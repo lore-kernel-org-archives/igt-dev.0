@@ -1,16 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE28410E34C
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Mar 2023 20:59:39 +0000 (UTC)
-From: Matthew Brost <matthew.brost@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Mar 2023 13:59:40 -0700
-Message-Id: <20230315205941.4038718-3-matthew.brost@intel.com>
-In-Reply-To: <20230315205941.4038718-1-matthew.brost@intel.com>
-References: <20230315205941.4038718-1-matthew.brost@intel.com>
-MIME-Version: 1.0
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam04on2080.outbound.protection.outlook.com [40.107.101.80])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC1E010E00E
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Mar 2023 21:02:53 +0000 (UTC)
+Message-ID: <83ee54a1-512a-fc51-a8f5-cd00949ad248@amd.com>
+Date: Wed, 15 Mar 2023 17:02:48 -0400
+To: Leo Li <sunpeng.li@amd.com>, igt-dev@lists.freedesktop.org,
+ rodrigo.siqueira@amd.com, harry.wentland@amd.com, nicholas.kazlauskas@amd.com
+References: <9212eb43-3204-79f1-c507-01c1824cebe9@amd.com>
+ <20230313163253.692137-1-Bhawanpreet.Lakha@amd.com>
+ <19e60197-21e2-c121-195c-bfd2d30af9ad@amd.com>
+Content-Language: en-US
+From: Bhawanpreet Lakha <Bhawanpreet.lakha@amd.com>
+In-Reply-To: <19e60197-21e2-c121-195c-bfd2d30af9ad@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/3] xe_exec_basic: Add NULL VM bind section
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH 1/2] amdgpu/amd_plane: Add multi MPO XRGB8888
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,96 +29,261 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-A NULL VM bind results in writes being dropped and reads returning zero,
-verify uAPI for NULL VM binds is working as designed.
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
- tests/xe/xe_exec_basic.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+On 2023-03-15 16:30, Leo Li wrote:
+>
+>
+> On 3/13/23 12:32, Bhawanpreet Lakha wrote:
+>> [Why]
+>> Some of our ASICs  support multiple overlay planes, so create
+>> a test to test them
+>>
+>> [How]
+>> Create a plane with two holes and fill them up with 2 overlay planes
+>>
+>> *v2
+>> create a overlap/non overlap test instead of using rand()
+>>
+>> Signed-off-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+>> ---
+>>   tests/amdgpu/amd_plane.c | 118 ++++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 117 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
+>> index b9eec677..3e8b1f31 100644
+>> --- a/tests/amdgpu/amd_plane.c
+>> +++ b/tests/amdgpu/amd_plane.c
+>> @@ -42,6 +42,7 @@ typedef struct data {
+>>           igt_plane_t *primary[MAX_PIPES];
+>>           igt_plane_t *cursor[MAX_PIPES];
+>>       igt_plane_t *overlay[MAX_PIPES];
+>> +    igt_plane_t *overlay2[MAX_PIPES];
+>>           igt_output_t *output[MAX_PIPES];
+>>           igt_pipe_t *pipe[MAX_PIPES];
+>>           igt_pipe_crc_t *pipe_crc[MAX_PIPES];
+>> @@ -144,7 +145,8 @@ static void lut_free(lut_t *lut)
+>>   enum test {
+>>       MPO_SINGLE_PAN,
+>>       MPO_MULTI_PAN,
+>> -    MPO_SCALE
+>> +    MPO_SCALE,
+>> +    MPO_MULTI_OVERLAY
+>>   };
+>>     static void test_init(data_t *data)
+>> @@ -159,6 +161,8 @@ static void test_init(data_t *data)
+>>               data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
+>>           data->overlay[i] = igt_pipe_get_plane_type_index(
+>>               data->pipe[i], DRM_PLANE_TYPE_OVERLAY, 0);
+>> +        data->overlay2[i] = igt_pipe_get_plane_type_index(
+>> +            data->pipe[i], DRM_PLANE_TYPE_OVERLAY, 1);
+>>           data->cursor[i] = igt_pipe_get_plane_type(
+>>               data->pipe[i], DRM_PLANE_TYPE_CURSOR);
+>>           data->pipe_crc[i] =
+>> @@ -252,6 +256,7 @@ struct fbc {
+>>       igt_fb_t ref_primary;
+>>       igt_fb_t test_primary;
+>>       igt_fb_t test_overlay;
+>> +    igt_fb_t test_overlay2;
+>>       igt_crc_t ref_crc;
+>>   };
+>>   @@ -264,6 +269,105 @@ static void set_regamma_lut(data_t *data, 
+>> lut_t const *lut, int n)
+>>                          size);
+>>   }
+>>   +/*
+>> + * Compares the result of white backgroud with white window with and 
+>> without MPO
+>> + *
+>> + * Reference crc:
+>> + * Draws a White background of size (pw,ph).
+>> + *
+>> + * Test crc:
+>> + * Draws a White Overlay of size (pw,ph) then creates a cutout of 
+>> size (w,h) at location (x1, y1) and (x2, y2)
+>> + * Draws a White Primary plane of size (w, h) at location (x1,y1) 
+>> (under the overlay)
+>> + * Draws a White Overlay of size (w, h) at location (x2,y2)
+>> + *
+>> + * NOTE: The reason for using White+White is to speed up the crc 
+>> (reuse the ref crc for all cases vs taking
+>> + * a ref crc per flip)
+>> + */
+>> +static void test_plane2(data_t *data, int n, int x1, int y1, int x2, 
+>> int y2, int w, int h, int pw, int ph, struct fbc *fbc){
+>> +
+>> +    igt_crc_t test_crc;
+>> +    igt_display_t *display = &data->display;
+>> +
+>> +    /* Reference: */
+>> +
+>> +    igt_plane_set_fb(data->primary[n], &fbc[n].ref_primary);
+>> +
+>> +    igt_plane_set_position(data->primary[n], 0, 0);
+>> +    igt_plane_set_size(data->primary[n], pw, ph);
+>> +
+>> +    igt_display_commit_atomic(display, 0, 0);
+>> +
+>> +    /* Test: */
+>> +    /* Draw a white overlay with two cutouts at (x1,y1) and (x2,y2) */
+>> +    draw_color_alpha(&fbc[n].test_overlay2, 0, 0, pw, ph, 1.0, 1.0, 
+>> 1.0, 1.0);
+>> +    draw_color_alpha(&fbc[n].test_overlay2, x1, y1, w, h, 0.0, 0.0, 
+>> 0.0, 0.0);
+>> +    draw_color_alpha(&fbc[n].test_overlay2, x2, y2, w, h, 0.0, 0.0, 
+>> 0.0, 0.0);
+>> +
+>> +    /* Draw a overlay to cover up one hole */
+>> +    draw_color_alpha(&fbc[n].test_overlay, 0, 0, pw, ph, 0.0, 0.0, 
+>> 0.0, 0.0);
+>> +    draw_color_alpha(&fbc[n].test_overlay, x2, y2, w, h, 1.0, 1.0, 
+>> 1.0, 1.0);
+>> +
+>> +    /* Draw a primary to cover up the other hole */
+>> +    draw_color_alpha(&fbc[n].test_primary, 0, 0, w, h, 0.0, 0.0, 
+>> 0.0, 0.0);
+>> +    draw_color_alpha(&fbc[n].test_primary, 0, 0, w, h, 1.0, 1.0, 
+>> 1.0, 1.0);
+>> +
+>> +    igt_plane_set_fb(data->primary[n], &fbc[n].test_primary);
+>> +    igt_plane_set_fb(data->overlay[n], &fbc[n].test_overlay);
+>> +    igt_plane_set_fb(data->overlay2[n], &fbc[n].test_overlay2);
+>> +
+>> +    /* Move the primary to cover one of the holes*/
+>> +    igt_plane_set_position(data->primary[n], x1, y1);
+>> +    igt_plane_set_size(data->primary[n], w, h);
+>
+> Hi Bhawan,
+>
+> For the primary plane, it looks like we're drawing at (0,0), then moving
+> to (x1, y1). For the overlay plane, we're drawing directly at (x2, y2)
+> without moving the plane. Is that on purpose?
 
-diff --git a/tests/xe/xe_exec_basic.c b/tests/xe/xe_exec_basic.c
-index d9af97d8..c5796e45 100644
---- a/tests/xe/xe_exec_basic.c
-+++ b/tests/xe/xe_exec_basic.c
-@@ -27,6 +27,7 @@
- #define BIND_ENGINE	(0x1 << 4)
- #define DEFER_ALLOC	(0x1 << 5)
- #define DEFER_BIND	(0x1 << 6)
-+#define SPARSE		(0x1 << 7)
- 
- /**
-  * SUBTEST: once-%s
-@@ -89,6 +90,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		.syncs = to_user_pointer(&sync),
- 	};
- 	uint64_t addr[MAX_N_ENGINES];
-+	uint64_t sparse_addr[MAX_N_ENGINES];
- 	uint32_t vm[MAX_N_ENGINES];
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t bind_engines[MAX_N_ENGINES];
-@@ -112,8 +114,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			xe_get_default_alignment(fd));
- 
- 	addr[0] = 0x1a0000;
--	for (i = 1; i < MAX_N_ENGINES; ++i)
-+	sparse_addr[0] = 0x301a0000;
-+	for (i = 1; i < MAX_N_ENGINES; ++i) {
- 		addr[i] = addr[i - 1] + (0x1ull << 32);
-+		sparse_addr[i] = sparse_addr[i - 1] + (0x1ull << 32);
-+	}
- 
- 	if (flags & USERPTR) {
- #define	MAP_ADDRESS	0x00007fadeadbe000
-@@ -161,6 +166,13 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			xe_vm_bind_userptr_async(fd, vm[i], bind_engines[i],
- 						 to_user_pointer(data), addr[i],
- 						 bo_size, sync, 1);
-+		if (flags & SPARSE)
-+			__xe_vm_bind_assert(fd, vm[i], bind_engines[i],
-+					    0, 0, sparse_addr[i], bo_size,
-+					    XE_VM_BIND_OP_MAP |
-+					    XE_VM_BIND_FLAG_ASYNC |
-+					    XE_VM_BIND_FLAG_NULL, sync,
-+					    1, 0, 0);
- 	}
- 
- 	if (flags & DEFER_BIND)
-@@ -171,7 +183,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
- 		uint64_t batch_addr = __addr + batch_offset;
- 		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
--		uint64_t sdi_addr = __addr + sdi_offset;
-+		uint64_t sdi_addr = (flags & SPARSE ? sparse_addr[i % n_vm] :
-+				     __addr)+ sdi_offset;
- 		int e = i % n_engines;
- 
- 		b = 0;
-@@ -254,9 +267,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 					INT64_MAX, 0, NULL));
- 	}
- 
--	for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
--	     i < n_execs; i++)
--		igt_assert_eq(data[i].data, 0xc0ffee);
-+	if (!(flags & SPARSE)) {
-+		for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
-+		     i < n_execs; i++)
-+			igt_assert_eq(data[i].data, 0xc0ffee);
-+	}
- 
- 	syncobj_destroy(fd, sync[0].handle);
- 	for (i = 0; i < n_engines; i++) {
-@@ -288,6 +303,10 @@ igt_main
- 		{ "basic-defer-bind", DEFER_ALLOC | DEFER_BIND },
- 		{ "userptr", USERPTR },
- 		{ "rebind", REBIND },
-+		{ "null", SPARSE },
-+		{ "null-defer-mmap", SPARSE | DEFER_ALLOC },
-+		{ "null-defer-bind", SPARSE | DEFER_ALLOC | DEFER_BIND },
-+		{ "null-rebind", SPARSE | REBIND },
- 		{ "userptr-rebind", USERPTR | REBIND },
- 		{ "userptr-invalidate", USERPTR | INVALIDATE },
- 		{ "userptr-invalidate-race", USERPTR | INVALIDATE | RACE },
--- 
-2.34.1
+Its done on purpose since the code is shared between normal MPO test the 
+second overlay is also full screen. Would need to redo the testing logic 
+to fit this in. Since this is mostly just a basic "multi mpo works" 
+test, its good enough.
+
+>
+>> +
+>> +
+>> +    igt_display_commit_atomic(display, 0, 0);
+>> +    igt_pipe_crc_collect_crc(data->pipe_crc[n], &test_crc);
+>> +    igt_plane_set_fb(data->overlay[n], NULL);
+>> +    igt_plane_set_fb(data->overlay2[n], NULL);
+>> +
+>> +    igt_assert_crc_equal(&fbc[n].ref_crc, &test_crc);
+>> +
+>> +    /* Set window to white, this is to avoid flashing between 
+>> black/white after each flip */
+>> +    draw_color_alpha(&fbc[n].ref_primary, 0, 0, w, h, 1.0, 1.0, 1.0, 
+>> 1.00);
+>> +    igt_plane_set_fb(data->primary[n], &fbc[n].ref_primary);
+>> +    igt_plane_set_position(data->primary[n], 0, 0);
+>> +    igt_plane_set_size(data->primary[n], pw, ph);
+>> +    igt_display_commit_atomic(display, 0, 0);
+>> +
+>> +
+>> +}
+>> +
+>> +/*
+>> + * MPO_MULTI_OVERLAY: This test takes the plane sizes and assigns 
+>> random position within the screen
+>
+> Drop "random"
+>
+>> + *
+>> + * The test creates a white screen with 2 cutouts which are to be 
+>> filled with 2 overlay planes.
+>> + * Testing multiple overlay planes
+>> + */
+>> +static void test_multi_overlay(data_t *data, int display_count, int 
+>> w, int h, struct fbc *fb)
+>> +{
+>> +
+>> +    for (int n = 0; n < display_count; n++) {
+>> +
+>> +        int pw = data->w[n];
+>> +        int ph = data->h[n];
+>> +
+>> +        if (pw <= w && ph <= h)
+>> +            break;
+>> +
+>> +        /* Don't overlap the planes */
+>> +        test_plane2(data, n, 0, 0, pw - w, ph - h, w, h, pw, ph, fb);
+>
+> If my mental plotter is working, the overlay and primary can overlap in
+> the center if (2*w > pw && 2*h > ph). I suppose that's ok as long as the
+> desired case (top and bottom corner positioning) is tested.
+>
+> Thanks,
+> Leo
+>
+>> +
+>> +        if (w/2 > pw - w || h/2 > ph - h)
+>> +            break;
+>> +
+>> +        /* Overlap the planes */
+>> +        test_plane2(data, n, 0, 0, w/2, h/2, w, h, pw, ph, fb);
+>> +    }
+>> +
+>> +    return;
+>> +
+>> +}
+>> +
+>>   /*
+>>    * Compares the result of white backgroud with white window with 
+>> and without MPO
+>>    *
+>> @@ -467,6 +571,10 @@ static void test_display_mpo(data_t *data, enum 
+>> test test, uint32_t format, int
+>>         test_init(data);
+>>   +    /* Skip test if we don't have 2 overlay planes */
+>> +    if (test == MPO_MULTI_OVERLAY)
+>> +        igt_skip_on(!data->overlay2[0]);
+>> +
+>>       /* Skip if there is less valid outputs than the required. */
+>>       for_each_connected_output(display, output)
+>>           valid_outputs++;
+>> @@ -494,6 +602,7 @@ static void test_display_mpo(data_t *data, enum 
+>> test test, uint32_t format, int
+>>           igt_create_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 
+>> &fb[n].ref_primary);
+>>           igt_create_color_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 
+>> 1.0, 1.0, 1.0, &fb[n].ref_primary);
+>>           igt_create_fb(data->fd, w, h, DRM_FORMAT_ARGB8888, 0, 
+>> &fb[n].test_overlay);
+>> +        igt_create_fb(data->fd, w, h, DRM_FORMAT_ARGB8888, 0, 
+>> &fb[n].test_overlay2);
+>>             igt_plane_set_fb(data->primary[n], &fb[n].ref_primary);
+>>   @@ -520,6 +629,8 @@ static void test_display_mpo(data_t *data, enum 
+>> test test, uint32_t format, int
+>>             if (test == MPO_SINGLE_PAN)
+>>               test_panning_1_display(data, display_count, 
+>> videos[i][0], videos[i][1], fb);
+>> +        if (test == MPO_MULTI_OVERLAY)
+>> +            test_multi_overlay(data, display_count, videos[i][0], 
+>> videos[i][1], fb);
+>>           if (test == MPO_MULTI_PAN)
+>>               test_panning_2_display(data, videos[i][0], 
+>> videos[i][1], fb);
+>>           if(test == MPO_SCALE)
+>> @@ -536,6 +647,7 @@ static void test_display_mpo(data_t *data, enum 
+>> test test, uint32_t format, int
+>>       for (int n = 0; n < display_count; n++) {
+>>           igt_remove_fb(data->fd, &fb[n].ref_primary);
+>>           igt_remove_fb(data->fd, &fb[n].test_overlay);
+>> +        igt_remove_fb(data->fd, &fb[n].test_overlay2);
+>>       }
+>>   }
+>>   /*
+>> @@ -798,6 +910,10 @@ igt_main
+>>       igt_subtest("mpo-pan-multi-p010")
+>>           test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_P010, 
+>> DISPLAYS_TO_TEST);
+>>   +    igt_describe("Multi MPO");
+>> +    igt_subtest("multi-mpo")
+>> +        test_display_mpo(&data, MPO_MULTI_OVERLAY, DRM_FORMAT_NV12, 1);
+>> +
+>>       igt_describe("MPO and scaling RGB primary plane");
+>>       igt_subtest("mpo-scale-rgb")
+>>           test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
