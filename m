@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3FBA610E2DD
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Mar 2023 15:02:41 +0000 (UTC)
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Mar 2023 15:01:29 +0000
-Message-Id: <20230315150129.245398-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe/debugfs: fix double-free in
- test_base
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Date: Wed, 15 Mar 2023 15:11:37 -0000
+Message-ID: <167889309704.19838.15162441145323543059@emeril.freedesktop.org>
+References: <20230315141524.39799-1-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20230315141524.39799-1-thomas.hellstrom@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/xe/xe=5Fnoexec=5Fping=5Fpong=3A_Add_a_test_to_expose_unnecess?=
+ =?utf-8?q?ary_rebinds?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,78 +18,23 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Looks to incorrectly free the xe_dev->config, even though there is still
-a cached entry pointing to it. The test fixture will also call
-xe_device_put() at the end, freeing the same pointer (might now point to
-valid memory), which hopefully explains why we see strange looking
-crashes in CI:
+== Series Details ==
 
-Starting subtest: base
-Subtest base: SUCCESS (0.005s)
-Received signal SIGABRT.
-Stack trace:
- #0 [fatal_sig_handler+0x10f]
- #1 [killpg+0x40]
- #2 [gsignal+0xcb]
- #3 [abort+0x12b]
- #4 [__fsetlocking+0x42e]
- #5 [pthread_attr_setschedparam+0x54c]
- #6 [pthread_attr_setschedparam+0xd28]
- #7 [pthread_attr_setschedparam+0x2ed3]
- #8 [__libc_malloc+0x74]
- #9 [_IO_file_doallocate+0x94]
- #10 [_IO_doallocbuf+0x50]
- #11 [_IO_file_overflow+0x1b0]
- #12 [_IO_file_xsputn+0xe5]
- #13 [psiginfo+0x13512]
- #14 [igt_kmsg+0xc9]
- #15 [igt_exit+0xd3]
- #16 [main+0x44]
- #17 [__libc_start_main+0xf3]
- #18 [_start+0x2e]
+Series: tests/xe/xe_noexec_ping_pong: Add a test to expose unnecessary rebinds
+URL   : https://patchwork.freedesktop.org/series/115206/
+State : failure
 
-Keep the xe_device stuff in test_base, since that looks be the only user
-here.
+== Summary ==
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/xe/xe_debugfs.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Applying: tests/xe/xe_noexec_ping_pong: Add a test to expose unnecessary rebinds
+Patch failed at 0001 tests/xe/xe_noexec_ping_pong: Add a test to expose unnecessary rebinds
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
-index 38c8becc..ddb01568 100644
---- a/tests/xe/xe_debugfs.c
-+++ b/tests/xe/xe_debugfs.c
-@@ -146,7 +146,7 @@ test_base(int fd)
- 
- 	validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
- 
--	free(config);
-+	xe_device_put(fd);
- }
- 
- /**
-@@ -250,7 +250,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
- 		__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
- 	}
- 
-@@ -272,7 +271,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_fixture {
--		xe_device_put(fd);
- 		close(fd);
- 	}
- }
--- 
-2.39.2
