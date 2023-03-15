@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E88110E2CE
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 21:47:18 +0000 (UTC)
-From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
-To: "Dong, Zhanjun" <zhanjun.dong@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Tue, 14 Mar 2023 21:47:15 +0000
-Message-ID: <ad08582c53e3026396da19e280e83b5d35ef075a.camel@intel.com>
-References: <20221206085849.271505-3-alan.previn.teres.alexis@intel.com>
- <741862eb-8a8c-a1b6-d033-0f6f09f1c40d@intel.com>
-In-Reply-To: <741862eb-8a8c-a1b6-d033-0f6f09f1c40d@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <CEC05801C228614AA42BBF064E2381C4@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFDAD10E994
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Mar 2023 10:25:07 +0000 (UTC)
+Date: Wed, 15 Mar 2023 12:25:03 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <ZBGc/3axSjSQn0UN@intel.com>
+References: <20230313151406.2113963-1-bhanuprakash.modem@intel.com>
+ <20230313151406.2113963-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t, v2,
- 02/11] tools/intel_guc_logger: Refactor intel_guc_logger globals
- into structs
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230313151406.2113963-2-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t V2 2/3] tests/i915/kms_ccs: Cleanup to use
+ linear modifier
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,39 +22,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIzLTAxLTMxIGF0IDE5OjA0IC0wNTAwLCBEb25nLCBaaGFuanVuIHdyb3RlOg0K
-PiBTZWUgbXkgY29tbWVudHMgYmVsb3cuDQo+IA0KPiANCj4gUmVnYXJkcywNCj4gDQo+IFpoYW5q
-dW4gRG9uZw0KPiANCj4gT24gMjAyMi0xMi0wNiAzOjU4IGEubS4sIEFsYW4gUHJldmluIHdyb3Rl
-Og0KPiA+IFJlZmFjdG9yIGFsbCBvZiB0aGUgZ2xvYmFsIHZhcmlhYmxlcyB1c2VkIGluIGludGVs
-X2d1Y19sb2dnZXINCj4gPiBpbnRvIGFic3RyYWN0aW9ucyBvZiBzdHJ1Y3R1cmVzIGF0IHRocmVh
-ZCBsZXZlbCwgR3VDLUdUIGxldmVsDQo+ID4gYW5kIGdsb2JhbCBsZXZlbC4NCj4gPiANCj4gPiBX
-aGlsZSBhdCBpdCwgcmVtb3ZlIGFzc2VydHMgZnJvbSB0aGUgbm9uIHByaW1hcnkgdGhyZWFkIHRv
-IGVuc3VyZQ0KPiA+IHByb2Nlc3MgY2xlYW51cCBkb2Vzbid0IGdldCBzdHVjay4NCj4gPiANCmFs
-YW46c25pcA0KDQo+ID4gLQlpZiAoY3RsX2ZkKSB7DQo+ID4gLQkJcmV0ID0gYXNwcmludGYoJnN0
-ciwgIjB4JSIgUFJJeDY0LCB2YWwpOw0KPiA+ICsJaWYgKHRkYXRhLT5ndWMtPmNvbnRyb2xfZmQp
-IHsNCj4gPiArCQlyZXQgPSBhc3ByaW50Zigmc3RyLCAiMHglIiBQUkl4NjQsICh1bnNpZ25lZCBs
-b25nKWNtZCk7DQo+IFdoeSBkb24ndCB1c2UgdHlwaWNhbCBpbnQgb3IgdW5zaWduZWQgaW50IGZv
-ciBtYXggY29tcGF0aWJpbGl0eT8NCmFsYW46c3VyZSB3aWxsIGNoYW5nZSB0byAiaW50IiBsaWtl
-IHBhdGNoICMxIGRpcmVjdGlvbiBhbmQgY2hhbmdlIHRoZSBlbnVtIG5hbWVzIHRvICNkZWZpbmVz
-Lg0Kc2lkZSBub3RlOiBhYm92ZSBjb2RlIHdpbGwgbG9vayBkaWZmZXJlbnQsIG5vdCB1c2luZyBh
-c3ByaW50Ziwgbm90IG5lZWRpbmcgdHlwZWNhc2UgYWZ0ZXIgaSBmaXgNCml0IGFzIHBlciB5b3Vy
-IHJldmlldyBjb21tZW50IG9mIHBhdGNoIDEgYW55d2F5LiBJIHdpbGwgY2hhbmdlIHRvIGludCBh
-bnl3YXkuDQphbGFuOnNuaXANCg0KPiA+ICAgCWNhc2UgJ2QnOg0KPiA+IC0JCWRpc2NhcmRfb2xk
-bG9ncyA9IHRydWU7DQo+ID4gKwkJZGF0YS0+ZGlzY2FyZF9vbGRsb2dzID0gdHJ1ZTsNCj4gPiAg
-IAkJaWd0X2RlYnVnKCJvbGQvYm9vdC10aW1lIGxvZ3Mgd2lsbCBiZSBkaXNjYXJkZWRcbiIpOw0K
-PiA+ICAgCQlicmVhazsNCj4gSG93IGFib3V0IHVuc3VwcG9ydGVkIG9wdGlvbihzKT8NCmFsYW46
-IGkgYmVsaWV2ZSB0aGUgaWd0IGhlbHBlciB0YWtlcyBjYXJlIG9mIHRoYXQuDQphbGFuOnNuaXAN
-Cg0KPiA+ICAgLQlnZXRfZ3VjX3N1YmJ1Zl9pbmZvKCk7DQo+ID4gLQlwcm9jZXNzX2NvbW1hbmRf
-bGluZShhcmdjLCBhcmd2KTsNCj4gPiArCW1lbXNldCgmZ3VjZGF0YVswXSwgMCwgc2l6ZW9mKHN0
-cnVjdCBndWNfdCkpOw0KPiA+ICsJZ3VjZGF0YVswXS5ndF9pZCA9IDA7DQo+ID4gKwlpZ3RfYXNz
-ZXJ0X25lcShhc3ByaW50ZigmZ3VjZGF0YVswXS5mc3BhdGgsICJndC91YyIpLCAtMSk7DQo+IERl
-cGVuZHMgb24gcGxhdGZvcm0sIG5hbWUgY291bGQgYmUgZ3QvdWMgb3IgZ3QwL3VjLCBndDEvdWMN
-CmFsYW46IHllYWggdGhhbmtzIC0gdGhpcyBzZXJpZXMgbGFzdCByZXYgd2FzIHB1Ymxpc2hlZCBz
-b21ldGltZSBiYWNrIC0gYnV0IGkgd2lsbCBmaXggdGhpcw0Kb24gdGhlIG5leHQgcGF0Y2ggdGhh
-dCBwcm9wZXJseSBoYW5kbGVzIG11bHRpLWd0IHBsYXRmb3JtcyAtIGZvciB0aGlzIHBhdGNoICMy
-LCBJJ2xsDQprZWVwdCBkZWZhdWx0aW5nIHRvIHNpbmdsZS1ndCBwcm9kdWN0IG9ubHkgYXMgYWJv
-dmUuIHRoZSBuZXh0IHBhdGNoIG5lZWRzIHRvIGJlIGZpeGVkIGZvciB0aGF0Lg0KDQo=
+On Mon, Mar 13, 2023 at 08:44:05PM +0530, Bhanuprakash Modem wrote:
+> Use either compressed or linear modifier to test. Due to the
+> lack of available bandwidth, we cannot fit two CCS planes into
+> the available FIFO configurations.
+> 
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  tests/i915/kms_ccs.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
+> index 9be3fa252..18d48fb80 100644
+> --- a/tests/i915/kms_ccs.c
+> +++ b/tests/i915/kms_ccs.c
+> @@ -393,10 +393,8 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
+>  	 */
+>  	if (fb_flags & FB_COMPRESSED)
+>  		modifier = data->ccs_modifier;
+> -	else if (!(fb_flags & FB_HAS_PLANE))
+> -		modifier = DRM_FORMAT_MOD_LINEAR;
+>  	else
+> -		modifier = 0;
+> +		modifier = DRM_FORMAT_MOD_LINEAR;
+
+Isn't this whole change a nop? If so why does the commit message
+seem to indicate some kind of functional change?
+
+>  
+>  	create_fb_prepare_add(data->drm_fd, width, height,
+>  			      data->format, modifier,
+> -- 
+> 2.39.1
+
+-- 
+Ville Syrjälä
+Intel
