@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <6f83991b-e4d6-b573-9e1c-074f2c612ff7@linux.intel.com>
-Date: Wed, 15 Mar 2023 09:20:49 +0000
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF87310E986
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Mar 2023 09:41:24 +0000 (UTC)
+From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 15 Mar 2023 10:40:38 +0100
+Message-Id: <20230315094042.5032-2-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20230315094042.5032-1-dominik.karol.piatkowski@intel.com>
+References: <20230315094042.5032-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-References: <20230314121740.1195358-1-tvrtko.ursulin@linux.intel.com>
- <ZBC8GxZjeR5+bHOm@orsosgc001.jf.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <ZBC8GxZjeR5+bHOm@orsosgc001.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] intel_gpu_top: Use actual
- period when calculating client busyness
+Subject: [igt-dev] [PATCH i-g-t 1/5] lib/igt_kmod: rename kselftest
+ functions to ktest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,143 +20,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org
+Cc: Isabella Basso <isabbasso@riseup.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Isabella Basso <isabbasso@riseup.net>
 
-Hi Umesh,
+This aims at making IGT's structure more general to different kernel
+testing frameworks such as KUnit, as they use a lot of the same
+functionality.
 
-On 14/03/2023 18:25, Umesh Nerlige Ramappa wrote:
-> lgtm,
-> 
-> Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Isabella Basso <isabbasso@riseup.net>
 
-Thanks - I had one second thought though. See below please.
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+---
+ lib/igt_kmod.c | 22 +++++++++++-----------
+ lib/igt_kmod.h | 12 ++++++------
+ 2 files changed, 17 insertions(+), 17 deletions(-)
 
-> On Tue, Mar 14, 2023 at 12:17:40PM +0000, Tvrtko Ursulin wrote:
->> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>
->> On a slow machine, or with many processes and/or file descriptors to
->> parse, the period of the scanning loop can drift significantly from the
->> assumed value. This results in artificially inflated client busyness
->> percentages.
->>
->> To alleviate the issue take some real timestamps and use actual elapsed
->> time when calculating relative busyness.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->> ---
->> tools/intel_gpu_top.c | 39 ++++++++++++++++++++++++++++++++++++++-
->> 1 file changed, 38 insertions(+), 1 deletion(-)
->>
->> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->> index e13e35b71f4b..af4b350da8e4 100644
->> --- a/tools/intel_gpu_top.c
->> +++ b/tools/intel_gpu_top.c
->> @@ -43,6 +43,7 @@
->> #include <sys/types.h>
->> #include <unistd.h>
->> #include <termios.h>
->> +#include <time.h>
->> #include <sys/sysmacros.h>
->>
->> #include "igt_perf.h"
->> @@ -2524,6 +2525,38 @@ static void show_help_screen(void)
->> "\n");
->> }
->>
->> +static int gettime(struct timespec *ts)
->> +{
->> +    memset(ts, 0, sizeof(*ts));
->> +
->> +#ifdef CLOCK_MONOTONIC_RAW
->> +    if (!clock_gettime(CLOCK_MONOTONIC_RAW, ts))
->> +        return 0;
->> +#endif
->> +#ifdef CLOCK_MONOTONIC_COARSE
->> +    if (!clock_gettime(CLOCK_MONOTONIC_COARSE, ts))
->> +        return 0;
->> +#endif
-
-So I copied this (with some edits) from igt_core.c but I think I should 
-actually remove the CLOCK_MONOTONIC_COARSE option. The usage in 
-intel_gpu_top is not performance sensitive and tick granularity actually 
-defeats to point of this patch.
-
-Okay to keep the r-b if I remove it?
-
-Regards,
-
-Tvrtko
-
->> +
->> +    return clock_gettime(CLOCK_MONOTONIC, ts);
->> +}
->> +
->> +static unsigned long elapsed_us(struct timespec *prev, unsigned int 
->> period_us)
->> +{
->> +    unsigned long elapsed;
->> +    struct timespec now;
->> +
->> +    if (gettime(&now))
->> +        return period_us;
->> +
->> +    elapsed = ((now.tv_nsec - prev->tv_nsec) / 1000 +
->> +               (unsigned long)USEC_PER_SEC * (now.tv_sec - 
->> prev->tv_sec));
->> +
->> +    *prev = now;
->> +
->> +    return elapsed;
->> +}
->> +
->> int main(int argc, char **argv)
->> {
->>     unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
->> @@ -2537,6 +2570,7 @@ int main(int argc, char **argv)
->>     char *pmu_device, *opt_device = NULL;
->>     struct igt_device_card card;
->>     char *codename = NULL;
->> +    struct timespec ts;
->>
->>     /* Parse options */
->>     while ((ch = getopt(argc, argv, "o:s:d:pcJLlh")) != -1) {
->> @@ -2690,6 +2724,7 @@ int main(int argc, char **argv)
->>
->>     pmu_sample(engines);
->>     scan_clients(clients, false);
->> +    gettime(&ts);
->>     codename = igt_device_get_pretty_name(&card, false);
->>
->>     if (output_mode == JSON)
->> @@ -2698,6 +2733,7 @@ int main(int argc, char **argv)
->>     while (!stop_top) {
->>         struct clients *disp_clients;
->>         bool consumed = false;
->> +        unsigned int scan_us;
->>         int j, lines = 0;
->>         struct winsize ws;
->>         struct client *c;
->> @@ -2720,6 +2756,7 @@ int main(int argc, char **argv)
->>         t = (double)(engines->ts.cur - engines->ts.prev) / 1e9;
->>
->>         disp_clients = scan_clients(clients, true);
->> +        scan_us = elapsed_us(&ts, period_us);
->>
->>         if (stop_top)
->>             break;
->> @@ -2757,7 +2794,7 @@ int main(int argc, char **argv)
->>
->>                     lines = print_client(c, engines, t,
->>                                  lines, con_w,
->> -                                 con_h, period_us,
->> +                                 con_h, scan_us,
->>                                  &class_w);
->>                 }
->>
->> -- 
->> 2.37.2
->>
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 6d6ecf01..0b714ce3 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -749,8 +749,8 @@ static int open_parameters(const char *module_name)
+ 	return open(path, O_RDONLY);
+ }
+ 
+-int igt_kselftest_init(struct igt_kselftest *tst,
+-		       const char *module_name)
++int igt_ktest_init(struct igt_ktest *tst,
++		   const char *module_name)
+ {
+ 	int err;
+ 
+@@ -769,7 +769,7 @@ int igt_kselftest_init(struct igt_kselftest *tst,
+ 	return 0;
+ }
+ 
+-int igt_kselftest_begin(struct igt_kselftest *tst)
++int igt_ktest_begin(struct igt_ktest *tst)
+ {
+ 	int err;
+ 
+@@ -784,7 +784,7 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
+ 	return 0;
+ }
+ 
+-int igt_kselftest_execute(struct igt_kselftest *tst,
++int igt_kselftest_execute(struct igt_ktest *tst,
+ 			  struct igt_kselftest_list *tl,
+ 			  const char *options,
+ 			  const char *result)
+@@ -822,13 +822,13 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
+ 	return err;
+ }
+ 
+-void igt_kselftest_end(struct igt_kselftest *tst)
++void igt_ktest_end(struct igt_ktest *tst)
+ {
+ 	kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
+ 	close(tst->kmsg);
+ }
+ 
+-void igt_kselftest_fini(struct igt_kselftest *tst)
++void igt_ktest_fini(struct igt_ktest *tst)
+ {
+ 	free(tst->module_name);
+ 	kmod_module_unref(tst->kmod);
+@@ -851,15 +851,15 @@ void igt_kselftests(const char *module_name,
+ 		    const char *result,
+ 		    const char *filter)
+ {
+-	struct igt_kselftest tst;
++	struct igt_ktest tst;
+ 	IGT_LIST_HEAD(tests);
+ 	struct igt_kselftest_list *tl, *tn;
+ 
+-	if (igt_kselftest_init(&tst, module_name) != 0)
++	if (igt_ktest_init(&tst, module_name) != 0)
+ 		return;
+ 
+ 	igt_fixture
+-		igt_require(igt_kselftest_begin(&tst) == 0);
++		igt_require(igt_ktest_begin(&tst) == 0);
+ 
+ 	igt_kselftest_get_tests(tst.kmod, filter, &tests);
+ 	igt_subtest_with_dynamic(filter ?: "all-tests") {
+@@ -878,9 +878,9 @@ void igt_kselftests(const char *module_name,
+ 	}
+ 
+ 	igt_fixture {
+-		igt_kselftest_end(&tst);
++		igt_ktest_end(&tst);
+ 		igt_require(!igt_list_empty(&tests));
+ 	}
+ 
+-	igt_kselftest_fini(&tst);
++	igt_ktest_fini(&tst);
+ }
+diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+index f98dd29f..ceb10cd0 100644
+--- a/lib/igt_kmod.h
++++ b/lib/igt_kmod.h
+@@ -50,7 +50,7 @@ void igt_kselftests(const char *module_name,
+ 		    const char *result_option,
+ 		    const char *filter);
+ 
+-struct igt_kselftest {
++struct igt_ktest {
+ 	struct kmod_module *kmod;
+ 	char *module_name;
+ 	int kmsg;
+@@ -63,19 +63,19 @@ struct igt_kselftest_list {
+ 	char param[];
+ };
+ 
+-int igt_kselftest_init(struct igt_kselftest *tst,
++int igt_ktest_init(struct igt_ktest *tst,
+ 		       const char *module_name);
+-int igt_kselftest_begin(struct igt_kselftest *tst);
++int igt_ktest_begin(struct igt_ktest *tst);
+ 
+ void igt_kselftest_get_tests(struct kmod_module *kmod,
+ 			     const char *filter,
+ 			     struct igt_list_head *tests);
+-int igt_kselftest_execute(struct igt_kselftest *tst,
++int igt_kselftest_execute(struct igt_ktest *tst,
+ 			  struct igt_kselftest_list *tl,
+ 			  const char *module_options,
+ 			  const char *result);
+ 
+-void igt_kselftest_end(struct igt_kselftest *tst);
+-void igt_kselftest_fini(struct igt_kselftest *tst);
++void igt_ktest_end(struct igt_ktest *tst);
++void igt_ktest_fini(struct igt_ktest *tst);
+ 
+ #endif /* IGT_KMOD_H */
+-- 
+2.34.1
