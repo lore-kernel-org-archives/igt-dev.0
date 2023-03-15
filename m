@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 898DE10E03C
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Mar 2023 15:42:17 +0000 (UTC)
-Date: Wed, 15 Mar 2023 15:41:36 +0000
-From: Matthew Brost <matthew.brost@intel.com>
-To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-Message-ID: <ZBHnMP0HyzPiQIbV@DUT025-TGLU.fm.intel.com>
-References: <20230315141810.40105-1-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230315141810.40105-1-thomas.hellstrom@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8046694879790386177=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] text/xe/xe_exec_basic: Wait for the correct
- vm_bind before exec
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Date: Wed, 15 Mar 2023 15:47:33 -0000
+Message-ID: <167889525327.19840.7161924273435694178@emeril.freedesktop.org>
+References: <20230315141810.40105-1-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20230315141810.40105-1-thomas.hellstrom@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGV4dC94?=
+ =?utf-8?q?e/xe=5Fexec=5Fbasic=3A_Wait_for_the_correct_vm=5Fbind_before_ex?=
+ =?utf-8?q?ec?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,132 +18,200 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Mar 15, 2023 at 03:18:10PM +0100, Thomas Hellström wrote:
-> The test was submitting the same syncobj for signalling to all
-> vm_bind operations, and then awaited it in all execs. However, the
-> binds don't necessarily complete in order, leading to GPU hangs if
-> an exec is launched before its bind is complete:
-> 
-> sudo ./xe_exec_basic --r many-engines-many-vm-basic-defer-mmap
-> IGT-Version: 1.26-g9b86de12 (x86_64) (Linux: 6.1.0+ x86_64)
-> Starting subtest: many-engines-many-vm-basic-defer-mmap
-> (xe_exec_basic:4204) xe/xe_ioctl-CRITICAL: Test assertion failure function __xe_exec_assert, file ../lib/xe/xe_ioctl.c:373:
-> (xe_exec_basic:4204) xe/xe_ioctl-CRITICAL: Failed assertion: igt_ioctl(fd, (((1U) << (((0+8)+8)+14)) | ((('d')) << (0+8)) | (((0x40 + 0x08)) << 0) | ((((sizeof(struct drm_xe_exec)))) << ((0+8)+8))), exec) == 0
-> (xe_exec_basic:4204) xe/xe_ioctl-CRITICAL: Last errno: 125, Operation canceled
-> (xe_exec_basic:4204) xe/xe_ioctl-CRITICAL: error: -1 != 0
-> Stack trace:
-> Subtest many-engines-many-vm-basic-defer-mmap failed.
-> **** DEBUG ****
-> (xe_exec_basic:4204) xe/xe_ioctl-CRITICAL: Test assertion failure function __xe_exec_assert, file ../lib/xe/xe_ioctl.c:373:
-> (xe_exec_basic:4204) xe/xe_ioctl-CRITICAL: Failed assertion: igt_ioctl(fd, (((1U) << (((0+8)+8)+14)) | ((('d')) << (0+8)) | (((0x40 + 0x08)) << 0) | ((((sizeof(struct drm_xe_exec)))) << ((0+8)+8))), exec) == 0
-> (xe_exec_basic:4204) xe/xe_ioctl-CRITICAL: Last errno: 125, Operation canceled
-> (xe_exec_basic:4204) xe/xe_ioctl-CRITICAL: error: -1 != 0
-> (xe_exec_basic:4204) igt_core-INFO: Stack trace:
-> ****  END  ****
-> Subtest many-engines-many-vm-basic-defer-mmap: FAIL (0.231s)
-> 
-> Fix this by using a unique syncobj per vm which is awaited in
-> execs touching that VM.
-> 
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+--===============8046694879790386177==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Been meaning to fix this for awhile, LGTM.
+== Series Details ==
 
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Series: text/xe/xe_exec_basic: Wait for the correct vm_bind before exec
+URL   : https://patchwork.freedesktop.org/series/115207/
+State : success
 
-> ---
->  tests/xe/xe_exec_basic.c | 20 ++++++++++++++------
->  1 file changed, 14 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/xe/xe_exec_basic.c b/tests/xe/xe_exec_basic.c
-> index cb0b8d2c..c1069829 100644
-> --- a/tests/xe/xe_exec_basic.c
-> +++ b/tests/xe/xe_exec_basic.c
-> @@ -93,6 +93,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  	uint32_t engines[MAX_N_ENGINES];
->  	uint32_t bind_engines[MAX_N_ENGINES];
->  	uint32_t syncobjs[MAX_N_ENGINES];
-> +	uint32_t bind_syncobjs[MAX_N_ENGINES];
->  	size_t bo_size;
->  	uint32_t bo = 0;
->  	struct {
-> @@ -150,10 +151,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  		else
->  			bind_engines[i] = 0;
->  		syncobjs[i] = syncobj_create(fd, 0);
-> +		bind_syncobjs[i] = syncobj_create(fd, 0);
->  	};
->  
-> -	sync[0].handle = syncobj_create(fd, 0);
->  	for (i = 0; i < n_vm; ++i) {
-> +		sync[0].handle = bind_syncobjs[i];
->  		if (bo)
->  			xe_vm_bind_async(fd, vm[i], bind_engines[i], bo, 0,
->  					 addr[i], bo_size, sync, 1);
-> @@ -167,7 +169,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  		data = xe_bo_map(fd, bo, bo_size);
->  
->  	for (i = 0; i < n_execs; i++) {
-> -		uint64_t __addr = addr[i % n_vm];
-> +		int cur_vm = i % n_vm;
-> +		uint64_t __addr = addr[cur_vm];
->  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
->  		uint64_t batch_addr = __addr + batch_offset;
->  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
-> @@ -183,6 +186,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  		igt_assert(b <= ARRAY_SIZE(data[i].batch));
->  
->  		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-> +		sync[0].handle = bind_syncobjs[cur_vm];
->  		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
->  		sync[1].handle = syncobjs[e];
->  
-> @@ -193,7 +197,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  		__xe_exec_assert(fd, &exec);
->  
->  		if (flags & REBIND && i + 1 != n_execs) {
-> -			uint32_t __vm = vm[i % n_vm];
-> +			uint32_t __vm = vm[cur_vm];
->  
->  			sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
->  			xe_vm_unbind_async(fd, __vm, bind_engines[e], 0,
-> @@ -243,7 +247,10 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  	for (i = 0; i < n_engines && n_execs; i++)
->  		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
->  					NULL));
-> -	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> +
-> +	for (i = 0; i < n_vm; i++)
-> +		igt_assert(syncobj_wait(fd, &bind_syncobjs[i], 1, INT64_MAX, 0,
-> +					NULL));
->  
->  	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
->  	for (i = 0; i < n_vm; ++i) {
-> @@ -258,7 +265,6 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  	     i < n_execs; i++)
->  		igt_assert_eq(data[i].data, 0xc0ffee);
->  
-> -	syncobj_destroy(fd, sync[0].handle);
->  	for (i = 0; i < n_engines; i++) {
->  		syncobj_destroy(fd, syncobjs[i]);
->  		xe_engine_destroy(fd, engines[i]);
-> @@ -272,8 +278,10 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  	} else if (!(flags & INVALIDATE)) {
->  		free(data);
->  	}
-> -	for (i = 0; i < n_vm; ++i)
-> +	for (i = 0; i < n_vm; ++i) {
-> +		syncobj_destroy(fd, bind_syncobjs[i]);
->  		xe_vm_destroy(fd, vm[i]);
-> +	}
->  }
->  
->  igt_main
-> -- 
-> 2.39.2
-> 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12864 -> IGTPW_8612
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with IGTPW_8612 need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8612, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8612:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [ABORT][1] ([i915#7911]) -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8612 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@dmabuf@all-tests@dma_fence:
+    - fi-pnv-d510:        [PASS][3] -> [DMESG-FAIL][4] ([i915#8143])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/fi-pnv-d510/igt@dmabuf@all-tests@dma_fence.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/fi-pnv-d510/igt@dmabuf@all-tests@dma_fence.html
+
+  * igt@dmabuf@all-tests@sanitycheck:
+    - fi-pnv-d510:        [PASS][5] -> [ABORT][6] ([i915#8143])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/fi-pnv-d510/igt@dmabuf@all-tests@sanitycheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/fi-pnv-d510/igt@dmabuf@all-tests@sanitycheck.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - bat-jsl-1:          [PASS][7] -> [DMESG-FAIL][8] ([i915#5334])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#8143]: https://gitlab.freedesktop.org/drm/intel/issues/8143
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7196 -> IGTPW_8612
+
+  CI-20190529: 20190529
+  CI_DRM_12864: efb4d3263a1932187dd525628e8b35d327f17a6f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8612: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/index.html
+  IGT_7196: 9b8c5dbe8cd82163ee198c43b81222d2b9b75fd4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@xe_vm@userptr-invalid
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/index.html
+
+--===============8046694879790386177==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>text/xe/xe_exec_basic: Wait for the correct vm_bind before exec</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115207/">https://patchwork.freedesktop.org/series/115207/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12864 -&gt; IGTPW_8612</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with IGTPW_8612 need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8612, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8612:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@execlists:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8612 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/fi-pnv-d510/igt@dmabuf@all-tests@dma_fence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/fi-pnv-d510/igt@dmabuf@all-tests@dma_fence.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8143">i915#8143</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf@all-tests@sanitycheck:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/fi-pnv-d510/igt@dmabuf@all-tests@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/fi-pnv-d510/igt@dmabuf@all-tests@sanitycheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8143">i915#8143</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7196 -&gt; IGTPW_8612</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12864: efb4d3263a1932187dd525628e8b35d327f17a6f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8612: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8612/index.html<br />
+  IGT_7196: 9b8c5dbe8cd82163ee198c43b81222d2b9b75fd4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@xe_vm@userptr-invalid</p>
+
+</body>
+</html>
+
+--===============8046694879790386177==--
