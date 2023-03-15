@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF8FD10E995
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Mar 2023 10:45:11 +0000 (UTC)
-Date: Wed, 15 Mar 2023 11:45:07 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230315104507.o74nhg7thqmkdmwb@zkempczy-mobl2>
-References: <cover.1678804829.git.karolina.stolarek@intel.com>
- <f302649434fdae4761cd4d3369df0b3698e207d1.1678804829.git.karolina.stolarek@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1782266290444261290=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f302649434fdae4761cd4d3369df0b3698e207d1.1678804829.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 5/8] lib/intel_batchbuffer: Add
- wrapper API to use XY_FAST_COPY_BLT/XY_SRC_BLT
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Date: Wed, 15 Mar 2023 10:46:52 -0000
+Message-ID: <167887721262.19839.12913120183481724958@emeril.freedesktop.org>
+References: <20230315100657.3385384-1-kunal1.joshi@intel.com>
+In-Reply-To: <20230315100657.3385384-1-kunal1.joshi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgZml4IG1p?=
+ =?utf-8?q?nor_chamelium_issues?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,152 +17,282 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 14, 2023 at 03:44:37PM +0100, Karolina Stolarek wrote:
-> From: Vikas Srivastava <vikas.srivastava@intel.com>
-> 
-> Add wrapper API in intel_batchbuffer to call respective copy functions
-> for XY_FAST_COPY_BLT or XY_SRC_BLT based on platform on which its
-> supported.
-> 
-> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-> Cc: Nirmoy Das <nirmoy.das@intel.com>
-> Cc: Andi Shyti <andi.shyti@linux.intel.com>
-> ---
->  lib/intel_batchbuffer.c | 72 +++++++++++++++++++++++++++++++++++++++++
->  lib/intel_batchbuffer.h | 22 +++++++++++++
->  2 files changed, 94 insertions(+)
-> 
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index a2bf5d2e..a5157194 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -277,6 +277,78 @@ static uint32_t src_copy_dword1(uint32_t dst_pitch, uint32_t bpp)
->  	return dword1;
->  }
->  
-> +/**
-> + * igt_blitter_copy:
-> + * @fd: file descriptor of the i915 driver
-> + * @ahnd: handle to an allocator
-> + * @ctx: context within which execute copy blit
-> + * @src_handle: GEM handle of the source buffer
-> + * @src_delta: offset into the source GEM bo, in bytes
-> + * @src_stride: Stride (in bytes) of the source buffer
-> + * @src_tiling: Tiling mode of the source buffer
-> + * @src_x: X coordinate of the source region to copy
-> + * @src_y: Y coordinate of the source region to copy
-> + * @src_size: size of the src bo required for allocator and softpin
-> + * @width: Width of the region to copy
-> + * @height: Height of the region to copy
-> + * @bpp: source and destination bits per pixel
-> + * @dst_handle: GEM handle of the destination buffer
-> + * @dst_delta: offset into the destination GEM bo, in bytes
-> + * @dst_stride: Stride (in bytes) of the destination buffer
-> + * @dst_tiling: Tiling mode of the destination buffer
-> + * @dst_x: X coordinate of destination
-> + * @dst_y: Y coordinate of destination
-> + * @dst_size: size of the dst bo required for allocator and softpin
-> + *
-> + * Wrapper API to call appropriate blitter copy function.
-> + */
-> +
-> +void igt_blitter_copy(int fd,
-> +		      uint64_t ahnd,
-> +		      uint32_t ctx,
-> +		      const intel_ctx_cfg_t *cfg,
-> +		      /* src */
-> +		      uint32_t src_handle,
-> +		      uint32_t src_delta,
-> +		      uint32_t src_stride,
-> +		      uint32_t src_tiling,
-> +		      uint32_t src_x, uint32_t src_y,
-> +		      uint64_t src_size,
-> +		      /* size */
-> +		      uint32_t width, uint32_t height,
-> +		      /* bpp */
-> +		      uint32_t bpp,
-> +		      /* dst */
-> +		      uint32_t dst_handle,
-> +		      uint32_t dst_delta,
-> +		      uint32_t dst_stride,
-> +		      uint32_t dst_tiling,
-> +		      uint32_t dst_x, uint32_t dst_y,
-> +		      uint64_t dst_size)
-> +{
-> +	uint32_t devid;
-> +
-> +	devid = intel_get_drm_devid(fd);
-> +
-> +	if (intel_graphics_ver(devid) >= IP_VER(12, 60))
-> +		igt_blitter_fast_copy__raw(fd, ahnd, ctx, NULL,
-> +					   src_handle, src_delta,
-> +					   src_stride, src_tiling,
-> +					   src_x, src_y, src_size,
-> +					   width, height, bpp,
-> +					   dst_handle, dst_delta,
-> +					   dst_stride, dst_tiling,
-> +					   dst_x, dst_y, dst_size);
-> +	else
-> +		igt_blitter_src_copy(fd, ahnd, ctx, NULL,
-> +				     src_handle, src_delta,
-> +				     src_stride, src_tiling,
-> +				     src_x, src_y, src_size,
-> +				     width, height, bpp,
-> +				     dst_handle, dst_delta,
-> +				     dst_stride, dst_tiling,
-> +				     dst_x, dst_y, dst_size);
-> +}
->  /**
->   * igt_blitter_src_copy:
->   * @fd: file descriptor of the i915 driver
-> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-> index 81830d77..aed1d575 100644
-> --- a/lib/intel_batchbuffer.h
-> +++ b/lib/intel_batchbuffer.h
-> @@ -36,6 +36,28 @@ uint32_t fast_copy_dword0(unsigned int src_tiling,
->  uint32_t fast_copy_dword1(unsigned int src_tiling,
->  			  unsigned int dst_tiling,
->  			  int bpp);
-> +void igt_blitter_copy(int fd,
-> +		      uint64_t ahnd,
-> +		      uint32_t ctx,
-> +		      const intel_ctx_cfg_t *cfg,
-> +		      /* src */
-> +		      uint32_t src_handle,
-> +		      uint32_t src_delta,
-> +		      uint32_t src_stride,
-> +		      uint32_t src_tiling,
-> +		      uint32_t src_x, uint32_t src_y,
-> +		      uint64_t src_size,
-> +		      /* size */
-> +		      uint32_t width, uint32_t height,
-> +		      /* bpp */
-> +		      uint32_t bpp,
-> +		      /* dst */
-> +		      uint32_t dst_handle,
-> +		      uint32_t dst_delta,
-> +		      uint32_t dst_stride,
-> +		      uint32_t dst_tiling,
-> +		      uint32_t dst_x, uint32_t dst_y,
-> +		      uint64_t dst_size);
->  
->  void igt_blitter_src_copy(int fd,
->  			  uint64_t ahnd,
-> -- 
-> 2.25.1
->
+--===============1782266290444261290==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Good idea, we can decrease conditional code where we just need
-to blit.
+== Series Details ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Series: fix minor chamelium issues
+URL   : https://patchwork.freedesktop.org/series/115179/
+State : success
 
---
-Zbigniew
- 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12861 -> IGTPW_8609
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/index.html
+
+Participating hosts (35 -> 37)
+------------------------------
+
+  Additional (3): fi-kbl-x1275 fi-bsw-n3050 fi-pnv-d510 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8609 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-kbl-x1275/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@random-engines:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][2] ([fdo#109271]) +28 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-kbl-x1275/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       NOTRUN -> [ABORT][4] ([i915#7911])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+    - fi-bsw-nick:        [PASS][5] -> [ABORT][6] ([i915#7911] / [i915#7913])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12861/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-dg1-6:          [PASS][7] -> [ABORT][8] ([i915#4983])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12861/bat-dg1-6/igt@i915_selftest@live@gt_mocs.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-dg1-6/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-adlm-1:         NOTRUN -> [SKIP][9] ([i915#7828])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-adlm-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][10] ([fdo#109271]) +45 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-kbl-x1275/igt@kms_pipe_crc_basic@read-crc.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-adlm-1:         NOTRUN -> [SKIP][11] ([i915#1845])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-adlm-1/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][12] ([fdo#109271]) +38 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@migrate:
+    - bat-rplp-1:         [DMESG-FAIL][13] ([i915#7699]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12861/bat-rplp-1/igt@i915_selftest@live@migrate.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-rplp-1/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-rpls-1:         [DMESG-WARN][15] ([i915#7852]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12861/bat-rpls-1/igt@i915_selftest@live@workarounds.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-rpls-1/igt@i915_selftest@live@workarounds.html
+    - bat-adlm-1:         [INCOMPLETE][17] ([i915#4983] / [i915#7677]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12861/bat-adlm-1/igt@i915_selftest@live@workarounds.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-adlm-1/igt@i915_selftest@live@workarounds.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#7677]: https://gitlab.freedesktop.org/drm/intel/issues/7677
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7852]: https://gitlab.freedesktop.org/drm/intel/issues/7852
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7195 -> IGTPW_8609
+
+  CI-20190529: 20190529
+  CI_DRM_12861: a2cdd75e9e48ef31a52b0472f7a3537423a9748e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8609: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/index.html
+  IGT_7195: 4976e86efa7f7657e0a175e6375508764ea58d95 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@drm_buddy@all-tests
++igt@drm_mm@all-tests
++igt@kms_selftest@all-tests
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/index.html
+
+--===============1782266290444261290==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>fix minor chamelium issues</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115179/">https://patchwork.freedesktop.org/series/115179/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12861 -&gt; IGTPW_8609</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/index.html</p>
+<h2>Participating hosts (35 -&gt; 37)</h2>
+<p>Additional (3): fi-kbl-x1275 fi-bsw-n3050 fi-pnv-d510 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8609 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-kbl-x1275/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +28 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-kbl-x1275/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>
+<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>)</p>
+</li>
+<li>
+<p>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12861/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12861/bat-dg1-6/igt@i915_selftest@live@gt_mocs.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-dg1-6/igt@i915_selftest@live@gt_mocs.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-adlm-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-kbl-x1275/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +45 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-adlm-1/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +38 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12861/bat-rplp-1/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-rplp-1/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>
+<p>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12861/bat-rpls-1/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7852">i915#7852</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-rpls-1/igt@i915_selftest@live@workarounds.html">PASS</a></p>
+</li>
+<li>
+<p>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12861/bat-adlm-1/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7677">i915#7677</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/bat-adlm-1/igt@i915_selftest@live@workarounds.html">PASS</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7195 -&gt; IGTPW_8609</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12861: a2cdd75e9e48ef31a52b0472f7a3537423a9748e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8609: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8609/index.html<br />
+  IGT_7195: 4976e86efa7f7657e0a175e6375508764ea58d95 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@drm_buddy@all-tests<br />
++igt@drm_mm@all-tests<br />
++igt@kms_selftest@all-tests</p>
+
+</body>
+</html>
+
+--===============1782266290444261290==--
