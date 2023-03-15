@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFB8A10E8D5
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Mar 2023 15:12:22 +0000 (UTC)
-Message-ID: <40812c0b-09f4-3020-4546-605086a5f309@intel.com>
-Date: Wed, 15 Mar 2023 16:11:17 +0100
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <cover.1678804829.git.karolina.stolarek@intel.com>
- <086a30feb1e8015eaf3b362e9e09cea50c97a39d.1678804829.git.karolina.stolarek@intel.com>
- <20230315104918.gcyjwmovyzct7rxx@zkempczy-mobl2>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230315104918.gcyjwmovyzct7rxx@zkempczy-mobl2>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============0320574203595194466=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 6/8] tests/i915/gem_blits: Add
- XY_FAST_COPY_BLT support for gem_blits
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Date: Wed, 15 Mar 2023 15:12:33 -0000
+Message-ID: <167889315313.19838.10555944189928737521@emeril.freedesktop.org>
+References: <20230315141453.39733-1-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20230315141453.39733-1-thomas.hellstrom@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?xe/xe=5Fvm=3A_Add_a_userptr-invalid_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,102 +17,202 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 15.03.2023 11:49, Zbigniew Kempczyński wrote:
-> On Tue, Mar 14, 2023 at 03:44:38PM +0100, Karolina Stolarek wrote:
->> From: Arjun Melkaveri <arjun.melkaveri@intel.com>
->>
->> Test case uses legacy command XY_SRC_COPY_BLT_CMD which is not supported
->> on newer generations. Modify test to use XY_FAST_COPY_BLT.
-> 
-> Description doesn't match the patch.
+--===============0320574203595194466==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Huh, you're right, that's an oversight on my part. Will correct it in 
-the next version.
+== Series Details ==
 
-> 
->>
->> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
->> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
->> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
->> Cc: Nirmoy Das <nirmoy.das@intel.com>
->> Cc: Andi Shyti <andi.shyti@linux.intel.com>
->> ---
->>   tests/i915/gem_blits.c | 21 +++++++++++++++++----
->>   1 file changed, 17 insertions(+), 4 deletions(-)
->>
->> diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
->> index e5ef3662..b38d6c7e 100644
->> --- a/tests/i915/gem_blits.c
->> +++ b/tests/i915/gem_blits.c
->> @@ -216,7 +216,12 @@ static void buffer_set_tiling(const struct device *device,
->>   
->>   	if (!blt_has_xy_src_copy(device->fd)) {
->>   		batch[i++] = fast_copy_dword0(buffer->tiling, tiling);
->> -		dword1 = fast_copy_dword1(buffer->tiling, tiling, 32);
->> +		/* Post ATS-M platforms require tile4 bit to be set for YMAJOR mode */
->> +		dword1 = fast_copy_dword1(buffer->tiling ?
->> +					  I915_TILING_Yf : I915_TILING_NONE,
->> +					  tiling ?
->> +					  I915_TILING_Yf : I915_TILING_NONE,
->> +					  32);
->>   		batch[i++] = dword1 | pitch;
->>   	} else {
->>   		batch[i] = (XY_SRC_COPY_BLT_CMD |
->> @@ -361,8 +366,11 @@ static bool blit_to_linear(const struct device *device,
->>   	}
->>   
->>   	if (!blt_has_xy_src_copy(device->fd)) {
->> -		batch[i++] = fast_copy_dword0(buffer->tiling, I915_TILING_NONE);
->> -		dword1 = fast_copy_dword1(buffer->tiling, I915_TILING_NONE, 32);
->> +		batch[i++] = fast_copy_dword0(buffer->tiling, 0);
->> +		/* Post ATS-M platforms require tile4 bit to be set for YMAJOR mode */
->> +		dword1 = fast_copy_dword1(buffer->tiling ?
->> +					  I915_TILING_Yf : I915_TILING_NONE,
->> +					  0, 32);
-> 
-> Is that comment adequate to fast_copy_dword1()? Where's tile4 bit set in this patch?
+Series: tests/xe/xe_vm: Add a userptr-invalid test
+URL   : https://patchwork.freedesktop.org/series/115205/
+State : success
 
-In dw1, we set bits 31 and 30 to specify if we're using new TileY format 
-(i.e. Tile4). MTL doesn't support the legacy format, so we have to 
-override it here. Come to think of it, we could write something like:
+== Summary ==
 
-dword1 = fast_copy_dword1(src->tiling == T_YMAJOR,
-			  dst->tiling == T_YMAJOR, 32);
+CI Bug Log - changes from CI_DRM_12864 -> IGTPW_8610
+====================================================
 
-to set the required bits.
+Summary
+-------
 
-Thoughts?
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8610 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         NOTRUN -> [DMESG-FAIL][1] ([i915#6367] / [i915#7996])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][2] ([fdo#109271])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - bat-rpls-1:         NOTRUN -> [SKIP][3] ([i915#7828])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-rpls-1:         NOTRUN -> [SKIP][4] ([i915#1845])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [ABORT][5] ([i915#7911]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [ABORT][7] ([i915#4983]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
 
 
-All the best,
-Karolina
-> 
-> --
-> Zbigniew
-> 
-> 
->>   		batch[i++] = dword1 | buffer->stride;
->>   	} else {
->>   		batch[i] = (XY_SRC_COPY_BLT_CMD |
->> @@ -705,7 +713,12 @@ blit(const struct device *device,
->>   
->>   	if (!blt_has_xy_src_copy(device->fd)) {
->>   		batch[i++] = fast_copy_dword0(src->tiling, dst->tiling);
->> -		dword1 = fast_copy_dword1(src->tiling, dst->tiling, 32);
->> +		/* Post ATS-M platforms require tile4 bit to be set for YMAJOR mode */
->> +		dword1 = fast_copy_dword1(src->tiling ?
->> +					  I915_TILING_Yf : I915_TILING_NONE,
->> +					  dst->tiling ?
->> +					  I915_TILING_Yf : I915_TILING_NONE,
->> +					  32);
->>   		batch[i++] = dword1 | pitch;
->>   	} else {
->>   		batch[i] = (XY_SRC_COPY_BLT_CMD |
->> -- 
->> 2.25.1
->>
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7196 -> IGTPW_8610
+
+  CI-20190529: 20190529
+  CI_DRM_12864: efb4d3263a1932187dd525628e8b35d327f17a6f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8610: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/index.html
+  IGT_7196: 9b8c5dbe8cd82163ee198c43b81222d2b9b75fd4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@xe_vm@userptr-invalid
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/index.html
+
+--===============0320574203595194466==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe/xe_vm: Add a userptr-invalid test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115205/">https://patchwork.freedesktop.org/series/115205/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12864 -&gt; IGTPW_8610</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8610 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12864/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7196 -&gt; IGTPW_8610</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12864: efb4d3263a1932187dd525628e8b35d327f17a6f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8610: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8610/index.html<br />
+  IGT_7196: 9b8c5dbe8cd82163ee198c43b81222d2b9b75fd4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_vm@userptr-invalid</p>
+
+</body>
+</html>
+
+--===============0320574203595194466==--
