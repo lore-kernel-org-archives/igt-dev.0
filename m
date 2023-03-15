@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0DC310E995
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Mar 2023 10:36:46 +0000 (UTC)
-Date: Wed, 15 Mar 2023 11:36:43 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230315103643.k2orixjccwo5ygzw@zkempczy-mobl2>
-References: <cover.1678804829.git.karolina.stolarek@intel.com>
- <af61dd51dd90df03d2f563adf322e115aa539493.1678804829.git.karolina.stolarek@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4278B10EB5D
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Mar 2023 16:47:59 +0000 (UTC)
+Date: Wed, 15 Mar 2023 17:47:54 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230315164754.w4jho7zshfvbgf5c@kamilkon-desk1>
+References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
+ <20230215004648.2100655-26-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <af61dd51dd90df03d2f563adf322e115aa539493.1678804829.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/8] lib/intel_device_info: Add
- tiling information for early gens
+In-Reply-To: <20230215004648.2100655-26-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 25/31] i915/perf: Make sanity check
+ failures descriptive
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,165 +21,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Lionel G Landwerlin <lionel.g.landwerlin@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 14, 2023 at 03:44:35PM +0100, Karolina Stolarek wrote:
-> Update relevant intel_device_info entries to store information
-> on supported tiling formats.
+On 2023-02-14 at 16:46:42 -0800, Umesh Nerlige Ramappa wrote:
+> Make the asserts in the sanity check descriptive.
 > 
-> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  lib/intel_device_info.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+>  tests/i915/perf.c | 16 ++++++++++++----
+>  1 file changed, 12 insertions(+), 4 deletions(-)
 > 
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index 0baad721..bda4fb63 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -27,12 +27,14 @@ static const struct intel_device_info intel_i830_info = {
->  	.graphics_ver = 2,
->  	.display_ver = 2,
->  	.is_almador = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "almador"
->  };
->  static const struct intel_device_info intel_i845_info = {
->  	.graphics_ver = 2,
->  	.display_ver = 2,
->  	.is_brookdale = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "brookdale"
->  };
->  static const struct intel_device_info intel_i855_info = {
-> @@ -40,12 +42,14 @@ static const struct intel_device_info intel_i855_info = {
->  	.display_ver = 2,
->  	.is_mobile = true,
->  	.is_montara = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "montara"
->  };
->  static const struct intel_device_info intel_i865_info = {
->  	.graphics_ver = 2,
->  	.display_ver = 2,
->  	.is_springdale = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "spingdale"
->  };
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index 2e902d74..b50c86d1 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -1030,7 +1030,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+>  			continue;
 >  
-> @@ -53,6 +57,7 @@ static const struct intel_device_info intel_i915_info = {
->  	.graphics_ver = 3,
->  	.display_ver = 3,
->  	.is_grantsdale = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "grantsdale"
->  };
->  static const struct intel_device_info intel_i915m_info = {
-> @@ -60,12 +65,14 @@ static const struct intel_device_info intel_i915m_info = {
->  	.display_ver = 3,
->  	.is_mobile = true,
->  	.is_alviso = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "alviso"
->  };
->  static const struct intel_device_info intel_i945_info = {
->  	.graphics_ver = 3,
->  	.display_ver = 3,
->  	.is_lakeport = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "lakeport"
->  };
->  static const struct intel_device_info intel_i945m_info = {
-> @@ -73,6 +80,7 @@ static const struct intel_device_info intel_i945m_info = {
->  	.display_ver = 3,
->  	.is_mobile = true,
->  	.is_calistoga = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "calistoga"
->  };
+>  		igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
+> -		igt_assert(delta <= max_delta);
+> +		igt_assert_f(delta <= max_delta,
+> +			     "A40_%d: delta = %"PRIu64", max_delta = %"PRIu64"\n",
+> +			     j, delta, max_delta);
+>  	}
 >  
-> @@ -80,6 +88,7 @@ static const struct intel_device_info intel_g33_info = {
->  	.graphics_ver = 3,
->  	.display_ver = 3,
->  	.is_bearlake = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "bearlake"
->  };
+>  	for (int j = 0; j < format.n_a64; j++) {
+> @@ -1042,7 +1044,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+>  			continue;
 >  
-> @@ -87,6 +96,7 @@ static const struct intel_device_info intel_pineview_g_info = {
->  	.graphics_ver = 3,
->  	.display_ver = 3,
->  	.is_pineview = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "pineview"
->  };
+>  		igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a + j, delta);
+> -		igt_assert(delta <= max_delta);
+> +		igt_assert_f(delta <= max_delta,
+> +			     "A64_%d: delta = %"PRIu64", max_delta = %"PRIu64"\n",
+> +			     format.first_a + j, delta, max_delta);
+>  	}
 >  
-> @@ -95,6 +105,7 @@ static const struct intel_device_info intel_pineview_m_info = {
->  	.display_ver = 3,
->  	.is_mobile = true,
->  	.is_pineview = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "pineview"
->  };
+>  	for (int j = 0; j < format.n_a; j++) {
+> @@ -1057,7 +1061,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+>  			continue;
 >  
-> @@ -102,6 +113,7 @@ static const struct intel_device_info intel_i965_info = {
->  	.graphics_ver = 4,
->  	.display_ver = 4,
->  	.is_broadwater = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "broadwater"
->  };
+>  		igt_debug("A%d: delta = %"PRIu32"\n", a_id, delta);
+> -		igt_assert(delta <= max_delta);
+> +		igt_assert_f(delta <= max_delta,
+> +			     "A%d: delta = %"PRIu32", max_delta = %"PRIu64"\n",
+> +			     a_id, delta, max_delta);
+>  	}
 >  
-> @@ -110,6 +122,7 @@ static const struct intel_device_info intel_i965m_info = {
->  	.display_ver = 4,
->  	.is_mobile = true,
->  	.is_crestline = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "crestline"
->  };
+>  	/* The TestOa metric set defines all B counters to be a
+> @@ -1119,7 +1125,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
 >  
-> @@ -117,6 +130,7 @@ static const struct intel_device_info intel_g45_info = {
->  	.graphics_ver = 4,
->  	.display_ver = 4,
->  	.is_eaglelake = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "eaglelake"
->  };
->  static const struct intel_device_info intel_gm45_info = {
-> @@ -124,6 +138,7 @@ static const struct intel_device_info intel_gm45_info = {
->  	.display_ver = 4,
->  	.is_mobile = true,
->  	.is_cantiga = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "cantiga"
->  };
->  
-> @@ -131,6 +146,7 @@ static const struct intel_device_info intel_ironlake_info = {
->  	.graphics_ver = 5,
->  	.display_ver = 5,
->  	.is_ironlake = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "ironlake" /* clarkdale? */
->  };
->  static const struct intel_device_info intel_ironlake_m_info = {
-> @@ -138,6 +154,7 @@ static const struct intel_device_info intel_ironlake_m_info = {
->  	.display_ver = 5,
->  	.is_mobile = true,
->  	.is_arrandale = true,
-> +	.cmds_info = &pre_gen6_cmds_info,
->  	.codename = "arrandale"
->  };
+>  		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu64"\n",
+>  			  j, delta, max_delta);
+> -		igt_assert(delta <= max_delta);
+> +		igt_assert_f(delta <= max_delta,
+> +			     "C%d: delta = %"PRIu32", max_delta = %"PRIu64"\n",
+> +			     j, delta, max_delta);
+>  	}
+>  }
 >  
 > -- 
-> 2.25.1
->
-
-Looks ok,
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew 
+> 2.36.1
+> 
