@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8795110EC1C
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 02:27:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6BEDE10EC1C
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 02:27:09 +0000 (UTC)
 From: Zack Rusin <zack@kde.org>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Mar 2023 22:26:58 -0400
-Message-Id: <20230316022659.73202-8-zack@kde.org>
+Date: Wed, 15 Mar 2023 22:26:59 -0400
+Message-Id: <20230316022659.73202-9-zack@kde.org>
 In-Reply-To: <20230316022659.73202-1-zack@kde.org>
 References: <20230316022659.73202-1-zack@kde.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 7/8] igt/vmwgfx: Add reference counting
- tests
+Subject: [igt-dev] [PATCH i-g-t v2 8/8] lib/igt_kms: vmwgfx returns 8 crtc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,356 +19,48 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: Zack Rusin <zackr@vmware.com>
-Cc: krastevm@vmware.com, banackm@vmware.com, mombasawalam@vmware.com,
- petri.latvala@intel.com
+Cc: petri.latvala@intel.com, banackm@vmware.com, krastevm@vmware.com,
+ mombasawalam@vmware.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Maaz Mombasawala <mombasawalam@vmware.com>
+From: Zack Rusin <zackr@vmware.com>
 
-This test checks reference counting functionality for several permutations
-of prime transfers and copies of mobs and surfaces in vmwgfx.
+To avoid crashes in multiple tests we need to extend the number of
+available pipe's to match the numbers returned by the virtualized drivers.
 
 Signed-off-by: Zack Rusin <zackr@vmware.com>
-Signed-off-by: Maaz Mombasawala <mombasawalam@vmware.com>
 ---
- tests/vmwgfx/meson.build |   3 +-
- tests/vmwgfx/ref_count.c | 312 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 314 insertions(+), 1 deletion(-)
- create mode 100644 tests/vmwgfx/ref_count.c
+ lib/igt_kms.c | 2 +-
+ lib/igt_kms.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
-index c84dcc28..5995b18c 100644
---- a/tests/vmwgfx/meson.build
-+++ b/tests/vmwgfx/meson.build
-@@ -3,7 +3,8 @@ vmwgfx_progs = [
- 	'tri',
- 	'execution_buffer',
- 	'surface_copy',
--	'mob_stress'
-+	'mob_stress',
-+	'ref_count'
- ]
- vmwgfx_deps = test_deps
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 8c7dd85b..d2e9eccc 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -839,7 +839,7 @@ static igt_plane_t *igt_get_assigned_primary(igt_output_t *output, igt_pipe_t *p
+  */
+ const char *kmstest_pipe_name(enum pipe pipe)
+ {
+-	static const char str[] = "A\0B\0C\0D\0E\0F";
++	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H";
  
-diff --git a/tests/vmwgfx/ref_count.c b/tests/vmwgfx/ref_count.c
-new file mode 100644
-index 00000000..f216dcc9
---- /dev/null
-+++ b/tests/vmwgfx/ref_count.c
-@@ -0,0 +1,312 @@
-+// SPDX-License-Identifier: GPL-2.0 OR MIT
-+/**********************************************************
-+ * Copyright 2021-2022 VMware, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person
-+ * obtaining a copy of this software and associated documentation
-+ * files (the "Software"), to deal in the Software without
-+ * restriction, including without limitation the rights to use, copy,
-+ * modify, merge, publish, distribute, sublicense, and/or sell copies
-+ * of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be
-+ * included in all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-+ * SOFTWARE.
-+ *
-+ **********************************************************/
-+
-+#include "igt_vmwgfx.h"
-+
-+IGT_TEST_DESCRIPTION("Perform tests related to vmwgfx's ref_count codepaths.");
-+
-+static uint32 data[10] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-+
-+static void write_to_mob(int fd, struct vmw_mob *mob)
-+{
-+	void *write_data;
-+
-+	write_data = vmw_ioctl_mob_map(fd, mob);
-+	memcpy(write_data, data, sizeof(data));
-+	vmw_ioctl_mob_unmap(mob);
-+}
-+
-+static bool verify_mob_data(int fd, struct vmw_mob *mob)
-+{
-+	uint32 *read_data;
-+	void *readback;
-+	uint32 i;
-+	bool data_is_equal = true;
-+
-+	read_data = malloc(mob->size);
-+
-+	readback = vmw_ioctl_mob_map(fd, mob);
-+	memcpy(read_data, readback, sizeof(data));
-+	vmw_ioctl_mob_unmap(mob);
-+
-+	for (i = 0; i < ARRAY_SIZE(data); i++) {
-+		if (read_data[i] != data[i]) {
-+			data_is_equal = false;
-+			break;
-+		}
-+	}
-+
-+	free(read_data);
-+	return data_is_equal;
-+}
-+
-+static struct vmw_surface *
-+create_and_write_shareable_surface(int32 fd, SVGA3dSize surface_size)
-+{
-+	struct vmw_mob mob = { 0 };
-+	struct vmw_surface *surface;
-+
-+	surface = vmw_ioctl_create_surface_full(
-+		fd, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
-+		SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
-+		SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, NULL,
-+		drm_vmw_surface_flag_shareable);
-+
-+	mob.handle = surface->base.buffer_handle;
-+	mob.map_handle = surface->base.buffer_map_handle;
-+	mob.size = surface->base.buffer_size;
-+
-+	write_to_mob(fd, &mob);
-+
-+	return surface;
-+}
-+
-+static bool ref_surface_and_check_contents(int32 fd, uint32 surface_handle)
-+{
-+	struct vmw_surface surface;
-+	struct vmw_mob mob = { 0 };
-+
-+	surface = vmw_ioctl_surface_ref(fd, surface_handle,
-+					DRM_VMW_HANDLE_LEGACY);
-+
-+	mob.handle = surface.base.handle;
-+	mob.size = surface.base.buffer_size;
-+	mob.map_handle = surface.base.buffer_map_handle;
-+
-+	return verify_mob_data(fd, &mob);
-+}
-+
-+igt_main
-+{
-+	int32 fd1, fd2;
-+	const uint32 size = sizeof(data);
-+	SVGA3dSize surface_size = { .width = size, .height = 1, .depth = 1 };
-+
-+	igt_fixture
-+	{
-+		fd1 = drm_open_driver_render(DRIVER_VMWGFX);
-+		fd2 = drm_open_driver_render(DRIVER_VMWGFX);
-+		igt_require(fd1 != -1);
-+		igt_require(fd2 != -1);
-+	}
-+
-+	igt_subtest("surface_prime_transfer_explicit_mob")
-+	{
-+		struct vmw_mob *mob;
-+		struct vmw_surface *surface;
-+		int32 surface_fd;
-+		uint32 surface_handle;
-+
-+		mob = vmw_ioctl_mob_create(fd1, size);
-+		surface = vmw_ioctl_create_surface_full(
-+			fd1, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
-+			SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
-+			SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, mob,
-+			drm_vmw_surface_flag_shareable);
-+
-+		write_to_mob(fd1, mob);
-+
-+		surface_fd =
-+			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
-+
-+		vmw_ioctl_mob_close_handle(fd1, mob);
-+		vmw_ioctl_surface_unref(fd1, surface);
-+
-+		surface_handle = prime_fd_to_handle(fd2, surface_fd);
-+		close(surface_fd);
-+
-+		igt_assert(ref_surface_and_check_contents(fd2, surface_handle));
-+	}
-+
-+	igt_subtest("surface_prime_transfer_implicit_mob")
-+	{
-+		struct vmw_surface *surface;
-+		int32 surface_fd;
-+		uint32 surface_handle;
-+
-+		surface = create_and_write_shareable_surface(fd1, surface_size);
-+
-+		surface_fd =
-+			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
-+
-+		vmw_ioctl_surface_unref(fd1, surface);
-+
-+		surface_handle = prime_fd_to_handle(fd2, surface_fd);
-+		close(surface_fd);
-+
-+		igt_assert(ref_surface_and_check_contents(fd2, surface_handle));
-+	}
-+
-+	igt_subtest("surface_prime_transfer_fd_dup")
-+	{
-+		int32 surface_fd1, surface_fd2;
-+		uint32 surface_handle;
-+		struct vmw_surface *surface;
-+
-+		surface = create_and_write_shareable_surface(fd1, surface_size);
-+
-+		surface_fd1 =
-+			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
-+		vmw_ioctl_surface_unref(fd1, surface);
-+
-+		surface_fd2 = dup(surface_fd1);
-+		close(surface_fd1);
-+
-+		surface_handle = prime_fd_to_handle(fd2, surface_fd2);
-+		close(surface_fd2);
-+
-+		igt_assert(ref_surface_and_check_contents(fd2, surface_handle));
-+	}
-+
-+	igt_subtest("surface_prime_transfer_two_surfaces")
-+	{
-+		int32 surface_fd;
-+		uint32 surface_handle1, surface_handle2;
-+		struct vmw_surface *surface1, *surface2;
-+
-+		surface1 =
-+			create_and_write_shareable_surface(fd1, surface_size);
-+		surface2 =
-+			create_and_write_shareable_surface(fd1, surface_size);
-+
-+		surface_fd =
-+			prime_handle_to_fd_for_mmap(fd1, surface1->base.handle);
-+		vmw_ioctl_surface_unref(fd1, surface1);
-+
-+		surface_handle1 = prime_fd_to_handle(fd2, surface_fd);
-+		close(surface_fd);
-+
-+		surface_fd =
-+			prime_handle_to_fd_for_mmap(fd1, surface2->base.handle);
-+		vmw_ioctl_surface_unref(fd1, surface2);
-+
-+		surface_handle2 = prime_fd_to_handle(fd2, surface_fd);
-+		close(surface_fd);
-+
-+		igt_assert(
-+			ref_surface_and_check_contents(fd2, surface_handle1));
-+		igt_assert(
-+			ref_surface_and_check_contents(fd2, surface_handle2));
-+	}
-+
-+	igt_subtest("surface_prime_transfer_single_surface_multiple_handle")
-+	{
-+		int32 surface_fd;
-+		uint32 surface_handle_old;
-+		uint32 surface_handle1, surface_handle2, surface_handle3;
-+		struct vmw_surface *surface;
-+
-+		surface = create_and_write_shareable_surface(fd1, surface_size);
-+		surface_handle_old = surface->base.handle;
-+
-+		surface_fd =
-+			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
-+		vmw_ioctl_surface_unref(fd1, surface);
-+
-+		surface_handle1 = prime_fd_to_handle(fd1, surface_fd);
-+		surface_handle2 = prime_fd_to_handle(fd2, surface_fd);
-+		surface_handle3 = prime_fd_to_handle(fd2, surface_fd);
-+		close(surface_fd);
-+
-+		igt_assert_eq_u32(surface_handle_old, surface_handle1);
-+		igt_assert_eq_u32(surface_handle2, surface_handle3);
-+
-+		igt_assert(
-+			ref_surface_and_check_contents(fd1, surface_handle1));
-+		igt_assert(
-+			ref_surface_and_check_contents(fd2, surface_handle2));
-+	}
-+
-+	igt_subtest("mob_repeated_unref")
-+	{
-+		struct vmw_mob *mob;
-+		int i = 0;
-+
-+		mob = vmw_ioctl_mob_create(fd1, size);
-+		write_to_mob(fd1, mob);
-+
-+		/* Shouldn't crash on multiple invocations */
-+		for (i = 0; i < 3; i++) {
-+			int ret;
-+			struct drm_vmw_handle_close_arg arg = {
-+				.handle = mob->handle
-+			};
-+			ret = drmCommandWrite(fd1, DRM_VMW_HANDLE_CLOSE, &arg,
-+					      sizeof(arg));
-+			igt_assert_eq(ret, 0);
-+		}
-+		free(mob);
-+	}
-+
-+	igt_subtest("surface_repeated_unref")
-+	{
-+		struct vmw_surface *surface;
-+		int i = 0;
-+
-+		surface = vmw_ioctl_create_surface_full(
-+			fd1, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
-+			SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
-+			SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, NULL,
-+			drm_vmw_surface_flag_shareable);
-+
-+		/* Shouldn't crash on multiple invocations */
-+		for (i = 0; i < 3; i++) {
-+			struct drm_vmw_surface_arg s_arg = {
-+				.sid = surface->base.handle,
-+				.handle_type = DRM_VMW_HANDLE_LEGACY
-+			};
-+			drmCommandWrite(fd1, DRM_VMW_UNREF_SURFACE, &s_arg,
-+					sizeof(s_arg));
-+		}
-+		free(surface);
-+	}
-+
-+	igt_subtest("surface_alloc_ref_unref")
-+	{
-+		struct vmw_surface *surface;
-+		struct vmw_surface ref_surface;
-+		struct vmw_mob readback_mob = { 0 };
-+
-+		surface = create_and_write_shareable_surface(fd1, surface_size);
-+
-+		ref_surface = vmw_ioctl_surface_ref(fd1, surface->base.handle,
-+						    DRM_VMW_HANDLE_LEGACY);
-+
-+		vmw_ioctl_surface_unref(fd1, surface);
-+
-+		readback_mob.handle = ref_surface.base.handle;
-+		readback_mob.size = ref_surface.base.buffer_size;
-+		readback_mob.map_handle = ref_surface.base.buffer_map_handle;
-+
-+		igt_assert(verify_mob_data(fd1, &readback_mob));
-+	}
-+
-+	igt_fixture
-+	{
-+		close(fd1);
-+		close(fd2);
-+	}
-+}
+ 	_Static_assert(sizeof(str) == IGT_MAX_PIPES * 2,
+ 		       "Missing pipe name");
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index be5482e0..64807a7f 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -62,6 +62,8 @@ enum pipe {
+         PIPE_D,
+         PIPE_E,
+         PIPE_F,
++	PIPE_G,
++	PIPE_H,
+         IGT_MAX_PIPES
+ };
+ const char *kmstest_pipe_name(enum pipe pipe);
 -- 
 2.38.1
