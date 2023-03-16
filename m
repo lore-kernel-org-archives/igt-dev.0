@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86C0F10EE33
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 23:33:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDC5510EDE1
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 23:33:29 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>,
  kamil.konieczny@linux.intel.com
-Date: Thu, 16 Mar 2023 16:33:19 -0700
-Message-Id: <20230316233323.2638668-28-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 16 Mar 2023 16:33:10 -0700
+Message-Id: <20230316233323.2638668-19-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230316233323.2638668-1-umesh.nerlige.ramappa@intel.com>
 References: <20230316233323.2638668-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 27/31] lib/i915/perf: Update MTL OA
- timestamp and EU thread config
+Subject: [igt-dev] [PATCH i-g-t v3 18/31] lib/i915/perf: Set missing metric
+ unit for some counters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,32 +25,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-MTL has configuration similar to DG2 for OA timestamp and threads per
-EU. Update the same for MTL.
+Some counters do not have units specified, so use 'number' as the unit.
+
+v2: Drop " from commit description (Kamil)
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/i915/perf.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ lib/i915/perf-configs/mdapi-xml-convert.py | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index d8624dc0..24ef3819 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -432,6 +432,14 @@ intel_perf_for_devinfo(uint32_t device_id,
- 		else
- 			return unsupported_i915_perf_platform(perf);
- 	} else if (devinfo->is_meteorlake) {
-+		perf->devinfo.eu_threads_count = 8;
-+		/* OA reports have the timestamp value shifted to the
-+		 * right by 1 bits, it also means we cannot use the
-+		 * top bit for comparison.
-+		 */
-+		perf->devinfo.oa_timestamp_shift = -1;
-+		perf->devinfo.oa_timestamp_mask = 0x7fffffff;
+diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
+index 3b7d0663..eee12ad5 100755
+--- a/lib/i915/perf-configs/mdapi-xml-convert.py
++++ b/lib/i915/perf-configs/mdapi-xml-convert.py
+@@ -819,9 +819,14 @@ for arg in args.xml:
+             # XXX Not sure why EU metrics tend to just be bundled under 'gpu'
+             counter.set('mdapi_hw_unit_type', mdapi_counter.get('HWUnitType').lower())
+ 
++            # Some counters do not have MetricUnits, treat them as number.
++            if mdapi_counter.get('MetricUnits') == None:
++                units = "number"
++            else:
++                units = mdapi_counter.get('MetricUnits').lower()
 +
- 		if (is_mtl_gt2(&perf->devinfo))
- 			intel_perf_load_metrics_mtlgt2(perf);
- 		else if (is_mtl_gt3(&perf->devinfo))
+             # There are counters representing cycle counts that have a semantic
+             # type of 'duration' which doesn't seem to make sense...
+-            units = mdapi_counter.get('MetricUnits').lower()
+             if units == "cycles":
+                 semantic_type = "event"
+             else:
 -- 
 2.36.1
