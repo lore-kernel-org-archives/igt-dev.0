@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9438E10ED22
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 16:27:01 +0000 (UTC)
-Date: Thu, 16 Mar 2023 17:24:51 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Zbigniew =?UTF-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20230316172451.2aa81563@maurocar-mobl2>
-In-Reply-To: <20230316160856.85520-1-zbigniew.kempczynski@intel.com>
-References: <20230316160856.85520-1-zbigniew.kempczynski@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0F9310E55D
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 23:33:29 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ kamil.konieczny@linux.intel.com
+Date: Thu, 16 Mar 2023 16:33:06 -0700
+Message-Id: <20230316233323.2638668-15-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20230316233323.2638668-1-umesh.nerlige.ramappa@intel.com>
+References: <20230316233323.2638668-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe_query: Rename for_each_gt macro
- for Xe tests
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 14/31] i915/perf: Test concurrent access
+ to OA in different groups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,321 +20,216 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Lionel G Landwerlin <lionel.g.landwerlin@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 16 Mar 2023 17:08:56 +0100
-Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com> wrote:
+With multiple OA buffers, verify that the perf interface allows
+concurrent access to the OA buffers in different groups.
 
-> As i915 and xe start to coexist in igt ensure gt iterator for Xe
-> tests is unique and won't conflict in the future merges.
->=20
-> Signed-off-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+v2: (Ashutosh)
+- Rename concurrency functions to use group instead of gt
+- Fix comment
 
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/perf.c | 134 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 130 insertions(+), 4 deletions(-)
 
-> ---
->  lib/xe/xe_query.h           |  2 +-
->  tests/xe/xe_debugfs.c       |  2 +-
->  tests/xe/xe_exec_balancer.c | 22 +++++++++++-----------
->  tests/xe/xe_exec_reset.c    | 14 +++++++-------
->  tests/xe/xe_exec_threads.c  |  4 ++--
->  tests/xe/xe_guc_pc.c        | 24 ++++++++++++------------
->  6 files changed, 34 insertions(+), 34 deletions(-)
->=20
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index beea9d0949..7ee45ef286 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -69,7 +69,7 @@ struct xe_device {
->  #define for_each_hw_engine_class(__class) \
->  	for (__class =3D 0; __class < DRM_XE_ENGINE_CLASS_COMPUTE + 1; \
->  	     ++__class)
-> -#define for_each_gt(__fd, __gt) \
-> +#define xe_for_each_gt(__fd, __gt) \
->  	for (__gt =3D 0; __gt < xe_number_gt(__fd); ++__gt)
-> =20
->  #define XE_IS_CLASS_SYSMEM(__region) ((__region)->mem_class =3D=3D XE_ME=
-M_REGION_CLASS_SYSMEM)
-> diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
-> index 38c8beccc5..29b0078f39 100644
-> --- a/tests/xe/xe_debugfs.c
-> +++ b/tests/xe/xe_debugfs.c
-> @@ -260,7 +260,7 @@ igt_main_args("", long_options, help_str, opt_handler=
-, NULL)
-> =20
-> =20
->  	igt_subtest("gt") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			snprintf(devnode, sizeof(devnode), "gt%d", gt);
->  			igt_require(igt_debugfs_exists(fd, devnode, O_RDONLY));
->  			test_gt(fd, gt);
-> diff --git a/tests/xe/xe_exec_balancer.c b/tests/xe/xe_exec_balancer.c
-> index a247b1d268..566ec88a41 100644
-> --- a/tests/xe/xe_exec_balancer.c
-> +++ b/tests/xe/xe_exec_balancer.c
-> @@ -632,25 +632,25 @@ igt_main
->  	}
-> =20
->  	igt_subtest("virtual-all-active")
-> -		for_each_gt(fd, gt)
-> +		xe_for_each_gt(fd, gt)
->  			for_each_hw_engine_class(class)
->  				test_all_active(fd, gt, class);
-> =20
->  	for (const struct section *s =3D sections; s->name; s++) {
->  		igt_subtest_f("once-%s", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_exec(fd, gt, class, 1, 1,
->  						  s->flags);
-> =20
->  		igt_subtest_f("twice-%s", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_exec(fd, gt, class, 1, 2,
->  						  s->flags);
-> =20
->  		igt_subtest_f("many-%s", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_exec(fd, gt, class, 1,
->  						  s->flags & (REBIND | INVALIDATE) ?
-> @@ -658,7 +658,7 @@ igt_main
->  						  s->flags);
-> =20
->  		igt_subtest_f("many-engines-%s", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_exec(fd, gt, class, 16,
->  						  s->flags & (REBIND | INVALIDATE) ?
-> @@ -666,7 +666,7 @@ igt_main
->  						  s->flags);
-> =20
->  		igt_subtest_f("no-exec-%s", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_exec(fd, gt, class, 1, 0,
->  						  s->flags);
-> @@ -675,17 +675,17 @@ igt_main
->  			continue;
-> =20
->  		igt_subtest_f("once-cm-%s", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_cm(fd, gt, class, 1, 1, s->flags);
-> =20
->  		igt_subtest_f("twice-cm-%s", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_cm(fd, gt, class, 1, 2, s->flags);
-> =20
->  		igt_subtest_f("many-cm-%s", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_cm(fd, gt, class, 1,
->  						s->flags & (REBIND | INVALIDATE) ?
-> @@ -693,7 +693,7 @@ igt_main
->  						s->flags);
-> =20
->  		igt_subtest_f("many-engines-cm-%s", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_cm(fd, gt, class, 16,
->  						s->flags & (REBIND | INVALIDATE) ?
-> @@ -701,7 +701,7 @@ igt_main
->  						s->flags);
-> =20
->  		igt_subtest_f("no-exec-cm-%s", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_cm(fd, gt, class, 1, 0, s->flags);
->  	}
-> diff --git a/tests/xe/xe_exec_reset.c b/tests/xe/xe_exec_reset.c
-> index 106fe941c1..f86525f78e 100644
-> --- a/tests/xe/xe_exec_reset.c
-> +++ b/tests/xe/xe_exec_reset.c
-> @@ -896,46 +896,46 @@ igt_main
-> =20
->  	for (const struct section *s =3D sections; s->name; s++) {
->  		igt_subtest_f("%s-cancel", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_balancer(fd, gt, class, 1, 1,
->  						      CANCEL | s->flags);
-> =20
->  		igt_subtest_f("%s-engine-reset", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_balancer(fd, gt, class, MAX_INSTANCE + 1,
->  						      MAX_INSTANCE + 1,
->  						      ENGINE_RESET | s->flags);
-> =20
->  		igt_subtest_f("%s-cat-error", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_balancer(fd, gt, class, MAX_INSTANCE + 1,
->  						      MAX_INSTANCE + 1,
->  						      CAT_ERROR | s->flags);
-> =20
->  		igt_subtest_f("%s-gt-reset", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_balancer(fd, gt, class, MAX_INSTANCE + 1,
->  						      MAX_INSTANCE + 1,
->  						      GT_RESET | s->flags);
-> =20
->  		igt_subtest_f("%s-close-fd-no-exec", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_balancer(-1, gt, class, 16, 0,
->  						      CLOSE_FD | s->flags);
-> =20
->  		igt_subtest_f("%s-close-fd", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_balancer(-1, gt, class, 16, 256,
->  						      CLOSE_FD | s->flags);
-> =20
->  		igt_subtest_f("%s-close-engines-close-fd", s->name)
-> -			for_each_gt(fd, gt)
-> +			xe_for_each_gt(fd, gt)
->  				for_each_hw_engine_class(class)
->  					test_balancer(-1, gt, class, 16, 256, CLOSE_FD |
->  						      CLOSE_ENGINES | s->flags);
-> diff --git a/tests/xe/xe_exec_threads.c b/tests/xe/xe_exec_threads.c
-> index 69055a829b..37c42029e9 100644
-> --- a/tests/xe/xe_exec_threads.c
-> +++ b/tests/xe/xe_exec_threads.c
-> @@ -1042,7 +1042,7 @@ static void threads(int fd, int flags)
->  		++n_hw_engines;
-> =20
->  	if (flags & BALANCER) {
-> -		for_each_gt(fd, gt)
-> +		xe_for_each_gt(fd, gt)
->  			for_each_hw_engine_class(class) {
->  				int num_placements =3D 0;
-> =20
-> @@ -1126,7 +1126,7 @@ static void threads(int fd, int flags)
->  	}
-> =20
->  	if (flags & BALANCER) {
-> -		for_each_gt(fd, gt)
-> +		xe_for_each_gt(fd, gt)
->  			for_each_hw_engine_class(class) {
->  				int num_placements =3D 0;
-> =20
-> diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
-> index 3f520d7bf4..91c826d853 100644
-> --- a/tests/xe/xe_guc_pc.c
-> +++ b/tests/xe/xe_guc_pc.c
-> @@ -398,18 +398,18 @@ igt_main
->  	}
-> =20
->  	igt_subtest("freq_basic_api") {
-> -		for_each_gt(fd, gt)
-> +		xe_for_each_gt(fd, gt)
->  			test_freq_basic_api(sysfs, gt);
->  	}
-> =20
->  	igt_subtest("freq_fixed_idle") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			test_freq_fixed(sysfs, gt);
->  		}
->  	}
-> =20
->  	igt_subtest("freq_fixed_exec") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			for_each_hw_engine(fd, hwe)
->  				igt_fork(child, ncpus) {
->  					igt_debug("Execution Started\n");
-> @@ -423,13 +423,13 @@ igt_main
->  	}
-> =20
->  	igt_subtest("freq_range_idle") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			test_freq_range(sysfs, gt);
->  		}
->  	}
-> =20
->  	igt_subtest("freq_range_exec") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			for_each_hw_engine(fd, hwe)
->  				igt_fork(child, ncpus) {
->  					igt_debug("Execution Started\n");
-> @@ -443,37 +443,37 @@ igt_main
->  	}
-> =20
->  	igt_subtest("freq_low_max") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			test_freq_low_max(sysfs, gt);
->  		}
->  	}
-> =20
->  	igt_subtest("freq_suspend") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			test_suspend(sysfs, gt);
->  		}
->  	}
-> =20
->  	igt_subtest("freq_reset") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			test_reset(fd, sysfs, gt, 1);
->  		}
->  	}
-> =20
->  	igt_subtest("freq_reset_multiple") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			test_reset(fd, sysfs, gt, 50);
->  		}
->  	}
-> =20
->  	igt_subtest("rc6_on_idle") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
->  		}
->  	}
-> =20
->  	igt_subtest("rc0_on_exec") {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
->  			for_each_hw_engine(fd, hwe)
->  				igt_fork(child, ncpus) {
-> @@ -488,7 +488,7 @@ igt_main
->  	}
-> =20
->  	igt_fixture {
-> -		for_each_gt(fd, gt) {
-> +		xe_for_each_gt(fd, gt) {
->  			set_freq(sysfs, gt, "min", stash_min);
->  			set_freq(sysfs, gt, "max", stash_max);
->  		}
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index 549a80ce..e647e309 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -2235,6 +2235,7 @@ test_blocking(uint64_t requested_oa_period,
+ 
+ 	int max_iterations = (test_duration_ns / oa_period) + 2;
+ 	int n_extra_iterations = 0;
++	int perf_fd;
+ 
+ 	/* It's a bit tricky to put a lower limit here, but we expect a
+ 	 * relatively low latency for seeing reports, while we don't currently
+@@ -2268,7 +2269,7 @@ test_blocking(uint64_t requested_oa_period,
+ 	param.num_properties = (idx - props) / 2;
+ 	param.properties_ptr = to_user_pointer(props);
+ 
+-	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
++	perf_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+ 
+ 	times(&start_times);
+ 
+@@ -2300,14 +2301,14 @@ test_blocking(uint64_t requested_oa_period,
+ 	 * the error delta.
+ 	 */
+ 	start = get_time();
+-	do_ioctl(stream_fd, I915_PERF_IOCTL_ENABLE, 0);
++	do_ioctl(perf_fd, I915_PERF_IOCTL_ENABLE, 0);
+ 	for (/* nop */; ((end = get_time()) - start) < test_duration_ns; /* nop */) {
+ 		struct drm_i915_perf_record_header *header;
+ 		bool timer_report_read = false;
+ 		bool non_timer_report_read = false;
+ 		int ret;
+ 
+-		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
++		while ((ret = read(perf_fd, buf, sizeof(buf))) < 0 &&
+ 		       errno == EINTR)
+ 			;
+ 
+@@ -2375,7 +2376,7 @@ test_blocking(uint64_t requested_oa_period,
+ 	if (!set_kernel_hrtimer)
+ 		igt_assert(kernel_ns <= (test_duration_ns / 100ull));
+ 
+-	__perf_close(stream_fd);
++	__perf_close(perf_fd);
+ }
+ 
+ static void
+@@ -5467,6 +5468,14 @@ static void put_engine_groups(struct perf_engine_group *groups,
+ 	free(groups);
+ }
+ 
++static struct i915_engine_class_instance *
++random_engine(struct perf_engine_group *group)
++{
++	srandom(time(NULL));
++
++	return &group->ci[random() % group->num_engines];
++}
++
+ static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
+ {
+ 	int fd;
+@@ -5489,6 +5498,111 @@ static void set_default_engine(const intel_ctx_t *ctx)
+ 			default_e2 = *e;
+ }
+ 
++/*
++ * Test if OA buffer streams can be independently opened on each group. Once a user
++ * opens a stream, that group is exclusive to the user, other users get -EBUSY on
++ * trying to open a stream.
++ */
++static void
++test_group_exclusive_stream(const intel_ctx_t *ctx, bool exponent)
++{
++	uint64_t properties[] = {
++		DRM_I915_PERF_PROP_SAMPLE_OA, true,
++		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, 0,
++		DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, 0,
++		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
++	};
++	struct drm_i915_perf_open_param param = {
++		.flags = I915_PERF_FLAG_FD_CLOEXEC,
++		/* for gem_context use case, we do no pass exponent */
++		.num_properties = exponent ?
++				  ARRAY_SIZE(properties) / 2 - 1:
++				  ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	uint32_t i, j;
++
++	/* for each group, open one random perf stream with sample OA */
++	for (i = 0; i < num_perf_oa_groups; i++) {
++		struct perf_engine_group *grp = &perf_oa_groups[i];
++		struct i915_engine_class_instance *ci = random_engine(grp);
++
++		if (!exponent) {
++			properties[0] = DRM_I915_PERF_PROP_CTX_HANDLE;
++			properties[1] = ctx->id;
++		}
++
++		properties[7] = ci->engine_class;
++		properties[9] = ci->engine_instance;
++		grp->perf_fd = igt_ioctl(drm_fd,
++					 DRM_IOCTL_I915_PERF_OPEN,
++					 &param);
++		igt_assert(grp->perf_fd >= 0);
++		igt_debug("opened OA buffer with c:i %d:%d\n",
++			  ci->engine_class, ci->engine_instance);
++	}
++
++	/* for each group make sure no other streams can be opened */
++	for (i = 0; i < num_perf_oa_groups; i++) {
++		struct perf_engine_group *grp = &perf_oa_groups[i];
++		int err;
++
++		for (j = 0; j < grp->num_engines; j++) {
++			struct i915_engine_class_instance *ci = grp->ci + j;
++
++			/*
++			 * case 1:
++			 * concurrent access to OAG should fail
++			 */
++			properties[0] = DRM_I915_PERF_PROP_SAMPLE_OA;
++			properties[1] = true;
++			properties[7] = ci->engine_class;
++			properties[9] = ci->engine_instance;
++			/* for SAMPLE OA use case, we must pass exponent */
++			param.num_properties = ARRAY_SIZE(properties) / 2;
++			do_ioctl_err(drm_fd, DRM_IOCTL_I915_PERF_OPEN, &param,
++				     EBUSY);
++			igt_debug("try OA buffer with c:i %d:%d\n",
++				  ci->engine_class, ci->engine_instance);
++
++			/*
++			 * case 2:
++			 * concurrent access to non-OAG unit should fail
++			 */
++			properties[0] = DRM_I915_PERF_PROP_CTX_HANDLE;
++			properties[1] = gem_context_create(drm_fd);
++			/* for gem_context use case, we do no pass exponent */
++			param.num_properties = ARRAY_SIZE(properties) / 2 - 1;
++			errno = 0;
++			err = igt_ioctl(drm_fd, DRM_IOCTL_I915_PERF_OPEN, &param);
++			igt_assert(err < 0);
++			igt_assert(errno == EBUSY || errno == ENODEV);
++			igt_debug("try OA ci unit with c:i %d:%d\n",
++				  ci->engine_class, ci->engine_instance);
++			gem_context_destroy(drm_fd, properties[1]);
++		}
++
++		if (grp->perf_fd >= 0)
++			close(grp->perf_fd);
++	}
++}
++
++static void
++test_group_concurrent_oa_buffer_read(void)
++{
++	igt_fork(child, num_perf_oa_groups) {
++		struct intel_execution_engine2 e;
++
++		e.class = perf_oa_groups[child].ci->engine_class;
++		e.instance = perf_oa_groups[child].ci->engine_instance;
++
++		test_blocking(40 * 1000 * 1000, false, 5 * 1000 * 1000, &e);
++	}
++	igt_waitchildren();
++}
++
+ igt_main
+ {
+ 	const intel_ctx_t *ctx;
+@@ -5714,6 +5828,18 @@ igt_main
+ 		igt_describe("Verify invalid class instance");
+ 		igt_subtest("gen12-invalid-class-instance")
+ 			test_invalid_class_instance();
++
++		igt_describe("Verify exclusivity of perf streams with sample oa option");
++		igt_subtest("gen12-group-exclusive-stream-sample-oa")
++			test_group_exclusive_stream(ctx, true);
++
++		igt_describe("Verify exclusivity of perf streams with ctx handle");
++		igt_subtest("gen12-group-exclusive-stream-ctx-handle")
++			test_group_exclusive_stream(ctx, false);
++
++		igt_describe("Verify concurrent reads from OA buffers in different groups");
++		igt_subtest("gen12-group-concurrent-oa-buffer-read")
++			test_group_concurrent_oa_buffer_read();
+ 	}
+ 
+ 	igt_subtest("rc6-disable")
+-- 
+2.36.1
