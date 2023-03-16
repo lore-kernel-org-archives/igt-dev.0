@@ -1,23 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com
- [IPv6:2a00:1450:4864:20::436])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 142AF10ECFE
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 14:09:03 +0000 (UTC)
-Received: by mail-wr1-x436.google.com with SMTP id p4so1660017wre.11
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 07:09:02 -0700 (PDT)
-Message-ID: <831b3312-0390-4f0a-6dad-d3773ec162e3@gmail.com>
-Date: Thu, 16 Mar 2023 16:08:59 +0200
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com
+ [IPv6:2a00:1450:4864:20::431])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3A9B10E268
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 14:14:00 +0000 (UTC)
+Received: by mail-wr1-x431.google.com with SMTP id r29so1665647wra.13
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 07:14:00 -0700 (PDT)
+Message-ID: <ded025ab-4b08-5e3b-6f1a-63e577d41461@gmail.com>
+Date: Thu, 16 Mar 2023 16:13:57 +0200
 MIME-Version: 1.0
 Content-Language: en-US
 To: igt-dev@lists.freedesktop.org
 References: <20230316022659.73202-1-zack@kde.org>
- <20230316022659.73202-6-zack@kde.org>
- <DM6PR05MB7099EFBC41B5FCEE66C80C44AEBC9@DM6PR05MB7099.namprd05.prod.outlook.com>
+ <20230316022659.73202-7-zack@kde.org>
+ <DM6PR05MB70993CAD6D2EF2959A0522F8AEBC9@DM6PR05MB7099.namprd05.prod.outlook.com>
 From: "Martin Krastev (VMware)" <martinkrastev768@gmail.com>
-In-Reply-To: <DM6PR05MB7099EFBC41B5FCEE66C80C44AEBC9@DM6PR05MB7099.namprd05.prod.outlook.com>
+In-Reply-To: <DM6PR05MB70993CAD6D2EF2959A0522F8AEBC9@DM6PR05MB7099.namprd05.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2 5/8] igt/vmwgfx: Add surface copy test
+Subject: Re: [igt-dev] [PATCH i-g-t v2 6/8] igt/vmwgfx: Add mob stress test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,7 +33,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 From: Martin Krastev <krastevm@vmware.com>
 
 
-LGTM, with one performance-related nitpick below.
+LGTM
 
 Reviewed-by: Martin Krastev <krastevm@vmware.com>
 
@@ -43,40 +43,40 @@ Regards,
 Martin
 
 
-On 16.03.23 г. 14:57 ч., Martin Krastev wrote:
+On 16.03.23 г. 14:58 ч., Martin Krastev wrote:
 > From: Maaz Mombasawala <mombasawalam@vmware.com>
 >
-> This test checks for validation errors during several surface copies
-> in vmwgfx.
+> This test checks the limits of the number and capacity of mobs that
+> vmwgfx can support.
 >
 > Signed-off-by: Zack Rusin <zackr@vmware.com>
 > Signed-off-by: Maaz Mombasawala <mombasawalam@vmware.com>
 > ---
->   tests/vmwgfx/meson.build    |   3 +-
->   tests/vmwgfx/surface_copy.c | 337 ++++++++++++++++++++++++++++++++++++
->   2 files changed, 339 insertions(+), 1 deletion(-)
->   create mode 100644 tests/vmwgfx/surface_copy.c
+>   tests/vmwgfx/meson.build  |  3 +-
+>   tests/vmwgfx/mob_stress.c | 99 +++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 101 insertions(+), 1 deletion(-)
+>   create mode 100644 tests/vmwgfx/mob_stress.c
 >
 > diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
-> index 0b4a87e4..7c688e92 100644
+> index 7c688e92..c84dcc28 100644
 > --- a/tests/vmwgfx/meson.build
 > +++ b/tests/vmwgfx/meson.build
-> @@ -1,7 +1,8 @@
->
+> @@ -2,7 +2,8 @@
 >   vmwgfx_progs = [
 >          'tri',
-> -       'execution_buffer'
-> +       'execution_buffer',
-> +       'surface_copy'
+>          'execution_buffer',
+> -       'surface_copy'
+> +       'surface_copy',
+> +       'mob_stress'
 >   ]
 >   vmwgfx_deps = test_deps
 >
-> diff --git a/tests/vmwgfx/surface_copy.c b/tests/vmwgfx/surface_copy.c
+> diff --git a/tests/vmwgfx/mob_stress.c b/tests/vmwgfx/mob_stress.c
 > new file mode 100644
-> index 00000000..b58d521f
+> index 00000000..9c8fb110
 > --- /dev/null
-> +++ b/tests/vmwgfx/surface_copy.c
-> @@ -0,0 +1,337 @@
+> +++ b/tests/vmwgfx/mob_stress.c
+> @@ -0,0 +1,99 @@
 > +// SPDX-License-Identifier: GPL-2.0 OR MIT
 > +/**********************************************************
 > + * Copyright 2021-2022 VMware, Inc.
@@ -105,318 +105,75 @@ On 16.03.23 г. 14:57 ч., Martin Krastev wrote:
 > +
 > +#include "igt_vmwgfx.h"
 > +
-> +/**
-> + * Compares two 2d surfaces to see if their size and contents are equal.
-> + */
-> +static bool are_surfaces_identical(int fd, struct vmw_surface *s1,
-> +                                  struct vmw_surface *s2)
+> +static void test_triangle_render(struct vmw_svga_device *device, int32 cid)
 > +{
-> +       struct vmw_mob mob1 = { .size = s1->base.buffer_size,
-> +                               .handle = s1->base.buffer_handle,
-> +                               .map_handle = s1->base.buffer_map_handle };
-> +       struct vmw_mob mob2 = { .size = s2->base.buffer_size,
-> +                               .handle = s2->base.buffer_handle,
-> +                               .map_handle = s2->base.buffer_map_handle };
-> +       char *readback1;
-> +       char *readback2;
-> +       bool is_equal = true;
-> +       uint32 i, j;
-> +       uint32 stride1, stride2, height, width;
+> +       uint8 *rendered_tri;
+> +       struct vmw_default_objects objects;
 > +
-> +       if ((s1->params.base.base_size.width !=
-> +            s2->params.base.base_size.width) ||
-> +           (s1->params.base.base_size.height !=
-> +            s2->params.base.base_size.height)) {
-> +               return false;
-> +       }
-> +       width = s1->params.base.base_size.width;
-> +       height = s1->params.base.base_size.height;
-> +       stride1 = s1->params.buffer_byte_stride == 0 ?
-> +                         width :
-> +                         s1->params.buffer_byte_stride;
-> +       stride2 = s2->params.buffer_byte_stride == 0 ?
-> +                         width :
-> +                         s2->params.buffer_byte_stride;
+> +       vmw_create_default_objects(device, cid, &objects,
+> +                                  &vmw_default_rect_size);
+> +       rendered_tri = vmw_triangle_draw(device, cid, &objects, true);
+> +       vmw_triangle_assert_values(rendered_tri, objects.color_rt);
 > +
-> +       readback1 = vmw_ioctl_mob_map(fd, &mob1);
-> +       readback2 = vmw_ioctl_mob_map(fd, &mob2);
-> +       for (i = 0; i < width; i++) {
-> +               for (j = 0; j < height; j++) {
-
-
-Is there a particular reason here to scan the buffers by columns?
-
-
-> +                       if (readback1[j * stride1 + i] !=
-> +                           readback2[j * stride2 + i]) {
-> +                               is_equal = false;
-> +                               goto are_surfaces_identical_end;
-> +                       }
-> +               }
-> +       }
-> +are_surfaces_identical_end:
-> +       vmw_ioctl_mob_unmap(&mob1);
-> +       vmw_ioctl_mob_unmap(&mob2);
-> +       return is_equal;
-> +}
-> +
-> +static void set_surface_value(int fd, struct vmw_surface *surface, char value)
-> +{
-> +       struct vmw_mob mob = { .size = surface->base.buffer_size,
-> +                              .handle = surface->base.buffer_handle,
-> +                              .map_handle = surface->base.buffer_map_handle };
-> +       char *readback;
-> +
-> +       readback = vmw_ioctl_mob_map(fd, &mob);
-> +       memset(readback, value, mob.size);
-> +       vmw_ioctl_mob_unmap(&mob);
-> +}
-> +
-> +static void exec_surface_copy(struct vmw_execbuf *cmd_buf,
-> +                             struct drm_vmw_fence_rep *cmd_fence,
-> +                             SVGA3dSurfaceImageId src,
-> +                             SVGA3dSurfaceImageId dest, SVGA3dCopyBox *box)
-> +{
-> +       vmw_cmd_surface_copy(cmd_buf, src, dest, box, 1);
-> +       vmw_execbuf_submit(cmd_buf, cmd_fence);
-> +       vmw_ioctl_fence_finish(cmd_buf->drm_fd, cmd_fence);
-> +}
-> +
-> +static void test_invalid_copies(int fd, int32 cid)
-> +{
-> +       struct vmw_surface *s1;
-> +       struct vmw_surface *s2;
-> +       struct vmw_execbuf *cmd_buf;
-> +       struct drm_vmw_fence_rep cmd_fence;
-> +       SVGA3dSize surface_size;
-> +       SVGA3dCopyBox box;
-> +       SVGA3dSurfaceImageId src;
-> +       SVGA3dSurfaceImageId dest;
-> +       SVGA3dSurfaceImageId bad_surface;
-> +
-> +       surface_size.width = 128;
-> +       surface_size.height = 128;
-> +       surface_size.depth = 1;
-> +
-> +       igt_require(
-> +               vmw_is_format_supported(fd, SVGA3D_DEVCAP_SURFACEFMT_A8R8G8B8));
-> +
-> +       s1 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
-> +                                      NULL);
-> +       s2 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
-> +                                      NULL);
-> +       cmd_buf = vmw_execbuf_create(fd, cid);
-> +
-> +       box.x = 0;
-> +       box.y = 0;
-> +       box.z = 0;
-> +       box.w = 1;
-> +       box.h = 1;
-> +       box.d = 1;
-> +       box.srcx = 0;
-> +       box.srcy = 0;
-> +       box.srcz = 0;
-> +
-> +       src.sid = s1->base.handle;
-> +       src.face = 0;
-> +       src.mipmap = 0;
-> +       dest.sid = s2->base.handle;
-> +       dest.face = 0;
-> +       dest.mipmap = 0;
-> +
-> +       /* Testing a valid copy first */
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(are_surfaces_identical(fd, s1, s2));
-> +
-> +       /* Setting surfaces to different values */
-> +       set_surface_value(fd, s1, 0);
-> +       set_surface_value(fd, s2, 16);
-> +
-> +       /* Testing invalid copies */
-> +
-> +       /* x */
-> +       box.x = 129;
-> +       box.w = 1;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       box.x = 0;
-> +       box.w = 129;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       box.srcx = 129;
-> +       box.w = 1;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       box.srcx = 0;
-> +       box.w = 129;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       /* y */
-> +       box.y = 129;
-> +       box.h = 1;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       box.y = 0;
-> +       box.h = 129;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       box.srcy = 129;
-> +       box.h = 1;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       box.srcy = 0;
-> +       box.h = 129;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       /* z */
-> +       box.z = 2;
-> +       box.d = 1;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       box.z = 0;
-> +       box.d = 2;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       box.srcz = 2;
-> +       box.d = 1;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       box.srcz = 0;
-> +       box.d = 2;
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       /* Invalid surface id */
-> +       bad_surface.sid = src.sid + dest.sid + 1;
-> +       bad_surface.face = 0;
-> +       bad_surface.mipmap = 0;
-> +
-> +       box.x = 0;
-> +       box.y = 0;
-> +       box.z = 0;
-> +       box.w = 1;
-> +       box.h = 1;
-> +       box.d = 1;
-> +       box.srcx = 0;
-> +       box.srcy = 0;
-> +       box.srcz = 0;
-> +
-> +       vmw_cmd_surface_copy(cmd_buf, bad_surface, dest, &box, 1);
-> +       igt_assert(vmw_execbuf_submit(cmd_buf, &cmd_fence) != 0);
-> +
-> +       vmw_cmd_surface_copy(cmd_buf, src, bad_surface, &box, 1);
-> +       igt_assert(vmw_execbuf_submit(cmd_buf, &cmd_fence) != 0);
-> +       vmw_ioctl_fence_finish(fd, &cmd_fence);
-> +
-> +       bad_surface.sid = src.sid;
-> +       bad_surface.face = 2;
-> +
-> +       exec_surface_copy(cmd_buf, &cmd_fence, bad_surface, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, bad_surface, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       vmw_execbuf_destroy(cmd_buf);
-> +       vmw_ioctl_surface_unref(fd, s1);
-> +       vmw_ioctl_surface_unref(fd, s2);
-> +}
-> +
-> +static void test_invalid_copies_3d(int fd, int32 cid)
-> +{
-> +       struct vmw_surface *s1;
-> +       struct vmw_surface *s2;
-> +       struct vmw_execbuf *cmd_buf;
-> +       struct drm_vmw_fence_rep cmd_fence;
-> +       SVGA3dSize surface_size;
-> +       SVGA3dCopyBox box;
-> +       SVGA3dSurfaceImageId src;
-> +       SVGA3dSurfaceImageId dest;
-> +
-> +       surface_size.width = 128;
-> +       surface_size.height = 128;
-> +       surface_size.depth = 1;
-> +
-> +       igt_require(
-> +               vmw_is_format_supported(fd, SVGA3D_DEVCAP_SURFACEFMT_A8R8G8B8));
-> +       igt_require(vmw_is_format_supported(fd, SVGA3D_DEVCAP_DXFMT_Z_D32));
-> +
-> +       s1 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
-> +                                      NULL);
-> +       s2 = vmw_create_surface_simple(fd, 0, SVGA3D_Z_D32, surface_size, NULL);
-> +       cmd_buf = vmw_execbuf_create(fd, cid);
-> +
-> +       box.x = 0;
-> +       box.y = 0;
-> +       box.z = 0;
-> +       box.w = 10;
-> +       box.h = 10;
-> +       box.d = 10;
-> +       box.srcx = 0;
-> +       box.srcy = 0;
-> +       box.srcz = 0;
-> +
-> +       src.sid = s1->base.handle;
-> +       src.face = 0;
-> +       src.mipmap = 0;
-> +       dest.sid = s2->base.handle;
-> +       dest.face = 0;
-> +       dest.mipmap = 0;
-> +
-> +       set_surface_value(fd, s1, 0);
-> +       set_surface_value(fd, s2, 16);
-> +
-> +       exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       exec_surface_copy(cmd_buf, &cmd_fence, dest, src, &box);
-> +       igt_assert(!are_surfaces_identical(fd, s1, s2));
-> +
-> +       vmw_execbuf_destroy(cmd_buf);
-> +       vmw_ioctl_surface_unref(fd, s1);
-> +       vmw_ioctl_surface_unref(fd, s2);
+> +       free(rendered_tri);
+> +       vmw_destroy_default_objects(device, &objects);
 > +}
 > +
 > +igt_main
 > +{
-> +       int fd;
+> +       struct vmw_svga_device device;
 > +       int32 cid;
+> +       uint64 max_mob_mem;
+> +       uint64 max_mob_size;
 > +
 > +       igt_fixture
 > +       {
-> +               fd = drm_open_driver_render(DRIVER_VMWGFX);
-> +               igt_require(fd != -1);
+> +               vmw_svga_device_init(&device, vmw_svga_device_node_render);
+> +               igt_require(device.drm_fd != -1);
 > +
-> +               cid = vmw_ioctl_context_create(fd);
+> +               cid = vmw_ioctl_context_create(device.drm_fd);
 > +               igt_require(cid != SVGA3D_INVALID_ID);
+> +
+> +               max_mob_mem = vmw_ioctl_get_param(device.drm_fd,
+> +                                                 DRM_VMW_PARAM_MAX_MOB_MEMORY);
+> +               max_mob_size = vmw_ioctl_get_param(device.drm_fd,
+> +                                                  DRM_VMW_PARAM_MAX_MOB_SIZE);
 > +       }
 > +
-> +       igt_subtest("test_invalid_copies")
+> +       igt_subtest("max_mob_mem_stress")
 > +       {
-> +               test_invalid_copies(fd, cid);
-> +       }
+> +               uint32 mob_num;
+> +               struct vmw_mob **mob_objs;
+> +               int i;
 > +
-> +       igt_subtest("test_invalid_copies_3d")
-> +       {
-> +               igt_require(vmw_ioctl_get_param(fd, DRM_VMW_PARAM_3D));
-> +               test_invalid_copies_3d(fd, cid);
+> +               mob_num = max_mob_mem / max_mob_size;
+> +               mob_objs = (struct vmw_mob **)calloc(mob_num,
+> +                                                    sizeof(struct vmw_mob *));
+> +
+> +               /* Enough mobs to reach max_mob_mem */
+> +               for (i = 0; i < mob_num; i++) {
+> +                       char *readback;
+> +
+> +                       mob_objs[i] = vmw_ioctl_mob_create(device.drm_fd,
+> +                                                          max_mob_size);
+> +                       /* Writing mob to ensure it gets created */
+> +                       readback =
+> +                               vmw_ioctl_mob_map(device.drm_fd, mob_objs[i]);
+> +                       memset(readback, 0, mob_objs[i]->size);
+> +                       vmw_ioctl_mob_unmap(mob_objs[i]);
+> +               }
+> +
+> +               test_triangle_render(&device, cid);
+> +
+> +               for (i = 0; i < mob_num; i++)
+> +                       vmw_ioctl_mob_close_handle(device.drm_fd, mob_objs[i]);
+> +               free(mob_objs);
 > +       }
 > +
 > +       igt_fixture
 > +       {
-> +               vmw_ioctl_context_destroy(fd, cid);
-> +               close(fd);
+> +               vmw_ioctl_context_destroy(device.drm_fd, cid);
+> +               vmw_svga_device_fini(&device);
 > +       }
 > +}
 > --
