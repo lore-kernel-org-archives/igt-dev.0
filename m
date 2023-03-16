@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C9C0810E09E
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 11:33:26 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 16 Mar 2023 17:00:26 +0530
-Message-Id: <20230316113026.1462723-1-vikas.srivastava@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============9169477869501343242=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/huc_copy: Use softpinning for Gen12+
- platforms.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Thu, 16 Mar 2023 11:43:39 -0000
+Message-ID: <167896701974.19094.7705239847154966541@emeril.freedesktop.org>
+References: <20230316100649.1261221-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230316100649.1261221-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_intel=5Fgpu=5Ftop=3A_Display_l?=
+ =?utf-8?q?arge_pids_nicely_in_interactive_mode?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,155 +18,246 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tony Ye <tony.ye@intel.com>
+--===============9169477869501343242==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Stop using relocs and the legacy execbuf flags.
+== Series Details ==
 
-Signed-off-by: Tony Ye <tony.ye@intel.com>
-Co-developed-by: Vikas Srivastava <vikas.srivastava@intel.com>
-Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
----
- lib/huc_copy.c          | 80 +++++++++++++++++++++++++++++++++++++++++
- lib/huc_copy.h          |  4 +++
- lib/intel_batchbuffer.c |  8 +++--
- 3 files changed, 90 insertions(+), 2 deletions(-)
+Series: series starting with [i-g-t,1/2] intel_gpu_top: Display large pids nicely in interactive mode
+URL   : https://patchwork.freedesktop.org/series/115253/
+State : success
 
-diff --git a/lib/huc_copy.c b/lib/huc_copy.c
-index bf8254c612..97643f07f7 100644
---- a/lib/huc_copy.c
-+++ b/lib/huc_copy.c
-@@ -26,6 +26,8 @@
- #include "drmtest.h"
- #include "huc_copy.h"
- #include "intel_allocator.h"
-+#include "intel_ctx.h"
-+#include "i915/gem_engine_topology.h"
- 
- static void
- gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
-@@ -123,3 +125,81 @@ gen9_huc_copyfunc(int fd, uint64_t ahnd,
- 
- 	gem_execbuf(fd, &execbuf);
- }
-+
-+static void
-+gen12_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
-+				  struct drm_i915_gem_exec_object2 *dst,
-+				  uint32_t *buf,
-+				  int *i)
-+{
-+	buf[(*i)++] = HUC_VIRTUAL_ADDR_STATE;
-+
-+	igt_assert((src->offset + sizeof(src->offset)) <= 32 || \
-+	(dst->offset + sizeof(dst->offset)) <= 32);
-+	for (int j = 0; j < HUC_VIRTUAL_ADDR_REGION_NUM; j++) {
-+		if (j == HUC_VIRTUAL_ADDR_REGION_SRC) {
-+			buf[(*i)++] = upper_32_bits(src->offset);
-+		} else if (j == HUC_VIRTUAL_ADDR_REGION_DST) {
-+			buf[(*i)++] = upper_32_bits(dst->offset);
-+		} else {
-+			buf[(*i)++] = 0;
-+			buf[(*i)++] = 0;
-+		}
-+
-+		buf[(*i)++] = 0;
-+	}
-+}
-+
-+void
-+gen12_huc_copyfunc(int fd, uint64_t ahnd,
-+		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	int i = 0;
-+	uint32_t buf[63];
-+	const intel_ctx_t *ctx;
-+
-+	/* load huc kernel */
-+	buf[i++] = HUC_IMEM_STATE;
-+	buf[i++] = 0;
-+	buf[i++] = 0;
-+	buf[i++] = 0;
-+	buf[i++] = 0x3;
-+
-+	buf[i++] = MFX_WAIT;
-+	buf[i++] = MFX_WAIT;
-+
-+	buf[i++] = HUC_PIPE_MODE_SELECT;
-+	buf[i++] = 0;
-+	buf[i++] = 0;
-+
-+	buf[i++] = MFX_WAIT;
-+
-+	obj[0].offset = get_offset(ahnd, obj[0].handle, objsize[0], 0);
-+	obj[0].flags |= EXEC_OBJECT_PINNED;
-+	obj[1].offset = get_offset(ahnd, obj[1].handle, objsize[1], 0);
-+	obj[1].flags |= EXEC_OBJECT_PINNED;
-+	obj[1].flags |= EXEC_OBJECT_WRITE;
-+	obj[2].offset = get_offset(ahnd, obj[2].handle, objsize[2], 0);
-+	obj[2].flags |= EXEC_OBJECT_PINNED;
-+	gen12_emit_huc_virtual_addr_state(&obj[0], &obj[1], buf, &i);
-+
-+	buf[i++] = HUC_START;
-+	buf[i++] = 1;
-+
-+	buf[i++] = MI_BATCH_BUFFER_END;
-+
-+	gem_write(fd, obj[2].handle, 0, buf, sizeof(buf));
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.buffer_count = 3;
-+	execbuf.flags = I915_EXEC_DEFAULT;
-+
-+	ctx = intel_ctx_create_for_engine(fd, I915_ENGINE_CLASS_VIDEO, 0);
-+	execbuf.rsvd1 = ctx->id;
-+
-+	gem_execbuf(fd, &execbuf);
-+
-+	intel_ctx_destroy(fd, ctx);
-+}
-diff --git a/lib/huc_copy.h b/lib/huc_copy.h
-index 1789e87359..4ee7de1288 100644
---- a/lib/huc_copy.h
-+++ b/lib/huc_copy.h
-@@ -46,4 +46,8 @@ void
- gen9_huc_copyfunc(int fd, uint64_t ahnd,
- 		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
- 
-+void
-+gen12_huc_copyfunc(int fd, uint64_t ahnd,
-+		   struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
-+
- #endif /* HUC_COPY_H */
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 8695f1b7ac..fa90f6b19e 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -2504,14 +2504,18 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
-  * Returns:
-  *
-  * The platform-specific huc copy function pointer for the device specified
-- * with @devid. Will return NULL when no media spin function is implemented.
-+ * with @devid. Will return NULL when no huc copy function is implemented.
-  */
- igt_huc_copyfunc_t igt_get_huc_copyfunc(int devid)
- {
- 	igt_huc_copyfunc_t copy = NULL;
- 
--	if (IS_GEN12(devid) || IS_GEN11(devid) || IS_GEN9(devid))
-+	if (AT_LEAST_GEN(devid, 12))
-+		copy = gen12_huc_copyfunc;
-+	else if (IS_GEN11(devid) || IS_GEN9(devid))
- 		copy = gen9_huc_copyfunc;
-+	else
-+		copy = NULL;
- 
- 	return copy;
- }
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from IGT_7198 -> IGTPW_8622
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): fi-snb-2520m fi-pnv-d510 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8622 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@basic:
+    - bat-adln-1:         NOTRUN -> [SKIP][1] ([i915#4613]) +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-adln-1:         NOTRUN -> [SKIP][2] ([i915#6621])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [PASS][3] -> [ABORT][4] ([i915#4983])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7198/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-adln-1:         NOTRUN -> [DMESG-FAIL][5] ([i915#6997])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-adln-1:         NOTRUN -> [SKIP][6] ([i915#7828])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][7] ([fdo#109271])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@prime_vgem@basic-userptr:
+    - bat-adln-1:         NOTRUN -> [SKIP][8] ([fdo#109295] / [i915#3301])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@prime_vgem@basic-userptr.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-adln-1:         NOTRUN -> [SKIP][9] ([fdo#109295] / [i915#3291]) +2 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - bat-adln-1:         [ABORT][10] ([i915#7977]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7198/bat-adln-1/igt@i915_pm_rpm@basic-rte.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [ABORT][12] -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7198/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7198 -> IGTPW_8622
+
+  CI-20190529: 20190529
+  CI_DRM_12867: 67d4276f8342780b8eaa6e9f5c15d979254a5675 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8622: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/index.html
+  IGT_7198: 17eeb3995c74f32ce6338b9e7dcd118c1104aebb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@xe_noexec_ping_pong
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/index.html
+
+--===============9169477869501343242==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] intel_gpu_top: Display large pids nicely in interactive mode</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115253/">https://patchwork.freedesktop.org/series/115253/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7198 -&gt; IGTPW_8622</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): fi-snb-2520m fi-pnv-d510 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8622 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7198/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+<li>
+<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7198/bat-adln-1/igt@i915_pm_rpm@basic-rte.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7977">i915#7977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/bat-adln-1/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7198/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7198 -&gt; IGTPW_8622</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12867: 67d4276f8342780b8eaa6e9f5c15d979254a5675 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8622: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8622/index.html<br />
+  IGT_7198: 17eeb3995c74f32ce6338b9e7dcd118c1104aebb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@xe_noexec_ping_pong</p>
+
+</body>
+</html>
+
+--===============9169477869501343242==--
