@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CB0210EE35
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 633AC10E55D
  for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 23:33:30 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>,
  kamil.konieczny@linux.intel.com
-Date: Thu, 16 Mar 2023 16:33:20 -0700
-Message-Id: <20230316233323.2638668-29-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 16 Mar 2023 16:33:17 -0700
+Message-Id: <20230316233323.2638668-26-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230316233323.2638668-1-umesh.nerlige.ramappa@intel.com>
 References: <20230316233323.2638668-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 28/31] lib/i915/perf: Add support for
- MPEC format
+Subject: [igt-dev] [PATCH i-g-t v3 25/31] i915/perf: Make sanity check
+ failures descriptive
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,124 +25,61 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support in perf library for MPEC formats.
+Make the asserts in the sanity check descriptive.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/i915/perf.c             | 38 +++++++++++++++++++++++++++++++++++++
- lib/i915/perf_data_reader.c | 14 +++++++++-----
- 2 files changed, 47 insertions(+), 5 deletions(-)
+ tests/i915/perf.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 24ef3819..d736490b 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -915,6 +915,34 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
- 		for (i = 0; i < 61; i++)
- 			accumulate_uint32(start + 3 + i, end + 3 + i, deltas + 1 + i);
- 		break;
-+
-+	case I915_OAM_FORMAT_MPEC8u32_B8_C8: {
-+		const uint64_t *start64 = (const uint64_t *)(record0 + 1);
-+		const uint64_t *end64 = (const uint64_t *)(record1 + 1);
-+
-+		/* 64 bit timestamp */
-+		if (perf->devinfo.oa_timestamp_shift >= 0)
-+			deltas[idx++] += (end64[1] - start64[1]) << perf->devinfo.oa_timestamp_shift;
-+		else
-+			deltas[idx++] += (end64[1] - start64[1]) >> (-perf->devinfo.oa_timestamp_shift);
-+
-+		/* 64 bit clock */
-+		deltas[idx++] = end64[3] - start64[3];
-+
-+		/* 8x 32bit MPEC counters */
-+		for (i = 0; i < 8; i++)
-+			accumulate_uint32(start + 8 + i, end + 8 + i, deltas + idx++);
-+
-+		/* 8x 32bit B counters */
-+		for (i = 0; i < 8; i++)
-+			accumulate_uint32(start + 16 + i, end + 16 + i, deltas + idx++);
-+
-+		/* 8x 32bit C counters */
-+		for (i = 0; i < 8; i++)
-+			accumulate_uint32(start + 24 + i, end + 24 + i, deltas + idx++);
-+
-+		break;
-+		}
- 	default:
- 		assert(0);
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index 3aa8ecb0..5f516aef 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -1017,7 +1017,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 			continue;
+ 
+ 		igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
+-		igt_assert(delta <= max_delta);
++		igt_assert_f(delta <= max_delta,
++			     "A40_%d: delta = %"PRIu64", max_delta = %"PRIu64"\n",
++			     j, delta, max_delta);
  	}
-@@ -926,6 +954,7 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
- 					  const struct drm_i915_perf_record_header *record)
- {
-        const uint32_t *report32 = (const uint32_t *)(record + 1);
-+       const uint64_t *report64 = (const uint64_t *)(record + 1);
-        uint64_t ts;
  
-        switch (metric_set->perf_oa_format) {
-@@ -935,6 +964,10 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
-                ts = report32[1];
-                break;
+ 	for (int j = 0; j < format.n_a64; j++) {
+@@ -1029,7 +1031,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 			continue;
  
-+       case I915_OAM_FORMAT_MPEC8u32_B8_C8:
-+               ts = report64[1];
-+               break;
-+
-        default:
-                assert(0);
-        }
-@@ -952,6 +985,7 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
- 					  const struct drm_i915_perf_record_header *record)
- {
-        const uint32_t *report32 = (const uint32_t *)(record + 1);
-+       const uint64_t *report64 = (const uint64_t *)(record + 1);
-        uint64_t ts;
+ 		igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a + j, delta);
+-		igt_assert(delta <= max_delta);
++		igt_assert_f(delta <= max_delta,
++			     "A64_%d: delta = %"PRIu64", max_delta = %"PRIu64"\n",
++			     format.first_a + j, delta, max_delta);
+ 	}
  
-        switch (metric_set->perf_oa_format) {
-@@ -961,6 +995,10 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
-                ts = report32[1];
-                break;
+ 	for (int j = 0; j < format.n_a; j++) {
+@@ -1044,7 +1048,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 			continue;
  
-+       case I915_OAM_FORMAT_MPEC8u32_B8_C8:
-+               ts = report64[1];
-+               break;
-+
-        default:
-                assert(0);
-        }
-diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
-index 10e78e63..332f530e 100644
---- a/lib/i915/perf_data_reader.c
-+++ b/lib/i915/perf_data_reader.c
-@@ -58,11 +58,15 @@ oa_report_ctx_is_valid(const struct intel_perf_devinfo *devinfo,
+ 		igt_debug("A%d: delta = %"PRIu32"\n", a_id, delta);
+-		igt_assert(delta <= max_delta);
++		igt_assert_f(delta <= max_delta,
++			     "A%d: delta = %"PRIu32", max_delta = %"PRIu64"\n",
++			     a_id, delta, max_delta);
+ 	}
+ 
+ 	/* The TestOa metric set defines all B counters to be a
+@@ -1106,7 +1112,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 
+ 		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu64"\n",
+ 			  j, delta, max_delta);
+-		igt_assert(delta <= max_delta);
++		igt_assert_f(delta <= max_delta,
++			     "C%d: delta = %"PRIu32", max_delta = %"PRIu64"\n",
++			     j, delta, max_delta);
+ 	}
  }
  
- static uint32_t
--oa_report_ctx_id(const struct intel_perf_devinfo *devinfo, const uint8_t *report)
-+oa_report_ctx_id(struct intel_perf_data_reader *reader, const uint8_t *report)
- {
--	if (!oa_report_ctx_is_valid(devinfo, report))
-+	if (!oa_report_ctx_is_valid(&reader->devinfo, report))
- 		return 0xffffffff;
--	return ((const uint32_t *) report)[2];
-+
-+	if (reader->metric_set->perf_oa_format == I915_OAM_FORMAT_MPEC8u32_B8_C8)
-+		return ((const uint32_t *) report)[4];
-+	else
-+		return ((const uint32_t *) report)[2];
- }
- 
- static void
-@@ -289,8 +293,8 @@ generate_cpu_events(struct intel_perf_data_reader *reader)
- 		start_report = (const uint8_t *) (last_header + 1);
- 		end_report = (const uint8_t *) (current_header + 1);
- 
--		last_ctx_id = oa_report_ctx_id(&reader->devinfo, start_report);
--		current_ctx_id = oa_report_ctx_id(&reader->devinfo, end_report);
-+		last_ctx_id = oa_report_ctx_id(reader, start_report);
-+		current_ctx_id = oa_report_ctx_id(reader, end_report);
- 
- 		gpu_ts_start = intel_perf_read_record_timestamp(reader->perf,
- 								reader->metric_set,
 -- 
 2.36.1
