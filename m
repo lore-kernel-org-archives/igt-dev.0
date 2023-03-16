@@ -1,23 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com
- [IPv6:2a00:1450:4864:20::42c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52D5410E19F
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 13:37:49 +0000 (UTC)
-Received: by mail-wr1-x42c.google.com with SMTP id r29so1555091wra.13
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 06:37:49 -0700 (PDT)
-Message-ID: <a26be195-c032-1e40-4fec-23a60eb0f1f9@gmail.com>
-Date: Thu, 16 Mar 2023 15:37:45 +0200
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com
+ [IPv6:2a00:1450:4864:20::429])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5EA710ED07
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 13:55:55 +0000 (UTC)
+Received: by mail-wr1-x429.google.com with SMTP id m2so1622419wrh.6
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 06:55:55 -0700 (PDT)
+Message-ID: <bb02a2ff-92fc-f0d5-828b-b3f2ee44f72d@gmail.com>
+Date: Thu, 16 Mar 2023 15:55:52 +0200
 MIME-Version: 1.0
 Content-Language: en-US
 To: igt-dev@lists.freedesktop.org
 References: <20230316022659.73202-1-zack@kde.org>
- <20230316022659.73202-4-zack@kde.org>
- <DM6PR05MB7099906944F388E2AF52683CAEBC9@DM6PR05MB7099.namprd05.prod.outlook.com>
+ <20230316022659.73202-5-zack@kde.org>
+ <DM6PR05MB7099387153CDB475DEC7D7A4AEBC9@DM6PR05MB7099.namprd05.prod.outlook.com>
 From: "Martin Krastev (VMware)" <martinkrastev768@gmail.com>
-In-Reply-To: <DM6PR05MB7099906944F388E2AF52683CAEBC9@DM6PR05MB7099.namprd05.prod.outlook.com>
+In-Reply-To: <DM6PR05MB7099387153CDB475DEC7D7A4AEBC9@DM6PR05MB7099.namprd05.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/8] igt/vmwgfx: Add triangle test
+Subject: Re: [igt-dev] [PATCH i-g-t v2 4/8] igt/vmwgfx: Add execution buffer
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -46,60 +47,23 @@ Martin
 On 16.03.23 г. 14:54 ч., Martin Krastev wrote:
 > From: Maaz Mombasawala <mombasawalam@vmware.com>
 >
-> Add vmwgfx tests support in tests/meson and a tri test.
-> This basic test draws a triangle using vmwgfx and checks if it has
-> been rendered correctly.
+> Add execution buffer related tests in vmwgfx, includes execution buffer
+> submit and syncs, mob creation and execution buffer stress test.
 >
-> Signed-off-by: Roye Eshed <reshed@vmware.com>
 > Signed-off-by: Zack Rusin <zackr@vmware.com>
 > Signed-off-by: Maaz Mombasawala <mombasawalam@vmware.com>
 > ---
->   tests/meson.build        |   2 +
->   tests/vmwgfx/meson.build |  14 +++
->   tests/vmwgfx/tri.c       | 210 +++++++++++++++++++++++++++++++++++++++
->   3 files changed, 226 insertions(+)
->   create mode 100644 tests/vmwgfx/meson.build
->   create mode 100644 tests/vmwgfx/tri.c
+>   tests/vmwgfx/execution_buffer.c | 307 ++++++++++++++++++++++++++++++++
+>   tests/vmwgfx/meson.build        |   3 +-
+>   2 files changed, 309 insertions(+), 1 deletion(-)
+>   create mode 100644 tests/vmwgfx/execution_buffer.c
 >
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 632e36e0..b2d75afa 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -508,6 +508,8 @@ subdir('v3d')
->
->   subdir('vc4')
->
-> +subdir('vmwgfx')
-> +
->   gen_testlist = find_program('generate_testlist.sh')
->   test_list_target = custom_target('testlist',
->                output : 'test-list.txt',
-> diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
+> diff --git a/tests/vmwgfx/execution_buffer.c b/tests/vmwgfx/execution_buffer.c
 > new file mode 100644
-> index 00000000..46961503
+> index 00000000..71b6f00e
 > --- /dev/null
-> +++ b/tests/vmwgfx/meson.build
-> @@ -0,0 +1,14 @@
-> +
-> +vmwgfx_progs = [
-> +       'tri'
-> +]
-> +vmwgfx_deps = test_deps
-> +
-> +foreach prog : vmwgfx_progs
-> +       test_executables += executable(prog, prog + '.c',
-> +                                      dependencies : vmwgfx_deps,
-> +                                      install_dir : vmwgfxdir,
-> +                                      install_rpath : vmwgfx_rpathdir,
-> +                                      install : true)
-> +       test_list += join_paths('vmwgfx', prog)
-> +endforeach
-> diff --git a/tests/vmwgfx/tri.c b/tests/vmwgfx/tri.c
-> new file mode 100644
-> index 00000000..6fc02967
-> --- /dev/null
-> +++ b/tests/vmwgfx/tri.c
-> @@ -0,0 +1,210 @@
+> +++ b/tests/vmwgfx/execution_buffer.c
+> @@ -0,0 +1,307 @@
 > +// SPDX-License-Identifier: GPL-2.0 OR MIT
 > +/**********************************************************
 > + * Copyright 2021-2022 VMware, Inc.
@@ -128,188 +92,298 @@ On 16.03.23 г. 14:54 ч., Martin Krastev wrote:
 > +
 > +#include "igt_vmwgfx.h"
 > +
-> +static void draw_triangle(struct vmw_svga_device *device, int32 cid)
+> +#include <stdatomic.h>
+> +
+> +struct {
+> +       bool stress_test;
+> +} options;
+> +
+> +static struct option long_options[] = {
+> +       { "stress-test", 0, 0, 's' },
+> +       { NULL, 0, 0, 0 },
+> +};
+> +
+> +static int parse_options(int opt, int opt_index, void *data)
 > +{
-> +       struct vmw_default_objects objects;
-> +       uint8 *rendered_img;
-> +       bool save_status;
-> +
-> +       vmw_create_default_objects(device, cid, &objects,
-> +                                  &vmw_default_rect_size);
-> +       rendered_img = vmw_triangle_draw(device, cid, &objects, true);
-> +
-> +       save_status = vmw_save_data_as_png(objects.color_rt, rendered_img,
-> +                                          "vmwgfx_tri.png");
-> +       igt_assert(save_status);
-> +
-> +       vmw_triangle_assert_values(rendered_img, objects.color_rt);
-> +
-> +       /* Clean up */
-> +       free(rendered_img);
-> +       vmw_destroy_default_objects(device, &objects);
+> +       switch (opt) {
+> +       case 's':
+> +               options.stress_test = 1;
+> +               igt_info("stress-test mode\n");
+> +               break;
+> +       default:
+> +               return IGT_OPT_HANDLER_ERROR;
+> +       }
+> +       return IGT_OPT_HANDLER_SUCCESS;
 > +}
 > +
-> +static void replace_with_coherent_rt(struct vmw_svga_device *device,
-> +                                    int32 context_id,
-> +                                    struct vmw_default_objects *objects,
-> +                                    const SVGA3dSize *rt_size)
+> +static void check_mob_create_map(int fd)
 > +{
-> +       struct vmw_execbuf *cmd_buf;
-> +       SVGA3dRenderTargetViewDesc rtv_desc = { 0 };
-> +       SVGA3dCmdDXDefineRenderTargetView rt_view_define_cmd = { 0 };
-> +       SVGA3dCmdDXDefineDepthStencilView ds_view_define_cmd = { 0 };
+> +       struct vmw_mob *mob_obj;
+> +       uint32 size = 4096;
 > +
-> +       objects->color_rt = vmw_ioctl_create_surface_full(
-> +               device->drm_fd,
-> +               SVGA3D_SURFACE_HINT_TEXTURE | SVGA3D_SURFACE_HINT_RENDERTARGET |
-> +                       SVGA3D_SURFACE_BIND_RENDER_TARGET,
-> +               SVGA3D_R8G8B8A8_UNORM, 0, SVGA3D_MS_PATTERN_NONE,
-> +               SVGA3D_MS_QUALITY_NONE, SVGA3D_TEX_FILTER_NONE, 1, 1, *rt_size,
-> +               NULL, drm_vmw_surface_flag_coherent);
+> +       /* create a new mob */
+> +       mob_obj = vmw_ioctl_mob_create(fd, size);
+> +       /* takes the created mob and maps it */
+> +       vmw_ioctl_mob_map(fd, mob_obj);
+> +       /* test that mapping is successful */
+> +       igt_assert_neq(mob_obj->map_count, 0);
 > +
-> +       objects->depth_rt = vmw_ioctl_create_surface_full(
-> +               device->drm_fd,
-> +               SVGA3D_SURFACE_HINT_DEPTHSTENCIL |
-> +                       SVGA3D_SURFACE_HINT_RENDERTARGET |
-> +                       SVGA3D_SURFACE_BIND_DEPTH_STENCIL,
-> +               SVGA3D_R24G8_TYPELESS, 0, SVGA3D_MS_PATTERN_NONE,
-> +               SVGA3D_MS_QUALITY_NONE, SVGA3D_TEX_FILTER_NONE, 1, 1, *rt_size,
-> +               NULL, drm_vmw_surface_flag_coherent);
-> +
-> +       cmd_buf = vmw_execbuf_create(device->drm_fd, context_id);
-> +
-> +       rtv_desc.tex.arraySize = 1;
-> +       rtv_desc.tex.firstArraySlice = 0;
-> +       rtv_desc.tex.mipSlice = 0;
-> +       vmw_bitvector_find_next_bit(device->rt_view_bv,
-> +                                   &rt_view_define_cmd.renderTargetViewId);
-> +       rt_view_define_cmd.sid = objects->color_rt->base.handle;
-> +       rt_view_define_cmd.format = SVGA3D_R8G8B8A8_UNORM;
-> +       rt_view_define_cmd.resourceDimension = SVGA3D_RESOURCE_TEXTURE2D;
-> +       rt_view_define_cmd.desc = rtv_desc;
-> +       vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DEFINE_RENDERTARGET_VIEW,
-> +                          &rt_view_define_cmd, sizeof(rt_view_define_cmd), NULL,
-> +                          0);
-> +       objects->color_rt_id = rt_view_define_cmd.renderTargetViewId;
-> +
-> +       vmw_bitvector_find_next_bit(device->ds_view_bv,
-> +                                   &ds_view_define_cmd.depthStencilViewId);
-> +       ds_view_define_cmd.sid = objects->depth_rt->base.handle;
-> +       ds_view_define_cmd.format = SVGA3D_D24_UNORM_S8_UINT;
-> +       ds_view_define_cmd.resourceDimension = SVGA3D_RESOURCE_TEXTURE2D;
-> +       ds_view_define_cmd.mipSlice = 0;
-> +       ds_view_define_cmd.firstArraySlice = 0;
-> +       ds_view_define_cmd.arraySize = 1;
-> +       vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DEFINE_DEPTHSTENCIL_VIEW,
-> +                          &ds_view_define_cmd, sizeof(ds_view_define_cmd), NULL,
-> +                          0);
-> +       objects->ds_view_id = ds_view_define_cmd.depthStencilViewId;
-> +
-> +       vmw_execbuf_submit(cmd_buf, NULL);
-> +       vmw_execbuf_destroy(cmd_buf);
+> +       vmw_ioctl_mob_unmap(mob_obj);
+> +       vmw_ioctl_mob_close_handle(fd, mob_obj);
 > +}
 > +
-> +static void destroy_rt(struct vmw_svga_device *device, int32 context_id,
-> +                      struct vmw_default_objects *objects)
+> +static void check_buffer_create(int fd)
 > +{
-> +       struct vmw_execbuf *cmd_buf;
+> +       struct vmw_surface *buffer_obj;
+> +       struct vmw_mob *mob_obj;
+> +       uint32 size = 4096;
 > +
-> +       SVGA3dCmdDXDestroyRenderTargetView rt_view_cmd = {
-> +               .renderTargetViewId = objects->color_rt_id
-> +       };
+> +       mob_obj = vmw_ioctl_mob_create(fd, size);
+> +       /* creates a buffer from mob */
+> +       buffer_obj = vmw_ioctl_buffer_create(fd, 0, size, mob_obj);
+> +       /* checks that the buffer is allocated */
+> +       igt_assert_eq(buffer_obj->base.backup_size, size);
 > +
-> +       SVGA3dCmdDXDestroyDepthStencilView ds_view_cmd = {
-> +               .depthStencilViewId = objects->ds_view_id
-> +       };
-> +
-> +       cmd_buf = vmw_execbuf_create(device->drm_fd, objects->context_id);
-> +
-> +       vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DESTROY_RENDERTARGET_VIEW,
-> +                          &rt_view_cmd, sizeof(rt_view_cmd), NULL, 0);
-> +
-> +       vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DESTROY_DEPTHSTENCIL_VIEW,
-> +                          &ds_view_cmd, sizeof(ds_view_cmd), NULL, 0);
-> +
-> +       vmw_ioctl_surface_unref(device->drm_fd, objects->color_rt);
-> +       vmw_ioctl_surface_unref(device->drm_fd, objects->depth_rt);
-> +
-> +       vmw_bitvector_free_bit(device->rt_view_bv, objects->color_rt_id);
-> +       vmw_bitvector_free_bit(device->ds_view_bv, objects->ds_view_id);
-> +
-> +       vmw_execbuf_submit(cmd_buf, NULL);
-> +       vmw_execbuf_destroy(cmd_buf);
+> +       vmw_ioctl_surface_unref(fd, buffer_obj);
+> +       vmw_ioctl_mob_close_handle(fd, mob_obj);
 > +}
 > +
-> +static void draw_triangle_on_coherent_rt(struct vmw_svga_device *device,
-> +                                        int32 cid)
+> +static void check_execbuf_submit_fence(int fd, int32 cid)
 > +{
-> +       struct vmw_default_objects objects;
-> +       uint8 *rendered_img;
-> +       struct vmw_surface *default_color_rt;
-> +       struct vmw_surface *default_depth_rt;
-> +       SVGA3dRenderTargetViewId default_color_rt_id;
-> +       SVGA3dDepthStencilViewId default_ds_view_id;
+> +       struct vmw_execbuf *command_buffer;
+> +       struct drm_vmw_fence_rep cmd_fence = { 0 };
+> +       const uint32 buffer_size = 128;
 > +
-> +       vmw_create_default_objects(device, cid, &objects,
-> +                                  &vmw_default_rect_size);
+> +       struct vmw_mob *mob;
+> +       struct vmw_surface *src_buffer;
+> +       struct vmw_surface *dst_buffer1, *dst_buffer2, *dst_buffer3;
 > +
-> +       /* Replace default rendertargets with coherent equivalents */
-> +       default_color_rt = objects.color_rt;
-> +       default_depth_rt = objects.depth_rt;
-> +       default_color_rt_id = objects.color_rt_id;
-> +       default_ds_view_id = objects.ds_view_id;
-> +       replace_with_coherent_rt(device, cid, &objects, &vmw_default_rect_size);
+> +       uint32_t total_size = 0;
+> +       SVGA3dCmdDXBufferCopy copyCmd = { 0 };
+> +       uint32_t total_cmd_len = sizeof(SVGA3dCmdHeader) + sizeof(copyCmd);
 > +
-> +       rendered_img = vmw_triangle_draw(device, cid, &objects, false);
+> +       SVGA3dCmdReadbackGBSurface cmd;
+> +       struct vmw_mob fake_mob = { 0 };
+> +       char *readback;
 > +
-> +       vmw_triangle_assert_values(rendered_img, objects.color_rt);
+> +       char *data;
+> +       int i;
 > +
-> +       /* Clean up */
-> +       free(rendered_img);
+> +       mob = vmw_ioctl_mob_create(fd, buffer_size);
 > +
-> +       destroy_rt(device, cid, &objects);
-> +       objects.color_rt = default_color_rt;
-> +       objects.depth_rt = default_depth_rt;
-> +       objects.color_rt_id = default_color_rt_id;
-> +       objects.ds_view_id = default_ds_view_id;
+> +       data = vmw_ioctl_mob_map(fd, mob);
+> +       for (i = 0; i < buffer_size; ++i)
+> +               data[i] = i;
+> +       vmw_ioctl_mob_unmap(mob);
 > +
-> +       vmw_destroy_default_objects(device, &objects);
+> +       src_buffer = vmw_ioctl_buffer_create(
+> +               fd, SVGA3D_SURFACE_BIND_SHADER_RESOURCE, buffer_size, mob);
+> +       dst_buffer1 = vmw_ioctl_buffer_create(
+> +               fd, SVGA3D_SURFACE_BIND_SHADER_RESOURCE, buffer_size, NULL);
+> +       dst_buffer2 = vmw_ioctl_buffer_create(
+> +               fd, SVGA3D_SURFACE_BIND_SHADER_RESOURCE, buffer_size, NULL);
+> +       dst_buffer3 = vmw_ioctl_buffer_create(
+> +               fd, SVGA3D_SURFACE_BIND_SHADER_RESOURCE, buffer_size, NULL);
+> +       /* Create command buffer */
+> +       command_buffer = vmw_execbuf_create(fd, cid);
+> +       igt_assert(command_buffer != NULL);
+> +
+> +       copyCmd.src = src_buffer->base.handle;
+> +       copyCmd.dest = dst_buffer1->base.handle;
+> +       copyCmd.width = buffer_size;
+> +       copyCmd.srcX = 0;
+> +       copyCmd.destX = 0;
+> +       vmw_execbuf_append(command_buffer, SVGA_3D_CMD_DX_BUFFER_COPY, &copyCmd,
+> +                          sizeof(copyCmd), NULL, 0);
+> +       total_size += total_cmd_len;
+> +       igt_assert_eq(command_buffer->offset, total_size);
+> +       igt_assert(command_buffer->offset < command_buffer->buffer_size);
+> +
+> +       for (i = 0; i < 4096; ++i) {
+> +               copyCmd.src = dst_buffer1->base.handle;
+> +               copyCmd.dest = dst_buffer2->base.handle;
+> +               vmw_execbuf_append(command_buffer, SVGA_3D_CMD_DX_BUFFER_COPY,
+> +                                  &copyCmd, sizeof(copyCmd), NULL, 0);
+> +               total_size += total_cmd_len;
+> +       }
+> +
+> +       copyCmd.src = dst_buffer2->base.handle;
+> +       copyCmd.dest = dst_buffer3->base.handle;
+> +       vmw_execbuf_append(command_buffer, SVGA_3D_CMD_DX_BUFFER_COPY, &copyCmd,
+> +                          sizeof(copyCmd), NULL, 0);
+> +       total_size += total_cmd_len;
+> +
+> +       igt_assert_eq(command_buffer->offset, total_size);
+> +       igt_assert(command_buffer->offset < command_buffer->buffer_size);
+> +
+> +       vmw_execbuf_submit(command_buffer, &cmd_fence);
+> +       vmw_ioctl_fence_finish(fd, &cmd_fence);
+> +
+> +       cmd.sid = dst_buffer1->base.handle;
+> +       vmw_execbuf_append(command_buffer, SVGA_3D_CMD_READBACK_GB_SURFACE,
+> +                          &cmd, sizeof(cmd), NULL, 0);
+> +       vmw_execbuf_submit(command_buffer, &cmd_fence);
+> +       vmw_ioctl_fence_finish(fd, &cmd_fence);
+> +
+> +       fake_mob.size = dst_buffer1->base.buffer_size;
+> +       fake_mob.handle = dst_buffer1->base.buffer_handle;
+> +       fake_mob.map_handle = dst_buffer1->base.buffer_map_handle;
+> +       readback = vmw_ioctl_mob_map(fd, &fake_mob);
+> +       for (i = 0; i < buffer_size; i++) {
+> +               int val = readback[i];
+> +
+> +               igt_assert_eq(i, val);
+> +       }
+> +       vmw_ioctl_mob_unmap(&fake_mob);
+> +
+> +       vmw_ioctl_surface_unref(fd, src_buffer);
+> +       vmw_ioctl_surface_unref(fd, dst_buffer1);
+> +       vmw_ioctl_surface_unref(fd, dst_buffer2);
+> +       vmw_ioctl_surface_unref(fd, dst_buffer3);
+> +       vmw_execbuf_destroy(command_buffer);
+> +       vmw_ioctl_mob_close_handle(fd, mob);
 > +}
 > +
-> +igt_main
+> +static int32 vmw_ioctl_command2(int drm_fd, int32_t cid, void *commands,
+> +                               uint32_t size, struct drm_vmw_fence_rep *fence)
 > +{
-> +       struct vmw_svga_device device;
+> +       struct drm_vmw_execbuf_arg arg = { 0 };
+> +       int ret;
+> +       const int argsize = sizeof(arg);
+> +
+> +       memset(&arg, 0, sizeof(arg));
+> +
+> +       arg.fence_rep = (unsigned long)fence;
+> +       arg.commands = (unsigned long)commands;
+> +       arg.command_size = size;
+> +       arg.throttle_us = 0; /* deprecated */
+> +       arg.version = DRM_VMW_EXECBUF_VERSION;
+> +       arg.context_handle = cid;
+> +
+> +       do {
+> +               ret = drmCommandWrite(drm_fd, DRM_VMW_EXECBUF, &arg, argsize);
+> +               if (ret == -EBUSY)
+> +                       usleep(1000);
+> +       } while (ret == -ERESTART || ret == -EBUSY);
+> +       if (ret)
+> +               return 1;
+> +       return 0;
+> +}
+> +
+> +static _Atomic(int32_t) context_id;
+> +static const uint32_t max_tries = 100000;
+> +
+> +static void *create_contexts(void *data)
+> +{
+> +       int fd = (uintptr_t)data;
+> +       uint32_t i;
+> +
+> +       for (i = 0; i < max_tries; ++i) {
+> +               int32_t cid = vmw_ioctl_context_create(fd);
+> +
+> +               atomic_store(&context_id, cid);
+> +
+> +               vmw_ioctl_context_destroy(fd, cid);
+> +       }
+> +       return 0;
+> +}
+> +
+> +static void *submit_queries(void *data)
+> +{
+> +       int fd = (uintptr_t)data;
+> +       uint32_t i;
+> +
+> +       for (i = 0; i < max_tries; ++i) {
+> +               struct vmw_execbuf *cmd_buf;
+> +               SVGA3dCmdDXDefineQuery cmd = {
+> +                       .queryId = 0,
+> +                       .type = SVGA3D_QUERYTYPE_TIMESTAMP,
+> +                       .flags = 0,
+> +               };
+> +               int32_t cid = atomic_load(&context_id);
+> +
+> +               cmd_buf = vmw_execbuf_create(fd, cid);
+> +
+> +               vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DEFINE_QUERY, &cmd,
+> +                                  sizeof(cmd), NULL, 0);
+> +
+> +               vmw_ioctl_command2(fd, cid, cmd_buf->buffer, cmd_buf->offset,
+> +                                  NULL);
+> +               cmd_buf->offset = 0;
+> +               vmw_execbuf_destroy(cmd_buf);
+> +       }
+> +       return 0;
+> +}
+> +
+> +static void execbuf_stress_test(int fd)
+> +{
+> +       pthread_t threads[2];
+> +       void *status;
+> +       int ret;
+> +
+> +       ret = pthread_create(&threads[0], NULL, create_contexts,
+> +                            (void *)(uintptr_t)fd);
+> +       igt_assert_eq(ret, 0);
+> +       ret = pthread_create(&threads[1], NULL, submit_queries,
+> +                            (void *)(uintptr_t)fd);
+> +       igt_assert_eq(ret, 0);
+> +
+> +       pthread_join(threads[0], &status);
+> +       pthread_join(threads[1], &status);
+> +}
+> +
+> +igt_main_args("st:", long_options, NULL, parse_options, NULL)
+> +{
+> +       int fd;
 > +       int32 cid;
 > +
 > +       igt_fixture
 > +       {
-> +               vmw_svga_device_init(&device, vmw_svga_device_node_render);
-> +               igt_require(device.drm_fd != -1);
-> +
-> +               cid = vmw_ioctl_context_create(device.drm_fd);
-> +               igt_require(cid != SVGA3D_INVALID_ID);
+> +               fd = drm_open_driver_render(DRIVER_VMWGFX);
+> +               cid = vmw_ioctl_context_create(fd);
 > +       }
 > +
-> +       igt_subtest("tri")
+> +       igt_subtest("mob-create-map")
 > +       {
-> +               draw_triangle(&device, cid);
+> +               check_mob_create_map(fd);
 > +       }
 > +
-> +       /*
-> +        * Check that vmwgfx correctly handles coherent rendertarget
-> +        * surfaces when no explicit sync is given from userspace
-> +        */
-> +       igt_subtest("tri-no-sync-coherent")
+> +       igt_subtest("buffer-create")
 > +       {
-> +               draw_triangle_on_coherent_rt(&device, cid);
+> +               check_buffer_create(fd);
+> +       }
+> +
+> +       igt_subtest("execution-buffer-submit-sync")
+> +       {
+> +               check_execbuf_submit_fence(fd, cid);
+> +       }
+> +
+> +       if (options.stress_test) {
+> +               igt_subtest("execution-buffer-stress-test")
+> +               {
+> +                       execbuf_stress_test(fd);
+> +               }
 > +       }
 > +
 > +       igt_fixture
 > +       {
-> +               vmw_ioctl_context_destroy(device.drm_fd, cid);
-> +               vmw_svga_device_fini(&device);
+> +               vmw_ioctl_context_destroy(fd, cid);
+> +               close(fd);
 > +       }
 > +}
+> diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
+> index 46961503..0b4a87e4 100644
+> --- a/tests/vmwgfx/meson.build
+> +++ b/tests/vmwgfx/meson.build
+> @@ -1,6 +1,7 @@
+>
+>   vmwgfx_progs = [
+> -       'tri'
+> +       'tri',
+> +       'execution_buffer'
+>   ]
+>   vmwgfx_deps = test_deps
+>
 > --
 > 2.38.1
 >
