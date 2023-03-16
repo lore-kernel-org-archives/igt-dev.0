@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com
- [IPv6:2a00:1450:4864:20::42b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8692410E22F
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 14:25:15 +0000 (UTC)
-Received: by mail-wr1-x42b.google.com with SMTP id o2so316242wro.12
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 07:25:15 -0700 (PDT)
-Message-ID: <3b2966e6-c41f-2004-a3da-8a50e8aee13a@gmail.com>
-Date: Thu, 16 Mar 2023 16:25:12 +0200
-MIME-Version: 1.0
-Content-Language: en-US
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D57C10E08C
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 14:32:09 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-References: <20230316022659.73202-1-zack@kde.org>
- <20230316022659.73202-9-zack@kde.org>
- <DM6PR05MB70990327C01C62C72489C001AEBC9@DM6PR05MB7099.namprd05.prod.outlook.com>
-From: "Martin Krastev (VMware)" <martinkrastev768@gmail.com>
-In-Reply-To: <DM6PR05MB70990327C01C62C72489C001AEBC9@DM6PR05MB7099.namprd05.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Date: Thu, 16 Mar 2023 20:04:37 +0530
+Message-Id: <20230316143437.24064-1-swati2.sharma@intel.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2 8/8] lib/igt_kms: vmwgfx returns 8
- crtc
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: Fix out-of-bound
+ array access
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,62 +17,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: krastevm@vmware.com, banackm@vmware.com, mombasawalam@vmware.com
+Cc: Coelho@freedesktop.org, Luciano <luciano.coelho@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Martin Krastev <krastevm@vmware.com>
+When k == n_planes - 1, we will try to access planes[n_planes],
+which is out of bounds. Fix this.
 
+Reported-by: Coelho, Luciano <luciano.coelho@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_plane_scaling.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-LGTM
-
-Reviewed-by: Martin Krastev <krastevm@vmware.com>
-
-
-Regards,
-
-Martin
-
-
-On 16.03.23 г. 14:57 ч., Martin Krastev wrote:
-> From: Zack Rusin <zackr@vmware.com>
->
-> To avoid crashes in multiple tests we need to extend the number of
-> available pipe's to match the numbers returned by the virtualized drivers.
->
-> Signed-off-by: Zack Rusin <zackr@vmware.com>
-> ---
->   lib/igt_kms.c | 2 +-
->   lib/igt_kms.h | 2 ++
->   2 files changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 8c7dd85b..d2e9eccc 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -839,7 +839,7 @@ static igt_plane_t *igt_get_assigned_primary(igt_output_t *output, igt_pipe_t *p
->    */
->   const char *kmstest_pipe_name(enum pipe pipe)
->   {
-> -       static const char str[] = "A\0B\0C\0D\0E\0F";
-> +       static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H";
->
->          _Static_assert(sizeof(str) == IGT_MAX_PIPES * 2,
->                         "Missing pipe name");
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index be5482e0..64807a7f 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -62,6 +62,8 @@ enum pipe {
->           PIPE_D,
->           PIPE_E,
->           PIPE_F,
-> +       PIPE_G,
-> +       PIPE_H,
->           IGT_MAX_PIPES
->   };
->   const char *kmstest_pipe_name(enum pipe pipe);
-> --
-> 2.38.1
->
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 3a6904af..8d78752c 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -744,7 +744,7 @@ test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+ 		igt_assert(0);
+ 	}
+ 
+-	for (int k = 0; k < display->pipes[pipe].n_planes; k++) {
++	for (int k = 0; k < display->pipes[pipe].n_planes - 1; k++) {
+ 		igt_plane_t *p1, *p2;
+ 
+ 		p1 = &display->pipes[pipe].planes[k];
+-- 
+2.25.1
