@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 139F910E0A7
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 11:27:55 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1861F10E215
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 17:21:44 +0000 (UTC)
+Date: Thu, 16 Mar 2023 18:21:40 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 16 Mar 2023 16:54:55 +0530
-Message-Id: <20230316112455.1462396-1-vikas.srivastava@intel.com>
+Message-ID: <20230316172140.bzkuddn6pqqouasf@kamilkon-desk1>
+References: <20230313175928.1159426-1-vikas.srivastava@intel.com>
+ <20230313175928.1159426-2-vikas.srivastava@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] lib/huc_copy: Use softpinning for Gen12+
- platforms.
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230313175928.1159426-2-vikas.srivastava@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/intel_ctx: Create intel_ctx
+ with physical engines in a single gt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,151 +25,125 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: "Ye, Tony" <tony.ye@intel.com>
+Hi Vikas,
 
-Stop using relocs and the legacy execbuf flags.
+On 2023-03-13 at 23:29:28 +0530, Vikas Srivastava wrote:
+> From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> 
+> Introduce intel_ctx_create_for_gt for creating an intel_ctx_t containing
+> all physical engines belonging to a single gt.
+> 
+> Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
 
-Signed-off-by: Tony Ye <tony.ye@intel.com>
-Co-developed-by: Vikas Srivastava <vikas.srivastava@intel.com>
-Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
----
- lib/huc_copy.c          | 80 +++++++++++++++++++++++++++++++++++++++++
- lib/huc_copy.h          |  4 +++
- lib/intel_batchbuffer.c |  8 +++--
- 3 files changed, 90 insertions(+), 2 deletions(-)
+I do not see Zbigniew in headers, please do send your patch to
+people on Cc list.
 
-diff --git a/lib/huc_copy.c b/lib/huc_copy.c
-index bf8254c612..97643f07f7 100644
---- a/lib/huc_copy.c
-+++ b/lib/huc_copy.c
-@@ -26,6 +26,8 @@
- #include "drmtest.h"
- #include "huc_copy.h"
- #include "intel_allocator.h"
-+#include "intel_ctx.h"
-+#include "i915/gem_engine_topology.h"
- 
- static void
- gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
-@@ -123,3 +125,81 @@ gen9_huc_copyfunc(int fd, uint64_t ahnd,
- 
- 	gem_execbuf(fd, &execbuf);
- }
-+
-+static void
-+gen12_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
-+				  struct drm_i915_gem_exec_object2 *dst,
-+				  uint32_t *buf,
-+				  int *i)
-+{
-+	buf[(*i)++] = HUC_VIRTUAL_ADDR_STATE;
-+
-+	igt_assert((src->offset + sizeof(src->offset)) <= 32 || \
-+	(dst->offset + sizeof(dst->offset)) <= 32);
-+	for (int j = 0; j < HUC_VIRTUAL_ADDR_REGION_NUM; j++) {
-+		if (j == HUC_VIRTUAL_ADDR_REGION_SRC) {
-+			buf[(*i)++] = upper_32_bits(src->offset);
-+		} else if (j == HUC_VIRTUAL_ADDR_REGION_DST) {
-+			buf[(*i)++] = upper_32_bits(dst->offset);
-+		} else {
-+			buf[(*i)++] = 0;
-+			buf[(*i)++] = 0;
-+		}
-+
-+		buf[(*i)++] = 0;
-+	}
-+}
-+
-+void
-+gen12_huc_copyfunc(int fd, uint64_t ahnd,
-+		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	int i = 0;
-+	uint32_t buf[63];
-+	const intel_ctx_t *ctx;
-+
-+	/* load huc kernel */
-+	buf[i++] = HUC_IMEM_STATE;
-+	buf[i++] = 0;
-+	buf[i++] = 0;
-+	buf[i++] = 0;
-+	buf[i++] = 0x3;
-+
-+	buf[i++] = MFX_WAIT;
-+	buf[i++] = MFX_WAIT;
-+
-+	buf[i++] = HUC_PIPE_MODE_SELECT;
-+	buf[i++] = 0;
-+	buf[i++] = 0;
-+
-+	buf[i++] = MFX_WAIT;
-+
-+	obj[0].offset = get_offset(ahnd, obj[0].handle, objsize[0], 0);
-+	obj[0].flags |= EXEC_OBJECT_PINNED;
-+	obj[1].offset = get_offset(ahnd, obj[1].handle, objsize[1], 0);
-+	obj[1].flags |= EXEC_OBJECT_PINNED;
-+	obj[1].flags |= EXEC_OBJECT_WRITE;
-+	obj[2].offset = get_offset(ahnd, obj[2].handle, objsize[2], 0);
-+	obj[2].flags |= EXEC_OBJECT_PINNED;
-+	gen12_emit_huc_virtual_addr_state(&obj[0], &obj[1], buf, &i);
-+
-+	buf[i++] = HUC_START;
-+	buf[i++] = 1;
-+
-+	buf[i++] = MI_BATCH_BUFFER_END;
-+
-+	gem_write(fd, obj[2].handle, 0, buf, sizeof(buf));
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.buffer_count = 3;
-+	execbuf.flags = I915_EXEC_DEFAULT;
-+
-+	ctx = intel_ctx_create_for_engine(fd, I915_ENGINE_CLASS_VIDEO, 0);
-+	execbuf.rsvd1 = ctx->id;
-+
-+	gem_execbuf(fd, &execbuf);
-+
-+	intel_ctx_destroy(fd, ctx);
-+}
-diff --git a/lib/huc_copy.h b/lib/huc_copy.h
-index 1789e87359..4ee7de1288 100644
---- a/lib/huc_copy.h
-+++ b/lib/huc_copy.h
-@@ -46,4 +46,8 @@ void
- gen9_huc_copyfunc(int fd, uint64_t ahnd,
- 		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
- 
-+void
-+gen12_huc_copyfunc(int fd, uint64_t ahnd,
-+		   struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
-+
- #endif /* HUC_COPY_H */
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 8695f1b7ac..fa90f6b19e 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -2504,14 +2504,18 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
-  * Returns:
-  *
-  * The platform-specific huc copy function pointer for the device specified
-- * with @devid. Will return NULL when no media spin function is implemented.
-+ * with @devid. Will return NULL when no huc copy function is implemented.
-  */
- igt_huc_copyfunc_t igt_get_huc_copyfunc(int devid)
- {
- 	igt_huc_copyfunc_t copy = NULL;
- 
--	if (IS_GEN12(devid) || IS_GEN11(devid) || IS_GEN9(devid))
-+	if (AT_LEAST_GEN(devid, 12))
-+		copy = gen12_huc_copyfunc;
-+	else if (IS_GEN11(devid) || IS_GEN9(devid))
- 		copy = gen9_huc_copyfunc;
-+	else
-+		copy = NULL;
- 
- 	return copy;
- }
--- 
-2.25.1
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+
+imho you should also cc Ashutosh and Riana.
+
+> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
+> ---
+>  lib/intel_ctx.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  lib/intel_ctx.h |  2 ++
+>  2 files changed, 44 insertions(+)
+> 
+> diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
+> index e19a54a896..ded9c0f1e4 100644
+> --- a/lib/intel_ctx.c
+> +++ b/lib/intel_ctx.c
+> @@ -61,6 +61,28 @@ intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd)
+>  	return cfg;
+>  }
+>  
+> +/**
+> + * intel_ctx_cfg_for_gt:
+> + * @fd: open i915 drm file descriptor
+> + * @gt: gt id
+> + *
+> + * Returns an intel_ctx_cfg_t containing all physical engines belonging to @gt
+> + */
+> +intel_ctx_cfg_t intel_ctx_cfg_for_gt(int fd, int gt)
+> +{
+> +	struct i915_engine_class_instance *ci;
+> +	intel_ctx_cfg_t cfg = {};
+> +	unsigned int count;
+> +
+> +	ci = gem_list_engines(fd, 1u << gt, ~0u, &count);
+> +	igt_assert(ci);
+> +	memcpy(&cfg.engines, ci, count * sizeof(*ci));
+> +	cfg.num_engines = count;
+> +	free(ci);
+> +
+> +	return cfg;
+> +}
+> +
+>  /**
+>   * intel_ctx_cfg_for_engine:
+>   * @class: engine class
+> @@ -295,6 +317,26 @@ const intel_ctx_t *intel_ctx_create_all_physical(int fd)
+>  	return intel_ctx_create(fd, &cfg);
+>  }
+>  
+> +/**
+> + * intel_ctx_create_for_gt:
+> + * @fd: open i915 drm file descriptor
+> + * @gt: gt id
+> + *
+> + * Creates an intel_ctx_t containing all physical engines belonging to @gt
+> + */
+> +const intel_ctx_t *intel_ctx_create_for_gt(int fd, int gt)
+> +{
+> +	intel_ctx_cfg_t cfg;
+> +
+> +	igt_require(gem_has_contexts(fd) || !gt);
+------- ^
+It would fail here for
+	!gem_has_contexts(fd) && gt != 0
+Does it really happen on new platforms ?
+imho we should avoid igt_require in lib, it should be checked in
+test itself so please remove it from here.
+
+> +
+> +	if (!gem_has_contexts(fd))
+
+It check has_contexts here - in case contexts are not supported 
+it return default one, so it is argument againts above
+igt_require.
+
+Regards,
+Kamil
+
+> +		return intel_ctx_0(fd);
+> +
+> +	cfg = intel_ctx_cfg_for_gt(fd, gt);
+> +	return intel_ctx_create(fd, &cfg);
+> +}
+> +
+>  /**
+>   * intel_ctx_cfg_engine_class:
+>   * @cfg: an intel_ctx_cfg_t
+> diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+> index 89c65fcd39..3cfeaae81e 100644
+> --- a/lib/intel_ctx.h
+> +++ b/lib/intel_ctx.h
+> @@ -54,6 +54,7 @@ typedef struct intel_ctx_cfg {
+>  
+>  intel_ctx_cfg_t intel_ctx_cfg_for_engine(unsigned int class, unsigned int inst);
+>  intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd);
+> +intel_ctx_cfg_t intel_ctx_cfg_for_gt(int fd, int gt);
+>  int intel_ctx_cfg_engine_class(const intel_ctx_cfg_t *cfg, unsigned int engine);
+>  
+>  /**
+> @@ -75,6 +76,7 @@ const intel_ctx_t *intel_ctx_0(int fd);
+>  const intel_ctx_t *intel_ctx_create_for_engine(int fd, unsigned int class,
+>  					       unsigned int inst);
+>  const intel_ctx_t *intel_ctx_create_all_physical(int fd);
+> +const intel_ctx_t *intel_ctx_create_for_gt(int fd, int gt);
+>  void intel_ctx_destroy(int fd, const intel_ctx_t *ctx);
+>  
+>  unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine);
+> -- 
+> 2.25.1
+> 
