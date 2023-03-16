@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 79A9B10E0F8
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9324710E0E4
  for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 02:32:51 +0000 (UTC)
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Mar 2023 19:32:47 -0700
-Message-Id: <20230316023250.4115730-2-matthew.brost@intel.com>
+Date: Wed, 15 Mar 2023 19:32:48 -0700
+Message-Id: <20230316023250.4115730-3-matthew.brost@intel.com>
 In-Reply-To: <20230316023250.4115730-1-matthew.brost@intel.com>
 References: <20230316023250.4115730-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/4] xe: Update to latest uAPI
+Subject: [igt-dev] [PATCH 2/4] xe_exec_basic: Add NULL VM bind section
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,31 +22,96 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Needed to test NULL VM binds.
+A NULL VM bind results in writes being dropped and reads returning zero,
+verify uAPI for NULL VM binds is working as designed.
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/xe/xe_exec_basic.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 593b01ba..4bde1087 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -446,6 +446,14 @@ struct drm_xe_vm_bind_op {
- 	 * than differing the MAP to the page fault handler.
- 	 */
- #define XE_VM_BIND_FLAG_IMMEDIATE	(0x1 << 18)
-+	/*
-+	 * When the NULL flag is set, the page tables are setup with a special
-+	 * bit which indicates writes are dropped and all reads return zero. The
-+	 * NULL flags is only valid for XE_VM_BIND_OP_MAP operations, the BO
-+	 * handle MBZ, and the BO offset MBZ. This flag is intended to implement
-+	 * VK sparse bindings.
-+	 */
-+#define XE_VM_BIND_FLAG_NULL		(0x1 << 19)
+diff --git a/tests/xe/xe_exec_basic.c b/tests/xe/xe_exec_basic.c
+index d9af97d8..c5796e45 100644
+--- a/tests/xe/xe_exec_basic.c
++++ b/tests/xe/xe_exec_basic.c
+@@ -27,6 +27,7 @@
+ #define BIND_ENGINE	(0x1 << 4)
+ #define DEFER_ALLOC	(0x1 << 5)
+ #define DEFER_BIND	(0x1 << 6)
++#define SPARSE		(0x1 << 7)
  
- 	/** @reserved: Reserved */
- 	__u64 reserved[2];
+ /**
+  * SUBTEST: once-%s
+@@ -89,6 +90,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 		.syncs = to_user_pointer(&sync),
+ 	};
+ 	uint64_t addr[MAX_N_ENGINES];
++	uint64_t sparse_addr[MAX_N_ENGINES];
+ 	uint32_t vm[MAX_N_ENGINES];
+ 	uint32_t engines[MAX_N_ENGINES];
+ 	uint32_t bind_engines[MAX_N_ENGINES];
+@@ -112,8 +114,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 			xe_get_default_alignment(fd));
+ 
+ 	addr[0] = 0x1a0000;
+-	for (i = 1; i < MAX_N_ENGINES; ++i)
++	sparse_addr[0] = 0x301a0000;
++	for (i = 1; i < MAX_N_ENGINES; ++i) {
+ 		addr[i] = addr[i - 1] + (0x1ull << 32);
++		sparse_addr[i] = sparse_addr[i - 1] + (0x1ull << 32);
++	}
+ 
+ 	if (flags & USERPTR) {
+ #define	MAP_ADDRESS	0x00007fadeadbe000
+@@ -161,6 +166,13 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 			xe_vm_bind_userptr_async(fd, vm[i], bind_engines[i],
+ 						 to_user_pointer(data), addr[i],
+ 						 bo_size, sync, 1);
++		if (flags & SPARSE)
++			__xe_vm_bind_assert(fd, vm[i], bind_engines[i],
++					    0, 0, sparse_addr[i], bo_size,
++					    XE_VM_BIND_OP_MAP |
++					    XE_VM_BIND_FLAG_ASYNC |
++					    XE_VM_BIND_FLAG_NULL, sync,
++					    1, 0, 0);
+ 	}
+ 
+ 	if (flags & DEFER_BIND)
+@@ -171,7 +183,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+ 		uint64_t batch_addr = __addr + batch_offset;
+ 		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+-		uint64_t sdi_addr = __addr + sdi_offset;
++		uint64_t sdi_addr = (flags & SPARSE ? sparse_addr[i % n_vm] :
++				     __addr)+ sdi_offset;
+ 		int e = i % n_engines;
+ 
+ 		b = 0;
+@@ -254,9 +267,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 					INT64_MAX, 0, NULL));
+ 	}
+ 
+-	for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
+-	     i < n_execs; i++)
+-		igt_assert_eq(data[i].data, 0xc0ffee);
++	if (!(flags & SPARSE)) {
++		for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
++		     i < n_execs; i++)
++			igt_assert_eq(data[i].data, 0xc0ffee);
++	}
+ 
+ 	syncobj_destroy(fd, sync[0].handle);
+ 	for (i = 0; i < n_engines; i++) {
+@@ -288,6 +303,10 @@ igt_main
+ 		{ "basic-defer-bind", DEFER_ALLOC | DEFER_BIND },
+ 		{ "userptr", USERPTR },
+ 		{ "rebind", REBIND },
++		{ "null", SPARSE },
++		{ "null-defer-mmap", SPARSE | DEFER_ALLOC },
++		{ "null-defer-bind", SPARSE | DEFER_ALLOC | DEFER_BIND },
++		{ "null-rebind", SPARSE | REBIND },
+ 		{ "userptr-rebind", USERPTR | REBIND },
+ 		{ "userptr-invalidate", USERPTR | INVALIDATE },
+ 		{ "userptr-invalidate-race", USERPTR | INVALIDATE | RACE },
 -- 
 2.34.1
