@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86D5310E09C
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 23:33:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB62D10E09C
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 23:33:27 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>,
  kamil.konieczny@linux.intel.com
-Date: Thu, 16 Mar 2023 16:32:56 -0700
-Message-Id: <20230316233323.2638668-5-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20230316233323.2638668-1-umesh.nerlige.ramappa@intel.com>
-References: <20230316233323.2638668-1-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 16 Mar 2023 16:32:52 -0700
+Message-Id: <20230316233323.2638668-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 04/31] i915/perf: Ensure rcs0 is present
- for gen12-mi-rpc
+Subject: [igt-dev] [PATCH i-g-t v3 00/31] Enable OAM support in IGT and
+ GPUvis
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,31 +23,94 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Make sure rcs0 is present for gen12-mi-rpc.
+Add support for OAM in IGT and enable support for GPUvis to capture
+OA reports on the media GT using OAM unit. Patch groups:
+
+OAM test support
+----------------
+  i915/perf: Add support for 64-bit OA formats
+  ...
+  i915/perf: Add OAM support
+
+OAM metrics support
+-------------------
+  lib/perf: Make chipsets aware of oa formats
+  ...
+  i915/perf: Make sanity check failures descriptive
+
+GPUvis support
+--------------
+  lib/perf: Enable multi-tile support for perf library
+  ...
+  lib/perf: Apply shift to raw timestamp as well
+
+v2:
+- Variable array sizes failed to build on fedora-clang, allocate on heap.
+- Add i-g-t to patch series.
+
+v3:
+- Incorporate review comments (Ashutosh, Kamil)
+- Fix CI failures
+
+Note:
+At the time v3 was posted, patches 23, 26 - 31 still need to be reviewed from
+pervious series. The review can continue in this series.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/perf.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index ee5a77fc..2a1cecfe 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -5274,8 +5274,12 @@ igt_main
- 		igt_fixture igt_require(intel_gen(devid) >= 12);
- 
- 		igt_describe("Test MI REPORT PERF COUNT for Gen 12");
--		igt_subtest("gen12-mi-rpc")
-+		igt_subtest("gen12-mi-rpc") {
-+			igt_require_f(has_class_instance(drm_fd,
-+							 I915_ENGINE_CLASS_RENDER,
-+							 0), "no render engine\n");
- 			gen12_test_mi_rpc();
-+		}
- 
- 		igt_describe("Test OA TLB invalidate");
- 		igt_subtest("gen12-oa-tlb-invalidate")
+Umesh Nerlige Ramappa (31):
+  i915/perf: Add support for 64-bit OA formats
+  i915/perf: Define a default engine for OA
+  i915/perf: Use default engine for sseu tests
+  i915/perf: Ensure rcs0 is present for gen12-mi-rpc
+  i915/perf: Use ARRAY_SIZE for buffer-fill test
+  i915/perf: Add class:instance support to OA tests
+  i915/perf: Enable tests to run on specific engines
+  i915/perf: Treat ticks as 64 bit
+  i915/perf: Treat timestamp as 64 bit value
+  i915/perf: Add OAM format type
+  i915/perf: Move OA format array from stack to heap
+  i915/perf: Use a helper for OA format
+  i915/perf: Add support for oa perf groups
+  i915/perf: Test concurrent access to OA in different groups
+  i915/perf: Add OAM support
+  lib/i915/perf: Prepare to read different OA formats
+  lib/i915/perf: Choose OAM format for media metrics
+  lib/i915/perf: Set missing metric unit for some counters
+  lib/i915/perf: Add MTL to supported HW in OA guid registry
+  lib/i915/perf: Add support for OAM format in codegen
+  lib/i915/perf: Update MTL GT2 metrics
+  lib/i915/perf: Update MTL GT3 metrics
+  i915/perf: Add support for engine specific metrics
+  i915/perf: Run non-zero-reason on media engines as well
+  i915/perf: Make sanity check failures descriptive
+  lib/i915/perf: Enable multi-tile support for perf library
+  lib/i915/perf: Update MTL OA timestamp and EU thread config
+  lib/i915/perf: Add support for MPEC format
+  lib/i915/perf: Adjust the GPU timestamp for new OA formats
+  tools/perf: Choose the right card
+  lib/i915/perf: Apply shift to raw timestamp as well
+
+ include/drm-uapi/i915_drm.h                   |    4 +
+ lib/i915/i915_drm_local.h                     |    3 +
+ lib/i915/perf-configs/codegen.py              |    4 +
+ lib/i915/perf-configs/guids.xml               |   36 +-
+ lib/i915/perf-configs/mdapi-xml-convert.py    |  220 ++-
+ lib/i915/perf-configs/oa-mtlgt2.xml           | 1014 ++++++++++--
+ lib/i915/perf-configs/oa-mtlgt3.xml           | 1328 +++++++++++++---
+ lib/i915/perf-configs/oa_guid_registry.py     |    3 +-
+ .../perf-configs/perf-metricset-codegen.py    |   36 +-
+ lib/i915/perf.c                               |   66 +-
+ lib/i915/perf.h                               |    2 +-
+ lib/i915/perf_data_reader.c                   |   20 +-
+ lib/intel_chipset.h                           |    3 +
+ lib/intel_device_info.c                       |    1 +
+ tests/core_hotunplug.c                        |    2 +-
+ tests/i915/gem_barrier_race.c                 |    2 +-
+ tests/i915/perf.c                             | 1370 +++++++++++++----
+ tools/i915-perf/i915_perf_configs.c           |    2 +-
+ tools/i915-perf/i915_perf_recorder.c          |   92 +-
+ 19 files changed, 3482 insertions(+), 726 deletions(-)
+
 -- 
 2.36.1
