@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F24710EBA9
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD5CE10EBA9
  for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 02:27:06 +0000 (UTC)
 From: Zack Rusin <zack@kde.org>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Mar 2023 22:26:55 -0400
-Message-Id: <20230316022659.73202-5-zack@kde.org>
+Date: Wed, 15 Mar 2023 22:26:56 -0400
+Message-Id: <20230316022659.73202-6-zack@kde.org>
 In-Reply-To: <20230316022659.73202-1-zack@kde.org>
 References: <20230316022659.73202-1-zack@kde.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 4/8] igt/vmwgfx: Add execution buffer test
+Subject: [igt-dev] [PATCH i-g-t v2 5/8] igt/vmwgfx: Add surface copy test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,23 +27,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Maaz Mombasawala <mombasawalam@vmware.com>
 
-Add execution buffer related tests in vmwgfx, includes execution buffer
-submit and syncs, mob creation and execution buffer stress test.
+This test checks for validation errors during several surface copies
+in vmwgfx.
 
 Signed-off-by: Zack Rusin <zackr@vmware.com>
 Signed-off-by: Maaz Mombasawala <mombasawalam@vmware.com>
 ---
- tests/vmwgfx/execution_buffer.c | 307 ++++++++++++++++++++++++++++++++
- tests/vmwgfx/meson.build        |   3 +-
- 2 files changed, 309 insertions(+), 1 deletion(-)
- create mode 100644 tests/vmwgfx/execution_buffer.c
+ tests/vmwgfx/meson.build    |   3 +-
+ tests/vmwgfx/surface_copy.c | 337 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 339 insertions(+), 1 deletion(-)
+ create mode 100644 tests/vmwgfx/surface_copy.c
 
-diff --git a/tests/vmwgfx/execution_buffer.c b/tests/vmwgfx/execution_buffer.c
+diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
+index 0b4a87e4..7c688e92 100644
+--- a/tests/vmwgfx/meson.build
++++ b/tests/vmwgfx/meson.build
+@@ -1,7 +1,8 @@
+ 
+ vmwgfx_progs = [
+ 	'tri',
+-	'execution_buffer'
++	'execution_buffer',
++	'surface_copy'
+ ]
+ vmwgfx_deps = test_deps
+ 
+diff --git a/tests/vmwgfx/surface_copy.c b/tests/vmwgfx/surface_copy.c
 new file mode 100644
-index 00000000..71b6f00e
+index 00000000..b58d521f
 --- /dev/null
-+++ b/tests/vmwgfx/execution_buffer.c
-@@ -0,0 +1,307 @@
++++ b/tests/vmwgfx/surface_copy.c
+@@ -0,0 +1,337 @@
 +// SPDX-License-Identifier: GPL-2.0 OR MIT
 +/**********************************************************
 + * Copyright 2021-2022 VMware, Inc.
@@ -72,247 +86,285 @@ index 00000000..71b6f00e
 +
 +#include "igt_vmwgfx.h"
 +
-+#include <stdatomic.h>
-+
-+struct {
-+	bool stress_test;
-+} options;
-+
-+static struct option long_options[] = {
-+	{ "stress-test", 0, 0, 's' },
-+	{ NULL, 0, 0, 0 },
-+};
-+
-+static int parse_options(int opt, int opt_index, void *data)
++/**
++ * Compares two 2d surfaces to see if their size and contents are equal.
++ */
++static bool are_surfaces_identical(int fd, struct vmw_surface *s1,
++				   struct vmw_surface *s2)
 +{
-+	switch (opt) {
-+	case 's':
-+		options.stress_test = 1;
-+		igt_info("stress-test mode\n");
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
++	struct vmw_mob mob1 = { .size = s1->base.buffer_size,
++				.handle = s1->base.buffer_handle,
++				.map_handle = s1->base.buffer_map_handle };
++	struct vmw_mob mob2 = { .size = s2->base.buffer_size,
++				.handle = s2->base.buffer_handle,
++				.map_handle = s2->base.buffer_map_handle };
++	char *readback1;
++	char *readback2;
++	bool is_equal = true;
++	uint32 i, j;
++	uint32 stride1, stride2, height, width;
++
++	if ((s1->params.base.base_size.width !=
++	     s2->params.base.base_size.width) ||
++	    (s1->params.base.base_size.height !=
++	     s2->params.base.base_size.height)) {
++		return false;
 +	}
-+	return IGT_OPT_HANDLER_SUCCESS;
++	width = s1->params.base.base_size.width;
++	height = s1->params.base.base_size.height;
++	stride1 = s1->params.buffer_byte_stride == 0 ?
++			  width :
++			  s1->params.buffer_byte_stride;
++	stride2 = s2->params.buffer_byte_stride == 0 ?
++			  width :
++			  s2->params.buffer_byte_stride;
++
++	readback1 = vmw_ioctl_mob_map(fd, &mob1);
++	readback2 = vmw_ioctl_mob_map(fd, &mob2);
++	for (i = 0; i < width; i++) {
++		for (j = 0; j < height; j++) {
++			if (readback1[j * stride1 + i] !=
++			    readback2[j * stride2 + i]) {
++				is_equal = false;
++				goto are_surfaces_identical_end;
++			}
++		}
++	}
++are_surfaces_identical_end:
++	vmw_ioctl_mob_unmap(&mob1);
++	vmw_ioctl_mob_unmap(&mob2);
++	return is_equal;
 +}
 +
-+static void check_mob_create_map(int fd)
++static void set_surface_value(int fd, struct vmw_surface *surface, char value)
 +{
-+	struct vmw_mob *mob_obj;
-+	uint32 size = 4096;
-+
-+	/* create a new mob */
-+	mob_obj = vmw_ioctl_mob_create(fd, size);
-+	/* takes the created mob and maps it */
-+	vmw_ioctl_mob_map(fd, mob_obj);
-+	/* test that mapping is successful */
-+	igt_assert_neq(mob_obj->map_count, 0);
-+
-+	vmw_ioctl_mob_unmap(mob_obj);
-+	vmw_ioctl_mob_close_handle(fd, mob_obj);
-+}
-+
-+static void check_buffer_create(int fd)
-+{
-+	struct vmw_surface *buffer_obj;
-+	struct vmw_mob *mob_obj;
-+	uint32 size = 4096;
-+
-+	mob_obj = vmw_ioctl_mob_create(fd, size);
-+	/* creates a buffer from mob */
-+	buffer_obj = vmw_ioctl_buffer_create(fd, 0, size, mob_obj);
-+	/* checks that the buffer is allocated */
-+	igt_assert_eq(buffer_obj->base.backup_size, size);
-+
-+	vmw_ioctl_surface_unref(fd, buffer_obj);
-+	vmw_ioctl_mob_close_handle(fd, mob_obj);
-+}
-+
-+static void check_execbuf_submit_fence(int fd, int32 cid)
-+{
-+	struct vmw_execbuf *command_buffer;
-+	struct drm_vmw_fence_rep cmd_fence = { 0 };
-+	const uint32 buffer_size = 128;
-+
-+	struct vmw_mob *mob;
-+	struct vmw_surface *src_buffer;
-+	struct vmw_surface *dst_buffer1, *dst_buffer2, *dst_buffer3;
-+
-+	uint32_t total_size = 0;
-+	SVGA3dCmdDXBufferCopy copyCmd = { 0 };
-+	uint32_t total_cmd_len = sizeof(SVGA3dCmdHeader) + sizeof(copyCmd);
-+
-+	SVGA3dCmdReadbackGBSurface cmd;
-+	struct vmw_mob fake_mob = { 0 };
++	struct vmw_mob mob = { .size = surface->base.buffer_size,
++			       .handle = surface->base.buffer_handle,
++			       .map_handle = surface->base.buffer_map_handle };
 +	char *readback;
 +
-+	char *data;
-+	int i;
++	readback = vmw_ioctl_mob_map(fd, &mob);
++	memset(readback, value, mob.size);
++	vmw_ioctl_mob_unmap(&mob);
++}
 +
-+	mob = vmw_ioctl_mob_create(fd, buffer_size);
++static void exec_surface_copy(struct vmw_execbuf *cmd_buf,
++			      struct drm_vmw_fence_rep *cmd_fence,
++			      SVGA3dSurfaceImageId src,
++			      SVGA3dSurfaceImageId dest, SVGA3dCopyBox *box)
++{
++	vmw_cmd_surface_copy(cmd_buf, src, dest, box, 1);
++	vmw_execbuf_submit(cmd_buf, cmd_fence);
++	vmw_ioctl_fence_finish(cmd_buf->drm_fd, cmd_fence);
++}
 +
-+	data = vmw_ioctl_mob_map(fd, mob);
-+	for (i = 0; i < buffer_size; ++i)
-+		data[i] = i;
-+	vmw_ioctl_mob_unmap(mob);
++static void test_invalid_copies(int fd, int32 cid)
++{
++	struct vmw_surface *s1;
++	struct vmw_surface *s2;
++	struct vmw_execbuf *cmd_buf;
++	struct drm_vmw_fence_rep cmd_fence;
++	SVGA3dSize surface_size;
++	SVGA3dCopyBox box;
++	SVGA3dSurfaceImageId src;
++	SVGA3dSurfaceImageId dest;
++	SVGA3dSurfaceImageId bad_surface;
 +
-+	src_buffer = vmw_ioctl_buffer_create(
-+		fd, SVGA3D_SURFACE_BIND_SHADER_RESOURCE, buffer_size, mob);
-+	dst_buffer1 = vmw_ioctl_buffer_create(
-+		fd, SVGA3D_SURFACE_BIND_SHADER_RESOURCE, buffer_size, NULL);
-+	dst_buffer2 = vmw_ioctl_buffer_create(
-+		fd, SVGA3D_SURFACE_BIND_SHADER_RESOURCE, buffer_size, NULL);
-+	dst_buffer3 = vmw_ioctl_buffer_create(
-+		fd, SVGA3D_SURFACE_BIND_SHADER_RESOURCE, buffer_size, NULL);
-+	/* Create command buffer */
-+	command_buffer = vmw_execbuf_create(fd, cid);
-+	igt_assert(command_buffer != NULL);
++	surface_size.width = 128;
++	surface_size.height = 128;
++	surface_size.depth = 1;
 +
-+	copyCmd.src = src_buffer->base.handle;
-+	copyCmd.dest = dst_buffer1->base.handle;
-+	copyCmd.width = buffer_size;
-+	copyCmd.srcX = 0;
-+	copyCmd.destX = 0;
-+	vmw_execbuf_append(command_buffer, SVGA_3D_CMD_DX_BUFFER_COPY, &copyCmd,
-+			   sizeof(copyCmd), NULL, 0);
-+	total_size += total_cmd_len;
-+	igt_assert_eq(command_buffer->offset, total_size);
-+	igt_assert(command_buffer->offset < command_buffer->buffer_size);
++	igt_require(
++		vmw_is_format_supported(fd, SVGA3D_DEVCAP_SURFACEFMT_A8R8G8B8));
 +
-+	for (i = 0; i < 4096; ++i) {
-+		copyCmd.src = dst_buffer1->base.handle;
-+		copyCmd.dest = dst_buffer2->base.handle;
-+		vmw_execbuf_append(command_buffer, SVGA_3D_CMD_DX_BUFFER_COPY,
-+				   &copyCmd, sizeof(copyCmd), NULL, 0);
-+		total_size += total_cmd_len;
-+	}
++	s1 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
++				       NULL);
++	s2 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
++				       NULL);
++	cmd_buf = vmw_execbuf_create(fd, cid);
 +
-+	copyCmd.src = dst_buffer2->base.handle;
-+	copyCmd.dest = dst_buffer3->base.handle;
-+	vmw_execbuf_append(command_buffer, SVGA_3D_CMD_DX_BUFFER_COPY, &copyCmd,
-+			   sizeof(copyCmd), NULL, 0);
-+	total_size += total_cmd_len;
++	box.x = 0;
++	box.y = 0;
++	box.z = 0;
++	box.w = 1;
++	box.h = 1;
++	box.d = 1;
++	box.srcx = 0;
++	box.srcy = 0;
++	box.srcz = 0;
 +
-+	igt_assert_eq(command_buffer->offset, total_size);
-+	igt_assert(command_buffer->offset < command_buffer->buffer_size);
++	src.sid = s1->base.handle;
++	src.face = 0;
++	src.mipmap = 0;
++	dest.sid = s2->base.handle;
++	dest.face = 0;
++	dest.mipmap = 0;
 +
-+	vmw_execbuf_submit(command_buffer, &cmd_fence);
++	/* Testing a valid copy first */
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(are_surfaces_identical(fd, s1, s2));
++
++	/* Setting surfaces to different values */
++	set_surface_value(fd, s1, 0);
++	set_surface_value(fd, s2, 16);
++
++	/* Testing invalid copies */
++
++	/* x */
++	box.x = 129;
++	box.w = 1;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	box.x = 0;
++	box.w = 129;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	box.srcx = 129;
++	box.w = 1;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	box.srcx = 0;
++	box.w = 129;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	/* y */
++	box.y = 129;
++	box.h = 1;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	box.y = 0;
++	box.h = 129;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	box.srcy = 129;
++	box.h = 1;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	box.srcy = 0;
++	box.h = 129;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	/* z */
++	box.z = 2;
++	box.d = 1;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	box.z = 0;
++	box.d = 2;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	box.srcz = 2;
++	box.d = 1;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	box.srcz = 0;
++	box.d = 2;
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	/* Invalid surface id */
++	bad_surface.sid = src.sid + dest.sid + 1;
++	bad_surface.face = 0;
++	bad_surface.mipmap = 0;
++
++	box.x = 0;
++	box.y = 0;
++	box.z = 0;
++	box.w = 1;
++	box.h = 1;
++	box.d = 1;
++	box.srcx = 0;
++	box.srcy = 0;
++	box.srcz = 0;
++
++	vmw_cmd_surface_copy(cmd_buf, bad_surface, dest, &box, 1);
++	igt_assert(vmw_execbuf_submit(cmd_buf, &cmd_fence) != 0);
++
++	vmw_cmd_surface_copy(cmd_buf, src, bad_surface, &box, 1);
++	igt_assert(vmw_execbuf_submit(cmd_buf, &cmd_fence) != 0);
 +	vmw_ioctl_fence_finish(fd, &cmd_fence);
 +
-+	cmd.sid = dst_buffer1->base.handle;
-+	vmw_execbuf_append(command_buffer, SVGA_3D_CMD_READBACK_GB_SURFACE,
-+			   &cmd, sizeof(cmd), NULL, 0);
-+	vmw_execbuf_submit(command_buffer, &cmd_fence);
-+	vmw_ioctl_fence_finish(fd, &cmd_fence);
++	bad_surface.sid = src.sid;
++	bad_surface.face = 2;
 +
-+	fake_mob.size = dst_buffer1->base.buffer_size;
-+	fake_mob.handle = dst_buffer1->base.buffer_handle;
-+	fake_mob.map_handle = dst_buffer1->base.buffer_map_handle;
-+	readback = vmw_ioctl_mob_map(fd, &fake_mob);
-+	for (i = 0; i < buffer_size; i++) {
-+		int val = readback[i];
++	exec_surface_copy(cmd_buf, &cmd_fence, bad_surface, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
 +
-+		igt_assert_eq(i, val);
-+	}
-+	vmw_ioctl_mob_unmap(&fake_mob);
++	exec_surface_copy(cmd_buf, &cmd_fence, src, bad_surface, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
 +
-+	vmw_ioctl_surface_unref(fd, src_buffer);
-+	vmw_ioctl_surface_unref(fd, dst_buffer1);
-+	vmw_ioctl_surface_unref(fd, dst_buffer2);
-+	vmw_ioctl_surface_unref(fd, dst_buffer3);
-+	vmw_execbuf_destroy(command_buffer);
-+	vmw_ioctl_mob_close_handle(fd, mob);
++	vmw_execbuf_destroy(cmd_buf);
++	vmw_ioctl_surface_unref(fd, s1);
++	vmw_ioctl_surface_unref(fd, s2);
 +}
 +
-+static int32 vmw_ioctl_command2(int drm_fd, int32_t cid, void *commands,
-+				uint32_t size, struct drm_vmw_fence_rep *fence)
++static void test_invalid_copies_3d(int fd, int32 cid)
 +{
-+	struct drm_vmw_execbuf_arg arg = { 0 };
-+	int ret;
-+	const int argsize = sizeof(arg);
++	struct vmw_surface *s1;
++	struct vmw_surface *s2;
++	struct vmw_execbuf *cmd_buf;
++	struct drm_vmw_fence_rep cmd_fence;
++	SVGA3dSize surface_size;
++	SVGA3dCopyBox box;
++	SVGA3dSurfaceImageId src;
++	SVGA3dSurfaceImageId dest;
 +
-+	memset(&arg, 0, sizeof(arg));
++	surface_size.width = 128;
++	surface_size.height = 128;
++	surface_size.depth = 1;
 +
-+	arg.fence_rep = (unsigned long)fence;
-+	arg.commands = (unsigned long)commands;
-+	arg.command_size = size;
-+	arg.throttle_us = 0; /* deprecated */
-+	arg.version = DRM_VMW_EXECBUF_VERSION;
-+	arg.context_handle = cid;
++	igt_require(
++		vmw_is_format_supported(fd, SVGA3D_DEVCAP_SURFACEFMT_A8R8G8B8));
++	igt_require(vmw_is_format_supported(fd, SVGA3D_DEVCAP_DXFMT_Z_D32));
 +
-+	do {
-+		ret = drmCommandWrite(drm_fd, DRM_VMW_EXECBUF, &arg, argsize);
-+		if (ret == -EBUSY)
-+			usleep(1000);
-+	} while (ret == -ERESTART || ret == -EBUSY);
-+	if (ret)
-+		return 1;
-+	return 0;
++	s1 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
++				       NULL);
++	s2 = vmw_create_surface_simple(fd, 0, SVGA3D_Z_D32, surface_size, NULL);
++	cmd_buf = vmw_execbuf_create(fd, cid);
++
++	box.x = 0;
++	box.y = 0;
++	box.z = 0;
++	box.w = 10;
++	box.h = 10;
++	box.d = 10;
++	box.srcx = 0;
++	box.srcy = 0;
++	box.srcz = 0;
++
++	src.sid = s1->base.handle;
++	src.face = 0;
++	src.mipmap = 0;
++	dest.sid = s2->base.handle;
++	dest.face = 0;
++	dest.mipmap = 0;
++
++	set_surface_value(fd, s1, 0);
++	set_surface_value(fd, s2, 16);
++
++	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	exec_surface_copy(cmd_buf, &cmd_fence, dest, src, &box);
++	igt_assert(!are_surfaces_identical(fd, s1, s2));
++
++	vmw_execbuf_destroy(cmd_buf);
++	vmw_ioctl_surface_unref(fd, s1);
++	vmw_ioctl_surface_unref(fd, s2);
 +}
 +
-+static _Atomic(int32_t) context_id;
-+static const uint32_t max_tries = 100000;
-+
-+static void *create_contexts(void *data)
-+{
-+	int fd = (uintptr_t)data;
-+	uint32_t i;
-+
-+	for (i = 0; i < max_tries; ++i) {
-+		int32_t cid = vmw_ioctl_context_create(fd);
-+
-+		atomic_store(&context_id, cid);
-+
-+		vmw_ioctl_context_destroy(fd, cid);
-+	}
-+	return 0;
-+}
-+
-+static void *submit_queries(void *data)
-+{
-+	int fd = (uintptr_t)data;
-+	uint32_t i;
-+
-+	for (i = 0; i < max_tries; ++i) {
-+		struct vmw_execbuf *cmd_buf;
-+		SVGA3dCmdDXDefineQuery cmd = {
-+			.queryId = 0,
-+			.type = SVGA3D_QUERYTYPE_TIMESTAMP,
-+			.flags = 0,
-+		};
-+		int32_t cid = atomic_load(&context_id);
-+
-+		cmd_buf = vmw_execbuf_create(fd, cid);
-+
-+		vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DEFINE_QUERY, &cmd,
-+				   sizeof(cmd), NULL, 0);
-+
-+		vmw_ioctl_command2(fd, cid, cmd_buf->buffer, cmd_buf->offset,
-+				   NULL);
-+		cmd_buf->offset = 0;
-+		vmw_execbuf_destroy(cmd_buf);
-+	}
-+	return 0;
-+}
-+
-+static void execbuf_stress_test(int fd)
-+{
-+	pthread_t threads[2];
-+	void *status;
-+	int ret;
-+
-+	ret = pthread_create(&threads[0], NULL, create_contexts,
-+			     (void *)(uintptr_t)fd);
-+	igt_assert_eq(ret, 0);
-+	ret = pthread_create(&threads[1], NULL, submit_queries,
-+			     (void *)(uintptr_t)fd);
-+	igt_assert_eq(ret, 0);
-+
-+	pthread_join(threads[0], &status);
-+	pthread_join(threads[1], &status);
-+}
-+
-+igt_main_args("st:", long_options, NULL, parse_options, NULL)
++igt_main
 +{
 +	int fd;
 +	int32 cid;
@@ -320,29 +372,21 @@ index 00000000..71b6f00e
 +	igt_fixture
 +	{
 +		fd = drm_open_driver_render(DRIVER_VMWGFX);
++		igt_require(fd != -1);
++
 +		cid = vmw_ioctl_context_create(fd);
++		igt_require(cid != SVGA3D_INVALID_ID);
 +	}
 +
-+	igt_subtest("mob-create-map")
++	igt_subtest("test_invalid_copies")
 +	{
-+		check_mob_create_map(fd);
++		test_invalid_copies(fd, cid);
 +	}
 +
-+	igt_subtest("buffer-create")
++	igt_subtest("test_invalid_copies_3d")
 +	{
-+		check_buffer_create(fd);
-+	}
-+
-+	igt_subtest("execution-buffer-submit-sync")
-+	{
-+		check_execbuf_submit_fence(fd, cid);
-+	}
-+
-+	if (options.stress_test) {
-+		igt_subtest("execution-buffer-stress-test")
-+		{
-+			execbuf_stress_test(fd);
-+		}
++		igt_require(vmw_ioctl_get_param(fd, DRM_VMW_PARAM_3D));
++		test_invalid_copies_3d(fd, cid);
 +	}
 +
 +	igt_fixture
@@ -351,18 +395,5 @@ index 00000000..71b6f00e
 +		close(fd);
 +	}
 +}
-diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
-index 46961503..0b4a87e4 100644
---- a/tests/vmwgfx/meson.build
-+++ b/tests/vmwgfx/meson.build
-@@ -1,6 +1,7 @@
- 
- vmwgfx_progs = [
--	'tri'
-+	'tri',
-+	'execution_buffer'
- ]
- vmwgfx_deps = test_deps
- 
 -- 
 2.38.1
