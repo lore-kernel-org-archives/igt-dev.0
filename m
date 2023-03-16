@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Thu, 16 Mar 2023 10:06:49 +0000
-Message-Id: <20230316100649.1261221-2-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230316100649.1261221-1-tvrtko.ursulin@linux.intel.com>
-References: <20230316100649.1261221-1-tvrtko.ursulin@linux.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C32310EC9D
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Mar 2023 10:37:46 +0000 (UTC)
+Date: Thu, 16 Mar 2023 12:37:38 +0200
+From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Message-ID: <ZBLxcjfx7RBYImws@intel.com>
+References: <20220830135400.12642-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] intel_gpu_top: Use full console width
- for global metrics
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220830135400.12642-1-mohammed.thasleem@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_cdclk: Fixed mode
+ selection for MST modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,51 +20,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On Tue, Aug 30, 2022 at 07:24:00PM +0530, Mohammed Thasleem wrote:
+> Added check on ENOSPC and EINVAL, when two monitors connected
+> through MST. This will find the connector mode combo that
+> fits into the bandwidth when more than one monitor is connected.
+> 
+> Example:
+>   When two monitors connected through MST, the second monitor
+>   also tries to use the same mode. So two such modes may not
+>   fit into the link bandwidth. So, iterate through connected
+>   outputs & modes and find a combination of modes those fit
+>   into the link BW.
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> ---
+>  tests/i915/kms_cdclk.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+> index 991a7c507..04f39bea5 100644
+> --- a/tests/i915/kms_cdclk.c
+> +++ b/tests/i915/kms_cdclk.c
+> @@ -313,7 +313,16 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+>  		j++;
+>  	}
+>  
+> +	/* In case of DP-MST find suitable mode(s) to fit into the link BW. */
+> +	if ((igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL) != 0) &&
+> +	    (errno == EINVAL || errno == ENOSPC)) {
+> +		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
+> +
+> +		igt_require_f(found, "No valid mode combo found for MST modeset.\n");
+> +	}
+> +
+>  	igt_display_commit2(display, COMMIT_ATOMIC);
+> +
 
-It appears we had an off by one of a kind where we were not using the full
-width of the terminal window for the global metrics section.
+New line added on purpose?
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- tools/intel_gpu_top.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Otherwise,
+Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 39be916297e4..36da016c3df0 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1960,8 +1960,7 @@ print_engines_header(struct engines *engines, double t,
- 				a = "          ENGINE     BUSY  ";
- 
- 			printf("\033[7m%s%*s%s\033[0m\n",
--			       a, (int)(con_w - 1 - strlen(a) - strlen(b)),
--			       " ", b);
-+			       a, (int)(con_w - strlen(a) - strlen(b)), " ", b);
- 
- 			lines++;
- 		}
-@@ -2000,7 +1999,6 @@ print_engine(struct engines *engines, unsigned int i, double t,
- 	print_groups(groups);
- 
- 	if (output_mode == INTERACTIVE) {
--		unsigned int max_w = con_w - 1;
- 		unsigned int len;
- 		char buf[128];
- 		double val;
-@@ -2012,7 +2010,7 @@ print_engine(struct engines *engines, unsigned int i, double t,
- 			      engine->display_name, engine_items[0].buf);
- 
- 		val = pmu_calc(&engine->busy.val, 1e9, t, 100);
--		print_percentage_bar(val, max_w > len ? max_w - len : 0, false);
-+		print_percentage_bar(val, con_w > len ? con_w - len : 0, false);
- 
- 		printf("%s\n", buf);
- 
--- 
-2.37.2
+>  	cdclk_new = get_current_cdclk_freq(debugfs_fd);
+>  	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
+>  
+> -- 
+> 2.25.1
+> 
