@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4160014993400178134=="
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2062b.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e88::62b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 587F010E3C9
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 14:48:03 +0000 (UTC)
+From: Hersen Wu <hersenxs.wu@amd.com>
+To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
+ <alex.hung@amd.com>, <hamza.mahfooz@amd.com>, <aurabindo.pillai@amd.com>
+Date: Fri, 17 Mar 2023 10:47:45 -0400
+Message-ID: <20230317144745.24785-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karolina Stolarek" <karolina.stolarek@intel.com>
-Date: Fri, 17 Mar 2023 14:38:24 -0000
-Message-ID: <167906390435.12995.5299757716815743584@emeril.freedesktop.org>
-References: <cover.1679055766.git.karolina.stolarek@intel.com>
-In-Reply-To: <cover.1679055766.git.karolina.stolarek@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVXBkYXRl?=
- =?utf-8?q?_gem=5Fblits_for_newer_generations_=28rev4=29?=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_dp_dsc: fix test crash
+ signal sigsegv
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,222 +21,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Hersen Wu <hersenxs.wu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4160014993400178134==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+array size of data.output is 6. when n_outputs is greater than 6,
+test will crash. valid combinations of pipe and output are available
+for pipes with display->pipes[i].enable = true. macro for_each_pipe
+should be used for loop.
 
-== Series Details ==
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+---
+ tests/amdgpu/amd_dp_dsc.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-Series: Update gem_blits for newer generations (rev4)
-URL   : https://patchwork.freedesktop.org/series/114776/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7204 -> IGTPW_8632
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/index.html
-
-Participating hosts (36 -> 34)
-------------------------------
-
-  Missing    (2): bat-adlm-1 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8632:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * {igt@i915_selftest@live@gt_tlb}:
-    - bat-jsl-3:          [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7204/bat-jsl-3/igt@i915_selftest@live@gt_tlb.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-jsl-3/igt@i915_selftest@live@gt_tlb.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8632 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - bat-rpls-1:         NOTRUN -> [SKIP][3] ([i915#7828])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc:
-    - bat-rpls-1:         NOTRUN -> [SKIP][4] ([i915#1845])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-rpls-1:         [ABORT][5] ([i915#6687] / [i915#7978]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7204/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-adlp-9:         [DMESG-FAIL][7] ([i915#7699]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7204/bat-adlp-9/igt@i915_selftest@live@migrate.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-adlp-9/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-1:         [DMESG-FAIL][9] ([i915#6997]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7204/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7204 -> IGTPW_8632
-
-  CI-20190529: 20190529
-  CI_DRM_12873: b97925f47e2a20e1b79bc7c8cc236ded1bd431df @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8632: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/index.html
-  IGT_7204: 0dc71800a0dd867e1fa32ee01c2dbf42b46ec3e2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/index.html
-
---===============4160014993400178134==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Update gem_blits for newer generations (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114776/">https://patchwork.freedesktop.org/series/114776/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7204 -&gt; IGTPW_8632</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/index.html</p>
-<h2>Participating hosts (36 -&gt; 34)</h2>
-<p>Missing    (2): bat-adlm-1 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8632:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>{igt@i915_selftest@live@gt_tlb}:<ul>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7204/bat-jsl-3/igt@i915_selftest@live@gt_tlb.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-jsl-3/igt@i915_selftest@live@gt_tlb.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8632 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7204/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7204/bat-adlp-9/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-adlp-9/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7204/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7204 -&gt; IGTPW_8632</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12873: b97925f47e2a20e1b79bc7c8cc236ded1bd431df @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8632: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8632/index.html<br />
-  IGT_7204: 0dc71800a0dd867e1fa32ee01c2dbf42b46ec3e2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4160014993400178134==--
+diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
+index b3f3cafb..e782ce84 100644
+--- a/tests/amdgpu/amd_dp_dsc.c
++++ b/tests/amdgpu/amd_dp_dsc.c
+@@ -110,7 +110,7 @@ static void test_dsc_enable(data_t *data)
+ 	test_init(data);
+ 	igt_enable_connectors(data->fd);
+ 
+-	for (i = 0; i < display->n_outputs; i++) {
++	for_each_pipe(&data->display, i) {
+ 		/* Setup the output */
+ 		output = data->output[i];
+ 		if (!output || !igt_output_is_connected(output))
+@@ -248,7 +248,7 @@ static void test_dsc_slice_dimensions_change(data_t *data)
+ 	test_init(data);
+ 	igt_enable_connectors(data->fd);
+ 
+-	for (i = 0; i < display->n_outputs; i++) {
++	for_each_pipe(&data->display, i) {
+ 		/* Setup the output */
+ 		output = data->output[i];
+ 		if (!output || !igt_output_is_connected(output))
+@@ -341,7 +341,7 @@ static void test_dsc_link_settings(data_t *data)
+     test_init(data);
+ 
+     /* Setup all outputs */
+-	for (i = 0; i < display->n_outputs; i++) {
++	for_each_pipe(&data->display, i) {
+ 		output = data->output[i];
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+@@ -358,7 +358,7 @@ static void test_dsc_link_settings(data_t *data)
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+ 
+     /* Collect reference CRCs */
+-	for (i = 0; i < display->n_outputs; i++) {
++	for_each_pipe(&data->display, i) {
+ 		output = data->output[i];
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+@@ -369,7 +369,7 @@ static void test_dsc_link_settings(data_t *data)
+ 	for (lc = 0; lc < ARRAY_SIZE(lane_count_vals); lc++) {
+ 		for (lr = 0; lr < ARRAY_SIZE(link_rate_vals); lr++) {
+ 			/* Write new link_settings */
+-			for (i = 0; i < display->n_outputs; i++) {
++			for_each_pipe(&data->display, i) {
+ 				output = data->output[i];
+ 				if (!output || !igt_output_is_connected(output))
+ 					continue;
+@@ -387,7 +387,7 @@ static void test_dsc_link_settings(data_t *data)
+ 			/* Trigger commit after writing new link settings */
+ 			igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 
+-			for (i = 0; i < display->n_outputs; i++) {
++			for_each_pipe(&data->display, i) {
+ 				output = data->output[i];
+ 				if (!output || !igt_output_is_connected(output))
+ 					continue;
+@@ -416,7 +416,7 @@ static void test_dsc_link_settings(data_t *data)
+ 	}
+ 
+ 	/* Cleanup all fbs */
+-	for (i = 0; i < display->n_outputs; i++) {
++	for_each_pipe(&data->display, i) {
+ 		output = data->output[i];
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+@@ -439,7 +439,7 @@ static void test_dsc_bpc(data_t *data)
+     test_init(data);
+ 
+ 	/* Find max supported bpc */
+-	for (i = 0; i < display->n_outputs; i++) {
++	for_each_pipe(&data->display, i) {
+ 		output = data->output[i];
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+@@ -451,7 +451,7 @@ static void test_dsc_bpc(data_t *data)
+ 	for (bpc = 0; bpc < ARRAY_SIZE(bpc_vals); bpc++) {
+ 		igt_info("Testing bpc = %d\n", bpc_vals[bpc]);
+ 
+-		for (i = 0; i < display->n_outputs; i++) {
++		for_each_pipe(&data->display, i) {
+ 			output = data->output[i];
+ 			if (!output || !igt_output_is_connected(output))
+ 				continue;
+@@ -474,7 +474,7 @@ static void test_dsc_bpc(data_t *data)
+ 
+ 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+ 
+-		for (i = 0; i < display->n_outputs; i++) {
++		for_each_pipe(&data->display, i) {
+ 			output = data->output[i];
+ 			if (!output || !igt_output_is_connected(output))
+ 				continue;
+@@ -501,7 +501,7 @@ static void test_dsc_bpc(data_t *data)
+ 		}
+ 
+ 		/* Cleanup all fbs */
+-		for (i = 0; i < display->n_outputs; i++) {
++		for_each_pipe(&data->display, i) {
+ 			output = data->output[i];
+ 			if (!output || !igt_output_is_connected(output))
+ 				continue;
+-- 
+2.25.1
