@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9125710E371
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 12:37:30 +0000 (UTC)
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 17 Mar 2023 13:37:09 +0100
-Message-Id: <3821529a6f383bd3a2ab859ae6b8a24d76526b10.1679055766.git.karolina.stolarek@intel.com>
-In-Reply-To: <cover.1679055766.git.karolina.stolarek@intel.com>
-References: <cover.1679055766.git.karolina.stolarek@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 82A0310E3BB
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 14:16:21 +0000 (UTC)
+Message-ID: <09b173b8-c904-b6af-bc59-ff8576ed9aeb@linux.intel.com>
+Date: Fri, 17 Mar 2023 15:16:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Language: en-US
+To: Karolina Stolarek <karolina.stolarek@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <cover.1679055766.git.karolina.stolarek@intel.com>
+ <33332fb94164e9b461e46cf396e56720c68c9bf6.1679055766.git.karolina.stolarek@intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <33332fb94164e9b461e46cf396e56720c68c9bf6.1679055766.git.karolina.stolarek@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 7/9] lib/intel_cmds_info: Reorder
- blt_tiling_type enum
+Subject: Re: [igt-dev] [PATCH i-g-t v4 8/9] lib/intel_batchbuffer: Handle no
+ support for Tile Y
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,29 +27,143 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Move Yf Major up so it follows the order of tiling definitions
-in intel_batchbuffer.h
 
-Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/i915/intel_cmds_info.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 3/17/2023 1:37 PM, Karolina Stolarek wrote:
+> Newer generations stopped supporting legacy Tile Y format.
+> In order to do a Y-Major blit, the command has to use Tile4
+> format, which requires setting specific blits in the first
+> bit group of the XY_FAST_COPY_BLT command.
+>
+> Rewrite fast_copy_dword1 function to always set them when
+> a platform doesn't support the legacy format. Update calls
+> to the function to include file descriptor parameter.
+>
+> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>   lib/intel_batchbuffer.c | 26 +++++++++++++++++---------
+>   lib/intel_batchbuffer.h |  2 +-
+>   tests/i915/gem_blits.c  |  9 ++++++---
+>   3 files changed, 24 insertions(+), 13 deletions(-)
+>
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 1b999ca5..24728d4a 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -32,7 +32,6 @@
+>   #include "intel_batchbuffer.h"
+>   #include "intel_bufops.h"
+>   #include "intel_chipset.h"
+> -#include "rendercopy.h"
+>   #include "media_fill.h"
+>   #include "media_spin.h"
+>   #include "i915/gem_mman.h"
+> @@ -40,6 +39,7 @@
+>   #include "sw_sync.h"
+>   #include "gpgpu_fill.h"
+>   #include "huc_copy.h"
+> +#include "i915/i915_blt.h"
+>   
+>   #define BCS_SWCTRL 0x22200
+>   #define BCS_SRC_Y (1 << 0)
+> @@ -122,18 +122,26 @@ uint32_t fast_copy_dword0(unsigned int src_tiling,
+>   	return dword0;
+>   }
+>   
+> +static bool new_tile_y_format(unsigned int tiling)
+> +{
+> +	return tiling == T_YFMAJOR || tiling == T_TILE4;
+> +}
+> +
+>   uint32_t fast_copy_dword1(unsigned int src_tiling,
+>   			  unsigned int dst_tiling,
+> -			  int bpp)
+> +			  int bpp, int fd)
+>   {
+>   	uint32_t dword1 = 0;
+>   
+> -	if (src_tiling == I915_TILING_Yf || src_tiling == I915_TILING_4)
+> -		/* Repurposed as Tile-4 on DG2 */
+> -		dword1 |= XY_FAST_COPY_SRC_TILING_Yf;
+> -	if (dst_tiling == I915_TILING_Yf || dst_tiling == I915_TILING_4)
+> -		/* Repurposed as Tile-4 on DG2 */
+> -		dword1 |= XY_FAST_COPY_DST_TILING_Yf;
+> +	if (blt_fast_copy_supports_tiling(fd, T_YMAJOR)) {
+> +		dword1 |= new_tile_y_format(src_tiling)
+> +				? XY_FAST_COPY_SRC_TILING_Yf : 0;
 
-diff --git a/lib/i915/intel_cmds_info.h b/lib/i915/intel_cmds_info.h
-index 57e34c4b..9af2f2d9 100644
---- a/lib/i915/intel_cmds_info.h
-+++ b/lib/i915/intel_cmds_info.h
-@@ -13,8 +13,8 @@ enum blt_tiling_type {
- 	T_XMAJOR,
- 	T_YMAJOR,
- 	T_TILE4,
--	T_TILE64,
- 	T_YFMAJOR,
-+	T_TILE64,
- 	__BLT_MAX_TILING
- };
- 
--- 
-2.25.1
+
+nit: Let it new_tile_y_format()  return "0 or 
+XY_FAST_COPY_SRC_TILING_Yf" to avoid extra line.
+
+
+Regards,
+
+Nirmoy
+
+
+> +		dword1 |= new_tile_y_format(dst_tiling)
+> +				? XY_FAST_COPY_DST_TILING_Yf : 0;
+> +	} else {
+> +		/* Always set bits for platforms that don't support legacy TileY */
+> +		dword1 |= XY_FAST_COPY_SRC_TILING_Yf | XY_FAST_COPY_DST_TILING_Yf;
+> +	}
+>   
+>   	switch (bpp) {
+>   	case 8:
+> @@ -582,7 +590,7 @@ void igt_blitter_fast_copy__raw(int fd,
+>   	src_pitch = fast_copy_pitch(src_stride, src_tiling);
+>   	dst_pitch = fast_copy_pitch(dst_stride, dst_tiling);
+>   	dword0 = fast_copy_dword0(src_tiling, dst_tiling);
+> -	dword1 = fast_copy_dword1(src_tiling, dst_tiling, bpp);
+> +	dword1 = fast_copy_dword1(src_tiling, dst_tiling, bpp, fd);
+>   
+>   	CHECK_RANGE(src_x); CHECK_RANGE(src_y);
+>   	CHECK_RANGE(dst_x); CHECK_RANGE(dst_y);
+> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+> index aed1d575..fb244c2b 100644
+> --- a/lib/intel_batchbuffer.h
+> +++ b/lib/intel_batchbuffer.h
+> @@ -35,7 +35,7 @@ uint32_t fast_copy_dword0(unsigned int src_tiling,
+>   			  unsigned int dst_tiling);
+>   uint32_t fast_copy_dword1(unsigned int src_tiling,
+>   			  unsigned int dst_tiling,
+> -			  int bpp);
+> +			  int bpp, int fd);
+>   void igt_blitter_copy(int fd,
+>   		      uint64_t ahnd,
+>   		      uint32_t ctx,
+> diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
+> index 1414826c..0d4655f8 100644
+> --- a/tests/i915/gem_blits.c
+> +++ b/tests/i915/gem_blits.c
+> @@ -224,7 +224,8 @@ static void buffer_set_tiling(const struct device *device,
+>   		batch[i++] = 3 << 24 | 0xcc << 16 | pitch;
+>   	} else if (blt_has_fast_copy(device->fd)) {
+>   		batch[i++] = fast_copy_dword0(buffer->tiling, tiling);
+> -		dword1 = fast_copy_dword1(buffer->tiling, tiling, 32);
+> +		dword1 = fast_copy_dword1(buffer->tiling, tiling,
+> +					  32, device->fd);
+>   		batch[i++] = dword1 | pitch;
+>   	} else {
+>   		igt_assert_f(0, "No supported blit command found\n");
+> @@ -371,7 +372,8 @@ static bool blit_to_linear(const struct device *device,
+>   		batch[i++] = 3 << 24 | 0xcc << 16 | buffer->stride;
+>   	} else if (blt_has_fast_copy(device->fd)) {
+>   		batch[i++] = fast_copy_dword0(buffer->tiling, I915_TILING_NONE);
+> -		dword1 = fast_copy_dword1(buffer->tiling, I915_TILING_NONE, 32);
+> +		dword1 = fast_copy_dword1(buffer->tiling, I915_TILING_NONE,
+> +					  32, device->fd);
+>   		batch[i++] = dword1 | buffer->stride;
+>   	} else {
+>   		igt_assert_f(0, "No supported blit command found\n");
+> @@ -719,7 +721,8 @@ blit(const struct device *device,
+>   		batch[i++] = 3 << 24 | 0xcc << 16 | pitch;
+>   	} else if (blt_has_fast_copy(device->fd)) {
+>   		batch[i++] = fast_copy_dword0(src->tiling, dst->tiling);
+> -		dword1 = fast_copy_dword1(src->tiling, dst->tiling, 32);
+> +		dword1 = fast_copy_dword1(src->tiling, dst->tiling,
+> +					  32, device->fd);
+>   		batch[i++] = dword1 | pitch;
+>   	} else {
+>   		igt_assert_f(0, "No supported blit command found\n");
