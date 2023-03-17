@@ -1,13 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Tue, 14 Mar 2023 12:17:40 +0000
-Message-Id: <20230314121740.1195358-1-tvrtko.ursulin@linux.intel.com>
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on20611.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7eab::611])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A39E10E39F
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 15:51:03 +0000 (UTC)
+Message-ID: <01bf7c6e-6455-4ebb-2e10-1b5b0c332fe1@amd.com>
+Date: Fri, 17 Mar 2023 11:51:56 -0400
+To: Hersen Wu <hersenxs.wu@amd.com>, igt-dev@lists.freedesktop.org,
+ rodrigo.siqueira@amd.com, alex.hung@amd.com, aurabindo.pillai@amd.com
+References: <20230317144745.24785-1-hersenxs.wu@amd.com>
+Content-Language: en-US
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+In-Reply-To: <20230317144745.24785-1-hersenxs.wu@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] intel_gpu_top: Use actual period when
- calculating client busyness
+Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_dp_dsc: fix test
+ crash signal sigsegv
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,117 +24,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On 3/17/23 10:47, Hersen Wu wrote:
+> array size of data.output is 6. when n_outputs is greater than 6,
+> test will crash. valid combinations of pipe and output are available
+> for pipes with display->pipes[i].enable = true. macro for_each_pipe
+> should be used for loop.
+> 
+> Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
 
-On a slow machine, or with many processes and/or file descriptors to
-parse, the period of the scanning loop can drift significantly from the
-assumed value. This results in artificially inflated client busyness
-percentages.
+Reviewed-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-To alleviate the issue take some real timestamps and use actual elapsed
-time when calculating relative busyness.
+> ---
+>   tests/amdgpu/amd_dp_dsc.c | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
+> index b3f3cafb..e782ce84 100644
+> --- a/tests/amdgpu/amd_dp_dsc.c
+> +++ b/tests/amdgpu/amd_dp_dsc.c
+> @@ -110,7 +110,7 @@ static void test_dsc_enable(data_t *data)
+>   	test_init(data);
+>   	igt_enable_connectors(data->fd);
+>   
+> -	for (i = 0; i < display->n_outputs; i++) {
+> +	for_each_pipe(&data->display, i) {
+>   		/* Setup the output */
+>   		output = data->output[i];
+>   		if (!output || !igt_output_is_connected(output))
+> @@ -248,7 +248,7 @@ static void test_dsc_slice_dimensions_change(data_t *data)
+>   	test_init(data);
+>   	igt_enable_connectors(data->fd);
+>   
+> -	for (i = 0; i < display->n_outputs; i++) {
+> +	for_each_pipe(&data->display, i) {
+>   		/* Setup the output */
+>   		output = data->output[i];
+>   		if (!output || !igt_output_is_connected(output))
+> @@ -341,7 +341,7 @@ static void test_dsc_link_settings(data_t *data)
+>       test_init(data);
+>   
+>       /* Setup all outputs */
+> -	for (i = 0; i < display->n_outputs; i++) {
+> +	for_each_pipe(&data->display, i) {
+>   		output = data->output[i];
+>   		if (!output || !igt_output_is_connected(output))
+>   			continue;
+> @@ -358,7 +358,7 @@ static void test_dsc_link_settings(data_t *data)
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+>   
+>       /* Collect reference CRCs */
+> -	for (i = 0; i < display->n_outputs; i++) {
+> +	for_each_pipe(&data->display, i) {
+>   		output = data->output[i];
+>   		if (!output || !igt_output_is_connected(output))
+>   			continue;
+> @@ -369,7 +369,7 @@ static void test_dsc_link_settings(data_t *data)
+>   	for (lc = 0; lc < ARRAY_SIZE(lane_count_vals); lc++) {
+>   		for (lr = 0; lr < ARRAY_SIZE(link_rate_vals); lr++) {
+>   			/* Write new link_settings */
+> -			for (i = 0; i < display->n_outputs; i++) {
+> +			for_each_pipe(&data->display, i) {
+>   				output = data->output[i];
+>   				if (!output || !igt_output_is_connected(output))
+>   					continue;
+> @@ -387,7 +387,7 @@ static void test_dsc_link_settings(data_t *data)
+>   			/* Trigger commit after writing new link settings */
+>   			igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>   
+> -			for (i = 0; i < display->n_outputs; i++) {
+> +			for_each_pipe(&data->display, i) {
+>   				output = data->output[i];
+>   				if (!output || !igt_output_is_connected(output))
+>   					continue;
+> @@ -416,7 +416,7 @@ static void test_dsc_link_settings(data_t *data)
+>   	}
+>   
+>   	/* Cleanup all fbs */
+> -	for (i = 0; i < display->n_outputs; i++) {
+> +	for_each_pipe(&data->display, i) {
+>   		output = data->output[i];
+>   		if (!output || !igt_output_is_connected(output))
+>   			continue;
+> @@ -439,7 +439,7 @@ static void test_dsc_bpc(data_t *data)
+>       test_init(data);
+>   
+>   	/* Find max supported bpc */
+> -	for (i = 0; i < display->n_outputs; i++) {
+> +	for_each_pipe(&data->display, i) {
+>   		output = data->output[i];
+>   		if (!output || !igt_output_is_connected(output))
+>   			continue;
+> @@ -451,7 +451,7 @@ static void test_dsc_bpc(data_t *data)
+>   	for (bpc = 0; bpc < ARRAY_SIZE(bpc_vals); bpc++) {
+>   		igt_info("Testing bpc = %d\n", bpc_vals[bpc]);
+>   
+> -		for (i = 0; i < display->n_outputs; i++) {
+> +		for_each_pipe(&data->display, i) {
+>   			output = data->output[i];
+>   			if (!output || !igt_output_is_connected(output))
+>   				continue;
+> @@ -474,7 +474,7 @@ static void test_dsc_bpc(data_t *data)
+>   
+>   		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+>   
+> -		for (i = 0; i < display->n_outputs; i++) {
+> +		for_each_pipe(&data->display, i) {
+>   			output = data->output[i];
+>   			if (!output || !igt_output_is_connected(output))
+>   				continue;
+> @@ -501,7 +501,7 @@ static void test_dsc_bpc(data_t *data)
+>   		}
+>   
+>   		/* Cleanup all fbs */
+> -		for (i = 0; i < display->n_outputs; i++) {
+> +		for_each_pipe(&data->display, i) {
+>   			output = data->output[i];
+>   			if (!output || !igt_output_is_connected(output))
+>   				continue;
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- tools/intel_gpu_top.c | 39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
-
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index e13e35b71f4b..af4b350da8e4 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -43,6 +43,7 @@
- #include <sys/types.h>
- #include <unistd.h>
- #include <termios.h>
-+#include <time.h>
- #include <sys/sysmacros.h>
- 
- #include "igt_perf.h"
-@@ -2524,6 +2525,38 @@ static void show_help_screen(void)
- "\n");
- }
- 
-+static int gettime(struct timespec *ts)
-+{
-+	memset(ts, 0, sizeof(*ts));
-+
-+#ifdef CLOCK_MONOTONIC_RAW
-+	if (!clock_gettime(CLOCK_MONOTONIC_RAW, ts))
-+		return 0;
-+#endif
-+#ifdef CLOCK_MONOTONIC_COARSE
-+	if (!clock_gettime(CLOCK_MONOTONIC_COARSE, ts))
-+		return 0;
-+#endif
-+
-+	return clock_gettime(CLOCK_MONOTONIC, ts);
-+}
-+
-+static unsigned long elapsed_us(struct timespec *prev, unsigned int period_us)
-+{
-+	unsigned long elapsed;
-+	struct timespec now;
-+
-+	if (gettime(&now))
-+		return period_us;
-+
-+	elapsed = ((now.tv_nsec - prev->tv_nsec) / 1000 +
-+	           (unsigned long)USEC_PER_SEC * (now.tv_sec - prev->tv_sec));
-+
-+	*prev = now;
-+
-+	return elapsed;
-+}
-+
- int main(int argc, char **argv)
- {
- 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
-@@ -2537,6 +2570,7 @@ int main(int argc, char **argv)
- 	char *pmu_device, *opt_device = NULL;
- 	struct igt_device_card card;
- 	char *codename = NULL;
-+	struct timespec ts;
- 
- 	/* Parse options */
- 	while ((ch = getopt(argc, argv, "o:s:d:pcJLlh")) != -1) {
-@@ -2690,6 +2724,7 @@ int main(int argc, char **argv)
- 
- 	pmu_sample(engines);
- 	scan_clients(clients, false);
-+	gettime(&ts);
- 	codename = igt_device_get_pretty_name(&card, false);
- 
- 	if (output_mode == JSON)
-@@ -2698,6 +2733,7 @@ int main(int argc, char **argv)
- 	while (!stop_top) {
- 		struct clients *disp_clients;
- 		bool consumed = false;
-+		unsigned int scan_us;
- 		int j, lines = 0;
- 		struct winsize ws;
- 		struct client *c;
-@@ -2720,6 +2756,7 @@ int main(int argc, char **argv)
- 		t = (double)(engines->ts.cur - engines->ts.prev) / 1e9;
- 
- 		disp_clients = scan_clients(clients, true);
-+		scan_us = elapsed_us(&ts, period_us);
- 
- 		if (stop_top)
- 			break;
-@@ -2757,7 +2794,7 @@ int main(int argc, char **argv)
- 
- 					lines = print_client(c, engines, t,
- 							     lines, con_w,
--							     con_h, period_us,
-+							     con_h, scan_us,
- 							     &class_w);
- 				}
- 
 -- 
-2.37.2
+Hamza
