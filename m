@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BED0410E36F
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 12:37:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A9EA910E382
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 12:37:30 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 17 Mar 2023 13:37:05 +0100
-Message-Id: <567cc9b70e85d36f0af2033e3c38946581e71e2f.1679055766.git.karolina.stolarek@intel.com>
+Date: Fri, 17 Mar 2023 13:37:08 +0100
+Message-Id: <3944eb326b64de5d516c2de166794583d628c006.1679055766.git.karolina.stolarek@intel.com>
 In-Reply-To: <cover.1679055766.git.karolina.stolarek@intel.com>
 References: <cover.1679055766.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 3/9] lib/intel_device_info: Add tiling
- information for early gens
+Subject: [igt-dev] [PATCH i-g-t v4 6/9] lib/intel_batchbuffer: Remove unused
+ includes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,152 +23,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update relevant intel_device_info entries to store information
-on supported tiling formats.
+The library includes a lot of headers and most of them are
+not needed.
 
 Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_device_info.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ lib/intel_batchbuffer.c | 22 ++++------------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 0baad721..bda4fb63 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -27,12 +27,14 @@ static const struct intel_device_info intel_i830_info = {
- 	.graphics_ver = 2,
- 	.display_ver = 2,
- 	.is_almador = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "almador"
- };
- static const struct intel_device_info intel_i845_info = {
- 	.graphics_ver = 2,
- 	.display_ver = 2,
- 	.is_brookdale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "brookdale"
- };
- static const struct intel_device_info intel_i855_info = {
-@@ -40,12 +42,14 @@ static const struct intel_device_info intel_i855_info = {
- 	.display_ver = 2,
- 	.is_mobile = true,
- 	.is_montara = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "montara"
- };
- static const struct intel_device_info intel_i865_info = {
- 	.graphics_ver = 2,
- 	.display_ver = 2,
- 	.is_springdale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "spingdale"
- };
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index a5157194..1b999ca5 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -25,35 +25,21 @@
+  *
+  **************************************************************************/
  
-@@ -53,6 +57,7 @@ static const struct intel_device_info intel_i915_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_grantsdale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "grantsdale"
- };
- static const struct intel_device_info intel_i915m_info = {
-@@ -60,12 +65,14 @@ static const struct intel_device_info intel_i915m_info = {
- 	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_alviso = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "alviso"
- };
- static const struct intel_device_info intel_i945_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_lakeport = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "lakeport"
- };
- static const struct intel_device_info intel_i945m_info = {
-@@ -73,6 +80,7 @@ static const struct intel_device_info intel_i945m_info = {
- 	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_calistoga = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "calistoga"
- };
+-#include <inttypes.h>
+-#include <poll.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <assert.h>
+ #include <search.h>
++#include <glib.h>
  
-@@ -80,6 +88,7 @@ static const struct intel_device_info intel_g33_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_bearlake = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "bearlake"
- };
+-#include "drm.h"
+-#include "drmtest.h"
+ #include "i915/gem_create.h"
+ #include "intel_batchbuffer.h"
+ #include "intel_bufops.h"
+ #include "intel_chipset.h"
+-#include "intel_reg.h"
+-#include "veboxcopy.h"
+ #include "rendercopy.h"
+ #include "media_fill.h"
+-#include "ioctl_wrappers.h"
+-#include "sw_sync.h"
+-#include "i915/gem_mman.h"
+ #include "media_spin.h"
++#include "i915/gem_mman.h"
++#include "veboxcopy.h"
++#include "sw_sync.h"
+ #include "gpgpu_fill.h"
+-#include "igt_aux.h"
+-#include "i830_reg.h"
+ #include "huc_copy.h"
+-#include <glib.h>
+-
+-#include <i915_drm.h>
  
-@@ -87,6 +96,7 @@ static const struct intel_device_info intel_pineview_g_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_pineview = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "pineview"
- };
- 
-@@ -95,6 +105,7 @@ static const struct intel_device_info intel_pineview_m_info = {
- 	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_pineview = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "pineview"
- };
- 
-@@ -102,6 +113,7 @@ static const struct intel_device_info intel_i965_info = {
- 	.graphics_ver = 4,
- 	.display_ver = 4,
- 	.is_broadwater = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "broadwater"
- };
- 
-@@ -110,6 +122,7 @@ static const struct intel_device_info intel_i965m_info = {
- 	.display_ver = 4,
- 	.is_mobile = true,
- 	.is_crestline = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "crestline"
- };
- 
-@@ -117,6 +130,7 @@ static const struct intel_device_info intel_g45_info = {
- 	.graphics_ver = 4,
- 	.display_ver = 4,
- 	.is_eaglelake = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "eaglelake"
- };
- static const struct intel_device_info intel_gm45_info = {
-@@ -124,6 +138,7 @@ static const struct intel_device_info intel_gm45_info = {
- 	.display_ver = 4,
- 	.is_mobile = true,
- 	.is_cantiga = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "cantiga"
- };
- 
-@@ -131,6 +146,7 @@ static const struct intel_device_info intel_ironlake_info = {
- 	.graphics_ver = 5,
- 	.display_ver = 5,
- 	.is_ironlake = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "ironlake" /* clarkdale? */
- };
- static const struct intel_device_info intel_ironlake_m_info = {
-@@ -138,6 +154,7 @@ static const struct intel_device_info intel_ironlake_m_info = {
- 	.display_ver = 5,
- 	.is_mobile = true,
- 	.is_arrandale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "arrandale"
- };
- 
+ #define BCS_SWCTRL 0x22200
+ #define BCS_SRC_Y (1 << 0)
 -- 
 2.25.1
