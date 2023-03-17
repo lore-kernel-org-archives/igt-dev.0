@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 66C6D10E3E2
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 16:54:28 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 17 Mar 2023 22:20:44 +0530
-Message-Id: <20230317165044.2616573-1-bhanuprakash.modem@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB67B10E0C8
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 16:58:59 +0000 (UTC)
+Date: Fri, 17 Mar 2023 17:58:55 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zack Rusin <zackr@vmware.com>
+Message-ID: <20230317165855.pr2lqbb4nn5g6mr3@kamilkon-desk1>
+References: <20230316022659.73202-1-zack@kde.org>
+ <20230316022659.73202-4-zack@kde.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC PATCH] lib/kms: Get pipe enum from debugfs
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230316022659.73202-4-zack@kde.org>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/8] igt/vmwgfx: Add triangle test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,103 +20,303 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org, krastevm@vmware.com, banackm@vmware.com,
+ mombasawalam@vmware.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The pipe may not be the same as crtc index if pipes are fused off.
-For testing purposes, IGT needs to know the pipe. There's already
-a I915_GET_PIPE_FROM_CRTC_ID IOCTL for this. However, the upcoming
-Xe driver won't have that IOCTL.
+Hi Zack,
 
-Add IGT support to read the pipe from debugfs. For i915, still
-fallback to ioctl method to support older kernels.
+I have few nits, see below.
 
-Cc: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/igt_kms.c | 53 ++++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 42 insertions(+), 11 deletions(-)
+On 2023-03-15 at 22:26:54 -0400, Zack Rusin wrote:
+> From: Maaz Mombasawala <mombasawalam@vmware.com>
+> 
+> Add vmwgfx tests support in tests/meson and a tri test.
+> This basic test draws a triangle using vmwgfx and checks if it has
+> been rendered correctly.
+> 
+> Signed-off-by: Roye Eshed <reshed@vmware.com>
+> Signed-off-by: Zack Rusin <zackr@vmware.com>
+> Signed-off-by: Maaz Mombasawala <mombasawalam@vmware.com>
+> ---
+>  tests/meson.build        |   2 +
+>  tests/vmwgfx/meson.build |  14 +++
+>  tests/vmwgfx/tri.c       | 210 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 226 insertions(+)
+>  create mode 100644 tests/vmwgfx/meson.build
+>  create mode 100644 tests/vmwgfx/tri.c
+> 
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 632e36e0..b2d75afa 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -508,6 +508,8 @@ subdir('v3d')
+>  
+>  subdir('vc4')
+>  
+> +subdir('vmwgfx')
+> +
+>  gen_testlist = find_program('generate_testlist.sh')
+>  test_list_target = custom_target('testlist',
+>  	      output : 'test-list.txt',
+> diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
+> new file mode 100644
+> index 00000000..46961503
+> --- /dev/null
+> +++ b/tests/vmwgfx/meson.build
+> @@ -0,0 +1,14 @@
+> +
+> +vmwgfx_progs = [
+> +	'tri'
+> +]
+> +vmwgfx_deps = test_deps
+> +
+> +foreach prog : vmwgfx_progs
+> +	test_executables += executable(prog, prog + '.c',
+> +				       dependencies : vmwgfx_deps,
+> +				       install_dir : vmwgfxdir,
+> +				       install_rpath : vmwgfx_rpathdir,
+> +				       install : true)
+> +	test_list += join_paths('vmwgfx', prog)
+> +endforeach
+> diff --git a/tests/vmwgfx/tri.c b/tests/vmwgfx/tri.c
+> new file mode 100644
+> index 00000000..6fc02967
+> --- /dev/null
+> +++ b/tests/vmwgfx/tri.c
+-------------------- ^
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 562d60bff..d7b46cd44 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2558,7 +2558,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	drmModeRes *resources;
- 	drmModePlaneRes *plane_resources;
- 	int i;
--	bool is_i915_dev;
-+	bool is_i915_dev, is_intel_dev;
- 
- 	memset(display, 0, sizeof(igt_display_t));
- 
-@@ -2566,6 +2566,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 
- 	display->drm_fd = drm_fd;
- 	is_i915_dev = is_i915_device(drm_fd);
-+	is_intel_dev = is_intel_device(drm_fd);
- 
- 	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
- 
-@@ -2607,17 +2608,47 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	for (i = 0; i < resources->count_crtcs; i++) {
- 		igt_pipe_t *pipe;
- 
--		if (is_i915_dev) {
--			struct drm_i915_get_pipe_from_crtc_id get_pipe;
-+		/*
-+		 * No GET_PIPE_FROM_CRTC_ID ioctl support for XE. Instead read
-+		 * from the debugfs "i915_pipe".
-+		 *
-+		 * This debugfs is applicable for both i915 & XE. For i915, still
-+		 * we can fallback to ioctl method to support older kernels.
-+		 */
-+		if (is_intel_dev) {
-+			char buf[2];
-+			int debugfs_fd, res;
- 
--			get_pipe.pipe = 0;
--			get_pipe.crtc_id =  resources->crtcs[i];
--			do_ioctl(display->drm_fd,
--					DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID, &get_pipe);
--			pipe = &display->pipes[get_pipe.pipe];
--			pipe->pipe = get_pipe.pipe;
--		}
--		else {
-+			debugfs_fd = igt_debugfs_pipe_dir(drm_fd, i, O_RDONLY);
-+			igt_assert(debugfs_fd >= 0);
-+
-+			res = igt_debugfs_simple_read(debugfs_fd, "i915_pipe", buf, sizeof(buf));
-+			close(debugfs_fd);
-+
-+			if (res <= 0) {
-+				/* Fallback to older ioctl method. */
-+				if (is_i915_dev) {
-+					struct drm_i915_get_pipe_from_crtc_id get_pipe;
-+
-+					get_pipe.pipe = 0;
-+					get_pipe.crtc_id =  resources->crtcs[i];
-+
-+					do_ioctl(drm_fd,
-+						 DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID,
-+						 &get_pipe);
-+
-+					pipe = &display->pipes[get_pipe.pipe];
-+					pipe->pipe = get_pipe.pipe;
-+				} else
-+					igt_assert_f(false, "XE: Failed to read the debugfs i915_pipe.\n");
-+			} else {
-+				int p;
-+
-+				igt_assert_eq(sscanf(buf, "%d", &p), 1);
-+				pipe = &display->pipes[p];
-+				pipe->pipe = p;
-+			}
-+		} else {
- 			pipe = &display->pipes[i];
- 			pipe->pipe = i;
- 		}
--- 
-2.40.0
+Consider naming it vmw_tri.c or vmwgfx_tri.c and putting all
+compiled test binaries to build/tests, see for example
+chamelium.
+
+> @@ -0,0 +1,210 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> +/**********************************************************
+> + * Copyright 2021-2022 VMware, Inc.
+> + *
+
+Delete below text starting with "Permission".
+
+> + * Permission is hereby granted, free of charge, to any person
+> + * obtaining a copy of this software and associated documentation
+> + * files (the "Software"), to deal in the Software without
+> + * restriction, including without limitation the rights to use, copy,
+> + * modify, merge, publish, distribute, sublicense, and/or sell copies
+> + * of the Software, and to permit persons to whom the Software is
+> + * furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be
+> + * included in all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+> + * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+> + * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+> + * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+> + * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+> + * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+> + * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+> + * SOFTWARE.
+> + *
+> + **********************************************************/
+> +
+> +#include "igt_vmwgfx.h"
+> +
+
+Put here global test description in
+IGT_TEST_DESCRIPTION("Write here what this test verify");
+
+> +static void draw_triangle(struct vmw_svga_device *device, int32 cid)
+> +{
+> +	struct vmw_default_objects objects;
+> +	uint8 *rendered_img;
+> +	bool save_status;
+> +
+> +	vmw_create_default_objects(device, cid, &objects,
+> +				   &vmw_default_rect_size);
+> +	rendered_img = vmw_triangle_draw(device, cid, &objects, true);
+> +
+> +	save_status = vmw_save_data_as_png(objects.color_rt, rendered_img,
+> +					   "vmwgfx_tri.png");
+> +	igt_assert(save_status);
+> +
+> +	vmw_triangle_assert_values(rendered_img, objects.color_rt);
+> +
+> +	/* Clean up */
+> +	free(rendered_img);
+> +	vmw_destroy_default_objects(device, &objects);
+> +}
+> +
+> +static void replace_with_coherent_rt(struct vmw_svga_device *device,
+> +				     int32 context_id,
+> +				     struct vmw_default_objects *objects,
+> +				     const SVGA3dSize *rt_size)
+> +{
+> +	struct vmw_execbuf *cmd_buf;
+> +	SVGA3dRenderTargetViewDesc rtv_desc = { 0 };
+> +	SVGA3dCmdDXDefineRenderTargetView rt_view_define_cmd = { 0 };
+> +	SVGA3dCmdDXDefineDepthStencilView ds_view_define_cmd = { 0 };
+> +
+> +	objects->color_rt = vmw_ioctl_create_surface_full(
+> +		device->drm_fd,
+> +		SVGA3D_SURFACE_HINT_TEXTURE | SVGA3D_SURFACE_HINT_RENDERTARGET |
+> +			SVGA3D_SURFACE_BIND_RENDER_TARGET,
+> +		SVGA3D_R8G8B8A8_UNORM, 0, SVGA3D_MS_PATTERN_NONE,
+> +		SVGA3D_MS_QUALITY_NONE, SVGA3D_TEX_FILTER_NONE, 1, 1, *rt_size,
+> +		NULL, drm_vmw_surface_flag_coherent);
+> +
+> +	objects->depth_rt = vmw_ioctl_create_surface_full(
+> +		device->drm_fd,
+> +		SVGA3D_SURFACE_HINT_DEPTHSTENCIL |
+> +			SVGA3D_SURFACE_HINT_RENDERTARGET |
+> +			SVGA3D_SURFACE_BIND_DEPTH_STENCIL,
+> +		SVGA3D_R24G8_TYPELESS, 0, SVGA3D_MS_PATTERN_NONE,
+> +		SVGA3D_MS_QUALITY_NONE, SVGA3D_TEX_FILTER_NONE, 1, 1, *rt_size,
+> +		NULL, drm_vmw_surface_flag_coherent);
+> +
+> +	cmd_buf = vmw_execbuf_create(device->drm_fd, context_id);
+> +
+> +	rtv_desc.tex.arraySize = 1;
+> +	rtv_desc.tex.firstArraySlice = 0;
+> +	rtv_desc.tex.mipSlice = 0;
+> +	vmw_bitvector_find_next_bit(device->rt_view_bv,
+> +				    &rt_view_define_cmd.renderTargetViewId);
+> +	rt_view_define_cmd.sid = objects->color_rt->base.handle;
+> +	rt_view_define_cmd.format = SVGA3D_R8G8B8A8_UNORM;
+> +	rt_view_define_cmd.resourceDimension = SVGA3D_RESOURCE_TEXTURE2D;
+> +	rt_view_define_cmd.desc = rtv_desc;
+> +	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DEFINE_RENDERTARGET_VIEW,
+> +			   &rt_view_define_cmd, sizeof(rt_view_define_cmd), NULL,
+> +			   0);
+> +	objects->color_rt_id = rt_view_define_cmd.renderTargetViewId;
+> +
+> +	vmw_bitvector_find_next_bit(device->ds_view_bv,
+> +				    &ds_view_define_cmd.depthStencilViewId);
+> +	ds_view_define_cmd.sid = objects->depth_rt->base.handle;
+> +	ds_view_define_cmd.format = SVGA3D_D24_UNORM_S8_UINT;
+> +	ds_view_define_cmd.resourceDimension = SVGA3D_RESOURCE_TEXTURE2D;
+> +	ds_view_define_cmd.mipSlice = 0;
+> +	ds_view_define_cmd.firstArraySlice = 0;
+> +	ds_view_define_cmd.arraySize = 1;
+> +	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DEFINE_DEPTHSTENCIL_VIEW,
+> +			   &ds_view_define_cmd, sizeof(ds_view_define_cmd), NULL,
+> +			   0);
+> +	objects->ds_view_id = ds_view_define_cmd.depthStencilViewId;
+> +
+> +	vmw_execbuf_submit(cmd_buf, NULL);
+> +	vmw_execbuf_destroy(cmd_buf);
+> +}
+> +
+> +static void destroy_rt(struct vmw_svga_device *device, int32 context_id,
+> +		       struct vmw_default_objects *objects)
+> +{
+> +	struct vmw_execbuf *cmd_buf;
+> +
+> +	SVGA3dCmdDXDestroyRenderTargetView rt_view_cmd = {
+> +		.renderTargetViewId = objects->color_rt_id
+> +	};
+> +
+> +	SVGA3dCmdDXDestroyDepthStencilView ds_view_cmd = {
+> +		.depthStencilViewId = objects->ds_view_id
+> +	};
+> +
+> +	cmd_buf = vmw_execbuf_create(device->drm_fd, objects->context_id);
+> +
+> +	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DESTROY_RENDERTARGET_VIEW,
+> +			   &rt_view_cmd, sizeof(rt_view_cmd), NULL, 0);
+> +
+> +	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DESTROY_DEPTHSTENCIL_VIEW,
+> +			   &ds_view_cmd, sizeof(ds_view_cmd), NULL, 0);
+> +
+> +	vmw_ioctl_surface_unref(device->drm_fd, objects->color_rt);
+> +	vmw_ioctl_surface_unref(device->drm_fd, objects->depth_rt);
+> +
+> +	vmw_bitvector_free_bit(device->rt_view_bv, objects->color_rt_id);
+> +	vmw_bitvector_free_bit(device->ds_view_bv, objects->ds_view_id);
+> +
+> +	vmw_execbuf_submit(cmd_buf, NULL);
+> +	vmw_execbuf_destroy(cmd_buf);
+> +}
+> +
+> +static void draw_triangle_on_coherent_rt(struct vmw_svga_device *device,
+> +					 int32 cid)
+> +{
+> +	struct vmw_default_objects objects;
+> +	uint8 *rendered_img;
+> +	struct vmw_surface *default_color_rt;
+> +	struct vmw_surface *default_depth_rt;
+> +	SVGA3dRenderTargetViewId default_color_rt_id;
+> +	SVGA3dDepthStencilViewId default_ds_view_id;
+> +
+> +	vmw_create_default_objects(device, cid, &objects,
+> +				   &vmw_default_rect_size);
+> +
+> +	/* Replace default rendertargets with coherent equivalents */
+> +	default_color_rt = objects.color_rt;
+> +	default_depth_rt = objects.depth_rt;
+> +	default_color_rt_id = objects.color_rt_id;
+> +	default_ds_view_id = objects.ds_view_id;
+> +	replace_with_coherent_rt(device, cid, &objects, &vmw_default_rect_size);
+> +
+> +	rendered_img = vmw_triangle_draw(device, cid, &objects, false);
+> +
+> +	vmw_triangle_assert_values(rendered_img, objects.color_rt);
+> +
+> +	/* Clean up */
+> +	free(rendered_img);
+> +
+> +	destroy_rt(device, cid, &objects);
+> +	objects.color_rt = default_color_rt;
+> +	objects.depth_rt = default_depth_rt;
+> +	objects.color_rt_id = default_color_rt_id;
+> +	objects.ds_view_id = default_ds_view_id;
+> +
+> +	vmw_destroy_default_objects(device, &objects);
+> +}
+> +
+> +igt_main
+> +{
+> +	struct vmw_svga_device device;
+> +	int32 cid;
+> +
+> +	igt_fixture
+> +	{
+> +		vmw_svga_device_init(&device, vmw_svga_device_node_render);
+> +		igt_require(device.drm_fd != -1);
+> +
+> +		cid = vmw_ioctl_context_create(device.drm_fd);
+> +		igt_require(cid != SVGA3D_INVALID_ID);
+> +	}
+> +
+
+Please describe every test with
+	igt_describe("description of subtest");
+
+Regards,
+Kamil
+
+> +	igt_subtest("tri")
+> +	{
+> +		draw_triangle(&device, cid);
+> +	}
+> +
+> +	/*
+> +	 * Check that vmwgfx correctly handles coherent rendertarget
+> +	 * surfaces when no explicit sync is given from userspace
+> +	 */
+> +	igt_subtest("tri-no-sync-coherent")
+> +	{
+> +		draw_triangle_on_coherent_rt(&device, cid);
+> +	}
+> +
+> +	igt_fixture
+> +	{
+> +		vmw_ioctl_context_destroy(device.drm_fd, cid);
+> +		vmw_svga_device_fini(&device);
+> +	}
+> +}
+> -- 
+> 2.38.1
+> 
