@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB67B10E0C8
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 16:58:59 +0000 (UTC)
-Date: Fri, 17 Mar 2023 17:58:55 +0100
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA25510EF5F
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 17:26:32 +0000 (UTC)
+Date: Fri, 17 Mar 2023 18:26:28 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Zack Rusin <zackr@vmware.com>
-Message-ID: <20230317165855.pr2lqbb4nn5g6mr3@kamilkon-desk1>
-References: <20230316022659.73202-1-zack@kde.org>
- <20230316022659.73202-4-zack@kde.org>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230317172628.r3bv7suuifxaspzm@kamilkon-desk1>
+References: <20230213181651.863367-1-Bhawanpreet.Lakha@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230316022659.73202-4-zack@kde.org>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/8] igt/vmwgfx: Add triangle test
+In-Reply-To: <20230213181651.863367-1-Bhawanpreet.Lakha@amd.com>
+Subject: Re: [igt-dev] [PATCH 1/2] amdgpu/amd_plane: Add multi MPO XRGB8888
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,303 +20,249 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, krastevm@vmware.com, banackm@vmware.com,
- mombasawalam@vmware.com, petri.latvala@intel.com
+Cc: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zack,
+Hi Bhawanpreet,
 
-I have few nits, see below.
-
-On 2023-03-15 at 22:26:54 -0400, Zack Rusin wrote:
-> From: Maaz Mombasawala <mombasawalam@vmware.com>
+On 2023-02-13 at 13:16:50 -0500, Bhawanpreet Lakha wrote:
+> [Why]
+> Some of our ASICs  support multiple overlay planes, so create
+> a test to test them
 > 
-> Add vmwgfx tests support in tests/meson and a tri test.
-> This basic test draws a triangle using vmwgfx and checks if it has
-> been rendered correctly.
+> [How]
+> Create a plane with two holes and fill them up with 2 overlay planes
 > 
-> Signed-off-by: Roye Eshed <reshed@vmware.com>
-> Signed-off-by: Zack Rusin <zackr@vmware.com>
-> Signed-off-by: Maaz Mombasawala <mombasawalam@vmware.com>
+> Signed-off-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+> Change-Id: If527d67ead59f64906a97c340845ac423d93a0aa
 > ---
->  tests/meson.build        |   2 +
->  tests/vmwgfx/meson.build |  14 +++
->  tests/vmwgfx/tri.c       | 210 +++++++++++++++++++++++++++++++++++++++
->  3 files changed, 226 insertions(+)
->  create mode 100644 tests/vmwgfx/meson.build
->  create mode 100644 tests/vmwgfx/tri.c
+>  tests/amdgpu/amd_plane.c | 128 ++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 127 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 632e36e0..b2d75afa 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -508,6 +508,8 @@ subdir('v3d')
+> diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
+> index b9eec677..d34cd1d9 100644
+> --- a/tests/amdgpu/amd_plane.c
+> +++ b/tests/amdgpu/amd_plane.c
+> @@ -42,6 +42,7 @@ typedef struct data {
+>          igt_plane_t *primary[MAX_PIPES];
+>          igt_plane_t *cursor[MAX_PIPES];
+>  	igt_plane_t *overlay[MAX_PIPES];
+> +	igt_plane_t *overlay2[MAX_PIPES];
+>          igt_output_t *output[MAX_PIPES];
+>          igt_pipe_t *pipe[MAX_PIPES];
+>          igt_pipe_crc_t *pipe_crc[MAX_PIPES];
+> @@ -144,7 +145,8 @@ static void lut_free(lut_t *lut)
+>  enum test {
+>  	MPO_SINGLE_PAN,
+>  	MPO_MULTI_PAN,
+> -	MPO_SCALE
+> +	MPO_SCALE,
+> +	MPO_MULTI_OVERLAY
+>  };
 >  
->  subdir('vc4')
+>  static void test_init(data_t *data)
+> @@ -159,6 +161,8 @@ static void test_init(data_t *data)
+>  			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
+>  		data->overlay[i] = igt_pipe_get_plane_type_index(
+>  			data->pipe[i], DRM_PLANE_TYPE_OVERLAY, 0);
+> +		data->overlay2[i] = igt_pipe_get_plane_type_index(
+> +			data->pipe[i], DRM_PLANE_TYPE_OVERLAY, 1);
+>  		data->cursor[i] = igt_pipe_get_plane_type(
+>  			data->pipe[i], DRM_PLANE_TYPE_CURSOR);
+>  		data->pipe_crc[i] =
+> @@ -252,6 +256,7 @@ struct fbc {
+>  	igt_fb_t ref_primary;
+>  	igt_fb_t test_primary;
+>  	igt_fb_t test_overlay;
+> +	igt_fb_t test_overlay2;
+>  	igt_crc_t ref_crc;
+>  };
 >  
-> +subdir('vmwgfx')
-> +
->  gen_testlist = find_program('generate_testlist.sh')
->  test_list_target = custom_target('testlist',
->  	      output : 'test-list.txt',
-> diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
-> new file mode 100644
-> index 00000000..46961503
-> --- /dev/null
-> +++ b/tests/vmwgfx/meson.build
-> @@ -0,0 +1,14 @@
-> +
-> +vmwgfx_progs = [
-> +	'tri'
-> +]
-> +vmwgfx_deps = test_deps
-> +
-> +foreach prog : vmwgfx_progs
-> +	test_executables += executable(prog, prog + '.c',
-> +				       dependencies : vmwgfx_deps,
-> +				       install_dir : vmwgfxdir,
-> +				       install_rpath : vmwgfx_rpathdir,
-> +				       install : true)
-> +	test_list += join_paths('vmwgfx', prog)
-> +endforeach
-> diff --git a/tests/vmwgfx/tri.c b/tests/vmwgfx/tri.c
-> new file mode 100644
-> index 00000000..6fc02967
-> --- /dev/null
-> +++ b/tests/vmwgfx/tri.c
--------------------- ^
-
-Consider naming it vmw_tri.c or vmwgfx_tri.c and putting all
-compiled test binaries to build/tests, see for example
-chamelium.
-
-> @@ -0,0 +1,210 @@
-> +// SPDX-License-Identifier: GPL-2.0 OR MIT
-> +/**********************************************************
-> + * Copyright 2021-2022 VMware, Inc.
+> @@ -264,6 +269,115 @@ static void set_regamma_lut(data_t *data, lut_t const *lut, int n)
+>  				       size);
+>  }
+>  
+> +/*
+> + * Compares the result of white backgroud with white window with and without MPO
 > + *
-
-Delete below text starting with "Permission".
-
-> + * Permission is hereby granted, free of charge, to any person
-> + * obtaining a copy of this software and associated documentation
-> + * files (the "Software"), to deal in the Software without
-> + * restriction, including without limitation the rights to use, copy,
-> + * modify, merge, publish, distribute, sublicense, and/or sell copies
-> + * of the Software, and to permit persons to whom the Software is
-> + * furnished to do so, subject to the following conditions:
+> + * Reference crc:
+> + * Draws a White background of size (pw,ph).
 > + *
-> + * The above copyright notice and this permission notice shall be
-> + * included in all copies or substantial portions of the Software.
+> + * Test crc:
+> + * Draws a White Overlay of size (pw,ph) then creates a cutout of size (w,h) at location (x1, y1) and (x2, y2)
+> + * Draws a White Primary plane of size (w, h) at location (x1,y1) (under the overlay)
+> + * Draws a White Overlay of size (w, h) at location (x2,y2)
 > + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-> + * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-> + * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-> + * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-> + * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-> + * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-> + * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-> + * SOFTWARE.
-> + *
-> + **********************************************************/
+> + * NOTE: The reason for using White+White is to speed up the crc (reuse the ref crc for all cases vs taking
+> + * a ref crc per flip)
+> + */
+> +static void test_plane2(data_t *data, int n, int x1, int y1, int x2, int y2, int w, int h, int pw, int ph, struct fbc *fbc){
 > +
-> +#include "igt_vmwgfx.h"
+> +	igt_crc_t test_crc;
+> +	igt_display_t *display = &data->display;
 > +
-
-Put here global test description in
-IGT_TEST_DESCRIPTION("Write here what this test verify");
-
-> +static void draw_triangle(struct vmw_svga_device *device, int32 cid)
-> +{
-> +	struct vmw_default_objects objects;
-> +	uint8 *rendered_img;
-> +	bool save_status;
+> +	/* Reference: */
 > +
-> +	vmw_create_default_objects(device, cid, &objects,
-> +				   &vmw_default_rect_size);
-> +	rendered_img = vmw_triangle_draw(device, cid, &objects, true);
+> +	igt_plane_set_fb(data->primary[n], &fbc[n].ref_primary);
 > +
-> +	save_status = vmw_save_data_as_png(objects.color_rt, rendered_img,
-> +					   "vmwgfx_tri.png");
-> +	igt_assert(save_status);
+> +	igt_plane_set_position(data->primary[n], 0, 0);
+> +	igt_plane_set_size(data->primary[n], pw, ph);
 > +
-> +	vmw_triangle_assert_values(rendered_img, objects.color_rt);
+> +	igt_display_commit_atomic(display, 0, 0);
 > +
-> +	/* Clean up */
-> +	free(rendered_img);
-> +	vmw_destroy_default_objects(device, &objects);
+> +	/* Test: */
+> +	/* Draw a white overlay with two cutouts at (x1,y1) and (x2,y2) */
+> +	draw_color_alpha(&fbc[n].test_overlay2, 0, 0, pw, ph, 1.0, 1.0, 1.0, 1.0);
+> +	draw_color_alpha(&fbc[n].test_overlay2, x1, y1, w, h, 0.0, 0.0, 0.0, 0.0);
+> +	draw_color_alpha(&fbc[n].test_overlay2, x2, y2, w, h, 0.0, 0.0, 0.0, 0.0);
+> +
+> +	/* Draw a overlay to cover up one hole */
+> +	draw_color_alpha(&fbc[n].test_overlay, 0, 0, pw, ph, 0.0, 0.0, 0.0, 0.0);
+> +	draw_color_alpha(&fbc[n].test_overlay, x2, y2, w, h, 1.0, 1.0, 1.0, 1.0);
+> +
+> +	/* Draw a primary to cover up the other hole */
+> +	draw_color_alpha(&fbc[n].test_primary, 0, 0, w, h, 0.0, 0.0, 0.0, 0.0);
+> +	draw_color_alpha(&fbc[n].test_primary, 0, 0, w, h, 1.0, 1.0, 1.0, 1.0);
+> +
+> +	igt_plane_set_fb(data->primary[n], &fbc[n].test_primary);
+> +	igt_plane_set_fb(data->overlay[n], &fbc[n].test_overlay);
+> +	igt_plane_set_fb(data->overlay2[n], &fbc[n].test_overlay2);
+> +
+> +	/* Move the primary to cover one of the holes*/
+> +	igt_plane_set_position(data->primary[n], x1, y1);
+> +	igt_plane_set_size(data->primary[n], w, h);
+> +
+> +
+> +	igt_display_commit_atomic(display, 0, 0);
+> +	igt_pipe_crc_collect_crc(data->pipe_crc[n], &test_crc);
+> +	igt_plane_set_fb(data->overlay[n], NULL);
+> +	igt_plane_set_fb(data->overlay2[n], NULL);
+> +
+> +	igt_assert_crc_equal(&fbc[n].ref_crc, &test_crc);
+> +
+> +	/* Set window to white, this is to avoid flashing between black/white after each flip */
+> +	draw_color_alpha(&fbc[n].ref_primary, 0, 0, w, h, 1.0, 1.0, 1.0, 1.00);
+> +	igt_plane_set_fb(data->primary[n], &fbc[n].ref_primary);
+> +	igt_plane_set_position(data->primary[n], 0, 0);
+> +	igt_plane_set_size(data->primary[n], pw, ph);
+> +	igt_display_commit_atomic(display, 0, 0);
+> +
+> +
 > +}
 > +
-> +static void replace_with_coherent_rt(struct vmw_svga_device *device,
-> +				     int32 context_id,
-> +				     struct vmw_default_objects *objects,
-> +				     const SVGA3dSize *rt_size)
+> +/*
+> + * MPO_MULTI_OVERLAY: This test takes the plane sizes and assigns random position within the screen
+> + *
+> + * The test creates a white screen with 2 cutouts which are to be filled with 2 overlay planes.
+> + * Testing multiple overlay planes
+> + */
+> +static void test_multi_overlay(data_t *data, int display_count, int w, int h, struct fbc *fb)
 > +{
-> +	struct vmw_execbuf *cmd_buf;
-> +	SVGA3dRenderTargetViewDesc rtv_desc = { 0 };
-> +	SVGA3dCmdDXDefineRenderTargetView rt_view_define_cmd = { 0 };
-> +	SVGA3dCmdDXDefineDepthStencilView ds_view_define_cmd = { 0 };
 > +
-> +	objects->color_rt = vmw_ioctl_create_surface_full(
-> +		device->drm_fd,
-> +		SVGA3D_SURFACE_HINT_TEXTURE | SVGA3D_SURFACE_HINT_RENDERTARGET |
-> +			SVGA3D_SURFACE_BIND_RENDER_TARGET,
-> +		SVGA3D_R8G8B8A8_UNORM, 0, SVGA3D_MS_PATTERN_NONE,
-> +		SVGA3D_MS_QUALITY_NONE, SVGA3D_TEX_FILTER_NONE, 1, 1, *rt_size,
-> +		NULL, drm_vmw_surface_flag_coherent);
+> +	int x1,x2,y1,y2;
 > +
-> +	objects->depth_rt = vmw_ioctl_create_surface_full(
-> +		device->drm_fd,
-> +		SVGA3D_SURFACE_HINT_DEPTHSTENCIL |
-> +			SVGA3D_SURFACE_HINT_RENDERTARGET |
-> +			SVGA3D_SURFACE_BIND_DEPTH_STENCIL,
-> +		SVGA3D_R24G8_TYPELESS, 0, SVGA3D_MS_PATTERN_NONE,
-> +		SVGA3D_MS_QUALITY_NONE, SVGA3D_TEX_FILTER_NONE, 1, 1, *rt_size,
-> +		NULL, drm_vmw_surface_flag_coherent);
+> +	for (int n = 0; n < display_count; n++) {
 > +
-> +	cmd_buf = vmw_execbuf_create(device->drm_fd, context_id);
+> +		int pw = data->w[n];
+> +		int ph = data->h[n];
 > +
-> +	rtv_desc.tex.arraySize = 1;
-> +	rtv_desc.tex.firstArraySlice = 0;
-> +	rtv_desc.tex.mipSlice = 0;
-> +	vmw_bitvector_find_next_bit(device->rt_view_bv,
-> +				    &rt_view_define_cmd.renderTargetViewId);
-> +	rt_view_define_cmd.sid = objects->color_rt->base.handle;
-> +	rt_view_define_cmd.format = SVGA3D_R8G8B8A8_UNORM;
-> +	rt_view_define_cmd.resourceDimension = SVGA3D_RESOURCE_TEXTURE2D;
-> +	rt_view_define_cmd.desc = rtv_desc;
-> +	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DEFINE_RENDERTARGET_VIEW,
-> +			   &rt_view_define_cmd, sizeof(rt_view_define_cmd), NULL,
-> +			   0);
-> +	objects->color_rt_id = rt_view_define_cmd.renderTargetViewId;
+> +		for (int i = 0; i < 1; i++){
 > +
-> +	vmw_bitvector_find_next_bit(device->ds_view_bv,
-> +				    &ds_view_define_cmd.depthStencilViewId);
-> +	ds_view_define_cmd.sid = objects->depth_rt->base.handle;
-> +	ds_view_define_cmd.format = SVGA3D_D24_UNORM_S8_UINT;
-> +	ds_view_define_cmd.resourceDimension = SVGA3D_RESOURCE_TEXTURE2D;
-> +	ds_view_define_cmd.mipSlice = 0;
-> +	ds_view_define_cmd.firstArraySlice = 0;
-> +	ds_view_define_cmd.arraySize = 1;
-> +	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DEFINE_DEPTHSTENCIL_VIEW,
-> +			   &ds_view_define_cmd, sizeof(ds_view_define_cmd), NULL,
-> +			   0);
-> +	objects->ds_view_id = ds_view_define_cmd.depthStencilViewId;
+> +			if (pw <= w && ph <= h)
+> +				break;
 > +
-> +	vmw_execbuf_submit(cmd_buf, NULL);
-> +	vmw_execbuf_destroy(cmd_buf);
-> +}
+> +			srand(time(NULL));
 > +
-> +static void destroy_rt(struct vmw_svga_device *device, int32 context_id,
-> +		       struct vmw_default_objects *objects)
-> +{
-> +	struct vmw_execbuf *cmd_buf;
+> +			/* Generate random x,y positions for two cutouts*/
+> +			x1 = (rand() % (pw-w));
+> +			y1 = (rand() % (ph-h));
 > +
-> +	SVGA3dCmdDXDestroyRenderTargetView rt_view_cmd = {
-> +		.renderTargetViewId = objects->color_rt_id
-> +	};
+> +			x2 = (rand() % (pw-w));
+> +			y2 = (rand() % (ph-h));
 > +
-> +	SVGA3dCmdDXDestroyDepthStencilView ds_view_cmd = {
-> +		.depthStencilViewId = objects->ds_view_id
-> +	};
 > +
-> +	cmd_buf = vmw_execbuf_create(device->drm_fd, objects->context_id);
+
+Delete this line, one is enough.
+
+> +			test_plane2(data, n, x1, y1, x2, y2, w,h, pw, ph, fb);
 > +
-> +	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DESTROY_RENDERTARGET_VIEW,
-> +			   &rt_view_cmd, sizeof(rt_view_cmd), NULL, 0);
-> +
-> +	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DESTROY_DEPTHSTENCIL_VIEW,
-> +			   &ds_view_cmd, sizeof(ds_view_cmd), NULL, 0);
-> +
-> +	vmw_ioctl_surface_unref(device->drm_fd, objects->color_rt);
-> +	vmw_ioctl_surface_unref(device->drm_fd, objects->depth_rt);
-> +
-> +	vmw_bitvector_free_bit(device->rt_view_bv, objects->color_rt_id);
-> +	vmw_bitvector_free_bit(device->ds_view_bv, objects->ds_view_id);
-> +
-> +	vmw_execbuf_submit(cmd_buf, NULL);
-> +	vmw_execbuf_destroy(cmd_buf);
-> +}
-> +
-> +static void draw_triangle_on_coherent_rt(struct vmw_svga_device *device,
-> +					 int32 cid)
-> +{
-> +	struct vmw_default_objects objects;
-> +	uint8 *rendered_img;
-> +	struct vmw_surface *default_color_rt;
-> +	struct vmw_surface *default_depth_rt;
-> +	SVGA3dRenderTargetViewId default_color_rt_id;
-> +	SVGA3dDepthStencilViewId default_ds_view_id;
-> +
-> +	vmw_create_default_objects(device, cid, &objects,
-> +				   &vmw_default_rect_size);
-> +
-> +	/* Replace default rendertargets with coherent equivalents */
-> +	default_color_rt = objects.color_rt;
-> +	default_depth_rt = objects.depth_rt;
-> +	default_color_rt_id = objects.color_rt_id;
-> +	default_ds_view_id = objects.ds_view_id;
-> +	replace_with_coherent_rt(device, cid, &objects, &vmw_default_rect_size);
-> +
-> +	rendered_img = vmw_triangle_draw(device, cid, &objects, false);
-> +
-> +	vmw_triangle_assert_values(rendered_img, objects.color_rt);
-> +
-> +	/* Clean up */
-> +	free(rendered_img);
-> +
-> +	destroy_rt(device, cid, &objects);
-> +	objects.color_rt = default_color_rt;
-> +	objects.depth_rt = default_depth_rt;
-> +	objects.color_rt_id = default_color_rt_id;
-> +	objects.ds_view_id = default_ds_view_id;
-> +
-> +	vmw_destroy_default_objects(device, &objects);
-> +}
-> +
-> +igt_main
-> +{
-> +	struct vmw_svga_device device;
-> +	int32 cid;
-> +
-> +	igt_fixture
-> +	{
-> +		vmw_svga_device_init(&device, vmw_svga_device_node_render);
-> +		igt_require(device.drm_fd != -1);
-> +
-> +		cid = vmw_ioctl_context_create(device.drm_fd);
-> +		igt_require(cid != SVGA3D_INVALID_ID);
+> +		}
 > +	}
 > +
+> +	return;
 
-Please describe every test with
-	igt_describe("description of subtest");
+No need for return from void.
+
+> +
+> +
+
+Delete two empty lines.
+
+> +}
+> +
+>  /*
+>   * Compares the result of white backgroud with white window with and without MPO
+>   *
+> @@ -467,6 +581,10 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+>  
+>  	test_init(data);
+>  
+> +	/* Skip test if we don't have 2 overlay planes */
+> +	if (test == MPO_MULTI_OVERLAY)
+> +		igt_skip_on(!data->overlay2[0]);
+> +
+>  	/* Skip if there is less valid outputs than the required. */
+>  	for_each_connected_output(display, output)
+>  		valid_outputs++;
+> @@ -494,6 +612,7 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+>  		igt_create_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, &fb[n].ref_primary);
+>  		igt_create_color_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 1.0, 1.0, 1.0, &fb[n].ref_primary);
+>  		igt_create_fb(data->fd, w, h, DRM_FORMAT_ARGB8888, 0, &fb[n].test_overlay);
+> +		igt_create_fb(data->fd, w, h, DRM_FORMAT_ARGB8888, 0, &fb[n].test_overlay2);
+>  
+>  		igt_plane_set_fb(data->primary[n], &fb[n].ref_primary);
+>  
+> @@ -520,6 +639,8 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+>  
+>  		if (test == MPO_SINGLE_PAN)
+>  			test_panning_1_display(data, display_count, videos[i][0], videos[i][1], fb);
+> +		if (test == MPO_MULTI_OVERLAY)
+> +			test_multi_overlay(data, display_count, videos[i][0], videos[i][1], fb);
+>  		if (test == MPO_MULTI_PAN)
+>  			test_panning_2_display(data, videos[i][0], videos[i][1], fb);
+>  		if(test == MPO_SCALE)
+> @@ -536,6 +657,7 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+>  	for (int n = 0; n < display_count; n++) {
+>  		igt_remove_fb(data->fd, &fb[n].ref_primary);
+>  		igt_remove_fb(data->fd, &fb[n].test_overlay);
+> +		igt_remove_fb(data->fd, &fb[n].test_overlay2);
+>  	}
+>  }
+>  /*
+> @@ -798,6 +920,10 @@ igt_main
+>  	igt_subtest("mpo-pan-multi-p010")
+>  		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
+>  
+> +	igt_describe("Multi MPO");
+
+Could you put a little more description here ? Now it seems
+like you repeated test name and it do not help much.
+The same ask apply for your other patch.
+
+Btw please use checkpatch.pl from linnux kernel, it can help catch
+some empty lines and some other errors.
 
 Regards,
 Kamil
 
-> +	igt_subtest("tri")
-> +	{
-> +		draw_triangle(&device, cid);
-> +	}
+> +	igt_subtest("multi-mpo")
+> +		test_display_mpo(&data, MPO_MULTI_OVERLAY, DRM_FORMAT_NV12, 1);
 > +
-> +	/*
-> +	 * Check that vmwgfx correctly handles coherent rendertarget
-> +	 * surfaces when no explicit sync is given from userspace
-> +	 */
-> +	igt_subtest("tri-no-sync-coherent")
-> +	{
-> +		draw_triangle_on_coherent_rt(&device, cid);
-> +	}
-> +
-> +	igt_fixture
-> +	{
-> +		vmw_ioctl_context_destroy(device.drm_fd, cid);
-> +		vmw_svga_device_fini(&device);
-> +	}
-> +}
+>  	igt_describe("MPO and scaling RGB primary plane");
+>  	igt_subtest("mpo-scale-rgb")
+>  		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
 > -- 
-> 2.38.1
+> 2.25.1
 > 
