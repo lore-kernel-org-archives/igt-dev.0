@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7145716344152514637=="
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E43A10E2D0
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 17:45:54 +0000 (UTC)
+Date: Mon, 20 Mar 2023 18:45:50 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230320174550.jm74pibx7mfztcgj@kamilkon-desk1>
+References: <20230320084500.1434535-1-mauro.chehab@linux.intel.com>
+ <20230320084500.1434535-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 29 Mar 2023 15:51:59 -0000
-Message-ID: <168010511901.23905.1139043720265872984@emeril.freedesktop.org>
-References: <e015c051fc2b5ed1c4743d9f9214615f8d3b5124.1680098476.git.mchehab@kernel.org>
-In-Reply-To: <e015c051fc2b5ed1c4743d9f9214615f8d3b5124.1680098476.git.mchehab@kernel.org>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgcnVubmVy?=
- =?utf-8?q?/meson=2Ebuild=3A_fix_minimal_build?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230320084500.1434535-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] meson: build Xe test
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,247 +20,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7145716344152514637==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
 
-== Series Details ==
+On 2023-03-20 at 09:44:59 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Add the remaining changes at meson for it to build Xe documentation.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  docs/meson.build           |  1 +
+>  docs/testplan/conf.py      | 41 ++++++++++++++++++++++++++++++++++++
+>  docs/testplan/testplan.css |  7 +++++++
+>  meson_options.txt          |  8 +++++++
+>  scripts/gen_rst_index      | 43 ++++++++++++++++++++++++++++++++++++++
+>  scripts/meson.build        |  3 +++
+>  6 files changed, 103 insertions(+)
+>  create mode 100644 docs/testplan/conf.py
+>  create mode 100644 docs/testplan/testplan.css
+>  create mode 100755 scripts/gen_rst_index
+> 
+> diff --git a/docs/meson.build b/docs/meson.build
+> index ead14c4015d9..01edf64f04a8 100644
+> --- a/docs/meson.build
+> +++ b/docs/meson.build
+> @@ -1 +1,2 @@
+>  subdir('reference')
+> +subdir('testplan')
+> diff --git a/docs/testplan/conf.py b/docs/testplan/conf.py
+> new file mode 100644
+> index 000000000000..26243ff8bd88
+> --- /dev/null
+> +++ b/docs/testplan/conf.py
+> @@ -0,0 +1,41 @@
+> +# -*- coding: utf-8 -*-
+> +
 
-Series: runner/meson.build: fix minimal build
-URL   : https://patchwork.freedesktop.org/series/115796/
-State : success
+imho you should put here SPDX with MIT.
 
-== Summary ==
+Regards,
+Kamil
 
-CI Bug Log - changes from CI_DRM_12935 -> IGTPW_8712
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/index.html
-
-Participating hosts (36 -> 36)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8712 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-dg2-11:         [PASS][3] -> [FAIL][4] ([i915#8308])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12935/bat-dg2-11/igt@i915_pm_rps@basic-api.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/bat-dg2-11/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][5] ([i915#1886])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg1-7:          [PASS][6] -> [ABORT][7] ([i915#4983])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12935/bat-dg1-7/igt@i915_selftest@live@workarounds.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/bat-dg1-7/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_chamelium_frames@hdmi-crc-fast:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271]) +16 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][9] ([fdo#109271]) +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-bsw-nick/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [ABORT][10] ([i915#7911] / [i915#7913]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12935/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-rkl-11600:       [DMESG-FAIL][12] ([i915#5334]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12935/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:
-    - bat-dg2-8:          [FAIL][14] ([i915#7932]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12935/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7226 -> IGTPW_8712
-
-  CI-20190529: 20190529
-  CI_DRM_12935: f3dbcedcb535d7eb574cb97104f827039713e842 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8712: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/index.html
-  IGT_7226: 41be8b4ab86f9e11388c10366dfd71e5032589c1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/index.html
-
---===============7145716344152514637==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>runner/meson.build: fix minimal build</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115796/">https://patchwork.freedesktop.org/series/115796/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12935 -&gt; IGTPW_8712</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/index.html</p>
-<h2>Participating hosts (36 -&gt; 36)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8712 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12935/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg1-7:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12935/bat-dg1-7/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/bat-dg1-7/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-bsw-nick/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12935/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12935/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12935/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7226 -&gt; IGTPW_8712</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12935: f3dbcedcb535d7eb574cb97104f827039713e842 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8712: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8712/index.html<br />
-  IGT_7226: 41be8b4ab86f9e11388c10366dfd71e5032589c1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7145716344152514637==--
+> +import sys
+> +import os
+> +from shutil import which
+> +
+> +extensions = []
+> +
+> +if which('rst2pdf'):
+> +    extensions.append('rst2pdf.pdfbuilder')
+> +
+> +source_suffix = '.rst'
+> +master_doc = 'index'
+> +
+> +project = 'IGT Test Tools'
+> +copyright = 'Intel'
+> +author = 'IGT developers'
+> +language = 'en'
+> +
+> +exclude_patterns = []
+> +todo_include_todos = False
+> +
+> +html_theme = "nature"
+> +
+> +html_css_files = []
+> +html_static_path = ['.']
+> +html_copy_source = False
+> +
+> +html_use_smartypants = False
+> +html_sidebars = { '**': ['searchbox.html', 'localtoc.html']}
+> +htmlhelp_basename = 'IGT'
+> +
+> +html_theme_options = {
+> +    "body_max_width": "1520px",
+> +    "sidebarwidth": "400px",
+> +}
+> +
+> +# rst2pdf
+> +pdf_documents = [
+> +    ('index', u'xe_tests', u'IGT Xe Tests', u'IGT authors'),
+> +]
+> diff --git a/docs/testplan/testplan.css b/docs/testplan/testplan.css
+> new file mode 100644
+> index 000000000000..8aa7b7105c19
+> --- /dev/null
+> +++ b/docs/testplan/testplan.css
+> @@ -0,0 +1,7 @@
+> +@import url(html4css1.css);
+> +
+> +.literal {
+> +	background: lightgrey;
+> +        color: darkblue;
+> +        font-size: 14px;
+> +}
+> diff --git a/meson_options.txt b/meson_options.txt
+> index d978813b4feb..d4e373d6cfc4 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -20,6 +20,14 @@ option('man',
+>         type : 'feature',
+>         description : 'Build man pages')
+>  
+> +option('testplan',
+> +       type : 'feature',
+> +       description : 'Build testplan documentation pages in ReST and html')
+> +
+> +option('sphinx',
+> +       type : 'feature',
+> +       description : 'Build testplan documentation using Sphinx')
+> +
+>  option('docs',
+>         type : 'feature',
+>         description : 'Build documentation')
+> diff --git a/scripts/gen_rst_index b/scripts/gen_rst_index
+> new file mode 100755
+> index 000000000000..34955a35a443
+> --- /dev/null
+> +++ b/scripts/gen_rst_index
+> @@ -0,0 +1,43 @@
+> +#!/bin/bash -e
+> +# SPDX-License-Identifier: (GPL-2.0 OR MIT)
+> +
+> +## Copyright (C) 2023    Intel Corporation                 ##
+> +## Author: Mauro Carvalho Chehab <mchehab@kernel.org>      ##
+> +##                                                         ##
+> +## Small script to produce a ReST index file               ##
+> +
+> +if [ $# -lt 3 ]; then
+> +	echo 'Usage: $0: <title> <files> <dest_dir>' >&2
+> +	exit 1
+> +fi
+> +
+> +title=$1
+> +shift
+> +
+> +args=( "$@" )
+> +
+> +dest_dir=${args[${#args[@]}-1]}
+> +unset args[${#args[@]}-1]
+> +
+> +if [ ! -d $dest_dir ]; then
+> +	echo "Error: $dest_dir directory doesn't exist" >&2
+> +	exit 1
+> +fi
+> +
+> +dest_file="$dest_dir/index.rst"
+> +
+> +echo $title > "$dest_file"
+> +len=${#title}
+> +for i in $(seq 1 $len); do
+> +	echo -n "=" >> "$dest_file"
+> +done
+> +echo >> "$dest_file"
+> +echo >> "$dest_file"
+> +
+> +echo ".. toctree::" >> "$dest_file"
+> +echo "   :maxdepth: 1" >> "$dest_file"
+> +echo >> "$dest_file"
+> +
+> +for i in "${!args[@]}"; do
+> +	echo "   ${args[$i]}" >> "$dest_file"
+> +done
+> diff --git a/scripts/meson.build b/scripts/meson.build
+> index 342972e66078..ce12aa02e946 100644
+> --- a/scripts/meson.build
+> +++ b/scripts/meson.build
+> @@ -11,3 +11,6 @@ if build_tests
+>  		install_data(prog, install_dir : bindir, install_mode : 'r-xr-xr-x')
+>  	endforeach
+>  endif
+> +
+> +igt_doc_script = find_program('igt_doc.py')
+> +gen_rst_index = find_program('gen_rst_index')
+> -- 
+> 2.39.2
+> 
 
