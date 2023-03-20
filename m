@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19E7C10E16F
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 05:00:43 +0000 (UTC)
-Date: Tue, 28 Mar 2023 22:00:37 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Message-ID: <ZCPF9QglAMtFoHld@nvishwa1-DESK>
-References: <20230328053303.26627-1-niranjana.vishwanathapura@intel.com>
- <20230328082717.110b7984@maurocar-mobl2>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230328082717.110b7984@maurocar-mobl2>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E1DD10E2D0
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 17:43:22 +0000 (UTC)
+Date: Mon, 20 Mar 2023 18:43:18 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230320174318.i6fhwud5dgjcrp2i@kamilkon-desk1>
+References: <20230320084500.1434535-1-mauro.chehab@linux.intel.com>
+ <20230320084500.1434535-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_guc_pc: Skip RC6 tests for
- PVC
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230320084500.1434535-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] testplan: build also a PDF file
+ with the testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,104 +22,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 28, 2023 at 08:27:17AM +0200, Mauro Carvalho Chehab wrote:
->On Mon, 27 Mar 2023 22:33:03 -0700
->Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com> wrote:
->
->> The Pontevecchio (PVC) platform doesn't have rc6 support yet.
->> Skip rc6_on_idle and rc0_on_exec subtests for PVC.
->>
->> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
->> ---
->>  tests/xe/xe_guc_pc.c | 34 ++++++++++++++++++++++++++++++++++
->>  1 file changed, 34 insertions(+)
->>
->> diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
->> index 60c93288b..9fc2429d8 100644
->> --- a/tests/xe/xe_guc_pc.c
->> +++ b/tests/xe/xe_guc_pc.c
->> @@ -375,6 +375,38 @@ static bool in_rc6(int sysfs, int gt_id)
->>  	return strcmp(rc, "rc6") == 0;
->>  }
->>
->> +static bool is_rc6_supported(int fd)
->> +{
->> +	struct drm_xe_query_config *config;
->> +	struct drm_xe_device_query query = {
->> +		.query = DRM_XE_DEVICE_QUERY_CONFIG,
->> +	};
->> +	uint16_t devid;
->> +
->> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
->> +
->> +	config = malloc(query.size);
->> +	igt_assert(config);
->> +
->> +	query.data = to_user_pointer(config);
->> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
->> +
->> +	/* No rc6 support yet on Pontevecchio */
->> +	devid = config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
->> +	return !(
->> +		devid == 0x0BD0 ||
->> +		devid == 0x0BD1 ||
->> +		devid == 0x0BD2 ||
->> +		devid == 0x0BD5 ||
->> +		devid == 0x0BD6 ||
->> +		devid == 0x0BD7 ||
->> +		devid == 0x0BD8 ||
->> +		devid == 0x0BD9 ||
->> +		devid == 0x0BDA ||
->> +		devid == 0x0BDB
->> +		);
->> +}
->
->Instead of hardcoding a list of devices, better to check for GPU version.
->Something like this (completely untested) patch:
->
->diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
->index c2c8998dd955..21ddb016960e 100644
->--- a/lib/intel_chipset.h
->+++ b/lib/intel_chipset.h
->@@ -203,6 +203,7 @@ void intel_check_pch(void);
-> #define IS_METEORLAKE(devid)	(intel_get_device_info(devid)->is_meteorlake)
->
-> #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
->+#define IS_GEN_VER(devid, x, y)	(intel_graphics_ver(devid) == IP_VER(x, y))
-> #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
->
-> #define IS_GEN2(devid)		IS_GEN(devid, 2)
->@@ -217,6 +218,8 @@ void intel_check_pch(void);
-> #define IS_GEN11(devid)		IS_GEN(devid, 11)
-> #define IS_GEN12(devid)		IS_GEN(devid, 12)
->
->+#define IS_PONTEVECCHIO(devid)	IS_GEN_VER(devid, 12, 60)
->+
-> #define IS_MOBILE(devid)	(intel_get_device_info(devid)->is_mobile)
-> #define IS_965(devid)		AT_LEAST_GEN(devid, 4)
->
->diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
->index 60c93288bfdb..819d415372ae 100644
->--- a/tests/xe/xe_guc_pc.c
->+++ b/tests/xe/xe_guc_pc.c
->@@ -467,6 +467,7 @@ igt_main
-> 	}
->
-> 	igt_subtest("rc6_on_idle") {
->+		igt_require(IS_PONTEVECCHIO(intel_get_drm_devid(fd)));
-> 		xe_for_each_gt(fd, gt) {
-> 			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
-> 		}
->
+Hi Mauro,
 
-Ok, thanks. I have posted a revised patch series.
-[PATCH i-g-t 0/2] tests/xe/xe_guc_pc: Skip RC6 tests on PVC
+On 2023-03-20 at 09:45:00 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> PDF files are easier to share, and it costs almost nothing to
+> produce them with Sphinx using rst2pdf. So, add support for it,
 
-Niranjana
+s/So, add/Added/
+s/it,/it/
 
->
+> if rst2pdf is installed.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  docs/testplan/meson.build | 27 ++++++++++++++++++++++-----
+>  1 file changed, 22 insertions(+), 5 deletions(-)
+> 
+> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+> index 11c08573307e..65bb6c31cd65 100644
+> --- a/docs/testplan/meson.build
+> +++ b/docs/testplan/meson.build
+> @@ -4,6 +4,7 @@ build_testplan = get_option('testplan')
+>  build_sphinx = get_option('sphinx')
+>  
+>  rst2html = find_program('rst2html-3', 'rst2html', required : build_testplan)
+> +rst2pdf = find_program('rst2pdf')
+>  sphinx = find_program('sphinx-build', required: build_sphinx)
+>  
+>  stylesheet = meson.current_source_dir() + '/testplan.css'
+> @@ -46,14 +47,30 @@ if sphinx.found()
+>                                  )
+>  
+>          custom_target('index.html',
+> -                    build_by_default : true,
+> -                    command : [ 'sphinx-build', '-c', meson.current_source_dir(), meson.current_build_dir(), sphinx_out_dir],
+> -                    input : index_rst,
+> -                    output : 'index.html'
+> -                    )
+> +                      build_by_default : true,
+> +                      command : [ 'sphinx-build', '-c', meson.current_source_dir(),
+> +                      meson.current_build_dir(), sphinx_out_dir],
+> +                      input : index_rst,
+> +                      output : 'index.html'
+> +                      )
+> +    endif
+
+Please do not touch unrelated lines.
+
+> +
+> +    if rst2pdf.found()
+> +        sphinx_out_pdf = meson.current_build_dir() + '/pdf'
+> +
+> +        custom_target('xe_tests.pdf',
+> +                      build_by_default : true,
+> +                      command : [ 'sphinx-build', '-c', meson.current_source_dir(),
+> +                      '-b', 'pdf',
+> +                      '-D', 'version=' + meson.project_version(),
+> +                      meson.current_build_dir(), sphinx_out_pdf],
+> +                      input : index_rst,
+> +                      output : 'xe_tests.pdf'
+> +                      )
+
+It seemd build fails when no rst2pdf is present:
+
+Program rst2pdf found: NO
+
+docs/testplan/meson.build:7:0: ERROR: Program 'rst2pdf' not found or not executable
+
+Regards,
+Kamil
+
+>      endif
+>  endif
+>  
+>  build_info += 'Build ReST test documentation: @0@'.format(igt_doc_script.found())
+>  build_info += 'Build simple html testplan documentation: @0@'.format(rst2html.found())
+>  build_info += 'Build indexed html testplan documentation: @0@'.format(sphinx.found())
+> +build_info += 'Build pdf testplan documentation: @0@'.format(sphinx.found() and rst2pdf.found())
+> -- 
+> 2.39.2
+> 
 
