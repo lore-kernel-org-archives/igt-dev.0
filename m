@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B62A210E232
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 06:35:51 +0000 (UTC)
-Date: Mon, 20 Mar 2023 07:35:28 +0100
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE7CF10E1DB
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 06:36:05 +0000 (UTC)
+Date: Mon, 20 Mar 2023 07:36:00 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230320063528.jk67ylwmxi3wlzds@zkempczy-mobl2>
+Message-ID: <20230320063600.wosbem32jmnoaitn@zkempczy-mobl2>
 References: <cover.1679055766.git.karolina.stolarek@intel.com>
  <f33395c3b788c934de5b9910ca5cf3c07426a6e8.1679055766.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <f33395c3b788c934de5b9910ca5cf3c07426a6e8.1679055766.git.karolina.stolarek@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t v4 4/9] tests/i915/gem_blits: Use new
  copy instruction
@@ -33,6 +34,14 @@ On Fri, Mar 17, 2023 at 01:37:06PM +0100, Karolina Stolarek wrote:
 > The test uses legacy command which is not supported on
 > newer GPU generations. Use XY_FAST_COPY_BLT on newer GPU generations.
 > 
+
+Forgot to add in review:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
 > Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
 > Co-developed-by: Nirmoy Das <nirmoy.das@intel.com>
 > Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
@@ -148,14 +157,6 @@ On Fri, Mar 17, 2023 at 01:37:06PM +0100, Karolina Stolarek wrote:
 > +		batch[i++] = fast_copy_dword0(buffer->tiling, tiling);
 > +		dword1 = fast_copy_dword1(buffer->tiling, tiling, 32);
 > +		batch[i++] = dword1 | pitch;
-
-Ok, now it looks much better for me, especially caller doesn't
-change tiling in the call and fast_copy_dword1() is responsible
-to adjust appropriate bitfields.
-
---
-Zbigniew
-
 > +	} else {
 > +		igt_assert_f(0, "No supported blit command found\n");
 > +	}
