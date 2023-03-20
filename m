@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 02D5F10E1DB
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 06:40:43 +0000 (UTC)
-Date: Mon, 20 Mar 2023 07:40:39 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230320064039.q6lxjb4mk3nagukc@zkempczy-mobl2>
-References: <cover.1679055766.git.karolina.stolarek@intel.com>
- <33332fb94164e9b461e46cf396e56720c68c9bf6.1679055766.git.karolina.stolarek@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4323741545329853568=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <33332fb94164e9b461e46cf396e56720c68c9bf6.1679055766.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 8/9] lib/intel_batchbuffer: Handle no
- support for Tile Y
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Mon, 20 Mar 2023 06:47:37 -0000
+Message-ID: <167929485737.26307.2152039358842007011@emeril.freedesktop.org>
+References: <20230320060034.2788862-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230320060034.2788862-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2tt?=
+ =?utf-8?q?s=3A_Get_pipe_enum_from_debugfs_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,148 +17,210 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Mar 17, 2023 at 01:37:10PM +0100, Karolina Stolarek wrote:
-> Newer generations stopped supporting legacy Tile Y format.
-> In order to do a Y-Major blit, the command has to use Tile4
-> format, which requires setting specific blits in the first
-> bit group of the XY_FAST_COPY_BLT command.
-> 
-> Rewrite fast_copy_dword1 function to always set them when
-> a platform doesn't support the legacy format. Update calls
-> to the function to include file descriptor parameter.
-> 
-> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/intel_batchbuffer.c | 26 +++++++++++++++++---------
->  lib/intel_batchbuffer.h |  2 +-
->  tests/i915/gem_blits.c  |  9 ++++++---
->  3 files changed, 24 insertions(+), 13 deletions(-)
-> 
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index 1b999ca5..24728d4a 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -32,7 +32,6 @@
->  #include "intel_batchbuffer.h"
->  #include "intel_bufops.h"
->  #include "intel_chipset.h"
-> -#include "rendercopy.h"
->  #include "media_fill.h"
->  #include "media_spin.h"
->  #include "i915/gem_mman.h"
-> @@ -40,6 +39,7 @@
->  #include "sw_sync.h"
->  #include "gpgpu_fill.h"
->  #include "huc_copy.h"
-> +#include "i915/i915_blt.h"
->  
->  #define BCS_SWCTRL 0x22200
->  #define BCS_SRC_Y (1 << 0)
-> @@ -122,18 +122,26 @@ uint32_t fast_copy_dword0(unsigned int src_tiling,
->  	return dword0;
->  }
->  
-> +static bool new_tile_y_format(unsigned int tiling)
-> +{
-> +	return tiling == T_YFMAJOR || tiling == T_TILE4;
-> +}
-> +
->  uint32_t fast_copy_dword1(unsigned int src_tiling,
->  			  unsigned int dst_tiling,
-> -			  int bpp)
-> +			  int bpp, int fd)
+--===============4323741545329853568==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Use fd as first argument, other api also uses it as first arg;
-then:
+== Series Details ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Series: lib/kms: Get pipe enum from debugfs (rev3)
+URL   : https://patchwork.freedesktop.org/series/115323/
+State : success
 
---
-Zbigniew
+== Summary ==
 
->  {
->  	uint32_t dword1 = 0;
->  
-> -	if (src_tiling == I915_TILING_Yf || src_tiling == I915_TILING_4)
-> -		/* Repurposed as Tile-4 on DG2 */
-> -		dword1 |= XY_FAST_COPY_SRC_TILING_Yf;
-> -	if (dst_tiling == I915_TILING_Yf || dst_tiling == I915_TILING_4)
-> -		/* Repurposed as Tile-4 on DG2 */
-> -		dword1 |= XY_FAST_COPY_DST_TILING_Yf;
-> +	if (blt_fast_copy_supports_tiling(fd, T_YMAJOR)) {
-> +		dword1 |= new_tile_y_format(src_tiling)
-> +				? XY_FAST_COPY_SRC_TILING_Yf : 0;
-> +		dword1 |= new_tile_y_format(dst_tiling)
-> +				? XY_FAST_COPY_DST_TILING_Yf : 0;
-> +	} else {
-> +		/* Always set bits for platforms that don't support legacy TileY */
-> +		dword1 |= XY_FAST_COPY_SRC_TILING_Yf | XY_FAST_COPY_DST_TILING_Yf;
-> +	}
->  
->  	switch (bpp) {
->  	case 8:
-> @@ -582,7 +590,7 @@ void igt_blitter_fast_copy__raw(int fd,
->  	src_pitch = fast_copy_pitch(src_stride, src_tiling);
->  	dst_pitch = fast_copy_pitch(dst_stride, dst_tiling);
->  	dword0 = fast_copy_dword0(src_tiling, dst_tiling);
-> -	dword1 = fast_copy_dword1(src_tiling, dst_tiling, bpp);
-> +	dword1 = fast_copy_dword1(src_tiling, dst_tiling, bpp, fd);
->  
->  	CHECK_RANGE(src_x); CHECK_RANGE(src_y);
->  	CHECK_RANGE(dst_x); CHECK_RANGE(dst_y);
-> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-> index aed1d575..fb244c2b 100644
-> --- a/lib/intel_batchbuffer.h
-> +++ b/lib/intel_batchbuffer.h
-> @@ -35,7 +35,7 @@ uint32_t fast_copy_dword0(unsigned int src_tiling,
->  			  unsigned int dst_tiling);
->  uint32_t fast_copy_dword1(unsigned int src_tiling,
->  			  unsigned int dst_tiling,
-> -			  int bpp);
-> +			  int bpp, int fd);
->  void igt_blitter_copy(int fd,
->  		      uint64_t ahnd,
->  		      uint32_t ctx,
-> diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
-> index 1414826c..0d4655f8 100644
-> --- a/tests/i915/gem_blits.c
-> +++ b/tests/i915/gem_blits.c
-> @@ -224,7 +224,8 @@ static void buffer_set_tiling(const struct device *device,
->  		batch[i++] = 3 << 24 | 0xcc << 16 | pitch;
->  	} else if (blt_has_fast_copy(device->fd)) {
->  		batch[i++] = fast_copy_dword0(buffer->tiling, tiling);
-> -		dword1 = fast_copy_dword1(buffer->tiling, tiling, 32);
-> +		dword1 = fast_copy_dword1(buffer->tiling, tiling,
-> +					  32, device->fd);
->  		batch[i++] = dword1 | pitch;
->  	} else {
->  		igt_assert_f(0, "No supported blit command found\n");
-> @@ -371,7 +372,8 @@ static bool blit_to_linear(const struct device *device,
->  		batch[i++] = 3 << 24 | 0xcc << 16 | buffer->stride;
->  	} else if (blt_has_fast_copy(device->fd)) {
->  		batch[i++] = fast_copy_dword0(buffer->tiling, I915_TILING_NONE);
-> -		dword1 = fast_copy_dword1(buffer->tiling, I915_TILING_NONE, 32);
-> +		dword1 = fast_copy_dword1(buffer->tiling, I915_TILING_NONE,
-> +					  32, device->fd);
->  		batch[i++] = dword1 | buffer->stride;
->  	} else {
->  		igt_assert_f(0, "No supported blit command found\n");
-> @@ -719,7 +721,8 @@ blit(const struct device *device,
->  		batch[i++] = 3 << 24 | 0xcc << 16 | pitch;
->  	} else if (blt_has_fast_copy(device->fd)) {
->  		batch[i++] = fast_copy_dword0(src->tiling, dst->tiling);
-> -		dword1 = fast_copy_dword1(src->tiling, dst->tiling, 32);
-> +		dword1 = fast_copy_dword1(src->tiling, dst->tiling,
-> +					  32, device->fd);
->  		batch[i++] = dword1 | pitch;
->  	} else {
->  		igt_assert_f(0, "No supported blit command found\n");
-> -- 
-> 2.25.1
-> 
+CI Bug Log - changes from CI_DRM_12879 -> IGTPW_8639
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/index.html
+
+Participating hosts (35 -> 34)
+------------------------------
+
+  Missing    (1): bat-atsm-1 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8639 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [PASS][1] -> [DMESG-WARN][2] ([i915#7699])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         NOTRUN -> [ABORT][3] ([i915#4983])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][4] ([fdo#109271])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][5] ([i915#5354]) +2 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [INCOMPLETE][6] ([i915#6972] / [i915#7913]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [ABORT][8] ([i915#7911]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1:
+    - bat-adlp-9:         [DMESG-WARN][10] ([i915#2867]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/bat-adlp-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/bat-adlp-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6972]: https://gitlab.freedesktop.org/drm/intel/issues/6972
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7205 -> IGTPW_8639
+
+  CI-20190529: 20190529
+  CI_DRM_12879: b101ddfdc98728b7ea5c8f9f6cbac5a5e5d64572 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8639: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/index.html
+  IGT_7205: 0d4bf61a38c7751cf7c92751c4bb64f95c9ffbe2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/index.html
+
+--===============4323741545329853568==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/kms: Get pipe enum from debugfs (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115323/">https://patchwork.freedesktop.org/series/115323/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12879 -&gt; IGTPW_8639</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/index.html</p>
+<h2>Participating hosts (35 -&gt; 34)</h2>
+<p>Missing    (1): bat-atsm-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8639 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6972">i915#6972</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1:</p>
+<ul>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/bat-adlp-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/bat-adlp-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7205 -&gt; IGTPW_8639</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12879: b101ddfdc98728b7ea5c8f9f6cbac5a5e5d64572 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8639: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8639/index.html<br />
+  IGT_7205: 0d4bf61a38c7751cf7c92751c4bb64f95c9ffbe2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4323741545329853568==--
