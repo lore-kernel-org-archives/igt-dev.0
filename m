@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 94CB610E2C6
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 10:04:14 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Mon, 20 Mar 2023 15:30:16 +0530
-Message-Id: <20230320100017.2913328-5-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230320100017.2913328-1-bhanuprakash.modem@intel.com>
-References: <20230320100017.2913328-1-bhanuprakash.modem@intel.com>
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
+ [IPv6:2a00:1450:4864:20::129])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 437D310E3FC
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 11:23:54 +0000 (UTC)
+Received: by mail-lf1-x129.google.com with SMTP id f18so14444920lfa.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 04:23:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 4/5] tests/kms_force_connector_basic: Add XE
- support
+References: <20230315150129.245398-1-matthew.auld@intel.com>
+In-Reply-To: <20230315150129.245398-1-matthew.auld@intel.com>
+From: Matthew Auld <matthew.william.auld@gmail.com>
+Date: Mon, 20 Mar 2023 11:23:25 +0000
+Message-ID: <CAM0jSHNUyTpFQ8PoJKV6Yze0bANzSLjOj7Y_GbT_UVQZRbz-dw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/debugfs: fix double-free in
+ test_base
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,32 +23,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com, mchehab@kernel.org, jani.nikula@intel.com
+To: Matthew Auld <matthew.auld@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+On Wed, 15 Mar 2023 at 15:02, Matthew Auld <matthew.auld@intel.com> wrote:
+>
+> Looks to incorrectly free the xe_dev->config, even though there is still
+> a cached entry pointing to it. The test fixture will also call
+> xe_device_put() at the end, freeing the same pointer (might now point to
+> valid memory), which hopefully explains why we see strange looking
+> crashes in CI:
+>
+> Starting subtest: base
+> Subtest base: SUCCESS (0.005s)
+> Received signal SIGABRT.
+> Stack trace:
+>  #0 [fatal_sig_handler+0x10f]
+>  #1 [killpg+0x40]
+>  #2 [gsignal+0xcb]
+>  #3 [abort+0x12b]
+>  #4 [__fsetlocking+0x42e]
+>  #5 [pthread_attr_setschedparam+0x54c]
+>  #6 [pthread_attr_setschedparam+0xd28]
+>  #7 [pthread_attr_setschedparam+0x2ed3]
+>  #8 [__libc_malloc+0x74]
+>  #9 [_IO_file_doallocate+0x94]
+>  #10 [_IO_doallocbuf+0x50]
+>  #11 [_IO_file_overflow+0x1b0]
+>  #12 [_IO_file_xsputn+0xe5]
+>  #13 [psiginfo+0x13512]
+>  #14 [igt_kmsg+0xc9]
+>  #15 [igt_exit+0xd3]
+>  #16 [main+0x44]
+>  #17 [__libc_start_main+0xf3]
+>  #18 [_start+0x2e]
+>
+> Keep the xe_device stuff in test_base, since that looks be the only user
+> here.
+>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_force_connector_basic.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Ping? Any takers for this one?
 
-diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
-index 4ff1efe3b..6a13fe4ed 100644
---- a/tests/kms_force_connector_basic.c
-+++ b/tests/kms_force_connector_basic.c
-@@ -53,7 +53,9 @@ static void reset_connectors(void)
- 		drmModeFreeConnector(connector);
- 	}
- 
--	igt_set_module_param_int(drm_fd, "load_detect_test", 0);
-+	/* FIXME: load_detect_test is not found in XE. */
-+	if (is_i915_device(drm_fd))
-+		igt_set_module_param_int(drm_fd, "load_detect_test", 0);
- 
- 	close(drm_fd);
- }
--- 
-2.40.0
-
+> ---
+>  tests/xe/xe_debugfs.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
+> index 38c8becc..ddb01568 100644
+> --- a/tests/xe/xe_debugfs.c
+> +++ b/tests/xe/xe_debugfs.c
+> @@ -146,7 +146,7 @@ test_base(int fd)
+>
+>         validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
+>
+> -       free(config);
+> +       xe_device_put(fd);
+>  }
+>
+>  /**
+> @@ -250,7 +250,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>
+>         igt_fixture {
+>                 fd = drm_open_driver(DRIVER_XE);
+> -               xe_device_get(fd);
+>                 __igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
+>         }
+>
+> @@ -272,7 +271,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>         }
+>
+>         igt_fixture {
+> -               xe_device_put(fd);
+>                 close(fd);
+>         }
+>  }
+> --
+> 2.39.2
+>
 
