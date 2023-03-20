@@ -1,20 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D24C610E09A
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 07:35:48 +0000 (UTC)
-From: "Coelho, Luciano" <luciano.coelho@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Sharma,
- Swati2" <swati2.sharma@intel.com>
-Date: Fri, 17 Mar 2023 07:35:45 +0000
-Message-ID: <a6f343d2ccb318fd0dd35f6353423b3da2e5d1f7.camel@intel.com>
-References: <20230316161353.30915-1-swati2.sharma@intel.com>
-In-Reply-To: <20230316161353.30915-1-swati2.sharma@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BB9396CF6C4CC046BB764B00EC58472B@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0379410E1CA
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 14:33:53 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 20 Mar 2023 20:06:22 +0530
+Message-Id: <20230320143622.5166-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: Fix
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_scaling: Fix
  out-of-bound array access
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,21 +17,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Luca Coelho <luciano.coelho@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCAyMDIzLTAzLTE2IGF0IDIxOjQzICswNTMwLCBTd2F0aSBTaGFybWEgd3JvdGU6DQo+
-IFdpdGggdGhpcyBmaXggd2UgYXJlIHNvbHZpbmcgMiBpc3N1ZXMuIEZpcnN0bHksIHRoZQ0KPiBw
-bGFuZXNfc2NhbGluZ19jb21ibygpIHRlc3RzIHdlcmUgbGVhdmluZyBvbmUgc2NhbGVyIGFzc2ln
-bmVkDQo+IGFmdGVyIHJ1bm5pbmcgc3ViLXRlc3Qgd2l0aCB0d28gY29uc2VjdXRpdmUgcGxhbmVz
-IGJlY2F1c2UNCj4gb25lIHNjYWxlciB3YXMgZ2V0dGluZyByZXVzZWQgaW4gdGhlIG5leHQgcnVu
-Lg0KPiANCj4gU2Vjb25kbHksIHdoZW4gayA9PSBuX3BsYW5lcyAtIDEsIHdlIHdlcmUgdHJ5aW5n
-IHRvIGFjY2Vzcw0KPiBwbGFuZXNbbl9wbGFuZXNdLCB3aGljaCBsZWQgdG8gYXJyYXkgb3V0IG9m
-IGJvdW5kcyBlcnJvci4NCj4gDQo+IFN1Z2dlc3RlZC1ieTogTHVjYSBDb2VsaG8gPGx1Y2lhbm8u
-Y29lbGhvQGludGVsLmNvbT4NCj4gU3VnZ2VzdGVkLWJ5OiBKdWhhLVBla2thIEhlaWtraWxhIDxq
-dWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPg0KPiBSZXBvcnRlZC1ieTogTHVjYSBDb2VsaG8g
-PGx1Y2lhbm8uY29lbGhvQGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogU3dhdGkgU2hhcm1h
-IDxzd2F0aTIuc2hhcm1hQGludGVsLmNvbT4NCj4gLS0tDQoNCkxvb2tzIGdvb2RzLiAgVGhhbmtz
-IGZvciBmaXhpbmcgaXQuDQoNClJldmlld2VkLWJ5OiBMdWNhIENvZWxobyA8bHVjaWFuby5jb2Vs
-aG9AaW50ZWwuY29tPg0KDQotLQ0KQ2hlZXJzLA0KTHVjYS4NCg==
+With this fix we are solving 2 issues. Firstly, the
+planes_scaling_combo() tests were leaving one scaler assigned
+after running sub-test with two consecutive planes because
+one scaler was getting reused in the next run. So with this fix
+scaler is not reused since we won't have any common plane.
+
+Secondly, when k == n_planes - 1, we were trying to access
+planes[n_planes], which led to array out of bounds error. So, with
+this fix, this issue is fixed too.
+
+v2: -fix condition if n_planes is not even (JP)
+
+Suggested-by: Luca Coelho <luciano.coelho@intel.com>
+Suggested-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Reported-by: Luca Coelho <luciano.coelho@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_plane_scaling.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 3a6904afb..7feb45ca3 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -744,7 +744,7 @@ test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+ 		igt_assert(0);
+ 	}
+ 
+-	for (int k = 0; k < display->pipes[pipe].n_planes; k++) {
++	for (int k = 0; k < display->pipes[pipe].n_planes - 1; k += 2) {
+ 		igt_plane_t *p1, *p2;
+ 
+ 		p1 = &display->pipes[pipe].planes[k];
+-- 
+2.25.1
