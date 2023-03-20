@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1237548793867436615=="
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B092D10E1DB
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 06:04:19 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 20 Mar 2023 11:30:34 +0530
+Message-Id: <20230320060034.2788862-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Mon, 20 Mar 2023 05:51:54 -0000
-Message-ID: <167929151474.26309.13996130983246031757@emeril.freedesktop.org>
-References: <20230316161353.30915-1-swati2.sharma@intel.com>
-In-Reply-To: <20230316161353.30915-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Fscaling=3A_Fix_out-of-bound_array_access_=28rev4?=
- =?utf-8?q?=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [RFC PATCH] lib/kms: Get pipe enum from debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,227 +16,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1237548793867436615==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The pipe may not be the same as crtc index if pipes are fused off.
+For testing purposes, IGT needs to know the pipe. There's already
+a I915_GET_PIPE_FROM_CRTC_ID IOCTL for this. However, the upcoming
+Xe driver won't have that IOCTL.
 
-== Series Details ==
+Add IGT support to read the pipe from debugfs. For i915, still
+fallback to ioctl method to support older kernels.
 
-Series: tests/kms_plane_scaling: Fix out-of-bound array access (rev4)
-URL   : https://patchwork.freedesktop.org/series/115274/
-State : success
+V2: Fix kmstest_get_pipe_from_crtc_id() (Bhanu)
 
-== Summary ==
+Cc: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ lib/igt_kms.c | 80 +++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 56 insertions(+), 24 deletions(-)
 
-CI Bug Log - changes from CI_DRM_12879 -> IGTPW_8638
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with IGTPW_8638 need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8638, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/index.html
-
-Participating hosts (35 -> 33)
-------------------------------
-
-  Missing    (2): fi-kbl-soraka bat-atsm-1 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8638:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@kms_addfb_basic@too-high:
-    - fi-kbl-8809g:       [FAIL][1] ([i915#8296]) -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8638 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-skl-guc:         [PASS][3] -> [DMESG-WARN][4] ([i915#8073])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-1:         NOTRUN -> [ABORT][5] ([i915#4983])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/bat-rpls-1/igt@i915_selftest@live@reset.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-1:         [ABORT][6] ([i915#7911]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/bat-rpls-1/igt@i915_selftest@live@requests.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/bat-rpls-1/igt@i915_selftest@live@requests.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1:
-    - bat-adlp-9:         [DMESG-WARN][8] ([i915#2867]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/bat-adlp-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/bat-adlp-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-n3050:       [INCOMPLETE][10] ([i915#6972] / [i915#7913]) -> [ABORT][11] ([i915#7911] / [i915#7913])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-
-  
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6972]: https://gitlab.freedesktop.org/drm/intel/issues/6972
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#8073]: https://gitlab.freedesktop.org/drm/intel/issues/8073
-  [i915#8296]: https://gitlab.freedesktop.org/drm/intel/issues/8296
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7205 -> IGTPW_8638
-
-  CI-20190529: 20190529
-  CI_DRM_12879: b101ddfdc98728b7ea5c8f9f6cbac5a5e5d64572 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8638: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/index.html
-  IGT_7205: 0d4bf61a38c7751cf7c92751c4bb64f95c9ffbe2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/index.html
-
---===============1237548793867436615==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: Fix out-of-bound array access (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115274/">https://patchwork.freedesktop.org/series/115274/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12879 -&gt; IGTPW_8638</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with IGTPW_8638 need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8638, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/index.html</p>
-<h2>Participating hosts (35 -&gt; 33)</h2>
-<p>Missing    (2): fi-kbl-soraka bat-atsm-1 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8638:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_addfb_basic@too-high:<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8296">i915#8296</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8638 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8073">i915#8073</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/bat-adlp-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/bat-adlp-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live@execlists:<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12879/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6972">i915#6972</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7205 -&gt; IGTPW_8638</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12879: b101ddfdc98728b7ea5c8f9f6cbac5a5e5d64572 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8638: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8638/index.html<br />
-  IGT_7205: 0d4bf61a38c7751cf7c92751c4bb64f95c9ffbe2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1237548793867436615==--
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 562d60bff..b3135ad7a 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1067,6 +1067,53 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
+ 		 aspect ? aspect : "", aspect ? ")" : "");
+ }
+ 
++/*
++ * With non-contiguous pipes display, crtc mapping is not always same
++ * as pipe mapping, In i915 pipe is enum id of i915's crtc object.
++ * hence allocating upper bound igt_pipe array to support non-contiguos
++ * pipe display and reading pipe enum for a crtc using GET_PIPE_FROM_CRTC_ID
++ * ioctl for a pipe to do pipe ordering with respect to crtc list.
++ */
++static int __intel_get_pipe_from_crtc_id(int fd, int crtc_id, int crtc_idx)
++{
++	char buf[2];
++	int debugfs_fd, res;
++
++	/*
++	 * No GET_PIPE_FROM_CRTC_ID ioctl support for XE. Instead read
++	 * from the debugfs "i915_pipe".
++	 *
++	 * This debugfs is applicable for both i915 & XE. For i915, still
++	 * we can fallback to ioctl method to support older kernels.
++	 */
++	debugfs_fd = igt_debugfs_pipe_dir(fd, crtc_idx, O_RDONLY);
++	igt_assert(debugfs_fd >= 0);
++
++	res = igt_debugfs_simple_read(debugfs_fd, "i915_pipe", buf, sizeof(buf));
++	close(debugfs_fd);
++
++	if (res <= 0) {
++		/* Fallback to older ioctl method. */
++		if (is_i915_device(fd)) {
++			struct drm_i915_get_pipe_from_crtc_id get_pipe;
++
++			get_pipe.pipe = 0;
++			get_pipe.crtc_id =  crtc_id;
++
++			do_ioctl(fd, DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID,
++				 &get_pipe);
++
++			return get_pipe.pipe;
++		} else
++			igt_assert_f(false, "XE: Failed to read the debugfs i915_pipe.\n");
++	} else {
++		int pipe;
++
++		igt_assert_eq(sscanf(buf, "%d", &pipe), 1);
++		return pipe;
++	}
++}
++
+ /**
+  * kmstest_get_pipe_from_crtc_id:
+  * @fd: DRM fd
+@@ -1100,7 +1147,8 @@ int kmstest_get_pipe_from_crtc_id(int fd, int crtc_id)
+ 
+ 	drmModeFreeResources(res);
+ 
+-	return i;
++	return is_intel_device(fd) ?
++		__intel_get_pipe_from_crtc_id(fd, crtc_id, i) : i;
+ }
+ 
+ /**
+@@ -2558,14 +2606,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 	drmModeRes *resources;
+ 	drmModePlaneRes *plane_resources;
+ 	int i;
+-	bool is_i915_dev;
++	bool is_intel_dev;
+ 
+ 	memset(display, 0, sizeof(igt_display_t));
+ 
+ 	LOG_INDENT(display, "init");
+ 
+ 	display->drm_fd = drm_fd;
+-	is_i915_dev = is_i915_device(drm_fd);
++	is_intel_dev = is_intel_device(drm_fd);
+ 
+ 	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
+ 
+@@ -2593,34 +2641,18 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 	if (is_xe_device(drm_fd))
+ 		xe_device_get(drm_fd);
+ 
+-	/*
+-	 * With non-contiguous pipes display, crtc mapping is not always same
+-	 * as pipe mapping, In i915 pipe is enum id of i915's crtc object.
+-	 * hence allocating upper bound igt_pipe array to support non-contiguos
+-	 * pipe display and reading pipe enum for a crtc using GET_PIPE_FROM_CRTC_ID ioctl
+-	 * for a pipe to do pipe ordering with respect to crtc list.
+-	 */
+ 	display->n_pipes = IGT_MAX_PIPES;
+ 	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
+ 	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+ 
+ 	for (i = 0; i < resources->count_crtcs; i++) {
+ 		igt_pipe_t *pipe;
++		int pipe_enum = (is_intel_dev)?
++			__intel_get_pipe_from_crtc_id(drm_fd,
++						      resources->crtcs[i], i) : i;
+ 
+-		if (is_i915_dev) {
+-			struct drm_i915_get_pipe_from_crtc_id get_pipe;
+-
+-			get_pipe.pipe = 0;
+-			get_pipe.crtc_id =  resources->crtcs[i];
+-			do_ioctl(display->drm_fd,
+-					DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID, &get_pipe);
+-			pipe = &display->pipes[get_pipe.pipe];
+-			pipe->pipe = get_pipe.pipe;
+-		}
+-		else {
+-			pipe = &display->pipes[i];
+-			pipe->pipe = i;
+-		}
++		pipe = &display->pipes[pipe_enum];
++		pipe->pipe = pipe_enum;
+ 
+ 		/* pipe is enabled/disabled */
+ 		pipe->enabled = true;
+-- 
+2.40.0
