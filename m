@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E43A10E2D0
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 17:45:54 +0000 (UTC)
-Date: Mon, 20 Mar 2023 18:45:50 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230320174550.jm74pibx7mfztcgj@kamilkon-desk1>
-References: <20230320084500.1434535-1-mauro.chehab@linux.intel.com>
- <20230320084500.1434535-2-mauro.chehab@linux.intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FB2B10E412
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 10:04:10 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Mon, 20 Mar 2023 15:30:14 +0530
+Message-Id: <20230320100017.2913328-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230320100017.2913328-1-bhanuprakash.modem@intel.com>
+References: <20230320100017.2913328-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230320084500.1434535-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] meson: build Xe test
- documentation
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t 2/5] lib/igt_fb: Add support for allocating
+ buffers for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,182 +20,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com, mchehab@kernel.org, jani.nikula@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+Add support to create a buffer object to the XE driver.
 
-On 2023-03-20 at 09:44:59 +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Add the remaining changes at meson for it to build Xe documentation.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  docs/meson.build           |  1 +
->  docs/testplan/conf.py      | 41 ++++++++++++++++++++++++++++++++++++
->  docs/testplan/testplan.css |  7 +++++++
->  meson_options.txt          |  8 +++++++
->  scripts/gen_rst_index      | 43 ++++++++++++++++++++++++++++++++++++++
->  scripts/meson.build        |  3 +++
->  6 files changed, 103 insertions(+)
->  create mode 100644 docs/testplan/conf.py
->  create mode 100644 docs/testplan/testplan.css
->  create mode 100755 scripts/gen_rst_index
-> 
-> diff --git a/docs/meson.build b/docs/meson.build
-> index ead14c4015d9..01edf64f04a8 100644
-> --- a/docs/meson.build
-> +++ b/docs/meson.build
-> @@ -1 +1,2 @@
->  subdir('reference')
-> +subdir('testplan')
-> diff --git a/docs/testplan/conf.py b/docs/testplan/conf.py
-> new file mode 100644
-> index 000000000000..26243ff8bd88
-> --- /dev/null
-> +++ b/docs/testplan/conf.py
-> @@ -0,0 +1,41 @@
-> +# -*- coding: utf-8 -*-
-> +
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ lib/igt_fb.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-imho you should put here SPDX with MIT.
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index ba89e1f60..63f8923dc 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -49,6 +49,8 @@
+ #include "intel_batchbuffer.h"
+ #include "intel_chipset.h"
+ #include "intel_bufops.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
+ 
+ /**
+  * SECTION:igt_fb
+@@ -434,7 +436,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
+ 
+ 	switch (modifier) {
+ 	case DRM_FORMAT_MOD_LINEAR :
+-		if (is_i915_device(fd))
++		if (is_intel_device(fd))
+ 			*width_ret = 64;
+ 		else
+ 			*width_ret = 1;
+@@ -924,6 +926,9 @@ static uint64_t calc_fb_size(struct igt_fb *fb)
+ 		size += calc_plane_size(fb, plane);
+ 	}
+ 
++	if (is_xe_device(fb->fd))
++		size = ALIGN(size, xe_get_default_alignment(fb->fd));
++
+ 	return size;
+ }
+ 
+@@ -1143,8 +1148,8 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
+ 	 * them, so we need to make sure to use a device BO then.
+ 	 */
+ 	if (fb->modifier || fb->size || fb->strides[0] ||
+-	    (is_i915_device(fd) && igt_format_is_yuv(fb->drm_format)) ||
+-	    (is_i915_device(fd) && igt_format_is_fp16(fb->drm_format)) ||
++	    (is_intel_device(fd) && igt_format_is_yuv(fb->drm_format)) ||
++	    (is_intel_device(fd) && igt_format_is_fp16(fb->drm_format)) ||
+ 	    (is_amdgpu_device(fd) && igt_format_is_yuv(fb->drm_format)) ||
+ 	    is_nouveau_device(fd))
+ 		device_bo = true;
+@@ -1168,6 +1173,11 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
+ 					       fb->strides[0]);
+ 			/* If we can't use fences, we won't use ggtt detiling later. */
+ 			igt_assert(err == 0 || err == -EOPNOTSUPP);
++		} else if (is_xe_device(fd)) {
++			fb->gem_handle = xe_bo_create_flags(fd, 0, fb->size,
++							    xe_has_vram(fd) ?
++							      vram_memory(fd, 0) :
++							      system_memory(fd));
+ 		} else if (is_vc4_device(fd)) {
+ 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
+ 
+-- 
+2.40.0
 
-Regards,
-Kamil
-
-> +import sys
-> +import os
-> +from shutil import which
-> +
-> +extensions = []
-> +
-> +if which('rst2pdf'):
-> +    extensions.append('rst2pdf.pdfbuilder')
-> +
-> +source_suffix = '.rst'
-> +master_doc = 'index'
-> +
-> +project = 'IGT Test Tools'
-> +copyright = 'Intel'
-> +author = 'IGT developers'
-> +language = 'en'
-> +
-> +exclude_patterns = []
-> +todo_include_todos = False
-> +
-> +html_theme = "nature"
-> +
-> +html_css_files = []
-> +html_static_path = ['.']
-> +html_copy_source = False
-> +
-> +html_use_smartypants = False
-> +html_sidebars = { '**': ['searchbox.html', 'localtoc.html']}
-> +htmlhelp_basename = 'IGT'
-> +
-> +html_theme_options = {
-> +    "body_max_width": "1520px",
-> +    "sidebarwidth": "400px",
-> +}
-> +
-> +# rst2pdf
-> +pdf_documents = [
-> +    ('index', u'xe_tests', u'IGT Xe Tests', u'IGT authors'),
-> +]
-> diff --git a/docs/testplan/testplan.css b/docs/testplan/testplan.css
-> new file mode 100644
-> index 000000000000..8aa7b7105c19
-> --- /dev/null
-> +++ b/docs/testplan/testplan.css
-> @@ -0,0 +1,7 @@
-> +@import url(html4css1.css);
-> +
-> +.literal {
-> +	background: lightgrey;
-> +        color: darkblue;
-> +        font-size: 14px;
-> +}
-> diff --git a/meson_options.txt b/meson_options.txt
-> index d978813b4feb..d4e373d6cfc4 100644
-> --- a/meson_options.txt
-> +++ b/meson_options.txt
-> @@ -20,6 +20,14 @@ option('man',
->         type : 'feature',
->         description : 'Build man pages')
->  
-> +option('testplan',
-> +       type : 'feature',
-> +       description : 'Build testplan documentation pages in ReST and html')
-> +
-> +option('sphinx',
-> +       type : 'feature',
-> +       description : 'Build testplan documentation using Sphinx')
-> +
->  option('docs',
->         type : 'feature',
->         description : 'Build documentation')
-> diff --git a/scripts/gen_rst_index b/scripts/gen_rst_index
-> new file mode 100755
-> index 000000000000..34955a35a443
-> --- /dev/null
-> +++ b/scripts/gen_rst_index
-> @@ -0,0 +1,43 @@
-> +#!/bin/bash -e
-> +# SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +
-> +## Copyright (C) 2023    Intel Corporation                 ##
-> +## Author: Mauro Carvalho Chehab <mchehab@kernel.org>      ##
-> +##                                                         ##
-> +## Small script to produce a ReST index file               ##
-> +
-> +if [ $# -lt 3 ]; then
-> +	echo 'Usage: $0: <title> <files> <dest_dir>' >&2
-> +	exit 1
-> +fi
-> +
-> +title=$1
-> +shift
-> +
-> +args=( "$@" )
-> +
-> +dest_dir=${args[${#args[@]}-1]}
-> +unset args[${#args[@]}-1]
-> +
-> +if [ ! -d $dest_dir ]; then
-> +	echo "Error: $dest_dir directory doesn't exist" >&2
-> +	exit 1
-> +fi
-> +
-> +dest_file="$dest_dir/index.rst"
-> +
-> +echo $title > "$dest_file"
-> +len=${#title}
-> +for i in $(seq 1 $len); do
-> +	echo -n "=" >> "$dest_file"
-> +done
-> +echo >> "$dest_file"
-> +echo >> "$dest_file"
-> +
-> +echo ".. toctree::" >> "$dest_file"
-> +echo "   :maxdepth: 1" >> "$dest_file"
-> +echo >> "$dest_file"
-> +
-> +for i in "${!args[@]}"; do
-> +	echo "   ${args[$i]}" >> "$dest_file"
-> +done
-> diff --git a/scripts/meson.build b/scripts/meson.build
-> index 342972e66078..ce12aa02e946 100644
-> --- a/scripts/meson.build
-> +++ b/scripts/meson.build
-> @@ -11,3 +11,6 @@ if build_tests
->  		install_data(prog, install_dir : bindir, install_mode : 'r-xr-xr-x')
->  	endforeach
->  endif
-> +
-> +igt_doc_script = find_program('igt_doc.py')
-> +gen_rst_index = find_program('gen_rst_index')
-> -- 
-> 2.39.2
-> 
 
