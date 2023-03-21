@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C406810E17C
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 10:40:50 +0000 (UTC)
-From: Jani Nikula <jani.nikula@intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-In-Reply-To: <20230320131342.2980032-1-bhanuprakash.modem@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A6B210E098
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 11:27:02 +0000 (UTC)
+Date: Tue, 21 Mar 2023 12:26:58 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230321112658.u2vdjy2rra7t44ie@kamilkon-desk1>
 References: <20230320131342.2980032-1-bhanuprakash.modem@intel.com>
-Date: Tue, 21 Mar 2023 12:40:46 +0200
-Message-ID: <87mt468k0h.fsf@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230320131342.2980032-1-bhanuprakash.modem@intel.com>
 Subject: Re: [igt-dev] [i-g-t V3] lib/kms: Get pipe enum from debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -19,33 +19,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: jani.nikula@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, 20 Mar 2023, Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
+Hi Bhanuprakash,
+
+On 2023-03-20 at 18:43:42 +0530, Bhanuprakash Modem wrote:
 > The pipe may not be the same as crtc index if pipes are fused off.
 > For testing purposes, IGT needs to know the pipe. There's already
 > a I915_GET_PIPE_FROM_CRTC_ID IOCTL for this. However, the upcoming
 > Xe driver won't have that IOCTL.
->
+> 
 > Add IGT support to read the pipe from debugfs. For i915, still
 > fallback to ioctl method to support older kernels.
->
+> 
 > V2: - Fix kmstest_get_pipe_from_crtc_id() (Bhanu)
 > V3: - Read pipe as a letter instead of number (Jani)
->
+> 
 > Cc: Jani Nikula <jani.nikula@intel.com>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
-No detailed review, but I approve of the change in general.
-
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-
 > ---
 >  lib/igt_kms.c | 80 +++++++++++++++++++++++++++++++++++----------------
 >  1 file changed, 56 insertions(+), 24 deletions(-)
->
+> 
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
 > index c12823d31..e08949cef 100644
 > --- a/lib/igt_kms.c
@@ -75,6 +73,12 @@ Acked-by: Jani Nikula <jani.nikula@intel.com>
 > +	 */
 > +	debugfs_fd = igt_debugfs_pipe_dir(fd, crtc_idx, O_RDONLY);
 > +	igt_assert(debugfs_fd >= 0);
+------- ^
+Do not use assert here, rather fall back to old ioctl.
+
+Regards,
+Kamil
+
 > +
 > +	res = igt_debugfs_simple_read(debugfs_fd, "i915_pipe", buf, sizeof(buf));
 > +	close(debugfs_fd);
@@ -171,6 +175,6 @@ Acked-by: Jani Nikula <jani.nikula@intel.com>
 >  
 >  		/* pipe is enabled/disabled */
 >  		pipe->enabled = true;
-
--- 
-Jani Nikula, Intel Open Source Graphics Center
+> -- 
+> 2.40.0
+> 
