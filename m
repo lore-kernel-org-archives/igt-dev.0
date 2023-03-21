@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6347331360426886565=="
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B049E10E090
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 22:56:31 +0000 (UTC)
+Date: Wed, 22 Mar 2023 00:56:26 +0200
+From: Imre Deak <imre.deak@intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Message-ID: <ZBo2Gsxrp6SKDtKC@ideak-desk.fi.intel.com>
+References: <20230315210147.19557-1-mohammed.thasleem@intel.com>
+ <20230315210147.19557-2-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon, 20 Mar 2023 17:04:45 -0000
-Message-ID: <167933188532.26306.651172292022462459@emeril.freedesktop.org>
-References: <20230320163259.67310-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230320163259.67310-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL3hl?=
- =?utf-8?q?=5Fquery=3A_Recover_original_vram=5F*_macros_semantics?=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230315210147.19557-2-mohammed.thasleem@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/i915_pm_dc: Add DC6 DPMS
+ test for mtl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,162 +21,122 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+Reply-To: imre.deak@intel.com
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6347331360426886565==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Mar 16, 2023 at 02:31:46AM +0530, Mohammed Thasleem wrote:
+> The flow for DC6 validation has changed for MTL.
+> DC6 state achieved based on PKGC10 entry.
+> This test validates PKGC10 entry and confirm DC6 achieved
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> ---
+>  tests/i915/i915_pm_dc.c | 38 +++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 37 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+> index 1c695b50..322a0c60 100644
+> --- a/tests/i915/i915_pm_dc.c
+> +++ b/tests/i915/i915_pm_dc.c
+> @@ -45,6 +45,7 @@
+>  #define PWR_DOMAIN_INFO "i915_power_domain_info"
+>  #define RPM_STATUS "i915_runtime_pm_status"
+>  #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+> +#define PACKAGE_STATE_PATH "/sys/kernel/debug/pmc_core/"
+>  #define KMS_POLL_DISABLE 0
+>  #define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid)))
+>  
+> @@ -60,6 +61,7 @@ typedef struct {
+>  	int drm_fd;
+>  	int msr_fd;
+>  	int debugfs_fd;
+> +	int pmc_fd;
+>  	uint32_t devid;
+>  	char *debugfs_dump;
+>  	igt_display_t display;
+> @@ -519,6 +521,36 @@ static int has_panels_without_dc_support(igt_display_t *display)
+>  	return external_panel;
+>  }
+>  
+> +static unsigned int read_pkc_state_value(int pmc_fd)
 
-== Series Details ==
+A more usual name for the power state is pkgc.
 
-Series: lib/xe_query: Recover original vram_* macros semantics
-URL   : https://patchwork.freedesktop.org/series/115409/
-State : success
+> +{
+> +	char buf[4096];
+> +	char *str;
+> +
+> +	igt_require((pmc_fd = open(PACKAGE_STATE_PATH, O_RDONLY)) >= 0);
 
-== Summary ==
+Better to make the assignment a separate expression and use
+igt_debugfs_mount().
 
-CI Bug Log - changes from IGT_7208 -> IGTPW_8647
-====================================================
+> +
+> +	igt_debugfs_simple_read(pmc_fd, "package_cstate_show",
+> +				buf, sizeof(buf));
+> +	igt_skip_on_f(!strstr(buf, "Package C10"),
+> +		      "PK10 will be not supported.\n");
 
-Summary
--------
+Could be simply "PKGC10 is not supported".
 
-  **SUCCESS**
+> +	str = strstr(buf, "Package C10");
 
-  No regressions found.
+Could move the above before igt_skip_on_f() and reuse str instead of
+calling strstr() again.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/index.html
+> +	igt_assert_f(str, "PKC10 value not available\n");
 
-Participating hosts (35 -> 35)
-------------------------------
+This looks redundant after the skip().
 
-  No changes in participating hosts
+> +
+> +	return get_dc_counter(str);
+> +}
+> +
+> +static void test_pkc_state_dpms(data_t *data)
+> +{
+> +	unsigned int timeout_msec = 30;
+> +	unsigned int prev_value = 0, cur_value = 0;
+> +
+> +	prev_value = read_pkc_state_value(data->pmc_fd);
+> +	dpms_off(data);
 
-Known issues
-------------
+Outputs will be off here and the device runtime suspends. That measures
+the PKGC10 residency in a deeper power state (S0ix), but we want here to
+measure only DC6. Should runtime PM be disabled accordingly as on other
+platforms (done in setup_dc_dpms())?
 
-  Here are the changes found in IGTPW_8647 that come from known issues:
+> +	igt_wait((cur_value = read_pkc_state_value(data->pmc_fd)),
+> +		  timeout_msec * 1000, 100);
 
-### IGT changes ###
+igt_wait() accepts msec, so the '* 1000' conversion isn't correct.
+A 30 sec timeout looks too long, was it meant to be 3 sec?
 
-#### Issues hit ####
+> +	igt_assert_f(cur_value > prev_value, "PK10 is not achieived.\n");
+> +	dpms_on(data);
+> +}
+> +
+>  static void kms_poll_state_restore(int sig)
+>  {
+>  	int sysfs_fd;
+> @@ -600,7 +632,11 @@ igt_main
+>  	igt_subtest("dc6-dpms") {
+>  		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+>  			      "PC8+ residencies not supported\n");
+> -		test_dc_state_dpms(&data, CHECK_DC6);
+> +		if (intel_display_ver(data.devid) == 14)
 
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-rpls-1:         NOTRUN -> [ABORT][1] ([i915#6687] / [i915#7978])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+Checking for >= 14 makes it future proof.
 
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - fi-rkl-11600:       [FAIL][2] ([fdo#103375]) -> [PASS][3]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7208/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-1:         [ABORT][4] ([i915#4983]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7208/bat-rpls-1/igt@i915_selftest@live@reset.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/bat-rpls-1/igt@i915_selftest@live@reset.html
-
-  
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7208 -> IGTPW_8647
-
-  CI-20190529: 20190529
-  CI_DRM_12883: 5619fa2b4a9b93019f6ca27a2f391fc39e152993 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8647: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/index.html
-  IGT_7208: f327c5d77b6ea6adff1ef6d08f21f232dfe093e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/index.html
-
---===============6347331360426886565==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/xe_query: Recover original vram_* macros semantics</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115409/">https://patchwork.freedesktop.org/series/115409/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7208 -&gt; IGTPW_8647</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/index.html</p>
-<h2>Participating hosts (35 -&gt; 35)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8647 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@gem_exec_suspend@basic-s3@smem:<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7208/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7208/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7208 -&gt; IGTPW_8647</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12883: 5619fa2b4a9b93019f6ca27a2f391fc39e152993 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8647: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8647/index.html<br />
-  IGT_7208: f327c5d77b6ea6adff1ef6d08f21f232dfe093e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6347331360426886565==--
+> +			test_pkc_state_dpms(&data);
+> +		else
+> +			test_dc_state_dpms(&data, CHECK_DC6);
+> +
+>  	}
+>  
+>  	igt_describe("This test validates display engine entry to DC9 state");
+> -- 
+> 2.25.1
+> 
