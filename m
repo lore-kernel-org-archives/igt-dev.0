@@ -1,23 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FC4F10E35C
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 09:22:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12D7B10E0DE
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 09:22:09 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.1.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id C7304580D92
+ by linux.intel.com (Postfix) with ESMTPS id AF97E580D2C
  for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 02:22:08 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1peYBy-006svY-2N
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1peYBy-006sve-2V
  for igt-dev@lists.freedesktop.org; Tue, 21 Mar 2023 10:22:06 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 21 Mar 2023 10:22:01 +0100
-Message-Id: <20230321092205.1640976-1-mauro.chehab@linux.intel.com>
+Date: Tue, 21 Mar 2023 10:22:03 +0100
+Message-Id: <20230321092205.1640976-3-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230321092205.1640976-1-mauro.chehab@linux.intel.com>
+References: <20230321092205.1640976-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/4] Build Xe test documentation
+Subject: [igt-dev] [PATCH i-g-t v3 2/4] testplan: build also a PDF file with
+ the testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,37 +34,50 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-IGT has gained support for building Xe driver test documentation,
-but there are a few left-overs for it to work.
+PDF files are easier to share, and it costs almost nothing to
+produce them with Sphinx, via rst2pdf. Added support for it
+if rst2pdf is installed.
 
-Add the left overs, creating Xe test documentation at build time.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
+ docs/testplan/meson.build | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-v3:
-  - added SPDG tag to docs/testplan/conf.py;
-  - changed description on patch 2;
-  - cleanup IGT doc dependency chain (patches 3 and 4).
-
-Mauro Carvalho Chehab (4):
-  meson: build Xe test documentation
-  testplan: build also a PDF file with the testplan
-  meson.build: place gtk-doc dependencies check at the right place
-  testplan/meson.build: cleanup dependency chain
-
- docs/meson.build           |  4 +++
- docs/reference/meson.build | 12 +++++++-
- docs/testplan/conf.py      | 42 ++++++++++++++++++++++++++
- docs/testplan/meson.build  | 60 ++++++++++++++++++++++----------------
- docs/testplan/testplan.css |  7 +++++
- meson.build                | 12 +++-----
- meson_options.txt          |  8 +++++
- scripts/gen_rst_index      | 43 +++++++++++++++++++++++++++
- scripts/meson.build        |  3 ++
- 9 files changed, 157 insertions(+), 34 deletions(-)
- create mode 100644 docs/testplan/conf.py
- create mode 100644 docs/testplan/testplan.css
- create mode 100755 scripts/gen_rst_index
-
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index 11c08573307e..50063aa2e84f 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -5,6 +5,7 @@ build_sphinx = get_option('sphinx')
+ 
+ rst2html = find_program('rst2html-3', 'rst2html', required : build_testplan)
+ sphinx = find_program('sphinx-build', required: build_sphinx)
++rst2pdf = find_program('rst2pdf', required: false)
+ 
+ stylesheet = meson.current_source_dir() + '/testplan.css'
+ 
+@@ -52,8 +53,23 @@ if sphinx.found()
+                     output : 'index.html'
+                     )
+     endif
++
++    if rst2pdf.found()
++        sphinx_out_pdf = meson.current_build_dir() + '/pdf'
++
++        custom_target('xe_tests.pdf',
++                      build_by_default : true,
++                      command : [ 'sphinx-build', '-c', meson.current_source_dir(),
++                      '-b', 'pdf',
++                      '-D', 'version=' + meson.project_version(),
++                      meson.current_build_dir(), sphinx_out_pdf],
++                      input : index_rst,
++                      output : 'xe_tests.pdf'
++                      )
++    endif
+ endif
+ 
+ build_info += 'Build ReST test documentation: @0@'.format(igt_doc_script.found())
+ build_info += 'Build simple html testplan documentation: @0@'.format(rst2html.found())
+ build_info += 'Build indexed html testplan documentation: @0@'.format(sphinx.found())
++build_info += 'Build pdf testplan documentation: @0@'.format(sphinx.found() and rst2pdf.found())
 -- 
 2.39.2
