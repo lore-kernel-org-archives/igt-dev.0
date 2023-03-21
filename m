@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com
- [IPv6:2a00:1450:4864:20::229])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1F4810E12E
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 08:57:43 +0000 (UTC)
-Received: by mail-lj1-x229.google.com with SMTP id z42so14714245ljq.13
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 01:57:43 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FC4F10E35C
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 09:22:10 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.1.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id C7304580D92
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 02:22:08 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1peYBy-006svY-2N
+ for igt-dev@lists.freedesktop.org; Tue, 21 Mar 2023 10:22:06 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 21 Mar 2023 10:57:32 +0200
-Message-Id: <20230321085732.29298-1-juhapekka.heikkila@gmail.com>
+Date: Tue, 21 Mar 2023 10:22:01 +0100
+Message-Id: <20230321092205.1640976-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: reduce work on
- framebuffer creation
+Subject: [igt-dev] [PATCH i-g-t v3 0/4] Build Xe test documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,69 +29,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There was created pattern framebuffers on tests which are not crc
-tests, change these to blank framebuffers.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+IGT has gained support for building Xe driver test documentation,
+but there are a few left-overs for it to work.
+
+Add the left overs, creating Xe test documentation at build time.
+
 ---
- tests/kms_plane_scaling.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 71586efba..fe695b684 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -719,10 +719,10 @@ static void setup_fb(int fd, int width, int height,
- 		     double r, double g, double b,
- 		     struct igt_fb *fb)
- {
--	igt_create_color_pattern_fb(fd, width, height,
--				    DRM_FORMAT_XRGB8888,
--				    DRM_FORMAT_MOD_LINEAR,
--				    r, g, b, fb);
-+	igt_create_fb(fd, width, height,
-+		      DRM_FORMAT_XRGB8888,
-+		      DRM_FORMAT_MOD_LINEAR,
-+		      fb);
- }
- 
- static void
-@@ -803,21 +803,21 @@ test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
- 	plane[2] = igt_pipe_get_plane_type_index(pipe_obj, DRM_PLANE_TYPE_OVERLAY, 2);
- 	igt_require(plane[2]);
- 
--	igt_create_color_pattern_fb(display->drm_fd,
--                                    width, height,
--                                    DRM_FORMAT_XRGB8888,
--                                    DRM_FORMAT_MOD_LINEAR,
--                                    1.0, 0.0, 0.0, &d->fb[0]);
--	igt_create_color_pattern_fb(display->drm_fd,
--                                    width, height,
--                                    DRM_FORMAT_XRGB8888,
--                                    DRM_FORMAT_MOD_LINEAR,
--                                    0.0, 1.0, 0.0, &d->fb[1]);
--	igt_create_color_pattern_fb(display->drm_fd,
--                                    width, height,
--                                    DRM_FORMAT_XRGB8888,
--                                    DRM_FORMAT_MOD_LINEAR,
--                                    0.0, 0.0, 1.0, &d->fb[2]);
-+	igt_create_fb(display->drm_fd,
-+		      width, height,
-+		      DRM_FORMAT_XRGB8888,
-+		      DRM_FORMAT_MOD_LINEAR,
-+		      &d->fb[0]);
-+	igt_create_fb(display->drm_fd,
-+		      width, height,
-+		      DRM_FORMAT_XRGB8888,
-+		      DRM_FORMAT_MOD_LINEAR,
-+		      &d->fb[1]);
-+	igt_create_fb(display->drm_fd,
-+		      width, height,
-+		      DRM_FORMAT_XRGB8888,
-+		      DRM_FORMAT_MOD_LINEAR,
-+		      &d->fb[2]);
- 
- 	igt_plane_set_fb(plane[0], &d->fb[0]);
- 	igt_plane_set_fb(plane[1], &d->fb[1]);
+v3:
+  - added SPDG tag to docs/testplan/conf.py;
+  - changed description on patch 2;
+  - cleanup IGT doc dependency chain (patches 3 and 4).
+
+Mauro Carvalho Chehab (4):
+  meson: build Xe test documentation
+  testplan: build also a PDF file with the testplan
+  meson.build: place gtk-doc dependencies check at the right place
+  testplan/meson.build: cleanup dependency chain
+
+ docs/meson.build           |  4 +++
+ docs/reference/meson.build | 12 +++++++-
+ docs/testplan/conf.py      | 42 ++++++++++++++++++++++++++
+ docs/testplan/meson.build  | 60 ++++++++++++++++++++++----------------
+ docs/testplan/testplan.css |  7 +++++
+ meson.build                | 12 +++-----
+ meson_options.txt          |  8 +++++
+ scripts/gen_rst_index      | 43 +++++++++++++++++++++++++++
+ scripts/meson.build        |  3 ++
+ 9 files changed, 157 insertions(+), 34 deletions(-)
+ create mode 100644 docs/testplan/conf.py
+ create mode 100644 docs/testplan/testplan.css
+ create mode 100755 scripts/gen_rst_index
+
 -- 
-2.39.0
+2.39.2
