@@ -1,26 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 919F710E925
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 12:33:07 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEBC610E371
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 14:00:52 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.26.250])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id C0850580C35
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 05:33:05 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 232B1580C35
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 07:00:33 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pexeJ-007WDX-2k
- for igt-dev@lists.freedesktop.org; Wed, 22 Mar 2023 13:33:03 +0100
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pez0x-007YK5-0j
+ for igt-dev@lists.freedesktop.org; Wed, 22 Mar 2023 15:00:31 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Mar 2023 13:32:59 +0100
-Message-Id: <20230322123301.1791267-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230322123301.1791267-1-mauro.chehab@linux.intel.com>
-References: <20230322123301.1791267-1-mauro.chehab@linux.intel.com>
+Date: Wed, 22 Mar 2023 15:00:27 +0100
+Message-Id: <20230322140030.1800192-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/3] intel-ci: update blacklists to work
- with the Xe driver
+Subject: [igt-dev] [PATCH i-g-t v3 0/3] xe/xe_module_load: add a test to
+ load/unload Xe driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,331 +32,96 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-It doesn't make sense to run i915 tests with Xe driver and
-vice-versa. Update testlists to make it clear.
+It is interesting to let IGT to unload/reload the Xe driver,
+as it can help CI to track track troubles.
 
-In order to avoid disrupts at exiting intel-ci tests, keep a
-symlink:
-	i915-blacklist.txt -> blacklist.txt
+Add support for it.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Test documentation:
+
+	==================
+	igt@xe_module_load
+	==================
+	
+	:Category: Sofware building block
+	:File: tests/xe/xe_module_load.c
+	:Sub-category: driver
+	:Summary: Tests the xe module loading
+	:Test category: functionality test
+	
+	igt@xe_module_load@force-load
+	=============================
+	
+	:Description: Load the Xe driver passing ``force_probe=*`` parameter
+	:Run type: BAT
+	
+	
+	igt@xe_module_load@load
+	=======================
+	
+	:Description: Load the Xe driver
+	:Run type: FULL
+	
+	
+	igt@xe_module_load@unload
+	=========================
+	
+	:Description: Unload the Xe driver
+	:Run type: FULL
+	
+	
+	igt@xe_module_load@reload
+	=========================
+	
+	:Description: Reload the Xe driver
+	:Run type: FULL
+	
+	
+	igt@xe_module_load@reload-no-display
+	====================================
+	
+	:Description: Reload the Xe driver passing ``enable_display=0`` parameter
+	:Run type: FULL
+	
+	
+	igt@xe_module_load@many-reload
+	==============================
+	
+	:Description: Reload the Xe driver many times
+	:Run type: FULL
+
 ---
- tests/intel-ci/blacklist.txt      | 130 +----------------------------
- tests/intel-ci/i915-blacklist.txt | 133 ++++++++++++++++++++++++++++++
- tests/intel-ci/xe-blacklist.txt   |  21 +++++
- 3 files changed, 155 insertions(+), 129 deletions(-)
+
+v3:
+- no changes. Just rebased due to a merge conflict.
+
+v2:
+
+- added a patch (already submitted) to shut-up i915 trybot to
+  try to run those tests when i915 driver is loaded;
+- removed duplication of the unwanted drivers array and declare
+  it as const with const strings;
+- reordered includes and removed a duplication;
+- did some cosmetic changes.
+
+Mauro Carvalho Chehab (3):
+  intel-ci: update blacklists to work with the Xe driver
+  lib/igt_kmod: add support for Xe driver
+  xe/xe_module_load: add a test to load/unload Xe driver
+
+ lib/igt_kmod.c                           |  34 ++---
+ lib/igt_kmod.h                           |  32 ++++-
+ tests/intel-ci/blacklist.txt             | 130 +------------------
+ tests/intel-ci/i915-blacklist.txt        | 133 +++++++++++++++++++
+ tests/intel-ci/xe-blacklist.txt          |  21 +++
+ tests/intel-ci/xe-fast-feedback.testlist |   3 +
+ tests/meson.build                        |   1 +
+ tests/xe/xe_module_load.c                | 158 +++++++++++++++++++++++
+ 8 files changed, 363 insertions(+), 149 deletions(-)
  mode change 100644 => 120000 tests/intel-ci/blacklist.txt
  create mode 100644 tests/intel-ci/i915-blacklist.txt
  create mode 100644 tests/intel-ci/xe-blacklist.txt
+ create mode 100644 tests/xe/xe_module_load.c
 
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-deleted file mode 100644
-index 6e5cc43667cf..000000000000
---- a/tests/intel-ci/blacklist.txt
-+++ /dev/null
-@@ -1,129 +0,0 @@
--igt@meta_test(@.*)?
--###############################################
--# Handle module reloads with great care!
--#
--# Reloading a module is more likely to leave
--# the machine in an unexpected state than other
--# self-contained tests, leading to random
--# failures in tests run afterwards.
--###############################################
--#igt@i915_module_load(@.*)? # danger, danger; hope for taints!
--igt@i915_pm_rpm@module-reload
--igt@i915_pm_rpm@gem-execbuf-stress-extra-wait
--###############################################
--# GEM
--###############################################
--igt@gem_busy@hang.*
--igt@gem_close_race@(?!.*basic).*
--igt@gem_concurrent_blit(@.*)?
--igt@gem_ctx_create@(?!.*basic).*
--igt@gem_ctx_exec@(?!.*basic).*
--igt@gem_ctx_shared@*exhaust*
--igt@gem_ctx_switch(@.*)?
--igt@gem_evict_alignment(@.*)?
--igt@gem_evict_everything(@.*)?
--igt@gem_exec_big@(?!.*single).*
--igt@gem_exec_capture@many-(?!4K-).*
--igt@gem_exec_fair@(?!.*basic).*
--igt@gem_exec_fence@.*hang.*
--igt@gem_exec_flush@(?!.*basic).*
--igt@gem_exec_latency(@.*)?
--igt@gem_exec_lut_handle(@.*)?
--igt@gem_exec_nop@(?!.*basic).*
--igt@gem_exec_reloc@(?!.*basic).*
--igt@gem_exec_suspend@(?!.*basic).*
--igt@gem_exec_whisper@(?!basic).*
--igt@gem_fd_exhaustion(@.*)?
--igt@gem_fence_upload(@.*)?
--igt@gem_gtt_hog(@.*)?
--igt@gem_gtt_speed(@.*)?
--igt@gem_lut_handle(@.*)?
--igt@gem_mmap_gtt@.*(huge|swap|clflush|forked).*
--igt@gem_mmap@.*(swap|huge).*
--igt@gem_pread_after_blit(@.*)?
--igt@gem_pwrite@(?!.*basic).*
--igt@gem_read_read_speed(@.*)?
--igt@gem_render_linear_blits@(?!.*basic).*
--igt@gem_render_tiled_blits@(?!.*basic).*
--igt@gem_reset_stats(@.*)?
--igt@gem_ringfill@(?!.*basic).*
--igt@gem_shrink@(?!reclaim$).*
--igt@gem_softpin@.*(hang|S4).*
--igt@gem_streaming_writes(@.*)?
--igt@gem_sync@(?!.*basic).*
--igt@gem_tiled_swapping@(?!non-threaded).*
--igt@gem_userptr_blits@(major|minor|forked|mlocked|swapping).*
--igt@gem_wait@hang.*
--igt@gem_watchdog@far-fence
--igt@sysfs_heartbeat_interval@(long|off)
--igt@sysfs_preempt_timeout@off
--igt@sysfs_timeslice_duration@off
--###############################################
--# GEM: Not worth fixing
--###############################################
--igt@gen7_exec_parse@.*lri.*
--igt@gem_exec_alignment@pi-shared
--###############################################
--# There are no DRRS capable displays in CI lab
--###############################################
--igt@kms_frontbuffer_tracking@.*drrs.*
--###############################################
--# Tends to generate invalid configurations
--# using CCS planes or configurations that
--# exceed HW capabilities resulting in sporadic
--# failure with -EINVAL.
--#
--# Maintaining extra constraints for Intel's HW
--# is too costly in comparison to the value
--# provided.
--###############################################
--igt@kms_chamelium_frames@hdmi-.*-planes-random
--###############################################
--# Broadcom
--###############################################
--igt@vc4_.*
--igt@v3d_.*
--###############################################
--# AMD
--###############################################
--igt@amdgpu/.*
--###############################################
--# Panfrost
--###############################################
--igt@panfrost_.*
--###############################################
--# Qualcomm
--###############################################
--igt@msm_.*
--###############################################
--# Hibernate: not configured correctly on CI
--###############################################
--igt@.*@.*-hibernate
--igt@gem_softpin@noreloc-s4
--igt@gem_workarounds@hibernate-.*
--igt@gem_exec_suspend@basic-s4$
--igt@gem_ctx_isolation@.*-s4
--###############################################
--# Out-of-memory: spammy and often broken
--###############################################
--igt@i915_suspend@shrink
--###############################################
--# pipe-e, pipe-f no current HW support
--###############################################
--igt@.*@.*pipe-e($|-.*)
--igt@.*@.*pipe-f($|-.*)
--
--###############################################
--# Temporary workarounds for CI-impacting bugs
--###############################################
--
--# Currently fails and leaves the machine in a very bad state, and
--# causes coverage loss for other tests. IOMMU related.
--# https://gitlab.freedesktop.org/drm/intel/-/issues/2644
--igt@core_hotunplug@.*(hot|plug).*
--
--# hangs several gens of hosts, and has no immediate fix
--igt@device_reset@reset-bound
--
--# not working for i915
--igt@kms_bw@.*
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-new file mode 120000
-index 000000000000..e48e29e27f4e
---- /dev/null
-+++ b/tests/intel-ci/blacklist.txt
-@@ -0,0 +1 @@
-+i915-blacklist.txt
-\ No newline at end of file
-diff --git a/tests/intel-ci/i915-blacklist.txt b/tests/intel-ci/i915-blacklist.txt
-new file mode 100644
-index 000000000000..389a2acb7f44
---- /dev/null
-+++ b/tests/intel-ci/i915-blacklist.txt
-@@ -0,0 +1,133 @@
-+igt@meta_test(@.*)?
-+###############################################
-+# Handle module reloads with great care!
-+#
-+# Reloading a module is more likely to leave
-+# the machine in an unexpected state than other
-+# self-contained tests, leading to random
-+# failures in tests run afterwards.
-+###############################################
-+#igt@i915_module_load(@.*)? # danger, danger; hope for taints!
-+igt@i915_pm_rpm@module-reload
-+igt@i915_pm_rpm@gem-execbuf-stress-extra-wait
-+###############################################
-+# GEM
-+###############################################
-+igt@gem_busy@hang.*
-+igt@gem_close_race@(?!.*basic).*
-+igt@gem_concurrent_blit(@.*)?
-+igt@gem_ctx_create@(?!.*basic).*
-+igt@gem_ctx_exec@(?!.*basic).*
-+igt@gem_ctx_shared@*exhaust*
-+igt@gem_ctx_switch(@.*)?
-+igt@gem_evict_alignment(@.*)?
-+igt@gem_evict_everything(@.*)?
-+igt@gem_exec_big@(?!.*single).*
-+igt@gem_exec_capture@many-(?!4K-).*
-+igt@gem_exec_fair@(?!.*basic).*
-+igt@gem_exec_fence@.*hang.*
-+igt@gem_exec_flush@(?!.*basic).*
-+igt@gem_exec_latency(@.*)?
-+igt@gem_exec_lut_handle(@.*)?
-+igt@gem_exec_nop@(?!.*basic).*
-+igt@gem_exec_reloc@(?!.*basic).*
-+igt@gem_exec_suspend@(?!.*basic).*
-+igt@gem_exec_whisper@(?!basic).*
-+igt@gem_fd_exhaustion(@.*)?
-+igt@gem_fence_upload(@.*)?
-+igt@gem_gtt_hog(@.*)?
-+igt@gem_gtt_speed(@.*)?
-+igt@gem_lut_handle(@.*)?
-+igt@gem_mmap_gtt@.*(huge|swap|clflush|forked).*
-+igt@gem_mmap@.*(swap|huge).*
-+igt@gem_pread_after_blit(@.*)?
-+igt@gem_pwrite@(?!.*basic).*
-+igt@gem_read_read_speed(@.*)?
-+igt@gem_render_linear_blits@(?!.*basic).*
-+igt@gem_render_tiled_blits@(?!.*basic).*
-+igt@gem_reset_stats(@.*)?
-+igt@gem_ringfill@(?!.*basic).*
-+igt@gem_shrink@(?!reclaim$).*
-+igt@gem_softpin@.*(hang|S4).*
-+igt@gem_streaming_writes(@.*)?
-+igt@gem_sync@(?!.*basic).*
-+igt@gem_tiled_swapping@(?!non-threaded).*
-+igt@gem_userptr_blits@(major|minor|forked|mlocked|swapping).*
-+igt@gem_wait@hang.*
-+igt@gem_watchdog@far-fence
-+igt@sysfs_heartbeat_interval@(long|off)
-+igt@sysfs_preempt_timeout@off
-+igt@sysfs_timeslice_duration@off
-+###############################################
-+# GEM: Not worth fixing
-+###############################################
-+igt@gen7_exec_parse@.*lri.*
-+igt@gem_exec_alignment@pi-shared
-+###############################################
-+# There are no DRRS capable displays in CI lab
-+###############################################
-+igt@kms_frontbuffer_tracking@.*drrs.*
-+###############################################
-+# Tends to generate invalid configurations
-+# using CCS planes or configurations that
-+# exceed HW capabilities resulting in sporadic
-+# failure with -EINVAL.
-+#
-+# Maintaining extra constraints for Intel's HW
-+# is too costly in comparison to the value
-+# provided.
-+###############################################
-+igt@kms_chamelium_frames@hdmi-.*-planes-random
-+###############################################
-+# Broadcom
-+###############################################
-+igt@vc4_.*
-+igt@v3d_.*
-+###############################################
-+# Intel Xe
-+###############################################
-+igt@xe/.*
-+###############################################
-+# AMD
-+###############################################
-+igt@amdgpu/.*
-+###############################################
-+# Panfrost
-+###############################################
-+igt@panfrost_.*
-+###############################################
-+# Qualcomm
-+###############################################
-+igt@msm_.*
-+###############################################
-+# Hibernate: not configured correctly on CI
-+###############################################
-+igt@.*@.*-hibernate
-+igt@gem_softpin@noreloc-s4
-+igt@gem_workarounds@hibernate-.*
-+igt@gem_exec_suspend@basic-s4$
-+igt@gem_ctx_isolation@.*-s4
-+###############################################
-+# Out-of-memory: spammy and often broken
-+###############################################
-+igt@i915_suspend@shrink
-+###############################################
-+# pipe-e, pipe-f no current HW support
-+###############################################
-+igt@.*@.*pipe-e($|-.*)
-+igt@.*@.*pipe-f($|-.*)
-+
-+###############################################
-+# Temporary workarounds for CI-impacting bugs
-+###############################################
-+
-+# Currently fails and leaves the machine in a very bad state, and
-+# causes coverage loss for other tests. IOMMU related.
-+# https://gitlab.freedesktop.org/drm/intel/-/issues/2644
-+igt@core_hotunplug@.*(hot|plug).*
-+
-+# hangs several gens of hosts, and has no immediate fix
-+igt@device_reset@reset-bound
-+
-+# not working for i915
-+igt@kms_bw@.*
-diff --git a/tests/intel-ci/xe-blacklist.txt b/tests/intel-ci/xe-blacklist.txt
-new file mode 100644
-index 000000000000..986e91a67069
---- /dev/null
-+++ b/tests/intel-ci/xe-blacklist.txt
-@@ -0,0 +1,21 @@
-+###############################################
-+# Broadcom
-+###############################################
-+igt@vc4_.*
-+igt@v3d_.*
-+###############################################
-+# Intel i915
-+###############################################
-+igt@i915/.*
-+###############################################
-+# AMD
-+###############################################
-+igt@amdgpu/.*
-+###############################################
-+# Panfrost
-+###############################################
-+igt@panfrost_.*
-+###############################################
-+# Qualcomm
-+###############################################
-+igt@msm_.*
 -- 
 2.39.2
