@@ -1,23 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64D6910E042
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CCC7610E281
  for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 06:50:10 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.26.250])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 577F5580D2C
+ by linux.intel.com (Postfix) with ESMTPS id 91E825805CB
  for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 23:50:09 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pesIR-007NXJ-0x
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pesIR-007NXf-1R
  for igt-dev@lists.freedesktop.org; Wed, 22 Mar 2023 07:50:07 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Mar 2023 07:49:55 +0100
-Message-Id: <20230322065003.1758611-1-mauro.chehab@linux.intel.com>
+Date: Wed, 22 Mar 2023 07:50:02 +0100
+Message-Id: <20230322065003.1758611-8-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230322065003.1758611-1-mauro.chehab@linux.intel.com>
+References: <20230322065003.1758611-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 0/8] Build Xe test documentation
+Subject: [igt-dev] [PATCH i-g-t v4 7/8] testplan/meson.build: use
+ join_paths()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,53 +34,28 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
+Use the more portable join_paths() macro.
 
-IGT has gained support for building Xe driver test documentation,
-but there are a few left-overs for it to work.
-
-Add the left overs, creating Xe test documentation at build time.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
+ docs/testplan/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-v4:
-  - Fixed a build error when tests are disabled;
-  - get rid of source_root future deprecated warning;
-  - testplan/meson.build now uses join_paths;
-  - dropped tests/xe/meson.build file;
-  - re-indented testplan/meson.build.
-
-v3:
-  - added SPDG tag to docs/testplan/conf.py;
-  - changed description on patch 2;
-  - cleanup IGT doc dependency chain.
-
-Mauro Carvalho Chehab (8):
-  meson: build Xe test documentation
-  testplan: build also a PDF file with the testplan
-  meson.build: place gtk-doc dependencies check at the right place
-  meson: get rid of a future-deprecated warning
-  meson: get rid of tests/xe/meson.build
-  testplan/meson.build: cleanup dependency chain
-  testplan/meson.build: use join_paths()
-  testplan/meson.build: re-indent file
-
- docs/meson.build           |   4 ++
- docs/reference/meson.build |  12 +++-
- docs/testplan/conf.py      |  42 ++++++++++++++
- docs/testplan/meson.build  | 112 +++++++++++++++++++++----------------
- docs/testplan/testplan.css |   7 +++
- lib/meson.build            |   2 +-
- meson.build                |  17 +++---
- meson_options.txt          |   8 +++
- scripts/gen_rst_index      |  43 ++++++++++++++
- scripts/meson.build        |   3 +
- tests/meson.build          |   1 -
- tests/xe/meson.build       |   1 -
- 12 files changed, 192 insertions(+), 60 deletions(-)
- create mode 100644 docs/testplan/conf.py
- create mode 100644 docs/testplan/testplan.css
- create mode 100755 scripts/gen_rst_index
- delete mode 100644 tests/xe/meson.build
-
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index 9e7ae7a04753..10ea4be9a3f5 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -4,9 +4,9 @@ sphinx = find_program('sphinx-build', required: build_sphinx)
+ rst2html = find_program('rst2html-3', 'rst2html', required : false)
+ rst2pdf = find_program('rst2pdf', required: false)
+ 
+-stylesheet = meson.current_source_dir() + '/testplan.css'
++stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
+ 
+-xe_test_config = source_root + '/tests/xe/xe_test_config.json'
++xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
+ 
+ if not build_tests
+     test_executables = []
 -- 
 2.39.2
