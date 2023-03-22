@@ -1,26 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DE0510E042
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64D6910E042
  for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 06:50:10 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.26.250])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 4433F580BF1
+ by linux.intel.com (Postfix) with ESMTPS id 577F5580D2C
  for <igt-dev@lists.freedesktop.org>; Tue, 21 Mar 2023 23:50:09 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pesIR-007NXP-1C
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pesIR-007NXJ-0x
  for igt-dev@lists.freedesktop.org; Wed, 22 Mar 2023 07:50:07 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Mar 2023 07:49:57 +0100
-Message-Id: <20230322065003.1758611-3-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230322065003.1758611-1-mauro.chehab@linux.intel.com>
-References: <20230322065003.1758611-1-mauro.chehab@linux.intel.com>
+Date: Wed, 22 Mar 2023 07:49:55 +0100
+Message-Id: <20230322065003.1758611-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 2/8] testplan: build also a PDF file with
- the testplan
+Subject: [igt-dev] [PATCH i-g-t v4 0/8] Build Xe test documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,50 +31,53 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-PDF files are easier to share, and it costs almost nothing to
-produce them with Sphinx, via rst2pdf. Added support for it
-if rst2pdf is installed.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+IGT has gained support for building Xe driver test documentation,
+but there are a few left-overs for it to work.
+
+Add the left overs, creating Xe test documentation at build time.
+
 ---
- docs/testplan/meson.build | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index 11c08573307e..50063aa2e84f 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -5,6 +5,7 @@ build_sphinx = get_option('sphinx')
- 
- rst2html = find_program('rst2html-3', 'rst2html', required : build_testplan)
- sphinx = find_program('sphinx-build', required: build_sphinx)
-+rst2pdf = find_program('rst2pdf', required: false)
- 
- stylesheet = meson.current_source_dir() + '/testplan.css'
- 
-@@ -52,8 +53,23 @@ if sphinx.found()
-                     output : 'index.html'
-                     )
-     endif
-+
-+    if rst2pdf.found()
-+        sphinx_out_pdf = meson.current_build_dir() + '/pdf'
-+
-+        custom_target('xe_tests.pdf',
-+                      build_by_default : true,
-+                      command : [ 'sphinx-build', '-c', meson.current_source_dir(),
-+                      '-b', 'pdf',
-+                      '-D', 'version=' + meson.project_version(),
-+                      meson.current_build_dir(), sphinx_out_pdf],
-+                      input : index_rst,
-+                      output : 'xe_tests.pdf'
-+                      )
-+    endif
- endif
- 
- build_info += 'Build ReST test documentation: @0@'.format(igt_doc_script.found())
- build_info += 'Build simple html testplan documentation: @0@'.format(rst2html.found())
- build_info += 'Build indexed html testplan documentation: @0@'.format(sphinx.found())
-+build_info += 'Build pdf testplan documentation: @0@'.format(sphinx.found() and rst2pdf.found())
+v4:
+  - Fixed a build error when tests are disabled;
+  - get rid of source_root future deprecated warning;
+  - testplan/meson.build now uses join_paths;
+  - dropped tests/xe/meson.build file;
+  - re-indented testplan/meson.build.
+
+v3:
+  - added SPDG tag to docs/testplan/conf.py;
+  - changed description on patch 2;
+  - cleanup IGT doc dependency chain.
+
+Mauro Carvalho Chehab (8):
+  meson: build Xe test documentation
+  testplan: build also a PDF file with the testplan
+  meson.build: place gtk-doc dependencies check at the right place
+  meson: get rid of a future-deprecated warning
+  meson: get rid of tests/xe/meson.build
+  testplan/meson.build: cleanup dependency chain
+  testplan/meson.build: use join_paths()
+  testplan/meson.build: re-indent file
+
+ docs/meson.build           |   4 ++
+ docs/reference/meson.build |  12 +++-
+ docs/testplan/conf.py      |  42 ++++++++++++++
+ docs/testplan/meson.build  | 112 +++++++++++++++++++++----------------
+ docs/testplan/testplan.css |   7 +++
+ lib/meson.build            |   2 +-
+ meson.build                |  17 +++---
+ meson_options.txt          |   8 +++
+ scripts/gen_rst_index      |  43 ++++++++++++++
+ scripts/meson.build        |   3 +
+ tests/meson.build          |   1 -
+ tests/xe/meson.build       |   1 -
+ 12 files changed, 192 insertions(+), 60 deletions(-)
+ create mode 100644 docs/testplan/conf.py
+ create mode 100644 docs/testplan/testplan.css
+ create mode 100755 scripts/gen_rst_index
+ delete mode 100644 tests/xe/meson.build
+
 -- 
 2.39.2
