@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9070B10E41D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCC8010E413
  for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 23:04:08 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Mar 2023 16:04:01 -0700
-Message-Id: <20230322230402.3342787-2-ashutosh.dixit@intel.com>
+Date: Wed, 22 Mar 2023 16:04:02 -0700
+Message-Id: <20230322230402.3342787-3-ashutosh.dixit@intel.com>
 In-Reply-To: <20230322230402.3342787-1-ashutosh.dixit@intel.com>
 References: <20230322230402.3342787-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/igt_sysfs: Add i915_for_each_gt()
- macro
+Subject: [igt-dev] [PATCH i-g-t 2/2] i915/i915_power: Also show requested
+ and actual freq's
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,35 +23,63 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+When power limits are in effect, in addition to measured power it is also
+important to see the requested and actual freq's and see how they change
+with set power limits. Add this to the test output.
 
-Add a macro to iterate over all the gts
+v2: Display power for each gt (Riana)
 
-v2: s/for_each_gt/i915_for_each_gt/ because of introduction of
-    xe_for_each_gt
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/igt_sysfs.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/i915/i915_power.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 2e3c4813adc..c0fcf6b5739 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -38,6 +38,11 @@
- 	     (dirfd__ = igt_sysfs_gt_open(i915__, gt__)) != -1; \
- 	     close(dirfd__), gt__++)
+diff --git a/tests/i915/i915_power.c b/tests/i915/i915_power.c
+index f2fd228698a..abf458573ef 100644
+--- a/tests/i915/i915_power.c
++++ b/tests/i915/i915_power.c
+@@ -5,6 +5,7 @@
  
-+#define i915_for_each_gt(i915, gtid, dir) \
-+	for ((gtid) = 0; \
-+	     ((dir) = igt_sysfs_gt_open((i915), (gtid))) != -1; \
-+	     close(dir), (gtid)++)
-+
- #define igt_sysfs_rps_write(dir, id, data, len) \
- 	igt_sysfs_write(dir, igt_sysfs_dir_id_to_name(dir, id), data, len)
+ #include "igt.h"
+ #include "i915/gem.h"
++#include "igt_sysfs.h"
+ #include "igt_power.h"
+ 
+ IGT_TEST_DESCRIPTION("i915 power measurement tests");
+@@ -27,6 +28,7 @@ static void sanity(int i915)
+ 	double idle, busy;
+ 	igt_spin_t *spin;
+ 	uint64_t ahnd;
++	int dir, gt, req, act;
+ 
+ #define DURATION_SEC 2
+ 
+@@ -34,6 +36,7 @@ static void sanity(int i915)
+ 	igt_require(!igt_power_open(i915, &pwr, "gpu"));
+ 	gem_quiescent_gpu(i915);
+ 	idle = measure_power(&pwr, DURATION_SEC);
++	igt_info("Measured idle power: %g mW\n", idle);
+ 
+ 	/* Busy power */
+ 	ctx = intel_ctx_create_all_physical(i915);
+@@ -44,12 +47,17 @@ static void sanity(int i915)
+ 	/* Wait till at least one spinner starts */
+ 	igt_spin_busywait_until_started(spin);
+ 	busy = measure_power(&pwr, DURATION_SEC);
++	i915_for_each_gt(i915, gt, dir) {
++		req = igt_sysfs_get_u32(dir, "rps_cur_freq_mhz");
++		act = igt_sysfs_get_u32(dir, "rps_act_freq_mhz");
++		igt_info("gt %d: req MHz: %d, act MHz: %d\n", gt, req, act);
++	}
+ 	igt_free_spins(i915);
+ 	put_ahnd(ahnd);
+ 	intel_ctx_destroy(i915, ctx);
+ 	igt_power_close(&pwr);
+ 
+-	igt_info("Measured power: idle: %g mW, busy: %g mW\n", idle, busy);
++	igt_info("Measured busy power: %g mW\n", busy);
+ 	igt_assert(idle >= 0 && busy > 0 && busy > idle);
+ }
  
 -- 
 2.38.0
