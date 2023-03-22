@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F254910E372
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 14:00:52 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A48BB10E8A4
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 08:28:42 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.26.250])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 4D727580D56
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 07:00:33 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 1C086580D60
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 01:28:32 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pez0x-007YKB-0q
- for igt-dev@lists.freedesktop.org; Wed, 22 Mar 2023 15:00:31 +0100
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1petpe-007QdL-0B
+ for igt-dev@lists.freedesktop.org; Wed, 22 Mar 2023 09:28:30 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Mar 2023 15:00:29 +0100
-Message-Id: <20230322140030.1800192-3-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230322140030.1800192-1-mauro.chehab@linux.intel.com>
-References: <20230322140030.1800192-1-mauro.chehab@linux.intel.com>
+Date: Wed, 22 Mar 2023 09:28:23 +0100
+Message-Id: <20230322082826.1770429-6-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230322082826.1770429-1-mauro.chehab@linux.intel.com>
+References: <20230322082826.1770429-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/3] lib/igt_kmod: add support for Xe
- driver
+Subject: [igt-dev] [PATCH i-g-t v4 5/8] meson: get rid of
+ tests/xe/meson.build
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,149 +34,67 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Change the kmod logic to also work with the Xe driver.
+Currently, this holds just a variable used by testplan. Drop it,
+cleaning up the building system.
+
+This change allows building the testplan documentation without
+needing to build tests.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/igt_kmod.c | 34 +++++++++++++++++-----------------
- lib/igt_kmod.h | 32 +++++++++++++++++++++++++++++---
- 2 files changed, 46 insertions(+), 20 deletions(-)
+ docs/meson.build          | 5 +----
+ docs/testplan/meson.build | 6 ++++++
+ tests/meson.build         | 1 -
+ tests/xe/meson.build      | 1 -
+ 4 files changed, 7 insertions(+), 6 deletions(-)
+ delete mode 100644 tests/xe/meson.build
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 6d6ecf0187ed..ccf0063ca1b1 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -404,23 +404,23 @@ static void *strdup_realloc(char *origptr, const char *strdata)
- }
+diff --git a/docs/meson.build b/docs/meson.build
+index 9bfec8fee80b..01edf64f04a8 100644
+--- a/docs/meson.build
++++ b/docs/meson.build
+@@ -1,5 +1,2 @@
+ subdir('reference')
+-
+-if xe_test_config != ''
+-	subdir('testplan')
+-endif
++subdir('testplan')
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index 50063aa2e84f..d34a8212df76 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -9,6 +9,12 @@ rst2pdf = find_program('rst2pdf', required: false)
  
- /**
-- * igt_i915_driver_load:
-- * @opts: options to pass to i915 driver
-+ * igt_intel_driver_load:
-+ * @opts: options to pass to Intel driver
-  *
-- * Loads the i915 driver and its dependencies.
-+ * Loads an Intel driver and its dependencies.
-  *
-  */
- int
--igt_i915_driver_load(const char *opts)
-+igt_intel_driver_load(const char *opts, const char *driver)
- {
- 	int ret;
+ stylesheet = meson.current_source_dir() + '/testplan.css'
  
- 	if (opts)
--		igt_info("Reloading i915 with %s\n\n", opts);
-+		igt_info("Reloading %s with %s\n\n", driver, opts);
- 
--	ret = igt_kmod_load("i915", opts);
-+	ret = igt_kmod_load(driver, opts);
- 	if (ret) {
--		igt_debug("Could not load i915\n");
-+		igt_debug("Could not load %s\n", driver);
- 		return ret;
- 	}
- 
-@@ -496,7 +496,7 @@ int igt_audio_driver_unload(char **who)
- 	return igt_always_unload_audio_driver(who);
- }
- 
--int __igt_i915_driver_unload(char **who)
-+int __igt_intel_driver_unload(char **who, const char *driver)
- {
- 	int ret;
- 
-@@ -530,11 +530,11 @@ int __igt_i915_driver_unload(char **who)
- 		}
- 	}
- 
--	if (igt_kmod_is_loaded("i915")) {
--		ret = igt_kmod_unload("i915", 0);
-+	if (igt_kmod_is_loaded(driver)) {
-+		ret = igt_kmod_unload(driver, 0);
- 		if (ret) {
- 			if (who)
--				*who = strdup_realloc(*who, "i915");
-+				*who = strdup_realloc(*who, driver);
- 
- 			return ret;
- 		}
-@@ -544,18 +544,18 @@ int __igt_i915_driver_unload(char **who)
- }
- 
- /**
-- * igt_i915_driver_unload:
-+ * igt_intel_driver_unload:
-  *
-- * Unloads the i915 driver and its dependencies.
-+ * Unloads an Intel driver and its dependencies.
-  *
-  */
- int
--igt_i915_driver_unload(void)
-+igt_intel_driver_unload(const char *driver)
- {
- 	char *who = NULL;
- 	int ret;
- 
--	ret = __igt_i915_driver_unload(&who);
-+	ret = __igt_intel_driver_unload(&who, driver);
- 	if (ret) {
- 		igt_warn("Could not unload %s\n", who);
- 		igt_kmod_list_loaded();
-@@ -572,8 +572,8 @@ igt_i915_driver_unload(void)
- 	igt_kmod_unload("drm_kms_helper", 0);
- 	igt_kmod_unload("drm", 0);
- 
--	if (igt_kmod_is_loaded("i915")) {
--		igt_warn("i915.ko still loaded!\n");
-+	if (igt_kmod_is_loaded("driver")) {
-+		igt_warn("%s.ko still loaded!\n", driver);
- 		return -EBUSY;
- 	}
- 
-diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index f98dd29fb175..d05af4a69410 100644
---- a/lib/igt_kmod.h
-+++ b/lib/igt_kmod.h
-@@ -38,9 +38,35 @@ int igt_kmod_unload(const char *mod_name, unsigned int flags);
- 
- int igt_audio_driver_unload(char **whom);
- 
--int igt_i915_driver_load(const char *opts);
--int igt_i915_driver_unload(void);
--int __igt_i915_driver_unload(char **whom);
-+int igt_intel_driver_load(const char *opts, const char *driver);
-+int igt_intel_driver_unload(const char *driver);
-+int __igt_intel_driver_unload(char **who, const char *driver);
++xe_test_config = source_root + '/tests/xe/xe_test_config.json'
 +
-+static inline int igt_i915_driver_load(const char *opts)
-+{
-+	return igt_intel_driver_load(opts, "i915");
-+}
++if not build_tests
++    test_executables = []
++endif
 +
-+static inline int igt_i915_driver_unload(void)
-+{
-+	return igt_intel_driver_unload("i915");
-+}
-+
-+static inline int __igt_i915_driver_unload(char **whom)
-+{
-+	return __igt_intel_driver_unload(whom, "i915");
-+};
-+
-+static inline int igt_xe_driver_load(const char *opts)
-+{
-+	return igt_intel_driver_load(opts, "xe");
-+}
-+
-+
-+static inline int igt_xe_driver_unload(void)
-+{
-+	return igt_intel_driver_unload("xe");
-+}
+ test_dict = { 'xe_tests': {
+                  'input': xe_test_config, 'extra_args': []
+               }
+diff --git a/tests/meson.build b/tests/meson.build
+index 632e36e059d8..e1cccf6298a6 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -502,7 +502,6 @@ test_executables += executable('sw_sync', 'sw_sync.c',
+ test_list += 'sw_sync'
  
- int igt_amdgpu_driver_load(const char *opts);
- int igt_amdgpu_driver_unload(void);
+ subdir('amdgpu')
+-subdir('xe')
+ 
+ subdir('v3d')
+ 
+diff --git a/tests/xe/meson.build b/tests/xe/meson.build
+deleted file mode 100644
+index bb344f95d59d..000000000000
+--- a/tests/xe/meson.build
++++ /dev/null
+@@ -1 +0,0 @@
+-xe_test_config = meson.current_source_dir() + '/xe_test_config.json'
 -- 
 2.39.2
