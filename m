@@ -1,27 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0313810E0F6
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 12:33:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 318AA10E925
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 12:33:07 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.26.250])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id C3509580CD3
+ by linux.intel.com (Postfix) with ESMTPS id C7599580D43
  for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 05:33:05 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pexeJ-007WDd-2v
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pexeJ-007WDa-2o
  for igt-dev@lists.freedesktop.org; Wed, 22 Mar 2023 13:33:03 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Mar 2023 13:33:01 +0100
-Message-Id: <20230322123301.1791267-4-mauro.chehab@linux.intel.com>
+Date: Wed, 22 Mar 2023 13:33:00 +0100
+Message-Id: <20230322123301.1791267-3-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230322123301.1791267-1-mauro.chehab@linux.intel.com>
 References: <20230322123301.1791267-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] xe/xe_module_load: add a test to
- load/unload Xe driver
+Subject: [igt-dev] [PATCH i-g-t v2 2/3] lib/igt_kmod: add support for Xe
+ driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,203 +34,149 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-This is helpful to allow IGT to check if there are issues
-during module load/unload.
+Change the kmod logic to also work with the Xe driver.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/intel-ci/xe-fast-feedback.testlist |   3 +
- tests/meson.build                        |   1 +
- tests/xe/xe_module_load.c                | 158 +++++++++++++++++++++++
- 3 files changed, 162 insertions(+)
- create mode 100644 tests/xe/xe_module_load.c
+ lib/igt_kmod.c | 34 +++++++++++++++++-----------------
+ lib/igt_kmod.h | 32 +++++++++++++++++++++++++++++---
+ 2 files changed, 46 insertions(+), 20 deletions(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 6525b1676b6f..3140d648833a 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,3 +1,6 @@
-+# Should be the first test
-+igt@xe_module_load@force-load
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 6d6ecf0187ed..ccf0063ca1b1 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -404,23 +404,23 @@ static void *strdup_realloc(char *origptr, const char *strdata)
+ }
+ 
+ /**
+- * igt_i915_driver_load:
+- * @opts: options to pass to i915 driver
++ * igt_intel_driver_load:
++ * @opts: options to pass to Intel driver
+  *
+- * Loads the i915 driver and its dependencies.
++ * Loads an Intel driver and its dependencies.
+  *
+  */
+ int
+-igt_i915_driver_load(const char *opts)
++igt_intel_driver_load(const char *opts, const char *driver)
+ {
+ 	int ret;
+ 
+ 	if (opts)
+-		igt_info("Reloading i915 with %s\n\n", opts);
++		igt_info("Reloading %s with %s\n\n", driver, opts);
+ 
+-	ret = igt_kmod_load("i915", opts);
++	ret = igt_kmod_load(driver, opts);
+ 	if (ret) {
+-		igt_debug("Could not load i915\n");
++		igt_debug("Could not load %s\n", driver);
+ 		return ret;
+ 	}
+ 
+@@ -496,7 +496,7 @@ int igt_audio_driver_unload(char **who)
+ 	return igt_always_unload_audio_driver(who);
+ }
+ 
+-int __igt_i915_driver_unload(char **who)
++int __igt_intel_driver_unload(char **who, const char *driver)
+ {
+ 	int ret;
+ 
+@@ -530,11 +530,11 @@ int __igt_i915_driver_unload(char **who)
+ 		}
+ 	}
+ 
+-	if (igt_kmod_is_loaded("i915")) {
+-		ret = igt_kmod_unload("i915", 0);
++	if (igt_kmod_is_loaded(driver)) {
++		ret = igt_kmod_unload(driver, 0);
+ 		if (ret) {
+ 			if (who)
+-				*who = strdup_realloc(*who, "i915");
++				*who = strdup_realloc(*who, driver);
+ 
+ 			return ret;
+ 		}
+@@ -544,18 +544,18 @@ int __igt_i915_driver_unload(char **who)
+ }
+ 
+ /**
+- * igt_i915_driver_unload:
++ * igt_intel_driver_unload:
+  *
+- * Unloads the i915 driver and its dependencies.
++ * Unloads an Intel driver and its dependencies.
+  *
+  */
+ int
+-igt_i915_driver_unload(void)
++igt_intel_driver_unload(const char *driver)
+ {
+ 	char *who = NULL;
+ 	int ret;
+ 
+-	ret = __igt_i915_driver_unload(&who);
++	ret = __igt_intel_driver_unload(&who, driver);
+ 	if (ret) {
+ 		igt_warn("Could not unload %s\n", who);
+ 		igt_kmod_list_loaded();
+@@ -572,8 +572,8 @@ igt_i915_driver_unload(void)
+ 	igt_kmod_unload("drm_kms_helper", 0);
+ 	igt_kmod_unload("drm", 0);
+ 
+-	if (igt_kmod_is_loaded("i915")) {
+-		igt_warn("i915.ko still loaded!\n");
++	if (igt_kmod_is_loaded("driver")) {
++		igt_warn("%s.ko still loaded!\n", driver);
+ 		return -EBUSY;
+ 	}
+ 
+diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+index f98dd29fb175..d05af4a69410 100644
+--- a/lib/igt_kmod.h
++++ b/lib/igt_kmod.h
+@@ -38,9 +38,35 @@ int igt_kmod_unload(const char *mod_name, unsigned int flags);
+ 
+ int igt_audio_driver_unload(char **whom);
+ 
+-int igt_i915_driver_load(const char *opts);
+-int igt_i915_driver_unload(void);
+-int __igt_i915_driver_unload(char **whom);
++int igt_intel_driver_load(const char *opts, const char *driver);
++int igt_intel_driver_unload(const char *driver);
++int __igt_intel_driver_unload(char **who, const char *driver);
 +
- igt@xe_compute@compute-square
- igt@xe_debugfs@base
- igt@xe_debugfs@gt
-diff --git a/tests/meson.build b/tests/meson.build
-index 632e36e059d8..f9fef103a736 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -256,6 +256,7 @@ xe_progs = [
- 	'xe_huc_copy',
- 	'xe_mmap',
- 	'xe_mmio',
-+	'xe_module_load',
- 	'xe_pm',
- 	'xe_prime_self_import',
- 	'xe_query',
-diff --git a/tests/xe/xe_module_load.c b/tests/xe/xe_module_load.c
-new file mode 100644
-index 000000000000..9a38d70858d1
---- /dev/null
-+++ b/tests/xe/xe_module_load.c
-@@ -0,0 +1,158 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Tests the xe module loading
-+ * Category: Sofware building block
-+ * Sub-category: driver
-+ * Test category: functionality test
-+ */
-+
-+#include <dirent.h>
-+#include <fcntl.h>
-+#include <libgen.h>
-+#include <signal.h>
-+
-+#ifdef __linux__
-+#include <linux/limits.h>
-+#endif
-+
-+#include <sys/ioctl.h>
-+#include <sys/utsname.h>
-+
-+#include "igt.h"
-+
-+#include "igt_aux.h"
-+#include "igt_core.h"
-+#include "igt_debugfs.h"
-+#include "igt_kmod.h"
-+#include "igt_sysfs.h"
-+
-+#define BAR_SIZE_SHIFT 20
-+#define MIN_BAR_SIZE 256
-+
-+static void hda_dynamic_debug(bool enable)
++static inline int igt_i915_driver_load(const char *opts)
 +{
-+	FILE *fp;
-+	static const char snd_hda_intel_on[] = "module snd_hda_intel +pf";
-+	static const char snd_hda_core_on[] = "module snd_hda_core +pf";
-+
-+	static const char snd_hda_intel_off[] = "module snd_hda_core =_";
-+	static const char snd_hda_core_off[] = "module snd_hda_intel =_";
-+
-+	fp = fopen("/sys/kernel/debug/dynamic_debug/control", "w");
-+	if (!fp) {
-+		igt_debug("hda dynamic debug not available\n");
-+		return;
-+	}
-+
-+	if (enable) {
-+		fwrite(snd_hda_intel_on, 1, sizeof(snd_hda_intel_on), fp);
-+		fwrite(snd_hda_core_on, 1, sizeof(snd_hda_core_on), fp);
-+	} else {
-+		fwrite(snd_hda_intel_off, 1, sizeof(snd_hda_intel_off), fp);
-+		fwrite(snd_hda_core_off, 1, sizeof(snd_hda_core_off), fp);
-+	}
-+
-+	fclose(fp);
++	return igt_intel_driver_load(opts, "i915");
 +}
 +
-+static void load_and_check_xe(const char *opts)
++static inline int igt_i915_driver_unload(void)
 +{
-+	int error;
-+	int drm_fd;
-+
-+	hda_dynamic_debug(true);
-+	error = igt_xe_driver_load(opts);
-+	hda_dynamic_debug(false);
-+
-+	igt_assert_eq(error, 0);
-+
-+	/* driver is ready, check if it's bound */
-+	drm_fd = __drm_open_driver(DRIVER_XE);
-+	igt_fail_on_f(drm_fd < 0, "Cannot open the xe DRM driver after modprobing xe.\n");
++	return igt_intel_driver_unload("i915");
 +}
 +
-+static const char * const unwanted_drivers[] = {
-+	"xe",
-+	"i915",
-+	NULL
++static inline int __igt_i915_driver_unload(char **whom)
++{
++	return __igt_intel_driver_unload(whom, "i915");
 +};
 +
-+/**
-+ * SUBTEST: force-load
-+ * Description: Load the Xe driver passing ``force_probe=*`` parameter
-+ * Run type: BAT
-+ *
-+ * SUBTEST: load
-+ * Description: Load the Xe driver
-+ * Run type: FULL
-+ *
-+ * SUBTEST: unload
-+ * Description: Unload the Xe driver
-+ * Run type: FULL
-+ *
-+ * SUBTEST: reload
-+ * Description: Reload the Xe driver
-+ * Run type: FULL
-+ *
-+ * SUBTEST: reload-no-display
-+ * Description: Reload the Xe driver passing ``enable_display=0`` parameter
-+ * Run type: FULL
-+ *
-+ * SUBTEST: many-reload
-+ * Description: Reload the Xe driver many times
-+ * Run type: FULL
-+ */
-+igt_main
++static inline int igt_xe_driver_load(const char *opts)
 +{
-+	igt_describe("Check if xe and friends are not yet loaded, then load them.");
-+	igt_subtest("load") {
-+		for (int i = 0; unwanted_drivers[i] != NULL; i++) {
-+			igt_skip_on_f(igt_kmod_is_loaded(unwanted_drivers[i]),
-+				      "%s is already loaded\n", unwanted_drivers[i]);
-+		}
-+
-+		load_and_check_xe(NULL);
-+	}
-+
-+	igt_subtest("unload") {
-+		igt_xe_driver_unload();
-+	}
-+
-+	igt_subtest("force-load") {
-+		for (int i = 0; unwanted_drivers[i] != NULL; i++) {
-+			igt_skip_on_f(igt_kmod_is_loaded(unwanted_drivers[i]),
-+				      "%s is already loaded\n", unwanted_drivers[i]);
-+		}
-+
-+		load_and_check_xe("force_probe=*");
-+	}
-+
-+	igt_subtest("reload-no-display") {
-+		igt_xe_driver_unload();
-+		load_and_check_xe("enable_display=0");
-+	}
-+
-+	igt_subtest("many-reload") {
-+		int i;
-+
-+		for (i = 0; i < 10; i++) {
-+			igt_debug("reload cycle: %d\n", i);
-+			igt_xe_driver_unload();
-+			load_and_check_xe(NULL);
-+			sleep(1);
-+		}
-+	}
-+
-+	igt_subtest("reload") {
-+		igt_xe_driver_unload();
-+		load_and_check_xe(NULL);
-+
-+		/* only default modparams, can leave module loaded */
-+	}
-+
-+	/* Subtests should unload the module themselves if they use modparams */
++	return igt_intel_driver_load(opts, "xe");
 +}
++
++
++static inline int igt_xe_driver_unload(void)
++{
++	return igt_intel_driver_unload("xe");
++}
+ 
+ int igt_amdgpu_driver_load(const char *opts);
+ int igt_amdgpu_driver_unload(void);
 -- 
 2.39.2
