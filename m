@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4879961195358101396=="
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBDB410E930
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 12:06:37 +0000 (UTC)
+Date: Wed, 22 Mar 2023 13:06:28 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230322120628.z524vkuhfauujdxx@kamilkon-desk1>
+References: <20230321144614.1676419-1-mauro.chehab@linux.intel.com>
+ <20230321144614.1676419-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 28 Mar 2023 09:47:43 -0000
-Message-ID: <167999686319.29057.10099646725079899071@emeril.freedesktop.org>
-References: <20230328083908.2476581-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230328083908.2476581-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgeGUveGVf?=
- =?utf-8?q?huc=5Fcopy=3A_use_IS=5FTIGERLAKE_macro?=
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230321144614.1676419-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] xe/xe_module_load: add a test to
+ load/unload Xe driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,220 +21,280 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4879961195358101396==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
 
-== Series Details ==
+On 2023-03-21 at 15:46:14 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> This is helpful to allow IGT to check if there are issues
+> during module load/unload.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  tests/intel-ci/xe-fast-feedback.testlist |   3 +
+>  tests/meson.build                        |   1 +
+>  tests/xe/xe_module_load.c                | 163 +++++++++++++++++++++++
+>  3 files changed, 167 insertions(+)
+>  create mode 100644 tests/xe/xe_module_load.c
+> 
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index 6525b1676b6f..3140d648833a 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -1,3 +1,6 @@
+> +# Should be the first test
+> +igt@xe_module_load@force-load
+> +
+>  igt@xe_compute@compute-square
+>  igt@xe_debugfs@base
+>  igt@xe_debugfs@gt
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 632e36e059d8..f9fef103a736 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -256,6 +256,7 @@ xe_progs = [
+>  	'xe_huc_copy',
+>  	'xe_mmap',
+>  	'xe_mmio',
+> +	'xe_module_load',
+>  	'xe_pm',
+>  	'xe_prime_self_import',
+>  	'xe_query',
+> diff --git a/tests/xe/xe_module_load.c b/tests/xe/xe_module_load.c
+> new file mode 100644
+> index 000000000000..00302be561c1
+> --- /dev/null
+> +++ b/tests/xe/xe_module_load.c
+> @@ -0,0 +1,163 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: Tests the xe module loading
+> + * Category: Sofware building block
+> + * Sub-category: driver
+> + * Test category: functionality test
+> + */
+> +
+> +#include "igt.h"
+------------ ^
+Move this after system includes.
 
-Series: xe/xe_huc_copy: use IS_TIGERLAKE macro
-URL   : https://patchwork.freedesktop.org/series/115707/
-State : success
+> +#include <dirent.h>
+> +#include <sys/utsname.h>
+> +#ifdef __linux__
+> +#include <linux/limits.h>
+> +#endif
+> +#include <signal.h>
+------------ ^
+> +#include <libgen.h>
+> +#include <signal.h>
+------------ ^
+Duplicated.
 
-== Summary ==
+> +#include <sys/ioctl.h>
+> +#include <fcntl.h>
 
-CI Bug Log - changes from CI_DRM_12924 -> IGTPW_8696
-====================================================
+Consider sorting system include aplhabetically.
 
-Summary
--------
+> +
+> +#include "igt_debugfs.h"
+> +#include "igt_aux.h"
+> +#include "igt_kmod.h"
+> +#include "igt_sysfs.h"
+> +#include "igt_core.h"
 
-  **SUCCESS**
+These also may be sorted.
 
-  No regressions found.
+Please add global description here, for example:
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/index.html
+IGT_TEST_DESCRIPTION("Check Xe module loading.");
 
-Participating hosts (36 -> 36)
-------------------------------
+> +
+> +#define BAR_SIZE_SHIFT 20
+> +#define MIN_BAR_SIZE 256
+> +
+> +static void
+> +hda_dynamic_debug(bool enable)
 
-  No changes in participating hosts
+Please write it on one line:
 
-Known issues
-------------
+static void hda_dynamic_debug(bool enable)
 
-  Here are the changes found in IGTPW_8696 that come from known issues:
+> +{
+> +	FILE *fp;
+> +	const char snd_hda_intel_on[] = "module snd_hda_intel +pf";
+------- ^
+Add static to const char*, here and below.
 
-### IGT changes ###
+> +	const char snd_hda_core_on[] = "module snd_hda_core +pf";
+> +
+> +	const char snd_hda_intel_off[] = "module snd_hda_core =_";
+> +	const char snd_hda_core_off[] = "module snd_hda_intel =_";
+> +
+> +	fp = fopen("/sys/kernel/debug/dynamic_debug/control", "w");
+> +	if (!fp) {
+> +		igt_debug("hda dynamic debug not available\n");
+> +		return;
+> +	}
+> +
+> +	if (enable) {
+> +		fwrite(snd_hda_intel_on, 1, sizeof(snd_hda_intel_on), fp);
+> +		fwrite(snd_hda_core_on, 1, sizeof(snd_hda_core_on), fp);
+> +	} else {
+> +		fwrite(snd_hda_intel_off, 1, sizeof(snd_hda_intel_off), fp);
+> +		fwrite(snd_hda_core_off, 1, sizeof(snd_hda_core_off), fp);
+> +	}
+> +
+> +	fclose(fp);
+> +}
+> +
+> +static void load_and_check_xe(const char *opts)
+> +{
+> +	int error;
+> +	int drm_fd;
+> +
+> +	hda_dynamic_debug(true);
+> +	error = igt_xe_driver_load(opts);
+> +	hda_dynamic_debug(false);
+> +
+> +	igt_assert_eq(error, 0);
+> +
+> +	/* driver is ready, check if it's bound */
+> +	drm_fd = __drm_open_driver(DRIVER_XE);
+> +	igt_fail_on_f(drm_fd < 0, "Cannot open the xe DRM driver after modprobing xe.\n");
+> +}
+> +
+> +/**
+> + * SUBTEST: force-load
+> + * Description: Load the Xe driver passing ``force_probe=*`` parameter
+> + * Run type: BAT
+> + *
+> + * SUBTEST: load
+> + * Description: Load the Xe driver
+> + * Run type: FULL
+> + *
+> + * SUBTEST: unload
+> + * Description: Unload the Xe driver
+> + * Run type: FULL
+> + *
+> + * SUBTEST: reload
+> + * Description: Reload the Xe driver
+> + * Run type: FULL
+> + *
+> + * SUBTEST: reload-no-display
+> + * Description: Reload the Xe driver passing ``enable_display=0`` parameter
+> + * Run type: FULL
+> + *
+> + * SUBTEST: many-reload
+> + * Description: Reload the Xe driver many times
+> + * Run type: FULL
+> + */
+> +igt_main
+> +{
+> +	igt_describe("Check if xe and friends are not yet loaded, then load them.");
+> +	igt_subtest("load") {
+> +		const char * unwanted_drivers[] = {
+--------------- ^ --------- ^
+		static const char *unwanted_drivers[] = {
 
-#### Issues hit ####
+> +			"xe",
+> +			"i915",
+> +			NULL
+> +		};
+> +
+> +		for (int i = 0; unwanted_drivers[i] != NULL; i++) {
+> +			igt_skip_on_f(igt_kmod_is_loaded(unwanted_drivers[i]),
+> +			              "%s is already loaded\n", unwanted_drivers[i]);
+-- ^
+Use more tabs.
 
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg2-11:         [PASS][1] -> [ABORT][2] ([i915#7913])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+> +		}
+> +
+> +		load_and_check_xe(NULL);
+> +	}
+> +
 
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-1:         [PASS][3] -> [ABORT][4] ([i915#4983] / [i915#7981])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-rpls-1/igt@i915_selftest@live@reset.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-rpls-1/igt@i915_selftest@live@reset.html
+Add here description with igt_describe.
 
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-dp-1:
-    - bat-dg2-8:          [PASS][5] -> [FAIL][6] ([i915#7932])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-dg2-8/igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-dp-1.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-dg2-8/igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-dp-1.html
+> +	igt_subtest("unload") {
+> +		igt_xe_driver_unload();
+> +	}
+> +
 
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         NOTRUN -> [SKIP][7] ([i915#5354])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+Same here.
 
-  
-#### Possible fixes ####
+> +	igt_subtest("force-load") {
+> +		const char * unwanted_drivers[] = {
+--------------- ^ --------- ^
+These are the same as above, maybe declare that before all tests
+in igt_main ? Or maybe make it separate function and call it
+from two places ?
 
-  * igt@i915_pm_rps@basic-api:
-    - bat-dg2-11:         [FAIL][8] ([i915#8308]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-dg2-11/igt@i915_pm_rps@basic-api.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+> +			"xe",
+> +			"i915",
+> +			NULL
+> +		};
+> +
+> +		for (int i = 0; unwanted_drivers[i] != NULL; i++) {
+> +			igt_skip_on_f(igt_kmod_is_loaded(unwanted_drivers[i]),
+> +			              "%s is already loaded\n", unwanted_drivers[i]);
+-- ^
+Use more tabs.
 
-  * igt@i915_selftest@live@migrate:
-    - bat-dg2-11:         [DMESG-WARN][10] ([i915#7699]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-dg2-11/igt@i915_selftest@live@migrate.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-dg2-11/igt@i915_selftest@live@migrate.html
+> +		}
+> +
+> +		load_and_check_xe("force_probe=*");
+> +	}
+> +
 
-  
-#### Warnings ####
+Same here, write description.
 
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-2:         [DMESG-FAIL][12] ([i915#6367] / [i915#7913] / [i915#7996]) -> [DMESG-FAIL][13] ([i915#6997] / [i915#7913])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-rpls-2/igt@i915_selftest@live@slpc.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-rpls-2/igt@i915_selftest@live@slpc.html
+> +	igt_subtest("reload-no-display") {
+> +		igt_xe_driver_unload();
+> +		load_and_check_xe("enable_display=0");
+> +	}
+> +
+> +
 
-  
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7981]: https://gitlab.freedesktop.org/drm/intel/issues/7981
-  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
-  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
+Remove extra empty line, add description.
 
+> +	igt_subtest("many-reload") {
+> +		int i;
+> +
+> +		for (i = 0; i < 10; i++) {
 
-Build changes
--------------
+imho here it is worth printing igt_debug("reload cycle: %d\n", i);
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7221 -> IGTPW_8696
+> +			igt_xe_driver_unload();
+> +			load_and_check_xe(NULL);
+> +			sleep(1);
+> +		}
+> +	}
+> +
 
-  CI-20190529: 20190529
-  CI_DRM_12924: ebd5c3d494ecd03a2f2851241c0b699f46746e4c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8696: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/index.html
-  IGT_7221: 4b77c6d85024d22ca521d510f8eee574128fe04f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+Add description.
 
-== Logs ==
+Regards,
+Kamil
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/index.html
-
---===============4879961195358101396==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>xe/xe_huc_copy: use IS_TIGERLAKE macro</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115707/">https://patchwork.freedesktop.org/series/115707/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12924 -&gt; IGTPW_8696</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/index.html</p>
-<h2>Participating hosts (36 -&gt; 36)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8696 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7981">i915#7981</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-dg2-8/igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-dg2-8/igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live@slpc:<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12924/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7221 -&gt; IGTPW_8696</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12924: ebd5c3d494ecd03a2f2851241c0b699f46746e4c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8696: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8696/index.html<br />
-  IGT_7221: 4b77c6d85024d22ca521d510f8eee574128fe04f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4879961195358101396==--
+> +	igt_subtest("reload") {
+> +		igt_xe_driver_unload();
+> +		load_and_check_xe(NULL);
+> +
+> +		/* only default modparams, can leave module loaded */
+> +	}
+> +
+> +	/* Subtests should unload the module themselves if they use modparams */
+> +}
+> -- 
+> 2.39.2
+> 
 
