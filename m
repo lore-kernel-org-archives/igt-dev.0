@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BAC7B89C05
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 08:28:42 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.26.250])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 10F3B580D43
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 01:28:32 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1petpd-007Qd6-38
- for igt-dev@lists.freedesktop.org; Wed, 22 Mar 2023 09:28:29 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Mar 2023 09:28:18 +0100
-Message-Id: <20230322082826.1770429-1-mauro.chehab@linux.intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C43B610E8E8
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 10:22:32 +0000 (UTC)
+Message-ID: <17274286-8b9b-4106-ca44-c76c17fc738a@intel.com>
+Date: Wed, 22 Mar 2023 15:52:18 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 0/8] Build Xe test documentation
+Content-Language: en-US
+To: Luca Coelho <luca@coelho.fi>, igt-dev@lists.freedesktop.org
+References: <20230320143622.5166-1-swati2.sharma@intel.com>
+ <4b8b5e1fd10fd32ab7f2196cb5b11129e849f3b9.camel@coelho.fi>
+From: Swati Sharma <swati2.sharma@intel.com>
+In-Reply-To: <4b8b5e1fd10fd32ab7f2196cb5b11129e849f3b9.camel@coelho.fi>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_scaling: Fix
+ out-of-bound array access
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,57 +26,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-IGT has gained support for building Xe driver test documentation,
-but there are a few left-overs for it to work.
 
-Add the left overs, creating Xe test documentation at build time.
-
----
-
-v5:
-  - Fix build issues with igt-gpu-tools-doc target.
-
-v4:
-  - Fixed a build error when tests are disabled;
-  - get rid of source_root future deprecated warning;
-  - testplan/meson.build now uses join_paths;
-  - dropped tests/xe/meson.build file;
-  - re-indented testplan/meson.build.
-
-v3:
-  - added SPDG tag to docs/testplan/conf.py;
-  - changed description on patch 2;
-  - cleanup IGT doc dependency chain.
-
-Mauro Carvalho Chehab (8):
-  meson: build Xe test documentation
-  testplan: build also a PDF file with the testplan
-  meson.build: place gtk-doc dependencies check at the right place
-  meson: get rid of a future-deprecated warning
-  meson: get rid of tests/xe/meson.build
-  testplan/meson.build: cleanup dependency chain
-  testplan/meson.build: use join_paths()
-  testplan/meson.build: re-indent file
-
- docs/meson.build           |   4 ++
- docs/reference/meson.build |   9 ++-
- docs/testplan/conf.py      |  42 ++++++++++++++
- docs/testplan/meson.build  | 112 +++++++++++++++++++++----------------
- docs/testplan/testplan.css |   7 +++
- lib/meson.build            |   2 +-
- meson.build                |  17 +++---
- meson_options.txt          |   8 +++
- scripts/gen_rst_index      |  43 ++++++++++++++
- scripts/meson.build        |   3 +
- tests/meson.build          |   1 -
- tests/xe/meson.build       |   1 -
- 12 files changed, 189 insertions(+), 60 deletions(-)
- create mode 100644 docs/testplan/conf.py
- create mode 100644 docs/testplan/testplan.css
- create mode 100755 scripts/gen_rst_index
- delete mode 100644 tests/xe/meson.build
+On 22-Mar-23 3:36 PM, Luca Coelho wrote:
+> On Mon, 2023-03-20 at 20:06 +0530, Swati Sharma wrote:
+>> With this fix we are solving 2 issues. Firstly, the
+>> planes_scaling_combo() tests were leaving one scaler assigned
+>> after running sub-test with two consecutive planes because
+>> one scaler was getting reused in the next run. So with this fix
+>> scaler is not reused since we won't have any common plane.
+>>
+>> Secondly, when k == n_planes - 1, we were trying to access
+>> planes[n_planes], which led to array out of bounds error. So, with
+>> this fix, this issue is fixed too.
+>>
+>> v2: -fix condition if n_planes is not even (JP)
+>>
+>> Suggested-by: Luca Coelho <luciano.coelho@intel.com>
+>> Suggested-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>> Reported-by: Luca Coelho <luciano.coelho@intel.com>
+>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>> ---
+>>   tests/kms_plane_scaling.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+>> index 3a6904afb..7feb45ca3 100644
+>> --- a/tests/kms_plane_scaling.c
+>> +++ b/tests/kms_plane_scaling.c
+>> @@ -744,7 +744,7 @@ test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+>>   		igt_assert(0);
+>>   	}
+>>   
+>> -	for (int k = 0; k < display->pipes[pipe].n_planes; k++) {
+>> +	for (int k = 0; k < display->pipes[pipe].n_planes - 1; k += 2) {
+>>   		igt_plane_t *p1, *p2;
+>>   
+>>   		p1 = &display->pipes[pipe].planes[k];
+> 
+> What will happen if we have only 1 plane? Shouldn't the test be
+> skipped? It seems that the loop will just not run and the test result
+> will be pass?
+Right.
+Should we add igt_require(n_planes >=2)?
+With that if n_planes=1 test will SKIP.
+> 
+> --
+> Cheers,
+> Luca.
 
 -- 
-2.39.2
+~Swati Sharma
