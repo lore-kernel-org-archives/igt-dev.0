@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 189B410E331
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 00:05:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27C5810E1D4
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 00:05:35 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>,
  kamil.konieczny@linux.intel.com
-Date: Tue, 21 Mar 2023 17:05:17 -0700
-Message-Id: <20230322000523.3310187-26-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 21 Mar 2023 17:05:22 -0700
+Message-Id: <20230322000523.3310187-31-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230322000523.3310187-1-umesh.nerlige.ramappa@intel.com>
 References: <20230322000523.3310187-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 25/31] i915/perf: Make sanity check
- failures descriptive
+Subject: [igt-dev] [PATCH i-g-t v4 30/31] tools/perf: Choose the right card
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,61 +24,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Make the asserts in the sanity check descriptive.
+Choose the right dri card to open for perf recorder.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/i915/perf.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ tools/i915-perf/i915_perf_recorder.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 02d0f232..ce58a6b8 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -1017,7 +1017,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
- 			continue;
- 
- 		igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
--		igt_assert(delta <= max_delta);
-+		igt_assert_f(delta <= max_delta,
-+			     "A40_%d: delta = %"PRIu64", max_delta = %"PRIu64"\n",
-+			     j, delta, max_delta);
- 	}
- 
- 	for (int j = 0; j < format.n_a64; j++) {
-@@ -1029,7 +1031,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
- 			continue;
- 
- 		igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a + j, delta);
--		igt_assert(delta <= max_delta);
-+		igt_assert_f(delta <= max_delta,
-+			     "A64_%d: delta = %"PRIu64", max_delta = %"PRIu64"\n",
-+			     format.first_a + j, delta, max_delta);
- 	}
- 
- 	for (int j = 0; j < format.n_a; j++) {
-@@ -1044,7 +1048,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
- 			continue;
- 
- 		igt_debug("A%d: delta = %"PRIu32"\n", a_id, delta);
--		igt_assert(delta <= max_delta);
-+		igt_assert_f(delta <= max_delta,
-+			     "A%d: delta = %"PRIu32", max_delta = %"PRIu64"\n",
-+			     a_id, delta, max_delta);
- 	}
- 
- 	/* The TestOa metric set defines all B counters to be a
-@@ -1106,7 +1112,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
- 
- 		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu64"\n",
- 			  j, delta, max_delta);
--		igt_assert(delta <= max_delta);
-+		igt_assert_f(delta <= max_delta,
-+			     "C%d: delta = %"PRIu32", max_delta = %"PRIu64"\n",
-+			     j, delta, max_delta);
- 	}
+diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+index ca435483..1c85a099 100644
+--- a/tools/i915-perf/i915_perf_recorder.c
++++ b/tools/i915-perf/i915_perf_recorder.c
+@@ -243,10 +243,10 @@ read_device_param(const char *stem, int id, const char *param)
  }
  
+ static int
+-find_intel_render_node(void)
++find_intel_card_node(void)
+ {
+-	for (int i = 128; i < (128 + 16); i++) {
+-		if (read_device_param("renderD", i, "vendor") == 0x8086)
++	for (int i = 0; i < 128; i++) {
++		if (read_device_param("card", i, "vendor") == 0x8086)
+ 			return i;
+ 	}
+ 
+@@ -275,20 +275,18 @@ open_render_node(uint32_t *devid, int card)
+ 	char *name;
+ 	int ret;
+ 	int fd;
+-	int render;
+ 
+ 	if (card < 0) {
+-		render = find_intel_render_node();
+-		if (render < 0)
++		card = find_intel_card_node();
++
++		if (card < 0)
+ 			return -1;
+-	} else {
+-		render = 128 + card;
+ 	}
+ 
+-	ret = asprintf(&name, "/dev/dri/renderD%u", render);
++	ret = asprintf(&name, "/dev/dri/card%u", card);
+ 	assert(ret != -1);
+ 
+-	*devid = read_device_param("renderD", render, "device");
++	*devid = read_device_param("card", card, "device");
+ 
+ 	fd = open(name, O_RDWR);
+ 	free(name);
 -- 
 2.36.1
