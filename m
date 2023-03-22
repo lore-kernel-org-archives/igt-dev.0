@@ -1,26 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B71C10E466
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 09:02:27 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.26.172])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 64FD9580D2C
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 02:02:25 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pfGpz-0085vi-1b
- for igt-dev@lists.freedesktop.org; Thu, 23 Mar 2023 10:02:23 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Mar 2023 10:02:20 +0100
-Message-Id: <20230323090221.1929302-4-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230323090221.1929302-1-mauro.chehab@linux.intel.com>
-References: <20230323090221.1929302-1-mauro.chehab@linux.intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B520110E8E3
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 10:00:18 +0000 (UTC)
+From: "Coelho, Luciano" <luciano.coelho@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Sharma,
+ Swati2" <swati2.sharma@intel.com>
+Date: Wed, 22 Mar 2023 10:00:15 +0000
+Message-ID: <5d58597b087cadbc3ca77d723446365386a8bdf3.camel@intel.com>
+References: <20230322060818.11415-1-swati2.sharma@intel.com>
+In-Reply-To: <20230322060818.11415-1-swati2.sharma@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6EC82A8F2B24F343AE32FCA9504CE81F@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 3/4] lib/igt_kmod: add support for Xe
- driver
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: Fix copy-paste
+ error
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,152 +27,13 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-Change the kmod logic to also work with the Xe driver.
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- lib/igt_kmod.c | 34 +++++++++++++++++-----------------
- lib/igt_kmod.h | 32 +++++++++++++++++++++++++++++---
- 2 files changed, 46 insertions(+), 20 deletions(-)
-
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 6d6ecf0187ed..ccf0063ca1b1 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -404,23 +404,23 @@ static void *strdup_realloc(char *origptr, const char *strdata)
- }
- 
- /**
-- * igt_i915_driver_load:
-- * @opts: options to pass to i915 driver
-+ * igt_intel_driver_load:
-+ * @opts: options to pass to Intel driver
-  *
-- * Loads the i915 driver and its dependencies.
-+ * Loads an Intel driver and its dependencies.
-  *
-  */
- int
--igt_i915_driver_load(const char *opts)
-+igt_intel_driver_load(const char *opts, const char *driver)
- {
- 	int ret;
- 
- 	if (opts)
--		igt_info("Reloading i915 with %s\n\n", opts);
-+		igt_info("Reloading %s with %s\n\n", driver, opts);
- 
--	ret = igt_kmod_load("i915", opts);
-+	ret = igt_kmod_load(driver, opts);
- 	if (ret) {
--		igt_debug("Could not load i915\n");
-+		igt_debug("Could not load %s\n", driver);
- 		return ret;
- 	}
- 
-@@ -496,7 +496,7 @@ int igt_audio_driver_unload(char **who)
- 	return igt_always_unload_audio_driver(who);
- }
- 
--int __igt_i915_driver_unload(char **who)
-+int __igt_intel_driver_unload(char **who, const char *driver)
- {
- 	int ret;
- 
-@@ -530,11 +530,11 @@ int __igt_i915_driver_unload(char **who)
- 		}
- 	}
- 
--	if (igt_kmod_is_loaded("i915")) {
--		ret = igt_kmod_unload("i915", 0);
-+	if (igt_kmod_is_loaded(driver)) {
-+		ret = igt_kmod_unload(driver, 0);
- 		if (ret) {
- 			if (who)
--				*who = strdup_realloc(*who, "i915");
-+				*who = strdup_realloc(*who, driver);
- 
- 			return ret;
- 		}
-@@ -544,18 +544,18 @@ int __igt_i915_driver_unload(char **who)
- }
- 
- /**
-- * igt_i915_driver_unload:
-+ * igt_intel_driver_unload:
-  *
-- * Unloads the i915 driver and its dependencies.
-+ * Unloads an Intel driver and its dependencies.
-  *
-  */
- int
--igt_i915_driver_unload(void)
-+igt_intel_driver_unload(const char *driver)
- {
- 	char *who = NULL;
- 	int ret;
- 
--	ret = __igt_i915_driver_unload(&who);
-+	ret = __igt_intel_driver_unload(&who, driver);
- 	if (ret) {
- 		igt_warn("Could not unload %s\n", who);
- 		igt_kmod_list_loaded();
-@@ -572,8 +572,8 @@ igt_i915_driver_unload(void)
- 	igt_kmod_unload("drm_kms_helper", 0);
- 	igt_kmod_unload("drm", 0);
- 
--	if (igt_kmod_is_loaded("i915")) {
--		igt_warn("i915.ko still loaded!\n");
-+	if (igt_kmod_is_loaded("driver")) {
-+		igt_warn("%s.ko still loaded!\n", driver);
- 		return -EBUSY;
- 	}
- 
-diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index f98dd29fb175..d05af4a69410 100644
---- a/lib/igt_kmod.h
-+++ b/lib/igt_kmod.h
-@@ -38,9 +38,35 @@ int igt_kmod_unload(const char *mod_name, unsigned int flags);
- 
- int igt_audio_driver_unload(char **whom);
- 
--int igt_i915_driver_load(const char *opts);
--int igt_i915_driver_unload(void);
--int __igt_i915_driver_unload(char **whom);
-+int igt_intel_driver_load(const char *opts, const char *driver);
-+int igt_intel_driver_unload(const char *driver);
-+int __igt_intel_driver_unload(char **who, const char *driver);
-+
-+static inline int igt_i915_driver_load(const char *opts)
-+{
-+	return igt_intel_driver_load(opts, "i915");
-+}
-+
-+static inline int igt_i915_driver_unload(void)
-+{
-+	return igt_intel_driver_unload("i915");
-+}
-+
-+static inline int __igt_i915_driver_unload(char **whom)
-+{
-+	return __igt_intel_driver_unload(whom, "i915");
-+};
-+
-+static inline int igt_xe_driver_load(const char *opts)
-+{
-+	return igt_intel_driver_load(opts, "xe");
-+}
-+
-+
-+static inline int igt_xe_driver_unload(void)
-+{
-+	return igt_intel_driver_unload("xe");
-+}
- 
- int igt_amdgpu_driver_load(const char *opts);
- int igt_amdgpu_driver_unload(void);
--- 
-2.39.2
+T24gV2VkLCAyMDIzLTAzLTIyIGF0IDExOjM4ICswNTMwLCBTd2F0aSBTaGFybWEgd3JvdGU6DQo+
+IFRoaXMgZml4ZXMgZG93bnNjYWxpbmcgZmFjdG9yIDAuNSAoMjoxKSB0ZXN0cyB3aGljaCB3ZXJl
+DQo+IHNraXBwaW5nIGJlZm9yZSBhbmQgd2VyZSBleHBlY3RlZCB0byBwYXNzIHNpbmNlIG1heCBk
+b3duc2NhbGluZw0KPiBzdXBwb3J0ZWQgaXMgMzoxDQo+IEV2ZW4gYWZ0ZXIgdGhlc2UgZml4ZXMs
+IGZldyB0ZXN0cyBzdGlsbCBjYW4gc2tpcCBiZWNhdXNlIG9mDQo+IENEQ0xLIGxpbWl0YXRpb25z
+IHdoaWNoIGlzIGV4cGVjdGVkLg0KPiANCj4gUmVwb3J0ZWQtYnk6IEx1Y2EgQ29lbGhvIDxsdWNp
+YW5vLmNvZWxob0BpbnRlbC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IFN3YXRpIFNoYXJtYSA8c3dh
+dGkyLnNoYXJtYUBpbnRlbC5jb20+DQo+IC0tLQ0KDQpMb29rcyBnb29kLiAgVGhhbmtzLCBTd2F0
+aSENCg0KUmV2aWV3ZWQtYnk6IEx1Y2EgQ29lbGhvIDxsdWNpYW5vLmNvZWxob0BpbnRlbC5jb20+
+DQoNCi0tDQpDaGVlcnMsDQpMdWNhLg0K
