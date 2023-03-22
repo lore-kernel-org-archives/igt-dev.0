@@ -1,23 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CEBC610E371
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 14:00:52 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61E6910E0F6
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 12:33:07 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.26.250])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 232B1580C35
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 07:00:33 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id D8D85580D56
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 05:33:05 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pez0x-007YK5-0j
- for igt-dev@lists.freedesktop.org; Wed, 22 Mar 2023 15:00:31 +0100
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pexeJ-007WDU-2b
+ for igt-dev@lists.freedesktop.org; Wed, 22 Mar 2023 13:33:03 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Mar 2023 15:00:27 +0100
-Message-Id: <20230322140030.1800192-1-mauro.chehab@linux.intel.com>
+Date: Wed, 22 Mar 2023 13:32:58 +0100
+Message-Id: <20230322123301.1791267-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/3] xe/xe_module_load: add a test to
+Subject: [igt-dev] [PATCH i-g-t v2 0/3] xe/xe_module_load: add a test to
  load/unload Xe driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -91,9 +91,6 @@ Test documentation:
 	:Run type: FULL
 
 ---
-
-v3:
-- no changes. Just rebased due to a merge conflict.
 
 v2:
 
