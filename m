@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ACEA910E4A2
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C96D710E4BE
  for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 22:55:39 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Mar 2023 15:55:06 -0700
-Message-Id: <20230323225534.3739835-3-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 23 Mar 2023 15:55:07 -0700
+Message-Id: <20230323225534.3739835-4-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 References: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 02/30] i915/perf: Define a default engine
- for OA
+Subject: [igt-dev] [PATCH i-g-t v5 03/30] i915/perf: Use default engine for
+ sseu tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,62 +23,81 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use a helper to set the default engine for use with OA.
+Explicitly pass the default engine for the sseu tests.
+
+v2: Pass context id in sseu tests to fix CI failure
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tests/i915/perf.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 48bd17a5..f7883de6 100644
+index f7883de6..75e698ec 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -215,6 +215,7 @@ static int sysfs = -1;
- static int pm_fd = -1;
- static int stream_fd = -1;
- static uint32_t devid;
-+static struct intel_execution_engine2 default_e2;
- 
- static uint64_t gt_max_freq_mhz = 0;
- static struct intel_perf *intel_perf = NULL;
-@@ -5084,8 +5085,19 @@ static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
- 	return false;
+@@ -4440,11 +4440,12 @@ make_valid_reduced_sseu_config(struct drm_i915_gem_context_param_sseu default_ss
  }
  
-+static void set_default_engine(const intel_ctx_t *ctx)
-+{
-+	const struct intel_execution_engine2 *e;
-+
-+	for_each_ctx_engine(drm_fd, ctx, e)
-+		if (e->class == I915_ENGINE_CLASS_RENDER && e->instance == 0)
-+			default_e2 = *e;
-+}
-+
- igt_main
+ static void
+-test_global_sseu_config_invalid(void)
++test_global_sseu_config_invalid(const intel_ctx_t *ctx)
  {
-+	const intel_ctx_t *ctx;
-+
- 	igt_fixture {
- 		struct stat sb;
+ 	struct drm_i915_gem_context_param_sseu default_sseu;
+ 	struct drm_i915_gem_context_param_sseu sseu_param;
+ 	struct drm_i915_gem_context_param ctx_gp = {
++		.ctx_id = ctx->id,
+ 		.param = I915_CONTEXT_PARAM_SSEU,
+ 		.size = sizeof(default_sseu),
+ 		.value = to_user_pointer(&default_sseu),
+@@ -4469,6 +4470,9 @@ test_global_sseu_config_invalid(void)
+ 	};
  
-@@ -5123,6 +5135,8 @@ igt_main
+ 	memset(&default_sseu, 0, sizeof(default_sseu));
++	default_sseu.flags = I915_CONTEXT_SSEU_FLAG_ENGINE_INDEX;
++	default_sseu.engine.engine_class = default_e2.class;
++	default_sseu.engine.engine_instance = default_e2.flags;
+ 	igt_require(__gem_context_get_param(drm_fd, &ctx_gp) == 0);
  
- 		igt_require(init_sys_info());
- 
-+		ctx = intel_ctx_create_all_physical(drm_fd);
-+		set_default_engine(ctx);
- 		write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
- 		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
- 
-@@ -5310,6 +5324,7 @@ igt_main
- 		if (intel_perf)
- 			intel_perf_free(intel_perf);
- 
-+		intel_ctx_destroy(drm_fd, ctx);
- 		close(drm_fd);
- 	}
+ 	igt_debug("Default context sseu:\n");
+@@ -4515,11 +4519,12 @@ test_global_sseu_config_invalid(void)
  }
+ 
+ static void
+-test_global_sseu_config(void)
++test_global_sseu_config(const intel_ctx_t *ctx)
+ {
+ 	struct drm_i915_gem_context_param_sseu default_sseu;
+ 	struct drm_i915_gem_context_param_sseu sseu_param;
+ 	struct drm_i915_gem_context_param ctx_gp = {
++		.ctx_id = ctx->id,
+ 		.param = I915_CONTEXT_PARAM_SSEU,
+ 		.size = sizeof(default_sseu),
+ 		.value = to_user_pointer(&default_sseu),
+@@ -4544,6 +4549,9 @@ test_global_sseu_config(void)
+ 	};
+ 
+ 	memset(&default_sseu, 0, sizeof(default_sseu));
++	default_sseu.flags = I915_CONTEXT_SSEU_FLAG_ENGINE_INDEX;
++	default_sseu.engine.engine_class = default_e2.class;
++	default_sseu.engine.engine_instance = default_e2.flags;
+ 	igt_require(__gem_context_get_param(drm_fd, &ctx_gp) == 0);
+ 
+ 	igt_debug("Default context sseu:\n");
+@@ -5297,11 +5305,11 @@ igt_main
+ 
+ 		igt_describe("Verify invalid SSEU opening parameters");
+ 		igt_subtest("global-sseu-config-invalid")
+-			test_global_sseu_config_invalid();
++			test_global_sseu_config_invalid(ctx);
+ 
+ 		igt_describe("Verify specifying SSEU opening parameters");
+ 		igt_subtest("global-sseu-config")
+-			test_global_sseu_config();
++			test_global_sseu_config(ctx);
+ 	}
+ 
+ 	igt_subtest("invalid-create-userspace-config")
 -- 
 2.36.1
