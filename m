@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on20607.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e88::607])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36F8110E0E6
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 17:30:43 +0000 (UTC)
-From: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
-To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
- <sunpeng.li@amd.com>, <harry.wentland@amd.com>, <nicholas.kazlauskas@amd.com>
-Date: Thu, 23 Mar 2023 13:30:03 -0400
-Message-ID: <20230323173003.592421-1-Bhawanpreet.Lakha@amd.com>
-In-Reply-To: <8307c87d-e96c-ee2d-48bb-a2964a349e31@amd.com>
-References: <8307c87d-e96c-ee2d-48bb-a2964a349e31@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============0217363930004280831=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 2/2] amdgpu_amd_plane: Add Multi MPO invalid test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhawanpreet Lakha" <bhawanpreet.lakha@amd.com>
+Date: Thu, 23 Mar 2023 18:09:28 -0000
+Message-ID: <167959496839.6630.11265590475310653780@emeril.freedesktop.org>
+References: <20230213181651.863367-1-Bhawanpreet.Lakha@amd.com>
+In-Reply-To: <20230213181651.863367-1-Bhawanpreet.Lakha@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5B1/2=5D_amdgpu/amd=5Fplane=3A_Add_multi_MPO_XR?=
+ =?utf-8?q?GB8888_test_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,100 +18,221 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[Why]
-We cannot draw cursor on a video plane so if the usermode trys to use
-the topmost plane as a video plane we should reject that commit
+--===============0217363930004280831==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-[How]
-Trying to use a video format (NV12) as the topmost plane should fail
-atomic check
+== Series Details ==
 
-*v2
-- Update test description
-- Formatting fixes
+Series: series starting with [1/2] amdgpu/amd_plane: Add multi MPO XRGB8888 test (rev4)
+URL   : https://patchwork.freedesktop.org/series/113966/
+State : success
 
-Signed-off-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
----
- tests/amdgpu/amd_plane.c | 55 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+== Summary ==
 
-diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index 4115d692..fd46fb04 100644
---- a/tests/amdgpu/amd_plane.c
-+++ b/tests/amdgpu/amd_plane.c
-@@ -544,6 +544,57 @@ static void test_panning_2_display(data_t *data, int w, int h, struct fbc *fbc)
- 
- }
- 
-+/*
-+ * This tests invalid plane format order
-+ *
-+ * Since we cannot draw a cursor on a video plane the top most plane cannot be a video plane.
-+ * This test tries to commit a configuration where the topmost plane is a video plane. This is
-+ * expected to fail since we do not support that configuration.
-+ */
-+static void test_multi_mpo_invalid(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	igt_output_t *output;
-+	uint32_t regamma_lut_size;
-+	lut_t lut;
-+	struct fbc fb[4];
-+	int valid_outputs = 0;
-+	int w, h;
-+	int ret;
-+
-+	test_init(data);
-+
-+	w = data->w[0];
-+	h = data->h[0];
-+
-+	/* Skip test if we don't have 2 overlay planes */
-+	igt_skip_on(!data->overlay2[0]);
-+
-+	igt_output_set_pipe(data->output[0], data->pipe_id[0]);
-+
-+	igt_create_color_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 1.0, 1.0, 1.0, &fb[0].test_primary);
-+	igt_create_fb(data->fd, w, h, DRM_FORMAT_NV12, 0, &fb[0].test_overlay);
-+
-+	/* Top most plane is NV12 (video plane) */
-+	igt_create_fb(data->fd, w, h, DRM_FORMAT_NV12, 0, &fb[0].test_overlay2);
-+
-+	igt_plane_set_fb(data->primary[0], &fb[0].test_primary);
-+	igt_plane_set_fb(data->overlay[0], &fb[0].test_overlay);
-+	igt_plane_set_fb(data->overlay2[0], &fb[0].test_overlay2);
-+
-+	/* This should fail as the topmost plane is NV12 */
-+	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY, NULL);
-+
-+	if (!ret)
-+		igt_assert(0);
-+
-+	test_fini(data);
-+
-+	igt_remove_fb(data->fd, &fb[0].test_primary);
-+	igt_remove_fb(data->fd, &fb[0].test_overlay);
-+	igt_remove_fb(data->fd, &fb[0].test_overlay2);
-+}
-+
- /*
-  * Setup and runner for panning test. Creates common video sizes and pans them across the display
-  */
-@@ -911,6 +962,10 @@ igt_main
- 	igt_subtest("multi-overlay")
- 		test_display_mpo(&data, MPO_MULTI_OVERLAY, DRM_FORMAT_NV12, 1);
- 
-+	igt_describe("Invalid MPO with 2 overlays planes and a primary plane");
-+	igt_subtest("multi-overlay-invalid")
-+		test_multi_mpo_invalid(&data);
-+
- 	igt_describe("MPO and scaling RGB primary plane");
- 	igt_subtest("mpo-scale-rgb")
- 		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
--- 
-2.25.1
+CI Bug Log - changes from IGT_7212 -> IGTPW_8671
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/index.html
+
+Participating hosts (36 -> 36)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8671 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@guc:
+    - bat-rpls-2:         NOTRUN -> [DMESG-WARN][1] ([i915#7852])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-2/igt@i915_selftest@live@guc.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [PASS][2] -> [ABORT][3] ([i915#4983])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7212/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         NOTRUN -> [DMESG-FAIL][4] ([i915#6367] / [i915#7913])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-rpls-2:         NOTRUN -> [SKIP][5] ([i915#7828])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-2/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-rpls-2:         NOTRUN -> [SKIP][6] ([i915#1845])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-2/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][7] ([fdo#109271]) +38 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [DMESG-FAIL][8] ([i915#5334]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7212/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-2:         [ABORT][10] ([i915#4983] / [i915#7913]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7212/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7852]: https://gitlab.freedesktop.org/drm/intel/issues/7852
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7212 -> IGTPW_8671
+
+  CI-20190529: 20190529
+  CI_DRM_12905: 3a266f994a6b752953eb974ab7bf1dc382a2d1b8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8671: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/index.html
+  IGT_7212: c67b6c8993c509ca06eca222287c58ade43292e6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/index.html
+
+--===============0217363930004280831==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2] amdgpu/amd_plane: Add multi MPO XRGB8888 test (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113966/">https://patchwork.freedesktop.org/series/113966/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7212 -&gt; IGTPW_8671</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/index.html</p>
+<h2>Participating hosts (36 -&gt; 36)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8671 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@guc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-2/igt@i915_selftest@live@guc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7852">i915#7852</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7212/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-2/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-2/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +38 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7212/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7212/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7212 -&gt; IGTPW_8671</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12905: 3a266f994a6b752953eb974ab7bf1dc382a2d1b8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8671: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8671/index.html<br />
+  IGT_7212: c67b6c8993c509ca06eca222287c58ade43292e6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0217363930004280831==--
