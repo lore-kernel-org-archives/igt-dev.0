@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53DB410EB85
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6590C10EB87
  for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 22:55:44 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Mar 2023 15:55:28 -0700
-Message-Id: <20230323225534.3739835-25-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 23 Mar 2023 15:55:29 -0700
+Message-Id: <20230323225534.3739835-26-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 References: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 24/30] i915/perf: Run non-zero-reason on
- media engines as well
+Subject: [igt-dev] [PATCH i-g-t v5 25/30] i915/perf: Make sanity check
+ failures descriptive
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,86 +23,61 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Enable non-zero-reason test to run on media engines as well.
-
-v2: Check if new params are available before passing (CI failure)
+Make the asserts in the sanity check descriptive.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/i915/perf.c | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ tests/i915/perf.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index e72704b5..02d0f232 100644
+index 02d0f232..ce58a6b8 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -2895,26 +2895,33 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
- }
+@@ -1017,7 +1017,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 			continue;
  
- static void
--test_non_zero_reason(void)
-+test_non_zero_reason(const struct intel_execution_engine2 *e)
- {
- 	/* ~20 micro second period */
- 	int oa_exponent = max_oa_exponent_for_period_lte(20000);
-+	struct intel_perf_metric_set *test_set = metric_set(e);
-+	uint64_t fmt = test_set->perf_oa_format;
-+	size_t report_size = get_oa_format(fmt).size;
- 	uint64_t properties[] = {
- 		/* Include OA reports in samples */
- 		DRM_I915_PERF_PROP_SAMPLE_OA, true,
- 
- 		/* OA unit configuration */
--		DRM_I915_PERF_PROP_OA_METRICS_SET, default_test_set->perf_oa_metrics_set,
--		DRM_I915_PERF_PROP_OA_FORMAT, default_test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-+		DRM_I915_PERF_PROP_OA_FORMAT, fmt,
- 		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
-+		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
-+		DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, e->instance,
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.num_properties = has_param_class_instance() ?
-+				  ARRAY_SIZE(properties) / 2 :
-+				  (ARRAY_SIZE(properties) / 2) - 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	struct drm_i915_perf_record_header *header;
--	uint32_t buf_size = 3 * 65536 * (256 + sizeof(struct drm_i915_perf_record_header));
-+	uint32_t buf_size = 3 * 65536 * (report_size + sizeof(struct drm_i915_perf_record_header));
- 	uint8_t *buf = malloc(buf_size);
- 	uint32_t total_len = 0, reports_lost;
- 	const uint32_t *last_report;
-@@ -2959,10 +2966,9 @@ test_non_zero_reason(void)
- 
- 			igt_assert_neq(reason, 0);
- 
--			if (last_report) {
--				sanity_check_reports(last_report, report,
--						     default_test_set->perf_oa_format);
--			}
-+			if (last_report)
-+				sanity_check_reports(last_report, report, fmt);
-+
- 			last_report = report;
- 			break;
- 		}
-@@ -5789,10 +5795,11 @@ igt_main
- 			test_buffer_fill(e);
- 
- 	igt_describe("Test that reason field in OA reports is never 0 on Gen8+");
--	igt_subtest("non-zero-reason") {
-+	igt_subtest_with_dynamic("non-zero-reason") {
- 		/* Reason field is only available on Gen8+ */
- 		igt_require(intel_gen(devid) >= 8);
--		test_non_zero_reason();
-+		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
-+			test_non_zero_reason(e);
+ 		igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
+-		igt_assert(delta <= max_delta);
++		igt_assert_f(delta <= max_delta,
++			     "A40_%d: delta = %"PRIu64", max_delta = %"PRIu64"\n",
++			     j, delta, max_delta);
  	}
  
- 	igt_subtest("disabled-read-error")
+ 	for (int j = 0; j < format.n_a64; j++) {
+@@ -1029,7 +1031,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 			continue;
+ 
+ 		igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a + j, delta);
+-		igt_assert(delta <= max_delta);
++		igt_assert_f(delta <= max_delta,
++			     "A64_%d: delta = %"PRIu64", max_delta = %"PRIu64"\n",
++			     format.first_a + j, delta, max_delta);
+ 	}
+ 
+ 	for (int j = 0; j < format.n_a; j++) {
+@@ -1044,7 +1048,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 			continue;
+ 
+ 		igt_debug("A%d: delta = %"PRIu32"\n", a_id, delta);
+-		igt_assert(delta <= max_delta);
++		igt_assert_f(delta <= max_delta,
++			     "A%d: delta = %"PRIu32", max_delta = %"PRIu64"\n",
++			     a_id, delta, max_delta);
+ 	}
+ 
+ 	/* The TestOa metric set defines all B counters to be a
+@@ -1106,7 +1112,9 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 
+ 		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu64"\n",
+ 			  j, delta, max_delta);
+-		igt_assert(delta <= max_delta);
++		igt_assert_f(delta <= max_delta,
++			     "C%d: delta = %"PRIu32", max_delta = %"PRIu64"\n",
++			     j, delta, max_delta);
+ 	}
+ }
+ 
 -- 
 2.36.1
