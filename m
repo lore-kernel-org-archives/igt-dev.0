@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F93A10E799
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 12:20:23 +0000 (UTC)
-Date: Tue, 14 Mar 2023 13:20:19 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20230314122019.nmjrvhx7xloqdcky@zkempczy-mobl2>
-References: <20230314105452.2169208-1-bhanuprakash.modem@intel.com>
- <20230314105452.2169208-5-bhanuprakash.modem@intel.com>
- <20230314130805.7276dcd9@maurocar-mobl2>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65FB610E0C7
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 13:56:58 +0000 (UTC)
+Date: Thu, 23 Mar 2023 14:56:53 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230323135653.ofaaiawfd6hyaxsr@kamilkon-desk1>
+References: <20230323132827.1948500-1-mauro.chehab@linux.intel.com>
+ <20230323132827.1948500-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230314130805.7276dcd9@maurocar-mobl2>
-Subject: Re: [igt-dev] [i-g-t 4/5] lib/intel_chipset: Add support to XE
- driver to get devid
+In-Reply-To: <20230323132827.1948500-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v5 1/3] intel-ci: update i915 blacklist
+ to ignore the Xe driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,99 +22,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 14, 2023 at 01:08:05PM +0100, Mauro Carvalho Chehab wrote:
-> On Tue, 14 Mar 2023 16:24:51 +0530
-> Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
+On 2023-03-23 at 14:28:25 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> > As many tests are using intel devid, add a helper to get it for
-> > XE driver.
-> > 
-> > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> > ---
-> >  lib/intel_chipset.c | 30 ++++++++++++++++++++----------
-> >  1 file changed, 20 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
-> > index efb6f1771..73dbd813d 100644
-> > --- a/lib/intel_chipset.c
-> > +++ b/lib/intel_chipset.c
-> > @@ -41,6 +41,7 @@
-> >  #include "drmtest.h"
-> >  #include "intel_chipset.h"
-> >  #include "igt_core.h"
-> > +#include "xe/xe_query.h"
-> >  
-> >  /**
-> >   * SECTION:intel_chipset
-> > @@ -112,9 +113,22 @@ intel_get_pci_device(void)
-> >  	return pci_dev;
-> >  }
-> >  
-> > +static uint32_t __i915_get_drm_devid(int fd)
-> > +{
-> > +	struct drm_i915_getparam gp;
-> > +	int devid = 0;
-> > +
-> > +	memset(&gp, 0, sizeof(gp));
-> > +	gp.param = I915_PARAM_CHIPSET_ID;
-> > +	gp.value = &devid;
-> > +	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
-> > +
-> > +	return devid;
-> > +}
-> > +
+> It doesn't make sense to run Xe tests with i915 driver loaded.
 > 
-> Hmm... Shouldn't it be cached? Anyway:
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  tests/intel-ci/blacklist.txt | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> 
-> >  /**
-> >   * intel_get_drm_devid:
-> > - * @fd: open i915 drm file descriptor
-> > + * @fd: open i915/xe drm file descriptor
-> >   *
-> >   * Queries the kernel for the pci device id corresponding to the drm file
-> >   * descriptor.
-> > @@ -125,22 +139,18 @@ intel_get_pci_device(void)
-> >  uint32_t
-> >  intel_get_drm_devid(int fd)
-> >  {
-> > -	struct drm_i915_getparam gp;
-> >  	const char *override;
-> > -	int devid = 0;
-> >  
-> > -	igt_assert(is_i915_device(fd));
-> > +	igt_assert(is_intel_device(fd));
-> >  
-> >  	override = getenv("INTEL_DEVID_OVERRIDE");
-> >  	if (override)
-> >  		return strtol(override, NULL, 0);
-> >  
-> > -	memset(&gp, 0, sizeof(gp));
-> > -	gp.param = I915_PARAM_CHIPSET_ID;
-> > -	gp.value = &devid;
-> > -	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
-> > -
-> > -	return devid;
-> > +	if (is_i915_device(fd))
-> > +		return __i915_get_drm_devid(fd);
-> > +	else
-> > +		return xe_dev_id(fd);
+> diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+> index 6e5cc43667cf..243bc60934f6 100644
+> --- a/tests/intel-ci/blacklist.txt
+> +++ b/tests/intel-ci/blacklist.txt
+> @@ -1,3 +1,8 @@
+> +###############################################
+> +# This file is for non-Xe tests only
 
-This call is problematic imo, it strongly depends on previously
-calling xe_device_get(). As this library part I would explicitly
-call config query ioctl() to get device id to avoid this dependency.
+imho better write:
 
---
-Zbigniew
+Do not run Xe tests on i915 driver
 
+or maybe:
+This file is for blocking tests from running on i915 driver
 
-> >  }
-> >  
-> >  /**
+With or without that
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> +###############################################
+> +igt@xe.*
+> +
+>  igt@meta_test(@.*)?
+>  ###############################################
+>  # Handle module reloads with great care!
+> -- 
+> 2.39.2
+> 
 
