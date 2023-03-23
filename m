@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5993C10E041
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 05:03:53 +0000 (UTC)
-Message-ID: <f64c1019-002e-e732-7767-32cd63ff99f2@intel.com>
-Date: Thu, 23 Mar 2023 10:33:39 +0530
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230322230402.3342787-1-ashutosh.dixit@intel.com>
- <20230322230402.3342787-3-ashutosh.dixit@intel.com>
-Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <20230322230402.3342787-3-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2AE3210E462
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 07:38:00 +0000 (UTC)
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 23 Mar 2023 09:37:39 +0200
+Message-Id: <20230323073739.553919-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] i915/i915_power: Also show
- requested and actual freq's
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_psr2_sf: Fix cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,66 +21,36 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Cleanup is leaving pipe reserved. This is causing failures like:
 
+igt_kms-CRITICAL: DP-1 and eDP-1 are both trying to use pipe A
 
-On 3/23/2023 4:34 AM, Ashutosh Dixit wrote:
-> When power limits are in effect, in addition to measured power it is also
-> important to see the requested and actual freq's and see how they change
-> with set power limits. Add this to the test output.
-> 
-> v2: Display power for each gt (Riana)
-> 
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Looks good to me
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
-> ---
->   tests/i915/i915_power.c | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/i915_power.c b/tests/i915/i915_power.c
-> index f2fd228698a..abf458573ef 100644
-> --- a/tests/i915/i915_power.c
-> +++ b/tests/i915/i915_power.c
-> @@ -5,6 +5,7 @@
->   
->   #include "igt.h"
->   #include "i915/gem.h"
-> +#include "igt_sysfs.h"
->   #include "igt_power.h"
->   
->   IGT_TEST_DESCRIPTION("i915 power measurement tests");
-> @@ -27,6 +28,7 @@ static void sanity(int i915)
->   	double idle, busy;
->   	igt_spin_t *spin;
->   	uint64_t ahnd;
-> +	int dir, gt, req, act;
->   
->   #define DURATION_SEC 2
->   
-> @@ -34,6 +36,7 @@ static void sanity(int i915)
->   	igt_require(!igt_power_open(i915, &pwr, "gpu"));
->   	gem_quiescent_gpu(i915);
->   	idle = measure_power(&pwr, DURATION_SEC);
-> +	igt_info("Measured idle power: %g mW\n", idle);
->   
->   	/* Busy power */
->   	ctx = intel_ctx_create_all_physical(i915);
-> @@ -44,12 +47,17 @@ static void sanity(int i915)
->   	/* Wait till at least one spinner starts */
->   	igt_spin_busywait_until_started(spin);
->   	busy = measure_power(&pwr, DURATION_SEC);
-> +	i915_for_each_gt(i915, gt, dir) {
-> +		req = igt_sysfs_get_u32(dir, "rps_cur_freq_mhz");
-> +		act = igt_sysfs_get_u32(dir, "rps_act_freq_mhz");
-> +		igt_info("gt %d: req MHz: %d, act MHz: %d\n", gt, req, act);
-> +	}
->   	igt_free_spins(i915);
->   	put_ahnd(ahnd);
->   	intel_ctx_destroy(i915, ctx);
->   	igt_power_close(&pwr);
->   
-> -	igt_info("Measured power: idle: %g mW, busy: %g mW\n", idle, busy);
-> +	igt_info("Measured busy power: %g mW\n", busy);
->   	igt_assert(idle >= 0 && busy > 0 && busy > idle);
->   }
->   
+Fix by setting pipe of output as PIPE_NONE.
+
+Cc: Jeevan B <jeevan.b@intel.com>
+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+---
+ tests/i915/kms_psr2_sf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index 2d761d31..4a8608c1 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -846,10 +846,10 @@ static void cleanup(data_t *data)
+ 		igt_plane_set_fb(sprite, NULL);
+ 	}
+ 
+-	if (data->coexist_feature & FEATURE_DSC) {
++	if (data->coexist_feature & FEATURE_DSC)
+ 		restore_force_dsc_en();
+-		igt_output_set_pipe(output, PIPE_NONE);
+-	}
++
++	igt_output_set_pipe(output, PIPE_NONE);
+ 
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+-- 
+2.34.1
