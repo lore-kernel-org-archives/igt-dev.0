@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF38810E587
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 07:51:21 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Hogander, Jouni" <jouni.hogander@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 23 Mar 2023 07:51:17 +0000
-Message-ID: <DM4PR11MB6312F6623FDB57728D95BF1A90879@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20230323073739.553919-1-jouni.hogander@intel.com>
- <DM4PR11MB6312C198ECD11440E90784FC90879@DM4PR11MB6312.namprd11.prod.outlook.com>
- <9d27a515b6f8616c8843022b677190fabc92085f.camel@intel.com>
-In-Reply-To: <9d27a515b6f8616c8843022b677190fabc92085f.camel@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E2EE10E46D
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 07:55:46 +0000 (UTC)
+Date: Thu, 23 Mar 2023 08:55:42 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230323085542.42887c3d@maurocar-mobl2>
+In-Reply-To: <20230323084933.127664f7@maurocar-mobl2>
+References: <20230322140030.1800192-1-mauro.chehab@linux.intel.com>
+ <20230322140030.1800192-2-mauro.chehab@linux.intel.com>
+ <20230322174446.75ie3nrckvetww3i@kamilkon-desk1>
+ <20230323084933.127664f7@maurocar-mobl2>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_psr2_sf: Fix cleanup
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/3] intel-ci: update blacklists to
+ work with the Xe driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,49 +23,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBIb2dhbmRlciwgSm91bmkgPGpv
-dW5pLmhvZ2FuZGVyQGludGVsLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIE1hcmNoIDIzLCAyMDIz
-IDE6MTcgUE0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBCLCBKZWV2YW4g
-PGplZXZhbi5iQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdF0gdGVzdHMv
-aTkxNS9rbXNfcHNyMl9zZjogRml4IGNsZWFudXANCj4gDQo+IE9uIFRodSwgMjAyMy0wMy0yMyBh
-dCAwNzo0MyArMDAwMCwgQiwgSmVldmFuIHdyb3RlOg0KPiA+IENhbiB3ZSBzZXQgZGlzcGxheV9y
-ZXNldCBiZWZvcmUgc2V0dGluZyBwaXBlID8/DQo+IA0KPiBJIGRvbid0IGtub3cgYWJvdXQgdGhh
-dCwgYnV0IGxvZ2ljYWxseSBhcyBwcmVwYXJlIGlzIHNldHRpbmcgcGlwZSBmb3Igb3V0cHV0IEkN
-Cj4gd291bGQgZXhwZWN0IGNsZWFudXAgdG8gcmVsZWFzZSBpdC4NCk9rIEdvdCBpdCwgdGhpcyBz
-aG91bGQgd29yay4gSXRzIGdldHRpbmcgY2FsbGVkIHdpdGggY2hlY2tfcHNyMl9zdXBwb3J0LiBM
-R1RNIA0KDQpUaGFua3MgDQpKZWV2YW4gQiANCj4gDQo+ID4NCj4gPiA+IC0tLS0tT3JpZ2luYWwg
-TWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBIb2dhbmRlciwgSm91bmkgPGpvdW5pLmhvZ2FuZGVy
-QGludGVsLmNvbT4NCj4gPiA+IFNlbnQ6IFRodXJzZGF5LCBNYXJjaCAyMywgMjAyMyAxOjA4IFBN
-DQo+ID4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPiA+IENjOiBIb2dh
-bmRlciwgSm91bmkgPGpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbT47IEIsIEplZXZhbg0KPiA+ID4g
-PGplZXZhbi5iQGludGVsLmNvbT4NCj4gPiA+IFN1YmplY3Q6IFtQQVRDSCBpLWctdF0gdGVzdHMv
-aTkxNS9rbXNfcHNyMl9zZjogRml4IGNsZWFudXANCj4gPiA+DQo+ID4gPiBDbGVhbnVwIGlzIGxl
-YXZpbmcgcGlwZSByZXNlcnZlZC4gVGhpcyBpcyBjYXVzaW5nIGZhaWx1cmVzIGxpa2U6DQo+ID4g
-Pg0KPiA+ID4gaWd0X2ttcy1DUklUSUNBTDogRFAtMSBhbmQgZURQLTEgYXJlIGJvdGggdHJ5aW5n
-IHRvIHVzZSBwaXBlIEENCj4gPiA+DQo+ID4gPiBGaXggYnkgc2V0dGluZyBwaXBlIG9mIG91dHB1
-dCBhcyBQSVBFX05PTkUuDQo+ID4gPg0KPiA+ID4gQ2M6IEplZXZhbiBCIDxqZWV2YW4uYkBpbnRl
-bC5jb20+DQo+ID4gPg0KPiA+ID4gU2lnbmVkLW9mZi1ieTogSm91bmkgSMO2Z2FuZGVyIDxqb3Vu
-aS5ob2dhbmRlckBpbnRlbC5jb20+DQpSZXZpZXdlZC1ieTogSmVldmFuIEIgPGplZXZhbi5iQGlu
-dGVsLmNvbT4NCj4gPiA+IC0tLQ0KPiA+ID4gwqB0ZXN0cy9pOTE1L2ttc19wc3IyX3NmLmMgfCA2
-ICsrKy0tLQ0KPiA+ID4gwqAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAzIGRlbGV0
-aW9ucygtKQ0KPiA+ID4NCj4gPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2ttc19wc3IyX3Nm
-LmMgYi90ZXN0cy9pOTE1L2ttc19wc3IyX3NmLmMNCj4gPiA+IGluZGV4DQo+ID4gPiAyZDc2MWQz
-MS4uNGE4NjA4YzEgMTAwNjQ0DQo+ID4gPiAtLS0gYS90ZXN0cy9pOTE1L2ttc19wc3IyX3NmLmMN
-Cj4gPiA+ICsrKyBiL3Rlc3RzL2k5MTUva21zX3BzcjJfc2YuYw0KPiA+ID4gQEAgLTg0NiwxMCAr
-ODQ2LDEwIEBAIHN0YXRpYyB2b2lkIGNsZWFudXAoZGF0YV90ICpkYXRhKQ0KPiA+ID4gwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcGxhbmVfc2V0X2ZiKHNwcml0ZSwgTlVMTCk7
-DQo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgfQ0KPiA+ID4NCj4gPiA+IC3CoMKgwqDCoMKgwqDCoGlm
-IChkYXRhLT5jb2V4aXN0X2ZlYXR1cmUgJiBGRUFUVVJFX0RTQykgew0KPiA+ID4gK8KgwqDCoMKg
-wqDCoMKgaWYgKGRhdGEtPmNvZXhpc3RfZmVhdHVyZSAmDQo+ID4gPiBGRUFUVVJFX0RTQylodHRw
-czovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzExNTUzMi8NCj4gPiA+IMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmVzdG9yZV9mb3JjZV9kc2NfZW4oKTsNCj4gPiA+
-IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1
-dCwgUElQRV9OT05FKTsNCj4gPiA+IC3CoMKgwqDCoMKgwqDCoH0NCj4gPiA+ICsNCj4gPiA+ICvC
-oMKgwqDCoMKgwqDCoGlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBQSVBFX05PTkUpOw0KPiA+
-ID4NCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGlzcGxheV9jb21taXQyKCZkYXRhLT5kaXNw
-bGF5LCBDT01NSVRfQVRPTUlDKTsNCj4gPiA+DQo+ID4gPiAtLQ0KPiA+ID4gMi4zNC4xDQo+ID4N
-Cg0K
+On Thu, 23 Mar 2023 08:50:25 +0100
+Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
+
+> On Wed, 22 Mar 2023 18:44:46 +0100
+> Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+> 
+> > Hi Mauro,
+> > 
+> > On 2023-03-22 at 15:00:28 +0100, Mauro Carvalho Chehab wrote:
+> > > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > > 
+> > > It doesn't make sense to run i915 tests with Xe driver and
+> > > vice-versa. Update testlists to make it clear.
+> > > 
+> > > In order to avoid disrupts at exiting intel-ci tests, keep a
+> > > symlink:
+> > > 	i915-blacklist.txt -> blacklist.txt
+> > > 
+> > > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > > ---
+> > >  tests/intel-ci/blacklist.txt      | 130 +----------------------------
+> > >  tests/intel-ci/i915-blacklist.txt | 133 ++++++++++++++++++++++++++++++  
+> > 
+> > Why not just git mv oldfile newfile ?
+> 
+> I did that. Then, I created a link:
+> 	ln -s blacklist.txt tests/intel-ci/i915-blacklist.txt 
+> 
+> The rationale is to avoid breaking any existing CI pipelines that would
+> be expecting to find the i915 blacklist as "blacklist.txt.".
+> 
+> > But that aside, imho better solution would be to just
+> > add xe_* to blacklist. 
+> 
+> That is what I did: once renamed: I added "igt@xe_.*" to the blacklist
+> file.
+> 
+> Unfortunately, git diff output is weird when there is a rename and
+> a symlink to the same name at the same patch. If you prefer, I can
+> split it on two patches to make easier to view the differences.
+> 
+> > I am also not sure you can include
+> > one blacklist into another.
+> 
+> There's no such thing. Both blacklist files are independent. You
+> probably got tricked by the weird output git produced with the rename
+> + symlink at the same patch.
+
+Btw, if I remove the symlink, the diff becomes nice and clean:
+
+[PATCH] intel-ci: update blacklists to work with the Xe driver
+    
+It doesn't make sense to run i915 tests with Xe driver and
+vice-versa. Update testlists to make it clear.
+    
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/i915-blacklist.txt
+similarity index 97%
+rename from tests/intel-ci/blacklist.txt
+rename to tests/intel-ci/i915-blacklist.txt
+index 6e5cc43667cf..389a2acb7f44 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/i915-blacklist.txt
+@@ -84,6 +84,10 @@ igt@kms_chamelium_frames@hdmi-.*-planes-random
+ igt@vc4_.*
+ igt@v3d_.*
+ ###############################################
++# Intel Xe
++###############################################
++igt@xe/.*
++###############################################
+ # AMD
+ ###############################################
+ igt@amdgpu/.*
+diff --git a/tests/intel-ci/xe-blacklist.txt b/tests/intel-ci/xe-blacklist.txt
+new file mode 100644
+index 000000000000..986e91a67069
+--- /dev/null
++++ b/tests/intel-ci/xe-blacklist.txt
+@@ -0,0 +1,21 @@
++###############################################
++# Broadcom
++###############################################
++igt@vc4_.*
++igt@v3d_.*
++###############################################
++# Intel i915
++###############################################
++igt@i915/.*
++###############################################
++# AMD
++###############################################
++igt@amdgpu/.*
++###############################################
++# Panfrost
++###############################################
++igt@panfrost_.*
++###############################################
++# Qualcomm
++###############################################
++igt@msm_.*
