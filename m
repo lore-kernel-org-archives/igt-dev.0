@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DD6710EB82
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 22:55:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 661A810EB85
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 22:55:42 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Mar 2023 15:55:24 -0700
-Message-Id: <20230323225534.3739835-21-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 23 Mar 2023 15:55:12 -0700
+Message-Id: <20230323225534.3739835-9-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 References: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 20/30] lib/i915/perf: Add support for OAM
- format in codegen
+Subject: [igt-dev] [PATCH i-g-t v5 08/30] i915/perf: Treat ticks as 64 bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,204 +22,195 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Include OAM SAMedia (Standalone Media) format for MTL.
-
-v2: Improve commit message (Kamil)
+To support 64 bit OA report headers, treat all ticks as 64 bits.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/i915/perf-configs/mdapi-xml-convert.py | 118 +++++++++++++++++++--
- 1 file changed, 112 insertions(+), 6 deletions(-)
+ tests/i915/perf.c | 79 ++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 54 insertions(+), 25 deletions(-)
 
-diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
-index eee12ad5..ba0b7ba4 100755
---- a/lib/i915/perf-configs/mdapi-xml-convert.py
-+++ b/lib/i915/perf-configs/mdapi-xml-convert.py
-@@ -135,6 +135,36 @@ xehpsdv_chipset_params = {
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index 9d143aba..6b76e35c 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -112,6 +112,7 @@ struct oa_format {
+ 	int c_off;
+ 	int n_c;
+ 	int oa_type;
++	bool report_hdr_64bit;
+ };
  
- # There is no ReportType field in most Metrics XML files, Use 256B_GENERIC_NOA16
- # to denote the generic 256 byte format that is used by most chipsets
-+# Just treat the MPEC counter names as A counters here. If a format has both A
-+# and MPEC counters, then we need to change this.
-+mtl_chipset_oam_samedia_ll_params = {
-+    'a_offset': 32,
-+    'b_offset': 96,
-+    'c_offset': 128,
-+    'oa_report_size': 192,
-+    'config_reg_blacklist': {
-+        0x2364, # OACTXID
-+    },
-+    'register_offsets': {
-+        0x1b0: 'PERFCNT 0',
-+        0x1b8: 'PERFCNT 1',
-+    }
-+}
-+
-+mtl_chipset_oam_samedia_params = {
-+    'a_offset': 32,
-+    'b_offset': 64,
-+    'c_offset': 96,
-+    'oa_report_size': 128,
-+    'config_reg_blacklist': {
-+        0x2364, # OACTXID
-+    },
-+    'register_offsets': {
-+        0x1b0: 'PERFCNT 0',
-+        0x1b8: 'PERFCNT 1',
-+    }
-+}
-+
- hsw_chipset_oa_formats = {
-     '256B_GENERIC_NOA16': hsw_chipset_params,
- }
-@@ -147,6 +177,11 @@ xehpsdv_chipset_oa_formats = {
-     '256B_GENERIC_NOA16': xehpsdv_chipset_params,
+ static struct oa_format hsw_oa_formats[I915_OA_FORMAT_MAX] = {
+@@ -231,7 +232,7 @@ static bool *undefined_a_counters;
+ static uint64_t oa_exp_1_millisec;
+ 
+ static igt_render_copyfunc_t render_copy = NULL;
+-static uint32_t (*read_report_ticks)(const uint32_t *report,
++static uint64_t (*read_report_ticks)(const uint32_t *report,
+ 				     enum drm_i915_oa_format format);
+ static void (*sanity_check_reports)(const uint32_t *oa_report0,
+ 				    const uint32_t *oa_report1,
+@@ -425,7 +426,7 @@ sysfs_read(enum i915_attr_id id)
+  * C2 corresponds to a clock counter for the Haswell render basic metric set
+  * but it's not included in all of the formats.
+  */
+-static uint32_t
++static uint64_t
+ hsw_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
+ {
+ 	uint32_t *c = (uint32_t *)(((uint8_t *)report) + get_oa_format(format).c_off);
+@@ -435,10 +436,41 @@ hsw_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
+ 	return c[2];
  }
  
-+mtl_chipset_oa_formats = {
-+    '256B_GENERIC_NOA16': xehpsdv_chipset_params,
-+    '192B_MPEC8LL_NOA16': mtl_chipset_oam_samedia_ll_params,
-+    '128B_MPEC8_NOA16': mtl_chipset_oam_samedia_params,
+-static uint32_t
++static uint64_t
+ gen8_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
+ {
+-	return report[3];
++
++	struct oa_format fmt = get_oa_format(format);
++
++	return fmt.report_hdr_64bit ? *(uint64_t *)&report[6] : report[3];
 +}
- 
- chipsets = {
-     'HSW': hsw_chipset_oa_formats,
-@@ -165,7 +200,7 @@ chipsets = {
-     'DG1': gen8_11_chipset_oa_formats,
-     'ADL': gen8_11_chipset_oa_formats,
-     'ACM': xehpsdv_chipset_oa_formats,
--    'MTL': xehpsdv_chipset_oa_formats,
-+    'MTL': mtl_chipset_oa_formats,
++
++/*
++ * t0 is a value sampled before t1. width is number of bits used to represent
++ * t0/t1. Normally t1 is greater than t0. In cases where t1 < t0 use this
++ * helper. Since the size of t1/t0 is already 64 bits, no special handling is
++ * needed for width = 64.
++ */
++static uint64_t
++elapsed_delta(uint64_t t1, uint64_t t0, uint32_t width)
++{
++	uint32_t max_bits = sizeof(t1) * 8;
++
++	igt_assert(width <= max_bits);
++
++	if (t1 < t0 && width != max_bits)
++		return ((1ULL << width) - t0) + t1;
++
++	return t1 - t0;
++}
++
++static uint64_t
++oa_tick_delta(const uint32_t *report1,
++	      const uint32_t *report0,
++	      enum drm_i915_oa_format format)
++{
++	return elapsed_delta(read_report_ticks(report1, format),
++			     read_report_ticks(report0, format), 32);
  }
  
- xehp_plus = ( 'ACM', 'MTL' )
-@@ -202,7 +237,62 @@ def read_value(chipset, offset, oa_format):
-     assert 0
+ static void
+@@ -668,8 +700,8 @@ hsw_sanity_check_render_basic_reports(const uint32_t *oa_report0,
+ 				      enum drm_i915_oa_format fmt)
+ {
+ 	uint32_t time_delta = timebase_scale(oa_report1[1] - oa_report0[1]);
+-	uint32_t clock_delta;
+-	uint32_t max_delta;
++	uint64_t clock_delta;
++	uint64_t max_delta;
+ 	struct oa_format format = get_oa_format(fmt);
  
+ 	igt_assert_neq(time_delta, 0);
+@@ -684,21 +716,19 @@ hsw_sanity_check_render_basic_reports(const uint32_t *oa_report0,
+ 		clock_delta = (gt_max_freq_mhz *
+ 			       (uint64_t)time_delta) / 1000;
+ 	} else {
+-		uint32_t ticks0 = read_report_ticks(oa_report0, fmt);
+-		uint32_t ticks1 = read_report_ticks(oa_report1, fmt);
+ 		uint64_t freq;
  
--def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
-+def read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format):
-+    width, offset_str = token.split('@')
-+    offset = int(offset_str, 16)
-+
-+    if width == 'qw':
-+        den = 8
-+    else:
-+        den = 4
-+
-+    if raw_offsets:
-+        # Location in the HW reports
-+        a_offset = chipsets[chipset][oa_format]['a_offset']
-+        b_offset = chipsets[chipset][oa_format]['b_offset']
-+        c_offset = chipsets[chipset][oa_format]['c_offset']
-+        report_size = chipsets[chipset][oa_format]['oa_report_size']
-+
-+        if offset < a_offset:
-+            if offset == 8:
-+                return "GPU_TIME 0 READ"
-+            elif offset == 24:
-+                return "GPU_CLOCK 0 READ"
-+            else:
-+                assert 0
-+        elif offset < b_offset:
-+            a_cnt_offset = int((offset - a_offset) / den)
-+            return "A " + str(a_cnt_offset) + " READ"
-+        elif offset < c_offset:
-+            return "B " + str(int((offset - b_offset) / den)) + " READ"
-+        elif offset < report_size:
-+            return "C " + str(int((offset - c_offset) / den)) + " READ"
-+        else:
-+            return "{0} READ".format(read_value(chipset, offset, oa_format))
-+    else:
-+        # Location in the accumulated deltas
-+        idx = int(offset / 8)
-+        if chipset in xehp_plus:
-+            # For XEHPSDV the array of accumulated counters is
-+            # assumed to start with a GPU_TIME then GPU_CLOCK,
-+            # then 38 A counters, then 8 B counters and finally
-+            # 8 C counters.
-+            if idx == 0:
-+                return "GPU_TIME 0 READ"
-+            elif idx == 1:
-+                return "GPU_CLOCK 0 READ"
-+            elif idx < 40:
-+                return "A " + str(idx - 2) + " READ"
-+            elif idx < 48:
-+                return "B " + str(idx - 40) + " READ"
-+            elif idx < 56:
-+                return "C " + str(idx - 48) + " READ"
-+            else:
-+                return "{0} READ".format(read_value(chipset, offset, oa_format))
-+
-+    assert 0
-+
-+def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
-     width, offset_str = token.split('@')
+-		clock_delta = ticks1 - ticks0;
++		clock_delta = oa_tick_delta(oa_report1, oa_report0, fmt);
  
-     # For Broadwell the raw read notation was extended for 40 bit
-@@ -298,6 +388,16 @@ def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
+-		igt_assert_neq(clock_delta, 0);
++		igt_assert_neq_u64(clock_delta, 0);
  
-     assert 0
+-		freq = ((uint64_t)clock_delta * 1000) / time_delta;
++		freq = (clock_delta * 1000) / time_delta;
+ 		igt_debug("freq = %"PRIu64"\n", freq);
  
-+
-+def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
-+    if oa_format == '256B_GENERIC_NOA16':
-+        return read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format)
-+
-+    if oa_format in ['192B_MPEC8LL_NOA16', '128B_MPEC8_NOA16']:
-+        return read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format)
-+
-+    assert 0
-+
- def replace_read_tokens_with_rpn_read_ops(chipset, oa_format, equation, raw_offsets):
-     # MDAPI MetricSet equations use tokens like 'dw@0xff' for reading raw
-     # values from snapshots, but this doesn't seem convenient for a few
-@@ -625,10 +725,13 @@ for arg in args.xml:
-     for mdapi_set in mdapi.findall(".//MetricSet"):
+ 		igt_assert(freq <= gt_max_freq_mhz);
+ 	}
  
-         apis = mdapi_set.get('SupportedAPI')
--        if "OGL" not in apis and "OCL" not in apis and "MEDIA" not in apis:
-+        if "OGL" not in apis and "OCL" not in apis and "MEDIA" not in apis and "IO" not in apis:
-             continue
+-	igt_debug("clock delta = %"PRIu32"\n", clock_delta);
++	igt_debug("clock delta = %"PRIu64"\n", clock_delta);
  
-         oa_format = '256B_GENERIC_NOA16'
-+        if mdapi_set.get('ReportType') in chipsets[chipset]:
-+            oa_format = mdapi_set.get('ReportType')
-+
-         set_symbol_name = oa_registry.Registry.sanitize_symbol_name(mdapi_set.get('SymbolName'))
+ 	/* The maximum rate for any HSW counter =
+ 	 *   clock_delta * N EUs
+@@ -831,7 +861,8 @@ accumulate_reports(struct accumulator *accumulator,
+ 		accumulate_uint32(4, start, end, deltas + idx++);
  
-         if set_symbol_name in sets:
-@@ -647,7 +750,7 @@ for arg in args.xml:
-         if set_symbol_name in set_blacklist:
-             continue
+ 		/* clock cycles */
+-		accumulate_uint32(12, start, end, deltas + idx++);
++		deltas[idx] += oa_tick_delta(end, start, accumulator->format);
++		idx++;
+ 	} else {
+ 		/* timestamp */
+ 		accumulate_uint32(4, start, end, deltas + idx++);
+@@ -904,10 +935,8 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ {
+ 	struct oa_format format = get_oa_format(fmt);
+ 	uint32_t time_delta = timebase_scale(oa_report1[1] - oa_report0[1]);
+-	uint32_t ticks0 = read_report_ticks(oa_report0, fmt);
+-	uint32_t ticks1 = read_report_ticks(oa_report1, fmt);
+-	uint32_t clock_delta = ticks1 - ticks0;
+-	uint32_t max_delta;
++	uint64_t clock_delta = oa_tick_delta(oa_report1, oa_report0, fmt);
++	uint64_t max_delta;
+ 	uint64_t freq;
+ 	uint32_t *rpt0_b = (uint32_t *)(((uint8_t *)oa_report0) +
+ 					format.b_off);
+@@ -920,10 +949,10 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 		  gen8_read_report_reason(oa_report0),
+ 		  gen8_read_report_reason(oa_report1));
  
--        if mdapi_set.get('SnapshotReportSize') != '256':
-+        if mdapi_set.get('SnapshotReportSize') != str(chipsets[chipset][oa_format]['oa_report_size']):
-             print_err("WARNING: skipping metric set '{0}', report size {1} invalid".format(set_symbol_name, mdapi_set.get('SnapshotReportSize')))
-             continue
+-	freq = time_delta ? ((uint64_t)clock_delta * 1000) / time_delta : 0;
++	freq = time_delta ? (clock_delta * 1000) / time_delta : 0;
+ 	igt_debug("freq = %"PRIu64"\n", freq);
  
-@@ -880,8 +983,11 @@ for arg in args.xml:
-             # XXX: As a special case, we override the raw and delta report
-             # equations for the GpuTime counters, which seem inconsistent
-             if mdapi_counter.get('SymbolName') == "GpuTime":
--                mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
-                 mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
-+                    mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                else:
-+                    mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
+-	igt_debug("clock delta = %"PRIu32"\n", clock_delta);
++	igt_debug("clock delta = %"PRIu64"\n", clock_delta);
  
-             availability = fixup_equation(mdapi_counter.get('AvailabilityEquation'))
-             if availability == "":
-@@ -919,7 +1025,7 @@ for arg in args.xml:
-                           "(" + mdapi_counter.get('ShortName') + ")" + "\"")
-                 # Media metric counters currently have no delta equation even
-                 # though they have normalization equations that reference $Self
--                if "MEDIA" in apis:
-+                if "MEDIA" in apis or "IO" in apis:
-                     print_err("WARNING: -> Treating inconsistent media metric's 'raw' equation as a 'delta report' equation, but results should be double checked!")
-                     delta_read_eq = raw_read_eq
-                 else:
+ 	max_delta = clock_delta * intel_perf->devinfo.n_eus;
+ 
+@@ -1024,7 +1053,7 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 					    format.c_off);
+ 		uint32_t delta = c1[j] - c0[j];
+ 
+-		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu32"\n",
++		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu64"\n",
+ 			  j, delta, max_delta);
+ 		igt_assert(delta <= max_delta);
+ 	}
+@@ -1516,10 +1545,10 @@ print_reports(uint32_t *oa_report0, uint32_t *oa_report1, int fmt)
+ 	if (IS_HASWELL(devid) && format.n_c == 0) {
+ 		igt_debug("CLOCK = N/A\n");
+ 	} else {
+-		uint32_t clock0 = read_report_ticks(oa_report0, fmt);
+-		uint32_t clock1 = read_report_ticks(oa_report1, fmt);
++		uint64_t clock0 = read_report_ticks(oa_report0, fmt);
++		uint64_t clock1 = read_report_ticks(oa_report1, fmt);
+ 
+-		igt_debug("CLOCK: 1st = %"PRIu32", 2nd = %"PRIu32", delta = %"PRIu32"\n",
++		igt_debug("CLOCK: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
+ 			  clock0, clock1, clock1 - clock0);
+ 	}
+ 
+@@ -1621,9 +1650,9 @@ print_report(uint32_t *report, int fmt)
+ 	if (IS_HASWELL(devid) && format.n_c == 0) {
+ 		igt_debug("CLOCK = N/A\n");
+ 	} else {
+-		uint32_t clock = read_report_ticks(report, fmt);
++		uint64_t clock = read_report_ticks(report, fmt);
+ 
+-		igt_debug("CLOCK: %"PRIu32"\n", clock);
++		igt_debug("CLOCK: %"PRIu64"\n", clock);
+ 	}
+ 
+ 	if (intel_gen(devid) >= 8) {
 -- 
 2.36.1
