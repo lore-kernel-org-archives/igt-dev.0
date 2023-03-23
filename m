@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9046C10E4BE
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 751B410E4A2
  for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 22:55:39 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Mar 2023 15:55:05 -0700
-Message-Id: <20230323225534.3739835-2-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
-References: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 23 Mar 2023 15:55:04 -0700
+Message-Id: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 01/30] i915/perf: Add support for 64-bit
- OA formats
+Subject: [igt-dev] [PATCH i-g-t v5 00/30] Enable OAM support in IGT and
+ GPUvis
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,125 +21,98 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Newer gen12 platforms introduced 64 bit OA formats that are used by MTL.
-Add support to parse reports for 64 bit counters.
+Add support for OAM in IGT and enable support for GPUvis to capture
+OA reports on the media GT using OAM unit. Patch groups:
+
+OAM test support
+----------------
+  i915/perf: Add support for 64-bit OA formats
+  ...
+  i915/perf: Add OAM support
+
+OAM metrics support
+-------------------
+  lib/perf: Make chipsets aware of oa formats
+  ...
+  i915/perf: Make sanity check failures descriptive
+
+GPUvis support
+--------------
+  lib/perf: Enable multi-tile support for perf library
+  ...
+  lib/perf: Apply shift to raw timestamp as well
+
+v2:
+- Variable array sizes failed to build on fedora-clang, allocate on heap.
+- Add i-g-t to patch series.
+
+v3:
+- Incorporate review comments (Ashutosh, Kamil)
+- Fix CI failures
+
+v4: Fix CI failures
+v5:
+- Mention which patch supports GPUvis (Kamil)
+- Drop "tools/perf: Choose the right card" since renderD works fine
+
+Note:
+At the time v3 was posted, patches 23, 26 - 31 still need to be reviewed from
+pervious series. The review can continue in this series.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/perf.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 57 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index edb922c7..48bd17a5 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -94,6 +94,8 @@ struct oa_format {
- 	int a40_high_off; /* bytes */
- 	int a40_low_off;
- 	int n_a40;
-+	int a64_off;
-+	int n_a64;
- 	int a_off;
- 	int n_a;
- 	int first_a;
-@@ -707,6 +709,15 @@ gen8_read_40bit_a_counter(const uint32_t *report,
- 	return a40_low[a_id] | high;
- }
- 
-+static uint64_t
-+xehpsdv_read_64bit_a_counter(const uint32_t *report, enum drm_i915_oa_format fmt, int a_id)
-+{
-+	struct oa_format format = get_oa_format(fmt);
-+	uint64_t *a64 = (uint64_t *)(((uint8_t *)report) + format.a64_off);
-+
-+	return a64[a_id];
-+}
-+
- static uint64_t
- gen8_40bit_a_delta(uint64_t value0, uint64_t value1)
- {
-@@ -741,6 +752,19 @@ accumulate_uint40(int a_index,
- 	*delta += gen8_40bit_a_delta(value0, value1);
- }
- 
-+static void
-+accumulate_uint64(int a_index,
-+		  const uint32_t *report0,
-+		  const uint32_t *report1,
-+		  enum drm_i915_oa_format format,
-+		  uint64_t *delta)
-+{
-+	uint64_t value0 = xehpsdv_read_64bit_a_counter(report0, format, a_index),
-+		 value1 = xehpsdv_read_64bit_a_counter(report1, format, a_index);
-+
-+	*delta += (value1 - value0);
-+}
-+
- static void
- accumulate_reports(struct accumulator *accumulator,
- 		   uint32_t *start,
-@@ -766,6 +790,11 @@ accumulate_reports(struct accumulator *accumulator,
- 				  deltas + idx++);
- 	}
- 
-+	for (int i = 0; i < format.n_a64; i++) {
-+		accumulate_uint64(i, start, end, accumulator->format,
-+				  deltas + idx++);
-+	}
-+
- 	for (int i = 0; i < format.n_a; i++) {
- 		accumulate_uint32(format.a_off + 4 * i,
- 				  start, end, deltas + idx++);
-@@ -796,6 +825,9 @@ accumulator_print(struct accumulator *accumulator, const char *title)
- 
- 		for (int i = 0; i < format.n_a40; i++)
- 			igt_debug("\tA%u = %"PRIu64"\n", i, deltas[idx++]);
-+
-+		for (int i = 0; i < format.n_a64; i++)
-+			igt_debug("\tA64_%u = %"PRIu64"\n", i, deltas[idx++]);
- 	} else {
- 		igt_debug("\ttime delta = %"PRIu64"\n", deltas[idx++]);
- 	}
-@@ -852,7 +884,19 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
- 		if (undefined_a_counters[j])
- 			continue;
- 
--		igt_debug("A%d: delta = %"PRIu64"\n", j, delta);
-+		igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
-+		igt_assert(delta <= max_delta);
-+	}
-+
-+	for (int j = 0; j < format.n_a64; j++) {
-+		uint64_t delta = 0;
-+
-+		accumulate_uint64(j, oa_report0, oa_report1, fmt, &delta);
-+
-+		if (undefined_a_counters[j])
-+			continue;
-+
-+		igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a + j, delta);
- 		igt_assert(delta <= max_delta);
- 	}
- 
-@@ -1417,6 +1461,18 @@ print_reports(uint32_t *oa_report0, uint32_t *oa_report1, int fmt)
- 			  j, value0, value1, delta);
- 	}
- 
-+	for (int j = 0; j < format.n_a64; j++) {
-+		uint64_t value0 = xehpsdv_read_64bit_a_counter(oa_report0, fmt, j);
-+		uint64_t value1 = xehpsdv_read_64bit_a_counter(oa_report1, fmt, j);
-+		uint64_t delta = value1 - value0;
-+
-+		if (undefined_a_counters[j])
-+			continue;
-+
-+		igt_debug("A_64%d: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
-+			  format.first_a + j, value0, value1, delta);
-+	}
-+
- 	for (int j = 0; j < format.n_a; j++) {
- 		uint32_t *a0 = (uint32_t *)(((uint8_t *)oa_report0) +
- 					    format.a_off);
+Umesh Nerlige Ramappa (30):
+  i915/perf: Add support for 64-bit OA formats
+  i915/perf: Define a default engine for OA
+  i915/perf: Use default engine for sseu tests
+  i915/perf: Ensure rcs0 is present for gen12-mi-rpc
+  i915/perf: Use ARRAY_SIZE for buffer-fill test
+  i915/perf: Add class:instance support to OA tests
+  i915/perf: Enable tests to run on specific engines
+  i915/perf: Treat ticks as 64 bit
+  i915/perf: Treat timestamp as 64 bit value
+  i915/perf: Add OAM format type
+  i915/perf: Move OA format array from stack to heap
+  i915/perf: Use a helper for OA format
+  i915/perf: Add support for oa perf groups
+  i915/perf: Test concurrent access to OA in different groups
+  i915/perf: Add OAM support
+  lib/i915/perf: Prepare to read different OA formats
+  lib/i915/perf: Choose OAM format for media metrics
+  lib/i915/perf: Set missing metric unit for some counters
+  lib/i915/perf: Add MTL to supported HW in OA guid registry
+  lib/i915/perf: Add support for OAM format in codegen
+  lib/i915/perf: Update MTL GT2 metrics
+  lib/i915/perf: Update MTL GT3 metrics
+  i915/perf: Add support for engine specific metrics
+  i915/perf: Run non-zero-reason on media engines as well
+  i915/perf: Make sanity check failures descriptive
+  lib/i915/perf: Enable multi-tile support for perf library
+  lib/i915/perf: Update MTL OA timestamp and EU thread config
+  lib/i915/perf: Add support for select MPEC formats
+  lib/i915/perf: Adjust the GPU timestamp for new OA formats
+  lib/i915/perf: Apply shift to raw timestamp as well
+
+ include/drm-uapi/i915_drm.h                   |    4 +
+ lib/i915/i915_drm_local.h                     |    3 +
+ lib/i915/perf-configs/codegen.py              |    4 +
+ lib/i915/perf-configs/guids.xml               |   36 +-
+ lib/i915/perf-configs/mdapi-xml-convert.py    |  220 ++-
+ lib/i915/perf-configs/oa-mtlgt2.xml           | 1014 ++++++++++--
+ lib/i915/perf-configs/oa-mtlgt3.xml           | 1328 +++++++++++++---
+ lib/i915/perf-configs/oa_guid_registry.py     |    3 +-
+ .../perf-configs/perf-metricset-codegen.py    |   36 +-
+ lib/i915/perf.c                               |   66 +-
+ lib/i915/perf.h                               |    2 +-
+ lib/i915/perf_data_reader.c                   |   20 +-
+ lib/intel_chipset.h                           |    3 +
+ lib/intel_device_info.c                       |    1 +
+ tests/core_hotunplug.c                        |    2 +-
+ tests/i915/gem_barrier_race.c                 |    2 +-
+ tests/i915/perf.c                             | 1380 +++++++++++++----
+ tools/i915-perf/i915_perf_configs.c           |    2 +-
+ tools/i915-perf/i915_perf_recorder.c          |   74 +-
+ 19 files changed, 3484 insertions(+), 716 deletions(-)
+
 -- 
 2.36.1
