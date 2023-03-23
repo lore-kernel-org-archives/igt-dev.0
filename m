@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1176510E533
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 13:49:05 +0000 (UTC)
-Date: Fri, 24 Mar 2023 14:49:01 +0100
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D91810E791
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 12:57:30 +0000 (UTC)
+Date: Thu, 23 Mar 2023 13:57:25 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230324134901.bq2crdglmjzcupom@kamilkon-desk1>
-References: <20230322082826.1770429-1-mauro.chehab@linux.intel.com>
- <20230322082826.1770429-7-mauro.chehab@linux.intel.com>
+Message-ID: <20230323125725.o2uv52kyvlvc2xuq@kamilkon-desk1>
+References: <20230323090221.1929302-1-mauro.chehab@linux.intel.com>
+ <20230323090221.1929302-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230322082826.1770429-7-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 6/8] testplan/meson.build: cleanup
- dependency chain
+In-Reply-To: <20230323090221.1929302-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 1/4] intel-ci: update blacklists to
+ work with the Xe driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,129 +25,102 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-03-22 at 09:28:24 +0100, Mauro Carvalho Chehab wrote:
+Hi Mauro,
+
+On 2023-03-23 at 10:02:18 +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Simplify the checks inside testplan/meson.build and ensure that
-> it will only build if option build_testplan is selected, by moving
-> such check to docs/meson.build.
+> It doesn't make sense to run i915 tests with Xe driver and
+> vice-versa. Update testlists to make it clear.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > ---
->  docs/meson.build          |  5 ++++-
->  docs/testplan/meson.build | 42 +++++++++++++++++----------------------
->  meson.build               |  3 +++
->  scripts/meson.build       |  4 ++--
->  4 files changed, 27 insertions(+), 27 deletions(-)
+>  .../{blacklist.txt => i915-blacklist.txt}     |  4 ++++
+>  tests/intel-ci/xe-blacklist.txt               | 21 +++++++++++++++++++
+>  2 files changed, 25 insertions(+)
+>  rename tests/intel-ci/{blacklist.txt => i915-blacklist.txt} (97%)
+>  create mode 100644 tests/intel-ci/xe-blacklist.txt
+
+imho we do not need symlink here but if you want to discuss it
+please split this move to i915-blacklist.txt and 2/4 into
+separate patchseries, so we will not block merging changes to
+xe-blacklist.txt and adding igt@xe_.* to blacklist.txt
+
 > 
-> diff --git a/docs/meson.build b/docs/meson.build
-> index 01edf64f04a8..d56260564cec 100644
-> --- a/docs/meson.build
-> +++ b/docs/meson.build
-> @@ -1,2 +1,5 @@
->  subdir('reference')
-> -subdir('testplan')
-> +
-> +if igt_doc_script.found()
-> +	subdir('testplan')
-> +endif
-> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> index d34a8212df76..9e7ae7a04753 100644
-> --- a/docs/testplan/meson.build
-> +++ b/docs/testplan/meson.build
-> @@ -1,10 +1,7 @@
->  testplan_title = 'IGT test plans'
->  
-> -build_testplan = get_option('testplan')
-> -build_sphinx = get_option('sphinx')
-> -
-> -rst2html = find_program('rst2html-3', 'rst2html', required : build_testplan)
->  sphinx = find_program('sphinx-build', required: build_sphinx)
-> +rst2html = find_program('rst2html-3', 'rst2html', required : false)
->  rst2pdf = find_program('rst2pdf', required: false)
->  
->  stylesheet = meson.current_source_dir() + '/testplan.css'
-> @@ -20,26 +17,24 @@ test_dict = { 'xe_tests': {
->                }
->              }
->  
-> -if igt_doc_script.found()
-> -    foreach testplan, fields: test_dict
-> -        rst = custom_target(testplan + '.rst',
-> -                            build_by_default : true,
-> -                            command : [ igt_doc_script, '--config', '@INPUT@', '--rest', '@OUTPUT@' ] + fields['extra_args'],
-> -                            depends : test_executables,
-> -                            input : fields['input'],
-> -                            output : testplan + '.rst'
-> -                            )
-> +foreach testplan, fields: test_dict
-> +    rst = custom_target(testplan + '.rst',
-> +                        build_by_default : true,
-> +                        command : [ igt_doc_script, '--config', '@INPUT@', '--rest', '@OUTPUT@' ] + fields['extra_args'],
-> +                        depends : test_executables,
-> +                        input : fields['input'],
-> +                        output : testplan + '.rst'
-> +                        )
->  
-> -        if rst2html.found()
-> -            custom_target(testplan + '.html',
-> -                          build_by_default : true,
-> -                          command : [ rst2html, '--stylesheet=' + stylesheet, '--field-name-limit=0', '@INPUT@', '@OUTPUT@' ],
-> -                          input : rst,
-> -                          output : testplan + '.html'
-> -                          )
-> -        endif
-> -    endforeach
-> -endif
-> +    if rst2html.found()
-> +        custom_target(testplan + '.html',
-> +                      build_by_default : true,
-> +                      command : [ rst2html, '--stylesheet=' + stylesheet, '--field-name-limit=0', '@INPUT@', '@OUTPUT@' ],
-> +                      input : rst,
-> +                      output : testplan + '.html'
-> +                      )
-> +    endif
-> +endforeach
->  
->  if sphinx.found()
->      if gen_rst_index.found()
-> @@ -75,7 +70,6 @@ if sphinx.found()
->      endif
->  endif
->  
-> -build_info += 'Build ReST test documentation: @0@'.format(igt_doc_script.found())
->  build_info += 'Build simple html testplan documentation: @0@'.format(rst2html.found())
->  build_info += 'Build indexed html testplan documentation: @0@'.format(sphinx.found())
->  build_info += 'Build pdf testplan documentation: @0@'.format(sphinx.found() and rst2pdf.found())
-> diff --git a/meson.build b/meson.build
-> index 12d5113a9042..7360634fe199 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -328,6 +328,9 @@ else
->  endif
->  build_info += 'Build tests: @0@'.format(build_tests)
->  
-> +build_testplan = get_option('testplan')
-> +build_sphinx = get_option('sphinx')
-> +
->  subdir('benchmarks')
->  subdir('tools')
->  subdir('runner')
-> diff --git a/scripts/meson.build b/scripts/meson.build
-> index ce12aa02e946..98783222b6fc 100644
-> --- a/scripts/meson.build
-> +++ b/scripts/meson.build
-> @@ -12,5 +12,5 @@ if build_tests
->  	endforeach
->  endif
->  
-> -igt_doc_script = find_program('igt_doc.py')
-> -gen_rst_index = find_program('gen_rst_index')
-> +igt_doc_script = find_program('igt_doc.py', required : build_testplan)
-> +gen_rst_index = find_program('gen_rst_index', required : build_sphinx)
+> diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/i915-blacklist.txt
+> similarity index 97%
+> rename from tests/intel-ci/blacklist.txt
+> rename to tests/intel-ci/i915-blacklist.txt
+> index 6e5cc43667cf..389a2acb7f44 100644
+> --- a/tests/intel-ci/blacklist.txt
+> +++ b/tests/intel-ci/i915-blacklist.txt
+> @@ -84,6 +84,10 @@ igt@kms_chamelium_frames@hdmi-.*-planes-random
+>  igt@vc4_.*
+>  igt@v3d_.*
+>  ###############################################
+> +# Intel Xe
+> +###############################################
+> +igt@xe/.*
+-------- ^
+There is no xe subdirectory with xe tests, all binaries are
+named xe_* and are placed in build/tests/
+
+This should be:
+
+igt@xe_.*
+
+> +###############################################
+>  # AMD
+>  ###############################################
+>  igt@amdgpu/.*
+
+See here, all amdgpu binaries are in this subfolder, so '/'
+is used.
+
+> diff --git a/tests/intel-ci/xe-blacklist.txt b/tests/intel-ci/xe-blacklist.txt
+> new file mode 100644
+> index 000000000000..986e91a67069
+> --- /dev/null
+> +++ b/tests/intel-ci/xe-blacklist.txt
+> @@ -0,0 +1,21 @@
+> +###############################################
+> +# Broadcom
+> +###############################################
+> +igt@vc4_.*
+> +igt@v3d_.*
+> +###############################################
+> +# Intel i915
+> +###############################################
+> +igt@i915/.*
+---------- ^
+Same here,
+
+igt@i915_.*
+
+Add also:
+
+igt@gem.*
+igt@gen.*
+
+imho look at tests/i915, we should really put all that here
+in alphabetical order and with regexp where possible to make
+it as short as possible.
+
+Regards,
+Kamil
+
+> +###############################################
+> +# AMD
+> +###############################################
+> +igt@amdgpu/.*
+> +###############################################
+> +# Panfrost
+> +###############################################
+> +igt@panfrost_.*
+> +###############################################
+> +# Qualcomm
+> +###############################################
+> +igt@msm_.*
 > -- 
 > 2.39.2
 > 
