@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8536410EB83
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB60B10EB85
  for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 22:55:42 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Mar 2023 15:55:15 -0700
-Message-Id: <20230323225534.3739835-12-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 23 Mar 2023 15:55:20 -0700
+Message-Id: <20230323225534.3739835-17-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 References: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 11/30] i915/perf: Move OA format array
- from stack to heap
+Subject: [igt-dev] [PATCH i-g-t v5 16/30] lib/i915/perf: Prepare to read
+ different OA formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,180 +23,251 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The OA format size will change based on the specific format used in some
-of the tests. In preparation for that, allocated the space required for
-the format on heap.
+Make chipsets aware of oa formats to allow addition of different formats
+per chipset.
 
-v2: Allocate the correct bytes for OA format (CI failure)
+v2: Improve commit message (Kamil)
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/i915/perf.c | 48 ++++++++++++++++++++++++-----------------------
- 1 file changed, 25 insertions(+), 23 deletions(-)
+ lib/i915/perf-configs/mdapi-xml-convert.py | 98 +++++++++++++---------
+ 1 file changed, 58 insertions(+), 40 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index a2bc6dc1..ebd8e159 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -1937,9 +1937,9 @@ test_oa_exponents(const struct intel_execution_engine2 *e)
- 		uint8_t *buf = calloc(1, buf_size);
- 		int ret, n_timer_reports = 0;
- 		uint32_t matches = 0;
--		struct {
--			uint32_t report[64];
--		} timer_reports[30];
-+#define NUM_TIMER_REPORTS 30
-+		uint32_t *reports = malloc(NUM_TIMER_REPORTS * format_size);
-+		uint32_t *timer_reports = reports;
+diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
+index b20b104d..5c784643 100755
+--- a/lib/i915/perf-configs/mdapi-xml-convert.py
++++ b/lib/i915/perf-configs/mdapi-xml-convert.py
+@@ -133,24 +133,39 @@ xehpsdv_chipset_params = {
+     }
+ }
  
- 		igt_debug("testing OA exponent %d,"
- 			  " expected ts delta = %"PRIu64" (%"PRIu64"ns/%.2fus/%.2fms)\n",
-@@ -1950,7 +1950,7 @@ test_oa_exponents(const struct intel_execution_engine2 *e)
- 
- 		stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
- 
--		while (n_timer_reports < ARRAY_SIZE(timer_reports)) {
-+		while (n_timer_reports < NUM_TIMER_REPORTS) {
- 			struct drm_i915_perf_record_header *header;
- 
- 			while ((ret = read(stream_fd, buf, buf_size)) < 0 &&
-@@ -1963,7 +1963,7 @@ test_oa_exponents(const struct intel_execution_engine2 *e)
- 			igt_assert(ret > 0);
- 
- 			for (int offset = 0;
--			     offset < ret && n_timer_reports < ARRAY_SIZE(timer_reports);
-+			     offset < ret && n_timer_reports < NUM_TIMER_REPORTS;
- 			     offset += header->size) {
- 				uint32_t *report;
- 
-@@ -1985,25 +1985,25 @@ test_oa_exponents(const struct intel_execution_engine2 *e)
- 				if (!oa_report_is_periodic(exponent, report))
- 					continue;
- 
--				memcpy(timer_reports[n_timer_reports].report, report,
--				       sizeof(timer_reports[n_timer_reports].report));
-+				memcpy(timer_reports, report, format_size);
- 				n_timer_reports++;
-+				timer_reports += (format_size / 4);
- 			}
- 		}
- 
- 		__perf_close(stream_fd);
- 
- 		igt_debug("report%04i ts=%"PRIx64" hw_id=0x%08x\n", 0,
--			  oa_timestamp(timer_reports[0].report, fmt),
--			  oa_report_get_ctx_id(timer_reports[0].report));
-+			  oa_timestamp(&reports[0], fmt),
-+			  oa_report_get_ctx_id(&reports[0]));
- 		for (int i = 1; i < n_timer_reports; i++) {
--			uint64_t delta = oa_timestamp_delta(timer_reports[i].report,
--							    timer_reports[i - 1].report,
-+			uint64_t delta = oa_timestamp_delta(&reports[i],
-+							    &reports[i - 1],
- 							    fmt);
- 
- 			igt_debug("report%04i ts=%"PRIx64" hw_id=0x%08x delta=%"PRIu64" %s\n", i,
--				  oa_timestamp(timer_reports[i].report, fmt),
--				  oa_report_get_ctx_id(timer_reports[i].report),
-+				  oa_timestamp(&reports[i], fmt),
-+				  oa_report_get_ctx_id(&reports[i]),
- 				  delta, expected_report_timing_delta(delta,
- 								      expected_timestamp_delta) ? "" : "******");
- 
-@@ -2020,6 +2020,8 @@ test_oa_exponents(const struct intel_execution_engine2 *e)
- 		 * etc...
- 		 */
- 		igt_assert_lte(n_timer_reports / 2, matches);
++# There is no ReportType field in most Metrics XML files, Use 256B_GENERIC_NOA16
++# to denote the generic 256 byte format that is used by most chipsets
++hsw_chipset_oa_formats = {
++    '256B_GENERIC_NOA16': hsw_chipset_params,
++}
 +
-+		free(reports);
- 	}
++gen8_11_chipset_oa_formats = {
++    '256B_GENERIC_NOA16': gen8_11_chipset_params,
++}
++
++xehpsdv_chipset_oa_formats = {
++    '256B_GENERIC_NOA16': xehpsdv_chipset_params,
++}
++
++
+ chipsets = {
+-    'HSW': hsw_chipset_params,
+-    'BDW': gen8_11_chipset_params,
+-    'CHV': gen8_11_chipset_params,
+-    'SKL': gen8_11_chipset_params,
+-    'BXT': gen8_11_chipset_params,
+-    'KBL': gen8_11_chipset_params,
+-    'GLK': gen8_11_chipset_params,
+-    'CFL': gen8_11_chipset_params,
+-    'CNL': gen8_11_chipset_params,
+-    'ICL': gen8_11_chipset_params,
+-    'EHL': gen8_11_chipset_params,
+-    'TGL': gen8_11_chipset_params,
+-    'RKL': gen8_11_chipset_params,
+-    'DG1': gen8_11_chipset_params,
+-    'ADL': gen8_11_chipset_params,
+-    'ACM': xehpsdv_chipset_params,
+-    'MTL': xehpsdv_chipset_params,
++    'HSW': hsw_chipset_oa_formats,
++    'BDW': gen8_11_chipset_oa_formats,
++    'CHV': gen8_11_chipset_oa_formats,
++    'SKL': gen8_11_chipset_oa_formats,
++    'BXT': gen8_11_chipset_oa_formats,
++    'KBL': gen8_11_chipset_oa_formats,
++    'GLK': gen8_11_chipset_oa_formats,
++    'CFL': gen8_11_chipset_oa_formats,
++    'CNL': gen8_11_chipset_oa_formats,
++    'ICL': gen8_11_chipset_oa_formats,
++    'EHL': gen8_11_chipset_oa_formats,
++    'TGL': gen8_11_chipset_oa_formats,
++    'RKL': gen8_11_chipset_oa_formats,
++    'DG1': gen8_11_chipset_oa_formats,
++    'ADL': gen8_11_chipset_oa_formats,
++    'ACM': xehpsdv_chipset_oa_formats,
++    'MTL': xehpsdv_chipset_oa_formats,
+ }
  
- 	load_helper_stop();
-@@ -2741,13 +2743,14 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	struct drm_i915_perf_record_header *header;
--	int buf_size = 65536 * (256 + sizeof(struct drm_i915_perf_record_header));
-+	size_t report_size = get_oa_format(fmt).size;
-+	int buf_size = 65536 * (report_size + sizeof(struct drm_i915_perf_record_header));
- 	uint8_t *buf = malloc(buf_size);
- 	int len;
- 	size_t oa_buf_size = MAX_OA_BUF_SIZE;
--	size_t report_size = get_oa_format(fmt).size;
- 	int n_full_oa_reports = oa_buf_size / report_size;
- 	uint64_t fill_duration = n_full_oa_reports * oa_period;
-+	uint32_t *last_periodic_report = malloc(report_size);
+ xehp_plus = ( 'ACM', 'MTL' )
+@@ -180,14 +195,14 @@ def underscore(name):
+ def print_err(*args):
+     sys.stderr.write(' '.join(map(str,args)) + '\n')
  
- 	igt_assert(fill_duration < 1000000000);
+-def read_value(chipset, offset):
+-    if offset in chipsets[chipset]['register_offsets']:
+-        return chipsets[chipset]['register_offsets'][offset]
++def read_value(chipset, offset, oa_format):
++    if offset in chipsets[chipset][oa_format]['register_offsets']:
++        return chipsets[chipset][oa_format]['register_offsets'][offset]
+     print_err("Unknown offset register at offset {0}".format(offset))
+     assert 0
  
-@@ -2757,7 +2760,6 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
- 		bool overflow_seen;
- 		uint32_t n_periodic_reports;
- 		uint32_t first_timestamp = 0, last_timestamp = 0;
--		uint32_t last_periodic_report[64];
  
- 		do_ioctl(stream_fd, I915_PERF_IOCTL_ENABLE, 0);
+-def read_token_to_rpn_read(chipset, token, raw_offsets):
++def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
+     width, offset_str = token.split('@')
  
-@@ -2836,8 +2838,7 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
- 						break;
+     # For Broadwell the raw read notation was extended for 40 bit
+@@ -200,10 +215,10 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
  
- 					if (oa_report_is_periodic(oa_exponent, report)) {
--						memcpy(last_periodic_report, report,
--						       sizeof(last_periodic_report));
-+						memcpy(last_periodic_report, report, report_size);
- 						n_periodic_reports++;
- 					}
- 					break;
-@@ -2863,6 +2864,7 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
- 			   report_size * n_full_oa_reports * 0.55);
- 	}
+     if raw_offsets:
+         # Location in the HW reports
+-        a_offset = chipsets[chipset]['a_offset']
+-        b_offset = chipsets[chipset]['b_offset']
+-        c_offset = chipsets[chipset]['c_offset']
+-        report_size = chipsets[chipset]['oa_report_size']
++        a_offset = chipsets[chipset][oa_format]['a_offset']
++        b_offset = chipsets[chipset][oa_format]['b_offset']
++        c_offset = chipsets[chipset][oa_format]['c_offset']
++        report_size = chipsets[chipset][oa_format]['oa_report_size']
  
-+	free(last_periodic_report);
- 	free(buf);
+         if offset < a_offset:
+             if offset == 4:
+@@ -228,7 +243,7 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
+         elif offset < report_size:
+             return "C " + str(int((offset - c_offset) / 4)) + " READ"
+         else:
+-            return "{0} READ".format(read_value(chipset, offset))
++            return "{0} READ".format(read_value(chipset, offset, oa_format))
+     else:
+         # Location in the accumulated deltas
+         idx = int(offset / 8)
+@@ -245,7 +260,7 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
+             elif idx < 62:
+                 return "C " + str(idx - 54) + " READ"
+             else:
+-                return "{0} READ".format(read_value(chipset, offset))
++                return "{0} READ".format(read_value(chipset, offset, oa_format))
+         elif chipset in xehp_plus:
+             # For XEHPSDV the array of accumulated counters is
+             # assumed to start with a GPU_TIME then GPU_CLOCK,
+@@ -262,7 +277,7 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
+             elif idx < 56:
+                 return "C " + str(idx - 48) + " READ"
+             else:
+-                return "{0} READ".format(read_value(chipset, offset))
++                return "{0} READ".format(read_value(chipset, offset, oa_format))
+         else:
+             # For Gen8+ the array of accumulated counters is
+             # assumed to start with a GPU_TIME then GPU_CLOCK,
+@@ -279,11 +294,11 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
+             elif idx < 54:
+                 return "C " + str(idx - 46) + " READ"
+             else:
+-                return "{0} READ".format(read_value(chipset, offset))
++                return "{0} READ".format(read_value(chipset, offset, oa_format))
  
- 	__perf_close(stream_fd);
-@@ -2977,12 +2979,13 @@ test_enable_disable(const struct intel_execution_engine2 *e)
- 				  (ARRAY_SIZE(properties) / 2) - 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
--	int buf_size = 65536 * (256 + sizeof(struct drm_i915_perf_record_header));
-+	size_t report_size = get_oa_format(fmt).size;
-+	int buf_size = 65536 * (report_size + sizeof(struct drm_i915_perf_record_header));
- 	uint8_t *buf = malloc(buf_size);
- 	size_t oa_buf_size = MAX_OA_BUF_SIZE;
--	size_t report_size = get_oa_format(fmt).size;
- 	int n_full_oa_reports = oa_buf_size / report_size;
- 	uint64_t fill_duration = n_full_oa_reports * oa_period;
-+	uint32_t *last_periodic_report = malloc(report_size);
+     assert 0
  
- 	load_helper_init();
- 	load_helper_run(HIGH);
-@@ -2994,7 +2997,6 @@ test_enable_disable(const struct intel_execution_engine2 *e)
- 		uint32_t n_periodic_reports;
- 		struct drm_i915_perf_record_header *header;
- 		uint64_t first_timestamp = 0, last_timestamp = 0;
--		uint32_t last_periodic_report[64];
+-def replace_read_tokens_with_rpn_read_ops(chipset, equation, raw_offsets):
++def replace_read_tokens_with_rpn_read_ops(chipset, oa_format, equation, raw_offsets):
+     # MDAPI MetricSet equations use tokens like 'dw@0xff' for reading raw
+     # values from snapshots, but this doesn't seem convenient for a few
+     # reasons:
+@@ -307,7 +322,7 @@ def replace_read_tokens_with_rpn_read_ops(chipset, equation, raw_offsets):
  
- 		/* Giving enough time for an overflow might help catch whether
- 		 * the OA unit has been enabled even if the driver might at
-@@ -3056,8 +3058,7 @@ test_enable_disable(const struct intel_execution_engine2 *e)
- 						break;
+     for token in tokens:
+         if '@' in token:
+-            read_exp = read_token_to_rpn_read(chipset, token, raw_offsets)
++            read_exp = read_token_to_rpn_read(chipset, token, raw_offsets, oa_format)
+             equation = equation + " " + read_exp
+         else:
+             equation = equation + " " + token
+@@ -425,14 +440,14 @@ def fixup_equation(equation):
+ # double check that there's never any variations between repeated
+ # configs
+ #
+-def filter_single_config_registers_of_type(mdapi_metric_set, type):
++def filter_single_config_registers_of_type(mdapi_metric_set, type, oa_format):
+     regs = []
+     for mdapi_reg_config in mdapi_metric_set.findall("RegConfigStart"):
+         tmp_regs = []
+         for mdapi_reg in mdapi_reg_config.findall("Register"):
+             reg = (int(mdapi_reg.get('offset'),16), int(mdapi_reg.get('value'),16))
  
- 					if (oa_report_is_periodic(oa_exponent, report)) {
--						memcpy(last_periodic_report, report,
--						       sizeof(last_periodic_report));
-+						memcpy(last_periodic_report, report, report_size);
+-            if reg[0] in chipsets[chipset]['config_reg_blacklist']:
++            if reg[0] in chipsets[chipset][oa_format]['config_reg_blacklist']:
+                 continue
  
- 						/* We want to measure only the
- 						 * periodic reports, ctx-switch
-@@ -3100,6 +3101,7 @@ test_enable_disable(const struct intel_execution_engine2 *e)
- 		igt_assert_eq(errno, EIO);
- 	}
+             if mdapi_reg.get('type') == type:
+@@ -472,7 +487,7 @@ def get_mux_id_group(id_groups, id):
  
-+	free(last_periodic_report);
- 	free(buf);
  
- 	__perf_close(stream_fd);
+ 
+-def process_mux_configs(mdapi_set):
++def process_mux_configs(mdapi_set, oa_format):
+     allow_missing_id = True
+ 
+     mux_config_id_groups = []
+@@ -483,7 +498,7 @@ def process_mux_configs(mdapi_set):
+         for mdapi_reg in mdapi_reg_config.findall("Register"):
+             address = int(mdapi_reg.get('offset'), 16)
+ 
+-            if address in chipsets[chipset]['config_reg_blacklist']:
++            if address in chipsets[chipset][oa_format]['config_reg_blacklist']:
+                 continue
+ 
+             reg_type = mdapi_reg.get('type')
+@@ -613,6 +628,7 @@ for arg in args.xml:
+         if "OGL" not in apis and "OCL" not in apis and "MEDIA" not in apis:
+             continue
+ 
++        oa_format = '256B_GENERIC_NOA16'
+         set_symbol_name = oa_registry.Registry.sanitize_symbol_name(mdapi_set.get('SymbolName'))
+ 
+         if set_symbol_name in sets:
+@@ -668,7 +684,7 @@ for arg in args.xml:
+         # to deal with. (At least we got the handling of the Broadwell
+         # ComputeExtended example wrong and it took several email exchanges and
+         # a conference call to confirm how to interpret this case)
+-        mux_configs = process_mux_configs(mdapi_set)
++        mux_configs = process_mux_configs(mdapi_set, oa_format)
+ 
+         # Unlike for MUX registers, we only expect one set of FLEX/OA
+         # registers per metric set (even though they are sometimes duplicated
+@@ -680,8 +696,8 @@ for arg in args.xml:
+         # need some adapting to support multiple OA/FLEX configs with different
+         # availability expressions)
+         #
+-        flex_regs = filter_single_config_registers_of_type(mdapi_set, "FLEX")
+-        oa_regs = filter_single_config_registers_of_type(mdapi_set, "OA")
++        flex_regs = filter_single_config_registers_of_type(mdapi_set, "FLEX", oa_format)
++        oa_regs = filter_single_config_registers_of_type(mdapi_set, "OA", oa_format)
+ 
+ 
+         # Note: we ignore Perfmon registers
+@@ -877,6 +893,7 @@ for arg in args.xml:
+                     raw_read_eq = None
+                 else:
+                     raw_read_eq = replace_read_tokens_with_rpn_read_ops(chipset,
++                                                                        oa_format,
+                                                                         raw_read_eq,
+                                                                         True) #raw offsets
+ 
+@@ -886,6 +903,7 @@ for arg in args.xml:
+                     delta_read_eq = None
+                 else:
+                     delta_read_eq = replace_read_tokens_with_rpn_read_ops(chipset,
++                                                                          oa_format,
+                                                                           delta_read_eq,
+                                                                           False) #delta offsets
+ 
+@@ -1070,8 +1088,8 @@ for set in metrics.findall(".//set"):
+         for reg in config.findall("register"):
+             addr = int(reg.get('address'), 16)
+ 
+-            if 'registers' in chipsets[chipset] and addr in chipsets[chipset]['registers']:
+-                reg_info = chipsets[chipset]['registers'][addr]
++            if 'registers' in chipsets[chipset][oa_format] and addr in chipsets[chipset][oa_format]['registers']:
++                reg_info = chipsets[chipset][oa_format]['registers'][addr]
+                 comment = ' <!--' + reg_info['name'] + ' -->'
+             else:
+                 comment = ''
 -- 
 2.36.1
