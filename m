@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 661A810EB85
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B754110EB84
  for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 22:55:42 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Mar 2023 15:55:12 -0700
-Message-Id: <20230323225534.3739835-9-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 23 Mar 2023 15:55:19 -0700
+Message-Id: <20230323225534.3739835-16-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 References: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 08/30] i915/perf: Treat ticks as 64 bit
+Subject: [igt-dev] [PATCH i-g-t v5 15/30] i915/perf: Add OAM support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,195 +22,382 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To support 64 bit OA report headers, treat all ticks as 64 bits.
+Add OAM formats and support for media engines in perf tests
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf.c | 79 ++++++++++++++++++++++++++++++++---------------
- 1 file changed, 54 insertions(+), 25 deletions(-)
+ include/drm-uapi/i915_drm.h |   4 ++
+ lib/intel_chipset.h         |   3 +
+ lib/intel_device_info.c     |   1 +
+ tests/i915/perf.c           | 138 +++++++++++++++++++++++++-----------
+ 4 files changed, 105 insertions(+), 41 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 9d143aba..6b76e35c 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -112,6 +112,7 @@ struct oa_format {
- 	int c_off;
- 	int n_c;
- 	int oa_type;
-+	bool report_hdr_64bit;
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index b71acfba..a0876ee4 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -2545,6 +2545,10 @@ enum drm_i915_oa_format {
+ 	I915_OAR_FORMAT_A32u40_A4u32_B8_C8,
+ 	I915_OA_FORMAT_A24u40_A14u32_B8_C8,
+ 
++	/* MTL OAM */
++	I915_OAM_FORMAT_MPEC8u64_B8_C8,
++	I915_OAM_FORMAT_MPEC8u32_B8_C8,
++
+ 	I915_OA_FORMAT_MAX	    /* non-ABI */
  };
  
- static struct oa_format hsw_oa_formats[I915_OA_FORMAT_MAX] = {
-@@ -231,7 +232,7 @@ static bool *undefined_a_counters;
- static uint64_t oa_exp_1_millisec;
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index c9762ae6..c2c8998d 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -45,6 +45,7 @@ struct intel_device_info {
+ 	unsigned gt; /* 0 if unknown */
+ 	bool has_4tile : 1;
+ 	bool has_flatccs : 1;
++	bool has_oam : 1;
+ 	bool is_mobile : 1;
+ 	bool is_whitney : 1;
+ 	bool is_almador : 1;
+@@ -231,4 +232,6 @@ void intel_check_pch(void);
  
- static igt_render_copyfunc_t render_copy = NULL;
--static uint32_t (*read_report_ticks)(const uint32_t *report,
-+static uint64_t (*read_report_ticks)(const uint32_t *report,
- 				     enum drm_i915_oa_format format);
- static void (*sanity_check_reports)(const uint32_t *oa_report0,
- 				    const uint32_t *oa_report1,
-@@ -425,7 +426,7 @@ sysfs_read(enum i915_attr_id id)
-  * C2 corresponds to a clock counter for the Haswell render basic metric set
-  * but it's not included in all of the formats.
-  */
--static uint32_t
-+static uint64_t
- hsw_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
+ #define HAS_FLATCCS(devid)	(intel_get_device_info(devid)->has_flatccs)
+ 
++#define HAS_OAM(devid)		(intel_get_device_info(devid)->has_oam)
++
+ #endif /* _INTEL_CHIPSET_H */
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 12b81d48..0b11dfce 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -472,6 +472,7 @@ static const struct intel_device_info intel_meteorlake_info = {
+ 	.graphics_rel = 70,
+ 	.display_ver = 14,
+ 	.has_4tile = true,
++	.has_oam = true,
+ 	.is_meteorlake = true,
+ 	.codename = "meteorlake",
+ 	.cmds_info = &gen12_mtl_cmds_info,
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index d3f80a19..d6db31c0 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -199,6 +199,40 @@ static struct oa_format dg2_oa_formats[I915_OA_FORMAT_MAX] = {
+ 		.c_off = 224, .n_c = 8, .oa_type = OAG, },
+ };
+ 
++static struct oa_format mtl_oa_formats[I915_OA_FORMAT_MAX] = {
++	[I915_OAR_FORMAT_A32u40_A4u32_B8_C8] = {
++		"A32u40_A4u32_B8_C8", .size = 256,
++		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 32,
++		.a_off = 144, .n_a = 4, .first_a = 32,
++		.b_off = 192, .n_b = 8,
++		.c_off = 224, .n_c = 8, .oa_type = OAR, },
++	/* This format has A36 and A37 interleaved with high bytes of some A
++	 * counters, so we will accumulate only subset of counters.
++	 */
++	[I915_OA_FORMAT_A24u40_A14u32_B8_C8] = {
++		"A24u40_A14u32_B8_C8", .size = 256,
++		/* u40: A4 - A23 */
++		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 20, .first_a40 = 4,
++		/* u32: A0 - A3 */
++		.a_off = 16, .n_a = 4,
++		.b_off = 192, .n_b = 8,
++		.c_off = 224, .n_c = 8, .oa_type = OAG, },
++
++	/* Treat MPEC countes as A counters for now */
++	[I915_OAM_FORMAT_MPEC8u64_B8_C8] = {
++		"MPEC8u64_B8_C8", .size = 192,
++		.a64_off = 32, .n_a64 = 8,
++		.b_off = 96, .n_b = 8,
++		.c_off = 128, .n_c = 8, .oa_type = OAM,
++		.report_hdr_64bit = true, },
++	[I915_OAM_FORMAT_MPEC8u32_B8_C8] = {
++		"MPEC8u32_B8_C8", .size = 128,
++		.a_off = 32, .n_a = 8,
++		.b_off = 64, .n_b = 8,
++		.c_off = 96, .n_c = 8, .oa_type = OAM,
++		.report_hdr_64bit = true, },
++};
++
+ static bool hsw_undefined_a_counters[45] = {
+ 	[4] = true,
+ 	[6] = true,
+@@ -260,8 +294,10 @@ get_oa_format(enum drm_i915_oa_format format)
  {
- 	uint32_t *c = (uint32_t *)(((uint8_t *)report) + get_oa_format(format).c_off);
-@@ -435,10 +436,41 @@ hsw_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
- 	return c[2];
+ 	if (IS_HASWELL(devid))
+ 		return hsw_oa_formats[format];
+-	else if (IS_DG2(devid) || IS_METEORLAKE(devid))
++	else if (IS_DG2(devid))
+ 		return dg2_oa_formats[format];
++	else if (IS_METEORLAKE(devid))
++		return mtl_oa_formats[format];
+ 	else if (IS_GEN12(devid))
+ 		return gen12_oa_formats[format];
+ 	else
+@@ -343,21 +379,6 @@ static int i915_perf_revision(int fd)
+ 	return value;
  }
  
--static uint32_t
-+static uint64_t
- gen8_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
+-/*
+- * perf_supports_engine is used in the for loop that iterates over engines and
+- * determines if perf test can be run on a particular engine. For perf revisions
+- * below 10, we only need to run the test once, so we return true only for rcs0.
+- * Note that the test itself ignores the class instance parameters if they are
+- * not supported by the perf interface. This enables us to use a single for-loop
+- * construct to run the same test on all platforms and all perf revisions.
+- */
+-static bool
+-perf_supports_engine(const struct intel_execution_engine2 *e)
+-{
+-	return e->class == I915_ENGINE_CLASS_RENDER &&
+-	       e->instance == 0;
+-}
+-
+ static bool
+ has_param_class_instance(void)
  {
--	return report[3];
-+
-+	struct oa_format fmt = get_oa_format(format);
-+
-+	return fmt.report_hdr_64bit ? *(uint64_t *)&report[6] : report[3];
-+}
-+
-+/*
-+ * t0 is a value sampled before t1. width is number of bits used to represent
-+ * t0/t1. Normally t1 is greater than t0. In cases where t1 < t0 use this
-+ * helper. Since the size of t1/t0 is already 64 bits, no special handling is
-+ * needed for width = 64.
-+ */
-+static uint64_t
-+elapsed_delta(uint64_t t1, uint64_t t0, uint32_t width)
-+{
-+	uint32_t max_bits = sizeof(t1) * 8;
-+
-+	igt_assert(width <= max_bits);
-+
-+	if (t1 < t0 && width != max_bits)
-+		return ((1ULL << width) - t0) + t1;
-+
-+	return t1 - t0;
-+}
-+
-+static uint64_t
-+oa_tick_delta(const uint32_t *report1,
-+	      const uint32_t *report0,
-+	      enum drm_i915_oa_format format)
-+{
-+	return elapsed_delta(read_report_ticks(report1, format),
-+			     read_report_ticks(report0, format), 32);
+@@ -661,8 +682,12 @@ oar_unit_default_format(void)
  }
  
+ static int
+-oa_unit_default_format(void)
++oa_unit_default_format(const struct intel_execution_engine2 *e)
+ {
++	if (e->class == I915_ENGINE_CLASS_VIDEO ||
++	    e->class == I915_ENGINE_CLASS_VIDEO_ENHANCE)
++		return I915_OAM_FORMAT_MPEC8u32_B8_C8;
++
+ 	return test_set->perf_oa_format;
+ }
+ 
+@@ -1739,6 +1764,20 @@ print_report(uint32_t *report, int fmt)
+ }
+ #endif
+ 
++static bool
++oa_unit_supports_engine(int oa_unit, const struct intel_execution_engine2 *e)
++{
++	switch (oa_unit) {
++	case OAM:
++		return e->class == I915_ENGINE_CLASS_VIDEO ||
++		       e->class == I915_ENGINE_CLASS_VIDEO_ENHANCE;
++	case OAG:
++		return e->class == I915_ENGINE_CLASS_RENDER;
++	}
++
++	return false;
++}
++
  static void
-@@ -668,8 +700,8 @@ hsw_sanity_check_render_basic_reports(const uint32_t *oa_report0,
- 				      enum drm_i915_oa_format fmt)
+ test_oa_formats(const struct intel_execution_engine2 *e)
  {
- 	uint32_t time_delta = timebase_scale(oa_report1[1] - oa_report0[1]);
--	uint32_t clock_delta;
--	uint32_t max_delta;
-+	uint64_t clock_delta;
-+	uint64_t max_delta;
- 	struct oa_format format = get_oa_format(fmt);
+@@ -1750,7 +1789,7 @@ test_oa_formats(const struct intel_execution_engine2 *e)
+ 		if (!format.name) /* sparse, indexed by ID */
+ 			continue;
  
- 	igt_assert_neq(time_delta, 0);
-@@ -684,21 +716,19 @@ hsw_sanity_check_render_basic_reports(const uint32_t *oa_report0,
- 		clock_delta = (gt_max_freq_mhz *
- 			       (uint64_t)time_delta) / 1000;
- 	} else {
--		uint32_t ticks0 = read_report_ticks(oa_report0, fmt);
--		uint32_t ticks1 = read_report_ticks(oa_report1, fmt);
- 		uint64_t freq;
+-		if (format.oa_type != OAG) /* sparse, indexed by ID */
++		if (!oa_unit_supports_engine(format.oa_type, e))
+ 			continue;
  
--		clock_delta = ticks1 - ticks0;
-+		clock_delta = oa_tick_delta(oa_report1, oa_report0, fmt);
- 
--		igt_assert_neq(clock_delta, 0);
-+		igt_assert_neq_u64(clock_delta, 0);
- 
--		freq = ((uint64_t)clock_delta * 1000) / time_delta;
-+		freq = (clock_delta * 1000) / time_delta;
- 		igt_debug("freq = %"PRIu64"\n", freq);
- 
- 		igt_assert(freq <= gt_max_freq_mhz);
- 	}
- 
--	igt_debug("clock delta = %"PRIu32"\n", clock_delta);
-+	igt_debug("clock delta = %"PRIu64"\n", clock_delta);
- 
- 	/* The maximum rate for any HSW counter =
- 	 *   clock_delta * N EUs
-@@ -831,7 +861,8 @@ accumulate_reports(struct accumulator *accumulator,
- 		accumulate_uint32(4, start, end, deltas + idx++);
- 
- 		/* clock cycles */
--		accumulate_uint32(12, start, end, deltas + idx++);
-+		deltas[idx] += oa_tick_delta(end, start, accumulator->format);
-+		idx++;
- 	} else {
- 		/* timestamp */
- 		accumulate_uint32(4, start, end, deltas + idx++);
-@@ -904,10 +935,8 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 		igt_debug("Checking OA format %s\n", format.name);
+@@ -1909,7 +1948,7 @@ static bool expected_report_timing_delta(uint32_t delta, uint32_t expected_delta
+ static void
+ test_oa_exponents(const struct intel_execution_engine2 *e)
  {
- 	struct oa_format format = get_oa_format(fmt);
- 	uint32_t time_delta = timebase_scale(oa_report1[1] - oa_report0[1]);
--	uint32_t ticks0 = read_report_ticks(oa_report0, fmt);
--	uint32_t ticks1 = read_report_ticks(oa_report1, fmt);
--	uint32_t clock_delta = ticks1 - ticks0;
--	uint32_t max_delta;
-+	uint64_t clock_delta = oa_tick_delta(oa_report1, oa_report0, fmt);
-+	uint64_t max_delta;
- 	uint64_t freq;
- 	uint32_t *rpt0_b = (uint32_t *)(((uint8_t *)oa_report0) +
- 					format.b_off);
-@@ -920,10 +949,10 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
- 		  gen8_read_report_reason(oa_report0),
- 		  gen8_read_report_reason(oa_report1));
+-	uint64_t fmt = oa_unit_default_format();
++	uint64_t fmt = oa_unit_default_format(e);
  
--	freq = time_delta ? ((uint64_t)clock_delta * 1000) / time_delta : 0;
-+	freq = time_delta ? (clock_delta * 1000) / time_delta : 0;
- 	igt_debug("freq = %"PRIu64"\n", freq);
+ 	load_helper_init();
+ 	load_helper_run(HIGH);
+@@ -2253,7 +2292,7 @@ test_blocking(uint64_t requested_oa_period,
  
--	igt_debug("clock delta = %"PRIu32"\n", clock_delta);
-+	igt_debug("clock delta = %"PRIu64"\n", clock_delta);
+ 	ADD_PROPS(props, idx, SAMPLE_OA, true);
+ 	ADD_PROPS(props, idx, OA_METRICS_SET, test_set->perf_oa_metrics_set);
+-	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format());
++	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format(e));
+ 	ADD_PROPS(props, idx, OA_EXPONENT, oa_exponent);
  
- 	max_delta = clock_delta * intel_perf->devinfo.n_eus;
+ 	if (has_param_poll_period() && set_kernel_hrtimer)
+@@ -2416,7 +2455,7 @@ test_polling(uint64_t requested_oa_period,
  
-@@ -1024,7 +1053,7 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
- 					    format.c_off);
- 		uint32_t delta = c1[j] - c0[j];
+ 	ADD_PROPS(props, idx, SAMPLE_OA, true);
+ 	ADD_PROPS(props, idx, OA_METRICS_SET, test_set->perf_oa_metrics_set);
+-	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format());
++	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format(e));
+ 	ADD_PROPS(props, idx, OA_EXPONENT, oa_exponent);
  
--		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu32"\n",
-+		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu64"\n",
- 			  j, delta, max_delta);
- 		igt_assert(delta <= max_delta);
+ 	if (has_param_poll_period() && set_kernel_hrtimer)
+@@ -2690,7 +2729,7 @@ gen12_test_oa_tlb_invalidate(const struct intel_execution_engine2 *e)
+ 		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+ 
+ 		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+-		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
++		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(e),
+ 		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
+ 		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
+ 		DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, e->instance,
+@@ -2733,7 +2772,7 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
+ 	/* ~5 micro second period */
+ 	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+ 	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+-	uint64_t fmt = oa_unit_default_format();
++	uint64_t fmt = oa_unit_default_format(e);
+ 	uint64_t properties[] = {
+ 		/* Include OA reports in samples */
+ 		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+@@ -2969,7 +3008,7 @@ test_enable_disable(const struct intel_execution_engine2 *e)
+ 	/* ~5 micro second period */
+ 	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+ 	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+-	uint64_t fmt = oa_unit_default_format();
++	uint64_t fmt = oa_unit_default_format(e);
+ 	uint64_t properties[] = {
+ 		/* Include OA reports in samples */
+ 		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+@@ -4564,7 +4603,7 @@ test_stress_open_close(const struct intel_execution_engine2 *e)
+ 
+ 			/* OA unit configuration */
+ 			DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+-			DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
++			DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(e),
+ 			DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
+ 			DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
+ 			DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, e->instance,
+@@ -4668,7 +4707,7 @@ test_global_sseu_config_invalid(const intel_ctx_t *ctx, const struct intel_execu
+ 
+ 		/* OA unit configuration */
+ 		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+-		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
++		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(e),
+ 		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
+ 		DRM_I915_PERF_PROP_GLOBAL_SSEU, to_user_pointer(&sseu_param),
+ 		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
+@@ -4758,7 +4797,7 @@ test_global_sseu_config(const intel_ctx_t *ctx, const struct intel_execution_eng
+ 
+ 		/* OA unit configuration */
+ 		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+-		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
++		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(e),
+ 		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
+ 		DRM_I915_PERF_PROP_GLOBAL_SSEU, to_user_pointer(&sseu_param),
+ 		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
+@@ -5295,10 +5334,27 @@ test_sysctl_defaults(void)
+ 	igt_assert_eq(max_freq, 100000);
+ }
+ 
+-#define __for_each_perf_enabled_engine(fd__, e__) \
+-	for_each_physical_engine(fd__, e__) \
+-		if (perf_supports_engine(e__)) \
+-			igt_dynamic_f("%s", e__->name)
++static struct intel_execution_engine2 *
++__ci_to_e2(const intel_ctx_t *ctx, struct i915_engine_class_instance *ci)
++{
++	static struct intel_execution_engine2 e2;
++	struct intel_execution_engine2 *e;
++
++	for_each_ctx_engine(drm_fd, ctx, e) {
++		if (e->class == ci->engine_class && e->instance == ci->engine_instance) {
++			e2 = *e;
++			break;
++		}
++	}
++
++	return &e2;
++}
++
++#define __for_random_engine_in_each_group(groups_, ctx_, e_) \
++	for (int i_ = 0; \
++	     i_ < num_perf_oa_groups && !!(e_ = __ci_to_e2(ctx_, random_engine(&groups_[i_]))); \
++	     i_++) \
++		igt_dynamic_f("%d-%s", i_, e_->name)
+ 
+ #define __for_each_render_engine(fd__, e__) \
+ 	for_each_physical_engine(fd__, e__) \
+@@ -5676,7 +5732,7 @@ igt_main
+ 		test_missing_sample_flags();
+ 
+ 	igt_subtest_with_dynamic("oa-formats")
+-		__for_each_perf_enabled_engine(drm_fd, e)
++		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+ 			test_oa_formats(e);
+ 
+ 	igt_subtest("invalid-oa-exponent")
+@@ -5684,7 +5740,7 @@ igt_main
+ 	igt_subtest("low-oa-exponent-permissions")
+ 		test_low_oa_exponent_permissions();
+ 	igt_subtest_with_dynamic("oa-exponents")
+-		__for_each_perf_enabled_engine(drm_fd, e)
++		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+ 			test_oa_exponents(e);
+ 
+ 	igt_subtest("per-context-mode-unprivileged") {
+@@ -5693,7 +5749,7 @@ igt_main
  	}
-@@ -1516,10 +1545,10 @@ print_reports(uint32_t *oa_report0, uint32_t *oa_report1, int fmt)
- 	if (IS_HASWELL(devid) && format.n_c == 0) {
- 		igt_debug("CLOCK = N/A\n");
- 	} else {
--		uint32_t clock0 = read_report_ticks(oa_report0, fmt);
--		uint32_t clock1 = read_report_ticks(oa_report1, fmt);
-+		uint64_t clock0 = read_report_ticks(oa_report0, fmt);
-+		uint64_t clock1 = read_report_ticks(oa_report1, fmt);
  
--		igt_debug("CLOCK: 1st = %"PRIu32", 2nd = %"PRIu32", delta = %"PRIu32"\n",
-+		igt_debug("CLOCK: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
- 			  clock0, clock1, clock1 - clock0);
+ 	igt_subtest_with_dynamic("buffer-fill")
+-		__for_each_perf_enabled_engine(drm_fd, e)
++		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+ 			test_buffer_fill(e);
+ 
+ 	igt_describe("Test that reason field in OA reports is never 0 on Gen8+");
+@@ -5709,12 +5765,12 @@ igt_main
+ 		test_non_sampling_read_error();
+ 
+ 	igt_subtest_with_dynamic("enable-disable")
+-		__for_each_perf_enabled_engine(drm_fd, e)
++		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+ 			test_enable_disable(e);
+ 
+ 	igt_describe("Test blocking read with default hrtimer frequency");
+ 	igt_subtest_with_dynamic("blocking") {
+-		__for_each_perf_enabled_engine(drm_fd, e)
++		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+ 			test_blocking(40 * 1000 * 1000 /* 40ms oa period */,
+ 				      false /* set_kernel_hrtimer */,
+ 				      5 * 1000 * 1000 /* default 5ms/200Hz hrtimer */,
+@@ -5742,7 +5798,7 @@ igt_main
+ 
+ 	igt_describe("Test polled read with default hrtimer frequency");
+ 	igt_subtest_with_dynamic("polling") {
+-		__for_each_perf_enabled_engine(drm_fd, e)
++		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+ 			test_polling(40 * 1000 * 1000 /* 40ms oa period */,
+ 				     false /* set_kernel_hrtimer */,
+ 				     5 * 1000 * 1000 /* default 5ms/200Hz hrtimer */,
+@@ -5812,7 +5868,7 @@ igt_main
+ 
+ 		igt_describe("Test OA TLB invalidate");
+ 		igt_subtest_with_dynamic("gen12-oa-tlb-invalidate")
+-			__for_each_perf_enabled_engine(drm_fd, e)
++			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+ 				gen12_test_oa_tlb_invalidate(e);
+ 
+ 		igt_describe("Measure performance for a specific context using OAR in Gen 12");
+@@ -5857,7 +5913,7 @@ igt_main
+ 
+ 	igt_describe("Stress tests opening & closing the i915-perf stream in a busy loop");
+ 	igt_subtest_with_dynamic("stress-open-close")
+-		__for_each_perf_enabled_engine(drm_fd, e)
++		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+ 			test_stress_open_close(e);
+ 
+ 	igt_subtest_group {
+@@ -5868,12 +5924,12 @@ igt_main
+ 
+ 		igt_describe("Verify invalid SSEU opening parameters");
+ 		igt_subtest_with_dynamic("global-sseu-config-invalid")
+-			__for_each_perf_enabled_engine(drm_fd, e)
++			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+ 				test_global_sseu_config_invalid(ctx, e);
+ 
+ 		igt_describe("Verify specifying SSEU opening parameters");
+ 		igt_subtest_with_dynamic("global-sseu-config")
+-			__for_each_perf_enabled_engine(drm_fd, e)
++			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+ 				test_global_sseu_config(ctx, e);
  	}
  
-@@ -1621,9 +1650,9 @@ print_report(uint32_t *report, int fmt)
- 	if (IS_HASWELL(devid) && format.n_c == 0) {
- 		igt_debug("CLOCK = N/A\n");
- 	} else {
--		uint32_t clock = read_report_ticks(report, fmt);
-+		uint64_t clock = read_report_ticks(report, fmt);
- 
--		igt_debug("CLOCK: %"PRIu32"\n", clock);
-+		igt_debug("CLOCK: %"PRIu64"\n", clock);
- 	}
- 
- 	if (intel_gen(devid) >= 8) {
 -- 
 2.36.1
