@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E52210EB8B
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 22:55:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0CB1F10EB84
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 22:55:45 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Mar 2023 15:55:18 -0700
-Message-Id: <20230323225534.3739835-15-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 23 Mar 2023 15:55:32 -0700
+Message-Id: <20230323225534.3739835-29-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 References: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 14/30] i915/perf: Test concurrent access
- to OA in different groups
+Subject: [igt-dev] [PATCH i-g-t v5 28/30] lib/i915/perf: Add support for
+ select MPEC formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,223 +23,128 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With multiple OA buffers, verify that the perf interface allows
-concurrent access to the OA buffers in different groups.
-
-v2: (Ashutosh)
-- Rename concurrency functions to use group instead of gt
-- Fix comment
-
-v3: (CI issues)
-- Run group-exclusive-stream tests for >= gen12
-- Fix exponent for group-exclusive-stream tests
+MTL OAM xml files have been updated to specify the OA format used to
+interpret the counter. The format supported for OAM is
+I915_OAM_FORMAT_MPEC8u32_B8_C8, hence add support in perf library for
+I915_OAM_FORMAT_MPEC8u32_B8_C8 format.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf.c | 142 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 138 insertions(+), 4 deletions(-)
+ lib/i915/perf.c             | 38 +++++++++++++++++++++++++++++++++++++
+ lib/i915/perf_data_reader.c | 14 +++++++++-----
+ 2 files changed, 47 insertions(+), 5 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 5340eff1..d3f80a19 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -2235,6 +2235,7 @@ test_blocking(uint64_t requested_oa_period,
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 24ef3819..d736490b 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -915,6 +915,34 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 		for (i = 0; i < 61; i++)
+ 			accumulate_uint32(start + 3 + i, end + 3 + i, deltas + 1 + i);
+ 		break;
++
++	case I915_OAM_FORMAT_MPEC8u32_B8_C8: {
++		const uint64_t *start64 = (const uint64_t *)(record0 + 1);
++		const uint64_t *end64 = (const uint64_t *)(record1 + 1);
++
++		/* 64 bit timestamp */
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[idx++] += (end64[1] - start64[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[idx++] += (end64[1] - start64[1]) >> (-perf->devinfo.oa_timestamp_shift);
++
++		/* 64 bit clock */
++		deltas[idx++] = end64[3] - start64[3];
++
++		/* 8x 32bit MPEC counters */
++		for (i = 0; i < 8; i++)
++			accumulate_uint32(start + 8 + i, end + 8 + i, deltas + idx++);
++
++		/* 8x 32bit B counters */
++		for (i = 0; i < 8; i++)
++			accumulate_uint32(start + 16 + i, end + 16 + i, deltas + idx++);
++
++		/* 8x 32bit C counters */
++		for (i = 0; i < 8; i++)
++			accumulate_uint32(start + 24 + i, end + 24 + i, deltas + idx++);
++
++		break;
++		}
+ 	default:
+ 		assert(0);
+ 	}
+@@ -926,6 +954,7 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
+ 					  const struct drm_i915_perf_record_header *record)
+ {
+        const uint32_t *report32 = (const uint32_t *)(record + 1);
++       const uint64_t *report64 = (const uint64_t *)(record + 1);
+        uint64_t ts;
  
- 	int max_iterations = (test_duration_ns / oa_period) + 2;
- 	int n_extra_iterations = 0;
-+	int perf_fd;
+        switch (metric_set->perf_oa_format) {
+@@ -935,6 +964,10 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
+                ts = report32[1];
+                break;
  
- 	/* It's a bit tricky to put a lower limit here, but we expect a
- 	 * relatively low latency for seeing reports, while we don't currently
-@@ -2268,7 +2269,7 @@ test_blocking(uint64_t requested_oa_period,
- 	param.num_properties = (idx - props) / 2;
- 	param.properties_ptr = to_user_pointer(props);
++       case I915_OAM_FORMAT_MPEC8u32_B8_C8:
++               ts = report64[1];
++               break;
++
+        default:
+                assert(0);
+        }
+@@ -952,6 +985,7 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
+ 					  const struct drm_i915_perf_record_header *record)
+ {
+        const uint32_t *report32 = (const uint32_t *)(record + 1);
++       const uint64_t *report64 = (const uint64_t *)(record + 1);
+        uint64_t ts;
  
--	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+	perf_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+        switch (metric_set->perf_oa_format) {
+@@ -961,6 +995,10 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
+                ts = report32[1];
+                break;
  
- 	times(&start_times);
++       case I915_OAM_FORMAT_MPEC8u32_B8_C8:
++               ts = report64[1];
++               break;
++
+        default:
+                assert(0);
+        }
+diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
+index 10e78e63..332f530e 100644
+--- a/lib/i915/perf_data_reader.c
++++ b/lib/i915/perf_data_reader.c
+@@ -58,11 +58,15 @@ oa_report_ctx_is_valid(const struct intel_perf_devinfo *devinfo,
+ }
  
-@@ -2300,14 +2301,14 @@ test_blocking(uint64_t requested_oa_period,
- 	 * the error delta.
- 	 */
- 	start = get_time();
--	do_ioctl(stream_fd, I915_PERF_IOCTL_ENABLE, 0);
-+	do_ioctl(perf_fd, I915_PERF_IOCTL_ENABLE, 0);
- 	for (/* nop */; ((end = get_time()) - start) < test_duration_ns; /* nop */) {
- 		struct drm_i915_perf_record_header *header;
- 		bool timer_report_read = false;
- 		bool non_timer_report_read = false;
- 		int ret;
- 
--		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
-+		while ((ret = read(perf_fd, buf, sizeof(buf))) < 0 &&
- 		       errno == EINTR)
- 			;
- 
-@@ -2375,7 +2376,7 @@ test_blocking(uint64_t requested_oa_period,
- 	if (!set_kernel_hrtimer)
- 		igt_assert(kernel_ns <= (test_duration_ns / 100ull));
- 
--	__perf_close(stream_fd);
-+	__perf_close(perf_fd);
+ static uint32_t
+-oa_report_ctx_id(const struct intel_perf_devinfo *devinfo, const uint8_t *report)
++oa_report_ctx_id(struct intel_perf_data_reader *reader, const uint8_t *report)
+ {
+-	if (!oa_report_ctx_is_valid(devinfo, report))
++	if (!oa_report_ctx_is_valid(&reader->devinfo, report))
+ 		return 0xffffffff;
+-	return ((const uint32_t *) report)[2];
++
++	if (reader->metric_set->perf_oa_format == I915_OAM_FORMAT_MPEC8u32_B8_C8)
++		return ((const uint32_t *) report)[4];
++	else
++		return ((const uint32_t *) report)[2];
  }
  
  static void
-@@ -5469,6 +5470,14 @@ static void put_engine_groups(struct perf_engine_group *groups,
- 	free(groups);
- }
+@@ -289,8 +293,8 @@ generate_cpu_events(struct intel_perf_data_reader *reader)
+ 		start_report = (const uint8_t *) (last_header + 1);
+ 		end_report = (const uint8_t *) (current_header + 1);
  
-+static struct i915_engine_class_instance *
-+random_engine(struct perf_engine_group *group)
-+{
-+	srandom(time(NULL));
-+
-+	return &group->ci[random() % group->num_engines];
-+}
-+
- static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
- {
- 	int fd;
-@@ -5491,6 +5500,111 @@ static void set_default_engine(const intel_ctx_t *ctx)
- 			default_e2 = *e;
- }
+-		last_ctx_id = oa_report_ctx_id(&reader->devinfo, start_report);
+-		current_ctx_id = oa_report_ctx_id(&reader->devinfo, end_report);
++		last_ctx_id = oa_report_ctx_id(reader, start_report);
++		current_ctx_id = oa_report_ctx_id(reader, end_report);
  
-+/*
-+ * Test if OA buffer streams can be independently opened on each group. Once a user
-+ * opens a stream, that group is exclusive to the user, other users get -EBUSY on
-+ * trying to open a stream.
-+ */
-+static void
-+test_group_exclusive_stream(const intel_ctx_t *ctx, bool exponent)
-+{
-+	uint64_t properties[] = {
-+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-+		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-+		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, 0,
-+		DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, 0,
-+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
-+	};
-+	struct drm_i915_perf_open_param param = {
-+		.flags = I915_PERF_FLAG_FD_CLOEXEC,
-+		/* for gem_context use case, we do no pass exponent */
-+		.num_properties = exponent ?
-+				  ARRAY_SIZE(properties) / 2 :
-+				  ARRAY_SIZE(properties) / 2 - 1,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	uint32_t i, j;
-+
-+	/* for each group, open one random perf stream with sample OA */
-+	for (i = 0; i < num_perf_oa_groups; i++) {
-+		struct perf_engine_group *grp = &perf_oa_groups[i];
-+		struct i915_engine_class_instance *ci = random_engine(grp);
-+
-+		if (!exponent) {
-+			properties[0] = DRM_I915_PERF_PROP_CTX_HANDLE;
-+			properties[1] = ctx->id;
-+		}
-+
-+		properties[7] = ci->engine_class;
-+		properties[9] = ci->engine_instance;
-+		grp->perf_fd = igt_ioctl(drm_fd,
-+					 DRM_IOCTL_I915_PERF_OPEN,
-+					 &param);
-+		igt_assert(grp->perf_fd >= 0);
-+		igt_debug("opened OA buffer with c:i %d:%d\n",
-+			  ci->engine_class, ci->engine_instance);
-+	}
-+
-+	/* for each group make sure no other streams can be opened */
-+	for (i = 0; i < num_perf_oa_groups; i++) {
-+		struct perf_engine_group *grp = &perf_oa_groups[i];
-+		int err;
-+
-+		for (j = 0; j < grp->num_engines; j++) {
-+			struct i915_engine_class_instance *ci = grp->ci + j;
-+
-+			/*
-+			 * case 1:
-+			 * concurrent access to OAG should fail
-+			 */
-+			properties[0] = DRM_I915_PERF_PROP_SAMPLE_OA;
-+			properties[1] = true;
-+			properties[7] = ci->engine_class;
-+			properties[9] = ci->engine_instance;
-+			/* for SAMPLE OA use case, we must pass exponent */
-+			param.num_properties = ARRAY_SIZE(properties) / 2;
-+			do_ioctl_err(drm_fd, DRM_IOCTL_I915_PERF_OPEN, &param,
-+				     EBUSY);
-+			igt_debug("try OA buffer with c:i %d:%d\n",
-+				  ci->engine_class, ci->engine_instance);
-+
-+			/*
-+			 * case 2:
-+			 * concurrent access to non-OAG unit should fail
-+			 */
-+			properties[0] = DRM_I915_PERF_PROP_CTX_HANDLE;
-+			properties[1] = gem_context_create(drm_fd);
-+			/* for gem_context use case, we do no pass exponent */
-+			param.num_properties = ARRAY_SIZE(properties) / 2 - 1;
-+			errno = 0;
-+			err = igt_ioctl(drm_fd, DRM_IOCTL_I915_PERF_OPEN, &param);
-+			igt_assert(err < 0);
-+			igt_assert(errno == EBUSY || errno == ENODEV);
-+			igt_debug("try OA ci unit with c:i %d:%d\n",
-+				  ci->engine_class, ci->engine_instance);
-+			gem_context_destroy(drm_fd, properties[1]);
-+		}
-+
-+		if (grp->perf_fd >= 0)
-+			close(grp->perf_fd);
-+	}
-+}
-+
-+static void
-+test_group_concurrent_oa_buffer_read(void)
-+{
-+	igt_fork(child, num_perf_oa_groups) {
-+		struct intel_execution_engine2 e;
-+
-+		e.class = perf_oa_groups[child].ci->engine_class;
-+		e.instance = perf_oa_groups[child].ci->engine_instance;
-+
-+		test_blocking(40 * 1000 * 1000, false, 5 * 1000 * 1000, &e);
-+	}
-+	igt_waitchildren();
-+}
-+
- igt_main
- {
- 	const intel_ctx_t *ctx;
-@@ -5716,6 +5830,26 @@ igt_main
- 		igt_describe("Verify invalid class instance");
- 		igt_subtest("gen12-invalid-class-instance")
- 			test_invalid_class_instance();
-+
-+		/*
-+		 * OAR and OAG use cases can be separately opened only on gen12
-+		 * and later, so group-exclusive-stream tests require >= 12.
-+		 */
-+		igt_describe("Verify exclusivity of perf streams with sample oa option");
-+		igt_subtest("gen12-group-exclusive-stream-sample-oa") {
-+			igt_require(intel_gen(devid) >= 12);
-+			test_group_exclusive_stream(ctx, true);
-+		}
-+
-+		igt_describe("Verify exclusivity of perf streams with ctx handle");
-+		igt_subtest("gen12-group-exclusive-stream-ctx-handle") {
-+			igt_require(intel_gen(devid) >= 12);
-+			test_group_exclusive_stream(ctx, false);
-+		}
-+
-+		igt_describe("Verify concurrent reads from OA buffers in different groups");
-+		igt_subtest("gen12-group-concurrent-oa-buffer-read")
-+			test_group_concurrent_oa_buffer_read();
- 	}
- 
- 	igt_subtest("rc6-disable")
+ 		gpu_ts_start = intel_perf_read_record_timestamp(reader->perf,
+ 								reader->metric_set,
 -- 
 2.36.1
