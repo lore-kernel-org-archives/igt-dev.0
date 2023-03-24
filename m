@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0CD0B10F16B
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 09:13:24 +0000 (UTC)
-Date: Fri, 31 Mar 2023 11:13:19 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230331091319.wl3hbua5uekrmg6c@kamilkon-desk1>
-References: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
- <20230330054221.2640814-13-mauro.chehab@linux.intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12D9D10E520
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 08:11:58 +0000 (UTC)
+From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+Date: Fri, 24 Mar 2023 09:11:19 +0100
+Message-Id: <20230324081120.3355-5-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20230324081120.3355-1-dominik.karol.piatkowski@intel.com>
+References: <20230324081120.3355-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230330054221.2640814-13-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 12/12] runner/meson.build: fix
- minimal build
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 4/5] tests: DRM selftests: switch to KUnit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,63 +21,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Isabella Basso <isabbasso@riseup.net>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+From: Isabella Basso <isabbasso@riseup.net>
 
-On 2023-03-30 at 07:42:21 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Minimal pipeline s now failing:
------------------- ^
-s/s/is/
+As the DRM selftests are now using KUnit [1], update IGT tests as well.
 
-> 	https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/38824636
-> 
-> This doesn't seem to be related to the patches at the series from
-> where the issue was reported, but addressing it is simple enough:
-> just remove the error and change the logic to properly validate
-> the possible options.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  runner/meson.build | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/runner/meson.build b/runner/meson.build
-> index dadfc75f0ca7..c62303ce35c5 100644
-> --- a/runner/meson.build
-> +++ b/runner/meson.build
-> @@ -24,11 +24,7 @@ if liboping.found()
->  	runner_c_args += '-DHAVE_OPING=1'
->  endif
->  
-> -if not build_tests and jsonc.found()
-> -	error('Building test runner requires building tests')
-> -endif
+[1] - https://lore.kernel.org/all/20220708203052.236290-1-maira.canal@usp.br/
 
-imho:
-if jsonc.found() and not build_tests 
+Signed-off-by: Isabella Basso <isabbasso@riseup.net>
 
-is more clear what we need here.
-Btw this is error from that build link:
+v1 -> v2:
+- drm_buddy|drm_mm: fallback to igt_kselftests if igt_kunit failed
+  with code other than IGT_EXIT_ABORT
+- kms_selftest: move igt_kunit tests to separate subtests
+- kms_selftest: fallback to igt_kselftests if all subtests failed
 
-docs/testplan/meson.build:24:1: ERROR:  Invalid use of addition: can only concatenate list (not "str") to list
+v2 -> v3:
+- expose all subtests
 
-I do not see how runner/meson.build is related to docs/testplan/meson.build ?
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+---
+ tests/drm_buddy.c    | 4 +++-
+ tests/drm_mm.c       | 4 +++-
+ tests/kms_selftest.c | 8 ++++++++
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
-+cc Petri
+diff --git a/tests/drm_buddy.c b/tests/drm_buddy.c
+index 06876e0c..3261f0d6 100644
+--- a/tests/drm_buddy.c
++++ b/tests/drm_buddy.c
+@@ -10,5 +10,7 @@ IGT_TEST_DESCRIPTION("Basic sanity check of DRM's buddy allocator (struct drm_bu
+ 
+ igt_main
+ {
+-	igt_kselftests("test-drm_buddy", NULL, NULL, NULL);
++	int ret = igt_kunit("drm_buddy_test", NULL);
++	if (ret != 0 && ret != IGT_EXIT_ABORT)
++		igt_kselftests("test-drm_buddy", NULL, NULL, NULL);
+ }
+diff --git a/tests/drm_mm.c b/tests/drm_mm.c
+index 2052b115..46d0142f 100644
+--- a/tests/drm_mm.c
++++ b/tests/drm_mm.c
+@@ -28,5 +28,7 @@ IGT_TEST_DESCRIPTION("Basic sanity check of DRM's range manager (struct drm_mm)"
+ 
+ igt_main
+ {
+-	igt_kselftests("test-drm_mm", NULL, NULL, NULL);
++	int ret = igt_kunit("drm_mm_test", NULL);
++	if (ret != 0 && ret != IGT_EXIT_ABORT)
++		igt_kselftests("test-drm_mm", NULL, NULL, NULL);
+ }
+diff --git a/tests/kms_selftest.c b/tests/kms_selftest.c
+index abc4bfe9..b27f60fb 100644
+--- a/tests/kms_selftest.c
++++ b/tests/kms_selftest.c
+@@ -28,5 +28,13 @@ IGT_TEST_DESCRIPTION("Basic sanity check of KMS selftests.");
+ 
+ igt_main
+ {
++	static const char *kunit_subtests[] = { "drm_cmdline_parser_test", "drm_damage_helper_test",
++						"drm_dp_mst_helper_test", "drm_format_helper_test",
++						"drm_format_test", "drm_framebuffer_test",
++						"drm_plane_helper_test", NULL };
++
++	for (int i = 0; kunit_subtests[i] != NULL; i++)
++		igt_kunit(kunit_subtests[i], NULL);
++
+ 	igt_kselftests("test-drm_modeset", NULL, NULL, NULL);
+ }
+-- 
+2.34.1
 
-Regards,
-Kamil
-
-> -
-> -if jsonc.found()
-> +if jsonc.found() and build_tests
->  	subdir('testdata')
->  
->  	runnerlib = static_library('igt_runner', runnerlib_sources,
-> -- 
-> 2.39.2
-> 
 
