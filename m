@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78A9E10E4B5
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 05:24:13 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Date: Fri, 24 Mar 2023 10:50:19 +0530
-Message-Id: <20230324052019.3131946-1-bhanuprakash.modem@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1218C10E4B5
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 06:00:10 +0000 (UTC)
+Date: Fri, 24 Mar 2023 07:00:06 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Message-ID: <20230324070006.1dd0e60c@maurocar-mobl2>
+In-Reply-To: <20230324050237.2510-1-niranjana.vishwanathapura@intel.com>
+References: <20230324050237.2510-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4] lib/kms: Get pipe enum from debugfs
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_debugfs: Get gt subtest
+ passing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,154 +20,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The pipe may not be the same as crtc index if pipes are fused off.
-For testing purposes, IGT needs to know the pipe. There's already
-a I915_GET_PIPE_FROM_CRTC_ID IOCTL for this. However, the upcoming
-Xe driver won't have that IOCTL.
+On Thu, 23 Mar 2023 22:02:37 -0700
+Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com> wrote:
 
-Add IGT support to read the pipe from debugfs. For i915, still
-fallback to ioctl method to support older kernels.
+> Get gt subtest passing by properly getting and using
+> xe device config info.
+> 
+> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 
-V2: - Fix kmstest_get_pipe_from_crtc_id() (Bhanu)
-V3: - Read pipe as a letter instead of number (Jani)
-V4: - Fallback to ioctl method if debugfs is not found (Kamil)
+LGTM.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
----
- lib/igt_kms.c | 81 ++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 57 insertions(+), 24 deletions(-)
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index c12823d31..50655f136 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1067,6 +1067,54 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
- 		 aspect ? aspect : "", aspect ? ")" : "");
- }
- 
-+/*
-+ * With non-contiguous pipes display, crtc mapping is not always same
-+ * as pipe mapping, In i915 pipe is enum id of i915's crtc object.
-+ * hence allocating upper bound igt_pipe array to support non-contiguos
-+ * pipe display and reading pipe enum for a crtc using GET_PIPE_FROM_CRTC_ID
-+ * ioctl for a pipe to do pipe ordering with respect to crtc list.
-+ */
-+static int __intel_get_pipe_from_crtc_id(int fd, int crtc_id, int crtc_idx)
-+{
-+	char buf[2];
-+	int debugfs_fd, res = 0;
-+
-+	/*
-+	 * No GET_PIPE_FROM_CRTC_ID ioctl support for XE. Instead read
-+	 * from the debugfs "i915_pipe".
-+	 *
-+	 * This debugfs is applicable for both i915 & XE. For i915, still
-+	 * we can fallback to ioctl method to support older kernels.
-+	 */
-+	debugfs_fd = igt_debugfs_pipe_dir(fd, crtc_idx, O_RDONLY);
-+
-+	if (debugfs_fd >= 0) {
-+		res = igt_debugfs_simple_read(debugfs_fd, "i915_pipe", buf, sizeof(buf));
-+		close(debugfs_fd);
-+	}
-+
-+	if (res <= 0) {
-+		/* Fallback to older ioctl method. */
-+		if (is_i915_device(fd)) {
-+			struct drm_i915_get_pipe_from_crtc_id get_pipe;
-+
-+			get_pipe.pipe = 0;
-+			get_pipe.crtc_id =  crtc_id;
-+
-+			do_ioctl(fd, DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID,
-+				 &get_pipe);
-+
-+			return get_pipe.pipe;
-+		} else
-+			igt_assert_f(false, "XE: Failed to read the debugfs i915_pipe.\n");
-+	} else {
-+		char pipe;
-+
-+		igt_assert_eq(sscanf(buf, "%c", &pipe), 1);
-+		return kmstest_pipe_to_index(pipe);
-+	}
-+}
-+
- /**
-  * kmstest_get_pipe_from_crtc_id:
-  * @fd: DRM fd
-@@ -1100,7 +1148,8 @@ int kmstest_get_pipe_from_crtc_id(int fd, int crtc_id)
- 
- 	drmModeFreeResources(res);
- 
--	return i;
-+	return is_intel_device(fd) ?
-+		__intel_get_pipe_from_crtc_id(fd, crtc_id, i) : i;
- }
- 
- /**
-@@ -2558,14 +2607,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	drmModeRes *resources;
- 	drmModePlaneRes *plane_resources;
- 	int i;
--	bool is_i915_dev;
-+	bool is_intel_dev;
- 
- 	memset(display, 0, sizeof(igt_display_t));
- 
- 	LOG_INDENT(display, "init");
- 
- 	display->drm_fd = drm_fd;
--	is_i915_dev = is_i915_device(drm_fd);
-+	is_intel_dev = is_intel_device(drm_fd);
- 
- 	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
- 
-@@ -2593,34 +2642,18 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	if (is_xe_device(drm_fd))
- 		xe_device_get(drm_fd);
- 
--	/*
--	 * With non-contiguous pipes display, crtc mapping is not always same
--	 * as pipe mapping, In i915 pipe is enum id of i915's crtc object.
--	 * hence allocating upper bound igt_pipe array to support non-contiguos
--	 * pipe display and reading pipe enum for a crtc using GET_PIPE_FROM_CRTC_ID ioctl
--	 * for a pipe to do pipe ordering with respect to crtc list.
--	 */
- 	display->n_pipes = IGT_MAX_PIPES;
- 	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
- 	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
- 
- 	for (i = 0; i < resources->count_crtcs; i++) {
- 		igt_pipe_t *pipe;
-+		int pipe_enum = (is_intel_dev)?
-+			__intel_get_pipe_from_crtc_id(drm_fd,
-+						      resources->crtcs[i], i) : i;
- 
--		if (is_i915_dev) {
--			struct drm_i915_get_pipe_from_crtc_id get_pipe;
--
--			get_pipe.pipe = 0;
--			get_pipe.crtc_id =  resources->crtcs[i];
--			do_ioctl(display->drm_fd,
--					DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID, &get_pipe);
--			pipe = &display->pipes[get_pipe.pipe];
--			pipe->pipe = get_pipe.pipe;
--		}
--		else {
--			pipe = &display->pipes[i];
--			pipe->pipe = i;
--		}
-+		pipe = &display->pipes[pipe_enum];
-+		pipe->pipe = pipe_enum;
- 
- 		/* pipe is enabled/disabled */
- 		pipe->enabled = true;
--- 
-2.40.0
+> ---
+>  tests/xe/xe_debugfs.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
+> index ad6191fbc..6bdd3ef06 100644
+> --- a/tests/xe/xe_debugfs.c
+> +++ b/tests/xe/xe_debugfs.c
+> @@ -71,7 +71,7 @@ static int validate_entries(int fd, const char *add_path, const char * const str
+>   * Description: Check if various debugfs devnodes exist and test reading them.
+>   */
+>  static void
+> -test_base(int fd)
+> +test_base(int fd, struct drm_xe_query_config *config)
+>  {
+>  	static const char * const expected_files[] = {
+>  		"gt0",
+> @@ -88,8 +88,6 @@ test_base(int fd)
+>  
+>  	char reference[4096];
+>  	int val = 0;
+> -	struct xe_device *xe_dev = xe_device_get(fd);
+> -	struct drm_xe_query_config *config = xe_dev->config;
+>  
+>  	igt_assert(config);
+>  	sprintf(reference, "devid 0x%llx",
+> @@ -145,8 +143,6 @@ test_base(int fd)
+>  	igt_debugfs_dump(fd, "gem_names");
+>  
+>  	validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
+> -
+> -	xe_device_put(fd);
+>  }
+>  
+>  /**
+> @@ -244,17 +240,19 @@ static int opt_handler(int option, int option_index, void *input)
+>  
+>  igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  {
+> +	struct xe_device *xe_dev;
+>  	char devnode[PATH_MAX];
+>  	int fd;
+>  	int gt;
+>  
+>  	igt_fixture {
+>  		fd = drm_open_driver(DRIVER_XE);
+> +		xe_dev = xe_device_get(fd);
+>  		__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
+>  	}
+>  
+>  	igt_subtest("base") {
+> -		test_base(fd);
+> +		test_base(fd, xe_dev->config);
+>  	}
+>  
+>  
+> @@ -271,6 +269,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  	}
+>  
+>  	igt_fixture {
+> +		xe_device_put(fd);
+>  		close(fd);
+>  	}
+>  }
