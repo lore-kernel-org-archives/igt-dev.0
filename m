@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CDDF10E021
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 13:32:51 +0000 (UTC)
+Date: Fri, 24 Mar 2023 14:32:47 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230324133247.knjkfmj4ejh7myl3@kamilkon-desk1>
+References: <20230322082826.1770429-1-mauro.chehab@linux.intel.com>
+ <20230322082826.1770429-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 27 Mar 2023 15:58:36 -0000
-Message-ID: <167993271679.32631.16296315106434713377@emeril.freedesktop.org>
-References: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
- =?utf-8?q?mprove_igt=5Fdoc=2Epy?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230322082826.1770429-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 2/8] testplan: build also a PDF file
+ with the testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,47 +20,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 2023-03-22 at 09:28:20 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> PDF files are easier to share, and it costs almost nothing to
+> produce them with Sphinx, via rst2pdf. Added support for it
+> if rst2pdf is installed.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Series: Improve igt_doc.py
-URL   : https://patchwork.freedesktop.org/series/115667/
-State : warning
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/840355 for the overview.
-
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/38824636):
-  Program rst2man-3 found: NO
-  Program rst2man found: NO
-  Program rst2man.sh found: YES (/builds/gfx-ci/igt-ci-tags/man/rst2man.sh)
-  Program igt_doc.py found: YES (/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py)
-  Program gen_rst_index found: YES (/builds/gfx-ci/igt-ci-tags/scripts/gen_rst_index)
-  Dependency gtk-doc found: NO (tried pkgconfig and cmake)
-  Program sphinx-build found: NO
-  Program rst2html-3 found: NO
-  Program rst2html found: NO
-  Program rst2pdf found: NO
-  
-  docs/testplan/meson.build:24:1: ERROR:  Invalid use of addition: can only concatenate list (not "str") to list
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1679932066:step_script
-  section_start:1679932066:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1679932068:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/840355
+> ---
+>  docs/testplan/meson.build | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+> index 11c08573307e..50063aa2e84f 100644
+> --- a/docs/testplan/meson.build
+> +++ b/docs/testplan/meson.build
+> @@ -5,6 +5,7 @@ build_sphinx = get_option('sphinx')
+>  
+>  rst2html = find_program('rst2html-3', 'rst2html', required : build_testplan)
+>  sphinx = find_program('sphinx-build', required: build_sphinx)
+> +rst2pdf = find_program('rst2pdf', required: false)
+>  
+>  stylesheet = meson.current_source_dir() + '/testplan.css'
+>  
+> @@ -52,8 +53,23 @@ if sphinx.found()
+>                      output : 'index.html'
+>                      )
+>      endif
+> +
+> +    if rst2pdf.found()
+> +        sphinx_out_pdf = meson.current_build_dir() + '/pdf'
+> +
+> +        custom_target('xe_tests.pdf',
+> +                      build_by_default : true,
+> +                      command : [ 'sphinx-build', '-c', meson.current_source_dir(),
+> +                      '-b', 'pdf',
+> +                      '-D', 'version=' + meson.project_version(),
+> +                      meson.current_build_dir(), sphinx_out_pdf],
+> +                      input : index_rst,
+> +                      output : 'xe_tests.pdf'
+> +                      )
+> +    endif
+>  endif
+>  
+>  build_info += 'Build ReST test documentation: @0@'.format(igt_doc_script.found())
+>  build_info += 'Build simple html testplan documentation: @0@'.format(rst2html.found())
+>  build_info += 'Build indexed html testplan documentation: @0@'.format(sphinx.found())
+> +build_info += 'Build pdf testplan documentation: @0@'.format(sphinx.found() and rst2pdf.found())
+> -- 
+> 2.39.2
+> 
 
