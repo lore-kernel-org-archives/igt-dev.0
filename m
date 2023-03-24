@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFE1810E126
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 13:36:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 66D2E10E126
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 13:37:29 +0000 (UTC)
 From: Vikas Srivastava <vikas.srivastava@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	karolina.stolarek@intel.com
-Date: Fri, 24 Mar 2023 19:03:43 +0530
-Message-Id: <20230324133346.2284000-2-vikas.srivastava@intel.com>
+Date: Fri, 24 Mar 2023 19:03:46 +0530
+Message-Id: <20230324133346.2284000-5-vikas.srivastava@intel.com>
 In-Reply-To: <20230324133346.2284000-1-vikas.srivastava@intel.com>
 References: <20230324133346.2284000-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/4] lib/intel_batchbuffer: Enable
- XY_FAST_COPY_BLT support for api_intel_bb
+Subject: [igt-dev] [PATCH i-g-t 4/4] tests/i915/gem_linear_blits: Enable
+ XY_FAST_COPY_BLT copy instruction
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,106 +24,109 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test case uses legacy command XY_SRC_COPY_BLT_CMD which is
-not supported on newer platforms. Modified test to use
-XY_FAST_COPY_BLT.
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
 
+Test case uses legacy command XY_SRC_COPY_BLT_CMD which is
+not supported on newer platforms. Modified test to
+use XY_FAST_COPY_BLT.
+
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Co-developed-by: Vikas Srivastava <vikas.srivastava@intel.com>
 Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
 ---
- lib/intel_batchbuffer.c | 63 +++++++++++++++++++++++++++--------------
- 1 file changed, 42 insertions(+), 21 deletions(-)
+ tests/i915/gem_linear_blits.c | 66 +++++++++++++++++++++++------------
+ 1 file changed, 43 insertions(+), 23 deletions(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index da4c238cae..b1eff42fcb 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -2407,11 +2407,17 @@ uint32_t intel_bb_copy_data(struct intel_bb *ibb,
-  */
- void intel_bb_blit_start(struct intel_bb *ibb, uint32_t flags)
- {
--	intel_bb_out(ibb, XY_SRC_COPY_BLT_CMD |
--		     XY_SRC_COPY_BLT_WRITE_ALPHA |
--		     XY_SRC_COPY_BLT_WRITE_RGB |
--		     flags |
--		     (6 + 2 * (ibb->gen >= 8)));
-+	if (blt_has_fast_copy(ibb->i915))
-+		intel_bb_out(ibb, XY_FAST_COPY_BLT | flags);
-+	else if (blt_has_xy_src_copy(ibb->i915))
+diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
+index fac25095f5..6fa6cd4976 100644
+--- a/tests/i915/gem_linear_blits.c
++++ b/tests/i915/gem_linear_blits.c
+@@ -48,6 +48,7 @@
+ #include "i915/gem_create.h"
+ #include "igt.h"
+ #include "igt_types.h"
++#include "i915/i915_blt.h"
+ 
+ IGT_TEST_DESCRIPTION("Test doing many blits with a working set larger than the"
+ 		     " aperture size.");
+@@ -67,6 +68,7 @@ static void copy(int fd, uint64_t ahnd, uint32_t dst, uint32_t src,
+ 	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_exec_object2 obj[3];
+ 	struct drm_i915_gem_execbuffer2 exec;
++	static uint32_t devid;
+ 	int i = 0;
+ 
+ 	memset(obj, 0, sizeof(obj));
+@@ -83,29 +85,47 @@ static void copy(int fd, uint64_t ahnd, uint32_t dst, uint32_t src,
+ 	obj[2].offset = CANONICAL(obj[2].offset);
+ 	obj[2].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 
+-	batch[i++] = XY_SRC_COPY_BLT_CMD |
+-		  XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		  XY_SRC_COPY_BLT_WRITE_RGB;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i - 1] |= 8;
+-	else
+-		batch[i - 1] |= 6;
+-
+-	batch[i++] = (3 << 24) | /* 32 bits */
+-		  (0xcc << 16) | /* copy ROP */
+-		  WIDTH*4;
+-	batch[i++] = 0; /* dst x1,y1 */
+-	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+-	batch[i++] = obj[0].offset;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = obj[0].offset >> 32;
+-	batch[i++] = 0; /* src x1,y1 */
+-	batch[i++] = WIDTH*4;
+-	batch[i++] = obj[1].offset;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = obj[1].offset >> 32;
+-	batch[i++] = MI_BATCH_BUFFER_END;
+-	batch[i++] = MI_NOOP;
++	devid = intel_get_drm_devid(fd);
 +
-+		intel_bb_out(ibb, XY_SRC_COPY_BLT_CMD |
-+			     XY_SRC_COPY_BLT_WRITE_ALPHA |
-+			     XY_SRC_COPY_BLT_WRITE_RGB |
-+			     flags |
-+			     (6 + 2 * (ibb->gen >= 8)));
-+	else
-+		igt_assert_f(0, "No supported blit command found\n");
- }
- 
- /*
-@@ -2449,12 +2455,22 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
- 
- 	if (gen >= 4 && src->tiling != I915_TILING_NONE) {
- 		src_pitch /= 4;
--		cmd_bits |= XY_SRC_COPY_BLT_SRC_TILED;
-+		if (blt_has_fast_copy(ibb->i915))
-+			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
-+		else if (blt_has_xy_src_copy(ibb->i915))
-+			cmd_bits |= XY_SRC_COPY_BLT_SRC_TILED;
++	if (blt_has_fast_copy(fd)) {
++		batch[i++] = XY_FAST_COPY_BLT;
++		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH * 4;
++		batch[i++] = 0; /* dst x1,y1 */
++		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
++		batch[i++] = obj[0].offset; /* dst address lower bits */
++		batch[i++] = obj[0].offset >> 32; /* dst address upper bits */
++		batch[i++] = 0; /* src x1,y1 */
++		batch[i++] = WIDTH * 4; /* src pitch */
++		batch[i++] = obj[1].offset; /* src address lower bits */
++		batch[i++] = obj[1].offset >> 32; /* src address upper bits */
++		batch[i++] = MI_BATCH_BUFFER_END;
++		batch[i++] = MI_NOOP;
++	} else if (blt_has_xy_src_copy(fd)) {
++		batch[i++] = XY_SRC_COPY_BLT_CMD |
++			  XY_SRC_COPY_BLT_WRITE_ALPHA |
++			  XY_SRC_COPY_BLT_WRITE_RGB;
++		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++			batch[i - 1] |= 8;
 +		else
-+			igt_assert_f(0, "No supported blit command found\n");
- 	}
- 
- 	if (gen >= 4 && dst->tiling != I915_TILING_NONE) {
- 		dst_pitch /= 4;
--		cmd_bits |= XY_SRC_COPY_BLT_DST_TILED;
-+		if (blt_has_fast_copy(ibb->i915))
-+			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
-+		else if (blt_has_xy_src_copy(ibb->i915))
-+			cmd_bits |= XY_SRC_COPY_BLT_DST_TILED;
-+		else
-+			igt_assert_f(0, "No supported blit command found\n");
- 	}
- 
- 	CHECK_RANGE(src_x1); CHECK_RANGE(src_y1);
-@@ -2465,20 +2481,25 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
- 	CHECK_RANGE(src_pitch); CHECK_RANGE(dst_pitch);
- 
- 	br13_bits = 0;
--	switch (bpp) {
--	case 8:
--		break;
--	case 16:		/* supporting only RGB565, not ARGB1555 */
--		br13_bits |= 1 << 24;
--		break;
--	case 32:
--		br13_bits |= 3 << 24;
--		cmd_bits |= (XY_SRC_COPY_BLT_WRITE_ALPHA |
--			     XY_SRC_COPY_BLT_WRITE_RGB);
--		break;
--	default:
--		igt_fail(IGT_EXIT_FAILURE);
--	}
-+	if (blt_has_xy_src_copy(ibb->i915)) {
-+		switch (bpp) {
-+		case 8:
-+			break;
-+		case 16:		/* supporting only RGB565, not ARGB1555 */
-+			br13_bits |= 1 << 24;
-+			break;
-+		case 32:
-+			br13_bits |= 3 << 24;
-+			cmd_bits |= (XY_SRC_COPY_BLT_WRITE_ALPHA |
-+				     XY_SRC_COPY_BLT_WRITE_RGB);
-+			break;
-+		default:
-+			igt_fail(IGT_EXIT_FAILURE);
-+		}
-+	} else if (blt_has_fast_copy(ibb->i915)) {
-+		br13_bits = fast_copy_dword1(ibb->i915, src->tiling, dst->tiling, bpp);
++			batch[i - 1] |= 6;
++
++		batch[i++] = (3 << 24) | /* 32 bits */
++			  (0xcc << 16) | /* copy ROP */
++			  WIDTH * 4;
++		batch[i++] = 0; /* dst x1,y1 */
++		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
++		batch[i++] = obj[0].offset;
++		if (intel_gen(devid) >= 8)
++			batch[i++] = obj[0].offset >> 32;
++		batch[i++] = 0; /* src x1,y1 */
++		batch[i++] = WIDTH * 4;
++		batch[i++] = obj[1].offset;
++		if (intel_gen(devid) >= 8)
++			batch[i++] = obj[1].offset >> 32;
++		batch[i++] = MI_BATCH_BUFFER_END;
++		batch[i++] = MI_NOOP;
 +	} else
 +		igt_assert_f(0, "No supported blit command found\n");
  
- 	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
- 		intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
+ 	gem_write(fd, obj[2].handle, 0, batch, i * sizeof(batch[0]));
+ 
 -- 
 2.25.1
