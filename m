@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAC9110EB7D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 08:11:38 +0000 (UTC)
-From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 24 Mar 2023 09:11:16 +0100
-Message-Id: <20230324081120.3355-2-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20230324081120.3355-1-dominik.karol.piatkowski@intel.com>
-References: <20230324081120.3355-1-dominik.karol.piatkowski@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/5] lib/igt_kmod: rename kselftest
- functions to ktest
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dominik Karol Piatkowski" <dominik.karol.piatkowski@intel.com>
+Date: Fri, 24 Mar 2023 08:30:29 -0000
+Message-ID: <167964662972.30854.1869537328443720431@emeril.freedesktop.org>
+References: <20230324081120.3355-1-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20230324081120.3355-1-dominik.karol.piatkowski@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
+ =?utf-8?q?ntroduce_KUnit_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,143 +17,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Isabella Basso <isabbasso@riseup.net>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Isabella Basso <isabbasso@riseup.net>
+== Series Details ==
 
-This aims at making IGT's structure more general to different kernel
-testing frameworks such as KUnit, as they use a lot of the same
-functionality.
+Series: Introduce KUnit (rev3)
+URL   : https://patchwork.freedesktop.org/series/114612/
+State : warning
 
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Isabella Basso <isabbasso@riseup.net>
+== Summary ==
 
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
----
- lib/igt_kmod.c | 22 +++++++++++-----------
- lib/igt_kmod.h | 12 ++++++------
- 2 files changed, 17 insertions(+), 17 deletions(-)
+Pipeline status: FAILED.
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index ccf0063c..93fa2006 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -749,8 +749,8 @@ static int open_parameters(const char *module_name)
- 	return open(path, O_RDONLY);
- }
- 
--int igt_kselftest_init(struct igt_kselftest *tst,
--		       const char *module_name)
-+int igt_ktest_init(struct igt_ktest *tst,
-+		   const char *module_name)
- {
- 	int err;
- 
-@@ -769,7 +769,7 @@ int igt_kselftest_init(struct igt_kselftest *tst,
- 	return 0;
- }
- 
--int igt_kselftest_begin(struct igt_kselftest *tst)
-+int igt_ktest_begin(struct igt_ktest *tst)
- {
- 	int err;
- 
-@@ -784,7 +784,7 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
- 	return 0;
- }
- 
--int igt_kselftest_execute(struct igt_kselftest *tst,
-+int igt_kselftest_execute(struct igt_ktest *tst,
- 			  struct igt_kselftest_list *tl,
- 			  const char *options,
- 			  const char *result)
-@@ -822,13 +822,13 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
- 	return err;
- }
- 
--void igt_kselftest_end(struct igt_kselftest *tst)
-+void igt_ktest_end(struct igt_ktest *tst)
- {
- 	kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
- 	close(tst->kmsg);
- }
- 
--void igt_kselftest_fini(struct igt_kselftest *tst)
-+void igt_ktest_fini(struct igt_ktest *tst)
- {
- 	free(tst->module_name);
- 	kmod_module_unref(tst->kmod);
-@@ -851,15 +851,15 @@ void igt_kselftests(const char *module_name,
- 		    const char *result,
- 		    const char *filter)
- {
--	struct igt_kselftest tst;
-+	struct igt_ktest tst;
- 	IGT_LIST_HEAD(tests);
- 	struct igt_kselftest_list *tl, *tn;
- 
--	if (igt_kselftest_init(&tst, module_name) != 0)
-+	if (igt_ktest_init(&tst, module_name) != 0)
- 		return;
- 
- 	igt_fixture
--		igt_require(igt_kselftest_begin(&tst) == 0);
-+		igt_require(igt_ktest_begin(&tst) == 0);
- 
- 	igt_kselftest_get_tests(tst.kmod, filter, &tests);
- 	igt_subtest_with_dynamic(filter ?: "all-tests") {
-@@ -878,9 +878,9 @@ void igt_kselftests(const char *module_name,
- 	}
- 
- 	igt_fixture {
--		igt_kselftest_end(&tst);
-+		igt_ktest_end(&tst);
- 		igt_require(!igt_list_empty(&tests));
- 	}
- 
--	igt_kselftest_fini(&tst);
-+	igt_ktest_fini(&tst);
- }
-diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index d05af4a6..ff59f1ec 100644
---- a/lib/igt_kmod.h
-+++ b/lib/igt_kmod.h
-@@ -76,7 +76,7 @@ void igt_kselftests(const char *module_name,
- 		    const char *result_option,
- 		    const char *filter);
- 
--struct igt_kselftest {
-+struct igt_ktest {
- 	struct kmod_module *kmod;
- 	char *module_name;
- 	int kmsg;
-@@ -89,19 +89,19 @@ struct igt_kselftest_list {
- 	char param[];
- };
- 
--int igt_kselftest_init(struct igt_kselftest *tst,
-+int igt_ktest_init(struct igt_ktest *tst,
- 		       const char *module_name);
--int igt_kselftest_begin(struct igt_kselftest *tst);
-+int igt_ktest_begin(struct igt_ktest *tst);
- 
- void igt_kselftest_get_tests(struct kmod_module *kmod,
- 			     const char *filter,
- 			     struct igt_list_head *tests);
--int igt_kselftest_execute(struct igt_kselftest *tst,
-+int igt_kselftest_execute(struct igt_ktest *tst,
- 			  struct igt_kselftest_list *tl,
- 			  const char *module_options,
- 			  const char *result);
- 
--void igt_kselftest_end(struct igt_kselftest *tst);
--void igt_kselftest_fini(struct igt_kselftest *tst);
-+void igt_ktest_end(struct igt_ktest *tst);
-+void igt_ktest_fini(struct igt_ktest *tst);
- 
- #endif /* IGT_KMOD_H */
--- 
-2.34.1
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/837634 for the overview.
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/38666969):
+  369/373 assembler test/rnde-intsrc              OK       0.01 s 
+  370/373 assembler test/rndz                     OK       0.01 s 
+  371/373 assembler test/lzd                      OK       0.01 s 
+  372/373 assembler test/not                      OK       0.01 s 
+  373/373 assembler test/immediate                OK       0.01 s 
+  
+  Ok:                  366
+  Expected Fail:         4
+  Fail:                  3
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1679646619:step_script
+  section_start:1679646619:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1679646620:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/38666970):
+  369/373 assembler test/rnde-intsrc              OK       0.01 s 
+  370/373 assembler test/rndz                     OK       0.01 s 
+  371/373 assembler test/lzd                      OK       0.01 s 
+  372/373 assembler test/not                      OK       0.01 s 
+  373/373 assembler test/immediate                OK       0.01 s 
+  
+  Ok:                  366
+  Expected Fail:         4
+  Fail:                  3
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1679646619:step_script
+  section_start:1679646619:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1679646619:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/837634
