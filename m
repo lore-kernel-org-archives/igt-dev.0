@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73CD410E4B5
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 05:03:00 +0000 (UTC)
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Mar 2023 22:02:53 -0700
-Message-Id: <20230324050253.2560-1-niranjana.vishwanathapura@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78A9E10E4B5
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 05:24:13 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	kamil.konieczny@linux.intel.com
+Date: Fri, 24 Mar 2023 10:50:19 +0530
+Message-Id: <20230324052019.3131946-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/xe/xe_query: Extern xe_supports_faults()
+Subject: [igt-dev] [i-g-t V4] lib/kms: Get pipe enum from debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,118 +17,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Jani Nikula <jani.nikula@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Do not check for supports_faults in xe_device_get() as
-it creates a VM in fault mode which prohibits creation
-of any other VM in non-fault mode until this fault mode
-VM is closed. This leads to test failures in multi threaded
-cases.
+The pipe may not be the same as crtc index if pipes are fused off.
+For testing purposes, IGT needs to know the pipe. There's already
+a I915_GET_PIPE_FROM_CRTC_ID IOCTL for this. However, the upcoming
+Xe driver won't have that IOCTL.
 
-Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Add IGT support to read the pipe from debugfs. For i915, still
+fallback to ioctl method to support older kernels.
+
+V2: - Fix kmstest_get_pipe_from_crtc_id() (Bhanu)
+V3: - Read pipe as a letter instead of number (Jani)
+V4: - Fallback to ioctl method if debugfs is not found (Kamil)
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/xe/xe_query.c | 51 ++++++++++++++++++++++-------------------------
- lib/xe/xe_query.h |  3 ---
- 2 files changed, 24 insertions(+), 30 deletions(-)
+ lib/igt_kms.c | 81 ++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 57 insertions(+), 24 deletions(-)
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 183523280..dc91d59bc 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -160,23 +160,6 @@ static uint32_t __mem_default_alignment(struct drm_xe_query_mem_usage *mem_usage
- 	return alignment;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index c12823d31..50655f136 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1067,6 +1067,54 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
+ 		 aspect ? aspect : "", aspect ? ")" : "");
  }
  
--static bool xe_check_supports_faults(int fd)
--{
--	bool supports_faults;
--
--	struct drm_xe_vm_create create = {
--		.flags = DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
--			 DRM_XE_VM_CREATE_FAULT_MODE,
--	};
--
--	supports_faults = !igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
--
--	if (supports_faults)
--		xe_vm_destroy(fd, create.vm_id);
--
--	return supports_faults;
--}
--
- /**
-  * xe_engine_class_string:
-  * @engine_class: engine class
-@@ -258,7 +241,6 @@ struct xe_device *xe_device_get(int fd)
- 						     xe_dev->gts, gt);
- 	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_usage);
- 	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_usage);
--	xe_dev->supports_faults = xe_check_supports_faults(fd);
- 
- 	igt_map_insert(cache.map, &xe_dev->fd, xe_dev);
- 
-@@ -294,6 +276,30 @@ void xe_device_put(int fd)
- 	pthread_mutex_unlock(&cache.cache_mutex);
- }
- 
-+/**
-+ * xe_supports_faults:
-+ * @fd: xe device fd
-+ *
-+ * Returns true if xe device @fd allows creating vm in fault mode otherwise
-+ * false.
++/*
++ * With non-contiguous pipes display, crtc mapping is not always same
++ * as pipe mapping, In i915 pipe is enum id of i915's crtc object.
++ * hence allocating upper bound igt_pipe array to support non-contiguos
++ * pipe display and reading pipe enum for a crtc using GET_PIPE_FROM_CRTC_ID
++ * ioctl for a pipe to do pipe ordering with respect to crtc list.
 + */
-+bool xe_supports_faults(int fd)
++static int __intel_get_pipe_from_crtc_id(int fd, int crtc_id, int crtc_idx)
 +{
-+	bool supports_faults;
++	char buf[2];
++	int debugfs_fd, res = 0;
 +
-+	struct drm_xe_vm_create create = {
-+		.flags = DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
-+			 DRM_XE_VM_CREATE_FAULT_MODE,
-+	};
++	/*
++	 * No GET_PIPE_FROM_CRTC_ID ioctl support for XE. Instead read
++	 * from the debugfs "i915_pipe".
++	 *
++	 * This debugfs is applicable for both i915 & XE. For i915, still
++	 * we can fallback to ioctl method to support older kernels.
++	 */
++	debugfs_fd = igt_debugfs_pipe_dir(fd, crtc_idx, O_RDONLY);
 +
-+	supports_faults = !igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
++	if (debugfs_fd >= 0) {
++		res = igt_debugfs_simple_read(debugfs_fd, "i915_pipe", buf, sizeof(buf));
++		close(debugfs_fd);
++	}
 +
-+	if (supports_faults)
-+		xe_vm_destroy(fd, create.vm_id);
++	if (res <= 0) {
++		/* Fallback to older ioctl method. */
++		if (is_i915_device(fd)) {
++			struct drm_i915_get_pipe_from_crtc_id get_pipe;
 +
-+	return supports_faults;
++			get_pipe.pipe = 0;
++			get_pipe.crtc_id =  crtc_id;
++
++			do_ioctl(fd, DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID,
++				 &get_pipe);
++
++			return get_pipe.pipe;
++		} else
++			igt_assert_f(false, "XE: Failed to read the debugfs i915_pipe.\n");
++	} else {
++		char pipe;
++
++		igt_assert_eq(sscanf(buf, "%c", &pipe), 1);
++		return kmstest_pipe_to_index(pipe);
++	}
 +}
 +
- static void xe_device_destroy_cache(void)
- {
- 	pthread_mutex_lock(&cache.cache_mutex);
-@@ -449,15 +455,6 @@ uint64_t xe_vram_size(int fd, int gt)
-  */
- xe_dev_FN(xe_get_default_alignment, default_alignment, uint32_t);
- 
--/**
-- * xe_supports_faults:
-- * @fd: xe device fd
-- *
-- * Returns true if xe device @fd allows creating vm in fault mode otherwise
-- * false.
-- */
--xe_dev_FN(xe_supports_faults, supports_faults, bool);
--
  /**
-  * xe_va_bits:
-  * @fd: xe device fd
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 70de183cc..3a00ecd1c 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -53,9 +53,6 @@ struct xe_device {
- 	/** @has_vram: true if gpu has vram, false if system memory only */
- 	bool has_vram;
+  * kmstest_get_pipe_from_crtc_id:
+  * @fd: DRM fd
+@@ -1100,7 +1148,8 @@ int kmstest_get_pipe_from_crtc_id(int fd, int crtc_id)
  
--	/** @supports_faults: true if gpu supports faults, otherwise false */
--	bool supports_faults;
+ 	drmModeFreeResources(res);
+ 
+-	return i;
++	return is_intel_device(fd) ?
++		__intel_get_pipe_from_crtc_id(fd, crtc_id, i) : i;
+ }
+ 
+ /**
+@@ -2558,14 +2607,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 	drmModeRes *resources;
+ 	drmModePlaneRes *plane_resources;
+ 	int i;
+-	bool is_i915_dev;
++	bool is_intel_dev;
+ 
+ 	memset(display, 0, sizeof(igt_display_t));
+ 
+ 	LOG_INDENT(display, "init");
+ 
+ 	display->drm_fd = drm_fd;
+-	is_i915_dev = is_i915_device(drm_fd);
++	is_intel_dev = is_intel_device(drm_fd);
+ 
+ 	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
+ 
+@@ -2593,34 +2642,18 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 	if (is_xe_device(drm_fd))
+ 		xe_device_get(drm_fd);
+ 
+-	/*
+-	 * With non-contiguous pipes display, crtc mapping is not always same
+-	 * as pipe mapping, In i915 pipe is enum id of i915's crtc object.
+-	 * hence allocating upper bound igt_pipe array to support non-contiguos
+-	 * pipe display and reading pipe enum for a crtc using GET_PIPE_FROM_CRTC_ID ioctl
+-	 * for a pipe to do pipe ordering with respect to crtc list.
+-	 */
+ 	display->n_pipes = IGT_MAX_PIPES;
+ 	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
+ 	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+ 
+ 	for (i = 0; i < resources->count_crtcs; i++) {
+ 		igt_pipe_t *pipe;
++		int pipe_enum = (is_intel_dev)?
++			__intel_get_pipe_from_crtc_id(drm_fd,
++						      resources->crtcs[i], i) : i;
+ 
+-		if (is_i915_dev) {
+-			struct drm_i915_get_pipe_from_crtc_id get_pipe;
 -
- 	/** @va_bits: va length in bits */
- 	uint32_t va_bits;
+-			get_pipe.pipe = 0;
+-			get_pipe.crtc_id =  resources->crtcs[i];
+-			do_ioctl(display->drm_fd,
+-					DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID, &get_pipe);
+-			pipe = &display->pipes[get_pipe.pipe];
+-			pipe->pipe = get_pipe.pipe;
+-		}
+-		else {
+-			pipe = &display->pipes[i];
+-			pipe->pipe = i;
+-		}
++		pipe = &display->pipes[pipe_enum];
++		pipe->pipe = pipe_enum;
  
+ 		/* pipe is enabled/disabled */
+ 		pipe->enabled = true;
 -- 
-2.21.0.rc0.32.g243a4c7e27
+2.40.0
