@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27C5810E1D4
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 00:05:35 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>,
- kamil.konieczny@linux.intel.com
-Date: Tue, 21 Mar 2023 17:05:22 -0700
-Message-Id: <20230322000523.3310187-31-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20230322000523.3310187-1-umesh.nerlige.ramappa@intel.com>
-References: <20230322000523.3310187-1-umesh.nerlige.ramappa@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1559258925860098390=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 30/31] tools/perf: Choose the right card
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Fri, 24 Mar 2023 09:40:05 -0000
+Message-ID: <167965080511.30853.6368600325735803177@emeril.freedesktop.org>
+References: <20230324085259.30854-1-swati2.sharma@intel.com>
+In-Reply-To: <20230324085259.30854-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fscaling=3A_SKIP_subtest_if_num=5Fplanes_=3C_2?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,61 +17,204 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lionel G Landwerlin <lionel.g.landwerlin@linux.intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Choose the right dri card to open for perf recorder.
+--===============1559258925860098390==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tools/i915-perf/i915_perf_recorder.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+== Series Details ==
 
-diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index ca435483..1c85a099 100644
---- a/tools/i915-perf/i915_perf_recorder.c
-+++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -243,10 +243,10 @@ read_device_param(const char *stem, int id, const char *param)
- }
- 
- static int
--find_intel_render_node(void)
-+find_intel_card_node(void)
- {
--	for (int i = 128; i < (128 + 16); i++) {
--		if (read_device_param("renderD", i, "vendor") == 0x8086)
-+	for (int i = 0; i < 128; i++) {
-+		if (read_device_param("card", i, "vendor") == 0x8086)
- 			return i;
- 	}
- 
-@@ -275,20 +275,18 @@ open_render_node(uint32_t *devid, int card)
- 	char *name;
- 	int ret;
- 	int fd;
--	int render;
- 
- 	if (card < 0) {
--		render = find_intel_render_node();
--		if (render < 0)
-+		card = find_intel_card_node();
-+
-+		if (card < 0)
- 			return -1;
--	} else {
--		render = 128 + card;
- 	}
- 
--	ret = asprintf(&name, "/dev/dri/renderD%u", render);
-+	ret = asprintf(&name, "/dev/dri/card%u", card);
- 	assert(ret != -1);
- 
--	*devid = read_device_param("renderD", render, "device");
-+	*devid = read_device_param("card", card, "device");
- 
- 	fd = open(name, O_RDWR);
- 	free(name);
--- 
-2.36.1
+Series: tests/kms_plane_scaling: SKIP subtest if num_planes < 2
+URL   : https://patchwork.freedesktop.org/series/115591/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7216 -> IGTPW_8678
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/index.html
+
+Participating hosts (37 -> 36)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8678 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         NOTRUN -> [DMESG-FAIL][1] ([i915#6367] / [i915#7913])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-rpls-2:         NOTRUN -> [SKIP][2] ([i915#7828])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-rpls-2/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-rpls-2:         NOTRUN -> [SKIP][3] ([i915#1845])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-rpls-2/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [DMESG-WARN][4] ([i915#7699]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7216/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-dg2-11/igt@i915_selftest@live@migrate.html
+    - bat-atsm-1:         [DMESG-FAIL][6] ([i915#7699]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7216/bat-atsm-1/igt@i915_selftest@live@migrate.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-atsm-1/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-2:         [ABORT][8] ([i915#4983] / [i915#7913]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7216/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7216 -> IGTPW_8678
+
+  CI-20190529: 20190529
+  CI_DRM_12907: 3e6be7c63e438996c88d6ba51a7d3025c56086d0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8678: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/index.html
+  IGT_7216: 0682c2b07c7eab2bf384899c3da3cc7f08083847 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++++ 153 lines
+--- 18 lines
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/index.html
+
+--===============1559258925860098390==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: SKIP subtest if num_planes &lt; 2</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115591/">https://patchwork.freedesktop.org/series/115591/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7216 -&gt; IGTPW_8678</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/index.html</p>
+<h2>Participating hosts (37 -&gt; 36)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8678 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-rpls-2/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-rpls-2/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>
+<p>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7216/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a></p>
+</li>
+<li>
+<p>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7216/bat-atsm-1/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-atsm-1/igt@i915_selftest@live@migrate.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7216/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7216 -&gt; IGTPW_8678</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12907: 3e6be7c63e438996c88d6ba51a7d3025c56086d0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8678: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8678/index.html<br />
+  IGT_7216: 0682c2b07c7eab2bf384899c3da3cc7f08083847 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+++ 153 lines<br />
+--- 18 lines</p>
+
+</body>
+</html>
+
+--===============1559258925860098390==--
