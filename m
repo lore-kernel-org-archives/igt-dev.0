@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2609B10EB82
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Mar 2023 22:55:45 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 217CA10E0CE
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 12:07:07 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Mar 2023 15:55:33 -0700
-Message-Id: <20230323225534.3739835-30-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
-References: <20230323225534.3739835-1-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 24 Mar 2023 13:06:44 +0100
+Message-Id: <20230324120644.19450-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 29/30] lib/i915/perf: Adjust the GPU
- timestamp for new OA formats
+Subject: [igt-dev] [PATCH i-g-t] lib/xe_query: Prevent cache corruption on
+ multiple access
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,32 +22,84 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In some OA formats, gpu_ts is a 64 bit value and the right shift can
-result in bit[31] being set. This throws off the correlation and the
-timelines. Apply the mask on gpu_ts as well.
+If multiple threads will enter getting the xe_device and cache is
+empty we may encounter situation all of them will try to add config
+data to the cache. As cache is resizable map and wasn't protected
+by the mutex at the moment of insertion it's possible to corrupt the
+map.
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Lets add protecting mutex at the moment of adding to the cache. Due
+to assertions around querying the kernel with ioctls mutex doesn't
+protect gathering the config data so some threads may do this in
+parallel. It's not a big deal though as all threads will see same
+configuration so we add first (winning) thread xe_device data.
+
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/i915/perf_data_reader.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ lib/xe/xe_query.c | 33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
-index 332f530e..2272ae2c 100644
---- a/lib/i915/perf_data_reader.c
-+++ b/lib/i915/perf_data_reader.c
-@@ -216,6 +216,12 @@ correlate_gpu_timestamp(struct intel_perf_data_reader *reader,
- 	uint64_t mask = reader->perf->devinfo.oa_timestamp_mask;
- 	int corr_idx = -1;
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 1835232804..82a7e36e30 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -223,6 +223,16 @@ static struct xe_device *find_in_cache(int fd)
+ 	return xe_dev;
+ }
  
-+	/* On some OA formats, gpu_ts is a 64 bit value and the shift can
-+	 * result in bit[31] being set. This throws off the correlation and the
-+	 * timelines. Apply the mask on gpu_ts as well.
-+	 */
-+	gpu_ts = gpu_ts & mask;
++static void xe_device_free(struct xe_device *xe_dev)
++{
++	free(xe_dev->config);
++	free(xe_dev->gts);
++	free(xe_dev->hw_engines);
++	free(xe_dev->mem_usage);
++	free(xe_dev->vram_size);
++	free(xe_dev);
++}
 +
- 	for (uint32_t i = 0; i < reader->n_correlation_chunks; i++) {
- 		if (gpu_ts >= (reader->correlation_chunks[i].gpu_ts_begin & mask) &&
- 		    gpu_ts <= (reader->correlation_chunks[i].gpu_ts_end & mask)) {
+ /**
+  * xe_device_get:
+  * @fd: xe device fd
+@@ -234,7 +244,7 @@ static struct xe_device *find_in_cache(int fd)
+  */
+ struct xe_device *xe_device_get(int fd)
+ {
+-	struct xe_device *xe_dev;
++	struct xe_device *xe_dev, *prev;
+ 
+ 	xe_dev = find_in_cache(fd);
+ 	if (xe_dev)
+@@ -260,21 +270,20 @@ struct xe_device *xe_device_get(int fd)
+ 	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_usage);
+ 	xe_dev->supports_faults = xe_check_supports_faults(fd);
+ 
+-	igt_map_insert(cache.map, &xe_dev->fd, xe_dev);
++	/* We may get here from multiple threads, use first cached xe_dev */
++	pthread_mutex_lock(&cache.cache_mutex);
++	prev = find_in_cache_unlocked(fd);
++	if (!prev) {
++		igt_map_insert(cache.map, &xe_dev->fd, xe_dev);
++	} else {
++		xe_device_free(xe_dev);
++		xe_dev = prev;
++	}
++	pthread_mutex_unlock(&cache.cache_mutex);
+ 
+ 	return xe_dev;
+ }
+ 
+-static void xe_device_free(struct xe_device *xe_dev)
+-{
+-	free(xe_dev->config);
+-	free(xe_dev->gts);
+-	free(xe_dev->hw_engines);
+-	free(xe_dev->mem_usage);
+-	free(xe_dev->vram_size);
+-	free(xe_dev);
+-}
+-
+ static void delete_in_cache(struct igt_map_entry *entry)
+ {
+ 	xe_device_free((struct xe_device *)entry->data);
 -- 
-2.36.1
+2.34.1
