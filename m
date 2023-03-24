@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69FB910E1AF
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 21:03:43 +0000 (UTC)
-Date: Fri, 24 Mar 2023 13:59:44 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <ZB4PQAWZfJ4VT4R0@nvishwa1-DESK>
-References: <20230324120644.19450-1-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230324120644.19450-1-zbigniew.kempczynski@intel.com>
+From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	igt-dev@lists.freedesktop.org
+Date: Fri, 24 Mar 2023 15:49:58 -0700
+Message-Id: <20230324224959.1727662-2-vinay.belgaumkar@intel.com>
+In-Reply-To: <20230324224959.1727662-1-vinay.belgaumkar@intel.com>
+References: <20230324224959.1727662-1-vinay.belgaumkar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe_query: Prevent cache corruption
- on multiple access
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib/debugfs: Add per GT debugfs helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,95 +16,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Mar 24, 2023 at 01:06:44PM +0100, Zbigniew Kempczyński wrote:
->If multiple threads will enter getting the xe_device and cache is
->empty we may encounter situation all of them will try to add config
->data to the cache. As cache is resizable map and wasn't protected
->by the mutex at the moment of insertion it's possible to corrupt the
->map.
->
->Lets add protecting mutex at the moment of adding to the cache. Due
->to assertions around querying the kernel with ioctls mutex doesn't
->protect gathering the config data so some threads may do this in
->parallel. It's not a big deal though as all threads will see same
->configuration so we add first (winning) thread xe_device data.
->
->Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+These can be used to open per-gt debugfs files.
 
-LGTM.
-Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Vinay Belgaumkar <viay.belgaumkar@intel.com>
+---
+ lib/igt_debugfs.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_debugfs.h |  4 ++++
+ 2 files changed, 64 insertions(+)
 
->---
-> lib/xe/xe_query.c | 33 +++++++++++++++++++++------------
-> 1 file changed, 21 insertions(+), 12 deletions(-)
->
->diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
->index 1835232804..82a7e36e30 100644
->--- a/lib/xe/xe_query.c
->+++ b/lib/xe/xe_query.c
->@@ -223,6 +223,16 @@ static struct xe_device *find_in_cache(int fd)
-> 	return xe_dev;
-> }
->
->+static void xe_device_free(struct xe_device *xe_dev)
->+{
->+	free(xe_dev->config);
->+	free(xe_dev->gts);
->+	free(xe_dev->hw_engines);
->+	free(xe_dev->mem_usage);
->+	free(xe_dev->vram_size);
->+	free(xe_dev);
->+}
->+
-> /**
->  * xe_device_get:
->  * @fd: xe device fd
->@@ -234,7 +244,7 @@ static struct xe_device *find_in_cache(int fd)
->  */
-> struct xe_device *xe_device_get(int fd)
-> {
->-	struct xe_device *xe_dev;
->+	struct xe_device *xe_dev, *prev;
->
-> 	xe_dev = find_in_cache(fd);
-> 	if (xe_dev)
->@@ -260,21 +270,20 @@ struct xe_device *xe_device_get(int fd)
-> 	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_usage);
-> 	xe_dev->supports_faults = xe_check_supports_faults(fd);
->
->-	igt_map_insert(cache.map, &xe_dev->fd, xe_dev);
->+	/* We may get here from multiple threads, use first cached xe_dev */
->+	pthread_mutex_lock(&cache.cache_mutex);
->+	prev = find_in_cache_unlocked(fd);
->+	if (!prev) {
->+		igt_map_insert(cache.map, &xe_dev->fd, xe_dev);
->+	} else {
->+		xe_device_free(xe_dev);
->+		xe_dev = prev;
->+	}
->+	pthread_mutex_unlock(&cache.cache_mutex);
->
-> 	return xe_dev;
-> }
->
->-static void xe_device_free(struct xe_device *xe_dev)
->-{
->-	free(xe_dev->config);
->-	free(xe_dev->gts);
->-	free(xe_dev->hw_engines);
->-	free(xe_dev->mem_usage);
->-	free(xe_dev->vram_size);
->-	free(xe_dev);
->-}
->-
-> static void delete_in_cache(struct igt_map_entry *entry)
-> {
-> 	xe_device_free((struct xe_device *)entry->data);
->-- 
->2.34.1
->
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 05889bbe..afde2da6 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -217,6 +217,37 @@ int igt_debugfs_dir(int device)
+ 	return open(path, O_RDONLY);
+ }
+ 
++/**
++ * igt_debugfs_gt_dir:
++ * @device: fd of the device
++ * @gt: GT instance number
++ *
++ * This opens the debugfs directory corresponding to device for use
++ * with igt_sysfs_get() and related functions.
++ *
++ * Returns:
++ * The directory fd, or -1 on failure.
++ */
++int igt_debugfs_gt_dir(int device, unsigned int gt)
++{
++	int debugfs_gt_dir_fd;
++	char path[PATH_MAX];
++	char gtpath[16];
++	int ret;
++
++	if (!igt_debugfs_path(device, path, sizeof(path)))
++		return -1;
++
++	ret = snprintf(gtpath, sizeof(gtpath), "/gt%u", gt);
++	igt_assert(ret < sizeof(gtpath));
++	strncat(path, gtpath, sizeof(path) - 1);
++
++	debugfs_gt_dir_fd = open(path, O_RDONLY);
++	igt_debug_on_f(debugfs_gt_dir_fd < 0, "path: %s\n", path);
++
++	return debugfs_gt_dir_fd;
++}
++
+ /**
+  * igt_debugfs_connector_dir:
+  * @device: fd of the device
+@@ -313,6 +344,35 @@ bool igt_debugfs_exists(int device, const char *filename, int mode)
+ 	return false;
+ }
+ 
++/**
++ * igt_debugfs_gt_open:
++ * @device: open i915 drm fd
++ * @gt: gt instance number
++ * @filename: name of the debugfs node to open
++ * @mode: mode bits as used by open()
++ *
++ * This opens a debugfs file as a Unix file descriptor. The filename should be
++ * relative to the drm device's root, i.e. without "drm/$minor".
++ *
++ * Returns:
++ * The Unix file descriptor for the debugfs file or -1 if that didn't work out.
++ */
++int
++igt_debugfs_gt_open(int device, unsigned int gt, const char *filename, int mode)
++{
++	int dir, ret;
++
++	dir = igt_debugfs_gt_dir(device, gt);
++	if (dir < 0)
++		return dir;
++
++	ret = openat(dir, filename, mode);
++
++	close(dir);
++
++	return ret;
++}
++
+ /**
+  * igt_debugfs_simple_read:
+  * @dir: fd of the debugfs directory
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index 4824344a..3e6194ad 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -45,6 +45,10 @@ void __igt_debugfs_write(int fd, const char *filename, const char *buf, int size
+ int igt_debugfs_simple_read(int dir, const char *filename, char *buf, int size);
+ bool igt_debugfs_search(int fd, const char *filename, const char *substring);
+ 
++int igt_debugfs_gt_dir(int device, unsigned int gt);
++int igt_debugfs_gt_open(int device, unsigned int gt, const char *filename,
++			int mode);
++
+ /**
+  * igt_debugfs_read:
+  * @filename: name of the debugfs file
+-- 
+2.38.1
