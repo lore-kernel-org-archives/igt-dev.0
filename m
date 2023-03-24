@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 324C210E2C6
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 10:04:13 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Mon, 20 Mar 2023 15:30:15 +0530
-Message-Id: <20230320100017.2913328-4-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230320100017.2913328-1-bhanuprakash.modem@intel.com>
-References: <20230320100017.2913328-1-bhanuprakash.modem@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42D8D10EB98
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 08:11:58 +0000 (UTC)
+From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+Date: Fri, 24 Mar 2023 09:11:20 +0100
+Message-Id: <20230324081120.3355-6-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20230324081120.3355-1-dominik.karol.piatkowski@intel.com>
+References: <20230324081120.3355-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 3/5] tests/kms_addfb_basic: Add XE support
+Subject: [igt-dev] [PATCH i-g-t 5/5] Change logic of ktap parser to run on a
+ thread
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,170 +21,305 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com, mchehab@kernel.org, jani.nikula@intel.com
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+The ktap parser should be listening and parsing messages as the tests
+are executed, and not after the end of module load.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+v1 -> v2:
+- fix coding style
+- remove usleep
+- add error check logic
+- follow the structure of igt_kselftests more closely
+
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 ---
- tests/kms_addfb_basic.c | 42 +++++++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
+ lib/igt_kmod.c |  26 +++++----
+ lib/igt_ktap.c | 148 ++++++++++++++++++++++++++++++++-----------------
+ lib/igt_ktap.h |   5 +-
+ 3 files changed, 118 insertions(+), 61 deletions(-)
 
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index b4526eee6..bf90a9aa1 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -41,6 +41,8 @@
- #include "igt_rand.h"
- #include "igt_device.h"
- #include "i915/intel_memory_region.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 21e801bd..45a0c6ed 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -758,7 +758,6 @@ int igt_kunit(const char *module_name, const char *opts)
+ {
+ 	struct igt_ktest tst;
+ 	struct kmod_module *kunit_kmod;
+-	char record[BUF_LEN + 1];
+ 	FILE *f;
+ 	bool is_builtin;
+ 	int ret;
+@@ -771,12 +770,13 @@ int igt_kunit(const char *module_name, const char *opts)
+ 		return ret;
+ 	}
  
- uint32_t gem_bo;
- uint32_t gem_bo_small;
-@@ -121,7 +123,7 @@ static void invalid_tests(int fd)
+-	if (igt_ktest_begin(&tst) != 0) {
+-		igt_warn("Unable to begin ktest for %s\n", module_name);
++	igt_fixture
++		if (igt_ktest_begin(&tst) != 0) {
++			igt_warn("Unable to begin ktest for %s\n", module_name);
  
- 	igt_describe("Check if addfb2 call works for clobbered modifier");
- 	igt_subtest("clobberred-modifier") {
--		igt_require_intel(fd);
-+		igt_require_i915(fd);
- 		igt_require(gem_available_fences(fd) > 0);
- 		f.flags = 0;
- 		f.modifier[0] = 0;
-@@ -139,10 +141,17 @@ static void invalid_tests(int fd)
- 		uint64_t size;
- 
- 		igt_require_intel(fd);
--		igt_require(gem_has_lmem(fd));
- 		igt_calc_fb_size(fd, f.width, f.height,
- 				DRM_FORMAT_XRGB8888, 0, &size, &stride);
--		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
-+
-+		if (is_i915_device(fd)) {
-+			igt_require(gem_has_lmem(fd));
-+			handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
-+		} else {
-+			igt_require(xe_has_vram(fd));
-+			handle = xe_bo_create_flags(fd, 0, size, vram_memory(fd, 0));
+-		igt_ktest_fini(&tst);
+-		return ret;
+-	}
++			igt_ktest_fini(&tst);
++			return ret;
 +		}
+ 
+ 	if (tst.kmsg < 0) {
+ 		igt_warn("Could not open /dev/kmsg\n");
+@@ -804,19 +804,25 @@ int igt_kunit(const char *module_name, const char *opts)
+ 
+ 	is_builtin = kmod_module_get_initstate(kunit_kmod) == KMOD_MODULE_BUILTIN;
+ 
++	ktap_parser_start(f, is_builtin);
 +
- 		f.handles[0] = handle;
- 		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EREMOTE);
- 	}
-@@ -323,7 +332,7 @@ static void tiling_tests(int fd)
- 
- 	igt_subtest_group {
- 		igt_fixture {
--			igt_require_intel(fd);
-+			igt_require_i915(fd);
- 			tiled_x_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
- 				DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED,
- 				1024*4, NULL, NULL, NULL);
-@@ -494,7 +503,7 @@ static void size_tests(int fd)
- 
- 	igt_describe("Test that addfb2 call fails correctly with small buffer object after changing tile");
- 	igt_subtest("bo-too-small-due-to-tiling") {
--		igt_require_intel(fd);
-+		igt_require_i915(fd);
- 		igt_require(gem_available_fences(fd) > 0);
- 		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
- 		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
-@@ -548,7 +557,7 @@ static void addfb25_tests(int fd)
- 
- 	igt_subtest_group {
- 		igt_fixture {
--			igt_require_intel(fd);
-+			igt_require_i915(fd);
- 			igt_require(gem_available_fences(fd) > 0);
- 			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
- 			igt_require_fb_modifiers(fd);
-@@ -594,6 +603,7 @@ static void addfb25_ytile(int fd)
- 	igt_display_t display;
- 
- 	igt_fixture {
-+		igt_require_i915(fd);
- 		igt_display_require(&display, fd);
- 
- 		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
-@@ -618,7 +628,6 @@ static void addfb25_ytile(int fd)
- 	igt_describe("Check if addfb2 call works for y-tiling");
- 	igt_subtest("addfb25-y-tiled-legacy") {
- 		igt_require_fb_modifiers(fd);
--		igt_require_intel(fd);
- 
- 		f.modifier[0] = I915_FORMAT_MOD_Y_TILED;
- 		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
-@@ -631,7 +640,6 @@ static void addfb25_ytile(int fd)
- 	igt_describe("Check if addfb2 call works for yf-tiling");
- 	igt_subtest("addfb25-yf-tiled-legacy") {
- 		igt_require_fb_modifiers(fd);
--		igt_require_intel(fd);
- 
- 		f.modifier[0] = I915_FORMAT_MOD_Yf_TILED;
- 		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
-@@ -644,7 +652,6 @@ static void addfb25_ytile(int fd)
- 	igt_describe("Test that addfb2 call fails correctly for y-tiling with given height and modifier");
- 	igt_subtest("addfb25-y-tiled-small-legacy") {
- 		igt_require_fb_modifiers(fd);
--		igt_require_intel(fd);
- 
- 		f.modifier[0] = I915_FORMAT_MOD_Y_TILED;
- 		f.height = 1023;
-@@ -667,6 +674,7 @@ static void addfb25_4tile(int fd)
- 	igt_display_t display;
- 
- 	igt_fixture {
-+		igt_require_i915(fd);
- 		igt_display_require(&display, fd);
- 
- 		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
-@@ -689,7 +697,6 @@ static void addfb25_4tile(int fd)
- 	igt_describe("Check if addfb2 call works for tiling-4");
- 	igt_subtest("addfb25-4-tiled") {
- 		igt_require_fb_modifiers(fd);
--		igt_require_intel(fd);
- 
- 		f.modifier[0] = I915_FORMAT_MOD_4_TILED;
- 		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
-@@ -839,6 +846,9 @@ igt_main
- 	igt_fixture {
- 		fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_require(has_addfb2_iface(fd));
-+
-+		if (is_xe_device(fd))
-+			xe_device_get(fd);
+ 	if (igt_kmod_load(module_name, opts) != 0) {
+ 		igt_warn("Unable to load %s module\n", module_name);
++		ret = ktap_parser_stop();
+ 		igt_fail(IGT_EXIT_FAILURE);
  	}
  
- 	invalid_tests(fd);
-@@ -847,6 +857,10 @@ igt_main
+-	ret = igt_ktap_parser(f, record, is_builtin);
+-	if (ret != 0)
+-		ret = IGT_EXIT_ABORT;
+ unload:
+-	igt_ktest_end(&tst);
++	igt_fixture
++		igt_ktest_end(&tst);
  
- 	size_tests(fd);
+ 	igt_ktest_fini(&tst);
  
-+	prop_tests(fd);
++	ret = ktap_parser_stop();
 +
-+	master_tests(fd);
++	if (ret != 0)
++		ret = IGT_EXIT_ABORT;
 +
- 	addfb25_tests(fd);
+ 	if (ret == 0)
+ 		igt_success();
  
- 	addfb25_ytile(fd);
-@@ -855,10 +869,10 @@ igt_main
+diff --git a/lib/igt_ktap.c b/lib/igt_ktap.c
+index 117598fa..090f98b7 100644
+--- a/lib/igt_ktap.c
++++ b/lib/igt_ktap.c
+@@ -5,11 +5,16 @@
  
- 	tiling_tests(fd);
+ #include <ctype.h>
+ #include <limits.h>
++#include <libkmod.h>
++#include <pthread.h>
++#include <errno.h>
  
--	prop_tests(fd);
--
--	master_tests(fd);
-+	igt_fixture {
-+		if (is_xe_device(fd))
-+			xe_device_put(fd);
+ #include "igt_aux.h"
+ #include "igt_core.h"
+ #include "igt_ktap.h"
  
--	igt_fixture
- 		close(fd);
-+	}
++
++
+ static int log_to_end(enum igt_log_level level, FILE *f,
+ 		      char *record, const char *format, ...) __attribute__((format(printf, 4, 5)));
+ 
+@@ -118,7 +123,10 @@ static int find_next_tap_subtest(FILE *fp, char *record, bool is_builtin)
+ 		igt_info("%s", version_rptr);
+ 
+ 		if (fgets(record, BUF_LEN, fp) == NULL) {
+-			igt_warn("kmsg truncated: unknown error (%m)\n");
++			if (ferror(fp))
++				igt_warn("kmsg read failed: %s\n", strerror(errno));
++			else
++				igt_warn("kmsg truncated: unknown error (%m)\n");
+ 			return -2;
+ 		}
+ 	}
+@@ -253,6 +261,13 @@ static int parse_kmsg_for_tap(FILE *fp, char *record, char *test_name)
+ 	return 1;
  }
+ 
++struct ktap_parser_args {
++	FILE *fp;
++	bool is_builtin;
++	volatile bool is_running;
++	int ret;
++} ktap_args;
++
+ /**
+  * igt_ktap_parser:
+  * @fp: FILE pointer
+@@ -264,71 +279,104 @@ static int parse_kmsg_for_tap(FILE *fp, char *record, char *test_name)
+  *
+  * Returns: IGT default codes
+  */
+-int igt_ktap_parser(FILE *fp, char *record, bool is_builtin)
++void *igt_ktap_parser(void *unused)
+ {
++	FILE *fp = ktap_args.fp;
++	char record[BUF_LEN + 1];
++	bool is_builtin = ktap_args.is_builtin;
++
+ 	char test_name[BUF_LEN + 1];
+ 	bool failed_tests, found_tests;
+ 	int sublevel = 0;
+ 
+-	test_name[0] = '\0';
+-	test_name[BUF_LEN] = '\0';
+-
+ 	failed_tests = false;
+ 	found_tests = false;
+ 
+-	while (sublevel >= 0) {
+-		if (fgets(record, BUF_LEN, fp) == NULL) {
+-			if (!found_tests)
+-				igt_warn("kmsg truncated: unknown error (%m)\n");
+-			break;
+-		}
++igt_ktap_parser_start:
++	while (ktap_args.is_running) {
++		test_name[0] = '\0';
++		test_name[BUF_LEN] = '\0';
+ 
+-		switch (find_next_tap_subtest(fp, record, is_builtin)) {
+-		case -2:
+-			/* no more data to read */
+-			return IGT_EXIT_FAILURE;
+-		case -1:
+-			/* no test found, so we keep parsing */
+-			break;
+-		case 0:
+-			/*
+-			 * tests found, but they're missing info, so we might
+-			 * have read into test output
+-			 */
+-			found_tests = true;
+-			sublevel++;
+-			break;
+-		default:
++		while(!feof(fp)) {
+ 			if (fgets(record, BUF_LEN, fp) == NULL) {
+-				igt_warn("kmsg truncated: unknown error (%m)\n");
+-				return -2;
++				if (ferror(fp))
++					igt_warn("kmsg read failed: %s\n", strerror(errno));
++
++				if (!ktap_args.is_running)
++					return NULL;
+ 			}
+-			found_tests = true;
+-			sublevel++;
+-			break;
+ 		}
+ 
+-		switch (parse_kmsg_for_tap(fp, record, test_name)) {
+-		case -2:
+-			return IGT_EXIT_FAILURE;
+-		case -1:
+-			sublevel--;
+-			failed_tests = true;
+-			igt_subtest(test_name)
+-				igt_fail(IGT_EXIT_FAILURE);
+-			test_name[0] = '\0';
+-			break;
+-		case 0: /* fallthrough */
+-			igt_subtest(test_name)
+-				igt_success();
+-			test_name[0] = '\0';
+-		default:
+-			break;
++		while (sublevel >= 0) {
++			switch (find_next_tap_subtest(fp, record, is_builtin)) {
++			case -2:
++				/* no more data to read */
++				goto igt_ktap_parser_start;
++			case -1:
++				/* no test found, so we keep parsing */
++				break;
++			case 0:
++				/*
++				 * tests found, but they're missing info, so we might
++				 * have read into test output
++				 */
++				found_tests = true;
++				sublevel++;
++				break;
++			default:
++				if (fgets(record, BUF_LEN, fp) == NULL) {
++					if (ferror(fp))
++						igt_warn("kmsg read failed: %s\n", strerror(errno));
++					else
++						igt_warn("kmsg truncated: unknown error (%m)\n");
++					goto igt_ktap_parser_start;
++				}
++				found_tests = true;
++				sublevel++;
++				break;
++			}
++
++			switch (parse_kmsg_for_tap(fp, record, test_name)) {
++			case -2:
++				goto igt_ktap_parser_start;
++			case -1:
++				sublevel--;
++				failed_tests = true;
++				igt_subtest(test_name)
++					igt_fail(IGT_EXIT_FAILURE);
++				test_name[0] = '\0';
++				break;
++			case 0: /* fallthrough */
++				igt_subtest(test_name)
++					igt_success();
++				test_name[0] = '\0';
++			default:
++				break;
++			}
+ 		}
+ 	}
+ 
+ 	if (failed_tests || !found_tests)
+-		return IGT_EXIT_FAILURE;
++		ktap_args.ret = IGT_EXIT_FAILURE;
++	else
++		ktap_args.ret = IGT_EXIT_SUCCESS;
++
++	return NULL;
++}
++
++static pthread_t ktap_parser_thread;
++
++void ktap_parser_start(FILE *fp, bool is_builtin)
++{
++	ktap_args.fp = fp;
++	ktap_args.is_builtin = is_builtin;
++	ktap_args.is_running = true;
++	pthread_create(&ktap_parser_thread, NULL, igt_ktap_parser, NULL);
++}
+ 
+-	return IGT_EXIT_SUCCESS;
++int ktap_parser_stop(void)
++{
++	ktap_args.is_running = false;
++	pthread_join(ktap_parser_thread, NULL);
++	return ktap_args.ret;
+ }
+diff --git a/lib/igt_ktap.h b/lib/igt_ktap.h
+index b2f69df2..ee6689c1 100644
+--- a/lib/igt_ktap.h
++++ b/lib/igt_ktap.h
+@@ -26,6 +26,9 @@
+ 
+ #define BUF_LEN 4096
+ 
+-int igt_ktap_parser(FILE *fp, char *record, bool is_builtin);
++void *igt_ktap_parser(void *unused);
++
++void ktap_parser_start(FILE *fp, bool is_builtin);
++int ktap_parser_stop(void);
+ 
+ #endif /* IGT_KTAP_H */
 -- 
-2.40.0
+2.34.1
 
 
