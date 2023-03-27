@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE87510E713
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 19:30:49 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Mar 2023 01:00:43 +0530
-Message-Id: <20230327193043.27678-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230315210147.19557-2-mohammed.thasleem@intel.com>
-References: <20230315210147.19557-2-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 1/2] tests/i915/i915_pm_dc: Add DC6 DPMS test
- for mtl
+Content-Transfer-Encoding: quoted-printable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Mon, 27 Mar 2023 19:57:21 -0000
+Message-ID: <167994704106.32632.12466686986775767895@emeril.freedesktop.org>
+References: <20230315210147.19557-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230315210147.19557-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/i915/i915=5Fpm=5Fdc=3A_Add_DC6_test_for_mtl_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,96 +17,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The flow for DC6 validation has changed for MTL.
-DC6 state achieved based on PKGC10 entry.
-This test validates PKGC10 entry and confirm DC6 achieved
+=3D=3D Series Details =3D=3D
 
-v2: - Removed varisable to store disp version. (Vinod)
-v3: - Used igt_debugfs_mount to open the path. (Imre)
-    - Updated string in igt_skip_on_f. (Imre)
-    - Removed redundant code. (Imre)
-    - Set test execution for display for version >=14. (Imre)
-    - Rename function read_pkc_state_value with pkgc. (Imre)
-    - Added runtime PM disabled and enable. (Imre).
-    - During testing the entry always happened in ~4.5ses, so
-      set max igt_wait to 5sec.
+Series: tests/i915/i915_pm_dc: Add DC6 test for mtl (rev3)
+URL   : https://patchwork.freedesktop.org/series/112918/
+State : failure
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/i915/i915_pm_dc.c | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+=3D=3D Summary =3D=3D
 
-diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-index 1c695b50..2da415e8 100644
---- a/tests/i915/i915_pm_dc.c
-+++ b/tests/i915/i915_pm_dc.c
-@@ -45,6 +45,7 @@
- #define PWR_DOMAIN_INFO "i915_power_domain_info"
- #define RPM_STATUS "i915_runtime_pm_status"
- #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
-+#define PACKAGE_STATE_PATH "pmc_core/package_cstate_show"
- #define KMS_POLL_DISABLE 0
- #define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid)))
- 
-@@ -60,6 +61,7 @@ typedef struct {
- 	int drm_fd;
- 	int msr_fd;
- 	int debugfs_fd;
-+	int pmc_fd;
- 	uint32_t devid;
- 	char *debugfs_dump;
- 	igt_display_t display;
-@@ -519,6 +521,34 @@ static int has_panels_without_dc_support(igt_display_t *display)
- 	return external_panel;
- }
- 
-+static unsigned int pkgc(int pmc_fd)
-+{
-+	char buf[4096];
-+	char *str;
-+
-+	pmc_fd = open(igt_debugfs_mount(), O_RDONLY);
-+	igt_debugfs_simple_read(pmc_fd, PACKAGE_STATE_PATH, buf, sizeof(buf));
-+	str = strstr(buf, "Package C10");
-+	igt_skip_on_f(!strstr(buf, "Package C10"), "PKGC10 is not supported.\n");
-+	close(pmc_fd);
-+
-+	return get_dc_counter(str);
-+}
-+
-+static void test_pkc_state_dpms(data_t *data)
-+{
-+	unsigned int timeout_sec = 5;
-+	unsigned int prev_value = 0, cur_value = 0;
-+
-+	prev_value = pkgc(data->pmc_fd);
-+	setup_dc_dpms(data);
-+	dpms_off(data);
-+	igt_wait((cur_value = pkgc(data->pmc_fd)) > prev_value, timeout_sec * 1000, 100);
-+	igt_assert_f(cur_value > prev_value, "PK10 is not achieived.\n");
-+	dpms_on(data);
-+	cleanup_dc_dpms(data);
-+}
-+
- static void kms_poll_state_restore(int sig)
- {
- 	int sysfs_fd;
-@@ -600,7 +630,11 @@ igt_main
- 	igt_subtest("dc6-dpms") {
- 		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
- 			      "PC8+ residencies not supported\n");
--		test_dc_state_dpms(&data, CHECK_DC6);
-+		if (intel_display_ver(data.devid) >= 14)
-+			test_pkc_state_dpms(&data);
-+		else
-+			test_dc_state_dpms(&data, CHECK_DC6);
-+
- 	}
- 
- 	igt_describe("This test validates display engine entry to DC9 state");
--- 
-2.25.1
+IGT patchset build failed on latest successful build
+4b77c6d85024d22ca521d510f8eee574128fe04f lib/xe_query: Prevent cache corrup=
+tion on multiple access
+
+[254/649] Linking target tests/gem_pwrite.
+[255/649] Linking target tests/gem_pwrite_snooped.
+[256/649] Linking target tests/gem_pxp.
+[257/649] Linking target tests/gem_read_read_speed.
+[258/649] Linking target tests/gem_readwrite.
+[259/649] Linking target tests/gem_render_copy_redux.
+[260/649] Linking target tests/gem_reg_read.
+[261/649] Linking target tests/gem_render_copy.
+[262/649] Linking target tests/gem_render_linear_blits.
+[263/649] Linking target tests/gem_render_tiled_blits.
+[264/649] Linking target tests/gem_request_retire.
+[265/649] Linking target tests/gem_reset_stats.
+[266/649] Linking target tests/gem_ringfill.
+[267/649] Linking target tests/gem_set_tiling_vs_blt.
+[268/649] Linking target tests/gem_set_tiling_vs_gtt.
+[269/649] Linking target tests/gem_shrink.
+[270/649] Linking target tests/gem_set_tiling_vs_pwrite.
+[271/649] Linking target tests/gem_softpin.
+[272/649] Linking target tests/gem_sync.
+[273/649] Linking target tests/gem_spin_batch.
+[274/649] Linking target tests/gem_streaming_writes.
+[275/649] Linking target tests/gem_tiled_blits.
+[276/649] Linking target tests/gem_tiled_fence_blits.
+[277/649] Linking target tests/gem_tiled_partial_pwrite_pread.
+[278/649] Linking target tests/gem_tiled_pread_pwrite.
+[279/649] Linking target tests/gem_tiled_pread_basic.
+[280/649] Linking target tests/gem_tiled_swapping.
+[281/649] Linking target tests/gem_tiled_wb.
+[282/649] Linking target tests/gem_tiled_wc.
+[283/649] Linking target tests/gem_tiling_max_stride.
+[284/649] Linking target tests/gem_unfence_active_buffers.
+[285/649] Linking target tests/gem_userptr_blits.
+[286/649] Linking target tests/gem_unref_active_buffers.
+[287/649] Linking target tests/gem_vm_create.
+[288/649] Linking target tests/gem_wait.
+[289/649] Linking target tests/gem_watchdog.
+[290/649] Linking target tests/gem_workarounds.
+[291/649] Linking target tests/i915_fb_tiling.
+[292/649] Linking target tests/i915_getparams_basic.
+[293/649] Linking target tests/i915_hangman.
+[294/649] Compiling C object 'tests/59830eb@@i915_pm_dc@exe/i915_i915_pm_dc=
+.c.o'.
+FAILED: tests/59830eb@@i915_pm_dc@exe/i915_i915_pm_dc.c.o=20
+cc -Itests/59830eb@@i915_pm_dc@exe -Itests -I../../../usr/src/igt-gpu-tools=
+/tests -I../../../usr/src/igt-gpu-tools/include -I../../../usr/src/igt-gpu-=
+tools/include/drm-uapi -I../../../usr/src/igt-gpu-tools/include/linux-uapi =
+-Ilib -I../../../usr/src/igt-gpu-tools/lib -I../../../usr/src/igt-gpu-tools=
+/lib/stubs/syscalls -I. -I../../../usr/src/igt-gpu-tools/ -I/usr/include/ca=
+iro -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I=
+/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/i=
+nclude/libpng16 -I/usr/include/libdrm -I/usr/include/x86_64-linux-gnu -I/us=
+r/include/valgrind -I/usr/include -fdiagnostics-color=3Dalways -pipe -D_FIL=
+E_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_S=
+OURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclara=
+tion-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -=
+Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissi=
+ng-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wred=
+undant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clo=
+bbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointe=
+r-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -W=
+no-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bo=
+unds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -=
+Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-=
+to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigra=
+phs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthrea=
+d -MD -MQ 'tests/59830eb@@i915_pm_dc@exe/i915_i915_pm_dc.c.o' -MF 'tests/59=
+830eb@@i915_pm_dc@exe/i915_i915_pm_dc.c.o.d' -o 'tests/59830eb@@i915_pm_dc@=
+exe/i915_i915_pm_dc.c.o' -c ../../../usr/src/igt-gpu-tools/tests/i915/i915_=
+pm_dc.c
+../../../usr/src/igt-gpu-tools/tests/i915/i915_pm_dc.c: In function =E2=80=
+=98test_pkc_state_psr=E2=80=99:
+../../../usr/src/igt-gpu-tools/tests/i915/i915_pm_dc.c:589:15: error: impli=
+cit declaration of function =E2=80=98read_pkc_state_value=E2=80=99 [-Werror=
+=3Dimplicit-function-declaration]
+  589 |  prev_value =3D read_pkc_state_value(data->pmc_fd);
+      |               ^~~~~~~~~~~~~~~~~~~~
+../../../usr/src/igt-gpu-tools/tests/i915/i915_pm_dc.c:589:15: warning: nes=
+ted extern declaration of =E2=80=98read_pkc_state_value=E2=80=99 [-Wnested-=
+externs]
+cc1: some warnings being treated as errors
+ninja: build stopped: subcommand failed.
+
