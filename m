@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E65210E9BD
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 18:01:34 +0000 (UTC)
-Date: Wed, 22 Mar 2023 19:00:31 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230322180031.7v2d4publhs6swhx@kamilkon-desk1>
-References: <20230322140030.1800192-1-mauro.chehab@linux.intel.com>
- <20230322140030.1800192-3-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8149134792929081289=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230322140030.1800192-3-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/3] lib/igt_kmod: add support for Xe
- driver
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 27 Mar 2023 16:15:35 -0000
+Message-ID: <167993373513.32629.8101504294519117264@emeril.freedesktop.org>
+References: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW1wcm92?=
+ =?utf-8?q?e_igt=5Fdoc=2Epy?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,166 +16,177 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-03-22 at 15:00:29 +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Change the kmod logic to also work with the Xe driver.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============8149134792929081289==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-LGTM,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
---
-Kamil
+Series: Improve igt_doc.py
+URL   : https://patchwork.freedesktop.org/series/115667/
+State : success
 
-> ---
->  lib/igt_kmod.c | 34 +++++++++++++++++-----------------
->  lib/igt_kmod.h | 32 +++++++++++++++++++++++++++++---
->  2 files changed, 46 insertions(+), 20 deletions(-)
-> 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 6d6ecf0187ed..ccf0063ca1b1 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -404,23 +404,23 @@ static void *strdup_realloc(char *origptr, const char *strdata)
->  }
->  
->  /**
-> - * igt_i915_driver_load:
-> - * @opts: options to pass to i915 driver
-> + * igt_intel_driver_load:
-> + * @opts: options to pass to Intel driver
->   *
-> - * Loads the i915 driver and its dependencies.
-> + * Loads an Intel driver and its dependencies.
->   *
->   */
->  int
-> -igt_i915_driver_load(const char *opts)
-> +igt_intel_driver_load(const char *opts, const char *driver)
->  {
->  	int ret;
->  
->  	if (opts)
-> -		igt_info("Reloading i915 with %s\n\n", opts);
-> +		igt_info("Reloading %s with %s\n\n", driver, opts);
->  
-> -	ret = igt_kmod_load("i915", opts);
-> +	ret = igt_kmod_load(driver, opts);
->  	if (ret) {
-> -		igt_debug("Could not load i915\n");
-> +		igt_debug("Could not load %s\n", driver);
->  		return ret;
->  	}
->  
-> @@ -496,7 +496,7 @@ int igt_audio_driver_unload(char **who)
->  	return igt_always_unload_audio_driver(who);
->  }
->  
-> -int __igt_i915_driver_unload(char **who)
-> +int __igt_intel_driver_unload(char **who, const char *driver)
->  {
->  	int ret;
->  
-> @@ -530,11 +530,11 @@ int __igt_i915_driver_unload(char **who)
->  		}
->  	}
->  
-> -	if (igt_kmod_is_loaded("i915")) {
-> -		ret = igt_kmod_unload("i915", 0);
-> +	if (igt_kmod_is_loaded(driver)) {
-> +		ret = igt_kmod_unload(driver, 0);
->  		if (ret) {
->  			if (who)
-> -				*who = strdup_realloc(*who, "i915");
-> +				*who = strdup_realloc(*who, driver);
->  
->  			return ret;
->  		}
-> @@ -544,18 +544,18 @@ int __igt_i915_driver_unload(char **who)
->  }
->  
->  /**
-> - * igt_i915_driver_unload:
-> + * igt_intel_driver_unload:
->   *
-> - * Unloads the i915 driver and its dependencies.
-> + * Unloads an Intel driver and its dependencies.
->   *
->   */
->  int
-> -igt_i915_driver_unload(void)
-> +igt_intel_driver_unload(const char *driver)
->  {
->  	char *who = NULL;
->  	int ret;
->  
-> -	ret = __igt_i915_driver_unload(&who);
-> +	ret = __igt_intel_driver_unload(&who, driver);
->  	if (ret) {
->  		igt_warn("Could not unload %s\n", who);
->  		igt_kmod_list_loaded();
-> @@ -572,8 +572,8 @@ igt_i915_driver_unload(void)
->  	igt_kmod_unload("drm_kms_helper", 0);
->  	igt_kmod_unload("drm", 0);
->  
-> -	if (igt_kmod_is_loaded("i915")) {
-> -		igt_warn("i915.ko still loaded!\n");
-> +	if (igt_kmod_is_loaded("driver")) {
-> +		igt_warn("%s.ko still loaded!\n", driver);
->  		return -EBUSY;
->  	}
->  
-> diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-> index f98dd29fb175..d05af4a69410 100644
-> --- a/lib/igt_kmod.h
-> +++ b/lib/igt_kmod.h
-> @@ -38,9 +38,35 @@ int igt_kmod_unload(const char *mod_name, unsigned int flags);
->  
->  int igt_audio_driver_unload(char **whom);
->  
-> -int igt_i915_driver_load(const char *opts);
-> -int igt_i915_driver_unload(void);
-> -int __igt_i915_driver_unload(char **whom);
-> +int igt_intel_driver_load(const char *opts, const char *driver);
-> +int igt_intel_driver_unload(const char *driver);
-> +int __igt_intel_driver_unload(char **who, const char *driver);
-> +
-> +static inline int igt_i915_driver_load(const char *opts)
-> +{
-> +	return igt_intel_driver_load(opts, "i915");
-> +}
-> +
-> +static inline int igt_i915_driver_unload(void)
-> +{
-> +	return igt_intel_driver_unload("i915");
-> +}
-> +
-> +static inline int __igt_i915_driver_unload(char **whom)
-> +{
-> +	return __igt_intel_driver_unload(whom, "i915");
-> +};
-> +
-> +static inline int igt_xe_driver_load(const char *opts)
-> +{
-> +	return igt_intel_driver_load(opts, "xe");
-> +}
-> +
-> +
-> +static inline int igt_xe_driver_unload(void)
-> +{
-> +	return igt_intel_driver_unload("xe");
-> +}
->  
->  int igt_amdgpu_driver_load(const char *opts);
->  int igt_amdgpu_driver_unload(void);
-> -- 
-> 2.39.2
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_7221 -> IGTPW_8686
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/index.html
+
+Participating hosts (36 -> 36)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8686 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-2:         [PASS][1] -> [ABORT][2] ([i915#4983] / [i915#7913])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7221/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         [PASS][3] -> [DMESG-FAIL][4] ([i915#6367] / [i915#7996])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7221/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][5] ([i915#5354])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg2-11:         [FAIL][6] ([i915#8308]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7221/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+
+  
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7221 -> IGTPW_8686
+
+  CI-20190529: 20190529
+  CI_DRM_12920: 78054149ebf825810cd893726be90865a6faf25e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8686: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/index.html
+  IGT_7221: 4b77c6d85024d22ca521d510f8eee574128fe04f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/index.html
+
+--===============8149134792929081289==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Improve igt_doc.py</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115667/">https://patchwork.freedesktop.org/series/115667/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7221 -&gt; IGTPW_8686</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/index.html</p>
+<h2>Participating hosts (36 -&gt; 36)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8686 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7221/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7221/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_pm_rps@basic-api:<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7221/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7221 -&gt; IGTPW_8686</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12920: 78054149ebf825810cd893726be90865a6faf25e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8686: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8686/index.html<br />
+  IGT_7221: 4b77c6d85024d22ca521d510f8eee574128fe04f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8149134792929081289==--
 
