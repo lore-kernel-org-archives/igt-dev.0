@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E423610E5AE
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 12:36:20 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C83CE10E5A0
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 12:53:03 +0000 (UTC)
+Date: Mon, 27 Mar 2023 14:52:55 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Mar 2023 15:36:17 +0300
-Message-Id: <20230327123617.24000-1-ville.syrjala@linux.intel.com>
+Message-ID: <20230327125255.vd2qwbnvsahxcbqu@kamilkon-desk1>
+References: <20230324133346.2284000-1-vikas.srivastava@intel.com>
+ <20230324133346.2284000-2-vikas.srivastava@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_psr: Try all modes on the
- connector
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230324133346.2284000-2-vikas.srivastava@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/intel_batchbuffer: Enable
+ XY_FAST_COPY_BLT support for api_intel_bb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,81 +25,135 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Hi Vikas,
 
-Certain panels have a preferred mode with a vblank that is
-too short for the PSR setup time, but also expose an alternate
-lower refresh rate mode where PSR is actually possible.
-Go through all the modes until one is found where PSR works.
+On 2023-03-24 at 19:03:43 +0530, Vikas Srivastava wrote:
+> Test case uses legacy command XY_SRC_COPY_BLT_CMD which is
+> not supported on newer platforms. Modified test to use
+> XY_FAST_COPY_BLT.
+> 
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/i915/kms_psr.c | 37 +++++++++++++++++++++++++++----------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+Put here Cc like:
 
-diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
-index c92902343ea3..3efe1faec8e7 100644
---- a/tests/i915/kms_psr.c
-+++ b/tests/i915/kms_psr.c
-@@ -109,7 +109,6 @@ static void setup_output(data_t *data)
- 
- 		data->crtc_id = output->config.crtc->crtc_id;
- 		data->output = output;
--		data->mode = igt_output_get_mode(output);
- 
- 		return;
- 	}
-@@ -369,6 +368,8 @@ static void test_cleanup(data_t *data)
- {
- 	igt_plane_t *primary;
- 
-+	igt_output_override_mode(data->output, NULL);
-+
- 	primary = igt_output_get_plane_type(data->output,
- 					    DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, NULL);
-@@ -440,17 +441,33 @@ static void setup_test_plane(data_t *data, int test_plane)
- 
- static void test_setup(data_t *data)
- {
-+	drmModeConnectorPtr connector;
-+	bool psr_entered = false;
-+
- 	igt_require_f(data->output,
- 		      "No available output found\n");
--	igt_require_f(data->mode,
--		      "No available mode found on %s\n",
--		      data->output->name);
--	if (data->op_psr_mode == PSR_MODE_2)
--		igt_require(data->supports_psr2);
--
--	psr_enable_if_enabled(data);
--	setup_test_plane(data, data->test_plane_id);
--	igt_assert(psr_wait_entry_if_enabled(data));
-+
-+	connector = data->output->config.connector;
-+
-+	for (int i = 0; i < connector->count_modes; i++) {
-+		data->mode = &connector->modes[i];
-+		igt_info("Testing mode:\n");
-+		kmstest_dump_mode(data->mode);
-+
-+		igt_output_override_mode(data->output, data->mode);
-+
-+		if (data->op_psr_mode == PSR_MODE_2)
-+			igt_require(data->supports_psr2);
-+
-+		psr_enable_if_enabled(data);
-+		setup_test_plane(data, data->test_plane_id);
-+		if (psr_wait_entry_if_enabled(data)) {
-+			psr_entered = true;
-+			break;
-+		}
-+	}
-+
-+	igt_assert(psr_entered);
- }
- 
- static void dpms_off_on(data_t *data)
--- 
-2.39.2
+Cc: Karolina Stolarek <karolina.stolarek@intel.com>
+> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
+> ---
+>  lib/intel_batchbuffer.c | 63 +++++++++++++++++++++++++++--------------
+>  1 file changed, 42 insertions(+), 21 deletions(-)
+> 
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index da4c238cae..b1eff42fcb 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -2407,11 +2407,17 @@ uint32_t intel_bb_copy_data(struct intel_bb *ibb,
+>   */
+>  void intel_bb_blit_start(struct intel_bb *ibb, uint32_t flags)
+>  {
+> -	intel_bb_out(ibb, XY_SRC_COPY_BLT_CMD |
+> -		     XY_SRC_COPY_BLT_WRITE_ALPHA |
+> -		     XY_SRC_COPY_BLT_WRITE_RGB |
+> -		     flags |
+> -		     (6 + 2 * (ibb->gen >= 8)));
+> +	if (blt_has_fast_copy(ibb->i915))
+> +		intel_bb_out(ibb, XY_FAST_COPY_BLT | flags);
+> +	else if (blt_has_xy_src_copy(ibb->i915))
+> +
+> +		intel_bb_out(ibb, XY_SRC_COPY_BLT_CMD |
+> +			     XY_SRC_COPY_BLT_WRITE_ALPHA |
+> +			     XY_SRC_COPY_BLT_WRITE_RGB |
+> +			     flags |
+> +			     (6 + 2 * (ibb->gen >= 8)));
+> +	else
+> +		igt_assert_f(0, "No supported blit command found\n");
+>  }
+>  
+>  /*
+> @@ -2449,12 +2455,22 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+>  
+>  	if (gen >= 4 && src->tiling != I915_TILING_NONE) {
+>  		src_pitch /= 4;
+> -		cmd_bits |= XY_SRC_COPY_BLT_SRC_TILED;
+> +		if (blt_has_fast_copy(ibb->i915))
+> +			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
+> +		else if (blt_has_xy_src_copy(ibb->i915))
+> +			cmd_bits |= XY_SRC_COPY_BLT_SRC_TILED;
+> +		else
+> +			igt_assert_f(0, "No supported blit command found\n");
+>  	}
+>  
+>  	if (gen >= 4 && dst->tiling != I915_TILING_NONE) {
+>  		dst_pitch /= 4;
+> -		cmd_bits |= XY_SRC_COPY_BLT_DST_TILED;
+> +		if (blt_has_fast_copy(ibb->i915))
+> +			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
+> +		else if (blt_has_xy_src_copy(ibb->i915))
+-------------------- ^
+Here you can use else without if() as it was already checked above.
+
+> +			cmd_bits |= XY_SRC_COPY_BLT_DST_TILED;
+> +		else
+> +			igt_assert_f(0, "No supported blit command found\n");
+
+This was ruled out with SRC_TILED above so no need to repeat
+"else igt_assert" here.
+
+>  	}
+>  
+>  	CHECK_RANGE(src_x1); CHECK_RANGE(src_y1);
+> @@ -2465,20 +2481,25 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+>  	CHECK_RANGE(src_pitch); CHECK_RANGE(dst_pitch);
+>  
+>  	br13_bits = 0;
+> -	switch (bpp) {
+> -	case 8:
+> -		break;
+> -	case 16:		/* supporting only RGB565, not ARGB1555 */
+> -		br13_bits |= 1 << 24;
+> -		break;
+> -	case 32:
+> -		br13_bits |= 3 << 24;
+> -		cmd_bits |= (XY_SRC_COPY_BLT_WRITE_ALPHA |
+> -			     XY_SRC_COPY_BLT_WRITE_RGB);
+> -		break;
+> -	default:
+> -		igt_fail(IGT_EXIT_FAILURE);
+> -	}
+> +	if (blt_has_xy_src_copy(ibb->i915)) {
+
+The instruction for dword0 and dword1 should be of the same kind,
+so if you will use fast_copy if it is supported then it should
+be used for both dw0 and dw1 as Karolina observed.
+
+> +		switch (bpp) {
+> +		case 8:
+> +			break;
+> +		case 16:		/* supporting only RGB565, not ARGB1555 */
+> +			br13_bits |= 1 << 24;
+> +			break;
+> +		case 32:
+> +			br13_bits |= 3 << 24;
+> +			cmd_bits |= (XY_SRC_COPY_BLT_WRITE_ALPHA |
+> +				     XY_SRC_COPY_BLT_WRITE_RGB);
+> +			break;
+> +		default:
+> +			igt_fail(IGT_EXIT_FAILURE);
+> +		}
+> +	} else if (blt_has_fast_copy(ibb->i915)) {
+-------------- ^
+Here you can use else without if().
+
+> +		br13_bits = fast_copy_dword1(ibb->i915, src->tiling, dst->tiling, bpp);
+> +	} else
+> +		igt_assert_f(0, "No supported blit command found\n");
+
+Same here, no need for that final else.
+
+Regards,
+Kamil
+
+>  
+>  	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
+>  		intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
+> -- 
+> 2.25.1
+> 
