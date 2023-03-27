@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
- [IPv6:2a00:1450:4864:20::133])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B255E10E36A
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 20:13:02 +0000 (UTC)
-Received: by mail-lf1-x133.google.com with SMTP id h25so13007649lfv.6
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 13:13:02 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EFF610E36F
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 13:32:11 +0000 (UTC)
+Received: from linux.intel.com (unknown [10.252.3.61])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id EA98A580D2C
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 06:31:59 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pgmx4-00ABn6-01
+ for igt-dev@lists.freedesktop.org; Mon, 27 Mar 2023 15:31:58 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Mar 2023 23:12:54 +0300
-Message-Id: <20230327201254.2834-3-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230327201254.2834-1-juhapekka.heikkila@gmail.com>
-References: <20230327201254.2834-1-juhapekka.heikkila@gmail.com>
+Date: Mon, 27 Mar 2023 15:31:44 +0200
+Message-Id: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] lib/igt_fb: switch blitcopy to use
- lib/i915/i915_blt functions
+Subject: [igt-dev] [PATCH i-g-t 00/11] Improve igt_doc.py
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,272 +28,40 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-reduce code duplication
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- lib/igt_fb.c | 214 +++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 192 insertions(+), 22 deletions(-)
+This series do some improvements at the igt_doc.py tool:
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index ba89e1f60..06ebe4818 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -35,6 +35,8 @@
- #include "drmtest.h"
- #include "i915/gem_create.h"
- #include "i915/gem_mman.h"
-+#include "i915/i915_blt.h"
-+#include "i915/intel_mocs.h"
- #include "igt_aux.h"
- #include "igt_color_encoding.h"
- #include "igt_fb.h"
-@@ -2680,12 +2682,134 @@ static void copy_with_engine(struct fb_blit_upload *blit,
- 	fini_buf(src);
- }
- 
-+static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
-+					   uint32_t plane, uint32_t memregion)
-+{
-+	uint32_t name, handle;
-+	struct blt_copy_object *blt;
-+	enum blt_tiling_type blt_tile;
-+	uint64_t stride;
-+
-+	blt = malloc(sizeof(*blt));
-+	igt_assert(blt);
-+
-+	name = gem_flink(fb->fd, fb->gem_handle);
-+	handle = gem_open(fb->fd, name);
-+
-+	switch (igt_fb_mod_to_tiling(fb->modifier)) {
-+	case I915_TILING_X:
-+		blt_tile = T_XMAJOR;
-+		stride = fb->strides[plane] / 4;
-+		break;
-+	case I915_TILING_Y:
-+		blt_tile = T_YMAJOR;
-+		stride = fb->strides[plane] / 4;
-+		break;
-+	case I915_TILING_4:
-+		blt_tile = T_TILE4;
-+		stride = fb->strides[plane] / 4;
-+		break;
-+	case I915_TILING_NONE:
-+	default:
-+		blt_tile = T_LINEAR;
-+		stride = fb->strides[plane];
-+		break;
-+	}
-+
-+	blt_set_object(blt, handle, fb->size, memregion,
-+		       intel_get_uc_mocs(fb->fd),
-+		       blt_tile,
-+		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
-+		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
-+
-+	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
-+
-+	blt->offset = fb->offsets[plane];
-+
-+	blt->ptr = gem_mmap__device_coherent(fb->fd, handle, 0, fb->size,
-+					     PROT_READ | PROT_WRITE);
-+	return blt;
-+}
-+
-+static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
-+{
-+	switch (fb->plane_bpp[0]) {
-+	case 8:
-+		return CD_8bit;
-+	case 16:
-+		return CD_16bit;
-+	case 32:
-+		return CD_32bit;
-+	case 64:
-+		return CD_64bit;
-+	case 96:
-+		return CD_96bit;
-+	case 128:
-+		return CD_128bit;
-+	default:
-+		igt_assert(0);
-+	}
-+}
-+
-+#define BLT_TARGET_RC(x) (x.compression == COMPRESSION_ENABLED && \
-+			  x.compression_type == COMPRESSION_TYPE_3D)
-+
-+#define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
-+			  x.compression_type == COMPRESSION_TYPE_MEDIA)
-+
-+static uint32_t blt_compression_format(struct blt_copy_data *blt,
-+				       const struct igt_fb *fb)
-+{
-+	if (blt->src.compression == COMPRESSION_DISABLED &&
-+	    blt->dst.compression == COMPRESSION_DISABLED)
-+		return 0;
-+
-+	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst)) {
-+		switch (blt->color_depth)
-+		{
-+		case CD_32bit:
-+			return 8;
-+		default:
-+			igt_assert_f(0, "COMPRESSION_TYPE_3D unknown color depth\n");
-+		}
-+	}
-+
-+	if (BLT_TARGET_MC(blt->src) || BLT_TARGET_MC(blt->dst)) {
-+		switch (fb->drm_format)
-+		{
-+		case DRM_FORMAT_XRGB8888:
-+			return 8;
-+		case DRM_FORMAT_XYUV8888:
-+			return 9;
-+		case DRM_FORMAT_NV12:
-+			return 9;
-+		case DRM_FORMAT_P010:
-+		case DRM_FORMAT_P012:
-+		case DRM_FORMAT_P016:
-+			return 8;
-+		default:
-+			igt_assert_f(0, "COMPRESSION_TYPE_MEDIA unknown format\n");
-+		}
-+	} else {
-+		igt_assert_f(0, "unknown compression\n");
-+	}
-+}
-+
- static void blitcopy(const struct igt_fb *dst_fb,
- 		     const struct igt_fb *src_fb)
- {
- 	uint32_t src_tiling, dst_tiling;
- 	uint32_t ctx = 0;
- 	uint64_t ahnd = 0;
-+	const intel_ctx_t *ictx = intel_ctx_create_all_physical(src_fb->fd);
-+	struct intel_execution_engine2 *e;
-+	uint32_t bb;
-+	uint64_t bb_size = 4096;
-+	struct blt_copy_data blt = {};
-+	struct blt_copy_object *src, *dst;
-+	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
-+	uint32_t mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
-+			   ? REGION_LMEM(0) : REGION_SMEM;
- 
- 	igt_assert_eq(dst_fb->fd, src_fb->fd);
- 	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
-@@ -2697,36 +2821,81 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 		igt_require(gem_has_contexts(dst_fb->fd));
- 		ctx = gem_context_create(dst_fb->fd);
- 		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
-+
-+		igt_assert(__gem_create_in_memory_regions(src_fb->fd,
-+							  &bb,
-+							  &bb_size,
-+							  mem_region) == 0);
-+
-+		for_each_ctx_engine(src_fb->fd, ictx, e) {
-+			if (gem_engine_can_block_copy(src_fb->fd, e))
-+				break;
-+		}
- 	}
- 
- 	for (int i = 0; i < dst_fb->num_planes; i++) {
- 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
- 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
- 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
--		/*
--		 * On GEN12+ X-tiled format support is removed from the fast
--		 * blit command, so use the XY_SRC blit command for it
--		 * instead.
--		 */
-+
- 		if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
--			igt_blitter_fast_copy__raw(dst_fb->fd,
--						   ahnd, ctx, NULL,
--						   src_fb->gem_handle,
--						   src_fb->offsets[i],
--						   src_fb->strides[i],
--						   src_tiling,
--						   0, 0, /* src_x, src_y */
--						   src_fb->size,
--						   dst_fb->plane_width[i],
--						   dst_fb->plane_height[i],
--						   dst_fb->plane_bpp[i],
--						   dst_fb->gem_handle,
--						   dst_fb->offsets[i],
--						   dst_fb->strides[i],
--						   dst_tiling,
--						   0, 0 /* dst_x, dst_y */,
--						   dst_fb->size);
-+			memset(&blt, 0, sizeof(blt));
-+			blt.color_depth = blt_get_bpp(src_fb);
-+
-+			src = blt_fb_init(src_fb, i, mem_region);
-+			dst = blt_fb_init(dst_fb, i, mem_region);
-+
-+			blt_set_copy_object(&blt.src, src);
-+			blt_set_copy_object(&blt.dst, dst);
-+
-+			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
-+
-+			blt_fast_copy(src_fb->fd, ictx, e, ahnd, &blt);
-+			gem_sync(src_fb->fd, blt.dst.handle);
-+
-+			blt_destroy_object(src_fb->fd, src);
-+			blt_destroy_object(dst_fb->fd, dst);
-+		} else if (ahnd) {
-+			/*
-+			* On GEN12+ X-tiled format support is removed from
-+			* the fast blit command, so use the block copy blit
-+			* command for it instead.
-+			*/
-+			src = blt_fb_init(src_fb, i, mem_region);
-+			dst = blt_fb_init(dst_fb, i, mem_region);
-+
-+			memset(&blt, 0, sizeof(blt));
-+			blt.print_bb = true;
-+			blt.color_depth = blt_get_bpp(src_fb);
-+			blt_set_copy_object(&blt.src, src);
-+			blt_set_copy_object(&blt.dst, dst);
-+
-+			if (HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))) {
-+				blt_set_object_ext(&ext.src,
-+						   blt_compression_format(&blt, src_fb),
-+						   src_fb->width, src_fb->height,
-+						   SURFACE_TYPE_2D);
-+
-+				blt_set_object_ext(&ext.dst,
-+						   blt_compression_format(&blt, dst_fb),
-+						   dst_fb->width, dst_fb->height,
-+						   SURFACE_TYPE_2D);
-+
-+				pext = &ext;
-+			}
-+
-+			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
-+
-+			blt_block_copy(src_fb->fd, ictx, e, ahnd, &blt, pext);
-+			gem_sync(src_fb->fd, blt.dst.handle);
-+
-+			blt_destroy_object(src_fb->fd, src);
-+			blt_destroy_object(dst_fb->fd, dst);
- 		} else {
-+			/*
-+			 * If on legacy hardware where relocations are supported
-+			 * we'll use XY_SRC blit command instead
-+			 */
- 			igt_blitter_src_copy(dst_fb->fd,
- 					     ahnd, ctx, NULL,
- 					     src_fb->gem_handle,
-@@ -2750,6 +2919,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 	if (ctx)
- 		gem_context_destroy(dst_fb->fd, ctx);
- 	put_ahnd(ahnd);
-+	intel_ctx_destroy(src_fb->fd, ictx);
- }
- 
- static void free_linear_mapping(struct fb_blit_upload *blit)
+- It does some tweaks at the Xe documentation hierarchy;
+- It adds support to generate test lists from documentation;
+- It splits the script on two parts: one with the TestList
+  class definition and another one with the toll itself;
+- While here, add missing documentation for two new tests;
+- Check if the documentation matches the actual tests at
+  build time, in order to prevent it to become outdated.
+
+Mauro Carvalho Chehab (11):
+  xe_test_config.json: do some adjustments at the output hierarchy
+  scripts/igt_doc.py: move show_subtests logic to the class
+  scripts/igt_doc.py: add support to generate testlists
+  scripts/igt_doc.py: prepare to place TestList class on a separate file
+  scripts/test_list.py: prepare to place class on a separate file
+  scripts/igt_doc.py: re-introduce it by calling test_list.py
+  scripts/test_list.py: better handle documentation validation issues
+  scripts/test_list.py: add support for igt_simple_main
+  testplan/meson.build: Validate documentation at build time
+  xe/xe_vm: add documentation for igt@xe_vm@userptr-invalid
+  xe/xe_noexec_ping_pong: document subtest
+
+ docs/testplan/meson.build      |    8 +-
+ meson.build                    |    1 +
+ scripts/igt_doc.py             | 1038 +-----------------------------
+ scripts/test_list.py           | 1084 ++++++++++++++++++++++++++++++++
+ tests/xe/xe_noexec_ping_pong.c |   26 +-
+ tests/xe/xe_test_config.json   |   30 +-
+ tests/xe/xe_vm.c               |   10 +-
+ 7 files changed, 1143 insertions(+), 1054 deletions(-)
+ create mode 100755 scripts/test_list.py
+
 -- 
-2.39.0
+2.39.2
