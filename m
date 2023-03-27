@@ -1,19 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C83CE10E5A0
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 12:53:03 +0000 (UTC)
-Date: Mon, 27 Mar 2023 14:52:55 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5164710E5C4
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 13:32:11 +0000 (UTC)
+Received: from linux.intel.com (unknown [10.252.3.61])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id EEEA3580689
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 06:31:59 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pgmx4-00ABn9-05
+ for igt-dev@lists.freedesktop.org; Mon, 27 Mar 2023 15:31:58 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230327125255.vd2qwbnvsahxcbqu@kamilkon-desk1>
-References: <20230324133346.2284000-1-vikas.srivastava@intel.com>
- <20230324133346.2284000-2-vikas.srivastava@intel.com>
+Date: Mon, 27 Mar 2023 15:31:45 +0200
+Message-Id: <20230327133155.2428454-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
+References: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230324133346.2284000-2-vikas.srivastava@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/intel_batchbuffer: Enable
- XY_FAST_COPY_BLT support for api_intel_bb
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 01/11] xe_test_config.json: do some
+ adjustments at the output hierarchy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,135 +31,65 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vikas,
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-On 2023-03-24 at 19:03:43 +0530, Vikas Srivastava wrote:
-> Test case uses legacy command XY_SRC_COPY_BLT_CMD which is
-> not supported on newer platforms. Modified test to use
-> XY_FAST_COPY_BLT.
-> 
+Place "Mega feature" inside the same hierarchical level,
+placing it on a higher level than sub-category, as this provides
+a higher level of group for functionalities.
 
-Put here Cc like:
+While here, better document the fields.
 
-Cc: Karolina Stolarek <karolina.stolarek@intel.com>
-> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-> ---
->  lib/intel_batchbuffer.c | 63 +++++++++++++++++++++++++++--------------
->  1 file changed, 42 insertions(+), 21 deletions(-)
-> 
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index da4c238cae..b1eff42fcb 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -2407,11 +2407,17 @@ uint32_t intel_bb_copy_data(struct intel_bb *ibb,
->   */
->  void intel_bb_blit_start(struct intel_bb *ibb, uint32_t flags)
->  {
-> -	intel_bb_out(ibb, XY_SRC_COPY_BLT_CMD |
-> -		     XY_SRC_COPY_BLT_WRITE_ALPHA |
-> -		     XY_SRC_COPY_BLT_WRITE_RGB |
-> -		     flags |
-> -		     (6 + 2 * (ibb->gen >= 8)));
-> +	if (blt_has_fast_copy(ibb->i915))
-> +		intel_bb_out(ibb, XY_FAST_COPY_BLT | flags);
-> +	else if (blt_has_xy_src_copy(ibb->i915))
-> +
-> +		intel_bb_out(ibb, XY_SRC_COPY_BLT_CMD |
-> +			     XY_SRC_COPY_BLT_WRITE_ALPHA |
-> +			     XY_SRC_COPY_BLT_WRITE_RGB |
-> +			     flags |
-> +			     (6 + 2 * (ibb->gen >= 8)));
-> +	else
-> +		igt_assert_f(0, "No supported blit command found\n");
->  }
->  
->  /*
-> @@ -2449,12 +2455,22 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
->  
->  	if (gen >= 4 && src->tiling != I915_TILING_NONE) {
->  		src_pitch /= 4;
-> -		cmd_bits |= XY_SRC_COPY_BLT_SRC_TILED;
-> +		if (blt_has_fast_copy(ibb->i915))
-> +			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
-> +		else if (blt_has_xy_src_copy(ibb->i915))
-> +			cmd_bits |= XY_SRC_COPY_BLT_SRC_TILED;
-> +		else
-> +			igt_assert_f(0, "No supported blit command found\n");
->  	}
->  
->  	if (gen >= 4 && dst->tiling != I915_TILING_NONE) {
->  		dst_pitch /= 4;
-> -		cmd_bits |= XY_SRC_COPY_BLT_DST_TILED;
-> +		if (blt_has_fast_copy(ibb->i915))
-> +			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
-> +		else if (blt_has_xy_src_copy(ibb->i915))
--------------------- ^
-Here you can use else without if() as it was already checked above.
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/xe/xe_test_config.json | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-> +			cmd_bits |= XY_SRC_COPY_BLT_DST_TILED;
-> +		else
-> +			igt_assert_f(0, "No supported blit command found\n");
-
-This was ruled out with SRC_TILED above so no need to repeat
-"else igt_assert" here.
-
->  	}
->  
->  	CHECK_RANGE(src_x1); CHECK_RANGE(src_y1);
-> @@ -2465,20 +2481,25 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
->  	CHECK_RANGE(src_pitch); CHECK_RANGE(dst_pitch);
->  
->  	br13_bits = 0;
-> -	switch (bpp) {
-> -	case 8:
-> -		break;
-> -	case 16:		/* supporting only RGB565, not ARGB1555 */
-> -		br13_bits |= 1 << 24;
-> -		break;
-> -	case 32:
-> -		br13_bits |= 3 << 24;
-> -		cmd_bits |= (XY_SRC_COPY_BLT_WRITE_ALPHA |
-> -			     XY_SRC_COPY_BLT_WRITE_RGB);
-> -		break;
-> -	default:
-> -		igt_fail(IGT_EXIT_FAILURE);
-> -	}
-> +	if (blt_has_xy_src_copy(ibb->i915)) {
-
-The instruction for dword0 and dword1 should be of the same kind,
-so if you will use fast_copy if it is supported then it should
-be used for both dw0 and dw1 as Karolina observed.
-
-> +		switch (bpp) {
-> +		case 8:
-> +			break;
-> +		case 16:		/* supporting only RGB565, not ARGB1555 */
-> +			br13_bits |= 1 << 24;
-> +			break;
-> +		case 32:
-> +			br13_bits |= 3 << 24;
-> +			cmd_bits |= (XY_SRC_COPY_BLT_WRITE_ALPHA |
-> +				     XY_SRC_COPY_BLT_WRITE_RGB);
-> +			break;
-> +		default:
-> +			igt_fail(IGT_EXIT_FAILURE);
-> +		}
-> +	} else if (blt_has_fast_copy(ibb->i915)) {
--------------- ^
-Here you can use else without if().
-
-> +		br13_bits = fast_copy_dword1(ibb->i915, src->tiling, dst->tiling, bpp);
-> +	} else
-> +		igt_assert_f(0, "No supported blit command found\n");
-
-Same here, no need for that final else.
-
-Regards,
-Kamil
-
->  
->  	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
->  		intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/xe/xe_test_config.json b/tests/xe/xe_test_config.json
+index 6c474d6053f3..666fe6cd315c 100644
+--- a/tests/xe/xe_test_config.json
++++ b/tests/xe/xe_test_config.json
+@@ -4,27 +4,27 @@
+     "fields": {
+         "Category": {
+             "_properties_": {
+-                "description": "Contains the major group for the tested functionality"
++                "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
+             },
+-            "Sub-category": {
++            "Mega feature": {
+                 "_properties_": {
+-                    "description": "Contains the minor group of the functionality"
+-                },
+-                "Functionality": {
+-                    "_properties_": {
+-                        "description": "Groups page table tests per functionality"
+-                    }
++                    "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
+                 },
+-                "Run type": {
++                "Sub-category": {
+                     "_properties_": {
+-                        "description": "Defines what category of testlist it belongs"
++                        "description": "Contains the the technical feature/functionality"
++                    },
++                    "Functionality": {
++                        "_properties_": {
++                            "description": "Groups page table tests on buckets containg more detailed functionality"
++                        }
++                    },
++                    "Run type": {
++                        "_properties_": {
++                            "description": "Defines what category of testlist it belongs"
++                        }
+                     }
+                 }
+-            },
+-            "Mega feature": {
+-                "_properties_": {
+-                    "description": "Contains the mega feature for E2E use case"
+-                }
+             }
+         },
+         "Test category": {
+-- 
+2.39.2
