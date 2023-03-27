@@ -1,22 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BBBD10E5D0
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24EE310E5D5
  for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 13:41:24 +0000 (UTC)
 Received: from linux.intel.com (unknown [10.252.3.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id E88FA580D2C
+ by linux.intel.com (Postfix) with ESMTPS id EEC27580C25
  for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 06:41:22 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pgn68-00AC0q-2m
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pgn68-00AC0t-2r
  for igt-dev@lists.freedesktop.org; Mon, 27 Mar 2023 15:41:20 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Mar 2023 15:41:14 +0200
-Message-Id: <20230327134119.2429388-1-mauro.chehab@linux.intel.com>
+Date: Mon, 27 Mar 2023 15:41:15 +0200
+Message-Id: <20230327134119.2429388-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230327134119.2429388-1-mauro.chehab@linux.intel.com>
+References: <20230327134119.2429388-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/5] Make xe_compute test more generic
+Subject: [igt-dev] [PATCH i-g-t 1/5] compute_square_kernel.cl: add CL file
+ used at xe_compute.c
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,30 +33,41 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Currently, xe_compute test runs only on an specific TGL PCI ID.
-Make the test more generic, preparing to add support for more
-platforms.
+Provide the cl file that it was used to produce the OpenCL
+Kernel used by xe_compute, and document how the binary at
+xe_compute.h was produced.
 
-Mauro Carvalho Chehab (5):
-  compute_square_kernel.cl: add CL file used at xe_compute.c
-  xe/xe_compute: place OpenCL kernel on a separate file
-  lib/xe/xe_compute: use registers defs from intel_gpu_commands.h
-  gen_opencl_kernel: add script to dynamically create OpenCL kernels
-  [RFC EXAMPLE] lib/xe/xe_compute_kernels.c: re-generate TGL binary
-
- lib/meson.build                    |    1 +
- lib/xe/xe_compute.c                |  236 ++--
- lib/xe/xe_compute.h                |   31 +-
- lib/xe/xe_compute_square_kernels.c | 1845 ++++++++++++++++++++++++++++
- opencl/README                      |   11 +
- opencl/compute_square_kernel.cl    |    5 +
- opencl/gen_opencl_kernel           |   86 ++
- tests/xe/xe_compute.c              |  108 +-
- 8 files changed, 2129 insertions(+), 194 deletions(-)
- create mode 100644 lib/xe/xe_compute_square_kernels.c
- create mode 100644 opencl/README
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ lib/xe/xe_compute.c             | 3 ++-
+ opencl/compute_square_kernel.cl | 5 +++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
  create mode 100644 opencl/compute_square_kernel.cl
- create mode 100755 opencl/gen_opencl_kernel
 
+diff --git a/lib/xe/xe_compute.c b/lib/xe/xe_compute.c
+index 8c0f8c87d50f..2165eada8931 100644
+--- a/lib/xe/xe_compute.c
++++ b/lib/xe/xe_compute.c
+@@ -18,7 +18,8 @@
+ #define GPGPU_WALKER			0x7105000d
+ #define MI_BATCH_BUFFER_END		(0xA << 23)
+ 
+-// generated with: ocloc -file kernel.cl -device tgllp && xxd -i kernel_Gen12LPlp.gen
++// generated with:
++// ocloc -file opencl/compute_square_kernel.cl -device tgllp && xxd -i compute_square_kernel_Gen12LPlp.bin
+ unsigned char tgllp_kernel_square_bin[] = {
+ 	0x61, 0x00, 0x03, 0x80, 0x20, 0x02, 0x05, 0x03, 0x04, 0x00, 0x10, 0x00,
+ 	0x00, 0x00, 0x00, 0x00, 0x66, 0x01, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
+diff --git a/opencl/compute_square_kernel.cl b/opencl/compute_square_kernel.cl
+new file mode 100644
+index 000000000000..f6260fb934dc
+--- /dev/null
++++ b/opencl/compute_square_kernel.cl
+@@ -0,0 +1,5 @@
++__kernel void square(__global float* input, __global float* output, const unsigned int count) {
++  int i = get_global_id(0);
++  if(i < count)
++    output[i] = input[i] * input[i];
++}
 -- 
 2.39.2
