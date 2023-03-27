@@ -1,25 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0D6510E5C4
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 13:32:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCE9F10E5C4
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 13:32:11 +0000 (UTC)
 Received: from linux.intel.com (unknown [10.252.3.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 1A729580D92
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 06:32:00 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id EA8F2580C25
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 06:31:59 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pgmx4-00ABnY-0T
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pgmx4-00ABnC-08
  for igt-dev@lists.freedesktop.org; Mon, 27 Mar 2023 15:31:58 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Mar 2023 15:31:53 +0200
-Message-Id: <20230327133155.2428454-10-mauro.chehab@linux.intel.com>
+Date: Mon, 27 Mar 2023 15:31:46 +0200
+Message-Id: <20230327133155.2428454-3-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
 References: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 09/11] testplan/meson.build: Validate
- documentation at build time
+Subject: [igt-dev] [PATCH i-g-t 02/11] scripts/igt_doc.py: move
+ show_subtests logic to the class
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,49 +33,65 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-If the tests are build too, check if the documentation match
-the name of the tests.
+Simplify the main code and avoid warnings about global vars with
+pylint by moving its code to a separate function.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- docs/testplan/meson.build | 8 ++++++--
- meson.build               | 1 +
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ scripts/igt_doc.py | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index fee568868167..d1ad6ea0461b 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -8,12 +8,16 @@ stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
+diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+index 67ab7984dd11..cc2768ae0847 100755
+--- a/scripts/igt_doc.py
++++ b/scripts/igt_doc.py
+@@ -1018,6 +1018,25 @@ class TestList:
+                 sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized line. Need to add field at %s?\n\t==> %s" %
+                          (self.config_fname, file_line))
  
- xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
++    def show_subtests(self, sort_field, filter_field):
++
++        """Show subtests, allowing sort and filter a field """
++
++        if sort_field:
++            test_subtests = tests.get_subtests(sort_field, filter_field)
++            for val_key in sorted(test_subtests.keys()):
++                if not test_subtests[val_key]:
++                    continue
++                if val_key == "":
++                    print("not defined:")
++                else:
++                    print(f"{val_key}:")
++                    for sub in test_subtests[val_key]:
++                        print (f"  {sub}")
++        else:
++            for sub in tests.get_subtests(sort_field, filter_field)[""]:
++                print (sub)
++
+ #
+ # Main
+ #
+@@ -1056,20 +1075,7 @@ tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files)
+ RUN = 0
+ if parse_args.show_subtests:
+     RUN = 1
+-    if parse_args.sort_field:
+-        test_subtests = tests.get_subtests(parse_args.sort_field, parse_args.filter_field)
+-        for val_key in sorted(test_subtests.keys()):
+-            if not test_subtests[val_key]:
+-                continue
+-            if val_key == "":
+-                print("not defined:")
+-            else:
+-                print(f"{val_key}:")
+-            for sub in test_subtests[val_key]:
+-                print (f"  {sub}")
+-    else:
+-        for sub in tests.get_subtests(parse_args.sort_field, parse_args.filter_field)[""]:
+-            print (sub)
++    tests.show_subtests(parse_args.sort_field, parse_args.filter_field)
  
--if not build_tests
-+check_testlist = ''
-+if build_tests
-+	# Check if documentation matches the actual tests
-+	check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
-+else
- 	test_executables = []
- endif
- 
- test_dict = { 'xe_tests':
--		{ 'input': xe_test_config, 'extra_args': [] }
-+		{ 'input': xe_test_config, 'extra_args': check_testlist }
- 	    }
- 
- foreach testplan, fields: test_dict
-diff --git a/meson.build b/meson.build
-index 7360634fe199..bef590f465dc 100644
---- a/meson.build
-+++ b/meson.build
-@@ -15,6 +15,7 @@ endif
- 
- # meson.source_root is marked as a future-deprecated feature
- source_root = meson.current_source_dir()
-+build_root = meson.current_build_dir()
- 
- cc = meson.get_compiler('c')
- 
+ if parse_args.check_testlist:
+     RUN = 1
 -- 
 2.39.2
