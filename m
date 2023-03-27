@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41E3310E346
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 10:26:11 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 27 Mar 2023 10:26:07 +0000
-Message-ID: <e282213dabed513c03e02d922d773b8b7ee6a327.camel@intel.com>
-References: <20230315210147.19557-1-mohammed.thasleem@intel.com>
- <20230315210147.19557-3-mohammed.thasleem@intel.com>
-In-Reply-To: <20230315210147.19557-3-mohammed.thasleem@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38EC810E55D
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 11:39:25 +0000 (UTC)
+Message-ID: <4a0f2593-1545-bd73-24db-548a6749a2a2@intel.com>
+Date: Mon, 27 Mar 2023 13:39:30 +0200
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7DD15BD93E764E4FAA1E338AFEAB7E83@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+To: Vikas Srivastava <vikas.srivastava@intel.com>
+References: <20230324133346.2284000-1-vikas.srivastava@intel.com>
+ <20230324133346.2284000-2-vikas.srivastava@intel.com>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230324133346.2284000-2-vikas.srivastava@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/i915_pm_dc: Add DC6 PSR
- test for mtl
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/intel_batchbuffer: Enable
+ XY_FAST_COPY_BLT support for api_intel_bb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,96 +22,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCAyMDIzLTAzLTE2IGF0IDAyOjMxICswNTMwLCBNb2hhbW1lZCBUaGFzbGVlbSB3cm90
-ZToKPiBUaGUgZmxvdyBmb3IgREM2IHZhbGlkYXRpb24gaGFzIGNoYW5nZWQgZm9yIE1UTC4KPiBE
-QzYgc3RhdGUgYWNoaWV2ZWQgYmFzZWQgb24gUEtHQzEwIGVudHJ5Lgo+IFRoaXMgdGVzdCB2YWxp
-ZGF0ZXMgUEtHQzEwIGVudHJ5IGFuZCBjb25maXJtIERDNiBhY2hpZXZlZC4KCkNhbiB5b3UgcGxl
-YXNlIGNsYXJpZnkgaW4gY29tbWl0IG1lc3NhZ2Ugd2h5IHRoaXMgaGFzIGNoYW5nZWQ/IFVzaW5n
-ClBLR0MxMCBhcyBpbmRpY2F0b3IgZm9yIERDNiBlbnRyeSBpcyBtdWNoIG1vcmUgZXJyb3IgcHJv
-bmUuIFRoZXJlIGFyZQptdWNoIG1vcmUgcG9zc2libGUgYmxvY2tlcnMgZm9yIFBLR0MqIHN0YXRl
-IGVudHJ5IGNvbXBhcmVkIHRvIERDKiBzdGF0ZQplbnRyeS4gWW91IHNob3VsZCBoYXZlIGdvb2Qg
-cmVhc29uaW5nIGZvciB5b3VyIGNoYW5nZS4KIAo+IAo+IFNpZ25lZC1vZmYtYnk6IE1vaGFtbWVk
-IFRoYXNsZWVtIDxtb2hhbW1lZC50aGFzbGVlbUBpbnRlbC5jb20+Cj4gLS0tCj4gwqB0ZXN0cy9p
-OTE1L2k5MTVfcG1fZGMuYyB8IDU0Cj4gKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKy0KPiDCoDEgZmlsZSBjaGFuZ2VkLCA1MyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9u
-KC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5jIGIvdGVzdHMvaTkx
-NS9pOTE1X3BtX2RjLmMKPiBpbmRleCAzMjJhMGM2MC4uZWQ1NzNjZTYgMTAwNjQ0Cj4gLS0tIGEv
-dGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMKPiArKysgYi90ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYwo+
-IEBAIC00MDcsNiArNDA3LDM4IEBAIHN0YXRpYyB2b2lkIGRwbXNfb24oZGF0YV90ICpkYXRhKQo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKElH
-VF9SVU5USU1FX1BNX1NUQVRVU19BQ1RJVkUpKTsKPiDCoH0KPiDCoAo+ICtzdGF0aWMgdm9pZCBw
-c3JfcGtjX2VuYWJsZShkYXRhX3QgKmRhdGEpCgpJIHRoaW5rIHRoaXMgbmFtaW5nIGRvZXNuJ3Qg
-bWFrZSBzZW5zZS4gQW55d2F5cywgZXZlbnR1YWxseSB0aGlzCmZ1bmN0aW9uIGlzIGRvaW5nIHNh
-bWUgdGhpbmcgYXM6CgprbXN0ZXN0X3NldF9jb25uZWN0b3JfZHBtcyhkYXRhLT5kcm1fZmQsIGRh
-dGEtPmRpc3BsYXkub3V0cHV0cy0KPmNvbmZpZy5jb25uZWN0b3IsIERSTV9NT0RFX0RQTVNfT0ZG
-KTsKClNvIG1heWJlIHlvdSBjb3VsZCBkaXJlY3RseSBkbyB0aGF0IGluc3RlYWQgb2Ygc3BsaXR0
-aW5nIHRoaXMgaW50byBpdCdzCm93biBmdW5jdGlvbj8gSS5lLiBsb29wIGJlbG93IGRvZXNuJ3Qg
-bWFrZSBzZW5zZS4KCj4gK3sKPiArwqDCoMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X3QgKm91dHB1dDsK
-PiArCj4gK8KgwqDCoMKgwqDCoMKgZm9yX2VhY2hfY29ubmVjdGVkX291dHB1dCgmZGF0YS0+ZGlz
-cGxheSwgb3V0cHV0KSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRybU1vZGVD
-b25uZWN0b3JQdHIgYyA9IG91dHB1dC0+Y29uZmlnLmNvbm5lY3RvcjsKPiArCj4gK8KgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChjLT5jb25uZWN0b3JfdHlwZSA9PSBEUk1fTU9ERV9D
-T05ORUNUT1JfZURQKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgY29udGludWU7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBrbXN0
-ZXN0X3NldF9jb25uZWN0b3JfZHBtcyhkYXRhLT5kcm1fZmQsCj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgZGF0YS0+ZGlzcGxheS5vdXRwdXRzLQo+ID5jb25maWcuY29ubmVjdG9yLAo+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIERSTV9NT0RFX0RQTVNfT0ZGKTsKCkFzIG1lbnRpb25l
-ZCBhYm92ZSB0aGlzIGxvb3AgZG9lc24ndCBtYWtlIHNlbnNlLiBNYXliZSB5b3Ugd2FudGVkIDoK
-Cmttc3Rlc3Rfc2V0X2Nvbm5lY3Rvcl9kcG1zKGRhdGEtPmRybV9mZCwgYywgRFJNX01PREVfRFBN
-U19PRkYpOwoKPwo+ICvCoMKgwqDCoMKgwqDCoH0KPiArfQo+ICsKPiArc3RhdGljIHZvaWQgcHNy
-X3BrY19kaXNhYmxlKGRhdGFfdCAqZGF0YSkKPiArewo+ICvCoMKgwqDCoMKgwqDCoGlndF9vdXRw
-dXRfdCAqb3V0cHV0Owo+ICsKPiArwqDCoMKgwqDCoMKgwqBmb3JfZWFjaF9jb25uZWN0ZWRfb3V0
-cHV0KCZkYXRhLT5kaXNwbGF5LCBvdXRwdXQpIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgZHJtTW9kZUNvbm5lY3RvclB0ciBjID0gb3V0cHV0LT5jb25maWcuY29ubmVjdG9yOwo+
-ICsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGMtPmNvbm5lY3Rvcl90eXBl
-ID09IERSTV9NT0RFX0NPTk5FQ1RPUl9lRFApCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoGttc3Rlc3Rfc2V0X2Nvbm5lY3Rvcl9kcG1zKGRhdGEtPmRybV9mZCwKPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkYXRhLT5kaXNwbGF5Lm91dHB1dHMtCj4gPmNvbmZpZy5j
-b25uZWN0b3IsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgRFJNX01PREVfRFBNU19PTik7
-Cj4gK8KgwqDCoMKgwqDCoMKgfQo+ICt9Cj4gKwo+IMKgc3RhdGljIHZvaWQgdGVzdF9kY19zdGF0
-ZV9kcG1zKGRhdGFfdCAqZGF0YSwgaW50IGRjX2ZsYWcpCj4gwqB7Cj4gwqDCoMKgwqDCoMKgwqDC
-oHVpbnQzMl90IGRjX2NvdW50ZXI7Cj4gQEAgLTU1MSw2ICs1ODMsMjMgQEAgc3RhdGljIHZvaWQg
-dGVzdF9wa2Nfc3RhdGVfZHBtcyhkYXRhX3QgKmRhdGEpCj4gwqDCoMKgwqDCoMKgwqDCoGRwbXNf
-b24oZGF0YSk7Cj4gwqB9Cj4gwqAKPiArc3RhdGljIHZvaWQgdGVzdF9wa2Nfc3RhdGVfcHNyKGRh
-dGFfdCAqZGF0YSkKCldvdWxkIGl0IG1ha2UgbW9yZSBzZW5zZSB0byBkaWZmZXJlbnRpYXRlIGlu
-IHRlc3RfZGNfc3RhdGVfcHNyIGluc3RlYWQKb2YgaGF2aW5nIG93biBmdW5jdGlvbj8KCj4gK3sK
-PiArwqDCoMKgwqDCoMKgwqB1bnNpZ25lZCBpbnQgdGltZW91dF9tc2VjID0gMzA7Cj4gK8KgwqDC
-oMKgwqDCoMKgdW5zaWduZWQgaW50IHByZXZfdmFsdWUgPSAwLCBjdXJfdmFsdWUgPSAwOwo+ICsK
-PiArwqDCoMKgwqDCoMKgwqBwcmV2X3ZhbHVlID0gcmVhZF9wa2Nfc3RhdGVfdmFsdWUoZGF0YS0+
-cG1jX2ZkKTsKPiArwqDCoMKgwqDCoMKgwqBzZXR1cF9vdXRwdXQoZGF0YSk7Cj4gK8KgwqDCoMKg
-wqDCoMKgc2V0dXBfcHJpbWFyeShkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KHBz
-cl93YWl0X2VudHJ5KGRhdGEtPmRlYnVnZnNfZmQsIGRhdGEtCj4gPm9wX3Bzcl9tb2RlKSk7Cj4g
-K8KgwqDCoMKgwqDCoMKgcHNyX3BrY19lbmFibGUoZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgY2xl
-YW51cF9kY19wc3IoZGF0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X3dhaXQoKGN1cl92YWx1ZSA9
-IHJlYWRfcGtjX3N0YXRlX3ZhbHVlKGRhdGEtPnBtY19mZCkpLAo+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCB0aW1lb3V0X21zZWMgKiAxMDAwLCAxMDApOwoKSSB0aGluayB5b3Ug
-d2FudCB0byBoYXZlOgoKaWd0X3dhaXQoKGN1cl92YWx1ZSA9IHJlYWRfcGtjX3N0YXRlX3ZhbHVl
-KGRhdGEtPnBtY19mZCkpID4KcHJldl92YWx1ZSx0aW1lb3V0X21zZWMgKiAxMDAwLCAxMDApOwoK
-Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9mKGN1cl92YWx1ZSA+IHByZXZfdmFsdWUsICJQ
-SzEwIGlzIG5vdAo+IGFjaGllaXZlZC5cbiIpOwo+ICvCoMKgwqDCoMKgwqDCoHBzcl9wa2NfZGlz
-YWJsZShkYXRhKTsKPiArfQo+ICsKPiDCoHN0YXRpYyB2b2lkIGttc19wb2xsX3N0YXRlX3Jlc3Rv
-cmUoaW50IHNpZykKPiDCoHsKPiDCoMKgwqDCoMKgwqDCoMKgaW50IHN5c2ZzX2ZkOwo+IEBAIC02
-MDksNyArNjU4LDEwIEBAIGlndF9tYWluCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqBwc3JfZW5hYmxlKGRhdGEuZHJtX2ZkLCBkYXRhLmRlYnVnZnNfZmQsCj4gZGF0YS5vcF9wc3Jf
-bW9kZSk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9mKGln
-dF9wbV9wYzhfcGx1c19yZXNpZGVuY2llc19lbmFibGVkKGRhdAo+IGEubXNyX2ZkKSwKPiDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJQ
-QzgrIHJlc2lkZW5jaWVzIG5vdCBzdXBwb3J0ZWRcbiIpOwo+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqB0ZXN0X2RjX3N0YXRlX3BzcigmZGF0YSwgQ0hFQ0tfREM2KTsKPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGludGVsX2Rpc3BsYXlfdmVyKGRhdGEuZGV2aWQp
-ID09IDE0KQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-dGVzdF9wa2Nfc3RhdGVfcHNyKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgZWxzZQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-dGVzdF9kY19zdGF0ZV9wc3IoJmRhdGEsIENIRUNLX0RDNik7Cj4gwqDCoMKgwqDCoMKgwqDCoH0K
-PiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRoaXMgdGVzdCB2YWxpZGF0ZXMg
-ZGlzcGxheSBlbmdpbmUgZW50cnkgdG8gREM1Cj4gc3RhdGUgIgoKQlIsCgpKb3VuaSBIw7ZnYW5k
-ZXIK
+Hi Vikas,
+
+On 24.03.2023 14:33, Vikas Srivastava wrote:
+> Test case uses legacy command XY_SRC_COPY_BLT_CMD which is
+> not supported on newer platforms. Modified test to use
+
+nit: The recommendation of using imperative mood in commit comments also 
+applies to descriptions. s/Modified/Modify/
+
+> XY_FAST_COPY_BLT.
+> 
+> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
+> ---
+>   lib/intel_batchbuffer.c | 63 +++++++++++++++++++++++++++--------------
+>   1 file changed, 42 insertions(+), 21 deletions(-)
+> 
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index da4c238cae..b1eff42fcb 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -2407,11 +2407,17 @@ uint32_t intel_bb_copy_data(struct intel_bb *ibb,
+>    */
+>   void intel_bb_blit_start(struct intel_bb *ibb, uint32_t flags)
+>   {
+> -	intel_bb_out(ibb, XY_SRC_COPY_BLT_CMD |
+> -		     XY_SRC_COPY_BLT_WRITE_ALPHA |
+> -		     XY_SRC_COPY_BLT_WRITE_RGB |
+> -		     flags |
+> -		     (6 + 2 * (ibb->gen >= 8)));
+> +	if (blt_has_fast_copy(ibb->i915))
+> +		intel_bb_out(ibb, XY_FAST_COPY_BLT | flags);
+> +	else if (blt_has_xy_src_copy(ibb->i915))
+> +
+
+^--- empty line, it'd be better to delete it
+
+> +		intel_bb_out(ibb, XY_SRC_COPY_BLT_CMD |
+> +			     XY_SRC_COPY_BLT_WRITE_ALPHA |
+> +			     XY_SRC_COPY_BLT_WRITE_RGB |
+> +			     flags |
+> +			     (6 + 2 * (ibb->gen >= 8)));
+> +	else
+> +		igt_assert_f(0, "No supported blit command found\n");
+>   }
+>   
+>   /*
+> @@ -2449,12 +2455,22 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+>   
+>   	if (gen >= 4 && src->tiling != I915_TILING_NONE) {
+>   		src_pitch /= 4;
+> -		cmd_bits |= XY_SRC_COPY_BLT_SRC_TILED;
+> +		if (blt_has_fast_copy(ibb->i915))
+> +			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
+
+I think you've run in a strange bug with that fast-copy that I didn't 
+have time to investigate. I was able to fix the issue locally by 
+reordering all of your checks (that is, first check for XY_SRC_COPY_BLT 
+and then do if else on XY_FAST_COPY_BLT support). Remember to test it, 
+on KBL for example, before sending the next version.
+
+> +		else if (blt_has_xy_src_copy(ibb->i915))
+> +			cmd_bits |= XY_SRC_COPY_BLT_SRC_TILED;
+> +		else
+> +			igt_assert_f(0, "No supported blit command found\n");
+>   	}
+>   
+>   	if (gen >= 4 && dst->tiling != I915_TILING_NONE) {
+>   		dst_pitch /= 4;
+> -		cmd_bits |= XY_SRC_COPY_BLT_DST_TILED;
+> +		if (blt_has_fast_copy(ibb->i915))
+> +			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
+> +		else if (blt_has_xy_src_copy(ibb->i915))
+> +			cmd_bits |= XY_SRC_COPY_BLT_DST_TILED;
+> +		else
+> +			igt_assert_f(0, "No supported blit command found\n");
+>   	}
+>   
+>   	CHECK_RANGE(src_x1); CHECK_RANGE(src_y1);
+> @@ -2465,20 +2481,25 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+>   	CHECK_RANGE(src_pitch); CHECK_RANGE(dst_pitch);
+>   
+>   	br13_bits = 0;
+> -	switch (bpp) {
+> -	case 8:
+> -		break;
+> -	case 16:		/* supporting only RGB565, not ARGB1555 */
+> -		br13_bits |= 1 << 24;
+> -		break;
+> -	case 32:
+> -		br13_bits |= 3 << 24;
+> -		cmd_bits |= (XY_SRC_COPY_BLT_WRITE_ALPHA |
+> -			     XY_SRC_COPY_BLT_WRITE_RGB);
+> -		break;
+> -	default:
+> -		igt_fail(IGT_EXIT_FAILURE);
+> -	}
+> +	if (blt_has_xy_src_copy(ibb->i915)) {
+> +		switch (bpp) {
+> +		case 8:
+> +			break;
+> +		case 16:		/* supporting only RGB565, not ARGB1555 */
+> +			br13_bits |= 1 << 24;
+> +			break;
+> +		case 32:
+> +			br13_bits |= 3 << 24;
+> +			cmd_bits |= (XY_SRC_COPY_BLT_WRITE_ALPHA |
+> +				     XY_SRC_COPY_BLT_WRITE_RGB);
+> +			break;
+> +		default:
+> +			igt_fail(IGT_EXIT_FAILURE);
+> +		}
+> +	} else if (blt_has_fast_copy(ibb->i915)) {
+> +		br13_bits = fast_copy_dword1(ibb->i915, src->tiling, dst->tiling, bpp);
+> +	} else
+> +		igt_assert_f(0, "No supported blit command found\n");
+
+Please add brackets to "else" as well.
+
+All the best,
+Karolina
+
+>   
+>   	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
+>   		intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
