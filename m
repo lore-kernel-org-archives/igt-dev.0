@@ -1,16 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	igt-dev@lists.freedesktop.org
-Date: Mon, 27 Mar 2023 19:00:28 -0700
-Message-Id: <20230328020028.2143954-3-vinay.belgaumkar@intel.com>
-In-Reply-To: <20230328020028.2143954-1-vinay.belgaumkar@intel.com>
-References: <20230328020028.2143954-1-vinay.belgaumkar@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E409B10E285
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 02:01:56 +0000 (UTC)
+Date: Tue, 28 Mar 2023 02:00:56 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Message-ID: <ZCJKWPNjhYyBJnhq@DUT025-TGLU.fm.intel.com>
+References: <20230324050253.2560-1-niranjana.vishwanathapura@intel.com>
+ <20230324071246.3eb2ef35@maurocar-mobl2>
+ <ZB1B5+7YUhJAYFDq@nvishwa1-DESK>
+ <20230324092151.kumrdwsajwu47bi5@zkempczy-mobl2>
+ <ZCIswnOWCVgPWTSN@nvishwa1-DESK>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] i915_pm_freq_api: Add some basic SLPC
- igt tests
+In-Reply-To: <ZCIswnOWCVgPWTSN@nvishwa1-DESK>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe/xe_query: Extern
+ xe_supports_faults()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,194 +25,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Validate basic api for GT freq control. Also test
-interaction with GT reset. We skip rps tests with
-SLPC enabled, this will re-introduce some coverage.
-SLPC selftests are already covering some other workload
-related scenarios.
+On Mon, Mar 27, 2023 at 04:54:42PM -0700, Niranjana Vishwanathapura wrote:
+> On Fri, Mar 24, 2023 at 10:21:51AM +0100, Zbigniew Kempczyński wrote:
+> > On Thu, Mar 23, 2023 at 11:23:35PM -0700, Niranjana Vishwanathapura wrote:
+> > > On Fri, Mar 24, 2023 at 07:12:46AM +0100, Mauro Carvalho Chehab wrote:
+> > > > On Thu, 23 Mar 2023 22:02:53 -0700
+> > > > Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com> wrote:
+> > > >
+> > > > > Do not check for supports_faults in xe_device_get() as
+> > > > > it creates a VM in fault mode which prohibits creation
+> > > > > of any other VM in non-fault mode until this fault mode
+> > > > > VM is closed. This leads to test failures in multi threaded
+> > > > > cases.
+> > > >
+> > > > Hmm...
+> > > >
+> > > > >
+> > > > > Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+> > > > > ---
+> > > > >  lib/xe/xe_query.c | 51 ++++++++++++++++++++++-------------------------
+> > > > >  lib/xe/xe_query.h |  3 ---
+> > > > >  2 files changed, 24 insertions(+), 30 deletions(-)
+> > > > >
+> > > > > diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+> > > > > index 183523280..dc91d59bc 100644
+> > > > > --- a/lib/xe/xe_query.c
+> > > > > +++ b/lib/xe/xe_query.c
+> > > > > @@ -160,23 +160,6 @@ static uint32_t __mem_default_alignment(struct drm_xe_query_mem_usage *mem_usage
+> > > > >  	return alignment;
+> > > > >  }
+> > > > >
+> > > > > -static bool xe_check_supports_faults(int fd)
+> > > > > -{
+> > > > > -	bool supports_faults;
+> > > > > -
+> > > > > -	struct drm_xe_vm_create create = {
+> > > > > -		.flags = DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
+> > > > > -			 DRM_XE_VM_CREATE_FAULT_MODE,
+> > > > > -	};
+> > > > > -
+> > > > > -	supports_faults = !igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
+> > > > > -
+> > > > > -	if (supports_faults)
+> > > > > -		xe_vm_destroy(fd, create.vm_id);
+> > > >
+> > > > Weren't the VM supposed to be closed here?
+> > > >
+> > > 
+> > > Yes, but before it does destroy the VM, some other thread can try
+> > > to create a VM in non-fault mode and fail because we have created
+> > > a fault mode VM here. This happens in multi-threaded test like
+> > > xe_exec_threads.
+> > 
+> > I've question about it - why separately created vm in fault mode
+> > influences on creating another vm in non-fault mode? Those vm's
+> > are separate entities so why they collide?
+> > 
+> > I've examined the code and at the moment I see two scenarios
+> > - threads are reusing same xe_device instantiated on opening
+> > fixture and are opening their own fd, what means each cached
+> > xe_device entry reside on separate fd. I see there's lack
+> > of proper locking during insertion to igt_map (I'm going to
+> > send a fix in a minute). I bet this might be reason of problems
+> > - multiple threads adding to hashmap (which might resize in
+> > this moment).
+> > 
+> > I see there's risk of executing xe_check_supports_faults()
+> > twice on same fd from two competing threads and this is not
+> > mutexed. But create/destroy vm is on local stack and even with
+> > this it shouldn't influence on other thread execution.
+> > 
+> 
+> Zbigniew,
+> 
+> Looks like KMD Xe driver fault/non-fault mode is at device level
+> (check xe_device_in_fault_mode(), it is used in couple places).
+> 
+> Probably Matt Brost can answer your question precisely.
+>
 
-v2: Rename test (Rodrigo)
+Yes, the KMD check is at a device level, basically you can't use any
+dma-fences if faults are used on another VM without the risk of
+deadlocking, this is why we have these checks in the KMD,
+ 
+> I wonder, whether we need this runtime switching between fault
+> and non-fault modes. I would assume, we always use fault mode
+> if device supports it, We can perhaps have a module load time
+> parameter to force non-fault mode.
+> 
+> Matt, any thoughts?
+>
 
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
----
- tests/i915/i915_pm_freq_api.c | 151 ++++++++++++++++++++++++++++++++++
- tests/meson.build             |   1 +
- 2 files changed, 152 insertions(+)
- create mode 100644 tests/i915/i915_pm_freq_api.c
+I prefer to have this dynamic as we shouldn't force a paradigm on the
+user.
 
-diff --git a/tests/i915/i915_pm_freq_api.c b/tests/i915/i915_pm_freq_api.c
-new file mode 100644
-index 00000000..f1027d1c
---- /dev/null
-+++ b/tests/i915/i915_pm_freq_api.c
-@@ -0,0 +1,151 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include <dirent.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <inttypes.h>
-+#include <stdlib.h>
-+#include <sys/stat.h>
-+#include <sys/syscall.h>
-+#include <sys/types.h>
-+#include <unistd.h>
-+
-+#include "drmtest.h"
-+#include "i915/gem.h"
-+#include "igt_sysfs.h"
-+#include "igt.h"
-+
-+IGT_TEST_DESCRIPTION("Test SLPC freq API");
-+/*
-+ * Too many intermediate components and steps before freq is adjusted
-+ * Specially if workload is under execution, so let's wait 100 ms.
-+ */
-+#define ACT_FREQ_LATENCY_US 100000
-+
-+static uint32_t get_freq(int dirfd, uint8_t id)
-+{
-+	uint32_t val;
-+
-+	igt_require(igt_sysfs_rps_scanf(dirfd, id, "%u", &val) == 1);
-+
-+	return val;
-+}
-+
-+static int set_freq(int dirfd, uint8_t id, uint32_t val)
-+{
-+	return igt_sysfs_rps_printf(dirfd, id, "%u", val);
-+}
-+
-+static void test_freq_basic_api(int dirfd, int gt)
-+{
-+	uint32_t rpn, rp0, rpe;
-+
-+	/* Save frequencies */
-+	rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
-+	rp0 = get_freq(dirfd, RPS_RP0_FREQ_MHZ);
-+	rpe = get_freq(dirfd, RPS_RP1_FREQ_MHZ);
-+	igt_info("System min freq: %dMHz; max freq: %dMHz\n", rpn, rp0);
-+
-+	/*
-+	 * Negative bound tests
-+	 * RPn is the floor
-+	 * RP0 is the ceiling
-+	 */
-+	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn - 1) < 0);
-+	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rp0 + 1) < 0);
-+	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn - 1) < 0);
-+	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rp0 + 1) < 0);
-+
-+	/* Assert min requests are respected from rp0 to rpn */
-+	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rp0) > 0);
-+	igt_assert(get_freq(dirfd, RPS_MIN_FREQ_MHZ) == rp0);
-+	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpe) > 0);
-+	igt_assert(get_freq(dirfd, RPS_MIN_FREQ_MHZ) == rpe);
-+	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
-+	igt_assert(get_freq(dirfd, RPS_MIN_FREQ_MHZ) == rpn);
-+
-+	/* Assert max requests are respected from rpn to rp0 */
-+	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
-+	igt_assert(get_freq(dirfd, RPS_MAX_FREQ_MHZ) == rpn);
-+	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpe) > 0);
-+	igt_assert(get_freq(dirfd, RPS_MAX_FREQ_MHZ) == rpe);
-+	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rp0) > 0);
-+	igt_assert(get_freq(dirfd, RPS_MAX_FREQ_MHZ) == rp0);
-+
-+}
-+
-+static void test_reset(int i915, int dirfd, int gt)
-+{
-+	uint32_t rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
-+	int fd;
-+
-+	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn) > 0);
-+	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rpn) > 0);
-+	usleep(ACT_FREQ_LATENCY_US);
-+	igt_assert(get_freq(dirfd, RPS_MIN_FREQ_MHZ) == rpn);
-+
-+	/* Manually trigger a GT reset */
-+	fd = igt_debugfs_gt_open(i915, gt, "reset", O_WRONLY);
-+	igt_require(fd >= 0);
-+	igt_ignore_warn(write(fd, "1\n", 2));
-+	close(fd);
-+
-+	igt_assert(get_freq(dirfd, RPS_MIN_FREQ_MHZ) == rpn);
-+	igt_assert(get_freq(dirfd, RPS_MAX_FREQ_MHZ) == rpn);
-+}
-+
-+igt_main
-+{
-+	int i915 = -1;
-+	uint32_t *stash_min, *stash_max;
-+
-+	igt_fixture {
-+		int num_gts, dirfd, gt;
-+
-+		i915 = drm_open_driver(DRIVER_INTEL);
-+		igt_require_gem(i915);
-+		/* i915_pm_rps already covers execlist path */
-+		igt_require(gem_using_guc_submission(i915));
-+
-+		num_gts = igt_sysfs_get_num_gt(i915);
-+		stash_min = (uint32_t*)malloc(sizeof(uint32_t) * num_gts);
-+		stash_max = (uint32_t*)malloc(sizeof(uint32_t) * num_gts);
-+
-+		/* Save curr min and max across GTs */
-+		for_each_sysfs_gt_dirfd(i915, dirfd, gt) {
-+			stash_min[gt] = get_freq(dirfd, RPS_MIN_FREQ_MHZ);
-+			stash_max[gt] = get_freq(dirfd, RPS_MAX_FREQ_MHZ);
-+		}
-+	}
-+
-+	igt_describe("Test basic API for controlling min/max GT frequency");
-+	igt_subtest_with_dynamic_f("freq-basic-api") {
-+		int dirfd, gt;
-+
-+		for_each_sysfs_gt_dirfd(i915, dirfd, gt)
-+			igt_dynamic_f("gt%u", gt)
-+				test_freq_basic_api(dirfd, gt);
-+	}
-+
-+	igt_describe("Test basic freq API works after a reset");
-+	igt_subtest_with_dynamic_f("freq-reset") {
-+		int dirfd, gt;
-+
-+		for_each_sysfs_gt_dirfd(i915, dirfd, gt)
-+			igt_dynamic_f("gt%u", gt)
-+				test_reset(i915, dirfd, gt);
-+	}
-+
-+	igt_fixture {
-+		int dirfd, gt;
-+		/* Restore frequencies */
-+		for_each_sysfs_gt_dirfd(i915, dirfd, gt) {
-+			igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, stash_max[gt]) > 0);
-+			igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, stash_min[gt]) > 0);
-+		}
-+		close(i915);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 7d2168be..072cae30 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -202,6 +202,7 @@ i915_progs = [
- 	'gem_workarounds',
- 	'i915_fb_tiling',
- 	'i915_getparams_basic',
-+	'i915_pm_freq_api',
- 	'i915_hangman',
- 	'i915_hwmon',
- 	'i915_module_load',
--- 
-2.38.1
+> In any case, this patch seems good to me. It checks whether
+> xe supports faults only for those tests that need it and also
+> solves the problem we currently have. So, I suggest we go
+> ahead with this patch. What do you think?
+>
+
+I agree this patch is good for now.
+
+Matt
+
+> Niranjana
+> 
+> > --
+> > Zbigniew
+> > 
+> > > 
+> > > Niranjana
+> > > 
+> > > 
+> > > >
+> > > > Regards,
+> > > > Mauro
