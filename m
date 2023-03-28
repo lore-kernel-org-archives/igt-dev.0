@@ -1,23 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E32FA10E443
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 05:02:11 +0000 (UTC)
-From: "Yedireswarapu, SaiX Nandan" <saix.nandan.yedireswarapu@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 28 Mar 2023 05:02:07 +0000
-Message-ID: <PH8PR11MB6952F79FC98498C2FBD9BD54B3889@PH8PR11MB6952.namprd11.prod.outlook.com>
-References: <20230327154359.91250-1-zbigniew.kempczynski@intel.com>
- <167994163856.32632.5442166340994911896@emeril.freedesktop.org>
- <20230327184844.ovjrf4dzn5ryzqhm@zkempczy-mobl2>
-In-Reply-To: <20230327184844.ovjrf4dzn5ryzqhm@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D8C210E443
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 05:04:56 +0000 (UTC)
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 27 Mar 2023 22:04:49 -0700
+Message-Id: <20230328050449.21706-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2dw?=
- =?utf-8?q?gpu=5Ffill=3A_Implement_gpgpu=5Ffillfunc_for_XEPH?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_debugfs: Get gt subtest passing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,72 +16,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Marikkar, SanjuX" <sanjux.marikkar@intel.com>, "Veesam,
- RavitejaX" <ravitejax.veesam@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCklzc3VlIHJlLXJlcG9ydGVkLCBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5v
-cmcvc2VyaWVzLzExNTY3Mi8NCg0KVGhhbmtzLA0KWSBTYWkgTmFuZGFuDQoNCg0KDQotLS0tLU9y
-aWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogS2VtcGN6eW5za2ksIFpiaWduaWV3IDx6Ymlnbmll
-dy5rZW1wY3p5bnNraUBpbnRlbC5jb20+IA0KU2VudDogVHVlc2RheSwgTWFyY2ggMjgsIDIwMjMg
-MTI6MTkgQU0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgWWVkaXJlc3dhcmFw
-dSwgU2FpWCBOYW5kYW4gPHNhaXgubmFuZGFuLnllZGlyZXN3YXJhcHVAaW50ZWwuY29tPg0KU3Vi
-amVjdDogUmU6IOKclyBGaS5DSS5CQVQ6IGZhaWx1cmUgZm9yIGxpYi9ncGdwdV9maWxsOiBJbXBs
-ZW1lbnQgZ3BncHVfZmlsbGZ1bmMgZm9yIFhFUEgNCg0KT24gTW9uLCBNYXIgMjcsIDIwMjMgYXQg
-MDY6Mjc6MThQTSArMDAwMCwgUGF0Y2h3b3JrIHdyb3RlOg0KPiAgICBQYXRjaCBEZXRhaWxzDQo+
-IA0KPiAgICBTZXJpZXM6ICBsaWIvZ3BncHVfZmlsbDogSW1wbGVtZW50IGdwZ3B1X2ZpbGxmdW5j
-IGZvciBYRVBIICAgICAgICAgICAgICANCj4gICAgVVJMOiAgICAgaHR0cHM6Ly9wYXRjaHdvcmsu
-ZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xMTU2NzIvICAgICAgICAgICAgICAgDQo+ICAgIFN0YXRl
-OiAgIGZhaWx1cmUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIA0KPiAgICBEZXRhaWxzOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tdGlwL0lHVFBXXzg2ODgvaW5kZXguaHRtbCANCj4gDQo+ICAgICAgICAgICAgICAgQ0kg
-QnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fMTI5MjEgLT4gSUdUUFdfODY4OA0KPiANCj4g
-U3VtbWFyeQ0KPiANCj4gICAgRkFJTFVSRQ0KPiANCj4gICAgU2VyaW91cyB1bmtub3duIGNoYW5n
-ZXMgY29taW5nIHdpdGggSUdUUFdfODY4OCBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUNCj4gICAgdmVy
-aWZpZWQgbWFudWFsbHkuDQo+IA0KPiAgICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5n
-ZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMNCj4gICAgaW50cm9kdWNlZCBp
-biBJR1RQV184Njg4LCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0gdG8gYWxsb3cgdGhlbQ0K
-PiAgICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNl
-IGZhbHNlIHBvc2l0aXZlcyBpbg0KPiAgICBDSS4NCj4gDQo+ICAgIEV4dGVybmFsIFVSTDoNCj4g
-ICAgaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV184Njg4L2lu
-ZGV4Lmh0bWwNCj4gDQo+IFBhcnRpY2lwYXRpbmcgaG9zdHMgKDM3IC0+IDM2KQ0KPiANCj4gICAg
-TWlzc2luZyAoMSk6IGZpLWtibC1zb3Jha2ENCj4gDQo+IFBvc3NpYmxlIG5ldyBpc3N1ZXMNCj4g
-DQo+ICAgIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGlu
-dHJvZHVjZWQgaW4gSUdUUFdfODY4ODoNCj4gDQo+ICAgSUdUIGNoYW5nZXMNCj4gDQo+ICAgICBQ
-b3NzaWJsZSByZWdyZXNzaW9ucw0KPiANCj4gICAgICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNA
-Y29tcGFyZS1jcmMtc2FuaXR5Y2hlY2tAcGlwZS1kLWRwLTE6DQo+ICAgICAgICAgICAqIGJhdC1k
-ZzItODogUEFTUyAtPiBGQUlMDQoNClVucmVsYXRlZCB0byB0aGUgY2hhbmdlLiBNYXkgSSBhc2sg
-Zm9yIHJ1biBzaGFyZHMgZm9yIGl0Pw0KDQotLQ0KWmJpZ25pZXcNCg0KPiANCj4gS25vd24gaXNz
-dWVzDQo+IA0KPiAgICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV184Njg4IHRo
-YXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoNCj4gDQo+ICAgSUdUIGNoYW5nZXMNCj4gDQo+ICAg
-ICBJc3N1ZXMgaGl0DQo+IA0KPiAgICAgICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZUBleGVjbGlz
-dHM6DQo+IA0KPiAgICAgICAgICAgKiBmaS1ic3ctbjMwNTA6IFBBU1MgLT4gQUJPUlQgKGk5MTUj
-NzkxMSAvIGk5MTUjNzkxMykNCj4gICAgICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAc2xwYzoN
-Cj4gDQo+ICAgICAgICAgICAqIGJhdC1ycGxzLTI6IE5PVFJVTiAtPiBETUVTRy1GQUlMIChpOTE1
-IzY5OTcgLyBpOTE1Izc5MTMpDQo+ICAgICAgKiBpZ3RAa21zX2NoYW1lbGl1bV9ocGRAY29tbW9u
-LWhwZC1hZnRlci1zdXNwZW5kOg0KPiANCj4gICAgICAgICAgICogYmF0LXJwbHMtMjogTk9UUlVO
-IC0+IFNLSVAgKGk5MTUjNzgyOCkNCj4gDQo+ICAgICAgICAgICAqIGJhdC1ycGxzLTE6IE5PVFJV
-TiAtPiBTS0lQIChpOTE1Izc4MjgpDQo+IA0KPiAgICAgICogaWd0QGttc19waXBlX2NyY19iYXNp
-Y0BzdXNwZW5kLXJlYWQtY3JjOg0KPiANCj4gICAgICAgICAgICogYmF0LXJwbHMtMTogTk9UUlVO
-IC0+IFNLSVAgKGk5MTUjMTg0NSkNCj4gDQo+ICAgICAgICAgICAqIGJhdC1ycGxzLTI6IE5PVFJV
-TiAtPiBTS0lQIChpOTE1IzE4NDUpDQo+IA0KPiAgICAgICogaWd0QGttc19waXBlX2NyY19iYXNp
-Y0BzdXNwZW5kLXJlYWQtY3JjQHBpcGUtYS1oZG1pLWEtMzoNCj4gDQo+ICAgICAgICAgICAqIGJh
-dC1kZzItMTE6IFBBU1MgLT4gSU5DT01QTEVURSAoaTkxNSMxOTgyIC8gaTkxNSM3OTA4KQ0KPiAN
-Cj4gICAgIFBvc3NpYmxlIGZpeGVzDQo+IA0KPiAgICAgICogaWd0QGdlbV9leGVjX3N1c3BlbmRA
-YmFzaWMtczNAc21lbToNCj4gDQo+ICAgICAgICAgICAqIGJhdC1ycGxzLTE6IEFCT1JUIChpOTE1
-IzY2ODcgLyBpOTE1Izc5NzgpIC0+IFBBU1MNCj4gICAgICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxp
-dmVAcmVzZXQ6DQo+IA0KPiAgICAgICAgICAgKiBiYXQtcnBscy0yOiBBQk9SVCAoaTkxNSM0OTgz
-IC8gaTkxNSM3OTEzKSAtPiBQQVNTDQo+IA0KPiAgICAgV2FybmluZ3MNCj4gDQo+ICAgICAgKiBp
-Z3RAaTkxNV9zZWxmdGVzdEBsaXZlQHNscGM6DQo+ICAgICAgICAgICAqIGJhdC1ycGxzLTE6IERN
-RVNHLUZBSUwgKGk5MTUjNjM2NykgLT4gRE1FU0ctRkFJTCAoaTkxNSM2MzY3IC8NCj4gICAgICAg
-ICAgICAgaTkxNSM3OTk2KQ0KPiANCj4gQnVpbGQgY2hhbmdlcw0KPiANCj4gICAgICAqIENJOiBD
-SS0yMDE5MDUyOSAtPiBOb25lDQo+ICAgICAgKiBJR1Q6IElHVF83MjIxIC0+IElHVFBXXzg2ODgN
-Cj4gDQo+ICAgIENJLTIwMTkwNTI5OiAyMDE5MDUyOQ0KPiAgICBDSV9EUk1fMTI5MjE6IDNkZTYw
-NDBjZTk5MDBhOTRlYzYyNjY2MmQ1YzZhMjI3YjM3ZWViMWMgQA0KPiAgICBnaXQ6Ly9hbm9uZ2l0
-LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgNCj4gICAgSUdUUFdfODY4ODogaHR0cHM6Ly9p
-bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV184Njg4L2luZGV4Lmh0bWwNCj4g
-ICAgSUdUXzcyMjE6IDRiNzdjNmQ4NTAyNGQyMmNhNTIxZDUxMGY4ZWVlNTc0MTI4ZmUwNGYgQA0K
-PiAgICBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2lndC1ncHUtdG9vbHMuZ2l0
-DQo=
+Get gt subtest passing by properly getting and using
+xe device config info.
+
+Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/xe/xe_debugfs.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
+index ad6191fbc..6bdd3ef06 100644
+--- a/tests/xe/xe_debugfs.c
++++ b/tests/xe/xe_debugfs.c
+@@ -71,7 +71,7 @@ static int validate_entries(int fd, const char *add_path, const char * const str
+  * Description: Check if various debugfs devnodes exist and test reading them.
+  */
+ static void
+-test_base(int fd)
++test_base(int fd, struct drm_xe_query_config *config)
+ {
+ 	static const char * const expected_files[] = {
+ 		"gt0",
+@@ -88,8 +88,6 @@ test_base(int fd)
+ 
+ 	char reference[4096];
+ 	int val = 0;
+-	struct xe_device *xe_dev = xe_device_get(fd);
+-	struct drm_xe_query_config *config = xe_dev->config;
+ 
+ 	igt_assert(config);
+ 	sprintf(reference, "devid 0x%llx",
+@@ -145,8 +143,6 @@ test_base(int fd)
+ 	igt_debugfs_dump(fd, "gem_names");
+ 
+ 	validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
+-
+-	xe_device_put(fd);
+ }
+ 
+ /**
+@@ -244,17 +240,19 @@ static int opt_handler(int option, int option_index, void *input)
+ 
+ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ {
++	struct xe_device *xe_dev;
+ 	char devnode[PATH_MAX];
+ 	int fd;
+ 	int gt;
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_XE);
++		xe_dev = xe_device_get(fd);
+ 		__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
+ 	}
+ 
+ 	igt_subtest("base") {
+-		test_base(fd);
++		test_base(fd, xe_dev->config);
+ 	}
+ 
+ 
+@@ -271,6 +269,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_fixture {
++		xe_device_put(fd);
+ 		close(fd);
+ 	}
+ }
+-- 
+2.21.0.rc0.32.g243a4c7e27
