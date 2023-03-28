@@ -1,18 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4532010E85E
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 10:57:29 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
- ankit.k.nautiyal@intel.com, karthik.b.s@intel.com
-Date: Tue, 28 Mar 2023 16:23:13 +0530
-Message-Id: <20230328105313.3727321-5-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230328105313.3727321-1-bhanuprakash.modem@intel.com>
-References: <20230328105313.3727321-1-bhanuprakash.modem@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4BC610E85E
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 11:10:40 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.28.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 669C7580C25
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 04:10:39 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ph7Do-00ASv8-2p
+ for igt-dev@lists.freedesktop.org; Tue, 28 Mar 2023 13:10:36 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Mar 2023 13:10:35 +0200
+Message-Id: <be171b540a5dd6c13e5045947e40a1586c6c14c7.1680001835.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 4/4] tests/kms_invalid_mode: Use helpers from IGT
- lib
+Subject: [igt-dev] [PATCH] scripts/igt_doc.py: ignore normal documentation
+ tags
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,54 +30,61 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of writing own logic at test level, use existing IGT
-helper to read the max dot clock.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Only bail out on comments if a field is not recognized on comments
+with TEST or SUBTEST tags.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_invalid_mode.c | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+ scripts/igt_doc.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index 86f529e88b1..ec048305567 100644
---- a/tests/kms_invalid_mode.c
-+++ b/tests/kms_invalid_mode.c
-@@ -213,27 +213,6 @@ test_output(data_t *data)
- 	igt_remove_fb(data->drm_fd, &fb);
- }
+diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+index 67ab7984dd11..92d925c451ed 100755
+--- a/scripts/igt_doc.py
++++ b/scripts/igt_doc.py
+@@ -828,6 +828,7 @@ class TestList:
+         arg_number = 1
+         cur_arg = -1
+         cur_arg_element = 0
++        has_test_or_subtest = 0
  
--static int i915_max_dotclock(data_t *data)
--{
--	char buf[4096];
--	char *s;
--	int max_dotclock = 0;
--
--	if (!is_i915_device(data->drm_fd))
--		return 0;
--
--	igt_debugfs_read(data->drm_fd, "i915_frequency_info", buf);
--	s = strstr(buf, "Max pixel clock frequency:");
--	igt_assert(s);
--	igt_assert_eq(sscanf(s, "Max pixel clock frequency: %d kHz", &max_dotclock), 1);
--
--	/* 100 Mhz to 5 GHz seem like reasonable values to expect */
--	igt_assert_lt(max_dotclock, 5000000);
--	igt_assert_lt(100000, max_dotclock);
--
--	return max_dotclock;
--}
--
- static const struct {
- 	const char *name;
- 	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
-@@ -293,7 +272,7 @@ igt_main
- 		data.res = drmModeGetResources(data.drm_fd);
- 		igt_assert(data.res);
+         with open(fname, 'r', encoding='utf8') as handle:
+             arg_ref = None
+@@ -845,6 +846,7 @@ class TestList:
+                     current_subtest = None
+                     arg_ref = None
+                     cur_arg = -1
++                    has_test_or_subtest = 0
  
--		data.max_dotclock = i915_max_dotclock(&data);
-+		data.max_dotclock = igt_get_max_dotclock(data.drm_fd);
- 		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
- 	}
+                     continue
  
+@@ -864,6 +866,7 @@ class TestList:
+                     # Check if it is a new TEST section
+                     match = re.match(r'^TEST:\s*(.*)', file_line)
+                     if match:
++                        has_test_or_subtest = 1
+                         current_test = self.test_number
+                         self.test_number += 1
+ 
+@@ -884,6 +887,7 @@ class TestList:
+                 # Check if it is a new SUBTEST section
+                 match = re.match(r'^SUBTESTS?:\s*(.*)', file_line)
+                 if match:
++                    has_test_or_subtest = 1
+                     current_subtest = subtest_number
+                     subtest_number += 1
+ 
+@@ -934,6 +938,9 @@ class TestList:
+ 
+                     continue
+ 
++                if not has_test_or_subtest:
++                    continue
++
+                 # Use hashes for arguments to avoid duplication
+                 match = re.match(r'arg\[(\d+)\]:\s*(.*)', file_line)
+                 if match:
 -- 
-2.40.0
+2.39.2
