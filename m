@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCC4310E85E
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 10:57:22 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
- ankit.k.nautiyal@intel.com, karthik.b.s@intel.com
-Date: Tue, 28 Mar 2023 16:23:10 +0530
-Message-Id: <20230328105313.3727321-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230328105313.3727321-1-bhanuprakash.modem@intel.com>
-References: <20230328105313.3727321-1-bhanuprakash.modem@intel.com>
+Received: from mblankhorst.nl (lankhorst.se
+ [IPv6:2a02:2308:0:7ec:e79c:4e97:b6c4:f0ae])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4963310E897
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 12:40:55 +0000 (UTC)
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Mar 2023 14:40:43 +0200
+Message-Id: <20230328124044.268766-1-maarten.lankhorst@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 1/4] lib/igt_kms: Fix Bigjoiner checks
+Subject: [igt-dev] [PATCH i-g-t 1/2] xe_pm: Kill display for PM tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,101 +21,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Bigjoiner will come in the picture when the resolution > 5K or
-clock > max dot-clock. Add a support to check the selected mode
-clock is greater than the max dot-clock.
+Display keeps PM alive, do the minimal initialization to disable
+display for the PM tests entirely.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 ---
- lib/igt_kms.c | 39 +++++++++++++++++++++++++++++++++++++--
- lib/igt_kms.h |  1 +
- 2 files changed, 38 insertions(+), 2 deletions(-)
+ tests/xe/xe_pm.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index c12823d318e..3587dc7d7f6 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5780,6 +5780,36 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
- 	return false;
- }
+diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c
+index 23b8246ed..861f6b915 100644
+--- a/tests/xe/xe_pm.c
++++ b/tests/xe/xe_pm.c
+@@ -365,6 +365,8 @@ igt_main
+ 	};
  
-+/*
-+ * igt_get_max_dotclock:
-+ * @fd: A drm file descriptor
-+ *
-+ * Get the Max pixel clock frequency from intel specific debugfs
-+ * "i915_frequency_info".
-+ *
-+ * Returns: Max supported pixel clock frequency.
-+ */
-+int igt_get_max_dotclock(int fd)
-+{
-+	char buf[4096];
-+	char *s;
-+	int max_dotclock = 0;
+ 	igt_fixture {
++		drmModeResPtr res;
 +
-+	if (!is_i915_device(fd))
-+		return max_dotclock;
-+
-+	igt_debugfs_read(fd, "i915_frequency_info", buf);
-+	s = strstr(buf, "Max pixel clock frequency:");
-+	igt_assert(s);
-+	igt_assert_eq(sscanf(s, "Max pixel clock frequency: %d kHz", &max_dotclock), 1);
-+
-+	/* 100 Mhz to 5 GHz seem like reasonable values to expect */
-+	igt_assert_lt(max_dotclock, 5000000);
-+	igt_assert_lt(100000, max_dotclock);
-+
-+	return max_dotclock;
-+}
-+
- /*
-  * igt_check_bigjoiner_support:
-  * @display: a pointer to an #igt_display_t structure
-@@ -5802,6 +5832,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 		enum pipe idx;
- 		drmModeModeInfo *mode;
- 	} pipes[IGT_MAX_PIPES];
-+	int max_dotclock;
+ 		memset(&device, 0, sizeof(device));
+ 		device.fd_xe = drm_open_driver(DRIVER_XE);
+ 		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
+@@ -376,6 +378,17 @@ igt_main
+ 		xe_for_each_hw_engine(device.fd_xe, hwe)
+ 			test_exec(device, hwe, 1, 1, NO_SUSPEND, NO_RPM);
  
- 	/* Get total enabled pipes. */
- 	for_each_pipe(display, p)
-@@ -5825,6 +5856,8 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 		return true;
++		/* Kill display, if it exists */
++		res = drmModeGetResources(device.fd_xe);
++		if (res) {
++			igt_display_t display;
++
++			drmModeFreeResources(res);
++			igt_display_require(&display, device.fd_xe);
++			igt_display_commit2(&display, COMMIT_ATOMIC);
++			igt_display_fini(&display);
++		}
++
+ 		get_d3cold_allowed(device.pci_xe, d3cold_allowed);
+ 		igt_assert(igt_setup_runtime_pm(device.fd_xe));
  	}
- 
-+	max_dotclock = igt_get_max_dotclock(display->drm_fd);
-+
- 	/*
- 	 * if mode.hdisplay > 5120, then ignore
- 	 *  - if the consecutive pipe is not available
-@@ -5836,11 +5869,13 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 	 *  - current & previous crtcs are consecutive
- 	 */
- 	for (i = 0; i < pipes_in_use; i++) {
--		if (((pipes[i].mode->hdisplay > MAX_HDISPLAY_PER_PIPE) &&
-+		if (((pipes[i].mode->hdisplay > MAX_HDISPLAY_PER_PIPE ||
-+		      pipes[i].mode->clock > max_dotclock) &&
- 		     ((pipes[i].idx >= (total_pipes - 1)) ||
- 		      (!display->pipes[pipes[i].idx + 1].enabled) ||
- 		      ((i < (pipes_in_use - 1)) && (abs(pipes[i + 1].idx - pipes[i].idx) <= 1)))) ||
--		    ((i > 0) && (pipes[i - 1].mode->hdisplay > MAX_HDISPLAY_PER_PIPE) &&
-+		    ((i > 0) && (pipes[i - 1].mode->hdisplay > MAX_HDISPLAY_PER_PIPE ||
-+			         pipes[i - 1].mode->clock > max_dotclock) &&
- 		     ((!display->pipes[pipes[i - 1].idx + 1].enabled) ||
- 		      (abs(pipes[i].idx - pipes[i - 1].idx) <= 1)))) {
- 			igt_debug("Pipe/Output combo is not possible with selected mode(s).\n");
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 2b917925158..20a4ced9ad9 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -990,6 +990,7 @@ void igt_sort_connector_modes(drmModeConnector *connector,
- 
- bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
- 		igt_output_t *output, int bpc);
-+int igt_get_max_dotclock(int fd);
- bool igt_check_bigjoiner_support(igt_display_t *display);
- bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
- bool i915_pipe_output_combo_valid(igt_display_t *display);
 -- 
-2.40.0
+2.34.1
