@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 25D4C10E07E
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 14:10:12 +0000 (UTC)
-Message-ID: <1041bd8f-0925-24c2-6142-c4f6f2dbf308@intel.com>
-Date: Tue, 28 Mar 2023 16:10:12 +0200
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-References: <20230327201254.2834-1-juhapekka.heikkila@gmail.com>
- <20230327201254.2834-3-juhapekka.heikkila@gmail.com>
- <20230328065042.tiwacahkm77bbb75@zkempczy-mobl2>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230328065042.tiwacahkm77bbb75@zkempczy-mobl2>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============6963395897818351342=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_fb: switch blitcopy to use
- lib/i915/i915_blt functions
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Tue, 28 Mar 2023 14:45:30 -0000
+Message-ID: <168001473047.29055.9490152240434440438@emeril.freedesktop.org>
+References: <20230328125429.1970202-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230328125429.1970202-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQXNzb3J0?=
+ =?utf-8?q?ed_intel=5Fgpu=5Ftop_tweaks?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,344 +17,236 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 28.03.2023 08:50, Zbigniew Kempczyński wrote:
-> On Mon, Mar 27, 2023 at 11:12:54PM +0300, Juha-Pekka Heikkila wrote:
->> reduce code duplication
->>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> ---
->>   lib/igt_fb.c | 214 +++++++++++++++++++++++++++++++++++++++++++++------
->>   1 file changed, 192 insertions(+), 22 deletions(-)
->>
->> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->> index ba89e1f60..06ebe4818 100644
->> --- a/lib/igt_fb.c
->> +++ b/lib/igt_fb.c
->> @@ -35,6 +35,8 @@
->>   #include "drmtest.h"
->>   #include "i915/gem_create.h"
->>   #include "i915/gem_mman.h"
->> +#include "i915/i915_blt.h"
->> +#include "i915/intel_mocs.h"
->>   #include "igt_aux.h"
->>   #include "igt_color_encoding.h"
->>   #include "igt_fb.h"
->> @@ -2680,12 +2682,134 @@ static void copy_with_engine(struct fb_blit_upload *blit,
->>   	fini_buf(src);
->>   }
->>   
->> +static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
->> +					   uint32_t plane, uint32_t memregion)
->> +{
->> +	uint32_t name, handle;
->> +	struct blt_copy_object *blt;
->> +	enum blt_tiling_type blt_tile;
->> +	uint64_t stride;
->> +
->> +	blt = malloc(sizeof(*blt));
->> +	igt_assert(blt);
->> +
->> +	name = gem_flink(fb->fd, fb->gem_handle);
->> +	handle = gem_open(fb->fd, name);
->> +
->> +	switch (igt_fb_mod_to_tiling(fb->modifier)) {
->> +	case I915_TILING_X:
->> +		blt_tile = T_XMAJOR;
-> 
-> I wonder to add helper in i915_blt: i915_tiling_to_blt_tile(int tile);
+--===============6963395897818351342==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I wish we could move on from using I915_TILING_* for tiling formats that 
-don't require fences. It would be great if we could switch on 
-blt_tiling_type when doing blit copy, especially when we have checks 
-that ensure the correct mapping.
+== Series Details ==
 
-I mean, we could add such a helper, but do we want to keep it as a 
-permanent solution?
+Series: Assorted intel_gpu_top tweaks
+URL   : https://patchwork.freedesktop.org/series/115725/
+State : failure
 
-> 
-> BTW Karolina added asserts which should map 1:1 i915 -> blt. Tile4 is
-> not added there yet but it can be, so i915_tiline_to_blt_tile() can
-> simply return tile;
-> 
-> then those few cases could looks like:
-> 
-> case I915_TILING_X:
-> case I915_TILING_Y:
-> case I915_TILING_4:
-> 	blt_tile = i915_tiling_to_blt_tile(...);
-> 	stride = fb->strides[plane] / 4;
-> 	break;
-> case I915_TILING_NONE:
-> 	...
-> 
->> +		stride = fb->strides[plane] / 4;
->> +		break;
->> +	case I915_TILING_Y:
->> +		blt_tile = T_YMAJOR;
->> +		stride = fb->strides[plane] / 4;
->> +		break;
->> +	case I915_TILING_4:
->> +		blt_tile = T_TILE4;
->> +		stride = fb->strides[plane] / 4;
->> +		break;
->> +	case I915_TILING_NONE:
->> +	default:
->> +		blt_tile = T_LINEAR;
->> +		stride = fb->strides[plane];
->> +		break;
->> +	}
->> +
->> +	blt_set_object(blt, handle, fb->size, memregion,
->> +		       intel_get_uc_mocs(fb->fd),
->> +		       blt_tile,
->> +		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
->> +		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
->> +
->> +	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
->> +
->> +	blt->offset = fb->offsets[plane];
->> +
->> +	blt->ptr = gem_mmap__device_coherent(fb->fd, handle, 0, fb->size,
->> +					     PROT_READ | PROT_WRITE);
->> +	return blt;
->> +}
->> +
->> +static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
->> +{
->> +	switch (fb->plane_bpp[0]) {
->> +	case 8:
->> +		return CD_8bit;
->> +	case 16:
->> +		return CD_16bit;
->> +	case 32:
->> +		return CD_32bit;
->> +	case 64:
->> +		return CD_64bit;
->> +	case 96:
->> +		return CD_96bit;
->> +	case 128:
->> +		return CD_128bit;
->> +	default:
->> +		igt_assert(0);
->> +	}
->> +}
->> +
->> +#define BLT_TARGET_RC(x) (x.compression == COMPRESSION_ENABLED && \
->> +			  x.compression_type == COMPRESSION_TYPE_3D)
->> +
->> +#define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
->> +			  x.compression_type == COMPRESSION_TYPE_MEDIA)
->> +
->> +static uint32_t blt_compression_format(struct blt_copy_data *blt,
->> +				       const struct igt_fb *fb)
->> +{
->> +	if (blt->src.compression == COMPRESSION_DISABLED &&
->> +	    blt->dst.compression == COMPRESSION_DISABLED)
->> +		return 0;
->> +
->> +	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst)) {
->> +		switch (blt->color_depth)
->> +		{
->> +		case CD_32bit:
->> +			return 8;
->> +		default:
->> +			igt_assert_f(0, "COMPRESSION_TYPE_3D unknown color depth\n");
->> +		}
->> +	}
->> +
->> +	if (BLT_TARGET_MC(blt->src) || BLT_TARGET_MC(blt->dst)) {
->> +		switch (fb->drm_format)
->> +		{
->> +		case DRM_FORMAT_XRGB8888:
->> +			return 8;
->> +		case DRM_FORMAT_XYUV8888:
->> +			return 9;
->> +		case DRM_FORMAT_NV12:
->> +			return 9;
->> +		case DRM_FORMAT_P010:
->> +		case DRM_FORMAT_P012:
->> +		case DRM_FORMAT_P016:
->> +			return 8;
->> +		default:
->> +			igt_assert_f(0, "COMPRESSION_TYPE_MEDIA unknown format\n");
->> +		}
->> +	} else {
->> +		igt_assert_f(0, "unknown compression\n");
->> +	}
->> +}
->> +
->>   static void blitcopy(const struct igt_fb *dst_fb,
->>   		     const struct igt_fb *src_fb)
->>   {
->>   	uint32_t src_tiling, dst_tiling;
->>   	uint32_t ctx = 0;
->>   	uint64_t ahnd = 0;
->> +	const intel_ctx_t *ictx = intel_ctx_create_all_physical(src_fb->fd);
->> +	struct intel_execution_engine2 *e;
->> +	uint32_t bb;
->> +	uint64_t bb_size = 4096;
->> +	struct blt_copy_data blt = {};
->> +	struct blt_copy_object *src, *dst;
->> +	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
->> +	uint32_t mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
->> +			   ? REGION_LMEM(0) : REGION_SMEM;
->>   
->>   	igt_assert_eq(dst_fb->fd, src_fb->fd);
->>   	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
->> @@ -2697,36 +2821,81 @@ static void blitcopy(const struct igt_fb *dst_fb,
->>   		igt_require(gem_has_contexts(dst_fb->fd));
->>   		ctx = gem_context_create(dst_fb->fd);
->>   		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
->> +
->> +		igt_assert(__gem_create_in_memory_regions(src_fb->fd,
->> +							  &bb,
->> +							  &bb_size,
->> +							  mem_region) == 0);
->> +
->> +		for_each_ctx_engine(src_fb->fd, ictx, e) {
->> +			if (gem_engine_can_block_copy(src_fb->fd, e))
->> +				break;
->> +		}
->>   	}
->>   
->>   	for (int i = 0; i < dst_fb->num_planes; i++) {
->>   		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
->>   		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
->>   		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
->> -		/*
->> -		 * On GEN12+ X-tiled format support is removed from the fast
->> -		 * blit command, so use the XY_SRC blit command for it
->> -		 * instead.
->> -		 */
->> +
->>   		if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
-> 
-> I think this blit fail when ahnd == 0 as i915_blt requires softpinning.
+== Summary ==
 
-Also, are we fine with the fact that we'll only cover gen 8 and above 
-(due to the softpinning requirement)?
+CI Bug Log - changes from CI_DRM_12927 -> IGTPW_8702
+====================================================
 
-> 
-> 'if (ahnd && fast_blit_ok(src_fb) && fast_blit_ok(dst_fb))' should work.
+Summary
+-------
 
-I had a quick look at the function, and I wonder if we could i915_blt 
-helpers here instead. There seem to be other factors that we have to 
-consider here, but the display version checks seem similar to what we 
-have in intel_cmd_info lib.
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8702 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8702, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/index.html
+
+Participating hosts (36 -> 36)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8702:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-adlp-9:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12927/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8702 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-rpls-1:         [PASS][3] -> [DMESG-FAIL][4] ([i915#7059])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12927/bat-rpls-1/igt@i915_selftest@live@gt_mocs.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-rpls-1/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-dg1-5:          NOTRUN -> [SKIP][5] ([i915#7828])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-dg1-5/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - bat-dg2-11:         NOTRUN -> [SKIP][6] ([i915#5354])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg1-5:          [ABORT][7] ([i915#4983] / [i915#7981]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12927/bat-dg1-5/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-dg1-5/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         [DMESG-FAIL][9] ([i915#6997] / [i915#7913]) -> [DMESG-FAIL][10] ([i915#6367] / [i915#7913] / [i915#7996])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12927/bat-rpls-2/igt@i915_selftest@live@slpc.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-rpls-2/igt@i915_selftest@live@slpc.html
+    - bat-rpls-1:         [DMESG-FAIL][11] ([i915#6367]) -> [DMESG-FAIL][12] ([i915#6997])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12927/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7981]: https://gitlab.freedesktop.org/drm/intel/issues/7981
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
 
 
-All the best,
-Karolina
+Build changes
+-------------
 
-> 
->> -			igt_blitter_fast_copy__raw(dst_fb->fd,
->> -						   ahnd, ctx, NULL,
->> -						   src_fb->gem_handle,
->> -						   src_fb->offsets[i],
->> -						   src_fb->strides[i],
->> -						   src_tiling,
->> -						   0, 0, /* src_x, src_y */
->> -						   src_fb->size,
->> -						   dst_fb->plane_width[i],
->> -						   dst_fb->plane_height[i],
->> -						   dst_fb->plane_bpp[i],
->> -						   dst_fb->gem_handle,
->> -						   dst_fb->offsets[i],
->> -						   dst_fb->strides[i],
->> -						   dst_tiling,
->> -						   0, 0 /* dst_x, dst_y */,
->> -						   dst_fb->size);
->> +			memset(&blt, 0, sizeof(blt));
->> +			blt.color_depth = blt_get_bpp(src_fb);
->> +
->> +			src = blt_fb_init(src_fb, i, mem_region);
->> +			dst = blt_fb_init(dst_fb, i, mem_region);
->> +
->> +			blt_set_copy_object(&blt.src, src);
->> +			blt_set_copy_object(&blt.dst, dst);
->> +
->> +			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
->> +
->> +			blt_fast_copy(src_fb->fd, ictx, e, ahnd, &blt);
->> +			gem_sync(src_fb->fd, blt.dst.handle);
->> +
->> +			blt_destroy_object(src_fb->fd, src);
->> +			blt_destroy_object(dst_fb->fd, dst);
->> +		} else if (ahnd) {
-> 
-> I would also check if this else supports block-copy.
-> 
-> If you prefer newer instructions (like fast-copy) with i915_blt it
-> requires valid ahnd (>0). Instead of using wrapper:
-> 
-> ahnd = get_reloc_ahnd(fd, ctx);
-> 
-> you may enforce softpinning by:
-> 
-> ahnd = intel_allocator_open(fd, ctx, INTEL_ALLOCATOR_RELOC);
-> 
-> Then i915_blt functions will work as you expect. But this will change
-> previous logic to prefer older blits instead new ones.
-> 
-> --
-> Zbigniew
-> 
->> +			/*
->> +			* On GEN12+ X-tiled format support is removed from
->> +			* the fast blit command, so use the block copy blit
->> +			* command for it instead.
->> +			*/
->> +			src = blt_fb_init(src_fb, i, mem_region);
->> +			dst = blt_fb_init(dst_fb, i, mem_region);
->> +
->> +			memset(&blt, 0, sizeof(blt));
->> +			blt.print_bb = true;
->> +			blt.color_depth = blt_get_bpp(src_fb);
->> +			blt_set_copy_object(&blt.src, src);
->> +			blt_set_copy_object(&blt.dst, dst);
->> +
->> +			if (HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))) {
->> +				blt_set_object_ext(&ext.src,
->> +						   blt_compression_format(&blt, src_fb),
->> +						   src_fb->width, src_fb->height,
->> +						   SURFACE_TYPE_2D);
->> +
->> +				blt_set_object_ext(&ext.dst,
->> +						   blt_compression_format(&blt, dst_fb),
->> +						   dst_fb->width, dst_fb->height,
->> +						   SURFACE_TYPE_2D);
->> +
->> +				pext = &ext;
->> +			}
->> +
->> +			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
->> +
->> +			blt_block_copy(src_fb->fd, ictx, e, ahnd, &blt, pext);
->> +			gem_sync(src_fb->fd, blt.dst.handle);
->> +
->> +			blt_destroy_object(src_fb->fd, src);
->> +			blt_destroy_object(dst_fb->fd, dst);
->>   		} else {
->> +			/*
->> +			 * If on legacy hardware where relocations are supported
->> +			 * we'll use XY_SRC blit command instead
->> +			 */
->>   			igt_blitter_src_copy(dst_fb->fd,
->>   					     ahnd, ctx, NULL,
->>   					     src_fb->gem_handle,
->> @@ -2750,6 +2919,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
->>   	if (ctx)
->>   		gem_context_destroy(dst_fb->fd, ctx);
->>   	put_ahnd(ahnd);
->> +	intel_ctx_destroy(src_fb->fd, ictx);
->>   }
->>   
->>   static void free_linear_mapping(struct fb_blit_upload *blit)
->> -- 
->> 2.39.0
->>
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7221 -> IGTPW_8702
+
+  CI-20190529: 20190529
+  CI_DRM_12927: 7139df0d53483b76598d625ae2f62cf742263ccb @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8702: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/index.html
+  IGT_7221: 4b77c6d85024d22ca521d510f8eee574128fe04f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/index.html
+
+--===============6963395897818351342==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Assorted intel_gpu_top tweaks</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115725/">https://patchwork.freedesktop.org/series/115725/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12927 -&gt; IGTPW_8702</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8702 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8702, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/index.html</p>
+<h2>Participating hosts (36 -&gt; 36)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8702:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12927/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8702 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12927/bat-rpls-1/igt@i915_selftest@live@gt_mocs.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-rpls-1/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-dg1-5/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12927/bat-dg1-5/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7981">i915#7981</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-dg1-5/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>
+<p>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12927/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</p>
+</li>
+<li>
+<p>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12927/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7221 -&gt; IGTPW_8702</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12927: 7139df0d53483b76598d625ae2f62cf742263ccb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8702: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8702/index.html<br />
+  IGT_7221: 4b77c6d85024d22ca521d510f8eee574128fe04f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6963395897818351342==--
