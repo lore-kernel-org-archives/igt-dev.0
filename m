@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7320E10E6E2
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 05:22:47 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60DF710E041
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 05:33:11 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Mar 2023 22:22:38 -0700
-Message-Id: <20230328052238.22108-1-niranjana.vishwanathapura@intel.com>
+Date: Mon, 27 Mar 2023 22:33:03 -0700
+Message-Id: <20230328053303.26627-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] lib/xe/xe_query: Extern
- xe_supports_faults()
+Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_guc_pc: Skip RC6 tests for PVC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,120 +20,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Do not check for supports_faults in xe_device_get() as
-it creates a VM in fault mode which prohibits creation
-of any other VM in non-fault mode until this fault mode
-VM is closed. This leads to test failures in multi threaded
-cases.
-
-v2: Rebase and add some documentation as per review feedback.
+The Pontevecchio (PVC) platform doesn't have rc6 support yet.
+Skip rc6_on_idle and rc0_on_exec subtests for PVC.
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- lib/xe/xe_query.c | 54 +++++++++++++++++++++++------------------------
- lib/xe/xe_query.h |  3 ---
- 2 files changed, 27 insertions(+), 30 deletions(-)
+ tests/xe/xe_guc_pc.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 82a7e36e3..f281bc4a3 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -160,23 +160,6 @@ static uint32_t __mem_default_alignment(struct drm_xe_query_mem_usage *mem_usage
- 	return alignment;
+diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
+index 60c93288b..9fc2429d8 100644
+--- a/tests/xe/xe_guc_pc.c
++++ b/tests/xe/xe_guc_pc.c
+@@ -375,6 +375,38 @@ static bool in_rc6(int sysfs, int gt_id)
+ 	return strcmp(rc, "rc6") == 0;
  }
  
--static bool xe_check_supports_faults(int fd)
--{
--	bool supports_faults;
--
--	struct drm_xe_vm_create create = {
--		.flags = DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
--			 DRM_XE_VM_CREATE_FAULT_MODE,
--	};
--
--	supports_faults = !igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
--
--	if (supports_faults)
--		xe_vm_destroy(fd, create.vm_id);
--
--	return supports_faults;
--}
--
- /**
-  * xe_engine_class_string:
-  * @engine_class: engine class
-@@ -268,7 +251,6 @@ struct xe_device *xe_device_get(int fd)
- 						     xe_dev->gts, gt);
- 	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_usage);
- 	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_usage);
--	xe_dev->supports_faults = xe_check_supports_faults(fd);
- 
- 	/* We may get here from multiple threads, use first cached xe_dev */
- 	pthread_mutex_lock(&cache.cache_mutex);
-@@ -303,6 +285,33 @@ void xe_device_put(int fd)
- 	pthread_mutex_unlock(&cache.cache_mutex);
- }
- 
-+/**
-+ * xe_supports_faults:
-+ * @fd: xe device fd
-+ *
-+ * Returns true if xe device @fd allows creating vm in fault mode otherwise
-+ * false.
-+ *
-+ * NOTE: This function temporarily creates a VM in fault mode. Hence, while
-+ * this function is executing, no non-fault mode VMs can be created.
-+ */
-+bool xe_supports_faults(int fd)
++static bool is_rc6_supported(int fd)
 +{
-+	bool supports_faults;
-+
-+	struct drm_xe_vm_create create = {
-+		.flags = DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
-+			 DRM_XE_VM_CREATE_FAULT_MODE,
++	struct drm_xe_query_config *config;
++	struct drm_xe_device_query query = {
++		.query = DRM_XE_DEVICE_QUERY_CONFIG,
 +	};
++	uint16_t devid;
 +
-+	supports_faults = !igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
 +
-+	if (supports_faults)
-+		xe_vm_destroy(fd, create.vm_id);
++	config = malloc(query.size);
++	igt_assert(config);
 +
-+	return supports_faults;
++	query.data = to_user_pointer(config);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	/* No rc6 support yet on Pontevecchio */
++	devid = config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
++	return !(
++		devid == 0x0BD0 ||
++		devid == 0x0BD1 ||
++		devid == 0x0BD2 ||
++		devid == 0x0BD5 ||
++		devid == 0x0BD6 ||
++		devid == 0x0BD7 ||
++		devid == 0x0BD8 ||
++		devid == 0x0BD9 ||
++		devid == 0x0BDA ||
++		devid == 0x0BDB
++		);
 +}
 +
- static void xe_device_destroy_cache(void)
+ igt_main
  {
- 	pthread_mutex_lock(&cache.cache_mutex);
-@@ -458,15 +467,6 @@ uint64_t xe_vram_size(int fd, int gt)
-  */
- xe_dev_FN(xe_get_default_alignment, default_alignment, uint32_t);
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -467,12 +499,14 @@ igt_main
+ 	}
  
--/**
-- * xe_supports_faults:
-- * @fd: xe device fd
-- *
-- * Returns true if xe device @fd allows creating vm in fault mode otherwise
-- * false.
-- */
--xe_dev_FN(xe_supports_faults, supports_faults, bool);
--
- /**
-  * xe_va_bits:
-  * @fd: xe device fd
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 70de183cc..3a00ecd1c 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -53,9 +53,6 @@ struct xe_device {
- 	/** @has_vram: true if gpu has vram, false if system memory only */
- 	bool has_vram;
+ 	igt_subtest("rc6_on_idle") {
++		igt_skip_on(!is_rc6_supported(fd));
+ 		xe_for_each_gt(fd, gt) {
+ 			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
+ 		}
+ 	}
  
--	/** @supports_faults: true if gpu supports faults, otherwise false */
--	bool supports_faults;
--
- 	/** @va_bits: va length in bits */
- 	uint32_t va_bits;
- 
+ 	igt_subtest("rc0_on_exec") {
++		igt_skip_on(!is_rc6_supported(fd));
+ 		xe_for_each_gt(fd, gt) {
+ 			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
+ 			xe_for_each_hw_engine(fd, hwe)
 -- 
 2.21.0.rc0.32.g243a4c7e27
