@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB7A310E8B4
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 12:36:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C8CE10E8AB
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 12:36:22 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
  ankit.k.nautiyal@intel.com, karthik.b.s@intel.com
-Date: Tue, 28 Mar 2023 18:02:08 +0530
-Message-Id: <20230328123210.3781976-5-bhanuprakash.modem@intel.com>
+Date: Tue, 28 Mar 2023 18:02:10 +0530
+Message-Id: <20230328123210.3781976-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230328123210.3781976-1-bhanuprakash.modem@intel.com>
 References: <20230328123210.3781976-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 4/6] tests/kms_invalid_mode: Use helpers from
- IGT lib
+Subject: [igt-dev] [i-g-t V2 6/6] tests/kms_setmode: Fix Bigjoiner checks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,54 +23,67 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of writing own logic at test level, use existing IGT
-helper to read the max dot clock.
+Bigjoiner will come in the picture when the resolution > 5K or
+clock > max dot-clock. Add a support to check the selected mode
+clock is greater than the max dot-clock.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_invalid_mode.c | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+ tests/kms_setmode.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index 86f529e88b1..ec048305567 100644
---- a/tests/kms_invalid_mode.c
-+++ b/tests/kms_invalid_mode.c
-@@ -213,27 +213,6 @@ test_output(data_t *data)
- 	igt_remove_fb(data->drm_fd, &fb);
- }
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index bfa108916ce..7932a3ec285 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -40,13 +40,12 @@
+ /* restricted pipe count */
+ #define CRTC_RESTRICT_CNT 2
  
--static int i915_max_dotclock(data_t *data)
--{
--	char buf[4096];
--	char *s;
--	int max_dotclock = 0;
+-#define MAX_HDISPLAY_PER_CRTC 5120
 -
--	if (!is_i915_device(data->drm_fd))
--		return 0;
--
--	igt_debugfs_read(data->drm_fd, "i915_frequency_info", buf);
--	s = strstr(buf, "Max pixel clock frequency:");
--	igt_assert(s);
--	igt_assert_eq(sscanf(s, "Max pixel clock frequency: %d kHz", &max_dotclock), 1);
--
--	/* 100 Mhz to 5 GHz seem like reasonable values to expect */
--	igt_assert_lt(max_dotclock, 5000000);
--	igt_assert_lt(100000, max_dotclock);
--
--	return max_dotclock;
--}
--
- static const struct {
- 	const char *name;
- 	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
-@@ -293,7 +272,7 @@ igt_main
- 		data.res = drmModeGetResources(data.drm_fd);
- 		igt_assert(data.res);
+ static int drm_fd;
+ static drmModeRes *drm_resources;
+ static int filter_test_id;
+ static bool dry_run;
+ static bool extended = false;
++static int max_dotclock;
  
--		data.max_dotclock = i915_max_dotclock(&data);
-+		data.max_dotclock = igt_get_max_dotclock(data.drm_fd);
- 		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
+ const drmModeModeInfo mode_640_480 = {
+ 	.name		= "640x480",
+@@ -664,18 +663,20 @@ static void test_one_combination(const struct test_config *tconf,
+ 			struct crtc_config *crtc = &crtcs[i];
+ 
+ 			/*
+-			 * if mode.hdisplay > 5120, then ignore
++			 * if mode resolution > 5K (or) mode clock > max_dotclock,
++			 * then ignore
+ 			 *   - last crtc in single/multi-connector config
+ 			 *   - consecutive crtcs in multi-connector config
+ 			 *
+ 			 * in multi-connector config ignore if
+-			 *   - previous crtc mode.hdisplay > 5120 and
++			 *   - previous crtc (mode resolution > 5K (or)
++			 *     mode clock > max_dotclock) and
+ 			 *   - current & previous crtcs are consecutive
+ 			 */
+-			if (((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
++			if ((igt_bigjoiner_possible(&crtc->mode, max_dotclock) &&
+ 			     ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
+ 			      ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
+-			    ((i > 0) && (crtc[i - 1].mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
++			    ((i > 0) && igt_bigjoiner_possible(&crtc[i - 1].mode, max_dotclock) &&
+ 			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
+ 				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
+ 				goto out;
+@@ -954,6 +955,8 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+ 
+ 		drm_resources = drmModeGetResources(drm_fd);
+ 		igt_require(drm_resources);
++
++		max_dotclock = igt_get_max_dotclock(drm_fd);
  	}
  
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
 -- 
 2.40.0
