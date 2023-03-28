@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mblankhorst.nl (lankhorst.se
- [IPv6:2a02:2308:0:7ec:e79c:4e97:b6c4:f0ae])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A0B010E899
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 12:40:55 +0000 (UTC)
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Mar 2023 14:40:44 +0200
-Message-Id: <20230328124044.268766-2-maarten.lankhorst@linux.intel.com>
-In-Reply-To: <20230328124044.268766-1-maarten.lankhorst@linux.intel.com>
-References: <20230328124044.268766-1-maarten.lankhorst@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1795368396120178386=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/xe: Prepare for widening
- drm_xe_sync.handle to 64-bits
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Tue, 28 Mar 2023 12:54:12 -0000
+Message-ID: <168000805257.29055.6953827644081139799@emeril.freedesktop.org>
+References: <20230328111745.3738878-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230328111745.3738878-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fkms=3A_Silent_errors_on_invalid_pipe/output_combo?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,643 +17,375 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-By not using a pointer to drm_xe_sync.handle, but taking the value, it
-becomes safer when we change the word size to 64-bits. This is required
-to make drm_xe_sync.handle safe on big-endian, and to explicitly set
-the high 32-bits to 0.
+--===============1795368396120178386==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
----
- lib/igt_syncobj.c           | 14 +++++++
- lib/igt_syncobj.h           |  4 ++
- lib/xe/xe_ioctl.c           |  4 +-
- tests/xe/xe_compute.c       |  4 +-
- tests/xe/xe_dma_buf_sync.c  |  7 ++--
- tests/xe/xe_evict.c         |  4 +-
- tests/xe/xe_exec_balancer.c |  8 ++--
- tests/xe/xe_exec_basic.c    |  6 +--
- tests/xe/xe_exec_reset.c    | 19 +++++----
- tests/xe/xe_exec_threads.c  | 20 ++++-----
- tests/xe/xe_guc_pc.c        |  4 +-
- tests/xe/xe_huc_copy.c      |  4 +-
- tests/xe/xe_pm.c            |  8 ++--
- tests/xe/xe_vm.c            | 81 +++++++++++++++++--------------------
- 14 files changed, 96 insertions(+), 91 deletions(-)
+== Series Details ==
 
-diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
-index a24ed10b7..95cad585e 100644
---- a/lib/igt_syncobj.c
-+++ b/lib/igt_syncobj.c
-@@ -248,6 +248,14 @@ syncobj_wait(int fd, uint32_t *handles, uint32_t count,
- 	return true;
- }
- 
-+bool
-+syncobj_wait1(int fd, uint32_t handle,
-+	     uint64_t abs_timeout_nsec, uint32_t flags,
-+	     uint32_t *first_signaled)
-+{
-+	return syncobj_wait(fd, &handle, 1, abs_timeout_nsec, flags, first_signaled);
-+}
-+
- static int
- __syncobj_reset(int fd, uint32_t *handles, uint32_t count)
- {
-@@ -278,6 +286,12 @@ syncobj_reset(int fd, uint32_t *handles, uint32_t count)
- 	igt_assert_eq(__syncobj_reset(fd, handles, count), 0);
- }
- 
-+void
-+syncobj_reset1(int fd, uint32_t handle)
-+{
-+	syncobj_reset(fd, &handle, 1);
-+}
-+
- static int
- __syncobj_signal(int fd, uint32_t *handles, uint32_t count)
- {
-diff --git a/lib/igt_syncobj.h b/lib/igt_syncobj.h
-index e6725671d..6d6d08cbd 100644
---- a/lib/igt_syncobj.h
-+++ b/lib/igt_syncobj.h
-@@ -41,6 +41,9 @@ int syncobj_wait_err(int fd, uint32_t *handles, uint32_t count,
- bool syncobj_wait(int fd, uint32_t *handles, uint32_t count,
- 		  uint64_t abs_timeout_nsec, uint32_t flags,
- 		  uint32_t *first_signaled);
-+bool syncobj_wait1(int fd, __u32 handle,
-+		   uint64_t abs_timeout_nsec, uint32_t flags,
-+		   uint32_t *first_signaled);
- int __syncobj_timeline_wait_ioctl(int fd,
- 				  struct drm_syncobj_timeline_wait *args);
- bool syncobj_timeline_wait(int fd, uint32_t *handles, uint64_t *points,
-@@ -51,6 +54,7 @@ int syncobj_timeline_wait_err(int fd, uint32_t *handles, uint64_t *points,
- 			      unsigned num_handles,
- 			      int64_t timeout_nsec, unsigned flags);
- void syncobj_reset(int fd, uint32_t *handles, uint32_t count);
-+void syncobj_reset1(int fd, uint32_t handle);
- void syncobj_signal(int fd, uint32_t *handles, uint32_t count);
- void syncobj_timeline_query(int fd, uint32_t *handles, uint64_t *points,
- 			    uint32_t count);
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 9d5793dff..62da03c7d 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -207,7 +207,7 @@ static void __xe_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
- 	__xe_vm_bind_assert(fd, vm, 0, bo, offset, addr, size, op, &sync, 1, 0,
- 			    0);
- 
--	igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync.handle, INT64_MAX, 0, NULL));
- 	syncobj_destroy(fd, sync.handle);
- }
- 
-@@ -386,7 +386,7 @@ void xe_exec_wait(int fd, uint32_t engine, uint64_t addr)
- 
- 	xe_exec_sync(fd, engine, addr, &sync, 1);
- 
--	igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync.handle, INT64_MAX, 0, NULL));
- 	syncobj_destroy(fd, sync.handle);
- }
- 
-diff --git a/tests/xe/xe_compute.c b/tests/xe/xe_compute.c
-index 138d80671..d72391a6e 100644
---- a/tests/xe/xe_compute.c
-+++ b/tests/xe/xe_compute.c
-@@ -75,7 +75,7 @@ test_compute_square(int fd)
- 	for(int i = 0; i < BO_DICT_ENTRIES; i++) {
- 		bo_dict[i].data = aligned_alloc(xe_get_default_alignment(fd), bo_dict[i].size);
- 		xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(bo_dict[i].data), bo_dict[i].addr, bo_dict[i].size, &sync, 1);
--		syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
-+		syncobj_wait1(fd, sync.handle, INT64_MAX, 0, NULL);
- 		memset(bo_dict[i].data, 0, bo_dict[i].size);
- 	}
- 	memcpy(bo_dict[0].data, tgllp_kernel_square_bin, tgllp_kernel_square_length);
-@@ -96,7 +96,7 @@ test_compute_square(int fd)
- 
- 	for(int i = 0; i < BO_DICT_ENTRIES; i++) {
- 		xe_vm_unbind_async(fd, vm, 0, 0, bo_dict[i].addr, bo_dict[i].size, &sync, 1);
--		syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
-+		syncobj_wait1(fd, sync.handle, INT64_MAX, 0, NULL);
- 		free(bo_dict[i].data);
- 	}
- 
-diff --git a/tests/xe/xe_dma_buf_sync.c b/tests/xe/xe_dma_buf_sync.c
-index 8b97480a7..91fc54adb 100644
---- a/tests/xe/xe_dma_buf_sync.c
-+++ b/tests/xe/xe_dma_buf_sync.c
-@@ -195,14 +195,13 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
- 
- 		/* Verify exec blocked on spinner / prime BO */
- 		usleep(5000);
--		igt_assert(!syncobj_wait(fd[1], &sync[1].handle, 1, 1, 0,
--					 NULL));
-+		igt_assert(!syncobj_wait1(fd[1], sync[1].handle, 1, 0, NULL));
- 		igt_assert_eq(data[i]->data, 0x0);
- 
- 		/* End spinner and verify exec complete */
- 		xe_spin_end(&data[i]->spin);
--		igt_assert(syncobj_wait(fd[1], &sync[1].handle, 1, INT64_MAX,
--					0, NULL));
-+		igt_assert(syncobj_wait1(fd[1], sync[1].handle, INT64_MAX, 0,
-+					 NULL));
- 		igt_assert_eq(data[i]->data, 0xc0ffee);
- 
- 		/* Clean up */
-diff --git a/tests/xe/xe_evict.c b/tests/xe/xe_evict.c
-index eddbbd6f4..79d018c30 100644
---- a/tests/xe/xe_evict.c
-+++ b/tests/xe/xe_evict.c
-@@ -124,7 +124,7 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 				xe_vm_bind_async(fd, vm3, bind_engines[2], __bo,
- 						 0, addr,
- 						 bo_size, sync, 1);
--				igt_assert(syncobj_wait(fd, &sync[0].handle, 1,
-+				igt_assert(syncobj_wait1(fd, sync[0].handle,
- 							INT64_MAX, 0, NULL));
- 				xe_vm_bind_async(fd, i & 1 ? vm2 : vm,
- 						 i & 1 ? bind_engines[1] :
-@@ -168,7 +168,7 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 	for (i = 0; i < n_engines; i++)
- 		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
- 					NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	for (i = 0; i < n_execs; i++) {
- 		uint32_t __bo;
-diff --git a/tests/xe/xe_exec_balancer.c b/tests/xe/xe_exec_balancer.c
-index f3341a99e..03ab83330 100644
---- a/tests/xe/xe_exec_balancer.c
-+++ b/tests/xe/xe_exec_balancer.c
-@@ -110,11 +110,11 @@ static void test_all_active(int fd, int gt, int class)
- 		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
- 					NULL));
- 	}
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	syncobj_destroy(fd, sync[0].handle);
- 	for (i = 0; i < num_placements; i++) {
-@@ -332,11 +332,11 @@ test_exec(int fd, int gt, int class, int n_engines, int n_execs,
- 	for (i = 0; i < n_engines && n_execs; i++)
- 		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
- 					NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
- 	     i < n_execs; i++)
-diff --git a/tests/xe/xe_exec_basic.c b/tests/xe/xe_exec_basic.c
-index 2a3cebd36..3a4ca55b7 100644
---- a/tests/xe/xe_exec_basic.c
-+++ b/tests/xe/xe_exec_basic.c
-@@ -254,11 +254,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	for (i = 0; i < n_vm; ++i) {
--		syncobj_reset(fd, &sync[0].handle, 1);
-+		syncobj_reset1(fd, sync[0].handle);
- 		xe_vm_unbind_async(fd, vm[i], bind_engines[i], 0, addr[i],
- 				   bo_size, sync, 1);
--		igt_assert(syncobj_wait(fd, &sync[0].handle, 1,
--					INT64_MAX, 0, NULL));
-+		igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0,
-+					 NULL));
- 	}
- 
- 	for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
-diff --git a/tests/xe/xe_exec_reset.c b/tests/xe/xe_exec_reset.c
-index 57dc90dd0..2ae1a51ad 100644
---- a/tests/xe/xe_exec_reset.c
-+++ b/tests/xe/xe_exec_reset.c
-@@ -72,15 +72,15 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
- 
- 	xe_spin_wait_started(spin);
- 	usleep(50000);
--	igt_assert(!syncobj_wait(fd, &syncobj, 1, 1, 0, NULL));
-+	igt_assert(!syncobj_wait1(fd, syncobj, 1, 0, NULL));
- 	xe_spin_end(spin);
- 
--	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, syncobj, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	syncobj_destroy(fd, sync[0].handle);
- 	syncobj_destroy(fd, syncobj);
-@@ -301,13 +301,12 @@ test_balancer(int fd, int gt, int class, int n_engines, int n_execs,
- 	}
- 
- 	for (i = 0; i < n_engines && n_execs; i++)
--		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
--					NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+		igt_assert(syncobj_wait1(fd, syncobjs[i], INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	for (i = bad_batches; i < n_execs; i++)
- 		igt_assert_eq(data[i].data, 0xc0ffee);
-@@ -484,11 +483,11 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	for (i = 0; i < n_engines && n_execs; i++)
- 		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
- 					NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	for (i = 1; i < n_execs; i++)
- 		igt_assert_eq(data[i].data, 0xc0ffee);
-diff --git a/tests/xe/xe_exec_threads.c b/tests/xe/xe_exec_threads.c
-index c34d8aec6..9b3ca51aa 100644
---- a/tests/xe/xe_exec_threads.c
-+++ b/tests/xe/xe_exec_threads.c
-@@ -194,8 +194,7 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 				 * an invalidate.
- 				 */
- 				for (j = 0; j < n_engines; ++j)
--					igt_assert(syncobj_wait(fd,
--								&syncobjs[j], 1,
-+					igt_assert(syncobj_wait1(fd, syncobjs[j],
- 								INT64_MAX, 0,
- 								NULL));
- 				igt_assert_eq(data[i].data, 0xc0ffee);
-@@ -217,13 +216,12 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	}
- 
- 	for (i = 0; i < n_engines; i++)
--		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
--					NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+		igt_assert(syncobj_wait1(fd, syncobjs[i], INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
- 	     i < n_execs; i++)
-@@ -637,8 +635,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 				 * an invalidate.
- 				 */
- 				for (j = 0; j < n_engines; ++j)
--					igt_assert(syncobj_wait(fd,
--								&syncobjs[j], 1,
-+					igt_assert(syncobj_wait1(fd, syncobjs[j],
- 								INT64_MAX, 0,
- 								NULL));
- 				if (!(flags & HANG && e == hang_engine))
-@@ -661,14 +658,13 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	}
- 
- 	for (i = 0; i < n_engines; i++)
--		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
--					NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+		igt_assert(syncobj_wait1(fd, syncobjs[i], INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, bind_engines[0], 0, addr,
- 			   bo_size, sync, 1);
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	for (i = flags & INVALIDATE ? n_execs - 1 : 0;
- 	     i < n_execs; i++) {
-diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
-index 60c93288b..e87f996cc 100644
---- a/tests/xe/xe_guc_pc.c
-+++ b/tests/xe/xe_guc_pc.c
-@@ -110,12 +110,12 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
- 		igt_assert_eq(data[i].data, 0xc0ffee);
- 	}
- 
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, bind_engines[0], 0, addr,
- 			   bo_size, sync, 1);
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	for (i = 0; i < n_execs; i++)
- 		igt_assert_eq(data[i].data, 0xc0ffee);
-diff --git a/tests/xe/xe_huc_copy.c b/tests/xe/xe_huc_copy.c
-index ee3896cef..0292e7c64 100644
---- a/tests/xe/xe_huc_copy.c
-+++ b/tests/xe/xe_huc_copy.c
-@@ -126,7 +126,7 @@ test_huc_copy(int fd)
- 	for(int i = 0; i < BO_DICT_ENTRIES; i++) {
- 		bo_dict[i].data = aligned_alloc(xe_get_default_alignment(fd), bo_dict[i].size);
- 		xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(bo_dict[i].data), bo_dict[i].addr, bo_dict[i].size, &sync, 1);
--		syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
-+		syncobj_wait1(fd, sync.handle, INT64_MAX, 0, NULL);
- 		memset(bo_dict[i].data, 0, bo_dict[i].size);
- 	}
- 	dinput = (char *)bo_dict[0].data;
-@@ -143,7 +143,7 @@ test_huc_copy(int fd)
- 
- 	for(int i = 0; i < BO_DICT_ENTRIES; i++) {
- 		xe_vm_unbind_async(fd, vm, 0, 0, bo_dict[i].addr, bo_dict[i].size, &sync, 1);
--		syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
-+		syncobj_wait1(fd, sync.handle, INT64_MAX, 0, NULL);
- 		free(bo_dict[i].data);
- 	}
- 
-diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c
-index 861f6b915..1af453212 100644
---- a/tests/xe/xe_pm.c
-+++ b/tests/xe/xe_pm.c
-@@ -303,8 +303,8 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 						      SUSPEND_TEST_NONE);
- 	}
- 
--	igt_assert(syncobj_wait(device.fd_xe, &sync[0].handle, 1, INT64_MAX, 0,
--				NULL));
-+	igt_assert(syncobj_wait1(device.fd_xe, sync[0].handle, INT64_MAX, 0,
-+				 NULL));
- 
- 	if (check_rpm && runtime_usage_available(device.pci_xe))
- 		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
-@@ -312,8 +312,8 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(device.fd_xe, vm, bind_engines[0], 0, addr,
- 			   bo_size, sync, 1);
--	igt_assert(syncobj_wait(device.fd_xe, &sync[0].handle, 1, INT64_MAX, 0,
--NULL));
-+	igt_assert(syncobj_wait1(device.fd_xe, sync[0].handle, INT64_MAX, 0,
-+				 NULL));
- 
- 	for (i = 0; i < n_execs; i++)
- 		igt_assert_eq(data[i].data, 0xc0ffee);
-diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
-index 15356c704..a427014a5 100644
---- a/tests/xe/xe_vm.c
-+++ b/tests/xe/xe_vm.c
-@@ -285,7 +285,7 @@ static void unbind_all(int fd, int n_vmas)
- 	sync[0].handle = syncobj_create(fd, 0);
- 	xe_vm_unbind_all_async(fd, vm, 0, bo, sync, 1);
- 
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 	syncobj_destroy(fd, sync[0].handle);
- 
- 	gem_close(fd, bo);
-@@ -485,8 +485,7 @@ static void vm_async_ops_err(int fd, bool destroy)
- 	}
- 
- 	for (i = 0; i < N_BINDS; i++)
--		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
--					NULL));
-+		igt_assert(syncobj_wait1(fd, syncobjs[i], INT64_MAX, 0, NULL));
- 
- 	if (!destroy)
- 		xe_vm_destroy(fd, vm);
-@@ -599,14 +598,12 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 		sync_all[n_execs].handle = sync[0].handle;
- 		xe_vm_unbind_async(fd, vm, 0, 0, addr + i * addr_stride,
- 				   bo_size, sync_all, n_execs + 1);
--		igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0,
--					NULL));
-+		igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 	}
- 
- 	for (i = 0; i < n_execs; i++)
--		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
--					NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+		igt_assert(syncobj_wait1(fd, syncobjs[i], INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	for (i = 0; i < n_execs; i++)
- 		igt_assert_eq(data[i]->data, 0xc0ffee);
-@@ -637,7 +634,7 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 
- 		exec.engine_id = engines[e];
- 		exec.address = batch_addr;
--		syncobj_reset(fd, &syncobjs[e], 1);
-+		syncobj_reset1(fd, syncobjs[e]);
- 		xe_exec(fd, &exec);
- 	}
- 
-@@ -649,17 +646,15 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 		sync_all[n_execs].handle = sync[0].handle;
- 		xe_vm_unbind_async(fd, vm, 0, 0, addr + i * addr_stride,
- 				   bo_size, sync_all, n_execs + 1);
--		igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0,
--					NULL));
-+		igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 	}
- 
- 	for (i = 0; i < n_execs; i++) {
- 		if (!(i % 2))
- 			continue;
--		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
--					NULL));
-+		igt_assert(syncobj_wait1(fd, syncobjs[i], INT64_MAX, 0, NULL));
- 	}
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	for (i = 0; i < n_execs; i++)
- 		igt_assert_eq(data[i]->data, 0xc0ffee);
-@@ -790,19 +785,18 @@ test_bind_engines_independent(int fd, struct drm_xe_engine_class_instance *eci)
- 	}
- 
- 	/* Verify initial bind, bind + write to 2nd engine done */
--	igt_assert(syncobj_wait(fd, &syncobjs[1], 1, INT64_MAX, 0, NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, syncobjs[1], INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 	igt_assert_eq(data[1].data, 0xc0ffee);
- 
- 	/* Verify bind + write to 1st engine still inflight */
--	igt_assert(!syncobj_wait(fd, &syncobjs[0], 1, 1, 0, NULL));
--	igt_assert(!syncobj_wait(fd, &syncobjs[N_ENGINES], 1, 1, 0, NULL));
-+	igt_assert(!syncobj_wait1(fd, syncobjs[0], 1, 0, NULL));
-+	igt_assert(!syncobj_wait1(fd, syncobjs[N_ENGINES], 1, 0, NULL));
- 
- 	/* Verify bind + write to 1st engine done after ending spinner */
- 	xe_spin_end(&data[0].spin);
--	igt_assert(syncobj_wait(fd, &syncobjs[0], 1, INT64_MAX, 0, NULL));
--	igt_assert(syncobj_wait(fd, &syncobjs[N_ENGINES], 1, INT64_MAX, 0,
--				NULL));
-+	igt_assert(syncobj_wait1(fd, syncobjs[0], INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, syncobjs[N_ENGINES], INT64_MAX, 0, NULL));
- 	igt_assert_eq(data[0].data, 0xc0ffee);
- 
- 	syncobj_destroy(fd, sync[0].handle);
-@@ -934,13 +928,13 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 		bind_ops[i].op = XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_ASYNC;
- 	}
- 
--	syncobj_reset(fd, &sync[0].handle, 1);
-+	syncobj_reset1(fd, sync[0].handle);
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
- 	xe_vm_bind_array(fd, vm, bind_engine, bind_ops, n_execs, sync, 2);
- 
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
--	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[1].handle, INT64_MAX, 0, NULL));
- 
- 	for (i = 0; i < n_execs; i++)
- 		igt_assert_eq(data[i].data, 0xc0ffee);
-@@ -1104,7 +1098,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 		sync[1].handle = syncobjs[e];
- 
- 		if (i != e)
--			syncobj_reset(fd, &sync[1].handle, 1);
-+			syncobj_reset1(fd, sync[1].handle);
- 
- 		exec.engine_id = engines[e];
- 		exec.address = batch_addr;
-@@ -1117,11 +1111,10 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 	}
- 
- 	for (i = 0; i < n_engines; i++)
--		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
--					NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+		igt_assert(syncobj_wait1(fd, syncobjs[i], INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
--	syncobj_reset(fd, &sync[0].handle, 1);
-+	syncobj_reset1(fd, sync[0].handle);
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	if (flags & LARGE_BIND_FLAG_SPLIT) {
- 		xe_vm_unbind_async(fd, vm, 0, 0, base_addr,
-@@ -1132,7 +1125,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 		xe_vm_unbind_async(fd, vm, 0, 0, base_addr, bo_size,
- 				   sync, 1);
- 	}
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
- 
- 	addr = base_addr;
- 	for (i = 0; i < n_execs; i++) {
-@@ -1216,9 +1209,9 @@ static void *hammer_thread(void *tdata)
- 		} else {
- 			exec.num_syncs = 1;
- 			xe_exec(t->fd, &exec);
--			igt_assert(syncobj_wait(t->fd, &sync[0].handle, 1,
--						INT64_MAX, 0, NULL));
--			syncobj_reset(t->fd, &sync[0].handle, 1);
-+			igt_assert(syncobj_wait1(t->fd, sync[0].handle,
-+						 INT64_MAX, 0, NULL));
-+			syncobj_reset1(t->fd, sync[0].handle);
- 		}
- 		++i;
- 	}
-@@ -1389,7 +1382,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
- 		if (i)
--			syncobj_reset(fd, &sync[1].handle, 1);
-+			syncobj_reset1(fd, sync[1].handle);
- 		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
- 
- 		exec.engine_id = engine;
-@@ -1401,15 +1394,15 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 	addr = base_addr;
- 
- 	/* Unbind some of the pages */
--	syncobj_reset(fd, &sync[0].handle, 1);
-+	syncobj_reset1(fd, sync[0].handle);
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0,
- 			   addr + unbind_n_page_offfset * page_size,
- 			   unbind_n_pages * page_size, sync, 2);
- 
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
--	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[1].handle, INT64_MAX, 0, NULL));
- 
- 	/* Verify all pages written */
- 	for (i = 0; i < n_binds; ++i) {
-@@ -1445,7 +1438,7 @@ try_again_after_invalidate:
- 			igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
- 			sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--			syncobj_reset(fd, &sync[1].handle, 1);
-+			syncobj_reset1(fd, sync[1].handle);
- 			sync[1].flags |= DRM_XE_SYNC_SIGNAL;
- 
- 			exec.engine_id = engine;
-@@ -1455,8 +1448,8 @@ try_again_after_invalidate:
- 	}
- 	addr = base_addr;
- 
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
--	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[1].handle, INT64_MAX, 0, NULL));
- 
- 	/* Verify all pages still bound written */
- 	for (i = 0; i < n_binds; ++i) {
-@@ -1486,7 +1479,7 @@ try_again_after_invalidate:
- 	}
- 
- 	/* Confirm unbound region can be rebound */
--	syncobj_reset(fd, &sync[0].handle, 1);
-+	syncobj_reset1(fd, sync[0].handle);
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	if (flags & MUNMAP_FLAG_USERPTR)
- 		xe_vm_bind_userptr_async(fd, vm, 0,
-@@ -1516,7 +1509,7 @@ try_again_after_invalidate:
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
- 		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
--		syncobj_reset(fd, &sync[1].handle, 1);
-+		syncobj_reset1(fd, sync[1].handle);
- 		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
- 
- 		exec.engine_id = engine;
-@@ -1527,8 +1520,8 @@ try_again_after_invalidate:
- 	}
- 	addr = base_addr;
- 
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
--	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[0].handle, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait1(fd, sync[1].handle, INT64_MAX, 0, NULL));
- 
- 	/* Verify all pages written */
- 	for (i = 0; i < n_binds; ++i) {
--- 
-2.34.1
+Series: lib/igt_kms: Silent errors on invalid pipe/output combo
+URL   : https://patchwork.freedesktop.org/series/115716/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12926 -> IGTPW_8699
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8699 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8699, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/index.html
+
+Participating hosts (36 -> 37)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8699:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@guc_hang:
+    - bat-adln-1:         NOTRUN -> [ABORT][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@i915_selftest@live@guc_hang.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8699 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+    - bat-adln-1:         NOTRUN -> [SKIP][4] ([i915#4613]) +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_module_load@reload:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-WARN][5] ([i915#1982])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-kbl-soraka/igt@i915_module_load@reload.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][6] ([i915#1886])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         NOTRUN -> [DMESG-WARN][7] ([i915#7699])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [PASS][8] -> [ABORT][9] ([i915#7911])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-adln-1:         NOTRUN -> [DMESG-FAIL][10] ([i915#6997])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-rpls-2:         [PASS][11] -> [ABORT][12] ([i915#6687])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_chamelium_frames@hdmi-crc-fast:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][13] ([fdo#109271]) +16 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][14] ([fdo#109271]) +1 similar issue
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-bsw-nick/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][15] ([i915#7828])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@prime_vgem@basic-userptr:
+    - bat-adln-1:         NOTRUN -> [SKIP][16] ([fdo#109295] / [i915#3301])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@prime_vgem@basic-userptr.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-adln-1:         NOTRUN -> [SKIP][17] ([fdo#109295] / [i915#3291]) +2 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - bat-adln-1:         [ABORT][18] ([i915#7977]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-adln-1/igt@i915_pm_rpm@basic-rte.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [ABORT][20] ([i915#7911] / [i915#7913]) -> [PASS][21]
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-dg2-11:         [INCOMPLETE][22] ([i915#7609] / [i915#7913]) -> [PASS][23]
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-rpls-1:         [DMESG-FAIL][24] ([i915#6763]) -> [PASS][25]
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-rpls-1/igt@i915_selftest@live@workarounds.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-rpls-1/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         [DMESG-FAIL][26] ([i915#6367] / [i915#7913] / [i915#7996]) -> [DMESG-FAIL][27] ([i915#6367] / [i915#7913])
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-rpls-2/igt@i915_selftest@live@slpc.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6763]: https://gitlab.freedesktop.org/drm/intel/issues/6763
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7221 -> IGTPW_8699
+
+  CI-20190529: 20190529
+  CI_DRM_12926: 3c05e51a6eff5ee0f05df5b40412e6ae7a18286b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8699: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/index.html
+  IGT_7221: 4b77c6d85024d22ca521d510f8eee574128fe04f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/index.html
+
+--===============1795368396120178386==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_kms: Silent errors on invalid pipe/output combo</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115716/">https://patchwork.freedesktop.org/series/115716/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12926 -&gt; IGTPW_8699</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8699 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8699, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/index.html</p>
+<h2>Participating hosts (36 -&gt; 37)</h2>
+<p>Additional (1): fi-kbl-soraka </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8699:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@guc_hang:<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@i915_selftest@live@guc_hang.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8699 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</p>
+</li>
+<li>
+<p>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-kbl-soraka/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-bsw-nick/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+</li>
+<li>
+<p>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-adln-1/igt@i915_pm_rpm@basic-rte.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7977">i915#7977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-adln-1/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7609">i915#7609</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-rpls-1/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6763">i915#6763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-rpls-1/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@slpc:<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12926/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7221 -&gt; IGTPW_8699</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12926: 3c05e51a6eff5ee0f05df5b40412e6ae7a18286b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8699: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8699/index.html<br />
+  IGT_7221: 4b77c6d85024d22ca521d510f8eee574128fe04f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1795368396120178386==--
