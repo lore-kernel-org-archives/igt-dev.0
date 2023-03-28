@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ADED310E899
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 12:36:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0292510E89A
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 12:36:19 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
  ankit.k.nautiyal@intel.com, karthik.b.s@intel.com
-Date: Tue, 28 Mar 2023 18:02:07 +0530
-Message-Id: <20230328123210.3781976-4-bhanuprakash.modem@intel.com>
+Date: Tue, 28 Mar 2023 18:02:09 +0530
+Message-Id: <20230328123210.3781976-6-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230328123210.3781976-1-bhanuprakash.modem@intel.com>
 References: <20230328123210.3781976-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 3/6] tests/i915/kms_dsc: Update bigjoiner pipe
- constraint
+Subject: [igt-dev] [i-g-t V2 5/6] tests/kms_flip: Fix Bigjoiner checks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,81 +23,67 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of writing own logic at test level, use existing IGT
-helper to check the bigjoiner support.
+Bigjoiner will come in the picture when the resolution > 5K or
+clock > max dot-clock. Add a support to check the selected mode
+clock is greater than the max dot-clock.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_dsc.c        | 17 ++++++++---------
- tests/i915/kms_dsc_helper.h |  2 --
- 2 files changed, 8 insertions(+), 11 deletions(-)
+ tests/kms_flip.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index b3c5e60c773..9c6a7780acd 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -47,7 +47,6 @@ typedef struct {
- 	unsigned int plane_format;
- 	igt_output_t *output;
- 	int input_bpc;
--	int n_pipes;
- 	int disp_ver;
- 	enum pipe pipe;
- } data_t;
-@@ -76,15 +75,19 @@ static bool check_big_joiner_pipe_constraint(data_t *data)
- {
- 	igt_output_t *output = data->output;
- 	drmModeModeInfo *mode = get_highres_mode(output);
-+	bool ret = true;
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 5e82f4a2f84..7cb8749c930 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -81,8 +81,6 @@
+ #define RUN_TEST		1
+ #define RUN_PAIR		2
  
--	if (mode->hdisplay >= HDISPLAY_5K &&
--	    data->pipe == (data->n_pipes - 1)) {
-+	igt_output_set_pipe(output, data->pipe);
-+	igt_output_override_mode(output, mode);
-+
-+	if (!igt_check_bigjoiner_support(&data->display)) {
- 		igt_debug("Pipe-%s not supported due to bigjoiner limitation\n",
- 			   kmstest_pipe_name(data->pipe));
--		return false;
-+		ret = false;
- 	}
-+	igt_output_set_pipe(output, PIPE_NONE);
- 
--	return true;
-+	return ret;
- }
- 
- static void test_cleanup(data_t *data)
-@@ -206,7 +209,6 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- igt_main
- {
- 	data_t data = {};
--	int i;
- 
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-@@ -217,9 +219,6 @@ igt_main
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
- 		igt_require(data.disp_ver >= 11);
--		data.n_pipes = 0;
--		for_each_pipe(&data.display, i)
--			data.n_pipes++;
- 	}
- 
- 	igt_describe("Tests basic display stream compression functionality if supported "
-diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
-index fe479dac472..b3828dcd44a 100644
---- a/tests/i915/kms_dsc_helper.h
-+++ b/tests/i915/kms_dsc_helper.h
-@@ -21,8 +21,6 @@
- #include <fcntl.h>
- #include <termios.h>
- 
--#define HDISPLAY_5K	5120
+-#define MAX_HDISPLAY_PER_CRTC 5120
 -
- void force_dsc_enable(int drmfd, igt_output_t *output);
- void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc);
- void save_force_dsc_en(int drmfd, igt_output_t *output);
+ #ifndef DRM_CAP_TIMESTAMP_MONOTONIC
+ #define DRM_CAP_TIMESTAMP_MONOTONIC 6
+ #endif
+@@ -96,6 +94,7 @@ uint32_t devid;
+ int test_time = 3;
+ static bool monotonic_timestamp;
+ static pthread_t vblank_wait_thread;
++static int max_dotclock;
+ 
+ static drmModeConnector *last_connector;
+ 
+@@ -1528,19 +1527,19 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 	/*
+ 	 * Handle BW limitations:
+ 	 *
+-	 * if mode.hdisplay > 5120, then ignore
++	 * if mode resolution > 5K (or) mode clock > max_dotclock, then ignore
+ 	 *  - last crtc in single/multi-connector config
+ 	 *  - consecutive crtcs in multi-connector config
+ 	 *
+ 	 * in multi-connector config ignore if
+-	 *  - previous crtc mode.hdisplay > 5120 and
++	 *  - previous crtc (mode resolution > 5K or mode clock > max_dotclock) and
+ 	 *  - current & previous crtcs are consecutive
+ 	 */
+ 	for (i = 0; i < crtc_count; i++) {
+-		if (((o->kmode[i].hdisplay > MAX_HDISPLAY_PER_CRTC) &&
++		if ((igt_bigjoiner_possible(&o->kmode[i], max_dotclock) &&
+ 		     ((crtc_idxs[i] >= (total_crtcs - 1)) ||
+ 		      ((i < (crtc_count - 1)) && (abs(crtc_idxs[i + 1] - crtc_idxs[i]) <= 1)))) ||
+-		    ((i > 0) && (o->kmode[i - 1].hdisplay > MAX_HDISPLAY_PER_CRTC) &&
++		    ((i > 0) && igt_bigjoiner_possible(&o->kmode[i - 1], max_dotclock) &&
+ 		     (abs(crtc_idxs[i] - crtc_idxs[i - 1]) <= 1))) {
+ 
+ 			igt_debug("Combo: %s is not possible with selected mode(s).\n", test_name);
+@@ -1822,6 +1821,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 			for (i = 0; i < sizeof(tests) / sizeof(tests[0]); i++)
+ 				tests[i].flags &= ~(TEST_CHECK_TS | TEST_VBLANK_EXPIRED_SEQ);
+ 		}
++		max_dotclock = igt_get_max_dotclock(drm_fd);
+ 	}
+ 
+ 	igt_describe("Tests that nonblocking reading fails correctly");
 -- 
 2.40.0
