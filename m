@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A43F210E95E
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 06:41:39 +0000 (UTC)
-Date: Fri, 10 Mar 2023 07:41:35 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Message-ID: <20230310074135.5609c2a8@maurocar-mobl2>
-In-Reply-To: <874jqtmdas.wl-ashutosh.dixit@intel.com>
-References: <20230307221236.913429-1-zbigniew.kempczynski@intel.com>
- <20230307221236.913429-3-zbigniew.kempczynski@intel.com>
- <875yb9mdn4.wl-ashutosh.dixit@intel.com>
- <874jqtmdas.wl-ashutosh.dixit@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEE4510E70B
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 14:14:49 +0000 (UTC)
+Date: Tue, 28 Mar 2023 16:14:46 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230328141446.qp32logzaqzh3cot@kamilkon-desk1>
+References: <20230328083908.2476581-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t v7 2/7] lib/xe: Introduce Xe library
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230328083908.2476581-1-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] xe/xe_huc_copy: use IS_TIGERLAKE macro
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,58 +18,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 09 Mar 2023 20:38:03 -0800
-"Dixit, Ashutosh" <ashutosh.dixit@intel.com> wrote:
+On 2023-03-28 at 10:39:08 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Instead of hardcoding the PCI IDs at the test, use a macro
+> to check if the platform is compatible with the test.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  tests/xe/xe_huc_copy.c | 38 +-------------------------------------
+>  1 file changed, 1 insertion(+), 37 deletions(-)
+> 
+> diff --git a/tests/xe/xe_huc_copy.c b/tests/xe/xe_huc_copy.c
+> index ee3896cef8b9..cd68dbb5ac50 100644
+> --- a/tests/xe/xe_huc_copy.c
+> +++ b/tests/xe/xe_huc_copy.c
+> @@ -152,42 +152,6 @@ test_huc_copy(int fd)
+>  	xe_vm_destroy(fd, vm);
+>  }
+>  
+> -static bool
+> -is_device_supported(int fd)
+> -{
+> -	struct drm_xe_query_config *config;
+> -	struct drm_xe_device_query query = {
+> -		.extensions = 0,
+> -		.query = DRM_XE_DEVICE_QUERY_CONFIG,
+> -		.size = 0,
+> -		.data = 0,
+> -	};
+> -	uint16_t devid;
+> -
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> -
+> -	config = malloc(query.size);
+> -	igt_assert(config);
+> -
+> -	query.data = to_user_pointer(config);
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> -
+> -	devid = config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+> -	return (
+> -			devid == 0x9A60 ||
+> -			devid == 0x9A68 ||
+> -			devid == 0x9A70 ||
+> -			devid == 0x9A40 ||
+> -			devid == 0x9A49 ||
+> -			devid == 0x9A59 ||
+> -			devid == 0x9A78 ||
+> -			devid == 0x9AC0 ||
+> -			devid == 0x9AC9 ||
+> -			devid == 0x9AD9 ||
+> -			devid == 0x9AF8
+> -		);
+> -}
+> -
+>  igt_main
+>  {
+>  	int xe;
+> @@ -198,7 +162,7 @@ igt_main
+>  	}
+>  
+>  	igt_subtest("huc_copy") {
+> -		igt_skip_on(!is_device_supported(xe));
+> +		igt_skip_on(!IS_TIGERLAKE(intel_get_drm_devid(xe)));
 
-> On Thu, 09 Mar 2023 20:30:39 -0800, Dixit, Ashutosh wrote:
-> >
-> > On Tue, 07 Mar 2023 14:12:31 -0800, Zbigniew Kempczy=C5=84ski wrote: =20
-> > > =20
-> >
-> > Hi Zbyzsek,
-> > =20
-> > > +#define for_each_gt(__fd, __gt) \
-> > > +	for (__gt =3D 0; __gt < xe_number_gt(__fd); ++__gt) =20
-> >
-> > This for_each_gt conflicts with for_each_gt in our internal i915 tree
-> > (which were planning to post upstream soon). How do you want to resolve
-> > this? =20
->=20
-> Can we can just do this?
->=20
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index fe1343f6161..72ee6c9478b 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -66,6 +66,7 @@ struct xe_device {
->  #define for_each_hw_engine_class(__class) \
->         for (__class =3D 0; __class < DRM_XE_ENGINE_CLASS_COMPUTE + 1; \
->              ++__class)
-> +#undef for_each_gt
->  #define for_each_gt(__fd, __gt) \
->         for (__gt =3D 0; __gt < xe_number_gt(__fd); ++__gt)
->=20
->=20
-
-My two cents there: this works, but it is painful if the i915-specific
-version is placed on a header used by both Xe and i915 drivers.
-
-I can see two possible solutions:
-
-1. ensure that the i915-specific version is placed on a lib/i915*
-   header;
-
-2. name such kind of macros after the name of the driver, e. g.:
-
-	sed s,for_each_gt,xe_for_each_gt, -i lib/xe/* tests/xe/*
-	sed s,for_each_gt,i915_for_each_gt, -i lib/i915/* tests/i915/*=20
-
-They're not mutually exclusive.
+LGTM,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
-Mauro
+Kamil
+
+>  		test_huc_copy(xe);
+>  	}
+>  
+> -- 
+> 2.39.2
+> 
+
