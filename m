@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F26C010E17C
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 11:32:18 +0000 (UTC)
-Message-ID: <86d20e9d-cc16-ea16-4f17-ece109435777@intel.com>
-Date: Tue, 28 Mar 2023 17:02:03 +0530
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>, <swati2.sharma@intel.com>,
- <karthik.b.s@intel.com>
-References: <20230328105313.3727321-1-bhanuprakash.modem@intel.com>
- <20230328105313.3727321-2-bhanuprakash.modem@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E204E10E17C
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 11:42:03 +0000 (UTC)
+Message-ID: <98d4c936-908a-e411-2c84-434948ebca9b@intel.com>
+Date: Tue, 28 Mar 2023 17:11:44 +0530
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230302224356.28771-1-nidhi1.gupta@intel.com>
 Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230328105313.3727321-2-bhanuprakash.modem@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230302224356.28771-1-nidhi1.gupta@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 1/4] lib/igt_kms: Fix Bigjoiner checks
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: Reduce the
+ execution time on simulation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,117 +25,154 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Patch looks good to me.
 
-Please find the comments inline:
-
-
-On 3/28/2023 4:23 PM, Bhanuprakash Modem wrote:
-> Bigjoiner will come in the picture when the resolution > 5K or
-> clock > max dot-clock. Add a support to check the selected mode
-> clock is greater than the max dot-clock.
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+On Fri-03-03-2023 04:13 am, Nidhi Gupta wrote:
+> As the test execution is taking more time on simulation, limit the
+> execution to two (first & last) pipes. This optimization is for
+> simulation and hardware.
+> 
+> This patch will also provide an option (command line flag '-e') to
+> execute on all pipes.
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   lib/igt_kms.c | 39 +++++++++++++++++++++++++++++++++++++--
->   lib/igt_kms.h |  1 +
->   2 files changed, 38 insertions(+), 2 deletions(-)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index c12823d318e..3587dc7d7f6 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -5780,6 +5780,36 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
->   	return false;
+>   tests/kms_cursor_crc.c | 60 +++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 59 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index 0b5aac30..a69c0444 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -83,6 +83,11 @@ typedef struct {
+>   	cursorarea oldcursorarea[MAXCURSORBUFFER];
+>   } data_t;
+>   
+> +static bool extended;
+> +static enum pipe active_pipes[IGT_MAX_PIPES];
+> +static uint32_t last_pipe;
+> +
+> +
+>   #define TEST_DPMS (1<<0)
+>   #define TEST_SUSPEND (1<<1)
+>   
+> @@ -700,6 +705,17 @@ static void test_rapid_movement(data_t *data)
+>   	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
 >   }
 >   
-> +/*
-> + * igt_get_max_dotclock:
-> + * @fd: A drm file descriptor
-> + *
-> + * Get the Max pixel clock frequency from intel specific debugfs
-> + * "i915_frequency_info".
-> + *
-> + * Returns: Max supported pixel clock frequency.
-> + */
-> +int igt_get_max_dotclock(int fd)
+> +static bool execution_constraint(enum pipe pipe)
 > +{
-> +	char buf[4096];
-> +	char *s;
-> +	int max_dotclock = 0;
+> +	if (!extended &&
+> +	    pipe != active_pipes[0] &&
+> +	    pipe != active_pipes[last_pipe])
+> +		return true;
 > +
-> +	if (!is_i915_device(fd))
-> +		return max_dotclock;
-> +
-> +	igt_debugfs_read(fd, "i915_frequency_info", buf);
-> +	s = strstr(buf, "Max pixel clock frequency:");
-> +	igt_assert(s);
-> +	igt_assert_eq(sscanf(s, "Max pixel clock frequency: %d kHz", &max_dotclock), 1);
-> +
-> +	/* 100 Mhz to 5 GHz seem like reasonable values to expect */
-> +	igt_assert_lt(max_dotclock, 5000000);
-> +	igt_assert_lt(100000, max_dotclock);
-> +
-> +	return max_dotclock;
+> +	return false;
 > +}
 > +
->   /*
->    * igt_check_bigjoiner_support:
->    * @display: a pointer to an #igt_display_t structure
-> @@ -5802,6 +5832,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
->   		enum pipe idx;
->   		drmModeModeInfo *mode;
->   	} pipes[IGT_MAX_PIPES];
-> +	int max_dotclock;
->   
->   	/* Get total enabled pipes. */
->   	for_each_pipe(display, p)
-> @@ -5825,6 +5856,8 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
->   		return true;
->   	}
->   
-> +	max_dotclock = igt_get_max_dotclock(display->drm_fd);
 > +
->   	/*
->   	 * if mode.hdisplay > 5120, then ignore
->   	 *  - if the consecutive pipe is not available
-
-Lets update the comment too, about dotclock check.
-
-
-> @@ -5836,11 +5869,13 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
->   	 *  - current & previous crtcs are consecutive
->   	 */
->   	for (i = 0; i < pipes_in_use; i++) {
-> -		if (((pipes[i].mode->hdisplay > MAX_HDISPLAY_PER_PIPE) &&
-> +		if (((pipes[i].mode->hdisplay > MAX_HDISPLAY_PER_PIPE ||
-> +		      pipes[i].mode->clock > max_dotclock) &&
->   		     ((pipes[i].idx >= (total_pipes - 1)) ||
->   		      (!display->pipes[pipes[i].idx + 1].enabled) ||
->   		      ((i < (pipes_in_use - 1)) && (abs(pipes[i + 1].idx - pipes[i].idx) <= 1)))) ||
-> -		    ((i > 0) && (pipes[i - 1].mode->hdisplay > MAX_HDISPLAY_PER_PIPE) &&
-> +		    ((i > 0) && (pipes[i - 1].mode->hdisplay > MAX_HDISPLAY_PER_PIPE ||
-> +			         pipes[i - 1].mode->clock > max_dotclock) &&
-
-We can add a helper for the above condition, as it is used in couple of 
-places, in this and the next patch:
-
-With above fixed, this is:
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-
->   		     ((!display->pipes[pipes[i - 1].idx + 1].enabled) ||
->   		      (abs(pipes[i].idx - pipes[i - 1].idx) <= 1)))) {
->   			igt_debug("Pipe/Output combo is not possible with selected mode(s).\n");
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 2b917925158..20a4ced9ad9 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -990,6 +990,7 @@ void igt_sort_connector_modes(drmModeConnector *connector,
+>   static void run_size_tests(data_t *data, int w, int h)
+>   {
+>   	enum pipe pipe;
+> @@ -750,6 +766,9 @@ static void run_size_tests(data_t *data, int w, int h)
+>   			}
 >   
->   bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
->   		igt_output_t *output, int bpc);
-> +int igt_get_max_dotclock(int fd);
->   bool igt_check_bigjoiner_support(igt_display_t *display);
->   bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
->   bool i915_pipe_output_combo_valid(igt_display_t *display);
+>   			for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+> +				if (execution_constraint(pipe))
+> +					continue;
+> +
+>   				data->pipe = pipe;
+>   
+>   				if (require_cursor_size(data, w, h)) {
+> @@ -783,6 +802,9 @@ static void run_tests_on_pipe(data_t *data)
+>   		     "correctly.");
+>   	igt_subtest_with_dynamic("cursor-size-change") {
+>   		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+> +			if (execution_constraint(pipe))
+> +				continue;
+> +
+>   			data->pipe = pipe;
+>   
+>   			igt_dynamic_f("pipe-%s-%s",
+> @@ -797,6 +819,9 @@ static void run_tests_on_pipe(data_t *data)
+>   		     "plane, i.e., alpha channel equal to 1.0.");
+>   	igt_subtest_with_dynamic("cursor-alpha-opaque") {
+>   		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+> +			if (execution_constraint(pipe))
+> +				continue;
+> +
+>   			data->pipe = pipe;
+>   
+>   			igt_dynamic_f("pipe-%s-%s",
+> @@ -811,6 +836,9 @@ static void run_tests_on_pipe(data_t *data)
+>   		     "plane, i.e., alpha channel equal to 0.0.");
+>   	igt_subtest_with_dynamic("cursor-alpha-transparent") {
+>   		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+> +			if (execution_constraint(pipe))
+> +				continue;
+> +
+>   			data->pipe = pipe;
+>   
+>   			igt_dynamic_f("pipe-%s-%s",
+> @@ -828,6 +856,9 @@ static void run_tests_on_pipe(data_t *data)
+>   	igt_describe("Check random placement of a cursor with DPMS.");
+>   	igt_subtest_with_dynamic("cursor-dpms") {
+>   		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+> +			if (execution_constraint(pipe))
+> +				continue;
+> +
+>   			data->pipe = pipe;
+>   			data->flags = TEST_DPMS;
+>   
+> @@ -843,6 +874,9 @@ static void run_tests_on_pipe(data_t *data)
+>   	igt_describe("Check random placement of a cursor with suspend.");
+>   	igt_subtest_with_dynamic("cursor-suspend") {
+>   		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+> +			if (execution_constraint(pipe))
+> +				continue;
+> +
+>   			data->pipe = pipe;
+>   			data->flags = TEST_SUSPEND;
+>   
+> @@ -881,16 +915,40 @@ static void run_tests_on_pipe(data_t *data)
+>   
+>   static data_t data;
+>   
+> -igt_main
+> +static int opt_handler(int opt, int opt_index, void *_data)
+> +{
+> +	switch (opt) {
+> +	case 'e':
+> +		extended = true;
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =
+> +	"  -e \tExtended tests.\n";
+> +
+> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   {
+>   	uint64_t cursor_width = 64, cursor_height = 64;
+>   	int ret;
+>   
+>   	igt_fixture {
+> +		enum pipe pipe;
+> +
+> +		last_pipe = 0;
+> +
+>   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>   
+>   		igt_display_require(&data.display, data.drm_fd);
+>   		igt_display_require_output(&data.display);
+> +		/* Get active pipes. */
+> +		for_each_pipe(&data.display, pipe)
+> +			active_pipes[last_pipe++] = pipe;
+> +		last_pipe--;
+>   
+>   		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &cursor_width);
+>   		igt_assert(ret == 0 || errno == EINVAL);
