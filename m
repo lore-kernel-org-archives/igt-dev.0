@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10B3810E52F
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 11:57:59 +0000 (UTC)
-From: Matthew Auld <matthew.auld@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C97C410E537
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 12:37:14 +0000 (UTC)
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 29 Mar 2023 12:56:38 +0100
-Message-Id: <20230329115642.244296-2-matthew.auld@intel.com>
-In-Reply-To: <20230329115642.244296-1-matthew.auld@intel.com>
-References: <20230329115642.244296-1-matthew.auld@intel.com>
+Date: Wed, 29 Mar 2023 14:37:07 +0200
+Message-Id: <20230329123707.2590437-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/5] xe: sync small-bar uapi
+Subject: [igt-dev] [PATCH i-g-t] intel-ci/xe-fast-feedback.testlist: use
+ xe_module_load@load
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,37 +21,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need a couple new fields for the region query and the new flag to
-ensure the buffer is CPU accessible.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Provided that the force_load parameter is already set either as:
+
+- boot time: xe.force_load=<value>
+- modprobe time: adding "option xe force_load=<value>" to a
+  /etc/modprobe.d/ file;
+- at boot time, via CONFIG_DRM_XE_FORCE_PROBE="<value>"
+
+There's no need to use igt@xe_module_load@force_load. Use
+instead the cleaner test: igt@xe_module_load@load.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- include/drm-uapi/xe_drm.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/intel-ci/xe-fast-feedback.testlist | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 593b01ba..441b377b 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -169,7 +169,9 @@ struct drm_xe_query_mem_usage {
- 		__u32 max_page_size;
- 		__u64 total_size;
- 		__u64 used;
--		__u64 reserved[8];
-+		__u64 cpu_visible_size;
-+		__u64 cpu_visible_used;
-+		__u64 reserved[6];
- 	} regions[];
- };
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 3140d648833a..5f3bd2e917d5 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -1,5 +1,5 @@
+ # Should be the first test
+-igt@xe_module_load@force-load
++igt@xe_module_load@load
  
-@@ -270,6 +272,7 @@ struct drm_xe_gem_create {
- 	 */
- #define XE_GEM_CREATE_FLAG_DEFER_BACKING	(0x1 << 24)
- #define XE_GEM_CREATE_FLAG_SCANOUT		(0x1 << 25)
-+#define XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM	(0x1 << 26)
- 	__u32 flags;
- 
- 	/**
+ igt@xe_compute@compute-square
+ igt@xe_debugfs@base
 -- 
 2.39.2
