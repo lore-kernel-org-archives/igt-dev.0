@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12D9D10E520
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 08:11:58 +0000 (UTC)
-From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-Date: Fri, 24 Mar 2023 09:11:19 +0100
-Message-Id: <20230324081120.3355-5-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20230324081120.3355-1-dominik.karol.piatkowski@intel.com>
-References: <20230324081120.3355-1-dominik.karol.piatkowski@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1FF610EBE5
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 17:59:28 +0000 (UTC)
+Date: Wed, 29 Mar 2023 19:59:25 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230329175925.uwtid4tthnc5fzgg@kamilkon-desk1>
+References: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/5] tests: DRM selftests: switch to KUnit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 00/11] Improve igt_doc.py
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,81 +20,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Isabella Basso <isabbasso@riseup.net>
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Isabella Basso <isabbasso@riseup.net>
+Hi Mauro,
 
-As the DRM selftests are now using KUnit [1], update IGT tests as well.
+On 2023-03-27 at 15:31:44 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> This series do some improvements at the igt_doc.py tool:
+> 
+> - It does some tweaks at the Xe documentation hierarchy;
+> - It adds support to generate test lists from documentation;
+> - It splits the script on two parts: one with the TestList
+>   class definition and another one with the toll itself;
+> - While here, add missing documentation for two new tests;
+> - Check if the documentation matches the actual tests at
+>   build time, in order to prevent it to become outdated.
+> 
+> Mauro Carvalho Chehab (11):
+>   xe_test_config.json: do some adjustments at the output hierarchy
+>   scripts/igt_doc.py: move show_subtests logic to the class
+>   scripts/igt_doc.py: add support to generate testlists
+>   scripts/igt_doc.py: prepare to place TestList class on a separate file
+>   scripts/test_list.py: prepare to place class on a separate file
+>   scripts/igt_doc.py: re-introduce it by calling test_list.py
+>   scripts/test_list.py: better handle documentation validation issues
+>   scripts/test_list.py: add support for igt_simple_main
+>   testplan/meson.build: Validate documentation at build time
 
-[1] - https://lore.kernel.org/all/20220708203052.236290-1-maira.canal@usp.br/
+Shouldn't you merge this with your other patch:
+runner/meson.build: fix minimal build
 
-Signed-off-by: Isabella Basso <isabbasso@riseup.net>
+as now GitLab shows warning during build ?
 
-v1 -> v2:
-- drm_buddy|drm_mm: fallback to igt_kselftests if igt_kunit failed
-  with code other than IGT_EXIT_ABORT
-- kms_selftest: move igt_kunit tests to separate subtests
-- kms_selftest: fallback to igt_kselftests if all subtests failed
+Regards,
+Kamil
 
-v2 -> v3:
-- expose all subtests
-
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
----
- tests/drm_buddy.c    | 4 +++-
- tests/drm_mm.c       | 4 +++-
- tests/kms_selftest.c | 8 ++++++++
- 3 files changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/tests/drm_buddy.c b/tests/drm_buddy.c
-index 06876e0c..3261f0d6 100644
---- a/tests/drm_buddy.c
-+++ b/tests/drm_buddy.c
-@@ -10,5 +10,7 @@ IGT_TEST_DESCRIPTION("Basic sanity check of DRM's buddy allocator (struct drm_bu
- 
- igt_main
- {
--	igt_kselftests("test-drm_buddy", NULL, NULL, NULL);
-+	int ret = igt_kunit("drm_buddy_test", NULL);
-+	if (ret != 0 && ret != IGT_EXIT_ABORT)
-+		igt_kselftests("test-drm_buddy", NULL, NULL, NULL);
- }
-diff --git a/tests/drm_mm.c b/tests/drm_mm.c
-index 2052b115..46d0142f 100644
---- a/tests/drm_mm.c
-+++ b/tests/drm_mm.c
-@@ -28,5 +28,7 @@ IGT_TEST_DESCRIPTION("Basic sanity check of DRM's range manager (struct drm_mm)"
- 
- igt_main
- {
--	igt_kselftests("test-drm_mm", NULL, NULL, NULL);
-+	int ret = igt_kunit("drm_mm_test", NULL);
-+	if (ret != 0 && ret != IGT_EXIT_ABORT)
-+		igt_kselftests("test-drm_mm", NULL, NULL, NULL);
- }
-diff --git a/tests/kms_selftest.c b/tests/kms_selftest.c
-index abc4bfe9..b27f60fb 100644
---- a/tests/kms_selftest.c
-+++ b/tests/kms_selftest.c
-@@ -28,5 +28,13 @@ IGT_TEST_DESCRIPTION("Basic sanity check of KMS selftests.");
- 
- igt_main
- {
-+	static const char *kunit_subtests[] = { "drm_cmdline_parser_test", "drm_damage_helper_test",
-+						"drm_dp_mst_helper_test", "drm_format_helper_test",
-+						"drm_format_test", "drm_framebuffer_test",
-+						"drm_plane_helper_test", NULL };
-+
-+	for (int i = 0; kunit_subtests[i] != NULL; i++)
-+		igt_kunit(kunit_subtests[i], NULL);
-+
- 	igt_kselftests("test-drm_modeset", NULL, NULL, NULL);
- }
--- 
-2.34.1
-
+>   xe/xe_vm: add documentation for igt@xe_vm@userptr-invalid
+>   xe/xe_noexec_ping_pong: document subtest
+> 
+>  docs/testplan/meson.build      |    8 +-
+>  meson.build                    |    1 +
+>  scripts/igt_doc.py             | 1038 +-----------------------------
+>  scripts/test_list.py           | 1084 ++++++++++++++++++++++++++++++++
+>  tests/xe/xe_noexec_ping_pong.c |   26 +-
+>  tests/xe/xe_test_config.json   |   30 +-
+>  tests/xe/xe_vm.c               |   10 +-
+>  7 files changed, 1143 insertions(+), 1054 deletions(-)
+>  create mode 100755 scripts/test_list.py
+> 
+> -- 
+> 2.39.2
+> 
 
