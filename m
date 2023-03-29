@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C6E210E8FE
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Mar 2023 14:46:26 +0000 (UTC)
-Date: Tue, 28 Mar 2023 16:46:22 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matthew Auld <matthew.william.auld@gmail.com>
-Message-ID: <20230328144622.ta33hvq6y7v7yx4y@zkempczy-mobl2>
-References: <20230327154359.91250-1-zbigniew.kempczynski@intel.com>
- <CAM0jSHOD0maP3ZrDZdCvtqec=29mcJruG7hXsWfn0NUDg_MHxg@mail.gmail.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86CF010E16F
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 04:59:01 +0000 (UTC)
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Mar 2023 21:58:55 -0700
+Message-Id: <20230329045855.11263-3-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20230329045855.11263-1-niranjana.vishwanathapura@intel.com>
+References: <20230329045855.11263-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM0jSHOD0maP3ZrDZdCvtqec=29mcJruG7hXsWfn0NUDg_MHxg@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/gpgpu_fill: Implement
- gpgpu_fillfunc for XEPH
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/xe/xe_guc_pc: Skip RC6 tests for
+ PVC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,41 +19,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 28, 2023 at 02:12:59PM +0100, Matthew Auld wrote:
-> On Mon, 27 Mar 2023 at 16:44, Zbigniew Kempczyński
-> <zbigniew.kempczynski@intel.com> wrote:
-> >
-> > From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> >
-> > Adding xeph_gpgpu_fillfunc to have gpgpu_fill running on XEPH (DG2).
-> > On XEPH there's no GPGPU_WALK command, it has COMPUTE_WALK what requires
-> > pipeline creation change.
-> 
-> Just a drive-by-comment, what is XEPH? Also in the patch itself. I
-> have only ever seen XEHP and XELP. Is this a typo? s/PH/HP/ ?
+The Pontevecchio (PVC) platform doesn't have rc6 support yet.
+Skip rc6_on_idle and rc0_on_exec subtests for PVC.
 
-You're right, XEHP should be there.
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+---
+ tests/xe/xe_guc_pc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Don't ask me about rationale with using names instead of versioning
-strings - it is out of my decision.
-
---
-Zbigniew
-
-> 
-> >
-> > Shader used in the test was taken from previous generation with
-> > adding SWSB dependency tracking. SWSB was added using iga64 automatic
-> > dependency generating:
-> >
-> > iga64 -p=12p5 -Xauto-deps shader.asm
-> >
-> > Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
+index 60c93288b..5d0a6dc96 100644
+--- a/tests/xe/xe_guc_pc.c
++++ b/tests/xe/xe_guc_pc.c
+@@ -467,12 +467,14 @@ igt_main
+ 	}
+ 
+ 	igt_subtest("rc6_on_idle") {
++		igt_require(IS_PONTEVECCHIO(xe_dev_id(fd)));
+ 		xe_for_each_gt(fd, gt) {
+ 			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
+ 		}
+ 	}
+ 
+ 	igt_subtest("rc0_on_exec") {
++		igt_require(IS_PONTEVECCHIO(xe_dev_id(fd)));
+ 		xe_for_each_gt(fd, gt) {
+ 			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
+ 			xe_for_each_hw_engine(fd, hwe)
+-- 
+2.21.0.rc0.32.g243a4c7e27
