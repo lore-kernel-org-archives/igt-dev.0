@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
- [IPv6:2a00:1450:4864:20::129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 437D310E3FC
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 11:23:54 +0000 (UTC)
-Received: by mail-lf1-x129.google.com with SMTP id f18so14444920lfa.3
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Mar 2023 04:23:54 -0700 (PDT)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD73A10EBE4
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 17:49:52 +0000 (UTC)
+Date: Wed, 29 Mar 2023 19:49:48 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230329174948.hbfkh3yhu2gcmo2x@kamilkon-desk1>
+References: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
+ <20230327133155.2428454-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-References: <20230315150129.245398-1-matthew.auld@intel.com>
-In-Reply-To: <20230315150129.245398-1-matthew.auld@intel.com>
-From: Matthew Auld <matthew.william.auld@gmail.com>
-Date: Mon, 20 Mar 2023 11:23:25 +0000
-Message-ID: <CAM0jSHNUyTpFQ8PoJKV6Yze0bANzSLjOj7Y_GbT_UVQZRbz-dw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/debugfs: fix double-free in
- test_base
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230327133155.2428454-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 02/11] scripts/igt_doc.py: move
+ show_subtests logic to the class
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,85 +22,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, 15 Mar 2023 at 15:02, Matthew Auld <matthew.auld@intel.com> wrote:
->
-> Looks to incorrectly free the xe_dev->config, even though there is still
-> a cached entry pointing to it. The test fixture will also call
-> xe_device_put() at the end, freeing the same pointer (might now point to
-> valid memory), which hopefully explains why we see strange looking
-> crashes in CI:
->
-> Starting subtest: base
-> Subtest base: SUCCESS (0.005s)
-> Received signal SIGABRT.
-> Stack trace:
->  #0 [fatal_sig_handler+0x10f]
->  #1 [killpg+0x40]
->  #2 [gsignal+0xcb]
->  #3 [abort+0x12b]
->  #4 [__fsetlocking+0x42e]
->  #5 [pthread_attr_setschedparam+0x54c]
->  #6 [pthread_attr_setschedparam+0xd28]
->  #7 [pthread_attr_setschedparam+0x2ed3]
->  #8 [__libc_malloc+0x74]
->  #9 [_IO_file_doallocate+0x94]
->  #10 [_IO_doallocbuf+0x50]
->  #11 [_IO_file_overflow+0x1b0]
->  #12 [_IO_file_xsputn+0xe5]
->  #13 [psiginfo+0x13512]
->  #14 [igt_kmsg+0xc9]
->  #15 [igt_exit+0xd3]
->  #16 [main+0x44]
->  #17 [__libc_start_main+0xf3]
->  #18 [_start+0x2e]
->
-> Keep the xe_device stuff in test_base, since that looks be the only user
-> here.
->
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+On 2023-03-27 at 15:31:46 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Simplify the main code and avoid warnings about global vars with
+> pylint by moving its code to a separate function.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Ping? Any takers for this one?
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tests/xe/xe_debugfs.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
-> index 38c8becc..ddb01568 100644
-> --- a/tests/xe/xe_debugfs.c
-> +++ b/tests/xe/xe_debugfs.c
-> @@ -146,7 +146,7 @@ test_base(int fd)
->
->         validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
->
-> -       free(config);
-> +       xe_device_put(fd);
->  }
->
->  /**
-> @@ -250,7 +250,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->
->         igt_fixture {
->                 fd = drm_open_driver(DRIVER_XE);
-> -               xe_device_get(fd);
->                 __igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
->         }
->
-> @@ -272,7 +271,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->         }
->
->         igt_fixture {
-> -               xe_device_put(fd);
->                 close(fd);
->         }
->  }
-> --
+>  scripts/igt_doc.py | 34 ++++++++++++++++++++--------------
+>  1 file changed, 20 insertions(+), 14 deletions(-)
+> 
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index 67ab7984dd11..cc2768ae0847 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -1018,6 +1018,25 @@ class TestList:
+>                  sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized line. Need to add field at %s?\n\t==> %s" %
+>                           (self.config_fname, file_line))
+>  
+> +    def show_subtests(self, sort_field, filter_field):
+> +
+> +        """Show subtests, allowing sort and filter a field """
+> +
+> +        if sort_field:
+> +            test_subtests = tests.get_subtests(sort_field, filter_field)
+> +            for val_key in sorted(test_subtests.keys()):
+> +                if not test_subtests[val_key]:
+> +                    continue
+> +                if val_key == "":
+> +                    print("not defined:")
+> +                else:
+> +                    print(f"{val_key}:")
+> +                    for sub in test_subtests[val_key]:
+> +                        print (f"  {sub}")
+> +        else:
+> +            for sub in tests.get_subtests(sort_field, filter_field)[""]:
+> +                print (sub)
+> +
+>  #
+>  # Main
+>  #
+> @@ -1056,20 +1075,7 @@ tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files)
+>  RUN = 0
+>  if parse_args.show_subtests:
+>      RUN = 1
+> -    if parse_args.sort_field:
+> -        test_subtests = tests.get_subtests(parse_args.sort_field, parse_args.filter_field)
+> -        for val_key in sorted(test_subtests.keys()):
+> -            if not test_subtests[val_key]:
+> -                continue
+> -            if val_key == "":
+> -                print("not defined:")
+> -            else:
+> -                print(f"{val_key}:")
+> -            for sub in test_subtests[val_key]:
+> -                print (f"  {sub}")
+> -    else:
+> -        for sub in tests.get_subtests(parse_args.sort_field, parse_args.filter_field)[""]:
+> -            print (sub)
+> +    tests.show_subtests(parse_args.sort_field, parse_args.filter_field)
+>  
+>  if parse_args.check_testlist:
+>      RUN = 1
+> -- 
 > 2.39.2
->
+> 
 
