@@ -1,18 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1D0410E4A7
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Mar 2023 06:12:50 +0000 (UTC)
-Date: Fri, 24 Mar 2023 07:12:46 +0100
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 03BCC10E15A
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 13:06:18 +0000 (UTC)
+Received: from maurocar-mobl2 (maurocar-mobl2.ger.corp.intel.com
+ [10.252.27.139])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 3247A580CD3
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 06:04:36 -0700 (PDT)
+Date: Wed, 29 Mar 2023 15:04:34 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Message-ID: <20230324071246.3eb2ef35@maurocar-mobl2>
-In-Reply-To: <20230324050253.2560-1-niranjana.vishwanathapura@intel.com>
-References: <20230324050253.2560-1-niranjana.vishwanathapura@intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230329150434.2bfbacb7@maurocar-mobl2>
+In-Reply-To: <20230329123707.2590437-1-mauro.chehab@linux.intel.com>
+References: <20230329123707.2590437-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe/xe_query: Extern
- xe_supports_faults()
+Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci/xe-fast-feedback.testlist: use
+ xe_module_load@load
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,53 +26,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 23 Mar 2023 22:02:53 -0700
-Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com> wrote:
+On Wed, 29 Mar 2023 14:37:07 +0200
+Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
 
-> Do not check for supports_faults in xe_device_get() as
-> it creates a VM in fault mode which prohibits creation
-> of any other VM in non-fault mode until this fault mode
-> VM is closed. This leads to test failures in multi threaded
-> cases.
-
-Hmm...
-
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+> Provided that the force_load parameter is already set either as:
+> 
+> - boot time: xe.force_load=<value>
+> - modprobe time: adding "option xe force_load=<value>" to a
+>   /etc/modprobe.d/ file;
+> - at boot time, via CONFIG_DRM_XE_FORCE_PROBE="<value>"
+> 
+> There's no need to use igt@xe_module_load@force_load. Use
+> instead the cleaner test: igt@xe_module_load@load.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
->  lib/xe/xe_query.c | 51 ++++++++++++++++++++++-------------------------
->  lib/xe/xe_query.h |  3 ---
->  2 files changed, 24 insertions(+), 30 deletions(-)
+>  tests/intel-ci/xe-fast-feedback.testlist | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index 183523280..dc91d59bc 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -160,23 +160,6 @@ static uint32_t __mem_default_alignment(struct drm_xe_query_mem_usage *mem_usage
->  	return alignment;
->  }
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index 3140d648833a..5f3bd2e917d5 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -1,5 +1,5 @@
+>  # Should be the first test
+> -igt@xe_module_load@force-load
+> +igt@xe_module_load@load
 >  
-> -static bool xe_check_supports_faults(int fd)
-> -{
-> -	bool supports_faults;
-> -
-> -	struct drm_xe_vm_create create = {
-> -		.flags = DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
-> -			 DRM_XE_VM_CREATE_FAULT_MODE,
-> -	};
-> -
-> -	supports_faults = !igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
-> -
-> -	if (supports_faults)
-> -		xe_vm_destroy(fd, create.vm_id);
+>  igt@xe_compute@compute-square
+>  igt@xe_debugfs@base
 
-Weren't the VM supposed to be closed here?
+Tested on an ADL-S booted with Xe module blacklisted:
 
-
-Regards,
-Mauro
+$ lsmod|grep xe
+$ sudo ./build/tests/xe_module_load --run load
+IGT-Version: 1.27.1-gc6585fd1 (x86_64) (Linux: 6.2.0-xe-2bf8f2602+ x86_64)
+Starting subtest: load
+Subtest load: SUCCESS (2.772s)
+gta@DUT1375ADLS:~/freedesktop-igt$ lsmod|grep xe
+xe                   6721536  2
+drm_ttm_helper         20480  1 xe
+gpu_sched             159744  1 xe
+drm_suballoc_helper    32768  1 xe
+i2c_algo_bit           24576  1 xe
+ttm                   307200  2 drm_ttm_helper,xe
+drm_display_helper    536576  1 xe
+drm_kms_helper        663552  2 drm_display_helper,xe
+drm_buddy              40960  1 xe
+drm                  1925120  9 gpu_sched,drm_kms_helper,drm_suballoc_helper,drm_display_helper,drm_buddy,drm_ttm_helper,xe,ttm
+video                 102400  1 xe
