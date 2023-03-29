@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAF1510EBC7
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 17:23:11 +0000 (UTC)
-Date: Wed, 29 Mar 2023 19:23:08 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B0FA10EBC9
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 17:28:14 +0000 (UTC)
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230329172308.v5vg6tv2noyjdrxg@kamilkon-desk1>
-References: <20230329101950.2773041-1-vikas.srivastava@intel.com>
+Date: Wed, 29 Mar 2023 10:27:48 -0700
+Message-Id: <20230329172748.21877-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230329101950.2773041-1-vikas.srivastava@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/i915: skip gem_set_caching
- call for mtl
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] xe/xe_vm: Create BO in proper tile
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,266 +20,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vikas,
+Create BO in the same tile where gpu job using this BO runs.
 
-On 2023-03-29 at 15:49:50 +0530, Vikas Srivastava wrote:
-> Call to gem_set_caching skips the test since i915_gem_set_caching_ioctl is
-> deprecated for MTL. To avoid this add the check for set caching supported
-> platforms.
-> 
-> FIXME: This is a temp solution to fix the IGT test issues where
-> set caching call is used , there is alternate API available
-> but support not yet available to use that.Once set_pat_index
-> support available need to bring that change replacing this one.
-> 
-> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-> ---
->  lib/ioctl_wrappers.c                | 14 ++++++++++++++
->  lib/ioctl_wrappers.h                |  1 +
->  tests/i915/gem_caching.c            |  7 +++++--
->  tests/i915/gem_exec_flush.c         |  6 ++++--
->  tests/i915/gem_exec_latency.c       |  3 ++-
->  tests/i915/gem_exec_suspend.c       |  6 ++++--
->  tests/i915/gem_render_tiled_blits.c |  3 ++-
->  tests/i915/gem_softpin.c            |  3 ++-
->  tests/i915/gem_userptr_blits.c      | 11 ++++++++---
->  tests/i915/gem_workarounds.c        |  6 ++++--
->  tests/i915/i915_pm_rpm.c            |  7 ++++---
->  tests/prime_vgem.c                  |  3 ++-
->  12 files changed, 52 insertions(+), 18 deletions(-)
-> 
-> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-> index 1ab41ab6d6..ebd8a2f36f 100644
-> --- a/lib/ioctl_wrappers.c
-> +++ b/lib/ioctl_wrappers.c
-> @@ -1297,3 +1297,17 @@ bool igt_has_drm_cap(int fd, uint64_t capability)
->  	igt_assert(drmIoctl(fd, DRM_IOCTL_GET_CAP, &cap) == 0);
->  	return cap.value;
->  }
-> +
-> +/**
-> + * igt_has_set_caching:
-> + * @devid: platform id.
-> + *
-> + * This helper verifies if the passed platform id
-> + * has support for setting cache.
-> + *
-> + * Returns: Whether the cache setting  is supported or not.
-> + */
-> +bool igt_has_set_caching(uint32_t devid)
-> +{
-> +	return IS_METEORLAKE(devid) ? false : true;
-> +}
-> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-> index e4d7c0d408..4c232078d0 100644
-> --- a/lib/ioctl_wrappers.h
-> +++ b/lib/ioctl_wrappers.h
-> @@ -145,6 +145,7 @@ void prime_sync_end(int dma_buf_fd, bool write);
->  bool igt_has_fb_modifiers(int fd);
->  void igt_require_fb_modifiers(int fd);
->  bool igt_has_drm_cap(int fd, uint64_t capability);
-> +bool igt_has_set_caching(uint32_t devid);
->  
->  /**
->   * __kms_addfb:
-> diff --git a/tests/i915/gem_caching.c b/tests/i915/gem_caching.c
-> index eb0170abca..b62a2100e2 100644
-> --- a/tests/i915/gem_caching.c
-> +++ b/tests/i915/gem_caching.c
-> @@ -163,8 +163,11 @@ igt_main
->  		scratch_buf = intel_buf_create(data.bops, BO_SIZE/4, 1,
->  					       32, 0, I915_TILING_NONE, 0);
->  
-> -		if (!gem_has_lmem(data.fd))
-> -			gem_set_caching(data.fd, scratch_buf->handle, 1);
-> +		if (!gem_has_lmem(data.fd)) {
-> +			if (igt_has_set_caching(intel_get_drm_devid(data.fd)))
------------------------ ^ delete these change,
-instead, please add before subtests which enters here:
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+---
+ tests/xe/xe_vm.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-		if (!gem_has_lmem(data.fd))
-			igt_require(igt_has_set_caching(intel_get_drm_devid(data.fd));
-
-It is gem_caching test so we need this or else we should skip.
-
-Regards,
-Kamil
-
-> +				gem_set_caching(data.fd, scratch_buf->handle, 1);
-> +		}
-> +
->  
->  		staging_buf = intel_buf_create(data.bops, BO_SIZE/4, 1,
->  					       32, 0, I915_TILING_NONE, 0);
-> diff --git a/tests/i915/gem_exec_flush.c b/tests/i915/gem_exec_flush.c
-> index bb120e0d6c..42ddbc529e 100644
-> --- a/tests/i915/gem_exec_flush.c
-> +++ b/tests/i915/gem_exec_flush.c
-> @@ -142,7 +142,8 @@ static void run(int fd, unsigned ring, int nchild, int timeout,
->  				       I915_GEM_DOMAIN_WC);
->  		} else {
->  			snoop = flags & COHERENT;
-> -			gem_set_caching(fd, obj[0].handle, snoop);
-> +			if (igt_has_set_caching(intel_get_drm_devid(fd)))
-> +				gem_set_caching(fd, obj[0].handle, snoop);
->  			map = gem_mmap__cpu(fd, obj[0].handle, 0, 4096, PROT_WRITE);
->  			gem_set_domain(fd, obj[0].handle,
->  				       I915_GEM_DOMAIN_CPU,
-> @@ -401,7 +402,8 @@ static void batch(int fd, unsigned ring, int nchild, int timeout,
->  		obj[0].handle = gem_create(fd, 4096);
->  		obj[0].flags |= EXEC_OBJECT_WRITE;
->  
-> -		gem_set_caching(fd, obj[0].handle, !!(flags & COHERENT));
-> +		if (igt_has_set_caching(intel_get_drm_devid(fd)))
-> +			gem_set_caching(fd, obj[0].handle, !!(flags & COHERENT));
->  		map = gem_mmap__cpu(fd, obj[0].handle, 0, 4096, PROT_WRITE);
->  
->  		gem_set_domain(fd, obj[0].handle,
-> diff --git a/tests/i915/gem_exec_latency.c b/tests/i915/gem_exec_latency.c
-> index fcdf7787b8..4838a70820 100644
-> --- a/tests/i915/gem_exec_latency.c
-> +++ b/tests/i915/gem_exec_latency.c
-> @@ -770,7 +770,8 @@ static void context_switch(int i915, const intel_ctx_t *ctx,
->  
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create(i915, 4096);
-> -	gem_set_caching(i915, obj[0].handle, 1);
-> +	if (igt_has_set_caching(intel_get_drm_devid(i915)))
-> +		gem_set_caching(i915, obj[0].handle, 1);
->  	results = gem_mmap__cpu(i915, obj[0].handle, 0, 4096, PROT_READ);
->  	gem_set_domain(i915, obj[0].handle, I915_GEM_DOMAIN_CPU, 0);
->  
-> diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
-> index 1dadf06df0..8d56093faa 100644
-> --- a/tests/i915/gem_exec_suspend.c
-> +++ b/tests/i915/gem_exec_suspend.c
-> @@ -116,8 +116,10 @@ static void run_test(int fd, const intel_ctx_t *ctx,
->  
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create_in_memory_regions(fd, 4096, region);
-> -	if (!gem_has_lmem(fd))
-> -		gem_set_caching(fd, obj[0].handle, !!(flags & CACHED));
-> +	if (!gem_has_lmem(fd)) {
-> +		if (igt_has_set_caching(intel_get_drm_devid(fd)))
-> +			gem_set_caching(fd, obj[0].handle, !!(flags & CACHED));
-> +	}
->  	obj[0].flags |= EXEC_OBJECT_WRITE;
->  	obj[1].handle = gem_create_in_memory_regions(fd, 4096, region);
->  	gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
-> diff --git a/tests/i915/gem_render_tiled_blits.c b/tests/i915/gem_render_tiled_blits.c
-> index eae06a332e..3becf576fe 100644
-> --- a/tests/i915/gem_render_tiled_blits.c
-> +++ b/tests/i915/gem_render_tiled_blits.c
-> @@ -117,7 +117,8 @@ static void run_test (int fd, int count)
->  	intel_buf_init(bops, &linear, WIDTH, HEIGHT, 32, 0,
->  		       I915_TILING_NONE, I915_COMPRESSION_NONE);
->  	if (snoop) {
-> -		gem_set_caching(fd, linear.handle, 1);
-> +		if (igt_has_set_caching(intel_get_drm_devid(fd)))
-> +			gem_set_caching(fd, linear.handle, 1);
->  		igt_info("Using a snoop linear buffer for comparisons\n");
->  	}
->  
-> diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-> index 7682f772a1..8717860b2d 100644
-> --- a/tests/i915/gem_softpin.c
-> +++ b/tests/i915/gem_softpin.c
-> @@ -525,7 +525,8 @@ static void test_evict_snoop(int fd, unsigned int flags)
->  	/* Create a snoop + uncached pair */
->  	object[0].handle = gem_create(fd, 4096);
->  	object[0].flags = EXEC_OBJECT_PINNED;
-> -	gem_set_caching(fd, object[0].handle, 1);
-> +	if (igt_has_set_caching(intel_get_drm_devid(fd)))
-> +		gem_set_caching(fd, object[0].handle, 1);
->  	object[1].handle = gem_create(fd, 4096);
->  	object[1].flags = EXEC_OBJECT_PINNED;
->  	gem_write(fd, object[1].handle, 4096-sizeof(bbe), &bbe, sizeof(bbe));
-> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> index 07a453229a..b97e541118 100644
-> --- a/tests/i915/gem_userptr_blits.c
-> +++ b/tests/i915/gem_userptr_blits.c
-> @@ -1147,8 +1147,10 @@ static void test_relocations(int fd)
->  	memset(&obj, 0, sizeof(obj));
->  	igt_assert(posix_memalign(&ptr, PAGE_SIZE, size) == 0);
->  	gem_userptr(fd, ptr, size, 0, userptr_flags, &obj.handle);
-> -	if (!gem_has_llc(fd))
-> -		gem_set_caching(fd, obj.handle, 0);
-> +	if (!gem_has_llc(fd)) {
-> +		if (igt_has_set_caching(intel_get_drm_devid(fd)))
-> +			gem_set_caching(fd, obj.handle, 0);
-> +	}
->  	*(uint32_t *)ptr = MI_BATCH_BUFFER_END;
->  
->  	reloc = (typeof(reloc))((char *)ptr + PAGE_SIZE);
-> @@ -2417,8 +2419,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
->  			test_sd_probe(fd);
->  		}
->  
-> -		igt_subtest("set-cache-level")
-> +		igt_subtest("set-cache-level") {
-> +			igt_require_f(igt_has_set_caching(intel_get_drm_devid(fd)),
-> +				      "set_caching not supported on this platform");
->  			test_set_caching(fd);
-> +		}
->  
->  		igt_subtest("userfault")
->  			test_userfault(fd);
-> diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
-> index 30c68d1ac9..7d11996254 100644
-> --- a/tests/i915/gem_workarounds.c
-> +++ b/tests/i915/gem_workarounds.c
-> @@ -106,8 +106,10 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
->  
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create(i915, result_sz);
-> -	if (!gem_has_lmem(i915))
-> -		gem_set_caching(i915, obj[0].handle, I915_CACHING_CACHED);
-> +	if (!gem_has_lmem(i915)) {
-> +		if (igt_has_set_caching(intel_get_drm_devid(i915)))
-> +			gem_set_caching(i915, obj[0].handle, I915_CACHING_CACHED);
-> +	}
->  	obj[1].handle = gem_create(i915, batch_sz);
->  	obj[1].relocs_ptr = to_user_pointer(reloc);
->  	obj[1].relocation_count = !ahnd ? num_wa_regs : 0;
-> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-> index 74935430c1..9a6408dd37 100644
-> --- a/tests/i915/i915_pm_rpm.c
-> +++ b/tests/i915/i915_pm_rpm.c
-> @@ -1995,8 +1995,8 @@ static void pm_test_caching(void)
->  
->  	for (i = 0; i < ARRAY_SIZE(cache_levels); i++) {
->  		igt_assert(wait_for_suspended());
-> -		gem_set_caching(drm_fd, handle, default_cache_level);
-> -
-> +		if (igt_has_set_caching(intel_get_drm_devid(drm_fd)))
-> +			gem_set_caching(drm_fd, handle, default_cache_level);
->  		/* Ensure we bind the vma into the GGTT */
->  		memset(gem_buf, 16 << i, gtt_obj_max_size);
->  
-> @@ -2008,7 +2008,8 @@ static void pm_test_caching(void)
->  		 */
->  		igt_debug("Setting cache level %u\n", cache_levels[i]);
->  		igt_assert(wait_for_suspended());
-> -		gem_set_caching(drm_fd, handle, cache_levels[i]);
-> +		if (igt_has_set_caching(intel_get_drm_devid(drm_fd)))
-> +			gem_set_caching(drm_fd, handle, cache_levels[i]);
->  	}
->  
->  	igt_assert(munmap(gem_buf, gtt_obj_max_size) == 0);
-> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-> index 7b473c03df..9aa767c9cd 100644
-> --- a/tests/prime_vgem.c
-> +++ b/tests/prime_vgem.c
-> @@ -330,7 +330,8 @@ static void test_userptr(int vgem, int i915)
->  	*ptr = MI_BATCH_BUFFER_END;
->  
->  	gem_userptr(i915, ptr, scratch.size, 0, 0, &obj.handle);
-> -	gem_set_caching(i915, obj.handle, I915_CACHING_NONE); /* for !llc exec */
-> +	if (igt_has_set_caching(intel_get_drm_devid(i915)))
-> +		gem_set_caching(i915, obj.handle, I915_CACHING_NONE); /* for !llc exec */
->  
->  	gem_execbuf(i915, &execbuf);
->  	gem_close(i915, obj.handle);
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
+index 15356c704..203721c8e 100644
+--- a/tests/xe/xe_vm.c
++++ b/tests/xe/xe_vm.c
+@@ -549,7 +549,7 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
+ 			xe_get_default_alignment(fd));
+ 
+ 	for (i = 0; i < n_bo; ++i) {
+-		bo[i] = xe_bo_create(fd, 0, vm, bo_size);
++		bo[i] = xe_bo_create(fd, eci->gt_id, vm, bo_size);
+ 		data[i] = xe_bo_map(fd, bo[i], bo_size);
+ 	}
+ 
+@@ -717,7 +717,7 @@ test_bind_engines_independent(int fd, struct drm_xe_engine_class_instance *eci)
+ 	bo_size = sizeof(*data) * N_ENGINES;
+ 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+ 			xe_get_default_alignment(fd));
+-	bo = xe_bo_create(fd, 0, vm, bo_size);
++	bo = xe_bo_create(fd, eci->gt_id, vm, bo_size);
+ 	data = xe_bo_map(fd, bo, bo_size);
+ 
+ 	for (i = 0; i < N_ENGINES; i++) {
+@@ -874,7 +874,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
+ 			xe_get_default_alignment(fd));
+ 
+-	bo = xe_bo_create(fd, 0, vm, bo_size);
++	bo = xe_bo_create(fd, eci->gt_id, vm, bo_size);
+ 	data = xe_bo_map(fd, bo, bo_size);
+ 
+ 	if (flags & BIND_ARRAY_BIND_ENGINE_FLAG)
+@@ -1052,7 +1052,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+ 		map = aligned_alloc(xe_get_default_alignment(fd), bo_size);
+ 		igt_assert(map);
+ 	} else {
+-		bo = xe_bo_create(fd, 0, vm, bo_size);
++		bo = xe_bo_create(fd, eci->gt_id, vm, bo_size);
+ 		map = xe_bo_map(fd, bo, bo_size);
+ 	}
+ 
+@@ -1329,7 +1329,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
+ 			    MAP_ANONYMOUS, -1, 0);
+ 		igt_assert(data != MAP_FAILED);
+ 	} else {
+-		bo = xe_bo_create(fd, 0, vm, bo_size);
++		bo = xe_bo_create(fd, eci->gt_id, vm, bo_size);
+ 		map = xe_bo_map(fd, bo, bo_size);
+ 	}
+ 	memset(map, 0, bo_size);
+-- 
+2.21.0.rc0.32.g243a4c7e27
