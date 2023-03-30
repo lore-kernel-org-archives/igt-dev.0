@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BCB910ED3C
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 08:55:03 +0000 (UTC)
-Message-ID: <1e431eb4-943b-685b-c8e1-9dcde7655942@linux.intel.com>
-Date: Thu, 30 Mar 2023 09:54:57 +0100
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB1D310ED6F
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 09:25:52 +0000 (UTC)
+Message-ID: <b814b211-c882-7b46-7afe-506418bc5b0c@linux.intel.com>
+Date: Thu, 30 Mar 2023 10:25:47 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230330003656.1294873-1-umesh.nerlige.ramappa@intel.com>
- <20230330003656.1294873-5-umesh.nerlige.ramappa@intel.com>
+ <20230330003656.1294873-8-umesh.nerlige.ramappa@intel.com>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230330003656.1294873-5-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20230330003656.1294873-8-umesh.nerlige.ramappa@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 4/7] tests/i915/perf_pmu: Support
- multi-tile in frequency subtest
+Subject: Re: [igt-dev] [PATCH i-g-t 7/7] tools/intel_gpu_top: Add support
+ for gt specific counters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,319 +23,234 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Andi Shyti <andi.shyti@intel.com>, badal.nilawar@intel.com,
- arjun.melkaveri@intel.com
+Cc: arjun.melkaveri@intel.com, badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-
 On 30/03/2023 01:36, Umesh Nerlige Ramappa wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> With MTL frequency and rc6 counters are gt specific. Add support for
+> intel_gpu_top to show these counters separately.
 > 
-> Simple conversion to run the frequency tests per each tile, as dynamic
-> subtests, picking the correct engine to stimulate each.
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> ---
+>   include/drm-uapi/i915_drm.h | 14 ++++++----
+>   tools/intel_gpu_top.c       | 56 ++++++++++++++++++++++++++-----------
+>   2 files changed, 49 insertions(+), 21 deletions(-)
 > 
-> Note: Needs fixing to support pre-multi-tile sysfs layout, once it is
->        known how that will look.
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index 3b5e3b51..1a0c43e7 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -290,6 +290,7 @@ enum drm_i915_pmu_engine_sample {
+>   	(((__u64)__I915_PMU_ENGINE(0xff, 0xff, 0xf) + 1 + (x)) | \
+>   	((__u64)(gt) << __I915_PMU_GT_SHIFT))
+>   
+> +/* Aggregate from all gts */
+>   #define __I915_PMU_OTHER(x) ___I915_PMU_OTHER(0, x)
+>   
+>   #define I915_PMU_ACTUAL_FREQUENCY	__I915_PMU_OTHER(0)
+> @@ -300,11 +301,14 @@ enum drm_i915_pmu_engine_sample {
+>   
+>   #define I915_PMU_LAST /* Deprecated - do not use */ I915_PMU_RC6_RESIDENCY
+>   
+> -#define __I915_PMU_ACTUAL_FREQUENCY(gt)		___I915_PMU_OTHER(gt, 0)
+> -#define __I915_PMU_REQUESTED_FREQUENCY(gt)	___I915_PMU_OTHER(gt, 1)
+> -#define __I915_PMU_INTERRUPTS(gt)		___I915_PMU_OTHER(gt, 2)
+> -#define __I915_PMU_RC6_RESIDENCY(gt)		___I915_PMU_OTHER(gt, 3)
+> -#define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	___I915_PMU_OTHER(gt, 4)
+> +/* GT specific counters */
+> +#define ____I915_PMU_OTHER(gt, x) ___I915_PMU_OTHER(((gt) + 1), x)
+> +
+> +#define __I915_PMU_ACTUAL_FREQUENCY(gt)		____I915_PMU_OTHER(gt, 0)
+> +#define __I915_PMU_REQUESTED_FREQUENCY(gt)	____I915_PMU_OTHER(gt, 1)
+> +#define __I915_PMU_INTERRUPTS(gt)		____I915_PMU_OTHER(gt, 2)
+> +#define __I915_PMU_RC6_RESIDENCY(gt)		____I915_PMU_OTHER(gt, 3)
+> +#define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	____I915_PMU_OTHER(gt, 4)
+>   
+>   /* Each region is a minimum of 16k, and there are at most 255 of them.
+>    */
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index a4302aa3..9fc8b996 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -87,6 +87,7 @@ struct engine_class {
+>   	unsigned int num_engines;
+>   };
+>   
+> +#define MAX_GTS 4
+>   struct engines {
+>   	unsigned int num_engines;
+>   	unsigned int num_classes;
+> @@ -105,14 +106,16 @@ struct engines {
+>   	struct pmu_counter imc_writes;
+>   	unsigned int num_imc;
+>   
+> -	struct pmu_counter freq_req;
+> -	struct pmu_counter freq_act;
+> +	struct pmu_counter freq_req[MAX_GTS];
+> +	struct pmu_counter freq_act[MAX_GTS];
+>   	struct pmu_counter irq;
+> -	struct pmu_counter rc6;
+> +	struct pmu_counter rc6[MAX_GTS];
+>   
+>   	bool discrete;
+>   	char *device;
+>   
+> +	int num_gts;
+> +
+>   	/* Do not edit below this line.
+>   	 * This structure is reallocated every time a new engine is
+>   	 * found and size is increased by sizeof (engine).
+> @@ -532,7 +535,7 @@ static void imc_reads_open(struct pmu_counter *pmu, struct engines *engines)
+>   static int pmu_init(struct engines *engines)
+>   {
+>   	unsigned int i;
+> -	int fd;
+> +	int fd, ret;
+>   	uint64_t type = igt_perf_type_id(engines->device);
+>   
+>   	engines->fd = -1;
+> @@ -543,14 +546,30 @@ static int pmu_init(struct engines *engines)
+>   	if (fd < 0)
+>   		return -1;
+>   
+> -	engines->freq_req.config = I915_PMU_REQUESTED_FREQUENCY;
+> -	_open_pmu(type, engines->num_counters, &engines->freq_req, engines->fd);
+> +	engines->num_gts = 1;
+> +	for (i = 0; i < MAX_GTS; i++) {
+> +		engines->freq_req[i].config = __I915_PMU_REQUESTED_FREQUENCY(i);
+>   
+> -	engines->freq_act.config = I915_PMU_ACTUAL_FREQUENCY;
+> -	_open_pmu(type, engines->num_counters, &engines->freq_act, engines->fd);
+> +		errno = 0;
+> +		ret = _open_pmu(type, engines->num_counters, &engines->freq_req[i], engines->fd);
+> +		if (ret >= 0)
+> +			continue;
+>   
+> -	engines->rc6.config = I915_PMU_RC6_RESIDENCY;
+> -	_open_pmu(type, engines->num_counters, &engines->rc6, engines->fd);
+> +		if (errno != ENOENT)
+> +			return ret;
+> +
+> +		engines->num_gts = i;
+> +		errno = 0;
+> +		break;
+> +	}
+> +
+> +	for (i = 0; i < engines->num_gts; i++) {
+> +		engines->freq_act[i].config = __I915_PMU_ACTUAL_FREQUENCY(i);
+> +		_open_pmu(type, engines->num_counters, &engines->freq_act[i], engines->fd);
+> +
+> +		engines->rc6[i].config = __I915_PMU_RC6_RESIDENCY(i);
+> +		_open_pmu(type, engines->num_counters, &engines->rc6[i], engines->fd);
+> +	}
+>   
+>   	for (i = 0; i < engines->num_engines; i++) {
+>   		struct engine *engine = engine_ptr(engines, i);
+> @@ -653,10 +672,12 @@ static void pmu_sample(struct engines *engines)
+>   	engines->ts.prev = engines->ts.cur;
+>   	engines->ts.cur = pmu_read_multi(engines->fd, num_val, val);
+>   
+> -	update_sample(&engines->freq_req, val);
+> -	update_sample(&engines->freq_act, val);
+> +	for (i = 0; i < engines->num_gts; i++) {
+> +		update_sample(&engines->freq_req[i], val);
+> +		update_sample(&engines->freq_act[i], val);
+> +		update_sample(&engines->rc6[i], val);
+> +	}
+>   	update_sample(&engines->irq, val);
+> -	update_sample(&engines->rc6, val);
+>   
+>   	for (i = 0; i < engines->num_engines; i++) {
+>   		struct engine *engine = engine_ptr(engines, i);
+> @@ -1727,8 +1748,10 @@ print_header(const struct igt_device_card *card,
+>   		.items = period_items,
+>   	};
+>   	struct cnt_item freq_items[] = {
+> -		{ &engines->freq_req, 4, 0, 1.0, t, 1, "requested", "req" },
+> -		{ &engines->freq_act, 4, 0, 1.0, t, 1, "actual", "act" },
+> +		{ &engines->freq_req[0], 8, 0, 1.0, t, 1, "requested-gt0", "req-gt0" },
+> +		{ &engines->freq_act[0], 8, 0, 1.0, t, 1, "actual-gt0", "act-gt0" },
+> +		{ &engines->freq_req[1], 8, 0, 1.0, t, 1, "requested-gt1", "req-gt1" },
+> +		{ &engines->freq_act[1], 8, 0, 1.0, t, 1, "actual-gt1", "act-gt1" },
 
-Same question as for debugfs in patch 1.
+Why is width going to 8? 9999 MHz is not enough? ;)
+
+[Comes back later..]
+
+Ah for the header label.. hm.. maybe we should try putting the GT information into the parent. It would looks nicer, be more logical, even for JSON output we now have:
+
+Terminal:
+
+  Freq MHz      ...
+  req  act      ...
+
+JSON:
+
+         "rc6": {
+                 "value": 29.309568,
+                 "unit": "%"
+         },
+  
+You propose something like:
+
+  Freq MHz      		Freq MHz		...
+  req-gt0  act-gt0	req-gt0  act-gt0	...
+
+         "rc6": {
+                 "value-gt0": 29.309568,
+                 "value-gt1": 29.309568,
+                 "unit": "%"
+         },
+
+Which is not very nice UI wise. How about something like:
+
+  Freq GT0 MHz   Freq GT1 MHz	...
+  req  act	req  act	...
+
+JSON should potentially be an array:
+
+         "rc6": [{
+		"gt": 0,
+                 "value": 29.309568,
+                 "unit": "%"
+         },
+		"gt": 0,
+                 "value": 29.309568,
+                 "unit": "%"
+         }],
+
+Or at least:
+
+         "rc6": {
+                 "value": 29.309568,
+                 "unit": "%"
+         },
+         "rc6-gt1": {
+                 "value": 29.309568,
+                 "unit": "%"
+         },
+
+Which also brings the point if maybe we shouldn't change the output for pre-MTL platforms. The approach is not IMHO even consistent with the proposed kernel change to have the aggregated counters, which I don't think I agree with at all.
+
+Let me mull it all over.
 
 Regards,
 
 Tvrtko
 
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com> (v2)
-> ---
->   tests/i915/perf_pmu.c | 195 +++++++++++++++++++++++++++++++++---------
->   1 file changed, 153 insertions(+), 42 deletions(-)
-> 
-> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-> index 5e1177b9..1bea3e57 100644
-> --- a/tests/i915/perf_pmu.c
-> +++ b/tests/i915/perf_pmu.c
-> @@ -238,19 +238,6 @@ static igt_spin_t *spin_sync(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
->   	return __spin_sync(fd, ahnd, ctx, e);
->   }
->   
-> -static igt_spin_t *spin_sync_flags(int fd, uint64_t ahnd,
-> -				   const intel_ctx_t *ctx, unsigned int flags)
-> -{
-> -	struct intel_execution_engine2 e = { };
-> -
-> -	e.class = gem_execbuf_flags_to_engine_class(flags);
-> -	e.instance = (flags & (I915_EXEC_BSD_MASK | I915_EXEC_RING_MASK)) ==
-> -		     (I915_EXEC_BSD | I915_EXEC_BSD_RING2) ? 1 : 0;
-> -	e.flags = flags;
-> -
-> -	return spin_sync(fd, ahnd, ctx, &e);
-> -}
-> -
->   static void end_spin(int fd, igt_spin_t *spin, unsigned int flags)
->   {
->   	if (!spin)
-> @@ -1539,8 +1526,125 @@ test_interrupts_sync(int gem_fd)
->   	igt_assert_lte(target, busy);
->   }
->   
-> +static int
-> +__i915_query(int fd, struct drm_i915_query *q)
-> +{
-> +	if (igt_ioctl(fd, DRM_IOCTL_I915_QUERY, q))
-> +		return -errno;
-> +
-> +	return 0;
-> +}
-> +
-> +static int
-> +__i915_query_items(int fd, struct drm_i915_query_item *items, uint32_t n_items)
-> +{
-> +	struct drm_i915_query q = {
-> +		.num_items = n_items,
-> +		.items_ptr = to_user_pointer(items),
-> +		};
-> +
-> +	return __i915_query(fd, &q);
-> +}
-> +
-> +#define i915_query_items(fd, items, n_items) \
-> +do { \
-> +	igt_assert_eq(__i915_query_items(fd, items, n_items), 0); \
-> +	errno = 0; \
-> +} while (0)
-> +
-> +static bool
-> +engine_in_gt(int i915, const struct i915_engine_class_instance *ci,
-> +	     unsigned int gt)
-> +{
-> +	/* If just one gt, return true always */
-> +	if (!IS_METEORLAKE(intel_get_drm_devid(i915)))
-> +		return true;
-> +
-> +	/*
-> +	 * FIXME: engine_to_gt map is hardcoded here until other mechanisms to
-> +	 * query it are upstreamed.
-> +	 */
-> +	switch (ci->engine_class) {
-> +	case I915_ENGINE_CLASS_RENDER:
-> +	case I915_ENGINE_CLASS_COMPUTE:
-> +	case I915_ENGINE_CLASS_COPY:
-> +		return gt == 0;
-> +	case I915_ENGINE_CLASS_VIDEO:
-> +	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
-> +		return gt == 1;
-> +	default:
-> +		igt_assert_f(0, "Unsupported engine class %d\n", ci->engine_class);
-> +		return false;
-> +	}
-> +}
-> +
-> +static struct i915_engine_class_instance
-> +find_dword_engine(int i915, const unsigned int gt)
-> +{
-> +	struct drm_i915_query_engine_info *engines;
-> +	struct i915_engine_class_instance ci = { -1, -1 };
-> +	struct drm_i915_query_item item;
-> +	unsigned int i;
-> +
-> +	engines = malloc(4096);
-> +	igt_assert(engines);
-> +
-> +	memset(engines, 0, 4096);
-> +	memset(&item, 0, sizeof(item));
-> +	item.query_id = DRM_I915_QUERY_ENGINE_INFO;
-> +	item.length = 4096;
-> +	item.data_ptr = to_user_pointer(engines);
-> +	i915_query_items(i915, &item, 1);
-> +	igt_assert(item.length > 0);
-> +
-> +	for (i = 0; i < engines->num_engines; i++) {
-> +		struct drm_i915_engine_info *e =
-> +			(struct drm_i915_engine_info *)&engines->engines[i];
-> +
-> +		if (!gem_class_can_store_dword(i915, e->engine.engine_class))
-> +			continue;
-> +
-> +		if (engine_in_gt(i915, &e->engine, gt)) {
-> +			ci.engine_class = e->engine.engine_class;
-> +			ci.engine_instance = e->engine.engine_instance;
-> +		}
-> +	}
-> +
-> +	free(engines);
-> +
-> +	return ci;
-> +}
-> +
-> +static igt_spin_t *spin_sync_gt(int i915, uint64_t ahnd, unsigned int gt,
-> +				const intel_ctx_t **ctx)
-> +{
-> +	struct i915_engine_class_instance ci = { -1, -1 };
-> +	struct intel_execution_engine2 e = { };
-> +
-> +	ci = find_dword_engine(i915, gt);
-> +
-> +	igt_require(ci.engine_class != (uint16_t)I915_ENGINE_CLASS_INVALID);
-> +
-> +	if (gem_has_contexts(i915)) {
-> +		e.class = ci.engine_class;
-> +		e.instance = ci.engine_instance;
-> +		e.flags = 0;
-> +		*ctx = intel_ctx_create_for_engine(i915, e.class, e.instance);
-> +	} else {
-> +		igt_require(gt == 0); /* Impossible anyway. */
-> +		e.class = gem_execbuf_flags_to_engine_class(I915_EXEC_DEFAULT);
-> +		e.instance = 0;
-> +		e.flags = I915_EXEC_DEFAULT;
-> +		*ctx = intel_ctx_0(i915);
-> +	}
-> +
-> +	igt_debug("Using engine %u:%u\n", e.class, e.instance);
-> +
-> +	return spin_sync(i915, ahnd, *ctx, &e);
-> +}
-> +
->   static void
-> -test_frequency(int gem_fd)
-> +test_frequency(int gem_fd, unsigned int gt)
->   {
->   	uint32_t min_freq, max_freq, boost_freq;
->   	uint64_t val[2], start[2], slept;
-> @@ -1548,13 +1652,14 @@ test_frequency(int gem_fd)
->   	igt_spin_t *spin;
->   	int fd[2], sysfs;
->   	uint64_t ahnd = get_reloc_ahnd(gem_fd, 0);
-> +	const intel_ctx_t *ctx;
->   
-> -	sysfs = igt_sysfs_open(gem_fd);
-> +	sysfs = igt_sysfs_gt_open(gem_fd, gt);
->   	igt_require(sysfs >= 0);
->   
-> -	min_freq = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
-> -	max_freq = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
-> -	boost_freq = igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz");
-> +	min_freq = igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz");
-> +	max_freq = igt_sysfs_get_u32(sysfs, "rps_RP0_freq_mhz");
-> +	boost_freq = igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz");
->   	igt_info("Frequency: min=%u, max=%u, boost=%u MHz\n",
->   		 min_freq, max_freq, boost_freq);
->   	igt_require(min_freq > 0 && max_freq > 0 && boost_freq > 0);
-> @@ -1567,15 +1672,15 @@ test_frequency(int gem_fd)
->   	/*
->   	 * Set GPU to min frequency and read PMU counters.
->   	 */
-> -	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq));
-> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
-> -	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", min_freq));
-> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
-> -	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", min_freq));
-> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == min_freq);
-> +	igt_require(igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", min_freq));
-> +	igt_require(igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz") == min_freq);
-> +	igt_require(igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", min_freq));
-> +	igt_require(igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz") == min_freq);
-> +	igt_require(igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", min_freq));
-> +	igt_require(igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz") == min_freq);
->   
->   	gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes effect */
-> -	spin = spin_sync_flags(gem_fd, ahnd, 0, I915_EXEC_DEFAULT);
-> +	spin = spin_sync_gt(gem_fd, ahnd, gt, &ctx);
->   
->   	slept = pmu_read_multi(fd[0], 2, start);
->   	measured_usleep(batch_duration_ns / 1000);
-> @@ -1584,6 +1689,7 @@ test_frequency(int gem_fd)
->   	min[0] = 1e9*(val[0] - start[0]) / slept;
->   	min[1] = 1e9*(val[1] - start[1]) / slept;
->   
-> +	intel_ctx_destroy(gem_fd, ctx);
->   	igt_spin_free(gem_fd, spin);
->   	gem_quiescent_gpu(gem_fd); /* Don't leak busy bo into the next phase */
->   
-> @@ -1592,16 +1698,16 @@ test_frequency(int gem_fd)
->   	/*
->   	 * Set GPU to max frequency and read PMU counters.
->   	 */
-> -	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", max_freq));
-> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == max_freq);
-> -	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", boost_freq));
-> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == boost_freq);
-> +	igt_require(igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", max_freq));
-> +	igt_require(igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz") == max_freq);
-> +	igt_require(igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", boost_freq));
-> +	igt_require(igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz") == boost_freq);
->   
-> -	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", max_freq));
-> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == max_freq);
-> +	igt_require(igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", max_freq));
-> +	igt_require(igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz") == max_freq);
->   
->   	gem_quiescent_gpu(gem_fd);
-> -	spin = spin_sync_flags(gem_fd, ahnd, 0, I915_EXEC_DEFAULT);
-> +	spin = spin_sync_gt(gem_fd, ahnd, gt, &ctx);
->   
->   	slept = pmu_read_multi(fd[0], 2, start);
->   	measured_usleep(batch_duration_ns / 1000);
-> @@ -1610,16 +1716,17 @@ test_frequency(int gem_fd)
->   	max[0] = 1e9*(val[0] - start[0]) / slept;
->   	max[1] = 1e9*(val[1] - start[1]) / slept;
->   
-> +	intel_ctx_destroy(gem_fd, ctx);
->   	igt_spin_free(gem_fd, spin);
->   	gem_quiescent_gpu(gem_fd);
->   
->   	/*
->   	 * Restore min/max.
->   	 */
-> -	igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq);
-> -	if (igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") != min_freq)
-> +	igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", min_freq);
-> +	if (igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz") != min_freq)
->   		igt_warn("Unable to restore min frequency to saved value [%u MHz], now %u MHz\n",
-> -			 min_freq, igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz"));
-> +			 min_freq, igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz"));
->   	close(fd[0]);
->   	close(fd[1]);
->   	put_ahnd(ahnd);
-> @@ -1638,17 +1745,17 @@ test_frequency(int gem_fd)
->   }
->   
->   static void
-> -test_frequency_idle(int gem_fd)
-> +test_frequency_idle(int gem_fd, unsigned int gt)
->   {
->   	uint32_t min_freq;
->   	uint64_t val[2], start[2], slept;
->   	double idle[2];
->   	int fd[2], sysfs;
->   
-> -	sysfs = igt_sysfs_open(gem_fd);
-> +	sysfs = igt_sysfs_gt_open(gem_fd, gt);
->   	igt_require(sysfs >= 0);
->   
-> -	min_freq = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
-> +	min_freq = igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz");
->   	close(sysfs);
->   
->   	/* While parked, our convention is to report the GPU at 0Hz */
-> @@ -2457,10 +2564,14 @@ igt_main
->   	/**
->   	 * Test GPU frequency.
->   	 */
-> -	igt_subtest("frequency")
-> -		test_frequency(fd);
-> -	igt_subtest("frequency-idle")
-> -		test_frequency_idle(fd);
-> +	igt_subtest_with_dynamic("frequency") {
-> +		for_each_gt(fd, gt, tmp) {
-> +			igt_dynamic_f("gt%u", gt)
-> +				test_frequency(fd, gt);
-> +			igt_dynamic_f("idle-gt%u", gt)
-> +				test_frequency_idle(fd, gt);
-> +		}
-> +	}
->   
->   	/**
->   	 * Test interrupt count reporting.
+>   		{ NULL, 0, 0, 0.0, 0.0, 0.0, "unit", "MHz" },
+>   		{ },
+>   	};
+> @@ -1748,7 +1771,8 @@ print_header(const struct igt_device_card *card,
+>   		.items = irq_items,
+>   	};
+>   	struct cnt_item rc6_items[] = {
+> -		{ &engines->rc6, 3, 0, 1e9, t, 100, "value", "%" },
+> +		{ &engines->rc6[0], 6, 0, 1e9, t, 100, "value-gt0", "%-gt0" },
+> +		{ &engines->rc6[1], 6, 0, 1e9, t, 100, "value-gt1", "%-gt1" },
+>   		{ NULL, 0, 0, 0.0, 0.0, 0.0, "unit", "%" },
+>   		{ },
+>   	};
