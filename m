@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BE0C10E075
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 05:42:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65AB310E075
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 05:42:28 +0000 (UTC)
 Received: from linux.intel.com (mwrzeszc-mobl1.ger.corp.intel.com
  [10.252.27.169])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 0A8ED580D96
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 22:42:27 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id D9705580D2C
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 22:42:26 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1phl3I-00B50w-2p
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1phl3I-00B510-2s
  for igt-dev@lists.freedesktop.org; Thu, 30 Mar 2023 07:42:24 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Mar 2023 07:42:16 +0200
-Message-Id: <20230330054221.2640814-8-mauro.chehab@linux.intel.com>
+Date: Thu, 30 Mar 2023 07:42:17 +0200
+Message-Id: <20230330054221.2640814-9-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
 References: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 07/12] scripts/test_list.py: better
- handle documentation validation issues
+Subject: [igt-dev] [PATCH i-g-t v2 08/12] scripts/test_list.py: add support
+ for igt_simple_main
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,38 +34,66 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Produce warnings and exit with an error when test plan is out of sync.
+when igt_simple_main is used, there will be a single unamed
+subtest. Add support for it.
+
+On such case, the documentation will be like:
+
+	/**
+	 * TEST: Test foo
+	 * Category: Software building block
+	 * Sub-category: foo
+	 * Test category: functionality test
+	 * Run type: BAT
+	 *
+	 * SUBTEST:
+	 * Description: foo description
+	 */
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- scripts/test_list.py | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ scripts/test_list.py | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
 diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 73c1794caec5..7d35deda3329 100755
+index 7d35deda3329..075f44d5e604 100755
 --- a/scripts/test_list.py
 +++ b/scripts/test_list.py
-@@ -803,16 +803,14 @@ class TestList:
-                 run_missing.append(run_test)
+@@ -176,6 +176,22 @@ class TestList:
  
-         if doc_uneeded:
--            print("Unused documentation")
-             for test_name in doc_uneeded:
--                print(test_name)
-+                print(f"Warning: Documented {test_name} doesn't exist on source files")
+     The SUBTEST contains the fields that are specific to each subtest.
  
-         if run_missing:
--            if doc_uneeded:
--                print()
--            print("Missing documentation")
-             for test_name in run_missing:
--                print(test_name)
-+                print(f'Warning: Missing documentation for {test_name}')
-+        if doc_uneeded or run_missing:
-+            sys.exit(1)
++    Note: when igt_simple_main is used, there will be a single nameless
++    subtest. On such case, "SUBTEST:" is still needed, but without a
++    test name on it, e. g., it would be documented as:
++
++        /**
++         * TEST: some test that uses igt_simple_main
++         * Category: Software build block
++         * Sub-category: documentation
++         * Functionality: test documentation
++         * Issue: none
++         * Description: Complete description of this test
++         *
++         * SUBTEST:
++         * Description: do foo things
++         */
++
+     Some IGT tests may have strings or integer wildcards, like:
+         test-%s-%ld-size
  
-     #
-     # File handling methods
+@@ -376,8 +392,9 @@ class TestList:
+         subtest_array = []
+ 
+         for subtest in self.doc[test]["subtest"].keys():
+-            summary = test_name + '@' + self.doc[test]["subtest"][subtest]["Summary"]
+-
++            summary = test_name
++            if self.doc[test]["subtest"][subtest]["Summary"] != '':
++                 summary += '@' + self.doc[test]["subtest"][subtest]["Summary"]
+             if not summary:
+                 continue
+ 
 -- 
 2.39.2
