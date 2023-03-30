@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3555C10E9C7
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 18:13:23 +0000 (UTC)
-Date: Wed, 22 Mar 2023 19:13:19 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230322181319.exa6xmv6naze5hrl@kamilkon-desk1>
-References: <20230322140030.1800192-1-mauro.chehab@linux.intel.com>
- <20230322140030.1800192-4-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3486421662351770427=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230322140030.1800192-4-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] xe/xe_module_load: add a test to
- load/unload Xe driver
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 30 Mar 2023 06:42:13 -0000
+Message-ID: <168015853382.18843.14678463125885982128@emeril.freedesktop.org>
+References: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW1wcm92?=
+ =?utf-8?q?e_igt=5Fdoc=2Epy_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,235 +16,262 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+--===============3486421662351770427==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-small nits, see below.
+== Series Details ==
 
-On 2023-03-22 at 15:00:30 +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> This is helpful to allow IGT to check if there are issues
-> during module load/unload.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  tests/intel-ci/xe-fast-feedback.testlist |   3 +
->  tests/meson.build                        |   1 +
->  tests/xe/xe_module_load.c                | 158 +++++++++++++++++++++++
->  3 files changed, 162 insertions(+)
->  create mode 100644 tests/xe/xe_module_load.c
-> 
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index 6525b1676b6f..3140d648833a 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -1,3 +1,6 @@
-> +# Should be the first test
-> +igt@xe_module_load@force-load
-> +
->  igt@xe_compute@compute-square
->  igt@xe_debugfs@base
->  igt@xe_debugfs@gt
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 2e62ff231416..9235d240fd85 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -256,6 +256,7 @@ xe_progs = [
->  	'xe_huc_copy',
->  	'xe_mmap',
->  	'xe_mmio',
-> +	'xe_module_load',
->  	'xe_noexec_ping_pong',
->  	'xe_pm',
->  	'xe_prime_self_import',
-> diff --git a/tests/xe/xe_module_load.c b/tests/xe/xe_module_load.c
-> new file mode 100644
-> index 000000000000..9a38d70858d1
-> --- /dev/null
-> +++ b/tests/xe/xe_module_load.c
-> @@ -0,0 +1,158 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: Tests the xe module loading
-> + * Category: Sofware building block
-> + * Sub-category: driver
-> + * Test category: functionality test
-> + */
-> +
-> +#include <dirent.h>
-> +#include <fcntl.h>
-> +#include <libgen.h>
-> +#include <signal.h>
------------- ^
-This should be after <linux/limits.h>
+Series: Improve igt_doc.py (rev2)
+URL   : https://patchwork.freedesktop.org/series/115667/
+State : success
 
-> +
-> +#ifdef __linux__
-> +#include <linux/limits.h>
-> +#endif
-> +
-> +#include <sys/ioctl.h>
-> +#include <sys/utsname.h>
-> +
-> +#include "igt.h"
-> +
-> +#include "igt_aux.h"
-> +#include "igt_core.h"
-> +#include "igt_debugfs.h"
-> +#include "igt_kmod.h"
-> +#include "igt_sysfs.h"
-> +
-> +#define BAR_SIZE_SHIFT 20
-> +#define MIN_BAR_SIZE 256
-> +
-> +static void hda_dynamic_debug(bool enable)
-> +{
-> +	FILE *fp;
-> +	static const char snd_hda_intel_on[] = "module snd_hda_intel +pf";
-> +	static const char snd_hda_core_on[] = "module snd_hda_core +pf";
-> +
-> +	static const char snd_hda_intel_off[] = "module snd_hda_core =_";
---------------------------------- ^ --------------------------- ^
-> +	static const char snd_hda_core_off[] = "module snd_hda_intel =_";
---------------------------------- ^ --------------------------- ^
+== Summary ==
 
-Name in string mismatch.
+CI Bug Log - changes from IGT_7227 -> IGTPW_8719
+====================================================
 
-> +
-> +	fp = fopen("/sys/kernel/debug/dynamic_debug/control", "w");
-> +	if (!fp) {
-> +		igt_debug("hda dynamic debug not available\n");
-> +		return;
-> +	}
-> +
-> +	if (enable) {
-> +		fwrite(snd_hda_intel_on, 1, sizeof(snd_hda_intel_on), fp);
+Summary
+-------
 
-imho we can add checks for fwrite errors.
+  **SUCCESS**
 
-> +		fwrite(snd_hda_core_on, 1, sizeof(snd_hda_core_on), fp);
-> +	} else {
-> +		fwrite(snd_hda_intel_off, 1, sizeof(snd_hda_intel_off), fp);
-> +		fwrite(snd_hda_core_off, 1, sizeof(snd_hda_core_off), fp);
-> +	}
-> +
-> +	fclose(fp);
-> +}
-> +
-> +static void load_and_check_xe(const char *opts)
-> +{
-> +	int error;
-> +	int drm_fd;
-> +
-> +	hda_dynamic_debug(true);
-> +	error = igt_xe_driver_load(opts);
-> +	hda_dynamic_debug(false);
-> +
-> +	igt_assert_eq(error, 0);
-> +
-> +	/* driver is ready, check if it's bound */
-> +	drm_fd = __drm_open_driver(DRIVER_XE);
-> +	igt_fail_on_f(drm_fd < 0, "Cannot open the xe DRM driver after modprobing xe.\n");
+  No regressions found.
 
-imho we should close drm_fd here.
-Rest looks good.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/index.html
 
-Regards,
-Kamil
+Participating hosts (36 -> 36)
+------------------------------
 
-> +}
-> +
-> +static const char * const unwanted_drivers[] = {
-> +	"xe",
-> +	"i915",
-> +	NULL
-> +};
-> +
-> +/**
-> + * SUBTEST: force-load
-> + * Description: Load the Xe driver passing ``force_probe=*`` parameter
-> + * Run type: BAT
-> + *
-> + * SUBTEST: load
-> + * Description: Load the Xe driver
-> + * Run type: FULL
-> + *
-> + * SUBTEST: unload
-> + * Description: Unload the Xe driver
-> + * Run type: FULL
-> + *
-> + * SUBTEST: reload
-> + * Description: Reload the Xe driver
-> + * Run type: FULL
-> + *
-> + * SUBTEST: reload-no-display
-> + * Description: Reload the Xe driver passing ``enable_display=0`` parameter
-> + * Run type: FULL
-> + *
-> + * SUBTEST: many-reload
-> + * Description: Reload the Xe driver many times
-> + * Run type: FULL
-> + */
-> +igt_main
-> +{
-> +	igt_describe("Check if xe and friends are not yet loaded, then load them.");
-> +	igt_subtest("load") {
-> +		for (int i = 0; unwanted_drivers[i] != NULL; i++) {
-> +			igt_skip_on_f(igt_kmod_is_loaded(unwanted_drivers[i]),
-> +				      "%s is already loaded\n", unwanted_drivers[i]);
-> +		}
-> +
-> +		load_and_check_xe(NULL);
-> +	}
-> +
-> +	igt_subtest("unload") {
-> +		igt_xe_driver_unload();
-> +	}
-> +
-> +	igt_subtest("force-load") {
-> +		for (int i = 0; unwanted_drivers[i] != NULL; i++) {
-> +			igt_skip_on_f(igt_kmod_is_loaded(unwanted_drivers[i]),
-> +				      "%s is already loaded\n", unwanted_drivers[i]);
-> +		}
-> +
-> +		load_and_check_xe("force_probe=*");
-> +	}
-> +
-> +	igt_subtest("reload-no-display") {
-> +		igt_xe_driver_unload();
-> +		load_and_check_xe("enable_display=0");
-> +	}
-> +
-> +	igt_subtest("many-reload") {
-> +		int i;
-> +
-> +		for (i = 0; i < 10; i++) {
-> +			igt_debug("reload cycle: %d\n", i);
-> +			igt_xe_driver_unload();
-> +			load_and_check_xe(NULL);
-> +			sleep(1);
-> +		}
-> +	}
-> +
-> +	igt_subtest("reload") {
-> +		igt_xe_driver_unload();
-> +		load_and_check_xe(NULL);
-> +
-> +		/* only default modparams, can leave module loaded */
-> +	}
-> +
-> +	/* Subtests should unload the module themselves if they use modparams */
-> +}
-> -- 
-> 2.39.2
-> 
+  Additional (1): fi-kbl-soraka 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8719 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-kbl-soraka:      NOTRUN -> [INCOMPLETE][3] ([i915#7156] / [i915#7913])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][4] ([i915#1886])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium_frames@hdmi-crc-fast:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271]) +16 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-rplp-1:         NOTRUN -> [SKIP][6] ([i915#7828])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-rplp-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][7] ([i915#7828])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg2-11:         [INCOMPLETE][8] ([i915#7913]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7227/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+    - bat-rplp-1:         [ABORT][10] ([i915#7913]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7227/bat-rplp-1/igt@i915_selftest@live@hangcheck.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-rplp-1/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [DMESG-WARN][12] ([i915#7699]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7227/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         [DMESG-FAIL][14] ([i915#6367] / [i915#7996]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7227/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
+    - bat-dg2-8:          [FAIL][16] ([i915#7932]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7227/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#7156]: https://gitlab.freedesktop.org/drm/intel/issues/7156
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7227 -> IGTPW_8719
+
+  CI-20190529: 20190529
+  CI_DRM_12937: 6848d3613c0a63382d00ff550c41394902bda903 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8719: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/index.html
+  IGT_7227: 5dfa3675c36bab82cdda056db7ef622363c324ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/index.html
+
+--===============3486421662351770427==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Improve igt_doc.py (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115667/">https://patchwork.freedesktop.org/series/115667/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7227 -&gt; IGTPW_8719</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/index.html</p>
+<h2>Participating hosts (36 -&gt; 36)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8719 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7156">i915#7156</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-rplp-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+<li>
+<p>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7227/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+<li>
+<p>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7227/bat-rplp-1/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-rplp-1/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7227/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7227/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7227/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7227 -&gt; IGTPW_8719</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12937: 6848d3613c0a63382d00ff550c41394902bda903 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8719: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8719/index.html<br />
+  IGT_7227: 5dfa3675c36bab82cdda056db7ef622363c324ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3486421662351770427==--
 
