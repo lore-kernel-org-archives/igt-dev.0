@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F0FF10EC9A
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 00:37:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D275210EC94
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 00:37:02 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 29 Mar 2023 17:36:56 -0700
-Message-Id: <20230330003656.1294873-8-umesh.nerlige.ramappa@intel.com>
+Date: Wed, 29 Mar 2023 17:36:52 -0700
+Message-Id: <20230330003656.1294873-4-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230330003656.1294873-1-umesh.nerlige.ramappa@intel.com>
 References: <20230330003656.1294873-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 7/7] tools/intel_gpu_top: Add support for gt
- specific counters
+Subject: [igt-dev] [PATCH i-g-t 3/7] tests/i915/perf_pmu: Two new rc6
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,163 +24,274 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With MTL frequency and rc6 counters are gt specific. Add support for
-intel_gpu_top to show these counters separately.
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+1.
+Keep one tile awake and check rc6 counters on all tiles.
+
+2.
+Keep all tiles awake and check rc6 counters on all.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- include/drm-uapi/i915_drm.h | 14 ++++++----
- tools/intel_gpu_top.c       | 56 ++++++++++++++++++++++++++-----------
- 2 files changed, 49 insertions(+), 21 deletions(-)
+ tests/i915/perf_pmu.c | 149 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 111 insertions(+), 38 deletions(-)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index 3b5e3b51..1a0c43e7 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -290,6 +290,7 @@ enum drm_i915_pmu_engine_sample {
- 	(((__u64)__I915_PMU_ENGINE(0xff, 0xff, 0xf) + 1 + (x)) | \
- 	((__u64)(gt) << __I915_PMU_GT_SHIFT))
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index 72f95b98..5e1177b9 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -173,6 +173,8 @@ static unsigned int measured_usleep(unsigned int usec)
+ #define FLAG_LONG (16)
+ #define FLAG_HANG (32)
+ #define TEST_S3 (64)
++#define TEST_OTHER (128)
++#define TEST_ALL   (256)
  
-+/* Aggregate from all gts */
- #define __I915_PMU_OTHER(x) ___I915_PMU_OTHER(0, x)
+ static igt_spin_t *__spin_poll(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
+ 			       const struct intel_execution_engine2 *e)
+@@ -1676,20 +1678,23 @@ test_frequency_idle(int gem_fd)
+ 		     "Actual frequency should be 0 while parked!\n");
+ }
  
- #define I915_PMU_ACTUAL_FREQUENCY	__I915_PMU_OTHER(0)
-@@ -300,11 +301,14 @@ enum drm_i915_pmu_engine_sample {
- 
- #define I915_PMU_LAST /* Deprecated - do not use */ I915_PMU_RC6_RESIDENCY
- 
--#define __I915_PMU_ACTUAL_FREQUENCY(gt)		___I915_PMU_OTHER(gt, 0)
--#define __I915_PMU_REQUESTED_FREQUENCY(gt)	___I915_PMU_OTHER(gt, 1)
--#define __I915_PMU_INTERRUPTS(gt)		___I915_PMU_OTHER(gt, 2)
--#define __I915_PMU_RC6_RESIDENCY(gt)		___I915_PMU_OTHER(gt, 3)
--#define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	___I915_PMU_OTHER(gt, 4)
-+/* GT specific counters */
-+#define ____I915_PMU_OTHER(gt, x) ___I915_PMU_OTHER(((gt) + 1), x)
-+
-+#define __I915_PMU_ACTUAL_FREQUENCY(gt)		____I915_PMU_OTHER(gt, 0)
-+#define __I915_PMU_REQUESTED_FREQUENCY(gt)	____I915_PMU_OTHER(gt, 1)
-+#define __I915_PMU_INTERRUPTS(gt)		____I915_PMU_OTHER(gt, 2)
-+#define __I915_PMU_RC6_RESIDENCY(gt)		____I915_PMU_OTHER(gt, 3)
-+#define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	____I915_PMU_OTHER(gt, 4)
- 
- /* Each region is a minimum of 16k, and there are at most 255 of them.
-  */
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index a4302aa3..9fc8b996 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -87,6 +87,7 @@ struct engine_class {
- 	unsigned int num_engines;
- };
- 
-+#define MAX_GTS 4
- struct engines {
- 	unsigned int num_engines;
- 	unsigned int num_classes;
-@@ -105,14 +106,16 @@ struct engines {
- 	struct pmu_counter imc_writes;
- 	unsigned int num_imc;
- 
--	struct pmu_counter freq_req;
--	struct pmu_counter freq_act;
-+	struct pmu_counter freq_req[MAX_GTS];
-+	struct pmu_counter freq_act[MAX_GTS];
- 	struct pmu_counter irq;
--	struct pmu_counter rc6;
-+	struct pmu_counter rc6[MAX_GTS];
- 
- 	bool discrete;
- 	char *device;
- 
-+	int num_gts;
-+
- 	/* Do not edit below this line.
- 	 * This structure is reallocated every time a new engine is
- 	 * found and size is increased by sizeof (engine).
-@@ -532,7 +535,7 @@ static void imc_reads_open(struct pmu_counter *pmu, struct engines *engines)
- static int pmu_init(struct engines *engines)
+-static bool wait_for_rc6(int fd, int timeout)
++static bool wait_for_rc6(int fd, int timeout, unsigned int pmus, unsigned int idx)
  {
- 	unsigned int i;
--	int fd;
-+	int fd, ret;
- 	uint64_t type = igt_perf_type_id(engines->device);
+ 	struct timespec tv = {};
++	uint64_t val[pmus];
+ 	uint64_t start, now;
  
- 	engines->fd = -1;
-@@ -543,14 +546,30 @@ static int pmu_init(struct engines *engines)
- 	if (fd < 0)
- 		return -1;
+ 	/* First wait for roughly an RC6 Evaluation Interval */
+ 	usleep(160 * 1000);
  
--	engines->freq_req.config = I915_PMU_REQUESTED_FREQUENCY;
--	_open_pmu(type, engines->num_counters, &engines->freq_req, engines->fd);
-+	engines->num_gts = 1;
-+	for (i = 0; i < MAX_GTS; i++) {
-+		engines->freq_req[i].config = __I915_PMU_REQUESTED_FREQUENCY(i);
+ 	/* Then poll for RC6 to start ticking */
+-	now = pmu_read_single(fd);
++	pmu_read_multi(fd, pmus, val);
++	now = val[idx];
+ 	do {
+ 		start = now;
+ 		usleep(5000);
+-		now = pmu_read_single(fd);
++		pmu_read_multi(fd, pmus, val);
++		now = val[idx];
+ 		if (now - start > 1e6)
+ 			return true;
+ 	} while (igt_seconds_elapsed(&tv) <= timeout);
+@@ -1716,16 +1721,38 @@ static int open_forcewake_handle(int fd, unsigned int gt)
+ }
  
--	engines->freq_act.config = I915_PMU_ACTUAL_FREQUENCY;
--	_open_pmu(type, engines->num_counters, &engines->freq_act, engines->fd);
-+		errno = 0;
-+		ret = _open_pmu(type, engines->num_counters, &engines->freq_req[i], engines->fd);
-+		if (ret >= 0)
+ static void
+-test_rc6(int gem_fd, unsigned int gt, unsigned int flags)
++test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
+ {
+ 	int64_t duration_ns = 2e9;
+-	uint64_t idle, busy, prev, ts[2];
++	uint64_t idle[16], busy[16], prev[16], ts[2];
++	int fd[num_gt], fw[num_gt], gt_, pmus = 0, test_idx = -1;
+ 	unsigned long slept;
+-	int fd, fw;
++
++	igt_require(!(flags & TEST_OTHER) ||
++		    ((flags & TEST_OTHER) && num_gt > 1));
++
++	igt_require(!(flags & TEST_ALL) ||
++		    ((flags & TEST_ALL) && num_gt > 1));
+ 
+ 	gem_quiescent_gpu(gem_fd);
+ 
+-	fd = open_pmu(gem_fd, __I915_PMU_RC6_RESIDENCY(gt));
++	fd[0] = -1;
++	for (gt_ = 0; gt_ < num_gt; gt_++) {
++		if (gt_ != gt && !(flags & TEST_OTHER))
 +			continue;
- 
--	engines->rc6.config = I915_PMU_RC6_RESIDENCY;
--	_open_pmu(type, engines->num_counters, &engines->rc6, engines->fd);
-+		if (errno != ENOENT)
-+			return ret;
 +
-+		engines->num_gts = i;
-+		errno = 0;
-+		break;
++		if (gt_ == gt) {
++			igt_assert(test_idx == -1);
++			test_idx = pmus;
++		}
++
++		fd[pmus] = perf_i915_open_group(gem_fd,
++						__I915_PMU_RC6_RESIDENCY(gt_),
++						fd[0]);
++		igt_skip_on(fd[pmus] < 0 && errno == ENODEV);
++		pmus++;
++	}
++	igt_assert(test_idx >= 0);
+ 
+ 	if (flags & TEST_RUNTIME_PM) {
+ 		drmModeRes *res;
+@@ -1746,21 +1773,26 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int flags)
+ 		 * drifted to far in advance of real RC6.
+ 		 */
+ 		if (flags & FLAG_LONG) {
+-			pmu_read_single(fd);
++			pmu_read_multi(fd[0], pmus, idle);
+ 			sleep(5);
+-			pmu_read_single(fd);
++			pmu_read_multi(fd[0], pmus, idle);
+ 		}
+ 	}
+ 
+-	igt_require(wait_for_rc6(fd, 1));
++	igt_require(wait_for_rc6(fd[0], 1, pmus, test_idx));
+ 
+ 	/* While idle check full RC6. */
+-	prev = __pmu_read_single(fd, &ts[0]);
++	ts[0] = pmu_read_multi(fd[0], pmus, prev);
+ 	slept = measured_usleep(duration_ns / 1000);
+-	idle = __pmu_read_single(fd, &ts[1]);
+-
+-	igt_debug("slept=%lu perf=%"PRIu64"\n", slept, ts[1] - ts[0]);
+-	assert_within_epsilon(idle - prev, ts[1] - ts[0], tolerance);
++	ts[1] = pmu_read_multi(fd[0], pmus, idle);
++
++	for (gt_ = 0; gt_ < pmus; gt_++) {
++		igt_debug("gt%u: idle rc6=%"PRIu64", slept=%lu, perf=%"PRIu64"\n",
++			  gt_, idle[gt_] - prev[gt_], slept, ts[1] - ts[0]);
++		assert_within_epsilon(idle[gt_] - prev[gt_],
++				      ts[1] - ts[0],
++				      tolerance);
++	}
+ 
+ 	if (flags & TEST_S3) {
+ 		/*
+@@ -1773,40 +1805,70 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int flags)
+ 		 * However, in practice it appears we are not entering rc6
+ 		 * immediately after resume... A bug?
+ 		 */
+-		prev = __pmu_read_single(fd, &ts[0]);
++		ts[0] = pmu_read_multi(fd[0], pmus, prev);
+ 		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+ 					      SUSPEND_TEST_NONE);
+-		idle = __pmu_read_single(fd, &ts[1]);
+-		igt_debug("suspend=%"PRIu64", rc6=%"PRIu64"\n",
+-			  ts[1] - ts[0], idle -prev);
+-		//assert_within_epsilon(idle - prev, ts[1] - ts[0], tolerance);
++		ts[1] = pmu_read_multi(fd[0], pmus, idle);
++		for (gt_ = 0; gt_ < pmus; gt_++) {
++			igt_debug("gt%u: rc6=%"PRIu64", suspend=%"PRIu64"\n",
++				  gt_, idle[gt_] - prev[gt_], ts[1] - ts[0]);
++			// assert_within_epsilon(idle[gt_] - prev[gt_],
++			//		      ts[1] - ts[0], tolerance);
++		}
+ 	}
+ 
+-	igt_assert(wait_for_rc6(fd, 5));
++	igt_assert(wait_for_rc6(fd[0], 5, pmus, test_idx));
+ 
+-	prev = __pmu_read_single(fd, &ts[0]);
++	ts[0] = pmu_read_multi(fd[0], pmus, prev);
+ 	slept = measured_usleep(duration_ns / 1000);
+-	idle = __pmu_read_single(fd, &ts[1]);
+-
+-	igt_debug("slept=%lu perf=%"PRIu64"\n", slept, ts[1] - ts[0]);
+-	assert_within_epsilon(idle - prev, ts[1] - ts[0], tolerance);
++	ts[1] = pmu_read_multi(fd[0], pmus, idle);
++
++	for (gt_ = 0; gt_ < pmus; gt_++) {
++		igt_debug("gt%u: idle rc6=%"PRIu64", slept=%lu, perf=%"PRIu64"\n",
++			  gt_, idle[gt_] - prev[gt_], slept, ts[1] - ts[0]);
++		assert_within_epsilon(idle[gt_] - prev[gt_],
++				      ts[1] - ts[0],
++				      tolerance);
++	}
+ 
+ 	/* Wake up device and check no RC6. */
+-	fw = open_forcewake_handle(gem_fd, gt);
+-	igt_require(fw >= 0);
++	for (gt_ = 0; gt_ < num_gt; gt_++) {
++		if (gt_ != gt && !(flags & TEST_ALL))
++			continue;
++
++		fw[gt_] = open_forcewake_handle(gem_fd, gt_);
++		igt_require(fw[gt_] >= 0);
 +	}
 +
-+	for (i = 0; i < engines->num_gts; i++) {
-+		engines->freq_act[i].config = __I915_PMU_ACTUAL_FREQUENCY(i);
-+		_open_pmu(type, engines->num_counters, &engines->freq_act[i], engines->fd);
+ 	usleep(1e3); /* wait for the rc6 cycle counter to stop ticking */
+ 
+-	prev = pmu_read_single(fd);
+-	usleep(duration_ns / 1000);
+-	busy = pmu_read_single(fd);
++	ts[0] = pmu_read_multi(fd[0], pmus, prev);
++	slept = measured_usleep(duration_ns / 1000);
++	ts[1] = pmu_read_multi(fd[0], pmus, busy);
+ 
+-	close(fw);
+-	close(fd);
++	for (gt_ = 0; gt_ < num_gt; gt_++) {
++		if (gt_ == gt || (flags & TEST_ALL))
++			close(fw[gt_]);
++	}
 +
-+		engines->rc6[i].config = __I915_PMU_RC6_RESIDENCY(i);
-+		_open_pmu(type, engines->num_counters, &engines->rc6[i], engines->fd);
++	for (gt_ = 0; gt_ < pmus; gt_++)
++		close(fd[gt_]);
+ 
+ 	if (flags & TEST_RUNTIME_PM)
+ 		igt_restore_runtime_pm();
+ 
+-	assert_within_epsilon(busy - prev, 0.0, tolerance);
++	for (gt_ = 0; gt_ < pmus; gt_++) {
++		igt_debug("gt%u: busy rc6=%"PRIu64", slept=%lu, perf=%"PRIu64"\n",
++			  gt_, busy[gt_] - prev[gt_], slept, ts[1] - ts[0]);
++		if (gt_ == test_idx || (flags & TEST_ALL))
++			assert_within_epsilon(busy[gt_] - prev[gt_],
++					      0.0,
++					      tolerance);
++		else
++			assert_within_epsilon(busy[gt_] - prev[gt_],
++					      ts[1] - ts[0],
++					      tolerance);
 +	}
+ }
  
- 	for (i = 0; i < engines->num_engines; i++) {
- 		struct engine *engine = engine_ptr(engines, i);
-@@ -653,10 +672,12 @@ static void pmu_sample(struct engines *engines)
- 	engines->ts.prev = engines->ts.cur;
- 	engines->ts.cur = pmu_read_multi(engines->fd, num_val, val);
+ static void
+@@ -2192,6 +2254,7 @@ igt_main
+ 	unsigned int num_engines = 0;
+ 	const intel_ctx_t *ctx = NULL;
+ 	int gt, tmp, fd = -1;
++	int num_gt = 0;
  
--	update_sample(&engines->freq_req, val);
--	update_sample(&engines->freq_act, val);
-+	for (i = 0; i < engines->num_gts; i++) {
-+		update_sample(&engines->freq_req[i], val);
-+		update_sample(&engines->freq_act[i], val);
-+		update_sample(&engines->rc6[i], val);
-+	}
- 	update_sample(&engines->irq, val);
--	update_sample(&engines->rc6, val);
+ 	/**
+ 	 * All PMU should be accompanied by a test.
+@@ -2210,6 +2273,9 @@ igt_main
+ 		for_each_ctx_engine(fd, ctx, e)
+ 			num_engines++;
+ 		igt_require(num_engines);
++
++		for_each_gt(fd, gt, tmp)
++			num_gt++;
+ 	}
  
- 	for (i = 0; i < engines->num_engines; i++) {
- 		struct engine *engine = engine_ptr(engines, i);
-@@ -1727,8 +1748,10 @@ print_header(const struct igt_device_card *card,
- 		.items = period_items,
- 	};
- 	struct cnt_item freq_items[] = {
--		{ &engines->freq_req, 4, 0, 1.0, t, 1, "requested", "req" },
--		{ &engines->freq_act, 4, 0, 1.0, t, 1, "actual", "act" },
-+		{ &engines->freq_req[0], 8, 0, 1.0, t, 1, "requested-gt0", "req-gt0" },
-+		{ &engines->freq_act[0], 8, 0, 1.0, t, 1, "actual-gt0", "act-gt0" },
-+		{ &engines->freq_req[1], 8, 0, 1.0, t, 1, "requested-gt1", "req-gt1" },
-+		{ &engines->freq_act[1], 8, 0, 1.0, t, 1, "actual-gt1", "act-gt1" },
- 		{ NULL, 0, 0, 0.0, 0.0, 0.0, "unit", "MHz" },
- 		{ },
- 	};
-@@ -1748,7 +1771,8 @@ print_header(const struct igt_device_card *card,
- 		.items = irq_items,
- 	};
- 	struct cnt_item rc6_items[] = {
--		{ &engines->rc6, 3, 0, 1e9, t, 100, "value", "%" },
-+		{ &engines->rc6[0], 6, 0, 1e9, t, 100, "value-gt0", "%-gt0" },
-+		{ &engines->rc6[1], 6, 0, 1e9, t, 100, "value-gt1", "%-gt1" },
- 		{ NULL, 0, 0, 0.0, 0.0, 0.0, "unit", "%" },
- 		{ },
- 	};
+ 	igt_describe("Verify i915 pmu dir exists and read all events");
+@@ -2411,18 +2477,25 @@ igt_main
+ 	igt_subtest_with_dynamic("rc6") {
+ 		for_each_gt(fd, gt, tmp) {
+ 			igt_dynamic_f("gt%u", gt)
+-				test_rc6(fd, gt, 0);
++				test_rc6(fd, gt, num_gt, 0);
+ 
+ 			igt_dynamic_f("runtime-pm-gt%u", gt)
+-				test_rc6(fd, gt, TEST_RUNTIME_PM);
++				test_rc6(fd, gt, num_gt, TEST_RUNTIME_PM);
+ 
+ 			igt_dynamic_f("runtime-pm-long-gt%u", gt)
+-				test_rc6(fd, gt, TEST_RUNTIME_PM | FLAG_LONG);
++				test_rc6(fd, gt, num_gt,
++					 TEST_RUNTIME_PM | FLAG_LONG);
++
++			igt_dynamic_f("other-idle-gt%u", gt)
++				test_rc6(fd, gt, num_gt, TEST_OTHER);
+ 		}
+ 	}
+ 
+ 	igt_subtest("rc6-suspend")
+-		test_rc6(fd, 0, TEST_S3);
++		test_rc6(fd, 0, num_gt, TEST_S3);
++
++	igt_subtest("rc6-all-gts")
++		test_rc6(fd, 0, num_gt, TEST_ALL | TEST_OTHER);
+ 
+ 	/**
+ 	 * Test GT wakeref tracking (similar to RC0, opposite of RC6)
 -- 
 2.36.1
