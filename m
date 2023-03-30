@@ -1,16 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D417610E10D
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 06:36:45 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Date: Thu, 30 Mar 2023 12:03:29 +0530
-Message-Id: <20230330063329.2870647-1-vikas.srivastava@intel.com>
-MIME-Version: 1.0
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E86810ED25
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 07:42:14 +0000 (UTC)
+Message-ID: <0dc839cd-1e39-ef83-5c47-9a95a335d598@intel.com>
+Date: Thu, 30 Mar 2023 09:42:06 +0200
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230327201254.2834-1-juhapekka.heikkila@gmail.com>
+ <20230327201254.2834-3-juhapekka.heikkila@gmail.com>
+ <20230328065042.tiwacahkm77bbb75@zkempczy-mobl2>
+ <1041bd8f-0925-24c2-6142-c4f6f2dbf308@intel.com>
+ <20230329171909.xsg5ngodwx7hary2@zkempczy-mobl2>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230329171909.xsg5ngodwx7hary2@zkempczy-mobl2>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3] tests/i915: skip gem_set_caching call
- for mtl
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_fb: switch blitcopy to use
+ lib/i915/i915_blt functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,254 +25,391 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Call to gem_set_caching skips the test since i915_gem_set_caching_ioctl is
-deprecated for MTL. To avoid this add the check for set caching supported
-platforms.
+On 29.03.2023 19:19, Zbigniew Kempczyński wrote:
+> On Tue, Mar 28, 2023 at 04:10:12PM +0200, Karolina Stolarek wrote:
+>> On 28.03.2023 08:50, Zbigniew Kempczyński wrote:
+>>> On Mon, Mar 27, 2023 at 11:12:54PM +0300, Juha-Pekka Heikkila wrote:
+>>>> reduce code duplication
+>>>>
+>>>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>>>> ---
+>>>>    lib/igt_fb.c | 214 +++++++++++++++++++++++++++++++++++++++++++++------
+>>>>    1 file changed, 192 insertions(+), 22 deletions(-)
+>>>>
+>>>> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+>>>> index ba89e1f60..06ebe4818 100644
+>>>> --- a/lib/igt_fb.c
+>>>> +++ b/lib/igt_fb.c
+>>>> @@ -35,6 +35,8 @@
+>>>>    #include "drmtest.h"
+>>>>    #include "i915/gem_create.h"
+>>>>    #include "i915/gem_mman.h"
+>>>> +#include "i915/i915_blt.h"
+>>>> +#include "i915/intel_mocs.h"
+>>>>    #include "igt_aux.h"
+>>>>    #include "igt_color_encoding.h"
+>>>>    #include "igt_fb.h"
+>>>> @@ -2680,12 +2682,134 @@ static void copy_with_engine(struct fb_blit_upload *blit,
+>>>>    	fini_buf(src);
+>>>>    }
+>>>> +static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
+>>>> +					   uint32_t plane, uint32_t memregion)
+>>>> +{
+>>>> +	uint32_t name, handle;
+>>>> +	struct blt_copy_object *blt;
+>>>> +	enum blt_tiling_type blt_tile;
+>>>> +	uint64_t stride;
+>>>> +
+>>>> +	blt = malloc(sizeof(*blt));
+>>>> +	igt_assert(blt);
+>>>> +
+>>>> +	name = gem_flink(fb->fd, fb->gem_handle);
+>>>> +	handle = gem_open(fb->fd, name);
+>>>> +
+>>>> +	switch (igt_fb_mod_to_tiling(fb->modifier)) {
+>>>> +	case I915_TILING_X:
+>>>> +		blt_tile = T_XMAJOR;
+>>>
+>>> I wonder to add helper in i915_blt: i915_tiling_to_blt_tile(int tile);
+>>
+>> I wish we could move on from using I915_TILING_* for tiling formats that
+>> don't require fences. It would be great if we could switch on
+>> blt_tiling_type when doing blit copy, especially when we have checks that
+>> ensure the correct mapping.
+>>
+>> I mean, we could add such a helper, but do we want to keep it as a permanent
+>> solution?
+>>
+> 
+> I assume we will keep I915_TILING_<fmt> == T_<fmt>. I don't know what
+> the future will bring, but I assume for each new format we will have
+> both I915_TILING_<newfmt> and T_<newfmt>.
+> 
+> As a legacy code still uses I915_TILING_<fmt> I would add converter to
+> enum to make developers happy to not to convert this manually (even if
+> this is same value).
+> 
 
-FIXME: This is a temp solution to fix the IGT test issues where
-set caching call is used , there is alternate API available
-but support not yet available to use that.Once set_pat_index
-support available need to bring that change replacing this one.
+Right, I see what you mean. I just pass "newer" definitions in :)
+But I know that others might not know that they're equivalent, and we
+should provide a function that will convert the values.
 
-Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
----
- lib/ioctl_wrappers.c                | 14 ++++++++++++++
- lib/ioctl_wrappers.h                |  1 +
- tests/i915/gem_caching.c            |  5 ++++-
- tests/i915/gem_exec_flush.c         |  6 ++++--
- tests/i915/gem_exec_latency.c       |  3 ++-
- tests/i915/gem_exec_suspend.c       |  6 ++++--
- tests/i915/gem_render_tiled_blits.c |  3 ++-
- tests/i915/gem_softpin.c            |  3 ++-
- tests/i915/gem_userptr_blits.c      | 11 ++++++++---
- tests/i915/gem_workarounds.c        |  6 ++++--
- tests/i915/i915_pm_rpm.c            |  7 ++++---
- tests/prime_vgem.c                  |  3 ++-
- 12 files changed, 51 insertions(+), 17 deletions(-)
+>>>
+>>> BTW Karolina added asserts which should map 1:1 i915 -> blt. Tile4 is
+>>> not added there yet but it can be, so i915_tiline_to_blt_tile() can
+>>> simply return tile;
+>>>
+>>> then those few cases could looks like:
+>>>
+>>> case I915_TILING_X:
+>>> case I915_TILING_Y:
+>>> case I915_TILING_4:
+>>> 	blt_tile = i915_tiling_to_blt_tile(...);
+>>> 	stride = fb->strides[plane] / 4;
+>>> 	break;
+>>> case I915_TILING_NONE:
+>>> 	...
+>>>
+>>>> +		stride = fb->strides[plane] / 4;
+>>>> +		break;
+>>>> +	case I915_TILING_Y:
+>>>> +		blt_tile = T_YMAJOR;
+>>>> +		stride = fb->strides[plane] / 4;
+>>>> +		break;
+>>>> +	case I915_TILING_4:
+>>>> +		blt_tile = T_TILE4;
+>>>> +		stride = fb->strides[plane] / 4;
+>>>> +		break;
+>>>> +	case I915_TILING_NONE:
+>>>> +	default:
+>>>> +		blt_tile = T_LINEAR;
+>>>> +		stride = fb->strides[plane];
+>>>> +		break;
+>>>> +	}
+>>>> +
+>>>> +	blt_set_object(blt, handle, fb->size, memregion,
+>>>> +		       intel_get_uc_mocs(fb->fd),
+>>>> +		       blt_tile,
+>>>> +		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
+>>>> +		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
+>>>> +
+>>>> +	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
+>>>> +
+>>>> +	blt->offset = fb->offsets[plane];
+>>>> +
+>>>> +	blt->ptr = gem_mmap__device_coherent(fb->fd, handle, 0, fb->size,
+>>>> +					     PROT_READ | PROT_WRITE);
+>>>> +	return blt;
+>>>> +}
+>>>> +
+>>>> +static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
+>>>> +{
+>>>> +	switch (fb->plane_bpp[0]) {
+>>>> +	case 8:
+>>>> +		return CD_8bit;
+>>>> +	case 16:
+>>>> +		return CD_16bit;
+>>>> +	case 32:
+>>>> +		return CD_32bit;
+>>>> +	case 64:
+>>>> +		return CD_64bit;
+>>>> +	case 96:
+>>>> +		return CD_96bit;
+>>>> +	case 128:
+>>>> +		return CD_128bit;
+>>>> +	default:
+>>>> +		igt_assert(0);
+>>>> +	}
+>>>> +}
+>>>> +
+>>>> +#define BLT_TARGET_RC(x) (x.compression == COMPRESSION_ENABLED && \
+>>>> +			  x.compression_type == COMPRESSION_TYPE_3D)
+>>>> +
+>>>> +#define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
+>>>> +			  x.compression_type == COMPRESSION_TYPE_MEDIA)
+>>>> +
+>>>> +static uint32_t blt_compression_format(struct blt_copy_data *blt,
+>>>> +				       const struct igt_fb *fb)
+>>>> +{
+>>>> +	if (blt->src.compression == COMPRESSION_DISABLED &&
+>>>> +	    blt->dst.compression == COMPRESSION_DISABLED)
+>>>> +		return 0;
+>>>> +
+>>>> +	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst)) {
+>>>> +		switch (blt->color_depth)
+>>>> +		{
+>>>> +		case CD_32bit:
+>>>> +			return 8;
+>>>> +		default:
+>>>> +			igt_assert_f(0, "COMPRESSION_TYPE_3D unknown color depth\n");
+>>>> +		}
+>>>> +	}
+>>>> +
+>>>> +	if (BLT_TARGET_MC(blt->src) || BLT_TARGET_MC(blt->dst)) {
+>>>> +		switch (fb->drm_format)
+>>>> +		{
+>>>> +		case DRM_FORMAT_XRGB8888:
+>>>> +			return 8;
+>>>> +		case DRM_FORMAT_XYUV8888:
+>>>> +			return 9;
+>>>> +		case DRM_FORMAT_NV12:
+>>>> +			return 9;
+>>>> +		case DRM_FORMAT_P010:
+>>>> +		case DRM_FORMAT_P012:
+>>>> +		case DRM_FORMAT_P016:
+>>>> +			return 8;
+>>>> +		default:
+>>>> +			igt_assert_f(0, "COMPRESSION_TYPE_MEDIA unknown format\n");
+>>>> +		}
+>>>> +	} else {
+>>>> +		igt_assert_f(0, "unknown compression\n");
+>>>> +	}
+>>>> +}
+>>>> +
+>>>>    static void blitcopy(const struct igt_fb *dst_fb,
+>>>>    		     const struct igt_fb *src_fb)
+>>>>    {
+>>>>    	uint32_t src_tiling, dst_tiling;
+>>>>    	uint32_t ctx = 0;
+>>>>    	uint64_t ahnd = 0;
+>>>> +	const intel_ctx_t *ictx = intel_ctx_create_all_physical(src_fb->fd);
+>>>> +	struct intel_execution_engine2 *e;
+>>>> +	uint32_t bb;
+>>>> +	uint64_t bb_size = 4096;
+>>>> +	struct blt_copy_data blt = {};
+>>>> +	struct blt_copy_object *src, *dst;
+>>>> +	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
+>>>> +	uint32_t mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
+>>>> +			   ? REGION_LMEM(0) : REGION_SMEM;
+>>>>    	igt_assert_eq(dst_fb->fd, src_fb->fd);
+>>>>    	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
+>>>> @@ -2697,36 +2821,81 @@ static void blitcopy(const struct igt_fb *dst_fb,
+>>>>    		igt_require(gem_has_contexts(dst_fb->fd));
+>>>>    		ctx = gem_context_create(dst_fb->fd);
+>>>>    		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
+>>>> +
+>>>> +		igt_assert(__gem_create_in_memory_regions(src_fb->fd,
+>>>> +							  &bb,
+>>>> +							  &bb_size,
+>>>> +							  mem_region) == 0);
+>>>> +
+>>>> +		for_each_ctx_engine(src_fb->fd, ictx, e) {
+>>>> +			if (gem_engine_can_block_copy(src_fb->fd, e))
+>>>> +				break;
+>>>> +		}
+>>>>    	}
+>>>>    	for (int i = 0; i < dst_fb->num_planes; i++) {
+>>>>    		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
+>>>>    		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
+>>>>    		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
+>>>> -		/*
+>>>> -		 * On GEN12+ X-tiled format support is removed from the fast
+>>>> -		 * blit command, so use the XY_SRC blit command for it
+>>>> -		 * instead.
+>>>> -		 */
+>>>> +
+>>>>    		if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
+>>>
+>>> I think this blit fail when ahnd == 0 as i915_blt requires softpinning.
+>>
+>> Also, are we fine with the fact that we'll only cover gen 8 and above (due
+>> to the softpinning requirement)?
+> 
+> Hmm, instead of fast_blit_ok() we should use here blt_has_fast_copy() and
+> blt_fast_copy_supports_tiling().
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 1ab41ab6d6..ebd8a2f36f 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -1297,3 +1297,17 @@ bool igt_has_drm_cap(int fd, uint64_t capability)
- 	igt_assert(drmIoctl(fd, DRM_IOCTL_GET_CAP, &cap) == 0);
- 	return cap.value;
- }
-+
-+/**
-+ * igt_has_set_caching:
-+ * @devid: platform id.
-+ *
-+ * This helper verifies if the passed platform id
-+ * has support for setting cache.
-+ *
-+ * Returns: Whether the cache setting  is supported or not.
-+ */
-+bool igt_has_set_caching(uint32_t devid)
-+{
-+	return IS_METEORLAKE(devid) ? false : true;
-+}
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index e4d7c0d408..4c232078d0 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -145,6 +145,7 @@ void prime_sync_end(int dma_buf_fd, bool write);
- bool igt_has_fb_modifiers(int fd);
- void igt_require_fb_modifiers(int fd);
- bool igt_has_drm_cap(int fd, uint64_t capability);
-+bool igt_has_set_caching(uint32_t devid);
- 
- /**
-  * __kms_addfb:
-diff --git a/tests/i915/gem_caching.c b/tests/i915/gem_caching.c
-index eb0170abca..b930d62cf0 100644
---- a/tests/i915/gem_caching.c
-+++ b/tests/i915/gem_caching.c
-@@ -163,8 +163,11 @@ igt_main
- 		scratch_buf = intel_buf_create(data.bops, BO_SIZE/4, 1,
- 					       32, 0, I915_TILING_NONE, 0);
- 
--		if (!gem_has_lmem(data.fd))
-+		if (!gem_has_lmem(data.fd)) {
-+			igt_require(igt_has_set_caching(data.devid));
- 			gem_set_caching(data.fd, scratch_buf->handle, 1);
-+		}
-+
- 
- 		staging_buf = intel_buf_create(data.bops, BO_SIZE/4, 1,
- 					       32, 0, I915_TILING_NONE, 0);
-diff --git a/tests/i915/gem_exec_flush.c b/tests/i915/gem_exec_flush.c
-index bb120e0d6c..42ddbc529e 100644
---- a/tests/i915/gem_exec_flush.c
-+++ b/tests/i915/gem_exec_flush.c
-@@ -142,7 +142,8 @@ static void run(int fd, unsigned ring, int nchild, int timeout,
- 				       I915_GEM_DOMAIN_WC);
- 		} else {
- 			snoop = flags & COHERENT;
--			gem_set_caching(fd, obj[0].handle, snoop);
-+			if (igt_has_set_caching(intel_get_drm_devid(fd)))
-+				gem_set_caching(fd, obj[0].handle, snoop);
- 			map = gem_mmap__cpu(fd, obj[0].handle, 0, 4096, PROT_WRITE);
- 			gem_set_domain(fd, obj[0].handle,
- 				       I915_GEM_DOMAIN_CPU,
-@@ -401,7 +402,8 @@ static void batch(int fd, unsigned ring, int nchild, int timeout,
- 		obj[0].handle = gem_create(fd, 4096);
- 		obj[0].flags |= EXEC_OBJECT_WRITE;
- 
--		gem_set_caching(fd, obj[0].handle, !!(flags & COHERENT));
-+		if (igt_has_set_caching(intel_get_drm_devid(fd)))
-+			gem_set_caching(fd, obj[0].handle, !!(flags & COHERENT));
- 		map = gem_mmap__cpu(fd, obj[0].handle, 0, 4096, PROT_WRITE);
- 
- 		gem_set_domain(fd, obj[0].handle,
-diff --git a/tests/i915/gem_exec_latency.c b/tests/i915/gem_exec_latency.c
-index fcdf7787b8..4838a70820 100644
---- a/tests/i915/gem_exec_latency.c
-+++ b/tests/i915/gem_exec_latency.c
-@@ -770,7 +770,8 @@ static void context_switch(int i915, const intel_ctx_t *ctx,
- 
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].handle = gem_create(i915, 4096);
--	gem_set_caching(i915, obj[0].handle, 1);
-+	if (igt_has_set_caching(intel_get_drm_devid(i915)))
-+		gem_set_caching(i915, obj[0].handle, 1);
- 	results = gem_mmap__cpu(i915, obj[0].handle, 0, 4096, PROT_READ);
- 	gem_set_domain(i915, obj[0].handle, I915_GEM_DOMAIN_CPU, 0);
- 
-diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
-index 1dadf06df0..8d56093faa 100644
---- a/tests/i915/gem_exec_suspend.c
-+++ b/tests/i915/gem_exec_suspend.c
-@@ -116,8 +116,10 @@ static void run_test(int fd, const intel_ctx_t *ctx,
- 
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].handle = gem_create_in_memory_regions(fd, 4096, region);
--	if (!gem_has_lmem(fd))
--		gem_set_caching(fd, obj[0].handle, !!(flags & CACHED));
-+	if (!gem_has_lmem(fd)) {
-+		if (igt_has_set_caching(intel_get_drm_devid(fd)))
-+			gem_set_caching(fd, obj[0].handle, !!(flags & CACHED));
-+	}
- 	obj[0].flags |= EXEC_OBJECT_WRITE;
- 	obj[1].handle = gem_create_in_memory_regions(fd, 4096, region);
- 	gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
-diff --git a/tests/i915/gem_render_tiled_blits.c b/tests/i915/gem_render_tiled_blits.c
-index eae06a332e..3becf576fe 100644
---- a/tests/i915/gem_render_tiled_blits.c
-+++ b/tests/i915/gem_render_tiled_blits.c
-@@ -117,7 +117,8 @@ static void run_test (int fd, int count)
- 	intel_buf_init(bops, &linear, WIDTH, HEIGHT, 32, 0,
- 		       I915_TILING_NONE, I915_COMPRESSION_NONE);
- 	if (snoop) {
--		gem_set_caching(fd, linear.handle, 1);
-+		if (igt_has_set_caching(intel_get_drm_devid(fd)))
-+			gem_set_caching(fd, linear.handle, 1);
- 		igt_info("Using a snoop linear buffer for comparisons\n");
- 	}
- 
-diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-index 7682f772a1..8717860b2d 100644
---- a/tests/i915/gem_softpin.c
-+++ b/tests/i915/gem_softpin.c
-@@ -525,7 +525,8 @@ static void test_evict_snoop(int fd, unsigned int flags)
- 	/* Create a snoop + uncached pair */
- 	object[0].handle = gem_create(fd, 4096);
- 	object[0].flags = EXEC_OBJECT_PINNED;
--	gem_set_caching(fd, object[0].handle, 1);
-+	if (igt_has_set_caching(intel_get_drm_devid(fd)))
-+		gem_set_caching(fd, object[0].handle, 1);
- 	object[1].handle = gem_create(fd, 4096);
- 	object[1].flags = EXEC_OBJECT_PINNED;
- 	gem_write(fd, object[1].handle, 4096-sizeof(bbe), &bbe, sizeof(bbe));
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 07a453229a..b97e541118 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -1147,8 +1147,10 @@ static void test_relocations(int fd)
- 	memset(&obj, 0, sizeof(obj));
- 	igt_assert(posix_memalign(&ptr, PAGE_SIZE, size) == 0);
- 	gem_userptr(fd, ptr, size, 0, userptr_flags, &obj.handle);
--	if (!gem_has_llc(fd))
--		gem_set_caching(fd, obj.handle, 0);
-+	if (!gem_has_llc(fd)) {
-+		if (igt_has_set_caching(intel_get_drm_devid(fd)))
-+			gem_set_caching(fd, obj.handle, 0);
-+	}
- 	*(uint32_t *)ptr = MI_BATCH_BUFFER_END;
- 
- 	reloc = (typeof(reloc))((char *)ptr + PAGE_SIZE);
-@@ -2417,8 +2419,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 			test_sd_probe(fd);
- 		}
- 
--		igt_subtest("set-cache-level")
-+		igt_subtest("set-cache-level") {
-+			igt_require_f(igt_has_set_caching(intel_get_drm_devid(fd)),
-+				      "set_caching not supported on this platform");
- 			test_set_caching(fd);
-+		}
- 
- 		igt_subtest("userfault")
- 			test_userfault(fd);
-diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
-index 30c68d1ac9..7d11996254 100644
---- a/tests/i915/gem_workarounds.c
-+++ b/tests/i915/gem_workarounds.c
-@@ -106,8 +106,10 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
- 
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].handle = gem_create(i915, result_sz);
--	if (!gem_has_lmem(i915))
--		gem_set_caching(i915, obj[0].handle, I915_CACHING_CACHED);
-+	if (!gem_has_lmem(i915)) {
-+		if (igt_has_set_caching(intel_get_drm_devid(i915)))
-+			gem_set_caching(i915, obj[0].handle, I915_CACHING_CACHED);
-+	}
- 	obj[1].handle = gem_create(i915, batch_sz);
- 	obj[1].relocs_ptr = to_user_pointer(reloc);
- 	obj[1].relocation_count = !ahnd ? num_wa_regs : 0;
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 74935430c1..9a6408dd37 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1995,8 +1995,8 @@ static void pm_test_caching(void)
- 
- 	for (i = 0; i < ARRAY_SIZE(cache_levels); i++) {
- 		igt_assert(wait_for_suspended());
--		gem_set_caching(drm_fd, handle, default_cache_level);
--
-+		if (igt_has_set_caching(intel_get_drm_devid(drm_fd)))
-+			gem_set_caching(drm_fd, handle, default_cache_level);
- 		/* Ensure we bind the vma into the GGTT */
- 		memset(gem_buf, 16 << i, gtt_obj_max_size);
- 
-@@ -2008,7 +2008,8 @@ static void pm_test_caching(void)
- 		 */
- 		igt_debug("Setting cache level %u\n", cache_levels[i]);
- 		igt_assert(wait_for_suspended());
--		gem_set_caching(drm_fd, handle, cache_levels[i]);
-+		if (igt_has_set_caching(intel_get_drm_devid(drm_fd)))
-+			gem_set_caching(drm_fd, handle, cache_levels[i]);
- 	}
- 
- 	igt_assert(munmap(gem_buf, gtt_obj_max_size) == 0);
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index 7b473c03df..9aa767c9cd 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -330,7 +330,8 @@ static void test_userptr(int vgem, int i915)
- 	*ptr = MI_BATCH_BUFFER_END;
- 
- 	gem_userptr(i915, ptr, scratch.size, 0, 0, &obj.handle);
--	gem_set_caching(i915, obj.handle, I915_CACHING_NONE); /* for !llc exec */
-+	if (igt_has_set_caching(intel_get_drm_devid(i915)))
-+		gem_set_caching(i915, obj.handle, I915_CACHING_NONE); /* for !llc exec */
- 
- 	gem_execbuf(i915, &execbuf);
- 	gem_close(i915, obj.handle);
--- 
-2.25.1
+I'm just confused by I915_FORMAT_MOD_X_TILED check. Is it the same as 
+checking for TileX? If so, then we could indeed rewrite it in such a way.
+
+> Gen8 won't be covered here as fast copy doesn't exists there.
+
+Right, by this comment I meant if we want to use a different blit as 
+well, or are we fine with using fast_copy only.
+
+> BTW it looks a little bit weird .cmds_info on gen9
+> pointing to gen11_cmds_info. I started to look on _cmds_info first to find
+> out is fast_copy supported on gen8 and gen9 and I thought it is not.
+
+Oh my, things are complicated over there, I agree. If time permits, I 
+shall re-review the naming convention used there.
+
+> Consider adding separated entry for gen9, even at the cost of additional
+> cmds_info variable.
+
+I believe it'll duplicate what's in gen11, wouldn't it? Nevermind, I'll 
+check it out and see if I can make it less confusing.
+
+
+Many thanks,
+Karolina
+> 
+>>
+>>>
+>>> 'if (ahnd && fast_blit_ok(src_fb) && fast_blit_ok(dst_fb))' should work.
+>>
+>> I had a quick look at the function, and I wonder if we could i915_blt
+>> helpers here instead. There seem to be other factors that we have to
+>> consider here, but the display version checks seem similar to what we have
+>> in intel_cmd_info lib.
+> 
+> Yes, i915_blt helpers are more reliable for platforms.
+> 
+> --
+> Zbigniew
+> 
+>>
+>>
+>> All the best,
+>> Karolina
+>>
+>>>
+>>>> -			igt_blitter_fast_copy__raw(dst_fb->fd,
+>>>> -						   ahnd, ctx, NULL,
+>>>> -						   src_fb->gem_handle,
+>>>> -						   src_fb->offsets[i],
+>>>> -						   src_fb->strides[i],
+>>>> -						   src_tiling,
+>>>> -						   0, 0, /* src_x, src_y */
+>>>> -						   src_fb->size,
+>>>> -						   dst_fb->plane_width[i],
+>>>> -						   dst_fb->plane_height[i],
+>>>> -						   dst_fb->plane_bpp[i],
+>>>> -						   dst_fb->gem_handle,
+>>>> -						   dst_fb->offsets[i],
+>>>> -						   dst_fb->strides[i],
+>>>> -						   dst_tiling,
+>>>> -						   0, 0 /* dst_x, dst_y */,
+>>>> -						   dst_fb->size);
+>>>> +			memset(&blt, 0, sizeof(blt));
+>>>> +			blt.color_depth = blt_get_bpp(src_fb);
+>>>> +
+>>>> +			src = blt_fb_init(src_fb, i, mem_region);
+>>>> +			dst = blt_fb_init(dst_fb, i, mem_region);
+>>>> +
+>>>> +			blt_set_copy_object(&blt.src, src);
+>>>> +			blt_set_copy_object(&blt.dst, dst);
+>>>> +
+>>>> +			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
+>>>> +
+>>>> +			blt_fast_copy(src_fb->fd, ictx, e, ahnd, &blt);
+>>>> +			gem_sync(src_fb->fd, blt.dst.handle);
+>>>> +
+>>>> +			blt_destroy_object(src_fb->fd, src);
+>>>> +			blt_destroy_object(dst_fb->fd, dst);
+>>>> +		} else if (ahnd) {
+>>>
+>>> I would also check if this else supports block-copy.
+>>>
+>>> If you prefer newer instructions (like fast-copy) with i915_blt it
+>>> requires valid ahnd (>0). Instead of using wrapper:
+>>>
+>>> ahnd = get_reloc_ahnd(fd, ctx);
+>>>
+>>> you may enforce softpinning by:
+>>>
+>>> ahnd = intel_allocator_open(fd, ctx, INTEL_ALLOCATOR_RELOC);
+>>>
+>>> Then i915_blt functions will work as you expect. But this will change
+>>> previous logic to prefer older blits instead new ones.
+>>>
+>>> --
+>>> Zbigniew
+>>>
+>>>> +			/*
+>>>> +			* On GEN12+ X-tiled format support is removed from
+>>>> +			* the fast blit command, so use the block copy blit
+>>>> +			* command for it instead.
+>>>> +			*/
+>>>> +			src = blt_fb_init(src_fb, i, mem_region);
+>>>> +			dst = blt_fb_init(dst_fb, i, mem_region);
+>>>> +
+>>>> +			memset(&blt, 0, sizeof(blt));
+>>>> +			blt.print_bb = true;
+>>>> +			blt.color_depth = blt_get_bpp(src_fb);
+>>>> +			blt_set_copy_object(&blt.src, src);
+>>>> +			blt_set_copy_object(&blt.dst, dst);
+>>>> +
+>>>> +			if (HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))) {
+>>>> +				blt_set_object_ext(&ext.src,
+>>>> +						   blt_compression_format(&blt, src_fb),
+>>>> +						   src_fb->width, src_fb->height,
+>>>> +						   SURFACE_TYPE_2D);
+>>>> +
+>>>> +				blt_set_object_ext(&ext.dst,
+>>>> +						   blt_compression_format(&blt, dst_fb),
+>>>> +						   dst_fb->width, dst_fb->height,
+>>>> +						   SURFACE_TYPE_2D);
+>>>> +
+>>>> +				pext = &ext;
+>>>> +			}
+>>>> +
+>>>> +			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
+>>>> +
+>>>> +			blt_block_copy(src_fb->fd, ictx, e, ahnd, &blt, pext);
+>>>> +			gem_sync(src_fb->fd, blt.dst.handle);
+>>>> +
+>>>> +			blt_destroy_object(src_fb->fd, src);
+>>>> +			blt_destroy_object(dst_fb->fd, dst);
+>>>>    		} else {
+>>>> +			/*
+>>>> +			 * If on legacy hardware where relocations are supported
+>>>> +			 * we'll use XY_SRC blit command instead
+>>>> +			 */
+>>>>    			igt_blitter_src_copy(dst_fb->fd,
+>>>>    					     ahnd, ctx, NULL,
+>>>>    					     src_fb->gem_handle,
+>>>> @@ -2750,6 +2919,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
+>>>>    	if (ctx)
+>>>>    		gem_context_destroy(dst_fb->fd, ctx);
+>>>>    	put_ahnd(ahnd);
+>>>> +	intel_ctx_destroy(src_fb->fd, ictx);
+>>>>    }
+>>>>    static void free_linear_mapping(struct fb_blit_upload *blit)
+>>>> -- 
+>>>> 2.39.0
+>>>>
