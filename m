@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEBC310E075
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 05:42:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3294110E0D5
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 05:42:29 +0000 (UTC)
 Received: from linux.intel.com (mwrzeszc-mobl1.ger.corp.intel.com
  [10.252.27.169])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id EFD94580D7C
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 22:42:26 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 14C93580D81
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 22:42:27 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1phl3I-00B51F-33
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1phl3I-00B50o-2m
  for igt-dev@lists.freedesktop.org; Thu, 30 Mar 2023 07:42:24 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Mar 2023 07:42:21 +0200
-Message-Id: <20230330054221.2640814-13-mauro.chehab@linux.intel.com>
+Date: Thu, 30 Mar 2023 07:42:15 +0200
+Message-Id: <20230330054221.2640814-7-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
 References: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 12/12] runner/meson.build: fix minimal
- build
+Subject: [igt-dev] [PATCH i-g-t v2 06/12] scripts/igt_doc.py: re-introduce
+ it by calling test_list.py
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,35 +34,191 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Minimal pipeline s now failing:
-	https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/38824636
+Now that the class on a separate file, move the argument parser
+to igt_doc.py.
 
-This doesn't seem to be related to the patches at the series from
-where the issue was reported, but addressing it is simple enough:
-just remove the error and change the logic to properly validate
-the possible options.
-
+Acked-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- runner/meson.build | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ scripts/igt_doc.py   | 80 ++++++++++++++++++++++++++++++++++++++++++++
+ scripts/test_list.py | 67 -------------------------------------
+ 2 files changed, 80 insertions(+), 67 deletions(-)
+ create mode 100755 scripts/igt_doc.py
 
-diff --git a/runner/meson.build b/runner/meson.build
-index dadfc75f0ca7..c62303ce35c5 100644
---- a/runner/meson.build
-+++ b/runner/meson.build
-@@ -24,11 +24,7 @@ if liboping.found()
- 	runner_c_args += '-DHAVE_OPING=1'
- endif
+diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+new file mode 100755
+index 000000000000..547cb81bce02
+--- /dev/null
++++ b/scripts/igt_doc.py
+@@ -0,0 +1,80 @@
++#!/usr/bin/env python3
++# pylint: disable=C0301
++# SPDX-License-Identifier: (GPL-2.0 OR MIT)
++
++## Copyright (C) 2023    Intel Corporation                 ##
++## Author: Mauro Carvalho Chehab <mchehab@kernel.org>      ##
++##                                                         ##
++## Allow keeping inlined test documentation and validate   ##
++## if the documentation is kept updated.                   ##
++
++"""Maintain test plan and test implementation documentation on IGT."""
++
++import argparse
++
++from test_list import TestList
++
++IGT_BUILD_PATH = 'build'
++IGT_RUNNER = 'runner/igt_runner'
++
++parser = argparse.ArgumentParser(description = "Print formatted kernel documentation to stdout.",
++                                 formatter_class = argparse.ArgumentDefaultsHelpFormatter,
++                                 epilog = 'If no action specified, assume --rest.')
++parser.add_argument("--config", required = True,
++                    help="JSON file describing the test plan template")
++parser.add_argument("--rest",
++                    help="Output documentation from the source files in REST file.")
++parser.add_argument("--per-test", action="store_true",
++                    help="Modifies ReST output to print subtests per test.")
++parser.add_argument("--to-json",
++                    help="Output test documentation in JSON format as TO_JSON file")
++parser.add_argument("--show-subtests", action="store_true",
++                    help="Shows the name of the documented subtests in alphabetical order.")
++parser.add_argument("--sort-field",
++                    help="modify --show-subtests to sort output based on SORT_FIELD value")
++parser.add_argument("--filter-field",
++                    help="modify --show-subtests to filter output based a regex given by FILTER_FIELD=~'regex'")
++parser.add_argument("--check-testlist", action="store_true",
++                    help="Compare documentation against IGT runner testlist.")
++parser.add_argument("--include-plan", action="store_true",
++                    help="Include test plans, if any.")
++parser.add_argument("--igt-build-path",
++                    help="Path where the IGT runner is sitting. Used by --check-testlist.",
++                    default=IGT_BUILD_PATH)
++parser.add_argument("--gen-testlist",
++                    help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
++parser.add_argument("--igt-runner",
++                    help="Path where the IGT runner is sitting. Used by --check-testlist.",
++                    default=IGT_RUNNER)
++parser.add_argument('--files', nargs='+',
++                    help="File name(s) to be processed")
++
++parse_args = parser.parse_args()
++
++tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files,
++                 parse_args.igt_build_path, parse_args.igt_runner)
++
++RUN = 0
++if parse_args.show_subtests:
++    RUN = 1
++    tests.show_subtests(parse_args.sort_field, parse_args.filter_field)
++
++if parse_args.check_testlist:
++    RUN = 1
++    tests.check_tests()
++
++if parse_args.gen_testlist:
++    RUN = 1
++    if not parse_args.sort_field:
++        sys.exit("Need a field to split the testlists")
++    tests.gen_testlist(parse_args.gen_testlist, parse_args.sort_field, parse_args.filter_field)
++
++if parse_args.to_json:
++    RUN = 1
++    tests.print_json(parse_args.to_json)
++
++if not RUN or parse_args.rest:
++    if parse_args.per_test:
++        tests.print_rest_flat(parse_args.rest)
++    else:
++        tests.print_nested_rest(parse_args.rest)
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 8eed875b0681..73c1794caec5 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -10,7 +10,6 @@
  
--if not build_tests and jsonc.found()
--	error('Building test runner requires building tests')
--endif
+ """Maintain test plan and test implementation documentation on IGT."""
+ 
+-import argparse
+ import glob
+ import json
+ import os
+@@ -22,9 +21,6 @@ MIN_PYTHON = (3, 6)
+ if sys.version_info < MIN_PYTHON:
+     sys.exit("Python %s.%s or later is required.\n" % MIN_PYTHON) # pylint: disable=C0209
+ 
+-IGT_BUILD_PATH = 'build'
+-IGT_RUNNER = 'runner/igt_runner'
 -
--if jsonc.found()
-+if jsonc.found() and build_tests
- 	subdir('testdata')
- 
- 	runnerlib = static_library('igt_runner', runnerlib_sources,
+ #
+ # ancillary functions to sort dictionary hierarchy
+ #
+@@ -1071,66 +1067,3 @@ class TestList:
+                 for sub in test_subtests[test]:
+                     handler.write (f"{sub}\n")
+                 print(f"{fname} created.")
+-
+-#
+-# Main
+-#
+-
+-parser = argparse.ArgumentParser(description = "Print formatted kernel documentation to stdout.",
+-                                 formatter_class = argparse.ArgumentDefaultsHelpFormatter,
+-                                 epilog = 'If no action specified, assume --rest.')
+-parser.add_argument("--config", required = True,
+-                    help="JSON file describing the test plan template")
+-parser.add_argument("--rest",
+-                    help="Output documentation from the source files in REST file.")
+-parser.add_argument("--per-test", action="store_true",
+-                    help="Modifies ReST output to print subtests per test.")
+-parser.add_argument("--to-json",
+-                    help="Output test documentation in JSON format as TO_JSON file")
+-parser.add_argument("--show-subtests", action="store_true",
+-                    help="Shows the name of the documented subtests in alphabetical order.")
+-parser.add_argument("--sort-field",
+-                    help="modify --show-subtests to sort output based on SORT_FIELD value")
+-parser.add_argument("--filter-field",
+-                    help="modify --show-subtests to filter output based a regex given by FILTER_FIELD=~'regex'")
+-parser.add_argument("--check-testlist", action="store_true",
+-                    help="Compare documentation against IGT runner testlist.")
+-parser.add_argument("--include-plan", action="store_true",
+-                    help="Include test plans, if any.")
+-parser.add_argument("--igt-build-path",
+-                    help="Path where the IGT runner is sitting. Used by --check-testlist.",
+-                    default=IGT_BUILD_PATH)
+-parser.add_argument("--gen-testlist",
+-                    help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
+-parser.add_argument('--files', nargs='+',
+-                    help="File name(s) to be processed")
+-
+-parse_args = parser.parse_args()
+-
+-tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files,
+-                 IGT_BUILD_PATH, IGT_RUNNER)
+-
+-RUN = 0
+-if parse_args.show_subtests:
+-    RUN = 1
+-    tests.show_subtests(parse_args.sort_field, parse_args.filter_field)
+-
+-if parse_args.check_testlist:
+-    RUN = 1
+-    tests.check_tests()
+-
+-if parse_args.gen_testlist:
+-    RUN = 1
+-    if not parse_args.sort_field:
+-        sys.exit("Need a field to split the testlists")
+-    tests.gen_testlist(parse_args.gen_testlist, parse_args.sort_field, parse_args.filter_field)
+-
+-if parse_args.to_json:
+-    RUN = 1
+-    tests.print_json(parse_args.to_json)
+-
+-if not RUN or parse_args.rest:
+-    if parse_args.per_test:
+-        tests.print_rest_flat(parse_args.rest)
+-    else:
+-        tests.print_nested_rest(parse_args.rest)
 -- 
 2.39.2
