@@ -1,25 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D19A010EE19
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 13:06:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6A6410EE02
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 13:06:08 +0000 (UTC)
 Received: from linux.intel.com (pludynia-mobl.ger.corp.intel.com [10.252.3.53])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 687A1580D98
+ by linux.intel.com (Postfix) with ESMTPS id 84A9B580DAC
  for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 06:05:24 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1phrxy-00BSab-16
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1phrxy-00BSaq-1K
  for igt-dev@lists.freedesktop.org; Thu, 30 Mar 2023 15:05:22 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Mar 2023 15:05:08 +0200
-Message-Id: <20230330130518.2731441-3-mauro.chehab@linux.intel.com>
+Date: Thu, 30 Mar 2023 15:05:13 +0200
+Message-Id: <20230330130518.2731441-8-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230330130518.2731441-1-mauro.chehab@linux.intel.com>
 References: <20230330130518.2731441-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 02/12] scripts/igt_doc.py: move
- show_subtests logic to the class
+Subject: [igt-dev] [PATCH i-g-t v3 07/12] scripts/test_list.py: better
+ handle documentation validation issues
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,66 +33,38 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Simplify the main code and avoid warnings about global vars with
-pylint by moving its code to a separate function.
+Produce warnings and exit with an error when test plan is out of sync.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- scripts/igt_doc.py | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ scripts/test_list.py | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index 67ab7984dd11..cc2768ae0847 100755
---- a/scripts/igt_doc.py
-+++ b/scripts/igt_doc.py
-@@ -1018,6 +1018,25 @@ class TestList:
-                 sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized line. Need to add field at %s?\n\t==> %s" %
-                          (self.config_fname, file_line))
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 73c1794caec5..7d35deda3329 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -803,16 +803,14 @@ class TestList:
+                 run_missing.append(run_test)
  
-+    def show_subtests(self, sort_field, filter_field):
-+
-+        """Show subtests, allowing sort and filter a field """
-+
-+        if sort_field:
-+            test_subtests = tests.get_subtests(sort_field, filter_field)
-+            for val_key in sorted(test_subtests.keys()):
-+                if not test_subtests[val_key]:
-+                    continue
-+                if val_key == "":
-+                    print("not defined:")
-+                else:
-+                    print(f"{val_key}:")
-+                    for sub in test_subtests[val_key]:
-+                        print (f"  {sub}")
-+        else:
-+            for sub in tests.get_subtests(sort_field, filter_field)[""]:
-+                print (sub)
-+
- #
- # Main
- #
-@@ -1056,20 +1075,7 @@ tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files)
- RUN = 0
- if parse_args.show_subtests:
-     RUN = 1
--    if parse_args.sort_field:
--        test_subtests = tests.get_subtests(parse_args.sort_field, parse_args.filter_field)
--        for val_key in sorted(test_subtests.keys()):
--            if not test_subtests[val_key]:
--                continue
--            if val_key == "":
--                print("not defined:")
--            else:
--                print(f"{val_key}:")
--            for sub in test_subtests[val_key]:
--                print (f"  {sub}")
--    else:
--        for sub in tests.get_subtests(parse_args.sort_field, parse_args.filter_field)[""]:
--            print (sub)
-+    tests.show_subtests(parse_args.sort_field, parse_args.filter_field)
+         if doc_uneeded:
+-            print("Unused documentation")
+             for test_name in doc_uneeded:
+-                print(test_name)
++                print(f"Warning: Documented {test_name} doesn't exist on source files")
  
- if parse_args.check_testlist:
-     RUN = 1
+         if run_missing:
+-            if doc_uneeded:
+-                print()
+-            print("Missing documentation")
+             for test_name in run_missing:
+-                print(test_name)
++                print(f'Warning: Missing documentation for {test_name}')
++        if doc_uneeded or run_missing:
++            sys.exit(1)
+ 
+     #
+     # File handling methods
 -- 
 2.39.2
