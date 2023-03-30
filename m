@@ -1,25 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0884C10EE08
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 13:06:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 16C9710EE02
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 13:06:07 +0000 (UTC)
 Received: from linux.intel.com (pludynia-mobl.ger.corp.intel.com [10.252.3.53])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 3F925580C4C
+ by linux.intel.com (Postfix) with ESMTPS id 6BA9E580D9E
  for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 06:05:24 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1phrxy-00BSaY-0z
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1phrxy-00BSax-1Q
  for igt-dev@lists.freedesktop.org; Thu, 30 Mar 2023 15:05:22 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Mar 2023 15:05:07 +0200
-Message-Id: <20230330130518.2731441-2-mauro.chehab@linux.intel.com>
+Date: Thu, 30 Mar 2023 15:05:15 +0200
+Message-Id: <20230330130518.2731441-10-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230330130518.2731441-1-mauro.chehab@linux.intel.com>
 References: <20230330130518.2731441-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 01/12] xe_test_config.json: do some
- adjustments at the output hierarchy
+Subject: [igt-dev] [PATCH i-g-t v3 09/12] testplan/meson.build: Validate
+ documentation at build time
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,64 +33,50 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Place "Mega feature" inside the same hierarchical level,
-placing it on a higher level than sub-category, as this provides
-a higher level of group for functionalities.
-
-While here, better document the fields.
+If the tests are build too, check if the documentation match
+the name of the tests.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/xe/xe_test_config.json | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ docs/testplan/meson.build | 8 ++++++--
+ meson.build               | 1 +
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tests/xe/xe_test_config.json b/tests/xe/xe_test_config.json
-index 6c474d6053f3..666fe6cd315c 100644
---- a/tests/xe/xe_test_config.json
-+++ b/tests/xe/xe_test_config.json
-@@ -4,27 +4,27 @@
-     "fields": {
-         "Category": {
-             "_properties_": {
--                "description": "Contains the major group for the tested functionality"
-+                "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
-             },
--            "Sub-category": {
-+            "Mega feature": {
-                 "_properties_": {
--                    "description": "Contains the minor group of the functionality"
--                },
--                "Functionality": {
--                    "_properties_": {
--                        "description": "Groups page table tests per functionality"
--                    }
-+                    "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
-                 },
--                "Run type": {
-+                "Sub-category": {
-                     "_properties_": {
--                        "description": "Defines what category of testlist it belongs"
-+                        "description": "Contains the the technical feature/functionality"
-+                    },
-+                    "Functionality": {
-+                        "_properties_": {
-+                            "description": "Groups page table tests on buckets containg more detailed functionality"
-+                        }
-+                    },
-+                    "Run type": {
-+                        "_properties_": {
-+                            "description": "Defines what category of testlist it belongs"
-+                        }
-                     }
-                 }
--            },
--            "Mega feature": {
--                "_properties_": {
--                    "description": "Contains the mega feature for E2E use case"
--                }
-             }
-         },
-         "Test category": {
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index fee568868167..4c67ec42fc69 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -8,12 +8,16 @@ stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
+ 
+ xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
+ 
+-if not build_tests
++check_testlist = []
++if build_tests
++	# Check if documentation matches the actual tests
++	check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
++else
+ 	test_executables = []
+ endif
+ 
+ test_dict = { 'xe_tests':
+-		{ 'input': xe_test_config, 'extra_args': [] }
++		{ 'input': xe_test_config, 'extra_args': check_testlist }
+ 	    }
+ 
+ foreach testplan, fields: test_dict
+diff --git a/meson.build b/meson.build
+index 7360634fe199..bef590f465dc 100644
+--- a/meson.build
++++ b/meson.build
+@@ -15,6 +15,7 @@ endif
+ 
+ # meson.source_root is marked as a future-deprecated feature
+ source_root = meson.current_source_dir()
++build_root = meson.current_build_dir()
+ 
+ cc = meson.get_compiler('c')
+ 
 -- 
 2.39.2
