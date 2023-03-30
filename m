@@ -1,23 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B395E10E163
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AEBC310E075
  for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 05:42:28 +0000 (UTC)
 Received: from linux.intel.com (mwrzeszc-mobl1.ger.corp.intel.com
  [10.252.27.169])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id DBBF0580D5D
+ by linux.intel.com (Postfix) with ESMTPS id EFD94580D7C
  for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 22:42:26 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1phl3I-00B50W-2L
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1phl3I-00B51F-33
  for igt-dev@lists.freedesktop.org; Thu, 30 Mar 2023 07:42:24 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Mar 2023 07:42:09 +0200
-Message-Id: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
+Date: Thu, 30 Mar 2023 07:42:21 +0200
+Message-Id: <20230330054221.2640814-13-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
+References: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 00/12] Improve igt_doc.py
+Subject: [igt-dev] [PATCH i-g-t v2 12/12] runner/meson.build: fix minimal
+ build
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,44 +34,35 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-This series do some improvements at the igt_doc.py tool:
+Minimal pipeline s now failing:
+	https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/38824636
 
-- It does some tweaks at the Xe documentation hierarchy;
-- It adds support to generate test lists from documentation;
-- It splits the script on two parts: one with the TestList
-  class definition and another one with the toll itself;
-- While here, add missing documentation for two new tests;
-- Check if the documentation matches the actual tests at
-  build time, in order to prevent it to become outdated.
+This doesn't seem to be related to the patches at the series from
+where the issue was reported, but addressing it is simple enough:
+just remove the error and change the logic to properly validate
+the possible options.
 
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
-v2:
-  - add a patch at the end to avoid a gitlab pipeline breakage.
+ runner/meson.build | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Mauro Carvalho Chehab (12):
-  xe_test_config.json: do some adjustments at the output hierarchy
-  scripts/igt_doc.py: move show_subtests logic to the class
-  scripts/igt_doc.py: add support to generate testlists
-  scripts/igt_doc.py: prepare to place TestList class on a separate file
-  scripts/test_list.py: prepare to place class on a separate file
-  scripts/igt_doc.py: re-introduce it by calling test_list.py
-  scripts/test_list.py: better handle documentation validation issues
-  scripts/test_list.py: add support for igt_simple_main
-  testplan/meson.build: Validate documentation at build time
-  xe/xe_vm: add documentation for igt@xe_vm@userptr-invalid
-  xe/xe_noexec_ping_pong: document subtest
-  runner/meson.build: fix minimal build
-
- docs/testplan/meson.build      |    8 +-
- meson.build                    |    1 +
- runner/meson.build             |    6 +-
- scripts/igt_doc.py             | 1038 +-----------------------------
- scripts/test_list.py           | 1084 ++++++++++++++++++++++++++++++++
- tests/xe/xe_noexec_ping_pong.c |   26 +-
- tests/xe/xe_test_config.json   |   30 +-
- tests/xe/xe_vm.c               |   10 +-
- 8 files changed, 1144 insertions(+), 1059 deletions(-)
- create mode 100755 scripts/test_list.py
-
+diff --git a/runner/meson.build b/runner/meson.build
+index dadfc75f0ca7..c62303ce35c5 100644
+--- a/runner/meson.build
++++ b/runner/meson.build
+@@ -24,11 +24,7 @@ if liboping.found()
+ 	runner_c_args += '-DHAVE_OPING=1'
+ endif
+ 
+-if not build_tests and jsonc.found()
+-	error('Building test runner requires building tests')
+-endif
+-
+-if jsonc.found()
++if jsonc.found() and build_tests
+ 	subdir('testdata')
+ 
+ 	runnerlib = static_library('igt_runner', runnerlib_sources,
 -- 
 2.39.2
