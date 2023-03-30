@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1E4710EBE9
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 17:57:42 +0000 (UTC)
-Date: Wed, 29 Mar 2023 19:56:50 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230329175650.w6lrwqhdaktz67lu@kamilkon-desk1>
-References: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
- <20230327133155.2428454-12-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230327133155.2428454-12-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 11/11] xe/xe_noexec_ping_pong: document
- subtest
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 30 Mar 2023 06:25:01 -0000
+Message-ID: <168015750148.18827.4269706060784246905@emeril.freedesktop.org>
+References: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
+ =?utf-8?q?mprove_igt=5Fdoc=2Epy_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,65 +16,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-03-27 at 15:31:55 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Use the SUBTEST tag to add the subtest's description to the
-> IGT test plan documentation.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+== Series Details ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: Improve igt_doc.py (rev2)
+URL   : https://patchwork.freedesktop.org/series/115667/
+State : warning
 
-> ---
->  tests/xe/xe_noexec_ping_pong.c | 26 ++++++++++++++------------
->  1 file changed, 14 insertions(+), 12 deletions(-)
-> 
-> diff --git a/tests/xe/xe_noexec_ping_pong.c b/tests/xe/xe_noexec_ping_pong.c
-> index dc14f8cf3f2d..367671883a28 100644
-> --- a/tests/xe/xe_noexec_ping_pong.c
-> +++ b/tests/xe/xe_noexec_ping_pong.c
-> @@ -20,20 +20,22 @@
->   * Category: Software building block
->   * Sub-category: compute
->   * Test category: functionality test
-> - */
-> -
-> -/*
-> - * This test creates compute vms, binds a couple of bos and an engine each,
-> - * thus redying it for execution. However, VRAM memory is over-
-> - * committed and while there is still nothing to execute, an eviction
-> - * will trigger the VM's rebind worker to rebind the evicted bo, which
-> - * will in turn trigger another eviction and so on.
->   *
-> - * Since we don't have eviction stats yet we need to watch "top" for
-> - * the rebind kworkers using a lot of CPU while the test idles.
-> + * SUBTEST:
-> + * Description:
-> + *	This test creates compute vms, binds a couple of bos and an engine each,
-> + *	thus redying it for execution. However, VRAM memory is over-
-> + *	committed and while there is still nothing to execute, an eviction
-> + *	will trigger the VM's rebind worker to rebind the evicted bo, which
-> + *	will in turn trigger another eviction and so on.
-> + *
-> + *	Since we don't have eviction stats yet we need to watch "top" for
-> + *	the rebind kworkers using a lot of CPU while the test idles.
->   *
-> - * The correct driver behaviour should be not to rebind anything unless
-> - * there is worked queued on one of the VM's compute engines.
-> + *	The correct driver behaviour should be not to rebind anything unless
-> + *	there is worked queued on one of the VM's compute engines.
-> + * Run type: FULL
-> + * TODO: change ``'Run type' == FULL`` to a better category
->   */
->  static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
->  {
-> -- 
-> 2.39.2
-> 
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/843145 for the overview.
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/39018529):
+  Program rst2man-3 found: NO
+  Program rst2man found: NO
+  Program rst2man.sh found: YES (/builds/gfx-ci/igt-ci-tags/man/rst2man.sh)
+  Program igt_doc.py found: YES (/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py)
+  Program gen_rst_index found: YES (/builds/gfx-ci/igt-ci-tags/scripts/gen_rst_index)
+  Dependency gtk-doc found: NO (tried pkgconfig and cmake)
+  Program sphinx-build found: NO
+  Program rst2html-3 found: NO
+  Program rst2html found: NO
+  Program rst2pdf found: NO
+  
+  docs/testplan/meson.build:24:1: ERROR:  Invalid use of addition: can only concatenate list (not "str") to list
+  
+  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
+  section_end:1680156901:step_script
+  section_start:1680156901:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1680156902:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/843145
 
