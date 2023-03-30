@@ -1,25 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EE7410EE19
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C45E910EE15
  for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 13:06:07 +0000 (UTC)
 Received: from linux.intel.com (pludynia-mobl.ger.corp.intel.com [10.252.3.53])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 45EBA580D77
+ by linux.intel.com (Postfix) with ESMTPS id 5F032580D92
  for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 06:05:24 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1phrxy-00BSah-1C
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1phrxy-00BSau-1N
  for igt-dev@lists.freedesktop.org; Thu, 30 Mar 2023 15:05:22 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Mar 2023 15:05:10 +0200
-Message-Id: <20230330130518.2731441-5-mauro.chehab@linux.intel.com>
+Date: Thu, 30 Mar 2023 15:05:14 +0200
+Message-Id: <20230330130518.2731441-9-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230330130518.2731441-1-mauro.chehab@linux.intel.com>
 References: <20230330130518.2731441-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 04/12] scripts/igt_doc.py: prepare to
- place TestList class on a separate file
+Subject: [igt-dev] [PATCH i-g-t v3 08/12] scripts/test_list.py: add support
+ for igt_simple_main
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,105 +33,66 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Do some changes at the code to avoid depending on global vars and
-to declare plural ancillary function as static.
+when igt_simple_main is used, there will be a single unamed
+subtest. Add support for it.
 
-Acked-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
+On such case, the documentation will be like:
+
+	/**
+	 * TEST: Test foo
+	 * Category: Software building block
+	 * Sub-category: foo
+	 * Test category: functionality test
+	 * Run type: BAT
+	 *
+	 * SUBTEST:
+	 * Description: foo description
+	 */
+
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- scripts/igt_doc.py | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ scripts/test_list.py | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index efbcee5e74e2..8eed875b0681 100755
---- a/scripts/igt_doc.py
-+++ b/scripts/igt_doc.py
-@@ -51,7 +51,7 @@ def _sort_using_array(item, array):
- # As suggested at https://stackoverflow.com/questions/18902608/generating-the-plural-form-of-a-noun/19018986
- #
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 7d35deda3329..075f44d5e604 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -176,6 +176,22 @@ class TestList:
  
--def plural(field):
-+def _plural(field):
+     The SUBTEST contains the fields that are specific to each subtest.
  
-     """
-     Poor man's conversion to plural.
-@@ -232,7 +232,8 @@ class TestList:
-     Description: test ioctls
-     """
- 
--    def __init__(self, config_fname, include_plan, file_list):
-+    def __init__(self, config_fname, include_plan = False, file_list = False,
-+                 igt_build_path = None, igt_runner = None):
-         self.doc = {}
-         self.test_number = 0
-         self.config = None
-@@ -240,6 +241,8 @@ class TestList:
-         self.plan_filenames = []
-         self.props = {}
-         self.config_fname = config_fname
-+        self.igt_build_path = igt_build_path
-+        self.igt_runner = igt_runner
-         self.level_count = 0
-         self.field_list = {}
-         self.title = None
-@@ -264,7 +267,7 @@ class TestList:
- 
-                 field_lc = field.lower()
-                 self.field_list[field_lc] = field
--                field_plural = plural(field_lc)
-+                field_plural = _plural(field_lc)
-                 if field_lc != field_plural:
-                     self.field_list[field_plural] = field
- 
-@@ -757,6 +760,9 @@ class TestList:
- 
-         """Compare documented subtests with the IGT test list"""
- 
-+        if not self.igt_build_path or not self.igt_runner:
-+            sys.exit("Need the IGT build path and igt_runner executable file name")
++    Note: when igt_simple_main is used, there will be a single nameless
++    subtest. On such case, "SUBTEST:" is still needed, but without a
++    test name on it, e. g., it would be documented as:
 +
-         doc_subtests = sorted(self.get_subtests()[""])
++        /**
++         * TEST: some test that uses igt_simple_main
++         * Category: Software build block
++         * Sub-category: documentation
++         * Functionality: test documentation
++         * Issue: none
++         * Description: Complete description of this test
++         *
++         * SUBTEST:
++         * Description: do foo things
++         */
++
+     Some IGT tests may have strings or integer wildcards, like:
+         test-%s-%ld-size
  
-         for i in range(0, len(doc_subtests)): # pylint: disable=C0200
-@@ -766,9 +772,9 @@ class TestList:
+@@ -376,8 +392,9 @@ class TestList:
+         subtest_array = []
  
-         # Get a list of tests from
-         try:
--            result = subprocess.run([ f"{IGT_BUILD_PATH}/{IGT_RUNNER}",
-+            result = subprocess.run([ f"{self.igt_build_path}/{self.igt_runner}",
-                                     "-L", "-t",  test_prefix,
--                                    f"{IGT_BUILD_PATH}/tests"], check = True,
-+                                    f"{self.igt_build_path}/tests"], check = True,
-                                     stdout=subprocess.PIPE, universal_newlines=True)
-         except subprocess.CalledProcessError as sub_err:
-             print(sub_err.stderr)
-@@ -1023,7 +1029,7 @@ class TestList:
-         """Show subtests, allowing sort and filter a field """
+         for subtest in self.doc[test]["subtest"].keys():
+-            summary = test_name + '@' + self.doc[test]["subtest"][subtest]["Summary"]
+-
++            summary = test_name
++            if self.doc[test]["subtest"][subtest]["Summary"] != '':
++                 summary += '@' + self.doc[test]["subtest"][subtest]["Summary"]
+             if not summary:
+                 continue
  
-         if sort_field:
--            test_subtests = tests.get_subtests(sort_field, filter_field)
-+            test_subtests = self.get_subtests(sort_field, filter_field)
-             for val_key in sorted(test_subtests.keys()):
-                 if not test_subtests[val_key]:
-                     continue
-@@ -1034,7 +1040,7 @@ class TestList:
-                     for sub in test_subtests[val_key]:
-                         print (f"  {sub}")
-         else:
--            for sub in tests.get_subtests(sort_field, filter_field)[""]:
-+            for sub in self.get_subtests(sort_field, filter_field)[""]:
-                 print (sub)
- 
-     def gen_testlist(self, directory, sort_field, filter_field):
-@@ -1101,7 +1107,8 @@ parser.add_argument('--files', nargs='+',
- 
- parse_args = parser.parse_args()
- 
--tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files)
-+tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files,
-+                 IGT_BUILD_PATH, IGT_RUNNER)
- 
- RUN = 0
- if parse_args.show_subtests:
 -- 
 2.39.2
