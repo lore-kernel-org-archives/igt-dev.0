@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A79910ECBD
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 03:34:41 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C08110ECC2
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 03:37:41 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 29 Mar 2023 20:34:30 -0700
-Message-Id: <20230330033430.1298683-1-ashutosh.dixit@intel.com>
+Date: Wed, 29 Mar 2023 20:37:32 -0700
+Message-Id: <20230330033732.1298812-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t] tests/i915/perf_pmu: Add some more debug
@@ -28,14 +28,14 @@ Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index 197e7cd2542..cd476867f6c 100644
+index 197e7cd2542..c5f083bbdbc 100644
 --- a/tests/i915/perf_pmu.c
 +++ b/tests/i915/perf_pmu.c
 @@ -2119,6 +2119,7 @@ static void test_unload(unsigned int num_engines)
  		igt_debug("Read %d events from perf and trial unload\n", count);
  		pmu_read_multi(fd[0], count, buf);
  		ret = __igt_i915_driver_unload(&who);
-+		igt_debug("(ret %d who %s\n", ret, who);
++		igt_debug("__igt_i915_driver_unload: ret %d who %s\n", ret, who);
  		igt_assert(ret != 0 && !strcmp(who, "i915"));
  		free(who);
  		pmu_read_multi(fd[0], count, buf);
