@@ -1,25 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5557810EE15
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 13:06:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3CBC10EDF9
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 13:06:08 +0000 (UTC)
 Received: from linux.intel.com (pludynia-mobl.ger.corp.intel.com [10.252.3.53])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 4DD51580919
+ by linux.intel.com (Postfix) with ESMTPS id 6BED9580DA0
  for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 06:05:24 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1phrxy-00BSak-1F
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1phrxy-00BSb4-1V
  for igt-dev@lists.freedesktop.org; Thu, 30 Mar 2023 15:05:22 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Mar 2023 15:05:11 +0200
-Message-Id: <20230330130518.2731441-6-mauro.chehab@linux.intel.com>
+Date: Thu, 30 Mar 2023 15:05:17 +0200
+Message-Id: <20230330130518.2731441-12-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230330130518.2731441-1-mauro.chehab@linux.intel.com>
 References: <20230330130518.2731441-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 05/12] scripts/test_list.py: prepare to
- place class on a separate file
+Subject: [igt-dev] [PATCH i-g-t v3 11/12] xe/xe_noexec_ping_pong: document
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,30 +33,53 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Rename scripts/igt_doc.py to scripts/test_list.py, preparing to
-split the main function from the class definition.
+Use the SUBTEST tag to add the subtest's description to the
+IGT test plan documentation.
 
-That allows re-using the class by other programs as well. It
-also makes the module better organized, and ensures that all
-variables inside the class are not global.
-
-While this could be folded with the next patch, by splitting it
-on two, it makes a lot easier to review the code changes, as most
-of the contents of the igt_doc.py are actually the TestList class.
-
-The next patch will re-introduce scripts/igt_doc.py, dropping
-the global vars and the main code from test_list.py.
-
-Acked-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- scripts/{igt_doc.py => test_list.py} | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- rename scripts/{igt_doc.py => test_list.py} (100%)
+ tests/xe/xe_noexec_ping_pong.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/scripts/igt_doc.py b/scripts/test_list.py
-similarity index 100%
-rename from scripts/igt_doc.py
-rename to scripts/test_list.py
+diff --git a/tests/xe/xe_noexec_ping_pong.c b/tests/xe/xe_noexec_ping_pong.c
+index dc14f8cf3f2d..367671883a28 100644
+--- a/tests/xe/xe_noexec_ping_pong.c
++++ b/tests/xe/xe_noexec_ping_pong.c
+@@ -20,20 +20,22 @@
+  * Category: Software building block
+  * Sub-category: compute
+  * Test category: functionality test
+- */
+-
+-/*
+- * This test creates compute vms, binds a couple of bos and an engine each,
+- * thus redying it for execution. However, VRAM memory is over-
+- * committed and while there is still nothing to execute, an eviction
+- * will trigger the VM's rebind worker to rebind the evicted bo, which
+- * will in turn trigger another eviction and so on.
+  *
+- * Since we don't have eviction stats yet we need to watch "top" for
+- * the rebind kworkers using a lot of CPU while the test idles.
++ * SUBTEST:
++ * Description:
++ *	This test creates compute vms, binds a couple of bos and an engine each,
++ *	thus redying it for execution. However, VRAM memory is over-
++ *	committed and while there is still nothing to execute, an eviction
++ *	will trigger the VM's rebind worker to rebind the evicted bo, which
++ *	will in turn trigger another eviction and so on.
++ *
++ *	Since we don't have eviction stats yet we need to watch "top" for
++ *	the rebind kworkers using a lot of CPU while the test idles.
+  *
+- * The correct driver behaviour should be not to rebind anything unless
+- * there is worked queued on one of the VM's compute engines.
++ *	The correct driver behaviour should be not to rebind anything unless
++ *	there is worked queued on one of the VM's compute engines.
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
+  */
+ static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
+ {
 -- 
 2.39.2
