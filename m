@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1E6910E0D5
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB0F610E075
  for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 05:42:27 +0000 (UTC)
 Received: from linux.intel.com (mwrzeszc-mobl1.ger.corp.intel.com
  [10.252.27.169])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id CC017580B9E
+ by linux.intel.com (Postfix) with ESMTPS id C41F6580692
  for <igt-dev@lists.freedesktop.org>; Wed, 29 Mar 2023 22:42:26 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1phl3I-00B50c-2b
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1phl3I-00B50Z-2W
  for igt-dev@lists.freedesktop.org; Thu, 30 Mar 2023 07:42:24 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 30 Mar 2023 07:42:11 +0200
-Message-Id: <20230330054221.2640814-3-mauro.chehab@linux.intel.com>
+Date: Thu, 30 Mar 2023 07:42:10 +0200
+Message-Id: <20230330054221.2640814-2-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
 References: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 02/12] scripts/igt_doc.py: move
- show_subtests logic to the class
+Subject: [igt-dev] [PATCH i-g-t v2 01/12] xe_test_config.json: do some
+ adjustments at the output hierarchy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,66 +34,64 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Simplify the main code and avoid warnings about global vars with
-pylint by moving its code to a separate function.
+Place "Mega feature" inside the same hierarchical level,
+placing it on a higher level than sub-category, as this provides
+a higher level of group for functionalities.
+
+While here, better document the fields.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- scripts/igt_doc.py | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ tests/xe/xe_test_config.json | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index 67ab7984dd11..cc2768ae0847 100755
---- a/scripts/igt_doc.py
-+++ b/scripts/igt_doc.py
-@@ -1018,6 +1018,25 @@ class TestList:
-                 sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized line. Need to add field at %s?\n\t==> %s" %
-                          (self.config_fname, file_line))
- 
-+    def show_subtests(self, sort_field, filter_field):
-+
-+        """Show subtests, allowing sort and filter a field """
-+
-+        if sort_field:
-+            test_subtests = tests.get_subtests(sort_field, filter_field)
-+            for val_key in sorted(test_subtests.keys()):
-+                if not test_subtests[val_key]:
-+                    continue
-+                if val_key == "":
-+                    print("not defined:")
-+                else:
-+                    print(f"{val_key}:")
-+                    for sub in test_subtests[val_key]:
-+                        print (f"  {sub}")
-+        else:
-+            for sub in tests.get_subtests(sort_field, filter_field)[""]:
-+                print (sub)
-+
- #
- # Main
- #
-@@ -1056,20 +1075,7 @@ tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files)
- RUN = 0
- if parse_args.show_subtests:
-     RUN = 1
--    if parse_args.sort_field:
--        test_subtests = tests.get_subtests(parse_args.sort_field, parse_args.filter_field)
--        for val_key in sorted(test_subtests.keys()):
--            if not test_subtests[val_key]:
--                continue
--            if val_key == "":
--                print("not defined:")
--            else:
--                print(f"{val_key}:")
--            for sub in test_subtests[val_key]:
--                print (f"  {sub}")
--    else:
--        for sub in tests.get_subtests(parse_args.sort_field, parse_args.filter_field)[""]:
--            print (sub)
-+    tests.show_subtests(parse_args.sort_field, parse_args.filter_field)
- 
- if parse_args.check_testlist:
-     RUN = 1
+diff --git a/tests/xe/xe_test_config.json b/tests/xe/xe_test_config.json
+index 6c474d6053f3..666fe6cd315c 100644
+--- a/tests/xe/xe_test_config.json
++++ b/tests/xe/xe_test_config.json
+@@ -4,27 +4,27 @@
+     "fields": {
+         "Category": {
+             "_properties_": {
+-                "description": "Contains the major group for the tested functionality"
++                "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
+             },
+-            "Sub-category": {
++            "Mega feature": {
+                 "_properties_": {
+-                    "description": "Contains the minor group of the functionality"
+-                },
+-                "Functionality": {
+-                    "_properties_": {
+-                        "description": "Groups page table tests per functionality"
+-                    }
++                    "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
+                 },
+-                "Run type": {
++                "Sub-category": {
+                     "_properties_": {
+-                        "description": "Defines what category of testlist it belongs"
++                        "description": "Contains the the technical feature/functionality"
++                    },
++                    "Functionality": {
++                        "_properties_": {
++                            "description": "Groups page table tests on buckets containg more detailed functionality"
++                        }
++                    },
++                    "Run type": {
++                        "_properties_": {
++                            "description": "Defines what category of testlist it belongs"
++                        }
+                     }
+                 }
+-            },
+-            "Mega feature": {
+-                "_properties_": {
+-                    "description": "Contains the mega feature for E2E use case"
+-                }
+             }
+         },
+         "Test category": {
 -- 
 2.39.2
