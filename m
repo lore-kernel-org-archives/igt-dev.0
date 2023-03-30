@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB1D310ED6F
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Mar 2023 09:25:52 +0000 (UTC)
-Message-ID: <b814b211-c882-7b46-7afe-506418bc5b0c@linux.intel.com>
-Date: Thu, 30 Mar 2023 10:25:47 +0100
+Content-Type: multipart/alternative;
+ boundary="===============5177949204385472611=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230330003656.1294873-1-umesh.nerlige.ramappa@intel.com>
- <20230330003656.1294873-8-umesh.nerlige.ramappa@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230330003656.1294873-8-umesh.nerlige.ramappa@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 7/7] tools/intel_gpu_top: Add support
- for gt specific counters
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik B S" <karthik.b.s@intel.com>
+Date: Thu, 30 Mar 2023 09:33:19 -0000
+Message-ID: <168016879906.18827.1746023466245458222@emeril.freedesktop.org>
+References: <20230330085008.16736-1-karthik.b.s@intel.com>
+In-Reply-To: <20230330085008.16736-1-karthik.b.s@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fmultiple=3A_Add_dual_display_subtest?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,234 +17,206 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: arjun.melkaveri@intel.com, badal.nilawar@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============5177949204385472611==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 30/03/2023 01:36, Umesh Nerlige Ramappa wrote:
-> With MTL frequency and rc6 counters are gt specific. Add support for
-> intel_gpu_top to show these counters separately.
-> 
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> ---
->   include/drm-uapi/i915_drm.h | 14 ++++++----
->   tools/intel_gpu_top.c       | 56 ++++++++++++++++++++++++++-----------
->   2 files changed, 49 insertions(+), 21 deletions(-)
-> 
-> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-> index 3b5e3b51..1a0c43e7 100644
-> --- a/include/drm-uapi/i915_drm.h
-> +++ b/include/drm-uapi/i915_drm.h
-> @@ -290,6 +290,7 @@ enum drm_i915_pmu_engine_sample {
->   	(((__u64)__I915_PMU_ENGINE(0xff, 0xff, 0xf) + 1 + (x)) | \
->   	((__u64)(gt) << __I915_PMU_GT_SHIFT))
->   
-> +/* Aggregate from all gts */
->   #define __I915_PMU_OTHER(x) ___I915_PMU_OTHER(0, x)
->   
->   #define I915_PMU_ACTUAL_FREQUENCY	__I915_PMU_OTHER(0)
-> @@ -300,11 +301,14 @@ enum drm_i915_pmu_engine_sample {
->   
->   #define I915_PMU_LAST /* Deprecated - do not use */ I915_PMU_RC6_RESIDENCY
->   
-> -#define __I915_PMU_ACTUAL_FREQUENCY(gt)		___I915_PMU_OTHER(gt, 0)
-> -#define __I915_PMU_REQUESTED_FREQUENCY(gt)	___I915_PMU_OTHER(gt, 1)
-> -#define __I915_PMU_INTERRUPTS(gt)		___I915_PMU_OTHER(gt, 2)
-> -#define __I915_PMU_RC6_RESIDENCY(gt)		___I915_PMU_OTHER(gt, 3)
-> -#define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	___I915_PMU_OTHER(gt, 4)
-> +/* GT specific counters */
-> +#define ____I915_PMU_OTHER(gt, x) ___I915_PMU_OTHER(((gt) + 1), x)
-> +
-> +#define __I915_PMU_ACTUAL_FREQUENCY(gt)		____I915_PMU_OTHER(gt, 0)
-> +#define __I915_PMU_REQUESTED_FREQUENCY(gt)	____I915_PMU_OTHER(gt, 1)
-> +#define __I915_PMU_INTERRUPTS(gt)		____I915_PMU_OTHER(gt, 2)
-> +#define __I915_PMU_RC6_RESIDENCY(gt)		____I915_PMU_OTHER(gt, 3)
-> +#define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	____I915_PMU_OTHER(gt, 4)
->   
->   /* Each region is a minimum of 16k, and there are at most 255 of them.
->    */
-> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index a4302aa3..9fc8b996 100644
-> --- a/tools/intel_gpu_top.c
-> +++ b/tools/intel_gpu_top.c
-> @@ -87,6 +87,7 @@ struct engine_class {
->   	unsigned int num_engines;
->   };
->   
-> +#define MAX_GTS 4
->   struct engines {
->   	unsigned int num_engines;
->   	unsigned int num_classes;
-> @@ -105,14 +106,16 @@ struct engines {
->   	struct pmu_counter imc_writes;
->   	unsigned int num_imc;
->   
-> -	struct pmu_counter freq_req;
-> -	struct pmu_counter freq_act;
-> +	struct pmu_counter freq_req[MAX_GTS];
-> +	struct pmu_counter freq_act[MAX_GTS];
->   	struct pmu_counter irq;
-> -	struct pmu_counter rc6;
-> +	struct pmu_counter rc6[MAX_GTS];
->   
->   	bool discrete;
->   	char *device;
->   
-> +	int num_gts;
-> +
->   	/* Do not edit below this line.
->   	 * This structure is reallocated every time a new engine is
->   	 * found and size is increased by sizeof (engine).
-> @@ -532,7 +535,7 @@ static void imc_reads_open(struct pmu_counter *pmu, struct engines *engines)
->   static int pmu_init(struct engines *engines)
->   {
->   	unsigned int i;
-> -	int fd;
-> +	int fd, ret;
->   	uint64_t type = igt_perf_type_id(engines->device);
->   
->   	engines->fd = -1;
-> @@ -543,14 +546,30 @@ static int pmu_init(struct engines *engines)
->   	if (fd < 0)
->   		return -1;
->   
-> -	engines->freq_req.config = I915_PMU_REQUESTED_FREQUENCY;
-> -	_open_pmu(type, engines->num_counters, &engines->freq_req, engines->fd);
-> +	engines->num_gts = 1;
-> +	for (i = 0; i < MAX_GTS; i++) {
-> +		engines->freq_req[i].config = __I915_PMU_REQUESTED_FREQUENCY(i);
->   
-> -	engines->freq_act.config = I915_PMU_ACTUAL_FREQUENCY;
-> -	_open_pmu(type, engines->num_counters, &engines->freq_act, engines->fd);
-> +		errno = 0;
-> +		ret = _open_pmu(type, engines->num_counters, &engines->freq_req[i], engines->fd);
-> +		if (ret >= 0)
-> +			continue;
->   
-> -	engines->rc6.config = I915_PMU_RC6_RESIDENCY;
-> -	_open_pmu(type, engines->num_counters, &engines->rc6, engines->fd);
-> +		if (errno != ENOENT)
-> +			return ret;
-> +
-> +		engines->num_gts = i;
-> +		errno = 0;
-> +		break;
-> +	}
-> +
-> +	for (i = 0; i < engines->num_gts; i++) {
-> +		engines->freq_act[i].config = __I915_PMU_ACTUAL_FREQUENCY(i);
-> +		_open_pmu(type, engines->num_counters, &engines->freq_act[i], engines->fd);
-> +
-> +		engines->rc6[i].config = __I915_PMU_RC6_RESIDENCY(i);
-> +		_open_pmu(type, engines->num_counters, &engines->rc6[i], engines->fd);
-> +	}
->   
->   	for (i = 0; i < engines->num_engines; i++) {
->   		struct engine *engine = engine_ptr(engines, i);
-> @@ -653,10 +672,12 @@ static void pmu_sample(struct engines *engines)
->   	engines->ts.prev = engines->ts.cur;
->   	engines->ts.cur = pmu_read_multi(engines->fd, num_val, val);
->   
-> -	update_sample(&engines->freq_req, val);
-> -	update_sample(&engines->freq_act, val);
-> +	for (i = 0; i < engines->num_gts; i++) {
-> +		update_sample(&engines->freq_req[i], val);
-> +		update_sample(&engines->freq_act[i], val);
-> +		update_sample(&engines->rc6[i], val);
-> +	}
->   	update_sample(&engines->irq, val);
-> -	update_sample(&engines->rc6, val);
->   
->   	for (i = 0; i < engines->num_engines; i++) {
->   		struct engine *engine = engine_ptr(engines, i);
-> @@ -1727,8 +1748,10 @@ print_header(const struct igt_device_card *card,
->   		.items = period_items,
->   	};
->   	struct cnt_item freq_items[] = {
-> -		{ &engines->freq_req, 4, 0, 1.0, t, 1, "requested", "req" },
-> -		{ &engines->freq_act, 4, 0, 1.0, t, 1, "actual", "act" },
-> +		{ &engines->freq_req[0], 8, 0, 1.0, t, 1, "requested-gt0", "req-gt0" },
-> +		{ &engines->freq_act[0], 8, 0, 1.0, t, 1, "actual-gt0", "act-gt0" },
-> +		{ &engines->freq_req[1], 8, 0, 1.0, t, 1, "requested-gt1", "req-gt1" },
-> +		{ &engines->freq_act[1], 8, 0, 1.0, t, 1, "actual-gt1", "act-gt1" },
+== Series Details ==
 
-Why is width going to 8? 9999 MHz is not enough? ;)
+Series: tests/kms_plane_multiple: Add dual display subtest
+URL   : https://patchwork.freedesktop.org/series/115855/
+State : success
 
-[Comes back later..]
+== Summary ==
 
-Ah for the header label.. hm.. maybe we should try putting the GT information into the parent. It would looks nicer, be more logical, even for JSON output we now have:
+CI Bug Log - changes from CI_DRM_12939 -> IGTPW_8721
+====================================================
 
-Terminal:
+Summary
+-------
 
-  Freq MHz      ...
-  req  act      ...
+  **SUCCESS**
 
-JSON:
+  No regressions found.
 
-         "rc6": {
-                 "value": 29.309568,
-                 "unit": "%"
-         },
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/index.html
+
+Participating hosts (37 -> 35)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8721 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - bat-rpls-1:         NOTRUN -> [ABORT][1] ([i915#6687] / [i915#7978])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-adln-1:         [PASS][2] -> [INCOMPLETE][3] ([i915#4983] / [i915#7609])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12939/bat-adln-1/igt@i915_selftest@live@gt_lrc.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-adln-1/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg2-11:         [PASS][4] -> [ABORT][5] ([i915#7913])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12939/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         NOTRUN -> [DMESG-FAIL][6] ([i915#6367])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
   
-You propose something like:
+#### Possible fixes ####
 
-  Freq MHz      		Freq MHz		...
-  req-gt0  act-gt0	req-gt0  act-gt0	...
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [ABORT][7] ([i915#4983]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12939/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-rpls-1/igt@i915_selftest@live@reset.html
 
-         "rc6": {
-                 "value-gt0": 29.309568,
-                 "value-gt1": 29.309568,
-                 "unit": "%"
-         },
+  * igt@i915_selftest@live@slpc:
+    - bat-rplp-1:         [DMESG-FAIL][9] ([i915#6367] / [i915#7913]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12939/bat-rplp-1/igt@i915_selftest@live@slpc.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-rplp-1/igt@i915_selftest@live@slpc.html
 
-Which is not very nice UI wise. How about something like:
+  
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
 
-  Freq GT0 MHz   Freq GT1 MHz	...
-  req  act	req  act	...
 
-JSON should potentially be an array:
+Build changes
+-------------
 
-         "rc6": [{
-		"gt": 0,
-                 "value": 29.309568,
-                 "unit": "%"
-         },
-		"gt": 0,
-                 "value": 29.309568,
-                 "unit": "%"
-         }],
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7227 -> IGTPW_8721
 
-Or at least:
+  CI-20190529: 20190529
+  CI_DRM_12939: 67f2a2f9902dad389232eee48db7073d66011582 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8721: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/index.html
+  IGT_7227: 5dfa3675c36bab82cdda056db7ef622363c324ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-         "rc6": {
-                 "value": 29.309568,
-                 "unit": "%"
-         },
-         "rc6-gt1": {
-                 "value": 29.309568,
-                 "unit": "%"
-         },
 
-Which also brings the point if maybe we shouldn't change the output for pre-MTL platforms. The approach is not IMHO even consistent with the proposed kernel change to have the aggregated counters, which I don't think I agree with at all.
+Testlist changes
+----------------
 
-Let me mull it all over.
++igt@kms_plane_multiple@2x-outputs
 
-Regards,
+== Logs ==
 
-Tvrtko
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/index.html
 
->   		{ NULL, 0, 0, 0.0, 0.0, 0.0, "unit", "MHz" },
->   		{ },
->   	};
-> @@ -1748,7 +1771,8 @@ print_header(const struct igt_device_card *card,
->   		.items = irq_items,
->   	};
->   	struct cnt_item rc6_items[] = {
-> -		{ &engines->rc6, 3, 0, 1e9, t, 100, "value", "%" },
-> +		{ &engines->rc6[0], 6, 0, 1e9, t, 100, "value-gt0", "%-gt0" },
-> +		{ &engines->rc6[1], 6, 0, 1e9, t, 100, "value-gt1", "%-gt1" },
->   		{ NULL, 0, 0, 0.0, 0.0, 0.0, "unit", "%" },
->   		{ },
->   	};
+--===============5177949204385472611==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_multiple: Add dual display subtest</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115855/">https://patchwork.freedesktop.org/series/115855/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12939 -&gt; IGTPW_8721</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/index.html</p>
+<h2>Participating hosts (37 -&gt; 35)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8721 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12939/bat-adln-1/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-adln-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7609">i915#7609</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12939/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12939/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12939/bat-rplp-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/bat-rplp-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7227 -&gt; IGTPW_8721</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12939: 67f2a2f9902dad389232eee48db7073d66011582 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8721: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8721/index.html<br />
+  IGT_7227: 5dfa3675c36bab82cdda056db7ef622363c324ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_plane_multiple@2x-outputs</p>
+
+</body>
+</html>
+
+--===============5177949204385472611==--
