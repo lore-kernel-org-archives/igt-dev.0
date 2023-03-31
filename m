@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBB9810F1CD
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 10:28:28 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	karolina.stolarek@intel.com
-Date: Fri, 31 Mar 2023 15:55:07 +0530
-Message-Id: <20230331102507.2987857-5-vikas.srivastava@intel.com>
-In-Reply-To: <20230331102507.2987857-1-vikas.srivastava@intel.com>
-References: <20230331102507.2987857-1-vikas.srivastava@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4693010F1CF
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 10:39:24 +0000 (UTC)
+Date: Fri, 31 Mar 2023 12:39:19 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230331123919.4ac06363@maurocar-mobl2>
+In-Reply-To: <20230331091319.wl3hbua5uekrmg6c@kamilkon-desk1>
+References: <20230330054221.2640814-1-mauro.chehab@linux.intel.com>
+ <20230330054221.2640814-13-mauro.chehab@linux.intel.com>
+ <20230331091319.wl3hbua5uekrmg6c@kamilkon-desk1>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4 v2] tests/i915/gem_linear_blits: Enable
- XY_FAST_COPY_BLT copy instruction
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v2 12/12] runner/meson.build: fix
+ minimal build
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,115 +22,76 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+On Fri, 31 Mar 2023 11:13:19 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-Test case uses legacy command XY_SRC_COPY_BLT_CMD which is
-not supported on newer platforms. Modify test to
-use XY_FAST_COPY_BLT.
+> Hi Mauro,
+> 
+> On 2023-03-30 at 07:42:21 +0200, Mauro Carvalho Chehab wrote:
+> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > 
+> > Minimal pipeline s now failing:  
+> ------------------ ^
+> s/s/is/
+> 
+> > 	https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/38824636
+> > 
+> > This doesn't seem to be related to the patches at the series from
+> > where the issue was reported, but addressing it is simple enough:
+> > just remove the error and change the logic to properly validate
+> > the possible options.
+> > 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > ---
+> >  runner/meson.build | 6 +-----
+> >  1 file changed, 1 insertion(+), 5 deletions(-)
+> > 
+> > diff --git a/runner/meson.build b/runner/meson.build
+> > index dadfc75f0ca7..c62303ce35c5 100644
+> > --- a/runner/meson.build
+> > +++ b/runner/meson.build
+> > @@ -24,11 +24,7 @@ if liboping.found()
+> >  	runner_c_args += '-DHAVE_OPING=1'
+> >  endif
+> >  
+> > -if not build_tests and jsonc.found()
+> > -	error('Building test runner requires building tests')
+> > -endif  
+> 
+> imho:
+> if jsonc.found() and not build_tests 
+> 
+> is more clear what we need here.
 
-Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Co-developed-by: Vikas Srivastava <vikas.srivastava@intel.com>
-Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-Cc: Karolina Stolarek <karolina.stolarek@intel.com>
----
- tests/i915/gem_linear_blits.c | 67 +++++++++++++++++++++++------------
- 1 file changed, 44 insertions(+), 23 deletions(-)
+IMO, this is less clear ;-) I mean, refusing to run because jsonc is 
+installed and -Dtests=false sounds a very bad idea.
 
-diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
-index fac25095f5..24f1499d79 100644
---- a/tests/i915/gem_linear_blits.c
-+++ b/tests/i915/gem_linear_blits.c
-@@ -48,6 +48,7 @@
- #include "i915/gem_create.h"
- #include "igt.h"
- #include "igt_types.h"
-+#include "i915/i915_blt.h"
- 
- IGT_TEST_DESCRIPTION("Test doing many blits with a working set larger than the"
- 		     " aperture size.");
-@@ -67,6 +68,7 @@ static void copy(int fd, uint64_t ahnd, uint32_t dst, uint32_t src,
- 	struct drm_i915_gem_relocation_entry reloc[2];
- 	struct drm_i915_gem_exec_object2 obj[3];
- 	struct drm_i915_gem_execbuffer2 exec;
-+	static uint32_t devid;
- 	int i = 0;
- 
- 	memset(obj, 0, sizeof(obj));
-@@ -83,29 +85,48 @@ static void copy(int fd, uint64_t ahnd, uint32_t dst, uint32_t src,
- 	obj[2].offset = CANONICAL(obj[2].offset);
- 	obj[2].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
- 
--	batch[i++] = XY_SRC_COPY_BLT_CMD |
--		  XY_SRC_COPY_BLT_WRITE_ALPHA |
--		  XY_SRC_COPY_BLT_WRITE_RGB;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i - 1] |= 8;
--	else
--		batch[i - 1] |= 6;
--
--	batch[i++] = (3 << 24) | /* 32 bits */
--		  (0xcc << 16) | /* copy ROP */
--		  WIDTH*4;
--	batch[i++] = 0; /* dst x1,y1 */
--	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--	batch[i++] = obj[0].offset;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = obj[0].offset >> 32;
--	batch[i++] = 0; /* src x1,y1 */
--	batch[i++] = WIDTH*4;
--	batch[i++] = obj[1].offset;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = obj[1].offset >> 32;
--	batch[i++] = MI_BATCH_BUFFER_END;
--	batch[i++] = MI_NOOP;
-+	devid = intel_get_drm_devid(fd);
-+
-+	if (blt_has_fast_copy(fd)) {
-+		batch[i++] = XY_FAST_COPY_BLT;
-+		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH * 4;
-+		batch[i++] = 0; /* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+		batch[i++] = obj[0].offset; /* dst address lower bits */
-+		batch[i++] = obj[0].offset >> 32; /* dst address upper bits */
-+		batch[i++] = 0; /* src x1,y1 */
-+		batch[i++] = WIDTH * 4; /* src pitch */
-+		batch[i++] = obj[1].offset; /* src address lower bits */
-+		batch[i++] = obj[1].offset >> 32; /* src address upper bits */
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	} else if (blt_has_xy_src_copy(fd)) {
-+		batch[i++] = XY_SRC_COPY_BLT_CMD |
-+			  XY_SRC_COPY_BLT_WRITE_ALPHA |
-+			  XY_SRC_COPY_BLT_WRITE_RGB;
-+		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+			batch[i - 1] |= 8;
-+		else
-+			batch[i - 1] |= 6;
-+
-+		batch[i++] = (3 << 24) | /* 32 bits */
-+			  (0xcc << 16) | /* copy ROP */
-+			  WIDTH * 4;
-+		batch[i++] = 0; /* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+		batch[i++] = obj[0].offset;
-+		if (intel_gen(devid) >= 8)
-+			batch[i++] = obj[0].offset >> 32;
-+		batch[i++] = 0; /* src x1,y1 */
-+		batch[i++] = WIDTH * 4;
-+		batch[i++] = obj[1].offset;
-+		if (intel_gen(devid) >= 8)
-+			batch[i++] = obj[1].offset >> 32;
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	} else {
-+		igt_assert_f(0, "No supported blit command found\n");
-+	}
- 
- 	gem_write(fd, obj[2].handle, 0, batch, i * sizeof(batch[0]));
- 
--- 
-2.25.1
+What we want instead is to have the runner built only if build_tests
+is selected (and the required jsonc library is installed). 
+
+This is what this patch does.
+
+> Btw this is error from that build link:
+> 
+> docs/testplan/meson.build:24:1: ERROR:  Invalid use of addition: can only concatenate list (not "str") to list
+
+This was due to CI Gitlab pipeline usage of meson 0.49.2. With meson 1.0.0 (shipped with Fedora), this doesn't occur.
+
+Anyway, the fix for it was fold at the patch that introduced the issue in docs/testplan/meson.build (patch 09/12).
+
+> I do not see how runner/meson.build is related to docs/testplan/meson.build ?
+
+It is not related at all. Yet, without this patch, the error may break
+CI pipelines if:
+
+	- jsonc is installed
+	- meson is called with:
+	  meson -Dtests=disabled build
+
+Regards,
+Mauro
