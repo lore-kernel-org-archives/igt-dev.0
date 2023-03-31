@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 945FF10E0E8
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 13:53:35 +0000 (UTC)
-Message-ID: <7413396e-fde9-10ff-4749-442d4cb7ee9e@intel.com>
-Date: Fri, 31 Mar 2023 19:23:13 +0530
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20230320100017.2913328-1-bhanuprakash.modem@intel.com>
- <20230320100017.2913328-5-bhanuprakash.modem@intel.com>
- <20230323190605.bhrggql7u6kmdszs@zkempczy-mobl2>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230323190605.bhrggql7u6kmdszs@zkempczy-mobl2>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CDDB891C0
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 14:05:59 +0000 (UTC)
+Message-ID: <e172cb8d-8f14-f84b-d799-7daad7af6130@intel.com>
+Date: Fri, 31 Mar 2023 19:35:54 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 4/5] tests/kms_force_connector_basic: Add XE
- support
+Content-Language: en-US
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230321085732.29298-1-juhapekka.heikkila@gmail.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230321085732.29298-1-juhapekka.heikkila@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: reduce work on
+ framebuffer creation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,49 +22,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, jani.nikula@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+LGTM.
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-On Fri-24-03-2023 12:36 am, Zbigniew Kempczyński wrote:
-> On Mon, Mar 20, 2023 at 03:30:16PM +0530, Bhanuprakash Modem wrote:
->> Add XE driver support for kms tests.
->>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> ---
->>   tests/kms_force_connector_basic.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
->> index 4ff1efe3b..6a13fe4ed 100644
->> --- a/tests/kms_force_connector_basic.c
->> +++ b/tests/kms_force_connector_basic.c
->> @@ -53,7 +53,9 @@ static void reset_connectors(void)
->>   		drmModeFreeConnector(connector);
->>   	}
->>   
->> -	igt_set_module_param_int(drm_fd, "load_detect_test", 0);
->> +	/* FIXME: load_detect_test is not found in XE. */
->> +	if (is_i915_device(drm_fd))
->> +		igt_set_module_param_int(drm_fd, "load_detect_test", 0);
-> 
-> What's the plan of addressing 'load_detect_test' param? If there will be
-> none I think "FIXME" should be get rid of here.
+On 21-Mar-23 2:27 PM, Juha-Pekka Heikkila wrote:
 
-Thanks for the review, Fixed in next rev.
-
-- Bhanu
-
-> 
-> --
-> Zbigniew
-> 
->>   
->>   	close(drm_fd);
->>   }
->> -- 
->> 2.40.0
->>
+> There was created pattern framebuffers on tests which are not crc
+> tests, change these to blank framebuffers.
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+> tests/kms_plane_scaling.c | 38 +++++++++++++++++++-------------------
+> 1 file changed, 19 insertions(+), 19 deletions(-)
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index 71586efba..fe695b684 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -719,10 +719,10 @@ static void setup_fb(int fd, int width, int height,
+>               double r, double g, double b,
+>               struct igt_fb *fb)
+> {
+> -    igt_create_color_pattern_fb(fd, width, height,
+> -                    DRM_FORMAT_XRGB8888,
+> -                    DRM_FORMAT_MOD_LINEAR,
+> -                    r, g, b, fb);
+> +    igt_create_fb(fd, width, height,
+> +              DRM_FORMAT_XRGB8888,
+> +              DRM_FORMAT_MOD_LINEAR,
+> +              fb);
+> }
+> static void
+> @@ -803,21 +803,21 @@ test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
+>      plane[2] = igt_pipe_get_plane_type_index(pipe_obj, DRM_PLANE_TYPE_OVERLAY, 2);
+>      igt_require(plane[2]);
+> -    igt_create_color_pattern_fb(display->drm_fd,
+> -                                    width, height,
+> -                                    DRM_FORMAT_XRGB8888,
+> -                                    DRM_FORMAT_MOD_LINEAR,
+> -                                    1.0, 0.0, 0.0, &d->fb[0]);
+> -    igt_create_color_pattern_fb(display->drm_fd,
+> -                                    width, height,
+> -                                    DRM_FORMAT_XRGB8888,
+> -                                    DRM_FORMAT_MOD_LINEAR,
+> -                                    0.0, 1.0, 0.0, &d->fb[1]);
+> -    igt_create_color_pattern_fb(display->drm_fd,
+> -                                    width, height,
+> -                                    DRM_FORMAT_XRGB8888,
+> -                                    DRM_FORMAT_MOD_LINEAR,
+> -                                    0.0, 0.0, 1.0, &d->fb[2]);
+> +    igt_create_fb(display->drm_fd,
+> +              width, height,
+> +              DRM_FORMAT_XRGB8888,
+> +              DRM_FORMAT_MOD_LINEAR,
+> +              &d->fb[0]);
+> +    igt_create_fb(display->drm_fd,
+> +              width, height,
+> +              DRM_FORMAT_XRGB8888,
+> +              DRM_FORMAT_MOD_LINEAR,
+> +              &d->fb[1]);
+> +    igt_create_fb(display->drm_fd,
+> +              width, height,
+> +              DRM_FORMAT_XRGB8888,
+> +              DRM_FORMAT_MOD_LINEAR,
+> +              &d->fb[2]);
+>      igt_plane_set_fb(plane[0], &d->fb[0]);
+>      igt_plane_set_fb(plane[1], &d->fb[1]);
