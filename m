@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CDDB891C0
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 14:05:59 +0000 (UTC)
-Message-ID: <e172cb8d-8f14-f84b-d799-7daad7af6130@intel.com>
-Date: Fri, 31 Mar 2023 19:35:54 +0530
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58C1F10E0A8
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 14:12:01 +0000 (UTC)
+Message-ID: <611b8e0d-8a7e-ea39-010e-cc9c1d0ffdb1@intel.com>
+Date: Fri, 31 Mar 2023 19:41:46 +0530
 MIME-Version: 1.0
 Content-Language: en-US
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20230321085732.29298-1-juhapekka.heikkila@gmail.com>
+References: <20230327123617.24000-1-ville.syrjala@linux.intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230321085732.29298-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230327123617.24000-1-ville.syrjala@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: reduce work on
- framebuffer creation
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr: Try all modes on the
+ connector
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,67 +26,87 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM.
+LGTM
+
 Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-On 21-Mar-23 2:27 PM, Juha-Pekka Heikkila wrote:
+On 27-Mar-23 6:06 PM, Ville Syrjala wrote:
 
-> There was created pattern framebuffers on tests which are not crc
-> tests, change these to blank framebuffers.
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+>
+> Certain panels have a preferred mode with a vblank that is
+> too short for the PSR setup time, but also expose an alternate
+> lower refresh rate mode where PSR is actually possible.
+> Go through all the modes until one is found where PSR works.
+>
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > ---
-> tests/kms_plane_scaling.c | 38 +++++++++++++++++++-------------------
-> 1 file changed, 19 insertions(+), 19 deletions(-)
-> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-> index 71586efba..fe695b684 100644
-> --- a/tests/kms_plane_scaling.c
-> +++ b/tests/kms_plane_scaling.c
-> @@ -719,10 +719,10 @@ static void setup_fb(int fd, int width, int height,
->               double r, double g, double b,
->               struct igt_fb *fb)
+> tests/i915/kms_psr.c | 37 +++++++++++++++++++++++++++----------
+> 1 file changed, 27 insertions(+), 10 deletions(-)
+>
+> diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+> index c92902343ea3..3efe1faec8e7 100644
+> --- a/tests/i915/kms_psr.c
+> +++ b/tests/i915/kms_psr.c
+> @@ -109,7 +109,6 @@ static void setup_output(data_t *data)
+>
+>         data->crtc_id = output->config.crtc->crtc_id;
+>         data->output = output;
+> -        data->mode = igt_output_get_mode(output);
+>
+>         return;
+>     }
+> @@ -369,6 +368,8 @@ static void test_cleanup(data_t *data)
 > {
-> -    igt_create_color_pattern_fb(fd, width, height,
-> -                    DRM_FORMAT_XRGB8888,
-> -                    DRM_FORMAT_MOD_LINEAR,
-> -                    r, g, b, fb);
-> +    igt_create_fb(fd, width, height,
-> +              DRM_FORMAT_XRGB8888,
-> +              DRM_FORMAT_MOD_LINEAR,
-> +              fb);
+>     igt_plane_t *primary;
+>
+> +    igt_output_override_mode(data->output, NULL);
+> +
+>     primary = igt_output_get_plane_type(data->output,
+>                         DRM_PLANE_TYPE_PRIMARY);
+>     igt_plane_set_fb(primary, NULL);
+> @@ -440,17 +441,33 @@ static void setup_test_plane(data_t *data, int 
+> test_plane)
+>
+> static void test_setup(data_t *data)
+> {
+> +    drmModeConnectorPtr connector;
+> +    bool psr_entered = false;
+> +
+>     igt_require_f(data->output,
+>               "No available output found\n");
+> -    igt_require_f(data->mode,
+> -              "No available mode found on %s\n",
+> -              data->output->name);
+> -    if (data->op_psr_mode == PSR_MODE_2)
+> -        igt_require(data->supports_psr2);
+> -
+> -    psr_enable_if_enabled(data);
+> -    setup_test_plane(data, data->test_plane_id);
+> -    igt_assert(psr_wait_entry_if_enabled(data));
+> +
+> +    connector = data->output->config.connector;
+> +
+> +    for (int i = 0; i < connector->count_modes; i++) {
+> +        data->mode = &connector->modes[i];
+> +        igt_info("Testing mode:\n");
+> +        kmstest_dump_mode(data->mode);
+> +
+> +        igt_output_override_mode(data->output, data->mode);
+> +
+> +        if (data->op_psr_mode == PSR_MODE_2)
+> +            igt_require(data->supports_psr2);
+> +
+> +        psr_enable_if_enabled(data);
+> +        setup_test_plane(data, data->test_plane_id);
+> +        if (psr_wait_entry_if_enabled(data)) {
+> +            psr_entered = true;
+> +            break;
+> +        }
+> +    }
+> +
+> +    igt_assert(psr_entered);
 > }
-> static void
-> @@ -803,21 +803,21 @@ test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
->      plane[2] = igt_pipe_get_plane_type_index(pipe_obj, DRM_PLANE_TYPE_OVERLAY, 2);
->      igt_require(plane[2]);
-> -    igt_create_color_pattern_fb(display->drm_fd,
-> -                                    width, height,
-> -                                    DRM_FORMAT_XRGB8888,
-> -                                    DRM_FORMAT_MOD_LINEAR,
-> -                                    1.0, 0.0, 0.0, &d->fb[0]);
-> -    igt_create_color_pattern_fb(display->drm_fd,
-> -                                    width, height,
-> -                                    DRM_FORMAT_XRGB8888,
-> -                                    DRM_FORMAT_MOD_LINEAR,
-> -                                    0.0, 1.0, 0.0, &d->fb[1]);
-> -    igt_create_color_pattern_fb(display->drm_fd,
-> -                                    width, height,
-> -                                    DRM_FORMAT_XRGB8888,
-> -                                    DRM_FORMAT_MOD_LINEAR,
-> -                                    0.0, 0.0, 1.0, &d->fb[2]);
-> +    igt_create_fb(display->drm_fd,
-> +              width, height,
-> +              DRM_FORMAT_XRGB8888,
-> +              DRM_FORMAT_MOD_LINEAR,
-> +              &d->fb[0]);
-> +    igt_create_fb(display->drm_fd,
-> +              width, height,
-> +              DRM_FORMAT_XRGB8888,
-> +              DRM_FORMAT_MOD_LINEAR,
-> +              &d->fb[1]);
-> +    igt_create_fb(display->drm_fd,
-> +              width, height,
-> +              DRM_FORMAT_XRGB8888,
-> +              DRM_FORMAT_MOD_LINEAR,
-> +              &d->fb[2]);
->      igt_plane_set_fb(plane[0], &d->fb[0]);
->      igt_plane_set_fb(plane[1], &d->fb[1]);
+>
+> static void dpms_off_on(data_t *data)
+>
