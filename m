@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A06F10F238
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 13:50:14 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 31 Mar 2023 19:15:56 +0530
-Message-Id: <20230331134556.4077113-6-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230331134556.4077113-1-bhanuprakash.modem@intel.com>
-References: <20230331134556.4077113-1-bhanuprakash.modem@intel.com>
-MIME-Version: 1.0
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0D0D10E0E8
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 13:51:55 +0000 (UTC)
+Message-ID: <c5bf51e3-dbd6-89a7-5313-b4d806e69a53@intel.com>
+Date: Fri, 31 Mar 2023 19:21:36 +0530
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230320100017.2913328-1-bhanuprakash.modem@intel.com>
+ <20230320100017.2913328-4-bhanuprakash.modem@intel.com>
+ <20230323190413.s7iy35wa733shfxe@zkempczy-mobl2>
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230323190413.s7iy35wa733shfxe@zkempczy-mobl2>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 5/5] xe-fast-feedback: Add basic kms tests to
- XE BAT
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t 3/5] tests/kms_addfb_basic: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,54 +22,186 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add display's connector detect, addfb2 and prop tests to XE BAT.
+Hi Zbigniew,
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 30 ++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+On Fri-24-03-2023 12:34 am, Zbigniew Kempczyński wrote:
+> On Mon, Mar 20, 2023 at 03:30:15PM +0530, Bhanuprakash Modem wrote:
+>> Add XE driver support for kms tests.
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   tests/kms_addfb_basic.c | 42 +++++++++++++++++++++++++++--------------
+>>   1 file changed, 28 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+>> index b4526eee6..bf90a9aa1 100644
+>> --- a/tests/kms_addfb_basic.c
+>> +++ b/tests/kms_addfb_basic.c
+>> @@ -41,6 +41,8 @@
+>>   #include "igt_rand.h"
+>>   #include "igt_device.h"
+>>   #include "i915/intel_memory_region.h"
+>> +#include "xe/xe_ioctl.h"
+>> +#include "xe/xe_query.h"
+>>   
+>>   uint32_t gem_bo;
+>>   uint32_t gem_bo_small;
+>> @@ -121,7 +123,7 @@ static void invalid_tests(int fd)
+>>   
+>>   	igt_describe("Check if addfb2 call works for clobbered modifier");
+>>   	igt_subtest("clobberred-modifier") {
+>> -		igt_require_intel(fd);
+>> +		igt_require_i915(fd);
+>>   		igt_require(gem_available_fences(fd) > 0);
+>>   		f.flags = 0;
+>>   		f.modifier[0] = 0;
+>> @@ -139,10 +141,17 @@ static void invalid_tests(int fd)
+>>   		uint64_t size;
+>>   
+>>   		igt_require_intel(fd);
+>> -		igt_require(gem_has_lmem(fd));
+>>   		igt_calc_fb_size(fd, f.width, f.height,
+>>   				DRM_FORMAT_XRGB8888, 0, &size, &stride);
+>> -		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
+>> +
+>> +		if (is_i915_device(fd)) {
+>> +			igt_require(gem_has_lmem(fd));
+>> +			handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
+>> +		} else {
+>> +			igt_require(xe_has_vram(fd));
+>> +			handle = xe_bo_create_flags(fd, 0, size, vram_memory(fd, 0));
+>> +		}
+>> +
+>>   		f.handles[0] = handle;
+>>   		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EREMOTE);
+>>   	}
+>> @@ -323,7 +332,7 @@ static void tiling_tests(int fd)
+>>   
+>>   	igt_subtest_group {
+>>   		igt_fixture {
+>> -			igt_require_intel(fd);
+>> +			igt_require_i915(fd);
+>>   			tiled_x_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+>>   				DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED,
+>>   				1024*4, NULL, NULL, NULL);
+>> @@ -494,7 +503,7 @@ static void size_tests(int fd)
+>>   
+>>   	igt_describe("Test that addfb2 call fails correctly with small buffer object after changing tile");
+>>   	igt_subtest("bo-too-small-due-to-tiling") {
+>> -		igt_require_intel(fd);
+>> +		igt_require_i915(fd);
+>>   		igt_require(gem_available_fences(fd) > 0);
+>>   		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
+>>   		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+>> @@ -548,7 +557,7 @@ static void addfb25_tests(int fd)
+>>   
+>>   	igt_subtest_group {
+>>   		igt_fixture {
+>> -			igt_require_intel(fd);
+>> +			igt_require_i915(fd);
+>>   			igt_require(gem_available_fences(fd) > 0);
+>>   			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
+>>   			igt_require_fb_modifiers(fd);
+>> @@ -594,6 +603,7 @@ static void addfb25_ytile(int fd)
+>>   	igt_display_t display;
+>>   
+>>   	igt_fixture {
+>> +		igt_require_i915(fd);
+>>   		igt_display_require(&display, fd);
+>>   
+>>   		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+>> @@ -618,7 +628,6 @@ static void addfb25_ytile(int fd)
+>>   	igt_describe("Check if addfb2 call works for y-tiling");
+>>   	igt_subtest("addfb25-y-tiled-legacy") {
+>>   		igt_require_fb_modifiers(fd);
+>> -		igt_require_intel(fd);
+>>   
+>>   		f.modifier[0] = I915_FORMAT_MOD_Y_TILED;
+>>   		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
+>> @@ -631,7 +640,6 @@ static void addfb25_ytile(int fd)
+>>   	igt_describe("Check if addfb2 call works for yf-tiling");
+>>   	igt_subtest("addfb25-yf-tiled-legacy") {
+>>   		igt_require_fb_modifiers(fd);
+>> -		igt_require_intel(fd);
+>>   
+>>   		f.modifier[0] = I915_FORMAT_MOD_Yf_TILED;
+>>   		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
+>> @@ -644,7 +652,6 @@ static void addfb25_ytile(int fd)
+>>   	igt_describe("Test that addfb2 call fails correctly for y-tiling with given height and modifier");
+>>   	igt_subtest("addfb25-y-tiled-small-legacy") {
+>>   		igt_require_fb_modifiers(fd);
+>> -		igt_require_intel(fd);
+>>   
+>>   		f.modifier[0] = I915_FORMAT_MOD_Y_TILED;
+>>   		f.height = 1023;
+>> @@ -667,6 +674,7 @@ static void addfb25_4tile(int fd)
+>>   	igt_display_t display;
+>>   
+>>   	igt_fixture {
+>> +		igt_require_i915(fd);
+>>   		igt_display_require(&display, fd);
+>>   
+>>   		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+>> @@ -689,7 +697,6 @@ static void addfb25_4tile(int fd)
+>>   	igt_describe("Check if addfb2 call works for tiling-4");
+>>   	igt_subtest("addfb25-4-tiled") {
+>>   		igt_require_fb_modifiers(fd);
+>> -		igt_require_intel(fd);
+>>   
+>>   		f.modifier[0] = I915_FORMAT_MOD_4_TILED;
+>>   		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
+>> @@ -839,6 +846,9 @@ igt_main
+>>   	igt_fixture {
+>>   		fd = drm_open_driver_master(DRIVER_ANY);
+>>   		igt_require(has_addfb2_iface(fd));
+>> +
+>> +		if (is_xe_device(fd))
+>> +			xe_device_get(fd);
+>>   	}
+>>   
+>>   	invalid_tests(fd);
+>> @@ -847,6 +857,10 @@ igt_main
+>>   
+>>   	size_tests(fd);
+>>   
+>> +	prop_tests(fd);
+>> +
+>> +	master_tests(fd);
+>> +
+>>   	addfb25_tests(fd);
+>>   
+>>   	addfb25_ytile(fd);
+>> @@ -855,10 +869,10 @@ igt_main
+>>   
+>>   	tiling_tests(fd);
+>>   
+>> -	prop_tests(fd);
+>> -
+>> -	master_tests(fd);
+>> +	igt_fixture {
+>> +		if (is_xe_device(fd))
+>> +			xe_device_put(fd);
+>>   
+>> -	igt_fixture
+>>   		close(fd);
+>> +	}
+>>   }
+>> -- 
+>> 2.40.0
+>>
+> 
+> Fails on DG2 at invalid-smem-bo-on-discrete subtest.
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 5f3bd2e91..5efb226ca 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -140,3 +140,33 @@ igt@xe_vm@munmap-style-unbind-userptr-front
- igt@xe_vm@munmap-style-unbind-userptr-inval-end
- igt@xe_vm@munmap-style-unbind-userptr-inval-front
- igt@xe_waitfence@test
-+igt@kms_addfb_basic@addfb25-bad-modifier
-+igt@kms_addfb_basic@addfb25-modifier-no-flag
-+igt@kms_addfb_basic@bad-pitch-0
-+igt@kms_addfb_basic@bad-pitch-1024
-+igt@kms_addfb_basic@bad-pitch-128
-+igt@kms_addfb_basic@bad-pitch-256
-+igt@kms_addfb_basic@bad-pitch-32
-+igt@kms_addfb_basic@bad-pitch-63
-+igt@kms_addfb_basic@bad-pitch-65536
-+igt@kms_addfb_basic@bad-pitch-999
-+igt@kms_addfb_basic@basic
-+igt@kms_addfb_basic@bo-too-small
-+igt@kms_addfb_basic@invalid-get-prop
-+igt@kms_addfb_basic@invalid-get-prop-any
-+igt@kms_addfb_basic@invalid-set-prop
-+igt@kms_addfb_basic@invalid-set-prop-any
-+igt@kms_addfb_basic@no-handle
-+igt@kms_addfb_basic@size-max
-+igt@kms_addfb_basic@small-bo
-+igt@kms_addfb_basic@too-high
-+igt@kms_addfb_basic@too-wide
-+igt@kms_addfb_basic@unused-handle
-+igt@kms_addfb_basic@unused-modifier
-+igt@kms_addfb_basic@unused-offsets
-+igt@kms_addfb_basic@unused-pitches
-+igt@kms_force_connector_basic@force-connector-state
-+igt@kms_force_connector_basic@force-edid
-+igt@kms_force_connector_basic@force-load-detect
-+igt@kms_force_connector_basic@prune-stale-modes
-+igt@kms_prop_blob@basic
--- 
-2.40.0
+Thanks for the review, Fixed in next rev.
+
+- Bhanu
+
+> 
+> --
+> Zbigniew
+>   
