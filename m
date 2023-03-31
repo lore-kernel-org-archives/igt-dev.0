@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3385910F1F7
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 11:47:07 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 31 Mar 2023 17:19:23 +0530
-Message-Id: <20230331114924.15396-1-swati2.sharma@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 37E1110E136
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 12:08:34 +0000 (UTC)
+Message-ID: <341f8289-a543-6157-f1d3-0af256f9c064@linux.intel.com>
+Date: Fri, 31 Mar 2023 14:08:29 +0200
 MIME-Version: 1.0
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230331091700.69801-1-zbigniew.kempczynski@intel.com>
+ <20230331091700.69801-4-zbigniew.kempczynski@intel.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20230331091700.69801-4-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_dsc: Add negative test for
- invalid input bpc
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] xe/xe_create: Add xe_create test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,107 +26,147 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Negative test is added to check driver behavior with invalid input bpc.
--EINVAL is returned when we try to commit.
 
-v2: -rebase
+On 2023-03-31 11:17, Zbigniew Kempczyński wrote:
+> Add basic test which exercises invalid sizes passed to create ioctl.
+>
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>   tests/meson.build    |   1 +
+>   tests/xe/xe_create.c | 107 +++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 108 insertions(+)
+>   create mode 100644 tests/xe/xe_create.c
+>
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 7d2168beb3..da31e7824b 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -242,6 +242,7 @@ i915_progs = [
+>   ]
+>   
+>   xe_progs = [
+> +	'xe_create',
+>   	'xe_compute',
+>   	'xe_dma_buf_sync',
+>   	'xe_debugfs',
+> diff --git a/tests/xe/xe_create.c b/tests/xe/xe_create.c
+> new file mode 100644
+> index 0000000000..ae841f8092
+> --- /dev/null
+> +++ b/tests/xe/xe_create.c
+> @@ -0,0 +1,107 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: Check bo create ioctl
+> + * Category: Software building block
+> + * Sub-category: uapi
+> + * Test category: functionality test
+> + * Run type: BAT
+> + */
+> +
+> +#include <string.h>
+> +
+> +#include "igt.h"
+> +#include "xe_drm.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +
+> +#define PAGE_SIZE 0x1000
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/i915/kms_dsc.c | 34 +++++++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 9 deletions(-)
+The page size may be different between supported archs, can you use 
+sysconf(_SC_PAGESIZE) instead?
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index b3c5e60c7..5c39c2e72 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -36,7 +36,8 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- 
- enum dsc_test_type {
- 	TEST_DSC_BASIC,
--	TEST_DSC_BPC
-+	TEST_DSC_BPC,
-+	TEST_DSC_INVALID_BPC,
- };
- 
- typedef struct {
-@@ -54,6 +55,7 @@ typedef struct {
- 
- static int format_list[] =  {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
- static uint32_t bpc_list[] = {12, 10, 8};
-+uint32_t invalid_bpc_list[] = {100, 1};
- 
- static inline void manual(const char *expected)
- {
-@@ -116,7 +118,7 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 	save_force_dsc_en(data->drm_fd, data->output);
- 	force_dsc_enable(data->drm_fd, data->output);
- 
--	if (test_type == TEST_DSC_BPC) {
-+	if (test_type == TEST_DSC_BPC || test_type == TEST_DSC_INVALID_BPC) {
- 		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
- 		force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
- 	}
-@@ -140,7 +142,12 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 			      &data->fb_test_pattern);
- 
- 	igt_plane_set_fb(primary, &data->fb_test_pattern);
--	igt_display_commit(display);
-+	if (test_type == TEST_DSC_INVALID_BPC) {
-+		igt_assert_eq(igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL), -EINVAL);
-+		goto cleanup;
-+	} else {
-+		igt_display_commit(display);
-+	}
- 
- 	/* until we have CRC check support, manually check if RGB test
- 	 * pattern has no corruption.
-@@ -154,16 +161,17 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 				mode->vrefresh,
- 				enabled ? "ON" : "OFF");
- 
--	restore_force_dsc_en();
--	igt_debug("Reset compression BPC\n");
--	data->input_bpc = 0;
--	force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
--
- 	igt_assert_f(enabled,
- 		     "Default DSC enable failed on connector: %s pipe: %s\n",
- 		     output->name,
- 		     kmstest_pipe_name(data->pipe));
- 
-+cleanup:
-+	restore_force_dsc_en();
-+	igt_debug("Reset compression BPC\n");
-+	data->input_bpc = 0;
-+	force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
-+
- 	test_cleanup(data);
- }
- 
-@@ -193,7 +201,7 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- 		if (!check_big_joiner_pipe_constraint(data))
- 			continue;
- 
--		if (test_type == TEST_DSC_BPC)
-+		if (test_type == TEST_DSC_BPC || test_type == TEST_DSC_INVALID_BPC)
- 			snprintf(name, sizeof(name), "-%dbpc-%s", data->input_bpc, igt_format_str(data->plane_format));
- 		else
- 			snprintf(name, sizeof(name), "-%s", igt_format_str(data->plane_format));
-@@ -244,6 +252,14 @@ igt_main
- 			test_dsc(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
- 	}
- 
-+	igt_describe("Tests negative basic display stream compression functionality if supported "
-+		     "by a connector by forcing DSC on all connectors that support it "
-+		     "with wrong input BPC for the connector");
-+	igt_subtest_with_dynamic("dsc-with-invalid-bpc") {
-+		for (int j = 0; j < ARRAY_SIZE(invalid_bpc_list); j++)
-+			test_dsc(&data, TEST_DSC_INVALID_BPC, invalid_bpc_list[j], DRM_FORMAT_XRGB8888);
-+	}
-+
- 	igt_describe("Tests basic display stream compression functionality if supported "
- 		     "by a connector by forcing DSC on all connectors that support it "
- 		     "with certain input BPC for the connector with diff formats");
--- 
-2.25.1
+With that fixed, for the series:
+
+Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+
+> +
+> +static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t flags,
+> +		       uint32_t *handlep)
+> +{
+> +	struct drm_xe_gem_create create = {
+> +		.vm_id = vm,
+> +		.size = size,
+> +		.flags = flags,
+> +	};
+> +	int ret = 0;
+> +
+> +	igt_assert(handlep);
+> +
+> +	if (igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create)) {
+> +		ret = -errno;
+> +		errno = 0;
+> +	}
+> +	*handlep = create.handle;
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * SUBTEST: create-invalid-size
+> + * Description: Verifies xe bo create returns expected error code on invalid
+> + *              buffer sizes.
+> + */
+> +static void create_invalid_size(int fd)
+> +{
+> +	struct drm_xe_query_mem_region *memregion;
+> +	uint64_t memreg = all_memory_regions(fd), region;
+> +	uint32_t vm;
+> +	uint32_t handle;
+> +	int ret;
+> +
+> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +
+> +	xe_for_each_mem_region(fd, memreg, region) {
+> +		memregion = xe_mem_region(fd, region);
+> +
+> +		/* first try, use half of possible min page size */
+> +		ret = __create_bo(fd, vm, memregion->min_page_size >> 1,
+> +				  region, &handle);
+> +		if (!ret) {
+> +			gem_close(fd, handle);
+> +			xe_vm_destroy(fd, vm);
+> +		}
+> +		igt_assert_eq(ret, -EINVAL);
+> +
+> +		/*
+> +		 * second try, add page size to min page size if it is
+> +		 * bigger than page size.
+> +		 */
+> +		if (memregion->min_page_size > PAGE_SIZE) {
+> +			ret = __create_bo(fd, vm,
+> +					  memregion->min_page_size + PAGE_SIZE,
+> +					  region, &handle);
+> +			if (!ret) {
+> +				gem_close(fd, handle);
+> +				xe_vm_destroy(fd, vm);
+> +			}
+> +			igt_assert_eq(ret, -EINVAL);
+> +		}
+> +	}
+> +
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+> +igt_main
+> +{
+> +	int xe;
+> +
+> +	igt_fixture {
+> +		xe = drm_open_driver(DRIVER_XE);
+> +		xe_device_get(xe);
+> +	}
+> +
+> +	igt_subtest("create-invalid-size") {
+> +		create_invalid_size(xe);
+> +	}
+> +
+> +	igt_fixture {
+> +		xe_device_put(xe);
+> +		close(xe);
+> +	}
+> +}
