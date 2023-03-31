@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D298710F108
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 06:54:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDA7810F109
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 06:54:42 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	swati2.sharma@intel.com
-Date: Fri, 31 Mar 2023 12:20:28 +0530
-Message-Id: <20230331065029.3869109-7-bhanuprakash.modem@intel.com>
+Date: Fri, 31 Mar 2023 12:20:29 +0530
+Message-Id: <20230331065029.3869109-8-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230331065029.3869109-1-bhanuprakash.modem@intel.com>
 References: <20230331065029.3869109-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 6/7] tests/kms_flip: Fix Bigjoiner checks
+Subject: [igt-dev] [i-g-t V3 7/7] tests/kms_setmode: Fix Bigjoiner checks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,61 +29,61 @@ clock is greater than the max dot-clock.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_flip.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/kms_setmode.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 5e82f4a2f84..7cb8749c930 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -81,8 +81,6 @@
- #define RUN_TEST		1
- #define RUN_PAIR		2
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index bfa108916ce..7932a3ec285 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -40,13 +40,12 @@
+ /* restricted pipe count */
+ #define CRTC_RESTRICT_CNT 2
  
 -#define MAX_HDISPLAY_PER_CRTC 5120
 -
- #ifndef DRM_CAP_TIMESTAMP_MONOTONIC
- #define DRM_CAP_TIMESTAMP_MONOTONIC 6
- #endif
-@@ -96,6 +94,7 @@ uint32_t devid;
- int test_time = 3;
- static bool monotonic_timestamp;
- static pthread_t vblank_wait_thread;
+ static int drm_fd;
+ static drmModeRes *drm_resources;
+ static int filter_test_id;
+ static bool dry_run;
+ static bool extended = false;
 +static int max_dotclock;
  
- static drmModeConnector *last_connector;
+ const drmModeModeInfo mode_640_480 = {
+ 	.name		= "640x480",
+@@ -664,18 +663,20 @@ static void test_one_combination(const struct test_config *tconf,
+ 			struct crtc_config *crtc = &crtcs[i];
  
-@@ -1528,19 +1527,19 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- 	/*
- 	 * Handle BW limitations:
- 	 *
--	 * if mode.hdisplay > 5120, then ignore
-+	 * if mode resolution > 5K (or) mode clock > max_dotclock, then ignore
- 	 *  - last crtc in single/multi-connector config
- 	 *  - consecutive crtcs in multi-connector config
- 	 *
- 	 * in multi-connector config ignore if
--	 *  - previous crtc mode.hdisplay > 5120 and
-+	 *  - previous crtc (mode resolution > 5K or mode clock > max_dotclock) and
- 	 *  - current & previous crtcs are consecutive
- 	 */
- 	for (i = 0; i < crtc_count; i++) {
--		if (((o->kmode[i].hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+		if ((igt_bigjoiner_possible(&o->kmode[i], max_dotclock) &&
- 		     ((crtc_idxs[i] >= (total_crtcs - 1)) ||
- 		      ((i < (crtc_count - 1)) && (abs(crtc_idxs[i + 1] - crtc_idxs[i]) <= 1)))) ||
--		    ((i > 0) && (o->kmode[i - 1].hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+		    ((i > 0) && igt_bigjoiner_possible(&o->kmode[i - 1], max_dotclock) &&
- 		     (abs(crtc_idxs[i] - crtc_idxs[i - 1]) <= 1))) {
+ 			/*
+-			 * if mode.hdisplay > 5120, then ignore
++			 * if mode resolution > 5K (or) mode clock > max_dotclock,
++			 * then ignore
+ 			 *   - last crtc in single/multi-connector config
+ 			 *   - consecutive crtcs in multi-connector config
+ 			 *
+ 			 * in multi-connector config ignore if
+-			 *   - previous crtc mode.hdisplay > 5120 and
++			 *   - previous crtc (mode resolution > 5K (or)
++			 *     mode clock > max_dotclock) and
+ 			 *   - current & previous crtcs are consecutive
+ 			 */
+-			if (((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
++			if ((igt_bigjoiner_possible(&crtc->mode, max_dotclock) &&
+ 			     ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
+ 			      ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
+-			    ((i > 0) && (crtc[i - 1].mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
++			    ((i > 0) && igt_bigjoiner_possible(&crtc[i - 1].mode, max_dotclock) &&
+ 			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
+ 				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
+ 				goto out;
+@@ -954,6 +955,8 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
  
- 			igt_debug("Combo: %s is not possible with selected mode(s).\n", test_name);
-@@ -1822,6 +1821,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 			for (i = 0; i < sizeof(tests) / sizeof(tests[0]); i++)
- 				tests[i].flags &= ~(TEST_CHECK_TS | TEST_VBLANK_EXPIRED_SEQ);
- 		}
+ 		drm_resources = drmModeGetResources(drm_fd);
+ 		igt_require(drm_resources);
++
 +		max_dotclock = igt_get_max_dotclock(drm_fd);
  	}
  
- 	igt_describe("Tests that nonblocking reading fails correctly");
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
 -- 
 2.40.0
