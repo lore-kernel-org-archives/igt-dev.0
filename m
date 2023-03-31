@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDA7810F109
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 06:54:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAE9110F107
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 06:54:35 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	swati2.sharma@intel.com
-Date: Fri, 31 Mar 2023 12:20:29 +0530
-Message-Id: <20230331065029.3869109-8-bhanuprakash.modem@intel.com>
+Date: Fri, 31 Mar 2023 12:20:25 +0530
+Message-Id: <20230331065029.3869109-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230331065029.3869109-1-bhanuprakash.modem@intel.com>
 References: <20230331065029.3869109-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 7/7] tests/kms_setmode: Fix Bigjoiner checks
+Subject: [igt-dev] [i-g-t V3 3/7] tests/i915/kms_dsc: Update bigjoiner pipe
+ constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,67 +24,81 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Bigjoiner will come in the picture when the resolution > 5K or
-clock > max dot-clock. Add a support to check the selected mode
-clock is greater than the max dot-clock.
+Instead of writing own logic at test level, use existing IGT
+helper to check the bigjoiner support.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_setmode.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ tests/i915/kms_dsc.c        | 17 ++++++++---------
+ tests/i915/kms_dsc_helper.h |  2 --
+ 2 files changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index bfa108916ce..7932a3ec285 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -40,13 +40,12 @@
- /* restricted pipe count */
- #define CRTC_RESTRICT_CNT 2
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index b3c5e60c773..9c6a7780acd 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -47,7 +47,6 @@ typedef struct {
+ 	unsigned int plane_format;
+ 	igt_output_t *output;
+ 	int input_bpc;
+-	int n_pipes;
+ 	int disp_ver;
+ 	enum pipe pipe;
+ } data_t;
+@@ -76,15 +75,19 @@ static bool check_big_joiner_pipe_constraint(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+ 	drmModeModeInfo *mode = get_highres_mode(output);
++	bool ret = true;
  
--#define MAX_HDISPLAY_PER_CRTC 5120
--
- static int drm_fd;
- static drmModeRes *drm_resources;
- static int filter_test_id;
- static bool dry_run;
- static bool extended = false;
-+static int max_dotclock;
- 
- const drmModeModeInfo mode_640_480 = {
- 	.name		= "640x480",
-@@ -664,18 +663,20 @@ static void test_one_combination(const struct test_config *tconf,
- 			struct crtc_config *crtc = &crtcs[i];
- 
- 			/*
--			 * if mode.hdisplay > 5120, then ignore
-+			 * if mode resolution > 5K (or) mode clock > max_dotclock,
-+			 * then ignore
- 			 *   - last crtc in single/multi-connector config
- 			 *   - consecutive crtcs in multi-connector config
- 			 *
- 			 * in multi-connector config ignore if
--			 *   - previous crtc mode.hdisplay > 5120 and
-+			 *   - previous crtc (mode resolution > 5K (or)
-+			 *     mode clock > max_dotclock) and
- 			 *   - current & previous crtcs are consecutive
- 			 */
--			if (((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+			if ((igt_bigjoiner_possible(&crtc->mode, max_dotclock) &&
- 			     ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
- 			      ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
--			    ((i > 0) && (crtc[i - 1].mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+			    ((i > 0) && igt_bigjoiner_possible(&crtc[i - 1].mode, max_dotclock) &&
- 			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
- 				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
- 				goto out;
-@@ -954,6 +955,8 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
- 
- 		drm_resources = drmModeGetResources(drm_fd);
- 		igt_require(drm_resources);
+-	if (mode->hdisplay >= HDISPLAY_5K &&
+-	    data->pipe == (data->n_pipes - 1)) {
++	igt_output_set_pipe(output, data->pipe);
++	igt_output_override_mode(output, mode);
 +
-+		max_dotclock = igt_get_max_dotclock(drm_fd);
++	if (!igt_check_bigjoiner_support(&data->display)) {
+ 		igt_debug("Pipe-%s not supported due to bigjoiner limitation\n",
+ 			   kmstest_pipe_name(data->pipe));
+-		return false;
++		ret = false;
+ 	}
++	igt_output_set_pipe(output, PIPE_NONE);
+ 
+-	return true;
++	return ret;
+ }
+ 
+ static void test_cleanup(data_t *data)
+@@ -206,7 +209,6 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ igt_main
+ {
+ 	data_t data = {};
+-	int i;
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+@@ -217,9 +219,6 @@ igt_main
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
+ 		igt_require(data.disp_ver >= 11);
+-		data.n_pipes = 0;
+-		for_each_pipe(&data.display, i)
+-			data.n_pipes++;
  	}
  
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
+index fe479dac472..b3828dcd44a 100644
+--- a/tests/i915/kms_dsc_helper.h
++++ b/tests/i915/kms_dsc_helper.h
+@@ -21,8 +21,6 @@
+ #include <fcntl.h>
+ #include <termios.h>
+ 
+-#define HDISPLAY_5K	5120
+-
+ void force_dsc_enable(int drmfd, igt_output_t *output);
+ void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc);
+ void save_force_dsc_en(int drmfd, igt_output_t *output);
 -- 
 2.40.0
