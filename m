@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC39710F1C9
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 10:28:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBB9810F1CD
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 10:28:28 +0000 (UTC)
 From: Vikas Srivastava <vikas.srivastava@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	karolina.stolarek@intel.com
-Date: Fri, 31 Mar 2023 15:55:05 +0530
-Message-Id: <20230331102507.2987857-3-vikas.srivastava@intel.com>
+Date: Fri, 31 Mar 2023 15:55:07 +0530
+Message-Id: <20230331102507.2987857-5-vikas.srivastava@intel.com>
 In-Reply-To: <20230331102507.2987857-1-vikas.srivastava@intel.com>
 References: <20230331102507.2987857-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4 v2] tests/i915/gem_caching: Enable
- XY_FAST_COPY_BLT for MTL
+Subject: [igt-dev] [PATCH i-g-t 4/4 v2] tests/i915/gem_linear_blits: Enable
+ XY_FAST_COPY_BLT copy instruction
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,60 +24,111 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test case uses legacy command XY_SRC_COPY_BLT_CMD which
-is not supported on newer platforms. Modify test to
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+
+Test case uses legacy command XY_SRC_COPY_BLT_CMD which is
+not supported on newer platforms. Modify test to
 use XY_FAST_COPY_BLT.
 
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Co-developed-by: Vikas Srivastava <vikas.srivastava@intel.com>
 Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
 Cc: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- tests/i915/gem_caching.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ tests/i915/gem_linear_blits.c | 67 +++++++++++++++++++++++------------
+ 1 file changed, 44 insertions(+), 23 deletions(-)
 
-diff --git a/tests/i915/gem_caching.c b/tests/i915/gem_caching.c
-index eb0170abca..8d1e738002 100644
---- a/tests/i915/gem_caching.c
-+++ b/tests/i915/gem_caching.c
-@@ -39,6 +39,7 @@
- 
- #include "i915/gem.h"
+diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
+index fac25095f5..24f1499d79 100644
+--- a/tests/i915/gem_linear_blits.c
++++ b/tests/i915/gem_linear_blits.c
+@@ -48,6 +48,7 @@
+ #include "i915/gem_create.h"
  #include "igt.h"
+ #include "igt_types.h"
 +#include "i915/i915_blt.h"
  
- IGT_TEST_DESCRIPTION("Test snoop consistency when touching partial"
- 		     " cachelines.");
-@@ -81,16 +82,23 @@ copy_bo(struct intel_bb *ibb, struct intel_buf *src, struct intel_buf *dst)
+ IGT_TEST_DESCRIPTION("Test doing many blits with a working set larger than the"
+ 		     " aperture size.");
+@@ -67,6 +68,7 @@ static void copy(int fd, uint64_t ahnd, uint32_t dst, uint32_t src,
+ 	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_exec_object2 obj[3];
+ 	struct drm_i915_gem_execbuffer2 exec;
++	static uint32_t devid;
+ 	int i = 0;
  
- 	intel_bb_add_intel_buf(ibb, src, false);
- 	intel_bb_add_intel_buf(ibb, dst, true);
-+	if (blt_has_fast_copy(ibb->i915)) {
-+		intel_bb_out(ibb, XY_FAST_COPY_BLT);
-+		intel_bb_out(ibb, XY_FAST_COPY_COLOR_DEPTH_32 | 4096);
-+	} else if (blt_has_xy_src_copy(ibb->i915)) {
-+		intel_bb_out(ibb,
-+			     XY_SRC_COPY_BLT_CMD |
-+			     XY_SRC_COPY_BLT_WRITE_ALPHA |
-+			     XY_SRC_COPY_BLT_WRITE_RGB |
-+			     (6 + 2 * has_64b_reloc));
+ 	memset(obj, 0, sizeof(obj));
+@@ -83,29 +85,48 @@ static void copy(int fd, uint64_t ahnd, uint32_t dst, uint32_t src,
+ 	obj[2].offset = CANONICAL(obj[2].offset);
+ 	obj[2].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 
+-	batch[i++] = XY_SRC_COPY_BLT_CMD |
+-		  XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		  XY_SRC_COPY_BLT_WRITE_RGB;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i - 1] |= 8;
+-	else
+-		batch[i - 1] |= 6;
+-
+-	batch[i++] = (3 << 24) | /* 32 bits */
+-		  (0xcc << 16) | /* copy ROP */
+-		  WIDTH*4;
+-	batch[i++] = 0; /* dst x1,y1 */
+-	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+-	batch[i++] = obj[0].offset;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = obj[0].offset >> 32;
+-	batch[i++] = 0; /* src x1,y1 */
+-	batch[i++] = WIDTH*4;
+-	batch[i++] = obj[1].offset;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = obj[1].offset >> 32;
+-	batch[i++] = MI_BATCH_BUFFER_END;
+-	batch[i++] = MI_NOOP;
++	devid = intel_get_drm_devid(fd);
 +
-+		intel_bb_out(ibb, (3 << 24) | /* 32 bits */
-+			     (0xcc << 16) | /* copy ROP */
-+			     4096);
++	if (blt_has_fast_copy(fd)) {
++		batch[i++] = XY_FAST_COPY_BLT;
++		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH * 4;
++		batch[i++] = 0; /* dst x1,y1 */
++		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
++		batch[i++] = obj[0].offset; /* dst address lower bits */
++		batch[i++] = obj[0].offset >> 32; /* dst address upper bits */
++		batch[i++] = 0; /* src x1,y1 */
++		batch[i++] = WIDTH * 4; /* src pitch */
++		batch[i++] = obj[1].offset; /* src address lower bits */
++		batch[i++] = obj[1].offset >> 32; /* src address upper bits */
++		batch[i++] = MI_BATCH_BUFFER_END;
++		batch[i++] = MI_NOOP;
++	} else if (blt_has_xy_src_copy(fd)) {
++		batch[i++] = XY_SRC_COPY_BLT_CMD |
++			  XY_SRC_COPY_BLT_WRITE_ALPHA |
++			  XY_SRC_COPY_BLT_WRITE_RGB;
++		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++			batch[i - 1] |= 8;
++		else
++			batch[i - 1] |= 6;
++
++		batch[i++] = (3 << 24) | /* 32 bits */
++			  (0xcc << 16) | /* copy ROP */
++			  WIDTH * 4;
++		batch[i++] = 0; /* dst x1,y1 */
++		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
++		batch[i++] = obj[0].offset;
++		if (intel_gen(devid) >= 8)
++			batch[i++] = obj[0].offset >> 32;
++		batch[i++] = 0; /* src x1,y1 */
++		batch[i++] = WIDTH * 4;
++		batch[i++] = obj[1].offset;
++		if (intel_gen(devid) >= 8)
++			batch[i++] = obj[1].offset >> 32;
++		batch[i++] = MI_BATCH_BUFFER_END;
++		batch[i++] = MI_NOOP;
 +	} else {
 +		igt_assert_f(0, "No supported blit command found\n");
 +	}
  
--	intel_bb_out(ibb,
--		     XY_SRC_COPY_BLT_CMD |
--		     XY_SRC_COPY_BLT_WRITE_ALPHA |
--		     XY_SRC_COPY_BLT_WRITE_RGB |
--		     (6 + 2 * has_64b_reloc));
--
--	intel_bb_out(ibb, (3 << 24) | /* 32 bits */
--		     (0xcc << 16) | /* copy ROP */
--		     4096);
- 	intel_bb_out(ibb, 0 << 16 | 0);
- 	intel_bb_out(ibb, (BO_SIZE/4096) << 16 | 1024);
- 	intel_bb_emit_reloc_fenced(ibb, dst->handle,
+ 	gem_write(fd, obj[2].handle, 0, batch, i * sizeof(batch[0]));
+ 
 -- 
 2.25.1
