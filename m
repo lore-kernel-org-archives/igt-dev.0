@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3473D10F107
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 06:54:38 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	swati2.sharma@intel.com
-Date: Fri, 31 Mar 2023 12:20:26 +0530
-Message-Id: <20230331065029.3869109-5-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230331065029.3869109-1-bhanuprakash.modem@intel.com>
-References: <20230331065029.3869109-1-bhanuprakash.modem@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A27810E031
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Mar 2023 07:12:38 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 31 Mar 2023 12:44:26 +0530
+Message-Id: <20230331071426.8568-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 4/7] tests/i915/kms_dsc: Drop bigjoiner check
+Subject: [igt-dev] [PATCH i-g-t] i915/kms_fbcon_fbt: Add crct_id to struct
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,50 +20,64 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Drop bigjoiner specific check, instead use the generic check
-i915_pipe_output_combo_valid() which will take care of bigjoiner
-too.
+Remove hard-coding of PIPE_A while computing CRC.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/i915/kms_dsc.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ tests/i915/kms_fbcon_fbt.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 9c6a7780acd..2c49ded4dfc 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -71,7 +71,7 @@ static drmModeModeInfo *get_highres_mode(igt_output_t *output)
- 	return highest_mode;
- }
+diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
+index 831ec867a..6c557dca7 100644
+--- a/tests/i915/kms_fbcon_fbt.c
++++ b/tests/i915/kms_fbcon_fbt.c
+@@ -39,7 +39,7 @@ IGT_TEST_DESCRIPTION("Test the relationship between fbcon and the frontbuffer "
+ #define MAX_CONNECTORS 32
  
--static bool check_big_joiner_pipe_constraint(data_t *data)
-+static bool pipe_output_combo_valid(data_t *data)
+ struct drm_info {
+-	int fd, debugfs_fd;
++	int fd, debugfs_fd, crtc_id;
+ 	struct igt_fb fb;
+ 	drmModeResPtr res;
+ 	drmModeConnectorPtr connectors[MAX_CONNECTORS];
+@@ -117,9 +117,10 @@ static bool fbc_check_cursor_blinking(struct drm_info *drm)
+ 	igt_pipe_crc_t *pipe_crc;
+ 	igt_crc_t crc[2];
+ 	bool ret;
+-	int i;
++	int i, pipe;
+ 
+-	pipe_crc = igt_pipe_crc_new(drm->fd, PIPE_A, IGT_PIPE_CRC_SOURCE_AUTO);
++	pipe = kmstest_get_pipe_from_crtc_id(drm->fd, drm->crtc_id);
++	pipe_crc = igt_pipe_crc_new(drm->fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	igt_pipe_crc_start(pipe_crc);
+ 	igt_pipe_crc_drain(pipe_crc);
+@@ -165,7 +166,6 @@ static void set_mode_for_one_screen(struct drm_info *drm,
+ 				    connector_possible_fn connector_possible)
  {
- 	igt_output_t *output = data->output;
- 	drmModeModeInfo *mode = get_highres_mode(output);
-@@ -80,11 +80,9 @@ static bool check_big_joiner_pipe_constraint(data_t *data)
- 	igt_output_set_pipe(output, data->pipe);
- 	igt_output_override_mode(output, mode);
+ 	int i, rc;
+-	uint32_t crtc_id;
+ 	drmModeModeInfoPtr mode;
+ 	uint32_t buffer_id;
+ 	drmModeConnectorPtr c = NULL;
+@@ -182,7 +182,7 @@ static void set_mode_for_one_screen(struct drm_info *drm,
+ 	igt_require_f(i < drm->res->count_connectors,
+ 		      "No connector available\n");
  
--	if (!igt_check_bigjoiner_support(&data->display)) {
--		igt_debug("Pipe-%s not supported due to bigjoiner limitation\n",
--			   kmstest_pipe_name(data->pipe));
-+	if (!i915_pipe_output_combo_valid(&data->display))
- 		ret = false;
--	}
-+
- 	igt_output_set_pipe(output, PIPE_NONE);
+-	crtc_id = kmstest_find_crtc_for_connector(drm->fd, drm->res, c, 0);
++	drm->crtc_id = kmstest_find_crtc_for_connector(drm->fd, drm->res, c, 0);
  
- 	return ret;
-@@ -193,7 +191,7 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- 		if (!check_gen11_bpc_constraint(data->drm_fd, data->output, data->input_bpc))
- 			continue;
+ 	buffer_id = igt_create_fb(drm->fd, mode->hdisplay, mode->vdisplay,
+ 				  DRM_FORMAT_XRGB8888,
+@@ -193,7 +193,7 @@ static void set_mode_for_one_screen(struct drm_info *drm,
+ 		 mode->hdisplay, mode->vdisplay,
+ 		 kmstest_connector_type_str(c->connector_type));
  
--		if (!check_big_joiner_pipe_constraint(data))
-+		if (!pipe_output_combo_valid(data))
- 			continue;
- 
- 		if (test_type == TEST_DSC_BPC)
+-	rc = drmModeSetCrtc(drm->fd, crtc_id, buffer_id, 0, 0,
++	rc = drmModeSetCrtc(drm->fd, drm->crtc_id, buffer_id, 0, 0,
+ 			    &c->connector_id, 1, mode);
+ 	igt_assert_eq(rc, 0);
+ }
 -- 
-2.40.0
+2.25.1
