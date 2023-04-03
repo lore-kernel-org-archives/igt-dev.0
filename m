@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AA0810E3C7
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C8C810E3B7
  for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 10:34:13 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  3 Apr 2023 12:33:59 +0200
-Message-Id: <20230403103359.165928-3-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230403103359.165928-1-zbigniew.kempczynski@intel.com>
-References: <20230403103359.165928-1-zbigniew.kempczynski@intel.com>
+Date: Mon,  3 Apr 2023 12:33:57 +0200
+Message-Id: <20230403103359.165928-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] intel-ci/xe-fast-feedback: Add
- xe_create@create-invalid-size subtest to BAT
+Subject: [igt-dev] [PATCH i-g-t 0/2] Add missing change in xe_create
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,25 +21,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Verifies object size passed by the use match region alignments during bo
-create ioctl.
+During the review I merged this in another branch so it wasn't pushed
+properly to master branch.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
+Also add this subtest to BAT run. Expect the failure on vram as this
+is not addressed in the kernel yet.
+
+Zbigniew Kempczyński (2):
+  xe/xe_create: Use system configuration page size
+  intel-ci/xe-fast-feedback: Add xe_create@create-invalid-size subtest
+    to BAT
+
  tests/intel-ci/xe-fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+ tests/xe/xe_create.c                     | 5 +++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 5f3bd2e917..9b2d4cac8a 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -2,6 +2,7 @@
- igt@xe_module_load@load
- 
- igt@xe_compute@compute-square
-+igt@xe_create@create-invalid-size
- igt@xe_debugfs@base
- igt@xe_debugfs@gt
- igt@xe_debugfs@forcewake
 -- 
 2.34.1
