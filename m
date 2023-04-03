@@ -1,11 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon,  3 Apr 2023 13:24:37 -0700
-Message-Id: <20230403202437.1816411-1-lucas.demarchi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4915415316876326808=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tools: Add tool to dump GuC/HuC CSS header
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Date: Mon, 03 Apr 2023 22:15:32 -0000
+Message-ID: <168056013274.24308.13185120866055777713@emeril.freedesktop.org>
+References: <20230403202437.1816411-1-lucas.demarchi@intel.com>
+In-Reply-To: <20230403202437.1816411-1-lucas.demarchi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdG9vbHM6?=
+ =?utf-8?q?_Add_tool_to_dump_GuC/HuC_CSS_header?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -13,196 +17,212 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>,
- intel-xe@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Since we are now using unversioned GuC/HuC, it's useful to be able to
-dump the firmware blob and get that information from the CSS header.
-Add a tool that decodes that information and dumps the raw header.
+--===============4915415316876326808==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Example output:
+== Series Details ==
 
-	$ tools/intel-gfx-fw-info /lib/firmware/i915/tgl_guc_70.bin
-	version: 70.5.1
-	date: 2022-09-09
-	raw dump:
-	00000000  06 00 00 00 a1 00 00 00  00 00 01 00 00 00 00 00   ................
-	00000010  86 80 00 00 09 09 22 20  71 17 01 00 40 00 00 00   ......" q...@...
-	00000020  40 00 00 00 01 00 00 00  09 21 45 00 73 79 73 5f   @........!E.sys_
-	00000030  67 62 73 62 50 43 2d 31  2e 30 2e 33 31 35 30 00   gbsbPC-1.0.3150.
-	00000040  01 05 46 00 00 00 00 00  00 00 00 00 00 00 00 00   ..F.............
-	00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................
-	00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................
-	00000070  00 00 00 00 00 00 00 00  00 10 80 00 00 01 40 00   ..............@.
+Series: tools: Add tool to dump GuC/HuC CSS header
+URL   : https://patchwork.freedesktop.org/series/116049/
+State : success
 
-	struct uc_css_header:
-	- module_type: 0x6
-	- header_size_dw: 0xa1
-	- header_version: 0x10000
-	- module_id: 0x0
-	- module_vendor: 0x8086
-	- date: 0x20220909
-	- size_dw: 0x11771
-	- key_size_dw: 0x40
-	- modulus_size_dw: 0x40
-	- exponent_size_dw: 0x1
-	- time: 0x452109
-	- username: b'sys_gbsb'
-	- buildnumber: b'PC-1.0.3150\x00'
-	- sw_version: 0x460501
-	- vf_version: 0x0
-	- reserved0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-	- rsvd: <rsvd private_data_size=0x801000, reserved1=0x801000>
-	- header_info: 0x400100
+== Summary ==
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tools/intel-gfx-fw-info | 120 ++++++++++++++++++++++++++++++++++++++++
- tools/meson.build       |   2 +-
- 2 files changed, 121 insertions(+), 1 deletion(-)
- create mode 100755 tools/intel-gfx-fw-info
+CI Bug Log - changes from CI_DRM_12961 -> IGTPW_8743
+====================================================
 
-diff --git a/tools/intel-gfx-fw-info b/tools/intel-gfx-fw-info
-new file mode 100755
-index 000000000..fc1fafdf5
---- /dev/null
-+++ b/tools/intel-gfx-fw-info
-@@ -0,0 +1,120 @@
-+#!/usr/bin/env python3
-+# pylint: disable=C0301
-+# SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+#
-+# Copyright (C) 2023    Intel Corporation
-+
-+import argparse
-+import logging
-+import pprint
-+import sys
-+import typing
-+
-+from dissect import cstruct
-+
-+# struct definition below should match the one from i915
-+# (drivers/gpu/drm/i915/gt/uc/intel_uc_fw_abi.h) and xe
-+# (drivers/gpu/drm/xe/xe_uc_fw_abi.h).
-+#
-+# For compatibility reasons with dissect.cstruct python module, the following
-+# things are changed from the original kernel definition:
-+#
-+#       1) Comments removed
-+#       2) No anonymous union - not compatible with the
-+#          dumpstruct(), give it a name
-+
-+CDEF = """
-+typedef uint32 u32;
-+
-+struct uc_css_header {
-+        u32 module_type;
-+        u32 header_size_dw;
-+        u32 header_version;
-+        u32 module_id;
-+        u32 module_vendor;
-+        u32 date;
-+        u32 size_dw;
-+        u32 key_size_dw;
-+        u32 modulus_size_dw;
-+        u32 exponent_size_dw;
-+        u32 time;
-+        char username[8];
-+        char buildnumber[12];
-+        u32 sw_version;
-+        u32 vf_version;
-+        u32 reserved0[12];
-+        union {
-+                u32 private_data_size;
-+                u32 reserved1;
-+        } rsvd;
-+        u32 header_info;
-+};
-+"""
-+
-+logger = logging.getLogger(__name__)
-+
-+
-+def ffs(x: int) -> int:
-+    """Returns the index, counting from 0, of the
-+    least significant set bit in `x`.
-+    """
-+    return (x & -x).bit_length() - 1
-+
-+
-+def FIELD_GET(mask: int, value: int) -> int:
-+    return (value & mask) >> ffs(mask)
-+
-+
-+def decode(fw) -> str:
-+    data = []
-+
-+    CSS_SW_VERSION_UC_MAJOR = 0xFF << 16
-+    CSS_SW_VERSION_UC_MINOR = 0xFF << 8
-+    CSS_SW_VERSION_UC_PATCH = 0xFF
-+    major = FIELD_GET(CSS_SW_VERSION_UC_MAJOR, fw.sw_version)
-+    minor = FIELD_GET(CSS_SW_VERSION_UC_MINOR, fw.sw_version)
-+    patch = FIELD_GET(CSS_SW_VERSION_UC_PATCH, fw.sw_version)
-+    data += [f"version: {major}.{minor}.{patch}"]
-+
-+    CSS_DATE_DAY = 0xFF
-+    CSS_DATE_MONTH = 0xFF << 8
-+    CSS_DATE_YEAR = 0xFFFF << 16
-+    day = FIELD_GET(CSS_DATE_DAY, fw.date)
-+    month = FIELD_GET(CSS_DATE_MONTH, fw.date)
-+    year = FIELD_GET(CSS_DATE_YEAR, fw.date)
-+    data += [f"date: {year:02x}-{month:02x}-{day:02x}"]
-+
-+    return data
-+
-+
-+def parse_args(argv: typing.List[str]) -> argparse.Namespace:
-+    description = "Dump GuC/HuC firmware header"
-+    parser = argparse.ArgumentParser(prog="intel-gfx-fw-info", description=description)
-+
-+    parser.add_argument("filename", help="GuC/HuC firmware file")
-+
-+    return parser.parse_args(argv)
-+
-+
-+def main(argv: typing.List[str]) -> int:
-+    args = parse_args(argv)
-+
-+    cparser = cstruct.cstruct()
-+    cparser.load(CDEF)
-+
-+    try:
-+        with open(args.filename, mode="rb") as f:
-+            fw = cparser.uc_css_header(f)
-+    except FileNotFoundError as e:
-+        logger.fatal(e)
-+        return 1
-+
-+    print(*decode(fw), sep="\n")
-+    print("raw dump:", end="")
-+    cstruct.dumpstruct(fw, color=sys.stdout.isatty())
-+
-+    return 0
-+
-+
-+if __name__ == "__main__":
-+    sys.exit(main(sys.argv[1:]))
-diff --git a/tools/meson.build b/tools/meson.build
-index 4c45f16b9..88c58adfe 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -81,7 +81,7 @@ executable('intel_reg', sources : intel_reg_src,
- 	     '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
- 	   ])
- 
--install_data('intel_gpu_abrt', install_dir : bindir)
-+install_data(['intel_gpu_abrt', 'intel-gfx-fw-info'], install_dir : bindir)
- 
- install_subdir('registers', install_dir : datadir)
- 
--- 
-2.39.0
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/index.html
+
+Participating hosts (36 -> 35)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8743 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - bat-rpls-1:         [PASS][1] -> [ABORT][2] ([i915#6687] / [i915#7978])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-adlp-9:         [PASS][3] -> [DMESG-FAIL][4] ([i915#7699])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-adlp-9/igt@i915_selftest@live@migrate.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-adlp-9/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-2:         [PASS][5] -> [ABORT][6] ([i915#4983] / [i915#7913] / [i915#7981])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
+    - bat-dg2-8:          [PASS][7] -> [FAIL][8] ([i915#7932])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         [DMESG-FAIL][9] ([i915#6367]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:
+    - bat-dg2-8:          [FAIL][11] ([i915#7932]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
+
+  
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+  [i915#7981]: https://gitlab.freedesktop.org/drm/intel/issues/7981
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7233 -> IGTPW_8743
+
+  CI-20190529: 20190529
+  CI_DRM_12961: 82f1e99798a184af2c21c9c8748f3fba4bdc4556 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8743: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/index.html
+  IGT_7233: 716520b469a2745e1882780f2aabbc88eb19332c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++++ 0 lines
+--- 1009 lines
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/index.html
+
+--===============4915415316876326808==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tools: Add tool to dump GuC/HuC CSS header</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116049/">https://patchwork.freedesktop.org/series/116049/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12961 -&gt; IGTPW_8743</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/index.html</p>
+<h2>Participating hosts (36 -&gt; 35)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8743 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-adlp-9/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-adlp-9/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7981">i915#7981</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12961/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7233 -&gt; IGTPW_8743</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12961: 82f1e99798a184af2c21c9c8748f3fba4bdc4556 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8743: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8743/index.html<br />
+  IGT_7233: 716520b469a2745e1882780f2aabbc88eb19332c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+++ 0 lines<br />
+--- 1009 lines</p>
+
+</body>
+</html>
+
+--===============4915415316876326808==--
