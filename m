@@ -1,28 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F4EF897C8
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 10:56:29 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.28.164])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id C5E5D5804D9
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 03:56:27 -0700 (PDT)
-Received: from localhost ([127.0.0.1])
- by linux.intel.com with esmtp (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pjHrN-000akj-0p
- for igt-dev@lists.freedesktop.org; Mon, 03 Apr 2023 12:56:25 +0200
-Message-ID: <b1e68d16-3a3a-6142-8eb9-5835e9f81824@linux.intel.com>
-Date: Mon, 3 Apr 2023 12:56:25 +0200
-MIME-Version: 1.0
-Content-Language: en-US
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85C6C10E411
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 11:00:44 +0000 (UTC)
+From: Vikas Srivastava <vikas.srivastava@intel.com>
 To: igt-dev@lists.freedesktop.org
-References: <20230403103359.165928-1-zbigniew.kempczynski@intel.com>
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-In-Reply-To: <20230403103359.165928-1-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Date: Mon,  3 Apr 2023 16:27:12 +0530
+Message-Id: <20230403105714.3299450-3-vikas.srivastava@intel.com>
+In-Reply-To: <20230403105714.3299450-1-vikas.srivastava@intel.com>
+References: <20230403105714.3299450-1-vikas.srivastava@intel.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Add missing change in xe_create
+Subject: [igt-dev] [PATCH i-g-t 2/4 v3] tests/i915/gem_caching: Enable
+ XY_FAST_COPY_BLT for MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,25 +23,59 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+Test case uses legacy command XY_SRC_COPY_BLT_CMD which
+is not supported on newer platforms. Modify test to
+use XY_FAST_COPY_BLT.
 
-On 4/3/23 12:33, Zbigniew Kempczyński wrote:
-> During the review I merged this in another branch so it wasn't pushed
-> properly to master branch.
->
-> Also add this subtest to BAT run. Expect the failure on vram as this
-> is not addressed in the kernel yet.
->
-> Zbigniew Kempczyński (2):
->    xe/xe_create: Use system configuration page size
->    intel-ci/xe-fast-feedback: Add xe_create@create-invalid-size subtest
->      to BAT
->
->   tests/intel-ci/xe-fast-feedback.testlist | 1 +
->   tests/xe/xe_create.c                     | 5 +++--
->   2 files changed, 4 insertions(+), 2 deletions(-)
->
-Didn't test patch 2, but, assuming it passes on all platforms:
+Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
+Cc: Karolina Stolarek <karolina.stolarek@intel.com>
+---
+ tests/i915/gem_caching.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+diff --git a/tests/i915/gem_caching.c b/tests/i915/gem_caching.c
+index eb0170abca..3783dc2b33 100644
+--- a/tests/i915/gem_caching.c
++++ b/tests/i915/gem_caching.c
+@@ -39,6 +39,7 @@
+ 
+ #include "i915/gem.h"
+ #include "igt.h"
++#include "i915/i915_blt.h"
+ 
+ IGT_TEST_DESCRIPTION("Test snoop consistency when touching partial"
+ 		     " cachelines.");
+@@ -82,15 +83,23 @@ copy_bo(struct intel_bb *ibb, struct intel_buf *src, struct intel_buf *dst)
+ 	intel_bb_add_intel_buf(ibb, src, false);
+ 	intel_bb_add_intel_buf(ibb, dst, true);
+ 
+-	intel_bb_out(ibb,
+-		     XY_SRC_COPY_BLT_CMD |
+-		     XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		     XY_SRC_COPY_BLT_WRITE_RGB |
+-		     (6 + 2 * has_64b_reloc));
++	if (blt_has_xy_src_copy(ibb->i915)) {
++		intel_bb_out(ibb,
++			     XY_SRC_COPY_BLT_CMD |
++			     XY_SRC_COPY_BLT_WRITE_ALPHA |
++			     XY_SRC_COPY_BLT_WRITE_RGB |
++			     (6 + 2 * has_64b_reloc));
++
++		intel_bb_out(ibb, (3 << 24) | /* 32 bits */
++			     (0xcc << 16) | /* copy ROP */
++			     4096);
++	} else if (blt_has_fast_copy(ibb->i915)) {
++		intel_bb_out(ibb, XY_FAST_COPY_BLT);
++		intel_bb_out(ibb, XY_FAST_COPY_COLOR_DEPTH_32 | 4096);
++	} else {
++		igt_assert_f(0, "No supported blit command found\n");
++	}
+ 
+-	intel_bb_out(ibb, (3 << 24) | /* 32 bits */
+-		     (0xcc << 16) | /* copy ROP */
+-		     4096);
+ 	intel_bb_out(ibb, 0 << 16 | 0);
+ 	intel_bb_out(ibb, (BO_SIZE/4096) << 16 | 1024);
+ 	intel_bb_emit_reloc_fenced(ibb, dst->handle,
+-- 
+2.25.1
