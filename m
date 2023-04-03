@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBBFE10E21B
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 12:22:00 +0000 (UTC)
-Date: Tue, 4 Apr 2023 14:21:57 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230404122157.rz44pnhxgvyuqerx@kamilkon-desk1>
-References: <20230404111942.214516-1-mauro.chehab@linux.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB59110E3FB
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 10:50:45 +0000 (UTC)
+Date: Mon, 3 Apr 2023 12:50:33 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20230403105033.le5owx7mmjkcmpz5@zkempczy-mobl2>
+References: <20230327134119.2429388-1-mauro.chehab@linux.intel.com>
+ <20230327134119.2429388-4-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20230404111942.214516-1-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] testplan/meson.build: only run
- igt_runner if it is compiled
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230327134119.2429388-4-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/5] lib/xe/xe_compute: use registers
+ defs from intel_gpu_commands.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,70 +23,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-04-04 at 13:19:43 +0200, Mauro Carvalho Chehab wrote:
+On Mon, Mar 27, 2023 at 03:41:17PM +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> While the runner is built by default, if jsonc is not found, it
-> won't be build. This will cause the documentation validation test
-> to cause the build to fail.
+> There are some register definitions that are already defined inside
+> intel_gpu_commands.h with a different concept.
 > 
-> Prevent that by adding an extra check if jsonc is found, as this
-> is the same condition that it is used to build igt_runner.
-> 
-> While here, also ensure that igt_doc.py will depend on having the
-> igt_runner already compiled, when the --check option is used.
+> Change the code to re-use the definitions there.
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-LGTM,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> 
 > ---
+>  lib/xe/xe_compute.c | 17 ++++-------------
+>  1 file changed, 4 insertions(+), 13 deletions(-)
 > 
-> v3:
->   - don't bail out if tests aren't built
-> v2:
->   - add a dependency for the runner binary when --check option is
->     used.
-> ---
->  docs/testplan/meson.build | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> index 4c67ec42fc69..ea9f6eeb7038 100644
-> --- a/docs/testplan/meson.build
-> +++ b/docs/testplan/meson.build
-> @@ -10,10 +10,14 @@ xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
+> diff --git a/lib/xe/xe_compute.c b/lib/xe/xe_compute.c
+> index 7259b888eb9e..9e50eba1b87b 100644
+> --- a/lib/xe/xe_compute.c
+> +++ b/lib/xe/xe_compute.c
+> @@ -33,15 +33,6 @@
+>  #define OFFSET_INDIRECT_DATA_START	0xFFFDF000
+>  #define OFFSET_KERNEL			0xFFFEF000
 >  
->  check_testlist = []
->  if build_tests
-> -	# Check if documentation matches the actual tests
-> -	check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
-> +	doc_dependencies = test_executables
-> +	if jsonc.found()
-> +		# Check if documentation matches the actual tests
-> +		check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
-> +		doc_dependencies += runner
-> +	endif
->  else
-> -	test_executables = []
-> +	doc_dependencies = []
->  endif
->  
->  test_dict = { 'xe_tests':
-> @@ -24,7 +28,7 @@ foreach testplan, fields: test_dict
->  	rst = custom_target(testplan + '.rst',
->  			    build_by_default : true,
->  			    command : [ igt_doc_script, '--config', '@INPUT@', '--rest', '@OUTPUT@' ] + fields['extra_args'],
-> -			    depends : test_executables,
-> +			    depends : doc_dependencies,
->  			    input : fields['input'],
->  			    output : testplan + '.rst'
->  			   )
+> -#undef MEDIA_VFE_STATE
+> -#define MEDIA_VFE_STATE			0x70000007
+> -#undef STATE_BASE_ADDRESS
+> -#define STATE_BASE_ADDRESS		0x61010014
+> -#undef MEDIA_INTERFACE_DESCRIPTOR_LOAD
+> -#define MEDIA_INTERFACE_DESCRIPTOR_LOAD	0x70020002
+> -#undef GPGPU_WALKER
+> -#define GPGPU_WALKER			0x7105000d
+> -
+>  struct bo_dict_entry {
+>  	uint64_t addr;
+>  	uint32_t size;
+> @@ -301,7 +292,7 @@ static void tgllp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+> -	addr_bo_buffer_batch[b++] = MEDIA_VFE_STATE;
+> +	addr_bo_buffer_batch[b++] = MEDIA_VFE_STATE | (9 - 2);
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  	addr_bo_buffer_batch[b++] = 0x00A70100;
+> @@ -316,7 +307,7 @@ static void tgllp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+> -	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS;
+> +	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS | (16 - 2);
+>  	addr_bo_buffer_batch[b++] = 0x00000001;
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  	addr_bo_buffer_batch[b++] = 0x00040000;
+> @@ -352,11 +343,11 @@ static void tgllp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  	addr_bo_buffer_batch[b++] = MEDIA_STATE_FLUSH;
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+> -	addr_bo_buffer_batch[b++] = MEDIA_INTERFACE_DESCRIPTOR_LOAD;
+> +	addr_bo_buffer_batch[b++] = MEDIA_INTERFACE_DESCRIPTOR_LOAD | (4 - 2);
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  	addr_bo_buffer_batch[b++] = 0x00000020;
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+> -	addr_bo_buffer_batch[b++] = GPGPU_WALKER;
+> +	addr_bo_buffer_batch[b++] = GPGPU_WALKER | 13;
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  	addr_bo_buffer_batch[b++] = 0x00000c80;
+>  	addr_bo_buffer_batch[b++] = offset_indirect_data_start;
 > -- 
 > 2.39.2
 > 
