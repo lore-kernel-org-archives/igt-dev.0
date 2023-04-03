@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD10E10E419
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 11:00:44 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon,  3 Apr 2023 16:27:14 +0530
-Message-Id: <20230403105714.3299450-5-vikas.srivastava@intel.com>
-In-Reply-To: <20230403105714.3299450-1-vikas.srivastava@intel.com>
-References: <20230403105714.3299450-1-vikas.srivastava@intel.com>
+Message-ID: <ee6394ca-ccab-7fc7-ba23-f5bdb449c45f@intel.com>
+Date: Mon, 3 Apr 2023 10:22:34 -0700
+Content-Language: en-US
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+References: <20230328020028.2143954-1-vinay.belgaumkar@intel.com>
+ <20230328020028.2143954-3-vinay.belgaumkar@intel.com>
+ <87bkk8h3uy.wl-ashutosh.dixit@intel.com>
+ <7327d651-d31f-8e20-a9a9-38b0ec37b86a@intel.com>
+ <87jzytdlkl.wl-ashutosh.dixit@intel.com>
+From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
+In-Reply-To: <87jzytdlkl.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4 v3] tests/i915/gem_userptr_blits: Enable
- XY_FAST_COPY_BLT command for gen12+
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] i915_pm_freq_api: Add some basic
+ SLPC igt tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,171 +22,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test case uses legacy command XY_SRC_COPY_BLT_CMD which is
-not supported on newer platforms. Modify test
-to use XY_FAST_COPY_BLT.
 
-Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-Cc: Karolina Stolarek <karolina.stolarek@intel.com>
----
- tests/i915/gem_userptr_blits.c | 102 ++++++++++++++++++++-------------
- 1 file changed, 63 insertions(+), 39 deletions(-)
+On 4/3/2023 8:36 AM, Dixit, Ashutosh wrote:
+> On Mon, 03 Apr 2023 08:23:45 -0700, Belgaumkar, Vinay wrote:
+>>
+>> On 3/31/2023 4:56 PM, Dixit, Ashutosh wrote:
+>>> On Mon, 27 Mar 2023 19:00:28 -0700, Vinay Belgaumkar wrote:
+>>> Hi Vinay,
+>>>
+>>>> +/*
+>>>> + * Too many intermediate components and steps before freq is adjusted
+>>>> + * Specially if workload is under execution, so let's wait 100 ms.
+>>>> + */
+>>>> +#define ACT_FREQ_LATENCY_US 100000
+>>>> +
+>>>> +static uint32_t get_freq(int dirfd, uint8_t id)
+>>>> +{
+>>>> +	uint32_t val;
+>>>> +
+>>>> +	igt_require(igt_sysfs_rps_scanf(dirfd, id, "%u", &val) == 1);
+>>> igt_assert?
+>> ok.
+>>>> +static void test_freq_basic_api(int dirfd, int gt)
+>>>> +{
+>>>> +	uint32_t rpn, rp0, rpe;
+>>>> +
+>>>> +	/* Save frequencies */
+>>>> +	rpn = get_freq(dirfd, RPS_RPn_FREQ_MHZ);
+>>>> +	rp0 = get_freq(dirfd, RPS_RP0_FREQ_MHZ);
+>>>> +	rpe = get_freq(dirfd, RPS_RP1_FREQ_MHZ);
+>>>> +	igt_info("System min freq: %dMHz; max freq: %dMHz\n", rpn, rp0);
+>>>> +
+>>>> +	/*
+>>>> +	 * Negative bound tests
+>>>> +	 * RPn is the floor
+>>>> +	 * RP0 is the ceiling
+>>>> +	 */
+>>>> +	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn - 1) < 0);
+>>>> +	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rp0 + 1) < 0);
+>>>> +	igt_assert(set_freq(dirfd, RPS_MIN_FREQ_MHZ, rpn - 1) < 0);
+>>> Is this supposed to be RPS_MAX_FREQ_MHZ?
+>> We could do this check for max as well. But this is trying to see if min
+>> can be set to below rpn.
+> In that case this statement is the same as the first one (2 lines
+> above). Is that needed?
 
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 07a453229a..3a1a81e456 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -66,6 +66,7 @@
- #include "sw_sync.h"
- 
- #include "eviction_common.c"
-+#include "i915/i915_blt.h"
- 
- #ifndef PAGE_SIZE
- #define PAGE_SIZE 4096
-@@ -99,6 +100,7 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 	struct drm_i915_gem_relocation_entry reloc[2];
- 	struct drm_i915_gem_exec_object2 obj[3];
- 	struct drm_i915_gem_execbuffer2 exec;
-+	static uint32_t devid;
- 	uint32_t handle;
- 	int ret, i=0;
- 	uint64_t dst_offset, src_offset, bb_offset;
-@@ -108,29 +110,49 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 	dst_offset = bb_offset + 4096;
- 	src_offset = dst_offset + WIDTH * HEIGHT * sizeof(uint32_t) * (src != dst);
- 
--	batch[i++] = XY_SRC_COPY_BLT_CMD |
--		  XY_SRC_COPY_BLT_WRITE_ALPHA |
--		  XY_SRC_COPY_BLT_WRITE_RGB;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i - 1] |= 8;
--	else
--		batch[i - 1] |= 6;
--
--	batch[i++] = (3 << 24) | /* 32 bits */
--		  (0xcc << 16) | /* copy ROP */
--		  WIDTH*4;
--	batch[i++] = 0; /* dst x1,y1 */
--	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--	batch[i++] = dst_offset; /* dst reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = dst_offset >> 32;
--	batch[i++] = 0; /* src x1,y1 */
--	batch[i++] = WIDTH*4;
--	batch[i++] = src_offset; /* src reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = src_offset >> 32;
--	batch[i++] = MI_BATCH_BUFFER_END;
--	batch[i++] = MI_NOOP;
-+	devid = intel_get_drm_devid(fd);
-+
-+	if (blt_has_xy_src_copy(fd)) {
-+		batch[i++] = XY_SRC_COPY_BLT_CMD |
-+			     XY_SRC_COPY_BLT_WRITE_ALPHA |
-+			     XY_SRC_COPY_BLT_WRITE_RGB;
-+
-+		if (intel_gen(devid) >= 8)
-+			batch[i - 1] |= 8;
-+		else
-+			batch[i - 1] |= 6;
-+
-+		batch[i++] = (3 << 24) | /* 32 bits */
-+			  (0xcc << 16) | /* copy ROP */
-+			  WIDTH * 4;
-+		batch[i++] = 0; /* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+		batch[i++] = lower_32_bits(dst_offset); /* dst reloc*/
-+		if (intel_gen(devid) >= 8)
-+			batch[i++] = upper_32_bits(CANONICAL(dst_offset));
-+		batch[i++] = 0; /* src x1,y1 */
-+		batch[i++] = WIDTH * 4;
-+		batch[i++] = lower_32_bits(src_offset); /* src reloc */
-+		if (intel_gen(devid) >= 8)
-+			batch[i++] = upper_32_bits(CANONICAL(src_offset));
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	} else if (blt_has_fast_copy(fd)) {
-+		batch[i++] = XY_FAST_COPY_BLT;
-+		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH * 4;
-+		batch[i++] = 0;/* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
-+		batch[i++] = lower_32_bits(dst_offset); /* dst address */
-+		batch[i++] = upper_32_bits(CANONICAL(dst_offset));
-+		batch[i++] = 0;/* src x1,y1 */
-+		batch[i++] = WIDTH * 4;/* src pitch */
-+		batch[i++] = lower_32_bits(src_offset); /* src address */
-+		batch[i++] = upper_32_bits(CANONICAL(src_offset));
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	} else {
-+		igt_assert_f(0, "No supported blit command found\n");
-+	}
- 
- 	handle = gem_create(fd, 4096);
- 	gem_write(fd, handle, 0, batch, sizeof(batch));
-@@ -254,20 +276,7 @@ blit(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
- 	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
- 	reloc[1].write_domain = 0;
- 
--	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
--		batch[i++] = XY_FAST_COPY_BLT;
--		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
--		batch[i++] = 0; /* dst x1,y1 */
--		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--		batch[i++] = lower_32_bits(dst_offset); /* dst address */
--		batch[i++] = upper_32_bits(CANONICAL(dst_offset));
--		batch[i++] = 0; /* src x1,y1 */
--		batch[i++] = WIDTH*4; /* src pitch */
--		batch[i++] = lower_32_bits(src_offset); /* src address */
--		batch[i++] = upper_32_bits(CANONICAL(src_offset));
--		batch[i++] = MI_BATCH_BUFFER_END;
--		batch[i++] = MI_NOOP;
--	} else {
-+	if (blt_has_xy_src_copy(fd)) {
- 		batch[i++] = XY_SRC_COPY_BLT_CMD |
- 			     XY_SRC_COPY_BLT_WRITE_ALPHA |
- 			     XY_SRC_COPY_BLT_WRITE_RGB;
-@@ -277,19 +286,34 @@ blit(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
- 			batch[i - 1] |= 6;
- 		batch[i++] = (3 << 24) | /* 32 bits */
- 			     (0xcc << 16) | /* copy ROP */
--			     WIDTH*4;
-+			     WIDTH * 4;
- 		batch[i++] = 0; /* dst x1,y1 */
- 		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
- 		batch[i++] = lower_32_bits(dst_offset);
- 		if (intel_gen(devid) >= 8)
- 			batch[i++] = upper_32_bits(CANONICAL(dst_offset));
- 		batch[i++] = 0; /* src x1,y1 */
--		batch[i++] = WIDTH*4;
-+		batch[i++] = WIDTH * 4;
- 		batch[i++] = lower_32_bits(src_offset);
- 		if (intel_gen(devid) >= 8)
- 			batch[i++] = upper_32_bits(CANONICAL(src_offset));
- 		batch[i++] = MI_BATCH_BUFFER_END;
- 		batch[i++] = MI_NOOP;
-+	} else if (blt_has_fast_copy(fd)) {
-+		batch[i++] = XY_FAST_COPY_BLT;
-+		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH * 4;
-+		batch[i++] = 0; /* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+		batch[i++] = lower_32_bits(dst_offset); /* dst address */
-+		batch[i++] = upper_32_bits(CANONICAL(dst_offset));
-+		batch[i++] = 0; /* src x1,y1 */
-+		batch[i++] = WIDTH * 4; /* src pitch */
-+		batch[i++] = lower_32_bits(src_offset); /* src address */
-+		batch[i++] = upper_32_bits(CANONICAL(src_offset));
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	} else {
-+		igt_assert_f(0, "No supported blit command found\n");
- 	}
- 
- 	gem_write(fd, handle, 0, batch, sizeof(batch));
--- 
-2.25.1
+ah, yes. Need more coffee. That should be RPS_MAX_FREQ_MHZ.
+
+Thanks,
+
+Vinay.
+
+>
+>
+>
+>>>> +	igt_assert(set_freq(dirfd, RPS_MAX_FREQ_MHZ, rp0 + 1) < 0);
+>>>> +
+>>> After addressing the above, this is:
+>>>
+>>> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>>>
+>>> Also, before merging it would be good to see the results of the new
+>>> tests. So could you add a HAX patch adding the new tests to
+>>> fast-feedback.testlist and resend the series?
+>> Sure, will do. Thanks for the review.
+>>
+>> Vinay.
+>>
+>>> Thanks.
+>>> --
+>>> Ashutosh
