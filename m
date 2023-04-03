@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85F4210E3F0
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 10:45:29 +0000 (UTC)
+Date: Mon, 3 Apr 2023 12:45:24 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20230403104524.x7ssrgycwagrw675@zkempczy-mobl2>
+References: <20230327134119.2429388-1-mauro.chehab@linux.intel.com>
+ <20230327134119.2429388-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 27 Apr 2023 11:11:40 -0000
-Message-ID: <168259390074.9051.11385385699926211138@emeril.freedesktop.org>
-References: <20230427103435.197950-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230427103435.197950-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?estplan/meson=2Ebuild=3A_don=27t_generate_testlist_on_cross-com?=
- =?utf-8?q?pilation?=
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230327134119.2429388-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/5] compute_square_kernel.cl: add CL
+ file used at xe_compute.c
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,47 +21,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Mon, Mar 27, 2023 at 03:41:15PM +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Provide the cl file that it was used to produce the OpenCL
+> Kernel used by xe_compute, and document how the binary at
+> xe_compute.h was produced.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  lib/xe/xe_compute.c             | 3 ++-
+>  opencl/compute_square_kernel.cl | 5 +++++
+>  2 files changed, 7 insertions(+), 1 deletion(-)
+>  create mode 100644 opencl/compute_square_kernel.cl
+> 
+> diff --git a/lib/xe/xe_compute.c b/lib/xe/xe_compute.c
+> index 8c0f8c87d50f..2165eada8931 100644
+> --- a/lib/xe/xe_compute.c
+> +++ b/lib/xe/xe_compute.c
+> @@ -18,7 +18,8 @@
+>  #define GPGPU_WALKER			0x7105000d
+>  #define MI_BATCH_BUFFER_END		(0xA << 23)
+>  
+> -// generated with: ocloc -file kernel.cl -device tgllp && xxd -i kernel_Gen12LPlp.gen
+> +// generated with:
+> +// ocloc -file opencl/compute_square_kernel.cl -device tgllp && xxd -i compute_square_kernel_Gen12LPlp.bin
+>  unsigned char tgllp_kernel_square_bin[] = {
+>  	0x61, 0x00, 0x03, 0x80, 0x20, 0x02, 0x05, 0x03, 0x04, 0x00, 0x10, 0x00,
+>  	0x00, 0x00, 0x00, 0x00, 0x66, 0x01, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
+> diff --git a/opencl/compute_square_kernel.cl b/opencl/compute_square_kernel.cl
+> new file mode 100644
+> index 000000000000..f6260fb934dc
+> --- /dev/null
+> +++ b/opencl/compute_square_kernel.cl
+> @@ -0,0 +1,5 @@
+> +__kernel void square(__global float* input, __global float* output, const unsigned int count) {
+> +  int i = get_global_id(0);
+> +  if(i < count)
+> +    output[i] = input[i] * input[i];
+> +}
+> -- 
+> 2.39.2
+>
 
-Series: testplan/meson.build: don't generate testlist on cross-compilation
-URL   : https://patchwork.freedesktop.org/series/117046/
-State : warning
+Looks good:
 
-== Summary ==
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/867838 for the overview.
-
-build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/40797632):
-  time="2023-04-27T11:07:29Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:2ff1d7c41c74a25258bfa6f0b8adb0a727f84518f55f65ca845ebc747976c408
-  Copying config sha256:8b277f5e168f773e3dba38bca291a5fd138d56fcdd5008a2f0bf1866d311483b
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-04-27T11:07:33Z" level=warning msg="signal: killed"
-  time="2023-04-27T11:07:33Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1682593654:step_script
-  section_start:1682593654:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1682593655:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/867838
+--
+Zbigniew
 
