@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7383710E3CF
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 10:20:42 +0000 (UTC)
-Message-ID: <4f6040b2-02d8-af61-7907-965632d08aeb@linux.intel.com>
-Date: Mon, 3 Apr 2023 11:20:38 +0100
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D95E10E171
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 10:34:07 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  3 Apr 2023 12:33:58 +0200
+Message-Id: <20230403103359.165928-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230403103359.165928-1-zbigniew.kempczynski@intel.com>
+References: <20230403103359.165928-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230331195915.5839-1-umesh.nerlige.ramappa@intel.com>
- <20230331195915.5839-3-umesh.nerlige.ramappa@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230331195915.5839-3-umesh.nerlige.ramappa@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/drm_fdinfo: Drop active
- busyness tests for GuC backend
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] xe/xe_create: Use system configuration
+ page size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,198 +24,38 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+During the review Maarten asked to use _SC_PAGESIZE, unfortunately
+this left on branch I didn't merge. Fix this to be page size
+independent.
 
-On 31/03/2023 20:59, Umesh Nerlige Ramappa wrote:
-> With GuC scheduling backends, the context busyness for an active context is
-> obtained from the GuC FW. The support for this is WIP, so disable tests that
-> check TEST_BUSY until the feature is implemented.
-> 
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> ---
->   tests/i915/drm_fdinfo.c | 148 +++++++++++++++++++++-------------------
->   1 file changed, 79 insertions(+), 69 deletions(-)
-> 
-> diff --git a/tests/i915/drm_fdinfo.c b/tests/i915/drm_fdinfo.c
-> index 65b8b830..5df33933 100644
-> --- a/tests/i915/drm_fdinfo.c
-> +++ b/tests/i915/drm_fdinfo.c
-> @@ -761,83 +761,93 @@ igt_main
->   	igt_subtest("virtual-idle")
->   		virtual(i915, &ctx->cfg, 0);
->   
-> -	/**
-> -	 * Test that a single engine reports load correctly.
-> -	 */
-> -	test_each_engine("busy", i915, ctx, e)
-> -		single(i915, ctx, e, TEST_BUSY);
-> -
-> -	igt_subtest("virtual-busy")
-> -		virtual(i915, &ctx->cfg, TEST_BUSY);
-> -
-> -	test_each_engine("busy-idle", i915, ctx, e)
-> -		single(i915, ctx, e, TEST_BUSY | TEST_TRAILING_IDLE);
-> -
-> -	igt_subtest("virtual-busy-idle")
-> -		virtual(i915, &ctx->cfg, TEST_BUSY | TEST_TRAILING_IDLE);
-> -
-> -	test_each_engine("busy-hang", i915, ctx, e) {
-> -		igt_hang_t hang = igt_allow_hang(i915, ctx->id, 0);
-> -
-> -		single(i915, ctx, e, TEST_BUSY | FLAG_HANG);
-> -
-> -		igt_disallow_hang(i915, hang);
-> -	}
-> -
-> -	igt_subtest("virtual-busy-hang")
-> -		virtual(i915, &ctx->cfg, TEST_BUSY | FLAG_HANG);
-> -
-> -	/**
-> -	 * Test that when one engine is loaded other report no
-> -	 * load.
-> -	 */
-> -	test_each_engine("busy-check-all", i915, ctx, e)
-> -		busy_check_all(i915, ctx, e, num_engines, classes, num_classes,
-> -			       TEST_BUSY);
-> +	igt_fixture {
-> +		/**
-> +		 * With GuC scheduling backends, the context busyness for a
-> +		 * active context is obtained from the GUC FW. The support for
-> +		 * this is WIP, so disable tests that check TEST_BUSY until the
-> +		 * feature is implemented.
-> +		 */
-> +		igt_require(!gem_using_guc_submission(i915));
->   
-> -	test_each_engine("busy-idle-check-all", i915, ctx, e)
-> -		busy_check_all(i915, ctx, e, num_engines, classes, num_classes,
-> -			       TEST_BUSY | TEST_TRAILING_IDLE);
-> +		/**
-> +		 * Test that a single engine reports load correctly.
-> +		 */
-> +		test_each_engine("busy", i915, ctx, e)
-> +			single(i915, ctx, e, TEST_BUSY);
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/xe/xe_create.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Hm I think executing tests from fixture blocks shouldn't be done. Don't 
-remember why but I thought so..
-
-Maybe as an alternative you put that igt_require into tests themselves?
-
-Like:
-
-if (flags & TEST_BUSY)
-	igt_require(!gem_using_guc_submission(i915));
-
-Thoughts?
-
-Regards,
-
-Tvrtko
-
->   
-> -	/**
-> -	 * Test that when all except one engine are loaded all
-> -	 * loads are correctly reported.
-> -	 */
-> -	test_each_engine("most-busy-check-all", i915, ctx, e)
-> -		most_busy_check_all(i915, ctx, e, num_engines,
-> -				    classes, num_classes,
-> -				    TEST_BUSY);
-> +		igt_subtest("virtual-busy")
-> +			virtual(i915, &ctx->cfg, TEST_BUSY);
->   
-> -	test_each_engine("most-busy-idle-check-all", i915, ctx, e)
-> -		most_busy_check_all(i915, ctx, e, num_engines,
-> -				    classes, num_classes,
-> -				    TEST_BUSY | TEST_TRAILING_IDLE);
-> +		test_each_engine("busy-idle", i915, ctx, e)
-> +			single(i915, ctx, e, TEST_BUSY | TEST_TRAILING_IDLE);
->   
-> -	/**
-> -	 * Test that when all engines are loaded all loads are
-> -	 * correctly reported.
-> -	 */
-> -	igt_subtest("all-busy-check-all")
-> -		all_busy_check_all(i915, ctx, num_engines, classes, num_classes,
-> -				   TEST_BUSY);
-> +		igt_subtest("virtual-busy-idle")
-> +			virtual(i915, &ctx->cfg, TEST_BUSY | TEST_TRAILING_IDLE);
->   
-> -	igt_subtest("all-busy-idle-check-all")
-> -		all_busy_check_all(i915, ctx, num_engines, classes, num_classes,
-> -				   TEST_BUSY | TEST_TRAILING_IDLE);
-> +		test_each_engine("busy-hang", i915, ctx, e) {
-> +			igt_hang_t hang = igt_allow_hang(i915, ctx->id, 0);
->   
-> -	igt_subtest("virtual-busy-all")
-> -		virtual_all(i915, &ctx->cfg, TEST_BUSY);
-> +			single(i915, ctx, e, TEST_BUSY | FLAG_HANG);
->   
-> -	igt_subtest("virtual-busy-idle-all")
-> -		virtual_all(i915, &ctx->cfg, TEST_BUSY | TEST_TRAILING_IDLE);
-> +			igt_disallow_hang(i915, hang);
-> +		}
->   
-> -	igt_subtest("virtual-busy-hang-all")
-> -		virtual_all(i915, &ctx->cfg, TEST_BUSY | FLAG_HANG);
-> -	/**
-> -	 * Test for no cross-client contamination.
-> -	 */
-> -	test_each_engine("isolation", i915, ctx, e)
-> -		single(i915, ctx, e, TEST_BUSY | TEST_ISOLATION);
-> +		igt_subtest("virtual-busy-hang")
-> +			virtual(i915, &ctx->cfg, TEST_BUSY | FLAG_HANG);
-> +
-> +		/**
-> +		 * Test that when one engine is loaded other report no
-> +		 * load.
-> +		 */
-> +		test_each_engine("busy-check-all", i915, ctx, e)
-> +			busy_check_all(i915, ctx, e, num_engines, classes, num_classes,
-> +					TEST_BUSY);
-> +
-> +		test_each_engine("busy-idle-check-all", i915, ctx, e)
-> +			busy_check_all(i915, ctx, e, num_engines, classes, num_classes,
-> +					TEST_BUSY | TEST_TRAILING_IDLE);
-> +
-> +		/**
-> +		 * Test that when all except one engine are loaded all
-> +		 * loads are correctly reported.
-> +		 */
-> +		test_each_engine("most-busy-check-all", i915, ctx, e)
-> +			most_busy_check_all(i915, ctx, e, num_engines,
-> +					classes, num_classes,
-> +					TEST_BUSY);
-> +
-> +		test_each_engine("most-busy-idle-check-all", i915, ctx, e)
-> +			most_busy_check_all(i915, ctx, e, num_engines,
-> +					classes, num_classes,
-> +					TEST_BUSY | TEST_TRAILING_IDLE);
-> +
-> +		/**
-> +		 * Test that when all engines are loaded all loads are
-> +		 * correctly reported.
-> +		 */
-> +		igt_subtest("all-busy-check-all")
-> +			all_busy_check_all(i915, ctx, num_engines, classes, num_classes,
-> +					TEST_BUSY);
-> +
-> +		igt_subtest("all-busy-idle-check-all")
-> +			all_busy_check_all(i915, ctx, num_engines, classes, num_classes,
-> +					TEST_BUSY | TEST_TRAILING_IDLE);
-> +
-> +		igt_subtest("virtual-busy-all")
-> +			virtual_all(i915, &ctx->cfg, TEST_BUSY);
-> +
-> +		igt_subtest("virtual-busy-idle-all")
-> +			virtual_all(i915, &ctx->cfg, TEST_BUSY | TEST_TRAILING_IDLE);
-> +
-> +		igt_subtest("virtual-busy-hang-all")
-> +			virtual_all(i915, &ctx->cfg, TEST_BUSY | FLAG_HANG);
-> +		/**
-> +		 * Test for no cross-client contamination.
-> +		 */
-> +		test_each_engine("isolation", i915, ctx, e)
-> +			single(i915, ctx, e, TEST_BUSY | TEST_ISOLATION);
-> +	}
->   
->   	igt_fixture {
->   		intel_ctx_destroy(i915, ctx);
+diff --git a/tests/xe/xe_create.c b/tests/xe/xe_create.c
+index ae841f8092..74833639f4 100644
+--- a/tests/xe/xe_create.c
++++ b/tests/xe/xe_create.c
+@@ -50,6 +50,7 @@ static void create_invalid_size(int fd)
+ {
+ 	struct drm_xe_query_mem_region *memregion;
+ 	uint64_t memreg = all_memory_regions(fd), region;
++	const uint32_t page_size = sysconf(_SC_PAGESIZE);
+ 	uint32_t vm;
+ 	uint32_t handle;
+ 	int ret;
+@@ -72,9 +73,9 @@ static void create_invalid_size(int fd)
+ 		 * second try, add page size to min page size if it is
+ 		 * bigger than page size.
+ 		 */
+-		if (memregion->min_page_size > PAGE_SIZE) {
++		if (memregion->min_page_size > page_size) {
+ 			ret = __create_bo(fd, vm,
+-					  memregion->min_page_size + PAGE_SIZE,
++					  memregion->min_page_size + page_size,
+ 					  region, &handle);
+ 			if (!ret) {
+ 				gem_close(fd, handle);
+-- 
+2.34.1
