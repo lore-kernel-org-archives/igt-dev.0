@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 676F010E4A4
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 14:17:43 +0000 (UTC)
-Message-ID: <a499550e-03d8-051e-9746-fcc1bef19871@intel.com>
-Date: Mon, 3 Apr 2023 17:17:28 +0300
-Content-Language: en-US
-To: Matthew Auld <matthew.auld@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230329115642.244296-1-matthew.auld@intel.com>
- <20230329115642.244296-3-matthew.auld@intel.com>
- <8ffd9eaa-880a-4a5b-8463-5c3260a7d092@intel.com>
- <a34e134e-8427-c46e-4c39-3c749fe0867a@intel.com>
-From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-In-Reply-To: <a34e134e-8427-c46e-4c39-3c749fe0867a@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49EBC10E4AD
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 14:55:46 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="------------LcSzdt6f0ailr4QmHPvbCt24"
+Message-ID: <2679f33b-76b8-def3-388e-1187b630c921@linux.intel.com>
+Date: Mon, 3 Apr 2023 16:55:42 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/5] lib/xe: add visible vram helpers
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230328124044.268766-1-maarten.lankhorst@linux.intel.com>
+ <20230403053724.kctv5urufyh7aono@zkempczy-mobl2>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20230403053724.kctv5urufyh7aono@zkempczy-mobl2>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] xe_pm: Kill display for PM tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,203 +21,280 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+This is a multi-part message in MIME format.
+--------------LcSzdt6f0ailr4QmHPvbCt24
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+Hey,
 
-On 4/3/23 3:39 PM, Matthew Auld wrote:
-> On 03/04/2023 10:18, Gwan-gyeong Mun wrote:
->>
->>
->> On 3/29/23 2:56 PM, Matthew Auld wrote:
->>> Add helpers for object creation and querying the cpu_visible related 
->>> bits.
->>>
->>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->>> Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
->>> ---
->>>   lib/xe/xe_query.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++-
->>>   lib/xe/xe_query.h |  6 +++++
->>>   2 files changed, 74 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
->>> index f281bc4a..48a413cd 100644
->>> --- a/lib/xe/xe_query.c
->>> +++ b/lib/xe/xe_query.c
->>> @@ -140,6 +140,17 @@ static uint64_t gt_vram_size(const struct 
->>> drm_xe_query_mem_usage *mem_usage,
->>>       return 0;
->>>   }
->>> +static uint64_t gt_visible_vram_size(const struct 
->>> drm_xe_query_mem_usage *mem_usage,
->>> +                     const struct drm_xe_query_gts *gts, int gt)
->>> +{
->>> +    int region_idx = ffs(native_region_for_gt(gts, gt)) - 1;
->>> +
->>> +    if (XE_IS_CLASS_VRAM(&mem_usage->regions[region_idx]))
->>> +        return mem_usage->regions[region_idx].cpu_visible_size;
->>> +
->>> +    return 0;
->>> +}
->>> +
->>>   static bool __mem_has_vram(struct drm_xe_query_mem_usage *mem_usage)
->>>   {
->>>       for (int i = 0; i < mem_usage->num_regions; i++)
->>> @@ -246,9 +257,14 @@ struct xe_device *xe_device_get(int fd)
->>>       xe_dev->hw_engines = xe_query_engines_new(fd, 
->>> &xe_dev->number_hw_engines);
->>>       xe_dev->mem_usage = xe_query_mem_usage_new(fd);
->>>       xe_dev->vram_size = calloc(xe_dev->number_gt, 
->>> sizeof(*xe_dev->vram_size));
->>> -    for (int gt = 0; gt < xe_dev->number_gt; gt++)
->>> +    xe_dev->visible_vram_size = calloc(xe_dev->number_gt, 
->>> sizeof(*xe_dev->visible_vram_size));
->>> +    for (int gt = 0; gt < xe_dev->number_gt; gt++) {
->>>           xe_dev->vram_size[gt] = gt_vram_size(xe_dev->mem_usage,
->>>                                xe_dev->gts, gt);
->>> +        xe_dev->visible_vram_size[gt] =
->>> +            gt_visible_vram_size(xe_dev->mem_usage,
->>> +                         xe_dev->gts, gt);
->>> +    }
->>>       xe_dev->default_alignment = 
->>> __mem_default_alignment(xe_dev->mem_usage);
->>>       xe_dev->has_vram = __mem_has_vram(xe_dev->mem_usage);
->>> @@ -383,6 +399,20 @@ uint64_t vram_memory(int fd, int gt)
->>>       return native_region_for_gt(xe_dev->gts, gt);
->>>   }
->>> +/**
->>> + * visible_vram_memory:
->>> + * @fd: xe device fd
->>> + * @gt: gt id
->>> + *
->>> + * Returns vram memory bitmask for xe device @fd and @gt id, with
->>> + * XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM also set, to ensure that 
->>> CPU access is
->>> + * possible.
->>> + */
->>> +uint64_t visible_vram_memory(int fd, int gt)
->>> +{
->>> +    return vram_memory(fd, gt) | XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
->>> +}
->>> +
->>>   /**
->>>    * vram_if_possible:
->>>    * @fd: xe device fd
->>> @@ -400,6 +430,25 @@ uint64_t vram_if_possible(int fd, int gt)
->>>       return vram ? vram : system_memory;
->>>   }
->>> +/**
->>> + * visible_vram_if_possible:
->>> + * @fd: xe device fd
->>> + * @gt: gt id
->>> + *
->>> + * Returns vram memory bitmask for xe device @fd and @gt id or 
->>> system memory if
->>> + * there's no vram memory available for @gt. Also attaches the
->>> + * XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM to ensure that CPU access 
->>> is possible
->>> + * when using vram.
->>> + */
->>> +uint64_t visible_vram_if_possible(int fd, int gt)
->>> +{
->>> +    uint64_t regions = all_memory_regions(fd);
->>> +    uint64_t system_memory = regions & 0x1;
->>> +    uint64_t vram = regions & (0x2 << gt);
->>> +
->> Hi Matt,
->>
->> vram_if_possible() uses as the below check routine for vram
->>
->> uint64_t vram = regions & (~0x1);
->>
->> but, here uses
->>
->> uint64_t vram = regions & (0x2 << gt);
->>
->> Why do you use a different check method than the vram_if_possible()?
-> 
-> I assume it was just copy-pasted from an earlier version of 
-> vram_if_possible(). Although I don't quite get why it wants to use 
-> (~0x1) here, if we are passing in the GT...
-> 
-If the purpose of this function is to return the flag information of the 
-VRAM of the specific GT passed as an argument when it is available, then 
-the code of vram_if_possible() should be changed like yours.
+On 2023-04-03 07:37, Zbigniew Kempczyński wrote:
+> On Tue, Mar 28, 2023 at 02:40:43PM +0200, Maarten Lankhorst wrote:
+>> Display keeps PM alive, do the minimal initialization to disable
+>> display for the PM tests entirely.
+> What's the reason of enforcing releasing display before starting PM
+> tests? Looks like introducing testing gap.
 
-Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+It's the easiest fix, and display is irrelevant for those tests. The 
+system will not go into
 
->>
->> Other than that, the rest looks good.
->>
->> Br,
->> G.G.
->>> +    return vram ? vram | XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM : 
->>> system_memory;
->>> +}
->>> +
->>>   /**
->>>    * xe_hw_engines:
->>>    * @fd: xe device fd
->>> @@ -459,6 +508,23 @@ uint64_t xe_vram_size(int fd, int gt)
->>>       return xe_dev->vram_size[gt];
->>>   }
->>> +/**
->>> + * xe_visible_vram_size:
->>> + * @fd: xe device fd
->>> + * @gt: gt
->>> + *
->>> + * Returns size of visible vram of xe device @fd.
->>> + */
->>> +uint64_t xe_visible_vram_size(int fd, int gt)
->>> +{
->>> +    struct xe_device *xe_dev;
->>> +
->>> +    xe_dev = find_in_cache(fd);
->>> +    igt_assert(xe_dev);
->>> +
->>> +    return xe_dev->visible_vram_size[gt];
->>> +}
->>> +
->>>   /**
->>>    * xe_get_default_alignment:
->>>    * @fd: xe device fd
->>> @@ -475,6 +541,7 @@ xe_dev_FN(xe_get_default_alignment, 
->>> default_alignment, uint32_t);
->>>    */
->>>   xe_dev_FN(xe_va_bits, va_bits, uint32_t);
->>> +
->>>   /**
->>>    * xe_dev_id:
->>>    * @fd: xe device fd
->>> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
->>> index 3a00ecd1..5aa5b402 100644
->>> --- a/lib/xe/xe_query.h
->>> +++ b/lib/xe/xe_query.h
->>> @@ -47,6 +47,9 @@ struct xe_device {
->>>       /** @vram_size: array of vram sizes for all gts */
->>>       uint64_t *vram_size;
->>> +    /** @visible_vram_size: array of visible vram sizes for all gts */
->>> +    uint64_t *visible_vram_size;
->>> +
->>>       /** @default_alignment: safe alignment regardless region 
->>> location */
->>>       uint32_t default_alignment;
->>> @@ -76,13 +79,16 @@ unsigned int xe_number_gt(int fd);
->>>   uint64_t all_memory_regions(int fd);
->>>   uint64_t system_memory(int fd);
->>>   uint64_t vram_memory(int fd, int gt);
->>> +uint64_t visible_vram_memory(int fd, int gt);
->>>   uint64_t vram_if_possible(int fd, int gt);
->>> +uint64_t visible_vram_if_possible(int fd, int gt);
->>>   struct drm_xe_engine_class_instance *xe_hw_engines(int fd);
->>>   struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
->>>   unsigned int xe_number_hw_engines(int fd);
->>>   bool xe_has_vram(int fd);
->>>   //uint64_t xe_vram_size(int fd);
->>>   uint64_t xe_vram_size(int fd, int gt);
->>> +uint64_t xe_visible_vram_size(int fd, int gt);
->>>   uint32_t xe_get_default_alignment(int fd);
->>>   uint32_t xe_va_bits(int fd);
->>>   uint16_t xe_dev_id(int fd);
+a lower power when display keeps it in a high power state by holding a 
+PM reference
+
+What do you think of the below test instead?
+
+----------->8---------
+
+diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c
+index 23b8246ed..f681e253a 100644
+--- a/tests/xe/xe_pm.c
++++ b/tests/xe/xe_pm.c
+@@ -341,6 +341,30 @@ NULL));
+  		igt_assert(in_d3(device, d_state));
+  }
+  
++static void test_pipe(device_t device, igt_display_t *display, enum pipe pipe,
++		      igt_output_t *output, enum igt_acpi_d_state d_state)
++{
++	struct igt_fb fb;
++
++	igt_assert(in_d3(device, d_state));
++
++	/* Just for fun, set a scaled fb as primary so scaler is active too */
++	igt_create_fb(display->drm_fd, 640, 480, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
++
++	igt_assert(in_d3(device, d_state));
++
++	igt_display_reset(display);
++	igt_output_set_pipe(output, pipe);
++	igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY), &fb);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_assert(out_of_d3(device, d_state));
++
++	igt_display_reset(display);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_remove_fb(display->drm_fd, &fb);
++	igt_assert(in_d3(device, d_state));
++}
++
+  igt_main
+  {
+  	struct drm_xe_engine_class_instance *hwe;
+@@ -363,19 +387,34 @@ igt_main
+  		{ "d3cold", IGT_ACPI_D3Cold },
+  		{ NULL },
+  	};
++	enum pipe pipe;
++	igt_display_t display;
+  
+  	igt_fixture {
++		drmModeResPtr res;
++
+  		memset(&device, 0, sizeof(device));
+-		device.fd_xe = drm_open_driver(DRIVER_XE);
++		device.fd_xe = drm_open_driver_master(DRIVER_XE);
+  		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
+  		device.pci_root = igt_device_get_pci_root_port(device.fd_xe);
+  
++		kmstest_set_vt_graphics_mode();
+  		xe_device_get(device.fd_xe);
+  
+  		/* Always perform initial once-basic exec checking for health */
+  		xe_for_each_hw_engine(device.fd_xe, hwe)
+  			test_exec(device, hwe, 1, 1, NO_SUSPEND, NO_RPM);
+  
++		/* Kill display, if it exists */
++		res = drmModeGetResources(device.fd_xe);
++		if (res) {
++			drmModeFreeResources(res);
++			igt_display_require(&display, device.fd_xe);
++			igt_display_commit2(&display, COMMIT_ATOMIC);
++		} else {
++			display.drm_fd = -1;
++		}
++
+  		get_d3cold_allowed(device.pci_xe, d3cold_allowed);
+  		igt_assert(igt_setup_runtime_pm(device.fd_xe));
+  	}
+@@ -435,11 +474,31 @@ igt_main
+  				test_exec(device, hwe, 16, 32,
+  					  NO_SUSPEND, d->state);
+  		}
++
++		for_each_pipe_static(pipe) {
++			igt_subtest_f("%s-pipe-%s", d->name, kmstest_pipe_name(pipe)) {
++				igt_output_t *output;
++				bool valid_output = false;
++
++				igt_require(display.drm_fd != -1);
++				igt_require_pipe(&display, pipe);
++				igt_assert(setup_d3(device, d->state));
++
++				for_each_valid_output_on_pipe(&display, pipe, output)
++					test_pipe(device, &display, pipe, output, d->state);
++
++				igt_require(valid_output);
++			}
++		}
+  	}
+  
+  	igt_fixture {
+  		set_d3cold_allowed(device.pci_xe, d3cold_allowed);
+  		igt_restore_runtime_pm();
++
++		if (display.drm_fd != -1)
++			igt_display_fini(&display);
++
+  		xe_device_put(device.fd_xe);
+  		close(device.fd_xe);
+  	}
+
+--------------LcSzdt6f0ailr4QmHPvbCt24
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p>Hey,<br>
+    </p>
+    <div class="moz-cite-prefix">On 2023-04-03 07:37, Zbigniew
+      Kempczyński wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20230403053724.kctv5urufyh7aono@zkempczy-mobl2">
+      <pre class="moz-quote-pre" wrap="">On Tue, Mar 28, 2023 at 02:40:43PM +0200, Maarten Lankhorst wrote:
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">Display keeps PM alive, do the minimal initialization to disable
+display for the PM tests entirely.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+What's the reason of enforcing releasing display before starting PM
+tests? Looks like introducing testing gap.</pre>
+    </blockquote>
+    <p>It's the easiest fix, and display is irrelevant for those tests.
+      The system will not go into</p>
+    <p>a lower power when display keeps it in a high power state by
+      holding a PM reference</p>
+    <p>What do you think of the below test instead?<br>
+    </p>
+    <pre>-----------&gt;8---------
+
+diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c
+index 23b8246ed..f681e253a 100644
+--- a/tests/xe/xe_pm.c
++++ b/tests/xe/xe_pm.c
+@@ -341,6 +341,30 @@ NULL));
+ 		igt_assert(in_d3(device, d_state));
+ }
+ 
++static void test_pipe(device_t device, igt_display_t *display, enum pipe pipe,
++		      igt_output_t *output, enum igt_acpi_d_state d_state)
++{
++	struct igt_fb fb;
++
++	igt_assert(in_d3(device, d_state));
++
++	/* Just for fun, set a scaled fb as primary so scaler is active too */
++	igt_create_fb(display-&gt;drm_fd, 640, 480, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &amp;fb);
++
++	igt_assert(in_d3(device, d_state));
++
++	igt_display_reset(display);
++	igt_output_set_pipe(output, pipe);
++	igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY), &amp;fb);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_assert(out_of_d3(device, d_state));
++
++	igt_display_reset(display);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_remove_fb(display-&gt;drm_fd, &amp;fb);
++	igt_assert(in_d3(device, d_state));
++}
++
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -363,19 +387,34 @@ igt_main
+ 		{ "d3cold", IGT_ACPI_D3Cold },
+ 		{ NULL },
+ 	};
++	enum pipe pipe;
++	igt_display_t display;
+ 
+ 	igt_fixture {
++		drmModeResPtr res;
++
+ 		memset(&amp;device, 0, sizeof(device));
+-		device.fd_xe = drm_open_driver(DRIVER_XE);
++		device.fd_xe = drm_open_driver_master(DRIVER_XE);
+ 		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
+ 		device.pci_root = igt_device_get_pci_root_port(device.fd_xe);
+ 
++		kmstest_set_vt_graphics_mode();
+ 		xe_device_get(device.fd_xe);
+ 
+ 		/* Always perform initial once-basic exec checking for health */
+ 		xe_for_each_hw_engine(device.fd_xe, hwe)
+ 			test_exec(device, hwe, 1, 1, NO_SUSPEND, NO_RPM);
+ 
++		/* Kill display, if it exists */
++		res = drmModeGetResources(device.fd_xe);
++		if (res) {
++			drmModeFreeResources(res);
++			igt_display_require(&amp;display, device.fd_xe);
++			igt_display_commit2(&amp;display, COMMIT_ATOMIC);
++		} else {
++			display.drm_fd = -1;
++		}
++
+ 		get_d3cold_allowed(device.pci_xe, d3cold_allowed);
+ 		igt_assert(igt_setup_runtime_pm(device.fd_xe));
+ 	}
+@@ -435,11 +474,31 @@ igt_main
+ 				test_exec(device, hwe, 16, 32,
+ 					  NO_SUSPEND, d-&gt;state);
+ 		}
++
++		for_each_pipe_static(pipe) {
++			igt_subtest_f("%s-pipe-%s", d-&gt;name, kmstest_pipe_name(pipe)) {
++				igt_output_t *output;
++				bool valid_output = false;
++
++				igt_require(display.drm_fd != -1);
++				igt_require_pipe(&amp;display, pipe);
++				igt_assert(setup_d3(device, d-&gt;state));
++
++				for_each_valid_output_on_pipe(&amp;display, pipe, output)
++					test_pipe(device, &amp;display, pipe, output, d-&gt;state);
++
++				igt_require(valid_output);
++			}
++		}
+ 	}
+ 
+ 	igt_fixture {
+ 		set_d3cold_allowed(device.pci_xe, d3cold_allowed);
+ 		igt_restore_runtime_pm();
++
++		if (display.drm_fd != -1)
++			igt_display_fini(&amp;display);
++
+ 		xe_device_put(device.fd_xe);
+ 		close(device.fd_xe);
+ 	}
+
+</pre>
+  </body>
+</html>
+
+--------------LcSzdt6f0ailr4QmHPvbCt24--
