@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3EA8A10E5D3
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 06:36:11 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  4 Apr 2023 12:06:15 +0530
-Message-Id: <20230404063615.3453716-1-riana.tauro@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A105710E169
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 06:57:50 +0000 (UTC)
+From: Vikas Srivastava <vikas.srivastava@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	karolina.stolarek@intel.com
+Date: Tue,  4 Apr 2023 12:24:25 +0530
+Message-Id: <20230404065429.3381075-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915/i915_power: skip power sanity test on
- simulation
+Subject: [igt-dev] [PATCH i-g-t 0/4] tests/i915: Enable XY_FAST_COPY_BLT for
+ gen12+
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,29 +18,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-skip power sanity test on simulation
+Test case uses legacy command XY_SRC_COPY_BLT_CMD which
+is not supported on newer platforms. Modify test
+to use XY_FAST_COPY_BLT.
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/i915/i915_power.c | 1 +
- 1 file changed, 1 insertion(+)
+Arjun Melkaveri (1):
+  tests/i915/gem_linear_blits: Enable XY_FAST_COPY_BLT copy instruction
 
-diff --git a/tests/i915/i915_power.c b/tests/i915/i915_power.c
-index 333ea002..51b412e3 100644
---- a/tests/i915/i915_power.c
-+++ b/tests/i915/i915_power.c
-@@ -66,6 +66,7 @@ igt_main
- 	int i915;
- 
- 	igt_fixture {
-+		igt_skip_on_simulation();
- 		i915 = drm_open_driver_master(DRIVER_INTEL);
- 	}
- 
+Vikas Srivastava (3):
+  tests/i915/gem_caching: Enable XY_FAST_COPY_BLT for MTL
+  lib/intel_batchbuffer: Enable XY_FAST_COPY_BLT support for
+    api_intel_bb
+  tests/i915/gem_userptr_blits: Enable XY_FAST_COPY_BLT command for
+    gen12+
+
+ lib/intel_batchbuffer.c        |  57 +++++++++++-------
+ tests/i915/gem_caching.c       |  25 +++++---
+ tests/i915/gem_linear_blits.c  |  68 ++++++++++++++--------
+ tests/i915/gem_userptr_blits.c | 102 ++++++++++++++++++++-------------
+ 4 files changed, 162 insertions(+), 90 deletions(-)
+
 -- 
-2.40.0
+2.25.1
