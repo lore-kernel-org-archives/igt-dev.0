@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F46110E36F
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 13:19:34 +0000 (UTC)
-Date: Thu, 13 Apr 2023 15:07:40 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230413130740.3eccl2kukijxmhxt@kamilkon-desk1>
-References: <20230413092159.146658-1-mauro.chehab@linux.intel.com>
- <20230413092159.146658-3-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230413092159.146658-3-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/4] scripts/igt_doc.py: don't depend
- on igt_runner anymore
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 04 Apr 2023 09:51:13 -0000
+Message-ID: <168060187358.18900.16749864525112990357@emeril.freedesktop.org>
+References: <20230404070844.204306-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230404070844.204306-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?estplan/meson=2Ebuild=3A_only_run_igt=5Frunner_if_it_is_compile?=
+ =?utf-8?q?d_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,179 +17,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-04-13 at 11:21:57 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> There's no need to actually call IGT runner to get test lists.
-> 
-> Remove such dependency, in order to speedup --check.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+== Series Details ==
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: testplan/meson.build: only run igt_runner if it is compiled (rev2)
+URL   : https://patchwork.freedesktop.org/series/116065/
+State : warning
 
-> ---
->  docs/testplan/meson.build |  7 ++----
->  scripts/igt_doc.py        | 10 +++-----
->  scripts/test_list.py      | 53 ++++++++++++++++++++++++++-------------
->  3 files changed, 41 insertions(+), 29 deletions(-)
-> 
-> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> index ea9f6eeb7038..3347f61876ef 100644
-> --- a/docs/testplan/meson.build
-> +++ b/docs/testplan/meson.build
-> @@ -11,11 +11,8 @@ xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
->  check_testlist = []
->  if build_tests
->  	doc_dependencies = test_executables
-> -	if jsonc.found()
-> -		# Check if documentation matches the actual tests
-> -		check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
-> -		doc_dependencies += runner
-> -	endif
-> +	# Check if documentation matches the actual tests
-> +	check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
->  else
->  	doc_dependencies = []
->  endif
-> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-> index 8fa5af15033e..01df35f98ace 100755
-> --- a/scripts/igt_doc.py
-> +++ b/scripts/igt_doc.py
-> @@ -16,7 +16,6 @@ import sys
->  from test_list import TestList
->  
->  IGT_BUILD_PATH = 'build'
-> -IGT_RUNNER = 'runner/igt_runner'
->  
->  parser = argparse.ArgumentParser(description = "Print formatted kernel documentation to stdout.",
->                                   formatter_class = argparse.ArgumentDefaultsHelpFormatter,
-> @@ -36,24 +35,21 @@ parser.add_argument("--sort-field",
->  parser.add_argument("--filter-field",
->                      help="modify --show-subtests to filter output based a regex given by FILTER_FIELD=~'regex'")
->  parser.add_argument("--check-testlist", action="store_true",
-> -                    help="Compare documentation against IGT runner testlist.")
-> +                    help="Compare documentation against IGT built tests.")
->  parser.add_argument("--include-plan", action="store_true",
->                      help="Include test plans, if any.")
->  parser.add_argument("--igt-build-path",
-> -                    help="Path where the IGT runner is sitting. Used by --check-testlist.",
-> +                    help="Path to the IGT build directory. Used by --check-testlist.",
->                      default=IGT_BUILD_PATH)
->  parser.add_argument("--gen-testlist",
->                      help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
-> -parser.add_argument("--igt-runner",
-> -                    help="Path where the IGT runner is sitting. Used by --check-testlist.",
-> -                    default=IGT_RUNNER)
->  parser.add_argument('--files', nargs='+',
->                      help="File name(s) to be processed")
->  
->  parse_args = parser.parse_args()
->  
->  tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files,
-> -                 parse_args.igt_build_path, parse_args.igt_runner)
-> +                 parse_args.igt_build_path)
->  
->  RUN = 0
->  if parse_args.show_subtests:
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index d1b9a2794967..287351e717b3 100755
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -245,7 +245,7 @@ class TestList:
->      """
->  
->      def __init__(self, config_fname, include_plan = False, file_list = False,
-> -                 igt_build_path = None, igt_runner = None):
-> +                 igt_build_path = None):
->          self.doc = {}
->          self.test_number = 0
->          self.config = None
-> @@ -254,7 +254,6 @@ class TestList:
->          self.props = {}
->          self.config_fname = config_fname
->          self.igt_build_path = igt_build_path
-> -        self.igt_runner = igt_runner
->          self.level_count = 0
->          self.field_list = {}
->          self.title = None
-> @@ -766,6 +765,38 @@ class TestList:
->  
->          return subtests
->  
-> +    def __get_testlist(self, name):
-> +        match = re.match(r"(.*/)?(.*)\.c$", name)
-> +        if not match:
-> +            return []
-> +
-> +        basename = "igt@" + match.group(2)
-> +
-> +        fname = os.path.join(self.igt_build_path, "tests", match.group(2))
-> +        if not os.path.isfile(fname):
-> +            print(f"Error: file {fname} doesn't exist.")
-> +            sys.exit(1)
-> +        try:
-> +            result = subprocess.run([ fname, "--list-subtests" ],
-> +                                    check = True,
-> +                                    stdout = subprocess.PIPE,
-> +                                    universal_newlines=True)
-> +            subtests = result.stdout.splitlines()
-> +
-> +            return [basename  + "@" + i for i in subtests]
-> +        except subprocess.CalledProcessError:
-> +            # Handle it as a test using igt_simple_main
-> +            return [basename]
-> +
-> +    def get_testlist(self):
-> +
-> +        """ Return a list of tests as reported by --list-subtests """
-> +        tests = []
-> +        for name in self.filenames:
-> +            tests += self.__get_testlist(name)
-> +
-> +        return sorted(tests)
-> +
->      #
->      # Validation methods
->      #
-> @@ -773,28 +804,16 @@ class TestList:
->  
->          """Compare documented subtests with the IGT test list"""
->  
-> -        if not self.igt_build_path or not self.igt_runner:
-> -            sys.exit("Need the IGT build path and igt_runner executable file name")
-> +        if not self.igt_build_path:
-> +            sys.exit("Need the IGT build path")
->  
->          doc_subtests = sorted(self.get_subtests()[""])
->  
->          for i in range(0, len(doc_subtests)): # pylint: disable=C0200
->              doc_subtests[i] = re.sub(r'\<[^\>]+\>', r'\\d+', doc_subtests[i])
->  
-> -        test_prefix = os.path.commonprefix(doc_subtests)
-> -
->          # Get a list of tests from
-> -        try:
-> -            result = subprocess.run([ f"{self.igt_build_path}/{self.igt_runner}",
-> -                                    "-L", "-t",  test_prefix,
-> -                                    f"{self.igt_build_path}/tests"], check = True,
-> -                                    stdout=subprocess.PIPE, universal_newlines=True)
-> -        except subprocess.CalledProcessError as sub_err:
-> -            print(sub_err.stderr)
-> -            print("Error:", sub_err)
-> -            sys.exit(1)
-> -
-> -        run_subtests = sorted(result.stdout.splitlines())
-> +        run_subtests = self.get_testlist()
->  
->          # Compare arrays
->  
-> -- 
-> 2.39.2
-> 
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/847575 for the overview.
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/39294527):
+  Program rst2man-3 found: NO
+  Program rst2man found: NO
+  Program rst2man.sh found: YES (/builds/gfx-ci/igt-ci-tags/man/rst2man.sh)
+  Program igt_doc.py found: YES (/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py)
+  Program gen_rst_index found: YES (/builds/gfx-ci/igt-ci-tags/scripts/gen_rst_index)
+  Dependency gtk-doc found: NO (tried pkgconfig and cmake)
+  Program sphinx-build found: NO
+  Program rst2html-3 found: NO
+  Program rst2html found: NO
+  Program rst2pdf found: NO
+  
+  docs/testplan/meson.build:12:0: ERROR:  Unknown variable "test_executables".
+  
+  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
+  section_end:1680601423:step_script
+  section_start:1680601423:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1680601423:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/847575
 
