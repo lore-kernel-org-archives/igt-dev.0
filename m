@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20230403202437.1816411-1-lucas.demarchi@intel.com>
-References: <20230403202437.1816411-1-lucas.demarchi@intel.com>
-From: Gustavo Sousa <gustavo.sousa@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>, <igt-dev@lists.freedesktop.org>
-Date: Tue, 4 Apr 2023 09:29:51 -0300
-Message-ID: <168061139110.5056.15908803129907670095@gjsousa-mobl2>
+Content-Type: multipart/alternative;
+ boundary="===============0822037736293055048=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tools: Add tool to dump GuC/HuC CSS
- header
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Tue, 04 Apr 2023 13:10:38 -0000
+Message-ID: <168061383818.18898.11534214227736346925@emeril.freedesktop.org>
+References: <20230404120042.146323-1-matthew.auld@intel.com>
+In-Reply-To: <20230404120042.146323-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_lib/xe=5Fquery=3A_fix_vram=5Fm?=
+ =?utf-8?q?emory=28=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,216 +18,217 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Lucas
- De Marchi <lucas.demarchi@intel.com>, intel-xe@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Lucas De Marchi (2023-04-03 17:24:37)
-> Since we are now using unversioned GuC/HuC, it's useful to be able to
-> dump the firmware blob and get that information from the CSS header.
-> Add a tool that decodes that information and dumps the raw header.
->=20
-> Example output:
->=20
->         $ tools/intel-gfx-fw-info /lib/firmware/i915/tgl_guc_70.bin
->         version: 70.5.1
->         date: 2022-09-09
->         raw dump:
->         00000000  06 00 00 00 a1 00 00 00  00 00 01 00 00 00 00 00   ....=
-............
->         00000010  86 80 00 00 09 09 22 20  71 17 01 00 40 00 00 00   ....=
-.." q...@...
->         00000020  40 00 00 00 01 00 00 00  09 21 45 00 73 79 73 5f   @...=
-.....!E.sys_
->         00000030  67 62 73 62 50 43 2d 31  2e 30 2e 33 31 35 30 00   gbsb=
-PC-1.0.3150.
->         00000040  01 05 46 00 00 00 00 00  00 00 00 00 00 00 00 00   ..F.=
-............
->         00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ....=
-............
->         00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ....=
-............
->         00000070  00 00 00 00 00 00 00 00  00 10 80 00 00 01 40 00   ....=
-..........@.
->=20
->         struct uc_css_header:
->         - module_type: 0x6
->         - header_size_dw: 0xa1
->         - header_version: 0x10000
->         - module_id: 0x0
->         - module_vendor: 0x8086
->         - date: 0x20220909
->         - size_dw: 0x11771
->         - key_size_dw: 0x40
->         - modulus_size_dw: 0x40
->         - exponent_size_dw: 0x1
->         - time: 0x452109
->         - username: b'sys_gbsb'
->         - buildnumber: b'PC-1.0.3150\x00'
->         - sw_version: 0x460501
->         - vf_version: 0x0
->         - reserved0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
->         - rsvd: <rsvd private_data_size=3D0x801000, reserved1=3D0x801000>
->         - header_info: 0x400100
->=20
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  tools/intel-gfx-fw-info | 120 ++++++++++++++++++++++++++++++++++++++++
->  tools/meson.build       |   2 +-
->  2 files changed, 121 insertions(+), 1 deletion(-)
->  create mode 100755 tools/intel-gfx-fw-info
->=20
-> diff --git a/tools/intel-gfx-fw-info b/tools/intel-gfx-fw-info
-> new file mode 100755
-> index 000000000..fc1fafdf5
-> --- /dev/null
-> +++ b/tools/intel-gfx-fw-info
-> @@ -0,0 +1,120 @@
-> +#!/usr/bin/env python3
-> +# pylint: disable=3DC0301
-> +# SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +#
-> +# Copyright (C) 2023    Intel Corporation
-> +
-> +import argparse
-> +import logging
-> +import pprint
-> +import sys
-> +import typing
-> +
-> +from dissect import cstruct
+--===============0822037736293055048==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Since we are not packaging this tool in a way that dependencies are
-automatically installed, I think it is worth to capture an ImportError
-here and point the user to the github repository for this dependency.
+== Series Details ==
 
-Acked-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Series: series starting with [i-g-t,1/2] lib/xe_query: fix vram_memory()
+URL   : https://patchwork.freedesktop.org/series/116089/
+State : success
 
-> +
-> +# struct definition below should match the one from i915
-> +# (drivers/gpu/drm/i915/gt/uc/intel_uc_fw_abi.h) and xe
-> +# (drivers/gpu/drm/xe/xe_uc_fw_abi.h).
-> +#
-> +# For compatibility reasons with dissect.cstruct python module, the foll=
-owing
-> +# things are changed from the original kernel definition:
-> +#
-> +#       1) Comments removed
-> +#       2) No anonymous union - not compatible with the
-> +#          dumpstruct(), give it a name
-> +
-> +CDEF =3D """
-> +typedef uint32 u32;
-> +
-> +struct uc_css_header {
-> +        u32 module_type;
-> +        u32 header_size_dw;
-> +        u32 header_version;
-> +        u32 module_id;
-> +        u32 module_vendor;
-> +        u32 date;
-> +        u32 size_dw;
-> +        u32 key_size_dw;
-> +        u32 modulus_size_dw;
-> +        u32 exponent_size_dw;
-> +        u32 time;
-> +        char username[8];
-> +        char buildnumber[12];
-> +        u32 sw_version;
-> +        u32 vf_version;
-> +        u32 reserved0[12];
-> +        union {
-> +                u32 private_data_size;
-> +                u32 reserved1;
-> +        } rsvd;
-> +        u32 header_info;
-> +};
-> +"""
-> +
-> +logger =3D logging.getLogger(__name__)
-> +
-> +
-> +def ffs(x: int) -> int:
-> +    """Returns the index, counting from 0, of the
-> +    least significant set bit in `x`.
-> +    """
-> +    return (x & -x).bit_length() - 1
-> +
-> +
-> +def FIELD_GET(mask: int, value: int) -> int:
-> +    return (value & mask) >> ffs(mask)
-> +
-> +
-> +def decode(fw) -> str:
-> +    data =3D []
-> +
-> +    CSS_SW_VERSION_UC_MAJOR =3D 0xFF << 16
-> +    CSS_SW_VERSION_UC_MINOR =3D 0xFF << 8
-> +    CSS_SW_VERSION_UC_PATCH =3D 0xFF
-> +    major =3D FIELD_GET(CSS_SW_VERSION_UC_MAJOR, fw.sw_version)
-> +    minor =3D FIELD_GET(CSS_SW_VERSION_UC_MINOR, fw.sw_version)
-> +    patch =3D FIELD_GET(CSS_SW_VERSION_UC_PATCH, fw.sw_version)
-> +    data +=3D [f"version: {major}.{minor}.{patch}"]
-> +
-> +    CSS_DATE_DAY =3D 0xFF
-> +    CSS_DATE_MONTH =3D 0xFF << 8
-> +    CSS_DATE_YEAR =3D 0xFFFF << 16
-> +    day =3D FIELD_GET(CSS_DATE_DAY, fw.date)
-> +    month =3D FIELD_GET(CSS_DATE_MONTH, fw.date)
-> +    year =3D FIELD_GET(CSS_DATE_YEAR, fw.date)
-> +    data +=3D [f"date: {year:02x}-{month:02x}-{day:02x}"]
-> +
-> +    return data
-> +
-> +
-> +def parse_args(argv: typing.List[str]) -> argparse.Namespace:
-> +    description =3D "Dump GuC/HuC firmware header"
-> +    parser =3D argparse.ArgumentParser(prog=3D"intel-gfx-fw-info", descr=
-iption=3Ddescription)
-> +
-> +    parser.add_argument("filename", help=3D"GuC/HuC firmware file")
-> +
-> +    return parser.parse_args(argv)
-> +
-> +
-> +def main(argv: typing.List[str]) -> int:
-> +    args =3D parse_args(argv)
-> +
-> +    cparser =3D cstruct.cstruct()
-> +    cparser.load(CDEF)
-> +
-> +    try:
-> +        with open(args.filename, mode=3D"rb") as f:
-> +            fw =3D cparser.uc_css_header(f)
-> +    except FileNotFoundError as e:
-> +        logger.fatal(e)
-> +        return 1
-> +
-> +    print(*decode(fw), sep=3D"\n")
-> +    print("raw dump:", end=3D"")
-> +    cstruct.dumpstruct(fw, color=3Dsys.stdout.isatty())
-> +
-> +    return 0
-> +
-> +
-> +if __name__ =3D=3D "__main__":
-> +    sys.exit(main(sys.argv[1:]))
-> diff --git a/tools/meson.build b/tools/meson.build
-> index 4c45f16b9..88c58adfe 100644
-> --- a/tools/meson.build
-> +++ b/tools/meson.build
-> @@ -81,7 +81,7 @@ executable('intel_reg', sources : intel_reg_src,
->              '-DIGT_DATADIR=3D"@0@"'.format(join_paths(prefix, datadir)),
->            ])
-> =20
-> -install_data('intel_gpu_abrt', install_dir : bindir)
-> +install_data(['intel_gpu_abrt', 'intel-gfx-fw-info'], install_dir : bind=
-ir)
-> =20
->  install_subdir('registers', install_dir : datadir)
-> =20
-> --=20
-> 2.39.0
->
+== Summary ==
+
+CI Bug Log - changes from IGT_7235 -> IGTPW_8751
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/index.html
+
+Participating hosts (37 -> 36)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8751 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg2-11:         [PASS][1] -> [FAIL][2] ([i915#8308])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [PASS][3] -> [ABORT][4] ([i915#7911] / [i915#7913])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [PASS][5] -> [DMESG-WARN][6] ([i915#7699])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - bat-dg2-11:         NOTRUN -> [SKIP][7] ([i915#5354])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         [DMESG-FAIL][8] ([i915#6367] / [i915#7996]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:
+    - bat-dg2-8:          [FAIL][10] ([i915#7932]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         [DMESG-FAIL][12] ([i915#6367] / [i915#7913]) -> [DMESG-FAIL][13] ([i915#6997] / [i915#7913])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/bat-rpls-2/igt@i915_selftest@live@slpc.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7235 -> IGTPW_8751
+
+  CI-20190529: 20190529
+  CI_DRM_12964: 761960bbc648f09022c69052289c90bb55798a8b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8751: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/index.html
+  IGT_7235: ff33276135a71fc86aa30505aa7cdb3cc678c82e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/index.html
+
+--===============0822037736293055048==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib/xe_query: fix vram_memory()</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116089/">https://patchwork.freedesktop.org/series/116089/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7235 -&gt; IGTPW_8751</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/index.html</p>
+<h2>Participating hosts (37 -&gt; 36)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8751 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@slpc:<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7235/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7235 -&gt; IGTPW_8751</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12964: 761960bbc648f09022c69052289c90bb55798a8b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8751: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8751/index.html<br />
+  IGT_7235: ff33276135a71fc86aa30505aa7cdb3cc678c82e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0822037736293055048==--
