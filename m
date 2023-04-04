@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7015910E676
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 12:01:11 +0000 (UTC)
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  4 Apr 2023 13:00:42 +0100
-Message-Id: <20230404120042.146323-2-matthew.auld@intel.com>
-In-Reply-To: <20230404120042.146323-1-matthew.auld@intel.com>
-References: <20230404120042.146323-1-matthew.auld@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAF0610E18B
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 12:02:24 +0000 (UTC)
+Message-ID: <54f4e126-389c-b637-2d8b-146dd55d3f8d@intel.com>
+Date: Tue, 4 Apr 2023 14:02:34 +0200
+To: Vikas Srivastava <vikas.srivastava@intel.com>
+References: <20230404065429.3381075-1-vikas.srivastava@intel.com>
+Content-Language: en-US
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230404065429.3381075-1-vikas.srivastava@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] lib/xe_query: fix vram_if_possible()
+Subject: Re: [igt-dev] [PATCH i-g-t 0/4] tests/i915: Enable XY_FAST_COPY_BLT
+ for gen12+
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,38 +21,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-It looks like this is meant to return the per-GT VRAM bit of the passed
-in GT. Currently this just returns the mask for all GTs. i.e if we ask
-for gt1 we still get back the region mask for all GTs.
+On 4.04.2023 08:54, Vikas Srivastava wrote:
+> Test case uses legacy command XY_SRC_COPY_BLT_CMD which
+> is not supported on newer platforms. Modify test
+> to use XY_FAST_COPY_BLT.
+> 
 
-Reported-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
----
- lib/xe/xe_query.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+I'm surprised to see that there are no r-b's on the patches I already 
+reviewed. Once you have good results from the FULL run, please add the 
+tag to each of the patches:
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 253164d6b..5856255bf 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -393,11 +393,7 @@ uint64_t vram_memory(int fd, int gt)
-  */
- uint64_t vram_if_possible(int fd, int gt)
- {
--	uint64_t regions = all_memory_regions(fd);
--	uint64_t system_memory = regions & 0x1;
--	uint64_t vram = regions & (~0x1);
--
--	return vram ? vram : system_memory;
-+	return vram_memory(fd, gt) ?: 0x1;
- }
- 
- /**
--- 
-2.39.2
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+
+Thanks,
+Karolina
+
+> Arjun Melkaveri (1):
+>    tests/i915/gem_linear_blits: Enable XY_FAST_COPY_BLT copy instruction
+> 
+> Vikas Srivastava (3):
+>    tests/i915/gem_caching: Enable XY_FAST_COPY_BLT for MTL
+>    lib/intel_batchbuffer: Enable XY_FAST_COPY_BLT support for
+>      api_intel_bb
+>    tests/i915/gem_userptr_blits: Enable XY_FAST_COPY_BLT command for
+>      gen12+
+> 
+>   lib/intel_batchbuffer.c        |  57 +++++++++++-------
+>   tests/i915/gem_caching.c       |  25 +++++---
+>   tests/i915/gem_linear_blits.c  |  68 ++++++++++++++--------
+>   tests/i915/gem_userptr_blits.c | 102 ++++++++++++++++++++-------------
+>   4 files changed, 162 insertions(+), 90 deletions(-)
+> 
