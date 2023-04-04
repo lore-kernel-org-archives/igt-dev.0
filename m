@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 4 Apr 2023 15:19:22 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230404131922.onfjzmhrnc3bcw3z@kamilkon-desk1>
-References: <20230403202437.1816411-1-lucas.demarchi@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 91E3310E333
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 13:41:19 +0000 (UTC)
+Date: Tue, 4 Apr 2023 16:41:13 +0300
+From: Imre Deak <imre.deak@intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Message-ID: <ZCwo+ZYr56JKAqb+@ideak-desk.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230403202437.1816411-1-lucas.demarchi@intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tools: Add tool to dump
- GuC/HuC CSS header
+Subject: Re: [igt-dev] [PATCH v6 1/2] tests/i915/i915_pm_dc: Add DC6 DPMS
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,204 +17,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>,
- intel-xe@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-04-03 at 13:24:37 -0700, Lucas De Marchi wrote:
-> Since we are now using unversioned GuC/HuC, it's useful to be able to
-> dump the firmware blob and get that information from the CSS header.
-> Add a tool that decodes that information and dumps the raw header.
-> 
-> Example output:
-> 
-> 	$ tools/intel-gfx-fw-info /lib/firmware/i915/tgl_guc_70.bin
-> 	version: 70.5.1
-> 	date: 2022-09-09
-> 	raw dump:
-> 	00000000  06 00 00 00 a1 00 00 00  00 00 01 00 00 00 00 00   ................
-> 	00000010  86 80 00 00 09 09 22 20  71 17 01 00 40 00 00 00   ......" q...@...
-> 	00000020  40 00 00 00 01 00 00 00  09 21 45 00 73 79 73 5f   @........!E.sys_
-> 	00000030  67 62 73 62 50 43 2d 31  2e 30 2e 33 31 35 30 00   gbsbPC-1.0.3150.
-> 	00000040  01 05 46 00 00 00 00 00  00 00 00 00 00 00 00 00   ..F.............
-> 	00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................
-> 	00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................
-> 	00000070  00 00 00 00 00 00 00 00  00 10 80 00 00 01 40 00   ..............@.
-> 
-> 	struct uc_css_header:
-> 	- module_type: 0x6
-> 	- header_size_dw: 0xa1
-> 	- header_version: 0x10000
-> 	- module_id: 0x0
-> 	- module_vendor: 0x8086
-> 	- date: 0x20220909
-> 	- size_dw: 0x11771
-> 	- key_size_dw: 0x40
-> 	- modulus_size_dw: 0x40
-> 	- exponent_size_dw: 0x1
-> 	- time: 0x452109
-> 	- username: b'sys_gbsb'
-> 	- buildnumber: b'PC-1.0.3150\x00'
-> 	- sw_version: 0x460501
-> 	- vf_version: 0x0
-> 	- reserved0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-> 	- rsvd: <rsvd private_data_size=0x801000, reserved1=0x801000>
-> 	- header_info: 0x400100
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+test for mtl
+Reply-To: imre.deak@intel.com
+In-Reply-To: <20230401175118.192350-2-mohammed.thasleem@intel.com>
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
---
-Kamil
-
+On Sat, Apr 01, 2023 at 11:21:17PM +0530, Mohammed Thasleem wrote:
+> The flow for DC6 validation has changed for MTL.
+> DC6 state achieved based on PKGC10 entry.
+> This test validates PKGC10 entry and confirm DC6 achieved
+> 
+> v2: - Removed variable to store disp version. (Vinod)
+> v3: - Used igt_debugfs_mount to open the path. (Imre)
+>     - Updated string in igt_skip_on_f. (Imre)
+>     - Removed redundant code. (Imre)
+>     - Set test execution for display for version >=14. (Imre)
+>     - Rename function read_pkc_state_value with pkgc. (Imre)
+>     - Added runtime PM disabled and enable. (Imre).
+>     - During testing the entry always happened in ~4.5ses so set
+>       max igt_wait to 5sec.
+> v4: - Updated with sysfs open and read entry calls. (Imre)
+>     - Renamed pkgc with read_pkgc_counter. (Imre)
+>     - Updated igt_wait to 6sec to avoid corner case failure.
+> v5: - Used igt_debugfs_mount to mount the path instead
+>       igt_sysfs_open. (Imre)
+> v6: - Updated igt_assert_f string in test_pkgc_state_dpms.
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 > ---
->  tools/intel-gfx-fw-info | 120 ++++++++++++++++++++++++++++++++++++++++
->  tools/meson.build       |   2 +-
->  2 files changed, 121 insertions(+), 1 deletion(-)
->  create mode 100755 tools/intel-gfx-fw-info
+>  tests/i915/i915_pm_dc.c | 41 ++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 40 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tools/intel-gfx-fw-info b/tools/intel-gfx-fw-info
-> new file mode 100755
-> index 000000000..fc1fafdf5
-> --- /dev/null
-> +++ b/tools/intel-gfx-fw-info
-> @@ -0,0 +1,120 @@
-> +#!/usr/bin/env python3
-> +# pylint: disable=C0301
-> +# SPDX-License-Identifier: (GPL-2.0 OR MIT)
-> +#
-> +# Copyright (C) 2023    Intel Corporation
-> +
-> +import argparse
-> +import logging
-> +import pprint
-> +import sys
-> +import typing
-> +
-> +from dissect import cstruct
-> +
-> +# struct definition below should match the one from i915
-> +# (drivers/gpu/drm/i915/gt/uc/intel_uc_fw_abi.h) and xe
-> +# (drivers/gpu/drm/xe/xe_uc_fw_abi.h).
-> +#
-> +# For compatibility reasons with dissect.cstruct python module, the following
-> +# things are changed from the original kernel definition:
-> +#
-> +#       1) Comments removed
-> +#       2) No anonymous union - not compatible with the
-> +#          dumpstruct(), give it a name
-> +
-> +CDEF = """
-> +typedef uint32 u32;
-> +
-> +struct uc_css_header {
-> +        u32 module_type;
-> +        u32 header_size_dw;
-> +        u32 header_version;
-> +        u32 module_id;
-> +        u32 module_vendor;
-> +        u32 date;
-> +        u32 size_dw;
-> +        u32 key_size_dw;
-> +        u32 modulus_size_dw;
-> +        u32 exponent_size_dw;
-> +        u32 time;
-> +        char username[8];
-> +        char buildnumber[12];
-> +        u32 sw_version;
-> +        u32 vf_version;
-> +        u32 reserved0[12];
-> +        union {
-> +                u32 private_data_size;
-> +                u32 reserved1;
-> +        } rsvd;
-> +        u32 header_info;
-> +};
-> +"""
-> +
-> +logger = logging.getLogger(__name__)
-> +
-> +
-> +def ffs(x: int) -> int:
-> +    """Returns the index, counting from 0, of the
-> +    least significant set bit in `x`.
-> +    """
-> +    return (x & -x).bit_length() - 1
-> +
-> +
-> +def FIELD_GET(mask: int, value: int) -> int:
-> +    return (value & mask) >> ffs(mask)
-> +
-> +
-> +def decode(fw) -> str:
-> +    data = []
-> +
-> +    CSS_SW_VERSION_UC_MAJOR = 0xFF << 16
-> +    CSS_SW_VERSION_UC_MINOR = 0xFF << 8
-> +    CSS_SW_VERSION_UC_PATCH = 0xFF
-> +    major = FIELD_GET(CSS_SW_VERSION_UC_MAJOR, fw.sw_version)
-> +    minor = FIELD_GET(CSS_SW_VERSION_UC_MINOR, fw.sw_version)
-> +    patch = FIELD_GET(CSS_SW_VERSION_UC_PATCH, fw.sw_version)
-> +    data += [f"version: {major}.{minor}.{patch}"]
-> +
-> +    CSS_DATE_DAY = 0xFF
-> +    CSS_DATE_MONTH = 0xFF << 8
-> +    CSS_DATE_YEAR = 0xFFFF << 16
-> +    day = FIELD_GET(CSS_DATE_DAY, fw.date)
-> +    month = FIELD_GET(CSS_DATE_MONTH, fw.date)
-> +    year = FIELD_GET(CSS_DATE_YEAR, fw.date)
-> +    data += [f"date: {year:02x}-{month:02x}-{day:02x}"]
-> +
-> +    return data
-> +
-> +
-> +def parse_args(argv: typing.List[str]) -> argparse.Namespace:
-> +    description = "Dump GuC/HuC firmware header"
-> +    parser = argparse.ArgumentParser(prog="intel-gfx-fw-info", description=description)
-> +
-> +    parser.add_argument("filename", help="GuC/HuC firmware file")
-> +
-> +    return parser.parse_args(argv)
-> +
-> +
-> +def main(argv: typing.List[str]) -> int:
-> +    args = parse_args(argv)
-> +
-> +    cparser = cstruct.cstruct()
-> +    cparser.load(CDEF)
-> +
-> +    try:
-> +        with open(args.filename, mode="rb") as f:
-> +            fw = cparser.uc_css_header(f)
-> +    except FileNotFoundError as e:
-> +        logger.fatal(e)
-> +        return 1
-> +
-> +    print(*decode(fw), sep="\n")
-> +    print("raw dump:", end="")
-> +    cstruct.dumpstruct(fw, color=sys.stdout.isatty())
-> +
-> +    return 0
-> +
-> +
-> +if __name__ == "__main__":
-> +    sys.exit(main(sys.argv[1:]))
-> diff --git a/tools/meson.build b/tools/meson.build
-> index 4c45f16b9..88c58adfe 100644
-> --- a/tools/meson.build
-> +++ b/tools/meson.build
-> @@ -81,7 +81,7 @@ executable('intel_reg', sources : intel_reg_src,
->  	     '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
->  	   ])
+> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+> index 1c695b50..8ca38a35 100644
+> --- a/tests/i915/i915_pm_dc.c
+> +++ b/tests/i915/i915_pm_dc.c
+> @@ -45,6 +45,7 @@
+>  #define PWR_DOMAIN_INFO "i915_power_domain_info"
+>  #define RPM_STATUS "i915_runtime_pm_status"
+>  #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+> +#define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
+>  #define KMS_POLL_DISABLE 0
+>  #define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid)))
 >  
-> -install_data('intel_gpu_abrt', install_dir : bindir)
-> +install_data(['intel_gpu_abrt', 'intel-gfx-fw-info'], install_dir : bindir)
+> @@ -60,6 +61,7 @@ typedef struct {
+>  	int drm_fd;
+>  	int msr_fd;
+>  	int debugfs_fd;
+> +	int debugfs_root_fd;
+>  	uint32_t devid;
+>  	char *debugfs_dump;
+>  	igt_display_t display;
+> @@ -519,6 +521,36 @@ static int has_panels_without_dc_support(igt_display_t *display)
+>  	return external_panel;
+>  }
 >  
->  install_subdir('registers', install_dir : datadir)
+> +static unsigned int read_pkgc_counter(int debugfs_root_fd)
+> +{
+> +	char buf[4096];
+> +	char *str;
+> +	int len;
+> +
+> +	len = igt_sysfs_read(debugfs_root_fd, PACKAGE_CSTATE_PATH, buf, sizeof(buf) - 1);
+> +	igt_skip_on_f(len < 0, "PKGC state file not found\n");
+> +	buf[len] = '\0';
+> +	str = strstr(buf, "Package C10");
+> +	igt_skip_on_f(!str, "PKGC10 is not supported.\n");
+> +
+> +	return get_dc_counter(str);
+> +}
+> +
+> +static void test_pkgc_state_dpms(data_t *data)
+> +{
+> +	unsigned int timeout_sec = 6;
+> +	unsigned int prev_value = 0, cur_value = 0;
+> +
+> +	prev_value = read_pkgc_counter(data->debugfs_root_fd);
+> +	setup_dc_dpms(data);
+> +	dpms_off(data);
+> +	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
+> +		  timeout_sec * 1000, 100);
+> +	igt_assert_f(cur_value > prev_value, "PKGC10 is not achieived.\n");
+
+s/achieived/achieved/
+
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+
+> +	dpms_on(data);
+> +	cleanup_dc_dpms(data);
+> +}
+> +
+>  static void kms_poll_state_restore(int sig)
+>  {
+>  	int sysfs_fd;
+> @@ -538,6 +570,8 @@ igt_main
+>  		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+>  		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+>  		igt_require(data.debugfs_fd != -1);
+> +		data.debugfs_root_fd = open(igt_debugfs_mount(), O_RDONLY);
+> +		igt_require(data.debugfs_root_fd != -1);
+>  		kmstest_set_vt_graphics_mode();
+>  		data.devid = intel_get_drm_devid(data.drm_fd);
+>  		igt_pm_enable_sata_link_power_management();
+> @@ -600,7 +634,11 @@ igt_main
+>  	igt_subtest("dc6-dpms") {
+>  		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+>  			      "PC8+ residencies not supported\n");
+> -		test_dc_state_dpms(&data, CHECK_DC6);
+> +		if (intel_display_ver(data.devid) >= 14)
+> +			test_pkgc_state_dpms(&data);
+> +		else
+> +			test_dc_state_dpms(&data, CHECK_DC6);
+> +
+>  	}
 >  
+>  	igt_describe("This test validates display engine entry to DC9 state");
+> @@ -614,6 +652,7 @@ igt_main
+>  	igt_fixture {
+>  		free(data.debugfs_dump);
+>  		close(data.debugfs_fd);
+> +		close(data.debugfs_root_fd);
+>  		close(data.msr_fd);
+>  		display_fini(&data);
+>  		close(data.drm_fd);
 > -- 
-> 2.39.0
+> 2.25.1
 > 
