@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91E3310E333
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 13:41:19 +0000 (UTC)
-Date: Tue, 4 Apr 2023 16:41:13 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Message-ID: <ZCwo+ZYr56JKAqb+@ideak-desk.fi.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Date: Tue, 4 Apr 2023 07:10:53 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Gustavo Sousa <gustavo.sousa@intel.com>
+Message-ID: <20230404141053.b2qi4deyus2it3p2@ldmartin-desk2.lan>
+References: <20230403202437.1816411-1-lucas.demarchi@intel.com>
+ <168061139110.5056.15908803129907670095@gjsousa-mobl2>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
 Content-Disposition: inline
-Subject: Re: [igt-dev] [PATCH v6 1/2] tests/i915/i915_pm_dc: Add DC6 DPMS
+In-Reply-To: <168061139110.5056.15908803129907670095@gjsousa-mobl2>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tools: Add tool to dump GuC/HuC CSS
+ header
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,133 +18,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-test for mtl
-Reply-To: imre.deak@intel.com
-In-Reply-To: <20230401175118.192350-2-mohammed.thasleem@intel.com>
+On Tue, Apr 04, 2023 at 09:29:51AM -0300, Gustavo Sousa wrote:
+>Quoting Lucas De Marchi (2023-04-03 17:24:37)
+>> Since we are now using unversioned GuC/HuC, it's useful to be able to
+>> dump the firmware blob and get that information from the CSS header.
+>> Add a tool that decodes that information and dumps the raw header.
+>>
+>> Example output:
+>>
+>>         $ tools/intel-gfx-fw-info /lib/firmware/i915/tgl_guc_70.bin
+>>         version: 70.5.1
+>>         date: 2022-09-09
+>>         raw dump:
+>>         00000000  06 00 00 00 a1 00 00 00  00 00 01 00 00 00 00 00   ................
+>>         00000010  86 80 00 00 09 09 22 20  71 17 01 00 40 00 00 00   ......" q...@...
+>>         00000020  40 00 00 00 01 00 00 00  09 21 45 00 73 79 73 5f   @........!E.sys_
+>>         00000030  67 62 73 62 50 43 2d 31  2e 30 2e 33 31 35 30 00   gbsbPC-1.0.3150.
+>>         00000040  01 05 46 00 00 00 00 00  00 00 00 00 00 00 00 00   ..F.............
+>>         00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................
+>>         00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00   ................
+>>         00000070  00 00 00 00 00 00 00 00  00 10 80 00 00 01 40 00   ..............@.
+>>
+>>         struct uc_css_header:
+>>         - module_type: 0x6
+>>         - header_size_dw: 0xa1
+>>         - header_version: 0x10000
+>>         - module_id: 0x0
+>>         - module_vendor: 0x8086
+>>         - date: 0x20220909
+>>         - size_dw: 0x11771
+>>         - key_size_dw: 0x40
+>>         - modulus_size_dw: 0x40
+>>         - exponent_size_dw: 0x1
+>>         - time: 0x452109
+>>         - username: b'sys_gbsb'
+>>         - buildnumber: b'PC-1.0.3150\x00'
+>>         - sw_version: 0x460501
+>>         - vf_version: 0x0
+>>         - reserved0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+>>         - rsvd: <rsvd private_data_size=0x801000, reserved1=0x801000>
+>>         - header_info: 0x400100
+>>
+>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>> ---
+>>  tools/intel-gfx-fw-info | 120 ++++++++++++++++++++++++++++++++++++++++
+>>  tools/meson.build       |   2 +-
+>>  2 files changed, 121 insertions(+), 1 deletion(-)
+>>  create mode 100755 tools/intel-gfx-fw-info
+>>
+>> diff --git a/tools/intel-gfx-fw-info b/tools/intel-gfx-fw-info
+>> new file mode 100755
+>> index 000000000..fc1fafdf5
+>> --- /dev/null
+>> +++ b/tools/intel-gfx-fw-info
+>> @@ -0,0 +1,120 @@
+>> +#!/usr/bin/env python3
+>> +# pylint: disable=C0301
+>> +# SPDX-License-Identifier: (GPL-2.0 OR MIT)
+>> +#
+>> +# Copyright (C) 2023    Intel Corporation
+>> +
+>> +import argparse
+>> +import logging
+>> +import pprint
+>> +import sys
+>> +import typing
+>> +
+>> +from dissect import cstruct
+>
+>Since we are not packaging this tool in a way that dependencies are
+>automatically installed, I think it is worth to capture an ImportError
+>here and point the user to the github repository for this dependency.
 
-On Sat, Apr 01, 2023 at 11:21:17PM +0530, Mohammed Thasleem wrote:
-> The flow for DC6 validation has changed for MTL.
-> DC6 state achieved based on PKGC10 entry.
-> This test validates PKGC10 entry and confirm DC6 achieved
-> 
-> v2: - Removed variable to store disp version. (Vinod)
-> v3: - Used igt_debugfs_mount to open the path. (Imre)
->     - Updated string in igt_skip_on_f. (Imre)
->     - Removed redundant code. (Imre)
->     - Set test execution for display for version >=14. (Imre)
->     - Rename function read_pkc_state_value with pkgc. (Imre)
->     - Added runtime PM disabled and enable. (Imre).
->     - During testing the entry always happened in ~4.5ses so set
->       max igt_wait to 5sec.
-> v4: - Updated with sysfs open and read entry calls. (Imre)
->     - Renamed pkgc with read_pkgc_counter. (Imre)
->     - Updated igt_wait to 6sec to avoid corner case failure.
-> v5: - Used igt_debugfs_mount to mount the path instead
->       igt_sysfs_open. (Imre)
-> v6: - Updated igt_assert_f string in test_pkgc_state_dpms.
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->  tests/i915/i915_pm_dc.c | 41 ++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 40 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-> index 1c695b50..8ca38a35 100644
-> --- a/tests/i915/i915_pm_dc.c
-> +++ b/tests/i915/i915_pm_dc.c
-> @@ -45,6 +45,7 @@
->  #define PWR_DOMAIN_INFO "i915_power_domain_info"
->  #define RPM_STATUS "i915_runtime_pm_status"
->  #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
-> +#define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
->  #define KMS_POLL_DISABLE 0
->  #define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid)))
->  
-> @@ -60,6 +61,7 @@ typedef struct {
->  	int drm_fd;
->  	int msr_fd;
->  	int debugfs_fd;
-> +	int debugfs_root_fd;
->  	uint32_t devid;
->  	char *debugfs_dump;
->  	igt_display_t display;
-> @@ -519,6 +521,36 @@ static int has_panels_without_dc_support(igt_display_t *display)
->  	return external_panel;
->  }
->  
-> +static unsigned int read_pkgc_counter(int debugfs_root_fd)
-> +{
-> +	char buf[4096];
-> +	char *str;
-> +	int len;
-> +
-> +	len = igt_sysfs_read(debugfs_root_fd, PACKAGE_CSTATE_PATH, buf, sizeof(buf) - 1);
-> +	igt_skip_on_f(len < 0, "PKGC state file not found\n");
-> +	buf[len] = '\0';
-> +	str = strstr(buf, "Package C10");
-> +	igt_skip_on_f(!str, "PKGC10 is not supported.\n");
-> +
-> +	return get_dc_counter(str);
-> +}
-> +
-> +static void test_pkgc_state_dpms(data_t *data)
-> +{
-> +	unsigned int timeout_sec = 6;
-> +	unsigned int prev_value = 0, cur_value = 0;
-> +
-> +	prev_value = read_pkgc_counter(data->debugfs_root_fd);
-> +	setup_dc_dpms(data);
-> +	dpms_off(data);
-> +	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
-> +		  timeout_sec * 1000, 100);
-> +	igt_assert_f(cur_value > prev_value, "PKGC10 is not achieived.\n");
+sounds good. I also have a minor update to this patch: we don't really
+need to remove the comments as stated below, it's just the defines in
+the middle of the struct that are not compatible with the minimal C
+parser from this module.
 
-s/achieived/achieved/
+>
+>Acked-by: Gustavo Sousa <gustavo.sousa@intel.com>
 
-Reviewed-by: Imre Deak <imre.deak@intel.com>
+thanks
 
-> +	dpms_on(data);
-> +	cleanup_dc_dpms(data);
-> +}
-> +
->  static void kms_poll_state_restore(int sig)
->  {
->  	int sysfs_fd;
-> @@ -538,6 +570,8 @@ igt_main
->  		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
->  		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
->  		igt_require(data.debugfs_fd != -1);
-> +		data.debugfs_root_fd = open(igt_debugfs_mount(), O_RDONLY);
-> +		igt_require(data.debugfs_root_fd != -1);
->  		kmstest_set_vt_graphics_mode();
->  		data.devid = intel_get_drm_devid(data.drm_fd);
->  		igt_pm_enable_sata_link_power_management();
-> @@ -600,7 +634,11 @@ igt_main
->  	igt_subtest("dc6-dpms") {
->  		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
->  			      "PC8+ residencies not supported\n");
-> -		test_dc_state_dpms(&data, CHECK_DC6);
-> +		if (intel_display_ver(data.devid) >= 14)
-> +			test_pkgc_state_dpms(&data);
-> +		else
-> +			test_dc_state_dpms(&data, CHECK_DC6);
-> +
->  	}
->  
->  	igt_describe("This test validates display engine entry to DC9 state");
-> @@ -614,6 +652,7 @@ igt_main
->  	igt_fixture {
->  		free(data.debugfs_dump);
->  		close(data.debugfs_fd);
-> +		close(data.debugfs_root_fd);
->  		close(data.msr_fd);
->  		display_fini(&data);
->  		close(data.drm_fd);
-> -- 
-> 2.25.1
-> 
+Lucas De Marchi
