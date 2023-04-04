@@ -1,18 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45F3A10E169
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 06:57:55 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	karolina.stolarek@intel.com
-Date: Tue,  4 Apr 2023 12:24:29 +0530
-Message-Id: <20230404065429.3381075-5-vikas.srivastava@intel.com>
-In-Reply-To: <20230404065429.3381075-1-vikas.srivastava@intel.com>
-References: <20230404065429.3381075-1-vikas.srivastava@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF56510E120
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 07:08:52 +0000 (UTC)
+Received: from linux.intel.com (daanders-mobl1.ger.corp.intel.com
+ [10.252.28.218])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id E7E95580C7C
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 00:08:49 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pjamd-000r9k-0h
+ for igt-dev@lists.freedesktop.org; Tue, 04 Apr 2023 09:08:47 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  4 Apr 2023 09:08:44 +0200
+Message-Id: <20230404070844.204306-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4 v3] tests/i915/gem_userptr_blits: Enable
- XY_FAST_COPY_BLT command for gen12+
+Subject: [igt-dev] [PATCH i-g-t v2] testplan/meson.build: only run
+ igt_runner if it is compiled
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,167 +30,53 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test case uses legacy command XY_SRC_COPY_BLT_CMD which is
-not supported on newer platforms. Modify test
-to use XY_FAST_COPY_BLT.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-Cc: Karolina Stolarek <karolina.stolarek@intel.com>
+While the runner is built by default, if jsonc is not found, it
+won't be build. This will cause the documentation validation test
+to cause the build to fail.
+
+Prevent that by adding an extra check if jsonc is found, as this
+is the same condition that it is used to build igt_runner.
+
+While here, also ensure that igt_doc.py will depend on having the
+igt_runner already compiled, when the --check option is used.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/gem_userptr_blits.c | 102 ++++++++++++++++++++-------------
- 1 file changed, 63 insertions(+), 39 deletions(-)
 
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 07a453229a..3a1a81e456 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -66,6 +66,7 @@
- #include "sw_sync.h"
+v2:
+  - add a dependency for the runner binary when --check option is
+    used.
+
+ docs/testplan/meson.build | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index 4c67ec42fc69..b8f94f1d74fb 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -9,9 +9,11 @@ stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
+ xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
  
- #include "eviction_common.c"
-+#include "i915/i915_blt.h"
- 
- #ifndef PAGE_SIZE
- #define PAGE_SIZE 4096
-@@ -99,6 +100,7 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 	struct drm_i915_gem_relocation_entry reloc[2];
- 	struct drm_i915_gem_exec_object2 obj[3];
- 	struct drm_i915_gem_execbuffer2 exec;
-+	static uint32_t devid;
- 	uint32_t handle;
- 	int ret, i=0;
- 	uint64_t dst_offset, src_offset, bb_offset;
-@@ -108,29 +110,49 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 	dst_offset = bb_offset + 4096;
- 	src_offset = dst_offset + WIDTH * HEIGHT * sizeof(uint32_t) * (src != dst);
- 
--	batch[i++] = XY_SRC_COPY_BLT_CMD |
--		  XY_SRC_COPY_BLT_WRITE_ALPHA |
--		  XY_SRC_COPY_BLT_WRITE_RGB;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i - 1] |= 8;
--	else
--		batch[i - 1] |= 6;
--
--	batch[i++] = (3 << 24) | /* 32 bits */
--		  (0xcc << 16) | /* copy ROP */
--		  WIDTH*4;
--	batch[i++] = 0; /* dst x1,y1 */
--	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--	batch[i++] = dst_offset; /* dst reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = dst_offset >> 32;
--	batch[i++] = 0; /* src x1,y1 */
--	batch[i++] = WIDTH*4;
--	batch[i++] = src_offset; /* src reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = src_offset >> 32;
--	batch[i++] = MI_BATCH_BUFFER_END;
--	batch[i++] = MI_NOOP;
-+	devid = intel_get_drm_devid(fd);
-+
-+	if (blt_has_xy_src_copy(fd)) {
-+		batch[i++] = XY_SRC_COPY_BLT_CMD |
-+			     XY_SRC_COPY_BLT_WRITE_ALPHA |
-+			     XY_SRC_COPY_BLT_WRITE_RGB;
-+
-+		if (intel_gen(devid) >= 8)
-+			batch[i - 1] |= 8;
-+		else
-+			batch[i - 1] |= 6;
-+
-+		batch[i++] = (3 << 24) | /* 32 bits */
-+			  (0xcc << 16) | /* copy ROP */
-+			  WIDTH * 4;
-+		batch[i++] = 0; /* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+		batch[i++] = lower_32_bits(dst_offset); /* dst reloc*/
-+		if (intel_gen(devid) >= 8)
-+			batch[i++] = upper_32_bits(CANONICAL(dst_offset));
-+		batch[i++] = 0; /* src x1,y1 */
-+		batch[i++] = WIDTH * 4;
-+		batch[i++] = lower_32_bits(src_offset); /* src reloc */
-+		if (intel_gen(devid) >= 8)
-+			batch[i++] = upper_32_bits(CANONICAL(src_offset));
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	} else if (blt_has_fast_copy(fd)) {
-+		batch[i++] = XY_FAST_COPY_BLT;
-+		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH * 4;
-+		batch[i++] = 0;/* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
-+		batch[i++] = lower_32_bits(dst_offset); /* dst address */
-+		batch[i++] = upper_32_bits(CANONICAL(dst_offset));
-+		batch[i++] = 0;/* src x1,y1 */
-+		batch[i++] = WIDTH * 4;/* src pitch */
-+		batch[i++] = lower_32_bits(src_offset); /* src address */
-+		batch[i++] = upper_32_bits(CANONICAL(src_offset));
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	} else {
-+		igt_assert_f(0, "No supported blit command found\n");
-+	}
- 
- 	handle = gem_create(fd, 4096);
- 	gem_write(fd, handle, 0, batch, sizeof(batch));
-@@ -254,20 +276,7 @@ blit(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
- 	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
- 	reloc[1].write_domain = 0;
- 
--	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
--		batch[i++] = XY_FAST_COPY_BLT;
--		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
--		batch[i++] = 0; /* dst x1,y1 */
--		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--		batch[i++] = lower_32_bits(dst_offset); /* dst address */
--		batch[i++] = upper_32_bits(CANONICAL(dst_offset));
--		batch[i++] = 0; /* src x1,y1 */
--		batch[i++] = WIDTH*4; /* src pitch */
--		batch[i++] = lower_32_bits(src_offset); /* src address */
--		batch[i++] = upper_32_bits(CANONICAL(src_offset));
--		batch[i++] = MI_BATCH_BUFFER_END;
--		batch[i++] = MI_NOOP;
--	} else {
-+	if (blt_has_xy_src_copy(fd)) {
- 		batch[i++] = XY_SRC_COPY_BLT_CMD |
- 			     XY_SRC_COPY_BLT_WRITE_ALPHA |
- 			     XY_SRC_COPY_BLT_WRITE_RGB;
-@@ -277,19 +286,34 @@ blit(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
- 			batch[i - 1] |= 6;
- 		batch[i++] = (3 << 24) | /* 32 bits */
- 			     (0xcc << 16) | /* copy ROP */
--			     WIDTH*4;
-+			     WIDTH * 4;
- 		batch[i++] = 0; /* dst x1,y1 */
- 		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
- 		batch[i++] = lower_32_bits(dst_offset);
- 		if (intel_gen(devid) >= 8)
- 			batch[i++] = upper_32_bits(CANONICAL(dst_offset));
- 		batch[i++] = 0; /* src x1,y1 */
--		batch[i++] = WIDTH*4;
-+		batch[i++] = WIDTH * 4;
- 		batch[i++] = lower_32_bits(src_offset);
- 		if (intel_gen(devid) >= 8)
- 			batch[i++] = upper_32_bits(CANONICAL(src_offset));
- 		batch[i++] = MI_BATCH_BUFFER_END;
- 		batch[i++] = MI_NOOP;
-+	} else if (blt_has_fast_copy(fd)) {
-+		batch[i++] = XY_FAST_COPY_BLT;
-+		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH * 4;
-+		batch[i++] = 0; /* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+		batch[i++] = lower_32_bits(dst_offset); /* dst address */
-+		batch[i++] = upper_32_bits(CANONICAL(dst_offset));
-+		batch[i++] = 0; /* src x1,y1 */
-+		batch[i++] = WIDTH * 4; /* src pitch */
-+		batch[i++] = lower_32_bits(src_offset); /* src address */
-+		batch[i++] = upper_32_bits(CANONICAL(src_offset));
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	} else {
-+		igt_assert_f(0, "No supported blit command found\n");
- 	}
- 
- 	gem_write(fd, handle, 0, batch, sizeof(batch));
+ check_testlist = []
+-if build_tests
++doc_dependencies = test_executables
++if build_tests and jsonc.found()
+ 	# Check if documentation matches the actual tests
+ 	check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
++	doc_dependencies += runner
+ else
+ 	test_executables = []
+ endif
+@@ -24,7 +26,7 @@ foreach testplan, fields: test_dict
+ 	rst = custom_target(testplan + '.rst',
+ 			    build_by_default : true,
+ 			    command : [ igt_doc_script, '--config', '@INPUT@', '--rest', '@OUTPUT@' ] + fields['extra_args'],
+-			    depends : test_executables,
++			    depends : doc_dependencies,
+ 			    input : fields['input'],
+ 			    output : testplan + '.rst'
+ 			   )
 -- 
-2.25.1
+2.39.2
