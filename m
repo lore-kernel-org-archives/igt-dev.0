@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D11610E6BD
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 14:28:33 +0000 (UTC)
-Date: Tue, 4 Apr 2023 16:28:18 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFC8110E6DA
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 15:41:19 +0000 (UTC)
+Date: Tue, 4 Apr 2023 17:41:09 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230404142818.7tpygd4x6xqnieay@kamilkon-desk1>
-References: <20230404073835.205323-1-mauro.chehab@linux.intel.com>
- <20230404073835.205323-5-mauro.chehab@linux.intel.com>
+Message-ID: <20230404154109.xccqtqawjvryhgop@kamilkon-desk1>
+References: <be171b540a5dd6c13e5045947e40a1586c6c14c7.1680001835.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230404073835.205323-5-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 4/4] gen_opencl_kernel: add script to
- dynamically create OpenCL kernels
+In-Reply-To: <be171b540a5dd6c13e5045947e40a1586c6c14c7.1680001835.git.mchehab@kernel.org>
+Subject: Re: [igt-dev] [PATCH] scripts/igt_doc.py: ignore normal
+ documentation tags
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,177 +24,66 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-
-On 2023-04-04 at 09:38:35 +0200, Mauro Carvalho Chehab wrote:
+On 2023-03-28 at 13:10:35 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Compute tests can be produced by using OpenCL, by calling ocloc.
-> 
-> While this can be part of IGT building system, for now, let's add
-> a script for such purpose.
+> Only bail out on comments if a field is not recognized on comments
+> with TEST or SUBTEST tags.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-It works on my Ubuntu 22.10,
-
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  opencl/README            |  30 ++++++++++++
->  opencl/gen_opencl_kernel | 103 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 133 insertions(+)
->  create mode 100644 opencl/README
->  create mode 100755 opencl/gen_opencl_kernel
+>  scripts/igt_doc.py | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/opencl/README b/opencl/README
-> new file mode 100644
-> index 000000000000..2fd0687a299b
-> --- /dev/null
-> +++ b/opencl/README
-> @@ -0,0 +1,30 @@
-> +This directory contains some OpenCL compute files, and a script to be used
-> +to produce a header file containing the binaries for the CL against
-> +multiple platforms.
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index 67ab7984dd11..92d925c451ed 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -828,6 +828,7 @@ class TestList:
+>          arg_number = 1
+>          cur_arg = -1
+>          cur_arg_element = 0
+> +        has_test_or_subtest = 0
+>  
+>          with open(fname, 'r', encoding='utf8') as handle:
+>              arg_ref = None
+> @@ -845,6 +846,7 @@ class TestList:
+>                      current_subtest = None
+>                      arg_ref = None
+>                      cur_arg = -1
+> +                    has_test_or_subtest = 0
+>  
+>                      continue
+>  
+> @@ -864,6 +866,7 @@ class TestList:
+>                      # Check if it is a new TEST section
+>                      match = re.match(r'^TEST:\s*(.*)', file_line)
+>                      if match:
+> +                        has_test_or_subtest = 1
+>                          current_test = self.test_number
+>                          self.test_number += 1
+>  
+> @@ -884,6 +887,7 @@ class TestList:
+>                  # Check if it is a new SUBTEST section
+>                  match = re.match(r'^SUBTESTS?:\s*(.*)', file_line)
+>                  if match:
+> +                    has_test_or_subtest = 1
+>                      current_subtest = subtest_number
+>                      subtest_number += 1
+>  
+> @@ -934,6 +938,9 @@ class TestList:
+>  
+>                      continue
+>  
+> +                if not has_test_or_subtest:
+> +                    continue
 > +
-> +For instance, to generate compute square Kernel binaries for TGL and ADL
-> +variants, use this:
-> +
-> +    opencl/gen_opencl_kernel xe_compute_square opencl/compute_square_kernel.cl \
-> +	   xe_compute_square_kernels.c build/opencl tgllp adl-s adl-p adl-n
-> +
-> +    cp build/opencl/xe_compute_square_kernels.c lib/xe/
-> +
-> +The opencl/gen_opencl_kernel requires the Intel compute runtime[1].
-> +
-> +[1] https://github.com/intel/compute-runtime
-> +
-> +This is usually shipped with different names on different distributions.
-> +The above command generate Kernels for both TGL and ADL platforms.
-> +Modern packages for Ubuntu are provided at github, under releases
-> +tag.
-> +
-> +Please notice that the GPU platforms supported by Intel ICD tools depend
-> +on its version. In order to know what's supported, you can run:
-> +
-> +	$ ocloc compile --help 2>&1|grep -A1 'Target device.'
-> +	  -device <device_type>         Target device.
-> +                  <device_type> can be: bdw, skl, kbl, cfl, apl, bxt, glk, whl, aml, cml, icllp, lkf, ehl, jsl, tgllp, rkl, adl-s, adl-p, adl-n, dg1, acm-g10, ats-m150, dg2-g10, acm-g11, ats-m75, dg2-g11, acm-g12, dg2-g12, pvc-sdv, pvc, gen11, gen12lp, gen8, gen9, xe, xe-hp, xe-hpc, xe-hpg, version  or hexadecimal value with 0x prefix
-> +
-> +The above results are for Intel ICD version 22.43.24558, which supports
-> +both TGL and ADL platforms, plus other newer GPU models.
-> diff --git a/opencl/gen_opencl_kernel b/opencl/gen_opencl_kernel
-> new file mode 100755
-> index 000000000000..e6f9601e0edb
-> --- /dev/null
-> +++ b/opencl/gen_opencl_kernel
-> @@ -0,0 +1,103 @@
-> +#!/bin/bash
-> +
-> +trap 'catch $LINENO' ERR
-> +
-> +catch() {
-> +    echo "error in line $1"
-> +    exit 1
-> +}
-> +
-> +
-> +# Parse arguments
-> +if [ $# -lt 5 ]; then
-> +        echo -e 'Usage:\n\t$0: <Kernel name> <kernel.cl> <header name> <dest_dir> <GPU models>' >&2
-> +        echo -e "Example:\n\t$0 kernel_foo kernel.cl kernels.c ../build/opencl tgllp rkl\n" >&2
-> +        exit 1
-> +fi
-> +
-> +if [ "$(xxd --help 2>&1|grep '\-n')" == "" ]; then
-> +	# Old versions have its own criteria to generate names.
-> +	# In this specific case, names will be like:
-> +	# "build_opencl_${GPU_DEVICE}_${kernel_name}_bin"
-> +	# Not fancy but it works.
-> +	USE_NAME_PARM=
-> +else
-> +	# Remove bloatware from the names, calling Kernels as:
-> +	# "${GPU_DEVICE}_${kernel_name}"
-> +	USE_NAME_PARM=1
-> +fi
-> +
-> +
-> +kernel_name=$1
-> +shift
-> +
-> +kernel_cl=$1
-> +shift
-> +
-> +output_fname=$1
-> +shift
-> +
-> +dest_dir=$1
-> +shift
-> +
-> +mkdir -p $dest_dir
-> +
-> +args=( "$@" )
-> +
-> +echo $args
-> +
-> +out_files=""
-> +for i in "${args[@]}"; do
-> +	name="$dest_dir/${i}_${kernel_name}"
-> +	out="$name.h"
-> +        echo "Generating $out"
-> +	ocloc compile -q -file ${kernel_cl} -device ${i} -output ${name}_bin -output_no_suffix
-> +	if  [ "$USE_NAME_PARM" != "" ]; then
-> +		xxd -n "${i}_${kernel_name}" -i ${name}_bin >$out
-> +	else
-> +		xxd -i ${name}_bin >$out
-> +	fi
-> +	sed "s,  ,\t,;s,.*unsigned int.*,,;s,\-,_,g;s,unsigned,static const unsigned," -i $out
-> +	sed "1 i// Match ID: $(ocloc ids $i|grep -v "Matched ids:")" -i $out
-> +	out_files+=" $out"
-> +done
-> +
-> +output_fname="$dest_dir/$output_fname"
-> +echo "Generating $output_fname"
-> +
-> +cat << PREFIX >$output_fname
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * This file is auto-generated from $kernel_cl:
-> + *
-> +PREFIX
-> +
-> +cat $kernel_cl |sed s,"^"," * ," >>$output_fname
-> +
-> +cat << INCLUDES >>$output_fname
-> + */
-> +
-> +#include "intel_chipset.h"
-> +#include "lib/xe/xe_compute.h"
-> +
-> +INCLUDES
-> +
-> +cat $out_files >>$output_fname
-> +
-> +echo "const struct xe_compute_kernels ${kernel_name}_kernels[] = {" >>$output_fname
-> +
-> +for i in "${args[@]}"; do
-> +        out="$dest_dir/${i}_${kernel_name}.h"
-> +        echo -e "\t{" >>$output_fname; \
-> +	grep "Match ID:" $out|sed -E "s/.*\s([0-9]+)\.([0-9]+).*/\t\t.ip_ver = IP_VER(\1, \2),/" >>$output_fname;
-> +	grep unsigned $out|sed -E "s/.*\s+([_a-zA-Z0-9]+)\[\].*/\t\t.size = sizeof(\1),/" >>$output_fname;
-> +	grep unsigned $out|sed -E "s/.*\s+([_a-zA-Z0-9]+)\[\].*/\t\t.kernel = \1,/" >>$output_fname;
-> +	echo -e "\t}," >>$output_fname;
-> +done
-> +
-> +cat << SUFFIX >>$output_fname
-> +	{}
-> +};
-> +SUFFIX
-> +
-> +echo "Done."
+>                  # Use hashes for arguments to avoid duplication
+>                  match = re.match(r'arg\[(\d+)\]:\s*(.*)', file_line)
+>                  if match:
 > -- 
 > 2.39.2
 > 
