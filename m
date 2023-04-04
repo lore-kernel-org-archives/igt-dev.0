@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAF0610E18B
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 12:02:24 +0000 (UTC)
-Message-ID: <54f4e126-389c-b637-2d8b-146dd55d3f8d@intel.com>
-Date: Tue, 4 Apr 2023 14:02:34 +0200
-To: Vikas Srivastava <vikas.srivastava@intel.com>
-References: <20230404065429.3381075-1-vikas.srivastava@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA29510E1E8
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 12:11:41 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 4 Apr 2023 12:10:36 +0000
+Message-ID: <f52b0bcde53b751c648da721ec2e67fc3402dbd9.camel@intel.com>
+References: <20230315210147.19557-1-mohammed.thasleem@intel.com>
+ <20230315210147.19557-3-mohammed.thasleem@intel.com>
+In-Reply-To: <20230315210147.19557-3-mohammed.thasleem@intel.com>
 Content-Language: en-US
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230404065429.3381075-1-vikas.srivastava@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <CA41989461FA60429DDCD722478CF789@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 0/4] tests/i915: Enable XY_FAST_COPY_BLT
- for gen12+
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/i915_pm_dc: Add DC6 PSR
+ test for mtl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,39 +24,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 4.04.2023 08:54, Vikas Srivastava wrote:
-> Test case uses legacy command XY_SRC_COPY_BLT_CMD which
-> is not supported on newer platforms. Modify test
-> to use XY_FAST_COPY_BLT.
-> 
-
-I'm surprised to see that there are no r-b's on the patches I already 
-reviewed. Once you have good results from the FULL run, please add the 
-tag to each of the patches:
-
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
-
-Thanks,
-Karolina
-
-> Arjun Melkaveri (1):
->    tests/i915/gem_linear_blits: Enable XY_FAST_COPY_BLT copy instruction
-> 
-> Vikas Srivastava (3):
->    tests/i915/gem_caching: Enable XY_FAST_COPY_BLT for MTL
->    lib/intel_batchbuffer: Enable XY_FAST_COPY_BLT support for
->      api_intel_bb
->    tests/i915/gem_userptr_blits: Enable XY_FAST_COPY_BLT command for
->      gen12+
-> 
->   lib/intel_batchbuffer.c        |  57 +++++++++++-------
->   tests/i915/gem_caching.c       |  25 +++++---
->   tests/i915/gem_linear_blits.c  |  68 ++++++++++++++--------
->   tests/i915/gem_userptr_blits.c | 102 ++++++++++++++++++++-------------
->   4 files changed, 162 insertions(+), 90 deletions(-)
-> 
+T24gVGh1LCAyMDIzLTAzLTE2IGF0IDAyOjMxICswNTMwLCBNb2hhbW1lZCBUaGFzbGVlbSB3cm90
+ZToKPiBUaGUgZmxvdyBmb3IgREM2IHZhbGlkYXRpb24gaGFzIGNoYW5nZWQgZm9yIE1UTC4KPiBE
+QzYgc3RhdGUgYWNoaWV2ZWQgYmFzZWQgb24gUEtHQzEwIGVudHJ5Lgo+IFRoaXMgdGVzdCB2YWxp
+ZGF0ZXMgUEtHQzEwIGVudHJ5IGFuZCBjb25maXJtIERDNiBhY2hpZXZlZC4KPiAKPiBTaWduZWQt
+b2ZmLWJ5OiBNb2hhbW1lZCBUaGFzbGVlbSA8bW9oYW1tZWQudGhhc2xlZW1AaW50ZWwuY29tPgoK
+UmV2aWV3ZWQtYnk6IEpvdW5pIEjDtmdhbmRlciA8am91bmkuaG9nYW5kZXJAaW50ZWwuY29tPgo+
+IC0tLQo+IMKgdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMgfCA1NAo+ICsrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKystCj4gwqAxIGZpbGUgY2hhbmdlZCwgNTMgaW5zZXJ0aW9u
+cygrKSwgMSBkZWxldGlvbigtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2k5MTVfcG1f
+ZGMuYyBiL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5jCj4gaW5kZXggMzIyYTBjNjAuLmVkNTczY2U2
+IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5jCj4gKysrIGIvdGVzdHMvaTkx
+NS9pOTE1X3BtX2RjLmMKPiBAQCAtNDA3LDYgKzQwNywzOCBAQCBzdGF0aWMgdm9pZCBkcG1zX29u
+KGRhdGFfdCAqZGF0YSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIChJR1RfUlVOVElNRV9QTV9TVEFUVVNfQUNUSVZFKSk7Cj4gwqB9Cj4gwqAK
+PiArc3RhdGljIHZvaWQgcHNyX3BrY19lbmFibGUoZGF0YV90ICpkYXRhKQo+ICt7Cj4gK8KgwqDC
+oMKgwqDCoMKgaWd0X291dHB1dF90ICpvdXRwdXQ7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoGZvcl9l
+YWNoX2Nvbm5lY3RlZF9vdXRwdXQoJmRhdGEtPmRpc3BsYXksIG91dHB1dCkgewo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkcm1Nb2RlQ29ubmVjdG9yUHRyIGMgPSBvdXRwdXQtPmNv
+bmZpZy5jb25uZWN0b3I7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAo
+Yy0+Y29ubmVjdG9yX3R5cGUgPT0gRFJNX01PREVfQ09OTkVDVE9SX2VEUCkKPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+ICsKPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKga21zdGVzdF9zZXRfY29ubmVjdG9yX2RwbXMoZGF0
+YS0+ZHJtX2ZkLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRhdGEtPmRpc3BsYXkub3V0
+cHV0cy0KPiA+Y29uZmlnLmNvbm5lY3RvciwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBE
+Uk1fTU9ERV9EUE1TX09GRik7Cj4gK8KgwqDCoMKgwqDCoMKgfQo+ICt9Cj4gKwo+ICtzdGF0aWMg
+dm9pZCBwc3JfcGtjX2Rpc2FibGUoZGF0YV90ICpkYXRhKQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKg
+aWd0X291dHB1dF90ICpvdXRwdXQ7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoGZvcl9lYWNoX2Nvbm5l
+Y3RlZF9vdXRwdXQoJmRhdGEtPmRpc3BsYXksIG91dHB1dCkgewo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBkcm1Nb2RlQ29ubmVjdG9yUHRyIGMgPSBvdXRwdXQtPmNvbmZpZy5jb25u
+ZWN0b3I7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoYy0+Y29ubmVj
+dG9yX3R5cGUgPT0gRFJNX01PREVfQ09OTkVDVE9SX2VEUCkKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+ICsKPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKga21zdGVzdF9zZXRfY29ubmVjdG9yX2RwbXMoZGF0YS0+ZHJtX2Zk
+LAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRhdGEtPmRpc3BsYXkub3V0cHV0cy0KPiA+
+Y29uZmlnLmNvbm5lY3RvciwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBEUk1fTU9ERV9E
+UE1TX09OKTsKPiArwqDCoMKgwqDCoMKgwqB9Cj4gK30KPiArCj4gwqBzdGF0aWMgdm9pZCB0ZXN0
+X2RjX3N0YXRlX2RwbXMoZGF0YV90ICpkYXRhLCBpbnQgZGNfZmxhZykKPiDCoHsKPiDCoMKgwqDC
+oMKgwqDCoMKgdWludDMyX3QgZGNfY291bnRlcjsKPiBAQCAtNTUxLDYgKzU4MywyMyBAQCBzdGF0
+aWMgdm9pZCB0ZXN0X3BrY19zdGF0ZV9kcG1zKGRhdGFfdCAqZGF0YSkKPiDCoMKgwqDCoMKgwqDC
+oMKgZHBtc19vbihkYXRhKTsKPiDCoH0KPiDCoAo+ICtzdGF0aWMgdm9pZCB0ZXN0X3BrY19zdGF0
+ZV9wc3IoZGF0YV90ICpkYXRhKQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgdW5zaWduZWQgaW50IHRp
+bWVvdXRfbXNlYyA9IDMwOwo+ICvCoMKgwqDCoMKgwqDCoHVuc2lnbmVkIGludCBwcmV2X3ZhbHVl
+ID0gMCwgY3VyX3ZhbHVlID0gMDsKPiArCj4gK8KgwqDCoMKgwqDCoMKgcHJldl92YWx1ZSA9IHJl
+YWRfcGtjX3N0YXRlX3ZhbHVlKGRhdGEtPnBtY19mZCk7Cj4gK8KgwqDCoMKgwqDCoMKgc2V0dXBf
+b3V0cHV0KGRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoHNldHVwX3ByaW1hcnkoZGF0YSk7Cj4gK8Kg
+wqDCoMKgwqDCoMKgaWd0X2Fzc2VydChwc3Jfd2FpdF9lbnRyeShkYXRhLT5kZWJ1Z2ZzX2ZkLCBk
+YXRhLQo+ID5vcF9wc3JfbW9kZSkpOwo+ICvCoMKgwqDCoMKgwqDCoHBzcl9wa2NfZW5hYmxlKGRh
+dGEpOwo+ICvCoMKgwqDCoMKgwqDCoGNsZWFudXBfZGNfcHNyKGRhdGEpOwo+ICvCoMKgwqDCoMKg
+wqDCoGlndF93YWl0KChjdXJfdmFsdWUgPSByZWFkX3BrY19zdGF0ZV92YWx1ZShkYXRhLT5wbWNf
+ZmQpKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdGltZW91dF9tc2VjICog
+MTAwMCwgMTAwKTsKPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2YoY3VyX3ZhbHVlID4gcHJl
+dl92YWx1ZSwgIlBLMTAgaXMgbm90Cj4gYWNoaWVpdmVkLlxuIik7Cj4gK8KgwqDCoMKgwqDCoMKg
+cHNyX3BrY19kaXNhYmxlKGRhdGEpOwo+ICt9Cj4gKwo+IMKgc3RhdGljIHZvaWQga21zX3BvbGxf
+c3RhdGVfcmVzdG9yZShpbnQgc2lnKQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgc3lzZnNf
+ZmQ7Cj4gQEAgLTYwOSw3ICs2NTgsMTAgQEAgaWd0X21haW4KPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoHBzcl9lbmFibGUoZGF0YS5kcm1fZmQsIGRhdGEuZGVidWdmc19mZCwKPiBk
+YXRhLm9wX3Bzcl9tb2RlKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9y
+ZXF1aXJlX2YoaWd0X3BtX3BjOF9wbHVzX3Jlc2lkZW5jaWVzX2VuYWJsZWQoZGF0Cj4gYS5tc3Jf
+ZmQpLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgIlBDOCsgcmVzaWRlbmNpZXMgbm90IHN1cHBvcnRlZFxuIik7Cj4gLcKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfZGNfc3RhdGVfcHNyKCZkYXRhLCBDSEVDS19EQzYp
+Owo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoaW50ZWxfZGlzcGxheV92ZXIo
+ZGF0YS5kZXZpZCkgPT0gMTQpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqB0ZXN0X3BrY19zdGF0ZV9wc3IoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBlbHNlCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqB0ZXN0X2RjX3N0YXRlX3BzcigmZGF0YSwgQ0hFQ0tfREM2KTsKPiDCoMKgwqDC
+oMKgwqDCoMKgfQo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGlndF9kZXNjcmliZSgiVGhpcyB0ZXN0
+IHZhbGlkYXRlcyBkaXNwbGF5IGVuZ2luZSBlbnRyeSB0byBEQzUKPiBzdGF0ZSAiCgo=
