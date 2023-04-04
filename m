@@ -1,26 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8379310E144
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 07:38:41 +0000 (UTC)
-Received: from linux.intel.com (daanders-mobl1.ger.corp.intel.com
- [10.252.28.218])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id DF163580D95
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 00:38:38 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pjbFU-000rTT-2O
- for igt-dev@lists.freedesktop.org; Tue, 04 Apr 2023 09:38:36 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  4 Apr 2023 09:38:35 +0200
-Message-Id: <20230404073835.205323-5-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230404073835.205323-1-mauro.chehab@linux.intel.com>
-References: <20230404073835.205323-1-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1346627231915168165=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 4/4] gen_opencl_kernel: add script to
- dynamically create OpenCL kernels
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Date: Tue, 04 Apr 2023 07:44:09 -0000
+Message-ID: <168059424935.18898.16948590729427468923@emeril.freedesktop.org>
+References: <20230404063615.3453716-1-riana.tauro@intel.com>
+In-Reply-To: <20230404063615.3453716-1-riana.tauro@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9p?=
+ =?utf-8?q?915=5Fpower=3A_skip_power_sanity_test_on_simulation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,169 +17,157 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============1346627231915168165==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Compute tests can be produced by using OpenCL, by calling ocloc.
+== Series Details ==
 
-While this can be part of IGT building system, for now, let's add
-a script for such purpose.
+Series: i915/i915_power: skip power sanity test on simulation
+URL   : https://patchwork.freedesktop.org/series/116066/
+State : success
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- opencl/README            |  30 ++++++++++++
- opencl/gen_opencl_kernel | 103 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 133 insertions(+)
- create mode 100644 opencl/README
- create mode 100755 opencl/gen_opencl_kernel
+== Summary ==
 
-diff --git a/opencl/README b/opencl/README
-new file mode 100644
-index 000000000000..2fd0687a299b
---- /dev/null
-+++ b/opencl/README
-@@ -0,0 +1,30 @@
-+This directory contains some OpenCL compute files, and a script to be used
-+to produce a header file containing the binaries for the CL against
-+multiple platforms.
-+
-+For instance, to generate compute square Kernel binaries for TGL and ADL
-+variants, use this:
-+
-+    opencl/gen_opencl_kernel xe_compute_square opencl/compute_square_kernel.cl \
-+	   xe_compute_square_kernels.c build/opencl tgllp adl-s adl-p adl-n
-+
-+    cp build/opencl/xe_compute_square_kernels.c lib/xe/
-+
-+The opencl/gen_opencl_kernel requires the Intel compute runtime[1].
-+
-+[1] https://github.com/intel/compute-runtime
-+
-+This is usually shipped with different names on different distributions.
-+The above command generate Kernels for both TGL and ADL platforms.
-+Modern packages for Ubuntu are provided at github, under releases
-+tag.
-+
-+Please notice that the GPU platforms supported by Intel ICD tools depend
-+on its version. In order to know what's supported, you can run:
-+
-+	$ ocloc compile --help 2>&1|grep -A1 'Target device.'
-+	  -device <device_type>         Target device.
-+                  <device_type> can be: bdw, skl, kbl, cfl, apl, bxt, glk, whl, aml, cml, icllp, lkf, ehl, jsl, tgllp, rkl, adl-s, adl-p, adl-n, dg1, acm-g10, ats-m150, dg2-g10, acm-g11, ats-m75, dg2-g11, acm-g12, dg2-g12, pvc-sdv, pvc, gen11, gen12lp, gen8, gen9, xe, xe-hp, xe-hpc, xe-hpg, version  or hexadecimal value with 0x prefix
-+
-+The above results are for Intel ICD version 22.43.24558, which supports
-+both TGL and ADL platforms, plus other newer GPU models.
-diff --git a/opencl/gen_opencl_kernel b/opencl/gen_opencl_kernel
-new file mode 100755
-index 000000000000..e6f9601e0edb
---- /dev/null
-+++ b/opencl/gen_opencl_kernel
-@@ -0,0 +1,103 @@
-+#!/bin/bash
-+
-+trap 'catch $LINENO' ERR
-+
-+catch() {
-+    echo "error in line $1"
-+    exit 1
-+}
-+
-+
-+# Parse arguments
-+if [ $# -lt 5 ]; then
-+        echo -e 'Usage:\n\t$0: <Kernel name> <kernel.cl> <header name> <dest_dir> <GPU models>' >&2
-+        echo -e "Example:\n\t$0 kernel_foo kernel.cl kernels.c ../build/opencl tgllp rkl\n" >&2
-+        exit 1
-+fi
-+
-+if [ "$(xxd --help 2>&1|grep '\-n')" == "" ]; then
-+	# Old versions have its own criteria to generate names.
-+	# In this specific case, names will be like:
-+	# "build_opencl_${GPU_DEVICE}_${kernel_name}_bin"
-+	# Not fancy but it works.
-+	USE_NAME_PARM=
-+else
-+	# Remove bloatware from the names, calling Kernels as:
-+	# "${GPU_DEVICE}_${kernel_name}"
-+	USE_NAME_PARM=1
-+fi
-+
-+
-+kernel_name=$1
-+shift
-+
-+kernel_cl=$1
-+shift
-+
-+output_fname=$1
-+shift
-+
-+dest_dir=$1
-+shift
-+
-+mkdir -p $dest_dir
-+
-+args=( "$@" )
-+
-+echo $args
-+
-+out_files=""
-+for i in "${args[@]}"; do
-+	name="$dest_dir/${i}_${kernel_name}"
-+	out="$name.h"
-+        echo "Generating $out"
-+	ocloc compile -q -file ${kernel_cl} -device ${i} -output ${name}_bin -output_no_suffix
-+	if  [ "$USE_NAME_PARM" != "" ]; then
-+		xxd -n "${i}_${kernel_name}" -i ${name}_bin >$out
-+	else
-+		xxd -i ${name}_bin >$out
-+	fi
-+	sed "s,  ,\t,;s,.*unsigned int.*,,;s,\-,_,g;s,unsigned,static const unsigned," -i $out
-+	sed "1 i// Match ID: $(ocloc ids $i|grep -v "Matched ids:")" -i $out
-+	out_files+=" $out"
-+done
-+
-+output_fname="$dest_dir/$output_fname"
-+echo "Generating $output_fname"
-+
-+cat << PREFIX >$output_fname
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * This file is auto-generated from $kernel_cl:
-+ *
-+PREFIX
-+
-+cat $kernel_cl |sed s,"^"," * ," >>$output_fname
-+
-+cat << INCLUDES >>$output_fname
-+ */
-+
-+#include "intel_chipset.h"
-+#include "lib/xe/xe_compute.h"
-+
-+INCLUDES
-+
-+cat $out_files >>$output_fname
-+
-+echo "const struct xe_compute_kernels ${kernel_name}_kernels[] = {" >>$output_fname
-+
-+for i in "${args[@]}"; do
-+        out="$dest_dir/${i}_${kernel_name}.h"
-+        echo -e "\t{" >>$output_fname; \
-+	grep "Match ID:" $out|sed -E "s/.*\s([0-9]+)\.([0-9]+).*/\t\t.ip_ver = IP_VER(\1, \2),/" >>$output_fname;
-+	grep unsigned $out|sed -E "s/.*\s+([_a-zA-Z0-9]+)\[\].*/\t\t.size = sizeof(\1),/" >>$output_fname;
-+	grep unsigned $out|sed -E "s/.*\s+([_a-zA-Z0-9]+)\[\].*/\t\t.kernel = \1,/" >>$output_fname;
-+	echo -e "\t}," >>$output_fname;
-+done
-+
-+cat << SUFFIX >>$output_fname
-+	{}
-+};
-+SUFFIX
-+
-+echo "Done."
--- 
-2.39.2
+CI Bug Log - changes from CI_DRM_12962 -> IGTPW_8745
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8745 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-2:         [PASS][1] -> [ABORT][2] ([i915#4983] / [i915#7913])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12962/bat-rpls-2/igt@i915_selftest@live@requests.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/bat-rpls-2/igt@i915_selftest@live@requests.html
+    - bat-rpls-1:         [PASS][3] -> [ABORT][4] ([i915#7911] / [i915#7982])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12962/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
+    - bat-dg2-8:          [PASS][5] -> [FAIL][6] ([i915#7932]) +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12962/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+
+  
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7233 -> IGTPW_8745
+
+  CI-20190529: 20190529
+  CI_DRM_12962: f8d28584fac01e6f5ab9de716fc0aadd8cf63464 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8745: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/index.html
+  IGT_7233: 716520b469a2745e1882780f2aabbc88eb19332c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/index.html
+
+--===============1346627231915168165==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/i915_power: skip power sanity test on simulation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116066/">https://patchwork.freedesktop.org/series/116066/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12962 -&gt; IGTPW_8745</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8745 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>
+<p>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12962/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</p>
+</li>
+<li>
+<p>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12962/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12962/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7233 -&gt; IGTPW_8745</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12962: f8d28584fac01e6f5ab9de716fc0aadd8cf63464 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8745: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8745/index.html<br />
+  IGT_7233: 716520b469a2745e1882780f2aabbc88eb19332c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1346627231915168165==--
