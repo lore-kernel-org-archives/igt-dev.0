@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2D5710E21D
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Apr 2023 22:12:20 +0000 (UTC)
-Date: Tue, 4 Apr 2023 15:11:43 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <ZCygn7zOgqdKPzHL@nvishwa1-DESK>
-References: <20230404120042.146323-1-matthew.auld@intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230404120042.146323-1-matthew.auld@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A948C10E7ED
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Apr 2023 00:09:31 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed,  5 Apr 2023 00:09:09 +0000
+Message-Id: <20230405000909.51175-3-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20230405000909.51175-1-umesh.nerlige.ramappa@intel.com>
+References: <20230405000909.51175-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe_query: fix vram_memory()
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 2/2] tests/drm_fdinfo: Drop active
+ busyness tests for GuC backend
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,50 +19,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 04, 2023 at 01:00:41PM +0100, Matthew Auld wrote:
->It looks like this is meant to return VRAM if supported. If we call this
->on igpu it should return zero. There is at least one user relying on
->this in xe_mmap@vram, where we want to skip if the mask here is zero.
->
+With GuC scheduling backends, the context busyness for an active context is
+obtained from the GuC FW. The support for this is WIP, so disable tests that
+check TEST_BUSY until the feature is implemented.
 
-Below patch was sent before, but never got merged.
-https://patchwork.freedesktop.org/series/115409/
+v2: Drop fixture (Tvrtko)
 
-There are some minor differences. Can you pick those
-changes?
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/i915/drm_fdinfo.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Also, cover letter seems to be missing for this series.
-Or, we can simple merge them into a single patch as they
-are related?
-
-Niranjana
-
->Reported-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
->Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->Cc: Matthew Brost <matthew.brost@intel.com>
->---
-> lib/xe/xe_query.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
->diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
->index 24a258a5e..253164d6b 100644
->--- a/lib/xe/xe_query.c
->+++ b/lib/xe/xe_query.c
->@@ -380,7 +380,7 @@ uint64_t vram_memory(int fd, int gt)
-> 	igt_assert(xe_dev);
-> 	igt_assert(gt >= 0 && gt < xe_dev->number_gt);
->
->-	return native_region_for_gt(xe_dev->gts, gt);
->+	return native_region_for_gt(xe_dev->gts, gt) & (~0x1);
-> }
->
-> /**
->-- 
->2.39.2
->
+diff --git a/tests/i915/drm_fdinfo.c b/tests/i915/drm_fdinfo.c
+index 65b8b830..1b124755 100644
+--- a/tests/i915/drm_fdinfo.c
++++ b/tests/i915/drm_fdinfo.c
+@@ -197,6 +197,9 @@ single(int gem_fd, const intel_ctx_t *ctx,
+ 	int spin_fd;
+ 	uint64_t ahnd;
+ 
++	if (flags & TEST_BUSY)
++		igt_require(!gem_using_guc_submission(gem_fd));
++
+ 	if (flags & TEST_ISOLATION) {
+ 		spin_fd = gem_reopen_driver(gem_fd);
+ 		ctx = intel_ctx_create_all_physical(spin_fd);
+@@ -287,6 +290,8 @@ busy_check_all(int gem_fd, const intel_ctx_t *ctx,
+ 	igt_spin_t *spin;
+ 	unsigned int i;
+ 
++	igt_require(!gem_using_guc_submission(gem_fd));
++
+ 	memset(tval, 0, sizeof(tval));
+ 
+ 	spin = spin_sync(gem_fd, ahnd, ctx, e);
+@@ -346,6 +351,8 @@ most_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
+ 	uint64_t val[16];
+ 	unsigned int i;
+ 
++	igt_require(!gem_using_guc_submission(gem_fd));
++
+ 	memset(busy_class, 0, sizeof(busy_class));
+ 	memset(tval, 0, sizeof(tval));
+ 
+@@ -404,6 +411,8 @@ all_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
+ 	uint64_t val[16];
+ 	unsigned int i;
+ 
++	igt_require(!gem_using_guc_submission(gem_fd));
++
+ 	memset(busy_class, 0, sizeof(busy_class));
+ 	memset(tval, 0, sizeof(tval));
+ 
+@@ -525,6 +534,9 @@ virtual(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+ {
+ 	intel_ctx_cfg_t cfg = {};
+ 
++	if (flags & TEST_BUSY)
++		igt_require(!gem_using_guc_submission(i915));
++
+ 	cfg.vm = gem_vm_create(i915);
+ 
+ 	for (int class = 0; class < 32; class++) {
+@@ -624,6 +636,8 @@ virtual_all(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+ 	const unsigned int num_engines = base_cfg->num_engines;
+ 	intel_ctx_cfg_t cfg = {};
+ 
++	igt_require(!gem_using_guc_submission(i915));
++
+ 	cfg.vm = gem_vm_create(i915);
+ 
+ 	for (int class = 0; class < 32; class++) {
+-- 
+2.34.1
