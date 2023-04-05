@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4055004843559734238=="
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CE4810E95D
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Apr 2023 13:26:41 +0000 (UTC)
+Message-ID: <1842dbd4-c8a4-9d15-1615-469bfbddc79d@intel.com>
+Date: Wed, 5 Apr 2023 14:26:37 +0100
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Wed, 05 Apr 2023 13:03:55 -0000
-Message-ID: <168069983575.14700.15464646281989778669@emeril.freedesktop.org>
-References: <20230405085141.40355-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20230405085141.40355-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fcursor=5Fcrc=3A_Reduce_the_execution_time_on_simulation_?=
- =?utf-8?b?KHJldjIp?=
+Content-Language: en-GB
+To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+References: <20230404120042.146323-1-matthew.auld@intel.com>
+ <ZCygn7zOgqdKPzHL@nvishwa1-DESK>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <ZCygn7zOgqdKPzHL@nvishwa1-DESK>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe_query: fix vram_memory()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,191 +21,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4055004843559734238==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 04/04/2023 23:11, Niranjana Vishwanathapura wrote:
+> On Tue, Apr 04, 2023 at 01:00:41PM +0100, Matthew Auld wrote:
+>> It looks like this is meant to return VRAM if supported. If we call this
+>> on igpu it should return zero. There is at least one user relying on
+>> this in xe_mmap@vram, where we want to skip if the mask here is zero.
+>>
+> 
+> Below patch was sent before, but never got merged.
+> https://patchwork.freedesktop.org/series/115409/
+> 
+> There are some minor differences. Can you pick those
+> changes?
 
-== Series Details ==
+Ok, missed that... Let me check.
 
-Series: tests/kms_cursor_crc: Reduce the execution time on simulation (rev2)
-URL   : https://patchwork.freedesktop.org/series/114595/
-State : success
+> 
+> Also, cover letter seems to be missing for this series.
+> Or, we can simple merge them into a single patch as they
+> are related?
 
-== Summary ==
+Ok, will squash.
 
-CI Bug Log - changes from CI_DRM_12970 -> IGTPW_8760
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/index.html
-
-Participating hosts (37 -> 35)
-------------------------------
-
-  Missing    (2): fi-kbl-soraka fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8760 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - bat-jsl-3:          [PASS][1] -> [DMESG-FAIL][2] ([i915#5334])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12970/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-dg2-11:         [FAIL][3] ([i915#8308]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12970/bat-dg2-11/igt@i915_pm_rps@basic-api.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/bat-dg2-11/igt@i915_pm_rps@basic-api.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
-    - bat-dg2-8:          [FAIL][5] ([i915#7932]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12970/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-2:         [DMESG-FAIL][7] ([i915#6997] / [i915#7913]) -> [DMESG-FAIL][8] ([i915#6367] / [i915#7913] / [i915#7996])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12970/bat-rpls-2/igt@i915_selftest@live@slpc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/bat-rpls-2/igt@i915_selftest@live@slpc.html
-    - bat-rpls-1:         [DMESG-FAIL][9] ([i915#6367]) -> [DMESG-FAIL][10] ([i915#6367] / [i915#7996])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12970/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
-  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7239 -> IGTPW_8760
-
-  CI-20190529: 20190529
-  CI_DRM_12970: 9009e501d394d70613abb67fae3ff19cc044bcc9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8760: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/index.html
-  IGT_7239: cbac5f457ab5d99586f24c6c9c48705d63ddf433 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/index.html
-
---===============4055004843559734238==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc: Reduce the execution time on simulation (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114595/">https://patchwork.freedesktop.org/series/114595/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12970 -&gt; IGTPW_8760</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/index.html</p>
-<h2>Participating hosts (37 -&gt; 35)</h2>
-<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8760 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_heartbeat:<ul>
-<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12970/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12970/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12970/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>
-<p>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12970/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</p>
-</li>
-<li>
-<p>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12970/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7239 -&gt; IGTPW_8760</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12970: 9009e501d394d70613abb67fae3ff19cc044bcc9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8760: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8760/index.html<br />
-  IGT_7239: cbac5f457ab5d99586f24c6c9c48705d63ddf433 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4055004843559734238==--
+> 
+> Niranjana
+> 
+>> Reported-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+>> Cc: Matthew Brost <matthew.brost@intel.com>
+>> ---
+>> lib/xe/xe_query.c | 2 +-
+>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+>> index 24a258a5e..253164d6b 100644
+>> --- a/lib/xe/xe_query.c
+>> +++ b/lib/xe/xe_query.c
+>> @@ -380,7 +380,7 @@ uint64_t vram_memory(int fd, int gt)
+>>     igt_assert(xe_dev);
+>>     igt_assert(gt >= 0 && gt < xe_dev->number_gt);
+>>
+>> -    return native_region_for_gt(xe_dev->gts, gt);
+>> +    return native_region_for_gt(xe_dev->gts, gt) & (~0x1);
+>> }
+>>
+>> /**
+>> -- 
+>> 2.39.2
+>>
