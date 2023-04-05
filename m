@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8769211832639508592=="
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CF6E10E031
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Apr 2023 07:38:27 +0000 (UTC)
+Message-ID: <2b3cd231-efd2-c31a-d310-25f551b2d599@intel.com>
+Date: Wed, 5 Apr 2023 13:08:09 +0530
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>, <swati2.sharma@intel.com>,
+ <ankit.k.nautiyal@intel.com>
+References: <20230328123210.3781976-1-bhanuprakash.modem@intel.com>
+ <20230328123210.3781976-3-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230328123210.3781976-3-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vikas Srivastava" <vikas.srivastava@intel.com>
-Date: Wed, 05 Apr 2023 07:18:39 -0000
-Message-ID: <168067911928.14695.10221881050950559424@emeril.freedesktop.org>
-References: <20230405060710.3476794-1-vikas.srivastava@intel.com>
-In-Reply-To: <20230405060710.3476794-1-vikas.srivastava@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915=3A_Enable_XY=5FFAST=5FCOPY=5FBLT_for_gen12+?=
+Subject: Re: [igt-dev] [i-g-t V2 2/6] tests/i915/kms_big_joiner: Fix
+ Bigjoiner checks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,265 +24,214 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8769211832639508592==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 3/28/2023 6:02 PM, Bhanuprakash Modem wrote:
+> Bigjoiner will come in the picture when the resolution > 5K or
+> clock > max dot-clock. Add a support to check the selected mode
+> clock is greater than the max dot-clock.
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/i915/kms_big_joiner.c | 67 +++++++++++++++++++++----------------
+>   1 file changed, 38 insertions(+), 29 deletions(-)
+>
+> diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
+> index 8be60ea1176..adc37be719d 100644
+> --- a/tests/i915/kms_big_joiner.c
+> +++ b/tests/i915/kms_big_joiner.c
+> @@ -26,10 +26,13 @@
+>   
+>   #include "igt.h"
+>   
+> -#define MAX_HDISPLAY_PER_PIPE 5120
+> -
+>   IGT_TEST_DESCRIPTION("Test big joiner");
+>   
+> +typedef struct {
+> +	uint32_t output;
 
-Series: tests/i915: Enable XY_FAST_COPY_BLT for gen12+
-URL   : https://patchwork.freedesktop.org/series/116132/
-State : success
+Hi,
 
-== Summary ==
+Could you please rename this as output_id, just to make it clear. Not a 
+must have change, just a suggestion.
 
-CI Bug Log - changes from CI_DRM_12967 -> IGTPW_8758
-====================================================
+> +	drmModeModeInfo mode;
+> +} big_joiner;
+> +
+>   typedef struct {
+>   	int drm_fd;
+>   	igt_display_t display;
+> @@ -37,7 +40,7 @@ typedef struct {
+>   	int n_pipes;
+>   	enum pipe pipe1;
+>   	enum pipe pipe2;
+> -	uint32_t big_joiner_output[2];
+> +	big_joiner big_joiner_output[2];
+>   } data_t;
+>   
+>   static void test_invalid_modeset(data_t *data)
+> @@ -91,7 +94,7 @@ static void test_basic_modeset(data_t *data)
+>   	igt_display_reset(display);
+>   
+>   	for_each_connected_output(display, output) {
+> -		if (data->big_joiner_output[0] == output->id) {
+> +		if (data->big_joiner_output[0].output == output->id) {
+>   			big_joiner_output = output;
+>   			break;
+>   		}
+> @@ -99,9 +102,7 @@ static void test_basic_modeset(data_t *data)
+>   
+>   	igt_output_set_pipe(big_joiner_output, data->pipe1);
+>   
+> -	igt_sort_connector_modes(big_joiner_output->config.connector,
+> -				 sort_drm_modes_by_res_dsc);
+> -	mode = &big_joiner_output->config.connector->modes[0];
+> +	mode = &data->big_joiner_output[0].mode;
+>   	igt_output_override_mode(big_joiner_output, mode);
+>   
+>   	pipe = &display->pipes[data->pipe1];
+> @@ -130,7 +131,7 @@ static void test_dual_display(data_t *data)
+>   	igt_display_reset(display);
+>   
+>   	for_each_connected_output(display, output) {
+> -		if (data->big_joiner_output[count] == output->id) {
+> +		if (data->big_joiner_output[count].output == output->id) {
+>   			big_joiner_output[count] = output;
+>   			count++;
+>   		}
+> @@ -143,9 +144,7 @@ static void test_dual_display(data_t *data)
+>   	igt_output_set_pipe(big_joiner_output[1], data->pipe2);
+>   
+>   	/* Set up first big joiner output on Pipe A*/
+> -	igt_sort_connector_modes(big_joiner_output[0]->config.connector,
+> -				 sort_drm_modes_by_res_dsc);
+> -	mode = &big_joiner_output[0]->config.connector->modes[0];
+> +	mode = &data->big_joiner_output[0].mode;
+>   	igt_output_override_mode(big_joiner_output[0], mode);
+>   
+>   	pipe = &display->pipes[data->pipe1];
+> @@ -156,9 +155,7 @@ static void test_dual_display(data_t *data)
+>   	igt_plane_set_size(plane1, mode->hdisplay, mode->vdisplay);
+>   
+>   	/* Set up second big joiner output on Pipe C*/
+> -	igt_sort_connector_modes(big_joiner_output[1]->config.connector,
+> -				 sort_drm_modes_by_res_dsc);
+> -	mode = &big_joiner_output[1]->config.connector->modes[0];
+> +	mode = &data->big_joiner_output[1].mode;
+>   	igt_output_override_mode(big_joiner_output[1], mode);
+>   
+>   	pipe = &display->pipes[data->pipe2];
+> @@ -186,6 +183,8 @@ igt_main
+>   	int valid_output = 0, i, count = 0, j = 0;
+>   	uint16_t width = 0, height = 0;
+>   	enum pipe pipe_seq[IGT_MAX_PIPES];
+> +	int max_dotclock;
+> +	bool retry = false;
+>   
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> @@ -194,13 +193,22 @@ igt_main
+>   		igt_display_require(&data.display, data.drm_fd);
+>   		igt_require(data.display.is_atomic);
+>   
+> +		max_dotclock = igt_get_max_dotclock(data.drm_fd);
+> +retry:
+>   		for_each_connected_output(&data.display, output) {
+> +			/*
+> +			 * Bigjoiner will come in the picture when
+> +			 * the resolution > 5K or clock > max-dot-clock.
+> +			 */
+>   			igt_sort_connector_modes(output->config.connector,
+> -						 sort_drm_modes_by_res_dsc);
+> +						 retry ? sort_drm_modes_by_clk_dsc :
+> +							 sort_drm_modes_by_res_dsc);
+>   
+>   			mode = &output->config.connector->modes[0];
+> -			if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
+> -				data.big_joiner_output[count++] = output->id;
+> +			if (igt_bigjoiner_possible(mode, max_dotclock)) {
+> +				data.big_joiner_output[count].output = output->id;
+> +				memcpy(&data.big_joiner_output[count].mode, mode, sizeof(drmModeModeInfo));
+> +				count++;
+>   
+>   				width = max(width, mode->hdisplay);
+>   				height = max(height, mode->vdisplay);
+> @@ -208,6 +216,11 @@ igt_main
+>   			valid_output++;
+>   		}
+>   
+> +		if (!count && !retry) {
+> +			retry = true;
+> +			goto retry;
+> +		}
+> +
 
-Summary
--------
+I think this retry mechanism will fail in a case where two big joiner 
+displays are connected.
 
-  **SUCCESS**
+Say we've the first display being 8k@30 and the second display being 
+4k@120. Since count would've already incremented with the first display, 
+we wouldn't do a retry and hence not detect the second display as a big 
+joiner capable display. Could you please check this.
 
-  No regressions found.
+Instead of having a retry mechanism, I would suggest to have a check 
+inside the for loop to try out both highest clk and res modes.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/index.html
-
-Participating hosts (37 -> 36)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (2): fi-snb-2520m fi-pnv-d510 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8758 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][3] ([i915#1886])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-rpls-2:         NOTRUN -> [TIMEOUT][4] ([i915#6794])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/bat-rpls-2/igt@i915_selftest@live@mman.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-rpls-2:         NOTRUN -> [ABORT][5] ([i915#6687] / [i915#7978])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_chamelium_frames@hdmi-crc-fast:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271]) +16 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][7] ([fdo#109271])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
-    - bat-dg2-8:          [PASS][8] -> [FAIL][9] ([i915#7932]) +1 similar issue
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12967/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-n3050:       [ABORT][10] ([i915#7911] / [i915#7913]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12967/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-2:         [ABORT][12] ([i915#7913] / [i915#7982]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12967/bat-rpls-2/igt@i915_selftest@live@requests.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/bat-rpls-2/igt@i915_selftest@live@requests.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:
-    - bat-dg2-8:          [FAIL][14] ([i915#7932]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12967/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7236 -> IGTPW_8758
-
-  CI-20190529: 20190529
-  CI_DRM_12967: 28c342e55ec8081498c63f4a38825f055e294a3a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8758: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/index.html
-  IGT_7236: bac5a4cc31b3212a205219a6cbc45a173d30d04b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+++ 0 lines
---- 1009 lines
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/index.html
-
---===============8769211832639508592==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915: Enable XY_FAST_COPY_BLT for gen12+</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116132/">https://patchwork.freedesktop.org/series/116132/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12967 -&gt; IGTPW_8758</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/index.html</p>
-<h2>Participating hosts (37 -&gt; 36)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (2): fi-snb-2520m fi-pnv-d510 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8758 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/bat-rpls-2/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12967/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12967/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12967/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12967/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7236 -&gt; IGTPW_8758</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12967: 28c342e55ec8081498c63f4a38825f055e294a3a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8758: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8758/index.html<br />
-  IGT_7236: bac5a4cc31b3212a205219a6cbc45a173d30d04b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+++ 0 lines<br />
---- 1009 lines</p>
-
-</body>
-</html>
-
---===============8769211832639508592==--
+Thanks,
+Karthik.B.S
+>   		data.n_pipes = 0;
+>   		for_each_pipe(&data.display, i) {
+>   			data.n_pipes++;
+> @@ -215,7 +228,7 @@ igt_main
+>   			j++;
+>   		}
+>   
+> -		igt_require_f(count > 0, "No output with 5k+ mode found\n");
+> +		igt_require_f(count > 0, "No output with 5k+ mode (or) clock > max-dot-clock found\n");
+>   
+>   		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
+>   				      DRM_FORMAT_MOD_LINEAR, &data.fb);
+> @@ -237,14 +250,12 @@ igt_main
+>   
+>   		igt_display_reset(&data.display);
+>   		for_each_connected_output(&data.display, output) {
+> -			if (data.big_joiner_output[0] != output->id)
+> +			if (data.big_joiner_output[0].output != output->id)
+>   				continue;
+>   
+> -			igt_sort_connector_modes(output->config.connector,
+> -						 sort_drm_modes_by_res_dsc);
+> -
+> +			mode = &data.big_joiner_output[0].mode;
+>   			igt_output_set_pipe(output, data.pipe1);
+> -			igt_output_override_mode(output, &output->config.connector->modes[0]);
+> +			igt_output_override_mode(output, mode);
+>   
+>   			igt_dynamic_f("pipe-%s-%s",
+>   				      kmstest_pipe_name(data.pipe1),
+> @@ -261,17 +272,15 @@ igt_main
+>   
+>   				igt_display_reset(&data.display);
+>   				for_each_connected_output(&data.display, output) {
+> -					igt_sort_connector_modes(output->config.connector,
+> -								 sort_drm_modes_by_res_dsc);
+> -
+> -					if (data.big_joiner_output[0] == output->id) {
+> +					if (data.big_joiner_output[0].output == output->id) {
+>   						first_output = output;
+> +						mode = &data.big_joiner_output[0].mode;
+> +
+>   						igt_output_set_pipe(output, data.pipe1);
+> -						igt_output_override_mode(output, &output->config.connector->modes[0]);
+> +						igt_output_override_mode(output, mode);
+>   					} else if (second_output == NULL) {
+>   						second_output = output;
+>   						igt_output_set_pipe(output, data.pipe2);
+> -						igt_output_override_mode(output, &output->config.connector->modes[0]);
+>   
+>   						break;
+>   					}
