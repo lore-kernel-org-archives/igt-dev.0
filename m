@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 334EB10E0EE
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 08:22:06 +0000 (UTC)
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  6 Apr 2023 09:21:57 +0100
-Message-Id: <20230406082157.258722-1-matthew.auld@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 199F010EB18
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 08:27:22 +0000 (UTC)
+Message-ID: <9ce41f00-ffed-2fb7-5868-3983b679fc9e@intel.com>
+Date: Thu, 6 Apr 2023 13:56:56 +0530
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230406074815.463965-1-bhanuprakash.modem@intel.com>
+ <20230406074815.463965-7-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230406074815.463965-7-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] lib/xe_query: fix vram_memory() and
- vram_if_possible()
+Subject: Re: [igt-dev] [i-g-t V3 6/6] xe-fast-feedback: Add basic kms tests
+ to XE BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,51 +27,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-vram_memory() is meant to return VRAM if supported. If we call this on
-igpu it should return zero. There is at least one user relying on this
-in xe_mmap@vram, where we want to skip if the mask here is zero.
 
-vram_if_possible() should account for the per GT VRAM when returning
-the mask. Currently it just returns the mask for all VRAM instances.
-
-v2 (Niranjana):
-  - Squash into a single patch
-  - Fold in the differences from the version by Matt Brost & Zbigniew
-
-Reported-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
----
- lib/xe/xe_query.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 24a258a5e..2b627a78a 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -380,7 +380,7 @@ uint64_t vram_memory(int fd, int gt)
- 	igt_assert(xe_dev);
- 	igt_assert(gt >= 0 && gt < xe_dev->number_gt);
- 
--	return native_region_for_gt(xe_dev->gts, gt);
-+	return xe_has_vram(fd) ? native_region_for_gt(xe_dev->gts, gt) : 0;
- }
- 
- /**
-@@ -393,11 +393,7 @@ uint64_t vram_memory(int fd, int gt)
-  */
- uint64_t vram_if_possible(int fd, int gt)
- {
--	uint64_t regions = all_memory_regions(fd);
--	uint64_t system_memory = regions & 0x1;
--	uint64_t vram = regions & (~0x1);
--
--	return vram ? vram : system_memory;
-+	return vram_memory(fd, gt) ?: system_memory(fd);
- }
- 
- /**
--- 
-2.39.2
+On 4/6/2023 1:18 PM, Bhanuprakash Modem wrote:
+> Add display's connector detect, addfb2 and prop tests to XE BAT.
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/intel-ci/xe-fast-feedback.testlist | 30 ++++++++++++++++++++++++
+>   1 file changed, 30 insertions(+)
+>
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index 5f3bd2e917d..5efb226caef 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -140,3 +140,33 @@ igt@xe_vm@munmap-style-unbind-userptr-front
+>   igt@xe_vm@munmap-style-unbind-userptr-inval-end
+>   igt@xe_vm@munmap-style-unbind-userptr-inval-front
+>   igt@xe_waitfence@test
+> +igt@kms_addfb_basic@addfb25-bad-modifier
+> +igt@kms_addfb_basic@addfb25-modifier-no-flag
+> +igt@kms_addfb_basic@bad-pitch-0
+> +igt@kms_addfb_basic@bad-pitch-1024
+> +igt@kms_addfb_basic@bad-pitch-128
+> +igt@kms_addfb_basic@bad-pitch-256
+> +igt@kms_addfb_basic@bad-pitch-32
+> +igt@kms_addfb_basic@bad-pitch-63
+> +igt@kms_addfb_basic@bad-pitch-65536
+> +igt@kms_addfb_basic@bad-pitch-999
+> +igt@kms_addfb_basic@basic
+> +igt@kms_addfb_basic@bo-too-small
+> +igt@kms_addfb_basic@invalid-get-prop
+> +igt@kms_addfb_basic@invalid-get-prop-any
+> +igt@kms_addfb_basic@invalid-set-prop
+> +igt@kms_addfb_basic@invalid-set-prop-any
+> +igt@kms_addfb_basic@no-handle
+> +igt@kms_addfb_basic@size-max
+> +igt@kms_addfb_basic@small-bo
+> +igt@kms_addfb_basic@too-high
+> +igt@kms_addfb_basic@too-wide
+> +igt@kms_addfb_basic@unused-handle
+> +igt@kms_addfb_basic@unused-modifier
+> +igt@kms_addfb_basic@unused-offsets
+> +igt@kms_addfb_basic@unused-pitches
+> +igt@kms_force_connector_basic@force-connector-state
+> +igt@kms_force_connector_basic@force-edid
+> +igt@kms_force_connector_basic@force-load-detect
+> +igt@kms_force_connector_basic@prune-stale-modes
+> +igt@kms_prop_blob@basic
