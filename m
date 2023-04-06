@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 199F010EB18
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 08:27:22 +0000 (UTC)
-Message-ID: <9ce41f00-ffed-2fb7-5868-3983b679fc9e@intel.com>
-Date: Thu, 6 Apr 2023 13:56:56 +0530
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230406074815.463965-1-bhanuprakash.modem@intel.com>
- <20230406074815.463965-7-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230406074815.463965-7-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============4917827136718573519=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V3 6/6] xe-fast-feedback: Add basic kms tests
- to XE BAT
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Date: Thu, 06 Apr 2023 08:36:40 -0000
+Message-ID: <168077020074.9558.7191250282045083584@emeril.freedesktop.org>
+References: <20230406074815.463965-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230406074815.463965-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgRW5hYmxl?=
+ =?utf-8?q?_ADDFB_tests_for_XE_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,55 +17,257 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============4917827136718573519==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 4/6/2023 1:18 PM, Bhanuprakash Modem wrote:
-> Add display's connector detect, addfb2 and prop tests to XE BAT.
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/intel-ci/xe-fast-feedback.testlist | 30 ++++++++++++++++++++++++
->   1 file changed, 30 insertions(+)
->
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index 5f3bd2e917d..5efb226caef 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -140,3 +140,33 @@ igt@xe_vm@munmap-style-unbind-userptr-front
->   igt@xe_vm@munmap-style-unbind-userptr-inval-end
->   igt@xe_vm@munmap-style-unbind-userptr-inval-front
->   igt@xe_waitfence@test
-> +igt@kms_addfb_basic@addfb25-bad-modifier
-> +igt@kms_addfb_basic@addfb25-modifier-no-flag
-> +igt@kms_addfb_basic@bad-pitch-0
-> +igt@kms_addfb_basic@bad-pitch-1024
-> +igt@kms_addfb_basic@bad-pitch-128
-> +igt@kms_addfb_basic@bad-pitch-256
-> +igt@kms_addfb_basic@bad-pitch-32
-> +igt@kms_addfb_basic@bad-pitch-63
-> +igt@kms_addfb_basic@bad-pitch-65536
-> +igt@kms_addfb_basic@bad-pitch-999
-> +igt@kms_addfb_basic@basic
-> +igt@kms_addfb_basic@bo-too-small
-> +igt@kms_addfb_basic@invalid-get-prop
-> +igt@kms_addfb_basic@invalid-get-prop-any
-> +igt@kms_addfb_basic@invalid-set-prop
-> +igt@kms_addfb_basic@invalid-set-prop-any
-> +igt@kms_addfb_basic@no-handle
-> +igt@kms_addfb_basic@size-max
-> +igt@kms_addfb_basic@small-bo
-> +igt@kms_addfb_basic@too-high
-> +igt@kms_addfb_basic@too-wide
-> +igt@kms_addfb_basic@unused-handle
-> +igt@kms_addfb_basic@unused-modifier
-> +igt@kms_addfb_basic@unused-offsets
-> +igt@kms_addfb_basic@unused-pitches
-> +igt@kms_force_connector_basic@force-connector-state
-> +igt@kms_force_connector_basic@force-edid
-> +igt@kms_force_connector_basic@force-load-detect
-> +igt@kms_force_connector_basic@prune-stale-modes
-> +igt@kms_prop_blob@basic
+== Series Details ==
+
+Series: Enable ADDFB tests for XE (rev4)
+URL   : https://patchwork.freedesktop.org/series/115381/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7242 -> IGTPW_8764
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8764 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8764, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/index.html
+
+Participating hosts (37 -> 35)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8764:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:
+    - fi-hsw-4770:        [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8764 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg2-11:         [PASS][3] -> [FAIL][4] ([i915#8308])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [PASS][5] -> [DMESG-WARN][6] ([i915#7699])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [PASS][7] -> [ABORT][8] ([i915#4983] / [i915#7911])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         NOTRUN -> [DMESG-FAIL][9] ([i915#6367] / [i915#7913])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - fi-skl-guc:         NOTRUN -> [SKIP][10] ([fdo#109271])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/fi-skl-guc/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - bat-dg2-11:         NOTRUN -> [SKIP][11] ([i915#5354]) +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-skl-guc:         [ABORT][12] ([i915#7980]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/fi-skl-guc/igt@gem_exec_suspend@basic-s3@smem.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/fi-skl-guc/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-rpls-2:         [TIMEOUT][14] ([i915#6794]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/bat-rpls-2/igt@i915_selftest@live@mman.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-rpls-2/igt@i915_selftest@live@mman.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7980]: https://gitlab.freedesktop.org/drm/intel/issues/7980
+  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7242 -> IGTPW_8764
+
+  CI-20190529: 20190529
+  CI_DRM_12978: 88c29af1396f80d54fb8c015e6390e0deda61293 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8764: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/index.html
+  IGT_7242: 32df2fea760a8b72516761657971a7edb08bd0bb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/index.html
+
+--===============4917827136718573519==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Enable ADDFB tests for XE (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115381/">https://patchwork.freedesktop.org/series/115381/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7242 -&gt; IGTPW_8764</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8764 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8764, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/index.html</p>
+<h2>Participating hosts (37 -&gt; 35)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8764:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/fi-hsw-4770/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8764 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/fi-skl-guc/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/fi-skl-guc/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7980">i915#7980</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/fi-skl-guc/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7242/bat-rpls-2/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/bat-rpls-2/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7242 -&gt; IGTPW_8764</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12978: 88c29af1396f80d54fb8c015e6390e0deda61293 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8764: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8764/index.html<br />
+  IGT_7242: 32df2fea760a8b72516761657971a7edb08bd0bb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4917827136718573519==--
