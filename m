@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FA7410EAFD
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 07:52:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5EE5F10EB02
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 07:52:42 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	karthik.b.s@intel.com
-Date: Thu,  6 Apr 2023 13:18:11 +0530
-Message-Id: <20230406074815.463965-3-bhanuprakash.modem@intel.com>
+Date: Thu,  6 Apr 2023 13:18:13 +0530
+Message-Id: <20230406074815.463965-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230406074815.463965-1-bhanuprakash.modem@intel.com>
 References: <20230406074815.463965-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 2/6] lib/igt_fb: Add support for allocating
- buffers for XE
+Subject: [igt-dev] [i-g-t V3 4/6] tests/kms_addfb_basic: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,69 +23,115 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support to create a buffer object to the XE driver.
+Update/fix necessary subtests for XE driver compatibility.
 
-V2: - Use vram_if_possible() (Zbigniew)
+V2: - Fix invalid-smem-bo-on-discrete subtest (Zbigniew)
+V3: - New patch to re-group the subtests (Karthik)
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- lib/igt_fb.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ tests/kms_addfb_basic.c | 32 ++++++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index ba89e1f60ee..7379b99aa8a 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -49,6 +49,8 @@
- #include "intel_batchbuffer.h"
- #include "intel_chipset.h"
- #include "intel_bufops.h"
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index 4c498a40937..a66ccfa6bff 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -41,6 +41,8 @@
+ #include "igt_rand.h"
+ #include "igt_device.h"
+ #include "i915/intel_memory_region.h"
 +#include "xe/xe_ioctl.h"
 +#include "xe/xe_query.h"
  
- /**
-  * SECTION:igt_fb
-@@ -434,7 +436,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
+ static uint32_t gem_bo;
+ static uint32_t gem_bo_small;
+@@ -122,7 +124,7 @@ static void invalid_tests(int fd)
  
- 	switch (modifier) {
- 	case DRM_FORMAT_MOD_LINEAR :
--		if (is_i915_device(fd))
-+		if (is_intel_device(fd))
- 			*width_ret = 64;
- 		else
- 			*width_ret = 1;
-@@ -924,6 +926,9 @@ static uint64_t calc_fb_size(struct igt_fb *fb)
- 		size += calc_plane_size(fb, plane);
+ 	igt_describe("Check if addfb2 call works for clobbered modifier");
+ 	igt_subtest("clobberred-modifier") {
+-		igt_require_intel(fd);
++		igt_require_i915(fd);
+ 		igt_require(gem_available_fences(fd) > 0);
+ 		f.flags = 0;
+ 		f.modifier[0] = 0;
+@@ -140,10 +142,17 @@ static void invalid_tests(int fd)
+ 		uint64_t size;
+ 
+ 		igt_require_intel(fd);
+-		igt_require(gem_has_lmem(fd));
+ 		igt_calc_fb_size(fd, f.width, f.height,
+ 				DRM_FORMAT_XRGB8888, 0, &size, &stride);
+-		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
++
++		if (is_i915_device(fd)) {
++			igt_require(gem_has_lmem(fd));
++			handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
++		} else {
++			igt_require(xe_has_vram(fd));
++			handle = xe_bo_create_flags(fd, 0, size, system_memory(fd));
++		}
++
+ 		f.handles[0] = handle;
+ 		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EREMOTE);
+ 	}
+@@ -324,7 +333,7 @@ static void tiling_tests(int fd)
+ 
+ 	igt_subtest_group {
+ 		igt_fixture {
+-			igt_require_intel(fd);
++			igt_require_i915(fd);
+ 			tiled_x_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+ 				DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED,
+ 				1024*4, NULL, NULL, NULL);
+@@ -492,7 +501,7 @@ static void size_tests(int fd)
+ 
+ 	igt_describe("Test that addfb2 call fails correctly with small buffer object after changing tile");
+ 	igt_subtest("bo-too-small-due-to-tiling") {
+-		igt_require_intel(fd);
++		igt_require_i915(fd);
+ 		igt_require(gem_available_fences(fd) > 0);
+ 		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
+ 		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+@@ -546,7 +555,7 @@ static void addfb25_tests(int fd)
+ 
+ 	igt_subtest_group {
+ 		igt_fixture {
+-			igt_require_intel(fd);
++			igt_require_i915(fd);
+ 			igt_require(gem_available_fences(fd) > 0);
+ 			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
+ 			igt_require_fb_modifiers(fd);
+@@ -827,6 +836,9 @@ igt_main
+ 	igt_fixture {
+ 		fd = drm_open_driver_master(DRIVER_ANY);
+ 		igt_require(has_addfb2_iface(fd));
++
++		if (is_xe_device(fd))
++			xe_device_get(fd);
  	}
  
-+	if (is_xe_device(fb->fd))
-+		size = ALIGN(size, xe_get_default_alignment(fb->fd));
+ 	invalid_tests(fd);
+@@ -848,7 +860,7 @@ igt_main
+ 		size_tests(fd);
+ 
+ 		igt_fixture
+-			igt_require_intel(fd);
++			igt_require_i915(fd);
+ 
+ 		addfb25_ytile(fd);
+ 
+@@ -858,6 +870,10 @@ igt_main
+ 			igt_display_fini(&display);
+ 	}
+ 
+-	igt_fixture
++	igt_fixture {
++		if (is_xe_device(fd))
++			xe_device_put(fd);
 +
- 	return size;
+ 		close(fd);
++	}
  }
- 
-@@ -1143,8 +1148,8 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
- 	 * them, so we need to make sure to use a device BO then.
- 	 */
- 	if (fb->modifier || fb->size || fb->strides[0] ||
--	    (is_i915_device(fd) && igt_format_is_yuv(fb->drm_format)) ||
--	    (is_i915_device(fd) && igt_format_is_fp16(fb->drm_format)) ||
-+	    (is_intel_device(fd) && igt_format_is_yuv(fb->drm_format)) ||
-+	    (is_intel_device(fd) && igt_format_is_fp16(fb->drm_format)) ||
- 	    (is_amdgpu_device(fd) && igt_format_is_yuv(fb->drm_format)) ||
- 	    is_nouveau_device(fd))
- 		device_bo = true;
-@@ -1168,6 +1173,9 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
- 					       fb->strides[0]);
- 			/* If we can't use fences, we won't use ggtt detiling later. */
- 			igt_assert(err == 0 || err == -EOPNOTSUPP);
-+		} else if (is_xe_device(fd)) {
-+			fb->gem_handle = xe_bo_create_flags(fd, 0, fb->size,
-+							vram_if_possible(fd, 0));
- 		} else if (is_vc4_device(fd)) {
- 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
- 
 -- 
 2.40.0
