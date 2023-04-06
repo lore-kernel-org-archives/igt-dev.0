@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8082310E2A2
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 16:38:56 +0000 (UTC)
-Date: Thu, 6 Apr 2023 09:38:32 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <ZC71iFyroOKfxGTN@nvishwa1-DESK>
-References: <20230406082157.258722-1-matthew.auld@intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230406082157.258722-1-matthew.auld@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C84EA10E2A2
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 16:39:44 +0000 (UTC)
+Date: Thu, 6 Apr 2023 18:39:17 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230406163917.slrgsymhcb7vvxfu@kamilkon-desk1>
+References: <20230322173004.19545-1-mohammed.thasleem@intel.com>
+ <20220422163808.131363-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/xe_query: fix vram_memory() and
- vram_if_possible()
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220422163808.131363-1-mohammed.thasleem@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Add negative
+ test for extended display
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,62 +21,268 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 06, 2023 at 09:21:57AM +0100, Matthew Auld wrote:
->vram_memory() is meant to return VRAM if supported. If we call this on
->igpu it should return zero. There is at least one user relying on this
->in xe_mmap@vram, where we want to skip if the mask here is zero.
->
->vram_if_possible() should account for the per GT VRAM when returning
->the mask. Currently it just returns the mask for all VRAM instances.
->
->v2 (Niranjana):
->  - Squash into a single patch
->  - Fold in the differences from the version by Matt Brost & Zbigniew
->
+Hi,
 
-LGTM.
-Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+On 2022-04-22 at 22:08:07 +0530, Mohammed Thasleem wrote:
+> Added negative test to validte ENOSPC and EINVAL when two 4k moniters
+> connected through MST.
 
->Reported-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
->Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
->Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->Cc: Matthew Brost <matthew.brost@intel.com>
->---
-> lib/xe/xe_query.c | 8 ++------
-> 1 file changed, 2 insertions(+), 6 deletions(-)
->
->diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
->index 24a258a5e..2b627a78a 100644
->--- a/lib/xe/xe_query.c
->+++ b/lib/xe/xe_query.c
->@@ -380,7 +380,7 @@ uint64_t vram_memory(int fd, int gt)
-> 	igt_assert(xe_dev);
-> 	igt_assert(gt >= 0 && gt < xe_dev->number_gt);
->
->-	return native_region_for_gt(xe_dev->gts, gt);
->+	return xe_has_vram(fd) ? native_region_for_gt(xe_dev->gts, gt) : 0;
-> }
->
-> /**
->@@ -393,11 +393,7 @@ uint64_t vram_memory(int fd, int gt)
->  */
-> uint64_t vram_if_possible(int fd, int gt)
-> {
->-	uint64_t regions = all_memory_regions(fd);
->-	uint64_t system_memory = regions & 0x1;
->-	uint64_t vram = regions & (~0x1);
->-
->-	return vram ? vram : system_memory;
->+	return vram_memory(fd, gt) ?: system_memory(fd);
-> }
->
-> /**
->-- 
->2.39.2
->
+Could you describe a little more how you test it ? Maybe here
+or in comments in code or in igt_describe().
+
+> 
+> v2: Rebased on tip.
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> ---
+>  tests/kms_display_modes.c | 165 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 165 insertions(+)
+> 
+> diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+> index d69c7b931..b23ff79ee 100644
+> --- a/tests/kms_display_modes.c
+> +++ b/tests/kms_display_modes.c
+> @@ -26,6 +26,11 @@
+>  
+>  #include "igt.h"
+>  
+> +#define HDISPLAY_2K	2560
+> +#define VDISPLAY_2K	1440
+
+Put newline here.
+
+> +#define HDISPLAY_4K	3840
+> +#define VDISPLAY_4K	2160
+> +
+
+What about putting 8K here ?
+
+>  IGT_TEST_DESCRIPTION("Test Display Modes");
+>  
+>  typedef struct {
+> @@ -34,6 +39,90 @@ typedef struct {
+>  	int n_pipes;
+>  } data_t;
+>  
+> +static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+> +{
+> +	drmModeConnector *connector = output->config.connector;
+> +	drmModeModeInfo *highest_mode = NULL;
+> +
+> +	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
+> +
+> +	highest_mode = &connector->modes[0];
+> +
+> +	return highest_mode;
+> +}
+> +
+> +static drmModeModeInfo *get_2k_mode(igt_output_t *output)
+> +{
+> +	drmModeModeInfo *required_mode = NULL;
+> +	drmModeConnector *connector = output->config.connector;
+> +	int j;
+> +
+> +	for (j = 0; j < connector->count_modes; j++) {
+> +
+> +		if (connector->modes[j].vdisplay == VDISPLAY_2K &&
+> +		    connector->modes[j].hdisplay == HDISPLAY_2K) {
+> +			required_mode = &connector->modes[j];
+> +			break;
+> +		}
+> +	}
+> +
+> +	return required_mode;
+> +}
+> +
+> +static int parse_path_blob(char *blob_data)
+> +{
+> +	int connector_id;
+> +	char *encoder;
+> +
+> +	encoder = strtok(blob_data, ":");
+> +	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
+> +
+> +	connector_id = atoi(strtok(NULL, "-"));
+> +
+> +	return connector_id;
+> +}
+> +
+> +static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
+> +{
+> +	drmModePropertyBlobPtr path_blob = NULL;
+> +	uint64_t path_blob_id;
+> +	drmModeConnector *connector = output->config.connector;
+> +	struct kmstest_connector_config config;
+> +	const char *encoder;
+> +	int connector_id;
+> +	static int prev_connector_id;
+> +
+> +	kmstest_get_connector_config(data->drm_fd, output->config.connector->connector_id,
+> +				     -1, &config);
+> +	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
+> +
+> +	if (strcmp(encoder, "DP MST"))
+> +		return false;
+> +
+> +	igt_assert(kmstest_get_property(data->drm_fd, connector->connector_id,
+> +		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
+> +		   &path_blob_id, NULL));
+> +
+> +	igt_assert(path_blob = drmModeGetPropertyBlob(data->drm_fd, path_blob_id));
+> +
+> +	connector_id = parse_path_blob((char *) path_blob->data);
+> +
+> +	/*
+> +	 * Discarding outputs of other DP MST topology.
+> +	 * Testing only on outputs on the topology we got previously
+> +	 */
+> +	if (i == 0) {
+> +		prev_connector_id = connector_id;
+> +	} else {
+> +		if (connector_id != prev_connector_id)
+
+You should free blob before return, so maybe do this check
+just before return ?
+
+> +			return false;
+> +	}
+> +
+> +	drmModeFreePropertyBlob(path_blob);
+> +
+> +	return true;
+
+imho here:
+	return connector_id != prev_connector_id ? false : true;
+
+> +}
+> +
+>  static void run_extendedmode_basic(data_t *data,
+>  				   enum pipe pipe1, igt_output_t *output1,
+>  				   enum pipe pipe2, igt_output_t *output2)
+> @@ -173,8 +262,69 @@ static void run_extendedmode_test(data_t *data) {
+>  	}
+>  }
+>  
+> +static void run_extendedmode_negative(data_t *data, int pipe1, int pipe2)
+> +{
+> +	struct igt_fb fbs[2];
+> +	drmModeModeInfo *mode_mst[2];
+> +	igt_output_t *output, *mst_output[2];
+> +	igt_display_t *display = &data->display;
+> +	igt_plane_t *plane[2];
+> +	int count = 0, dp_mst_outputs = 0, ret;
+> +
+> +	igt_display_reset(display);
+> +
+> +	for_each_connected_output(display, output) {
+> +		mst_output[count++] = output;
+> +		if (output_is_dp_mst(data, output, dp_mst_outputs))
+> +			dp_mst_outputs++;
+> +
+> +		if (dp_mst_outputs > 1)
+> +			break;
+> +	}
+> +
+> +	igt_assert_f(dp_mst_outputs > 1, "MST not found more then one\n");
+
+Why not igt_require_f here ? You could also write out how many MST
+outputs was found.
+
+> +
+> +	igt_output_set_pipe(mst_output[0], pipe1);
+> +	igt_output_set_pipe(mst_output[1], pipe2);
+> +
+> +	mode_mst[0] = get_2k_mode(mst_output[0]);
+> +	mode_mst[1] = get_highres_mode(mst_output[1]);
+> +
+> +	igt_create_color_fb(data->drm_fd, mode_mst[0]->hdisplay, mode_mst[0]->vdisplay,
+> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 1, 0, 0, &fbs[0]);
+> +	igt_create_color_fb(data->drm_fd, mode_mst[1]->hdisplay, mode_mst[1]->vdisplay,
+> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 0, 0, 1, &fbs[1]);
+> +
+> +	plane[0] = igt_pipe_get_plane_type(&display->pipes[pipe1], DRM_PLANE_TYPE_PRIMARY);
+> +	plane[1] = igt_pipe_get_plane_type(&display->pipes[pipe2], DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	igt_plane_set_fb(plane[0], &fbs[0]);
+> +	igt_fb_set_size(&fbs[0], plane[0], mode_mst[0]->hdisplay, mode_mst[0]->vdisplay);
+> +	igt_plane_set_size(plane[0], mode_mst[0]->hdisplay, mode_mst[0]->vdisplay);
+> +
+> +	igt_plane_set_fb(plane[1], &fbs[1]);
+> +	igt_fb_set_size(&fbs[1], plane[1], mode_mst[1]->hdisplay, mode_mst[1]->vdisplay);
+> +	igt_plane_set_size(plane[1], mode_mst[1]->hdisplay, mode_mst[1]->vdisplay);
+> +
+> +	if (mode_mst[0]->hdisplay >= HDISPLAY_2K && mode_mst[0]->vdisplay >= VDISPLAY_2K) {
+> +		mode_mst[0]->hdisplay = HDISPLAY_4K;
+> +		mode_mst[0]->vdisplay = VDISPLAY_4K;
+> +		igt_output_override_mode(mst_output[0], mode_mst[0]);
+> +	}
+> +
+> +	if (mode_mst[1]->hdisplay >= HDISPLAY_4K && mode_mst[1]->vdisplay >= VDISPLAY_4K) {
+> +		mode_mst[0]->hdisplay = HDISPLAY_4K;
+------------------------ ^
+> +		mode_mst[0]->vdisplay = VDISPLAY_4K;
+------------------------ ^
+> +		igt_output_override_mode(mst_output[1], mode_mst[1]);
+--------------------------------------------------- ^ ---------- ^
+This changes mode_mst[0] but override for 1 ?
+
+> +	}
+> +	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+> +	igt_assert(ret != 0 && dp_mst_outputs > 1 && (ENOSPC || EINVAL));
+------------------ ^ --------- ^ -------------------- ^
+dp_mst_output was checked before, so this should be imho
+
+	igt_assert(ret == ENOSPC || ret == EINVAL);
+
+> +
+> +}
+> +
+>  igt_main
+>  {
+> +	enum pipe pipe1, pipe2;
+>  	data_t data;
+>  
+>  	igt_fixture {
+> @@ -188,6 +338,21 @@ igt_main
+>  	igt_subtest_with_dynamic("extended-mode-basic")
+>  		run_extendedmode_test(&data);
+>  
+> +	igt_describe("Negative test for validating display extended mode with a pair of connected "
+> +		     "4k displays");
+
+What exactly negative test tries to check ? Setting 4k on 2k ?
+Or setting 8k on 4k ? Maybe you should write here about MST
+in that case please also write out what is MST (describe this
+shortcut). You can also put longer description in comments.
+
+> +	igt_subtest_with_dynamic("extended-mode-negative") {
+> +		for_each_pipe(&data.display, pipe1) {
+> +			for_each_pipe(&data.display, pipe2) {
+> +				if (pipe1 == pipe2)
+> +					continue;
+> +
+> +				igt_dynamic_f("pipe-%s%s", kmstest_pipe_name(pipe1),
+----------------------------------------------------- ^
+Consider pipe-%s-%s
+
+I hope someone from KMS team will also review it,
+
+Regards,
+Kamil
+
+> +					      kmstest_pipe_name(pipe2))
+> +					run_extendedmode_negative(&data, pipe1, pipe2);
+> +			}
+> +		}
+> +	}
+> +
+>  	igt_fixture {
+>  		igt_display_fini(&data.display);
+>  	}
+> -- 
+> 2.25.1
+> 
