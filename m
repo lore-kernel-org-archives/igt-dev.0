@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D57CA10E215
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 09:04:07 +0000 (UTC)
-Date: Thu, 6 Apr 2023 11:04:03 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230406090403.577rbyr3c5zgbdot@kamilkon-desk1>
-References: <20230331071426.8568-1-swati2.sharma@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A48010EB47
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 10:01:32 +0000 (UTC)
+Message-ID: <b275f801-02b0-541f-c503-08660e7c3358@intel.com>
+Date: Thu, 6 Apr 2023 15:31:16 +0530
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230406074815.463965-1-bhanuprakash.modem@intel.com>
+ <20230406074815.463965-4-bhanuprakash.modem@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230406074815.463965-4-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230331071426.8568-1-swati2.sharma@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/kms_fbcon_fbt: Add crct_id to
- struct
+Subject: Re: [igt-dev] [i-g-t V3 3/6] tests/kms_addfb_basic: Code cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,83 +26,206 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
 
-On 2023-03-31 at 12:44:26 +0530, Swati Sharma wrote:
+On 4/6/2023 1:18 PM, Bhanuprakash Modem wrote:
+> Cleanup to re-group the subtests to avoid redundant checks.
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-may you change patch description from subject ? I would like
-to see there something like you wrote below, for example:
+While going through this patch, I found few things that needs to be 
+cleaned up in this file. But that is out of scope for this patch and 
+with the re-grouping of subtests this patch looks good to me.
 
-i915/kms_fbcon_fbt: remove hard-coding of PIPE_A for CRC calc
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 
-> Remove hard-coding of PIPE_A while computing CRC.
-
-You can write here how you did it (added crtc_id to drm_info
-struct) but imho it is not needed.
-
-Please also test it again as CI didn't tested it.
-
-Regards,
-Kamil
-
-> 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  tests/i915/kms_fbcon_fbt.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
-> index 831ec867a..6c557dca7 100644
-> --- a/tests/i915/kms_fbcon_fbt.c
-> +++ b/tests/i915/kms_fbcon_fbt.c
-> @@ -39,7 +39,7 @@ IGT_TEST_DESCRIPTION("Test the relationship between fbcon and the frontbuffer "
->  #define MAX_CONNECTORS 32
->  
->  struct drm_info {
-> -	int fd, debugfs_fd;
-> +	int fd, debugfs_fd, crtc_id;
->  	struct igt_fb fb;
->  	drmModeResPtr res;
->  	drmModeConnectorPtr connectors[MAX_CONNECTORS];
-> @@ -117,9 +117,10 @@ static bool fbc_check_cursor_blinking(struct drm_info *drm)
->  	igt_pipe_crc_t *pipe_crc;
->  	igt_crc_t crc[2];
->  	bool ret;
-> -	int i;
-> +	int i, pipe;
->  
-> -	pipe_crc = igt_pipe_crc_new(drm->fd, PIPE_A, IGT_PIPE_CRC_SOURCE_AUTO);
-> +	pipe = kmstest_get_pipe_from_crtc_id(drm->fd, drm->crtc_id);
-> +	pipe_crc = igt_pipe_crc_new(drm->fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
->  
->  	igt_pipe_crc_start(pipe_crc);
->  	igt_pipe_crc_drain(pipe_crc);
-> @@ -165,7 +166,6 @@ static void set_mode_for_one_screen(struct drm_info *drm,
->  				    connector_possible_fn connector_possible)
->  {
->  	int i, rc;
-> -	uint32_t crtc_id;
->  	drmModeModeInfoPtr mode;
->  	uint32_t buffer_id;
->  	drmModeConnectorPtr c = NULL;
-> @@ -182,7 +182,7 @@ static void set_mode_for_one_screen(struct drm_info *drm,
->  	igt_require_f(i < drm->res->count_connectors,
->  		      "No connector available\n");
->  
-> -	crtc_id = kmstest_find_crtc_for_connector(drm->fd, drm->res, c, 0);
-> +	drm->crtc_id = kmstest_find_crtc_for_connector(drm->fd, drm->res, c, 0);
->  
->  	buffer_id = igt_create_fb(drm->fd, mode->hdisplay, mode->vdisplay,
->  				  DRM_FORMAT_XRGB8888,
-> @@ -193,7 +193,7 @@ static void set_mode_for_one_screen(struct drm_info *drm,
->  		 mode->hdisplay, mode->vdisplay,
->  		 kmstest_connector_type_str(c->connector_type));
->  
-> -	rc = drmModeSetCrtc(drm->fd, crtc_id, buffer_id, 0, 0,
-> +	rc = drmModeSetCrtc(drm->fd, drm->crtc_id, buffer_id, 0, 0,
->  			    &c->connector_id, 1, mode);
->  	igt_assert_eq(rc, 0);
->  }
-> -- 
-> 2.25.1
-> 
+>   tests/kms_addfb_basic.c | 61 ++++++++++++++++++++---------------------
+>   1 file changed, 30 insertions(+), 31 deletions(-)
+>
+> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> index b4526eee6d6..4c498a40937 100644
+> --- a/tests/kms_addfb_basic.c
+> +++ b/tests/kms_addfb_basic.c
+> @@ -42,8 +42,9 @@
+>   #include "igt_device.h"
+>   #include "i915/intel_memory_region.h"
+>   
+> -uint32_t gem_bo;
+> -uint32_t gem_bo_small;
+> +static uint32_t gem_bo;
+> +static uint32_t gem_bo_small;
+> +static igt_display_t display;
+>   
+>   static int legacy_addfb(int fd, struct drm_mode_fb_cmd *arg)
+>   {
+> @@ -395,7 +396,6 @@ static void size_tests(int fd)
+>   	struct drm_mode_fb_cmd2 f_16 = {};
+>   	struct drm_mode_fb_cmd2 f_8 = {};
+>   	struct drm_mode_fb_cmd2 *framebuffers[] = {&f, &f_16, &f_8};
+> -	igt_display_t display;
+>   	int i;
+>   
+>   	f.width = 1024;
+> @@ -414,8 +414,6 @@ static void size_tests(int fd)
+>   	f_8.pitches[0] = 1024*2;
+>   
+>   	igt_fixture {
+> -		igt_display_require(&display, fd);
+> -
+>   		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+>   			DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 0, NULL, NULL, NULL);
+>   		igt_assert(gem_bo);
+> @@ -578,24 +576,22 @@ static void addfb25_tests(int fd)
+>   			f.fb_id = 0;
+>   		}
+>   	}
+> +
+>   	igt_fixture
+>   		gem_close(fd, gem_bo);
+>   }
+>   
+> -static int addfb_expected_ret(igt_display_t *display, struct drm_mode_fb_cmd2 *f)
+> +static int addfb_expected_ret(igt_display_t *disp, struct drm_mode_fb_cmd2 *f)
+>   {
+> -	return igt_display_has_format_mod(display, f->pixel_format,
+> +	return igt_display_has_format_mod(disp, f->pixel_format,
+>   					  f->modifier[0]) ? 0 : -1;
+>   }
+>   
+>   static void addfb25_ytile(int fd)
+>   {
+>   	struct drm_mode_fb_cmd2 f = {};
+> -	igt_display_t display;
+>   
+>   	igt_fixture {
+> -		igt_display_require(&display, fd);
+> -
+>   		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+>   			DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 0, NULL, NULL, NULL);
+>   		igt_assert(gem_bo);
+> @@ -618,7 +614,6 @@ static void addfb25_ytile(int fd)
+>   	igt_describe("Check if addfb2 call works for y-tiling");
+>   	igt_subtest("addfb25-y-tiled-legacy") {
+>   		igt_require_fb_modifiers(fd);
+> -		igt_require_intel(fd);
+>   
+>   		f.modifier[0] = I915_FORMAT_MOD_Y_TILED;
+>   		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
+> @@ -631,7 +626,6 @@ static void addfb25_ytile(int fd)
+>   	igt_describe("Check if addfb2 call works for yf-tiling");
+>   	igt_subtest("addfb25-yf-tiled-legacy") {
+>   		igt_require_fb_modifiers(fd);
+> -		igt_require_intel(fd);
+>   
+>   		f.modifier[0] = I915_FORMAT_MOD_Yf_TILED;
+>   		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
+> @@ -644,7 +638,6 @@ static void addfb25_ytile(int fd)
+>   	igt_describe("Test that addfb2 call fails correctly for y-tiling with given height and modifier");
+>   	igt_subtest("addfb25-y-tiled-small-legacy") {
+>   		igt_require_fb_modifiers(fd);
+> -		igt_require_intel(fd);
+>   
+>   		f.modifier[0] = I915_FORMAT_MOD_Y_TILED;
+>   		f.height = 1023;
+> @@ -657,18 +650,14 @@ static void addfb25_ytile(int fd)
+>   	igt_fixture {
+>   		gem_close(fd, gem_bo);
+>   		gem_close(fd, gem_bo_small);
+> -		igt_display_fini(&display);
+>   	}
+>   }
+>   
+>   static void addfb25_4tile(int fd)
+>   {
+>   	struct drm_mode_fb_cmd2 f = {};
+> -	igt_display_t display;
+>   
+>   	igt_fixture {
+> -		igt_display_require(&display, fd);
+> -
+>   		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+>   				DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 0, NULL, NULL, NULL);
+>   		igt_assert(gem_bo);
+> @@ -689,7 +678,6 @@ static void addfb25_4tile(int fd)
+>   	igt_describe("Check if addfb2 call works for tiling-4");
+>   	igt_subtest("addfb25-4-tiled") {
+>   		igt_require_fb_modifiers(fd);
+> -		igt_require_intel(fd);
+>   
+>   		f.modifier[0] = I915_FORMAT_MOD_4_TILED;
+>   		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
+> @@ -699,10 +687,8 @@ static void addfb25_4tile(int fd)
+>   		f.fb_id = 0;
+>   	}
+>   
+> -	igt_fixture {
+> +	igt_fixture
+>   		gem_close(fd, gem_bo);
+> -		igt_display_fini(&display);
+> -	}
+>   }
+>   
+>   static void prop_tests(int fd)
+> @@ -764,9 +750,10 @@ static void prop_tests(int fd)
+>   		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY, &set_prop, EINVAL);
+>   	}
+>   
+> -	igt_fixture
+> +	igt_fixture {
+>   		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+> -
+> +		gem_close(fd, gem_bo);
+> +	}
+>   }
+>   
+>   static void master_tests(int fd)
+> @@ -804,9 +791,10 @@ static void master_tests(int fd)
+>   		igt_device_set_master(fd);
+>   	}
+>   
+> -	igt_fixture
+> +	igt_fixture {
+>   		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+> -
+> +		gem_close(fd, gem_bo);
+> +	}
+>   }
+>   
+>   static bool has_addfb2_iface(int fd)
+> @@ -845,19 +833,30 @@ igt_main
+>   
+>   	pitch_tests(fd);
+>   
+> -	size_tests(fd);
+> +	prop_tests(fd);
+> +
+> +	master_tests(fd);
+>   
+>   	addfb25_tests(fd);
+>   
+> -	addfb25_ytile(fd);
+> +	tiling_tests(fd);
+> +
+> +	igt_subtest_group {
+> +		igt_fixture
+> +			igt_display_require(&display, fd);
+>   
+> -	addfb25_4tile(fd);
+> +		size_tests(fd);
+>   
+> -	tiling_tests(fd);
+> +		igt_fixture
+> +			igt_require_intel(fd);
+>   
+> -	prop_tests(fd);
+> +		addfb25_ytile(fd);
+>   
+> -	master_tests(fd);
+> +		addfb25_4tile(fd);
+> +
+> +		igt_fixture
+> +			igt_display_fini(&display);
+> +	}
+>   
+>   	igt_fixture
+>   		close(fd);
