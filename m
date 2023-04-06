@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BF4210E064
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 07:20:13 +0000 (UTC)
-Date: Thu, 6 Apr 2023 09:20:09 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230406072009.m5ksek6755ry5g3a@kamilkon-desk1>
-References: <20230405053451.2878039-1-jouni.hogander@intel.com>
- <20230405053451.2878039-4-jouni.hogander@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C52A010EAFD
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Apr 2023 07:52:38 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	karthik.b.s@intel.com
+Date: Thu,  6 Apr 2023 13:18:10 +0530
+Message-Id: <20230406074815.463965-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230406074815.463965-1-bhanuprakash.modem@intel.com>
+References: <20230406074815.463965-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230405053451.2878039-4-jouni.hogander@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/kms_dirtyfb: Add new test for
- dirtyfb ioctl
+Subject: [igt-dev] [i-g-t V3 1/6] lib/xe/xe_ioctl: Add a helper to map the
+ buffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,371 +21,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+Create a new helper to map the buffer with the user PROT flags.
 
-On 2023-04-05 at 08:34:51 +0300, Jouni Högander wrote:
-> Add new test to validate dirtyfb ioctl is working properly with GPU
-> frontbuffer rendering.
-> 
-> Create big framebuffer and use only lower right corner for the
-> plane. Initiate GPU drawing for a rectangle over the whole
-> framebuffer and perform dirtyfb ioctl. Then wait for the drawing to
-> complete and collect crc and check that it matches with expected.
-> 
-> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-> ---
->  tests/i915/kms_dirtyfb.c | 309 +++++++++++++++++++++++++++++++++++++++
->  tests/meson.build        |   8 +
->  2 files changed, 317 insertions(+)
->  create mode 100644 tests/i915/kms_dirtyfb.c
-> 
-> diff --git a/tests/i915/kms_dirtyfb.c b/tests/i915/kms_dirtyfb.c
-> new file mode 100644
-> index 00000000..99d4231d
-> --- /dev/null
-> +++ b/tests/i915/kms_dirtyfb.c
-> @@ -0,0 +1,309 @@
-> +/*
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Acked-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/xe/xe_ioctl.c | 14 ++++++++++++--
+ lib/xe/xe_ioctl.h |  1 +
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-Please add SPDX licence here.
-
-> + * Copyright © 2023 Intel Corporation
-> + *
-
-Delete below text as we should use SPDX instead.
-
-Regards,
-Kamil
-
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> + * IN THE SOFTWARE.
-> + *
-> + */
-> +
-> +#include <sys/types.h>
-> +
-> +#include "igt.h"
-> +#include "igt_psr.h"
-> +
-> +#include "kms_fbc_helper.h"
-> +#include "kms_drrs_helper.h"
-> +
-> +IGT_TEST_DESCRIPTION("Test the DIRTYFB ioctl is working properly with "
-> +		     "its related features: FBC, PSR and DRRS");
-> +
-> +#ifndef PAGE_ALIGN
-> +#ifndef PAGE_SIZE
-> +#define PAGE_SIZE 4096
-> +#endif
-> +#define PAGE_ALIGN(x) ALIGN(x, PAGE_SIZE)
-> +#endif
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	int debugfs_fd;
-> +	igt_display_t display;
-> +	drmModeModeInfo *mode;
-> +	igt_output_t *output;
-> +	igt_pipe_crc_t *pipe_crc;
-> +	enum pipe pipe;
-> +
-> +	struct igt_fb fbs[3];
-> +
-> +	igt_crc_t ref_crc;
-> +
-> +	struct buf_ops *bops;
-> +	enum {
-> +		FEATURE_NONE  = 0,
-> +		FEATURE_PSR   = 1,
-> +		FEATURE_FBC   = 2,
-> +		FEATURE_DRRS  = 4,
-> +		FEATURE_COUNT = 8,
-> +		FEATURE_DEFAULT = 8,
-> +	} feature;
-> +} data_t;
-> +
-> +static const char *feature_str(int feature)
-> +{
-> +	switch (feature) {
-> +	case FEATURE_NONE:
-> +		return "nop";
-> +	case FEATURE_FBC:
-> +		return "fbc";
-> +	case FEATURE_PSR:
-> +		return "psr";
-> +	case FEATURE_DRRS:
-> +		return "drrs";
-> +	case FEATURE_DEFAULT:
-> +		return "default";
-> +	default:
-> +		igt_assert(false);
-> +	}
-> +}
-> +
-> +static bool check_support(data_t *data)
-> +{
-> +	switch (data->feature) {
-> +	case FEATURE_NONE:
-> +		return true;
-> +	case FEATURE_FBC:
-> +		return fbc_supported_on_chipset(data->drm_fd, data->pipe);
-> +	case FEATURE_PSR:
-> +		return psr_sink_support(data->drm_fd, data->debugfs_fd,
-> +					PSR_MODE_1);
-> +	case FEATURE_DRRS:
-> +		return is_drrs_supported(data->drm_fd, data->pipe) &&
-> +			output_has_drrs(data->drm_fd, data->output);
-> +	case FEATURE_DEFAULT:
-> +		return true;
-> +	default:
-> +		igt_assert(false);
-> +	}
-> +}
-> +
-> +static void enable_feature(data_t *data)
-> +{
-> +	switch (data->feature) {
-> +	case FEATURE_NONE:
-> +		break;
-> +	case FEATURE_FBC:
-> +		fbc_enable(data->drm_fd);
-> +		break;
-> +	case FEATURE_PSR:
-> +		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1);
-> +		break;
-> +	case FEATURE_DRRS:
-> +		drrs_enable(data->drm_fd, data->pipe);
-> +		break;
-> +	case FEATURE_DEFAULT:
-> +		break;
-> +	default:
-> +		igt_assert(false);
-> +	}
-> +}
-> +
-> +static void check_feature(data_t *data)
-> +{
-> +	switch (data->feature) {
-> +	case FEATURE_NONE:
-> +		break;
-> +	case FEATURE_FBC:
-> +		igt_assert_f(fbc_wait_until_enabled(data->drm_fd, data->pipe),
-> +			     "FBC still disabled");
-> +		break;
-> +	case FEATURE_PSR:
-> +		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1),
-> +			     "PSR still disabled\n");
-> +		break;
-> +	case FEATURE_DRRS:
-> +		igt_assert_f(is_drrs_inactive(data->drm_fd, data->pipe),
-> +			     "DRRS INACTIVE\n");
-> +		break;
-> +	case FEATURE_DEFAULT:
-> +		break;
-> +	default:
-> +		igt_assert(false);
-> +	}
-> +}
-> +
-> +static void disable_features(data_t *data)
-> +{
-> +	fbc_disable(data->drm_fd);
-> +	psr_disable(data->drm_fd, data->debugfs_fd);
-> +	drrs_disable(data->drm_fd, data->pipe);
-> +}
-> +
-> +static void prepare(data_t *data)
-> +{
-> +	igt_plane_t *primary;
-> +	drmModeResPtr res;
-> +
-> +	igt_skip_on(!check_support(data));
-> +
-> +	data->mode = igt_output_get_mode(data->output);
-> +
-> +	igt_output_set_pipe(data->output, data->pipe);
-> +
-> +	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-> +					 IGT_PIPE_CRC_SOURCE_AUTO);
-> +
-> +	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
-> +			    data->mode->hdisplay, DRM_FORMAT_XRGB8888,
-> +			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-> +			    &data->fbs[0]);
-> +	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[0],
-> +			 IGT_DRAW_RENDER, 0, 0, data->fbs[0].width,
-> +			 data->fbs[0].height, 0xFF);
-> +
-> +	primary = igt_output_get_plane_type(data->output,
-> +					    DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_plane_set_fb(primary, &data->fbs[0]);
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
-> +
-> +	res = drmModeGetResources(data->drm_fd);
-> +
-> +	igt_create_color_fb(data->drm_fd, res->max_width,
-> +			    res->max_height, DRM_FORMAT_XRGB8888,
-> +			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-> +			    &data->fbs[1]);
-> +	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[1],
-> +			 IGT_DRAW_MMAP_CPU, 0, 0, data->fbs[1].width,
-> +			 data->fbs[1].height, 0xFF);
-> +
-> +	igt_create_color_fb(data->drm_fd, res->max_width,
-> +			    res->max_height, DRM_FORMAT_XRGB8888,
-> +			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-> +			    &data->fbs[2]);
-> +
-> +	igt_plane_set_fb(primary, &data->fbs[2]);
-> +	igt_fb_set_position(&data->fbs[2], primary,
-> +			    data->fbs[2].width - data->fbs[0].width,
-> +			    data->fbs[2].height - data->fbs[0].height);
-> +	igt_fb_set_size(&data->fbs[2], primary, data->fbs[0].width,
-> +			data->fbs[0].height);
-> +
-> +	enable_feature(data);
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +	check_feature(data);
-> +}
-> +
-> +static void cleanup(data_t *data)
-> +{
-> +	igt_remove_fb(data->drm_fd, &data->fbs[0]);
-> +	igt_remove_fb(data->drm_fd, &data->fbs[1]);
-> +
-> +	igt_pipe_crc_free(data->pipe_crc);
-> +
-> +	disable_features(data);
-> +
-> +	igt_output_set_pipe(data->output, PIPE_NONE);
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +}
-> +
-> +static void run_test(data_t *data)
-> +{
-> +	igt_crc_t crc;
-> +	struct intel_buf *src, *dst;
-> +	struct intel_bb *ibb;
-> +	uint32_t devid = intel_get_drm_devid(data->drm_fd);
-> +	igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
-> +	int r;
-> +
-> +	igt_skip_on(!rendercopy);
-> +
-> +	src = intel_buf_create_using_handle(data->bops, data->fbs[1].gem_handle,
-> +					    data->fbs[1].width,
-> +					    data->fbs[1].height,
-> +					    igt_drm_format_to_bpp(data->fbs[1].drm_format),
-> +					    0, igt_fb_mod_to_tiling(data->fbs[1].modifier), 0);
-> +	dst = intel_buf_create_using_handle(data->bops, data->fbs[2].gem_handle,
-> +					    data->fbs[2].width,
-> +					    data->fbs[2].height,
-> +					    igt_drm_format_to_bpp(data->fbs[2].drm_format),
-> +					    0, igt_fb_mod_to_tiling(data->fbs[2].modifier), 0);
-> +	ibb = intel_bb_create_with_context(data->drm_fd, 0, NULL, PAGE_SIZE);
-> +
-> +	rendercopy(ibb, src, 0, 0, data->fbs[2].width, data->fbs[2].height, dst, 0, 0);
-> +
-> +	/* Perfom dirtyfb right after initiating rendercopy */
-> +	r = drmModeDirtyFB(data->drm_fd, data->fbs[2].fb_id, NULL, 0);
-> +	igt_assert(r == 0 || r == -ENOSYS);
-> +
-> +	/* Ensure rendercopy is complete */
-> +	intel_bb_sync(ibb);
-> +
-> +	intel_bb_destroy(ibb);
-> +	intel_buf_destroy(src);
-> +	intel_buf_destroy(dst);
-> +
-> +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
-> +	igt_assert_crc_equal(&crc, &data->ref_crc);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data = {};
-> +
-> +	igt_fixture {
-> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.drm_fd);
-> +
-> +		data.bops = buf_ops_create(data.drm_fd);
-> +
-> +		igt_display_reset(&data.display);
-> +	}
-> +
-> +	igt_describe("Test dirtyFB ioctl");
-> +	igt_subtest_with_dynamic("dirtyfb-ioctl") {
-> +		data.pipe = PIPE_A;
-> +		for_each_valid_output_on_pipe(&data.display, data.pipe,
-> +					      data.output) {
-> +			for (data.feature = FEATURE_DEFAULT; data.feature > 0;
-> +			     data.feature = data.feature >> 1) {
-> +				igt_dynamic_f("%s-%s", feature_str(data.feature),
-> +					      igt_output_name(data.output)) {
-> +					prepare(&data);
-> +					run_test(&data);
-> +					cleanup(&data);
-> +				}
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		buf_ops_destroy(data.bops);
-> +		igt_display_fini(&data.display);
-> +		close(data.drm_fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 8fa69af3..a286a9b8 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -494,6 +494,14 @@ test_executables += executable('kms_frontbuffer_tracking',
->  	   install : true)
->  test_list += 'kms_frontbuffer_tracking'
->  
-> +test_executables += executable('kms_dirtyfb',
-> +	   [ join_paths('i915', 'kms_dirtyfb.c'), join_paths ('i915', 'kms_fbc_helper.c'), join_paths ('i915', 'kms_drrs_helper.c')],
-> +	   dependencies : test_deps,
-> +	   install_dir : libexecdir,
-> +	   install_rpath : libexecdir_rpathdir,
-> +	   install : true)
-> +test_list += 'kms_frontbuffer_tracking'
-> +
->  if chamelium.found()
->         test_executables += executable('kms_chamelium_color',
->                               [ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
-> -- 
-> 2.34.1
-> 
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 9d5793dff77..66a8393fe96 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -334,18 +334,28 @@ uint64_t xe_bo_mmap_offset(int fd, uint32_t bo)
+ 	return mmo.offset;
+ }
+ 
+-void *xe_bo_map(int fd, uint32_t bo, size_t size)
++static void *__xe_bo_map(int fd, uint16_t bo, size_t size, int prot)
+ {
+ 	uint64_t mmo;
+ 	void *map;
+ 
+ 	mmo = xe_bo_mmap_offset(fd, bo);
+-	map = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fd, mmo);
++	map = mmap(NULL, size, prot, MAP_SHARED, fd, mmo);
+ 	igt_assert(map != MAP_FAILED);
+ 
+ 	return map;
+ }
+ 
++void *xe_bo_map(int fd, uint32_t bo, size_t size)
++{
++	return __xe_bo_map(fd, bo, size, PROT_WRITE);
++}
++
++void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot)
++{
++	return __xe_bo_map(fd, bo, size, prot);
++}
++
+ static int __xe_exec(int fd, struct drm_xe_exec *exec)
+ {
+ 	int err = 0;
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 5c7e773faa2..d8c40eda01e 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -73,6 +73,7 @@ uint32_t xe_engine_create_class(int fd, uint32_t vm, uint16_t class);
+ void xe_engine_destroy(int fd, uint32_t engine);
+ uint64_t xe_bo_mmap_offset(int fd, uint32_t bo);
+ void *xe_bo_map(int fd, uint32_t bo, size_t size);
++void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot);
+ void xe_exec(int fd, struct drm_xe_exec *exec);
+ void xe_exec_sync(int fd, uint32_t engine, uint64_t addr,
+ 		  struct drm_xe_sync *sync, uint32_t num_syncs);
+-- 
+2.40.0
