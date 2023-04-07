@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CC6E10E090
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Apr 2023 11:40:33 +0000 (UTC)
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  7 Apr 2023 13:40:16 +0200
-Message-Id: <20230407114016.28728-1-dominik.grzegorzek@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B26110ED67
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Apr 2023 13:55:05 +0000 (UTC)
+Message-ID: <71075925-bdb2-2d8e-3358-22e9c9687398@intel.com>
+Date: Fri, 7 Apr 2023 15:55:01 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe_vm: Do not assert uninitalized
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230407114016.28728-1-dominik.grzegorzek@intel.com>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+In-Reply-To: <20230407114016.28728-1-dominik.grzegorzek@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe_vm: Do not assert uninitalized
  variable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -21,27 +26,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-test_munmap_style_unbind() used wrong, uninitialized variable
-in assert of mmap result. That could lead to unextpected failure.
-Use correct one.
-
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- tests/xe/xe_vm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
-index ce770f2a9..c09b9714b 100644
---- a/tests/xe/xe_vm.c
-+++ b/tests/xe/xe_vm.c
-@@ -1331,7 +1331,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 		map = mmap(from_user_pointer(addr), bo_size, PROT_READ |
- 			    PROT_WRITE, MAP_SHARED | MAP_FIXED |
- 			    MAP_ANONYMOUS, -1, 0);
--		igt_assert(data != MAP_FAILED);
-+		igt_assert(map != MAP_FAILED);
- 	} else {
- 		bo = xe_bo_create(fd, eci->gt_id, vm, bo_size);
- 		map = xe_bo_map(fd, bo, bo_size);
--- 
-2.34.1
+SGkgRG9taW5paywKCk9uIDcuMDQuMjAyMyAxMzo0MCwgRG9taW5payBHcnplZ29yemVrIHdyb3Rl
+Ogo+IHRlc3RfbXVubWFwX3N0eWxlX3VuYmluZCgpIHVzZWQgd3JvbmcsIHVuaW5pdGlhbGl6ZWQg
+dmFyaWFibGUKPiBpbiBhc3NlcnQgb2YgbW1hcCByZXN1bHQuIFRoYXQgY291bGQgbGVhZCB0byB1
+bmV4dHBlY3RlZCBmYWlsdXJlLgo+IFVzZSBjb3JyZWN0IG9uZS4KPiAKPiBTaWduZWQtb2ZmLWJ5
+OiBEb21pbmlrIEdyemVnb3J6ZWsgPGRvbWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+CgpSZXZp
+ZXdlZC1ieTogQ2hyaXN0b3BoIE1hbnN6ZXdza2kgPGNocmlzdG9waC5tYW5zemV3c2tpQGludGVs
+LmNvbT4KCkNocmlzdG9waAoKCj4gLS0tCj4gICB0ZXN0cy94ZS94ZV92bS5jIHwgMiArLQo+ICAg
+MSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAt
+LWdpdCBhL3Rlc3RzL3hlL3hlX3ZtLmMgYi90ZXN0cy94ZS94ZV92bS5jCj4gaW5kZXggY2U3NzBm
+MmE5Li5jMDliOTcxNGIgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMveGUveGVfdm0uYwo+ICsrKyBiL3Rl
+c3RzL3hlL3hlX3ZtLmMKPiBAQCAtMTMzMSw3ICsxMzMxLDcgQEAgdGVzdF9tdW5tYXBfc3R5bGVf
+dW5iaW5kKGludCBmZCwgc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKmVjaSwK
+PiAgIAkJbWFwID0gbW1hcChmcm9tX3VzZXJfcG9pbnRlcihhZGRyKSwgYm9fc2l6ZSwgUFJPVF9S
+RUFEIHwKPiAgIAkJCSAgICBQUk9UX1dSSVRFLCBNQVBfU0hBUkVEIHwgTUFQX0ZJWEVEIHwKPiAg
+IAkJCSAgICBNQVBfQU5PTllNT1VTLCAtMSwgMCk7Cj4gLQkJaWd0X2Fzc2VydChkYXRhICE9IE1B
+UF9GQUlMRUQpOwo+ICsJCWlndF9hc3NlcnQobWFwICE9IE1BUF9GQUlMRUQpOwo+ICAgCX0gZWxz
+ZSB7Cj4gICAJCWJvID0geGVfYm9fY3JlYXRlKGZkLCBlY2ktPmd0X2lkLCB2bSwgYm9fc2l6ZSk7
+Cj4gICAJCW1hcCA9IHhlX2JvX21hcChmZCwgYm8sIGJvX3NpemUpOwotLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KSW50
+ZWwgVGVjaG5vbG9neSBQb2xhbmQgc3AuIHogby5vLgp1bC4gU2xvd2Fja2llZ28gMTczIHwgODAt
+Mjk4IEdkYW5zayB8IFNhZCBSZWpvbm93eSBHZGFuc2sgUG9sbm9jIHwgVklJIFd5ZHppYWwgR29z
+cG9kYXJjenkgS3Jham93ZWdvIFJlamVzdHJ1IFNhZG93ZWdvIC0gS1JTIDEwMTg4MiB8IE5JUCA5
+NTctMDctNTItMzE2IHwgS2FwaXRhbCB6YWtsYWRvd3kgMjAwLjAwMCBQTE4uClNwb2xrYSBvc3dp
+YWRjemEsIHplIHBvc2lhZGEgc3RhdHVzIGR1emVnbyBwcnplZHNpZWJpb3JjeSB3IHJvenVtaWVu
+aXUgdXN0YXd5IHogZG5pYSA4IG1hcmNhIDIwMTMgci4gbyBwcnplY2l3ZHppYWxhbml1IG5hZG1p
+ZXJueW0gb3Bvem5pZW5pb20gdyB0cmFuc2FrY2phY2ggaGFuZGxvd3ljaC4KClRhIHdpYWRvbW9z
+YyB3cmF6IHogemFsYWN6bmlrYW1pIGplc3QgcHJ6ZXpuYWN6b25hIGRsYSBva3Jlc2xvbmVnbyBh
+ZHJlc2F0YSBpIG1vemUgemF3aWVyYWMgaW5mb3JtYWNqZSBwb3VmbmUuIFcgcmF6aWUgcHJ6eXBh
+ZGtvd2VnbyBvdHJ6eW1hbmlhIHRlaiB3aWFkb21vc2NpLCBwcm9zaW15IG8gcG93aWFkb21pZW5p
+ZSBuYWRhd2N5IG9yYXogdHJ3YWxlIGplaiB1c3VuaWVjaWU7IGpha2lla29sd2llayBwcnplZ2xh
+ZGFuaWUgbHViIHJvenBvd3N6ZWNobmlhbmllIGplc3QgemFicm9uaW9uZS4KVGhpcyBlLW1haWwg
+YW5kIGFueSBhdHRhY2htZW50cyBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgbWF0ZXJpYWwgZm9y
+IHRoZSBzb2xlIHVzZSBvZiB0aGUgaW50ZW5kZWQgcmVjaXBpZW50KHMpLiBJZiB5b3UgYXJlIG5v
+dCB0aGUgaW50ZW5kZWQgcmVjaXBpZW50LCBwbGVhc2UgY29udGFjdCB0aGUgc2VuZGVyIGFuZCBk
+ZWxldGUgYWxsIGNvcGllczsgYW55IHJldmlldyBvciBkaXN0cmlidXRpb24gYnkgb3RoZXJzIGlz
+IHN0cmljdGx5IHByb2hpYml0ZWQuCg==
