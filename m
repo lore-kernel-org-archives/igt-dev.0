@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A602F10E545
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 13:54:10 +0000 (UTC)
-From: Christoph Manszewski <christoph.manszewski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Apr 2023 15:53:58 +0200
-Message-Id: <20230411135358.2981763-1-christoph.manszewski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1418416029190511903=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Subject: [igt-dev] [PATCH] tests/xe: Set syncs pointer in drm_xe_exec
- correctly
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Date: Tue, 11 Apr 2023 15:10:14 -0000
+Message-ID: <168122581499.13173.4640678619191431154@emeril.freedesktop.org>
+References: <20230411132946.17459-1-mcanal@igalia.com>
+In-Reply-To: <20230411132946.17459-1-mcanal@igalia.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?vkms=3A_Update_VKMS=27s_testlist?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,304 +17,230 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Drop the 'address-of' operator as xe_exec_ioctl expects a pointer
-to 'struct drm_xe_sync' array.
+--===============1418416029190511903==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
----
- tests/xe/xe_dma_buf_sync.c      |  2 +-
- tests/xe/xe_evict.c             |  4 ++--
- tests/xe/xe_exec_balancer.c     |  6 +++---
- tests/xe/xe_exec_basic.c        |  2 +-
- tests/xe/xe_exec_compute_mode.c |  2 +-
- tests/xe/xe_exec_fault_mode.c   |  4 ++--
- tests/xe/xe_exec_reset.c        |  8 ++++----
- tests/xe/xe_exec_threads.c      |  6 +++---
- tests/xe/xe_guc_pc.c            |  2 +-
- tests/xe/xe_pm.c                |  2 +-
- tests/xe/xe_vm.c                | 12 ++++++------
- 11 files changed, 25 insertions(+), 25 deletions(-)
+== Series Details ==
 
-diff --git a/tests/xe/xe_dma_buf_sync.c b/tests/xe/xe_dma_buf_sync.c
-index 8b97480a..8920b141 100644
---- a/tests/xe/xe_dma_buf_sync.c
-+++ b/tests/xe/xe_dma_buf_sync.c
-@@ -152,7 +152,7 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
- 		};
- 		struct drm_xe_exec exec = {
- 			.num_batch_buffer = 1,
--			.syncs = to_user_pointer(&sync),
-+			.syncs = to_user_pointer(sync),
- 		};
- 		uint32_t syncobj;
- 		int b = 0;
-diff --git a/tests/xe/xe_evict.c b/tests/xe/xe_evict.c
-index eddbbd6f..5687cce3 100644
---- a/tests/xe/xe_evict.c
-+++ b/tests/xe/xe_evict.c
-@@ -44,7 +44,7 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t syncobjs[MAX_N_ENGINES];
-@@ -220,7 +220,7 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 1,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t *bo;
-diff --git a/tests/xe/xe_exec_balancer.c b/tests/xe/xe_exec_balancer.c
-index f3341a99..2018c810 100644
---- a/tests/xe/xe_exec_balancer.c
-+++ b/tests/xe/xe_exec_balancer.c
-@@ -44,7 +44,7 @@ static void test_all_active(int fd, int gt, int class)
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_INSTANCE];
- 	uint32_t syncobjs[MAX_INSTANCE];
-@@ -186,7 +186,7 @@ test_exec(int fd, int gt, int class, int n_engines, int n_execs,
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t syncobjs[MAX_N_ENGINES];
-@@ -407,7 +407,7 @@ test_cm(int fd, int gt, int class, int n_engines, int n_execs,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 1,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	size_t bo_size;
-diff --git a/tests/xe/xe_exec_basic.c b/tests/xe/xe_exec_basic.c
-index 2a3cebd3..2a176a5b 100644
---- a/tests/xe/xe_exec_basic.c
-+++ b/tests/xe/xe_exec_basic.c
-@@ -86,7 +86,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint64_t addr[MAX_N_ENGINES];
- 	uint32_t vm[MAX_N_ENGINES];
-diff --git a/tests/xe/xe_exec_compute_mode.c b/tests/xe/xe_exec_compute_mode.c
-index 60713a95..68519399 100644
---- a/tests/xe/xe_exec_compute_mode.c
-+++ b/tests/xe/xe_exec_compute_mode.c
-@@ -98,7 +98,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 1,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t bind_engines[MAX_N_ENGINES];
-diff --git a/tests/xe/xe_exec_fault_mode.c b/tests/xe/xe_exec_fault_mode.c
-index b5d924a3..a3ab1727 100644
---- a/tests/xe/xe_exec_fault_mode.c
-+++ b/tests/xe/xe_exec_fault_mode.c
-@@ -118,7 +118,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 1,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t bind_engines[MAX_N_ENGINES];
-@@ -360,7 +360,7 @@ test_atomic(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 1,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engine;
- 	size_t bo_size;
-diff --git a/tests/xe/xe_exec_reset.c b/tests/xe/xe_exec_reset.c
-index 57dc90dd..0d72a3f2 100644
---- a/tests/xe/xe_exec_reset.c
-+++ b/tests/xe/xe_exec_reset.c
-@@ -38,7 +38,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engine;
- 	uint32_t syncobj;
-@@ -160,7 +160,7 @@ test_balancer(int fd, int gt, int class, int n_engines, int n_execs,
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t syncobjs[MAX_N_ENGINES];
-@@ -372,7 +372,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t syncobjs[MAX_N_ENGINES];
-@@ -549,7 +549,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 1,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	size_t bo_size;
-diff --git a/tests/xe/xe_exec_threads.c b/tests/xe/xe_exec_threads.c
-index c34d8aec..3f2c2de9 100644
---- a/tests/xe/xe_exec_threads.c
-+++ b/tests/xe/xe_exec_threads.c
-@@ -53,7 +53,7 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	struct drm_xe_sync sync_all[MAX_N_ENGINES];
- 	struct drm_xe_exec exec = {
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t syncobjs[MAX_N_ENGINES];
-@@ -262,7 +262,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 1,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	size_t bo_size;
-@@ -471,7 +471,7 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t bind_engines[MAX_N_ENGINES];
-diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
-index 39a755d7..5c71ae14 100644
---- a/tests/xe/xe_guc_pc.c
-+++ b/tests/xe/xe_guc_pc.c
-@@ -42,7 +42,7 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t bind_engines[MAX_N_ENGINES];
-diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c
-index 23b8246e..44154143 100644
---- a/tests/xe/xe_pm.c
-+++ b/tests/xe/xe_pm.c
-@@ -216,7 +216,7 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t bind_engines[MAX_N_ENGINES];
-diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
-index c09b9714..d4cec104 100644
---- a/tests/xe/xe_vm.c
-+++ b/tests/xe/xe_vm.c
-@@ -529,7 +529,7 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t syncobjs[MAX_N_ENGINES];
-@@ -701,7 +701,7 @@ test_bind_engines_independent(int fd, struct drm_xe_engine_class_instance *eci)
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- #define N_ENGINES	2
- 	uint32_t engines[N_ENGINES];
-@@ -857,7 +857,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 	};
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t engine, bind_engine = 0;
- #define BIND_ARRAY_MAX_N_EXEC	16
-@@ -1029,7 +1029,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint64_t addr = 0x1ull << 30, base_addr = 0x1ull << 30;
- 	uint32_t vm;
-@@ -1184,7 +1184,7 @@ static void *hammer_thread(void *tdata)
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 1,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	struct {
- 		uint32_t batch[16];
-@@ -1303,7 +1303,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct drm_xe_exec exec = {
- 		.num_batch_buffer = 1,
- 		.num_syncs = 2,
--		.syncs = to_user_pointer(&sync),
-+		.syncs = to_user_pointer(sync),
- 	};
- 	uint64_t addr = 0x1a0000, base_addr = 0x1a0000;
- 	uint32_t vm;
--- 
-2.39.2
+Series: tests/vkms: Update VKMS's testlist
+URL   : https://patchwork.freedesktop.org/series/116316/
+State : success
 
----------------------------------------------------------------------
-Intel Technology Poland sp. z o.o.
-ul. Slowackiego 173 | 80-298 Gdansk | Sad Rejonowy Gdansk Polnoc | VII Wydzial Gospodarczy Krajowego Rejestru Sadowego - KRS 101882 | NIP 957-07-52-316 | Kapital zakladowy 200.000 PLN.
-Spolka oswiadcza, ze posiada status duzego przedsiebiorcy w rozumieniu ustawy z dnia 8 marca 2013 r. o przeciwdzialaniu nadmiernym opoznieniom w transakcjach handlowych.
+== Summary ==
 
-Ta wiadomosc wraz z zalacznikami jest przeznaczona dla okreslonego adresata i moze zawierac informacje poufne. W razie przypadkowego otrzymania tej wiadomosci, prosimy o powiadomienie nadawcy oraz trwale jej usuniecie; jakiekolwiek przegladanie lub rozpowszechnianie jest zabronione.
-This e-mail and any attachments may contain confidential material for the sole use of the intended recipient(s). If you are not the intended recipient, please contact the sender and delete all copies; any review or distribution by others is strictly prohibited.
+CI Bug Log - changes from CI_DRM_12989 -> IGTPW_8778
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/index.html
+
+Participating hosts (36 -> 35)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8778 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg2-11:         [PASS][1] -> [FAIL][2] ([i915#8308])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-soraka:      [PASS][3] -> [DMESG-FAIL][4] ([i915#5334] / [i915#7872])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-rpls-1:         [PASS][5] -> [TIMEOUT][6] ([i915#6794])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/bat-rpls-1/igt@i915_selftest@live@mman.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-rpls-1/igt@i915_selftest@live@mman.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-rpls-1:         NOTRUN -> [SKIP][7] ([i915#7828])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-rpls-1:         NOTRUN -> [SKIP][8] ([i915#1845])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - bat-rpls-1:         [ABORT][9] ([i915#6687] / [i915#7978]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
+    - bat-dg2-8:          [FAIL][11] ([i915#7932]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         [DMESG-FAIL][13] ([i915#6997] / [i915#7913]) -> [DMESG-FAIL][14] ([i915#6367] / [i915#7913])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/bat-rpls-2/igt@i915_selftest@live@slpc.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7249 -> IGTPW_8778
+
+  CI-20190529: 20190529
+  CI_DRM_12989: eefce9bcf5dedd74281189053ae60f222ac594b0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8778: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/index.html
+  IGT_7249: 44cc06fb6a20c8907f696ca61ba87e152b3dcd11 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/index.html
+
+--===============1418416029190511903==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/vkms: Update VKMS&#39;s testlist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116316/">https://patchwork.freedesktop.org/series/116316/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12989 -&gt; IGTPW_8778</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/index.html</p>
+<h2>Participating hosts (36 -&gt; 35)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8778 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/bat-rpls-1/igt@i915_selftest@live@mman.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-rpls-1/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@slpc:<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12989/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7249 -&gt; IGTPW_8778</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12989: eefce9bcf5dedd74281189053ae60f222ac594b0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8778: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8778/index.html<br />
+  IGT_7249: 44cc06fb6a20c8907f696ca61ba87e152b3dcd11 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1418416029190511903==--
