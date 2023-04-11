@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67F5010E4CF
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 07:51:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5F5710E4CA
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 07:51:12 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Apr 2023 10:50:58 +0300
-Message-Id: <20230411075101.2785-6-ville.syrjala@linux.intel.com>
+Date: Tue, 11 Apr 2023 10:50:56 +0300
+Message-Id: <20230411075101.2785-4-ville.syrjala@linux.intel.com>
 In-Reply-To: <20230411075101.2785-1-ville.syrjala@linux.intel.com>
 References: <20230411075101.2785-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/8] tests/kms_color: Get rid of hand coded
- "expected_colors"
+Subject: [igt-dev] [PATCH i-g-t 3/8] tests/kms_color: Make loads of stuff
+ static const
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,155 +26,184 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Instead of specifying the expected colors by hand just apply
-the ctm to the fb colors and let the computer do the work for
-us.
+Huge swaths of the data used in the test can be made static const.
+The one slightly tricky part is 'expected_colors' which is being
+mutated in the ctm tests. But we can just use an on stack variable
+for that.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_color.c | 59 +++++++++++++++++------------------------------
- 1 file changed, 21 insertions(+), 38 deletions(-)
+ tests/kms_color.c        | 47 +++++++++++++++++++++-------------------
+ tests/kms_color_helper.c |  4 ++--
+ tests/kms_color_helper.h |  4 ++--
+ 3 files changed, 29 insertions(+), 26 deletions(-)
 
 diff --git a/tests/kms_color.c b/tests/kms_color.c
-index e3fe2aea4695..d430ee12aaa3 100644
+index 84a8eabe5484..5c4d884f4de8 100644
 --- a/tests/kms_color.c
 +++ b/tests/kms_color.c
-@@ -735,10 +735,18 @@ out:
- 	test_cleanup(data);
- }
+@@ -321,7 +321,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
+ static bool test_pipe_legacy_gamma_reset(data_t *data,
+ 					 igt_plane_t *primary)
+ {
+-	const double ctm_identity[] = {
++	static const double ctm_identity[] = {
+ 		1.0, 0.0, 0.0,
+ 		0.0, 1.0, 0.0,
+ 		0.0, 0.0, 1.0,
+@@ -454,11 +454,11 @@ end:
+  */
+ static bool test_pipe_ctm(data_t *data,
+ 			  igt_plane_t *primary,
+-			  color_t *before,
+-			  color_t *after,
+-			  double *ctm_matrix)
++			  const color_t *before,
++			  const color_t *after,
++			  const double *ctm_matrix)
+ {
+-	const double ctm_identity[] = {
++	static const double ctm_identity[] = {
+ 		1.0, 0.0, 0.0,
+ 		0.0, 1.0, 0.0,
+ 		0.0, 0.0, 1.0,
+@@ -566,17 +566,17 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ 					igt_plane_t *primary)
+ {
+ 	double limited_result = 235.0 / 255.0;
+-	color_t red_green_blue_limited[] = {
++	static const color_t red_green_blue_limited[] = {
+ 		{ limited_result, 0.0, 0.0 },
+ 		{ 0.0, limited_result, 0.0 },
+ 		{ 0.0, 0.0, limited_result },
+ 	};
+-	color_t red_green_blue_full[] = {
++	static const color_t red_green_blue_full[] = {
+ 		{ 0.5, 0.0, 0.0 },
+ 		{ 0.0, 0.5, 0.0 },
+ 		{ 0.0, 0.0, 0.5 },
+ 	};
+-	double ctm[] = {
++	static const double ctm[] = {
+ 		1.0, 0.0, 0.0,
+ 		0.0, 1.0, 0.0,
+ 		0.0, 0.0, 1.0,
+@@ -737,12 +737,12 @@ out:
  
-+static void transform_color(color_t *color, const double *ctm, double offset)
-+{
-+	color_t tmp = *color;
-+
-+	color->r = ctm[0] * tmp.r + ctm[1] * tmp.g + ctm[2] * tmp.b + offset;
-+	color->g = ctm[3] * tmp.r + ctm[4] * tmp.g + ctm[5] * tmp.b + offset;
-+	color->b = ctm[6] * tmp.r + ctm[7] * tmp.g + ctm[8] * tmp.b + offset;
-+}
-+
  static void
  run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 		       const color_t *fb_colors,
--		       const color_t *expected_colors,
- 		       const double *ctm,
+-		       color_t *expected_colors,
+-		       double *ctm,
++		       const color_t *expected_colors,
++		       const double *ctm,
  		       int iter)
  {
-@@ -758,14 +766,13 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 	if (!pipe_output_combo_valid(data, p))
- 		goto out;
- 
-+	if (!iter)
-+		iter = 1;
-+
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
- 		bool success = false;
- 		int i;
- 
--		if (!iter)
--			success = test_pipe_ctm(data, data->primary, fb_colors,
--						expected_colors, ctm);
--
- 		/*
- 		 * We tests a few values around the expected result because
- 		 * it depends on the hardware we're dealing with, we can either
-@@ -773,15 +780,18 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 	double delta;
+-	color_t red_green_blue[] = {
++	static const color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+ 		{ 0.0, 1.0, 0.0 },
+ 		{ 0.0, 0.0, 1.0 },
+@@ -777,12 +777,15 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
  		 * for odd number of items in the LUTs.
  		 */
  		for (i = 0; i < iter; i++) {
--			float c = ctm[0] + delta * (i - (iter / 2));
--			color_t expected_colors_local[] = {
--				{ .r = c, },
--				{ .g = c, },
--				{ .b = c, },
-+			color_t expected_colors[3] = {
-+				fb_colors[0],
-+				fb_colors[1],
-+				fb_colors[2],
- 			};
- 
-+			transform_color(&expected_colors[0], ctm, delta * (i - (iter / 2)));
-+			transform_color(&expected_colors[1], ctm, delta * (i - (iter / 2)));
-+			transform_color(&expected_colors[2], ctm, delta * (i - (iter / 2)));
+-			expected_colors[0].r =
+-				expected_colors[1].g =
+-				expected_colors[2].b =
+-				ctm[0] + delta * (i - (iter / 2));
++			float c = ctm[0] + delta * (i - (iter / 2));
++			color_t expected_colors_local[] = {
++				{ .r = c, },
++				{ .g = c, },
++				{ .b = c, },
++			};
 +
- 			if (test_pipe_ctm(data, data->primary, fb_colors,
--					  expected_colors_local, ctm)) {
-+					  expected_colors, ctm)) {
+ 			if (test_pipe_ctm(data, data->primary, red_green_blue,
+-					  expected_colors, ctm)) {
++					  expected_colors_local, ctm)) {
  				success = true;
  				break;
  			}
-@@ -953,17 +963,11 @@ run_tests_for_pipe(data_t *data)
+@@ -798,17 +801,17 @@ static void
+ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ {
+ 	igt_output_t *output;
+-	color_t blue_green_blue[] = {
++	static const color_t blue_green_blue[] = {
+ 		{ 0.0, 0.0, 1.0 },
+ 		{ 0.0, 1.0, 0.0 },
+ 		{ 0.0, 0.0, 1.0 },
+ 	};
+-	color_t red_green_blue[] = {
++	static const color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+ 		{ 0.0, 1.0, 0.0 },
+-		{ 0.0, 0.0, 1.0 }
++		{ 0.0, 0.0, 1.0 },
+ 	};
+-	double ctm[] = {
++	static const double ctm[] = {
+ 		0.0, 0.0, 0.0,
+ 		0.0, 1.0, 0.0,
+ 		1.0, 0.0, 1.0,
+@@ -923,7 +926,7 @@ static void
+ run_tests_for_pipe(data_t *data)
+ {
+ 	enum pipe pipe;
+-	struct {
++	static const struct {
+ 		const char *name;
+ 		bool (*test_t)(data_t*, igt_plane_t*);
+ 		const char *desc;
+@@ -945,7 +948,7 @@ run_tests_for_pipe(data_t *data)
+ 		  .desc = "Verify that setting the legacy gamma LUT resets the gamma LUT set through GAMMA_LUT property",
+ 		},
+ 	};
+-	struct {
++	static const struct {
  		const char *name;
  		int iter;
- 		const color_t *fb_colors;
--		color_t colors[3];
- 		double ctm[9];
- 		const char *desc;
- 	} ctm_tests[] = {
- 		{ .name = "ctm-red-to-blue",
- 		  .fb_colors = colors_rgb,
--		  .colors = {
--			  { 0.0, 0.0, 1.0 },
--			  { 0.0, 1.0, 0.0 },
--			  { 0.0, 0.0, 1.0 },
--		  },
- 		  .ctm = {
- 			  0.0, 0.0, 0.0,
- 			  0.0, 1.0, 0.0,
-@@ -973,11 +977,6 @@ run_tests_for_pipe(data_t *data)
- 		},
- 		{ .name = "ctm-green-to-red",
- 		  .fb_colors = colors_rgb,
--		  .colors = {
--			  { 1.0, 0.0, 0.0 },
--			  { 1.0, 0.0, 0.0 },
--			  { 0.0, 0.0, 1.0 },
--		  },
- 		  .ctm = {
- 			  1.0, 1.0, 0.0,
- 			  0.0, 0.0, 0.0,
-@@ -987,11 +986,6 @@ run_tests_for_pipe(data_t *data)
- 		},
- 		{ .name = "ctm-blue-to-red",
- 		  .fb_colors = colors_rgb,
--		  .colors = {
--			  { 1.0, 0.0, 0.0 },
--			  { 0.0, 1.0, 0.0 },
--			  { 1.0, 0.0, 0.0 },
--		  },
- 		  .ctm = {
- 			  1.0, 0.0, 1.0,
- 			  0.0, 1.0, 0.0,
-@@ -1001,11 +995,6 @@ run_tests_for_pipe(data_t *data)
- 		},
- 		{ .name = "ctm-max",
- 		  .fb_colors = colors_rgb,
--		  .colors = {
--			  { 1.0, 0.0, 0.0 },
--			  { 0.0, 1.0, 0.0 },
--			  { 0.0, 0.0, 1.0 },
--		  },
- 		  .ctm = { 100.0, 0.0, 0.0,
- 			  0.0, 100.0, 0.0,
- 			  0.0, 0.0, 100.0,
-@@ -1014,11 +1003,6 @@ run_tests_for_pipe(data_t *data)
- 		},
- 		{ .name = "ctm-negative",
- 		  .fb_colors = colors_rgb,
--		  .colors = {
--			  { 0.0, 0.0, 0.0 },
--			  { 0.0, 0.0, 0.0 },
--			  { 0.0, 0.0, 0.0 },
--		  },
- 		  .ctm = {
- 			  -1.0,  0.0,  0.0,
- 			   0.0, -1.0,  0.0,
-@@ -1075,7 +1059,6 @@ run_tests_for_pipe(data_t *data)
- 			for_each_pipe(&data->display, pipe) {
- 				run_ctm_tests_for_pipe(data, pipe,
- 						       ctm_tests[i].fb_colors,
--						       ctm_tests[i].colors,
- 						       ctm_tests[i].ctm,
- 						       ctm_tests[i].iter);
- 			}
+ 		color_t colors[3];
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index 2f9950f801e4..5089bc373343 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -54,7 +54,7 @@ uint64_t get_max_bpc(igt_output_t *output)
+ 
+ void paint_gradient_rectangles(data_t *data,
+ 			       drmModeModeInfo *mode,
+-			       color_t *colors,
++			       const color_t *colors,
+ 			       struct igt_fb *fb)
+ {
+ 	cairo_t *cr = igt_get_cairo_ctx(data->drm_fd, fb);
+@@ -90,7 +90,7 @@ void paint_gradient_rectangles(data_t *data,
+ 
+ void paint_rectangles(data_t *data,
+ 		      drmModeModeInfo *mode,
+-		      color_t *colors,
++		      const color_t *colors,
+ 		      struct igt_fb *fb)
+ {
+ 	cairo_t *cr = igt_get_cairo_ctx(data->drm_fd, fb);
+diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
+index 78b97b00864f..23463b944b6f 100644
+--- a/tests/kms_color_helper.h
++++ b/tests/kms_color_helper.h
+@@ -74,11 +74,11 @@ bool panel_supports_deep_color(int fd, char *output_name);
+ uint64_t get_max_bpc(igt_output_t *output);
+ void paint_gradient_rectangles(data_t *data,
+ 			       drmModeModeInfo *mode,
+-			       color_t *colors,
++			       const color_t *colors,
+ 			       struct igt_fb *fb);
+ void paint_rectangles(data_t *data,
+ 		      drmModeModeInfo *mode,
+-		      color_t *colors,
++		      const color_t *colors,
+ 		      struct igt_fb *fb);
+ gamma_lut_t *alloc_lut(int lut_size);
+ void free_lut(gamma_lut_t *gamma);
 -- 
 2.39.2
