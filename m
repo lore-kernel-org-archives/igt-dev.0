@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15BD910E03E
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 11:02:09 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D75510E4D5
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 07:51:21 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Apr 2023 14:02:05 +0300
-Message-Id: <20230411110205.1002-1-ville.syrjala@linux.intel.com>
+Date: Tue, 11 Apr 2023 10:50:59 +0300
+Message-Id: <20230411075101.2785-7-ville.syrjala@linux.intel.com>
+In-Reply-To: <20230411075101.2785-1-ville.syrjala@linux.intel.com>
+References: <20230411075101.2785-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] meson: Disable testplan build by default
+Subject: [igt-dev] [PATCH i-g-t 6/8] tests/kms_color: Add and additional
+ "signed" subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,45 +26,52 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-No real idea what this "testplan" is and why it lives
-in igt. Seems to be build some xe documentation, and based
-on the name is maybe some manager level stuff? Surely
-this is nothing that matters for normal people (esp. those
-outside Intel).
+i915 CHV CSC code has a bug where it treats the hardware
+CSC coefficient as sign-magnitude instead of the two's
+complement value that it is. None of the current tests
+manage to notice this.
 
-The main problem here being that it is hideously slow to
-build, making life miserable for everyone. Flip the
-default to disabled and let those that need this enable
-it themselves.
+Add a testcase that uses suitable negative coefficients
+to catch the issue. With CHV's s4.12 coefficients the
+-0.25 ends up as -7.75 and the results won't match.
 
-On my HSW:
-$ touch tests/kms_color.c # any random file
-$ time ninja -Cbuild
-- real  0m22,202s
-- user  0m20,640s
-- sys   0m1,570s
-+ real  0m0,241s
-+ user  0m0,214s
-+ sys   0m0,031s
-
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- meson_options.txt | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_color.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/meson_options.txt b/meson_options.txt
-index d4e373d6cfc4..0ea1383a4fe8 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -22,6 +22,7 @@ option('man',
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index d430ee12aaa3..35083122dfbf 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -959,6 +959,11 @@ run_tests_for_pipe(data_t *data)
+ 		{ 0.0, 1.0, 0.0 },
+ 		{ 0.0, 0.0, 1.0 },
+ 	};
++	static const color_t colors_cmy[] = {
++		{ 0.0, 1.0, 1.0 },
++		{ 1.0, 0.0, 1.0 },
++		{ 1.0, 1.0, 0.0 }
++	};
+ 	static const struct {
+ 		const char *name;
+ 		int iter;
+@@ -1040,6 +1045,16 @@ run_tests_for_pipe(data_t *data)
+ 		  },
+ 		  .desc = "Check the color transformation for 0.75 transparency",
+ 		},
++		{ .name = "ctm-signed",
++		  .fb_colors = colors_cmy,
++		  .iter = 3,
++		  .ctm = {
++			  -0.25,  0.75,  0.75,
++			   0.75, -0.25,  0.75,
++			   0.75,  0.75, -0.25,
++		  },
++		  .desc = "Check the color transformation for correct signed handling",
++		},
+ 	};
+ 	int i;
  
- option('testplan',
-        type : 'feature',
-+       value : 'disabled',
-        description : 'Build testplan documentation pages in ReST and html')
- 
- option('sphinx',
 -- 
 2.39.2
