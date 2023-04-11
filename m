@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDB1510E23A
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 16:15:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C54810E23A
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 16:16:00 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Apr 2023 19:15:45 +0300
-Message-Id: <20230411161555.10001-1-ville.syrjala@linux.intel.com>
+Date: Tue, 11 Apr 2023 19:15:46 +0300
+Message-Id: <20230411161555.10001-2-ville.syrjala@linux.intel.com>
+In-Reply-To: <20230411161555.10001-1-ville.syrjala@linux.intel.com>
+References: <20230411161555.10001-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/9] tests/kms_color: Improve CTM tests
+Subject: [igt-dev] [PATCH i-g-t v2 1/9] tests/kms_color: Use legacy LUT for
+ chopping off the lsbs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,29 +26,35 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
+Trying to use an interpolated gamma mode (as is the case currently
+on eg. icl/tgl) for chopping off the lsbs doesn't really work. Use
+the legacy LUT instead. Also get rid of the degamma LUT as that
+can't even be enabled alognside the legacy LUT on split gamma i915
+platforms (ivb-skl).
 
-Bunch of fixe and cleanups to the CTM tests. Also add a new
-"signed" subtest to highlight a bug in the i915 CHV CGM code.
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ tests/kms_color.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-v2: Tweak the dyamic subtest stuff in order to
-    make CHV actually run the tests
-
-Ville Syrjälä (9):
-  tests/kms_color: Use legacy LUT for chopping off the lsbs
-  tests/kms_color: Use named initializers
-  tests/kms_color: Make loads of stuff static const
-  tests/kms_color: Pass down the colors used to paint the fb
-  tests/kms_color: Get rid of hand coded "expected_colors"
-  tests/kms_color: Add and additional "signed" subtest
-  tests/kms_color: Dump the CTM before/after color values
-  tests/kms_color: Move dynamic subtests up one level
-  tests/intel-ci/fast-feedback: Run ctm tests
-
- tests/intel-ci/fast-feedback.testlist |  11 +
- tests/kms_color.c                     | 335 +++++++++++++++-----------
- tests/kms_color_helper.c              |   4 +-
- tests/kms_color_helper.h              |   4 +-
- 4 files changed, 208 insertions(+), 146 deletions(-)
-
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index cd03c1354c0a..369dc8057d83 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -504,13 +504,10 @@ static bool test_pipe_ctm(data_t *data,
+ 	 * rounding issues and inaccuracies leading to crc mismatch.
+ 	 */
+ 	if (is_i915_device(data->drm_fd) && memcmp(before, after, sizeof(color_t))) {
+-		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
+ 		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+ 
+-		degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+-		gamma_linear = generate_table(data->gamma_lut_size, 1.0);
++		gamma_linear = generate_table(256, 1.0);
+ 
+-		set_degamma(data, primary->pipe, degamma_linear);
+ 		set_gamma(data, primary->pipe, gamma_linear);
+ 	}
+ 
 -- 
 2.39.2
