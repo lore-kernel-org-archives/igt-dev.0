@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D75510E4D5
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 07:51:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 037B610E4D5
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 07:51:26 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Apr 2023 10:50:59 +0300
-Message-Id: <20230411075101.2785-7-ville.syrjala@linux.intel.com>
+Date: Tue, 11 Apr 2023 10:51:01 +0300
+Message-Id: <20230411075101.2785-9-ville.syrjala@linux.intel.com>
 In-Reply-To: <20230411075101.2785-1-ville.syrjala@linux.intel.com>
 References: <20230411075101.2785-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/8] tests/kms_color: Add and additional
- "signed" subtest
+Subject: [igt-dev] [PATCH i-g-t 8/8] tests/intel-ci/fast-feedback: Run ctm
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,52 +26,28 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-i915 CHV CSC code has a bug where it treats the hardware
-CSC coefficient as sign-magnitude instead of the two's
-complement value that it is. None of the current tests
-manage to notice this.
-
-Add a testcase that uses suitable negative coefficients
-to catch the issue. With CHV's s4.12 coefficients the
--0.25 ends up as -7.75 and the results won't match.
-
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_color.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tests/intel-ci/fast-feedback.testlist | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index d430ee12aaa3..35083122dfbf 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -959,6 +959,11 @@ run_tests_for_pipe(data_t *data)
- 		{ 0.0, 1.0, 0.0 },
- 		{ 0.0, 0.0, 1.0 },
- 	};
-+	static const color_t colors_cmy[] = {
-+		{ 0.0, 1.0, 1.0 },
-+		{ 1.0, 0.0, 1.0 },
-+		{ 1.0, 1.0, 0.0 }
-+	};
- 	static const struct {
- 		const char *name;
- 		int iter;
-@@ -1040,6 +1045,16 @@ run_tests_for_pipe(data_t *data)
- 		  },
- 		  .desc = "Check the color transformation for 0.75 transparency",
- 		},
-+		{ .name = "ctm-signed",
-+		  .fb_colors = colors_cmy,
-+		  .iter = 3,
-+		  .ctm = {
-+			  -0.25,  0.75,  0.75,
-+			   0.75, -0.25,  0.75,
-+			   0.75,  0.75, -0.25,
-+		  },
-+		  .desc = "Check the color transformation for correct signed handling",
-+		},
- 	};
- 	int i;
- 
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index d9fcb62d6e78..33e825772c96 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -181,3 +181,14 @@ igt@gem_exec_suspend@basic-s0
+ igt@gem_exec_suspend@basic-s3
+ igt@kms_chamelium_hpd@common-hpd-after-suspend
+ igt@kms_pipe_crc_basic@suspend-read-crc
++
++igt@kms_color@ctm-red-to-blue
++igt@kms_color@ctm-green-to-red
++igt@kms_color@ctm-blue-to-red
++igt@kms_color@ctm-max
++igt@kms_color@ctm-negative
++igt@kms_color@ctm-0-25
++igt@kms_color@ctm-0-50
++igt@kms_color@ctm-0-75
++igt@kms_color@ctm-signed
++igt@kms_color@invalid-ctm-matrix-sizes
 -- 
 2.39.2
