@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 819C810E5EF
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 17:37:32 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Apr 2023 23:02:58 +0530
-Message-Id: <20230411173258.224223-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20220422163808.131363-1-mohammed.thasleem@intel.com>
-References: <20220422163808.131363-1-mohammed.thasleem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0740375665351636696=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Add negative test
- for extended display
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Date: Tue, 11 Apr 2023 17:51:03 -0000
+Message-ID: <168123546303.13173.4375672227053901340@emeril.freedesktop.org>
+References: <20230411161555.10001-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20230411161555.10001-1-ville.syrjala@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcolor=3A_Improve_CTM_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,230 +17,837 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added negative test to validte ENOSPC when two 2k-4k or 4k-4k
-moniters connected through MST.
-This test added to prvode bandwidth issue in MST config.
+--===============0740375665351636696==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Example:
-  When two monitors connected through MST, the second monitor
-  also tries to use the same mode. So two such modes may not
-  fit into the link bandwidth. So, iterate through connected
-  outputs & modes and find a combination of modes those fit
-  into the link BW.
+== Series Details ==
 
-v2: Rebased on tip.
-v3: Code cleanup and updated description.
+Series: tests/kms_color: Improve CTM tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/116300/
+State : failure
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/kms_display_modes.c | 161 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 161 insertions(+)
+== Summary ==
 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index d69c7b931..1fe1be1ac 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -26,14 +26,107 @@
- 
- #include "igt.h"
- 
-+#define HDISPLAY_2K	2560
-+#define VDISPLAY_2K	1440
-+
-+#define HDISPLAY_4K	3840
-+#define VDISPLAY_4K	2160
-+
- IGT_TEST_DESCRIPTION("Test Display Modes");
- 
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
-+	drmModeModeInfo mode_mst[2];
-+	igt_output_t *mst_output[2];
- 	int n_pipes;
- } data_t;
- 
-+static drmModeModeInfo *get_highres_mode(igt_output_t *output)
-+{
-+	drmModeConnector *connector = output->config.connector;
-+	drmModeModeInfo *highest_mode = NULL;
-+
-+	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-+
-+	highest_mode = &connector->modes[0];
-+
-+	return highest_mode;
-+}
-+
-+static drmModeModeInfo *get_mode(igt_output_t *output)
-+{
-+	drmModeModeInfo *required_mode = NULL;
-+	drmModeConnector *connector = output->config.connector;
-+	int j;
-+
-+	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-+	for (j = 0; j < connector->count_modes; j++) {
-+
-+		if (connector->modes[j].vdisplay <= VDISPLAY_4K &&
-+		    connector->modes[j].hdisplay <= HDISPLAY_4K) {
-+			required_mode = &connector->modes[j];
-+			break;
-+		}
-+	}
-+
-+	return required_mode;
-+}
-+
-+static int parse_path_blob(char *blob_data)
-+{
-+	int connector_id;
-+	char *encoder;
-+
-+	encoder = strtok(blob_data, ":");
-+	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
-+
-+	connector_id = atoi(strtok(NULL, "-"));
-+
-+	return connector_id;
-+}
-+
-+static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
-+{
-+	drmModePropertyBlobPtr path_blob = NULL;
-+	uint64_t path_blob_id;
-+	drmModeConnector *connector = output->config.connector;
-+	struct kmstest_connector_config config;
-+	const char *encoder;
-+	int connector_id;
-+	static int prev_connector_id;
-+
-+	kmstest_get_connector_config(data->drm_fd, output->config.connector->connector_id,
-+				     -1, &config);
-+	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
-+
-+	if (strcmp(encoder, "DP MST"))
-+		return false;
-+
-+	igt_assert(kmstest_get_property(data->drm_fd, connector->connector_id,
-+		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
-+		   &path_blob_id, NULL));
-+
-+	igt_assert(path_blob = drmModeGetPropertyBlob(data->drm_fd, path_blob_id));
-+
-+	connector_id = parse_path_blob((char *) path_blob->data);
-+
-+	drmModeFreePropertyBlob(path_blob);
-+
-+	/*
-+	 * Discarding outputs of other DP MST topology.
-+	 * Testing only on outputs on the topology we got previously
-+	 */
-+	if (i == 0) {
-+		prev_connector_id = connector_id;
-+	} else {
-+		if (connector_id != prev_connector_id)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static void run_extendedmode_basic(data_t *data,
- 				   enum pipe pipe1, igt_output_t *output1,
- 				   enum pipe pipe2, igt_output_t *output2)
-@@ -173,8 +266,46 @@ static void run_extendedmode_test(data_t *data) {
- 	}
- }
- 
-+static void run_extendedmode_negative(data_t *data, int pipe1, int pipe2)
-+{
-+	struct igt_fb fbs[2];
-+	igt_display_t *display = &data->display;
-+	igt_plane_t *plane[2];
-+	int ret;
-+
-+	igt_display_reset(display);
-+
-+	igt_output_set_pipe(data->mst_output[0], pipe1);
-+	igt_output_set_pipe(data->mst_output[1], pipe2);
-+
-+	igt_create_color_fb(data->drm_fd, data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay,
-+			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 1, 0, 0, &fbs[0]);
-+	igt_create_color_fb(data->drm_fd, data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay,
-+			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 0, 0, 1, &fbs[1]);
-+
-+	plane[0] = igt_pipe_get_plane_type(&display->pipes[pipe1], DRM_PLANE_TYPE_PRIMARY);
-+	plane[1] = igt_pipe_get_plane_type(&display->pipes[pipe2], DRM_PLANE_TYPE_PRIMARY);
-+
-+	igt_plane_set_fb(plane[0], &fbs[0]);
-+	igt_fb_set_size(&fbs[0], plane[0], data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay);
-+	igt_plane_set_size(plane[0], data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay);
-+
-+	igt_plane_set_fb(plane[1], &fbs[1]);
-+	igt_fb_set_size(&fbs[1], plane[1], data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay);
-+	igt_plane_set_size(plane[1], data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay);
-+
-+	igt_output_override_mode(data->mst_output[0], &data->mode_mst[0]);
-+	igt_output_override_mode(data->mst_output[1], &data->mode_mst[1]);
-+
-+	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
-+	igt_assert(ret != 0 && errno == ENOSPC);
-+}
-+
- igt_main
- {
-+	int dp_mst_outputs = 0, count = 0;
-+	enum pipe pipe1, pipe2;
-+	igt_output_t *output;
- 	data_t data;
- 
- 	igt_fixture {
-@@ -182,12 +313,42 @@ igt_main
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
-+
-+		for_each_connected_output(&data.display, output) {
-+			data.mst_output[count++] = output;
-+			if (output_is_dp_mst(&data, output, dp_mst_outputs))
-+				dp_mst_outputs++;
-+		}
- 	}
- 
- 	igt_describe("Test for validating display extended mode with a pair of connected displays");
- 	igt_subtest_with_dynamic("extended-mode-basic")
- 		run_extendedmode_test(&data);
- 
-+	igt_describe("Negative test for validating display extended mode with a pair of connected "
-+		     "2k-4k or 4k-4k displays");
-+	igt_subtest_with_dynamic("mst-extended-mode-negative") {
-+		igt_require_f(dp_mst_outputs > 1, "MST not found more then one\n");
-+
-+		 memcpy(&data.mode_mst[0], get_mode(data.mst_output[0]), sizeof(drmModeModeInfo));
-+		 memcpy(&data.mode_mst[1], get_highres_mode(data.mst_output[1]),
-+				 sizeof(drmModeModeInfo));
-+
-+		igt_require_f((data.mode_mst[1].hdisplay >= HDISPLAY_4K &&
-+			       data.mode_mst[1].vdisplay >= VDISPLAY_4K), "4k panel not found\n");
-+
-+		for_each_pipe(&data.display, pipe1) {
-+			for_each_pipe(&data.display, pipe2) {
-+				if (pipe1 == pipe2)
-+					continue;
-+
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe1),
-+					      kmstest_pipe_name(pipe2))
-+					run_extendedmode_negative(&data, pipe1, pipe2);
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 	}
--- 
-2.25.1
+CI Bug Log - changes from IGT_7250 -> IGTPW_8780
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8780 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8780, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/index.html
+
+Participating hosts (36 -> 35)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8780:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_color@ctm-max@pipe-b (NEW):
+    - bat-dg1-7:          NOTRUN -> [SKIP][1] +35 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg1-7/igt@kms_color@ctm-max@pipe-b.html
+
+  * igt@kms_color@ctm-max@pipe-c (NEW):
+    - fi-bsw-n3050:       NOTRUN -> [DMESG-WARN][2] +6 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-bsw-n3050/igt@kms_color@ctm-max@pipe-c.html
+
+  * {igt@kms_color@ctm-signed@pipe-c} (NEW):
+    - fi-bsw-n3050:       NOTRUN -> [DMESG-FAIL][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-bsw-n3050/igt@kms_color@ctm-signed@pipe-c.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between IGT_7250 and IGTPW_8780:
+
+### New IGT tests (37) ###
+
+  * igt@kms_color@ctm-0-25@pipe-a:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-25@pipe-b:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-25@pipe-c:
+    - Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-25@pipe-d:
+    - Statuses : 7 pass(s) 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-50@pipe-a:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-50@pipe-b:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-50@pipe-c:
+    - Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-50@pipe-d:
+    - Statuses : 7 pass(s) 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-75@pipe-a:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-75@pipe-b:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-75@pipe-c:
+    - Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-0-75@pipe-d:
+    - Statuses : 7 pass(s) 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-blue-to-red@pipe-a:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-blue-to-red@pipe-b:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-blue-to-red@pipe-c:
+    - Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-blue-to-red@pipe-d:
+    - Statuses : 7 pass(s) 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-green-to-red@pipe-a:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-green-to-red@pipe-b:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-green-to-red@pipe-c:
+    - Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-green-to-red@pipe-d:
+    - Statuses : 7 pass(s) 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-max@pipe-a:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-max@pipe-b:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-max@pipe-c:
+    - Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-max@pipe-d:
+    - Statuses : 7 pass(s) 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-negative@pipe-a:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-negative@pipe-b:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-negative@pipe-c:
+    - Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-negative@pipe-d:
+    - Statuses : 7 pass(s) 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-red-to-blue@pipe-a:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-red-to-blue@pipe-b:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-red-to-blue@pipe-c:
+    - Statuses : 22 pass(s) 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-red-to-blue@pipe-d:
+    - Statuses : 7 pass(s) 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-signed:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-signed@pipe-a:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-signed@pipe-b:
+    - Statuses : 21 pass(s) 9 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-signed@pipe-c:
+    - Statuses : 1 dmesg-fail(s) 21 pass(s) 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@ctm-signed@pipe-d:
+    - Statuses : 7 pass(s) 1 skip(s)
+    - Exec time: [0.0] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8780 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s0@lmem0:
+    - bat-dg2-11:         [PASS][4] -> [INCOMPLETE][5] ([i915#6311])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-dg2-11/igt@gem_exec_suspend@basic-s0@lmem0.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg2-11/igt@gem_exec_suspend@basic-s0@lmem0.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - bat-rpls-1:         NOTRUN -> [ABORT][6] ([i915#6687] / [i915#7978])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-adlp-9:         [PASS][7] -> [DMESG-FAIL][8] ([i915#7699])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-adlp-9/igt@i915_selftest@live@migrate.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-adlp-9/igt@i915_selftest@live@migrate.html
+    - bat-dg2-11:         [PASS][9] -> [DMESG-WARN][10] ([i915#7699])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         NOTRUN -> [DMESG-FAIL][11] ([i915#6367])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-rplp-1:         NOTRUN -> [SKIP][12] ([i915#7828])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-rplp-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][13] ([i915#7828])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg1-7/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_color@ctm-0-25:
+    - bat-atsm-1:         NOTRUN -> [SKIP][14] ([i915#6078]) +9 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-atsm-1/igt@kms_color@ctm-0-25.html
+
+  * igt@kms_color@ctm-0-25@pipe-b (NEW):
+    - {bat-kbl-2}:        NOTRUN -> [SKIP][15] ([fdo#109271]) +26 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-kbl-2/igt@kms_color@ctm-0-25@pipe-b.html
+
+  * igt@kms_color@ctm-0-50@pipe-b (NEW):
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][16] ([fdo#109271]) +17 similar issues
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-bsw-n3050/igt@kms_color@ctm-0-50@pipe-b.html
+
+  * igt@kms_color@ctm-blue-to-red@pipe-c (NEW):
+    - fi-bsw-nick:        NOTRUN -> [SKIP][17] ([fdo#109271]) +26 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-bsw-nick/igt@kms_color@ctm-blue-to-red@pipe-c.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][18] ([fdo#109271]) +26 similar issues
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-kbl-guc/igt@kms_color@ctm-blue-to-red@pipe-c.html
+
+  * igt@kms_color@ctm-green-to-red@pipe-b (NEW):
+    - fi-ilk-650:         NOTRUN -> [SKIP][19] ([fdo#109271]) +19 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-ilk-650/igt@kms_color@ctm-green-to-red@pipe-b.html
+
+  * igt@kms_color@ctm-green-to-red@pipe-c (NEW):
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][20] ([fdo#109271]) +26 similar issues
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-kbl-8809g/igt@kms_color@ctm-green-to-red@pipe-c.html
+
+  * {igt@kms_color@ctm-signed@pipe-a} (NEW):
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][21] ([fdo#109271]) +26 similar issues
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-kbl-x1275/igt@kms_color@ctm-signed@pipe-a.html
+
+  * {igt@kms_color@ctm-signed@pipe-b} (NEW):
+    - fi-elk-e7500:       NOTRUN -> [SKIP][22] ([fdo#109271]) +19 similar issues
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-elk-e7500/igt@kms_color@ctm-signed@pipe-b.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - bat-dg2-11:         NOTRUN -> [SKIP][23] ([i915#5354])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-dg1-7:          NOTRUN -> [SKIP][24] ([i915#1845] / [i915#4078])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg1-7/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-7:          [ABORT][25] ([i915#4983]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-dg1-7/igt@i915_selftest@live@hangcheck.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg1-7/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rplp-1:         [ABORT][27] ([i915#7913]) -> [PASS][28]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-rplp-1/igt@i915_selftest@live@requests.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-rplp-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [ABORT][29] ([i915#4983]) -> [PASS][30]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
+  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7250 -> IGTPW_8780
+
+  CI-20190529: 20190529
+  CI_DRM_12990: 43444a1de6ae4f1258bc1cf677558de3c582a93d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8780: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/index.html
+  IGT_7250: 2da179d399d83a6859a89176d83b7ec1d71fe27a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_color@ctm-signed
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/index.html
+
+--===============0740375665351636696==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_color: Improve CTM tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116300/">https://patchwork.freedesktop.org/series/116300/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7250 -&gt; IGTPW_8780</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8780 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8780, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/index.html</p>
+<h2>Participating hosts (36 -&gt; 35)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8780:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_color@ctm-max@pipe-b (NEW):</p>
+<ul>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg1-7/igt@kms_color@ctm-max@pipe-b.html">SKIP</a> +35 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-max@pipe-c (NEW):</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-bsw-n3050/igt@kms_color@ctm-max@pipe-c.html">DMESG-WARN</a> +6 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_color@ctm-signed@pipe-c} (NEW):</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-bsw-n3050/igt@kms_color@ctm-signed@pipe-c.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_7250 and IGTPW_8780:</p>
+<h3>New IGT tests (37)</h3>
+<ul>
+<li>
+<p>igt@kms_color@ctm-0-25@pipe-a:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-25@pipe-b:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-25@pipe-c:</p>
+<ul>
+<li>Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-25@pipe-d:</p>
+<ul>
+<li>Statuses : 7 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-50@pipe-a:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-50@pipe-b:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-50@pipe-c:</p>
+<ul>
+<li>Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-50@pipe-d:</p>
+<ul>
+<li>Statuses : 7 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-75@pipe-a:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-75@pipe-b:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-75@pipe-c:</p>
+<ul>
+<li>Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-75@pipe-d:</p>
+<ul>
+<li>Statuses : 7 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-blue-to-red@pipe-a:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-blue-to-red@pipe-b:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-blue-to-red@pipe-c:</p>
+<ul>
+<li>Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-blue-to-red@pipe-d:</p>
+<ul>
+<li>Statuses : 7 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-green-to-red@pipe-a:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-green-to-red@pipe-b:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-green-to-red@pipe-c:</p>
+<ul>
+<li>Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-green-to-red@pipe-d:</p>
+<ul>
+<li>Statuses : 7 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-max@pipe-a:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-max@pipe-b:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-max@pipe-c:</p>
+<ul>
+<li>Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-max@pipe-d:</p>
+<ul>
+<li>Statuses : 7 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-negative@pipe-a:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-negative@pipe-b:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-negative@pipe-c:</p>
+<ul>
+<li>Statuses : 1 dmesg-warn(s) 21 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-negative@pipe-d:</p>
+<ul>
+<li>Statuses : 7 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-red-to-blue@pipe-a:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-red-to-blue@pipe-b:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-red-to-blue@pipe-c:</p>
+<ul>
+<li>Statuses : 22 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-red-to-blue@pipe-d:</p>
+<ul>
+<li>Statuses : 7 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-signed:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-signed@pipe-a:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-signed@pipe-b:</p>
+<ul>
+<li>Statuses : 21 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-signed@pipe-c:</p>
+<ul>
+<li>Statuses : 1 dmesg-fail(s) 21 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-signed@pipe-d:</p>
+<ul>
+<li>Statuses : 7 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8780 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@lmem0:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-dg2-11/igt@gem_exec_suspend@basic-s0@lmem0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg2-11/igt@gem_exec_suspend@basic-s0@lmem0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6311">i915#6311</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>
+<p>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-adlp-9/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-adlp-9/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</p>
+</li>
+<li>
+<p>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-rplp-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+<li>
+<p>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg1-7/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-25:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-atsm-1/igt@kms_color@ctm-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6078">i915#6078</a>) +9 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-25@pipe-b (NEW):</p>
+<ul>
+<li>{bat-kbl-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-kbl-2/igt@kms_color@ctm-0-25@pipe-b.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-0-50@pipe-b (NEW):</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-bsw-n3050/igt@kms_color@ctm-0-50@pipe-b.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-blue-to-red@pipe-c (NEW):</p>
+<ul>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-bsw-nick/igt@kms_color@ctm-blue-to-red@pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-kbl-guc/igt@kms_color@ctm-blue-to-red@pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-green-to-red@pipe-b (NEW):</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-ilk-650/igt@kms_color@ctm-green-to-red@pipe-b.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +19 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@ctm-green-to-red@pipe-c (NEW):</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-kbl-8809g/igt@kms_color@ctm-green-to-red@pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_color@ctm-signed@pipe-a} (NEW):</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-kbl-x1275/igt@kms_color@ctm-signed@pipe-a.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_color@ctm-signed@pipe-b} (NEW):</p>
+<ul>
+<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/fi-elk-e7500/igt@kms_color@ctm-signed@pipe-b.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +19 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg1-7/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4078">i915#4078</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-7:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-dg1-7/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-dg1-7/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-rplp-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-rplp-1/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7250/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7250 -&gt; IGTPW_8780</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12990: 43444a1de6ae4f1258bc1cf677558de3c582a93d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8780: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8780/index.html<br />
+  IGT_7250: 2da179d399d83a6859a89176d83b7ec1d71fe27a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_color@ctm-signed</p>
+
+</body>
+</html>
+
+--===============0740375665351636696==--
