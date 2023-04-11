@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2034A10E130
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 07:51:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B056E10E4CE
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Apr 2023 07:51:15 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Apr 2023 10:50:55 +0300
-Message-Id: <20230411075101.2785-3-ville.syrjala@linux.intel.com>
+Date: Tue, 11 Apr 2023 10:50:57 +0300
+Message-Id: <20230411075101.2785-5-ville.syrjala@linux.intel.com>
 In-Reply-To: <20230411075101.2785-1-ville.syrjala@linux.intel.com>
 References: <20230411075101.2785-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/8] tests/kms_color: Use named initializers
+Subject: [igt-dev] [PATCH i-g-t 4/8] tests/kms_color: Pass down the colors
+ used to paint the fb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,308 +26,140 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Use named initializers to make it actually possible to figure out
-what is happening. And sprinkle some missing commas around while
-at it.
+Instead of assuming we always want RGB stripes in the fb let's
+pass those colors down from the top. Will be needed to make
+more interesting tests that mix colors from multiple channels.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_color.c | 202 +++++++++++++++++++++++++++-------------------
- 1 file changed, 118 insertions(+), 84 deletions(-)
+ tests/kms_color.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
 diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 369dc8057d83..84a8eabe5484 100644
+index 5c4d884f4de8..e3fe2aea4695 100644
 --- a/tests/kms_color.c
 +++ b/tests/kms_color.c
-@@ -35,7 +35,7 @@ static bool test_pipe_degamma(data_t *data,
- 	color_t red_green_blue[] = {
- 		{ 1.0, 0.0, 0.0 },
- 		{ 0.0, 1.0, 0.0 },
--		{ 0.0, 0.0, 1.0 }
-+		{ 0.0, 0.0, 1.0 },
- 	};
- 	drmModeModeInfo *mode = data->mode;
- 	struct igt_fb fb_modeset, fb;
-@@ -127,7 +127,7 @@ static bool test_pipe_gamma(data_t *data,
- 	color_t red_green_blue[] = {
- 		{ 1.0, 0.0, 0.0 },
- 		{ 0.0, 1.0, 0.0 },
--		{ 0.0, 0.0, 1.0 }
-+		{ 0.0, 0.0, 1.0 },
- 	};
- 	drmModeModeInfo *mode = data->mode;
- 	struct igt_fb fb_modeset, fb;
-@@ -215,7 +215,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
- 	color_t red_green_blue[] = {
- 		{ 1.0, 0.0, 0.0 },
- 		{ 0.0, 1.0, 0.0 },
--		{ 0.0, 0.0, 1.0 }
-+		{ 0.0, 0.0, 1.0 },
- 	};
- 	drmModeCrtc *kms_crtc;
- 	uint32_t i, legacy_lut_size;
-@@ -324,7 +324,7 @@ static bool test_pipe_legacy_gamma_reset(data_t *data,
- 	const double ctm_identity[] = {
- 		1.0, 0.0, 0.0,
- 		0.0, 1.0, 0.0,
--		0.0, 0.0, 1.0
-+		0.0, 0.0, 1.0,
- 	};
- 	drmModeCrtc *kms_crtc;
- 	gamma_lut_t *degamma_linear = NULL, *gamma_zero;
-@@ -461,7 +461,7 @@ static bool test_pipe_ctm(data_t *data,
- 	const double ctm_identity[] = {
- 		1.0, 0.0, 0.0,
- 		0.0, 1.0, 0.0,
--		0.0, 0.0, 1.0
-+		0.0, 0.0, 1.0,
- 	};
- 	gamma_lut_t *degamma_linear = NULL, *gamma_linear = NULL;
- 	igt_output_t *output = data->output;
-@@ -569,16 +569,18 @@ static void test_pipe_limited_range_ctm(data_t *data,
- 	color_t red_green_blue_limited[] = {
- 		{ limited_result, 0.0, 0.0 },
- 		{ 0.0, limited_result, 0.0 },
--		{ 0.0, 0.0, limited_result }
-+		{ 0.0, 0.0, limited_result },
- 	};
- 	color_t red_green_blue_full[] = {
- 		{ 0.5, 0.0, 0.0 },
- 		{ 0.0, 0.5, 0.0 },
--		{ 0.0, 0.0, 0.5 }
-+		{ 0.0, 0.0, 0.5 },
-+	};
-+	double ctm[] = {
-+		1.0, 0.0, 0.0,
-+		0.0, 1.0, 0.0,
-+		0.0, 0.0, 1.0,
- 	};
--	double ctm[] = { 1.0, 0.0, 0.0,
--			0.0, 1.0, 0.0,
--			0.0, 0.0, 1.0 };
- 	gamma_lut_t *degamma_linear, *gamma_linear;
- 	igt_output_t *output;
- 	bool has_broadcast_rgb_output = false;
-@@ -743,7 +745,7 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 	color_t red_green_blue[] = {
- 		{ 1.0, 0.0, 0.0 },
- 		{ 0.0, 1.0, 0.0 },
--		{ 0.0, 0.0, 1.0 }
-+		{ 0.0, 0.0, 1.0 },
- 	};
+@@ -737,16 +737,12 @@ out:
+ 
+ static void
+ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
++		       const color_t *fb_colors,
+ 		       const color_t *expected_colors,
+ 		       const double *ctm,
+ 		       int iter)
+ {
+ 	double delta;
+-	static const color_t red_green_blue[] = {
+-		{ 1.0, 0.0, 0.0 },
+-		{ 0.0, 1.0, 0.0 },
+-		{ 0.0, 0.0, 1.0 },
+-	};
  
  	test_setup(data, p);
-@@ -799,16 +801,18 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 	color_t blue_green_blue[] = {
- 		{ 0.0, 0.0, 1.0 },
- 		{ 0.0, 1.0, 0.0 },
--		{ 0.0, 0.0, 1.0 }
-+		{ 0.0, 0.0, 1.0 },
- 	};
- 	color_t red_green_blue[] = {
- 		{ 1.0, 0.0, 0.0 },
- 		{ 0.0, 1.0, 0.0 },
- 		{ 0.0, 0.0, 1.0 }
- 	};
--	double ctm[] = { 0.0, 0.0, 0.0,
--			 0.0, 1.0, 0.0,
--			 1.0, 0.0, 1.0 };
-+	double ctm[] = {
-+		0.0, 0.0, 0.0,
-+		0.0, 1.0, 0.0,
-+		1.0, 0.0, 1.0,
-+	};
  
- 	if (is_i915_device(data->drm_fd))
- 		igt_require_f((intel_display_ver(data->devid) >= 11),
-@@ -924,17 +928,22 @@ run_tests_for_pipe(data_t *data)
- 		bool (*test_t)(data_t*, igt_plane_t*);
- 		const char *desc;
- 	} gamma_degamma_tests[] = {
--		{ "degamma", test_pipe_degamma,
--		  "Verify that degamma LUT transformation works correctly" },
--
--		{ "gamma", test_pipe_gamma,
--		  "Verify that gamma LUT transformation works correctly" },
--
--		{ "legacy-gamma", test_pipe_legacy_gamma,
--		  "Verify that legacy gamma LUT transformation works correctly" },
--
--		{ "legacy-gamma-reset", test_pipe_legacy_gamma_reset,
--		  "Verify that setting the legacy gamma LUT resets the gamma LUT set through GAMMA_LUT property" },
-+		{ .name = "degamma",
-+		  .test_t = test_pipe_degamma,
-+		  .desc = "Verify that degamma LUT transformation works correctly",
-+		},
-+		{ .name = "gamma",
-+		  .test_t = test_pipe_gamma,
-+		  .desc = "Verify that gamma LUT transformation works correctly",
-+		},
-+		{ .name = "legacy-gamma",
-+		  .test_t = test_pipe_legacy_gamma,
-+		  .desc = "Verify that legacy gamma LUT transformation works correctly",
-+		},
-+		{ .name = "legacy-gamma-reset",
-+		  .test_t = test_pipe_legacy_gamma_reset,
-+		  .desc = "Verify that setting the legacy gamma LUT resets the gamma LUT set through GAMMA_LUT property",
-+		},
+@@ -767,7 +763,7 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 		int i;
+ 
+ 		if (!iter)
+-			success = test_pipe_ctm(data, data->primary, red_green_blue,
++			success = test_pipe_ctm(data, data->primary, fb_colors,
+ 						expected_colors, ctm);
+ 
+ 		/*
+@@ -784,7 +780,7 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 				{ .b = c, },
+ 			};
+ 
+-			if (test_pipe_ctm(data, data->primary, red_green_blue,
++			if (test_pipe_ctm(data, data->primary, fb_colors,
+ 					  expected_colors_local, ctm)) {
+ 				success = true;
+ 				break;
+@@ -948,14 +944,21 @@ run_tests_for_pipe(data_t *data)
+ 		  .desc = "Verify that setting the legacy gamma LUT resets the gamma LUT set through GAMMA_LUT property",
+ 		},
  	};
- 	struct {
++	static const color_t colors_rgb[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 },
++	};
+ 	static const struct {
  		const char *name;
-@@ -943,71 +952,96 @@ run_tests_for_pipe(data_t *data)
+ 		int iter;
++		const color_t *fb_colors;
+ 		color_t colors[3];
  		double ctm[9];
  		const char *desc;
  	} ctm_tests[] = {
--		{ "ctm-red-to-blue", 0,
--			{{ 0.0, 0.0, 1.0 },
--			 { 0.0, 1.0, 0.0 },
--			 { 0.0, 0.0, 1.0 }},
--		  { 0.0, 0.0, 0.0,
--		    0.0, 1.0, 0.0,
--		    1.0, 0.0, 1.0 },
--		  "Check the color transformation from red to blue"
-+		{ .name = "ctm-red-to-blue",
-+		  .colors = {
-+			  { 0.0, 0.0, 1.0 },
-+			  { 0.0, 1.0, 0.0 },
-+			  { 0.0, 0.0, 1.0 },
-+		  },
-+		  .ctm = {
-+			  0.0, 0.0, 0.0,
-+			  0.0, 1.0, 0.0,
-+			  1.0, 0.0, 1.0,
-+		  },
-+		  .desc = "Check the color transformation from red to blue",
+ 		{ .name = "ctm-red-to-blue",
++		  .fb_colors = colors_rgb,
+ 		  .colors = {
+ 			  { 0.0, 0.0, 1.0 },
+ 			  { 0.0, 1.0, 0.0 },
+@@ -969,6 +972,7 @@ run_tests_for_pipe(data_t *data)
+ 		  .desc = "Check the color transformation from red to blue",
  		},
--		{ "ctm-green-to-red", 0,
--			{{ 1.0, 0.0, 0.0 },
--			 { 1.0, 0.0, 0.0 },
--			 { 0.0, 0.0, 1.0 }},
--		  { 1.0, 1.0, 0.0,
--		    0.0, 0.0, 0.0,
--		    0.0, 0.0, 1.0 },
--		  "Check the color transformation from green to red"
-+		{ .name = "ctm-green-to-red",
-+		  .colors = {
-+			  { 1.0, 0.0, 0.0 },
-+			  { 1.0, 0.0, 0.0 },
-+			  { 0.0, 0.0, 1.0 },
-+		  },
-+		  .ctm = {
-+			  1.0, 1.0, 0.0,
-+			  0.0, 0.0, 0.0,
-+			  0.0, 0.0, 1.0,
-+		  },
-+		  .desc = "Check the color transformation from green to red",
+ 		{ .name = "ctm-green-to-red",
++		  .fb_colors = colors_rgb,
+ 		  .colors = {
+ 			  { 1.0, 0.0, 0.0 },
+ 			  { 1.0, 0.0, 0.0 },
+@@ -982,6 +986,7 @@ run_tests_for_pipe(data_t *data)
+ 		  .desc = "Check the color transformation from green to red",
  		},
--		{ "ctm-blue-to-red", 0,
--			{{ 1.0, 0.0, 0.0 },
--			 { 0.0, 1.0, 0.0 },
--			 { 1.0, 0.0, 0.0 }},
--		  { 1.0, 0.0, 1.0,
--		    0.0, 1.0, 0.0,
--		    0.0, 0.0, 0.0 },
--		  "Check the color transformation from blue to red"
-+		{ .name = "ctm-blue-to-red",
-+		  .colors = {
-+			  { 1.0, 0.0, 0.0 },
-+			  { 0.0, 1.0, 0.0 },
-+			  { 1.0, 0.0, 0.0 },
-+		  },
-+		  .ctm = {
-+			  1.0, 0.0, 1.0,
-+			  0.0, 1.0, 0.0,
-+			  0.0, 0.0, 0.0,
-+		  },
-+		  .desc = "Check the color transformation from blue to red",
+ 		{ .name = "ctm-blue-to-red",
++		  .fb_colors = colors_rgb,
+ 		  .colors = {
+ 			  { 1.0, 0.0, 0.0 },
+ 			  { 0.0, 1.0, 0.0 },
+@@ -995,6 +1000,7 @@ run_tests_for_pipe(data_t *data)
+ 		  .desc = "Check the color transformation from blue to red",
  		},
--		{ "ctm-max", 0,
--			{{ 1.0, 0.0, 0.0 },
--			 { 0.0, 1.0, 0.0 },
--			 { 0.0, 0.0, 1.0 }},
--		  { 100.0, 0.0, 0.0,
--		    0.0, 100.0, 0.0,
--		    0.0, 0.0, 100.0 },
--		  "Check the color transformation for maximum transparency"
-+		{ .name = "ctm-max",
-+		  .colors = {
-+			  { 1.0, 0.0, 0.0 },
-+			  { 0.0, 1.0, 0.0 },
-+			  { 0.0, 0.0, 1.0 },
-+		  },
-+		  .ctm = { 100.0, 0.0, 0.0,
-+			  0.0, 100.0, 0.0,
-+			  0.0, 0.0, 100.0,
-+		  },
-+		  .desc = "Check the color transformation for maximum transparency",
+ 		{ .name = "ctm-max",
++		  .fb_colors = colors_rgb,
+ 		  .colors = {
+ 			  { 1.0, 0.0, 0.0 },
+ 			  { 0.0, 1.0, 0.0 },
+@@ -1007,6 +1013,7 @@ run_tests_for_pipe(data_t *data)
+ 		  .desc = "Check the color transformation for maximum transparency",
  		},
--		{ "ctm-negative", 0,
--			{{ 0.0, 0.0, 0.0 },
--			 { 0.0, 0.0, 0.0 },
--			 { 0.0, 0.0, 0.0 }},
--		  { -1.0, 0.0, 0.0,
--		    0.0, -1.0, 0.0,
--		    0.0, 0.0, -1.0 },
--		  "Check the color transformation for negative transparency"
-+		{ .name = "ctm-negative",
-+		  .colors = {
-+			  { 0.0, 0.0, 0.0 },
-+			  { 0.0, 0.0, 0.0 },
-+			  { 0.0, 0.0, 0.0 },
-+		  },
-+		  .ctm = {
-+			  -1.0,  0.0,  0.0,
-+			   0.0, -1.0,  0.0,
-+			   0.0,  0.0, -1.0,
-+		  },
-+		  .desc = "Check the color transformation for negative transparency",
+ 		{ .name = "ctm-negative",
++		  .fb_colors = colors_rgb,
+ 		  .colors = {
+ 			  { 0.0, 0.0, 0.0 },
+ 			  { 0.0, 0.0, 0.0 },
+@@ -1021,6 +1028,7 @@ run_tests_for_pipe(data_t *data)
  		},
--		{ "ctm-0-25", 5,
--			{{ 0.0, }, { 0.0, }, { 0.0, }},
--		  { 0.25, 0.0,  0.0,
--		    0.0,  0.25, 0.0,
--		    0.0,  0.0,  0.25 },
--		  "Check the color transformation for 0.25 transparency"
-+		{ .name = "ctm-0-25",
-+		  .iter = 5,
-+		  .ctm = {
-+			  0.25, 0.0,  0.0,
-+			  0.0,  0.25, 0.0,
-+			  0.0,  0.0,  0.25,
-+		  },
-+		  .desc = "Check the color transformation for 0.25 transparency",
+ 		{ .name = "ctm-0-25",
+ 		  .iter = 5,
++		  .fb_colors = colors_rgb,
+ 		  .ctm = {
+ 			  0.25, 0.0,  0.0,
+ 			  0.0,  0.25, 0.0,
+@@ -1030,6 +1038,7 @@ run_tests_for_pipe(data_t *data)
  		},
--		{ "ctm-0-50", 5,
--			{{ 0.0, }, { 0.0, }, { 0.0, }},
--		  { 0.5,  0.0,  0.0,
--		    0.0,  0.5,  0.0,
--		    0.0,  0.0,  0.5 },
--		  "Check the color transformation for 0.5 transparency"
-+		{ .name = "ctm-0-50",
-+		  .iter = 5,
-+		  .ctm = {
-+			  0.5,  0.0,  0.0,
-+			  0.0,  0.5,  0.0,
-+			  0.0,  0.0,  0.5,
-+		  },
-+		  .desc = "Check the color transformation for 0.5 transparency",
+ 		{ .name = "ctm-0-50",
+ 		  .iter = 5,
++		  .fb_colors = colors_rgb,
+ 		  .ctm = {
+ 			  0.5,  0.0,  0.0,
+ 			  0.0,  0.5,  0.0,
+@@ -1039,6 +1048,7 @@ run_tests_for_pipe(data_t *data)
  		},
--		{ "ctm-0-75", 7,
--			{{ 0.0, }, { 0.0, }, { 0.0, }},
--		  { 0.75, 0.0,  0.0,
--		    0.0,  0.75, 0.0,
--		    0.0,  0.0,  0.75 },
--		  "Check the color transformation for 0.75 transparency"
-+		{ .name = "ctm-0-75",
-+		  .iter = 7,
-+		  .ctm = {
-+			  0.75, 0.0,  0.0,
-+			  0.0,  0.75, 0.0,
-+			  0.0,  0.0,  0.75,
-+		  },
-+		  .desc = "Check the color transformation for 0.75 transparency",
- 		},
- 	};
- 	int i;
+ 		{ .name = "ctm-0-75",
+ 		  .iter = 7,
++		  .fb_colors = colors_rgb,
+ 		  .ctm = {
+ 			  0.75, 0.0,  0.0,
+ 			  0.0,  0.75, 0.0,
+@@ -1064,6 +1074,7 @@ run_tests_for_pipe(data_t *data)
+ 		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
+ 			for_each_pipe(&data->display, pipe) {
+ 				run_ctm_tests_for_pipe(data, pipe,
++						       ctm_tests[i].fb_colors,
+ 						       ctm_tests[i].colors,
+ 						       ctm_tests[i].ctm,
+ 						       ctm_tests[i].iter);
 -- 
 2.39.2
