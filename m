@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B15F10E74E
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 09:31:10 +0000 (UTC)
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Apr 2023 12:30:39 +0300
-Message-Id: <20230412093039.57064-4-jouni.hogander@intel.com>
-In-Reply-To: <20230412093039.57064-1-jouni.hogander@intel.com>
-References: <20230412093039.57064-1-jouni.hogander@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07AFB10E74C
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 09:32:35 +0000 (UTC)
+Message-ID: <a011cddf-00e5-34aa-6db0-2627672e26f1@intel.com>
+Date: Wed, 12 Apr 2023 15:02:22 +0530
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230331065029.3869109-3-bhanuprakash.modem@intel.com>
+ <20230405094537.302827-1-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230405094537.302827-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/kms_dirtyfb: Add new test for
- dirtyfb ioctl
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t V2 2/7] tests/i915/kms_big_joiner: Fix
+ Bigjoiner checks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,334 +27,238 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new test to validate dirtyfb ioctl is working properly with GPU
-frontbuffer rendering.
 
-Create big framebuffer and use only lower right corner for the
-plane. Initiate GPU drawing for a rectangle over the whole
-framebuffer and perform dirtyfb ioctl. Then wait for the drawing to
-complete and collect crc and check that it matches with expected.
+On 4/5/2023 3:15 PM, Bhanuprakash Modem wrote:
+> Bigjoiner will come in the picture when the resolution > 5K or
+> clock > max dot-clock. Add a support to check the selected mode
+> clock is greater than the max dot-clock.
+>
+> V2: - Handle both 5k & max dot clock cases
+>      - Other minor cleanups
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/i915/kms_big_joiner.c | 84 ++++++++++++++++++++++++-------------
+>   1 file changed, 55 insertions(+), 29 deletions(-)
+>
+> diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
+> index 8be60ea1176..bd4541ce469 100644
+> --- a/tests/i915/kms_big_joiner.c
+> +++ b/tests/i915/kms_big_joiner.c
+> @@ -26,10 +26,13 @@
+>   
+>   #include "igt.h"
+>   
+> -#define MAX_HDISPLAY_PER_PIPE 5120
+> -
+>   IGT_TEST_DESCRIPTION("Test big joiner");
+>   
+> +struct big_joiner_output {
+> +	uint32_t output_id;
+> +	drmModeModeInfo mode;
+> +};
+> +
+>   typedef struct {
+>   	int drm_fd;
+>   	igt_display_t display;
+> @@ -37,7 +40,7 @@ typedef struct {
+>   	int n_pipes;
+>   	enum pipe pipe1;
+>   	enum pipe pipe2;
+> -	uint32_t big_joiner_output[2];
+> +	struct big_joiner_output output[2];
+>   } data_t;
+>   
+>   static void test_invalid_modeset(data_t *data)
+> @@ -91,7 +94,7 @@ static void test_basic_modeset(data_t *data)
+>   	igt_display_reset(display);
+>   
+>   	for_each_connected_output(display, output) {
+> -		if (data->big_joiner_output[0] == output->id) {
+> +		if (data->output[0].output_id == output->id) {
+>   			big_joiner_output = output;
+>   			break;
+>   		}
+> @@ -99,9 +102,7 @@ static void test_basic_modeset(data_t *data)
+>   
+>   	igt_output_set_pipe(big_joiner_output, data->pipe1);
+>   
+> -	igt_sort_connector_modes(big_joiner_output->config.connector,
+> -				 sort_drm_modes_by_res_dsc);
+> -	mode = &big_joiner_output->config.connector->modes[0];
+> +	mode = &data->output[0].mode;
+>   	igt_output_override_mode(big_joiner_output, mode);
+>   
+>   	pipe = &display->pipes[data->pipe1];
+> @@ -130,7 +131,7 @@ static void test_dual_display(data_t *data)
+>   	igt_display_reset(display);
+>   
+>   	for_each_connected_output(display, output) {
+> -		if (data->big_joiner_output[count] == output->id) {
+> +		if (data->output[count].output_id == output->id) {
+>   			big_joiner_output[count] = output;
+>   			count++;
+>   		}
+> @@ -143,9 +144,7 @@ static void test_dual_display(data_t *data)
+>   	igt_output_set_pipe(big_joiner_output[1], data->pipe2);
+>   
+>   	/* Set up first big joiner output on Pipe A*/
+> -	igt_sort_connector_modes(big_joiner_output[0]->config.connector,
+> -				 sort_drm_modes_by_res_dsc);
+> -	mode = &big_joiner_output[0]->config.connector->modes[0];
+> +	mode = &data->output[0].mode;
+>   	igt_output_override_mode(big_joiner_output[0], mode);
+>   
+>   	pipe = &display->pipes[data->pipe1];
+> @@ -156,9 +155,7 @@ static void test_dual_display(data_t *data)
+>   	igt_plane_set_size(plane1, mode->hdisplay, mode->vdisplay);
+>   
+>   	/* Set up second big joiner output on Pipe C*/
+> -	igt_sort_connector_modes(big_joiner_output[1]->config.connector,
+> -				 sort_drm_modes_by_res_dsc);
+> -	mode = &big_joiner_output[1]->config.connector->modes[0];
+> +	mode = &data->output[1].mode;
+>   	igt_output_override_mode(big_joiner_output[1], mode);
+>   
+>   	pipe = &display->pipes[data->pipe2];
+> @@ -186,6 +183,8 @@ igt_main
+>   	int valid_output = 0, i, count = 0, j = 0;
+>   	uint16_t width = 0, height = 0;
+>   	enum pipe pipe_seq[IGT_MAX_PIPES];
+> +	int max_dotclock;
+> +	bool retry = false;
+>   
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> @@ -194,13 +193,39 @@ igt_main
+>   		igt_display_require(&data.display, data.drm_fd);
+>   		igt_require(data.display.is_atomic);
+>   
+> +		max_dotclock = igt_get_max_dotclock(data.drm_fd);
 
-v2:
- - Change license comment
- - Move disable_features and do not apply for FEATURE_DEFAULT
+Hi,
 
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
----
- tests/i915/kms_dirtyfb.c | 292 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |   1 +
- 2 files changed, 293 insertions(+)
- create mode 100644 tests/i915/kms_dirtyfb.c
+Could igt_get_max_dotclock() call be moved inside the 
+igt_bigjoner_possible() check?
 
-diff --git a/tests/i915/kms_dirtyfb.c b/tests/i915/kms_dirtyfb.c
-new file mode 100644
-index 00000000..b120e957
---- /dev/null
-+++ b/tests/i915/kms_dirtyfb.c
-@@ -0,0 +1,292 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include <sys/types.h>
-+
-+#include "igt.h"
-+#include "igt_psr.h"
-+
-+#include "i915/intel_drrs.h"
-+#include "i915/intel_fbc.h"
-+
-+IGT_TEST_DESCRIPTION("Test the DIRTYFB ioctl is working properly with "
-+		     "its related features: FBC, PSR and DRRS");
-+
-+#ifndef PAGE_ALIGN
-+#ifndef PAGE_SIZE
-+#define PAGE_SIZE 4096
-+#endif
-+#define PAGE_ALIGN(x) ALIGN(x, PAGE_SIZE)
-+#endif
-+
-+typedef struct {
-+	int drm_fd;
-+	int debugfs_fd;
-+	igt_display_t display;
-+	drmModeModeInfo *mode;
-+	igt_output_t *output;
-+	igt_pipe_crc_t *pipe_crc;
-+	enum pipe pipe;
-+
-+	struct igt_fb fbs[3];
-+
-+	igt_crc_t ref_crc;
-+
-+	struct buf_ops *bops;
-+	enum {
-+		FEATURE_NONE  = 0,
-+		FEATURE_PSR   = 1,
-+		FEATURE_FBC   = 2,
-+		FEATURE_DRRS  = 4,
-+		FEATURE_COUNT = 8,
-+		FEATURE_DEFAULT = 8,
-+	} feature;
-+} data_t;
-+
-+static const char *feature_str(int feature)
-+{
-+	switch (feature) {
-+	case FEATURE_NONE:
-+		return "nop";
-+	case FEATURE_FBC:
-+		return "fbc";
-+	case FEATURE_PSR:
-+		return "psr";
-+	case FEATURE_DRRS:
-+		return "drrs";
-+	case FEATURE_DEFAULT:
-+		return "default";
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static bool check_support(data_t *data)
-+{
-+	switch (data->feature) {
-+	case FEATURE_NONE:
-+		return true;
-+	case FEATURE_FBC:
-+		return intel_fbc_supported_on_chipset(data->drm_fd, data->pipe);
-+	case FEATURE_PSR:
-+		return psr_sink_support(data->drm_fd, data->debugfs_fd,
-+					PSR_MODE_1);
-+	case FEATURE_DRRS:
-+		return intel_is_drrs_supported(data->drm_fd, data->pipe) &&
-+			intel_output_has_drrs(data->drm_fd, data->output);
-+	case FEATURE_DEFAULT:
-+		return true;
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static void enable_feature(data_t *data)
-+{
-+	switch (data->feature) {
-+	case FEATURE_NONE:
-+		break;
-+	case FEATURE_FBC:
-+		intel_fbc_enable(data->drm_fd);
-+		break;
-+	case FEATURE_PSR:
-+		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1);
-+		break;
-+	case FEATURE_DRRS:
-+		intel_drrs_enable(data->drm_fd, data->pipe);
-+		break;
-+	case FEATURE_DEFAULT:
-+		break;
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static void check_feature(data_t *data)
-+{
-+	switch (data->feature) {
-+	case FEATURE_NONE:
-+		break;
-+	case FEATURE_FBC:
-+		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
-+							  data->pipe),
-+			     "FBC still disabled");
-+		break;
-+	case FEATURE_PSR:
-+		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1),
-+			     "PSR still disabled\n");
-+		break;
-+	case FEATURE_DRRS:
-+		igt_assert_f(intel_is_drrs_inactive(data->drm_fd, data->pipe),
-+			     "DRRS INACTIVE\n");
-+		break;
-+	case FEATURE_DEFAULT:
-+		break;
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static void disable_features(data_t *data)
-+{
-+	intel_fbc_disable(data->drm_fd);
-+	psr_disable(data->drm_fd, data->debugfs_fd);
-+	intel_drrs_disable(data->drm_fd, data->pipe);
-+}
-+
-+static void prepare(data_t *data)
-+{
-+	igt_plane_t *primary;
-+	drmModeResPtr res;
-+
-+	igt_skip_on(!check_support(data));
-+
-+	data->mode = igt_output_get_mode(data->output);
-+
-+	igt_output_set_pipe(data->output, data->pipe);
-+
-+	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-+					 IGT_PIPE_CRC_SOURCE_AUTO);
-+
-+	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
-+			    data->mode->hdisplay, DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-+			    &data->fbs[0]);
-+	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[0],
-+			 IGT_DRAW_RENDER, 0, 0, data->fbs[0].width,
-+			 data->fbs[0].height, 0xFF);
-+
-+	primary = igt_output_get_plane_type(data->output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+
-+	igt_plane_set_fb(primary, &data->fbs[0]);
-+
-+	if (data->feature != FEATURE_DEFAULT)
-+		disable_features(data);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
-+
-+	res = drmModeGetResources(data->drm_fd);
-+
-+	igt_create_color_fb(data->drm_fd, res->max_width,
-+			    res->max_height, DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-+			    &data->fbs[1]);
-+	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[1],
-+			 IGT_DRAW_MMAP_CPU, 0, 0, data->fbs[1].width,
-+			 data->fbs[1].height, 0xFF);
-+
-+	igt_create_color_fb(data->drm_fd, res->max_width,
-+			    res->max_height, DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-+			    &data->fbs[2]);
-+
-+	igt_plane_set_fb(primary, &data->fbs[2]);
-+	igt_fb_set_position(&data->fbs[2], primary,
-+			    data->fbs[2].width - data->fbs[0].width,
-+			    data->fbs[2].height - data->fbs[0].height);
-+	igt_fb_set_size(&data->fbs[2], primary, data->fbs[0].width,
-+			data->fbs[0].height);
-+
-+	enable_feature(data);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	check_feature(data);
-+}
-+
-+static void cleanup(data_t *data)
-+{
-+	igt_remove_fb(data->drm_fd, &data->fbs[0]);
-+	igt_remove_fb(data->drm_fd, &data->fbs[1]);
-+
-+	igt_pipe_crc_free(data->pipe_crc);
-+
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+static void run_test(data_t *data)
-+{
-+	igt_crc_t crc;
-+	struct intel_buf *src, *dst;
-+	struct intel_bb *ibb;
-+	uint32_t devid = intel_get_drm_devid(data->drm_fd);
-+	igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
-+	int r;
-+
-+	igt_skip_on(!rendercopy);
-+
-+	src = intel_buf_create_using_handle(data->bops, data->fbs[1].gem_handle,
-+					    data->fbs[1].width,
-+					    data->fbs[1].height,
-+					    igt_drm_format_to_bpp(data->fbs[1].drm_format),
-+					    0, igt_fb_mod_to_tiling(data->fbs[1].modifier), 0);
-+	dst = intel_buf_create_using_handle(data->bops, data->fbs[2].gem_handle,
-+					    data->fbs[2].width,
-+					    data->fbs[2].height,
-+					    igt_drm_format_to_bpp(data->fbs[2].drm_format),
-+					    0, igt_fb_mod_to_tiling(data->fbs[2].modifier), 0);
-+	ibb = intel_bb_create_with_context(data->drm_fd, 0, NULL, PAGE_SIZE);
-+
-+	rendercopy(ibb, src, 0, 0, data->fbs[2].width, data->fbs[2].height, dst, 0, 0);
-+
-+	/* Perfom dirtyfb right after initiating rendercopy */
-+	r = drmModeDirtyFB(data->drm_fd, data->fbs[2].fb_id, NULL, 0);
-+	igt_assert(r == 0 || r == -ENOSYS);
-+
-+	/* Ensure rendercopy is complete */
-+	intel_bb_sync(ibb);
-+
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(src);
-+	intel_buf_destroy(dst);
-+
-+	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
-+	igt_assert_crc_equal(&crc, &data->ref_crc);
-+}
-+
-+igt_main
-+{
-+	data_t data = {};
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.drm_fd);
-+
-+		data.bops = buf_ops_create(data.drm_fd);
-+
-+		igt_display_reset(&data.display);
-+	}
-+
-+	igt_describe("Test dirtyFB ioctl");
-+	igt_subtest_with_dynamic("dirtyfb-ioctl") {
-+		data.pipe = PIPE_A;
-+		for_each_valid_output_on_pipe(&data.display, data.pipe,
-+					      data.output) {
-+			for (data.feature = FEATURE_DEFAULT; data.feature > 0;
-+			     data.feature = data.feature >> 1) {
-+				igt_dynamic_f("%s-%s", feature_str(data.feature),
-+					      igt_output_name(data.output)) {
-+					prepare(&data);
-+					run_test(&data);
-+					cleanup(&data);
-+				}
-+			}
-+		}
-+	}
-+
-+	igt_fixture {
-+		buf_ops_destroy(data.bops);
-+		igt_display_fini(&data.display);
-+		close(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index da31e782..4bf2951b 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -222,6 +222,7 @@ i915_progs = [
- 	'kms_busy',
- 	'kms_ccs',
- 	'kms_cdclk',
-+	'kms_dirtyfb',
- 	'kms_draw_crc',
- 	'kms_fbcon_fbt',
- 	'kms_fence_pin_leak',
--- 
-2.34.1
+> +retry:
+>   		for_each_connected_output(&data.display, output) {
+> +			int idx;
+> +			bool found = false;
+> +
+> +			/*
+> +			 * Check if the output is already considered as
+> +			 * a Bigjoiner supported.
+> +			 */
+> +			for (idx = 0; idx < count; idx++) {
+> +				if (data.output[idx].output_id == output->id) {
+> +					found = true;
+> +					break;
+> +				}
+> +			}
+> +
+> +			if (found)
+> +				continue;
+> +
+> +			/*
+> +			 * Bigjoiner will come in the picture when
+> +			 * the resolution > 5K or clock > max-dot-clock.
+> +			 */
+>   			igt_sort_connector_modes(output->config.connector,
+> -						 sort_drm_modes_by_res_dsc);
+> +						 retry ? sort_drm_modes_by_clk_dsc :
+> +							 sort_drm_modes_by_res_dsc);
+>   
+>   			mode = &output->config.connector->modes[0];
+> -			if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
+> -				data.big_joiner_output[count++] = output->id;
+> +			if (igt_bigjoiner_possible(mode, max_dotclock)) {
+> +				data.output[count].output_id = output->id;
+> +				memcpy(&data.output[count].mode, mode, sizeof(drmModeModeInfo));
+> +				count++;
+>   
+>   				width = max(width, mode->hdisplay);
+>   				height = max(height, mode->vdisplay);
+> @@ -208,6 +233,11 @@ igt_main
+>   			valid_output++;
+>   		}
+>   
+> +		if (!retry) {
+> +			retry = true;
+> +			goto retry;
+> +		}
+> +
+
+This would mean we are running the for loop twice in all the cases 
+right? Could this be handled without using the 'retry' label then?
+
+May be nested for loops? Or may be something like below inside the 
+current loop for each output?
+
+igt_sort_connector_modes(connector, sort_drm_modes_by_res_dec);
+if (igt_bigjoiner_possible()) {
+     flag=true;
+} else {
+     igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dec);
+     if (igt_bigjoiner_possible()) {
+         flag=true;
+     }
+}
+if(flag)
+     <current logic>
+
+
+Thanks,
+Karthik.B.S
+>   		data.n_pipes = 0;
+>   		for_each_pipe(&data.display, i) {
+>   			data.n_pipes++;
+> @@ -215,7 +245,7 @@ igt_main
+>   			j++;
+>   		}
+>   
+> -		igt_require_f(count > 0, "No output with 5k+ mode found\n");
+> +		igt_require_f(count > 0, "No output with 5k+ mode (or) clock > max-dot-clock found\n");
+>   
+>   		igt_create_pattern_fb(data.drm_fd, width, height, DRM_FORMAT_XRGB8888,
+>   				      DRM_FORMAT_MOD_LINEAR, &data.fb);
+> @@ -237,14 +267,12 @@ igt_main
+>   
+>   		igt_display_reset(&data.display);
+>   		for_each_connected_output(&data.display, output) {
+> -			if (data.big_joiner_output[0] != output->id)
+> +			if (data.output[0].output_id != output->id)
+>   				continue;
+>   
+> -			igt_sort_connector_modes(output->config.connector,
+> -						 sort_drm_modes_by_res_dsc);
+> -
+> +			mode = &data.output[0].mode;
+>   			igt_output_set_pipe(output, data.pipe1);
+> -			igt_output_override_mode(output, &output->config.connector->modes[0]);
+> +			igt_output_override_mode(output, mode);
+>   
+>   			igt_dynamic_f("pipe-%s-%s",
+>   				      kmstest_pipe_name(data.pipe1),
+> @@ -261,17 +289,15 @@ igt_main
+>   
+>   				igt_display_reset(&data.display);
+>   				for_each_connected_output(&data.display, output) {
+> -					igt_sort_connector_modes(output->config.connector,
+> -								 sort_drm_modes_by_res_dsc);
+> -
+> -					if (data.big_joiner_output[0] == output->id) {
+> +					if (data.output[0].output_id == output->id) {
+>   						first_output = output;
+> +						mode = &data.output[0].mode;
+> +
+>   						igt_output_set_pipe(output, data.pipe1);
+> -						igt_output_override_mode(output, &output->config.connector->modes[0]);
+> +						igt_output_override_mode(output, mode);
+>   					} else if (second_output == NULL) {
+>   						second_output = output;
+>   						igt_output_set_pipe(output, data.pipe2);
+> -						igt_output_override_mode(output, &output->config.connector->modes[0]);
+>   
+>   						break;
+>   					}
