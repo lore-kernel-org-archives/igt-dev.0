@@ -1,21 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81EC510E520
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A59E310E5F6
  for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 12:50:38 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.30.58])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 4DE67580871
+ by linux.intel.com (Postfix) with ESMTPS id 60896580D2A
  for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 05:50:37 -0700 (PDT)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Apr 2023 14:50:30 +0200
-Message-Id: <20230412125033.120215-1-mauro.chehab@linux.intel.com>
+Date: Wed, 12 Apr 2023 14:50:31 +0200
+Message-Id: <20230412125033.120215-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230412125033.120215-1-mauro.chehab@linux.intel.com>
+References: <20230412125033.120215-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/3] ./scripts/igt_doc.py: speedup check
- logic
+Subject: [igt-dev] [PATCH i-g-t v2 1/3] scripts/igt_doc.py: cleanup some
+ pylint warnings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,58 +31,45 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-The logic which checks for missing/obsolete documentation is too
-slow. Currently, on my notebook it takes 12 seconds:
+Ensure that pylint won't report any issues on igt_doc.py.
 
-	$ time ./scripts/igt_doc.py --check --config tests/xe/xe_*json
-
-	real	0m12.085s
-	user	0m10.468s
-	sys	0m1.457s
-
-Implent it on a different way, in order to speedup the build process.
-
-After the change, it now takes less than 500ms:
-
-	$ time ./scripts/igt_doc.py --check --config tests/xe/xe_*json
-
-	real	0m0.460s
-	user	0m0.357s
-	sys	0m0.102s
-
-It should be noticed that it is possible to speed it up even
-further by running:
-
-	 build/tests/* --list-subtests
-
-tasks in parallel. I did some tests: the improvements weren't so
-relevant on my notebook with 8 CPUs, and, on my tests with python 3.11
-it seemed a little too fragile when using multithreading, as it was not
-hard to mess with it, not having threads or subprocess forks not
-happening, and without triggering an error.
-
-As the benefit of such optimization was marginal, let's avoid the
-additional complexity of multithreading.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
+ scripts/igt_doc.py   | 1 +
+ scripts/test_list.py | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-v2:
-  - remove a now uneeded loop
-
-Mauro Carvalho Chehab (3):
-  scripts/igt_doc.py: cleanup some pylint warnings
-  scripts/igt_doc.py: don't depend on igt_runner anymore
-  scripts/test_list.py: use a compiled regex for check
-
-Mauro Carvalho Chehab (3):
-  scripts/igt_doc.py: cleanup some pylint warnings
-  scripts/igt_doc.py: don't depend on igt_runner anymore
-  scripts/test_list.py: use a compiled regex for check
-
- docs/testplan/meson.build |  7 ++--
- scripts/igt_doc.py        | 11 +++---
- scripts/test_list.py      | 73 ++++++++++++++++++++++++++-------------
- 3 files changed, 55 insertions(+), 36 deletions(-)
-
+diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+index 547cb81bce02..8fa5af15033e 100755
+--- a/scripts/igt_doc.py
++++ b/scripts/igt_doc.py
+@@ -11,6 +11,7 @@
+ """Maintain test plan and test implementation documentation on IGT."""
+ 
+ import argparse
++import sys
+ 
+ from test_list import TestList
+ 
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 6af1914822a3..d1b9a2794967 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-# pylint: disable=C0301,R0902,R0914,R0912,R0915,R1702,C0302
++# pylint: disable=C0301,R0902,R0914,R0912,R0913,R0915,R1702,C0302
+ # SPDX-License-Identifier: (GPL-2.0 OR MIT)
+ 
+ ## Copyright (C) 2023    Intel Corporation                 ##
+@@ -394,7 +394,7 @@ class TestList:
+         for subtest in self.doc[test]["subtest"].keys():
+             summary = test_name
+             if self.doc[test]["subtest"][subtest]["Summary"] != '':
+-                 summary += '@' + self.doc[test]["subtest"][subtest]["Summary"]
++                summary += '@' + self.doc[test]["subtest"][subtest]["Summary"]
+             if not summary:
+                 continue
+ 
 -- 
 2.39.2
