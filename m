@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B84F10E7CC
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 12:45:56 +0000 (UTC)
-Date: Wed, 12 Apr 2023 14:45:51 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C33E010E7D4
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 12:50:38 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.30.58])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 949E4580D77
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 05:50:37 -0700 (PDT)
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230412124055.fhpm23v37katknbs@kamilkon-desk1>
-References: <20230411132946.17459-1-mcanal@igalia.com>
- <20230411132946.17459-2-mcanal@igalia.com>
+Date: Wed, 12 Apr 2023 14:50:33 +0200
+Message-Id: <20230412125033.120215-4-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230412125033.120215-1-mauro.chehab@linux.intel.com>
+References: <20230412125033.120215-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230411132946.17459-2-mcanal@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/vkms: Add tests that changed
- its testing structure
+Subject: [igt-dev] [PATCH i-g-t v2 3/3] scripts/test_list.py: use a compiled
+ regex for check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,58 +29,53 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-04-11 at 10:29:44 -0300, Maíra Canal wrote:
-> Commit 10b12ce8 ("tests/kms_cursor_edge_walk: Re-org dynamic subtests")
-> changed the name of the kms_cursor_edge_walk sub-tests, while commit
-> 777ed850 ("tests/kms: Cleanup to use linear modifier") made it possible
-> to run more kms_plane_cursor tests for non-i915 devices. Reflect this
-> changes in the testlist by adding those tests to the testlist.
-> 
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Speed up even further the logic for --check-testlist by
+pre-compiling the regex that will be used to validate the
+results.
 
-> ---
->  tests/vkms_ci/vkms.testlist | 19 +++++++++++++++----
->  1 file changed, 15 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/vkms_ci/vkms.testlist b/tests/vkms_ci/vkms.testlist
-> index 9065d318..c52dc210 100644
-> --- a/tests/vkms_ci/vkms.testlist
-> +++ b/tests/vkms_ci/vkms.testlist
-> @@ -76,10 +76,18 @@ igt@kms_cursor_crc@cursor-sliding-512x512
->  igt@kms_cursor_crc@cursor-sliding-64x21
->  igt@kms_cursor_crc@cursor-sliding-64x64
->  igt@kms_cursor_crc@cursor-suspend
-> -igt@kms_cursor_edge_walk@left-edge
-> -igt@kms_cursor_edge_walk@right-edge
-> -igt@kms_cursor_edge_walk@top-bottom
-> -igt@kms_cursor_edge_walk@top-edge
-> +igt@kms_cursor_edge_walk@128x128-left-edge
-> +igt@kms_cursor_edge_walk@128x128-right-edge
-> +igt@kms_cursor_edge_walk@128x128-top-bottom
-> +igt@kms_cursor_edge_walk@128x128-top-edge
-> +igt@kms_cursor_edge_walk@256x256-left-edge
-> +igt@kms_cursor_edge_walk@256x256-right-edge
-> +igt@kms_cursor_edge_walk@256x256-top-bottom
-> +igt@kms_cursor_edge_walk@256x256-top-edge
-> +igt@kms_cursor_edge_walk@64x64-left-edge
-> +igt@kms_cursor_edge_walk@64x64-right-edge
-> +igt@kms_cursor_edge_walk@64x64-top-bottom
-> +igt@kms_cursor_edge_walk@64x64-top-edge
->  igt@kms_flip@absolute-wf_vblank
->  igt@kms_flip@absolute-wf_vblank-interruptible
->  igt@kms_flip@basic-flip-vs-dpms
-> @@ -168,6 +176,9 @@ igt@kms_plane@plane-panning-top-left
->  igt@kms_plane@plane-position-covered
->  igt@kms_plane@plane-position-hole
->  igt@kms_plane@plane-position-hole-dpms
-> +igt@kms_plane_cursor@overlay
-> +igt@kms_plane_cursor@primary
-> +igt@kms_plane_cursor@viewport
->  igt@kms_plane_multiple@tiling-none
->  igt@kms_plane_scaling@planes-downscale-factor-0-25
->  igt@kms_plane_scaling@planes-downscale-factor-0-5
-> -- 
-> 2.39.2
-> 
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ scripts/test_list.py | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 287351e717b3..96d8883db122 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -820,10 +820,18 @@ class TestList:
+         run_missing = []
+         doc_uneeded = []
+ 
++        test_regex = r""
++        for doc_test in doc_subtests:
++            if test_regex != r"":
++                test_regex += r"|"
++            test_regex += r'^' + doc_test + r'$'
++
++        test_regex = re.compile(test_regex)
++
+         for doc_test in doc_subtests:
+             found = False
+             for run_test in run_subtests:
+-                if re.match(r'^' + doc_test + r'$', run_test):
++                if re.match(test_regex, run_test):
+                     found = True
+                     break
+             if not found:
+@@ -831,10 +839,8 @@ class TestList:
+ 
+         for run_test in run_subtests:
+             found = False
+-            for doc_test in doc_subtests:
+-                if re.match(r'^' + doc_test + r'$', run_test):
+-                    found = True
+-                    break
++            if re.match(test_regex, run_test):
++                found = True
+             if not found:
+                 run_missing.append(run_test)
+ 
+-- 
+2.39.2
