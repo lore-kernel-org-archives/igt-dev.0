@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29D1610E6E0
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 02:33:39 +0000 (UTC)
-From: Zack Rusin <zack@kde.org>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Apr 2023 22:33:28 -0400
-Message-Id: <20230412023329.465551-8-zack@kde.org>
-In-Reply-To: <20230412023329.465551-1-zack@kde.org>
-References: <20230412023329.465551-1-zack@kde.org>
+Content-Type: multipart/alternative;
+ boundary="===============6463835965193677039=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 7/8] tests/vmwgfx: Add reference counting
- tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Date: Wed, 12 Apr 2023 11:48:42 -0000
+Message-ID: <168130012253.10846.8205682070978591250@emeril.freedesktop.org>
+References: <20230412103448.826946-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230412103448.826946-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=3A_s/i915=5Ffrequency=5Finfo/i915=5Fcdclk=5Finfo/?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,366 +17,254 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: Zack Rusin <zackr@vmware.com>
-Cc: banackm@vmware.com, krastevm@vmware.com, iforbes@vmware.com,
- mombasawalam@vmware.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Maaz Mombasawala <mombasawalam@vmware.com>
+--===============6463835965193677039==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This test checks reference counting functionality for several permutations
-of prime transfers and copies of mobs and surfaces in vmwgfx.
+== Series Details ==
 
-Signed-off-by: Zack Rusin <zackr@vmware.com>
-Signed-off-by: Maaz Mombasawala <mombasawalam@vmware.com>
-Reviewed-by: Martin Krastev <krastevm@vmware.com>
----
- tests/vmwgfx/meson.build     |   3 +-
- tests/vmwgfx/vmw_ref_count.c | 320 +++++++++++++++++++++++++++++++++++
- 2 files changed, 322 insertions(+), 1 deletion(-)
- create mode 100644 tests/vmwgfx/vmw_ref_count.c
+Series: tests/kms: s/i915_frequency_info/i915_cdclk_info/
+URL   : https://patchwork.freedesktop.org/series/116371/
+State : failure
 
-diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
-index 1cb662e3..073905f0 100644
---- a/tests/vmwgfx/meson.build
-+++ b/tests/vmwgfx/meson.build
-@@ -3,7 +3,8 @@ vmwgfx_progs = [
- 	'vmw_tri',
- 	'vmw_execution_buffer',
- 	'vmw_surface_copy',
--	'vmw_mob_stress'
-+	'vmw_mob_stress',
-+	'vmw_ref_count'
- ]
- vmwgfx_deps = test_deps
- 
-diff --git a/tests/vmwgfx/vmw_ref_count.c b/tests/vmwgfx/vmw_ref_count.c
-new file mode 100644
-index 00000000..013214ff
---- /dev/null
-+++ b/tests/vmwgfx/vmw_ref_count.c
-@@ -0,0 +1,320 @@
-+// SPDX-License-Identifier: GPL-2.0 OR MIT
-+/**********************************************************
-+ * Copyright 2021-2022 VMware, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person
-+ * obtaining a copy of this software and associated documentation
-+ * files (the "Software"), to deal in the Software without
-+ * restriction, including without limitation the rights to use, copy,
-+ * modify, merge, publish, distribute, sublicense, and/or sell copies
-+ * of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be
-+ * included in all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-+ * SOFTWARE.
-+ *
-+ **********************************************************/
-+
-+#include "igt_vmwgfx.h"
-+
-+IGT_TEST_DESCRIPTION("Perform tests related to vmwgfx's ref_count codepaths.");
-+
-+static uint32 data[10] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-+
-+static void write_to_mob(int fd, struct vmw_mob *mob)
-+{
-+	void *write_data;
-+
-+	write_data = vmw_ioctl_mob_map(fd, mob);
-+	memcpy(write_data, data, sizeof(data));
-+	vmw_ioctl_mob_unmap(mob);
-+}
-+
-+static bool verify_mob_data(int fd, struct vmw_mob *mob)
-+{
-+	uint32 *read_data;
-+	void *readback;
-+	uint32 i;
-+	bool data_is_equal = true;
-+
-+	read_data = malloc(mob->size);
-+
-+	readback = vmw_ioctl_mob_map(fd, mob);
-+	memcpy(read_data, readback, sizeof(data));
-+	vmw_ioctl_mob_unmap(mob);
-+
-+	for (i = 0; i < ARRAY_SIZE(data); i++) {
-+		if (read_data[i] != data[i]) {
-+			data_is_equal = false;
-+			break;
-+		}
-+	}
-+
-+	free(read_data);
-+	return data_is_equal;
-+}
-+
-+static struct vmw_surface *
-+create_and_write_shareable_surface(int32 fd, SVGA3dSize surface_size)
-+{
-+	struct vmw_mob mob = { 0 };
-+	struct vmw_surface *surface;
-+
-+	surface = vmw_ioctl_create_surface_full(
-+		fd, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
-+		SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
-+		SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, NULL,
-+		drm_vmw_surface_flag_shareable);
-+
-+	mob.handle = surface->base.buffer_handle;
-+	mob.map_handle = surface->base.buffer_map_handle;
-+	mob.size = surface->base.buffer_size;
-+
-+	write_to_mob(fd, &mob);
-+
-+	return surface;
-+}
-+
-+static bool ref_surface_and_check_contents(int32 fd, uint32 surface_handle)
-+{
-+	struct vmw_surface surface;
-+	struct vmw_mob mob = { 0 };
-+
-+	surface = vmw_ioctl_surface_ref(fd, surface_handle,
-+					DRM_VMW_HANDLE_LEGACY);
-+
-+	mob.handle = surface.base.handle;
-+	mob.size = surface.base.buffer_size;
-+	mob.map_handle = surface.base.buffer_map_handle;
-+
-+	return verify_mob_data(fd, &mob);
-+}
-+
-+igt_main
-+{
-+	int32 fd1, fd2;
-+	const uint32 size = sizeof(data);
-+	SVGA3dSize surface_size = { .width = size, .height = 1, .depth = 1 };
-+
-+	igt_fixture
-+	{
-+		fd1 = drm_open_driver_render(DRIVER_VMWGFX);
-+		fd2 = drm_open_driver_render(DRIVER_VMWGFX);
-+		igt_require(fd1 != -1);
-+		igt_require(fd2 != -1);
-+	}
-+
-+	igt_describe("Test prime transfers with explicit mobs.");
-+	igt_subtest("surface_prime_transfer_explicit_mob")
-+	{
-+		struct vmw_mob *mob;
-+		struct vmw_surface *surface;
-+		int32 surface_fd;
-+		uint32 surface_handle;
-+
-+		mob = vmw_ioctl_mob_create(fd1, size);
-+		surface = vmw_ioctl_create_surface_full(
-+			fd1, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
-+			SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
-+			SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, mob,
-+			drm_vmw_surface_flag_shareable);
-+
-+		write_to_mob(fd1, mob);
-+
-+		surface_fd =
-+			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
-+
-+		vmw_ioctl_mob_close_handle(fd1, mob);
-+		vmw_ioctl_surface_unref(fd1, surface);
-+
-+		surface_handle = prime_fd_to_handle(fd2, surface_fd);
-+		close(surface_fd);
-+
-+		igt_assert(ref_surface_and_check_contents(fd2, surface_handle));
-+	}
-+
-+	igt_describe("Test prime transfers with implicit mobs.");
-+	igt_subtest("surface_prime_transfer_implicit_mob")
-+	{
-+		struct vmw_surface *surface;
-+		int32 surface_fd;
-+		uint32 surface_handle;
-+
-+		surface = create_and_write_shareable_surface(fd1, surface_size);
-+
-+		surface_fd =
-+			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
-+
-+		vmw_ioctl_surface_unref(fd1, surface);
-+
-+		surface_handle = prime_fd_to_handle(fd2, surface_fd);
-+		close(surface_fd);
-+
-+		igt_assert(ref_surface_and_check_contents(fd2, surface_handle));
-+	}
-+
-+	igt_describe("Test prime transfers with a fd dup.");
-+	igt_subtest("surface_prime_transfer_fd_dup")
-+	{
-+		int32 surface_fd1, surface_fd2;
-+		uint32 surface_handle;
-+		struct vmw_surface *surface;
-+
-+		surface = create_and_write_shareable_surface(fd1, surface_size);
-+
-+		surface_fd1 =
-+			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
-+		vmw_ioctl_surface_unref(fd1, surface);
-+
-+		surface_fd2 = dup(surface_fd1);
-+		close(surface_fd1);
-+
-+		surface_handle = prime_fd_to_handle(fd2, surface_fd2);
-+		close(surface_fd2);
-+
-+		igt_assert(ref_surface_and_check_contents(fd2, surface_handle));
-+	}
-+
-+	igt_describe("Test prime lifetime with 2 surfaces.");
-+	igt_subtest("surface_prime_transfer_two_surfaces")
-+	{
-+		int32 surface_fd;
-+		uint32 surface_handle1, surface_handle2;
-+		struct vmw_surface *surface1, *surface2;
-+
-+		surface1 =
-+			create_and_write_shareable_surface(fd1, surface_size);
-+		surface2 =
-+			create_and_write_shareable_surface(fd1, surface_size);
-+
-+		surface_fd =
-+			prime_handle_to_fd_for_mmap(fd1, surface1->base.handle);
-+		vmw_ioctl_surface_unref(fd1, surface1);
-+
-+		surface_handle1 = prime_fd_to_handle(fd2, surface_fd);
-+		close(surface_fd);
-+
-+		surface_fd =
-+			prime_handle_to_fd_for_mmap(fd1, surface2->base.handle);
-+		vmw_ioctl_surface_unref(fd1, surface2);
-+
-+		surface_handle2 = prime_fd_to_handle(fd2, surface_fd);
-+		close(surface_fd);
-+
-+		igt_assert(
-+			ref_surface_and_check_contents(fd2, surface_handle1));
-+		igt_assert(
-+			ref_surface_and_check_contents(fd2, surface_handle2));
-+	}
-+
-+	igt_describe("Test prime transfers with multiple handles.");
-+	igt_subtest("surface_prime_transfer_single_surface_multiple_handle")
-+	{
-+		int32 surface_fd;
-+		uint32 surface_handle_old;
-+		uint32 surface_handle1, surface_handle2, surface_handle3;
-+		struct vmw_surface *surface;
-+
-+		surface = create_and_write_shareable_surface(fd1, surface_size);
-+		surface_handle_old = surface->base.handle;
-+
-+		surface_fd =
-+			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
-+		vmw_ioctl_surface_unref(fd1, surface);
-+
-+		surface_handle1 = prime_fd_to_handle(fd1, surface_fd);
-+		surface_handle2 = prime_fd_to_handle(fd2, surface_fd);
-+		surface_handle3 = prime_fd_to_handle(fd2, surface_fd);
-+		close(surface_fd);
-+
-+		igt_assert_eq_u32(surface_handle_old, surface_handle1);
-+		igt_assert_eq_u32(surface_handle2, surface_handle3);
-+
-+		igt_assert(
-+			ref_surface_and_check_contents(fd1, surface_handle1));
-+		igt_assert(
-+			ref_surface_and_check_contents(fd2, surface_handle2));
-+	}
-+
-+	igt_describe("Test repeated unrefs on a mob.");
-+	igt_subtest("mob_repeated_unref")
-+	{
-+		struct vmw_mob *mob;
-+		int i = 0;
-+
-+		mob = vmw_ioctl_mob_create(fd1, size);
-+		write_to_mob(fd1, mob);
-+
-+		/* Shouldn't crash on multiple invocations */
-+		for (i = 0; i < 3; i++) {
-+			int ret;
-+			struct drm_vmw_handle_close_arg arg = {
-+				.handle = mob->handle
-+			};
-+			ret = drmCommandWrite(fd1, DRM_VMW_HANDLE_CLOSE, &arg,
-+					      sizeof(arg));
-+			igt_assert_eq(ret, 0);
-+		}
-+		free(mob);
-+	}
-+
-+	igt_describe("Test repeated unrefs on a surface.");
-+	igt_subtest("surface_repeated_unref")
-+	{
-+		struct vmw_surface *surface;
-+		int i = 0;
-+
-+		surface = vmw_ioctl_create_surface_full(
-+			fd1, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
-+			SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
-+			SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, NULL,
-+			drm_vmw_surface_flag_shareable);
-+
-+		/* Shouldn't crash on multiple invocations */
-+		for (i = 0; i < 3; i++) {
-+			struct drm_vmw_surface_arg s_arg = {
-+				.sid = surface->base.handle,
-+				.handle_type = DRM_VMW_HANDLE_LEGACY
-+			};
-+			drmCommandWrite(fd1, DRM_VMW_UNREF_SURFACE, &s_arg,
-+					sizeof(s_arg));
-+		}
-+		free(surface);
-+	}
-+
-+	igt_describe("Test unref on a refed surface.");
-+	igt_subtest("surface_alloc_ref_unref")
-+	{
-+		struct vmw_surface *surface;
-+		struct vmw_surface ref_surface;
-+		struct vmw_mob readback_mob = { 0 };
-+
-+		surface = create_and_write_shareable_surface(fd1, surface_size);
-+
-+		ref_surface = vmw_ioctl_surface_ref(fd1, surface->base.handle,
-+						    DRM_VMW_HANDLE_LEGACY);
-+
-+		vmw_ioctl_surface_unref(fd1, surface);
-+
-+		readback_mob.handle = ref_surface.base.handle;
-+		readback_mob.size = ref_surface.base.buffer_size;
-+		readback_mob.map_handle = ref_surface.base.buffer_map_handle;
-+
-+		igt_assert(verify_mob_data(fd1, &readback_mob));
-+	}
-+
-+	igt_fixture
-+	{
-+		close(fd1);
-+		close(fd2);
-+	}
-+}
--- 
-2.39.2
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12995 -> IGTPW_8788
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8788 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8788, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/index.html
+
+Participating hosts (37 -> 35)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8788:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_ringfill@basic-all:
+    - bat-dg2-9:          [PASS][1] -> [TIMEOUT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/bat-dg2-9/igt@gem_ringfill@basic-all.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-dg2-9/igt@gem_ringfill@basic-all.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8788 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         [PASS][3] -> [DMESG-FAIL][4] ([i915#6367] / [i915#7996])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-rpls-1/igt@i915_selftest@live@slpc.html
+    - bat-adln-1:         NOTRUN -> [DMESG-FAIL][5] ([i915#6997])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-adln-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-adln-1:         NOTRUN -> [SKIP][6] ([i915#7828])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-adln-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@load:
+    - fi-elk-e7500:       [DMESG-WARN][7] ([i915#4391]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/fi-elk-e7500/igt@i915_module_load@load.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/fi-elk-e7500/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-adln-1:         [INCOMPLETE][9] ([i915#7609]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/bat-adln-1/igt@i915_selftest@live@gt_lrc.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-adln-1/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
+    - bat-dg2-8:          [FAIL][11] ([i915#7932]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         [DMESG-FAIL][13] ([i915#6367] / [i915#7913] / [i915#7996]) -> [DMESG-FAIL][14] ([i915#6367] / [i915#7913])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/bat-rpls-2/igt@i915_selftest@live@slpc.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  
+  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7251 -> IGTPW_8788
+
+  CI-20190529: 20190529
+  CI_DRM_12995: 0c5be3027d7ac4a8b107bf1113867744aa3bb440 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8788: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/index.html
+  IGT_7251: 55fa959aad79b3771350a801c1c2dbd4e5034102 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@kms_dirtyfb@dirtyfb-ioctl
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/index.html
+
+--===============6463835965193677039==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms: s/i915_frequency_info/i915_cdclk_info/</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116371/">https://patchwork.freedesktop.org/series/116371/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12995 -&gt; IGTPW_8788</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8788 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8788, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/index.html</p>
+<h2>Participating hosts (37 -&gt; 35)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8788:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@gem_ringfill@basic-all:<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/bat-dg2-9/igt@gem_ringfill@basic-all.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-dg2-9/igt@gem_ringfill@basic-all.html">TIMEOUT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8788 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>
+<p>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</p>
+</li>
+<li>
+<p>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-adln-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-adln-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/fi-elk-e7500/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4391">i915#4391</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/fi-elk-e7500/igt@i915_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/bat-adln-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7609">i915#7609</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-adln-1/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@slpc:<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12995/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7251 -&gt; IGTPW_8788</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12995: 0c5be3027d7ac4a8b107bf1113867744aa3bb440 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8788: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8788/index.html<br />
+  IGT_7251: 55fa959aad79b3771350a801c1c2dbd4e5034102 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@kms_dirtyfb@dirtyfb-ioctl</p>
+
+</body>
+</html>
+
+--===============6463835965193677039==--
