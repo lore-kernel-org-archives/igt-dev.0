@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39F5410E6E0
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 02:33:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 29D1610E6E0
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 02:33:39 +0000 (UTC)
 From: Zack Rusin <zack@kde.org>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Apr 2023 22:33:26 -0400
-Message-Id: <20230412023329.465551-6-zack@kde.org>
+Date: Tue, 11 Apr 2023 22:33:28 -0400
+Message-Id: <20230412023329.465551-8-zack@kde.org>
 In-Reply-To: <20230412023329.465551-1-zack@kde.org>
 References: <20230412023329.465551-1-zack@kde.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 5/8] tests/vmwgfx: Add surface copy test
+Subject: [igt-dev] [PATCH i-g-t v3 7/8] tests/vmwgfx: Add reference counting
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,38 +28,38 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Maaz Mombasawala <mombasawalam@vmware.com>
 
-This test checks for validation errors during several surface copies
-in vmwgfx.
+This test checks reference counting functionality for several permutations
+of prime transfers and copies of mobs and surfaces in vmwgfx.
 
 Signed-off-by: Zack Rusin <zackr@vmware.com>
 Signed-off-by: Maaz Mombasawala <mombasawalam@vmware.com>
 Reviewed-by: Martin Krastev <krastevm@vmware.com>
 ---
- tests/vmwgfx/meson.build        |   3 +-
- tests/vmwgfx/vmw_surface_copy.c | 341 ++++++++++++++++++++++++++++++++
- 2 files changed, 343 insertions(+), 1 deletion(-)
- create mode 100644 tests/vmwgfx/vmw_surface_copy.c
+ tests/vmwgfx/meson.build     |   3 +-
+ tests/vmwgfx/vmw_ref_count.c | 320 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 322 insertions(+), 1 deletion(-)
+ create mode 100644 tests/vmwgfx/vmw_ref_count.c
 
 diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
-index ce2969db..cc0718b2 100644
+index 1cb662e3..073905f0 100644
 --- a/tests/vmwgfx/meson.build
 +++ b/tests/vmwgfx/meson.build
-@@ -1,7 +1,8 @@
- 
- vmwgfx_progs = [
+@@ -3,7 +3,8 @@ vmwgfx_progs = [
  	'vmw_tri',
--	'vmw_execution_buffer'
-+	'vmw_execution_buffer',
-+	'vmw_surface_copy'
+ 	'vmw_execution_buffer',
+ 	'vmw_surface_copy',
+-	'vmw_mob_stress'
++	'vmw_mob_stress',
++	'vmw_ref_count'
  ]
  vmwgfx_deps = test_deps
  
-diff --git a/tests/vmwgfx/vmw_surface_copy.c b/tests/vmwgfx/vmw_surface_copy.c
+diff --git a/tests/vmwgfx/vmw_ref_count.c b/tests/vmwgfx/vmw_ref_count.c
 new file mode 100644
-index 00000000..d7c2711a
+index 00000000..013214ff
 --- /dev/null
-+++ b/tests/vmwgfx/vmw_surface_copy.c
-@@ -0,0 +1,341 @@
++++ b/tests/vmwgfx/vmw_ref_count.c
+@@ -0,0 +1,320 @@
 +// SPDX-License-Identifier: GPL-2.0 OR MIT
 +/**********************************************************
 + * Copyright 2021-2022 VMware, Inc.
@@ -87,317 +88,296 @@ index 00000000..d7c2711a
 +
 +#include "igt_vmwgfx.h"
 +
-+IGT_TEST_DESCRIPTION("Test surface copies.");
++IGT_TEST_DESCRIPTION("Perform tests related to vmwgfx's ref_count codepaths.");
 +
-+/**
-+ * Compares two 2d surfaces to see if their size and contents are equal.
-+ */
-+static bool are_surfaces_identical(int fd, struct vmw_surface *s1,
-+				   struct vmw_surface *s2)
++static uint32 data[10] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
++
++static void write_to_mob(int fd, struct vmw_mob *mob)
 +{
-+	struct vmw_mob mob1 = { .size = s1->base.buffer_size,
-+				.handle = s1->base.buffer_handle,
-+				.map_handle = s1->base.buffer_map_handle };
-+	struct vmw_mob mob2 = { .size = s2->base.buffer_size,
-+				.handle = s2->base.buffer_handle,
-+				.map_handle = s2->base.buffer_map_handle };
-+	char *readback1;
-+	char *readback2;
-+	bool is_equal = true;
-+	uint32 i, j;
-+	uint32 stride1, stride2, height, width;
++	void *write_data;
 +
-+	if ((s1->params.base.base_size.width !=
-+	     s2->params.base.base_size.width) ||
-+	    (s1->params.base.base_size.height !=
-+	     s2->params.base.base_size.height)) {
-+		return false;
-+	}
-+	width = s1->params.base.base_size.width;
-+	height = s1->params.base.base_size.height;
-+	stride1 = s1->params.buffer_byte_stride == 0 ?
-+			  width :
-+			  s1->params.buffer_byte_stride;
-+	stride2 = s2->params.buffer_byte_stride == 0 ?
-+			  width :
-+			  s2->params.buffer_byte_stride;
++	write_data = vmw_ioctl_mob_map(fd, mob);
++	memcpy(write_data, data, sizeof(data));
++	vmw_ioctl_mob_unmap(mob);
++}
 +
-+	readback1 = vmw_ioctl_mob_map(fd, &mob1);
-+	readback2 = vmw_ioctl_mob_map(fd, &mob2);
-+	for (i = 0; i < width; i++) {
-+		for (j = 0; j < height; j++) {
-+			if (readback1[j * stride1 + i] !=
-+			    readback2[j * stride2 + i]) {
-+				is_equal = false;
-+				goto are_surfaces_identical_end;
-+			}
++static bool verify_mob_data(int fd, struct vmw_mob *mob)
++{
++	uint32 *read_data;
++	void *readback;
++	uint32 i;
++	bool data_is_equal = true;
++
++	read_data = malloc(mob->size);
++
++	readback = vmw_ioctl_mob_map(fd, mob);
++	memcpy(read_data, readback, sizeof(data));
++	vmw_ioctl_mob_unmap(mob);
++
++	for (i = 0; i < ARRAY_SIZE(data); i++) {
++		if (read_data[i] != data[i]) {
++			data_is_equal = false;
++			break;
 +		}
 +	}
-+are_surfaces_identical_end:
-+	vmw_ioctl_mob_unmap(&mob1);
-+	vmw_ioctl_mob_unmap(&mob2);
-+	return is_equal;
++
++	free(read_data);
++	return data_is_equal;
 +}
 +
-+static void set_surface_value(int fd, struct vmw_surface *surface, char value)
++static struct vmw_surface *
++create_and_write_shareable_surface(int32 fd, SVGA3dSize surface_size)
 +{
-+	struct vmw_mob mob = { .size = surface->base.buffer_size,
-+			       .handle = surface->base.buffer_handle,
-+			       .map_handle = surface->base.buffer_map_handle };
-+	char *readback;
++	struct vmw_mob mob = { 0 };
++	struct vmw_surface *surface;
 +
-+	readback = vmw_ioctl_mob_map(fd, &mob);
-+	memset(readback, value, mob.size);
-+	vmw_ioctl_mob_unmap(&mob);
++	surface = vmw_ioctl_create_surface_full(
++		fd, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
++		SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
++		SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, NULL,
++		drm_vmw_surface_flag_shareable);
++
++	mob.handle = surface->base.buffer_handle;
++	mob.map_handle = surface->base.buffer_map_handle;
++	mob.size = surface->base.buffer_size;
++
++	write_to_mob(fd, &mob);
++
++	return surface;
 +}
 +
-+static void exec_surface_copy(struct vmw_execbuf *cmd_buf,
-+			      struct drm_vmw_fence_rep *cmd_fence,
-+			      SVGA3dSurfaceImageId src,
-+			      SVGA3dSurfaceImageId dest, SVGA3dCopyBox *box)
++static bool ref_surface_and_check_contents(int32 fd, uint32 surface_handle)
 +{
-+	vmw_cmd_surface_copy(cmd_buf, src, dest, box, 1);
-+	vmw_execbuf_submit(cmd_buf, cmd_fence);
-+	vmw_ioctl_fence_finish(cmd_buf->drm_fd, cmd_fence);
-+}
++	struct vmw_surface surface;
++	struct vmw_mob mob = { 0 };
 +
-+static void test_invalid_copies(int fd, int32 cid)
-+{
-+	struct vmw_surface *s1;
-+	struct vmw_surface *s2;
-+	struct vmw_execbuf *cmd_buf;
-+	struct drm_vmw_fence_rep cmd_fence;
-+	SVGA3dSize surface_size;
-+	SVGA3dCopyBox box;
-+	SVGA3dSurfaceImageId src;
-+	SVGA3dSurfaceImageId dest;
-+	SVGA3dSurfaceImageId bad_surface;
++	surface = vmw_ioctl_surface_ref(fd, surface_handle,
++					DRM_VMW_HANDLE_LEGACY);
 +
-+	surface_size.width = 128;
-+	surface_size.height = 128;
-+	surface_size.depth = 1;
++	mob.handle = surface.base.handle;
++	mob.size = surface.base.buffer_size;
++	mob.map_handle = surface.base.buffer_map_handle;
 +
-+	igt_require(
-+		vmw_is_format_supported(fd, SVGA3D_DEVCAP_SURFACEFMT_A8R8G8B8));
-+
-+	s1 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
-+				       NULL);
-+	s2 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
-+				       NULL);
-+	cmd_buf = vmw_execbuf_create(fd, cid);
-+
-+	box.x = 0;
-+	box.y = 0;
-+	box.z = 0;
-+	box.w = 1;
-+	box.h = 1;
-+	box.d = 1;
-+	box.srcx = 0;
-+	box.srcy = 0;
-+	box.srcz = 0;
-+
-+	src.sid = s1->base.handle;
-+	src.face = 0;
-+	src.mipmap = 0;
-+	dest.sid = s2->base.handle;
-+	dest.face = 0;
-+	dest.mipmap = 0;
-+
-+	/* Testing a valid copy first */
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(are_surfaces_identical(fd, s1, s2));
-+
-+	/* Setting surfaces to different values */
-+	set_surface_value(fd, s1, 0);
-+	set_surface_value(fd, s2, 16);
-+
-+	/* Testing invalid copies */
-+
-+	/* x */
-+	box.x = 129;
-+	box.w = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.x = 0;
-+	box.w = 129;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcx = 129;
-+	box.w = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcx = 0;
-+	box.w = 129;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	/* y */
-+	box.y = 129;
-+	box.h = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.y = 0;
-+	box.h = 129;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcy = 129;
-+	box.h = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcy = 0;
-+	box.h = 129;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	/* z */
-+	box.z = 2;
-+	box.d = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.z = 0;
-+	box.d = 2;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcz = 2;
-+	box.d = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcz = 0;
-+	box.d = 2;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	/* Invalid surface id */
-+	bad_surface.sid = src.sid + dest.sid + 1;
-+	bad_surface.face = 0;
-+	bad_surface.mipmap = 0;
-+
-+	box.x = 0;
-+	box.y = 0;
-+	box.z = 0;
-+	box.w = 1;
-+	box.h = 1;
-+	box.d = 1;
-+	box.srcx = 0;
-+	box.srcy = 0;
-+	box.srcz = 0;
-+
-+	vmw_cmd_surface_copy(cmd_buf, bad_surface, dest, &box, 1);
-+	igt_assert(vmw_execbuf_submit(cmd_buf, &cmd_fence) != 0);
-+
-+	vmw_cmd_surface_copy(cmd_buf, src, bad_surface, &box, 1);
-+	igt_assert(vmw_execbuf_submit(cmd_buf, &cmd_fence) != 0);
-+	vmw_ioctl_fence_finish(fd, &cmd_fence);
-+
-+	bad_surface.sid = src.sid;
-+	bad_surface.face = 2;
-+
-+	exec_surface_copy(cmd_buf, &cmd_fence, bad_surface, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, bad_surface, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	vmw_execbuf_destroy(cmd_buf);
-+	vmw_ioctl_surface_unref(fd, s1);
-+	vmw_ioctl_surface_unref(fd, s2);
-+}
-+
-+static void test_invalid_copies_3d(int fd, int32 cid)
-+{
-+	struct vmw_surface *s1;
-+	struct vmw_surface *s2;
-+	struct vmw_execbuf *cmd_buf;
-+	struct drm_vmw_fence_rep cmd_fence;
-+	SVGA3dSize surface_size;
-+	SVGA3dCopyBox box;
-+	SVGA3dSurfaceImageId src;
-+	SVGA3dSurfaceImageId dest;
-+
-+	surface_size.width = 128;
-+	surface_size.height = 128;
-+	surface_size.depth = 1;
-+
-+	igt_require(
-+		vmw_is_format_supported(fd, SVGA3D_DEVCAP_SURFACEFMT_A8R8G8B8));
-+	igt_require(vmw_is_format_supported(fd, SVGA3D_DEVCAP_DXFMT_Z_D32));
-+
-+	s1 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
-+				       NULL);
-+	s2 = vmw_create_surface_simple(fd, 0, SVGA3D_Z_D32, surface_size, NULL);
-+	cmd_buf = vmw_execbuf_create(fd, cid);
-+
-+	box.x = 0;
-+	box.y = 0;
-+	box.z = 0;
-+	box.w = 10;
-+	box.h = 10;
-+	box.d = 10;
-+	box.srcx = 0;
-+	box.srcy = 0;
-+	box.srcz = 0;
-+
-+	src.sid = s1->base.handle;
-+	src.face = 0;
-+	src.mipmap = 0;
-+	dest.sid = s2->base.handle;
-+	dest.face = 0;
-+	dest.mipmap = 0;
-+
-+	set_surface_value(fd, s1, 0);
-+	set_surface_value(fd, s2, 16);
-+
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	exec_surface_copy(cmd_buf, &cmd_fence, dest, src, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	vmw_execbuf_destroy(cmd_buf);
-+	vmw_ioctl_surface_unref(fd, s1);
-+	vmw_ioctl_surface_unref(fd, s2);
++	return verify_mob_data(fd, &mob);
 +}
 +
 +igt_main
 +{
-+	int fd;
-+	int32 cid;
++	int32 fd1, fd2;
++	const uint32 size = sizeof(data);
++	SVGA3dSize surface_size = { .width = size, .height = 1, .depth = 1 };
 +
 +	igt_fixture
 +	{
-+		fd = drm_open_driver_render(DRIVER_VMWGFX);
-+		igt_require(fd != -1);
-+
-+		cid = vmw_ioctl_context_create(fd);
-+		igt_require(cid != SVGA3D_INVALID_ID);
++		fd1 = drm_open_driver_render(DRIVER_VMWGFX);
++		fd2 = drm_open_driver_render(DRIVER_VMWGFX);
++		igt_require(fd1 != -1);
++		igt_require(fd2 != -1);
 +	}
 +
-+	igt_describe("Test surface copies (valid and invalid ones).");
-+	igt_subtest("test_invalid_copies")
++	igt_describe("Test prime transfers with explicit mobs.");
++	igt_subtest("surface_prime_transfer_explicit_mob")
 +	{
-+		test_invalid_copies(fd, cid);
++		struct vmw_mob *mob;
++		struct vmw_surface *surface;
++		int32 surface_fd;
++		uint32 surface_handle;
++
++		mob = vmw_ioctl_mob_create(fd1, size);
++		surface = vmw_ioctl_create_surface_full(
++			fd1, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
++			SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
++			SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, mob,
++			drm_vmw_surface_flag_shareable);
++
++		write_to_mob(fd1, mob);
++
++		surface_fd =
++			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
++
++		vmw_ioctl_mob_close_handle(fd1, mob);
++		vmw_ioctl_surface_unref(fd1, surface);
++
++		surface_handle = prime_fd_to_handle(fd2, surface_fd);
++		close(surface_fd);
++
++		igt_assert(ref_surface_and_check_contents(fd2, surface_handle));
 +	}
 +
-+	igt_describe("Test surface copies on 3D enabled contexts.");
-+	igt_subtest("test_invalid_copies_3d")
++	igt_describe("Test prime transfers with implicit mobs.");
++	igt_subtest("surface_prime_transfer_implicit_mob")
 +	{
-+		igt_require(vmw_ioctl_get_param(fd, DRM_VMW_PARAM_3D));
-+		test_invalid_copies_3d(fd, cid);
++		struct vmw_surface *surface;
++		int32 surface_fd;
++		uint32 surface_handle;
++
++		surface = create_and_write_shareable_surface(fd1, surface_size);
++
++		surface_fd =
++			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
++
++		vmw_ioctl_surface_unref(fd1, surface);
++
++		surface_handle = prime_fd_to_handle(fd2, surface_fd);
++		close(surface_fd);
++
++		igt_assert(ref_surface_and_check_contents(fd2, surface_handle));
++	}
++
++	igt_describe("Test prime transfers with a fd dup.");
++	igt_subtest("surface_prime_transfer_fd_dup")
++	{
++		int32 surface_fd1, surface_fd2;
++		uint32 surface_handle;
++		struct vmw_surface *surface;
++
++		surface = create_and_write_shareable_surface(fd1, surface_size);
++
++		surface_fd1 =
++			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
++		vmw_ioctl_surface_unref(fd1, surface);
++
++		surface_fd2 = dup(surface_fd1);
++		close(surface_fd1);
++
++		surface_handle = prime_fd_to_handle(fd2, surface_fd2);
++		close(surface_fd2);
++
++		igt_assert(ref_surface_and_check_contents(fd2, surface_handle));
++	}
++
++	igt_describe("Test prime lifetime with 2 surfaces.");
++	igt_subtest("surface_prime_transfer_two_surfaces")
++	{
++		int32 surface_fd;
++		uint32 surface_handle1, surface_handle2;
++		struct vmw_surface *surface1, *surface2;
++
++		surface1 =
++			create_and_write_shareable_surface(fd1, surface_size);
++		surface2 =
++			create_and_write_shareable_surface(fd1, surface_size);
++
++		surface_fd =
++			prime_handle_to_fd_for_mmap(fd1, surface1->base.handle);
++		vmw_ioctl_surface_unref(fd1, surface1);
++
++		surface_handle1 = prime_fd_to_handle(fd2, surface_fd);
++		close(surface_fd);
++
++		surface_fd =
++			prime_handle_to_fd_for_mmap(fd1, surface2->base.handle);
++		vmw_ioctl_surface_unref(fd1, surface2);
++
++		surface_handle2 = prime_fd_to_handle(fd2, surface_fd);
++		close(surface_fd);
++
++		igt_assert(
++			ref_surface_and_check_contents(fd2, surface_handle1));
++		igt_assert(
++			ref_surface_and_check_contents(fd2, surface_handle2));
++	}
++
++	igt_describe("Test prime transfers with multiple handles.");
++	igt_subtest("surface_prime_transfer_single_surface_multiple_handle")
++	{
++		int32 surface_fd;
++		uint32 surface_handle_old;
++		uint32 surface_handle1, surface_handle2, surface_handle3;
++		struct vmw_surface *surface;
++
++		surface = create_and_write_shareable_surface(fd1, surface_size);
++		surface_handle_old = surface->base.handle;
++
++		surface_fd =
++			prime_handle_to_fd_for_mmap(fd1, surface->base.handle);
++		vmw_ioctl_surface_unref(fd1, surface);
++
++		surface_handle1 = prime_fd_to_handle(fd1, surface_fd);
++		surface_handle2 = prime_fd_to_handle(fd2, surface_fd);
++		surface_handle3 = prime_fd_to_handle(fd2, surface_fd);
++		close(surface_fd);
++
++		igt_assert_eq_u32(surface_handle_old, surface_handle1);
++		igt_assert_eq_u32(surface_handle2, surface_handle3);
++
++		igt_assert(
++			ref_surface_and_check_contents(fd1, surface_handle1));
++		igt_assert(
++			ref_surface_and_check_contents(fd2, surface_handle2));
++	}
++
++	igt_describe("Test repeated unrefs on a mob.");
++	igt_subtest("mob_repeated_unref")
++	{
++		struct vmw_mob *mob;
++		int i = 0;
++
++		mob = vmw_ioctl_mob_create(fd1, size);
++		write_to_mob(fd1, mob);
++
++		/* Shouldn't crash on multiple invocations */
++		for (i = 0; i < 3; i++) {
++			int ret;
++			struct drm_vmw_handle_close_arg arg = {
++				.handle = mob->handle
++			};
++			ret = drmCommandWrite(fd1, DRM_VMW_HANDLE_CLOSE, &arg,
++					      sizeof(arg));
++			igt_assert_eq(ret, 0);
++		}
++		free(mob);
++	}
++
++	igt_describe("Test repeated unrefs on a surface.");
++	igt_subtest("surface_repeated_unref")
++	{
++		struct vmw_surface *surface;
++		int i = 0;
++
++		surface = vmw_ioctl_create_surface_full(
++			fd1, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
++			SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
++			SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, NULL,
++			drm_vmw_surface_flag_shareable);
++
++		/* Shouldn't crash on multiple invocations */
++		for (i = 0; i < 3; i++) {
++			struct drm_vmw_surface_arg s_arg = {
++				.sid = surface->base.handle,
++				.handle_type = DRM_VMW_HANDLE_LEGACY
++			};
++			drmCommandWrite(fd1, DRM_VMW_UNREF_SURFACE, &s_arg,
++					sizeof(s_arg));
++		}
++		free(surface);
++	}
++
++	igt_describe("Test unref on a refed surface.");
++	igt_subtest("surface_alloc_ref_unref")
++	{
++		struct vmw_surface *surface;
++		struct vmw_surface ref_surface;
++		struct vmw_mob readback_mob = { 0 };
++
++		surface = create_and_write_shareable_surface(fd1, surface_size);
++
++		ref_surface = vmw_ioctl_surface_ref(fd1, surface->base.handle,
++						    DRM_VMW_HANDLE_LEGACY);
++
++		vmw_ioctl_surface_unref(fd1, surface);
++
++		readback_mob.handle = ref_surface.base.handle;
++		readback_mob.size = ref_surface.base.buffer_size;
++		readback_mob.map_handle = ref_surface.base.buffer_map_handle;
++
++		igt_assert(verify_mob_data(fd1, &readback_mob));
 +	}
 +
 +	igt_fixture
 +	{
-+		vmw_ioctl_context_destroy(fd, cid);
-+		close(fd);
++		close(fd1);
++		close(fd2);
 +	}
 +}
 -- 
