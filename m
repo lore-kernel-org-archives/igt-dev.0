@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C65AE10E19F
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 15:37:26 +0000 (UTC)
-Date: Fri, 21 Apr 2023 17:37:20 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E1FD10EAAF
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 10:10:19 +0000 (UTC)
+Date: Thu, 13 Apr 2023 12:10:08 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230421153720.ylqhyxgfib34dzf7@kamilkon-desk1>
+Message-ID: <20230413101008.cnh67hsuj4tegso4@kamilkon-desk1>
 References: <20230413092159.146658-1-mauro.chehab@linux.intel.com>
  <20230413092159.146658-5-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
@@ -24,6 +24,8 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
+
+Hi Mauro,
 
 On 2023-04-13 at 11:21:59 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
@@ -53,6 +55,13 @@ On 2023-04-13 at 11:21:59 +0200, Mauro Carvalho Chehab wrote:
 > As Sphinx and PDF outputs aren't something that every single
 > IGT developer would need, let's speedup the build by disabling
 > it by default.
+
+imho this may require a change in our building pipeline so
++cc Petri.
+
+Regards,
+Kamil
+
 > 
 > Test plan and test documentation validation will still run,
 > as this is a necessary step to validate if the tests documentation
@@ -60,9 +69,6 @@ On 2023-04-13 at 11:21:59 +0200, Mauro Carvalho Chehab wrote:
 > normal builds.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > ---
 >  meson_options.txt | 1 +
 >  1 file changed, 1 insertion(+)
