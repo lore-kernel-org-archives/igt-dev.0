@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E1FD10EAAF
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 10:10:19 +0000 (UTC)
-Date: Thu, 13 Apr 2023 12:10:08 +0200
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A23EC10E36F
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 13:18:49 +0000 (UTC)
+Date: Thu, 13 Apr 2023 15:08:19 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230413101008.cnh67hsuj4tegso4@kamilkon-desk1>
+Message-ID: <20230413130819.oga4thpa7poz4npi@kamilkon-desk1>
 References: <20230413092159.146658-1-mauro.chehab@linux.intel.com>
- <20230413092159.146658-5-mauro.chehab@linux.intel.com>
+ <20230413092159.146658-4-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230413092159.146658-5-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 4/4] meson_options.txt: disable
- Sphinx by default
+In-Reply-To: <20230413092159.146658-4-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 3/4] scripts/test_list.py: use a
+ compiled regex for check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,66 +25,58 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-
-On 2023-04-13 at 11:21:59 +0200, Mauro Carvalho Chehab wrote:
+On 2023-04-13 at 11:21:58 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Building IGT with Sphinx enabled and rst2pdf installed takes:
-> 
-> 	$ touch tests/xe/xe_compute.c
-> 	$ time ninja -C build
-> 
-> 	...
-> 
->         real    0m10.545s
->         user    0m13.778s
->         sys     0m0.724s
-> 
-> With Sphinx disabled, the same build is a lot faster:
-> 
-> 	$ touch tests/xe/xe_compute.c
-> 	$ time ninja -C build
-> 
-> 	...
-> 
-> 	real	0m1.746s
-> 	user	0m1.574s
-> 	sys	0m0.171s
-> 
-> As Sphinx and PDF outputs aren't something that every single
-> IGT developer would need, let's speedup the build by disabling
-> it by default.
-
-imho this may require a change in our building pipeline so
-+cc Petri.
-
-Regards,
-Kamil
-
-> 
-> Test plan and test documentation validation will still run,
-> as this is a necessary step to validate if the tests documentation
-> were not broken on a patch, but this will save some time during
-> normal builds.
+> Speed up even further the logic for --check-testlist by
+> pre-compiling the regex that will be used to validate the
+> results.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  meson_options.txt | 1 +
->  1 file changed, 1 insertion(+)
+>  scripts/test_list.py | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
 > 
-> diff --git a/meson_options.txt b/meson_options.txt
-> index d4e373d6cfc4..2cb44f20169b 100644
-> --- a/meson_options.txt
-> +++ b/meson_options.txt
-> @@ -26,6 +26,7 @@ option('testplan',
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 287351e717b3..96d8883db122 100755
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -820,10 +820,18 @@ class TestList:
+>          run_missing = []
+>          doc_uneeded = []
 >  
->  option('sphinx',
->         type : 'feature',
-> +       value : 'disabled',
->         description : 'Build testplan documentation using Sphinx')
+> +        test_regex = r""
+> +        for doc_test in doc_subtests:
+> +            if test_regex != r"":
+> +                test_regex += r"|"
+> +            test_regex += r'^' + doc_test + r'$'
+> +
+> +        test_regex = re.compile(test_regex)
+> +
+>          for doc_test in doc_subtests:
+>              found = False
+>              for run_test in run_subtests:
+> -                if re.match(r'^' + doc_test + r'$', run_test):
+> +                if re.match(test_regex, run_test):
+>                      found = True
+>                      break
+>              if not found:
+> @@ -831,10 +839,8 @@ class TestList:
 >  
->  option('docs',
+>          for run_test in run_subtests:
+>              found = False
+> -            for doc_test in doc_subtests:
+> -                if re.match(r'^' + doc_test + r'$', run_test):
+> -                    found = True
+> -                    break
+> +            if re.match(test_regex, run_test):
+> +                found = True
+>              if not found:
+>                  run_missing.append(run_test)
+>  
 > -- 
 > 2.39.2
 > 
