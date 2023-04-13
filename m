@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5AC510E9B1
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Apr 2023 22:02:39 +0000 (UTC)
-Date: Wed, 12 Apr 2023 15:02:31 -0700
-From: Matt Atwood <matthew.s.atwood@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>, <igt-dev@lists.freedesktop.org>
-Message-ID: <ZDcqdykMyq76FuTb@msatwood-mobl>
-References: <20230412210558.18837-1-matthew.s.atwood@intel.com>
- <20230412215639.p4bhx7jn4wwqq73i@ldmartin-desk2.lan>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20230412215639.p4bhx7jn4wwqq73i@ldmartin-desk2.lan>
+From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	igt-dev@lists.freedesktop.org
+Date: Wed, 12 Apr 2023 17:48:47 -0700
+Message-Id: <20230413004850.1985672-1-vinay.belgaumkar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_huc_copy: check debugfs for
- huc running
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v4 i-g-t 0/3] tests/slpc: Add basic IGT test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,84 +14,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Apr 12, 2023 at 02:56:39PM -0700, Lucas De Marchi wrote:
-> On Wed, Apr 12, 2023 at 02:05:58PM -0700, Matt Atwood wrote:
-> > Use debugfs to make sure that huc is loaded for xe_huc_copy. This
-> > function will need to be updated for multitile functionality.
-> > 
-> > Signed-off-by: Matt Atwood <matthew.s.atwood@intel.com>
-> > ---
-> > tests/xe/xe_huc_copy.c | 18 +++++++++++++++++-
-> > 1 file changed, 17 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tests/xe/xe_huc_copy.c b/tests/xe/xe_huc_copy.c
-> > index cd68dbb5ac..58d770106e 100644
-> > --- a/tests/xe/xe_huc_copy.c
-> > +++ b/tests/xe/xe_huc_copy.c
-> > @@ -152,6 +152,22 @@ test_huc_copy(int fd)
-> > 	xe_vm_destroy(fd, vm);
-> > }
-> > 
-> > +static bool
-> > +is_huc_running(int fd)
-> > +{
-> > +	char buf[4096];
-> > +	char *s;
-> > +
-> > +	/*
-> > +	 * TODO: add multi tile support
-> 
-> can't be a todo, otherwise it doesn't work on MTL since there
-> the media gt is gt1. It's simple enough to add
-> 
-> 	int gt;
-> 
-> 	xe_for_each_gt(fd, gt) {
-> 		char name[256];
-> 
-> 		sprintf(name, "gt%d/uc/huc_info", gt);
-> 		...
-> 		if (s)
-> 			return true;
-> 	}
-> 
-> 	return false;
-Ack
-> 	
-> in xe it seems that when HuC is not loaded, for whatever reason
-> we fail module load. So this is fine for now. Eventually we will need to
-> differentiate "failed to load HuC" from "platform doesn't have huc"
-> from "huc failed to run for whatever reason".  I think this can be a
-> TODO.
-will leave as todo.
-> 
-> Lucas De Marchi
-> 
-> > +	 */
-> > +
-> > +	igt_debugfs_read(fd, "gt0/uc/huc_info", buf);
-> > +	s = strstr(buf, "RUNNING");
-> > +
-> > +	return s;
-> > +}
-> > +
-> > igt_main
-> > {
-> > 	int xe;
-> > @@ -162,7 +178,7 @@ igt_main
-> > 	}
-> > 
-> > 	igt_subtest("huc_copy") {
-> > -		igt_skip_on(!IS_TIGERLAKE(intel_get_drm_devid(xe)));
-> > +		igt_skip_on(!is_huc_running(xe));
-> > 		test_huc_copy(xe);
-> > 	}
-> > 
-> > -- 
-> > 2.39.2
-> > 
+
+Borrow some subtests from xe_guc_pc. Also add per GT debugfs helpers.
+
+v3: Review comments and add HAX patch
+v4: Modify the condition for skipping the test
+
+Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+
+Vinay Belgaumkar (3):
+  lib/debugfs: Add per GT debugfs helpers
+  i915_pm_freq_api: Add some basic SLPC igt tests
+  HAX: tests/i915: Try out the SLPC IGT tests
+
+ lib/igt_debugfs.c                     |  60 ++++++++++
+ lib/igt_debugfs.h                     |   4 +
+ tests/i915/i915_pm_freq_api.c         | 152 ++++++++++++++++++++++++++
+ tests/intel-ci/fast-feedback.testlist |   2 +
+ tests/meson.build                     |   1 +
+ 5 files changed, 219 insertions(+)
+ create mode 100644 tests/i915/i915_pm_freq_api.c
+
+-- 
+2.38.1
