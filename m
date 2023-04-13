@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37C6410E058
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 01:24:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 860BE10E058
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 01:24:32 +0000 (UTC)
 From: Zack Rusin <zack@kde.org>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Apr 2023 21:24:23 -0400
-Message-Id: <20230413012426.503658-6-zack@kde.org>
+Date: Wed, 12 Apr 2023 21:24:21 -0400
+Message-Id: <20230413012426.503658-4-zack@kde.org>
 In-Reply-To: <20230413012426.503658-1-zack@kde.org>
 References: <20230413012426.503658-1-zack@kde.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 5/8] tests/vmwgfx: Add surface copy test
+Subject: [igt-dev] [PATCH i-g-t v4 3/8] tests/vmwgfx: Add triangle test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,38 +27,61 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Maaz Mombasawala <mombasawalam@vmware.com>
 
-This test checks for validation errors during several surface copies
-in vmwgfx.
+Add vmwgfx tests support in tests/meson and a tri test.
+This basic test draws a triangle using vmwgfx and checks if it has
+been rendered correctly.
 
+Signed-off-by: Roye Eshed <reshed@vmware.com>
 Signed-off-by: Zack Rusin <zackr@vmware.com>
 Signed-off-by: Maaz Mombasawala <mombasawalam@vmware.com>
 Reviewed-by: Martin Krastev <krastevm@vmware.com>
 ---
- tests/vmwgfx/meson.build        |   3 +-
- tests/vmwgfx/vmw_surface_copy.c | 341 ++++++++++++++++++++++++++++++++
- 2 files changed, 343 insertions(+), 1 deletion(-)
- create mode 100644 tests/vmwgfx/vmw_surface_copy.c
+ tests/meson.build        |   2 +
+ tests/vmwgfx/meson.build |  14 +++
+ tests/vmwgfx/vmw_tri.c   | 214 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 230 insertions(+)
+ create mode 100644 tests/vmwgfx/meson.build
+ create mode 100644 tests/vmwgfx/vmw_tri.c
 
+diff --git a/tests/meson.build b/tests/meson.build
+index da31e782..9072cfad 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -510,6 +510,8 @@ subdir('v3d')
+ 
+ subdir('vc4')
+ 
++subdir('vmwgfx')
++
+ gen_testlist = find_program('generate_testlist.sh')
+ test_list_target = custom_target('testlist',
+ 	      output : 'test-list.txt',
 diff --git a/tests/vmwgfx/meson.build b/tests/vmwgfx/meson.build
-index ce2969db..cc0718b2 100644
---- a/tests/vmwgfx/meson.build
-+++ b/tests/vmwgfx/meson.build
-@@ -1,7 +1,8 @@
- 
- vmwgfx_progs = [
- 	'vmw_tri',
--	'vmw_execution_buffer'
-+	'vmw_execution_buffer',
-+	'vmw_surface_copy'
- ]
- vmwgfx_deps = test_deps
- 
-diff --git a/tests/vmwgfx/vmw_surface_copy.c b/tests/vmwgfx/vmw_surface_copy.c
 new file mode 100644
-index 00000000..d7c2711a
+index 00000000..e2e5a86b
 --- /dev/null
-+++ b/tests/vmwgfx/vmw_surface_copy.c
-@@ -0,0 +1,341 @@
++++ b/tests/vmwgfx/meson.build
+@@ -0,0 +1,14 @@
++
++vmwgfx_progs = [
++	'vmw_tri'
++]
++vmwgfx_deps = test_deps
++
++foreach prog : vmwgfx_progs
++	test_executables += executable(prog, prog + '.c',
++				       dependencies : vmwgfx_deps,
++				       install_dir : vmwgfxdir,
++				       install_rpath : vmwgfx_rpathdir,
++				       install : true)
++	test_list += join_paths('vmwgfx', prog)
++endforeach
+diff --git a/tests/vmwgfx/vmw_tri.c b/tests/vmwgfx/vmw_tri.c
+new file mode 100644
+index 00000000..f5a59229
+--- /dev/null
++++ b/tests/vmwgfx/vmw_tri.c
+@@ -0,0 +1,214 @@
 +// SPDX-License-Identifier: GPL-2.0 OR MIT
 +/**********************************************************
 + * Copyright 2021-2022 VMware, Inc.
@@ -87,317 +110,190 @@ index 00000000..d7c2711a
 +
 +#include "igt_vmwgfx.h"
 +
-+IGT_TEST_DESCRIPTION("Test surface copies.");
++IGT_TEST_DESCRIPTION("Check whether basic 3D pipeline works correctly.");
 +
-+/**
-+ * Compares two 2d surfaces to see if their size and contents are equal.
-+ */
-+static bool are_surfaces_identical(int fd, struct vmw_surface *s1,
-+				   struct vmw_surface *s2)
++static void draw_triangle(struct vmw_svga_device *device, int32 cid)
 +{
-+	struct vmw_mob mob1 = { .size = s1->base.buffer_size,
-+				.handle = s1->base.buffer_handle,
-+				.map_handle = s1->base.buffer_map_handle };
-+	struct vmw_mob mob2 = { .size = s2->base.buffer_size,
-+				.handle = s2->base.buffer_handle,
-+				.map_handle = s2->base.buffer_map_handle };
-+	char *readback1;
-+	char *readback2;
-+	bool is_equal = true;
-+	uint32 i, j;
-+	uint32 stride1, stride2, height, width;
++	struct vmw_default_objects objects;
++	uint8 *rendered_img;
++	bool save_status;
 +
-+	if ((s1->params.base.base_size.width !=
-+	     s2->params.base.base_size.width) ||
-+	    (s1->params.base.base_size.height !=
-+	     s2->params.base.base_size.height)) {
-+		return false;
-+	}
-+	width = s1->params.base.base_size.width;
-+	height = s1->params.base.base_size.height;
-+	stride1 = s1->params.buffer_byte_stride == 0 ?
-+			  width :
-+			  s1->params.buffer_byte_stride;
-+	stride2 = s2->params.buffer_byte_stride == 0 ?
-+			  width :
-+			  s2->params.buffer_byte_stride;
++	vmw_create_default_objects(device, cid, &objects,
++				   &vmw_default_rect_size);
++	rendered_img = vmw_triangle_draw(device, cid, &objects, true);
 +
-+	readback1 = vmw_ioctl_mob_map(fd, &mob1);
-+	readback2 = vmw_ioctl_mob_map(fd, &mob2);
-+	for (i = 0; i < width; i++) {
-+		for (j = 0; j < height; j++) {
-+			if (readback1[j * stride1 + i] !=
-+			    readback2[j * stride2 + i]) {
-+				is_equal = false;
-+				goto are_surfaces_identical_end;
-+			}
-+		}
-+	}
-+are_surfaces_identical_end:
-+	vmw_ioctl_mob_unmap(&mob1);
-+	vmw_ioctl_mob_unmap(&mob2);
-+	return is_equal;
++	save_status = vmw_save_data_as_png(objects.color_rt, rendered_img,
++					   "vmw_tri.png");
++	igt_assert(save_status);
++
++	vmw_triangle_assert_values(rendered_img, objects.color_rt);
++
++	/* Clean up */
++	free(rendered_img);
++	vmw_destroy_default_objects(device, &objects);
 +}
 +
-+static void set_surface_value(int fd, struct vmw_surface *surface, char value)
++static void replace_with_coherent_rt(struct vmw_svga_device *device,
++				     int32 context_id,
++				     struct vmw_default_objects *objects,
++				     const SVGA3dSize *rt_size)
 +{
-+	struct vmw_mob mob = { .size = surface->base.buffer_size,
-+			       .handle = surface->base.buffer_handle,
-+			       .map_handle = surface->base.buffer_map_handle };
-+	char *readback;
-+
-+	readback = vmw_ioctl_mob_map(fd, &mob);
-+	memset(readback, value, mob.size);
-+	vmw_ioctl_mob_unmap(&mob);
-+}
-+
-+static void exec_surface_copy(struct vmw_execbuf *cmd_buf,
-+			      struct drm_vmw_fence_rep *cmd_fence,
-+			      SVGA3dSurfaceImageId src,
-+			      SVGA3dSurfaceImageId dest, SVGA3dCopyBox *box)
-+{
-+	vmw_cmd_surface_copy(cmd_buf, src, dest, box, 1);
-+	vmw_execbuf_submit(cmd_buf, cmd_fence);
-+	vmw_ioctl_fence_finish(cmd_buf->drm_fd, cmd_fence);
-+}
-+
-+static void test_invalid_copies(int fd, int32 cid)
-+{
-+	struct vmw_surface *s1;
-+	struct vmw_surface *s2;
 +	struct vmw_execbuf *cmd_buf;
-+	struct drm_vmw_fence_rep cmd_fence;
-+	SVGA3dSize surface_size;
-+	SVGA3dCopyBox box;
-+	SVGA3dSurfaceImageId src;
-+	SVGA3dSurfaceImageId dest;
-+	SVGA3dSurfaceImageId bad_surface;
++	SVGA3dRenderTargetViewDesc rtv_desc = { 0 };
++	SVGA3dCmdDXDefineRenderTargetView rt_view_define_cmd = { 0 };
++	SVGA3dCmdDXDefineDepthStencilView ds_view_define_cmd = { 0 };
 +
-+	surface_size.width = 128;
-+	surface_size.height = 128;
-+	surface_size.depth = 1;
++	objects->color_rt = vmw_ioctl_create_surface_full(
++		device->drm_fd,
++		SVGA3D_SURFACE_HINT_TEXTURE | SVGA3D_SURFACE_HINT_RENDERTARGET |
++			SVGA3D_SURFACE_BIND_RENDER_TARGET,
++		SVGA3D_R8G8B8A8_UNORM, 0, SVGA3D_MS_PATTERN_NONE,
++		SVGA3D_MS_QUALITY_NONE, SVGA3D_TEX_FILTER_NONE, 1, 1, *rt_size,
++		NULL, drm_vmw_surface_flag_coherent);
 +
-+	igt_require(
-+		vmw_is_format_supported(fd, SVGA3D_DEVCAP_SURFACEFMT_A8R8G8B8));
++	objects->depth_rt = vmw_ioctl_create_surface_full(
++		device->drm_fd,
++		SVGA3D_SURFACE_HINT_DEPTHSTENCIL |
++			SVGA3D_SURFACE_HINT_RENDERTARGET |
++			SVGA3D_SURFACE_BIND_DEPTH_STENCIL,
++		SVGA3D_R24G8_TYPELESS, 0, SVGA3D_MS_PATTERN_NONE,
++		SVGA3D_MS_QUALITY_NONE, SVGA3D_TEX_FILTER_NONE, 1, 1, *rt_size,
++		NULL, drm_vmw_surface_flag_coherent);
 +
-+	s1 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
-+				       NULL);
-+	s2 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
-+				       NULL);
-+	cmd_buf = vmw_execbuf_create(fd, cid);
++	cmd_buf = vmw_execbuf_create(device->drm_fd, context_id);
 +
-+	box.x = 0;
-+	box.y = 0;
-+	box.z = 0;
-+	box.w = 1;
-+	box.h = 1;
-+	box.d = 1;
-+	box.srcx = 0;
-+	box.srcy = 0;
-+	box.srcz = 0;
++	rtv_desc.tex.arraySize = 1;
++	rtv_desc.tex.firstArraySlice = 0;
++	rtv_desc.tex.mipSlice = 0;
++	vmw_bitvector_find_next_bit(device->rt_view_bv,
++				    &rt_view_define_cmd.renderTargetViewId);
++	rt_view_define_cmd.sid = objects->color_rt->base.handle;
++	rt_view_define_cmd.format = SVGA3D_R8G8B8A8_UNORM;
++	rt_view_define_cmd.resourceDimension = SVGA3D_RESOURCE_TEXTURE2D;
++	rt_view_define_cmd.desc = rtv_desc;
++	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DEFINE_RENDERTARGET_VIEW,
++			   &rt_view_define_cmd, sizeof(rt_view_define_cmd), NULL,
++			   0);
++	objects->color_rt_id = rt_view_define_cmd.renderTargetViewId;
 +
-+	src.sid = s1->base.handle;
-+	src.face = 0;
-+	src.mipmap = 0;
-+	dest.sid = s2->base.handle;
-+	dest.face = 0;
-+	dest.mipmap = 0;
++	vmw_bitvector_find_next_bit(device->ds_view_bv,
++				    &ds_view_define_cmd.depthStencilViewId);
++	ds_view_define_cmd.sid = objects->depth_rt->base.handle;
++	ds_view_define_cmd.format = SVGA3D_D24_UNORM_S8_UINT;
++	ds_view_define_cmd.resourceDimension = SVGA3D_RESOURCE_TEXTURE2D;
++	ds_view_define_cmd.mipSlice = 0;
++	ds_view_define_cmd.firstArraySlice = 0;
++	ds_view_define_cmd.arraySize = 1;
++	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DEFINE_DEPTHSTENCIL_VIEW,
++			   &ds_view_define_cmd, sizeof(ds_view_define_cmd), NULL,
++			   0);
++	objects->ds_view_id = ds_view_define_cmd.depthStencilViewId;
 +
-+	/* Testing a valid copy first */
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(are_surfaces_identical(fd, s1, s2));
-+
-+	/* Setting surfaces to different values */
-+	set_surface_value(fd, s1, 0);
-+	set_surface_value(fd, s2, 16);
-+
-+	/* Testing invalid copies */
-+
-+	/* x */
-+	box.x = 129;
-+	box.w = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.x = 0;
-+	box.w = 129;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcx = 129;
-+	box.w = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcx = 0;
-+	box.w = 129;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	/* y */
-+	box.y = 129;
-+	box.h = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.y = 0;
-+	box.h = 129;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcy = 129;
-+	box.h = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcy = 0;
-+	box.h = 129;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	/* z */
-+	box.z = 2;
-+	box.d = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.z = 0;
-+	box.d = 2;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcz = 2;
-+	box.d = 1;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	box.srcz = 0;
-+	box.d = 2;
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	/* Invalid surface id */
-+	bad_surface.sid = src.sid + dest.sid + 1;
-+	bad_surface.face = 0;
-+	bad_surface.mipmap = 0;
-+
-+	box.x = 0;
-+	box.y = 0;
-+	box.z = 0;
-+	box.w = 1;
-+	box.h = 1;
-+	box.d = 1;
-+	box.srcx = 0;
-+	box.srcy = 0;
-+	box.srcz = 0;
-+
-+	vmw_cmd_surface_copy(cmd_buf, bad_surface, dest, &box, 1);
-+	igt_assert(vmw_execbuf_submit(cmd_buf, &cmd_fence) != 0);
-+
-+	vmw_cmd_surface_copy(cmd_buf, src, bad_surface, &box, 1);
-+	igt_assert(vmw_execbuf_submit(cmd_buf, &cmd_fence) != 0);
-+	vmw_ioctl_fence_finish(fd, &cmd_fence);
-+
-+	bad_surface.sid = src.sid;
-+	bad_surface.face = 2;
-+
-+	exec_surface_copy(cmd_buf, &cmd_fence, bad_surface, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, bad_surface, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
++	vmw_execbuf_submit(cmd_buf, NULL);
 +	vmw_execbuf_destroy(cmd_buf);
-+	vmw_ioctl_surface_unref(fd, s1);
-+	vmw_ioctl_surface_unref(fd, s2);
 +}
 +
-+static void test_invalid_copies_3d(int fd, int32 cid)
++static void destroy_rt(struct vmw_svga_device *device, int32 context_id,
++		       struct vmw_default_objects *objects)
 +{
-+	struct vmw_surface *s1;
-+	struct vmw_surface *s2;
 +	struct vmw_execbuf *cmd_buf;
-+	struct drm_vmw_fence_rep cmd_fence;
-+	SVGA3dSize surface_size;
-+	SVGA3dCopyBox box;
-+	SVGA3dSurfaceImageId src;
-+	SVGA3dSurfaceImageId dest;
 +
-+	surface_size.width = 128;
-+	surface_size.height = 128;
-+	surface_size.depth = 1;
++	SVGA3dCmdDXDestroyRenderTargetView rt_view_cmd = {
++		.renderTargetViewId = objects->color_rt_id
++	};
 +
-+	igt_require(
-+		vmw_is_format_supported(fd, SVGA3D_DEVCAP_SURFACEFMT_A8R8G8B8));
-+	igt_require(vmw_is_format_supported(fd, SVGA3D_DEVCAP_DXFMT_Z_D32));
++	SVGA3dCmdDXDestroyDepthStencilView ds_view_cmd = {
++		.depthStencilViewId = objects->ds_view_id
++	};
 +
-+	s1 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
-+				       NULL);
-+	s2 = vmw_create_surface_simple(fd, 0, SVGA3D_Z_D32, surface_size, NULL);
-+	cmd_buf = vmw_execbuf_create(fd, cid);
++	cmd_buf = vmw_execbuf_create(device->drm_fd, objects->context_id);
 +
-+	box.x = 0;
-+	box.y = 0;
-+	box.z = 0;
-+	box.w = 10;
-+	box.h = 10;
-+	box.d = 10;
-+	box.srcx = 0;
-+	box.srcy = 0;
-+	box.srcz = 0;
++	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DESTROY_RENDERTARGET_VIEW,
++			   &rt_view_cmd, sizeof(rt_view_cmd), NULL, 0);
 +
-+	src.sid = s1->base.handle;
-+	src.face = 0;
-+	src.mipmap = 0;
-+	dest.sid = s2->base.handle;
-+	dest.face = 0;
-+	dest.mipmap = 0;
++	vmw_execbuf_append(cmd_buf, SVGA_3D_CMD_DX_DESTROY_DEPTHSTENCIL_VIEW,
++			   &ds_view_cmd, sizeof(ds_view_cmd), NULL, 0);
 +
-+	set_surface_value(fd, s1, 0);
-+	set_surface_value(fd, s2, 16);
++	vmw_ioctl_surface_unref(device->drm_fd, objects->color_rt);
++	vmw_ioctl_surface_unref(device->drm_fd, objects->depth_rt);
 +
-+	exec_surface_copy(cmd_buf, &cmd_fence, src, dest, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
++	vmw_bitvector_free_bit(device->rt_view_bv, objects->color_rt_id);
++	vmw_bitvector_free_bit(device->ds_view_bv, objects->ds_view_id);
 +
-+	exec_surface_copy(cmd_buf, &cmd_fence, dest, src, &box);
-+	igt_assert(!are_surfaces_identical(fd, s1, s2));
-+
++	vmw_execbuf_submit(cmd_buf, NULL);
 +	vmw_execbuf_destroy(cmd_buf);
-+	vmw_ioctl_surface_unref(fd, s1);
-+	vmw_ioctl_surface_unref(fd, s2);
++}
++
++static void draw_triangle_on_coherent_rt(struct vmw_svga_device *device,
++					 int32 cid)
++{
++	struct vmw_default_objects objects;
++	uint8 *rendered_img;
++	struct vmw_surface *default_color_rt;
++	struct vmw_surface *default_depth_rt;
++	SVGA3dRenderTargetViewId default_color_rt_id;
++	SVGA3dDepthStencilViewId default_ds_view_id;
++
++	vmw_create_default_objects(device, cid, &objects,
++				   &vmw_default_rect_size);
++
++	/* Replace default rendertargets with coherent equivalents */
++	default_color_rt = objects.color_rt;
++	default_depth_rt = objects.depth_rt;
++	default_color_rt_id = objects.color_rt_id;
++	default_ds_view_id = objects.ds_view_id;
++	replace_with_coherent_rt(device, cid, &objects, &vmw_default_rect_size);
++
++	rendered_img = vmw_triangle_draw(device, cid, &objects, false);
++
++	vmw_triangle_assert_values(rendered_img, objects.color_rt);
++
++	/* Clean up */
++	free(rendered_img);
++
++	destroy_rt(device, cid, &objects);
++	objects.color_rt = default_color_rt;
++	objects.depth_rt = default_depth_rt;
++	objects.color_rt_id = default_color_rt_id;
++	objects.ds_view_id = default_ds_view_id;
++
++	vmw_destroy_default_objects(device, &objects);
 +}
 +
 +igt_main
 +{
-+	int fd;
++	struct vmw_svga_device device;
 +	int32 cid;
 +
 +	igt_fixture
 +	{
-+		fd = drm_open_driver_render(DRIVER_VMWGFX);
-+		igt_require(fd != -1);
++		vmw_svga_device_init(&device, vmw_svga_device_node_render);
++		igt_require(device.drm_fd != -1);
 +
-+		cid = vmw_ioctl_context_create(fd);
++		cid = vmw_ioctl_context_create(device.drm_fd);
 +		igt_require(cid != SVGA3D_INVALID_ID);
 +	}
 +
-+	igt_describe("Test surface copies (valid and invalid ones).");
-+	igt_subtest("test_invalid_copies")
++	igt_describe("Tests rendering of a trivial triangle.");
++	igt_subtest("tri")
 +	{
-+		test_invalid_copies(fd, cid);
++		draw_triangle(&device, cid);
 +	}
 +
-+	igt_describe("Test surface copies on 3D enabled contexts.");
-+	igt_subtest("test_invalid_copies_3d")
++	/*
++	 * Check that vmwgfx correctly handles coherent rendertarget
++	 * surfaces when no explicit sync is given from userspace
++	 */
++	igt_describe("Tests rendering of a triangle with coherency.");
++	igt_subtest("tri-no-sync-coherent")
 +	{
-+		igt_require(vmw_ioctl_get_param(fd, DRM_VMW_PARAM_3D));
-+		test_invalid_copies_3d(fd, cid);
++		draw_triangle_on_coherent_rt(&device, cid);
 +	}
 +
 +	igt_fixture
 +	{
-+		vmw_ioctl_context_destroy(fd, cid);
-+		close(fd);
++		vmw_ioctl_context_destroy(device.drm_fd, cid);
++		vmw_svga_device_fini(&device);
 +	}
 +}
 -- 
