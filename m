@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB59110E3FB
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Apr 2023 10:50:45 +0000 (UTC)
-Date: Mon, 3 Apr 2023 12:50:33 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20230403105033.le5owx7mmjkcmpz5@zkempczy-mobl2>
-References: <20230327134119.2429388-1-mauro.chehab@linux.intel.com>
- <20230327134119.2429388-4-mauro.chehab@linux.intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F46110E36F
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 13:19:34 +0000 (UTC)
+Date: Thu, 13 Apr 2023 15:07:40 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230413130740.3eccl2kukijxmhxt@kamilkon-desk1>
+References: <20230413092159.146658-1-mauro.chehab@linux.intel.com>
+ <20230413092159.146658-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230327134119.2429388-4-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/5] lib/xe/xe_compute: use registers
- defs from intel_gpu_commands.h
+In-Reply-To: <20230413092159.146658-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/4] scripts/igt_doc.py: don't depend
+ on igt_runner anymore
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,81 +22,176 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Mar 27, 2023 at 03:41:17PM +0200, Mauro Carvalho Chehab wrote:
+On 2023-04-13 at 11:21:57 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> There are some register definitions that are already defined inside
-> intel_gpu_commands.h with a different concept.
+> There's no need to actually call IGT runner to get test lists.
 > 
-> Change the code to re-use the definitions there.
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
+> Remove such dependency, in order to speedup --check.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  lib/xe/xe_compute.c | 17 ++++-------------
->  1 file changed, 4 insertions(+), 13 deletions(-)
+>  docs/testplan/meson.build |  7 ++----
+>  scripts/igt_doc.py        | 10 +++-----
+>  scripts/test_list.py      | 53 ++++++++++++++++++++++++++-------------
+>  3 files changed, 41 insertions(+), 29 deletions(-)
 > 
-> diff --git a/lib/xe/xe_compute.c b/lib/xe/xe_compute.c
-> index 7259b888eb9e..9e50eba1b87b 100644
-> --- a/lib/xe/xe_compute.c
-> +++ b/lib/xe/xe_compute.c
-> @@ -33,15 +33,6 @@
->  #define OFFSET_INDIRECT_DATA_START	0xFFFDF000
->  #define OFFSET_KERNEL			0xFFFEF000
+> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+> index ea9f6eeb7038..3347f61876ef 100644
+> --- a/docs/testplan/meson.build
+> +++ b/docs/testplan/meson.build
+> @@ -11,11 +11,8 @@ xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
+>  check_testlist = []
+>  if build_tests
+>  	doc_dependencies = test_executables
+> -	if jsonc.found()
+> -		# Check if documentation matches the actual tests
+> -		check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
+> -		doc_dependencies += runner
+> -	endif
+> +	# Check if documentation matches the actual tests
+> +	check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
+>  else
+>  	doc_dependencies = []
+>  endif
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index 8fa5af15033e..01df35f98ace 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -16,7 +16,6 @@ import sys
+>  from test_list import TestList
 >  
-> -#undef MEDIA_VFE_STATE
-> -#define MEDIA_VFE_STATE			0x70000007
-> -#undef STATE_BASE_ADDRESS
-> -#define STATE_BASE_ADDRESS		0x61010014
-> -#undef MEDIA_INTERFACE_DESCRIPTOR_LOAD
-> -#define MEDIA_INTERFACE_DESCRIPTOR_LOAD	0x70020002
-> -#undef GPGPU_WALKER
-> -#define GPGPU_WALKER			0x7105000d
+>  IGT_BUILD_PATH = 'build'
+> -IGT_RUNNER = 'runner/igt_runner'
+>  
+>  parser = argparse.ArgumentParser(description = "Print formatted kernel documentation to stdout.",
+>                                   formatter_class = argparse.ArgumentDefaultsHelpFormatter,
+> @@ -36,24 +35,21 @@ parser.add_argument("--sort-field",
+>  parser.add_argument("--filter-field",
+>                      help="modify --show-subtests to filter output based a regex given by FILTER_FIELD=~'regex'")
+>  parser.add_argument("--check-testlist", action="store_true",
+> -                    help="Compare documentation against IGT runner testlist.")
+> +                    help="Compare documentation against IGT built tests.")
+>  parser.add_argument("--include-plan", action="store_true",
+>                      help="Include test plans, if any.")
+>  parser.add_argument("--igt-build-path",
+> -                    help="Path where the IGT runner is sitting. Used by --check-testlist.",
+> +                    help="Path to the IGT build directory. Used by --check-testlist.",
+>                      default=IGT_BUILD_PATH)
+>  parser.add_argument("--gen-testlist",
+>                      help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
+> -parser.add_argument("--igt-runner",
+> -                    help="Path where the IGT runner is sitting. Used by --check-testlist.",
+> -                    default=IGT_RUNNER)
+>  parser.add_argument('--files', nargs='+',
+>                      help="File name(s) to be processed")
+>  
+>  parse_args = parser.parse_args()
+>  
+>  tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files,
+> -                 parse_args.igt_build_path, parse_args.igt_runner)
+> +                 parse_args.igt_build_path)
+>  
+>  RUN = 0
+>  if parse_args.show_subtests:
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index d1b9a2794967..287351e717b3 100755
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -245,7 +245,7 @@ class TestList:
+>      """
+>  
+>      def __init__(self, config_fname, include_plan = False, file_list = False,
+> -                 igt_build_path = None, igt_runner = None):
+> +                 igt_build_path = None):
+>          self.doc = {}
+>          self.test_number = 0
+>          self.config = None
+> @@ -254,7 +254,6 @@ class TestList:
+>          self.props = {}
+>          self.config_fname = config_fname
+>          self.igt_build_path = igt_build_path
+> -        self.igt_runner = igt_runner
+>          self.level_count = 0
+>          self.field_list = {}
+>          self.title = None
+> @@ -766,6 +765,38 @@ class TestList:
+>  
+>          return subtests
+>  
+> +    def __get_testlist(self, name):
+> +        match = re.match(r"(.*/)?(.*)\.c$", name)
+> +        if not match:
+> +            return []
+> +
+> +        basename = "igt@" + match.group(2)
+> +
+> +        fname = os.path.join(self.igt_build_path, "tests", match.group(2))
+> +        if not os.path.isfile(fname):
+> +            print(f"Error: file {fname} doesn't exist.")
+> +            sys.exit(1)
+> +        try:
+> +            result = subprocess.run([ fname, "--list-subtests" ],
+> +                                    check = True,
+> +                                    stdout = subprocess.PIPE,
+> +                                    universal_newlines=True)
+> +            subtests = result.stdout.splitlines()
+> +
+> +            return [basename  + "@" + i for i in subtests]
+> +        except subprocess.CalledProcessError:
+> +            # Handle it as a test using igt_simple_main
+> +            return [basename]
+> +
+> +    def get_testlist(self):
+> +
+> +        """ Return a list of tests as reported by --list-subtests """
+> +        tests = []
+> +        for name in self.filenames:
+> +            tests += self.__get_testlist(name)
+> +
+> +        return sorted(tests)
+> +
+>      #
+>      # Validation methods
+>      #
+> @@ -773,28 +804,16 @@ class TestList:
+>  
+>          """Compare documented subtests with the IGT test list"""
+>  
+> -        if not self.igt_build_path or not self.igt_runner:
+> -            sys.exit("Need the IGT build path and igt_runner executable file name")
+> +        if not self.igt_build_path:
+> +            sys.exit("Need the IGT build path")
+>  
+>          doc_subtests = sorted(self.get_subtests()[""])
+>  
+>          for i in range(0, len(doc_subtests)): # pylint: disable=C0200
+>              doc_subtests[i] = re.sub(r'\<[^\>]+\>', r'\\d+', doc_subtests[i])
+>  
+> -        test_prefix = os.path.commonprefix(doc_subtests)
 > -
->  struct bo_dict_entry {
->  	uint64_t addr;
->  	uint32_t size;
-> @@ -301,7 +292,7 @@ static void tgllp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
-> -	addr_bo_buffer_batch[b++] = MEDIA_VFE_STATE;
-> +	addr_bo_buffer_batch[b++] = MEDIA_VFE_STATE | (9 - 2);
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00A70100;
-> @@ -316,7 +307,7 @@ static void tgllp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
-> -	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS;
-> +	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS | (16 - 2);
->  	addr_bo_buffer_batch[b++] = 0x00000001;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00040000;
-> @@ -352,11 +343,11 @@ static void tgllp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = MEDIA_STATE_FLUSH;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
-> -	addr_bo_buffer_batch[b++] = MEDIA_INTERFACE_DESCRIPTOR_LOAD;
-> +	addr_bo_buffer_batch[b++] = MEDIA_INTERFACE_DESCRIPTOR_LOAD | (4 - 2);
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00000020;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
-> -	addr_bo_buffer_batch[b++] = GPGPU_WALKER;
-> +	addr_bo_buffer_batch[b++] = GPGPU_WALKER | 13;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  	addr_bo_buffer_batch[b++] = 0x00000c80;
->  	addr_bo_buffer_batch[b++] = offset_indirect_data_start;
+>          # Get a list of tests from
+> -        try:
+> -            result = subprocess.run([ f"{self.igt_build_path}/{self.igt_runner}",
+> -                                    "-L", "-t",  test_prefix,
+> -                                    f"{self.igt_build_path}/tests"], check = True,
+> -                                    stdout=subprocess.PIPE, universal_newlines=True)
+> -        except subprocess.CalledProcessError as sub_err:
+> -            print(sub_err.stderr)
+> -            print("Error:", sub_err)
+> -            sys.exit(1)
+> -
+> -        run_subtests = sorted(result.stdout.splitlines())
+> +        run_subtests = self.get_testlist()
+>  
+>          # Compare arrays
+>  
 > -- 
 > 2.39.2
 > 
