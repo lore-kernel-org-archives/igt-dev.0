@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76F1010E1D6
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 05:07:34 +0000 (UTC)
-Message-ID: <0635610d-2d46-59ea-612e-9e7d28786cd0@intel.com>
-Date: Mon, 17 Apr 2023 10:37:21 +0530
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230413162732.1155058-1-bhanuprakash.modem@intel.com>
- <20230413162732.1155058-4-bhanuprakash.modem@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230413162732.1155058-4-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA35F10EA95
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 09:22:31 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.29.155])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 17137580D93
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 02:22:06 -0700 (PDT)
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 13 Apr 2023 11:21:57 +0200
+Message-Id: <20230413092159.146658-3-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230413092159.146658-1-mauro.chehab@linux.intel.com>
+References: <20230413092159.146658-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 3/7] lib: Use i915 namespace for XE debugfs
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 2/4] scripts/igt_doc.py: don't depend on
+ igt_runner anymore
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,50 +29,168 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-On 4/13/2023 9:57 PM, Bhanuprakash Modem wrote:
-> As of now XE is going to use i915 namesapce for their debugfs.
-> Example: i915_current_bpc is applicable for both i915 & XE
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   lib/igt_kms.c | 2 +-
->   lib/igt_psr.c | 4 ++--
->   2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 50655f136b8..720e68ca7c9 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -5706,7 +5706,7 @@ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe)
->   	fd = igt_debugfs_pipe_dir(drmfd, pipe, O_RDONLY);
->   	igt_assert(fd >= 0);
->   
-> -	if (is_i915_device(drmfd))
-> +	if (is_intel_device(drmfd))
->   		strcpy(debugfs_name, "i915_current_bpc");
->   	else if (is_amdgpu_device(drmfd))
->   		strcpy(debugfs_name, "amdgpu_current_bpc");
-> diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-> index a2d88031268..13f7c567dc9 100644
-> --- a/lib/igt_psr.c
-> +++ b/lib/igt_psr.c
-> @@ -277,7 +277,7 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
->   	int debugfs_fd;
->   	bool ret;
->   
-> -	if (!is_i915_device(drm_fd))
-> +	if (!is_intel_device(drm_fd))
->   		return false;
->   
->   	debugfs_fd = igt_debugfs_dir(drm_fd);
-> @@ -303,7 +303,7 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
->   	int debugfs_fd;
->   	bool ret = false;
->   
-> -	if (!is_i915_device(drm_fd))
-> +	if (!is_intel_device(drm_fd))
->   		return ret;
->   
->   	debugfs_fd = igt_debugfs_dir(drm_fd);
+There's no need to actually call IGT runner to get test lists.
+
+Remove such dependency, in order to speedup --check.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ docs/testplan/meson.build |  7 ++----
+ scripts/igt_doc.py        | 10 +++-----
+ scripts/test_list.py      | 53 ++++++++++++++++++++++++++-------------
+ 3 files changed, 41 insertions(+), 29 deletions(-)
+
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index ea9f6eeb7038..3347f61876ef 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -11,11 +11,8 @@ xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
+ check_testlist = []
+ if build_tests
+ 	doc_dependencies = test_executables
+-	if jsonc.found()
+-		# Check if documentation matches the actual tests
+-		check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
+-		doc_dependencies += runner
+-	endif
++	# Check if documentation matches the actual tests
++	check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
+ else
+ 	doc_dependencies = []
+ endif
+diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+index 8fa5af15033e..01df35f98ace 100755
+--- a/scripts/igt_doc.py
++++ b/scripts/igt_doc.py
+@@ -16,7 +16,6 @@ import sys
+ from test_list import TestList
+ 
+ IGT_BUILD_PATH = 'build'
+-IGT_RUNNER = 'runner/igt_runner'
+ 
+ parser = argparse.ArgumentParser(description = "Print formatted kernel documentation to stdout.",
+                                  formatter_class = argparse.ArgumentDefaultsHelpFormatter,
+@@ -36,24 +35,21 @@ parser.add_argument("--sort-field",
+ parser.add_argument("--filter-field",
+                     help="modify --show-subtests to filter output based a regex given by FILTER_FIELD=~'regex'")
+ parser.add_argument("--check-testlist", action="store_true",
+-                    help="Compare documentation against IGT runner testlist.")
++                    help="Compare documentation against IGT built tests.")
+ parser.add_argument("--include-plan", action="store_true",
+                     help="Include test plans, if any.")
+ parser.add_argument("--igt-build-path",
+-                    help="Path where the IGT runner is sitting. Used by --check-testlist.",
++                    help="Path to the IGT build directory. Used by --check-testlist.",
+                     default=IGT_BUILD_PATH)
+ parser.add_argument("--gen-testlist",
+                     help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
+-parser.add_argument("--igt-runner",
+-                    help="Path where the IGT runner is sitting. Used by --check-testlist.",
+-                    default=IGT_RUNNER)
+ parser.add_argument('--files', nargs='+',
+                     help="File name(s) to be processed")
+ 
+ parse_args = parser.parse_args()
+ 
+ tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files,
+-                 parse_args.igt_build_path, parse_args.igt_runner)
++                 parse_args.igt_build_path)
+ 
+ RUN = 0
+ if parse_args.show_subtests:
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index d1b9a2794967..287351e717b3 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -245,7 +245,7 @@ class TestList:
+     """
+ 
+     def __init__(self, config_fname, include_plan = False, file_list = False,
+-                 igt_build_path = None, igt_runner = None):
++                 igt_build_path = None):
+         self.doc = {}
+         self.test_number = 0
+         self.config = None
+@@ -254,7 +254,6 @@ class TestList:
+         self.props = {}
+         self.config_fname = config_fname
+         self.igt_build_path = igt_build_path
+-        self.igt_runner = igt_runner
+         self.level_count = 0
+         self.field_list = {}
+         self.title = None
+@@ -766,6 +765,38 @@ class TestList:
+ 
+         return subtests
+ 
++    def __get_testlist(self, name):
++        match = re.match(r"(.*/)?(.*)\.c$", name)
++        if not match:
++            return []
++
++        basename = "igt@" + match.group(2)
++
++        fname = os.path.join(self.igt_build_path, "tests", match.group(2))
++        if not os.path.isfile(fname):
++            print(f"Error: file {fname} doesn't exist.")
++            sys.exit(1)
++        try:
++            result = subprocess.run([ fname, "--list-subtests" ],
++                                    check = True,
++                                    stdout = subprocess.PIPE,
++                                    universal_newlines=True)
++            subtests = result.stdout.splitlines()
++
++            return [basename  + "@" + i for i in subtests]
++        except subprocess.CalledProcessError:
++            # Handle it as a test using igt_simple_main
++            return [basename]
++
++    def get_testlist(self):
++
++        """ Return a list of tests as reported by --list-subtests """
++        tests = []
++        for name in self.filenames:
++            tests += self.__get_testlist(name)
++
++        return sorted(tests)
++
+     #
+     # Validation methods
+     #
+@@ -773,28 +804,16 @@ class TestList:
+ 
+         """Compare documented subtests with the IGT test list"""
+ 
+-        if not self.igt_build_path or not self.igt_runner:
+-            sys.exit("Need the IGT build path and igt_runner executable file name")
++        if not self.igt_build_path:
++            sys.exit("Need the IGT build path")
+ 
+         doc_subtests = sorted(self.get_subtests()[""])
+ 
+         for i in range(0, len(doc_subtests)): # pylint: disable=C0200
+             doc_subtests[i] = re.sub(r'\<[^\>]+\>', r'\\d+', doc_subtests[i])
+ 
+-        test_prefix = os.path.commonprefix(doc_subtests)
+-
+         # Get a list of tests from
+-        try:
+-            result = subprocess.run([ f"{self.igt_build_path}/{self.igt_runner}",
+-                                    "-L", "-t",  test_prefix,
+-                                    f"{self.igt_build_path}/tests"], check = True,
+-                                    stdout=subprocess.PIPE, universal_newlines=True)
+-        except subprocess.CalledProcessError as sub_err:
+-            print(sub_err.stderr)
+-            print("Error:", sub_err)
+-            sys.exit(1)
+-
+-        run_subtests = sorted(result.stdout.splitlines())
++        run_subtests = self.get_testlist()
+ 
+         # Compare arrays
+ 
+-- 
+2.39.2
