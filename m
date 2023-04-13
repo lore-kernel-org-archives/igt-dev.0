@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <ff016423-edb8-bcd5-c75e-f05c0eaf1c8a@intel.com>
-Date: Thu, 13 Apr 2023 17:31:36 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B80A10E747
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 16:32:07 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 13 Apr 2023 21:57:26 +0530
+Message-Id: <20230413162732.1155058-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230413162732.1155058-1-bhanuprakash.modem@intel.com>
+References: <20230413162732.1155058-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230413143626.311639-1-janusz.krzysztofik@linux.intel.com>
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-In-Reply-To: <20230413143626.311639-1-janusz.krzysztofik@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_reset_stats: Don't allow
- request watchdog to interfere
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t 1/7] lib/intel_bufops: Fix bops creation to
+ support XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,62 +19,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+As XE won't support tiling, fix the bops creation logic to
+support XE device.
 
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ lib/intel_bufops.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-On 13.04.2023 16:36, Janusz Krzysztofik wrote:
-> A user reported recently that some subtests are failing.  The test was
-> blocklisted in 2018, so we've lost CI feedback on its results since then.
->
-> In 2021, request watchdog with 20 seconds timeout was introduced to i915.
-> Kernel logs from failed subtest runs indicate that the request watchdog
-> interfers with engine heartbeat and request preemption used by the test
-> for exercising reset statistics.
->
-> Disable request watchdog during the test execution.
->
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8310
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> ---
->   tests/i915/gem_reset_stats.c | 7 +++++++
->   1 file changed, 7 insertions(+)
->
-> diff --git a/tests/i915/gem_reset_stats.c b/tests/i915/gem_reset_stats.c
-> index baa101517d..7b003d88b6 100644
-> --- a/tests/i915/gem_reset_stats.c
-> +++ b/tests/i915/gem_reset_stats.c
-> @@ -906,6 +906,7 @@ igt_main
->   	igt_fixture {
->   		bool has_reset_stats;
->   		bool using_full_reset;
-> +		char *tmp;
->   
->   		device = drm_open_driver(DRIVER_INTEL);
->   		devid = intel_get_drm_devid(device);
-> @@ -922,6 +923,12 @@ igt_main
->   			      "No reset stats ioctl support. Too old kernel?\n");
->   		igt_require_f(using_full_reset,
->   			      "Full GPU reset is not enabled. Is enable_hangcheck set?\n");
-> +
-> +		/* Don't allow request watchdog to interfere */
-> +		tmp = __igt_params_get(device, "request_timeout_ms");
-
-With presence of igt_params_scanf it would be simpler.
-
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-
-Regards
-Andrzej
-
-> +		if (tmp && atoi(tmp))
-> +			igt_params_save_and_set(device, "request_timeout_ms", "%u", 0);
-> +		free(tmp);
->   	}
->   
->   	igt_subtest("params")
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index cdc7a1698b2..81f7b951813 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -1423,6 +1423,25 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+ 	igt_debug("generation: %d, supported tiles: 0x%02x\n",
+ 		  bops->intel_gen, bops->supported_tiles);
+ 
++	/* No tiling support in XE. */
++	if (is_xe_device(fd)) {
++		bops->supported_tiles = TILE_NONE;
++		bops->supported_hw_tiles = TILE_NONE;
++
++		bops->linear_to_x = NULL;
++		bops->x_to_linear = NULL;
++		bops->linear_to_y = NULL;
++		bops->y_to_linear = NULL;
++		bops->linear_to_tile4 = NULL;
++		bops->tile4_to_linear = NULL;
++		bops->linear_to_yf = NULL;
++		bops->yf_to_linear = NULL;
++		bops->linear_to_ys = NULL;
++		bops->ys_to_linear = NULL;
++
++		return bops;
++	}
++
+ 	/*
+ 	 * Warning!
+ 	 *
+-- 
+2.40.0
