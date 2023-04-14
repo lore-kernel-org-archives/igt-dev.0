@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D36010EC9A
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Apr 2023 08:41:37 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 14 Apr 2023 14:07:03 +0530
-Message-Id: <20230414083703.1219101-7-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230414083703.1219101-1-bhanuprakash.modem@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2703210E0D5
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Apr 2023 09:53:50 +0000 (UTC)
+Message-ID: <452aa91c-1480-046e-9353-e314c49dd68d@intel.com>
+Date: Fri, 14 Apr 2023 15:23:36 +0530
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
 References: <20230414083703.1219101-1-bhanuprakash.modem@intel.com>
+ <20230414083703.1219101-4-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230414083703.1219101-4-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 6/6] tests/kms_setmode: Fix Bigjoiner checks
+Subject: Re: [igt-dev] [i-g-t V3 3/6] tests/i915/kms_dsc: Update bigjoiner
+ pipe constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,67 +27,103 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Bigjoiner will come in the picture when the resolution > 5K or
-clock > max dot-clock. Add a support to check the selected mode
-clock is greater than the max dot-clock.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_setmode.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index bfa108916ce..7932a3ec285 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -40,13 +40,12 @@
- /* restricted pipe count */
- #define CRTC_RESTRICT_CNT 2
- 
--#define MAX_HDISPLAY_PER_CRTC 5120
--
- static int drm_fd;
- static drmModeRes *drm_resources;
- static int filter_test_id;
- static bool dry_run;
- static bool extended = false;
-+static int max_dotclock;
- 
- const drmModeModeInfo mode_640_480 = {
- 	.name		= "640x480",
-@@ -664,18 +663,20 @@ static void test_one_combination(const struct test_config *tconf,
- 			struct crtc_config *crtc = &crtcs[i];
- 
- 			/*
--			 * if mode.hdisplay > 5120, then ignore
-+			 * if mode resolution > 5K (or) mode clock > max_dotclock,
-+			 * then ignore
- 			 *   - last crtc in single/multi-connector config
- 			 *   - consecutive crtcs in multi-connector config
- 			 *
- 			 * in multi-connector config ignore if
--			 *   - previous crtc mode.hdisplay > 5120 and
-+			 *   - previous crtc (mode resolution > 5K (or)
-+			 *     mode clock > max_dotclock) and
- 			 *   - current & previous crtcs are consecutive
- 			 */
--			if (((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+			if ((igt_bigjoiner_possible(&crtc->mode, max_dotclock) &&
- 			     ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
- 			      ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
--			    ((i > 0) && (crtc[i - 1].mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+			    ((i > 0) && igt_bigjoiner_possible(&crtc[i - 1].mode, max_dotclock) &&
- 			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
- 				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
- 				goto out;
-@@ -954,6 +955,8 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
- 
- 		drm_resources = drmModeGetResources(drm_fd);
- 		igt_require(drm_resources);
-+
-+		max_dotclock = igt_get_max_dotclock(drm_fd);
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
--- 
-2.40.0
+On 4/14/2023 2:07 PM, Bhanuprakash Modem wrote:
+> Instead of writing own logic at test level, use existing IGT
+> helper to check the bigjoiner support.
+>
+> V2: - git squash to include i915_pipe_output_combo_valid()
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/i915/kms_dsc.c        | 30 +++++++++++++++---------------
+>   tests/i915/kms_dsc_helper.h |  2 --
+>   2 files changed, 15 insertions(+), 17 deletions(-)
+>
+> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+> index b3c5e60c773..cf34dc8a8b0 100644
+> --- a/tests/i915/kms_dsc.c
+> +++ b/tests/i915/kms_dsc.c
+> @@ -47,7 +47,6 @@ typedef struct {
+>   	unsigned int plane_format;
+>   	igt_output_t *output;
+>   	int input_bpc;
+> -	int n_pipes;
+>   	int disp_ver;
+>   	enum pipe pipe;
+>   } data_t;
+> @@ -72,19 +71,24 @@ static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+>   	return highest_mode;
+>   }
+>   
+> -static bool check_big_joiner_pipe_constraint(data_t *data)
+> +static bool pipe_output_combo_valid(data_t *data)
+>   {
+>   	igt_output_t *output = data->output;
+> -	drmModeModeInfo *mode = get_highres_mode(output);
+> +	drmModeModeInfo *mode;
+> +	bool ret = true;
+>   
+> -	if (mode->hdisplay >= HDISPLAY_5K &&
+> -	    data->pipe == (data->n_pipes - 1)) {
+> -		igt_debug("Pipe-%s not supported due to bigjoiner limitation\n",
+> -			   kmstest_pipe_name(data->pipe));
+> -		return false;
+> -	}
+> +	igt_display_reset(&data->display);
+> +	mode = get_highres_mode(output);
+> +
+> +	igt_output_set_pipe(output, data->pipe);
+> +	igt_output_override_mode(output, mode);
+> +
+> +	if (!i915_pipe_output_combo_valid(&data->display))
+> +		ret = false;
+> +
+> +	igt_output_set_pipe(output, PIPE_NONE);
+>   
+> -	return true;
+> +	return ret;
+>   }
+>   
+>   static void test_cleanup(data_t *data)
+> @@ -190,7 +194,7 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+>   		if (!check_gen11_bpc_constraint(data->drm_fd, data->output, data->input_bpc))
+>   			continue;
+>   
+> -		if (!check_big_joiner_pipe_constraint(data))
+> +		if (!pipe_output_combo_valid(data))
+>   			continue;
+>   
+>   		if (test_type == TEST_DSC_BPC)
+> @@ -206,7 +210,6 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+>   igt_main
+>   {
+>   	data_t data = {};
+> -	int i;
+>   
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> @@ -217,9 +220,6 @@ igt_main
+>   		igt_display_require(&data.display, data.drm_fd);
+>   		igt_display_require_output(&data.display);
+>   		igt_require(data.disp_ver >= 11);
+> -		data.n_pipes = 0;
+> -		for_each_pipe(&data.display, i)
+> -			data.n_pipes++;
+>   	}
+>   
+>   	igt_describe("Tests basic display stream compression functionality if supported "
+> diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
+> index fe479dac472..b3828dcd44a 100644
+> --- a/tests/i915/kms_dsc_helper.h
+> +++ b/tests/i915/kms_dsc_helper.h
+> @@ -21,8 +21,6 @@
+>   #include <fcntl.h>
+>   #include <termios.h>
+>   
+> -#define HDISPLAY_5K	5120
+> -
+>   void force_dsc_enable(int drmfd, igt_output_t *output);
+>   void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc);
+>   void save_force_dsc_en(int drmfd, igt_output_t *output);
