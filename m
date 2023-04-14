@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 056E410E1B3
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Apr 2023 11:41:29 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 14 Apr 2023 11:41:25 +0000
-Message-ID: <DM4PR11MB6312594F52FF46CF75D4C4FA90999@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20220422163808.131363-1-mohammed.thasleem@intel.com>
- <20230411173258.224223-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230411173258.224223-1-mohammed.thasleem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============8791916589013023907=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Add negative
- test for extended display
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Date: Fri, 14 Apr 2023 11:47:38 -0000
+Message-ID: <168147285800.26684.8921654595316080746@emeril.freedesktop.org>
+References: <20230413143626.311639-1-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20230413143626.311639-1-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?gem=5Freset=5Fstats=3A_Don=27t_allow_request_watchdog_to_interf?=
+ =?utf-8?q?ere?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,266 +18,246 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> Mohammed Thasleem
-> Sent: Tuesday, April 11, 2023 11:03 PM
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Add negative te=
-st for
-> extended display
->=20
-> Added negative test to validte ENOSPC when two 2k-4k or 4k-4k moniters
-> connected through MST.
-> This test added to prvode bandwidth issue in MST config.
->=20
-> Example:
->   When two monitors connected through MST, the second monitor
->   also tries to use the same mode. So two such modes may not
->   fit into the link bandwidth. So, iterate through connected
->   outputs & modes and find a combination of modes those fit
->   into the link BW.
->=20
-> v2: Rebased on tip.
-> v3: Code cleanup and updated description.
->=20
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->  tests/kms_display_modes.c | 161
-> ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 161 insertions(+)
->=20
-> diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c index
-> d69c7b931..1fe1be1ac 100644
-> --- a/tests/kms_display_modes.c
-> +++ b/tests/kms_display_modes.c
-> @@ -26,14 +26,107 @@
->=20
->  #include "igt.h"
->=20
-> +#define HDISPLAY_2K	2560
-> +#define VDISPLAY_2K	1440
-> +
-> +#define HDISPLAY_4K	3840
-> +#define VDISPLAY_4K	2160
-> +
->  IGT_TEST_DESCRIPTION("Test Display Modes");
->=20
->  typedef struct {
->  	int drm_fd;
->  	igt_display_t display;
-> +	drmModeModeInfo mode_mst[2];
-> +	igt_output_t *mst_output[2];
->  	int n_pipes;
->  } data_t;
->=20
+--===============8791916589013023907==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add comments to describe the function.=20
-> +static drmModeModeInfo *get_highres_mode(igt_output_t *output) {
-> +	drmModeConnector *connector =3D output->config.connector;
-> +	drmModeModeInfo *highest_mode =3D NULL;
-> +
-> +	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-> +
-> +	highest_mode =3D &connector->modes[0];
-> +
-> +	return highest_mode;
-> +}
-> +
-Same here, Also check for formatting of code its not consistent. =20
-> +static drmModeModeInfo *get_mode(igt_output_t *output) {
-> +	drmModeModeInfo *required_mode =3D NULL;
-> +	drmModeConnector *connector =3D output->config.connector;
-> +	int j;
-> +
-> +	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
-> +	for (j =3D 0; j < connector->count_modes; j++) {
-> +
-> +		if (connector->modes[j].vdisplay <=3D VDISPLAY_4K &&
-> +		    connector->modes[j].hdisplay <=3D HDISPLAY_4K) {
-> +			required_mode =3D &connector->modes[j];
-> +			break;
-> +		}
-> +	}
-> +
-> +	return required_mode;
-> +}
-> +
+== Series Details ==
 
-Error handling is not done if blob property is not found.=20
-> +static int parse_path_blob(char *blob_data) {
-> +	int connector_id;
-> +	char *encoder;
-> +
-> +	encoder =3D strtok(blob_data, ":");
-> +	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property
-> +expected to have 'mst'\n");
-> +
-> +	connector_id =3D atoi(strtok(NULL, "-"));
-> +
-> +	return connector_id;
-> +}
-> +
-> +static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
-> +{
-> +	drmModePropertyBlobPtr path_blob =3D NULL;
-> +	uint64_t path_blob_id;
-> +	drmModeConnector *connector =3D output->config.connector;
-> +	struct kmstest_connector_config config;
-> +	const char *encoder;
-> +	int connector_id;
-> +	static int prev_connector_id;
-> +
-> +	kmstest_get_connector_config(data->drm_fd, output-
-> >config.connector->connector_id,
-> +				     -1, &config);
-> +	encoder =3D kmstest_encoder_type_str(config.encoder->encoder_type);
-> +
-> +	if (strcmp(encoder, "DP MST"))
-> +		return false;
-> +
-> +	igt_assert(kmstest_get_property(data->drm_fd, connector-
-> >connector_id,
-> +		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
-> +		   &path_blob_id, NULL));
-> +
-> +	igt_assert(path_blob =3D drmModeGetPropertyBlob(data->drm_fd,
-> +path_blob_id));
-> +
-> +	connector_id =3D parse_path_blob((char *) path_blob->data);
-> +
-> +	drmModeFreePropertyBlob(path_blob);
-> +
-> +	/*
-> +	 * Discarding outputs of other DP MST topology.
-> +	 * Testing only on outputs on the topology we got previously
-> +	 */
-> +	if (i =3D=3D 0) {
-> +		prev_connector_id =3D connector_id;
-> +	} else {
-> +		if (connector_id !=3D prev_connector_id)
-> +			return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->  static void run_extendedmode_basic(data_t *data,
->  				   enum pipe pipe1, igt_output_t *output1,
->  				   enum pipe pipe2, igt_output_t *output2) @@
-> -173,8 +266,46 @@ static void run_extendedmode_test(data_t *data) {
->  	}
->  }
->=20
-> +static void run_extendedmode_negative(data_t *data, int pipe1, int
-> +pipe2) {
-> +	struct igt_fb fbs[2];
-> +	igt_display_t *display =3D &data->display;
-> +	igt_plane_t *plane[2];
-> +	int ret;
-> +
-> +	igt_display_reset(display);
-> +
-> +	igt_output_set_pipe(data->mst_output[0], pipe1);
-> +	igt_output_set_pipe(data->mst_output[1], pipe2);
-> +
-> +	igt_create_color_fb(data->drm_fd, data->mode_mst[0].hdisplay, data-
-> >mode_mst[0].vdisplay,
-> +			    DRM_FORMAT_XRGB8888,
-> DRM_FORMAT_MOD_LINEAR, 1, 0, 0, &fbs[0]);
-> +	igt_create_color_fb(data->drm_fd, data->mode_mst[1].hdisplay, data-
-> >mode_mst[1].vdisplay,
-> +			    DRM_FORMAT_XRGB8888,
-> DRM_FORMAT_MOD_LINEAR, 0, 0, 1, &fbs[1]);
-> +
-> +	plane[0] =3D igt_pipe_get_plane_type(&display->pipes[pipe1],
-> DRM_PLANE_TYPE_PRIMARY);
-> +	plane[1] =3D igt_pipe_get_plane_type(&display->pipes[pipe2],
-> +DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_plane_set_fb(plane[0], &fbs[0]);
-> +	igt_fb_set_size(&fbs[0], plane[0], data->mode_mst[0].hdisplay, data-
-> >mode_mst[0].vdisplay);
-> +	igt_plane_set_size(plane[0], data->mode_mst[0].hdisplay,
-> +data->mode_mst[0].vdisplay);
-> +
-> +	igt_plane_set_fb(plane[1], &fbs[1]);
-> +	igt_fb_set_size(&fbs[1], plane[1], data->mode_mst[1].hdisplay, data-
-> >mode_mst[1].vdisplay);
-> +	igt_plane_set_size(plane[1], data->mode_mst[1].hdisplay,
-> +data->mode_mst[1].vdisplay);
-> +
-> +	igt_output_override_mode(data->mst_output[0], &data-
-> >mode_mst[0]);
-> +	igt_output_override_mode(data->mst_output[1], &data-
-> >mode_mst[1]);
-> +
-> +	ret =3D igt_display_try_commit2(display, COMMIT_ATOMIC);
-> +	igt_assert(ret !=3D 0 && errno =3D=3D ENOSPC); }
-> +
->  igt_main
->  {
-> +	int dp_mst_outputs =3D 0, count =3D 0;
-> +	enum pipe pipe1, pipe2;
-> +	igt_output_t *output;
->  	data_t data;
->=20
->  	igt_fixture {
-> @@ -182,12 +313,42 @@ igt_main
->  		kmstest_set_vt_graphics_mode();
->  		igt_display_require(&data.display, data.drm_fd);
->  		igt_display_require_output(&data.display);
-> +
-> +		for_each_connected_output(&data.display, output) {
-> +			data.mst_output[count++] =3D output;
-> +			if (output_is_dp_mst(&data, output, dp_mst_outputs))
-> +				dp_mst_outputs++;
-> +		}
->  	}
->=20
->  	igt_describe("Test for validating display extended mode with a pair of
-> connected displays");
->  	igt_subtest_with_dynamic("extended-mode-basic")
->  		run_extendedmode_test(&data);
->=20
-> +	igt_describe("Negative test for validating display extended mode with a
-> pair of connected "
-> +		     "2k-4k or 4k-4k displays");
-> +	igt_subtest_with_dynamic("mst-extended-mode-negative") {
-> +		igt_require_f(dp_mst_outputs > 1, "MST not found more then
-> one\n");
-> +
-> +		 memcpy(&data.mode_mst[0], get_mode(data.mst_output[0]),
-> sizeof(drmModeModeInfo));
-> +		 memcpy(&data.mode_mst[1],
-> get_highres_mode(data.mst_output[1]),
-> +				 sizeof(drmModeModeInfo));
-> +
-> +		igt_require_f((data.mode_mst[1].hdisplay >=3D HDISPLAY_4K &&
-> +			       data.mode_mst[1].vdisplay >=3D VDISPLAY_4K), "4k
-> panel not
-> +found\n");
-> +
-> +		for_each_pipe(&data.display, pipe1) {
-> +			for_each_pipe(&data.display, pipe2) {
-> +				if (pipe1 =3D=3D pipe2)
-> +					continue;
-> +
-> +				igt_dynamic_f("pipe-%s-%s",
-> kmstest_pipe_name(pipe1),
-> +					      kmstest_pipe_name(pipe2))
-> +					run_extendedmode_negative(&data,
-> pipe1, pipe2);
-> +			}
-> +		}
-> +	}
-> +
->  	igt_fixture {
->  		igt_display_fini(&data.display);
->  	}
-> --
-> 2.25.1
+Series: tests/gem_reset_stats: Don't allow request watchdog to interfere
+URL   : https://patchwork.freedesktop.org/series/116443/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7254 -> IGTPW_8799
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/index.html
+
+Participating hosts (36 -> 34)
+------------------------------
+
+  Missing    (2): bat-atsm-1 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8799 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-await@vcs0:
+    - bat-adln-1:         [PASS][1] -> [FAIL][2] ([i915#8360])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/bat-adln-1/igt@gem_exec_fence@basic-await@vcs0.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-adln-1/igt@gem_exec_fence@basic-await@vcs0.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg2-11:         [PASS][3] -> [FAIL][4] ([i915#8308])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-bsw-n3050:       [PASS][5] -> [DMESG-FAIL][6] ([i915#5334])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/fi-bsw-n3050/igt@i915_selftest@live@gt_heartbeat.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/fi-bsw-n3050/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-2:         [PASS][7] -> [ABORT][8] ([i915#4983] / [i915#7913])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/bat-rpls-2/igt@i915_selftest@live@requests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-rpls-2/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         NOTRUN -> [DMESG-FAIL][9] ([i915#6367] / [i915#7996])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-rpls-1:         NOTRUN -> [SKIP][10] ([i915#7828])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - bat-adlp-9:         NOTRUN -> [SKIP][11] ([i915#3546]) +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-rpls-1:         NOTRUN -> [SKIP][12] ([i915#1845])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [ABORT][13] ([i915#7911]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
+    - bat-dg2-8:          [FAIL][15] ([i915#7932]) -> [PASS][16] +1 similar issue
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+
+  
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
+  [i915#8360]: https://gitlab.freedesktop.org/drm/intel/issues/8360
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7254 -> IGTPW_8799
+
+  CI-20190529: 20190529
+  CI_DRM_13002: 687357dbd79393e4cd9a36c84d6efb1eb375da70 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8799: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/index.html
+  IGT_7254: 7fab01340a3f360abacd7914015be1ad485363d7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/index.html
+
+--===============8791916589013023907==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/gem_reset_stats: Don&#39;t allow request watchdog to interfere</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116443/">https://patchwork.freedesktop.org/series/116443/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7254 -&gt; IGTPW_8799</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/index.html</p>
+<h2>Participating hosts (36 -&gt; 34)</h2>
+<p>Missing    (2): bat-atsm-1 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8799 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-await@vcs0:</p>
+<ul>
+<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/bat-adln-1/igt@gem_exec_fence@basic-await@vcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-adln-1/igt@gem_exec_fence@basic-await@vcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8360">i915#8360</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/fi-bsw-n3050/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/fi-bsw-n3050/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7254/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7254 -&gt; IGTPW_8799</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13002: 687357dbd79393e4cd9a36c84d6efb1eb375da70 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8799: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8799/index.html<br />
+  IGT_7254: 7fab01340a3f360abacd7914015be1ad485363d7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8791916589013023907==--
