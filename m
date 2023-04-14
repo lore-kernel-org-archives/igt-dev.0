@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF46710E180
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Apr 2023 07:48:04 +0000 (UTC)
-Message-ID: <f2fe1467-29fd-1f81-26ac-20da064e925b@intel.com>
-Date: Fri, 14 Apr 2023 13:17:52 +0530
-To: <igt-dev@lists.freedesktop.org>
-References: <20230412103448.826946-1-bhanuprakash.modem@intel.com>
- <20230414050830.1176272-1-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-In-Reply-To: <20230414050830.1176272-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B3E5E10EC7F
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Apr 2023 08:27:43 +0000 (UTC)
+Message-ID: <0cfabc58-d15d-bffe-c8ec-d40d10d7e6c3@linux.intel.com>
+Date: Fri, 14 Apr 2023 09:27:38 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V2] tests/kms:
- s/i915_frequency_info/i915_cdclk_info/
+Content-Language: en-US
+To: Rob Clark <robdclark@gmail.com>
+References: <20230407215625.1551410-1-robdclark@gmail.com>
+ <20230407215625.1551410-2-robdclark@gmail.com>
+ <94672f31-599f-1926-d7dd-9ba4006d76e3@linux.intel.com>
+ <CAF6AEGtqL-XGH3vpcmwSSDjsgCbnphsDbN8vL5BL55kS1D05Ug@mail.gmail.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <CAF6AEGtqL-XGH3vpcmwSSDjsgCbnphsDbN8vL5BL55kS1D05Ug@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH igt 1/2] lib/igt_drm_fdinfo: Parse memory usage
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,81 +23,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Rob Clark <robdclark@chromium.org>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 4/14/2023 10:38 AM, Bhanuprakash Modem wrote:
-> Read display specific clock frequency info from debugfs
-> "i915_cdclk_info".
+
+
+On 13/04/2023 19:26, Rob Clark wrote:
+> On Thu, Apr 13, 2023 at 8:19 AM Tvrtko Ursulin
+> <tvrtko.ursulin@linux.intel.com> wrote:
+>>
+>>
+>> On 07/04/2023 22:56, Rob Clark wrote:
+>>> From: Rob Clark <robdclark@chromium.org>
+>>>
+>>> Add parsing for the memory usage related fdinfo stats.
+>>>
+>>> Signed-off-by: Rob Clark <robdclark@chromium.org>
+>>> ---
+>>>    lib/igt_drm_fdinfo.c | 39 +++++++++++++++++++++++++++++++++++++++
+>>>    lib/igt_drm_fdinfo.h |  9 +++++++++
+>>>    2 files changed, 48 insertions(+)
+>>>
+>>> diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+>>> index b850d221..6269e166 100644
+>>> --- a/lib/igt_drm_fdinfo.c
+>>> +++ b/lib/igt_drm_fdinfo.c
+>>> @@ -124,6 +124,34 @@ static const char *find_kv(const char *buf, const char *key, size_t keylen)
+>>>        return *p ? p : NULL;
+>>>    }
+>>>
+>>> +static size_t find_mem_kv(const char *buf, const char *key)
+>>> +{
+>>> +     const char *val = find_kv(buf, key, strlen(key));
+>>
+>> If you were asking yourself why I made strlen an argument to find_kv I
+>> have to admit I micro-optimized it a bit based on profiling. Sad fact is
+>> hunting for drm fdinfo in procfs sucks and gputop uses more CPU time
+>> than top, to even display less data. More processes with more open files
+>> there are, even when the 99.9% are not DRM, more taxing it is.
 > 
-> V2: - For older Kernels, readback from i915_frequency_info
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-LGTM:
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->   tests/i915/kms_cdclk.c   | 10 +++++++++-
->   tests/kms_invalid_mode.c | 23 +++++++++++++++++++----
->   2 files changed, 28 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
-> index 23d9d3b02e2..bb003680229 100644
-> --- a/tests/i915/kms_cdclk.c
-> +++ b/tests/i915/kms_cdclk.c
-> @@ -61,8 +61,16 @@ static int get_current_cdclk_freq(int debugfs_fd)
->   	char *start_loc;
->   	int res;
->   
-> -	res = igt_debugfs_simple_read(debugfs_fd, "i915_frequency_info",
-> +	/*
-> +	 * Display specific clock frequency info is moved to i915_cdclk_info,
-> +	 * On older kernels if this debugfs is not found, fallback to read from
-> +	 * i915_frequency_info.
-> +	 */
-> +	res = igt_debugfs_simple_read(debugfs_fd, "i915_cdclk_info",
->   				      buf, sizeof(buf));
-> +	if (res <= 0)
-> +		res = igt_debugfs_simple_read(debugfs_fd, "i915_frequency_info",
-> +					      buf, sizeof(buf));
->   	igt_require(res > 0);
->   
->   	igt_assert(start_loc = strstr(buf, "Current CD clock frequency: "));
-> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-> index 86f529e88b1..6ef36d3cc98 100644
-> --- a/tests/kms_invalid_mode.c
-> +++ b/tests/kms_invalid_mode.c
-> @@ -217,14 +217,29 @@ static int i915_max_dotclock(data_t *data)
->   {
->   	char buf[4096];
->   	char *s;
-> -	int max_dotclock = 0;
-> +	int dir, res, max_dotclock = 0;
->   
->   	if (!is_i915_device(data->drm_fd))
->   		return 0;
->   
-> -	igt_debugfs_read(data->drm_fd, "i915_frequency_info", buf);
-> -	s = strstr(buf, "Max pixel clock frequency:");
-> -	igt_assert(s);
-> +	dir = igt_debugfs_dir(data->drm_fd);
-> +	igt_require(dir);
-> +
-> +	/*
-> +	 * Display specific clock frequency info is moved to i915_cdclk_info,
-> +	 * On older kernels if this debugfs is not found, fallback to read from
-> +	 * i915_frequency_info.
-> +	 */
-> +	res = igt_debugfs_simple_read(dir, "i915_cdclk_info",
-> +				      buf, sizeof(buf));
-> +	if (res <= 0)
-> +		res = igt_debugfs_simple_read(dir, "i915_frequency_info",
-> +					      buf, sizeof(buf));
-> +	close(dir);
-> +
-> +	igt_require(res > 0);
-> +
-> +	igt_assert(s = strstr(buf, "Max pixel clock frequency:"));
->   	igt_assert_eq(sscanf(s, "Max pixel clock frequency: %d kHz", &max_dotclock), 1);
->   
->   	/* 100 Mhz to 5 GHz seem like reasonable values to expect */
+> Did a release build really not end up with it inlined??  If so I guess
+> we can make this a macro, but it seems a bit surprising.  This should
+> be a thing the compiler can figure out.
+
+AFAIR it wasn't able to figure out to evaluate the strlen at compile 
+time when inside find_kv. Pretty sure it was the default build 
+(debugoptimized) but it was also more than a year ago now so I guess I'd 
+need to repeat the experiment to be sure.
+
+Regards,
+
+Tvrtko
