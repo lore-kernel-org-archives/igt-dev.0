@@ -1,20 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67CFA10E158
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 05:03:20 +0000 (UTC)
-Message-ID: <63eef62d-390f-4110-0e06-407437992c45@intel.com>
-Date: Mon, 17 Apr 2023 10:33:08 +0530
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230413162732.1155058-1-bhanuprakash.modem@intel.com>
- <20230413162732.1155058-5-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230413162732.1155058-5-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	igt-dev@lists.freedesktop.org
+Date: Fri, 14 Apr 2023 12:16:35 -0700
+Message-Id: <20230414191639.2565389-1-vinay.belgaumkar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 4/7] tests/kms_cursor_legacy: Add XE support
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v6 i-g-t 0/4] tests/slpc: Add basic IGT test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,45 +18,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Borrow some subtests from xe_guc_pc. Also add per GT debugfs helpers.
 
-On 4/13/2023 9:57 PM, Bhanuprakash Modem wrote:
-> Add XE driver support for kms tests.
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_cursor_legacy.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 5f430090815..cd247cf0088 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -308,7 +308,7 @@ enum flip_test {
->   static bool cursor_slowpath(igt_display_t *display, enum flip_test mode)
->   {
->   	/* Intel display 9 and newer will handle cursor movement as fastsets */
-> -	if (is_i915_device(display->drm_fd) &&
-> +	if (is_intel_device(display->drm_fd) &&
->   	    intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 9)
->   	    return true;
->   
-> @@ -1708,6 +1708,7 @@ igt_main
->   	igt_describe("this test perform a busy bo update followed by a cursor update");
->   	igt_subtest_group {
->   		igt_fixture {
-> +			igt_require_i915(display.drm_fd);
+v3: Review comments and add HAX patch
+v4: Modify the condition for skipping the test
+v5: Update the SLPC helper to per GT
+v6: Review comments (Ashutosh)
 
-Hi,
+Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 
-Could you please remove the 'igt_require_intel' check inside 
-'flip_vs_cursor_busy_crc', as with the above check that is redundant.
+Vinay Belgaumkar (4):
+  lib/debugfs: Add per GT debugfs helpers
+  lib: Make SLPC helper function per GT
+  i915_pm_freq_api: Add some basic SLPC igt tests
+  HAX: tests/i915: Try out the SLPC IGT tests
 
-With this removed, the patch LGTM.
+ lib/igt_debugfs.c                     |  60 ++++++++++
+ lib/igt_debugfs.h                     |   4 +
+ lib/igt_pm.c                          |  36 ++++--
+ lib/igt_pm.h                          |   3 +-
+ tests/i915/i915_pm_freq_api.c         | 152 ++++++++++++++++++++++++++
+ tests/intel-ci/fast-feedback.testlist |   2 +
+ tests/meson.build                     |   1 +
+ 7 files changed, 247 insertions(+), 11 deletions(-)
+ create mode 100644 tests/i915/i915_pm_freq_api.c
 
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-
-Thanks,
-Karthik.B.S
->   			igt_require_pipe_crc(display.drm_fd);
->   			igt_display_require_output(&display);
->   		}
+-- 
+2.38.1
