@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F46A10E111
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 07:33:50 +0000 (UTC)
-Message-ID: <4b3167b4-85e5-ec9b-1aec-d185db58d746@intel.com>
-Date: Mon, 17 Apr 2023 13:03:37 +0530
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230414135319.1270913-1-bhanuprakash.modem@intel.com>
- <20230414135319.1270913-7-bhanuprakash.modem@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230414135319.1270913-7-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96A3510E40A
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 10:57:11 +0000 (UTC)
+Date: Mon, 17 Apr 2023 12:57:06 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <20230417105706.pyzocygeqkpitjdc@zkempczy-mobl2>
+References: <20230413162732.1155058-1-bhanuprakash.modem@intel.com>
+ <20230413162732.1155058-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V4 6/6] tests/kms_setmode: Fix Bigjoiner checks
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230413162732.1155058-2-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t 1/7] lib/intel_bufops: Fix bops creation to
+ support XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,80 +21,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 4/14/2023 7:23 PM, Bhanuprakash Modem wrote:
-> Bigjoiner will come in the picture when the resolution > 5K or
-> clock > max dot-clock. Add a support to check the selected mode
-> clock is greater than the max dot-clock.
->
+On Thu, Apr 13, 2023 at 09:57:26PM +0530, Bhanuprakash Modem wrote:
+> As XE won't support tiling, fix the bops creation logic to
+> support XE device.
+> 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+No, we want to do software tiling here.
+
+I'm going to enablement series today.
+
+--
+Zbigniew
+
 > ---
->   tests/kms_setmode.c | 15 +++++++++------
->   1 file changed, 9 insertions(+), 6 deletions(-)
->
-> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-> index bfa108916ce..7932a3ec285 100644
-> --- a/tests/kms_setmode.c
-> +++ b/tests/kms_setmode.c
-> @@ -40,13 +40,12 @@
->   /* restricted pipe count */
->   #define CRTC_RESTRICT_CNT 2
->   
-> -#define MAX_HDISPLAY_PER_CRTC 5120
-> -
->   static int drm_fd;
->   static drmModeRes *drm_resources;
->   static int filter_test_id;
->   static bool dry_run;
->   static bool extended = false;
-> +static int max_dotclock;
->   
->   const drmModeModeInfo mode_640_480 = {
->   	.name		= "640x480",
-> @@ -664,18 +663,20 @@ static void test_one_combination(const struct test_config *tconf,
->   			struct crtc_config *crtc = &crtcs[i];
->   
->   			/*
-> -			 * if mode.hdisplay > 5120, then ignore
-> +			 * if mode resolution > 5K (or) mode clock > max_dotclock,
-> +			 * then ignore
->   			 *   - last crtc in single/multi-connector config
->   			 *   - consecutive crtcs in multi-connector config
->   			 *
->   			 * in multi-connector config ignore if
-> -			 *   - previous crtc mode.hdisplay > 5120 and
-> +			 *   - previous crtc (mode resolution > 5K (or)
-> +			 *     mode clock > max_dotclock) and
->   			 *   - current & previous crtcs are consecutive
->   			 */
-> -			if (((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-> +			if ((igt_bigjoiner_possible(&crtc->mode, max_dotclock) &&
-
-As mentioned in other patch as well, lets have the bigjoiner check only 
-for i915 case.
-
-Regards,
-
-Ankit
-
-
->   			     ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
->   			      ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
-> -			    ((i > 0) && (crtc[i - 1].mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-> +			    ((i > 0) && igt_bigjoiner_possible(&crtc[i - 1].mode, max_dotclock) &&
->   			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
->   				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
->   				goto out;
-> @@ -954,6 +955,8 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
->   
->   		drm_resources = drmModeGetResources(drm_fd);
->   		igt_require(drm_resources);
+>  lib/intel_bufops.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+> 
+> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+> index cdc7a1698b2..81f7b951813 100644
+> --- a/lib/intel_bufops.c
+> +++ b/lib/intel_bufops.c
+> @@ -1423,6 +1423,25 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+>  	igt_debug("generation: %d, supported tiles: 0x%02x\n",
+>  		  bops->intel_gen, bops->supported_tiles);
+>  
+> +	/* No tiling support in XE. */
+> +	if (is_xe_device(fd)) {
+> +		bops->supported_tiles = TILE_NONE;
+> +		bops->supported_hw_tiles = TILE_NONE;
 > +
-> +		max_dotclock = igt_get_max_dotclock(drm_fd);
->   	}
->   
->   	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+> +		bops->linear_to_x = NULL;
+> +		bops->x_to_linear = NULL;
+> +		bops->linear_to_y = NULL;
+> +		bops->y_to_linear = NULL;
+> +		bops->linear_to_tile4 = NULL;
+> +		bops->tile4_to_linear = NULL;
+> +		bops->linear_to_yf = NULL;
+> +		bops->yf_to_linear = NULL;
+> +		bops->linear_to_ys = NULL;
+> +		bops->ys_to_linear = NULL;
+> +
+> +		return bops;
+> +	}
+> +
+>  	/*
+>  	 * Warning!
+>  	 *
+> -- 
+> 2.40.0
+> 
