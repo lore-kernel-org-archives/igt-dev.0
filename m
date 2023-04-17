@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96A3510E40A
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 10:57:11 +0000 (UTC)
-Date: Mon, 17 Apr 2023 12:57:06 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230417105706.pyzocygeqkpitjdc@zkempczy-mobl2>
-References: <20230413162732.1155058-1-bhanuprakash.modem@intel.com>
- <20230413162732.1155058-2-bhanuprakash.modem@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Intel-gfx@lists.freedesktop.org
+Date: Mon, 17 Apr 2023 11:57:26 +0100
+Message-Id: <20230417105734.3945840-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230413162732.1155058-2-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t 1/7] lib/intel_bufops: Fix bops creation to
- support XE
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v5 0/8] Vendor agnostic gputop
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,58 +15,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 13, 2023 at 09:57:26PM +0530, Bhanuprakash Modem wrote:
-> As XE won't support tiling, fix the bops creation logic to
-> support XE device.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-No, we want to do software tiling here.
+This is a pile of patches which implements a rudimentary vendor agnostic gputop
+tool based of the new DRM spec as documented in
+Documentation/gpu/drm-usage-stats.rst.
 
-I'm going to enablement series today.
+First part of the series is code refactoring which should be reasonably stable.
+I've tested it all while working on it both against intel_gpu_top and gputop.
 
---
-Zbigniew
+Last patch is the actual tool itself. It works but it is rather rudimentary
+which is hopefully good enough for a start.
 
-> ---
->  lib/intel_bufops.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index cdc7a1698b2..81f7b951813 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -1423,6 +1423,25 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
->  	igt_debug("generation: %d, supported tiles: 0x%02x\n",
->  		  bops->intel_gen, bops->supported_tiles);
->  
-> +	/* No tiling support in XE. */
-> +	if (is_xe_device(fd)) {
-> +		bops->supported_tiles = TILE_NONE;
-> +		bops->supported_hw_tiles = TILE_NONE;
-> +
-> +		bops->linear_to_x = NULL;
-> +		bops->x_to_linear = NULL;
-> +		bops->linear_to_y = NULL;
-> +		bops->y_to_linear = NULL;
-> +		bops->linear_to_tile4 = NULL;
-> +		bops->tile4_to_linear = NULL;
-> +		bops->linear_to_yf = NULL;
-> +		bops->yf_to_linear = NULL;
-> +		bops->linear_to_ys = NULL;
-> +		bops->ys_to_linear = NULL;
-> +
-> +		return bops;
-> +	}
-> +
->  	/*
->  	 * Warning!
->  	 *
-> -- 
-> 2.40.0
-> 
+Fundamental difference between intel_gpu_top and gputop is that the former is
+centered around a single card and only shows processes belonging to it. Gputop
+on the other hand has an idea to show all processes with DRM file descriptors
+open and sort them into groups per card. It also makes no effort to provide
+sorting modes, well any interactivity, or any pretty names for GPUs or engines.
+
+It looks like this:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DRM minor 0
+     PID              NAME    render       copy       video
+    3816          kwin_x11 |███▎      ||          ||          ||          |
+    3523              Xorg |▊         ||          ||          ||          |
+ 1120449               mpv |          ||          ||▋         ||          |
+ 1120529          glxgears |▋         ||          ||          ||          |
+ 1120449               mpv |▍         ||          ||          ||          |
+    3860       plasmashell |▏         ||          ||          ||          |
+    4764           krunner |          ||          ||          ||          |
+  575206            chrome |          ||          ||          ||          |
+  833481           firefox |          ||          ||          ||          |
+  892924       thunderbird |          ||          ||          ||          |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+I did test it as well with two cards and confirmed that too works.
+
+Rob Clark also tested it with a patch which exports the respective data from the
+msm driver and confirmed it works fine. Christian König tested it with in
+progress patches for amdgpu and that worked as well.
+
+v2:
+ * Fixed SPDX headers and added a bunch of code comments/docs throughout.
+
+v3:
+ * Rebased and some patch titles renamed as requested. (Kamil)
+
+v4:
+ * Just a rebase for conflicts due passage of time.
+
+ v5:
+ * A larger rebase this time round, catching up with some improvements which
+   landed to intel_gpu_top in the meantime.
+
+Tvrtko Ursulin (8):
+  lib: Extract igt_drm_clients from intel_gpu_top
+  lib: Allow specifying custom engine map
+  lib/igt_drm_clients: Record client drm minor
+  lib/igt_drm_clients: Support multiple DRM cards
+  lib/igt_drm_fdinfo: Track largest engine index
+  lib/igt_drm_clients: Decouple hardcoded engine assumptions
+  lib/igt_drm_clients: Enforce client status sort order in the library
+  gputop: Basic vendor agnostic GPU top tool
+
+ lib/igt_drm_clients.c   | 542 ++++++++++++++++++++++++++++++
+ lib/igt_drm_clients.h   |  91 +++++
+ lib/igt_drm_fdinfo.c    |  53 ++-
+ lib/igt_drm_fdinfo.h    |  16 +-
+ lib/meson.build         |   8 +
+ tests/i915/drm_fdinfo.c |  19 +-
+ tools/gputop.c          | 266 +++++++++++++++
+ tools/intel_gpu_top.c   | 718 +++++++++++-----------------------------
+ tools/meson.build       |   7 +-
+ 9 files changed, 1162 insertions(+), 558 deletions(-)
+ create mode 100644 lib/igt_drm_clients.c
+ create mode 100644 lib/igt_drm_clients.h
+ create mode 100644 tools/gputop.c
+
+-- 
+2.37.2
