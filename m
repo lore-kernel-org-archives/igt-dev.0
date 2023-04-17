@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D6AD10EA98
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 09:22:31 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.29.155])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id C7220580AFF
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Apr 2023 02:22:05 -0700 (PDT)
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Apr 2023 11:21:58 +0200
-Message-Id: <20230413092159.146658-4-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230413092159.146658-1-mauro.chehab@linux.intel.com>
-References: <20230413092159.146658-1-mauro.chehab@linux.intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76F1010E1D6
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 05:07:34 +0000 (UTC)
+Message-ID: <0635610d-2d46-59ea-612e-9e7d28786cd0@intel.com>
+Date: Mon, 17 Apr 2023 10:37:21 +0530
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230413162732.1155058-1-bhanuprakash.modem@intel.com>
+ <20230413162732.1155058-4-bhanuprakash.modem@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230413162732.1155058-4-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 3/4] scripts/test_list.py: use a compiled
- regex for check
+Subject: Re: [igt-dev] [i-g-t 3/7] lib: Use i915 namespace for XE debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,53 +26,50 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Speed up even further the logic for --check-testlist by
-pre-compiling the regex that will be used to validate the
-results.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/test_list.py | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 287351e717b3..96d8883db122 100755
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -820,10 +820,18 @@ class TestList:
-         run_missing = []
-         doc_uneeded = []
- 
-+        test_regex = r""
-+        for doc_test in doc_subtests:
-+            if test_regex != r"":
-+                test_regex += r"|"
-+            test_regex += r'^' + doc_test + r'$'
-+
-+        test_regex = re.compile(test_regex)
-+
-         for doc_test in doc_subtests:
-             found = False
-             for run_test in run_subtests:
--                if re.match(r'^' + doc_test + r'$', run_test):
-+                if re.match(test_regex, run_test):
-                     found = True
-                     break
-             if not found:
-@@ -831,10 +839,8 @@ class TestList:
- 
-         for run_test in run_subtests:
-             found = False
--            for doc_test in doc_subtests:
--                if re.match(r'^' + doc_test + r'$', run_test):
--                    found = True
--                    break
-+            if re.match(test_regex, run_test):
-+                found = True
-             if not found:
-                 run_missing.append(run_test)
- 
--- 
-2.39.2
+On 4/13/2023 9:57 PM, Bhanuprakash Modem wrote:
+> As of now XE is going to use i915 namesapce for their debugfs.
+> Example: i915_current_bpc is applicable for both i915 & XE
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   lib/igt_kms.c | 2 +-
+>   lib/igt_psr.c | 4 ++--
+>   2 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 50655f136b8..720e68ca7c9 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -5706,7 +5706,7 @@ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe)
+>   	fd = igt_debugfs_pipe_dir(drmfd, pipe, O_RDONLY);
+>   	igt_assert(fd >= 0);
+>   
+> -	if (is_i915_device(drmfd))
+> +	if (is_intel_device(drmfd))
+>   		strcpy(debugfs_name, "i915_current_bpc");
+>   	else if (is_amdgpu_device(drmfd))
+>   		strcpy(debugfs_name, "amdgpu_current_bpc");
+> diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+> index a2d88031268..13f7c567dc9 100644
+> --- a/lib/igt_psr.c
+> +++ b/lib/igt_psr.c
+> @@ -277,7 +277,7 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
+>   	int debugfs_fd;
+>   	bool ret;
+>   
+> -	if (!is_i915_device(drm_fd))
+> +	if (!is_intel_device(drm_fd))
+>   		return false;
+>   
+>   	debugfs_fd = igt_debugfs_dir(drm_fd);
+> @@ -303,7 +303,7 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
+>   	int debugfs_fd;
+>   	bool ret = false;
+>   
+> -	if (!is_i915_device(drm_fd))
+> +	if (!is_intel_device(drm_fd))
+>   		return ret;
+>   
+>   	debugfs_fd = igt_debugfs_dir(drm_fd);
