@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <cc343cda-29eb-3364-9eca-237be2cb5110@intel.com>
-Date: Fri, 14 Apr 2023 12:15:14 -0700
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67CFA10E158
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 05:03:20 +0000 (UTC)
+Message-ID: <63eef62d-390f-4110-0e06-407437992c45@intel.com>
+Date: Mon, 17 Apr 2023 10:33:08 +0530
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230413162732.1155058-1-bhanuprakash.modem@intel.com>
+ <20230413162732.1155058-5-bhanuprakash.modem@intel.com>
 Content-Language: en-US
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-References: <20230413224414.2313507-1-vinay.belgaumkar@intel.com>
- <20230413224414.2313507-3-vinay.belgaumkar@intel.com>
- <87jzyeqqqo.wl-ashutosh.dixit@intel.com>
-From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
-In-Reply-To: <87jzyeqqqo.wl-ashutosh.dixit@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230413162732.1155058-5-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib: Make SLPC helper function per
- GT
+Subject: Re: [igt-dev] [i-g-t 4/7] tests/kms_cursor_legacy: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,146 +22,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 4/14/2023 11:10 AM, Dixit, Ashutosh wrote:
-> On Thu, 13 Apr 2023 15:44:12 -0700, Vinay Belgaumkar wrote:
->> Use default of 0 where GT id is not being used.
->>
->> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
->> ---
->>   lib/igt_pm.c             | 20 ++++++++++----------
->>   lib/igt_pm.h             |  2 +-
->>   tests/i915/i915_pm_rps.c |  6 +++---
->>   3 files changed, 14 insertions(+), 14 deletions(-)
->>
->> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
->> index 704acf7d..8ca7c181 100644
->> --- a/lib/igt_pm.c
->> +++ b/lib/igt_pm.c
->> @@ -1329,21 +1329,21 @@ void igt_pm_print_pci_card_runtime_status(void)
->> 	}
->>   }
->>
->> -bool i915_is_slpc_enabled(int fd)
->> +bool i915_is_slpc_enabled(int drm_fd, int gt)
-> OK, we understand that the debugfs dir path is per gt, but I am wondering
-> if we need to expose this as a function argument? Since, in all instances,
-> we are always passing gt as 0.
+On 4/13/2023 9:57 PM, Bhanuprakash Modem wrote:
+> Add XE driver support for kms tests.
 >
-> Maybe the caller is only interested in knowing if slpc is enabled. Can SLPC
-> be enabled for gt 0 and disabled for gt 1? In the case the caller should
-> really call something like:
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_cursor_legacy.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> 	for_each_gt()
-> 		i915_is_slpc_enabled(fd, gt)
->
-> and return false if slpc is disabled for any gt.
->
-> I think what we should do is write two functions:
->
-> 1. Rename the function above with the gt argument to something like:
->
-> 	i915_is_slpc_enabled_gt()
->
-> 2. Have another function without the gt argument:
->
-> 	i915_is_slpc_enabled() which will do:
->
-> 	for_each_gt()
-> 		i915_is_slpc_enabled_gt(fd, gt)
->
-> and return false if slpc is disabled for any gt.
->
-> And then have the tests call this second function without the gt argument.
->
-> I think this will be cleaner than passing 0 as the gt from the tests.
+> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+> index 5f430090815..cd247cf0088 100644
+> --- a/tests/kms_cursor_legacy.c
+> +++ b/tests/kms_cursor_legacy.c
+> @@ -308,7 +308,7 @@ enum flip_test {
+>   static bool cursor_slowpath(igt_display_t *display, enum flip_test mode)
+>   {
+>   	/* Intel display 9 and newer will handle cursor movement as fastsets */
+> -	if (is_i915_device(display->drm_fd) &&
+> +	if (is_intel_device(display->drm_fd) &&
+>   	    intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 9)
+>   	    return true;
+>   
+> @@ -1708,6 +1708,7 @@ igt_main
+>   	igt_describe("this test perform a busy bo update followed by a cursor update");
+>   	igt_subtest_group {
+>   		igt_fixture {
+> +			igt_require_i915(display.drm_fd);
 
-ok, created a helper for the helper :) This will hard code GT 0 instead 
-of the tests doing it, when necessary.
+Hi,
+
+Could you please remove the 'igt_require_intel' check inside 
+'flip_vs_cursor_busy_crc', as with the above check that is redundant.
+
+With this removed, the patch LGTM.
+
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 
 Thanks,
-
-Vinay.
-
->
-> Thanks.
-> --
-> Ashutosh
->
->
->>   {
->> -	int debugfs_fd = igt_debugfs_dir(fd);
->> -	char buf[4096] = {};
->> -	int len;
->> +	int debugfs_fd;
->> +	char buf[256] = {};
->> +
->> +	debugfs_fd = igt_debugfs_gt_open(drm_fd, gt, "uc/guc_slpc_info", O_RDONLY);
->>
->> -	igt_require(debugfs_fd != -1);
->> +	/* if guc_slpc_info not present then return false */
->> +	if (debugfs_fd < 0)
->> +		return false;
->> +	read(debugfs_fd, buf, sizeof(buf)-1);
->>
->> -	len = igt_debugfs_simple_read(debugfs_fd, "gt/uc/guc_slpc_info", buf, sizeof(buf));
->> 	close(debugfs_fd);
->>
->> -	if (len < 0)
->> -		return false;
->> -	else
->> -		return strstr(buf, "SLPC state: running");
->> +	return strstr(buf, "SLPC state: running");
->>   }
->>
->>   int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
->> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
->> index d0d6d673..1b054dce 100644
->> --- a/lib/igt_pm.h
->> +++ b/lib/igt_pm.h
->> @@ -84,7 +84,7 @@ void igt_pm_set_d3cold_allowed(struct igt_device_card *card, const char *val);
->>   void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
->>   void igt_pm_restore_pci_card_runtime_pm(void);
->>   void igt_pm_print_pci_card_runtime_status(void);
->> -bool i915_is_slpc_enabled(int fd);
->> +bool i915_is_slpc_enabled(int fd, int gt);
->>   int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
->>   int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
->>
->> diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
->> index d4ee2d58..85dae449 100644
->> --- a/tests/i915/i915_pm_rps.c
->> +++ b/tests/i915/i915_pm_rps.c
->> @@ -916,21 +916,21 @@ igt_main
->> 	}
->>
->> 	igt_subtest("basic-api") {
->> -		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->> +		igt_skip_on_f(i915_is_slpc_enabled(drm_fd, 0),
->> 			      "This subtest is not supported when SLPC is enabled\n");
->> 		min_max_config(basic_check, false);
->> 	}
->>
->> 	/* Verify the constraints, check if we can reach idle */
->> 	igt_subtest("min-max-config-idle") {
->> -		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->> +		igt_skip_on_f(i915_is_slpc_enabled(drm_fd, 0),
->> 			      "This subtest is not supported when SLPC is enabled\n");
->> 		min_max_config(idle_check, true);
->> 	}
->>
->> 	/* Verify the constraints with high load, check if we can reach max */
->> 	igt_subtest("min-max-config-loaded") {
->> -		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->> +		igt_skip_on_f(i915_is_slpc_enabled(drm_fd, 0),
->> 			      "This subtest is not supported when SLPC is enabled\n");
->> 		load_helper_run(HIGH);
->> 		min_max_config(loaded_check, false);
->> --
->> 2.38.1
->>
+Karthik.B.S
+>   			igt_require_pipe_crc(display.drm_fd);
+>   			igt_display_require_output(&display);
+>   		}
