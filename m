@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFA3C10E46A
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 15:36:33 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FC6210E46A
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 15:36:36 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Apr 2023 17:36:00 +0200
-Message-Id: <20230417153602.104298-9-zbigniew.kempczynski@intel.com>
+Date: Mon, 17 Apr 2023 17:36:01 +0200
+Message-Id: <20230417153602.104298-10-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230417153602.104298-1-zbigniew.kempczynski@intel.com>
 References: <20230417153602.104298-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 08/10] tests/xe-fast-feedback: Add
- xe_intel_bb test to BAT
+Subject: [igt-dev] [PATCH i-g-t 09/10] lib/gpgpu_fill: Use RENDER engine
+ flag to work on Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,41 +24,38 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Verifies intel-bb integration with xe.
+Using I915_EXEC_DEFAULT works fine for i915 selecting appropriate
+command streamer. Unfortunately this cannot be used on Xe as it
+requires explicit engine selection. Submitting gpgpu work on
+render is fine so change to I915_EXEC_RENDER doesn't break i915
+and allows run on valid engine on Xe.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel-ci/xe-fast-feedback.testlist | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ lib/gpgpu_fill.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 5db27c6345..019804b579 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,6 +1,24 @@
- # Should be the first test
- igt@xe_module_load@load
+diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
+index 4f7bab68f2..4db8775145 100644
+--- a/lib/gpgpu_fill.c
++++ b/lib/gpgpu_fill.c
+@@ -288,7 +288,7 @@ __gen9_gpgpu_fillfunc(int i915,
+ 	intel_bb_ptr_align(ibb, 32);
  
-+igt@xe_intel_bb@reset-bb
-+igt@xe_intel_bb@purge-bb
-+igt@xe_intel_bb@simple-bb
-+igt@xe_intel_bb@simple-bb-ctx
-+igt@xe_intel_bb@bb-with-allocator
-+igt@xe_intel_bb@lot-of-buffers
-+igt@xe_intel_bb@add-remove-objects
-+igt@xe_intel_bb@destroy-bb
-+igt@xe_intel_bb@create-in-region
-+igt@xe_intel_bb@blit-simple
-+igt@xe_intel_bb@blit-reloc
-+igt@xe_intel_bb@intel-bb-blit-none
-+igt@xe_intel_bb@intel-bb-blit-x
-+igt@xe_intel_bb@intel-bb-blit-y
-+igt@xe_intel_bb@offset-control
-+igt@xe_intel_bb@delta-check
-+igt@xe_intel_bb@full-batch
-+igt@xe_intel_bb@render
- igt@xe_compute@compute-square
- igt@xe_debugfs@base
- igt@xe_debugfs@gt
+ 	intel_bb_exec(ibb, intel_bb_offset(ibb),
+-		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, true);
+ 
+ 	intel_bb_destroy(ibb);
+ }
+@@ -329,7 +329,7 @@ __xehp_gpgpu_fillfunc(int i915,
+ 	intel_bb_ptr_align(ibb, 32);
+ 
+ 	intel_bb_exec(ibb, intel_bb_offset(ibb),
+-		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, true);
+ 
+ 	intel_bb_destroy(ibb);
+ }
 -- 
 2.34.1
