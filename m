@@ -1,18 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 300B710E6C2
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 07:26:14 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 09:25:34 +0200
-Message-Id: <20230418072535.14946-10-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230418072535.14946-1-zbigniew.kempczynski@intel.com>
-References: <20230418072535.14946-1-zbigniew.kempczynski@intel.com>
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com
+ [IPv6:2a00:1450:4864:20::12c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDDD910E37A
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:36:08 +0000 (UTC)
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-4ec8133c59eso2233578e87.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 09:36:08 -0700 (PDT)
+Date: Tue, 18 Apr 2023 19:36:02 +0300
+From: Petri Latvala <adrinael@adrinael.net>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <ZD7G8uT0cWHHWtQX@adrinael.net>
+References: <20230418145408.39730-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 09/10] lib/gpgpu_fill: Use RENDER engine
- flag to work on Xe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230418145408.39730-1-kamil.konieczny@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_dummyload: Fall back to no
+ scheduling policy if SCHED_FIFO unavailable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,42 +24,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Using I915_EXEC_DEFAULT works fine for i915 selecting appropriate
-command streamer. Unfortunately this cannot be used on Xe as it
-requires explicit engine selection. Submitting gpgpu work on
-render is fine so change to I915_EXEC_RENDER doesn't break i915
-and allows run on valid engine on Xe.
+On Tue, Apr 18, 2023 at 04:54:08PM +0200, Kamil Konieczny wrote:
+> From: Petri Latvala <petri.latvala@intel.com>
+> 
+> From: Petri Latvala <petri.latvala@intel.com>
+> 
+> If pthread_create with SCHED_FIFO fails, try creating the thread
+> without a policy before bailing out.
+> 
+> Cc: Petri Latvala <adrinael@adrinael.net>
+> Suggested-by: Chris Wilson <chris.p.wilson@intel.com>
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/gpgpu_fill.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Still seems relevant, no objections to this going upstream.
 
-diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
-index 4f7bab68f2..4db8775145 100644
---- a/lib/gpgpu_fill.c
-+++ b/lib/gpgpu_fill.c
-@@ -288,7 +288,7 @@ __gen9_gpgpu_fillfunc(int i915,
- 	intel_bb_ptr_align(ibb, 32);
- 
- 	intel_bb_exec(ibb, intel_bb_offset(ibb),
--		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
-+		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, true);
- 
- 	intel_bb_destroy(ibb);
- }
-@@ -329,7 +329,7 @@ __xehp_gpgpu_fillfunc(int i915,
- 	intel_bb_ptr_align(ibb, 32);
- 
- 	intel_bb_exec(ibb, intel_bb_offset(ibb),
--		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
-+		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, true);
- 
- 	intel_bb_destroy(ibb);
- }
+
 -- 
-2.34.1
+Petri Latvala
+
+
+> ---
+>  lib/igt_dummyload.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+> index b3dc18ee7..740a58f3d 100644
+> --- a/lib/igt_dummyload.c
+> +++ b/lib/igt_dummyload.c
+> @@ -528,6 +528,7 @@ void igt_spin_set_timeout(igt_spin_t *spin, int64_t ns)
+>  	struct itimerspec its;
+>  	pthread_attr_t attr;
+>  	int timerfd;
+> +	int err;
+>  
+>  	if (!spin)
+>  		return;
+> @@ -547,8 +548,13 @@ void igt_spin_set_timeout(igt_spin_t *spin, int64_t ns)
+>  	pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
+>  	pthread_attr_setschedparam(&attr, &param);
+>  
+> -	igt_assert(pthread_create(&spin->timer_thread, &attr,
+> -				  timer_thread, spin) == 0);
+> +	err = pthread_create(&spin->timer_thread, &attr, timer_thread, spin);
+> +	if (err) {
+> +		igt_debug("Cannot create thread with SCHED_FIFO (%s), trying without scheduling policy...\n",
+> +			  strerror(err));
+> +		igt_assert_eq(pthread_create(&spin->timer_thread, NULL,
+> +					     timer_thread, spin), 0);
+> +	}
+>  	pthread_attr_destroy(&attr);
+>  
+>  	memset(&its, 0, sizeof(its));
+> -- 
+> 2.37.2
+> 
