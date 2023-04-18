@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C9B510E0A1
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 14:54:22 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 16:54:08 +0200
-Message-Id: <20230418145408.39730-1-kamil.konieczny@linux.intel.com>
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2069.outbound.protection.outlook.com [40.107.223.69])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 81AF210E088
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 15:20:29 +0000 (UTC)
+From: Alex Hung <alex.hung@amd.com>
+To: <igt-dev@lists.freedesktop.org>, <kamil.konieczny@linux.intel.com>
+Date: Tue, 18 Apr 2023 09:19:59 -0600
+Message-ID: <20230418151959.112929-1-alex.hung@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_dummyload: Fall back to no
- scheduling policy if SCHED_FIFO unavailable
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH][V2] tests/kms_universal_plane: Enable
+ sanity_test_pipe for all devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,54 +19,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>,
- Chris Wilson <chris.p.wilson@intel.com>
+Cc: markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Petri Latvala <petri.latvala@intel.com>
+This subtest can run on non-Intel devices.
 
-From: Petri Latvala <petri.latvala@intel.com>
-
-If pthread_create with SCHED_FIFO fails, try creating the thread
-without a policy before bailing out.
-
-Cc: Petri Latvala <adrinael@adrinael.net>
-Suggested-by: Chris Wilson <chris.p.wilson@intel.com>
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Mark Yacoub <markyacoub@chromium.org>
 ---
- lib/igt_dummyload.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tests/kms_universal_plane.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-index b3dc18ee7..740a58f3d 100644
---- a/lib/igt_dummyload.c
-+++ b/lib/igt_dummyload.c
-@@ -528,6 +528,7 @@ void igt_spin_set_timeout(igt_spin_t *spin, int64_t ns)
- 	struct itimerspec its;
- 	pthread_attr_t attr;
- 	int timerfd;
-+	int err;
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index 114918d9..b2435b51 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -377,7 +377,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_plane_t *primary;
+ 	drmModeModeInfo *mode;
+ 	int i;
+-	int expect;
++	int expect = 0;
  
- 	if (!spin)
- 		return;
-@@ -547,8 +548,13 @@ void igt_spin_set_timeout(igt_spin_t *spin, int64_t ns)
- 	pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
- 	pthread_attr_setschedparam(&attr, &param);
+ 	igt_require_pipe(&data->display, pipe);
  
--	igt_assert(pthread_create(&spin->timer_thread, &attr,
--				  timer_thread, spin) == 0);
-+	err = pthread_create(&spin->timer_thread, &attr, timer_thread, spin);
-+	if (err) {
-+		igt_debug("Cannot create thread with SCHED_FIFO (%s), trying without scheduling policy...\n",
-+			  strerror(err));
-+		igt_assert_eq(pthread_create(&spin->timer_thread, NULL,
-+					     timer_thread, spin), 0);
-+	}
- 	pthread_attr_destroy(&attr);
+@@ -400,9 +400,9 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	 * doesn't cover CRTC (should fail on pre-gen9 and succeed on
+ 	 * gen9+).
+ 	 */
+-	igt_require_intel(data->drm_fd);
+ 	igt_plane_set_fb(primary, &test.undersized_fb);
+-	expect = (data->display_ver < 9) ? -EINVAL : 0;
++	if (is_intel_device(data->drm_fd))
++		expect = (data->display_ver < 9) ? -EINVAL : 0;
+ 	igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERSAL) == expect);
  
- 	memset(&its, 0, sizeof(its));
+ 	/* Same as above, but different plane positioning. */
+@@ -412,7 +412,8 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_plane_set_position(primary, 0, 0);
+ 
+ 	/* Try to use universal plane API to scale down (should fail on pre-gen9) */
+-	expect = (data->display_ver < 9) ? -ERANGE : 0;
++	if (is_intel_device(data->drm_fd))
++		expect = (data->display_ver < 9) ? -ERANGE : 0;
+ 	igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+ 				   output->config.crtc->crtc_id,
+ 				   test.oversized_fb.fb_id, 0,
 -- 
-2.37.2
+2.40.0
