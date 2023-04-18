@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CCA710E37A
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:14 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 22:14:55 +0530
-Message-Id: <20230418164501.1687266-40-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
-References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3451602838148186875=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 39/45] tests/kms_plane_scaling: Add XE support
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Tue, 18 Apr 2023 16:55:54 -0000
+Message-ID: <168183695487.17886.8717152716068988399@emeril.freedesktop.org>
+References: <20230418090122.8209-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230418090122.8209-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fdisplay=5Fmodes=3A_Add_negative_test_for_extended_display?=
+ =?utf-8?q?_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,144 +18,226 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+--===============3451602838148186875==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_plane_scaling.c | 41 ++++++++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 5008cd931..753029cac 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -52,9 +52,9 @@ struct invalid_paramtests {
- 	} params[8];
- };
- 
--static const struct invalid_paramtests i915_paramtests[] = {
-+static const struct invalid_paramtests intel_paramtests[] = {
- 	{
--		.testname = "i915-max-src-size",
-+		.testname = "intel-max-src-size",
- 		.planesize = {3840, 2160},
- 	},
- };
-@@ -463,7 +463,7 @@ static const igt_rotation_t rotations[] = {
- 
- static bool can_scale(data_t *d, unsigned format)
- {
--	if (!is_i915_device(d->drm_fd))
-+	if (!is_intel_device(d->drm_fd))
- 		return true;
- 
- 	switch (format) {
-@@ -488,7 +488,7 @@ static bool test_format(data_t *data,
- 	if (!igt_fb_supported_format(format))
- 		return false;
- 
--	if (!is_i915_device(data->drm_fd) ||
-+	if (!is_intel_device(data->drm_fd) ||
- 	    data->extended)
- 		return true;
- 
-@@ -505,7 +505,7 @@ static bool test_format(data_t *data,
- 
- static bool test_pipe_iteration(data_t *data, enum pipe pipe, int iteration)
- {
--	if (!is_i915_device(data->drm_fd) ||
-+	if (!is_intel_device(data->drm_fd) ||
- 	    data->extended)
- 		return true;
- 
-@@ -544,6 +544,10 @@ static void test_scaler_with_modifier_pipe(data_t *d,
- 		for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
- 			uint64_t modifier = modifiers[i];
- 
-+			if (is_xe_device(d->drm_fd) &&
-+			    modifier != DRM_FORMAT_MOD_LINEAR)
-+				continue;
-+
- 			if (igt_plane_has_format_mod(plane, format, modifier))
- 				check_scaling_pipe_plane_rot(d, plane,
- 							     format, modifier,
-@@ -831,11 +835,12 @@ test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
- 	igt_plane_set_size(plane[1], mode->hdisplay, mode->vdisplay);
- 	igt_plane_set_size(plane[2], mode->hdisplay, mode->vdisplay);
- 
--	/* This commit is expected to fail for i915 devices. i915 devices support
-+	/*
-+	 * This commit is expected to fail for intel devices. intel devices support
- 	 * max 2 scalers/pipe. In dmesg we can find: Too many scaling requests 3 > 2.
--	 * For devices (non-i915, or possible future i915) that are able to perform this
--	 * amount of scaling; handle that case aswell.
--	 * */
-+	 * For devices (non-intel, or possible future intel) that are able to perform
-+	 * this amount of scaling; handle that case aswell.
-+	 */
- 	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_skip_on_f(ret == 0, "Cannot test handling of too many scaling ops, the device supports a large amount.\n");
- 	igt_assert_eq(ret, -EINVAL);
-@@ -1012,7 +1017,7 @@ static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const uint
- }
- 
- /*
-- *	Max source/destination width/height for i915 driver.
-+ *	Max source/destination width/height for intel driver.
-  *	These numbers are coming from
-  *	drivers/gpu/drm/i915/display/skl_scaler.c in kernel sources.
-  *
-@@ -1040,8 +1045,8 @@ static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const uint
-  *		max_dst_w = 8192
-  *		max_dst_h = 8192
-  */
--static void i915_max_source_size_test(data_t *d, enum pipe pipe, igt_output_t *output,
--				      drmModeModeInfo *mode, const uint32_t planesize[])
-+static void intel_max_source_size_test(data_t *d, enum pipe pipe, igt_output_t *output,
-+				       drmModeModeInfo *mode, const uint32_t planesize[])
- {
- 	igt_fb_t fb;
- 	igt_plane_t *plane;
-@@ -1119,7 +1124,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_display_require(&data.display, data.drm_fd);
--		data.devid = is_i915_device(data.drm_fd) ?
-+		data.devid = is_intel_device(data.drm_fd) ?
- 			intel_get_drm_devid(data.drm_fd) : 0;
- 		igt_require(data.display.is_atomic);
- 	}
-@@ -1273,9 +1278,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			}
- 		}
- 
--		for (int index = 0; index < ARRAY_SIZE(i915_paramtests); index++) {
-+		for (int index = 0; index < ARRAY_SIZE(intel_paramtests); index++) {
- 			igt_describe("Test for validating max source size.");
--			igt_subtest_with_dynamic(i915_paramtests[index].testname) {
-+			igt_subtest_with_dynamic(intel_paramtests[index].testname) {
- 				igt_require_intel(data.drm_fd);
- 				for_each_pipe(&data.display, pipe) {
- 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-@@ -1284,12 +1289,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 						 * Need to find mode with lowest vrefresh else
- 						 * we can exceed cdclk limits.
- 						 */
--						mode = find_mode(&data, output, i915_paramtests[index].planesize);
-+						mode = find_mode(&data, output, intel_paramtests[index].planesize);
- 						if (mode) {
- 							igt_dynamic_f("pipe-%s-%s",
- 								       kmstest_pipe_name(pipe), igt_output_name(output))
--								i915_max_source_size_test(&data, pipe, output, mode,
--											  i915_paramtests[index].planesize);
-+								intel_max_source_size_test(&data, pipe, output, mode,
-+											   intel_paramtests[index].planesize);
- 						}
- 						continue;
- 					}
--- 
-2.40.0
+Series: tests/kms_display_modes: Add negative test for extended display (rev6)
+URL   : https://patchwork.freedesktop.org/series/115522/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13026 -> IGTPW_8817
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/index.html
+
+Participating hosts (38 -> 37)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (2): bat-rpls-2 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8817 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - bat-rpls-1:         [PASS][1] -> [ABORT][2] ([i915#6687] / [i915#7978])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13026/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-dg2-11:         [PASS][5] -> [INCOMPLETE][6] ([i915#7609] / [i915#7913])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13026/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][7] ([i915#1886])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium_frames@hdmi-crc-fast:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271]) +16 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         [DMESG-FAIL][9] ([i915#6367] / [i915#6997]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13026/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7259 -> IGTPW_8817
+
+  CI-20190529: 20190529
+  CI_DRM_13026: 45bed7de41ad8bd909a82382a8fc4cb65e04ad56 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8817: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/index.html
+  IGT_7259: 3d3a7f1c041d3f8d84d7457abf96adef0ea071cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_display_modes@mst-extended-mode-negative
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/index.html
+
+--===============3451602838148186875==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_display_modes: Add negative test for extended display (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115522/">https://patchwork.freedesktop.org/series/115522/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13026 -&gt; IGTPW_8817</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (2): bat-rpls-2 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8817 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13026/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13026/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7609">i915#7609</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@slpc:<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13026/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7259 -&gt; IGTPW_8817</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13026: 45bed7de41ad8bd909a82382a8fc4cb65e04ad56 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8817: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8817/index.html<br />
+  IGT_7259: 3d3a7f1c041d3f8d84d7457abf96adef0ea071cb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_display_modes@mst-extended-mode-negative</p>
+
+</body>
+</html>
+
+--===============3451602838148186875==--
