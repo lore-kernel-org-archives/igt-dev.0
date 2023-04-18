@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F74110E226
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 15:33:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBE5310E226
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 15:33:05 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 20:58:21 +0530
-Message-Id: <20230418152822.1655272-5-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Apr 2023 20:58:22 +0530
+Message-Id: <20230418152822.1655272-6-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230418152822.1655272-1-bhanuprakash.modem@intel.com>
 References: <20230418152822.1655272-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 4/5] tests/i915/kms_psr*: Add XE support
+Subject: [igt-dev] [i-g-t V2 5/5] xe-fast-feedback: Add kms tests to XE BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,177 +22,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
-
-V2: - Fix unknown subtest error on CI
+Add kms tests to XE BAT.
+- kms_chamelium_*
+- kms_cursor_legacy
+- kms_flip
+- kms_pipe_crc_basic
+- kms_psr
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/i915/kms_psr.c             | 40 +++++++++++++++++++++++++++-----
- tests/i915/kms_psr2_sf.c         |  2 +-
- tests/i915/kms_psr2_su.c         |  2 +-
- tests/i915/kms_psr_stress_test.c |  2 +-
- 4 files changed, 37 insertions(+), 9 deletions(-)
+ tests/intel-ci/xe-fast-feedback.testlist | 31 ++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
-index 3efe1faec8e..4565acd8a1e 100644
---- a/tests/i915/kms_psr.c
-+++ b/tests/i915/kms_psr.c
-@@ -29,6 +29,7 @@
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
-+#include "xe/xe_ioctl.h"
- 
- enum operations {
- 	PAGE_FLIP,
-@@ -181,7 +182,8 @@ static void fill_blt(data_t *data, const struct igt_fb *fb, unsigned char color)
- 	intel_bb_destroy(ibb);
- 	intel_buf_destroy(dst);
- 
--	gem_bo_busy(data->drm_fd, fb->gem_handle);
-+	if (is_i915_device(data->drm_fd))
-+		gem_bo_busy(data->drm_fd, fb->gem_handle);
- }
- 
- static void fill_render(data_t *data, const struct igt_fb *fb,
-@@ -204,7 +206,16 @@ static void fill_render(data_t *data, const struct igt_fb *fb,
- 
- 	src = intel_buf_create(data->bops, width, height, fb->plane_bpp[0],
- 			       0, tiling, 0);
--	gem_write(data->drm_fd, src->handle, 0, buf, 4);
-+
-+	if (is_i915_device(data->drm_fd)) {
-+		gem_write(data->drm_fd, src->handle, 0, buf, 4);
-+	} else {
-+		void *map = xe_bo_mmap_ext(data->drm_fd, src->handle, 4,
-+					   PROT_READ | PROT_WRITE);
-+
-+		memcpy(map, buf, 4);
-+		gem_munmap(map, 4);
-+	}
- 
- 	rendercopy(ibb,
- 		   src, 0, 0, 0xff, 0xff,
-@@ -214,7 +225,8 @@ static void fill_render(data_t *data, const struct igt_fb *fb,
- 	intel_buf_destroy(src);
- 	intel_buf_destroy(dst);
- 
--	gem_bo_busy(data->drm_fd, fb->gem_handle);
-+	if (is_i915_device(data->drm_fd))
-+		gem_bo_busy(data->drm_fd, fb->gem_handle);
- }
- 
- static bool sink_support(data_t *data, enum psr_mode mode)
-@@ -256,6 +268,11 @@ static bool drrs_disabled(data_t *data)
- {
- 	char buf[512];
- 
-+	/*
-+	 * FIXME: As of now, XE's debugfs is using i915 namespace, once Kernel
-+	 * changes got landed, please update this logic to use XE specific
-+	 * debugfs.
-+	 */
- 	igt_debugfs_simple_read(data->debugfs_fd, "i915_drrs_status",
- 			 buf, sizeof(buf));
- 
-@@ -388,7 +405,8 @@ static void setup_test_plane(data_t *data, int test_plane)
- 	igt_create_color_fb(data->drm_fd,
- 			    data->mode->hdisplay, data->mode->vdisplay,
- 			    DRM_FORMAT_XRGB8888,
--			    I915_FORMAT_MOD_X_TILED,
-+			    is_i915_device(data->drm_fd) ?
-+				I915_FORMAT_MOD_X_TILED : DRM_FORMAT_MOD_LINEAR,
- 			    0.0, 1.0, 0.0,
- 			    &data->fb_green);
- 
-@@ -416,7 +434,8 @@ static void setup_test_plane(data_t *data, int test_plane)
- 		igt_create_color_fb(data->drm_fd,
- 				    white_h, white_v,
- 				    DRM_FORMAT_XRGB8888,
--				    I915_FORMAT_MOD_X_TILED,
-+				    is_i915_device(data->drm_fd) ?
-+					I915_FORMAT_MOD_X_TILED : DRM_FORMAT_MOD_LINEAR,
- 				    1.0, 1.0, 1.0,
- 				    &data->fb_white);
- 		break;
-@@ -510,7 +529,7 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
- 	};
- 
- 	igt_fixture {
--		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 		kmstest_set_vt_graphics_mode();
- 		data.devid = intel_get_drm_devid(data.drm_fd);
-@@ -547,6 +566,9 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
- 			igt_subtest_f("%sprimary_%s",
- 				      append_subtest_name[data.op_psr_mode],
- 				      op_str(op)) {
-+				igt_skip_on(is_xe_device(data.drm_fd) &&
-+					    (op == MMAP_CPU || op == MMAP_GTT));
-+
- 				data.op = op;
- 				data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 				test_setup(&data);
-@@ -561,6 +583,9 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
- 			igt_subtest_f("%ssprite_%s",
- 				      append_subtest_name[data.op_psr_mode],
- 				      op_str(op)) {
-+				igt_skip_on(is_xe_device(data.drm_fd) &&
-+					    (op == MMAP_CPU || op == MMAP_GTT));
-+
- 				data.op = op;
- 				data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
- 				test_setup(&data);
-@@ -573,6 +598,9 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
- 			igt_subtest_f("%scursor_%s",
- 				      append_subtest_name[data.op_psr_mode],
- 				      op_str(op)) {
-+				igt_skip_on(is_xe_device(data.drm_fd) &&
-+					    (op == MMAP_CPU || op == MMAP_GTT));
-+
- 				data.op = op;
- 				data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
- 				test_setup(&data);
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index ffaae68b3e6..4cf9864409c 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -898,7 +898,7 @@ igt_main
- 	igt_fixture {
- 		drmModeResPtr res;
- 
--		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 		kmstest_set_vt_graphics_mode();
- 
-diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
-index 3e0a78f24b2..65e67b8c9be 100644
---- a/tests/i915/kms_psr2_su.c
-+++ b/tests/i915/kms_psr2_su.c
-@@ -297,7 +297,7 @@ igt_main
- 	igt_fixture {
- 		struct itimerspec interval;
- 
--		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 		kmstest_set_vt_graphics_mode();
- 
-diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
-index 26e222a27b6..a4cb3194ebe 100644
---- a/tests/i915/kms_psr_stress_test.c
-+++ b/tests/i915/kms_psr_stress_test.c
-@@ -331,7 +331,7 @@ igt_main
- 	data_t data = {};
- 
- 	igt_fixture {
--		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 		data.bops = buf_ops_create(data.drm_fd);
- 		kmstest_set_vt_graphics_mode();
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 5db27c63452..c9ab687cf13 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -165,8 +165,39 @@ igt@kms_addfb_basic@unused-handle
+ igt@kms_addfb_basic@unused-modifier
+ igt@kms_addfb_basic@unused-offsets
+ igt@kms_addfb_basic@unused-pitches
++igt@kms_chamelium_edid@dp-edid-read
++igt@kms_chamelium_edid@hdmi-edid-read
++igt@kms_chamelium_edid@vga-edid-read
++igt@kms_chamelium_frames@dp-crc-fast
++igt@kms_chamelium_frames@hdmi-crc-fast
++igt@kms_chamelium_hpd@common-hpd-after-suspend
++igt@kms_chamelium_hpd@dp-hpd-fast
++igt@kms_chamelium_hpd@hdmi-hpd-fast
++igt@kms_chamelium_hpd@vga-hpd-fast
++igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
++igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
++igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
++igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
++igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
++igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
++igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
++igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
++igt@kms_flip@basic-flip-vs-dpms
++igt@kms_flip@basic-flip-vs-modeset
++igt@kms_flip@basic-flip-vs-wf_vblank
++igt@kms_flip@basic-plain-flip
+ igt@kms_force_connector_basic@force-connector-state
+ igt@kms_force_connector_basic@force-edid
+ igt@kms_force_connector_basic@force-load-detect
+ igt@kms_force_connector_basic@prune-stale-modes
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck
++igt@kms_pipe_crc_basic@hang-read-crc
++igt@kms_pipe_crc_basic@nonblocking-crc
++igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
++igt@kms_pipe_crc_basic@read-crc
++igt@kms_pipe_crc_basic@read-crc-frame-sequence
++igt@kms_pipe_crc_basic@suspend-read-crc
+ igt@kms_prop_blob@basic
++igt@kms_psr@primary_page_flip
++igt@kms_psr@cursor_plane_move
++igt@kms_psr@sprite_plane_onoff
 -- 
 2.40.0
