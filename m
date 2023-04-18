@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26E4F10E7FA
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:49:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4BD7D10E80A
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:49:49 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 22:14:32 +0530
-Message-Id: <20230418164501.1687266-17-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Apr 2023 22:14:33 +0530
+Message-Id: <20230418164501.1687266-18-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 16/45] tests/i915/kms_cdclk: Add XE support
+Subject: [igt-dev] [i-g-t 17/45] tests/i915/kms_draw_crc: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,35 +22,70 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+Add XE driver support for differnt draw methods.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_cdclk.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/i915/kms_draw_crc.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
-index bb0036802..0f9b8dc58 100644
---- a/tests/i915/kms_cdclk.c
-+++ b/tests/i915/kms_cdclk.c
-@@ -65,6 +65,9 @@ static int get_current_cdclk_freq(int debugfs_fd)
- 	 * Display specific clock frequency info is moved to i915_cdclk_info,
- 	 * On older kernels if this debugfs is not found, fallback to read from
- 	 * i915_frequency_info.
-+	 *
-+	 * FIXME: As of now, XE debugfs is still using i915 namespace, once the
-+	 * Kernel changes are landed, update this to use the XE specific debugfs.
- 	 */
- 	res = igt_debugfs_simple_read(debugfs_fd, "i915_cdclk_info",
- 				      buf, sizeof(buf));
-@@ -368,7 +371,7 @@ igt_main
- 	data_t data = {};
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index 3a3cd99a0..db6d71f2e 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -149,8 +149,8 @@ static void draw_method_subtest(enum igt_draw_method method,
+ 	 * comparison. Cache the value so we don't recompute it for every single
+ 	 * subtest. */
+ 	if (!base_crcs[format_index].set) {
+-		get_method_crc(gem_has_mappable_ggtt(drm_fd) ? IGT_DRAW_MMAP_GTT :
+-							       IGT_DRAW_MMAP_WC,
++		get_method_crc(igt_draw_supports_method(drm_fd, IGT_DRAW_MMAP_GTT) ?
++			       IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
+ 			       formats[format_index],
+ 			       DRM_FORMAT_MOD_LINEAR,
+ 			       &base_crcs[format_index].crc);
+@@ -195,8 +195,8 @@ static void fill_fb_subtest(void)
+ 	igt_plane_set_fb(primary, &fb);
  
- 	igt_fixture {
--		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		igt_require(data.drm_fd >= 0);
- 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 		igt_require(data.debugfs_fd);
+ 	igt_draw_rect_fb(drm_fd, bops, 0, &fb,
+-			 gem_has_mappable_ggtt(drm_fd) ? IGT_DRAW_MMAP_GTT :
+-							 IGT_DRAW_MMAP_WC,
++			 igt_draw_supports_method(drm_fd, IGT_DRAW_MMAP_GTT) ?
++			 IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
+ 			 0, 0, fb.width, fb.height, 0xFF);
+ 
+ 	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+@@ -222,7 +222,7 @@ static void fill_fb_subtest(void)
+ 
+ static void setup_environment(void)
+ {
+-	drm_fd = drm_open_driver_master(DRIVER_INTEL);
++	drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 	igt_require(drm_fd >= 0);
+ 	igt_display_require(&display, drm_fd);
+ 	igt_display_require_output(&display);
+@@ -289,13 +289,17 @@ igt_main
+ 			       "method (%s) with different modifiers & DRM formats.",
+ 			       igt_draw_get_method_name(method));
+ 		igt_subtest_with_dynamic_f("draw-method-%s", igt_draw_get_method_name(method)) {
+-			igt_skip_on(method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd));
+-			igt_skip_on(method == IGT_DRAW_MMAP_GTT && !gem_has_mappable_ggtt(drm_fd));
++			if (!igt_draw_supports_method(drm_fd, method))
++				continue;
+ 
+-			for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+-				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+-					modifier = modifiers[modifier_idx];
++			for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
++				modifier = modifiers[modifier_idx];
+ 
++				/* No tiling support in XE. */
++				if (is_xe_device(drm_fd) && modifier != DRM_FORMAT_MOD_LINEAR)
++					continue;
++
++				for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+ 					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
+ 						continue;
+ 
 -- 
 2.40.0
