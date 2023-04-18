@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C81210E821
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26B9E10E0DA
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:49:32 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 22:14:58 +0530
-Message-Id: <20230418164501.1687266-43-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Apr 2023 22:14:18 +0530
+Message-Id: <20230418164501.1687266-3-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 42/45] tests/kms_setmode: Add XE support
+Subject: [igt-dev] [i-g-t 02/45] lib/xe_query: Add region helpers and
+ missing doc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,44 +24,95 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+For easier iterate over memory regions and produce dynamic subtests
+add xe_region_name() helper.
+
+As Xe requires buffer size alignment during creating bo add
+xe_min_page_size() helper.
+
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/kms_setmode.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ lib/xe/xe_query.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_query.h |  2 ++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index bfa108916..a611d9382 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -30,6 +30,7 @@
- #include <string.h>
- #include <sys/time.h>
- #include <math.h>
-+#include "xe/xe_query.h"
- 
- #define MAX_CONNECTORS  10
- #define MAX_CRTCS       6
-@@ -954,6 +955,9 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
- 
- 		drm_resources = drmModeGetResources(drm_fd);
- 		igt_require(drm_resources);
-+
-+		if (is_xe_device(drm_fd))
-+			xe_device_get(drm_fd);
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-@@ -971,6 +975,9 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
- 	igt_fixture {
- 		drmModeFreeResources(drm_resources);
- 
-+		if (is_xe_device(drm_fd))
-+			xe_device_put(drm_fd);
-+
- 		close(drm_fd);
- 	}
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 2b627a78a..bd5eb1d18 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -422,6 +422,13 @@ struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx)
+ 	return &xe_dev->hw_engines[idx];
  }
+ 
++/**
++ * xe_mem_region:
++ * @fd: xe device fd
++ * @region: region mask
++ *
++ * Returns memory region structure for @region mask.
++ */
+ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region)
+ {
+ 	struct xe_device *xe_dev;
+@@ -434,6 +441,44 @@ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region)
+ 	return &xe_dev->mem_usage->regions[region_idx];
+ }
+ 
++/**
++ * xe_region_name:
++ * @region: region mask
++ *
++ * Returns region string like "system" or "vram-n" where n=0...62.
++ */
++const char *xe_region_name(uint64_t region)
++{
++	static char **vrams;
++	int region_idx = ffs(region) - 1;
++
++	/* Populate the array */
++	if (!vrams) {
++		vrams = calloc(64, sizeof(char *));
++		for (int i = 0; i < 64; i++) {
++			if (i != 0)
++				asprintf(&vrams[i], "vram-%d", i - 1);
++			else
++				asprintf(&vrams[i], "system");
++			igt_assert(vrams[i]);
++		}
++	}
++
++	return vrams[region_idx];
++}
++
++/**
++ * xe_min_page_size:
++ * @fd: xe device fd
++ * @region: region mask
++ *
++ * Returns minimum page size for @region.
++ */
++uint32_t xe_min_page_size(int fd, uint64_t region)
++{
++	return xe_mem_region(fd, region)->min_page_size;
++}
++
+ /**
+  * xe_number_hw_engine:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 0d4b810a1..f49acb1d7 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -84,6 +84,8 @@ uint64_t vram_if_possible(int fd, int gt);
+ struct drm_xe_engine_class_instance *xe_hw_engines(int fd);
+ struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
+ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
++const char *xe_region_name(uint64_t region);
++uint32_t xe_min_page_size(int fd, uint64_t region);
+ unsigned int xe_number_hw_engines(int fd);
+ bool xe_has_vram(int fd);
+ //uint64_t xe_vram_size(int fd);
 -- 
 2.40.0
