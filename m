@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CDE4910E820
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A9E210E816
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:08 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 22:14:48 +0530
-Message-Id: <20230418164501.1687266-33-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Apr 2023 22:14:50 +0530
+Message-Id: <20230418164501.1687266-35-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 32/45] tests/kms_flip_event_leak: Add XE support
+Subject: [igt-dev] [i-g-t 34/45] tests/kms_hdmi_inject: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,38 +26,50 @@ Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_flip_event_leak.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/kms_hdmi_inject.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-index bc26597de..b79cd5030 100644
---- a/tests/kms_flip_event_leak.c
-+++ b/tests/kms_flip_event_leak.c
+diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
+index b6418faf0..2085d1453 100644
+--- a/tests/kms_hdmi_inject.c
++++ b/tests/kms_hdmi_inject.c
 @@ -29,6 +29,7 @@
- #include <string.h>
- 
- #include "igt_device.h"
+ #include "igt.h"
+ #include "igt_edid.h"
+ #include "igt_eld.h"
 +#include "xe/xe_query.h"
  
- typedef struct {
- 	int drm_fd;
-@@ -64,6 +65,8 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_device_drop_master(data->drm_fd);
+ #define HDISPLAY_4K	3840
+ #define VDISPLAY_4K	2160
+@@ -83,7 +84,7 @@ hdmi_inject_4k(int drm_fd, drmModeConnector *connector)
+ 	struct igt_fb fb;
+ 	uint8_t found_4k_mode = 0;
  
- 	igt_device_set_master(fd);
-+	if (is_xe_device(fd))
-+		xe_device_get(fd);
+-	if (is_i915_device(drm_fd)) {
++	if (is_intel_device(drm_fd)) {
+ 		uint32_t devid = intel_get_drm_devid(drm_fd);
  
- 	igt_create_fb(fd, mode->hdisplay, mode->vdisplay,
- 		      DRM_FORMAT_XRGB8888,
-@@ -74,6 +77,8 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
- 			      data);
- 	igt_assert_eq(ret, 0);
+ 		/* 4K requires at least HSW */
+@@ -205,6 +206,9 @@ igt_main
+ 		igt_require(connector);
  
-+	if (is_xe_device(fd))
-+		xe_device_put(fd);
- 	ret = close(fd);
- 	igt_assert_eq(ret, 0);
+ 		kmstest_unset_all_crtcs(drm_fd, res);
++
++		if (is_xe_device(drm_fd))
++			xe_device_get(drm_fd);
+ 	}
  
+ 	igt_describe("Make sure that 4K modes exposed by DRM match the "
+@@ -219,6 +223,10 @@ igt_main
+ 
+ 	igt_fixture {
+ 		drmModeFreeConnector(connector);
++
++		if (is_xe_device(drm_fd))
++			xe_device_put(drm_fd);
++
+ 		close(drm_fd);
+ 	}
+ }
 -- 
 2.40.0
