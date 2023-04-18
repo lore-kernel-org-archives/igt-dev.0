@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC43410E81E
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDE4910E820
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:05 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 22:14:47 +0530
-Message-Id: <20230418164501.1687266-32-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Apr 2023 22:14:48 +0530
+Message-Id: <20230418164501.1687266-33-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 31/45] tests/kms_flip: Add XE support
+Subject: [igt-dev] [i-g-t 32/45] tests/kms_flip_event_leak: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,97 +24,40 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Add XE driver support for kms tests.
 
-V2: - Minor cleanups
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_flip.c | 32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ tests/kms_flip_event_leak.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 5e82f4a2f..d048f2f12 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -44,6 +44,7 @@
+diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+index bc26597de..b79cd5030 100644
+--- a/tests/kms_flip_event_leak.c
++++ b/tests/kms_flip_event_leak.c
+@@ -29,6 +29,7 @@
+ #include <string.h>
  
- #include "i915/gem_create.h"
- #include "igt_stats.h"
+ #include "igt_device.h"
 +#include "xe/xe_query.h"
  
- #define TEST_DPMS		(1 << 0)
+ typedef struct {
+ 	int drm_fd;
+@@ -64,6 +65,8 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_device_drop_master(data->drm_fd);
  
-@@ -1347,15 +1348,21 @@ restart:
- 		o->fb_width *= 2;
+ 	igt_device_set_master(fd);
++	if (is_xe_device(fd))
++		xe_device_get(fd);
  
- 	modifier = DRM_FORMAT_MOD_LINEAR;
--	if (o->flags & TEST_FENCE_STRESS)
-+	if (o->flags & TEST_FENCE_STRESS) {
-+		igt_skip_on(is_xe_device(drm_fd));
- 		modifier = I915_FORMAT_MOD_X_TILED;
-+	}
+ 	igt_create_fb(fd, mode->hdisplay, mode->vdisplay,
+ 		      DRM_FORMAT_XRGB8888,
+@@ -74,6 +77,8 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 			      data);
+ 	igt_assert_eq(ret, 0);
  
- 	/* 256 MB is usually the maximum mappable aperture,
- 	 * (make it 4x times that to ensure failure) */
- 	if (o->flags & TEST_BO_TOOBIG) {
--		igt_skip_on(!is_i915_device(drm_fd));
-+		igt_skip_on(!is_intel_device(drm_fd));
- 		bo_size = 4*gem_mappable_aperture_size(drm_fd);
--		igt_require(bo_size < gem_global_aperture_size(drm_fd));
-+
-+		if (is_i915_device(drm_fd))
-+			igt_require(bo_size < gem_global_aperture_size(drm_fd));
-+		else
-+			igt_require(bo_size < (1ULL << xe_va_bits(drm_fd)));
- 	}
++	if (is_xe_device(fd))
++		xe_device_put(fd);
+ 	ret = close(fd);
+ 	igt_assert_eq(ret, 0);
  
- 	o->fb_ids[0] = igt_create_fb(drm_fd, o->fb_width, o->fb_height,
-@@ -1557,9 +1564,10 @@ static int run_test(int duration, int flags)
- 	struct test_output o;
- 	int i, n, modes = 0;
- 
--	igt_require((flags & TEST_HANG) == 0 || !is_wedged(drm_fd));
-+	igt_require((flags & TEST_HANG) == 0 ||
-+		    (is_i915_device(drm_fd) && !is_wedged(drm_fd)));
- 	igt_require(!(flags & TEST_FENCE_STRESS) ||
--		    gem_available_fences(drm_fd));
-+		    (is_i915_device(drm_fd) && gem_available_fences(drm_fd)));
- 
- 	resources = drmModeGetResources(drm_fd);
- 	igt_require(resources);
-@@ -1626,9 +1634,10 @@ static int run_pair(int duration, int flags)
- 	struct test_output o;
- 	int i, j, m, n, modes = 0;
- 
--	igt_require((flags & TEST_HANG) == 0 || !is_wedged(drm_fd));
-+	igt_require((flags & TEST_HANG) == 0 ||
-+		    (is_i915_device(drm_fd) && !is_wedged(drm_fd)));
- 	igt_require(!(flags & TEST_FENCE_STRESS) ||
--		    gem_available_fences(drm_fd));
-+		    (is_i915_device(drm_fd) && gem_available_fences(drm_fd)));
- 
- 	resources = drmModeGetResources(drm_fd);
- 	igt_require(resources);
-@@ -1813,6 +1822,9 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		igt_install_exit_handler(kms_flip_exit_handler);
- 		get_timestamp_format();
- 
-+		if (is_xe_device(drm_fd))
-+			xe_device_get(drm_fd);
-+
- 		if (is_i915_device(drm_fd)) {
- 			bops = buf_ops_create(drm_fd);
- 		}
-@@ -1878,6 +1890,10 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 	}
- 	igt_stop_signal_helper();
- 
--	igt_fixture
-+	igt_fixture {
-+		if (is_xe_device(drm_fd))
-+			xe_device_put(drm_fd);
-+
- 		close(drm_fd);
-+	}
- }
 -- 
 2.40.0
