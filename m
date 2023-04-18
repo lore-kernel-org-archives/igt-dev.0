@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E33E210E0DA
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:49:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C81210E821
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 22:14:17 +0530
-Message-Id: <20230418164501.1687266-2-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Apr 2023 22:14:58 +0530
+Message-Id: <20230418164501.1687266-43-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 01/45] lib/xe_ioctl: Add missing header for direct
- resolving
+Subject: [igt-dev] [i-g-t 42/45] tests/kms_setmode: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,27 +22,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Add XE driver support for kms tests.
 
-xe_ioctl.h user expects all types resolving. Add missing stddef.h
-header which contains size_t definition.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/xe/xe_ioctl.h | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_setmode.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index d8c40eda0..049cd183d 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -11,6 +11,7 @@
- #ifndef XE_IOCTL_H
- #define XE_IOCTL_H
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index bfa108916..a611d9382 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -30,6 +30,7 @@
+ #include <string.h>
+ #include <sys/time.h>
+ #include <math.h>
++#include "xe/xe_query.h"
  
-+#include <stddef.h>
- #include <stdint.h>
- #include <xe_drm.h>
+ #define MAX_CONNECTORS  10
+ #define MAX_CRTCS       6
+@@ -954,6 +955,9 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
  
+ 		drm_resources = drmModeGetResources(drm_fd);
+ 		igt_require(drm_resources);
++
++		if (is_xe_device(drm_fd))
++			xe_device_get(drm_fd);
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+@@ -971,6 +975,9 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+ 	igt_fixture {
+ 		drmModeFreeResources(drm_resources);
+ 
++		if (is_xe_device(drm_fd))
++			xe_device_put(drm_fd);
++
+ 		close(drm_fd);
+ 	}
+ }
 -- 
 2.40.0
