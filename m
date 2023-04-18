@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC92910E1E7
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 15:33:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F74110E226
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 15:33:04 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 20:58:20 +0530
-Message-Id: <20230418152822.1655272-4-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Apr 2023 20:58:21 +0530
+Message-Id: <20230418152822.1655272-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230418152822.1655272-1-bhanuprakash.modem@intel.com>
 References: <20230418152822.1655272-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 3/5] tests/kms_flip: Add XE support
+Subject: [igt-dev] [i-g-t V2 4/5] tests/i915/kms_psr*: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,97 +24,175 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Add XE driver support for kms tests.
 
-V2: - Minor cleanups
+V2: - Fix unknown subtest error on CI
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_flip.c | 32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ tests/i915/kms_psr.c             | 40 +++++++++++++++++++++++++++-----
+ tests/i915/kms_psr2_sf.c         |  2 +-
+ tests/i915/kms_psr2_su.c         |  2 +-
+ tests/i915/kms_psr_stress_test.c |  2 +-
+ 4 files changed, 37 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 5e82f4a2f84..d048f2f125a 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -44,6 +44,7 @@
+diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+index 3efe1faec8e..4565acd8a1e 100644
+--- a/tests/i915/kms_psr.c
++++ b/tests/i915/kms_psr.c
+@@ -29,6 +29,7 @@
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <string.h>
++#include "xe/xe_ioctl.h"
  
- #include "i915/gem_create.h"
- #include "igt_stats.h"
-+#include "xe/xe_query.h"
+ enum operations {
+ 	PAGE_FLIP,
+@@ -181,7 +182,8 @@ static void fill_blt(data_t *data, const struct igt_fb *fb, unsigned char color)
+ 	intel_bb_destroy(ibb);
+ 	intel_buf_destroy(dst);
  
- #define TEST_DPMS		(1 << 0)
- 
-@@ -1347,15 +1348,21 @@ restart:
- 		o->fb_width *= 2;
- 
- 	modifier = DRM_FORMAT_MOD_LINEAR;
--	if (o->flags & TEST_FENCE_STRESS)
-+	if (o->flags & TEST_FENCE_STRESS) {
-+		igt_skip_on(is_xe_device(drm_fd));
- 		modifier = I915_FORMAT_MOD_X_TILED;
-+	}
- 
- 	/* 256 MB is usually the maximum mappable aperture,
- 	 * (make it 4x times that to ensure failure) */
- 	if (o->flags & TEST_BO_TOOBIG) {
--		igt_skip_on(!is_i915_device(drm_fd));
-+		igt_skip_on(!is_intel_device(drm_fd));
- 		bo_size = 4*gem_mappable_aperture_size(drm_fd);
--		igt_require(bo_size < gem_global_aperture_size(drm_fd));
-+
-+		if (is_i915_device(drm_fd))
-+			igt_require(bo_size < gem_global_aperture_size(drm_fd));
-+		else
-+			igt_require(bo_size < (1ULL << xe_va_bits(drm_fd)));
- 	}
- 
- 	o->fb_ids[0] = igt_create_fb(drm_fd, o->fb_width, o->fb_height,
-@@ -1557,9 +1564,10 @@ static int run_test(int duration, int flags)
- 	struct test_output o;
- 	int i, n, modes = 0;
- 
--	igt_require((flags & TEST_HANG) == 0 || !is_wedged(drm_fd));
-+	igt_require((flags & TEST_HANG) == 0 ||
-+		    (is_i915_device(drm_fd) && !is_wedged(drm_fd)));
- 	igt_require(!(flags & TEST_FENCE_STRESS) ||
--		    gem_available_fences(drm_fd));
-+		    (is_i915_device(drm_fd) && gem_available_fences(drm_fd)));
- 
- 	resources = drmModeGetResources(drm_fd);
- 	igt_require(resources);
-@@ -1626,9 +1634,10 @@ static int run_pair(int duration, int flags)
- 	struct test_output o;
- 	int i, j, m, n, modes = 0;
- 
--	igt_require((flags & TEST_HANG) == 0 || !is_wedged(drm_fd));
-+	igt_require((flags & TEST_HANG) == 0 ||
-+		    (is_i915_device(drm_fd) && !is_wedged(drm_fd)));
- 	igt_require(!(flags & TEST_FENCE_STRESS) ||
--		    gem_available_fences(drm_fd));
-+		    (is_i915_device(drm_fd) && gem_available_fences(drm_fd)));
- 
- 	resources = drmModeGetResources(drm_fd);
- 	igt_require(resources);
-@@ -1813,6 +1822,9 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		igt_install_exit_handler(kms_flip_exit_handler);
- 		get_timestamp_format();
- 
-+		if (is_xe_device(drm_fd))
-+			xe_device_get(drm_fd);
-+
- 		if (is_i915_device(drm_fd)) {
- 			bops = buf_ops_create(drm_fd);
- 		}
-@@ -1878,6 +1890,10 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 	}
- 	igt_stop_signal_helper();
- 
--	igt_fixture
-+	igt_fixture {
-+		if (is_xe_device(drm_fd))
-+			xe_device_put(drm_fd);
-+
- 		close(drm_fd);
-+	}
+-	gem_bo_busy(data->drm_fd, fb->gem_handle);
++	if (is_i915_device(data->drm_fd))
++		gem_bo_busy(data->drm_fd, fb->gem_handle);
  }
+ 
+ static void fill_render(data_t *data, const struct igt_fb *fb,
+@@ -204,7 +206,16 @@ static void fill_render(data_t *data, const struct igt_fb *fb,
+ 
+ 	src = intel_buf_create(data->bops, width, height, fb->plane_bpp[0],
+ 			       0, tiling, 0);
+-	gem_write(data->drm_fd, src->handle, 0, buf, 4);
++
++	if (is_i915_device(data->drm_fd)) {
++		gem_write(data->drm_fd, src->handle, 0, buf, 4);
++	} else {
++		void *map = xe_bo_mmap_ext(data->drm_fd, src->handle, 4,
++					   PROT_READ | PROT_WRITE);
++
++		memcpy(map, buf, 4);
++		gem_munmap(map, 4);
++	}
+ 
+ 	rendercopy(ibb,
+ 		   src, 0, 0, 0xff, 0xff,
+@@ -214,7 +225,8 @@ static void fill_render(data_t *data, const struct igt_fb *fb,
+ 	intel_buf_destroy(src);
+ 	intel_buf_destroy(dst);
+ 
+-	gem_bo_busy(data->drm_fd, fb->gem_handle);
++	if (is_i915_device(data->drm_fd))
++		gem_bo_busy(data->drm_fd, fb->gem_handle);
+ }
+ 
+ static bool sink_support(data_t *data, enum psr_mode mode)
+@@ -256,6 +268,11 @@ static bool drrs_disabled(data_t *data)
+ {
+ 	char buf[512];
+ 
++	/*
++	 * FIXME: As of now, XE's debugfs is using i915 namespace, once Kernel
++	 * changes got landed, please update this logic to use XE specific
++	 * debugfs.
++	 */
+ 	igt_debugfs_simple_read(data->debugfs_fd, "i915_drrs_status",
+ 			 buf, sizeof(buf));
+ 
+@@ -388,7 +405,8 @@ static void setup_test_plane(data_t *data, int test_plane)
+ 	igt_create_color_fb(data->drm_fd,
+ 			    data->mode->hdisplay, data->mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    I915_FORMAT_MOD_X_TILED,
++			    is_i915_device(data->drm_fd) ?
++				I915_FORMAT_MOD_X_TILED : DRM_FORMAT_MOD_LINEAR,
+ 			    0.0, 1.0, 0.0,
+ 			    &data->fb_green);
+ 
+@@ -416,7 +434,8 @@ static void setup_test_plane(data_t *data, int test_plane)
+ 		igt_create_color_fb(data->drm_fd,
+ 				    white_h, white_v,
+ 				    DRM_FORMAT_XRGB8888,
+-				    I915_FORMAT_MOD_X_TILED,
++				    is_i915_device(data->drm_fd) ?
++					I915_FORMAT_MOD_X_TILED : DRM_FORMAT_MOD_LINEAR,
+ 				    1.0, 1.0, 1.0,
+ 				    &data->fb_white);
+ 		break;
+@@ -510,7 +529,7 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
+ 	};
+ 
+ 	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
+ 		data.devid = intel_get_drm_devid(data.drm_fd);
+@@ -547,6 +566,9 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
+ 			igt_subtest_f("%sprimary_%s",
+ 				      append_subtest_name[data.op_psr_mode],
+ 				      op_str(op)) {
++				igt_skip_on(is_xe_device(data.drm_fd) &&
++					    (op == MMAP_CPU || op == MMAP_GTT));
++
+ 				data.op = op;
+ 				data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+ 				test_setup(&data);
+@@ -561,6 +583,9 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
+ 			igt_subtest_f("%ssprite_%s",
+ 				      append_subtest_name[data.op_psr_mode],
+ 				      op_str(op)) {
++				igt_skip_on(is_xe_device(data.drm_fd) &&
++					    (op == MMAP_CPU || op == MMAP_GTT));
++
+ 				data.op = op;
+ 				data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 				test_setup(&data);
+@@ -573,6 +598,9 @@ igt_main_args("", long_options, help_str, opt_handler, &data)
+ 			igt_subtest_f("%scursor_%s",
+ 				      append_subtest_name[data.op_psr_mode],
+ 				      op_str(op)) {
++				igt_skip_on(is_xe_device(data.drm_fd) &&
++					    (op == MMAP_CPU || op == MMAP_GTT));
++
+ 				data.op = op;
+ 				data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
+ 				test_setup(&data);
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index ffaae68b3e6..4cf9864409c 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -898,7 +898,7 @@ igt_main
+ 	igt_fixture {
+ 		drmModeResPtr res;
+ 
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
+ 
+diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+index 3e0a78f24b2..65e67b8c9be 100644
+--- a/tests/i915/kms_psr2_su.c
++++ b/tests/i915/kms_psr2_su.c
+@@ -297,7 +297,7 @@ igt_main
+ 	igt_fixture {
+ 		struct itimerspec interval;
+ 
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
+ 
+diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
+index 26e222a27b6..a4cb3194ebe 100644
+--- a/tests/i915/kms_psr_stress_test.c
++++ b/tests/i915/kms_psr_stress_test.c
+@@ -331,7 +331,7 @@ igt_main
+ 	data_t data = {};
+ 
+ 	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		data.bops = buf_ops_create(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
 -- 
 2.40.0
