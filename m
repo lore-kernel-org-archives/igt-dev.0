@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 046C610E814
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:49:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 186D410E815
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:49:58 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 22:14:40 +0530
-Message-Id: <20230418164501.1687266-25-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Apr 2023 22:14:41 +0530
+Message-Id: <20230418164501.1687266-26-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 24/45] tests/kms_async_flips: No XE support
+Subject: [igt-dev] [i-g-t 25/45] tests/kms_atomic_transition: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,32 +22,52 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Async flips won't work with linear buffers on Intel hardware,
-hence don't run tests on XE device as XE won't support tiling.
+Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_async_flips.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tests/kms_atomic_transition.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 1e6506e3d..51ffa523a 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -592,7 +592,13 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 	int i;
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 7c7be578c..9f39d033d 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -136,7 +136,7 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
+ 	if (data->extended)
+ 		return false;
  
- 	igt_fixture {
--		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		/*
-+		 * FIXME: As of now, Async flips won't work with linear buffers
-+		 * on Intel hardware, hence don't run tests on XE device as XE
-+		 * won't support tiling.
-+		 * Once Kernel changes got landed, please update this logic.
-+		 */
-+		data.drm_fd = drm_open_driver_master(DRIVER_ANY & ~DRIVER_XE);
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
+-	if (!is_i915_device(data->drm_fd))
++	if (!is_intel_device(data->drm_fd))
+ 		return false;
+ 
+ 	if (plane->type == DRM_PLANE_TYPE_CURSOR)
+@@ -848,7 +848,7 @@ retry:
+ 		/* count enable pipes to set max iteration */
+ 		j += 1;
+ 
+-		if (is_i915_device(data->drm_fd))
++		if (is_intel_device(data->drm_fd))
+ 			data->pipe_crcs[i] = igt_pipe_crc_new(data->drm_fd, i,
+ 							      IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+@@ -943,7 +943,7 @@ retry:
+ 			commit_display(data, i, nonblocking);
+ 			collect_crcs_mask(data->pipe_crcs, i, crcs[4]);
+ 
+-			if (!is_i915_device(data->drm_fd))
++			if (!is_intel_device(data->drm_fd))
+ 				continue;
+ 
+ 			for (int k = 0; k < IGT_MAX_PIPES; k++) {
+@@ -996,7 +996,7 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
+ 	unset_output_pipe(&data->display);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+-	if (is_i915_device(data->drm_fd)) {
++	if (is_intel_device(data->drm_fd)) {
+ 		for_each_pipe(&data->display, pipe)
+ 			igt_pipe_crc_free(data->pipe_crcs[pipe]);
+ 	}
 -- 
 2.40.0
