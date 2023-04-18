@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6803C10E824
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D397810E821
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:15 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 22:15:00 +0530
-Message-Id: <20230418164501.1687266-45-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Apr 2023 22:14:57 +0530
+Message-Id: <20230418164501.1687266-42-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 44/45] tests/kms: Move intel specific kms tests to
- new dir
+Subject: [igt-dev] [i-g-t 41/45] tests/kms_rotation_crc: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,180 +22,110 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Move all kms tests those supports both i915 & XE to new dir
-called tests/intel.
+Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/{i915 => intel}/kms_big_fb.c          |  0
- tests/{i915 => intel}/kms_big_joiner.c      |  0
- tests/{i915 => intel}/kms_cdclk.c           |  0
- tests/{i915 => intel}/kms_draw_crc.c        |  0
- tests/{i915 => intel}/kms_dsc.c             |  0
- tests/{i915 => intel}/kms_dsc_helper.c      |  0
- tests/{i915 => intel}/kms_dsc_helper.h      |  0
- tests/{i915 => intel}/kms_flip_scaled_crc.c |  0
- tests/{i915 => intel}/kms_flip_tiling.c     |  0
- tests/{i915 => intel}/kms_mmap_write_crc.c  |  0
- tests/{i915 => intel}/kms_psr.c             |  0
- tests/{i915 => intel}/kms_psr2_sf.c         |  0
- tests/{i915 => intel}/kms_psr2_su.c         |  0
- tests/{i915 => intel}/kms_psr_stress_test.c |  0
- tests/meson.build                           | 37 ++++++++++++++-------
- 15 files changed, 25 insertions(+), 12 deletions(-)
- rename tests/{i915 => intel}/kms_big_fb.c (100%)
- rename tests/{i915 => intel}/kms_big_joiner.c (100%)
- rename tests/{i915 => intel}/kms_cdclk.c (100%)
- rename tests/{i915 => intel}/kms_draw_crc.c (100%)
- rename tests/{i915 => intel}/kms_dsc.c (100%)
- rename tests/{i915 => intel}/kms_dsc_helper.c (100%)
- rename tests/{i915 => intel}/kms_dsc_helper.h (100%)
- rename tests/{i915 => intel}/kms_flip_scaled_crc.c (100%)
- rename tests/{i915 => intel}/kms_flip_tiling.c (100%)
- rename tests/{i915 => intel}/kms_mmap_write_crc.c (100%)
- rename tests/{i915 => intel}/kms_psr.c (100%)
- rename tests/{i915 => intel}/kms_psr2_sf.c (100%)
- rename tests/{i915 => intel}/kms_psr2_su.c (100%)
- rename tests/{i915 => intel}/kms_psr_stress_test.c (100%)
+ tests/kms_rotation_crc.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/tests/i915/kms_big_fb.c b/tests/intel/kms_big_fb.c
-similarity index 100%
-rename from tests/i915/kms_big_fb.c
-rename to tests/intel/kms_big_fb.c
-diff --git a/tests/i915/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
-similarity index 100%
-rename from tests/i915/kms_big_joiner.c
-rename to tests/intel/kms_big_joiner.c
-diff --git a/tests/i915/kms_cdclk.c b/tests/intel/kms_cdclk.c
-similarity index 100%
-rename from tests/i915/kms_cdclk.c
-rename to tests/intel/kms_cdclk.c
-diff --git a/tests/i915/kms_draw_crc.c b/tests/intel/kms_draw_crc.c
-similarity index 100%
-rename from tests/i915/kms_draw_crc.c
-rename to tests/intel/kms_draw_crc.c
-diff --git a/tests/i915/kms_dsc.c b/tests/intel/kms_dsc.c
-similarity index 100%
-rename from tests/i915/kms_dsc.c
-rename to tests/intel/kms_dsc.c
-diff --git a/tests/i915/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
-similarity index 100%
-rename from tests/i915/kms_dsc_helper.c
-rename to tests/intel/kms_dsc_helper.c
-diff --git a/tests/i915/kms_dsc_helper.h b/tests/intel/kms_dsc_helper.h
-similarity index 100%
-rename from tests/i915/kms_dsc_helper.h
-rename to tests/intel/kms_dsc_helper.h
-diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
-similarity index 100%
-rename from tests/i915/kms_flip_scaled_crc.c
-rename to tests/intel/kms_flip_scaled_crc.c
-diff --git a/tests/i915/kms_flip_tiling.c b/tests/intel/kms_flip_tiling.c
-similarity index 100%
-rename from tests/i915/kms_flip_tiling.c
-rename to tests/intel/kms_flip_tiling.c
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/intel/kms_mmap_write_crc.c
-similarity index 100%
-rename from tests/i915/kms_mmap_write_crc.c
-rename to tests/intel/kms_mmap_write_crc.c
-diff --git a/tests/i915/kms_psr.c b/tests/intel/kms_psr.c
-similarity index 100%
-rename from tests/i915/kms_psr.c
-rename to tests/intel/kms_psr.c
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-similarity index 100%
-rename from tests/i915/kms_psr2_sf.c
-rename to tests/intel/kms_psr2_sf.c
-diff --git a/tests/i915/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
-similarity index 100%
-rename from tests/i915/kms_psr2_su.c
-rename to tests/intel/kms_psr2_su.c
-diff --git a/tests/i915/kms_psr_stress_test.c b/tests/intel/kms_psr_stress_test.c
-similarity index 100%
-rename from tests/i915/kms_psr_stress_test.c
-rename to tests/intel/kms_psr_stress_test.c
-diff --git a/tests/meson.build b/tests/meson.build
-index a6642b9dc..75fdda84a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -217,23 +217,13 @@ i915_progs = [
- 	'i915_query',
- 	'i915_selftest',
- 	'i915_suspend',
--	'kms_big_fb',
--	'kms_big_joiner' ,
- 	'kms_busy',
- 	'kms_ccs',
--	'kms_cdclk',
--	'kms_draw_crc',
- 	'kms_fbcon_fbt',
- 	'kms_fence_pin_leak',
--	'kms_flip_scaled_crc',
--	'kms_flip_tiling',
- 	'kms_frontbuffer_tracking',
- 	'kms_legacy_colorkey',
--	'kms_mmap_write_crc',
- 	'kms_pipe_b_c_ivb',
--	'kms_psr',
--	'kms_psr2_su',
--	'kms_psr_stress_test',
- 	'kms_pwrite_crc',
- 	'sysfs_defaults',
- 	'sysfs_heartbeat_interval',
-@@ -241,6 +231,19 @@ i915_progs = [
- 	'sysfs_timeslice_duration',
- ]
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 295aed762..23c18c242 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -459,7 +459,7 @@ static bool test_format(data_t *data,
+ 	if (!igt_fb_supported_format(format))
+ 		return false;
  
-+intel_progs = [
-+	'kms_big_fb',
-+	'kms_big_joiner' ,
-+	'kms_cdclk',
-+	'kms_draw_crc',
-+	'kms_flip_scaled_crc',
-+	'kms_flip_tiling',
-+	'kms_mmap_write_crc',
-+	'kms_psr',
-+	'kms_psr2_su',
-+	'kms_psr_stress_test',
-+]
+-	if (!is_i915_device(data->gfx_fd) ||
++	if (!is_intel_device(data->gfx_fd) ||
+ 	    data->extended)
+ 		return true;
+ 
+@@ -545,14 +545,14 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
+ 		igt_require(igt_plane_has_rotation(plane, data->rotation));
+ 		/* CHV can't rotate and reflect simultaneously */
+-		igt_require(!is_i915_device(data->gfx_fd) ||
++		igt_require(!is_intel_device(data->gfx_fd) ||
+ 			    !IS_CHERRYVIEW(data->devid) ||
+ 			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
+ 
+ 		prepare_crtc(data, output, pipe, plane, true);
+ 
+ 		for (i = 0; i < num_rectangle_types; i++) {
+-			/* Unsupported on i915 */
++			/* Unsupported on intel */
+ 			if (plane_type == DRM_PLANE_TYPE_CURSOR &&
+ 			    i != square)
+ 				continue;
+@@ -560,9 +560,8 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 			/* Only support partial covering primary plane on gen9+ */
+ 			if (is_amdgpu_device(data->gfx_fd) ||
+ 				(plane_type == DRM_PLANE_TYPE_PRIMARY &&
+-				 is_i915_device(data->gfx_fd) &&
+-				 intel_display_ver(
+-					 intel_get_drm_devid(data->gfx_fd)) < 9)) {
++				 is_intel_device(data->gfx_fd) &&
++				 intel_display_ver(data->devid) < 9)) {
+ 				if (i != rectangle)
+ 					continue;
+ 				else
+@@ -592,7 +591,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 						 data->override_fmt, test_bad_format);
+ 			}
+ 		}
+-		if (is_i915_device(data->gfx_fd)) {
++		if (is_intel_device(data->gfx_fd)) {
+ 			igt_pipe_crc_stop(data->pipe_crc);
+ 		}
+ 	}
+@@ -841,6 +840,10 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 		igt_pipe_crc_start(data->pipe_crc);
+ 
+ 		for (i = 0; i < ARRAY_SIZE(planeconfigs); i++) {
++			if (is_xe_device(data->gfx_fd) &&
++			    planeconfigs[i].modifier != DRM_FORMAT_MOD_LINEAR)
++				continue;
 +
- xe_progs = [
- 	'xe_create',
- 	'xe_compute',
-@@ -316,6 +319,16 @@ foreach prog : i915_progs
- 	test_list += prog
- endforeach
+ 			p[0].fbinfo = &planeconfigs[i];
+ 			pointlocation(data, p, mode, 0);
  
-+foreach prog : intel_progs
-+	test_executables += executable(prog,
-+		   join_paths('intel', prog + '.c'),
-+		   dependencies : test_deps,
-+		   install_dir : libexecdir,
-+		   install_rpath : libexecdir_rpathdir,
-+		   install : true)
-+	test_list += prog
-+endforeach
+@@ -1137,7 +1140,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 	igt_fixture {
+ 		data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
+-		if (is_i915_device(data.gfx_fd)) {
++		if (is_intel_device(data.gfx_fd)) {
+ 			data.devid = intel_get_drm_devid(data.gfx_fd);
+ 			gen = intel_display_ver(data.devid);
+ 		}
+@@ -1193,6 +1196,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 	igt_describe("Checking unsupported tiling for gen9+ with 90 degree of rotation");
+ 	igt_subtest_f("bad-tiling") {
++		igt_require_i915(data.gfx_fd);
 +
- foreach prog : xe_progs
- 	test_executables += executable(prog,
- 		   join_paths('xe', prog + '.c'),
-@@ -474,7 +487,7 @@ test_executables += executable('kms_color',
- test_list += 'kms_color'
+ 		data.rotation = IGT_ROTATION_90;
+ 		data.override_modifier = I915_FORMAT_MOD_X_TILED;
+ 		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
+@@ -1201,6 +1206,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
  
- test_executables += executable('kms_dsc',
--	   [ join_paths('i915', 'kms_dsc.c'), join_paths ('i915', 'kms_dsc_helper.c')],
-+	   [ join_paths('intel', 'kms_dsc.c'), join_paths ('intel', 'kms_dsc_helper.c')],
- 	   dependencies : test_deps,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -482,7 +495,7 @@ test_executables += executable('kms_dsc',
- test_list += 'kms_dsc'
+ 	igt_describe("Tiling and Rotation test for gen 10+ for primary plane");
+ 	for (reflect_x = reflect_x_subtests; reflect_x->modifier; reflect_x++) {
++		igt_fixture
++			igt_require_i915(data.gfx_fd);
++
+ 		igt_subtest_f("primary-%s-reflect-x-%s",
+ 			      modifier_test_str(reflect_x->modifier),
+ 			      rot_test_str(reflect_x->rot)) {
+@@ -1260,6 +1268,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		enum pipe pipe;
+ 		igt_output_t *output;
  
- test_executables += executable('kms_psr2_sf',
--	   [ join_paths('i915', 'kms_psr2_sf.c'), join_paths ('i915', 'kms_dsc_helper.c')],
-+	   [ join_paths('intel', 'kms_psr2_sf.c'), join_paths ('intel', 'kms_dsc_helper.c')],
- 	   dependencies : test_deps,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
++		igt_require_i915(data.gfx_fd);
+ 		igt_display_require_output(&data.display);
+ 
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
 -- 
 2.40.0
