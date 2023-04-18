@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com
- [IPv6:2a00:1450:4864:20::42e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A0BB10E541
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 14:27:33 +0000 (UTC)
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-2f833bda191so938062f8f.1
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Apr 2023 07:27:33 -0700 (PDT)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B1F0F10E722
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 09:06:13 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 18 Apr 2023 14:31:22 +0530
+Message-Id: <20230418090122.8209-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-References: <20230414210328.1153659-1-alex.hung@amd.com>
-In-Reply-To: <20230414210328.1153659-1-alex.hung@amd.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Mon, 17 Apr 2023 10:27:21 -0400
-Message-ID: <CAJUqKUqFCX=hM+y6dOeG2kyuuoyeGYvMannQMX12keV4=4dWsg@mail.gmail.com>
-To: Alex Hung <alex.hung@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH] tests/kms_universal_plane: Enable
- sanity_test_pipe for all devices
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Add negative test
+ for extended display
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,65 +17,232 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thank you for enabling this.
+Added negative test to validte ENOSPC when two 2k-4k or 4k-4k
+moniters connected through MST.
+This test added to prvode bandwidth issue in MST config.
 
-On Fri, Apr 14, 2023 at 5:03=E2=80=AFPM Alex Hung <alex.hung@amd.com> wrote=
-:
->
-> This subtest can run on non-i915 devices.
->
-> Signed-off-by: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Mark Yacoub <markyacoub@chromium.org>
-> ---
->  tests/kms_universal_plane.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-> index 114918d9..369e5665 100644
-> --- a/tests/kms_universal_plane.c
-> +++ b/tests/kms_universal_plane.c
-> @@ -377,7 +377,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_ou=
-tput_t *output)
->         igt_plane_t *primary;
->         drmModeModeInfo *mode;
->         int i;
-> -       int expect;
-> +       int expect =3D 0;
->
->         igt_require_pipe(&data->display, pipe);
->
-> @@ -400,9 +400,9 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_ou=
-tput_t *output)
->          * doesn't cover CRTC (should fail on pre-gen9 and succeed on
->          * gen9+).
->          */
-> -       igt_require_intel(data->drm_fd);
->         igt_plane_set_fb(primary, &test.undersized_fb);
-> -       expect =3D (data->display_ver < 9) ? -EINVAL : 0;
-> +       if (is_i915_device(data->drm_fd))
-> +               expect =3D (data->display_ver < 9) ? -EINVAL : 0;
->         igt_assert(igt_display_try_commit2(&data->display, COMMIT_UNIVERS=
-AL) =3D=3D expect);
->
->         /* Same as above, but different plane positioning. */
-> @@ -412,7 +412,8 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_ou=
-tput_t *output)
->         igt_plane_set_position(primary, 0, 0);
->
->         /* Try to use universal plane API to scale down (should fail on p=
-re-gen9) */
-> -       expect =3D (data->display_ver < 9) ? -ERANGE : 0;
-> +       if (is_i915_device(data->drm_fd))
-> +               expect =3D (data->display_ver < 9) ? -ERANGE : 0;
->         igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plan=
-e_id,
->                                    output->config.crtc->crtc_id,
->                                    test.oversized_fb.fb_id, 0,
-> --
-> 2.40.0
->
+Example:
+  When two monitors connected through MST, the second monitor
+  also tries to use the same mode. So two such modes may not
+  fit into the link bandwidth. So, iterate through connected
+  outputs & modes and find a combination of modes those fit
+  into the link BW.
+
+v2: Rebased on tip.
+v3: -Code cleanup and updated description.
+    -Free path_blob before call return. (Kamil)
+v4: Updated code formatting and function description. (Jeevan)
+
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/kms_display_modes.c | 161 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 161 insertions(+)
+
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+index d69c7b931..e9b2b22bf 100644
+--- a/tests/kms_display_modes.c
++++ b/tests/kms_display_modes.c
+@@ -26,14 +26,107 @@
+ 
+ #include "igt.h"
+ 
++#define HDISPLAY_2K	2560
++#define VDISPLAY_2K	1440
++
++#define HDISPLAY_4K	3840
++#define VDISPLAY_4K	2160
++
+ IGT_TEST_DESCRIPTION("Test Display Modes");
+ 
+ typedef struct {
+ 	int drm_fd;
+ 	igt_display_t display;
++	drmModeModeInfo mode_mst[2];
++	igt_output_t *mst_output[2];
+ 	int n_pipes;
+ } data_t;
+ 
++/*Get higher mode supported by panel*/
++static drmModeModeInfo *get_highres_mode(igt_output_t *output)
++{
++	drmModeConnector *connector = output->config.connector;
++	drmModeModeInfo *highest_mode = NULL;
++
++	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
++	highest_mode = &connector->modes[0];
++
++	return highest_mode;
++}
++
++/*Get the 4k or less then 4k mode of connected panel*/
++static drmModeModeInfo *get_mode(igt_output_t *output)
++{
++	int j;
++	drmModeModeInfo *required_mode = NULL;
++	drmModeConnector *connector = output->config.connector;
++
++	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
++	for (j = 0; j < connector->count_modes; j++) {
++		if (connector->modes[j].vdisplay <= VDISPLAY_4K &&
++		    connector->modes[j].hdisplay <= HDISPLAY_4K) {
++			required_mode = &connector->modes[j];
++			break;
++		}
++	}
++
++	return required_mode;
++}
++
++static int parse_path_blob(char *blob_data)
++{
++	int connector_id;
++	char *encoder;
++
++	encoder = strtok(blob_data, ":");
++	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
++
++	connector_id = atoi(strtok(NULL, "-"));
++
++	return connector_id;
++}
++
++static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
++{
++	drmModePropertyBlobPtr path_blob = NULL;
++	uint64_t path_blob_id;
++	drmModeConnector *connector = output->config.connector;
++	struct kmstest_connector_config config;
++	const char *encoder;
++	int connector_id;
++	static int prev_connector_id;
++
++	kmstest_get_connector_config(data->drm_fd, output->config.connector->connector_id,
++				     -1, &config);
++	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
++
++	if (strcmp(encoder, "DP MST"))
++		return false;
++
++	igt_assert(kmstest_get_property(data->drm_fd, connector->connector_id,
++		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
++		   &path_blob_id, NULL));
++
++	igt_assert(path_blob = drmModeGetPropertyBlob(data->drm_fd, path_blob_id));
++
++	connector_id = parse_path_blob((char *) path_blob->data);
++
++	drmModeFreePropertyBlob(path_blob);
++
++	/*
++	 * Discarding outputs of other DP MST topology.
++	 * Testing only on outputs on the topology we got previously
++	 */
++	if (i == 0) {
++		prev_connector_id = connector_id;
++	} else {
++		if (connector_id != prev_connector_id)
++			return false;
++	}
++
++	return true;
++}
++
+ static void run_extendedmode_basic(data_t *data,
+ 				   enum pipe pipe1, igt_output_t *output1,
+ 				   enum pipe pipe2, igt_output_t *output2)
+@@ -173,8 +266,46 @@ static void run_extendedmode_test(data_t *data) {
+ 	}
+ }
+ 
++static void run_extendedmode_negative(data_t *data, int pipe1, int pipe2)
++{
++	struct igt_fb fbs[2];
++	igt_display_t *display = &data->display;
++	igt_plane_t *plane[2];
++	int ret;
++
++	igt_display_reset(display);
++
++	igt_output_set_pipe(data->mst_output[0], pipe1);
++	igt_output_set_pipe(data->mst_output[1], pipe2);
++
++	igt_create_color_fb(data->drm_fd, data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 1, 0, 0, &fbs[0]);
++	igt_create_color_fb(data->drm_fd, data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 0, 0, 1, &fbs[1]);
++
++	plane[0] = igt_pipe_get_plane_type(&display->pipes[pipe1], DRM_PLANE_TYPE_PRIMARY);
++	plane[1] = igt_pipe_get_plane_type(&display->pipes[pipe2], DRM_PLANE_TYPE_PRIMARY);
++
++	igt_plane_set_fb(plane[0], &fbs[0]);
++	igt_fb_set_size(&fbs[0], plane[0], data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay);
++	igt_plane_set_size(plane[0], data->mode_mst[0].hdisplay, data->mode_mst[0].vdisplay);
++
++	igt_plane_set_fb(plane[1], &fbs[1]);
++	igt_fb_set_size(&fbs[1], plane[1], data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay);
++	igt_plane_set_size(plane[1], data->mode_mst[1].hdisplay, data->mode_mst[1].vdisplay);
++
++	igt_output_override_mode(data->mst_output[0], &data->mode_mst[0]);
++	igt_output_override_mode(data->mst_output[1], &data->mode_mst[1]);
++
++	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
++	igt_assert(ret != 0 && errno == ENOSPC);
++}
++
+ igt_main
+ {
++	int dp_mst_outputs = 0, count = 0;
++	enum pipe pipe1, pipe2;
++	igt_output_t *output;
+ 	data_t data;
+ 
+ 	igt_fixture {
+@@ -182,12 +313,42 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
++
++		for_each_connected_output(&data.display, output) {
++			data.mst_output[count++] = output;
++			if (output_is_dp_mst(&data, output, dp_mst_outputs))
++				dp_mst_outputs++;
++		}
+ 	}
+ 
+ 	igt_describe("Test for validating display extended mode with a pair of connected displays");
+ 	igt_subtest_with_dynamic("extended-mode-basic")
+ 		run_extendedmode_test(&data);
+ 
++	igt_describe("Negative test for validating display extended mode with a pair of connected "
++		     "2k-4k or 4k-4k displays");
++	igt_subtest_with_dynamic("mst-extended-mode-negative") {
++		igt_require_f(dp_mst_outputs > 1, "MST not found more then one\n");
++
++		 memcpy(&data.mode_mst[0], get_mode(data.mst_output[0]), sizeof(drmModeModeInfo));
++		 memcpy(&data.mode_mst[1], get_highres_mode(data.mst_output[1]),
++				 sizeof(drmModeModeInfo));
++
++		igt_require_f((data.mode_mst[1].hdisplay >= HDISPLAY_4K &&
++			       data.mode_mst[1].vdisplay >= VDISPLAY_4K), "4k panel not found\n");
++
++		for_each_pipe(&data.display, pipe1) {
++			for_each_pipe(&data.display, pipe2) {
++				if (pipe1 == pipe2)
++					continue;
++
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe1),
++					      kmstest_pipe_name(pipe2))
++					run_extendedmode_negative(&data, pipe1, pipe2);
++			}
++		}
++	}
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 	}
+-- 
+2.25.1
