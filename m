@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B8DC110E099
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 06:21:04 +0000 (UTC)
-Message-ID: <eb994c0a-8409-67eb-9d9b-04fa1ce20123@linux.intel.com>
-Date: Wed, 19 Apr 2023 08:20:59 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F79510E7EB
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:10 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 18 Apr 2023 22:14:52 +0530
+Message-Id: <20230418164501.1687266-37-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
+References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230418190603.56196-1-kamil.konieczny@linux.intel.com>
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-In-Reply-To: <20230418190603.56196-1-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] scripts/verify-blacklist: Handle
- multiple given blacklists
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t 36/45] tests/kms_panel_fitting: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,103 +18,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 4/18/23 21:06, Kamil Konieczny wrote:
-> From: Petri Latvala <petri.latvala@intel.com>
->
-> Also change the message for useless entry to not say blacklist; this
-> script is incidentally useful for checking testlist files too.
+Add XE driver support for kms tests.
 
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_panel_fitting.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-LGTM.
-
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-
->
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->   scripts/verify-blacklist.sh | 40 +++++++++++++++++++++----------------
->   1 file changed, 23 insertions(+), 17 deletions(-)
->
-> diff --git a/scripts/verify-blacklist.sh b/scripts/verify-blacklist.sh
-> index 93dca495b..05383f13f 100755
-> --- a/scripts/verify-blacklist.sh
-> +++ b/scripts/verify-blacklist.sh
-> @@ -3,21 +3,23 @@
->   # Verify that all entries in a blacklist file are still valid
->   
->   usage() {
-> -    echo "Usage: $0 <path-to-igt-runner> <test-binary-directory> <blacklist-file>"
-> +    echo "Usage: $0 <path-to-igt-runner> <test-binary-directory> <blacklist-files ...>"
->       echo
->       echo " path-to-igt-runner: For example build/runner/igt_runner"
->       echo " test-binary-directory: For example build/tests"
-> -    echo " blacklist-file: For example tests/intel-ci/blacklist.txt"
-> +    echo " blacklist-files: For example tests/intel-ci/blacklist.txt"
->       exit 2
->   }
->   
-> -if [ $# -ne 3 ]; then
-> +if [ $# -lt 3 ]; then
->       usage
->   fi
->   
->   RUNNER="$1"
-> -BINDIR="$2"
-> -BLFILE="$3"
-> +shift
-> +BINDIR="$1"
-> +shift
-> +BLFILES="$*"
->   
->   if [ ! -x "$RUNNER" ]; then
->       echo "$RUNNER not found"
-> @@ -31,24 +33,28 @@ if [ ! -f "$BINDIR/test-list.txt" ]; then
->       usage
->   fi
->   
-> -if [ ! -f "$BLFILE" ]; then
-> -    echo "$BLFILE not found"
-> -    echo
-> -    usage
-> -fi
-> +for BLFILE in $BLFILES; do
-> +    if [ ! -f "$BLFILE" ]; then
-> +	echo "$BLFILE not found"
-> +	echo
-> +	usage
-> +    fi
-> +done
->   
->   STATUS=0
->   
->   TESTLIST="$("$RUNNER" --list-all "$BINDIR")"
->   
-> -cat "$BLFILE" | while read line; do
-> -    blentry=$(echo "$line" | sed 's/#.*//' | tr -d '[:space:]')
-> -    if [ "$blentry" = "" ]; then continue; fi
-> +for BLFILE in $BLFILES; do
-> +    cat "$BLFILE" | while read line; do
-> +	blentry=$(echo "$line" | sed 's/#.*//' | tr -d '[:space:]')
-> +	if [ "$blentry" = "" ]; then continue; fi
->   
-> -    if ! (echo "$TESTLIST" | grep -Pq "$blentry") >/dev/null 2>/dev/null; then
-> -	echo Useless blacklist entry: "$blentry"
-> -	STATUS=1
-> -    fi
-> +	if ! (echo "$TESTLIST" | grep -Pq "$blentry") >/dev/null 2>/dev/null; then
-> +	    echo "$BLFILE: Useless entry: $blentry"
-> +	    STATUS=1
-> +	fi
-> +    done
->   done
->   
->   exit $STATUS
+diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+index 2d0590da2..97ef1ae48 100644
+--- a/tests/kms_panel_fitting.c
++++ b/tests/kms_panel_fitting.c
+@@ -23,6 +23,7 @@
+  */
+ 
+ #include "igt.h"
++#include <limits.h>
+ #include <math.h>
+ #include <sys/stat.h>
+ 
+@@ -133,7 +134,7 @@ test_panel_fitting_legacy(data_t *d, igt_display_t *display,
+ 	igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
+ 	igt_plane_set_position(d->plane2, 100, 100);
+ 
+-	if (is_i915_device(display->drm_fd)) {
++	if (is_intel_device(display->drm_fd)) {
+ 		uint32_t devid = intel_get_drm_devid(display->drm_fd);
+ 		/*
+ 		 * Most of gen7 and all of gen8 doesn't support plane scaling
+@@ -233,10 +234,15 @@ static void test_panel_fitting(data_t *data, enum test_type type)
+ 	struct stat sb;
+ 
+ 	if (type == TEST_ATOMIC) {
+-		igt_require_f(is_i915_device(display->drm_fd), "not valid for non-i915 devices\n");
++		char path[PATH_MAX];
++
++		igt_require_f(is_intel_device(display->drm_fd), "not valid for non-intel devices\n");
+ 
+ 		/* Until this is force enabled, force modeset evasion. */
+-		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
++		snprintf(path, PATH_MAX, "/sys/module/%s/parameters/fastboot",
++					 is_i915_device(data->drm_fd) ? "i915" : "xe");
++
++		if (stat(path, &sb) == 0)
+ 			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
+ 
+ 		igt_require(intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 5);
+-- 
+2.40.0
