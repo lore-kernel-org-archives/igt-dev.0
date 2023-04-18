@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95ABB10E7F6
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:49:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8DC210E7FA
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:49:44 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 22:14:27 +0530
-Message-Id: <20230418164501.1687266-12-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Apr 2023 22:14:29 +0530
+Message-Id: <20230418164501.1687266-14-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 11/45] lib: Use i915 namespace for XE debugfs
+Subject: [igt-dev] [i-g-t 13/45] lib/igt_draw: Add gpu draw routine support
+ for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,62 +23,153 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As of now XE is going to use i915 namespace for their debugfs.
-Example: i915_current_bpc is applicable for both i915 & XE
+Add GPU blt, render & WC draw routine support for XE driver.
 
-V2: - Rebase
-
+Credits-to: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- lib/igt_kms.c | 4 ++--
- lib/igt_psr.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ lib/igt_draw.c | 82 +++++++++++++++++++++++++++++++++++---------------
+ lib/igt_draw.h |  2 ++
+ 2 files changed, 60 insertions(+), 24 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 4b3eeffc7..a169b3288 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5706,7 +5706,7 @@ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe)
- 	fd = igt_debugfs_pipe_dir(drmfd, pipe, O_RDONLY);
- 	igt_assert(fd >= 0);
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index ac512fac5..1b793c0df 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -37,6 +37,8 @@
+ #include "i915/gem_create.h"
+ #include "i915/gem_mman.h"
+ #include "i915/intel_mocs.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
  
--	if (is_i915_device(drmfd))
-+	if (is_intel_device(drmfd))
- 		strcpy(debugfs_name, "i915_current_bpc");
- 	else if (is_amdgpu_device(drmfd))
- 		strcpy(debugfs_name, "amdgpu_current_bpc");
-@@ -5828,7 +5828,7 @@ int igt_get_max_dotclock(int fd)
- 	char *s;
- 	int dir, res, max_dotclock = 0;
+ #ifndef PAGE_ALIGN
+ #ifndef PAGE_SIZE
+@@ -493,24 +495,29 @@ static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
+ {
+ 	uint32_t *ptr;
  
--	if (!is_i915_device(fd))
-+	if (!is_intel_device(fd))
- 		return max_dotclock;
+-	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
+-		       I915_GEM_DOMAIN_GTT);
+-
+-	/* We didn't implement suport for the older tiling methods yet. */
+-	if (tiling != I915_TILING_NONE)
+-		igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
+-
+-	if (gem_has_lmem(fd))
+-		ptr = gem_mmap_offset__fixed(fd, buf->handle, 0,
+-					     PAGE_ALIGN(buf->size),
+-					     PROT_READ | PROT_WRITE);
+-	else if (gem_has_legacy_mmap(fd))
+-		ptr = gem_mmap__wc(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
+-				   PROT_READ | PROT_WRITE);
+-	else
+-		ptr = gem_mmap_offset__wc(fd, buf->handle, 0,
+-					  PAGE_ALIGN(buf->size),
+-					  PROT_READ | PROT_WRITE);
++	if (is_i915_device(fd)) {
++		gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
++			       I915_GEM_DOMAIN_GTT);
++
++		/* We didn't implement suport for the older tiling methods yet. */
++		if (tiling != I915_TILING_NONE)
++			igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
++
++		if (gem_has_lmem(fd))
++			ptr = gem_mmap_offset__fixed(fd, buf->handle, 0,
++						     PAGE_ALIGN(buf->size),
++						     PROT_READ | PROT_WRITE);
++		else if (gem_has_legacy_mmap(fd))
++			ptr = gem_mmap__wc(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
++					   PROT_READ | PROT_WRITE);
++		else
++			ptr = gem_mmap_offset__wc(fd, buf->handle, 0,
++						  PAGE_ALIGN(buf->size),
++						  PROT_READ | PROT_WRITE);
++	} else {
++		ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size,
++				     PROT_READ | PROT_WRITE);
++	}
  
- 	dir = igt_debugfs_dir(fd);
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index a2d880312..13f7c567d 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -277,7 +277,7 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
- 	int debugfs_fd;
- 	bool ret;
+ 	switch (tiling) {
+ 	case I915_TILING_NONE:
+@@ -663,11 +670,14 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+ 	int gen = intel_gen(devid);
+ 	int pitch;
  
--	if (!is_i915_device(drm_fd))
-+	if (!is_intel_device(drm_fd))
- 		return false;
++	if (tiling)
++		igt_require_i915(fd);
++
+ 	dst = create_buf(fd, cmd_data->bops, buf, tiling);
+ 	ibb = intel_bb_create(fd, PAGE_SIZE);
+ 	intel_bb_add_intel_buf(ibb, dst, true);
  
- 	debugfs_fd = igt_debugfs_dir(drm_fd);
-@@ -303,7 +303,7 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
- 	int debugfs_fd;
- 	bool ret = false;
+-	if (HAS_4TILE(intel_get_drm_devid(fd))) {
++	if (is_i915_device(fd) && HAS_4TILE(intel_get_drm_devid(fd))) {
+ 		int buf_height = buf->size / buf->stride;
  
--	if (!is_i915_device(drm_fd))
-+	if (!is_intel_device(drm_fd))
- 		return ret;
+ 		switch (buf->bpp) {
+@@ -772,11 +782,21 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
  
- 	debugfs_fd = igt_debugfs_dir(drm_fd);
+ 	/* We create a temporary buffer and copy from it using rendercopy. */
+ 	tmp.size = rect->w * rect->h * pixel_size;
+-	tmp.handle = gem_create(fd, tmp.size);
++	if (is_i915_device(fd))
++		tmp.handle = gem_create(fd, tmp.size);
++	else
++		tmp.handle = xe_bo_create_flags(fd, 0,
++						ALIGN(tmp.size, xe_get_default_alignment(fd)),
++						vram_if_possible(fd, 0));
++
+ 	tmp.stride = rect->w * pixel_size;
+ 	tmp.bpp = buf->bpp;
+-	draw_rect_mmap_cpu(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
+-			   I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
++	if (is_i915_device(fd))
++		draw_rect_mmap_cpu(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
++				   I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
++	else
++		draw_rect_mmap_wc(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
++				  I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
+ 
+ 	src = create_buf(fd, cmd_data->bops, &tmp, I915_TILING_NONE);
+ 	dst = create_buf(fd, cmd_data->bops, buf, tiling);
+@@ -904,7 +924,21 @@ void igt_draw_rect_fb(int fd, struct buf_ops *bops,
+ void igt_draw_fill_fb(int fd, struct igt_fb *fb, uint32_t color)
+ {
+ 	igt_draw_rect_fb(fd, NULL, 0, fb,
+-			 gem_has_mappable_ggtt(fd) ? IGT_DRAW_MMAP_GTT :
+-						     IGT_DRAW_MMAP_WC,
++			 igt_draw_supports_method(fd, IGT_DRAW_MMAP_GTT) ?
++			 IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
+ 			 0, 0, fb->width, fb->height, color);
+ }
++
++bool igt_draw_supports_method(int fd, enum igt_draw_method method)
++{
++	if (method == IGT_DRAW_MMAP_GTT)
++		return is_i915_device(fd) && gem_has_mappable_ggtt(fd);
++
++	if (method == IGT_DRAW_MMAP_WC)
++		return (is_i915_device(fd) && gem_mmap__has_wc(fd)) || is_xe_device(fd);
++
++	if (method == IGT_DRAW_MMAP_CPU || method == IGT_DRAW_PWRITE)
++		return is_i915_device(fd);
++
++	return true;
++}
+diff --git a/lib/igt_draw.h b/lib/igt_draw.h
+index 2d18ef6c9..fe7531b79 100644
+--- a/lib/igt_draw.h
++++ b/lib/igt_draw.h
+@@ -50,6 +50,8 @@ enum igt_draw_method {
+ 
+ const char *igt_draw_get_method_name(enum igt_draw_method method);
+ 
++bool igt_draw_supports_method(int fd, enum igt_draw_method method);
++
+ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+ 		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+ 		   uint32_t tiling, enum igt_draw_method method,
 -- 
 2.40.0
