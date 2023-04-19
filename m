@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51F8510E16D
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 11:27:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F04610E16D
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 11:27:15 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 19 Apr 2023 16:52:37 +0530
-Message-Id: <20230419112243.1719789-1-bhanuprakash.modem@intel.com>
+Date: Wed, 19 Apr 2023 16:52:38 +0530
+Message-Id: <20230419112243.1719789-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230419112243.1719789-1-bhanuprakash.modem@intel.com>
+References: <20230419112243.1719789-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 0/6] Enable KMS tests in XE BAT
+Subject: [igt-dev] [i-g-t V4 1/6] lib: Use i915 namespace for XE debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,34 +23,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add kms tests to XE BAT and update tests to support XE device.
-- kms_chamelium_*
-- kms_cursor_legacy
-- kms_flip
-- kms_pipe_crc_basic
-- kms_psr
+As of now XE is going to use i915 namespace for their debugfs.
+Example: i915_current_bpc is applicable for both i915 & XE
 
-Note: Tests are expected to fail, as intel_bb changes for XE is not
-yet landed in IGT lib.
+V2: - Rebase
 
-Bhanuprakash Modem (6):
-  lib: Use i915 namespace for XE debugfs
-  tests/kms_cursor_legacy: Add XE support
-  tests/kms_flip: Add XE support
-  tests/i915/kms_psr: Use linear modifier to create FB
-  tests/i915/kms_psr*: Add XE support
-  xe-fast-feedback: Add kms tests to XE BAT
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+---
+ lib/igt_kms.c | 4 ++--
+ lib/igt_psr.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
- lib/igt_kms.c                            |  4 +--
- lib/igt_psr.c                            |  4 +--
- tests/i915/kms_psr.c                     | 38 +++++++++++++++++----
- tests/i915/kms_psr2_sf.c                 |  2 +-
- tests/i915/kms_psr2_su.c                 |  2 +-
- tests/i915/kms_psr_stress_test.c         |  2 +-
- tests/intel-ci/xe-fast-feedback.testlist | 31 +++++++++++++++++
- tests/kms_cursor_legacy.c                |  4 +--
- tests/kms_flip.c                         | 42 +++++++++++++++++-------
- 9 files changed, 103 insertions(+), 26 deletions(-)
-
---
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index a80b26a84..e085e234a 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -5706,7 +5706,7 @@ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe)
+ 	fd = igt_debugfs_pipe_dir(drmfd, pipe, O_RDONLY);
+ 	igt_assert(fd >= 0);
+ 
+-	if (is_i915_device(drmfd))
++	if (is_intel_device(drmfd))
+ 		strcpy(debugfs_name, "i915_current_bpc");
+ 	else if (is_amdgpu_device(drmfd))
+ 		strcpy(debugfs_name, "amdgpu_current_bpc");
+@@ -5828,7 +5828,7 @@ int igt_get_max_dotclock(int fd)
+ 	char *s;
+ 	int dir, res, max_dotclock = 0;
+ 
+-	if (!is_i915_device(fd))
++	if (!is_intel_device(fd))
+ 		return max_dotclock;
+ 
+ 	dir = igt_debugfs_dir(fd);
+diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+index a2d880312..13f7c567d 100644
+--- a/lib/igt_psr.c
++++ b/lib/igt_psr.c
+@@ -277,7 +277,7 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
+ 	int debugfs_fd;
+ 	bool ret;
+ 
+-	if (!is_i915_device(drm_fd))
++	if (!is_intel_device(drm_fd))
+ 		return false;
+ 
+ 	debugfs_fd = igt_debugfs_dir(drm_fd);
+@@ -303,7 +303,7 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
+ 	int debugfs_fd;
+ 	bool ret = false;
+ 
+-	if (!is_i915_device(drm_fd))
++	if (!is_intel_device(drm_fd))
+ 		return ret;
+ 
+ 	debugfs_fd = igt_debugfs_dir(drm_fd);
+-- 
 2.40.0
