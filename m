@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5746910E931
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 11:27:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E96D410E93B
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 11:27:20 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 19 Apr 2023 16:52:39 +0530
-Message-Id: <20230419112243.1719789-3-bhanuprakash.modem@intel.com>
+Date: Wed, 19 Apr 2023 16:52:41 +0530
+Message-Id: <20230419112243.1719789-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230419112243.1719789-1-bhanuprakash.modem@intel.com>
 References: <20230419112243.1719789-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 2/6] tests/kms_cursor_legacy: Add XE support
+Subject: [igt-dev] [i-g-t V4 4/6] tests/i915/kms_psr: Use linear modifier to
+ create FB
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,44 +23,36 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+To create a color framebuffer, nstead of using X-tiled use
+liniear modifier.
 
-V2: - Drop redundant check for i915 device
-
+Cc: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_cursor_legacy.c | 4 ++--
+ tests/i915/kms_psr.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 5f4300908..7df6a6125 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -308,7 +308,7 @@ enum flip_test {
- static bool cursor_slowpath(igt_display_t *display, enum flip_test mode)
- {
- 	/* Intel display 9 and newer will handle cursor movement as fastsets */
--	if (is_i915_device(display->drm_fd) &&
-+	if (is_intel_device(display->drm_fd) &&
- 	    intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 9)
- 	    return true;
+diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+index 3efe1faec..dfc2fbb65 100644
+--- a/tests/i915/kms_psr.c
++++ b/tests/i915/kms_psr.c
+@@ -388,7 +388,7 @@ static void setup_test_plane(data_t *data, int test_plane)
+ 	igt_create_color_fb(data->drm_fd,
+ 			    data->mode->hdisplay, data->mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    I915_FORMAT_MOD_X_TILED,
++			    DRM_FORMAT_MOD_LINEAR,
+ 			    0.0, 1.0, 0.0,
+ 			    &data->fb_green);
  
-@@ -1465,7 +1465,6 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
- 	igt_output_t *output;
- 	igt_plane_t *cursor;
- 
--	igt_require_intel(display->drm_fd);
- 	ahnd = get_reloc_ahnd(display->drm_fd, 0);
- 
- 	if (atomic)
-@@ -1708,6 +1707,7 @@ igt_main
- 	igt_describe("this test perform a busy bo update followed by a cursor update");
- 	igt_subtest_group {
- 		igt_fixture {
-+			igt_require_i915(display.drm_fd);
- 			igt_require_pipe_crc(display.drm_fd);
- 			igt_display_require_output(&display);
- 		}
+@@ -416,7 +416,7 @@ static void setup_test_plane(data_t *data, int test_plane)
+ 		igt_create_color_fb(data->drm_fd,
+ 				    white_h, white_v,
+ 				    DRM_FORMAT_XRGB8888,
+-				    I915_FORMAT_MOD_X_TILED,
++				    DRM_FORMAT_MOD_LINEAR,
+ 				    1.0, 1.0, 1.0,
+ 				    &data->fb_white);
+ 		break;
 -- 
 2.40.0
