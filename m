@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <73d1718a-ec6b-5c00-fe62-b79ce03ef9b2@intel.com>
-Date: Sun, 23 Apr 2023 13:16:44 -0700
-Content-Language: en-US
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-References: <20230414191639.2565389-1-vinay.belgaumkar@intel.com>
- <20230414191639.2565389-3-vinay.belgaumkar@intel.com>
- <87ildyqkh4.wl-ashutosh.dixit@intel.com>
-From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
-In-Reply-To: <87ildyqkh4.wl-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8DC110E099
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 06:21:04 +0000 (UTC)
+Message-ID: <eb994c0a-8409-67eb-9d9b-04fa1ce20123@linux.intel.com>
+Date: Wed, 19 Apr 2023 08:20:59 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib: Make SLPC helper function per
- GT
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230418190603.56196-1-kamil.konieczny@linux.intel.com>
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+In-Reply-To: <20230418190603.56196-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] scripts/verify-blacklist: Handle
+ multiple given blacklists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,138 +22,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 4/14/2023 1:25 PM, Dixit, Ashutosh wrote:
-> On Fri, 14 Apr 2023 12:16:37 -0700, Vinay Belgaumkar wrote:
-> Hi Vinay,
+On 4/18/23 21:06, Kamil Konieczny wrote:
+> From: Petri Latvala <petri.latvala@intel.com>
 >
->> Use default of 0 where GT id is not being used.
->>
->> v2: Add a helper for GT 0 (Ashutosh)
->>
->> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
->> ---
->>   lib/igt_pm.c | 36 ++++++++++++++++++++++++++----------
->>   lib/igt_pm.h |  3 ++-
->>   2 files changed, 28 insertions(+), 11 deletions(-)
->>
->> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
->> index 704acf7d..8a30bb3b 100644
->> --- a/lib/igt_pm.c
->> +++ b/lib/igt_pm.c
->> @@ -1329,21 +1329,37 @@ void igt_pm_print_pci_card_runtime_status(void)
->> 	}
->>   }
->>
->> -bool i915_is_slpc_enabled(int fd)
->> +/**
->> + * i915_is_slpc_enabled_gt:
->> + * @drm_fd: DRM file descriptor
->> + * @gt: GT id
->> + * Check if SLPC is enabled on a GT
->> + */
->> +bool i915_is_slpc_enabled_gt(int drm_fd, int gt)
->>   {
->> -	int debugfs_fd = igt_debugfs_dir(fd);
->> -	char buf[4096] = {};
->> -	int len;
->> +	int debugfs_fd;
->> +	char buf[256] = {};
-> Shouldn't this be 4096 as before?
->
->> -	igt_require(debugfs_fd != -1);
->> +	debugfs_fd = igt_debugfs_gt_open(drm_fd, gt, "uc/guc_slpc_info", O_RDONLY);
->> +
->> +	/* if guc_slpc_info not present then return false */
->> +	if (debugfs_fd < 0)
->> +		return false;
-> I think this should just be:
->
-> 	igt_require_fd(debugfs_fd);
->
-> Basically we cannot determine if SLPC is enabled or not if say debugfs is
-> not mounted, so it's not correct return false from here.
+> Also change the message for useless entry to not say blacklist; this
+> script is incidentally useful for checking testlist files too.
 
-Actually, rethinking on this, we should keep it to return false. This is 
-making tests skip on platforms where it shouldn't. Debugfs will not be 
-mounted only when driver load fails, which would cause the test to fail 
-when we try to create the drm fd before this. Case in point - 
-https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8839/fi-tgl-1115g4/igt@i915_pm_rps@basic-api.html 
-- here, the test should have run (guc disabled platform) but it skipped.
 
-Thanks,
+LGTM.
 
-Vinay.
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
 
 >
->> +	read(debugfs_fd, buf, sizeof(buf)-1);
->>
->> -	len = igt_debugfs_simple_read(debugfs_fd, "gt/uc/guc_slpc_info", buf, sizeof(buf));
->> 	close(debugfs_fd);
->>
->> -	if (len < 0)
->> -		return false;
->> -	else
->> -		return strstr(buf, "SLPC state: running");
->> +	return strstr(buf, "SLPC state: running");
->> +}
->> +
->> +/**
->> + * i915_is_slpc_enabled:
->> + * @drm_fd: DRM file descriptor
->> + * Check if SLPC is enabled on GT 0
-> Hmm, not sure why we are not using the i915_for_each_gt() loop here since
-> that is the correct way of doing it.
+> Cc: Petri Latvala <adrinael@adrinael.net>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>   scripts/verify-blacklist.sh | 40 +++++++++++++++++++++----------------
+>   1 file changed, 23 insertions(+), 17 deletions(-)
 >
-> At the min let's remove the GT 0 in the comment above. This function
-> doesn't check for GT0, it checks if "slpc is enabled for the device". We
-> can check only on GT0 if we are certain that checking on GT0 is sufficient,
-> that is if SLPC is disabled on GT0 it's disabled for the device. But then
-> someone can ask the question in that case why are we exposing slpc_enabled
-> for each gt from the kernel rather than at the device level.
->
-> In any case for now let's change the above comment to:
->
-> "Check if SLPC is enabled" or ""Check if SLPC is enabled for the i915
-> device".
->
-> With the above comments addressed this is:
->
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->
-> Also, why is igt@i915_pm_rps@basic-api still skipping on DG2/ATSM in
-> pre-merge CI even after this series?
->
-> Thanks.
-> --
-> Ashutosh
->
->
->> + */
->> +bool i915_is_slpc_enabled(int drm_fd)
->> +{
->> +	return i915_is_slpc_enabled_gt(drm_fd, 0);
->>   }
->>   int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
->> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
->> index d0d6d673..448cf42d 100644
->> --- a/lib/igt_pm.h
->> +++ b/lib/igt_pm.h
->> @@ -84,7 +84,8 @@ void igt_pm_set_d3cold_allowed(struct igt_device_card *card, const char *val);
->>   void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
->>   void igt_pm_restore_pci_card_runtime_pm(void);
->>   void igt_pm_print_pci_card_runtime_status(void);
->> -bool i915_is_slpc_enabled(int fd);
->> +bool i915_is_slpc_enabled_gt(int drm_fd, int gt);
->> +bool i915_is_slpc_enabled(int drm_fd);
->>   int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
->>   int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
->>
->> --
->> 2.38.1
->>
+> diff --git a/scripts/verify-blacklist.sh b/scripts/verify-blacklist.sh
+> index 93dca495b..05383f13f 100755
+> --- a/scripts/verify-blacklist.sh
+> +++ b/scripts/verify-blacklist.sh
+> @@ -3,21 +3,23 @@
+>   # Verify that all entries in a blacklist file are still valid
+>   
+>   usage() {
+> -    echo "Usage: $0 <path-to-igt-runner> <test-binary-directory> <blacklist-file>"
+> +    echo "Usage: $0 <path-to-igt-runner> <test-binary-directory> <blacklist-files ...>"
+>       echo
+>       echo " path-to-igt-runner: For example build/runner/igt_runner"
+>       echo " test-binary-directory: For example build/tests"
+> -    echo " blacklist-file: For example tests/intel-ci/blacklist.txt"
+> +    echo " blacklist-files: For example tests/intel-ci/blacklist.txt"
+>       exit 2
+>   }
+>   
+> -if [ $# -ne 3 ]; then
+> +if [ $# -lt 3 ]; then
+>       usage
+>   fi
+>   
+>   RUNNER="$1"
+> -BINDIR="$2"
+> -BLFILE="$3"
+> +shift
+> +BINDIR="$1"
+> +shift
+> +BLFILES="$*"
+>   
+>   if [ ! -x "$RUNNER" ]; then
+>       echo "$RUNNER not found"
+> @@ -31,24 +33,28 @@ if [ ! -f "$BINDIR/test-list.txt" ]; then
+>       usage
+>   fi
+>   
+> -if [ ! -f "$BLFILE" ]; then
+> -    echo "$BLFILE not found"
+> -    echo
+> -    usage
+> -fi
+> +for BLFILE in $BLFILES; do
+> +    if [ ! -f "$BLFILE" ]; then
+> +	echo "$BLFILE not found"
+> +	echo
+> +	usage
+> +    fi
+> +done
+>   
+>   STATUS=0
+>   
+>   TESTLIST="$("$RUNNER" --list-all "$BINDIR")"
+>   
+> -cat "$BLFILE" | while read line; do
+> -    blentry=$(echo "$line" | sed 's/#.*//' | tr -d '[:space:]')
+> -    if [ "$blentry" = "" ]; then continue; fi
+> +for BLFILE in $BLFILES; do
+> +    cat "$BLFILE" | while read line; do
+> +	blentry=$(echo "$line" | sed 's/#.*//' | tr -d '[:space:]')
+> +	if [ "$blentry" = "" ]; then continue; fi
+>   
+> -    if ! (echo "$TESTLIST" | grep -Pq "$blentry") >/dev/null 2>/dev/null; then
+> -	echo Useless blacklist entry: "$blentry"
+> -	STATUS=1
+> -    fi
+> +	if ! (echo "$TESTLIST" | grep -Pq "$blentry") >/dev/null 2>/dev/null; then
+> +	    echo "$BLFILE: Useless entry: $blentry"
+> +	    STATUS=1
+> +	fi
+> +    done
+>   done
+>   
+>   exit $STATUS
