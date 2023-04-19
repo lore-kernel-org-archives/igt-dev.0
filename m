@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F04610E16D
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 11:27:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F3B010E937
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 11:27:19 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 19 Apr 2023 16:52:38 +0530
-Message-Id: <20230419112243.1719789-2-bhanuprakash.modem@intel.com>
+Date: Wed, 19 Apr 2023 16:52:40 +0530
+Message-Id: <20230419112243.1719789-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230419112243.1719789-1-bhanuprakash.modem@intel.com>
 References: <20230419112243.1719789-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 1/6] lib: Use i915 namespace for XE debugfs
+Subject: [igt-dev] [i-g-t V4 3/6] tests/kms_flip: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,62 +22,123 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As of now XE is going to use i915 namespace for their debugfs.
-Example: i915_current_bpc is applicable for both i915 & XE
+Add XE driver support for kms tests.
 
-V2: - Rebase
+V2: - Minor cleanups
+V3: - Don't run the test instead of SKIP
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- lib/igt_kms.c | 4 ++--
- lib/igt_psr.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ tests/kms_flip.c | 42 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 31 insertions(+), 11 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index a80b26a84..e085e234a 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5706,7 +5706,7 @@ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe)
- 	fd = igt_debugfs_pipe_dir(drmfd, pipe, O_RDONLY);
- 	igt_assert(fd >= 0);
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 5e82f4a2f..e4c98b8ec 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -44,6 +44,7 @@
  
--	if (is_i915_device(drmfd))
-+	if (is_intel_device(drmfd))
- 		strcpy(debugfs_name, "i915_current_bpc");
- 	else if (is_amdgpu_device(drmfd))
- 		strcpy(debugfs_name, "amdgpu_current_bpc");
-@@ -5828,7 +5828,7 @@ int igt_get_max_dotclock(int fd)
- 	char *s;
- 	int dir, res, max_dotclock = 0;
+ #include "i915/gem_create.h"
+ #include "igt_stats.h"
++#include "xe/xe_query.h"
  
--	if (!is_i915_device(fd))
-+	if (!is_intel_device(fd))
- 		return max_dotclock;
+ #define TEST_DPMS		(1 << 0)
  
- 	dir = igt_debugfs_dir(fd);
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index a2d880312..13f7c567d 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -277,7 +277,7 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
- 	int debugfs_fd;
- 	bool ret;
+@@ -1353,9 +1354,13 @@ restart:
+ 	/* 256 MB is usually the maximum mappable aperture,
+ 	 * (make it 4x times that to ensure failure) */
+ 	if (o->flags & TEST_BO_TOOBIG) {
+-		igt_skip_on(!is_i915_device(drm_fd));
++		igt_skip_on(!is_intel_device(drm_fd));
+ 		bo_size = 4*gem_mappable_aperture_size(drm_fd);
+-		igt_require(bo_size < gem_global_aperture_size(drm_fd));
++
++		if (is_i915_device(drm_fd))
++			igt_require(bo_size < gem_global_aperture_size(drm_fd));
++		else
++			igt_require(bo_size < (1ULL << xe_va_bits(drm_fd)));
+ 	}
  
--	if (!is_i915_device(drm_fd))
-+	if (!is_intel_device(drm_fd))
- 		return false;
+ 	o->fb_ids[0] = igt_create_fb(drm_fd, o->fb_width, o->fb_height,
+@@ -1552,14 +1557,19 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 		__run_test_on_crtc_set(o, crtc_idxs, crtc_count, duration_ms);
+ }
  
- 	debugfs_fd = igt_debugfs_dir(drm_fd);
-@@ -303,7 +303,7 @@ bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
- 	int debugfs_fd;
- 	bool ret = false;
+-static int run_test(int duration, int flags)
++static void run_test(int duration, int flags)
+ {
+ 	struct test_output o;
+ 	int i, n, modes = 0;
  
--	if (!is_i915_device(drm_fd))
-+	if (!is_intel_device(drm_fd))
- 		return ret;
+-	igt_require((flags & TEST_HANG) == 0 || !is_wedged(drm_fd));
++	/* No tiling support in XE. */
++	if (is_xe_device(drm_fd) && flags & TEST_FENCE_STRESS)
++		return;
++
++	igt_require((flags & TEST_HANG) == 0 ||
++		    (is_i915_device(drm_fd) && !is_wedged(drm_fd)));
+ 	igt_require(!(flags & TEST_FENCE_STRESS) ||
+-		    gem_available_fences(drm_fd));
++		    (is_i915_device(drm_fd) && gem_available_fences(drm_fd)));
  
- 	debugfs_fd = igt_debugfs_dir(drm_fd);
+ 	resources = drmModeGetResources(drm_fd);
+ 	igt_require(resources);
+@@ -1618,17 +1628,21 @@ static int run_test(int duration, int flags)
+ 	}
+ 
+ 	drmModeFreeResources(resources);
+-	return 1;
+ }
+ 
+-static int run_pair(int duration, int flags)
++static void run_pair(int duration, int flags)
+ {
+ 	struct test_output o;
+ 	int i, j, m, n, modes = 0;
+ 
+-	igt_require((flags & TEST_HANG) == 0 || !is_wedged(drm_fd));
++	/* No tiling support in XE. */
++	if (is_xe_device(drm_fd) && flags & TEST_FENCE_STRESS)
++		return;
++
++	igt_require((flags & TEST_HANG) == 0 ||
++		    (is_i915_device(drm_fd) && !is_wedged(drm_fd)));
+ 	igt_require(!(flags & TEST_FENCE_STRESS) ||
+-		    gem_available_fences(drm_fd));
++		    (is_i915_device(drm_fd) && gem_available_fences(drm_fd)));
+ 
+ 	resources = drmModeGetResources(drm_fd);
+ 	igt_require(resources);
+@@ -1693,7 +1707,6 @@ static int run_pair(int duration, int flags)
+ 	}
+ 
+ 	drmModeFreeResources(resources);
+-	return 1;
+ }
+ 
+ static void get_timestamp_format(void)
+@@ -1813,6 +1826,9 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 		igt_install_exit_handler(kms_flip_exit_handler);
+ 		get_timestamp_format();
+ 
++		if (is_xe_device(drm_fd))
++			xe_device_get(drm_fd);
++
+ 		if (is_i915_device(drm_fd)) {
+ 			bops = buf_ops_create(drm_fd);
+ 		}
+@@ -1878,6 +1894,10 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 	}
+ 	igt_stop_signal_helper();
+ 
+-	igt_fixture
++	igt_fixture {
++		if (is_xe_device(drm_fd))
++			xe_device_put(drm_fd);
++
+ 		close(drm_fd);
++	}
+ }
 -- 
 2.40.0
