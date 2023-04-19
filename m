@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AF8110E1CA
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 16:07:18 +0000 (UTC)
-Date: Wed, 19 Apr 2023 18:07:14 +0200
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 273CA10E1C1
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 16:19:33 +0000 (UTC)
+Date: Wed, 19 Apr 2023 18:19:23 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230419160714.3e7smdeeyx4iof3u@zkempczy-mobl2>
-References: <20230418145408.39730-1-kamil.konieczny@linux.intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Message-ID: <20230419161923.dswjjoakp2cp3alb@zkempczy-mobl2>
+References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
+ <ZD7MIIwPHu+eM8ZR@intel.com>
+ <20230419070151.ezivqrifp2qk6q7o@zkempczy-mobl2>
+ <bd850ded-b4b7-dd17-ea3a-8433557c3b54@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230418145408.39730-1-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_dummyload: Fall back to no
- scheduling policy if SCHED_FIFO unavailable
+In-Reply-To: <bd850ded-b4b7-dd17-ea3a-8433557c3b54@intel.com>
+Subject: Re: [igt-dev] [i-g-t 00/45] Add IGT display support for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,64 +22,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>,
- Chris Wilson <chris.p.wilson@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 18, 2023 at 04:54:08PM +0200, Kamil Konieczny wrote:
-> From: Petri Latvala <petri.latvala@intel.com>
+On Wed, Apr 19, 2023 at 05:27:24PM +0530, Modem, Bhanuprakash wrote:
+<cut>
+
+> @Zbigniew, How about moving xe_device_get() to drm_open_driver()?
+> So that, no need to call xe_device_get() in test level.
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -601,6 +601,9 @@ int drm_open_driver(int chipset)
+>                 }
+>         }
+> 
+> +       if (is_xe_device(fd))
+> +               xe_device_get(fd);
+> +
+>         return fd;
+>  }
+> 
+> Ofcourse we need some efforts to handle xe_device_put():
+> 1- Create a new helper maybe drm_close(fd)
+> 	drm_close(int fd) {
+> 		if (is_xe_device(fd))
+> 			xe_device_put(fd);
+> 
+> 		close(fd);
+> 	}
+> 2- Update both kms & gem tests to use s/close(fd)/drm_close(fd)/
+> 
+> - Bhanu
 > 
 
-Remove duplicate, then
+I got no strong preference to call this helper but if you plan to
+do so I think  __drm_open_driver_another() is better place to put
+this into. I mean with using filters you can omit drm_open_driver().
+And yes, drm_close() might need to be added also to call freeing
+helper.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Just try out, let's see what will happen on CI. I don't think
+you'll regress i915, only xe path may need some tweaks.
 
 --
 Zbigniew
-
-> From: Petri Latvala <petri.latvala@intel.com>
-> 
-> If pthread_create with SCHED_FIFO fails, try creating the thread
-> without a policy before bailing out.
-> 
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> Suggested-by: Chris Wilson <chris.p.wilson@intel.com>
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  lib/igt_dummyload.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-> index b3dc18ee7..740a58f3d 100644
-> --- a/lib/igt_dummyload.c
-> +++ b/lib/igt_dummyload.c
-> @@ -528,6 +528,7 @@ void igt_spin_set_timeout(igt_spin_t *spin, int64_t ns)
->  	struct itimerspec its;
->  	pthread_attr_t attr;
->  	int timerfd;
-> +	int err;
->  
->  	if (!spin)
->  		return;
-> @@ -547,8 +548,13 @@ void igt_spin_set_timeout(igt_spin_t *spin, int64_t ns)
->  	pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
->  	pthread_attr_setschedparam(&attr, &param);
->  
-> -	igt_assert(pthread_create(&spin->timer_thread, &attr,
-> -				  timer_thread, spin) == 0);
-> +	err = pthread_create(&spin->timer_thread, &attr, timer_thread, spin);
-> +	if (err) {
-> +		igt_debug("Cannot create thread with SCHED_FIFO (%s), trying without scheduling policy...\n",
-> +			  strerror(err));
-> +		igt_assert_eq(pthread_create(&spin->timer_thread, NULL,
-> +					     timer_thread, spin), 0);
-> +	}
->  	pthread_attr_destroy(&attr);
->  
->  	memset(&its, 0, sizeof(its));
-> -- 
-> 2.37.2
-> 
