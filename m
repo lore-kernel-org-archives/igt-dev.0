@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6137510E21D
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Apr 2023 05:19:33 +0000 (UTC)
-Message-ID: <fba412aa-319c-ce1c-993e-faf39d24f8e1@intel.com>
-Date: Thu, 20 Apr 2023 10:49:11 +0530
-Content-Language: en-US
-To: Karthik B S <karthik.b.s@intel.com>, "Nautiyal, Ankit K"
- <ankit.k.nautiyal@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230419112243.1719789-1-bhanuprakash.modem@intel.com>
- <20230419112243.1719789-5-bhanuprakash.modem@intel.com>
- <f2c90793-0bf1-9d3f-c740-4d1564640d90@intel.com>
- <2dd99ceb-e428-0bde-7339-d2fa808bfb6d@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <2dd99ceb-e428-0bde-7339-d2fa808bfb6d@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============6939291001755069899=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V4 4/6] tests/i915/kms_psr: Use linear
- modifier to create FB
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Thu, 20 Apr 2023 05:33:17 -0000
+Message-ID: <168196879738.7766.296714439888073344@emeril.freedesktop.org>
+References: <20230420034046.20815-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20230420034046.20815-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?intel-ci=3A_update_blacklist_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,73 +17,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============6939291001755069899==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/intel-ci: update blacklist (rev2)
+URL   : https://patchwork.freedesktop.org/series/116712/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13031 -> IGTPW_8827
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8827 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [PASS][1] -> [ABORT][2] ([i915#7911] / [i915#7913])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13031/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [PASS][3] -> [ABORT][4] ([i915#4983] / [i915#7981])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13031/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2017]: https://gitlab.freedesktop.org/drm/intel/issues/2017
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7981]: https://gitlab.freedesktop.org/drm/intel/issues/7981
 
 
-On Thu-20-04-2023 10:42 am, Karthik B S wrote:
-> 
-> On 4/20/2023 10:34 AM, Nautiyal, Ankit K wrote:
->>
->> On 4/19/2023 4:52 PM, Bhanuprakash Modem wrote:
->>> To create a color framebuffer, nstead of using X-tiled use
->>> liniear modifier.
->>
->> typos : instead, linear.
->>
->> Perhaps it can be reworded to specify that the change is to make the 
->> test compatible for drivers, only supporting
->>
->> linear modifiers.
-> 
-> I agree with this. Please mention this reasoning as to why this change 
-> is made.
+Build changes
+-------------
 
-Sure, will update the commit message while merging the patch. Hope don't 
-need to float a new rev.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7260 -> IGTPW_8827
 
-- Bhanu
+  CI-20190529: 20190529
+  CI_DRM_13031: 5e8767e3e485540273f1db1e73395025c24cb4a0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8827: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/index.html
+  IGT_7260: 5a0dab0153d184b4497e5e25305699f76a20b303 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-> 
-> With this update the patch LGTM.
-> 
-> Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> 
->>
->> Otherwise the changes LGTM.
->>
->> Acked-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
->>
->>
->>>
->>> Cc: Karthik B S <karthik.b.s@intel.com>
->>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->>> ---
->>>   tests/i915/kms_psr.c | 4 ++--
->>>   1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
->>> index 3efe1faec..dfc2fbb65 100644
->>> --- a/tests/i915/kms_psr.c
->>> +++ b/tests/i915/kms_psr.c
->>> @@ -388,7 +388,7 @@ static void setup_test_plane(data_t *data, int 
->>> test_plane)
->>>       igt_create_color_fb(data->drm_fd,
->>>                   data->mode->hdisplay, data->mode->vdisplay,
->>>                   DRM_FORMAT_XRGB8888,
->>> -                I915_FORMAT_MOD_X_TILED,
->>> +                DRM_FORMAT_MOD_LINEAR,
->>>                   0.0, 1.0, 0.0,
->>>                   &data->fb_green);
->>>   @@ -416,7 +416,7 @@ static void setup_test_plane(data_t *data, int 
->>> test_plane)
->>>           igt_create_color_fb(data->drm_fd,
->>>                       white_h, white_v,
->>>                       DRM_FORMAT_XRGB8888,
->>> -                    I915_FORMAT_MOD_X_TILED,
->>> +                    DRM_FORMAT_MOD_LINEAR,
->>>                       1.0, 1.0, 1.0,
->>>                       &data->fb_white);
->>>           break;
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/index.html
+
+--===============6939291001755069899==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-ci: update blacklist (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116712/">https://patchwork.freedesktop.org/series/116712/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13031 -&gt; IGTPW_8827</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8827 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13031/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13031/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7981">i915#7981</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7260 -&gt; IGTPW_8827</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13031: 5e8767e3e485540273f1db1e73395025c24cb4a0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8827: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8827/index.html<br />
+  IGT_7260: 5a0dab0153d184b4497e5e25305699f76a20b303 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6939291001755069899==--
