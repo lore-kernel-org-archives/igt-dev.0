@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDC0A10E5A2
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Apr 2023 19:15:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C5E710E51B
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Apr 2023 19:15:21 +0000 (UTC)
 From: Anna Karas <anna.karas@intel.com>
-Date: Thu, 20 Apr 2023 21:14:53 +0200
-Message-Id: <20230420191454.497237-2-anna.karas@intel.com>
-In-Reply-To: <20230420191454.497237-1-anna.karas@intel.com>
-References: <20230420191454.497237-1-anna.karas@intel.com>
+Date: Thu, 20 Apr 2023 21:14:52 +0200
+Message-Id: <20230420191454.497237-1-anna.karas@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Subject: [igt-dev] [RFC 1/2] lib/xe_gpu: Introduce xe_gpu library
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Subject: [igt-dev] [RFC 0/2] lib/xe_gpu: Introduce xe_gpu library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,88 +22,66 @@ To: igt-dev@lists.freedesktop.org
 Cc: Joonas Lahtinen <joonas.lahtinen@intel.com>, Maarten Lankhorst <maarten.lankhorst@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QWRkIGhlbHBlcnMgZm9yIHJlcXVpcmluZyB0aGUgWEUgZHJpdmVyLCByZW9wZW5pbmcgZHJtIGZk
-IGFuZCByZXN0b3JpbmcKZW5naW5lIHByb3BlcnRpZXMgYmV0d2VlbiB0ZXN0cy4KVGhpcyBsaWIg
-aXMgYSBkaXJlY3QgcG9ydCBvZiBnZW0uYyBmcm9tIGk5MTUuCgpSZWZlcmVuY2U6IEppcmEgVkxL
-LTQ2MjM1ClNpZ25lZC1vZmYtYnk6IEFubmEgS2FyYXMgPGFubmEua2FyYXNAaW50ZWwuY29tPgot
-LS0KIGxpYi9tZXNvbi5idWlsZCB8ICAgMSArCiBsaWIveGUveGVfZ3B1LmMgfCAxMzYgKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBsaWIveGUveGVfZ3B1
-LmggfCAgMTkgKysrKysrKwogMyBmaWxlcyBjaGFuZ2VkLCAxNTYgaW5zZXJ0aW9ucygrKQogY3Jl
-YXRlIG1vZGUgMTAwNjQ0IGxpYi94ZS94ZV9ncHUuYwogY3JlYXRlIG1vZGUgMTAwNjQ0IGxpYi94
-ZS94ZV9ncHUuaAoKZGlmZiAtLWdpdCBhL2xpYi9tZXNvbi5idWlsZCBiL2xpYi9tZXNvbi5idWls
-ZAppbmRleCBiMjFjMjUyYi4uYjMzZjhhZTYgMTAwNjQ0Ci0tLSBhL2xpYi9tZXNvbi5idWlsZAor
-KysgYi9saWIvbWVzb24uYnVpbGQKQEAgLTEwMCw2ICsxMDAsNyBAQCBsaWJfc291cmNlcyA9IFsK
-IAknaWd0X21zbS5jJywKIAknaWd0X2RzYy5jJywKIAkneGUveGVfY29tcHV0ZS5jJywKKwkneGUv
-eGVfZ3B1LmMnLAogCSd4ZS94ZV9jb21wdXRlX3NxdWFyZV9rZXJuZWxzLmMnLAogCSd4ZS94ZV9p
-b2N0bC5jJywKIAkneGUveGVfcXVlcnkuYycsCmRpZmYgLS1naXQgYS9saWIveGUveGVfZ3B1LmMg
-Yi9saWIveGUveGVfZ3B1LmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAuLjdh
-YmQ4MDU3Ci0tLSAvZGV2L251bGwKKysrIGIvbGliL3hlL3hlX2dwdS5jCkBAIC0wLDAgKzEsMTM2
-IEBACisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUICovCisvKgorICogQ29weXJpZ2h0
-IMKpIDIwMjMgSW50ZWwgQ29ycG9yYXRpb24KKyAqCisgKiBBdXRob3JzOgorICogICAgQW5uYSBL
-YXJhcyA8YW5uYS5rYXJhc0BpbnRlbC5jb20+CisgKi8KKworI2luY2x1ZGUgPGRpcmVudC5oPgor
-I2luY2x1ZGUgPGZjbnRsLmg+CisjaW5jbHVkZSA8c3lzL2lvY3RsLmg+CisKKyNpbmNsdWRlICJ4
-ZS94ZV9ncHUuaCIKKyNpbmNsdWRlICJpZ3Rfc3lzZnMuaCIKKyNpbmNsdWRlICJpZ3QuaCIKKwor
-CisvKgorICogUmVzZXRzIGFsbCBlbmdpbmUgcHJvcGVydGllcyB0byBkZWZhdWx0cyBwcmlvciB0
-byB0aGUgc3RhcnQgb2YgYSB0ZXN0LgorICovCitzdGF0aWMgdm9pZCBfX3Jlc3RvcmVfZGVmYXVs
-dHMoaW50IGVuZ2luZSkKK3sKKwlzdHJ1Y3QgZGlyZW50ICpkZTsKKwlpbnQgZGVmYXVsdHM7CisJ
-RElSICpkaXI7CisKKwlkZWZhdWx0cyA9IG9wZW5hdChlbmdpbmUsICIuZGVmYXVsdHMiLCBPX1JE
-T05MWSk7CisJaWYgKGRlZmF1bHRzIDwgMCkKKwkJcmV0dXJuOworCisJZGlyID0gZmRvcGVuZGly
-KGRlZmF1bHRzKTsKKwlpZiAoIWRpcikgeworCQljbG9zZShkZWZhdWx0cyk7CisJCXJldHVybjsK
-Kwl9CisKKwl3aGlsZSAoKGRlID0gcmVhZGRpcihkaXIpKSkgeworCQljaGFyIGJ1ZlsyNTZdOwor
-CQlpbnQgZmQsIGxlbjsKKworCQlpZiAoKmRlLT5kX25hbWUgPT0gJy4nKQorCQkJY29udGludWU7
-CisKKwkJZmQgPSBvcGVuYXQoZGVmYXVsdHMsIGRlLT5kX25hbWUsIE9fUkRPTkxZKTsKKwkJaWYg
-KGZkIDwgMCkKKwkJCWNvbnRpbnVlOworCisJCWxlbiA9IHJlYWQoZmQsIGJ1Ziwgc2l6ZW9mKGJ1
-ZikpOworCQljbG9zZShmZCk7CisJCWlmIChsZW4gPCAwKQorCQkJY29udGludWU7CisKKwkJZmQg
-PSBvcGVuYXQoZW5naW5lLCBkZS0+ZF9uYW1lLCBPX1dST05MWSk7CisJCWlmIChmZCA8IDApCisJ
-CQljb250aW51ZTsKKworCQl3cml0ZShmZCwgYnVmLCBsZW4pOworCQljbG9zZShmZCk7CisJfQor
-CisJY2xvc2VkaXIoZGlyKTsKK30KKworc3RhdGljIHZvaWQgcmVzdG9yZV9kZWZhdWx0cyhpbnQg
-ZmQpCit7CisJc3RydWN0IGRpcmVudCAqZGU7CisJaW50IGVuZ2luZXM7CisJRElSICpkaXI7CisJ
-aW50IHN5czsKKworCXN5cyA9IGlndF9zeXNmc19vcGVuKGZkKTsKKwlpZiAoc3lzIDwgMCkKKwkJ
-cmV0dXJuOworCisJZW5naW5lcyA9IG9wZW5hdChzeXMsICJlbmdpbmUiLCBPX1JET05MWSk7CisJ
-aWYgKGVuZ2luZXMgPCAwKQorCQlnb3RvIGNsb3NlX3N5czsKKworCWRpciA9IGZkb3BlbmRpcihl
-bmdpbmVzKTsKKwlpZiAoIWRpcikgeworCQljbG9zZShlbmdpbmVzKTsKKwkJZ290byBjbG9zZV9z
-eXM7CisJfQorCisJd2hpbGUgKChkZSA9IHJlYWRkaXIoZGlyKSkpIHsKKwkJaW50IGVuZ2luZTsK
-KworCQlpZiAoKmRlLT5kX25hbWUgPT0gJy4nKQorCQkJY29udGludWU7CisKKwkJZW5naW5lID0g
-b3BlbmF0KGVuZ2luZXMsIGRlLT5kX25hbWUsIE9fUkRPTkxZKTsKKwkJaWYgKGVuZ2luZSA8IDAp
-CisJCQljb250aW51ZTsKKworCQlfX3Jlc3RvcmVfZGVmYXVsdHMoZW5naW5lKTsKKwkJY2xvc2Uo
-ZW5naW5lKTsKKwl9CisKKwljbG9zZWRpcihkaXIpOworCitjbG9zZV9zeXM6CisJY2xvc2Uoc3lz
-KTsKK30KKworLyoqCisgKiB4ZV9yZW9wZW5fZHJpdmVyOgorICogQGZkOiByZS1vcGVuIHRoZSB4
-ZSBkcm0gZmlsZSBkZXNjcmlwdG9yCisgKgorICogUmUtb3BlbnMgdGhlIGRybSBmZCB3aGljaCBp
-cyB1c2VmdWwgaW4gaW5zdGFuY2VzIHdoZXJlIGEgY2xlYW4gZGVmYXVsdAorICogY29udGV4dCBp
-cyBuZWVkZWQuCisgKi8KK2ludCB4ZV9yZW9wZW5fZHJpdmVyKGludCBmZCkKK3sKKwljaGFyIHBh
-dGhbMjU2XTsKKworCXNucHJpbnRmKHBhdGgsIHNpemVvZihwYXRoKSwgIi9wcm9jL3NlbGYvZmQv
-JWQiLCBmZCk7CisJZmQgPSBvcGVuKHBhdGgsIE9fUkRXUik7CisJaWd0X2Fzc2VydF9mZChmZCk7
-CisKKwlyZXR1cm4gZmQ7Cit9CisKKy8qKgorICogeGVfcmVxdWlyZV9ncHU6CisgKiBAZmQ6IHRo
-ZSB4ZSBkcm0gZmlsZSBkZXNjcmlwdG9yCisgKgorICogSGVscGVyIHRvIGJlIHVzZWQgcHJpb3Ig
-dG8gdGhlIHN0YXJ0IG9mIGEgdGVzdHMsIHVzZWZ1bCBpbiBpbnN0YW5jZXMKKyAqIHdoZXJlIGEg
-Y2xlYW4gZGVmYXVsdCBjb250ZXh0IGlzIG5lZWRlZC4KKyAqLwordm9pZCB4ZV9yZXF1aXJlX2dw
-dShpbnQgZmQpCit7CisJaWd0X3JlcXVpcmVfeGUoZmQpOworCWZkID0geGVfcmVvcGVuX2RyaXZl
-cihmZCk7CisJcmVzdG9yZV9kZWZhdWx0cyhmZCk7CisJY2xvc2UoZmQpOworfQpkaWZmIC0tZ2l0
-IGEvbGliL3hlL3hlX2dwdS5oIGIvbGliL3hlL3hlX2dwdS5oCm5ldyBmaWxlIG1vZGUgMTAwNjQ0
-CmluZGV4IDAwMDAwMDAwLi4wMjAwNDBhYwotLS0gL2Rldi9udWxsCisrKyBiL2xpYi94ZS94ZV9n
-cHUuaApAQCAtMCwwICsxLDE5IEBACisvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUICov
-CisvKgorICogQ29weXJpZ2h0IMKpIDIwMjMgSW50ZWwgQ29ycG9yYXRpb24KKyAqCisgKiBBdXRo
-b3JzOgorICogICAgQW5uYSBLYXJhcyA8YW5uYS5rYXJhc0BpbnRlbC5jb20+CisgKi8KKworI2lm
-bmRlZiBYRV9HUFVfSAorI2RlZmluZSBYRV9HUFVfSAorCisjaW5jbHVkZSA8c3RkaW50Lmg+Cisj
-aW5jbHVkZSA8eGVfZHJtLmg+CisKK2ludCB4ZV9yZW9wZW5fZHJpdmVyKGludCBmZCk7Cit2b2lk
-IHhlX3JlcXVpcmVfZ3B1KGludCBmZCk7CisKKyNlbmRpZgkvKiBYRV9HUFVfSCAqLworCi0tIAoy
-LjI1LjEKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRlbCBUZWNobm9sb2d5IFBvbGFuZCBzcC4geiBvLm8uCnVs
-LiBTbG93YWNraWVnbyAxNzMgfCA4MC0yOTggR2RhbnNrIHwgU2FkIFJlam9ub3d5IEdkYW5zayBQ
-b2xub2MgfCBWSUkgV3lkemlhbCBHb3Nwb2RhcmN6eSBLcmFqb3dlZ28gUmVqZXN0cnUgU2Fkb3dl
-Z28gLSBLUlMgMTAxODgyIHwgTklQIDk1Ny0wNy01Mi0zMTYgfCBLYXBpdGFsIHpha2xhZG93eSAy
-MDAuMDAwIFBMTi4KU3BvbGthIG9zd2lhZGN6YSwgemUgcG9zaWFkYSBzdGF0dXMgZHV6ZWdvIHBy
-emVkc2llYmlvcmN5IHcgcm96dW1pZW5pdSB1c3Rhd3kgeiBkbmlhIDggbWFyY2EgMjAxMyByLiBv
-IHByemVjaXdkemlhbGFuaXUgbmFkbWllcm55bSBvcG96bmllbmlvbSB3IHRyYW5zYWtjamFjaCBo
-YW5kbG93eWNoLgoKVGEgd2lhZG9tb3NjIHdyYXogeiB6YWxhY3puaWthbWkgamVzdCBwcnplem5h
-Y3pvbmEgZGxhIG9rcmVzbG9uZWdvIGFkcmVzYXRhIGkgbW96ZSB6YXdpZXJhYyBpbmZvcm1hY2pl
-IHBvdWZuZS4gVyByYXppZSBwcnp5cGFka293ZWdvIG90cnp5bWFuaWEgdGVqIHdpYWRvbW9zY2ks
-IHByb3NpbXkgbyBwb3dpYWRvbWllbmllIG5hZGF3Y3kgb3JheiB0cndhbGUgamVqIHVzdW5pZWNp
-ZTsgamFraWVrb2x3aWVrIHByemVnbGFkYW5pZSBsdWIgcm96cG93c3plY2huaWFuaWUgamVzdCB6
-YWJyb25pb25lLgpUaGlzIGUtbWFpbCBhbmQgYW55IGF0dGFjaG1lbnRzIG1heSBjb250YWluIGNv
-bmZpZGVudGlhbCBtYXRlcmlhbCBmb3IgdGhlIHNvbGUgdXNlIG9mIHRoZSBpbnRlbmRlZCByZWNp
-cGllbnQocykuIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQsIHBsZWFzZSBj
-b250YWN0IHRoZSBzZW5kZXIgYW5kIGRlbGV0ZSBhbGwgY29waWVzOyBhbnkgcmV2aWV3IG9yIGRp
-c3RyaWJ1dGlvbiBieSBvdGhlcnMgaXMgc3RyaWN0bHkgcHJvaGliaXRlZC4K
+OPENS:
+1. Lack of wedged concept in XE: @Matthew informed me that there is no
+intent to have reporting wedged device in XE. However, @Joonas believes
+that it may be useful - "it's used at least in specific diagnostics and
+hardware repair flows for PVC and FLR for all platforms, where we
+prevent further accesses to the hardware. So an alternative mechanism is
+needed for those". Since xe_require_gpu() is a direct port of i915's 
+igt_require_gem() stripped of wedged device reporting, this could be a
+good opportunity to discuss this.
+
+2. igt_require_gem() was also responsible for restoring reset and
+enable_hangcheck modparams. Do we need those parameters here? Do/will we
+need different ones do restore?
+
+3. Would you find adding equivalent of gem_quiescent_gpu here worth?
+
+Reference: Jira VLK-46235
+Signed-off-by: Anna Karas <anna.karas@intel.com>
+
+Anna Karas (2):
+  lib/xe_gpu: Introduce xe_gpu library
+  tests/xe: Use xe_require_gpu() in existing tests
+
+ lib/meson.build                 |   1 +
+ lib/xe/xe_gpu.c                 | 136 ++++++++++++++++++++++++++++++++
+ lib/xe/xe_gpu.h                 |  19 +++++
+ tests/xe/xe_compute.c           |   2 +
+ tests/xe/xe_create.c            |   2 +
+ tests/xe/xe_debugfs.c           |   2 +
+ tests/xe/xe_dma_buf_sync.c      |   2 +
+ tests/xe/xe_evict.c             |   2 +
+ tests/xe/xe_exec_balancer.c     |   2 +
+ tests/xe/xe_exec_basic.c        |   2 +
+ tests/xe/xe_exec_compute_mode.c |   2 +
+ tests/xe/xe_exec_fault_mode.c   |   2 +
+ tests/xe/xe_exec_reset.c        |   2 +
+ tests/xe/xe_exec_threads.c      |   2 +
+ tests/xe/xe_guc_pc.c            |   2 +
+ tests/xe/xe_huc_copy.c          |   2 +
+ tests/xe/xe_mmap.c              |   2 +
+ tests/xe/xe_mmio.c              |   2 +
+ tests/xe/xe_noexec_ping_pong.c  |   2 +
+ tests/xe/xe_pm.c                |   2 +
+ tests/xe/xe_prime_self_import.c |   2 +
+ tests/xe/xe_query.c             |   2 +
+ tests/xe/xe_vm.c                |   2 +
+ tests/xe/xe_waitfence.c         |   2 +
+ 24 files changed, 198 insertions(+)
+ create mode 100644 lib/xe/xe_gpu.c
+ create mode 100644 lib/xe/xe_gpu.h
+
+-- 
+2.25.1
+
+---------------------------------------------------------------------
+Intel Technology Poland sp. z o.o.
+ul. Slowackiego 173 | 80-298 Gdansk | Sad Rejonowy Gdansk Polnoc | VII Wydzial Gospodarczy Krajowego Rejestru Sadowego - KRS 101882 | NIP 957-07-52-316 | Kapital zakladowy 200.000 PLN.
+Spolka oswiadcza, ze posiada status duzego przedsiebiorcy w rozumieniu ustawy z dnia 8 marca 2013 r. o przeciwdzialaniu nadmiernym opoznieniom w transakcjach handlowych.
+
+Ta wiadomosc wraz z zalacznikami jest przeznaczona dla okreslonego adresata i moze zawierac informacje poufne. W razie przypadkowego otrzymania tej wiadomosci, prosimy o powiadomienie nadawcy oraz trwale jej usuniecie; jakiekolwiek przegladanie lub rozpowszechnianie jest zabronione.
+This e-mail and any attachments may contain confidential material for the sole use of the intended recipient(s). If you are not the intended recipient, please contact the sender and delete all copies; any review or distribution by others is strictly prohibited.
 
 
