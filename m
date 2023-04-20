@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B959010E2DA
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Apr 2023 13:03:36 +0000 (UTC)
-Message-ID: <5a2ff1e5-026c-c8e7-aa77-e003143c3ecd@intel.com>
-Date: Thu, 20 Apr 2023 15:03:32 +0200
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230227142748.28811-1-kamil.konieczny@linux.intel.com>
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-In-Reply-To: <20230227142748.28811-1-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH v2 i-g-t] runner: check disk limit at dumping
- kmsg
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Thu, 20 Apr 2023 14:18:32 -0000
+Message-ID: <168200031248.780.1695790401108345949@emeril.freedesktop.org>
+References: <20230420120631.1866947-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230420120631.1866947-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Faddfb=5Fbasic=3A_Use_proper_macro_for_invalid_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,125 +17,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>,
- Karol Krol <karol.krol@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+== Series Details ==
 
-On 27.02.2023 15:27, Kamil Konieczny wrote:
-> It was reported that kernel dumps can grow beyond disk limit size
-> so add checks for it and report error if that happen.
->
-> v2: return number of written bytes (Petri)
->
-> Reported-by: Karol Krol <karol.krol@intel.com>
-> Ref: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/129
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Reviewed-by: Petri Latvala <adrinael@adrinael.net>
+Series: tests/kms_addfb_basic: Use proper macro for invalid tests
+URL   : https://patchwork.freedesktop.org/series/116754/
+State : warning
 
-It looks correct, however the main issue is that logs cut are quite 
-often unusable, the vital info is usually at the end.
- From my observation the long dmesg is usually a result of trace dump in 
-dmesg.
-Limiting it in .config should help, currently it is:
-CONFIG_GLOBAL_TRACE_BUF_SIZE=1441792
-It seems huge since it is very compressed comparing to dmesg.
+== Summary ==
 
-Anyway, going back to the subject:
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Pipeline status: FAILED.
 
-Regards
-Andrzej
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/862192 for the overview.
 
-> ---
->   runner/executor.c | 24 +++++++++++++++++++-----
->   1 file changed, 19 insertions(+), 5 deletions(-)
->
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 597cd7f5..ae6cf1bb 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -584,7 +584,7 @@ void close_outputs(int *fds)
->   }
->   
->   /* Returns the number of bytes written to disk, or a negative number on error */
-> -static long dump_dmesg(int kmsgfd, int outfd)
-> +static long dump_dmesg(int kmsgfd, int outfd, size_t disk_limit)
->   {
->   	/*
->   	 * Write kernel messages to the log file until we reach
-> @@ -599,12 +599,18 @@ static long dump_dmesg(int kmsgfd, int outfd)
->   	bool underflow_once = false;
->   	char cont;
->   	char buf[2048];
-> -	ssize_t r;
-> +	ssize_t r, disk_written;
->   	long written = 0;
->   
->   	if (kmsgfd < 0)
->   		return 0;
->   
-> +	disk_written = lseek(outfd, 0, SEEK_SET);
-> +	if (disk_written > disk_limit) {
-> +		errf("Error dumping kmsg: disk limit already exceeded\n");
-> +		return 0; /* number of written bytes */
-> +	}
-> +
->   	comparefd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
->   	if (comparefd < 0) {
->   		errf("Error opening another fd for /dev/kmsg\n");
-> @@ -655,6 +661,13 @@ static long dump_dmesg(int kmsgfd, int outfd)
->   
->   		write(outfd, buf, r);
->   		written += r;
-> +		disk_written += r;
-> +
-> +		if (disk_written > disk_limit) {
-> +			close(comparefd);
-> +			errf("Error dumping kmsg: disk limit exceeded\n");
-> +			return written;
-> +		}
->   
->   		if (comparefd < 0 && sscanf(buf, "%u,%llu,%llu,%c;",
->   					    &flags, &seq, &usec, &cont) == 4) {
-> @@ -890,6 +903,7 @@ static int monitor_output(pid_t child,
->   	unsigned long taints = 0;
->   	bool aborting = false;
->   	size_t disk_usage = 0;
-> +	const size_t mon_disk_limit = settings->disk_usage_limit ? : (~(size_t)0);
->   	bool socket_comms_used = false; /* whether the test actually uses comms */
->   	bool results_received = false; /* whether we already have test results that might need overriding if we detect an abort condition */
->   
-> @@ -1219,7 +1233,7 @@ static int monitor_output(pid_t child,
->   
->   			time_last_activity = time_now;
->   
-> -			dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG]);
-> +			dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], mon_disk_limit);
->   			if (settings->sync)
->   				fdatasync(outputs[_F_DMESG]);
->   
-> @@ -1457,7 +1471,7 @@ static int monitor_output(pid_t child,
->   					asprintf(abortreason, "Child refuses to die, tainted 0x%lx.", taints);
->   				}
->   
-> -				dump_dmesg(kmsgfd, outputs[_F_DMESG]);
-> +				dump_dmesg(kmsgfd, outputs[_F_DMESG], mon_disk_limit);
->   				if (settings->sync)
->   					fdatasync(outputs[_F_DMESG]);
->   
-> @@ -1483,7 +1497,7 @@ static int monitor_output(pid_t child,
->   		}
->   	}
->   
-> -	dump_dmesg(kmsgfd, outputs[_F_DMESG]);
-> +	dump_dmesg(kmsgfd, outputs[_F_DMESG], mon_disk_limit);
->   	if (settings->sync)
->   		fdatasync(outputs[_F_DMESG]);
->   
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/40358359):
+  time="2023-04-20T14:12:54Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:2ff1d7c41c74a25258bfa6f0b8adb0a727f84518f55f65ca845ebc747976c408
+  Copying config sha256:8b277f5e168f773e3dba38bca291a5fd138d56fcdd5008a2f0bf1866d311483b
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-04-20T14:12:57Z" level=warning msg="signal: killed"
+  time="2023-04-20T14:12:57Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1681999978:step_script
+  section_start:1681999978:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1681999980:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/40358361):
+  time="2023-04-20T14:12:54Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:2ff1d7c41c74a25258bfa6f0b8adb0a727f84518f55f65ca845ebc747976c408
+  Copying config sha256:8b277f5e168f773e3dba38bca291a5fd138d56fcdd5008a2f0bf1866d311483b
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-04-20T14:12:57Z" level=warning msg="signal: killed"
+  time="2023-04-20T14:12:57Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1681999978:step_script
+  section_start:1681999978:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1681999980:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/40358360):
+  time="2023-04-20T14:12:53Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:2ff1d7c41c74a25258bfa6f0b8adb0a727f84518f55f65ca845ebc747976c408
+  Copying config sha256:8b277f5e168f773e3dba38bca291a5fd138d56fcdd5008a2f0bf1866d311483b
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-04-20T14:12:56Z" level=warning msg="signal: killed"
+  time="2023-04-20T14:12:56Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1681999977:step_script
+  section_start:1681999977:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1681999978:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/40358362):
+  time="2023-04-20T14:13:07Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:2ff1d7c41c74a25258bfa6f0b8adb0a727f84518f55f65ca845ebc747976c408
+  Copying config sha256:8b277f5e168f773e3dba38bca291a5fd138d56fcdd5008a2f0bf1866d311483b
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-04-20T14:13:12Z" level=warning msg="signal: killed"
+  time="2023-04-20T14:13:12Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1681999995:step_script
+  section_start:1681999995:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1682000000:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/40358363):
+  time="2023-04-20T14:12:54Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM fedora:31
+  Getting image source signatures
+  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
+  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
+  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-04-20T14:12:57Z" level=warning msg="signal: killed"
+  time="2023-04-20T14:12:57Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
+  section_end:1681999978:step_script
+  section_start:1681999978:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1681999980:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/862192
