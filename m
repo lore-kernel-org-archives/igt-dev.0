@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C001110E1EA
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Apr 2023 21:02:00 +0000 (UTC)
-Date: Wed, 19 Apr 2023 23:01:56 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70D8F10EB90
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Apr 2023 06:39:44 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230419210156.vstclygwk742pde7@kamilkon-desk1>
-References: <20230419203243.20058-1-nidhi1.gupta@intel.com>
+Date: Thu, 20 Apr 2023 08:39:08 +0200
+Message-Id: <20230420063908.66568-11-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230420063908.66568-1-zbigniew.kempczynski@intel.com>
+References: <20230420063908.66568-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230419203243.20058-1-nidhi1.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel-ci: update blacklist
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 10/10] tests/xe_gpgpu_fill: Exercise
+ gpgpu fill on Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,63 +20,182 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>, kamil.konieczny@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Nidhi,
+Reuse gpgpu fill already exercised on i915 on Xe.
 
-On 2023-04-20 at 02:02:43 +0530, Nidhi Gupta wrote:
-> Following tests are added in blacklist:
-> -Block vmwgfx tests
-> -Block execution of tests on pipe-g and  pipe-h
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->  tests/intel-ci/blacklist.txt | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-> index 243bc609..13ad3b5b 100644
-> --- a/tests/intel-ci/blacklist.txt
-> +++ b/tests/intel-ci/blacklist.txt
-> @@ -93,6 +93,10 @@ igt@v3d_.*
->  ###############################################
->  igt@amdgpu/.*
->  ###############################################
-> +# VMware
-> +###############################################
-> +igt@vmwgfx/.*
------------- ^
-Remove '/' so it will be:
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist |   1 +
+ tests/meson.build                        |   1 +
+ tests/xe/xe_gpgpu_fill.c                 | 133 +++++++++++++++++++++++
+ 3 files changed, 135 insertions(+)
+ create mode 100644 tests/xe/xe_gpgpu_fill.c
 
-igt@vmwgfx.*
-
-With that fixed:
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
-> +###############################################
->  # Panfrost
->  ###############################################
->  igt@panfrost_.*
-> @@ -113,10 +117,12 @@ igt@gem_ctx_isolation@.*-s4
->  ###############################################
->  igt@i915_suspend@shrink
->  ###############################################
-> -# pipe-e, pipe-f no current HW support
-> +# pipe-e, pipe-f, pipe-g, pipe-h no current HW support
->  ###############################################
->  igt@.*@.*pipe-e($|-.*)
->  igt@.*@.*pipe-f($|-.*)
-> +igt@.*@.*pipe-g($|-.*)
-> +igt@.*@.*pipe-h($|-.*)
->  
->  ###############################################
->  # Temporary workarounds for CI-impacting bugs
-> -- 
-> 2.39.0
-> 
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 0be02bf5b4..24e876e70a 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -100,6 +100,7 @@ igt@xe_exec_threads@threads-mixed-fd-basic
+ igt@xe_exec_threads@threads-bal-mixed-basic
+ igt@xe_exec_threads@threads-bal-mixed-shared-vm-basic
+ igt@xe_exec_threads@threads-bal-mixed-fd-basic
++igt@xe_gpgpu_fill@basic
+ igt@xe_guc_pc@freq_basic_api
+ igt@xe_guc_pc@freq_fixed_idle
+ igt@xe_guc_pc@freq_range_idle
+diff --git a/tests/meson.build b/tests/meson.build
+index 5c7affad88..0e33cb3533 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -253,6 +253,7 @@ xe_progs = [
+ 	'xe_exec_fault_mode',
+ 	'xe_exec_reset',
+ 	'xe_exec_threads',
++	'xe_gpgpu_fill',
+ 	'xe_guc_pc',
+ 	'xe_huc_copy',
+ 	'xe_intel_bb',
+diff --git a/tests/xe/xe_gpgpu_fill.c b/tests/xe/xe_gpgpu_fill.c
+new file mode 100644
+index 0000000000..e9975d20e8
+--- /dev/null
++++ b/tests/xe/xe_gpgpu_fill.c
+@@ -0,0 +1,133 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++/**
++ * TEST: Basic tests for gpgpu functionality
++ * Category: Software building block
++ * Sub-category: gpgpu
++ * Test category: functionality test
++ */
++
++#include <errno.h>
++#include <fcntl.h>
++#include <inttypes.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/stat.h>
++#include <sys/time.h>
++#include <unistd.h>
++
++#include "drm.h"
++#include "i915/gem.h"
++#include "igt.h"
++#include "igt_collection.h"
++#include "intel_bufops.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++#define WIDTH 64
++#define HEIGHT 64
++#define STRIDE (WIDTH)
++#define SIZE (HEIGHT*STRIDE)
++#define COLOR_C4	0xc4
++#define COLOR_4C	0x4c
++
++typedef struct {
++	int drm_fd;
++	uint32_t devid;
++	struct buf_ops *bops;
++} data_t;
++
++static struct intel_buf *
++create_buf(data_t *data, int width, int height, uint8_t color, uint64_t region)
++{
++	struct intel_buf *buf;
++	uint8_t *ptr;
++	int i;
++
++	buf = calloc(1, sizeof(*buf));
++	igt_assert(buf);
++
++	buf = intel_buf_create(data->bops, width/4, height, 32, 0,
++			       I915_TILING_NONE, 0);
++
++	ptr = xe_bo_map(data->drm_fd, buf->handle, buf->surface[0].size);
++
++	for (i = 0; i < buf->surface[0].size; i++)
++		ptr[i] = color;
++
++	munmap(ptr, buf->surface[0].size);
++
++	return buf;
++}
++
++static void buf_check(uint8_t *ptr, int x, int y, uint8_t color)
++{
++	uint8_t val;
++
++	val = ptr[y * WIDTH + x];
++	igt_assert_f(val == color,
++		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
++		     color, val, x, y);
++}
++
++/**
++ * SUBTEST: basic
++ * Description: run gpgpu fill
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++
++static void gpgpu_fill(data_t *data, igt_fillfunc_t fill, uint32_t region)
++{
++	struct intel_buf *buf;
++	uint8_t *ptr;
++	int i, j;
++
++	buf = create_buf(data, WIDTH, HEIGHT, COLOR_C4, region);
++	ptr = xe_bo_map(data->drm_fd, buf->handle, buf->surface[0].size);
++
++	for (i = 0; i < WIDTH; i++)
++		for (j = 0; j < HEIGHT; j++)
++			buf_check(ptr, i, j, COLOR_C4);
++
++	fill(data->drm_fd, buf, 0, 0, WIDTH / 2, HEIGHT / 2, COLOR_4C);
++
++	for (i = 0; i < WIDTH; i++)
++		for (j = 0; j < HEIGHT; j++)
++			if (i < WIDTH / 2 && j < HEIGHT / 2)
++				buf_check(ptr, i, j, COLOR_4C);
++			else
++				buf_check(ptr, i, j, COLOR_C4);
++
++	munmap(ptr, buf->surface[0].size);
++}
++
++igt_main
++{
++	data_t data = {0, };
++	igt_fillfunc_t fill_fn = NULL;
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_render(DRIVER_XE);
++		data.devid = intel_get_drm_devid(data.drm_fd);
++		data.bops = buf_ops_create(data.drm_fd);
++
++		fill_fn = igt_get_gpgpu_fillfunc(data.devid);
++		xe_device_get(data.drm_fd);
++	}
++
++	igt_subtest("basic") {
++		gpgpu_fill(&data, fill_fn, 0);
++	}
++
++	igt_fixture {
++		xe_device_put(data.drm_fd);
++		buf_ops_destroy(data.bops);
++	}
++}
+-- 
+2.34.1
