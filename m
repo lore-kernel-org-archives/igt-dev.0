@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F252810E0A4
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 09:57:20 +0000 (UTC)
-Message-ID: <ce1cf8c9-8cb2-778c-937f-239dbbabae04@intel.com>
-Date: Fri, 21 Apr 2023 15:27:08 +0530
-Content-Language: en-US
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF76C10E130
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 10:17:42 +0000 (UTC)
+Message-ID: <4738852c-ee7a-3bb8-6498-f0ba7d80010f@intel.com>
+Date: Fri, 21 Apr 2023 15:47:31 +0530
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
- <20230418164501.1687266-21-bhanuprakash.modem@intel.com>
+ <20230418164501.1687266-37-bhanuprakash.modem@intel.com>
+Content-Language: en-US
 From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230418164501.1687266-21-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230418164501.1687266-37-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 20/45] tests/i915/kms_flip_tiling: Add XE
- support
+Subject: Re: [igt-dev] [i-g-t 36/45] tests/kms_panel_fitting: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -36,32 +35,45 @@ On 4/18/2023 10:14 PM, Bhanuprakash Modem wrote:
 >
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/i915/kms_flip_tiling.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
+>   tests/kms_panel_fitting.c | 12 +++++++++---
+>   1 file changed, 9 insertions(+), 3 deletions(-)
 >
-> diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
-> index 4cc063f63..a22f12382 100644
-> --- a/tests/i915/kms_flip_tiling.c
-> +++ b/tests/i915/kms_flip_tiling.c
-> @@ -177,7 +177,7 @@ igt_output_t *output;
->   igt_main
->   {
->   	igt_fixture {
-> -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
->   		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+> diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+> index 2d0590da2..97ef1ae48 100644
+> --- a/tests/kms_panel_fitting.c
+> +++ b/tests/kms_panel_fitting.c
+> @@ -23,6 +23,7 @@
+>    */
 >   
->   		data.testformat = DRM_FORMAT_XRGB8888;
-> @@ -217,6 +217,12 @@ igt_main
->   					if (plane->formats[j] != data.testformat)
->   						continue;
+>   #include "igt.h"
+> +#include <limits.h>
+>   #include <math.h>
+>   #include <sys/stat.h>
 >   
-> +					/* No tiling support in XE. */
-> +					if (is_xe_device(data.drm_fd) &&
-> +					    (plane->modifiers[i] != DRM_FORMAT_MOD_LINEAR ||
-> +					     plane->modifiers[j] != DRM_FORMAT_MOD_LINEAR))
-> +						continue;
+> @@ -133,7 +134,7 @@ test_panel_fitting_legacy(data_t *d, igt_display_t *display,
+>   	igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
+>   	igt_plane_set_position(d->plane2, 100, 100);
+>   
+> -	if (is_i915_device(display->drm_fd)) {
+> +	if (is_intel_device(display->drm_fd)) {
+>   		uint32_t devid = intel_get_drm_devid(display->drm_fd);
+>   		/*
+>   		 * Most of gen7 and all of gen8 doesn't support plane scaling
+> @@ -233,10 +234,15 @@ static void test_panel_fitting(data_t *data, enum test_type type)
+>   	struct stat sb;
+>   
+>   	if (type == TEST_ATOMIC) {
+> -		igt_require_f(is_i915_device(display->drm_fd), "not valid for non-i915 devices\n");
+> +		char path[PATH_MAX];
 > +
->   					igt_dynamic_f("%s-pipe-%s-%s-to-%s",
->   						      igt_output_name(output),
->   						      kmstest_pipe_name(pipe),
+> +		igt_require_f(is_intel_device(display->drm_fd), "not valid for non-intel devices\n");
+>   
+>   		/* Until this is force enabled, force modeset evasion. */
+> -		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
+> +		snprintf(path, PATH_MAX, "/sys/module/%s/parameters/fastboot",
+> +					 is_i915_device(data->drm_fd) ? "i915" : "xe");
+> +
+> +		if (stat(path, &sb) == 0)
+>   			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
+>   
+>   		igt_require(intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 5);
