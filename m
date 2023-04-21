@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88EC810E265
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 16:43:51 +0000 (UTC)
-Date: Fri, 21 Apr 2023 18:43:47 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230421164347.lkxhv3mmu7hbxtt3@kamilkon-desk1>
-References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7769A10EA00
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 17:57:57 +0000 (UTC)
+Date: Fri, 21 Apr 2023 19:57:53 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Message-ID: <20230421175753.2vgz6rzo4lfp3dwe@zkempczy-mobl2>
+References: <20230421055457.13035-1-zbigniew.kempczynski@intel.com>
+ <20230421055457.13035-11-zbigniew.kempczynski@intel.com>
+ <c6bbfece-82d2-1961-515f-34fc86e2be61@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t 00/45] Add IGT display support for XE
+In-Reply-To: <c6bbfece-82d2-1961-515f-34fc86e2be61@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 10/10] tests/xe_gpgpu_fill: Exercise
+ gpgpu fill on Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,151 +23,207 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanuprakash,
+On Fri, Apr 21, 2023 at 04:11:29PM +0200, Manszewski, Christoph wrote:
+> Hi Zbigniew,
+> 
+> On 21.04.2023 07:54, Zbigniew Kempczyński wrote:
+> > Reuse gpgpu fill already exercised on i915 on Xe.
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > ---
+> >   tests/intel-ci/xe-fast-feedback.testlist |   1 +
+> >   tests/meson.build                        |   1 +
+> >   tests/xe/xe_gpgpu_fill.c                 | 133 +++++++++++++++++++++++
+> >   3 files changed, 135 insertions(+)
+> >   create mode 100644 tests/xe/xe_gpgpu_fill.c
+> > 
+> > diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> > index 704c7f6e83..9a38135f27 100644
+> > --- a/tests/intel-ci/xe-fast-feedback.testlist
+> > +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> > @@ -100,6 +100,7 @@ igt@xe_exec_threads@threads-mixed-fd-basic
+> >   igt@xe_exec_threads@threads-bal-mixed-basic
+> >   igt@xe_exec_threads@threads-bal-mixed-shared-vm-basic
+> >   igt@xe_exec_threads@threads-bal-mixed-fd-basic
+> > +igt@xe_gpgpu_fill@basic
+> >   igt@xe_guc_pc@freq_basic_api
+> >   igt@xe_guc_pc@freq_fixed_idle
+> >   igt@xe_guc_pc@freq_range_idle
+> > diff --git a/tests/meson.build b/tests/meson.build
+> > index 5c7affad88..0e33cb3533 100644
+> > --- a/tests/meson.build
+> > +++ b/tests/meson.build
+> > @@ -253,6 +253,7 @@ xe_progs = [
+> >   	'xe_exec_fault_mode',
+> >   	'xe_exec_reset',
+> >   	'xe_exec_threads',
+> > +	'xe_gpgpu_fill',
+> >   	'xe_guc_pc',
+> >   	'xe_huc_copy',
+> >   	'xe_intel_bb',
+> > diff --git a/tests/xe/xe_gpgpu_fill.c b/tests/xe/xe_gpgpu_fill.c
+> > new file mode 100644
+> > index 0000000000..e9975d20e8
+> > --- /dev/null
+> > +++ b/tests/xe/xe_gpgpu_fill.c
+> > @@ -0,0 +1,133 @@
+> > +// SPDX-License-Identifier: MIT
+> > +/*
+> > + * Copyright © 2023 Intel Corporation
+> > + */
+> > +
+> > +/**
+> > + * TEST: Basic tests for gpgpu functionality
+> > + * Category: Software building block
+> > + * Sub-category: gpgpu
+> > + * Test category: functionality test
+> > + */
+> > +
+> > +#include <errno.h>
+> > +#include <fcntl.h>
+> > +#include <inttypes.h>
+> > +#include <stdbool.h>
+> > +#include <stdio.h>
+> > +#include <stdlib.h>
+> > +#include <string.h>
+> > +#include <sys/ioctl.h>
+> > +#include <sys/stat.h>
+> > +#include <sys/time.h>
+> > +#include <unistd.h>
+> > +
+> > +#include "drm.h"
+> > +#include "i915/gem.h"
+> > +#include "igt.h"
+> > +#include "igt_collection.h"
+> > +#include "intel_bufops.h"
+> > +#include "xe/xe_ioctl.h"
+> > +#include "xe/xe_query.h"
+> > +
+> > +#define WIDTH 64
+> > +#define HEIGHT 64
+> > +#define STRIDE (WIDTH)
+> > +#define SIZE (HEIGHT*STRIDE)
+> > +#define COLOR_C4	0xc4
+> > +#define COLOR_4C	0x4c
+> > +
+> > +typedef struct {
+> > +	int drm_fd;
+> > +	uint32_t devid;
+> > +	struct buf_ops *bops;
+> > +} data_t;
+> > +
+> > +static struct intel_buf *
+> > +create_buf(data_t *data, int width, int height, uint8_t color, uint64_t region)
+> > +{
+> > +	struct intel_buf *buf;
+> > +	uint8_t *ptr;
+> > +	int i;
+> > +
+> > +	buf = calloc(1, sizeof(*buf));
+> > +	igt_assert(buf);
+> > +
+> > +	buf = intel_buf_create(data->bops, width/4, height, 32, 0,
+> > +			       I915_TILING_NONE, 0);
+> > +
+> > +	ptr = xe_bo_map(data->drm_fd, buf->handle, buf->surface[0].size);
+> > +
+> > +	for (i = 0; i < buf->surface[0].size; i++)
+> > +		ptr[i] = color;
+> > +
+> > +	munmap(ptr, buf->surface[0].size);
+> > +
+> > +	return buf;
+> > +}
+> > +
+> > +static void buf_check(uint8_t *ptr, int x, int y, uint8_t color)
+> > +{
+> > +	uint8_t val;
+> > +
+> > +	val = ptr[y * WIDTH + x];
+> > +	igt_assert_f(val == color,
+> > +		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
+> > +		     color, val, x, y);
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: basic
+> > + * Description: run gpgpu fill
+> > + * Run type: FULL
+> > + * TODO: change ``'Run type' == FULL`` to a better category
+> > + */
+> > +
+> > +static void gpgpu_fill(data_t *data, igt_fillfunc_t fill, uint32_t region)
+> > +{
+> > +	struct intel_buf *buf;
+> > +	uint8_t *ptr;
+> > +	int i, j;
+> > +
+> > +	buf = create_buf(data, WIDTH, HEIGHT, COLOR_C4, region);
+> > +	ptr = xe_bo_map(data->drm_fd, buf->handle, buf->surface[0].size);
+> > +
+> > +	for (i = 0; i < WIDTH; i++)
+> > +		for (j = 0; j < HEIGHT; j++)
+> > +			buf_check(ptr, i, j, COLOR_C4);
+> > +
+> > +	fill(data->drm_fd, buf, 0, 0, WIDTH / 2, HEIGHT / 2, COLOR_4C);
+> > +
+> > +	for (i = 0; i < WIDTH; i++)
+> > +		for (j = 0; j < HEIGHT; j++)
+> > +			if (i < WIDTH / 2 && j < HEIGHT / 2)
+> > +				buf_check(ptr, i, j, COLOR_4C);
+> > +			else
+> > +				buf_check(ptr, i, j, COLOR_C4);
+> > +
+> > +	munmap(ptr, buf->surface[0].size);
+> > +}
+> > +
+> > +igt_main
+> > +{
+> > +	data_t data = {0, };
+> > +	igt_fillfunc_t fill_fn = NULL;
+> > +
+> > +	igt_fixture {
+> > +		data.drm_fd = drm_open_driver_render(DRIVER_XE);
+> > +		data.devid = intel_get_drm_devid(data.drm_fd);
+> > +		data.bops = buf_ops_create(data.drm_fd);
+> > +
+> > +		fill_fn = igt_get_gpgpu_fillfunc(data.devid);
+> 
+> Maybe similar to gem_gpgpu_fill we could add:
+> 
+> igt_require_f(fill_fn, "no gpgpu-fill function\n");
 
-On 2023-04-18 at 22:14:16 +0530, Bhanuprakash Modem wrote:
-> Add IGT support to work kms tests on XE driver.
-> 
-> TODO: Spin, BUSY & HANG related tests.
-> 
-> Bhanuprakash Modem (35):
->   lib: Use i915 namespace for XE debugfs
->   lib/igt_fb: Add copy engine support for XE
->   lib/igt_draw: Add gpu draw routine support for XE
->   tests/i915/kms_big_fb: Add XE support
->   tests/i915/kms_big_joiner: Add XE support
->   tests/i915/kms_cdclk: Add XE support
->   tests/i915/kms_draw_crc: Add XE support
->   tests/i915/kms_dsc: Add XE support
->   tests/i915/kms_flip_scaled_crc: Add XE support
->   tests/i915/kms_flip_tiling: Add XE support
->   tests/i915/kms_mmap_write_crc: Add XE support
->   tests/i915/kms_psr*: Add XE support
->   tests/kms_3d: Add XE support
->   tests/kms_async_flips: No XE support
->   tests/kms_atomic_transition: Add XE support
->   tests/color: Add XE support
->   tests/kms_concurrent: Add XE support
->   tests/kms_content_protection: Add XE support
->   tests/kms_cursor_crc: Add XE support
->   tests/kms_cursor_legacy: Add XE support
->   tests/kms_flip: Add XE support
->   tests/kms_flip_event_leak: Add XE support
->   tests/kms_getfb: Add XE support
->   tests/kms_hdmi_inject: Add XE support
->   tests/kms_hdr: Add XE support
->   tests/kms_panel_fitting: Add XE support
->   tests/kms_plane: Add XE support
->   tests/kms_plane_lowers: Add XE support
->   tests/kms_plane_scaling: Add XE support
->   tests/kms_prime: Add XE support
->   tests/kms_rotation_crc: Add XE support
->   tests/kms_setmode: Add XE support
->   tests/kms_universal_plane: Add XE support
->   tests/kms: Move intel specific kms tests to new dir
->   xe-fast-feedback: Add kms tests to XE BAT
-> 
-> Zbigniew Kempczyński (10):
->   lib/xe_ioctl: Add missing header for direct resolving
->   lib/xe_query: Add region helpers and missing doc
->   lib/xe_query: Remove commented out function prototype
->   lib/intel_allocator: Add allocator support for Xe
->   lib/intel_bufops: Add Xe support in bufops
->   lib/intel_batchbuffer: Add Xe support in intel-bb
->   tests/xe_intel_bb: Check if intel-bb Xe support correctness
->   tests/xe-fast-feedback: Add xe_intel_bb test to BAT
->   lib/gpgpu_fill: Use RENDER engine flag to work on Xe
->   tests/xe_gpgpu_fill: Exercise gpgpu fill on Xe
-> 
->  lib/gpgpu_fill.c                            |    4 +-
->  lib/gpu_cmds.c                              |    2 +-
->  lib/igt_draw.c                              |   82 +-
->  lib/igt_draw.h                              |    2 +
->  lib/igt_fb.c                                |   30 +-
->  lib/igt_fb.h                                |    2 +
->  lib/igt_kms.c                               |    4 +-
->  lib/igt_psr.c                               |    4 +-
->  lib/intel_allocator.c                       |   49 +-
->  lib/intel_aux_pgtable.c                     |    2 +-
->  lib/intel_batchbuffer.c                     |  430 +++++--
->  lib/intel_batchbuffer.h                     |   28 +-
->  lib/intel_bufops.c                          |   73 +-
->  lib/intel_bufops.h                          |   13 +-
->  lib/xe/xe_ioctl.h                           |    1 +
->  lib/xe/xe_query.c                           |   45 +
->  lib/xe/xe_query.h                           |    3 +-
->  tests/chamelium/kms_chamelium_color.c       |    2 +-
->  tests/i915/gem_caching.c                    |    4 +-
->  tests/i915/gem_pxp.c                        |    2 +-
->  tests/intel-ci/xe-fast-feedback.testlist    |   50 +
->  tests/{i915 => intel}/kms_big_fb.c          |   75 +-
->  tests/{i915 => intel}/kms_big_joiner.c      |    2 +-
->  tests/{i915 => intel}/kms_cdclk.c           |    5 +-
->  tests/{i915 => intel}/kms_draw_crc.c        |   24 +-
->  tests/{i915 => intel}/kms_dsc.c             |    2 +-
->  tests/{i915 => intel}/kms_dsc_helper.c      |    0
->  tests/{i915 => intel}/kms_dsc_helper.h      |    0
->  tests/{i915 => intel}/kms_flip_scaled_crc.c |    8 +-
->  tests/{i915 => intel}/kms_flip_tiling.c     |    8 +-
->  tests/{i915 => intel}/kms_mmap_write_crc.c  |    4 +-
->  tests/{i915 => intel}/kms_psr.c             |   40 +-
->  tests/{i915 => intel}/kms_psr2_sf.c         |    2 +-
->  tests/{i915 => intel}/kms_psr2_su.c         |    2 +-
->  tests/{i915 => intel}/kms_psr_stress_test.c |    2 +-
---------- ^^^^^^^^^^^^^
-Do we really need to move them ? If yes, I would prefer
-to see that in separate patch with cc to CI.
+Hi Christoph.
 
-Regards,
-Kamil
+Even not 'maybe' but 'we have to', otherwise fill() is null
+pointer and crash is imminent.
 
->  tests/kms_3d.c                              |    8 +
->  tests/kms_async_flips.c                     |    8 +-
->  tests/kms_atomic_transition.c               |    8 +-
->  tests/kms_color.c                           |   10 +-
->  tests/kms_color_helper.c                    |    2 +-
->  tests/kms_concurrent.c                      |    4 +-
->  tests/kms_content_protection.c              |   12 +-
->  tests/kms_cursor_crc.c                      |    4 +-
->  tests/kms_cursor_legacy.c                   |    4 +-
->  tests/kms_flip.c                            |   32 +-
->  tests/kms_flip_event_leak.c                 |    5 +
->  tests/kms_getfb.c                           |   22 +-
->  tests/kms_hdmi_inject.c                     |   10 +-
->  tests/kms_hdr.c                             |    8 +-
->  tests/kms_panel_fitting.c                   |   12 +-
->  tests/kms_plane.c                           |   19 +-
->  tests/kms_plane_lowres.c                    |    9 +-
->  tests/kms_plane_scaling.c                   |   41 +-
->  tests/kms_prime.c                           |  241 +++-
->  tests/kms_rotation_crc.c                    |   25 +-
->  tests/kms_setmode.c                         |    7 +
->  tests/kms_universal_plane.c                 |   15 +-
->  tests/meson.build                           |   39 +-
->  tests/xe/xe_gpgpu_fill.c                    |  133 +++
->  tests/xe/xe_intel_bb.c                      | 1181 +++++++++++++++++++
->  60 files changed, 2513 insertions(+), 352 deletions(-)
->  rename tests/{i915 => intel}/kms_big_fb.c (92%)
->  rename tests/{i915 => intel}/kms_big_joiner.c (99%)
->  rename tests/{i915 => intel}/kms_cdclk.c (98%)
->  rename tests/{i915 => intel}/kms_draw_crc.c (92%)
->  rename tests/{i915 => intel}/kms_dsc.c (99%)
->  rename tests/{i915 => intel}/kms_dsc_helper.c (100%)
->  rename tests/{i915 => intel}/kms_dsc_helper.h (100%)
->  rename tests/{i915 => intel}/kms_flip_scaled_crc.c (98%)
->  rename tests/{i915 => intel}/kms_flip_tiling.c (96%)
->  rename tests/{i915 => intel}/kms_mmap_write_crc.c (98%)
->  rename tests/{i915 => intel}/kms_psr.c (93%)
->  rename tests/{i915 => intel}/kms_psr2_sf.c (99%)
->  rename tests/{i915 => intel}/kms_psr2_su.c (99%)
->  rename tests/{i915 => intel}/kms_psr_stress_test.c (99%)
->  create mode 100644 tests/xe/xe_gpgpu_fill.c
->  create mode 100644 tests/xe/xe_intel_bb.c
+Thank you for the review.
+
+--
+Zbigniew
+
 > 
-> --
-> 2.40.0
+> Also:
+> Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 > 
+> Christoph
+> 
+> 
+> > +		xe_device_get(data.drm_fd);
+> > +	}
+> > +
+> > +	igt_subtest("basic") {
+> > +		gpgpu_fill(&data, fill_fn, 0);
+> > +	}
+> > +
+> > +	igt_fixture {
+> > +		xe_device_put(data.drm_fd);
+> > +		buf_ops_destroy(data.bops);
+> > +	}
+> > +}
