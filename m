@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28A1110E043
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 08:54:48 +0000 (UTC)
-Message-ID: <e795e8a4-6b81-824b-6d30-3127d346555f@intel.com>
-Date: Fri, 21 Apr 2023 14:24:35 +0530
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 90A5210E09C
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 09:08:37 +0000 (UTC)
+Message-ID: <5ed5300e-7423-697f-ca74-7ac4eeedfd10@intel.com>
+Date: Fri, 21 Apr 2023 14:38:23 +0530
+Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  <igt-dev@lists.freedesktop.org>
-References: <20230420120631.1866947-1-bhanuprakash.modem@intel.com>
-Content-Language: en-US
+References: <20230420063515.1791062-1-bhanuprakash.modem@intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230420120631.1866947-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230420063515.1791062-1-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] tests/kms_addfb_basic: Use proper macro for
- invalid tests
+Subject: Re: [igt-dev] [i-g-t] tests/kms_force_connector_basic: Limit
+ "force-load-detect" test to i915
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,49 +22,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Jani Nikula <jani.nikula@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 4/20/2023 5:36 PM, Bhanuprakash Modem wrote:
-> For invalid tests, instead of using magic numbers use proper
-> macros those are already defined in IGT lib.
+On 4/20/2023 12:05 PM, Bhanuprakash Modem wrote:
+> As load_detect_test is enabled only for i915, limit the IGT test
+> igt@kms_force_connector_basic@force-load-detect execution to i915
+> only.
 >
+> Cc: Jani Nikula <jani.nikula@intel.com>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/kms_addfb_basic.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   tests/intel-ci/xe-fast-feedback.testlist | 1 -
+>   tests/kms_force_connector_basic.c        | 5 ++++-
+>   2 files changed, 4 insertions(+), 2 deletions(-)
 >
-> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-> index a66ccfa6b..e4783624f 100644
-> --- a/tests/kms_addfb_basic.c
-> +++ b/tests/kms_addfb_basic.c
-> @@ -549,7 +549,7 @@ static void addfb25_tests(int fd)
->   	igt_subtest("addfb25-bad-modifier") {
->   		igt_require_fb_modifiers(fd);
->   
-> -		f.modifier[0] = ~0;
-> +		f.modifier[0] = DRM_FORMAT_MOD_INVALID;
->   		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index 5db27c634..3c9276e49 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -167,6 +167,5 @@ igt@kms_addfb_basic@unused-offsets
+>   igt@kms_addfb_basic@unused-pitches
+>   igt@kms_force_connector_basic@force-connector-state
+>   igt@kms_force_connector_basic@force-edid
+> -igt@kms_force_connector_basic@force-load-detect
+>   igt@kms_force_connector_basic@prune-stale-modes
+>   igt@kms_prop_blob@basic
+> diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
+> index 35e8153c8..f1508efba 100644
+> --- a/tests/kms_force_connector_basic.c
+> +++ b/tests/kms_force_connector_basic.c
+> @@ -372,8 +372,11 @@ end:
 >   	}
 >   
-> @@ -729,7 +729,7 @@ static void prop_tests(int fd)
+>   	igt_describe("Test to detect forced load.");
+> -	igt_subtest("force-load-detect")
+> +	igt_subtest("force-load-detect") {
+> +		igt_require_i915(drm_fd);
+> +
+>   		force_load_detect(drm_fd, connector, res);
+> +	}
 >   
->   	igt_describe("Test that get-properties ioctl call fails correctly for invalid object type");
->   	igt_subtest("invalid-get-prop-any") {
-> -		get_props.obj_type = 0; /* DRM_MODE_OBJECT_ANY */
-> +		get_props.obj_type = DRM_MODE_OBJECT_ANY;
->   
->   		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES, &get_props, EINVAL);
->   	}
-> @@ -747,7 +747,7 @@ static void prop_tests(int fd)
->   
->   	igt_describe("Test that set-properties ioctl call fails correctly for invalid object type");
->   	igt_subtest("invalid-set-prop-any") {
-> -		set_prop.obj_type = 0; /* DRM_MODE_OBJECT_ANY */
-> +		set_prop.obj_type = DRM_MODE_OBJECT_ANY;
->   
->   		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY, &set_prop, EINVAL);
->   	}
+>   	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+>   		igt_describe_f("%s", tests[i].desc);
