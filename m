@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7569910E123
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 16:14:24 +0000 (UTC)
-Date: Fri, 21 Apr 2023 18:14:20 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BADD210E260
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 16:29:00 +0000 (UTC)
+Date: Fri, 21 Apr 2023 18:28:56 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230421161420.uyf4po76gtynwrbe@kamilkon-desk1>
+Message-ID: <20230421162856.ykduu4ilywu6h7v7@kamilkon-desk1>
 References: <20230421055457.13035-1-zbigniew.kempczynski@intel.com>
- <20230421055457.13035-5-zbigniew.kempczynski@intel.com>
+ <20230421055457.13035-6-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230421055457.13035-5-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 04/10] lib/intel_allocator: Add
- allocator support for Xe
+In-Reply-To: <20230421055457.13035-6-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 05/10] lib/intel_bufops: Add Xe
+ support in bufops
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,99 +26,213 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-04-21 at 07:54:51 +0200, Zbigniew Kempczyński wrote:
-> Start supporting va range configuration for xe allocator.
-> 
-> During opening allocator has to be aware of vm range (start and end).
-> i915 driver doesn't expose vm range information so those variables
-> have to be detected. In xe driver we get information of va size from
-> the kernel query so va end can be directly configured. At the moment
-> there's no autodetection of va start for xe what might need to be
-> address in the future if for some reason lower offsets might not be
-> in use.
+Hi Zbigniew,
+
+On 2023-04-21 at 07:54:52 +0200, Zbigniew Kempczyński wrote:
+> Extend bufops to support Xe:
+>  - change region to 64bit region mask,
+>  - add initialization helper (full) which allows passing handle,
+>    size and region,
+>  - mapping functions (read + write) selects driver specific mapping
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> 
 > ---
-> v2: Fix review comments (Kamil)
-> ---
->  lib/intel_allocator.c | 40 +++++++++++++++++++++++++---------------
->  1 file changed, 25 insertions(+), 15 deletions(-)
+>  lib/intel_bufops.c | 73 ++++++++++++++++++++++++++++++++++++++++++----
+>  lib/intel_bufops.h | 13 ++++++++-
+>  2 files changed, 80 insertions(+), 6 deletions(-)
 > 
-> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-> index 2b08dd5996..45c1168ab5 100644
-> --- a/lib/intel_allocator.c
-> +++ b/lib/intel_allocator.c
-> @@ -16,6 +16,7 @@
->  #include "igt_map.h"
->  #include "intel_allocator.h"
->  #include "intel_allocator_msgchannel.h"
+> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+> index cdc7a1698b..3307f30ee3 100644
+> --- a/lib/intel_bufops.c
+> +++ b/lib/intel_bufops.c
+> @@ -26,6 +26,8 @@
+>  #include <cairo.h>
+>  
+>  #include "i915/gem_create.h"
+> +#include "xe/xe_ioctl.h"
 > +#include "xe/xe_query.h"
+>  #include "igt.h"
+>  #include "igt_x86.h"
+>  #include "intel_bufops.h"
+> @@ -488,6 +490,9 @@ static void *mmap_write(int fd, struct intel_buf *buf)
+>  {
+>  	void *map = NULL;
 >  
->  //#define ALLOCDBG
->  #ifdef ALLOCDBG
-> @@ -910,24 +911,33 @@ static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
->  	struct alloc_resp resp;
->  	uint64_t gtt_size;
+> +	if (is_xe_device(fd))
+> +		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
+> +
+>  	if (gem_has_lmem(fd)) {
+>  		/*
+>  		 * set/get_caching and set_domain are no longer supported on
+> @@ -530,6 +535,9 @@ static void *mmap_read(int fd, struct intel_buf *buf)
+>  {
+>  	void *map = NULL;
 >  
-> -	if (!start)
-> -		req.open.start = gem_detect_safe_start_offset(fd);
-> +	if (is_i915_device(fd)) {
-> +		if (!start)
-> +			req.open.start = gem_detect_safe_start_offset(fd);
+> +	if (is_xe_device(fd))
+> +		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
+> +
+>  	if (gem_has_lmem(fd)) {
+>  		/*
+>  		 * set/get_caching and set_domain are no longer supported on
+> @@ -809,7 +817,7 @@ static void __intel_buf_init(struct buf_ops *bops,
+>  			     int width, int height, int bpp, int alignment,
+>  			     uint32_t req_tiling, uint32_t compression,
+>  			     uint64_t bo_size, int bo_stride,
+> -			     uint32_t region)
+> +			     uint64_t region)
+>  {
+>  	uint32_t tiling = req_tiling;
+>  	uint64_t size;
+> @@ -899,9 +907,17 @@ static void __intel_buf_init(struct buf_ops *bops,
+>  	buf->size = size;
+>  	buf->handle = handle;
 >  
-> -	if (!end) {
-> -		igt_assert_f(can_report_gtt_size(fd), "Invalid fd\n");
-> -		gtt_size = gem_aperture_size(fd);
-> -		if (!gem_uses_full_ppgtt(fd))
-> -			gtt_size /= 2;
-> -		else
-> -			gtt_size -= RESERVED;
-> +		if (!end) {
-> +			igt_assert_f(can_report_gtt_size(fd), "Invalid fd\n");
-> +			gtt_size = gem_aperture_size(fd);
-> +			if (!gem_uses_full_ppgtt(fd))
-> +				gtt_size /= 2;
-> +			else
-> +				gtt_size -= RESERVED;
->  
-> -		req.open.end = gtt_size;
-> -	}
-> +			req.open.end = gtt_size;
+> -	if (!handle)
+> -		if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
+> -			igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
+> +	if (!handle) {
+> +		if (is_i915_device(bops->fd)) {
+> +			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
+> +				igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
+> +		} else {
+> +			region = vram_if_possible(bops->fd, 0);
+----------------------- ^
+Here you override region passed by caller, imho this line
+should be removed.
+
+> +			size = ALIGN(size, xe_get_default_alignment(bops->fd));
+> +			buf->handle = xe_bo_create_flags(bops->fd, 0, size, region);
 > +		}
->  
-> -	if (!default_alignment)
-> -		req.open.default_alignment = gem_detect_safe_alignment(fd);
-> +		if (!default_alignment)
-> +			req.open.default_alignment = gem_detect_safe_alignment(fd);
-> +
-> +		req.open.start = ALIGN(req.open.start, req.open.default_alignment);
-> +	} else {
-> +		struct xe_device *xe_dev = xe_device_get(fd);
->  
-> -	req.open.start = ALIGN(req.open.start, req.open.default_alignment);
-> +		igt_assert(xe_dev);
-> +
-> +		if (!end)
-> +			req.open.end = 1ull << xe_dev->va_bits;
 > +	}
+> +	buf->region = region;
 >  
->  	/* Get child_tid only once at open() */
->  	if (child_tid == -1)
-> @@ -998,7 +1008,7 @@ uint64_t intel_allocator_open_vm_full(int fd, uint32_t vm,
+>  	/* Store gem bo size */
+>  	buf->bo_size = size;
+> @@ -945,7 +961,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+>  			      struct intel_buf *buf,
+>  			      int width, int height, int bpp, int alignment,
+>  			      uint32_t tiling, uint32_t compression,
+> -			      uint32_t region)
+> +			      uint64_t region)
+>  {
+>  	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+>  			 tiling, compression, 0, 0, region);
+> @@ -1010,6 +1026,41 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+>  			 req_tiling, compression, 0, 0, -1);
+>  }
 >  
+> +/**
+> + * intel_buf_init_full
+> + * @bops: pointer to buf_ops
+> + * @handle: BO handle created by the caller
+> + * @buf: pointer to intel_buf structure to be filled
+> + * @width: surface width
+> + * @height: surface height
+> + * @bpp: bits-per-pixel (8 / 16 / 32 / 64)
+> + * @alignment: alignment of the stride for linear surfaces
+> + * @req_tiling: surface tiling
+> + * @compression: surface compression type
+> + * @size: size
+> + * @region: region
+> + *
+> + * Function configures BO handle within intel_buf structure passed by the caller
+> + * (with all its metadata - width, height, ...). Useful if BO was created
+> + * outside. Allows passing real size which caller is aware of.
+> + *
+> + * Note: intel_buf_close() can be used because intel_buf is aware it is not
+> + * buffer owner so it won't close it underneath.
+> + */
+> +void intel_buf_init_full(struct buf_ops *bops,
+> +			 uint32_t handle,
+> +			 struct intel_buf *buf,
+> +			 int width, int height,
+> +			 int bpp, int alignment,
+> +			 uint32_t req_tiling,
+> +			 uint32_t compression,
+> +			 uint64_t size,
+> +			 uint64_t region)
+> +{
+> +	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+> +			 req_tiling, compression, size, 0, region);
+------------------------------------------------------- ^
+stride set to zero ? +cc Bhanuprakash.
+
+> +}
+> +
 >  /**
->   * intel_allocator_open:
-> - * @fd: i915 descriptor
-> + * @fd: i915 or xe descriptor
->   * @ctx: context
->   * @allocator_type: one of INTEL_ALLOCATOR_* define
->   *
+>   * intel_buf_create
+>   * @bops: pointer to buf_ops
+> @@ -1423,6 +1474,18 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+>  	igt_debug("generation: %d, supported tiles: 0x%02x\n",
+>  		  bops->intel_gen, bops->supported_tiles);
+>  
+> +	/* No tiling support in XE. */
+> +	if (is_xe_device(fd)) {
+> +		bops->supported_hw_tiles = TILE_NONE;
+> +
+> +		bops->linear_to_x = copy_linear_to_x;
+> +		bops->x_to_linear = copy_x_to_linear;
+> +		bops->linear_to_y = copy_linear_to_y;
+> +		bops->y_to_linear = copy_y_to_linear;
+> +
+> +		return bops;
+> +	}
+> +
+>  	/*
+>  	 * Warning!
+>  	 *
+> diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+> index 25b4307399..0b6e025ca3 100644
+> --- a/lib/intel_bufops.h
+> +++ b/lib/intel_bufops.h
+> @@ -43,6 +43,7 @@ struct intel_buf {
+>  	} addr;
+>  
+>  	uint64_t bo_size;
+> +	uint64_t region;
+>  
+>  	/* Tracking */
+>  	struct intel_bb *ibb;
+> @@ -135,7 +136,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+>  			      struct intel_buf *buf,
+>  			      int width, int height, int bpp, int alignment,
+>  			      uint32_t tiling, uint32_t compression,
+> -			      uint32_t region);
+> +			      uint64_t region);
+>  void intel_buf_close(struct buf_ops *bops, struct intel_buf *buf);
+>  
+>  void intel_buf_init_using_handle(struct buf_ops *bops,
+> @@ -143,6 +144,15 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+>  				 struct intel_buf *buf,
+>  				 int width, int height, int bpp, int alignment,
+>  				 uint32_t req_tiling, uint32_t compression);
+> +void intel_buf_init_full(struct buf_ops *bops,
+> +			 uint32_t handle,
+> +			 struct intel_buf *buf,
+> +			 int width, int height,
+> +			 int bpp, int alignment,
+> +			 uint32_t req_tiling,
+> +			 uint32_t compression,
+> +			 uint64_t size,
+> +			 uint64_t region);
+>  
+>  struct intel_buf *intel_buf_create(struct buf_ops *bops,
+>  				   int width, int height,
+> @@ -164,6 +174,7 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+>  							 uint32_t compression,
+>  							 uint64_t size,
+>  							 int stride);
+> +
+
+imho this newline should be deleted.
+
+Regards,
+Kamil
+
+>  void intel_buf_destroy(struct intel_buf *buf);
+>  
+>  static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
 > -- 
 > 2.34.1
 > 
