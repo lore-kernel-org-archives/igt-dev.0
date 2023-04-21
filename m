@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 66D1A10E223
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 08:07:43 +0000 (UTC)
-Message-ID: <b2f7d0c6-da1d-858b-599d-4a39091f5e20@intel.com>
-Date: Fri, 21 Apr 2023 13:37:19 +0530
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
- <20230418164501.1687266-20-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230418164501.1687266-20-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F067F10EDD0
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 08:53:16 +0000 (UTC)
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 21 Apr 2023 11:52:51 +0300
+Message-Id: <20230421085253.2344889-2-jouni.hogander@intel.com>
+In-Reply-To: <20230421085253.2344889-1-jouni.hogander@intel.com>
+References: <20230421085253.2344889-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 19/45] tests/i915/kms_flip_scaled_crc: Add XE
- support
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 1/3] tests/i915/kms_frontbuffer_tracking:
+ Split fbc into library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,41 +24,248 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM.
+Split fbc handling into library to be used by other tests as well.
 
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+v2: Moved into libigt instead of static kms_fbc_helper
 
-On 4/18/2023 10:14 PM, Bhanuprakash Modem wrote:
-> Add XE driver support for kms tests.
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/i915/kms_flip_scaled_crc.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
-> index 7f7a59b93..f5dc430e3 100644
-> --- a/tests/i915/kms_flip_scaled_crc.c
-> +++ b/tests/i915/kms_flip_scaled_crc.c
-> @@ -623,7 +623,7 @@ igt_main
->   	drmModeModeInfoPtr modetoset = NULL;
->   
->   	igt_fixture {
-> -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
->   		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
->   		igt_require(data.gen >= 9);
->   		igt_display_require(&data.display, data.drm_fd);
-> @@ -644,6 +644,12 @@ igt_main
->   	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
->   		igt_describe(flip_scenario_test[index].describe);
->   		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
-> +			/* No tiling support in XE. */
-> +			if (is_xe_device(data.drm_fd) &&
-> +			    (flip_scenario_test[index].firstmodifier != DRM_FORMAT_MOD_LINEAR ||
-> +			     flip_scenario_test[index].secondmodifier != DRM_FORMAT_MOD_LINEAR))
-> +				continue;
-> +
->   			free_fbs(&data);
->   			for_each_pipe(&data.display, pipe) {
->   				bool found = false;
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+---
+ lib/i915/intel_fbc.c                  | 62 +++++++++++++++++++++++++++
+ lib/i915/intel_fbc.h                  | 19 ++++++++
+ lib/meson.build                       |  1 +
+ tests/i915/kms_frontbuffer_tracking.c | 57 +++++-------------------
+ 4 files changed, 92 insertions(+), 47 deletions(-)
+ create mode 100644 lib/i915/intel_fbc.c
+ create mode 100644 lib/i915/intel_fbc.h
+
+diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
+new file mode 100644
+index 00000000..2a1a65d5
+--- /dev/null
++++ b/lib/i915/intel_fbc.c
+@@ -0,0 +1,62 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#include <fcntl.h>
++
++#include "igt.h"
++
++#include "intel_fbc.h"
++
++bool intel_fbc_supported_on_chipset(int device, enum pipe pipe)
++{
++	char buf[128];
++	int dir;
++
++	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
++	igt_require_fd(dir);
++	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
++	close(dir);
++	if (*buf == '\0')
++		return false;
++
++	return !strstr(buf, "FBC unsupported on this chipset\n");
++}
++
++static bool _intel_fbc_is_enabled(int device, enum pipe pipe, int log_level, char *last_fbc_buf)
++{
++	char buf[128];
++	bool print = true;
++	int dir;
++
++	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
++	igt_require_fd(dir);
++	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
++	close(dir);
++	if (log_level != IGT_LOG_DEBUG)
++		last_fbc_buf[0] = '\0';
++	else if (strcmp(last_fbc_buf, buf))
++		strcpy(last_fbc_buf, buf);
++	else
++		print = false;
++
++	if (print)
++		igt_log(IGT_LOG_DOMAIN, log_level, "fbc_is_enabled()?\n%s", buf);
++
++	return strstr(buf, "FBC enabled\n");
++}
++
++bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level)
++{
++	char last_fbc_buf[128] = {'\0'};
++
++	return _intel_fbc_is_enabled(device, pipe, log_level, last_fbc_buf);
++}
++
++bool intel_fbc_wait_until_enabled(int device, enum pipe pipe)
++{
++	char last_fbc_buf[128] = {'\0'};
++
++	return igt_wait(_intel_fbc_is_enabled(device, pipe, IGT_LOG_DEBUG, last_fbc_buf), 2000, 1);
++}
+diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
+new file mode 100644
+index 00000000..901bf984
+--- /dev/null
++++ b/lib/i915/intel_fbc.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#ifndef INTEL_FBC_H
++#define INTEL_FBC_H
++
++#include "igt.h"
++
++#define intel_fbc_enable(device) igt_set_module_param_int(device, "enable_fbc", 1)
++#define intel_fbc_disable(device) igt_set_module_param_int(device, "enable_fbc", 0)
++
++bool intel_fbc_supported_on_chipset(int device, enum pipe pipe);
++bool intel_fbc_wait_until_enabled(int device, enum pipe pipe);
++bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level);
++
++#endif
++
+diff --git a/lib/meson.build b/lib/meson.build
+index b21c252b..e3916096 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -12,6 +12,7 @@ lib_sources = [
+ 	'i915/gem_mman.c',
+ 	'i915/gem_vm.c',
+ 	'i915/intel_decode.c',
++	'i915/intel_fbc.c',
+ 	'i915/intel_memory_region.c',
+ 	'i915/intel_mocs.c',
+ 	'i915/intel_cmds_info.c',
+diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+index 650e14a7..f5da0f24 100644
+--- a/tests/i915/kms_frontbuffer_tracking.c
++++ b/tests/i915/kms_frontbuffer_tracking.c
+@@ -32,6 +32,7 @@
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
++#include "i915/intel_fbc.h"
+ #include "igt.h"
+ #include "igt_sysfs.h"
+ #include "igt_psr.h"
+@@ -775,27 +776,6 @@ static void __debugfs_read_connector(const char *param, char *buf, int len)
+ #define debugfs_write_crtc(p, arr) __debugfs_write_crtc(p, arr, sizeof(arr))
+ #define debugfs_read_connector(p, arr) __debugfs_read_connector(p, arr, sizeof(arr))
+ 
+-static char last_fbc_buf[128];
+-
+-static bool fbc_is_enabled(int lvl)
+-{
+-	char buf[128];
+-	bool print = true;
+-
+-	debugfs_read_crtc("i915_fbc_status", buf);
+-	if (lvl != IGT_LOG_DEBUG)
+-		last_fbc_buf[0] = '\0';
+-	else if (strcmp(last_fbc_buf, buf))
+-		strcpy(last_fbc_buf, buf);
+-	else
+-		print = false;
+-
+-	if (print)
+-		igt_log(IGT_LOG_DOMAIN, lvl, "fbc_is_enabled()?\n%s", buf);
+-
+-	return strstr(buf, "FBC enabled\n");
+-}
+-
+ static void drrs_set(unsigned int val)
+ {
+ 	char buf[2];
+@@ -970,20 +950,11 @@ static bool fbc_mode_too_large(void)
+ 	return strstr(buf, "FBC disabled: mode too large for compression\n");
+ }
+ 
+-static bool fbc_wait_until_enabled(void)
+-{
+-	last_fbc_buf[0] = '\0';
+-
+-	return igt_wait(fbc_is_enabled(IGT_LOG_DEBUG), 2000, 1);
+-}
+-
+ static bool drrs_wait_until_rr_switch_to_low(void)
+ {
+ 	return igt_wait(is_drrs_low(), 5000, 1);
+ }
+ 
+-#define fbc_enable() igt_set_module_param_int(drm.fd, "enable_fbc", 1)
+-#define fbc_disable() igt_set_module_param_int(drm.fd, "enable_fbc", 0)
+ #define drrs_enable()	drrs_set(1)
+ #define drrs_disable()	drrs_set(0)
+ 
+@@ -1188,8 +1159,8 @@ static bool disable_features(const struct test_mode *t)
+ 	if (t->feature == FEATURE_DEFAULT)
+ 		return false;
+ 
+-	fbc_disable();
+ 	drrs_disable();
++	intel_fbc_disable(drm.fd);
+ 	return psr.can_test ? psr_disable(drm.fd, drm.debugfs) : false;
+ }
+ 
+@@ -1429,20 +1400,9 @@ static void teardown_crcs(void)
+ 	igt_pipe_crc_free(pipe_crc);
+ }
+ 
+-static bool fbc_supported_on_chipset(void)
+-{
+-	char buf[128];
+-
+-	debugfs_read_crtc("i915_fbc_status", buf);
+-	if (*buf == '\0')
+-		return false;
+-
+-	return !strstr(buf, "FBC unsupported on this chipset\n");
+-}
+-
+ static void setup_fbc(void)
+ {
+-	if (!fbc_supported_on_chipset()) {
++	if (!intel_fbc_supported_on_chipset(drm.fd, prim_mode_params.pipe)) {
+ 		igt_info("Can't test FBC: not supported on this chipset\n");
+ 		return;
+ 	}
+@@ -1649,15 +1609,18 @@ static void do_status_assertions(int flags)
+ 		igt_require(!fbc_not_enough_stolen());
+ 		igt_require(!fbc_stride_not_supported());
+ 		igt_require(!fbc_mode_too_large());
+-		if (!fbc_wait_until_enabled()) {
+-			igt_assert_f(fbc_is_enabled(IGT_LOG_WARN),
++		if (!intel_fbc_wait_until_enabled(drm.fd, prim_mode_params.pipe)) {
++			igt_assert_f(intel_fbc_is_enabled(drm.fd,
++						    prim_mode_params.pipe,
++						    IGT_LOG_WARN),
+ 				     "FBC disabled\n");
+ 		}
+ 
+ 		if (opt.fbc_check_compression)
+ 			igt_assert(fbc_wait_for_compression());
+ 	} else if (flags & ASSERT_FBC_DISABLED) {
+-		igt_assert(!fbc_wait_until_enabled());
++		igt_assert(!intel_fbc_wait_until_enabled(drm.fd,
++						   prim_mode_params.pipe));
+ 	}
+ 
+ 	if (flags & ASSERT_PSR_ENABLED)
+@@ -1797,7 +1760,7 @@ static bool enable_features_for_test(const struct test_mode *t)
+ 		return false;
+ 
+ 	if (t->feature & FEATURE_FBC)
+-		fbc_enable();
++		intel_fbc_enable(drm.fd);
+ 	if (t->feature & FEATURE_PSR)
+ 		ret = psr_enable(drm.fd, drm.debugfs, PSR_MODE_1);
+ 	if (t->feature & FEATURE_DRRS)
+-- 
+2.34.1
