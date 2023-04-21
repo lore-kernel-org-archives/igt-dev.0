@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4609954512904750400=="
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CDCB10ED8A
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Apr 2023 06:47:32 +0000 (UTC)
+Message-ID: <3d505bfb-5845-0196-67da-dd21c502fc18@intel.com>
+Date: Fri, 21 Apr 2023 12:17:20 +0530
+To: <igt-dev@lists.freedesktop.org>
+References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
+ <ZD7MIIwPHu+eM8ZR@intel.com> <20230419070151.ezivqrifp2qk6q7o@zkempczy-mobl2>
+ <bd850ded-b4b7-dd17-ea3a-8433557c3b54@intel.com>
+Content-Language: en-US
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <bd850ded-b4b7-dd17-ea3a-8433557c3b54@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri, 21 Apr 2023 06:45:40 -0000
-Message-ID: <168205954001.5828.8877992956404781449@emeril.freedesktop.org>
-References: <20230421055457.13035-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230421055457.13035-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50ZWdy?=
- =?utf-8?q?ate_intel-bb_with_Xe_=28rev5=29?=
+Subject: Re: [igt-dev] [i-g-t 00/45] Add IGT display support for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,221 +22,224 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4609954512904750400==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
-
-Series: Integrate intel-bb with Xe (rev5)
-URL   : https://patchwork.freedesktop.org/series/116578/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13037 -> IGTPW_8835
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/index.html
-
-Participating hosts (38 -> 32)
-------------------------------
-
-  Missing    (6): fi-kbl-soraka bat-adlp-9 fi-ilk-650 fi-snb-2520m fi-glk-j4005 bat-mtlp-8 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8835 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-1:         [PASS][1] -> [ABORT][2] ([i915#4983])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13037/bat-rpls-1/igt@i915_selftest@live@reset.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/bat-rpls-1/igt@i915_selftest@live@reset.html
-
-  * igt@i915_selftest@live@slpc:
-    - bat-adlp-6:         [PASS][3] -> [DMESG-FAIL][4] ([i915#6367] / [i915#7913])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13037/bat-adlp-6/igt@i915_selftest@live@slpc.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/bat-adlp-6/igt@i915_selftest@live@slpc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [DMESG-FAIL][5] ([i915#5334]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13037/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-atsm-1:         [DMESG-FAIL][7] ([i915#7699]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13037/bat-atsm-1/igt@i915_selftest@live@migrate.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/bat-atsm-1/igt@i915_selftest@live@migrate.html
-
-  
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7263 -> IGTPW_8835
-
-  CI-20190529: 20190529
-  CI_DRM_13037: c61620cfd82da4300b7992335bca9274568accba @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8835: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/index.html
-  IGT_7263: a6bd8f415c4ec41b5a014c7db47e46c81ffd0074 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+On 4/19/2023 5:27 PM, Modem, Bhanuprakash wrote:
+> Hi,
+>
+> On Wed-19-04-2023 12:31 pm, Zbigniew Kempczyński wrote:
+>> On Tue, Apr 18, 2023 at 07:58:08PM +0300, Ville Syrjälä wrote:
+>>> On Tue, Apr 18, 2023 at 10:14:16PM +0530, Bhanuprakash Modem wrote:
+>>>> Add IGT support to work kms tests on XE driver.
+>>>>
+>>>> TODO: Spin, BUSY & HANG related tests.
+>>>>
+>>>> Bhanuprakash Modem (35):
+>>>>    lib: Use i915 namespace for XE debugfs
+>>>>    lib/igt_fb: Add copy engine support for XE
+>>>>    lib/igt_draw: Add gpu draw routine support for XE
+>>>>    tests/i915/kms_big_fb: Add XE support
+>>>>    tests/i915/kms_big_joiner: Add XE support
+>>>>    tests/i915/kms_cdclk: Add XE support
+>>>>    tests/i915/kms_draw_crc: Add XE support
+>>>>    tests/i915/kms_dsc: Add XE support
+>>>>    tests/i915/kms_flip_scaled_crc: Add XE support
+>>>>    tests/i915/kms_flip_tiling: Add XE support
+>>>>    tests/i915/kms_mmap_write_crc: Add XE support
+>>>>    tests/i915/kms_psr*: Add XE support
+>>>>    tests/kms_3d: Add XE support
+>>>>    tests/kms_async_flips: No XE support
+>>>>    tests/kms_atomic_transition: Add XE support
+>>>>    tests/color: Add XE support
+>>>>    tests/kms_concurrent: Add XE support
+>>>>    tests/kms_content_protection: Add XE support
+>>>>    tests/kms_cursor_crc: Add XE support
+>>>>    tests/kms_cursor_legacy: Add XE support
+>>>>    tests/kms_flip: Add XE support
+>>>>    tests/kms_flip_event_leak: Add XE support
+>>>>    tests/kms_getfb: Add XE support
+>>>>    tests/kms_hdmi_inject: Add XE support
+>>>>    tests/kms_hdr: Add XE support
+>>>>    tests/kms_panel_fitting: Add XE support
+>>>>    tests/kms_plane: Add XE support
+>>>>    tests/kms_plane_lowers: Add XE support
+>>>>    tests/kms_plane_scaling: Add XE support
+>>>>    tests/kms_prime: Add XE support
+>>>>    tests/kms_rotation_crc: Add XE support
+>>>>    tests/kms_setmode: Add XE support
+>>>>    tests/kms_universal_plane: Add XE support
+>>>>    tests/kms: Move intel specific kms tests to new dir
+>>>
+>>> Feels like the whole xe lib/ stuff is basically
+>>> a failure if we need to touch that many things
+>>
+>> Why you think so? Changes:
+>>
+>> -               if (is_i915_device(data->drm_fd))
+>> +               if (is_intel_device(data->drm_fd))
+>
+> Yes most of the changes are to update *i915* to *intel* and few 
+> unavoidable changes like:
+> -    data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +    data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+>
+>
+> Also, there are few xe_device specific changes like:
+> +        if (is_xe_device(drm_fd))
+> +            xe_device_get(drm_fd);
+>
+> +        if (is_xe_device(drm_fd))
+> +            xe_device_put(drm_fd);
+>
+>
+> @Zbigniew, How about moving xe_device_get() to drm_open_driver()?
+> So that, no need to call xe_device_get() in test level.
 
 
-Testlist changes
-----------------
+I agree, with this approach.
 
-+igt@xe_gpgpu_fill@basic
-+igt@xe_intel_bb@add-remove-objects
-+igt@xe_intel_bb@bb-with-allocator
-+igt@xe_intel_bb@blit-reloc
-+igt@xe_intel_bb@blit-simple
-+igt@xe_intel_bb@create-in-region
-+igt@xe_intel_bb@delta-check
-+igt@xe_intel_bb@destroy-bb
-+igt@xe_intel_bb@full-batch
-+igt@xe_intel_bb@intel-bb-blit-none
-+igt@xe_intel_bb@intel-bb-blit-x
-+igt@xe_intel_bb@intel-bb-blit-y
-+igt@xe_intel_bb@lot-of-buffers
-+igt@xe_intel_bb@offset-control
-+igt@xe_intel_bb@purge-bb
-+igt@xe_intel_bb@render
-+igt@xe_intel_bb@reset-bb
-+igt@xe_intel_bb@simple-bb
-+igt@xe_intel_bb@simple-bb-ctx
+Currently a new test that is meant to run on any drm driver will need to 
+add this explicitly, so that it runs on XE driver.
 
-== Logs ==
+As mentioned by Bhanu, will need to have a wrapper around close(drm_fd), 
+where we can do xe_device_put().
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/index.html
+Regards,
 
---===============4609954512904750400==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Ankit
 
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Integrate intel-bb with Xe (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116578/">https://patchwork.freedesktop.org/series/116578/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13037 -&gt; IGTPW_8835</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/index.html</p>
-<h2>Participating hosts (38 -&gt; 32)</h2>
-<p>Missing    (6): fi-kbl-soraka bat-adlp-9 fi-ilk-650 fi-snb-2520m fi-glk-j4005 bat-mtlp-8 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8835 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13037/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13037/bat-adlp-6/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/bat-adlp-6/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13037/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13037/bat-atsm-1/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/bat-atsm-1/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7263 -&gt; IGTPW_8835</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13037: c61620cfd82da4300b7992335bca9274568accba @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8835: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8835/index.html<br />
-  IGT_7263: a6bd8f415c4ec41b5a014c7db47e46c81ffd0074 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_gpgpu_fill@basic<br />
-+igt@xe_intel_bb@add-remove-objects<br />
-+igt@xe_intel_bb@bb-with-allocator<br />
-+igt@xe_intel_bb@blit-reloc<br />
-+igt@xe_intel_bb@blit-simple<br />
-+igt@xe_intel_bb@create-in-region<br />
-+igt@xe_intel_bb@delta-check<br />
-+igt@xe_intel_bb@destroy-bb<br />
-+igt@xe_intel_bb@full-batch<br />
-+igt@xe_intel_bb@intel-bb-blit-none<br />
-+igt@xe_intel_bb@intel-bb-blit-x<br />
-+igt@xe_intel_bb@intel-bb-blit-y<br />
-+igt@xe_intel_bb@lot-of-buffers<br />
-+igt@xe_intel_bb@offset-control<br />
-+igt@xe_intel_bb@purge-bb<br />
-+igt@xe_intel_bb@render<br />
-+igt@xe_intel_bb@reset-bb<br />
-+igt@xe_intel_bb@simple-bb<br />
-+igt@xe_intel_bb@simple-bb-ctx</p>
-
-</body>
-</html>
-
---===============4609954512904750400==--
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -601,6 +601,9 @@ int drm_open_driver(int chipset)
+>                 }
+>         }
+>
+> +       if (is_xe_device(fd))
+> +               xe_device_get(fd);
+> +
+>         return fd;
+>  }
+>
+> Ofcourse we need some efforts to handle xe_device_put():
+> 1- Create a new helper maybe drm_close(fd)
+>     drm_close(int fd) {
+>         if (is_xe_device(fd))
+>             xe_device_put(fd);
+>
+>         close(fd);
+>     }
+> 2- Update both kms & gem tests to use s/close(fd)/drm_close(fd)/
+>
+> - Bhanu
+>
+>>
+>> which checks intel (i915 or xe) looks good for me. I mean
+>> I wouldn't like to handle xe in is_i915_device() check.
+>>
+>> -- 
+>> Zbigniew
+>>
+>>
+>>>
+>>>>    xe-fast-feedback: Add kms tests to XE BAT
+>>>>
+>>>> Zbigniew Kempczyński (10):
+>>>>    lib/xe_ioctl: Add missing header for direct resolving
+>>>>    lib/xe_query: Add region helpers and missing doc
+>>>>    lib/xe_query: Remove commented out function prototype
+>>>>    lib/intel_allocator: Add allocator support for Xe
+>>>>    lib/intel_bufops: Add Xe support in bufops
+>>>>    lib/intel_batchbuffer: Add Xe support in intel-bb
+>>>>    tests/xe_intel_bb: Check if intel-bb Xe support correctness
+>>>>    tests/xe-fast-feedback: Add xe_intel_bb test to BAT
+>>>>    lib/gpgpu_fill: Use RENDER engine flag to work on Xe
+>>>>    tests/xe_gpgpu_fill: Exercise gpgpu fill on Xe
+>>>>
+>>>>   lib/gpgpu_fill.c                            |    4 +-
+>>>>   lib/gpu_cmds.c                              |    2 +-
+>>>>   lib/igt_draw.c                              |   82 +-
+>>>>   lib/igt_draw.h                              |    2 +
+>>>>   lib/igt_fb.c                                |   30 +-
+>>>>   lib/igt_fb.h                                |    2 +
+>>>>   lib/igt_kms.c                               |    4 +-
+>>>>   lib/igt_psr.c                               |    4 +-
+>>>>   lib/intel_allocator.c                       |   49 +-
+>>>>   lib/intel_aux_pgtable.c                     |    2 +-
+>>>>   lib/intel_batchbuffer.c                     |  430 +++++--
+>>>>   lib/intel_batchbuffer.h                     |   28 +-
+>>>>   lib/intel_bufops.c                          |   73 +-
+>>>>   lib/intel_bufops.h                          |   13 +-
+>>>>   lib/xe/xe_ioctl.h                           |    1 +
+>>>>   lib/xe/xe_query.c                           |   45 +
+>>>>   lib/xe/xe_query.h                           |    3 +-
+>>>>   tests/chamelium/kms_chamelium_color.c       |    2 +-
+>>>>   tests/i915/gem_caching.c                    |    4 +-
+>>>>   tests/i915/gem_pxp.c                        |    2 +-
+>>>>   tests/intel-ci/xe-fast-feedback.testlist    |   50 +
+>>>>   tests/{i915 => intel}/kms_big_fb.c          |   75 +-
+>>>>   tests/{i915 => intel}/kms_big_joiner.c      |    2 +-
+>>>>   tests/{i915 => intel}/kms_cdclk.c           |    5 +-
+>>>>   tests/{i915 => intel}/kms_draw_crc.c        |   24 +-
+>>>>   tests/{i915 => intel}/kms_dsc.c             |    2 +-
+>>>>   tests/{i915 => intel}/kms_dsc_helper.c      |    0
+>>>>   tests/{i915 => intel}/kms_dsc_helper.h      |    0
+>>>>   tests/{i915 => intel}/kms_flip_scaled_crc.c |    8 +-
+>>>>   tests/{i915 => intel}/kms_flip_tiling.c     |    8 +-
+>>>>   tests/{i915 => intel}/kms_mmap_write_crc.c  |    4 +-
+>>>>   tests/{i915 => intel}/kms_psr.c             |   40 +-
+>>>>   tests/{i915 => intel}/kms_psr2_sf.c         |    2 +-
+>>>>   tests/{i915 => intel}/kms_psr2_su.c         |    2 +-
+>>>>   tests/{i915 => intel}/kms_psr_stress_test.c |    2 +-
+>>>>   tests/kms_3d.c                              |    8 +
+>>>>   tests/kms_async_flips.c                     |    8 +-
+>>>>   tests/kms_atomic_transition.c               |    8 +-
+>>>>   tests/kms_color.c                           |   10 +-
+>>>>   tests/kms_color_helper.c                    |    2 +-
+>>>>   tests/kms_concurrent.c                      |    4 +-
+>>>>   tests/kms_content_protection.c              |   12 +-
+>>>>   tests/kms_cursor_crc.c                      |    4 +-
+>>>>   tests/kms_cursor_legacy.c                   |    4 +-
+>>>>   tests/kms_flip.c                            |   32 +-
+>>>>   tests/kms_flip_event_leak.c                 |    5 +
+>>>>   tests/kms_getfb.c                           |   22 +-
+>>>>   tests/kms_hdmi_inject.c                     |   10 +-
+>>>>   tests/kms_hdr.c                             |    8 +-
+>>>>   tests/kms_panel_fitting.c                   |   12 +-
+>>>>   tests/kms_plane.c                           |   19 +-
+>>>>   tests/kms_plane_lowres.c                    |    9 +-
+>>>>   tests/kms_plane_scaling.c                   |   41 +-
+>>>>   tests/kms_prime.c                           |  241 +++-
+>>>>   tests/kms_rotation_crc.c                    |   25 +-
+>>>>   tests/kms_setmode.c                         |    7 +
+>>>>   tests/kms_universal_plane.c                 |   15 +-
+>>>>   tests/meson.build                           |   39 +-
+>>>>   tests/xe/xe_gpgpu_fill.c                    |  133 +++
+>>>>   tests/xe/xe_intel_bb.c                      | 1181 
+>>>> +++++++++++++++++++
+>>>>   60 files changed, 2513 insertions(+), 352 deletions(-)
+>>>>   rename tests/{i915 => intel}/kms_big_fb.c (92%)
+>>>>   rename tests/{i915 => intel}/kms_big_joiner.c (99%)
+>>>>   rename tests/{i915 => intel}/kms_cdclk.c (98%)
+>>>>   rename tests/{i915 => intel}/kms_draw_crc.c (92%)
+>>>>   rename tests/{i915 => intel}/kms_dsc.c (99%)
+>>>>   rename tests/{i915 => intel}/kms_dsc_helper.c (100%)
+>>>>   rename tests/{i915 => intel}/kms_dsc_helper.h (100%)
+>>>>   rename tests/{i915 => intel}/kms_flip_scaled_crc.c (98%)
+>>>>   rename tests/{i915 => intel}/kms_flip_tiling.c (96%)
+>>>>   rename tests/{i915 => intel}/kms_mmap_write_crc.c (98%)
+>>>>   rename tests/{i915 => intel}/kms_psr.c (93%)
+>>>>   rename tests/{i915 => intel}/kms_psr2_sf.c (99%)
+>>>>   rename tests/{i915 => intel}/kms_psr2_su.c (99%)
+>>>>   rename tests/{i915 => intel}/kms_psr_stress_test.c (99%)
+>>>>   create mode 100644 tests/xe/xe_gpgpu_fill.c
+>>>>   create mode 100644 tests/xe/xe_intel_bb.c
+>>>>
+>>>> -- 
+>>>> 2.40.0
+>>>
+>>> -- 
+>>> Ville Syrjälä
+>>> Intel
