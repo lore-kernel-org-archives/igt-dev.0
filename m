@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A9E210E816
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Apr 2023 16:50:08 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Apr 2023 22:14:50 +0530
-Message-Id: <20230418164501.1687266-35-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
-References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
+Message-ID: <73d1718a-ec6b-5c00-fe62-b79ce03ef9b2@intel.com>
+Date: Sun, 23 Apr 2023 13:16:44 -0700
+Content-Language: en-US
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+References: <20230414191639.2565389-1-vinay.belgaumkar@intel.com>
+ <20230414191639.2565389-3-vinay.belgaumkar@intel.com>
+ <87ildyqkh4.wl-ashutosh.dixit@intel.com>
+From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
+In-Reply-To: <87ildyqkh4.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 34/45] tests/kms_hdmi_inject: Add XE support
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib: Make SLPC helper function per
+ GT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,58 +20,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_hdmi_inject.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+On 4/14/2023 1:25 PM, Dixit, Ashutosh wrote:
+> On Fri, 14 Apr 2023 12:16:37 -0700, Vinay Belgaumkar wrote:
+> Hi Vinay,
+>
+>> Use default of 0 where GT id is not being used.
+>>
+>> v2: Add a helper for GT 0 (Ashutosh)
+>>
+>> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+>> ---
+>>   lib/igt_pm.c | 36 ++++++++++++++++++++++++++----------
+>>   lib/igt_pm.h |  3 ++-
+>>   2 files changed, 28 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+>> index 704acf7d..8a30bb3b 100644
+>> --- a/lib/igt_pm.c
+>> +++ b/lib/igt_pm.c
+>> @@ -1329,21 +1329,37 @@ void igt_pm_print_pci_card_runtime_status(void)
+>> 	}
+>>   }
+>>
+>> -bool i915_is_slpc_enabled(int fd)
+>> +/**
+>> + * i915_is_slpc_enabled_gt:
+>> + * @drm_fd: DRM file descriptor
+>> + * @gt: GT id
+>> + * Check if SLPC is enabled on a GT
+>> + */
+>> +bool i915_is_slpc_enabled_gt(int drm_fd, int gt)
+>>   {
+>> -	int debugfs_fd = igt_debugfs_dir(fd);
+>> -	char buf[4096] = {};
+>> -	int len;
+>> +	int debugfs_fd;
+>> +	char buf[256] = {};
+> Shouldn't this be 4096 as before?
+>
+>> -	igt_require(debugfs_fd != -1);
+>> +	debugfs_fd = igt_debugfs_gt_open(drm_fd, gt, "uc/guc_slpc_info", O_RDONLY);
+>> +
+>> +	/* if guc_slpc_info not present then return false */
+>> +	if (debugfs_fd < 0)
+>> +		return false;
+> I think this should just be:
+>
+> 	igt_require_fd(debugfs_fd);
+>
+> Basically we cannot determine if SLPC is enabled or not if say debugfs is
+> not mounted, so it's not correct return false from here.
 
-diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
-index b6418faf0..2085d1453 100644
---- a/tests/kms_hdmi_inject.c
-+++ b/tests/kms_hdmi_inject.c
-@@ -29,6 +29,7 @@
- #include "igt.h"
- #include "igt_edid.h"
- #include "igt_eld.h"
-+#include "xe/xe_query.h"
- 
- #define HDISPLAY_4K	3840
- #define VDISPLAY_4K	2160
-@@ -83,7 +84,7 @@ hdmi_inject_4k(int drm_fd, drmModeConnector *connector)
- 	struct igt_fb fb;
- 	uint8_t found_4k_mode = 0;
- 
--	if (is_i915_device(drm_fd)) {
-+	if (is_intel_device(drm_fd)) {
- 		uint32_t devid = intel_get_drm_devid(drm_fd);
- 
- 		/* 4K requires at least HSW */
-@@ -205,6 +206,9 @@ igt_main
- 		igt_require(connector);
- 
- 		kmstest_unset_all_crtcs(drm_fd, res);
-+
-+		if (is_xe_device(drm_fd))
-+			xe_device_get(drm_fd);
- 	}
- 
- 	igt_describe("Make sure that 4K modes exposed by DRM match the "
-@@ -219,6 +223,10 @@ igt_main
- 
- 	igt_fixture {
- 		drmModeFreeConnector(connector);
-+
-+		if (is_xe_device(drm_fd))
-+			xe_device_put(drm_fd);
-+
- 		close(drm_fd);
- 	}
- }
--- 
-2.40.0
+Actually, rethinking on this, we should keep it to return false. This is 
+making tests skip on platforms where it shouldn't. Debugfs will not be 
+mounted only when driver load fails, which would cause the test to fail 
+when we try to create the drm fd before this. Case in point - 
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8839/fi-tgl-1115g4/igt@i915_pm_rps@basic-api.html 
+- here, the test should have run (guc disabled platform) but it skipped.
+
+Thanks,
+
+Vinay.
+
+>
+>> +	read(debugfs_fd, buf, sizeof(buf)-1);
+>>
+>> -	len = igt_debugfs_simple_read(debugfs_fd, "gt/uc/guc_slpc_info", buf, sizeof(buf));
+>> 	close(debugfs_fd);
+>>
+>> -	if (len < 0)
+>> -		return false;
+>> -	else
+>> -		return strstr(buf, "SLPC state: running");
+>> +	return strstr(buf, "SLPC state: running");
+>> +}
+>> +
+>> +/**
+>> + * i915_is_slpc_enabled:
+>> + * @drm_fd: DRM file descriptor
+>> + * Check if SLPC is enabled on GT 0
+> Hmm, not sure why we are not using the i915_for_each_gt() loop here since
+> that is the correct way of doing it.
+>
+> At the min let's remove the GT 0 in the comment above. This function
+> doesn't check for GT0, it checks if "slpc is enabled for the device". We
+> can check only on GT0 if we are certain that checking on GT0 is sufficient,
+> that is if SLPC is disabled on GT0 it's disabled for the device. But then
+> someone can ask the question in that case why are we exposing slpc_enabled
+> for each gt from the kernel rather than at the device level.
+>
+> In any case for now let's change the above comment to:
+>
+> "Check if SLPC is enabled" or ""Check if SLPC is enabled for the i915
+> device".
+>
+> With the above comments addressed this is:
+>
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>
+> Also, why is igt@i915_pm_rps@basic-api still skipping on DG2/ATSM in
+> pre-merge CI even after this series?
+>
+> Thanks.
+> --
+> Ashutosh
+>
+>
+>> + */
+>> +bool i915_is_slpc_enabled(int drm_fd)
+>> +{
+>> +	return i915_is_slpc_enabled_gt(drm_fd, 0);
+>>   }
+>>   int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
+>> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+>> index d0d6d673..448cf42d 100644
+>> --- a/lib/igt_pm.h
+>> +++ b/lib/igt_pm.h
+>> @@ -84,7 +84,8 @@ void igt_pm_set_d3cold_allowed(struct igt_device_card *card, const char *val);
+>>   void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
+>>   void igt_pm_restore_pci_card_runtime_pm(void);
+>>   void igt_pm_print_pci_card_runtime_status(void);
+>> -bool i915_is_slpc_enabled(int fd);
+>> +bool i915_is_slpc_enabled_gt(int drm_fd, int gt);
+>> +bool i915_is_slpc_enabled(int drm_fd);
+>>   int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
+>>   int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
+>>
+>> --
+>> 2.38.1
+>>
