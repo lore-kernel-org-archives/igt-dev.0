@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55CA310E24A
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 08:07:23 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Mon, 24 Apr 2023 13:32:33 +0530
-Message-Id: <20230424080233.2016931-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7332036084231336385=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] tests: New dir structure for intel specific tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 24 Apr 2023 11:22:29 -0000
+Message-ID: <168233534992.1232.12439669546963187708@emeril.freedesktop.org>
+References: <20230424073237.15431-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230424073237.15431-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2NyaXB0?=
+ =?utf-8?q?s/test=5Flist=2Epy=3A_make_filtering_logic_more_generic_=28rev3?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,1428 +17,428 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com, swati2.sharma@intel.com, kamil.konieczny@linux.intel.com, mchehab@kernel.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As we have many KMS tests those can support both i915 & XE, we
-can have new dir structure to place tests in a proper location.
+--===============7332036084231336385==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Below is the new dir structure:
-- tests/intel/i915/ : All i915 specific tests should move here.
-- tests/intel/xe/   : All XE specific tests should move here.
-- tests/intel/      : Tests those supports both i915 & XE should
-                      move here. Example: kms_psr
+== Series Details ==
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- docs/testplan/meson.build                     |  2 +-
- tests/{ => intel}/i915/api_intel_allocator.c  |  0
- tests/{ => intel}/i915/api_intel_bb.c         |  0
- tests/{ => intel}/i915/drm_fdinfo.c           |  0
- tests/{ => intel}/i915/gem_bad_reloc.c        |  0
- tests/{ => intel}/i915/gem_barrier_race.c     |  0
- tests/{ => intel}/i915/gem_basic.c            |  0
- tests/{ => intel}/i915/gem_blits.c            |  0
- tests/{ => intel}/i915/gem_busy.c             |  0
- tests/{ => intel}/i915/gem_caching.c          |  0
- tests/{ => intel}/i915/gem_ccs.c              |  0
- tests/{ => intel}/i915/gem_close.c            |  0
- tests/{ => intel}/i915/gem_close_race.c       |  0
- tests/{ => intel}/i915/gem_concurrent_all.c   |  0
- tests/{ => intel}/i915/gem_concurrent_blit.c  |  0
- tests/{ => intel}/i915/gem_create.c           |  0
- tests/{ => intel}/i915/gem_cs_tlb.c           |  0
- tests/{ => intel}/i915/gem_ctx_bad_destroy.c  |  0
- tests/{ => intel}/i915/gem_ctx_create.c       |  0
- tests/{ => intel}/i915/gem_ctx_engines.c      |  0
- tests/{ => intel}/i915/gem_ctx_exec.c         |  0
- tests/{ => intel}/i915/gem_ctx_freq.c         |  0
- tests/{ => intel}/i915/gem_ctx_isolation.c    |  0
- tests/{ => intel}/i915/gem_ctx_param.c        |  0
- tests/{ => intel}/i915/gem_ctx_persistence.c  |  0
- tests/{ => intel}/i915/gem_ctx_shared.c       |  0
- tests/{ => intel}/i915/gem_ctx_sseu.c         |  0
- tests/{ => intel}/i915/gem_ctx_switch.c       |  0
- tests/{ => intel}/i915/gem_eio.c              |  0
- tests/{ => intel}/i915/gem_evict_alignment.c  |  0
- tests/{ => intel}/i915/gem_evict_everything.c |  0
- tests/{ => intel}/i915/gem_exec_alignment.c   |  0
- tests/{ => intel}/i915/gem_exec_async.c       |  0
- tests/{ => intel}/i915/gem_exec_await.c       |  0
- tests/{ => intel}/i915/gem_exec_balancer.c    |  0
- tests/{ => intel}/i915/gem_exec_basic.c       |  0
- tests/{ => intel}/i915/gem_exec_big.c         |  0
- tests/{ => intel}/i915/gem_exec_capture.c     |  0
- tests/{ => intel}/i915/gem_exec_create.c      |  0
- tests/{ => intel}/i915/gem_exec_endless.c     |  0
- tests/{ => intel}/i915/gem_exec_fair.c        |  0
- tests/{ => intel}/i915/gem_exec_fence.c       |  0
- tests/{ => intel}/i915/gem_exec_flush.c       |  0
- tests/{ => intel}/i915/gem_exec_gttfill.c     |  0
- tests/{ => intel}/i915/gem_exec_latency.c     |  0
- tests/{ => intel}/i915/gem_exec_lut_handle.c  |  0
- tests/{ => intel}/i915/gem_exec_nop.c         |  0
- tests/{ => intel}/i915/gem_exec_parallel.c    |  0
- tests/{ => intel}/i915/gem_exec_params.c      |  0
- tests/{ => intel}/i915/gem_exec_reloc.c       |  0
- tests/{ => intel}/i915/gem_exec_schedule.c    |  0
- tests/{ => intel}/i915/gem_exec_store.c       |  0
- tests/{ => intel}/i915/gem_exec_suspend.c     |  0
- tests/{ => intel}/i915/gem_exec_whisper.c     |  0
- tests/{ => intel}/i915/gem_exercise_blt.c     |  0
- tests/{ => intel}/i915/gem_fd_exhaustion.c    |  0
- tests/{ => intel}/i915/gem_fence_thrash.c     |  0
- tests/{ => intel}/i915/gem_fence_upload.c     |  0
- .../{ => intel}/i915/gem_fenced_exec_thrash.c |  0
- tests/{ => intel}/i915/gem_flink_basic.c      |  0
- tests/{ => intel}/i915/gem_flink_race.c       |  0
- tests/{ => intel}/i915/gem_gpgpu_fill.c       |  0
- tests/{ => intel}/i915/gem_gtt_cpu_tlb.c      |  0
- tests/{ => intel}/i915/gem_gtt_hog.c          |  0
- tests/{ => intel}/i915/gem_gtt_speed.c        |  0
- tests/{ => intel}/i915/gem_huc_copy.c         |  0
- tests/{ => intel}/i915/gem_linear_blits.c     |  0
- tests/{ => intel}/i915/gem_lmem_evict.c       |  0
- tests/{ => intel}/i915/gem_lmem_swapping.c    |  0
- tests/{ => intel}/i915/gem_lut_handle.c       |  0
- tests/{ => intel}/i915/gem_madvise.c          |  0
- tests/{ => intel}/i915/gem_media_fill.c       |  0
- tests/{ => intel}/i915/gem_media_vme.c        |  0
- tests/{ => intel}/i915/gem_mmap.c             |  0
- tests/{ => intel}/i915/gem_mmap_gtt.c         |  0
- tests/{ => intel}/i915/gem_mmap_offset.c      |  0
- tests/{ => intel}/i915/gem_mmap_wc.c          |  0
- .../i915/gem_partial_pwrite_pread.c           |  0
- .../i915/gem_pipe_control_store_loop.c        |  0
- tests/{ => intel}/i915/gem_ppgtt.c            |  0
- tests/{ => intel}/i915/gem_pread.c            |  0
- tests/{ => intel}/i915/gem_pread_after_blit.c |  0
- tests/{ => intel}/i915/gem_pwrite.c           |  0
- tests/{ => intel}/i915/gem_pwrite_snooped.c   |  0
- tests/{ => intel}/i915/gem_pxp.c              |  0
- tests/{ => intel}/i915/gem_read_read_speed.c  |  0
- tests/{ => intel}/i915/gem_readwrite.c        |  0
- tests/{ => intel}/i915/gem_reg_read.c         |  0
- tests/{ => intel}/i915/gem_render_copy.c      |  0
- .../{ => intel}/i915/gem_render_copy_redux.c  |  0
- .../i915/gem_render_linear_blits.c            |  0
- .../{ => intel}/i915/gem_render_tiled_blits.c |  0
- tests/{ => intel}/i915/gem_request_retire.c   |  0
- tests/{ => intel}/i915/gem_reset_stats.c      |  0
- tests/{ => intel}/i915/gem_ringfill.c         |  0
- .../{ => intel}/i915/gem_set_tiling_vs_blt.c  |  0
- .../{ => intel}/i915/gem_set_tiling_vs_gtt.c  |  0
- .../i915/gem_set_tiling_vs_pwrite.c           |  0
- tests/{ => intel}/i915/gem_shrink.c           |  0
- tests/{ => intel}/i915/gem_softpin.c          |  0
- tests/{ => intel}/i915/gem_spin_batch.c       |  0
- tests/{ => intel}/i915/gem_streaming_writes.c |  0
- tests/{ => intel}/i915/gem_stress.c           |  0
- tests/{ => intel}/i915/gem_sync.c             |  0
- tests/{ => intel}/i915/gem_tiled_blits.c      |  0
- .../{ => intel}/i915/gem_tiled_fence_blits.c  |  0
- .../i915/gem_tiled_partial_pwrite_pread.c     |  0
- .../{ => intel}/i915/gem_tiled_pread_basic.c  |  0
- .../{ => intel}/i915/gem_tiled_pread_pwrite.c |  0
- tests/{ => intel}/i915/gem_tiled_swapping.c   |  0
- tests/{ => intel}/i915/gem_tiled_wb.c         |  0
- tests/{ => intel}/i915/gem_tiled_wc.c         |  0
- .../{ => intel}/i915/gem_tiling_max_stride.c  |  0
- .../i915/gem_unfence_active_buffers.c         |  0
- .../i915/gem_unref_active_buffers.c           |  0
- tests/{ => intel}/i915/gem_userptr_blits.c    |  0
- tests/{ => intel}/i915/gem_vm_create.c        |  0
- tests/{ => intel}/i915/gem_wait.c             |  0
- tests/{ => intel}/i915/gem_watchdog.c         |  0
- tests/{ => intel}/i915/gem_workarounds.c      |  0
- tests/{ => intel}/i915/gen3_mixed_blits.c     |  0
- .../i915/gen3_render_linear_blits.c           |  0
- .../i915/gen3_render_mixed_blits.c            |  0
- .../i915/gen3_render_tiledx_blits.c           |  0
- .../i915/gen3_render_tiledy_blits.c           |  0
- tests/{ => intel}/i915/gen7_exec_parse.c      |  0
- tests/{ => intel}/i915/gen9_exec_parse.c      |  0
- tests/{ => intel}/i915/i915_fb_tiling.c       |  0
- tests/{ => intel}/i915/i915_getparams_basic.c |  0
- tests/{ => intel}/i915/i915_hangman.c         |  0
- tests/{ => intel}/i915/i915_hwmon.c           |  0
- tests/{ => intel}/i915/i915_module_load.c     |  0
- tests/{ => intel}/i915/i915_pciid.c           |  0
- tests/{ => intel}/i915/i915_pipe_stress.c     |  0
- tests/{ => intel}/i915/i915_pm_backlight.c    |  0
- tests/{ => intel}/i915/i915_pm_dc.c           |  0
- tests/{ => intel}/i915/i915_pm_freq_mult.c    |  0
- tests/{ => intel}/i915/i915_pm_lpsp.c         |  0
- .../{ => intel}/i915/i915_pm_rc6_residency.c  |  0
- tests/{ => intel}/i915/i915_pm_rpm.c          |  0
- tests/{ => intel}/i915/i915_pm_rps.c          |  0
- tests/{ => intel}/i915/i915_pm_sseu.c         |  0
- tests/{ => intel}/i915/i915_power.c           |  0
- tests/{ => intel}/i915/i915_query.c           |  0
- tests/{ => intel}/i915/i915_selftest.c        |  0
- tests/{ => intel}/i915/i915_suspend.c         |  0
- tests/{ => intel}/i915/kms_big_fb.c           |  0
- tests/{ => intel}/i915/kms_big_joiner.c       |  0
- tests/{ => intel}/i915/kms_busy.c             |  0
- tests/{ => intel}/i915/kms_ccs.c              |  0
- tests/{ => intel}/i915/kms_cdclk.c            |  0
- tests/{ => intel}/i915/kms_draw_crc.c         |  0
- tests/{ => intel}/i915/kms_dsc.c              |  0
- tests/{ => intel}/i915/kms_dsc_helper.c       |  0
- tests/{ => intel}/i915/kms_dsc_helper.h       |  0
- tests/{ => intel}/i915/kms_fbcon_fbt.c        |  0
- tests/{ => intel}/i915/kms_fence_pin_leak.c   |  0
- tests/{ => intel}/i915/kms_flip_scaled_crc.c  |  0
- tests/{ => intel}/i915/kms_flip_tiling.c      |  0
- .../i915/kms_frontbuffer_tracking.c           |  0
- tests/{ => intel}/i915/kms_legacy_colorkey.c  |  0
- tests/{ => intel}/i915/kms_mmap_write_crc.c   |  0
- tests/{ => intel}/i915/kms_pipe_b_c_ivb.c     |  0
- tests/{ => intel}/i915/kms_pwrite_crc.c       |  0
- tests/{ => intel}/i915/perf.c                 |  0
- tests/{ => intel}/i915/perf_pmu.c             |  0
- tests/{ => intel}/i915/sysfs_defaults.c       |  0
- .../i915/sysfs_heartbeat_interval.c           |  0
- .../{ => intel}/i915/sysfs_preempt_timeout.c  |  0
- .../i915/sysfs_timeslice_duration.c           |  0
- tests/{i915 => intel}/kms_psr.c               |  0
- tests/{i915 => intel}/kms_psr2_sf.c           |  2 +-
- tests/{i915 => intel}/kms_psr2_su.c           |  0
- tests/{i915 => intel}/kms_psr_stress_test.c   |  0
- tests/{ => intel}/xe/xe_compute.c             |  0
- tests/{ => intel}/xe/xe_create.c              |  0
- tests/{ => intel}/xe/xe_debugfs.c             |  0
- tests/{ => intel}/xe/xe_dma_buf_sync.c        |  0
- tests/{ => intel}/xe/xe_evict.c               |  0
- tests/{ => intel}/xe/xe_exec_balancer.c       |  0
- tests/{ => intel}/xe/xe_exec_basic.c          |  0
- tests/{ => intel}/xe/xe_exec_compute_mode.c   |  0
- tests/{ => intel}/xe/xe_exec_fault_mode.c     |  0
- tests/{ => intel}/xe/xe_exec_reset.c          |  0
- tests/{ => intel}/xe/xe_exec_threads.c        |  0
- tests/{ => intel}/xe/xe_guc_pc.c              |  0
- tests/{ => intel}/xe/xe_huc_copy.c            |  0
- tests/{ => intel}/xe/xe_mmap.c                |  0
- tests/{ => intel}/xe/xe_mmio.c                |  0
- tests/{ => intel}/xe/xe_module_load.c         |  0
- tests/{ => intel}/xe/xe_noexec_ping_pong.c    |  0
- tests/{ => intel}/xe/xe_pm.c                  |  0
- tests/{ => intel}/xe/xe_prime_self_import.c   |  0
- tests/{ => intel}/xe/xe_query.c               |  0
- tests/{ => intel}/xe/xe_test_config.json      |  0
- tests/{ => intel}/xe/xe_vm.c                  |  0
- tests/{ => intel}/xe/xe_waitfence.c           |  0
- tests/meson.build                             | 55 ++++++++++++-------
- 198 files changed, 36 insertions(+), 23 deletions(-)
- rename tests/{ => intel}/i915/api_intel_allocator.c (100%)
- rename tests/{ => intel}/i915/api_intel_bb.c (100%)
- rename tests/{ => intel}/i915/drm_fdinfo.c (100%)
- rename tests/{ => intel}/i915/gem_bad_reloc.c (100%)
- rename tests/{ => intel}/i915/gem_barrier_race.c (100%)
- rename tests/{ => intel}/i915/gem_basic.c (100%)
- rename tests/{ => intel}/i915/gem_blits.c (100%)
- rename tests/{ => intel}/i915/gem_busy.c (100%)
- rename tests/{ => intel}/i915/gem_caching.c (100%)
- rename tests/{ => intel}/i915/gem_ccs.c (100%)
- rename tests/{ => intel}/i915/gem_close.c (100%)
- rename tests/{ => intel}/i915/gem_close_race.c (100%)
- rename tests/{ => intel}/i915/gem_concurrent_all.c (100%)
- rename tests/{ => intel}/i915/gem_concurrent_blit.c (100%)
- rename tests/{ => intel}/i915/gem_create.c (100%)
- rename tests/{ => intel}/i915/gem_cs_tlb.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_bad_destroy.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_create.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_engines.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_exec.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_freq.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_isolation.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_param.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_persistence.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_shared.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_sseu.c (100%)
- rename tests/{ => intel}/i915/gem_ctx_switch.c (100%)
- rename tests/{ => intel}/i915/gem_eio.c (100%)
- rename tests/{ => intel}/i915/gem_evict_alignment.c (100%)
- rename tests/{ => intel}/i915/gem_evict_everything.c (100%)
- rename tests/{ => intel}/i915/gem_exec_alignment.c (100%)
- rename tests/{ => intel}/i915/gem_exec_async.c (100%)
- rename tests/{ => intel}/i915/gem_exec_await.c (100%)
- rename tests/{ => intel}/i915/gem_exec_balancer.c (100%)
- rename tests/{ => intel}/i915/gem_exec_basic.c (100%)
- rename tests/{ => intel}/i915/gem_exec_big.c (100%)
- rename tests/{ => intel}/i915/gem_exec_capture.c (100%)
- rename tests/{ => intel}/i915/gem_exec_create.c (100%)
- rename tests/{ => intel}/i915/gem_exec_endless.c (100%)
- rename tests/{ => intel}/i915/gem_exec_fair.c (100%)
- rename tests/{ => intel}/i915/gem_exec_fence.c (100%)
- rename tests/{ => intel}/i915/gem_exec_flush.c (100%)
- rename tests/{ => intel}/i915/gem_exec_gttfill.c (100%)
- rename tests/{ => intel}/i915/gem_exec_latency.c (100%)
- rename tests/{ => intel}/i915/gem_exec_lut_handle.c (100%)
- rename tests/{ => intel}/i915/gem_exec_nop.c (100%)
- rename tests/{ => intel}/i915/gem_exec_parallel.c (100%)
- rename tests/{ => intel}/i915/gem_exec_params.c (100%)
- rename tests/{ => intel}/i915/gem_exec_reloc.c (100%)
- rename tests/{ => intel}/i915/gem_exec_schedule.c (100%)
- rename tests/{ => intel}/i915/gem_exec_store.c (100%)
- rename tests/{ => intel}/i915/gem_exec_suspend.c (100%)
- rename tests/{ => intel}/i915/gem_exec_whisper.c (100%)
- rename tests/{ => intel}/i915/gem_exercise_blt.c (100%)
- rename tests/{ => intel}/i915/gem_fd_exhaustion.c (100%)
- rename tests/{ => intel}/i915/gem_fence_thrash.c (100%)
- rename tests/{ => intel}/i915/gem_fence_upload.c (100%)
- rename tests/{ => intel}/i915/gem_fenced_exec_thrash.c (100%)
- rename tests/{ => intel}/i915/gem_flink_basic.c (100%)
- rename tests/{ => intel}/i915/gem_flink_race.c (100%)
- rename tests/{ => intel}/i915/gem_gpgpu_fill.c (100%)
- rename tests/{ => intel}/i915/gem_gtt_cpu_tlb.c (100%)
- rename tests/{ => intel}/i915/gem_gtt_hog.c (100%)
- rename tests/{ => intel}/i915/gem_gtt_speed.c (100%)
- rename tests/{ => intel}/i915/gem_huc_copy.c (100%)
- rename tests/{ => intel}/i915/gem_linear_blits.c (100%)
- rename tests/{ => intel}/i915/gem_lmem_evict.c (100%)
- rename tests/{ => intel}/i915/gem_lmem_swapping.c (100%)
- rename tests/{ => intel}/i915/gem_lut_handle.c (100%)
- rename tests/{ => intel}/i915/gem_madvise.c (100%)
- rename tests/{ => intel}/i915/gem_media_fill.c (100%)
- rename tests/{ => intel}/i915/gem_media_vme.c (100%)
- rename tests/{ => intel}/i915/gem_mmap.c (100%)
- rename tests/{ => intel}/i915/gem_mmap_gtt.c (100%)
- rename tests/{ => intel}/i915/gem_mmap_offset.c (100%)
- rename tests/{ => intel}/i915/gem_mmap_wc.c (100%)
- rename tests/{ => intel}/i915/gem_partial_pwrite_pread.c (100%)
- rename tests/{ => intel}/i915/gem_pipe_control_store_loop.c (100%)
- rename tests/{ => intel}/i915/gem_ppgtt.c (100%)
- rename tests/{ => intel}/i915/gem_pread.c (100%)
- rename tests/{ => intel}/i915/gem_pread_after_blit.c (100%)
- rename tests/{ => intel}/i915/gem_pwrite.c (100%)
- rename tests/{ => intel}/i915/gem_pwrite_snooped.c (100%)
- rename tests/{ => intel}/i915/gem_pxp.c (100%)
- rename tests/{ => intel}/i915/gem_read_read_speed.c (100%)
- rename tests/{ => intel}/i915/gem_readwrite.c (100%)
- rename tests/{ => intel}/i915/gem_reg_read.c (100%)
- rename tests/{ => intel}/i915/gem_render_copy.c (100%)
- rename tests/{ => intel}/i915/gem_render_copy_redux.c (100%)
- rename tests/{ => intel}/i915/gem_render_linear_blits.c (100%)
- rename tests/{ => intel}/i915/gem_render_tiled_blits.c (100%)
- rename tests/{ => intel}/i915/gem_request_retire.c (100%)
- rename tests/{ => intel}/i915/gem_reset_stats.c (100%)
- rename tests/{ => intel}/i915/gem_ringfill.c (100%)
- rename tests/{ => intel}/i915/gem_set_tiling_vs_blt.c (100%)
- rename tests/{ => intel}/i915/gem_set_tiling_vs_gtt.c (100%)
- rename tests/{ => intel}/i915/gem_set_tiling_vs_pwrite.c (100%)
- rename tests/{ => intel}/i915/gem_shrink.c (100%)
- rename tests/{ => intel}/i915/gem_softpin.c (100%)
- rename tests/{ => intel}/i915/gem_spin_batch.c (100%)
- rename tests/{ => intel}/i915/gem_streaming_writes.c (100%)
- rename tests/{ => intel}/i915/gem_stress.c (100%)
- rename tests/{ => intel}/i915/gem_sync.c (100%)
- rename tests/{ => intel}/i915/gem_tiled_blits.c (100%)
- rename tests/{ => intel}/i915/gem_tiled_fence_blits.c (100%)
- rename tests/{ => intel}/i915/gem_tiled_partial_pwrite_pread.c (100%)
- rename tests/{ => intel}/i915/gem_tiled_pread_basic.c (100%)
- rename tests/{ => intel}/i915/gem_tiled_pread_pwrite.c (100%)
- rename tests/{ => intel}/i915/gem_tiled_swapping.c (100%)
- rename tests/{ => intel}/i915/gem_tiled_wb.c (100%)
- rename tests/{ => intel}/i915/gem_tiled_wc.c (100%)
- rename tests/{ => intel}/i915/gem_tiling_max_stride.c (100%)
- rename tests/{ => intel}/i915/gem_unfence_active_buffers.c (100%)
- rename tests/{ => intel}/i915/gem_unref_active_buffers.c (100%)
- rename tests/{ => intel}/i915/gem_userptr_blits.c (100%)
- rename tests/{ => intel}/i915/gem_vm_create.c (100%)
- rename tests/{ => intel}/i915/gem_wait.c (100%)
- rename tests/{ => intel}/i915/gem_watchdog.c (100%)
- rename tests/{ => intel}/i915/gem_workarounds.c (100%)
- rename tests/{ => intel}/i915/gen3_mixed_blits.c (100%)
- rename tests/{ => intel}/i915/gen3_render_linear_blits.c (100%)
- rename tests/{ => intel}/i915/gen3_render_mixed_blits.c (100%)
- rename tests/{ => intel}/i915/gen3_render_tiledx_blits.c (100%)
- rename tests/{ => intel}/i915/gen3_render_tiledy_blits.c (100%)
- rename tests/{ => intel}/i915/gen7_exec_parse.c (100%)
- rename tests/{ => intel}/i915/gen9_exec_parse.c (100%)
- rename tests/{ => intel}/i915/i915_fb_tiling.c (100%)
- rename tests/{ => intel}/i915/i915_getparams_basic.c (100%)
- rename tests/{ => intel}/i915/i915_hangman.c (100%)
- rename tests/{ => intel}/i915/i915_hwmon.c (100%)
- rename tests/{ => intel}/i915/i915_module_load.c (100%)
- rename tests/{ => intel}/i915/i915_pciid.c (100%)
- rename tests/{ => intel}/i915/i915_pipe_stress.c (100%)
- rename tests/{ => intel}/i915/i915_pm_backlight.c (100%)
- rename tests/{ => intel}/i915/i915_pm_dc.c (100%)
- rename tests/{ => intel}/i915/i915_pm_freq_mult.c (100%)
- rename tests/{ => intel}/i915/i915_pm_lpsp.c (100%)
- rename tests/{ => intel}/i915/i915_pm_rc6_residency.c (100%)
- rename tests/{ => intel}/i915/i915_pm_rpm.c (100%)
- rename tests/{ => intel}/i915/i915_pm_rps.c (100%)
- rename tests/{ => intel}/i915/i915_pm_sseu.c (100%)
- rename tests/{ => intel}/i915/i915_power.c (100%)
- rename tests/{ => intel}/i915/i915_query.c (100%)
- rename tests/{ => intel}/i915/i915_selftest.c (100%)
- rename tests/{ => intel}/i915/i915_suspend.c (100%)
- rename tests/{ => intel}/i915/kms_big_fb.c (100%)
- rename tests/{ => intel}/i915/kms_big_joiner.c (100%)
- rename tests/{ => intel}/i915/kms_busy.c (100%)
- rename tests/{ => intel}/i915/kms_ccs.c (100%)
- rename tests/{ => intel}/i915/kms_cdclk.c (100%)
- rename tests/{ => intel}/i915/kms_draw_crc.c (100%)
- rename tests/{ => intel}/i915/kms_dsc.c (100%)
- rename tests/{ => intel}/i915/kms_dsc_helper.c (100%)
- rename tests/{ => intel}/i915/kms_dsc_helper.h (100%)
- rename tests/{ => intel}/i915/kms_fbcon_fbt.c (100%)
- rename tests/{ => intel}/i915/kms_fence_pin_leak.c (100%)
- rename tests/{ => intel}/i915/kms_flip_scaled_crc.c (100%)
- rename tests/{ => intel}/i915/kms_flip_tiling.c (100%)
- rename tests/{ => intel}/i915/kms_frontbuffer_tracking.c (100%)
- rename tests/{ => intel}/i915/kms_legacy_colorkey.c (100%)
- rename tests/{ => intel}/i915/kms_mmap_write_crc.c (100%)
- rename tests/{ => intel}/i915/kms_pipe_b_c_ivb.c (100%)
- rename tests/{ => intel}/i915/kms_pwrite_crc.c (100%)
- rename tests/{ => intel}/i915/perf.c (100%)
- rename tests/{ => intel}/i915/perf_pmu.c (100%)
- rename tests/{ => intel}/i915/sysfs_defaults.c (100%)
- rename tests/{ => intel}/i915/sysfs_heartbeat_interval.c (100%)
- rename tests/{ => intel}/i915/sysfs_preempt_timeout.c (100%)
- rename tests/{ => intel}/i915/sysfs_timeslice_duration.c (100%)
- rename tests/{i915 => intel}/kms_psr.c (100%)
- rename tests/{i915 => intel}/kms_psr2_sf.c (99%)
- rename tests/{i915 => intel}/kms_psr2_su.c (100%)
- rename tests/{i915 => intel}/kms_psr_stress_test.c (100%)
- rename tests/{ => intel}/xe/xe_compute.c (100%)
- rename tests/{ => intel}/xe/xe_create.c (100%)
- rename tests/{ => intel}/xe/xe_debugfs.c (100%)
- rename tests/{ => intel}/xe/xe_dma_buf_sync.c (100%)
- rename tests/{ => intel}/xe/xe_evict.c (100%)
- rename tests/{ => intel}/xe/xe_exec_balancer.c (100%)
- rename tests/{ => intel}/xe/xe_exec_basic.c (100%)
- rename tests/{ => intel}/xe/xe_exec_compute_mode.c (100%)
- rename tests/{ => intel}/xe/xe_exec_fault_mode.c (100%)
- rename tests/{ => intel}/xe/xe_exec_reset.c (100%)
- rename tests/{ => intel}/xe/xe_exec_threads.c (100%)
- rename tests/{ => intel}/xe/xe_guc_pc.c (100%)
- rename tests/{ => intel}/xe/xe_huc_copy.c (100%)
- rename tests/{ => intel}/xe/xe_mmap.c (100%)
- rename tests/{ => intel}/xe/xe_mmio.c (100%)
- rename tests/{ => intel}/xe/xe_module_load.c (100%)
- rename tests/{ => intel}/xe/xe_noexec_ping_pong.c (100%)
- rename tests/{ => intel}/xe/xe_pm.c (100%)
- rename tests/{ => intel}/xe/xe_prime_self_import.c (100%)
- rename tests/{ => intel}/xe/xe_query.c (100%)
- rename tests/{ => intel}/xe/xe_test_config.json (100%)
- rename tests/{ => intel}/xe/xe_vm.c (100%)
- rename tests/{ => intel}/xe/xe_waitfence.c (100%)
+Series: scripts/test_list.py: make filtering logic more generic (rev3)
+URL   : https://patchwork.freedesktop.org/series/116098/
+State : success
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index 3347f6187..0617859a9 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -6,7 +6,7 @@ rst2pdf = find_program('rst2pdf', required: false)
- 
- stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
- 
--xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
-+xe_test_config = join_paths(source_root, 'tests', 'intel/xe', 'xe_test_config.json')
- 
- check_testlist = []
- if build_tests
-diff --git a/tests/i915/api_intel_allocator.c b/tests/intel/i915/api_intel_allocator.c
-similarity index 100%
-rename from tests/i915/api_intel_allocator.c
-rename to tests/intel/i915/api_intel_allocator.c
-diff --git a/tests/i915/api_intel_bb.c b/tests/intel/i915/api_intel_bb.c
-similarity index 100%
-rename from tests/i915/api_intel_bb.c
-rename to tests/intel/i915/api_intel_bb.c
-diff --git a/tests/i915/drm_fdinfo.c b/tests/intel/i915/drm_fdinfo.c
-similarity index 100%
-rename from tests/i915/drm_fdinfo.c
-rename to tests/intel/i915/drm_fdinfo.c
-diff --git a/tests/i915/gem_bad_reloc.c b/tests/intel/i915/gem_bad_reloc.c
-similarity index 100%
-rename from tests/i915/gem_bad_reloc.c
-rename to tests/intel/i915/gem_bad_reloc.c
-diff --git a/tests/i915/gem_barrier_race.c b/tests/intel/i915/gem_barrier_race.c
-similarity index 100%
-rename from tests/i915/gem_barrier_race.c
-rename to tests/intel/i915/gem_barrier_race.c
-diff --git a/tests/i915/gem_basic.c b/tests/intel/i915/gem_basic.c
-similarity index 100%
-rename from tests/i915/gem_basic.c
-rename to tests/intel/i915/gem_basic.c
-diff --git a/tests/i915/gem_blits.c b/tests/intel/i915/gem_blits.c
-similarity index 100%
-rename from tests/i915/gem_blits.c
-rename to tests/intel/i915/gem_blits.c
-diff --git a/tests/i915/gem_busy.c b/tests/intel/i915/gem_busy.c
-similarity index 100%
-rename from tests/i915/gem_busy.c
-rename to tests/intel/i915/gem_busy.c
-diff --git a/tests/i915/gem_caching.c b/tests/intel/i915/gem_caching.c
-similarity index 100%
-rename from tests/i915/gem_caching.c
-rename to tests/intel/i915/gem_caching.c
-diff --git a/tests/i915/gem_ccs.c b/tests/intel/i915/gem_ccs.c
-similarity index 100%
-rename from tests/i915/gem_ccs.c
-rename to tests/intel/i915/gem_ccs.c
-diff --git a/tests/i915/gem_close.c b/tests/intel/i915/gem_close.c
-similarity index 100%
-rename from tests/i915/gem_close.c
-rename to tests/intel/i915/gem_close.c
-diff --git a/tests/i915/gem_close_race.c b/tests/intel/i915/gem_close_race.c
-similarity index 100%
-rename from tests/i915/gem_close_race.c
-rename to tests/intel/i915/gem_close_race.c
-diff --git a/tests/i915/gem_concurrent_all.c b/tests/intel/i915/gem_concurrent_all.c
-similarity index 100%
-rename from tests/i915/gem_concurrent_all.c
-rename to tests/intel/i915/gem_concurrent_all.c
-diff --git a/tests/i915/gem_concurrent_blit.c b/tests/intel/i915/gem_concurrent_blit.c
-similarity index 100%
-rename from tests/i915/gem_concurrent_blit.c
-rename to tests/intel/i915/gem_concurrent_blit.c
-diff --git a/tests/i915/gem_create.c b/tests/intel/i915/gem_create.c
-similarity index 100%
-rename from tests/i915/gem_create.c
-rename to tests/intel/i915/gem_create.c
-diff --git a/tests/i915/gem_cs_tlb.c b/tests/intel/i915/gem_cs_tlb.c
-similarity index 100%
-rename from tests/i915/gem_cs_tlb.c
-rename to tests/intel/i915/gem_cs_tlb.c
-diff --git a/tests/i915/gem_ctx_bad_destroy.c b/tests/intel/i915/gem_ctx_bad_destroy.c
-similarity index 100%
-rename from tests/i915/gem_ctx_bad_destroy.c
-rename to tests/intel/i915/gem_ctx_bad_destroy.c
-diff --git a/tests/i915/gem_ctx_create.c b/tests/intel/i915/gem_ctx_create.c
-similarity index 100%
-rename from tests/i915/gem_ctx_create.c
-rename to tests/intel/i915/gem_ctx_create.c
-diff --git a/tests/i915/gem_ctx_engines.c b/tests/intel/i915/gem_ctx_engines.c
-similarity index 100%
-rename from tests/i915/gem_ctx_engines.c
-rename to tests/intel/i915/gem_ctx_engines.c
-diff --git a/tests/i915/gem_ctx_exec.c b/tests/intel/i915/gem_ctx_exec.c
-similarity index 100%
-rename from tests/i915/gem_ctx_exec.c
-rename to tests/intel/i915/gem_ctx_exec.c
-diff --git a/tests/i915/gem_ctx_freq.c b/tests/intel/i915/gem_ctx_freq.c
-similarity index 100%
-rename from tests/i915/gem_ctx_freq.c
-rename to tests/intel/i915/gem_ctx_freq.c
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/intel/i915/gem_ctx_isolation.c
-similarity index 100%
-rename from tests/i915/gem_ctx_isolation.c
-rename to tests/intel/i915/gem_ctx_isolation.c
-diff --git a/tests/i915/gem_ctx_param.c b/tests/intel/i915/gem_ctx_param.c
-similarity index 100%
-rename from tests/i915/gem_ctx_param.c
-rename to tests/intel/i915/gem_ctx_param.c
-diff --git a/tests/i915/gem_ctx_persistence.c b/tests/intel/i915/gem_ctx_persistence.c
-similarity index 100%
-rename from tests/i915/gem_ctx_persistence.c
-rename to tests/intel/i915/gem_ctx_persistence.c
-diff --git a/tests/i915/gem_ctx_shared.c b/tests/intel/i915/gem_ctx_shared.c
-similarity index 100%
-rename from tests/i915/gem_ctx_shared.c
-rename to tests/intel/i915/gem_ctx_shared.c
-diff --git a/tests/i915/gem_ctx_sseu.c b/tests/intel/i915/gem_ctx_sseu.c
-similarity index 100%
-rename from tests/i915/gem_ctx_sseu.c
-rename to tests/intel/i915/gem_ctx_sseu.c
-diff --git a/tests/i915/gem_ctx_switch.c b/tests/intel/i915/gem_ctx_switch.c
-similarity index 100%
-rename from tests/i915/gem_ctx_switch.c
-rename to tests/intel/i915/gem_ctx_switch.c
-diff --git a/tests/i915/gem_eio.c b/tests/intel/i915/gem_eio.c
-similarity index 100%
-rename from tests/i915/gem_eio.c
-rename to tests/intel/i915/gem_eio.c
-diff --git a/tests/i915/gem_evict_alignment.c b/tests/intel/i915/gem_evict_alignment.c
-similarity index 100%
-rename from tests/i915/gem_evict_alignment.c
-rename to tests/intel/i915/gem_evict_alignment.c
-diff --git a/tests/i915/gem_evict_everything.c b/tests/intel/i915/gem_evict_everything.c
-similarity index 100%
-rename from tests/i915/gem_evict_everything.c
-rename to tests/intel/i915/gem_evict_everything.c
-diff --git a/tests/i915/gem_exec_alignment.c b/tests/intel/i915/gem_exec_alignment.c
-similarity index 100%
-rename from tests/i915/gem_exec_alignment.c
-rename to tests/intel/i915/gem_exec_alignment.c
-diff --git a/tests/i915/gem_exec_async.c b/tests/intel/i915/gem_exec_async.c
-similarity index 100%
-rename from tests/i915/gem_exec_async.c
-rename to tests/intel/i915/gem_exec_async.c
-diff --git a/tests/i915/gem_exec_await.c b/tests/intel/i915/gem_exec_await.c
-similarity index 100%
-rename from tests/i915/gem_exec_await.c
-rename to tests/intel/i915/gem_exec_await.c
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/intel/i915/gem_exec_balancer.c
-similarity index 100%
-rename from tests/i915/gem_exec_balancer.c
-rename to tests/intel/i915/gem_exec_balancer.c
-diff --git a/tests/i915/gem_exec_basic.c b/tests/intel/i915/gem_exec_basic.c
-similarity index 100%
-rename from tests/i915/gem_exec_basic.c
-rename to tests/intel/i915/gem_exec_basic.c
-diff --git a/tests/i915/gem_exec_big.c b/tests/intel/i915/gem_exec_big.c
-similarity index 100%
-rename from tests/i915/gem_exec_big.c
-rename to tests/intel/i915/gem_exec_big.c
-diff --git a/tests/i915/gem_exec_capture.c b/tests/intel/i915/gem_exec_capture.c
-similarity index 100%
-rename from tests/i915/gem_exec_capture.c
-rename to tests/intel/i915/gem_exec_capture.c
-diff --git a/tests/i915/gem_exec_create.c b/tests/intel/i915/gem_exec_create.c
-similarity index 100%
-rename from tests/i915/gem_exec_create.c
-rename to tests/intel/i915/gem_exec_create.c
-diff --git a/tests/i915/gem_exec_endless.c b/tests/intel/i915/gem_exec_endless.c
-similarity index 100%
-rename from tests/i915/gem_exec_endless.c
-rename to tests/intel/i915/gem_exec_endless.c
-diff --git a/tests/i915/gem_exec_fair.c b/tests/intel/i915/gem_exec_fair.c
-similarity index 100%
-rename from tests/i915/gem_exec_fair.c
-rename to tests/intel/i915/gem_exec_fair.c
-diff --git a/tests/i915/gem_exec_fence.c b/tests/intel/i915/gem_exec_fence.c
-similarity index 100%
-rename from tests/i915/gem_exec_fence.c
-rename to tests/intel/i915/gem_exec_fence.c
-diff --git a/tests/i915/gem_exec_flush.c b/tests/intel/i915/gem_exec_flush.c
-similarity index 100%
-rename from tests/i915/gem_exec_flush.c
-rename to tests/intel/i915/gem_exec_flush.c
-diff --git a/tests/i915/gem_exec_gttfill.c b/tests/intel/i915/gem_exec_gttfill.c
-similarity index 100%
-rename from tests/i915/gem_exec_gttfill.c
-rename to tests/intel/i915/gem_exec_gttfill.c
-diff --git a/tests/i915/gem_exec_latency.c b/tests/intel/i915/gem_exec_latency.c
-similarity index 100%
-rename from tests/i915/gem_exec_latency.c
-rename to tests/intel/i915/gem_exec_latency.c
-diff --git a/tests/i915/gem_exec_lut_handle.c b/tests/intel/i915/gem_exec_lut_handle.c
-similarity index 100%
-rename from tests/i915/gem_exec_lut_handle.c
-rename to tests/intel/i915/gem_exec_lut_handle.c
-diff --git a/tests/i915/gem_exec_nop.c b/tests/intel/i915/gem_exec_nop.c
-similarity index 100%
-rename from tests/i915/gem_exec_nop.c
-rename to tests/intel/i915/gem_exec_nop.c
-diff --git a/tests/i915/gem_exec_parallel.c b/tests/intel/i915/gem_exec_parallel.c
-similarity index 100%
-rename from tests/i915/gem_exec_parallel.c
-rename to tests/intel/i915/gem_exec_parallel.c
-diff --git a/tests/i915/gem_exec_params.c b/tests/intel/i915/gem_exec_params.c
-similarity index 100%
-rename from tests/i915/gem_exec_params.c
-rename to tests/intel/i915/gem_exec_params.c
-diff --git a/tests/i915/gem_exec_reloc.c b/tests/intel/i915/gem_exec_reloc.c
-similarity index 100%
-rename from tests/i915/gem_exec_reloc.c
-rename to tests/intel/i915/gem_exec_reloc.c
-diff --git a/tests/i915/gem_exec_schedule.c b/tests/intel/i915/gem_exec_schedule.c
-similarity index 100%
-rename from tests/i915/gem_exec_schedule.c
-rename to tests/intel/i915/gem_exec_schedule.c
-diff --git a/tests/i915/gem_exec_store.c b/tests/intel/i915/gem_exec_store.c
-similarity index 100%
-rename from tests/i915/gem_exec_store.c
-rename to tests/intel/i915/gem_exec_store.c
-diff --git a/tests/i915/gem_exec_suspend.c b/tests/intel/i915/gem_exec_suspend.c
-similarity index 100%
-rename from tests/i915/gem_exec_suspend.c
-rename to tests/intel/i915/gem_exec_suspend.c
-diff --git a/tests/i915/gem_exec_whisper.c b/tests/intel/i915/gem_exec_whisper.c
-similarity index 100%
-rename from tests/i915/gem_exec_whisper.c
-rename to tests/intel/i915/gem_exec_whisper.c
-diff --git a/tests/i915/gem_exercise_blt.c b/tests/intel/i915/gem_exercise_blt.c
-similarity index 100%
-rename from tests/i915/gem_exercise_blt.c
-rename to tests/intel/i915/gem_exercise_blt.c
-diff --git a/tests/i915/gem_fd_exhaustion.c b/tests/intel/i915/gem_fd_exhaustion.c
-similarity index 100%
-rename from tests/i915/gem_fd_exhaustion.c
-rename to tests/intel/i915/gem_fd_exhaustion.c
-diff --git a/tests/i915/gem_fence_thrash.c b/tests/intel/i915/gem_fence_thrash.c
-similarity index 100%
-rename from tests/i915/gem_fence_thrash.c
-rename to tests/intel/i915/gem_fence_thrash.c
-diff --git a/tests/i915/gem_fence_upload.c b/tests/intel/i915/gem_fence_upload.c
-similarity index 100%
-rename from tests/i915/gem_fence_upload.c
-rename to tests/intel/i915/gem_fence_upload.c
-diff --git a/tests/i915/gem_fenced_exec_thrash.c b/tests/intel/i915/gem_fenced_exec_thrash.c
-similarity index 100%
-rename from tests/i915/gem_fenced_exec_thrash.c
-rename to tests/intel/i915/gem_fenced_exec_thrash.c
-diff --git a/tests/i915/gem_flink_basic.c b/tests/intel/i915/gem_flink_basic.c
-similarity index 100%
-rename from tests/i915/gem_flink_basic.c
-rename to tests/intel/i915/gem_flink_basic.c
-diff --git a/tests/i915/gem_flink_race.c b/tests/intel/i915/gem_flink_race.c
-similarity index 100%
-rename from tests/i915/gem_flink_race.c
-rename to tests/intel/i915/gem_flink_race.c
-diff --git a/tests/i915/gem_gpgpu_fill.c b/tests/intel/i915/gem_gpgpu_fill.c
-similarity index 100%
-rename from tests/i915/gem_gpgpu_fill.c
-rename to tests/intel/i915/gem_gpgpu_fill.c
-diff --git a/tests/i915/gem_gtt_cpu_tlb.c b/tests/intel/i915/gem_gtt_cpu_tlb.c
-similarity index 100%
-rename from tests/i915/gem_gtt_cpu_tlb.c
-rename to tests/intel/i915/gem_gtt_cpu_tlb.c
-diff --git a/tests/i915/gem_gtt_hog.c b/tests/intel/i915/gem_gtt_hog.c
-similarity index 100%
-rename from tests/i915/gem_gtt_hog.c
-rename to tests/intel/i915/gem_gtt_hog.c
-diff --git a/tests/i915/gem_gtt_speed.c b/tests/intel/i915/gem_gtt_speed.c
-similarity index 100%
-rename from tests/i915/gem_gtt_speed.c
-rename to tests/intel/i915/gem_gtt_speed.c
-diff --git a/tests/i915/gem_huc_copy.c b/tests/intel/i915/gem_huc_copy.c
-similarity index 100%
-rename from tests/i915/gem_huc_copy.c
-rename to tests/intel/i915/gem_huc_copy.c
-diff --git a/tests/i915/gem_linear_blits.c b/tests/intel/i915/gem_linear_blits.c
-similarity index 100%
-rename from tests/i915/gem_linear_blits.c
-rename to tests/intel/i915/gem_linear_blits.c
-diff --git a/tests/i915/gem_lmem_evict.c b/tests/intel/i915/gem_lmem_evict.c
-similarity index 100%
-rename from tests/i915/gem_lmem_evict.c
-rename to tests/intel/i915/gem_lmem_evict.c
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/intel/i915/gem_lmem_swapping.c
-similarity index 100%
-rename from tests/i915/gem_lmem_swapping.c
-rename to tests/intel/i915/gem_lmem_swapping.c
-diff --git a/tests/i915/gem_lut_handle.c b/tests/intel/i915/gem_lut_handle.c
-similarity index 100%
-rename from tests/i915/gem_lut_handle.c
-rename to tests/intel/i915/gem_lut_handle.c
-diff --git a/tests/i915/gem_madvise.c b/tests/intel/i915/gem_madvise.c
-similarity index 100%
-rename from tests/i915/gem_madvise.c
-rename to tests/intel/i915/gem_madvise.c
-diff --git a/tests/i915/gem_media_fill.c b/tests/intel/i915/gem_media_fill.c
-similarity index 100%
-rename from tests/i915/gem_media_fill.c
-rename to tests/intel/i915/gem_media_fill.c
-diff --git a/tests/i915/gem_media_vme.c b/tests/intel/i915/gem_media_vme.c
-similarity index 100%
-rename from tests/i915/gem_media_vme.c
-rename to tests/intel/i915/gem_media_vme.c
-diff --git a/tests/i915/gem_mmap.c b/tests/intel/i915/gem_mmap.c
-similarity index 100%
-rename from tests/i915/gem_mmap.c
-rename to tests/intel/i915/gem_mmap.c
-diff --git a/tests/i915/gem_mmap_gtt.c b/tests/intel/i915/gem_mmap_gtt.c
-similarity index 100%
-rename from tests/i915/gem_mmap_gtt.c
-rename to tests/intel/i915/gem_mmap_gtt.c
-diff --git a/tests/i915/gem_mmap_offset.c b/tests/intel/i915/gem_mmap_offset.c
-similarity index 100%
-rename from tests/i915/gem_mmap_offset.c
-rename to tests/intel/i915/gem_mmap_offset.c
-diff --git a/tests/i915/gem_mmap_wc.c b/tests/intel/i915/gem_mmap_wc.c
-similarity index 100%
-rename from tests/i915/gem_mmap_wc.c
-rename to tests/intel/i915/gem_mmap_wc.c
-diff --git a/tests/i915/gem_partial_pwrite_pread.c b/tests/intel/i915/gem_partial_pwrite_pread.c
-similarity index 100%
-rename from tests/i915/gem_partial_pwrite_pread.c
-rename to tests/intel/i915/gem_partial_pwrite_pread.c
-diff --git a/tests/i915/gem_pipe_control_store_loop.c b/tests/intel/i915/gem_pipe_control_store_loop.c
-similarity index 100%
-rename from tests/i915/gem_pipe_control_store_loop.c
-rename to tests/intel/i915/gem_pipe_control_store_loop.c
-diff --git a/tests/i915/gem_ppgtt.c b/tests/intel/i915/gem_ppgtt.c
-similarity index 100%
-rename from tests/i915/gem_ppgtt.c
-rename to tests/intel/i915/gem_ppgtt.c
-diff --git a/tests/i915/gem_pread.c b/tests/intel/i915/gem_pread.c
-similarity index 100%
-rename from tests/i915/gem_pread.c
-rename to tests/intel/i915/gem_pread.c
-diff --git a/tests/i915/gem_pread_after_blit.c b/tests/intel/i915/gem_pread_after_blit.c
-similarity index 100%
-rename from tests/i915/gem_pread_after_blit.c
-rename to tests/intel/i915/gem_pread_after_blit.c
-diff --git a/tests/i915/gem_pwrite.c b/tests/intel/i915/gem_pwrite.c
-similarity index 100%
-rename from tests/i915/gem_pwrite.c
-rename to tests/intel/i915/gem_pwrite.c
-diff --git a/tests/i915/gem_pwrite_snooped.c b/tests/intel/i915/gem_pwrite_snooped.c
-similarity index 100%
-rename from tests/i915/gem_pwrite_snooped.c
-rename to tests/intel/i915/gem_pwrite_snooped.c
-diff --git a/tests/i915/gem_pxp.c b/tests/intel/i915/gem_pxp.c
-similarity index 100%
-rename from tests/i915/gem_pxp.c
-rename to tests/intel/i915/gem_pxp.c
-diff --git a/tests/i915/gem_read_read_speed.c b/tests/intel/i915/gem_read_read_speed.c
-similarity index 100%
-rename from tests/i915/gem_read_read_speed.c
-rename to tests/intel/i915/gem_read_read_speed.c
-diff --git a/tests/i915/gem_readwrite.c b/tests/intel/i915/gem_readwrite.c
-similarity index 100%
-rename from tests/i915/gem_readwrite.c
-rename to tests/intel/i915/gem_readwrite.c
-diff --git a/tests/i915/gem_reg_read.c b/tests/intel/i915/gem_reg_read.c
-similarity index 100%
-rename from tests/i915/gem_reg_read.c
-rename to tests/intel/i915/gem_reg_read.c
-diff --git a/tests/i915/gem_render_copy.c b/tests/intel/i915/gem_render_copy.c
-similarity index 100%
-rename from tests/i915/gem_render_copy.c
-rename to tests/intel/i915/gem_render_copy.c
-diff --git a/tests/i915/gem_render_copy_redux.c b/tests/intel/i915/gem_render_copy_redux.c
-similarity index 100%
-rename from tests/i915/gem_render_copy_redux.c
-rename to tests/intel/i915/gem_render_copy_redux.c
-diff --git a/tests/i915/gem_render_linear_blits.c b/tests/intel/i915/gem_render_linear_blits.c
-similarity index 100%
-rename from tests/i915/gem_render_linear_blits.c
-rename to tests/intel/i915/gem_render_linear_blits.c
-diff --git a/tests/i915/gem_render_tiled_blits.c b/tests/intel/i915/gem_render_tiled_blits.c
-similarity index 100%
-rename from tests/i915/gem_render_tiled_blits.c
-rename to tests/intel/i915/gem_render_tiled_blits.c
-diff --git a/tests/i915/gem_request_retire.c b/tests/intel/i915/gem_request_retire.c
-similarity index 100%
-rename from tests/i915/gem_request_retire.c
-rename to tests/intel/i915/gem_request_retire.c
-diff --git a/tests/i915/gem_reset_stats.c b/tests/intel/i915/gem_reset_stats.c
-similarity index 100%
-rename from tests/i915/gem_reset_stats.c
-rename to tests/intel/i915/gem_reset_stats.c
-diff --git a/tests/i915/gem_ringfill.c b/tests/intel/i915/gem_ringfill.c
-similarity index 100%
-rename from tests/i915/gem_ringfill.c
-rename to tests/intel/i915/gem_ringfill.c
-diff --git a/tests/i915/gem_set_tiling_vs_blt.c b/tests/intel/i915/gem_set_tiling_vs_blt.c
-similarity index 100%
-rename from tests/i915/gem_set_tiling_vs_blt.c
-rename to tests/intel/i915/gem_set_tiling_vs_blt.c
-diff --git a/tests/i915/gem_set_tiling_vs_gtt.c b/tests/intel/i915/gem_set_tiling_vs_gtt.c
-similarity index 100%
-rename from tests/i915/gem_set_tiling_vs_gtt.c
-rename to tests/intel/i915/gem_set_tiling_vs_gtt.c
-diff --git a/tests/i915/gem_set_tiling_vs_pwrite.c b/tests/intel/i915/gem_set_tiling_vs_pwrite.c
-similarity index 100%
-rename from tests/i915/gem_set_tiling_vs_pwrite.c
-rename to tests/intel/i915/gem_set_tiling_vs_pwrite.c
-diff --git a/tests/i915/gem_shrink.c b/tests/intel/i915/gem_shrink.c
-similarity index 100%
-rename from tests/i915/gem_shrink.c
-rename to tests/intel/i915/gem_shrink.c
-diff --git a/tests/i915/gem_softpin.c b/tests/intel/i915/gem_softpin.c
-similarity index 100%
-rename from tests/i915/gem_softpin.c
-rename to tests/intel/i915/gem_softpin.c
-diff --git a/tests/i915/gem_spin_batch.c b/tests/intel/i915/gem_spin_batch.c
-similarity index 100%
-rename from tests/i915/gem_spin_batch.c
-rename to tests/intel/i915/gem_spin_batch.c
-diff --git a/tests/i915/gem_streaming_writes.c b/tests/intel/i915/gem_streaming_writes.c
-similarity index 100%
-rename from tests/i915/gem_streaming_writes.c
-rename to tests/intel/i915/gem_streaming_writes.c
-diff --git a/tests/i915/gem_stress.c b/tests/intel/i915/gem_stress.c
-similarity index 100%
-rename from tests/i915/gem_stress.c
-rename to tests/intel/i915/gem_stress.c
-diff --git a/tests/i915/gem_sync.c b/tests/intel/i915/gem_sync.c
-similarity index 100%
-rename from tests/i915/gem_sync.c
-rename to tests/intel/i915/gem_sync.c
-diff --git a/tests/i915/gem_tiled_blits.c b/tests/intel/i915/gem_tiled_blits.c
-similarity index 100%
-rename from tests/i915/gem_tiled_blits.c
-rename to tests/intel/i915/gem_tiled_blits.c
-diff --git a/tests/i915/gem_tiled_fence_blits.c b/tests/intel/i915/gem_tiled_fence_blits.c
-similarity index 100%
-rename from tests/i915/gem_tiled_fence_blits.c
-rename to tests/intel/i915/gem_tiled_fence_blits.c
-diff --git a/tests/i915/gem_tiled_partial_pwrite_pread.c b/tests/intel/i915/gem_tiled_partial_pwrite_pread.c
-similarity index 100%
-rename from tests/i915/gem_tiled_partial_pwrite_pread.c
-rename to tests/intel/i915/gem_tiled_partial_pwrite_pread.c
-diff --git a/tests/i915/gem_tiled_pread_basic.c b/tests/intel/i915/gem_tiled_pread_basic.c
-similarity index 100%
-rename from tests/i915/gem_tiled_pread_basic.c
-rename to tests/intel/i915/gem_tiled_pread_basic.c
-diff --git a/tests/i915/gem_tiled_pread_pwrite.c b/tests/intel/i915/gem_tiled_pread_pwrite.c
-similarity index 100%
-rename from tests/i915/gem_tiled_pread_pwrite.c
-rename to tests/intel/i915/gem_tiled_pread_pwrite.c
-diff --git a/tests/i915/gem_tiled_swapping.c b/tests/intel/i915/gem_tiled_swapping.c
-similarity index 100%
-rename from tests/i915/gem_tiled_swapping.c
-rename to tests/intel/i915/gem_tiled_swapping.c
-diff --git a/tests/i915/gem_tiled_wb.c b/tests/intel/i915/gem_tiled_wb.c
-similarity index 100%
-rename from tests/i915/gem_tiled_wb.c
-rename to tests/intel/i915/gem_tiled_wb.c
-diff --git a/tests/i915/gem_tiled_wc.c b/tests/intel/i915/gem_tiled_wc.c
-similarity index 100%
-rename from tests/i915/gem_tiled_wc.c
-rename to tests/intel/i915/gem_tiled_wc.c
-diff --git a/tests/i915/gem_tiling_max_stride.c b/tests/intel/i915/gem_tiling_max_stride.c
-similarity index 100%
-rename from tests/i915/gem_tiling_max_stride.c
-rename to tests/intel/i915/gem_tiling_max_stride.c
-diff --git a/tests/i915/gem_unfence_active_buffers.c b/tests/intel/i915/gem_unfence_active_buffers.c
-similarity index 100%
-rename from tests/i915/gem_unfence_active_buffers.c
-rename to tests/intel/i915/gem_unfence_active_buffers.c
-diff --git a/tests/i915/gem_unref_active_buffers.c b/tests/intel/i915/gem_unref_active_buffers.c
-similarity index 100%
-rename from tests/i915/gem_unref_active_buffers.c
-rename to tests/intel/i915/gem_unref_active_buffers.c
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/intel/i915/gem_userptr_blits.c
-similarity index 100%
-rename from tests/i915/gem_userptr_blits.c
-rename to tests/intel/i915/gem_userptr_blits.c
-diff --git a/tests/i915/gem_vm_create.c b/tests/intel/i915/gem_vm_create.c
-similarity index 100%
-rename from tests/i915/gem_vm_create.c
-rename to tests/intel/i915/gem_vm_create.c
-diff --git a/tests/i915/gem_wait.c b/tests/intel/i915/gem_wait.c
-similarity index 100%
-rename from tests/i915/gem_wait.c
-rename to tests/intel/i915/gem_wait.c
-diff --git a/tests/i915/gem_watchdog.c b/tests/intel/i915/gem_watchdog.c
-similarity index 100%
-rename from tests/i915/gem_watchdog.c
-rename to tests/intel/i915/gem_watchdog.c
-diff --git a/tests/i915/gem_workarounds.c b/tests/intel/i915/gem_workarounds.c
-similarity index 100%
-rename from tests/i915/gem_workarounds.c
-rename to tests/intel/i915/gem_workarounds.c
-diff --git a/tests/i915/gen3_mixed_blits.c b/tests/intel/i915/gen3_mixed_blits.c
-similarity index 100%
-rename from tests/i915/gen3_mixed_blits.c
-rename to tests/intel/i915/gen3_mixed_blits.c
-diff --git a/tests/i915/gen3_render_linear_blits.c b/tests/intel/i915/gen3_render_linear_blits.c
-similarity index 100%
-rename from tests/i915/gen3_render_linear_blits.c
-rename to tests/intel/i915/gen3_render_linear_blits.c
-diff --git a/tests/i915/gen3_render_mixed_blits.c b/tests/intel/i915/gen3_render_mixed_blits.c
-similarity index 100%
-rename from tests/i915/gen3_render_mixed_blits.c
-rename to tests/intel/i915/gen3_render_mixed_blits.c
-diff --git a/tests/i915/gen3_render_tiledx_blits.c b/tests/intel/i915/gen3_render_tiledx_blits.c
-similarity index 100%
-rename from tests/i915/gen3_render_tiledx_blits.c
-rename to tests/intel/i915/gen3_render_tiledx_blits.c
-diff --git a/tests/i915/gen3_render_tiledy_blits.c b/tests/intel/i915/gen3_render_tiledy_blits.c
-similarity index 100%
-rename from tests/i915/gen3_render_tiledy_blits.c
-rename to tests/intel/i915/gen3_render_tiledy_blits.c
-diff --git a/tests/i915/gen7_exec_parse.c b/tests/intel/i915/gen7_exec_parse.c
-similarity index 100%
-rename from tests/i915/gen7_exec_parse.c
-rename to tests/intel/i915/gen7_exec_parse.c
-diff --git a/tests/i915/gen9_exec_parse.c b/tests/intel/i915/gen9_exec_parse.c
-similarity index 100%
-rename from tests/i915/gen9_exec_parse.c
-rename to tests/intel/i915/gen9_exec_parse.c
-diff --git a/tests/i915/i915_fb_tiling.c b/tests/intel/i915/i915_fb_tiling.c
-similarity index 100%
-rename from tests/i915/i915_fb_tiling.c
-rename to tests/intel/i915/i915_fb_tiling.c
-diff --git a/tests/i915/i915_getparams_basic.c b/tests/intel/i915/i915_getparams_basic.c
-similarity index 100%
-rename from tests/i915/i915_getparams_basic.c
-rename to tests/intel/i915/i915_getparams_basic.c
-diff --git a/tests/i915/i915_hangman.c b/tests/intel/i915/i915_hangman.c
-similarity index 100%
-rename from tests/i915/i915_hangman.c
-rename to tests/intel/i915/i915_hangman.c
-diff --git a/tests/i915/i915_hwmon.c b/tests/intel/i915/i915_hwmon.c
-similarity index 100%
-rename from tests/i915/i915_hwmon.c
-rename to tests/intel/i915/i915_hwmon.c
-diff --git a/tests/i915/i915_module_load.c b/tests/intel/i915/i915_module_load.c
-similarity index 100%
-rename from tests/i915/i915_module_load.c
-rename to tests/intel/i915/i915_module_load.c
-diff --git a/tests/i915/i915_pciid.c b/tests/intel/i915/i915_pciid.c
-similarity index 100%
-rename from tests/i915/i915_pciid.c
-rename to tests/intel/i915/i915_pciid.c
-diff --git a/tests/i915/i915_pipe_stress.c b/tests/intel/i915/i915_pipe_stress.c
-similarity index 100%
-rename from tests/i915/i915_pipe_stress.c
-rename to tests/intel/i915/i915_pipe_stress.c
-diff --git a/tests/i915/i915_pm_backlight.c b/tests/intel/i915/i915_pm_backlight.c
-similarity index 100%
-rename from tests/i915/i915_pm_backlight.c
-rename to tests/intel/i915/i915_pm_backlight.c
-diff --git a/tests/i915/i915_pm_dc.c b/tests/intel/i915/i915_pm_dc.c
-similarity index 100%
-rename from tests/i915/i915_pm_dc.c
-rename to tests/intel/i915/i915_pm_dc.c
-diff --git a/tests/i915/i915_pm_freq_mult.c b/tests/intel/i915/i915_pm_freq_mult.c
-similarity index 100%
-rename from tests/i915/i915_pm_freq_mult.c
-rename to tests/intel/i915/i915_pm_freq_mult.c
-diff --git a/tests/i915/i915_pm_lpsp.c b/tests/intel/i915/i915_pm_lpsp.c
-similarity index 100%
-rename from tests/i915/i915_pm_lpsp.c
-rename to tests/intel/i915/i915_pm_lpsp.c
-diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/intel/i915/i915_pm_rc6_residency.c
-similarity index 100%
-rename from tests/i915/i915_pm_rc6_residency.c
-rename to tests/intel/i915/i915_pm_rc6_residency.c
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/intel/i915/i915_pm_rpm.c
-similarity index 100%
-rename from tests/i915/i915_pm_rpm.c
-rename to tests/intel/i915/i915_pm_rpm.c
-diff --git a/tests/i915/i915_pm_rps.c b/tests/intel/i915/i915_pm_rps.c
-similarity index 100%
-rename from tests/i915/i915_pm_rps.c
-rename to tests/intel/i915/i915_pm_rps.c
-diff --git a/tests/i915/i915_pm_sseu.c b/tests/intel/i915/i915_pm_sseu.c
-similarity index 100%
-rename from tests/i915/i915_pm_sseu.c
-rename to tests/intel/i915/i915_pm_sseu.c
-diff --git a/tests/i915/i915_power.c b/tests/intel/i915/i915_power.c
-similarity index 100%
-rename from tests/i915/i915_power.c
-rename to tests/intel/i915/i915_power.c
-diff --git a/tests/i915/i915_query.c b/tests/intel/i915/i915_query.c
-similarity index 100%
-rename from tests/i915/i915_query.c
-rename to tests/intel/i915/i915_query.c
-diff --git a/tests/i915/i915_selftest.c b/tests/intel/i915/i915_selftest.c
-similarity index 100%
-rename from tests/i915/i915_selftest.c
-rename to tests/intel/i915/i915_selftest.c
-diff --git a/tests/i915/i915_suspend.c b/tests/intel/i915/i915_suspend.c
-similarity index 100%
-rename from tests/i915/i915_suspend.c
-rename to tests/intel/i915/i915_suspend.c
-diff --git a/tests/i915/kms_big_fb.c b/tests/intel/i915/kms_big_fb.c
-similarity index 100%
-rename from tests/i915/kms_big_fb.c
-rename to tests/intel/i915/kms_big_fb.c
-diff --git a/tests/i915/kms_big_joiner.c b/tests/intel/i915/kms_big_joiner.c
-similarity index 100%
-rename from tests/i915/kms_big_joiner.c
-rename to tests/intel/i915/kms_big_joiner.c
-diff --git a/tests/i915/kms_busy.c b/tests/intel/i915/kms_busy.c
-similarity index 100%
-rename from tests/i915/kms_busy.c
-rename to tests/intel/i915/kms_busy.c
-diff --git a/tests/i915/kms_ccs.c b/tests/intel/i915/kms_ccs.c
-similarity index 100%
-rename from tests/i915/kms_ccs.c
-rename to tests/intel/i915/kms_ccs.c
-diff --git a/tests/i915/kms_cdclk.c b/tests/intel/i915/kms_cdclk.c
-similarity index 100%
-rename from tests/i915/kms_cdclk.c
-rename to tests/intel/i915/kms_cdclk.c
-diff --git a/tests/i915/kms_draw_crc.c b/tests/intel/i915/kms_draw_crc.c
-similarity index 100%
-rename from tests/i915/kms_draw_crc.c
-rename to tests/intel/i915/kms_draw_crc.c
-diff --git a/tests/i915/kms_dsc.c b/tests/intel/i915/kms_dsc.c
-similarity index 100%
-rename from tests/i915/kms_dsc.c
-rename to tests/intel/i915/kms_dsc.c
-diff --git a/tests/i915/kms_dsc_helper.c b/tests/intel/i915/kms_dsc_helper.c
-similarity index 100%
-rename from tests/i915/kms_dsc_helper.c
-rename to tests/intel/i915/kms_dsc_helper.c
-diff --git a/tests/i915/kms_dsc_helper.h b/tests/intel/i915/kms_dsc_helper.h
-similarity index 100%
-rename from tests/i915/kms_dsc_helper.h
-rename to tests/intel/i915/kms_dsc_helper.h
-diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/intel/i915/kms_fbcon_fbt.c
-similarity index 100%
-rename from tests/i915/kms_fbcon_fbt.c
-rename to tests/intel/i915/kms_fbcon_fbt.c
-diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/intel/i915/kms_fence_pin_leak.c
-similarity index 100%
-rename from tests/i915/kms_fence_pin_leak.c
-rename to tests/intel/i915/kms_fence_pin_leak.c
-diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/intel/i915/kms_flip_scaled_crc.c
-similarity index 100%
-rename from tests/i915/kms_flip_scaled_crc.c
-rename to tests/intel/i915/kms_flip_scaled_crc.c
-diff --git a/tests/i915/kms_flip_tiling.c b/tests/intel/i915/kms_flip_tiling.c
-similarity index 100%
-rename from tests/i915/kms_flip_tiling.c
-rename to tests/intel/i915/kms_flip_tiling.c
-diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/intel/i915/kms_frontbuffer_tracking.c
-similarity index 100%
-rename from tests/i915/kms_frontbuffer_tracking.c
-rename to tests/intel/i915/kms_frontbuffer_tracking.c
-diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/intel/i915/kms_legacy_colorkey.c
-similarity index 100%
-rename from tests/i915/kms_legacy_colorkey.c
-rename to tests/intel/i915/kms_legacy_colorkey.c
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/intel/i915/kms_mmap_write_crc.c
-similarity index 100%
-rename from tests/i915/kms_mmap_write_crc.c
-rename to tests/intel/i915/kms_mmap_write_crc.c
-diff --git a/tests/i915/kms_pipe_b_c_ivb.c b/tests/intel/i915/kms_pipe_b_c_ivb.c
-similarity index 100%
-rename from tests/i915/kms_pipe_b_c_ivb.c
-rename to tests/intel/i915/kms_pipe_b_c_ivb.c
-diff --git a/tests/i915/kms_pwrite_crc.c b/tests/intel/i915/kms_pwrite_crc.c
-similarity index 100%
-rename from tests/i915/kms_pwrite_crc.c
-rename to tests/intel/i915/kms_pwrite_crc.c
-diff --git a/tests/i915/perf.c b/tests/intel/i915/perf.c
-similarity index 100%
-rename from tests/i915/perf.c
-rename to tests/intel/i915/perf.c
-diff --git a/tests/i915/perf_pmu.c b/tests/intel/i915/perf_pmu.c
-similarity index 100%
-rename from tests/i915/perf_pmu.c
-rename to tests/intel/i915/perf_pmu.c
-diff --git a/tests/i915/sysfs_defaults.c b/tests/intel/i915/sysfs_defaults.c
-similarity index 100%
-rename from tests/i915/sysfs_defaults.c
-rename to tests/intel/i915/sysfs_defaults.c
-diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/intel/i915/sysfs_heartbeat_interval.c
-similarity index 100%
-rename from tests/i915/sysfs_heartbeat_interval.c
-rename to tests/intel/i915/sysfs_heartbeat_interval.c
-diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/intel/i915/sysfs_preempt_timeout.c
-similarity index 100%
-rename from tests/i915/sysfs_preempt_timeout.c
-rename to tests/intel/i915/sysfs_preempt_timeout.c
-diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/intel/i915/sysfs_timeslice_duration.c
-similarity index 100%
-rename from tests/i915/sysfs_timeslice_duration.c
-rename to tests/intel/i915/sysfs_timeslice_duration.c
-diff --git a/tests/i915/kms_psr.c b/tests/intel/kms_psr.c
-similarity index 100%
-rename from tests/i915/kms_psr.c
-rename to tests/intel/kms_psr.c
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-similarity index 99%
-rename from tests/i915/kms_psr2_sf.c
-rename to tests/intel/kms_psr2_sf.c
-index 4cf986440..068006e25 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -25,7 +25,7 @@
- #include "igt.h"
- #include "igt_sysfs.h"
- #include "igt_psr.h"
--#include "kms_dsc_helper.h"
-+#include "i915/kms_dsc_helper.h"
- #include <errno.h>
- #include <stdbool.h>
- #include <stdio.h>
-diff --git a/tests/i915/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
-similarity index 100%
-rename from tests/i915/kms_psr2_su.c
-rename to tests/intel/kms_psr2_su.c
-diff --git a/tests/i915/kms_psr_stress_test.c b/tests/intel/kms_psr_stress_test.c
-similarity index 100%
-rename from tests/i915/kms_psr_stress_test.c
-rename to tests/intel/kms_psr_stress_test.c
-diff --git a/tests/xe/xe_compute.c b/tests/intel/xe/xe_compute.c
-similarity index 100%
-rename from tests/xe/xe_compute.c
-rename to tests/intel/xe/xe_compute.c
-diff --git a/tests/xe/xe_create.c b/tests/intel/xe/xe_create.c
-similarity index 100%
-rename from tests/xe/xe_create.c
-rename to tests/intel/xe/xe_create.c
-diff --git a/tests/xe/xe_debugfs.c b/tests/intel/xe/xe_debugfs.c
-similarity index 100%
-rename from tests/xe/xe_debugfs.c
-rename to tests/intel/xe/xe_debugfs.c
-diff --git a/tests/xe/xe_dma_buf_sync.c b/tests/intel/xe/xe_dma_buf_sync.c
-similarity index 100%
-rename from tests/xe/xe_dma_buf_sync.c
-rename to tests/intel/xe/xe_dma_buf_sync.c
-diff --git a/tests/xe/xe_evict.c b/tests/intel/xe/xe_evict.c
-similarity index 100%
-rename from tests/xe/xe_evict.c
-rename to tests/intel/xe/xe_evict.c
-diff --git a/tests/xe/xe_exec_balancer.c b/tests/intel/xe/xe_exec_balancer.c
-similarity index 100%
-rename from tests/xe/xe_exec_balancer.c
-rename to tests/intel/xe/xe_exec_balancer.c
-diff --git a/tests/xe/xe_exec_basic.c b/tests/intel/xe/xe_exec_basic.c
-similarity index 100%
-rename from tests/xe/xe_exec_basic.c
-rename to tests/intel/xe/xe_exec_basic.c
-diff --git a/tests/xe/xe_exec_compute_mode.c b/tests/intel/xe/xe_exec_compute_mode.c
-similarity index 100%
-rename from tests/xe/xe_exec_compute_mode.c
-rename to tests/intel/xe/xe_exec_compute_mode.c
-diff --git a/tests/xe/xe_exec_fault_mode.c b/tests/intel/xe/xe_exec_fault_mode.c
-similarity index 100%
-rename from tests/xe/xe_exec_fault_mode.c
-rename to tests/intel/xe/xe_exec_fault_mode.c
-diff --git a/tests/xe/xe_exec_reset.c b/tests/intel/xe/xe_exec_reset.c
-similarity index 100%
-rename from tests/xe/xe_exec_reset.c
-rename to tests/intel/xe/xe_exec_reset.c
-diff --git a/tests/xe/xe_exec_threads.c b/tests/intel/xe/xe_exec_threads.c
-similarity index 100%
-rename from tests/xe/xe_exec_threads.c
-rename to tests/intel/xe/xe_exec_threads.c
-diff --git a/tests/xe/xe_guc_pc.c b/tests/intel/xe/xe_guc_pc.c
-similarity index 100%
-rename from tests/xe/xe_guc_pc.c
-rename to tests/intel/xe/xe_guc_pc.c
-diff --git a/tests/xe/xe_huc_copy.c b/tests/intel/xe/xe_huc_copy.c
-similarity index 100%
-rename from tests/xe/xe_huc_copy.c
-rename to tests/intel/xe/xe_huc_copy.c
-diff --git a/tests/xe/xe_mmap.c b/tests/intel/xe/xe_mmap.c
-similarity index 100%
-rename from tests/xe/xe_mmap.c
-rename to tests/intel/xe/xe_mmap.c
-diff --git a/tests/xe/xe_mmio.c b/tests/intel/xe/xe_mmio.c
-similarity index 100%
-rename from tests/xe/xe_mmio.c
-rename to tests/intel/xe/xe_mmio.c
-diff --git a/tests/xe/xe_module_load.c b/tests/intel/xe/xe_module_load.c
-similarity index 100%
-rename from tests/xe/xe_module_load.c
-rename to tests/intel/xe/xe_module_load.c
-diff --git a/tests/xe/xe_noexec_ping_pong.c b/tests/intel/xe/xe_noexec_ping_pong.c
-similarity index 100%
-rename from tests/xe/xe_noexec_ping_pong.c
-rename to tests/intel/xe/xe_noexec_ping_pong.c
-diff --git a/tests/xe/xe_pm.c b/tests/intel/xe/xe_pm.c
-similarity index 100%
-rename from tests/xe/xe_pm.c
-rename to tests/intel/xe/xe_pm.c
-diff --git a/tests/xe/xe_prime_self_import.c b/tests/intel/xe/xe_prime_self_import.c
-similarity index 100%
-rename from tests/xe/xe_prime_self_import.c
-rename to tests/intel/xe/xe_prime_self_import.c
-diff --git a/tests/xe/xe_query.c b/tests/intel/xe/xe_query.c
-similarity index 100%
-rename from tests/xe/xe_query.c
-rename to tests/intel/xe/xe_query.c
-diff --git a/tests/xe/xe_test_config.json b/tests/intel/xe/xe_test_config.json
-similarity index 100%
-rename from tests/xe/xe_test_config.json
-rename to tests/intel/xe/xe_test_config.json
-diff --git a/tests/xe/xe_vm.c b/tests/intel/xe/xe_vm.c
-similarity index 100%
-rename from tests/xe/xe_vm.c
-rename to tests/intel/xe/xe_vm.c
-diff --git a/tests/xe/xe_waitfence.c b/tests/intel/xe/xe_waitfence.c
-similarity index 100%
-rename from tests/xe/xe_waitfence.c
-rename to tests/intel/xe/xe_waitfence.c
-diff --git a/tests/meson.build b/tests/meson.build
-index 9072cfadc..782a0473a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -83,6 +83,12 @@ test_progs = [
- 	'vgem_slow',
- ]
- 
-+intel_progs = [
-+	'kms_psr',
-+	'kms_psr2_su',
-+	'kms_psr_stress_test',
-+]
-+
- i915_progs = [
- 	'api_intel_allocator',
- 	'api_intel_bb',
-@@ -231,9 +237,6 @@ i915_progs = [
- 	'kms_legacy_colorkey',
- 	'kms_mmap_write_crc',
- 	'kms_pipe_b_c_ivb',
--	'kms_psr',
--	'kms_psr2_su',
--	'kms_psr_stress_test',
- 	'kms_pwrite_crc',
- 	'sysfs_defaults',
- 	'sysfs_heartbeat_interval',
-@@ -304,9 +307,19 @@ foreach prog : test_progs
- 	test_list += prog
- endforeach
- 
-+foreach prog : intel_progs
-+	test_executables += executable(prog,
-+		   join_paths('intel', prog + '.c'),
-+		   dependencies : test_deps,
-+		   install_dir : libexecdir,
-+		   install_rpath : libexecdir_rpathdir,
-+		   install : true)
-+	test_list += prog
-+endforeach
-+
- foreach prog : i915_progs
- 	test_executables += executable(prog,
--		   join_paths('i915', prog + '.c'),
-+		   join_paths('intel/i915', prog + '.c'),
- 		   dependencies : test_deps,
- 		   install_dir : libexecdir,
- 		   install_rpath : libexecdir_rpathdir,
-@@ -316,7 +329,7 @@ endforeach
- 
- foreach prog : xe_progs
- 	test_executables += executable(prog,
--		   join_paths('xe', prog + '.c'),
-+		   join_paths('intel/xe', prog + '.c'),
- 		   dependencies : test_deps,
- 		   install_dir : libexecdir,
- 		   install_rpath : libexecdir_rpathdir,
-@@ -348,7 +361,7 @@ if chamelium.found()
- endif
- 
- test_executables += executable('drm_fdinfo',
--	   join_paths('i915', 'drm_fdinfo.c'),
-+	   join_paths('intel/i915', 'drm_fdinfo.c'),
- 	   dependencies : test_deps + [ lib_igt_drm_fdinfo ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -363,7 +376,7 @@ test_executables += executable('dumb_buffer', 'dumb_buffer.c',
- test_list += 'dumb_buffer'
- 
- test_executables += executable('gem_create',
--	   join_paths('i915', 'gem_create.c'),
-+	   join_paths('intel/i915', 'gem_create.c'),
- 	   dependencies : test_deps + [ libatomic ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -371,7 +384,7 @@ test_executables += executable('gem_create',
- test_list += 'gem_create'
- 
- test_executables += executable('gem_ctx_freq',
--	   join_paths('i915', 'gem_ctx_freq.c'),
-+	   join_paths('intel/i915', 'gem_ctx_freq.c'),
- 	   dependencies : test_deps + [ lib_igt_perf ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -379,7 +392,7 @@ test_executables += executable('gem_ctx_freq',
- test_list += 'gem_ctx_freq'
- 
- test_executables += executable('gem_ctx_sseu',
--	   join_paths('i915', 'gem_ctx_sseu.c'),
-+	   join_paths('intel/i915', 'gem_ctx_sseu.c'),
- 	   dependencies : test_deps + [ lib_igt_perf ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -387,14 +400,14 @@ test_executables += executable('gem_ctx_sseu',
- test_list += 'gem_ctx_sseu'
- 
- test_executables += executable('gem_eio',
--	   join_paths('i915', 'gem_eio.c'),
-+	   join_paths('intel/i915', 'gem_eio.c'),
- 	   dependencies : test_deps + [ realtime ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
- 	   install : true)
- test_list += 'gem_eio'
- 
--test_executables += executable('gem_exec_balancer', 'i915/gem_exec_balancer.c',
-+test_executables += executable('gem_exec_balancer', 'intel/i915/gem_exec_balancer.c',
- 	   dependencies : test_deps + [ lib_igt_perf ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -402,7 +415,7 @@ test_executables += executable('gem_exec_balancer', 'i915/gem_exec_balancer.c',
- test_list += 'gem_exec_balancer'
- 
- test_executables += executable('gem_mmap_offset',
--	   join_paths('i915', 'gem_mmap_offset.c'),
-+	   join_paths('intel/i915', 'gem_mmap_offset.c'),
- 	   dependencies : test_deps + [ libatomic ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -410,7 +423,7 @@ test_executables += executable('gem_mmap_offset',
- test_list += 'gem_mmap_offset'
- 
- test_executables += executable('i915_pm_freq_mult',
--	   join_paths('i915', 'i915_pm_freq_mult.c'),
-+	   join_paths('intel/i915', 'i915_pm_freq_mult.c'),
- 	   dependencies : test_deps + [ lib_igt_perf ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -418,7 +431,7 @@ test_executables += executable('i915_pm_freq_mult',
- test_list += 'i915_pm_freq_mult'
- 
- test_executables += executable('i915_pm_rc6_residency',
--	   join_paths('i915', 'i915_pm_rc6_residency.c'),
-+	   join_paths('intel/i915', 'i915_pm_rc6_residency.c'),
- 	   dependencies : test_deps + [ lib_igt_perf ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -426,7 +439,7 @@ test_executables += executable('i915_pm_rc6_residency',
- test_list += 'i915_pm_rc6_residency'
- 
- test_executables += executable('gem_barrier_race',
--	   join_paths('i915', 'gem_barrier_race.c'),
-+	   join_paths('intel/i915', 'gem_barrier_race.c'),
- 	   dependencies : test_deps + [ lib_igt_i915_perf ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -434,7 +447,7 @@ test_executables += executable('gem_barrier_race',
- test_list += 'gem_barrier_race'
- 
- test_executables += executable('perf_pmu',
--	   join_paths('i915', 'perf_pmu.c'),
-+	   join_paths('intel/i915', 'perf_pmu.c'),
- 	   dependencies : test_deps + [ lib_igt_perf ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -442,7 +455,7 @@ test_executables += executable('perf_pmu',
- test_list += 'perf_pmu'
- 
- test_executables += executable('perf',
--	   join_paths('i915', 'perf.c'),
-+	   join_paths('intel/i915', 'perf.c'),
- 	   dependencies : test_deps + [ lib_igt_i915_perf ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -472,7 +485,7 @@ test_executables += executable('kms_color',
- test_list += 'kms_color'
- 
- test_executables += executable('kms_dsc',
--	   [ join_paths('i915', 'kms_dsc.c'), join_paths ('i915', 'kms_dsc_helper.c')],
-+	   [ join_paths('intel/i915', 'kms_dsc.c'), join_paths ('intel/i915', 'kms_dsc_helper.c')],
- 	   dependencies : test_deps,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -480,7 +493,7 @@ test_executables += executable('kms_dsc',
- test_list += 'kms_dsc'
- 
- test_executables += executable('kms_psr2_sf',
--	   [ join_paths('i915', 'kms_psr2_sf.c'), join_paths ('i915', 'kms_dsc_helper.c')],
-+	   [ join_paths('intel', 'kms_psr2_sf.c'), join_paths ('intel/i915', 'kms_dsc_helper.c')],
- 	   dependencies : test_deps,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -519,7 +532,7 @@ test_list_target = custom_target('testlist',
- 	      install : true,
- 	      install_dir : libexecdir)
- 
--test_executables += executable('gem_concurrent_all', 'i915/gem_concurrent_all.c',
-+test_executables += executable('gem_concurrent_all', 'intel/i915/gem_concurrent_all.c',
- 	   dependencies : test_deps + [ libatomic ],
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -537,7 +550,7 @@ foreach prog : test_list
- 	test('testcase check ' + prog, test_script, args : prog)
- endforeach
- 
--executable('gem_stress', 'i915/gem_stress.c',
-+executable('gem_stress', 'intel/i915/gem_stress.c',
- 	   install : true,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
--- 
-2.40.0
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_13051_full -> IGTPW_8841_full
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/index.html
+
+Participating hosts (7 -> 7)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8841_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_ctx_persistence@hang:
+    - shard-snb:          NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#1099])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-snb2/igt@gem_ctx_persistence@hang.html
+
+  * igt@gem_exec_fair@basic-pace-share@rcs0:
+    - shard-glk:          [PASS][2] -> [FAIL][3] ([i915#2842]) +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-glk2/igt@gem_exec_fair@basic-pace-share@rcs0.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-glk8/igt@gem_exec_fair@basic-pace-share@rcs0.html
+
+  * igt@gen9_exec_parse@allowed-single:
+    - shard-apl:          [PASS][4] -> [ABORT][5] ([i915#5566])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-apl1/igt@gen9_exec_parse@allowed-single.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-apl4/igt@gen9_exec_parse@allowed-single.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - shard-glk:          [PASS][6] -> [DMESG-FAIL][7] ([i915#5334])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-glk9/igt@i915_selftest@live@gt_heartbeat.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-glk3/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@ac-hdmi-a1-hdmi-a2:
+    - shard-glk:          [PASS][8] -> [FAIL][9] ([i915#2122])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-glk1/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@ac-hdmi-a1-hdmi-a2.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-glk1/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@ac-hdmi-a1-hdmi-a2.html
+
+  * igt@kms_hdr@bpc-switch-suspend@pipe-a-dp-1:
+    - shard-apl:          [PASS][10] -> [ABORT][11] ([i915#180]) +1 similar issue
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-apl7/igt@kms_hdr@bpc-switch-suspend@pipe-a-dp-1.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-apl2/igt@kms_hdr@bpc-switch-suspend@pipe-a-dp-1.html
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a-vga-1:
+    - shard-snb:          NOTRUN -> [SKIP][12] ([fdo#109271]) +91 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-snb4/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a-vga-1.html
+
+  
+#### Possible fixes ####
+
+  * igt@drm_fdinfo@most-busy-check-all@rcs0:
+    - {shard-rkl}:        [FAIL][13] ([i915#7742]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-rkl-4/igt@drm_fdinfo@most-busy-check-all@rcs0.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-rkl-3/igt@drm_fdinfo@most-busy-check-all@rcs0.html
+
+  * igt@gem_eio@hibernate:
+    - {shard-tglu}:       [ABORT][15] ([i915#7975]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-tglu-10/igt@gem_eio@hibernate.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-tglu-7/igt@gem_eio@hibernate.html
+
+  * igt@gem_exec_fair@basic-deadline:
+    - shard-glk:          [FAIL][17] ([i915#2846]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-glk7/igt@gem_exec_fair@basic-deadline.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-glk9/igt@gem_exec_fair@basic-deadline.html
+
+  * igt@i915_pm_rpm@dpms-mode-unset-non-lpsp:
+    - {shard-dg1}:        [SKIP][19] ([i915#1397]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-dg1-14/igt@i915_pm_rpm@dpms-mode-unset-non-lpsp.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-dg1-18/igt@i915_pm_rpm@dpms-mode-unset-non-lpsp.html
+
+  * igt@i915_pm_rpm@modeset-non-lpsp-stress:
+    - {shard-rkl}:        [SKIP][21] ([i915#1397]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-rkl-7/igt@i915_pm_rpm@modeset-non-lpsp-stress.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-rkl-4/igt@i915_pm_rpm@modeset-non-lpsp-stress.html
+
+  * igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-async-flip:
+    - {shard-rkl}:        [FAIL][23] ([i915#3743]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-rkl-7/igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-async-flip.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-rkl-7/igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-async-flip.html
+
+  * igt@kms_cursor_legacy@single-move@pipe-b:
+    - {shard-rkl}:        [INCOMPLETE][25] ([i915#8011]) -> [PASS][26] +1 similar issue
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-rkl-7/igt@kms_cursor_legacy@single-move@pipe-b.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-rkl-6/igt@kms_cursor_legacy@single-move@pipe-b.html
+
+  * igt@kms_fbcon_fbt@fbc-suspend:
+    - shard-apl:          [FAIL][27] ([i915#4767]) -> [PASS][28]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-apl2/igt@kms_fbcon_fbt@fbc-suspend.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-apl3/igt@kms_fbcon_fbt@fbc-suspend.html
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank@bc-hdmi-a1-hdmi-a2:
+    - shard-glk:          [FAIL][29] ([i915#79]) -> [PASS][30]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-glk2/igt@kms_flip@2x-flip-vs-expired-vblank@bc-hdmi-a1-hdmi-a2.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-glk5/igt@kms_flip@2x-flip-vs-expired-vblank@bc-hdmi-a1-hdmi-a2.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109274]: https://bugs.freedesktop.org/show_bug.cgi?id=109274
+  [fdo#109280]: https://bugs.freedesktop.org/show_bug.cgi?id=109280
+  [fdo#109283]: https://bugs.freedesktop.org/show_bug.cgi?id=109283
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109289]: https://bugs.freedesktop.org/show_bug.cgi?id=109289
+  [fdo#109291]: https://bugs.freedesktop.org/show_bug.cgi?id=109291
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#109303]: https://bugs.freedesktop.org/show_bug.cgi?id=109303
+  [fdo#109313]: https://bugs.freedesktop.org/show_bug.cgi?id=109313
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#109506]: https://bugs.freedesktop.org/show_bug.cgi?id=109506
+  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
+  [fdo#110723]: https://bugs.freedesktop.org/show_bug.cgi?id=110723
+  [fdo#111068]: https://bugs.freedesktop.org/show_bug.cgi?id=111068
+  [fdo#111615]: https://bugs.freedesktop.org/show_bug.cgi?id=111615
+  [fdo#111656]: https://bugs.freedesktop.org/show_bug.cgi?id=111656
+  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [fdo#112283]: https://bugs.freedesktop.org/show_bug.cgi?id=112283
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1099]: https://gitlab.freedesktop.org/drm/intel/issues/1099
+  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#1825]: https://gitlab.freedesktop.org/drm/intel/issues/1825
+  [i915#1839]: https://gitlab.freedesktop.org/drm/intel/issues/1839
+  [i915#2122]: https://gitlab.freedesktop.org/drm/intel/issues/2122
+  [i915#2434]: https://gitlab.freedesktop.org/drm/intel/issues/2434
+  [i915#2527]: https://gitlab.freedesktop.org/drm/intel/issues/2527
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#2587]: https://gitlab.freedesktop.org/drm/intel/issues/2587
+  [i915#2672]: https://gitlab.freedesktop.org/drm/intel/issues/2672
+  [i915#2681]: https://gitlab.freedesktop.org/drm/intel/issues/2681
+  [i915#280]: https://gitlab.freedesktop.org/drm/intel/issues/280
+  [i915#2842]: https://gitlab.freedesktop.org/drm/intel/issues/2842
+  [i915#2846]: https://gitlab.freedesktop.org/drm/intel/issues/2846
+  [i915#3023]: https://gitlab.freedesktop.org/drm/intel/issues/3023
+  [i915#315]: https://gitlab.freedesktop.org/drm/intel/issues/315
+  [i915#3281]: https://gitlab.freedesktop.org/drm/intel/issues/3281
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3297]: https://gitlab.freedesktop.org/drm/intel/issues/3297
+  [i915#3299]: https://gitlab.freedesktop.org/drm/intel/issues/3299
+  [i915#3359]: https://gitlab.freedesktop.org/drm/intel/issues/3359
+  [i915#3458]: https://gitlab.freedesktop.org/drm/intel/issues/3458
+  [i915#3469]: https://gitlab.freedesktop.org/drm/intel/issues/3469
+  [i915#3539]: https://gitlab.freedesktop.org/drm/intel/issues/3539
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3591]: https://gitlab.freedesktop.org/drm/intel/issues/3591
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3638]: https://gitlab.freedesktop.org/drm/intel/issues/3638
+  [i915#3689]: https://gitlab.freedesktop.org/drm/intel/issues/3689
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3743]: https://gitlab.freedesktop.org/drm/intel/issues/3743
+  [i915#3886]: https://gitlab.freedesktop.org/drm/intel/issues/3886
+  [i915#3952]: https://gitlab.freedesktop.org/drm/intel/issues/3952
+  [i915#3955]: https://gitlab.freedesktop.org/drm/intel/issues/3955
+  [i915#4070]: https://gitlab.freedesktop.org/drm/intel/issues/4070
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#426]: https://gitlab.freedesktop.org/drm/intel/issues/426
+  [i915#4270]: https://gitlab.freedesktop.org/drm/intel/issues/4270
+  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
+  [i915#4538]: https://gitlab.freedesktop.org/drm/intel/issues/4538
+  [i915#4565]: https://gitlab.freedesktop.org/drm/intel/issues/4565
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4767]: https://gitlab.freedesktop.org/drm/intel/issues/4767
+  [i915#4771]: https://gitlab.freedesktop.org/drm/intel/issues/4771
+  [i915#4812]: https://gitlab.freedesktop.org/drm/intel/issues/4812
+  [i915#4816]: https://gitlab.freedesktop.org/drm/intel/issues/4816
+  [i915#4833]: https://gitlab.freedesktop.org/drm/intel/issues/4833
+  [i915#4852]: https://gitlab.freedesktop.org/drm/intel/issues/4852
+  [i915#4860]: https://gitlab.freedesktop.org/drm/intel/issues/4860
+  [i915#4881]: https://gitlab.freedesktop.org/drm/intel/issues/4881
+  [i915#4884]: https://gitlab.freedesktop.org/drm/intel/issues/4884
+  [i915#4958]: https://gitlab.freedesktop.org/drm/intel/issues/4958
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5176]: https://gitlab.freedesktop.org/drm/intel/issues/5176
+  [i915#5235]: https://gitlab.freedesktop.org/drm/intel/issues/5235
+  [i915#5286]: https://gitlab.freedesktop.org/drm/intel/issues/5286
+  [i915#5289]: https://gitlab.freedesktop.org/drm/intel/issues/5289
+  [i915#5325]: https://gitlab.freedesktop.org/drm/intel/issues/5325
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#5431]: https://gitlab.freedesktop.org/drm/intel/issues/5431
+  [i915#5563]: https://gitlab.freedesktop.org/drm/intel/issues/5563
+  [i915#5566]: https://gitlab.freedesktop.org/drm/intel/issues/5566
+  [i915#6095]: https://gitlab.freedesktop.org/drm/intel/issues/6095
+  [i915#6268]: https://gitlab.freedesktop.org/drm/intel/issues/6268
+  [i915#6301]: https://gitlab.freedesktop.org/drm/intel/issues/6301
+  [i915#6433]: https://gitlab.freedesktop.org/drm/intel/issues/6433
+  [i915#6524]: https://gitlab.freedesktop.org/drm/intel/issues/6524
+  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
+  [i915#6768]: https://gitlab.freedesktop.org/drm/intel/issues/6768
+  [i915#6946]: https://gitlab.freedesktop.org/drm/intel/issues/6946
+  [i915#6953]: https://gitlab.freedesktop.org/drm/intel/issues/6953
+  [i915#7116]: https://gitlab.freedesktop.org/drm/intel/issues/7116
+  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
+  [i915#7697]: https://gitlab.freedesktop.org/drm/intel/issues/7697
+  [i915#7701]: https://gitlab.freedesktop.org/drm/intel/issues/7701
+  [i915#7711]: https://gitlab.freedesktop.org/drm/intel/issues/7711
+  [i915#7742]: https://gitlab.freedesktop.org/drm/intel/issues/7742
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#79]: https://gitlab.freedesktop.org/drm/intel/issues/79
+  [i915#7975]: https://gitlab.freedesktop.org/drm/intel/issues/7975
+  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
+  [i915#8150]: https://gitlab.freedesktop.org/drm/intel/issues/8150
+  [i915#8228]: https://gitlab.freedesktop.org/drm/intel/issues/8228
+  [i915#8253]: https://gitlab.freedesktop.org/drm/intel/issues/8253
+  [i915#8292]: https://gitlab.freedesktop.org/drm/intel/issues/8292
+  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7266 -> IGTPW_8841
+  * Piglit: piglit_4509 -> None
+
+  CI-20190529: 20190529
+  CI_DRM_13051: 9132bb6d71522dce6724ff23873a397786e6bf92 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8841: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/index.html
+  IGT_7266: 94411dd85f9ad6d76fb7b2097197122703a3914c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/index.html
+
+--===============7332036084231336385==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>scripts/test_list.py: make filtering logic more generic (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116098/">https://patchwork.freedesktop.org/series/116098/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13051_full -&gt; IGTPW_8841_full</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/index.html</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8841_full that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_ctx_persistence@hang:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-snb2/igt@gem_ctx_persistence@hang.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1099">i915#1099</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-pace-share@rcs0:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-glk2/igt@gem_exec_fair@basic-pace-share@rcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-glk8/igt@gem_exec_fair@basic-pace-share@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@allowed-single:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-apl1/igt@gen9_exec_parse@allowed-single.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-apl4/igt@gen9_exec_parse@allowed-single.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5566">i915#5566</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-glk9/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-glk3/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@ac-hdmi-a1-hdmi-a2:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-glk1/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@ac-hdmi-a1-hdmi-a2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-glk1/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@ac-hdmi-a1-hdmi-a2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2122">i915#2122</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@bpc-switch-suspend@pipe-a-dp-1:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-apl7/igt@kms_hdr@bpc-switch-suspend@pipe-a-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-apl2/igt@kms_hdr@bpc-switch-suspend@pipe-a-dp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a-vga-1:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-snb4/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a-vga-1.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +91 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@drm_fdinfo@most-busy-check-all@rcs0:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-rkl-4/igt@drm_fdinfo@most-busy-check-all@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7742">i915#7742</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-rkl-3/igt@drm_fdinfo@most-busy-check-all@rcs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_eio@hibernate:</p>
+<ul>
+<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-tglu-10/igt@gem_eio@hibernate.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7975">i915#7975</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-tglu-7/igt@gem_eio@hibernate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-deadline:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-glk7/igt@gem_exec_fair@basic-deadline.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2846">i915#2846</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-glk9/igt@gem_exec_fair@basic-deadline.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@dpms-mode-unset-non-lpsp:</p>
+<ul>
+<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-dg1-14/igt@i915_pm_rpm@dpms-mode-unset-non-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-dg1-18/igt@i915_pm_rpm@dpms-mode-unset-non-lpsp.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@modeset-non-lpsp-stress:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-rkl-7/igt@i915_pm_rpm@modeset-non-lpsp-stress.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-rkl-4/igt@i915_pm_rpm@modeset-non-lpsp-stress.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-async-flip:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-rkl-7/igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-async-flip.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3743">i915#3743</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-rkl-7/igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-async-flip.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@single-move@pipe-b:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-rkl-7/igt@kms_cursor_legacy@single-move@pipe-b.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8011">i915#8011</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-rkl-6/igt@kms_cursor_legacy@single-move@pipe-b.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_fbcon_fbt@fbc-suspend:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-apl2/igt@kms_fbcon_fbt@fbc-suspend.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4767">i915#4767</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-apl3/igt@kms_fbcon_fbt@fbc-suspend.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-expired-vblank@bc-hdmi-a1-hdmi-a2:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13051/shard-glk2/igt@kms_flip@2x-flip-vs-expired-vblank@bc-hdmi-a1-hdmi-a2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/79">i915#79</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/shard-glk5/igt@kms_flip@2x-flip-vs-expired-vblank@bc-hdmi-a1-hdmi-a2.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7266 -&gt; IGTPW_8841</li>
+<li>Piglit: piglit_4509 -&gt; None</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13051: 9132bb6d71522dce6724ff23873a397786e6bf92 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8841: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8841/index.html<br />
+  IGT_7266: 94411dd85f9ad6d76fb7b2097197122703a3914c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
+
+</body>
+</html>
+
+--===============7332036084231336385==--
 
