@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC5E110E4AE
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 11:27:52 +0000 (UTC)
-Date: Mon, 24 Apr 2023 13:27:47 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230424112747.huli4jjmawuwrz6k@kamilkon-desk1>
-References: <20230424073907.158701-1-zbigniew.kempczynski@intel.com>
- <20230424073907.158701-12-zbigniew.kempczynski@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 948D210E4A6
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 11:38:11 +0000 (UTC)
+Message-ID: <52df5972-846b-1886-80eb-bfb1961bd877@intel.com>
+Date: Mon, 24 Apr 2023 13:38:01 +0200
+Content-Language: pl
+To: "Souza, Jose" <jose.souza@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+References: <20230420191454.497237-1-anna.karas@intel.com>
+ <e45eac2d1c40ed492887d96020d361c179706c6f.camel@intel.com>
+From: "Karas, Anna" <anna.karas@intel.com>
+In-Reply-To: <e45eac2d1c40ed492887d96020d361c179706c6f.camel@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230424073907.158701-12-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 11/11] lib/igt_fb: For xe assume vram
- is used on discrete
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
+Subject: Re: [igt-dev] [RFC 0/2] lib/xe_gpu: Introduce xe_gpu library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,57 +22,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-04-24 at 09:39:07 +0200, Zbigniew Kempczyński wrote:
-> Assume fb bo's were created on vram on discrete, otherwise use system
-> memory.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> ---
->  lib/igt_fb.c | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 7379b99aa8..2c1d48783a 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -2545,6 +2545,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
->  {
->  	struct intel_buf *buf;
->  	uint32_t bo_name, handle, compression;
-> +	uint64_t region;
->  	int num_surfaces;
->  	int i;
->  
-> @@ -2571,12 +2572,15 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
->  	bo_name = gem_flink(fd, fb->gem_handle);
->  	handle = gem_open(fd, bo_name);
->  
-> -	buf = intel_buf_create_using_handle_and_size(bops, handle,
-> -						     fb->width, fb->height,
-> -						     fb->plane_bpp[0], 0,
-> -						     igt_fb_mod_to_tiling(fb->modifier),
-> -						     compression, fb->size,
-> -						     fb->strides[0]);
-> +	/* For i915 region doesn't matter, for xe does */
-> +	region = is_i915_device(fd) ? 0 : vram_if_possible(fd, 0);
-> +	buf = intel_buf_create_full(bops, handle,
-> +				    fb->width, fb->height,
-> +				    fb->plane_bpp[0], 0,
-> +				    igt_fb_mod_to_tiling(fb->modifier),
-> +				    compression, fb->size,
-> +				    fb->strides[0],
-> +				    region);
->  	intel_buf_set_name(buf, name);
->  
->  	/* Make sure we close handle on destroy path */
-> -- 
-> 2.34.1
-> 
+SGkgYWxsLApDQy1pbmcgTWF1cm8sIE1hdHRoZXcgYW5kIFpieXN6ZWsgdG8gdGhpcyB0aHJlYWQg
+KGJ0dy4gc29ycnkgZm9yIHVzaW5nIApAaW50ZWwuY29tIGluc3RlYWQgb2YgQGxpbnV4LmludGVs
+LmNvbSBpbiB0aGUgb3JpZ2luYWwgZW1haWwpCgpAYWxsIC0gZm9sa3MsIGFueSB0aG91Z2h0cyBv
+biBvcGVucz8gOikKCk9uIDIwLjA0LjIwMjMgMjI6MzgsIFNvdXphLCBKb3NlIHdyb3RlOgo+IE9u
+IFRodSwgMjAyMy0wNC0yMCBhdCAyMToxNCArMDIwMCwgQW5uYSBLYXJhcyB3cm90ZToKPj4gT1BF
+TlM6Cj4+IDEuIExhY2sgb2Ygd2VkZ2VkIGNvbmNlcHQgaW4gWEU6IEBNYXR0aGV3IGluZm9ybWVk
+IG1lIHRoYXQgdGhlcmUgaXMgbm8KPj4gaW50ZW50IHRvIGhhdmUgcmVwb3J0aW5nIHdlZGdlZCBk
+ZXZpY2UgaW4gWEUuIEhvd2V2ZXIsIEBKb29uYXMgYmVsaWV2ZXMKPj4gdGhhdCBpdCBtYXkgYmUg
+dXNlZnVsIC0gIml0J3MgdXNlZCBhdCBsZWFzdCBpbiBzcGVjaWZpYyBkaWFnbm9zdGljcyBhbmQK
+Pj4gaGFyZHdhcmUgcmVwYWlyIGZsb3dzIGZvciBQVkMgYW5kIEZMUiBmb3IgYWxsIHBsYXRmb3Jt
+cywgd2hlcmUgd2UKPj4gcHJldmVudCBmdXJ0aGVyIGFjY2Vzc2VzIHRvIHRoZSBoYXJkd2FyZS4g
+U28gYW4gYWx0ZXJuYXRpdmUgbWVjaGFuaXNtIGlzCj4+IG5lZWRlZCBmb3IgdGhvc2UiLiBTaW5j
+ZSB4ZV9yZXF1aXJlX2dwdSgpIGlzIGEgZGlyZWN0IHBvcnQgb2YgaTkxNSdzCj4+IGlndF9yZXF1
+aXJlX2dlbSgpIHN0cmlwcGVkIG9mIHdlZGdlZCBkZXZpY2UgcmVwb3J0aW5nLCB0aGlzIGNvdWxk
+IGJlIGEKPj4gZ29vZCBvcHBvcnR1bml0eSB0byBkaXNjdXNzIHRoaXMuCj4gCj4gSSBndWVzcyB5
+b3UgY291bGQgY3JlYXRlIGEgWGUgZW5naW5lLCBzdWJtaXQgTk9QcyBhbmQgY2hlY2sgZm9yIFhF
+X0VOR0lORV9HRVRfUFJPUEVSVFlfQkFOIHRvIGRldGVjdCBpZiBHUFUgaXMgd2VkZ2VkLgo+IAoK
+QEpvc2UgLSBJdCBzZWVtcyB0aGF0IHRoaXMgbWF5IGhlbHAgaGVyZSwgdGhhbmtzCgpPbiAyMS4w
+NC4yMDIzIDA5OjU2LCBaYmlnbmlldyBLZW1wY3p5xYRza2kgd3JvdGU6CiA+PiAraW50IHhlX3Jl
+b3Blbl9kcml2ZXIoaW50IGZkKQogPj4gK3sKID4+ICsJY2hhciBwYXRoWzI1Nl07CiA+PiArCiA+
+PiArCXNucHJpbnRmKHBhdGgsIHNpemVvZihwYXRoKSwgIi9wcm9jL3NlbGYvZmQvJWQiLCBmZCk7
+CiA+PiArCWZkID0gb3BlbihwYXRoLCBPX1JEV1IpOwogPj4gKwlpZ3RfYXNzZXJ0X2ZkKGZkKTsK
+ID4+ICsKID4+ICsJcmV0dXJuIGZkOwogPj4gK30KID4KID4gT24gcXVpY2sgZmlyc3QgbG9vazoK
+ID4KID4gRHVwbGljYXRlcyBnZW1fcmVvcGVuX2RyaXZlcigpIGNvZGUsIG1heWJlIGp1c3QgcmVw
+bGFjZSAnaTkxNScgdG8gJ2ZkJwogPiB0aGVyZT8KID4KID4gLS0KID4gWmJpZ25pZXcKCkBaYnlz
+emVrIC0gSSBhZ3JlZS4gZ2VtX3Jlb3Blbl9kcml2ZXIoKSBpcyBjdXJyZW50bHkgcGxhY2VkIGlu
+IGxpYi9pOTE1LCAKd291bGQgaXQgYmUgYSBnb29kIGlkZWEgdG8gbW92ZSBpdCAoYXMgImRybV9y
+ZW9wZW5fZHJpdmVyKCkiLCB3aXRoIAonaTkxNScgcmVwbGFjZWQgd2l0aCAnZmQnKSB0byBsaWIv
+ZHJtdGVzdC5jPwoKQW5pYQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KSW50ZWwgVGVjaG5vbG9neSBQb2xhbmQgc3Au
+IHogby5vLgp1bC4gU2xvd2Fja2llZ28gMTczIHwgODAtMjk4IEdkYW5zayB8IFNhZCBSZWpvbm93
+eSBHZGFuc2sgUG9sbm9jIHwgVklJIFd5ZHppYWwgR29zcG9kYXJjenkgS3Jham93ZWdvIFJlamVz
+dHJ1IFNhZG93ZWdvIC0gS1JTIDEwMTg4MiB8IE5JUCA5NTctMDctNTItMzE2IHwgS2FwaXRhbCB6
+YWtsYWRvd3kgMjAwLjAwMCBQTE4uClNwb2xrYSBvc3dpYWRjemEsIHplIHBvc2lhZGEgc3RhdHVz
+IGR1emVnbyBwcnplZHNpZWJpb3JjeSB3IHJvenVtaWVuaXUgdXN0YXd5IHogZG5pYSA4IG1hcmNh
+IDIwMTMgci4gbyBwcnplY2l3ZHppYWxhbml1IG5hZG1pZXJueW0gb3Bvem5pZW5pb20gdyB0cmFu
+c2FrY2phY2ggaGFuZGxvd3ljaC4KClRhIHdpYWRvbW9zYyB3cmF6IHogemFsYWN6bmlrYW1pIGpl
+c3QgcHJ6ZXpuYWN6b25hIGRsYSBva3Jlc2xvbmVnbyBhZHJlc2F0YSBpIG1vemUgemF3aWVyYWMg
+aW5mb3JtYWNqZSBwb3VmbmUuIFcgcmF6aWUgcHJ6eXBhZGtvd2VnbyBvdHJ6eW1hbmlhIHRlaiB3
+aWFkb21vc2NpLCBwcm9zaW15IG8gcG93aWFkb21pZW5pZSBuYWRhd2N5IG9yYXogdHJ3YWxlIGpl
+aiB1c3VuaWVjaWU7IGpha2lla29sd2llayBwcnplZ2xhZGFuaWUgbHViIHJvenBvd3N6ZWNobmlh
+bmllIGplc3QgemFicm9uaW9uZS4KVGhpcyBlLW1haWwgYW5kIGFueSBhdHRhY2htZW50cyBtYXkg
+Y29udGFpbiBjb25maWRlbnRpYWwgbWF0ZXJpYWwgZm9yIHRoZSBzb2xlIHVzZSBvZiB0aGUgaW50
+ZW5kZWQgcmVjaXBpZW50KHMpLiBJZiB5b3UgYXJlIG5vdCB0aGUgaW50ZW5kZWQgcmVjaXBpZW50
+LCBwbGVhc2UgY29udGFjdCB0aGUgc2VuZGVyIGFuZCBkZWxldGUgYWxsIGNvcGllczsgYW55IHJl
+dmlldyBvciBkaXN0cmlidXRpb24gYnkgb3RoZXJzIGlzIHN0cmljdGx5IHByb2hpYml0ZWQuCg==
