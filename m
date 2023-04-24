@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2078.outbound.protection.outlook.com [40.107.243.78])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BF2210E1B9
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 16:46:30 +0000 (UTC)
-Message-ID: <f6acd7c4-ab9c-60f7-4e13-35edadfe96dc@amd.com>
-Date: Mon, 24 Apr 2023 10:46:25 -0600
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D5AC10E12B
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 16:49:55 +0000 (UTC)
+Message-ID: <2e34a61e-4006-1cf7-fd4c-7578413a2e14@amd.com>
+Date: Mon, 24 Apr 2023 10:49:49 -0600
+Content-Language: en-US
 To: Hersen Wu <hersenxs.wu@amd.com>, igt-dev@lists.freedesktop.org,
  aurabindo.pillai@amd.com, alex.hung@amd.com, hamza.mahfooz@amd.com
-References: <20230424141626.78069-1-hersenxs.wu@amd.com>
-Content-Language: en-US
+References: <20230424134845.67398-1-hersenxs.wu@amd.com>
 From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20230424141626.78069-1-hersenxs.wu@amd.com>
+In-Reply-To: <20230424134845.67398-1-hersenxs.wu@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_link_settings: use
- mode 640x480 for link configuration test
+Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_hotplug: add delay
+ after igt_system_suspend_autoresume
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,68 +29,29 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 4/24/23 08:16, Hersen Wu wrote:
-> with 4k dp connected, amdgpu kernel warning mesaage dp_blank timeout
-
-/mesaage/message/
-
-> happens intermittently. link configuration <1, 162> could not support
-
-Do you mean 1.62?
-
-> 4k mode. dp safe mode 640x480@60hz could be used for all link
-
-Is this safe mode defined in the spec?
-
-Also, after set to this safe mode this test stop to be intermittently?
-
-> configuration test.
+On 4/24/23 07:48, Hersen Wu wrote:
+> at call back of igt_system_suspend_autoresume, linux kernel resume
+> finish and in d0 state. but user mode components may not be fully
+> out of sleep mode. add delay wait for system stable before issuing
+> debugfs_hotplug_trigger.
 > 
 > Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
 > ---
->   tests/amdgpu/amd_link_settings.c | 25 ++++++++++++++++++++++++-
->   1 file changed, 24 insertions(+), 1 deletion(-)
+>   tests/amdgpu/amd_hotplug.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> diff --git a/tests/amdgpu/amd_link_settings.c b/tests/amdgpu/amd_link_settings.c
-> index 14c8c4d7..ec5e6fe5 100644
-> --- a/tests/amdgpu/amd_link_settings.c
-> +++ b/tests/amdgpu/amd_link_settings.c
-> @@ -159,6 +159,24 @@ static void run_link_training_config(data_t *data, igt_output_t *output)
+> diff --git a/tests/amdgpu/amd_hotplug.c b/tests/amdgpu/amd_hotplug.c
+> index 736040a2..1c946ff8 100644
+> --- a/tests/amdgpu/amd_hotplug.c
+> +++ b/tests/amdgpu/amd_hotplug.c
+> @@ -133,6 +133,7 @@ static void test_hotplug_basic(data_t *data, bool suspend)
+>   	if (suspend) {
+>   		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+>   					      SUSPEND_TEST_NONE);
+> +		sleep(30);
+
+Do we need to wait all of this time? If so, why?
+
 >   	}
->   }
 >   
-> +static const drmModeModeInfo dp_safe_mode_640_480 = {
-> +	.name		= "640x480",
-> +	.vrefresh	= 60,
-> +	.clock		= 25200,
-> +
-> +	.hdisplay	= 640,
-> +	.hsync_start	= 656,
-> +	.hsync_end	= 752,
-> +	.htotal		= 800,
-> +
-> +	.vdisplay	= 480,
-> +	.vsync_start	= 490,
-> +	.vsync_end	= 492,
-> +	.vtotal		= 525,
-> +
-> +	.flags		= DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
-> +};
-> +
->   static void test_link_training_configs(data_t *data)
->   {
->   	const drmModeModeInfo *orig_mode;
-> @@ -177,7 +195,12 @@ static void test_link_training_configs(data_t *data)
->   		/* Init only if display supports link_settings */
->   		test_init(data, output);
->   
-> -		orig_mode = igt_output_get_mode(output);
-> +		/* run_link_training_config run test from <1, 1.62>
-> +		 * to highest link configuration. to make sure mode timing
-> +		 * be fitted into <1, 1.62> and higher configuration, use
-> +		 * dp safe mode 640x480@60hz
-> +		 */
-> +		orig_mode = &dp_safe_mode_640_480;
->   		igt_assert(orig_mode);
->   		igt_output_override_mode(output, orig_mode);
->   
+>   	/* Trigger hotplug and confirm reference image is the same. */
