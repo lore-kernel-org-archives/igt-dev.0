@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 948D210E4A6
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 11:38:11 +0000 (UTC)
-Message-ID: <52df5972-846b-1886-80eb-bfb1961bd877@intel.com>
-Date: Mon, 24 Apr 2023 13:38:01 +0200
-Content-Language: pl
-To: "Souza, Jose" <jose.souza@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-References: <20230420191454.497237-1-anna.karas@intel.com>
- <e45eac2d1c40ed492887d96020d361c179706c6f.camel@intel.com>
-From: "Karas, Anna" <anna.karas@intel.com>
-In-Reply-To: <e45eac2d1c40ed492887d96020d361c179706c6f.camel@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 532B810E16D
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 11:55:35 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ sai.gowtham.ch@intel.com
+Date: Mon, 24 Apr 2023 17:24:23 +0530
+Message-Id: <20230424115423.28726-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
-Subject: Re: [igt-dev] [RFC 0/2] lib/xe_gpu: Introduce xe_gpu library
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new with
+ Xe.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,49 +23,97 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgYWxsLApDQy1pbmcgTWF1cm8sIE1hdHRoZXcgYW5kIFpieXN6ZWsgdG8gdGhpcyB0aHJlYWQg
-KGJ0dy4gc29ycnkgZm9yIHVzaW5nIApAaW50ZWwuY29tIGluc3RlYWQgb2YgQGxpbnV4LmludGVs
-LmNvbSBpbiB0aGUgb3JpZ2luYWwgZW1haWwpCgpAYWxsIC0gZm9sa3MsIGFueSB0aG91Z2h0cyBv
-biBvcGVucz8gOikKCk9uIDIwLjA0LjIwMjMgMjI6MzgsIFNvdXphLCBKb3NlIHdyb3RlOgo+IE9u
-IFRodSwgMjAyMy0wNC0yMCBhdCAyMToxNCArMDIwMCwgQW5uYSBLYXJhcyB3cm90ZToKPj4gT1BF
-TlM6Cj4+IDEuIExhY2sgb2Ygd2VkZ2VkIGNvbmNlcHQgaW4gWEU6IEBNYXR0aGV3IGluZm9ybWVk
-IG1lIHRoYXQgdGhlcmUgaXMgbm8KPj4gaW50ZW50IHRvIGhhdmUgcmVwb3J0aW5nIHdlZGdlZCBk
-ZXZpY2UgaW4gWEUuIEhvd2V2ZXIsIEBKb29uYXMgYmVsaWV2ZXMKPj4gdGhhdCBpdCBtYXkgYmUg
-dXNlZnVsIC0gIml0J3MgdXNlZCBhdCBsZWFzdCBpbiBzcGVjaWZpYyBkaWFnbm9zdGljcyBhbmQK
-Pj4gaGFyZHdhcmUgcmVwYWlyIGZsb3dzIGZvciBQVkMgYW5kIEZMUiBmb3IgYWxsIHBsYXRmb3Jt
-cywgd2hlcmUgd2UKPj4gcHJldmVudCBmdXJ0aGVyIGFjY2Vzc2VzIHRvIHRoZSBoYXJkd2FyZS4g
-U28gYW4gYWx0ZXJuYXRpdmUgbWVjaGFuaXNtIGlzCj4+IG5lZWRlZCBmb3IgdGhvc2UiLiBTaW5j
-ZSB4ZV9yZXF1aXJlX2dwdSgpIGlzIGEgZGlyZWN0IHBvcnQgb2YgaTkxNSdzCj4+IGlndF9yZXF1
-aXJlX2dlbSgpIHN0cmlwcGVkIG9mIHdlZGdlZCBkZXZpY2UgcmVwb3J0aW5nLCB0aGlzIGNvdWxk
-IGJlIGEKPj4gZ29vZCBvcHBvcnR1bml0eSB0byBkaXNjdXNzIHRoaXMuCj4gCj4gSSBndWVzcyB5
-b3UgY291bGQgY3JlYXRlIGEgWGUgZW5naW5lLCBzdWJtaXQgTk9QcyBhbmQgY2hlY2sgZm9yIFhF
-X0VOR0lORV9HRVRfUFJPUEVSVFlfQkFOIHRvIGRldGVjdCBpZiBHUFUgaXMgd2VkZ2VkLgo+IAoK
-QEpvc2UgLSBJdCBzZWVtcyB0aGF0IHRoaXMgbWF5IGhlbHAgaGVyZSwgdGhhbmtzCgpPbiAyMS4w
-NC4yMDIzIDA5OjU2LCBaYmlnbmlldyBLZW1wY3p5xYRza2kgd3JvdGU6CiA+PiAraW50IHhlX3Jl
-b3Blbl9kcml2ZXIoaW50IGZkKQogPj4gK3sKID4+ICsJY2hhciBwYXRoWzI1Nl07CiA+PiArCiA+
-PiArCXNucHJpbnRmKHBhdGgsIHNpemVvZihwYXRoKSwgIi9wcm9jL3NlbGYvZmQvJWQiLCBmZCk7
-CiA+PiArCWZkID0gb3BlbihwYXRoLCBPX1JEV1IpOwogPj4gKwlpZ3RfYXNzZXJ0X2ZkKGZkKTsK
-ID4+ICsKID4+ICsJcmV0dXJuIGZkOwogPj4gK30KID4KID4gT24gcXVpY2sgZmlyc3QgbG9vazoK
-ID4KID4gRHVwbGljYXRlcyBnZW1fcmVvcGVuX2RyaXZlcigpIGNvZGUsIG1heWJlIGp1c3QgcmVw
-bGFjZSAnaTkxNScgdG8gJ2ZkJwogPiB0aGVyZT8KID4KID4gLS0KID4gWmJpZ25pZXcKCkBaYnlz
-emVrIC0gSSBhZ3JlZS4gZ2VtX3Jlb3Blbl9kcml2ZXIoKSBpcyBjdXJyZW50bHkgcGxhY2VkIGlu
-IGxpYi9pOTE1LCAKd291bGQgaXQgYmUgYSBnb29kIGlkZWEgdG8gbW92ZSBpdCAoYXMgImRybV9y
-ZW9wZW5fZHJpdmVyKCkiLCB3aXRoIAonaTkxNScgcmVwbGFjZWQgd2l0aCAnZmQnKSB0byBsaWIv
-ZHJtdGVzdC5jPwoKQW5pYQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KSW50ZWwgVGVjaG5vbG9neSBQb2xhbmQgc3Au
-IHogby5vLgp1bC4gU2xvd2Fja2llZ28gMTczIHwgODAtMjk4IEdkYW5zayB8IFNhZCBSZWpvbm93
-eSBHZGFuc2sgUG9sbm9jIHwgVklJIFd5ZHppYWwgR29zcG9kYXJjenkgS3Jham93ZWdvIFJlamVz
-dHJ1IFNhZG93ZWdvIC0gS1JTIDEwMTg4MiB8IE5JUCA5NTctMDctNTItMzE2IHwgS2FwaXRhbCB6
-YWtsYWRvd3kgMjAwLjAwMCBQTE4uClNwb2xrYSBvc3dpYWRjemEsIHplIHBvc2lhZGEgc3RhdHVz
-IGR1emVnbyBwcnplZHNpZWJpb3JjeSB3IHJvenVtaWVuaXUgdXN0YXd5IHogZG5pYSA4IG1hcmNh
-IDIwMTMgci4gbyBwcnplY2l3ZHppYWxhbml1IG5hZG1pZXJueW0gb3Bvem5pZW5pb20gdyB0cmFu
-c2FrY2phY2ggaGFuZGxvd3ljaC4KClRhIHdpYWRvbW9zYyB3cmF6IHogemFsYWN6bmlrYW1pIGpl
-c3QgcHJ6ZXpuYWN6b25hIGRsYSBva3Jlc2xvbmVnbyBhZHJlc2F0YSBpIG1vemUgemF3aWVyYWMg
-aW5mb3JtYWNqZSBwb3VmbmUuIFcgcmF6aWUgcHJ6eXBhZGtvd2VnbyBvdHJ6eW1hbmlhIHRlaiB3
-aWFkb21vc2NpLCBwcm9zaW15IG8gcG93aWFkb21pZW5pZSBuYWRhd2N5IG9yYXogdHJ3YWxlIGpl
-aiB1c3VuaWVjaWU7IGpha2lla29sd2llayBwcnplZ2xhZGFuaWUgbHViIHJvenBvd3N6ZWNobmlh
-bmllIGplc3QgemFicm9uaW9uZS4KVGhpcyBlLW1haWwgYW5kIGFueSBhdHRhY2htZW50cyBtYXkg
-Y29udGFpbiBjb25maWRlbnRpYWwgbWF0ZXJpYWwgZm9yIHRoZSBzb2xlIHVzZSBvZiB0aGUgaW50
-ZW5kZWQgcmVjaXBpZW50KHMpLiBJZiB5b3UgYXJlIG5vdCB0aGUgaW50ZW5kZWQgcmVjaXBpZW50
-LCBwbGVhc2UgY29udGFjdCB0aGUgc2VuZGVyIGFuZCBkZWxldGUgYWxsIGNvcGllczsgYW55IHJl
-dmlldyBvciBkaXN0cmlidXRpb24gYnkgb3RoZXJzIGlzIHN0cmljdGx5IHByb2hpYml0ZWQuCg==
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+
+Extending the spin_create implementation and allocator handle support in xe,
+where it submits dummy work loads to engine. This Implementation is wrapped
+around vm_bind and unbind as we are supposed to do it manually for xe.
+
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+---
+ lib/xe/xe_spin.c | 39 +++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_spin.h |  9 +++++++++
+ 2 files changed, 48 insertions(+)
+
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 856d0ba2..e0629419 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -82,6 +82,45 @@ void xe_spin_end(struct xe_spin *spin)
+ 	spin->end = 0;
+ }
+ 
++void xe_spin_new(int fd, struct xe_spin *spin, struct drm_xe_engine_class_instance *eci)
++{
++	size_t bo_size = xe_get_default_alignment(fd);
++	uint32_t syncobj;
++	uint64_t ahnd = spin->ahnd, addr;
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++
++	spin->vm = xe_vm_create(fd, 0, 0);
++	spin->bo = xe_bo_create(fd, eci->gt_id, spin->vm, bo_size);
++	spin->engine = xe_engine_create(fd, spin->vm, eci, 0);
++	syncobj = syncobj_create(fd, 0);
++
++	if (ahnd)
++		addr = intel_allocator_alloc_with_strategy(ahnd, spin->bo, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
++
++	xe_vm_bind_sync(fd, spin->vm, spin->bo, 0, addr, bo_size);
++
++	xe_spin_init(spin, addr, true);
++	exec.engine_id = spin->engine;
++	exec.address = addr;
++	sync.handle = syncobj;
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
++
++}
++
++void xe_spin_free(struct xe_spin *spin)
++{
++	xe_engine_destroy(spin->fd, spin->engine);
++	xe_vm_destroy(spin->fd, spin->vm);
++	gem_close(spin->fd, spin->bo);
++}
+ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+ 		  struct xe_cork *cork)
+ {
+diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+index 73f9a026..12116445 100644
+--- a/lib/xe/xe_spin.h
++++ b/lib/xe/xe_spin.h
+@@ -17,15 +17,24 @@
+ /* Mapped GPU object */
+ struct xe_spin {
+ 	uint32_t batch[16];
++	int fd;
+ 	uint64_t pad;
+ 	uint32_t start;
+ 	uint32_t end;
++	uint64_t ahnd;
++	uint32_t engine;
++	uint32_t vm;
++	uint32_t bo;
++
+ };
+ 
+ void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
+ bool xe_spin_started(struct xe_spin *spin);
+ void xe_spin_wait_started(struct xe_spin *spin);
+ void xe_spin_end(struct xe_spin *spin);
++void xe_spin_new(int fd, struct xe_spin *spin,
++		struct drm_xe_engine_class_instance *hwe);
++void xe_spin_free(struct xe_spin *spin);
+ 
+ struct xe_cork {
+ 	struct xe_spin *spin;
+-- 
+2.39.1
