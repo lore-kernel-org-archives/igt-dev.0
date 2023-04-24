@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E51910E2FC
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 08:08:46 +0000 (UTC)
-Message-ID: <2a6e50ce-9be8-3c54-9bbf-3ec7958d2f43@intel.com>
-Date: Mon, 24 Apr 2023 13:38:30 +0530
-MIME-Version: 1.0
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8052F10E2F2
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 08:13:26 +0000 (UTC)
+Message-ID: <800c831c-8a60-95f3-2b14-d9383f32a806@intel.com>
+Date: Mon, 24 Apr 2023 13:43:06 +0530
 Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230418164501.1687266-28-bhanuprakash.modem@intel.com>
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20230418164501.1687266-28-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t,27/45] tests/kms_concurrent: Add XE support
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230418164501.1687266-27-bhanuprakash.modem@intel.com>
+ <347cb1aa-8064-a50e-72a2-b48bde93751d@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <347cb1aa-8064-a50e-72a2-b48bde93751d@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t,26/45] tests/color: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,15 +25,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 4/18/2023 10:14 PM, Bhanuprakash Modem wrote:
+Hi Kunal,
 
-> Add XE driver support for kms tests.
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_concurrent.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+On Mon-24-04-2023 01:30 pm, Joshi, Kunal1 wrote:
+> 
+> On 4/18/2023 10:14 PM, Bhanuprakash Modem wrote:
+>> Add XE driver support for kms tests.
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   tests/chamelium/kms_chamelium_color.c |  2 +-
+>>   tests/kms_color.c                     | 10 +++++-----
+>>   tests/kms_color_helper.c              |  2 +-
+>>   3 files changed, 7 insertions(+), 7 deletions(-)
+>>
+> Function i915_pipe_output_combo_valid in tests/kms_color_helper.c should 
+> be renamed to intel_pipe_output_combo_valid
+> Please ignore if already part of other series
 
-LGTM
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+This renaming task is not included in any series. Will plan after 
+merging this XE series.
 
+- Bhanu
+
+> 
+> Failures seen on newer platforms are expected due to pipe rounding issue
+> LGTM
+> Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
