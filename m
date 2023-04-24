@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B28F10E46D
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 10:06:08 +0000 (UTC)
-Message-ID: <ba290244-869c-c75a-f125-505cf18227a7@intel.com>
-Date: Mon, 24 Apr 2023 15:35:50 +0530
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230418164501.1687266-1-bhanuprakash.modem@intel.com>
- <20230421164347.lkxhv3mmu7hbxtt3@kamilkon-desk1>
- <ebb89173-c2a0-d06b-0cbb-63e649343a9f@intel.com>
- <20230424094551.ae7f5aif533najq4@kamilkon-desk1>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230424094551.ae7f5aif533najq4@kamilkon-desk1>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============8954275213346532831=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 00/45] Add IGT display support for XE
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
+Date: Mon, 24 Apr 2023 15:37:03 -0000
+Message-ID: <168235062363.1234.14952716115694615089@emeril.freedesktop.org>
+References: <20230424133054.59629-1-hersenxs.wu@amd.com>
+In-Reply-To: <20230424133054.59629-1-hersenxs.wu@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?amdgpu/amd=5Fmem=5Fleak=3A_add_delay_after_igt=5Fsystem=5Fsuspe?=
+ =?utf-8?q?nd=5Fautoresume?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,143 +18,222 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
+--===============8954275213346532831==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Mon-24-04-2023 03:15 pm, Kamil Konieczny wrote:
-> Hi Bhanuprakash,
-> 
-> On 2023-04-24 at 10:51:46 +0530, Modem, Bhanuprakash wrote:
->> Hi Kamil,
->>
->> On Fri-21-04-2023 10:13 pm, Kamil Konieczny wrote:
->>> Hi Bhanuprakash,
->>>
->>> On 2023-04-18 at 22:14:16 +0530, Bhanuprakash Modem wrote:
->>>> Add IGT support to work kms tests on XE driver.
->>>>
->>>> TODO: Spin, BUSY & HANG related tests.
->>>>
->>>> Bhanuprakash Modem (35):
->>>>     lib: Use i915 namespace for XE debugfs
->>>>     lib/igt_fb: Add copy engine support for XE
->>>>     lib/igt_draw: Add gpu draw routine support for XE
->>>>     tests/i915/kms_big_fb: Add XE support
->>>>     tests/i915/kms_big_joiner: Add XE support
-> 
-> [...]
-> 
->>>>    lib/xe/xe_query.c                           |   45 +
->>>>    lib/xe/xe_query.h                           |    3 +-
->>>>    tests/chamelium/kms_chamelium_color.c       |    2 +-
->>>>    tests/i915/gem_caching.c                    |    4 +-
->>>>    tests/i915/gem_pxp.c                        |    2 +-
->>>>    tests/intel-ci/xe-fast-feedback.testlist    |   50 +
->>>>    tests/{i915 => intel}/kms_big_fb.c          |   75 +-
->>>>    tests/{i915 => intel}/kms_big_joiner.c      |    2 +-
->>>>    tests/{i915 => intel}/kms_cdclk.c           |    5 +-
->>>>    tests/{i915 => intel}/kms_draw_crc.c        |   24 +-
->>>>    tests/{i915 => intel}/kms_dsc.c             |    2 +-
->>>>    tests/{i915 => intel}/kms_dsc_helper.c      |    0
->>>>    tests/{i915 => intel}/kms_dsc_helper.h      |    0
->>>>    tests/{i915 => intel}/kms_flip_scaled_crc.c |    8 +-
->>>>    tests/{i915 => intel}/kms_flip_tiling.c     |    8 +-
->>>>    tests/{i915 => intel}/kms_mmap_write_crc.c  |    4 +-
->>>>    tests/{i915 => intel}/kms_psr.c             |   40 +-
->>>>    tests/{i915 => intel}/kms_psr2_sf.c         |    2 +-
->>>>    tests/{i915 => intel}/kms_psr2_su.c         |    2 +-
->>>>    tests/{i915 => intel}/kms_psr_stress_test.c |    2 +-
->>> --------- ^^^^^^^^^^^^^
->>> Do we really need to move them ? If yes, I would prefer
->>> to see that in separate patch with cc to CI.
->>
->> Yes, I would prefer to move these tests to new dir because these kms tests
->> supports both i915 & XE. Currently, dir tests/i915/ contains only i915
->> specific tests, similarly tests/xe/ contains XE specific.
-> 
-> Ok. The only thing to avoid would be moving them back and forth
-> between folders xe/ and i915/
-> My main point is to do this movement in separate patchset.
+== Series Details ==
 
-Here is the new patch: https://patchwork.freedesktop.org/series/116874/
+Series: tests/amdgpu/amd_mem_leak: add delay after igt_system_suspend_autoresume
+URL   : https://patchwork.freedesktop.org/series/116889/
+State : failure
 
-> 
->>
->> Else we can have a new dir structure as below:
->> tests/intel/i915/*.c: i915 specific tests.
->> tests/intel/xe/*.c: XE specific tests.
->> tests/intel/*.c: Tests supports both i915 & XE.
-> 
-> Looks bad, too many folders.
+== Summary ==
 
-Yeah, but this approach will make intel specific tests well organized.
+CI Bug Log - changes from CI_DRM_13054 -> IGTPW_8846
+====================================================
 
-- Bhanu
+Summary
+-------
 
-> 
->>
->> Also, why do we need to include CI folks? We are just moving tests to
->> different dir, and binaries location is still unchanged (<build
->> dir>/tests/).
->>
->> - Bhanu
-> 
-> You are right, I forgot we put all execs in build/tests/
-> 
-> Regards,
-> Kamil
-> 
->>
->>>
->>> Regards,
->>> Kamil
->>>
->>>>    tests/kms_3d.c                              |    8 +
->>>>    tests/kms_async_flips.c                     |    8 +-
->>>>    tests/kms_atomic_transition.c               |    8 +-
->>>>    tests/kms_color.c                           |   10 +-
->>>>    tests/kms_color_helper.c                    |    2 +-
->>>>    tests/kms_concurrent.c                      |    4 +-
->>>>    tests/kms_content_protection.c              |   12 +-
->>>>    tests/kms_cursor_crc.c                      |    4 +-
->>>>    tests/kms_cursor_legacy.c                   |    4 +-
->>>>    tests/kms_flip.c                            |   32 +-
->>>>    tests/kms_flip_event_leak.c                 |    5 +
->>>>    tests/kms_getfb.c                           |   22 +-
->>>>    tests/kms_hdmi_inject.c                     |   10 +-
->>>>    tests/kms_hdr.c                             |    8 +-
->>>>    tests/kms_panel_fitting.c                   |   12 +-
->>>>    tests/kms_plane.c                           |   19 +-
->>>>    tests/kms_plane_lowres.c                    |    9 +-
->>>>    tests/kms_plane_scaling.c                   |   41 +-
->>>>    tests/kms_prime.c                           |  241 +++-
->>>>    tests/kms_rotation_crc.c                    |   25 +-
->>>>    tests/kms_setmode.c                         |    7 +
->>>>    tests/kms_universal_plane.c                 |   15 +-
->>>>    tests/meson.build                           |   39 +-
->>>>    tests/xe/xe_gpgpu_fill.c                    |  133 +++
->>>>    tests/xe/xe_intel_bb.c                      | 1181 +++++++++++++++++++
->>>>    60 files changed, 2513 insertions(+), 352 deletions(-)
->>>>    rename tests/{i915 => intel}/kms_big_fb.c (92%)
->>>>    rename tests/{i915 => intel}/kms_big_joiner.c (99%)
->>>>    rename tests/{i915 => intel}/kms_cdclk.c (98%)
->>>>    rename tests/{i915 => intel}/kms_draw_crc.c (92%)
->>>>    rename tests/{i915 => intel}/kms_dsc.c (99%)
->>>>    rename tests/{i915 => intel}/kms_dsc_helper.c (100%)
->>>>    rename tests/{i915 => intel}/kms_dsc_helper.h (100%)
->>>>    rename tests/{i915 => intel}/kms_flip_scaled_crc.c (98%)
->>>>    rename tests/{i915 => intel}/kms_flip_tiling.c (96%)
->>>>    rename tests/{i915 => intel}/kms_mmap_write_crc.c (98%)
->>>>    rename tests/{i915 => intel}/kms_psr.c (93%)
->>>>    rename tests/{i915 => intel}/kms_psr2_sf.c (99%)
->>>>    rename tests/{i915 => intel}/kms_psr2_su.c (99%)
->>>>    rename tests/{i915 => intel}/kms_psr_stress_test.c (99%)
->>>>    create mode 100644 tests/xe/xe_gpgpu_fill.c
->>>>    create mode 100644 tests/xe/xe_intel_bb.c
->>>>
->>>> --
->>>> 2.40.0
->>>>
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8846 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8846, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/index.html
+
+Participating hosts (38 -> 37)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8846:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-cfl-8700k:       [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13054/fi-cfl-8700k/igt@i915_suspend@basic-s3-without-i915.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/fi-cfl-8700k/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8846 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - bat-rpls-1:         NOTRUN -> [ABORT][3] ([i915#6687] / [i915#7978])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg1-5:          [PASS][4] -> [FAIL][5] ([i915#8308])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13054/bat-dg1-5/igt@i915_pm_rps@basic-api.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/bat-dg1-5/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         NOTRUN -> [DMESG-FAIL][6] ([i915#6367])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@migrate:
+    - bat-adlp-6:         [DMESG-FAIL][7] ([i915#7699]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13054/bat-adlp-6/igt@i915_selftest@live@migrate.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/bat-adlp-6/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [ABORT][9] ([i915#4983] / [i915#7911]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13054/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7266 -> IGTPW_8846
+
+  CI-20190529: 20190529
+  CI_DRM_13054: 8cabe2adb8e028197f9535daffd3d5ff98d51d8b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8846: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/index.html
+  IGT_7266: 94411dd85f9ad6d76fb7b2097197122703a3914c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/index.html
+
+--===============8954275213346532831==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_mem_leak: add delay after igt_system_suspend_autoresume</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116889/">https://patchwork.freedesktop.org/series/116889/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13054 -&gt; IGTPW_8846</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8846 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8846, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8846:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_suspend@basic-s3-without-i915:<ul>
+<li>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13054/fi-cfl-8700k/igt@i915_suspend@basic-s3-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/fi-cfl-8700k/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8846 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13054/bat-dg1-5/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/bat-dg1-5/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13054/bat-adlp-6/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/bat-adlp-6/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13054/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7266 -&gt; IGTPW_8846</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13054: 8cabe2adb8e028197f9535daffd3d5ff98d51d8b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8846: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8846/index.html<br />
+  IGT_7266: 94411dd85f9ad6d76fb7b2097197122703a3914c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8954275213346532831==--
