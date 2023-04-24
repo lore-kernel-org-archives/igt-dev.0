@@ -1,24 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2055.outbound.protection.outlook.com [40.107.93.55])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 496C110E1D2
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 19:08:59 +0000 (UTC)
-From: "Wu, Hersen" <hersenxs.wu@amd.com>
-To: "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pillai,
- Aurabindo" <Aurabindo.Pillai@amd.com>, "Hung, Alex" <Alex.Hung@amd.com>,
- "Mahfooz, Hamza" <Hamza.Mahfooz@amd.com>
-Date: Mon, 24 Apr 2023 19:08:56 +0000
-Message-ID: <PH8PR12MB69623EC89FF9C4204B38BE7CFD679@PH8PR12MB6962.namprd12.prod.outlook.com>
-References: <20230424141626.78069-1-hersenxs.wu@amd.com>
- <f6acd7c4-ab9c-60f7-4e13-35edadfe96dc@amd.com>
-In-Reply-To: <f6acd7c4-ab9c-60f7-4e13-35edadfe96dc@amd.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B5B210E5D9
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Apr 2023 19:15:19 +0000 (UTC)
+Date: Mon, 24 Apr 2023 22:15:14 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: "Wu, Hersen" <hersenxs.wu@amd.com>
+Message-ID: <ZEbVQmgEpx2PMSIj@intel.com>
+References: <20230424134845.67398-1-hersenxs.wu@amd.com>
+ <2e34a61e-4006-1cf7-fd4c-7578413a2e14@amd.com>
+ <PH8PR12MB69628ACAD108D765A888BBFBFD679@PH8PR12MB6962.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_link_settings: use
- mode 640x480 for link configuration test
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PH8PR12MB69628ACAD108D765A888BBFBFD679@PH8PR12MB6962.namprd12.prod.outlook.com>
+Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_hotplug: add delay
+ after igt_system_suspend_autoresume
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,55 +23,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Mahfooz,
+ Hamza" <Hamza.Mahfooz@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEdlbmVyYWxdDQoNClJlcGx5IGluLWxpbmUuDQoNCi0t
-LS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBTaXF1ZWlyYSwgUm9kcmlnbyA8Um9kcmln
-by5TaXF1ZWlyYUBhbWQuY29tPiANClNlbnQ6IE1vbmRheSwgQXByaWwgMjQsIDIwMjMgMTI6NDYg
-UE0NClRvOiBXdSwgSGVyc2VuIDxoZXJzZW54cy53dUBhbWQuY29tPjsgaWd0LWRldkBsaXN0cy5m
-cmVlZGVza3RvcC5vcmc7IFBpbGxhaSwgQXVyYWJpbmRvIDxBdXJhYmluZG8uUGlsbGFpQGFtZC5j
-b20+OyBIdW5nLCBBbGV4IDxBbGV4Lkh1bmdAYW1kLmNvbT47IE1haGZvb3osIEhhbXphIDxIYW16
-YS5NYWhmb296QGFtZC5jb20+DQpTdWJqZWN0OiBSZTogW1BBVENIXSBbaS1nLXRdIHRlc3RzL2Ft
-ZGdwdS9hbWRfbGlua19zZXR0aW5nczogdXNlIG1vZGUgNjQweDQ4MCBmb3IgbGluayBjb25maWd1
-cmF0aW9uIHRlc3QNCg0KDQoNCk9uIDQvMjQvMjMgMDg6MTYsIEhlcnNlbiBXdSB3cm90ZToNCj4g
-d2l0aCA0ayBkcCBjb25uZWN0ZWQsIGFtZGdwdSBrZXJuZWwgd2FybmluZyBtZXNhYWdlIGRwX2Js
-YW5rIHRpbWVvdXQNCg0KL21lc2FhZ2UvbWVzc2FnZS8NCg0KPiBoYXBwZW5zIGludGVybWl0dGVu
-dGx5LiBsaW5rIGNvbmZpZ3VyYXRpb24gPDEsIDE2Mj4gY291bGQgbm90IHN1cHBvcnQNCg0KRG8g
-eW91IG1lYW4gMS42Mj8NCg0KW0hlcnNlbl0gdHlwb3MuIEZpeCBpbiByZXZpZXcgdmVyc2lvbjIu
-DQoNCj4gNGsgbW9kZS4gZHAgc2FmZSBtb2RlIDY0MHg0ODBANjBoeiBjb3VsZCBiZSB1c2VkIGZv
-ciBhbGwgbGluaw0KDQpJcyB0aGlzIHNhZmUgbW9kZSBkZWZpbmVkIGluIHRoZSBzcGVjPw0KDQpb
-SGVyc2VuXSBEUCBzYWZlIG1vZGUgaXMgZGVmaW5lZCB3aXRoaW4gRFAgc3BlY2lmaWNhdGlvbiBh
-bmQgRFAgTGluayBMYXllciBDb21wbGlhbmNlIFRlc3QgU3BlY2lmaWNhdGlvbi4NCg0KQWxzbywg
-YWZ0ZXIgc2V0IHRvIHRoaXMgc2FmZSBtb2RlIHRoaXMgdGVzdCBzdG9wIHRvIGJlIGludGVybWl0
-dGVudGx5Pw0KDQp7SGVyc2VuXSBSdW4gMzAgbG9vcHMgb2YgdGVzdCwgdGhlIGlzc3VlIGNvdWxk
-IG5vdCBiZSByZXByb2R1Y2VkLg0KDQoNCj4gY29uZmlndXJhdGlvbiB0ZXN0Lg0KPiANCj4gU2ln
-bmVkLW9mZi1ieTogSGVyc2VuIFd1IDxoZXJzZW54cy53dUBhbWQuY29tPg0KPiAtLS0NCj4gICB0
-ZXN0cy9hbWRncHUvYW1kX2xpbmtfc2V0dGluZ3MuYyB8IDI1ICsrKysrKysrKysrKysrKysrKysr
-KysrKy0NCj4gICAxIGZpbGUgY2hhbmdlZCwgMjQgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigt
-KQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2FtZGdwdS9hbWRfbGlua19zZXR0aW5ncy5jIGIv
-dGVzdHMvYW1kZ3B1L2FtZF9saW5rX3NldHRpbmdzLmMNCj4gaW5kZXggMTRjOGM0ZDcuLmVjNWU2
-ZmU1IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9hbWRncHUvYW1kX2xpbmtfc2V0dGluZ3MuYw0KPiAr
-KysgYi90ZXN0cy9hbWRncHUvYW1kX2xpbmtfc2V0dGluZ3MuYw0KPiBAQCAtMTU5LDYgKzE1OSwy
-NCBAQCBzdGF0aWMgdm9pZCBydW5fbGlua190cmFpbmluZ19jb25maWcoZGF0YV90ICpkYXRhLCBp
-Z3Rfb3V0cHV0X3QgKm91dHB1dCkNCj4gICAJfQ0KPiAgIH0NCj4gICANCj4gK3N0YXRpYyBjb25z
-dCBkcm1Nb2RlTW9kZUluZm8gZHBfc2FmZV9tb2RlXzY0MF80ODAgPSB7DQo+ICsJLm5hbWUJCT0g
-IjY0MHg0ODAiLA0KPiArCS52cmVmcmVzaAk9IDYwLA0KPiArCS5jbG9jawkJPSAyNTIwMCwNCj4g
-Kw0KPiArCS5oZGlzcGxheQk9IDY0MCwNCj4gKwkuaHN5bmNfc3RhcnQJPSA2NTYsDQo+ICsJLmhz
-eW5jX2VuZAk9IDc1MiwNCj4gKwkuaHRvdGFsCQk9IDgwMCwNCj4gKw0KPiArCS52ZGlzcGxheQk9
-IDQ4MCwNCj4gKwkudnN5bmNfc3RhcnQJPSA0OTAsDQo+ICsJLnZzeW5jX2VuZAk9IDQ5MiwNCj4g
-KwkudnRvdGFsCQk9IDUyNSwNCj4gKw0KPiArCS5mbGFncwkJPSBEUk1fTU9ERV9GTEFHX05IU1lO
-QyB8IERSTV9NT0RFX0ZMQUdfTlZTWU5DLA0KPiArfTsNCj4gKw0KPiAgIHN0YXRpYyB2b2lkIHRl
-c3RfbGlua190cmFpbmluZ19jb25maWdzKGRhdGFfdCAqZGF0YSkNCj4gICB7DQo+ICAgCWNvbnN0
-IGRybU1vZGVNb2RlSW5mbyAqb3JpZ19tb2RlOw0KPiBAQCAtMTc3LDcgKzE5NSwxMiBAQCBzdGF0
-aWMgdm9pZCB0ZXN0X2xpbmtfdHJhaW5pbmdfY29uZmlncyhkYXRhX3QgKmRhdGEpDQo+ICAgCQkv
-KiBJbml0IG9ubHkgaWYgZGlzcGxheSBzdXBwb3J0cyBsaW5rX3NldHRpbmdzICovDQo+ICAgCQl0
-ZXN0X2luaXQoZGF0YSwgb3V0cHV0KTsNCj4gICANCj4gLQkJb3JpZ19tb2RlID0gaWd0X291dHB1
-dF9nZXRfbW9kZShvdXRwdXQpOw0KPiArCQkvKiBydW5fbGlua190cmFpbmluZ19jb25maWcgcnVu
-IHRlc3QgZnJvbSA8MSwgMS42Mj4NCj4gKwkJICogdG8gaGlnaGVzdCBsaW5rIGNvbmZpZ3VyYXRp
-b24uIHRvIG1ha2Ugc3VyZSBtb2RlIHRpbWluZw0KPiArCQkgKiBiZSBmaXR0ZWQgaW50byA8MSwg
-MS42Mj4gYW5kIGhpZ2hlciBjb25maWd1cmF0aW9uLCB1c2UNCj4gKwkJICogZHAgc2FmZSBtb2Rl
-IDY0MHg0ODBANjBoeg0KPiArCQkgKi8NCj4gKwkJb3JpZ19tb2RlID0gJmRwX3NhZmVfbW9kZV82
-NDBfNDgwOw0KPiAgIAkJaWd0X2Fzc2VydChvcmlnX21vZGUpOw0KPiAgIAkJaWd0X291dHB1dF9v
-dmVycmlkZV9tb2RlKG91dHB1dCwgb3JpZ19tb2RlKTsNCj4gICANCg==
+On Mon, Apr 24, 2023 at 07:02:04PM +0000, Wu, Hersen wrote:
+> [AMD Official Use Only - General]
+> 
+> After igt_system_suspend_autoresume is executed, Linux kernel should be out of sleep mode.
+> By adding read power_state from /sys/class/drm/card0/device# cat power_state. Value is D0.
+> This is already checked by reading amdgpu adev->in_suspend, value is false.
+> 
+> Some other components may not finish process for resume.
+> 
+> When batch run test case below,
+> 
+> igt@amdgpu/amd_hotplug@basic-suspend
+> igt@amdgpu/amd_link_settings@link-training-configs
+> igt@amdgpu/amd_mem_leak@connector-suspend-resume
+> 
+> 
+> igt@amdgpu/amd_hotplug@basic-suspend is executed, but the rest two test case are skipped.
+> 
+> I do not find method to check if all SW components are out of resume processing. The delay 30 seconds is safe value based on experiments.
+
+There is no such suspend processing. The kernel just freezed/thaws
+userspace as a whole. Once the igt is running so is rest of userspace.
+
+> AMD IGT test list are executed 15 loops.
+> 
+> With delay 15 seconds, intermittent failure could still be captured.
+> 
+> Thanks!
+> Hersen
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> -----Original Message-----
+> From: Siqueira, Rodrigo <Rodrigo.Siqueira@amd.com> 
+> Sent: Monday, April 24, 2023 12:50 PM
+> To: Wu, Hersen <hersenxs.wu@amd.com>; igt-dev@lists.freedesktop.org; Pillai, Aurabindo <Aurabindo.Pillai@amd.com>; Hung, Alex <Alex.Hung@amd.com>; Mahfooz, Hamza <Hamza.Mahfooz@amd.com>
+> Subject: Re: [PATCH] [i-g-t] tests/amdgpu/amd_hotplug: add delay after igt_system_suspend_autoresume
+> 
+> 
+> 
+> On 4/24/23 07:48, Hersen Wu wrote:
+> > at call back of igt_system_suspend_autoresume, linux kernel resume 
+> > finish and in d0 state. but user mode components may not be fully out 
+> > of sleep mode. add delay wait for system stable before issuing 
+> > debugfs_hotplug_trigger.
+> > 
+> > Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+> > ---
+> >   tests/amdgpu/amd_hotplug.c | 1 +
+> >   1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/tests/amdgpu/amd_hotplug.c b/tests/amdgpu/amd_hotplug.c 
+> > index 736040a2..1c946ff8 100644
+> > --- a/tests/amdgpu/amd_hotplug.c
+> > +++ b/tests/amdgpu/amd_hotplug.c
+> > @@ -133,6 +133,7 @@ static void test_hotplug_basic(data_t *data, bool suspend)
+> >   	if (suspend) {
+> >   		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> >   					      SUSPEND_TEST_NONE);
+> > +		sleep(30);
+> 
+> Do we need to wait all of this time? If so, why?
+> 
+> >   	}
+> >   
+> >   	/* Trigger hotplug and confirm reference image is the same. */
+
+-- 
+Ville Syrjälä
+Intel
