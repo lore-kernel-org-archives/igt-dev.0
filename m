@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============6692601154518853974=="
+ boundary="===============8085969231960698674=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 25 Apr 2023 21:54:24 -0000
-Message-ID: <168245966406.25939.9541411991403016983@emeril.freedesktop.org>
-References: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgSW50ZWdy?=
- =?utf-8?q?ate_intel-bb_with_Xe_=28rev8=29?=
+To: john.c.harrison@intel.com
+Date: Tue, 25 Apr 2023 22:25:33 -0000
+Message-ID: <168246153386.25940.659316741592497940@emeril.freedesktop.org>
+References: <20230425201926.99086-1-John.C.Harrison@Intel.com>
+In-Reply-To: <20230425201926.99086-1-John.C.Harrison@Intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgVXBkYXRl?=
+ =?utf-8?q?_intel=5Ferror=5Fdecode_for_Gen12?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6692601154518853974==
+--===============8085969231960698674==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Integrate intel-bb with Xe (rev8)
-URL   : https://patchwork.freedesktop.org/series/116578/
+Series: Update intel_error_decode for Gen12
+URL   : https://patchwork.freedesktop.org/series/116948/
 State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_7271 -> IGTPW_8861
+CI Bug Log - changes from IGT_7271 -> IGTPW_8862
 ====================================================
 
 Summary
@@ -44,44 +44,44 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with IGTPW_8861 absolutely need to be
+  Serious unknown changes coming with IGTPW_8862 absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8861, please notify your bug team to allow them
+  introduced in IGTPW_8862, please notify your bug team to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/index.html
 
 Participating hosts (39 -> 37)
 ------------------------------
 
-  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+  Missing    (2): bat-mtlp-8 fi-snb-2520m 
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_8861:
+  Here are the unknown changes that may have been introduced in IGTPW_8862:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-rpls-1:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-
   * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [PASS][3] -> [FAIL][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+    - fi-apl-guc:         [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [PASS][3] -> [ABORT][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/bat-rpls-1/igt@i915_selftest@live@requests.html
 
   
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_8861 that come from known issues:
+  Here are the changes found in IGTPW_8862 that come from known issues:
 
 ### IGT changes ###
 
@@ -90,34 +90,34 @@ Known issues
   * igt@i915_pm_rps@basic-api:
     - bat-dg2-11:         [PASS][5] -> [FAIL][6] ([i915#8308])
    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_pm_rps@basic-api.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/bat-dg2-11/igt@i915_pm_rps@basic-api.html
 
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-adln-1:         [PASS][7] -> [INCOMPLETE][8] ([i915#7609])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-adln-1/igt@i915_selftest@live@gt_lrc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-adln-1/igt@i915_selftest@live@gt_lrc.html
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - fi-tgl-1115g4:      [PASS][7] -> [ABORT][8] ([i915#8213])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/fi-tgl-1115g4/igt@i915_suspend@basic-s2idle-without-i915.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/fi-tgl-1115g4/igt@i915_suspend@basic-s2idle-without-i915.html
 
   * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:
     - bat-dg2-8:          [PASS][9] -> [FAIL][10] ([i915#7932])
    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - bat-adlp-9:         NOTRUN -> [SKIP][11] ([i915#3546]) +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html
 
   
 #### Possible fixes ####
 
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-1:         [FAIL][11] -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
   * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
-    - bat-dg2-8:          [FAIL][13] ([i915#7932]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+    - bat-dg2-8:          [FAIL][12] ([i915#7932]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
 
   
-  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
   [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#8213]: https://gitlab.freedesktop.org/drm/intel/issues/8213
   [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
 
 
@@ -125,43 +125,42 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_7271 -> IGTPW_8861
+  * IGT: IGT_7271 -> IGTPW_8862
 
   CI-20190529: 20190529
   CI_DRM_13062: 5a0333cf630a335d7e8f60fd2b8526ed0895900c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8861: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/index.html
+  IGTPW_8862: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/index.html
   IGT_7271: d12d7eb92226e14745a80e6bdd95384913a43548 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 
 Testlist changes
 ----------------
 
-+igt@xe_gpgpu_fill@basic
-+igt@xe_intel_bb@add-remove-objects
-+igt@xe_intel_bb@bb-with-allocator
-+igt@xe_intel_bb@blit-reloc
-+igt@xe_intel_bb@blit-simple
-+igt@xe_intel_bb@create-in-region
-+igt@xe_intel_bb@delta-check
-+igt@xe_intel_bb@destroy-bb
-+igt@xe_intel_bb@full-batch
-+igt@xe_intel_bb@intel-bb-blit-none
-+igt@xe_intel_bb@intel-bb-blit-x
-+igt@xe_intel_bb@intel-bb-blit-y
-+igt@xe_intel_bb@lot-of-buffers
-+igt@xe_intel_bb@offset-control
-+igt@xe_intel_bb@purge-bb
-+igt@xe_intel_bb@render
-+igt@xe_intel_bb@reset-bb
-+igt@xe_intel_bb@simple-bb
-+igt@xe_intel_bb@simple-bb-ctx
--igt@xe_query@query-invalid-extension
+-igt@xe_gpgpu_fill@basic
+-igt@xe_intel_bb@add-remove-objects
+-igt@xe_intel_bb@bb-with-allocator
+-igt@xe_intel_bb@blit-reloc
+-igt@xe_intel_bb@blit-simple
+-igt@xe_intel_bb@create-in-region
+-igt@xe_intel_bb@delta-check
+-igt@xe_intel_bb@destroy-bb
+-igt@xe_intel_bb@full-batch
+-igt@xe_intel_bb@intel-bb-blit-none
+-igt@xe_intel_bb@intel-bb-blit-x
+-igt@xe_intel_bb@intel-bb-blit-y
+-igt@xe_intel_bb@lot-of-buffers
+-igt@xe_intel_bb@offset-control
+-igt@xe_intel_bb@purge-bb
+-igt@xe_intel_bb@render
+-igt@xe_intel_bb@reset-bb
+-igt@xe_intel_bb@simple-bb
+-igt@xe_intel_bb@simple-bb-ctx
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/index.html
 
---===============6692601154518853974==
+--===============8085969231960698674==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -181,115 +180,112 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Integrate intel-bb with Xe (rev8)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116578/">https://patchwork.freedesktop.org/series/116578/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Update intel_error_decode for Gen12</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116948/">https://patchwork.freedesktop.org/series/116948/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_7271 -&gt; IGTPW_8861</h1>
+    <h1>CI Bug Log - changes from IGT_7271 -&gt; IGTPW_8862</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8861 absolutely need to be<br />
+<p>Serious unknown changes coming with IGTPW_8862 absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8861, please notify your bug team to allow them<br />
+  introduced in IGTPW_8862, please notify your bug team to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/index.html</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/index.html</p>
 <h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<p>Missing    (2): bat-mtlp-8 fi-snb-2520m </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8861:</p>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8862:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
 <li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
 <ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a></li>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">FAIL</a></li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<p>igt@i915_selftest@live@requests:</p>
 <ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">FAIL</a></li>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a></li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8861 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_8862 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
 <p>igt@i915_pm_rps@basic-api:</p>
 <ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>)</li>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
 <ul>
-<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-adln-1/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-adln-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7609">i915#7609</a>)</li>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/fi-tgl-1115g4/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/fi-tgl-1115g4/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8213">i915#8213</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:</p>
 <ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +1 similar issue</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@i915_selftest@live@slpc.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a></li>
+<li>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7271 -&gt; IGTPW_8861</li>
+<li>IGT: IGT_7271 -&gt; IGTPW_8862</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_13062: 5a0333cf630a335d7e8f60fd2b8526ed0895900c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8861: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8861/index.html<br />
+  IGTPW_8862: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8862/index.html<br />
   IGT_7271: d12d7eb92226e14745a80e6bdd95384913a43548 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 <h2>Testlist changes</h2>
-<p>+igt@xe_gpgpu_fill@basic<br />
-+igt@xe_intel_bb@add-remove-objects<br />
-+igt@xe_intel_bb@bb-with-allocator<br />
-+igt@xe_intel_bb@blit-reloc<br />
-+igt@xe_intel_bb@blit-simple<br />
-+igt@xe_intel_bb@create-in-region<br />
-+igt@xe_intel_bb@delta-check<br />
-+igt@xe_intel_bb@destroy-bb<br />
-+igt@xe_intel_bb@full-batch<br />
-+igt@xe_intel_bb@intel-bb-blit-none<br />
-+igt@xe_intel_bb@intel-bb-blit-x<br />
-+igt@xe_intel_bb@intel-bb-blit-y<br />
-+igt@xe_intel_bb@lot-of-buffers<br />
-+igt@xe_intel_bb@offset-control<br />
-+igt@xe_intel_bb@purge-bb<br />
-+igt@xe_intel_bb@render<br />
-+igt@xe_intel_bb@reset-bb<br />
-+igt@xe_intel_bb@simple-bb<br />
-+igt@xe_intel_bb@simple-bb-ctx<br />
--igt@xe_query@query-invalid-extension</p>
+<p>-igt@xe_gpgpu_fill@basic<br />
+-igt@xe_intel_bb@add-remove-objects<br />
+-igt@xe_intel_bb@bb-with-allocator<br />
+-igt@xe_intel_bb@blit-reloc<br />
+-igt@xe_intel_bb@blit-simple<br />
+-igt@xe_intel_bb@create-in-region<br />
+-igt@xe_intel_bb@delta-check<br />
+-igt@xe_intel_bb@destroy-bb<br />
+-igt@xe_intel_bb@full-batch<br />
+-igt@xe_intel_bb@intel-bb-blit-none<br />
+-igt@xe_intel_bb@intel-bb-blit-x<br />
+-igt@xe_intel_bb@intel-bb-blit-y<br />
+-igt@xe_intel_bb@lot-of-buffers<br />
+-igt@xe_intel_bb@offset-control<br />
+-igt@xe_intel_bb@purge-bb<br />
+-igt@xe_intel_bb@render<br />
+-igt@xe_intel_bb@reset-bb<br />
+-igt@xe_intel_bb@simple-bb<br />
+-igt@xe_intel_bb@simple-bb-ctx</p>
 
 </body>
 </html>
 
---===============6692601154518853974==--
+--===============8085969231960698674==--
