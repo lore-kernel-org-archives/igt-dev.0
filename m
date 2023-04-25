@@ -1,25 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1nam02on2057.outbound.protection.outlook.com [40.107.96.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3F9E10E2FF
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 21:32:31 +0000 (UTC)
-From: "Wu, Hersen" <hersenxs.wu@amd.com>
-To: "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pillai,
- Aurabindo" <Aurabindo.Pillai@amd.com>, "Hung, Alex" <Alex.Hung@amd.com>,
- "Mahfooz, Hamza" <Hamza.Mahfooz@amd.com>
-Date: Tue, 25 Apr 2023 21:32:28 +0000
-Message-ID: <PH8PR12MB696285F498F65916D91EF341FD649@PH8PR12MB6962.namprd12.prod.outlook.com>
-References: <20230424141626.78069-1-hersenxs.wu@amd.com>
- <f6acd7c4-ab9c-60f7-4e13-35edadfe96dc@amd.com>
- <PH8PR12MB69623EC89FF9C4204B38BE7CFD679@PH8PR12MB6962.namprd12.prod.outlook.com>
-In-Reply-To: <PH8PR12MB69623EC89FF9C4204B38BE7CFD679@PH8PR12MB6962.namprd12.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2079.outbound.protection.outlook.com [40.107.244.79])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D86DE10E220
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 21:45:05 +0000 (UTC)
+From: Hersen Wu <hersenxs.wu@amd.com>
+To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
+ <aurabindo.pillai@amd.com>, <alex.hung@amd.com>, <hamza.mahfooz@amd.com>
+Date: Tue, 25 Apr 2023 17:44:58 -0400
+Message-ID: <20230425214458.178340-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_link_settings: use
- mode 640x480 for link configuration test
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_link_settings: use mode
+ 640x480 for link configuration test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,75 +20,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Hersen Wu <hersenxs.wu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEdlbmVyYWxdDQoNCkZvciBEUCBiYW5kd2lkdGggdnMg
-dmlkZW8gdGltaW5nLCB5b3UgcGxlYXNlIHJlZmVyIHRvIGh0dHBzOi8vZW4ud2lraXBlZGlhLm9y
-Zy93aWtpL0Rpc3BsYXlQb3J0DQoNCkhlcmUgaXMgcm91Z2ggY2FsY3VsYXRpb24gb2YgdmlkZW8g
-dGltaW5nIGFuZCBEUCBsYW5lIGJhbmR3aWR0aC4NCg0KdmlkZW8gbW9kZSB0aW1pbmcgbmVlZHMg
-YmFuZHdpZHRoIGluIGJpdHM6DQpwaXhlbF9jbG9jayB4IGJpdF9wZXJfY29sb3IgeCAzDQoNCjM4
-NDB4MjE2MEA2MGh6IHBpeGVsIGNsb2NrIGNvdWxkIGJlIDU5NE1oei4gRm9yIGJpdHNfcGVyX2Nv
-bG9yID04Lg0KNTk0eDEsMDAwLDAwMCB4IDggeCAzID0gMTQsMjU2IHggMSwwMDAsMDAwDQoNCg0K
-RFAgbGFuZSBzdXBwb3J0IGJhbmR3aWR0aCBpbiBiaXRzLiBCZSBhd2FyZSB0aGF0IDEwIGJpdHMg
-b2YgRFAgbGFuZSAoaW5jbHVkaW5nIGNvbnRyb2wgYml0IGV0Yy4pIGNvbnNpc3RzIG9mIDEgRFAg
-c3ltYm9sICg4Yml0cykuDQoyMCBwZXJjZW50IG9mIERQIGxhbmUgYmFuZHdpZHRoIGlzIHVzZWQg
-Zm9yIGNvbnRyb2wsIG5vdCBmb3IgcGl4ZWwgZGF0YS4NCg0KKGxpbmtfcmF0ZSBYIExhbmVfY291
-bnQpICogKDggLzEwKQ0KDQo8MSBMYW5lLCAxLjYyR0h6PiBEUCBsYW5lOg0KDQooKDEgeCAxLjYy
-IHggMSwwMDAsMDAwLDAwMCkgKiAoOCAvMTApID0gMSwyOTYgeCAsMTAwMCwxMDAwDQoNCg0KDQoN
-Ci0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBXdSwgSGVyc2VuIA0KU2VudDogTW9u
-ZGF5LCBBcHJpbCAyNCwgMjAyMyAzOjA5IFBNDQpUbzogU2lxdWVpcmEsIFJvZHJpZ28gPFJvZHJp
-Z28uU2lxdWVpcmFAYW1kLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBQaWxs
-YWksIEF1cmFiaW5kbyA8QXVyYWJpbmRvLlBpbGxhaUBhbWQuY29tPjsgSHVuZywgQWxleCA8QWxl
-eC5IdW5nQGFtZC5jb20+OyBNYWhmb296LCBIYW16YSA8SGFtemEuTWFoZm9vekBhbWQuY29tPg0K
-U3ViamVjdDogUkU6IFtQQVRDSF0gW2ktZy10XSB0ZXN0cy9hbWRncHUvYW1kX2xpbmtfc2V0dGlu
-Z3M6IHVzZSBtb2RlIDY0MHg0ODAgZm9yIGxpbmsgY29uZmlndXJhdGlvbiB0ZXN0DQoNCltBTUQg
-T2ZmaWNpYWwgVXNlIE9ubHkgLSBHZW5lcmFsXQ0KDQpSZXBseSBpbi1saW5lLg0KDQotLS0tLU9y
-aWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogU2lxdWVpcmEsIFJvZHJpZ28gPFJvZHJpZ28uU2lx
-dWVpcmFAYW1kLmNvbT4gDQpTZW50OiBNb25kYXksIEFwcmlsIDI0LCAyMDIzIDEyOjQ2IFBNDQpU
-bzogV3UsIEhlcnNlbiA8aGVyc2VueHMud3VAYW1kLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnOyBQaWxsYWksIEF1cmFiaW5kbyA8QXVyYWJpbmRvLlBpbGxhaUBhbWQuY29tPjsg
-SHVuZywgQWxleCA8QWxleC5IdW5nQGFtZC5jb20+OyBNYWhmb296LCBIYW16YSA8SGFtemEuTWFo
-Zm9vekBhbWQuY29tPg0KU3ViamVjdDogUmU6IFtQQVRDSF0gW2ktZy10XSB0ZXN0cy9hbWRncHUv
-YW1kX2xpbmtfc2V0dGluZ3M6IHVzZSBtb2RlIDY0MHg0ODAgZm9yIGxpbmsgY29uZmlndXJhdGlv
-biB0ZXN0DQoNCg0KDQpPbiA0LzI0LzIzIDA4OjE2LCBIZXJzZW4gV3Ugd3JvdGU6DQo+IHdpdGgg
-NGsgZHAgY29ubmVjdGVkLCBhbWRncHUga2VybmVsIHdhcm5pbmcgbWVzYWFnZSBkcF9ibGFuayB0
-aW1lb3V0DQoNCi9tZXNhYWdlL21lc3NhZ2UvDQoNCj4gaGFwcGVucyBpbnRlcm1pdHRlbnRseS4g
-bGluayBjb25maWd1cmF0aW9uIDwxLCAxNjI+IGNvdWxkIG5vdCBzdXBwb3J0DQoNCkRvIHlvdSBt
-ZWFuIDEuNjI/DQoNCltIZXJzZW5dIHR5cG9zLiBGaXggaW4gcmV2aWV3IHZlcnNpb24yLg0KDQo+
-IDRrIG1vZGUuIGRwIHNhZmUgbW9kZSA2NDB4NDgwQDYwaHogY291bGQgYmUgdXNlZCBmb3IgYWxs
-IGxpbmsNCg0KSXMgdGhpcyBzYWZlIG1vZGUgZGVmaW5lZCBpbiB0aGUgc3BlYz8NCg0KW0hlcnNl
-bl0gRFAgc2FmZSBtb2RlIGlzIGRlZmluZWQgd2l0aGluIERQIHNwZWNpZmljYXRpb24gYW5kIERQ
-IExpbmsgTGF5ZXIgQ29tcGxpYW5jZSBUZXN0IFNwZWNpZmljYXRpb24uDQoNCkFsc28sIGFmdGVy
-IHNldCB0byB0aGlzIHNhZmUgbW9kZSB0aGlzIHRlc3Qgc3RvcCB0byBiZSBpbnRlcm1pdHRlbnRs
-eT8NCg0Ke0hlcnNlbl0gUnVuIDMwIGxvb3BzIG9mIHRlc3QsIHRoZSBpc3N1ZSBjb3VsZCBub3Qg
-YmUgcmVwcm9kdWNlZC4NCg0KDQo+IGNvbmZpZ3VyYXRpb24gdGVzdC4NCj4gDQo+IFNpZ25lZC1v
-ZmYtYnk6IEhlcnNlbiBXdSA8aGVyc2VueHMud3VAYW1kLmNvbT4NCj4gLS0tDQo+ICAgdGVzdHMv
-YW1kZ3B1L2FtZF9saW5rX3NldHRpbmdzLmMgfCAyNSArKysrKysrKysrKysrKysrKysrKysrKyst
-DQo+ICAgMSBmaWxlIGNoYW5nZWQsIDI0IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4g
-DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9hbWRncHUvYW1kX2xpbmtfc2V0dGluZ3MuYyBiL3Rlc3Rz
-L2FtZGdwdS9hbWRfbGlua19zZXR0aW5ncy5jDQo+IGluZGV4IDE0YzhjNGQ3Li5lYzVlNmZlNSAx
-MDA2NDQNCj4gLS0tIGEvdGVzdHMvYW1kZ3B1L2FtZF9saW5rX3NldHRpbmdzLmMNCj4gKysrIGIv
-dGVzdHMvYW1kZ3B1L2FtZF9saW5rX3NldHRpbmdzLmMNCj4gQEAgLTE1OSw2ICsxNTksMjQgQEAg
-c3RhdGljIHZvaWQgcnVuX2xpbmtfdHJhaW5pbmdfY29uZmlnKGRhdGFfdCAqZGF0YSwgaWd0X291
-dHB1dF90ICpvdXRwdXQpDQo+ICAgCX0NCj4gICB9DQo+ICAgDQo+ICtzdGF0aWMgY29uc3QgZHJt
-TW9kZU1vZGVJbmZvIGRwX3NhZmVfbW9kZV82NDBfNDgwID0gew0KPiArCS5uYW1lCQk9ICI2NDB4
-NDgwIiwNCj4gKwkudnJlZnJlc2gJPSA2MCwNCj4gKwkuY2xvY2sJCT0gMjUyMDAsDQo+ICsNCj4g
-KwkuaGRpc3BsYXkJPSA2NDAsDQo+ICsJLmhzeW5jX3N0YXJ0CT0gNjU2LA0KPiArCS5oc3luY19l
-bmQJPSA3NTIsDQo+ICsJLmh0b3RhbAkJPSA4MDAsDQo+ICsNCj4gKwkudmRpc3BsYXkJPSA0ODAs
-DQo+ICsJLnZzeW5jX3N0YXJ0CT0gNDkwLA0KPiArCS52c3luY19lbmQJPSA0OTIsDQo+ICsJLnZ0
-b3RhbAkJPSA1MjUsDQo+ICsNCj4gKwkuZmxhZ3MJCT0gRFJNX01PREVfRkxBR19OSFNZTkMgfCBE
-Uk1fTU9ERV9GTEFHX05WU1lOQywNCj4gK307DQo+ICsNCj4gICBzdGF0aWMgdm9pZCB0ZXN0X2xp
-bmtfdHJhaW5pbmdfY29uZmlncyhkYXRhX3QgKmRhdGEpDQo+ICAgew0KPiAgIAljb25zdCBkcm1N
-b2RlTW9kZUluZm8gKm9yaWdfbW9kZTsNCj4gQEAgLTE3Nyw3ICsxOTUsMTIgQEAgc3RhdGljIHZv
-aWQgdGVzdF9saW5rX3RyYWluaW5nX2NvbmZpZ3MoZGF0YV90ICpkYXRhKQ0KPiAgIAkJLyogSW5p
-dCBvbmx5IGlmIGRpc3BsYXkgc3VwcG9ydHMgbGlua19zZXR0aW5ncyAqLw0KPiAgIAkJdGVzdF9p
-bml0KGRhdGEsIG91dHB1dCk7DQo+ICAgDQo+IC0JCW9yaWdfbW9kZSA9IGlndF9vdXRwdXRfZ2V0
-X21vZGUob3V0cHV0KTsNCj4gKwkJLyogcnVuX2xpbmtfdHJhaW5pbmdfY29uZmlnIHJ1biB0ZXN0
-IGZyb20gPDEsIDEuNjI+DQo+ICsJCSAqIHRvIGhpZ2hlc3QgbGluayBjb25maWd1cmF0aW9uLiB0
-byBtYWtlIHN1cmUgbW9kZSB0aW1pbmcNCj4gKwkJICogYmUgZml0dGVkIGludG8gPDEsIDEuNjI+
-IGFuZCBoaWdoZXIgY29uZmlndXJhdGlvbiwgdXNlDQo+ICsJCSAqIGRwIHNhZmUgbW9kZSA2NDB4
-NDgwQDYwaHoNCj4gKwkJICovDQo+ICsJCW9yaWdfbW9kZSA9ICZkcF9zYWZlX21vZGVfNjQwXzQ4
-MDsNCj4gICAJCWlndF9hc3NlcnQob3JpZ19tb2RlKTsNCj4gICAJCWlndF9vdXRwdXRfb3ZlcnJp
-ZGVfbW9kZShvdXRwdXQsIG9yaWdfbW9kZSk7DQo+ICAgDQo=
+with 4k dp connected, amdgpu kernel warning messaage dp_blank timeout
+happens intermittently. link configuration <1, 1.62> could not support
+4k mode. dp safe mode 640x480@60hz could be used for all link
+configuration test.
+
+video timing bw in bits: pixel_clock x bits_per_color x 3
+dp lane bw in bits: link_rate x lane_count x 8 / 10
+
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+---
+ tests/amdgpu/amd_link_settings.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/tests/amdgpu/amd_link_settings.c b/tests/amdgpu/amd_link_settings.c
+index 14c8c4d7..28aa5da5 100644
+--- a/tests/amdgpu/amd_link_settings.c
++++ b/tests/amdgpu/amd_link_settings.c
+@@ -159,6 +159,21 @@ static void run_link_training_config(data_t *data, igt_output_t *output)
+ 	}
+ }
+ 
++static const drmModeModeInfo dp_safe_mode_640_480 = {
++	.name		= "640x480",
++	.vrefresh	= 60,
++	.clock		= 25200,
++	.hdisplay	= 640,
++	.hsync_start	= 656,
++	.hsync_end	= 752,
++	.htotal		= 800,
++	.vdisplay	= 480,
++	.vsync_start	= 490,
++	.vsync_end	= 492,
++	.vtotal		= 525,
++	.flags		= DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++};
++
+ static void test_link_training_configs(data_t *data)
+ {
+ 	const drmModeModeInfo *orig_mode;
+@@ -177,7 +192,12 @@ static void test_link_training_configs(data_t *data)
+ 		/* Init only if display supports link_settings */
+ 		test_init(data, output);
+ 
+-		orig_mode = igt_output_get_mode(output);
++		/* run_link_training_config run test from <1, 1.62>
++		 * to highest link configuration. to make sure mode timing
++		 * be fitted into <1, 1.62> and higher configuration, use
++		 * dp safe mode 640x480@60hz
++		 */
++		orig_mode = &dp_safe_mode_640_480;
+ 		igt_assert(orig_mode);
+ 		igt_output_override_mode(output, orig_mode);
+ 
+-- 
+2.25.1
