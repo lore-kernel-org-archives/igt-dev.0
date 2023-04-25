@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B8DF010E547
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:54:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 538A010E6A1
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:54:39 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Apr 2023 12:19:13 +0530
-Message-Id: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
+Date: Tue, 25 Apr 2023 12:19:18 +0530
+Message-Id: <20230425064953.2121947-6-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
+References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 00/40] Add IGT display support for XE
+Subject: [igt-dev] [i-g-t V2 05/40] lib/intel_bufops: Add Xe support in
+ bufops
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,109 +24,277 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add IGT support to work kms tests on XE driver.
+From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-TODO: Spin, BUSY & HANG related tests.
+Extend bufops to support Xe:
+ - change region to 64bit region mask,
+ - add initialization helper (full) which allows passing handle,
+   size and region,
+ - mapping functions (read + write) selects driver specific mapping
 
-V2: - Rebase on PW 116578
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
+---
+ lib/intel_bufops.c | 108 ++++++++++++++++++++++++++++++++++++++++-----
+ lib/intel_bufops.h |  23 +++++++++-
+ 2 files changed, 120 insertions(+), 11 deletions(-)
 
-Bhanuprakash Modem (29):
-  lib/igt_fb: Add copy engine support for XE
-  lib/igt_draw: Add gpu draw routine support for XE
-  tests/i915/kms_big_fb: Add XE support
-  tests/i915/kms_big_joiner: Add XE support
-  tests/i915/kms_cdclk: Add XE support
-  tests/i915/kms_draw_crc: Add XE support
-  tests/i915/kms_dsc: Add XE support
-  tests/i915/kms_flip_scaled_crc: Add XE support
-  tests/i915/kms_flip_tiling: Add XE support
-  tests/i915/kms_mmap_write_crc: Add XE support
-  tests/kms_3d: Add XE support
-  tests/kms_async_flips: No XE support
-  tests/kms_atomic_transition: Add XE support
-  tests/color: Add XE support
-  tests/kms_concurrent: Add XE support
-  tests/kms_content_protection: Add XE support
-  tests/kms_cursor_crc: Add XE support
-  tests/kms_flip_event_leak: Add XE support
-  tests/kms_getfb: Add XE support
-  tests/kms_hdmi_inject: Add XE support
-  tests/kms_hdr: Add XE support
-  tests/kms_panel_fitting: Add XE support
-  tests/kms_plane: Add XE support
-  tests/kms_plane_lowers: Add XE support
-  tests/kms_plane_scaling: Add XE support
-  tests/kms_prime: Add XE support
-  tests/kms_rotation_crc: Add XE support
-  tests/kms_setmode: Add XE support
-  tests/kms_universal_plane: Add XE support
-
-Zbigniew Kempczyński (11):
-  lib/xe_ioctl: Add missing header for direct resolving
-  lib/xe_query: Add region helpers and missing doc
-  lib/xe_query: Remove commented out function prototype
-  lib/intel_allocator: Add allocator support for Xe
-  lib/intel_bufops: Add Xe support in bufops
-  lib/intel_batchbuffer: Add Xe support in intel-bb
-  tests/xe_intel_bb: Check if intel-bb Xe support correctness
-  tests/xe-fast-feedback: Add xe_intel_bb test to BAT
-  lib/gpgpu_fill: Use RENDER engine flag to work on Xe
-  tests/xe_gpgpu_fill: Exercise gpgpu fill on Xe
-  lib/igt_fb: For xe assume vram is used on discrete
-
- lib/gpgpu_fill.c                         |    4 +-
- lib/gpu_cmds.c                           |    2 +-
- lib/igt_draw.c                           |   82 +-
- lib/igt_draw.h                           |    2 +
- lib/igt_fb.c                             |   46 +-
- lib/igt_fb.h                             |    2 +
- lib/intel_allocator.c                    |   40 +-
- lib/intel_aux_pgtable.c                  |    2 +-
- lib/intel_batchbuffer.c                  |  429 ++++++--
- lib/intel_batchbuffer.h                  |   28 +-
- lib/intel_bufops.c                       |  108 +-
- lib/intel_bufops.h                       |   23 +-
- lib/xe/xe_ioctl.h                        |    1 +
- lib/xe/xe_query.c                        |   45 +
- lib/xe/xe_query.h                        |    3 +-
- tests/chamelium/kms_chamelium_color.c    |    2 +-
- tests/i915/gem_caching.c                 |    4 +-
- tests/i915/gem_pxp.c                     |    2 +-
- tests/i915/kms_big_fb.c                  |   75 +-
- tests/i915/kms_big_joiner.c              |    2 +-
- tests/i915/kms_cdclk.c                   |    5 +-
- tests/i915/kms_draw_crc.c                |   24 +-
- tests/i915/kms_dsc.c                     |    2 +-
- tests/i915/kms_flip_scaled_crc.c         |    8 +-
- tests/i915/kms_flip_tiling.c             |    8 +-
- tests/i915/kms_mmap_write_crc.c          |    4 +-
- tests/intel-ci/xe-fast-feedback.testlist |   19 +
- tests/kms_3d.c                           |    8 +
- tests/kms_async_flips.c                  |    8 +-
- tests/kms_atomic_transition.c            |    8 +-
- tests/kms_color.c                        |   10 +-
- tests/kms_color_helper.c                 |    2 +-
- tests/kms_concurrent.c                   |    4 +-
- tests/kms_content_protection.c           |   12 +-
- tests/kms_cursor_crc.c                   |    4 +-
- tests/kms_flip_event_leak.c              |    5 +
- tests/kms_getfb.c                        |   22 +-
- tests/kms_hdmi_inject.c                  |   10 +-
- tests/kms_hdr.c                          |    8 +-
- tests/kms_panel_fitting.c                |   12 +-
- tests/kms_plane.c                        |   19 +-
- tests/kms_plane_lowres.c                 |    9 +-
- tests/kms_plane_scaling.c                |   41 +-
- tests/kms_prime.c                        |  241 ++++-
- tests/kms_rotation_crc.c                 |   25 +-
- tests/kms_setmode.c                      |    7 +
- tests/kms_universal_plane.c              |   15 +-
- tests/meson.build                        |    2 +
- tests/xe/xe_gpgpu_fill.c                 |  135 +++
- tests/xe/xe_intel_bb.c                   | 1185 ++++++++++++++++++++++
- 50 files changed, 2438 insertions(+), 326 deletions(-)
- create mode 100644 tests/xe/xe_gpgpu_fill.c
- create mode 100644 tests/xe/xe_intel_bb.c
-
---
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index cdc7a1698..dc8552f91 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -26,6 +26,8 @@
+ #include <cairo.h>
+ 
+ #include "i915/gem_create.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
+ #include "igt.h"
+ #include "igt_x86.h"
+ #include "intel_bufops.h"
+@@ -106,6 +108,7 @@ typedef void (*bo_copy)(struct buf_ops *, struct intel_buf *, uint32_t *);
+ 
+ struct buf_ops {
+ 	int fd;
++	enum intel_driver driver;
+ 	int gen_start;
+ 	int gen_end;
+ 	unsigned int intel_gen;
+@@ -488,6 +491,9 @@ static void *mmap_write(int fd, struct intel_buf *buf)
+ {
+ 	void *map = NULL;
+ 
++	if (buf->bops->driver == INTEL_DRIVER_XE)
++		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
++
+ 	if (gem_has_lmem(fd)) {
+ 		/*
+ 		 * set/get_caching and set_domain are no longer supported on
+@@ -530,6 +536,9 @@ static void *mmap_read(int fd, struct intel_buf *buf)
+ {
+ 	void *map = NULL;
+ 
++	if (buf->bops->driver == INTEL_DRIVER_XE)
++		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
++
+ 	if (gem_has_lmem(fd)) {
+ 		/*
+ 		 * set/get_caching and set_domain are no longer supported on
+@@ -809,7 +818,7 @@ static void __intel_buf_init(struct buf_ops *bops,
+ 			     int width, int height, int bpp, int alignment,
+ 			     uint32_t req_tiling, uint32_t compression,
+ 			     uint64_t bo_size, int bo_stride,
+-			     uint32_t region)
++			     uint64_t region)
+ {
+ 	uint32_t tiling = req_tiling;
+ 	uint64_t size;
+@@ -899,9 +908,18 @@ static void __intel_buf_init(struct buf_ops *bops,
+ 	buf->size = size;
+ 	buf->handle = handle;
+ 
+-	if (!handle)
+-		if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
+-			igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
++	if (!handle) {
++		if (bops->driver == INTEL_DRIVER_I915) {
++			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
++				igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
++		} else {
++			size = ALIGN(size, xe_get_default_alignment(bops->fd));
++			buf->handle = xe_bo_create_flags(bops->fd, 0, size, region);
++		}
++	}
++	buf->region = region;
++	igt_assert_f(bops->driver == INTEL_DRIVER_XE && region != -1,
++		     "Xe requires region awareness, use api which passes valid region\n");
+ 
+ 	/* Store gem bo size */
+ 	buf->bo_size = size;
+@@ -930,8 +948,12 @@ void intel_buf_init(struct buf_ops *bops,
+ 		    int width, int height, int bpp, int alignment,
+ 		    uint32_t tiling, uint32_t compression)
+ {
++	uint64_t region;
++
++	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
++						     system_memory(bops->fd);
+ 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+-			 tiling, compression, 0, 0, I915_SYSTEM_MEMORY);
++			 tiling, compression, 0, 0, region);
+ 
+ 	intel_buf_set_ownership(buf, true);
+ }
+@@ -945,7 +967,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+ 			      struct intel_buf *buf,
+ 			      int width, int height, int bpp, int alignment,
+ 			      uint32_t tiling, uint32_t compression,
+-			      uint32_t region)
++			      uint64_t region)
+ {
+ 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+ 			 tiling, compression, 0, 0, region);
+@@ -1010,6 +1032,43 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+ 			 req_tiling, compression, 0, 0, -1);
+ }
+ 
++/**
++ * intel_buf_init_full
++ * @bops: pointer to buf_ops
++ * @handle: BO handle created by the caller
++ * @buf: pointer to intel_buf structure to be filled
++ * @width: surface width
++ * @height: surface height
++ * @bpp: bits-per-pixel (8 / 16 / 32 / 64)
++ * @alignment: alignment of the stride for linear surfaces
++ * @req_tiling: surface tiling
++ * @compression: surface compression type
++ * @size: real bo size
++ * @stride: bo stride
++ * @region: region
++ *
++ * Function configures BO handle within intel_buf structure passed by the caller
++ * (with all its metadata - width, height, ...). Useful if BO was created
++ * outside. Allows passing real size which caller is aware of.
++ *
++ * Note: intel_buf_close() can be used because intel_buf is aware it is not
++ * buffer owner so it won't close it underneath.
++ */
++void intel_buf_init_full(struct buf_ops *bops,
++			 uint32_t handle,
++			 struct intel_buf *buf,
++			 int width, int height,
++			 int bpp, int alignment,
++			 uint32_t req_tiling,
++			 uint32_t compression,
++			 uint64_t size,
++			 int stride,
++			 uint64_t region)
++{
++	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
++			 req_tiling, compression, size, stride, region);
++}
++
+ /**
+  * intel_buf_create
+  * @bops: pointer to buf_ops
+@@ -1084,6 +1143,20 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+ 							 uint32_t compression,
+ 							 uint64_t size,
+ 							 int stride)
++{
++	return intel_buf_create_full(bops, handle, width, height, bpp, alignment,
++				     req_tiling, compression, size, stride, -1);
++}
++
++struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
++					uint32_t handle,
++					int width, int height,
++					int bpp, int alignment,
++					uint32_t req_tiling,
++					uint32_t compression,
++					uint64_t size,
++					int stride,
++					uint64_t region)
+ {
+ 	struct intel_buf *buf;
+ 
+@@ -1093,12 +1166,11 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+ 	igt_assert(buf);
+ 
+ 	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+-			 req_tiling, compression, size, stride, -1);
++			 req_tiling, compression, size, stride, region);
+ 
+ 	return buf;
+ }
+ 
+-
+ /**
+  * intel_buf_destroy
+  * @buf: intel_buf
+@@ -1420,8 +1492,24 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+ 
+ 	bops->fd = fd;
+ 	bops->intel_gen = generation;
+-	igt_debug("generation: %d, supported tiles: 0x%02x\n",
+-		  bops->intel_gen, bops->supported_tiles);
++	bops->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
++					    is_xe_device(fd) ? INTEL_DRIVER_XE : 0;
++	igt_assert(bops->driver);
++	igt_debug("generation: %d, supported tiles: 0x%02x, driver: %s\n",
++		  bops->intel_gen, bops->supported_tiles,
++		  bops->driver == INTEL_DRIVER_I915 ? "i915" : "xe");
++
++	/* No tiling support in XE. */
++	if (bops->driver == INTEL_DRIVER_XE) {
++		bops->supported_hw_tiles = TILE_NONE;
++
++		bops->linear_to_x = copy_linear_to_x;
++		bops->x_to_linear = copy_x_to_linear;
++		bops->linear_to_y = copy_linear_to_y;
++		bops->y_to_linear = copy_y_to_linear;
++
++		return bops;
++	}
+ 
+ 	/*
+ 	 * Warning!
+diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+index 25b430739..f45cd7d24 100644
+--- a/lib/intel_bufops.h
++++ b/lib/intel_bufops.h
+@@ -43,6 +43,7 @@ struct intel_buf {
+ 	} addr;
+ 
+ 	uint64_t bo_size;
++	uint64_t region;
+ 
+ 	/* Tracking */
+ 	struct intel_bb *ibb;
+@@ -135,7 +136,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+ 			      struct intel_buf *buf,
+ 			      int width, int height, int bpp, int alignment,
+ 			      uint32_t tiling, uint32_t compression,
+-			      uint32_t region);
++			      uint64_t region);
+ void intel_buf_close(struct buf_ops *bops, struct intel_buf *buf);
+ 
+ void intel_buf_init_using_handle(struct buf_ops *bops,
+@@ -143,6 +144,16 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+ 				 struct intel_buf *buf,
+ 				 int width, int height, int bpp, int alignment,
+ 				 uint32_t req_tiling, uint32_t compression);
++void intel_buf_init_full(struct buf_ops *bops,
++			 uint32_t handle,
++			 struct intel_buf *buf,
++			 int width, int height,
++			 int bpp, int alignment,
++			 uint32_t req_tiling,
++			 uint32_t compression,
++			 uint64_t size,
++			 int stride,
++			 uint64_t region);
+ 
+ struct intel_buf *intel_buf_create(struct buf_ops *bops,
+ 				   int width, int height,
+@@ -164,6 +175,16 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+ 							 uint32_t compression,
+ 							 uint64_t size,
+ 							 int stride);
++
++struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
++					uint32_t handle,
++					int width, int height,
++					int bpp, int alignment,
++					uint32_t req_tiling,
++					uint32_t compression,
++					uint64_t size,
++					int stride,
++					uint64_t region);
+ void intel_buf_destroy(struct intel_buf *buf);
+ 
+ static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
+-- 
 2.40.0
