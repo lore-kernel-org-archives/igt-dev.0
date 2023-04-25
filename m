@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7C0310E671
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:54:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18E3710E671
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:54:41 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Apr 2023 12:19:14 +0530
-Message-Id: <20230425064953.2121947-2-bhanuprakash.modem@intel.com>
+Date: Tue, 25 Apr 2023 12:19:19 +0530
+Message-Id: <20230425064953.2121947-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 01/40] lib/xe_ioctl: Add missing header for
- direct resolving
+Subject: [igt-dev] [i-g-t V2 06/40] lib/intel_batchbuffer: Add Xe support in
+ intel-bb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,26 +26,976 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-xe_ioctl.h user expects all types resolving. Add missing stddef.h
-header which contains size_t definition.
+Intention of creating intel-bb was to replace libdrm for i915.
+Due to many code relies on it (kms for example) most rational way
+is to extend and add Xe path to it.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- lib/xe/xe_ioctl.h | 1 +
- 1 file changed, 1 insertion(+)
+ lib/gpu_cmds.c           |   2 +-
+ lib/intel_aux_pgtable.c  |   2 +-
+ lib/intel_batchbuffer.c  | 429 +++++++++++++++++++++++++++++----------
+ lib/intel_batchbuffer.h  |  28 ++-
+ tests/i915/gem_caching.c |   4 +-
+ tests/i915/gem_pxp.c     |   2 +-
+ 6 files changed, 352 insertions(+), 115 deletions(-)
 
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index d8c40eda0..049cd183d 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -11,6 +11,7 @@
- #ifndef XE_IOCTL_H
- #define XE_IOCTL_H
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index cee81555d..afb26d299 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -251,7 +251,7 @@ gen7_fill_binding_table(struct intel_bb *ibb,
+ {
+ 	uint32_t binding_table_offset;
+ 	uint32_t *binding_table;
+-	uint32_t devid = intel_get_drm_devid(ibb->i915);
++	uint32_t devid = intel_get_drm_devid(ibb->fd);
  
-+#include <stddef.h>
- #include <stdint.h>
- #include <xe_drm.h>
+ 	intel_bb_ptr_align(ibb, 64);
+ 	binding_table_offset = intel_bb_offset(ibb);
+diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+index 520568708..946ca60b9 100644
+--- a/lib/intel_aux_pgtable.c
++++ b/lib/intel_aux_pgtable.c
+@@ -481,7 +481,7 @@ intel_aux_pgtable_create(struct intel_bb *ibb,
+ 	intel_bb_add_intel_buf_with_alignment(ibb, pgt->buf,
+ 					      pgt->max_align, false);
  
+-	pgt_map(ibb->i915, pgt);
++	pgt_map(ibb->fd, pgt);
+ 	pgt_populate_entries(pgt, bufs, buf_count);
+ 	pgt_unmap(pgt);
+ 
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index a4eb4c2bb..8fd8f6427 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -29,6 +29,8 @@
+ #include <glib.h>
+ 
+ #include "i915/gem_create.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
+ #include "intel_batchbuffer.h"
+ #include "intel_bufops.h"
+ #include "intel_chipset.h"
+@@ -38,6 +40,8 @@
+ #include "veboxcopy.h"
+ #include "sw_sync.h"
+ #include "gpgpu_fill.h"
++#include "igt_aux.h"
++#include "igt_syncobj.h"
+ #include "huc_copy.h"
+ #include "i915/i915_blt.h"
+ 
+@@ -828,21 +832,22 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+ 
+ /**
+  * __intel_bb_create:
+- * @i915: drm fd
++ * @fd: drm fd - i915 or xe
+  * @ctx: context id
+- * @cfg: intel_ctx configuration, NULL for default context or legacy mode
++ * @cfg: for i915 intel_ctx configuration, NULL for default context or legacy mode,
++ *       unused for xe
+  * @size: size of the batchbuffer
+  * @do_relocs: use relocations or allocator
+  * @allocator_type: allocator type, must be INTEL_ALLOCATOR_NONE for relocations
+  *
+  * intel-bb assumes it will work in one of two modes - with relocations or
+- * with using allocator (currently RANDOM and SIMPLE are implemented).
++ * with using allocator (currently RELOC and SIMPLE are implemented).
+  * Some description is required to describe how they maintain the addresses.
+  *
+  * Before entering into each scenarios generic rule is intel-bb keeps objects
+  * and their offsets in the internal cache and reuses in subsequent execs.
+  *
+- * 1. intel-bb with relocations
++ * 1. intel-bb with relocations (i915 only)
+  *
+  * Creating new intel-bb adds handle to cache implicitly and sets its address
+  * to 0. Objects added to intel-bb later also have address 0 set for first run.
+@@ -850,14 +855,15 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+  * works in reloc mode addresses are only suggestion to the driver and we
+  * cannot be sure they won't change at next exec.
+  *
+- * 2. with allocator
++ * 2. with allocator (i915 or xe)
+  *
+  * This mode is valid only for ppgtt. Addresses are acquired from allocator
+- * and softpinned. intel-bb cache must be then coherent with allocator
+- * (simple is coherent, random is not due to fact we don't keep its state).
++ * and softpinned (i915) or vm-binded (xe). intel-bb cache must be then
++ * coherent with allocator (simple is coherent, reloc partially [doesn't
++ * support address reservation]).
+  * When we do intel-bb reset with purging cache it has to reacquire addresses
+  * from allocator (allocator should return same address - what is true for
+- * simple allocator and false for random as mentioned before).
++ * simple and reloc allocators).
+  *
+  * If we do reset without purging caches we use addresses from intel-bb cache
+  * during execbuf objects construction.
+@@ -873,7 +879,7 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+  * Pointer the intel_bb, asserts on failure.
+  */
+ static struct intel_bb *
+-__intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
++__intel_bb_create(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 		  uint32_t size, bool do_relocs,
+ 		  uint64_t start, uint64_t end,
+ 		  uint8_t allocator_type, enum allocator_strategy strategy)
+@@ -883,48 +889,83 @@ __intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 
+ 	igt_assert(ibb);
+ 
+-	ibb->uses_full_ppgtt = gem_uses_full_ppgtt(i915);
+-	ibb->devid = intel_get_drm_devid(i915);
++	ibb->devid = intel_get_drm_devid(fd);
+ 	ibb->gen = intel_gen(ibb->devid);
++	ibb->ctx = ctx;
++
++	ibb->fd = fd;
++	ibb->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
++					   is_xe_device(fd) ? INTEL_DRIVER_XE : 0;
++	igt_assert(ibb->driver);
+ 
+ 	/*
+ 	 * If we don't have full ppgtt driver can change our addresses
+ 	 * so allocator is useless in this case. Just enforce relocations
+ 	 * for such gens and don't use allocator at all.
+ 	 */
+-	if (!ibb->uses_full_ppgtt)
+-		do_relocs = true;
++	if (ibb->driver == INTEL_DRIVER_I915) {
++		ibb->uses_full_ppgtt = gem_uses_full_ppgtt(fd);
+ 
+-	/*
+-	 * For softpin mode allocator has full control over offsets allocation
+-	 * so we want kernel to not interfere with this.
+-	 */
+-	if (do_relocs)
+-		ibb->allows_obj_alignment = gem_allows_obj_alignment(i915);
++		if (!ibb->uses_full_ppgtt)
++			do_relocs = true;
+ 
+-	/* Use safe start offset instead assuming 0x0 is safe */
+-	start = max_t(uint64_t, start, gem_detect_safe_start_offset(i915));
++		/*
++		 * For softpin mode allocator has full control over offsets allocation
++		 * so we want kernel to not interfere with this.
++		 */
++		if (do_relocs) {
++			ibb->allows_obj_alignment = gem_allows_obj_alignment(fd);
++			allocator_type = INTEL_ALLOCATOR_NONE;
++		} else {
++			/* Use safe start offset instead assuming 0x0 is safe */
++			start = max_t(uint64_t, start, gem_detect_safe_start_offset(fd));
++
++			/* if relocs are set we won't use an allocator */
++			ibb->allocator_handle =
++				intel_allocator_open_full(fd, ctx,
++							  start, end,
++							  allocator_type,
++							  strategy, 0);
++		}
++
++		ibb->vm_id = 0;
++	} else {
++		igt_assert(!do_relocs);
++
++		if (!ctx)
++			ctx = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++
++		ibb->uses_full_ppgtt = 1;
++		ibb->allocator_handle =
++			intel_allocator_open_full(fd, ctx, start, end,
++						  allocator_type,
++						  strategy,
++						  xe_get_default_alignment(fd));
++		ibb->vm_id = ctx;
++		ibb->last_engine = ~0U;
++	}
+ 
+-	/* if relocs are set we won't use an allocator */
+-	if (do_relocs)
+-		allocator_type = INTEL_ALLOCATOR_NONE;
+-	else
+-		ibb->allocator_handle = intel_allocator_open_full(i915, ctx,
+-								  start, end,
+-								  allocator_type,
+-								  strategy, 0);
+ 	ibb->allocator_type = allocator_type;
+ 	ibb->allocator_strategy = strategy;
+ 	ibb->allocator_start = start;
+ 	ibb->allocator_end = end;
+-
+-	ibb->i915 = i915;
+ 	ibb->enforce_relocs = do_relocs;
+-	ibb->handle = gem_create(i915, size);
++
++	if (ibb->driver == INTEL_DRIVER_I915) {
++		ibb->handle = gem_create(fd, size);
++		ibb->alignment = gem_detect_safe_alignment(fd);
++		ibb->gtt_size = gem_aperture_size(fd);
++	} else {
++		ibb->alignment = xe_get_default_alignment(fd);
++		size = ALIGN(size, ibb->alignment);
++		ibb->handle = xe_bo_create_flags(fd, 0, size,
++						 xe_has_vram(fd) ?
++						 vram_memory(fd, 0) :
++						 system_memory(fd));
++		ibb->gtt_size = 1ull << xe_va_bits(fd);
++	}
++
+ 	ibb->size = size;
+-	ibb->alignment = gem_detect_safe_alignment(i915);
+-	ibb->ctx = ctx;
+-	ibb->vm_id = 0;
+ 	ibb->batch = calloc(1, size);
+ 	igt_assert(ibb->batch);
+ 	ibb->ptr = ibb->batch;
+@@ -937,7 +978,6 @@ __intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 		memcpy(ibb->cfg, cfg, sizeof(*cfg));
+ 	}
+ 
+-	ibb->gtt_size = gem_aperture_size(i915);
+ 	if ((ibb->gtt_size - 1) >> 32)
+ 		ibb->supports_48b_address = true;
+ 
+@@ -961,13 +1001,13 @@ __intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 
+ /**
+  * intel_bb_create_full:
+- * @i915: drm fd
++ * @fd: drm fd - i915 or xe
+  * @ctx: context
+  * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+  * @size: size of the batchbuffer
+  * @start: allocator vm start address
+  * @end: allocator vm start address
+- * @allocator_type: allocator type, SIMPLE, RANDOM, ...
++ * @allocator_type: allocator type, SIMPLE, RELOC, ...
+  * @strategy: allocation strategy
+  *
+  * Creates bb with context passed in @ctx, size in @size and allocator type
+@@ -980,19 +1020,19 @@ __intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+  *
+  * Pointer the intel_bb, asserts on failure.
+  */
+-struct intel_bb *intel_bb_create_full(int i915, uint32_t ctx,
++struct intel_bb *intel_bb_create_full(int fd, uint32_t ctx,
+ 				      const intel_ctx_cfg_t *cfg, uint32_t size,
+ 				      uint64_t start, uint64_t end,
+ 				      uint8_t allocator_type,
+ 				      enum allocator_strategy strategy)
+ {
+-	return __intel_bb_create(i915, ctx, cfg, size, false, start, end,
++	return __intel_bb_create(fd, ctx, cfg, size, false, start, end,
+ 				 allocator_type, strategy);
+ }
+ 
+ /**
+  * intel_bb_create_with_allocator:
+- * @i915: drm fd
++ * @fd: drm fd - i915 or xe
+  * @ctx: context
+  * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+  * @size: size of the batchbuffer
+@@ -1006,18 +1046,18 @@ struct intel_bb *intel_bb_create_full(int i915, uint32_t ctx,
+  *
+  * Pointer the intel_bb, asserts on failure.
+  */
+-struct intel_bb *intel_bb_create_with_allocator(int i915, uint32_t ctx,
++struct intel_bb *intel_bb_create_with_allocator(int fd, uint32_t ctx,
+ 						const intel_ctx_cfg_t *cfg,
+ 						uint32_t size,
+ 						uint8_t allocator_type)
+ {
+-	return __intel_bb_create(i915, ctx, cfg, size, false, 0, 0,
++	return __intel_bb_create(fd, ctx, cfg, size, false, 0, 0,
+ 				 allocator_type, ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
+ 
+-static bool aux_needs_softpin(int i915)
++static bool aux_needs_softpin(int fd)
+ {
+-	return intel_gen(intel_get_drm_devid(i915)) >= 12;
++	return intel_gen(intel_get_drm_devid(fd)) >= 12;
+ }
+ 
+ static bool has_ctx_cfg(struct intel_bb *ibb)
+@@ -1027,7 +1067,7 @@ static bool has_ctx_cfg(struct intel_bb *ibb)
+ 
+ /**
+  * intel_bb_create:
+- * @i915: drm fd
++ * @fd: drm fd - i915 or xe
+  * @size: size of the batchbuffer
+  *
+  * Creates bb with default context.
+@@ -1045,19 +1085,19 @@ static bool has_ctx_cfg(struct intel_bb *ibb)
+  * connection to it inside intel_bb is not valid anymore.
+  * Trying to use it leads to catastrofic errors.
+  */
+-struct intel_bb *intel_bb_create(int i915, uint32_t size)
++struct intel_bb *intel_bb_create(int fd, uint32_t size)
+ {
+-	bool relocs = gem_has_relocations(i915);
++	bool relocs = is_i915_device(fd) && gem_has_relocations(fd);
+ 
+-	return __intel_bb_create(i915, 0, NULL, size,
+-				 relocs && !aux_needs_softpin(i915), 0, 0,
++	return __intel_bb_create(fd, 0, NULL, size,
++				 relocs && !aux_needs_softpin(fd), 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
+ 
+ /**
+  * intel_bb_create_with_context:
+- * @i915: drm fd
++ * @fd: drm fd - i915 or xe
+  * @ctx: context id
+  * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+  * @size: size of the batchbuffer
+@@ -1070,20 +1110,20 @@ struct intel_bb *intel_bb_create(int i915, uint32_t size)
+  * Pointer the intel_bb, asserts on failure.
+  */
+ struct intel_bb *
+-intel_bb_create_with_context(int i915, uint32_t ctx,
++intel_bb_create_with_context(int fd, uint32_t ctx,
+ 			     const intel_ctx_cfg_t *cfg, uint32_t size)
+ {
+-	bool relocs = gem_has_relocations(i915);
++	bool relocs = is_i915_device(fd) && gem_has_relocations(fd);
+ 
+-	return __intel_bb_create(i915, ctx, cfg, size,
+-				 relocs && !aux_needs_softpin(i915), 0, 0,
++	return __intel_bb_create(fd, ctx, cfg, size,
++				 relocs && !aux_needs_softpin(fd), 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
+ 
+ /**
+  * intel_bb_create_with_relocs:
+- * @i915: drm fd
++ * @fd: drm fd - i915
+  * @size: size of the batchbuffer
+  *
+  * Creates bb which will disable passing addresses.
+@@ -1093,17 +1133,17 @@ intel_bb_create_with_context(int i915, uint32_t ctx,
+  *
+  * Pointer the intel_bb, asserts on failure.
+  */
+-struct intel_bb *intel_bb_create_with_relocs(int i915, uint32_t size)
++struct intel_bb *intel_bb_create_with_relocs(int fd, uint32_t size)
+ {
+-	igt_require(gem_has_relocations(i915));
++	igt_require(is_i915_device(fd) && gem_has_relocations(fd));
+ 
+-	return __intel_bb_create(i915, 0, NULL, size, true, 0, 0,
++	return __intel_bb_create(fd, 0, NULL, size, true, 0, 0,
+ 				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
+ }
+ 
+ /**
+  * intel_bb_create_with_relocs_and_context:
+- * @i915: drm fd
++ * @fd: drm fd - i915
+  * @ctx: context
+  * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+  * @size: size of the batchbuffer
+@@ -1116,19 +1156,19 @@ struct intel_bb *intel_bb_create_with_relocs(int i915, uint32_t size)
+  * Pointer the intel_bb, asserts on failure.
+  */
+ struct intel_bb *
+-intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx,
++intel_bb_create_with_relocs_and_context(int fd, uint32_t ctx,
+ 					const intel_ctx_cfg_t *cfg,
+ 					uint32_t size)
+ {
+-	igt_require(gem_has_relocations(i915));
++	igt_require(is_i915_device(fd) && gem_has_relocations(fd));
+ 
+-	return __intel_bb_create(i915, ctx, cfg, size, true, 0, 0,
++	return __intel_bb_create(fd, ctx, cfg, size, true, 0, 0,
+ 				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
+ }
+ 
+ /**
+  * intel_bb_create_no_relocs:
+- * @i915: drm fd
++ * @fd: drm fd - i915 or xe
+  * @size: size of the batchbuffer
+  *
+  * Creates bb with disabled relocations.
+@@ -1138,11 +1178,12 @@ intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx,
+  *
+  * Pointer the intel_bb, asserts on failure.
+  */
+-struct intel_bb *intel_bb_create_no_relocs(int i915, uint32_t size)
++struct intel_bb *intel_bb_create_no_relocs(int fd, uint32_t size)
+ {
+-	igt_require(gem_uses_full_ppgtt(i915));
++	igt_require(is_xe_device(fd) ||
++		    (is_i915_device(fd) && gem_uses_full_ppgtt(fd)));
+ 
+-	return __intel_bb_create(i915, 0, NULL, size, false, 0, 0,
++	return __intel_bb_create(fd, 0, NULL, size, false, 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
+@@ -1217,16 +1258,80 @@ void intel_bb_destroy(struct intel_bb *ibb)
+ 		intel_allocator_free(ibb->allocator_handle, ibb->handle);
+ 		intel_allocator_close(ibb->allocator_handle);
+ 	}
+-	gem_close(ibb->i915, ibb->handle);
++	gem_close(ibb->fd, ibb->handle);
+ 
+ 	if (ibb->fence >= 0)
+ 		close(ibb->fence);
++	if (ibb->engine_syncobj)
++		syncobj_destroy(ibb->fd, ibb->engine_syncobj);
++	if (ibb->vm_id && !ibb->ctx)
++		xe_vm_destroy(ibb->fd, ibb->vm_id);
+ 
+ 	free(ibb->batch);
+ 	free(ibb->cfg);
+ 	free(ibb);
+ }
+ 
++static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
++						   uint32_t op, uint32_t region)
++{
++	struct drm_i915_gem_exec_object2 **objects = ibb->objects;
++	struct drm_xe_vm_bind_op *bind_ops, *ops;
++	bool set_obj = (op & 0xffff) == XE_VM_BIND_OP_MAP;
++
++	bind_ops = calloc(ibb->num_objects, sizeof(*bind_ops));
++	igt_assert(bind_ops);
++
++	igt_debug("bind_ops: %s\n", set_obj ? "MAP" : "UNMAP");
++	for (int i = 0; i < ibb->num_objects; i++) {
++		ops = &bind_ops[i];
++
++		if (set_obj)
++			ops->obj = objects[i]->handle;
++
++		ops->op = op;
++		ops->obj_offset = 0;
++		ops->addr = objects[i]->offset;
++		ops->range = objects[i]->rsvd1;
++		ops->region = region;
++
++		igt_debug("  [%d]: handle: %u, offset: %llx, size: %llx\n",
++			  i, ops->obj, (long long)ops->addr, (long long)ops->range);
++	}
++
++	return bind_ops;
++}
++
++static void __unbind_xe_objects(struct intel_bb *ibb)
++{
++	struct drm_xe_sync syncs[2] = {
++		{ .flags = DRM_XE_SYNC_SYNCOBJ },
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
++	};
++	int ret;
++
++	syncs[0].handle = ibb->engine_syncobj;
++	syncs[1].handle = syncobj_create(ibb->fd, 0);
++
++	if (ibb->num_objects > 1) {
++		struct drm_xe_vm_bind_op *bind_ops;
++		uint32_t op = XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_ASYNC;
++
++		bind_ops = xe_alloc_bind_ops(ibb, op, 0);
++		xe_vm_bind_array(ibb->fd, ibb->vm_id, 0, bind_ops,
++				 ibb->num_objects, syncs, 2);
++		free(bind_ops);
++	} else {
++		xe_vm_unbind_async(ibb->fd, ibb->vm_id, 0, 0,
++				   ibb->batch_offset, ibb->size, syncs, 2);
++	}
++	ret = syncobj_wait_err(ibb->fd, &syncs[1].handle, 1, INT64_MAX, 0);
++	igt_assert_eq(ret, 0);
++	syncobj_destroy(ibb->fd, syncs[1].handle);
++
++	ibb->xe_bound = false;
++}
++
+ /*
+  * intel_bb_reset:
+  * @ibb: pointer to intel_bb
+@@ -1238,7 +1343,6 @@ void intel_bb_destroy(struct intel_bb *ibb)
+  * from intel-bb tracking list. Removing intel_bufs releases their addresses
+  * in the allocator.
+ */
+-
+ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
+ {
+ 	uint32_t i;
+@@ -1258,6 +1362,9 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
+ 	for (i = 0; i < ibb->num_objects; i++)
+ 		ibb->objects[i]->flags &= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 
++	if (is_xe_device(ibb->fd) && ibb->xe_bound)
++		__unbind_xe_objects(ibb);
++
+ 	__intel_bb_destroy_relocations(ibb);
+ 	__intel_bb_destroy_objects(ibb);
+ 	__reallocate_objects(ibb);
+@@ -1277,11 +1384,16 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
+ 		intel_bb_remove_object(ibb, ibb->handle, ibb->batch_offset,
+ 				       ibb->size);
+ 
+-	gem_close(ibb->i915, ibb->handle);
+-	ibb->handle = gem_create(ibb->i915, ibb->size);
++	gem_close(ibb->fd, ibb->handle);
++	if (is_i915_device(ibb->fd))
++		ibb->handle = gem_create(ibb->fd, ibb->size);
++	else
++		ibb->handle = xe_bo_create_flags(ibb->fd, 0, ibb->size,
++						 vram_if_possible(ibb->fd, 0));
+ 
+-	/* Keep address for bb in reloc mode and RANDOM allocator */
+-	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE)
++	/* Reacquire offset for RELOC and SIMPLE */
++	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE ||
++	    ibb->allocator_type == INTEL_ALLOCATOR_RELOC)
+ 		ibb->batch_offset = __intel_bb_get_offset(ibb,
+ 							  ibb->handle,
+ 							  ibb->size,
+@@ -1304,13 +1416,19 @@ int intel_bb_sync(struct intel_bb *ibb)
+ {
+ 	int ret;
+ 
+-	if (ibb->fence < 0)
++	if (ibb->fence < 0 && !ibb->engine_syncobj)
+ 		return 0;
+ 
+-	ret = sync_fence_wait(ibb->fence, -1);
+-	if (ret == 0) {
+-		close(ibb->fence);
+-		ibb->fence = -1;
++	if (ibb->fence >= 0) {
++		ret = sync_fence_wait(ibb->fence, -1);
++		if (ret == 0) {
++			close(ibb->fence);
++			ibb->fence = -1;
++		}
++	} else {
++		igt_assert_neq(ibb->engine_syncobj, 0);
++		ret = syncobj_wait_err(ibb->fd, &ibb->engine_syncobj,
++				       1, INT64_MAX, 0);
+ 	}
+ 
+ 	return ret;
+@@ -1325,7 +1443,7 @@ int intel_bb_sync(struct intel_bb *ibb)
+ void intel_bb_print(struct intel_bb *ibb)
+ {
+ 	igt_info("drm fd: %d, gen: %d, devid: %u, debug: %d\n",
+-		 ibb->i915, ibb->gen, ibb->devid, ibb->debug);
++		 ibb->fd, ibb->gen, ibb->devid, ibb->debug);
+ 	igt_info("handle: %u, size: %u, batch: %p, ptr: %p\n",
+ 		 ibb->handle, ibb->size, ibb->batch, ibb->ptr);
+ 	igt_info("gtt_size: %" PRIu64 ", supports 48bit: %d\n",
+@@ -1350,7 +1468,7 @@ void intel_bb_dump(struct intel_bb *ibb, const char *filename)
+ 	FILE *out;
+ 	void *ptr;
+ 
+-	ptr = gem_mmap__device_coherent(ibb->i915, ibb->handle, 0, ibb->size,
++	ptr = gem_mmap__device_coherent(ibb->fd, ibb->handle, 0, ibb->size,
+ 					PROT_READ);
+ 	out = fopen(filename, "wb");
+ 	igt_assert(out);
+@@ -1501,7 +1619,7 @@ static void __remove_from_objects(struct intel_bb *ibb,
+ }
+ 
+ /**
+- * intel_bb_add_object:
++ * __intel_bb_add_object:
+  * @ibb: pointer to intel_bb
+  * @handle: which handle to add to objects array
+  * @size: object size
+@@ -1513,9 +1631,9 @@ static void __remove_from_objects(struct intel_bb *ibb,
+  * in the object tree. When object is a render target it has to
+  * be marked with EXEC_OBJECT_WRITE flag.
+  */
+-struct drm_i915_gem_exec_object2 *
+-intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+-		    uint64_t offset, uint64_t alignment, bool write)
++static struct drm_i915_gem_exec_object2 *
++__intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
++		      uint64_t offset, uint64_t alignment, bool write)
+ {
+ 	struct drm_i915_gem_exec_object2 *object;
+ 
+@@ -1523,8 +1641,12 @@ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 		   || ALIGN(offset, alignment) == offset);
+ 	igt_assert(is_power_of_two(alignment));
+ 
++	if (ibb->driver == INTEL_DRIVER_I915)
++		alignment = max_t(uint64_t, alignment, gem_detect_safe_alignment(ibb->fd));
++	else
++		alignment = max_t(uint64_t, ibb->alignment, alignment);
++
+ 	object = __add_to_cache(ibb, handle);
+-	alignment = max_t(uint64_t, alignment, gem_detect_safe_alignment(ibb->i915));
+ 	__add_to_objects(ibb, object);
+ 
+ 	/*
+@@ -1584,9 +1706,27 @@ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 	if (ibb->allows_obj_alignment)
+ 		object->alignment = alignment;
+ 
++	if (ibb->driver == INTEL_DRIVER_XE) {
++		object->alignment = alignment;
++		object->rsvd1 = size;
++	}
++
+ 	return object;
+ }
+ 
++struct drm_i915_gem_exec_object2 *
++intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
++		    uint64_t offset, uint64_t alignment, bool write)
++{
++	struct drm_i915_gem_exec_object2 *obj = NULL;
++
++	obj = __intel_bb_add_object(ibb, handle, size, offset,
++				    alignment, write);
++	igt_assert(obj);
++
++	return obj;
++}
++
+ bool intel_bb_remove_object(struct intel_bb *ibb, uint32_t handle,
+ 			    uint64_t offset, uint64_t size)
+ {
+@@ -1999,7 +2139,7 @@ static void intel_bb_dump_execbuf(struct intel_bb *ibb,
+ 	uint64_t address;
+ 
+ 	igt_debug("execbuf [pid: %ld, fd: %d, ctx: %u]\n",
+-		  (long) getpid(), ibb->i915, ibb->ctx);
++		  (long) getpid(), ibb->fd, ibb->ctx);
+ 	igt_debug("execbuf batch len: %u, start offset: 0x%x, "
+ 		  "DR1: 0x%x, DR4: 0x%x, "
+ 		  "num clip: %u, clipptr: 0x%llx, "
+@@ -2135,6 +2275,82 @@ static void update_offsets(struct intel_bb *ibb,
+ }
+ 
+ #define LINELEN 76
++
++static int
++__xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
++{
++	uint32_t engine = flags & (I915_EXEC_BSD_MASK | I915_EXEC_RING_MASK);
++	uint32_t engine_id;
++	struct drm_xe_sync syncs[2] = {
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
++	};
++	struct drm_xe_vm_bind_op *bind_ops;
++	void *map;
++
++	igt_assert_eq(ibb->num_relocs, 0);
++	igt_assert_eq(ibb->xe_bound, false);
++
++	if (ibb->last_engine != engine) {
++		struct drm_xe_engine_class_instance inst = { };
++
++		inst.engine_instance =
++			(flags & I915_EXEC_BSD_MASK) >> I915_EXEC_BSD_SHIFT;
++
++		switch (flags & I915_EXEC_RING_MASK) {
++		case I915_EXEC_DEFAULT:
++		case I915_EXEC_BLT:
++			inst.engine_class = DRM_XE_ENGINE_CLASS_COPY;
++			break;
++		case I915_EXEC_BSD:
++			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
++			break;
++		case I915_EXEC_RENDER:
++			inst.engine_class = DRM_XE_ENGINE_CLASS_RENDER;
++			break;
++		case I915_EXEC_VEBOX:
++			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
++			break;
++		default:
++			igt_assert_f(false, "Unknown engine: %x", (uint32_t) flags);
++		}
++		igt_debug("Run on %s\n", xe_engine_class_string(inst.engine_class));
++
++		ibb->engine_id = engine_id =
++			xe_engine_create(ibb->fd, ibb->vm_id, &inst, 0);
++	} else {
++		engine_id = ibb->engine_id;
++	}
++	ibb->last_engine = engine;
++
++	map = xe_bo_map(ibb->fd, ibb->handle, ibb->size);
++	memcpy(map, ibb->batch, ibb->size);
++	gem_munmap(map, ibb->size);
++
++	syncs[0].handle = syncobj_create(ibb->fd, 0);
++	if (ibb->num_objects > 1) {
++		bind_ops = xe_alloc_bind_ops(ibb, XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC, 0);
++		xe_vm_bind_array(ibb->fd, ibb->vm_id, 0, bind_ops,
++				 ibb->num_objects, syncs, 1);
++		ibb->xe_bound = true;
++		free(bind_ops);
++	} else {
++		xe_vm_bind_async(ibb->fd, ibb->vm_id, 0, ibb->handle, 0,
++				 ibb->batch_offset, ibb->size, syncs, 1);
++	}
++
++	syncs[0].flags &= ~DRM_XE_SYNC_SIGNAL;
++	ibb->engine_syncobj = syncobj_create(ibb->fd, 0);
++	syncs[1].handle = ibb->engine_syncobj;
++
++	xe_exec_sync(ibb->fd, engine_id, ibb->batch_offset, syncs, 2);
++
++	if (sync)
++		intel_bb_sync(ibb);
++
++	return 0;
++}
++
+ /*
+  * __intel_bb_exec:
+  * @ibb: pointer to intel_bb
+@@ -2160,7 +2376,7 @@ int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 	ibb->objects[0]->handle = ibb->handle;
+ 	ibb->objects[0]->offset = ibb->batch_offset;
+ 
+-	gem_write(ibb->i915, ibb->handle, 0, ibb->batch, ibb->size);
++	gem_write(ibb->fd, ibb->handle, 0, ibb->batch, ibb->size);
+ 
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	objects = create_objects_array(ibb);
+@@ -2173,13 +2389,10 @@ int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 		execbuf.flags &= ~I915_EXEC_NO_RELOC;
+ 	execbuf.rsvd2 = 0;
+ 
+-	if (ibb->dump_base64)
+-		intel_bb_dump_base64(ibb, LINELEN);
+-
+ 	/* For debugging on CI, remove in final series */
+ 	intel_bb_dump_execbuf(ibb, &execbuf);
+ 
+-	ret = __gem_execbuf_wr(ibb->i915, &execbuf);
++	ret = __gem_execbuf_wr(ibb->fd, &execbuf);
+ 	if (ret) {
+ 		intel_bb_dump_execbuf(ibb, &execbuf);
+ 		free(objects);
+@@ -2220,7 +2433,7 @@ int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ /**
+  * intel_bb_exec:
+  * @ibb: pointer to intel_bb
+- * @end_offset: offset of the last instruction in the bb
++ * @end_offset: offset of the last instruction in the bb (for i915)
+  * @flags: flags passed directly to execbuf
+  * @sync: if true wait for execbuf completion, otherwise caller is responsible
+  * to wait for completion
+@@ -2230,7 +2443,13 @@ int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ void intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 		   uint64_t flags, bool sync)
+ {
+-	igt_assert_eq(__intel_bb_exec(ibb, end_offset, flags, sync), 0);
++	if (ibb->dump_base64)
++		intel_bb_dump_base64(ibb, LINELEN);
++
++	if (ibb->driver == INTEL_DRIVER_I915)
++		igt_assert_eq(__intel_bb_exec(ibb, end_offset, flags, sync), 0);
++	else
++		igt_assert_eq(__xe_bb_exec(ibb, flags, sync), 0);
+ }
+ 
+ /**
+@@ -2409,13 +2628,13 @@ uint32_t intel_bb_copy_data(struct intel_bb *ibb,
+  */
+ void intel_bb_blit_start(struct intel_bb *ibb, uint32_t flags)
+ {
+-	if (blt_has_xy_src_copy(ibb->i915))
++	if (blt_has_xy_src_copy(ibb->fd))
+ 		intel_bb_out(ibb, XY_SRC_COPY_BLT_CMD |
+ 			     XY_SRC_COPY_BLT_WRITE_ALPHA |
+ 			     XY_SRC_COPY_BLT_WRITE_RGB |
+ 			     flags |
+ 			     (6 + 2 * (ibb->gen >= 8)));
+-	else if (blt_has_fast_copy(ibb->i915))
++	else if (blt_has_fast_copy(ibb->fd))
+ 		intel_bb_out(ibb, XY_FAST_COPY_BLT | flags);
+ 	else
+ 		igt_assert_f(0, "No supported blit command found\n");
+@@ -2456,9 +2675,9 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+ 
+ 	if (gen >= 4 && src->tiling != I915_TILING_NONE) {
+ 		src_pitch /= 4;
+-		if (blt_has_xy_src_copy(ibb->i915))
++		if (blt_has_xy_src_copy(ibb->fd))
+ 			cmd_bits |= XY_SRC_COPY_BLT_SRC_TILED;
+-		else if (blt_has_fast_copy(ibb->i915))
++		else if (blt_has_fast_copy(ibb->fd))
+ 			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
+ 		else
+ 			igt_assert_f(0, "No supported blit command found\n");
+@@ -2466,7 +2685,7 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+ 
+ 	if (gen >= 4 && dst->tiling != I915_TILING_NONE) {
+ 		dst_pitch /= 4;
+-		if (blt_has_xy_src_copy(ibb->i915))
++		if (blt_has_xy_src_copy(ibb->fd))
+ 			cmd_bits |= XY_SRC_COPY_BLT_DST_TILED;
+ 		else
+ 			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
+@@ -2480,7 +2699,7 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+ 	CHECK_RANGE(src_pitch); CHECK_RANGE(dst_pitch);
+ 
+ 	br13_bits = 0;
+-	if (blt_has_xy_src_copy(ibb->i915)) {
++	if (blt_has_xy_src_copy(ibb->fd)) {
+ 		switch (bpp) {
+ 		case 8:
+ 			break;
+@@ -2496,7 +2715,7 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+ 			igt_fail(IGT_EXIT_FAILURE);
+ 		}
+ 	} else {
+-		br13_bits = fast_copy_dword1(ibb->i915, src->tiling, dst->tiling, bpp);
++		br13_bits = fast_copy_dword1(ibb->fd, src->tiling, dst->tiling, bpp);
+ 	}
+ 
+ 	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
+@@ -2628,14 +2847,20 @@ void intel_bb_track(bool do_tracking)
+ 
+ static void __intel_bb_reinit_alloc(struct intel_bb *ibb)
+ {
++	uint64_t alignment = 0;
++
+ 	if (ibb->allocator_type == INTEL_ALLOCATOR_NONE)
+ 		return;
+ 
+-	ibb->allocator_handle = intel_allocator_open_full(ibb->i915, ibb->ctx,
++	if (ibb->driver == INTEL_DRIVER_XE)
++		alignment = xe_get_default_alignment(ibb->fd);
++
++	ibb->allocator_handle = intel_allocator_open_full(ibb->fd, ibb->ctx,
+ 							  ibb->allocator_start, ibb->allocator_end,
+ 							  ibb->allocator_type,
+ 							  ibb->allocator_strategy,
+-							  0);
++							  alignment);
++
+ 	intel_bb_reset(ibb, true);
+ }
+ 
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 10e412660..e2566d822 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -235,6 +235,11 @@ struct igt_pxp {
+ 	uint32_t appid;
+ };
+ 
++enum intel_driver {
++	INTEL_DRIVER_I915 = 1,
++	INTEL_DRIVER_XE,
++};
++
+ /*
+  * Batchbuffer without libdrm dependency
+  */
+@@ -246,7 +251,9 @@ struct intel_bb {
+ 	uint8_t allocator_type;
+ 	enum allocator_strategy allocator_strategy;
+ 
+-	int i915;
++	enum intel_driver driver;
++	int fd;
++
+ 	unsigned int gen;
+ 	bool debug;
+ 	bool dump_base64;
+@@ -268,6 +275,11 @@ struct intel_bb {
+ 	uint32_t ctx;
+ 	uint32_t vm_id;
+ 
++	bool xe_bound;
++	uint32_t engine_syncobj;
++	uint32_t engine_id;
++	uint32_t last_engine;
++
+ 	/* Context configuration */
+ 	intel_ctx_cfg_t *cfg;
+ 
+@@ -299,21 +311,21 @@ struct intel_bb {
+ };
+ 
+ struct intel_bb *
+-intel_bb_create_full(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
++intel_bb_create_full(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 		     uint32_t size, uint64_t start, uint64_t end,
+ 		     uint8_t allocator_type, enum allocator_strategy strategy);
+ struct intel_bb *
+-intel_bb_create_with_allocator(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
++intel_bb_create_with_allocator(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 			       uint32_t size, uint8_t allocator_type);
+-struct intel_bb *intel_bb_create(int i915, uint32_t size);
++struct intel_bb *intel_bb_create(int fd, uint32_t size);
+ struct intel_bb *
+-intel_bb_create_with_context(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
++intel_bb_create_with_context(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 			     uint32_t size);
+-struct intel_bb *intel_bb_create_with_relocs(int i915, uint32_t size);
++struct intel_bb *intel_bb_create_with_relocs(int fd, uint32_t size);
+ struct intel_bb *
+-intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx,
++intel_bb_create_with_relocs_and_context(int fd, uint32_t ctx,
+ 					const intel_ctx_cfg_t *cfg, uint32_t size);
+-struct intel_bb *intel_bb_create_no_relocs(int i915, uint32_t size);
++struct intel_bb *intel_bb_create_no_relocs(int fd, uint32_t size);
+ void intel_bb_destroy(struct intel_bb *ibb);
+ 
+ /* make it safe to use intel_allocator after failed test */
+diff --git a/tests/i915/gem_caching.c b/tests/i915/gem_caching.c
+index b6ecd8346..6e944f0ac 100644
+--- a/tests/i915/gem_caching.c
++++ b/tests/i915/gem_caching.c
+@@ -83,7 +83,7 @@ copy_bo(struct intel_bb *ibb, struct intel_buf *src, struct intel_buf *dst)
+ 	intel_bb_add_intel_buf(ibb, src, false);
+ 	intel_bb_add_intel_buf(ibb, dst, true);
+ 
+-	if (blt_has_xy_src_copy(ibb->i915)) {
++	if (blt_has_xy_src_copy(ibb->fd)) {
+ 		intel_bb_out(ibb,
+ 			     XY_SRC_COPY_BLT_CMD |
+ 			     XY_SRC_COPY_BLT_WRITE_ALPHA |
+@@ -93,7 +93,7 @@ copy_bo(struct intel_bb *ibb, struct intel_buf *src, struct intel_buf *dst)
+ 		intel_bb_out(ibb, (3 << 24) | /* 32 bits */
+ 			     (0xcc << 16) | /* copy ROP */
+ 			     4096);
+-	} else if (blt_has_fast_copy(ibb->i915)) {
++	} else if (blt_has_fast_copy(ibb->fd)) {
+ 		intel_bb_out(ibb, XY_FAST_COPY_BLT);
+ 		intel_bb_out(ibb, XY_FAST_COPY_COLOR_DEPTH_32 | 4096);
+ 	} else {
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index af657d0e1..2f27abd58 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -809,7 +809,7 @@ static int gem_execbuf_flush_store_dw(int i915, struct intel_bb *ibb, uint32_t c
+ 	ret = __intel_bb_exec(ibb, intel_bb_offset(ibb),
+ 				  I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
+ 	if (ret == 0) {
+-		gem_sync(ibb->i915, fence->handle);
++		gem_sync(ibb->fd, fence->handle);
+ 		assert_pipectl_storedw_done(i915, fence->handle);
+ 	}
+ 	return ret;
 -- 
 2.40.0
