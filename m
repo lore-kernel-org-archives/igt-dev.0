@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE5D210E6AE
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:54:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85F5C10E6B7
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:54:55 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Apr 2023 12:19:25 +0530
-Message-Id: <20230425064953.2121947-13-bhanuprakash.modem@intel.com>
+Date: Tue, 25 Apr 2023 12:19:33 +0530
+Message-Id: <20230425064953.2121947-21-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 12/40] lib/igt_fb: Add copy engine support for
- XE
+Subject: [igt-dev] [i-g-t V2 20/40] tests/i915/kms_flip_tiling: Add XE
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,134 +23,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add copy engine support for kms framebuffer mappings.
+Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- lib/igt_fb.c | 30 ++++++++++++++++++++++++++----
- lib/igt_fb.h |  2 ++
- 2 files changed, 28 insertions(+), 4 deletions(-)
+ tests/i915/kms_flip_tiling.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 2c1d48783..93fdca681 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -45,6 +45,7 @@
- #include "igt_amd.h"
- #include "igt_x86.h"
- #include "igt_nouveau.h"
-+#include "igt_syncobj.h"
- #include "ioctl_wrappers.h"
- #include "intel_batchbuffer.h"
- #include "intel_chipset.h"
-@@ -2489,12 +2490,13 @@ static bool blitter_ok(const struct igt_fb *fb)
- 
- static bool use_enginecopy(const struct igt_fb *fb)
+diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
+index 4cc063f63..a22f12382 100644
+--- a/tests/i915/kms_flip_tiling.c
++++ b/tests/i915/kms_flip_tiling.c
+@@ -177,7 +177,7 @@ igt_output_t *output;
+ igt_main
  {
--	if (blitter_ok(fb))
-+	if (!is_xe_device(fb->fd) && blitter_ok(fb))
- 		return false;
+ 	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
  
- 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
- 	       is_ccs_modifier(fb->modifier) ||
--	       !gem_has_mappable_ggtt(fb->fd);
-+	       (is_xe_device(fb->fd) && fb->modifier == DRM_FORMAT_MOD_LINEAR) ||
-+	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
- }
+ 		data.testformat = DRM_FORMAT_XRGB8888;
+@@ -217,6 +217,12 @@ igt_main
+ 					if (plane->formats[j] != data.testformat)
+ 						continue;
  
- static bool use_blitter(const struct igt_fb *fb)
-@@ -2504,7 +2506,7 @@ static bool use_blitter(const struct igt_fb *fb)
- 
- 	return fb->modifier == I915_FORMAT_MOD_Y_TILED ||
- 	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
--	       !gem_has_mappable_ggtt(fb->fd);
-+	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
- }
- 
- static void init_buf_ccs(struct intel_buf *buf, int ccs_idx,
-@@ -2705,7 +2707,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
- 	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
- 
--	if (!gem_has_relocations(dst_fb->fd)) {
-+	if (is_i915_device(dst_fb->fd) && !gem_has_relocations(dst_fb->fd)) {
- 		igt_require(gem_has_contexts(dst_fb->fd));
- 		ctx = gem_context_create(dst_fb->fd);
- 		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
-@@ -2785,6 +2787,12 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
- 	} else if (is_nouveau_device(fd)) {
- 		igt_nouveau_fb_blit(fb, &linear->fb);
- 		igt_nouveau_delete_bo(&linear->fb);
-+	} else if (is_xe_device(fd)) {
-+		gem_munmap(linear->map, linear->fb.size);
-+		copy_with_engine(blit, fb, &linear->fb);
++					/* No tiling support in XE. */
++					if (is_xe_device(data.drm_fd) &&
++					    (plane->modifiers[i] != DRM_FORMAT_MOD_LINEAR ||
++					     plane->modifiers[j] != DRM_FORMAT_MOD_LINEAR))
++						continue;
 +
-+		syncobj_wait(fd, &blit->ibb->engine_syncobj, 1, INT64_MAX, 0, NULL);
-+		gem_close(fd, linear->fb.gem_handle);
- 	} else {
- 		gem_munmap(linear->map, linear->fb.size);
- 		gem_set_domain(fd, linear->fb.gem_handle,
-@@ -2862,6 +2870,11 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
- 		igt_nouveau_fb_blit(&linear->fb, fb);
- 
- 		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
-+	} else if (is_xe_device(fd)) {
-+		copy_with_engine(blit, &linear->fb, fb);
-+
-+		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
-+					     linear->fb.size, PROT_READ | PROT_WRITE);
- 	} else {
- 		/* Copy fb content to linear BO */
- 		gem_set_domain(fd, linear->fb.gem_handle,
-@@ -2919,6 +2932,9 @@ static void create_cairo_surface__gpu(int fd, struct igt_fb *fb)
-  */
- int igt_dirty_fb(int fd, struct igt_fb *fb)
- {
-+	if (fb->syncobj)
-+		syncobj_wait(fd, &fb->syncobj, 1, INT64_MAX, 0, NULL);
-+
- 	return drmModeDirtyFB(fb->fd, fb->fb_id, NULL, 0);
- }
- 
-@@ -2968,6 +2984,9 @@ static void *map_bo(int fd, struct igt_fb *fb)
- 				      PROT_READ | PROT_WRITE);
- 	else if (is_nouveau_device(fd))
- 		ptr = igt_nouveau_mmap_bo(fb, PROT_READ | PROT_WRITE);
-+	else if (is_xe_device(fd))
-+		ptr = xe_bo_mmap_ext(fd, fb->gem_handle,
-+				     fb->size, PROT_READ | PROT_WRITE);
- 	else
- 		igt_assert(false);
- 
-@@ -4252,6 +4271,9 @@ void igt_remove_fb(int fd, struct igt_fb *fb)
- 	if (!fb || !fb->fb_id)
- 		return;
- 
-+	if (fb->syncobj)
-+		syncobj_destroy(fd, fb->syncobj);
-+
- 	cairo_surface_destroy(fb->cairo_surface);
- 	do_or_die(drmModeRmFB(fd, fb->fb_id));
- 	if (fb->is_dumb)
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index 73bdfc866..a127a8128 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -62,6 +62,7 @@ typedef struct _igt_crc igt_crc_t;
-  * @fb_id: KMS ID of the framebuffer
-  * @fd: DRM device fd this framebuffer is created on
-  * @gem_handle: GEM handler of the underlying backing storage
-+ * @syncobj: Syncobj to sync to for last drawing operation
-  * @is_dumb: Whether this framebuffer was allocated using the dumb buffer API
-  * @drm_format: DRM FOURCC code
-  * @width: width in pixels
-@@ -84,6 +85,7 @@ typedef struct igt_fb {
- 	uint32_t fb_id;
- 	int fd;
- 	uint32_t gem_handle;
-+	uint32_t syncobj;
- 	bool is_dumb;
- 	uint32_t drm_format;
- 	int width;
+ 					igt_dynamic_f("%s-pipe-%s-%s-to-%s",
+ 						      igt_output_name(output),
+ 						      kmstest_pipe_name(pipe),
 -- 
 2.40.0
