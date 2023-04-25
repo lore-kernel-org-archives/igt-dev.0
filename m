@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7CE710E28E
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 10:48:50 +0000 (UTC)
-Date: Tue, 25 Apr 2023 12:48:47 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-Message-ID: <20230425104847.7srkdpbakukg74ge@zkempczy-mobl2>
-References: <20230424115423.28726-1-sai.gowtham.ch@intel.com>
- <20230425033654.zw4pw32bdqwohvsy@zkempczy-mobl2>
- <BYAPR11MB3413E63B18DB468CB7F65F3DD0649@BYAPR11MB3413.namprd11.prod.outlook.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B052110E0B6
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 11:59:01 +0000 (UTC)
+Message-ID: <cd4cdc0a-489b-dcb3-7e17-ae9043aba1e8@igalia.com>
+Date: Tue, 25 Apr 2023 08:58:50 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Language: en-US
+To: Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+References: <20230403130124.15946-1-mcanal@igalia.com>
+From: =?UTF-8?Q?Ma=c3=adra_Canal?= <mcanal@igalia.com>
+In-Reply-To: <20230403130124.15946-1-mcanal@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <BYAPR11MB3413E63B18DB468CB7F65F3DD0649@BYAPR11MB3413.namprd11.prod.outlook.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new
- with Xe.
+Subject: Re: [igt-dev] [PATCH i-g-t 0/4] kms_rotation_crc improvements and
+ generalization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,154 +22,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 25, 2023 at 09:07:15AM +0200, Ch, Sai Gowtham wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
-> > Sent: Tuesday, April 25, 2023 9:07 AM
-> > To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
-> > Cc: igt-dev@lists.freedesktop.org
-> > Subject: Re: [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new with Xe.
-> > 
-> > On Mon, Apr 24, 2023 at 05:24:23PM +0530, sai.gowtham.ch@intel.com wrote:
-> > > From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> > >
-> > > Extending the spin_create implementation and allocator handle support
-> > > in xe, where it submits dummy work loads to engine. This
-> > > Implementation is wrapped around vm_bind and unbind as we are supposed to
-> > do it manually for xe.
-> > >
-> > > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > > Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> > > ---
-> > >  lib/xe/xe_spin.c | 39 +++++++++++++++++++++++++++++++++++++++
-> > >  lib/xe/xe_spin.h |  9 +++++++++
-> > >  2 files changed, 48 insertions(+)
-> > >
-> > > diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c index
-> > > 856d0ba2..e0629419 100644
-> > > --- a/lib/xe/xe_spin.c
-> > > +++ b/lib/xe/xe_spin.c
-> > > @@ -82,6 +82,45 @@ void xe_spin_end(struct xe_spin *spin)
-> > >  	spin->end = 0;
-> > >  }
-> > >
-> > > +void xe_spin_new(int fd, struct xe_spin *spin, struct
-> > > +drm_xe_engine_class_instance *eci) {
-> > > +	size_t bo_size = xe_get_default_alignment(fd);
-> > > +	uint32_t syncobj;
-> > > +	uint64_t ahnd = spin->ahnd, addr;
-> > > +	struct drm_xe_sync sync = {
-> > > +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-> > > +	};
-> > > +	struct drm_xe_exec exec = {
-> > > +		.num_batch_buffer = 1,
-> > > +		.num_syncs = 1,
-> > > +		.syncs = to_user_pointer(&sync),
-> > > +	};
-> > > +
-> > > +	spin->vm = xe_vm_create(fd, 0, 0);
-> > > +	spin->bo = xe_bo_create(fd, eci->gt_id, spin->vm, bo_size);
-> > > +	spin->engine = xe_engine_create(fd, spin->vm, eci, 0);
-> > > +	syncobj = syncobj_create(fd, 0);
-> > > +
-> > > +	if (ahnd)
-> > > +		addr = intel_allocator_alloc_with_strategy(ahnd, spin->bo,
-> > bo_size,
-> > > +0, ALLOC_STRATEGY_LOW_TO_HIGH);
-> > > +
-> > > +	xe_vm_bind_sync(fd, spin->vm, spin->bo, 0, addr, bo_size);
-> > > +
-> > > +	xe_spin_init(spin, addr, true);
-> > > +	exec.engine_id = spin->engine;
-> > > +	exec.address = addr;
-> > > +	sync.handle = syncobj;
-> > > +
-> > > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
-> > > +
-> > > +}
-> > > +
-> > > +void xe_spin_free(struct xe_spin *spin) {
-> > > +	xe_engine_destroy(spin->fd, spin->engine);
-> > > +	xe_vm_destroy(spin->fd, spin->vm);
-> > > +	gem_close(spin->fd, spin->bo);
-> > > +}
-> > 
-> > You need to embed this into igt_spin_new(). Take a look to
-> > kms_cursor_legacy.c.
-> > We want to have this syntax intact:
-> > 
-> > 	spin = igt_spin_new(display->drm_fd,
-> > 			    .ahnd = ahnd,
-> > 			    .dependency = fb_info.gem_handle);
-> > 
-> > --
-> > Zbigniew
-> > 
-> Will be calling this code from igt_spin_factory it self, with a check is being called like below 
-> 
-> igt_spin_t *
-> __igt_spin_factory(int fd, const struct igt_spin_factory *opts)
-> {
->         if (is_xe_device)
->                 xe_spin_create(fd, opts);
->         else
->                 spin_create(fd, opts);
-> }
-> And similarly in igt_spin_free:
-> 
-> What are your thoughts on this ? Do you think this works ? 
+Gentle ping. Thanks!
 
-We need adopt the code to make this work. Be aware that spin_create()
-uses igt_spin_t to collect all necessary information about spinner
-so you need to do this for xe_spin_create() too.
+Best Regards,
+- Maíra Canal
 
---
-Zbigniew
-
-
-> -----
-> Sai Gowtham
+On 4/3/23 10:01, Maíra Canal wrote:
+> This patchset introduces some improvements and generalizes the kms_rotation_crc
+> test. Currently, I'm working on the rotation property of the vkms driver [1]
+> and while working on it, I noticed that some subtests could be added and some
+> subtests could be more generic.
 > 
-> > >  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
-> > >  		  struct xe_cork *cork)
-> > >  {
-> > > diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h index
-> > > 73f9a026..12116445 100644
-> > > --- a/lib/xe/xe_spin.h
-> > > +++ b/lib/xe/xe_spin.h
-> > > @@ -17,15 +17,24 @@
-> > >  /* Mapped GPU object */
-> > >  struct xe_spin {
-> > >  	uint32_t batch[16];
-> > > +	int fd;
-> > >  	uint64_t pad;
-> > >  	uint32_t start;
-> > >  	uint32_t end;
-> > > +	uint64_t ahnd;
-> > > +	uint32_t engine;
-> > > +	uint32_t vm;
-> > > +	uint32_t bo;
-> > > +
-> > >  };
-> > >
-> > >  void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
-> > > bool xe_spin_started(struct xe_spin *spin);  void
-> > > xe_spin_wait_started(struct xe_spin *spin);  void xe_spin_end(struct
-> > > xe_spin *spin);
-> > > +void xe_spin_new(int fd, struct xe_spin *spin,
-> > > +		struct drm_xe_engine_class_instance *hwe); void
-> > xe_spin_free(struct
-> > > +xe_spin *spin);
-> > >
-> > >  struct xe_cork {
-> > >  	struct xe_spin *spin;
-> > > --
-> > > 2.39.1
-> > >
+> The first and second patches make the tests more generic. Currently, some
+> subtests use i915 modifiers, which make the subtest fail for other vendors
+> that are not Intel. Therefore, check if the device is i915 before using the
+> i915-specific modifiers.
+> 
+> The third patch expands the subtest "sprite-rotation-90-pos-100-0" by testing
+> all 90, 180 and 270 degrees rotation with x and y offsets. This can helps us
+> to assure that 90, 180 and 270 degrees rotation happens correctly even with
+> offsets.
+> 
+> Finally, add generic tests for reflect-x and reflect-y. Currently, there are
+> no tests for reflection values. So, add some generic reflection tests to
+> ensure that these properties are working correctly. Note that these subtests
+> must skip on i915 devices, as i915 uses reflect-x together with specific
+> modifiers.
+> 
+> [1] https://gitlab.freedesktop.org/mairacanal/linux/-/commits/vkms/rotation
+> 
+> Best Regards,
+> - Maíra Canal
+> 
+> Maíra Canal (4):
+>    tests/kms_rotation_crc: make the subtest "bad-pixel-format" i915-specific
+>    tests/kms_rotation_crc: use DRM_FORMAT_MOD_LINEAR as default modifier
+>    tests/kms_rotation_crc: add tests for a rotated plane in a given position
+>    tests/kms_rotation_crc: create generic reflection tests
+> 
+>   tests/kms_rotation_crc.c | 69 ++++++++++++++++++++++++++++++++++++----
+>   1 file changed, 62 insertions(+), 7 deletions(-)
+> 
