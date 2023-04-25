@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C650110E6D2
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 09:19:33 +0000 (UTC)
-Message-ID: <f003a13b-6449-fd9e-8b1b-a180e4443fa7@intel.com>
-Date: Tue, 25 Apr 2023 14:49:27 +0530
-MIME-Version: 1.0
-Content-Language: en-US
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78AD510E6E1
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 09:20:02 +0000 (UTC)
+Message-ID: <a62bd536-71d7-a25b-423a-4ce30e0ad073@intel.com>
+Date: Tue, 25 Apr 2023 14:49:43 +0530
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230425064953.2121947-32-bhanuprakash.modem@intel.com>
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20230425064953.2121947-32-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <igt-dev@lists.freedesktop.org>
+References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
+ <20230425064953.2121947-22-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230425064953.2121947-22-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t, V2,
- 31/40] tests/kms_hdmi_inject: Add XE support
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t V2 21/40] tests/i915/kms_mmap_write_crc: Add
+ XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,9 +32,30 @@ On 4/25/2023 12:19 PM, Bhanuprakash Modem wrote:
 > Add XE driver support for kms tests.
 >
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/kms_hdmi_inject.c | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
+>   tests/i915/kms_mmap_write_crc.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 >
-LGTM
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+> diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
+> index 4f7a86bf4..bc51975f6 100644
+> --- a/tests/i915/kms_mmap_write_crc.c
+> +++ b/tests/i915/kms_mmap_write_crc.c
+> @@ -102,7 +102,7 @@ static void test(data_t *data)
+>   	igt_plane_set_fb(data->primary, &data->fb[0]);
+>   	igt_display_commit(display);
+>   
+> -	if (!gem_has_lmem(data->drm_fd)) {
+> +	if (is_i915_device(data->drm_fd) && !gem_has_lmem(data->drm_fd)) {
+>   		uint32_t caching;
+>   
+>   		/* make sure caching mode has become UC/WT */
+> @@ -259,7 +259,7 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
+>   	enum pipe pipe;
+>   
+>   	igt_fixture {
+> -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+>   
+>   		data.devid = intel_get_drm_devid(data.drm_fd);
+>   
