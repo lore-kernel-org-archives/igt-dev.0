@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 898D910E6AB
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:55:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B4B910E6AB
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:55:08 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Apr 2023 12:19:47 +0530
-Message-Id: <20230425064953.2121947-35-bhanuprakash.modem@intel.com>
+Date: Tue, 25 Apr 2023 12:19:43 +0530
+Message-Id: <20230425064953.2121947-31-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 34/40] tests/kms_plane: Add XE support
+Subject: [igt-dev] [i-g-t V2 30/40] tests/kms_getfb: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,59 +26,89 @@ Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ tests/kms_getfb.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 62aee9ad0..10e16b638 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -30,6 +30,7 @@
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index 813417e77..4adc7eee2 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -42,6 +42,7 @@
+ #include "drm_fourcc.h"
+ #include "i915/gem_create.h"
+ #include "igt_device.h"
 +#include "xe/xe_query.h"
  
- /*
-  * Throw away enough lsbs in pixel formats tests
-@@ -399,6 +400,18 @@ test_plane_panning(data_t *data, enum pipe pipe)
+ IGT_TEST_DESCRIPTION("Tests GETFB and GETFB2 ioctls.");
  
+@@ -91,7 +92,6 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
+ 	uint32_t devid;
+ 
+ 	igt_require(has_addfb2_iface(fd));
+-	igt_require_intel(fd);
+ 	devid = intel_get_drm_devid(fd);
+ 
+ 	if (HAS_FLATCCS(devid)) {
+@@ -265,7 +265,7 @@ static void test_duplicate_handles(int fd)
+ 		struct drm_mode_fb_cmd2 add_ccs = { };
+ 		struct drm_mode_fb_cmd get = { };
+ 
+-		igt_require(is_i915_device(fd));
++		igt_require_i915(fd);
+ 		igt_require_f(!HAS_FLATCCS(intel_get_drm_devid(fd)),
+ 			      "skip because flat ccs has only one buffer.\n");
+ 
+@@ -340,6 +340,7 @@ static void test_getfb2(int fd)
+ 		struct drm_mode_fb_cmd2 get = { };
+ 		int i;
+ 
++		igt_require_i915(fd);
+ 		get_ccs_fb(fd, &add_ccs);
+ 		igt_require(add_ccs.fb_id != 0);
+ 		get.fb_id = add_ccs.fb_id;
+@@ -398,6 +399,9 @@ static void test_handle_protection(void) {
+ 	igt_fixture {
+ 		non_master_fd = drm_open_driver(DRIVER_ANY);
+ 
++		if (is_xe_device(non_master_fd))
++			xe_device_get(non_master_fd);
++
+ 		non_master_add.width = 1024;
+ 		non_master_add.height = 1024;
+ 		non_master_add.pixel_format = DRM_FORMAT_XRGB8888;
+@@ -444,6 +448,11 @@ static void test_handle_protection(void) {
+ 	igt_fixture {
+ 		do_ioctl(non_master_fd, DRM_IOCTL_MODE_RMFB, &non_master_add.fb_id);
+ 		gem_close(non_master_fd, non_master_add.handles[0]);
++
++		if (is_xe_device(non_master_fd))
++			xe_device_get(non_master_fd);
++
++		close(non_master_fd);
+ 	}
+ }
+ 
+@@ -454,6 +463,9 @@ igt_main
+ 	igt_fixture {
+ 		fd = drm_open_driver_master(DRIVER_ANY);
+ 		igt_require(has_getfb_iface(fd));
++
++		if (is_xe_device(fd))
++			xe_device_get(fd);
  	}
  
-+	if (is_xe_device(data->drm_fd)) {
-+		struct drm_xe_query_mem_region *memregion;
-+		uint64_t memreg = all_memory_regions(data->drm_fd), region;
+ 	igt_subtest_group
+@@ -468,6 +480,10 @@ igt_main
+ 	igt_subtest_group
+ 		test_handle_protection();
+ 
+-	igt_fixture
++	igt_fixture {
++		if (is_xe_device(fd))
++			xe_device_put(fd);
 +
-+		xe_for_each_mem_region(data->drm_fd, memreg, region) {
-+			memregion = xe_mem_region(data->drm_fd, region);
-+
-+			if (XE_IS_CLASS_VRAM(memregion))
-+				mem_size = memregion->total_size;
-+		}
+ 		close(fd);
 +	}
-+
- 	for_each_connector_mode(output) {
- 		drmModeModeInfo *m = &output->config.connector->modes[j__];
- 		uint32_t fb_size = m->hdisplay * m->vdisplay * 4;
-@@ -976,6 +989,10 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
- 			.modifier = plane->modifiers[i],
- 		};
- 
-+		if (is_xe_device(data->drm_fd) &&
-+		    f.modifier != DRM_FORMAT_MOD_LINEAR)
-+			continue;
-+
- 		if (f.format == ref.format &&
- 		    f.modifier == ref.modifier)
- 			continue;
-@@ -1050,7 +1067,7 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
- 	if (data->extended)
- 		return false;
- 
--	if (!is_i915_device(data->drm_fd))
-+	if (!is_intel_device(data->drm_fd))
- 		return false;
- 
- 	if (plane->type == DRM_PLANE_TYPE_CURSOR)
+ }
 -- 
 2.40.0
