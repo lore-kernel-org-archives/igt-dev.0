@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1B0C10E6A7
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:54:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD66110E6AB
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:55:12 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Apr 2023 12:19:24 +0530
-Message-Id: <20230425064953.2121947-12-bhanuprakash.modem@intel.com>
+Date: Tue, 25 Apr 2023 12:19:48 +0530
+Message-Id: <20230425064953.2121947-36-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 11/40] lib/igt_fb: For xe assume vram is used
- on discrete
+Subject: [igt-dev] [i-g-t V2 35/40] tests/kms_plane_lowers: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,50 +22,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Add XE driver support for kms tests.
 
-Assume fb bo's were created on vram on discrete, otherwise use system
-memory.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_fb.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ tests/kms_plane_lowres.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 7379b99aa..2c1d48783 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2545,6 +2545,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
- {
- 	struct intel_buf *buf;
- 	uint32_t bo_name, handle, compression;
-+	uint64_t region;
- 	int num_surfaces;
- 	int i;
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index 958d3ec6f..db9f5a54c 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -266,8 +266,11 @@ static void run_test(data_t *data, uint64_t modifier)
+ 	enum pipe pipe;
+ 	igt_output_t *output;
  
-@@ -2571,12 +2572,15 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
- 	bo_name = gem_flink(fd, fb->gem_handle);
- 	handle = gem_open(fd, bo_name);
+-	igt_skip_on(!igt_display_has_format_mod(&data->display,
+-						DRM_FORMAT_XRGB8888, modifier));
++	if(!igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888, modifier))
++		return;
++
++	if (is_xe_device(data->drm_fd) && modifier != DRM_FORMAT_MOD_LINEAR)
++		return;
  
--	buf = intel_buf_create_using_handle_and_size(bops, handle,
--						     fb->width, fb->height,
--						     fb->plane_bpp[0], 0,
--						     igt_fb_mod_to_tiling(fb->modifier),
--						     compression, fb->size,
--						     fb->strides[0]);
-+	/* For i915 region doesn't matter, for xe does */
-+	region = is_i915_device(fd) ? 0 : vram_if_possible(fd, 0);
-+	buf = intel_buf_create_full(bops, handle,
-+				    fb->width, fb->height,
-+				    fb->plane_bpp[0], 0,
-+				    igt_fb_mod_to_tiling(fb->modifier),
-+				    compression, fb->size,
-+				    fb->strides[0],
-+				    region);
- 	intel_buf_set_name(buf, name);
+ 	for_each_pipe(&data->display, pipe) {
+ 		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+@@ -318,7 +321,7 @@ igt_main
  
- 	/* Make sure we close handle on destroy path */
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+-		data.devid = is_i915_device(data.drm_fd) ?
++		data.devid = is_intel_device(data.drm_fd) ?
+ 			intel_get_drm_devid(data.drm_fd) : 0;
+ 
+ 		kmstest_set_vt_graphics_mode();
 -- 
 2.40.0
