@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70DD210E676
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 07:07:31 +0000 (UTC)
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Date: Tue, 25 Apr 2023 07:07:15 +0000
-Message-ID: <BYAPR11MB3413E63B18DB468CB7F65F3DD0649@BYAPR11MB3413.namprd11.prod.outlook.com>
-References: <20230424115423.28726-1-sai.gowtham.ch@intel.com>
- <20230425033654.zw4pw32bdqwohvsy@zkempczy-mobl2>
-In-Reply-To: <20230425033654.zw4pw32bdqwohvsy@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/alternative;
+ boundary="===============1837711371375119759=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new
- with Xe.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Tue, 25 Apr 2023 07:39:44 -0000
+Message-ID: <168240838472.24067.17116635342471921780@emeril.freedesktop.org>
+References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIElH?=
+ =?utf-8?q?T_display_support_for_XE_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,83 +17,502 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2VtcGN6eW5za2ksIFpi
-aWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXks
-IEFwcmlsIDI1LCAyMDIzIDk6MDcgQU0NCj4gVG86IENoLCBTYWkgR293dGhhbSA8c2FpLmdvd3Ro
-YW0uY2hAaW50ZWwuY29tPg0KPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4g
-U3ViamVjdDogUmU6IFtQQVRDSCBpLWctdF0gbGliL3hlL3hlX3NwaW46IEludGVncmF0ZSBpZ3Rf
-c3Bpbl9uZXcgd2l0aCBYZS4NCj4gDQo+IE9uIE1vbiwgQXByIDI0LCAyMDIzIGF0IDA1OjI0OjIz
-UE0gKzA1MzAsIHNhaS5nb3d0aGFtLmNoQGludGVsLmNvbSB3cm90ZToNCj4gPiBGcm9tOiBTYWkg
-R293dGhhbSBDaCA8c2FpLmdvd3RoYW0uY2hAaW50ZWwuY29tPg0KPiA+DQo+ID4gRXh0ZW5kaW5n
-IHRoZSBzcGluX2NyZWF0ZSBpbXBsZW1lbnRhdGlvbiBhbmQgYWxsb2NhdG9yIGhhbmRsZSBzdXBw
-b3J0DQo+ID4gaW4geGUsIHdoZXJlIGl0IHN1Ym1pdHMgZHVtbXkgd29yayBsb2FkcyB0byBlbmdp
-bmUuIFRoaXMNCj4gPiBJbXBsZW1lbnRhdGlvbiBpcyB3cmFwcGVkIGFyb3VuZCB2bV9iaW5kIGFu
-ZCB1bmJpbmQgYXMgd2UgYXJlIHN1cHBvc2VkIHRvDQo+IGRvIGl0IG1hbnVhbGx5IGZvciB4ZS4N
-Cj4gPg0KPiA+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tp
-QGludGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTYWkgR293dGhhbSBDaCA8c2FpLmdvd3Ro
-YW0uY2hAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICBsaWIveGUveGVfc3Bpbi5jIHwgMzkgKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gIGxpYi94ZS94ZV9zcGlu
-LmggfCAgOSArKysrKysrKysNCj4gPiAgMiBmaWxlcyBjaGFuZ2VkLCA0OCBpbnNlcnRpb25zKCsp
-DQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvbGliL3hlL3hlX3NwaW4uYyBiL2xpYi94ZS94ZV9zcGlu
-LmMgaW5kZXgNCj4gPiA4NTZkMGJhMi4uZTA2Mjk0MTkgMTAwNjQ0DQo+ID4gLS0tIGEvbGliL3hl
-L3hlX3NwaW4uYw0KPiA+ICsrKyBiL2xpYi94ZS94ZV9zcGluLmMNCj4gPiBAQCAtODIsNiArODIs
-NDUgQEAgdm9pZCB4ZV9zcGluX2VuZChzdHJ1Y3QgeGVfc3BpbiAqc3BpbikNCj4gPiAgCXNwaW4t
-PmVuZCA9IDA7DQo+ID4gIH0NCj4gPg0KPiA+ICt2b2lkIHhlX3NwaW5fbmV3KGludCBmZCwgc3Ry
-dWN0IHhlX3NwaW4gKnNwaW4sIHN0cnVjdA0KPiA+ICtkcm1feGVfZW5naW5lX2NsYXNzX2luc3Rh
-bmNlICplY2kpIHsNCj4gPiArCXNpemVfdCBib19zaXplID0geGVfZ2V0X2RlZmF1bHRfYWxpZ25t
-ZW50KGZkKTsNCj4gPiArCXVpbnQzMl90IHN5bmNvYmo7DQo+ID4gKwl1aW50NjRfdCBhaG5kID0g
-c3Bpbi0+YWhuZCwgYWRkcjsNCj4gPiArCXN0cnVjdCBkcm1feGVfc3luYyBzeW5jID0gew0KPiA+
-ICsJCS5mbGFncyA9IERSTV9YRV9TWU5DX1NZTkNPQkogfCBEUk1fWEVfU1lOQ19TSUdOQUwsDQo+
-ID4gKwl9Ow0KPiA+ICsJc3RydWN0IGRybV94ZV9leGVjIGV4ZWMgPSB7DQo+ID4gKwkJLm51bV9i
-YXRjaF9idWZmZXIgPSAxLA0KPiA+ICsJCS5udW1fc3luY3MgPSAxLA0KPiA+ICsJCS5zeW5jcyA9
-IHRvX3VzZXJfcG9pbnRlcigmc3luYyksDQo+ID4gKwl9Ow0KPiA+ICsNCj4gPiArCXNwaW4tPnZt
-ID0geGVfdm1fY3JlYXRlKGZkLCAwLCAwKTsNCj4gPiArCXNwaW4tPmJvID0geGVfYm9fY3JlYXRl
-KGZkLCBlY2ktPmd0X2lkLCBzcGluLT52bSwgYm9fc2l6ZSk7DQo+ID4gKwlzcGluLT5lbmdpbmUg
-PSB4ZV9lbmdpbmVfY3JlYXRlKGZkLCBzcGluLT52bSwgZWNpLCAwKTsNCj4gPiArCXN5bmNvYmog
-PSBzeW5jb2JqX2NyZWF0ZShmZCwgMCk7DQo+ID4gKw0KPiA+ICsJaWYgKGFobmQpDQo+ID4gKwkJ
-YWRkciA9IGludGVsX2FsbG9jYXRvcl9hbGxvY193aXRoX3N0cmF0ZWd5KGFobmQsIHNwaW4tPmJv
-LA0KPiBib19zaXplLA0KPiA+ICswLCBBTExPQ19TVFJBVEVHWV9MT1dfVE9fSElHSCk7DQo+ID4g
-Kw0KPiA+ICsJeGVfdm1fYmluZF9zeW5jKGZkLCBzcGluLT52bSwgc3Bpbi0+Ym8sIDAsIGFkZHIs
-IGJvX3NpemUpOw0KPiA+ICsNCj4gPiArCXhlX3NwaW5faW5pdChzcGluLCBhZGRyLCB0cnVlKTsN
-Cj4gPiArCWV4ZWMuZW5naW5lX2lkID0gc3Bpbi0+ZW5naW5lOw0KPiA+ICsJZXhlYy5hZGRyZXNz
-ID0gYWRkcjsNCj4gPiArCXN5bmMuaGFuZGxlID0gc3luY29iajsNCj4gPiArDQo+ID4gKwlpZ3Rf
-YXNzZXJ0X2VxKGlndF9pb2N0bChmZCwgRFJNX0lPQ1RMX1hFX0VYRUMsICZleGVjKSwgMCk7DQo+
-ID4gKw0KPiA+ICt9DQo+ID4gKw0KPiA+ICt2b2lkIHhlX3NwaW5fZnJlZShzdHJ1Y3QgeGVfc3Bp
-biAqc3Bpbikgew0KPiA+ICsJeGVfZW5naW5lX2Rlc3Ryb3koc3Bpbi0+ZmQsIHNwaW4tPmVuZ2lu
-ZSk7DQo+ID4gKwl4ZV92bV9kZXN0cm95KHNwaW4tPmZkLCBzcGluLT52bSk7DQo+ID4gKwlnZW1f
-Y2xvc2Uoc3Bpbi0+ZmQsIHNwaW4tPmJvKTsNCj4gPiArfQ0KPiANCj4gWW91IG5lZWQgdG8gZW1i
-ZWQgdGhpcyBpbnRvIGlndF9zcGluX25ldygpLiBUYWtlIGEgbG9vayB0bw0KPiBrbXNfY3Vyc29y
-X2xlZ2FjeS5jLg0KPiBXZSB3YW50IHRvIGhhdmUgdGhpcyBzeW50YXggaW50YWN0Og0KPiANCj4g
-CXNwaW4gPSBpZ3Rfc3Bpbl9uZXcoZGlzcGxheS0+ZHJtX2ZkLA0KPiAJCQkgICAgLmFobmQgPSBh
-aG5kLA0KPiAJCQkgICAgLmRlcGVuZGVuY3kgPSBmYl9pbmZvLmdlbV9oYW5kbGUpOw0KPiANCj4g
-LS0NCj4gWmJpZ25pZXcNCj4gDQpXaWxsIGJlIGNhbGxpbmcgdGhpcyBjb2RlIGZyb20gaWd0X3Nw
-aW5fZmFjdG9yeSBpdCBzZWxmLCB3aXRoIGEgY2hlY2sgaXMgYmVpbmcgY2FsbGVkIGxpa2UgYmVs
-b3cgDQoNCmlndF9zcGluX3QgKg0KX19pZ3Rfc3Bpbl9mYWN0b3J5KGludCBmZCwgY29uc3Qgc3Ry
-dWN0IGlndF9zcGluX2ZhY3RvcnkgKm9wdHMpDQp7DQogICAgICAgIGlmIChpc194ZV9kZXZpY2Up
-DQogICAgICAgICAgICAgICAgeGVfc3Bpbl9jcmVhdGUoZmQsIG9wdHMpOw0KICAgICAgICBlbHNl
-DQogICAgICAgICAgICAgICAgc3Bpbl9jcmVhdGUoZmQsIG9wdHMpOw0KfQ0KQW5kIHNpbWlsYXJs
-eSBpbiBpZ3Rfc3Bpbl9mcmVlOg0KDQpXaGF0IGFyZSB5b3VyIHRob3VnaHRzIG9uIHRoaXMgPyBE
-byB5b3UgdGhpbmsgdGhpcyB3b3JrcyA/IA0KLS0tLS0NClNhaSBHb3d0aGFtDQoNCj4gPiAgdm9p
-ZCB4ZV9jb3JrX2luaXQoaW50IGZkLCBzdHJ1Y3QgZHJtX3hlX2VuZ2luZV9jbGFzc19pbnN0YW5j
-ZSAqaHdlLA0KPiA+ICAJCSAgc3RydWN0IHhlX2NvcmsgKmNvcmspDQo+ID4gIHsNCj4gPiBkaWZm
-IC0tZ2l0IGEvbGliL3hlL3hlX3NwaW4uaCBiL2xpYi94ZS94ZV9zcGluLmggaW5kZXgNCj4gPiA3
-M2Y5YTAyNi4uMTIxMTY0NDUgMTAwNjQ0DQo+ID4gLS0tIGEvbGliL3hlL3hlX3NwaW4uaA0KPiA+
-ICsrKyBiL2xpYi94ZS94ZV9zcGluLmgNCj4gPiBAQCAtMTcsMTUgKzE3LDI0IEBADQo+ID4gIC8q
-IE1hcHBlZCBHUFUgb2JqZWN0ICovDQo+ID4gIHN0cnVjdCB4ZV9zcGluIHsNCj4gPiAgCXVpbnQz
-Ml90IGJhdGNoWzE2XTsNCj4gPiArCWludCBmZDsNCj4gPiAgCXVpbnQ2NF90IHBhZDsNCj4gPiAg
-CXVpbnQzMl90IHN0YXJ0Ow0KPiA+ICAJdWludDMyX3QgZW5kOw0KPiA+ICsJdWludDY0X3QgYWhu
-ZDsNCj4gPiArCXVpbnQzMl90IGVuZ2luZTsNCj4gPiArCXVpbnQzMl90IHZtOw0KPiA+ICsJdWlu
-dDMyX3QgYm87DQo+ID4gKw0KPiA+ICB9Ow0KPiA+DQo+ID4gIHZvaWQgeGVfc3Bpbl9pbml0KHN0
-cnVjdCB4ZV9zcGluICpzcGluLCB1aW50NjRfdCBhZGRyLCBib29sIHByZWVtcHQpOw0KPiA+IGJv
-b2wgeGVfc3Bpbl9zdGFydGVkKHN0cnVjdCB4ZV9zcGluICpzcGluKTsgIHZvaWQNCj4gPiB4ZV9z
-cGluX3dhaXRfc3RhcnRlZChzdHJ1Y3QgeGVfc3BpbiAqc3Bpbik7ICB2b2lkIHhlX3NwaW5fZW5k
-KHN0cnVjdA0KPiA+IHhlX3NwaW4gKnNwaW4pOw0KPiA+ICt2b2lkIHhlX3NwaW5fbmV3KGludCBm
-ZCwgc3RydWN0IHhlX3NwaW4gKnNwaW4sDQo+ID4gKwkJc3RydWN0IGRybV94ZV9lbmdpbmVfY2xh
-c3NfaW5zdGFuY2UgKmh3ZSk7IHZvaWQNCj4geGVfc3Bpbl9mcmVlKHN0cnVjdA0KPiA+ICt4ZV9z
-cGluICpzcGluKTsNCj4gPg0KPiA+ICBzdHJ1Y3QgeGVfY29yayB7DQo+ID4gIAlzdHJ1Y3QgeGVf
-c3BpbiAqc3BpbjsNCj4gPiAtLQ0KPiA+IDIuMzkuMQ0KPiA+DQo=
+--===============1837711371375119759==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Add IGT display support for XE (rev2)
+URL   : https://patchwork.freedesktop.org/series/116658/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7268 -> IGTPW_8852
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8852 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8852, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/index.html
+
+Participating hosts (38 -> 37)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8852:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_render_linear_blits@basic:
+    - fi-rkl-11600:       [PASS][1] -> [FAIL][2] +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-rkl-11600/igt@gem_render_linear_blits@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-rkl-11600/igt@gem_render_linear_blits@basic.html
+    - fi-skl-6600u:       [PASS][3] -> [FAIL][4] +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-skl-6600u/igt@gem_render_linear_blits@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-skl-6600u/igt@gem_render_linear_blits@basic.html
+    - bat-adls-5:         [PASS][5] -> [FAIL][6] +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-adls-5/igt@gem_render_linear_blits@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-adls-5/igt@gem_render_linear_blits@basic.html
+    - fi-apl-guc:         [PASS][7] -> [FAIL][8] +3 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-apl-guc/igt@gem_render_linear_blits@basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-apl-guc/igt@gem_render_linear_blits@basic.html
+    - bat-dg1-5:          [PASS][9] -> [FAIL][10] +1 similar issue
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-dg1-5/igt@gem_render_linear_blits@basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-dg1-5/igt@gem_render_linear_blits@basic.html
+    - bat-atsm-1:         [PASS][11] -> [FAIL][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-atsm-1/igt@gem_render_linear_blits@basic.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-atsm-1/igt@gem_render_linear_blits@basic.html
+    - bat-dg1-7:          [PASS][13] -> [FAIL][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-dg1-7/igt@gem_render_linear_blits@basic.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-dg1-7/igt@gem_render_linear_blits@basic.html
+    - bat-jsl-3:          [PASS][15] -> [FAIL][16] +3 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-jsl-3/igt@gem_render_linear_blits@basic.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-jsl-3/igt@gem_render_linear_blits@basic.html
+    - fi-skl-guc:         [PASS][17] -> [FAIL][18] +3 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-skl-guc/igt@gem_render_linear_blits@basic.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-skl-guc/igt@gem_render_linear_blits@basic.html
+    - fi-kbl-7567u:       [PASS][19] -> [FAIL][20] +3 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-kbl-7567u/igt@gem_render_linear_blits@basic.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-kbl-7567u/igt@gem_render_linear_blits@basic.html
+    - fi-kbl-8809g:       [PASS][21] -> [FAIL][22] +2 similar issues
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-kbl-8809g/igt@gem_render_linear_blits@basic.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-kbl-8809g/igt@gem_render_linear_blits@basic.html
+    - fi-elk-e7500:       [PASS][23] -> [FAIL][24] +2 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-elk-e7500/igt@gem_render_linear_blits@basic.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-elk-e7500/igt@gem_render_linear_blits@basic.html
+    - fi-bsw-nick:        [PASS][25] -> [FAIL][26] +1 similar issue
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-bsw-nick/igt@gem_render_linear_blits@basic.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-bsw-nick/igt@gem_render_linear_blits@basic.html
+    - bat-dg2-9:          [PASS][27] -> [FAIL][28] +1 similar issue
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-dg2-9/igt@gem_render_linear_blits@basic.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-dg2-9/igt@gem_render_linear_blits@basic.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - fi-glk-j4005:       [PASS][29] -> [FAIL][30] +3 similar issues
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-glk-j4005/igt@gem_render_tiled_blits@basic.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-glk-j4005/igt@gem_render_tiled_blits@basic.html
+    - bat-adlp-9:         [PASS][31] -> [FAIL][32] +3 similar issues
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-adlp-9/igt@gem_render_tiled_blits@basic.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-adlp-9/igt@gem_render_tiled_blits@basic.html
+    - fi-cfl-8700k:       [PASS][33] -> [FAIL][34] +3 similar issues
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-cfl-8700k/igt@gem_render_tiled_blits@basic.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-cfl-8700k/igt@gem_render_tiled_blits@basic.html
+    - fi-blb-e6850:       [PASS][35] -> [FAIL][36] +2 similar issues
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-blb-e6850/igt@gem_render_tiled_blits@basic.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-blb-e6850/igt@gem_render_tiled_blits@basic.html
+    - bat-rplp-1:         [PASS][37] -> [FAIL][38] +3 similar issues
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-rplp-1/igt@gem_render_tiled_blits@basic.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-rplp-1/igt@gem_render_tiled_blits@basic.html
+    - fi-kbl-x1275:       [PASS][39] -> [FAIL][40] +2 similar issues
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-kbl-x1275/igt@gem_render_tiled_blits@basic.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-kbl-x1275/igt@gem_render_tiled_blits@basic.html
+
+  * igt@gem_tiled_blits@basic:
+    - fi-kbl-guc:         [PASS][41] -> [FAIL][42] +2 similar issues
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-kbl-guc/igt@gem_tiled_blits@basic.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-kbl-guc/igt@gem_tiled_blits@basic.html
+    - bat-adlm-1:         [PASS][43] -> [FAIL][44] +2 similar issues
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-adlm-1/igt@gem_tiled_blits@basic.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-adlm-1/igt@gem_tiled_blits@basic.html
+    - fi-ilk-650:         [PASS][45] -> [FAIL][46] +3 similar issues
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-ilk-650/igt@gem_tiled_blits@basic.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-ilk-650/igt@gem_tiled_blits@basic.html
+    - bat-jsl-1:          [PASS][47] -> [FAIL][48] +3 similar issues
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-jsl-1/igt@gem_tiled_blits@basic.html
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-jsl-1/igt@gem_tiled_blits@basic.html
+    - fi-tgl-1115g4:      [PASS][49] -> [FAIL][50] +3 similar issues
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-tgl-1115g4/igt@gem_tiled_blits@basic.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-tgl-1115g4/igt@gem_tiled_blits@basic.html
+    - bat-rpls-1:         [PASS][51] -> [FAIL][52] +2 similar issues
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-rpls-1/igt@gem_tiled_blits@basic.html
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-rpls-1/igt@gem_tiled_blits@basic.html
+    - fi-cfl-guc:         [PASS][53] -> [FAIL][54] +3 similar issues
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-cfl-guc/igt@gem_tiled_blits@basic.html
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-cfl-guc/igt@gem_tiled_blits@basic.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-hsw-4770:        [PASS][55] -> [FAIL][56] +3 similar issues
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-hsw-4770/igt@kms_frontbuffer_tracking@basic.html
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-hsw-4770/igt@kms_frontbuffer_tracking@basic.html
+    - fi-cfl-8109u:       [PASS][57] -> [FAIL][58] +3 similar issues
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+    - bat-adln-1:         [PASS][59] -> [FAIL][60] +3 similar issues
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-adln-1/igt@kms_frontbuffer_tracking@basic.html
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-adln-1/igt@kms_frontbuffer_tracking@basic.html
+    - fi-ivb-3770:        [PASS][61] -> [FAIL][62] +3 similar issues
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-ivb-3770/igt@kms_frontbuffer_tracking@basic.html
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-ivb-3770/igt@kms_frontbuffer_tracking@basic.html
+    - bat-dg2-8:          [PASS][63] -> [FAIL][64] +1 similar issue
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-dg2-8/igt@kms_frontbuffer_tracking@basic.html
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-dg2-8/igt@kms_frontbuffer_tracking@basic.html
+    - fi-bsw-n3050:       [PASS][65] -> [FAIL][66] +2 similar issues
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-bsw-n3050/igt@kms_frontbuffer_tracking@basic.html
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-bsw-n3050/igt@kms_frontbuffer_tracking@basic.html
+    - bat-adlp-6:         [PASS][67] -> [FAIL][68] +3 similar issues
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-adlp-6/igt@kms_frontbuffer_tracking@basic.html
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-adlp-6/igt@kms_frontbuffer_tracking@basic.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_render_tiled_blits@basic:
+    - {bat-kbl-2}:        [PASS][69] -> [FAIL][70] +2 similar issues
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-kbl-2/igt@gem_render_tiled_blits@basic.html
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-kbl-2/igt@gem_render_tiled_blits@basic.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8852 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-7567u:       [PASS][71] -> [DMESG-FAIL][72] ([i915#5334] / [i915#7872])
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-atsm-1:         [PASS][73] -> [DMESG-FAIL][74] ([i915#7699])
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-atsm-1/igt@i915_selftest@live@migrate.html
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-atsm-1/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rplp-1:         [PASS][75] -> [ABORT][76] ([i915#7913])
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-rplp-1/igt@i915_selftest@live@requests.html
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-rplp-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [PASS][77] -> [ABORT][78] ([i915#4983] / [i915#8384])
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7268 -> IGTPW_8852
+
+  CI-20190529: 20190529
+  CI_DRM_13056: 308c0163d9e46238948942260e6d2abcad3d8bff @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8852: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/index.html
+  IGT_7268: b07894648514a9f22a7a5805832e41a4e7890288 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_plane_scaling@intel-max-src-size
++igt@xe_gpgpu_fill@basic
++igt@xe_intel_bb@add-remove-objects
++igt@xe_intel_bb@bb-with-allocator
++igt@xe_intel_bb@blit-reloc
++igt@xe_intel_bb@blit-simple
++igt@xe_intel_bb@create-in-region
++igt@xe_intel_bb@delta-check
++igt@xe_intel_bb@destroy-bb
++igt@xe_intel_bb@full-batch
++igt@xe_intel_bb@intel-bb-blit-none
++igt@xe_intel_bb@intel-bb-blit-x
++igt@xe_intel_bb@intel-bb-blit-y
++igt@xe_intel_bb@lot-of-buffers
++igt@xe_intel_bb@offset-control
++igt@xe_intel_bb@purge-bb
++igt@xe_intel_bb@render
++igt@xe_intel_bb@reset-bb
++igt@xe_intel_bb@simple-bb
++igt@xe_intel_bb@simple-bb-ctx
+-igt@kms_plane_scaling@i915-max-src-size
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/index.html
+
+--===============1837711371375119759==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add IGT display support for XE (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116658/">https://patchwork.freedesktop.org/series/116658/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7268 -&gt; IGTPW_8852</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8852 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8852, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8852:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@gem_render_linear_blits@basic:</p>
+<ul>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-rkl-11600/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-rkl-11600/igt@gem_render_linear_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-skl-6600u/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-skl-6600u/igt@gem_render_linear_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>bat-adls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-adls-5/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-adls-5/igt@gem_render_linear_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-apl-guc/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-apl-guc/igt@gem_render_linear_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-dg1-5/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-dg1-5/igt@gem_render_linear_blits@basic.html">FAIL</a> +1 similar issue</p>
+</li>
+<li>
+<p>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-atsm-1/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-atsm-1/igt@gem_render_linear_blits@basic.html">FAIL</a></p>
+</li>
+<li>
+<p>bat-dg1-7:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-dg1-7/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-dg1-7/igt@gem_render_linear_blits@basic.html">FAIL</a></p>
+</li>
+<li>
+<p>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-jsl-3/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-jsl-3/igt@gem_render_linear_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-skl-guc/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-skl-guc/igt@gem_render_linear_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-kbl-7567u/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-kbl-7567u/igt@gem_render_linear_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-kbl-8809g/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-kbl-8809g/igt@gem_render_linear_blits@basic.html">FAIL</a> +2 similar issues</p>
+</li>
+<li>
+<p>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-elk-e7500/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-elk-e7500/igt@gem_render_linear_blits@basic.html">FAIL</a> +2 similar issues</p>
+</li>
+<li>
+<p>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-bsw-nick/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-bsw-nick/igt@gem_render_linear_blits@basic.html">FAIL</a> +1 similar issue</p>
+</li>
+<li>
+<p>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-dg2-9/igt@gem_render_linear_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-dg2-9/igt@gem_render_linear_blits@basic.html">FAIL</a> +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>
+<p>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-glk-j4005/igt@gem_render_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-glk-j4005/igt@gem_render_tiled_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-adlp-9/igt@gem_render_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-adlp-9/igt@gem_render_tiled_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-cfl-8700k/igt@gem_render_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-cfl-8700k/igt@gem_render_tiled_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-blb-e6850/igt@gem_render_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-blb-e6850/igt@gem_render_tiled_blits@basic.html">FAIL</a> +2 similar issues</p>
+</li>
+<li>
+<p>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-rplp-1/igt@gem_render_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-rplp-1/igt@gem_render_tiled_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-kbl-x1275/igt@gem_render_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-kbl-x1275/igt@gem_render_tiled_blits@basic.html">FAIL</a> +2 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_blits@basic:</p>
+<ul>
+<li>
+<p>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-kbl-guc/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-kbl-guc/igt@gem_tiled_blits@basic.html">FAIL</a> +2 similar issues</p>
+</li>
+<li>
+<p>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-adlm-1/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-adlm-1/igt@gem_tiled_blits@basic.html">FAIL</a> +2 similar issues</p>
+</li>
+<li>
+<p>fi-ilk-650:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-ilk-650/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-ilk-650/igt@gem_tiled_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-jsl-1/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-jsl-1/igt@gem_tiled_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-tgl-1115g4/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-tgl-1115g4/igt@gem_tiled_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-rpls-1/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-rpls-1/igt@gem_tiled_blits@basic.html">FAIL</a> +2 similar issues</p>
+</li>
+<li>
+<p>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-cfl-guc/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-cfl-guc/igt@gem_tiled_blits@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-hsw-4770/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-hsw-4770/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-adln-1/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-adln-1/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-ivb-3770/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-ivb-3770/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+<li>
+<p>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-dg2-8/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-dg2-8/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-bsw-n3050/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-bsw-n3050/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> +2 similar issues</p>
+</li>
+<li>
+<p>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-adlp-6/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-adlp-6/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> +3 similar issues</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@gem_render_tiled_blits@basic:<ul>
+<li>{bat-kbl-2}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-kbl-2/igt@gem_render_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-kbl-2/igt@gem_render_tiled_blits@basic.html">FAIL</a> +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8852 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-atsm-1/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-atsm-1/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-rplp-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-rplp-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7268/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7268 -&gt; IGTPW_8852</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13056: 308c0163d9e46238948942260e6d2abcad3d8bff @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8852: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8852/index.html<br />
+  IGT_7268: b07894648514a9f22a7a5805832e41a4e7890288 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_plane_scaling@intel-max-src-size<br />
++igt@xe_gpgpu_fill@basic<br />
++igt@xe_intel_bb@add-remove-objects<br />
++igt@xe_intel_bb@bb-with-allocator<br />
++igt@xe_intel_bb@blit-reloc<br />
++igt@xe_intel_bb@blit-simple<br />
++igt@xe_intel_bb@create-in-region<br />
++igt@xe_intel_bb@delta-check<br />
++igt@xe_intel_bb@destroy-bb<br />
++igt@xe_intel_bb@full-batch<br />
++igt@xe_intel_bb@intel-bb-blit-none<br />
++igt@xe_intel_bb@intel-bb-blit-x<br />
++igt@xe_intel_bb@intel-bb-blit-y<br />
++igt@xe_intel_bb@lot-of-buffers<br />
++igt@xe_intel_bb@offset-control<br />
++igt@xe_intel_bb@purge-bb<br />
++igt@xe_intel_bb@render<br />
++igt@xe_intel_bb@reset-bb<br />
++igt@xe_intel_bb@simple-bb<br />
++igt@xe_intel_bb@simple-bb-ctx<br />
+-igt@kms_plane_scaling@i915-max-src-size</p>
+
+</body>
+</html>
+
+--===============1837711371375119759==--
