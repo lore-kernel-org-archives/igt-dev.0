@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CF9810E864
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 02:06:13 +0000 (UTC)
-Message-ID: <e24adf6f-0834-cfd1-df8e-7e6318fc1a0b@intel.com>
-Date: Wed, 26 Apr 2023 07:36:07 +0530
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 851C910E78D
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 15:41:03 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 25 Apr 2023 17:40:12 +0200
+Message-Id: <20230425154017.374465-11-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
+References: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230425064953.2121947-18-bhanuprakash.modem@intel.com>
-From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-In-Reply-To: <20230425064953.2121947-18-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t, V2,
- 17/40] tests/i915/kms_draw_crc: Add XE support
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v6 10/15] tests/xe-fast-feedback: Add
+ xe_intel_bb test to BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,78 +24,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Verifies intel-bb integration with xe.
 
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-On 4/25/2023 12:19 PM, Bhanuprakash Modem wrote:
-> Add XE driver support for differnt draw methods.
-Please correct the spelling of 'different'
-
-With that change, patch looks good to me.
-Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/i915/kms_draw_crc.c | 24 ++++++++++++++----------
->   1 file changed, 14 insertions(+), 10 deletions(-)
-> 
-> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-> index 3a3cd99a0..db6d71f2e 100644
-> --- a/tests/i915/kms_draw_crc.c
-> +++ b/tests/i915/kms_draw_crc.c
-> @@ -149,8 +149,8 @@ static void draw_method_subtest(enum igt_draw_method method,
->   	 * comparison. Cache the value so we don't recompute it for every single
->   	 * subtest. */
->   	if (!base_crcs[format_index].set) {
-> -		get_method_crc(gem_has_mappable_ggtt(drm_fd) ? IGT_DRAW_MMAP_GTT :
-> -							       IGT_DRAW_MMAP_WC,
-> +		get_method_crc(igt_draw_supports_method(drm_fd, IGT_DRAW_MMAP_GTT) ?
-> +			       IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
->   			       formats[format_index],
->   			       DRM_FORMAT_MOD_LINEAR,
->   			       &base_crcs[format_index].crc);
-> @@ -195,8 +195,8 @@ static void fill_fb_subtest(void)
->   	igt_plane_set_fb(primary, &fb);
->   
->   	igt_draw_rect_fb(drm_fd, bops, 0, &fb,
-> -			 gem_has_mappable_ggtt(drm_fd) ? IGT_DRAW_MMAP_GTT :
-> -							 IGT_DRAW_MMAP_WC,
-> +			 igt_draw_supports_method(drm_fd, IGT_DRAW_MMAP_GTT) ?
-> +			 IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
->   			 0, 0, fb.width, fb.height, 0xFF);
->   
->   	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> @@ -222,7 +222,7 @@ static void fill_fb_subtest(void)
->   
->   static void setup_environment(void)
->   {
-> -	drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +	drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
->   	igt_require(drm_fd >= 0);
->   	igt_display_require(&display, drm_fd);
->   	igt_display_require_output(&display);
-> @@ -289,13 +289,17 @@ igt_main
->   			       "method (%s) with different modifiers & DRM formats.",
->   			       igt_draw_get_method_name(method));
->   		igt_subtest_with_dynamic_f("draw-method-%s", igt_draw_get_method_name(method)) {
-> -			igt_skip_on(method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd));
-> -			igt_skip_on(method == IGT_DRAW_MMAP_GTT && !gem_has_mappable_ggtt(drm_fd));
-> +			if (!igt_draw_supports_method(drm_fd, method))
-> +				continue;
->   
-> -			for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
-> -				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
-> -					modifier = modifiers[modifier_idx];
-> +			for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
-> +				modifier = modifiers[modifier_idx];
->   
-> +				/* No tiling support in XE. */
-> +				if (is_xe_device(drm_fd) && modifier != DRM_FORMAT_MOD_LINEAR)
-> +					continue;
-> +
-> +				for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
->   					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
->   						continue;
->   
-
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 987e72ef4b..3d0603fd94 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -106,6 +106,24 @@ igt@xe_guc_pc@freq_range_idle
+ igt@xe_guc_pc@rc6_on_idle
+ igt@xe_guc_pc@rc0_on_exec
+ igt@xe_huc_copy@huc_copy
++igt@xe_intel_bb@add-remove-objects
++igt@xe_intel_bb@bb-with-allocator
++igt@xe_intel_bb@blit-reloc
++igt@xe_intel_bb@blit-simple
++igt@xe_intel_bb@create-in-region
++igt@xe_intel_bb@delta-check
++igt@xe_intel_bb@destroy-bb
++igt@xe_intel_bb@full-batch
++igt@xe_intel_bb@intel-bb-blit-none
++igt@xe_intel_bb@intel-bb-blit-x
++igt@xe_intel_bb@intel-bb-blit-y
++igt@xe_intel_bb@lot-of-buffers
++igt@xe_intel_bb@offset-control
++igt@xe_intel_bb@purge-bb
++igt@xe_intel_bb@render
++igt@xe_intel_bb@reset-bb
++igt@xe_intel_bb@simple-bb
++igt@xe_intel_bb@simple-bb-ctx
+ igt@xe_mmap@system
+ igt@xe_mmap@vram
+ igt@xe_mmap@vram-system
 -- 
-~Nidhi Gupta
+2.34.1
