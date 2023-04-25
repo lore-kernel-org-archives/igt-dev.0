@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DEC610E6B8
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:55:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C93310E6B8
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:55:04 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Apr 2023 12:19:40 +0530
-Message-Id: <20230425064953.2121947-28-bhanuprakash.modem@intel.com>
+Date: Tue, 25 Apr 2023 12:19:41 +0530
+Message-Id: <20230425064953.2121947-29-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 27/40] tests/kms_content_protection: Add XE
- support
+Subject: [igt-dev] [i-g-t V2 28/40] tests/kms_cursor_crc: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,47 +25,31 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_content_protection.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tests/kms_cursor_crc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 638e1301a..344cac505 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -392,7 +392,12 @@ static bool sink_hdcp_capable(igt_output_t *output)
- 	if (fd < 0)
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index cc9dfcb1d..3a353a032 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -143,7 +143,7 @@ static bool chv_cursor_broken(data_t *data, int x)
+ {
+ 	uint32_t devid;
+ 
+-	if (!is_i915_device(data->drm_fd))
++	if (!is_intel_device(data->drm_fd))
  		return false;
  
--	if (is_i915_device(data.drm_fd))
-+	/*
-+	 * FIXME: As of now XE's debugfs is using i915 namespace. Once Kernel
-+	 * changes got landed, please update this logic to use XE specific
-+	 * debugfs.
-+	 */
-+	if (is_intel_device(data.drm_fd))
- 		debugfs_read(fd, "i915_hdcp_sink_capability", buf);
- 	else
- 		debugfs_read(fd, "hdcp_sink_capability", buf);
-@@ -413,7 +418,8 @@ static bool sink_hdcp2_capable(igt_output_t *output)
- 	if (fd < 0)
- 		return false;
- 
--	if (is_i915_device(data.drm_fd))
-+	/* FIXME: XE specific debugfs as mentioned above. */
-+	if (is_intel_device(data.drm_fd))
- 		debugfs_read(fd, "i915_hdcp_sink_capability", buf);
- 	else
- 		debugfs_read(fd, "hdcp_sink_capability", buf);
-@@ -763,7 +769,7 @@ static const struct {
- 	  .content_type = HDCP_CONTENT_TYPE_1,
- 	},
- 	{ .desc = "Test the teardown and rebuild of the interface between "
--		  "I915 and mei hdcp.",
-+		  "Intel and mei hdcp.",
- 	  .name = "mei_interface",
- 	  .cp_tests = CP_MEI_RELOAD,
- 	  .content_type = HDCP_CONTENT_TYPE_1,
+ 	devid = intel_get_drm_devid(data->drm_fd);
+@@ -152,7 +152,7 @@ static bool chv_cursor_broken(data_t *data, int x)
+ 	 * CHV gets a FIFO underrun on pipe C when cursor x coordinate
+ 	 * is negative and the cursor visible.
+ 	 *
+-	 * i915 is fixed to return -EINVAL on cursor updates with those
++	 * intel is fixed to return -EINVAL on cursor updates with those
+ 	 * negative coordinates, so require cursor update to fail with
+ 	 * -EINVAL in that case.
+ 	 *
 -- 
 2.40.0
