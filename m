@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C4DE10E78D
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 15:40:33 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E64A810E771
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 15:40:35 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Apr 2023 17:40:02 +0200
-Message-Id: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
+Date: Tue, 25 Apr 2023 17:40:03 +0200
+Message-Id: <20230425154017.374465-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
+References: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 00/15] Integrate intel-bb with Xe
+Subject: [igt-dev] [PATCH i-g-t v6 01/15] lib/xe_ioctl: Add missing header
+ for direct resolving
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,58 +24,26 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Series touches intel-bb + intel-buf which are rendercopy, gpgpu fill and
-media fill facilities. Exercise both paths on CI (i915 and xe) to check
-there's no regression in common part.
+xe_ioctl.h user expects all types resolving. Add missing stddef.h
+header which contains size_t definition.
 
-v2: fix allocator issue
-v3: address review comments (Kamil)
-v4: address review comments (Christoph)
-v5: - address review comments (Kamil)
-    - add region awareness in bufops (Zbigniew)
-v6: alter igt_draw and kms_big_fb to be region aware (Zbigniew)
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/xe/xe_ioctl.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-Zbigniew Kempczyński (15):
-  lib/xe_ioctl: Add missing header for direct resolving
-  lib/xe_query: Add region helpers and missing doc
-  lib/xe_query: Remove commented out function prototype
-  lib/intel_allocator: Add allocator support for Xe
-  lib/drmtest: Add driver enum for i915/xe
-  lib/intel_bufops: Add Xe support in bufops
-  lib/intel_batchbuffer: Rename i915 -> fd as preparation step for xe
-  lib/intel_batchbuffer: Add Xe support in intel-bb
-  tests/xe_intel_bb: Check if intel-bb Xe support correctness
-  tests/xe-fast-feedback: Add xe_intel_bb test to BAT
-  lib/gpgpu_fill: Use RENDER engine flag to work on Xe
-  tests/xe_gpgpu_fill: Exercise gpgpu fill on Xe
-  lib/igt_fb: For xe assume vram is used on discrete
-  lib/igt_draw: Pass region while building intel_buf from flink
-  tests/kms_big_fb: Deduce region for xe framebuffer
-
- lib/drmtest.h                            |    8 +
- lib/gpgpu_fill.c                         |    4 +-
- lib/gpu_cmds.c                           |    2 +-
- lib/igt_draw.c                           |   14 +-
- lib/igt_fb.c                             |   17 +-
- lib/intel_allocator.c                    |   40 +-
- lib/intel_aux_pgtable.c                  |    2 +-
- lib/intel_batchbuffer.c                  |  424 ++++++--
- lib/intel_batchbuffer.h                  |   22 +-
- lib/intel_bufops.c                       |  120 ++-
- lib/intel_bufops.h                       |   24 +-
- lib/xe/xe_ioctl.h                        |    1 +
- lib/xe/xe_query.c                        |   45 +
- lib/xe/xe_query.h                        |    3 +-
- tests/i915/gem_caching.c                 |    4 +-
- tests/i915/gem_pxp.c                     |    2 +-
- tests/i915/kms_big_fb.c                  |   10 +-
- tests/intel-ci/xe-fast-feedback.testlist |   19 +
- tests/meson.build                        |    2 +
- tests/xe/xe_gpgpu_fill.c                 |  135 +++
- tests/xe/xe_intel_bb.c                   | 1185 ++++++++++++++++++++++
- 21 files changed, 1932 insertions(+), 151 deletions(-)
- create mode 100644 tests/xe/xe_gpgpu_fill.c
- create mode 100644 tests/xe/xe_intel_bb.c
-
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index d8c40eda01..049cd183d6 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -11,6 +11,7 @@
+ #ifndef XE_IOCTL_H
+ #define XE_IOCTL_H
+ 
++#include <stddef.h>
+ #include <stdint.h>
+ #include <xe_drm.h>
+ 
 -- 
 2.34.1
