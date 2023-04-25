@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2079.outbound.protection.outlook.com [40.107.244.79])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D86DE10E220
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 21:45:05 +0000 (UTC)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5904D10E242
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 21:47:18 +0000 (UTC)
 From: Hersen Wu <hersenxs.wu@amd.com>
 To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
  <aurabindo.pillai@amd.com>, <alex.hung@amd.com>, <hamza.mahfooz@amd.com>
-Date: Tue, 25 Apr 2023 17:44:58 -0400
-Message-ID: <20230425214458.178340-1-hersenxs.wu@amd.com>
+Date: Tue, 25 Apr 2023 17:47:10 -0400
+Message-ID: <20230425214710.179129-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -25,7 +25,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-with 4k dp connected, amdgpu kernel warning messaage dp_blank timeout
+with 4k dp connected, amdgpu kernel warning message dp_blank timeout
 happens intermittently. link configuration <1, 1.62> could not support
 4k mode. dp safe mode 640x480@60hz could be used for all link
 configuration test.
