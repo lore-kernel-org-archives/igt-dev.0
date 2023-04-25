@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AA1B10E04C
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 09:50:53 +0000 (UTC)
-Message-ID: <4bd2d9e3-7403-f98a-54cb-6943e2e6545c@intel.com>
-Date: Tue, 25 Apr 2023 15:20:48 +0530
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CB2410E6E8
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 10:03:19 +0000 (UTC)
+Message-ID: <07a491a0-694b-4f16-9851-a39be979577f@intel.com>
+Date: Tue, 25 Apr 2023 15:33:15 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20230425064953.2121947-36-bhanuprakash.modem@intel.com>
+References: <20230425064953.2121947-37-bhanuprakash.modem@intel.com>
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20230425064953.2121947-36-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230425064953.2121947-37-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Subject: Re: [igt-dev] [i-g-t, V2,
- 35/40] tests/kms_plane_lowers: Add XE support
+ 36/40] tests/kms_plane_scaling: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,6 +30,14 @@ List-ID: <igt-dev@lists.freedesktop.org>
 On 4/25/2023 12:19 PM, Bhanuprakash Modem wrote:
 > Add XE driver support for kms tests.
 >
-> Signed-off-by: Bhanuprakash Modem<bhanuprakash.modem@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
 LGTM
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+
+Review provided here are for the test changes, but patch can be merged once
+we have lib changes in place specific to xe.
+
+Failures can be seen with below execution
+
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8818/shards-all.html?testfilter=plane_sca
