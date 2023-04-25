@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A293510E509
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 18:38:05 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3DEA010E0C6
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 18:39:44 +0000 (UTC)
 From: janga.rahul.kumar@intel.com
 To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  janga.rahul.kumar@intel.com
-Date: Wed, 26 Apr 2023 00:10:03 +0530
-Message-Id: <20230425184003.3089338-1-janga.rahul.kumar@intel.com>
+Date: Wed, 26 Apr 2023 00:11:42 +0530
+Message-Id: <20230425184142.3089518-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/xe/xe_query: Add subtest
+Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_query: Add subtest
  query-invalid-extension
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
