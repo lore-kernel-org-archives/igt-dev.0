@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED33110E6AF
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:54:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 454AD10E6AB
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:55:10 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Apr 2023 12:19:37 +0530
-Message-Id: <20230425064953.2121947-25-bhanuprakash.modem@intel.com>
+Date: Tue, 25 Apr 2023 12:19:46 +0530
+Message-Id: <20230425064953.2121947-34-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 24/40] tests/kms_atomic_transition: Add XE
- support
+Subject: [igt-dev] [i-g-t V2 33/40] tests/kms_panel_fitting: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,49 +25,49 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/kms_atomic_transition.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/kms_panel_fitting.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 7c7be578c..9f39d033d 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -136,7 +136,7 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
- 	if (data->extended)
- 		return false;
+diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+index 2d0590da2..97ef1ae48 100644
+--- a/tests/kms_panel_fitting.c
++++ b/tests/kms_panel_fitting.c
+@@ -23,6 +23,7 @@
+  */
  
--	if (!is_i915_device(data->drm_fd))
-+	if (!is_intel_device(data->drm_fd))
- 		return false;
+ #include "igt.h"
++#include <limits.h>
+ #include <math.h>
+ #include <sys/stat.h>
  
- 	if (plane->type == DRM_PLANE_TYPE_CURSOR)
-@@ -848,7 +848,7 @@ retry:
- 		/* count enable pipes to set max iteration */
- 		j += 1;
+@@ -133,7 +134,7 @@ test_panel_fitting_legacy(data_t *d, igt_display_t *display,
+ 	igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
+ 	igt_plane_set_position(d->plane2, 100, 100);
  
--		if (is_i915_device(data->drm_fd))
-+		if (is_intel_device(data->drm_fd))
- 			data->pipe_crcs[i] = igt_pipe_crc_new(data->drm_fd, i,
- 							      IGT_PIPE_CRC_SOURCE_AUTO);
+-	if (is_i915_device(display->drm_fd)) {
++	if (is_intel_device(display->drm_fd)) {
+ 		uint32_t devid = intel_get_drm_devid(display->drm_fd);
+ 		/*
+ 		 * Most of gen7 and all of gen8 doesn't support plane scaling
+@@ -233,10 +234,15 @@ static void test_panel_fitting(data_t *data, enum test_type type)
+ 	struct stat sb;
  
-@@ -943,7 +943,7 @@ retry:
- 			commit_display(data, i, nonblocking);
- 			collect_crcs_mask(data->pipe_crcs, i, crcs[4]);
+ 	if (type == TEST_ATOMIC) {
+-		igt_require_f(is_i915_device(display->drm_fd), "not valid for non-i915 devices\n");
++		char path[PATH_MAX];
++
++		igt_require_f(is_intel_device(display->drm_fd), "not valid for non-intel devices\n");
  
--			if (!is_i915_device(data->drm_fd))
-+			if (!is_intel_device(data->drm_fd))
- 				continue;
+ 		/* Until this is force enabled, force modeset evasion. */
+-		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
++		snprintf(path, PATH_MAX, "/sys/module/%s/parameters/fastboot",
++					 is_i915_device(data->drm_fd) ? "i915" : "xe");
++
++		if (stat(path, &sb) == 0)
+ 			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
  
- 			for (int k = 0; k < IGT_MAX_PIPES; k++) {
-@@ -996,7 +996,7 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
- 	unset_output_pipe(&data->display);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	if (is_i915_device(data->drm_fd)) {
-+	if (is_intel_device(data->drm_fd)) {
- 		for_each_pipe(&data->display, pipe)
- 			igt_pipe_crc_free(data->pipe_crcs[pipe]);
- 	}
+ 		igt_require(intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 5);
 -- 
 2.40.0
