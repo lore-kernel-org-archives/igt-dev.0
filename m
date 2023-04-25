@@ -1,49 +1,41 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: John.C.Harrison@Intel.com
+Date: Tue, 25 Apr 2023 13:19:24 -0700
+Message-Id: <20230425201926.99086-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 12 Apr 2023 17:02:10 -0000
-Message-ID: <168131893082.10847.1790337114624440336@emeril.freedesktop.org>
-References: <20230412150736.124686-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230412150736.124686-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB4ZS94?=
- =?utf-8?q?e=5Fprime=5Fself=5Fimport=3A_remove_reimport-vs-gem=5Fclose-rac?=
- =?utf-8?q?e_from_BAT?=
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Content-Transfer-Encoding: 8bit
+Subject: [Intel-gfx] [PATCH i-g-t 0/2] Update intel_error_decode for Gen12
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: IGT-Dev@Lists.FreeDesktop.Org
+Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: John Harrison <John.C.Harrison@Intel.com>
 
-Series: xe/xe_prime_self_import: remove reimport-vs-gem_close-race from BAT
-URL   : https://patchwork.freedesktop.org/series/116388/
-State : failure
+The error capture decoder was reporting invalid errors in batch
+buffers and getting confused about the prescence of the GuC CTB. So
+fix those up.
 
-== Summary ==
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 
-Applying: xe/xe_prime_self_import: remove reimport-vs-gem_close-race from BAT
-Using index info to reconstruct a base tree...
-M	tests/intel-ci/xe-fast-feedback.testlist
-M	tests/xe/xe_prime_self_import.c
-Falling back to patching base and 3-way merge...
-Auto-merging tests/xe/xe_prime_self_import.c
-Auto-merging tests/intel-ci/xe-fast-feedback.testlist
-CONFLICT (content): Merge conflict in tests/intel-ci/xe-fast-feedback.testlist
-Patch failed at 0001 xe/xe_prime_self_import: remove reimport-vs-gem_close-race from BAT
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
 
+John Harrison (2):
+  lib/intel_decode: Decode Gen12 ring/batch instructions correctly
+  tools/intel_error_decode: Correctly name the GuC CT buffer
+
+ lib/i915/intel_decode.c    | 15 +++++++++++++--
+ tools/intel_error_decode.c |  1 +
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+-- 
+2.39.1
 
 
