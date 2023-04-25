@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 75FD510E013
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 09:29:19 +0000 (UTC)
-Message-ID: <3f562769-479f-2892-c07e-3b47450a4ee2@intel.com>
-Date: Tue, 25 Apr 2023 14:58:54 +0530
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5810D10E6D2
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 09:44:33 +0000 (UTC)
+Message-ID: <35c32768-89ee-eca4-b25f-06334f7b9e94@intel.com>
+Date: Tue, 25 Apr 2023 15:14:28 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20230425064953.2121947-29-bhanuprakash.modem@intel.com>
+References: <20230425064953.2121947-30-bhanuprakash.modem@intel.com>
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20230425064953.2121947-29-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230425064953.2121947-30-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Subject: Re: [igt-dev] [i-g-t, V2,
- 28/40] tests/kms_cursor_crc: Add XE support
+ 29/40] tests/kms_flip_event_leak: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
