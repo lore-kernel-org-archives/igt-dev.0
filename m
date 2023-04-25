@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7B0910E6AB
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 06:55:13 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Apr 2023 12:19:49 +0530
-Message-Id: <20230425064953.2121947-37-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
-References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70DD210E676
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 07:07:31 +0000 (UTC)
+From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
+Date: Tue, 25 Apr 2023 07:07:15 +0000
+Message-ID: <BYAPR11MB3413E63B18DB468CB7F65F3DD0649@BYAPR11MB3413.namprd11.prod.outlook.com>
+References: <20230424115423.28726-1-sai.gowtham.ch@intel.com>
+ <20230425033654.zw4pw32bdqwohvsy@zkempczy-mobl2>
+In-Reply-To: <20230425033654.zw4pw32bdqwohvsy@zkempczy-mobl2>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 36/40] tests/kms_plane_scaling: Add XE support
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new
+ with Xe.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,144 +22,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_plane_scaling.c | 41 ++++++++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
-
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 5008cd931..753029cac 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -52,9 +52,9 @@ struct invalid_paramtests {
- 	} params[8];
- };
- 
--static const struct invalid_paramtests i915_paramtests[] = {
-+static const struct invalid_paramtests intel_paramtests[] = {
- 	{
--		.testname = "i915-max-src-size",
-+		.testname = "intel-max-src-size",
- 		.planesize = {3840, 2160},
- 	},
- };
-@@ -463,7 +463,7 @@ static const igt_rotation_t rotations[] = {
- 
- static bool can_scale(data_t *d, unsigned format)
- {
--	if (!is_i915_device(d->drm_fd))
-+	if (!is_intel_device(d->drm_fd))
- 		return true;
- 
- 	switch (format) {
-@@ -488,7 +488,7 @@ static bool test_format(data_t *data,
- 	if (!igt_fb_supported_format(format))
- 		return false;
- 
--	if (!is_i915_device(data->drm_fd) ||
-+	if (!is_intel_device(data->drm_fd) ||
- 	    data->extended)
- 		return true;
- 
-@@ -505,7 +505,7 @@ static bool test_format(data_t *data,
- 
- static bool test_pipe_iteration(data_t *data, enum pipe pipe, int iteration)
- {
--	if (!is_i915_device(data->drm_fd) ||
-+	if (!is_intel_device(data->drm_fd) ||
- 	    data->extended)
- 		return true;
- 
-@@ -544,6 +544,10 @@ static void test_scaler_with_modifier_pipe(data_t *d,
- 		for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
- 			uint64_t modifier = modifiers[i];
- 
-+			if (is_xe_device(d->drm_fd) &&
-+			    modifier != DRM_FORMAT_MOD_LINEAR)
-+				continue;
-+
- 			if (igt_plane_has_format_mod(plane, format, modifier))
- 				check_scaling_pipe_plane_rot(d, plane,
- 							     format, modifier,
-@@ -831,11 +835,12 @@ test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
- 	igt_plane_set_size(plane[1], mode->hdisplay, mode->vdisplay);
- 	igt_plane_set_size(plane[2], mode->hdisplay, mode->vdisplay);
- 
--	/* This commit is expected to fail for i915 devices. i915 devices support
-+	/*
-+	 * This commit is expected to fail for intel devices. intel devices support
- 	 * max 2 scalers/pipe. In dmesg we can find: Too many scaling requests 3 > 2.
--	 * For devices (non-i915, or possible future i915) that are able to perform this
--	 * amount of scaling; handle that case aswell.
--	 * */
-+	 * For devices (non-intel, or possible future intel) that are able to perform
-+	 * this amount of scaling; handle that case aswell.
-+	 */
- 	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_skip_on_f(ret == 0, "Cannot test handling of too many scaling ops, the device supports a large amount.\n");
- 	igt_assert_eq(ret, -EINVAL);
-@@ -1012,7 +1017,7 @@ static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const uint
- }
- 
- /*
-- *	Max source/destination width/height for i915 driver.
-+ *	Max source/destination width/height for intel driver.
-  *	These numbers are coming from
-  *	drivers/gpu/drm/i915/display/skl_scaler.c in kernel sources.
-  *
-@@ -1040,8 +1045,8 @@ static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const uint
-  *		max_dst_w = 8192
-  *		max_dst_h = 8192
-  */
--static void i915_max_source_size_test(data_t *d, enum pipe pipe, igt_output_t *output,
--				      drmModeModeInfo *mode, const uint32_t planesize[])
-+static void intel_max_source_size_test(data_t *d, enum pipe pipe, igt_output_t *output,
-+				       drmModeModeInfo *mode, const uint32_t planesize[])
- {
- 	igt_fb_t fb;
- 	igt_plane_t *plane;
-@@ -1119,7 +1124,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_display_require(&data.display, data.drm_fd);
--		data.devid = is_i915_device(data.drm_fd) ?
-+		data.devid = is_intel_device(data.drm_fd) ?
- 			intel_get_drm_devid(data.drm_fd) : 0;
- 		igt_require(data.display.is_atomic);
- 	}
-@@ -1273,9 +1278,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			}
- 		}
- 
--		for (int index = 0; index < ARRAY_SIZE(i915_paramtests); index++) {
-+		for (int index = 0; index < ARRAY_SIZE(intel_paramtests); index++) {
- 			igt_describe("Test for validating max source size.");
--			igt_subtest_with_dynamic(i915_paramtests[index].testname) {
-+			igt_subtest_with_dynamic(intel_paramtests[index].testname) {
- 				igt_require_intel(data.drm_fd);
- 				for_each_pipe(&data.display, pipe) {
- 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-@@ -1284,12 +1289,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 						 * Need to find mode with lowest vrefresh else
- 						 * we can exceed cdclk limits.
- 						 */
--						mode = find_mode(&data, output, i915_paramtests[index].planesize);
-+						mode = find_mode(&data, output, intel_paramtests[index].planesize);
- 						if (mode) {
- 							igt_dynamic_f("pipe-%s-%s",
- 								       kmstest_pipe_name(pipe), igt_output_name(output))
--								i915_max_source_size_test(&data, pipe, output, mode,
--											  i915_paramtests[index].planesize);
-+								intel_max_source_size_test(&data, pipe, output, mode,
-+											   intel_paramtests[index].planesize);
- 						}
- 						continue;
- 					}
--- 
-2.40.0
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2VtcGN6eW5za2ksIFpi
+aWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXks
+IEFwcmlsIDI1LCAyMDIzIDk6MDcgQU0NCj4gVG86IENoLCBTYWkgR293dGhhbSA8c2FpLmdvd3Ro
+YW0uY2hAaW50ZWwuY29tPg0KPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4g
+U3ViamVjdDogUmU6IFtQQVRDSCBpLWctdF0gbGliL3hlL3hlX3NwaW46IEludGVncmF0ZSBpZ3Rf
+c3Bpbl9uZXcgd2l0aCBYZS4NCj4gDQo+IE9uIE1vbiwgQXByIDI0LCAyMDIzIGF0IDA1OjI0OjIz
+UE0gKzA1MzAsIHNhaS5nb3d0aGFtLmNoQGludGVsLmNvbSB3cm90ZToNCj4gPiBGcm9tOiBTYWkg
+R293dGhhbSBDaCA8c2FpLmdvd3RoYW0uY2hAaW50ZWwuY29tPg0KPiA+DQo+ID4gRXh0ZW5kaW5n
+IHRoZSBzcGluX2NyZWF0ZSBpbXBsZW1lbnRhdGlvbiBhbmQgYWxsb2NhdG9yIGhhbmRsZSBzdXBw
+b3J0DQo+ID4gaW4geGUsIHdoZXJlIGl0IHN1Ym1pdHMgZHVtbXkgd29yayBsb2FkcyB0byBlbmdp
+bmUuIFRoaXMNCj4gPiBJbXBsZW1lbnRhdGlvbiBpcyB3cmFwcGVkIGFyb3VuZCB2bV9iaW5kIGFu
+ZCB1bmJpbmQgYXMgd2UgYXJlIHN1cHBvc2VkIHRvDQo+IGRvIGl0IG1hbnVhbGx5IGZvciB4ZS4N
+Cj4gPg0KPiA+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tp
+QGludGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTYWkgR293dGhhbSBDaCA8c2FpLmdvd3Ro
+YW0uY2hAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICBsaWIveGUveGVfc3Bpbi5jIHwgMzkgKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gIGxpYi94ZS94ZV9zcGlu
+LmggfCAgOSArKysrKysrKysNCj4gPiAgMiBmaWxlcyBjaGFuZ2VkLCA0OCBpbnNlcnRpb25zKCsp
+DQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvbGliL3hlL3hlX3NwaW4uYyBiL2xpYi94ZS94ZV9zcGlu
+LmMgaW5kZXgNCj4gPiA4NTZkMGJhMi4uZTA2Mjk0MTkgMTAwNjQ0DQo+ID4gLS0tIGEvbGliL3hl
+L3hlX3NwaW4uYw0KPiA+ICsrKyBiL2xpYi94ZS94ZV9zcGluLmMNCj4gPiBAQCAtODIsNiArODIs
+NDUgQEAgdm9pZCB4ZV9zcGluX2VuZChzdHJ1Y3QgeGVfc3BpbiAqc3BpbikNCj4gPiAgCXNwaW4t
+PmVuZCA9IDA7DQo+ID4gIH0NCj4gPg0KPiA+ICt2b2lkIHhlX3NwaW5fbmV3KGludCBmZCwgc3Ry
+dWN0IHhlX3NwaW4gKnNwaW4sIHN0cnVjdA0KPiA+ICtkcm1feGVfZW5naW5lX2NsYXNzX2luc3Rh
+bmNlICplY2kpIHsNCj4gPiArCXNpemVfdCBib19zaXplID0geGVfZ2V0X2RlZmF1bHRfYWxpZ25t
+ZW50KGZkKTsNCj4gPiArCXVpbnQzMl90IHN5bmNvYmo7DQo+ID4gKwl1aW50NjRfdCBhaG5kID0g
+c3Bpbi0+YWhuZCwgYWRkcjsNCj4gPiArCXN0cnVjdCBkcm1feGVfc3luYyBzeW5jID0gew0KPiA+
+ICsJCS5mbGFncyA9IERSTV9YRV9TWU5DX1NZTkNPQkogfCBEUk1fWEVfU1lOQ19TSUdOQUwsDQo+
+ID4gKwl9Ow0KPiA+ICsJc3RydWN0IGRybV94ZV9leGVjIGV4ZWMgPSB7DQo+ID4gKwkJLm51bV9i
+YXRjaF9idWZmZXIgPSAxLA0KPiA+ICsJCS5udW1fc3luY3MgPSAxLA0KPiA+ICsJCS5zeW5jcyA9
+IHRvX3VzZXJfcG9pbnRlcigmc3luYyksDQo+ID4gKwl9Ow0KPiA+ICsNCj4gPiArCXNwaW4tPnZt
+ID0geGVfdm1fY3JlYXRlKGZkLCAwLCAwKTsNCj4gPiArCXNwaW4tPmJvID0geGVfYm9fY3JlYXRl
+KGZkLCBlY2ktPmd0X2lkLCBzcGluLT52bSwgYm9fc2l6ZSk7DQo+ID4gKwlzcGluLT5lbmdpbmUg
+PSB4ZV9lbmdpbmVfY3JlYXRlKGZkLCBzcGluLT52bSwgZWNpLCAwKTsNCj4gPiArCXN5bmNvYmog
+PSBzeW5jb2JqX2NyZWF0ZShmZCwgMCk7DQo+ID4gKw0KPiA+ICsJaWYgKGFobmQpDQo+ID4gKwkJ
+YWRkciA9IGludGVsX2FsbG9jYXRvcl9hbGxvY193aXRoX3N0cmF0ZWd5KGFobmQsIHNwaW4tPmJv
+LA0KPiBib19zaXplLA0KPiA+ICswLCBBTExPQ19TVFJBVEVHWV9MT1dfVE9fSElHSCk7DQo+ID4g
+Kw0KPiA+ICsJeGVfdm1fYmluZF9zeW5jKGZkLCBzcGluLT52bSwgc3Bpbi0+Ym8sIDAsIGFkZHIs
+IGJvX3NpemUpOw0KPiA+ICsNCj4gPiArCXhlX3NwaW5faW5pdChzcGluLCBhZGRyLCB0cnVlKTsN
+Cj4gPiArCWV4ZWMuZW5naW5lX2lkID0gc3Bpbi0+ZW5naW5lOw0KPiA+ICsJZXhlYy5hZGRyZXNz
+ID0gYWRkcjsNCj4gPiArCXN5bmMuaGFuZGxlID0gc3luY29iajsNCj4gPiArDQo+ID4gKwlpZ3Rf
+YXNzZXJ0X2VxKGlndF9pb2N0bChmZCwgRFJNX0lPQ1RMX1hFX0VYRUMsICZleGVjKSwgMCk7DQo+
+ID4gKw0KPiA+ICt9DQo+ID4gKw0KPiA+ICt2b2lkIHhlX3NwaW5fZnJlZShzdHJ1Y3QgeGVfc3Bp
+biAqc3Bpbikgew0KPiA+ICsJeGVfZW5naW5lX2Rlc3Ryb3koc3Bpbi0+ZmQsIHNwaW4tPmVuZ2lu
+ZSk7DQo+ID4gKwl4ZV92bV9kZXN0cm95KHNwaW4tPmZkLCBzcGluLT52bSk7DQo+ID4gKwlnZW1f
+Y2xvc2Uoc3Bpbi0+ZmQsIHNwaW4tPmJvKTsNCj4gPiArfQ0KPiANCj4gWW91IG5lZWQgdG8gZW1i
+ZWQgdGhpcyBpbnRvIGlndF9zcGluX25ldygpLiBUYWtlIGEgbG9vayB0bw0KPiBrbXNfY3Vyc29y
+X2xlZ2FjeS5jLg0KPiBXZSB3YW50IHRvIGhhdmUgdGhpcyBzeW50YXggaW50YWN0Og0KPiANCj4g
+CXNwaW4gPSBpZ3Rfc3Bpbl9uZXcoZGlzcGxheS0+ZHJtX2ZkLA0KPiAJCQkgICAgLmFobmQgPSBh
+aG5kLA0KPiAJCQkgICAgLmRlcGVuZGVuY3kgPSBmYl9pbmZvLmdlbV9oYW5kbGUpOw0KPiANCj4g
+LS0NCj4gWmJpZ25pZXcNCj4gDQpXaWxsIGJlIGNhbGxpbmcgdGhpcyBjb2RlIGZyb20gaWd0X3Nw
+aW5fZmFjdG9yeSBpdCBzZWxmLCB3aXRoIGEgY2hlY2sgaXMgYmVpbmcgY2FsbGVkIGxpa2UgYmVs
+b3cgDQoNCmlndF9zcGluX3QgKg0KX19pZ3Rfc3Bpbl9mYWN0b3J5KGludCBmZCwgY29uc3Qgc3Ry
+dWN0IGlndF9zcGluX2ZhY3RvcnkgKm9wdHMpDQp7DQogICAgICAgIGlmIChpc194ZV9kZXZpY2Up
+DQogICAgICAgICAgICAgICAgeGVfc3Bpbl9jcmVhdGUoZmQsIG9wdHMpOw0KICAgICAgICBlbHNl
+DQogICAgICAgICAgICAgICAgc3Bpbl9jcmVhdGUoZmQsIG9wdHMpOw0KfQ0KQW5kIHNpbWlsYXJs
+eSBpbiBpZ3Rfc3Bpbl9mcmVlOg0KDQpXaGF0IGFyZSB5b3VyIHRob3VnaHRzIG9uIHRoaXMgPyBE
+byB5b3UgdGhpbmsgdGhpcyB3b3JrcyA/IA0KLS0tLS0NClNhaSBHb3d0aGFtDQoNCj4gPiAgdm9p
+ZCB4ZV9jb3JrX2luaXQoaW50IGZkLCBzdHJ1Y3QgZHJtX3hlX2VuZ2luZV9jbGFzc19pbnN0YW5j
+ZSAqaHdlLA0KPiA+ICAJCSAgc3RydWN0IHhlX2NvcmsgKmNvcmspDQo+ID4gIHsNCj4gPiBkaWZm
+IC0tZ2l0IGEvbGliL3hlL3hlX3NwaW4uaCBiL2xpYi94ZS94ZV9zcGluLmggaW5kZXgNCj4gPiA3
+M2Y5YTAyNi4uMTIxMTY0NDUgMTAwNjQ0DQo+ID4gLS0tIGEvbGliL3hlL3hlX3NwaW4uaA0KPiA+
+ICsrKyBiL2xpYi94ZS94ZV9zcGluLmgNCj4gPiBAQCAtMTcsMTUgKzE3LDI0IEBADQo+ID4gIC8q
+IE1hcHBlZCBHUFUgb2JqZWN0ICovDQo+ID4gIHN0cnVjdCB4ZV9zcGluIHsNCj4gPiAgCXVpbnQz
+Ml90IGJhdGNoWzE2XTsNCj4gPiArCWludCBmZDsNCj4gPiAgCXVpbnQ2NF90IHBhZDsNCj4gPiAg
+CXVpbnQzMl90IHN0YXJ0Ow0KPiA+ICAJdWludDMyX3QgZW5kOw0KPiA+ICsJdWludDY0X3QgYWhu
+ZDsNCj4gPiArCXVpbnQzMl90IGVuZ2luZTsNCj4gPiArCXVpbnQzMl90IHZtOw0KPiA+ICsJdWlu
+dDMyX3QgYm87DQo+ID4gKw0KPiA+ICB9Ow0KPiA+DQo+ID4gIHZvaWQgeGVfc3Bpbl9pbml0KHN0
+cnVjdCB4ZV9zcGluICpzcGluLCB1aW50NjRfdCBhZGRyLCBib29sIHByZWVtcHQpOw0KPiA+IGJv
+b2wgeGVfc3Bpbl9zdGFydGVkKHN0cnVjdCB4ZV9zcGluICpzcGluKTsgIHZvaWQNCj4gPiB4ZV9z
+cGluX3dhaXRfc3RhcnRlZChzdHJ1Y3QgeGVfc3BpbiAqc3Bpbik7ICB2b2lkIHhlX3NwaW5fZW5k
+KHN0cnVjdA0KPiA+IHhlX3NwaW4gKnNwaW4pOw0KPiA+ICt2b2lkIHhlX3NwaW5fbmV3KGludCBm
+ZCwgc3RydWN0IHhlX3NwaW4gKnNwaW4sDQo+ID4gKwkJc3RydWN0IGRybV94ZV9lbmdpbmVfY2xh
+c3NfaW5zdGFuY2UgKmh3ZSk7IHZvaWQNCj4geGVfc3Bpbl9mcmVlKHN0cnVjdA0KPiA+ICt4ZV9z
+cGluICpzcGluKTsNCj4gPg0KPiA+ICBzdHJ1Y3QgeGVfY29yayB7DQo+ID4gIAlzdHJ1Y3QgeGVf
+c3BpbiAqc3BpbjsNCj4gPiAtLQ0KPiA+IDIuMzkuMQ0KPiA+DQo=
