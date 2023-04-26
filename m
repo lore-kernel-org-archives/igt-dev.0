@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69A1410E968
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 66D5810E2CE
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:33 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 17:17:05 +0530
-Message-Id: <20230426114725.2244653-26-bhanuprakash.modem@intel.com>
+Date: Wed, 26 Apr 2023 17:17:00 +0530
+Message-Id: <20230426114725.2244653-21-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 25/45] tests/i915/kms_mmap_write_crc: Add XE
- support
+Subject: [igt-dev] [i-g-t V3 20/45] tests/i915/kms_cdclk: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,33 +25,33 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/i915/kms_mmap_write_crc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/i915/kms_cdclk.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-index 4f7a86bf4..bc51975f6 100644
---- a/tests/i915/kms_mmap_write_crc.c
-+++ b/tests/i915/kms_mmap_write_crc.c
-@@ -102,7 +102,7 @@ static void test(data_t *data)
- 	igt_plane_set_fb(data->primary, &data->fb[0]);
- 	igt_display_commit(display);
- 
--	if (!gem_has_lmem(data->drm_fd)) {
-+	if (is_i915_device(data->drm_fd) && !gem_has_lmem(data->drm_fd)) {
- 		uint32_t caching;
- 
- 		/* make sure caching mode has become UC/WT */
-@@ -259,7 +259,7 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
- 	enum pipe pipe;
+diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+index bb0036802..0f9b8dc58 100644
+--- a/tests/i915/kms_cdclk.c
++++ b/tests/i915/kms_cdclk.c
+@@ -65,6 +65,9 @@ static int get_current_cdclk_freq(int debugfs_fd)
+ 	 * Display specific clock frequency info is moved to i915_cdclk_info,
+ 	 * On older kernels if this debugfs is not found, fallback to read from
+ 	 * i915_frequency_info.
++	 *
++	 * FIXME: As of now, XE debugfs is still using i915 namespace, once the
++	 * Kernel changes are landed, update this to use the XE specific debugfs.
+ 	 */
+ 	res = igt_debugfs_simple_read(debugfs_fd, "i915_cdclk_info",
+ 				      buf, sizeof(buf));
+@@ -368,7 +371,7 @@ igt_main
+ 	data_t data = {};
  
  	igt_fixture {
 -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
 +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 
- 		data.devid = intel_get_drm_devid(data.drm_fd);
- 
+ 		igt_require(data.drm_fd >= 0);
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		igt_require(data.debugfs_fd);
 -- 
 2.40.0
