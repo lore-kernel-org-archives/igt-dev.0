@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03BE910E231
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 02:31:09 +0000 (UTC)
-Message-ID: <9183d0eb-5d1d-7b10-6164-dff8466a9f90@intel.com>
-Date: Wed, 26 Apr 2023 08:00:58 +0530
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0D6E10E004
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 04:57:33 +0000 (UTC)
+Message-ID: <ede757f6-6ccc-f4e8-fb9f-e4fd8ae9cb88@intel.com>
+Date: Wed, 26 Apr 2023 10:27:28 +0530
 MIME-Version: 1.0
-Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230425064953.2121947-14-bhanuprakash.modem@intel.com>
-From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-In-Reply-To: <20230425064953.2121947-14-bhanuprakash.modem@intel.com>
+ igt-dev@lists.freedesktop.org, karthik.b.s@intel.com
+References: <20230425090014.2147853-1-bhanuprakash.modem@intel.com>
+ <20230425091432.2155846-1-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230425091432.2155846-1-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t, V2,
- 13/40] lib/igt_draw: Add gpu draw routine support for XE
+Subject: Re: [igt-dev] [i-g-t V3 37/40] tests/kms_prime: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,157 +28,321 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 4/25/2023 12:19 PM, Bhanuprakash Modem wrote:
-> Add GPU blt, render & WC draw routine support for XE driver.
-> 
-> Credits-to: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+On 25-Apr-23 2:44 PM, Bhanuprakash Modem wrote:
+> Add XE driver support for kms tests.
+>
+> V2: - Use rendercopy method for both i915 & xe
+>      - Minor cleanup
+Please, split this patch into 2.
+Cleanup followed by xe support.
+>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   lib/igt_draw.c | 82 +++++++++++++++++++++++++++++++++++---------------
->   lib/igt_draw.h |  2 ++
->   2 files changed, 60 insertions(+), 24 deletions(-)
-> 
-> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-> index ac512fac5..1b793c0df 100644
-> --- a/lib/igt_draw.c
-> +++ b/lib/igt_draw.c
-> @@ -37,6 +37,8 @@
->   #include "i915/gem_create.h"
->   #include "i915/gem_mman.h"
->   #include "i915/intel_mocs.h"
+>   tests/kms_prime.c | 228 ++++++++++++++++++++++++++++++++++++----------
+>   1 file changed, 179 insertions(+), 49 deletions(-)
+>
+> diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+> index dd5ab993e..ac4078ad2 100644
+> --- a/tests/kms_prime.c
+> +++ b/tests/kms_prime.c
+> @@ -27,9 +27,12 @@
+>   #include "igt_sysfs.h"
+>   #include <fcntl.h>
+>   
+> +#include <limits.h>
+>   #include <sys/ioctl.h>
+>   #include <sys/poll.h>
+>   #include <time.h>
 > +#include "xe/xe_ioctl.h"
 > +#include "xe/xe_query.h"
 >   
->   #ifndef PAGE_ALIGN
->   #ifndef PAGE_SIZE
-> @@ -493,24 +495,29 @@ static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
->   {
->   	uint32_t *ptr;
+>   #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+>   #define KMS_POLL_DISABLE 0
+> @@ -112,7 +115,29 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+>   	scratch->height = mode->vdisplay;
+>   	scratch->bpp = 32;
 >   
-> -	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
-> -		       I915_GEM_DOMAIN_GTT);
-> -
-> -	/* We didn't implement suport for the older tiling methods yet. */
-> -	if (tiling != I915_TILING_NONE)
-> -		igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
-> -
-> -	if (gem_has_lmem(fd))
-> -		ptr = gem_mmap_offset__fixed(fd, buf->handle, 0,
-> -					     PAGE_ALIGN(buf->size),
-> -					     PROT_READ | PROT_WRITE);
-> -	else if (gem_has_legacy_mmap(fd))
-> -		ptr = gem_mmap__wc(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
-> -				   PROT_READ | PROT_WRITE);
-> -	else
-Can we add check for xe driver also? "if (is_xe_device(first_fd))"
-
-> -		ptr = gem_mmap_offset__wc(fd, buf->handle, 0,
-> -					  PAGE_ALIGN(buf->size),
-> -					  PROT_READ | PROT_WRITE); > +	if (is_i915_device(fd)) {
-> +		gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
-> +			       I915_GEM_DOMAIN_GTT);
+> -	if (!is_i915_device(exporter_fd)) {
+> +	if (is_intel_device(exporter_fd)) {
+> +		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
+> +				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
 > +
-> +		/* We didn't implement suport for the older tiling methods yet. */
-> +		if (tiling != I915_TILING_NONE)
-> +			igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
+> +		if (is_i915_device(exporter_fd)) {
+> +			if (gem_has_lmem(exporter_fd))
+> +				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
+> +								       REGION_LMEM(0), REGION_SMEM);
+> +			else
+> +				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
+> +								       REGION_SMEM);
 > +
-> +		if (gem_has_lmem(fd))
-> +			ptr = gem_mmap_offset__fixed(fd, buf->handle, 0,
-> +						     PAGE_ALIGN(buf->size),
-> +						     PROT_READ | PROT_WRITE);
-> +		else if (gem_has_legacy_mmap(fd))
-> +			ptr = gem_mmap__wc(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
-> +					   PROT_READ | PROT_WRITE);
-> +		else
-> +			ptr = gem_mmap_offset__wc(fd, buf->handle, 0,
-> +						  PAGE_ALIGN(buf->size),
-> +						  PROT_READ | PROT_WRITE);
+> +			ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0,
+> +							scratch->size, PROT_WRITE | PROT_READ);
+> +		} else {
+> +			scratch->handle = xe_bo_create_flags(exporter_fd, 0,
+> +							     ALIGN(scratch->size, xe_get_default_alignment(exporter_fd)),
+> +							     vram_if_possible(exporter_fd, 0));
+> +
+> +			ptr = xe_bo_mmap_ext(exporter_fd, scratch->handle,
+> +					     scratch->size, PROT_READ | PROT_WRITE);
+> +		}
 > +	} else {
-Can we add check for xe driver also? "if (is_xe_device(first_fd))"
-> +		ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size,
-> +				     PROT_READ | PROT_WRITE);
-> +	}
+>   		scratch->handle = kmstest_dumb_create(exporter_fd,
+>   						      ALIGN(scratch->width, 256),
+>   						      scratch->height, scratch->bpp,
+> @@ -120,18 +145,6 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
 >   
->   	switch (tiling) {
->   	case I915_TILING_NONE:
-> @@ -663,11 +670,14 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
->   	int gen = intel_gen(devid);
->   	int pitch;
+>   		ptr = kmstest_dumb_map_buffer(exporter_fd, scratch->handle,
+>   					      scratch->size, PROT_WRITE);
+> -	} else {
+> -		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
+> -				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
+> -		if (gem_has_lmem(exporter_fd))
+> -			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
+> -								       REGION_LMEM(0), REGION_SMEM);
+> -		else
+> -			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
+> -								       REGION_SMEM);
+> -
+> -		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
+> -						PROT_WRITE | PROT_READ);
+>   	}
 >   
-> +	if (tiling)
-> +		igt_require_i915(fd);
-> +
->   	dst = create_buf(fd, cmd_data->bops, buf, tiling);
->   	ibb = intel_bb_create(fd, PAGE_SIZE);
->   	intel_bb_add_intel_buf(ibb, dst, true);
->   
-> -	if (HAS_4TILE(intel_get_drm_devid(fd))) {
-> +	if (is_i915_device(fd) && HAS_4TILE(intel_get_drm_devid(fd))) {
->   		int buf_height = buf->size / buf->stride;
->   
->   		switch (buf->bpp) {
-> @@ -772,11 +782,21 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
->   
->   	/* We create a temporary buffer and copy from it using rendercopy. */
->   	tmp.size = rect->w * rect->h * pixel_size;
-> -	tmp.handle = gem_create(fd, tmp.size);
-> +	if (is_i915_device(fd))
-> +		tmp.handle = gem_create(fd, tmp.size);
-> +	else
-> +		tmp.handle = xe_bo_create_flags(fd, 0,
-> +						ALIGN(tmp.size, xe_get_default_alignment(fd)),
-> +						vram_if_possible(fd, 0));
-> +
->   	tmp.stride = rect->w * pixel_size;
->   	tmp.bpp = buf->bpp;
-> -	draw_rect_mmap_cpu(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
-> -			   I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
-> +	if (is_i915_device(fd))
-> +		draw_rect_mmap_cpu(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
-> +				   I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
-> +	else
-> +		draw_rect_mmap_wc(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
-> +				  I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
->   
->   	src = create_buf(fd, cmd_data->bops, &tmp, I915_TILING_NONE);
->   	dst = create_buf(fd, cmd_data->bops, buf, tiling);
-> @@ -904,7 +924,21 @@ void igt_draw_rect_fb(int fd, struct buf_ops *bops,
->   void igt_draw_fill_fb(int fd, struct igt_fb *fb, uint32_t color)
->   {
->   	igt_draw_rect_fb(fd, NULL, 0, fb,
-> -			 gem_has_mappable_ggtt(fd) ? IGT_DRAW_MMAP_GTT :
-> -						     IGT_DRAW_MMAP_WC,
-> +			 igt_draw_supports_method(fd, IGT_DRAW_MMAP_GTT) ?
-> +			 IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
->   			 0, 0, fb->width, fb->height, color);
+>   	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
+> @@ -150,35 +163,67 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
+>   		    color_encoding, color_range);
 >   }
-> +
-> +bool igt_draw_supports_method(int fd, enum igt_draw_method method)
+>   
+> +static struct intel_buf * create_buf(int fd, struct buf_ops *bops, int width,
+> +				     int height, uint32_t gem_handle)
 > +{
-> +	if (method == IGT_DRAW_MMAP_GTT)
-> +		return is_i915_device(fd) && gem_has_mappable_ggtt(fd);
+> +	struct intel_buf *buf;
+> +	uint32_t name, handle;
 > +
-> +	if (method == IGT_DRAW_MMAP_WC)
-> +		return (is_i915_device(fd) && gem_mmap__has_wc(fd)) || is_xe_device(fd);
+> +	name = gem_flink(fd,gem_handle);
+> +	handle = gem_open(fd, name);
 > +
-> +	if (method == IGT_DRAW_MMAP_CPU || method == IGT_DRAW_PWRITE)
-> +		return is_i915_device(fd);
+> +	buf = intel_buf_create_using_handle(bops, handle,
+> +					    width, height, 32, 0,
+> +					    I915_TILING_NONE, 0);
 > +
-> +	return true;
+> +	/* Make sure we close handle on destroy path */
+> +	intel_buf_set_ownership(buf, true);
+> +	return buf;
 > +}
-> diff --git a/lib/igt_draw.h b/lib/igt_draw.h
-> index 2d18ef6c9..fe7531b79 100644
-> --- a/lib/igt_draw.h
-> +++ b/lib/igt_draw.h
-> @@ -50,6 +50,8 @@ enum igt_draw_method {
->   
->   const char *igt_draw_get_method_name(enum igt_draw_method method);
->   
-> +bool igt_draw_supports_method(int fd, enum igt_draw_method method);
 > +
->   void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
->   		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
->   		   uint32_t tiling, enum igt_draw_method method,
-
--- 
-~Nidhi Gupta
+>   static void import_fb(int importer_fd, struct igt_fb *fb,
+>   		      int dmabuf_fd, uint32_t pitch)
+>   {
+>   	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
+>   	int ret;
+> -
+> -	if (is_i915_device(importer_fd)) {
+> -		if (gem_has_lmem(importer_fd)) {
+> -			uint64_t ahnd = get_reloc_ahnd(importer_fd, 0);
+> -			uint64_t fb_size = 0;
+> -
+> -			igt_info("Importer is dGPU\n");
+> -			temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> -			igt_assert(temp_buf_handle > 0);
+> -			fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
+> -								       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
+> -			igt_assert(fb->gem_handle > 0);
+> -
+> -			igt_blitter_src_copy(importer_fd, ahnd, 0, NULL, temp_buf_handle,
+> -					     0, pitch, fb->modifier, 0, 0, fb_size, fb->width,
+> -					     fb->height, 32, fb->gem_handle, 0, pitch, fb->modifier,
+> -					     0, 0, fb_size);
+> -
+> -			gem_sync(importer_fd, fb->gem_handle);
+> -			gem_close(importer_fd, temp_buf_handle);
+> -			put_ahnd(ahnd);
+> +	uint64_t fb_size = 0;
+> +
+> +	if ((is_i915_device(importer_fd) && gem_has_lmem(importer_fd)) ||
+> +	    (is_xe_device(importer_fd) && xe_has_vram(importer_fd)))  {
+> +		uint32_t devid = intel_get_drm_devid(importer_fd);
+> +		struct buf_ops *bops = buf_ops_create(importer_fd);
+> +		igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
+> +		struct intel_bb *ibb = intel_bb_create(importer_fd, 4096);
+> +		struct intel_buf *src, *dst;
+> +		uint32_t *ptr;
+> +
+> +		igt_info("Importer is dGPU\n");
+> +		temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> +		igt_assert(temp_buf_handle > 0);
+> +		fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
+> +							       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
+> +		igt_assert(fb->gem_handle > 0);
+> +
+> +		if (is_i915_device(importer_fd)) {
+> +			ptr = gem_mmap__device_coherent(importer_fd, temp_buf_handle, 0,
+> +							ALIGN(fb_size, 4096),
+> +							PROT_READ | PROT_WRITE);
+>   		} else {
+> -			fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> +			ptr = xe_bo_mmap_ext(importer_fd, temp_buf_handle,
+> +					     ALIGN(fb_size, xe_get_default_alignment(importer_fd)),
+> +					     PROT_READ | PROT_WRITE);
+>   		}
+> +
+> +		src = create_buf(importer_fd, bops, fb->width, fb->height, temp_buf_handle);
+> +		dst = create_buf(importer_fd, bops, fb->width, fb->height, fb->gem_handle);
+> +		rendercopy(ibb, src, 0, 0, fb->width, fb->height, dst, 0, 0);
+> +
+> +		igt_assert(gem_munmap(ptr, fb_size) == 0);
+> +		intel_bb_destroy(ibb);
+> +		intel_buf_destroy(src);
+> +		intel_buf_destroy(dst);
+> +		buf_ops_destroy(bops);
+> +		gem_close(importer_fd, temp_buf_handle);
+>   	} else {
+>   		fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+>   	}
+> @@ -330,12 +375,6 @@ static bool has_connected_output(int drm_fd)
+>   	return false;
+>   }
+>   
+> -static void validate_d3_hot(int drm_fd)
+> -{
+> -	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
+> -	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
+> -}
+> -
+>   static void kms_poll_state_restore(void)
+>   {
+>   	int sysfs_fd;
+> @@ -357,6 +396,88 @@ static void kms_poll_disable(void)
+>   	close(sysfs_fd);
+>   }
+>   
+> +static bool runtime_usage_available(struct pci_device *pci)
+> +{
+> +	char name[PATH_MAX];
+> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/runtime_usage",
+> +		 pci->domain, pci->bus, pci->dev, pci->func);
+> +	return access(name, F_OK) == 0;
+> +}
+> +
+> +static bool in_d3_hot(struct pci_device *pci)
+> +{
+> +	uint16_t val;
+> +
+> +	/* We need to wait for the autosuspend to kick in before we can check */
+> +	if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED))
+> +		return false;
+> +
+> +	if (runtime_usage_available(pci) &&
+> +	    igt_pm_get_runtime_usage(pci) != 0)
+> +		return false;
+> +
+> +	igt_assert_eq(pci_device_cfg_read_u16(pci, &val, 0xd4), 0);
+> +
+> +	return (val & 0x3) == 0x3;
+> +}
+> +
+> +static void validate_d3_hot(int drm_fd, struct pci_device *pci)
+> +{
+> +	if (is_i915_device(drm_fd)) {
+> +		igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
+> +		igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
+> +	} else {
+> +		igt_assert(in_d3_hot(pci));
+> +	}
+> +}
+> +
+> +static int open_d3_allowed(struct pci_device *pci)
+> +{
+> +	char name[PATH_MAX];
+> +	int fd;
+> +
+> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/d3cold_allowed",
+> +		 pci->domain, pci->bus, pci->dev, pci->func);
+> +
+> +	fd = open(name, O_RDWR);
+> +	igt_assert_f(fd >= 0, "Can't open %s\n", name);
+> +
+> +	return fd;
+> +}
+> +
+> +static void get_d3_allowed(struct pci_device *pci, char *d3_allowed)
+> +{
+> +	int fd = open_d3_allowed(pci);
+> +
+> +	igt_assert(read(fd, d3_allowed, 2));
+> +	close(fd);
+> +}
+> +
+> +static void set_d3_allowed(struct pci_device *pci, const char *d3_allowed)
+> +{
+> +	int fd = open_d3_allowed(pci);
+> +
+> +	igt_assert(write(fd, d3_allowed, 2));
+> +	close(fd);
+> +}
+> +
+> +static void setup_d3_hot(int fd, struct pci_device *pci)
+> +{
+> +	if (is_xe_device(fd)) {
+> +		igt_assert(igt_setup_runtime_pm(fd));
+> +
+> +		set_d3_allowed(pci, "0\n");
+> +
+> +		igt_assert(in_d3_hot(pci));
+> +	} else {
+> +		igt_set_timeout(10, "Wait for dGPU to enter D3hot before starting the subtest");
+> +		while (!igt_debugfs_search(fd,
+> +			"i915_runtime_pm_status",
+> +			"PCI device power state: D3hot [3]"));
+> +		igt_reset_timeout();
+> +	}
+> +}
+> +
+>   igt_main
+>   {
+>   	int first_fd = -1;
+> @@ -410,21 +531,28 @@ igt_main
+>   
+>   		igt_describe("Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU");
+>   		igt_subtest("D3hot") {
+> -			igt_require_f(is_i915_device(second_fd_hybrid), "i915 device required\n");
+> -			igt_require_f(gem_has_lmem(second_fd_hybrid), "Second GPU is not dGPU\n");
+> +			char d3_allowed[2];
+> +			struct pci_device *pci;
+> +
+> +			igt_require_f(is_intel_device(second_fd_hybrid), "intel device required\n");
+> +			if (is_i915_device(second_fd_hybrid))
+> +				igt_require_f(gem_has_lmem(second_fd_hybrid), "Second GPU is not dGPU\n");
+> +			else
+> +				igt_require_f(xe_has_vram(second_fd_hybrid), "Second GPU is not dGPU\n");
+>   			igt_require_f(first_output, "No display connected to iGPU\n");
+>   			igt_require_f(!second_output, "Display connected to dGPU\n");
+>   
+>   			kms_poll_disable();
+>   
+> -			igt_set_timeout(10, "Wait for dGPU to enter D3hot before starting the subtest");
+> -			while (!igt_debugfs_search(second_fd_hybrid,
+> -			       "i915_runtime_pm_status",
+> -			       "PCI device power state: D3hot [3]"));
+> -			igt_reset_timeout();
+> +			pci = igt_device_get_pci_device(second_fd_hybrid);
+> +			get_d3_allowed(pci, d3_allowed);
+> +
+> +			setup_d3_hot(second_fd_hybrid, pci);
+>   
+>   			test_basic_modeset(first_fd);
+> -			validate_d3_hot(second_fd_hybrid);
+> +			validate_d3_hot(second_fd_hybrid, pci);
+> +
+> +			set_d3_allowed(pci, d3_allowed);
+>   		}
+>   
+>   		igt_fixture {
+> @@ -442,6 +570,8 @@ igt_main
+>   			igt_require(second_fd_vgem >= 0);
+>   			if (is_i915_device(first_fd))
+>   				igt_require(!gem_has_lmem(first_fd));
+> +			if (is_xe_device(first_fd))
+> +				igt_require(!xe_has_vram(first_fd));
+>   		}
+>   
+>   		igt_describe("Make a dumb color buffer, export to another device and"
