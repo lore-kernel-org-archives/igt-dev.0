@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5084110E90B
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 10:53:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4056B10E90B
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 10:53:18 +0000 (UTC)
 From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 13:52:48 +0300
-Message-Id: <20230426105249.3897491-3-jouni.hogander@intel.com>
+Date: Wed, 26 Apr 2023 13:52:49 +0300
+Message-Id: <20230426105249.3897491-4-jouni.hogander@intel.com>
 In-Reply-To: <20230426105249.3897491-1-jouni.hogander@intel.com>
 References: <20230426105249.3897491-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 2/3] tests/i915/kms_frontbuffer_tracking:
- Split drrs into library
+Subject: [igt-dev] [PATCH i-g-t v4 3/3] tests/kms_dirtyfb: Add new test for
+ dirtyfb ioctl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,353 +24,341 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Split drrs handling into library to be used by other testcases as well.
+Add new test to validate dirtyfb ioctl is working properly with GPU
+frontbuffer rendering.
 
-v3: Add library function descriptions
-v2: Moved into libigt instead of static kms_drrs_helper
+Create big framebuffer and use only lower right corner for the
+plane. Initiate GPU drawing for a rectangle over the whole
+framebuffer and perform dirtyfb ioctl. Then wait for the drawing to
+complete and collect crc and check that it matches with expected.
+
+v4:
+ - Check connector type when PSR is tested
+v3:
+ - Use spinner
+ - Drop allocating big frambuffers
+v2:
+ - Change license comment
+ - Move disable_features and do not apply for FEATURE_DEFAULT
 
 Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- lib/i915/intel_drrs.c                 | 133 ++++++++++++++++++++++++++
- lib/i915/intel_drrs.h                 |  17 ++++
- lib/meson.build                       |   1 +
- tests/i915/kms_frontbuffer_tracking.c |  83 ++--------------
- 4 files changed, 158 insertions(+), 76 deletions(-)
- create mode 100644 lib/i915/intel_drrs.c
- create mode 100644 lib/i915/intel_drrs.h
+ tests/i915/kms_dirtyfb.c | 294 +++++++++++++++++++++++++++++++++++++++
+ tests/meson.build        |   1 +
+ 2 files changed, 295 insertions(+)
+ create mode 100644 tests/i915/kms_dirtyfb.c
 
-diff --git a/lib/i915/intel_drrs.c b/lib/i915/intel_drrs.c
+diff --git a/tests/i915/kms_dirtyfb.c b/tests/i915/kms_dirtyfb.c
 new file mode 100644
-index 00000000..2f83e139
+index 00000000..2a7dd85b
 --- /dev/null
-+++ b/lib/i915/intel_drrs.c
-@@ -0,0 +1,133 @@
++++ b/tests/i915/kms_dirtyfb.c
+@@ -0,0 +1,294 @@
 +/* SPDX-License-Identifier: MIT */
 +/*
 + * Copyright © 2023 Intel Corporation
 + */
 +
-+#include <fcntl.h>
++#include <sys/types.h>
 +
 +#include "igt.h"
-+#include "igt_sysfs.h"
++#include "igt_psr.h"
 +
-+#include "intel_drrs.h"
-+
-+/**
-+ * intel_is_drrs_supported:
-+ * @device: fd of the device
-+ * @pipe: Display pipe
-+ *
-+ * Check if DRRS is supported on given pipe.
-+ *
-+ * Returns:
-+ * true if DRRS is supported and false otherwise.
-+ */
-+bool intel_is_drrs_supported(int device, enum pipe pipe)
-+{
-+	char buf[256];
-+	int dir;
-+
-+	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
-+	igt_require_fd(dir);
-+	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
-+	close(dir);
-+	if (*buf == '\0')
-+		return false;
-+
-+	return !strcasestr(buf, "DRRS enabled:");
-+}
-+
-+/**
-+ * intel_output_has_drrs
-+ * @device: fd of the device
-+ * @output: Display output
-+ *
-+ * Check if drrs used on given output.
-+ *
-+ * Returns:
-+ * true if DRRS is used and false otherwise.
-+ */
-+bool intel_output_has_drrs(int device, igt_output_t *output)
-+{
-+	char buf[256];
-+	int dir;
-+
-+	dir = igt_debugfs_connector_dir(device, output->name, O_DIRECTORY);
-+	igt_require_fd(dir);
-+	igt_debugfs_simple_read(dir, "i915_drrs_type", buf, sizeof(buf));
-+	close(dir);
-+
-+	return strstr(buf, "seamless");
-+}
-+
-+static void drrs_set(int device, enum pipe pipe, unsigned int val)
-+{
-+	char buf[2];
-+	int dir, ret;
-+
-+	igt_debug("Manually %sabling DRRS. %u\n", val ? "en" : "dis", val);
-+	snprintf(buf, sizeof(buf), "%d", val);
-+
-+	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
-+	igt_require_fd(dir);
-+	ret = igt_sysfs_write(dir, "i915_drrs_ctl", buf, sizeof(buf) - 1);
-+
-+	/*
-+	 * drrs_enable() is called on DRRS capable platform only,
-+	 * whereas drrs_disable() is called on all platforms.
-+	 * So handle the failure of debugfs_write only for drrs_enable().
-+	 */
-+	if (val)
-+		igt_assert_f(ret == (sizeof(buf) - 1), "debugfs_write failed");
-+}
-+
-+/**
-+ * intel_drrs_enable:
-+ * @device: fd of the device
-+ * @pipe: Display pipe
-+ *
-+ * Enable DRRS on given pipe
-+ *
-+ * Returns:
-+ * none
-+ */
-+void intel_drrs_enable(int device, enum pipe pipe)
-+{
-+	drrs_set(device, pipe, 1);
-+}
-+
-+/**
-+ * intel_drrs_disable:
-+ * @device: fd of the device
-+ * @pipe: Display pipe
-+ *
-+ * Disable DRRS on given pipe
-+ *
-+ * Returns:
-+ * none
-+ */
-+void intel_drrs_disable(int device, enum pipe pipe)
-+{
-+	drrs_set(device, pipe, 0);
-+}
-+
-+/**
-+ * intel_is_drrs_inactive:
-+ * @device: fd of the device
-+ * @pipe: Display pipe
-+ *
-+ * Check if drrs is inactive on given pipe
-+ *
-+ * Returns:
-+ * true if inactive and false otherwise
-+ */
-+bool intel_is_drrs_inactive(int device, enum pipe pipe)
-+{
-+	char buf[256];
-+	int dir;
-+
-+	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
-+	igt_require_fd(dir);
-+	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
-+	close(dir);
-+
-+	return strstr(buf, "DRRS active: no");
-+}
-diff --git a/lib/i915/intel_drrs.h b/lib/i915/intel_drrs.h
-new file mode 100644
-index 00000000..d4d27a5f
---- /dev/null
-+++ b/lib/i915/intel_drrs.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+
-+#ifndef INTEL_DRRS_H
-+#define INTEL_DRRS_H
-+
-+#include "igt.h"
-+
-+bool intel_is_drrs_supported(int device, enum pipe pipe);
-+bool intel_output_has_drrs(int device, igt_output_t *output);
-+void intel_drrs_enable(int device, enum pipe pipe);
-+void intel_drrs_disable(int device, enum pipe pipe);
-+bool intel_is_drrs_inactive(int device, enum pipe pipe);
-+
-+#endif
-diff --git a/lib/meson.build b/lib/meson.build
-index e3916096..64abc76b 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -12,6 +12,7 @@ lib_sources = [
- 	'i915/gem_mman.c',
- 	'i915/gem_vm.c',
- 	'i915/intel_decode.c',
-+	'i915/intel_drrs.c',
- 	'i915/intel_fbc.c',
- 	'i915/intel_memory_region.c',
- 	'i915/intel_mocs.c',
-diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index f5da0f24..4669e0d4 100644
---- a/tests/i915/kms_frontbuffer_tracking.c
-+++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -32,6 +32,7 @@
- 
- #include "i915/gem.h"
- #include "i915/gem_create.h"
 +#include "i915/intel_drrs.h"
- #include "i915/intel_fbc.h"
- #include "igt.h"
- #include "igt_sysfs.h"
-@@ -746,54 +747,10 @@ static void __debugfs_read_crtc(const char *param, char *buf, int len)
- 	close(dir);
- }
- 
--static int __debugfs_write_crtc(const char *param, const char *buf, int len)
--{
--	int dir, ret;
--	enum pipe pipe;
--
--	pipe = prim_mode_params.pipe;
--	dir = igt_debugfs_pipe_dir(drm.fd, pipe, O_DIRECTORY);
--	igt_require_fd(dir);
--	ret = igt_sysfs_write(dir, param, buf, len - 1);
--	close(dir);
--
--	return ret;
--}
--
--static void __debugfs_read_connector(const char *param, char *buf, int len)
--{
--	int dir;
--	igt_output_t *output;
--
--	output = prim_mode_params.output;
--	dir = igt_debugfs_connector_dir(drm.fd, output->name, O_DIRECTORY);
--	igt_require_fd(dir);
--	igt_debugfs_simple_read(dir, param, buf, len);
--	close(dir);
--}
--
- #define debugfs_read_crtc(p, arr) __debugfs_read_crtc(p, arr, sizeof(arr))
- #define debugfs_write_crtc(p, arr) __debugfs_write_crtc(p, arr, sizeof(arr))
- #define debugfs_read_connector(p, arr) __debugfs_read_connector(p, arr, sizeof(arr))
- 
--static void drrs_set(unsigned int val)
--{
--	char buf[2];
--	int ret;
--
--	igt_debug("Manually %sabling DRRS. %u\n", val ? "en" : "dis", val);
--	snprintf(buf, sizeof(buf), "%d", val);
--	ret = debugfs_write_crtc("i915_drrs_ctl", buf);
--
--	/*
--	 * drrs_enable() is called on DRRS capable platform only,
--	 * whereas drrs_disable() is called on all platforms.
--	 * So handle the failure of debugfs_write only for drrs_enable().
--	 */
--	if (val)
--		igt_assert_f(ret == (sizeof(buf) - 1), "debugfs_write failed");
--}
--
- static bool is_drrs_high(void)
- {
- 	char buf[MAX_DRRS_STATUS_BUF_LEN];
-@@ -810,22 +767,6 @@ static bool is_drrs_low(void)
- 	return strstr(buf, "DRRS refresh rate: low");
- }
- 
--static bool is_drrs_supported(void)
--{
--	char buf[MAX_DRRS_STATUS_BUF_LEN];
--
--	debugfs_read_crtc("i915_drrs_status", buf);
--	return strcasestr(buf, "DRRS enabled:");
--}
--
--static bool is_drrs_inactive(void)
--{
--	char buf[MAX_DRRS_STATUS_BUF_LEN];
--
--	debugfs_read_crtc("i915_drrs_status", buf);
--	return strstr(buf, "DRRS active: no");
--}
--
- static void drrs_print_status(void)
- {
- 	char buf[MAX_DRRS_STATUS_BUF_LEN];
-@@ -834,14 +775,6 @@ static void drrs_print_status(void)
- 	igt_info("DRRS STATUS :\n%s\n", buf);
- }
- 
--static bool output_has_drrs(void)
--{
--	char buf[MAX_DRRS_STATUS_BUF_LEN];
--
--	debugfs_read_connector("i915_drrs_type", buf);
--	return strstr(buf, "seamless");
--}
--
- static struct timespec fbc_get_last_action(void)
- {
- 	struct timespec ret = { 0, 0 };
-@@ -955,9 +888,6 @@ static bool drrs_wait_until_rr_switch_to_low(void)
- 	return igt_wait(is_drrs_low(), 5000, 1);
- }
- 
--#define drrs_enable()	drrs_set(1)
--#define drrs_disable()	drrs_set(0)
--
- static struct rect pat1_get_rect(struct fb_region *fb, int r)
- {
- 	struct rect rect;
-@@ -1159,8 +1089,9 @@ static bool disable_features(const struct test_mode *t)
- 	if (t->feature == FEATURE_DEFAULT)
- 		return false;
- 
--	drrs_disable();
- 	intel_fbc_disable(drm.fd);
-+	intel_drrs_disable(drm.fd, prim_mode_params.pipe);
++#include "i915/intel_fbc.h"
 +
- 	return psr.can_test ? psr_disable(drm.fd, drm.debugfs) : false;
- }
- 
-@@ -1437,12 +1368,12 @@ static void teardown_psr(void)
- 
- static void setup_drrs(void)
- {
--	if (!output_has_drrs()) {
-+	if (!intel_output_has_drrs(drm.fd, prim_mode_params.output)) {
- 		igt_info("Can't test DRRS: no usable screen.\n");
- 		return;
- 	}
- 
--	if (!is_drrs_supported()) {
-+	if (!intel_is_drrs_supported(drm.fd, prim_mode_params.pipe)) {
- 		igt_info("Can't test DRRS: Not supported.\n");
- 		return;
- 	}
-@@ -1599,7 +1530,7 @@ static void do_status_assertions(int flags)
- 			igt_assert_f(false, "DRRS LOW\n");
- 		}
- 	} else if (flags & ASSERT_DRRS_INACTIVE) {
--		if (!is_drrs_inactive()) {
-+		if (!intel_is_drrs_inactive(drm.fd, prim_mode_params.pipe)) {
- 			drrs_print_status();
- 			igt_assert_f(false, "DRRS INACTIVE\n");
- 		}
-@@ -1764,7 +1695,7 @@ static bool enable_features_for_test(const struct test_mode *t)
- 	if (t->feature & FEATURE_PSR)
- 		ret = psr_enable(drm.fd, drm.debugfs, PSR_MODE_1);
- 	if (t->feature & FEATURE_DRRS)
--		drrs_enable();
-+		intel_drrs_enable(drm.fd, prim_mode_params.pipe);
- 
- 	return ret;
- }
++IGT_TEST_DESCRIPTION("Test the DIRTYFB ioctl is working properly with "
++		     "its related features: FBC, PSR and DRRS");
++
++#ifndef PAGE_ALIGN
++#ifndef PAGE_SIZE
++#define PAGE_SIZE 4096
++#endif
++#define PAGE_ALIGN(x) ALIGN(x, PAGE_SIZE)
++#endif
++
++typedef struct {
++	int drm_fd;
++	int debugfs_fd;
++	igt_display_t display;
++	drmModeModeInfo *mode;
++	igt_output_t *output;
++	igt_pipe_crc_t *pipe_crc;
++	enum pipe pipe;
++
++	struct igt_fb fbs[3];
++
++	igt_crc_t ref_crc;
++
++	struct buf_ops *bops;
++	enum {
++		FEATURE_NONE  = 0,
++		FEATURE_PSR   = 1,
++		FEATURE_FBC   = 2,
++		FEATURE_DRRS  = 4,
++		FEATURE_COUNT = 8,
++		FEATURE_DEFAULT = 8,
++	} feature;
++} data_t;
++
++static const char *feature_str(int feature)
++{
++	switch (feature) {
++	case FEATURE_NONE:
++		return "nop";
++	case FEATURE_FBC:
++		return "fbc";
++	case FEATURE_PSR:
++		return "psr";
++	case FEATURE_DRRS:
++		return "drrs";
++	case FEATURE_DEFAULT:
++		return "default";
++	default:
++		igt_assert(false);
++	}
++}
++
++static bool check_support(data_t *data)
++{
++	switch (data->feature) {
++	case FEATURE_NONE:
++		return true;
++	case FEATURE_FBC:
++		return intel_fbc_supported_on_chipset(data->drm_fd, data->pipe);
++	case FEATURE_PSR:
++		if (data->output->config.connector->connector_type !=
++		    DRM_MODE_CONNECTOR_eDP)
++			return false;
++		return psr_sink_support(data->drm_fd, data->debugfs_fd,
++					PSR_MODE_1);
++	case FEATURE_DRRS:
++		return intel_is_drrs_supported(data->drm_fd, data->pipe) &&
++			intel_output_has_drrs(data->drm_fd, data->output);
++	case FEATURE_DEFAULT:
++		return true;
++	default:
++		igt_assert(false);
++	}
++}
++
++static void enable_feature(data_t *data)
++{
++	switch (data->feature) {
++	case FEATURE_NONE:
++		break;
++	case FEATURE_FBC:
++		intel_fbc_enable(data->drm_fd);
++		break;
++	case FEATURE_PSR:
++		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1);
++		break;
++	case FEATURE_DRRS:
++		intel_drrs_enable(data->drm_fd, data->pipe);
++		break;
++	case FEATURE_DEFAULT:
++		break;
++	default:
++		igt_assert(false);
++	}
++}
++
++static void check_feature(data_t *data)
++{
++	switch (data->feature) {
++	case FEATURE_NONE:
++		break;
++	case FEATURE_FBC:
++		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
++							  data->pipe),
++			     "FBC still disabled");
++		break;
++	case FEATURE_PSR:
++		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1),
++			     "PSR still disabled\n");
++		break;
++	case FEATURE_DRRS:
++		igt_assert_f(intel_is_drrs_inactive(data->drm_fd, data->pipe),
++			     "DRRS INACTIVE\n");
++		break;
++	case FEATURE_DEFAULT:
++		break;
++	default:
++		igt_assert(false);
++	}
++}
++
++static void disable_features(data_t *data)
++{
++	intel_fbc_disable(data->drm_fd);
++	psr_disable(data->drm_fd, data->debugfs_fd);
++	intel_drrs_disable(data->drm_fd, data->pipe);
++}
++
++static void prepare(data_t *data)
++{
++	igt_plane_t *primary;
++
++	igt_skip_on(!check_support(data));
++
++	data->mode = igt_output_get_mode(data->output);
++
++	igt_output_set_pipe(data->output, data->pipe);
++
++	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++					 IGT_PIPE_CRC_SOURCE_AUTO);
++
++	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
++			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
++			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
++			    &data->fbs[0]);
++	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[0],
++			 IGT_DRAW_MMAP_CPU, 0, 0, data->fbs[0].width,
++			 data->fbs[0].height, 0xFF);
++
++	primary = igt_output_get_plane_type(data->output,
++					    DRM_PLANE_TYPE_PRIMARY);
++
++	igt_plane_set_fb(primary, &data->fbs[0]);
++
++	if (data->feature != FEATURE_DEFAULT)
++		disable_features(data);
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
++
++	igt_create_color_fb(data->drm_fd,  data->mode->hdisplay,
++			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
++			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
++			    &data->fbs[1]);
++	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[1],
++			 IGT_DRAW_MMAP_CPU, 0, 0, data->fbs[1].width,
++			 data->fbs[1].height, 0xFF);
++
++	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
++			     data->mode->vdisplay, DRM_FORMAT_XRGB8888,
++			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
++			    &data->fbs[2]);
++
++	igt_plane_set_fb(primary, &data->fbs[2]);
++
++	enable_feature(data);
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	check_feature(data);
++}
++
++static void cleanup(data_t *data)
++{
++	igt_remove_fb(data->drm_fd, &data->fbs[0]);
++	igt_remove_fb(data->drm_fd, &data->fbs[1]);
++	igt_remove_fb(data->drm_fd, &data->fbs[2]);
++
++	igt_pipe_crc_free(data->pipe_crc);
++
++	igt_output_set_pipe(data->output, PIPE_NONE);
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++}
++
++static void run_test(data_t *data)
++{
++	igt_crc_t crc;
++	struct intel_buf *src, *dst;
++	struct intel_bb *ibb;
++	igt_spin_t *spin;
++	uint64_t ahnd = 0;
++	uint32_t devid = intel_get_drm_devid(data->drm_fd);
++	igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
++	int r;
++
++	igt_skip_on(!rendercopy);
++
++	src = intel_buf_create_using_handle(data->bops, data->fbs[1].gem_handle,
++					    data->fbs[1].width,
++					    data->fbs[1].height,
++					    igt_drm_format_to_bpp(data->fbs[1].drm_format),
++					    0, igt_fb_mod_to_tiling(data->fbs[1].modifier), 0);
++	dst = intel_buf_create_using_handle(data->bops, data->fbs[2].gem_handle,
++					    data->fbs[2].width,
++					    data->fbs[2].height,
++					    igt_drm_format_to_bpp(data->fbs[2].drm_format),
++					    0, igt_fb_mod_to_tiling(data->fbs[2].modifier), 0);
++	ibb = intel_bb_create_with_context(data->drm_fd, 0, NULL, PAGE_SIZE);
++
++	spin = igt_spin_new(data->drm_fd, .ahnd = ahnd);
++	igt_spin_set_timeout(spin, NSEC_PER_SEC);
++
++	rendercopy(ibb, src, 0, 0, data->fbs[2].width, data->fbs[2].height, dst, 0, 0);
++
++	/* Perfom dirtyfb right after initiating rendercopy */
++	r = drmModeDirtyFB(data->drm_fd, data->fbs[2].fb_id, NULL, 0);
++	igt_assert(r == 0 || r == -ENOSYS);
++
++	/* Ensure rendercopy is complete */
++	intel_bb_sync(ibb);
++
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
++	igt_assert_crc_equal(&crc, &data->ref_crc);
++
++	igt_spin_free(data->drm_fd, spin);
++	intel_bb_destroy(ibb);
++	intel_buf_destroy(src);
++	intel_buf_destroy(dst);
++}
++
++igt_main
++{
++	data_t data = {};
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.drm_fd);
++
++		data.bops = buf_ops_create(data.drm_fd);
++
++		igt_display_reset(&data.display);
++	}
++
++	igt_describe("Test dirtyFB ioctl");
++	igt_subtest_with_dynamic("dirtyfb-ioctl") {
++		data.pipe = PIPE_A;
++		for_each_valid_output_on_pipe(&data.display, data.pipe,
++					      data.output) {
++			for (data.feature = FEATURE_DEFAULT; data.feature > 0;
++			     data.feature = data.feature >> 1) {
++				igt_dynamic_f("%s-%s", feature_str(data.feature),
++					      igt_output_name(data.output)) {
++					prepare(&data);
++					run_test(&data);
++					cleanup(&data);
++				}
++			}
++		}
++	}
++
++	igt_fixture {
++		buf_ops_destroy(data.bops);
++		igt_display_fini(&data.display);
++		close(data.drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 9072cfad..1a467e7d 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -222,6 +222,7 @@ i915_progs = [
+ 	'kms_busy',
+ 	'kms_ccs',
+ 	'kms_cdclk',
++	'kms_dirtyfb',
+ 	'kms_draw_crc',
+ 	'kms_fbcon_fbt',
+ 	'kms_fence_pin_leak',
 -- 
 2.34.1
