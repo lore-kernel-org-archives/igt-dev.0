@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 956C710E976
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBBF410E962
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:54 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 17:17:17 +0530
-Message-Id: <20230426114725.2244653-38-bhanuprakash.modem@intel.com>
+Date: Wed, 26 Apr 2023 17:17:18 +0530
+Message-Id: <20230426114725.2244653-39-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 37/45] tests/kms_panel_fitting: Add XE support
+Subject: [igt-dev] [i-g-t V3 38/45] tests/kms_plane: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,49 +25,61 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_panel_fitting.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tests/kms_plane.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
-index 2d0590da2..97ef1ae48 100644
---- a/tests/kms_panel_fitting.c
-+++ b/tests/kms_panel_fitting.c
-@@ -23,6 +23,7 @@
-  */
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 62aee9ad0..10e16b638 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -30,6 +30,7 @@
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <string.h>
++#include "xe/xe_query.h"
  
- #include "igt.h"
-+#include <limits.h>
- #include <math.h>
- #include <sys/stat.h>
+ /*
+  * Throw away enough lsbs in pixel formats tests
+@@ -399,6 +400,18 @@ test_plane_panning(data_t *data, enum pipe pipe)
  
-@@ -133,7 +134,7 @@ test_panel_fitting_legacy(data_t *d, igt_display_t *display,
- 	igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
- 	igt_plane_set_position(d->plane2, 100, 100);
+ 	}
  
--	if (is_i915_device(display->drm_fd)) {
-+	if (is_intel_device(display->drm_fd)) {
- 		uint32_t devid = intel_get_drm_devid(display->drm_fd);
- 		/*
- 		 * Most of gen7 and all of gen8 doesn't support plane scaling
-@@ -233,10 +234,15 @@ static void test_panel_fitting(data_t *data, enum test_type type)
- 	struct stat sb;
- 
- 	if (type == TEST_ATOMIC) {
--		igt_require_f(is_i915_device(display->drm_fd), "not valid for non-i915 devices\n");
-+		char path[PATH_MAX];
++	if (is_xe_device(data->drm_fd)) {
++		struct drm_xe_query_mem_region *memregion;
++		uint64_t memreg = all_memory_regions(data->drm_fd), region;
 +
-+		igt_require_f(is_intel_device(display->drm_fd), "not valid for non-intel devices\n");
- 
- 		/* Until this is force enabled, force modeset evasion. */
--		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
-+		snprintf(path, PATH_MAX, "/sys/module/%s/parameters/fastboot",
-+					 is_i915_device(data->drm_fd) ? "i915" : "xe");
++		xe_for_each_mem_region(data->drm_fd, memreg, region) {
++			memregion = xe_mem_region(data->drm_fd, region);
 +
-+		if (stat(path, &sb) == 0)
- 			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
++			if (XE_IS_CLASS_VRAM(memregion))
++				mem_size = memregion->total_size;
++		}
++	}
++
+ 	for_each_connector_mode(output) {
+ 		drmModeModeInfo *m = &output->config.connector->modes[j__];
+ 		uint32_t fb_size = m->hdisplay * m->vdisplay * 4;
+@@ -976,6 +989,10 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+ 			.modifier = plane->modifiers[i],
+ 		};
  
- 		igt_require(intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 5);
++		if (is_xe_device(data->drm_fd) &&
++		    f.modifier != DRM_FORMAT_MOD_LINEAR)
++			continue;
++
+ 		if (f.format == ref.format &&
+ 		    f.modifier == ref.modifier)
+ 			continue;
+@@ -1050,7 +1067,7 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
+ 	if (data->extended)
+ 		return false;
+ 
+-	if (!is_i915_device(data->drm_fd))
++	if (!is_intel_device(data->drm_fd))
+ 		return false;
+ 
+ 	if (plane->type == DRM_PLANE_TYPE_CURSOR)
 -- 
 2.40.0
