@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C10710E8B9
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 878C210E8B9
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 17:16:46 +0530
-Message-Id: <20230426114725.2244653-7-bhanuprakash.modem@intel.com>
+Date: Wed, 26 Apr 2023 17:16:47 +0530
+Message-Id: <20230426114725.2244653-8-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 06/45] lib/intel_bufops: Add Xe support in
- bufops
+Subject: [igt-dev] [i-g-t V3 07/45] lib/intel_batchbuffer: Rename i915 -> fd
+ as preparation step for xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,301 +26,517 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Extend bufops to support Xe:
- - change region to 64bit region mask,
- - add initialization helper (full) which allows passing handle,
-   size and region,
- - mapping functions (read + write) selects driver specific mapping
+Until now intel-bb was designed to handle i915 (relocations and
+softpinning). We want to reuse it also for xe as softpinning
+which requires allocator also unblocks this for vm_bind used
+in xe.
+
+This is preparation step which stops using i915 as internal fd
+to avoid confusion.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/intel_bufops.c | 120 +++++++++++++++++++++++++++++++++++++++++----
- lib/intel_bufops.h |  24 ++++++++-
- 2 files changed, 133 insertions(+), 11 deletions(-)
+ lib/gpu_cmds.c           |   2 +-
+ lib/intel_aux_pgtable.c  |   2 +-
+ lib/intel_batchbuffer.c  | 116 +++++++++++++++++++--------------------
+ lib/intel_batchbuffer.h  |  16 +++---
+ tests/i915/gem_caching.c |   4 +-
+ tests/i915/gem_pxp.c     |   2 +-
+ 6 files changed, 71 insertions(+), 71 deletions(-)
 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index cdc7a1698..42a9b2bd0 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -26,6 +26,8 @@
- #include <cairo.h>
- 
- #include "i915/gem_create.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
- #include "igt.h"
- #include "igt_x86.h"
- #include "intel_bufops.h"
-@@ -106,6 +108,7 @@ typedef void (*bo_copy)(struct buf_ops *, struct intel_buf *, uint32_t *);
- 
- struct buf_ops {
- 	int fd;
-+	enum intel_driver driver;
- 	int gen_start;
- 	int gen_end;
- 	unsigned int intel_gen;
-@@ -488,6 +491,9 @@ static void *mmap_write(int fd, struct intel_buf *buf)
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index cee81555d..afb26d299 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -251,7 +251,7 @@ gen7_fill_binding_table(struct intel_bb *ibb,
  {
- 	void *map = NULL;
+ 	uint32_t binding_table_offset;
+ 	uint32_t *binding_table;
+-	uint32_t devid = intel_get_drm_devid(ibb->i915);
++	uint32_t devid = intel_get_drm_devid(ibb->fd);
  
-+	if (buf->bops->driver == INTEL_DRIVER_XE)
-+		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
-+
- 	if (gem_has_lmem(fd)) {
- 		/*
- 		 * set/get_caching and set_domain are no longer supported on
-@@ -530,6 +536,9 @@ static void *mmap_read(int fd, struct intel_buf *buf)
- {
- 	void *map = NULL;
+ 	intel_bb_ptr_align(ibb, 64);
+ 	binding_table_offset = intel_bb_offset(ibb);
+diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+index 520568708..946ca60b9 100644
+--- a/lib/intel_aux_pgtable.c
++++ b/lib/intel_aux_pgtable.c
+@@ -481,7 +481,7 @@ intel_aux_pgtable_create(struct intel_bb *ibb,
+ 	intel_bb_add_intel_buf_with_alignment(ibb, pgt->buf,
+ 					      pgt->max_align, false);
  
-+	if (buf->bops->driver == INTEL_DRIVER_XE)
-+		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
-+
- 	if (gem_has_lmem(fd)) {
- 		/*
- 		 * set/get_caching and set_domain are no longer supported on
-@@ -809,7 +818,7 @@ static void __intel_buf_init(struct buf_ops *bops,
- 			     int width, int height, int bpp, int alignment,
- 			     uint32_t req_tiling, uint32_t compression,
- 			     uint64_t bo_size, int bo_stride,
--			     uint32_t region)
-+			     uint64_t region)
- {
- 	uint32_t tiling = req_tiling;
- 	uint64_t size;
-@@ -899,9 +908,19 @@ static void __intel_buf_init(struct buf_ops *bops,
- 	buf->size = size;
- 	buf->handle = handle;
+-	pgt_map(ibb->i915, pgt);
++	pgt_map(ibb->fd, pgt);
+ 	pgt_populate_entries(pgt, bufs, buf_count);
+ 	pgt_unmap(pgt);
  
--	if (!handle)
--		if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
--			igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
-+	if (!handle) {
-+		if (bops->driver == INTEL_DRIVER_I915) {
-+			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
-+				igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
-+		} else {
-+			size = ALIGN(size, xe_get_default_alignment(bops->fd));
-+			buf->handle = xe_bo_create_flags(bops->fd, 0, size, region);
-+		}
-+	}
-+	if (bops->driver == INTEL_DRIVER_XE)
-+		igt_assert_f(region != -1, "Xe requires region awareness, "
-+					   "use api which passes valid region\n");
-+	buf->region = region;
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index a4eb4c2bb..7dbd6dd58 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -828,7 +828,7 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
  
- 	/* Store gem bo size */
- 	buf->bo_size = size;
-@@ -930,8 +949,12 @@ void intel_buf_init(struct buf_ops *bops,
- 		    int width, int height, int bpp, int alignment,
- 		    uint32_t tiling, uint32_t compression)
- {
-+	uint64_t region;
-+
-+	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
-+						     system_memory(bops->fd);
- 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
--			 tiling, compression, 0, 0, I915_SYSTEM_MEMORY);
-+			 tiling, compression, 0, 0, region);
- 
- 	intel_buf_set_ownership(buf, true);
- }
-@@ -945,7 +968,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
- 			      struct intel_buf *buf,
- 			      int width, int height, int bpp, int alignment,
- 			      uint32_t tiling, uint32_t compression,
--			      uint32_t region)
-+			      uint64_t region)
- {
- 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
- 			 tiling, compression, 0, 0, region);
-@@ -1010,6 +1033,43 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
- 			 req_tiling, compression, 0, 0, -1);
- }
- 
-+/**
-+ * intel_buf_init_full
-+ * @bops: pointer to buf_ops
-+ * @handle: BO handle created by the caller
-+ * @buf: pointer to intel_buf structure to be filled
-+ * @width: surface width
-+ * @height: surface height
-+ * @bpp: bits-per-pixel (8 / 16 / 32 / 64)
-+ * @alignment: alignment of the stride for linear surfaces
-+ * @req_tiling: surface tiling
-+ * @compression: surface compression type
-+ * @size: real bo size
-+ * @stride: bo stride
-+ * @region: region
-+ *
-+ * Function configures BO handle within intel_buf structure passed by the caller
-+ * (with all its metadata - width, height, ...). Useful if BO was created
-+ * outside. Allows passing real size which caller is aware of.
-+ *
-+ * Note: intel_buf_close() can be used because intel_buf is aware it is not
-+ * buffer owner so it won't close it underneath.
-+ */
-+void intel_buf_init_full(struct buf_ops *bops,
-+			 uint32_t handle,
-+			 struct intel_buf *buf,
-+			 int width, int height,
-+			 int bpp, int alignment,
-+			 uint32_t req_tiling,
-+			 uint32_t compression,
-+			 uint64_t size,
-+			 int stride,
-+			 uint64_t region)
-+{
-+	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
-+			 req_tiling, compression, size, stride, region);
-+}
-+
  /**
-  * intel_buf_create
-  * @bops: pointer to buf_ops
-@@ -1084,6 +1144,20 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
- 							 uint32_t compression,
- 							 uint64_t size,
- 							 int stride)
-+{
-+	return intel_buf_create_full(bops, handle, width, height, bpp, alignment,
-+				     req_tiling, compression, size, stride, -1);
-+}
-+
-+struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
-+					uint32_t handle,
-+					int width, int height,
-+					int bpp, int alignment,
-+					uint32_t req_tiling,
-+					uint32_t compression,
-+					uint64_t size,
-+					int stride,
-+					uint64_t region)
- {
- 	struct intel_buf *buf;
+  * __intel_bb_create:
+- * @i915: drm fd
++ * @fd: drm fd
+  * @ctx: context id
+  * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+  * @size: size of the batchbuffer
+@@ -873,7 +873,7 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+  * Pointer the intel_bb, asserts on failure.
+  */
+ static struct intel_bb *
+-__intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
++__intel_bb_create(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 		  uint32_t size, bool do_relocs,
+ 		  uint64_t start, uint64_t end,
+ 		  uint8_t allocator_type, enum allocator_strategy strategy)
+@@ -883,8 +883,8 @@ __intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
  
-@@ -1093,12 +1167,11 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
- 	igt_assert(buf);
+ 	igt_assert(ibb);
  
- 	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
--			 req_tiling, compression, size, stride, -1);
-+			 req_tiling, compression, size, stride, region);
- 
- 	return buf;
- }
- 
--
- /**
-  * intel_buf_destroy
-  * @buf: intel_buf
-@@ -1420,8 +1493,24 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
- 
- 	bops->fd = fd;
- 	bops->intel_gen = generation;
--	igt_debug("generation: %d, supported tiles: 0x%02x\n",
--		  bops->intel_gen, bops->supported_tiles);
-+	bops->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
-+					    is_xe_device(fd) ? INTEL_DRIVER_XE : 0;
-+	igt_assert(bops->driver);
-+	igt_debug("generation: %d, supported tiles: 0x%02x, driver: %s\n",
-+		  bops->intel_gen, bops->supported_tiles,
-+		  bops->driver == INTEL_DRIVER_I915 ? "i915" : "xe");
-+
-+	/* No tiling support in XE. */
-+	if (bops->driver == INTEL_DRIVER_XE) {
-+		bops->supported_hw_tiles = TILE_NONE;
-+
-+		bops->linear_to_x = copy_linear_to_x;
-+		bops->x_to_linear = copy_x_to_linear;
-+		bops->linear_to_y = copy_linear_to_y;
-+		bops->y_to_linear = copy_y_to_linear;
-+
-+		return bops;
-+	}
+-	ibb->uses_full_ppgtt = gem_uses_full_ppgtt(i915);
+-	ibb->devid = intel_get_drm_devid(i915);
++	ibb->uses_full_ppgtt = gem_uses_full_ppgtt(fd);
++	ibb->devid = intel_get_drm_devid(fd);
+ 	ibb->gen = intel_gen(ibb->devid);
  
  	/*
- 	 * Warning!
-@@ -1569,6 +1658,17 @@ int buf_ops_get_fd(struct buf_ops *bops)
- 	return bops->fd;
+@@ -900,16 +900,16 @@ __intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 	 * so we want kernel to not interfere with this.
+ 	 */
+ 	if (do_relocs)
+-		ibb->allows_obj_alignment = gem_allows_obj_alignment(i915);
++		ibb->allows_obj_alignment = gem_allows_obj_alignment(fd);
+ 
+ 	/* Use safe start offset instead assuming 0x0 is safe */
+-	start = max_t(uint64_t, start, gem_detect_safe_start_offset(i915));
++	start = max_t(uint64_t, start, gem_detect_safe_start_offset(fd));
+ 
+ 	/* if relocs are set we won't use an allocator */
+ 	if (do_relocs)
+ 		allocator_type = INTEL_ALLOCATOR_NONE;
+ 	else
+-		ibb->allocator_handle = intel_allocator_open_full(i915, ctx,
++		ibb->allocator_handle = intel_allocator_open_full(fd, ctx,
+ 								  start, end,
+ 								  allocator_type,
+ 								  strategy, 0);
+@@ -918,11 +918,11 @@ __intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 	ibb->allocator_start = start;
+ 	ibb->allocator_end = end;
+ 
+-	ibb->i915 = i915;
++	ibb->fd = fd;
+ 	ibb->enforce_relocs = do_relocs;
+-	ibb->handle = gem_create(i915, size);
++	ibb->handle = gem_create(fd, size);
+ 	ibb->size = size;
+-	ibb->alignment = gem_detect_safe_alignment(i915);
++	ibb->alignment = gem_detect_safe_alignment(fd);
+ 	ibb->ctx = ctx;
+ 	ibb->vm_id = 0;
+ 	ibb->batch = calloc(1, size);
+@@ -937,7 +937,7 @@ __intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 		memcpy(ibb->cfg, cfg, sizeof(*cfg));
+ 	}
+ 
+-	ibb->gtt_size = gem_aperture_size(i915);
++	ibb->gtt_size = gem_aperture_size(fd);
+ 	if ((ibb->gtt_size - 1) >> 32)
+ 		ibb->supports_48b_address = true;
+ 
+@@ -961,7 +961,7 @@ __intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 
+ /**
+  * intel_bb_create_full:
+- * @i915: drm fd
++ * @fd: drm fd
+  * @ctx: context
+  * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+  * @size: size of the batchbuffer
+@@ -980,19 +980,19 @@ __intel_bb_create(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+  *
+  * Pointer the intel_bb, asserts on failure.
+  */
+-struct intel_bb *intel_bb_create_full(int i915, uint32_t ctx,
++struct intel_bb *intel_bb_create_full(int fd, uint32_t ctx,
+ 				      const intel_ctx_cfg_t *cfg, uint32_t size,
+ 				      uint64_t start, uint64_t end,
+ 				      uint8_t allocator_type,
+ 				      enum allocator_strategy strategy)
+ {
+-	return __intel_bb_create(i915, ctx, cfg, size, false, start, end,
++	return __intel_bb_create(fd, ctx, cfg, size, false, start, end,
+ 				 allocator_type, strategy);
  }
  
-+/**
-+ * buf_ops_get_driver
-+ * @bops: pointer to buf_ops
-+ *
-+ * Returns: intel driver enum value
-+ */
-+enum intel_driver buf_ops_get_driver(struct buf_ops *bops)
-+{
-+	return bops->driver;
-+}
-+
  /**
-  * buf_ops_set_software_tiling
-  * @bops: pointer to buf_ops
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 25b430739..0037548a3 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -43,6 +43,7 @@ struct intel_buf {
- 	} addr;
+  * intel_bb_create_with_allocator:
+- * @i915: drm fd
++ * @fd: drm fd
+  * @ctx: context
+  * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+  * @size: size of the batchbuffer
+@@ -1006,18 +1006,18 @@ struct intel_bb *intel_bb_create_full(int i915, uint32_t ctx,
+  *
+  * Pointer the intel_bb, asserts on failure.
+  */
+-struct intel_bb *intel_bb_create_with_allocator(int i915, uint32_t ctx,
++struct intel_bb *intel_bb_create_with_allocator(int fd, uint32_t ctx,
+ 						const intel_ctx_cfg_t *cfg,
+ 						uint32_t size,
+ 						uint8_t allocator_type)
+ {
+-	return __intel_bb_create(i915, ctx, cfg, size, false, 0, 0,
++	return __intel_bb_create(fd, ctx, cfg, size, false, 0, 0,
+ 				 allocator_type, ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
  
- 	uint64_t bo_size;
-+	uint64_t region;
+-static bool aux_needs_softpin(int i915)
++static bool aux_needs_softpin(int fd)
+ {
+-	return intel_gen(intel_get_drm_devid(i915)) >= 12;
++	return intel_gen(intel_get_drm_devid(fd)) >= 12;
+ }
  
- 	/* Tracking */
- 	struct intel_bb *ibb;
-@@ -109,6 +110,7 @@ struct buf_ops *buf_ops_create(int fd);
- struct buf_ops *buf_ops_create_with_selftest(int fd);
- void buf_ops_destroy(struct buf_ops *bops);
- int buf_ops_get_fd(struct buf_ops *bops);
-+enum intel_driver buf_ops_get_driver(struct buf_ops *bops);
+ static bool has_ctx_cfg(struct intel_bb *ibb)
+@@ -1027,7 +1027,7 @@ static bool has_ctx_cfg(struct intel_bb *ibb)
  
- bool buf_ops_set_software_tiling(struct buf_ops *bops,
- 				 uint32_t tiling,
-@@ -135,7 +137,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
- 			      struct intel_buf *buf,
- 			      int width, int height, int bpp, int alignment,
- 			      uint32_t tiling, uint32_t compression,
--			      uint32_t region);
-+			      uint64_t region);
- void intel_buf_close(struct buf_ops *bops, struct intel_buf *buf);
+ /**
+  * intel_bb_create:
+- * @i915: drm fd
++ * @fd: drm fd
+  * @size: size of the batchbuffer
+  *
+  * Creates bb with default context.
+@@ -1045,19 +1045,19 @@ static bool has_ctx_cfg(struct intel_bb *ibb)
+  * connection to it inside intel_bb is not valid anymore.
+  * Trying to use it leads to catastrofic errors.
+  */
+-struct intel_bb *intel_bb_create(int i915, uint32_t size)
++struct intel_bb *intel_bb_create(int fd, uint32_t size)
+ {
+-	bool relocs = gem_has_relocations(i915);
++	bool relocs = gem_has_relocations(fd);
  
- void intel_buf_init_using_handle(struct buf_ops *bops,
-@@ -143,6 +145,16 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
- 				 struct intel_buf *buf,
- 				 int width, int height, int bpp, int alignment,
- 				 uint32_t req_tiling, uint32_t compression);
-+void intel_buf_init_full(struct buf_ops *bops,
-+			 uint32_t handle,
-+			 struct intel_buf *buf,
-+			 int width, int height,
-+			 int bpp, int alignment,
-+			 uint32_t req_tiling,
-+			 uint32_t compression,
-+			 uint64_t size,
-+			 int stride,
-+			 uint64_t region);
+-	return __intel_bb_create(i915, 0, NULL, size,
+-				 relocs && !aux_needs_softpin(i915), 0, 0,
++	return __intel_bb_create(fd, 0, NULL, size,
++				 relocs && !aux_needs_softpin(fd), 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
  
- struct intel_buf *intel_buf_create(struct buf_ops *bops,
- 				   int width, int height,
-@@ -164,6 +176,16 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
- 							 uint32_t compression,
- 							 uint64_t size,
- 							 int stride);
-+
-+struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
-+					uint32_t handle,
-+					int width, int height,
-+					int bpp, int alignment,
-+					uint32_t req_tiling,
-+					uint32_t compression,
-+					uint64_t size,
-+					int stride,
-+					uint64_t region);
- void intel_buf_destroy(struct intel_buf *buf);
+ /**
+  * intel_bb_create_with_context:
+- * @i915: drm fd
++ * @fd: drm fd
+  * @ctx: context id
+  * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+  * @size: size of the batchbuffer
+@@ -1070,20 +1070,20 @@ struct intel_bb *intel_bb_create(int i915, uint32_t size)
+  * Pointer the intel_bb, asserts on failure.
+  */
+ struct intel_bb *
+-intel_bb_create_with_context(int i915, uint32_t ctx,
++intel_bb_create_with_context(int fd, uint32_t ctx,
+ 			     const intel_ctx_cfg_t *cfg, uint32_t size)
+ {
+-	bool relocs = gem_has_relocations(i915);
++	bool relocs = gem_has_relocations(fd);
  
- static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
+-	return __intel_bb_create(i915, ctx, cfg, size,
+-				 relocs && !aux_needs_softpin(i915), 0, 0,
++	return __intel_bb_create(fd, ctx, cfg, size,
++				 relocs && !aux_needs_softpin(fd), 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
+ 
+ /**
+  * intel_bb_create_with_relocs:
+- * @i915: drm fd
++ * @fd: drm fd
+  * @size: size of the batchbuffer
+  *
+  * Creates bb which will disable passing addresses.
+@@ -1093,17 +1093,17 @@ intel_bb_create_with_context(int i915, uint32_t ctx,
+  *
+  * Pointer the intel_bb, asserts on failure.
+  */
+-struct intel_bb *intel_bb_create_with_relocs(int i915, uint32_t size)
++struct intel_bb *intel_bb_create_with_relocs(int fd, uint32_t size)
+ {
+-	igt_require(gem_has_relocations(i915));
++	igt_require(gem_has_relocations(fd));
+ 
+-	return __intel_bb_create(i915, 0, NULL, size, true, 0, 0,
++	return __intel_bb_create(fd, 0, NULL, size, true, 0, 0,
+ 				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
+ }
+ 
+ /**
+  * intel_bb_create_with_relocs_and_context:
+- * @i915: drm fd
++ * @fd: drm fd
+  * @ctx: context
+  * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+  * @size: size of the batchbuffer
+@@ -1116,19 +1116,19 @@ struct intel_bb *intel_bb_create_with_relocs(int i915, uint32_t size)
+  * Pointer the intel_bb, asserts on failure.
+  */
+ struct intel_bb *
+-intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx,
++intel_bb_create_with_relocs_and_context(int fd, uint32_t ctx,
+ 					const intel_ctx_cfg_t *cfg,
+ 					uint32_t size)
+ {
+-	igt_require(gem_has_relocations(i915));
++	igt_require(gem_has_relocations(fd));
+ 
+-	return __intel_bb_create(i915, ctx, cfg, size, true, 0, 0,
++	return __intel_bb_create(fd, ctx, cfg, size, true, 0, 0,
+ 				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
+ }
+ 
+ /**
+  * intel_bb_create_no_relocs:
+- * @i915: drm fd
++ * @fd: drm fd
+  * @size: size of the batchbuffer
+  *
+  * Creates bb with disabled relocations.
+@@ -1138,11 +1138,11 @@ intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx,
+  *
+  * Pointer the intel_bb, asserts on failure.
+  */
+-struct intel_bb *intel_bb_create_no_relocs(int i915, uint32_t size)
++struct intel_bb *intel_bb_create_no_relocs(int fd, uint32_t size)
+ {
+-	igt_require(gem_uses_full_ppgtt(i915));
++	igt_require(gem_uses_full_ppgtt(fd));
+ 
+-	return __intel_bb_create(i915, 0, NULL, size, false, 0, 0,
++	return __intel_bb_create(fd, 0, NULL, size, false, 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
+@@ -1217,7 +1217,7 @@ void intel_bb_destroy(struct intel_bb *ibb)
+ 		intel_allocator_free(ibb->allocator_handle, ibb->handle);
+ 		intel_allocator_close(ibb->allocator_handle);
+ 	}
+-	gem_close(ibb->i915, ibb->handle);
++	gem_close(ibb->fd, ibb->handle);
+ 
+ 	if (ibb->fence >= 0)
+ 		close(ibb->fence);
+@@ -1277,8 +1277,8 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
+ 		intel_bb_remove_object(ibb, ibb->handle, ibb->batch_offset,
+ 				       ibb->size);
+ 
+-	gem_close(ibb->i915, ibb->handle);
+-	ibb->handle = gem_create(ibb->i915, ibb->size);
++	gem_close(ibb->fd, ibb->handle);
++	ibb->handle = gem_create(ibb->fd, ibb->size);
+ 
+ 	/* Keep address for bb in reloc mode and RANDOM allocator */
+ 	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE)
+@@ -1325,7 +1325,7 @@ int intel_bb_sync(struct intel_bb *ibb)
+ void intel_bb_print(struct intel_bb *ibb)
+ {
+ 	igt_info("drm fd: %d, gen: %d, devid: %u, debug: %d\n",
+-		 ibb->i915, ibb->gen, ibb->devid, ibb->debug);
++		 ibb->fd, ibb->gen, ibb->devid, ibb->debug);
+ 	igt_info("handle: %u, size: %u, batch: %p, ptr: %p\n",
+ 		 ibb->handle, ibb->size, ibb->batch, ibb->ptr);
+ 	igt_info("gtt_size: %" PRIu64 ", supports 48bit: %d\n",
+@@ -1350,7 +1350,7 @@ void intel_bb_dump(struct intel_bb *ibb, const char *filename)
+ 	FILE *out;
+ 	void *ptr;
+ 
+-	ptr = gem_mmap__device_coherent(ibb->i915, ibb->handle, 0, ibb->size,
++	ptr = gem_mmap__device_coherent(ibb->fd, ibb->handle, 0, ibb->size,
+ 					PROT_READ);
+ 	out = fopen(filename, "wb");
+ 	igt_assert(out);
+@@ -1524,7 +1524,7 @@ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 	igt_assert(is_power_of_two(alignment));
+ 
+ 	object = __add_to_cache(ibb, handle);
+-	alignment = max_t(uint64_t, alignment, gem_detect_safe_alignment(ibb->i915));
++	alignment = max_t(uint64_t, alignment, gem_detect_safe_alignment(ibb->fd));
+ 	__add_to_objects(ibb, object);
+ 
+ 	/*
+@@ -1999,7 +1999,7 @@ static void intel_bb_dump_execbuf(struct intel_bb *ibb,
+ 	uint64_t address;
+ 
+ 	igt_debug("execbuf [pid: %ld, fd: %d, ctx: %u]\n",
+-		  (long) getpid(), ibb->i915, ibb->ctx);
++		  (long) getpid(), ibb->fd, ibb->ctx);
+ 	igt_debug("execbuf batch len: %u, start offset: 0x%x, "
+ 		  "DR1: 0x%x, DR4: 0x%x, "
+ 		  "num clip: %u, clipptr: 0x%llx, "
+@@ -2160,7 +2160,7 @@ int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 	ibb->objects[0]->handle = ibb->handle;
+ 	ibb->objects[0]->offset = ibb->batch_offset;
+ 
+-	gem_write(ibb->i915, ibb->handle, 0, ibb->batch, ibb->size);
++	gem_write(ibb->fd, ibb->handle, 0, ibb->batch, ibb->size);
+ 
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	objects = create_objects_array(ibb);
+@@ -2179,7 +2179,7 @@ int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 	/* For debugging on CI, remove in final series */
+ 	intel_bb_dump_execbuf(ibb, &execbuf);
+ 
+-	ret = __gem_execbuf_wr(ibb->i915, &execbuf);
++	ret = __gem_execbuf_wr(ibb->fd, &execbuf);
+ 	if (ret) {
+ 		intel_bb_dump_execbuf(ibb, &execbuf);
+ 		free(objects);
+@@ -2409,13 +2409,13 @@ uint32_t intel_bb_copy_data(struct intel_bb *ibb,
+  */
+ void intel_bb_blit_start(struct intel_bb *ibb, uint32_t flags)
+ {
+-	if (blt_has_xy_src_copy(ibb->i915))
++	if (blt_has_xy_src_copy(ibb->fd))
+ 		intel_bb_out(ibb, XY_SRC_COPY_BLT_CMD |
+ 			     XY_SRC_COPY_BLT_WRITE_ALPHA |
+ 			     XY_SRC_COPY_BLT_WRITE_RGB |
+ 			     flags |
+ 			     (6 + 2 * (ibb->gen >= 8)));
+-	else if (blt_has_fast_copy(ibb->i915))
++	else if (blt_has_fast_copy(ibb->fd))
+ 		intel_bb_out(ibb, XY_FAST_COPY_BLT | flags);
+ 	else
+ 		igt_assert_f(0, "No supported blit command found\n");
+@@ -2456,9 +2456,9 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+ 
+ 	if (gen >= 4 && src->tiling != I915_TILING_NONE) {
+ 		src_pitch /= 4;
+-		if (blt_has_xy_src_copy(ibb->i915))
++		if (blt_has_xy_src_copy(ibb->fd))
+ 			cmd_bits |= XY_SRC_COPY_BLT_SRC_TILED;
+-		else if (blt_has_fast_copy(ibb->i915))
++		else if (blt_has_fast_copy(ibb->fd))
+ 			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
+ 		else
+ 			igt_assert_f(0, "No supported blit command found\n");
+@@ -2466,7 +2466,7 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+ 
+ 	if (gen >= 4 && dst->tiling != I915_TILING_NONE) {
+ 		dst_pitch /= 4;
+-		if (blt_has_xy_src_copy(ibb->i915))
++		if (blt_has_xy_src_copy(ibb->fd))
+ 			cmd_bits |= XY_SRC_COPY_BLT_DST_TILED;
+ 		else
+ 			cmd_bits |= fast_copy_dword0(src->tiling, dst->tiling);
+@@ -2480,7 +2480,7 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+ 	CHECK_RANGE(src_pitch); CHECK_RANGE(dst_pitch);
+ 
+ 	br13_bits = 0;
+-	if (blt_has_xy_src_copy(ibb->i915)) {
++	if (blt_has_xy_src_copy(ibb->fd)) {
+ 		switch (bpp) {
+ 		case 8:
+ 			break;
+@@ -2496,7 +2496,7 @@ void intel_bb_emit_blt_copy(struct intel_bb *ibb,
+ 			igt_fail(IGT_EXIT_FAILURE);
+ 		}
+ 	} else {
+-		br13_bits = fast_copy_dword1(ibb->i915, src->tiling, dst->tiling, bpp);
++		br13_bits = fast_copy_dword1(ibb->fd, src->tiling, dst->tiling, bpp);
+ 	}
+ 
+ 	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
+@@ -2631,7 +2631,7 @@ static void __intel_bb_reinit_alloc(struct intel_bb *ibb)
+ 	if (ibb->allocator_type == INTEL_ALLOCATOR_NONE)
+ 		return;
+ 
+-	ibb->allocator_handle = intel_allocator_open_full(ibb->i915, ibb->ctx,
++	ibb->allocator_handle = intel_allocator_open_full(ibb->fd, ibb->ctx,
+ 							  ibb->allocator_start, ibb->allocator_end,
+ 							  ibb->allocator_type,
+ 							  ibb->allocator_strategy,
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 10e412660..4978b6fb2 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -246,7 +246,7 @@ struct intel_bb {
+ 	uint8_t allocator_type;
+ 	enum allocator_strategy allocator_strategy;
+ 
+-	int i915;
++	int fd;
+ 	unsigned int gen;
+ 	bool debug;
+ 	bool dump_base64;
+@@ -299,21 +299,21 @@ struct intel_bb {
+ };
+ 
+ struct intel_bb *
+-intel_bb_create_full(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
++intel_bb_create_full(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 		     uint32_t size, uint64_t start, uint64_t end,
+ 		     uint8_t allocator_type, enum allocator_strategy strategy);
+ struct intel_bb *
+-intel_bb_create_with_allocator(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
++intel_bb_create_with_allocator(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 			       uint32_t size, uint8_t allocator_type);
+-struct intel_bb *intel_bb_create(int i915, uint32_t size);
++struct intel_bb *intel_bb_create(int fd, uint32_t size);
+ struct intel_bb *
+-intel_bb_create_with_context(int i915, uint32_t ctx, const intel_ctx_cfg_t *cfg,
++intel_bb_create_with_context(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+ 			     uint32_t size);
+-struct intel_bb *intel_bb_create_with_relocs(int i915, uint32_t size);
++struct intel_bb *intel_bb_create_with_relocs(int fd, uint32_t size);
+ struct intel_bb *
+-intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx,
++intel_bb_create_with_relocs_and_context(int fd, uint32_t ctx,
+ 					const intel_ctx_cfg_t *cfg, uint32_t size);
+-struct intel_bb *intel_bb_create_no_relocs(int i915, uint32_t size);
++struct intel_bb *intel_bb_create_no_relocs(int fd, uint32_t size);
+ void intel_bb_destroy(struct intel_bb *ibb);
+ 
+ /* make it safe to use intel_allocator after failed test */
+diff --git a/tests/i915/gem_caching.c b/tests/i915/gem_caching.c
+index b6ecd8346..6e944f0ac 100644
+--- a/tests/i915/gem_caching.c
++++ b/tests/i915/gem_caching.c
+@@ -83,7 +83,7 @@ copy_bo(struct intel_bb *ibb, struct intel_buf *src, struct intel_buf *dst)
+ 	intel_bb_add_intel_buf(ibb, src, false);
+ 	intel_bb_add_intel_buf(ibb, dst, true);
+ 
+-	if (blt_has_xy_src_copy(ibb->i915)) {
++	if (blt_has_xy_src_copy(ibb->fd)) {
+ 		intel_bb_out(ibb,
+ 			     XY_SRC_COPY_BLT_CMD |
+ 			     XY_SRC_COPY_BLT_WRITE_ALPHA |
+@@ -93,7 +93,7 @@ copy_bo(struct intel_bb *ibb, struct intel_buf *src, struct intel_buf *dst)
+ 		intel_bb_out(ibb, (3 << 24) | /* 32 bits */
+ 			     (0xcc << 16) | /* copy ROP */
+ 			     4096);
+-	} else if (blt_has_fast_copy(ibb->i915)) {
++	} else if (blt_has_fast_copy(ibb->fd)) {
+ 		intel_bb_out(ibb, XY_FAST_COPY_BLT);
+ 		intel_bb_out(ibb, XY_FAST_COPY_COLOR_DEPTH_32 | 4096);
+ 	} else {
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index af657d0e1..2f27abd58 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -809,7 +809,7 @@ static int gem_execbuf_flush_store_dw(int i915, struct intel_bb *ibb, uint32_t c
+ 	ret = __intel_bb_exec(ibb, intel_bb_offset(ibb),
+ 				  I915_EXEC_RENDER | I915_EXEC_NO_RELOC, false);
+ 	if (ret == 0) {
+-		gem_sync(ibb->i915, fence->handle);
++		gem_sync(ibb->fd, fence->handle);
+ 		assert_pipectl_storedw_done(i915, fence->handle);
+ 	}
+ 	return ret;
 -- 
 2.40.0
