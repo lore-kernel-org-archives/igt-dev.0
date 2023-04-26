@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55FAC10E951
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8ECC410E2E2
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:50 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 17:17:10 +0530
-Message-Id: <20230426114725.2244653-31-bhanuprakash.modem@intel.com>
+Date: Wed, 26 Apr 2023 17:17:14 +0530
+Message-Id: <20230426114725.2244653-35-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 30/45] tests/kms_concurrent: Add XE support
+Subject: [igt-dev] [i-g-t V3 34/45] tests/kms_getfb: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,30 +27,89 @@ Add XE driver support for kms tests.
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_concurrent.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/kms_getfb.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index e6d61a84d..e1e581723 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -387,7 +387,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require(data.display.is_atomic);
--		if (is_i915_device(data.drm_fd))
-+		if (is_intel_device(data.drm_fd))
- 			intel_allocator_multiprocess_start();
- 	}
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index 813417e77..4adc7eee2 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -42,6 +42,7 @@
+ #include "drm_fourcc.h"
+ #include "i915/gem_create.h"
+ #include "igt_device.h"
++#include "xe/xe_query.h"
  
-@@ -397,7 +397,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	}
+ IGT_TEST_DESCRIPTION("Tests GETFB and GETFB2 ioctls.");
  
+@@ -91,7 +92,6 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
+ 	uint32_t devid;
+ 
+ 	igt_require(has_addfb2_iface(fd));
+-	igt_require_intel(fd);
+ 	devid = intel_get_drm_devid(fd);
+ 
+ 	if (HAS_FLATCCS(devid)) {
+@@ -265,7 +265,7 @@ static void test_duplicate_handles(int fd)
+ 		struct drm_mode_fb_cmd2 add_ccs = { };
+ 		struct drm_mode_fb_cmd get = { };
+ 
+-		igt_require(is_i915_device(fd));
++		igt_require_i915(fd);
+ 		igt_require_f(!HAS_FLATCCS(intel_get_drm_devid(fd)),
+ 			      "skip because flat ccs has only one buffer.\n");
+ 
+@@ -340,6 +340,7 @@ static void test_getfb2(int fd)
+ 		struct drm_mode_fb_cmd2 get = { };
+ 		int i;
+ 
++		igt_require_i915(fd);
+ 		get_ccs_fb(fd, &add_ccs);
+ 		igt_require(add_ccs.fb_id != 0);
+ 		get.fb_id = add_ccs.fb_id;
+@@ -398,6 +399,9 @@ static void test_handle_protection(void) {
  	igt_fixture {
--		if (is_i915_device(data.drm_fd))
-+		if (is_intel_device(data.drm_fd))
- 			intel_allocator_multiprocess_stop();
- 		igt_display_fini(&data.display);
- 		close(data.drm_fd);
+ 		non_master_fd = drm_open_driver(DRIVER_ANY);
+ 
++		if (is_xe_device(non_master_fd))
++			xe_device_get(non_master_fd);
++
+ 		non_master_add.width = 1024;
+ 		non_master_add.height = 1024;
+ 		non_master_add.pixel_format = DRM_FORMAT_XRGB8888;
+@@ -444,6 +448,11 @@ static void test_handle_protection(void) {
+ 	igt_fixture {
+ 		do_ioctl(non_master_fd, DRM_IOCTL_MODE_RMFB, &non_master_add.fb_id);
+ 		gem_close(non_master_fd, non_master_add.handles[0]);
++
++		if (is_xe_device(non_master_fd))
++			xe_device_get(non_master_fd);
++
++		close(non_master_fd);
+ 	}
+ }
+ 
+@@ -454,6 +463,9 @@ igt_main
+ 	igt_fixture {
+ 		fd = drm_open_driver_master(DRIVER_ANY);
+ 		igt_require(has_getfb_iface(fd));
++
++		if (is_xe_device(fd))
++			xe_device_get(fd);
+ 	}
+ 
+ 	igt_subtest_group
+@@ -468,6 +480,10 @@ igt_main
+ 	igt_subtest_group
+ 		test_handle_protection();
+ 
+-	igt_fixture
++	igt_fixture {
++		if (is_xe_device(fd))
++			xe_device_put(fd);
++
+ 		close(fd);
++	}
+ }
 -- 
 2.40.0
