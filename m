@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BED0510E064
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 10:12:34 +0000 (UTC)
-Date: Wed, 26 Apr 2023 12:12:30 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 108E710E064
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 10:13:40 +0000 (UTC)
+Date: Wed, 26 Apr 2023 12:13:36 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: janga.rahul.kumar@intel.com
-Message-ID: <20230426101230.6ym5owacxguqkbas@zkempczy-mobl2>
+Message-ID: <20230426101336.acli72woncnfonsq@zkempczy-mobl2>
 References: <20230425184003.3089338-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -58,6 +58,13 @@ On Wed, Apr 26, 2023 at 12:10:03AM +0530, janga.rahul.kumar@intel.com wrote:
 > +	};
 > +
 > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), -1);
+
+I forget to comment this value, -1 is not valid error code we should
+validate in this test.
+
+--
+Zbigniew
+
 > +}
 > +
 >  igt_main
@@ -70,13 +77,6 @@ On Wed, Apr 26, 2023 at 12:10:03AM +0530, janga.rahul.kumar@intel.com wrote:
 > +	igt_subtest("query-invalid-extension")
 > +		test_query_invalid_extension(xe);
 > +
-
-We need to start fixing those tests as they are not properly validating
-uapi. See gem_mmap_offset@bad-extensions.
-
---
-Zbigniew
-
 >  	igt_fixture {
 >  		xe_device_put(xe);
 >  		close(xe);
