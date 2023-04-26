@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2C0210E95A
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:53:01 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 17:17:23 +0530
-Message-Id: <20230426114725.2244653-44-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
-References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 359F110E947
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 12:18:06 +0000 (UTC)
+Message-ID: <41400bc9-844d-bade-3eab-03d7285bf343@intel.com>
+Date: Wed, 26 Apr 2023 14:18:01 +0200
 MIME-Version: 1.0
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
+ <20230425154017.374465-7-zbigniew.kempczynski@intel.com>
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+In-Reply-To: <20230425154017.374465-7-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 43/45] tests/kms_rotation_crc: Add XE support
+Subject: Re: [igt-dev] [PATCH i-g-t v6 06/15] lib/intel_bufops: Add Xe
+ support in bufops
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,104 +27,315 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+Hi Zbigniew,
 
-V2: - Drop i915 check for bad-tiling test.
-    - Skip exhaust-fences as it needs Y-tiling
+On 25.04.2023 17:40, Zbigniew Kempczyński wrote:
+> Extend bufops to support Xe:
+>   - change region to 64bit region mask,
+>   - add initialization helper (full) which allows passing handle,
+>     size and region,
+>   - mapping functions (read + write) selects driver specific mapping
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> 
+> ---
+> v5: add intel_buf_create_full() for future lib/igt_fb changes
+>      regarding region
+> v6: - fix igt_assert_f()
+>      - add buf_ops_get_driver() helper
+> ---
+>   lib/intel_bufops.c | 120 +++++++++++++++++++++++++++++++++++++++++----
+>   lib/intel_bufops.h |  24 ++++++++-
+>   2 files changed, 133 insertions(+), 11 deletions(-)
+> 
+> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+> index cdc7a1698b..42a9b2bd05 100644
+> --- a/lib/intel_bufops.c
+> +++ b/lib/intel_bufops.c
+> @@ -26,6 +26,8 @@
+>   #include <cairo.h>
+>   
+>   #include "i915/gem_create.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+>   #include "igt.h"
+>   #include "igt_x86.h"
+>   #include "intel_bufops.h"
+> @@ -106,6 +108,7 @@ typedef void (*bo_copy)(struct buf_ops *, struct intel_buf *, uint32_t *);
+>   
+>   struct buf_ops {
+>   	int fd;
+> +	enum intel_driver driver;
+>   	int gen_start;
+>   	int gen_end;
+>   	unsigned int intel_gen;
+> @@ -488,6 +491,9 @@ static void *mmap_write(int fd, struct intel_buf *buf)
+>   {
+>   	void *map = NULL;
+>   
+> +	if (buf->bops->driver == INTEL_DRIVER_XE)
+> +		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
+> +
+>   	if (gem_has_lmem(fd)) {
+>   		/*
+>   		 * set/get_caching and set_domain are no longer supported on
+> @@ -530,6 +536,9 @@ static void *mmap_read(int fd, struct intel_buf *buf)
+>   {
+>   	void *map = NULL;
+>   
+> +	if (buf->bops->driver == INTEL_DRIVER_XE)
+> +		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
+> +
+>   	if (gem_has_lmem(fd)) {
+>   		/*
+>   		 * set/get_caching and set_domain are no longer supported on
+> @@ -809,7 +818,7 @@ static void __intel_buf_init(struct buf_ops *bops,
+>   			     int width, int height, int bpp, int alignment,
+>   			     uint32_t req_tiling, uint32_t compression,
+>   			     uint64_t bo_size, int bo_stride,
+> -			     uint32_t region)
+> +			     uint64_t region)
+>   {
+>   	uint32_t tiling = req_tiling;
+>   	uint64_t size;
+> @@ -899,9 +908,19 @@ static void __intel_buf_init(struct buf_ops *bops,
+>   	buf->size = size;
+>   	buf->handle = handle;
+>   
+> -	if (!handle)
+> -		if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
+> -			igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
+> +	if (!handle) {
+> +		if (bops->driver == INTEL_DRIVER_I915) {
+> +			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
+> +				igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
+> +		} else {
+> +			size = ALIGN(size, xe_get_default_alignment(bops->fd));
+> +			buf->handle = xe_bo_create_flags(bops->fd, 0, size, region);
+> +		}
+> +	}
+> +	if (bops->driver == INTEL_DRIVER_XE)
+> +		igt_assert_f(region != -1, "Xe requires region awareness, "
+> +					   "use api which passes valid region\n");
+> +	buf->region = region;
+>   
+>   	/* Store gem bo size */
+>   	buf->bo_size = size;
+> @@ -930,8 +949,12 @@ void intel_buf_init(struct buf_ops *bops,
+>   		    int width, int height, int bpp, int alignment,
+>   		    uint32_t tiling, uint32_t compression)
+>   {
+> +	uint64_t region;
+> +
+> +	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
+> +						     system_memory(bops->fd);
+>   	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+> -			 tiling, compression, 0, 0, I915_SYSTEM_MEMORY);
+> +			 tiling, compression, 0, 0, region);
+>   
+>   	intel_buf_set_ownership(buf, true);
+>   }
+> @@ -945,7 +968,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+>   			      struct intel_buf *buf,
+>   			      int width, int height, int bpp, int alignment,
+>   			      uint32_t tiling, uint32_t compression,
+> -			      uint32_t region)
+> +			      uint64_t region)
+>   {
+>   	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+>   			 tiling, compression, 0, 0, region);
+> @@ -1010,6 +1033,43 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+>   			 req_tiling, compression, 0, 0, -1);
+>   }
+>   
+> +/**
+> + * intel_buf_init_full
+> + * @bops: pointer to buf_ops
+> + * @handle: BO handle created by the caller
+> + * @buf: pointer to intel_buf structure to be filled
+> + * @width: surface width
+> + * @height: surface height
+> + * @bpp: bits-per-pixel (8 / 16 / 32 / 64)
+> + * @alignment: alignment of the stride for linear surfaces
+> + * @req_tiling: surface tiling
+> + * @compression: surface compression type
+> + * @size: real bo size
+> + * @stride: bo stride
+> + * @region: region
+> + *
+> + * Function configures BO handle within intel_buf structure passed by the caller
+> + * (with all its metadata - width, height, ...). Useful if BO was created
+> + * outside. Allows passing real size which caller is aware of.
+> + *
+> + * Note: intel_buf_close() can be used because intel_buf is aware it is not
+> + * buffer owner so it won't close it underneath.
+> + */
+> +void intel_buf_init_full(struct buf_ops *bops,
+> +			 uint32_t handle,
+> +			 struct intel_buf *buf,
+> +			 int width, int height,
+> +			 int bpp, int alignment,
+> +			 uint32_t req_tiling,
+> +			 uint32_t compression,
+> +			 uint64_t size,
+> +			 int stride,
+> +			 uint64_t region)
+> +{
+> +	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+> +			 req_tiling, compression, size, stride, region);
+> +}
+> +
+>   /**
+>    * intel_buf_create
+>    * @bops: pointer to buf_ops
+> @@ -1084,6 +1144,20 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+>   							 uint32_t compression,
+>   							 uint64_t size,
+>   							 int stride)
+> +{
+> +	return intel_buf_create_full(bops, handle, width, height, bpp, alignment,
+> +				     req_tiling, compression, size, stride, -1);
+> +}
+> +
+> +struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+> +					uint32_t handle,
+> +					int width, int height,
+> +					int bpp, int alignment,
+> +					uint32_t req_tiling,
+> +					uint32_t compression,
+> +					uint64_t size,
+> +					int stride,
+> +					uint64_t region)
+>   {
+>   	struct intel_buf *buf;
+>   
+> @@ -1093,12 +1167,11 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+>   	igt_assert(buf);
+>   
+>   	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+> -			 req_tiling, compression, size, stride, -1);
+> +			 req_tiling, compression, size, stride, region);
+>   
+>   	return buf;
+>   }
+>   
+> -
+>   /**
+>    * intel_buf_destroy
+>    * @buf: intel_buf
+> @@ -1420,8 +1493,24 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+>   
+>   	bops->fd = fd;
+>   	bops->intel_gen = generation;
+> -	igt_debug("generation: %d, supported tiles: 0x%02x\n",
+> -		  bops->intel_gen, bops->supported_tiles);
+> +	bops->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
+> +					    is_xe_device(fd) ? INTEL_DRIVER_XE : 0;
+> +	igt_assert(bops->driver);
+> +	igt_debug("generation: %d, supported tiles: 0x%02x, driver: %s\n",
+> +		  bops->intel_gen, bops->supported_tiles,
+> +		  bops->driver == INTEL_DRIVER_I915 ? "i915" : "xe");
+> +
+> +	/* No tiling support in XE. */
+> +	if (bops->driver == INTEL_DRIVER_XE) {
+> +		bops->supported_hw_tiles = TILE_NONE;
+> +
+> +		bops->linear_to_x = copy_linear_to_x;
+> +		bops->x_to_linear = copy_x_to_linear;
+> +		bops->linear_to_y = copy_linear_to_y;
+> +		bops->y_to_linear = copy_y_to_linear;
+> +
+> +		return bops;
+> +	}
+>   
+>   	/*
+>   	 * Warning!
+> @@ -1569,6 +1658,17 @@ int buf_ops_get_fd(struct buf_ops *bops)
+>   	return bops->fd;
+>   }
+>   
+> +/**
+> + * buf_ops_get_driver
+> + * @bops: pointer to buf_ops
+> + *
+> + * Returns: intel driver enum value
+> + */
+> +enum intel_driver buf_ops_get_driver(struct buf_ops *bops)
+> +{
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_rotation_crc.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+Maybe 'igt_assert(bops)' here? At least that's what buf_ops_get_fd does, 
+and it adds some layer of protection over just wrapping 'bops->driver'.
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 295aed762..28b4fd27c 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -459,7 +459,7 @@ static bool test_format(data_t *data,
- 	if (!igt_fb_supported_format(format))
- 		return false;
- 
--	if (!is_i915_device(data->gfx_fd) ||
-+	if (!is_intel_device(data->gfx_fd) ||
- 	    data->extended)
- 		return true;
- 
-@@ -545,14 +545,14 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
- 		igt_require(igt_plane_has_rotation(plane, data->rotation));
- 		/* CHV can't rotate and reflect simultaneously */
--		igt_require(!is_i915_device(data->gfx_fd) ||
-+		igt_require(!is_intel_device(data->gfx_fd) ||
- 			    !IS_CHERRYVIEW(data->devid) ||
- 			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
- 
- 		prepare_crtc(data, output, pipe, plane, true);
- 
- 		for (i = 0; i < num_rectangle_types; i++) {
--			/* Unsupported on i915 */
-+			/* Unsupported on intel */
- 			if (plane_type == DRM_PLANE_TYPE_CURSOR &&
- 			    i != square)
- 				continue;
-@@ -560,9 +560,8 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 			/* Only support partial covering primary plane on gen9+ */
- 			if (is_amdgpu_device(data->gfx_fd) ||
- 				(plane_type == DRM_PLANE_TYPE_PRIMARY &&
--				 is_i915_device(data->gfx_fd) &&
--				 intel_display_ver(
--					 intel_get_drm_devid(data->gfx_fd)) < 9)) {
-+				 is_intel_device(data->gfx_fd) &&
-+				 intel_display_ver(data->devid) < 9)) {
- 				if (i != rectangle)
- 					continue;
- 				else
-@@ -592,7 +591,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 						 data->override_fmt, test_bad_format);
- 			}
- 		}
--		if (is_i915_device(data->gfx_fd)) {
-+		if (is_intel_device(data->gfx_fd)) {
- 			igt_pipe_crc_stop(data->pipe_crc);
- 		}
- 	}
-@@ -841,6 +840,10 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 		igt_pipe_crc_start(data->pipe_crc);
- 
- 		for (i = 0; i < ARRAY_SIZE(planeconfigs); i++) {
-+			if (is_xe_device(data->gfx_fd) &&
-+			    planeconfigs[i].modifier != DRM_FORMAT_MOD_LINEAR)
-+				continue;
-+
- 			p[0].fbinfo = &planeconfigs[i];
- 			pointlocation(data, p, mode, 0);
- 
-@@ -1137,7 +1140,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 
- 	igt_fixture {
- 		data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
--		if (is_i915_device(data.gfx_fd)) {
-+		if (is_intel_device(data.gfx_fd)) {
- 			data.devid = intel_get_drm_devid(data.gfx_fd);
- 			gen = intel_display_ver(data.devid);
- 		}
-@@ -1201,6 +1204,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 
- 	igt_describe("Tiling and Rotation test for gen 10+ for primary plane");
- 	for (reflect_x = reflect_x_subtests; reflect_x->modifier; reflect_x++) {
-+		igt_fixture
-+			igt_require_i915(data.gfx_fd);
-+
- 		igt_subtest_f("primary-%s-reflect-x-%s",
- 			      modifier_test_str(reflect_x->modifier),
- 			      rot_test_str(reflect_x->rot)) {
-@@ -1260,6 +1266,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		enum pipe pipe;
- 		igt_output_t *output;
- 
-+		igt_require_i915(data.gfx_fd);
- 		igt_display_require_output(&data.display);
- 
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
--- 
-2.40.0
+Anyway:
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
+
+
+> +	return bops->driver;
+> +} > +
+>   /**
+>    * buf_ops_set_software_tiling
+>    * @bops: pointer to buf_ops
+> diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+> index 25b4307399..0037548a3b 100644
+> --- a/lib/intel_bufops.h
+> +++ b/lib/intel_bufops.h
+> @@ -43,6 +43,7 @@ struct intel_buf {
+>   	} addr;
+>   
+>   	uint64_t bo_size;
+> +	uint64_t region;
+>   
+>   	/* Tracking */
+>   	struct intel_bb *ibb;
+> @@ -109,6 +110,7 @@ struct buf_ops *buf_ops_create(int fd);
+>   struct buf_ops *buf_ops_create_with_selftest(int fd);
+>   void buf_ops_destroy(struct buf_ops *bops);
+>   int buf_ops_get_fd(struct buf_ops *bops);
+> +enum intel_driver buf_ops_get_driver(struct buf_ops *bops);
+>   
+>   bool buf_ops_set_software_tiling(struct buf_ops *bops,
+>   				 uint32_t tiling,
+> @@ -135,7 +137,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+>   			      struct intel_buf *buf,
+>   			      int width, int height, int bpp, int alignment,
+>   			      uint32_t tiling, uint32_t compression,
+> -			      uint32_t region);
+> +			      uint64_t region);
+>   void intel_buf_close(struct buf_ops *bops, struct intel_buf *buf);
+>   
+>   void intel_buf_init_using_handle(struct buf_ops *bops,
+> @@ -143,6 +145,16 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+>   				 struct intel_buf *buf,
+>   				 int width, int height, int bpp, int alignment,
+>   				 uint32_t req_tiling, uint32_t compression);
+> +void intel_buf_init_full(struct buf_ops *bops,
+> +			 uint32_t handle,
+> +			 struct intel_buf *buf,
+> +			 int width, int height,
+> +			 int bpp, int alignment,
+> +			 uint32_t req_tiling,
+> +			 uint32_t compression,
+> +			 uint64_t size,
+> +			 int stride,
+> +			 uint64_t region);
+>   
+>   struct intel_buf *intel_buf_create(struct buf_ops *bops,
+>   				   int width, int height,
+> @@ -164,6 +176,16 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+>   							 uint32_t compression,
+>   							 uint64_t size,
+>   							 int stride);
+> +
+> +struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+> +					uint32_t handle,
+> +					int width, int height,
+> +					int bpp, int alignment,
+> +					uint32_t req_tiling,
+> +					uint32_t compression,
+> +					uint64_t size,
+> +					int stride,
+> +					uint64_t region);
+>   void intel_buf_destroy(struct intel_buf *buf);
+>   
+>   static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
