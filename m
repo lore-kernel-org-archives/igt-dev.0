@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1CF510E8D8
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 07:15:54 +0000 (UTC)
-Message-ID: <51185bf3-e9c8-196f-0bbf-39fff5d7d80a@intel.com>
-Date: Wed, 26 Apr 2023 12:45:49 +0530
+Content-Type: multipart/alternative;
+ boundary="===============0623980896821244742=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
- <20230425064953.2121947-14-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230425064953.2121947-14-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t V2 13/40] lib/igt_draw: Add gpu draw routine
- support for XE
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: janga.rahul.kumar@intel.com
+Date: Wed, 26 Apr 2023 07:22:58 -0000
+Message-ID: <168249377835.17154.10777945430201018335@emeril.freedesktop.org>
+References: <20230426062248.3110901-1-janga.rahul.kumar@intel.com>
+In-Reply-To: <20230426062248.3110901-1-janga.rahul.kumar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaW50ZWwt?=
+ =?utf-8?q?ci/xe-fast-feedback=2Etestlist=3A_Add_eviction_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,161 +17,215 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-Acked-by: Swati Sharma <swati2.sharma@intel.com>
+--===============0623980896821244742==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please get patch reviewed from core folks too.
+== Series Details ==
 
-On 25-Apr-23 12:19 PM, Bhanuprakash Modem wrote:
-> Add GPU blt, render & WC draw routine support for XE driver.
->
-> Credits-to: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   lib/igt_draw.c | 82 +++++++++++++++++++++++++++++++++++---------------
->   lib/igt_draw.h |  2 ++
->   2 files changed, 60 insertions(+), 24 deletions(-)
->
-> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-> index ac512fac5..1b793c0df 100644
-> --- a/lib/igt_draw.c
-> +++ b/lib/igt_draw.c
-> @@ -37,6 +37,8 @@
->   #include "i915/gem_create.h"
->   #include "i915/gem_mman.h"
->   #include "i915/intel_mocs.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
->   
->   #ifndef PAGE_ALIGN
->   #ifndef PAGE_SIZE
-> @@ -493,24 +495,29 @@ static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
->   {
->   	uint32_t *ptr;
->   
-> -	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
-> -		       I915_GEM_DOMAIN_GTT);
-> -
-> -	/* We didn't implement suport for the older tiling methods yet. */
-> -	if (tiling != I915_TILING_NONE)
-> -		igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
-> -
-> -	if (gem_has_lmem(fd))
-> -		ptr = gem_mmap_offset__fixed(fd, buf->handle, 0,
-> -					     PAGE_ALIGN(buf->size),
-> -					     PROT_READ | PROT_WRITE);
-> -	else if (gem_has_legacy_mmap(fd))
-> -		ptr = gem_mmap__wc(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
-> -				   PROT_READ | PROT_WRITE);
-> -	else
-> -		ptr = gem_mmap_offset__wc(fd, buf->handle, 0,
-> -					  PAGE_ALIGN(buf->size),
-> -					  PROT_READ | PROT_WRITE);
-> +	if (is_i915_device(fd)) {
-> +		gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
-> +			       I915_GEM_DOMAIN_GTT);
-> +
-> +		/* We didn't implement suport for the older tiling methods yet. */
-> +		if (tiling != I915_TILING_NONE)
-> +			igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
-> +
-> +		if (gem_has_lmem(fd))
-> +			ptr = gem_mmap_offset__fixed(fd, buf->handle, 0,
-> +						     PAGE_ALIGN(buf->size),
-> +						     PROT_READ | PROT_WRITE);
-> +		else if (gem_has_legacy_mmap(fd))
-> +			ptr = gem_mmap__wc(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
-> +					   PROT_READ | PROT_WRITE);
-> +		else
-> +			ptr = gem_mmap_offset__wc(fd, buf->handle, 0,
-> +						  PAGE_ALIGN(buf->size),
-> +						  PROT_READ | PROT_WRITE);
-> +	} else {
-> +		ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size,
-> +				     PROT_READ | PROT_WRITE);
-> +	}
->   
->   	switch (tiling) {
->   	case I915_TILING_NONE:
-> @@ -663,11 +670,14 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
->   	int gen = intel_gen(devid);
->   	int pitch;
->   
-> +	if (tiling)
-> +		igt_require_i915(fd);
-> +
->   	dst = create_buf(fd, cmd_data->bops, buf, tiling);
->   	ibb = intel_bb_create(fd, PAGE_SIZE);
->   	intel_bb_add_intel_buf(ibb, dst, true);
->   
-> -	if (HAS_4TILE(intel_get_drm_devid(fd))) {
-> +	if (is_i915_device(fd) && HAS_4TILE(intel_get_drm_devid(fd))) {
->   		int buf_height = buf->size / buf->stride;
->   
->   		switch (buf->bpp) {
-> @@ -772,11 +782,21 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
->   
->   	/* We create a temporary buffer and copy from it using rendercopy. */
->   	tmp.size = rect->w * rect->h * pixel_size;
-> -	tmp.handle = gem_create(fd, tmp.size);
-> +	if (is_i915_device(fd))
-> +		tmp.handle = gem_create(fd, tmp.size);
-> +	else
-> +		tmp.handle = xe_bo_create_flags(fd, 0,
-> +						ALIGN(tmp.size, xe_get_default_alignment(fd)),
-> +						vram_if_possible(fd, 0));
-> +
->   	tmp.stride = rect->w * pixel_size;
->   	tmp.bpp = buf->bpp;
-> -	draw_rect_mmap_cpu(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
-> -			   I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
-> +	if (is_i915_device(fd))
-> +		draw_rect_mmap_cpu(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
-> +				   I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
-> +	else
-> +		draw_rect_mmap_wc(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
-> +				  I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
->   
->   	src = create_buf(fd, cmd_data->bops, &tmp, I915_TILING_NONE);
->   	dst = create_buf(fd, cmd_data->bops, buf, tiling);
-> @@ -904,7 +924,21 @@ void igt_draw_rect_fb(int fd, struct buf_ops *bops,
->   void igt_draw_fill_fb(int fd, struct igt_fb *fb, uint32_t color)
->   {
->   	igt_draw_rect_fb(fd, NULL, 0, fb,
-> -			 gem_has_mappable_ggtt(fd) ? IGT_DRAW_MMAP_GTT :
-> -						     IGT_DRAW_MMAP_WC,
-> +			 igt_draw_supports_method(fd, IGT_DRAW_MMAP_GTT) ?
-> +			 IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
->   			 0, 0, fb->width, fb->height, color);
->   }
-> +
-> +bool igt_draw_supports_method(int fd, enum igt_draw_method method)
-> +{
-> +	if (method == IGT_DRAW_MMAP_GTT)
-> +		return is_i915_device(fd) && gem_has_mappable_ggtt(fd);
-> +
-> +	if (method == IGT_DRAW_MMAP_WC)
-> +		return (is_i915_device(fd) && gem_mmap__has_wc(fd)) || is_xe_device(fd);
-> +
-> +	if (method == IGT_DRAW_MMAP_CPU || method == IGT_DRAW_PWRITE)
-> +		return is_i915_device(fd);
-> +
-> +	return true;
-> +}
-> diff --git a/lib/igt_draw.h b/lib/igt_draw.h
-> index 2d18ef6c9..fe7531b79 100644
-> --- a/lib/igt_draw.h
-> +++ b/lib/igt_draw.h
-> @@ -50,6 +50,8 @@ enum igt_draw_method {
->   
->   const char *igt_draw_get_method_name(enum igt_draw_method method);
->   
-> +bool igt_draw_supports_method(int fd, enum igt_draw_method method);
-> +
->   void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
->   		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
->   		   uint32_t tiling, enum igt_draw_method method,
+Series: intel-ci/xe-fast-feedback.testlist: Add eviction tests
+URL   : https://patchwork.freedesktop.org/series/116971/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7271 -> IGTPW_8864
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8864 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8864, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html
+
+Participating hosts (39 -> 36)
+------------------------------
+
+  Missing    (3): fi-kbl-soraka bat-mtlp-8 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8864:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - bat-rpls-1:         [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8864 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg2-11:         [PASS][3] -> [FAIL][4] ([i915#8308])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [PASS][5] -> [FAIL][6] ([i915#7913])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - bat-adlp-9:         NOTRUN -> [SKIP][7] ([i915#3546]) +1 similar issue
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][8] ([i915#1845] / [i915#5354]) +1 similar issue
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html
+
+  
+#### Warnings ####
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         [SKIP][9] ([i915#5354]) -> [SKIP][10] ([i915#1845] / [i915#5354])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7271 -> IGTPW_8864
+
+  CI-20190529: 20190529
+  CI_DRM_13062: 5a0333cf630a335d7e8f60fd2b8526ed0895900c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8864: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html
+  IGT_7271: d12d7eb92226e14745a80e6bdd95384913a43548 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html
+
+--===============0623980896821244742==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci/xe-fast-feedback.testlist: Add eviction tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116971/">https://patchwork.freedesktop.org/series/116971/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7271 -&gt; IGTPW_8864</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8864 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8864, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html</p>
+<h2>Participating hosts (39 -&gt; 36)</h2>
+<p>Missing    (3): fi-kbl-soraka bat-mtlp-8 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8864:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@gem_exec_suspend@basic-s3@smem:<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8864 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@i915_selftest@live@migrate.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>
+<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +1 similar issue</p>
+</li>
+<li>
+<p>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) +1 similar issue</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7271 -&gt; IGTPW_8864</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13062: 5a0333cf630a335d7e8f60fd2b8526ed0895900c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8864: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html<br />
+  IGT_7271: d12d7eb92226e14745a80e6bdd95384913a43548 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0623980896821244742==--
