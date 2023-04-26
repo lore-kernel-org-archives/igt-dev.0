@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BC5410E8B9
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0BE210E962
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:28 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 17:16:42 +0530
-Message-Id: <20230426114725.2244653-3-bhanuprakash.modem@intel.com>
+Date: Wed, 26 Apr 2023 17:16:56 +0530
+Message-Id: <20230426114725.2244653-17-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 02/45] lib/xe_query: Add region helpers and
- missing doc
+Subject: [igt-dev] [i-g-t V3 16/45] lib/igt_fb: Add copy engine support for
+ XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,96 +23,134 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Add copy engine support for kms framebuffer mappings.
 
-For easier iterate over memory regions and produce dynamic subtests
-add xe_region_name() helper.
-
-As Xe requires buffer size alignment during creating bo add
-xe_min_page_size() helper.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/xe/xe_query.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_query.h |  2 ++
- 2 files changed, 47 insertions(+)
+ lib/igt_fb.c | 30 ++++++++++++++++++++++++++----
+ lib/igt_fb.h |  2 ++
+ 2 files changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 2b627a78a..bd5eb1d18 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -422,6 +422,13 @@ struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx)
- 	return &xe_dev->hw_engines[idx];
- }
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 76f2e1245..c9b86fcb0 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -45,6 +45,7 @@
+ #include "igt_amd.h"
+ #include "igt_x86.h"
+ #include "igt_nouveau.h"
++#include "igt_syncobj.h"
+ #include "ioctl_wrappers.h"
+ #include "intel_batchbuffer.h"
+ #include "intel_chipset.h"
+@@ -2489,12 +2490,13 @@ static bool blitter_ok(const struct igt_fb *fb)
  
-+/**
-+ * xe_mem_region:
-+ * @fd: xe device fd
-+ * @region: region mask
-+ *
-+ * Returns memory region structure for @region mask.
-+ */
- struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region)
+ static bool use_enginecopy(const struct igt_fb *fb)
  {
- 	struct xe_device *xe_dev;
-@@ -434,6 +441,44 @@ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region)
- 	return &xe_dev->mem_usage->regions[region_idx];
+-	if (blitter_ok(fb))
++	if (!is_xe_device(fb->fd) && blitter_ok(fb))
+ 		return false;
+ 
+ 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+ 	       is_ccs_modifier(fb->modifier) ||
+-	       !gem_has_mappable_ggtt(fb->fd);
++	       (is_xe_device(fb->fd) && fb->modifier == DRM_FORMAT_MOD_LINEAR) ||
++	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
  }
  
-+/**
-+ * xe_region_name:
-+ * @region: region mask
-+ *
-+ * Returns region string like "system" or "vram-n" where n=0...62.
-+ */
-+const char *xe_region_name(uint64_t region)
-+{
-+	static char **vrams;
-+	int region_idx = ffs(region) - 1;
+ static bool use_blitter(const struct igt_fb *fb)
+@@ -2504,7 +2506,7 @@ static bool use_blitter(const struct igt_fb *fb)
+ 
+ 	return fb->modifier == I915_FORMAT_MOD_Y_TILED ||
+ 	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+-	       !gem_has_mappable_ggtt(fb->fd);
++	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
+ }
+ 
+ static void init_buf_ccs(struct intel_buf *buf, int ccs_idx,
+@@ -2706,7 +2708,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
+ 	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
+ 
+-	if (!gem_has_relocations(dst_fb->fd)) {
++	if (is_i915_device(dst_fb->fd) && !gem_has_relocations(dst_fb->fd)) {
+ 		igt_require(gem_has_contexts(dst_fb->fd));
+ 		ctx = gem_context_create(dst_fb->fd);
+ 		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
+@@ -2786,6 +2788,12 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
+ 	} else if (is_nouveau_device(fd)) {
+ 		igt_nouveau_fb_blit(fb, &linear->fb);
+ 		igt_nouveau_delete_bo(&linear->fb);
++	} else if (is_xe_device(fd)) {
++		gem_munmap(linear->map, linear->fb.size);
++		copy_with_engine(blit, fb, &linear->fb);
 +
-+	/* Populate the array */
-+	if (!vrams) {
-+		vrams = calloc(64, sizeof(char *));
-+		for (int i = 0; i < 64; i++) {
-+			if (i != 0)
-+				asprintf(&vrams[i], "vram-%d", i - 1);
-+			else
-+				asprintf(&vrams[i], "system");
-+			igt_assert(vrams[i]);
-+		}
-+	}
++		syncobj_wait(fd, &blit->ibb->engine_syncobj, 1, INT64_MAX, 0, NULL);
++		gem_close(fd, linear->fb.gem_handle);
+ 	} else {
+ 		gem_munmap(linear->map, linear->fb.size);
+ 		gem_set_domain(fd, linear->fb.gem_handle,
+@@ -2863,6 +2871,11 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
+ 		igt_nouveau_fb_blit(&linear->fb, fb);
+ 
+ 		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
++	} else if (is_xe_device(fd)) {
++		copy_with_engine(blit, &linear->fb, fb);
 +
-+	return vrams[region_idx];
-+}
++		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
++					     linear->fb.size, PROT_READ | PROT_WRITE);
+ 	} else {
+ 		/* Copy fb content to linear BO */
+ 		gem_set_domain(fd, linear->fb.gem_handle,
+@@ -2920,6 +2933,9 @@ static void create_cairo_surface__gpu(int fd, struct igt_fb *fb)
+  */
+ int igt_dirty_fb(int fd, struct igt_fb *fb)
+ {
++	if (fb->syncobj)
++		syncobj_wait(fd, &fb->syncobj, 1, INT64_MAX, 0, NULL);
 +
-+/**
-+ * xe_min_page_size:
-+ * @fd: xe device fd
-+ * @region: region mask
-+ *
-+ * Returns minimum page size for @region.
-+ */
-+uint32_t xe_min_page_size(int fd, uint64_t region)
-+{
-+	return xe_mem_region(fd, region)->min_page_size;
-+}
+ 	return drmModeDirtyFB(fb->fd, fb->fb_id, NULL, 0);
+ }
+ 
+@@ -2969,6 +2985,9 @@ static void *map_bo(int fd, struct igt_fb *fb)
+ 				      PROT_READ | PROT_WRITE);
+ 	else if (is_nouveau_device(fd))
+ 		ptr = igt_nouveau_mmap_bo(fb, PROT_READ | PROT_WRITE);
++	else if (is_xe_device(fd))
++		ptr = xe_bo_mmap_ext(fd, fb->gem_handle,
++				     fb->size, PROT_READ | PROT_WRITE);
+ 	else
+ 		igt_assert(false);
+ 
+@@ -4253,6 +4272,9 @@ void igt_remove_fb(int fd, struct igt_fb *fb)
+ 	if (!fb || !fb->fb_id)
+ 		return;
+ 
++	if (fb->syncobj)
++		syncobj_destroy(fd, fb->syncobj);
 +
- /**
-  * xe_number_hw_engine:
-  * @fd: xe device fd
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 0d4b810a1..f49acb1d7 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -84,6 +84,8 @@ uint64_t vram_if_possible(int fd, int gt);
- struct drm_xe_engine_class_instance *xe_hw_engines(int fd);
- struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
- struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
-+const char *xe_region_name(uint64_t region);
-+uint32_t xe_min_page_size(int fd, uint64_t region);
- unsigned int xe_number_hw_engines(int fd);
- bool xe_has_vram(int fd);
- //uint64_t xe_vram_size(int fd);
+ 	cairo_surface_destroy(fb->cairo_surface);
+ 	do_or_die(drmModeRmFB(fd, fb->fb_id));
+ 	if (fb->is_dumb)
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index 73bdfc866..a127a8128 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -62,6 +62,7 @@ typedef struct _igt_crc igt_crc_t;
+  * @fb_id: KMS ID of the framebuffer
+  * @fd: DRM device fd this framebuffer is created on
+  * @gem_handle: GEM handler of the underlying backing storage
++ * @syncobj: Syncobj to sync to for last drawing operation
+  * @is_dumb: Whether this framebuffer was allocated using the dumb buffer API
+  * @drm_format: DRM FOURCC code
+  * @width: width in pixels
+@@ -84,6 +85,7 @@ typedef struct igt_fb {
+ 	uint32_t fb_id;
+ 	int fd;
+ 	uint32_t gem_handle;
++	uint32_t syncobj;
+ 	bool is_dumb;
+ 	uint32_t drm_format;
+ 	int width;
 -- 
 2.40.0
