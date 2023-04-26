@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0623980896821244742=="
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 420E410E8EC
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 07:48:41 +0000 (UTC)
+Message-ID: <e5c989b4-5d1c-9a4d-94f8-6415132db369@intel.com>
+Date: Wed, 26 Apr 2023 13:18:36 +0530
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
-Date: Wed, 26 Apr 2023 07:22:58 -0000
-Message-ID: <168249377835.17154.10777945430201018335@emeril.freedesktop.org>
-References: <20230426062248.3110901-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230426062248.3110901-1-janga.rahul.kumar@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaW50ZWwt?=
- =?utf-8?q?ci/xe-fast-feedback=2Etestlist=3A_Add_eviction_tests?=
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
+ <20230425064953.2121947-39-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230425064953.2121947-39-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t V2 38/40] tests/kms_rotation_crc: Add XE
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,215 +23,120 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0623980896821244742==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 25-Apr-23 12:19 PM, Bhanuprakash Modem wrote:
+> Add XE driver support for kms tests.
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_rotation_crc.c | 25 +++++++++++++++++--------
+>   1 file changed, 17 insertions(+), 8 deletions(-)
+>
+> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+> index 295aed762..23c18c242 100644
+> --- a/tests/kms_rotation_crc.c
+> +++ b/tests/kms_rotation_crc.c
+> @@ -459,7 +459,7 @@ static bool test_format(data_t *data,
+>   	if (!igt_fb_supported_format(format))
+>   		return false;
+>   
+> -	if (!is_i915_device(data->gfx_fd) ||
+> +	if (!is_intel_device(data->gfx_fd) ||
+>   	    data->extended)
+>   		return true;
+>   
+> @@ -545,14 +545,14 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+>   		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
+>   		igt_require(igt_plane_has_rotation(plane, data->rotation));
+>   		/* CHV can't rotate and reflect simultaneously */
+> -		igt_require(!is_i915_device(data->gfx_fd) ||
+> +		igt_require(!is_intel_device(data->gfx_fd) ||
+>   			    !IS_CHERRYVIEW(data->devid) ||
+>   			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
+>   
+>   		prepare_crtc(data, output, pipe, plane, true);
+>   
+>   		for (i = 0; i < num_rectangle_types; i++) {
+> -			/* Unsupported on i915 */
+> +			/* Unsupported on intel */
+>   			if (plane_type == DRM_PLANE_TYPE_CURSOR &&
+>   			    i != square)
+>   				continue;
+> @@ -560,9 +560,8 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+>   			/* Only support partial covering primary plane on gen9+ */
+>   			if (is_amdgpu_device(data->gfx_fd) ||
+>   				(plane_type == DRM_PLANE_TYPE_PRIMARY &&
+> -				 is_i915_device(data->gfx_fd) &&
+> -				 intel_display_ver(
+> -					 intel_get_drm_devid(data->gfx_fd)) < 9)) {
+> +				 is_intel_device(data->gfx_fd) &&
+> +				 intel_display_ver(data->devid) < 9)) {
+>   				if (i != rectangle)
+>   					continue;
+>   				else
+> @@ -592,7 +591,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+>   						 data->override_fmt, test_bad_format);
+>   			}
+>   		}
+> -		if (is_i915_device(data->gfx_fd)) {
+> +		if (is_intel_device(data->gfx_fd)) {
+>   			igt_pipe_crc_stop(data->pipe_crc);
+>   		}
+>   	}
+> @@ -841,6 +840,10 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+>   		igt_pipe_crc_start(data->pipe_crc);
+>   
+>   		for (i = 0; i < ARRAY_SIZE(planeconfigs); i++) {
+> +			if (is_xe_device(data->gfx_fd) &&
+> +			    planeconfigs[i].modifier != DRM_FORMAT_MOD_LINEAR)
+> +				continue;
+> +
+>   			p[0].fbinfo = &planeconfigs[i];
+>   			pointlocation(data, p, mode, 0);
+>   
+> @@ -1137,7 +1140,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   	igt_fixture {
+>   		data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
+> -		if (is_i915_device(data.gfx_fd)) {
+> +		if (is_intel_device(data.gfx_fd)) {
+>   			data.devid = intel_get_drm_devid(data.gfx_fd);
+>   			gen = intel_display_ver(data.devid);
+>   		}
+> @@ -1193,6 +1196,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   	igt_describe("Checking unsupported tiling for gen9+ with 90 degree of rotation");
+>   	igt_subtest_f("bad-tiling") {
+> +		igt_require_i915(data.gfx_fd);
+bad-tiling test should be applicable for xe too.
+anything apart from LINEAR is negative test for xe.
+>   		data.rotation = IGT_ROTATION_90;
+>   		data.override_modifier = I915_FORMAT_MOD_X_TILED;
+>   		test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
+> @@ -1201,6 +1206,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   	igt_describe("Tiling and Rotation test for gen 10+ for primary plane");
+>   	for (reflect_x = reflect_x_subtests; reflect_x->modifier; reflect_x++) {
+> +		igt_fixture
+> +			igt_require_i915(data.gfx_fd);
 
-== Series Details ==
+Should we add LINEAR format tests with different rot in reflect_x_subtests,
+so that we can cover xe with linear+rot combinations and continue this test
+if (xe) && format != LINEAR only.
 
-Series: intel-ci/xe-fast-feedback.testlist: Add eviction tests
-URL   : https://patchwork.freedesktop.org/series/116971/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7271 -> IGTPW_8864
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_8864 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8864, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html
-
-Participating hosts (39 -> 36)
-------------------------------
-
-  Missing    (3): fi-kbl-soraka bat-mtlp-8 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8864:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-rpls-1:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8864 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-dg2-11:         [PASS][3] -> [FAIL][4] ([i915#8308])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_pm_rps@basic-api.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-dg2-11:         [PASS][5] -> [FAIL][6] ([i915#7913])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_selftest@live@migrate.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@i915_selftest@live@migrate.html
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - bat-adlp-9:         NOTRUN -> [SKIP][7] ([i915#3546]) +1 similar issue
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html
-    - bat-dg2-11:         NOTRUN -> [SKIP][8] ([i915#1845] / [i915#5354]) +1 similar issue
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html
-
-  
-#### Warnings ####
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         [SKIP][9] ([i915#5354]) -> [SKIP][10] ([i915#1845] / [i915#5354])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#8308]: https://gitlab.freedesktop.org/drm/intel/issues/8308
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7271 -> IGTPW_8864
-
-  CI-20190529: 20190529
-  CI_DRM_13062: 5a0333cf630a335d7e8f60fd2b8526ed0895900c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8864: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html
-  IGT_7271: d12d7eb92226e14745a80e6bdd95384913a43548 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html
-
---===============0623980896821244742==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>intel-ci/xe-fast-feedback.testlist: Add eviction tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116971/">https://patchwork.freedesktop.org/series/116971/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7271 -&gt; IGTPW_8864</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8864 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8864, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html</p>
-<h2>Participating hosts (39 -&gt; 36)</h2>
-<p>Missing    (3): fi-kbl-soraka bat-mtlp-8 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8864:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@gem_exec_suspend@basic-s3@smem:<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8864 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8308">i915#8308</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@i915_selftest@live@migrate.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc:</p>
-<ul>
-<li>
-<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +1 similar issue</p>
-</li>
-<li>
-<p>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) +1 similar issue</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7271 -&gt; IGTPW_8864</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13062: 5a0333cf630a335d7e8f60fd2b8526ed0895900c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8864: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8864/index.html<br />
-  IGT_7271: d12d7eb92226e14745a80e6bdd95384913a43548 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0623980896821244742==--
+> +
+>   		igt_subtest_f("primary-%s-reflect-x-%s",
+>   			      modifier_test_str(reflect_x->modifier),
+>   			      rot_test_str(reflect_x->rot)) {
+> @@ -1260,6 +1268,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		enum pipe pipe;
+>   		igt_output_t *output;
+>   
+> +		igt_require_i915(data.gfx_fd);
+Please write a comment why only i915 and not xe.
+>   		igt_display_require_output(&data.display);
+>   
+>   		for_each_pipe_with_valid_output(&data.display, pipe, output) {
