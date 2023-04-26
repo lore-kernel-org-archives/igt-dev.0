@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2875973491912603412=="
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FF8F10E0BE
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 12:47:43 +0000 (UTC)
+Date: Wed, 26 Apr 2023 14:47:23 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230426124723.gwzv4bnci32kgdej@kamilkon-desk1>
+References: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
+ <20230425154017.374465-9-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Wed, 26 Apr 2023 12:24:18 -0000
-Message-ID: <168251185850.17154.14492612869561242910@emeril.freedesktop.org>
-References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIElH?=
- =?utf-8?q?T_display_support_for_XE_=28rev5=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230425154017.374465-9-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v6 08/15] lib/intel_batchbuffer: Add Xe
+ support in intel-bb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,394 +22,721 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2875973491912603412==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Zbigniew,
 
-== Series Details ==
+On 2023-04-25 at 17:40:10 +0200, Zbigniew Kempczyński wrote:
+> Intention of creating intel-bb was to replace libdrm for i915.
+> Due to many code relies on it (kms for example) most rational way
+> is to extend and add Xe path to it.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  lib/intel_batchbuffer.c | 350 +++++++++++++++++++++++++++++++++-------
+>  lib/intel_batchbuffer.h |   6 +
 
-Series: Add IGT display support for XE (rev5)
-URL   : https://patchwork.freedesktop.org/series/116658/
-State : success
+Thank you for separating i195 -> fd rename, now it is easier to review.
 
-== Summary ==
+>  2 files changed, 295 insertions(+), 61 deletions(-)
+> 
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 7dbd6dd582..1563e1da4a 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -29,6 +29,8 @@
+>  #include <glib.h>
+>  
+>  #include "i915/gem_create.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
 
-CI Bug Log - changes from IGT_7271 -> IGTPW_8867
-====================================================
+Please sort it alphabetically.
 
-Summary
--------
+>  #include "intel_batchbuffer.h"
+>  #include "intel_bufops.h"
+>  #include "intel_chipset.h"
+> @@ -38,6 +40,8 @@
+>  #include "veboxcopy.h"
+>  #include "sw_sync.h"
+>  #include "gpgpu_fill.h"
+> +#include "igt_aux.h"
+> +#include "igt_syncobj.h"
 
-  **SUCCESS**
+Same here, please put in in alphabetical order.
 
-  No regressions found.
+>  #include "huc_copy.h"
+>  #include "i915/i915_blt.h"
+>  
+> @@ -828,21 +832,22 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+>  
+>  /**
+>   * __intel_bb_create:
+> - * @fd: drm fd
+> + * @fd: drm fd - i915 or xe
+>   * @ctx: context id
+> - * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+> + * @cfg: for i915 intel_ctx configuration, NULL for default context or legacy mode,
+> + *       unused for xe
+>   * @size: size of the batchbuffer
+>   * @do_relocs: use relocations or allocator
+>   * @allocator_type: allocator type, must be INTEL_ALLOCATOR_NONE for relocations
+>   *
+>   * intel-bb assumes it will work in one of two modes - with relocations or
+> - * with using allocator (currently RANDOM and SIMPLE are implemented).
+> + * with using allocator (currently RELOC and SIMPLE are implemented).
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/index.html
+These should be done in separate patch ? Or at least write about
+it in patch description. Also you can write about relocations can
+not be used in xe and that RELOC allocator can.
 
-Participating hosts (39 -> 37)
-------------------------------
+>   * Some description is required to describe how they maintain the addresses.
+>   *
+>   * Before entering into each scenarios generic rule is intel-bb keeps objects
+>   * and their offsets in the internal cache and reuses in subsequent execs.
+>   *
+> - * 1. intel-bb with relocations
+> + * 1. intel-bb with relocations (i915 only)
+>   *
+>   * Creating new intel-bb adds handle to cache implicitly and sets its address
+>   * to 0. Objects added to intel-bb later also have address 0 set for first run.
+> @@ -850,14 +855,15 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+>   * works in reloc mode addresses are only suggestion to the driver and we
+>   * cannot be sure they won't change at next exec.
+>   *
+> - * 2. with allocator
+> + * 2. with allocator (i915 or xe)
+>   *
+>   * This mode is valid only for ppgtt. Addresses are acquired from allocator
+> - * and softpinned. intel-bb cache must be then coherent with allocator
+> - * (simple is coherent, random is not due to fact we don't keep its state).
+> + * and softpinned (i915) or vm-binded (xe). intel-bb cache must be then
+> + * coherent with allocator (simple is coherent, reloc partially [doesn't
+> + * support address reservation]).
+>   * When we do intel-bb reset with purging cache it has to reacquire addresses
+>   * from allocator (allocator should return same address - what is true for
+> - * simple allocator and false for random as mentioned before).
+> + * simple and reloc allocators).
+>   *
+>   * If we do reset without purging caches we use addresses from intel-bb cache
+>   * during execbuf objects construction.
+> @@ -883,48 +889,83 @@ __intel_bb_create(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+>  
+>  	igt_assert(ibb);
+>  
+> -	ibb->uses_full_ppgtt = gem_uses_full_ppgtt(fd);
+>  	ibb->devid = intel_get_drm_devid(fd);
+>  	ibb->gen = intel_gen(ibb->devid);
+> +	ibb->ctx = ctx;
+> +
+> +	ibb->fd = fd;
+> +	ibb->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
+> +					   is_xe_device(fd) ? INTEL_DRIVER_XE : 0;
+> +	igt_assert(ibb->driver);
+>  
+>  	/*
+>  	 * If we don't have full ppgtt driver can change our addresses
+>  	 * so allocator is useless in this case. Just enforce relocations
+>  	 * for such gens and don't use allocator at all.
+>  	 */
+> -	if (!ibb->uses_full_ppgtt)
+> -		do_relocs = true;
+> +	if (ibb->driver == INTEL_DRIVER_I915) {
+> +		ibb->uses_full_ppgtt = gem_uses_full_ppgtt(fd);
+>  
+> -	/*
+> -	 * For softpin mode allocator has full control over offsets allocation
+> -	 * so we want kernel to not interfere with this.
+> -	 */
+> -	if (do_relocs)
+> -		ibb->allows_obj_alignment = gem_allows_obj_alignment(fd);
+> +		if (!ibb->uses_full_ppgtt)
+> +			do_relocs = true;
+>  
+> -	/* Use safe start offset instead assuming 0x0 is safe */
+> -	start = max_t(uint64_t, start, gem_detect_safe_start_offset(fd));
+> +		/*
+> +		 * For softpin mode allocator has full control over offsets allocation
+> +		 * so we want kernel to not interfere with this.
+> +		 */
+> +		if (do_relocs) {
+> +			ibb->allows_obj_alignment = gem_allows_obj_alignment(fd);
+> +			allocator_type = INTEL_ALLOCATOR_NONE;
+> +		} else {
+> +			/* Use safe start offset instead assuming 0x0 is safe */
+> +			start = max_t(uint64_t, start, gem_detect_safe_start_offset(fd));
+> +
+> +			/* if relocs are set we won't use an allocator */
+> +			ibb->allocator_handle =
+> +				intel_allocator_open_full(fd, ctx,
+> +							  start, end,
+> +							  allocator_type,
+> +							  strategy, 0);
+> +		}
+> +
 
-  Additional (1): bat-rpls-2 
-  Missing    (3): fi-kbl-soraka bat-mtlp-8 fi-snb-2520m 
+imho here should be placed alignment detection for i915.
 
-Known issues
-------------
+> +		ibb->vm_id = 0;
+> +	} else {
+> +		igt_assert(!do_relocs);
+> +
+> +		if (!ctx)
+> +			ctx = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +
+> +		ibb->uses_full_ppgtt = 1;
+> +		ibb->allocator_handle =
+> +			intel_allocator_open_full(fd, ctx, start, end,
+> +						  allocator_type,
+> +						  strategy,
+> +						  xe_get_default_alignment(fd));
+------------------------------------------------- ^
+Later on you set:
+		ibb->alignment = xe_get_default_alignment(fd);
+so maybe move it here and use it ?
 
-  Here are the changes found in IGTPW_8867 that come from known issues:
+> +		ibb->vm_id = ctx;
+> +		ibb->last_engine = ~0U;
+> +	}
+>  
+> -	/* if relocs are set we won't use an allocator */
+> -	if (do_relocs)
+> -		allocator_type = INTEL_ALLOCATOR_NONE;
+> -	else
+> -		ibb->allocator_handle = intel_allocator_open_full(fd, ctx,
+> -								  start, end,
+> -								  allocator_type,
+> -								  strategy, 0);
+>  	ibb->allocator_type = allocator_type;
+>  	ibb->allocator_strategy = strategy;
+>  	ibb->allocator_start = start;
+>  	ibb->allocator_end = end;
+> -
+> -	ibb->fd = fd;
+>  	ibb->enforce_relocs = do_relocs;
+> -	ibb->handle = gem_create(fd, size);
+> +
+> +	if (ibb->driver == INTEL_DRIVER_I915) {
+> +		ibb->handle = gem_create(fd, size);
+> +		ibb->alignment = gem_detect_safe_alignment(fd);
+> +		ibb->gtt_size = gem_aperture_size(fd);
+> +	} else {
+> +		ibb->alignment = xe_get_default_alignment(fd);
+> +		size = ALIGN(size, ibb->alignment);
+> +		ibb->handle = xe_bo_create_flags(fd, 0, size,
+> +						 xe_has_vram(fd) ?
+------------------------------------------------ ^
+> +						 vram_memory(fd, 0) :
+> +						 system_memory(fd));
 
-### IGT changes ###
+xe_vram_if_possible ? btw this may interfere when one wants to
+create ibb object in system memory, so maybe we should add one
+more option (in future).
 
-#### Issues hit ####
+> +		ibb->gtt_size = 1ull << xe_va_bits(fd);
+> +	}
+> +
+>  	ibb->size = size;
+> -	ibb->alignment = gem_detect_safe_alignment(fd);
+> -	ibb->ctx = ctx;
+> -	ibb->vm_id = 0;
+>  	ibb->batch = calloc(1, size);
+>  	igt_assert(ibb->batch);
+>  	ibb->ptr = ibb->batch;
+> @@ -937,7 +978,6 @@ __intel_bb_create(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+>  		memcpy(ibb->cfg, cfg, sizeof(*cfg));
+>  	}
+>  
+> -	ibb->gtt_size = gem_aperture_size(fd);
+>  	if ((ibb->gtt_size - 1) >> 32)
+>  		ibb->supports_48b_address = true;
+>  
+> @@ -961,13 +1001,13 @@ __intel_bb_create(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+>  
+>  /**
+>   * intel_bb_create_full:
+> - * @fd: drm fd
+> + * @fd: drm fd - i915 or xe
+>   * @ctx: context
+>   * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+>   * @size: size of the batchbuffer
+>   * @start: allocator vm start address
+>   * @end: allocator vm start address
+> - * @allocator_type: allocator type, SIMPLE, RANDOM, ...
+> + * @allocator_type: allocator type, SIMPLE, RELOC, ...
 
-  * igt@debugfs_test@basic-hwmon:
-    - bat-rpls-2:         NOTRUN -> [SKIP][1] ([i915#7456])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@debugfs_test@basic-hwmon.html
+Looks like unrelated fix.
 
-  * igt@fbdev@read:
-    - bat-rpls-2:         NOTRUN -> [SKIP][2] ([i915#2582]) +4 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@fbdev@read.html
+>   * @strategy: allocation strategy
+>   *
+>   * Creates bb with context passed in @ctx, size in @size and allocator type
+> @@ -992,7 +1032,7 @@ struct intel_bb *intel_bb_create_full(int fd, uint32_t ctx,
+>  
+>  /**
+>   * intel_bb_create_with_allocator:
+> - * @fd: drm fd
+> + * @fd: drm fd - i915 or xe
+>   * @ctx: context
+>   * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+>   * @size: size of the batchbuffer
+> @@ -1027,7 +1067,7 @@ static bool has_ctx_cfg(struct intel_bb *ibb)
+>  
+>  /**
+>   * intel_bb_create:
+> - * @fd: drm fd
+> + * @fd: drm fd - i915 or xe
+>   * @size: size of the batchbuffer
+>   *
+>   * Creates bb with default context.
+> @@ -1047,7 +1087,7 @@ static bool has_ctx_cfg(struct intel_bb *ibb)
+>   */
+>  struct intel_bb *intel_bb_create(int fd, uint32_t size)
+>  {
+> -	bool relocs = gem_has_relocations(fd);
+> +	bool relocs = is_i915_device(fd) && gem_has_relocations(fd);
+>  
+>  	return __intel_bb_create(fd, 0, NULL, size,
+>  				 relocs && !aux_needs_softpin(fd), 0, 0,
+> @@ -1057,7 +1097,7 @@ struct intel_bb *intel_bb_create(int fd, uint32_t size)
+>  
+>  /**
+>   * intel_bb_create_with_context:
+> - * @fd: drm fd
+> + * @fd: drm fd - i915 or xe
+>   * @ctx: context id
+>   * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+>   * @size: size of the batchbuffer
+> @@ -1073,7 +1113,7 @@ struct intel_bb *
+>  intel_bb_create_with_context(int fd, uint32_t ctx,
+>  			     const intel_ctx_cfg_t *cfg, uint32_t size)
+>  {
+> -	bool relocs = gem_has_relocations(fd);
+> +	bool relocs = is_i915_device(fd) && gem_has_relocations(fd);
+>  
+>  	return __intel_bb_create(fd, ctx, cfg, size,
+>  				 relocs && !aux_needs_softpin(fd), 0, 0,
+> @@ -1083,7 +1123,7 @@ intel_bb_create_with_context(int fd, uint32_t ctx,
+>  
+>  /**
+>   * intel_bb_create_with_relocs:
+> - * @fd: drm fd
+> + * @fd: drm fd - i915
+>   * @size: size of the batchbuffer
+>   *
+>   * Creates bb which will disable passing addresses.
+> @@ -1095,7 +1135,7 @@ intel_bb_create_with_context(int fd, uint32_t ctx,
+>   */
+>  struct intel_bb *intel_bb_create_with_relocs(int fd, uint32_t size)
+>  {
+> -	igt_require(gem_has_relocations(fd));
+> +	igt_require(is_i915_device(fd) && gem_has_relocations(fd));
+>  
+>  	return __intel_bb_create(fd, 0, NULL, size, true, 0, 0,
+>  				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
+> @@ -1103,7 +1143,7 @@ struct intel_bb *intel_bb_create_with_relocs(int fd, uint32_t size)
+>  
+>  /**
+>   * intel_bb_create_with_relocs_and_context:
+> - * @fd: drm fd
+> + * @fd: drm fd - i915
+>   * @ctx: context
+>   * @cfg: intel_ctx configuration, NULL for default context or legacy mode
+>   * @size: size of the batchbuffer
+> @@ -1120,7 +1160,7 @@ intel_bb_create_with_relocs_and_context(int fd, uint32_t ctx,
+>  					const intel_ctx_cfg_t *cfg,
+>  					uint32_t size)
+>  {
+> -	igt_require(gem_has_relocations(fd));
+> +	igt_require(is_i915_device(fd) && gem_has_relocations(fd));
+>  
+>  	return __intel_bb_create(fd, ctx, cfg, size, true, 0, 0,
+>  				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
+> @@ -1221,12 +1261,76 @@ void intel_bb_destroy(struct intel_bb *ibb)
+>  
+>  	if (ibb->fence >= 0)
+>  		close(ibb->fence);
+> +	if (ibb->engine_syncobj)
+> +		syncobj_destroy(ibb->fd, ibb->engine_syncobj);
+> +	if (ibb->vm_id && !ibb->ctx)
 
-  * igt@gem_lmem_swapping@verify-random:
-    - bat-rpls-2:         NOTRUN -> [SKIP][3] ([i915#4613]) +3 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@gem_lmem_swapping@verify-random.html
+Why not use here ibb->driver == INTEL_DRIVER_XE check ?
 
-  * igt@gem_tiled_pread_basic:
-    - bat-rpls-2:         NOTRUN -> [SKIP][4] ([i915#3282])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@gem_tiled_pread_basic.html
+> +		xe_vm_destroy(ibb->fd, ibb->vm_id);
+>  
+>  	free(ibb->batch);
+>  	free(ibb->cfg);
+>  	free(ibb);
+>  }
+>  
+> +static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct intel_bb *ibb,
+> +						   uint32_t op, uint32_t region)
+--------------------------------------------------------------- ^
+Here uint64_t as you are adding new function so let make it
+correct from the start.
 
-  * igt@i915_pm_backlight@basic-brightness:
-    - bat-rpls-2:         NOTRUN -> [SKIP][5] ([i915#7561])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html
+> +{
+> +	struct drm_i915_gem_exec_object2 **objects = ibb->objects;
+> +	struct drm_xe_vm_bind_op *bind_ops, *ops;
+> +	bool set_obj = (op & 0xffff) == XE_VM_BIND_OP_MAP;
+> +
+> +	bind_ops = calloc(ibb->num_objects, sizeof(*bind_ops));
+> +	igt_assert(bind_ops);
+> +
+> +	igt_debug("bind_ops: %s\n", set_obj ? "MAP" : "UNMAP");
+> +	for (int i = 0; i < ibb->num_objects; i++) {
+> +		ops = &bind_ops[i];
+> +
+> +		if (set_obj)
+> +			ops->obj = objects[i]->handle;
+> +
+> +		ops->op = op;
+> +		ops->obj_offset = 0;
+> +		ops->addr = objects[i]->offset;
+> +		ops->range = objects[i]->rsvd1;
+> +		ops->region = region;
+> +
+> +		igt_debug("  [%d]: handle: %u, offset: %llx, size: %llx\n",
+> +			  i, ops->obj, (long long)ops->addr, (long long)ops->range);
+> +	}
+> +
+> +	return bind_ops;
+> +}
+> +
+> +static void __unbind_xe_objects(struct intel_bb *ibb)
+> +{
+> +	struct drm_xe_sync syncs[2] = {
+> +		{ .flags = DRM_XE_SYNC_SYNCOBJ },
+> +		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
+> +	};
+> +	int ret;
+> +
+> +	syncs[0].handle = ibb->engine_syncobj;
+> +	syncs[1].handle = syncobj_create(ibb->fd, 0);
+> +
+> +	if (ibb->num_objects > 1) {
+> +		struct drm_xe_vm_bind_op *bind_ops;
+> +		uint32_t op = XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_ASYNC;
+> +
+> +		bind_ops = xe_alloc_bind_ops(ibb, op, 0);
+> +		xe_vm_bind_array(ibb->fd, ibb->vm_id, 0, bind_ops,
+> +				 ibb->num_objects, syncs, 2);
+> +		free(bind_ops);
+> +	} else {
+> +		xe_vm_unbind_async(ibb->fd, ibb->vm_id, 0, 0,
+> +				   ibb->batch_offset, ibb->size, syncs, 2);
+> +	}
+> +	ret = syncobj_wait_err(ibb->fd, &syncs[1].handle, 1, INT64_MAX, 0);
+> +	igt_assert_eq(ret, 0);
+> +	syncobj_destroy(ibb->fd, syncs[1].handle);
+> +
+> +	ibb->xe_bound = false;
+> +}
+> +
+>  /*
+>   * intel_bb_reset:
+>   * @ibb: pointer to intel_bb
+> @@ -1258,6 +1362,9 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
+>  	for (i = 0; i < ibb->num_objects; i++)
+>  		ibb->objects[i]->flags &= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+>  
+> +	if (is_xe_device(ibb->fd) && ibb->xe_bound)
+----------- ^
+Use ibb->driver ? Or just drop and use only:
+	if (ibb->xe_bound)
 
-  * igt@i915_selftest@live@gt_pm:
-    - bat-rpls-2:         NOTRUN -> [FAIL][6] ([i915#7913])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+> +		__unbind_xe_objects(ibb);
+> +
+>  	__intel_bb_destroy_relocations(ibb);
+>  	__intel_bb_destroy_objects(ibb);
+>  	__reallocate_objects(ibb);
+> @@ -1278,10 +1385,15 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
+>  				       ibb->size);
+>  
+>  	gem_close(ibb->fd, ibb->handle);
+> -	ibb->handle = gem_create(ibb->fd, ibb->size);
+> +	if (is_i915_device(ibb->fd))
+----------- ^
+Use ibb->driver
 
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-2:         NOTRUN -> [FAIL][7] ([i915#6997] / [i915#7913])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@i915_selftest@live@slpc.html
+> +		ibb->handle = gem_create(ibb->fd, ibb->size);
+> +	else
+> +		ibb->handle = xe_bo_create_flags(ibb->fd, 0, ibb->size,
+> +						 vram_if_possible(ibb->fd, 0));
+>  
+> -	/* Keep address for bb in reloc mode and RANDOM allocator */
+> -	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE)
+> +	/* Reacquire offset for RELOC and SIMPLE */
+> +	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE ||
+> +	    ibb->allocator_type == INTEL_ALLOCATOR_RELOC)
 
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-rpls-2:         NOTRUN -> [ABORT][8] ([i915#7978])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html
+This hunk looks like part of non-related fix.
 
-  * igt@kms_busy@basic:
-    - bat-rpls-2:         NOTRUN -> [SKIP][9] ([i915#1845]) +14 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_busy@basic.html
+>  		ibb->batch_offset = __intel_bb_get_offset(ibb,
+>  							  ibb->handle,
+>  							  ibb->size,
+> @@ -1304,13 +1416,19 @@ int intel_bb_sync(struct intel_bb *ibb)
+>  {
+>  	int ret;
+>  
+> -	if (ibb->fence < 0)
+> +	if (ibb->fence < 0 && !ibb->engine_syncobj)
+>  		return 0;
+>  
+> -	ret = sync_fence_wait(ibb->fence, -1);
+> -	if (ret == 0) {
+> -		close(ibb->fence);
+> -		ibb->fence = -1;
+> +	if (ibb->fence >= 0) {
+> +		ret = sync_fence_wait(ibb->fence, -1);
+> +		if (ret == 0) {
+> +			close(ibb->fence);
+> +			ibb->fence = -1;
+> +		}
+> +	} else {
+> +		igt_assert_neq(ibb->engine_syncobj, 0);
+> +		ret = syncobj_wait_err(ibb->fd, &ibb->engine_syncobj,
+> +				       1, INT64_MAX, 0);
+>  	}
+>  
+>  	return ret;
+> @@ -1501,7 +1619,7 @@ static void __remove_from_objects(struct intel_bb *ibb,
+>  }
+>  
+>  /**
+> - * intel_bb_add_object:
+> + * __intel_bb_add_object:
+>   * @ibb: pointer to intel_bb
+>   * @handle: which handle to add to objects array
+>   * @size: object size
+> @@ -1513,9 +1631,9 @@ static void __remove_from_objects(struct intel_bb *ibb,
+>   * in the object tree. When object is a render target it has to
+>   * be marked with EXEC_OBJECT_WRITE flag.
+>   */
+> -struct drm_i915_gem_exec_object2 *
+> -intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+> -		    uint64_t offset, uint64_t alignment, bool write)
+> +static struct drm_i915_gem_exec_object2 *
+> +__intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+> +		      uint64_t offset, uint64_t alignment, bool write)
+>  {
+>  	struct drm_i915_gem_exec_object2 *object;
+>  
+> @@ -1523,8 +1641,12 @@ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+>  		   || ALIGN(offset, alignment) == offset);
+>  	igt_assert(is_power_of_two(alignment));
+>  
+> +	if (ibb->driver == INTEL_DRIVER_I915)
+> +		alignment = max_t(uint64_t, alignment, gem_detect_safe_alignment(ibb->fd));
+> +	else
+> +		alignment = max_t(uint64_t, ibb->alignment, alignment);
+> +
+>  	object = __add_to_cache(ibb, handle);
+> -	alignment = max_t(uint64_t, alignment, gem_detect_safe_alignment(ibb->fd));
+>  	__add_to_objects(ibb, object);
+>  
+>  	/*
+> @@ -1584,9 +1706,27 @@ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+>  	if (ibb->allows_obj_alignment)
+>  		object->alignment = alignment;
+>  
+> +	if (ibb->driver == INTEL_DRIVER_XE) {
+> +		object->alignment = alignment;
+> +		object->rsvd1 = size;
+> +	}
+> +
+>  	return object;
+>  }
+>  
+> +struct drm_i915_gem_exec_object2 *
+> +intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+> +		    uint64_t offset, uint64_t alignment, bool write)
+> +{
+> +	struct drm_i915_gem_exec_object2 *obj = NULL;
+> +
+> +	obj = __intel_bb_add_object(ibb, handle, size, offset,
+> +				    alignment, write);
+> +	igt_assert(obj);
+> +
+> +	return obj;
+> +}
+> +
+>  bool intel_bb_remove_object(struct intel_bb *ibb, uint32_t handle,
+>  			    uint64_t offset, uint64_t size)
+>  {
+> @@ -2135,6 +2275,82 @@ static void update_offsets(struct intel_bb *ibb,
+>  }
+>  
+>  #define LINELEN 76
+> +
+> +static int
+> +__xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
+----------------------------------------------------- ^
+You use this function only once with 0 (=false), so maybe drop
+this param ?
 
-  * igt@kms_chamelium_edid@hdmi-edid-read:
-    - bat-rpls-2:         NOTRUN -> [SKIP][10] ([i915#7828]) +7 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_chamelium_edid@hdmi-edid-read.html
+> +{
+> +	uint32_t engine = flags & (I915_EXEC_BSD_MASK | I915_EXEC_RING_MASK);
+> +	uint32_t engine_id;
+> +	struct drm_xe_sync syncs[2] = {
+> +		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
+> +		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
+> +	};
+> +	struct drm_xe_vm_bind_op *bind_ops;
+> +	void *map;
+> +
+> +	igt_assert_eq(ibb->num_relocs, 0);
+> +	igt_assert_eq(ibb->xe_bound, false);
+> +
+> +	if (ibb->last_engine != engine) {
+> +		struct drm_xe_engine_class_instance inst = { };
+> +
+> +		inst.engine_instance =
+> +			(flags & I915_EXEC_BSD_MASK) >> I915_EXEC_BSD_SHIFT;
+> +
+> +		switch (flags & I915_EXEC_RING_MASK) {
+> +		case I915_EXEC_DEFAULT:
+> +		case I915_EXEC_BLT:
+> +			inst.engine_class = DRM_XE_ENGINE_CLASS_COPY;
+> +			break;
+> +		case I915_EXEC_BSD:
+> +			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
+> +			break;
+> +		case I915_EXEC_RENDER:
+> +			inst.engine_class = DRM_XE_ENGINE_CLASS_RENDER;
+> +			break;
+> +		case I915_EXEC_VEBOX:
+> +			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
+> +			break;
 
-  * igt@kms_flip@basic-flip-vs-dpms:
-    - bat-rpls-2:         NOTRUN -> [SKIP][11] ([i915#3637]) +3 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_flip@basic-flip-vs-dpms.html
+What about compute ? It is not unknown.
 
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-rpls-2:         NOTRUN -> [SKIP][12] ([fdo#109285])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_force_connector_basic@force-load-detect.html
+> +		default:
+> +			igt_assert_f(false, "Unknown engine: %x", (uint32_t) flags);
+> +		}
+> +		igt_debug("Run on %s\n", xe_engine_class_string(inst.engine_class));
+> +
+> +		ibb->engine_id = engine_id =
+> +			xe_engine_create(ibb->fd, ibb->vm_id, &inst, 0);
+> +	} else {
+> +		engine_id = ibb->engine_id;
+> +	}
+> +	ibb->last_engine = engine;
+> +
+> +	map = xe_bo_map(ibb->fd, ibb->handle, ibb->size);
+> +	memcpy(map, ibb->batch, ibb->size);
+> +	gem_munmap(map, ibb->size);
+> +
+> +	syncs[0].handle = syncobj_create(ibb->fd, 0);
+> +	if (ibb->num_objects > 1) {
+> +		bind_ops = xe_alloc_bind_ops(ibb, XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC, 0);
+> +		xe_vm_bind_array(ibb->fd, ibb->vm_id, 0, bind_ops,
+> +				 ibb->num_objects, syncs, 1);
+--------------------------------------------------------- ^
+> +		ibb->xe_bound = true;
+> +		free(bind_ops);
+> +	} else {
+> +		xe_vm_bind_async(ibb->fd, ibb->vm_id, 0, ibb->handle, 0,
+> +				 ibb->batch_offset, ibb->size, syncs, 1);
+--------------------------------------------------------------------- ^
+> +	}
+> +
+> +	syncs[0].flags &= ~DRM_XE_SYNC_SIGNAL;
+------------- ^
+Why not create it already without this flag and in above places
+use "&syncs[1]" ? Or use two vars sync_bind[1] and syncs_exec[2] ?
 
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-rpls-2:         NOTRUN -> [SKIP][13] ([i915#1849])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_frontbuffer_tracking@basic.html
+> +	ibb->engine_syncobj = syncobj_create(ibb->fd, 0);
+> +	syncs[1].handle = ibb->engine_syncobj;
+> +
+> +	xe_exec_sync(ibb->fd, engine_id, ibb->batch_offset, syncs, 2);
+> +
+> +	if (sync)
+> +		intel_bb_sync(ibb);
+--------------- ^
+Not used.
 
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-rpls-2:         NOTRUN -> [SKIP][14] ([i915#1072]) +3 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_psr@sprite_plane_onoff.html
+Regards,
+Kamil
 
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rpls-2:         NOTRUN -> [SKIP][15] ([i915#3555] / [i915#4579])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - bat-rpls-2:         NOTRUN -> [SKIP][16] ([fdo#109295] / [i915#1845] / [i915#3708])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@prime_vgem@basic-fence-flip.html
-
-  * igt@prime_vgem@basic-fence-read:
-    - bat-rpls-2:         NOTRUN -> [SKIP][17] ([fdo#109295] / [i915#3708]) +3 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@prime_vgem@basic-fence-read.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
-    - bat-dg2-8:          [FAIL][18] ([i915#7932]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
-
-  
-#### Warnings ####
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         [SKIP][20] ([i915#5354]) -> [SKIP][21] ([i915#1845] / [i915#5354])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7271 -> IGTPW_8867
-
-  CI-20190529: 20190529
-  CI_DRM_13062: 5a0333cf630a335d7e8f60fd2b8526ed0895900c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8867: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/index.html
-  IGT_7271: d12d7eb92226e14745a80e6bdd95384913a43548 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_plane_scaling@intel-max-src-size
-+igt@xe_gpgpu_fill@basic
-+igt@xe_intel_bb@add-remove-objects
-+igt@xe_intel_bb@bb-with-allocator
-+igt@xe_intel_bb@blit-reloc
-+igt@xe_intel_bb@blit-simple
-+igt@xe_intel_bb@create-in-region
-+igt@xe_intel_bb@delta-check
-+igt@xe_intel_bb@destroy-bb
-+igt@xe_intel_bb@full-batch
-+igt@xe_intel_bb@intel-bb-blit-none
-+igt@xe_intel_bb@intel-bb-blit-x
-+igt@xe_intel_bb@intel-bb-blit-y
-+igt@xe_intel_bb@lot-of-buffers
-+igt@xe_intel_bb@offset-control
-+igt@xe_intel_bb@purge-bb
-+igt@xe_intel_bb@render
-+igt@xe_intel_bb@reset-bb
-+igt@xe_intel_bb@simple-bb
-+igt@xe_intel_bb@simple-bb-ctx
--igt@kms_dirtyfb@dirtyfb-ioctl
--igt@kms_plane_scaling@i915-max-src-size
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/index.html
-
---===============2875973491912603412==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add IGT display support for XE (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116658/">https://patchwork.freedesktop.org/series/116658/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7271 -&gt; IGTPW_8867</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Additional (1): bat-rpls-2 <br />
-  Missing    (3): fi-kbl-soraka bat-mtlp-8 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8867 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7456">i915#7456</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@read:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@fbdev@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7561">i915#7561</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@i915_selftest@live@gt_pm.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@i915_selftest@live@slpc.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_busy@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +14 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_edid@hdmi-edid-read:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_chamelium_edid@hdmi-edid-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-read:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-rpls-2/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +3 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7271 -&gt; IGTPW_8867</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13062: 5a0333cf630a335d7e8f60fd2b8526ed0895900c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8867: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8867/index.html<br />
-  IGT_7271: d12d7eb92226e14745a80e6bdd95384913a43548 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_plane_scaling@intel-max-src-size<br />
-+igt@xe_gpgpu_fill@basic<br />
-+igt@xe_intel_bb@add-remove-objects<br />
-+igt@xe_intel_bb@bb-with-allocator<br />
-+igt@xe_intel_bb@blit-reloc<br />
-+igt@xe_intel_bb@blit-simple<br />
-+igt@xe_intel_bb@create-in-region<br />
-+igt@xe_intel_bb@delta-check<br />
-+igt@xe_intel_bb@destroy-bb<br />
-+igt@xe_intel_bb@full-batch<br />
-+igt@xe_intel_bb@intel-bb-blit-none<br />
-+igt@xe_intel_bb@intel-bb-blit-x<br />
-+igt@xe_intel_bb@intel-bb-blit-y<br />
-+igt@xe_intel_bb@lot-of-buffers<br />
-+igt@xe_intel_bb@offset-control<br />
-+igt@xe_intel_bb@purge-bb<br />
-+igt@xe_intel_bb@render<br />
-+igt@xe_intel_bb@reset-bb<br />
-+igt@xe_intel_bb@simple-bb<br />
-+igt@xe_intel_bb@simple-bb-ctx<br />
--igt@kms_dirtyfb@dirtyfb-ioctl<br />
--igt@kms_plane_scaling@i915-max-src-size</p>
-
-</body>
-</html>
-
---===============2875973491912603412==--
+> +
+> +	return 0;
+> +}
+> +
+>  /*
+>   * __intel_bb_exec:
+>   * @ibb: pointer to intel_bb
+> @@ -2220,7 +2436,7 @@ int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+>  /**
+>   * intel_bb_exec:
+>   * @ibb: pointer to intel_bb
+> - * @end_offset: offset of the last instruction in the bb
+> + * @end_offset: offset of the last instruction in the bb (for i915)
+>   * @flags: flags passed directly to execbuf
+>   * @sync: if true wait for execbuf completion, otherwise caller is responsible
+>   * to wait for completion
+> @@ -2230,7 +2446,13 @@ int __intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+>  void intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+>  		   uint64_t flags, bool sync)
+>  {
+> -	igt_assert_eq(__intel_bb_exec(ibb, end_offset, flags, sync), 0);
+> +	if (ibb->dump_base64)
+> +		intel_bb_dump_base64(ibb, LINELEN);
+> +
+> +	if (ibb->driver == INTEL_DRIVER_I915)
+> +		igt_assert_eq(__intel_bb_exec(ibb, end_offset, flags, sync), 0);
+> +	else
+> +		igt_assert_eq(__xe_bb_exec(ibb, flags, sync), 0);
+>  }
+>  
+>  /**
+> @@ -2628,14 +2850,20 @@ void intel_bb_track(bool do_tracking)
+>  
+>  static void __intel_bb_reinit_alloc(struct intel_bb *ibb)
+>  {
+> +	uint64_t alignment = 0;
+> +
+>  	if (ibb->allocator_type == INTEL_ALLOCATOR_NONE)
+>  		return;
+>  
+> +	if (ibb->driver == INTEL_DRIVER_XE)
+> +		alignment = xe_get_default_alignment(ibb->fd);
+> +
+>  	ibb->allocator_handle = intel_allocator_open_full(ibb->fd, ibb->ctx,
+>  							  ibb->allocator_start, ibb->allocator_end,
+>  							  ibb->allocator_type,
+>  							  ibb->allocator_strategy,
+> -							  0);
+> +							  alignment);
+> +
+>  	intel_bb_reset(ibb, true);
+>  }
+>  
+> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+> index 4978b6fb29..9a58fb7809 100644
+> --- a/lib/intel_batchbuffer.h
+> +++ b/lib/intel_batchbuffer.h
+> @@ -246,6 +246,7 @@ struct intel_bb {
+>  	uint8_t allocator_type;
+>  	enum allocator_strategy allocator_strategy;
+>  
+> +	enum intel_driver driver;
+>  	int fd;
+>  	unsigned int gen;
+>  	bool debug;
+> @@ -268,6 +269,11 @@ struct intel_bb {
+>  	uint32_t ctx;
+>  	uint32_t vm_id;
+>  
+> +	bool xe_bound;
+> +	uint32_t engine_syncobj;
+> +	uint32_t engine_id;
+> +	uint32_t last_engine;
+> +
+>  	/* Context configuration */
+>  	intel_ctx_cfg_t *cfg;
+>  
+> -- 
+> 2.34.1
+> 
