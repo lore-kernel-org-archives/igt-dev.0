@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90C8410E96E
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD32E10E96E
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:41 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 17:17:06 +0530
-Message-Id: <20230426114725.2244653-27-bhanuprakash.modem@intel.com>
+Date: Wed, 26 Apr 2023 17:17:07 +0530
+Message-Id: <20230426114725.2244653-28-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 26/45] tests/kms_3d: Add XE support
+Subject: [igt-dev] [i-g-t V3 27/45] tests/kms_async_flips: No XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,45 +22,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+Async flips won't work with linear buffers on Intel hardware,
+hence don't run tests on XE device as XE won't support tiling.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_3d.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/kms_async_flips.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_3d.c b/tests/kms_3d.c
-index c6bef67c1..437c8a481 100644
---- a/tests/kms_3d.c
-+++ b/tests/kms_3d.c
-@@ -23,6 +23,7 @@
-  */
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 1e6506e3d..51ffa523a 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -592,7 +592,13 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+ 	int i;
  
- #include "igt.h"
-+#include "xe/xe_query.h"
- 
- IGT_TEST_DESCRIPTION("Tests 3D mode setting.");
- 
-@@ -36,6 +37,9 @@ igt_simple_main
- 
- 	drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
-+	if (is_xe_device(drm_fd))
-+		xe_device_get(drm_fd);
-+
- 	res = drmModeGetResources(drm_fd);
- 	igt_require(res);
- 
-@@ -111,5 +115,9 @@ igt_simple_main
- 	kmstest_force_edid(drm_fd, connector, NULL);
- 
- 	drmModeFreeConnector(connector);
-+
-+	if (is_xe_device(drm_fd))
-+		xe_device_put(drm_fd);
-+
- 	close(drm_fd);
- }
+ 	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++		/*
++		 * FIXME: As of now, Async flips won't work with linear buffers
++		 * on Intel hardware, hence don't run tests on XE device as XE
++		 * won't support tiling.
++		 * Once Kernel changes got landed, please update this logic.
++		 */
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY & ~DRIVER_XE);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
 -- 
 2.40.0
