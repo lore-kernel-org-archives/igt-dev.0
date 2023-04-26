@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E79F110E2FD
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 06:40:13 +0000 (UTC)
-Message-ID: <a5510feb-f0d3-9a65-992a-35b457e45b5e@intel.com>
-Date: Wed, 26 Apr 2023 12:09:59 +0530
-MIME-Version: 1.0
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8549010E2FD
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 06:40:47 +0000 (UTC)
+Message-ID: <2cb7f777-d672-6e48-1cbf-c3afb6672e20@intel.com>
+Date: Wed, 26 Apr 2023 12:10:00 +0530
 Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
- <20230425064953.2121947-13-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230425064953.2121947-13-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t V2 12/40] lib/igt_fb: Add copy engine support
- for XE
+To: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230425064953.2121947-14-bhanuprakash.modem@intel.com>
+ <9183d0eb-5d1d-7b10-6164-dff8466a9f90@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <9183d0eb-5d1d-7b10-6164-dff8466a9f90@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t, V2,
+ 13/40] lib/igt_draw: Add gpu draw routine support for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,135 +26,168 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM Acked-by: Swati Sharma <swati2.sharma@intel.com> Can we get review 
-from core folks too? On 25-Apr-23 12:19 PM, Bhanuprakash Modem wrote:
+Hi Nidhi,
 
-> Add copy engine support for kms framebuffer mappings.
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   lib/igt_fb.c | 30 ++++++++++++++++++++++++++----
->   lib/igt_fb.h |  2 ++
->   2 files changed, 28 insertions(+), 4 deletions(-)
->
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 2c1d48783..93fdca681 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -45,6 +45,7 @@
->   #include "igt_amd.h"
->   #include "igt_x86.h"
->   #include "igt_nouveau.h"
-> +#include "igt_syncobj.h"
->   #include "ioctl_wrappers.h"
->   #include "intel_batchbuffer.h"
->   #include "intel_chipset.h"
-> @@ -2489,12 +2490,13 @@ static bool blitter_ok(const struct igt_fb *fb)
->   
->   static bool use_enginecopy(const struct igt_fb *fb)
->   {
-> -	if (blitter_ok(fb))
-> +	if (!is_xe_device(fb->fd) && blitter_ok(fb))
->   		return false;
->   
->   	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
->   	       is_ccs_modifier(fb->modifier) ||
-> -	       !gem_has_mappable_ggtt(fb->fd);
-> +	       (is_xe_device(fb->fd) && fb->modifier == DRM_FORMAT_MOD_LINEAR) ||
-> +	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
->   }
->   
->   static bool use_blitter(const struct igt_fb *fb)
-> @@ -2504,7 +2506,7 @@ static bool use_blitter(const struct igt_fb *fb)
->   
->   	return fb->modifier == I915_FORMAT_MOD_Y_TILED ||
->   	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
-> -	       !gem_has_mappable_ggtt(fb->fd);
-> +	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
->   }
->   
->   static void init_buf_ccs(struct intel_buf *buf, int ccs_idx,
-> @@ -2705,7 +2707,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
->   	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
->   	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
->   
-> -	if (!gem_has_relocations(dst_fb->fd)) {
-> +	if (is_i915_device(dst_fb->fd) && !gem_has_relocations(dst_fb->fd)) {
->   		igt_require(gem_has_contexts(dst_fb->fd));
->   		ctx = gem_context_create(dst_fb->fd);
->   		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
-> @@ -2785,6 +2787,12 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
->   	} else if (is_nouveau_device(fd)) {
->   		igt_nouveau_fb_blit(fb, &linear->fb);
->   		igt_nouveau_delete_bo(&linear->fb);
-> +	} else if (is_xe_device(fd)) {
-> +		gem_munmap(linear->map, linear->fb.size);
-> +		copy_with_engine(blit, fb, &linear->fb);
-> +
-> +		syncobj_wait(fd, &blit->ibb->engine_syncobj, 1, INT64_MAX, 0, NULL);
-> +		gem_close(fd, linear->fb.gem_handle);
->   	} else {
->   		gem_munmap(linear->map, linear->fb.size);
->   		gem_set_domain(fd, linear->fb.gem_handle,
-> @@ -2862,6 +2870,11 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
->   		igt_nouveau_fb_blit(&linear->fb, fb);
->   
->   		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
-> +	} else if (is_xe_device(fd)) {
-> +		copy_with_engine(blit, &linear->fb, fb);
-> +
-> +		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
-> +					     linear->fb.size, PROT_READ | PROT_WRITE);
->   	} else {
->   		/* Copy fb content to linear BO */
->   		gem_set_domain(fd, linear->fb.gem_handle,
-> @@ -2919,6 +2932,9 @@ static void create_cairo_surface__gpu(int fd, struct igt_fb *fb)
->    */
->   int igt_dirty_fb(int fd, struct igt_fb *fb)
->   {
-> +	if (fb->syncobj)
-> +		syncobj_wait(fd, &fb->syncobj, 1, INT64_MAX, 0, NULL);
-> +
->   	return drmModeDirtyFB(fb->fd, fb->fb_id, NULL, 0);
->   }
->   
-> @@ -2968,6 +2984,9 @@ static void *map_bo(int fd, struct igt_fb *fb)
->   				      PROT_READ | PROT_WRITE);
->   	else if (is_nouveau_device(fd))
->   		ptr = igt_nouveau_mmap_bo(fb, PROT_READ | PROT_WRITE);
-> +	else if (is_xe_device(fd))
-> +		ptr = xe_bo_mmap_ext(fd, fb->gem_handle,
-> +				     fb->size, PROT_READ | PROT_WRITE);
->   	else
->   		igt_assert(false);
->   
-> @@ -4252,6 +4271,9 @@ void igt_remove_fb(int fd, struct igt_fb *fb)
->   	if (!fb || !fb->fb_id)
->   		return;
->   
-> +	if (fb->syncobj)
-> +		syncobj_destroy(fd, fb->syncobj);
-> +
->   	cairo_surface_destroy(fb->cairo_surface);
->   	do_or_die(drmModeRmFB(fd, fb->fb_id));
->   	if (fb->is_dumb)
-> diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-> index 73bdfc866..a127a8128 100644
-> --- a/lib/igt_fb.h
-> +++ b/lib/igt_fb.h
-> @@ -62,6 +62,7 @@ typedef struct _igt_crc igt_crc_t;
->    * @fb_id: KMS ID of the framebuffer
->    * @fd: DRM device fd this framebuffer is created on
->    * @gem_handle: GEM handler of the underlying backing storage
-> + * @syncobj: Syncobj to sync to for last drawing operation
->    * @is_dumb: Whether this framebuffer was allocated using the dumb buffer API
->    * @drm_format: DRM FOURCC code
->    * @width: width in pixels
-> @@ -84,6 +85,7 @@ typedef struct igt_fb {
->   	uint32_t fb_id;
->   	int fd;
->   	uint32_t gem_handle;
-> +	uint32_t syncobj;
->   	bool is_dumb;
->   	uint32_t drm_format;
->   	int width;
+On Wed-26-04-2023 08:00 am, Gupta, Nidhi1 wrote:
+> 
+> 
+> On 4/25/2023 12:19 PM, Bhanuprakash Modem wrote:
+>> Add GPU blt, render & WC draw routine support for XE driver.
+>>
+>> Credits-to: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   lib/igt_draw.c | 82 +++++++++++++++++++++++++++++++++++---------------
+>>   lib/igt_draw.h |  2 ++
+>>   2 files changed, 60 insertions(+), 24 deletions(-)
+>>
+>> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+>> index ac512fac5..1b793c0df 100644
+>> --- a/lib/igt_draw.c
+>> +++ b/lib/igt_draw.c
+>> @@ -37,6 +37,8 @@
+>>   #include "i915/gem_create.h"
+>>   #include "i915/gem_mman.h"
+>>   #include "i915/intel_mocs.h"
+>> +#include "xe/xe_ioctl.h"
+>> +#include "xe/xe_query.h"
+>>   #ifndef PAGE_ALIGN
+>>   #ifndef PAGE_SIZE
+>> @@ -493,24 +495,29 @@ static void draw_rect_mmap_wc(int fd, struct 
+>> buf_data *buf, struct rect *rect,
+>>   {
+>>       uint32_t *ptr;
+>> -    gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
+>> -               I915_GEM_DOMAIN_GTT);
+>> -
+>> -    /* We didn't implement suport for the older tiling methods yet. */
+>> -    if (tiling != I915_TILING_NONE)
+>> -        igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 5);
+>> -
+>> -    if (gem_has_lmem(fd))
+>> -        ptr = gem_mmap_offset__fixed(fd, buf->handle, 0,
+>> -                         PAGE_ALIGN(buf->size),
+>> -                         PROT_READ | PROT_WRITE);
+>> -    else if (gem_has_legacy_mmap(fd))
+>> -        ptr = gem_mmap__wc(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
+>> -                   PROT_READ | PROT_WRITE);
+>> -    else
+> Can we add check for xe driver also? "if (is_xe_device(first_fd))"
+> 
+>> -        ptr = gem_mmap_offset__wc(fd, buf->handle, 0,
+>> -                      PAGE_ALIGN(buf->size),
+>> -                      PROT_READ | PROT_WRITE); > +    if 
+>> (is_i915_device(fd)) {
+>> +        gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
+>> +                   I915_GEM_DOMAIN_GTT);
+>> +
+>> +        /* We didn't implement suport for the older tiling methods 
+>> yet. */
+>> +        if (tiling != I915_TILING_NONE)
+>> +            igt_require(intel_display_ver(intel_get_drm_devid(fd)) >= 
+>> 5);
+>> +
+>> +        if (gem_has_lmem(fd))
+>> +            ptr = gem_mmap_offset__fixed(fd, buf->handle, 0,
+>> +                             PAGE_ALIGN(buf->size),
+>> +                             PROT_READ | PROT_WRITE);
+>> +        else if (gem_has_legacy_mmap(fd))
+>> +            ptr = gem_mmap__wc(fd, buf->handle, 0, 
+>> PAGE_ALIGN(buf->size),
+>> +                       PROT_READ | PROT_WRITE);
+>> +        else
+>> +            ptr = gem_mmap_offset__wc(fd, buf->handle, 0,
+>> +                          PAGE_ALIGN(buf->size),
+>> +                          PROT_READ | PROT_WRITE);
+>> +    } else {
+> Can we add check for xe driver also? "if (is_xe_device(first_fd))"
+
+As this library is intel specific, no need to check for each driver.
+
+if (i915) {} else {} is enough.
+
+- Bhanu
+
+>> +        ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size,
+>> +                     PROT_READ | PROT_WRITE);
+>> +    }
+>>       switch (tiling) {
+>>       case I915_TILING_NONE:
+>> @@ -663,11 +670,14 @@ static void draw_rect_blt(int fd, struct 
+>> cmd_data *cmd_data,
+>>       int gen = intel_gen(devid);
+>>       int pitch;
+>> +    if (tiling)
+>> +        igt_require_i915(fd);
+>> +
+>>       dst = create_buf(fd, cmd_data->bops, buf, tiling);
+>>       ibb = intel_bb_create(fd, PAGE_SIZE);
+>>       intel_bb_add_intel_buf(ibb, dst, true);
+>> -    if (HAS_4TILE(intel_get_drm_devid(fd))) {
+>> +    if (is_i915_device(fd) && HAS_4TILE(intel_get_drm_devid(fd))) {
+>>           int buf_height = buf->size / buf->stride;
+>>           switch (buf->bpp) {
+>> @@ -772,11 +782,21 @@ static void draw_rect_render(int fd, struct 
+>> cmd_data *cmd_data,
+>>       /* We create a temporary buffer and copy from it using 
+>> rendercopy. */
+>>       tmp.size = rect->w * rect->h * pixel_size;
+>> -    tmp.handle = gem_create(fd, tmp.size);
+>> +    if (is_i915_device(fd))
+>> +        tmp.handle = gem_create(fd, tmp.size);
+>> +    else
+>> +        tmp.handle = xe_bo_create_flags(fd, 0,
+>> +                        ALIGN(tmp.size, xe_get_default_alignment(fd)),
+>> +                        vram_if_possible(fd, 0));
+>> +
+>>       tmp.stride = rect->w * pixel_size;
+>>       tmp.bpp = buf->bpp;
+>> -    draw_rect_mmap_cpu(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
+>> -               I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
+>> +    if (is_i915_device(fd))
+>> +        draw_rect_mmap_cpu(fd, &tmp, &(struct rect){0, 0, rect->w, 
+>> rect->h},
+>> +                   I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
+>> +    else
+>> +        draw_rect_mmap_wc(fd, &tmp, &(struct rect){0, 0, rect->w, 
+>> rect->h},
+>> +                  I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
+>>       src = create_buf(fd, cmd_data->bops, &tmp, I915_TILING_NONE);
+>>       dst = create_buf(fd, cmd_data->bops, buf, tiling);
+>> @@ -904,7 +924,21 @@ void igt_draw_rect_fb(int fd, struct buf_ops *bops,
+>>   void igt_draw_fill_fb(int fd, struct igt_fb *fb, uint32_t color)
+>>   {
+>>       igt_draw_rect_fb(fd, NULL, 0, fb,
+>> -             gem_has_mappable_ggtt(fd) ? IGT_DRAW_MMAP_GTT :
+>> -                             IGT_DRAW_MMAP_WC,
+>> +             igt_draw_supports_method(fd, IGT_DRAW_MMAP_GTT) ?
+>> +             IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
+>>                0, 0, fb->width, fb->height, color);
+>>   }
+>> +
+>> +bool igt_draw_supports_method(int fd, enum igt_draw_method method)
+>> +{
+>> +    if (method == IGT_DRAW_MMAP_GTT)
+>> +        return is_i915_device(fd) && gem_has_mappable_ggtt(fd);
+>> +
+>> +    if (method == IGT_DRAW_MMAP_WC)
+>> +        return (is_i915_device(fd) && gem_mmap__has_wc(fd)) || 
+>> is_xe_device(fd);
+>> +
+>> +    if (method == IGT_DRAW_MMAP_CPU || method == IGT_DRAW_PWRITE)
+>> +        return is_i915_device(fd);
+>> +
+>> +    return true;
+>> +}
+>> diff --git a/lib/igt_draw.h b/lib/igt_draw.h
+>> index 2d18ef6c9..fe7531b79 100644
+>> --- a/lib/igt_draw.h
+>> +++ b/lib/igt_draw.h
+>> @@ -50,6 +50,8 @@ enum igt_draw_method {
+>>   const char *igt_draw_get_method_name(enum igt_draw_method method);
+>> +bool igt_draw_supports_method(int fd, enum igt_draw_method method);
+>> +
+>>   void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
+>>              uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+>>              uint32_t tiling, enum igt_draw_method method,
+> 
