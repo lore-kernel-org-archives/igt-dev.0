@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4056B10E90B
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 10:53:18 +0000 (UTC)
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 13:52:49 +0300
-Message-Id: <20230426105249.3897491-4-jouni.hogander@intel.com>
-In-Reply-To: <20230426105249.3897491-1-jouni.hogander@intel.com>
-References: <20230426105249.3897491-1-jouni.hogander@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF64910E0A4
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 10:55:04 +0000 (UTC)
+Message-ID: <0a1ef69f-bc41-8d59-03a8-3de56fac31c3@intel.com>
+Date: Wed, 26 Apr 2023 16:24:31 +0530
+Content-Language: en-US
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230425064953.2121947-1-bhanuprakash.modem@intel.com>
+ <20230425064953.2121947-39-bhanuprakash.modem@intel.com>
+ <e5c989b4-5d1c-9a4d-94f8-6415132db369@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <e5c989b4-5d1c-9a4d-94f8-6415132db369@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 3/3] tests/kms_dirtyfb: Add new test for
- dirtyfb ioctl
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t V2 38/40] tests/kms_rotation_crc: Add XE
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,341 +27,128 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new test to validate dirtyfb ioctl is working properly with GPU
-frontbuffer rendering.
+Hi Swati,
 
-Create big framebuffer and use only lower right corner for the
-plane. Initiate GPU drawing for a rectangle over the whole
-framebuffer and perform dirtyfb ioctl. Then wait for the drawing to
-complete and collect crc and check that it matches with expected.
+On Wed-26-04-2023 01:18 pm, Sharma, Swati2 wrote:
+> On 25-Apr-23 12:19 PM, Bhanuprakash Modem wrote:
+>> Add XE driver support for kms tests.
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   tests/kms_rotation_crc.c | 25 +++++++++++++++++--------
+>>   1 file changed, 17 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+>> index 295aed762..23c18c242 100644
+>> --- a/tests/kms_rotation_crc.c
+>> +++ b/tests/kms_rotation_crc.c
+>> @@ -459,7 +459,7 @@ static bool test_format(data_t *data,
+>>       if (!igt_fb_supported_format(format))
+>>           return false;
+>> -    if (!is_i915_device(data->gfx_fd) ||
+>> +    if (!is_intel_device(data->gfx_fd) ||
+>>           data->extended)
+>>           return true;
+>> @@ -545,14 +545,14 @@ static void test_plane_rotation(data_t *data, 
+>> int plane_type, bool test_bad_form
+>>           igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
+>>           igt_require(igt_plane_has_rotation(plane, data->rotation));
+>>           /* CHV can't rotate and reflect simultaneously */
+>> -        igt_require(!is_i915_device(data->gfx_fd) ||
+>> +        igt_require(!is_intel_device(data->gfx_fd) ||
+>>                   !IS_CHERRYVIEW(data->devid) ||
+>>                   data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
+>>           prepare_crtc(data, output, pipe, plane, true);
+>>           for (i = 0; i < num_rectangle_types; i++) {
+>> -            /* Unsupported on i915 */
+>> +            /* Unsupported on intel */
+>>               if (plane_type == DRM_PLANE_TYPE_CURSOR &&
+>>                   i != square)
+>>                   continue;
+>> @@ -560,9 +560,8 @@ static void test_plane_rotation(data_t *data, int 
+>> plane_type, bool test_bad_form
+>>               /* Only support partial covering primary plane on gen9+ */
+>>               if (is_amdgpu_device(data->gfx_fd) ||
+>>                   (plane_type == DRM_PLANE_TYPE_PRIMARY &&
+>> -                 is_i915_device(data->gfx_fd) &&
+>> -                 intel_display_ver(
+>> -                     intel_get_drm_devid(data->gfx_fd)) < 9)) {
+>> +                 is_intel_device(data->gfx_fd) &&
+>> +                 intel_display_ver(data->devid) < 9)) {
+>>                   if (i != rectangle)
+>>                       continue;
+>>                   else
+>> @@ -592,7 +591,7 @@ static void test_plane_rotation(data_t *data, int 
+>> plane_type, bool test_bad_form
+>>                            data->override_fmt, test_bad_format);
+>>               }
+>>           }
+>> -        if (is_i915_device(data->gfx_fd)) {
+>> +        if (is_intel_device(data->gfx_fd)) {
+>>               igt_pipe_crc_stop(data->pipe_crc);
+>>           }
+>>       }
+>> @@ -841,6 +840,10 @@ static void test_multi_plane_rotation(data_t 
+>> *data, enum pipe pipe)
+>>           igt_pipe_crc_start(data->pipe_crc);
+>>           for (i = 0; i < ARRAY_SIZE(planeconfigs); i++) {
+>> +            if (is_xe_device(data->gfx_fd) &&
+>> +                planeconfigs[i].modifier != DRM_FORMAT_MOD_LINEAR)
+>> +                continue;
+>> +
+>>               p[0].fbinfo = &planeconfigs[i];
+>>               pointlocation(data, p, mode, 0);
+>> @@ -1137,7 +1140,7 @@ igt_main_args("", long_opts, help_str, 
+>> opt_handler, &data)
+>>       igt_fixture {
+>>           data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
+>> -        if (is_i915_device(data.gfx_fd)) {
+>> +        if (is_intel_device(data.gfx_fd)) {
+>>               data.devid = intel_get_drm_devid(data.gfx_fd);
+>>               gen = intel_display_ver(data.devid);
+>>           }
+>> @@ -1193,6 +1196,8 @@ igt_main_args("", long_opts, help_str, 
+>> opt_handler, &data)
+>>       igt_describe("Checking unsupported tiling for gen9+ with 90 
+>> degree of rotation");
+>>       igt_subtest_f("bad-tiling") {
+>> +        igt_require_i915(data.gfx_fd);
+> bad-tiling test should be applicable for xe too.
+> anything apart from LINEAR is negative test for xe.
 
-v4:
- - Check connector type when PSR is tested
-v3:
- - Use spinner
- - Drop allocating big frambuffers
-v2:
- - Change license comment
- - Move disable_features and do not apply for FEATURE_DEFAULT
+Will fix this in next rev.
 
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
----
- tests/i915/kms_dirtyfb.c | 294 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |   1 +
- 2 files changed, 295 insertions(+)
- create mode 100644 tests/i915/kms_dirtyfb.c
+>>           data.rotation = IGT_ROTATION_90;
+>>           data.override_modifier = I915_FORMAT_MOD_X_TILED;
+>>           test_plane_rotation(&data, DRM_PLANE_TYPE_PRIMARY, true);
+>> @@ -1201,6 +1206,9 @@ igt_main_args("", long_opts, help_str, 
+>> opt_handler, &data)
+>>       igt_describe("Tiling and Rotation test for gen 10+ for primary 
+>> plane");
+>>       for (reflect_x = reflect_x_subtests; reflect_x->modifier; 
+>> reflect_x++) {
+>> +        igt_fixture
+>> +            igt_require_i915(data.gfx_fd);
+> 
+> Should we add LINEAR format tests with different rot in reflect_x_subtests,
+> so that we can cover xe with linear+rot combinations and continue this test
+> if (xe) && format != LINEAR only.
 
-diff --git a/tests/i915/kms_dirtyfb.c b/tests/i915/kms_dirtyfb.c
-new file mode 100644
-index 00000000..2a7dd85b
---- /dev/null
-+++ b/tests/i915/kms_dirtyfb.c
-@@ -0,0 +1,294 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include <sys/types.h>
-+
-+#include "igt.h"
-+#include "igt_psr.h"
-+
-+#include "i915/intel_drrs.h"
-+#include "i915/intel_fbc.h"
-+
-+IGT_TEST_DESCRIPTION("Test the DIRTYFB ioctl is working properly with "
-+		     "its related features: FBC, PSR and DRRS");
-+
-+#ifndef PAGE_ALIGN
-+#ifndef PAGE_SIZE
-+#define PAGE_SIZE 4096
-+#endif
-+#define PAGE_ALIGN(x) ALIGN(x, PAGE_SIZE)
-+#endif
-+
-+typedef struct {
-+	int drm_fd;
-+	int debugfs_fd;
-+	igt_display_t display;
-+	drmModeModeInfo *mode;
-+	igt_output_t *output;
-+	igt_pipe_crc_t *pipe_crc;
-+	enum pipe pipe;
-+
-+	struct igt_fb fbs[3];
-+
-+	igt_crc_t ref_crc;
-+
-+	struct buf_ops *bops;
-+	enum {
-+		FEATURE_NONE  = 0,
-+		FEATURE_PSR   = 1,
-+		FEATURE_FBC   = 2,
-+		FEATURE_DRRS  = 4,
-+		FEATURE_COUNT = 8,
-+		FEATURE_DEFAULT = 8,
-+	} feature;
-+} data_t;
-+
-+static const char *feature_str(int feature)
-+{
-+	switch (feature) {
-+	case FEATURE_NONE:
-+		return "nop";
-+	case FEATURE_FBC:
-+		return "fbc";
-+	case FEATURE_PSR:
-+		return "psr";
-+	case FEATURE_DRRS:
-+		return "drrs";
-+	case FEATURE_DEFAULT:
-+		return "default";
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static bool check_support(data_t *data)
-+{
-+	switch (data->feature) {
-+	case FEATURE_NONE:
-+		return true;
-+	case FEATURE_FBC:
-+		return intel_fbc_supported_on_chipset(data->drm_fd, data->pipe);
-+	case FEATURE_PSR:
-+		if (data->output->config.connector->connector_type !=
-+		    DRM_MODE_CONNECTOR_eDP)
-+			return false;
-+		return psr_sink_support(data->drm_fd, data->debugfs_fd,
-+					PSR_MODE_1);
-+	case FEATURE_DRRS:
-+		return intel_is_drrs_supported(data->drm_fd, data->pipe) &&
-+			intel_output_has_drrs(data->drm_fd, data->output);
-+	case FEATURE_DEFAULT:
-+		return true;
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static void enable_feature(data_t *data)
-+{
-+	switch (data->feature) {
-+	case FEATURE_NONE:
-+		break;
-+	case FEATURE_FBC:
-+		intel_fbc_enable(data->drm_fd);
-+		break;
-+	case FEATURE_PSR:
-+		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1);
-+		break;
-+	case FEATURE_DRRS:
-+		intel_drrs_enable(data->drm_fd, data->pipe);
-+		break;
-+	case FEATURE_DEFAULT:
-+		break;
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static void check_feature(data_t *data)
-+{
-+	switch (data->feature) {
-+	case FEATURE_NONE:
-+		break;
-+	case FEATURE_FBC:
-+		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
-+							  data->pipe),
-+			     "FBC still disabled");
-+		break;
-+	case FEATURE_PSR:
-+		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1),
-+			     "PSR still disabled\n");
-+		break;
-+	case FEATURE_DRRS:
-+		igt_assert_f(intel_is_drrs_inactive(data->drm_fd, data->pipe),
-+			     "DRRS INACTIVE\n");
-+		break;
-+	case FEATURE_DEFAULT:
-+		break;
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static void disable_features(data_t *data)
-+{
-+	intel_fbc_disable(data->drm_fd);
-+	psr_disable(data->drm_fd, data->debugfs_fd);
-+	intel_drrs_disable(data->drm_fd, data->pipe);
-+}
-+
-+static void prepare(data_t *data)
-+{
-+	igt_plane_t *primary;
-+
-+	igt_skip_on(!check_support(data));
-+
-+	data->mode = igt_output_get_mode(data->output);
-+
-+	igt_output_set_pipe(data->output, data->pipe);
-+
-+	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-+					 IGT_PIPE_CRC_SOURCE_AUTO);
-+
-+	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
-+			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-+			    &data->fbs[0]);
-+	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[0],
-+			 IGT_DRAW_MMAP_CPU, 0, 0, data->fbs[0].width,
-+			 data->fbs[0].height, 0xFF);
-+
-+	primary = igt_output_get_plane_type(data->output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+
-+	igt_plane_set_fb(primary, &data->fbs[0]);
-+
-+	if (data->feature != FEATURE_DEFAULT)
-+		disable_features(data);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
-+
-+	igt_create_color_fb(data->drm_fd,  data->mode->hdisplay,
-+			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-+			    &data->fbs[1]);
-+	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[1],
-+			 IGT_DRAW_MMAP_CPU, 0, 0, data->fbs[1].width,
-+			 data->fbs[1].height, 0xFF);
-+
-+	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
-+			     data->mode->vdisplay, DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-+			    &data->fbs[2]);
-+
-+	igt_plane_set_fb(primary, &data->fbs[2]);
-+
-+	enable_feature(data);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	check_feature(data);
-+}
-+
-+static void cleanup(data_t *data)
-+{
-+	igt_remove_fb(data->drm_fd, &data->fbs[0]);
-+	igt_remove_fb(data->drm_fd, &data->fbs[1]);
-+	igt_remove_fb(data->drm_fd, &data->fbs[2]);
-+
-+	igt_pipe_crc_free(data->pipe_crc);
-+
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+static void run_test(data_t *data)
-+{
-+	igt_crc_t crc;
-+	struct intel_buf *src, *dst;
-+	struct intel_bb *ibb;
-+	igt_spin_t *spin;
-+	uint64_t ahnd = 0;
-+	uint32_t devid = intel_get_drm_devid(data->drm_fd);
-+	igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
-+	int r;
-+
-+	igt_skip_on(!rendercopy);
-+
-+	src = intel_buf_create_using_handle(data->bops, data->fbs[1].gem_handle,
-+					    data->fbs[1].width,
-+					    data->fbs[1].height,
-+					    igt_drm_format_to_bpp(data->fbs[1].drm_format),
-+					    0, igt_fb_mod_to_tiling(data->fbs[1].modifier), 0);
-+	dst = intel_buf_create_using_handle(data->bops, data->fbs[2].gem_handle,
-+					    data->fbs[2].width,
-+					    data->fbs[2].height,
-+					    igt_drm_format_to_bpp(data->fbs[2].drm_format),
-+					    0, igt_fb_mod_to_tiling(data->fbs[2].modifier), 0);
-+	ibb = intel_bb_create_with_context(data->drm_fd, 0, NULL, PAGE_SIZE);
-+
-+	spin = igt_spin_new(data->drm_fd, .ahnd = ahnd);
-+	igt_spin_set_timeout(spin, NSEC_PER_SEC);
-+
-+	rendercopy(ibb, src, 0, 0, data->fbs[2].width, data->fbs[2].height, dst, 0, 0);
-+
-+	/* Perfom dirtyfb right after initiating rendercopy */
-+	r = drmModeDirtyFB(data->drm_fd, data->fbs[2].fb_id, NULL, 0);
-+	igt_assert(r == 0 || r == -ENOSYS);
-+
-+	/* Ensure rendercopy is complete */
-+	intel_bb_sync(ibb);
-+
-+	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
-+	igt_assert_crc_equal(&crc, &data->ref_crc);
-+
-+	igt_spin_free(data->drm_fd, spin);
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(src);
-+	intel_buf_destroy(dst);
-+}
-+
-+igt_main
-+{
-+	data_t data = {};
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.drm_fd);
-+
-+		data.bops = buf_ops_create(data.drm_fd);
-+
-+		igt_display_reset(&data.display);
-+	}
-+
-+	igt_describe("Test dirtyFB ioctl");
-+	igt_subtest_with_dynamic("dirtyfb-ioctl") {
-+		data.pipe = PIPE_A;
-+		for_each_valid_output_on_pipe(&data.display, data.pipe,
-+					      data.output) {
-+			for (data.feature = FEATURE_DEFAULT; data.feature > 0;
-+			     data.feature = data.feature >> 1) {
-+				igt_dynamic_f("%s-%s", feature_str(data.feature),
-+					      igt_output_name(data.output)) {
-+					prepare(&data);
-+					run_test(&data);
-+					cleanup(&data);
-+				}
-+			}
-+		}
-+	}
-+
-+	igt_fixture {
-+		buf_ops_destroy(data.bops);
-+		igt_display_fini(&data.display);
-+		close(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 9072cfad..1a467e7d 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -222,6 +222,7 @@ i915_progs = [
- 	'kms_busy',
- 	'kms_ccs',
- 	'kms_cdclk',
-+	'kms_dirtyfb',
- 	'kms_draw_crc',
- 	'kms_fbcon_fbt',
- 	'kms_fence_pin_leak',
--- 
-2.34.1
+This is already covered under *-rotation-* tests.
+
+- Bhanu
+
+> 
+>> +
+>>           igt_subtest_f("primary-%s-reflect-x-%s",
+>>                     modifier_test_str(reflect_x->modifier),
+>>                     rot_test_str(reflect_x->rot)) {
+>> @@ -1260,6 +1268,7 @@ igt_main_args("", long_opts, help_str, 
+>> opt_handler, &data)
+>>           enum pipe pipe;
+>>           igt_output_t *output;
+>> +        igt_require_i915(data.gfx_fd);
+> Please write a comment why only i915 and not xe.
+>>           igt_display_require_output(&data.display);
+>>           for_each_pipe_with_valid_output(&data.display, pipe, output) {
+> 
