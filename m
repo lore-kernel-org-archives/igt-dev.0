@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5CDB10E6D1
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Apr 2023 09:05:33 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Apr 2023 14:30:14 +0530
-Message-Id: <20230425090014.2147853-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230425064953.2121947-38-bhanuprakash.modem@intel.com>
-References: <20230425064953.2121947-38-bhanuprakash.modem@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C0C9C10E238
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 21:14:52 +0000 (UTC)
+Date: Wed, 26 Apr 2023 14:13:59 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <ZEmUFyCXnaz0rQbh@orsosgc001.jf.intel.com>
+References: <20230330003656.1294873-1-umesh.nerlige.ramappa@intel.com>
+ <20230330003656.1294873-8-umesh.nerlige.ramappa@intel.com>
+ <b814b211-c882-7b46-7afe-506418bc5b0c@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <b814b211-c882-7b46-7afe-506418bc5b0c@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 37/40] tests/kms_prime: Add XE support
+Subject: Re: [igt-dev] [PATCH i-g-t 7/7] tools/intel_gpu_top: Add support
+ for gt specific counters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,327 +22,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com,
+ arjun.melkaveri@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+On Thu, Mar 30, 2023 at 10:25:47AM +0100, Tvrtko Ursulin wrote:
+>
+>On 30/03/2023 01:36, Umesh Nerlige Ramappa wrote:
+>>With MTL frequency and rc6 counters are gt specific. Add support for
+>>intel_gpu_top to show these counters separately.
+>>
+>>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>>---
+>>  include/drm-uapi/i915_drm.h | 14 ++++++----
+>>  tools/intel_gpu_top.c       | 56 ++++++++++++++++++++++++++-----------
+>>  2 files changed, 49 insertions(+), 21 deletions(-)
+>>
+>>diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+>>index 3b5e3b51..1a0c43e7 100644
+>>--- a/include/drm-uapi/i915_drm.h
+>>+++ b/include/drm-uapi/i915_drm.h
+>>@@ -290,6 +290,7 @@ enum drm_i915_pmu_engine_sample {
+>>  	(((__u64)__I915_PMU_ENGINE(0xff, 0xff, 0xf) + 1 + (x)) | \
+>>  	((__u64)(gt) << __I915_PMU_GT_SHIFT))
+>>+/* Aggregate from all gts */
+>>  #define __I915_PMU_OTHER(x) ___I915_PMU_OTHER(0, x)
+>>  #define I915_PMU_ACTUAL_FREQUENCY	__I915_PMU_OTHER(0)
+>>@@ -300,11 +301,14 @@ enum drm_i915_pmu_engine_sample {
+>>  #define I915_PMU_LAST /* Deprecated - do not use */ I915_PMU_RC6_RESIDENCY
+>>-#define __I915_PMU_ACTUAL_FREQUENCY(gt)		___I915_PMU_OTHER(gt, 0)
+>>-#define __I915_PMU_REQUESTED_FREQUENCY(gt)	___I915_PMU_OTHER(gt, 1)
+>>-#define __I915_PMU_INTERRUPTS(gt)		___I915_PMU_OTHER(gt, 2)
+>>-#define __I915_PMU_RC6_RESIDENCY(gt)		___I915_PMU_OTHER(gt, 3)
+>>-#define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	___I915_PMU_OTHER(gt, 4)
+>>+/* GT specific counters */
+>>+#define ____I915_PMU_OTHER(gt, x) ___I915_PMU_OTHER(((gt) + 1), x)
+>>+
+>>+#define __I915_PMU_ACTUAL_FREQUENCY(gt)		____I915_PMU_OTHER(gt, 0)
+>>+#define __I915_PMU_REQUESTED_FREQUENCY(gt)	____I915_PMU_OTHER(gt, 1)
+>>+#define __I915_PMU_INTERRUPTS(gt)		____I915_PMU_OTHER(gt, 2)
+>>+#define __I915_PMU_RC6_RESIDENCY(gt)		____I915_PMU_OTHER(gt, 3)
+>>+#define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	____I915_PMU_OTHER(gt, 4)
+>>  /* Each region is a minimum of 16k, and there are at most 255 of them.
+>>   */
+>>diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+>>index a4302aa3..9fc8b996 100644
+>>--- a/tools/intel_gpu_top.c
+>>+++ b/tools/intel_gpu_top.c
+>>@@ -87,6 +87,7 @@ struct engine_class {
+>>  	unsigned int num_engines;
+>>  };
+>>+#define MAX_GTS 4
+>>  struct engines {
+>>  	unsigned int num_engines;
+>>  	unsigned int num_classes;
+>>@@ -105,14 +106,16 @@ struct engines {
+>>  	struct pmu_counter imc_writes;
+>>  	unsigned int num_imc;
+>>-	struct pmu_counter freq_req;
+>>-	struct pmu_counter freq_act;
+>>+	struct pmu_counter freq_req[MAX_GTS];
+>>+	struct pmu_counter freq_act[MAX_GTS];
+>>  	struct pmu_counter irq;
+>>-	struct pmu_counter rc6;
+>>+	struct pmu_counter rc6[MAX_GTS];
+>>  	bool discrete;
+>>  	char *device;
+>>+	int num_gts;
+>>+
+>>  	/* Do not edit below this line.
+>>  	 * This structure is reallocated every time a new engine is
+>>  	 * found and size is increased by sizeof (engine).
+>>@@ -532,7 +535,7 @@ static void imc_reads_open(struct pmu_counter *pmu, struct engines *engines)
+>>  static int pmu_init(struct engines *engines)
+>>  {
+>>  	unsigned int i;
+>>-	int fd;
+>>+	int fd, ret;
+>>  	uint64_t type = igt_perf_type_id(engines->device);
+>>  	engines->fd = -1;
+>>@@ -543,14 +546,30 @@ static int pmu_init(struct engines *engines)
+>>  	if (fd < 0)
+>>  		return -1;
+>>-	engines->freq_req.config = I915_PMU_REQUESTED_FREQUENCY;
+>>-	_open_pmu(type, engines->num_counters, &engines->freq_req, engines->fd);
+>>+	engines->num_gts = 1;
+>>+	for (i = 0; i < MAX_GTS; i++) {
+>>+		engines->freq_req[i].config = __I915_PMU_REQUESTED_FREQUENCY(i);
+>>-	engines->freq_act.config = I915_PMU_ACTUAL_FREQUENCY;
+>>-	_open_pmu(type, engines->num_counters, &engines->freq_act, engines->fd);
+>>+		errno = 0;
+>>+		ret = _open_pmu(type, engines->num_counters, &engines->freq_req[i], engines->fd);
+>>+		if (ret >= 0)
+>>+			continue;
+>>-	engines->rc6.config = I915_PMU_RC6_RESIDENCY;
+>>-	_open_pmu(type, engines->num_counters, &engines->rc6, engines->fd);
+>>+		if (errno != ENOENT)
+>>+			return ret;
+>>+
+>>+		engines->num_gts = i;
+>>+		errno = 0;
+>>+		break;
+>>+	}
+>>+
+>>+	for (i = 0; i < engines->num_gts; i++) {
+>>+		engines->freq_act[i].config = __I915_PMU_ACTUAL_FREQUENCY(i);
+>>+		_open_pmu(type, engines->num_counters, &engines->freq_act[i], engines->fd);
+>>+
+>>+		engines->rc6[i].config = __I915_PMU_RC6_RESIDENCY(i);
+>>+		_open_pmu(type, engines->num_counters, &engines->rc6[i], engines->fd);
+>>+	}
+>>  	for (i = 0; i < engines->num_engines; i++) {
+>>  		struct engine *engine = engine_ptr(engines, i);
+>>@@ -653,10 +672,12 @@ static void pmu_sample(struct engines *engines)
+>>  	engines->ts.prev = engines->ts.cur;
+>>  	engines->ts.cur = pmu_read_multi(engines->fd, num_val, val);
+>>-	update_sample(&engines->freq_req, val);
+>>-	update_sample(&engines->freq_act, val);
+>>+	for (i = 0; i < engines->num_gts; i++) {
+>>+		update_sample(&engines->freq_req[i], val);
+>>+		update_sample(&engines->freq_act[i], val);
+>>+		update_sample(&engines->rc6[i], val);
+>>+	}
+>>  	update_sample(&engines->irq, val);
+>>-	update_sample(&engines->rc6, val);
+>>  	for (i = 0; i < engines->num_engines; i++) {
+>>  		struct engine *engine = engine_ptr(engines, i);
+>>@@ -1727,8 +1748,10 @@ print_header(const struct igt_device_card *card,
+>>  		.items = period_items,
+>>  	};
+>>  	struct cnt_item freq_items[] = {
+>>-		{ &engines->freq_req, 4, 0, 1.0, t, 1, "requested", "req" },
+>>-		{ &engines->freq_act, 4, 0, 1.0, t, 1, "actual", "act" },
+>>+		{ &engines->freq_req[0], 8, 0, 1.0, t, 1, "requested-gt0", "req-gt0" },
+>>+		{ &engines->freq_act[0], 8, 0, 1.0, t, 1, "actual-gt0", "act-gt0" },
+>>+		{ &engines->freq_req[1], 8, 0, 1.0, t, 1, "requested-gt1", "req-gt1" },
+>>+		{ &engines->freq_act[1], 8, 0, 1.0, t, 1, "actual-gt1", "act-gt1" },
+>
+>Why is width going to 8? 9999 MHz is not enough? ;)
+>
+>[Comes back later..]
+>
+>Ah for the header label.. hm.. maybe we should try putting the GT information into the parent. It would looks nicer, be more logical, even for JSON output we now have:
+>
+>Terminal:
+>
+> Freq MHz      ...
+> req  act      ...
+>
+>JSON:
+>
+>        "rc6": {
+>                "value": 29.309568,
+>                "unit": "%"
+>        },
+>You propose something like:
+>
+> Freq MHz      		Freq MHz		...
+> req-gt0  act-gt0	req-gt0  act-gt0	...
+>
+>        "rc6": {
+>                "value-gt0": 29.309568,
+>                "value-gt1": 29.309568,
+>                "unit": "%"
+>        },
+>
+>Which is not very nice UI wise. How about something like:
+>
+> Freq GT0 MHz   Freq GT1 MHz	...
+> req  act	req  act	...
+>
+>JSON should potentially be an array:
+>
+>        "rc6": [{
+>		"gt": 0,
+>                "value": 29.309568,
+>                "unit": "%"
+>        },
+>		"gt": 0,
+>                "value": 29.309568,
+>                "unit": "%"
+>        }],
+>
+>Or at least:
+>
+>        "rc6": {
+>                "value": 29.309568,
+>                "unit": "%"
+>        },
+>        "rc6-gt1": {
+>                "value": 29.309568,
+>                "unit": "%"
+>        },
+>
+>Which also brings the point if maybe we shouldn't change the output for pre-MTL platforms. The approach is not IMHO even consistent with the proposed kernel change to have the aggregated counters, which I don't think I agree with at all.
+>
+>Let me mull it all over.
 
-V2: - Use rendercopy method for both i915 & xe
-    - Minor cleanup
+Any further thoughts?
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_prime.c | 231 ++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 182 insertions(+), 49 deletions(-)
+Thanks,
+Umesh
 
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index dd5ab993e..a706f5d82 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -27,9 +27,12 @@
- #include "igt_sysfs.h"
- #include <fcntl.h>
- 
-+#include <limits.h>
- #include <sys/ioctl.h>
- #include <sys/poll.h>
- #include <time.h>
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
- 
- #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
- #define KMS_POLL_DISABLE 0
-@@ -112,7 +115,29 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 	scratch->height = mode->vdisplay;
- 	scratch->bpp = 32;
- 
--	if (!is_i915_device(exporter_fd)) {
-+	if (is_intel_device(exporter_fd)) {
-+		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
-+
-+		if (is_i915_device(exporter_fd)) {
-+			if (gem_has_lmem(exporter_fd))
-+				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+								       REGION_LMEM(0), REGION_SMEM);
-+			else
-+				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+								       REGION_SMEM);
-+
-+			ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0,
-+							scratch->size, PROT_WRITE | PROT_READ);
-+		} else {
-+			scratch->handle = xe_bo_create_flags(exporter_fd, 0,
-+							     ALIGN(scratch->size, xe_get_default_alignment(exporter_fd)),
-+							     vram_if_possible(exporter_fd, 0));
-+
-+			ptr = xe_bo_mmap_ext(exporter_fd, scratch->handle,
-+					     scratch->size, PROT_READ | PROT_WRITE);
-+		}
-+	} else {
- 		scratch->handle = kmstest_dumb_create(exporter_fd,
- 						      ALIGN(scratch->width, 256),
- 						      scratch->height, scratch->bpp,
-@@ -120,18 +145,6 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 
- 		ptr = kmstest_dumb_map_buffer(exporter_fd, scratch->handle,
- 					      scratch->size, PROT_WRITE);
--	} else {
--		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
--				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
--		if (gem_has_lmem(exporter_fd))
--			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
--								       REGION_LMEM(0), REGION_SMEM);
--		else
--			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
--								       REGION_SMEM);
--
--		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
--						PROT_WRITE | PROT_READ);
- 	}
- 
- 	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
-@@ -150,35 +163,70 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
- 		    color_encoding, color_range);
- }
- 
-+static struct intel_buf * create_buf(int fd, struct buf_ops *bops, int width,
-+				     int height, uint32_t gem_handle)
-+{
-+	struct intel_buf *buf;
-+	uint32_t name, handle;
-+
-+	name = gem_flink(fd,gem_handle);
-+	handle = gem_open(fd, name);
-+
-+	buf = intel_buf_create_using_handle(bops, handle,
-+					    width, height, 32, 0,
-+					    I915_TILING_NONE, 0);
-+
-+	/* Make sure we close handle on destroy path */
-+	intel_buf_set_ownership(buf, true);
-+	return buf;
-+}
-+
- static void import_fb(int importer_fd, struct igt_fb *fb,
- 		      int dmabuf_fd, uint32_t pitch)
- {
- 	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
- 	int ret;
--
--	if (is_i915_device(importer_fd)) {
--		if (gem_has_lmem(importer_fd)) {
--			uint64_t ahnd = get_reloc_ahnd(importer_fd, 0);
--			uint64_t fb_size = 0;
--
--			igt_info("Importer is dGPU\n");
--			temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
--			igt_assert(temp_buf_handle > 0);
--			fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
--								       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
--			igt_assert(fb->gem_handle > 0);
--
--			igt_blitter_src_copy(importer_fd, ahnd, 0, NULL, temp_buf_handle,
--					     0, pitch, fb->modifier, 0, 0, fb_size, fb->width,
--					     fb->height, 32, fb->gem_handle, 0, pitch, fb->modifier,
--					     0, 0, fb_size);
--
--			gem_sync(importer_fd, fb->gem_handle);
--			gem_close(importer_fd, temp_buf_handle);
--			put_ahnd(ahnd);
-+	uint64_t fb_size = 0;
-+
-+	if ((is_i915_device(importer_fd) && gem_has_lmem(importer_fd)) ||
-+	    (is_xe_device(importer_fd) && xe_has_vram(importer_fd)))  {
-+		uint32_t devid = intel_get_drm_devid(importer_fd);
-+		struct buf_ops *bops = buf_ops_create(importer_fd);
-+		igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
-+		struct intel_bb *ibb = intel_bb_create(importer_fd, 4096);
-+		struct intel_buf *src, *dst;
-+		uint32_t *ptr;
-+
-+		igt_info("Importer is dGPU\n");
-+		temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-+		igt_assert(temp_buf_handle > 0);
-+		fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
-+							       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
-+		igt_assert(fb->gem_handle > 0);
-+
-+		if (is_i915_device(importer_fd)) {
-+			gem_set_domain(importer_fd, temp_buf_handle,
-+				       I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
-+
-+			ptr = gem_mmap__device_coherent(importer_fd, temp_buf_handle, 0,
-+							ALIGN(fb_size, 4096),
-+							PROT_READ | PROT_WRITE);
- 		} else {
--			fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-+			ptr = xe_bo_mmap_ext(importer_fd, temp_buf_handle,
-+					     ALIGN(fb_size, xe_get_default_alignment(importer_fd)),
-+					     PROT_READ | PROT_WRITE);
- 		}
-+
-+		src = create_buf(importer_fd, bops, fb->width, fb->height, temp_buf_handle);
-+		dst = create_buf(importer_fd, bops, fb->width, fb->height, fb->gem_handle);
-+		rendercopy(ibb, src, 0, 0, fb->width, fb->height, dst, 0, 0);
-+
-+		igt_assert(gem_munmap(ptr, fb_size) == 0);
-+		intel_bb_destroy(ibb);
-+		intel_buf_destroy(src);
-+		intel_buf_destroy(dst);
-+		buf_ops_destroy(bops);
-+		gem_close(importer_fd, temp_buf_handle);
- 	} else {
- 		fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
- 	}
-@@ -330,12 +378,6 @@ static bool has_connected_output(int drm_fd)
- 	return false;
- }
- 
--static void validate_d3_hot(int drm_fd)
--{
--	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
--	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
--}
--
- static void kms_poll_state_restore(void)
- {
- 	int sysfs_fd;
-@@ -357,6 +399,88 @@ static void kms_poll_disable(void)
- 	close(sysfs_fd);
- }
- 
-+static bool runtime_usage_available(struct pci_device *pci)
-+{
-+	char name[PATH_MAX];
-+	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/runtime_usage",
-+		 pci->domain, pci->bus, pci->dev, pci->func);
-+	return access(name, F_OK) == 0;
-+}
-+
-+static bool in_d3_hot(struct pci_device *pci)
-+{
-+	uint16_t val;
-+
-+	/* We need to wait for the autosuspend to kick in before we can check */
-+	if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED))
-+		return false;
-+
-+	if (runtime_usage_available(pci) &&
-+	    igt_pm_get_runtime_usage(pci) != 0)
-+		return false;
-+
-+	igt_assert_eq(pci_device_cfg_read_u16(pci, &val, 0xd4), 0);
-+
-+	return (val & 0x3) == 0x3;
-+}
-+
-+static void validate_d3_hot(int drm_fd, struct pci_device *pci)
-+{
-+	if (is_i915_device(drm_fd)) {
-+		igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
-+		igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
-+	} else {
-+		igt_assert(in_d3_hot(pci));
-+	}
-+}
-+
-+static int open_d3_allowed(struct pci_device *pci)
-+{
-+	char name[PATH_MAX];
-+	int fd;
-+
-+	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/d3cold_allowed",
-+		 pci->domain, pci->bus, pci->dev, pci->func);
-+
-+	fd = open(name, O_RDWR);
-+	igt_assert_f(fd >= 0, "Can't open %s\n", name);
-+
-+	return fd;
-+}
-+
-+static void get_d3_allowed(struct pci_device *pci, char *d3_allowed)
-+{
-+	int fd = open_d3_allowed(pci);
-+
-+	igt_assert(read(fd, d3_allowed, 2));
-+	close(fd);
-+}
-+
-+static void set_d3_allowed(struct pci_device *pci, const char *d3_allowed)
-+{
-+	int fd = open_d3_allowed(pci);
-+
-+	igt_assert(write(fd, d3_allowed, 2));
-+	close(fd);
-+}
-+
-+static void setup_d3_hot(int fd, struct pci_device *pci)
-+{
-+	if (is_xe_device(fd)) {
-+		igt_assert(igt_setup_runtime_pm(fd));
-+
-+		set_d3_allowed(pci, "0\n");
-+
-+		igt_assert(in_d3_hot(pci));
-+	} else {
-+		igt_set_timeout(10, "Wait for dGPU to enter D3hot before starting the subtest");
-+		while (!igt_debugfs_search(fd,
-+			"i915_runtime_pm_status",
-+			"PCI device power state: D3hot [3]"));
-+		igt_reset_timeout();
-+	}
-+}
-+
- igt_main
- {
- 	int first_fd = -1;
-@@ -410,21 +534,28 @@ igt_main
- 
- 		igt_describe("Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU");
- 		igt_subtest("D3hot") {
--			igt_require_f(is_i915_device(second_fd_hybrid), "i915 device required\n");
--			igt_require_f(gem_has_lmem(second_fd_hybrid), "Second GPU is not dGPU\n");
-+			char d3_allowed[2];
-+			struct pci_device *pci;
-+
-+			igt_require_f(is_intel_device(second_fd_hybrid), "intel device required\n");
-+			if (is_i915_device(second_fd_hybrid))
-+				igt_require_f(gem_has_lmem(second_fd_hybrid), "Second GPU is not dGPU\n");
-+			else
-+				igt_require_f(xe_has_vram(second_fd_hybrid), "Second GPU is not dGPU\n");
- 			igt_require_f(first_output, "No display connected to iGPU\n");
- 			igt_require_f(!second_output, "Display connected to dGPU\n");
- 
- 			kms_poll_disable();
- 
--			igt_set_timeout(10, "Wait for dGPU to enter D3hot before starting the subtest");
--			while (!igt_debugfs_search(second_fd_hybrid,
--			       "i915_runtime_pm_status",
--			       "PCI device power state: D3hot [3]"));
--			igt_reset_timeout();
-+			pci = igt_device_get_pci_device(second_fd_hybrid);
-+			get_d3_allowed(pci, d3_allowed);
-+
-+			setup_d3_hot(second_fd_hybrid, pci);
- 
- 			test_basic_modeset(first_fd);
--			validate_d3_hot(second_fd_hybrid);
-+			validate_d3_hot(second_fd_hybrid, pci);
-+
-+			set_d3_allowed(pci, d3_allowed);
- 		}
- 
- 		igt_fixture {
-@@ -442,6 +573,8 @@ igt_main
- 			igt_require(second_fd_vgem >= 0);
- 			if (is_i915_device(first_fd))
- 				igt_require(!gem_has_lmem(first_fd));
-+			if (is_xe_device(first_fd))
-+				igt_require(!xe_has_vram(first_fd));
- 		}
- 
- 		igt_describe("Make a dumb color buffer, export to another device and"
--- 
-2.40.0
+>
+>Regards,
+>
+>Tvrtko
+>
+>>  		{ NULL, 0, 0, 0.0, 0.0, 0.0, "unit", "MHz" },
+>>  		{ },
+>>  	};
+>>@@ -1748,7 +1771,8 @@ print_header(const struct igt_device_card *card,
+>>  		.items = irq_items,
+>>  	};
+>>  	struct cnt_item rc6_items[] = {
+>>-		{ &engines->rc6, 3, 0, 1e9, t, 100, "value", "%" },
+>>+		{ &engines->rc6[0], 6, 0, 1e9, t, 100, "value-gt0", "%-gt0" },
+>>+		{ &engines->rc6[1], 6, 0, 1e9, t, 100, "value-gt1", "%-gt1" },
+>>  		{ NULL, 0, 0, 0.0, 0.0, 0.0, "unit", "%" },
+>>  		{ },
+>>  	};
