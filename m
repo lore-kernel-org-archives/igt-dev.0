@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8ECC410E2E2
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB1B410E1D9
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:47 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 17:17:14 +0530
-Message-Id: <20230426114725.2244653-35-bhanuprakash.modem@intel.com>
+Date: Wed, 26 Apr 2023 17:17:12 +0530
+Message-Id: <20230426114725.2244653-33-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 34/45] tests/kms_getfb: Add XE support
+Subject: [igt-dev] [i-g-t V3 32/45] tests/kms_cursor_crc: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,89 +27,30 @@ Add XE driver support for kms tests.
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_getfb.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ tests/kms_cursor_crc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index 813417e77..4adc7eee2 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -42,6 +42,7 @@
- #include "drm_fourcc.h"
- #include "i915/gem_create.h"
- #include "igt_device.h"
-+#include "xe/xe_query.h"
- 
- IGT_TEST_DESCRIPTION("Tests GETFB and GETFB2 ioctls.");
- 
-@@ -91,7 +92,6 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index cc9dfcb1d..3a353a032 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -143,7 +143,7 @@ static bool chv_cursor_broken(data_t *data, int x)
+ {
  	uint32_t devid;
  
- 	igt_require(has_addfb2_iface(fd));
--	igt_require_intel(fd);
- 	devid = intel_get_drm_devid(fd);
+-	if (!is_i915_device(data->drm_fd))
++	if (!is_intel_device(data->drm_fd))
+ 		return false;
  
- 	if (HAS_FLATCCS(devid)) {
-@@ -265,7 +265,7 @@ static void test_duplicate_handles(int fd)
- 		struct drm_mode_fb_cmd2 add_ccs = { };
- 		struct drm_mode_fb_cmd get = { };
- 
--		igt_require(is_i915_device(fd));
-+		igt_require_i915(fd);
- 		igt_require_f(!HAS_FLATCCS(intel_get_drm_devid(fd)),
- 			      "skip because flat ccs has only one buffer.\n");
- 
-@@ -340,6 +340,7 @@ static void test_getfb2(int fd)
- 		struct drm_mode_fb_cmd2 get = { };
- 		int i;
- 
-+		igt_require_i915(fd);
- 		get_ccs_fb(fd, &add_ccs);
- 		igt_require(add_ccs.fb_id != 0);
- 		get.fb_id = add_ccs.fb_id;
-@@ -398,6 +399,9 @@ static void test_handle_protection(void) {
- 	igt_fixture {
- 		non_master_fd = drm_open_driver(DRIVER_ANY);
- 
-+		if (is_xe_device(non_master_fd))
-+			xe_device_get(non_master_fd);
-+
- 		non_master_add.width = 1024;
- 		non_master_add.height = 1024;
- 		non_master_add.pixel_format = DRM_FORMAT_XRGB8888;
-@@ -444,6 +448,11 @@ static void test_handle_protection(void) {
- 	igt_fixture {
- 		do_ioctl(non_master_fd, DRM_IOCTL_MODE_RMFB, &non_master_add.fb_id);
- 		gem_close(non_master_fd, non_master_add.handles[0]);
-+
-+		if (is_xe_device(non_master_fd))
-+			xe_device_get(non_master_fd);
-+
-+		close(non_master_fd);
- 	}
- }
- 
-@@ -454,6 +463,9 @@ igt_main
- 	igt_fixture {
- 		fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_require(has_getfb_iface(fd));
-+
-+		if (is_xe_device(fd))
-+			xe_device_get(fd);
- 	}
- 
- 	igt_subtest_group
-@@ -468,6 +480,10 @@ igt_main
- 	igt_subtest_group
- 		test_handle_protection();
- 
--	igt_fixture
-+	igt_fixture {
-+		if (is_xe_device(fd))
-+			xe_device_put(fd);
-+
- 		close(fd);
-+	}
- }
+ 	devid = intel_get_drm_devid(data->drm_fd);
+@@ -152,7 +152,7 @@ static bool chv_cursor_broken(data_t *data, int x)
+ 	 * CHV gets a FIFO underrun on pipe C when cursor x coordinate
+ 	 * is negative and the cursor visible.
+ 	 *
+-	 * i915 is fixed to return -EINVAL on cursor updates with those
++	 * intel is fixed to return -EINVAL on cursor updates with those
+ 	 * negative coordinates, so require cursor update to fail with
+ 	 * -EINVAL in that case.
+ 	 *
 -- 
 2.40.0
