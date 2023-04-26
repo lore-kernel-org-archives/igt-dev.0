@@ -1,24 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1BBB410E0F1
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 20:10:05 +0000 (UTC)
-Date: Wed, 26 Apr 2023 22:10:01 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Christoph Manszewski <christoph.manszewski@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230426201001.krfbffxot5yey4xd@zkempczy-mobl2>
-References: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
- <20230425154017.374465-7-zbigniew.kempczynski@intel.com>
- <20230426140209.zrx75vo3r2yetvwu@kamilkon-desk1>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50C4110E0F1
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 20:17:40 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ sai.gowtham.ch@intel.com
+Date: Thu, 27 Apr 2023 01:46:26 +0530
+Message-Id: <20230426201626.5361-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230426140209.zrx75vo3r2yetvwu@kamilkon-desk1>
-Subject: Re: [igt-dev] [PATCH i-g-t v6 06/15] lib/intel_bufops: Add Xe
- support in bufops
+Subject: [igt-dev] [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new with
+ Xe.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,330 +23,137 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Apr 26, 2023 at 04:02:09PM +0200, Kamil Konieczny wrote:
-> Hi Zbigniew,
-> 
-> On 2023-04-25 at 17:40:08 +0200, Zbigniew Kempczyński wrote:
-> > Extend bufops to support Xe:
-> >  - change region to 64bit region mask,
-> >  - add initialization helper (full) which allows passing handle,
-> >    size and region,
-> >  - mapping functions (read + write) selects driver specific mapping
-> > 
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> > 
-> > ---
-> > v5: add intel_buf_create_full() for future lib/igt_fb changes
-> >     regarding region
-> > v6: - fix igt_assert_f()
-> >     - add buf_ops_get_driver() helper
-> > ---
-> >  lib/intel_bufops.c | 120 +++++++++++++++++++++++++++++++++++++++++----
-> >  lib/intel_bufops.h |  24 ++++++++-
-> >  2 files changed, 133 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> > index cdc7a1698b..42a9b2bd05 100644
-> > --- a/lib/intel_bufops.c
-> > +++ b/lib/intel_bufops.c
-> > @@ -26,6 +26,8 @@
-> >  #include <cairo.h>
-> >  
-> >  #include "i915/gem_create.h"
-> > +#include "xe/xe_ioctl.h"
-> > +#include "xe/xe_query.h"
-> ------------ ^
-> Put in alphabetical order.
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Ack.
+Extending the spin_create implementation and allocator handle support in xe,
+where it submits dummy work loads to engine. This Implementation is wrapped
+around vm_bind and unbind as we are supposed to do it manually for xe.
 
-> 
-> >  #include "igt.h"
-> >  #include "igt_x86.h"
-> >  #include "intel_bufops.h"
-> > @@ -106,6 +108,7 @@ typedef void (*bo_copy)(struct buf_ops *, struct intel_buf *, uint32_t *);
-> >  
-> >  struct buf_ops {
-> >  	int fd;
-> > +	enum intel_driver driver;
-> >  	int gen_start;
-> >  	int gen_end;
-> >  	unsigned int intel_gen;
-> > @@ -488,6 +491,9 @@ static void *mmap_write(int fd, struct intel_buf *buf)
-> >  {
-> >  	void *map = NULL;
-> >  
-> > +	if (buf->bops->driver == INTEL_DRIVER_XE)
-> > +		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
-> > +
-> >  	if (gem_has_lmem(fd)) {
-> >  		/*
-> >  		 * set/get_caching and set_domain are no longer supported on
-> > @@ -530,6 +536,9 @@ static void *mmap_read(int fd, struct intel_buf *buf)
-> >  {
-> >  	void *map = NULL;
-> >  
-> > +	if (buf->bops->driver == INTEL_DRIVER_XE)
-> > +		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
-> > +
-> >  	if (gem_has_lmem(fd)) {
-> >  		/*
-> >  		 * set/get_caching and set_domain are no longer supported on
-> > @@ -809,7 +818,7 @@ static void __intel_buf_init(struct buf_ops *bops,
-> >  			     int width, int height, int bpp, int alignment,
-> >  			     uint32_t req_tiling, uint32_t compression,
-> >  			     uint64_t bo_size, int bo_stride,
-> > -			     uint32_t region)
-> > +			     uint64_t region)
-> >  {
-> >  	uint32_t tiling = req_tiling;
-> >  	uint64_t size;
-> > @@ -899,9 +908,19 @@ static void __intel_buf_init(struct buf_ops *bops,
-> >  	buf->size = size;
-> >  	buf->handle = handle;
-> >  
-> > -	if (!handle)
-> > -		if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
-> > -			igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
-> > +	if (!handle) {
-> > +		if (bops->driver == INTEL_DRIVER_I915) {
-> > +			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
-> > +				igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
-> > +		} else {
-> > +			size = ALIGN(size, xe_get_default_alignment(bops->fd));
-> > +			buf->handle = xe_bo_create_flags(bops->fd, 0, size, region);
-> > +		}
-> > +	}
-> > +	if (bops->driver == INTEL_DRIVER_XE)
-> > +		igt_assert_f(region != -1, "Xe requires region awareness, "
-> > +					   "use api which passes valid region\n");
-> > +	buf->region = region;
-> 
-> Place this "if() ... region" before if(!handle)
-> 
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+---
+ lib/xe/xe_spin.c | 67 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_spin.h | 21 +++++++++++++--
+ 2 files changed, 86 insertions(+), 2 deletions(-)
 
-Yes, makes sense if assert will fail.
-
---
-Zbigniew
-
-> Regards,
-> Kamil
-> 
-> >  
-> >  	/* Store gem bo size */
-> >  	buf->bo_size = size;
-> > @@ -930,8 +949,12 @@ void intel_buf_init(struct buf_ops *bops,
-> >  		    int width, int height, int bpp, int alignment,
-> >  		    uint32_t tiling, uint32_t compression)
-> >  {
-> > +	uint64_t region;
-> > +
-> > +	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
-> > +						     system_memory(bops->fd);
-> >  	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
-> > -			 tiling, compression, 0, 0, I915_SYSTEM_MEMORY);
-> > +			 tiling, compression, 0, 0, region);
-> >  
-> >  	intel_buf_set_ownership(buf, true);
-> >  }
-> > @@ -945,7 +968,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
-> >  			      struct intel_buf *buf,
-> >  			      int width, int height, int bpp, int alignment,
-> >  			      uint32_t tiling, uint32_t compression,
-> > -			      uint32_t region)
-> > +			      uint64_t region)
-> >  {
-> >  	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
-> >  			 tiling, compression, 0, 0, region);
-> > @@ -1010,6 +1033,43 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
-> >  			 req_tiling, compression, 0, 0, -1);
-> >  }
-> >  
-> > +/**
-> > + * intel_buf_init_full
-> > + * @bops: pointer to buf_ops
-> > + * @handle: BO handle created by the caller
-> > + * @buf: pointer to intel_buf structure to be filled
-> > + * @width: surface width
-> > + * @height: surface height
-> > + * @bpp: bits-per-pixel (8 / 16 / 32 / 64)
-> > + * @alignment: alignment of the stride for linear surfaces
-> > + * @req_tiling: surface tiling
-> > + * @compression: surface compression type
-> > + * @size: real bo size
-> > + * @stride: bo stride
-> > + * @region: region
-> > + *
-> > + * Function configures BO handle within intel_buf structure passed by the caller
-> > + * (with all its metadata - width, height, ...). Useful if BO was created
-> > + * outside. Allows passing real size which caller is aware of.
-> > + *
-> > + * Note: intel_buf_close() can be used because intel_buf is aware it is not
-> > + * buffer owner so it won't close it underneath.
-> > + */
-> > +void intel_buf_init_full(struct buf_ops *bops,
-> > +			 uint32_t handle,
-> > +			 struct intel_buf *buf,
-> > +			 int width, int height,
-> > +			 int bpp, int alignment,
-> > +			 uint32_t req_tiling,
-> > +			 uint32_t compression,
-> > +			 uint64_t size,
-> > +			 int stride,
-> > +			 uint64_t region)
-> > +{
-> > +	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
-> > +			 req_tiling, compression, size, stride, region);
-> > +}
-> > +
-> >  /**
-> >   * intel_buf_create
-> >   * @bops: pointer to buf_ops
-> > @@ -1084,6 +1144,20 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
-> >  							 uint32_t compression,
-> >  							 uint64_t size,
-> >  							 int stride)
-> > +{
-> > +	return intel_buf_create_full(bops, handle, width, height, bpp, alignment,
-> > +				     req_tiling, compression, size, stride, -1);
-> > +}
-> > +
-> > +struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
-> > +					uint32_t handle,
-> > +					int width, int height,
-> > +					int bpp, int alignment,
-> > +					uint32_t req_tiling,
-> > +					uint32_t compression,
-> > +					uint64_t size,
-> > +					int stride,
-> > +					uint64_t region)
-> >  {
-> >  	struct intel_buf *buf;
-> >  
-> > @@ -1093,12 +1167,11 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
-> >  	igt_assert(buf);
-> >  
-> >  	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
-> > -			 req_tiling, compression, size, stride, -1);
-> > +			 req_tiling, compression, size, stride, region);
-> >  
-> >  	return buf;
-> >  }
-> >  
-> > -
-> >  /**
-> >   * intel_buf_destroy
-> >   * @buf: intel_buf
-> > @@ -1420,8 +1493,24 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
-> >  
-> >  	bops->fd = fd;
-> >  	bops->intel_gen = generation;
-> > -	igt_debug("generation: %d, supported tiles: 0x%02x\n",
-> > -		  bops->intel_gen, bops->supported_tiles);
-> > +	bops->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
-> > +					    is_xe_device(fd) ? INTEL_DRIVER_XE : 0;
-> > +	igt_assert(bops->driver);
-> > +	igt_debug("generation: %d, supported tiles: 0x%02x, driver: %s\n",
-> > +		  bops->intel_gen, bops->supported_tiles,
-> > +		  bops->driver == INTEL_DRIVER_I915 ? "i915" : "xe");
-> > +
-> > +	/* No tiling support in XE. */
-> > +	if (bops->driver == INTEL_DRIVER_XE) {
-> > +		bops->supported_hw_tiles = TILE_NONE;
-> > +
-> > +		bops->linear_to_x = copy_linear_to_x;
-> > +		bops->x_to_linear = copy_x_to_linear;
-> > +		bops->linear_to_y = copy_linear_to_y;
-> > +		bops->y_to_linear = copy_y_to_linear;
-> > +
-> > +		return bops;
-> > +	}
-> >  
-> >  	/*
-> >  	 * Warning!
-> > @@ -1569,6 +1658,17 @@ int buf_ops_get_fd(struct buf_ops *bops)
-> >  	return bops->fd;
-> >  }
-> >  
-> > +/**
-> > + * buf_ops_get_driver
-> > + * @bops: pointer to buf_ops
-> > + *
-> > + * Returns: intel driver enum value
-> > + */
-> > +enum intel_driver buf_ops_get_driver(struct buf_ops *bops)
-> > +{
-> > +	return bops->driver;
-> > +}
-> > +
-> >  /**
-> >   * buf_ops_set_software_tiling
-> >   * @bops: pointer to buf_ops
-> > diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-> > index 25b4307399..0037548a3b 100644
-> > --- a/lib/intel_bufops.h
-> > +++ b/lib/intel_bufops.h
-> > @@ -43,6 +43,7 @@ struct intel_buf {
-> >  	} addr;
-> >  
-> >  	uint64_t bo_size;
-> > +	uint64_t region;
-> >  
-> >  	/* Tracking */
-> >  	struct intel_bb *ibb;
-> > @@ -109,6 +110,7 @@ struct buf_ops *buf_ops_create(int fd);
-> >  struct buf_ops *buf_ops_create_with_selftest(int fd);
-> >  void buf_ops_destroy(struct buf_ops *bops);
-> >  int buf_ops_get_fd(struct buf_ops *bops);
-> > +enum intel_driver buf_ops_get_driver(struct buf_ops *bops);
-> >  
-> >  bool buf_ops_set_software_tiling(struct buf_ops *bops,
-> >  				 uint32_t tiling,
-> > @@ -135,7 +137,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
-> >  			      struct intel_buf *buf,
-> >  			      int width, int height, int bpp, int alignment,
-> >  			      uint32_t tiling, uint32_t compression,
-> > -			      uint32_t region);
-> > +			      uint64_t region);
-> >  void intel_buf_close(struct buf_ops *bops, struct intel_buf *buf);
-> >  
-> >  void intel_buf_init_using_handle(struct buf_ops *bops,
-> > @@ -143,6 +145,16 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
-> >  				 struct intel_buf *buf,
-> >  				 int width, int height, int bpp, int alignment,
-> >  				 uint32_t req_tiling, uint32_t compression);
-> > +void intel_buf_init_full(struct buf_ops *bops,
-> > +			 uint32_t handle,
-> > +			 struct intel_buf *buf,
-> > +			 int width, int height,
-> > +			 int bpp, int alignment,
-> > +			 uint32_t req_tiling,
-> > +			 uint32_t compression,
-> > +			 uint64_t size,
-> > +			 int stride,
-> > +			 uint64_t region);
-> >  
-> >  struct intel_buf *intel_buf_create(struct buf_ops *bops,
-> >  				   int width, int height,
-> > @@ -164,6 +176,16 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
-> >  							 uint32_t compression,
-> >  							 uint64_t size,
-> >  							 int stride);
-> > +
-> > +struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
-> > +					uint32_t handle,
-> > +					int width, int height,
-> > +					int bpp, int alignment,
-> > +					uint32_t req_tiling,
-> > +					uint32_t compression,
-> > +					uint64_t size,
-> > +					int stride,
-> > +					uint64_t region);
-> >  void intel_buf_destroy(struct intel_buf *buf);
-> >  
-> >  static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
-> > -- 
-> > 2.34.1
-> > 
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 856d0ba2..503d440e 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -82,6 +82,73 @@ void xe_spin_end(struct xe_spin *spin)
+ 	spin->end = 0;
+ }
+ 
++static xe_spin_t *
++xe_spin_create(int fd, struct xe_spin_factory *opt)
++{
++	struct drm_xe_engine_class_instance *eci;
++	size_t bo_size = xe_get_default_alignment(fd);
++	uint32_t vm, bo, engine, syncobj;
++	uint64_t ahnd = opt->ahnd, addr;
++	struct xe_spin *spin;
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++
++	spin = calloc(1, sizeof(struct xe_spin));
++	igt_assert(spin);
++
++	vm = xe_vm_create(fd, 0, 0);
++	bo = xe_bo_create(fd, eci->gt_id, vm, bo_size);
++	spin = xe_bo_map(fd, bo, 0x1000);
++	engine = xe_engine_create(fd, vm, eci, 0);
++	syncobj = syncobj_create(fd, 0);
++
++	if (ahnd)
++		addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
++
++	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
++
++	xe_spin_init(spin, addr, true);
++	exec.engine_id = engine;
++	exec.address = addr;
++	sync.handle = syncobj;
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
++
++	opt->bo = bo;
++	opt->vm = vm;
++	opt->engine = engine;
++	opt->spin = spin;
++	opt->syncobj = syncobj;
++
++	return opt->spin;
++
++}
++
++xe_spin_t *
++__xe_spin_factory(int fd, struct xe_spin_factory *opt)
++{
++	return xe_spin_create(fd, opt);
++}
++
++void xe_spin_sync_wait(int fd, struct xe_spin_factory *opt)
++{
++	igt_assert(syncobj_wait(fd, &opt->syncobj, 1, INT64_MAX, 0,
++				NULL));
++}
++
++void xe_spin_free(int fd, struct xe_spin_factory *opt)
++{
++	xe_spin_end(opt->spin);
++	xe_engine_destroy(fd, opt->engine);
++	xe_vm_destroy(fd, opt->vm);
++	gem_close(fd, opt->bo);
++}
++
+ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+ 		  struct xe_cork *cork)
+ {
+diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+index 73f9a026..124fdebe 100644
+--- a/lib/xe/xe_spin.h
++++ b/lib/xe/xe_spin.h
+@@ -15,17 +15,34 @@
+ #include "xe_query.h"
+ 
+ /* Mapped GPU object */
+-struct xe_spin {
++struct  xe_spin_factory {
++	uint64_t ahnd;
++	uint32_t vm;
++	uint32_t bo;
++	uint32_t engine;
++	uint32_t syncobj;
++	struct xe_spin *spin;
++};
++
++typedef struct xe_spin {
+ 	uint32_t batch[16];
+ 	uint64_t pad;
+ 	uint32_t start;
+ 	uint32_t end;
+-};
++} xe_spin_t;
++
++xe_spin_t *
++__xe_spin_factory(int fd, struct xe_spin_factory *opt);
++
++#define xe_spin_new(fd, ...) \
++	__xe_spin_factory(fd, &((xe_spin_factory *opt){__VA__ARGS}))
+ 
+ void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
+ bool xe_spin_started(struct xe_spin *spin);
++void xe_spin_sync_wait(int fd, struct xe_spin_factory *opt);
+ void xe_spin_wait_started(struct xe_spin *spin);
+ void xe_spin_end(struct xe_spin *spin);
++void xe_spin_free(int fd, struct xe_spin_factory *opt);
+ 
+ struct xe_cork {
+ 	struct xe_spin *spin;
+-- 
+2.39.1
