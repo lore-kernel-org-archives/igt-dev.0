@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F16710E95D
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A9CFC10E951
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Apr 2023 11:52:22 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Apr 2023 17:16:54 +0530
-Message-Id: <20230426114725.2244653-15-bhanuprakash.modem@intel.com>
+Date: Wed, 26 Apr 2023 17:16:51 +0530
+Message-Id: <20230426114725.2244653-12-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 14/45] lib/igt_draw: Pass region while building
- intel_buf from flink
+Subject: [igt-dev] [i-g-t V3 11/45] lib/gpgpu_fill: Use RENDER engine flag
+ to work on Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,55 +26,39 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-For i915 region doesn't matter but for xe we need to be more strict and
-region aware. This is related to size and alignment constraints. As we
-don't have information about flink buffer origin let's assume region
-is vram if possible, otherwise choose system region.
+Using I915_EXEC_DEFAULT works fine for i915 selecting appropriate
+command streamer. Unfortunately this cannot be used on Xe as it
+requires explicit engine selection. Submitting gpgpu work on
+render is fine so change to I915_EXEC_RENDER doesn't break i915
+and allows run on valid engine on Xe.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- lib/igt_draw.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ lib/gpgpu_fill.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index ac512fac5..c5f2fdfe2 100644
---- a/lib/igt_draw.c
-+++ b/lib/igt_draw.c
-@@ -37,6 +37,7 @@
- #include "i915/gem_create.h"
- #include "i915/gem_mman.h"
- #include "i915/intel_mocs.h"
-+#include "xe/xe_query.h"
+diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
+index 4f7bab68f..4db877514 100644
+--- a/lib/gpgpu_fill.c
++++ b/lib/gpgpu_fill.c
+@@ -288,7 +288,7 @@ __gen9_gpgpu_fillfunc(int i915,
+ 	intel_bb_ptr_align(ibb, 32);
  
- #ifndef PAGE_ALIGN
- #ifndef PAGE_SIZE
-@@ -634,17 +635,24 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
- 				    struct buf_data *from, uint32_t tiling)
- {
- 	struct intel_buf *buf;
-+	enum intel_driver driver = buf_ops_get_driver(bops);
- 	uint32_t handle, name, width, height;
-+	uint64_t region = driver == INTEL_DRIVER_XE ? vram_if_possible(fd, 0) : -1;
-+	uint64_t size = from->size;
+ 	intel_bb_exec(ibb, intel_bb_offset(ibb),
+-		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, true);
  
- 	width = from->stride / (from->bpp / 8);
- 	height = from->size / from->stride;
-+	if (driver == INTEL_DRIVER_XE)
-+		size = ALIGN(size, xe_get_default_alignment(fd));
+ 	intel_bb_destroy(ibb);
+ }
+@@ -329,7 +329,7 @@ __xehp_gpgpu_fillfunc(int i915,
+ 	intel_bb_ptr_align(ibb, 32);
  
- 	name = gem_flink(fd, from->handle);
- 	handle = gem_open(fd, name);
+ 	intel_bb_exec(ibb, intel_bb_offset(ibb),
+-		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, true);
  
--	buf = intel_buf_create_using_handle(bops, handle,
--					    width, height, from->bpp, 0,
--					    tiling, 0);
-+	buf = intel_buf_create_full(bops, handle,
-+				    width, height, from->bpp, 0,
-+				    tiling, 0,
-+				    size, 0,
-+				    region);
- 
- 	/* Make sure we close handle on destroy path */
- 	intel_buf_set_ownership(buf, true);
+ 	intel_bb_destroy(ibb);
+ }
 -- 
 2.40.0
