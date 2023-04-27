@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2911410E09F
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 20:03:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DECC110E09F
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 20:03:51 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Apr 2023 22:02:55 +0200
-Message-Id: <20230427200307.240349-5-zbigniew.kempczynski@intel.com>
+Date: Thu, 27 Apr 2023 22:02:52 +0200
+Message-Id: <20230427200307.240349-2-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230427200307.240349-1-zbigniew.kempczynski@intel.com>
 References: <20230427200307.240349-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 04/16] lib/intel_allocator: Add allocator
- support for Xe
+Subject: [igt-dev] [PATCH i-g-t v7 01/16] lib/xe_ioctl: Add missing header
+ for direct resolving
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,92 +24,26 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Start supporting va range configuration for xe allocator.
-
-During opening allocator has to be aware of vm range (start and end).
-i915 driver doesn't expose vm range information so those variables
-have to be detected. In xe driver we get information of va size from
-the kernel query so va end can be directly configured. At the moment
-there's no autodetection of va start for xe what might need to be
-address in the future if for some reason lower offsets might not be
-in use.
+xe_ioctl.h user expects all types resolving. Add missing stddef.h
+header which contains size_t definition.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/intel_allocator.c | 40 +++++++++++++++++++++++++---------------
- 1 file changed, 25 insertions(+), 15 deletions(-)
+ lib/xe/xe_ioctl.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-index 2b08dd5996..45c1168ab5 100644
---- a/lib/intel_allocator.c
-+++ b/lib/intel_allocator.c
-@@ -16,6 +16,7 @@
- #include "igt_map.h"
- #include "intel_allocator.h"
- #include "intel_allocator_msgchannel.h"
-+#include "xe/xe_query.h"
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index d8c40eda01..049cd183d6 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -11,6 +11,7 @@
+ #ifndef XE_IOCTL_H
+ #define XE_IOCTL_H
  
- //#define ALLOCDBG
- #ifdef ALLOCDBG
-@@ -910,24 +911,33 @@ static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
- 	struct alloc_resp resp;
- 	uint64_t gtt_size;
++#include <stddef.h>
+ #include <stdint.h>
+ #include <xe_drm.h>
  
--	if (!start)
--		req.open.start = gem_detect_safe_start_offset(fd);
-+	if (is_i915_device(fd)) {
-+		if (!start)
-+			req.open.start = gem_detect_safe_start_offset(fd);
- 
--	if (!end) {
--		igt_assert_f(can_report_gtt_size(fd), "Invalid fd\n");
--		gtt_size = gem_aperture_size(fd);
--		if (!gem_uses_full_ppgtt(fd))
--			gtt_size /= 2;
--		else
--			gtt_size -= RESERVED;
-+		if (!end) {
-+			igt_assert_f(can_report_gtt_size(fd), "Invalid fd\n");
-+			gtt_size = gem_aperture_size(fd);
-+			if (!gem_uses_full_ppgtt(fd))
-+				gtt_size /= 2;
-+			else
-+				gtt_size -= RESERVED;
- 
--		req.open.end = gtt_size;
--	}
-+			req.open.end = gtt_size;
-+		}
- 
--	if (!default_alignment)
--		req.open.default_alignment = gem_detect_safe_alignment(fd);
-+		if (!default_alignment)
-+			req.open.default_alignment = gem_detect_safe_alignment(fd);
-+
-+		req.open.start = ALIGN(req.open.start, req.open.default_alignment);
-+	} else {
-+		struct xe_device *xe_dev = xe_device_get(fd);
- 
--	req.open.start = ALIGN(req.open.start, req.open.default_alignment);
-+		igt_assert(xe_dev);
-+
-+		if (!end)
-+			req.open.end = 1ull << xe_dev->va_bits;
-+	}
- 
- 	/* Get child_tid only once at open() */
- 	if (child_tid == -1)
-@@ -998,7 +1008,7 @@ uint64_t intel_allocator_open_vm_full(int fd, uint32_t vm,
- 
- /**
-  * intel_allocator_open:
-- * @fd: i915 descriptor
-+ * @fd: i915 or xe descriptor
-  * @ctx: context
-  * @allocator_type: one of INTEL_ALLOCATOR_* define
-  *
 -- 
 2.34.1
