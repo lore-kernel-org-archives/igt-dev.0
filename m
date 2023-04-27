@@ -1,22 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B6E710EAA0
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 06:14:43 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 27 Apr 2023 06:14:38 +0000
-Message-ID: <DM4PR11MB6312741831F6BA84FC4205DB906A9@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20230426114725.2244653-1-bhanuprakash.modem@intel.com>
- <20230426114725.2244653-16-bhanuprakash.modem@intel.com>
- <DM4PR11MB63124BB77E879DF8115DCFD0906A9@DM4PR11MB6312.namprd11.prod.outlook.com>
-In-Reply-To: <DM4PR11MB63124BB77E879DF8115DCFD0906A9@DM4PR11MB6312.namprd11.prod.outlook.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E01010EAB7
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 06:40:42 +0000 (UTC)
+Message-ID: <69648412-edb1-373f-77ab-cc1adc59a21d@intel.com>
+Date: Thu, 27 Apr 2023 12:10:09 +0530
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
+ <20230425154017.374465-16-zbigniew.kempczynski@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230425154017.374465-16-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V3 15/45] tests/kms_big_fb: Deduce region for
- xe framebuffer
+Subject: Re: [igt-dev] [PATCH i-g-t v6 15/15] tests/kms_big_fb: Deduce
+ region for xe framebuffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,48 +27,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBCLCBKZWV2YW4NCj4gU2VudDog
-VGh1cnNkYXksIEFwcmlsIDI3LCAyMDIzIDExOjQzIEFNDQo+IFRvOiBCaGFudXByYWthc2ggTW9k
-ZW0gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+OyBpZ3QtDQo+IGRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcNCj4gU3ViamVjdDogUkU6IFtpZ3QtZGV2XSBbaS1nLXQgVjMgMTUvNDVdIHRl
-c3RzL2ttc19iaWdfZmI6IERlZHVjZSByZWdpb24gZm9yIHhlDQo+IGZyYW1lYnVmZmVyDQo+IA0K
-PiANCj4gDQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBGcm9tOiBpZ3QtZGV2
-IDxpZ3QtZGV2LWJvdW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YNCj4g
-PiBCaGFudXByYWthc2ggTW9kZW0NCj4gPiBTZW50OiBXZWRuZXNkYXksIEFwcmlsIDI2LCAyMDIz
-IDU6MTcgUE0NCj4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPiBTdWJq
-ZWN0OiBbaWd0LWRldl0gW2ktZy10IFYzIDE1LzQ1XSB0ZXN0cy9rbXNfYmlnX2ZiOiBEZWR1Y2Ug
-cmVnaW9uDQo+ID4gZm9yIHhlIGZyYW1lYnVmZmVyDQo+ID4NCj4gPiBGcm9tOiBaYmlnbmlldyBL
-ZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4NCj4gPg0KPiA+IEZv
-ciBkaXNjcmV0ZSBmcmFtZWJ1ZmZlciByZXNpZGUgb24gdnJhbS9kZXZpY2UgbWVtb3J5IGFuZCBm
-b3INCj4gPiBpbnRlZ3JhdGVkIG9uIHN5c3RlbSBtZW1vcnkuIER1ZSB0byB4ZSByZXF1aXJlbWVu
-dCByZWdhcmRpbmcgc2l6ZSBhbmQNCj4gPiBhbGlnbm1lbnQgb24gZGlmZmVyZW50IG1lbW9yeSBy
-ZWdpb25zIGR1cmluZyBpbnRlbF9idWYgY3JlYXRpb24gcGFzcw0KPiA+IGRlZHVjZWQgbWVtb3J5
-IHJlZ2lvbi4NCj4gPg0KPiBMR1RNDQo+ID4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6
-ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQpSZXZpZXdlZC1ieTogSmVl
-dmFuIEIgPGplZXZhbi5iQGludGVsLmNvbT4NCj4gDQo+ID4gLS0tDQo+ID4gIHRlc3RzL2k5MTUv
-a21zX2JpZ19mYi5jIHwgMTAgKysrKysrKystLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgOCBpbnNl
-cnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5
-MTUva21zX2JpZ19mYi5jIGIvdGVzdHMvaTkxNS9rbXNfYmlnX2ZiLmMgaW5kZXgNCj4gPiBhMjlh
-MDVhMjguLmEwZDVlZjczMCAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9pOTE1L2ttc19iaWdfZmIu
-Yw0KPiA+ICsrKyBiL3Rlc3RzL2k5MTUva21zX2JpZ19mYi5jDQo+ID4gQEAgLTI4LDYgKzI4LDcg
-QEANCj4gPiAgI2luY2x1ZGUgPHN0cmluZy5oPg0KPiA+DQo+ID4gICNpbmNsdWRlICJpOTE1L2dl
-bV9jcmVhdGUuaCINCj4gPiArI2luY2x1ZGUgInhlL3hlX3F1ZXJ5LmgiDQo+ID4NCj4gPiAgSUdU
-X1RFU1RfREVTQ1JJUFRJT04oIlRlc3QgYmlnIGZyYW1lYnVmZmVycyIpOw0KPiA+DQo+ID4gQEAg
-LTYyLDcgKzYzLDEwIEBAIHN0YXRpYyBzdHJ1Y3QgaW50ZWxfYnVmICppbml0X2J1ZihkYXRhX3Qg
-KmRhdGEsDQo+ID4gIAkJCQkgIGNvbnN0IGNoYXIgKmJ1Zl9uYW1lKQ0KPiA+ICB7DQo+ID4gIAlz
-dHJ1Y3QgaW50ZWxfYnVmICpidWY7DQo+ID4gKwllbnVtIGludGVsX2RyaXZlciBkcml2ZXIgPSBi
-dWZfb3BzX2dldF9kcml2ZXIoZGF0YS0+Ym9wcyk7DQo+ID4gIAl1aW50MzJfdCBuYW1lLCBoYW5k
-bGUsIHRpbGluZywgc3RyaWRlLCB3aWR0aCwgaGVpZ2h0LCBicHAsIHNpemU7DQo+ID4gKwl1aW50
-NjRfdCByZWdpb24gPSBkcml2ZXIgPT0gSU5URUxfRFJJVkVSX1hFID8NCj4gPiArCQkJCXZyYW1f
-aWZfcG9zc2libGUoZGF0YS0+ZHJtX2ZkLCAwKSA6IC0xOw0KPiA+DQo+ID4gIAlpZ3RfYXNzZXJ0
-X2VxKGZiLT5vZmZzZXRzWzBdLCAwKTsNCj4gPg0KPiA+IEBAIC03NSw4ICs3OSwxMCBAQCBzdGF0
-aWMgc3RydWN0IGludGVsX2J1ZiAqaW5pdF9idWYoZGF0YV90ICpkYXRhLA0KPiA+DQo+ID4gIAlu
-YW1lID0gZ2VtX2ZsaW5rKGRhdGEtPmRybV9mZCwgZmItPmdlbV9oYW5kbGUpOw0KPiA+ICAJaGFu
-ZGxlID0gZ2VtX29wZW4oZGF0YS0+ZHJtX2ZkLCBuYW1lKTsNCj4gPiAtCWJ1ZiA9IGludGVsX2J1
-Zl9jcmVhdGVfdXNpbmdfaGFuZGxlKGRhdGEtPmJvcHMsIGhhbmRsZSwgd2lkdGgsIGhlaWdodCwN
-Cj4gPiAtCQkJCQkgICAgYnBwLCAwLCB0aWxpbmcsIDApOw0KPiA+ICsJYnVmID0gaW50ZWxfYnVm
-X2NyZWF0ZV9mdWxsKGRhdGEtPmJvcHMsIGhhbmRsZSwgd2lkdGgsIGhlaWdodCwNCj4gPiArCQkJ
-CSAgICBicHAsIDAsIHRpbGluZywgMCwgc2l6ZSwgMCwNCj4gPiArCQkJCSAgICByZWdpb24pOw0K
-PiA+ICsNCj4gPiAgCWludGVsX2J1Zl9zZXRfbmFtZShidWYsIGJ1Zl9uYW1lKTsNCj4gPiAgCWlu
-dGVsX2J1Zl9zZXRfb3duZXJzaGlwKGJ1ZiwgdHJ1ZSk7DQo+ID4NCj4gPiAtLQ0KPiA+IDIuNDAu
-MA0KDQo=
+
+On Tue-25-04-2023 09:10 pm, Zbigniew Kempczyński wrote:
+> For discrete framebuffer reside on vram/device memory and for
+> integrated on system memory. Due to xe requirement regarding
+> size and alignment on different memory regions during intel_buf
+> creation pass deduced memory region.
+> 
+LGTM
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>   tests/i915/kms_big_fb.c | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+> index a29a05a282..a0d5ef7301 100644
+> --- a/tests/i915/kms_big_fb.c
+> +++ b/tests/i915/kms_big_fb.c
+> @@ -28,6 +28,7 @@
+>   #include <string.h>
+>   
+>   #include "i915/gem_create.h"
+> +#include "xe/xe_query.h"
+>   
+>   IGT_TEST_DESCRIPTION("Test big framebuffers");
+>   
+> @@ -62,7 +63,10 @@ static struct intel_buf *init_buf(data_t *data,
+>   				  const char *buf_name)
+>   {
+>   	struct intel_buf *buf;
+> +	enum intel_driver driver = buf_ops_get_driver(data->bops);
+>   	uint32_t name, handle, tiling, stride, width, height, bpp, size;
+> +	uint64_t region = driver == INTEL_DRIVER_XE ?
+> +				vram_if_possible(data->drm_fd, 0) : -1;
+>   
+>   	igt_assert_eq(fb->offsets[0], 0);
+>   
+> @@ -75,8 +79,10 @@ static struct intel_buf *init_buf(data_t *data,
+>   
+>   	name = gem_flink(data->drm_fd, fb->gem_handle);
+>   	handle = gem_open(data->drm_fd, name);
+> -	buf = intel_buf_create_using_handle(data->bops, handle, width, height,
+> -					    bpp, 0, tiling, 0);
+> +	buf = intel_buf_create_full(data->bops, handle, width, height,
+> +				    bpp, 0, tiling, 0, size, 0,
+> +				    region);
+> +
+>   	intel_buf_set_name(buf, buf_name);
+>   	intel_buf_set_ownership(buf, true);
+>   
