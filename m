@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04E9F10EBE7
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 20:04:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13D1610EBD1
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 20:04:21 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Apr 2023 22:02:59 +0200
-Message-Id: <20230427200307.240349-9-zbigniew.kempczynski@intel.com>
+Date: Thu, 27 Apr 2023 22:03:02 +0200
+Message-Id: <20230427200307.240349-12-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230427200307.240349-1-zbigniew.kempczynski@intel.com>
 References: <20230427200307.240349-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 08/16] lib/intel_batchbuffer: Update
- intel-bb docs
+Subject: [igt-dev] [PATCH i-g-t v7 11/16] tests/xe-fast-feedback: Add
+ xe_intel_bb test to BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,61 +24,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-After RANDOM pseudo-allocator was removed and RELOC allocator becomed
-stateful docs stays intact and documents old code. Fix this before
-adding xe code.
+Verifies intel-bb integration with xe.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- lib/intel_batchbuffer.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ tests/intel-ci/xe-fast-feedback.testlist | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 7dbd6dd582..306b7650e9 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -836,7 +836,7 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
-  * @allocator_type: allocator type, must be INTEL_ALLOCATOR_NONE for relocations
-  *
-  * intel-bb assumes it will work in one of two modes - with relocations or
-- * with using allocator (currently RANDOM and SIMPLE are implemented).
-+ * with using allocator (currently RELOC and SIMPLE are implemented).
-  * Some description is required to describe how they maintain the addresses.
-  *
-  * Before entering into each scenarios generic rule is intel-bb keeps objects
-@@ -854,10 +854,10 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
-  *
-  * This mode is valid only for ppgtt. Addresses are acquired from allocator
-  * and softpinned. intel-bb cache must be then coherent with allocator
-- * (simple is coherent, random is not due to fact we don't keep its state).
-+ * (simple is coherent, reloc partially [doesn't support address reservation]).
-  * When we do intel-bb reset with purging cache it has to reacquire addresses
-  * from allocator (allocator should return same address - what is true for
-- * simple allocator and false for random as mentioned before).
-+ * simple and reloc allocators).
-  *
-  * If we do reset without purging caches we use addresses from intel-bb cache
-  * during execbuf objects construction.
-@@ -967,7 +967,7 @@ __intel_bb_create(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
-  * @size: size of the batchbuffer
-  * @start: allocator vm start address
-  * @end: allocator vm start address
-- * @allocator_type: allocator type, SIMPLE, RANDOM, ...
-+ * @allocator_type: allocator type, SIMPLE, RELOC, ...
-  * @strategy: allocation strategy
-  *
-  * Creates bb with context passed in @ctx, size in @size and allocator type
-@@ -1280,8 +1280,9 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
- 	gem_close(ibb->fd, ibb->handle);
- 	ibb->handle = gem_create(ibb->fd, ibb->size);
- 
--	/* Keep address for bb in reloc mode and RANDOM allocator */
--	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE)
-+	/* Reacquire offset for RELOC and SIMPLE */
-+	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE ||
-+	    ibb->allocator_type == INTEL_ALLOCATOR_RELOC)
- 		ibb->batch_offset = __intel_bb_get_offset(ibb,
- 							  ibb->handle,
- 							  ibb->size,
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 987e72ef4b..3d0603fd94 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -106,6 +106,24 @@ igt@xe_guc_pc@freq_range_idle
+ igt@xe_guc_pc@rc6_on_idle
+ igt@xe_guc_pc@rc0_on_exec
+ igt@xe_huc_copy@huc_copy
++igt@xe_intel_bb@add-remove-objects
++igt@xe_intel_bb@bb-with-allocator
++igt@xe_intel_bb@blit-reloc
++igt@xe_intel_bb@blit-simple
++igt@xe_intel_bb@create-in-region
++igt@xe_intel_bb@delta-check
++igt@xe_intel_bb@destroy-bb
++igt@xe_intel_bb@full-batch
++igt@xe_intel_bb@intel-bb-blit-none
++igt@xe_intel_bb@intel-bb-blit-x
++igt@xe_intel_bb@intel-bb-blit-y
++igt@xe_intel_bb@lot-of-buffers
++igt@xe_intel_bb@offset-control
++igt@xe_intel_bb@purge-bb
++igt@xe_intel_bb@render
++igt@xe_intel_bb@reset-bb
++igt@xe_intel_bb@simple-bb
++igt@xe_intel_bb@simple-bb-ctx
+ igt@xe_mmap@system
+ igt@xe_mmap@vram
+ igt@xe_mmap@vram-system
 -- 
 2.34.1
