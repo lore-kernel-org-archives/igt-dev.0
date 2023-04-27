@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2679610EB2A
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 11:49:53 +0000 (UTC)
-Date: Thu, 27 Apr 2023 13:49:49 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230427114949.h3l5crahhz6mmpwf@zkempczy-mobl2>
-References: <20230426114725.2244653-17-bhanuprakash.modem@intel.com>
- <20230427112908.2421803-1-bhanuprakash.modem@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9ACE410EB2D
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 11:58:17 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gandi,
+ Ramadevi" <ramadevi.gandi@intel.com>
+Date: Thu, 27 Apr 2023 11:58:14 +0000
+Message-ID: <MW3PR11MB474865820F23633E1C468129AE6A9@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20230425123603.3069724-1-janga.rahul.kumar@intel.com>
+In-Reply-To: <20230425123603.3069724-1-janga.rahul.kumar@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230427112908.2421803-1-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t V4 16/45] lib/igt_fb: Add copy engine support
- for XE
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_query.c: Update subtest
+ query-engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,110 +22,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 27, 2023 at 04:59:08PM +0530, Bhanuprakash Modem wrote:
-> Add copy engine support for kms framebuffer mappings.
-> 
-> V2: - Drop unused syncobj(Zbigniew)
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Now I haven't spotted other issues here:
 
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
+> -----Original Message-----
+> From: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
+> Sent: 25 April 2023 18:06
+> To: igt-dev@lists.freedesktop.org; Gandi, Ramadevi
+> <ramadevi.gandi@intel.com>; Kumar, Janga Rahul
+> <janga.rahul.kumar@intel.com>
+> Subject: [PATCH i-g-t] tests/xe/xe_query.c: Update subtest query-engines
+>=20
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+>=20
+> Log engine instance and tile info along with engine type.
+>=20
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 > ---
->  lib/igt_fb.c | 24 ++++++++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 76f2e1245..cf24d9e66 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -45,6 +45,7 @@
->  #include "igt_amd.h"
->  #include "igt_x86.h"
->  #include "igt_nouveau.h"
-> +#include "igt_syncobj.h"
->  #include "ioctl_wrappers.h"
->  #include "intel_batchbuffer.h"
->  #include "intel_chipset.h"
-> @@ -2489,12 +2490,13 @@ static bool blitter_ok(const struct igt_fb *fb)
->  
->  static bool use_enginecopy(const struct igt_fb *fb)
->  {
-> -	if (blitter_ok(fb))
-> +	if (!is_xe_device(fb->fd) && blitter_ok(fb))
->  		return false;
->  
->  	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
->  	       is_ccs_modifier(fb->modifier) ||
-> -	       !gem_has_mappable_ggtt(fb->fd);
-> +	       (is_xe_device(fb->fd) && fb->modifier == DRM_FORMAT_MOD_LINEAR) ||
-> +	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
->  }
->  
->  static bool use_blitter(const struct igt_fb *fb)
-> @@ -2504,7 +2506,7 @@ static bool use_blitter(const struct igt_fb *fb)
->  
->  	return fb->modifier == I915_FORMAT_MOD_Y_TILED ||
->  	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
-> -	       !gem_has_mappable_ggtt(fb->fd);
-> +	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
->  }
->  
->  static void init_buf_ccs(struct intel_buf *buf, int ccs_idx,
-> @@ -2706,7 +2708,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
->  	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
->  	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
->  
-> -	if (!gem_has_relocations(dst_fb->fd)) {
-> +	if (is_i915_device(dst_fb->fd) && !gem_has_relocations(dst_fb->fd)) {
->  		igt_require(gem_has_contexts(dst_fb->fd));
->  		ctx = gem_context_create(dst_fb->fd);
->  		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
-> @@ -2786,6 +2788,12 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
->  	} else if (is_nouveau_device(fd)) {
->  		igt_nouveau_fb_blit(fb, &linear->fb);
->  		igt_nouveau_delete_bo(&linear->fb);
-> +	} else if (is_xe_device(fd)) {
-> +		gem_munmap(linear->map, linear->fb.size);
-> +		copy_with_engine(blit, fb, &linear->fb);
-> +
-> +		syncobj_wait(fd, &blit->ibb->engine_syncobj, 1, INT64_MAX, 0, NULL);
-> +		gem_close(fd, linear->fb.gem_handle);
->  	} else {
->  		gem_munmap(linear->map, linear->fb.size);
->  		gem_set_domain(fd, linear->fb.gem_handle,
-> @@ -2863,6 +2871,11 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
->  		igt_nouveau_fb_blit(&linear->fb, fb);
->  
->  		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
-> +	} else if (is_xe_device(fd)) {
-> +		copy_with_engine(blit, &linear->fb, fb);
-> +
-> +		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
-> +					     linear->fb.size, PROT_READ | PROT_WRITE);
->  	} else {
->  		/* Copy fb content to linear BO */
->  		gem_set_domain(fd, linear->fb.gem_handle,
-> @@ -2969,6 +2982,9 @@ static void *map_bo(int fd, struct igt_fb *fb)
->  				      PROT_READ | PROT_WRITE);
->  	else if (is_nouveau_device(fd))
->  		ptr = igt_nouveau_mmap_bo(fb, PROT_READ | PROT_WRITE);
-> +	else if (is_xe_device(fd))
-> +		ptr = xe_bo_mmap_ext(fd, fb->gem_handle,
-> +				     fb->size, PROT_READ | PROT_WRITE);
->  	else
->  		igt_assert(false);
->  
-> -- 
-> 2.40.0
-> 
+>  tests/xe/xe_query.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/tests/xe/xe_query.c b/tests/xe/xe_query.c index
+> 3f038225..161386d8 100644
+> --- a/tests/xe/xe_query.c
+> +++ b/tests/xe/xe_query.c
+> @@ -183,8 +183,9 @@ test_query_engines(int fd)
+>=20
+>  	xe_for_each_hw_engine(fd, hwe) {
+>  		igt_assert(hwe);
+> -		igt_info("engine %d: %s\n", i++,
+> -			xe_engine_class_string(hwe->engine_class));
+> +		igt_info("engine %d: %s, engine instance: %d , tile: TILE-%d\n",
+> i++,
+> +			 xe_engine_class_string(hwe->engine_class), hwe-
+> >engine_instance,
+> +								    hwe-
+> >gt_id);
+>  	}
+>=20
+>  	igt_assert(i > 0);
+> --
+> 2.25.1
