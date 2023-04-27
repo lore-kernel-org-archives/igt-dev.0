@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F03310EB28
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 11:40:57 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Thu, 27 Apr 2023 17:12:56 +0530
-Message-Id: <20230427114256.3182329-1-janga.rahul.kumar@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2679610EB2A
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 11:49:53 +0000 (UTC)
+Date: Thu, 27 Apr 2023 13:49:49 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <20230427114949.h3l5crahhz6mmpwf@zkempczy-mobl2>
+References: <20230426114725.2244653-17-bhanuprakash.modem@intel.com>
+ <20230427112908.2421803-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_query: Add subtest
- query-invalid-extension
+In-Reply-To: <20230427112908.2421803-1-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t V4 16/45] lib/igt_fb: Add copy engine support
+ for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,58 +22,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On Thu, Apr 27, 2023 at 04:59:08PM +0530, Bhanuprakash Modem wrote:
+> Add copy engine support for kms framebuffer mappings.
+> 
+> V2: - Drop unused syncobj(Zbigniew)
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Check query with invalid extension returns expected error code.
+Now I haven't spotted other issues here:
 
-CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-CC: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- tests/xe/xe_query.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-diff --git a/tests/xe/xe_query.c b/tests/xe/xe_query.c
-index 3f038225..a0fb5422 100644
---- a/tests/xe/xe_query.c
-+++ b/tests/xe/xe_query.c
-@@ -435,6 +435,23 @@ test_query_invalid_size(int fd)
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), -1);
- }
- 
-+/**
-+ * SUBTEST: query-invalid-extension
-+ * Description: Check query with invalid extension returns expected error code.
-+ */
-+static void
-+test_query_invalid_extension(int fd)
-+{
-+	struct drm_xe_device_query query = {
-+		.extensions = -1,
-+		.query = DRM_XE_DEVICE_QUERY_CONFIG,
-+		.size = 0,
-+		.data = 0,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
-+}
-+
- igt_main
- {
- 	int xe;
-@@ -468,6 +485,9 @@ igt_main
- 	igt_subtest("query-invalid-size")
- 		test_query_invalid_size(xe);
- 
-+	igt_subtest("query-invalid-extension")
-+		test_query_invalid_extension(xe);
-+
- 	igt_fixture {
- 		xe_device_put(xe);
- 		close(xe);
--- 
-2.25.1
+--
+Zbigniew
+
+> ---
+>  lib/igt_fb.c | 24 ++++++++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
+> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 76f2e1245..cf24d9e66 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -45,6 +45,7 @@
+>  #include "igt_amd.h"
+>  #include "igt_x86.h"
+>  #include "igt_nouveau.h"
+> +#include "igt_syncobj.h"
+>  #include "ioctl_wrappers.h"
+>  #include "intel_batchbuffer.h"
+>  #include "intel_chipset.h"
+> @@ -2489,12 +2490,13 @@ static bool blitter_ok(const struct igt_fb *fb)
+>  
+>  static bool use_enginecopy(const struct igt_fb *fb)
+>  {
+> -	if (blitter_ok(fb))
+> +	if (!is_xe_device(fb->fd) && blitter_ok(fb))
+>  		return false;
+>  
+>  	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+>  	       is_ccs_modifier(fb->modifier) ||
+> -	       !gem_has_mappable_ggtt(fb->fd);
+> +	       (is_xe_device(fb->fd) && fb->modifier == DRM_FORMAT_MOD_LINEAR) ||
+> +	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
+>  }
+>  
+>  static bool use_blitter(const struct igt_fb *fb)
+> @@ -2504,7 +2506,7 @@ static bool use_blitter(const struct igt_fb *fb)
+>  
+>  	return fb->modifier == I915_FORMAT_MOD_Y_TILED ||
+>  	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+> -	       !gem_has_mappable_ggtt(fb->fd);
+> +	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
+>  }
+>  
+>  static void init_buf_ccs(struct intel_buf *buf, int ccs_idx,
+> @@ -2706,7 +2708,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
+>  	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
+>  	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
+>  
+> -	if (!gem_has_relocations(dst_fb->fd)) {
+> +	if (is_i915_device(dst_fb->fd) && !gem_has_relocations(dst_fb->fd)) {
+>  		igt_require(gem_has_contexts(dst_fb->fd));
+>  		ctx = gem_context_create(dst_fb->fd);
+>  		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
+> @@ -2786,6 +2788,12 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
+>  	} else if (is_nouveau_device(fd)) {
+>  		igt_nouveau_fb_blit(fb, &linear->fb);
+>  		igt_nouveau_delete_bo(&linear->fb);
+> +	} else if (is_xe_device(fd)) {
+> +		gem_munmap(linear->map, linear->fb.size);
+> +		copy_with_engine(blit, fb, &linear->fb);
+> +
+> +		syncobj_wait(fd, &blit->ibb->engine_syncobj, 1, INT64_MAX, 0, NULL);
+> +		gem_close(fd, linear->fb.gem_handle);
+>  	} else {
+>  		gem_munmap(linear->map, linear->fb.size);
+>  		gem_set_domain(fd, linear->fb.gem_handle,
+> @@ -2863,6 +2871,11 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
+>  		igt_nouveau_fb_blit(&linear->fb, fb);
+>  
+>  		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
+> +	} else if (is_xe_device(fd)) {
+> +		copy_with_engine(blit, &linear->fb, fb);
+> +
+> +		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
+> +					     linear->fb.size, PROT_READ | PROT_WRITE);
+>  	} else {
+>  		/* Copy fb content to linear BO */
+>  		gem_set_domain(fd, linear->fb.gem_handle,
+> @@ -2969,6 +2982,9 @@ static void *map_bo(int fd, struct igt_fb *fb)
+>  				      PROT_READ | PROT_WRITE);
+>  	else if (is_nouveau_device(fd))
+>  		ptr = igt_nouveau_mmap_bo(fb, PROT_READ | PROT_WRITE);
+> +	else if (is_xe_device(fd))
+> +		ptr = xe_bo_mmap_ext(fd, fb->gem_handle,
+> +				     fb->size, PROT_READ | PROT_WRITE);
+>  	else
+>  		igt_assert(false);
+>  
+> -- 
+> 2.40.0
+> 
