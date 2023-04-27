@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 27 Apr 2023 18:24:58 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEFFF10E033
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 16:32:37 +0000 (UTC)
+Date: Thu, 27 Apr 2023 18:32:34 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230427162458.5bkxmdh2zb5zjykc@kamilkon-desk1>
-References: <20230425162405.1730513-1-vinay.belgaumkar@intel.com>
- <20230425162405.1730513-4-vinay.belgaumkar@intel.com>
- <87a5yu9y2r.wl-ashutosh.dixit@intel.com>
+Message-ID: <20230427163234.3bwrtximcptnueuf@kamilkon-desk1>
+References: <20230426062248.3110901-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87a5yu9y2r.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 3/4] i915_pm_freq_api: Add
- some basic SLPC igt tests
+In-Reply-To: <20230426062248.3110901-1-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci/xe-fast-feedback.testlist: Add
+ eviction tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,58 +20,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org
+Cc: janga.rahul.kumar@intel.com, ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Ashutosh,
-
-On 2023-04-26 at 13:40:28 -0700, Dixit, Ashutosh wrote:
-> On Tue, 25 Apr 2023 09:24:04 -0700, Vinay Belgaumkar wrote:
-> >
-> > diff --git a/tests/i915/i915_pm_freq_api.c b/tests/i915/i915_pm_freq_api.c
-> > new file mode 100644
-> > index 00000000..17adacbc
-> > --- /dev/null
-> > +++ b/tests/i915/i915_pm_freq_api.c
-> > @@ -0,0 +1,153 @@
-> > +// SPDX-License-Identifier: MIT
-> > +/*
-> > + * Copyright © 2023 Intel Corporation
-> > + */
-> > +
-> > +#include <dirent.h>
-> > +#include <errno.h>
-> > +#include <fcntl.h>
-> > +#include <inttypes.h>
-> > +#include <stdlib.h>
-> > +#include <sys/stat.h>
-> > +#include <sys/syscall.h>
-> > +#include <sys/types.h>
-> > +#include <unistd.h>
-> > +
-> > +#include "drmtest.h"
+On 2023-04-26 at 11:52:48 +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 > 
-> The series is merged but before merging I removed all the #include's above,
-> they are not needed.
-
-Please do not do this, at least send it to trybot and look at
-GitLab.Pipeline status. There are platforms where compilation 
-failed due to missing fcntl.h, see
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/137
-
-It is fixed now with
-https://patchwork.freedesktop.org/series/117047/
-
-Regards,
-Kamil
-
+> Add VRAM eviction tests.
 > 
-> > +#include "i915/gem.h"
-> > +#include "igt_sysfs.h"
-> > +#include "igt.h"
+> CC: Katarzyna Dec <katarzyna.dec@intel.com>
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> ---
+>  tests/intel-ci/xe-fast-feedback.testlist | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
-> Thanks.
-> --
-> Ashutosh
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index 987e72ef..7c052a78 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -140,6 +140,17 @@ igt@xe_vm@munmap-style-unbind-userptr-front
+>  igt@xe_vm@munmap-style-unbind-userptr-inval-end
+>  igt@xe_vm@munmap-style-unbind-userptr-inval-front
+>  igt@xe_waitfence@test
+> +igt@xe_evict@evict-small
+> +igt@xe_evict@evict-small-external
+> +igt@xe_evict@evict-small-multi-vm
+> +igt@xe_evict@evict-beng-small
+> +igt@xe_evict@evict-beng-small-external
+> +igt@xe_evict@evict-beng-small-multi-vm
+> +igt@xe_evict@evict-small-cm
+> +igt@xe_evict@evict-small-external-cm
+> +igt@xe_evict@evict-small-multi-vm-cm
+> +igt@xe_evict@evict-beng-small-cm
+> +igt@xe_evict@evict-beng-small-external-cm
+>  igt@kms_addfb_basic@addfb25-bad-modifier
+>  igt@kms_addfb_basic@addfb25-modifier-no-flag
+>  igt@kms_addfb_basic@bad-pitch-0
+> -- 
+> 2.25.1
+> 
