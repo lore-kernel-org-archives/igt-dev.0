@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CDB710E04D
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 12:06:23 +0000 (UTC)
+Message-ID: <7ece4542-25bc-13b9-425e-7e4191eba30c@intel.com>
+Date: Thu, 27 Apr 2023 14:06:20 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 04 Apr 2023 09:51:13 -0000
-Message-ID: <168060187358.18900.16749864525112990357@emeril.freedesktop.org>
-References: <20230404070844.204306-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230404070844.204306-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?estplan/meson=2Ebuild=3A_only_run_igt=5Frunner_if_it_is_compile?=
- =?utf-8?q?d_=28rev2=29?=
+Content-Language: en-US
+References: <20230427104119.198499-1-mauro.chehab@linux.intel.com>
+ <20230427104119.198499-2-mauro.chehab@linux.intel.com>
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+In-Reply-To: <20230427104119.198499-2-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915_pm_freq_api: add missing
+ include
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,47 +21,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: testplan/meson.build: only run igt_runner if it is compiled (rev2)
-URL   : https://patchwork.freedesktop.org/series/116065/
-State : warning
 
-== Summary ==
+On 27.04.2023 12:41, Mauro Carvalho Chehab wrote:
+> From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>
+> Add missing include file. This fixes armhf, aarch64 and mips
+> cross-compilation error:
+>
+> ../tests/i915/i915_pm_freq_api.c:80:46: error: ‘O_WRONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
+>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Pipeline status: FAILED.
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/847575 for the overview.
+Regards
+Andrzej
+> ---
+>   tests/i915/i915_pm_freq_api.c | 2 ++
+>   1 file changed, 2 insertions(+)
+>
+> diff --git a/tests/i915/i915_pm_freq_api.c b/tests/i915/i915_pm_freq_api.c
+> index 7342f5414034..662d514a4ef6 100644
+> --- a/tests/i915/i915_pm_freq_api.c
+> +++ b/tests/i915/i915_pm_freq_api.c
+> @@ -3,6 +3,8 @@
+>    * Copyright © 2023 Intel Corporation
+>    */
+>   
+> +#include <fcntl.h>
+> +
+>   #include "i915/gem.h"
+>   #include "igt_sysfs.h"
+>   #include "igt.h"
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/39294527):
-  Program rst2man-3 found: NO
-  Program rst2man found: NO
-  Program rst2man.sh found: YES (/builds/gfx-ci/igt-ci-tags/man/rst2man.sh)
-  Program igt_doc.py found: YES (/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py)
-  Program gen_rst_index found: YES (/builds/gfx-ci/igt-ci-tags/scripts/gen_rst_index)
-  Dependency gtk-doc found: NO (tried pkgconfig and cmake)
-  Program sphinx-build found: NO
-  Program rst2html-3 found: NO
-  Program rst2html found: NO
-  Program rst2pdf found: NO
-  
-  docs/testplan/meson.build:12:0: ERROR:  Unknown variable "test_executables".
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1680601423:step_script
-  section_start:1680601423:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1680601423:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/847575
 
