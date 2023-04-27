@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B39410E113
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 20:04:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA82E10E09F
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 20:04:26 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Apr 2023 22:03:04 +0200
-Message-Id: <20230427200307.240349-14-zbigniew.kempczynski@intel.com>
+Date: Thu, 27 Apr 2023 22:03:06 +0200
+Message-Id: <20230427200307.240349-16-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230427200307.240349-1-zbigniew.kempczynski@intel.com>
 References: <20230427200307.240349-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 13/16] tests/xe_gpgpu_fill: Exercise
- gpgpu fill on Xe
+Subject: [igt-dev] [PATCH i-g-t v7 15/16] lib/igt_draw: Pass region while
+ building intel_buf from flink
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,181 +24,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reuse gpgpu fill already exercised on i915 on Xe.
+For i915 region doesn't matter but for xe we need to be more strict and
+region aware. This is related to size and alignment constraints. As we
+don't have information about flink buffer origin let's assume region
+is vram if possible, otherwise choose system region.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel-ci/xe-fast-feedback.testlist |   1 +
- tests/meson.build                        |   1 +
- tests/xe/xe_gpgpu_fill.c                 | 135 +++++++++++++++++++++++
- 3 files changed, 137 insertions(+)
- create mode 100644 tests/xe/xe_gpgpu_fill.c
+ lib/igt_draw.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 3d0603fd94..ecf44ca736 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -100,6 +100,7 @@ igt@xe_exec_threads@threads-mixed-fd-basic
- igt@xe_exec_threads@threads-bal-mixed-basic
- igt@xe_exec_threads@threads-bal-mixed-shared-vm-basic
- igt@xe_exec_threads@threads-bal-mixed-fd-basic
-+igt@xe_gpgpu_fill@basic
- igt@xe_guc_pc@freq_basic_api
- igt@xe_guc_pc@freq_fixed_idle
- igt@xe_guc_pc@freq_range_idle
-diff --git a/tests/meson.build b/tests/meson.build
-index b026fac48b..c15eb3a08c 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -254,6 +254,7 @@ xe_progs = [
- 	'xe_exec_fault_mode',
- 	'xe_exec_reset',
- 	'xe_exec_threads',
-+	'xe_gpgpu_fill',
- 	'xe_guc_pc',
- 	'xe_huc_copy',
- 	'xe_intel_bb',
-diff --git a/tests/xe/xe_gpgpu_fill.c b/tests/xe/xe_gpgpu_fill.c
-new file mode 100644
-index 0000000000..5bca19c87e
---- /dev/null
-+++ b/tests/xe/xe_gpgpu_fill.c
-@@ -0,0 +1,135 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Basic tests for gpgpu functionality
-+ * Category: Software building block
-+ * Sub-category: gpgpu
-+ * Test category: functionality test
-+ */
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <inttypes.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/stat.h>
-+#include <sys/time.h>
-+#include <unistd.h>
-+
-+#include "drm.h"
-+#include "i915/gem.h"
-+#include "igt.h"
-+#include "igt_collection.h"
-+#include "intel_bufops.h"
-+#include "xe/xe_ioctl.h"
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index ac512fac5a..c5f2fdfe2b 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -37,6 +37,7 @@
+ #include "i915/gem_create.h"
+ #include "i915/gem_mman.h"
+ #include "i915/intel_mocs.h"
 +#include "xe/xe_query.h"
-+
-+#define WIDTH 64
-+#define HEIGHT 64
-+#define STRIDE (WIDTH)
-+#define SIZE (HEIGHT*STRIDE)
-+#define COLOR_C4	0xc4
-+#define COLOR_4C	0x4c
-+
-+typedef struct {
-+	int drm_fd;
-+	uint32_t devid;
-+	struct buf_ops *bops;
-+} data_t;
-+
-+static struct intel_buf *
-+create_buf(data_t *data, int width, int height, uint8_t color, uint64_t region)
-+{
-+	struct intel_buf *buf;
-+	uint8_t *ptr;
-+	int i;
-+
-+	buf = calloc(1, sizeof(*buf));
-+	igt_assert(buf);
-+
-+	buf = intel_buf_create(data->bops, width/4, height, 32, 0,
-+			       I915_TILING_NONE, 0);
-+
-+	ptr = xe_bo_map(data->drm_fd, buf->handle, buf->surface[0].size);
-+
-+	for (i = 0; i < buf->surface[0].size; i++)
-+		ptr[i] = color;
-+
-+	munmap(ptr, buf->surface[0].size);
-+
-+	return buf;
-+}
-+
-+static void buf_check(uint8_t *ptr, int x, int y, uint8_t color)
-+{
-+	uint8_t val;
-+
-+	val = ptr[y * WIDTH + x];
-+	igt_assert_f(val == color,
-+		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
-+		     color, val, x, y);
-+}
-+
-+/**
-+ * SUBTEST: basic
-+ * Description: run gpgpu fill
-+ * Run type: FULL
-+ * TODO: change ``'Run type' == FULL`` to a better category
-+ */
-+
-+static void gpgpu_fill(data_t *data, igt_fillfunc_t fill, uint32_t region)
-+{
-+	struct intel_buf *buf;
-+	uint8_t *ptr;
-+	int i, j;
-+
-+	buf = create_buf(data, WIDTH, HEIGHT, COLOR_C4, region);
-+	ptr = xe_bo_map(data->drm_fd, buf->handle, buf->surface[0].size);
-+
-+	for (i = 0; i < WIDTH; i++)
-+		for (j = 0; j < HEIGHT; j++)
-+			buf_check(ptr, i, j, COLOR_C4);
-+
-+	fill(data->drm_fd, buf, 0, 0, WIDTH / 2, HEIGHT / 2, COLOR_4C);
-+
-+	for (i = 0; i < WIDTH; i++)
-+		for (j = 0; j < HEIGHT; j++)
-+			if (i < WIDTH / 2 && j < HEIGHT / 2)
-+				buf_check(ptr, i, j, COLOR_4C);
-+			else
-+				buf_check(ptr, i, j, COLOR_C4);
-+
-+	munmap(ptr, buf->surface[0].size);
-+}
-+
-+igt_main
-+{
-+	data_t data = {0, };
-+	igt_fillfunc_t fill_fn = NULL;
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_render(DRIVER_XE);
-+		data.devid = intel_get_drm_devid(data.drm_fd);
-+		data.bops = buf_ops_create(data.drm_fd);
-+
-+		fill_fn = igt_get_gpgpu_fillfunc(data.devid);
-+		igt_require_f(fill_fn, "no gpgpu-fill function\n");
-+
-+		xe_device_get(data.drm_fd);
-+	}
-+
-+	igt_subtest("basic") {
-+		gpgpu_fill(&data, fill_fn, 0);
-+	}
-+
-+	igt_fixture {
-+		xe_device_put(data.drm_fd);
-+		buf_ops_destroy(data.bops);
-+	}
-+}
+ 
+ #ifndef PAGE_ALIGN
+ #ifndef PAGE_SIZE
+@@ -634,17 +635,24 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
+ 				    struct buf_data *from, uint32_t tiling)
+ {
+ 	struct intel_buf *buf;
++	enum intel_driver driver = buf_ops_get_driver(bops);
+ 	uint32_t handle, name, width, height;
++	uint64_t region = driver == INTEL_DRIVER_XE ? vram_if_possible(fd, 0) : -1;
++	uint64_t size = from->size;
+ 
+ 	width = from->stride / (from->bpp / 8);
+ 	height = from->size / from->stride;
++	if (driver == INTEL_DRIVER_XE)
++		size = ALIGN(size, xe_get_default_alignment(fd));
+ 
+ 	name = gem_flink(fd, from->handle);
+ 	handle = gem_open(fd, name);
+ 
+-	buf = intel_buf_create_using_handle(bops, handle,
+-					    width, height, from->bpp, 0,
+-					    tiling, 0);
++	buf = intel_buf_create_full(bops, handle,
++				    width, height, from->bpp, 0,
++				    tiling, 0,
++				    size, 0,
++				    region);
+ 
+ 	/* Make sure we close handle on destroy path */
+ 	intel_buf_set_ownership(buf, true);
 -- 
 2.34.1
