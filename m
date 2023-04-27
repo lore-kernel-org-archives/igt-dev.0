@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E01010EAB7
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 06:40:42 +0000 (UTC)
-Message-ID: <69648412-edb1-373f-77ab-cc1adc59a21d@intel.com>
-Date: Thu, 27 Apr 2023 12:10:09 +0530
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5DD510EAB7
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 06:41:35 +0000 (UTC)
+Message-ID: <963562a5-2148-a674-788e-69f6b94c4628@intel.com>
+Date: Thu, 27 Apr 2023 12:11:16 +0530
+Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
- <20230425154017.374465-16-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
+ <20230425154017.374465-15-zbigniew.kempczynski@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230425154017.374465-16-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230425154017.374465-15-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v6 15/15] tests/kms_big_fb: Deduce
- region for xe framebuffer
+Subject: Re: [igt-dev] [PATCH i-g-t v6 14/15] lib/igt_draw: Pass region
+ while building intel_buf from flink
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,52 +29,57 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On Tue-25-04-2023 09:10 pm, Zbigniew Kempczyński wrote:
-> For discrete framebuffer reside on vram/device memory and for
-> integrated on system memory. Due to xe requirement regarding
-> size and alignment on different memory regions during intel_buf
-> creation pass deduced memory region.
+> For i915 region doesn't matter but for xe we need to be more strict and
+> region aware. This is related to size and alignment constraints. As we
+> don't have information about flink buffer origin let's assume region
+> is vram if possible, otherwise choose system region.
 > 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
 LGTM
 Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->   tests/i915/kms_big_fb.c | 10 ++++++++--
->   1 file changed, 8 insertions(+), 2 deletions(-)
+>   lib/igt_draw.c | 14 +++++++++++---
+>   1 file changed, 11 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-> index a29a05a282..a0d5ef7301 100644
-> --- a/tests/i915/kms_big_fb.c
-> +++ b/tests/i915/kms_big_fb.c
-> @@ -28,6 +28,7 @@
->   #include <string.h>
->   
+> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> index ac512fac5a..c5f2fdfe2b 100644
+> --- a/lib/igt_draw.c
+> +++ b/lib/igt_draw.c
+> @@ -37,6 +37,7 @@
 >   #include "i915/gem_create.h"
+>   #include "i915/gem_mman.h"
+>   #include "i915/intel_mocs.h"
 > +#include "xe/xe_query.h"
 >   
->   IGT_TEST_DESCRIPTION("Test big framebuffers");
->   
-> @@ -62,7 +63,10 @@ static struct intel_buf *init_buf(data_t *data,
->   				  const char *buf_name)
+>   #ifndef PAGE_ALIGN
+>   #ifndef PAGE_SIZE
+> @@ -634,17 +635,24 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
+>   				    struct buf_data *from, uint32_t tiling)
 >   {
 >   	struct intel_buf *buf;
-> +	enum intel_driver driver = buf_ops_get_driver(data->bops);
->   	uint32_t name, handle, tiling, stride, width, height, bpp, size;
-> +	uint64_t region = driver == INTEL_DRIVER_XE ?
-> +				vram_if_possible(data->drm_fd, 0) : -1;
+> +	enum intel_driver driver = buf_ops_get_driver(bops);
+>   	uint32_t handle, name, width, height;
+> +	uint64_t region = driver == INTEL_DRIVER_XE ? vram_if_possible(fd, 0) : -1;
+> +	uint64_t size = from->size;
 >   
->   	igt_assert_eq(fb->offsets[0], 0);
+>   	width = from->stride / (from->bpp / 8);
+>   	height = from->size / from->stride;
+> +	if (driver == INTEL_DRIVER_XE)
+> +		size = ALIGN(size, xe_get_default_alignment(fd));
 >   
-> @@ -75,8 +79,10 @@ static struct intel_buf *init_buf(data_t *data,
+>   	name = gem_flink(fd, from->handle);
+>   	handle = gem_open(fd, name);
 >   
->   	name = gem_flink(data->drm_fd, fb->gem_handle);
->   	handle = gem_open(data->drm_fd, name);
-> -	buf = intel_buf_create_using_handle(data->bops, handle, width, height,
-> -					    bpp, 0, tiling, 0);
-> +	buf = intel_buf_create_full(data->bops, handle, width, height,
-> +				    bpp, 0, tiling, 0, size, 0,
+> -	buf = intel_buf_create_using_handle(bops, handle,
+> -					    width, height, from->bpp, 0,
+> -					    tiling, 0);
+> +	buf = intel_buf_create_full(bops, handle,
+> +				    width, height, from->bpp, 0,
+> +				    tiling, 0,
+> +				    size, 0,
 > +				    region);
-> +
->   	intel_buf_set_name(buf, buf_name);
->   	intel_buf_set_ownership(buf, true);
 >   
+>   	/* Make sure we close handle on destroy path */
+>   	intel_buf_set_ownership(buf, true);
