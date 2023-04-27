@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5DD510EAB7
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 06:41:35 +0000 (UTC)
-Message-ID: <963562a5-2148-a674-788e-69f6b94c4628@intel.com>
-Date: Thu, 27 Apr 2023 12:11:16 +0530
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C44A510EAB9
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Apr 2023 06:44:31 +0000 (UTC)
+Message-ID: <9afc47b4-03f2-99c2-f4af-b9c1bcaeb491@intel.com>
+Date: Thu, 27 Apr 2023 12:14:06 +0530
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20230425154017.374465-1-zbigniew.kempczynski@intel.com>
- <20230425154017.374465-15-zbigniew.kempczynski@intel.com>
+ <20230425154017.374465-14-zbigniew.kempczynski@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230425154017.374465-15-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230425154017.374465-14-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v6 14/15] lib/igt_draw: Pass region
- while building intel_buf from flink
+Subject: Re: [igt-dev] [PATCH i-g-t v6 13/15] lib/igt_fb: For xe assume vram
+ is used on discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,57 +29,51 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On Tue-25-04-2023 09:10 pm, Zbigniew Kempczyński wrote:
-> For i915 region doesn't matter but for xe we need to be more strict and
-> region aware. This is related to size and alignment constraints. As we
-> don't have information about flink buffer origin let's assume region
-> is vram if possible, otherwise choose system region.
+> Assume fb bo's were created on vram on discrete, otherwise use system
+> memory.
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
-LGTM
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
 > ---
->   lib/igt_draw.c | 14 +++++++++++---
->   1 file changed, 11 insertions(+), 3 deletions(-)
+>   lib/igt_fb.c | 17 +++++++++++------
+>   1 file changed, 11 insertions(+), 6 deletions(-)
 > 
-> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-> index ac512fac5a..c5f2fdfe2b 100644
-> --- a/lib/igt_draw.c
-> +++ b/lib/igt_draw.c
-> @@ -37,6 +37,7 @@
->   #include "i915/gem_create.h"
->   #include "i915/gem_mman.h"
->   #include "i915/intel_mocs.h"
-> +#include "xe/xe_query.h"
->   
->   #ifndef PAGE_ALIGN
->   #ifndef PAGE_SIZE
-> @@ -634,17 +635,24 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
->   				    struct buf_data *from, uint32_t tiling)
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 7379b99aa8..76f2e12456 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -2545,6 +2545,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
 >   {
 >   	struct intel_buf *buf;
-> +	enum intel_driver driver = buf_ops_get_driver(bops);
->   	uint32_t handle, name, width, height;
-> +	uint64_t region = driver == INTEL_DRIVER_XE ? vram_if_possible(fd, 0) : -1;
-> +	uint64_t size = from->size;
+>   	uint32_t bo_name, handle, compression;
+> +	uint64_t region;
+>   	int num_surfaces;
+>   	int i;
 >   
->   	width = from->stride / (from->bpp / 8);
->   	height = from->size / from->stride;
-> +	if (driver == INTEL_DRIVER_XE)
-> +		size = ALIGN(size, xe_get_default_alignment(fd));
+> @@ -2571,12 +2572,16 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+>   	bo_name = gem_flink(fd, fb->gem_handle);
+>   	handle = gem_open(fd, bo_name);
 >   
->   	name = gem_flink(fd, from->handle);
->   	handle = gem_open(fd, name);
->   
-> -	buf = intel_buf_create_using_handle(bops, handle,
-> -					    width, height, from->bpp, 0,
-> -					    tiling, 0);
+> -	buf = intel_buf_create_using_handle_and_size(bops, handle,
+> -						     fb->width, fb->height,
+> -						     fb->plane_bpp[0], 0,
+> -						     igt_fb_mod_to_tiling(fb->modifier),
+> -						     compression, fb->size,
+> -						     fb->strides[0]);
+> +	/* For i915 region doesn't matter, for xe does */
+> +	region = buf_ops_get_driver(bops) == INTEL_DRIVER_XE ?
+> +				vram_if_possible(fd, 0) : 0;
+----------------------------------------------------------^
+For i915, region must be -1 right?
+
+- Bhanu
+
 > +	buf = intel_buf_create_full(bops, handle,
-> +				    width, height, from->bpp, 0,
-> +				    tiling, 0,
-> +				    size, 0,
+> +				    fb->width, fb->height,
+> +				    fb->plane_bpp[0], 0,
+> +				    igt_fb_mod_to_tiling(fb->modifier),
+> +				    compression, fb->size,
+> +				    fb->strides[0],
 > +				    region);
+>   	intel_buf_set_name(buf, name);
 >   
 >   	/* Make sure we close handle on destroy path */
->   	intel_buf_set_ownership(buf, true);
