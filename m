@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EBD510EC75
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA5A410EC86
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:20 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:41 +0530
-Message-Id: <20230428071350.2561575-39-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:44 +0530
+Message-Id: <20230428071350.2561575-42-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 38/47] tests/kms_hdr: Add XE support
+Subject: [igt-dev] [i-g-t V5 41/47] tests/kms_plane_lowers: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,50 +25,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_hdr.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/kms_plane_lowres.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 23f12c14a..81a32dbf8 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -226,7 +226,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 			if (igt_pipe_connector_valid(pipe, output)) {
- 				prepare_test(data, output, pipe);
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index 958d3ec6f..db9f5a54c 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -266,8 +266,11 @@ static void run_test(data_t *data, uint64_t modifier)
+ 	enum pipe pipe;
+ 	igt_output_t *output;
  
--				if (is_i915_device(data->fd) &&
-+				if (is_intel_device(data->fd) &&
- 				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
- 					test_fini(data);
- 					break;
-@@ -503,7 +503,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+-	igt_skip_on(!igt_display_has_format_mod(&data->display,
+-						DRM_FORMAT_XRGB8888, modifier));
++	if(!igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888, modifier))
++		return;
++
++	if (is_xe_device(data->drm_fd) && modifier != DRM_FORMAT_MOD_LINEAR)
++		return;
  
- 	/* Change the mastering information, no modeset allowed
--	 * for amd driver, whereas a modeset is required for i915
-+	 * for amd driver, whereas a modeset is required for intel
- 	 * driver. */
- 	hdr.hdmi_metadata_type1.max_display_mastering_luminance = 200;
- 	hdr.hdmi_metadata_type1.max_fall = 200;
-@@ -517,7 +517,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	for_each_pipe(&data->display, pipe) {
+ 		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+@@ -318,7 +321,7 @@ igt_main
  
- 	/* Enter SDR via metadata, no modeset allowed for
- 	 * amd driver, whereas a modeset is required for
--	 * i915 driver. */
-+	 * intel driver. */
- 	fill_hdr_output_metadata_sdr(&hdr);
- 	set_hdr_output_metadata(data, &hdr);
- 	if (is_amdgpu_device(data->fd))
-@@ -590,7 +590,7 @@ static void test_hdr(data_t *data, uint32_t flags)
- 			if (igt_pipe_connector_valid(pipe, output)) {
- 				prepare_test(data, output, pipe);
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+-		data.devid = is_i915_device(data.drm_fd) ?
++		data.devid = is_intel_device(data.drm_fd) ?
+ 			intel_get_drm_devid(data.drm_fd) : 0;
  
--				if (is_i915_device(data->fd) &&
-+				if (is_intel_device(data->fd) &&
- 				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
- 					test_fini(data);
- 					break;
+ 		kmstest_set_vt_graphics_mode();
 -- 
 2.40.0
