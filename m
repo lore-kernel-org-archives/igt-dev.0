@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7807F10EC5E
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D19710EC5E
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:07 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:37:37 +0530
-Message-Id: <20230428060818.2446308-6-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:37:36 +0530
+Message-Id: <20230428060818.2446308-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 05/46] lib/drmtest: Add driver enum for i915/xe
+Subject: [igt-dev] [i-g-t V4 04/46] lib/intel_allocator: Add allocator
+ support for Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,36 +26,92 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Library code like intel-bb and intel-buf which requires adoption
-to handle both drivers should store driver on which fd they are
-working on instead of calling costful is_i915/xe_device() helper.
+Start supporting va range configuration for xe allocator.
 
-Introduce intel_driver enum which will be used on library code
-adoption to Xe.
+During opening allocator has to be aware of vm range (start and end).
+i915 driver doesn't expose vm range information so those variables
+have to be detected. In xe driver we get information of va size from
+the kernel query so va end can be directly configured. At the moment
+there's no autodetection of va start for xe what might need to be
+address in the future if for some reason lower offsets might not be
+in use.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/drmtest.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ lib/intel_allocator.c | 40 +++++++++++++++++++++++++---------------
+ 1 file changed, 25 insertions(+), 15 deletions(-)
 
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index 5878f6512..3c88b85c6 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -62,6 +62,14 @@
-  */
- #define DRIVER_ANY 	~(DRIVER_VGEM)
+diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+index 2b08dd599..45c1168ab 100644
+--- a/lib/intel_allocator.c
++++ b/lib/intel_allocator.c
+@@ -16,6 +16,7 @@
+ #include "igt_map.h"
+ #include "intel_allocator.h"
+ #include "intel_allocator_msgchannel.h"
++#include "xe/xe_query.h"
  
-+/*
-+ * Compile friendly enum for i915/xe.
-+ */
-+enum intel_driver {
-+	INTEL_DRIVER_I915 = 1,
-+	INTEL_DRIVER_XE,
-+};
+ //#define ALLOCDBG
+ #ifdef ALLOCDBG
+@@ -910,24 +911,33 @@ static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
+ 	struct alloc_resp resp;
+ 	uint64_t gtt_size;
+ 
+-	if (!start)
+-		req.open.start = gem_detect_safe_start_offset(fd);
++	if (is_i915_device(fd)) {
++		if (!start)
++			req.open.start = gem_detect_safe_start_offset(fd);
+ 
+-	if (!end) {
+-		igt_assert_f(can_report_gtt_size(fd), "Invalid fd\n");
+-		gtt_size = gem_aperture_size(fd);
+-		if (!gem_uses_full_ppgtt(fd))
+-			gtt_size /= 2;
+-		else
+-			gtt_size -= RESERVED;
++		if (!end) {
++			igt_assert_f(can_report_gtt_size(fd), "Invalid fd\n");
++			gtt_size = gem_aperture_size(fd);
++			if (!gem_uses_full_ppgtt(fd))
++				gtt_size /= 2;
++			else
++				gtt_size -= RESERVED;
+ 
+-		req.open.end = gtt_size;
+-	}
++			req.open.end = gtt_size;
++		}
+ 
+-	if (!default_alignment)
+-		req.open.default_alignment = gem_detect_safe_alignment(fd);
++		if (!default_alignment)
++			req.open.default_alignment = gem_detect_safe_alignment(fd);
 +
- void __set_forced_driver(const char *name);
++		req.open.start = ALIGN(req.open.start, req.open.default_alignment);
++	} else {
++		struct xe_device *xe_dev = xe_device_get(fd);
+ 
+-	req.open.start = ALIGN(req.open.start, req.open.default_alignment);
++		igt_assert(xe_dev);
++
++		if (!end)
++			req.open.end = 1ull << xe_dev->va_bits;
++	}
+ 
+ 	/* Get child_tid only once at open() */
+ 	if (child_tid == -1)
+@@ -998,7 +1008,7 @@ uint64_t intel_allocator_open_vm_full(int fd, uint32_t vm,
  
  /**
+  * intel_allocator_open:
+- * @fd: i915 descriptor
++ * @fd: i915 or xe descriptor
+  * @ctx: context
+  * @allocator_type: one of INTEL_ALLOCATOR_* define
+  *
 -- 
 2.40.0
