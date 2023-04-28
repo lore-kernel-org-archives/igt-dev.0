@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BECC610EC66
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:38 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1301110EC5E
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:23:18 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:38:01 +0530
-Message-Id: <20230428060818.2446308-30-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
-References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 08:22:23 +0200
+Message-Id: <20230428062224.21322-17-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230428062224.21322-1-zbigniew.kempczynski@intel.com>
+References: <20230428062224.21322-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 29/46] tests/kms_atomic_transition: Add XE
- support
+Subject: [igt-dev] [PATCH i-g-t v8 16/17] lib/igt_draw: Pass region while
+ building intel_buf from flink
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,53 +24,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+For i915 region doesn't matter but for xe we need to be more strict and
+region aware. This is related to size and alignment constraints. As we
+don't have information about flink buffer origin let's assume region
+is vram if possible, otherwise choose system region.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_atomic_transition.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ lib/igt_draw.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 7c7be578c..9f39d033d 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -136,7 +136,7 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
- 	if (data->extended)
- 		return false;
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index ac512fac5a..c5f2fdfe2b 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -37,6 +37,7 @@
+ #include "i915/gem_create.h"
+ #include "i915/gem_mman.h"
+ #include "i915/intel_mocs.h"
++#include "xe/xe_query.h"
  
--	if (!is_i915_device(data->drm_fd))
-+	if (!is_intel_device(data->drm_fd))
- 		return false;
+ #ifndef PAGE_ALIGN
+ #ifndef PAGE_SIZE
+@@ -634,17 +635,24 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
+ 				    struct buf_data *from, uint32_t tiling)
+ {
+ 	struct intel_buf *buf;
++	enum intel_driver driver = buf_ops_get_driver(bops);
+ 	uint32_t handle, name, width, height;
++	uint64_t region = driver == INTEL_DRIVER_XE ? vram_if_possible(fd, 0) : -1;
++	uint64_t size = from->size;
  
- 	if (plane->type == DRM_PLANE_TYPE_CURSOR)
-@@ -848,7 +848,7 @@ retry:
- 		/* count enable pipes to set max iteration */
- 		j += 1;
+ 	width = from->stride / (from->bpp / 8);
+ 	height = from->size / from->stride;
++	if (driver == INTEL_DRIVER_XE)
++		size = ALIGN(size, xe_get_default_alignment(fd));
  
--		if (is_i915_device(data->drm_fd))
-+		if (is_intel_device(data->drm_fd))
- 			data->pipe_crcs[i] = igt_pipe_crc_new(data->drm_fd, i,
- 							      IGT_PIPE_CRC_SOURCE_AUTO);
+ 	name = gem_flink(fd, from->handle);
+ 	handle = gem_open(fd, name);
  
-@@ -943,7 +943,7 @@ retry:
- 			commit_display(data, i, nonblocking);
- 			collect_crcs_mask(data->pipe_crcs, i, crcs[4]);
+-	buf = intel_buf_create_using_handle(bops, handle,
+-					    width, height, from->bpp, 0,
+-					    tiling, 0);
++	buf = intel_buf_create_full(bops, handle,
++				    width, height, from->bpp, 0,
++				    tiling, 0,
++				    size, 0,
++				    region);
  
--			if (!is_i915_device(data->drm_fd))
-+			if (!is_intel_device(data->drm_fd))
- 				continue;
- 
- 			for (int k = 0; k < IGT_MAX_PIPES; k++) {
-@@ -996,7 +996,7 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
- 	unset_output_pipe(&data->display);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	if (is_i915_device(data->drm_fd)) {
-+	if (is_intel_device(data->drm_fd)) {
- 		for_each_pipe(&data->display, pipe)
- 			igt_pipe_crc_free(data->pipe_crcs[pipe]);
- 	}
+ 	/* Make sure we close handle on destroy path */
+ 	intel_buf_set_ownership(buf, true);
 -- 
-2.40.0
+2.34.1
