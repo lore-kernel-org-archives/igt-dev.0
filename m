@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8968410EC63
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15CBA10EC62
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:30 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:37:48 +0530
-Message-Id: <20230428060818.2446308-17-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:37:54 +0530
+Message-Id: <20230428060818.2446308-23-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 16/46] tests/kms_big_fb: Deduce region for xe
- framebuffer
+Subject: [igt-dev] [i-g-t V4 22/46] tests/i915/kms_draw_crc: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,54 +22,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Add XE driver support for differnt draw methods.
 
-For discrete framebuffer reside on vram/device memory and for
-integrated on system memory. Due to xe requirement regarding
-size and alignment on different memory regions during intel_buf
-creation pass deduced memory region.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/i915/kms_big_fb.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tests/i915/kms_draw_crc.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-index a29a05a28..a0d5ef730 100644
---- a/tests/i915/kms_big_fb.c
-+++ b/tests/i915/kms_big_fb.c
-@@ -28,6 +28,7 @@
- #include <string.h>
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index 3a3cd99a0..db6d71f2e 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -149,8 +149,8 @@ static void draw_method_subtest(enum igt_draw_method method,
+ 	 * comparison. Cache the value so we don't recompute it for every single
+ 	 * subtest. */
+ 	if (!base_crcs[format_index].set) {
+-		get_method_crc(gem_has_mappable_ggtt(drm_fd) ? IGT_DRAW_MMAP_GTT :
+-							       IGT_DRAW_MMAP_WC,
++		get_method_crc(igt_draw_supports_method(drm_fd, IGT_DRAW_MMAP_GTT) ?
++			       IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
+ 			       formats[format_index],
+ 			       DRM_FORMAT_MOD_LINEAR,
+ 			       &base_crcs[format_index].crc);
+@@ -195,8 +195,8 @@ static void fill_fb_subtest(void)
+ 	igt_plane_set_fb(primary, &fb);
  
- #include "i915/gem_create.h"
-+#include "xe/xe_query.h"
+ 	igt_draw_rect_fb(drm_fd, bops, 0, &fb,
+-			 gem_has_mappable_ggtt(drm_fd) ? IGT_DRAW_MMAP_GTT :
+-							 IGT_DRAW_MMAP_WC,
++			 igt_draw_supports_method(drm_fd, IGT_DRAW_MMAP_GTT) ?
++			 IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
+ 			 0, 0, fb.width, fb.height, 0xFF);
  
- IGT_TEST_DESCRIPTION("Test big framebuffers");
+ 	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+@@ -222,7 +222,7 @@ static void fill_fb_subtest(void)
  
-@@ -62,7 +63,10 @@ static struct intel_buf *init_buf(data_t *data,
- 				  const char *buf_name)
+ static void setup_environment(void)
  {
- 	struct intel_buf *buf;
-+	enum intel_driver driver = buf_ops_get_driver(data->bops);
- 	uint32_t name, handle, tiling, stride, width, height, bpp, size;
-+	uint64_t region = driver == INTEL_DRIVER_XE ?
-+				vram_if_possible(data->drm_fd, 0) : -1;
+-	drm_fd = drm_open_driver_master(DRIVER_INTEL);
++	drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 	igt_require(drm_fd >= 0);
+ 	igt_display_require(&display, drm_fd);
+ 	igt_display_require_output(&display);
+@@ -289,13 +289,17 @@ igt_main
+ 			       "method (%s) with different modifiers & DRM formats.",
+ 			       igt_draw_get_method_name(method));
+ 		igt_subtest_with_dynamic_f("draw-method-%s", igt_draw_get_method_name(method)) {
+-			igt_skip_on(method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd));
+-			igt_skip_on(method == IGT_DRAW_MMAP_GTT && !gem_has_mappable_ggtt(drm_fd));
++			if (!igt_draw_supports_method(drm_fd, method))
++				continue;
  
- 	igt_assert_eq(fb->offsets[0], 0);
+-			for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+-				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+-					modifier = modifiers[modifier_idx];
++			for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
++				modifier = modifiers[modifier_idx];
  
-@@ -75,8 +79,10 @@ static struct intel_buf *init_buf(data_t *data,
- 
- 	name = gem_flink(data->drm_fd, fb->gem_handle);
- 	handle = gem_open(data->drm_fd, name);
--	buf = intel_buf_create_using_handle(data->bops, handle, width, height,
--					    bpp, 0, tiling, 0);
-+	buf = intel_buf_create_full(data->bops, handle, width, height,
-+				    bpp, 0, tiling, 0, size, 0,
-+				    region);
++				/* No tiling support in XE. */
++				if (is_xe_device(drm_fd) && modifier != DRM_FORMAT_MOD_LINEAR)
++					continue;
 +
- 	intel_buf_set_name(buf, buf_name);
- 	intel_buf_set_ownership(buf, true);
++				for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+ 					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
+ 						continue;
  
 -- 
 2.40.0
