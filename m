@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F111810EC64
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCA6410EC62
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:28 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:38:07 +0530
-Message-Id: <20230428060818.2446308-36-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:37:53 +0530
+Message-Id: <20230428060818.2446308-22-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 35/46] tests/kms_getfb: Add XE support
+Subject: [igt-dev] [i-g-t V4 21/46] tests/i915/kms_cdclk: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,91 +25,33 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/kms_getfb.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ tests/i915/kms_cdclk.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index 813417e77..4adc7eee2 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -42,6 +42,7 @@
- #include "drm_fourcc.h"
- #include "i915/gem_create.h"
- #include "igt_device.h"
-+#include "xe/xe_query.h"
+diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+index bb0036802..0f9b8dc58 100644
+--- a/tests/i915/kms_cdclk.c
++++ b/tests/i915/kms_cdclk.c
+@@ -65,6 +65,9 @@ static int get_current_cdclk_freq(int debugfs_fd)
+ 	 * Display specific clock frequency info is moved to i915_cdclk_info,
+ 	 * On older kernels if this debugfs is not found, fallback to read from
+ 	 * i915_frequency_info.
++	 *
++	 * FIXME: As of now, XE debugfs is still using i915 namespace, once the
++	 * Kernel changes are landed, update this to use the XE specific debugfs.
+ 	 */
+ 	res = igt_debugfs_simple_read(debugfs_fd, "i915_cdclk_info",
+ 				      buf, sizeof(buf));
+@@ -368,7 +371,7 @@ igt_main
+ 	data_t data = {};
  
- IGT_TEST_DESCRIPTION("Tests GETFB and GETFB2 ioctls.");
- 
-@@ -91,7 +92,6 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
- 	uint32_t devid;
- 
- 	igt_require(has_addfb2_iface(fd));
--	igt_require_intel(fd);
- 	devid = intel_get_drm_devid(fd);
- 
- 	if (HAS_FLATCCS(devid)) {
-@@ -265,7 +265,7 @@ static void test_duplicate_handles(int fd)
- 		struct drm_mode_fb_cmd2 add_ccs = { };
- 		struct drm_mode_fb_cmd get = { };
- 
--		igt_require(is_i915_device(fd));
-+		igt_require_i915(fd);
- 		igt_require_f(!HAS_FLATCCS(intel_get_drm_devid(fd)),
- 			      "skip because flat ccs has only one buffer.\n");
- 
-@@ -340,6 +340,7 @@ static void test_getfb2(int fd)
- 		struct drm_mode_fb_cmd2 get = { };
- 		int i;
- 
-+		igt_require_i915(fd);
- 		get_ccs_fb(fd, &add_ccs);
- 		igt_require(add_ccs.fb_id != 0);
- 		get.fb_id = add_ccs.fb_id;
-@@ -398,6 +399,9 @@ static void test_handle_protection(void) {
  	igt_fixture {
- 		non_master_fd = drm_open_driver(DRIVER_ANY);
- 
-+		if (is_xe_device(non_master_fd))
-+			xe_device_get(non_master_fd);
-+
- 		non_master_add.width = 1024;
- 		non_master_add.height = 1024;
- 		non_master_add.pixel_format = DRM_FORMAT_XRGB8888;
-@@ -444,6 +448,11 @@ static void test_handle_protection(void) {
- 	igt_fixture {
- 		do_ioctl(non_master_fd, DRM_IOCTL_MODE_RMFB, &non_master_add.fb_id);
- 		gem_close(non_master_fd, non_master_add.handles[0]);
-+
-+		if (is_xe_device(non_master_fd))
-+			xe_device_get(non_master_fd);
-+
-+		close(non_master_fd);
- 	}
- }
- 
-@@ -454,6 +463,9 @@ igt_main
- 	igt_fixture {
- 		fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_require(has_getfb_iface(fd));
-+
-+		if (is_xe_device(fd))
-+			xe_device_get(fd);
- 	}
- 
- 	igt_subtest_group
-@@ -468,6 +480,10 @@ igt_main
- 	igt_subtest_group
- 		test_handle_protection();
- 
--	igt_fixture
-+	igt_fixture {
-+		if (is_xe_device(fd))
-+			xe_device_put(fd);
-+
- 		close(fd);
-+	}
- }
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		igt_require(data.drm_fd >= 0);
+ 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		igt_require(data.debugfs_fd);
 -- 
 2.40.0
