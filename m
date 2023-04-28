@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5794532164215922892=="
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B42910EC63
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:25 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 28 Apr 2023 11:37:45 +0530
+Message-Id: <20230428060818.2446308-14-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
+References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Hersen Wu" <hersenxs.wu@amd.com>
-Date: Tue, 25 Apr 2023 22:53:06 -0000
-Message-ID: <168246318673.25939.14413973006685510532@emeril.freedesktop.org>
-References: <20230425214710.179129-1-hersenxs.wu@amd.com>
-In-Reply-To: <20230425214710.179129-1-hersenxs.wu@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?amdgpu/amd=5Flink=5Fsettings=3A_use_mode_640x480_for_link_confi?=
- =?utf-8?q?guration_test_=28rev4=29?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V4 13/46] tests/xe_gpgpu_fill: Exercise gpgpu fill
+ on Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,220 +20,187 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5794532164215922892==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-== Series Details ==
+Reuse gpgpu fill already exercised on i915 on Xe.
 
-Series: tests/amdgpu/amd_link_settings: use mode 640x480 for link configuration test (rev4)
-URL   : https://patchwork.freedesktop.org/series/116892/
-State : failure
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist |   1 +
+ tests/meson.build                        |   1 +
+ tests/xe/xe_gpgpu_fill.c                 | 135 +++++++++++++++++++++++
+ 3 files changed, 137 insertions(+)
+ create mode 100644 tests/xe/xe_gpgpu_fill.c
 
-== Summary ==
-
-CI Bug Log - changes from IGT_7271 -> IGTPW_8863
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_8863 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8863, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): fi-kbl-soraka fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8863:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-rpls-1:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@slpc:
-    - {bat-mtlp-8}:       NOTRUN -> [FAIL][3] +2 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/bat-mtlp-8/igt@i915_selftest@live@slpc.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8863 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - bat-adlp-9:         NOTRUN -> [SKIP][4] ([i915#3546]) +1 similar issue
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@requests:
-    - {bat-mtlp-8}:       [ABORT][5] -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
-    - bat-dg2-8:          [FAIL][7] ([i915#7932]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7271 -> IGTPW_8863
-
-  CI-20190529: 20190529
-  CI_DRM_13062: 5a0333cf630a335d7e8f60fd2b8526ed0895900c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8863: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/index.html
-  IGT_7271: d12d7eb92226e14745a80e6bdd95384913a43548 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/index.html
-
---===============5794532164215922892==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_link_settings: use mode 640x480 for link configuration test (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116892/">https://patchwork.freedesktop.org/series/116892/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7271 -&gt; IGTPW_8863</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8863 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8863, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8863:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@gem_exec_suspend@basic-s3@smem:<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_selftest@live@slpc:<ul>
-<li>{bat-mtlp-8}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/bat-mtlp-8/igt@i915_selftest@live@slpc.html">FAIL</a> +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8863 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@read-crc:<ul>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7271/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7271 -&gt; IGTPW_8863</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13062: 5a0333cf630a335d7e8f60fd2b8526ed0895900c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8863: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8863/index.html<br />
-  IGT_7271: d12d7eb92226e14745a80e6bdd95384913a43548 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5794532164215922892==--
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 3d0603fd9..ecf44ca73 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -100,6 +100,7 @@ igt@xe_exec_threads@threads-mixed-fd-basic
+ igt@xe_exec_threads@threads-bal-mixed-basic
+ igt@xe_exec_threads@threads-bal-mixed-shared-vm-basic
+ igt@xe_exec_threads@threads-bal-mixed-fd-basic
++igt@xe_gpgpu_fill@basic
+ igt@xe_guc_pc@freq_basic_api
+ igt@xe_guc_pc@freq_fixed_idle
+ igt@xe_guc_pc@freq_range_idle
+diff --git a/tests/meson.build b/tests/meson.build
+index b026fac48..c15eb3a08 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -254,6 +254,7 @@ xe_progs = [
+ 	'xe_exec_fault_mode',
+ 	'xe_exec_reset',
+ 	'xe_exec_threads',
++	'xe_gpgpu_fill',
+ 	'xe_guc_pc',
+ 	'xe_huc_copy',
+ 	'xe_intel_bb',
+diff --git a/tests/xe/xe_gpgpu_fill.c b/tests/xe/xe_gpgpu_fill.c
+new file mode 100644
+index 000000000..5bca19c87
+--- /dev/null
++++ b/tests/xe/xe_gpgpu_fill.c
+@@ -0,0 +1,135 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++/**
++ * TEST: Basic tests for gpgpu functionality
++ * Category: Software building block
++ * Sub-category: gpgpu
++ * Test category: functionality test
++ */
++
++#include <errno.h>
++#include <fcntl.h>
++#include <inttypes.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/stat.h>
++#include <sys/time.h>
++#include <unistd.h>
++
++#include "drm.h"
++#include "i915/gem.h"
++#include "igt.h"
++#include "igt_collection.h"
++#include "intel_bufops.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++#define WIDTH 64
++#define HEIGHT 64
++#define STRIDE (WIDTH)
++#define SIZE (HEIGHT*STRIDE)
++#define COLOR_C4	0xc4
++#define COLOR_4C	0x4c
++
++typedef struct {
++	int drm_fd;
++	uint32_t devid;
++	struct buf_ops *bops;
++} data_t;
++
++static struct intel_buf *
++create_buf(data_t *data, int width, int height, uint8_t color, uint64_t region)
++{
++	struct intel_buf *buf;
++	uint8_t *ptr;
++	int i;
++
++	buf = calloc(1, sizeof(*buf));
++	igt_assert(buf);
++
++	buf = intel_buf_create(data->bops, width/4, height, 32, 0,
++			       I915_TILING_NONE, 0);
++
++	ptr = xe_bo_map(data->drm_fd, buf->handle, buf->surface[0].size);
++
++	for (i = 0; i < buf->surface[0].size; i++)
++		ptr[i] = color;
++
++	munmap(ptr, buf->surface[0].size);
++
++	return buf;
++}
++
++static void buf_check(uint8_t *ptr, int x, int y, uint8_t color)
++{
++	uint8_t val;
++
++	val = ptr[y * WIDTH + x];
++	igt_assert_f(val == color,
++		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
++		     color, val, x, y);
++}
++
++/**
++ * SUBTEST: basic
++ * Description: run gpgpu fill
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++
++static void gpgpu_fill(data_t *data, igt_fillfunc_t fill, uint32_t region)
++{
++	struct intel_buf *buf;
++	uint8_t *ptr;
++	int i, j;
++
++	buf = create_buf(data, WIDTH, HEIGHT, COLOR_C4, region);
++	ptr = xe_bo_map(data->drm_fd, buf->handle, buf->surface[0].size);
++
++	for (i = 0; i < WIDTH; i++)
++		for (j = 0; j < HEIGHT; j++)
++			buf_check(ptr, i, j, COLOR_C4);
++
++	fill(data->drm_fd, buf, 0, 0, WIDTH / 2, HEIGHT / 2, COLOR_4C);
++
++	for (i = 0; i < WIDTH; i++)
++		for (j = 0; j < HEIGHT; j++)
++			if (i < WIDTH / 2 && j < HEIGHT / 2)
++				buf_check(ptr, i, j, COLOR_4C);
++			else
++				buf_check(ptr, i, j, COLOR_C4);
++
++	munmap(ptr, buf->surface[0].size);
++}
++
++igt_main
++{
++	data_t data = {0, };
++	igt_fillfunc_t fill_fn = NULL;
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_render(DRIVER_XE);
++		data.devid = intel_get_drm_devid(data.drm_fd);
++		data.bops = buf_ops_create(data.drm_fd);
++
++		fill_fn = igt_get_gpgpu_fillfunc(data.devid);
++		igt_require_f(fill_fn, "no gpgpu-fill function\n");
++
++		xe_device_get(data.drm_fd);
++	}
++
++	igt_subtest("basic") {
++		gpgpu_fill(&data, fill_fn, 0);
++	}
++
++	igt_fixture {
++		xe_device_put(data.drm_fd);
++		buf_ops_destroy(data.bops);
++	}
++}
+-- 
+2.40.0
