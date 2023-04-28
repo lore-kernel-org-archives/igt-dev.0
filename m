@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7865510EC85
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7252810EC75
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:07 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:40 +0530
-Message-Id: <20230428071350.2561575-38-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:32 +0530
+Message-Id: <20230428071350.2561575-30-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 37/47] tests/kms_hdmi_inject: Add XE support
+Subject: [igt-dev] [i-g-t V5 29/47] tests/kms_async_flips: No XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,55 +22,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+Async flips won't work with linear buffers on Intel hardware,
+hence don't run tests on XE device as XE won't support tiling.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_hdmi_inject.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tests/kms_async_flips.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
-index b6418faf0..2085d1453 100644
---- a/tests/kms_hdmi_inject.c
-+++ b/tests/kms_hdmi_inject.c
-@@ -29,6 +29,7 @@
- #include "igt.h"
- #include "igt_edid.h"
- #include "igt_eld.h"
-+#include "xe/xe_query.h"
- 
- #define HDISPLAY_4K	3840
- #define VDISPLAY_4K	2160
-@@ -83,7 +84,7 @@ hdmi_inject_4k(int drm_fd, drmModeConnector *connector)
- 	struct igt_fb fb;
- 	uint8_t found_4k_mode = 0;
- 
--	if (is_i915_device(drm_fd)) {
-+	if (is_intel_device(drm_fd)) {
- 		uint32_t devid = intel_get_drm_devid(drm_fd);
- 
- 		/* 4K requires at least HSW */
-@@ -205,6 +206,9 @@ igt_main
- 		igt_require(connector);
- 
- 		kmstest_unset_all_crtcs(drm_fd, res);
-+
-+		if (is_xe_device(drm_fd))
-+			xe_device_get(drm_fd);
- 	}
- 
- 	igt_describe("Make sure that 4K modes exposed by DRM match the "
-@@ -219,6 +223,10 @@ igt_main
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 1e6506e3d..51ffa523a 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -592,7 +592,13 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+ 	int i;
  
  	igt_fixture {
- 		drmModeFreeConnector(connector);
-+
-+		if (is_xe_device(drm_fd))
-+			xe_device_put(drm_fd);
-+
- 		close(drm_fd);
- 	}
- }
+-		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++		/*
++		 * FIXME: As of now, Async flips won't work with linear buffers
++		 * on Intel hardware, hence don't run tests on XE device as XE
++		 * won't support tiling.
++		 * Once Kernel changes got landed, please update this logic.
++		 */
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY & ~DRIVER_XE);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
 -- 
 2.40.0
