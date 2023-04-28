@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82CE310EC66
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 04FB910EC6A
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:35 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:38:10 +0530
-Message-Id: <20230428060818.2446308-39-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:37:59 +0530
+Message-Id: <20230428060818.2446308-28-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 38/46] tests/kms_panel_fitting: Add XE support
+Subject: [igt-dev] [i-g-t V4 27/46] tests/kms_3d: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,49 +25,42 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_panel_fitting.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tests/kms_3d.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
-index 2d0590da2..97ef1ae48 100644
---- a/tests/kms_panel_fitting.c
-+++ b/tests/kms_panel_fitting.c
+diff --git a/tests/kms_3d.c b/tests/kms_3d.c
+index c6bef67c1..437c8a481 100644
+--- a/tests/kms_3d.c
++++ b/tests/kms_3d.c
 @@ -23,6 +23,7 @@
   */
  
  #include "igt.h"
-+#include <limits.h>
- #include <math.h>
- #include <sys/stat.h>
++#include "xe/xe_query.h"
  
-@@ -133,7 +134,7 @@ test_panel_fitting_legacy(data_t *d, igt_display_t *display,
- 	igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
- 	igt_plane_set_position(d->plane2, 100, 100);
+ IGT_TEST_DESCRIPTION("Tests 3D mode setting.");
  
--	if (is_i915_device(display->drm_fd)) {
-+	if (is_intel_device(display->drm_fd)) {
- 		uint32_t devid = intel_get_drm_devid(display->drm_fd);
- 		/*
- 		 * Most of gen7 and all of gen8 doesn't support plane scaling
-@@ -233,10 +234,15 @@ static void test_panel_fitting(data_t *data, enum test_type type)
- 	struct stat sb;
+@@ -36,6 +37,9 @@ igt_simple_main
  
- 	if (type == TEST_ATOMIC) {
--		igt_require_f(is_i915_device(display->drm_fd), "not valid for non-i915 devices\n");
-+		char path[PATH_MAX];
+ 	drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 
++	if (is_xe_device(drm_fd))
++		xe_device_get(drm_fd);
 +
-+		igt_require_f(is_intel_device(display->drm_fd), "not valid for non-intel devices\n");
+ 	res = drmModeGetResources(drm_fd);
+ 	igt_require(res);
  
- 		/* Until this is force enabled, force modeset evasion. */
--		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
-+		snprintf(path, PATH_MAX, "/sys/module/%s/parameters/fastboot",
-+					 is_i915_device(data->drm_fd) ? "i915" : "xe");
+@@ -111,5 +115,9 @@ igt_simple_main
+ 	kmstest_force_edid(drm_fd, connector, NULL);
+ 
+ 	drmModeFreeConnector(connector);
 +
-+		if (stat(path, &sb) == 0)
- 			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
- 
- 		igt_require(intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 5);
++	if (is_xe_device(drm_fd))
++		xe_device_put(drm_fd);
++
+ 	close(drm_fd);
+ }
 -- 
 2.40.0
