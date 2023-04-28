@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54B3710EC73
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:18:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 902D810EC73
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:18:53 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:18 +0530
-Message-Id: <20230428071350.2561575-16-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:20 +0530
+Message-Id: <20230428071350.2561575-18-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 15/47] lib/igt_fb: For xe assume vram is used
- on discrete
+Subject: [igt-dev] [i-g-t V5 17/47] tests/kms_big_fb: Deduce region for xe
+ framebuffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,49 +26,52 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Assume fb bo's were created on vram on discrete, otherwise use system
-memory.
+For discrete framebuffer reside on vram/device memory and for
+integrated on system memory. Due to xe requirement regarding
+size and alignment on different memory regions during intel_buf
+creation pass deduced memory region.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_fb.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ tests/i915/kms_big_fb.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 7379b99aa..df3d7d91a 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2545,6 +2545,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+index a29a05a28..a0d5ef730 100644
+--- a/tests/i915/kms_big_fb.c
++++ b/tests/i915/kms_big_fb.c
+@@ -28,6 +28,7 @@
+ #include <string.h>
+ 
+ #include "i915/gem_create.h"
++#include "xe/xe_query.h"
+ 
+ IGT_TEST_DESCRIPTION("Test big framebuffers");
+ 
+@@ -62,7 +63,10 @@ static struct intel_buf *init_buf(data_t *data,
+ 				  const char *buf_name)
  {
  	struct intel_buf *buf;
- 	uint32_t bo_name, handle, compression;
-+	uint64_t region;
- 	int num_surfaces;
- 	int i;
++	enum intel_driver driver = buf_ops_get_driver(data->bops);
+ 	uint32_t name, handle, tiling, stride, width, height, bpp, size;
++	uint64_t region = driver == INTEL_DRIVER_XE ?
++				vram_if_possible(data->drm_fd, 0) : -1;
  
-@@ -2571,12 +2572,16 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
- 	bo_name = gem_flink(fd, fb->gem_handle);
- 	handle = gem_open(fd, bo_name);
+ 	igt_assert_eq(fb->offsets[0], 0);
  
--	buf = intel_buf_create_using_handle_and_size(bops, handle,
--						     fb->width, fb->height,
--						     fb->plane_bpp[0], 0,
--						     igt_fb_mod_to_tiling(fb->modifier),
--						     compression, fb->size,
--						     fb->strides[0]);
-+	/* For i915 region doesn't matter, for xe does */
-+	region = buf_ops_get_driver(bops) == INTEL_DRIVER_XE ?
-+				vram_if_possible(fd, 0) : -1;
-+	buf = intel_buf_create_full(bops, handle,
-+				    fb->width, fb->height,
-+				    fb->plane_bpp[0], 0,
-+				    igt_fb_mod_to_tiling(fb->modifier),
-+				    compression, fb->size,
-+				    fb->strides[0],
+@@ -75,8 +79,10 @@ static struct intel_buf *init_buf(data_t *data,
+ 
+ 	name = gem_flink(data->drm_fd, fb->gem_handle);
+ 	handle = gem_open(data->drm_fd, name);
+-	buf = intel_buf_create_using_handle(data->bops, handle, width, height,
+-					    bpp, 0, tiling, 0);
++	buf = intel_buf_create_full(data->bops, handle, width, height,
++				    bpp, 0, tiling, 0, size, 0,
 +				    region);
- 	intel_buf_set_name(buf, name);
++
+ 	intel_buf_set_name(buf, buf_name);
+ 	intel_buf_set_ownership(buf, true);
  
- 	/* Make sure we close handle on destroy path */
 -- 
 2.40.0
