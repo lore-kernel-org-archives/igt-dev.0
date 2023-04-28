@@ -1,23 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0106E10E11B
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 11:47:07 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gandi,
- Ramadevi" <ramadevi.gandi@intel.com>
-Date: Fri, 28 Apr 2023 11:47:04 +0000
-Message-ID: <MW3PR11MB474832550DCA4B11D6C3D6E7AE6B9@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20230425123603.3069724-1-janga.rahul.kumar@intel.com>
- <MW3PR11MB474865820F23633E1C468129AE6A9@MW3PR11MB4748.namprd11.prod.outlook.com>
- <BYAPR11MB34135C3DEA3576D3EEA5AD3BD06A9@BYAPR11MB3413.namprd11.prod.outlook.com>
-In-Reply-To: <BYAPR11MB34135C3DEA3576D3EEA5AD3BD06A9@BYAPR11MB3413.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 542BE10E11B
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 11:53:10 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 28 Apr 2023 13:52:57 +0200
+Message-Id: <20230428115257.59885-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_query.c: Update subtest
- query-engines
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/drmtest: Change do_ioctl_err() macro to
+ function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,71 +22,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Chris enlightened me after I did some review do_ioctl_err() macro
+is a little bit problematic when it catches unexpected error (debug
+output isn't much descriptive). As we plan to use it widely in xe
+uapi verification lets make error callstack more readable.
 
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/drmtest.c | 12 ++++++++++++
+ lib/drmtest.h | 10 +++-------
+ 2 files changed, 15 insertions(+), 7 deletions(-)
 
-> -----Original Message-----
-> From: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
-> Sent: 27 April 2023 17:50
-> To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; igt-
-> dev@lists.freedesktop.org; Gandi, Ramadevi <ramadevi.gandi@intel.com>
-> Subject: RE: [PATCH i-g-t] tests/xe/xe_query.c: Update subtest query-engi=
-nes
->=20
->=20
->=20
-> > -----Original Message-----
-> > From: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
-> > Sent: Thursday, April 27, 2023 5:28 PM
-> > To: igt-dev@lists.freedesktop.org; Gandi, Ramadevi
-> > <ramadevi.gandi@intel.com>
-> > Cc: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
-> > Subject: RE: [PATCH i-g-t] tests/xe/xe_query.c: Update subtest
-> > query-engines
-> >
-> >
-> >
-> > > -----Original Message-----
-> > > From: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
-> > > Sent: 25 April 2023 18:06
-> > > To: igt-dev@lists.freedesktop.org; Gandi, Ramadevi
-> > > <ramadevi.gandi@intel.com>; Kumar, Janga Rahul
-> > > <janga.rahul.kumar@intel.com>
-> > > Subject: [PATCH i-g-t] tests/xe/xe_query.c: Update subtest
-> > > query-engines
-> > >
-> > > From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> > >
-> > > Log engine instance and tile info along with engine type.
-> > >
-> > > Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> > > ---
-> > >  tests/xe/xe_query.c | 5 +++--
-> > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/tests/xe/xe_query.c b/tests/xe/xe_query.c index
-> > > 3f038225..161386d8 100644
-> > > --- a/tests/xe/xe_query.c
-> > > +++ b/tests/xe/xe_query.c
-> > > @@ -183,8 +183,9 @@ test_query_engines(int fd)
-> > >
-> > >  	xe_for_each_hw_engine(fd, hwe) {
-> > >  		igt_assert(hwe);
-> > > -		igt_info("engine %d: %s\n", i++,
-> > > -			xe_engine_class_string(hwe->engine_class));
-> > > +		igt_info("engine %d: %s, engine instance: %d , tile: TILE-%d\n",
->=20
-> Do we really need tile info here ?
-Yes, It helps in identifying the number of engines per tile.
-> Fix this engine instance: %d , --> engine instance: %d,
-> > > i++,
-> > > +			 xe_engine_class_string(hwe->engine_class), hwe-
-> > > >engine_instance,
-> > > +								    hwe-
-> > > >gt_id);
-> > >  	}
-> With the above fixed,
-> Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> > >
-> > >  	igt_assert(i > 0);
-> > > --
-> > > 2.25.1
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index c91a914257..759e889874 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -681,3 +681,15 @@ void igt_require_xe(int fd)
+ {
+ 	igt_require(is_xe_device(fd));
+ }
++
++void do_ioctl_err(int fd, unsigned long ioc, void *ioc_data, int err)
++{
++	int ret;
++
++	ret = igt_ioctl(fd, ioc, ioc_data);
++	igt_assert_f(ret == -1,
++		     "ioctl should fail with -1 but returned %d\n", ret);
++	igt_assert_f(errno == err,
++		     "errno fail - returned: %d, expected: %d\n", errno, err);
++	errno = 0;
++}
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 3c88b85c6f..792996dd28 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -153,13 +153,9 @@ bool is_intel_device(int fd);
+  * @ioc_data: data pointer for the ioctl operation
+  * @err: value to expect in errno
+  *
+- * This macro wraps drmIoctl() and uses igt_assert to check that it fails,
+- * returning a particular value in errno.
++ * This function wraps drmIoctl() and uses igt_assert to check that it fails,
++ * verifying expected errno in @err.
+  */
+-#define do_ioctl_err(fd, ioc, ioc_data, err) do { \
+-	igt_assert_eq(igt_ioctl((fd), (ioc), (ioc_data)), -1); \
+-	igt_assert_eq(errno, err); \
+-	errno = 0; \
+-} while (0)
++void do_ioctl_err(int fd, unsigned long ioc, void *ioc_data, int err);
+ 
+ #endif /* DRMTEST_H */
+-- 
+2.34.1
