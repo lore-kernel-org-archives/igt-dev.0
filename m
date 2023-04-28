@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65C7E10EC70
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D05E10EC5C
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:38:12 +0530
-Message-Id: <20230428060818.2446308-41-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:38:17 +0530
+Message-Id: <20230428060818.2446308-46-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 40/46] tests/kms_plane_lowers: Add XE support
+Subject: [igt-dev] [i-g-t V4 45/46] tests/kms_setmode: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,37 +25,42 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_plane_lowres.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tests/kms_setmode.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-index 958d3ec6f..db9f5a54c 100644
---- a/tests/kms_plane_lowres.c
-+++ b/tests/kms_plane_lowres.c
-@@ -266,8 +266,11 @@ static void run_test(data_t *data, uint64_t modifier)
- 	enum pipe pipe;
- 	igt_output_t *output;
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index bfa108916..a611d9382 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -30,6 +30,7 @@
+ #include <string.h>
+ #include <sys/time.h>
+ #include <math.h>
++#include "xe/xe_query.h"
  
--	igt_skip_on(!igt_display_has_format_mod(&data->display,
--						DRM_FORMAT_XRGB8888, modifier));
-+	if(!igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888, modifier))
-+		return;
+ #define MAX_CONNECTORS  10
+ #define MAX_CRTCS       6
+@@ -954,6 +955,9 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+ 
+ 		drm_resources = drmModeGetResources(drm_fd);
+ 		igt_require(drm_resources);
 +
-+	if (is_xe_device(data->drm_fd) && modifier != DRM_FORMAT_MOD_LINEAR)
-+		return;
++		if (is_xe_device(drm_fd))
++			xe_device_get(drm_fd);
+ 	}
  
- 	for_each_pipe(&data->display, pipe) {
- 		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-@@ -318,7 +321,7 @@ igt_main
- 
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+@@ -971,6 +975,9 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
  	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
--		data.devid = is_i915_device(data.drm_fd) ?
-+		data.devid = is_intel_device(data.drm_fd) ?
- 			intel_get_drm_devid(data.drm_fd) : 0;
+ 		drmModeFreeResources(drm_resources);
  
- 		kmstest_set_vt_graphics_mode();
++		if (is_xe_device(drm_fd))
++			xe_device_put(drm_fd);
++
+ 		close(drm_fd);
+ 	}
+ }
 -- 
 2.40.0
