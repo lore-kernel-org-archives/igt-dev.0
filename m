@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4080110EC65
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 72D5810EC6F
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:32 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:37:47 +0530
-Message-Id: <20230428060818.2446308-16-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:37:56 +0530
+Message-Id: <20230428060818.2446308-25-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 15/46] lib/igt_draw: Pass region while building
- intel_buf from flink
+Subject: [igt-dev] [i-g-t V4 24/46] tests/i915/kms_flip_scaled_crc: Add XE
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,58 +23,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Add XE driver support for kms tests.
 
-For i915 region doesn't matter but for xe we need to be more strict and
-region aware. This is related to size and alignment constraints. As we
-don't have information about flink buffer origin let's assume region
-is vram if possible, otherwise choose system region.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- lib/igt_draw.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ tests/i915/kms_flip_scaled_crc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index ac512fac5..c5f2fdfe2 100644
---- a/lib/igt_draw.c
-+++ b/lib/igt_draw.c
-@@ -37,6 +37,7 @@
- #include "i915/gem_create.h"
- #include "i915/gem_mman.h"
- #include "i915/intel_mocs.h"
-+#include "xe/xe_query.h"
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index 7f7a59b93..f5dc430e3 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -623,7 +623,7 @@ igt_main
+ 	drmModeModeInfoPtr modetoset = NULL;
  
- #ifndef PAGE_ALIGN
- #ifndef PAGE_SIZE
-@@ -634,17 +635,24 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
- 				    struct buf_data *from, uint32_t tiling)
- {
- 	struct intel_buf *buf;
-+	enum intel_driver driver = buf_ops_get_driver(bops);
- 	uint32_t handle, name, width, height;
-+	uint64_t region = driver == INTEL_DRIVER_XE ? vram_if_possible(fd, 0) : -1;
-+	uint64_t size = from->size;
- 
- 	width = from->stride / (from->bpp / 8);
- 	height = from->size / from->stride;
-+	if (driver == INTEL_DRIVER_XE)
-+		size = ALIGN(size, xe_get_default_alignment(fd));
- 
- 	name = gem_flink(fd, from->handle);
- 	handle = gem_open(fd, name);
- 
--	buf = intel_buf_create_using_handle(bops, handle,
--					    width, height, from->bpp, 0,
--					    tiling, 0);
-+	buf = intel_buf_create_full(bops, handle,
-+				    width, height, from->bpp, 0,
-+				    tiling, 0,
-+				    size, 0,
-+				    region);
- 
- 	/* Make sure we close handle on destroy path */
- 	intel_buf_set_ownership(buf, true);
+ 	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+ 		igt_require(data.gen >= 9);
+ 		igt_display_require(&data.display, data.drm_fd);
+@@ -644,6 +644,12 @@ igt_main
+ 	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
+ 		igt_describe(flip_scenario_test[index].describe);
+ 		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
++			/* No tiling support in XE. */
++			if (is_xe_device(data.drm_fd) &&
++			    (flip_scenario_test[index].firstmodifier != DRM_FORMAT_MOD_LINEAR ||
++			     flip_scenario_test[index].secondmodifier != DRM_FORMAT_MOD_LINEAR))
++				continue;
++
+ 			free_fbs(&data);
+ 			for_each_pipe(&data.display, pipe) {
+ 				bool found = false;
 -- 
 2.40.0
