@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B289610EC75
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7EE710EC80
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:02 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:42 +0530
-Message-Id: <20230428071350.2561575-40-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:28 +0530
+Message-Id: <20230428071350.2561575-26-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 39/47] tests/kms_panel_fitting: Add XE support
+Subject: [igt-dev] [i-g-t V5 25/47] tests/i915/kms_flip_scaled_crc: Add XE
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,47 +28,34 @@ Add XE driver support for kms tests.
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/kms_panel_fitting.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tests/i915/kms_flip_scaled_crc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
-index 2d0590da2..97ef1ae48 100644
---- a/tests/kms_panel_fitting.c
-+++ b/tests/kms_panel_fitting.c
-@@ -23,6 +23,7 @@
-  */
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index 7f7a59b93..f5dc430e3 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -623,7 +623,7 @@ igt_main
+ 	drmModeModeInfoPtr modetoset = NULL;
  
- #include "igt.h"
-+#include <limits.h>
- #include <math.h>
- #include <sys/stat.h>
- 
-@@ -133,7 +134,7 @@ test_panel_fitting_legacy(data_t *d, igt_display_t *display,
- 	igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
- 	igt_plane_set_position(d->plane2, 100, 100);
- 
--	if (is_i915_device(display->drm_fd)) {
-+	if (is_intel_device(display->drm_fd)) {
- 		uint32_t devid = intel_get_drm_devid(display->drm_fd);
- 		/*
- 		 * Most of gen7 and all of gen8 doesn't support plane scaling
-@@ -233,10 +234,15 @@ static void test_panel_fitting(data_t *data, enum test_type type)
- 	struct stat sb;
- 
- 	if (type == TEST_ATOMIC) {
--		igt_require_f(is_i915_device(display->drm_fd), "not valid for non-i915 devices\n");
-+		char path[PATH_MAX];
+ 	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+ 		igt_require(data.gen >= 9);
+ 		igt_display_require(&data.display, data.drm_fd);
+@@ -644,6 +644,12 @@ igt_main
+ 	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
+ 		igt_describe(flip_scenario_test[index].describe);
+ 		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
++			/* No tiling support in XE. */
++			if (is_xe_device(data.drm_fd) &&
++			    (flip_scenario_test[index].firstmodifier != DRM_FORMAT_MOD_LINEAR ||
++			     flip_scenario_test[index].secondmodifier != DRM_FORMAT_MOD_LINEAR))
++				continue;
 +
-+		igt_require_f(is_intel_device(display->drm_fd), "not valid for non-intel devices\n");
- 
- 		/* Until this is force enabled, force modeset evasion. */
--		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
-+		snprintf(path, PATH_MAX, "/sys/module/%s/parameters/fastboot",
-+					 is_i915_device(data->drm_fd) ? "i915" : "xe");
-+
-+		if (stat(path, &sb) == 0)
- 			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
- 
- 		igt_require(intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 5);
+ 			free_fbs(&data);
+ 			for_each_pipe(&data.display, pipe) {
+ 				bool found = false;
 -- 
 2.40.0
