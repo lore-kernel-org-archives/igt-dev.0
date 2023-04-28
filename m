@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E294A10E0CA
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 08:51:54 +0000 (UTC)
-Message-ID: <5483155c-e754-b522-6ece-09ac4db902b0@intel.com>
-Date: Fri, 28 Apr 2023 10:51:50 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5939510E2F7
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 09:13:38 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 28 Apr 2023 11:13:32 +0200
+Message-Id: <20230428091332.12330-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230428062224.21322-1-zbigniew.kempczynski@intel.com>
- <20230428062224.21322-10-zbigniew.kempczynski@intel.com>
-From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
-In-Reply-To: <20230428062224.21322-10-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v8 09/17] lib/intel_batchbuffer: Update
- intel-bb docs
+Subject: [igt-dev] [PATCH i-g-t] Revert "runner: check disk limit at dumping
+ kmsg"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,62 +21,103 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+This reverts commit 3bd8bf9bca97bbfb7b4b408f9fccd0cf6f742d4c.
 
-On 28.04.2023 08:22, Zbigniew Kempczyński wrote:
-> After RANDOM pseudo-allocator was removed and RELOC allocator becomed
-> stateful docs stays intact and documents old code. Fix this before
-> adding xe code.
+After some tests it seems that runner is not reporting failures
+properly from i915_selftest due to this change, also after
+re-thinking I come to conclusion that clipping may be applied
+after runner/resume processes a tests dmesg from a run into
+rusults.json
 
-It just came to my mind that if you dedicate a patch for 
-'__intel_bb_create' docs update, you may as well add missing description 
-for 'start', 'end' and 'strategy' parameters. But it's optional, it can 
-wait for another day.
+Fixes: 3bd8bf9bca97 ("runner: check disk limit at dumping kmsg")
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/executor.c | 24 +++++-------------------
+ 1 file changed, 5 insertions(+), 19 deletions(-)
 
-Anyway:
-Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
-
-Christoph
-
-
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->   lib/intel_batchbuffer.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index 99b0b61585..306b7650e9 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -836,7 +836,7 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
->    * @allocator_type: allocator type, must be INTEL_ALLOCATOR_NONE for relocations
->    *
->    * intel-bb assumes it will work in one of two modes - with relocations or
-> - * with using allocator (currently RANDOM and SIMPLE are implemented).
-> + * with using allocator (currently RELOC and SIMPLE are implemented).
->    * Some description is required to describe how they maintain the addresses.
->    *
->    * Before entering into each scenarios generic rule is intel-bb keeps objects
-> @@ -854,10 +854,10 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
->    *
->    * This mode is valid only for ppgtt. Addresses are acquired from allocator
->    * and softpinned. intel-bb cache must be then coherent with allocator
-> - * (simple is coherent, random is not due to fact we don't keep its state).
-> + * (simple is coherent, reloc partially [doesn't support address reservation]).
->    * When we do intel-bb reset with purging cache it has to reacquire addresses
->    * from allocator (allocator should return same address - what is true for
-> - * simple allocator and false for random as mentioned before).
-> + * simple and reloc allocators).
->    *
->    * If we do reset without purging caches we use addresses from intel-bb cache
->    * during execbuf objects construction.
-> @@ -967,7 +967,7 @@ __intel_bb_create(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
->    * @size: size of the batchbuffer
->    * @start: allocator vm start address
->    * @end: allocator vm start address
-> - * @allocator_type: allocator type, SIMPLE, RANDOM, ...
-> + * @allocator_type: allocator type, SIMPLE, RELOC, ...
->    * @strategy: allocation strategy
->    *
->    * Creates bb with context passed in @ctx, size in @size and allocator type
+diff --git a/runner/executor.c b/runner/executor.c
+index ae6cf1bba..597cd7f58 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -584,7 +584,7 @@ void close_outputs(int *fds)
+ }
+ 
+ /* Returns the number of bytes written to disk, or a negative number on error */
+-static long dump_dmesg(int kmsgfd, int outfd, size_t disk_limit)
++static long dump_dmesg(int kmsgfd, int outfd)
+ {
+ 	/*
+ 	 * Write kernel messages to the log file until we reach
+@@ -599,18 +599,12 @@ static long dump_dmesg(int kmsgfd, int outfd, size_t disk_limit)
+ 	bool underflow_once = false;
+ 	char cont;
+ 	char buf[2048];
+-	ssize_t r, disk_written;
++	ssize_t r;
+ 	long written = 0;
+ 
+ 	if (kmsgfd < 0)
+ 		return 0;
+ 
+-	disk_written = lseek(outfd, 0, SEEK_SET);
+-	if (disk_written > disk_limit) {
+-		errf("Error dumping kmsg: disk limit already exceeded\n");
+-		return 0; /* number of written bytes */
+-	}
+-
+ 	comparefd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
+ 	if (comparefd < 0) {
+ 		errf("Error opening another fd for /dev/kmsg\n");
+@@ -661,13 +655,6 @@ static long dump_dmesg(int kmsgfd, int outfd, size_t disk_limit)
+ 
+ 		write(outfd, buf, r);
+ 		written += r;
+-		disk_written += r;
+-
+-		if (disk_written > disk_limit) {
+-			close(comparefd);
+-			errf("Error dumping kmsg: disk limit exceeded\n");
+-			return written;
+-		}
+ 
+ 		if (comparefd < 0 && sscanf(buf, "%u,%llu,%llu,%c;",
+ 					    &flags, &seq, &usec, &cont) == 4) {
+@@ -903,7 +890,6 @@ static int monitor_output(pid_t child,
+ 	unsigned long taints = 0;
+ 	bool aborting = false;
+ 	size_t disk_usage = 0;
+-	const size_t mon_disk_limit = settings->disk_usage_limit ? : (~(size_t)0);
+ 	bool socket_comms_used = false; /* whether the test actually uses comms */
+ 	bool results_received = false; /* whether we already have test results that might need overriding if we detect an abort condition */
+ 
+@@ -1233,7 +1219,7 @@ static int monitor_output(pid_t child,
+ 
+ 			time_last_activity = time_now;
+ 
+-			dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], mon_disk_limit);
++			dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG]);
+ 			if (settings->sync)
+ 				fdatasync(outputs[_F_DMESG]);
+ 
+@@ -1471,7 +1457,7 @@ static int monitor_output(pid_t child,
+ 					asprintf(abortreason, "Child refuses to die, tainted 0x%lx.", taints);
+ 				}
+ 
+-				dump_dmesg(kmsgfd, outputs[_F_DMESG], mon_disk_limit);
++				dump_dmesg(kmsgfd, outputs[_F_DMESG]);
+ 				if (settings->sync)
+ 					fdatasync(outputs[_F_DMESG]);
+ 
+@@ -1497,7 +1483,7 @@ static int monitor_output(pid_t child,
+ 		}
+ 	}
+ 
+-	dump_dmesg(kmsgfd, outputs[_F_DMESG], mon_disk_limit);
++	dump_dmesg(kmsgfd, outputs[_F_DMESG]);
+ 	if (settings->sync)
+ 		fdatasync(outputs[_F_DMESG]);
+ 
+-- 
+2.37.2
