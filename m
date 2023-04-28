@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E042F10EC63
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6869010EC73
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:54 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:37:49 +0530
-Message-Id: <20230428060818.2446308-18-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:38:13 +0530
+Message-Id: <20230428060818.2446308-42-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 17/46] lib/igt_fb: Add copy engine support for
- XE
+Subject: [igt-dev] [i-g-t V4 41/46] tests/kms_plane_scaling: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,96 +22,141 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add copy engine support for kms framebuffer mappings.
-
-V2: - Drop unused syncobj(Zbigniew)
+Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_fb.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ tests/kms_plane_scaling.c | 41 ++++++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index df3d7d91a..0fe5b6adf 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -45,6 +45,7 @@
- #include "igt_amd.h"
- #include "igt_x86.h"
- #include "igt_nouveau.h"
-+#include "igt_syncobj.h"
- #include "ioctl_wrappers.h"
- #include "intel_batchbuffer.h"
- #include "intel_chipset.h"
-@@ -2489,12 +2490,13 @@ static bool blitter_ok(const struct igt_fb *fb)
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 19528a405..a37abd16d 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -52,9 +52,9 @@ struct invalid_paramtests {
+ 	} params[8];
+ };
  
- static bool use_enginecopy(const struct igt_fb *fb)
+-static const struct invalid_paramtests i915_paramtests[] = {
++static const struct invalid_paramtests intel_paramtests[] = {
+ 	{
+-		.testname = "i915-max-src-size",
++		.testname = "intel-max-src-size",
+ 		.planesize = {3840, 2160},
+ 	},
+ };
+@@ -463,7 +463,7 @@ static const igt_rotation_t rotations[] = {
+ 
+ static bool can_scale(data_t *d, unsigned format)
  {
--	if (blitter_ok(fb))
-+	if (!is_xe_device(fb->fd) && blitter_ok(fb))
+-	if (!is_i915_device(d->drm_fd))
++	if (!is_intel_device(d->drm_fd))
+ 		return true;
+ 
+ 	switch (format) {
+@@ -488,7 +488,7 @@ static bool test_format(data_t *data,
+ 	if (!igt_fb_supported_format(format))
  		return false;
  
- 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
- 	       is_ccs_modifier(fb->modifier) ||
--	       !gem_has_mappable_ggtt(fb->fd);
-+	       (is_xe_device(fb->fd) && fb->modifier == DRM_FORMAT_MOD_LINEAR) ||
-+	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
+-	if (!is_i915_device(data->drm_fd) ||
++	if (!is_intel_device(data->drm_fd) ||
+ 	    data->extended)
+ 		return true;
+ 
+@@ -505,7 +505,7 @@ static bool test_format(data_t *data,
+ 
+ static bool test_pipe_iteration(data_t *data, enum pipe pipe, int iteration)
+ {
+-	if (!is_i915_device(data->drm_fd) ||
++	if (!is_intel_device(data->drm_fd) ||
+ 	    data->extended)
+ 		return true;
+ 
+@@ -544,6 +544,10 @@ static void test_scaler_with_modifier_pipe(data_t *d,
+ 		for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
+ 			uint64_t modifier = modifiers[i];
+ 
++			if (is_xe_device(d->drm_fd) &&
++			    modifier != DRM_FORMAT_MOD_LINEAR)
++				continue;
++
+ 			if (igt_plane_has_format_mod(plane, format, modifier))
+ 				check_scaling_pipe_plane_rot(d, plane,
+ 							     format, modifier,
+@@ -829,11 +833,12 @@ test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
+ 	igt_plane_set_size(plane[1], mode->hdisplay, mode->vdisplay);
+ 	igt_plane_set_size(plane[2], mode->hdisplay, mode->vdisplay);
+ 
+-	/* This commit is expected to fail for i915 devices. i915 devices support
++	/*
++	 * This commit is expected to fail for intel devices. intel devices support
+ 	 * max 2 scalers/pipe. In dmesg we can find: Too many scaling requests 3 > 2.
+-	 * For devices (non-i915, or possible future i915) that are able to perform this
+-	 * amount of scaling; handle that case aswell.
+-	 * */
++	 * For devices (non-intel, or possible future intel) that are able to perform
++	 * this amount of scaling; handle that case aswell.
++	 */
+ 	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 	igt_skip_on_f(ret == 0, "Cannot test handling of too many scaling ops, the device supports a large amount.\n");
+ 	igt_assert(ret == -EINVAL || ret == -ERANGE);
+@@ -1010,7 +1015,7 @@ static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const uint
  }
  
- static bool use_blitter(const struct igt_fb *fb)
-@@ -2504,7 +2506,7 @@ static bool use_blitter(const struct igt_fb *fb)
+ /*
+- *	Max source/destination width/height for i915 driver.
++ *	Max source/destination width/height for intel driver.
+  *	These numbers are coming from
+  *	drivers/gpu/drm/i915/display/skl_scaler.c in kernel sources.
+  *
+@@ -1038,8 +1043,8 @@ static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const uint
+  *		max_dst_w = 8192
+  *		max_dst_h = 8192
+  */
+-static void i915_max_source_size_test(data_t *d, enum pipe pipe, igt_output_t *output,
+-				      drmModeModeInfo *mode, const uint32_t planesize[])
++static void intel_max_source_size_test(data_t *d, enum pipe pipe, igt_output_t *output,
++				       drmModeModeInfo *mode, const uint32_t planesize[])
+ {
+ 	igt_fb_t fb;
+ 	igt_plane_t *plane;
+@@ -1117,7 +1122,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		igt_display_require(&data.display, data.drm_fd);
+-		data.devid = is_i915_device(data.drm_fd) ?
++		data.devid = is_intel_device(data.drm_fd) ?
+ 			intel_get_drm_devid(data.drm_fd) : 0;
+ 		igt_require(data.display.is_atomic);
+ 	}
+@@ -1271,9 +1276,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			}
+ 		}
  
- 	return fb->modifier == I915_FORMAT_MOD_Y_TILED ||
- 	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
--	       !gem_has_mappable_ggtt(fb->fd);
-+	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
- }
- 
- static void init_buf_ccs(struct intel_buf *buf, int ccs_idx,
-@@ -2706,7 +2708,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
- 	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
- 
--	if (!gem_has_relocations(dst_fb->fd)) {
-+	if (is_i915_device(dst_fb->fd) && !gem_has_relocations(dst_fb->fd)) {
- 		igt_require(gem_has_contexts(dst_fb->fd));
- 		ctx = gem_context_create(dst_fb->fd);
- 		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
-@@ -2786,6 +2788,12 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
- 	} else if (is_nouveau_device(fd)) {
- 		igt_nouveau_fb_blit(fb, &linear->fb);
- 		igt_nouveau_delete_bo(&linear->fb);
-+	} else if (is_xe_device(fd)) {
-+		gem_munmap(linear->map, linear->fb.size);
-+		copy_with_engine(blit, fb, &linear->fb);
-+
-+		syncobj_wait(fd, &blit->ibb->engine_syncobj, 1, INT64_MAX, 0, NULL);
-+		gem_close(fd, linear->fb.gem_handle);
- 	} else {
- 		gem_munmap(linear->map, linear->fb.size);
- 		gem_set_domain(fd, linear->fb.gem_handle,
-@@ -2863,6 +2871,11 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
- 		igt_nouveau_fb_blit(&linear->fb, fb);
- 
- 		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
-+	} else if (is_xe_device(fd)) {
-+		copy_with_engine(blit, &linear->fb, fb);
-+
-+		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
-+					     linear->fb.size, PROT_READ | PROT_WRITE);
- 	} else {
- 		/* Copy fb content to linear BO */
- 		gem_set_domain(fd, linear->fb.gem_handle,
-@@ -2969,6 +2982,9 @@ static void *map_bo(int fd, struct igt_fb *fb)
- 				      PROT_READ | PROT_WRITE);
- 	else if (is_nouveau_device(fd))
- 		ptr = igt_nouveau_mmap_bo(fb, PROT_READ | PROT_WRITE);
-+	else if (is_xe_device(fd))
-+		ptr = xe_bo_mmap_ext(fd, fb->gem_handle,
-+				     fb->size, PROT_READ | PROT_WRITE);
- 	else
- 		igt_assert(false);
- 
+-		for (int index = 0; index < ARRAY_SIZE(i915_paramtests); index++) {
++		for (int index = 0; index < ARRAY_SIZE(intel_paramtests); index++) {
+ 			igt_describe("Test for validating max source size.");
+-			igt_subtest_with_dynamic(i915_paramtests[index].testname) {
++			igt_subtest_with_dynamic(intel_paramtests[index].testname) {
+ 				igt_require_intel(data.drm_fd);
+ 				for_each_pipe(&data.display, pipe) {
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+@@ -1282,12 +1287,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 						 * Need to find mode with lowest vrefresh else
+ 						 * we can exceed cdclk limits.
+ 						 */
+-						mode = find_mode(&data, output, i915_paramtests[index].planesize);
++						mode = find_mode(&data, output, intel_paramtests[index].planesize);
+ 						if (mode) {
+ 							igt_dynamic_f("pipe-%s-%s",
+ 								       kmstest_pipe_name(pipe), igt_output_name(output))
+-								i915_max_source_size_test(&data, pipe, output, mode,
+-											  i915_paramtests[index].planesize);
++								intel_max_source_size_test(&data, pipe, output, mode,
++											   intel_paramtests[index].planesize);
+ 						}
+ 						continue;
+ 					}
 -- 
 2.40.0
