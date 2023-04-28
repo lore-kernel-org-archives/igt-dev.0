@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D937C10E0A6
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 05:59:18 +0000 (UTC)
-Message-ID: <1510967b-6e10-54d2-953e-3d96f0cbb75b@intel.com>
-Date: Fri, 28 Apr 2023 11:28:55 +0530
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230427200307.240349-1-zbigniew.kempczynski@intel.com>
- <20230427200307.240349-15-zbigniew.kempczynski@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230427200307.240349-15-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19B1510EC57
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:03 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 28 Apr 2023 11:37:32 +0530
+Message-Id: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v7 14/16] lib/igt_fb: For xe assume vram
- is used on discrete
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V4 00/46] Add IGT display support for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,56 +21,117 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Add IGT support to work kms tests on XE driver.
 
+TODO: Spin, BUSY & HANG related tests.
 
-On Fri-28-04-2023 01:33 am, Zbigniew Kempczyński wrote:
-> Assume fb bo's were created on vram on discrete, otherwise use system
-> memory.
-> 
+V2: - Rebase on PW 116578v5
+V3: - Rebase on PW 116578v6
+V4: - Rebase on PW 116578v7
 
-LGTM
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Bhanuprakash Modem (30):
+  lib/igt_fb: Add copy engine support for XE
+  lib/igt_draw: Add gpu draw routine support for XE
+  tests/i915/kms_big_fb: Add XE support
+  tests/i915/kms_big_joiner: Add XE support
+  tests/i915/kms_cdclk: Add XE support
+  tests/i915/kms_draw_crc: Add XE support
+  tests/i915/kms_dsc: Add XE support
+  tests/i915/kms_flip_scaled_crc: Add XE support
+  tests/i915/kms_flip_tiling: Add XE support
+  tests/i915/kms_mmap_write_crc: Add XE support
+  tests/kms_3d: Add XE support
+  tests/kms_async_flips: No XE support
+  tests/kms_atomic_transition: Add XE support
+  tests/color: Add XE support
+  tests/kms_concurrent: Add XE support
+  tests/kms_content_protection: Add XE support
+  tests/kms_cursor_crc: Add XE support
+  tests/kms_flip_event_leak: Add XE support
+  tests/kms_getfb: Add XE support
+  tests/kms_hdmi_inject: Add XE support
+  tests/kms_hdr: Add XE support
+  tests/kms_panel_fitting: Add XE support
+  tests/kms_plane: Add XE support
+  tests/kms_plane_lowers: Add XE support
+  tests/kms_plane_scaling: Add XE support
+  tests/kms_prime: Use Rendercopy instead of Blit
+  tests/kms_prime: Add XE support
+  tests/kms_rotation_crc: Add XE support
+  tests/kms_setmode: Add XE support
+  tests/kms_universal_plane: Add XE support
 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> 
-> ---
-> v2: use -1 for i915 region (Bhanu)
-> ---
->   lib/igt_fb.c | 17 +++++++++++------
->   1 file changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 7379b99aa8..df3d7d91a9 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -2545,6 +2545,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
->   {
->   	struct intel_buf *buf;
->   	uint32_t bo_name, handle, compression;
-> +	uint64_t region;
->   	int num_surfaces;
->   	int i;
->   
-> @@ -2571,12 +2572,16 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
->   	bo_name = gem_flink(fd, fb->gem_handle);
->   	handle = gem_open(fd, bo_name);
->   
-> -	buf = intel_buf_create_using_handle_and_size(bops, handle,
-> -						     fb->width, fb->height,
-> -						     fb->plane_bpp[0], 0,
-> -						     igt_fb_mod_to_tiling(fb->modifier),
-> -						     compression, fb->size,
-> -						     fb->strides[0]);
-> +	/* For i915 region doesn't matter, for xe does */
-> +	region = buf_ops_get_driver(bops) == INTEL_DRIVER_XE ?
-> +				vram_if_possible(fd, 0) : -1;
-> +	buf = intel_buf_create_full(bops, handle,
-> +				    fb->width, fb->height,
-> +				    fb->plane_bpp[0], 0,
-> +				    igt_fb_mod_to_tiling(fb->modifier),
-> +				    compression, fb->size,
-> +				    fb->strides[0],
-> +				    region);
->   	intel_buf_set_name(buf, name);
->   
->   	/* Make sure we close handle on destroy path */
+Zbigniew Kempczyński (16):
+  lib/xe_ioctl: Add missing header for direct resolving
+  lib/xe_query: Add region helpers and missing doc
+  lib/xe_query: Remove commented out function prototype
+  lib/intel_allocator: Add allocator support for Xe
+  lib/drmtest: Add driver enum for i915/xe
+  lib/intel_bufops: Add Xe support in bufops
+  lib/intel_batchbuffer: Rename i915 -> fd as preparation step for xe
+  lib/intel_batchbuffer: Update intel-bb docs
+  lib/intel_batchbuffer: Add Xe support in intel-bb
+  tests/xe_intel_bb: Check if intel-bb Xe support correctness
+  tests/xe-fast-feedback: Add xe_intel_bb test to BAT
+  lib/gpgpu_fill: Use RENDER engine flag to work on Xe
+  tests/xe_gpgpu_fill: Exercise gpgpu fill on Xe
+  lib/igt_fb: For xe assume vram is used on discrete
+  lib/igt_draw: Pass region while building intel_buf from flink
+  tests/kms_big_fb: Deduce region for xe framebuffer
+
+ lib/drmtest.h                            |    8 +
+ lib/gpgpu_fill.c                         |    4 +-
+ lib/gpu_cmds.c                           |    2 +-
+ lib/igt_draw.c                           |   95 +-
+ lib/igt_draw.h                           |    2 +
+ lib/igt_fb.c                             |   41 +-
+ lib/intel_allocator.c                    |   40 +-
+ lib/intel_aux_pgtable.c                  |    2 +-
+ lib/intel_batchbuffer.c                  |  421 ++++++--
+ lib/intel_batchbuffer.h                  |   22 +-
+ lib/intel_bufops.c                       |  123 ++-
+ lib/intel_bufops.h                       |   24 +-
+ lib/xe/xe_ioctl.h                        |    1 +
+ lib/xe/xe_query.c                        |   45 +
+ lib/xe/xe_query.h                        |    3 +-
+ tests/chamelium/kms_chamelium_color.c    |    2 +-
+ tests/i915/gem_caching.c                 |    4 +-
+ tests/i915/gem_pxp.c                     |    2 +-
+ tests/i915/kms_big_fb.c                  |   84 +-
+ tests/i915/kms_big_joiner.c              |    2 +-
+ tests/i915/kms_cdclk.c                   |    5 +-
+ tests/i915/kms_draw_crc.c                |   24 +-
+ tests/i915/kms_dsc.c                     |    2 +-
+ tests/i915/kms_flip_scaled_crc.c         |    8 +-
+ tests/i915/kms_flip_tiling.c             |    8 +-
+ tests/i915/kms_mmap_write_crc.c          |    4 +-
+ tests/intel-ci/xe-fast-feedback.testlist |   19 +
+ tests/kms_3d.c                           |    8 +
+ tests/kms_async_flips.c                  |    8 +-
+ tests/kms_atomic_transition.c            |    8 +-
+ tests/kms_color.c                        |   10 +-
+ tests/kms_color_helper.c                 |    2 +-
+ tests/kms_concurrent.c                   |    4 +-
+ tests/kms_content_protection.c           |   12 +-
+ tests/kms_cursor_crc.c                   |    4 +-
+ tests/kms_flip_event_leak.c              |    5 +
+ tests/kms_getfb.c                        |   22 +-
+ tests/kms_hdmi_inject.c                  |   10 +-
+ tests/kms_hdr.c                          |    8 +-
+ tests/kms_panel_fitting.c                |   12 +-
+ tests/kms_plane.c                        |   19 +-
+ tests/kms_plane_lowres.c                 |    9 +-
+ tests/kms_plane_scaling.c                |   41 +-
+ tests/kms_prime.c                        |  230 ++++-
+ tests/kms_rotation_crc.c                 |   23 +-
+ tests/kms_setmode.c                      |    7 +
+ tests/kms_universal_plane.c              |   15 +-
+ tests/meson.build                        |    2 +
+ tests/xe/xe_gpgpu_fill.c                 |  135 +++
+ tests/xe/xe_intel_bb.c                   | 1185 ++++++++++++++++++++++
+ 50 files changed, 2447 insertions(+), 329 deletions(-)
+ create mode 100644 tests/xe/xe_gpgpu_fill.c
+ create mode 100644 tests/xe/xe_intel_bb.c
+
+--
+2.40.0
