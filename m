@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B485110EC73
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:56 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADAA310E041
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:22:29 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:38:15 +0530
-Message-Id: <20230428060818.2446308-44-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
-References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 08:22:07 +0200
+Message-Id: <20230428062224.21322-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 43/46] tests/kms_prime: Add XE support
+Subject: [igt-dev] [PATCH i-g-t v8 00/17] Integrate intel-bb with Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,291 +21,65 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for kms tests.
+Series touches intel-bb + intel-buf which are rendercopy, gpgpu fill and
+media fill facilities. Exercise both paths on CI (i915 and xe) to check
+there's no regression in common part.
 
-V2: - Use rendercopy method for both i915 & xe
-    - Minor cleanup
-V3: - New patch for cleanup & rendercopy
+v2: fix allocator issue
+v3: address review comments (Kamil)
+v4: address review comments (Christoph)
+v5: - address review comments (Kamil)
+    - add region awareness in bufops (Zbigniew)
+v6: alter igt_draw and kms_big_fb to be region aware (Zbigniew)
+v7: - separate random->reloc docs fix patch (Kamil)
+    - reorganize driver (i915/xe) blocks (Kamil)
+    - fix xe_bound issue for single buffer (Zbigniew)
+v8: separate change for RELOC in reset path (Christoph)
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_prime.c | 183 ++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 146 insertions(+), 37 deletions(-)
+Zbigniew Kempczyński (17):
+  lib/xe_ioctl: Add missing header for direct resolving
+  lib/xe_query: Add region helpers and missing doc
+  lib/xe_query: Remove commented out function prototype
+  lib/intel_allocator: Add allocator support for Xe
+  lib/drmtest: Add driver enum for i915/xe
+  lib/intel_bufops: Add Xe support in bufops
+  lib/intel_batchbuffer: Rename i915 -> fd as preparation step for xe
+  lib/intel_batchbuffer: Reacquire offset for reloc allocator in reset
+    path
+  lib/intel_batchbuffer: Update intel-bb docs
+  lib/intel_batchbuffer: Add Xe support in intel-bb
+  tests/xe_intel_bb: Check if intel-bb Xe support correctness
+  tests/xe-fast-feedback: Add xe_intel_bb test to BAT
+  lib/gpgpu_fill: Use RENDER engine flag to work on Xe
+  tests/xe_gpgpu_fill: Exercise gpgpu fill on Xe
+  lib/igt_fb: For xe assume vram is used on discrete
+  lib/igt_draw: Pass region while building intel_buf from flink
+  tests/kms_big_fb: Deduce region for xe framebuffer
 
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 0828bf6b5..4442104a0 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -27,9 +27,12 @@
- #include "igt_sysfs.h"
- #include <fcntl.h>
- 
-+#include <limits.h>
- #include <sys/ioctl.h>
- #include <sys/poll.h>
- #include <time.h>
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
- 
- #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
- #define KMS_POLL_DISABLE 0
-@@ -112,7 +115,29 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 	scratch->height = mode->vdisplay;
- 	scratch->bpp = 32;
- 
--	if (!is_i915_device(exporter_fd)) {
-+	if (is_intel_device(exporter_fd)) {
-+		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
-+
-+		if (is_i915_device(exporter_fd)) {
-+			if (gem_has_lmem(exporter_fd))
-+				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+								       REGION_LMEM(0), REGION_SMEM);
-+			else
-+				scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
-+								       REGION_SMEM);
-+
-+			ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0,
-+							scratch->size, PROT_WRITE | PROT_READ);
-+		} else {
-+			scratch->handle = xe_bo_create_flags(exporter_fd, 0,
-+							     ALIGN(scratch->size, xe_get_default_alignment(exporter_fd)),
-+							     vram_if_possible(exporter_fd, 0));
-+
-+			ptr = xe_bo_mmap_ext(exporter_fd, scratch->handle,
-+					     scratch->size, PROT_READ | PROT_WRITE);
-+		}
-+	} else {
- 		scratch->handle = kmstest_dumb_create(exporter_fd,
- 						      ALIGN(scratch->width, 256),
- 						      scratch->height, scratch->bpp,
-@@ -120,18 +145,6 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
- 
- 		ptr = kmstest_dumb_map_buffer(exporter_fd, scratch->handle,
- 					      scratch->size, PROT_WRITE);
--	} else {
--		igt_calc_fb_size(exporter_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
--				 DRM_FORMAT_MOD_LINEAR, &scratch->size, &scratch->pitch);
--		if (gem_has_lmem(exporter_fd))
--			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
--								       REGION_LMEM(0), REGION_SMEM);
--		else
--			scratch->handle = gem_create_in_memory_regions(exporter_fd, scratch->size,
--								       REGION_SMEM);
--
--		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
--						PROT_WRITE | PROT_READ);
- 	}
- 
- 	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
-@@ -151,17 +164,21 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
- }
- 
- static struct intel_buf * create_buf(int fd, struct buf_ops *bops, int width,
--				     int height, uint32_t gem_handle)
-+				     int height, uint64_t size, uint32_t gem_handle)
- {
- 	struct intel_buf *buf;
- 	uint32_t name, handle;
-+	uint64_t region = (buf_ops_get_driver(bops) == INTEL_DRIVER_XE) ?
-+						vram_if_possible(fd, 0) : -1;
- 
- 	name = gem_flink(fd, gem_handle);
- 	handle = gem_open(fd, name);
- 
--	buf = intel_buf_create_using_handle(bops, handle,
--					    width, height, 32, 0,
--					    I915_TILING_NONE, 0);
-+	buf = intel_buf_create_full(bops, handle,
-+				    width, height, 32, 0,
-+				    I915_TILING_NONE, 0,
-+				    size, 0,
-+				    region);
- 
- 	/* Make sure we close handle on destroy path */
- 	intel_buf_set_ownership(buf, true);
-@@ -174,7 +191,8 @@ static void import_fb(int importer_fd, struct igt_fb *fb,
- 	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
- 	int ret;
- 
--	if (is_i915_device(importer_fd) && gem_has_lmem(importer_fd)) {
-+	if ((is_i915_device(importer_fd) && gem_has_lmem(importer_fd)) ||
-+	    (is_xe_device(importer_fd) && xe_has_vram(importer_fd)))  {
- 		uint32_t devid = intel_get_drm_devid(importer_fd);
- 		struct buf_ops *bops = buf_ops_create(importer_fd);
- 		igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
-@@ -190,12 +208,18 @@ static void import_fb(int importer_fd, struct igt_fb *fb,
- 							       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
- 		igt_assert(fb->gem_handle > 0);
- 
--		ptr = gem_mmap__device_coherent(importer_fd, temp_buf_handle, 0,
--						ALIGN(fb_size, 4096),
--						PROT_READ | PROT_WRITE);
-+		if (is_i915_device(importer_fd)) {
-+			ptr = gem_mmap__device_coherent(importer_fd, temp_buf_handle, 0,
-+							ALIGN(fb_size, 4096),
-+							PROT_READ | PROT_WRITE);
-+		} else {
-+			ptr = xe_bo_mmap_ext(importer_fd, temp_buf_handle,
-+					     ALIGN(fb_size, xe_get_default_alignment(importer_fd)),
-+					     PROT_READ | PROT_WRITE);
-+		}
- 
--		src = create_buf(importer_fd, bops, fb->width, fb->height, temp_buf_handle);
--		dst = create_buf(importer_fd, bops, fb->width, fb->height, fb->gem_handle);
-+		src = create_buf(importer_fd, bops, fb->width, fb->height, fb_size, temp_buf_handle);
-+		dst = create_buf(importer_fd, bops, fb->width, fb->height, fb_size, fb->gem_handle);
- 		rendercopy(ibb, src, 0, 0, fb->width, fb->height, dst, 0, 0);
- 
- 		igt_assert(gem_munmap(ptr, fb_size) == 0);
-@@ -355,12 +379,6 @@ static bool has_connected_output(int drm_fd)
- 	return false;
- }
- 
--static void validate_d3_hot(int drm_fd)
--{
--	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
--	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
--}
--
- static void kms_poll_state_restore(void)
- {
- 	int sysfs_fd;
-@@ -382,6 +400,88 @@ static void kms_poll_disable(void)
- 	close(sysfs_fd);
- }
- 
-+static bool runtime_usage_available(struct pci_device *pci)
-+{
-+	char name[PATH_MAX];
-+	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/runtime_usage",
-+		 pci->domain, pci->bus, pci->dev, pci->func);
-+	return access(name, F_OK) == 0;
-+}
-+
-+static bool in_d3_hot(struct pci_device *pci)
-+{
-+	uint16_t val;
-+
-+	/* We need to wait for the autosuspend to kick in before we can check */
-+	if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED))
-+		return false;
-+
-+	if (runtime_usage_available(pci) &&
-+	    igt_pm_get_runtime_usage(pci) != 0)
-+		return false;
-+
-+	igt_assert_eq(pci_device_cfg_read_u16(pci, &val, 0xd4), 0);
-+
-+	return (val & 0x3) == 0x3;
-+}
-+
-+static void validate_d3_hot(int drm_fd, struct pci_device *pci)
-+{
-+	if (is_i915_device(drm_fd)) {
-+		igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
-+		igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
-+	} else {
-+		igt_assert(in_d3_hot(pci));
-+	}
-+}
-+
-+static int open_d3_allowed(struct pci_device *pci)
-+{
-+	char name[PATH_MAX];
-+	int fd;
-+
-+	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/d3cold_allowed",
-+		 pci->domain, pci->bus, pci->dev, pci->func);
-+
-+	fd = open(name, O_RDWR);
-+	igt_assert_f(fd >= 0, "Can't open %s\n", name);
-+
-+	return fd;
-+}
-+
-+static void get_d3_allowed(struct pci_device *pci, char *d3_allowed)
-+{
-+	int fd = open_d3_allowed(pci);
-+
-+	igt_assert(read(fd, d3_allowed, 2));
-+	close(fd);
-+}
-+
-+static void set_d3_allowed(struct pci_device *pci, const char *d3_allowed)
-+{
-+	int fd = open_d3_allowed(pci);
-+
-+	igt_assert(write(fd, d3_allowed, 2));
-+	close(fd);
-+}
-+
-+static void setup_d3_hot(int fd, struct pci_device *pci)
-+{
-+	if (is_xe_device(fd)) {
-+		igt_assert(igt_setup_runtime_pm(fd));
-+
-+		set_d3_allowed(pci, "0\n");
-+
-+		igt_assert(in_d3_hot(pci));
-+	} else {
-+		igt_set_timeout(10, "Wait for dGPU to enter D3hot before starting the subtest");
-+		while (!igt_debugfs_search(fd,
-+			"i915_runtime_pm_status",
-+			"PCI device power state: D3hot [3]"));
-+		igt_reset_timeout();
-+	}
-+}
-+
- igt_main
- {
- 	int first_fd = -1;
-@@ -435,21 +535,28 @@ igt_main
- 
- 		igt_describe("Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU");
- 		igt_subtest("D3hot") {
--			igt_require_f(is_i915_device(second_fd_hybrid), "i915 device required\n");
--			igt_require_f(gem_has_lmem(second_fd_hybrid), "Second GPU is not dGPU\n");
-+			char d3_allowed[2];
-+			struct pci_device *pci;
-+
-+			igt_require_f(is_intel_device(second_fd_hybrid), "intel device required\n");
-+			if (is_i915_device(second_fd_hybrid))
-+				igt_require_f(gem_has_lmem(second_fd_hybrid), "Second GPU is not dGPU\n");
-+			else
-+				igt_require_f(xe_has_vram(second_fd_hybrid), "Second GPU is not dGPU\n");
- 			igt_require_f(first_output, "No display connected to iGPU\n");
- 			igt_require_f(!second_output, "Display connected to dGPU\n");
- 
- 			kms_poll_disable();
- 
--			igt_set_timeout(10, "Wait for dGPU to enter D3hot before starting the subtest");
--			while (!igt_debugfs_search(second_fd_hybrid,
--			       "i915_runtime_pm_status",
--			       "PCI device power state: D3hot [3]"));
--			igt_reset_timeout();
-+			pci = igt_device_get_pci_device(second_fd_hybrid);
-+			get_d3_allowed(pci, d3_allowed);
-+
-+			setup_d3_hot(second_fd_hybrid, pci);
- 
- 			test_basic_modeset(first_fd);
--			validate_d3_hot(second_fd_hybrid);
-+			validate_d3_hot(second_fd_hybrid, pci);
-+
-+			set_d3_allowed(pci, d3_allowed);
- 		}
- 
- 		igt_fixture {
-@@ -467,6 +574,8 @@ igt_main
- 			igt_require(second_fd_vgem >= 0);
- 			if (is_i915_device(first_fd))
- 				igt_require(!gem_has_lmem(first_fd));
-+			if (is_xe_device(first_fd))
-+				igt_require(!xe_has_vram(first_fd));
- 		}
- 
- 		igt_describe("Make a dumb color buffer, export to another device and"
+ lib/drmtest.h                            |    8 +
+ lib/gpgpu_fill.c                         |    4 +-
+ lib/gpu_cmds.c                           |    2 +-
+ lib/igt_draw.c                           |   14 +-
+ lib/igt_fb.c                             |   17 +-
+ lib/intel_allocator.c                    |   40 +-
+ lib/intel_aux_pgtable.c                  |    2 +-
+ lib/intel_batchbuffer.c                  |  421 ++++++--
+ lib/intel_batchbuffer.h                  |   22 +-
+ lib/intel_bufops.c                       |  123 ++-
+ lib/intel_bufops.h                       |   24 +-
+ lib/xe/xe_ioctl.h                        |    1 +
+ lib/xe/xe_query.c                        |   45 +
+ lib/xe/xe_query.h                        |    3 +-
+ tests/i915/gem_caching.c                 |    4 +-
+ tests/i915/gem_pxp.c                     |    2 +-
+ tests/i915/kms_big_fb.c                  |   10 +-
+ tests/intel-ci/xe-fast-feedback.testlist |   19 +
+ tests/meson.build                        |    2 +
+ tests/xe/xe_gpgpu_fill.c                 |  135 +++
+ tests/xe/xe_intel_bb.c                   | 1185 ++++++++++++++++++++++
+ 21 files changed, 1927 insertions(+), 156 deletions(-)
+ create mode 100644 tests/xe/xe_gpgpu_fill.c
+ create mode 100644 tests/xe/xe_intel_bb.c
+
 -- 
-2.40.0
+2.34.1
