@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D0E710EC30
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 05:56:44 +0000 (UTC)
-Date: Fri, 28 Apr 2023 07:56:02 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: janga.rahul.kumar@intel.com
-Message-ID: <20230428055602.l2rsw4f3cu2k66a4@zkempczy-mobl2>
-References: <20230427114256.3182329-1-janga.rahul.kumar@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D937C10E0A6
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 05:59:18 +0000 (UTC)
+Message-ID: <1510967b-6e10-54d2-953e-3d96f0cbb75b@intel.com>
+Date: Fri, 28 Apr 2023 11:28:55 +0530
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230427200307.240349-1-zbigniew.kempczynski@intel.com>
+ <20230427200307.240349-15-zbigniew.kempczynski@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230427200307.240349-15-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230427114256.3182329-1-janga.rahul.kumar@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_query: Add subtest
- query-invalid-extension
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v7 14/16] lib/igt_fb: For xe assume vram
+ is used on discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,68 +23,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 27, 2023 at 05:12:56PM +0530, janga.rahul.kumar@intel.com wrote:
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+
+
+On Fri-28-04-2023 01:33 am, Zbigniew Kempczyński wrote:
+> Assume fb bo's were created on vram on discrete, otherwise use system
+> memory.
 > 
-> Check query with invalid extension returns expected error code.
+
+LGTM
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > 
-> CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> CC: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-
-I've already gave r-b, but this subtest should land to xe-fast-feedback
-either.
-
---
-Zbigniew
-
 > ---
->  tests/xe/xe_query.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+> v2: use -1 for i915 region (Bhanu)
+> ---
+>   lib/igt_fb.c | 17 +++++++++++------
+>   1 file changed, 11 insertions(+), 6 deletions(-)
 > 
-> diff --git a/tests/xe/xe_query.c b/tests/xe/xe_query.c
-> index 3f038225..a0fb5422 100644
-> --- a/tests/xe/xe_query.c
-> +++ b/tests/xe/xe_query.c
-> @@ -435,6 +435,23 @@ test_query_invalid_size(int fd)
->  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), -1);
->  }
->  
-> +/**
-> + * SUBTEST: query-invalid-extension
-> + * Description: Check query with invalid extension returns expected error code.
-> + */
-> +static void
-> +test_query_invalid_extension(int fd)
-> +{
-> +	struct drm_xe_device_query query = {
-> +		.extensions = -1,
-> +		.query = DRM_XE_DEVICE_QUERY_CONFIG,
-> +		.size = 0,
-> +		.data = 0,
-> +	};
-> +
-> +	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
-> +}
-> +
->  igt_main
->  {
->  	int xe;
-> @@ -468,6 +485,9 @@ igt_main
->  	igt_subtest("query-invalid-size")
->  		test_query_invalid_size(xe);
->  
-> +	igt_subtest("query-invalid-extension")
-> +		test_query_invalid_extension(xe);
-> +
->  	igt_fixture {
->  		xe_device_put(xe);
->  		close(xe);
-> -- 
-> 2.25.1
-> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 7379b99aa8..df3d7d91a9 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -2545,6 +2545,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+>   {
+>   	struct intel_buf *buf;
+>   	uint32_t bo_name, handle, compression;
+> +	uint64_t region;
+>   	int num_surfaces;
+>   	int i;
+>   
+> @@ -2571,12 +2572,16 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+>   	bo_name = gem_flink(fd, fb->gem_handle);
+>   	handle = gem_open(fd, bo_name);
+>   
+> -	buf = intel_buf_create_using_handle_and_size(bops, handle,
+> -						     fb->width, fb->height,
+> -						     fb->plane_bpp[0], 0,
+> -						     igt_fb_mod_to_tiling(fb->modifier),
+> -						     compression, fb->size,
+> -						     fb->strides[0]);
+> +	/* For i915 region doesn't matter, for xe does */
+> +	region = buf_ops_get_driver(bops) == INTEL_DRIVER_XE ?
+> +				vram_if_possible(fd, 0) : -1;
+> +	buf = intel_buf_create_full(bops, handle,
+> +				    fb->width, fb->height,
+> +				    fb->plane_bpp[0], 0,
+> +				    igt_fb_mod_to_tiling(fb->modifier),
+> +				    compression, fb->size,
+> +				    fb->strides[0],
+> +				    region);
+>   	intel_buf_set_name(buf, name);
+>   
+>   	/* Make sure we close handle on destroy path */
