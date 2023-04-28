@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15CBA10EC62
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B42E10EC64
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:48 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:37:54 +0530
-Message-Id: <20230428060818.2446308-23-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:38:09 +0530
+Message-Id: <20230428060818.2446308-38-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 22/46] tests/i915/kms_draw_crc: Add XE support
+Subject: [igt-dev] [i-g-t V4 37/46] tests/kms_hdr: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,71 +22,53 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XE driver support for differnt draw methods.
+Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/i915/kms_draw_crc.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ tests/kms_hdr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index 3a3cd99a0..db6d71f2e 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -149,8 +149,8 @@ static void draw_method_subtest(enum igt_draw_method method,
- 	 * comparison. Cache the value so we don't recompute it for every single
- 	 * subtest. */
- 	if (!base_crcs[format_index].set) {
--		get_method_crc(gem_has_mappable_ggtt(drm_fd) ? IGT_DRAW_MMAP_GTT :
--							       IGT_DRAW_MMAP_WC,
-+		get_method_crc(igt_draw_supports_method(drm_fd, IGT_DRAW_MMAP_GTT) ?
-+			       IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
- 			       formats[format_index],
- 			       DRM_FORMAT_MOD_LINEAR,
- 			       &base_crcs[format_index].crc);
-@@ -195,8 +195,8 @@ static void fill_fb_subtest(void)
- 	igt_plane_set_fb(primary, &fb);
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index 23f12c14a..81a32dbf8 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -226,7 +226,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
+ 			if (igt_pipe_connector_valid(pipe, output)) {
+ 				prepare_test(data, output, pipe);
  
- 	igt_draw_rect_fb(drm_fd, bops, 0, &fb,
--			 gem_has_mappable_ggtt(drm_fd) ? IGT_DRAW_MMAP_GTT :
--							 IGT_DRAW_MMAP_WC,
-+			 igt_draw_supports_method(drm_fd, IGT_DRAW_MMAP_GTT) ?
-+			 IGT_DRAW_MMAP_GTT : IGT_DRAW_MMAP_WC,
- 			 0, 0, fb.width, fb.height, 0xFF);
+-				if (is_i915_device(data->fd) &&
++				if (is_intel_device(data->fd) &&
+ 				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
+ 					test_fini(data);
+ 					break;
+@@ -503,7 +503,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
  
- 	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-@@ -222,7 +222,7 @@ static void fill_fb_subtest(void)
+ 	/* Change the mastering information, no modeset allowed
+-	 * for amd driver, whereas a modeset is required for i915
++	 * for amd driver, whereas a modeset is required for intel
+ 	 * driver. */
+ 	hdr.hdmi_metadata_type1.max_display_mastering_luminance = 200;
+ 	hdr.hdmi_metadata_type1.max_fall = 200;
+@@ -517,7 +517,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
  
- static void setup_environment(void)
- {
--	drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+	drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 	igt_require(drm_fd >= 0);
- 	igt_display_require(&display, drm_fd);
- 	igt_display_require_output(&display);
-@@ -289,13 +289,17 @@ igt_main
- 			       "method (%s) with different modifiers & DRM formats.",
- 			       igt_draw_get_method_name(method));
- 		igt_subtest_with_dynamic_f("draw-method-%s", igt_draw_get_method_name(method)) {
--			igt_skip_on(method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd));
--			igt_skip_on(method == IGT_DRAW_MMAP_GTT && !gem_has_mappable_ggtt(drm_fd));
-+			if (!igt_draw_supports_method(drm_fd, method))
-+				continue;
+ 	/* Enter SDR via metadata, no modeset allowed for
+ 	 * amd driver, whereas a modeset is required for
+-	 * i915 driver. */
++	 * intel driver. */
+ 	fill_hdr_output_metadata_sdr(&hdr);
+ 	set_hdr_output_metadata(data, &hdr);
+ 	if (is_amdgpu_device(data->fd))
+@@ -590,7 +590,7 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 			if (igt_pipe_connector_valid(pipe, output)) {
+ 				prepare_test(data, output, pipe);
  
--			for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
--				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
--					modifier = modifiers[modifier_idx];
-+			for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
-+				modifier = modifiers[modifier_idx];
- 
-+				/* No tiling support in XE. */
-+				if (is_xe_device(drm_fd) && modifier != DRM_FORMAT_MOD_LINEAR)
-+					continue;
-+
-+				for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
- 					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
- 						continue;
- 
+-				if (is_i915_device(data->fd) &&
++				if (is_intel_device(data->fd) &&
+ 				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
+ 					test_fini(data);
+ 					break;
 -- 
 2.40.0
