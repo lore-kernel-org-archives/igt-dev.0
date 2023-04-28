@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E48A710EC6B
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EBD510EC75
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:48 +0530
-Message-Id: <20230428071350.2561575-46-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:41 +0530
+Message-Id: <20230428071350.2561575-39-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 45/47] tests/kms_rotation_crc: Add XE support
+Subject: [igt-dev] [i-g-t V5 38/47] tests/kms_hdr: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,103 +24,51 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Add XE driver support for kms tests.
 
-V2: - Drop i915 check for bad-tiling test.
-    - Skip exhaust-fences as it needs Y-tiling
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/kms_rotation_crc.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ tests/kms_hdr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 295aed762..28b4fd27c 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -459,7 +459,7 @@ static bool test_format(data_t *data,
- 	if (!igt_fb_supported_format(format))
- 		return false;
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index 23f12c14a..81a32dbf8 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -226,7 +226,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
+ 			if (igt_pipe_connector_valid(pipe, output)) {
+ 				prepare_test(data, output, pipe);
  
--	if (!is_i915_device(data->gfx_fd) ||
-+	if (!is_intel_device(data->gfx_fd) ||
- 	    data->extended)
- 		return true;
+-				if (is_i915_device(data->fd) &&
++				if (is_intel_device(data->fd) &&
+ 				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
+ 					test_fini(data);
+ 					break;
+@@ -503,7 +503,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
  
-@@ -545,14 +545,14 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
- 		igt_require(igt_plane_has_rotation(plane, data->rotation));
- 		/* CHV can't rotate and reflect simultaneously */
--		igt_require(!is_i915_device(data->gfx_fd) ||
-+		igt_require(!is_intel_device(data->gfx_fd) ||
- 			    !IS_CHERRYVIEW(data->devid) ||
- 			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
+ 	/* Change the mastering information, no modeset allowed
+-	 * for amd driver, whereas a modeset is required for i915
++	 * for amd driver, whereas a modeset is required for intel
+ 	 * driver. */
+ 	hdr.hdmi_metadata_type1.max_display_mastering_luminance = 200;
+ 	hdr.hdmi_metadata_type1.max_fall = 200;
+@@ -517,7 +517,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
  
- 		prepare_crtc(data, output, pipe, plane, true);
+ 	/* Enter SDR via metadata, no modeset allowed for
+ 	 * amd driver, whereas a modeset is required for
+-	 * i915 driver. */
++	 * intel driver. */
+ 	fill_hdr_output_metadata_sdr(&hdr);
+ 	set_hdr_output_metadata(data, &hdr);
+ 	if (is_amdgpu_device(data->fd))
+@@ -590,7 +590,7 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 			if (igt_pipe_connector_valid(pipe, output)) {
+ 				prepare_test(data, output, pipe);
  
- 		for (i = 0; i < num_rectangle_types; i++) {
--			/* Unsupported on i915 */
-+			/* Unsupported on intel */
- 			if (plane_type == DRM_PLANE_TYPE_CURSOR &&
- 			    i != square)
- 				continue;
-@@ -560,9 +560,8 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 			/* Only support partial covering primary plane on gen9+ */
- 			if (is_amdgpu_device(data->gfx_fd) ||
- 				(plane_type == DRM_PLANE_TYPE_PRIMARY &&
--				 is_i915_device(data->gfx_fd) &&
--				 intel_display_ver(
--					 intel_get_drm_devid(data->gfx_fd)) < 9)) {
-+				 is_intel_device(data->gfx_fd) &&
-+				 intel_display_ver(data->devid) < 9)) {
- 				if (i != rectangle)
- 					continue;
- 				else
-@@ -592,7 +591,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 						 data->override_fmt, test_bad_format);
- 			}
- 		}
--		if (is_i915_device(data->gfx_fd)) {
-+		if (is_intel_device(data->gfx_fd)) {
- 			igt_pipe_crc_stop(data->pipe_crc);
- 		}
- 	}
-@@ -841,6 +840,10 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 		igt_pipe_crc_start(data->pipe_crc);
- 
- 		for (i = 0; i < ARRAY_SIZE(planeconfigs); i++) {
-+			if (is_xe_device(data->gfx_fd) &&
-+			    planeconfigs[i].modifier != DRM_FORMAT_MOD_LINEAR)
-+				continue;
-+
- 			p[0].fbinfo = &planeconfigs[i];
- 			pointlocation(data, p, mode, 0);
- 
-@@ -1137,7 +1140,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 
- 	igt_fixture {
- 		data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
--		if (is_i915_device(data.gfx_fd)) {
-+		if (is_intel_device(data.gfx_fd)) {
- 			data.devid = intel_get_drm_devid(data.gfx_fd);
- 			gen = intel_display_ver(data.devid);
- 		}
-@@ -1201,6 +1204,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 
- 	igt_describe("Tiling and Rotation test for gen 10+ for primary plane");
- 	for (reflect_x = reflect_x_subtests; reflect_x->modifier; reflect_x++) {
-+		igt_fixture
-+			igt_require_i915(data.gfx_fd);
-+
- 		igt_subtest_f("primary-%s-reflect-x-%s",
- 			      modifier_test_str(reflect_x->modifier),
- 			      rot_test_str(reflect_x->rot)) {
-@@ -1260,6 +1266,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		enum pipe pipe;
- 		igt_output_t *output;
- 
-+		igt_require_i915(data.gfx_fd);
- 		igt_display_require_output(&data.display);
- 
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-				if (is_i915_device(data->fd) &&
++				if (is_intel_device(data->fd) &&
+ 				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
+ 					test_fini(data);
+ 					break;
 -- 
 2.40.0
