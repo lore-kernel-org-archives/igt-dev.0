@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1301110EC5E
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:23:18 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F111810EC64
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:45 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 08:22:23 +0200
-Message-Id: <20230428062224.21322-17-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230428062224.21322-1-zbigniew.kempczynski@intel.com>
-References: <20230428062224.21322-1-zbigniew.kempczynski@intel.com>
+Date: Fri, 28 Apr 2023 11:38:07 +0530
+Message-Id: <20230428060818.2446308-36-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
+References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 16/17] lib/igt_draw: Pass region while
- building intel_buf from flink
+Subject: [igt-dev] [i-g-t V4 35/46] tests/kms_getfb: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,56 +22,94 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For i915 region doesn't matter but for xe we need to be more strict and
-region aware. This is related to size and alignment constraints. As we
-don't have information about flink buffer origin let's assume region
-is vram if possible, otherwise choose system region.
+Add XE driver support for kms tests.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_draw.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ tests/kms_getfb.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index ac512fac5a..c5f2fdfe2b 100644
---- a/lib/igt_draw.c
-+++ b/lib/igt_draw.c
-@@ -37,6 +37,7 @@
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index 813417e77..4adc7eee2 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -42,6 +42,7 @@
+ #include "drm_fourcc.h"
  #include "i915/gem_create.h"
- #include "i915/gem_mman.h"
- #include "i915/intel_mocs.h"
+ #include "igt_device.h"
 +#include "xe/xe_query.h"
  
- #ifndef PAGE_ALIGN
- #ifndef PAGE_SIZE
-@@ -634,17 +635,24 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
- 				    struct buf_data *from, uint32_t tiling)
- {
- 	struct intel_buf *buf;
-+	enum intel_driver driver = buf_ops_get_driver(bops);
- 	uint32_t handle, name, width, height;
-+	uint64_t region = driver == INTEL_DRIVER_XE ? vram_if_possible(fd, 0) : -1;
-+	uint64_t size = from->size;
+ IGT_TEST_DESCRIPTION("Tests GETFB and GETFB2 ioctls.");
  
- 	width = from->stride / (from->bpp / 8);
- 	height = from->size / from->stride;
-+	if (driver == INTEL_DRIVER_XE)
-+		size = ALIGN(size, xe_get_default_alignment(fd));
+@@ -91,7 +92,6 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
+ 	uint32_t devid;
  
- 	name = gem_flink(fd, from->handle);
- 	handle = gem_open(fd, name);
+ 	igt_require(has_addfb2_iface(fd));
+-	igt_require_intel(fd);
+ 	devid = intel_get_drm_devid(fd);
  
--	buf = intel_buf_create_using_handle(bops, handle,
--					    width, height, from->bpp, 0,
--					    tiling, 0);
-+	buf = intel_buf_create_full(bops, handle,
-+				    width, height, from->bpp, 0,
-+				    tiling, 0,
-+				    size, 0,
-+				    region);
+ 	if (HAS_FLATCCS(devid)) {
+@@ -265,7 +265,7 @@ static void test_duplicate_handles(int fd)
+ 		struct drm_mode_fb_cmd2 add_ccs = { };
+ 		struct drm_mode_fb_cmd get = { };
  
- 	/* Make sure we close handle on destroy path */
- 	intel_buf_set_ownership(buf, true);
+-		igt_require(is_i915_device(fd));
++		igt_require_i915(fd);
+ 		igt_require_f(!HAS_FLATCCS(intel_get_drm_devid(fd)),
+ 			      "skip because flat ccs has only one buffer.\n");
+ 
+@@ -340,6 +340,7 @@ static void test_getfb2(int fd)
+ 		struct drm_mode_fb_cmd2 get = { };
+ 		int i;
+ 
++		igt_require_i915(fd);
+ 		get_ccs_fb(fd, &add_ccs);
+ 		igt_require(add_ccs.fb_id != 0);
+ 		get.fb_id = add_ccs.fb_id;
+@@ -398,6 +399,9 @@ static void test_handle_protection(void) {
+ 	igt_fixture {
+ 		non_master_fd = drm_open_driver(DRIVER_ANY);
+ 
++		if (is_xe_device(non_master_fd))
++			xe_device_get(non_master_fd);
++
+ 		non_master_add.width = 1024;
+ 		non_master_add.height = 1024;
+ 		non_master_add.pixel_format = DRM_FORMAT_XRGB8888;
+@@ -444,6 +448,11 @@ static void test_handle_protection(void) {
+ 	igt_fixture {
+ 		do_ioctl(non_master_fd, DRM_IOCTL_MODE_RMFB, &non_master_add.fb_id);
+ 		gem_close(non_master_fd, non_master_add.handles[0]);
++
++		if (is_xe_device(non_master_fd))
++			xe_device_get(non_master_fd);
++
++		close(non_master_fd);
+ 	}
+ }
+ 
+@@ -454,6 +463,9 @@ igt_main
+ 	igt_fixture {
+ 		fd = drm_open_driver_master(DRIVER_ANY);
+ 		igt_require(has_getfb_iface(fd));
++
++		if (is_xe_device(fd))
++			xe_device_get(fd);
+ 	}
+ 
+ 	igt_subtest_group
+@@ -468,6 +480,10 @@ igt_main
+ 	igt_subtest_group
+ 		test_handle_protection();
+ 
+-	igt_fixture
++	igt_fixture {
++		if (is_xe_device(fd))
++			xe_device_put(fd);
++
+ 		close(fd);
++	}
+ }
 -- 
-2.34.1
+2.40.0
