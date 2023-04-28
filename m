@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2706D10ECC9
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 11:00:34 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Fri, 28 Apr 2023 16:32:35 +0530
-Message-Id: <20230428110235.3230978-1-janga.rahul.kumar@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5ED9F10ECC9
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 11:04:32 +0000 (UTC)
+Date: Fri, 28 Apr 2023 13:04:27 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230428110427.tgmlzxtt3vhxs5ji@kamilkon-desk1>
+References: <20230427121158.3189360-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_query: Add subtest
- query-invalid-extension
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230427121158.3189360-1-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_query: Add check for
+ expected error
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,73 +20,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: janga.rahul.kumar@intel.com, ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On 2023-04-27 at 17:41:58 +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> 
+> For negavtive subtests, check for expected error value.
+> 
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Check query with invalid extension returns expected error code.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Add test to XE BAT.
-
-CC: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist |  1 +
- tests/xe/xe_query.c                      | 20 ++++++++++++++++++++
- 2 files changed, 21 insertions(+)
-
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index ecf44ca7..f699afd5 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -143,6 +143,7 @@ igt@xe_query@query-hwconfig
- igt@xe_query@query-topology
- igt@xe_query@query-invalid-query
- igt@xe_query@query-invalid-size
-+igt@xe_query@query-invalid-extension
- #igt@xe_vm@bind-once
- #igt@xe_vm@scratch
- igt@xe_vm@shared-pte-page
-diff --git a/tests/xe/xe_query.c b/tests/xe/xe_query.c
-index 3f038225..a0fb5422 100644
---- a/tests/xe/xe_query.c
-+++ b/tests/xe/xe_query.c
-@@ -435,6 +435,23 @@ test_query_invalid_size(int fd)
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), -1);
- }
- 
-+/**
-+ * SUBTEST: query-invalid-extension
-+ * Description: Check query with invalid extension returns expected error code.
-+ */
-+static void
-+test_query_invalid_extension(int fd)
-+{
-+	struct drm_xe_device_query query = {
-+		.extensions = -1,
-+		.query = DRM_XE_DEVICE_QUERY_CONFIG,
-+		.size = 0,
-+		.data = 0,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
-+}
-+
- igt_main
- {
- 	int xe;
-@@ -468,6 +485,9 @@ igt_main
- 	igt_subtest("query-invalid-size")
- 		test_query_invalid_size(xe);
- 
-+	igt_subtest("query-invalid-extension")
-+		test_query_invalid_extension(xe);
-+
- 	igt_fixture {
- 		xe_device_put(xe);
- 		close(xe);
--- 
-2.25.1
+> ---
+>  tests/xe/xe_query.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/xe/xe_query.c b/tests/xe/xe_query.c
+> index 3f038225..ceb73c35 100644
+> --- a/tests/xe/xe_query.c
+> +++ b/tests/xe/xe_query.c
+> @@ -415,7 +415,7 @@ test_query_invalid_query(int fd)
+>  		.data = 0,
+>  	};
+>  
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), -1);
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
+>  }
+>  
+>  /**
+> @@ -432,7 +432,7 @@ test_query_invalid_size(int fd)
+>  		.data = 0,
+>  	};
+>  
+> -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), -1);
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query, EINVAL);
+>  }
+>  
+>  igt_main
+> -- 
+> 2.25.1
+> 
