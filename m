@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12C1910EC84
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B289610EC75
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:18 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:29 +0530
-Message-Id: <20230428071350.2561575-27-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:42 +0530
+Message-Id: <20230428071350.2561575-40-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 26/47] tests/i915/kms_flip_tiling: Add XE
- support
+Subject: [igt-dev] [i-g-t V5 39/47] tests/kms_panel_fitting: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,34 +27,47 @@ Add XE driver support for kms tests.
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/i915/kms_flip_tiling.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tests/kms_panel_fitting.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
-index 4cc063f63..a22f12382 100644
---- a/tests/i915/kms_flip_tiling.c
-+++ b/tests/i915/kms_flip_tiling.c
-@@ -177,7 +177,7 @@ igt_output_t *output;
- igt_main
- {
- 	igt_fixture {
--		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+index 2d0590da2..97ef1ae48 100644
+--- a/tests/kms_panel_fitting.c
++++ b/tests/kms_panel_fitting.c
+@@ -23,6 +23,7 @@
+  */
  
- 		data.testformat = DRM_FORMAT_XRGB8888;
-@@ -217,6 +217,12 @@ igt_main
- 					if (plane->formats[j] != data.testformat)
- 						continue;
+ #include "igt.h"
++#include <limits.h>
+ #include <math.h>
+ #include <sys/stat.h>
  
-+					/* No tiling support in XE. */
-+					if (is_xe_device(data.drm_fd) &&
-+					    (plane->modifiers[i] != DRM_FORMAT_MOD_LINEAR ||
-+					     plane->modifiers[j] != DRM_FORMAT_MOD_LINEAR))
-+						continue;
+@@ -133,7 +134,7 @@ test_panel_fitting_legacy(data_t *d, igt_display_t *display,
+ 	igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
+ 	igt_plane_set_position(d->plane2, 100, 100);
+ 
+-	if (is_i915_device(display->drm_fd)) {
++	if (is_intel_device(display->drm_fd)) {
+ 		uint32_t devid = intel_get_drm_devid(display->drm_fd);
+ 		/*
+ 		 * Most of gen7 and all of gen8 doesn't support plane scaling
+@@ -233,10 +234,15 @@ static void test_panel_fitting(data_t *data, enum test_type type)
+ 	struct stat sb;
+ 
+ 	if (type == TEST_ATOMIC) {
+-		igt_require_f(is_i915_device(display->drm_fd), "not valid for non-i915 devices\n");
++		char path[PATH_MAX];
 +
- 					igt_dynamic_f("%s-pipe-%s-%s-to-%s",
- 						      igt_output_name(output),
- 						      kmstest_pipe_name(pipe),
++		igt_require_f(is_intel_device(display->drm_fd), "not valid for non-intel devices\n");
+ 
+ 		/* Until this is force enabled, force modeset evasion. */
+-		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
++		snprintf(path, PATH_MAX, "/sys/module/%s/parameters/fastboot",
++					 is_i915_device(data->drm_fd) ? "i915" : "xe");
++
++		if (stat(path, &sb) == 0)
+ 			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
+ 
+ 		igt_require(intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 5);
 -- 
 2.40.0
