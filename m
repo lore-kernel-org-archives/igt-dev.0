@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E81B10EC59
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7807F10EC5E
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:08 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:37:35 +0530
-Message-Id: <20230428060818.2446308-4-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:37:37 +0530
+Message-Id: <20230428060818.2446308-6-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 03/46] lib/xe_query: Remove commented out
- function prototype
+Subject: [igt-dev] [i-g-t V4 05/46] lib/drmtest: Add driver enum for i915/xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,25 +25,36 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Remove unnecessary commented out code.
+Library code like intel-bb and intel-buf which requires adoption
+to handle both drivers should store driver on which fd they are
+working on instead of calling costful is_i915/xe_device() helper.
+
+Introduce intel_driver enum which will be used on library code
+adoption to Xe.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/xe/xe_query.h | 1 -
- 1 file changed, 1 deletion(-)
+ lib/drmtest.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index f49acb1d7..cc6e7cefd 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -88,7 +88,6 @@ const char *xe_region_name(uint64_t region);
- uint32_t xe_min_page_size(int fd, uint64_t region);
- unsigned int xe_number_hw_engines(int fd);
- bool xe_has_vram(int fd);
--//uint64_t xe_vram_size(int fd);
- uint64_t xe_vram_size(int fd, int gt);
- uint32_t xe_get_default_alignment(int fd);
- uint32_t xe_va_bits(int fd);
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 5878f6512..3c88b85c6 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -62,6 +62,14 @@
+  */
+ #define DRIVER_ANY 	~(DRIVER_VGEM)
+ 
++/*
++ * Compile friendly enum for i915/xe.
++ */
++enum intel_driver {
++	INTEL_DRIVER_I915 = 1,
++	INTEL_DRIVER_XE,
++};
++
+ void __set_forced_driver(const char *name);
+ 
+ /**
 -- 
 2.40.0
