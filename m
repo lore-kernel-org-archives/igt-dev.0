@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 320C010EC69
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B44F010EC5F
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:44 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:38:00 +0530
-Message-Id: <20230428060818.2446308-29-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:38:06 +0530
+Message-Id: <20230428060818.2446308-35-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 28/46] tests/kms_async_flips: No XE support
+Subject: [igt-dev] [i-g-t V4 34/46] tests/kms_flip_event_leak: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,33 +22,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Async flips won't work with linear buffers on Intel hardware,
-hence don't run tests on XE device as XE won't support tiling.
+Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_async_flips.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tests/kms_flip_event_leak.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 1e6506e3d..51ffa523a 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -592,7 +592,13 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 	int i;
+diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+index bc26597de..b79cd5030 100644
+--- a/tests/kms_flip_event_leak.c
++++ b/tests/kms_flip_event_leak.c
+@@ -29,6 +29,7 @@
+ #include <string.h>
  
- 	igt_fixture {
--		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		/*
-+		 * FIXME: As of now, Async flips won't work with linear buffers
-+		 * on Intel hardware, hence don't run tests on XE device as XE
-+		 * won't support tiling.
-+		 * Once Kernel changes got landed, please update this logic.
-+		 */
-+		data.drm_fd = drm_open_driver_master(DRIVER_ANY & ~DRIVER_XE);
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
+ #include "igt_device.h"
++#include "xe/xe_query.h"
+ 
+ typedef struct {
+ 	int drm_fd;
+@@ -64,6 +65,8 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_device_drop_master(data->drm_fd);
+ 
+ 	igt_device_set_master(fd);
++	if (is_xe_device(fd))
++		xe_device_get(fd);
+ 
+ 	igt_create_fb(fd, mode->hdisplay, mode->vdisplay,
+ 		      DRM_FORMAT_XRGB8888,
+@@ -74,6 +77,8 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 			      data);
+ 	igt_assert_eq(ret, 0);
+ 
++	if (is_xe_device(fd))
++		xe_device_put(fd);
+ 	ret = close(fd);
+ 	igt_assert_eq(ret, 0);
+ 
 -- 
 2.40.0
