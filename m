@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18BA910EC6D
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:18:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0CFBD10EC78
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:18:58 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:16 +0530
-Message-Id: <20230428071350.2561575-14-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:24 +0530
+Message-Id: <20230428071350.2561575-22-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 13/47] lib/gpgpu_fill: Use RENDER engine flag
- to work on Xe
+Subject: [igt-dev] [i-g-t V5 21/47] tests/i915/kms_big_joiner: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,41 +22,26 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Add XE driver support for kms tests.
 
-Using I915_EXEC_DEFAULT works fine for i915 selecting appropriate
-command streamer. Unfortunately this cannot be used on Xe as it
-requires explicit engine selection. Submitting gpgpu work on
-render is fine so change to I915_EXEC_RENDER doesn't break i915
-and allows run on valid engine on Xe.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- lib/gpgpu_fill.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/i915/kms_big_joiner.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
-index 4f7bab68f..4db877514 100644
---- a/lib/gpgpu_fill.c
-+++ b/lib/gpgpu_fill.c
-@@ -288,7 +288,7 @@ __gen9_gpgpu_fillfunc(int i915,
- 	intel_bb_ptr_align(ibb, 32);
+diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
+index 8be60ea11..b9dda58f6 100644
+--- a/tests/i915/kms_big_joiner.c
++++ b/tests/i915/kms_big_joiner.c
+@@ -188,7 +188,7 @@ igt_main
+ 	enum pipe pipe_seq[IGT_MAX_PIPES];
  
- 	intel_bb_exec(ibb, intel_bb_offset(ibb),
--		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
-+		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, true);
+ 	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		kmstest_set_vt_graphics_mode();
  
- 	intel_bb_destroy(ibb);
- }
-@@ -329,7 +329,7 @@ __xehp_gpgpu_fillfunc(int i915,
- 	intel_bb_ptr_align(ibb, 32);
- 
- 	intel_bb_exec(ibb, intel_bb_offset(ibb),
--		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
-+		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, true);
- 
- 	intel_bb_destroy(ibb);
- }
+ 		igt_display_require(&data.display, data.drm_fd);
 -- 
 2.40.0
