@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D05E10EC5C
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 983F110EC69
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:52 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:38:17 +0530
-Message-Id: <20230428060818.2446308-46-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:38:11 +0530
+Message-Id: <20230428060818.2446308-40-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 45/46] tests/kms_setmode: Add XE support
+Subject: [igt-dev] [i-g-t V4 39/46] tests/kms_plane: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,42 +25,61 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_setmode.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/kms_plane.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index bfa108916..a611d9382 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 62aee9ad0..10e16b638 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
 @@ -30,6 +30,7 @@
+ #include <stdbool.h>
+ #include <stdio.h>
  #include <string.h>
- #include <sys/time.h>
- #include <math.h>
 +#include "xe/xe_query.h"
  
- #define MAX_CONNECTORS  10
- #define MAX_CRTCS       6
-@@ -954,6 +955,9 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+ /*
+  * Throw away enough lsbs in pixel formats tests
+@@ -399,6 +400,18 @@ test_plane_panning(data_t *data, enum pipe pipe)
  
- 		drm_resources = drmModeGetResources(drm_fd);
- 		igt_require(drm_resources);
-+
-+		if (is_xe_device(drm_fd))
-+			xe_device_get(drm_fd);
  	}
  
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-@@ -971,6 +975,9 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
- 	igt_fixture {
- 		drmModeFreeResources(drm_resources);
- 
-+		if (is_xe_device(drm_fd))
-+			xe_device_put(drm_fd);
++	if (is_xe_device(data->drm_fd)) {
++		struct drm_xe_query_mem_region *memregion;
++		uint64_t memreg = all_memory_regions(data->drm_fd), region;
 +
- 		close(drm_fd);
- 	}
- }
++		xe_for_each_mem_region(data->drm_fd, memreg, region) {
++			memregion = xe_mem_region(data->drm_fd, region);
++
++			if (XE_IS_CLASS_VRAM(memregion))
++				mem_size = memregion->total_size;
++		}
++	}
++
+ 	for_each_connector_mode(output) {
+ 		drmModeModeInfo *m = &output->config.connector->modes[j__];
+ 		uint32_t fb_size = m->hdisplay * m->vdisplay * 4;
+@@ -976,6 +989,10 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+ 			.modifier = plane->modifiers[i],
+ 		};
+ 
++		if (is_xe_device(data->drm_fd) &&
++		    f.modifier != DRM_FORMAT_MOD_LINEAR)
++			continue;
++
+ 		if (f.format == ref.format &&
+ 		    f.modifier == ref.modifier)
+ 			continue;
+@@ -1050,7 +1067,7 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
+ 	if (data->extended)
+ 		return false;
+ 
+-	if (!is_i915_device(data->drm_fd))
++	if (!is_intel_device(data->drm_fd))
+ 		return false;
+ 
+ 	if (plane->type == DRM_PLANE_TYPE_CURSOR)
 -- 
 2.40.0
