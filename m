@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 331C010EC80
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B14F10EC75
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:14 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:30 +0530
-Message-Id: <20230428071350.2561575-28-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:38 +0530
+Message-Id: <20230428071350.2561575-36-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 27/47] tests/i915/kms_mmap_write_crc: Add XE
- support
+Subject: [igt-dev] [i-g-t V5 35/47] tests/kms_flip_event_leak: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,33 +25,40 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/i915/kms_mmap_write_crc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/kms_flip_event_leak.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-index 4f7a86bf4..bc51975f6 100644
---- a/tests/i915/kms_mmap_write_crc.c
-+++ b/tests/i915/kms_mmap_write_crc.c
-@@ -102,7 +102,7 @@ static void test(data_t *data)
- 	igt_plane_set_fb(data->primary, &data->fb[0]);
- 	igt_display_commit(display);
+diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+index bc26597de..b79cd5030 100644
+--- a/tests/kms_flip_event_leak.c
++++ b/tests/kms_flip_event_leak.c
+@@ -29,6 +29,7 @@
+ #include <string.h>
  
--	if (!gem_has_lmem(data->drm_fd)) {
-+	if (is_i915_device(data->drm_fd) && !gem_has_lmem(data->drm_fd)) {
- 		uint32_t caching;
+ #include "igt_device.h"
++#include "xe/xe_query.h"
  
- 		/* make sure caching mode has become UC/WT */
-@@ -259,7 +259,7 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
- 	enum pipe pipe;
+ typedef struct {
+ 	int drm_fd;
+@@ -64,6 +65,8 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_device_drop_master(data->drm_fd);
  
- 	igt_fixture {
--		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 	igt_device_set_master(fd);
++	if (is_xe_device(fd))
++		xe_device_get(fd);
  
- 		data.devid = intel_get_drm_devid(data.drm_fd);
+ 	igt_create_fb(fd, mode->hdisplay, mode->vdisplay,
+ 		      DRM_FORMAT_XRGB8888,
+@@ -74,6 +77,8 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 			      data);
+ 	igt_assert_eq(ret, 0);
+ 
++	if (is_xe_device(fd))
++		xe_device_put(fd);
+ 	ret = close(fd);
+ 	igt_assert_eq(ret, 0);
  
 -- 
 2.40.0
