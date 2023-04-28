@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4599928566214854023=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri, 28 Apr 2023 07:48:04 -0000
-Message-ID: <168266808497.32441.3244497542304350277@emeril.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 009BF10E0CC
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:49:08 +0000 (UTC)
+Date: Fri, 28 Apr 2023 09:49:04 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20230428074904.psdkokrokidqntet@kamilkon-desk1>
 References: <20230428062224.21322-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230428062224.21322-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50ZWdy?=
- =?utf-8?q?ate_intel-bb_with_Xe_=28rev11=29?=
+ <20230428062224.21322-7-zbigniew.kempczynski@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230428062224.21322-7-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v8 06/17] lib/intel_bufops: Add Xe
+ support in bufops
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,245 +22,323 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4599928566214854023==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 2023-04-28 at 08:22:13 +0200, Zbigniew Kempczyński wrote:
+> Extend bufops to support Xe:
+>  - change region to 64bit region mask,
+>  - add initialization helper (full) which allows passing handle,
+>    size and region,
+>  - mapping functions (read + write) selects driver specific mapping
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: Integrate intel-bb with Xe (rev11)
-URL   : https://patchwork.freedesktop.org/series/116578/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13071 -> IGTPW_8881
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/index.html
-
-Participating hosts (38 -> 37)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (2): bat-mtlp-8 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8881 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-soraka:      NOTRUN -> [FAIL][3] ([i915#7916])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [FAIL][4] ([i915#7913] / [i915#8383])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_chamelium_frames@hdmi-crc-fast:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271]) +16 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-glk-j4005:       [FAIL][6] ([i915#7916]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13071/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@requests:
-    - {bat-mtlp-6}:       [ABORT][8] ([i915#7920]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13071/bat-mtlp-6/igt@i915_selftest@live@requests.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/bat-mtlp-6/igt@i915_selftest@live@requests.html
-
-  
-#### Warnings ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-kbl-8809g:       [ABORT][10] ([i915#8299]) -> [ABORT][11] ([i915#8299] / [i915#8397])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13071/fi-kbl-8809g/igt@core_hotunplug@unbind-rebind.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-8809g/igt@core_hotunplug@unbind-rebind.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7916]: https://gitlab.freedesktop.org/drm/intel/issues/7916
-  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
-  [i915#8299]: https://gitlab.freedesktop.org/drm/intel/issues/8299
-  [i915#8383]: https://gitlab.freedesktop.org/drm/intel/issues/8383
-  [i915#8397]: https://gitlab.freedesktop.org/drm/intel/issues/8397
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7273 -> IGTPW_8881
-
-  CI-20190529: 20190529
-  CI_DRM_13071: b9458e7075652669ec0e04abe039a5ed001701fe @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8881: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/index.html
-  IGT_7273: f40ef4b058466219968b7792d22ff0648b82396b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_plane_scaling@i915-max-src-size
--igt@kms_plane_scaling@intel-max-src-size
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/index.html
-
---===============4599928566214854023==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Integrate intel-bb with Xe (rev11)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116578/">https://patchwork.freedesktop.org/series/116578/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13071 -&gt; IGTPW_8881</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/index.html</p>
-<h2>Participating hosts (38 -&gt; 37)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (2): bat-mtlp-8 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8881 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7916">i915#7916</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8383">i915#8383</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13071/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7916">i915#7916</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>{bat-mtlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13071/bat-mtlp-6/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13071/fi-kbl-8809g/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8299">i915#8299</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/fi-kbl-8809g/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8299">i915#8299</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8397">i915#8397</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7273 -&gt; IGTPW_8881</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13071: b9458e7075652669ec0e04abe039a5ed001701fe @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8881: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8881/index.html<br />
-  IGT_7273: f40ef4b058466219968b7792d22ff0648b82396b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_plane_scaling@i915-max-src-size<br />
--igt@kms_plane_scaling@intel-max-src-size</p>
-
-</body>
-</html>
-
---===============4599928566214854023==--
+> ---
+> v5: add intel_buf_create_full() for future lib/igt_fb changes
+>     regarding region
+> v6: - fix igt_assert_f()
+>     - add buf_ops_get_driver() helper
+> v7: - alphabetical includes (Kamil)
+>     - assert if region is not valid for xe before bo create (Kamil)
+>     - ensure bops pointer is valid on public call (Christoph)
+> ---
+>  lib/intel_bufops.c | 123 +++++++++++++++++++++++++++++++++++++++++----
+>  lib/intel_bufops.h |  24 ++++++++-
+>  2 files changed, 136 insertions(+), 11 deletions(-)
+> 
+> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+> index cdc7a1698b..46fd981f09 100644
+> --- a/lib/intel_bufops.c
+> +++ b/lib/intel_bufops.c
+> @@ -29,6 +29,8 @@
+>  #include "igt.h"
+>  #include "igt_x86.h"
+>  #include "intel_bufops.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+>  
+>  /**
+>   * SECTION:intel_bufops
+> @@ -106,6 +108,7 @@ typedef void (*bo_copy)(struct buf_ops *, struct intel_buf *, uint32_t *);
+>  
+>  struct buf_ops {
+>  	int fd;
+> +	enum intel_driver driver;
+>  	int gen_start;
+>  	int gen_end;
+>  	unsigned int intel_gen;
+> @@ -488,6 +491,9 @@ static void *mmap_write(int fd, struct intel_buf *buf)
+>  {
+>  	void *map = NULL;
+>  
+> +	if (buf->bops->driver == INTEL_DRIVER_XE)
+> +		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
+> +
+>  	if (gem_has_lmem(fd)) {
+>  		/*
+>  		 * set/get_caching and set_domain are no longer supported on
+> @@ -530,6 +536,9 @@ static void *mmap_read(int fd, struct intel_buf *buf)
+>  {
+>  	void *map = NULL;
+>  
+> +	if (buf->bops->driver == INTEL_DRIVER_XE)
+> +		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
+> +
+>  	if (gem_has_lmem(fd)) {
+>  		/*
+>  		 * set/get_caching and set_domain are no longer supported on
+> @@ -809,7 +818,7 @@ static void __intel_buf_init(struct buf_ops *bops,
+>  			     int width, int height, int bpp, int alignment,
+>  			     uint32_t req_tiling, uint32_t compression,
+>  			     uint64_t bo_size, int bo_stride,
+> -			     uint32_t region)
+> +			     uint64_t region)
+>  {
+>  	uint32_t tiling = req_tiling;
+>  	uint64_t size;
+> @@ -899,9 +908,20 @@ static void __intel_buf_init(struct buf_ops *bops,
+>  	buf->size = size;
+>  	buf->handle = handle;
+>  
+> -	if (!handle)
+> -		if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
+> -			igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
+> +	if (bops->driver == INTEL_DRIVER_XE)
+> +		igt_assert_f(region != -1, "Xe requires region awareness, "
+> +					   "use api which passes valid region\n");
+> +	buf->region = region;
+> +
+> +	if (!handle) {
+> +		if (bops->driver == INTEL_DRIVER_I915) {
+> +			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
+> +				igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
+> +		} else {
+> +			size = ALIGN(size, xe_get_default_alignment(bops->fd));
+> +			buf->handle = xe_bo_create_flags(bops->fd, 0, size, region);
+> +		}
+> +	}
+>  
+>  	/* Store gem bo size */
+>  	buf->bo_size = size;
+> @@ -930,8 +950,12 @@ void intel_buf_init(struct buf_ops *bops,
+>  		    int width, int height, int bpp, int alignment,
+>  		    uint32_t tiling, uint32_t compression)
+>  {
+> +	uint64_t region;
+> +
+> +	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
+> +						     system_memory(bops->fd);
+>  	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+> -			 tiling, compression, 0, 0, I915_SYSTEM_MEMORY);
+> +			 tiling, compression, 0, 0, region);
+>  
+>  	intel_buf_set_ownership(buf, true);
+>  }
+> @@ -945,7 +969,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+>  			      struct intel_buf *buf,
+>  			      int width, int height, int bpp, int alignment,
+>  			      uint32_t tiling, uint32_t compression,
+> -			      uint32_t region)
+> +			      uint64_t region)
+>  {
+>  	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
+>  			 tiling, compression, 0, 0, region);
+> @@ -1010,6 +1034,43 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+>  			 req_tiling, compression, 0, 0, -1);
+>  }
+>  
+> +/**
+> + * intel_buf_init_full
+> + * @bops: pointer to buf_ops
+> + * @handle: BO handle created by the caller
+> + * @buf: pointer to intel_buf structure to be filled
+> + * @width: surface width
+> + * @height: surface height
+> + * @bpp: bits-per-pixel (8 / 16 / 32 / 64)
+> + * @alignment: alignment of the stride for linear surfaces
+> + * @req_tiling: surface tiling
+> + * @compression: surface compression type
+> + * @size: real bo size
+> + * @stride: bo stride
+> + * @region: region
+> + *
+> + * Function configures BO handle within intel_buf structure passed by the caller
+> + * (with all its metadata - width, height, ...). Useful if BO was created
+> + * outside. Allows passing real size which caller is aware of.
+> + *
+> + * Note: intel_buf_close() can be used because intel_buf is aware it is not
+> + * buffer owner so it won't close it underneath.
+> + */
+> +void intel_buf_init_full(struct buf_ops *bops,
+> +			 uint32_t handle,
+> +			 struct intel_buf *buf,
+> +			 int width, int height,
+> +			 int bpp, int alignment,
+> +			 uint32_t req_tiling,
+> +			 uint32_t compression,
+> +			 uint64_t size,
+> +			 int stride,
+> +			 uint64_t region)
+> +{
+> +	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+> +			 req_tiling, compression, size, stride, region);
+> +}
+> +
+>  /**
+>   * intel_buf_create
+>   * @bops: pointer to buf_ops
+> @@ -1084,6 +1145,20 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+>  							 uint32_t compression,
+>  							 uint64_t size,
+>  							 int stride)
+> +{
+> +	return intel_buf_create_full(bops, handle, width, height, bpp, alignment,
+> +				     req_tiling, compression, size, stride, -1);
+> +}
+> +
+> +struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+> +					uint32_t handle,
+> +					int width, int height,
+> +					int bpp, int alignment,
+> +					uint32_t req_tiling,
+> +					uint32_t compression,
+> +					uint64_t size,
+> +					int stride,
+> +					uint64_t region)
+>  {
+>  	struct intel_buf *buf;
+>  
+> @@ -1093,12 +1168,11 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+>  	igt_assert(buf);
+>  
+>  	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
+> -			 req_tiling, compression, size, stride, -1);
+> +			 req_tiling, compression, size, stride, region);
+>  
+>  	return buf;
+>  }
+>  
+> -
+>  /**
+>   * intel_buf_destroy
+>   * @buf: intel_buf
+> @@ -1420,8 +1494,24 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+>  
+>  	bops->fd = fd;
+>  	bops->intel_gen = generation;
+> -	igt_debug("generation: %d, supported tiles: 0x%02x\n",
+> -		  bops->intel_gen, bops->supported_tiles);
+> +	bops->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
+> +					    is_xe_device(fd) ? INTEL_DRIVER_XE : 0;
+> +	igt_assert(bops->driver);
+> +	igt_debug("generation: %d, supported tiles: 0x%02x, driver: %s\n",
+> +		  bops->intel_gen, bops->supported_tiles,
+> +		  bops->driver == INTEL_DRIVER_I915 ? "i915" : "xe");
+> +
+> +	/* No tiling support in XE. */
+> +	if (bops->driver == INTEL_DRIVER_XE) {
+> +		bops->supported_hw_tiles = TILE_NONE;
+> +
+> +		bops->linear_to_x = copy_linear_to_x;
+> +		bops->x_to_linear = copy_x_to_linear;
+> +		bops->linear_to_y = copy_linear_to_y;
+> +		bops->y_to_linear = copy_y_to_linear;
+> +
+> +		return bops;
+> +	}
+>  
+>  	/*
+>  	 * Warning!
+> @@ -1569,6 +1659,19 @@ int buf_ops_get_fd(struct buf_ops *bops)
+>  	return bops->fd;
+>  }
+>  
+> +/**
+> + * buf_ops_get_driver
+> + * @bops: pointer to buf_ops
+> + *
+> + * Returns: intel driver enum value
+> + */
+> +enum intel_driver buf_ops_get_driver(struct buf_ops *bops)
+> +{
+> +	igt_assert(bops);
+> +
+> +	return bops->driver;
+> +}
+> +
+>  /**
+>   * buf_ops_set_software_tiling
+>   * @bops: pointer to buf_ops
+> diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+> index 25b4307399..0037548a3b 100644
+> --- a/lib/intel_bufops.h
+> +++ b/lib/intel_bufops.h
+> @@ -43,6 +43,7 @@ struct intel_buf {
+>  	} addr;
+>  
+>  	uint64_t bo_size;
+> +	uint64_t region;
+>  
+>  	/* Tracking */
+>  	struct intel_bb *ibb;
+> @@ -109,6 +110,7 @@ struct buf_ops *buf_ops_create(int fd);
+>  struct buf_ops *buf_ops_create_with_selftest(int fd);
+>  void buf_ops_destroy(struct buf_ops *bops);
+>  int buf_ops_get_fd(struct buf_ops *bops);
+> +enum intel_driver buf_ops_get_driver(struct buf_ops *bops);
+>  
+>  bool buf_ops_set_software_tiling(struct buf_ops *bops,
+>  				 uint32_t tiling,
+> @@ -135,7 +137,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
+>  			      struct intel_buf *buf,
+>  			      int width, int height, int bpp, int alignment,
+>  			      uint32_t tiling, uint32_t compression,
+> -			      uint32_t region);
+> +			      uint64_t region);
+>  void intel_buf_close(struct buf_ops *bops, struct intel_buf *buf);
+>  
+>  void intel_buf_init_using_handle(struct buf_ops *bops,
+> @@ -143,6 +145,16 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
+>  				 struct intel_buf *buf,
+>  				 int width, int height, int bpp, int alignment,
+>  				 uint32_t req_tiling, uint32_t compression);
+> +void intel_buf_init_full(struct buf_ops *bops,
+> +			 uint32_t handle,
+> +			 struct intel_buf *buf,
+> +			 int width, int height,
+> +			 int bpp, int alignment,
+> +			 uint32_t req_tiling,
+> +			 uint32_t compression,
+> +			 uint64_t size,
+> +			 int stride,
+> +			 uint64_t region);
+>  
+>  struct intel_buf *intel_buf_create(struct buf_ops *bops,
+>  				   int width, int height,
+> @@ -164,6 +176,16 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
+>  							 uint32_t compression,
+>  							 uint64_t size,
+>  							 int stride);
+> +
+> +struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
+> +					uint32_t handle,
+> +					int width, int height,
+> +					int bpp, int alignment,
+> +					uint32_t req_tiling,
+> +					uint32_t compression,
+> +					uint64_t size,
+> +					int stride,
+> +					uint64_t region);
+>  void intel_buf_destroy(struct intel_buf *buf);
+>  
+>  static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
+> -- 
+> 2.34.1
+> 
