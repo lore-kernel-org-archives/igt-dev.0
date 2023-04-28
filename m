@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19B1510EC57
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 222A210EC5C
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:05 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:37:32 +0530
-Message-Id: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:37:34 +0530
+Message-Id: <20230428060818.2446308-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
+References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 00/46] Add IGT display support for XE
+Subject: [igt-dev] [i-g-t V4 02/46] lib/xe_query: Add region helpers and
+ missing doc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,117 +24,96 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add IGT support to work kms tests on XE driver.
+From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-TODO: Spin, BUSY & HANG related tests.
+For easier iterate over memory regions and produce dynamic subtests
+add xe_region_name() helper.
 
-V2: - Rebase on PW 116578v5
-V3: - Rebase on PW 116578v6
-V4: - Rebase on PW 116578v7
+As Xe requires buffer size alignment during creating bo add
+xe_min_page_size() helper.
 
-Bhanuprakash Modem (30):
-  lib/igt_fb: Add copy engine support for XE
-  lib/igt_draw: Add gpu draw routine support for XE
-  tests/i915/kms_big_fb: Add XE support
-  tests/i915/kms_big_joiner: Add XE support
-  tests/i915/kms_cdclk: Add XE support
-  tests/i915/kms_draw_crc: Add XE support
-  tests/i915/kms_dsc: Add XE support
-  tests/i915/kms_flip_scaled_crc: Add XE support
-  tests/i915/kms_flip_tiling: Add XE support
-  tests/i915/kms_mmap_write_crc: Add XE support
-  tests/kms_3d: Add XE support
-  tests/kms_async_flips: No XE support
-  tests/kms_atomic_transition: Add XE support
-  tests/color: Add XE support
-  tests/kms_concurrent: Add XE support
-  tests/kms_content_protection: Add XE support
-  tests/kms_cursor_crc: Add XE support
-  tests/kms_flip_event_leak: Add XE support
-  tests/kms_getfb: Add XE support
-  tests/kms_hdmi_inject: Add XE support
-  tests/kms_hdr: Add XE support
-  tests/kms_panel_fitting: Add XE support
-  tests/kms_plane: Add XE support
-  tests/kms_plane_lowers: Add XE support
-  tests/kms_plane_scaling: Add XE support
-  tests/kms_prime: Use Rendercopy instead of Blit
-  tests/kms_prime: Add XE support
-  tests/kms_rotation_crc: Add XE support
-  tests/kms_setmode: Add XE support
-  tests/kms_universal_plane: Add XE support
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/xe/xe_query.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_query.h |  2 ++
+ 2 files changed, 47 insertions(+)
 
-Zbigniew Kempczyński (16):
-  lib/xe_ioctl: Add missing header for direct resolving
-  lib/xe_query: Add region helpers and missing doc
-  lib/xe_query: Remove commented out function prototype
-  lib/intel_allocator: Add allocator support for Xe
-  lib/drmtest: Add driver enum for i915/xe
-  lib/intel_bufops: Add Xe support in bufops
-  lib/intel_batchbuffer: Rename i915 -> fd as preparation step for xe
-  lib/intel_batchbuffer: Update intel-bb docs
-  lib/intel_batchbuffer: Add Xe support in intel-bb
-  tests/xe_intel_bb: Check if intel-bb Xe support correctness
-  tests/xe-fast-feedback: Add xe_intel_bb test to BAT
-  lib/gpgpu_fill: Use RENDER engine flag to work on Xe
-  tests/xe_gpgpu_fill: Exercise gpgpu fill on Xe
-  lib/igt_fb: For xe assume vram is used on discrete
-  lib/igt_draw: Pass region while building intel_buf from flink
-  tests/kms_big_fb: Deduce region for xe framebuffer
-
- lib/drmtest.h                            |    8 +
- lib/gpgpu_fill.c                         |    4 +-
- lib/gpu_cmds.c                           |    2 +-
- lib/igt_draw.c                           |   95 +-
- lib/igt_draw.h                           |    2 +
- lib/igt_fb.c                             |   41 +-
- lib/intel_allocator.c                    |   40 +-
- lib/intel_aux_pgtable.c                  |    2 +-
- lib/intel_batchbuffer.c                  |  421 ++++++--
- lib/intel_batchbuffer.h                  |   22 +-
- lib/intel_bufops.c                       |  123 ++-
- lib/intel_bufops.h                       |   24 +-
- lib/xe/xe_ioctl.h                        |    1 +
- lib/xe/xe_query.c                        |   45 +
- lib/xe/xe_query.h                        |    3 +-
- tests/chamelium/kms_chamelium_color.c    |    2 +-
- tests/i915/gem_caching.c                 |    4 +-
- tests/i915/gem_pxp.c                     |    2 +-
- tests/i915/kms_big_fb.c                  |   84 +-
- tests/i915/kms_big_joiner.c              |    2 +-
- tests/i915/kms_cdclk.c                   |    5 +-
- tests/i915/kms_draw_crc.c                |   24 +-
- tests/i915/kms_dsc.c                     |    2 +-
- tests/i915/kms_flip_scaled_crc.c         |    8 +-
- tests/i915/kms_flip_tiling.c             |    8 +-
- tests/i915/kms_mmap_write_crc.c          |    4 +-
- tests/intel-ci/xe-fast-feedback.testlist |   19 +
- tests/kms_3d.c                           |    8 +
- tests/kms_async_flips.c                  |    8 +-
- tests/kms_atomic_transition.c            |    8 +-
- tests/kms_color.c                        |   10 +-
- tests/kms_color_helper.c                 |    2 +-
- tests/kms_concurrent.c                   |    4 +-
- tests/kms_content_protection.c           |   12 +-
- tests/kms_cursor_crc.c                   |    4 +-
- tests/kms_flip_event_leak.c              |    5 +
- tests/kms_getfb.c                        |   22 +-
- tests/kms_hdmi_inject.c                  |   10 +-
- tests/kms_hdr.c                          |    8 +-
- tests/kms_panel_fitting.c                |   12 +-
- tests/kms_plane.c                        |   19 +-
- tests/kms_plane_lowres.c                 |    9 +-
- tests/kms_plane_scaling.c                |   41 +-
- tests/kms_prime.c                        |  230 ++++-
- tests/kms_rotation_crc.c                 |   23 +-
- tests/kms_setmode.c                      |    7 +
- tests/kms_universal_plane.c              |   15 +-
- tests/meson.build                        |    2 +
- tests/xe/xe_gpgpu_fill.c                 |  135 +++
- tests/xe/xe_intel_bb.c                   | 1185 ++++++++++++++++++++++
- 50 files changed, 2447 insertions(+), 329 deletions(-)
- create mode 100644 tests/xe/xe_gpgpu_fill.c
- create mode 100644 tests/xe/xe_intel_bb.c
-
---
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 2b627a78a..bd5eb1d18 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -422,6 +422,13 @@ struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx)
+ 	return &xe_dev->hw_engines[idx];
+ }
+ 
++/**
++ * xe_mem_region:
++ * @fd: xe device fd
++ * @region: region mask
++ *
++ * Returns memory region structure for @region mask.
++ */
+ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region)
+ {
+ 	struct xe_device *xe_dev;
+@@ -434,6 +441,44 @@ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region)
+ 	return &xe_dev->mem_usage->regions[region_idx];
+ }
+ 
++/**
++ * xe_region_name:
++ * @region: region mask
++ *
++ * Returns region string like "system" or "vram-n" where n=0...62.
++ */
++const char *xe_region_name(uint64_t region)
++{
++	static char **vrams;
++	int region_idx = ffs(region) - 1;
++
++	/* Populate the array */
++	if (!vrams) {
++		vrams = calloc(64, sizeof(char *));
++		for (int i = 0; i < 64; i++) {
++			if (i != 0)
++				asprintf(&vrams[i], "vram-%d", i - 1);
++			else
++				asprintf(&vrams[i], "system");
++			igt_assert(vrams[i]);
++		}
++	}
++
++	return vrams[region_idx];
++}
++
++/**
++ * xe_min_page_size:
++ * @fd: xe device fd
++ * @region: region mask
++ *
++ * Returns minimum page size for @region.
++ */
++uint32_t xe_min_page_size(int fd, uint64_t region)
++{
++	return xe_mem_region(fd, region)->min_page_size;
++}
++
+ /**
+  * xe_number_hw_engine:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 0d4b810a1..f49acb1d7 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -84,6 +84,8 @@ uint64_t vram_if_possible(int fd, int gt);
+ struct drm_xe_engine_class_instance *xe_hw_engines(int fd);
+ struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
+ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
++const char *xe_region_name(uint64_t region);
++uint32_t xe_min_page_size(int fd, uint64_t region);
+ unsigned int xe_number_hw_engines(int fd);
+ bool xe_has_vram(int fd);
+ //uint64_t xe_vram_size(int fd);
+-- 
 2.40.0
