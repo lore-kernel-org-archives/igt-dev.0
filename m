@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBDC210EC6D
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:18:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 54B3710EC73
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:18:51 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:15 +0530
-Message-Id: <20230428071350.2561575-13-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:18 +0530
+Message-Id: <20230428071350.2561575-16-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 12/47] tests/xe-fast-feedback: Add xe_intel_bb
- test to BAT
+Subject: [igt-dev] [i-g-t V5 15/47] lib/igt_fb: For xe assume vram is used
+ on discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,43 +26,49 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Verifies intel-bb integration with xe.
+Assume fb bo's were created on vram on discrete, otherwise use system
+memory.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel-ci/xe-fast-feedback.testlist | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ lib/igt_fb.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 987e72ef4..3d0603fd9 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -106,6 +106,24 @@ igt@xe_guc_pc@freq_range_idle
- igt@xe_guc_pc@rc6_on_idle
- igt@xe_guc_pc@rc0_on_exec
- igt@xe_huc_copy@huc_copy
-+igt@xe_intel_bb@add-remove-objects
-+igt@xe_intel_bb@bb-with-allocator
-+igt@xe_intel_bb@blit-reloc
-+igt@xe_intel_bb@blit-simple
-+igt@xe_intel_bb@create-in-region
-+igt@xe_intel_bb@delta-check
-+igt@xe_intel_bb@destroy-bb
-+igt@xe_intel_bb@full-batch
-+igt@xe_intel_bb@intel-bb-blit-none
-+igt@xe_intel_bb@intel-bb-blit-x
-+igt@xe_intel_bb@intel-bb-blit-y
-+igt@xe_intel_bb@lot-of-buffers
-+igt@xe_intel_bb@offset-control
-+igt@xe_intel_bb@purge-bb
-+igt@xe_intel_bb@render
-+igt@xe_intel_bb@reset-bb
-+igt@xe_intel_bb@simple-bb
-+igt@xe_intel_bb@simple-bb-ctx
- igt@xe_mmap@system
- igt@xe_mmap@vram
- igt@xe_mmap@vram-system
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 7379b99aa..df3d7d91a 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2545,6 +2545,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+ {
+ 	struct intel_buf *buf;
+ 	uint32_t bo_name, handle, compression;
++	uint64_t region;
+ 	int num_surfaces;
+ 	int i;
+ 
+@@ -2571,12 +2572,16 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+ 	bo_name = gem_flink(fd, fb->gem_handle);
+ 	handle = gem_open(fd, bo_name);
+ 
+-	buf = intel_buf_create_using_handle_and_size(bops, handle,
+-						     fb->width, fb->height,
+-						     fb->plane_bpp[0], 0,
+-						     igt_fb_mod_to_tiling(fb->modifier),
+-						     compression, fb->size,
+-						     fb->strides[0]);
++	/* For i915 region doesn't matter, for xe does */
++	region = buf_ops_get_driver(bops) == INTEL_DRIVER_XE ?
++				vram_if_possible(fd, 0) : -1;
++	buf = intel_buf_create_full(bops, handle,
++				    fb->width, fb->height,
++				    fb->plane_bpp[0], 0,
++				    igt_fb_mod_to_tiling(fb->modifier),
++				    compression, fb->size,
++				    fb->strides[0],
++				    region);
+ 	intel_buf_set_name(buf, name);
+ 
+ 	/* Make sure we close handle on destroy path */
 -- 
 2.40.0
