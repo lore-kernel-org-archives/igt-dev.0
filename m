@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B14F10EC75
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1830489A4E
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:13 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:38 +0530
-Message-Id: <20230428071350.2561575-36-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:37 +0530
+Message-Id: <20230428071350.2561575-35-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 35/47] tests/kms_flip_event_leak: Add XE support
+Subject: [igt-dev] [i-g-t V5 34/47] tests/kms_cursor_crc: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,38 +27,30 @@ Add XE driver support for kms tests.
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_flip_event_leak.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/kms_cursor_crc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-index bc26597de..b79cd5030 100644
---- a/tests/kms_flip_event_leak.c
-+++ b/tests/kms_flip_event_leak.c
-@@ -29,6 +29,7 @@
- #include <string.h>
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index cc9dfcb1d..3a353a032 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -143,7 +143,7 @@ static bool chv_cursor_broken(data_t *data, int x)
+ {
+ 	uint32_t devid;
  
- #include "igt_device.h"
-+#include "xe/xe_query.h"
+-	if (!is_i915_device(data->drm_fd))
++	if (!is_intel_device(data->drm_fd))
+ 		return false;
  
- typedef struct {
- 	int drm_fd;
-@@ -64,6 +65,8 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_device_drop_master(data->drm_fd);
- 
- 	igt_device_set_master(fd);
-+	if (is_xe_device(fd))
-+		xe_device_get(fd);
- 
- 	igt_create_fb(fd, mode->hdisplay, mode->vdisplay,
- 		      DRM_FORMAT_XRGB8888,
-@@ -74,6 +77,8 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
- 			      data);
- 	igt_assert_eq(ret, 0);
- 
-+	if (is_xe_device(fd))
-+		xe_device_put(fd);
- 	ret = close(fd);
- 	igt_assert_eq(ret, 0);
- 
+ 	devid = intel_get_drm_devid(data->drm_fd);
+@@ -152,7 +152,7 @@ static bool chv_cursor_broken(data_t *data, int x)
+ 	 * CHV gets a FIFO underrun on pipe C when cursor x coordinate
+ 	 * is negative and the cursor visible.
+ 	 *
+-	 * i915 is fixed to return -EINVAL on cursor updates with those
++	 * intel is fixed to return -EINVAL on cursor updates with those
+ 	 * negative coordinates, so require cursor update to fail with
+ 	 * -EINVAL in that case.
+ 	 *
 -- 
 2.40.0
