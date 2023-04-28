@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDD6589A4E
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12C1910EC84
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 07:19:04 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 12:43:36 +0530
-Message-Id: <20230428071350.2561575-34-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 12:43:29 +0530
+Message-Id: <20230428071350.2561575-27-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 References: <20230428071350.2561575-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 33/47] tests/kms_content_protection: Add XE
+Subject: [igt-dev] [i-g-t V5 26/47] tests/i915/kms_flip_tiling: Add XE
  support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,47 +26,36 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/kms_content_protection.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tests/i915/kms_flip_tiling.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 638e1301a..344cac505 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -392,7 +392,12 @@ static bool sink_hdcp_capable(igt_output_t *output)
- 	if (fd < 0)
- 		return false;
+diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
+index 4cc063f63..a22f12382 100644
+--- a/tests/i915/kms_flip_tiling.c
++++ b/tests/i915/kms_flip_tiling.c
+@@ -177,7 +177,7 @@ igt_output_t *output;
+ igt_main
+ {
+ 	igt_fixture {
+-		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
  
--	if (is_i915_device(data.drm_fd))
-+	/*
-+	 * FIXME: As of now XE's debugfs is using i915 namespace. Once Kernel
-+	 * changes got landed, please update this logic to use XE specific
-+	 * debugfs.
-+	 */
-+	if (is_intel_device(data.drm_fd))
- 		debugfs_read(fd, "i915_hdcp_sink_capability", buf);
- 	else
- 		debugfs_read(fd, "hdcp_sink_capability", buf);
-@@ -413,7 +418,8 @@ static bool sink_hdcp2_capable(igt_output_t *output)
- 	if (fd < 0)
- 		return false;
+ 		data.testformat = DRM_FORMAT_XRGB8888;
+@@ -217,6 +217,12 @@ igt_main
+ 					if (plane->formats[j] != data.testformat)
+ 						continue;
  
--	if (is_i915_device(data.drm_fd))
-+	/* FIXME: XE specific debugfs as mentioned above. */
-+	if (is_intel_device(data.drm_fd))
- 		debugfs_read(fd, "i915_hdcp_sink_capability", buf);
- 	else
- 		debugfs_read(fd, "hdcp_sink_capability", buf);
-@@ -763,7 +769,7 @@ static const struct {
- 	  .content_type = HDCP_CONTENT_TYPE_1,
- 	},
- 	{ .desc = "Test the teardown and rebuild of the interface between "
--		  "I915 and mei hdcp.",
-+		  "Intel and mei hdcp.",
- 	  .name = "mei_interface",
- 	  .cp_tests = CP_MEI_RELOAD,
- 	  .content_type = HDCP_CONTENT_TYPE_1,
++					/* No tiling support in XE. */
++					if (is_xe_device(data.drm_fd) &&
++					    (plane->modifiers[i] != DRM_FORMAT_MOD_LINEAR ||
++					     plane->modifiers[j] != DRM_FORMAT_MOD_LINEAR))
++						continue;
++
+ 					igt_dynamic_f("%s-pipe-%s-%s-to-%s",
+ 						      igt_output_name(output),
+ 						      kmstest_pipe_name(pipe),
 -- 
 2.40.0
