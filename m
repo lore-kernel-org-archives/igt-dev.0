@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2A6010EC62
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FAD210EC57
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:24 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:37:38 +0530
-Message-Id: <20230428060818.2446308-7-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:37:42 +0530
+Message-Id: <20230428060818.2446308-11-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 06/46] lib/intel_bufops: Add Xe support in
- bufops
+Subject: [igt-dev] [i-g-t V4 10/46] tests/xe_intel_bb: Check if intel-bb Xe
+ support correctness
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,304 +26,1219 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Extend bufops to support Xe:
- - change region to 64bit region mask,
- - add initialization helper (full) which allows passing handle,
-   size and region,
- - mapping functions (read + write) selects driver specific mapping
+As we're reusing intel-bb for Xe we need to check it behaves correctly
+for buffer handling and submission.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- lib/intel_bufops.c | 123 +++++++++++++++++++++++++++++++++++++++++----
- lib/intel_bufops.h |  24 ++++++++-
- 2 files changed, 136 insertions(+), 11 deletions(-)
+ tests/meson.build      |    1 +
+ tests/xe/xe_intel_bb.c | 1185 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 1186 insertions(+)
+ create mode 100644 tests/xe/xe_intel_bb.c
 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index cdc7a1698..46fd981f0 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -29,6 +29,8 @@
- #include "igt.h"
- #include "igt_x86.h"
- #include "intel_bufops.h"
+diff --git a/tests/meson.build b/tests/meson.build
+index 8909cfa8f..b026fac48 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -256,6 +256,7 @@ xe_progs = [
+ 	'xe_exec_threads',
+ 	'xe_guc_pc',
+ 	'xe_huc_copy',
++	'xe_intel_bb',
+ 	'xe_mmap',
+ 	'xe_mmio',
+ 	'xe_module_load',
+diff --git a/tests/xe/xe_intel_bb.c b/tests/xe/xe_intel_bb.c
+new file mode 100644
+index 000000000..35d61608e
+--- /dev/null
++++ b/tests/xe/xe_intel_bb.c
+@@ -0,0 +1,1185 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#include <cairo.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <glib.h>
++#include <inttypes.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/stat.h>
++#include <unistd.h>
++#include <zlib.h>
++
++#include "igt.h"
++#include "igt_crc.h"
++#include "intel_bufops.h"
 +#include "xe/xe_ioctl.h"
 +#include "xe/xe_query.h"
- 
- /**
-  * SECTION:intel_bufops
-@@ -106,6 +108,7 @@ typedef void (*bo_copy)(struct buf_ops *, struct intel_buf *, uint32_t *);
- 
- struct buf_ops {
- 	int fd;
-+	enum intel_driver driver;
- 	int gen_start;
- 	int gen_end;
- 	unsigned int intel_gen;
-@@ -488,6 +491,9 @@ static void *mmap_write(int fd, struct intel_buf *buf)
- {
- 	void *map = NULL;
- 
-+	if (buf->bops->driver == INTEL_DRIVER_XE)
-+		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
 +
- 	if (gem_has_lmem(fd)) {
- 		/*
- 		 * set/get_caching and set_domain are no longer supported on
-@@ -530,6 +536,9 @@ static void *mmap_read(int fd, struct intel_buf *buf)
- {
- 	void *map = NULL;
- 
-+	if (buf->bops->driver == INTEL_DRIVER_XE)
-+		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
++/**
++ * TEST: Basic tests for intel-bb xe functionality
++ * Category: Software building block
++ * Sub-category: xe
++ * Test category: functionality test
++ */
 +
- 	if (gem_has_lmem(fd)) {
- 		/*
- 		 * set/get_caching and set_domain are no longer supported on
-@@ -809,7 +818,7 @@ static void __intel_buf_init(struct buf_ops *bops,
- 			     int width, int height, int bpp, int alignment,
- 			     uint32_t req_tiling, uint32_t compression,
- 			     uint64_t bo_size, int bo_stride,
--			     uint32_t region)
-+			     uint64_t region)
- {
- 	uint32_t tiling = req_tiling;
- 	uint64_t size;
-@@ -899,9 +908,20 @@ static void __intel_buf_init(struct buf_ops *bops,
- 	buf->size = size;
- 	buf->handle = handle;
- 
--	if (!handle)
--		if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
--			igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
-+	if (bops->driver == INTEL_DRIVER_XE)
-+		igt_assert_f(region != -1, "Xe requires region awareness, "
-+					   "use api which passes valid region\n");
-+	buf->region = region;
++#define PAGE_SIZE 4096
 +
-+	if (!handle) {
-+		if (bops->driver == INTEL_DRIVER_I915) {
-+			if (__gem_create_in_memory_regions(bops->fd, &buf->handle, &size, region))
-+				igt_assert_eq(__gem_create(bops->fd, &size, &buf->handle), 0);
++#define WIDTH	64
++#define HEIGHT	64
++#define STRIDE	(WIDTH * 4)
++#define SIZE	(HEIGHT * STRIDE)
++
++#define COLOR_00	0x00
++#define COLOR_33	0x33
++#define COLOR_77	0x77
++#define COLOR_CC	0xcc
++
++IGT_TEST_DESCRIPTION("xe_intel_bb API check.");
++
++static bool debug_bb;
++static bool write_png;
++static bool buf_info;
++static bool print_base64;
++
++static void *alloc_aligned(uint64_t size)
++{
++	void *p;
++
++	igt_assert_eq(posix_memalign(&p, 16, size), 0);
++
++	return p;
++}
++
++static void fill_buf(struct intel_buf *buf, uint8_t color)
++{
++	uint8_t *ptr;
++	int xe = buf_ops_get_fd(buf->bops);
++	int i;
++
++	ptr = xe_bo_map(xe, buf->handle, buf->surface[0].size);
++
++	for (i = 0; i < buf->surface[0].size; i++)
++		ptr[i] = color;
++
++	munmap(ptr, buf->surface[0].size);
++}
++
++static void check_buf(struct intel_buf *buf, uint8_t color)
++{
++	uint8_t *ptr;
++	int xe = buf_ops_get_fd(buf->bops);
++	int i;
++
++	ptr = xe_bo_map(xe, buf->handle, buf->surface[0].size);
++
++	for (i = 0; i < buf->surface[0].size; i++)
++		igt_assert(ptr[i] == color);
++
++	munmap(ptr, buf->surface[0].size);
++}
++
++static struct intel_buf *
++create_buf(struct buf_ops *bops, int width, int height, uint8_t color)
++{
++	struct intel_buf *buf;
++
++	buf = calloc(1, sizeof(*buf));
++	igt_assert(buf);
++
++	intel_buf_init(bops, buf, width/4, height, 32, 0, I915_TILING_NONE, 0);
++	fill_buf(buf, color);
++
++	return buf;
++}
++
++static void print_buf(struct intel_buf *buf, const char *name)
++{
++	uint8_t *ptr;
++	int xe = buf_ops_get_fd(buf->bops);
++
++	ptr = xe_bo_map(xe, buf->handle, buf->surface[0].size);
++
++	igt_debug("[%s] Buf handle: %d, size: %" PRIu64
++		  ", v: 0x%02x, presumed_addr: %p\n",
++		  name, buf->handle, buf->surface[0].size, ptr[0],
++		  from_user_pointer(buf->addr.offset));
++	munmap(ptr, buf->surface[0].size);
++}
++
++/**
++ * SUBTEST: reset-bb
++ * Description: check bb reset
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++static void reset_bb(struct buf_ops *bops)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_bb *ibb;
++
++	ibb = intel_bb_create(xe, PAGE_SIZE);
++	intel_bb_reset(ibb, false);
++	intel_bb_destroy(ibb);
++}
++
++/**
++ * SUBTEST: purge-bb
++ * Description: check bb reset == full (purge)
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++static void purge_bb(struct buf_ops *bops)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_buf *buf;
++	struct intel_bb *ibb;
++	uint64_t offset0, offset1;
++
++	buf = intel_buf_create(bops, 512, 512, 32, 0, I915_TILING_NONE,
++			       I915_COMPRESSION_NONE);
++	ibb = intel_bb_create(xe, 4096);
++	intel_bb_set_debug(ibb, true);
++
++	intel_bb_add_intel_buf(ibb, buf, false);
++	offset0 = buf->addr.offset;
++
++	intel_bb_reset(ibb, true);
++	buf->addr.offset = INTEL_BUF_INVALID_ADDRESS;
++
++	intel_bb_add_intel_buf(ibb, buf, false);
++	offset1 = buf->addr.offset;
++
++	igt_assert(offset0 == offset1);
++
++	intel_buf_destroy(buf);
++	intel_bb_destroy(ibb);
++}
++
++/**
++ * SUBTEST: simple-%s
++ * Description: Run simple bb xe %arg[1] test
++ * Run type: BAT
++ *
++ * arg[1]:
++ *
++ * @bb:     bb
++ * @bb-ctx: bb-ctx
++ */
++static void simple_bb(struct buf_ops *bops, bool new_context)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_bb *ibb;
++	uint32_t ctx = 0;
++
++	ibb = intel_bb_create_with_allocator(xe, ctx, NULL, PAGE_SIZE,
++					     INTEL_ALLOCATOR_SIMPLE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
++	intel_bb_ptr_align(ibb, 8);
++
++	intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++
++	/* Check we're safe with reset and no double-free will occur */
++	intel_bb_reset(ibb, true);
++	intel_bb_reset(ibb, false);
++	intel_bb_reset(ibb, true);
++
++	if (new_context) {
++		ctx = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++		intel_bb_destroy(ibb);
++		ibb = intel_bb_create_with_context(xe, ctx, NULL, PAGE_SIZE);
++		intel_bb_out(ibb, MI_BATCH_BUFFER_END);
++		intel_bb_ptr_align(ibb, 8);
++		intel_bb_exec(ibb, intel_bb_offset(ibb),
++			      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC,
++			      true);
++		xe_vm_destroy(xe, ctx);
++	}
++
++	intel_bb_destroy(ibb);
++}
++
++/**
++ * SUBTEST: bb-with-allocator
++ * Description: check bb with passed allocator
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++static void bb_with_allocator(struct buf_ops *bops)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_bb *ibb;
++	struct intel_buf *src, *dst;
++	uint32_t ctx = 0;
++
++	ibb = intel_bb_create_with_allocator(xe, ctx, NULL, PAGE_SIZE,
++					     INTEL_ALLOCATOR_SIMPLE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	src = intel_buf_create(bops, 4096/32, 32, 8, 0, I915_TILING_NONE,
++			       I915_COMPRESSION_NONE);
++	dst = intel_buf_create(bops, 4096/32, 32, 8, 0, I915_TILING_NONE,
++			       I915_COMPRESSION_NONE);
++
++	intel_bb_add_intel_buf(ibb, src, false);
++	intel_bb_add_intel_buf(ibb, dst, true);
++	intel_bb_copy_intel_buf(ibb, dst, src, 4096);
++	intel_bb_remove_intel_buf(ibb, src);
++	intel_bb_remove_intel_buf(ibb, dst);
++
++	intel_buf_destroy(src);
++	intel_buf_destroy(dst);
++	intel_bb_destroy(ibb);
++}
++
++/**
++ * SUBTEST: lot-of-buffers
++ * Description: check running bb with many buffers
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++#define NUM_BUFS 500
++static void lot_of_buffers(struct buf_ops *bops)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_bb *ibb;
++	struct intel_buf *buf[NUM_BUFS];
++	int i;
++
++	ibb = intel_bb_create(xe, PAGE_SIZE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
++	intel_bb_ptr_align(ibb, 8);
++
++	for (i = 0; i < NUM_BUFS; i++) {
++		buf[i] = intel_buf_create(bops, 4096, 1, 8, 0, I915_TILING_NONE,
++					  I915_COMPRESSION_NONE);
++		if (i % 2)
++			intel_bb_add_intel_buf(ibb, buf[i], false);
++		else
++			intel_bb_add_intel_buf_with_alignment(ibb, buf[i],
++							      0x4000, false);
++	}
++
++	intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++	intel_bb_reset(ibb, false);
++
++	for (i = 0; i < NUM_BUFS; i++)
++		intel_buf_destroy(buf[i]);
++
++	intel_bb_destroy(ibb);
++}
++
++/**
++ * SUBTEST: add-remove-objects
++ * Description: check bb object manipulation (add + remove)
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++static void add_remove_objects(struct buf_ops *bops)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_bb *ibb;
++	struct intel_buf *src, *mid, *dst;
++	uint32_t offset;
++	const uint32_t width = 512;
++	const uint32_t height = 512;
++
++	ibb = intel_bb_create(xe, PAGE_SIZE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	src = intel_buf_create(bops, width, height, 32, 0,
++			       I915_TILING_NONE, I915_COMPRESSION_NONE);
++	mid = intel_buf_create(bops, width, height, 32, 0,
++			       I915_TILING_NONE, I915_COMPRESSION_NONE);
++	dst = intel_buf_create(bops, width, height, 32, 0,
++			       I915_TILING_NONE, I915_COMPRESSION_NONE);
++
++	intel_bb_add_intel_buf(ibb, src, false);
++	intel_bb_add_intel_buf(ibb, mid, true);
++	intel_bb_remove_intel_buf(ibb, mid);
++	intel_bb_remove_intel_buf(ibb, mid);
++	intel_bb_remove_intel_buf(ibb, mid);
++	intel_bb_add_intel_buf(ibb, dst, true);
++
++	offset = intel_bb_emit_bbe(ibb);
++	intel_bb_exec(ibb, offset,
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++	intel_bb_reset(ibb, false);
++
++	intel_buf_destroy(src);
++	intel_buf_destroy(mid);
++	intel_buf_destroy(dst);
++	intel_bb_destroy(ibb);
++}
++
++/**
++ * SUBTEST: destroy-bb
++ * Description: check bb destroy/create
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++static void destroy_bb(struct buf_ops *bops)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_bb *ibb;
++	struct intel_buf *src, *mid, *dst;
++	uint32_t offset;
++	const uint32_t width = 512;
++	const uint32_t height = 512;
++
++	ibb = intel_bb_create(xe, PAGE_SIZE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	src = intel_buf_create(bops, width, height, 32, 0,
++			       I915_TILING_NONE, I915_COMPRESSION_NONE);
++	mid = intel_buf_create(bops, width, height, 32, 0,
++			       I915_TILING_NONE, I915_COMPRESSION_NONE);
++	dst = intel_buf_create(bops, width, height, 32, 0,
++			       I915_TILING_NONE, I915_COMPRESSION_NONE);
++
++	intel_bb_add_intel_buf(ibb, src, false);
++	intel_bb_add_intel_buf(ibb, mid, true);
++	intel_bb_add_intel_buf(ibb, dst, true);
++
++	offset = intel_bb_emit_bbe(ibb);
++	intel_bb_exec(ibb, offset,
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++	intel_bb_reset(ibb, false);
++
++	/* Check destroy will detach intel_bufs */
++	intel_bb_destroy(ibb);
++	igt_assert(src->addr.offset == INTEL_BUF_INVALID_ADDRESS);
++	igt_assert(src->ibb == NULL);
++	igt_assert(mid->addr.offset == INTEL_BUF_INVALID_ADDRESS);
++	igt_assert(mid->ibb == NULL);
++	igt_assert(dst->addr.offset == INTEL_BUF_INVALID_ADDRESS);
++	igt_assert(dst->ibb == NULL);
++
++	ibb = intel_bb_create(xe, PAGE_SIZE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	intel_bb_add_intel_buf(ibb, src, false);
++	offset = intel_bb_emit_bbe(ibb);
++	intel_bb_exec(ibb, offset,
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++	intel_bb_reset(ibb, false);
++
++	intel_bb_destroy(ibb);
++	intel_buf_destroy(src);
++	intel_buf_destroy(mid);
++	intel_buf_destroy(dst);
++}
++
++/**
++ * SUBTEST: create-in-region
++ * Description: check size validation on available regions
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++static void create_in_region(struct buf_ops *bops, uint64_t region)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_bb *ibb;
++	struct intel_buf buf = {};
++	uint32_t handle, offset;
++	uint64_t size;
++	int width = 64;
++	int height = 64;
++
++	ibb = intel_bb_create(xe, PAGE_SIZE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	size = xe_min_page_size(xe, system_memory(xe));
++	handle = xe_bo_create_flags(xe, 0, size, system_memory(xe));
++	intel_buf_init_full(bops, handle, &buf,
++			    width/4, height, 32, 0,
++			    I915_TILING_NONE, 0,
++			    size, 0, region);
++	intel_buf_set_ownership(&buf, true);
++
++	intel_bb_add_intel_buf(ibb, &buf, false);
++	offset = intel_bb_emit_bbe(ibb);
++	intel_bb_exec(ibb, offset,
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++	intel_bb_reset(ibb, false);
++
++	intel_buf_close(bops, &buf);
++	intel_bb_destroy(ibb);
++}
++
++static void __emit_blit(struct intel_bb *ibb,
++			 struct intel_buf *src, struct intel_buf *dst)
++{
++	intel_bb_emit_blt_copy(ibb,
++			       src, 0, 0, src->surface[0].stride,
++			       dst, 0, 0, dst->surface[0].stride,
++			       intel_buf_width(dst),
++			       intel_buf_height(dst),
++			       dst->bpp);
++}
++
++/**
++ * SUBTEST: blit-%s
++ * Description: Run blit on %arg[1] allocator
++ * Run type: BAT
++ *
++ * arg[1]:
++ *
++ * @simple:				simple
++ * @reloc:				reloc
++ */
++static void blit(struct buf_ops *bops, uint8_t allocator_type)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_bb *ibb;
++	struct intel_buf *src, *dst;
++	uint64_t poff_src, poff_dst;
++	uint64_t flags = 0;
++
++	ibb = intel_bb_create_with_allocator(xe, 0, NULL, PAGE_SIZE,
++					     allocator_type);
++	flags |= I915_EXEC_NO_RELOC;
++
++	src = create_buf(bops, WIDTH, HEIGHT, COLOR_CC);
++	dst = create_buf(bops, WIDTH, HEIGHT, COLOR_00);
++
++	if (buf_info) {
++		print_buf(src, "src");
++		print_buf(dst, "dst");
++	}
++
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	__emit_blit(ibb, src, dst);
++	intel_bb_emit_bbe(ibb);
++	intel_bb_flush_blit(ibb);
++	intel_bb_sync(ibb);
++	intel_bb_reset(ibb, false);
++	check_buf(dst, COLOR_CC);
++
++	poff_src = intel_bb_get_object_offset(ibb, src->handle);
++	poff_dst = intel_bb_get_object_offset(ibb, dst->handle);
++
++	/* Add buffers again */
++	intel_bb_add_intel_buf(ibb, src, false);
++	intel_bb_add_intel_buf(ibb, dst, true);
++
++	igt_assert_f(poff_src == src->addr.offset,
++		     "prev src addr: %" PRIx64 " <> src addr %" PRIx64 "\n",
++		     poff_src, src->addr.offset);
++	igt_assert_f(poff_dst == dst->addr.offset,
++		     "prev dst addr: %" PRIx64 " <> dst addr %" PRIx64 "\n",
++		     poff_dst, dst->addr.offset);
++
++	fill_buf(src, COLOR_77);
++	fill_buf(dst, COLOR_00);
++
++	__emit_blit(ibb, src, dst);
++	intel_bb_emit_bbe(ibb);
++	intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++	intel_bb_reset(ibb, false);
++	check_buf(dst, COLOR_77);
++
++	intel_bb_emit_bbe(ibb);
++	intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++	intel_bb_reset(ibb, false);
++	check_buf(dst, COLOR_77);
++
++	intel_buf_destroy(src);
++	intel_buf_destroy(dst);
++	intel_bb_destroy(ibb);
++}
++
++static void scratch_buf_init(struct buf_ops *bops,
++			     struct intel_buf *buf,
++			     int width, int height,
++			     uint32_t req_tiling,
++			     enum i915_compression compression)
++{
++	int fd = buf_ops_get_fd(bops);
++	int bpp = 32;
++
++	/*
++	 * We use system memory even if vram is possible because wc mapping
++	 * is extremely slow.
++	 */
++	intel_buf_init_in_region(bops, buf, width, height, bpp, 0,
++				 req_tiling, compression,
++				 system_memory(fd));
++
++	igt_assert(intel_buf_width(buf) == width);
++	igt_assert(intel_buf_height(buf) == height);
++}
++
++static void scratch_buf_draw_pattern(struct buf_ops *bops,
++				     struct intel_buf *buf,
++				     int x, int y, int w, int h,
++				     int cx, int cy, int cw, int ch,
++				     bool use_alternate_colors)
++{
++	cairo_surface_t *surface;
++	cairo_pattern_t *pat;
++	cairo_t *cr;
++	void *linear;
++
++	linear = alloc_aligned(buf->surface[0].size);
++
++	surface = cairo_image_surface_create_for_data(linear,
++						      CAIRO_FORMAT_RGB24,
++						      intel_buf_width(buf),
++						      intel_buf_height(buf),
++						      buf->surface[0].stride);
++
++	cr = cairo_create(surface);
++
++	cairo_rectangle(cr, cx, cy, cw, ch);
++	cairo_clip(cr);
++
++	pat = cairo_pattern_create_mesh();
++	cairo_mesh_pattern_begin_patch(pat);
++	cairo_mesh_pattern_move_to(pat, x,   y);
++	cairo_mesh_pattern_line_to(pat, x+w, y);
++	cairo_mesh_pattern_line_to(pat, x+w, y+h);
++	cairo_mesh_pattern_line_to(pat, x,   y+h);
++	if (use_alternate_colors) {
++		cairo_mesh_pattern_set_corner_color_rgb(pat, 0, 0.0, 1.0, 1.0);
++		cairo_mesh_pattern_set_corner_color_rgb(pat, 1, 1.0, 0.0, 1.0);
++		cairo_mesh_pattern_set_corner_color_rgb(pat, 2, 1.0, 1.0, 0.0);
++		cairo_mesh_pattern_set_corner_color_rgb(pat, 3, 0.0, 0.0, 0.0);
++	} else {
++		cairo_mesh_pattern_set_corner_color_rgb(pat, 0, 1.0, 0.0, 0.0);
++		cairo_mesh_pattern_set_corner_color_rgb(pat, 1, 0.0, 1.0, 0.0);
++		cairo_mesh_pattern_set_corner_color_rgb(pat, 2, 0.0, 0.0, 1.0);
++		cairo_mesh_pattern_set_corner_color_rgb(pat, 3, 1.0, 1.0, 1.0);
++	}
++	cairo_mesh_pattern_end_patch(pat);
++
++	cairo_rectangle(cr, x, y, w, h);
++	cairo_set_source(cr, pat);
++	cairo_fill(cr);
++	cairo_pattern_destroy(pat);
++
++	cairo_destroy(cr);
++
++	cairo_surface_destroy(surface);
++
++	linear_to_intel_buf(bops, buf, linear);
++
++	free(linear);
++}
++
++#define GROUP_SIZE 4096
++static int compare_detail(const uint32_t *ptr1, uint32_t *ptr2,
++			  uint32_t size)
++{
++	int i, ok = 0, fail = 0;
++	int groups = size / GROUP_SIZE;
++	int *hist = calloc(GROUP_SIZE, groups);
++
++	igt_debug("size: %d, group_size: %d, groups: %d\n",
++		  size, GROUP_SIZE, groups);
++
++	for (i = 0; i < size / sizeof(uint32_t); i++) {
++		if (ptr1[i] == ptr2[i]) {
++			ok++;
 +		} else {
-+			size = ALIGN(size, xe_get_default_alignment(bops->fd));
-+			buf->handle = xe_bo_create_flags(bops->fd, 0, size, region);
++			fail++;
++			hist[i * sizeof(uint32_t) / GROUP_SIZE]++;
 +		}
 +	}
- 
- 	/* Store gem bo size */
- 	buf->bo_size = size;
-@@ -930,8 +950,12 @@ void intel_buf_init(struct buf_ops *bops,
- 		    int width, int height, int bpp, int alignment,
- 		    uint32_t tiling, uint32_t compression)
- {
-+	uint64_t region;
 +
-+	region = bops->driver == INTEL_DRIVER_I915 ? I915_SYSTEM_MEMORY :
-+						     system_memory(bops->fd);
- 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
--			 tiling, compression, 0, 0, I915_SYSTEM_MEMORY);
-+			 tiling, compression, 0, 0, region);
- 
- 	intel_buf_set_ownership(buf, true);
- }
-@@ -945,7 +969,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
- 			      struct intel_buf *buf,
- 			      int width, int height, int bpp, int alignment,
- 			      uint32_t tiling, uint32_t compression,
--			      uint32_t region)
-+			      uint64_t region)
- {
- 	__intel_buf_init(bops, 0, buf, width, height, bpp, alignment,
- 			 tiling, compression, 0, 0, region);
-@@ -1010,6 +1034,43 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
- 			 req_tiling, compression, 0, 0, -1);
- }
- 
-+/**
-+ * intel_buf_init_full
-+ * @bops: pointer to buf_ops
-+ * @handle: BO handle created by the caller
-+ * @buf: pointer to intel_buf structure to be filled
-+ * @width: surface width
-+ * @height: surface height
-+ * @bpp: bits-per-pixel (8 / 16 / 32 / 64)
-+ * @alignment: alignment of the stride for linear surfaces
-+ * @req_tiling: surface tiling
-+ * @compression: surface compression type
-+ * @size: real bo size
-+ * @stride: bo stride
-+ * @region: region
-+ *
-+ * Function configures BO handle within intel_buf structure passed by the caller
-+ * (with all its metadata - width, height, ...). Useful if BO was created
-+ * outside. Allows passing real size which caller is aware of.
-+ *
-+ * Note: intel_buf_close() can be used because intel_buf is aware it is not
-+ * buffer owner so it won't close it underneath.
-+ */
-+void intel_buf_init_full(struct buf_ops *bops,
-+			 uint32_t handle,
-+			 struct intel_buf *buf,
-+			 int width, int height,
-+			 int bpp, int alignment,
-+			 uint32_t req_tiling,
-+			 uint32_t compression,
-+			 uint64_t size,
-+			 int stride,
-+			 uint64_t region)
-+{
-+	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
-+			 req_tiling, compression, size, stride, region);
-+}
-+
- /**
-  * intel_buf_create
-  * @bops: pointer to buf_ops
-@@ -1084,6 +1145,20 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
- 							 uint32_t compression,
- 							 uint64_t size,
- 							 int stride)
-+{
-+	return intel_buf_create_full(bops, handle, width, height, bpp, alignment,
-+				     req_tiling, compression, size, stride, -1);
-+}
-+
-+struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
-+					uint32_t handle,
-+					int width, int height,
-+					int bpp, int alignment,
-+					uint32_t req_tiling,
-+					uint32_t compression,
-+					uint64_t size,
-+					int stride,
-+					uint64_t region)
- {
- 	struct intel_buf *buf;
- 
-@@ -1093,12 +1168,11 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
- 	igt_assert(buf);
- 
- 	__intel_buf_init(bops, handle, buf, width, height, bpp, alignment,
--			 req_tiling, compression, size, stride, -1);
-+			 req_tiling, compression, size, stride, region);
- 
- 	return buf;
- }
- 
--
- /**
-  * intel_buf_destroy
-  * @buf: intel_buf
-@@ -1420,8 +1494,24 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
- 
- 	bops->fd = fd;
- 	bops->intel_gen = generation;
--	igt_debug("generation: %d, supported tiles: 0x%02x\n",
--		  bops->intel_gen, bops->supported_tiles);
-+	bops->driver = is_i915_device(fd) ? INTEL_DRIVER_I915 :
-+					    is_xe_device(fd) ? INTEL_DRIVER_XE : 0;
-+	igt_assert(bops->driver);
-+	igt_debug("generation: %d, supported tiles: 0x%02x, driver: %s\n",
-+		  bops->intel_gen, bops->supported_tiles,
-+		  bops->driver == INTEL_DRIVER_I915 ? "i915" : "xe");
-+
-+	/* No tiling support in XE. */
-+	if (bops->driver == INTEL_DRIVER_XE) {
-+		bops->supported_hw_tiles = TILE_NONE;
-+
-+		bops->linear_to_x = copy_linear_to_x;
-+		bops->x_to_linear = copy_x_to_linear;
-+		bops->linear_to_y = copy_linear_to_y;
-+		bops->y_to_linear = copy_y_to_linear;
-+
-+		return bops;
++	for (i = 0; i < groups; i++) {
++		if (hist[i])
++			igt_debug("[group %4x]: %d\n", i, hist[i]);
 +	}
- 
- 	/*
- 	 * Warning!
-@@ -1569,6 +1659,19 @@ int buf_ops_get_fd(struct buf_ops *bops)
- 	return bops->fd;
- }
- 
-+/**
-+ * buf_ops_get_driver
-+ * @bops: pointer to buf_ops
-+ *
-+ * Returns: intel driver enum value
-+ */
-+enum intel_driver buf_ops_get_driver(struct buf_ops *bops)
-+{
-+	igt_assert(bops);
++	free(hist);
 +
-+	return bops->driver;
++	igt_debug("ok: %d, fail: %d\n", ok, fail);
++
++	return fail;
 +}
 +
- /**
-  * buf_ops_set_software_tiling
-  * @bops: pointer to buf_ops
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 25b430739..0037548a3 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -43,6 +43,7 @@ struct intel_buf {
- 	} addr;
- 
- 	uint64_t bo_size;
-+	uint64_t region;
- 
- 	/* Tracking */
- 	struct intel_bb *ibb;
-@@ -109,6 +110,7 @@ struct buf_ops *buf_ops_create(int fd);
- struct buf_ops *buf_ops_create_with_selftest(int fd);
- void buf_ops_destroy(struct buf_ops *bops);
- int buf_ops_get_fd(struct buf_ops *bops);
-+enum intel_driver buf_ops_get_driver(struct buf_ops *bops);
- 
- bool buf_ops_set_software_tiling(struct buf_ops *bops,
- 				 uint32_t tiling,
-@@ -135,7 +137,7 @@ void intel_buf_init_in_region(struct buf_ops *bops,
- 			      struct intel_buf *buf,
- 			      int width, int height, int bpp, int alignment,
- 			      uint32_t tiling, uint32_t compression,
--			      uint32_t region);
-+			      uint64_t region);
- void intel_buf_close(struct buf_ops *bops, struct intel_buf *buf);
- 
- void intel_buf_init_using_handle(struct buf_ops *bops,
-@@ -143,6 +145,16 @@ void intel_buf_init_using_handle(struct buf_ops *bops,
- 				 struct intel_buf *buf,
- 				 int width, int height, int bpp, int alignment,
- 				 uint32_t req_tiling, uint32_t compression);
-+void intel_buf_init_full(struct buf_ops *bops,
-+			 uint32_t handle,
-+			 struct intel_buf *buf,
-+			 int width, int height,
-+			 int bpp, int alignment,
-+			 uint32_t req_tiling,
-+			 uint32_t compression,
-+			 uint64_t size,
-+			 int stride,
-+			 uint64_t region);
- 
- struct intel_buf *intel_buf_create(struct buf_ops *bops,
- 				   int width, int height,
-@@ -164,6 +176,16 @@ struct intel_buf *intel_buf_create_using_handle_and_size(struct buf_ops *bops,
- 							 uint32_t compression,
- 							 uint64_t size,
- 							 int stride);
++static int compare_bufs(struct intel_buf *buf1, struct intel_buf *buf2,
++			 bool detail_compare)
++{
++	void *ptr1, *ptr2;
++	int fd1, fd2, ret;
 +
-+struct intel_buf *intel_buf_create_full(struct buf_ops *bops,
-+					uint32_t handle,
-+					int width, int height,
-+					int bpp, int alignment,
-+					uint32_t req_tiling,
-+					uint32_t compression,
-+					uint64_t size,
-+					int stride,
-+					uint64_t region);
- void intel_buf_destroy(struct intel_buf *buf);
- 
- static inline void intel_buf_set_pxp(struct intel_buf *buf, bool new_pxp_state)
++	igt_assert(buf1->surface[0].size == buf2->surface[0].size);
++
++	fd1 = buf_ops_get_fd(buf1->bops);
++	fd2 = buf_ops_get_fd(buf2->bops);
++
++	ptr1 = xe_bo_map(fd1, buf1->handle, buf1->surface[0].size);
++	ptr2 = xe_bo_map(fd2, buf2->handle, buf2->surface[0].size);
++	ret = memcmp(ptr1, ptr2, buf1->surface[0].size);
++	if (detail_compare)
++		ret = compare_detail(ptr1, ptr2, buf1->surface[0].size);
++
++	munmap(ptr1, buf1->surface[0].size);
++	munmap(ptr2, buf2->surface[0].size);
++
++	return ret;
++}
++
++#define LINELEN 76ul
++static int dump_base64(const char *name, struct intel_buf *buf)
++{
++	void *ptr;
++	int fd, ret;
++	uLongf outsize = buf->surface[0].size * 3 / 2;
++	Bytef *destbuf = malloc(outsize);
++	gchar *str, *pos;
++
++	fd = buf_ops_get_fd(buf->bops);
++
++	ptr = gem_mmap__device_coherent(fd, buf->handle, 0,
++					buf->surface[0].size, PROT_READ);
++
++	ret = compress2(destbuf, &outsize, ptr, buf->surface[0].size,
++			Z_BEST_COMPRESSION);
++	if (ret != Z_OK) {
++		igt_warn("error compressing, ret: %d\n", ret);
++	} else {
++		igt_info("compressed %" PRIu64 " -> %lu\n",
++			 buf->surface[0].size, outsize);
++
++		igt_info("--- %s ---\n", name);
++		pos = str = g_base64_encode(destbuf, outsize);
++		outsize = strlen(str);
++		while (pos) {
++			char line[LINELEN + 1];
++			int to_copy = min(LINELEN, outsize);
++
++			memcpy(line, pos, to_copy);
++			line[to_copy] = 0;
++			igt_info("%s\n", line);
++			pos += LINELEN;
++			outsize -= to_copy;
++
++			if (outsize == 0)
++				break;
++		}
++		free(str);
++	}
++
++	munmap(ptr, buf->surface[0].size);
++	free(destbuf);
++
++	return ret;
++}
++
++static int __do_intel_bb_blit(struct buf_ops *bops, uint32_t tiling)
++{
++	struct intel_bb *ibb;
++	const int width = 1024;
++	const int height = 1024;
++	struct intel_buf src, dst, final;
++	char name[128];
++	int xe = buf_ops_get_fd(bops), fails;
++
++	ibb = intel_bb_create(xe, PAGE_SIZE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	scratch_buf_init(bops, &src, width, height, I915_TILING_NONE,
++			 I915_COMPRESSION_NONE);
++	scratch_buf_init(bops, &dst, width, height, tiling,
++			 I915_COMPRESSION_NONE);
++	scratch_buf_init(bops, &final, width, height, I915_TILING_NONE,
++			 I915_COMPRESSION_NONE);
++
++	if (buf_info) {
++		intel_buf_print(&src);
++		intel_buf_print(&dst);
++	}
++
++	scratch_buf_draw_pattern(bops, &src,
++				 0, 0, width, height,
++				 0, 0, width, height, 0);
++
++	intel_bb_blt_copy(ibb,
++			  &src, 0, 0, src.surface[0].stride,
++			  &dst, 0, 0, dst.surface[0].stride,
++			  intel_buf_width(&dst),
++			  intel_buf_height(&dst),
++			  dst.bpp);
++
++	intel_bb_blt_copy(ibb,
++			  &dst, 0, 0, dst.surface[0].stride,
++			  &final, 0, 0, final.surface[0].stride,
++			  intel_buf_width(&dst),
++			  intel_buf_height(&dst),
++			  dst.bpp);
++
++	igt_assert(intel_bb_sync(ibb) == 0);
++	intel_bb_destroy(ibb);
++
++	if (write_png) {
++		snprintf(name, sizeof(name) - 1,
++			 "bb_blit_dst_tiling_%d.png", tiling);
++		intel_buf_write_to_png(&src, "bb_blit_src_tiling_none.png");
++		intel_buf_write_to_png(&dst, name);
++		intel_buf_write_to_png(&final, "bb_blit_final_tiling_none.png");
++	}
++
++	/* We'll fail on src <-> final compare so just warn */
++	if (tiling == I915_TILING_NONE) {
++		if (compare_bufs(&src, &dst, false) > 0)
++			igt_warn("none->none blit failed!");
++	} else {
++		if (compare_bufs(&src, &dst, false) == 0)
++			igt_warn("none->tiled blit failed!");
++	}
++
++	fails = compare_bufs(&src, &final, true);
++
++	intel_buf_close(bops, &src);
++	intel_buf_close(bops, &dst);
++	intel_buf_close(bops, &final);
++
++	return fails;
++}
++
++/**
++ * SUBTEST: intel-bb-blit-%s
++ * Description: Run simple bb xe %arg[1] test
++ * Run type: BAT
++ *
++ * arg[1]:
++ *
++ * @none:				none
++ * @x:					x
++ * @y:					y
++ */
++static void do_intel_bb_blit(struct buf_ops *bops, int loops, uint32_t tiling)
++{
++	int i, fails = 0, xe = buf_ops_get_fd(bops);
++
++	/* We'll fix it for gen2/3 later. */
++	igt_require(intel_gen(intel_get_drm_devid(xe)) > 3);
++
++	for (i = 0; i < loops; i++)
++		fails += __do_intel_bb_blit(bops, tiling);
++
++	igt_assert_f(fails == 0, "intel-bb-blit (tiling: %d) fails: %d\n",
++		     tiling, fails);
++}
++
++/**
++ * SUBTEST: offset-control
++ * Description: check offset is kept on default simple allocator
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++static void offset_control(struct buf_ops *bops)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_bb *ibb;
++	struct intel_buf *src, *dst1, *dst2, *dst3;
++	uint64_t poff_src, poff_dst1, poff_dst2;
++
++	ibb = intel_bb_create(xe, PAGE_SIZE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	src = create_buf(bops, WIDTH, HEIGHT, COLOR_CC);
++	dst1 = create_buf(bops, WIDTH, HEIGHT, COLOR_00);
++	dst2 = create_buf(bops, WIDTH, HEIGHT, COLOR_77);
++
++	intel_bb_add_object(ibb, src->handle, intel_buf_bo_size(src),
++			    src->addr.offset, 0, false);
++	intel_bb_add_object(ibb, dst1->handle, intel_buf_bo_size(dst1),
++			    dst1->addr.offset, 0, true);
++	intel_bb_add_object(ibb, dst2->handle, intel_buf_bo_size(dst2),
++			    dst2->addr.offset, 0, true);
++
++	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
++	intel_bb_ptr_align(ibb, 8);
++
++	intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, false);
++
++	if (buf_info) {
++		print_buf(src, "src ");
++		print_buf(dst1, "dst1");
++		print_buf(dst2, "dst2");
++	}
++
++	poff_src = src->addr.offset;
++	poff_dst1 = dst1->addr.offset;
++	poff_dst2 = dst2->addr.offset;
++	intel_bb_reset(ibb, true);
++
++	dst3 = create_buf(bops, WIDTH, HEIGHT, COLOR_33);
++	intel_bb_add_object(ibb, dst3->handle, intel_buf_bo_size(dst3),
++			    dst3->addr.offset, 0, true);
++	intel_bb_add_object(ibb, src->handle, intel_buf_bo_size(src),
++			    src->addr.offset, 0, false);
++	intel_bb_add_object(ibb, dst1->handle, intel_buf_bo_size(dst1),
++			    dst1->addr.offset, 0, true);
++	intel_bb_add_object(ibb, dst2->handle, intel_buf_bo_size(dst2),
++			    dst2->addr.offset, 0, true);
++
++	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
++	intel_bb_ptr_align(ibb, 8);
++
++	intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, false);
++	intel_bb_sync(ibb);
++	intel_bb_reset(ibb, true);
++
++	igt_assert(poff_src == src->addr.offset);
++	igt_assert(poff_dst1 == dst1->addr.offset);
++	igt_assert(poff_dst2 == dst2->addr.offset);
++
++	if (buf_info) {
++		print_buf(src, "src ");
++		print_buf(dst1, "dst1");
++		print_buf(dst2, "dst2");
++	}
++
++	intel_buf_destroy(src);
++	intel_buf_destroy(dst1);
++	intel_buf_destroy(dst2);
++	intel_buf_destroy(dst3);
++	intel_bb_destroy(ibb);
++}
++
++/*
++ * Idea of the test is to verify delta is properly added to address
++ * when emit_reloc() is called.
++ */
++
++/**
++ * SUBTEST: delta-check
++ * Description: check delta is honoured in intel-bb pipelines
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++#define DELTA_BUFFERS 3
++static void delta_check(struct buf_ops *bops)
++{
++	const uint32_t expected = 0x1234abcd;
++	int xe = buf_ops_get_fd(bops);
++	uint32_t *ptr, hi, lo, val;
++	struct intel_buf *buf;
++	struct intel_bb *ibb;
++	uint64_t offset;
++	uint64_t obj_size = xe_get_default_alignment(xe) + 0x2000;
++	uint64_t obj_offset = (1ULL << 32) - xe_get_default_alignment(xe);
++	uint64_t delta = xe_get_default_alignment(xe) + 0x1000;
++
++	ibb = intel_bb_create_with_allocator(xe, 0, NULL, PAGE_SIZE,
++					     INTEL_ALLOCATOR_SIMPLE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	buf = create_buf(bops, obj_size, 0x1, COLOR_CC);
++	buf->addr.offset = obj_offset;
++	intel_bb_add_object(ibb, buf->handle, intel_buf_bo_size(buf),
++			    buf->addr.offset, 0, false);
++
++	intel_bb_out(ibb, MI_STORE_DWORD_IMM_GEN4);
++	intel_bb_emit_reloc(ibb, buf->handle,
++			    I915_GEM_DOMAIN_RENDER,
++			    I915_GEM_DOMAIN_RENDER,
++			    delta, buf->addr.offset);
++	intel_bb_out(ibb, expected);
++
++	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
++	intel_bb_ptr_align(ibb, 8);
++
++	intel_bb_exec(ibb, intel_bb_offset(ibb), I915_EXEC_DEFAULT, false);
++	intel_bb_sync(ibb);
++
++	/* Buffer should be @ obj_offset */
++	offset = intel_bb_get_object_offset(ibb, buf->handle);
++	igt_assert_eq_u64(offset, obj_offset);
++
++	ptr = xe_bo_map(xe, ibb->handle, ibb->size);
++	lo = ptr[1];
++	hi = ptr[2];
++	gem_munmap(ptr, ibb->size);
++
++	ptr = xe_bo_map(xe, buf->handle, intel_buf_size(buf));
++	val = ptr[delta / sizeof(uint32_t)];
++	gem_munmap(ptr, intel_buf_size(buf));
++
++	intel_buf_destroy(buf);
++	intel_bb_destroy(ibb);
++
++	/* Assert after all resources are freed */
++	igt_assert_f(lo == 0x1000 && hi == 0x1,
++		     "intel-bb doesn't properly handle delta in emit relocation\n");
++	igt_assert_f(val == expected,
++		     "Address doesn't contain expected [%x] value [%x]\n",
++		     expected, val);
++}
++
++/**
++ * SUBTEST: full-batch
++ * Description: check bb totally filled is executing correct
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++static void full_batch(struct buf_ops *bops)
++{
++	int xe = buf_ops_get_fd(bops);
++	struct intel_bb *ibb;
++	int i;
++
++	ibb = intel_bb_create(xe, PAGE_SIZE);
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	for (i = 0; i < PAGE_SIZE / sizeof(uint32_t) - 1; i++)
++		intel_bb_out(ibb, 0);
++	intel_bb_emit_bbe(ibb);
++
++	igt_assert(intel_bb_offset(ibb) == PAGE_SIZE);
++	intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
++	intel_bb_reset(ibb, false);
++
++	intel_bb_destroy(ibb);
++}
++
++/**
++ * SUBTEST: render
++ * Description: check intel-bb render pipeline
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++static int render(struct buf_ops *bops, uint32_t tiling,
++		  uint32_t width, uint32_t height)
++{
++	struct intel_bb *ibb;
++	struct intel_buf src, dst, final;
++	int xe = buf_ops_get_fd(bops);
++	uint32_t fails = 0;
++	char name[128];
++	uint32_t devid = intel_get_drm_devid(xe);
++	igt_render_copyfunc_t render_copy = NULL;
++
++	igt_debug("%s() gen: %d\n", __func__, intel_gen(devid));
++
++	ibb = intel_bb_create(xe, PAGE_SIZE);
++
++	if (debug_bb)
++		intel_bb_set_debug(ibb, true);
++
++	if (print_base64)
++		intel_bb_set_dump_base64(ibb, true);
++
++	scratch_buf_init(bops, &src, width, height, I915_TILING_NONE,
++			 I915_COMPRESSION_NONE);
++	scratch_buf_init(bops, &dst, width, height, tiling,
++			 I915_COMPRESSION_NONE);
++	scratch_buf_init(bops, &final, width, height, I915_TILING_NONE,
++			 I915_COMPRESSION_NONE);
++
++	scratch_buf_draw_pattern(bops, &src,
++				 0, 0, width, height,
++				 0, 0, width, height, 0);
++
++	render_copy = igt_get_render_copyfunc(devid);
++	igt_assert(render_copy);
++
++	render_copy(ibb,
++		    &src,
++		    0, 0, width, height,
++		    &dst,
++		    0, 0);
++
++	render_copy(ibb,
++		    &dst,
++		    0, 0, width, height,
++		    &final,
++		    0, 0);
++
++	intel_bb_sync(ibb);
++	intel_bb_destroy(ibb);
++
++	if (write_png) {
++		snprintf(name, sizeof(name) - 1,
++			 "render_dst_tiling_%d.png", tiling);
++		intel_buf_write_to_png(&src, "render_src_tiling_none.png");
++		intel_buf_write_to_png(&dst, name);
++		intel_buf_write_to_png(&final, "render_final_tiling_none.png");
++	}
++
++	/* We'll fail on src <-> final compare so just warn */
++	if (tiling == I915_TILING_NONE) {
++		if (compare_bufs(&src, &dst, false) > 0)
++			igt_warn("%s: none->none failed!\n", __func__);
++	} else {
++		if (compare_bufs(&src, &dst, false) == 0)
++			igt_warn("%s: none->tiled failed!\n", __func__);
++	}
++
++	fails = compare_bufs(&src, &final, true);
++
++	if (fails && print_base64) {
++		dump_base64("src", &src);
++		dump_base64("dst", &dst);
++		dump_base64("final", &final);
++	}
++
++	intel_buf_close(bops, &src);
++	intel_buf_close(bops, &dst);
++	intel_buf_close(bops, &final);
++
++	igt_assert_f(fails == 0, "%s: (tiling: %d) fails: %d\n",
++		     __func__, tiling, fails);
++
++	return fails;
++}
++
++static int opt_handler(int opt, int opt_index, void *data)
++{
++	switch (opt) {
++	case 'd':
++		debug_bb = true;
++		break;
++	case 'p':
++		write_png = true;
++		break;
++	case 'i':
++		buf_info = true;
++		break;
++	case 'b':
++		print_base64 = true;
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -d\tDebug bb\n"
++	"  -p\tWrite surfaces to png\n"
++	"  -i\tPrint buffer info\n"
++	"  -b\tDump to base64 (bb and images)\n"
++	;
++
++igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
++{
++	int xe, i;
++	struct buf_ops *bops;
++	uint32_t width;
++
++	struct test {
++		uint32_t tiling;
++		const char *tiling_name;
++	} tests[] = {
++		{ I915_TILING_NONE, "none" },
++		{ I915_TILING_X, "x" },
++		{ I915_TILING_Y, "y" },
++	};
++
++	igt_fixture {
++		xe = drm_open_driver(DRIVER_XE);
++		bops = buf_ops_create(xe);
++		xe_device_get(xe);
++	}
++
++	igt_describe("Ensure reset is possible on fresh bb");
++	igt_subtest("reset-bb")
++		reset_bb(bops);
++
++	igt_subtest_f("purge-bb")
++		purge_bb(bops);
++
++	igt_subtest("simple-bb")
++		simple_bb(bops, false);
++
++	igt_subtest("simple-bb-ctx")
++		simple_bb(bops, true);
++
++	igt_subtest("bb-with-allocator")
++		bb_with_allocator(bops);
++
++	igt_subtest("lot-of-buffers")
++		lot_of_buffers(bops);
++
++	igt_subtest("add-remove-objects")
++		add_remove_objects(bops);
++
++	igt_subtest("destroy-bb")
++		destroy_bb(bops);
++
++	igt_subtest_with_dynamic("create-in-region") {
++		uint64_t memreg = all_memory_regions(xe), region;
++
++		xe_for_each_mem_region(fd, memreg, region)
++			igt_dynamic_f("region-%s", xe_region_name(region))
++				create_in_region(bops, region);
++	}
++
++	igt_subtest("blit-simple")
++		blit(bops, INTEL_ALLOCATOR_SIMPLE);
++
++	igt_subtest("blit-reloc")
++		blit(bops, INTEL_ALLOCATOR_RELOC);
++
++	igt_subtest("intel-bb-blit-none")
++		do_intel_bb_blit(bops, 3, I915_TILING_NONE);
++
++	igt_subtest("intel-bb-blit-x")
++		do_intel_bb_blit(bops, 3, I915_TILING_X);
++
++	igt_subtest("intel-bb-blit-y") {
++		igt_require(intel_gen(intel_get_drm_devid(xe)) >= 6);
++		do_intel_bb_blit(bops, 3, I915_TILING_Y);
++	}
++
++	igt_subtest("offset-control")
++		offset_control(bops);
++
++	igt_subtest("delta-check")
++		delta_check(bops);
++
++	igt_subtest("full-batch")
++		full_batch(bops);
++
++	igt_subtest_with_dynamic("render") {
++		for (i = 0; i < ARRAY_SIZE(tests); i++) {
++			const struct test *t = &tests[i];
++
++			for (width = 512; width <= 1024; width += 512)
++				igt_dynamic_f("render-%s-%u", t->tiling_name, width)
++					render(bops, t->tiling, width, width);
++		}
++	}
++
++	igt_fixture {
++		xe_device_put(xe);
++		buf_ops_destroy(bops);
++		close(xe);
++	}
++}
 -- 
 2.40.0
