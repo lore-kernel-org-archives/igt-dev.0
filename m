@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B42E10EC64
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BECC610EC66
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 06:13:38 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Apr 2023 11:38:09 +0530
-Message-Id: <20230428060818.2446308-38-bhanuprakash.modem@intel.com>
+Date: Fri, 28 Apr 2023 11:38:01 +0530
+Message-Id: <20230428060818.2446308-30-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 References: <20230428060818.2446308-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 37/46] tests/kms_hdr: Add XE support
+Subject: [igt-dev] [i-g-t V4 29/46] tests/kms_atomic_transition: Add XE
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,50 +26,50 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add XE driver support for kms tests.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_hdr.c | 8 ++++----
+ tests/kms_atomic_transition.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 23f12c14a..81a32dbf8 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -226,7 +226,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 			if (igt_pipe_connector_valid(pipe, output)) {
- 				prepare_test(data, output, pipe);
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 7c7be578c..9f39d033d 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -136,7 +136,7 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
+ 	if (data->extended)
+ 		return false;
  
--				if (is_i915_device(data->fd) &&
-+				if (is_intel_device(data->fd) &&
- 				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
- 					test_fini(data);
- 					break;
-@@ -503,7 +503,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+-	if (!is_i915_device(data->drm_fd))
++	if (!is_intel_device(data->drm_fd))
+ 		return false;
  
- 	/* Change the mastering information, no modeset allowed
--	 * for amd driver, whereas a modeset is required for i915
-+	 * for amd driver, whereas a modeset is required for intel
- 	 * driver. */
- 	hdr.hdmi_metadata_type1.max_display_mastering_luminance = 200;
- 	hdr.hdmi_metadata_type1.max_fall = 200;
-@@ -517,7 +517,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	if (plane->type == DRM_PLANE_TYPE_CURSOR)
+@@ -848,7 +848,7 @@ retry:
+ 		/* count enable pipes to set max iteration */
+ 		j += 1;
  
- 	/* Enter SDR via metadata, no modeset allowed for
- 	 * amd driver, whereas a modeset is required for
--	 * i915 driver. */
-+	 * intel driver. */
- 	fill_hdr_output_metadata_sdr(&hdr);
- 	set_hdr_output_metadata(data, &hdr);
- 	if (is_amdgpu_device(data->fd))
-@@ -590,7 +590,7 @@ static void test_hdr(data_t *data, uint32_t flags)
- 			if (igt_pipe_connector_valid(pipe, output)) {
- 				prepare_test(data, output, pipe);
+-		if (is_i915_device(data->drm_fd))
++		if (is_intel_device(data->drm_fd))
+ 			data->pipe_crcs[i] = igt_pipe_crc_new(data->drm_fd, i,
+ 							      IGT_PIPE_CRC_SOURCE_AUTO);
  
--				if (is_i915_device(data->fd) &&
-+				if (is_intel_device(data->fd) &&
- 				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
- 					test_fini(data);
- 					break;
+@@ -943,7 +943,7 @@ retry:
+ 			commit_display(data, i, nonblocking);
+ 			collect_crcs_mask(data->pipe_crcs, i, crcs[4]);
+ 
+-			if (!is_i915_device(data->drm_fd))
++			if (!is_intel_device(data->drm_fd))
+ 				continue;
+ 
+ 			for (int k = 0; k < IGT_MAX_PIPES; k++) {
+@@ -996,7 +996,7 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
+ 	unset_output_pipe(&data->display);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+-	if (is_i915_device(data->drm_fd)) {
++	if (is_intel_device(data->drm_fd)) {
+ 		for_each_pipe(&data->display, pipe)
+ 			igt_pipe_crc_free(data->pipe_crcs[pipe]);
+ 	}
 -- 
 2.40.0
