@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 777BF10E3AE
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 08:44:58 +0000 (UTC)
-Message-ID: <0203e60c-0215-49bf-2fed-ea517baa3aed@intel.com>
-Date: Fri, 28 Apr 2023 10:44:53 +0200
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E294A10E0CA
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Apr 2023 08:51:54 +0000 (UTC)
+Message-ID: <5483155c-e754-b522-6ece-09ac4db902b0@intel.com>
+Date: Fri, 28 Apr 2023 10:51:50 +0200
 MIME-Version: 1.0
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20230428062224.21322-1-zbigniew.kempczynski@intel.com>
- <20230428062224.21322-9-zbigniew.kempczynski@intel.com>
+ <20230428062224.21322-10-zbigniew.kempczynski@intel.com>
 From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
-In-Reply-To: <20230428062224.21322-9-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230428062224.21322-10-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v8 08/17] lib/intel_batchbuffer:
- Reacquire offset for reloc allocator in reset path
+Subject: Re: [igt-dev] [PATCH i-g-t v8 09/17] lib/intel_batchbuffer: Update
+ intel-bb docs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,38 +27,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 28.04.2023 08:22, Zbigniew Kempczyński wrote:
-> On reset path we recreate bo for batch (to avoid stalls) so we should
-> reacquire the offset too. At the moment simple allocator will return
-> same offset (so unfortunately we'll stall), but for reloc allocator
-> we'll get new one (so we avoid stall).
-> 
-> I've noticed this is missing during xe_intel_bb test, where on reloc
-> I noticed unexpected result (direct consequence of using same offset
-> which pointed to old batch, not new one).
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Hi Zbigniew,
 
+On 28.04.2023 08:22, Zbigniew Kempczyński wrote:
+> After RANDOM pseudo-allocator was removed and RELOC allocator becomed
+> stateful docs stays intact and documents old code. Fix this before
+> adding xe code.
+
+It just came to my mind that if you dedicate a patch for 
+'__intel_bb_create' docs update, you may as well add missing description 
+for 'start', 'end' and 'strategy' parameters. But it's optional, it can 
+wait for another day.
+
+Anyway:
 Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
+Christoph
 
+
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->   lib/intel_batchbuffer.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>   lib/intel_batchbuffer.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
 > 
 > diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index 7dbd6dd582..99b0b61585 100644
+> index 99b0b61585..306b7650e9 100644
 > --- a/lib/intel_batchbuffer.c
 > +++ b/lib/intel_batchbuffer.c
-> @@ -1280,8 +1280,9 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
->   	gem_close(ibb->fd, ibb->handle);
->   	ibb->handle = gem_create(ibb->fd, ibb->size);
->   
-> -	/* Keep address for bb in reloc mode and RANDOM allocator */
-> -	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE)
-> +	/* Reacquire offset for RELOC and SIMPLE */
-> +	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE ||
-> +	    ibb->allocator_type == INTEL_ALLOCATOR_RELOC)
->   		ibb->batch_offset = __intel_bb_get_offset(ibb,
->   							  ibb->handle,
->   							  ibb->size,
+> @@ -836,7 +836,7 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+>    * @allocator_type: allocator type, must be INTEL_ALLOCATOR_NONE for relocations
+>    *
+>    * intel-bb assumes it will work in one of two modes - with relocations or
+> - * with using allocator (currently RANDOM and SIMPLE are implemented).
+> + * with using allocator (currently RELOC and SIMPLE are implemented).
+>    * Some description is required to describe how they maintain the addresses.
+>    *
+>    * Before entering into each scenarios generic rule is intel-bb keeps objects
+> @@ -854,10 +854,10 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
+>    *
+>    * This mode is valid only for ppgtt. Addresses are acquired from allocator
+>    * and softpinned. intel-bb cache must be then coherent with allocator
+> - * (simple is coherent, random is not due to fact we don't keep its state).
+> + * (simple is coherent, reloc partially [doesn't support address reservation]).
+>    * When we do intel-bb reset with purging cache it has to reacquire addresses
+>    * from allocator (allocator should return same address - what is true for
+> - * simple allocator and false for random as mentioned before).
+> + * simple and reloc allocators).
+>    *
+>    * If we do reset without purging caches we use addresses from intel-bb cache
+>    * during execbuf objects construction.
+> @@ -967,7 +967,7 @@ __intel_bb_create(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+>    * @size: size of the batchbuffer
+>    * @start: allocator vm start address
+>    * @end: allocator vm start address
+> - * @allocator_type: allocator type, SIMPLE, RANDOM, ...
+> + * @allocator_type: allocator type, SIMPLE, RELOC, ...
+>    * @strategy: allocation strategy
+>    *
+>    * Creates bb with context passed in @ctx, size in @size and allocator type
