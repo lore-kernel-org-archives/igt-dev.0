@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F06CB10E0E1
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D83D710E05C
  for <igt-dev@lists.freedesktop.org>; Mon,  1 May 2023 23:04:18 +0000 (UTC)
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  1 May 2023 16:04:14 -0700
-Message-Id: <20230501230416.3210262-4-matthew.brost@intel.com>
+Date: Mon,  1 May 2023 16:04:13 -0700
+Message-Id: <20230501230416.3210262-3-matthew.brost@intel.com>
 In-Reply-To: <20230501230416.3210262-1-matthew.brost@intel.com>
 References: <20230501230416.3210262-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 3/5] xe_vm: MMAP style VM binds section
+Subject: [igt-dev] [PATCH 2/5] xe_exec_basic: Add NULL VM bind section
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,482 +22,107 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-GPUVA added support for this let's test it.
+A NULL VM bind results in writes being dropped and reads returning zero,
+verify uAPI for NULL VM binds is working as designed.
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/xe/xe_vm.c | 350 ++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 314 insertions(+), 36 deletions(-)
+ tests/xe/xe_exec_basic.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
-index d4cec104e..038a80600 100644
---- a/tests/xe/xe_vm.c
-+++ b/tests/xe/xe_vm.c
-@@ -1233,9 +1233,9 @@ static void *hammer_thread(void *tdata)
- 	return NULL;
- }
- 
--#define MUNMAP_FLAG_USERPTR		(0x1 << 0)
--#define MUNMAP_FLAG_INVALIDATE		(0x1 << 1)
--#define MUNMAP_FLAG_HAMMER_FIRST_PAGE	(0x1 << 2)
-+#define MAP_FLAG_USERPTR		(0x1 << 0)
-+#define MAP_FLAG_INVALIDATE		(0x1 << 1)
-+#define MAP_FLAG_HAMMER_FIRST_PAGE	(0x1 << 2)
- 
+diff --git a/tests/xe/xe_exec_basic.c b/tests/xe/xe_exec_basic.c
+index 2a176a5b3..f7ad6aeeb 100644
+--- a/tests/xe/xe_exec_basic.c
++++ b/tests/xe/xe_exec_basic.c
+@@ -27,6 +27,7 @@
+ #define BIND_ENGINE	(0x1 << 4)
+ #define DEFER_ALLOC	(0x1 << 5)
+ #define DEFER_BIND	(0x1 << 6)
++#define SPARSE		(0x1 << 7)
  
  /**
-@@ -1327,7 +1327,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
- 	bo_size = page_size * bo_n_pages;
- 
--	if (flags & MUNMAP_FLAG_USERPTR) {
-+	if (flags & MAP_FLAG_USERPTR) {
- 		map = mmap(from_user_pointer(addr), bo_size, PROT_READ |
- 			    PROT_WRITE, MAP_SHARED | MAP_FIXED |
- 			    MAP_ANONYMOUS, -1, 0);
-@@ -1346,7 +1346,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 	/* Do initial binds */
- 	bind_size = (page_size * bo_n_pages) / n_binds;
- 	for (i = 0; i < n_binds; ++i) {
--		if (flags & MUNMAP_FLAG_USERPTR)
-+		if (flags & MAP_FLAG_USERPTR)
- 			xe_vm_bind_userptr_async(fd, vm, 0, addr, addr,
- 						 bind_size, sync, 1);
- 		else
-@@ -1361,7 +1361,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 	 * cause a fault if a rebind occurs during munmap style VM unbind
- 	 * (partial VMAs unbound).
- 	 */
--	if (flags & MUNMAP_FLAG_HAMMER_FIRST_PAGE) {
-+	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
- 		t.fd = fd;
- 		t.vm = vm;
- #define PAGE_SIZE	4096
-@@ -1420,7 +1420,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 		data = map + i * page_size;
- 		igt_assert_eq(data->data, 0xc0ffee);
- 	}
--	if (flags & MUNMAP_FLAG_HAMMER_FIRST_PAGE) {
-+	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
- 		memset(map, 0, PAGE_SIZE / 2);
- 		memset(map + PAGE_SIZE, 0, bo_size - PAGE_SIZE);
- 	} else {
-@@ -1470,7 +1470,7 @@ try_again_after_invalidate:
- 			igt_assert_eq(data->data, 0xc0ffee);
- 		}
- 	}
--	if (flags & MUNMAP_FLAG_HAMMER_FIRST_PAGE) {
-+	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
- 		memset(map, 0, PAGE_SIZE / 2);
- 		memset(map + PAGE_SIZE, 0, bo_size - PAGE_SIZE);
- 	} else {
-@@ -1481,7 +1481,7 @@ try_again_after_invalidate:
- 	 * The munmap style VM unbind can create new VMAs, make sure those are
- 	 * in the bookkeeping for another rebind after a userptr invalidate.
- 	 */
--	if (flags & MUNMAP_FLAG_INVALIDATE && !invalidate++) {
-+	if (flags & MAP_FLAG_INVALIDATE && !invalidate++) {
- 		map = mmap(from_user_pointer(addr), bo_size, PROT_READ |
- 			    PROT_WRITE, MAP_SHARED | MAP_FIXED |
- 			    MAP_ANONYMOUS, -1, 0);
-@@ -1492,7 +1492,7 @@ try_again_after_invalidate:
- 	/* Confirm unbound region can be rebound */
- 	syncobj_reset(fd, &sync[0].handle, 1);
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
--	if (flags & MUNMAP_FLAG_USERPTR)
-+	if (flags & MAP_FLAG_USERPTR)
- 		xe_vm_bind_userptr_async(fd, vm, 0,
- 					 addr + unbind_n_page_offfset * page_size,
- 					 addr + unbind_n_page_offfset * page_size,
-@@ -1540,7 +1540,7 @@ try_again_after_invalidate:
- 		igt_assert_eq(data->data, 0xc0ffee);
- 	}
- 
--	if (flags & MUNMAP_FLAG_HAMMER_FIRST_PAGE) {
-+	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
- 		exit = 1;
- 		pthread_join(t.thread, NULL);
- 		pthread_barrier_destroy(&barrier);
-@@ -1555,6 +1555,251 @@ try_again_after_invalidate:
- 	xe_vm_destroy(fd, vm);
- }
- 
-+/**
-+ * SUBTEST: mmap-style-bind-%s
-+ * Description: Test mmap style unbind with %arg[1]
-+ * Run type: FULL
-+ * TODO: change ``'Run type' == FULL`` to a better category
-+ *
-+ * arg[1]:
-+ *
-+ * @all:				all
-+ * @one-partial:			one partial
-+ * @either-side-partial:		either side partial
-+ * @either-side-full:			either side full
-+ * @either-side-partial-hammer:		either side partial hammer
-+ * @end:				end
-+ * @front:				front
-+ * @many-all:				many all
-+ * @many-either-side-partial:		many either side partial
-+ * @many-either-side-partial-hammer:	many either side partial hammer
-+ * @userptr-all:			userptr all
-+ * @userptr-one-partial:		userptr one partial
-+ * @userptr-either-side-partial:	userptr either side partial
-+ * @userptr-either-side-full:		userptr either side full
-+ */
-+
-+static void
-+test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
-+		     int bo_n_pages, int n_binds, int unbind_n_page_offfset,
-+		     int unbind_n_pages, unsigned int flags)
-+{
-+	struct drm_xe_sync sync[2] = {
-+		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 2,
-+		.syncs = to_user_pointer(sync),
-+	};
-+	uint64_t addr = 0x1a0000, base_addr = 0x1a0000;
-+	uint32_t vm;
-+	uint32_t engine;
-+	size_t bo_size;
-+	uint32_t bo0 = 0, bo1 = 0;
-+	uint64_t bind_size;
-+	uint64_t page_size = xe_get_default_alignment(fd);
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+	} *data;
-+	void *map0, *map1;
-+	int i, b;
-+	struct thread_data t;
-+	pthread_barrier_t barrier;
-+	int exit = 0;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+	bo_size = page_size * bo_n_pages;
-+
-+	if (flags & MAP_FLAG_USERPTR) {
-+		map0 = mmap(from_user_pointer(addr), bo_size, PROT_READ |
-+			    PROT_WRITE, MAP_SHARED | MAP_FIXED |
-+			    MAP_ANONYMOUS, -1, 0);
-+		map1 = mmap(from_user_pointer(addr + bo_size),
-+			    bo_size, PROT_READ | PROT_WRITE, MAP_SHARED |
-+			    MAP_FIXED | MAP_ANONYMOUS, -1, 0);
-+		igt_assert(map0 != MAP_FAILED);
-+		igt_assert(map1 != MAP_FAILED);
-+	} else {
-+		bo0 = xe_bo_create(fd, eci->gt_id, vm, bo_size);
-+		map0 = xe_bo_map(fd, bo0, bo_size);
-+		bo1 = xe_bo_create(fd, eci->gt_id, vm, bo_size);
-+		map1 = xe_bo_map(fd, bo1, bo_size);
-+	}
-+	memset(map0, 0, bo_size);
-+	memset(map1, 0, bo_size);
-+
-+	engine = xe_engine_create(fd, vm, eci, 0);
-+
-+	sync[0].handle = syncobj_create(fd, 0);
-+	sync[1].handle = syncobj_create(fd, 0);
-+
-+	/* Do initial binds */
-+	bind_size = (page_size * bo_n_pages) / n_binds;
-+	for (i = 0; i < n_binds; ++i) {
-+		if (flags & MAP_FLAG_USERPTR)
-+			xe_vm_bind_userptr_async(fd, vm, 0, addr, addr,
-+						 bind_size, sync, 1);
-+		else
-+			xe_vm_bind_async(fd, vm, 0, bo0, i * bind_size,
-+					 addr, bind_size, sync, 1);
-+		addr += bind_size;
-+	}
-+	addr = base_addr;
-+
-+	/*
-+	 * Kick a thread to write the first page continously to ensure we can't
-+	 * cause a fault if a rebind occurs during munmap style VM unbind
-+	 * (partial VMAs unbound).
-+	 */
-+	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
-+		t.fd = fd;
-+		t.vm = vm;
-+#define PAGE_SIZE	4096
-+		t.addr = addr + PAGE_SIZE / 2;
-+		t.eci = eci;
-+		t.exit = &exit;
-+		t.map = map0 + PAGE_SIZE / 2;
-+		t.barrier = &barrier;
-+		pthread_barrier_init(&barrier, NULL, 2);
-+		pthread_create(&t.thread, 0, hammer_thread, &t);
-+		pthread_barrier_wait(&barrier);
-+	}
-+
-+	/* Verify we can use every page */
-+	for (i = 0; i < n_binds; ++i) {
-+		uint64_t batch_offset = (char *)&data->batch - (char *)data;
-+		uint64_t batch_addr = addr + batch_offset;
-+		uint64_t sdi_offset = (char *)&data->data - (char *)data;
-+		uint64_t sdi_addr = addr + sdi_offset;
-+		data = map0 + i * page_size;
-+
-+		b = 0;
-+		data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+		data->batch[b++] = sdi_addr;
-+		data->batch[b++] = sdi_addr >> 32;
-+		data->batch[b++] = 0xc0ffee;
-+		data->batch[b++] = MI_BATCH_BUFFER_END;
-+		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-+
-+		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-+		if (i)
-+			syncobj_reset(fd, &sync[1].handle, 1);
-+		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+
-+		exec.engine_id = engine;
-+		exec.address = batch_addr;
-+		xe_exec(fd, &exec);
-+
-+		addr += page_size;
-+	}
-+	addr = base_addr;
-+
-+	/* Bind some of the pages to different BO / userptr */
-+	syncobj_reset(fd, &sync[0].handle, 1);
-+	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-+	sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
-+	if (flags & MAP_FLAG_USERPTR)
-+		xe_vm_bind_userptr_async(fd, vm, 0, addr + bo_size +
-+					 unbind_n_page_offfset * page_size,
-+					 addr + unbind_n_page_offfset * page_size,
-+					 unbind_n_pages * page_size, sync, 2);
-+	else
-+		xe_vm_bind_async(fd, vm, 0, bo1,
-+				 unbind_n_page_offfset * page_size,
-+				 addr + unbind_n_page_offfset * page_size,
-+				 unbind_n_pages * page_size, sync, 2);
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0, NULL));
-+
-+	/* Verify all pages written */
-+	for (i = 0; i < n_binds; ++i) {
-+		data = map0 + i * page_size;
-+		igt_assert_eq(data->data, 0xc0ffee);
-+	}
-+	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
-+		memset(map0, 0, PAGE_SIZE / 2);
-+		memset(map0 + PAGE_SIZE, 0, bo_size - PAGE_SIZE);
-+	} else {
-+		memset(map0, 0, bo_size);
-+		memset(map1, 0, bo_size);
-+	}
-+
-+	/* Verify we can use every page */
-+	for (i = 0; i < n_binds; ++i) {
-+		uint64_t batch_offset = (char *)&data->batch - (char *)data;
-+		uint64_t batch_addr = addr + batch_offset;
-+		uint64_t sdi_offset = (char *)&data->data - (char *)data;
-+		uint64_t sdi_addr = addr + sdi_offset;
-+
-+		data = map0 + i * page_size;
-+		b = 0;
-+		data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+		data->batch[b++] = sdi_addr;
-+		data->batch[b++] = sdi_addr >> 32;
-+		data->batch[b++] = 0xc0ffee;
-+		data->batch[b++] = MI_BATCH_BUFFER_END;
-+		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-+
-+		data = map1 + i * page_size;
-+		b = 0;
-+		data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+		data->batch[b++] = sdi_addr;
-+		data->batch[b++] = sdi_addr >> 32;
-+		data->batch[b++] = 0xc0ffee;
-+		data->batch[b++] = MI_BATCH_BUFFER_END;
-+		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-+
-+		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-+		if (i)
-+			syncobj_reset(fd, &sync[1].handle, 1);
-+		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
-+
-+		exec.engine_id = engine;
-+		exec.address = batch_addr;
-+		xe_exec(fd, &exec);
-+
-+		addr += page_size;
-+	}
-+	addr = base_addr;
-+
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0, NULL));
-+
-+	/* Verify all pages written */
-+	for (i = 0; i < n_binds; ++i) {
-+		uint32_t result = 0;
-+
-+		data = map0 + i * page_size;
-+		result |= data->data;
-+
-+		data = map1 + i * page_size;
-+		result |= data->data;
-+
-+		igt_assert_eq(result, 0xc0ffee);
-+	}
-+
-+	if (flags & MAP_FLAG_HAMMER_FIRST_PAGE) {
-+		exit = 1;
-+		pthread_join(t.thread, NULL);
-+		pthread_barrier_destroy(&barrier);
-+	}
-+
-+	syncobj_destroy(fd, sync[0].handle);
-+	syncobj_destroy(fd, sync[1].handle);
-+	xe_engine_destroy(fd, engine);
-+	munmap(map0, bo_size);
-+	munmap(map1, bo_size);
-+	if (bo0)
-+		gem_close(fd, bo0);
-+	if (bo1)
-+		gem_close(fd, bo1);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
-@@ -1567,55 +1812,74 @@ igt_main
- 		int unbind_n_page_offfset;
- 		int unbind_n_pages;
- 		unsigned int flags;
--	} sections[] = {
-+	} munmap_sections[] = {
- 		{ "all", 4, 2, 0, 4, 0 },
- 		{ "one-partial", 4, 1, 1, 2, 0 },
- 		{ "either-side-partial", 4, 2, 1, 2, 0 },
- 		{ "either-side-partial-hammer", 4, 2, 1, 2,
--			MUNMAP_FLAG_HAMMER_FIRST_PAGE },
-+			MAP_FLAG_HAMMER_FIRST_PAGE },
- 		{ "either-side-full", 4, 4, 1, 2, 0 },
- 		{ "end", 4, 2, 0, 3, 0 },
- 		{ "front", 4, 2, 1, 3, 0 },
- 		{ "many-all", 4 * 8, 2 * 8, 0 * 8, 4 * 8, 0 },
- 		{ "many-either-side-partial", 4 * 8, 2 * 8, 1, 4 * 8 - 2, 0 },
- 		{ "many-either-side-partial-hammer", 4 * 8, 2 * 8, 1, 4 * 8 - 2,
--			MUNMAP_FLAG_HAMMER_FIRST_PAGE },
-+			MAP_FLAG_HAMMER_FIRST_PAGE },
- 		{ "many-either-side-full", 4 * 8, 4 * 8, 1 * 8, 2 * 8, 0 },
- 		{ "many-end", 4 * 8, 4, 0 * 8, 3 * 8 + 2, 0 },
- 		{ "many-front", 4 * 8, 4, 1 * 8 - 2, 3 * 8 + 2, 0 },
--		{ "userptr-all", 4, 2, 0, 4, MUNMAP_FLAG_USERPTR },
--		{ "userptr-one-partial", 4, 1, 1, 2, MUNMAP_FLAG_USERPTR },
-+		{ "userptr-all", 4, 2, 0, 4, MAP_FLAG_USERPTR },
-+		{ "userptr-one-partial", 4, 1, 1, 2, MAP_FLAG_USERPTR },
- 		{ "userptr-either-side-partial", 4, 2, 1, 2,
--			MUNMAP_FLAG_USERPTR },
-+			MAP_FLAG_USERPTR },
- 		{ "userptr-either-side-full", 4, 4, 1, 2,
--			MUNMAP_FLAG_USERPTR },
--		{ "userptr-end", 4, 2, 0, 3, MUNMAP_FLAG_USERPTR },
--		{ "userptr-front", 4, 2, 1, 3, MUNMAP_FLAG_USERPTR },
-+			MAP_FLAG_USERPTR },
-+		{ "userptr-end", 4, 2, 0, 3, MAP_FLAG_USERPTR },
-+		{ "userptr-front", 4, 2, 1, 3, MAP_FLAG_USERPTR },
- 		{ "userptr-many-all", 4 * 8, 2 * 8, 0 * 8, 4 * 8,
--			MUNMAP_FLAG_USERPTR },
-+			MAP_FLAG_USERPTR },
- 		{ "userptr-many-either-side-full", 4 * 8, 4 * 8, 1 * 8, 2 * 8,
--			MUNMAP_FLAG_USERPTR },
-+			MAP_FLAG_USERPTR },
- 		{ "userptr-many-end", 4 * 8, 4, 0 * 8, 3 * 8 + 2,
--			MUNMAP_FLAG_USERPTR },
-+			MAP_FLAG_USERPTR },
- 		{ "userptr-many-front", 4 * 8, 4, 1 * 8 - 2, 3 * 8 + 2,
--			MUNMAP_FLAG_USERPTR },
-+			MAP_FLAG_USERPTR },
- 		{ "userptr-inval-either-side-full", 4, 4, 1, 2,
--			MUNMAP_FLAG_USERPTR | MUNMAP_FLAG_INVALIDATE },
--		{ "userptr-inval-end", 4, 2, 0, 3, MUNMAP_FLAG_USERPTR |
--			MUNMAP_FLAG_INVALIDATE },
--		{ "userptr-inval-front", 4, 2, 1, 3, MUNMAP_FLAG_USERPTR |
--			MUNMAP_FLAG_INVALIDATE },
-+			MAP_FLAG_USERPTR | MAP_FLAG_INVALIDATE },
-+		{ "userptr-inval-end", 4, 2, 0, 3, MAP_FLAG_USERPTR |
-+			MAP_FLAG_INVALIDATE },
-+		{ "userptr-inval-front", 4, 2, 1, 3, MAP_FLAG_USERPTR |
-+			MAP_FLAG_INVALIDATE },
- 		{ "userptr-inval-many-all", 4 * 8, 2 * 8, 0 * 8, 4 * 8,
--			MUNMAP_FLAG_USERPTR | MUNMAP_FLAG_INVALIDATE },
-+			MAP_FLAG_USERPTR | MAP_FLAG_INVALIDATE },
- 		{ "userptr-inval-many-either-side-partial", 4 * 8, 2 * 8, 1,
--			4 * 8 - 2, MUNMAP_FLAG_USERPTR |
--				MUNMAP_FLAG_INVALIDATE },
-+			4 * 8 - 2, MAP_FLAG_USERPTR |
-+				MAP_FLAG_INVALIDATE },
- 		{ "userptr-inval-many-either-side-full", 4 * 8, 4 * 8, 1 * 8,
--			2 * 8, MUNMAP_FLAG_USERPTR | MUNMAP_FLAG_INVALIDATE },
-+			2 * 8, MAP_FLAG_USERPTR | MAP_FLAG_INVALIDATE },
- 		{ "userptr-inval-many-end", 4 * 8, 4, 0 * 8, 3 * 8 + 2,
--			MUNMAP_FLAG_USERPTR | MUNMAP_FLAG_INVALIDATE },
-+			MAP_FLAG_USERPTR | MAP_FLAG_INVALIDATE },
- 		{ "userptr-inval-many-front", 4 * 8, 4, 1 * 8 - 2, 3 * 8 + 2,
--			MUNMAP_FLAG_USERPTR | MUNMAP_FLAG_INVALIDATE },
-+			MAP_FLAG_USERPTR | MAP_FLAG_INVALIDATE },
-+		{ NULL },
-+	};
-+	const struct section mmap_sections[] = {
-+		{ "all", 4, 2, 0, 4, 0 },
-+		{ "one-partial", 4, 1, 1, 2, 0 },
-+		{ "either-side-partial", 4, 2, 1, 2, 0 },
-+		{ "either-side-full", 4, 4, 1, 2, 0 },
-+		{ "either-side-partial-hammer", 4, 2, 1, 2,
-+			MAP_FLAG_HAMMER_FIRST_PAGE },
-+		{ "end", 4, 2, 0, 3, 0 },
-+		{ "front", 4, 2, 1, 3, 0 },
-+		{ "many-all", 4 * 8, 2 * 8, 0 * 8, 4 * 8, 0 },
-+		{ "many-either-side-partial", 4 * 8, 2 * 8, 1, 4 * 8 - 2, 0 },
-+		{ "many-either-side-partial-hammer", 4 * 8, 2 * 8, 1, 4 * 8 - 2,
-+			MAP_FLAG_HAMMER_FIRST_PAGE },
-+		{ "userptr-all", 4, 2, 0, 4, MAP_FLAG_USERPTR },
-+		{ "userptr-one-partial", 4, 1, 1, 2, MAP_FLAG_USERPTR },
-+		{ "userptr-either-side-partial", 4, 2, 1, 2, MAP_FLAG_USERPTR },
-+		{ "userptr-either-side-full", 4, 4, 1, 2, MAP_FLAG_USERPTR },
- 		{ NULL },
+  * SUBTEST: once-%s
+@@ -67,6 +68,10 @@
+  * @userptr-rebind:			userptr rebind
+  * @userptr-invalidate:			userptr invalidate
+  * @userptr-invalidate-race:		userptr invalidate racy
++ * @null:				null
++ * @null-defer-mmap:			null defer mmap
++ * @null-defer-bind:			null defer bind
++ * @null-rebind:			null rebind
+  * @bindengine:				bind engine
+  * @bindengine-userptr:			bind engine userptr description
+  * @bindengine-rebind:			bind engine rebind description
+@@ -89,6 +94,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 		.syncs = to_user_pointer(sync),
  	};
+ 	uint64_t addr[MAX_N_ENGINES];
++	uint64_t sparse_addr[MAX_N_ENGINES];
+ 	uint32_t vm[MAX_N_ENGINES];
+ 	uint32_t engines[MAX_N_ENGINES];
+ 	uint32_t bind_engines[MAX_N_ENGINES];
+@@ -113,8 +119,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 			xe_get_default_alignment(fd));
  
-@@ -1823,7 +2087,7 @@ igt_main
- 			break;
- 		}
+ 	addr[0] = 0x1a0000;
+-	for (i = 1; i < MAX_N_ENGINES; ++i)
++	sparse_addr[0] = 0x301a0000;
++	for (i = 1; i < MAX_N_ENGINES; ++i) {
+ 		addr[i] = addr[i - 1] + (0x1ull << 32);
++		sparse_addr[i] = sparse_addr[i - 1] + (0x1ull << 32);
++	}
  
--	for (const struct section *s = sections; s->name; s++) {
-+	for (const struct section *s = munmap_sections; s->name; s++) {
- 		igt_subtest_f("munmap-style-unbind-%s", s->name) {
- 			igt_require_f(hwe_non_copy,
- 				      "Requires non-copy engine to run\n");
-@@ -1837,6 +2101,20 @@ igt_main
- 		}
+ 	if (flags & USERPTR) {
+ #define	MAP_ADDRESS	0x00007fadeadbe000
+@@ -163,6 +172,13 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 			xe_vm_bind_userptr_async(fd, vm[i], bind_engines[i],
+ 						 to_user_pointer(data), addr[i],
+ 						 bo_size, sync, 1);
++		if (flags & SPARSE)
++			__xe_vm_bind_assert(fd, vm[i], bind_engines[i],
++					    0, 0, sparse_addr[i], bo_size,
++					    XE_VM_BIND_OP_MAP |
++					    XE_VM_BIND_FLAG_ASYNC |
++					    XE_VM_BIND_FLAG_NULL, sync,
++					    1, 0, 0);
  	}
  
-+	for (const struct section *s = mmap_sections; s->name; s++) {
-+		igt_subtest_f("mmap-style-bind-%s", s->name) {
-+			igt_require_f(hwe_non_copy,
-+				      "Requires non-copy engine to run\n");
-+
-+			test_mmap_style_bind(fd, hwe_non_copy,
-+					     s->bo_n_pages,
-+					     s->n_binds,
-+					     s->unbind_n_page_offfset,
-+					     s->unbind_n_pages,
-+					     s->flags);
-+		}
+ 	if (flags & DEFER_BIND)
+@@ -174,7 +190,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+ 		uint64_t batch_addr = __addr + batch_offset;
+ 		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+-		uint64_t sdi_addr = __addr + sdi_offset;
++		uint64_t sdi_addr = (flags & SPARSE ? sparse_addr[i % n_vm] :
++				     __addr)+ sdi_offset;
+ 		int e = i % n_engines;
+ 
+ 		b = 0;
+@@ -261,9 +278,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 					INT64_MAX, 0, NULL));
+ 	}
+ 
+-	for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
+-	     i < n_execs; i++)
+-		igt_assert_eq(data[i].data, 0xc0ffee);
++	if (!(flags & SPARSE)) {
++		for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
++		     i < n_execs; i++)
++			igt_assert_eq(data[i].data, 0xc0ffee);
 +	}
-+
- 	igt_fixture {
- 		xe_device_put(fd);
- 		close(fd);
+ 
+ 	for (i = 0; i < n_engines; i++) {
+ 		syncobj_destroy(fd, syncobjs[i]);
+@@ -296,6 +315,10 @@ igt_main
+ 		{ "basic-defer-bind", DEFER_ALLOC | DEFER_BIND },
+ 		{ "userptr", USERPTR },
+ 		{ "rebind", REBIND },
++		{ "null", SPARSE },
++		{ "null-defer-mmap", SPARSE | DEFER_ALLOC },
++		{ "null-defer-bind", SPARSE | DEFER_ALLOC | DEFER_BIND },
++		{ "null-rebind", SPARSE | REBIND },
+ 		{ "userptr-rebind", USERPTR | REBIND },
+ 		{ "userptr-invalidate", USERPTR | INVALIDATE },
+ 		{ "userptr-invalidate-race", USERPTR | INVALIDATE | RACE },
 -- 
 2.34.1
