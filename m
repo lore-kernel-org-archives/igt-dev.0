@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6081654067122955240=="
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE92B10E326
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 May 2023 06:55:35 +0000 (UTC)
+From: Matthew Brost <matthew.brost@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  1 May 2023 23:55:35 -0700
+Message-Id: <20230502065536.3223489-7-matthew.brost@intel.com>
+In-Reply-To: <20230502065536.3223489-1-matthew.brost@intel.com>
+References: <20230502065536.3223489-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: fei.yang@intel.com
-Date: Tue, 02 May 2023 05:53:01 -0000
-Message-ID: <168300678110.18872.8482996745990440304@emeril.freedesktop.org>
-References: <20230502051921.2183579-1-fei.yang@intel.com>
-In-Reply-To: <20230502051921.2183579-1-fei.yang@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9n?=
- =?utf-8?q?em=5Fcreate=3A_exercise_gem=5Fcreate=5Fext=5Fset=5Fpat?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 6/7] xe_exec_compute_mode: All dma-fences as
+ in-syncs to compute execs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,272 +19,276 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6081654067122955240==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+We allow this behavior now, lets test it.
 
-== Series Details ==
+Signed-of-by: Matthew Brost <matthew.brost@intel.com>
+---
+ tests/xe/xe_exec_compute_mode.c | 159 ++++++++++++++++++++++++++++----
+ 1 file changed, 141 insertions(+), 18 deletions(-)
 
-Series: test/gem_create: exercise gem_create_ext_set_pat
-URL   : https://patchwork.freedesktop.org/series/117185/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13078 -> IGTPW_8892
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/index.html
-
-Participating hosts (38 -> 38)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8892 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [PASS][3] -> [DMESG-FAIL][4] ([i915#5334])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13078/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][5] ([i915#1886] / [i915#7913])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-1:         [PASS][6] -> [DMESG-WARN][7] ([i915#6367])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13078/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  * igt@kms_chamelium_frames@hdmi-crc-fast:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271]) +16 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - bat-rpls-1:         NOTRUN -> [SKIP][9] ([i915#7828])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:
-    - bat-dg2-8:          [PASS][10] -> [FAIL][11] ([i915#7932])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13078/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc:
-    - bat-rpls-1:         NOTRUN -> [SKIP][12] ([i915#1845])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-rpls-1:         [ABORT][13] ([i915#6687] / [i915#7978] / [i915#8407]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13078/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-atsm-1:         [DMESG-FAIL][15] ([i915#7699] / [i915#7913]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13078/bat-atsm-1/igt@i915_selftest@live@migrate.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-atsm-1/igt@i915_selftest@live@migrate.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#8407]: https://gitlab.freedesktop.org/drm/intel/issues/8407
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7277 -> IGTPW_8892
-
-  CI-20190529: 20190529
-  CI_DRM_13078: 59c67d4cf8b737c0c25649091a1a22809d6a06f8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8892: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/index.html
-  IGT_7277: 1cb3507f3ff28d11bd5cfabcde576fe78ddab571 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@gem_create@create-ext-set-pat
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/index.html
-
---===============6081654067122955240==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>test/gem_create: exercise gem_create_ext_set_pat</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117185/">https://patchwork.freedesktop.org/series/117185/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13078 -&gt; IGTPW_8892</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/index.html</p>
-<h2>Participating hosts (38 -&gt; 38)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8892 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13078/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13078/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13078/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13078/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8407">i915#8407</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13078/bat-atsm-1/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/bat-atsm-1/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7277 -&gt; IGTPW_8892</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13078: 59c67d4cf8b737c0c25649091a1a22809d6a06f8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8892: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8892/index.html<br />
-  IGT_7277: 1cb3507f3ff28d11bd5cfabcde576fe78ddab571 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@gem_create@create-ext-set-pat</p>
-
-</body>
-</html>
-
---===============6081654067122955240==--
+diff --git a/tests/xe/xe_exec_compute_mode.c b/tests/xe/xe_exec_compute_mode.c
+index 750815764..750e65b5d 100644
+--- a/tests/xe/xe_exec_compute_mode.c
++++ b/tests/xe/xe_exec_compute_mode.c
+@@ -30,6 +30,7 @@
+ #define BIND_ENGINE	(0x1 << 4)
+ #define VM_FOR_BO	(0x1 << 5)
+ #define ENGINE_EARLY	(0x1 << 6)
++#define DMA_FENCES_FOR_BINDS	(0x1 << 7)
+ 
+ /**
+  * SUBTEST: twice-%s
+@@ -61,6 +62,32 @@
+  * @bindengine-userptr-rebind:		bindengine userptr rebind
+  * @bindengine-userptr-invalidate:	bindengine userptr invalidate
+  * @bindengine-userptr-invalidate-race:	bindengine-userptr invalidate race
++ * @basic-dma-fences:
++ *	basic dma fences
++ * @preempt-fence-early-dma-fences:
++ *	preempt fence early dma fences
++ * @userptr-dma-fences:
++ *	userptr dma fences
++ * @rebind-dma-fences:
++ *	rebind dma fences
++ * @userptr-rebind-dma-fences:
++ *	userptr rebind dma fences
++ * @userptr-invalidate-dma-fences:
++ *	userptr invalidate dma fences
++ * @userptr-invalidate-race-dma-fences:
++ *	userptr invalidate race dma fences
++ * @bindengine-dma-fences:
++ *	bindengine dma fences
++ * @bindengine-userptr-dma-fences:
++ *	bindengine userptr dma fences
++ * @bindengine-rebind-dma-fences:
++ *	bindengine rebind dma fences
++ * @bindengine-userptr-rebind-dma-fences:
++ *	bindengine userptr rebind dma fences
++ * @bindengine-userptr-invalidate-dma-fences:
++ *	bindengine userptr invalidate dma fences
++ * @bindengine-userptr-invalidate-race-dma-fences:
++ *	bindengine-userptr invalidate race dma fences
+  */
+ 
+ /**
+@@ -83,6 +110,28 @@
+  * @bindengine-rebind:			bindengine rebind
+  * @bindengine-userptr-rebind:		bindengine userptr rebind
+  * @bindengine-userptr-invalidate:	bindengine userptr invalidate
++ * @basic-dma-fences:
++ *	basic dma fences
++ * @preempt-fence-early-dma-fences:
++ *	preempt fence early dma fences
++ * @userptr-dma-fences:
++ *	userptr dma fences
++ * @rebind-dma-fences:
++ *	rebind dma fences
++ * @userptr-rebind-dma-fences:
++ *	userptr rebind dma fences
++ * @userptr-invalidate-dma-fences:
++ *	userptr invalidate dma fences
++ * @bindengine-dma-fences:
++ *	bindengine dma fences
++ * @bindengine-userptr-dma-fences:
++ *	bindengine userptr dma fences
++ * @bindengine-rebind-dma-fences:
++ *	bindengine rebind dma fences
++ * @bindengine-userptr-rebind-dma-fences:
++ *	bindengine userptr rebind dma fences
++ * @bindengine-userptr-invalidate-dma-fences:
++ *	bindengine userptr invalidate dma fences
+  */
+ static void
+ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+@@ -91,14 +140,21 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	uint32_t vm;
+ 	uint64_t addr = 0x1a0000;
+ #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
++	bool dma_fences = flags & DMA_FENCES_FOR_BINDS;
+ 	struct drm_xe_sync sync[1] = {
+ 		{ .flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
+ 	          .timeline_value = USER_FENCE_VALUE },
+ 	};
++	struct drm_xe_sync dma_sync[2] = {
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
++		{ .flags = DRM_XE_SYNC_USER_FENCE | DRM_XE_SYNC_SIGNAL,
++	          .timeline_value = USER_FENCE_VALUE },
++	};
+ 	struct drm_xe_exec exec = {
+ 		.num_batch_buffer = 1,
+-		.num_syncs = 1,
+-		.syncs = to_user_pointer(sync),
++		.num_syncs = dma_fences ? 2 : 1,
++		.syncs = dma_fences ? to_user_pointer(dma_sync) :
++			to_user_pointer(sync),
+ 	};
+ 	uint32_t engines[MAX_N_ENGINES];
+ 	uint32_t bind_engines[MAX_N_ENGINES];
+@@ -113,6 +169,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	} *data;
+ 	int i, j, b;
+ 	int map_fd = -1;
++	uint32_t syncobj;
+ 
+ 	igt_assert(n_engines <= MAX_N_ENGINES);
+ 
+@@ -175,17 +232,29 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 			bind_engines[i] = 0;
+ 	};
+ 
+-	sync[0].addr = to_user_pointer(&data[0].vm_sync);
++	if (dma_fences) {
++		syncobj = syncobj_create(fd, 0);
++		dma_sync[0].handle = syncobj;
++	} else {
++		sync[0].addr = to_user_pointer(&data[0].vm_sync);
++	}
++
+ 	if (bo)
+ 		xe_vm_bind_async(fd, vm, bind_engines[0], bo, 0, addr,
+-				 bo_size, sync, 1);
++				 bo_size, dma_fences ? dma_sync : sync, 1);
+ 	else
+ 		xe_vm_bind_userptr_async(fd, vm, bind_engines[0],
+ 					 to_user_pointer(data), addr,
+-					 bo_size, sync, 1);
++					 bo_size, dma_fences ? dma_sync : sync,
++					 1);
+ #define ONE_SEC	1000
+-	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
+-	data[0].vm_sync = 0;
++	if (!dma_fences) {
++		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
++			       ONE_SEC);
++		data[0].vm_sync = 0;
++	} else {
++		dma_sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
++	}
+ 
+ 	for (i = 0; i < n_execs; i++) {
+ 		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+@@ -202,7 +271,12 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 		data[i].batch[b++] = MI_BATCH_BUFFER_END;
+ 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
+ 
+-		sync[0].addr = addr + (char *)&data[i].exec_sync - (char *)data;
++		if (dma_fences)
++			dma_sync[1].addr = addr +
++				(char *)&data[i].exec_sync - (char *)data;
++		else
++			sync[0].addr = addr +
++				(char *)&data[i].exec_sync - (char *)data;
+ 
+ 		exec.engine_id = engines[e];
+ 		exec.address = batch_addr;
+@@ -214,20 +288,31 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 			xe_vm_unbind_async(fd, vm, bind_engines[e], 0,
+ 					   addr, bo_size, NULL, 0);
+ 
+-			sync[0].addr = to_user_pointer(&data[0].vm_sync);
++			if (dma_fences)
++				dma_sync[0].flags |= DRM_XE_SYNC_SIGNAL;
++			else
++				sync[0].addr =
++					to_user_pointer(&data[0].vm_sync);
+ 			addr += bo_size;
+ 			if (bo)
+ 				xe_vm_bind_async(fd, vm, bind_engines[e], bo,
+-						 0, addr, bo_size, sync, 1);
++						 0, addr, bo_size,
++						 dma_fences ? dma_sync : sync,
++						 1);
+ 			else
+ 				xe_vm_bind_userptr_async(fd, vm,
+ 							 bind_engines[e],
+ 							 to_user_pointer(data),
+-							 addr, bo_size, sync,
+-							 1);
+-			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+-				       NULL, ONE_SEC);
+-			data[0].vm_sync = 0;
++							 addr, bo_size,
++							 dma_fences ? dma_sync :
++							 sync, 1);
++			if (!dma_fences) {
++				xe_wait_ufence(fd, &data[0].vm_sync,
++					       USER_FENCE_VALUE, NULL, ONE_SEC);
++				data[0].vm_sync = 0;
++			} else {
++				dma_sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
++			}
+ 		}
+ 
+ 		if (flags & INVALIDATE && i + 1 != n_execs) {
+@@ -275,10 +360,21 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	if (flags & INVALIDATE)
+ 		usleep(250000);
+ 
+-	sync[0].addr = to_user_pointer(&data[0].vm_sync);
++	if (dma_fences) {
++		syncobj_reset(fd, &syncobj, 1);
++		dma_sync[0].flags |= DRM_XE_SYNC_SIGNAL;
++	} else {
++		sync[0].addr = to_user_pointer(&data[0].vm_sync);
++	}
++
+ 	xe_vm_unbind_async(fd, vm, bind_engines[0], 0, addr, bo_size,
+-			   sync, 1);
+-	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
++			   dma_fences ? dma_sync : sync, 1);
++	if (dma_fences)
++		igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0,
++					NULL));
++	else
++		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
++			       ONE_SEC);
+ 
+ 	for (i = j; i < n_execs; i++)
+ 		igt_assert_eq(data[i].data, 0xc0ffee);
+@@ -289,6 +385,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 			xe_engine_destroy(fd, bind_engines[i]);
+ 	}
+ 
++	if (dma_fences)
++		syncobj_destroy(fd, syncobj);
++
+ 	if (bo) {
+ 		munmap(data, bo_size);
+ 		gem_close(fd, bo);
+@@ -323,6 +422,30 @@ igt_main
+ 			INVALIDATE },
+ 		{ "bindengine-userptr-invalidate-race", BIND_ENGINE | USERPTR |
+ 			INVALIDATE | RACE },
++		{ "basic-dma-fences", DMA_FENCES_FOR_BINDS | 0 },
++		{ "preempt-fence-early-dma-fences", DMA_FENCES_FOR_BINDS |
++			VM_FOR_BO | ENGINE_EARLY },
++		{ "userptr-dma-fences", DMA_FENCES_FOR_BINDS | USERPTR },
++		{ "rebind-dma-fences", DMA_FENCES_FOR_BINDS | REBIND },
++		{ "userptr-rebind-dma-fences", DMA_FENCES_FOR_BINDS | USERPTR |
++			REBIND },
++		{ "userptr-invalidate-dma-fences", DMA_FENCES_FOR_BINDS |
++			USERPTR | INVALIDATE },
++		{ "userptr-invalidate-race-dma-fences", DMA_FENCES_FOR_BINDS |
++			USERPTR | INVALIDATE | RACE },
++		{ "bindengine-dma-fences", DMA_FENCES_FOR_BINDS | BIND_ENGINE },
++		{ "bindengine-userptr-dma-fences", DMA_FENCES_FOR_BINDS |
++			BIND_ENGINE | USERPTR },
++		{ "bindengine-rebind-dma-fences", DMA_FENCES_FOR_BINDS |
++			BIND_ENGINE | REBIND },
++		{ "bindengine-userptr-rebind-dma-fences", DMA_FENCES_FOR_BINDS |
++			BIND_ENGINE | USERPTR | REBIND },
++		{ "bindengine-userptr-invalidate-dma-fences",
++			DMA_FENCES_FOR_BINDS |  BIND_ENGINE | USERPTR |
++				INVALIDATE },
++		{ "bindengine-userptr-invalidate-race-dma-fences",
++			DMA_FENCES_FOR_BINDS | BIND_ENGINE | USERPTR |
++				INVALIDATE | RACE },
+ 		{ NULL },
+ 	};
+ 	int fd;
+-- 
+2.34.1
