@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1424522488902079898=="
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F29E10E587
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 May 2023 15:06:13 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  2 May 2023 20:35:16 +0530
+Message-Id: <20230502150516.130362-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Tue, 02 May 2023 14:35:47 -0000
-Message-ID: <168303814761.18870.7379709015741143146@emeril.freedesktop.org>
-References: <20230502110227.31965-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230502110227.31965-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fdisplay=5Fmodes=3A?=
- =?utf-8?q?_Add_negative_test_for_extended_display?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] DO NOT MERGE: NV12 Experiment
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,486 +16,369 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1424522488902079898==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Jeevan B <jeevan.b@intel.com>
 
-== Series Details ==
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist |   9 +-
+ tests/kms_pipe_crc_basic.c            | 292 ++++++++++++++++++++++++--
+ 2 files changed, 285 insertions(+), 16 deletions(-)
 
-Series: series starting with [i-g-t,1/2] tests/kms_display_modes: Add negative test for extended display
-URL   : https://patchwork.freedesktop.org/series/117195/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13096_full -> IGTPW_8896_full
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/index.html
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8896_full:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@kms_display_modes@mst-extended-mode-negative} (NEW):
-    - {shard-rkl}:        NOTRUN -> [SKIP][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-rkl-3/igt@kms_display_modes@mst-extended-mode-negative.html
-    - {shard-dg1}:        NOTRUN -> [SKIP][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-dg1-15/igt@kms_display_modes@mst-extended-mode-negative.html
-    - {shard-tglu}:       NOTRUN -> [SKIP][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-tglu-2/igt@kms_display_modes@mst-extended-mode-negative.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_13096_full and IGTPW_8896_full:
-
-### New IGT tests (1) ###
-
-  * igt@kms_display_modes@mst-extended-mode-negative:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8896_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_ccs@block-copy-compressed:
-    - shard-snb:          NOTRUN -> [SKIP][4] ([fdo#109271]) +112 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-snb2/igt@gem_ccs@block-copy-compressed.html
-
-  * igt@gem_exec_fair@basic-pace@vcs0:
-    - shard-glk:          [PASS][5] -> [FAIL][6] ([i915#2842]) +2 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-glk1/igt@gem_exec_fair@basic-pace@vcs0.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk4/igt@gem_exec_fair@basic-pace@vcs0.html
-
-  * igt@gem_pxp@create-regular-context-1:
-    - shard-glk:          NOTRUN -> [SKIP][7] ([fdo#109271]) +5 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk9/igt@gem_pxp@create-regular-context-1.html
-
-  * igt@gen9_exec_parse@allowed-single:
-    - shard-glk:          [PASS][8] -> [ABORT][9] ([i915#5566])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-glk6/igt@gen9_exec_parse@allowed-single.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk5/igt@gen9_exec_parse@allowed-single.html
-
-  * {igt@kms_display_modes@mst-extended-mode-negative} (NEW):
-    - shard-apl:          NOTRUN -> [SKIP][10] ([fdo#109271])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-apl6/igt@kms_display_modes@mst-extended-mode-negative.html
-
-  * igt@kms_plane_alpha_blend@constant-alpha-max@pipe-c-hdmi-a-1:
-    - shard-glk:          NOTRUN -> [FAIL][11] ([i915#4573]) +1 similar issue
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk5/igt@kms_plane_alpha_blend@constant-alpha-max@pipe-c-hdmi-a-1.html
-
-  
-#### Possible fixes ####
-
-  * igt@drm_fdinfo@virtual-idle:
-    - {shard-rkl}:        [FAIL][12] ([i915#7742]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-rkl-1/igt@drm_fdinfo@virtual-idle.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-rkl-7/igt@drm_fdinfo@virtual-idle.html
-
-  * igt@gem_barrier_race@remote-request@rcs0:
-    - shard-glk:          [ABORT][14] ([i915#7461] / [i915#8211]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-glk3/igt@gem_barrier_race@remote-request@rcs0.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk4/igt@gem_barrier_race@remote-request@rcs0.html
-
-  * igt@gem_eio@hibernate:
-    - {shard-dg1}:        [ABORT][16] ([i915#7975] / [i915#8213]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-dg1-14/igt@gem_eio@hibernate.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-dg1-16/igt@gem_eio@hibernate.html
-    - {shard-tglu}:       [ABORT][18] ([i915#7975] / [i915#8213] / [i915#8398]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-tglu-10/igt@gem_eio@hibernate.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-tglu-8/igt@gem_eio@hibernate.html
-
-  * igt@gem_eio@unwedge-stress:
-    - {shard-dg1}:        [FAIL][20] ([i915#5784]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-dg1-16/igt@gem_eio@unwedge-stress.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-dg1-12/igt@gem_eio@unwedge-stress.html
-
-  * igt@gem_exec_fair@basic-deadline:
-    - shard-glk:          [FAIL][22] ([i915#2846]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-glk1/igt@gem_exec_fair@basic-deadline.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk9/igt@gem_exec_fair@basic-deadline.html
-
-  * igt@gem_exec_fair@basic-none-solo@rcs0:
-    - shard-apl:          [FAIL][24] ([i915#2842]) -> [PASS][25] +1 similar issue
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-apl7/igt@gem_exec_fair@basic-none-solo@rcs0.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-apl7/igt@gem_exec_fair@basic-none-solo@rcs0.html
-
-  * igt@gem_exec_fair@basic-none@bcs0:
-    - {shard-rkl}:        [FAIL][26] ([i915#2842]) -> [PASS][27]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-rkl-7/igt@gem_exec_fair@basic-none@bcs0.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-rkl-2/igt@gem_exec_fair@basic-none@bcs0.html
-
-  * igt@i915_module_load@reload-no-display:
-    - shard-snb:          [ABORT][28] ([i915#4528] / [i915#8393]) -> [PASS][29]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-snb4/igt@i915_module_load@reload-no-display.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-snb1/igt@i915_module_load@reload-no-display.html
-
-  * igt@i915_pm_rps@reset:
-    - shard-snb:          [DMESG-FAIL][30] ([i915#8319]) -> [PASS][31]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-snb7/igt@i915_pm_rps@reset.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-snb6/igt@i915_pm_rps@reset.html
-
-  * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:
-    - shard-glk:          [FAIL][32] ([i915#2346]) -> [PASS][33]
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-glk1/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk4/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html
-
-  * igt@kms_flip@flip-vs-rmfb@a-hdmi-a1:
-    - {shard-tglu}:       [INCOMPLETE][34] -> [PASS][35]
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-tglu-4/igt@kms_flip@flip-vs-rmfb@a-hdmi-a1.html
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-tglu-7/igt@kms_flip@flip-vs-rmfb@a-hdmi-a1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109274]: https://bugs.freedesktop.org/show_bug.cgi?id=109274
-  [fdo#109280]: https://bugs.freedesktop.org/show_bug.cgi?id=109280
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109289]: https://bugs.freedesktop.org/show_bug.cgi?id=109289
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
-  [fdo#111614]: https://bugs.freedesktop.org/show_bug.cgi?id=111614
-  [fdo#111615]: https://bugs.freedesktop.org/show_bug.cgi?id=111615
-  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
-  [i915#1825]: https://gitlab.freedesktop.org/drm/intel/issues/1825
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-  [i915#2527]: https://gitlab.freedesktop.org/drm/intel/issues/2527
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#2587]: https://gitlab.freedesktop.org/drm/intel/issues/2587
-  [i915#2672]: https://gitlab.freedesktop.org/drm/intel/issues/2672
-  [i915#2681]: https://gitlab.freedesktop.org/drm/intel/issues/2681
-  [i915#2705]: https://gitlab.freedesktop.org/drm/intel/issues/2705
-  [i915#280]: https://gitlab.freedesktop.org/drm/intel/issues/280
-  [i915#2842]: https://gitlab.freedesktop.org/drm/intel/issues/2842
-  [i915#2846]: https://gitlab.freedesktop.org/drm/intel/issues/2846
-  [i915#3023]: https://gitlab.freedesktop.org/drm/intel/issues/3023
-  [i915#315]: https://gitlab.freedesktop.org/drm/intel/issues/315
-  [i915#3281]: https://gitlab.freedesktop.org/drm/intel/issues/3281
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3297]: https://gitlab.freedesktop.org/drm/intel/issues/3297
-  [i915#3299]: https://gitlab.freedesktop.org/drm/intel/issues/3299
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3361]: https://gitlab.freedesktop.org/drm/intel/issues/3361
-  [i915#3458]: https://gitlab.freedesktop.org/drm/intel/issues/3458
-  [i915#3469]: https://gitlab.freedesktop.org/drm/intel/issues/3469
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3591]: https://gitlab.freedesktop.org/drm/intel/issues/3591
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3638]: https://gitlab.freedesktop.org/drm/intel/issues/3638
-  [i915#3689]: https://gitlab.freedesktop.org/drm/intel/issues/3689
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3742]: https://gitlab.freedesktop.org/drm/intel/issues/3742
-  [i915#3743]: https://gitlab.freedesktop.org/drm/intel/issues/3743
-  [i915#3804]: https://gitlab.freedesktop.org/drm/intel/issues/3804
-  [i915#3886]: https://gitlab.freedesktop.org/drm/intel/issues/3886
-  [i915#3989]: https://gitlab.freedesktop.org/drm/intel/issues/3989
-  [i915#4070]: https://gitlab.freedesktop.org/drm/intel/issues/4070
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4270]: https://gitlab.freedesktop.org/drm/intel/issues/4270
-  [i915#4349]: https://gitlab.freedesktop.org/drm/intel/issues/4349
-  [i915#4525]: https://gitlab.freedesktop.org/drm/intel/issues/4525
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4538]: https://gitlab.freedesktop.org/drm/intel/issues/4538
-  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
-  [i915#4565]: https://gitlab.freedesktop.org/drm/intel/issues/4565
-  [i915#4573]: https://gitlab.freedesktop.org/drm/intel/issues/4573
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4816]: https://gitlab.freedesktop.org/drm/intel/issues/4816
-  [i915#4833]: https://gitlab.freedesktop.org/drm/intel/issues/4833
-  [i915#4860]: https://gitlab.freedesktop.org/drm/intel/issues/4860
-  [i915#5176]: https://gitlab.freedesktop.org/drm/intel/issues/5176
-  [i915#5235]: https://gitlab.freedesktop.org/drm/intel/issues/5235
-  [i915#5286]: https://gitlab.freedesktop.org/drm/intel/issues/5286
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5493]: https://gitlab.freedesktop.org/drm/intel/issues/5493
-  [i915#5566]: https://gitlab.freedesktop.org/drm/intel/issues/5566
-  [i915#5784]: https://gitlab.freedesktop.org/drm/intel/issues/5784
-  [i915#6095]: https://gitlab.freedesktop.org/drm/intel/issues/6095
-  [i915#6301]: https://gitlab.freedesktop.org/drm/intel/issues/6301
-  [i915#6524]: https://gitlab.freedesktop.org/drm/intel/issues/6524
-  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
-  [i915#6768]: https://gitlab.freedesktop.org/drm/intel/issues/6768
-  [i915#6786]: https://gitlab.freedesktop.org/drm/intel/issues/6786
-  [i915#6946]: https://gitlab.freedesktop.org/drm/intel/issues/6946
-  [i915#7118]: https://gitlab.freedesktop.org/drm/intel/issues/7118
-  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
-  [i915#7711]: https://gitlab.freedesktop.org/drm/intel/issues/7711
-  [i915#7742]: https://gitlab.freedesktop.org/drm/intel/issues/7742
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7975]: https://gitlab.freedesktop.org/drm/intel/issues/7975
-  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
-  [i915#8211]: https://gitlab.freedesktop.org/drm/intel/issues/8211
-  [i915#8213]: https://gitlab.freedesktop.org/drm/intel/issues/8213
-  [i915#8229]: https://gitlab.freedesktop.org/drm/intel/issues/8229
-  [i915#8292]: https://gitlab.freedesktop.org/drm/intel/issues/8292
-  [i915#8319]: https://gitlab.freedesktop.org/drm/intel/issues/8319
-  [i915#8381]: https://gitlab.freedesktop.org/drm/intel/issues/8381
-  [i915#8393]: https://gitlab.freedesktop.org/drm/intel/issues/8393
-  [i915#8398]: https://gitlab.freedesktop.org/drm/intel/issues/8398
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7277 -> IGTPW_8896
-  * Piglit: piglit_4509 -> None
-
-  CI-20190529: 20190529
-  CI_DRM_13096: ec374264576fb8b33a27098e4b2ceeb99712007d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8896: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/index.html
-  IGT_7277: 1cb3507f3ff28d11bd5cfabcde576fe78ddab571 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/index.html
-
---===============1424522488902079898==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_display_modes: Add negative test for extended display</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117195/">https://patchwork.freedesktop.org/series/117195/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13096_full -&gt; IGTPW_8896_full</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/index.html</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8896_full:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>{igt@kms_display_modes@mst-extended-mode-negative} (NEW):</p>
-<ul>
-<li>
-<p>{shard-rkl}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-rkl-3/igt@kms_display_modes@mst-extended-mode-negative.html">SKIP</a></p>
-</li>
-<li>
-<p>{shard-dg1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-dg1-15/igt@kms_display_modes@mst-extended-mode-negative.html">SKIP</a></p>
-</li>
-<li>
-<p>{shard-tglu}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-tglu-2/igt@kms_display_modes@mst-extended-mode-negative.html">SKIP</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_13096_full and IGTPW_8896_full:</p>
-<h3>New IGT tests (1)</h3>
-<ul>
-<li>igt@kms_display_modes@mst-extended-mode-negative:<ul>
-<li>Statuses : 6 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8896_full that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_ccs@block-copy-compressed:</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-snb2/igt@gem_ccs@block-copy-compressed.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +112 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-pace@vcs0:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-glk1/igt@gem_exec_fair@basic-pace@vcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk4/igt@gem_exec_fair@basic-pace@vcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_pxp@create-regular-context-1:</p>
-<ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk9/igt@gem_pxp@create-regular-context-1.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +5 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gen9_exec_parse@allowed-single:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-glk6/igt@gen9_exec_parse@allowed-single.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk5/igt@gen9_exec_parse@allowed-single.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5566">i915#5566</a>)</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_display_modes@mst-extended-mode-negative} (NEW):</p>
-<ul>
-<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-apl6/igt@kms_display_modes@mst-extended-mode-negative.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_plane_alpha_blend@constant-alpha-max@pipe-c-hdmi-a-1:</p>
-<ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk5/igt@kms_plane_alpha_blend@constant-alpha-max@pipe-c-hdmi-a-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4573">i915#4573</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@drm_fdinfo@virtual-idle:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-rkl-1/igt@drm_fdinfo@virtual-idle.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7742">i915#7742</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-rkl-7/igt@drm_fdinfo@virtual-idle.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_barrier_race@remote-request@rcs0:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-glk3/igt@gem_barrier_race@remote-request@rcs0.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8211">i915#8211</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk4/igt@gem_barrier_race@remote-request@rcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_eio@hibernate:</p>
-<ul>
-<li>
-<p>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-dg1-14/igt@gem_eio@hibernate.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7975">i915#7975</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8213">i915#8213</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-dg1-16/igt@gem_eio@hibernate.html">PASS</a></p>
-</li>
-<li>
-<p>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-tglu-10/igt@gem_eio@hibernate.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7975">i915#7975</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8213">i915#8213</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8398">i915#8398</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-tglu-8/igt@gem_eio@hibernate.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_eio@unwedge-stress:</p>
-<ul>
-<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-dg1-16/igt@gem_eio@unwedge-stress.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5784">i915#5784</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-dg1-12/igt@gem_eio@unwedge-stress.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-deadline:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-glk1/igt@gem_exec_fair@basic-deadline.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2846">i915#2846</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk9/igt@gem_exec_fair@basic-deadline.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-none-solo@rcs0:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-apl7/igt@gem_exec_fair@basic-none-solo@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-apl7/igt@gem_exec_fair@basic-none-solo@rcs0.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-none@bcs0:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-rkl-7/igt@gem_exec_fair@basic-none@bcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-rkl-2/igt@gem_exec_fair@basic-none@bcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload-no-display:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-snb4/igt@i915_module_load@reload-no-display.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8393">i915#8393</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-snb1/igt@i915_module_load@reload-no-display.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@reset:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-snb7/igt@i915_pm_rps@reset.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8319">i915#8319</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-snb6/igt@i915_pm_rps@reset.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-glk1/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-glk4/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-rmfb@a-hdmi-a1:</p>
-<ul>
-<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13096/shard-tglu-4/igt@kms_flip@flip-vs-rmfb@a-hdmi-a1.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/shard-tglu-7/igt@kms_flip@flip-vs-rmfb@a-hdmi-a1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7277 -&gt; IGTPW_8896</li>
-<li>Piglit: piglit_4509 -&gt; None</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13096: ec374264576fb8b33a27098e4b2ceeb99712007d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8896: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8896/index.html<br />
-  IGT_7277: 1cb3507f3ff28d11bd5cfabcde576fe78ddab571 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
-
-</body>
-</html>
-
---===============1424522488902079898==--
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index d9fcb62d..4af9e8d2 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -118,7 +118,14 @@ igt@kms_force_connector_basic@force-edid
+ igt@kms_force_connector_basic@force-load-detect
+ igt@kms_force_connector_basic@prune-stale-modes
+ igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-red
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-green
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-blue
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-red
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-green
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-blue
+ igt@kms_pipe_crc_basic@hang-read-crc
+ igt@kms_pipe_crc_basic@nonblocking-crc
+ igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 65afc9f6..6b9def05 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -177,6 +177,108 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+ 	igt_display_commit(display);
+ }
+ 
++static void test_compare_crc_xrgb(data_t *data, enum pipe pipe, igt_output_t *output, int color)
++{
++	igt_display_t *display = &data->display;
++	igt_plane_t *primary;
++	drmModeModeInfo *mode;
++	igt_crc_t ref_crc, crc;
++	igt_pipe_crc_t *pipe_crc = NULL;
++	struct igt_fb fb0, fb1;
++
++	igt_display_reset(display);
++	igt_output_set_pipe(output, pipe);
++
++	mode = igt_output_get_mode(output);
++
++	/* Create two framebuffers with the same color info. */
++	switch (color) {
++	case 1:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 0.0, 0.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 0.0, 0.0,
++				&fb1);
++		break;
++	case 2:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fb1);
++		break;
++	case 3:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 0.0, 1.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 0.0, 1.0,
++				&fb1);
++		break;
++	default:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 1.0, 1.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 1.0, 1.0,
++				&fb1);
++	}
++
++	/* Flip FB0 with the Primary plane & collect the CRC as ref CRC. */
++	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(primary, &fb0);
++	igt_display_commit(display);
++
++	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++				    IGT_PIPE_CRC_SOURCE_AUTO);
++	igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
++
++	/* Flip FB1 with the Primary plane & compare the CRC with ref CRC. */
++	igt_plane_set_fb(primary, &fb1);
++	igt_display_commit(display);
++
++	igt_pipe_crc_collect_crc(pipe_crc, &crc);
++	igt_assert_crc_equal(&crc, &ref_crc);
++
++	/* Clean-up */
++	igt_pipe_crc_free(pipe_crc);
++	igt_plane_set_fb(primary, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit(display);
++
++	igt_remove_fb(data->drm_fd, &fb0);
++	igt_remove_fb(data->drm_fd, &fb1);
++}
+ /*
+  * CRC-sanity test, to make sure there would be no CRC mismatches
+  *
+@@ -187,7 +289,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+  *
+  *   No CRC mismatch should happen
+  */
+-static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
++static void test_compare_crc_nv12(data_t *data, enum pipe pipe, igt_output_t *output, int color)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_plane_t *primary;
+@@ -202,18 +304,64 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	mode = igt_output_get_mode(output);
+ 
+ 	/* Create two framebuffers with the same color info. */
+-	igt_create_color_fb(data->drm_fd,
+-			mode->hdisplay, mode->vdisplay,
+-			DRM_FORMAT_XRGB8888,
+-			DRM_FORMAT_MOD_LINEAR,
+-			1.0, 1.0, 1.0,
+-			&fb0);
+-	igt_create_color_fb(data->drm_fd,
+-			mode->hdisplay, mode->vdisplay,
+-			DRM_FORMAT_XRGB8888,
+-			DRM_FORMAT_MOD_LINEAR,
+-			1.0, 1.0, 1.0,
+-			&fb1);
++	switch (color) {
++	case 1:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 0.0, 0.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 0.0, 0.0,
++				&fb1);
++	case 2:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fb1);
++	case 3:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 0.0, 1.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 0.0, 1.0,
++				&fb1);
++	default:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 1.0, 1.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 1.0, 1.0,
++				&fb1);
++	}
+ 
+ 	/* Flip FB0 with the Primary plane & collect the CRC as ref CRC. */
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+@@ -418,7 +566,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_describe("Basic sanity check for CRC mismatches");
+-	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 			if (simulation_constraint(pipe))
+ 				continue;
+@@ -427,7 +575,121 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 				continue;
+ 
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+-				test_compare_crc(&data, pipe, output);
++				test_compare_crc_xrgb(&data, pipe, output, 0);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-red") {
++			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if (simulation_constraint(pipe))
++					continue;
++
++				if(!pipe_output_combo_valid(&data.display, pipe, output))
++					continue;
++
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++					test_compare_crc_xrgb(&data, pipe, output, 1);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-green") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc_xrgb(&data, pipe, output, 2);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-blue") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc_xrgb(&data, pipe, output, 3);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc_nv12(&data, pipe, output, 0);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-red") {
++			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if (simulation_constraint(pipe))
++					continue;
++
++				if(!pipe_output_combo_valid(&data.display, pipe, output))
++					continue;
++
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++					test_compare_crc_nv12(&data, pipe, output, 1);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-green") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc_nv12(&data, pipe, output, 2);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-blue") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc_nv12(&data, pipe, output, 3);
++
++			break;
+ 		}
+ 	}
+ 
+-- 
+2.25.1
