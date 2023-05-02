@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35AA210E1FF
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CCFBA10E1FF
  for <igt-dev@lists.freedesktop.org>; Tue,  2 May 2023 06:55:35 +0000 (UTC)
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  1 May 2023 23:55:31 -0700
-Message-Id: <20230502065536.3223489-3-matthew.brost@intel.com>
+Date: Mon,  1 May 2023 23:55:36 -0700
+Message-Id: <20230502065536.3223489-8-matthew.brost@intel.com>
 In-Reply-To: <20230502065536.3223489-1-matthew.brost@intel.com>
 References: <20230502065536.3223489-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 2/7] xe_exec_basic: Add NULL VM bind section
+Subject: [igt-dev] [PATCH v2 7/7] xe_vm: Add EIO test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,107 +22,176 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-A NULL VM bind results in writes being dropped and reads returning zero,
-verify uAPI for NULL VM binds is working as designed.
+Let's make sure bad input to VM bind doesn't crash the driver or leak
+resources.
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/xe/xe_exec_basic.c | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+ lib/xe/xe_ioctl.c | 22 +++++++++++
+ lib/xe/xe_ioctl.h |  4 ++
+ tests/xe/xe_vm.c  | 95 +++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 121 insertions(+)
 
-diff --git a/tests/xe/xe_exec_basic.c b/tests/xe/xe_exec_basic.c
-index 2a176a5b3..f7ad6aeeb 100644
---- a/tests/xe/xe_exec_basic.c
-+++ b/tests/xe/xe_exec_basic.c
-@@ -27,6 +27,7 @@
- #define BIND_ENGINE	(0x1 << 4)
- #define DEFER_ALLOC	(0x1 << 5)
- #define DEFER_BIND	(0x1 << 6)
-+#define SPARSE		(0x1 << 7)
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 77e6d2d13..b9bfc2e8e 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -70,6 +70,28 @@ void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t engine,
+ 			    sync, num_syncs, 0, 0);
+ }
  
- /**
-  * SUBTEST: once-%s
-@@ -67,6 +68,10 @@
-  * @userptr-rebind:			userptr rebind
-  * @userptr-invalidate:			userptr invalidate
-  * @userptr-invalidate-race:		userptr invalidate racy
-+ * @null:				null
-+ * @null-defer-mmap:			null defer mmap
-+ * @null-defer-bind:			null defer bind
-+ * @null-rebind:			null rebind
-  * @bindengine:				bind engine
-  * @bindengine-userptr:			bind engine userptr description
-  * @bindengine-rebind:			bind engine rebind description
-@@ -89,6 +94,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		.syncs = to_user_pointer(sync),
- 	};
- 	uint64_t addr[MAX_N_ENGINES];
-+	uint64_t sparse_addr[MAX_N_ENGINES];
- 	uint32_t vm[MAX_N_ENGINES];
- 	uint32_t engines[MAX_N_ENGINES];
- 	uint32_t bind_engines[MAX_N_ENGINES];
-@@ -113,8 +119,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			xe_get_default_alignment(fd));
++int __xe_vm_bind_array(int fd, uint32_t vm, uint32_t engine,
++		       struct drm_xe_vm_bind_op *bind_ops,
++		       uint32_t num_bind, struct drm_xe_sync *sync,
++		       uint32_t num_syncs)
++{
++	struct drm_xe_vm_bind bind = {
++		.vm_id = vm,
++		.num_binds = num_bind,
++		.vector_of_binds = (uintptr_t)bind_ops,
++		.num_syncs = num_syncs,
++		.syncs = (uintptr_t)sync,
++		.engine_id = engine,
++	};
++
++	igt_assert(num_bind > 1);
++
++	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
++		return -errno;
++
++	return 0;
++}
++
+ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t engine,
+ 		      struct drm_xe_vm_bind_op *bind_ops,
+ 		      uint32_t num_bind, struct drm_xe_sync *sync,
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index f5d39e81c..9757aab37 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -56,6 +56,10 @@ void xe_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+ 		     uint64_t addr, uint64_t size);
+ void xe_vm_unbind_sync(int fd, uint32_t vm, uint64_t offset,
+ 		       uint64_t addr, uint64_t size);
++int __xe_vm_bind_array(int fd, uint32_t vm, uint32_t engine,
++		       struct drm_xe_vm_bind_op *bind_ops,
++		       uint32_t num_bind, struct drm_xe_sync *sync,
++		       uint32_t num_syncs);
+ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t engine,
+ 		      struct drm_xe_vm_bind_op *bind_ops,
+ 		      uint32_t num_bind, struct drm_xe_sync *sync,
+diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
+index f6d71d0e0..78320fc48 100644
+--- a/tests/xe/xe_vm.c
++++ b/tests/xe/xe_vm.c
+@@ -294,6 +294,98 @@ static void unbind_all(int fd, int n_vmas)
  
- 	addr[0] = 0x1a0000;
--	for (i = 1; i < MAX_N_ENGINES; ++i)
-+	sparse_addr[0] = 0x301a0000;
-+	for (i = 1; i < MAX_N_ENGINES; ++i) {
- 		addr[i] = addr[i - 1] + (0x1ull << 32);
-+		sparse_addr[i] = sparse_addr[i - 1] + (0x1ull << 32);
-+	}
- 
- 	if (flags & USERPTR) {
  #define	MAP_ADDRESS	0x00007fadeadbe000
-@@ -163,6 +172,13 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			xe_vm_bind_userptr_async(fd, vm[i], bind_engines[i],
- 						 to_user_pointer(data), addr[i],
- 						 bo_size, sync, 1);
-+		if (flags & SPARSE)
-+			__xe_vm_bind_assert(fd, vm[i], bind_engines[i],
-+					    0, 0, sparse_addr[i], bo_size,
-+					    XE_VM_BIND_OP_MAP |
-+					    XE_VM_BIND_FLAG_ASYNC |
-+					    XE_VM_BIND_FLAG_NULL, sync,
-+					    1, 0, 0);
- 	}
  
- 	if (flags & DEFER_BIND)
-@@ -174,7 +190,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
- 		uint64_t batch_addr = __addr + batch_offset;
- 		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
--		uint64_t sdi_addr = __addr + sdi_offset;
-+		uint64_t sdi_addr = (flags & SPARSE ? sparse_addr[i % n_vm] :
-+				     __addr)+ sdi_offset;
- 		int e = i % n_engines;
- 
- 		b = 0;
-@@ -261,9 +278,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 					INT64_MAX, 0, NULL));
- 	}
- 
--	for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
--	     i < n_execs; i++)
--		igt_assert_eq(data[i].data, 0xc0ffee);
-+	if (!(flags & SPARSE)) {
-+		for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
-+		     i < n_execs; i++)
-+			igt_assert_eq(data[i].data, 0xc0ffee);
++/**
++ * SUBTEST: eio
++ * Description:
++ *	Verifies bad input to vm bind is handled correctly and doesn't crash the
++ *	driver
++ * Run type: FULL
++ * TODO: change ``'Run type' == FULL`` to a better category
++ */
++static void eio(int fd)
++{
++	size_t size = xe_get_default_alignment(fd);
++	struct drm_xe_vm_bind_op bind_ops[2];
++	uint32_t vm;
++	uint32_t bo;
++	uint32_t async_bind_engine;
++	uint32_t sync_bind_engine;
++	int ret, i;
++
++	vm = xe_vm_create(fd, 0, 0);
++	bo = xe_bo_create(fd, 0, vm, size);
++	async_bind_engine = xe_bind_engine_create(fd, vm, 0, true);
++	sync_bind_engine = xe_bind_engine_create(fd, vm, 0, false);
++
++	/* Bad BO */
++	ret = __xe_vm_bind(fd, vm, 0, bo + 1, 0, 0x40000,
++			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
++	igt_assert(ret == -ENOENT);
++
++	/* Bad BO /w an engine */
++	ret = __xe_vm_bind(fd, vm, sync_bind_engine, bo + 1, 0, 0x40000,
++			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
++	igt_assert(ret == -ENOENT);
++
++	/* Invalid engine */
++	ret = __xe_vm_bind(fd, vm, sync_bind_engine + async_bind_engine, bo, 0,
++			   0x40000, size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
++	igt_assert(ret == -ENOENT);
++
++	/* Bad BO offset */
++	ret = __xe_vm_bind(fd, vm, 0, bo, xe_get_default_alignment(fd) * 2, 0x40000,
++			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
++	igt_assert(ret == -EINVAL);
++
++	/* Bad BO offset /w an engine */
++	ret = __xe_vm_bind(fd, vm, sync_bind_engine, bo,
++			   xe_get_default_alignment(fd) * 2, 0x40000,
++			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
++	igt_assert(ret == -EINVAL);
++
++	/* Bad BO 2nd op */
++	memset(bind_ops, 0, sizeof(bind_ops));
++	for (i = 0; i < 2; ++i) {
++		bind_ops[i].obj = bo + i;
++		bind_ops[i].obj_offset = 0;
++		bind_ops[i].range = size;
++		bind_ops[i].addr = 0x40000 * (i + 1);
++		bind_ops[i].op = XE_VM_BIND_OP_MAP;
 +	}
++	ret = __xe_vm_bind_array(fd, vm, 0, bind_ops, 2, 0, 0);
++	igt_assert(ret == -ENOENT);
++
++	/* Bad BO /w an engine 2nd op */
++	memset(bind_ops, 0, sizeof(bind_ops));
++	for (i = 0; i < 2; ++i) {
++		bind_ops[i].obj = bo + i;
++		bind_ops[i].obj_offset = 0;
++		bind_ops[i].range = size;
++		bind_ops[i].addr = 0x40000 * (i + 1);
++		bind_ops[i].op = XE_VM_BIND_OP_MAP;
++	}
++	ret = __xe_vm_bind_array(fd, vm, sync_bind_engine, bind_ops, 2, 0, 0);
++	igt_assert(ret == -ENOENT);
++
++	/* userptr_invalid 2nd op */
++	memset(bind_ops, 0, sizeof(bind_ops));
++	for (i = 0; i < 2; ++i) {
++		bind_ops[i].obj = !i ? bo : 0;
++		bind_ops[i].obj_offset = !i ? 0 : MAP_ADDRESS;
++		bind_ops[i].range = size;
++		bind_ops[i].addr = 0x40000 * (i + 1);
++		bind_ops[i].op = !i ? XE_VM_BIND_OP_MAP :
++			XE_VM_BIND_OP_MAP_USERPTR;
++	}
++	ret = __xe_vm_bind_array(fd, vm, sync_bind_engine, bind_ops, 2, 0, 0);
++	igt_assert(ret == -EFAULT);
++
++	xe_engine_destroy(fd, async_bind_engine);
++	xe_engine_destroy(fd, sync_bind_engine);
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);
++}
++
+ /**
+  * SUBTEST: userptr-invalid
+  * Description:
+@@ -1847,6 +1939,9 @@ igt_main
+ 	igt_subtest("unbind-all-8-vmas")
+ 		unbind_all(fd, 8);
  
- 	for (i = 0; i < n_engines; i++) {
- 		syncobj_destroy(fd, syncobjs[i]);
-@@ -296,6 +315,10 @@ igt_main
- 		{ "basic-defer-bind", DEFER_ALLOC | DEFER_BIND },
- 		{ "userptr", USERPTR },
- 		{ "rebind", REBIND },
-+		{ "null", SPARSE },
-+		{ "null-defer-mmap", SPARSE | DEFER_ALLOC },
-+		{ "null-defer-bind", SPARSE | DEFER_ALLOC | DEFER_BIND },
-+		{ "null-rebind", SPARSE | REBIND },
- 		{ "userptr-rebind", USERPTR | REBIND },
- 		{ "userptr-invalidate", USERPTR | INVALIDATE },
- 		{ "userptr-invalidate-race", USERPTR | INVALIDATE | RACE },
++	igt_subtest("eio")
++		eio(fd);
++
+ 	igt_subtest("userptr-invalid")
+ 		userptr_invalid(fd);
+ 
 -- 
 2.34.1
