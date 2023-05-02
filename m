@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FDD910E236
- for <igt-dev@lists.freedesktop.org>; Tue,  2 May 2023 14:07:02 +0000 (UTC)
-From: Matthew Brost <matthew.brost@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1BFA10E2D1
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 May 2023 05:18:21 +0000 (UTC)
+From: fei.yang@intel.com
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  2 May 2023 07:06:52 -0700
-Message-Id: <20230502140652.3226881-1-matthew.brost@intel.com>
+Date: Mon,  1 May 2023 22:19:21 -0700
+Message-Id: <20230502051921.2183579-2-fei.yang@intel.com>
+In-Reply-To: <20230502051921.2183579-1-fei.yang@intel.com>
+References: <20230502051921.2183579-1-fei.yang@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] xe_vm: Add EIO test
+Subject: [igt-dev] [PATCH v2 1/1] test/gem_create: exercise
+ gem_create_ext_set_pat
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,275 +19,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Fei Yang <fei.yang@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let's make sure bad input to VM bind doesn't crash the driver or leak
-resources.
+From: Fei Yang <fei.yang@intel.com>
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Gem_create uAPI has been extended with capability of setting PAT index.
+Add a test case to exercise this new extension.
+
+Signed-off-by: Fei Yang <fei.yang@intel.com>
 ---
- lib/xe/xe_ioctl.c |  22 ++++++
- lib/xe/xe_ioctl.h |   4 +
- tests/xe/xe_vm.c  | 183 +++++++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 208 insertions(+), 1 deletion(-)
+ include/drm-uapi/i915_drm.h | 33 ++++++++++++++++++++++++++++
+ tests/i915/gem_create.c     | 44 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 77 insertions(+)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 77e6d2d13..b9bfc2e8e 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -70,6 +70,28 @@ void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t engine,
- 			    sync, num_syncs, 0, 0);
- }
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index a0876ee4..1fdaa372 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -3499,6 +3499,7 @@ struct drm_i915_gem_create_ext {
+ 	 */
+ #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
+ #define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
++#define I915_GEM_CREATE_EXT_SET_PAT 2
+ 	__u64 extensions;
+ };
  
-+int __xe_vm_bind_array(int fd, uint32_t vm, uint32_t engine,
-+		       struct drm_xe_vm_bind_op *bind_ops,
-+		       uint32_t num_bind, struct drm_xe_sync *sync,
-+		       uint32_t num_syncs)
-+{
-+	struct drm_xe_vm_bind bind = {
-+		.vm_id = vm,
-+		.num_binds = num_bind,
-+		.vector_of_binds = (uintptr_t)bind_ops,
-+		.num_syncs = num_syncs,
-+		.syncs = (uintptr_t)sync,
-+		.engine_id = engine,
-+	};
-+
-+	igt_assert(num_bind > 1);
-+
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
-+		return -errno;
-+
-+	return 0;
-+}
-+
- void xe_vm_bind_array(int fd, uint32_t vm, uint32_t engine,
- 		      struct drm_xe_vm_bind_op *bind_ops,
- 		      uint32_t num_bind, struct drm_xe_sync *sync,
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index f5d39e81c..9757aab37 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -56,6 +56,10 @@ void xe_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
- 		     uint64_t addr, uint64_t size);
- void xe_vm_unbind_sync(int fd, uint32_t vm, uint64_t offset,
- 		       uint64_t addr, uint64_t size);
-+int __xe_vm_bind_array(int fd, uint32_t vm, uint32_t engine,
-+		       struct drm_xe_vm_bind_op *bind_ops,
-+		       uint32_t num_bind, struct drm_xe_sync *sync,
-+		       uint32_t num_syncs);
- void xe_vm_bind_array(int fd, uint32_t vm, uint32_t engine,
- 		      struct drm_xe_vm_bind_op *bind_ops,
- 		      uint32_t num_bind, struct drm_xe_sync *sync,
-diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
-index f6d71d0e0..fd7354f52 100644
---- a/tests/xe/xe_vm.c
-+++ b/tests/xe/xe_vm.c
-@@ -294,6 +294,185 @@ static void unbind_all(int fd, int n_vmas)
- 
- #define	MAP_ADDRESS	0x00007fadeadbe000
+@@ -3616,6 +3617,38 @@ struct drm_i915_gem_create_ext_protected_content {
+ /* ID of the protected content session managed by i915 when PXP is active */
+ #define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
  
 +/**
-+ * SUBTEST: eio
-+ * Description:
-+ *	Verifies bad input to vm bind is handled correctly and doesn't crash the
-+ *	driver or leak resources
-+ * Run type: FULL
-+ * TODO: change ``'Run type' == FULL`` to a better category
++ * struct drm_i915_gem_create_ext_set_pat - The
++ * I915_GEM_CREATE_EXT_SET_PAT extension.
++ *
++ * If this extension is provided, the specified caching policy (PAT index) is
++ * applied to the buffer object.
++ *
++ * Below is an example on how to create an object with specific caching policy:
++ *
++ * .. code-block:: C
++ *
++ *      struct drm_i915_gem_create_ext_set_pat set_pat_ext = {
++ *              .base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
++ *              .pat_index = 0,
++ *      };
++ *      struct drm_i915_gem_create_ext create_ext = {
++ *              .size = PAGE_SIZE,
++ *              .extensions = (uintptr_t)&set_pat_ext,
++ *      };
++ *
++ *      int err = ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
++ *      if (err) ...
 + */
-+static void eio(int fd)
++struct drm_i915_gem_create_ext_set_pat {
++	/** @base: Extension link. See struct i915_user_extension. */
++	struct i915_user_extension base;
++	/** @pat_index: PAT index to be set */
++	__u32 pat_index;
++	/** @rsvd: reserved for future use */
++	__u32 rsvd;
++};
++
+ #if defined(__cplusplus)
+ }
+ #endif
+diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+index c719ab6c..20c71afb 100644
+--- a/tests/i915/gem_create.c
++++ b/tests/i915/gem_create.c
+@@ -537,6 +537,45 @@ static void create_ext_placement_each(int fd)
+ 	free(regions);
+ }
+ 
++static void create_ext_set_pat(int fd)
 +{
-+	size_t size = xe_get_default_alignment(fd);
-+	struct drm_xe_vm_bind_op bind_ops[3];
-+	uint32_t vm;
-+	uint32_t bo;
-+	uint32_t async_bind_engine;
-+	uint32_t sync_bind_engine;
-+	int ret, i;
++	struct drm_i915_gem_create_ext_set_pat setparam_pat = {
++		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
++		.pat_index = 0,
++	};
++	struct drm_i915_gem_create_ext_set_pat setparam_inv_pat = {
++		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
++		.pat_index = 65,
++	};
++	struct drm_i915_gem_caching arg;
++	uint64_t size;
++	uint32_t handle;
++	int ret;
 +
-+	vm = xe_vm_create(fd, 0, 0);
-+	bo = xe_bo_create(fd, 0, vm, size);
-+	async_bind_engine = xe_bind_engine_create(fd, vm, 0, true);
-+	sync_bind_engine = xe_bind_engine_create(fd, vm, 0, false);
++	size = PAGE_SIZE;
 +
-+	/* Bad BO */
-+	ret = __xe_vm_bind(fd, vm, 0, bo + 1, 0, 0x40000,
-+			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
-+	igt_assert(ret == -ENOENT);
++	ret = __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base);
 +
-+	/* Bad BO /w an engine */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, bo + 1, 0, 0x40000,
-+			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
-+	igt_assert(ret == -ENOENT);
++	/* Returning -EFAULT indicates set_pat extension is not supported */
++	if (ret == -EFAULT)
++		igt_info("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
++	igt_assert(ret == 0);
 +
-+	/* Unmap with BO */
-+	ret = __xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
-+			   size, XE_VM_BIND_OP_UNMAP, NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);
++	/* {set|get}_caching ioctl should fail for objects created with set_pat */
++	igt_assert(__gem_set_caching(fd, handle, 1) == -EOPNOTSUPP);
 +
-+	/* Async / sync mismatch */
-+	ret = __xe_vm_bind(fd, vm, async_bind_engine, bo, 0, 0x40000,
-+			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);
++	memset(&arg, 0, sizeof(arg));
++	arg.handle = handle;
++	igt_assert(ioctl(fd, DRM_IOCTL_I915_GEM_GET_CACHING, &arg) < 0 &&
++		   errno == EOPNOTSUPP);
 +
-+	/* Async / sync mismatch */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, bo, 0, 0x40000,
-+			   size, XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC,
-+			   NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);
++	/* gem_create should fail with -EINVAL if invalid pat index specified */
++	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle, &setparam_inv_pat.base),
++		      -EINVAL);
 +
-+	/* Reclaim sync */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, bo, 0, 0x40000,
-+			   size, XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_RECLAIM,
-+			   NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);
-+
-+	/* Reclaim async */
-+	ret = __xe_vm_bind(fd, vm, async_bind_engine, bo, 0, 0x40000,
-+			   size, XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_RECLAIM,
-+			   NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);
-+
-+	/* Invalid engine */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine + async_bind_engine, bo, 0,
-+			   0x40000, size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
-+	igt_assert(ret == -ENOENT);
-+
-+	/* Bad BO offset */
-+	ret = __xe_vm_bind(fd, vm, 0, bo, xe_get_default_alignment(fd) * 2, 0x40000,
-+			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);
-+
-+	/* Bad BO offset /w an engine */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, bo,
-+			   xe_get_default_alignment(fd) * 2, 0x40000,
-+			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);
-+
-+	/* Bad BO 2nd op */
-+	memset(bind_ops, 0, sizeof(bind_ops));
-+	for (i = 0; i < 2; ++i) {
-+		bind_ops[i].obj = bo + i;
-+		bind_ops[i].obj_offset = 0;
-+		bind_ops[i].range = size;
-+		bind_ops[i].addr = 0x40000 * (i + 1);
-+		bind_ops[i].op = XE_VM_BIND_OP_MAP;
-+	}
-+	ret = __xe_vm_bind_array(fd, vm, 0, bind_ops, 2, 0, 0);
-+	igt_assert(ret == -ENOENT);
-+
-+	/* Bad BO /w an engine 2nd op */
-+	memset(bind_ops, 0, sizeof(bind_ops));
-+	for (i = 0; i < 2; ++i) {
-+		bind_ops[i].obj = bo + i;
-+		bind_ops[i].obj_offset = 0;
-+		bind_ops[i].range = size;
-+		bind_ops[i].addr = 0x40000 * (i + 1);
-+		bind_ops[i].op = XE_VM_BIND_OP_MAP;
-+	}
-+	ret = __xe_vm_bind_array(fd, vm, sync_bind_engine, bind_ops, 2, 0, 0);
-+	igt_assert(ret == -ENOENT);
-+
-+	/* userptr_invalid 2nd op */
-+	memset(bind_ops, 0, sizeof(bind_ops));
-+	for (i = 0; i < 2; ++i) {
-+		bind_ops[i].obj = !i ? bo : 0;
-+		bind_ops[i].obj_offset = !i ? 0 : MAP_ADDRESS;
-+		bind_ops[i].range = size;
-+		bind_ops[i].addr = 0x40000 * (i + 1);
-+		bind_ops[i].op = !i ? XE_VM_BIND_OP_MAP :
-+			XE_VM_BIND_OP_MAP_USERPTR;
-+	}
-+	ret = __xe_vm_bind_array(fd, vm, sync_bind_engine, bind_ops, 2, 0, 0);
-+	igt_assert(ret == -EFAULT);
-+
-+	/* fail 2nd op, verify error allowed / not allowed ops, restart */
-+	memset(bind_ops, 0, sizeof(bind_ops));
-+	for (i = 0; i < 3; ++i) {
-+		bind_ops[i].obj = bo;
-+		bind_ops[i].obj_offset = 0;
-+		bind_ops[i].range = size;
-+		bind_ops[i].addr = 0x40000 * (i + 1);
-+		bind_ops[i].op = XE_VM_BIND_OP_MAP;
-+#define INJECT_ERROR	(0x1 << 31)
-+		if (i == 1)
-+			bind_ops[i].op |= INJECT_ERROR;
-+	}
-+	ret = __xe_vm_bind_array(fd, vm, sync_bind_engine, bind_ops, 3, 0, 0);
-+	igt_assert(ret == -ENOSPC);	/* Enter error state, 2nd bind op failed */
-+	ret = __xe_vm_bind(fd, vm, async_bind_engine, bo, 0, 0x4000000,
-+			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
-+	igt_assert(ret == -EALREADY);	/* Can't do anything w/o reclaim */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, bo, 0, 0x4000000,
-+			   size, XE_VM_BIND_OP_MAP, NULL, 0, 0, 0);
-+	igt_assert(ret == -EALREADY);	/* Can't do anything w/o reclaim */
-+	ret = __xe_vm_bind(fd, vm, async_bind_engine, 0, 0, 0x4000000,
-+			   size, XE_VM_BIND_OP_UNMAP,
-+			   NULL, 0, 0, 0);
-+	igt_assert(ret == -EALREADY);	/* Can't do anything w/o reclaim */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, 0, 0, 0x4000000,
-+			   size, XE_VM_BIND_OP_UNMAP,
-+			   NULL, 0, 0, 0);
-+	igt_assert(ret == -EALREADY);	/* Can't do anything w/o reclaim */
-+	ret = __xe_vm_bind(fd, vm, async_bind_engine, bo, 0, 0x4000000,
-+			   size, XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_RECLAIM,
-+			   NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);	/* Can't map with reclaim */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, bo, 0, 0x4000000,
-+			   size, XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_RECLAIM,
-+			   NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);	/* Can't map with reclaim */
-+	ret = __xe_vm_bind(fd, vm, async_bind_engine, 0, 0, 0x4000000,
-+			   size, XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_RECLAIM,
-+			   NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);	/* Can't use async with reclaim */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, 0, 0, 0x4000000,
-+			   size, XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_RECLAIM,
-+			   NULL, 0, 0, 0);
-+	igt_assert(!ret);	/* Reclaim memory */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, 0, 0, 0,
-+			   0, XE_VM_BIND_OP_RESTART |
-+			   XE_VM_BIND_FLAG_RECLAIM,
-+			   NULL, 0, 0, 0);
-+	igt_assert(!ret);	/* Exit error state, 2nd & 3rd bind op executed */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, bo, 0, 0,
-+			   0, XE_VM_BIND_OP_UNMAP_ALL |
-+			   XE_VM_BIND_FLAG_RECLAIM,
-+			   NULL, 0, 0, 0);
-+	igt_assert(ret == -EINVAL);	/* Verify not in error state */
-+	ret = __xe_vm_bind(fd, vm, sync_bind_engine, bo, 0, 0,
-+			   0, XE_VM_BIND_OP_UNMAP_ALL,
-+			   NULL, 0, 0, 0);
-+	igt_assert(!ret);	/* Cleanup works */
-+
-+	xe_engine_destroy(fd, async_bind_engine);
-+	xe_engine_destroy(fd, sync_bind_engine);
-+	gem_close(fd, bo);
-+	xe_vm_destroy(fd, vm);
++	gem_close(fd, handle);
 +}
 +
- /**
-  * SUBTEST: userptr-invalid
-  * Description:
-@@ -357,7 +536,6 @@ static void vm_async_ops_err(int fd, bool destroy)
+ static bool supports_needs_cpu_access(int fd)
+ {
+ 	struct drm_i915_gem_memory_class_instance regions[] = {
+@@ -897,6 +936,11 @@ igt_main
+ 	igt_subtest("create-ext-placement-all")
+ 		create_ext_placement_all(fd);
  
- 	for (i = 0; i < N_BINDS; i++) {
- 		sync.handle = syncobjs[i];
--#define INJECT_ERROR	(0x1 << 31)
- 		if ((i == N_BINDS / 8 && destroy) ||
- 		    (!((i + 1) % (N_BINDS / 8)) && !destroy)) { /* Inject error on this bind */
- 			__xe_vm_bind(fd, vm, 0, bo, 0,
-@@ -1847,6 +2025,9 @@ igt_main
- 	igt_subtest("unbind-all-8-vmas")
- 		unbind_all(fd, 8);
- 
-+	igt_subtest("eio")
-+		eio(fd);
++	igt_describe("Create objects with specific cache setting"
++		     " create-ext.");
++	igt_subtest("create-ext-set-pat")
++		    create_ext_set_pat(fd);
 +
- 	igt_subtest("userptr-invalid")
- 		userptr_invalid(fd);
- 
+ 	igt_describe("Verify the basic functionally and expected ABI contract around I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS");
+ 	igt_subtest("create-ext-cpu-access-sanity-check") {
+ 		igt_require(supports_needs_cpu_access(fd));
 -- 
-2.34.1
+2.25.1
