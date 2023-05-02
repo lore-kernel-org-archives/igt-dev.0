@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C35F10E535
- for <igt-dev@lists.freedesktop.org>; Tue,  2 May 2023 12:27:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1AEAF10E36D
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 May 2023 12:27:31 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  2 May 2023 17:56:37 +0530
-Message-Id: <20230502122638.115471-2-swati2.sharma@intel.com>
+Date: Tue,  2 May 2023 17:56:38 +0530
+Message-Id: <20230502122638.115471-3-swati2.sharma@intel.com>
 In-Reply-To: <20230502122638.115471-1-swati2.sharma@intel.com>
 References: <20230502122638.115471-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/2] lib/dsc: Add helpers for VDSC output format
- debugfs entry
+Subject: [igt-dev] [PATCH 2/2] tests/i915/kms_dsc: Enable validation for
+ VDSC output formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,112 +24,392 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Helper functions are added for VDSC output format debugfs entry.
+Existing i-g-t is extended to enable validation for VDSC output
+formats. Output format is selected as per driver policy.For ex:
+If a mode is supported in both RGB and YCbCr420 output formats
+by the sink, i915 driver policy is to try RGB first and fall
+back to YCbCr420, if mode cannot be shown using RGB.
+
+To test DSC output format, a debugfs entry is created to force
+this output format. However, before setting debugfs entry, we
+have checked capability i.e. output format is supported by both
+platform and sink.
+
+Also, each mode doesn't support all output formats; so if both
+sink and platform support an output format, we will do a try
+commit with each mode till we get a successful commit.
+
+v2: -used is_dsc_ycbcr420_supported() (Ankit)
+    -handled try-commit correctly (Ankit)
+    -instead of flag use enum for output formats (Ankit)
+v3: -instead of global count, pass count as para (Ankit)
+    -print output format (Ankit)
+v4: -optimized while loop (Jouni)
+    -used only try commit (Jouni)
+    -fixed get_next_mode() (Jouni)
+v5: -made generic test to validate all output formats (Jani N)
+v6: -fixed assert (Jouni)
+    -if mode == NULL output_format debugfs reset didn't happen, fixed
+v7: -indentation fixes (Kamil)
+v8: -rebase
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Jouni Högander <jouni.hogander@intel.com> (v5)
 Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- lib/igt_dsc.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_dsc.h |  5 +++++
- lib/igt_kms.h |  6 ++++++
- 3 files changed, 60 insertions(+)
+ lib/igt_kms.c               |  18 ++++++
+ lib/igt_kms.h               |   1 +
+ tests/i915/kms_dsc.c        | 118 +++++++++++++++++++++++++++++-------
+ tests/i915/kms_dsc_helper.c |  36 +++++++++++
+ tests/i915/kms_dsc_helper.h |   4 ++
+ 5 files changed, 154 insertions(+), 23 deletions(-)
 
-diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
-index 64dd6b29..9e1ab9b1 100644
---- a/lib/igt_dsc.c
-+++ b/lib/igt_dsc.c
-@@ -134,3 +134,52 @@ int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name)
- 
- 	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index e085e234..c5484148 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -967,6 +967,24 @@ const char *kmstest_scaling_filter_str(int filter)
+ 	return find_type_name(scaling_filter_names, filter);
  }
-+
-+/*
-+ * igt_is_dsc_output_format_supported_by_sink:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ * @output_format: Output format
-+ *
-+ * Returns: True if DSC output format is supported for the given connector,
-+ * false otherwise.
-+ */
-+bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
-+						enum dsc_output_format output_format)
-+{
-+	const char *check_str = "OUTPUTFORMATNOTFOUND";
-+
-+	switch (output_format) {
-+	case DSC_FORMAT_RGB:
-+		check_str = "RGB: yes";
-+		break;
-+	case DSC_FORMAT_YCBCR420:
-+		check_str = "YCBCR420: yes";
-+		break;
-+	case DSC_FORMAT_YCBCR444:
-+		check_str = "YCBCR444: yes";
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return check_dsc_debugfs(drmfd, connector_name, check_str);
-+}
-+
-+/*
-+ * igt_force_dsc_output_format:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ * @output_format: Output format
-+ *
-+ * Returns: 0 on success or negative error code, in case of failure.
-+ */
-+int igt_force_dsc_output_format(int drmfd, char *connector_name,
-+				enum dsc_output_format output_format)
-+{
-+	char buf[20] = {0};
-+
-+	sprintf(buf, "%d", output_format);
-+
-+	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_output_format", buf);
-+}
-diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
-index 291c2cde..9608aad4 100644
---- a/lib/igt_dsc.h
-+++ b/lib/igt_dsc.h
-@@ -7,6 +7,7 @@
- #define IGT_DSC_H
  
- #include "igt_fb.h"
-+#include "igt_kms.h"
- 
- bool igt_is_dsc_supported(int drmfd, char *connector_name);
- bool igt_is_fec_supported(int drmfd, char *connector_name);
-@@ -15,5 +16,9 @@ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
- int igt_force_dsc_enable(int drmfd, char *connector_name);
- int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc);
- int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
-+bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
-+						enum dsc_output_format output_format);
-+int igt_force_dsc_output_format(int drmfd, char *connector_name,
-+				enum dsc_output_format output_format);
- 
- #endif
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 483b4165..41e041b6 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -108,6 +108,12 @@ enum igt_custom_edid_type {
-  */
- #define kmstest_port_name(port) ((port) + 'A')
- 
-+enum dsc_output_format {
-+	DSC_FORMAT_RGB = 0,
-+	DSC_FORMAT_YCBCR420,
-+	DSC_FORMAT_YCBCR444,
++static const struct type_name dsc_output_format_names[] = {
++	{ DSC_FORMAT_RGB, "RGB" },
++	{ DSC_FORMAT_YCBCR420, "YCBCR420" },
++	{ DSC_FORMAT_YCBCR444, "YCBCR444" },
++	{}
 +};
 +
- const char *kmstest_encoder_type_str(int type);
++/**
++ * kmstest_dsc_output_format_str:
++ * @output_format: DSC_FORMAT_* output format value
++ *
++ * Returns: A string representing the output format @output format.
++ */
++const char *kmstest_dsc_output_format_str(int output_format)
++{
++	return find_type_name(dsc_output_format_names, output_format);
++}
++
+ static const struct type_name connector_type_names[] = {
+ 	{ DRM_MODE_CONNECTOR_Unknown, "Unknown" },
+ 	{ DRM_MODE_CONNECTOR_VGA, "VGA" },
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 41e041b6..1b6988c1 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -118,6 +118,7 @@ const char *kmstest_encoder_type_str(int type);
  const char *kmstest_connector_status_str(int status);
  const char *kmstest_connector_type_str(int type);
+ const char *kmstest_scaling_filter_str(int filter);
++const char *kmstest_dsc_output_format_str(int output_format);
+ 
+ void kmstest_dump_mode(drmModeModeInfo *mode);
+ #define MAX_HDISPLAY_PER_PIPE 5120
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index c4dfc925..035efb5b 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -36,7 +36,8 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
+ enum dsc_test_type {
+ 	TEST_DSC_BASIC,
+-	TEST_DSC_BPC
++	TEST_DSC_BPC,
++	TEST_DSC_OUTPUT_FORMAT,
+ };
+ 
+ typedef struct {
+@@ -44,6 +45,7 @@ typedef struct {
+ 	uint32_t devid;
+ 	igt_display_t display;
+ 	struct igt_fb fb_test_pattern;
++	enum dsc_output_format output_format;
+ 	unsigned int plane_format;
+ 	igt_output_t *output;
+ 	int input_bpc;
+@@ -51,7 +53,8 @@ typedef struct {
+ 	enum pipe pipe;
+ } data_t;
+ 
+-static int format_list[] =  {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
++static int output_format_list[] = {DSC_FORMAT_YCBCR420, DSC_FORMAT_YCBCR444};
++static int format_list[] = {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
+ static uint32_t bpc_list[] = {12, 10, 8};
+ 
+ static inline void manual(const char *expected)
+@@ -71,6 +74,17 @@ static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+ 	return highest_mode;
+ }
+ 
++static drmModeModeInfo *get_next_mode(igt_output_t *output, int index)
++{
++	drmModeConnector *connector = output->config.connector;
++	drmModeModeInfo *next_mode = NULL;
++
++	if (index < connector->count_modes)
++		next_mode = &connector->modes[index];
++
++	return next_mode;
++}
++
+ static bool pipe_output_combo_valid(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+@@ -91,6 +105,17 @@ static bool pipe_output_combo_valid(data_t *data)
+ 	return ret;
+ }
+ 
++static void test_reset(data_t *data)
++{
++	igt_debug("Reset input BPC\n");
++	data->input_bpc = 0;
++	force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
++
++	igt_debug("Reset DSC output format\n");
++	data->output_format = DSC_FORMAT_RGB;
++	force_dsc_output_format(data->drm_fd, data->output, data->output_format);
++}
++
+ static void test_cleanup(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+@@ -106,7 +131,9 @@ static void test_cleanup(data_t *data)
+ /* re-probe connectors and do a modeset with DSC */
+ static void update_display(data_t *data, enum dsc_test_type test_type)
+ {
++	int ret;
+ 	bool enabled;
++	int index = 0;
+ 	igt_plane_t *primary;
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output = data->output;
+@@ -125,26 +152,48 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 		force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
+ 	}
+ 
+-	igt_output_set_pipe(output, data->pipe);
+-
+-	mode = get_highres_mode(output);
+-	igt_require(mode != NULL);
+-	igt_output_override_mode(output, mode);
++	if (test_type == TEST_DSC_OUTPUT_FORMAT) {
++		igt_debug("Trying to set DSC %s output format\n",
++			   kmstest_dsc_output_format_str(data->output_format));
++		force_dsc_output_format(data->drm_fd, data->output, data->output_format);
++	}
+ 
++	igt_output_set_pipe(output, data->pipe);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+ 	igt_skip_on(!igt_plane_has_format_mod(primary, data->plane_format,
+ 		    DRM_FORMAT_MOD_LINEAR));
+ 
+-	igt_create_pattern_fb(data->drm_fd,
+-			      mode->hdisplay,
+-			      mode->vdisplay,
+-			      data->plane_format,
+-			      DRM_FORMAT_MOD_LINEAR,
+-			      &data->fb_test_pattern);
++	do {
++		if (data->output_format == DSC_FORMAT_RGB) {
++			mode = get_highres_mode(output);
++		} else {
++			mode = get_next_mode(output, index);
++			index++;
++		}
++
++		if (mode == NULL)
++			goto reset;
+ 
+-	igt_plane_set_fb(primary, &data->fb_test_pattern);
+-	igt_display_commit(display);
++		igt_output_override_mode(output, mode);
++
++		igt_create_pattern_fb(data->drm_fd,
++				      mode->hdisplay,
++				      mode->vdisplay,
++				      data->plane_format,
++				      DRM_FORMAT_MOD_LINEAR,
++				      &data->fb_test_pattern);
++		igt_plane_set_fb(primary, &data->fb_test_pattern);
++
++		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		if (data->output_format == DSC_FORMAT_RGB || ret == 0)
++			break;
++
++		igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
++	} while (1);
++
++	if (ret != 0)
++		goto reset;
+ 
+ 	/* until we have CRC check support, manually check if RGB test
+ 	 * pattern has no corruption.
+@@ -159,20 +208,22 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 				enabled ? "ON" : "OFF");
+ 
+ 	restore_force_dsc_en();
+-	igt_debug("Reset compression BPC\n");
+-	data->input_bpc = 0;
+-	force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
+ 
+ 	igt_assert_f(enabled,
+ 		     "Default DSC enable failed on connector: %s pipe: %s\n",
+ 		     output->name,
+ 		     kmstest_pipe_name(data->pipe));
+ 
++reset:
++	test_reset(data);
++
+ 	test_cleanup(data);
++	igt_skip_on(mode == NULL);
++	igt_assert_eq(ret, 0);
+ }
+ 
+ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+-		     unsigned int plane_format)
++		     unsigned int plane_format, enum dsc_output_format output_format)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+@@ -180,6 +231,7 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 	enum pipe pipe;
+ 
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
++		data->output_format = output_format;
+ 		data->plane_format = plane_format;
+ 		data->input_bpc = bpc;
+ 		data->output = output;
+@@ -188,6 +240,10 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 		if (!check_dsc_on_connector(data->drm_fd, data->output))
+ 			continue;
+ 
++		if (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
++						    data->output, data->output_format))
++			continue;
++
+ 		if (!check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
+ 			continue;
+ 
+@@ -199,6 +255,9 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 
+ 		if (test_type == TEST_DSC_BPC)
+ 			snprintf(name, sizeof(name), "-%dbpc-%s", data->input_bpc, igt_format_str(data->plane_format));
++		else if (test_type == TEST_DSC_OUTPUT_FORMAT)
++			snprintf(name, sizeof(name), "-%s-%s", kmstest_dsc_output_format_str(data->output_format),
++							       igt_format_str(data->plane_format));
+ 		else
+ 			snprintf(name, sizeof(name), "-%s", igt_format_str(data->plane_format));
+ 
+@@ -226,14 +285,16 @@ igt_main
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters");
+ 	igt_subtest_with_dynamic("dsc-basic")
+-			test_dsc(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
++			test_dsc(&data, TEST_DSC_BASIC, 0,
++				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
+ 
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters and creating fb with diff formats");
+ 	igt_subtest_with_dynamic("dsc-with-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+-			test_dsc(&data, TEST_DSC_BASIC, 0, format_list[k]);
++			test_dsc(&data, TEST_DSC_BASIC, 0,
++				 format_list[k], DSC_FORMAT_RGB);
+ 	}
+ 
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -241,7 +302,8 @@ igt_main
+ 		     "with certain input BPC for the connector");
+ 	igt_subtest_with_dynamic("dsc-with-bpc") {
+ 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+-			test_dsc(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
++			test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
++				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
+ 	}
+ 
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -250,11 +312,21 @@ igt_main
+ 	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+ 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+ 			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+-				test_dsc(&data, TEST_DSC_BPC, bpc_list[j], format_list[k]);
++				test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
++				format_list[k], DSC_FORMAT_RGB);
+ 			}
+ 		}
+ 	}
+ 
++	igt_describe("Tests basic display stream compression functionality if supported "
++		     "by a connector by forcing DSC and output format on all connectors "
++		     "that support it");
++	igt_subtest_with_dynamic("dsc-with-output-formats") {
++		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
++			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, 0, DRM_FORMAT_XRGB8888,
++				 output_format_list[k]);
++	}
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		close(data.drm_fd);
+diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
+index e2c278c7..02d1a484 100644
+--- a/tests/i915/kms_dsc_helper.c
++++ b/tests/i915/kms_dsc_helper.c
+@@ -97,3 +97,39 @@ bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc)
+ 
+ 	return true;
+ }
++
++void force_dsc_output_format(int drmfd, igt_output_t *output,
++			     enum dsc_output_format output_format)
++{
++	int ret;
++
++	igt_debug("Forcing DSC %s output format on %s\n",
++		  kmstest_dsc_output_format_str(output_format), output->name);
++	ret = igt_force_dsc_output_format(drmfd, output->name, output_format);
++	igt_assert_f(ret == 0, "forcing dsc output format debugfs_write failed\n");
++}
++
++/* YCbCr420 DSC is supported on display version 14+ with DSC1.2a */
++static bool is_dsc_output_format_supported_by_platform(int disp_ver, enum dsc_output_format output_format)
++{
++	if (disp_ver < 14 && output_format == DSC_FORMAT_YCBCR420) {
++		igt_debug("Output format DSC YCBCR420 not supported on D13 and older platforms\n");
++		return false;
++	}
++
++	return true;
++}
++
++bool is_dsc_output_format_supported(int drmfd, int disp_ver, igt_output_t *output,
++				    enum dsc_output_format output_format)
++{
++	if (!(igt_is_dsc_output_format_supported_by_sink(drmfd, output->name, output_format)) &&
++	     (is_dsc_output_format_supported_by_platform(disp_ver, output_format))) {
++		    igt_debug("DSC %s output format not supported on connector %s\n",
++			       kmstest_dsc_output_format_str(output_format),
++			       output->name);
++			return false;
++		}
++
++	return true;
++}
+diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
+index b3828dcd..198f5afa 100644
+--- a/tests/i915/kms_dsc_helper.h
++++ b/tests/i915/kms_dsc_helper.h
+@@ -29,5 +29,9 @@ void kms_dsc_exit_handler(int sig);
+ bool check_dsc_on_connector(int drmfd, igt_output_t *output);
+ bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe);
+ bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc);
++void force_dsc_output_format(int drmfd, igt_output_t *output,
++			     enum dsc_output_format output_format);
++bool is_dsc_output_format_supported(int disp_ver, int drmfd, igt_output_t *output,
++				    enum dsc_output_format output_format);
+ 
+ #endif
 -- 
 2.25.1
