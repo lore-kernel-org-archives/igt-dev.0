@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5377410E327
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 13:08:29 +0000 (UTC)
-Date: Mon, 22 May 2023 15:07:48 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230522130748.fqeqvuc4y5zukosc@kamilkon-desk1>
-References: <20230522071230.2494402-1-mauro.chehab@linux.intel.com>
- <20230522071230.2494402-7-mauro.chehab@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADD9610E1F8
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 May 2023 08:44:09 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Wed,  3 May 2023 14:09:06 +0530
+Message-Id: <20230503083907.2794598-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230503083907.2794598-1-bhanuprakash.modem@intel.com>
+References: <20230503083907.2794598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230522071230.2494402-7-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 6/6] i915/: better document the
- remaining i915 tests
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t 1/2] tests: New dir structure for intel specific
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,1991 +20,1414 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com, mchehab@kernel.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+In-order to organize tests, move all intel specific tests to
+a new directory "tests/intel".
 
-On 2023-05-22 at 09:12:30 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Merge data from some ancillary internal documentation to improve
-> i915 test descriptions.
-> 
-> This patch was auto-generated via script.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  tests/i915/api_intel_allocator.c         | 23 ++++++-
->  tests/i915/api_intel_bb.c                | 33 +++++++++-
->  tests/i915/gem_barrier_race.c            |  1 +
->  tests/i915/gem_basic.c                   |  7 +++
->  tests/i915/gem_blits.c                   |  4 ++
->  tests/i915/gem_busy.c                    |  7 +++
->  tests/i915/gem_caching.c                 |  4 ++
->  tests/i915/gem_close.c                   |  4 ++
->  tests/i915/gem_close_race.c              |  7 +++
->  tests/i915/gem_create.c                  | 41 ++++++++++++-
->  tests/i915/gem_cs_tlb.c                  |  4 ++
->  tests/i915/gem_eio.c                     | 60 ++++++++++++++++++-
->  tests/i915/gem_exercise_blt.c            |  9 ++-
->  tests/i915/gem_flink_basic.c             | 14 ++++-
->  tests/i915/gem_flink_race.c              |  4 ++
->  tests/i915/gem_gpgpu_fill.c              |  4 ++
->  tests/i915/gem_linear_blits.c            |  6 ++
->  tests/i915/gem_lmem_evict.c              |  1 +
->  tests/i915/gem_lmem_swapping.c           |  4 ++
->  tests/i915/gem_madvise.c                 |  4 ++
->  tests/i915/gem_mmap_offset.c             |  4 ++
->  tests/i915/gem_pipe_control_store_loop.c |  4 ++
->  tests/i915/gem_ppgtt.c                   |  6 ++
->  tests/i915/gem_request_retire.c          |  4 ++
->  tests/i915/gem_ringfill.c                |  8 +++
->  tests/i915/gem_shrink.c                  |  4 ++
->  tests/i915/gem_softpin.c                 | 69 ++++++++++++++++++++-
->  tests/i915/gem_spin_batch.c              | 37 ++++++++++++
->  tests/i915/gem_sync.c                    | 14 +++++
->  tests/i915/gem_unref_active_buffers.c    |  4 ++
->  tests/i915/gem_userptr_blits.c           | 76 ++++++++++++++++++++++++
->  tests/i915/gem_vm_create.c               |  4 ++
->  tests/i915/gem_wait.c                    |  4 ++
->  tests/i915/gem_workarounds.c             | 20 +++++++
->  tests/i915/i915_getparams_basic.c        |  4 ++
->  tests/i915/i915_hangman.c                | 40 ++++++++++---
->  tests/i915/i915_hwmon.c                  |  1 +
->  tests/i915/i915_module_load.c            |  4 ++
->  tests/i915/i915_pciid.c                  |  4 ++
->  tests/i915/i915_pm_rpm.c                 |  2 +
->  tests/i915/i915_pm_rps.c                 |  4 ++
->  tests/i915/i915_power.c                  |  1 +
->  tests/i915/i915_query.c                  |  4 ++
->  tests/i915/i915_suspend.c                |  5 ++
->  tests/i915/sysfs_defaults.c              |  4 ++
->  tests/i915/sysfs_heartbeat_interval.c    |  6 ++
->  tests/i915/sysfs_preempt_timeout.c       |  4 ++
->  tests/i915/sysfs_timeslice_duration.c    |  5 ++
->  48 files changed, 568 insertions(+), 19 deletions(-)
-> 
-> diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
-> index 3962231ebcc7..7759032b75db 100644
-> --- a/tests/i915/api_intel_allocator.c
-> +++ b/tests/i915/api_intel_allocator.c
-> @@ -11,44 +11,65 @@
->  #include "intel_allocator.h"
->  /**
->   * TEST: api intel allocator
-> + * Category: Infrastructure
->   * Feature: igt_core
-> + * Functionality: virtual address ranges
->   * Run type: FULL
-> + * Sub-category: IGT Lib
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: alloc-simple
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: default-alignment
->   * Description:
->   *   For simple allocator check does default alignment is properly handled in open and alloc
->   *   functions
-> + *   checking the virtual address ranges
->   *
->   * SUBTEST: execbuf-with-allocator
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: fork-simple-once
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: fork-simple-stress
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: fork-simple-stress-signal
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: gem-pool
-> - * Description: Verifies creating and executing bb from gem pool
-> + * Description:
-> + *   Verifies creating and executing bb from gem pool
-> + *   checking the virtual address ranges
->   *
->   * SUBTEST: open-vm
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: reloc-allocator
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: reopen
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: reopen-fork
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: reserve-simple
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: simple-allocator
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: standalone
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: two-level-inception
-> + * Description: checking the virtual address ranges
->   *
->   * SUBTEST: two-level-inception-interruptible
-> + * Description: checking the virtual address ranges
->   */
->  
->  #define OBJ_SIZE 1024
-> diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
-> index 198a29eb4f26..09d90199ef4a 100644
-> --- a/tests/i915/api_intel_bb.c
-> +++ b/tests/i915/api_intel_bb.c
-> @@ -43,66 +43,95 @@
->  #include "i915/i915_blt.h"
->  /**
->   * TEST: api intel bb
-> + * Category: Infrastructure
->   * Description: intel_bb API check.
->   * Feature: igt_core
-> + * Functionality: dummy buffer creation & submission
->   * Run type: FULL
-> + * Sub-category: IGT Lib
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: add-remove-objects
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: bb-with-allocator
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: blit-noreloc-keep-cache
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: blit-noreloc-purge-cache
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: blit-reloc-keep-cache
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: blit-reloc-purge-cache
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: crc32
->   * Description: Compare cpu and gpu crc32 sums on input object
->   *
->   * SUBTEST: delta-check
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: destroy-bb
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: full-batch
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: intel-bb-blit-none
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: intel-bb-blit-x
->   *
->   * SUBTEST: intel-bb-blit-y
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: lot-of-buffers
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: misplaced-blitter
-> - * Description: Execute intel_bb with set of engines provided by userspace
-> + * Description:
-> + *   Execute intel_bb with set of engines provided by userspace
-> + *   checking dummy buffer creation & submission
->   *
->   * SUBTEST: object-noreloc-keep-cache-simple
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: object-noreloc-purge-cache-simple
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: object-reloc-keep-cache
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: object-reloc-purge-cache
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: offset-control
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: purge-bb
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: render
->   *
->   * SUBTEST: render-ccs
->   *
->   * SUBTEST: reset-bb
-> - * Description: Ensure reset is possible on fresh bb
-> + * Description:
-> + *   Ensure reset is possible on fresh bb
-> + *   checking dummy buffer creation & submission
->   *
->   * SUBTEST: reset-flags
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: simple-bb
-> + * Description: checking dummy buffer creation & submission
->   *
->   * SUBTEST: simple-bb-ctx
-> + * Description: checking dummy buffer creation & submission
->   */
->  
->  #define PAGE_SIZE 4096
-> diff --git a/tests/i915/gem_barrier_race.c b/tests/i915/gem_barrier_race.c
-> index ec8ebaa63611..be71d20e7f24 100644
-> --- a/tests/i915/gem_barrier_race.c
-> +++ b/tests/i915/gem_barrier_race.c
-> @@ -22,6 +22,7 @@
->   * Description: Exercise engine barriers and their interaction with other subsystems
->   * Feature: core
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: remote-request
->   * Description:
-> diff --git a/tests/i915/gem_basic.c b/tests/i915/gem_basic.c
-> index 8605429799aa..8df581bb3e48 100644
-> --- a/tests/i915/gem_basic.c
-> +++ b/tests/i915/gem_basic.c
-> @@ -43,27 +43,34 @@
->  #include "lib/igt_device_scan.h"
->  /**
->   * TEST: gem basic
-> + * Category: Infrastructure
->   * Description: Tests basic gem_create and gem_close IOCTLs
-> + * Functionality: driver handler
-> + * Sub-category: i915
->   *
->   * SUBTEST: bad-close
->   * Description: Verify that gem_close fails with bad params.
->   * Feature: gem_core
->   * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: create-close
->   * Description: Verify basic functionality of gem_create and gem_close.
->   * Feature: gem_core
->   * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: create-fd-close
->   * Description: Verify that closing drm driver is possible with opened gem object.
->   * Feature: gem_core
->   * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: multigpu-create-close
->   * Description: Verify basic functionality of gem_create and gem_close on multi-GPU.
->   * Feature: gem_core, multigpu
->   * Run type: FULL
-> + * Test category: MultiGPU
->   */
->  
->  IGT_TEST_DESCRIPTION("Tests basic gem_create and gem_close IOCTLs");
-> diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
-> index acc1adc165f3..681fe046665b 100644
-> --- a/tests/i915/gem_blits.c
-> +++ b/tests/i915/gem_blits.c
-> @@ -30,8 +30,12 @@
->  #include "i915/i915_blt.h"
->  /**
->   * TEST: gem blits
-> + * Category: Infrastructure
->   * Feature: blitter
-> + * Functionality: command streamer
->   * Run type: FULL
-> + * Sub-category: HW
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic
->   */
-> diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
-> index 38d66f8f292a..34f6c5984b0b 100644
-> --- a/tests/i915/gem_busy.c
-> +++ b/tests/i915/gem_busy.c
-> @@ -32,19 +32,25 @@
->  #include "igt_vgem.h"
->  /**
->   * TEST: gem busy
-> + * Category: Desktop client
->   * Description: Basic check of busy-ioctl ABI.
->   * Feature: cmd_submission
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: busy
->   * Description: Basic test to check busyness of each engine.
-> + * Functionality: semaphore
->   * Run type: FULL
->   *
->   * SUBTEST: close-race
->   * Description: Test to check race condition by randomly closing the handle using gem_close.
-> + * Functionality: semaphore
->   * Run type: FULL
->   *
->   * SUBTEST: extended
->   * Description: Extended test to check busyness of dwstore-capable engines.
-> + * Functionality: semaphore
->   * Run type: FULL
->   *
->   * SUBTEST: hang
-> @@ -61,6 +67,7 @@
->   * Description:
->   *   Extended test to check busyness of dwstore-capable engines while doing parallel
->   *   execution.
-> + * Functionality: semaphore
->   * Run type: FULL
->   *
->   * SUBTEST: semaphore
-> diff --git a/tests/i915/gem_caching.c b/tests/i915/gem_caching.c
-> index d24e6cce059b..7af427d7e48c 100644
-> --- a/tests/i915/gem_caching.c
-> +++ b/tests/i915/gem_caching.c
-> @@ -42,9 +42,13 @@
->  #include "i915/i915_blt.h"
->  /**
->   * TEST: gem caching
-> + * Category: Desktop client
->   * Description: Test snoop consistency when touching partial cachelines.
->   * Feature: caching
-> + * Functionality: data coherency
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: read-writes
->   *
-> diff --git a/tests/i915/gem_close.c b/tests/i915/gem_close.c
-> index 212fd8e9062a..20aff600d595 100644
-> --- a/tests/i915/gem_close.c
-> +++ b/tests/i915/gem_close.c
-> @@ -27,8 +27,12 @@
->  #include "igt_types.h"
->  /**
->   * TEST: gem close
-> + * Category: Infrastructure
->   * Feature: mapping
-> + * Functionality: driver handler
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic
->   *
-> diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
-> index 802fa3abbe6a..e02cea17ccad 100644
-> --- a/tests/i915/gem_close_race.c
-> +++ b/tests/i915/gem_close_race.c
-> @@ -50,12 +50,16 @@
->  #include "igt_device_scan.h"
->  /**
->   * TEST: gem close race
-> + * Category: Infrastructure
->   * Description: Test try to race gem_close against workload submission.
-> + * Functionality: driver handler
-> + * Sub-category: i915
->   *
->   * SUBTEST: basic-process
->   * Description: Basic workload submission.
->   * Feature: synchronization
->   * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic-threads
->   * Description:
-> @@ -63,6 +67,7 @@
->   *   continuous workload with minimum timeout.
->   * Feature: synchronization
->   * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: contexts
->   * Description:
-> @@ -82,11 +87,13 @@
->   * Description: Basic workload submission on multi-GPU machine.
->   * Feature: multigpu, synchronization
->   * Run type: FULL
-> + * Test category: MultiGPU
->   *
->   * SUBTEST: multigpu-basic-threads
->   * Description: Run basic-threads race on multi-GPU machine.
->   * Feature: multigpu, synchronization
->   * Run type: FULL
-> + * Test category: MultiGPU
->   *
->   * SUBTEST: process-exit
->   * Description: Test try to race gem_close against submission of continuous workload.
-> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-> index fc99189499b8..ed79031f59de 100644
-> --- a/tests/i915/gem_create.c
-> +++ b/tests/i915/gem_create.c
-> @@ -67,50 +67,89 @@
->   * Description:
->   *   Ensure that basic gem_create and gem_create_ext works and that invalid input combinations
->   *   are rejected.
-> - * Feature: mapping
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: busy-create
-> + * Category: Infrastructure
->   * Description: Create buffer objects while GPU is busy.
-> + * Feature: mapping
-> + * Functionality: buffer management
-> + * Sub-category: i915
->   *
->   * SUBTEST: create-clear
-> + * Category: Infrastructure
->   * Description: Verify that all new objects are clear.
-> + * Feature: mapping
-> + * Functionality: buffer management
-> + * Sub-category: i915
->   *
->   * SUBTEST: create-ext-cpu-access-big
->   * Description:
->   *   Verify the extreme cases with very large objects and.
->   *   I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS
-> + * Feature: mapping
->   *
->   * SUBTEST: create-ext-cpu-access-sanity-check
->   * Description:
->   *   Verify the basic functionally and expected ABI contract around.
->   *   I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS
-> + * Feature: mapping
->   *
->   * SUBTEST: create-ext-placement-all
-> + * Category: Infrastructure
->   * Description: Create objects in every memory region using create_ext.
-> + * Feature: mapping
-> + * Functionality: buffer management
-> + * Sub-category: i915
->   *
->   * SUBTEST: create-ext-placement-each
-> + * Category: Infrastructure
->   * Description: Create one object with memory pieces in each memory region using create_ext.
-> + * Feature: mapping
-> + * Functionality: buffer management
-> + * Sub-category: i915
->   *
->   * SUBTEST: create-ext-placement-sanity-check
-> + * Category: Infrastructure
->   * Description: Exercise create_ext placements extension.
-> + * Feature: mapping
-> + * Functionality: buffer management
-> + * Sub-category: i915
->   *
->   * SUBTEST: create-invalid-size
-> + * Category: Infrastructure
->   * Description: Try to create a gem object of invalid size 0 and check if ioctl returns error.
-> + * Feature: mapping
-> + * Functionality: buffer management
-> + * Sub-category: i915
->   *
->   * SUBTEST: create-massive
-> + * Category: Infrastructure
->   * Description: Exercise creation of buffer object with impossible size and check for the expected error.
-> + * Feature: mapping
-> + * Functionality: buffer management
-> + * Sub-category: i915
->   *
->   * SUBTEST: create-size-update
-> + * Category: Infrastructure
->   * Description: Try to create a gem object with size 15 and check actual created size.
-> + * Feature: mapping
-> + * Functionality: buffer management
-> + * Sub-category: i915
->   *
->   * SUBTEST: create-valid-nonaligned
-> + * Category: Infrastructure
->   * Description:
->   *   Try to create an object with non-aligned size, check we got one with size aligned up to page
->   *   size and test we can write into the padded extra memory.
-> + * Feature: mapping
-> + * Functionality: buffer management
-> + * Sub-category: i915
->   *
->   * SUBTEST: hog-create
->   * Description: Create buffer objects while GPU is busy.
-> + * Feature: mapping
->   */
->  
->  IGT_TEST_DESCRIPTION("Ensure that basic gem_create and gem_create_ext works"
-> diff --git a/tests/i915/gem_cs_tlb.c b/tests/i915/gem_cs_tlb.c
-> index ab09efa251b3..3f285f42c1ac 100644
-> --- a/tests/i915/gem_cs_tlb.c
-> +++ b/tests/i915/gem_cs_tlb.c
-> @@ -54,9 +54,13 @@
->  #include "igt.h"
->  /**
->   * TEST: gem cs tlb
-> + * Category: Infrastructure
->   * Description: Check whether we correctly invalidate the cs tlb.
->   * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: engines
->   */
-> diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-> index 4aef96d18e8c..241dbd828a2f 100644
-> --- a/tests/i915/gem_eio.c
-> +++ b/tests/i915/gem_eio.c
-> @@ -54,96 +54,152 @@
->  #include "sw_sync.h"
->  /**
->   * TEST: gem eio
-> + * Category: Infrastructure
->   * Description: Test that specific ioctls report a wedged GPU (EIO).
->   * Run type: FULL
-> + * Sub-category: i915
->   *
->   * SUBTEST: banned
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: context-create
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: create
->   * Description: Validate i915_gem_create_ioctl, while gpu is wedged for fb scanout.
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: create-ext
->   * Description:
->   *   Validate i915_gem_create_ext_ioctl and checks if returns clear backing store while gpu is
->   *   wedged for fb scanout.
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: execbuf
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: hibernate
-> - * Feature: hibernate, reset
-> + * Feature: hibernate, reset, suspend
-> + * Functionality: Test that specific ioctls report a wedged GPU (EIO) during suspend
--------------------- ^
-rather: wedged GPU detection during suspend
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ docs/testplan/meson.build                     |  2 +-
+ tests/{i915 => intel}/api_intel_allocator.c   |  0
+ tests/{i915 => intel}/api_intel_bb.c          |  0
+ tests/{i915 => intel}/drm_fdinfo.c            |  0
+ tests/{i915 => intel}/gem_bad_reloc.c         |  0
+ tests/{i915 => intel}/gem_barrier_race.c      |  0
+ tests/{i915 => intel}/gem_basic.c             |  0
+ tests/{i915 => intel}/gem_blits.c             |  0
+ tests/{i915 => intel}/gem_busy.c              |  0
+ tests/{i915 => intel}/gem_caching.c           |  0
+ tests/{i915 => intel}/gem_ccs.c               |  0
+ tests/{i915 => intel}/gem_close.c             |  0
+ tests/{i915 => intel}/gem_close_race.c        |  0
+ tests/{i915 => intel}/gem_concurrent_all.c    |  0
+ tests/{i915 => intel}/gem_concurrent_blit.c   |  0
+ tests/{i915 => intel}/gem_create.c            |  0
+ tests/{i915 => intel}/gem_cs_tlb.c            |  0
+ tests/{i915 => intel}/gem_ctx_bad_destroy.c   |  0
+ tests/{i915 => intel}/gem_ctx_create.c        |  0
+ tests/{i915 => intel}/gem_ctx_engines.c       |  0
+ tests/{i915 => intel}/gem_ctx_exec.c          |  0
+ tests/{i915 => intel}/gem_ctx_freq.c          |  0
+ tests/{i915 => intel}/gem_ctx_isolation.c     |  0
+ tests/{i915 => intel}/gem_ctx_param.c         |  0
+ tests/{i915 => intel}/gem_ctx_persistence.c   |  0
+ tests/{i915 => intel}/gem_ctx_shared.c        |  0
+ tests/{i915 => intel}/gem_ctx_sseu.c          |  0
+ tests/{i915 => intel}/gem_ctx_switch.c        |  0
+ tests/{i915 => intel}/gem_eio.c               |  0
+ tests/{i915 => intel}/gem_evict_alignment.c   |  0
+ tests/{i915 => intel}/gem_evict_everything.c  |  0
+ tests/{i915 => intel}/gem_exec_alignment.c    |  0
+ tests/{i915 => intel}/gem_exec_async.c        |  0
+ tests/{i915 => intel}/gem_exec_await.c        |  0
+ tests/{i915 => intel}/gem_exec_balancer.c     |  0
+ tests/{i915 => intel}/gem_exec_basic.c        |  0
+ tests/{i915 => intel}/gem_exec_big.c          |  0
+ tests/{i915 => intel}/gem_exec_capture.c      |  0
+ tests/{i915 => intel}/gem_exec_create.c       |  0
+ tests/{i915 => intel}/gem_exec_endless.c      |  0
+ tests/{i915 => intel}/gem_exec_fair.c         |  0
+ tests/{i915 => intel}/gem_exec_fence.c        |  0
+ tests/{i915 => intel}/gem_exec_flush.c        |  0
+ tests/{i915 => intel}/gem_exec_gttfill.c      |  0
+ tests/{i915 => intel}/gem_exec_latency.c      |  0
+ tests/{i915 => intel}/gem_exec_lut_handle.c   |  0
+ tests/{i915 => intel}/gem_exec_nop.c          |  0
+ tests/{i915 => intel}/gem_exec_parallel.c     |  0
+ tests/{i915 => intel}/gem_exec_params.c       |  0
+ tests/{i915 => intel}/gem_exec_reloc.c        |  0
+ tests/{i915 => intel}/gem_exec_schedule.c     |  0
+ tests/{i915 => intel}/gem_exec_store.c        |  0
+ tests/{i915 => intel}/gem_exec_suspend.c      |  0
+ tests/{i915 => intel}/gem_exec_whisper.c      |  0
+ tests/{i915 => intel}/gem_exercise_blt.c      |  0
+ tests/{i915 => intel}/gem_fd_exhaustion.c     |  0
+ tests/{i915 => intel}/gem_fence_thrash.c      |  0
+ tests/{i915 => intel}/gem_fence_upload.c      |  0
+ .../{i915 => intel}/gem_fenced_exec_thrash.c  |  0
+ tests/{i915 => intel}/gem_flink_basic.c       |  0
+ tests/{i915 => intel}/gem_flink_race.c        |  0
+ tests/{i915 => intel}/gem_gpgpu_fill.c        |  0
+ tests/{i915 => intel}/gem_gtt_cpu_tlb.c       |  0
+ tests/{i915 => intel}/gem_gtt_hog.c           |  0
+ tests/{i915 => intel}/gem_gtt_speed.c         |  0
+ tests/{i915 => intel}/gem_huc_copy.c          |  0
+ tests/{i915 => intel}/gem_linear_blits.c      |  0
+ tests/{i915 => intel}/gem_lmem_evict.c        |  0
+ tests/{i915 => intel}/gem_lmem_swapping.c     |  0
+ tests/{i915 => intel}/gem_lut_handle.c        |  0
+ tests/{i915 => intel}/gem_madvise.c           |  0
+ tests/{i915 => intel}/gem_media_fill.c        |  0
+ tests/{i915 => intel}/gem_media_vme.c         |  0
+ tests/{i915 => intel}/gem_mmap.c              |  0
+ tests/{i915 => intel}/gem_mmap_gtt.c          |  0
+ tests/{i915 => intel}/gem_mmap_offset.c       |  0
+ tests/{i915 => intel}/gem_mmap_wc.c           |  0
+ .../gem_partial_pwrite_pread.c                |  0
+ .../gem_pipe_control_store_loop.c             |  0
+ tests/{i915 => intel}/gem_ppgtt.c             |  0
+ tests/{i915 => intel}/gem_pread.c             |  0
+ tests/{i915 => intel}/gem_pread_after_blit.c  |  0
+ tests/{i915 => intel}/gem_pwrite.c            |  0
+ tests/{i915 => intel}/gem_pwrite_snooped.c    |  0
+ tests/{i915 => intel}/gem_pxp.c               |  0
+ tests/{i915 => intel}/gem_read_read_speed.c   |  0
+ tests/{i915 => intel}/gem_readwrite.c         |  0
+ tests/{i915 => intel}/gem_reg_read.c          |  0
+ tests/{i915 => intel}/gem_render_copy.c       |  0
+ tests/{i915 => intel}/gem_render_copy_redux.c |  0
+ .../{i915 => intel}/gem_render_linear_blits.c |  0
+ .../{i915 => intel}/gem_render_tiled_blits.c  |  0
+ tests/{i915 => intel}/gem_request_retire.c    |  0
+ tests/{i915 => intel}/gem_reset_stats.c       |  0
+ tests/{i915 => intel}/gem_ringfill.c          |  0
+ tests/{i915 => intel}/gem_set_tiling_vs_blt.c |  0
+ tests/{i915 => intel}/gem_set_tiling_vs_gtt.c |  0
+ .../gem_set_tiling_vs_pwrite.c                |  0
+ tests/{i915 => intel}/gem_shrink.c            |  0
+ tests/{i915 => intel}/gem_softpin.c           |  0
+ tests/{i915 => intel}/gem_spin_batch.c        |  0
+ tests/{i915 => intel}/gem_streaming_writes.c  |  0
+ tests/{i915 => intel}/gem_stress.c            |  0
+ tests/{i915 => intel}/gem_sync.c              |  0
+ tests/{i915 => intel}/gem_tiled_blits.c       |  0
+ tests/{i915 => intel}/gem_tiled_fence_blits.c |  0
+ .../gem_tiled_partial_pwrite_pread.c          |  0
+ tests/{i915 => intel}/gem_tiled_pread_basic.c |  0
+ .../{i915 => intel}/gem_tiled_pread_pwrite.c  |  0
+ tests/{i915 => intel}/gem_tiled_swapping.c    |  0
+ tests/{i915 => intel}/gem_tiled_wb.c          |  0
+ tests/{i915 => intel}/gem_tiled_wc.c          |  0
+ tests/{i915 => intel}/gem_tiling_max_stride.c |  0
+ .../gem_unfence_active_buffers.c              |  0
+ .../gem_unref_active_buffers.c                |  0
+ tests/{i915 => intel}/gem_userptr_blits.c     |  0
+ tests/{i915 => intel}/gem_vm_create.c         |  0
+ tests/{i915 => intel}/gem_wait.c              |  0
+ tests/{i915 => intel}/gem_watchdog.c          |  0
+ tests/{i915 => intel}/gem_workarounds.c       |  0
+ tests/{i915 => intel}/gen3_mixed_blits.c      |  0
+ .../gen3_render_linear_blits.c                |  0
+ .../{i915 => intel}/gen3_render_mixed_blits.c |  0
+ .../gen3_render_tiledx_blits.c                |  0
+ .../gen3_render_tiledy_blits.c                |  0
+ tests/{i915 => intel}/gen7_exec_parse.c       |  0
+ tests/{i915 => intel}/gen9_exec_parse.c       |  0
+ tests/{i915 => intel}/i915_fb_tiling.c        |  0
+ tests/{i915 => intel}/i915_getparams_basic.c  |  0
+ tests/{i915 => intel}/i915_hangman.c          |  0
+ tests/{i915 => intel}/i915_hwmon.c            |  0
+ tests/{i915 => intel}/i915_module_load.c      |  0
+ tests/{i915 => intel}/i915_pciid.c            |  0
+ tests/{i915 => intel}/i915_pipe_stress.c      |  0
+ tests/{i915 => intel}/i915_pm_backlight.c     |  0
+ tests/{i915 => intel}/i915_pm_dc.c            |  0
+ tests/{i915 => intel}/i915_pm_freq_api.c      |  0
+ tests/{i915 => intel}/i915_pm_freq_mult.c     |  0
+ tests/{i915 => intel}/i915_pm_lpsp.c          |  0
+ tests/{i915 => intel}/i915_pm_rc6_residency.c |  0
+ tests/{i915 => intel}/i915_pm_rpm.c           |  0
+ tests/{i915 => intel}/i915_pm_rps.c           |  0
+ tests/{i915 => intel}/i915_pm_sseu.c          |  0
+ tests/{i915 => intel}/i915_power.c            |  0
+ tests/{i915 => intel}/i915_query.c            |  0
+ tests/{i915 => intel}/i915_selftest.c         |  0
+ tests/{i915 => intel}/i915_suspend.c          |  0
+ tests/{i915 => intel}/kms_big_fb.c            |  0
+ tests/{i915 => intel}/kms_big_joiner.c        |  0
+ tests/{i915 => intel}/kms_busy.c              |  0
+ tests/{i915 => intel}/kms_ccs.c               |  0
+ tests/{i915 => intel}/kms_cdclk.c             |  0
+ tests/{i915 => intel}/kms_draw_crc.c          |  0
+ tests/{i915 => intel}/kms_dsc.c               |  0
+ tests/{i915 => intel}/kms_dsc_helper.c        |  0
+ tests/{i915 => intel}/kms_dsc_helper.h        |  0
+ tests/{i915 => intel}/kms_fbcon_fbt.c         |  0
+ tests/{i915 => intel}/kms_fence_pin_leak.c    |  0
+ tests/{i915 => intel}/kms_flip_scaled_crc.c   |  0
+ tests/{i915 => intel}/kms_flip_tiling.c       |  0
+ .../kms_frontbuffer_tracking.c                |  0
+ tests/{i915 => intel}/kms_legacy_colorkey.c   |  0
+ tests/{i915 => intel}/kms_mmap_write_crc.c    |  0
+ tests/{i915 => intel}/kms_pipe_b_c_ivb.c      |  0
+ tests/{i915 => intel}/kms_psr.c               |  0
+ tests/{i915 => intel}/kms_psr2_sf.c           |  0
+ tests/{i915 => intel}/kms_psr2_su.c           |  0
+ tests/{i915 => intel}/kms_psr_stress_test.c   |  0
+ tests/{i915 => intel}/kms_pwrite_crc.c        |  0
+ tests/{i915 => intel}/perf.c                  |  0
+ tests/{i915 => intel}/perf_pmu.c              |  0
+ tests/{i915 => intel}/sysfs_defaults.c        |  0
+ .../sysfs_heartbeat_interval.c                |  0
+ tests/{i915 => intel}/sysfs_preempt_timeout.c |  0
+ .../sysfs_timeslice_duration.c                |  0
+ tests/{xe => intel}/xe_compute.c              |  0
+ tests/{xe => intel}/xe_create.c               |  0
+ tests/{xe => intel}/xe_debugfs.c              |  0
+ tests/{xe => intel}/xe_dma_buf_sync.c         |  0
+ tests/{xe => intel}/xe_evict.c                |  0
+ tests/{xe => intel}/xe_exec_balancer.c        |  0
+ tests/{xe => intel}/xe_exec_basic.c           |  0
+ tests/{xe => intel}/xe_exec_compute_mode.c    |  0
+ tests/{xe => intel}/xe_exec_fault_mode.c      |  0
+ tests/{xe => intel}/xe_exec_reset.c           |  0
+ tests/{xe => intel}/xe_exec_threads.c         |  0
+ tests/{xe => intel}/xe_gpgpu_fill.c           |  0
+ tests/{xe => intel}/xe_guc_pc.c               |  0
+ tests/{xe => intel}/xe_huc_copy.c             |  0
+ tests/{xe => intel}/xe_intel_bb.c             |  0
+ tests/{xe => intel}/xe_mmap.c                 |  0
+ tests/{xe => intel}/xe_mmio.c                 |  0
+ tests/{xe => intel}/xe_module_load.c          |  0
+ tests/{xe => intel}/xe_noexec_ping_pong.c     |  0
+ tests/{xe => intel}/xe_pm.c                   |  0
+ tests/{xe => intel}/xe_prime_self_import.c    |  0
+ tests/{xe => intel}/xe_query.c                |  0
+ tests/{xe => intel}/xe_test_config.json       |  0
+ tests/{xe => intel}/xe_vm.c                   |  0
+ tests/{xe => intel}/xe_waitfence.c            |  0
+ tests/meson.build                             | 51 +++++++------------
+ 201 files changed, 20 insertions(+), 33 deletions(-)
+ rename tests/{i915 => intel}/api_intel_allocator.c (100%)
+ rename tests/{i915 => intel}/api_intel_bb.c (100%)
+ rename tests/{i915 => intel}/drm_fdinfo.c (100%)
+ rename tests/{i915 => intel}/gem_bad_reloc.c (100%)
+ rename tests/{i915 => intel}/gem_barrier_race.c (100%)
+ rename tests/{i915 => intel}/gem_basic.c (100%)
+ rename tests/{i915 => intel}/gem_blits.c (100%)
+ rename tests/{i915 => intel}/gem_busy.c (100%)
+ rename tests/{i915 => intel}/gem_caching.c (100%)
+ rename tests/{i915 => intel}/gem_ccs.c (100%)
+ rename tests/{i915 => intel}/gem_close.c (100%)
+ rename tests/{i915 => intel}/gem_close_race.c (100%)
+ rename tests/{i915 => intel}/gem_concurrent_all.c (100%)
+ rename tests/{i915 => intel}/gem_concurrent_blit.c (100%)
+ rename tests/{i915 => intel}/gem_create.c (100%)
+ rename tests/{i915 => intel}/gem_cs_tlb.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_bad_destroy.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_create.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_engines.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_exec.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_freq.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_isolation.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_param.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_persistence.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_shared.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_sseu.c (100%)
+ rename tests/{i915 => intel}/gem_ctx_switch.c (100%)
+ rename tests/{i915 => intel}/gem_eio.c (100%)
+ rename tests/{i915 => intel}/gem_evict_alignment.c (100%)
+ rename tests/{i915 => intel}/gem_evict_everything.c (100%)
+ rename tests/{i915 => intel}/gem_exec_alignment.c (100%)
+ rename tests/{i915 => intel}/gem_exec_async.c (100%)
+ rename tests/{i915 => intel}/gem_exec_await.c (100%)
+ rename tests/{i915 => intel}/gem_exec_balancer.c (100%)
+ rename tests/{i915 => intel}/gem_exec_basic.c (100%)
+ rename tests/{i915 => intel}/gem_exec_big.c (100%)
+ rename tests/{i915 => intel}/gem_exec_capture.c (100%)
+ rename tests/{i915 => intel}/gem_exec_create.c (100%)
+ rename tests/{i915 => intel}/gem_exec_endless.c (100%)
+ rename tests/{i915 => intel}/gem_exec_fair.c (100%)
+ rename tests/{i915 => intel}/gem_exec_fence.c (100%)
+ rename tests/{i915 => intel}/gem_exec_flush.c (100%)
+ rename tests/{i915 => intel}/gem_exec_gttfill.c (100%)
+ rename tests/{i915 => intel}/gem_exec_latency.c (100%)
+ rename tests/{i915 => intel}/gem_exec_lut_handle.c (100%)
+ rename tests/{i915 => intel}/gem_exec_nop.c (100%)
+ rename tests/{i915 => intel}/gem_exec_parallel.c (100%)
+ rename tests/{i915 => intel}/gem_exec_params.c (100%)
+ rename tests/{i915 => intel}/gem_exec_reloc.c (100%)
+ rename tests/{i915 => intel}/gem_exec_schedule.c (100%)
+ rename tests/{i915 => intel}/gem_exec_store.c (100%)
+ rename tests/{i915 => intel}/gem_exec_suspend.c (100%)
+ rename tests/{i915 => intel}/gem_exec_whisper.c (100%)
+ rename tests/{i915 => intel}/gem_exercise_blt.c (100%)
+ rename tests/{i915 => intel}/gem_fd_exhaustion.c (100%)
+ rename tests/{i915 => intel}/gem_fence_thrash.c (100%)
+ rename tests/{i915 => intel}/gem_fence_upload.c (100%)
+ rename tests/{i915 => intel}/gem_fenced_exec_thrash.c (100%)
+ rename tests/{i915 => intel}/gem_flink_basic.c (100%)
+ rename tests/{i915 => intel}/gem_flink_race.c (100%)
+ rename tests/{i915 => intel}/gem_gpgpu_fill.c (100%)
+ rename tests/{i915 => intel}/gem_gtt_cpu_tlb.c (100%)
+ rename tests/{i915 => intel}/gem_gtt_hog.c (100%)
+ rename tests/{i915 => intel}/gem_gtt_speed.c (100%)
+ rename tests/{i915 => intel}/gem_huc_copy.c (100%)
+ rename tests/{i915 => intel}/gem_linear_blits.c (100%)
+ rename tests/{i915 => intel}/gem_lmem_evict.c (100%)
+ rename tests/{i915 => intel}/gem_lmem_swapping.c (100%)
+ rename tests/{i915 => intel}/gem_lut_handle.c (100%)
+ rename tests/{i915 => intel}/gem_madvise.c (100%)
+ rename tests/{i915 => intel}/gem_media_fill.c (100%)
+ rename tests/{i915 => intel}/gem_media_vme.c (100%)
+ rename tests/{i915 => intel}/gem_mmap.c (100%)
+ rename tests/{i915 => intel}/gem_mmap_gtt.c (100%)
+ rename tests/{i915 => intel}/gem_mmap_offset.c (100%)
+ rename tests/{i915 => intel}/gem_mmap_wc.c (100%)
+ rename tests/{i915 => intel}/gem_partial_pwrite_pread.c (100%)
+ rename tests/{i915 => intel}/gem_pipe_control_store_loop.c (100%)
+ rename tests/{i915 => intel}/gem_ppgtt.c (100%)
+ rename tests/{i915 => intel}/gem_pread.c (100%)
+ rename tests/{i915 => intel}/gem_pread_after_blit.c (100%)
+ rename tests/{i915 => intel}/gem_pwrite.c (100%)
+ rename tests/{i915 => intel}/gem_pwrite_snooped.c (100%)
+ rename tests/{i915 => intel}/gem_pxp.c (100%)
+ rename tests/{i915 => intel}/gem_read_read_speed.c (100%)
+ rename tests/{i915 => intel}/gem_readwrite.c (100%)
+ rename tests/{i915 => intel}/gem_reg_read.c (100%)
+ rename tests/{i915 => intel}/gem_render_copy.c (100%)
+ rename tests/{i915 => intel}/gem_render_copy_redux.c (100%)
+ rename tests/{i915 => intel}/gem_render_linear_blits.c (100%)
+ rename tests/{i915 => intel}/gem_render_tiled_blits.c (100%)
+ rename tests/{i915 => intel}/gem_request_retire.c (100%)
+ rename tests/{i915 => intel}/gem_reset_stats.c (100%)
+ rename tests/{i915 => intel}/gem_ringfill.c (100%)
+ rename tests/{i915 => intel}/gem_set_tiling_vs_blt.c (100%)
+ rename tests/{i915 => intel}/gem_set_tiling_vs_gtt.c (100%)
+ rename tests/{i915 => intel}/gem_set_tiling_vs_pwrite.c (100%)
+ rename tests/{i915 => intel}/gem_shrink.c (100%)
+ rename tests/{i915 => intel}/gem_softpin.c (100%)
+ rename tests/{i915 => intel}/gem_spin_batch.c (100%)
+ rename tests/{i915 => intel}/gem_streaming_writes.c (100%)
+ rename tests/{i915 => intel}/gem_stress.c (100%)
+ rename tests/{i915 => intel}/gem_sync.c (100%)
+ rename tests/{i915 => intel}/gem_tiled_blits.c (100%)
+ rename tests/{i915 => intel}/gem_tiled_fence_blits.c (100%)
+ rename tests/{i915 => intel}/gem_tiled_partial_pwrite_pread.c (100%)
+ rename tests/{i915 => intel}/gem_tiled_pread_basic.c (100%)
+ rename tests/{i915 => intel}/gem_tiled_pread_pwrite.c (100%)
+ rename tests/{i915 => intel}/gem_tiled_swapping.c (100%)
+ rename tests/{i915 => intel}/gem_tiled_wb.c (100%)
+ rename tests/{i915 => intel}/gem_tiled_wc.c (100%)
+ rename tests/{i915 => intel}/gem_tiling_max_stride.c (100%)
+ rename tests/{i915 => intel}/gem_unfence_active_buffers.c (100%)
+ rename tests/{i915 => intel}/gem_unref_active_buffers.c (100%)
+ rename tests/{i915 => intel}/gem_userptr_blits.c (100%)
+ rename tests/{i915 => intel}/gem_vm_create.c (100%)
+ rename tests/{i915 => intel}/gem_wait.c (100%)
+ rename tests/{i915 => intel}/gem_watchdog.c (100%)
+ rename tests/{i915 => intel}/gem_workarounds.c (100%)
+ rename tests/{i915 => intel}/gen3_mixed_blits.c (100%)
+ rename tests/{i915 => intel}/gen3_render_linear_blits.c (100%)
+ rename tests/{i915 => intel}/gen3_render_mixed_blits.c (100%)
+ rename tests/{i915 => intel}/gen3_render_tiledx_blits.c (100%)
+ rename tests/{i915 => intel}/gen3_render_tiledy_blits.c (100%)
+ rename tests/{i915 => intel}/gen7_exec_parse.c (100%)
+ rename tests/{i915 => intel}/gen9_exec_parse.c (100%)
+ rename tests/{i915 => intel}/i915_fb_tiling.c (100%)
+ rename tests/{i915 => intel}/i915_getparams_basic.c (100%)
+ rename tests/{i915 => intel}/i915_hangman.c (100%)
+ rename tests/{i915 => intel}/i915_hwmon.c (100%)
+ rename tests/{i915 => intel}/i915_module_load.c (100%)
+ rename tests/{i915 => intel}/i915_pciid.c (100%)
+ rename tests/{i915 => intel}/i915_pipe_stress.c (100%)
+ rename tests/{i915 => intel}/i915_pm_backlight.c (100%)
+ rename tests/{i915 => intel}/i915_pm_dc.c (100%)
+ rename tests/{i915 => intel}/i915_pm_freq_api.c (100%)
+ rename tests/{i915 => intel}/i915_pm_freq_mult.c (100%)
+ rename tests/{i915 => intel}/i915_pm_lpsp.c (100%)
+ rename tests/{i915 => intel}/i915_pm_rc6_residency.c (100%)
+ rename tests/{i915 => intel}/i915_pm_rpm.c (100%)
+ rename tests/{i915 => intel}/i915_pm_rps.c (100%)
+ rename tests/{i915 => intel}/i915_pm_sseu.c (100%)
+ rename tests/{i915 => intel}/i915_power.c (100%)
+ rename tests/{i915 => intel}/i915_query.c (100%)
+ rename tests/{i915 => intel}/i915_selftest.c (100%)
+ rename tests/{i915 => intel}/i915_suspend.c (100%)
+ rename tests/{i915 => intel}/kms_big_fb.c (100%)
+ rename tests/{i915 => intel}/kms_big_joiner.c (100%)
+ rename tests/{i915 => intel}/kms_busy.c (100%)
+ rename tests/{i915 => intel}/kms_ccs.c (100%)
+ rename tests/{i915 => intel}/kms_cdclk.c (100%)
+ rename tests/{i915 => intel}/kms_draw_crc.c (100%)
+ rename tests/{i915 => intel}/kms_dsc.c (100%)
+ rename tests/{i915 => intel}/kms_dsc_helper.c (100%)
+ rename tests/{i915 => intel}/kms_dsc_helper.h (100%)
+ rename tests/{i915 => intel}/kms_fbcon_fbt.c (100%)
+ rename tests/{i915 => intel}/kms_fence_pin_leak.c (100%)
+ rename tests/{i915 => intel}/kms_flip_scaled_crc.c (100%)
+ rename tests/{i915 => intel}/kms_flip_tiling.c (100%)
+ rename tests/{i915 => intel}/kms_frontbuffer_tracking.c (100%)
+ rename tests/{i915 => intel}/kms_legacy_colorkey.c (100%)
+ rename tests/{i915 => intel}/kms_mmap_write_crc.c (100%)
+ rename tests/{i915 => intel}/kms_pipe_b_c_ivb.c (100%)
+ rename tests/{i915 => intel}/kms_psr.c (100%)
+ rename tests/{i915 => intel}/kms_psr2_sf.c (100%)
+ rename tests/{i915 => intel}/kms_psr2_su.c (100%)
+ rename tests/{i915 => intel}/kms_psr_stress_test.c (100%)
+ rename tests/{i915 => intel}/kms_pwrite_crc.c (100%)
+ rename tests/{i915 => intel}/perf.c (100%)
+ rename tests/{i915 => intel}/perf_pmu.c (100%)
+ rename tests/{i915 => intel}/sysfs_defaults.c (100%)
+ rename tests/{i915 => intel}/sysfs_heartbeat_interval.c (100%)
+ rename tests/{i915 => intel}/sysfs_preempt_timeout.c (100%)
+ rename tests/{i915 => intel}/sysfs_timeslice_duration.c (100%)
+ rename tests/{xe => intel}/xe_compute.c (100%)
+ rename tests/{xe => intel}/xe_create.c (100%)
+ rename tests/{xe => intel}/xe_debugfs.c (100%)
+ rename tests/{xe => intel}/xe_dma_buf_sync.c (100%)
+ rename tests/{xe => intel}/xe_evict.c (100%)
+ rename tests/{xe => intel}/xe_exec_balancer.c (100%)
+ rename tests/{xe => intel}/xe_exec_basic.c (100%)
+ rename tests/{xe => intel}/xe_exec_compute_mode.c (100%)
+ rename tests/{xe => intel}/xe_exec_fault_mode.c (100%)
+ rename tests/{xe => intel}/xe_exec_reset.c (100%)
+ rename tests/{xe => intel}/xe_exec_threads.c (100%)
+ rename tests/{xe => intel}/xe_gpgpu_fill.c (100%)
+ rename tests/{xe => intel}/xe_guc_pc.c (100%)
+ rename tests/{xe => intel}/xe_huc_copy.c (100%)
+ rename tests/{xe => intel}/xe_intel_bb.c (100%)
+ rename tests/{xe => intel}/xe_mmap.c (100%)
+ rename tests/{xe => intel}/xe_mmio.c (100%)
+ rename tests/{xe => intel}/xe_module_load.c (100%)
+ rename tests/{xe => intel}/xe_noexec_ping_pong.c (100%)
+ rename tests/{xe => intel}/xe_pm.c (100%)
+ rename tests/{xe => intel}/xe_prime_self_import.c (100%)
+ rename tests/{xe => intel}/xe_query.c (100%)
+ rename tests/{xe => intel}/xe_test_config.json (100%)
+ rename tests/{xe => intel}/xe_vm.c (100%)
+ rename tests/{xe => intel}/xe_waitfence.c (100%)
 
-> + * Test category: suspend
->   *
->   * SUBTEST: in-flight-10ms
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: in-flight-1us
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: in-flight-contexts-10ms
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: in-flight-contexts-1us
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: in-flight-contexts-immediate
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: in-flight-external
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: in-flight-immediate
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: in-flight-internal-10ms
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: in-flight-internal-1us
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: in-flight-internal-immediate
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: in-flight-suspend
-> - * Feature: reset
-> + * Feature: reset, suspend
-> + * Functionality: Test that specific ioctls report a wedged GPU (EIO) during suspend
-> + * Test category: suspend
->   *
->   * SUBTEST: kms
->   * Feature: kms_gem_interop, reset
->   *
->   * SUBTEST: reset-stress
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: suspend
->   * Feature: reset, suspend
-> + * Functionality: Test that specific ioctls report a wedged GPU (EIO) during suspend
-> + * Test category: suspend
->   *
->   * SUBTEST: throttle
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: unwedge-stress
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: wait-10ms
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: wait-1us
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: wait-immediate
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: wait-wedge-10ms
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: wait-wedge-1us
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: wait-wedge-immediate
->   * Feature: reset
-> + * Functionality: reset
-> + * Test category: GEM_Legacy
->   */
->  
->  IGT_TEST_DESCRIPTION("Test that specific ioctls report a wedged GPU (EIO).");
-> diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
-> index af86d5edc2ab..3287ced76a59 100644
-> --- a/tests/i915/gem_exercise_blt.c
-> +++ b/tests/i915/gem_exercise_blt.c
-> @@ -15,12 +15,17 @@
->   * Description: Exercise blitter commands
->   * Feature: blitter
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: fast-copy
-> - * Description: Check fast-copy blit
-> + * Description:
-> + *   Check fast-copy blit
-> + *   blitter
->   *
->   * SUBTEST: fast-copy-emit
-> - * Description: Check multiple fast-copy in one batch
-> + * Description:
-> + *   Check multiple fast-copy in one batch
-> + *   blitter
->   */
->  
->  IGT_TEST_DESCRIPTION("Exercise blitter commands");
-> diff --git a/tests/i915/gem_flink_basic.c b/tests/i915/gem_flink_basic.c
-> index 7feabf61a303..fd99ee5538e4 100644
-> --- a/tests/i915/gem_flink_basic.c
-> +++ b/tests/i915/gem_flink_basic.c
-> @@ -40,24 +40,36 @@
->  #include "igt_types.h"
->  /**
->   * TEST: gem flink basic
-> + * Category: Desktop client
->   * Description: Tests for flink - a way to export a gem object by name
->   * Feature: xorg_dri2
-> - * Run type: BAT
-> + * Functionality: buffer management
-> + * Sub-category: DRM
->   *
->   * SUBTEST: bad-flink
->   * Description: Verify that GEM_FLINK ioctl with invalid gem object fails.
-> + * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: bad-open
->   * Description: Verify that GEM_OPEN ioctl with invalid flink name fails.
-> + * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic
->   * Description: Check if gem object can be exported to global namespace and then opened.
-> + * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: double-flink
->   * Description: Tests that multiple flinks for the same gem object share the same name.
-> + * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: flink-lifetime
->   * Description: Tests flink lifetime by referencing from multiple descriptors.
-> + * Run type: BAT
-> + * Test category: GEM_Legacy
->   */
->  
->  IGT_TEST_DESCRIPTION("Tests for flink - a way to export a gem object by name");
-> diff --git a/tests/i915/gem_flink_race.c b/tests/i915/gem_flink_race.c
-> index 5ebf1969b992..a9177ce1b775 100644
-> --- a/tests/i915/gem_flink_race.c
-> +++ b/tests/i915/gem_flink_race.c
-> @@ -37,9 +37,13 @@
->  #include "igt_stats.h"
->  /**
->   * TEST: gem flink race
-> + * Category: Desktop client
->   * Description: Check for flink/open vs. gem close races.
->   * Feature: xorg_dri2
-> + * Functionality: buffer management
->   * Run type: FULL
-> + * Sub-category: DRM
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: flink_close
->   *
-> diff --git a/tests/i915/gem_gpgpu_fill.c b/tests/i915/gem_gpgpu_fill.c
-> index f350e9fbb6d0..e79df7409c01 100644
-> --- a/tests/i915/gem_gpgpu_fill.c
-> +++ b/tests/i915/gem_gpgpu_fill.c
-> @@ -50,8 +50,12 @@
->  #include "i915/intel_memory_region.h"
->  /**
->   * TEST: gem gpgpu fill
-> + * Category: Server
->   * Feature: compute
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic
->   */
-> diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
-> index 4c3576503ca3..40ab4fab3df4 100644
-> --- a/tests/i915/gem_linear_blits.c
-> +++ b/tests/i915/gem_linear_blits.c
-> @@ -51,20 +51,26 @@
->  #include "i915/i915_blt.h"
->  /**
->   * TEST: gem linear blits
-> + * Category: Infrastructure
->   * Description: Test doing many blits with a working set larger than the aperture size.
->   * Feature: blitter
-> + * Functionality: command submission
-> + * Sub-category: i915
->   *
->   * SUBTEST: basic
->   * Description: Basic blitter functionality check with 2 buffers
->   * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: interruptible
->   * Description: Test with interrupts in between the parent process
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: normal
->   * Description: The intent is to push beyond the working GTT size to force the driver to rebind the buffers
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   */
->  
->  IGT_TEST_DESCRIPTION("Test doing many blits with a working set larger than the"
-> diff --git a/tests/i915/gem_lmem_evict.c b/tests/i915/gem_lmem_evict.c
-> index e40eab2d2914..54277e11dac7 100644
-> --- a/tests/i915/gem_lmem_evict.c
-> +++ b/tests/i915/gem_lmem_evict.c
-> @@ -12,6 +12,7 @@
->   * Description: Force tiny lmem size for easily testing eviction scenarios.
->   * Feature: local_memory
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: dontneed-evict-race
->   * Description: Regression test to verify that madvise will sync against busy dma-resv object for lmem
-> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-> index f6a1c0082c78..014068da79f3 100644
-> --- a/tests/i915/gem_lmem_swapping.c
-> +++ b/tests/i915/gem_lmem_swapping.c
-> @@ -26,8 +26,12 @@
->  #include "i915/intel_mocs.h"
->  /**
->   * TEST: gem lmem swapping
-> + * Category: Server
->   * Description: Exercise local memory swapping.
->   * Feature: local_memory
-> + * Functionality: buffer management
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic
->   * Description: Exercise local memory swapping to system memory
-> diff --git a/tests/i915/gem_madvise.c b/tests/i915/gem_madvise.c
-> index 17653cc4ad53..139376d1b3e3 100644
-> --- a/tests/i915/gem_madvise.c
-> +++ b/tests/i915/gem_madvise.c
-> @@ -40,8 +40,12 @@
->  #include "i915/gem_create.h"
->  /**
->   * TEST: gem madvise
-> + * Category: Desktop client
->   * Description: Checks that the kernel reports EFAULT when trying to use purged bo.
-> + * Functionality: buffer management
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: dontneed-after-mmap
->   * Description:
-> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-> index afabe2426291..f6d3374dd6e8 100644
-> --- a/tests/i915/gem_mmap_offset.c
-> +++ b/tests/i915/gem_mmap_offset.c
-> @@ -39,9 +39,13 @@
->  #include "igt_x86.h"
->  /**
->   * TEST: gem mmap offset
-> + * Category: Infrastructure
->   * Description: Basic MMAP_OFFSET IOCTL tests for mem regions
->   * Feature: mapping
-> + * Functionality: memory management
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: bad-extensions
->   *
-> diff --git a/tests/i915/gem_pipe_control_store_loop.c b/tests/i915/gem_pipe_control_store_loop.c
-> index 5e6ef049085b..986dbf673164 100644
-> --- a/tests/i915/gem_pipe_control_store_loop.c
-> +++ b/tests/i915/gem_pipe_control_store_loop.c
-> @@ -45,9 +45,13 @@
->  #include "igt.h"
->  /**
->   * TEST: gem pipe control store loop
-> + * Category: Desktop client
->   * Description: Test (TLB-)Coherency of pipe_control QW writes.
->   * Feature: cmd_submission
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: fresh-buffer
->   * Description: Checks tlb consistency of the pipe_control with fresh buffer.
-> diff --git a/tests/i915/gem_ppgtt.c b/tests/i915/gem_ppgtt.c
-> index 368f8b17db75..6a0512ab6010 100644
-> --- a/tests/i915/gem_ppgtt.c
-> +++ b/tests/i915/gem_ppgtt.c
-> @@ -50,15 +50,21 @@
->   * Feature: mapping
->   *
->   * SUBTEST: flink-and-close-vma-leak
-> + * Category: Desktop client
->   * Feature: mapping, xorg_dri2
-> + * Functionality: buffer management
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: shrink-vs-evict-any
->   * Description: Regression test to verify GTT eviction can't randomly fail due to object lock contention
->   * Feature: mapping
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: shrink-vs-evict-pinned
->   * Description: Regression test to verify GTT eviction can't randomly fail due to object lock contention
->   * Feature: mapping
-> + * Test category: GEM_Legacy
->   */
->  
->  #define WIDTH 512
-> diff --git a/tests/i915/gem_request_retire.c b/tests/i915/gem_request_retire.c
-> index 9e074706d259..9814b435d937 100644
-> --- a/tests/i915/gem_request_retire.c
-> +++ b/tests/i915/gem_request_retire.c
-> @@ -51,9 +51,13 @@
->  #include "igt_types.h"
->  /**
->   * TEST: gem request retire
-> + * Category: Infrastructure
->   * Description: Collection of tests targeting request retirement code paths.
->   * Feature: cmd_submission
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: retire-vma-not-inactive
->   */
-> diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
-> index 451876526e9a..d350cd7fea57 100644
-> --- a/tests/i915/gem_ringfill.c
-> +++ b/tests/i915/gem_ringfill.c
-> @@ -43,14 +43,18 @@
->  #include <sys/ioctl.h>
->  /**
->   * TEST: gem ringfill
-> + * Category: Infrastructure
->   * Description:
->   *   Exercise many tiny batchbuffer operations, in the hope of catching failure to manage the ring
->   *   properly near full.
-> + * Sub-category: i915
->   *
->   * SUBTEST: basic-all
->   * Description: Basic check to fill the ring upto maximum on all engines simultaneously.
->   * Feature: cmd_submission
-> + * Functionality: command submission
->   * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: engines-S3
->   * Description: Handle a full ring across suspend cycle.
-> @@ -65,7 +69,9 @@
->   * SUBTEST: engines-basic
->   * Description: Basic check how the driver handles a full ring.
->   * Feature: cmd_submission, multitile
-> + * Functionality: Test spamming ring with contexts
->   * Run type: FULL
-> + * Test category: MultiTile
->   *
->   * SUBTEST: engines-bomb
->   * Description:
-> @@ -114,7 +120,9 @@
->   * SUBTEST: legacy-basic
->   * Description: Basic check how the driver handles a full ring - on legacy ring.
->   * Feature: cmd_submission, multitile
-> + * Functionality: Test spamming ring with contexts - legacy path
->   * Run type: FULL
-> + * Test category: MultiTile
->   *
->   * SUBTEST: legacy-bomb
->   * Description:
-> diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
-> index a65792c84137..79301754babc 100644
-> --- a/tests/i915/gem_shrink.c
-> +++ b/tests/i915/gem_shrink.c
-> @@ -139,6 +139,10 @@
->   * SUBTEST: pwrite-userptr-dirty
->   *
->   * SUBTEST: reclaim
-> + * Category: Desktop client
-> + * Functionality: buffer management
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   */
->  
->  #ifndef MADV_FREE
-> diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-> index 27e5781b9b73..6bea75d1fe37 100644
-> --- a/tests/i915/gem_softpin.c
-> +++ b/tests/i915/gem_softpin.c
-> @@ -33,116 +33,183 @@
->  #include "intel_allocator.h"
->  /**
->   * TEST: gem softpin
-> + * Category: Infrastructure
->   * Description:
->   *   Tests softpin feature with normal usage, invalid inputs scenarios and couple of eviction
->   *   tests which copy buffers between CPU and GPU.
-> - * Feature: mapping
-> + * Sub-category: i915
->   *
->   * SUBTEST: 32b-excludes-last-page
->   * Description: Check the last 32b page is excluded.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: allocator-basic
->   * Description: Check that we can place objects at start/end of the GTT using the allocator.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: allocator-basic-reserve
->   * Description: Check that if we can reserve a space for an object starting from a given offset.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: allocator-evict
->   * Description: Exercise eviction with softpinning.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: allocator-fork
->   * Description: Check if multiple processes can use alloctor.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: allocator-nopin
->   * Description: Check that we can combine manual placement with automatic GTT placement.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: allocator-nopin-reserve
->   * Description:
->   *   Check that we can combine manual placement with automatic GTT placement and
->   *   reserves/unreserves space for objects.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: evict-active
->   * Description: Check eviction with active bo.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: evict-active-interruptible
->   * Description: Check eviction with active bo with interrupts.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: evict-hang
->   * Description: Check eviction of softpinned bo with hung batch.
-> + * Feature: mapping
->   * Run type: FULL
->   *
->   * SUBTEST: evict-prime
->   * Description: Check eviction of vma on importing prime fd in reopened drm fds
-> + * Feature: mapping
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: evict-prime-sanity-check
->   * Description: Check eviction of vma on importing prime fd in reopened drm fd in single thread
-> + * Feature: mapping
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: evict-single-offset
->   * Description: Use same offset for all engines and for different handles.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: evict-snoop
->   * Description: Check eviction against snooping.
-> + * Feature: mapping
->   * Run type: FULL
->   *
->   * SUBTEST: evict-snoop-interruptible
->   * Description: Check eviction against snooping with interrupts.
-> + * Feature: mapping
->   * Run type: FULL
->   *
->   * SUBTEST: full
->   * Description: Check the total occupancy by using pad-to-size to fill the entire GTT.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: invalid
->   * Description: Check that invalid inputs are handled correctly.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: noreloc
->   * Description: Check that noreloc support works.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: noreloc-S3
->   * Description: Check noreloc survives after suspend to RAM/resume cycle.
-> + * Feature: mapping
->   * Run type: FULL
->   *
->   * SUBTEST: noreloc-S4
->   * Description: Check noreloc survives after suspend to disk/resume cycle.
-> + * Feature: mapping
->   * Run type: FULL
->   *
->   * SUBTEST: noreloc-interruptible
->   * Description: Check noreloc support with interruptible.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: overlap
->   * Description: Check all the possible pages aligned overlaps.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: reverse
->   * Description: Check that if the user demands the vma will be swapped.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: safe-alignment
->   * Description: Check start offset and alignment detection.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: BAT
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: softpin
->   * Description: Check softpinning of a gem buffer object.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: zero
->   * Description: Check full placement control under full-ppGTT.
-> + * Feature: mapping
-> + * Functionality: command submission
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   */
->  
->  IGT_TEST_DESCRIPTION("Tests softpin feature with normal usage, invalid inputs"
-> diff --git a/tests/i915/gem_spin_batch.c b/tests/i915/gem_spin_batch.c
-> index 0a6c088da630..cd828beb26c2 100644
-> --- a/tests/i915/gem_spin_batch.c
-> +++ b/tests/i915/gem_spin_batch.c
-> @@ -28,42 +28,79 @@
->  /**
->   * TEST: gem spin batch
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: engines
-> + * Category: Infrastructure
->   * Feature: context, igt_core
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: legacy
-> + * Category: Infrastructure
->   * Feature: context, igt_core
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: legacy-resubmit
-> + * Category: Infrastructure
->   * Feature: context, igt_core
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: legacy-resubmit-new
-> + * Category: Infrastructure
->   * Feature: context, igt_core, multictx
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: resubmit
-> + * Category: Infrastructure
->   * Feature: context, igt_core
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: resubmit-all
-> + * Category: Infrastructure
->   * Feature: context, igt_core, multictx
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: resubmit-new
-> + * Category: Infrastructure
->   * Feature: context, igt_core, multictx
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: resubmit-new-all
-> + * Category: Infrastructure
->   * Feature: context, igt_core, multictx
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: spin-all
-> + * Category: Infrastructure
->   * Feature: igt_core, multictx
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: spin-all-new
-> + * Category: Infrastructure
->   * Feature: igt_core, multictx
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: spin-each
-> + * Category: Infrastructure
->   * Feature: igt_core, multictx
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   *
->   * SUBTEST: user-each
-> + * Category: Infrastructure
->   * Feature: igt_core, multictx
-> + * Functionality: dummy workload
-> + * Sub-category: IGT Lib
->   */
->  
->  #define MAX_ERROR 5 /* % */
-> diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-> index 1c7e51a92bfa..9a855a221654 100644
-> --- a/tests/i915/gem_sync.c
-> +++ b/tests/i915/gem_sync.c
-> @@ -57,29 +57,43 @@
->   * Run type: FULL
->   *
->   * SUBTEST: basic-all
-> + * Category: Infrastructure
->   * Description: Basic test to wait upon a batch on all rings.
->   * Feature: synchronization
-> + * Functionality: semaphore
->   * Run type: BAT
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic-each
->   * Description: Check synchronisation of ring.
->   * Feature: multitile, synchronization
-> + * Functionality: Exercise all physical engine selection and legacy rings
->   * Run type: BAT
-> + * Test category: MultiTile
->   *
->   * SUBTEST: basic-many-each
->   * Description: Create race condition and see if we can catch interrupts.
->   * Feature: multitile, synchronization
-> + * Functionality: Basic check of ring to ring write synchronisation
->   * Run type: FULL
-> + * Test category: MultiTile
->   *
->   * SUBTEST: basic-store-all
-> + * Category: Infrastructure
->   * Description: Basic version of store synchronisation test.
->   * Feature: synchronization
-> + * Functionality: semaphore
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic-store-each
->   * Description: Check that store synchronisation works.
->   * Feature: multitile, synchronization
-> + * Functionality: Basic check of ring to ring write, store synchronisation
->   * Run type: FULL
-> + * Test category: MultiTile
->   *
->   * SUBTEST: default
->   * Description: Check synchronisation of rings on each engine.
-> diff --git a/tests/i915/gem_unref_active_buffers.c b/tests/i915/gem_unref_active_buffers.c
-> index 90a63e8f9acf..badded1f71a6 100644
-> --- a/tests/i915/gem_unref_active_buffers.c
-> +++ b/tests/i915/gem_unref_active_buffers.c
-> @@ -43,9 +43,13 @@
->  #include "i915/gem_create.h"
->  /**
->   * TEST: gem unref active buffers
-> + * Category: Infrastructure
->   * Description: Test unreferencing of active buffers.
->   * Feature: cmd_submission
-> + * Functionality: buffer management
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST:
->   */
-> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> index 4df604d6dcd6..e9235a6898d5 100644
-> --- a/tests/i915/gem_userptr_blits.c
-> +++ b/tests/i915/gem_userptr_blits.c
-> @@ -81,7 +81,11 @@
->   * Feature: userptr
->   *
->   * SUBTEST: create-destroy-sync
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: create-destroy-unsync
->   * Feature: userptr
-> @@ -195,17 +199,29 @@
->   * Feature: userptr
->   *
->   * SUBTEST: huge-split
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: input-checking
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: invalid-mmap-offset-unsync
->   * Description: Verify unsynchronized userptr on mmap-offset mappings fails
->   * Feature: userptr
->   *
->   * SUBTEST: invalid-null-pointer
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: major-normal-sync
->   * Feature: userptr
-> @@ -260,14 +276,26 @@
->   * Feature: userptr
->   *
->   * SUBTEST: mmap-offset-banned
-> + * Category: Server
->   * Description: Verify mmap_offset to userptr is banned
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: nohangcheck
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: probe
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: process-exit
->   * Feature: userptr
-> @@ -285,22 +313,46 @@
->   * Feature: userptr
->   *
->   * SUBTEST: sd-probe
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: set-cache-level
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: stress-mm
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: stress-mm-invalidate-close
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: stress-mm-invalidate-close-overlap
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: stress-purge
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: swapping-normal-sync
->   * Feature: userptr
-> @@ -315,16 +367,32 @@
->   * Feature: userptr
->   *
->   * SUBTEST: sync-overlap
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: sync-unmap
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: sync-unmap-after-close
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: sync-unmap-cycles
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: unsync-overlap
->   * Feature: userptr
-> @@ -339,13 +407,21 @@
->   * Feature: userptr
->   *
->   * SUBTEST: usage-restrictions
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: userfault
->   * Feature: userptr
->   *
->   * SUBTEST: vma-merge
-> + * Category: Server
->   * Feature: userptr
-> + * Functionality: buffer management
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   */
->  
->  #ifndef PAGE_SIZE
-> diff --git a/tests/i915/gem_vm_create.c b/tests/i915/gem_vm_create.c
-> index 2b19ca973acc..f24aefdae729 100644
-> --- a/tests/i915/gem_vm_create.c
-> +++ b/tests/i915/gem_vm_create.c
-> @@ -29,7 +29,11 @@
->  #include "igt_dummyload.h"
->  /**
->   * TEST: gem vm create
-> + * Category: Server
-> + * Functionality: context management
->   * Run type: FULL
-> + * Sub-category: Compute
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: create-ext
->   * Feature: mapping
-> diff --git a/tests/i915/gem_wait.c b/tests/i915/gem_wait.c
-> index 874ccd87eee3..40e548579226 100644
-> --- a/tests/i915/gem_wait.c
-> +++ b/tests/i915/gem_wait.c
-> @@ -33,8 +33,12 @@
->  #include "igt_vgem.h"
->  /**
->   * TEST: gem wait
-> + * Category: Infrastructure
->   * Description: Tests the GEM_WAIT ioctl
->   * Feature: synchronization
-> + * Functionality: semaphore
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: await
->   * Description: Verify GEM_WAIT functionality in await mode.
-> diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
-> index b635fd342ac5..d9938b10ccd0 100644
-> --- a/tests/i915/gem_workarounds.c
-> +++ b/tests/i915/gem_workarounds.c
-> @@ -34,16 +34,24 @@
->  #include "igt_types.h"
->  /**
->   * TEST: gem workarounds
-> + * Category: Infrastructure
->   * Run type: FULL
-> + * Sub-category: HW
->   *
->   * SUBTEST: basic-read
->   * Feature: workarounds
-> + * Functionality: context management
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic-read-context
->   * Feature: workarounds
-> + * Functionality: context management
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic-read-fd
->   * Feature: workarounds
-> + * Functionality: context management
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: hibernate-resume
->   * Feature: hibernate, workarounds
-> @@ -56,21 +64,33 @@
->   *
->   * SUBTEST: reset
->   * Feature: workarounds
-> + * Functionality: context management
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: reset-context
->   * Feature: workarounds
-> + * Functionality: context management
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: reset-fd
->   * Feature: workarounds
-> + * Functionality: context management
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: suspend-resume
->   * Feature: suspend, workarounds
-> + * Functionality: Test to verify gem WA registers during suspend-resume
--------------------- ^
-This looks like description, imho this should be:
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index e36713960..81d3cee57 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -6,7 +6,7 @@ rst2pdf = find_program('rst2pdf', required: false)
+ 
+ stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
+ 
+-xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
++xe_test_config = join_paths(source_root, 'tests', 'intel', 'xe_test_config.json')
+ 
+ check_testlist = []
+ if build_tests
+diff --git a/tests/i915/api_intel_allocator.c b/tests/intel/api_intel_allocator.c
+similarity index 100%
+rename from tests/i915/api_intel_allocator.c
+rename to tests/intel/api_intel_allocator.c
+diff --git a/tests/i915/api_intel_bb.c b/tests/intel/api_intel_bb.c
+similarity index 100%
+rename from tests/i915/api_intel_bb.c
+rename to tests/intel/api_intel_bb.c
+diff --git a/tests/i915/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+similarity index 100%
+rename from tests/i915/drm_fdinfo.c
+rename to tests/intel/drm_fdinfo.c
+diff --git a/tests/i915/gem_bad_reloc.c b/tests/intel/gem_bad_reloc.c
+similarity index 100%
+rename from tests/i915/gem_bad_reloc.c
+rename to tests/intel/gem_bad_reloc.c
+diff --git a/tests/i915/gem_barrier_race.c b/tests/intel/gem_barrier_race.c
+similarity index 100%
+rename from tests/i915/gem_barrier_race.c
+rename to tests/intel/gem_barrier_race.c
+diff --git a/tests/i915/gem_basic.c b/tests/intel/gem_basic.c
+similarity index 100%
+rename from tests/i915/gem_basic.c
+rename to tests/intel/gem_basic.c
+diff --git a/tests/i915/gem_blits.c b/tests/intel/gem_blits.c
+similarity index 100%
+rename from tests/i915/gem_blits.c
+rename to tests/intel/gem_blits.c
+diff --git a/tests/i915/gem_busy.c b/tests/intel/gem_busy.c
+similarity index 100%
+rename from tests/i915/gem_busy.c
+rename to tests/intel/gem_busy.c
+diff --git a/tests/i915/gem_caching.c b/tests/intel/gem_caching.c
+similarity index 100%
+rename from tests/i915/gem_caching.c
+rename to tests/intel/gem_caching.c
+diff --git a/tests/i915/gem_ccs.c b/tests/intel/gem_ccs.c
+similarity index 100%
+rename from tests/i915/gem_ccs.c
+rename to tests/intel/gem_ccs.c
+diff --git a/tests/i915/gem_close.c b/tests/intel/gem_close.c
+similarity index 100%
+rename from tests/i915/gem_close.c
+rename to tests/intel/gem_close.c
+diff --git a/tests/i915/gem_close_race.c b/tests/intel/gem_close_race.c
+similarity index 100%
+rename from tests/i915/gem_close_race.c
+rename to tests/intel/gem_close_race.c
+diff --git a/tests/i915/gem_concurrent_all.c b/tests/intel/gem_concurrent_all.c
+similarity index 100%
+rename from tests/i915/gem_concurrent_all.c
+rename to tests/intel/gem_concurrent_all.c
+diff --git a/tests/i915/gem_concurrent_blit.c b/tests/intel/gem_concurrent_blit.c
+similarity index 100%
+rename from tests/i915/gem_concurrent_blit.c
+rename to tests/intel/gem_concurrent_blit.c
+diff --git a/tests/i915/gem_create.c b/tests/intel/gem_create.c
+similarity index 100%
+rename from tests/i915/gem_create.c
+rename to tests/intel/gem_create.c
+diff --git a/tests/i915/gem_cs_tlb.c b/tests/intel/gem_cs_tlb.c
+similarity index 100%
+rename from tests/i915/gem_cs_tlb.c
+rename to tests/intel/gem_cs_tlb.c
+diff --git a/tests/i915/gem_ctx_bad_destroy.c b/tests/intel/gem_ctx_bad_destroy.c
+similarity index 100%
+rename from tests/i915/gem_ctx_bad_destroy.c
+rename to tests/intel/gem_ctx_bad_destroy.c
+diff --git a/tests/i915/gem_ctx_create.c b/tests/intel/gem_ctx_create.c
+similarity index 100%
+rename from tests/i915/gem_ctx_create.c
+rename to tests/intel/gem_ctx_create.c
+diff --git a/tests/i915/gem_ctx_engines.c b/tests/intel/gem_ctx_engines.c
+similarity index 100%
+rename from tests/i915/gem_ctx_engines.c
+rename to tests/intel/gem_ctx_engines.c
+diff --git a/tests/i915/gem_ctx_exec.c b/tests/intel/gem_ctx_exec.c
+similarity index 100%
+rename from tests/i915/gem_ctx_exec.c
+rename to tests/intel/gem_ctx_exec.c
+diff --git a/tests/i915/gem_ctx_freq.c b/tests/intel/gem_ctx_freq.c
+similarity index 100%
+rename from tests/i915/gem_ctx_freq.c
+rename to tests/intel/gem_ctx_freq.c
+diff --git a/tests/i915/gem_ctx_isolation.c b/tests/intel/gem_ctx_isolation.c
+similarity index 100%
+rename from tests/i915/gem_ctx_isolation.c
+rename to tests/intel/gem_ctx_isolation.c
+diff --git a/tests/i915/gem_ctx_param.c b/tests/intel/gem_ctx_param.c
+similarity index 100%
+rename from tests/i915/gem_ctx_param.c
+rename to tests/intel/gem_ctx_param.c
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/intel/gem_ctx_persistence.c
+similarity index 100%
+rename from tests/i915/gem_ctx_persistence.c
+rename to tests/intel/gem_ctx_persistence.c
+diff --git a/tests/i915/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
+similarity index 100%
+rename from tests/i915/gem_ctx_shared.c
+rename to tests/intel/gem_ctx_shared.c
+diff --git a/tests/i915/gem_ctx_sseu.c b/tests/intel/gem_ctx_sseu.c
+similarity index 100%
+rename from tests/i915/gem_ctx_sseu.c
+rename to tests/intel/gem_ctx_sseu.c
+diff --git a/tests/i915/gem_ctx_switch.c b/tests/intel/gem_ctx_switch.c
+similarity index 100%
+rename from tests/i915/gem_ctx_switch.c
+rename to tests/intel/gem_ctx_switch.c
+diff --git a/tests/i915/gem_eio.c b/tests/intel/gem_eio.c
+similarity index 100%
+rename from tests/i915/gem_eio.c
+rename to tests/intel/gem_eio.c
+diff --git a/tests/i915/gem_evict_alignment.c b/tests/intel/gem_evict_alignment.c
+similarity index 100%
+rename from tests/i915/gem_evict_alignment.c
+rename to tests/intel/gem_evict_alignment.c
+diff --git a/tests/i915/gem_evict_everything.c b/tests/intel/gem_evict_everything.c
+similarity index 100%
+rename from tests/i915/gem_evict_everything.c
+rename to tests/intel/gem_evict_everything.c
+diff --git a/tests/i915/gem_exec_alignment.c b/tests/intel/gem_exec_alignment.c
+similarity index 100%
+rename from tests/i915/gem_exec_alignment.c
+rename to tests/intel/gem_exec_alignment.c
+diff --git a/tests/i915/gem_exec_async.c b/tests/intel/gem_exec_async.c
+similarity index 100%
+rename from tests/i915/gem_exec_async.c
+rename to tests/intel/gem_exec_async.c
+diff --git a/tests/i915/gem_exec_await.c b/tests/intel/gem_exec_await.c
+similarity index 100%
+rename from tests/i915/gem_exec_await.c
+rename to tests/intel/gem_exec_await.c
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
+similarity index 100%
+rename from tests/i915/gem_exec_balancer.c
+rename to tests/intel/gem_exec_balancer.c
+diff --git a/tests/i915/gem_exec_basic.c b/tests/intel/gem_exec_basic.c
+similarity index 100%
+rename from tests/i915/gem_exec_basic.c
+rename to tests/intel/gem_exec_basic.c
+diff --git a/tests/i915/gem_exec_big.c b/tests/intel/gem_exec_big.c
+similarity index 100%
+rename from tests/i915/gem_exec_big.c
+rename to tests/intel/gem_exec_big.c
+diff --git a/tests/i915/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
+similarity index 100%
+rename from tests/i915/gem_exec_capture.c
+rename to tests/intel/gem_exec_capture.c
+diff --git a/tests/i915/gem_exec_create.c b/tests/intel/gem_exec_create.c
+similarity index 100%
+rename from tests/i915/gem_exec_create.c
+rename to tests/intel/gem_exec_create.c
+diff --git a/tests/i915/gem_exec_endless.c b/tests/intel/gem_exec_endless.c
+similarity index 100%
+rename from tests/i915/gem_exec_endless.c
+rename to tests/intel/gem_exec_endless.c
+diff --git a/tests/i915/gem_exec_fair.c b/tests/intel/gem_exec_fair.c
+similarity index 100%
+rename from tests/i915/gem_exec_fair.c
+rename to tests/intel/gem_exec_fair.c
+diff --git a/tests/i915/gem_exec_fence.c b/tests/intel/gem_exec_fence.c
+similarity index 100%
+rename from tests/i915/gem_exec_fence.c
+rename to tests/intel/gem_exec_fence.c
+diff --git a/tests/i915/gem_exec_flush.c b/tests/intel/gem_exec_flush.c
+similarity index 100%
+rename from tests/i915/gem_exec_flush.c
+rename to tests/intel/gem_exec_flush.c
+diff --git a/tests/i915/gem_exec_gttfill.c b/tests/intel/gem_exec_gttfill.c
+similarity index 100%
+rename from tests/i915/gem_exec_gttfill.c
+rename to tests/intel/gem_exec_gttfill.c
+diff --git a/tests/i915/gem_exec_latency.c b/tests/intel/gem_exec_latency.c
+similarity index 100%
+rename from tests/i915/gem_exec_latency.c
+rename to tests/intel/gem_exec_latency.c
+diff --git a/tests/i915/gem_exec_lut_handle.c b/tests/intel/gem_exec_lut_handle.c
+similarity index 100%
+rename from tests/i915/gem_exec_lut_handle.c
+rename to tests/intel/gem_exec_lut_handle.c
+diff --git a/tests/i915/gem_exec_nop.c b/tests/intel/gem_exec_nop.c
+similarity index 100%
+rename from tests/i915/gem_exec_nop.c
+rename to tests/intel/gem_exec_nop.c
+diff --git a/tests/i915/gem_exec_parallel.c b/tests/intel/gem_exec_parallel.c
+similarity index 100%
+rename from tests/i915/gem_exec_parallel.c
+rename to tests/intel/gem_exec_parallel.c
+diff --git a/tests/i915/gem_exec_params.c b/tests/intel/gem_exec_params.c
+similarity index 100%
+rename from tests/i915/gem_exec_params.c
+rename to tests/intel/gem_exec_params.c
+diff --git a/tests/i915/gem_exec_reloc.c b/tests/intel/gem_exec_reloc.c
+similarity index 100%
+rename from tests/i915/gem_exec_reloc.c
+rename to tests/intel/gem_exec_reloc.c
+diff --git a/tests/i915/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
+similarity index 100%
+rename from tests/i915/gem_exec_schedule.c
+rename to tests/intel/gem_exec_schedule.c
+diff --git a/tests/i915/gem_exec_store.c b/tests/intel/gem_exec_store.c
+similarity index 100%
+rename from tests/i915/gem_exec_store.c
+rename to tests/intel/gem_exec_store.c
+diff --git a/tests/i915/gem_exec_suspend.c b/tests/intel/gem_exec_suspend.c
+similarity index 100%
+rename from tests/i915/gem_exec_suspend.c
+rename to tests/intel/gem_exec_suspend.c
+diff --git a/tests/i915/gem_exec_whisper.c b/tests/intel/gem_exec_whisper.c
+similarity index 100%
+rename from tests/i915/gem_exec_whisper.c
+rename to tests/intel/gem_exec_whisper.c
+diff --git a/tests/i915/gem_exercise_blt.c b/tests/intel/gem_exercise_blt.c
+similarity index 100%
+rename from tests/i915/gem_exercise_blt.c
+rename to tests/intel/gem_exercise_blt.c
+diff --git a/tests/i915/gem_fd_exhaustion.c b/tests/intel/gem_fd_exhaustion.c
+similarity index 100%
+rename from tests/i915/gem_fd_exhaustion.c
+rename to tests/intel/gem_fd_exhaustion.c
+diff --git a/tests/i915/gem_fence_thrash.c b/tests/intel/gem_fence_thrash.c
+similarity index 100%
+rename from tests/i915/gem_fence_thrash.c
+rename to tests/intel/gem_fence_thrash.c
+diff --git a/tests/i915/gem_fence_upload.c b/tests/intel/gem_fence_upload.c
+similarity index 100%
+rename from tests/i915/gem_fence_upload.c
+rename to tests/intel/gem_fence_upload.c
+diff --git a/tests/i915/gem_fenced_exec_thrash.c b/tests/intel/gem_fenced_exec_thrash.c
+similarity index 100%
+rename from tests/i915/gem_fenced_exec_thrash.c
+rename to tests/intel/gem_fenced_exec_thrash.c
+diff --git a/tests/i915/gem_flink_basic.c b/tests/intel/gem_flink_basic.c
+similarity index 100%
+rename from tests/i915/gem_flink_basic.c
+rename to tests/intel/gem_flink_basic.c
+diff --git a/tests/i915/gem_flink_race.c b/tests/intel/gem_flink_race.c
+similarity index 100%
+rename from tests/i915/gem_flink_race.c
+rename to tests/intel/gem_flink_race.c
+diff --git a/tests/i915/gem_gpgpu_fill.c b/tests/intel/gem_gpgpu_fill.c
+similarity index 100%
+rename from tests/i915/gem_gpgpu_fill.c
+rename to tests/intel/gem_gpgpu_fill.c
+diff --git a/tests/i915/gem_gtt_cpu_tlb.c b/tests/intel/gem_gtt_cpu_tlb.c
+similarity index 100%
+rename from tests/i915/gem_gtt_cpu_tlb.c
+rename to tests/intel/gem_gtt_cpu_tlb.c
+diff --git a/tests/i915/gem_gtt_hog.c b/tests/intel/gem_gtt_hog.c
+similarity index 100%
+rename from tests/i915/gem_gtt_hog.c
+rename to tests/intel/gem_gtt_hog.c
+diff --git a/tests/i915/gem_gtt_speed.c b/tests/intel/gem_gtt_speed.c
+similarity index 100%
+rename from tests/i915/gem_gtt_speed.c
+rename to tests/intel/gem_gtt_speed.c
+diff --git a/tests/i915/gem_huc_copy.c b/tests/intel/gem_huc_copy.c
+similarity index 100%
+rename from tests/i915/gem_huc_copy.c
+rename to tests/intel/gem_huc_copy.c
+diff --git a/tests/i915/gem_linear_blits.c b/tests/intel/gem_linear_blits.c
+similarity index 100%
+rename from tests/i915/gem_linear_blits.c
+rename to tests/intel/gem_linear_blits.c
+diff --git a/tests/i915/gem_lmem_evict.c b/tests/intel/gem_lmem_evict.c
+similarity index 100%
+rename from tests/i915/gem_lmem_evict.c
+rename to tests/intel/gem_lmem_evict.c
+diff --git a/tests/i915/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+similarity index 100%
+rename from tests/i915/gem_lmem_swapping.c
+rename to tests/intel/gem_lmem_swapping.c
+diff --git a/tests/i915/gem_lut_handle.c b/tests/intel/gem_lut_handle.c
+similarity index 100%
+rename from tests/i915/gem_lut_handle.c
+rename to tests/intel/gem_lut_handle.c
+diff --git a/tests/i915/gem_madvise.c b/tests/intel/gem_madvise.c
+similarity index 100%
+rename from tests/i915/gem_madvise.c
+rename to tests/intel/gem_madvise.c
+diff --git a/tests/i915/gem_media_fill.c b/tests/intel/gem_media_fill.c
+similarity index 100%
+rename from tests/i915/gem_media_fill.c
+rename to tests/intel/gem_media_fill.c
+diff --git a/tests/i915/gem_media_vme.c b/tests/intel/gem_media_vme.c
+similarity index 100%
+rename from tests/i915/gem_media_vme.c
+rename to tests/intel/gem_media_vme.c
+diff --git a/tests/i915/gem_mmap.c b/tests/intel/gem_mmap.c
+similarity index 100%
+rename from tests/i915/gem_mmap.c
+rename to tests/intel/gem_mmap.c
+diff --git a/tests/i915/gem_mmap_gtt.c b/tests/intel/gem_mmap_gtt.c
+similarity index 100%
+rename from tests/i915/gem_mmap_gtt.c
+rename to tests/intel/gem_mmap_gtt.c
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
+similarity index 100%
+rename from tests/i915/gem_mmap_offset.c
+rename to tests/intel/gem_mmap_offset.c
+diff --git a/tests/i915/gem_mmap_wc.c b/tests/intel/gem_mmap_wc.c
+similarity index 100%
+rename from tests/i915/gem_mmap_wc.c
+rename to tests/intel/gem_mmap_wc.c
+diff --git a/tests/i915/gem_partial_pwrite_pread.c b/tests/intel/gem_partial_pwrite_pread.c
+similarity index 100%
+rename from tests/i915/gem_partial_pwrite_pread.c
+rename to tests/intel/gem_partial_pwrite_pread.c
+diff --git a/tests/i915/gem_pipe_control_store_loop.c b/tests/intel/gem_pipe_control_store_loop.c
+similarity index 100%
+rename from tests/i915/gem_pipe_control_store_loop.c
+rename to tests/intel/gem_pipe_control_store_loop.c
+diff --git a/tests/i915/gem_ppgtt.c b/tests/intel/gem_ppgtt.c
+similarity index 100%
+rename from tests/i915/gem_ppgtt.c
+rename to tests/intel/gem_ppgtt.c
+diff --git a/tests/i915/gem_pread.c b/tests/intel/gem_pread.c
+similarity index 100%
+rename from tests/i915/gem_pread.c
+rename to tests/intel/gem_pread.c
+diff --git a/tests/i915/gem_pread_after_blit.c b/tests/intel/gem_pread_after_blit.c
+similarity index 100%
+rename from tests/i915/gem_pread_after_blit.c
+rename to tests/intel/gem_pread_after_blit.c
+diff --git a/tests/i915/gem_pwrite.c b/tests/intel/gem_pwrite.c
+similarity index 100%
+rename from tests/i915/gem_pwrite.c
+rename to tests/intel/gem_pwrite.c
+diff --git a/tests/i915/gem_pwrite_snooped.c b/tests/intel/gem_pwrite_snooped.c
+similarity index 100%
+rename from tests/i915/gem_pwrite_snooped.c
+rename to tests/intel/gem_pwrite_snooped.c
+diff --git a/tests/i915/gem_pxp.c b/tests/intel/gem_pxp.c
+similarity index 100%
+rename from tests/i915/gem_pxp.c
+rename to tests/intel/gem_pxp.c
+diff --git a/tests/i915/gem_read_read_speed.c b/tests/intel/gem_read_read_speed.c
+similarity index 100%
+rename from tests/i915/gem_read_read_speed.c
+rename to tests/intel/gem_read_read_speed.c
+diff --git a/tests/i915/gem_readwrite.c b/tests/intel/gem_readwrite.c
+similarity index 100%
+rename from tests/i915/gem_readwrite.c
+rename to tests/intel/gem_readwrite.c
+diff --git a/tests/i915/gem_reg_read.c b/tests/intel/gem_reg_read.c
+similarity index 100%
+rename from tests/i915/gem_reg_read.c
+rename to tests/intel/gem_reg_read.c
+diff --git a/tests/i915/gem_render_copy.c b/tests/intel/gem_render_copy.c
+similarity index 100%
+rename from tests/i915/gem_render_copy.c
+rename to tests/intel/gem_render_copy.c
+diff --git a/tests/i915/gem_render_copy_redux.c b/tests/intel/gem_render_copy_redux.c
+similarity index 100%
+rename from tests/i915/gem_render_copy_redux.c
+rename to tests/intel/gem_render_copy_redux.c
+diff --git a/tests/i915/gem_render_linear_blits.c b/tests/intel/gem_render_linear_blits.c
+similarity index 100%
+rename from tests/i915/gem_render_linear_blits.c
+rename to tests/intel/gem_render_linear_blits.c
+diff --git a/tests/i915/gem_render_tiled_blits.c b/tests/intel/gem_render_tiled_blits.c
+similarity index 100%
+rename from tests/i915/gem_render_tiled_blits.c
+rename to tests/intel/gem_render_tiled_blits.c
+diff --git a/tests/i915/gem_request_retire.c b/tests/intel/gem_request_retire.c
+similarity index 100%
+rename from tests/i915/gem_request_retire.c
+rename to tests/intel/gem_request_retire.c
+diff --git a/tests/i915/gem_reset_stats.c b/tests/intel/gem_reset_stats.c
+similarity index 100%
+rename from tests/i915/gem_reset_stats.c
+rename to tests/intel/gem_reset_stats.c
+diff --git a/tests/i915/gem_ringfill.c b/tests/intel/gem_ringfill.c
+similarity index 100%
+rename from tests/i915/gem_ringfill.c
+rename to tests/intel/gem_ringfill.c
+diff --git a/tests/i915/gem_set_tiling_vs_blt.c b/tests/intel/gem_set_tiling_vs_blt.c
+similarity index 100%
+rename from tests/i915/gem_set_tiling_vs_blt.c
+rename to tests/intel/gem_set_tiling_vs_blt.c
+diff --git a/tests/i915/gem_set_tiling_vs_gtt.c b/tests/intel/gem_set_tiling_vs_gtt.c
+similarity index 100%
+rename from tests/i915/gem_set_tiling_vs_gtt.c
+rename to tests/intel/gem_set_tiling_vs_gtt.c
+diff --git a/tests/i915/gem_set_tiling_vs_pwrite.c b/tests/intel/gem_set_tiling_vs_pwrite.c
+similarity index 100%
+rename from tests/i915/gem_set_tiling_vs_pwrite.c
+rename to tests/intel/gem_set_tiling_vs_pwrite.c
+diff --git a/tests/i915/gem_shrink.c b/tests/intel/gem_shrink.c
+similarity index 100%
+rename from tests/i915/gem_shrink.c
+rename to tests/intel/gem_shrink.c
+diff --git a/tests/i915/gem_softpin.c b/tests/intel/gem_softpin.c
+similarity index 100%
+rename from tests/i915/gem_softpin.c
+rename to tests/intel/gem_softpin.c
+diff --git a/tests/i915/gem_spin_batch.c b/tests/intel/gem_spin_batch.c
+similarity index 100%
+rename from tests/i915/gem_spin_batch.c
+rename to tests/intel/gem_spin_batch.c
+diff --git a/tests/i915/gem_streaming_writes.c b/tests/intel/gem_streaming_writes.c
+similarity index 100%
+rename from tests/i915/gem_streaming_writes.c
+rename to tests/intel/gem_streaming_writes.c
+diff --git a/tests/i915/gem_stress.c b/tests/intel/gem_stress.c
+similarity index 100%
+rename from tests/i915/gem_stress.c
+rename to tests/intel/gem_stress.c
+diff --git a/tests/i915/gem_sync.c b/tests/intel/gem_sync.c
+similarity index 100%
+rename from tests/i915/gem_sync.c
+rename to tests/intel/gem_sync.c
+diff --git a/tests/i915/gem_tiled_blits.c b/tests/intel/gem_tiled_blits.c
+similarity index 100%
+rename from tests/i915/gem_tiled_blits.c
+rename to tests/intel/gem_tiled_blits.c
+diff --git a/tests/i915/gem_tiled_fence_blits.c b/tests/intel/gem_tiled_fence_blits.c
+similarity index 100%
+rename from tests/i915/gem_tiled_fence_blits.c
+rename to tests/intel/gem_tiled_fence_blits.c
+diff --git a/tests/i915/gem_tiled_partial_pwrite_pread.c b/tests/intel/gem_tiled_partial_pwrite_pread.c
+similarity index 100%
+rename from tests/i915/gem_tiled_partial_pwrite_pread.c
+rename to tests/intel/gem_tiled_partial_pwrite_pread.c
+diff --git a/tests/i915/gem_tiled_pread_basic.c b/tests/intel/gem_tiled_pread_basic.c
+similarity index 100%
+rename from tests/i915/gem_tiled_pread_basic.c
+rename to tests/intel/gem_tiled_pread_basic.c
+diff --git a/tests/i915/gem_tiled_pread_pwrite.c b/tests/intel/gem_tiled_pread_pwrite.c
+similarity index 100%
+rename from tests/i915/gem_tiled_pread_pwrite.c
+rename to tests/intel/gem_tiled_pread_pwrite.c
+diff --git a/tests/i915/gem_tiled_swapping.c b/tests/intel/gem_tiled_swapping.c
+similarity index 100%
+rename from tests/i915/gem_tiled_swapping.c
+rename to tests/intel/gem_tiled_swapping.c
+diff --git a/tests/i915/gem_tiled_wb.c b/tests/intel/gem_tiled_wb.c
+similarity index 100%
+rename from tests/i915/gem_tiled_wb.c
+rename to tests/intel/gem_tiled_wb.c
+diff --git a/tests/i915/gem_tiled_wc.c b/tests/intel/gem_tiled_wc.c
+similarity index 100%
+rename from tests/i915/gem_tiled_wc.c
+rename to tests/intel/gem_tiled_wc.c
+diff --git a/tests/i915/gem_tiling_max_stride.c b/tests/intel/gem_tiling_max_stride.c
+similarity index 100%
+rename from tests/i915/gem_tiling_max_stride.c
+rename to tests/intel/gem_tiling_max_stride.c
+diff --git a/tests/i915/gem_unfence_active_buffers.c b/tests/intel/gem_unfence_active_buffers.c
+similarity index 100%
+rename from tests/i915/gem_unfence_active_buffers.c
+rename to tests/intel/gem_unfence_active_buffers.c
+diff --git a/tests/i915/gem_unref_active_buffers.c b/tests/intel/gem_unref_active_buffers.c
+similarity index 100%
+rename from tests/i915/gem_unref_active_buffers.c
+rename to tests/intel/gem_unref_active_buffers.c
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/intel/gem_userptr_blits.c
+similarity index 100%
+rename from tests/i915/gem_userptr_blits.c
+rename to tests/intel/gem_userptr_blits.c
+diff --git a/tests/i915/gem_vm_create.c b/tests/intel/gem_vm_create.c
+similarity index 100%
+rename from tests/i915/gem_vm_create.c
+rename to tests/intel/gem_vm_create.c
+diff --git a/tests/i915/gem_wait.c b/tests/intel/gem_wait.c
+similarity index 100%
+rename from tests/i915/gem_wait.c
+rename to tests/intel/gem_wait.c
+diff --git a/tests/i915/gem_watchdog.c b/tests/intel/gem_watchdog.c
+similarity index 100%
+rename from tests/i915/gem_watchdog.c
+rename to tests/intel/gem_watchdog.c
+diff --git a/tests/i915/gem_workarounds.c b/tests/intel/gem_workarounds.c
+similarity index 100%
+rename from tests/i915/gem_workarounds.c
+rename to tests/intel/gem_workarounds.c
+diff --git a/tests/i915/gen3_mixed_blits.c b/tests/intel/gen3_mixed_blits.c
+similarity index 100%
+rename from tests/i915/gen3_mixed_blits.c
+rename to tests/intel/gen3_mixed_blits.c
+diff --git a/tests/i915/gen3_render_linear_blits.c b/tests/intel/gen3_render_linear_blits.c
+similarity index 100%
+rename from tests/i915/gen3_render_linear_blits.c
+rename to tests/intel/gen3_render_linear_blits.c
+diff --git a/tests/i915/gen3_render_mixed_blits.c b/tests/intel/gen3_render_mixed_blits.c
+similarity index 100%
+rename from tests/i915/gen3_render_mixed_blits.c
+rename to tests/intel/gen3_render_mixed_blits.c
+diff --git a/tests/i915/gen3_render_tiledx_blits.c b/tests/intel/gen3_render_tiledx_blits.c
+similarity index 100%
+rename from tests/i915/gen3_render_tiledx_blits.c
+rename to tests/intel/gen3_render_tiledx_blits.c
+diff --git a/tests/i915/gen3_render_tiledy_blits.c b/tests/intel/gen3_render_tiledy_blits.c
+similarity index 100%
+rename from tests/i915/gen3_render_tiledy_blits.c
+rename to tests/intel/gen3_render_tiledy_blits.c
+diff --git a/tests/i915/gen7_exec_parse.c b/tests/intel/gen7_exec_parse.c
+similarity index 100%
+rename from tests/i915/gen7_exec_parse.c
+rename to tests/intel/gen7_exec_parse.c
+diff --git a/tests/i915/gen9_exec_parse.c b/tests/intel/gen9_exec_parse.c
+similarity index 100%
+rename from tests/i915/gen9_exec_parse.c
+rename to tests/intel/gen9_exec_parse.c
+diff --git a/tests/i915/i915_fb_tiling.c b/tests/intel/i915_fb_tiling.c
+similarity index 100%
+rename from tests/i915/i915_fb_tiling.c
+rename to tests/intel/i915_fb_tiling.c
+diff --git a/tests/i915/i915_getparams_basic.c b/tests/intel/i915_getparams_basic.c
+similarity index 100%
+rename from tests/i915/i915_getparams_basic.c
+rename to tests/intel/i915_getparams_basic.c
+diff --git a/tests/i915/i915_hangman.c b/tests/intel/i915_hangman.c
+similarity index 100%
+rename from tests/i915/i915_hangman.c
+rename to tests/intel/i915_hangman.c
+diff --git a/tests/i915/i915_hwmon.c b/tests/intel/i915_hwmon.c
+similarity index 100%
+rename from tests/i915/i915_hwmon.c
+rename to tests/intel/i915_hwmon.c
+diff --git a/tests/i915/i915_module_load.c b/tests/intel/i915_module_load.c
+similarity index 100%
+rename from tests/i915/i915_module_load.c
+rename to tests/intel/i915_module_load.c
+diff --git a/tests/i915/i915_pciid.c b/tests/intel/i915_pciid.c
+similarity index 100%
+rename from tests/i915/i915_pciid.c
+rename to tests/intel/i915_pciid.c
+diff --git a/tests/i915/i915_pipe_stress.c b/tests/intel/i915_pipe_stress.c
+similarity index 100%
+rename from tests/i915/i915_pipe_stress.c
+rename to tests/intel/i915_pipe_stress.c
+diff --git a/tests/i915/i915_pm_backlight.c b/tests/intel/i915_pm_backlight.c
+similarity index 100%
+rename from tests/i915/i915_pm_backlight.c
+rename to tests/intel/i915_pm_backlight.c
+diff --git a/tests/i915/i915_pm_dc.c b/tests/intel/i915_pm_dc.c
+similarity index 100%
+rename from tests/i915/i915_pm_dc.c
+rename to tests/intel/i915_pm_dc.c
+diff --git a/tests/i915/i915_pm_freq_api.c b/tests/intel/i915_pm_freq_api.c
+similarity index 100%
+rename from tests/i915/i915_pm_freq_api.c
+rename to tests/intel/i915_pm_freq_api.c
+diff --git a/tests/i915/i915_pm_freq_mult.c b/tests/intel/i915_pm_freq_mult.c
+similarity index 100%
+rename from tests/i915/i915_pm_freq_mult.c
+rename to tests/intel/i915_pm_freq_mult.c
+diff --git a/tests/i915/i915_pm_lpsp.c b/tests/intel/i915_pm_lpsp.c
+similarity index 100%
+rename from tests/i915/i915_pm_lpsp.c
+rename to tests/intel/i915_pm_lpsp.c
+diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
+similarity index 100%
+rename from tests/i915/i915_pm_rc6_residency.c
+rename to tests/intel/i915_pm_rc6_residency.c
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
+similarity index 100%
+rename from tests/i915/i915_pm_rpm.c
+rename to tests/intel/i915_pm_rpm.c
+diff --git a/tests/i915/i915_pm_rps.c b/tests/intel/i915_pm_rps.c
+similarity index 100%
+rename from tests/i915/i915_pm_rps.c
+rename to tests/intel/i915_pm_rps.c
+diff --git a/tests/i915/i915_pm_sseu.c b/tests/intel/i915_pm_sseu.c
+similarity index 100%
+rename from tests/i915/i915_pm_sseu.c
+rename to tests/intel/i915_pm_sseu.c
+diff --git a/tests/i915/i915_power.c b/tests/intel/i915_power.c
+similarity index 100%
+rename from tests/i915/i915_power.c
+rename to tests/intel/i915_power.c
+diff --git a/tests/i915/i915_query.c b/tests/intel/i915_query.c
+similarity index 100%
+rename from tests/i915/i915_query.c
+rename to tests/intel/i915_query.c
+diff --git a/tests/i915/i915_selftest.c b/tests/intel/i915_selftest.c
+similarity index 100%
+rename from tests/i915/i915_selftest.c
+rename to tests/intel/i915_selftest.c
+diff --git a/tests/i915/i915_suspend.c b/tests/intel/i915_suspend.c
+similarity index 100%
+rename from tests/i915/i915_suspend.c
+rename to tests/intel/i915_suspend.c
+diff --git a/tests/i915/kms_big_fb.c b/tests/intel/kms_big_fb.c
+similarity index 100%
+rename from tests/i915/kms_big_fb.c
+rename to tests/intel/kms_big_fb.c
+diff --git a/tests/i915/kms_big_joiner.c b/tests/intel/kms_big_joiner.c
+similarity index 100%
+rename from tests/i915/kms_big_joiner.c
+rename to tests/intel/kms_big_joiner.c
+diff --git a/tests/i915/kms_busy.c b/tests/intel/kms_busy.c
+similarity index 100%
+rename from tests/i915/kms_busy.c
+rename to tests/intel/kms_busy.c
+diff --git a/tests/i915/kms_ccs.c b/tests/intel/kms_ccs.c
+similarity index 100%
+rename from tests/i915/kms_ccs.c
+rename to tests/intel/kms_ccs.c
+diff --git a/tests/i915/kms_cdclk.c b/tests/intel/kms_cdclk.c
+similarity index 100%
+rename from tests/i915/kms_cdclk.c
+rename to tests/intel/kms_cdclk.c
+diff --git a/tests/i915/kms_draw_crc.c b/tests/intel/kms_draw_crc.c
+similarity index 100%
+rename from tests/i915/kms_draw_crc.c
+rename to tests/intel/kms_draw_crc.c
+diff --git a/tests/i915/kms_dsc.c b/tests/intel/kms_dsc.c
+similarity index 100%
+rename from tests/i915/kms_dsc.c
+rename to tests/intel/kms_dsc.c
+diff --git a/tests/i915/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
+similarity index 100%
+rename from tests/i915/kms_dsc_helper.c
+rename to tests/intel/kms_dsc_helper.c
+diff --git a/tests/i915/kms_dsc_helper.h b/tests/intel/kms_dsc_helper.h
+similarity index 100%
+rename from tests/i915/kms_dsc_helper.h
+rename to tests/intel/kms_dsc_helper.h
+diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
+similarity index 100%
+rename from tests/i915/kms_fbcon_fbt.c
+rename to tests/intel/kms_fbcon_fbt.c
+diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/intel/kms_fence_pin_leak.c
+similarity index 100%
+rename from tests/i915/kms_fence_pin_leak.c
+rename to tests/intel/kms_fence_pin_leak.c
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
+similarity index 100%
+rename from tests/i915/kms_flip_scaled_crc.c
+rename to tests/intel/kms_flip_scaled_crc.c
+diff --git a/tests/i915/kms_flip_tiling.c b/tests/intel/kms_flip_tiling.c
+similarity index 100%
+rename from tests/i915/kms_flip_tiling.c
+rename to tests/intel/kms_flip_tiling.c
+diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+similarity index 100%
+rename from tests/i915/kms_frontbuffer_tracking.c
+rename to tests/intel/kms_frontbuffer_tracking.c
+diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/intel/kms_legacy_colorkey.c
+similarity index 100%
+rename from tests/i915/kms_legacy_colorkey.c
+rename to tests/intel/kms_legacy_colorkey.c
+diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/intel/kms_mmap_write_crc.c
+similarity index 100%
+rename from tests/i915/kms_mmap_write_crc.c
+rename to tests/intel/kms_mmap_write_crc.c
+diff --git a/tests/i915/kms_pipe_b_c_ivb.c b/tests/intel/kms_pipe_b_c_ivb.c
+similarity index 100%
+rename from tests/i915/kms_pipe_b_c_ivb.c
+rename to tests/intel/kms_pipe_b_c_ivb.c
+diff --git a/tests/i915/kms_psr.c b/tests/intel/kms_psr.c
+similarity index 100%
+rename from tests/i915/kms_psr.c
+rename to tests/intel/kms_psr.c
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+similarity index 100%
+rename from tests/i915/kms_psr2_sf.c
+rename to tests/intel/kms_psr2_sf.c
+diff --git a/tests/i915/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
+similarity index 100%
+rename from tests/i915/kms_psr2_su.c
+rename to tests/intel/kms_psr2_su.c
+diff --git a/tests/i915/kms_psr_stress_test.c b/tests/intel/kms_psr_stress_test.c
+similarity index 100%
+rename from tests/i915/kms_psr_stress_test.c
+rename to tests/intel/kms_psr_stress_test.c
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/intel/kms_pwrite_crc.c
+similarity index 100%
+rename from tests/i915/kms_pwrite_crc.c
+rename to tests/intel/kms_pwrite_crc.c
+diff --git a/tests/i915/perf.c b/tests/intel/perf.c
+similarity index 100%
+rename from tests/i915/perf.c
+rename to tests/intel/perf.c
+diff --git a/tests/i915/perf_pmu.c b/tests/intel/perf_pmu.c
+similarity index 100%
+rename from tests/i915/perf_pmu.c
+rename to tests/intel/perf_pmu.c
+diff --git a/tests/i915/sysfs_defaults.c b/tests/intel/sysfs_defaults.c
+similarity index 100%
+rename from tests/i915/sysfs_defaults.c
+rename to tests/intel/sysfs_defaults.c
+diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/intel/sysfs_heartbeat_interval.c
+similarity index 100%
+rename from tests/i915/sysfs_heartbeat_interval.c
+rename to tests/intel/sysfs_heartbeat_interval.c
+diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/intel/sysfs_preempt_timeout.c
+similarity index 100%
+rename from tests/i915/sysfs_preempt_timeout.c
+rename to tests/intel/sysfs_preempt_timeout.c
+diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/intel/sysfs_timeslice_duration.c
+similarity index 100%
+rename from tests/i915/sysfs_timeslice_duration.c
+rename to tests/intel/sysfs_timeslice_duration.c
+diff --git a/tests/xe/xe_compute.c b/tests/intel/xe_compute.c
+similarity index 100%
+rename from tests/xe/xe_compute.c
+rename to tests/intel/xe_compute.c
+diff --git a/tests/xe/xe_create.c b/tests/intel/xe_create.c
+similarity index 100%
+rename from tests/xe/xe_create.c
+rename to tests/intel/xe_create.c
+diff --git a/tests/xe/xe_debugfs.c b/tests/intel/xe_debugfs.c
+similarity index 100%
+rename from tests/xe/xe_debugfs.c
+rename to tests/intel/xe_debugfs.c
+diff --git a/tests/xe/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
+similarity index 100%
+rename from tests/xe/xe_dma_buf_sync.c
+rename to tests/intel/xe_dma_buf_sync.c
+diff --git a/tests/xe/xe_evict.c b/tests/intel/xe_evict.c
+similarity index 100%
+rename from tests/xe/xe_evict.c
+rename to tests/intel/xe_evict.c
+diff --git a/tests/xe/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
+similarity index 100%
+rename from tests/xe/xe_exec_balancer.c
+rename to tests/intel/xe_exec_balancer.c
+diff --git a/tests/xe/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
+similarity index 100%
+rename from tests/xe/xe_exec_basic.c
+rename to tests/intel/xe_exec_basic.c
+diff --git a/tests/xe/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
+similarity index 100%
+rename from tests/xe/xe_exec_compute_mode.c
+rename to tests/intel/xe_exec_compute_mode.c
+diff --git a/tests/xe/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
+similarity index 100%
+rename from tests/xe/xe_exec_fault_mode.c
+rename to tests/intel/xe_exec_fault_mode.c
+diff --git a/tests/xe/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+similarity index 100%
+rename from tests/xe/xe_exec_reset.c
+rename to tests/intel/xe_exec_reset.c
+diff --git a/tests/xe/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+similarity index 100%
+rename from tests/xe/xe_exec_threads.c
+rename to tests/intel/xe_exec_threads.c
+diff --git a/tests/xe/xe_gpgpu_fill.c b/tests/intel/xe_gpgpu_fill.c
+similarity index 100%
+rename from tests/xe/xe_gpgpu_fill.c
+rename to tests/intel/xe_gpgpu_fill.c
+diff --git a/tests/xe/xe_guc_pc.c b/tests/intel/xe_guc_pc.c
+similarity index 100%
+rename from tests/xe/xe_guc_pc.c
+rename to tests/intel/xe_guc_pc.c
+diff --git a/tests/xe/xe_huc_copy.c b/tests/intel/xe_huc_copy.c
+similarity index 100%
+rename from tests/xe/xe_huc_copy.c
+rename to tests/intel/xe_huc_copy.c
+diff --git a/tests/xe/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
+similarity index 100%
+rename from tests/xe/xe_intel_bb.c
+rename to tests/intel/xe_intel_bb.c
+diff --git a/tests/xe/xe_mmap.c b/tests/intel/xe_mmap.c
+similarity index 100%
+rename from tests/xe/xe_mmap.c
+rename to tests/intel/xe_mmap.c
+diff --git a/tests/xe/xe_mmio.c b/tests/intel/xe_mmio.c
+similarity index 100%
+rename from tests/xe/xe_mmio.c
+rename to tests/intel/xe_mmio.c
+diff --git a/tests/xe/xe_module_load.c b/tests/intel/xe_module_load.c
+similarity index 100%
+rename from tests/xe/xe_module_load.c
+rename to tests/intel/xe_module_load.c
+diff --git a/tests/xe/xe_noexec_ping_pong.c b/tests/intel/xe_noexec_ping_pong.c
+similarity index 100%
+rename from tests/xe/xe_noexec_ping_pong.c
+rename to tests/intel/xe_noexec_ping_pong.c
+diff --git a/tests/xe/xe_pm.c b/tests/intel/xe_pm.c
+similarity index 100%
+rename from tests/xe/xe_pm.c
+rename to tests/intel/xe_pm.c
+diff --git a/tests/xe/xe_prime_self_import.c b/tests/intel/xe_prime_self_import.c
+similarity index 100%
+rename from tests/xe/xe_prime_self_import.c
+rename to tests/intel/xe_prime_self_import.c
+diff --git a/tests/xe/xe_query.c b/tests/intel/xe_query.c
+similarity index 100%
+rename from tests/xe/xe_query.c
+rename to tests/intel/xe_query.c
+diff --git a/tests/xe/xe_test_config.json b/tests/intel/xe_test_config.json
+similarity index 100%
+rename from tests/xe/xe_test_config.json
+rename to tests/intel/xe_test_config.json
+diff --git a/tests/xe/xe_vm.c b/tests/intel/xe_vm.c
+similarity index 100%
+rename from tests/xe/xe_vm.c
+rename to tests/intel/xe_vm.c
+diff --git a/tests/xe/xe_waitfence.c b/tests/intel/xe_waitfence.c
+similarity index 100%
+rename from tests/xe/xe_waitfence.c
+rename to tests/intel/xe_waitfence.c
+diff --git a/tests/meson.build b/tests/meson.build
+index c15eb3a08..14f81083f 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -83,7 +83,7 @@ test_progs = [
+ 	'vgem_slow',
+ ]
+ 
+-i915_progs = [
++intel_progs = [
+ 	'api_intel_allocator',
+ 	'api_intel_bb',
+ 	'gen3_mixed_blits',
+@@ -240,9 +240,6 @@ i915_progs = [
+ 	'sysfs_heartbeat_interval',
+ 	'sysfs_preempt_timeout',
+ 	'sysfs_timeslice_duration',
+-]
+-
+-xe_progs = [
+ 	'xe_create',
+ 	'xe_compute',
+ 	'xe_dma_buf_sync',
+@@ -307,19 +304,9 @@ foreach prog : test_progs
+ 	test_list += prog
+ endforeach
+ 
+-foreach prog : i915_progs
+-	test_executables += executable(prog,
+-		   join_paths('i915', prog + '.c'),
+-		   dependencies : test_deps,
+-		   install_dir : libexecdir,
+-		   install_rpath : libexecdir_rpathdir,
+-		   install : true)
+-	test_list += prog
+-endforeach
+-
+-foreach prog : xe_progs
++foreach prog : intel_progs
+ 	test_executables += executable(prog,
+-		   join_paths('xe', prog + '.c'),
++		   join_paths('intel', prog + '.c'),
+ 		   dependencies : test_deps,
+ 		   install_dir : libexecdir,
+ 		   install_rpath : libexecdir_rpathdir,
+@@ -351,7 +338,7 @@ if chamelium.found()
+ endif
+ 
+ test_executables += executable('drm_fdinfo',
+-	   join_paths('i915', 'drm_fdinfo.c'),
++	   join_paths('intel', 'drm_fdinfo.c'),
+ 	   dependencies : test_deps + [ lib_igt_drm_fdinfo ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -366,7 +353,7 @@ test_executables += executable('dumb_buffer', 'dumb_buffer.c',
+ test_list += 'dumb_buffer'
+ 
+ test_executables += executable('gem_create',
+-	   join_paths('i915', 'gem_create.c'),
++	   join_paths('intel', 'gem_create.c'),
+ 	   dependencies : test_deps + [ libatomic ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -374,7 +361,7 @@ test_executables += executable('gem_create',
+ test_list += 'gem_create'
+ 
+ test_executables += executable('gem_ctx_freq',
+-	   join_paths('i915', 'gem_ctx_freq.c'),
++	   join_paths('intel', 'gem_ctx_freq.c'),
+ 	   dependencies : test_deps + [ lib_igt_perf ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -382,7 +369,7 @@ test_executables += executable('gem_ctx_freq',
+ test_list += 'gem_ctx_freq'
+ 
+ test_executables += executable('gem_ctx_sseu',
+-	   join_paths('i915', 'gem_ctx_sseu.c'),
++	   join_paths('intel', 'gem_ctx_sseu.c'),
+ 	   dependencies : test_deps + [ lib_igt_perf ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -390,14 +377,14 @@ test_executables += executable('gem_ctx_sseu',
+ test_list += 'gem_ctx_sseu'
+ 
+ test_executables += executable('gem_eio',
+-	   join_paths('i915', 'gem_eio.c'),
++	   join_paths('intel', 'gem_eio.c'),
+ 	   dependencies : test_deps + [ realtime ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+ 	   install : true)
+ test_list += 'gem_eio'
+ 
+-test_executables += executable('gem_exec_balancer', 'i915/gem_exec_balancer.c',
++test_executables += executable('gem_exec_balancer', 'intel/gem_exec_balancer.c',
+ 	   dependencies : test_deps + [ lib_igt_perf ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -405,7 +392,7 @@ test_executables += executable('gem_exec_balancer', 'i915/gem_exec_balancer.c',
+ test_list += 'gem_exec_balancer'
+ 
+ test_executables += executable('gem_mmap_offset',
+-	   join_paths('i915', 'gem_mmap_offset.c'),
++	   join_paths('intel', 'gem_mmap_offset.c'),
+ 	   dependencies : test_deps + [ libatomic ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -413,7 +400,7 @@ test_executables += executable('gem_mmap_offset',
+ test_list += 'gem_mmap_offset'
+ 
+ test_executables += executable('i915_pm_freq_mult',
+-	   join_paths('i915', 'i915_pm_freq_mult.c'),
++	   join_paths('intel', 'i915_pm_freq_mult.c'),
+ 	   dependencies : test_deps + [ lib_igt_perf ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -421,7 +408,7 @@ test_executables += executable('i915_pm_freq_mult',
+ test_list += 'i915_pm_freq_mult'
+ 
+ test_executables += executable('i915_pm_rc6_residency',
+-	   join_paths('i915', 'i915_pm_rc6_residency.c'),
++	   join_paths('intel', 'i915_pm_rc6_residency.c'),
+ 	   dependencies : test_deps + [ lib_igt_perf ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -429,7 +416,7 @@ test_executables += executable('i915_pm_rc6_residency',
+ test_list += 'i915_pm_rc6_residency'
+ 
+ test_executables += executable('gem_barrier_race',
+-	   join_paths('i915', 'gem_barrier_race.c'),
++	   join_paths('intel', 'gem_barrier_race.c'),
+ 	   dependencies : test_deps + [ lib_igt_i915_perf ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -437,7 +424,7 @@ test_executables += executable('gem_barrier_race',
+ test_list += 'gem_barrier_race'
+ 
+ test_executables += executable('perf_pmu',
+-	   join_paths('i915', 'perf_pmu.c'),
++	   join_paths('intel', 'perf_pmu.c'),
+ 	   dependencies : test_deps + [ lib_igt_perf ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -445,7 +432,7 @@ test_executables += executable('perf_pmu',
+ test_list += 'perf_pmu'
+ 
+ test_executables += executable('perf',
+-	   join_paths('i915', 'perf.c'),
++	   join_paths('intel', 'perf.c'),
+ 	   dependencies : test_deps + [ lib_igt_i915_perf ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -475,7 +462,7 @@ test_executables += executable('kms_color',
+ test_list += 'kms_color'
+ 
+ test_executables += executable('kms_dsc',
+-	   [ join_paths('i915', 'kms_dsc.c'), join_paths ('i915', 'kms_dsc_helper.c')],
++	   [ join_paths('intel', 'kms_dsc.c'), join_paths ('intel', 'kms_dsc_helper.c')],
+ 	   dependencies : test_deps,
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -483,7 +470,7 @@ test_executables += executable('kms_dsc',
+ test_list += 'kms_dsc'
+ 
+ test_executables += executable('kms_psr2_sf',
+-	   [ join_paths('i915', 'kms_psr2_sf.c'), join_paths ('i915', 'kms_dsc_helper.c')],
++	   [ join_paths('intel', 'kms_psr2_sf.c'), join_paths ('intel', 'kms_dsc_helper.c')],
+ 	   dependencies : test_deps,
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -522,7 +509,7 @@ test_list_target = custom_target('testlist',
+ 	      install : true,
+ 	      install_dir : libexecdir)
+ 
+-test_executables += executable('gem_concurrent_all', 'i915/gem_concurrent_all.c',
++test_executables += executable('gem_concurrent_all', 'intel/gem_concurrent_all.c',
+ 	   dependencies : test_deps + [ libatomic ],
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -540,7 +527,7 @@ foreach prog : test_list
+ 	test('testcase check ' + prog, test_script, args : prog)
+ endforeach
+ 
+-executable('gem_stress', 'i915/gem_stress.c',
++executable('gem_stress', 'intel/gem_stress.c',
+ 	   install : true,
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+-- 
+2.40.0
 
-  * Functionality: context management
-
-> + * Test category: suspend
->   *
->   * SUBTEST: suspend-resume-context
->   * Feature: suspend, workarounds
-> + * Functionality: Test to verify gem WA registers during suspend-resume
--------------------- ^
-
-> + * Test category: suspend
->   *
->   * SUBTEST: suspend-resume-fd
->   * Feature: suspend, workarounds
-> + * Functionality: Test to verify gem WA registers during suspend-resume
--------------------- ^
-
-> + * Test category: suspend
->   */
->  
->  #define PAGE_SIZE 4096
-> diff --git a/tests/i915/i915_getparams_basic.c b/tests/i915/i915_getparams_basic.c
-> index e026aad565ff..74ccaf4d35f0 100644
-> --- a/tests/i915/i915_getparams_basic.c
-> +++ b/tests/i915/i915_getparams_basic.c
-> @@ -32,9 +32,13 @@
->  #include <i915_drm.h>
->  /**
->   * TEST: i915 getparams basic
-> + * Category: Infrastructure
->   * Description: Tests the export of parameters via DRM_IOCTL_I915_GETPARAM
->   * Feature: gem_core
-> + * Functionality: device topology
->   * Run type: BAT
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: basic-eu-total
->   * Description: Examine the export of EU_TOTAL parameter
-> diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-> index ef45b25adacd..fc46bd29764b 100644
-> --- a/tests/i915/i915_hangman.c
-> +++ b/tests/i915/i915_hangman.c
-> @@ -42,43 +42,65 @@
->  #include "sw_sync.h"
->  /**
->   * TEST: i915 hangman
-> + * Category: Server
->   * Description: Tests for hang detection and recovery
->   * Feature: reset
-> + * Functionality: error handling
-> + * Sub-category: debugger
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: detector
-> - * Description: Check that hang detector works
-> + * Description:
-> + *   Check that hang detector works
-> + *   error detection
->   * Run type: FULL
->   *
->   * SUBTEST: engine-engine-error
-> - * Description: Per engine hang recovery (invalid CS, engine reset)
-> + * Description:
-> + *   Per engine hang recovery (invalid CS, engine reset)
-> + *   error detection
->   * Run type: FULL
->   *
->   * SUBTEST: engine-engine-hang
-> - * Description: Per engine hang recovery (spin, engine reset)
-> + * Description:
-> + *   Per engine hang recovery (spin, engine reset)
-> + *   error detection
->   * Run type: FULL
->   *
->   * SUBTEST: engine-error-state-capture
-> - * Description: Per engine error capture (engine reset)
-> + * Description:
-> + *   Per engine error capture (engine reset)
-> + *   error detection
->   * Run type: FULL
->   *
->   * SUBTEST: error-state-basic
-> - * Description: Basic error capture
-> + * Description:
-> + *   Basic error capture
-> + *   error detection
->   * Run type: BAT
->   *
->   * SUBTEST: gt-engine-error
-> - * Description: Per engine hang recovery (invalid CS, GT reset)
-> + * Description:
-> + *   Per engine hang recovery (invalid CS, GT reset)
-> + *   error detection
->   * Run type: FULL
->   *
->   * SUBTEST: gt-engine-hang
-> - * Description: Per engine hang recovery (spin, GT reset)
-> + * Description:
-> + *   Per engine hang recovery (spin, GT reset)
-> + *   error detection
->   * Run type: FULL
->   *
->   * SUBTEST: gt-error-state-capture
-> - * Description: Per engine error capture (GT reset)
-> + * Description:
-> + *   Per engine error capture (GT reset)
-> + *   error detection
->   * Run type: FULL
->   *
->   * SUBTEST: hangcheck-unterminated
-> - * Description: Check that executing unintialised memory causes a hang
-> + * Description:
-> + *   Check that executing unintialised memory causes a hang
-> + *   error detection
->   * Run type: FULL
->   */
->  
-> diff --git a/tests/i915/i915_hwmon.c b/tests/i915/i915_hwmon.c
-> index 6d1334172c40..279f6821b0da 100644
-> --- a/tests/i915/i915_hwmon.c
-> +++ b/tests/i915/i915_hwmon.c
-> @@ -13,6 +13,7 @@
->   * Description: Tests for i915 hwmon
->   * Feature: hwmon
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: hwmon-read
->   * Description: Verify we can read all hwmon attributes
-> diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-> index ae4e01ef18bc..386be7d602dc 100644
-> --- a/tests/i915/i915_module_load.c
-> +++ b/tests/i915/i915_module_load.c
-> @@ -25,7 +25,11 @@
->  #include <sys/utsname.h>
->  /**
->   * TEST: i915 module load
-> + * Category: Infrastructure
->   * Description: Tests the i915 module loading.
-> + * Functionality: driver handler
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: load
->   * Description: Check if i915 and friends are not yet loaded, then load them.
-> diff --git a/tests/i915/i915_pciid.c b/tests/i915/i915_pciid.c
-> index ae3d2a09d208..c44be56dcbc1 100644
-> --- a/tests/i915/i915_pciid.c
-> +++ b/tests/i915/i915_pciid.c
-> @@ -30,9 +30,13 @@
->  #include "intel_chipset.h"
->  /**
->   * TEST: i915 pciid
-> + * Category: Infrastructure
->   * Description: Check that igt/i915 know about this PCI-ID
->   * Feature: core
-> + * Functionality: device management
->   * Run type: BAT
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST:
->   */
-> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-> index d9b4cbbfe615..61ee7f63190a 100644
-> --- a/tests/i915/i915_pm_rpm.c
-> +++ b/tests/i915/i915_pm_rpm.c
-> @@ -42,6 +42,8 @@
->  #include <sys/stat.h>
->  /**
->   * TEST: i915 pm rpm
-> + * Functionality: Validate PCI device D3 state enter-exit scenario using runtime PM
--------------------- ^
-
-> + * Test category: pm_rpm
->   *
->   * SUBTEST: basic-pci-d3-state
->   * Feature: pm_rpm
-> diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-> index 050d68a16559..93e8e628b4f2 100644
-> --- a/tests/i915/i915_pm_rps.c
-> +++ b/tests/i915/i915_pm_rps.c
-> @@ -53,12 +53,16 @@
->   * SUBTEST: engine-order
->   * Description: Check if context reuse does not affect waitboosting
->   * Feature: pm_rps
-> + * Functionality: Render P-States tests - verify GPU frequency changes
->   * Run type: FULL
-> + * Test category: pm_rps
->   *
->   * SUBTEST: fence-order
->   * Description: Check if the order of fences does not affect waitboosting
->   * Feature: pm_rps, synchronization
-> + * Functionality: Render P-States tests - verify GPU frequency changes
->   * Run type: FULL
-> + * Test category: pm_rps
->   *
->   * SUBTEST: min-max-config-idle
->   * Feature: pm_rps
-> diff --git a/tests/i915/i915_power.c b/tests/i915/i915_power.c
-> index 383c212d2807..3675b9d6d75c 100644
-> --- a/tests/i915/i915_power.c
-> +++ b/tests/i915/i915_power.c
-> @@ -12,6 +12,7 @@
->   * Description: i915 power measurement tests
->   * Feature: hwmon
->   * Run type: FULL
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: sanity
->   * Description: Sanity check gpu power measurement
-> diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
-> index 10c6d43fa7fc..de3aa5c24f2d 100644
-> --- a/tests/i915/i915_query.c
-> +++ b/tests/i915/i915_query.c
-> @@ -29,8 +29,12 @@
->  #include <limits.h>
->  /**
->   * TEST: i915 query
-> + * Category: Infrastructure
->   * Description: Testing the i915 query uAPI.
-> + * Functionality: device topology
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: engine-info
->   * Description: Positive tests for DRM_I915_QUERY_ENGINE_INFO
-> diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
-> index 448cadfb0804..4e7d568570b1 100644
-> --- a/tests/i915/i915_suspend.c
-> +++ b/tests/i915/i915_suspend.c
-> @@ -46,6 +46,7 @@
->  #include "igt_device_scan.h"
->  /**
->   * TEST: i915 suspend
-> + * Test category: suspend
->   *
->   * SUBTEST: basic-s2idle-without-i915
->   * Description: Validate suspend-to-idle without i915 module
-> @@ -55,10 +56,12 @@
->   * SUBTEST: basic-s3-without-i915
->   * Description: Validate S3 without i915 module
->   * Feature: suspend
-> + * Functionality: Validate S3 state without i915 module
->   * Run type: BAT
->   *
->   * SUBTEST: debugfs-reader
->   * Feature: suspend
-> + * Functionality: Test debugfs behavior during suspend to idle
--------------------- ^
-And it goes in other long functionaluty fields below.
-
-Regards,
-Kamil
-
->   * Run type: FULL
->   *
->   * SUBTEST: debugfs-reader-hibernate
-> @@ -83,6 +86,7 @@
->   *
->   * SUBTEST: forcewake
->   * Feature: suspend
-> + * Functionality: Test to prevent GT from suspend by opening forcewake handle
->   * Run type: FULL
->   *
->   * SUBTEST: forcewake-hibernate
-> @@ -95,6 +99,7 @@
->   *
->   * SUBTEST: sysfs-reader
->   * Feature: suspend
-> + * Functionality: Test sysfs behavior during suspend to idle
->   * Run type: FULL
->   *
->   * SUBTEST: sysfs-reader-hibernate
-> diff --git a/tests/i915/sysfs_defaults.c b/tests/i915/sysfs_defaults.c
-> index 73478559fcda..066532f0a5e2 100644
-> --- a/tests/i915/sysfs_defaults.c
-> +++ b/tests/i915/sysfs_defaults.c
-> @@ -35,8 +35,12 @@
->  #include "igt_sysfs.h"
->  /**
->   * TEST: sysfs defaults
-> + * Category: Infrastructure
->   * Feature: gem_core
-> + * Functionality: driver handler
->   * Run type: FULL
-> + * Sub-category: i915
-> + * Test category: GEM_Legacy
->   *
->   * SUBTEST: readonly
->   */
-> diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
-> index 2971acb32811..9161ea5bbf59 100644
-> --- a/tests/i915/sysfs_heartbeat_interval.c
-> +++ b/tests/i915/sysfs_heartbeat_interval.c
-> @@ -45,20 +45,26 @@
->   * TEST: sysfs heartbeat interval
->   * Feature: SMI, cmd_submission
->   * Run type: FULL
-> + * Test category: SysMan
->   *
->   * SUBTEST: idempotent
-> + * Functionality: Test to check whether the heartbeat parameter reports the values set.
->   *
->   * SUBTEST: invalid
-> + * Functionality: Test to check if heartbeat parameter rejects any unrepresentable intervals.
->   *
->   * SUBTEST: long
->   *
->   * SUBTEST: mixed
-> + * Functionality: Run a mixed workload with non-preemptable hogs that exceed the heartbeat, and quicker innocents. Inspect the fence status of each to verify that only the hogs are reset.
->   *
->   * SUBTEST: nopreempt
-> + * Functionality: Test heartbeats with forced preemption disabled.
->   *
->   * SUBTEST: off
->   *
->   * SUBTEST: precise
-> + * Functionality: Tests the heartbeats with preemption and heartbeat parameter enabled.
->   */
->  
->  #define ATTR "heartbeat_interval_ms"
-> diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/i915/sysfs_preempt_timeout.c
-> index e7c09949930c..b7ec5ec3e4b7 100644
-> --- a/tests/i915/sysfs_preempt_timeout.c
-> +++ b/tests/i915/sysfs_preempt_timeout.c
-> @@ -44,14 +44,18 @@
->   * TEST: sysfs preempt timeout
->   * Feature: SMI, context
->   * Run type: FULL
-> + * Test category: SysMan
->   *
->   * SUBTEST: idempotent
-> + * Functionality: Test to check whether the preempt_timeout parameter reports the values set.
->   *
->   * SUBTEST: invalid
-> + * Functionality: Test to check if preempt_timeout parameter rejects any unrepresentable intervals.
->   *
->   * SUBTEST: off
->   *
->   * SUBTEST: timeout
-> + * Functionality: Test to measure the delay from requestion the preemption to its completion. Send down some non-preemptable workloads and then request a switch to a higher priority context. The HW will not be able to respond, so the kernel will be forced to reset the hog.
->   */
->  
->  #define ATTR "preempt_timeout_ms"
-> diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
-> index 0f4905d8b613..58b0ed3f02d2 100644
-> --- a/tests/i915/sysfs_timeslice_duration.c
-> +++ b/tests/i915/sysfs_timeslice_duration.c
-> @@ -47,16 +47,21 @@
->   * TEST: sysfs timeslice duration
->   * Feature: SMI, cmd_submission
->   * Run type: FULL
-> + * Test category: SysMan
->   *
->   * SUBTEST: duration
-> + * Functionality: Test to measure the timeslice duration by watching the xCS_TIMESTAMP and recording its value every time we switch into the context, using a couple of semaphores to busyspin for the timeslice.
->   *
->   * SUBTEST: idempotent
-> + * Functionality: Test to check whether timeslice parameter reports the values set.
->   *
->   * SUBTEST: invalid
-> + * Functionality: Test to check if timeslice parameter rejects any unrepresentable intervals.
->   *
->   * SUBTEST: off
->   *
->   * SUBTEST: timeout
-> + * Functionality: Couple a unpreemptable hog with a fast forced reset and measure the timeslice by how long it takes for the hog to be reset and the high priority context to complete.
->   */
->  
->  #define ATTR "timeslice_duration_ms"
-> -- 
-> 2.40.1
-> 
 
