@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3696B10E27A
- for <igt-dev@lists.freedesktop.org>; Wed,  3 May 2023 11:40:58 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  3 May 2023 17:10:14 +0530
-Message-Id: <20230503114014.132968-3-swati2.sharma@intel.com>
-In-Reply-To: <20230503114014.132968-1-swati2.sharma@intel.com>
-References: <20230503114014.132968-1-swati2.sharma@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7524415723937122919=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915/kms_dsc: Enable validation
- for VDSC output formats
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Thu, 04 May 2023 14:38:40 -0000
+Message-ID: <168321112027.11435.12872470783774250204@emeril.freedesktop.org>
+References: <20230504115155.3070843-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230504115155.3070843-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHM6?=
+ =?utf-8?q?_s/i915=5Fpipe=5Foutput=5Fcombo=5Fvalid/intel=5Fpipe=5Foutput?=
+ =?utf-8?q?=5Fcombo=5Fvalid/?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,414 +18,247 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Existing i-g-t is extended to enable validation for VDSC output
-formats. Output format is selected as per driver policy.For ex:
-If a mode is supported in both RGB and YCbCr420 output formats
-by the sink, i915 driver policy is to try RGB first and fall
-back to YCbCr420, if mode cannot be shown using RGB.
+--===============7524415723937122919==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-To test DSC output format, a debugfs entry is created to force
-this output format. However, before setting debugfs entry, we
-have checked capability i.e. output format is supported by both
-platform and sink.
+== Series Details ==
 
-Also, each mode doesn't support all output formats; so if both
-sink and platform support an output format, we will do a try
-commit with each mode till we get a successful commit.
+Series: tests: s/i915_pipe_output_combo_valid/intel_pipe_output_combo_valid/
+URL   : https://patchwork.freedesktop.org/series/117280/
+State : success
 
-v2: -used is_dsc_ycbcr420_supported() (Ankit)
-    -handled try-commit correctly (Ankit)
-    -instead of flag use enum for output formats (Ankit)
-v3: -instead of global count, pass count as para (Ankit)
-    -print output format (Ankit)
-v4: -optimized while loop (Jouni)
-    -used only try commit (Jouni)
-    -fixed get_next_mode() (Jouni)
-v5: -made generic test to validate all output formats (Jani N)
-v6: -fixed assert (Jouni)
-    -if mode == NULL output_format debugfs reset didn't happen, fixed
-v7: -indentation fixes (Kamil)
-v8: -rebase
-    -removed pipe_output_combo_valid() (Bhanu)
+== Summary ==
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com> (v5)
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- lib/igt_kms.c               |  18 +++++
- lib/igt_kms.h               |   1 +
- tests/i915/kms_dsc.c        | 136 +++++++++++++++++++++++++-----------
- tests/i915/kms_dsc_helper.c |  36 ++++++++++
- tests/i915/kms_dsc_helper.h |   4 ++
- 5 files changed, 156 insertions(+), 39 deletions(-)
+CI Bug Log - changes from CI_DRM_13108 -> IGTPW_8910
+====================================================
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e085e234..c5484148 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -967,6 +967,24 @@ const char *kmstest_scaling_filter_str(int filter)
- 	return find_type_name(scaling_filter_names, filter);
- }
- 
-+static const struct type_name dsc_output_format_names[] = {
-+	{ DSC_FORMAT_RGB, "RGB" },
-+	{ DSC_FORMAT_YCBCR420, "YCBCR420" },
-+	{ DSC_FORMAT_YCBCR444, "YCBCR444" },
-+	{}
-+};
-+
-+/**
-+ * kmstest_dsc_output_format_str:
-+ * @output_format: DSC_FORMAT_* output format value
-+ *
-+ * Returns: A string representing the output format @output format.
-+ */
-+const char *kmstest_dsc_output_format_str(int output_format)
-+{
-+	return find_type_name(dsc_output_format_names, output_format);
-+}
-+
- static const struct type_name connector_type_names[] = {
- 	{ DRM_MODE_CONNECTOR_Unknown, "Unknown" },
- 	{ DRM_MODE_CONNECTOR_VGA, "VGA" },
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 41e041b6..1b6988c1 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -118,6 +118,7 @@ const char *kmstest_encoder_type_str(int type);
- const char *kmstest_connector_status_str(int status);
- const char *kmstest_connector_type_str(int type);
- const char *kmstest_scaling_filter_str(int filter);
-+const char *kmstest_dsc_output_format_str(int output_format);
- 
- void kmstest_dump_mode(drmModeModeInfo *mode);
- #define MAX_HDISPLAY_PER_PIPE 5120
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index c4dfc925..d441c356 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -36,7 +36,8 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- 
- enum dsc_test_type {
- 	TEST_DSC_BASIC,
--	TEST_DSC_BPC
-+	TEST_DSC_BPC,
-+	TEST_DSC_OUTPUT_FORMAT,
- };
- 
- typedef struct {
-@@ -44,6 +45,7 @@ typedef struct {
- 	uint32_t devid;
- 	igt_display_t display;
- 	struct igt_fb fb_test_pattern;
-+	enum dsc_output_format output_format;
- 	unsigned int plane_format;
- 	igt_output_t *output;
- 	int input_bpc;
-@@ -51,7 +53,8 @@ typedef struct {
- 	enum pipe pipe;
- } data_t;
- 
--static int format_list[] =  {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
-+static int output_format_list[] = {DSC_FORMAT_YCBCR420, DSC_FORMAT_YCBCR444};
-+static int format_list[] = {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
- static uint32_t bpc_list[] = {12, 10, 8};
- 
- static inline void manual(const char *expected)
-@@ -71,24 +74,26 @@ static drmModeModeInfo *get_highres_mode(igt_output_t *output)
- 	return highest_mode;
- }
- 
--static bool pipe_output_combo_valid(data_t *data)
-+static drmModeModeInfo *get_next_mode(igt_output_t *output, int index)
- {
--	igt_output_t *output = data->output;
--	drmModeModeInfo *mode;
--	bool ret = true;
--
--	igt_display_reset(&data->display);
--	mode = get_highres_mode(output);
-+	drmModeConnector *connector = output->config.connector;
-+	drmModeModeInfo *next_mode = NULL;
- 
--	igt_output_set_pipe(output, data->pipe);
--	igt_output_override_mode(output, mode);
-+	if (index < connector->count_modes)
-+		next_mode = &connector->modes[index];
- 
--	if (!i915_pipe_output_combo_valid(&data->display))
--		ret = false;
-+	return next_mode;
-+}
- 
--	igt_output_set_pipe(output, PIPE_NONE);
-+static void test_reset(data_t *data)
-+{
-+	igt_debug("Reset input BPC\n");
-+	data->input_bpc = 0;
-+	force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
- 
--	return ret;
-+	igt_debug("Reset DSC output format\n");
-+	data->output_format = DSC_FORMAT_RGB;
-+	force_dsc_output_format(data->drm_fd, data->output, data->output_format);
- }
- 
- static void test_cleanup(data_t *data)
-@@ -106,7 +111,9 @@ static void test_cleanup(data_t *data)
- /* re-probe connectors and do a modeset with DSC */
- static void update_display(data_t *data, enum dsc_test_type test_type)
- {
-+	int ret;
- 	bool enabled;
-+	int index = 0;
- 	igt_plane_t *primary;
- 	drmModeModeInfo *mode;
- 	igt_output_t *output = data->output;
-@@ -125,26 +132,57 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 		force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
- 	}
- 
--	igt_output_set_pipe(output, data->pipe);
--
--	mode = get_highres_mode(output);
--	igt_require(mode != NULL);
--	igt_output_override_mode(output, mode);
-+	if (test_type == TEST_DSC_OUTPUT_FORMAT) {
-+		igt_debug("Trying to set DSC %s output format\n",
-+			   kmstest_dsc_output_format_str(data->output_format));
-+		force_dsc_output_format(data->drm_fd, data->output, data->output_format);
-+	}
- 
-+	igt_output_set_pipe(output, data->pipe);
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 
- 	igt_skip_on(!igt_plane_has_format_mod(primary, data->plane_format,
- 		    DRM_FORMAT_MOD_LINEAR));
- 
--	igt_create_pattern_fb(data->drm_fd,
--			      mode->hdisplay,
--			      mode->vdisplay,
--			      data->plane_format,
--			      DRM_FORMAT_MOD_LINEAR,
--			      &data->fb_test_pattern);
-+	do {
-+		if (data->output_format == DSC_FORMAT_RGB)
-+			mode = get_highres_mode(output);
-+		else
-+			mode = get_next_mode(output, index++);
- 
--	igt_plane_set_fb(primary, &data->fb_test_pattern);
--	igt_display_commit(display);
-+		if (mode == NULL)
-+			goto reset;
-+
-+		igt_output_override_mode(output, mode);
-+
-+		if (!i915_pipe_output_combo_valid(display)) {
-+			if (data->output_format == DSC_FORMAT_RGB) {
-+				igt_info("No valid pipe/output/mode found.\n");
-+
-+				mode = NULL;
-+				goto reset;
-+			} else {
-+				continue;
-+			}
-+		}
-+
-+		igt_create_pattern_fb(data->drm_fd,
-+				      mode->hdisplay,
-+				      mode->vdisplay,
-+				      data->plane_format,
-+				      DRM_FORMAT_MOD_LINEAR,
-+				      &data->fb_test_pattern);
-+		igt_plane_set_fb(primary, &data->fb_test_pattern);
-+
-+		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+		if (data->output_format == DSC_FORMAT_RGB || ret == 0)
-+			break;
-+
-+		igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
-+	} while (1);
-+
-+	if (ret != 0)
-+		goto reset;
- 
- 	/* until we have CRC check support, manually check if RGB test
- 	 * pattern has no corruption.
-@@ -159,20 +197,22 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 				enabled ? "ON" : "OFF");
- 
- 	restore_force_dsc_en();
--	igt_debug("Reset compression BPC\n");
--	data->input_bpc = 0;
--	force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
- 
- 	igt_assert_f(enabled,
- 		     "Default DSC enable failed on connector: %s pipe: %s\n",
- 		     output->name,
- 		     kmstest_pipe_name(data->pipe));
- 
-+reset:
-+	test_reset(data);
-+
- 	test_cleanup(data);
-+	igt_skip_on(mode == NULL);
-+	igt_assert_eq(ret, 0);
- }
- 
- static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
--		     unsigned int plane_format)
-+		     unsigned int plane_format, enum dsc_output_format output_format)
- {
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
-@@ -180,6 +220,7 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- 	enum pipe pipe;
- 
- 	for_each_pipe_with_valid_output(display, pipe, output) {
-+		data->output_format = output_format;
- 		data->plane_format = plane_format;
- 		data->input_bpc = bpc;
- 		data->output = output;
-@@ -188,17 +229,21 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- 		if (!check_dsc_on_connector(data->drm_fd, data->output))
- 			continue;
- 
--		if (!check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
-+		if (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
-+						    data->output, data->output_format))
- 			continue;
- 
--		if (!check_gen11_bpc_constraint(data->drm_fd, data->output, data->input_bpc))
-+		if (!check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
- 			continue;
- 
--		if (!pipe_output_combo_valid(data))
-+		if (!check_gen11_bpc_constraint(data->drm_fd, data->output, data->input_bpc))
- 			continue;
- 
- 		if (test_type == TEST_DSC_BPC)
- 			snprintf(name, sizeof(name), "-%dbpc-%s", data->input_bpc, igt_format_str(data->plane_format));
-+		else if (test_type == TEST_DSC_OUTPUT_FORMAT)
-+			snprintf(name, sizeof(name), "-%s-%s", kmstest_dsc_output_format_str(data->output_format),
-+							       igt_format_str(data->plane_format));
- 		else
- 			snprintf(name, sizeof(name), "-%s", igt_format_str(data->plane_format));
- 
-@@ -226,14 +271,16 @@ igt_main
- 		     "by a connector by forcing DSC on all connectors that support it "
- 		     "with default parameters");
- 	igt_subtest_with_dynamic("dsc-basic")
--			test_dsc(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
-+			test_dsc(&data, TEST_DSC_BASIC, 0,
-+				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
- 
- 	igt_describe("Tests basic display stream compression functionality if supported "
- 		     "by a connector by forcing DSC on all connectors that support it "
- 		     "with default parameters and creating fb with diff formats");
- 	igt_subtest_with_dynamic("dsc-with-formats") {
- 		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
--			test_dsc(&data, TEST_DSC_BASIC, 0, format_list[k]);
-+			test_dsc(&data, TEST_DSC_BASIC, 0,
-+				 format_list[k], DSC_FORMAT_RGB);
- 	}
- 
- 	igt_describe("Tests basic display stream compression functionality if supported "
-@@ -241,7 +288,8 @@ igt_main
- 		     "with certain input BPC for the connector");
- 	igt_subtest_with_dynamic("dsc-with-bpc") {
- 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
--			test_dsc(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
-+			test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
-+				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
- 	}
- 
- 	igt_describe("Tests basic display stream compression functionality if supported "
-@@ -250,11 +298,21 @@ igt_main
- 	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
- 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
- 			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
--				test_dsc(&data, TEST_DSC_BPC, bpc_list[j], format_list[k]);
-+				test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
-+				format_list[k], DSC_FORMAT_RGB);
- 			}
- 		}
- 	}
- 
-+	igt_describe("Tests basic display stream compression functionality if supported "
-+		     "by a connector by forcing DSC and output format on all connectors "
-+		     "that support it");
-+	igt_subtest_with_dynamic("dsc-with-output-formats") {
-+		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
-+			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, 0, DRM_FORMAT_XRGB8888,
-+				 output_format_list[k]);
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		close(data.drm_fd);
-diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
-index e2c278c7..02d1a484 100644
---- a/tests/i915/kms_dsc_helper.c
-+++ b/tests/i915/kms_dsc_helper.c
-@@ -97,3 +97,39 @@ bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc)
- 
- 	return true;
- }
-+
-+void force_dsc_output_format(int drmfd, igt_output_t *output,
-+			     enum dsc_output_format output_format)
-+{
-+	int ret;
-+
-+	igt_debug("Forcing DSC %s output format on %s\n",
-+		  kmstest_dsc_output_format_str(output_format), output->name);
-+	ret = igt_force_dsc_output_format(drmfd, output->name, output_format);
-+	igt_assert_f(ret == 0, "forcing dsc output format debugfs_write failed\n");
-+}
-+
-+/* YCbCr420 DSC is supported on display version 14+ with DSC1.2a */
-+static bool is_dsc_output_format_supported_by_platform(int disp_ver, enum dsc_output_format output_format)
-+{
-+	if (disp_ver < 14 && output_format == DSC_FORMAT_YCBCR420) {
-+		igt_debug("Output format DSC YCBCR420 not supported on D13 and older platforms\n");
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+bool is_dsc_output_format_supported(int drmfd, int disp_ver, igt_output_t *output,
-+				    enum dsc_output_format output_format)
-+{
-+	if (!(igt_is_dsc_output_format_supported_by_sink(drmfd, output->name, output_format)) &&
-+	     (is_dsc_output_format_supported_by_platform(disp_ver, output_format))) {
-+		    igt_debug("DSC %s output format not supported on connector %s\n",
-+			       kmstest_dsc_output_format_str(output_format),
-+			       output->name);
-+			return false;
-+		}
-+
-+	return true;
-+}
-diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
-index b3828dcd..198f5afa 100644
---- a/tests/i915/kms_dsc_helper.h
-+++ b/tests/i915/kms_dsc_helper.h
-@@ -29,5 +29,9 @@ void kms_dsc_exit_handler(int sig);
- bool check_dsc_on_connector(int drmfd, igt_output_t *output);
- bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe);
- bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc);
-+void force_dsc_output_format(int drmfd, igt_output_t *output,
-+			     enum dsc_output_format output_format);
-+bool is_dsc_output_format_supported(int disp_ver, int drmfd, igt_output_t *output,
-+				    enum dsc_output_format output_format);
- 
- #endif
--- 
-2.25.1
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/index.html
+
+Participating hosts (40 -> 38)
+------------------------------
+
+  Missing    (2): bat-atsm-1 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8910:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_pm_rpm@basic-rte:
+    - {bat-mtlp-8}:       [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/bat-mtlp-8/igt@i915_pm_rpm@basic-rte.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/bat-mtlp-8/igt@i915_pm_rpm@basic-rte.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8910 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - bat-rpls-2:         [PASS][3] -> [ABORT][4] ([i915#6687])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-rplp-1:         [PASS][5] -> [INCOMPLETE][6] ([i915#4983] / [i915#7609] / [i915#7913])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/bat-rplp-1/igt@i915_selftest@live@gt_lrc.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/bat-rplp-1/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][7] ([fdo#109271]) +1 similar issue
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/fi-bsw-nick/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [ABORT][8] ([i915#7911] / [i915#7913]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-rpls-2:         [TIMEOUT][10] ([i915#6794] / [i915#7392]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/bat-rpls-2/igt@i915_selftest@live@mman.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/bat-rpls-2/igt@i915_selftest@live@mman.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
+    - bat-dg2-8:          [FAIL][12] ([i915#7932]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#7392]: https://gitlab.freedesktop.org/drm/intel/issues/7392
+  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#8379]: https://gitlab.freedesktop.org/drm/intel/issues/8379
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7277 -> IGTPW_8910
+
+  CI-20190529: 20190529
+  CI_DRM_13108: 3ddac02bdbb0e147d2fd025029955aca7c2798a9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8910: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/index.html
+  IGT_7277: 1cb3507f3ff28d11bd5cfabcde576fe78ddab571 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@kms_dsc@dsc-with-output-formats
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/index.html
+
+--===============7524415723937122919==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests: s/i915_pipe_output_combo_valid/intel_pipe_output_combo_valid/</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117280/">https://patchwork.freedesktop.org/series/117280/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13108 -&gt; IGTPW_8910</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-atsm-1 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8910:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_pm_rpm@basic-rte:<ul>
+<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/bat-mtlp-8/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/bat-mtlp-8/igt@i915_pm_rpm@basic-rte.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8910 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/bat-rplp-1/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/bat-rplp-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7609">i915#7609</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/fi-bsw-nick/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/bat-rpls-2/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/bat-rpls-2/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7277 -&gt; IGTPW_8910</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13108: 3ddac02bdbb0e147d2fd025029955aca7c2798a9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8910: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8910/index.html<br />
+  IGT_7277: 1cb3507f3ff28d11bd5cfabcde576fe78ddab571 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@kms_dsc@dsc-with-output-formats</p>
+
+</body>
+</html>
+
+--===============7524415723937122919==--
