@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1472C10E1C8
- for <igt-dev@lists.freedesktop.org>; Thu,  4 May 2023 21:28:59 +0000 (UTC)
-From: "Shankar, Uma" <uma.shankar@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 4 May 2023 21:28:56 +0000
-Message-ID: <DM4PR11MB6360082C81A233176338D353F46D9@DM4PR11MB6360.namprd11.prod.outlook.com>
-References: <20230411161555.10001-1-ville.syrjala@linux.intel.com>
- <20230411161555.10001-5-ville.syrjala@linux.intel.com>
-In-Reply-To: <20230411161555.10001-5-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam04on2063.outbound.protection.outlook.com [40.107.100.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4989F10E45A
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 May 2023 14:22:58 +0000 (UTC)
+From: Hersen Wu <hersenxs.wu@amd.com>
+To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
+ <aurabindo.pillai@amd.com>, <alex.hung@amd.com>, <hamza.mahfooz@amd.com>
+Date: Thu, 4 May 2023 10:22:51 -0400
+Message-ID: <20230504142251.34775-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 4/9] tests/kms_color: Pass down the
- colors used to paint the fb
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_hotplug: fix test crash
+ signal sigsegv
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,91 +20,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Hersen Wu <hersenxs.wu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
-di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIFZpbGxlIFN5cmph
-bGENCj4gU2VudDogVHVlc2RheSwgQXByaWwgMTEsIDIwMjMgOTo0NiBQTQ0KPiBUbzogaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRDSCBpLWct
-dCB2MiA0LzldIHRlc3RzL2ttc19jb2xvcjogUGFzcyBkb3duIHRoZSBjb2xvcnMgdXNlZCB0bw0K
-PiBwYWludCB0aGUgZmINCj4gDQo+IEZyb206IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFs
-YUBsaW51eC5pbnRlbC5jb20+DQo+IA0KPiBJbnN0ZWFkIG9mIGFzc3VtaW5nIHdlIGFsd2F5cyB3
-YW50IFJHQiBzdHJpcGVzIGluIHRoZSBmYiBsZXQncyBwYXNzIHRob3NlIGNvbG9ycw0KPiBkb3du
-IGZyb20gdGhlIHRvcC4gV2lsbCBiZSBuZWVkZWQgdG8gbWFrZSBtb3JlIGludGVyZXN0aW5nIHRl
-c3RzIHRoYXQgbWl4IGNvbG9ycw0KPiBmcm9tIG11bHRpcGxlIGNoYW5uZWxzLg0KDQpMb29rcyBH
-b29kIHRvIG1lLg0KUmV2aWV3ZWQtYnk6IFVtYSBTaGFua2FyIDx1bWEuc2hhbmthckBpbnRlbC5j
-b20+DQoNCj4gU2lnbmVkLW9mZi1ieTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxp
-bnV4LmludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9rbXNfY29sb3IuYyB8IDI1ICsrKysrKysr
-KysrKysrKysrKy0tLS0tLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxOCBpbnNlcnRpb25zKCspLCA3
-IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19jb2xvci5jIGIvdGVz
-dHMva21zX2NvbG9yLmMgaW5kZXgNCj4gNWM0ZDg4NGY0ZGU4Li5lM2ZlMmFlYTQ2OTUgMTAwNjQ0
-DQo+IC0tLSBhL3Rlc3RzL2ttc19jb2xvci5jDQo+ICsrKyBiL3Rlc3RzL2ttc19jb2xvci5jDQo+
-IEBAIC03MzcsMTYgKzczNywxMiBAQCBvdXQ6DQo+IA0KPiAgc3RhdGljIHZvaWQNCj4gIHJ1bl9j
-dG1fdGVzdHNfZm9yX3BpcGUoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcCwNCj4gKwkJICAgICAg
-IGNvbnN0IGNvbG9yX3QgKmZiX2NvbG9ycywNCj4gIAkJICAgICAgIGNvbnN0IGNvbG9yX3QgKmV4
-cGVjdGVkX2NvbG9ycywNCj4gIAkJICAgICAgIGNvbnN0IGRvdWJsZSAqY3RtLA0KPiAgCQkgICAg
-ICAgaW50IGl0ZXIpDQo+ICB7DQo+ICAJZG91YmxlIGRlbHRhOw0KPiAtCXN0YXRpYyBjb25zdCBj
-b2xvcl90IHJlZF9ncmVlbl9ibHVlW10gPSB7DQo+IC0JCXsgMS4wLCAwLjAsIDAuMCB9LA0KPiAt
-CQl7IDAuMCwgMS4wLCAwLjAgfSwNCj4gLQkJeyAwLjAsIDAuMCwgMS4wIH0sDQo+IC0JfTsNCj4g
-DQo+ICAJdGVzdF9zZXR1cChkYXRhLCBwKTsNCj4gDQo+IEBAIC03NjcsNyArNzYzLDcgQEAgcnVu
-X2N0bV90ZXN0c19mb3JfcGlwZShkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwLA0KPiAgCQlpbnQg
-aTsNCj4gDQo+ICAJCWlmICghaXRlcikNCj4gLQkJCXN1Y2Nlc3MgPSB0ZXN0X3BpcGVfY3RtKGRh
-dGEsIGRhdGEtPnByaW1hcnksDQo+IHJlZF9ncmVlbl9ibHVlLA0KPiArCQkJc3VjY2VzcyA9IHRl
-c3RfcGlwZV9jdG0oZGF0YSwgZGF0YS0+cHJpbWFyeSwgZmJfY29sb3JzLA0KPiAgCQkJCQkJZXhw
-ZWN0ZWRfY29sb3JzLCBjdG0pOw0KPiANCj4gIAkJLyoNCj4gQEAgLTc4NCw3ICs3ODAsNyBAQCBy
-dW5fY3RtX3Rlc3RzX2Zvcl9waXBlKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHAsDQo+ICAJCQkJ
-eyAuYiA9IGMsIH0sDQo+ICAJCQl9Ow0KPiANCj4gLQkJCWlmICh0ZXN0X3BpcGVfY3RtKGRhdGEs
-IGRhdGEtPnByaW1hcnksIHJlZF9ncmVlbl9ibHVlLA0KPiArCQkJaWYgKHRlc3RfcGlwZV9jdG0o
-ZGF0YSwgZGF0YS0+cHJpbWFyeSwgZmJfY29sb3JzLA0KPiAgCQkJCQkgIGV4cGVjdGVkX2NvbG9y
-c19sb2NhbCwgY3RtKSkgew0KPiAgCQkJCXN1Y2Nlc3MgPSB0cnVlOw0KPiAgCQkJCWJyZWFrOw0K
-PiBAQCAtOTQ4LDE0ICs5NDQsMjEgQEAgcnVuX3Rlc3RzX2Zvcl9waXBlKGRhdGFfdCAqZGF0YSkN
-Cj4gIAkJICAuZGVzYyA9ICJWZXJpZnkgdGhhdCBzZXR0aW5nIHRoZSBsZWdhY3kgZ2FtbWEgTFVU
-IHJlc2V0cyB0aGUNCj4gZ2FtbWEgTFVUIHNldCB0aHJvdWdoIEdBTU1BX0xVVCBwcm9wZXJ0eSIs
-DQo+ICAJCX0sDQo+ICAJfTsNCj4gKwlzdGF0aWMgY29uc3QgY29sb3JfdCBjb2xvcnNfcmdiW10g
-PSB7DQo+ICsJCXsgMS4wLCAwLjAsIDAuMCB9LA0KPiArCQl7IDAuMCwgMS4wLCAwLjAgfSwNCj4g
-KwkJeyAwLjAsIDAuMCwgMS4wIH0sDQo+ICsJfTsNCj4gIAlzdGF0aWMgY29uc3Qgc3RydWN0IHsN
-Cj4gIAkJY29uc3QgY2hhciAqbmFtZTsNCj4gIAkJaW50IGl0ZXI7DQo+ICsJCWNvbnN0IGNvbG9y
-X3QgKmZiX2NvbG9yczsNCj4gIAkJY29sb3JfdCBjb2xvcnNbM107DQo+ICAJCWRvdWJsZSBjdG1b
-OV07DQo+ICAJCWNvbnN0IGNoYXIgKmRlc2M7DQo+ICAJfSBjdG1fdGVzdHNbXSA9IHsNCj4gIAkJ
-eyAubmFtZSA9ICJjdG0tcmVkLXRvLWJsdWUiLA0KPiArCQkgIC5mYl9jb2xvcnMgPSBjb2xvcnNf
-cmdiLA0KPiAgCQkgIC5jb2xvcnMgPSB7DQo+ICAJCQkgIHsgMC4wLCAwLjAsIDEuMCB9LA0KPiAg
-CQkJICB7IDAuMCwgMS4wLCAwLjAgfSwNCj4gQEAgLTk2OSw2ICs5NzIsNyBAQCBydW5fdGVzdHNf
-Zm9yX3BpcGUoZGF0YV90ICpkYXRhKQ0KPiAgCQkgIC5kZXNjID0gIkNoZWNrIHRoZSBjb2xvciB0
-cmFuc2Zvcm1hdGlvbiBmcm9tIHJlZCB0byBibHVlIiwNCj4gIAkJfSwNCj4gIAkJeyAubmFtZSA9
-ICJjdG0tZ3JlZW4tdG8tcmVkIiwNCj4gKwkJICAuZmJfY29sb3JzID0gY29sb3JzX3JnYiwNCj4g
-IAkJICAuY29sb3JzID0gew0KPiAgCQkJICB7IDEuMCwgMC4wLCAwLjAgfSwNCj4gIAkJCSAgeyAx
-LjAsIDAuMCwgMC4wIH0sDQo+IEBAIC05ODIsNiArOTg2LDcgQEAgcnVuX3Rlc3RzX2Zvcl9waXBl
-KGRhdGFfdCAqZGF0YSkNCj4gIAkJICAuZGVzYyA9ICJDaGVjayB0aGUgY29sb3IgdHJhbnNmb3Jt
-YXRpb24gZnJvbSBncmVlbiB0byByZWQiLA0KPiAgCQl9LA0KPiAgCQl7IC5uYW1lID0gImN0bS1i
-bHVlLXRvLXJlZCIsDQo+ICsJCSAgLmZiX2NvbG9ycyA9IGNvbG9yc19yZ2IsDQo+ICAJCSAgLmNv
-bG9ycyA9IHsNCj4gIAkJCSAgeyAxLjAsIDAuMCwgMC4wIH0sDQo+ICAJCQkgIHsgMC4wLCAxLjAs
-IDAuMCB9LA0KPiBAQCAtOTk1LDYgKzEwMDAsNyBAQCBydW5fdGVzdHNfZm9yX3BpcGUoZGF0YV90
-ICpkYXRhKQ0KPiAgCQkgIC5kZXNjID0gIkNoZWNrIHRoZSBjb2xvciB0cmFuc2Zvcm1hdGlvbiBm
-cm9tIGJsdWUgdG8gcmVkIiwNCj4gIAkJfSwNCj4gIAkJeyAubmFtZSA9ICJjdG0tbWF4IiwNCj4g
-KwkJICAuZmJfY29sb3JzID0gY29sb3JzX3JnYiwNCj4gIAkJICAuY29sb3JzID0gew0KPiAgCQkJ
-ICB7IDEuMCwgMC4wLCAwLjAgfSwNCj4gIAkJCSAgeyAwLjAsIDEuMCwgMC4wIH0sDQo+IEBAIC0x
-MDA3LDYgKzEwMTMsNyBAQCBydW5fdGVzdHNfZm9yX3BpcGUoZGF0YV90ICpkYXRhKQ0KPiAgCQkg
-IC5kZXNjID0gIkNoZWNrIHRoZSBjb2xvciB0cmFuc2Zvcm1hdGlvbiBmb3IgbWF4aW11bQ0KPiB0
-cmFuc3BhcmVuY3kiLA0KPiAgCQl9LA0KPiAgCQl7IC5uYW1lID0gImN0bS1uZWdhdGl2ZSIsDQo+
-ICsJCSAgLmZiX2NvbG9ycyA9IGNvbG9yc19yZ2IsDQo+ICAJCSAgLmNvbG9ycyA9IHsNCj4gIAkJ
-CSAgeyAwLjAsIDAuMCwgMC4wIH0sDQo+ICAJCQkgIHsgMC4wLCAwLjAsIDAuMCB9LA0KPiBAQCAt
-MTAyMSw2ICsxMDI4LDcgQEAgcnVuX3Rlc3RzX2Zvcl9waXBlKGRhdGFfdCAqZGF0YSkNCj4gIAkJ
-fSwNCj4gIAkJeyAubmFtZSA9ICJjdG0tMC0yNSIsDQo+ICAJCSAgLml0ZXIgPSA1LA0KPiArCQkg
-IC5mYl9jb2xvcnMgPSBjb2xvcnNfcmdiLA0KPiAgCQkgIC5jdG0gPSB7DQo+ICAJCQkgIDAuMjUs
-IDAuMCwgIDAuMCwNCj4gIAkJCSAgMC4wLCAgMC4yNSwgMC4wLA0KPiBAQCAtMTAzMCw2ICsxMDM4
-LDcgQEAgcnVuX3Rlc3RzX2Zvcl9waXBlKGRhdGFfdCAqZGF0YSkNCj4gIAkJfSwNCj4gIAkJeyAu
-bmFtZSA9ICJjdG0tMC01MCIsDQo+ICAJCSAgLml0ZXIgPSA1LA0KPiArCQkgIC5mYl9jb2xvcnMg
-PSBjb2xvcnNfcmdiLA0KPiAgCQkgIC5jdG0gPSB7DQo+ICAJCQkgIDAuNSwgIDAuMCwgIDAuMCwN
-Cj4gIAkJCSAgMC4wLCAgMC41LCAgMC4wLA0KPiBAQCAtMTAzOSw2ICsxMDQ4LDcgQEAgcnVuX3Rl
-c3RzX2Zvcl9waXBlKGRhdGFfdCAqZGF0YSkNCj4gIAkJfSwNCj4gIAkJeyAubmFtZSA9ICJjdG0t
-MC03NSIsDQo+ICAJCSAgLml0ZXIgPSA3LA0KPiArCQkgIC5mYl9jb2xvcnMgPSBjb2xvcnNfcmdi
-LA0KPiAgCQkgIC5jdG0gPSB7DQo+ICAJCQkgIDAuNzUsIDAuMCwgIDAuMCwNCj4gIAkJCSAgMC4w
-LCAgMC43NSwgMC4wLA0KPiBAQCAtMTA2NCw2ICsxMDc0LDcgQEAgcnVuX3Rlc3RzX2Zvcl9waXBl
-KGRhdGFfdCAqZGF0YSkNCj4gIAkJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljX2YoIiVzIiwgY3Rt
-X3Rlc3RzW2ldLm5hbWUpIHsNCj4gIAkJCWZvcl9lYWNoX3BpcGUoJmRhdGEtPmRpc3BsYXksIHBp
-cGUpIHsNCj4gIAkJCQlydW5fY3RtX3Rlc3RzX2Zvcl9waXBlKGRhdGEsIHBpcGUsDQo+ICsJCQkJ
-CQkgICAgICAgY3RtX3Rlc3RzW2ldLmZiX2NvbG9ycywNCj4gIAkJCQkJCSAgICAgICBjdG1fdGVz
-dHNbaV0uY29sb3JzLA0KPiAgCQkJCQkJICAgICAgIGN0bV90ZXN0c1tpXS5jdG0sDQo+ICAJCQkJ
-CQkgICAgICAgY3RtX3Rlc3RzW2ldLml0ZXIpOw0KPiAtLQ0KPiAyLjM5LjINCg0K
+MAX_PIPES is 6 within amd_hotplug. IGT_MAX_PIPES is changed from
+6 to 8 by 'commit 3d3a7f1c041d ("lib: Fix igt_kms for drivers with
+8 crtc's")'. amd_hotplug loop up to display->n_pipes = 8, this will
+exceed range of array and cause crash.
+fix this issue with loop using for_each_pipe.
+
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+---
+ tests/amdgpu/amd_hotplug.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tests/amdgpu/amd_hotplug.c b/tests/amdgpu/amd_hotplug.c
+index 736040a2..c13bf49d 100644
+--- a/tests/amdgpu/amd_hotplug.c
++++ b/tests/amdgpu/amd_hotplug.c
+@@ -109,7 +109,7 @@ static void test_hotplug_basic(data_t *data, bool suspend)
+ 	test_init(data);
+ 
+ 	/* Setup all outputs */
+-	for (i = 0; i < display->n_pipes; i++) {
++	for_each_pipe(&data->display, i) {
+ 		output = data->output[i];
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+@@ -122,7 +122,7 @@ static void test_hotplug_basic(data_t *data, bool suspend)
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+ 
+ 	/* Collect reference CRCs */
+-	for (i = 0; i < display->n_pipes; i++) {
++	for_each_pipe(&data->display, i) {
+ 		output = data->output[i];
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+@@ -136,7 +136,7 @@ static void test_hotplug_basic(data_t *data, bool suspend)
+ 	}
+ 
+ 	/* Trigger hotplug and confirm reference image is the same. */
+-	for (i = 0; i < display->n_pipes; i++) {
++	for_each_pipe(&data->display, i) {
+ 		output = data->output[i];
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+-- 
+2.25.1
