@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3170965555519643402=="
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05AD410E561
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 May 2023 04:49:30 +0000 (UTC)
+Date: Fri, 5 May 2023 06:49:24 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <20230505064924.7d36bfb1@maurocar-mobl2>
+In-Reply-To: <20230504102451.3047783-2-bhanuprakash.modem@intel.com>
+References: <20230504102451.3047783-1-bhanuprakash.modem@intel.com>
+ <20230504102451.3047783-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Fri, 05 May 2023 04:22:53 -0000
-Message-ID: <168326057332.5020.1084674548366481263@emeril.freedesktop.org>
-References: <20230504045726.2954788-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230504045726.2954788-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgWEUgdGVz?=
- =?utf-8?q?t_cleanup_to_handle_xe=5Fdevice_=28rev3=29?=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t 1/3] tests/kms: Document kms subtests for XE
+ BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,495 +21,763 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3170965555519643402==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu,  4 May 2023 15:54:49 +0530
+Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
 
-== Series Details ==
+> Add documentation for kms tests those are in XE BAT which is used
+> by IGT test plan documentation.
+> 
+> Tests included in this patch:
+> - tests/chamelium/kms_chamelium_edid.c
+> - tests/chamelium/kms_chamelium_frames.c
+> - tests/chamelium/kms_chamelium_hpd.c
+> - tests/i915/kms_psr.c
+> - tests/kms_addfb_basic.c
+> - tests/kms_cursor_legacy.c
+> - tests/kms_flip.c
+> - tests/kms_force_connector_basic.c
+> - tests/kms_pipe_crc_basic.c
+> - tests/kms_prop_blob.c
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  tests/chamelium/kms_chamelium_edid.c   |  27 +++++
+>  tests/chamelium/kms_chamelium_frames.c |  22 ++++
+>  tests/chamelium/kms_chamelium_hpd.c    |  39 +++++++
+>  tests/i915/kms_psr.c                   |  31 ++++++
+>  tests/kms_addfb_basic.c                | 147 +++++++++++++++++++++++++
+>  tests/kms_cursor_legacy.c              |  44 ++++++++
+>  tests/kms_flip.c                       |  27 +++++
+>  tests/kms_force_connector_basic.c      |  29 +++++
+>  tests/kms_pipe_crc_basic.c             |  58 ++++++++++
+>  tests/kms_prop_blob.c                  |  12 ++
+>  10 files changed, 436 insertions(+)
+> 
+> diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
+> index 7e7262ed3..4a52e6922 100644
+> --- a/tests/chamelium/kms_chamelium_edid.c
+> +++ b/tests/chamelium/kms_chamelium_edid.c
+> @@ -24,6 +24,11 @@
+>   *    Lyude Paul <lyude@redhat.com>
+>   */
+>  
+> +/**
+> + * TEST: Tests behaviour of edid & timings using chamelium
+> + * Category: Display
+> + */
+> +
+>  #include <fcntl.h>
+>  #include <stdint.h>
+>  #include <string.h>
+> @@ -139,6 +144,28 @@ static void check_mode(struct chamelium *chamelium, struct chamelium_port *port,
+>  	igt_assert(video_params.vsync_polarity == mode_vsync_polarity);
+>  }
+>  
+> +/**
+> + * SUBTEST: dp-edid-read
+> + * Description: Make sure the EDID exposed by KMS is the same as the screen's
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: dp
+> + * Mega feature: DP
+> + *
+> + * SUBTEST: hdmi-edid-read
+> + * Description: Make sure the EDID exposed by KMS is the same as the screen's
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: hdmi
+> + * Mega feature: HDMI
+> + *
+> + * SUBTEST: vga-edid-read
+> + * Description: Make sure the EDID exposed by KMS is the same as the screen's
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: vga
+> + * Mega feature: VGA
+> + */
+>  static const char igt_custom_edid_type_read_desc[] =
+>  	"Make sure the EDID exposed by KMS is the same as the screen's";
+>  static void igt_custom_edid_type_read(chamelium_data_t *data,
+> diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
+> index 008bc34b6..22a7ba936 100644
+> --- a/tests/chamelium/kms_chamelium_frames.c
+> +++ b/tests/chamelium/kms_chamelium_frames.c
+> @@ -24,6 +24,11 @@
+>   *    Lyude Paul <lyude@redhat.com>
+>   */
+>  
+> +/**
+> + * TEST: Tests to capture frames using chamelium
+> + * Category: Display
+> + */
+> +
+>  #include "igt_eld.h"
+>  #include "igt_infoframe.h"
+>  #include "kms_chamelium_helper.h"
+> @@ -534,6 +539,23 @@ static void prepare_randomized_plane(chamelium_data_t *data,
+>  	igt_remove_fb(data->drm_fd, &pattern_fb);
+>  }
+>  
+> +/**
+> + * SUBTEST: dp-crc-fast
+> + * Description: Pick the first mode of the IGT base EDID, display and capture
+> + * 		a few frames, then check captured frames are correct
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: dp
+> + * Mega feature: DP
+> + *
+> + * SUBTEST: hdmi-crc-fast
+> + * Description: Pick the first mode of the IGT base EDID, display and capture
+> + * 		a few frames, then check captured frames are correct
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: hdmi
+> + * Mega feature: HDMI
+> + */
+>  static const char test_display_one_mode_desc[] =
+>  	"Pick the first mode of the IGT base EDID, display and capture a few "
+>  	"frames, then check captured frames are correct";
+> diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
+> index 2b17ce29d..efd40ba54 100644
+> --- a/tests/chamelium/kms_chamelium_hpd.c
+> +++ b/tests/chamelium/kms_chamelium_hpd.c
+> @@ -24,6 +24,11 @@
+>   *    Lyude Paul <lyude@redhat.com>
+>   */
+>  
+> +/**
+> + * TEST: Tests behaviour of hpd using chamelium
+> + * Category: Display
+> + */
+> +
+>  #include "kms_chamelium_helper.h"
+>  
+>  #define HPD_STORM_PULSE_INTERVAL_DP 100 /* ms */
+> @@ -104,6 +109,31 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
+>  	}
+>  }
+>  
+> +/**
+> + * SUBTEST: dp-hpd-fast
+> + * Description: Check that we get uevents and updated connector status on
+> + * 		hotplug and unplug
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: dp_hotplug
+> + * Mega feature: DP
+> + *
+> + * SUBTEST: hdmi-hpd-fast
+> + * Description: Check that we get uevents and updated connector status on
+> + * 		hotplug and unplug
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: hdmi_hotplug
+> + * Mega feature: HDMI
+> + *
+> + * SUBTEST: vga-hpd-fast
+> + * Description: Check that we get uevents and updated connector status on
+> + * 		hotplug and unplug
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: vga_hotplug
+> + * Mega feature: VGA
+> + */
+>  static const char test_basic_hotplug_desc[] =
+>  	"Check that we get uevents and updated connector status on "
+>  	"hotplug and unplug";
+> @@ -238,6 +268,15 @@ static void test_suspend_resume_hpd(chamelium_data_t *data,
+>  	igt_cleanup_uevents(mon);
+>  }
+>  
+> +/**
+> + * SUBTEST: common-hpd-after-suspend
+> + * Description: Toggle HPD during suspend on all connectors, check that uevents
+> + * 		are sent and connector status is updated
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: hotplug
+> + * Mega feature: General Display Features
+> + */
+>  static const char test_suspend_resume_hpd_common_desc[] =
+>  	"Toggle HPD during suspend on all connectors, check that uevents are "
+>  	"sent and connector status is updated";
+> diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+> index 0e8d7f4f0..6c89de45d 100644
+> --- a/tests/i915/kms_psr.c
+> +++ b/tests/i915/kms_psr.c
+> @@ -22,6 +22,11 @@
+>   *
+>   */
+>  
+> +/**
+> + * TEST: Tests behaviour of PSR & PSR2
+> + * Category: Display
+> + */
+> +
+>  #include "igt.h"
+>  #include "igt_sysfs.h"
+>  #include "igt_psr.h"
+> @@ -300,6 +305,32 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
+>  	igt_assert(ret == 0 || ret == -ENOSYS);
+>  }
+>  
+> +/**
+> + * SUBTEST: cursor_plane_move
+> + * Description: Check if psr is detecting the plane operations performed on
+> + *		cursor planes
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: psr
+> + * Mega feature: PSR
+> + *
+> + * SUBTEST: primary_page_flip
+> + * Description: Check if psr is detecting page-flipping operations performed
+> + *		on primary planes
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: psr
+> + * Mega feature: PSR
+> + *
+> + * SUBTEST: sprite_plane_onoff
+> + * Description: Check if psr is detecting the plane operations performed on
+> + *		sprite planes
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: psr
+> + * Mega feature: PSR
+> + */
+> +
+>  static void run_test(data_t *data)
+>  {
+>  	uint32_t handle = data->fb_white.gem_handle;
+> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> index e4783624f..6f77c19de 100644
+> --- a/tests/kms_addfb_basic.c
+> +++ b/tests/kms_addfb_basic.c
+> @@ -25,6 +25,11 @@
+>   *
+>   */
+>  
+> +/**
+> + * TEST: Sanity test for ioctls DRM_IOCTL_MODE_ADDFB2 & DRM_IOCTL_MODE_RMFB.
+> + * Category: Display
+> + */
+> +
+>  #include "igt.h"
+>  #include <unistd.h>
+>  #include <stdlib.h>
+> @@ -60,6 +65,35 @@ static int legacy_addfb(int fd, struct drm_mode_fb_cmd *arg)
+>  	return err;
+>  }
+>  
+> +/**
+> + * SUBTEST: unused-handle
+> + * Description: Test that addfb2 call fails correctly for unused handle
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: unused-pitches
+> + * Description: Test that addfb2 call fails correctly for unused pitches
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: unused-offsets
+> + * Description: Test that addfb2 call fails correctly for unused offset
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: unused-modifier
+> + * Description: Test that addfb2 call fails correctly for unused modifier
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + */
+>  static void invalid_tests(int fd)
+>  {
+>  	struct drm_mode_fb_cmd2 f = {};
+> @@ -273,6 +307,39 @@ static void invalid_tests(int fd)
+>  	}
+>  }
+>  
+> +/**
+> + * SUBTEST: no-handle
+> + * Description: Test that addfb2 call fails correctly without handle
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: basic
+> + * Description: Check if addfb2 call works with given handle
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
 
-Series: XE test cleanup to handle xe_device (rev3)
-URL   : https://patchwork.freedesktop.org/series/117263/
-State : success
+> + * SUBTEST: bad-pitch-%i
+> + * Description: bad-pitch-%arg[1]: Test that addfb2 call fails correctly for bad-pitches
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * arg[1]:
+> + *
+> + * @0:          0
+> + * @32:         32
+> + * @63:         63
+> + * @128:        128
+> + * @256:        256
+> + * @999:        999
+> + * @1024:       1024
+> + * @65536:      65536
 
-== Summary ==
+There's an alternate syntax that IMO makes the comment cleaner in this 
+specific case[1], and will produce exactly the same result of the
+above block:
 
-CI Bug Log - changes from CI_DRM_13108_full -> IGTPW_8911_full
-====================================================
+  * SUBTEST: bad-pitch-%i
+  * Description: bad-pitch-%arg[1]: Test that addfb2 call fails correctly for bad-pitches
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: kms_gem_interop
+  * Mega feature: General Display Features
+  *
+  * arg[1].values: 0, 32, 63, 128, 256, 999, 1024, 65536
 
-Summary
--------
+Please use this for number arguments.
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/index.html
-
-Participating hosts (8 -> 7)
-------------------------------
-
-  Missing    (1): shard-rkl0 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8911_full:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@drm_fdinfo@busy-idle@bcs0:
-    - {shard-rkl}:        [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-3/igt@drm_fdinfo@busy-idle@bcs0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-6/igt@drm_fdinfo@busy-idle@bcs0.html
-
-  * igt@drm_fdinfo@busy-idle@vcs0:
-    - {shard-rkl}:        [PASS][3] -> [DMESG-WARN][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-3/igt@drm_fdinfo@busy-idle@vcs0.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-6/igt@drm_fdinfo@busy-idle@vcs0.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8911_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_barrier_race@remote-request@rcs0:
-    - shard-glk:          [PASS][5] -> [ABORT][6] ([i915#7461] / [i915#8211])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-glk9/igt@gem_barrier_race@remote-request@rcs0.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk5/igt@gem_barrier_race@remote-request@rcs0.html
-
-  * igt@gem_lmem_swapping@verify-random-ccs:
-    - shard-glk:          NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#4613]) +2 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk2/igt@gem_lmem_swapping@verify-random-ccs.html
-
-  * igt@i915_pm_dc@dc9-dpms:
-    - shard-apl:          [PASS][8] -> [SKIP][9] ([fdo#109271])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-apl3/igt@i915_pm_dc@dc9-dpms.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-apl6/igt@i915_pm_dc@dc9-dpms.html
-
-  * igt@kms_atomic@plane-primary-overlay-mutable-zpos:
-    - shard-glk:          NOTRUN -> [SKIP][10] ([fdo#109271]) +82 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk8/igt@kms_atomic@plane-primary-overlay-mutable-zpos.html
-
-  * igt@kms_ccs@pipe-c-bad-pixel-format-y_tiled_gen12_rc_ccs_cc:
-    - shard-glk:          NOTRUN -> [SKIP][11] ([fdo#109271] / [i915#3886]) +3 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk6/igt@kms_ccs@pipe-c-bad-pixel-format-y_tiled_gen12_rc_ccs_cc.html
-
-  * igt@kms_color@ctm-green-to-red@pipe-a-hdmi-a-1:
-    - shard-snb:          NOTRUN -> [SKIP][12] ([fdo#109271]) +87 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-snb1/igt@kms_color@ctm-green-to-red@pipe-a-hdmi-a-1.html
-
-  * igt@kms_flip@flip-vs-expired-vblank-interruptible@a-hdmi-a2:
-    - shard-glk:          [PASS][13] -> [FAIL][14] ([i915#2122])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-glk2/igt@kms_flip@flip-vs-expired-vblank-interruptible@a-hdmi-a2.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk8/igt@kms_flip@flip-vs-expired-vblank-interruptible@a-hdmi-a2.html
-
-  * igt@kms_psr2_sf@overlay-primary-update-sf-dmg-area:
-    - shard-glk:          NOTRUN -> [SKIP][15] ([fdo#109271] / [i915#658])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk1/igt@kms_psr2_sf@overlay-primary-update-sf-dmg-area.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_barrier_race@remote-request@rcs0:
-    - {shard-tglu}:       [ABORT][16] ([i915#8211] / [i915#8234]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-tglu-8/igt@gem_barrier_race@remote-request@rcs0.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-tglu-2/igt@gem_barrier_race@remote-request@rcs0.html
-
-  * igt@gem_eio@reset-stress:
-    - shard-snb:          [TIMEOUT][18] ([i915#3063]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-snb7/igt@gem_eio@reset-stress.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-snb7/igt@gem_eio@reset-stress.html
-    - {shard-dg1}:        [FAIL][20] ([i915#5784]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-dg1-18/igt@gem_eio@reset-stress.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-dg1-12/igt@gem_eio@reset-stress.html
-
-  * igt@gem_exec_fair@basic-pace@rcs0:
-    - {shard-rkl}:        [FAIL][22] ([i915#2842]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-1/igt@gem_exec_fair@basic-pace@rcs0.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-3/igt@gem_exec_fair@basic-pace@rcs0.html
-
-  * igt@gen9_exec_parse@allowed-single:
-    - shard-glk:          [ABORT][24] ([i915#5566]) -> [PASS][25]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-glk2/igt@gen9_exec_parse@allowed-single.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk1/igt@gen9_exec_parse@allowed-single.html
-
-  * igt@i915_module_load@reload-no-display:
-    - shard-snb:          [ABORT][26] ([i915#4528] / [i915#8393]) -> [PASS][27]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-snb4/igt@i915_module_load@reload-no-display.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-snb5/igt@i915_module_load@reload-no-display.html
-
-  * igt@i915_pm_rpm@dpms-mode-unset-non-lpsp:
-    - {shard-rkl}:        [SKIP][28] ([i915#1397]) -> [PASS][29]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-7/igt@i915_pm_rpm@dpms-mode-unset-non-lpsp.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-2/igt@i915_pm_rpm@dpms-mode-unset-non-lpsp.html
-
-  * igt@i915_pm_rps@waitboost:
-    - {shard-dg1}:        [FAIL][30] ([i915#8229]) -> [PASS][31]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-dg1-18/igt@i915_pm_rps@waitboost.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-dg1-15/igt@i915_pm_rps@waitboost.html
-
-  * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:
-    - shard-apl:          [FAIL][32] ([i915#2346]) -> [PASS][33]
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-apl1/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-apl2/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html
-
-  * igt@kms_cursor_legacy@single-bo@pipe-b:
-    - {shard-rkl}:        [INCOMPLETE][34] ([i915#8011]) -> [PASS][35]
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-7/igt@kms_cursor_legacy@single-bo@pipe-b.html
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-6/igt@kms_cursor_legacy@single-bo@pipe-b.html
-
-  * igt@kms_vblank@pipe-c-accuracy-idle:
-    - shard-glk:          [FAIL][36] ([i915#43]) -> [PASS][37]
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-glk3/igt@kms_vblank@pipe-c-accuracy-idle.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk9/igt@kms_vblank@pipe-c-accuracy-idle.html
-
-  * igt@perf@stress-open-close@0-rcs0:
-    - shard-glk:          [ABORT][38] ([i915#5213] / [i915#7941]) -> [PASS][39]
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-glk1/igt@perf@stress-open-close@0-rcs0.html
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk2/igt@perf@stress-open-close@0-rcs0.html
-
-  * igt@perf_pmu@idle@rcs0:
-    - {shard-rkl}:        [FAIL][40] ([i915#4349]) -> [PASS][41]
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-4/igt@perf_pmu@idle@rcs0.html
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-1/igt@perf_pmu@idle@rcs0.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109280]: https://bugs.freedesktop.org/show_bug.cgi?id=109280
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109289]: https://bugs.freedesktop.org/show_bug.cgi?id=109289
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#109300]: https://bugs.freedesktop.org/show_bug.cgi?id=109300
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#110723]: https://bugs.freedesktop.org/show_bug.cgi?id=110723
-  [fdo#111614]: https://bugs.freedesktop.org/show_bug.cgi?id=111614
-  [fdo#111615]: https://bugs.freedesktop.org/show_bug.cgi?id=111615
-  [fdo#111656]: https://bugs.freedesktop.org/show_bug.cgi?id=111656
-  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
-  [i915#1825]: https://gitlab.freedesktop.org/drm/intel/issues/1825
-  [i915#2122]: https://gitlab.freedesktop.org/drm/intel/issues/2122
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-  [i915#2527]: https://gitlab.freedesktop.org/drm/intel/issues/2527
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#2672]: https://gitlab.freedesktop.org/drm/intel/issues/2672
-  [i915#2681]: https://gitlab.freedesktop.org/drm/intel/issues/2681
-  [i915#2705]: https://gitlab.freedesktop.org/drm/intel/issues/2705
-  [i915#280]: https://gitlab.freedesktop.org/drm/intel/issues/280
-  [i915#284]: https://gitlab.freedesktop.org/drm/intel/issues/284
-  [i915#2842]: https://gitlab.freedesktop.org/drm/intel/issues/2842
-  [i915#3023]: https://gitlab.freedesktop.org/drm/intel/issues/3023
-  [i915#3063]: https://gitlab.freedesktop.org/drm/intel/issues/3063
-  [i915#3281]: https://gitlab.freedesktop.org/drm/intel/issues/3281
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3297]: https://gitlab.freedesktop.org/drm/intel/issues/3297
-  [i915#3299]: https://gitlab.freedesktop.org/drm/intel/issues/3299
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3359]: https://gitlab.freedesktop.org/drm/intel/issues/3359
-  [i915#3361]: https://gitlab.freedesktop.org/drm/intel/issues/3361
-  [i915#3458]: https://gitlab.freedesktop.org/drm/intel/issues/3458
-  [i915#3469]: https://gitlab.freedesktop.org/drm/intel/issues/3469
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3591]: https://gitlab.freedesktop.org/drm/intel/issues/3591
-  [i915#3638]: https://gitlab.freedesktop.org/drm/intel/issues/3638
-  [i915#3689]: https://gitlab.freedesktop.org/drm/intel/issues/3689
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3734]: https://gitlab.freedesktop.org/drm/intel/issues/3734
-  [i915#3742]: https://gitlab.freedesktop.org/drm/intel/issues/3742
-  [i915#3804]: https://gitlab.freedesktop.org/drm/intel/issues/3804
-  [i915#3886]: https://gitlab.freedesktop.org/drm/intel/issues/3886
-  [i915#4070]: https://gitlab.freedesktop.org/drm/intel/issues/4070
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4270]: https://gitlab.freedesktop.org/drm/intel/issues/4270
-  [i915#43]: https://gitlab.freedesktop.org/drm/intel/issues/43
-  [i915#4349]: https://gitlab.freedesktop.org/drm/intel/issues/4349
-  [i915#4525]: https://gitlab.freedesktop.org/drm/intel/issues/4525
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4538]: https://gitlab.freedesktop.org/drm/intel/issues/4538
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4833]: https://gitlab.freedesktop.org/drm/intel/issues/4833
-  [i915#4860]: https://gitlab.freedesktop.org/drm/intel/issues/4860
-  [i915#4936]: https://gitlab.freedesktop.org/drm/intel/issues/4936
-  [i915#5176]: https://gitlab.freedesktop.org/drm/intel/issues/5176
-  [i915#5213]: https://gitlab.freedesktop.org/drm/intel/issues/5213
-  [i915#5235]: https://gitlab.freedesktop.org/drm/intel/issues/5235
-  [i915#5286]: https://gitlab.freedesktop.org/drm/intel/issues/5286
-  [i915#5289]: https://gitlab.freedesktop.org/drm/intel/issues/5289
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5493]: https://gitlab.freedesktop.org/drm/intel/issues/5493
-  [i915#5566]: https://gitlab.freedesktop.org/drm/intel/issues/5566
-  [i915#5784]: https://gitlab.freedesktop.org/drm/intel/issues/5784
-  [i915#6095]: https://gitlab.freedesktop.org/drm/intel/issues/6095
-  [i915#6433]: https://gitlab.freedesktop.org/drm/intel/issues/6433
-  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
-  [i915#6768]: https://gitlab.freedesktop.org/drm/intel/issues/6768
-  [i915#6944]: https://gitlab.freedesktop.org/drm/intel/issues/6944
-  [i915#7116]: https://gitlab.freedesktop.org/drm/intel/issues/7116
-  [i915#7118]: https://gitlab.freedesktop.org/drm/intel/issues/7118
-  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
-  [i915#7479]: https://gitlab.freedesktop.org/drm/intel/issues/7479
-  [i915#7711]: https://gitlab.freedesktop.org/drm/intel/issues/7711
-  [i915#7742]: https://gitlab.freedesktop.org/drm/intel/issues/7742
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7941]: https://gitlab.freedesktop.org/drm/intel/issues/7941
-  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
-  [i915#8178]: https://gitlab.freedesktop.org/drm/intel/issues/8178
-  [i915#8211]: https://gitlab.freedesktop.org/drm/intel/issues/8211
-  [i915#8229]: https://gitlab.freedesktop.org/drm/intel/issues/8229
-  [i915#8234]: https://gitlab.freedesktop.org/drm/intel/issues/8234
-  [i915#8311]: https://gitlab.freedesktop.org/drm/intel/issues/8311
-  [i915#8381]: https://gitlab.freedesktop.org/drm/intel/issues/8381
-  [i915#8393]: https://gitlab.freedesktop.org/drm/intel/issues/8393
+[1] See https://gfx-linux.intel.com/igt-doc.html#igt-test-documentation
 
 
-Build changes
--------------
+> + */
+>  static void pitch_tests(int fd)
+>  {
+>  	struct drm_mode_fb_cmd2 f = {};
+> @@ -399,6 +466,42 @@ static void tiling_tests(int fd)
+>  	}
+>  }
+>  
+> +/**
+> + * SUBTEST: size-max
+> + * Description: Check if addfb2 call works with max size of buffer object
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: too-wide
+> + * Description: Test that addfb2 call fails correctly with increased width of fb
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: too-high
+> + * Description: Test that addfb2 call fails correctly with increased height of fb
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: bo-too-small
+> + * Description: Test that addfb2 call fails correctly with small size of buffer object
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: small-bo
+> + * Description: Check if addfb2 call works for given height
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + */
+>  static void size_tests(int fd)
+>  {
+>  	struct drm_mode_fb_cmd2 f = {};
+> @@ -514,6 +617,21 @@ static void size_tests(int fd)
+>  	}
+>  }
+>  
+> +/**
+> + * SUBTEST: addfb25-modifier-no-flag
+> + * Description: Test that addfb2 call fails correctly for x-tiling with given modifier
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: addfb25-bad-modifier
+> + * Description: Test that addfb2 call fails correctly for irrelevant modifier
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + */
+>  static void addfb25_tests(int fd)
+>  {
+>  	struct drm_mode_fb_cmd2 f = {};
+> @@ -700,6 +818,35 @@ static void addfb25_4tile(int fd)
+>  		gem_close(fd, gem_bo);
+>  }
+>  
+> +/**
+> + * SUBTEST: invalid-get-prop-any
+> + * Description: Test that get-properties ioctl call fails correctly for invalid object type
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: invalid-get-prop
+> + * Description: Test that get-properties ioctl call fails correctly for fb mode object
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: invalid-set-prop-any
+> + * Description: Test that set-properties ioctl call fails correctly for invalid object type
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: invalid-set-prop
+> + * Description: Test that get-properties ioctl call fails correctly for fb mode object
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_gem_interop
+> + * Mega feature: General Display Features
+> + */
+>  static void prop_tests(int fd)
+>  {
+>  	struct drm_mode_fb_cmd2 f = {};
+> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+> index 7df6a6125..05085d607 100644
+> --- a/tests/kms_cursor_legacy.c
+> +++ b/tests/kms_cursor_legacy.c
+> @@ -22,6 +22,11 @@
+>   *
+>   */
+>  
+> +/**
+> + * TEST: Stress legacy cursor ioctl
+> + * Category: Display
+> + */
+> +
+>  #include <sched.h>
+>  #include <sys/poll.h>
+>  
+> @@ -536,6 +541,45 @@ enum basic_flip_cursor {
+>  
+>  #define BASIC_BUSY 0x1
+>  
+> +/**
+> + * SUBTEST: basic-busy-flip-before-cursor-%s
+> + * Description: Cursor test with %arg[1] mode
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: cursor
+> + * Mega feature: General Display Features
+> + *
+> + * arg[1]:
+> + *
+> + * @atomic:	atomic
+> + * @legacy:	legacy
+> + *
+> + * SUBTEST: basic-flip-after-cursor-%s
+> + * Description: Cursor test with %arg[1] mode
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: cursor
+> + * Mega feature: General Display Features
+> + *
+> + * arg[1]:
+> + *
+> + * @atomic:        atomic
+> + * @legacy:        legacy
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7277 -> IGTPW_8911
-  * Piglit: piglit_4509 -> None
+> + * @varying-size:  varying-size
 
-  CI-20190529: 20190529
-  CI_DRM_13108: 3ddac02bdbb0e147d2fd025029955aca7c2798a9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8911: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/index.html
-  IGT_7277: 1cb3507f3ff28d11bd5cfabcde576fe78ddab571 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+I would define this on a different way, like:
 
-== Logs ==
+	* Description: Cursor test with %arg[1]
+	*
+	* arg[1]:
+	*
+	* @atomic:        atomic mode
+	* @legacy:        legacy mode
+	* @varying-size:  varying size on atomic mode
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/index.html
+(I'm guessing that the last one is also on atomic mode)
 
---===============3170965555519643402==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> + *
+> + * SUBTEST: basic-flip-before-cursor-%s
+> + * Description: Cursor test with %arg[1] mode
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: cursor
+> + * Mega feature: General Display Features
+> + *
+> + * arg[1]:
+> + *
+> + * @atomic:        atomic
+> + * @legacy:        legacy
+> + * @varying-size:  varying-size
 
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>XE test cleanup to handle xe_device (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117263/">https://patchwork.freedesktop.org/series/117263/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/index.html</a></td></tr>
-
-</table>
+As arg[1] definition is at the same comment block, you don't need to
+repeat it here, as the argument definitions are valid for the entire
+comment block.
 
 
-    <h1>CI Bug Log - changes from CI_DRM_13108_full -&gt; IGTPW_8911_full</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/index.html</p>
-<h2>Participating hosts (8 -&gt; 7)</h2>
-<p>Missing    (1): shard-rkl0 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8911_full:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>
-<p>igt@drm_fdinfo@busy-idle@bcs0:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-3/igt@drm_fdinfo@busy-idle@bcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-6/igt@drm_fdinfo@busy-idle@bcs0.html">ABORT</a></li>
-</ul>
-</li>
-<li>
-<p>igt@drm_fdinfo@busy-idle@vcs0:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-3/igt@drm_fdinfo@busy-idle@vcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-6/igt@drm_fdinfo@busy-idle@vcs0.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8911_full that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_barrier_race@remote-request@rcs0:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-glk9/igt@gem_barrier_race@remote-request@rcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk5/igt@gem_barrier_race@remote-request@rcs0.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8211">i915#8211</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random-ccs:</p>
-<ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk2/igt@gem_lmem_swapping@verify-random-ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_dc@dc9-dpms:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-apl3/igt@i915_pm_dc@dc9-dpms.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-apl6/igt@i915_pm_dc@dc9-dpms.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_atomic@plane-primary-overlay-mutable-zpos:</p>
-<ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk8/igt@kms_atomic@plane-primary-overlay-mutable-zpos.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +82 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-c-bad-pixel-format-y_tiled_gen12_rc_ccs_cc:</p>
-<ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk6/igt@kms_ccs@pipe-c-bad-pixel-format-y_tiled_gen12_rc_ccs_cc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3886">i915#3886</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_color@ctm-green-to-red@pipe-a-hdmi-a-1:</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-snb1/igt@kms_color@ctm-green-to-red@pipe-a-hdmi-a-1.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +87 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-expired-vblank-interruptible@a-hdmi-a2:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-glk2/igt@kms_flip@flip-vs-expired-vblank-interruptible@a-hdmi-a2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk8/igt@kms_flip@flip-vs-expired-vblank-interruptible@a-hdmi-a2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2122">i915#2122</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@overlay-primary-update-sf-dmg-area:</p>
-<ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk1/igt@kms_psr2_sf@overlay-primary-update-sf-dmg-area.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/658">i915#658</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_barrier_race@remote-request@rcs0:</p>
-<ul>
-<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-tglu-8/igt@gem_barrier_race@remote-request@rcs0.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8211">i915#8211</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8234">i915#8234</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-tglu-2/igt@gem_barrier_race@remote-request@rcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_eio@reset-stress:</p>
-<ul>
-<li>
-<p>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-snb7/igt@gem_eio@reset-stress.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3063">i915#3063</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-snb7/igt@gem_eio@reset-stress.html">PASS</a></p>
-</li>
-<li>
-<p>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-dg1-18/igt@gem_eio@reset-stress.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5784">i915#5784</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-dg1-12/igt@gem_eio@reset-stress.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-pace@rcs0:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-1/igt@gem_exec_fair@basic-pace@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-3/igt@gem_exec_fair@basic-pace@rcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gen9_exec_parse@allowed-single:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-glk2/igt@gen9_exec_parse@allowed-single.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5566">i915#5566</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk1/igt@gen9_exec_parse@allowed-single.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload-no-display:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-snb4/igt@i915_module_load@reload-no-display.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8393">i915#8393</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-snb5/igt@i915_module_load@reload-no-display.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@dpms-mode-unset-non-lpsp:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-7/igt@i915_pm_rpm@dpms-mode-unset-non-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-2/igt@i915_pm_rpm@dpms-mode-unset-non-lpsp.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@waitboost:</p>
-<ul>
-<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-dg1-18/igt@i915_pm_rps@waitboost.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8229">i915#8229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-dg1-15/igt@i915_pm_rps@waitboost.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-apl1/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-apl2/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@single-bo@pipe-b:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-7/igt@kms_cursor_legacy@single-bo@pipe-b.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8011">i915#8011</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-6/igt@kms_cursor_legacy@single-bo@pipe-b.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vblank@pipe-c-accuracy-idle:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-glk3/igt@kms_vblank@pipe-c-accuracy-idle.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/43">i915#43</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk9/igt@kms_vblank@pipe-c-accuracy-idle.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@perf@stress-open-close@0-rcs0:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-glk1/igt@perf@stress-open-close@0-rcs0.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5213">i915#5213</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7941">i915#7941</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-glk2/igt@perf@stress-open-close@0-rcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@perf_pmu@idle@rcs0:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13108/shard-rkl-4/igt@perf_pmu@idle@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4349">i915#4349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/shard-rkl-1/igt@perf_pmu@idle@rcs0.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7277 -&gt; IGTPW_8911</li>
-<li>Piglit: piglit_4509 -&gt; None</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13108: 3ddac02bdbb0e147d2fd025029955aca7c2798a9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8911: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8911/index.html<br />
-  IGT_7277: 1cb3507f3ff28d11bd5cfabcde576fe78ddab571 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
+> + */
+>  static void basic_flip_cursor(igt_display_t *display,
+>  			      enum flip_test mode,
+>  			      enum basic_flip_cursor order,
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index e4c98b8ec..611d3fbe3 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -21,6 +21,11 @@
+>   * IN THE SOFTWARE.
+>   */
+>  
+> +/**
+> + * TEST: Tests for validating modeset, dpms and pageflips
+> + * Category: Display
+> + */
+> +
+>  #include "config.h"
+>  
+>  #include "igt.h"
+> @@ -1557,6 +1562,28 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+>  		__run_test_on_crtc_set(o, crtc_idxs, crtc_count, duration_ms);
+>  }
+>  
+> +/**
+> + * SUBTEST: basic-flip-vs-%s
+> + * Description: Basic test for validating %arg[1]
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: vblank
+> + * Mega feature: General Display Features
+> + *
+> + * arg[1]:
+> + *
+> + * @dpms:         dpms
+> + * @modeset:      modeset
+> + * @wf_vblank:    wf_vblank
 
-</body>
-</html>
+It probably makes sense tor replace wf_vblank with a more meaningful
+string. Maybe:
 
---===============3170965555519643402==--
+	@wf_vblank:  wait for vertical blank 
+
+or:
+
+	@wf_vblank:  wait for vblank 
+
+
+> + *
+> + * SUBTEST: basic-plain-flip
+> + * Description: Basic test for validating page flip
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: vblank
+> + * Mega feature: General Display Features
+> + */
+> +
+>  static void run_test(int duration, int flags)
+>  {
+>  	struct test_output o;
+> diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
+> index f1508efba..7e35693cf 100644
+> --- a/tests/kms_force_connector_basic.c
+> +++ b/tests/kms_force_connector_basic.c
+> @@ -22,6 +22,11 @@
+>   *
+>   */
+>  
+> +/**
+> + * TEST: Check the debugfs force connector/edid features work correctly
+> + * Category: Display
+> + */
+> +
+>  #include "igt.h"
+>  
+>  IGT_TEST_DESCRIPTION("Check the debugfs force connector/edid features work"
+> @@ -151,6 +156,14 @@ static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmMode
+>  	}
+>  }
+>  
+> +/**
+> + * SUBTEST: force-connector-state
+> + * Description: Test to check the forced connector state
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: force_connector
+> + * Mega feature: General Display Features
+> + */
+>  static void force_connector_state(int drm_fd, drmModeConnectorPtr connector)
+>  {
+>  	igt_display_t display;
+> @@ -190,6 +203,14 @@ static void force_connector_state(int drm_fd, drmModeConnectorPtr connector)
+>  	igt_display_fini(&display);
+>  }
+>  
+> +/**
+> + * SUBTEST: force-edid
+> + * Description: Test to check the values after forcing edid
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: force_connector
+> + * Mega feature: General Display Features
+> + */
+>  static void force_edid(int drm_fd, drmModeConnectorPtr connector)
+>  {
+>  	drmModeConnector *temp;
+> @@ -231,6 +252,14 @@ static void force_edid(int drm_fd, drmModeConnectorPtr connector)
+>  
+>  }
+>  
+> +/**
+> + * SUBTEST: prune-stale-modes
+> + * Description: Tests pruning of stale modes
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: force_connector
+> + * Mega feature: General Display Features
+> + */
+>  static void prune_stale_modes(int drm_fd, drmModeConnectorPtr connector)
+>  {
+>  	int i;
+> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+> index 65afc9f60..84c73fd7f 100644
+> --- a/tests/kms_pipe_crc_basic.c
+> +++ b/tests/kms_pipe_crc_basic.c
+> @@ -22,6 +22,11 @@
+>   *
+>   */
+>  
+> +/**
+> + * TEST: Tests behaviour of CRC
+> + * Category: Display
+> + */
+> +
+>  #include "igt.h"
+>  #include "igt_sysfs.h"
+>  #include <errno.h>
+> @@ -80,6 +85,50 @@ enum {
+>  	TEST_HANG = 1 << 3,
+>  };
+>  
+> +/**
+> + * SUBTEST: read-crc
+> + * Description: Test for pipe CRC reads
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: crc
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: read-crc-frame-sequence
+> + * Description: Tests the pipe CRC read and ensure frame sequence
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: crc
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: nonblocking-crc
+> + * Description: Test for O_NONBLOCK CRC reads
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: crc
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: nonblocking-crc-frame-sequence
+> + * Description: Test for O_NONBLOCK CRC reads and ensure frame sequence
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: crc
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: suspend-read-crc
+> + * Description: Suspend test for pipe CRC reads
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: crc
+> + * Mega feature: General Display Features
+> + *
+> + * SUBTEST: hang-read-crc
+> + * Description: Hang test for pipe CRC read
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: crc
+> + * Mega feature: General Display Features
+> + */
+> +
+>  static void test_read_crc(data_t *data, enum pipe pipe,
+>  			  igt_output_t *output, unsigned flags)
+>  {
+> @@ -177,6 +226,15 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+>  	igt_display_commit(display);
+>  }
+>  
+> +/**
+> + * SUBTEST: compare-crc-sanitycheck
+> + * Description: Basic sanity check for CRC mismatches
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: crc
+> + * Mega feature: General Display Features
+> + */
+> +
+>  /*
+>   * CRC-sanity test, to make sure there would be no CRC mismatches
+>   *
+> diff --git a/tests/kms_prop_blob.c b/tests/kms_prop_blob.c
+> index 96aa6d8d6..6a5a5f410 100644
+> --- a/tests/kms_prop_blob.c
+> +++ b/tests/kms_prop_blob.c
+> @@ -25,6 +25,10 @@
+>   *   Daniel Stone <daniels@collabora.com>
+>   */
+>  
+> +/**
+> + * TEST: Tests behaviour of mass-data 'blob' properties
+> + * Category: Display
+> + */
+>  #include "igt.h"
+>  #include <errno.h>
+>  #include <stdbool.h>
+> @@ -238,6 +242,14 @@ test_core(int fd)
+>  	igt_assert_eq(validate_prop(fd, 0), ENOENT);
+>  }
+>  
+> +/**
+> + * SUBTEST: basic
+> + * Description: Test to ensure property support exists
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: kms_core
+> + * Mega feature: General Display Features
+> + */
+>  static void
+>  test_basic(int fd)
+>  {
