@@ -1,23 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 155B410E56A
- for <igt-dev@lists.freedesktop.org>; Fri,  5 May 2023 06:20:02 +0000 (UTC)
-Received: from linux.intel.com (unknown [10.252.18.182])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 8BE7F580C55
- for <igt-dev@lists.freedesktop.org>; Thu,  4 May 2023 23:20:01 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1puonP-0018t1-0n
- for igt-dev@lists.freedesktop.org; Fri, 05 May 2023 08:19:59 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B55FA10E576
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 May 2023 06:48:49 +0000 (UTC)
+Date: Fri, 5 May 2023 08:48:44 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  5 May 2023 08:19:56 +0200
-Message-Id: <20230505061956.272476-1-mauro.chehab@linux.intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <20230505084844.1fd76b14@maurocar-mobl2>
+In-Reply-To: <20230505061431.3157151-1-bhanuprakash.modem@intel.com>
+References: <20230505061431.3157151-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] scripts/test_list.py: add support to
- exclude files
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] scripts/test_list: Create dir if it
+ doesn't exist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,53 +20,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On Fri,  5 May 2023 11:44:31 +0530
+Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
 
-Specially when using wildcards, it is interesting to have a
-way to exclude some files. This is needed to support some kms
-helper functions that, instead of being part of the IGT library,
-are stored inside the tests sub-directories.
+> To generate the testlist create the destination dir if it
+> doesn't exist.
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  scripts/test_list.py | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 1c5e195eb..9ae1cd154 100755
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -1149,6 +1149,9 @@ class TestList:
+>              fname = directory + "/" + test_prefix + fname + ".testlist"
+>              fname = re.sub(r"[\s_]+", "-", fname)
+>  
+> +            if not os.path.exists(directory):
+> +                os.makedirs(directory)
+> +
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/test_list.py | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Don't need to have it inside the for loop, as the directory is
+the same for all test lists.
 
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 2a53d782a4a0..c9dbf144da1e 100755
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -208,6 +208,7 @@ class TestList:
- 
-     {
-         "files": [ "tests/driver/*.c" ],
-+        "exclude_files": [ "tests/driver/*-helper.c" ],
-         "fields": {
-             "Category": {
-                 "Sub-category": {
-@@ -302,10 +303,19 @@ class TestList:
-             has_implemented = False
-             if not self.filenames:
-                 self.filenames = []
-+                exclude_files = []
-                 files = self.config["files"]
-+                exclude_file_glob = self.config.get("exclude_files", [])
-+                for cfg_file in exclude_file_glob:
-+                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-+                    for fname in glob.glob(cfg_file):
-+                        exclude_files.append(fname)
-+
-                 for cfg_file in files:
-                     cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-                     for fname in glob.glob(cfg_file):
-+                        if fname in exclude_files:
-+                            continue
-                         self.filenames.append(fname)
-                         has_implemented = True
-             else:
--- 
-2.40.1
+After moving it to be before the "for test in test_subtests.keys():"
+loop:
+
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Regards,
+Mauro
