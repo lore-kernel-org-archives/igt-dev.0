@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BEEAE10E541
- for <igt-dev@lists.freedesktop.org>; Thu,  4 May 2023 21:46:23 +0000 (UTC)
-From: "Shankar, Uma" <uma.shankar@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 4 May 2023 21:46:18 +0000
-Message-ID: <DM4PR11MB6360CEB325AB196E13F27772F46D9@DM4PR11MB6360.namprd11.prod.outlook.com>
-References: <20230411161555.10001-1-ville.syrjala@linux.intel.com>
- <20230411161555.10001-9-ville.syrjala@linux.intel.com>
-In-Reply-To: <20230411161555.10001-9-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84D6910E1EA
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 May 2023 00:07:13 +0000 (UTC)
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  4 May 2023 17:05:56 -0700
+Message-Id: <20230505000555.1916763-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 8/9] tests/kms_color: Move dynamic
- subtests up one level
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Update dmesg error message
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,97 +16,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
-di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIFZpbGxlIFN5cmph
-bGENCj4gU2VudDogVHVlc2RheSwgQXByaWwgMTEsIDIwMjMgOTo0NiBQTQ0KPiBUbzogaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRDSCBpLWct
-dCB2MiA4LzldIHRlc3RzL2ttc19jb2xvcjogTW92ZSBkeW5hbWljIHN1YnRlc3RzIHVwDQo+IG9u
-ZSBsZXZlbA0KPiANCj4gRnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4
-LmludGVsLmNvbT4NCj4gDQo+IE1vdmUgdGhlIGlndF9keW5hbWljX2YoKSB1cCBvbmUgbGV2ZWwg
-c28gdGhhdCB0aGUgd2hvbGUgc3VidGVzdHMgZG9lc24ndCBza2lwIGlmDQo+IHNvbWUgcGlwZSBp
-cyBtaXNzaW5nIGEgc3VpdGFibGUgb3V0cHV0LiBXZSB3YW50IHRvIHNraXAgb25seSB0aGUgZHlu
-YW1pYyBzdWJ0ZXN0Lg0KDQpMb29rcyBHb29kIHRvIG1lLg0KUmV2aWV3ZWQtYnk6IFVtYSBTaGFu
-a2FyIDx1bWEuc2hhbmthckBpbnRlbC5jb20+DQoNCj4gU2lnbmVkLW9mZi1ieTogVmlsbGUgU3ly
-asOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9r
-bXNfY29sb3IuYyB8IDc2ICsrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgMzggaW5zZXJ0aW9ucygrKSwgMzggZGVsZXRpb25z
-KC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2NvbG9yLmMgYi90ZXN0cy9rbXNfY29s
-b3IuYyBpbmRleA0KPiAxZWMwOTc5NTNjOWQuLmUzNWRjY2VhMWE2MSAxMDA2NDQNCj4gLS0tIGEv
-dGVzdHMva21zX2NvbG9yLmMNCj4gKysrIGIvdGVzdHMva21zX2NvbG9yLmMNCj4gQEAgLTczNiw4
-ICs3MzYsNyBAQCBydW5fZ2FtbWFfZGVnYW1tYV90ZXN0c19mb3JfcGlwZShkYXRhX3QgKmRhdGEs
-IGVudW0NCj4gcGlwZSBwLA0KPiAgCWlmICghcGlwZV9vdXRwdXRfY29tYm9fdmFsaWQoZGF0YSwg
-cCkpDQo+ICAJCWdvdG8gb3V0Ow0KPiANCj4gLQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzLSVzIiwg
-a21zdGVzdF9waXBlX25hbWUocCksIGRhdGEtPm91dHB1dC0+bmFtZSkNCj4gLQkJaWd0X2Fzc2Vy
-dCh0ZXN0X3QoZGF0YSwgZGF0YS0+cHJpbWFyeSkpOw0KPiArCWlndF9hc3NlcnQodGVzdF90KGRh
-dGEsIGRhdGEtPnByaW1hcnkpKTsNCj4gDQo+ICBvdXQ6DQo+ICAJdGVzdF9jbGVhbnVwKGRhdGEp
-Ow0KPiBAQCAtNzU4LDcgKzc1Nyw5IEBAIHJ1bl9jdG1fdGVzdHNfZm9yX3BpcGUoZGF0YV90ICpk
-YXRhLCBlbnVtIHBpcGUgcCwNCj4gIAkJICAgICAgIGNvbnN0IGRvdWJsZSAqY3RtLA0KPiAgCQkg
-ICAgICAgaW50IGl0ZXIpDQo+ICB7DQo+ICsJYm9vbCBzdWNjZXNzID0gZmFsc2U7DQo+ICAJZG91
-YmxlIGRlbHRhOw0KPiArCWludCBpOw0KPiANCj4gIAl0ZXN0X3NldHVwKGRhdGEsIHApOw0KPiAN
-Cj4gQEAgLTc3NywzNSArNzc4LDMwIEBAIHJ1bl9jdG1fdGVzdHNfZm9yX3BpcGUoZGF0YV90ICpk
-YXRhLCBlbnVtIHBpcGUgcCwNCj4gIAlpZiAoIWl0ZXIpDQo+ICAJCWl0ZXIgPSAxOw0KPiANCj4g
-LQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzLSVzIiwga21zdGVzdF9waXBlX25hbWUocCksIGRhdGEt
-Pm91dHB1dC0+bmFtZSkgew0KPiAtCQlib29sIHN1Y2Nlc3MgPSBmYWxzZTsNCj4gLQkJaW50IGk7
-DQo+IC0NCj4gLQkJLyoNCj4gLQkJICogV2UgdGVzdHMgYSBmZXcgdmFsdWVzIGFyb3VuZCB0aGUg
-ZXhwZWN0ZWQgcmVzdWx0IGJlY2F1c2UNCj4gLQkJICogaXQgZGVwZW5kcyBvbiB0aGUgaGFyZHdh
-cmUgd2UncmUgZGVhbGluZyB3aXRoLCB3ZSBjYW4gZWl0aGVyDQo+IC0JCSAqIGdldCBjbGFtcGVk
-IG9yIHJvdW5kZWQgdmFsdWVzIGFuZCB3ZSBhbHNvIG5lZWQgdG8gYWNjb3VudA0KPiAtCQkgKiBm
-b3Igb2RkIG51bWJlciBvZiBpdGVtcyBpbiB0aGUgTFVUcy4NCj4gLQkJICovDQo+IC0JCWZvciAo
-aSA9IDA7IGkgPCBpdGVyOyBpKyspIHsNCj4gLQkJCWNvbG9yX3QgZXhwZWN0ZWRfY29sb3JzWzNd
-ID0gew0KPiAtCQkJCWZiX2NvbG9yc1swXSwNCj4gLQkJCQlmYl9jb2xvcnNbMV0sDQo+IC0JCQkJ
-ZmJfY29sb3JzWzJdLA0KPiAtCQkJfTsNCj4gLQ0KPiAtCQkJdHJhbnNmb3JtX2NvbG9yKCZleHBl
-Y3RlZF9jb2xvcnNbMF0sIGN0bSwgZGVsdGEgKiAoaSAtIChpdGVyDQo+IC8gMikpKTsNCj4gLQkJ
-CXRyYW5zZm9ybV9jb2xvcigmZXhwZWN0ZWRfY29sb3JzWzFdLCBjdG0sIGRlbHRhICogKGkgLSAo
-aXRlcg0KPiAvIDIpKSk7DQo+IC0JCQl0cmFuc2Zvcm1fY29sb3IoJmV4cGVjdGVkX2NvbG9yc1sy
-XSwgY3RtLCBkZWx0YSAqIChpIC0gKGl0ZXINCj4gLyAyKSkpOw0KPiAtDQo+IC0JCQlpZiAodGVz
-dF9waXBlX2N0bShkYXRhLCBkYXRhLT5wcmltYXJ5LCBmYl9jb2xvcnMsDQo+IC0JCQkJCSAgZXhw
-ZWN0ZWRfY29sb3JzLCBjdG0pKSB7DQo+IC0JCQkJc3VjY2VzcyA9IHRydWU7DQo+IC0JCQkJYnJl
-YWs7DQo+IC0JCQl9DQo+ICsJLyoNCj4gKwkgKiBXZSB0ZXN0cyBhIGZldyB2YWx1ZXMgYXJvdW5k
-IHRoZSBleHBlY3RlZCByZXN1bHQgYmVjYXVzZQ0KPiArCSAqIGl0IGRlcGVuZHMgb24gdGhlIGhh
-cmR3YXJlIHdlJ3JlIGRlYWxpbmcgd2l0aCwgd2UgY2FuIGVpdGhlcg0KPiArCSAqIGdldCBjbGFt
-cGVkIG9yIHJvdW5kZWQgdmFsdWVzIGFuZCB3ZSBhbHNvIG5lZWQgdG8gYWNjb3VudA0KPiArCSAq
-IGZvciBvZGQgbnVtYmVyIG9mIGl0ZW1zIGluIHRoZSBMVVRzLg0KPiArCSAqLw0KPiArCWZvciAo
-aSA9IDA7IGkgPCBpdGVyOyBpKyspIHsNCj4gKwkJY29sb3JfdCBleHBlY3RlZF9jb2xvcnNbM10g
-PSB7DQo+ICsJCQlmYl9jb2xvcnNbMF0sDQo+ICsJCQlmYl9jb2xvcnNbMV0sDQo+ICsJCQlmYl9j
-b2xvcnNbMl0sDQo+ICsJCX07DQo+ICsNCj4gKwkJdHJhbnNmb3JtX2NvbG9yKCZleHBlY3RlZF9j
-b2xvcnNbMF0sIGN0bSwgZGVsdGEgKiAoaSAtIChpdGVyIC8gMikpKTsNCj4gKwkJdHJhbnNmb3Jt
-X2NvbG9yKCZleHBlY3RlZF9jb2xvcnNbMV0sIGN0bSwgZGVsdGEgKiAoaSAtIChpdGVyIC8gMikp
-KTsNCj4gKwkJdHJhbnNmb3JtX2NvbG9yKCZleHBlY3RlZF9jb2xvcnNbMl0sIGN0bSwgZGVsdGEg
-KiAoaSAtIChpdGVyIC8gMikpKTsNCj4gKw0KPiArCQlpZiAodGVzdF9waXBlX2N0bShkYXRhLCBk
-YXRhLT5wcmltYXJ5LCBmYl9jb2xvcnMsDQo+ICsJCQkJICBleHBlY3RlZF9jb2xvcnMsIGN0bSkp
-IHsNCj4gKwkJCXN1Y2Nlc3MgPSB0cnVlOw0KPiArCQkJYnJlYWs7DQo+ICAJCX0NCj4gLQkJaWd0
-X2Fzc2VydChzdWNjZXNzKTsNCj4gIAl9DQo+ICsJaWd0X2Fzc2VydChzdWNjZXNzKTsNCj4gDQo+
-ICBvdXQ6DQo+ICAJdGVzdF9jbGVhbnVwKGRhdGEpOw0KPiBAQCAtOTI3LDEwICs5MjMsMTAgQEAg
-cnVuX2ludmFsaWRfdGVzdHNfZm9yX3BpcGUoZGF0YV90ICpkYXRhKQ0KPiAgCQlpZ3RfZGVzY3Jp
-YmVfZigiJXMiLCB0ZXN0c1tpXS5kZXNjKTsNCj4gIAkJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWlj
-X2YoIiVzIiwgdGVzdHNbaV0ubmFtZSkgew0KPiAgCQkJZm9yX2VhY2hfcGlwZSgmZGF0YS0+ZGlz
-cGxheSwgcGlwZSkgew0KPiAtCQkJCXByZXBfcGlwZShkYXRhLCBwaXBlKTsNCj4gLQ0KPiAtCQkJ
-CWlndF9keW5hbWljX2YoInBpcGUtJXMiLA0KPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkNCj4g
-KwkJCQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzIiwNCj4ga21zdGVzdF9waXBlX25hbWUocGlwZSkp
-IHsNCj4gKwkJCQkJcHJlcF9waXBlKGRhdGEsIHBpcGUpOw0KPiAgCQkJCQl0ZXN0c1tpXS50ZXN0
-X3QoZGF0YSwgcGlwZSk7DQo+ICsJCQkJfQ0KPiAgCQkJfQ0KPiAgCQl9DQo+ICAJfQ0KPiBAQCAt
-MTA3MCw4ICsxMDY2LDEwIEBAIHJ1bl90ZXN0c19mb3JfcGlwZShkYXRhX3QgKmRhdGEpDQo+ICAJ
-CWlndF9kZXNjcmliZV9mKCIlcyIsIGdhbW1hX2RlZ2FtbWFfdGVzdHNbaV0uZGVzYyk7DQo+ICAJ
-CWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pY19mKCIlcyIsDQo+IGdhbW1hX2RlZ2FtbWFfdGVzdHNb
-aV0ubmFtZSkgew0KPiAgCQkJZm9yX2VhY2hfcGlwZSgmZGF0YS0+ZGlzcGxheSwgcGlwZSkgew0K
-PiAtCQkJCXJ1bl9nYW1tYV9kZWdhbW1hX3Rlc3RzX2Zvcl9waXBlKGRhdGEsIHBpcGUsDQo+IC0N
-Cj4gZ2FtbWFfZGVnYW1tYV90ZXN0c1tpXS50ZXN0X3QpOw0KPiArCQkJCWlndF9keW5hbWljX2Yo
-InBpcGUtJXMiLA0KPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkgew0KPiArDQo+IAlydW5fZ2Ft
-bWFfZGVnYW1tYV90ZXN0c19mb3JfcGlwZShkYXRhLCBwaXBlLA0KPiArDQo+IGdhbW1hX2RlZ2Ft
-bWFfdGVzdHNbaV0udGVzdF90KTsNCj4gKwkJCQl9DQo+ICAJCQl9DQo+ICAJCX0NCj4gIAl9DQo+
-IEBAIC0xMDgwLDEwICsxMDc4LDEyIEBAIHJ1bl90ZXN0c19mb3JfcGlwZShkYXRhX3QgKmRhdGEp
-DQo+ICAJCWlndF9kZXNjcmliZV9mKCIlcyIsIGN0bV90ZXN0c1tpXS5kZXNjKTsNCj4gIAkJaWd0
-X3N1YnRlc3Rfd2l0aF9keW5hbWljX2YoIiVzIiwgY3RtX3Rlc3RzW2ldLm5hbWUpIHsNCj4gIAkJ
-CWZvcl9lYWNoX3BpcGUoJmRhdGEtPmRpc3BsYXksIHBpcGUpIHsNCj4gLQkJCQlydW5fY3RtX3Rl
-c3RzX2Zvcl9waXBlKGRhdGEsIHBpcGUsDQo+IC0JCQkJCQkgICAgICAgY3RtX3Rlc3RzW2ldLmZi
-X2NvbG9ycywNCj4gLQkJCQkJCSAgICAgICBjdG1fdGVzdHNbaV0uY3RtLA0KPiAtCQkJCQkJICAg
-ICAgIGN0bV90ZXN0c1tpXS5pdGVyKTsNCj4gKwkJCQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzIiwN
-Cj4ga21zdGVzdF9waXBlX25hbWUocGlwZSkpIHsNCj4gKwkJCQkJcnVuX2N0bV90ZXN0c19mb3Jf
-cGlwZShkYXRhLCBwaXBlLA0KPiArCQkJCQkJCSAgICAgICBjdG1fdGVzdHNbaV0uZmJfY29sb3Jz
-LA0KPiArCQkJCQkJCSAgICAgICBjdG1fdGVzdHNbaV0uY3RtLA0KPiArCQkJCQkJCSAgICAgICBj
-dG1fdGVzdHNbaV0uaXRlcik7DQo+ICsJCQkJfQ0KPiAgCQkJfQ0KPiAgCQl9DQo+ICAJfQ0KPiAt
-LQ0KPiAyLjM5LjINCg0K
+Error message changed in the kernel in commit
+e5eef23e267c ("drm/display: Don't block HDR_OUTPUT_METADATA on
+unknown EOTF"). We should probably have a better way to get this
+error, but this should bring it back to a pass.
+
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+
+Still to be tested.... didn't have a machine available to reproduce it
+
+ tests/kms_hdr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index 23f12c14a..cbc0f3a55 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -418,7 +418,7 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 	if (flags & TEST_INVALID_HDR) {
+-		igt_assert_eq(system("dmesg|tail -n 1000|grep -E \"EOTF Not Supported\""), 0);
++		igt_assert_eq(system("dmesg|tail -n 1000|grep -E \"Unknown EOTF [0-9]+\""), 0);
+ 		goto cleanup;
+ 	}
+ 	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 10);
+-- 
+2.40.1
