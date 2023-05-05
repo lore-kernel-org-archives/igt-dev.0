@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4B1410E00F
- for <igt-dev@lists.freedesktop.org>; Fri,  5 May 2023 04:53:13 +0000 (UTC)
-Date: Fri, 5 May 2023 06:53:07 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31F2210E55C
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 May 2023 04:55:18 +0000 (UTC)
+Date: Fri, 5 May 2023 06:55:12 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230505065307.6efa102f@maurocar-mobl2>
-In-Reply-To: <20230504102451.3047783-3-bhanuprakash.modem@intel.com>
+Message-ID: <20230505065512.04e14e77@maurocar-mobl2>
+In-Reply-To: <20230504102451.3047783-4-bhanuprakash.modem@intel.com>
 References: <20230504102451.3047783-1-bhanuprakash.modem@intel.com>
- <20230504102451.3047783-3-bhanuprakash.modem@intel.com>
+ <20230504102451.3047783-4-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t 2/3] testplan: Add testplan support for kms
- tests
+Subject: Re: [igt-dev] [i-g-t 3/3] scripts/test_list: Ignore non-XE tests
+ for missing documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,111 +26,66 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu,  4 May 2023 15:54:50 +0530
+On Thu,  4 May 2023 15:54:51 +0530
 Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
 
-> Add testplan support for kms tests.
-> The documentation for kms tests will be like:
+> To add the test file to tests_config.json, documentation is
+> mandatory for all the subtests, else we'll end up with the
+> compilation failure.
+
+That's because you added a command on patch 2/3 to make it to check
+for documentation gaps at build time. Just replace:
+
+	'extra_args': check_testlist
+to:
+	'extra_args': []
+
+To avoid that.
+
+No need of hacking the source code.
+
 > 
-> 	/**
-> 	 * TEST: Test foo.
-> 	 * Category: Display
-> 	 *
-> 	 * SUBTEST: bar
-> 	 * Description: bar description
-> 	 * Test category: functionality test
-> 	 * Run type: BAT
-> 	 * Functionality: dp
-> 	 * Mega feature: DP 2.0
-> 	 */
+> It's completely make sense to consider the documentation as
+> mandatory for newly created test files like xe_*.c. But for
+> existing files, it is very painful to add the documentation
+> for all the subtests in that file.
+> 
+> Example: tests/kms_flip.c
+> It has N number of subtests, but we are using 2-3 subtests
+> for BAT. Will slowly add the documentation for remaining
+> subtests.
+> 
+> So, for non-XE subtests, don't fail the compilation for
+> missing documentation. Once the documentation is done for
+> all the subtests we can revert this patch.
 > 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  docs/testplan/meson.build  |  6 ++++--
->  tests/kms_test_config.json | 41 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 45 insertions(+), 2 deletions(-)
->  create mode 100644 tests/kms_test_config.json
+>  scripts/test_list.py | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> index e36713960..4e3565cf8 100644
-> --- a/docs/testplan/meson.build
-> +++ b/docs/testplan/meson.build
-> @@ -7,6 +7,7 @@ rst2pdf = find_program('rst2pdf', required: false)
->  stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 1c5e195eb..3c959d6b9 100755
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -876,11 +876,16 @@ class TestList:
+>              if not found:
+>                  doc_uneeded.append(doc_test)
 >  
->  xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
-> +kms_test_config = join_paths(source_root, 'tests', 'kms_test_config.json')
+> +        xe_regex = r"^(igt@xe_.*@.*$)"
+>          for run_test in run_subtests:
+>              found = False
+>              if re.match(test_regex, run_test):
+>                  found = True
+> -            if not found:
+> +            #
+> +            # FIXME: Drop this XE specific check once documentation is done
+> +            # for all subtests.
+> +            #
+> +            if not found and re.match(xe_regex, run_test):
+>                  run_missing.append(run_test)
+
+NACK.
+
 >  
->  check_testlist = []
->  if build_tests
-> @@ -22,8 +23,9 @@ else
->  	doc_dependencies = []
->  endif
->  
-> -test_dict = { 'xe_tests':
-> -		{ 'input': xe_test_config, 'extra_args': check_testlist }
-> +test_dict = {
-> +	      'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist },
-> +	      'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist }
-
-As you're not planning to document all tests at once, please replace it
-to:
-
-      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
-
-As otherwise the build will complain that the documentation is
-incomplete.
-
->  	    }
->  
->  foreach testplan, fields: test_dict
-> diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
-> new file mode 100644
-> index 000000000..4faecb7a7
-> --- /dev/null
-> +++ b/tests/kms_test_config.json
-> @@ -0,0 +1,41 @@
-> +{
-> +    "description": "JSON file to be used to parse KMS documentation",
-> +    "files": [ "chamelium/kms_chamelium_edid.c", "chamelium/kms_chamelium_frames.c",
-> +               "chamelium/kms_chamelium_hpd.c", "i915/kms_psr.c",
-> +               "kms_addfb_basic.c", "kms_cursor_legacy.c", "kms_flip.c",
-> +               "kms_force_connector_basic.c", "kms_pipe_crc_basic.c",
-> +               "kms_prop_blob.c", "kms_color.c"
-> +             ],
-
-It probably makes sense to use wildcards like "kms_*.c" and "i915/kms_*.c".
-
-> +    "fields": {
-> +        "Category": {
-> +            "_properties_": {
-> +                "description": "Contains the major group for the tested functionality 'Display'"
-> +            }
-> +        },
-> +        "Mega feature": {
-> +            "_properties_": {
-> +                "description": "Contains the mega feature for end to end use case, e.g. the 'PSR' feature."
-> +            },
-> +            "Functionality": {
-> +                "_properties_": {
-> +                    "description": "Groups tests on buckets containg more detailed functionality"
-> +                }
-> +            }
-> +        },
-> +        "Run type": {
-> +            "_properties_": {
-> +                "description": "Defines what category of testlist it belongs"
-> +            }
-> +        },
-> +        "Test category": {
-> +            "_properties_": {
-> +                "description": "Defines the test category. Usually used at subtest level."
-> +            }
-> +        },
-> +        "Description" : {
-> +            "_properties_": {
-> +                "description": "Provides a description for the test/subtest."
-> +            }
-> +        }
-> +    }
-> +}
+>          if doc_uneeded:
