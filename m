@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80FE510E2D6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4959010E15B
  for <igt-dev@lists.freedesktop.org>; Sat,  6 May 2023 00:55:39 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri,  5 May 2023 17:55:26 -0700
-Message-Id: <20230506005528.1890922-14-umesh.nerlige.ramappa@intel.com>
+Date: Fri,  5 May 2023 17:55:20 -0700
+Message-Id: <20230506005528.1890922-8-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230506005528.1890922-1-umesh.nerlige.ramappa@intel.com>
 References: <20230506005528.1890922-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 13/15] intel_gpu_top: Show gt specific
- values if requested
+Subject: [igt-dev] [PATCH i-g-t 07/15] intel_gpu_top: Determine number of
+ tiles
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,45 +25,59 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On multi-gt platforms, the aggregate values are displayed as default. If
-user passes -p (physical) option for these platforms, show gt specific
-counter values.
+Find out how many tiles are present in the platforms for multi-tile support.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tools/intel_gpu_top.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ tools/intel_gpu_top.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 4d0aeee16..8bcca67a6 100644
+index 3d21f25bd..695f57526 100644
 --- a/tools/intel_gpu_top.c
 +++ b/tools/intel_gpu_top.c
-@@ -1944,6 +1944,26 @@ print_header(const struct igt_device_card *card,
- 		&power_group,
- 		NULL
- 	};
-+	int i;
-+
-+	/*
-+	 * If we have multi-gt and the user has specified -p options, show gt
-+	 * specific values.
-+	 */
-+	if (!class_view && engines->num_gts > 1) {
-+		int j = 0;
-+
-+		groups[j++] = &period_group;
-+		for (i = 0; i < engines->num_gts; i++)
-+			groups[j++] = &freq_group_gt[i];
-+
-+		groups[j++] = &irq_group;
-+		for (i = 0; i < engines->num_gts; i++)
-+			groups[j++] = &rc6_group_gt[i];
-+
-+		groups[j++] = &power_group;
-+		groups[j++] = NULL;
-+	}
+@@ -117,6 +117,8 @@ struct engines {
+ 	bool discrete;
+ 	char *device;
  
- 	if (output_mode != JSON)
- 		memmove(&groups[0], &groups[1],
++	int num_gts;
++
+ 	/* Do not edit below this line.
+ 	 * This structure is reallocated every time a new engine is
+ 	 * found and size is increased by sizeof (engine).
+@@ -533,6 +535,25 @@ static void imc_reads_open(struct pmu_counter *pmu, struct engines *engines)
+ 	imc_open(pmu, "data_reads", engines);
+ }
+ 
++static int get_num_gts(uint64_t type)
++{
++	int fd, cnt;
++
++	errno = 0;
++	for (cnt = 0; cnt < MAX_GTS; cnt++) {
++		fd = igt_perf_open(type, __I915_PMU_REQUESTED_FREQUENCY(cnt));
++		if (fd < 0)
++			break;
++
++		close(fd);
++	}
++	assert(!errno || errno == ENOENT);
++	assert(cnt > 0);
++	errno = 0;
++
++	return cnt;
++}
++
+ static int pmu_init(struct engines *engines)
+ {
+ 	unsigned int i;
+@@ -541,6 +562,7 @@ static int pmu_init(struct engines *engines)
+ 
+ 	engines->fd = -1;
+ 	engines->num_counters = 0;
++	engines->num_gts = get_num_gts(type);
+ 
+ 	engines->irq.config = I915_PMU_INTERRUPTS;
+ 	fd = _open_pmu(type, engines->num_counters, &engines->irq, engines->fd);
 -- 
 2.34.1
