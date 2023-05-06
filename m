@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6202E10E155
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E24910E146
  for <igt-dev@lists.freedesktop.org>; Sat,  6 May 2023 00:55:39 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri,  5 May 2023 17:55:22 -0700
-Message-Id: <20230506005528.1890922-10-umesh.nerlige.ramappa@intel.com>
+Date: Fri,  5 May 2023 17:55:28 -0700
+Message-Id: <20230506005528.1890922-16-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230506005528.1890922-1-umesh.nerlige.ramappa@intel.com>
 References: <20230506005528.1890922-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 09/15] intel_gpu_top: Switch pmu_counter to
- use aggregated values
+Subject: [igt-dev] [PATCH i-g-t 15/15] intel_gpu_top: Add gt specific values
+ to header in interactive mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,91 +25,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Aggregate gt specific values for freq and rc6 counters.
+If -p options is specified in INTERACTIVE mode, show the gt specific
+values.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tools/intel_gpu_top.c | 49 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 38 insertions(+), 11 deletions(-)
+ tools/intel_gpu_top.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
 diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index b0c177329..d995c39b9 100644
+index 0acc81e9e..7018499c7 100644
 --- a/tools/intel_gpu_top.c
 +++ b/tools/intel_gpu_top.c
-@@ -554,6 +554,26 @@ static int get_num_gts(uint64_t type)
- 	return cnt;
- }
+@@ -1988,14 +1988,31 @@ print_header(const struct igt_device_card *card,
+ 	lines = print_header_token(" @ ", lines, con_w, con_h, &rem,
+ 				   "%s", card->card);
  
-+static void init_aggregate_counters(struct engines *engines)
-+{
-+	struct pmu_counter *pmu;
-+
-+	pmu = &engines->freq_req;
-+	pmu->type = igt_perf_type_id(engines->device);
-+	pmu->config = I915_PMU_REQUESTED_FREQUENCY;
-+	pmu->present = true;
-+
-+	pmu = &engines->freq_act;
-+	pmu->type = igt_perf_type_id(engines->device);
-+	pmu->config = I915_PMU_ACTUAL_FREQUENCY;
-+	pmu->present = true;
-+
-+	pmu = &engines->rc6;
-+	pmu->type = igt_perf_type_id(engines->device);
-+	pmu->config = I915_PMU_RC6_RESIDENCY;
-+	pmu->present = true;
-+}
-+
- static int pmu_init(struct engines *engines)
- {
- 	unsigned int i;
-@@ -569,14 +589,7 @@ static int pmu_init(struct engines *engines)
- 	if (fd < 0)
- 		return -1;
- 
--	engines->freq_req.config = I915_PMU_REQUESTED_FREQUENCY;
--	_open_pmu(type, engines->num_counters, &engines->freq_req, engines->fd);
+-	lines = print_header_token(" - ", lines, con_w, con_h, &rem,
+-				   "%s/%s MHz",
+-				   freq_items[1].buf,
+-				   freq_items[0].buf);
 -
--	engines->freq_act.config = I915_PMU_ACTUAL_FREQUENCY;
--	_open_pmu(type, engines->num_counters, &engines->freq_act, engines->fd);
--
--	engines->rc6.config = I915_PMU_RC6_RESIDENCY;
--	_open_pmu(type, engines->num_counters, &engines->rc6, engines->fd);
-+	init_aggregate_counters(engines);
+-	lines = print_header_token("; ", lines, con_w, con_h, &rem,
+-				   "%s%% RC6",
+-				   rc6_items[0].buf);
++	if (class_view || engines->num_gts == 1) {
++		lines = print_header_token(" - ", lines, con_w, con_h, &rem,
++					   "%s/%s MHz",
++					   freq_items[1].buf,
++					   freq_items[0].buf);
++
++		lines = print_header_token("; ", lines, con_w, con_h, &rem,
++					   "%s%% RC6",
++					   rc6_items[0].buf);
++	} else {
++		for (i = 0; i < engines->num_gts; i++) {
++			const char *cont = !i ? " - ": "; ";
++
++			lines = print_header_token(cont, lines, con_w, con_h, &rem,
++						   "%s/%s MHz(gt%d)",
++						   freq_items_gt[i * 4 + 1].buf,
++						   freq_items_gt[i * 4 + 0].buf,
++						   i);
++
++			lines = print_header_token("; ", lines, con_w, con_h, &rem,
++						   "%s%% RC6(gt%d)",
++						   rc6_items_gt[i * 3].buf,
++						   i);
++		}
++	}
  
- 	for (i = 0; i < engines->num_gts; i++) {
- 		engines->freq_req_gt[i].config = __I915_PMU_REQUESTED_FREQUENCY(i);
-@@ -692,14 +705,28 @@ static void pmu_sample(struct engines *engines)
- 
- 	for (i = 0; i < engines->num_gts; i++) {
- 		update_sample(&engines->freq_req_gt[i], val);
-+		engines->freq_req.val.cur += engines->freq_req_gt[i].val.cur;
-+		engines->freq_req.val.prev += engines->freq_req_gt[i].val.prev;
-+
- 		update_sample(&engines->freq_act_gt[i], val);
-+		engines->freq_act.val.cur += engines->freq_act_gt[i].val.cur;
-+		engines->freq_act.val.prev += engines->freq_act_gt[i].val.prev;
-+
- 		update_sample(&engines->rc6_gt[i], val);
-+		engines->rc6.val.cur += engines->rc6_gt[i].val.cur;
-+		engines->rc6.val.prev += engines->rc6_gt[i].val.prev;
- 	}
- 
--	update_sample(&engines->freq_req, val);
--	update_sample(&engines->freq_act, val);
-+	engines->freq_req.val.cur /= engines->num_gts;
-+	engines->freq_req.val.prev /= engines->num_gts;
-+
-+	engines->freq_act.val.cur /= engines->num_gts;
-+	engines->freq_act.val.prev /= engines->num_gts;
-+
-+	engines->rc6.val.cur /= engines->num_gts;
-+	engines->rc6.val.prev /= engines->num_gts;
-+
- 	update_sample(&engines->irq, val);
--	update_sample(&engines->rc6, val);
- 
- 	for (i = 0; i < engines->num_engines; i++) {
- 		struct engine *engine = engine_ptr(engines, i);
+ 	if (engines->r_gpu.present) {
+ 		lines = print_header_token("; ", lines, con_w, con_h,
 -- 
 2.34.1
