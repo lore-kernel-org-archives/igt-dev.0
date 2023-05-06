@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDD7D10E110
- for <igt-dev@lists.freedesktop.org>; Sat,  6 May 2023 00:55:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9CEDB10E110
+ for <igt-dev@lists.freedesktop.org>; Sat,  6 May 2023 00:55:39 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri,  5 May 2023 17:55:14 -0700
-Message-Id: <20230506005528.1890922-2-umesh.nerlige.ramappa@intel.com>
+Date: Fri,  5 May 2023 17:55:27 -0700
+Message-Id: <20230506005528.1890922-15-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230506005528.1890922-1-umesh.nerlige.ramappa@intel.com>
 References: <20230506005528.1890922-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 01/15] perf_pmu: Support multi-tile in rc6
- subtest
+Subject: [igt-dev] [PATCH i-g-t 14/15] intel_gpu_top: Reduce one level of
+ indent
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,144 +25,116 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Prepare to display gt specific items in INTERACTIVE mode with the -p
+option. An additional for loop will push code more towards right, so
+reduce one level of indent.
 
-Teach test how to wake up a particular tile and make it iterate all of
-them using dynamic subtests.
-
-v2: Finalize SHIFT to 60. Drop FIXME from i915_drm.h
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- include/drm-uapi/i915_drm.h | 17 ++++++++++++++-
- tests/i915/perf_pmu.c       | 41 ++++++++++++++++++++++++++-----------
- 2 files changed, 45 insertions(+), 13 deletions(-)
+ tools/intel_gpu_top.c | 74 ++++++++++++++++++++++---------------------
+ 1 file changed, 38 insertions(+), 36 deletions(-)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index a0876ee41..e164ad014 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -280,7 +280,16 @@ enum drm_i915_pmu_engine_sample {
- #define I915_PMU_ENGINE_SEMA(class, instance) \
- 	__I915_PMU_ENGINE(class, instance, I915_SAMPLE_SEMA)
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 8bcca67a6..0acc81e9e 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -1944,7 +1944,7 @@ print_header(const struct igt_device_card *card,
+ 		&power_group,
+ 		NULL
+ 	};
+-	int i;
++	int rem, i;
  
--#define __I915_PMU_OTHER(x) (__I915_PMU_ENGINE(0xff, 0xff, 0xf) + 1 + (x))
-+/*
-+ * Top 4 bits of every non-engine counter are GT id.
-+ */
-+#define __I915_PMU_GT_SHIFT (60)
-+
-+#define ___I915_PMU_OTHER(gt, x) \
-+	(((__u64)__I915_PMU_ENGINE(0xff, 0xff, 0xf) + 1 + (x)) | \
-+	((__u64)(gt) << __I915_PMU_GT_SHIFT))
-+
-+#define __I915_PMU_OTHER(x) ___I915_PMU_OTHER(0, x)
+ 	/*
+ 	 * If we have multi-gt and the user has specified -p options, show gt
+@@ -1971,51 +1971,53 @@ print_header(const struct igt_device_card *card,
  
- #define I915_PMU_ACTUAL_FREQUENCY	__I915_PMU_OTHER(0)
- #define I915_PMU_REQUESTED_FREQUENCY	__I915_PMU_OTHER(1)
-@@ -290,6 +299,12 @@ enum drm_i915_pmu_engine_sample {
+ 	*consumed = print_groups(groups);
  
- #define I915_PMU_LAST /* Deprecated - do not use */ I915_PMU_RC6_RESIDENCY
+-	if (output_mode == INTERACTIVE) {
+-		int rem = con_w;
++	if (output_mode != INTERACTIVE)
++		return lines;
  
-+#define __I915_PMU_ACTUAL_FREQUENCY(gt)		___I915_PMU_OTHER(gt, 0)
-+#define __I915_PMU_REQUESTED_FREQUENCY(gt)	___I915_PMU_OTHER(gt, 1)
-+#define __I915_PMU_INTERRUPTS(gt)		___I915_PMU_OTHER(gt, 2)
-+#define __I915_PMU_RC6_RESIDENCY(gt)		___I915_PMU_OTHER(gt, 3)
-+#define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	___I915_PMU_OTHER(gt, 4)
-+
- /* Each region is a minimum of 16k, and there are at most 255 of them.
-  */
- #define I915_NR_TEX_REGIONS 255	/* table size 2k - maximum due to use
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index c5f083bbd..97ad09d76 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -1707,8 +1707,16 @@ static bool wait_for_suspended(int gem_fd)
- 	return suspended;
- }
+-		printf("\033[H\033[J");
++	/* INTERACTIVE MODE */
++	rem = con_w;
  
-+static int open_forcewake_handle(int fd, unsigned int gt)
-+{
-+	if (getenv("IGT_NO_FORCEWAKE"))
-+		return -1;
-+
-+	return igt_debugfs_gt_open(fd, gt, "forcewake_user", O_WRONLY);
-+}
-+
- static void
--test_rc6(int gem_fd, unsigned int flags)
-+test_rc6(int gem_fd, unsigned int gt, unsigned int flags)
- {
- 	int64_t duration_ns = 2e9;
- 	uint64_t idle, busy, prev, ts[2];
-@@ -1717,7 +1725,7 @@ test_rc6(int gem_fd, unsigned int flags)
+-		lines = print_header_token(NULL, lines, con_w, con_h, &rem,
+-					   "intel-gpu-top:");
++	printf("\033[H\033[J");
  
- 	gem_quiescent_gpu(gem_fd);
+-		lines = print_header_token(" ", lines, con_w, con_h, &rem,
+-					   "%s", codename);
++	lines = print_header_token(NULL, lines, con_w, con_h, &rem,
++				   "intel-gpu-top:");
  
--	fd = open_pmu(gem_fd, I915_PMU_RC6_RESIDENCY);
-+	fd = open_pmu(gem_fd, __I915_PMU_RC6_RESIDENCY(gt));
+-		lines = print_header_token(" @ ", lines, con_w, con_h, &rem,
+-					   "%s", card->card);
++	lines = print_header_token(" ", lines, con_w, con_h, &rem,
++				   "%s", codename);
  
- 	if (flags & TEST_RUNTIME_PM) {
- 		drmModeRes *res;
-@@ -1784,8 +1792,8 @@ test_rc6(int gem_fd, unsigned int flags)
- 	assert_within_epsilon(idle - prev, ts[1] - ts[0], tolerance);
+-		lines = print_header_token(" - ", lines, con_w, con_h, &rem,
+-					   "%s/%s MHz",
+-					   freq_items[1].buf,
+-					   freq_items[0].buf);
++	lines = print_header_token(" @ ", lines, con_w, con_h, &rem,
++				   "%s", card->card);
  
- 	/* Wake up device and check no RC6. */
--	fw = igt_open_forcewake_handle(gem_fd);
--	igt_assert(fw >= 0);
-+	fw = open_forcewake_handle(gem_fd, gt);
-+	igt_require(fw >= 0);
- 	usleep(1e3); /* wait for the rc6 cycle counter to stop ticking */
+-		lines = print_header_token("; ", lines, con_w, con_h, &rem,
+-					   "%s%% RC6",
+-					   rc6_items[0].buf);
++	lines = print_header_token(" - ", lines, con_w, con_h, &rem,
++				   "%s/%s MHz",
++				   freq_items[1].buf,
++				   freq_items[0].buf);
  
- 	prev = pmu_read_single(fd);
-@@ -2174,12 +2182,17 @@ static void pmu_read(int i915)
- 		for_each_if((e)->class == I915_ENGINE_CLASS_RENDER) \
- 			igt_dynamic_f("%s", e->name)
+-		if (engines->r_gpu.present) {
+-			lines = print_header_token("; ", lines, con_w, con_h,
+-						   &rem,
+-						   "%s/%s W",
+-						   power_items[0].buf,
+-						   power_items[1].buf);
+-		}
++	lines = print_header_token("; ", lines, con_w, con_h, &rem,
++				   "%s%% RC6",
++				   rc6_items[0].buf);
  
-+#define for_each_gt(i915, gtid, tmp) \
-+	for ((gtid) = 0; \
-+	     ((tmp) = igt_sysfs_gt_open((i915), (gtid))) != -1; \
-+	     close(tmp), (gtid)++)
-+
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
- 	unsigned int num_engines = 0;
- 	const intel_ctx_t *ctx = NULL;
--	int fd = -1;
-+	int gt, tmp, fd = -1;
- 
- 	/**
- 	 * All PMU should be accompanied by a test.
-@@ -2396,17 +2409,21 @@ igt_main
- 	/**
- 	 * Test RC6 residency reporting.
- 	 */
--	igt_subtest("rc6")
--		test_rc6(fd, 0);
-+	igt_subtest_with_dynamic("rc6") {
-+		for_each_gt(fd, gt, tmp) {
-+			igt_dynamic_f("gt%u", gt)
-+				test_rc6(fd, gt, 0);
- 
--	igt_subtest("rc6-runtime-pm")
--		test_rc6(fd, TEST_RUNTIME_PM);
-+			igt_dynamic_f("runtime-pm-gt%u", gt)
-+				test_rc6(fd, gt, TEST_RUNTIME_PM);
- 
--	igt_subtest("rc6-runtime-pm-long")
--		test_rc6(fd, TEST_RUNTIME_PM | FLAG_LONG);
-+			igt_dynamic_f("runtime-pm-long-gt%u", gt)
-+				test_rc6(fd, gt, TEST_RUNTIME_PM | FLAG_LONG);
-+		}
+-		lines = print_header_token("; ", lines, con_w, con_h, &rem,
+-					   "%s irqs/s",
+-					   irq_items[0].buf);
++	if (engines->r_gpu.present) {
++		lines = print_header_token("; ", lines, con_w, con_h,
++					   &rem,
++					   "%s/%s W",
++					   power_items[0].buf,
++					   power_items[1].buf);
 +	}
  
- 	igt_subtest("rc6-suspend")
--		test_rc6(fd, TEST_S3);
-+		test_rc6(fd, 0, TEST_S3);
+-		if (lines++ < con_h)
+-			printf("\n");
++	lines = print_header_token("; ", lines, con_w, con_h, &rem,
++				   "%s irqs/s",
++				   irq_items[0].buf);
  
- 	/**
- 	 * Test GT wakeref tracking (similar to RC0, opposite of RC6)
+-		if (lines++ < con_h) {
+-			if (header_msg) {
+-				printf(" >>> %s\n", header_msg);
+-				header_msg = NULL;
+-			} else {
+-				printf("\n");
+-			}
++	if (lines++ < con_h)
++		printf("\n");
++
++	if (lines++ < con_h) {
++		if (header_msg) {
++			printf(" >>> %s\n", header_msg);
++			header_msg = NULL;
++		} else {
++			printf("\n");
+ 		}
+ 	}
+ 
 -- 
 2.34.1
