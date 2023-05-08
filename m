@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E5ABC10E281
- for <igt-dev@lists.freedesktop.org>; Mon,  8 May 2023 12:41:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E46310E281
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 May 2023 12:41:23 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.13.145])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id E85F7580D92
- for <igt-dev@lists.freedesktop.org>; Mon,  8 May 2023 05:41:20 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 17A9458091C
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 May 2023 05:41:21 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pw0B5-004c6A-01
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pw0B5-004c6D-04
  for igt-dev@lists.freedesktop.org; Mon, 08 May 2023 14:41:19 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  8 May 2023 14:41:11 +0200
-Message-Id: <20230508124116.1099603-2-mauro.chehab@linux.intel.com>
+Date: Mon,  8 May 2023 14:41:12 +0200
+Message-Id: <20230508124116.1099603-3-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230508124116.1099603-1-mauro.chehab@linux.intel.com>
 References: <20230508124116.1099603-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/6] scripts/test_list.py: expand
- testlist fields
+Subject: [igt-dev] [PATCH i-g-t v2 2/6] scripts/test_list.py: add support to
+ exclude files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,75 +34,47 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-We're about to add support for i915 testlists. On those,
-it is possible to have functionalities mapped to different
-buckets, as the same test could be used to test multiple
-parts of the driver/hardware.
-
-So, for instance, the subtest igt@prime_vgem@basic-fence-mmap
-actually tests two features:
-	- gtt
-	- prime
-
-A description of such test will then be mapped as:
-
-	* SUBTEST: basic-fence-mmap
-	* Description: Examine GTT access path fencing.
-	* Feature: gtt, prime
-
-In order to be able to generate per-feature testlists, we
-need to expand the Feature field, using the separator field
-(currently a comma) to expand the test lists.
+Specially when using wildcards, it is interesting to have a
+way to exclude some files. This is needed to support some kms
+helper functions that, instead of being part of the IGT library,
+are stored inside the tests sub-directories.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ scripts/test_list.py | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 9a909e3640f6..e68a4cb3df71 100755
+index e68a4cb3df71..7153b06df015 100755
 --- a/scripts/test_list.py
 +++ b/scripts/test_list.py
-@@ -762,7 +762,7 @@ class TestList:
-     # Subtest list methods
-     #
+@@ -208,6 +208,7 @@ class TestList:
  
--    def get_subtests(self, sort_field = None):
-+    def get_subtests(self, sort_field = None, expand = None):
- 
-         """Return an array with all subtests"""
- 
-@@ -789,10 +789,17 @@ class TestList:
- 
-                 if sort_field:
-                     if sort_field in subtest:
--                        if subtest[sort_field] not in subtests:
--                            subtests[subtest[sort_field]] = []
--
--                        subtests[subtest[sort_field]].append(subtest["Summary"])
-+                        if expand:
-+                            test_list = subtest[sort_field].split(expand)
-+                            for test_elem in test_list:
-+                                test_elem = test_elem.strip()
-+                                if test_elem not in subtests:
-+                                    subtests[test_elem] = []
-+                                subtests[test_elem].append(subtest["Summary"])
-+                        else:
-+                            if subtest[sort_field] not in subtests:
-+                                subtests[subtest[sort_field]] = []
-+                            subtests[subtest[sort_field]].append(subtest["Summary"])
-                     else:
-                         subtests[""].append(subtest["Summary"])
- 
-@@ -1132,7 +1139,8 @@ class TestList:
-         test_prefix = os.path.commonprefix(self.get_subtests()[""])
-         test_prefix = re.sub(r'^igt@', '', test_prefix)
- 
--        test_subtests = self.get_subtests(sort_field)
-+        # NOTE: currently, it uses a comma for multi-value delimitter
-+        test_subtests = self.get_subtests(sort_field, ",")
- 
-         if not os.path.exists(directory):
-             os.makedirs(directory)
+     {
+         "files": [ "tests/driver/*.c" ],
++        "exclude_files": [ "tests/driver/*-helper.c" ],
+         "fields": {
+             "Category": {
+                 "Sub-category": {
+@@ -302,10 +303,19 @@ class TestList:
+             has_implemented = False
+             if not self.filenames:
+                 self.filenames = []
++                exclude_files = []
+                 files = self.config["files"]
++                exclude_file_glob = self.config.get("exclude_files", [])
++                for cfg_file in exclude_file_glob:
++                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
++                    for fname in glob.glob(cfg_file):
++                        exclude_files.append(fname)
++
+                 for cfg_file in files:
+                     cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
+                     for fname in glob.glob(cfg_file):
++                        if fname in exclude_files:
++                            continue
+                         self.filenames.append(fname)
+                         has_implemented = True
+             else:
 -- 
 2.40.1
