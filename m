@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 114B110E3B5
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:38:43 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:03 +0530
-Message-Id: <20230517063323.4146387-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
-References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 01/81] tests/chamelium: Move chamelium helpers
- to lib
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 08 May 2023 12:51:15 -0000
+Message-ID: <168355027517.22735.46987040160232253@emeril.freedesktop.org>
+References: <20230508124116.1099603-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230508124116.1099603-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBCZXR0?=
+ =?utf-8?q?er_document_i915_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,139 +16,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, mchehab@kernel.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The correct place for helpers is lib as the tests directory is
-supposed to have test files, also having the helpers in tests
-dir will break the compilation of testplan. Hence move all
-helpers to library.
+== Series Details ==
 
-Expectation is to have an executable binary for each .c file
-the "tests" dir.
+Series: Better document i915 tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/117382/
+State : failure
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- .../kms_chamelium_helper.c => lib/igt_chamelium_helper.c      | 4 ++--
- .../kms_chamelium_helper.h => lib/igt_chamelium_helper.h      | 0
- lib/meson.build                                               | 1 +
- tests/chamelium/kms_chamelium_audio.c                         | 2 +-
- tests/chamelium/kms_chamelium_edid.c                          | 2 +-
- tests/chamelium/kms_chamelium_frames.c                        | 2 +-
- tests/chamelium/kms_chamelium_hpd.c                           | 2 +-
- tests/meson.build                                             | 3 +--
- 8 files changed, 8 insertions(+), 8 deletions(-)
- rename tests/chamelium/kms_chamelium_helper.c => lib/igt_chamelium_helper.c (99%)
- rename tests/chamelium/kms_chamelium_helper.h => lib/igt_chamelium_helper.h (100%)
+== Summary ==
 
-diff --git a/tests/chamelium/kms_chamelium_helper.c b/lib/igt_chamelium_helper.c
-similarity index 99%
-rename from tests/chamelium/kms_chamelium_helper.c
-rename to lib/igt_chamelium_helper.c
-index 197d29be9..3c1a802d3 100644
---- a/tests/chamelium/kms_chamelium_helper.c
-+++ b/lib/igt_chamelium_helper.c
-@@ -25,7 +25,7 @@
-  */
- 
- #include "igt_edid.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- 
- void chamelium_init_test(chamelium_data_t *data)
- {
-@@ -344,4 +344,4 @@ bool chamelium_check_analog_bridge(chamelium_data_t *data,
- 		return true;
- 
- 	return false;
--}
-\ No newline at end of file
-+}
-diff --git a/tests/chamelium/kms_chamelium_helper.h b/lib/igt_chamelium_helper.h
-similarity index 100%
-rename from tests/chamelium/kms_chamelium_helper.h
-rename to lib/igt_chamelium_helper.h
-diff --git a/lib/meson.build b/lib/meson.build
-index 85f100f75..2d3456577 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -17,6 +17,7 @@ lib_sources = [
- 	'i915/intel_cmds_info.c',
- 	'i915/i915_blt.c',
- 	'i915/i915_crc.c',
-+	'igt_chamelium_helper.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
- 	'igt_crc.c',
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index 6c6177fc5..a4204fbb6 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -26,7 +26,7 @@
- 
- #include "igt_eld.h"
- #include "igt_infoframe.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- 
- /* Playback parameters control the audio signal we synthesize and send */
- #define PLAYBACK_CHANNELS 2
-diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
-index 4a52e6922..fc78d4a07 100644
---- a/tests/chamelium/kms_chamelium_edid.c
-+++ b/tests/chamelium/kms_chamelium_edid.c
-@@ -42,7 +42,7 @@
- #include "igt_eld.h"
- #include "igt_vc4.h"
- #include "igt_infoframe.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- #include "monitor_edids/dp_edids.h"
- #include "monitor_edids/hdmi_edids.h"
- #include "monitor_edids/monitor_edids_helper.h"
-diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
-index 22a7ba936..2d90b45b2 100644
---- a/tests/chamelium/kms_chamelium_frames.c
-+++ b/tests/chamelium/kms_chamelium_frames.c
-@@ -31,7 +31,7 @@
- 
- #include "igt_eld.h"
- #include "igt_infoframe.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- 
- #define connector_dynamic_subtest(name__, type__)                   \
- 	igt_subtest_with_dynamic(name__)                            \
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index efd40ba54..ea0ee10e7 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -29,7 +29,7 @@
-  * Category: Display
-  */
- 
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- 
- #define HPD_STORM_PULSE_INTERVAL_DP 100 /* ms */
- #define HPD_STORM_PULSE_INTERVAL_HDMI 200 /* ms */
-diff --git a/tests/meson.build b/tests/meson.build
-index 38f080f7c..d5f0f54c1 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -342,8 +342,7 @@ endforeach
- if chamelium.found()
- 	foreach prog : chamelium_progs
- 		test_executables += executable(prog,
--				 [join_paths('chamelium', prog + '.c'),
--					join_paths('chamelium', 'kms_chamelium_helper.c')],
-+				 join_paths('chamelium', prog + '.c'),
- 				 dependencies : test_deps,
- 				 install_dir : libexecdir,
- 				 install_rpath : libexecdir_rpathdir,
--- 
-2.40.0
+IGT patchset build failed on latest successful build
+ce51f53938690f581b315fa045d41155a5c6ecd3 testplan: Add testplan support for kms tests
+
+Checking if "built-in atomics" links: YES 
+Has header "linux/kd.h" : YES 
+Has header "sys/kd.h" : YES 
+Has header "libgen.h" : YES 
+Has header "sys/io.h" : YES 
+Checking if "cpuid.h" links: YES 
+Header <unistd.h> has symbol "gettid" : YES 
+Checking whether type "struct sysinfo" has member "totalram" : YES 
+Checking for function "memfd_create" : YES 
+Configuring config.h using configuration
+Program python3 found: YES (/usr/bin/python3)
+Configuring i915-perf.pc using configuration
+Program generate_testlist.sh found: YES (/usr/src/igt-gpu-tools/tests/generate_testlist.sh)
+Program igt_command_line.sh found: YES (/usr/src/igt-gpu-tools/tests/igt_command_line.sh)
+Run-time dependency json-c found: YES 0.13.1
+Run-time dependency liboping found: YES 1.10.0
+Compiler for C supports arguments -Wno-declaration-after-statement -Wdeclaration-after-statement: YES 
+Compiler for C supports arguments -Wno-discarded-qualifiers -Wdiscarded-qualifiers: YES 
+Compiler for C supports arguments -Wno-missing-format-attribute -Wmissing-format-attribute: YES 
+Compiler for C supports arguments -Wno-old-style-definition -Wold-style-definition: YES 
+Compiler for C supports arguments -Wno-redundant-decls -Wredundant-decls: YES 
+Compiler for C supports arguments -Wno-shadow -Wshadow: YES 
+Compiler for C supports arguments -Wno-incompatible-pointer-types-discards-qualifiers -Wincompatible-pointer-types-discards-qualifiers: NO 
+Program flex found: YES (/usr/bin/flex)
+Program bison found: YES (/usr/bin/bison)
+Configuring intel-gen4asm.pc using configuration
+Program test/run-test.sh found: YES (/bin/sh /usr/src/igt-gpu-tools/assembler/test/run-test.sh)
+Run-time dependency xv found: YES 1.0.11
+Run-time dependency x11 found: YES 1.6.9
+Run-time dependency xext found: YES 1.3.4
+Run-time dependency dri2proto found: YES 2.8
+Run-time dependency cairo-xlib found: YES 1.17.2
+Run-time dependency xrandr found: YES 1.5.2
+Program leg found: YES (/usr/bin/leg)
+Configuring defs.rst using configuration
+Program rst2man-3 found: NO
+Program rst2man found: YES (/usr/bin/rst2man)
+Program rst2man.sh found: YES (/usr/src/igt-gpu-tools/man/rst2man.sh)
+Program igt_doc.py found: YES (/usr/src/igt-gpu-tools/scripts/igt_doc.py)
+Program gen_rst_index skipped: feature sphinx disabled
+Run-time dependency gtk-doc found: NO (tried pkgconfig and cmake)
+
+docs/testplan/meson.build:30:7: ERROR: Expecting rcurl got string.
+	      'i915_tests': { 'input': i915_test_config, 'extra_args': [] },
+       ^
+For a block that started at 27,12
+test_dict = {
+            ^
+
+A full log can be found at /opt/igt/build/meson-logs/meson-log.txt
+
 
 
