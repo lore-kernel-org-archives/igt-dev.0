@@ -1,22 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2368C10E268
- for <igt-dev@lists.freedesktop.org>; Mon,  8 May 2023 12:22:44 +0000 (UTC)
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-To: "Hogander, Jouni" <jouni.hogander@intel.com>, "Kempczynski, Zbigniew"
- <zbigniew.kempczynski@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 8 May 2023 12:22:32 +0000
-Message-ID: <BYAPR11MB3413C88C81826F8F50F8E6F2D0719@BYAPR11MB3413.namprd11.prod.outlook.com>
-References: <20230505053528.25967-1-sai.gowtham.ch@intel.com>
- <f17a5efb2a2943ea8b90def0b29f0bc92311001a.camel@intel.com>
-In-Reply-To: <f17a5efb2a2943ea8b90def0b29f0bc92311001a.camel@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1BED910E282
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 May 2023 12:41:23 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.13.145])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id E931A580D9C
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 May 2023 05:41:20 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pw0B5-004c6J-09
+ for igt-dev@lists.freedesktop.org; Mon, 08 May 2023 14:41:19 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  8 May 2023 14:41:14 +0200
+Message-Id: <20230508124116.1099603-5-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230508124116.1099603-1-mauro.chehab@linux.intel.com>
+References: <20230508124116.1099603-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new
- with Xe.
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 4/6] testplan/meson.build: add i915
+ support for a testplan document
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,160 +32,172 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSG9nYW5kZXIsIEpvdW5p
-IDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwgTWF5IDgsIDIwMjMg
-NTo1MCBQTQ0KPiBUbzogS2VtcGN6eW5za2ksIFpiaWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNr
-aUBpbnRlbC5jb20+OyBDaCwgU2FpDQo+IEdvd3RoYW0gPHNhaS5nb3d0aGFtLmNoQGludGVsLmNv
-bT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1YmplY3Q6IFJlOiBbaWd0LWRl
-dl0gW1BBVENIIGktZy10XSBsaWIveGUveGVfc3BpbjogSW50ZWdyYXRlIGlndF9zcGluX25ldyB3
-aXRoDQo+IFhlLg0KPiANCj4gT24gRnJpLCAyMDIzLTA1LTA1IGF0IDExOjA1ICswNTMwLCBzYWku
-Z293dGhhbS5jaEBpbnRlbC5jb20gd3JvdGU6DQo+ID4gRnJvbTogU2FpIEdvd3RoYW0gQ2ggPHNh
-aS5nb3d0aGFtLmNoQGludGVsLmNvbT4NCj4gPg0KPiA+IEV4dGVuZGluZyB0aGUgc3Bpbl9jcmVh
-dGUgaW1wbGVtZW50YXRpb24gYW5kIGFsbG9jYXRvciBoYW5kbGUgc3VwcG9ydA0KPiA+IGluIHhl
-LCB3aGVyZSBpdCBzdWJtaXRzIGR1bW15IHdvcmsgbG9hZHMgdG8gZW5naW5lLiBUaGlzDQo+ID4g
-SW1wbGVtZW50YXRpb24gaXMgd3JhcHBlZCBhcm91bmQgdm1fYmluZCBhbmQgdW5iaW5kIGFzIHdl
-IGFyZSBzdXBwb3NlZA0KPiA+IHRvIGRvIGl0IG1hbnVhbGx5IGZvciB4ZS4NCj4gDQo+IEhlbGxv
-IFNhaSwNCj4gDQo+IERvIHlvdSBoYXZlIHNvbWUgZXhhbXBsZSB0ZXN0Y2FzZSBkZW1vbnN0cmF0
-aW5nIHVzYWdlIG9mIHRoaXMgWGUgc3Bpbm5lcj8NCj4gSSd2ZSBiZWVuIHRyeWluZyB0byBhZGFw
-dCBteSB0ZXN0Y2FzZSBoZXJlIHRvIHdvcmsgd2l0aCBYZSBhbmQgb24gdG9wIG9mIHlvdXINCj4g
-c3Bpbm5lciBwYXRjaDoNCj4gDQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9z
-ZXJpZXMvMTE2MTMwLw0KPiANCj4gV2l0aG91dCBzdWNjZXNzLiBTZWVpbmcgY3Jhc2guLi4NCj4g
-DQo+IEJSLA0KPiANCj4gSm91bmkgSMO2Z2FuZGVyDQpIaSBKb3VuaSBIw7ZnYW5kZXIsDQoNCkl0
-IG5lZWQgZmV3IGZpeGVzIFdpbGwgYmUgc2VuZGluZyBhIG5ldyBwYXRjaCBzZXJpZXMgaW4gc29t
-ZXRpbWUsIHlvdSBjYW4gdXNlIHRoYXQuIA0KDQpUaGFua3MsDQpTYWkgR293dGhhbQ0KPiANCj4g
-Pg0KPiA+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGlu
-dGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTYWkgR293dGhhbSBDaCA8c2FpLmdvd3RoYW0u
-Y2hAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+IMKgbGliL2lndF9kdW1teWxvYWQuYyB8IDI4ICsr
-KysrKysrKysrKysrLS0tLS0tDQo+ID4gwqBsaWIvaWd0X2R1bW15bG9hZC5oIHzCoCA4ICsrKysr
-Kw0KPiA+IMKgbGliL3hlL3hlX3NwaW4uY8KgwqDCoCB8IDYzDQo+ID4gKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gwqBsaWIveGUveGVfc3Bpbi5owqDC
-oMKgIHzCoCA3ICsrKysrDQo+ID4gwqA0IGZpbGVzIGNoYW5nZWQsIDk4IGluc2VydGlvbnMoKyks
-IDggZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9kdW1teWxvYWQu
-YyBiL2xpYi9pZ3RfZHVtbXlsb2FkLmMgaW5kZXgNCj4gPiA3NDBhNThmMy4uOTI1MDc4MTkgMTAw
-NjQ0DQo+ID4gLS0tIGEvbGliL2lndF9kdW1teWxvYWQuYw0KPiA+ICsrKyBiL2xpYi9pZ3RfZHVt
-bXlsb2FkLmMNCj4gPiBAQCAtNDYsNiArNDYsNyBAQA0KPiA+IMKgI2luY2x1ZGUgImludGVsX3Jl
-Zy5oIg0KPiA+IMKgI2luY2x1ZGUgImlvY3RsX3dyYXBwZXJzLmgiDQo+ID4gwqAjaW5jbHVkZSAi
-c3dfc3luYy5oIg0KPiA+ICsjaW5jbHVkZSAieGUveGVfc3Bpbi5oIg0KPiA+DQo+ID4gwqAvKioN
-Cj4gPiDCoCAqIFNFQ1RJT046aWd0X2R1bW15bG9hZA0KPiA+IEBAIC00NDcsNyArNDQ4LDEwIEBA
-IHNwaW5fY3JlYXRlKGludCBmZCwgY29uc3Qgc3RydWN0IGlndF9zcGluX2ZhY3RvcnkNCj4gPiAq
-b3B0cykNCj4gPiDCoGlndF9zcGluX3QgKg0KPiA+IMKgX19pZ3Rfc3Bpbl9mYWN0b3J5KGludCBm
-ZCwgY29uc3Qgc3RydWN0IGlndF9zcGluX2ZhY3RvcnkgKm9wdHMpDQo+ID4gwqB7DQo+ID4gLcKg
-wqDCoMKgwqDCoMKgcmV0dXJuIHNwaW5fY3JlYXRlKGZkLCBvcHRzKTsNCj4gPiArwqDCoMKgwqDC
-oMKgwqBpZiAoaXNfeGVfZGV2aWNlKGZkKSkNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgcmV0dXJuIHhlX3NwaW5fY3JlYXRlKGZkLCBvcHRzKTsNCj4gPiArwqDCoMKgwqDCoMKg
-wqBlbHNlDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiBzcGluX2Ny
-ZWF0ZShmZCwgb3B0cyk7DQo+ID4gwqB9DQo+ID4NCj4gPiDCoC8qKg0KPiA+IEBAIC00ODAsOCAr
-NDg0LDEzIEBAIGlndF9zcGluX2ZhY3RvcnkoaW50IGZkLCBjb25zdCBzdHJ1Y3QNCj4gPiBpZ3Rf
-c3Bpbl9mYWN0b3J5ICpvcHRzKQ0KPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-aWd0X3JlcXVpcmUoIWdlbV9lbmdpbmVfaGFzX2NtZHBhcnNlcihmZCwgJm9wdHMtPmN0eC0NCj4g
-PiA+Y2ZnLA0KPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgb3B0cy0+ZW5naW5lKSk7DQo+ID4gwqDCoMKgwqDCoMKgwqDCoH0NCj4gPiAtDQo+ID4g
-LcKgwqDCoMKgwqDCoMKgc3BpbiA9IHNwaW5fY3JlYXRlKGZkLCBvcHRzKTsNCj4gPiArwqDCoMKg
-wqDCoMKgwqBpZiAoaXNfeGVfZGV2aWNlKGZkKSkgew0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBzcGluID0geGVfc3Bpbl9jcmVhdGUoZmQsIG9wdHMpOw0KPiA+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gc3BpbjsNCj4gPiArwqDCoMKgwqDCoMKgwqB9
-IGVsc2Ugew0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzcGluID0gc3Bpbl9j
-cmVhdGUoZmQsIG9wdHMpOw0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1
-cm4gc3BpbjsNCj4gPiArwqDCoMKgwqDCoMKgwqB9DQo+ID4NCj4gPiDCoMKgwqDCoMKgwqDCoMKg
-aWYgKCEob3B0cy0+ZmxhZ3MgJiBJR1RfU1BJTl9JTlZBTElEX0NTKSkgew0KPiA+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyoNCj4gPiBAQCAtNjQ3LDExICs2NTYsMTQgQEAgdm9p
-ZCBpZ3Rfc3Bpbl9mcmVlKGludCBmZCwgaWd0X3NwaW5fdCAqc3BpbikNCj4gPiDCoMKgwqDCoMKg
-wqDCoMKgaWYgKCFzcGluKQ0KPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0
-dXJuOw0KPiA+DQo+ID4gLcKgwqDCoMKgwqDCoMKgcHRocmVhZF9tdXRleF9sb2NrKCZsaXN0X2xv
-Y2spOw0KPiA+IC3CoMKgwqDCoMKgwqDCoGlndF9saXN0X2RlbCgmc3Bpbi0+bGluayk7DQo+ID4g
-LcKgwqDCoMKgwqDCoMKgcHRocmVhZF9tdXRleF91bmxvY2soJmxpc3RfbG9jayk7DQo+ID4gLQ0K
-PiA+IC3CoMKgwqDCoMKgwqDCoF9faWd0X3NwaW5fZnJlZShmZCwgc3Bpbik7DQo+ID4gK8KgwqDC
-oMKgwqDCoMKgaWYgKGlzX3hlX2RldmljZShmZCkpIHsNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgeGVfc3Bpbl9mcmVlKGZkLCBzcGluKTsNCj4gPiArwqDCoMKgwqDCoMKgwqB9
-IGVsc2Ugew0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwdGhyZWFkX211dGV4
-X2xvY2soJmxpc3RfbG9jayk7DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGln
-dF9saXN0X2RlbCgmc3Bpbi0+bGluayk7DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoHB0aHJlYWRfbXV0ZXhfdW5sb2NrKCZsaXN0X2xvY2spOw0KPiA+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqBfX2lndF9zcGluX2ZyZWUoZmQsIHNwaW4pOw0KPiA+ICvCoMKgwqDC
-oMKgwqDCoH0NCj4gPiDCoH0NCj4gPg0KPiA+IMKgdm9pZCBpZ3RfdGVybWluYXRlX3NwaW5zKHZv
-aWQpDQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZHVtbXlsb2FkLmggYi9saWIvaWd0X2R1bW15
-bG9hZC5oIGluZGV4DQo+ID4gYjI0N2FiMDIuLjdlZmJiNDY0IDEwMDY0NA0KPiA+IC0tLSBhL2xp
-Yi9pZ3RfZHVtbXlsb2FkLmgNCj4gPiArKysgYi9saWIvaWd0X2R1bW15bG9hZC5oDQo+ID4gQEAg
-LTgzLDYgKzgzLDE0IEBAIHR5cGVkZWYgc3RydWN0IGlndF9zcGluIHsNCj4gPiDCoCNkZWZpbmUg
-U1BJTl9DTEZMVVNIICgxIDw8IDApDQo+ID4NCj4gPiDCoMKgwqDCoMKgwqDCoMKgc3RydWN0IGln
-dF9zcGluX2ZhY3Rvcnkgb3B0czsNCj4gPiArwqDCoMKgwqDCoMKgwqB1bmlvbiB7DQo+ID4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHVpbnQ2NF90IHBhZDsNCj4gPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgdWludDMyX3Qgc3RhcnQ7DQo+ID4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHVpbnQzMl90IGVuZDsNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgdWludDMyX3Qgdm07DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oHVpbnQzMl90IHN5bmNvYmo7DQo+ID4gK8KgwqDCoMKgwqDCoMKgfTsNCj4gPiArDQo+ID4gwqB9
-IGlndF9zcGluX3Q7DQo+ID4NCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9saWIveGUveGVfc3Bpbi5j
-IGIvbGliL3hlL3hlX3NwaW4uYyBpbmRleA0KPiA+IDg1NmQwYmEyLi5iNzliNWEwYyAxMDA2NDQN
-Cj4gPiAtLS0gYS9saWIveGUveGVfc3Bpbi5jDQo+ID4gKysrIGIvbGliL3hlL3hlX3NwaW4uYw0K
-PiA+IEBAIC0xNSw2ICsxNSw3IEBADQo+ID4gwqAjaW5jbHVkZSAiaW50ZWxfcmVnLmgiDQo+ID4g
-wqAjaW5jbHVkZSAieGVfaW9jdGwuaCINCj4gPiDCoCNpbmNsdWRlICJ4ZV9zcGluLmgiDQo+ID4g
-KyNpbmNsdWRlICJsaWIvaWd0X2R1bW15bG9hZC5oIg0KPiA+DQo+ID4gwqAvKioNCj4gPiDCoCAq
-IHhlX3NwaW5faW5pdDoNCj4gPiBAQCAtODIsNiArODMsNjggQEAgdm9pZCB4ZV9zcGluX2VuZChz
-dHJ1Y3QgeGVfc3BpbiAqc3BpbikNCj4gPiDCoMKgwqDCoMKgwqDCoMKgc3Bpbi0+ZW5kID0gMDsN
-Cj4gPiDCoH0NCj4gPg0KPiA+ICtpZ3Rfc3Bpbl90ICoNCj4gPiAreGVfc3Bpbl9jcmVhdGUoaW50
-IGZkLCBjb25zdCBzdHJ1Y3QgaWd0X3NwaW5fZmFjdG9yeSAqb3B0KSB7DQo+ID4gK8KgwqDCoMKg
-wqDCoMKgc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKmVjaTsNCj4gPiArwqDC
-oMKgwqDCoMKgwqBzaXplX3QgYm9fc2l6ZSA9IHhlX2dldF9kZWZhdWx0X2FsaWdubWVudChmZCk7
-DQo+ID4gK8KgwqDCoMKgwqDCoMKgdWludDMyX3Qgdm0sIGJvLCBlbmdpbmUsIHN5bmNvYmo7DQo+
-ID4gK8KgwqDCoMKgwqDCoMKgdWludDY0X3QgYWhuZCA9IG9wdC0+YWhuZCwgYWRkcjsNCj4gPiAr
-wqDCoMKgwqDCoMKgwqBzdHJ1Y3QgaWd0X3NwaW4gKnNwaW47DQo+ID4gK8KgwqDCoMKgwqDCoMKg
-c3RydWN0IHhlX3NwaW4gKnhlX3NwaW47DQo+ID4gK8KgwqDCoMKgwqDCoMKgc3RydWN0IGRybV94
-ZV9zeW5jIHN5bmMgPSB7DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5mbGFn
-cyA9IERSTV9YRV9TWU5DX1NZTkNPQkogfCBEUk1fWEVfU1lOQ19TSUdOQUwsDQo+ID4gK8KgwqDC
-oMKgwqDCoMKgfTsNCj4gPiArwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgZHJtX3hlX2V4ZWMgZXhlYyA9
-IHsNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLm51bV9iYXRjaF9idWZmZXIg
-PSAxLA0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAubnVtX3N5bmNzID0gMSwN
-Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLnN5bmNzID0gdG9fdXNlcl9wb2lu
-dGVyKCZzeW5jKSwNCj4gPiArwqDCoMKgwqDCoMKgwqB9Ow0KPiA+ICsNCj4gPiArwqDCoMKgwqDC
-oMKgwqBpZ3RfYXNzZXJ0KGFobmQpOw0KPiA+ICvCoMKgwqDCoMKgwqDCoHhlX3NwaW4gPSBjYWxs
-b2MoMSwgc2l6ZW9mKHN0cnVjdCB4ZV9zcGluKSk7DQo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fz
-c2VydCh4ZV9zcGluKTsNCj4gPiArwqDCoMKgwqDCoMKgwqBzcGluID0gY2FsbG9jKDEsIHNpemVv
-ZihzdHJ1Y3QgaWd0X3NwaW4pKTsNCj4gPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KHNwaW4p
-Ow0KPiA+ICsNCj4gPiArwqDCoMKgwqDCoMKgwqBibyA9IHhlX2JvX2NyZWF0ZShmZCwgZWNpLT5n
-dF9pZCwgdm0sIGJvX3NpemUpOw0KPiA+ICvCoMKgwqDCoMKgwqDCoHNwaW4gPSB4ZV9ib19tYXAo
-ZmQsIGJvLCAweDEwMDApOw0KPiA+ICvCoMKgwqDCoMKgwqDCoHNwaW4tPmhhbmRsZSA9IGJvOw0K
-PiA+ICvCoMKgwqDCoMKgwqDCoHNwaW4tPnZtID0geGVfdm1fY3JlYXRlKGZkLCAwLCAwKTsNCj4g
-PiArwqDCoMKgwqDCoMKgwqBlbmdpbmUgPSB4ZV9lbmdpbmVfY3JlYXRlKGZkLCB2bSwgZWNpLCAw
-KTsNCj4gPiArwqDCoMKgwqDCoMKgwqBzcGluLT5zeW5jb2JqID0gc3luY29ial9jcmVhdGUoZmQs
-IDApOw0KPiA+ICsNCj4gPiArwqDCoMKgwqDCoMKgwqBpZiAoYWhuZCkNCj4gPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgYWRkciA9IGludGVsX2FsbG9jYXRvcl9hbGxvY193aXRoX3N0
-cmF0ZWd5KGFobmQsIGJvLA0KPiA+IGJvX3NpemUsIDAsIEFMTE9DX1NUUkFURUdZX0xPV19UT19I
-SUdIKTsNCj4gPiArDQo+ID4gK8KgwqDCoMKgwqDCoMKgeGVfdm1fYmluZF9zeW5jKGZkLCB2bSwg
-Ym8sIDAsIGFkZHIsIGJvX3NpemUpOw0KPiA+ICsNCj4gPiArwqDCoMKgwqDCoMKgwqB4ZV9zcGlu
-X2luaXQoeGVfc3BpbiwgYWRkciwgdHJ1ZSk7DQo+ID4gK8KgwqDCoMKgwqDCoMKgZXhlYy5lbmdp
-bmVfaWQgPSBlbmdpbmU7DQo+ID4gK8KgwqDCoMKgwqDCoMKgZXhlYy5hZGRyZXNzID0gYWRkcjsN
-Cj4gPiArwqDCoMKgwqDCoMKgwqBzeW5jLmhhbmRsZSA9IHN5bmNvYmo7DQo+ID4gK8KgwqDCoMKg
-wqDCoMKgaWd0X2Fzc2VydF9lcShpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9YRV9FWEVDLCAmZXhl
-YyksIDApOw0KPiA+ICsNCj4gPiArwqDCoMKgwqDCoMKgwqBzcGluLT5iYXRjaCA9IHhlX3NwaW4t
-PmJhdGNoOw0KPiA+ICvCoMKgwqDCoMKgwqDCoHNwaW4tPnN0YXJ0ID0geGVfc3Bpbi0+c3RhcnQ7
-DQo+ID4gK8KgwqDCoMKgwqDCoMKgc3Bpbi0+ZW5kID0geGVfc3Bpbi0+ZW5kOw0KPiA+ICvCoMKg
-wqDCoMKgwqDCoHJldHVybiBzcGluOw0KPiA+ICsNCj4gPiArfQ0KPiA+ICsNCj4gPiArdm9pZCB4
-ZV9zcGluX3N5bmNfd2FpdChpbnQgZmQsIHN0cnVjdCBpZ3Rfc3BpbiAqc3Bpbikgew0KPiA+ICvC
-oMKgwqDCoMKgwqDCoGlndF9hc3NlcnQoc3luY29ial93YWl0KGZkLCAmc3Bpbi0+c3luY29iaiwg
-MSwgSU5UNjRfTUFYLCAwLA0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoE5VTEwpKTsgfQ0KPiA+ICsNCj4gPiArdm9pZCB4
-ZV9zcGluX2ZyZWUoaW50IGZkLCBzdHJ1Y3QgaWd0X3NwaW4gKnNwaW4pIHsNCj4gPiArwqDCoMKg
-wqDCoMKgwqBzcGluLT5lbmQgPSAwOw0KPiA+ICvCoMKgwqDCoMKgwqDCoHhlX3ZtX2Rlc3Ryb3ko
-ZmQsIHNwaW4tPnZtKTsNCj4gPiArwqDCoMKgwqDCoMKgwqBnZW1fY2xvc2UoZmQsIHNwaW4tPmhh
-bmRsZSk7DQo+ID4gK30NCj4gPiArDQo+ID4gwqB2b2lkIHhlX2NvcmtfaW5pdChpbnQgZmQsIHN0
-cnVjdCBkcm1feGVfZW5naW5lX2NsYXNzX2luc3RhbmNlICpod2UsDQo+ID4gwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzdHJ1Y3QgeGVfY29yayAqY29yaykNCj4gPiDCoHsNCj4g
-PiBkaWZmIC0tZ2l0IGEvbGliL3hlL3hlX3NwaW4uaCBiL2xpYi94ZS94ZV9zcGluLmggaW5kZXgN
-Cj4gPiA3M2Y5YTAyNi4uNDg4NjdlYjggMTAwNjQ0DQo+ID4gLS0tIGEvbGliL3hlL3hlX3NwaW4u
-aA0KPiA+ICsrKyBiL2xpYi94ZS94ZV9zcGluLmgNCj4gPiBAQCAtMTMsMTkgKzEzLDI2IEBADQo+
-ID4gwqAjaW5jbHVkZSA8c3RkYm9vbC5oPg0KPiA+DQo+ID4gwqAjaW5jbHVkZSAieGVfcXVlcnku
-aCINCj4gPiArI2luY2x1ZGUgImxpYi9pZ3RfZHVtbXlsb2FkLmgiDQo+ID4NCj4gPiDCoC8qIE1h
-cHBlZCBHUFUgb2JqZWN0ICovDQo+ID4gKw0KPiA+IMKgc3RydWN0IHhlX3NwaW4gew0KPiA+IMKg
-wqDCoMKgwqDCoMKgwqB1aW50MzJfdCBiYXRjaFsxNl07DQo+ID4gwqDCoMKgwqDCoMKgwqDCoHVp
-bnQ2NF90IHBhZDsNCj4gPiDCoMKgwqDCoMKgwqDCoMKgdWludDMyX3Qgc3RhcnQ7DQo+ID4gwqDC
-oMKgwqDCoMKgwqDCoHVpbnQzMl90IGVuZDsNCj4gPiArDQo+ID4gwqB9Ow0KPiA+DQo+ID4gK2ln
-dF9zcGluX3QgKg0KPiA+ICt4ZV9zcGluX2NyZWF0ZShpbnQgZmQsIGNvbnN0IHN0cnVjdCBpZ3Rf
-c3Bpbl9mYWN0b3J5ICpvcHQpOw0KPiA+IMKgdm9pZCB4ZV9zcGluX2luaXQoc3RydWN0IHhlX3Nw
-aW4gKnNwaW4sIHVpbnQ2NF90IGFkZHIsIGJvb2wgcHJlZW1wdCk7DQo+ID4gwqBib29sIHhlX3Nw
-aW5fc3RhcnRlZChzdHJ1Y3QgeGVfc3BpbiAqc3Bpbik7DQo+ID4gK3ZvaWQgeGVfc3Bpbl9zeW5j
-X3dhaXQoaW50IGZkLCBzdHJ1Y3QgaWd0X3NwaW4gKnNwaW4pOw0KPiA+IMKgdm9pZCB4ZV9zcGlu
-X3dhaXRfc3RhcnRlZChzdHJ1Y3QgeGVfc3BpbiAqc3Bpbik7DQo+ID4gwqB2b2lkIHhlX3NwaW5f
-ZW5kKHN0cnVjdCB4ZV9zcGluICpzcGluKTsNCj4gPiArdm9pZCB4ZV9zcGluX2ZyZWUoaW50IGZk
-LCBzdHJ1Y3QgaWd0X3NwaW4gKnNwaW4pOw0KPiA+DQo+ID4gwqBzdHJ1Y3QgeGVfY29yayB7DQo+
-ID4gwqDCoMKgwqDCoMKgwqDCoHN0cnVjdCB4ZV9zcGluICpzcGluOw0KDQo=
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Prepare to support documenting the i915 tests via in-code macros, in a
+similar way to how Xe tests are documented.
+
+For now, don't enable checking i915 documentation here, as this
+may consume a lot of build time on desktops.
+
+Please notice that we had to exclude documentation for
+gem_concurrent_all.c, as there are too many subtests there:
+
+	${build}/tests/gem_concurrent_all --list|wc -l
+	428400
+
+Adding documentation for all of them (even with wildcards) would
+produce a very big document, seriously affecting build time.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ docs/testplan/conf.py            |  2 +-
+ docs/testplan/meson.build        |  6 ++-
+ tests/i915/i915_test_config.json | 88 ++++++++++++++++++++++++++++++++
+ 3 files changed, 93 insertions(+), 3 deletions(-)
+ create mode 100644 tests/i915/i915_test_config.json
+
+diff --git a/docs/testplan/conf.py b/docs/testplan/conf.py
+index a73ad99b09b6..a7db5c3a230d 100644
+--- a/docs/testplan/conf.py
++++ b/docs/testplan/conf.py
+@@ -68,5 +68,5 @@ htmlhelp_basename = 'IGT'
+ 
+ # rst2pdf
+ pdf_documents = [
+-    ('index', u'xe_tests', u'IGT Xe Tests', u'IGT authors'),
++    ('index', u'tests', u'IGT Xe Tests', u'IGT authors'),
+ ]
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index b65ee964ddd2..cd3c14f501b1 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -8,6 +8,7 @@ stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
+ 
+ xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
+ kms_test_config = join_paths(source_root, 'tests', 'kms_test_config.json')
++i915_test_config = join_paths(source_root, 'tests', 'i915', 'i915_test_config.json')
+ 
+ check_testlist = []
+ if build_tests
+@@ -26,6 +27,7 @@ endif
+ test_dict = {
+ 	      'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist },
+ 	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
++	      'i915_tests': { 'input': i915_test_config, 'extra_args': [] },
+ 	    }
+ 
+ foreach testplan, fields: test_dict
+@@ -70,14 +72,14 @@ if sphinx.found()
+ 	if rst2pdf.found()
+ 		sphinx_out_pdf = meson.current_build_dir() + '/pdf'
+ 
+-		custom_target('xe_tests.pdf',
++		custom_target('tests.pdf',
+ 			      build_by_default : true,
+ 			      command : [ 'sphinx-build', '-c', meson.current_source_dir(),
+ 					  '-b', 'pdf',
+ 					  '-D', 'version=' + meson.project_version(),
+ 					  meson.current_build_dir(), sphinx_out_pdf],
+ 			      input : index_rst,
+-			      output : 'xe_tests.pdf'
++			      output : 'tests.pdf'
+ 			     )
+ 	endif
+ endif
+diff --git a/tests/i915/i915_test_config.json b/tests/i915/i915_test_config.json
+new file mode 100644
+index 000000000000..812cb73b9f52
+--- /dev/null
++++ b/tests/i915/i915_test_config.json
+@@ -0,0 +1,88 @@
++{
++    "description": "JSON file to be used to parse i915 documentation",
++    "files": [ "*.c", "../core_auth.c", "../core_getclient.c",
++               "../core_getstats.c", "../core_getversion.c",
++               "../core_hotunplug.c", "../core_setmaster.c",
++               "../core_setmaster_vs_auth.c", "../debugfs_test.c",
++               "../device_reset.c", "../dmabuf.c",
++               "../drm_import_export.c", "../drm_mm.c",
++               "../dumb_buffer.c", "../prime_busy.c", "../prime_mmap.c",
++               "../prime_mmap_coherency.c", "../prime_self_import.c",
++               "../prime_vgem.c", "../sw_sync.c", "../syncobj_basic.c",
++               "../syncobj_timeline.c", "../syncobj_wait.c",
++               "../vgem_basic.c", "../vgem_slow.c" ],
++    "exclude_files": [ "kms_*", "gem_concurrent_all.c" ],
++    "fields": {
++	"Mega feature": {
++                "_properties_": {
++                    "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
++                },
++                "Category": {
++                "_properties_": {
++                    "description": "Contains the major group for the tested functionality"
++                },
++
++                "Sub-category": {
++                    "_properties_": {
++                        "description": "Contains the minor group of the functionality"
++                    },
++                    "Functionality": {
++                        "_properties_": {
++                            "description": "Describes the functionality to be tested"
++                        },
++                        "Feature": {
++                            "_properties_": {
++                                "description": "Describes the lowest level feature bucket"
++                            },
++                            "Run type": {
++                                "_properties_": {
++                                    "description": "Defines what category of testlist it belongs"
++                                }
++                            }
++                        }
++                    }
++                }
++            }
++        },
++        "Test category": {
++            "_properties_": {
++                "description": "Defines the test category. Usually used at subtest level."
++            }
++        },
++        "Test requirement": {
++            "_properties_": {
++                "description": "Defines Kernel parameters required for the test to run"
++            }
++        },
++        "Issue": {
++            "_properties_": {
++                "description": "If the test is used to solve an issue, point to the URL containing the issue."
++            }
++        },
++        "GPU excluded platform": {
++            "_properties_": {
++                "description": "Provides a list of GPUs not capable of running the subtest (or the test as a whole)."
++            }
++        },
++        "GPU requirement": {
++            "_properties_": {
++                "description": "Describes any GPU-specific requrirement, like requiring multi-tiles."
++            }
++        },
++        "Depends on" : {
++            "_properties_": {
++                "description": "List other subtests that are required to not be skipped before calling this one."
++            }
++        },
++        "TODO": {
++            "_properties_": {
++                "description": "Point to known missing features at the test or subtest."
++            }
++        },
++        "Description" : {
++            "_properties_": {
++                "description": "Provides a description for the test/subtest."
++            }
++        }
++    }
++}
+-- 
+2.40.1
