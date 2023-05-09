@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 824AD8903B
- for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 13:31:45 +0000 (UTC)
-Date: Tue, 9 May 2023 15:31:24 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2CFA10E226
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 13:47:34 +0000 (UTC)
+Date: Tue, 9 May 2023 15:47:28 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230509133124.vbxwhuapyihje6u2@kamilkon-desk1>
+Message-ID: <20230509134728.2o5aq3bqc5d7i6vq@kamilkon-desk1>
 References: <20230504045726.2954788-1-bhanuprakash.modem@intel.com>
- <20230504045726.2954788-4-bhanuprakash.modem@intel.com>
+ <20230504045726.2954788-5-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230504045726.2954788-4-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t 3/6] lib/xe/xe_query: Add xe_config() interface
+In-Reply-To: <20230504045726.2954788-5-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t 4/6] Revert "lib/igt_kms: Cache xe_device info
+ for kms tests"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,52 +28,59 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi,
 
-On 2023-05-04 at 10:27:23 +0530, Bhanuprakash Modem wrote:
-> Add support to get XE configuration from xe_device.
+On 2023-05-04 at 10:27:24 +0530, Bhanuprakash Modem wrote:
+> As this logic is moved to driver open/close level, this is
+> redundant, hence revert this logic.
+------------------------- ^^^^^^^^^^
+s/this logic/it/
+
+> 
+> This reverts commit 3e049d7c5048c8e4d0b0cfc22afca18e9e897e9a.
 > 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Please make it last patch in this series.
 
 Regards,
 Kamil
 
 > ---
->  lib/xe/xe_query.c | 8 ++++++++
->  lib/xe/xe_query.h | 1 +
->  2 files changed, 9 insertions(+)
+>  lib/igt_kms.c | 8 --------
+>  1 file changed, 8 deletions(-)
 > 
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index bd5eb1d18..d254a23cb 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -479,6 +479,14 @@ uint32_t xe_min_page_size(int fd, uint64_t region)
->  	return xe_mem_region(fd, region)->min_page_size;
->  }
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index e085e234a..9125a8ccb 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -59,7 +59,6 @@
+>  #include "igt_device.h"
+>  #include "igt_sysfs.h"
+>  #include "sw_sync.h"
+> -#include "xe/xe_query.h"
+>  #ifdef HAVE_CHAMELIUM
+>  #include "igt_chamelium.h"
+>  #endif
+> @@ -2639,9 +2638,6 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  	}
+>  #endif
 >  
-> +/**
-> + * xe_config:
-> + * @fd: xe device fd
-> + *
-> + * Returns xe configuration of xe device @fd.
-> + */
-> +xe_dev_FN(xe_config, config, struct drm_xe_query_config *);
-> +
->  /**
->   * xe_number_hw_engine:
->   * @fd: xe device fd
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index cc6e7cefd..63f32ca92 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -86,6 +86,7 @@ struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
->  struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
->  const char *xe_region_name(uint64_t region);
->  uint32_t xe_min_page_size(int fd, uint64_t region);
-> +struct drm_xe_query_config *xe_config(int fd);
->  unsigned int xe_number_hw_engines(int fd);
->  bool xe_has_vram(int fd);
->  uint64_t xe_vram_size(int fd, int gt);
+> -	if (is_xe_device(drm_fd))
+> -		xe_device_get(drm_fd);
+> -
+>  	display->n_pipes = IGT_MAX_PIPES;
+>  	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
+>  	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+> @@ -2978,10 +2974,6 @@ static void igt_output_fini(igt_output_t *output)
+>  void igt_display_fini(igt_display_t *display)
+>  {
+>  	int i;
+> -	int drm_fd = display->drm_fd;
+> -
+> -	if (is_xe_device(drm_fd))
+> -		xe_device_put(drm_fd);
+>  
+>  	for (i = 0; i < display->n_planes; ++i) {
+>  		igt_plane_t *plane = &display->planes[i];
 > -- 
 > 2.40.0
 > 
