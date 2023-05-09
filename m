@@ -1,21 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9386110E1FE
- for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 08:45:30 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
- Nidhi1" <nidhi1.gupta@intel.com>
-Date: Tue, 9 May 2023 08:45:19 +0000
-Message-ID: <5f773680aba5c418bcfb112edc4a6162f5dcb5c7.camel@intel.com>
-References: <20230509020228.25780-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20230509020228.25780-1-nidhi1.gupta@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9F925182C3D7164C802EC7F1D7899B99@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53E9510E361
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 09:07:44 +0000 (UTC)
+Received: from linux.intel.com (ksebasti-mobl.ger.corp.intel.com
+ [10.252.18.159])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 4DFFE580D9C
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 02:07:42 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pwJJs-004rJV-0V
+ for igt-dev@lists.freedesktop.org; Tue, 09 May 2023 11:07:40 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  9 May 2023 11:07:33 +0200
+Message-Id: <20230509090738.1157939-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230509090738.1157939-1-mauro.chehab@linux.intel.com>
+References: <20230509090738.1157939-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_fbcon_fbt: Execute test
- on multiple modes
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 1/6] scripts/test_list.py: expand
+ testlist fields
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,61 +32,77 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGVsbG8gTmlkaGksCgpTZWUgbXkgY29tbWVudCBpbmxpbmUgYmVsb3cuCgpPbiBUdWUsIDIwMjMt
-MDUtMDkgYXQgMDc6MzIgKzA1MzAsIE5pZGhpIEd1cHRhIHdyb3RlOgo+IEluIHByZXNlbnQgc2l0
-dWF0aW9uIHRoZSB0ZXN0IGlzIGV4ZWN1dGluZyBvbmx5IGZvciBzaW5nbGUgbW9kZSwKPiBleGVj
-dXRlIHRoZSB0ZXN0IGZvciB0aGUgbmV4dCBtb2RlIHN1cHBvcnRlZCBieSB0aGUgY29ubmVjdG9y
-IGlmCj4gdGhlIGZpcnN0IG9uZSBpcyBpbnZhbGlkIHRvIGVuYWJsZSBmYmMuCj4gCj4gU2lnbmVk
-LW9mZi1ieTogTmlkaGkgR3VwdGEgPG5pZGhpMS5ndXB0YUBpbnRlbC5jb20+Cj4gLS0tCj4gwqB0
-ZXN0cy9pOTE1L2ttc19mYmNvbl9mYnQuYyB8IDE2ICsrKysrKysrKysrLS0tLS0KPiDCoDEgZmls
-ZSBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1n
-aXQgYS90ZXN0cy9pOTE1L2ttc19mYmNvbl9mYnQuYyBiL3Rlc3RzL2k5MTUva21zX2ZiY29uX2Zi
-dC5jCj4gaW5kZXggODMxZWM4NjcuLjU0MzQyNmQxIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2k5MTUv
-a21zX2ZiY29uX2ZidC5jCj4gKysrIGIvdGVzdHMvaTkxNS9rbXNfZmJjb25fZmJ0LmMKPiBAQCAt
-MzcsNiArMzcsNyBAQCBJR1RfVEVTVF9ERVNDUklQVElPTigiVGVzdCB0aGUgcmVsYXRpb25zaGlw
-IGJldHdlZW4KPiBmYmNvbiBhbmQgdGhlIGZyb250YnVmZmVyICIKPiDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJ0cmFja2luZyBpbmZyYXN0cnVjdHVyZS4iKTsKPiDC
-oAo+IMKgI2RlZmluZSBNQVhfQ09OTkVDVE9SUyAzMgo+ICtpbnQgaiA9IDA7Cj4gwqAKPiDCoHN0
-cnVjdCBkcm1faW5mbyB7Cj4gwqDCoMKgwqDCoMKgwqDCoGludCBmZCwgZGVidWdmc19mZDsKPiBA
-QCAtMTY0LDE0ICsxNjUsMTQgQEAgdHlwZWRlZiBib29sCj4gKCpjb25uZWN0b3JfcG9zc2libGVf
-Zm4pKGRybU1vZGVDb25uZWN0b3JQdHIgY29ubmVjdG9yKTsKPiDCoHN0YXRpYyB2b2lkIHNldF9t
-b2RlX2Zvcl9vbmVfc2NyZWVuKHN0cnVjdCBkcm1faW5mbyAqZHJtLAo+IMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-Y29ubmVjdG9yX3Bvc3NpYmxlX2ZuCj4gY29ubmVjdG9yX3Bvc3NpYmxlKQo+IMKgewo+IC3CoMKg
-wqDCoMKgwqDCoGludCBpLCByYzsKPiArwqDCoMKgwqDCoMKgwqBpbnQgcmM7Cj4gwqDCoMKgwqDC
-oMKgwqDCoHVpbnQzMl90IGNydGNfaWQ7Cj4gwqDCoMKgwqDCoMKgwqDCoGRybU1vZGVNb2RlSW5m
-b1B0ciBtb2RlOwo+IMKgwqDCoMKgwqDCoMKgwqB1aW50MzJfdCBidWZmZXJfaWQ7Cj4gwqDCoMKg
-wqDCoMKgwqDCoGRybU1vZGVDb25uZWN0b3JQdHIgYyA9IE5VTEw7Cj4gwqAKPiAtwqDCoMKgwqDC
-oMKgwqBmb3IgKGkgPSAwOyBpIDwgZHJtLT5yZXMtPmNvdW50X2Nvbm5lY3RvcnM7IGkrKykgewo+
-IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjID0gZHJtLT5jb25uZWN0b3JzW2ldOwo+
-ICvCoMKgwqDCoMKgwqDCoGZvciAoO2ogPCBkcm0tPnJlcy0+Y291bnRfY29ubmVjdG9yczsgaisr
-KSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGMgPSBkcm0tPmNvbm5lY3RvcnNb
-al07CgpTZWUgZmJjX3N0cmlkZV9ub3Rfc3VwcG9ydGVkKCkgaW4ga21zX2Zyb250YnVmZmVyX3Ry
-YWNraW5nLmMuIFlvdSBjb3VsZApsb29wIHRocm91Z2ggbW9kZXMgdW50aWwgY2hlY2sgZmJjX3N0
-cmlkZV9ub3Rfc3VwcG9ydGVkIHJldHVybnMgMC4KCj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoGlmIChjLT5jb25uZWN0aW9uID09IERSTV9NT0RFX0NPTk5FQ1RFRCAmJiBj
-LQo+ID5jb3VudF9tb2RlcyAmJgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIGNvbm5lY3Rvcl9wb3NzaWJsZShjKSkgewo+IEBAIC0xNzksNyArMTgwLDcgQEAgc3RhdGlj
-IHZvaWQgc2V0X21vZGVfZm9yX29uZV9zY3JlZW4oc3RydWN0Cj4gZHJtX2luZm8gKmRybSwKPiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBicmVhazsKPiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgfQo+IC3C
-oMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlX2YoaSA8IGRybS0+cmVzLT5jb3VudF9jb25uZWN0b3Jz
-LAo+ICvCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlX2YoaiA8IGRybS0+cmVzLT5jb3VudF9jb25u
-ZWN0b3JzLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiTm8g
-Y29ubmVjdG9yIGF2YWlsYWJsZVxuIik7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgY3J0Y19pZCA9
-IGttc3Rlc3RfZmluZF9jcnRjX2Zvcl9jb25uZWN0b3IoZHJtLT5mZCwgZHJtLT5yZXMsCj4gYywg
-MCk7Cj4gQEAgLTM0OCw3ICszNDksMTIgQEAgc3RhdGljIHZvaWQgc3VidGVzdChzdHJ1Y3QgZHJt
-X2luZm8gKmRybSwgc3RydWN0Cj4gZmVhdHVyZSAqZmVhdHVyZSwgYm9vbCBzdXNwZW5kKQo+IMKg
-Cj4gwqDCoMKgwqDCoMKgwqDCoHNldF9tb2RlX2Zvcl9vbmVfc2NyZWVuKGRybSwgZmVhdHVyZS0+
-Y29ubmVjdG9yX3Bvc3NpYmxlX2ZuKTsKPiDCoMKgwqDCoMKgwqDCoMKgd2FpdF91c2VyKCJTY3Jl
-ZW4gc2V0LiIpOwo+IC3CoMKgwqDCoMKgwqDCoGlndF9hc3NlcnQoZmVhdHVyZS0+d2FpdF91bnRp
-bF9lbmFibGVkKGRybS0+ZGVidWdmc19mZCkpOwo+ICvCoMKgwqDCoMKgwqDCoGlmICghKGZlYXR1
-cmUtPndhaXRfdW50aWxfZW5hYmxlZChkcm0tPmRlYnVnZnNfZmQpKSkgewo+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqArK2o7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oHNldF9tb2RlX2Zvcl9vbmVfc2NyZWVuKGRybSwgZmVhdHVyZS0KPiA+Y29ubmVjdG9yX3Bvc3Np
-YmxlX2ZuKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgd2FpdF91c2VyKCJTY3Jl
-ZW4gc2V0IGZvciBuZXh0IG1vZGUuIik7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oGlndF9hc3NlcnQoZmVhdHVyZS0+d2FpdF91bnRpbF9lbmFibGVkKGRybS0KPiA+ZGVidWdmc19m
-ZCkpOwo+ICvCoMKgwqDCoMKgwqDCoH0KPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBpZiAoc3VzcGVu
-ZCkgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N5c3RlbV9zdXNwZW5k
-X2F1dG9yZXN1bWUoU1VTUEVORF9TVEFURV9NRU0sCgo=
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+We're about to add support for i915 testlists. On those,
+it is possible to have functionalities mapped to different
+buckets, as the same test could be used to test multiple
+parts of the driver/hardware.
+
+So, for instance, the subtest igt@prime_vgem@basic-fence-mmap
+actually tests two features:
+	- gtt
+	- prime
+
+A description of such test will then be mapped as:
+
+	* SUBTEST: basic-fence-mmap
+	* Description: Examine GTT access path fencing.
+	* Feature: gtt, prime
+
+In order to be able to generate per-feature testlists, we
+need to expand the Feature field, using the separator field
+(currently a comma) to expand the test lists.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ scripts/test_list.py | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
+
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 9a909e3640f6..e68a4cb3df71 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -762,7 +762,7 @@ class TestList:
+     # Subtest list methods
+     #
+ 
+-    def get_subtests(self, sort_field = None):
++    def get_subtests(self, sort_field = None, expand = None):
+ 
+         """Return an array with all subtests"""
+ 
+@@ -789,10 +789,17 @@ class TestList:
+ 
+                 if sort_field:
+                     if sort_field in subtest:
+-                        if subtest[sort_field] not in subtests:
+-                            subtests[subtest[sort_field]] = []
+-
+-                        subtests[subtest[sort_field]].append(subtest["Summary"])
++                        if expand:
++                            test_list = subtest[sort_field].split(expand)
++                            for test_elem in test_list:
++                                test_elem = test_elem.strip()
++                                if test_elem not in subtests:
++                                    subtests[test_elem] = []
++                                subtests[test_elem].append(subtest["Summary"])
++                        else:
++                            if subtest[sort_field] not in subtests:
++                                subtests[subtest[sort_field]] = []
++                            subtests[subtest[sort_field]].append(subtest["Summary"])
+                     else:
+                         subtests[""].append(subtest["Summary"])
+ 
+@@ -1132,7 +1139,8 @@ class TestList:
+         test_prefix = os.path.commonprefix(self.get_subtests()[""])
+         test_prefix = re.sub(r'^igt@', '', test_prefix)
+ 
+-        test_subtests = self.get_subtests(sort_field)
++        # NOTE: currently, it uses a comma for multi-value delimitter
++        test_subtests = self.get_subtests(sort_field, ",")
+ 
+         if not os.path.exists(directory):
+             os.makedirs(directory)
+-- 
+2.40.1
