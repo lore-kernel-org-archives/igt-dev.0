@@ -1,23 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6FEB10E346
- for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 07:34:32 +0000 (UTC)
-Received: from linux.intel.com (ksebasti-mobl.ger.corp.intel.com
- [10.252.18.159])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id E53A9580D9C
- for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 00:34:30 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pwHrg-004qMm-1e
- for igt-dev@lists.freedesktop.org; Tue, 09 May 2023 09:34:28 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6829810E349
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 08:01:57 +0000 (UTC)
+Date: Tue, 9 May 2023 10:01:53 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  9 May 2023 09:34:24 +0200
-Message-Id: <20230509073426.1154390-1-mauro.chehab@linux.intel.com>
+Message-ID: <20230509080153.itpksapie4vaazwp@kamilkon-desk1>
+References: <20230509063921.29500-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] Add an option to protect Xe test builds
+In-Reply-To: <20230509063921.29500-1-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/drmtest: Change do_ioctl_err()
+ macro to function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,36 +25,86 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Hi Zbigniew,
 
-The Xe driver is currently under heavy development and has not
-merged upstream yet. While merging doesn't happen, the API may
-still change, as upstream may request changes on it and/or
-driver developers may need to tweak some API bits.
+On 2023-05-09 at 08:39:21 +0200, Zbigniew Kempczyński wrote:
+> Chris enlightened me after I did some review do_ioctl_err() macro
+> is a little bit problematic when it catches unexpected error (debug
+> output isn't much descriptive). As we plan to use it widely in xe
+> uapi verification lets make error callstack more readable.
 
-While this is happening, incompatible API changes may still
-happen. As IGT is distributed on some distros, placing Xe
-tests on binaries is not a good idea, as such tests may fail
-when the final version gets released.
+It is up to you if you would like to have a macro or a function,
+you can improve macro to have more descriptive prints.
 
-So, add a build option to allow disabling Xe driver builds.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  lib/drmtest.c | 12 ++++++++++++
+>  lib/drmtest.h | 10 +++-------
+>  2 files changed, 15 insertions(+), 7 deletions(-)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index c91a914257..759e889874 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -681,3 +681,15 @@ void igt_require_xe(int fd)
+>  {
+>  	igt_require(is_xe_device(fd));
+>  }
+> +
 
-The first patch adds such option but keeps it enabled by
-default, as we don't want to break any CI automation that
-may be relying on having the driver enabled.
+Please write here description.
 
-The idea is to get the first patch merged, and then give
-some time to adjust CI scripts. Afterwards, apply the
-second one changing the default.
+> +void do_ioctl_err(int fd, unsigned long ioc, void *ioc_data, int err)
+> +{
+> +	int ret;
+> +
+> +	ret = igt_ioctl(fd, ioc, ioc_data);
+> +	igt_assert_f(ret == -1,
+> +		     "ioctl should fail with -1 but returned %d\n", ret);
+> +	igt_assert_f(errno == err,
+> +		     "errno fail - returned: %d, expected: %d\n", errno, err);
+--------------------- ^ --- ^
+Maybe "ioctl mismatch error:" ?
 
-Mauro Carvalho Chehab (2):
-  meson: add an option to control Xe test builds
-  meson_options.txt: disable Xe driver tests by default
+> +	errno = 0;
+> +}
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index 3c88b85c6f..792996dd28 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -153,13 +153,9 @@ bool is_intel_device(int fd);
+>   * @ioc_data: data pointer for the ioctl operation
+>   * @err: value to expect in errno
+>   *
+> - * This macro wraps drmIoctl() and uses igt_assert to check that it fails,
+> - * returning a particular value in errno.
+> + * This function wraps drmIoctl() and uses igt_assert to check that it fails,
+> + * verifying expected errno in @err.
+>   */
 
- docs/testplan/meson.build |  9 ++++++++-
- meson_options.txt         | 10 ++++++++++
- tests/meson.build         | 23 ++++++++++++++---------
- 3 files changed, 32 insertions(+), 10 deletions(-)
+If this is a function then descritpion should be moved to .c file
 
--- 
-2.40.1
+> -#define do_ioctl_err(fd, ioc, ioc_data, err) do { \
+> -	igt_assert_eq(igt_ioctl((fd), (ioc), (ioc_data)), -1); \
+
+You can improve macro with temporary var for ret and change
+asserts into igt_assert_f.
+Second idea would be to have
+
+bool __do_ioctl_err
+
+call it from macro and fail if not true.
+
+Regards,
+Kamil
+
+> -	igt_assert_eq(errno, err); \
+> -	errno = 0; \
+> -} while (0)
+> +void do_ioctl_err(int fd, unsigned long ioc, void *ioc_data, int err);
+>  
+>  #endif /* DRMTEST_H */
+> -- 
+> 2.34.1
+> 
