@@ -1,21 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D99CB10E31F
- for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 05:24:28 +0000 (UTC)
-Message-ID: <cba1cf0d-4c4b-d21b-5e58-d992e46bd739@intel.com>
-Date: Tue, 9 May 2023 10:54:09 +0530
-Content-Language: en-US
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230507193943.57877-1-mohammed.thasleem@intel.com>
- <20230507193943.57877-3-mohammed.thasleem@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230507193943.57877-3-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 39B9B10E345
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 07:34:32 +0000 (UTC)
+Received: from linux.intel.com (ksebasti-mobl.ger.corp.intel.com
+ [10.252.18.159])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id E124C58091C
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 00:34:30 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pwHrg-004qMp-1n
+ for igt-dev@lists.freedesktop.org; Tue, 09 May 2023 09:34:28 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  9 May 2023 09:34:25 +0200
+Message-Id: <20230509073426.1154390-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230509073426.1154390-1-mauro.chehab@linux.intel.com>
+References: <20230509073426.1154390-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v3 2/2] lib/igt_kms: Check for other modes to
- fit on bw when ENOSPC failure
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] meson: add an option to control Xe test
+ builds
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,33 +32,104 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-On Mon-08-05-2023 01:09 am, Mohammed Thasleem wrote:
-> It check other then ENOSPC failure and if its ENOSPC then check all
-> active outputs modes to fit possible bw and return false if not found
-> any suitable bw.
-> 
-> v2: Check for other then ENOSPC failure. (Bhanu)
-> v3: Updated commit message.
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+The Xe driver is currently under heavy development and has not
+merged upstream yet. While merging doesn't happen, the API may
+still change, as upstream may request changes on it and/or
+driver developers may need to tweak some API bits.
 
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+While this is happening, incompatible API changes may still
+happen. As IGT is distributed on some distros, placing Xe
+tests on binaries is not a good idea, as such tests may fail
+when the final version gets released.
 
-> ---
->   lib/igt_kms.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index a6e91f982..5047d4b1b 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -4574,6 +4574,8 @@ bool __override_all_active_output_modes_to_fit_bw(igt_display_t *display,
->   
->   		if (!ret)
->   			return true;
-> +		else if (ret != -ENOSPC)
-> +			return false;
->   	}
->   
->   	return false;
+So, add a build option to allow disabling Xe driver builds.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ docs/testplan/meson.build |  9 ++++++++-
+ meson_options.txt         |  9 +++++++++
+ tests/meson.build         | 23 ++++++++++++++---------
+ 3 files changed, 31 insertions(+), 10 deletions(-)
+
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index b65ee964ddd2..2014f91b5be1 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -23,11 +23,18 @@ else
+ 	doc_dependencies = []
+ endif
+ 
++xe_test_dict = {
++		 'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
++	       }
++
+ test_dict = {
+-	      'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist },
+ 	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
+ 	    }
+ 
++if build_xe
++	test_dict += xe_test_dict
++endif
++
+ foreach testplan, fields: test_dict
+ 	rst = custom_target(testplan + '.rst',
+ 			    build_by_default : true,
+diff --git a/meson_options.txt b/meson_options.txt
+index 2cb44f20169b..7b5a818cb72f 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -37,6 +37,15 @@ option('tests',
+        type : 'feature',
+        description : 'Build tests')
+ 
++# Currently, Xe uAPI is not stable: it may still change while the driver is
++# not merged upstream.
++# So, add an option to enable it, as distros shall not be shipping
++# binaries with Xe tests on it, as they will most certainly fail once
++# drivers get upstreamed.
++option('xe_driver',
++       type : 'feature',
++       description : 'Build tests for Xe driver (experimental)')
++
+ option('libdrm_drivers',
+        type : 'array',
+        value : ['auto'],
+diff --git a/tests/meson.build b/tests/meson.build
+index c15eb3a08cb2..ff7c37304b4d 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -317,15 +317,20 @@ foreach prog : i915_progs
+ 	test_list += prog
+ endforeach
+ 
+-foreach prog : xe_progs
+-	test_executables += executable(prog,
+-		   join_paths('xe', prog + '.c'),
+-		   dependencies : test_deps,
+-		   install_dir : libexecdir,
+-		   install_rpath : libexecdir_rpathdir,
+-		   install : true)
+-	test_list += prog
+-endforeach
++build_xe = not get_option('xe_driver').disabled()
++
++if build_xe
++	foreach prog : xe_progs
++		test_executables += executable(prog,
++			   join_paths('xe', prog + '.c'),
++			   dependencies : test_deps,
++			   install_dir : libexecdir,
++			   install_rpath : libexecdir_rpathdir,
++			   install : true)
++		test_list += prog
++	endforeach
++	build_info += 'Xe **experimental** tests enabled.'
++endif
+ 
+ foreach prog : msm_progs
+ 	test_executables += executable(prog, join_paths('msm', prog + '.c'),
+-- 
+2.40.1
