@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B60310E354
- for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 08:13:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C76510E358
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 08:13:48 +0000 (UTC)
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  9 May 2023 13:23:38 +0530
-Message-Id: <20230509075340.48546-3-mohammed.thasleem@intel.com>
+Date: Tue,  9 May 2023 13:23:40 +0530
+Message-Id: <20230509075340.48546-5-mohammed.thasleem@intel.com>
 In-Reply-To: <20230509075340.48546-1-mohammed.thasleem@intel.com>
 References: <20230509075340.48546-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v1 2/4] lib/igt_kms: Check for other modes to fit
- on bw when ENOSPC failure
+Subject: [igt-dev] [PATCH v1 4/4] tests/i915/kms_cdclk: Fixed mode selection
+ for MST modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,31 +23,47 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-It check other then ENOSPC failure and if its ENOSPC then check all
-active outputs modes to fit possible bw and return false if not found
-any suitable bw.
+When two monitors connected through MST. This will find the
+connector mode combo that fits into the bandwidth when more
+than one monitor is connected.
 
-v2: Check for other then ENOSPC failure. (Bhanu)
-v3: Updated commit message.
+Example:
+  When two monitors connected through MST, the second monitor
+  also tries to use the same mode. So two such modes may not
+  fit into the link bandwidth. So, iterate through connected
+  outputs & modes and find a combination of modes those fit
+  into the link BW.
+
+v2: -Removed if loop checks.
+    -Added igt override to avoid dp mst bw failure.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_kms.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/i915/kms_cdclk.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index a6e91f982..5047d4b1b 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -4574,6 +4574,8 @@ bool __override_all_active_output_modes_to_fit_bw(igt_display_t *display,
- 
- 		if (!ret)
- 			return true;
-+		else if (ret != -ENOSPC)
-+			return false;
+diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+index 0f9b8dc58..bf93d940f 100644
+--- a/tests/i915/kms_cdclk.c
++++ b/tests/i915/kms_cdclk.c
+@@ -257,6 +257,7 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 	int valid_outputs = 0;
+ 	int cdclk_ref, cdclk_new;
+ 	uint16_t width = 0, height = 0;
++	bool found;
+ 	struct igt_fb fb;
+ 	igt_pipe_t *pipe;
+ 	igt_plane_t *plane;
+@@ -332,6 +333,10 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 		j++;
  	}
  
- 	return false;
++	/* In case of DP-MST find suitable mode(s) to fit into the link BW. */
++	found = igt_override_all_active_output_modes_to_fit_bw(display);
++	igt_require_f(found, "No valid mode combo found for MST modeset.\n");
++
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 	cdclk_new = get_current_cdclk_freq(debugfs_fd);
+ 	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
 -- 
 2.25.1
