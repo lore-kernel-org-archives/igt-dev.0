@@ -1,19 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6829810E349
- for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 08:01:57 +0000 (UTC)
-Date: Tue, 9 May 2023 10:01:53 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9670610E363
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 09:07:44 +0000 (UTC)
+Received: from linux.intel.com (ksebasti-mobl.ger.corp.intel.com
+ [10.252.18.159])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 2F989580109
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 02:07:42 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pwJJs-004rJe-0h
+ for igt-dev@lists.freedesktop.org; Tue, 09 May 2023 11:07:40 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230509080153.itpksapie4vaazwp@kamilkon-desk1>
-References: <20230509063921.29500-1-zbigniew.kempczynski@intel.com>
+Date: Tue,  9 May 2023 11:07:36 +0200
+Message-Id: <20230509090738.1157939-5-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230509090738.1157939-1-mauro.chehab@linux.intel.com>
+References: <20230509090738.1157939-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230509063921.29500-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/drmtest: Change do_ioctl_err()
- macro to function
+Subject: [igt-dev] [PATCH i-g-t v3 4/6] testplan/meson.build: add i915
+ support for a testplan document
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,86 +32,172 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-On 2023-05-09 at 08:39:21 +0200, Zbigniew Kempczyński wrote:
-> Chris enlightened me after I did some review do_ioctl_err() macro
-> is a little bit problematic when it catches unexpected error (debug
-> output isn't much descriptive). As we plan to use it widely in xe
-> uapi verification lets make error callstack more readable.
+Prepare to support documenting the i915 tests via in-code macros, in a
+similar way to how Xe tests are documented.
 
-It is up to you if you would like to have a macro or a function,
-you can improve macro to have more descriptive prints.
+For now, don't enable checking i915 documentation here, as this
+may consume a lot of build time on desktops.
 
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/drmtest.c | 12 ++++++++++++
->  lib/drmtest.h | 10 +++-------
->  2 files changed, 15 insertions(+), 7 deletions(-)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index c91a914257..759e889874 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -681,3 +681,15 @@ void igt_require_xe(int fd)
->  {
->  	igt_require(is_xe_device(fd));
->  }
-> +
+Please notice that we had to exclude documentation for
+gem_concurrent_all.c, as there are too many subtests there:
 
-Please write here description.
+	${build}/tests/gem_concurrent_all --list|wc -l
+	428400
 
-> +void do_ioctl_err(int fd, unsigned long ioc, void *ioc_data, int err)
-> +{
-> +	int ret;
-> +
-> +	ret = igt_ioctl(fd, ioc, ioc_data);
-> +	igt_assert_f(ret == -1,
-> +		     "ioctl should fail with -1 but returned %d\n", ret);
-> +	igt_assert_f(errno == err,
-> +		     "errno fail - returned: %d, expected: %d\n", errno, err);
---------------------- ^ --- ^
-Maybe "ioctl mismatch error:" ?
+Adding documentation for all of them (even with wildcards) would
+produce a very big document, seriously affecting build time.
 
-> +	errno = 0;
-> +}
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 3c88b85c6f..792996dd28 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -153,13 +153,9 @@ bool is_intel_device(int fd);
->   * @ioc_data: data pointer for the ioctl operation
->   * @err: value to expect in errno
->   *
-> - * This macro wraps drmIoctl() and uses igt_assert to check that it fails,
-> - * returning a particular value in errno.
-> + * This function wraps drmIoctl() and uses igt_assert to check that it fails,
-> + * verifying expected errno in @err.
->   */
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ docs/testplan/conf.py            |  2 +-
+ docs/testplan/meson.build        |  6 ++-
+ tests/i915/i915_test_config.json | 88 ++++++++++++++++++++++++++++++++
+ 3 files changed, 93 insertions(+), 3 deletions(-)
+ create mode 100644 tests/i915/i915_test_config.json
 
-If this is a function then descritpion should be moved to .c file
-
-> -#define do_ioctl_err(fd, ioc, ioc_data, err) do { \
-> -	igt_assert_eq(igt_ioctl((fd), (ioc), (ioc_data)), -1); \
-
-You can improve macro with temporary var for ret and change
-asserts into igt_assert_f.
-Second idea would be to have
-
-bool __do_ioctl_err
-
-call it from macro and fail if not true.
-
-Regards,
-Kamil
-
-> -	igt_assert_eq(errno, err); \
-> -	errno = 0; \
-> -} while (0)
-> +void do_ioctl_err(int fd, unsigned long ioc, void *ioc_data, int err);
->  
->  #endif /* DRMTEST_H */
-> -- 
-> 2.34.1
-> 
+diff --git a/docs/testplan/conf.py b/docs/testplan/conf.py
+index a73ad99b09b6..a7db5c3a230d 100644
+--- a/docs/testplan/conf.py
++++ b/docs/testplan/conf.py
+@@ -68,5 +68,5 @@ htmlhelp_basename = 'IGT'
+ 
+ # rst2pdf
+ pdf_documents = [
+-    ('index', u'xe_tests', u'IGT Xe Tests', u'IGT authors'),
++    ('index', u'tests', u'IGT Xe Tests', u'IGT authors'),
+ ]
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index b65ee964ddd2..ca70864c1e95 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -8,6 +8,7 @@ stylesheet = join_paths(meson.current_source_dir(), 'testplan.css')
+ 
+ xe_test_config = join_paths(source_root, 'tests', 'xe', 'xe_test_config.json')
+ kms_test_config = join_paths(source_root, 'tests', 'kms_test_config.json')
++i915_test_config = join_paths(source_root, 'tests', 'i915', 'i915_test_config.json')
+ 
+ check_testlist = []
+ if build_tests
+@@ -25,6 +26,7 @@ endif
+ 
+ test_dict = {
+ 	      'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist },
++	      'i915_tests': { 'input': i915_test_config, 'extra_args': [] },
+ 	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
+ 	    }
+ 
+@@ -70,14 +72,14 @@ if sphinx.found()
+ 	if rst2pdf.found()
+ 		sphinx_out_pdf = meson.current_build_dir() + '/pdf'
+ 
+-		custom_target('xe_tests.pdf',
++		custom_target('tests.pdf',
+ 			      build_by_default : true,
+ 			      command : [ 'sphinx-build', '-c', meson.current_source_dir(),
+ 					  '-b', 'pdf',
+ 					  '-D', 'version=' + meson.project_version(),
+ 					  meson.current_build_dir(), sphinx_out_pdf],
+ 			      input : index_rst,
+-			      output : 'xe_tests.pdf'
++			      output : 'tests.pdf'
+ 			     )
+ 	endif
+ endif
+diff --git a/tests/i915/i915_test_config.json b/tests/i915/i915_test_config.json
+new file mode 100644
+index 000000000000..812cb73b9f52
+--- /dev/null
++++ b/tests/i915/i915_test_config.json
+@@ -0,0 +1,88 @@
++{
++    "description": "JSON file to be used to parse i915 documentation",
++    "files": [ "*.c", "../core_auth.c", "../core_getclient.c",
++               "../core_getstats.c", "../core_getversion.c",
++               "../core_hotunplug.c", "../core_setmaster.c",
++               "../core_setmaster_vs_auth.c", "../debugfs_test.c",
++               "../device_reset.c", "../dmabuf.c",
++               "../drm_import_export.c", "../drm_mm.c",
++               "../dumb_buffer.c", "../prime_busy.c", "../prime_mmap.c",
++               "../prime_mmap_coherency.c", "../prime_self_import.c",
++               "../prime_vgem.c", "../sw_sync.c", "../syncobj_basic.c",
++               "../syncobj_timeline.c", "../syncobj_wait.c",
++               "../vgem_basic.c", "../vgem_slow.c" ],
++    "exclude_files": [ "kms_*", "gem_concurrent_all.c" ],
++    "fields": {
++	"Mega feature": {
++                "_properties_": {
++                    "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
++                },
++                "Category": {
++                "_properties_": {
++                    "description": "Contains the major group for the tested functionality"
++                },
++
++                "Sub-category": {
++                    "_properties_": {
++                        "description": "Contains the minor group of the functionality"
++                    },
++                    "Functionality": {
++                        "_properties_": {
++                            "description": "Describes the functionality to be tested"
++                        },
++                        "Feature": {
++                            "_properties_": {
++                                "description": "Describes the lowest level feature bucket"
++                            },
++                            "Run type": {
++                                "_properties_": {
++                                    "description": "Defines what category of testlist it belongs"
++                                }
++                            }
++                        }
++                    }
++                }
++            }
++        },
++        "Test category": {
++            "_properties_": {
++                "description": "Defines the test category. Usually used at subtest level."
++            }
++        },
++        "Test requirement": {
++            "_properties_": {
++                "description": "Defines Kernel parameters required for the test to run"
++            }
++        },
++        "Issue": {
++            "_properties_": {
++                "description": "If the test is used to solve an issue, point to the URL containing the issue."
++            }
++        },
++        "GPU excluded platform": {
++            "_properties_": {
++                "description": "Provides a list of GPUs not capable of running the subtest (or the test as a whole)."
++            }
++        },
++        "GPU requirement": {
++            "_properties_": {
++                "description": "Describes any GPU-specific requrirement, like requiring multi-tiles."
++            }
++        },
++        "Depends on" : {
++            "_properties_": {
++                "description": "List other subtests that are required to not be skipped before calling this one."
++            }
++        },
++        "TODO": {
++            "_properties_": {
++                "description": "Point to known missing features at the test or subtest."
++            }
++        },
++        "Description" : {
++            "_properties_": {
++                "description": "Provides a description for the test/subtest."
++            }
++        }
++    }
++}
+-- 
+2.40.1
