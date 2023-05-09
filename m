@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 816AF10E157
- for <igt-dev@lists.freedesktop.org>; Mon,  8 May 2023 19:55:43 +0000 (UTC)
-Date: Mon, 8 May 2023 21:55:39 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <20230508195539.myzbd7g5q2szeddb@zkempczy-mobl2>
-References: <20230505053528.25967-1-sai.gowtham.ch@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 810E910E31F
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 01:55:35 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  9 May 2023 07:32:28 +0530
+Message-Id: <20230509020228.25780-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230505053528.25967-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new
- with Xe.
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_fbcon_fbt: Execute test on
+ multiple modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,228 +17,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, May 05, 2023 at 11:05:28AM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> 
-> Extending the spin_create implementation and allocator handle support in xe,
-> where it submits dummy work loads to engine. This Implementation is wrapped
-> around vm_bind and unbind as we are supposed to do it manually for xe.
-> 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> ---
->  lib/igt_dummyload.c | 28 ++++++++++++++------
->  lib/igt_dummyload.h |  8 ++++++
->  lib/xe/xe_spin.c    | 63 +++++++++++++++++++++++++++++++++++++++++++++
->  lib/xe/xe_spin.h    |  7 +++++
->  4 files changed, 98 insertions(+), 8 deletions(-)
-> 
-> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-> index 740a58f3..92507819 100644
-> --- a/lib/igt_dummyload.c
-> +++ b/lib/igt_dummyload.c
-> @@ -46,6 +46,7 @@
->  #include "intel_reg.h"
->  #include "ioctl_wrappers.h"
->  #include "sw_sync.h"
-> +#include "xe/xe_spin.h"
->  
->  /**
->   * SECTION:igt_dummyload
-> @@ -447,7 +448,10 @@ spin_create(int fd, const struct igt_spin_factory *opts)
->  igt_spin_t *
->  __igt_spin_factory(int fd, const struct igt_spin_factory *opts)
->  {
-> -	return spin_create(fd, opts);
-> +	if (is_xe_device(fd))
-> +		return xe_spin_create(fd, opts);
-> +	else
-> +		return spin_create(fd, opts);
->  }
->  
->  /**
-> @@ -480,8 +484,13 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
->  		igt_require(!gem_engine_has_cmdparser(fd, &opts->ctx->cfg,
->  						      opts->engine));
->  	}
-> -
-> -	spin = spin_create(fd, opts);
-> +	if (is_xe_device(fd)) {
-> +		spin = xe_spin_create(fd, opts);
-> +		return spin;
-> +	} else {
-> +		spin = spin_create(fd, opts);
-> +		return spin;
-> +	}
->  
->  	if (!(opts->flags & IGT_SPIN_INVALID_CS)) {
->  		/*
-> @@ -647,11 +656,14 @@ void igt_spin_free(int fd, igt_spin_t *spin)
->  	if (!spin)
->  		return;
->  
-> -	pthread_mutex_lock(&list_lock);
-> -	igt_list_del(&spin->link);
-> -	pthread_mutex_unlock(&list_lock);
-> -
-> -	__igt_spin_free(fd, spin);
-> +	if (is_xe_device(fd)) {
-> +		xe_spin_free(fd, spin);
-> +	} else {
-> +		pthread_mutex_lock(&list_lock);
-> +		igt_list_del(&spin->link);
-> +		pthread_mutex_unlock(&list_lock);
-> +		__igt_spin_free(fd, spin);
-> +	}
->  }
->  
->  void igt_terminate_spins(void)
-> diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-> index b247ab02..7efbb464 100644
-> --- a/lib/igt_dummyload.h
-> +++ b/lib/igt_dummyload.h
-> @@ -83,6 +83,14 @@ typedef struct igt_spin {
->  #define SPIN_CLFLUSH (1 << 0)
->  
->  	struct igt_spin_factory opts;
-> +	union {
-> +		uint64_t pad;
-> +		uint32_t start;
-> +		uint32_t end;
-> +		uint32_t vm;
-> +		uint32_t syncobj;
-> +	};
-> +
+In present situation the test is executing only for single mode,
+execute the test for the next mode supported by the connector if
+the first one is invalid to enable fbc.
 
-Union? Marker guaranteed.
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/i915/kms_fbcon_fbt.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
->  } igt_spin_t;
->  
->  
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 856d0ba2..b79b5a0c 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -15,6 +15,7 @@
->  #include "intel_reg.h"
->  #include "xe_ioctl.h"
->  #include "xe_spin.h"
-> +#include "lib/igt_dummyload.h"
->  
->  /**
->   * xe_spin_init:
-> @@ -82,6 +83,68 @@ void xe_spin_end(struct xe_spin *spin)
->  	spin->end = 0;
->  }
->  
-> +igt_spin_t *
-> +xe_spin_create(int fd, const struct igt_spin_factory *opt)
-> +{
-> +	struct drm_xe_engine_class_instance *eci;
-> +	size_t bo_size = xe_get_default_alignment(fd);
-> +	uint32_t vm, bo, engine, syncobj;
-> +	uint64_t ahnd = opt->ahnd, addr;
-> +	struct igt_spin *spin;
-> +	struct xe_spin *xe_spin;
-> +	struct drm_xe_sync sync = {
-> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-> +	};
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 1,
-> +		.syncs = to_user_pointer(&sync),
-> +	};
-> +
-> +	igt_assert(ahnd);
-> +	xe_spin = calloc(1, sizeof(struct xe_spin));
-> +	igt_assert(xe_spin);
-> +	spin = calloc(1, sizeof(struct igt_spin));
-> +	igt_assert(spin);
-> +
-> +	bo = xe_bo_create(fd, eci->gt_id, vm, bo_size);
-> +	spin = xe_bo_map(fd, bo, 0x1000);
-> +	spin->handle = bo;
-> +	spin->vm = xe_vm_create(fd, 0, 0);
-> +	engine = xe_engine_create(fd, vm, eci, 0);
-> +	spin->syncobj = syncobj_create(fd, 0);
-> +
-> +	if (ahnd)
-> +		addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
-> +
-> +	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
-> +
-> +	xe_spin_init(xe_spin, addr, true);
-> +	exec.engine_id = engine;
-> +	exec.address = addr;
-> +	sync.handle = syncobj;
-> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
-> +
-> +	spin->batch = xe_spin->batch;
-> +	spin->start = xe_spin->start;
-> +	spin->end = xe_spin->end;
-> +	return spin;
-> +
-> +}
-> +
-> +void xe_spin_sync_wait(int fd, struct igt_spin *spin)
-> +{
-> +	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0,
-> +				NULL));
-> +}
-> +
-> +void xe_spin_free(int fd, struct igt_spin *spin)
-> +{
-> +	spin->end = 0;
-> +	xe_vm_destroy(fd, spin->vm);
-
-I see no usecase working right now but spin->end without synchronous
-unbinding before will likely produce gpu hang.
-
---
-Zbigniew
-
-> +	gem_close(fd, spin->handle);
-> +}
-> +
->  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
->  		  struct xe_cork *cork)
->  {
-> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index 73f9a026..48867eb8 100644
-> --- a/lib/xe/xe_spin.h
-> +++ b/lib/xe/xe_spin.h
-> @@ -13,19 +13,26 @@
->  #include <stdbool.h>
->  
->  #include "xe_query.h"
-> +#include "lib/igt_dummyload.h"
->  
->  /* Mapped GPU object */
-> +
->  struct xe_spin {
->  	uint32_t batch[16];
->  	uint64_t pad;
->  	uint32_t start;
->  	uint32_t end;
-> +
->  };
->  
-> +igt_spin_t *
-> +xe_spin_create(int fd, const struct igt_spin_factory *opt);
->  void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
->  bool xe_spin_started(struct xe_spin *spin);
-> +void xe_spin_sync_wait(int fd, struct igt_spin *spin);
->  void xe_spin_wait_started(struct xe_spin *spin);
->  void xe_spin_end(struct xe_spin *spin);
-> +void xe_spin_free(int fd, struct igt_spin *spin);
->  
->  struct xe_cork {
->  	struct xe_spin *spin;
-> -- 
-> 2.39.1
-> 
+diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
+index 831ec867..543426d1 100644
+--- a/tests/i915/kms_fbcon_fbt.c
++++ b/tests/i915/kms_fbcon_fbt.c
+@@ -37,6 +37,7 @@ IGT_TEST_DESCRIPTION("Test the relationship between fbcon and the frontbuffer "
+ 		     "tracking infrastructure.");
+ 
+ #define MAX_CONNECTORS 32
++int j = 0;
+ 
+ struct drm_info {
+ 	int fd, debugfs_fd;
+@@ -164,14 +165,14 @@ typedef bool (*connector_possible_fn)(drmModeConnectorPtr connector);
+ static void set_mode_for_one_screen(struct drm_info *drm,
+ 				    connector_possible_fn connector_possible)
+ {
+-	int i, rc;
++	int rc;
+ 	uint32_t crtc_id;
+ 	drmModeModeInfoPtr mode;
+ 	uint32_t buffer_id;
+ 	drmModeConnectorPtr c = NULL;
+ 
+-	for (i = 0; i < drm->res->count_connectors; i++) {
+-		c = drm->connectors[i];
++	for (;j < drm->res->count_connectors; j++) {
++		c = drm->connectors[j];
+ 
+ 		if (c->connection == DRM_MODE_CONNECTED && c->count_modes &&
+ 		    connector_possible(c)) {
+@@ -179,7 +180,7 @@ static void set_mode_for_one_screen(struct drm_info *drm,
+ 			break;
+ 		}
+ 	}
+-	igt_require_f(i < drm->res->count_connectors,
++	igt_require_f(j < drm->res->count_connectors,
+ 		      "No connector available\n");
+ 
+ 	crtc_id = kmstest_find_crtc_for_connector(drm->fd, drm->res, c, 0);
+@@ -348,7 +349,12 @@ static void subtest(struct drm_info *drm, struct feature *feature, bool suspend)
+ 
+ 	set_mode_for_one_screen(drm, feature->connector_possible_fn);
+ 	wait_user("Screen set.");
+-	igt_assert(feature->wait_until_enabled(drm->debugfs_fd));
++	if (!(feature->wait_until_enabled(drm->debugfs_fd))) {
++		++j;
++		set_mode_for_one_screen(drm, feature->connector_possible_fn);
++		wait_user("Screen set for next mode.");
++		igt_assert(feature->wait_until_enabled(drm->debugfs_fd));
++	}
+ 
+ 	if (suspend) {
+ 		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+-- 
+2.39.0
