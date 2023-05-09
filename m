@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C081A10E32D
- for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 06:36:45 +0000 (UTC)
-Date: Tue, 9 May 2023 08:36:41 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <20230509063641.lbetx4unxp22tq22@zkempczy-mobl2>
-References: <20230505053528.25967-1-sai.gowtham.ch@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB0A210E1E3
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 06:39:27 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  9 May 2023 08:39:21 +0200
+Message-Id: <20230509063921.29500-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230505053528.25967-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new
- with Xe.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/drmtest: Change do_ioctl_err() macro to
+ function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,67 +18,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, May 05, 2023 at 11:05:28AM +0530, sai.gowtham.ch@intel.com wrote:
-<cut>
+Chris enlightened me after I did some review do_ioctl_err() macro
+is a little bit problematic when it catches unexpected error (debug
+output isn't much descriptive). As we plan to use it widely in xe
+uapi verification lets make error callstack more readable.
 
-> +igt_spin_t *
-> +xe_spin_create(int fd, const struct igt_spin_factory *opt)
-> +{
-> +	struct drm_xe_engine_class_instance *eci;
-> +	size_t bo_size = xe_get_default_alignment(fd);
-> +	uint32_t vm, bo, engine, syncobj;
-> +	uint64_t ahnd = opt->ahnd, addr;
-> +	struct igt_spin *spin;
-> +	struct xe_spin *xe_spin;
-> +	struct drm_xe_sync sync = {
-> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-> +	};
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 1,
-> +		.syncs = to_user_pointer(&sync),
-> +	};
-> +
-> +	igt_assert(ahnd);
-> +	xe_spin = calloc(1, sizeof(struct xe_spin));
-> +	igt_assert(xe_spin);
-> +	spin = calloc(1, sizeof(struct igt_spin));
-> +	igt_assert(spin);
-> +
-> +	bo = xe_bo_create(fd, eci->gt_id, vm, bo_size);
-> +	spin = xe_bo_map(fd, bo, 0x1000);
-> +	spin->handle = bo;
-> +	spin->vm = xe_vm_create(fd, 0, 0);
-> +	engine = xe_engine_create(fd, vm, eci, 0);
-> +	spin->syncobj = syncobj_create(fd, 0);
-> +
-> +	if (ahnd)
-> +		addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/drmtest.c | 12 ++++++++++++
+ lib/drmtest.h | 10 +++-------
+ 2 files changed, 15 insertions(+), 7 deletions(-)
 
-if not necessary as you've assert on the beginning.
-
-That's all I've noticed without testcode.
-
---
-Zbigniew
-
-> +
-> +	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
-> +
-> +	xe_spin_init(xe_spin, addr, true);
-> +	exec.engine_id = engine;
-> +	exec.address = addr;
-> +	sync.handle = syncobj;
-> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
-> +
-> +	spin->batch = xe_spin->batch;
-> +	spin->start = xe_spin->start;
-> +	spin->end = xe_spin->end;
-> +	return spin;
-> +
-> +}
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index c91a914257..759e889874 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -681,3 +681,15 @@ void igt_require_xe(int fd)
+ {
+ 	igt_require(is_xe_device(fd));
+ }
++
++void do_ioctl_err(int fd, unsigned long ioc, void *ioc_data, int err)
++{
++	int ret;
++
++	ret = igt_ioctl(fd, ioc, ioc_data);
++	igt_assert_f(ret == -1,
++		     "ioctl should fail with -1 but returned %d\n", ret);
++	igt_assert_f(errno == err,
++		     "errno fail - returned: %d, expected: %d\n", errno, err);
++	errno = 0;
++}
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 3c88b85c6f..792996dd28 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -153,13 +153,9 @@ bool is_intel_device(int fd);
+  * @ioc_data: data pointer for the ioctl operation
+  * @err: value to expect in errno
+  *
+- * This macro wraps drmIoctl() and uses igt_assert to check that it fails,
+- * returning a particular value in errno.
++ * This function wraps drmIoctl() and uses igt_assert to check that it fails,
++ * verifying expected errno in @err.
+  */
+-#define do_ioctl_err(fd, ioc, ioc_data, err) do { \
+-	igt_assert_eq(igt_ioctl((fd), (ioc), (ioc_data)), -1); \
+-	igt_assert_eq(errno, err); \
+-	errno = 0; \
+-} while (0)
++void do_ioctl_err(int fd, unsigned long ioc, void *ioc_data, int err);
+ 
+ #endif /* DRMTEST_H */
+-- 
+2.34.1
