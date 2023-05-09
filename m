@@ -1,26 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53E9510E361
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85A6110E361
  for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 09:07:44 +0000 (UTC)
 Received: from linux.intel.com (ksebasti-mobl.ger.corp.intel.com
  [10.252.18.159])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 4DFFE580D9C
+ by linux.intel.com (Postfix) with ESMTPS id 218F358091C
  for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 02:07:42 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pwJJs-004rJV-0V
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pwJJs-004rJS-0N
  for igt-dev@lists.freedesktop.org; Tue, 09 May 2023 11:07:40 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  9 May 2023 11:07:33 +0200
-Message-Id: <20230509090738.1157939-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230509090738.1157939-1-mauro.chehab@linux.intel.com>
-References: <20230509090738.1157939-1-mauro.chehab@linux.intel.com>
+Date: Tue,  9 May 2023 11:07:32 +0200
+Message-Id: <20230509090738.1157939-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 1/6] scripts/test_list.py: expand
- testlist fields
+Subject: [igt-dev] [PATCH i-g-t v3 0/6] Better document i915 tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,75 +31,218 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-We're about to add support for i915 testlists. On those,
-it is possible to have functionalities mapped to different
-buckets, as the same test could be used to test multiple
-parts of the driver/hardware.
+The i915 test documentation has several gaps. Convert them
+to use igt_doc.py tool, adding information from existing
+sources.
 
-So, for instance, the subtest igt@prime_vgem@basic-fence-mmap
-actually tests two features:
-	- gtt
-	- prime
+Please notice that the last two patches on this series were generated
+by a script which collects data from several different sources.
 
-A description of such test will then be mapped as:
+This is the first step to have a more comprehensive documentation
+for i915 tests. Manual work will be needed in order to do some
+additional cleanups.
 
-	* SUBTEST: basic-fence-mmap
-	* Description: Examine GTT access path fencing.
-	* Feature: gtt, prime
-
-In order to be able to generate per-feature testlists, we
-need to expand the Feature field, using the separator field
-(currently a comma) to expand the test lists.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 9a909e3640f6..e68a4cb3df71 100755
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -762,7 +762,7 @@ class TestList:
-     # Subtest list methods
-     #
- 
--    def get_subtests(self, sort_field = None):
-+    def get_subtests(self, sort_field = None, expand = None):
- 
-         """Return an array with all subtests"""
- 
-@@ -789,10 +789,17 @@ class TestList:
- 
-                 if sort_field:
-                     if sort_field in subtest:
--                        if subtest[sort_field] not in subtests:
--                            subtests[subtest[sort_field]] = []
--
--                        subtests[subtest[sort_field]].append(subtest["Summary"])
-+                        if expand:
-+                            test_list = subtest[sort_field].split(expand)
-+                            for test_elem in test_list:
-+                                test_elem = test_elem.strip()
-+                                if test_elem not in subtests:
-+                                    subtests[test_elem] = []
-+                                subtests[test_elem].append(subtest["Summary"])
-+                        else:
-+                            if subtest[sort_field] not in subtests:
-+                                subtests[subtest[sort_field]] = []
-+                            subtests[subtest[sort_field]].append(subtest["Summary"])
-                     else:
-                         subtests[""].append(subtest["Summary"])
- 
-@@ -1132,7 +1139,8 @@ class TestList:
-         test_prefix = os.path.commonprefix(self.get_subtests()[""])
-         test_prefix = re.sub(r'^igt@', '', test_prefix)
- 
--        test_subtests = self.get_subtests(sort_field)
-+        # NOTE: currently, it uses a comma for multi-value delimitter
-+        test_subtests = self.get_subtests(sort_field, ",")
- 
-         if not os.path.exists(directory):
-             os.makedirs(directory)
+v3:
+- fix a badly-solved conflict with KMS documentation patches.
+
+v2:
+- add support to expand testlist fields, as i915 may have
+  the same test on multiple test lists;
+- do some test_list.py cleanups based on Ruff warnings;
+- rebased to be applied after KMS test documentation;
+- feature names are now alphabetically sorted;
+- some minor improvements at the igt doc comments, due to
+  some improvements at the generation script.
+
+Mauro Carvalho Chehab (6):
+  scripts/test_list.py: expand testlist fields
+  scripts/test_list.py: add support to exclude files
+  scripts/test_list.py: fix some hints pointed by Ruff
+  testplan/meson.build: add i915 support for a testplan document
+  tests/i915: Improve test documentation
+  tests/i915: Enhance test documentation
+
+ docs/testplan/conf.py                       |    2 +-
+ docs/testplan/meson.build                   |    6 +-
+ scripts/test_list.py                        |   38 +-
+ tests/core_auth.c                           |   25 +
+ tests/core_getclient.c                      |   12 +
+ tests/core_getstats.c                       |   12 +
+ tests/core_getversion.c                     |   12 +
+ tests/core_hotunplug.c                      |   50 +
+ tests/core_setmaster.c                      |   19 +
+ tests/core_setmaster_vs_auth.c              |   13 +
+ tests/debugfs_test.c                        |   38 +
+ tests/device_reset.c                        |   25 +
+ tests/dmabuf.c                              |    8 +
+ tests/drm_mm.c                              |    8 +
+ tests/dumb_buffer.c                         |   37 +
+ tests/i915/api_intel_allocator.c            |   77 +
+ tests/i915/api_intel_bb.c                   |  111 ++
+ tests/i915/drm_fdinfo.c                     |   44 +
+ tests/i915/gem_bad_reloc.c                  |   19 +
+ tests/i915/gem_barrier_race.c               |   14 +
+ tests/i915/gem_basic.c                      |   37 +
+ tests/i915/gem_blits.c                      |   11 +
+ tests/i915/gem_busy.c                       |   46 +
+ tests/i915/gem_caching.c                    |   20 +
+ tests/i915/gem_ccs.c                        |   33 +
+ tests/i915/gem_close.c                      |   13 +
+ tests/i915/gem_close_race.c                 |   53 +
+ tests/i915/gem_create.c                     |   89 ++
+ tests/i915/gem_cs_tlb.c                     |   12 +
+ tests/i915/gem_ctx_bad_destroy.c            |   18 +
+ tests/i915/gem_ctx_create.c                 |   77 +
+ tests/i915/gem_ctx_engines.c                |   26 +
+ tests/i915/gem_ctx_exec.c                   |   53 +
+ tests/i915/gem_ctx_freq.c                   |   11 +
+ tests/i915/gem_ctx_isolation.c              |   53 +
+ tests/i915/gem_ctx_param.c                  |  146 ++
+ tests/i915/gem_ctx_persistence.c            |  154 ++
+ tests/i915/gem_ctx_shared.c                 |   56 +
+ tests/i915/gem_ctx_sseu.c                   |   14 +
+ tests/i915/gem_ctx_switch.c                 |  365 +++++
+ tests/i915/gem_eio.c                        |  178 +++
+ tests/i915/gem_evict_alignment.c            |   17 +
+ tests/i915/gem_evict_everything.c           |   61 +
+ tests/i915/gem_exec_alignment.c             |   27 +
+ tests/i915/gem_exec_async.c                 |   14 +
+ tests/i915/gem_exec_await.c                 |   16 +
+ tests/i915/gem_exec_balancer.c              |  218 +++
+ tests/i915/gem_exec_basic.c                 |   16 +
+ tests/i915/gem_exec_big.c                   |   14 +
+ tests/i915/gem_exec_capture.c               |   40 +
+ tests/i915/gem_exec_create.c                |   44 +
+ tests/i915/gem_exec_endless.c               |   11 +
+ tests/i915/gem_exec_fair.c                  |   92 ++
+ tests/i915/gem_exec_fence.c                 |  369 +++++
+ tests/i915/gem_exec_flush.c                 | 1496 +++++++++++++++++++
+ tests/i915/gem_exec_gttfill.c               |   35 +
+ tests/i915/gem_exec_latency.c               |   30 +
+ tests/i915/gem_exec_lut_handle.c            |    7 +
+ tests/i915/gem_exec_nop.c                   |   63 +
+ tests/i915/gem_exec_parallel.c              |   43 +
+ tests/i915/gem_exec_params.c                |  179 +++
+ tests/i915/gem_exec_reloc.c                 |  593 ++++++++
+ tests/i915/gem_exec_schedule.c              |  336 +++++
+ tests/i915/gem_exec_store.c                 |   33 +
+ tests/i915/gem_exec_suspend.c               |   81 +
+ tests/i915/gem_exec_whisper.c               |  256 ++++
+ tests/i915/gem_exercise_blt.c               |   17 +
+ tests/i915/gem_fd_exhaustion.c              |    6 +
+ tests/i915/gem_fence_thrash.c               |   19 +
+ tests/i915/gem_fence_upload.c               |   16 +
+ tests/i915/gem_fenced_exec_thrash.c         |   18 +
+ tests/i915/gem_flink_basic.c                |   39 +
+ tests/i915/gem_flink_race.c                 |   17 +
+ tests/i915/gem_gpgpu_fill.c                 |   11 +
+ tests/i915/gem_gtt_cpu_tlb.c                |    8 +
+ tests/i915/gem_gtt_hog.c                    |    6 +
+ tests/i915/gem_gtt_speed.c                  |    6 +
+ tests/i915/gem_huc_copy.c                   |   11 +
+ tests/i915/gem_linear_blits.c               |   25 +
+ tests/i915/gem_lmem_evict.c                 |   10 +
+ tests/i915/gem_lmem_swapping.c              |  121 ++
+ tests/i915/gem_lut_handle.c                 |    7 +
+ tests/i915/gem_madvise.c                    |   31 +
+ tests/i915/gem_media_fill.c                 |    8 +
+ tests/i915/gem_media_vme.c                  |    8 +
+ tests/i915/gem_mmap.c                       |   57 +
+ tests/i915/gem_mmap_gtt.c                   |  488 ++++++
+ tests/i915/gem_mmap_offset.c                |   76 +
+ tests/i915/gem_mmap_wc.c                    |   67 +
+ tests/i915/gem_partial_pwrite_pread.c       |   62 +
+ tests/i915/gem_pipe_control_store_loop.c    |   17 +
+ tests/i915/gem_ppgtt.c                      |   29 +
+ tests/i915/gem_pread.c                      |   17 +
+ tests/i915/gem_pread_after_blit.c           |   29 +
+ tests/i915/gem_pwrite.c                     |   67 +
+ tests/i915/gem_pwrite_snooped.c             |    8 +
+ tests/i915/gem_pxp.c                        |   79 +
+ tests/i915/gem_read_read_speed.c            |   61 +
+ tests/i915/gem_readwrite.c                  |   15 +
+ tests/i915/gem_reg_read.c                   |   11 +
+ tests/i915/gem_render_copy.c                |  120 ++
+ tests/i915/gem_render_copy_redux.c          |   17 +
+ tests/i915/gem_render_linear_blits.c        |   16 +
+ tests/i915/gem_render_tiled_blits.c         |   27 +
+ tests/i915/gem_request_retire.c             |   12 +
+ tests/i915/gem_reset_stats.c                |  178 +++
+ tests/i915/gem_ringfill.c                   |  123 ++
+ tests/i915/gem_set_tiling_vs_blt.c          |   15 +
+ tests/i915/gem_set_tiling_vs_gtt.c          |    8 +
+ tests/i915/gem_set_tiling_vs_pwrite.c       |    8 +
+ tests/i915/gem_shrink.c                     |  111 ++
+ tests/i915/gem_softpin.c                    |  203 +++
+ tests/i915/gem_spin_batch.c                 |   66 +
+ tests/i915/gem_streaming_writes.c           |   29 +
+ tests/i915/gem_stress.c                     |    7 +
+ tests/i915/gem_sync.c                       |  247 +++
+ tests/i915/gem_tiled_blits.c                |   17 +
+ tests/i915/gem_tiled_fence_blits.c          |   15 +
+ tests/i915/gem_tiled_partial_pwrite_pread.c |   12 +
+ tests/i915/gem_tiled_pread_basic.c          |    8 +
+ tests/i915/gem_tiled_pread_pwrite.c         |    8 +
+ tests/i915/gem_tiled_swapping.c             |   10 +
+ tests/i915/gem_tiled_wb.c                   |   10 +
+ tests/i915/gem_tiled_wc.c                   |    7 +
+ tests/i915/gem_tiling_max_stride.c          |    8 +
+ tests/i915/gem_unfence_active_buffers.c     |    8 +
+ tests/i915/gem_unref_active_buffers.c       |   12 +
+ tests/i915/gem_userptr_blits.c              |  356 +++++
+ tests/i915/gem_vm_create.c                  |   39 +
+ tests/i915/gem_wait.c                       |   71 +
+ tests/i915/gem_watchdog.c                   |   11 +
+ tests/i915/gem_workarounds.c                |   71 +
+ tests/i915/gen3_mixed_blits.c               |    7 +
+ tests/i915/gen3_render_linear_blits.c       |    7 +
+ tests/i915/gen3_render_mixed_blits.c        |    7 +
+ tests/i915/gen3_render_tiledx_blits.c       |    7 +
+ tests/i915/gen3_render_tiledy_blits.c       |    7 +
+ tests/i915/gen7_exec_parse.c                |   31 +
+ tests/i915/gen9_exec_parse.c                |   47 +
+ tests/i915/i915_fb_tiling.c                 |    8 +
+ tests/i915/i915_getparams_basic.c           |   19 +
+ tests/i915/i915_hangman.c                   |   83 +
+ tests/i915/i915_hwmon.c                     |   13 +
+ tests/i915/i915_module_load.c               |   40 +
+ tests/i915/i915_pciid.c                     |   13 +
+ tests/i915/i915_pipe_stress.c               |   17 +
+ tests/i915/i915_pm_backlight.c              |   25 +
+ tests/i915/i915_pm_dc.c                     |   41 +
+ tests/i915/i915_pm_freq_api.c               |   11 +
+ tests/i915/i915_pm_freq_mult.c              |   10 +
+ tests/i915/i915_pm_lpsp.c                   |   12 +
+ tests/i915/i915_pm_rc6_residency.c          |   16 +
+ tests/i915/i915_pm_rpm.c                    |  190 +++
+ tests/i915/i915_pm_rps.c                    |   42 +
+ tests/i915/i915_pm_sseu.c                   |    8 +
+ tests/i915/i915_power.c                     |   12 +
+ tests/i915/i915_query.c                     |   97 ++
+ tests/i915/i915_selftest.c                  |   16 +
+ tests/i915/i915_suspend.c                   |   79 +
+ tests/i915/i915_test_config.json            |   88 ++
+ tests/i915/perf.c                           |  266 ++++
+ tests/i915/perf_pmu.c                       |  250 ++++
+ tests/i915/sysfs_defaults.c                 |   12 +
+ tests/i915/sysfs_heartbeat_interval.c       |   25 +
+ tests/i915/sysfs_preempt_timeout.c          |   18 +
+ tests/i915/sysfs_timeslice_duration.c       |   24 +
+ tests/prime_busy.c                          |   27 +
+ tests/prime_mmap.c                          |   33 +
+ tests/prime_mmap_coherency.c                |   20 +
+ tests/prime_self_import.c                   |   50 +
+ tests/prime_vgem.c                          |  110 ++
+ tests/sw_sync.c                             |   46 +
+ tests/syncobj_basic.c                       |   34 +
+ tests/syncobj_timeline.c                    |  398 +++++
+ tests/syncobj_wait.c                        |  284 ++++
+ tests/vgem_basic.c                          |  117 ++
+ tests/vgem_slow.c                           |   13 +
+ 177 files changed, 12110 insertions(+), 13 deletions(-)
+ create mode 100644 tests/i915/i915_test_config.json
+
 -- 
 2.40.1
