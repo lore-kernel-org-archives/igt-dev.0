@@ -1,26 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39B9B10E345
- for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 07:34:32 +0000 (UTC)
-Received: from linux.intel.com (ksebasti-mobl.ger.corp.intel.com
- [10.252.18.159])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id E124C58091C
- for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 00:34:30 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pwHrg-004qMp-1n
- for igt-dev@lists.freedesktop.org; Tue, 09 May 2023 09:34:28 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1FC410E325
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 May 2023 05:43:06 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  9 May 2023 09:34:25 +0200
-Message-Id: <20230509073426.1154390-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230509073426.1154390-1-mauro.chehab@linux.intel.com>
-References: <20230509073426.1154390-1-mauro.chehab@linux.intel.com>
+Date: Tue,  9 May 2023 11:12:19 +0530
+Message-Id: <20230509054221.162805-2-swati2.sharma@intel.com>
+In-Reply-To: <20230509054221.162805-1-swati2.sharma@intel.com>
+References: <20230509054221.162805-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] meson: add an option to control Xe test
- builds
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/dsc: Add helpers for VDSC
+ Fractional BPP debugfs entry
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,104 +23,134 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Helper functions are added for getting/setting VDSC Fractional BPP
+debugfs entry.
 
-The Xe driver is currently under heavy development and has not
-merged upstream yet. While merging doesn't happen, the API may
-still change, as upstream may request changes on it and/or
-driver developers may need to tweak some API bits.
+v2: -improved func description (Ankit)
+    -increased buff size (Ankit)
+    -asserted bpp_prec (Ankit)
+v3: -return 0 on success instead of 1 (Jouni)
+    -rebase
 
-While this is happening, incompatible API changes may still
-happen. As IGT is distributed on some distros, placing Xe
-tests on binaries is not a good idea, as such tests may fail
-when the final version gets released.
-
-So, add a build option to allow disabling Xe driver builds.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- docs/testplan/meson.build |  9 ++++++++-
- meson_options.txt         |  9 +++++++++
- tests/meson.build         | 23 ++++++++++++++---------
- 3 files changed, 31 insertions(+), 10 deletions(-)
+ lib/igt_dsc.c | 84 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_dsc.h |  5 +++
+ 2 files changed, 89 insertions(+)
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index b65ee964ddd2..2014f91b5be1 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -23,11 +23,18 @@ else
- 	doc_dependencies = []
- endif
+diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
+index 9e1ab9b1..04ec3d98 100644
+--- a/lib/igt_dsc.c
++++ b/lib/igt_dsc.c
+@@ -183,3 +183,87 @@ int igt_force_dsc_output_format(int drmfd, char *connector_name,
  
-+xe_test_dict = {
-+		 'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
-+	       }
+ 	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_output_format", buf);
+ }
 +
- test_dict = {
--	      'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist },
- 	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
- 	    }
- 
-+if build_xe
-+	test_dict += xe_test_dict
-+endif
++static
++bool check_dsc_fractional_bpp_debugfs(int drmfd, char *connector_name,
++				      const char *check_str)
++{
++	char file_name[128] = {0};
++	char buf[512];
 +
- foreach testplan, fields: test_dict
- 	rst = custom_target(testplan + '.rst',
- 			    build_by_default : true,
-diff --git a/meson_options.txt b/meson_options.txt
-index 2cb44f20169b..7b5a818cb72f 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -37,6 +37,15 @@ option('tests',
-        type : 'feature',
-        description : 'Build tests')
- 
-+# Currently, Xe uAPI is not stable: it may still change while the driver is
-+# not merged upstream.
-+# So, add an option to enable it, as distros shall not be shipping
-+# binaries with Xe tests on it, as they will most certainly fail once
-+# drivers get upstreamed.
-+option('xe_driver',
-+       type : 'feature',
-+       description : 'Build tests for Xe driver (experimental)')
++	sprintf(file_name, "%s/i915_dsc_fractional_bpp", connector_name);
 +
- option('libdrm_drivers',
-        type : 'array',
-        value : ['auto'],
-diff --git a/tests/meson.build b/tests/meson.build
-index c15eb3a08cb2..ff7c37304b4d 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -317,15 +317,20 @@ foreach prog : i915_progs
- 	test_list += prog
- endforeach
- 
--foreach prog : xe_progs
--	test_executables += executable(prog,
--		   join_paths('xe', prog + '.c'),
--		   dependencies : test_deps,
--		   install_dir : libexecdir,
--		   install_rpath : libexecdir_rpathdir,
--		   install : true)
--	test_list += prog
--endforeach
-+build_xe = not get_option('xe_driver').disabled()
++	igt_debugfs_read(drmfd, file_name, buf);
 +
-+if build_xe
-+	foreach prog : xe_progs
-+		test_executables += executable(prog,
-+			   join_paths('xe', prog + '.c'),
-+			   dependencies : test_deps,
-+			   install_dir : libexecdir,
-+			   install_rpath : libexecdir_rpathdir,
-+			   install : true)
-+		test_list += prog
-+	endforeach
-+	build_info += 'Xe **experimental** tests enabled.'
-+endif
++	return strstr(buf, check_str);
++}
++
++/*
++ * igt_get_dsc_fractional_bpp_supported:
++ * @drmfd: A drm file descriptor
++ * @connector_name: Name of the libdrm connector we're going to use
++ *
++ * Returns: The dsc sink bpp precision.
++ * 	    Precision value of
++ * 				16 => 1/16
++ * 				8  => 1/8
++ * 				1  => fractional bpp not supported
++ */
++int igt_get_dsc_fractional_bpp_supported(int drmfd, char *connector_name)
++{
++	char file_name[128] = {0};
++	char buf[512];
++	char *start_loc;
++	int bpp_prec;
++
++	sprintf(file_name, "%s/i915_dsc_fec_support", connector_name);
++	igt_debugfs_read(drmfd, file_name, buf);
++
++	igt_assert(start_loc = strstr(buf, "DSC_Sink_BPP_Precision: "));
++	igt_assert_eq(sscanf(start_loc, "DSC_Sink_BPP_Precision: %d", &bpp_prec), 1);
++	igt_assert(bpp_prec > 0);
++
++	return bpp_prec;
++}
++
++/*
++ * igt_is_force_dsc_fractional_bpp_enabled:
++ * @drmfd: A drm file descriptor
++ * @connector_name: Name of the libdrm connector we're going to use
++ *
++ * Returns: True if DSC Fractional BPP is force enabled (via debugfs) for the given connector,
++ * false otherwise.
++ */
++bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name)
++{
++	return check_dsc_fractional_bpp_debugfs(drmfd, connector_name, "Force_DSC_Fractional_BPP_Enable: yes");
++}
++
++/*
++ * igt_force_dsc_fractional_bpp_enable:
++ * @drmfd: A drm file descriptor
++ * @connector_name: Name of the libdrm connector we're going to use
++ *
++ * Returns: 0 on success or negative error code, in case of failure.
++ */
++int igt_force_dsc_fractional_bpp_enable(int drmfd, char *connector_name)
++{
++	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_fractional_bpp", "1");
++}
++
++/*
++ * igt_get_dsc_fractional_bpp_debugfs_fd:
++ * @drmfd: A drm file descriptor
++ * @connector_name: Name of the libdrm connector we're going to use
++ *
++ * Returns: fd of the DSC Fractional BPP debugfs for the given connector,
++ * else returns -1.
++ */
++int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name)
++{
++	char file_name[128] = {0};
++
++	sprintf(file_name, "%s/i915_dsc_fractional_bpp", connector_name);
++
++	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
++}
+diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
+index 9608aad4..e4d86696 100644
+--- a/lib/igt_dsc.h
++++ b/lib/igt_dsc.h
+@@ -8,6 +8,7 @@
  
- foreach prog : msm_progs
- 	test_executables += executable(prog, join_paths('msm', prog + '.c'),
+ #include "igt_fb.h"
+ #include "igt_kms.h"
++#include "igt_core.h"
+ 
+ bool igt_is_dsc_supported(int drmfd, char *connector_name);
+ bool igt_is_fec_supported(int drmfd, char *connector_name);
+@@ -20,5 +21,9 @@ bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
+ 						enum dsc_output_format output_format);
+ int igt_force_dsc_output_format(int drmfd, char *connector_name,
+ 				enum dsc_output_format output_format);
++int igt_get_dsc_fractional_bpp_supported(int drmfd, char *connector_name);
++bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name);
++int igt_force_dsc_fractional_bpp_enable(int drmfd, char *connector_name);
++int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name);
+ 
+ #endif
 -- 
-2.40.1
+2.25.1
