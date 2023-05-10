@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB8F910E460
- for <igt-dev@lists.freedesktop.org>; Wed, 10 May 2023 08:41:18 +0000 (UTC)
-Message-ID: <198bc0a4-563f-eaa2-9608-9d93334921bc@linux.intel.com>
-Date: Wed, 10 May 2023 09:41:15 +0100
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 818C110E460
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 May 2023 08:43:44 +0000 (UTC)
+Message-ID: <dc2f0dfb-88ae-a508-babd-a83859d52120@linux.intel.com>
+Date: Wed, 10 May 2023 09:43:39 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>
 References: <20230506005528.1890922-1-umesh.nerlige.ramappa@intel.com>
- <20230506005528.1890922-14-umesh.nerlige.ramappa@intel.com>
+ <20230506005528.1890922-15-umesh.nerlige.ramappa@intel.com>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230506005528.1890922-14-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20230506005528.1890922-15-umesh.nerlige.ramappa@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 13/15] intel_gpu_top: Show gt specific
- values if requested
+Subject: Re: [igt-dev] [PATCH i-g-t 14/15] intel_gpu_top: Reduce one level
+ of indent
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,51 +29,122 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 On 06/05/2023 01:55, Umesh Nerlige Ramappa wrote:
-> On multi-gt platforms, the aggregate values are displayed as default. If
-> user passes -p (physical) option for these platforms, show gt specific
-> counter values.
+> Prepare to display gt specific items in INTERACTIVE mode with the -p
+> option. An additional for loop will push code more towards right, so
+> reduce one level of indent.
 > 
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 > ---
->   tools/intel_gpu_top.c | 20 ++++++++++++++++++++
->   1 file changed, 20 insertions(+)
+>   tools/intel_gpu_top.c | 74 ++++++++++++++++++++++---------------------
+>   1 file changed, 38 insertions(+), 36 deletions(-)
 > 
 > diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index 4d0aeee16..8bcca67a6 100644
+> index 8bcca67a6..0acc81e9e 100644
 > --- a/tools/intel_gpu_top.c
 > +++ b/tools/intel_gpu_top.c
-> @@ -1944,6 +1944,26 @@ print_header(const struct igt_device_card *card,
+> @@ -1944,7 +1944,7 @@ print_header(const struct igt_device_card *card,
 >   		&power_group,
 >   		NULL
 >   	};
-> +	int i;
-> +
-> +	/*
-> +	 * If we have multi-gt and the user has specified -p options, show gt
-> +	 * specific values.
-> +	 */
-> +	if (!class_view && engines->num_gts > 1) {
-> +		int j = 0;
-> +
-> +		groups[j++] = &period_group;
-> +		for (i = 0; i < engines->num_gts; i++)
-> +			groups[j++] = &freq_group_gt[i];
-> +
-> +		groups[j++] = &irq_group;
-> +		for (i = 0; i < engines->num_gts; i++)
-> +			groups[j++] = &rc6_group_gt[i];
-> +
-> +		groups[j++] = &power_group;
-> +		groups[j++] = NULL;
-> +	}
+> -	int i;
+> +	int rem, i;
 >   
->   	if (output_mode != JSON)
->   		memmove(&groups[0], &groups[1],
+>   	/*
+>   	 * If we have multi-gt and the user has specified -p options, show gt
+> @@ -1971,51 +1971,53 @@ print_header(const struct igt_device_card *card,
+>   
+>   	*consumed = print_groups(groups);
+>   
+> -	if (output_mode == INTERACTIVE) {
+> -		int rem = con_w;
+> +	if (output_mode != INTERACTIVE)
+> +		return lines;
 
-This works fine. One day we can think about how to make the setup one 
-time. Like have two pre-configured groups arrays and then just select 
-the right one here based on class_view.
+Yeah this is better in any case since it correctly expresses the 
+either-or flow.
 
 Regards,
 
 Tvrtko
+
+>   
+> -		printf("\033[H\033[J");
+> +	/* INTERACTIVE MODE */
+> +	rem = con_w;
+>   
+> -		lines = print_header_token(NULL, lines, con_w, con_h, &rem,
+> -					   "intel-gpu-top:");
+> +	printf("\033[H\033[J");
+>   
+> -		lines = print_header_token(" ", lines, con_w, con_h, &rem,
+> -					   "%s", codename);
+> +	lines = print_header_token(NULL, lines, con_w, con_h, &rem,
+> +				   "intel-gpu-top:");
+>   
+> -		lines = print_header_token(" @ ", lines, con_w, con_h, &rem,
+> -					   "%s", card->card);
+> +	lines = print_header_token(" ", lines, con_w, con_h, &rem,
+> +				   "%s", codename);
+>   
+> -		lines = print_header_token(" - ", lines, con_w, con_h, &rem,
+> -					   "%s/%s MHz",
+> -					   freq_items[1].buf,
+> -					   freq_items[0].buf);
+> +	lines = print_header_token(" @ ", lines, con_w, con_h, &rem,
+> +				   "%s", card->card);
+>   
+> -		lines = print_header_token("; ", lines, con_w, con_h, &rem,
+> -					   "%s%% RC6",
+> -					   rc6_items[0].buf);
+> +	lines = print_header_token(" - ", lines, con_w, con_h, &rem,
+> +				   "%s/%s MHz",
+> +				   freq_items[1].buf,
+> +				   freq_items[0].buf);
+>   
+> -		if (engines->r_gpu.present) {
+> -			lines = print_header_token("; ", lines, con_w, con_h,
+> -						   &rem,
+> -						   "%s/%s W",
+> -						   power_items[0].buf,
+> -						   power_items[1].buf);
+> -		}
+> +	lines = print_header_token("; ", lines, con_w, con_h, &rem,
+> +				   "%s%% RC6",
+> +				   rc6_items[0].buf);
+>   
+> -		lines = print_header_token("; ", lines, con_w, con_h, &rem,
+> -					   "%s irqs/s",
+> -					   irq_items[0].buf);
+> +	if (engines->r_gpu.present) {
+> +		lines = print_header_token("; ", lines, con_w, con_h,
+> +					   &rem,
+> +					   "%s/%s W",
+> +					   power_items[0].buf,
+> +					   power_items[1].buf);
+> +	}
+>   
+> -		if (lines++ < con_h)
+> -			printf("\n");
+> +	lines = print_header_token("; ", lines, con_w, con_h, &rem,
+> +				   "%s irqs/s",
+> +				   irq_items[0].buf);
+>   
+> -		if (lines++ < con_h) {
+> -			if (header_msg) {
+> -				printf(" >>> %s\n", header_msg);
+> -				header_msg = NULL;
+> -			} else {
+> -				printf("\n");
+> -			}
+> +	if (lines++ < con_h)
+> +		printf("\n");
+> +
+> +	if (lines++ < con_h) {
+> +		if (header_msg) {
+> +			printf(" >>> %s\n", header_msg);
+> +			header_msg = NULL;
+> +		} else {
+> +			printf("\n");
+>   		}
+>   	}
+>   
