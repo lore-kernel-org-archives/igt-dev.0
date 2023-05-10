@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD9FA10E4F8
- for <igt-dev@lists.freedesktop.org>; Thu, 11 May 2023 15:05:25 +0000 (UTC)
-Date: Thu, 11 May 2023 17:05:08 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230511150508.vqgy6szun24uc2k4@kamilkon-desk1>
-References: <20230511125010.172215-1-swati2.sharma@intel.com>
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
+ [205.220.168.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05DF310E10A
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 May 2023 22:42:33 +0000 (UTC)
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Wed, 10 May 2023 15:42:18 -0700
+Message-ID: <20230510224218.16482-1-quic_abhinavk@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230511125010.172215-1-swati2.sharma@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] DO NOT MERGE: NV12 Experiment
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_writeback: fix teardown path
+ for kms_writeback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,378 +23,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
+When [1] was pushed, it was incorrectly verified as the
+condition to clear the writeback connector's pipe [2] never
+hits because writeback framebuffer is one-shot as per [3].
 
-may it go to trybot ? If not (due to limits running by trybot ?)
-at least trim a lot out of fast-feedback list (leave only tests
-you would like to test) and add a stopper at end (so it will not
-enter ci testing for IGT full).
+To fix this, lets clear the writeback connector's pipe only
+for the test case which actually commits a frame because
+there seems to be no other reliable way to find if an actual
+commit was performed in any of the test-cases because some of
+the test cases dont actually want to commit to go through and
+test that the driver actually fails invalid parameters.
 
-Regards,
-Kamil
+For those, the IGT SW state still shows valid parameters but commit
+was actually never called or never went through.
 
-On 2023-05-11 at 18:20:09 +0530, Swati Sharma wrote:
-> From: Jeevan B <jeevan.b@intel.com>
-> 
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  tests/intel-ci/fast-feedback.testlist |   9 +-
->  tests/kms_pipe_crc_basic.c            | 293 ++++++++++++++++++++++++--
->  2 files changed, 286 insertions(+), 16 deletions(-)
-> 
-> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> index d9fcb62d..4af9e8d2 100644
-> --- a/tests/intel-ci/fast-feedback.testlist
-> +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -118,7 +118,14 @@ igt@kms_force_connector_basic@force-edid
->  igt@kms_force_connector_basic@force-load-detect
->  igt@kms_force_connector_basic@prune-stale-modes
->  igt@kms_frontbuffer_tracking@basic
-> -igt@kms_pipe_crc_basic@compare-crc-sanitycheck
-> +igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb
-> +igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-red
-> +igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-green
-> +igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-blue
-> +igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
-> +igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-red
-> +igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-green
-> +igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-blue
->  igt@kms_pipe_crc_basic@hang-read-crc
->  igt@kms_pipe_crc_basic@nonblocking-crc
->  igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index 84c73fd7..939d8486 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -226,6 +226,109 @@ static void test_read_crc(data_t *data, enum pipe pipe,
->  	igt_display_commit(display);
->  }
->  
-> +static void test_compare_crc_xrgb(data_t *data, enum pipe pipe, igt_output_t *output, int color)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	igt_plane_t *primary;
-> +	drmModeModeInfo *mode;
-> +	igt_crc_t ref_crc, crc;
-> +	igt_pipe_crc_t *pipe_crc = NULL;
-> +	struct igt_fb fb0, fb1;
-> +
-> +	igt_display_reset(display);
-> +	igt_output_set_pipe(output, pipe);
-> +
-> +	mode = igt_output_get_mode(output);
-> +
-> +	/* Create two framebuffers with the same color info. */
-> +	switch (color) {
-> +	case 1:
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_XRGB8888,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				1.0, 0.0, 0.0,
-> +				&fb0);
-> +
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_XRGB8888,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				1.0, 0.0, 0.0,
-> +				&fb1);
-> +		break;
-> +	case 2:
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_XRGB8888,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				0.0, 1.0, 0.0,
-> +				&fb0);
-> +
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_XRGB8888,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				0.0, 1.0, 0.0,
-> +				&fb1);
-> +		break;
-> +	case 3:
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_XRGB8888,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				0.0, 0.0, 1.0,
-> +				&fb0);
-> +
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_XRGB8888,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				0.0, 0.0, 1.0,
-> +				&fb1);
-> +		break;
-> +	default:
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_XRGB8888,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				1.0, 1.0, 1.0,
-> +				&fb0);
-> +
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_XRGB8888,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				1.0, 1.0, 1.0,
-> +				&fb1);
-> +	}
-> +
-> +	/* Flip FB0 with the Primary plane & collect the CRC as ref CRC. */
-> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +	igt_plane_set_fb(primary, &fb0);
-> +	igt_display_commit(display);
-> +
-> +	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
-> +				    IGT_PIPE_CRC_SOURCE_AUTO);
-> +	igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
-> +
-> +	/* Flip FB1 with the Primary plane & compare the CRC with ref CRC. */
-> +	igt_plane_set_fb(primary, &fb1);
-> +	igt_display_commit(display);
-> +
-> +	igt_pipe_crc_collect_crc(pipe_crc, &crc);
-> +	igt_assert_crc_equal(&crc, &ref_crc);
-> +
-> +	/* Clean-up */
-> +	igt_pipe_crc_free(pipe_crc);
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_output_set_pipe(output, PIPE_NONE);
-> +	igt_display_commit(display);
-> +
-> +	igt_remove_fb(data->drm_fd, &fb0);
-> +	igt_remove_fb(data->drm_fd, &fb1);
-> +}
-> +
->  /**
->   * SUBTEST: compare-crc-sanitycheck
->   * Description: Basic sanity check for CRC mismatches
-> @@ -245,7 +348,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
->   *
->   *   No CRC mismatch should happen
->   */
-> -static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
-> +static void test_compare_crc_nv12(data_t *data, enum pipe pipe, igt_output_t *output, int color)
->  {
->  	igt_display_t *display = &data->display;
->  	igt_plane_t *primary;
-> @@ -260,18 +363,64 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
->  	mode = igt_output_get_mode(output);
->  
->  	/* Create two framebuffers with the same color info. */
-> -	igt_create_color_fb(data->drm_fd,
-> -			mode->hdisplay, mode->vdisplay,
-> -			DRM_FORMAT_XRGB8888,
-> -			DRM_FORMAT_MOD_LINEAR,
-> -			1.0, 1.0, 1.0,
-> -			&fb0);
-> -	igt_create_color_fb(data->drm_fd,
-> -			mode->hdisplay, mode->vdisplay,
-> -			DRM_FORMAT_XRGB8888,
-> -			DRM_FORMAT_MOD_LINEAR,
-> -			1.0, 1.0, 1.0,
-> -			&fb1);
-> +	switch (color) {
-> +	case 1:
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_NV12,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				1.0, 0.0, 0.0,
-> +				&fb0);
-> +
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_NV12,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				1.0, 0.0, 0.0,
-> +				&fb1);
-> +	case 2:
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_NV12,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				0.0, 1.0, 0.0,
-> +				&fb0);
-> +
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_NV12,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				0.0, 1.0, 0.0,
-> +				&fb1);
-> +	case 3:
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_NV12,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				0.0, 0.0, 1.0,
-> +				&fb0);
-> +
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_NV12,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				0.0, 0.0, 1.0,
-> +				&fb1);
-> +	default:
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_NV12,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				1.0, 1.0, 1.0,
-> +				&fb0);
-> +
-> +		igt_create_color_fb(data->drm_fd,
-> +				mode->hdisplay, mode->vdisplay,
-> +				DRM_FORMAT_NV12,
-> +				DRM_FORMAT_MOD_LINEAR,
-> +				1.0, 1.0, 1.0,
-> +				&fb1);
-> +	}
->  
->  	/* Flip FB0 with the Primary plane & collect the CRC as ref CRC. */
->  	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> @@ -476,7 +625,71 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
->  	}
->  
->  	igt_describe("Basic sanity check for CRC mismatches");
-> -	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
-> +	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb") {
-> +		for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +			if (simulation_constraint(pipe))
-> +				continue;
-> +
-> +			if(!pipe_output_combo_valid(&data.display, pipe, output))
-> +				continue;
-> +
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +				test_compare_crc_xrgb(&data, pipe, output, 0);
-> +
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_describe("Basic sanity check for CRC mismatches");
-> +	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-red") {
-> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +				if (simulation_constraint(pipe))
-> +					continue;
-> +
-> +				if(!pipe_output_combo_valid(&data.display, pipe, output))
-> +					continue;
-> +
-> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +					test_compare_crc_xrgb(&data, pipe, output, 1);
-> +
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_describe("Basic sanity check for CRC mismatches");
-> +	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-green") {
-> +		for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +			if (simulation_constraint(pipe))
-> +				continue;
-> +
-> +			if(!pipe_output_combo_valid(&data.display, pipe, output))
-> +				continue;
-> +
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +				test_compare_crc_xrgb(&data, pipe, output, 2);
-> +
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_describe("Basic sanity check for CRC mismatches");
-> +	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-blue") {
-> +		for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +			if (simulation_constraint(pipe))
-> +				continue;
-> +
-> +			if(!pipe_output_combo_valid(&data.display, pipe, output))
-> +				continue;
-> +
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +				test_compare_crc_xrgb(&data, pipe, output, 3);
-> +
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_describe("Basic sanity check for CRC mismatches");
-> +	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12") {
->  		for_each_pipe_with_single_output(&data.display, pipe, output) {
->  			if (simulation_constraint(pipe))
->  				continue;
-> @@ -485,7 +698,57 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
->  				continue;
->  
->  			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> -				test_compare_crc(&data, pipe, output);
-> +				test_compare_crc_nv12(&data, pipe, output, 0);
-> +
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_describe("Basic sanity check for CRC mismatches");
-> +	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-red") {
-> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +				if (simulation_constraint(pipe))
-> +					continue;
-> +
-> +				if(!pipe_output_combo_valid(&data.display, pipe, output))
-> +					continue;
-> +
-> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +					test_compare_crc_nv12(&data, pipe, output, 1);
-> +
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_describe("Basic sanity check for CRC mismatches");
-> +	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-green") {
-> +		for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +			if (simulation_constraint(pipe))
-> +				continue;
-> +
-> +			if(!pipe_output_combo_valid(&data.display, pipe, output))
-> +				continue;
-> +
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +				test_compare_crc_nv12(&data, pipe, output, 2);
-> +
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_describe("Basic sanity check for CRC mismatches");
-> +	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-blue") {
-> +		for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +			if (simulation_constraint(pipe))
-> +				continue;
-> +
-> +			if(!pipe_output_combo_valid(&data.display, pipe, output))
-> +				continue;
-> +
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +				test_compare_crc_nv12(&data, pipe, output, 3);
-> +
-> +			break;
->  		}
->  	}
->  
-> -- 
-> 2.25.1
-> 
+Clearing the pipeline with a commit which was never setup up
+results in commit failures arising from detach_crtc() and thats
+why the check [2] was added.
+
+[1] : https://patchwork.freedesktop.org/patch/486177/
+[2] : https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_writeback.c#L169
+[3] : https://gitlab.freedesktop.org/drm/msm/-/blob/msm-next/drivers/gpu/drm/drm_atomic_uapi.c#L848
+[3] : https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/lib/igt_kms.c#L4189
+
+changes in v2:
+	- fix commit text details
+
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+---
+ tests/kms_writeback.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index c4808b02c2c4..325b757b2f6f 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -159,16 +159,8 @@ static igt_output_t *kms_writeback_get_output(igt_display_t *display)
+ 	return NULL;
+ }
+ 
+-static uint64_t get_writeback_fb_id(igt_output_t *output)
+-{
+-	return igt_output_get_prop(output, IGT_CONNECTOR_WRITEBACK_FB_ID);
+-}
+-
+ static void detach_crtc(igt_display_t *display, igt_output_t *output)
+ {
+-	if (get_writeback_fb_id(output) == 0)
+-		return;
+-
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ }
+@@ -599,11 +591,12 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
+ 
+ 		writeback_check_output(output, plane, &input_fb, &output_fb);
+ 
++		detach_crtc(&display, output);
++
+ 		igt_remove_fb(display.drm_fd, &output_fb);
+ 	}
+ 
+ 	igt_fixture {
+-		detach_crtc(&display, output);
+ 		igt_remove_fb(display.drm_fd, &input_fb);
+ 		igt_display_fini(&display);
+ 	}
+-- 
+2.40.1
