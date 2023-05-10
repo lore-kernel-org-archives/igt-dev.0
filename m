@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B54310E452
- for <igt-dev@lists.freedesktop.org>; Wed, 10 May 2023 06:54:21 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: priyanka.dandamudi@intel.com, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org
-Date: Wed, 10 May 2023 12:24:15 +0530
-Message-Id: <20230510065415.3599892-1-priyanka.dandamudi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2281560431470687284=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/xe/xe_create: Exercise oversized object
- detection
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: priyanka.dandamudi@intel.com
+Date: Wed, 10 May 2023 07:35:56 -0000
+Message-ID: <168370415626.7573.7160240373635175796@emeril.freedesktop.org>
+References: <20230510065415.3599892-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20230510065415.3599892-1-priyanka.dandamudi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?xe/xe=5Fcreate=3A_Exercise_oversized_object_detection_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,65 +18,272 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+--===============2281560431470687284==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Create an oversized object and try to check if it throws an error.
+== Series Details ==
 
-v2: Added it as a new subtest.(Rahul)
+Series: tests/xe/xe_create: Exercise oversized object detection (rev2)
+URL   : https://patchwork.freedesktop.org/series/117191/
+State : success
 
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Acked-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- tests/xe/xe_create.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+== Summary ==
 
-diff --git a/tests/xe/xe_create.c b/tests/xe/xe_create.c
-index ae841f80..5effabc8 100644
---- a/tests/xe/xe_create.c
-+++ b/tests/xe/xe_create.c
-@@ -87,6 +87,26 @@ static void create_invalid_size(int fd)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+/**
-+ * SUBTEST: create-massive-size
-+ * Description: Verifies xe bo create returns expected error code on massive
-+ *              buffer sizes.
-+ */
-+static void create_massive_size(int fd)
-+{
-+	uint64_t memreg = all_memory_regions(fd), region;
-+	uint32_t vm;
-+	uint32_t handle;
-+	int ret;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+
-+	xe_for_each_mem_region(fd, memreg, region) {
-+		ret = __create_bo(fd, vm, -1ULL >> 32, region, &handle);
-+		igt_assert_eq(ret, -ENOSPC);
-+	}
-+}
-+
- igt_main
- {
- 	int xe;
-@@ -100,6 +120,11 @@ igt_main
- 		create_invalid_size(xe);
- 	}
- 
-+	igt_subtest("create-massive-size") {
-+		create_massive_size(xe);
-+	}
-+
-+
- 	igt_fixture {
- 		xe_device_put(xe);
- 		close(xe);
--- 
-2.25.1
+CI Bug Log - changes from IGT_7284 -> IGTPW_8938
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/index.html
+
+Participating hosts (40 -> 39)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (2): bat-rpls-2 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8938 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][3] -> [DMESG-FAIL][4] ([i915#5334])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][5] ([i915#1886] / [i915#7913])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@guc:
+    - bat-rpls-1:         NOTRUN -> [DMESG-WARN][6] ([i915#7852] / [i915#7953])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/bat-rpls-1/igt@i915_selftest@live@guc.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - bat-rpls-1:         NOTRUN -> [ABORT][7] ([i915#6687] / [i915#7953] / [i915#7978])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_chamelium_frames@hdmi-crc-fast:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271]) +16 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - {bat-mtlp-6}:       [ABORT][9] ([i915#4983] / [i915#7920] / [i915#7953]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-mtlp-6/igt@i915_selftest@live@requests.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/bat-mtlp-6/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [ABORT][11] ([i915#4983] / [i915#7461] / [i915#7953] / [i915#8347] / [i915#8384]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  
+#### Warnings ####
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - bat-rplp-1:         [SKIP][13] ([i915#1072]) -> [ABORT][14] ([i915#8198])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7852]: https://gitlab.freedesktop.org/drm/intel/issues/7852
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
+  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+  [i915#8198]: https://gitlab.freedesktop.org/drm/intel/issues/8198
+  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
+  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7284 -> IGTPW_8938
+
+  CI-20190529: 20190529
+  CI_DRM_13128: 31e3463b0edba64934bfd9e8fdbebeab1676d3eb @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8938: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/index.html
+  IGT_7284: 8c017d37b521276c113ad590521636eba8d7009c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@xe_create@create-massive-size
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/index.html
+
+--===============2281560431470687284==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe/xe_create: Exercise oversized object detection (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117191/">https://patchwork.freedesktop.org/series/117191/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7284 -&gt; IGTPW_8938</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/index.html</p>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (2): bat-rpls-2 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8938 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@guc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/bat-rpls-1/igt@i915_selftest@live@guc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7852">i915#7852</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>{bat-mtlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-mtlp-6/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_psr@sprite_plane_onoff:<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8198">i915#8198</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7284 -&gt; IGTPW_8938</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13128: 31e3463b0edba64934bfd9e8fdbebeab1676d3eb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8938: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8938/index.html<br />
+  IGT_7284: 8c017d37b521276c113ad590521636eba8d7009c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_create@create-massive-size</p>
+
+</body>
+</html>
+
+--===============2281560431470687284==--
