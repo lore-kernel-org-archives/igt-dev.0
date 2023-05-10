@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1634055365835106749=="
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FB9F10E083
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 May 2023 22:14:43 +0000 (UTC)
+Date: Wed, 10 May 2023 15:14:36 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <ZFwXTD5H9uDZBo/8@orsosgc001.jf.intel.com>
+References: <20230506005528.1890922-1-umesh.nerlige.ramappa@intel.com>
+ <20230506005528.1890922-16-umesh.nerlige.ramappa@intel.com>
+ <04a7f10e-99ff-e1cd-0fe7-6f63d9e896d0@linux.intel.com>
+Content-Type: multipart/mixed; boundary="ISWLyc3eVveXgdUN"
+Content-Disposition: inline
+In-Reply-To: <04a7f10e-99ff-e1cd-0fe7-6f63d9e896d0@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Date: Wed, 10 May 2023 06:39:41 -0000
-Message-ID: <168370078182.7576.13863149051888680505@emeril.freedesktop.org>
-References: <20230510055529.24084-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20230510055529.24084-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL3hl?=
- =?utf-8?q?/xe=5Fspin=3A_Integrate_igt=5Fspin=5Fnew_with_Xe=2E_=28rev4=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t 15/15] intel_gpu_top: Add gt specific
+ values to header in interactive mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,233 +22,315 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1634055365835106749==
+--ISWLyc3eVveXgdUN
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
+
+On Wed, May 10, 2023 at 09:46:53AM +0100, Tvrtko Ursulin wrote:
+>
+>On 06/05/2023 01:55, Umesh Nerlige Ramappa wrote:
+>>If -p options is specified in INTERACTIVE mode, show the gt specific
+>>values.
+>>
+>>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>>---
+>>  tools/intel_gpu_top.c | 33 +++++++++++++++++++++++++--------
+>>  1 file changed, 25 insertions(+), 8 deletions(-)
+>>
+>>diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+>>index 0acc81e9e..7018499c7 100644
+>>--- a/tools/intel_gpu_top.c
+>>+++ b/tools/intel_gpu_top.c
+>>@@ -1988,14 +1988,31 @@ print_header(const struct igt_device_card *card,
+>>  	lines = print_header_token(" @ ", lines, con_w, con_h, &rem,
+>>  				   "%s", card->card);
+>>-	lines = print_header_token(" - ", lines, con_w, con_h, &rem,
+>>-				   "%s/%s MHz",
+>>-				   freq_items[1].buf,
+>>-				   freq_items[0].buf);
+>>-
+>>-	lines = print_header_token("; ", lines, con_w, con_h, &rem,
+>>-				   "%s%% RC6",
+>>-				   rc6_items[0].buf);
+>>+	if (class_view || engines->num_gts == 1) {
+>>+		lines = print_header_token(" - ", lines, con_w, con_h, &rem,
+>>+					   "%s/%s MHz",
+>>+					   freq_items[1].buf,
+>>+					   freq_items[0].buf);
+>>+
+>>+		lines = print_header_token("; ", lines, con_w, con_h, &rem,
+>>+					   "%s%% RC6",
+>>+					   rc6_items[0].buf);
+>>+	} else {
+>>+		for (i = 0; i < engines->num_gts; i++) {
+>>+			const char *cont = !i ? " - ": "; ";
+>>+
+>>+			lines = print_header_token(cont, lines, con_w, con_h, &rem,
+>>+						   "%s/%s MHz(gt%d)",
+>>+						   freq_items_gt[i * 4 + 1].buf,
+>>+						   freq_items_gt[i * 4 + 0].buf,
+>>+						   i);
+>>+
+>>+			lines = print_header_token("; ", lines, con_w, con_h, &rem,
+>>+						   "%s%% RC6(gt%d)",
+>>+						   rc6_items_gt[i * 3].buf,
+>>+						   i);
+>>+		}
+>>+	}
+>>  	if (engines->r_gpu.present) {
+>>  		lines = print_header_token("; ", lines, con_w, con_h,
+>
+>Series was a super easy read, thanks for that! Pretty much r-b for the 
+>lot from me but I would just like to visualize how the output looks 
+>like first. Would you mind pasting some examples for all the modes?
+
+great, I am attaching the outputs in text files for MTL and DG2 here, 
+hope that is visible. If not, I can paste it in pastebin.
+
+MTL shows the gt specific changes. DG2 is single tile, so there are no 
+changes.
+
+Thanks,
+Umesh
+>
+>Regards,
+>
+>Tvrtko
+
+--ISWLyc3eVveXgdUN
 Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="mtl_pmu.txt"
 
-== Series Details ==
+> sudo ./intel_gpu_top -l
+ Freq MHz      IRQ RC6     Power W             RCS             BCS             VCS            VECS             CCS
+ req  act       /s   %   gpu   pkg       %  se  wa       %  se  wa       %  se  wa       %  se  wa       %  se  wa
+   0    0       39 100  0.09 12.24    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
+   0    0        0 100  0.00  5.01    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
+   0    0        0 100  0.00  4.94    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
 
-Series: lib/xe/xe_spin: Integrate igt_spin_new with Xe. (rev4)
-URL   : https://patchwork.freedesktop.org/series/116880/
-State : success
+> sudo ./intel_gpu_top -l -p
+ Freq GT0 MHz  Freq GT1 MHz      IRQ  RC6 GT0  RC6 GT1     Power W           RCS/0           BCS/0           VCS/0           VCS/1          VECS/0           CCS/0
+   req    act    req    act       /s        %        %   gpu   pkg       %  se  wa       %  se  wa       %  se  wa       %  se  wa       %  se  wa       %  se  wa
+     0      0      0      0       38      100      100  0.00 11.81    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
+     0      0      0      0        0      100      100  0.00  4.97    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
+     0      0      0      0        0      100      100  0.00  4.94    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
 
-== Summary ==
+> sudo ./intel_gpu_top -J
+[
 
-CI Bug Log - changes from IGT_7284 -> IGTPW_8937
-====================================================
+{
+        "period": {
+                "duration": 27.774630,
+                "unit": "ms"
+        },
+        "frequency": {
+                "requested": 0.000000,
+                "actual": 0.000000,
+                "unit": "MHz"
+        },
+        "interrupts": {
+                "count": 36.004080,
+                "unit": "irq/s"
+        },
+        "rc6": {
+                "value": 100.000000,
+                "unit": "%"
+        },
+        "power": {
+                "GPU": 0.065925,
+                "Package": 11.444656,
+                "unit": "W"
+        },
+        "engines": {
+                "Render/3D": {
+                        "busy": 0.000000,
+                        "sema": 0.000000,
+                        "wait": 0.000000,
+                        "unit": "%"
+                },
+...
 
-Summary
--------
+> sudo ./intel_gpu_top -J -p
+[
 
-  **SUCCESS**
+{
+        "period": {
+                "duration": 26.035037,
+                "unit": "ms"
+        },
+        "frequency-gt0": {
+                "requested": 0.000000,
+                "actual": 0.000000,
+                "unit": "MHz"
+        },
+        "frequency-gt1": {
+                "requested": 0.000000,
+                "actual": 0.000000,
+                "unit": "MHz"
+        },
+        "interrupts": {
+                "count": 38.409778,
+                "unit": "irq/s"
+        },
+        "rc6-gt0": {
+                "value": 100.000000,
+                "unit": "%"
+        },
+        "rc6-gt1": {
+                "value": 100.000000,
+                "unit": "%"
+        },
+        "power": {
+                "GPU": 0.000000,
+                "Package": 12.335953,
+                "unit": "W"
+        },
+        "engines": {
+                "Render/3D/0": {
+                        "busy": 0.000000,
+                        "sema": 0.000000,
+                        "wait": 0.000000,
+                        "unit": "%"
+                },
+...
 
-  No regressions found.
+> sudo ./intel_gpu_top -c
+Freq MHz req,Freq MHz act,IRQ /s,RC6 %,Power W gpu,Power W pkg,RCS %,RCS se,RCS wa,BCS %,BCS se,BCS wa,VCS %,VCS se,VCS wa,VECS %,VECS se,VECS wa,CCS %,CCS se,CCS wa
+0.000000,0.000000,37.859083,100.000000,0.000000,12.096698,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+0.000000,0.000000,0.000000,100.000000,0.000000,5.024299,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+0.000000,0.000000,0.000000,100.000000,0.000000,4.988727,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/index.html
+> sudo ./intel_gpu_top -c -p
+Freq GT0 MHz req,Freq GT0 MHz act,Freq GT1 MHz req,Freq GT1 MHz act,IRQ /s,RC6 GT0 %,RC6 GT1 %,Power W gpu,Power W pkg,RCS/0 %,RCS/0 se,RCS/0 wa,BCS/0 %,BCS/0 se,BCS/0 wa,VCS/0 %,VCS/0 se,VCS/0 wa,VCS/1 %,VCS/1 se,VCS/1 wa,VECS/0 %,VECS/0 se,VECS/0 wa,CCS/0 %,CCS/0 se,CCS/0 wa
+0.000000,0.000000,0.000000,0.000000,37.173657,99.998777,99.997810,0.068067,11.337693,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+0.000000,0.000000,0.000000,0.000000,0.000000,100.000000,100.000000,0.000000,5.041599,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+0.000000,0.000000,0.000000,0.000000,0.000000,100.000000,100.000000,0.000000,5.008404,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
 
-Participating hosts (40 -> 39)
-------------------------------
+> sudo ./intel_gpu_top
 
-  Missing    (1): fi-snb-2520m 
+intel-gpu-top: Intel Meteorlake (Gen12) @ /dev/dri/card0 -    0/   0 MHz; 100% RC6;  0.00/ 4.99 W;        0 irqs/s
+...
 
-Known issues
-------------
+> sudo ./intel_gpu_top -p
 
-  Here are the changes found in IGTPW_8937 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-2:         [PASS][1] -> [ABORT][2] ([i915#4983] / [i915#7461] / [i915#7913] / [i915#8347])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-rpls-2/igt@i915_selftest@live@reset.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-rpls-2/igt@i915_selftest@live@reset.html
-
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-1:         NOTRUN -> [DMESG-WARN][3] ([i915#6367] / [i915#7953])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-rpls-1:         NOTRUN -> [ABORT][4] ([i915#6687] / [i915#7953] / [i915#7978])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         NOTRUN -> [SKIP][5] ([i915#1845] / [i915#5354]) +2 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
-    - bat-dg2-8:          [PASS][6] -> [FAIL][7] ([i915#7932])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@requests:
-    - {bat-mtlp-6}:       [ABORT][8] ([i915#4983] / [i915#7920] / [i915#7953]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-mtlp-6/igt@i915_selftest@live@requests.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-mtlp-6/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-1:         [ABORT][10] ([i915#4983] / [i915#7461] / [i915#7953] / [i915#8347] / [i915#8384]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-rpls-1/igt@i915_selftest@live@reset.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-rpls-1/igt@i915_selftest@live@reset.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
-  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7284 -> IGTPW_8937
-
-  CI-20190529: 20190529
-  CI_DRM_13128: 31e3463b0edba64934bfd9e8fdbebeab1676d3eb @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8937: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/index.html
-  IGT_7284: 8c017d37b521276c113ad590521636eba8d7009c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+++ 0 lines
---- 216 lines
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/index.html
-
---===============1634055365835106749==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+intel-gpu-top: Intel Meteorlake (Gen12) @ /dev/dri/card0 -      0/     0 MHz(gt0);      100% RC6(gt0);      0/     0 MHz(gt1);      100% RC6(gt1);  0.00/ 4.98 W;        0 irqs/s
+...
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+--ISWLyc3eVveXgdUN
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: attachment; filename="dg2_pmu.txt"
+
+> sudo ./intel_gpu_top -l
+ Freq MHz      IRQ RC6     IMC MiB/s             RCS             BCS             VCS            VECS             CCS
+ req  act       /s   %     rd     wr       %  se  wa       %  se  wa       %  se  wa       %  se  wa       %  se  wa
+   0    0      195 100    144     37    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
+   0    0      142 100     25      6    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
+   0    0        0 100     85      4    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
+
+> sudo ./intel_gpu_top -l -p
+ Freq MHz      IRQ RC6     IMC MiB/s           RCS/0           BCS/0           VCS/0           VCS/1          VECS/0          VECS/1           CCS/0           CCS/1           CCS/2           CCS/3
+ req  act       /s   %     rd     wr       %  se  wa       %  se  wa       %  se  wa       %  se  wa       %  se  wa       %  se  wa       %  se  wa       %  se  wa       %  se  wa       %  se  wa
+   0    0        0 100    314     55    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
+   0    0        0 100     91      7    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
+   0    0        0 100     92      5    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0    0.00   0   0
+
+> sudo ./intel_gpu_top -J
+[
+
+{
+        "period": {
+                "duration": 25.839066,
+                "unit": "ms"
+        },
+        "frequency": {
+                "requested": 0.000000,
+                "actual": 0.000000,
+                "unit": "MHz"
+        },
+        "interrupts": {
+                "count": 232.206536,
+                "unit": "irq/s"
+        },
+        "rc6": {
+                "value": 100.000000,
+                "unit": "%"
+        },
+        "imc-bandwidth": {
+                "reads": 299.149216,
+                "writes": 20.748924,
+                "unit": "MiB/s"
+        },
+        "engines": {
+                "Render/3D": {
+                        "busy": 0.000000,
+                        "sema": 0.000000,
+                        "wait": 0.000000,
+                        "unit": "%"
+                },
+...
+
+> sudo ./intel_gpu_top -J -p
+[
+
+{
+        "period": {
+                "duration": 24.558506,
+                "unit": "ms"
+        },
+        "frequency": {
+                "requested": 0.000000,
+                "actual": 0.000000,
+                "unit": "MHz"
+        },
+        "interrupts": {
+                "count": 0.000000,
+                "unit": "irq/s"
+        },
+        "rc6": {
+                "value": 100.000000,
+                "unit": "%"
+        },
+        "imc-bandwidth": {
+                "reads": 309.006790,
+                "writes": 53.386643,
+                "unit": "MiB/s"
+        },
+        "engines": {
+                "Render/3D/0": {
+                        "busy": 0.000000,
+                        "sema": 0.000000,
+                        "wait": 0.000000,
+                        "unit": "%"
+                },
+...
+
+> sudo ./intel_gpu_top -c
+Freq MHz req,Freq MHz act,IRQ /s,RC6 %,IMC MiB/s rd,IMC MiB/s wr,RCS %,RCS se,RCS wa,BCS %,BCS se,BCS wa,VCS %,VCS se,VCS wa,VECS %,VECS se,VECS wa,CCS %,CCS se,CCS wa
+0.000000,0.000000,197.280107,100.000000,330.786144,24.573318,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+0.000000,0.000000,149.410773,100.000000,23.879837,3.148010,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+0.000000,0.000000,0.000000,100.000000,101.882497,5.109333,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+
+> sudo ./intel_gpu_top -c -p
+Freq MHz req,Freq MHz act,IRQ /s,RC6 %,IMC MiB/s rd,IMC MiB/s wr,RCS/0 %,RCS/0 se,RCS/0 wa,BCS/0 %,BCS/0 se,BCS/0 wa,VCS/0 %,VCS/0 se,VCS/0 wa,VCS/1 %,VCS/1 se,VCS/1 wa,VECS/0 %,VECS/0 se,VECS/0 wa,VECS/1 %,VECS/1 se,VECS/1 wa,CCS/0 %,CCS/0 se,CCS/0 wa,CCS/1 %,CCS/1 se,CCS/1 wa,CCS/2 %,CCS/2 se,CCS/2 wa,CCS/3 %,CCS/3 se,CCS/3 wa
+0.000000,0.000000,0.000000,100.000000,340.977673,60.574177,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+0.000000,0.000000,0.000000,100.000000,88.193030,6.309502,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+0.000000,0.000000,0.000000,100.000000,89.373431,4.450919,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+
+> sudo ./intel_gpu_top
+
+intel-gpu-top: Intel Dg2 (Gen12) @ /dev/dri/card0 -    0/   0 MHz; 100% RC6;        0 irqs/s
+...
+
+> sudo ./intel_gpu_top -p
+
+intel-gpu-top: Intel Dg2 (Gen12) @ /dev/dri/card0 -    0/   0 MHz; 100% RC6;        0 irqs/s
+...
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/xe/xe_spin: Integrate igt_spin_new with Xe. (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/116880/">https://patchwork.freedesktop.org/series/116880/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7284 -&gt; IGTPW_8937</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8937 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>{bat-mtlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-mtlp-6/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7284/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7284 -&gt; IGTPW_8937</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13128: 31e3463b0edba64934bfd9e8fdbebeab1676d3eb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8937: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8937/index.html<br />
-  IGT_7284: 8c017d37b521276c113ad590521636eba8d7009c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+++ 0 lines<br />
---- 216 lines</p>
-
-</body>
-</html>
-
---===============1634055365835106749==--
+--ISWLyc3eVveXgdUN--
