@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7189390513373110687=="
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5F2610E599
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 May 2023 05:08:08 +0000 (UTC)
+Date: Thu, 11 May 2023 07:08:04 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: sai.gowtham.ch@intel.com
+Message-ID: <20230511050804.qqaid6yadzja52dg@zkempczy-mobl2>
+References: <20230510055529.24084-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Abhinav Kumar" <quic_abhinavk@quicinc.com>
-Date: Thu, 11 May 2023 00:30:57 -0000
-Message-ID: <168376505738.29007.5338937508209765637@emeril.freedesktop.org>
-References: <20230510224218.16482-1-quic_abhinavk@quicinc.com>
-In-Reply-To: <20230510224218.16482-1-quic_abhinavk@quicinc.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fwriteback=3A_fix_teardown_path_for_kms=5Fwriteback_=28rev?=
- =?utf-8?q?2=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230510055529.24084-1-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new
+ with Xe.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,265 +21,235 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7189390513373110687==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, May 10, 2023 at 11:25:29AM +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> 
+> Extending the spin_create implementation and allocator handle support in xe,
+> where it submits dummy work loads to engine. This Implementation is wrapped
+> around vm_bind and unbind as we are supposed to do it manually for xe.
+> 
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-== Series Details ==
+Please provide some test I can run with this on xe and verify
+this library extension is working.
 
-Series: tests/kms_writeback: fix teardown path for kms_writeback (rev2)
-URL   : https://patchwork.freedesktop.org/series/117408/
-State : success
+--
+Zbigniew
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13131 -> IGTPW_8940
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/index.html
-
-Participating hosts (40 -> 38)
-------------------------------
-
-  Missing    (2): bat-rpls-2 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8940 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-atsm-1:         [PASS][1] -> [SKIP][2] ([i915#5174])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13131/bat-atsm-1/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/bat-atsm-1/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-soraka:      [PASS][3] -> [DMESG-FAIL][4] ([i915#5334] / [i915#7872])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13131/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         NOTRUN -> [SKIP][5] ([i915#1845] / [i915#5354]) +2 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-#### Possible fixes ####
-
-  * igt@dmabuf@all-tests@dma_fence:
-    - fi-kbl-7567u:       [DMESG-FAIL][6] -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13131/fi-kbl-7567u/igt@dmabuf@all-tests@dma_fence.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/fi-kbl-7567u/igt@dmabuf@all-tests@dma_fence.html
-
-  * igt@dmabuf@all-tests@sanitycheck:
-    - fi-kbl-7567u:       [ABORT][8] -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13131/fi-kbl-7567u/igt@dmabuf@all-tests@sanitycheck.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/fi-kbl-7567u/igt@dmabuf@all-tests@sanitycheck.html
-
-  * igt@i915_hangman@error-state-basic:
-    - fi-kbl-soraka:      [INCOMPLETE][10] -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13131/fi-kbl-soraka/igt@i915_hangman@error-state-basic.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/fi-kbl-soraka/igt@i915_hangman@error-state-basic.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-1:         [ABORT][12] ([i915#4983] / [i915#7461] / [i915#7953] / [i915#7981] / [i915#8347] / [i915#8384]) -> [ABORT][13] ([i915#4983] / [i915#7461] / [i915#7953] / [i915#8347] / [i915#8384])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13131/bat-rpls-1/igt@i915_selftest@live@reset.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/bat-rpls-1/igt@i915_selftest@live@reset.html
-
-  
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5174]: https://gitlab.freedesktop.org/drm/intel/issues/5174
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
-  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
-  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
-  [i915#7981]: https://gitlab.freedesktop.org/drm/intel/issues/7981
-  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
-  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7285 -> IGTPW_8940
-
-  CI-20190529: 20190529
-  CI_DRM_13131: 92b7f1c42fc99ff1bad5e18d6b1aaa585f134d47 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8940: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/index.html
-  IGT_7285: d1cbf2bad9c2664ab8bd3bd0946510a52800912f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/index.html
-
---===============7189390513373110687==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-
-
-<!DOCTYPE html>
-<html xmlns=3D"http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id=3D"css-table-select" type=3D"text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_writeback: fix teardown path for k=
-ms_writeback (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
-ries/117408/">https://patchwork.freedesktop.org/series/117408/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href=3D"https://intel-gfx-ci.01.org/=
-tree/drm-tip/IGTPW_8940/index.html">https://intel-gfx-ci.01.org/tree/drm-ti=
-p/IGTPW_8940/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13131 -&gt; IGTPW_8940</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/index.=
-html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Missing    (2): bat-rpls-2 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8940 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>bat-atsm-1:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/CI_DRM_13131/bat-atsm-1/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt;=
- <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/bat-atsm-1/=
-igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href=3D"https://gitlab.fre=
-edesktop.org/drm/intel/issues/5174">i915#5174</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/CI_DRM_13131/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">PASS<=
-/a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/fi=
--kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a hr=
-ef=3D"https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> /=
- <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872=
-</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_8940/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-=
-frame-sequence.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/dr=
-m/intel/issues/1845">i915#1845</a> / <a href=3D"https://gitlab.freedesktop.=
-org/drm/intel/issues/5354">i915#5354</a>) +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests@dma_fence:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/CI_DRM_13131/fi-kbl-7567u/igt@dmabuf@all-tests@dma_fence.html">DMESG-FAIL<=
-/a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/fi=
--kbl-7567u/igt@dmabuf@all-tests@dma_fence.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@dmabuf@all-tests@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/CI_DRM_13131/fi-kbl-7567u/igt@dmabuf@all-tests@sanitycheck.html">ABORT</a>=
- -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/fi-kb=
-l-7567u/igt@dmabuf@all-tests@sanitycheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_hangman@error-state-basic:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/CI_DRM_13131/fi-kbl-soraka/igt@i915_hangman@error-state-basic.html">INCOMP=
-LETE</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_89=
-40/fi-kbl-soraka/igt@i915_hangman@error-state-basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live@reset:<ul>
-<li>bat-rpls-1:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/CI_DRM_13131/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a h=
-ref=3D"https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> =
-/ <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#746=
-1</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/7953">i9=
-15#7953</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/79=
-81">i915#7981</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/iss=
-ues/8347">i915#8347</a> / <a href=3D"https://gitlab.freedesktop.org/drm/int=
-el/issues/8384">i915#8384</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org=
-/tree/drm-tip/IGTPW_8940/bat-rpls-1/igt@i915_selftest@live@reset.html">ABOR=
-T</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4983">i91=
-5#4983</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/746=
-1">i915#7461</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issu=
-es/7953">i915#7953</a> / <a href=3D"https://gitlab.freedesktop.org/drm/inte=
-l/issues/8347">i915#8347</a> / <a href=3D"https://gitlab.freedesktop.org/dr=
-m/intel/issues/8384">i915#8384</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7285 -&gt; IGTPW_8940</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13131: 92b7f1c42fc99ff1bad5e18d6b1aaa585f134d47 @ git://anongit.fr=
-eedesktop.org/gfx-ci/linux<br />
-  IGTPW_8940: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8940/index.htm=
-l<br />
-  IGT_7285: d1cbf2bad9c2664ab8bd3bd0946510a52800912f @ https://gitlab.freed=
-esktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7189390513373110687==--
+> ---
+>  lib/igt_dummyload.c | 24 ++++++++++++----
+>  lib/igt_dummyload.h | 10 +++++++
+>  lib/xe/xe_spin.c    | 67 +++++++++++++++++++++++++++++++++++++++++++++
+>  lib/xe/xe_spin.h    |  7 +++++
+>  4 files changed, 102 insertions(+), 6 deletions(-)
+> 
+> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+> index 740a58f3..6e89b72d 100644
+> --- a/lib/igt_dummyload.c
+> +++ b/lib/igt_dummyload.c
+> @@ -46,6 +46,7 @@
+>  #include "intel_reg.h"
+>  #include "ioctl_wrappers.h"
+>  #include "sw_sync.h"
+> +#include "xe/xe_spin.h"
+>  
+>  /**
+>   * SECTION:igt_dummyload
+> @@ -447,7 +448,10 @@ spin_create(int fd, const struct igt_spin_factory *opts)
+>  igt_spin_t *
+>  __igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+>  {
+> -	return spin_create(fd, opts);
+> +	if (is_xe_device(fd))
+> +		return xe_spin_create(fd, opts);
+> +	else
+> +		return spin_create(fd, opts);
+>  }
+>  
+>  /**
+> @@ -467,6 +471,11 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+>  {
+>  	igt_spin_t *spin;
+>  
+> +	if (is_xe_device(fd)) {
+> +		spin = xe_spin_create(fd, opts);
+> +		return spin;
+> +	}
+> +
+>  	if ((opts->flags & IGT_SPIN_POLL_RUN) && opts->engine != ALL_ENGINES) {
+>  		unsigned int class;
+>  
+> @@ -647,11 +656,14 @@ void igt_spin_free(int fd, igt_spin_t *spin)
+>  	if (!spin)
+>  		return;
+>  
+> -	pthread_mutex_lock(&list_lock);
+> -	igt_list_del(&spin->link);
+> -	pthread_mutex_unlock(&list_lock);
+> -
+> -	__igt_spin_free(fd, spin);
+> +	if (is_xe_device(fd)) {
+> +		xe_spin_free(fd, spin);
+> +	} else {
+> +		pthread_mutex_lock(&list_lock);
+> +		igt_list_del(&spin->link);
+> +		pthread_mutex_unlock(&list_lock);
+> +		__igt_spin_free(fd, spin);
+> +	}
+>  }
+>  
+>  void igt_terminate_spins(void)
+> diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+> index b247ab02..c2900a8f 100644
+> --- a/lib/igt_dummyload.h
+> +++ b/lib/igt_dummyload.h
+> @@ -51,6 +51,7 @@ typedef struct igt_spin_factory {
+>  	uint32_t dependency;
+>  	uint64_t dependency_size;
+>  	unsigned int engine;
+> +	struct drm_xe_engine_class_instance *hwe;
+>  	unsigned int flags;
+>  	int fence;
+>  	uint64_t ahnd;
+> @@ -83,6 +84,15 @@ typedef struct igt_spin {
+>  #define SPIN_CLFLUSH (1 << 0)
+>  
+>  	struct igt_spin_factory opts;
+> +
+> +	uint32_t start;
+> +	uint32_t end;
+> +	size_t bo_size;
+> +	uint64_t address;
+> +	unsigned int engine;
+> +	uint32_t vm;
+> +	uint32_t syncobj;
+> +
+>  } igt_spin_t;
+>  
+>  
+> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+> index 856d0ba2..5f3a3b4f 100644
+> --- a/lib/xe/xe_spin.c
+> +++ b/lib/xe/xe_spin.c
+> @@ -15,6 +15,7 @@
+>  #include "intel_reg.h"
+>  #include "xe_ioctl.h"
+>  #include "xe_spin.h"
+> +#include "lib/igt_dummyload.h"
+>  
+>  /**
+>   * xe_spin_init:
+> @@ -82,6 +83,72 @@ void xe_spin_end(struct xe_spin *spin)
+>  	spin->end = 0;
+>  }
+>  
+> +igt_spin_t *
+> +xe_spin_create(int fd, const struct igt_spin_factory *opt)
+> +{
+> +	size_t bo_size = xe_get_default_alignment(fd);
+> +	uint32_t bo;
+> +	uint64_t ahnd = opt->ahnd, addr;
+> +	struct igt_spin *spin;
+> +	struct xe_spin *xe_spin;
+> +	struct drm_xe_sync sync = {
+> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(&sync),
+> +	};
+> +
+> +	igt_assert(ahnd);
+> +	xe_spin = calloc(1, sizeof(struct xe_spin));
+> +	igt_assert(xe_spin);
+> +	spin = calloc(1, sizeof(struct igt_spin));
+> +	igt_assert(spin);
+> +
+> +	spin->vm = xe_vm_create(fd, 0, 0);
+> +	bo = xe_bo_create(fd, opt->hwe->gt_id, spin->vm, bo_size);
+> +	spin = xe_bo_map(fd, bo, 0x1000);
+> +	spin->handle = bo;
+> +	if (opt->engine)
+> +		spin->engine = opt->engine;
+> +	else
+> +		spin->engine = xe_engine_create(fd, spin->vm, opt->hwe, 0);
+> +
+> +	spin->syncobj = syncobj_create(fd, 0);
+> +	addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
+> +	xe_vm_bind_sync(fd, spin->vm, bo, 0, addr, bo_size);
+> +
+> +	xe_spin_init(xe_spin, addr, true);
+> +	exec.engine_id = spin->engine;
+> +	exec.address = addr;
+> +	sync.handle = spin->syncobj;
+> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
+> +
+> +	spin->batch = xe_spin->batch;
+> +	spin->start = xe_spin->start;
+> +	spin->end = xe_spin->end;
+> +	spin->bo_size = bo_size;
+> +	spin->address = addr;
+> +	return spin;
+> +
+> +}
+> +
+> +void xe_spin_sync_wait(int fd, struct igt_spin *spin)
+> +{
+> +	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0,
+> +				NULL));
+> +}
+> +
+> +void xe_spin_free(int fd, struct igt_spin *spin)
+> +{
+> +	xe_vm_unbind_sync(fd, spin->vm, 0, spin->address, spin->bo_size);
+> +	spin->end = 0;
+> +	syncobj_destroy(fd, spin->syncobj);
+> +	xe_engine_destroy(fd, spin->engine);
+> +	gem_close(fd, spin->handle);
+> +}
+> +
+>  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+>  		  struct xe_cork *cork)
+>  {
+> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+> index 73f9a026..48867eb8 100644
+> --- a/lib/xe/xe_spin.h
+> +++ b/lib/xe/xe_spin.h
+> @@ -13,19 +13,26 @@
+>  #include <stdbool.h>
+>  
+>  #include "xe_query.h"
+> +#include "lib/igt_dummyload.h"
+>  
+>  /* Mapped GPU object */
+> +
+>  struct xe_spin {
+>  	uint32_t batch[16];
+>  	uint64_t pad;
+>  	uint32_t start;
+>  	uint32_t end;
+> +
+>  };
+>  
+> +igt_spin_t *
+> +xe_spin_create(int fd, const struct igt_spin_factory *opt);
+>  void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
+>  bool xe_spin_started(struct xe_spin *spin);
+> +void xe_spin_sync_wait(int fd, struct igt_spin *spin);
+>  void xe_spin_wait_started(struct xe_spin *spin);
+>  void xe_spin_end(struct xe_spin *spin);
+> +void xe_spin_free(int fd, struct igt_spin *spin);
+>  
+>  struct xe_cork {
+>  	struct xe_spin *spin;
+> -- 
+> 2.39.1
+> 
