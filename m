@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E0BC10E295
- for <igt-dev@lists.freedesktop.org>; Thu, 11 May 2023 14:34:38 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDD0D10E073
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 May 2023 15:22:58 +0000 (UTC)
 From: Nirmoy Das <nirmoy.das@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 11 May 2023 16:34:31 +0200
-Message-Id: <20230511143431.19215-1-nirmoy.das@intel.com>
+Date: Thu, 11 May 2023 17:22:51 +0200
+Message-Id: <20230511152251.18043-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH igt-dii-client] test/prime_vgem: Remove
- test_userptr test
+Subject: [igt-dev] [PATCH i-g-t] test/prime_vgem: Remove test_userptr test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
