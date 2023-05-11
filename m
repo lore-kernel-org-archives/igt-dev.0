@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95B1110E5AC
- for <igt-dev@lists.freedesktop.org>; Thu, 11 May 2023 06:44:09 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Ch, Sai
- Gowtham" <sai.gowtham.ch@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Thu, 11 May 2023 06:43:54 +0000
-Message-ID: <3aa1b1e92b6e8ee33d767eebfe7397cccf4c94bb.camel@intel.com>
-References: <20230510055529.24084-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20230510055529.24084-1-sai.gowtham.ch@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BA9242D86467EA46BEF8450C5AFBD37E@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E503C10E1AF
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 May 2023 07:45:02 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 11 May 2023 13:12:42 +0530
+Message-Id: <20230511074243.167747-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/xe/xe_spin: Integrate igt_spin_new
- with Xe.
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] DO NOT MERGE: NV12 Experiment
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,146 +20,365 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGVsbG8gU2FpLCBzZWUgbXkgY29tbWVudHMgaW5saW5lIGJlbG93OgoKT24gV2VkLCAyMDIzLTA1
-LTEwIGF0IDExOjI1ICswNTMwLCBzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20gd3JvdGU6Cj4gRnJv
-bTogU2FpIEdvd3RoYW0gQ2ggPHNhaS5nb3d0aGFtLmNoQGludGVsLmNvbT4KPiAKPiBFeHRlbmRp
-bmcgdGhlIHNwaW5fY3JlYXRlIGltcGxlbWVudGF0aW9uIGFuZCBhbGxvY2F0b3IgaGFuZGxlIHN1
-cHBvcnQKPiBpbiB4ZSwKPiB3aGVyZSBpdCBzdWJtaXRzIGR1bW15IHdvcmsgbG9hZHMgdG8gZW5n
-aW5lLiBUaGlzIEltcGxlbWVudGF0aW9uIGlzCj4gd3JhcHBlZAo+IGFyb3VuZCB2bV9iaW5kIGFu
-ZCB1bmJpbmQgYXMgd2UgYXJlIHN1cHBvc2VkIHRvIGRvIGl0IG1hbnVhbGx5IGZvcgo+IHhlLgo+
-IAo+IENjOiBCaGFudXByYWthc2ggTW9kZW0gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+
-Cj4gQ2M6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwu
-Y29tPgo+IFNpZ25lZC1vZmYtYnk6IFNhaSBHb3d0aGFtIENoIDxzYWkuZ293dGhhbS5jaEBpbnRl
-bC5jb20+Cj4gLS0tCj4gwqBsaWIvaWd0X2R1bW15bG9hZC5jIHwgMjQgKysrKysrKysrKysrLS0t
-LQo+IMKgbGliL2lndF9kdW1teWxvYWQuaCB8IDEwICsrKysrKysKPiDCoGxpYi94ZS94ZV9zcGlu
-LmPCoMKgwqAgfCA2Nwo+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKwo+IMKgbGliL3hlL3hlX3NwaW4uaMKgwqDCoCB8wqAgNyArKysrKwo+IMKgNCBmaWxlcyBj
-aGFuZ2VkLCAxMDIgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0
-IGEvbGliL2lndF9kdW1teWxvYWQuYyBiL2xpYi9pZ3RfZHVtbXlsb2FkLmMKPiBpbmRleCA3NDBh
-NThmMy4uNmU4OWI3MmQgMTAwNjQ0Cj4gLS0tIGEvbGliL2lndF9kdW1teWxvYWQuYwo+ICsrKyBi
-L2xpYi9pZ3RfZHVtbXlsb2FkLmMKPiBAQCAtNDYsNiArNDYsNyBAQAo+IMKgI2luY2x1ZGUgImlu
-dGVsX3JlZy5oIgo+IMKgI2luY2x1ZGUgImlvY3RsX3dyYXBwZXJzLmgiCj4gwqAjaW5jbHVkZSAi
-c3dfc3luYy5oIgo+ICsjaW5jbHVkZSAieGUveGVfc3Bpbi5oIgo+IMKgCj4gwqAvKioKPiDCoCAq
-IFNFQ1RJT046aWd0X2R1bW15bG9hZAo+IEBAIC00NDcsNyArNDQ4LDEwIEBAIHNwaW5fY3JlYXRl
-KGludCBmZCwgY29uc3Qgc3RydWN0Cj4gaWd0X3NwaW5fZmFjdG9yeSAqb3B0cykKPiDCoGlndF9z
-cGluX3QgKgo+IMKgX19pZ3Rfc3Bpbl9mYWN0b3J5KGludCBmZCwgY29uc3Qgc3RydWN0IGlndF9z
-cGluX2ZhY3RvcnkgKm9wdHMpCj4gwqB7Cj4gLcKgwqDCoMKgwqDCoMKgcmV0dXJuIHNwaW5fY3Jl
-YXRlKGZkLCBvcHRzKTsKPiArwqDCoMKgwqDCoMKgwqBpZiAoaXNfeGVfZGV2aWNlKGZkKSkKPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIHhlX3NwaW5fY3JlYXRlKGZkLCBv
-cHRzKTsKPiArwqDCoMKgwqDCoMKgwqBlbHNlCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoHJldHVybiBzcGluX2NyZWF0ZShmZCwgb3B0cyk7Cj4gwqB9Cj4gwqAKPiDCoC8qKgo+IEBA
-IC00NjcsNiArNDcxLDExIEBAIGlndF9zcGluX2ZhY3RvcnkoaW50IGZkLCBjb25zdCBzdHJ1Y3QK
-PiBpZ3Rfc3Bpbl9mYWN0b3J5ICpvcHRzKQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3Bp
-bl90ICpzcGluOwo+IMKgCj4gK8KgwqDCoMKgwqDCoMKgaWYgKGlzX3hlX2RldmljZShmZCkpIHsK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3BpbiA9IHhlX3NwaW5fY3JlYXRlKGZk
-LCBvcHRzKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIHNwaW47Cj4g
-K8KgwqDCoMKgwqDCoMKgfQo+ICsKPiDCoMKgwqDCoMKgwqDCoMKgaWYgKChvcHRzLT5mbGFncyAm
-IElHVF9TUElOX1BPTExfUlVOKSAmJiBvcHRzLT5lbmdpbmUgIT0KPiBBTExfRU5HSU5FUykgewo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdW5zaWduZWQgaW50IGNsYXNzOwo+IMKg
-Cj4gQEAgLTY0NywxMSArNjU2LDE0IEBAIHZvaWQgaWd0X3NwaW5fZnJlZShpbnQgZmQsIGlndF9z
-cGluX3QgKnNwaW4pCj4gwqDCoMKgwqDCoMKgwqDCoGlmICghc3BpbikKPiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybjsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoHB0aHJlYWRf
-bXV0ZXhfbG9jaygmbGlzdF9sb2NrKTsKPiAtwqDCoMKgwqDCoMKgwqBpZ3RfbGlzdF9kZWwoJnNw
-aW4tPmxpbmspOwo+IC3CoMKgwqDCoMKgwqDCoHB0aHJlYWRfbXV0ZXhfdW5sb2NrKCZsaXN0X2xv
-Y2spOwo+IC0KPiAtwqDCoMKgwqDCoMKgwqBfX2lndF9zcGluX2ZyZWUoZmQsIHNwaW4pOwo+ICvC
-oMKgwqDCoMKgwqDCoGlmIChpc194ZV9kZXZpY2UoZmQpKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoHhlX3NwaW5fZnJlZShmZCwgc3Bpbik7Cj4gK8KgwqDCoMKgwqDCoMKgfSBl
-bHNlIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHRocmVhZF9tdXRleF9sb2Nr
-KCZsaXN0X2xvY2spOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfbGlzdF9k
-ZWwoJnNwaW4tPmxpbmspOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwdGhyZWFk
-X211dGV4X3VubG9jaygmbGlzdF9sb2NrKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgX19pZ3Rfc3Bpbl9mcmVlKGZkLCBzcGluKTsKPiArwqDCoMKgwqDCoMKgwqB9Cj4gwqB9Cj4g
-wqAKPiDCoHZvaWQgaWd0X3Rlcm1pbmF0ZV9zcGlucyh2b2lkKQo+IGRpZmYgLS1naXQgYS9saWIv
-aWd0X2R1bW15bG9hZC5oIGIvbGliL2lndF9kdW1teWxvYWQuaAo+IGluZGV4IGIyNDdhYjAyLi5j
-MjkwMGE4ZiAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X2R1bW15bG9hZC5oCj4gKysrIGIvbGliL2ln
-dF9kdW1teWxvYWQuaAo+IEBAIC01MSw2ICs1MSw3IEBAIHR5cGVkZWYgc3RydWN0IGlndF9zcGlu
-X2ZhY3Rvcnkgewo+IMKgwqDCoMKgwqDCoMKgwqB1aW50MzJfdCBkZXBlbmRlbmN5Owo+IMKgwqDC
-oMKgwqDCoMKgwqB1aW50NjRfdCBkZXBlbmRlbmN5X3NpemU7Cj4gwqDCoMKgwqDCoMKgwqDCoHVu
-c2lnbmVkIGludCBlbmdpbmU7Cj4gK8KgwqDCoMKgwqDCoMKgc3RydWN0IGRybV94ZV9lbmdpbmVf
-Y2xhc3NfaW5zdGFuY2UgKmh3ZTsKPiDCoMKgwqDCoMKgwqDCoMKgdW5zaWduZWQgaW50IGZsYWdz
-Owo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgZmVuY2U7Cj4gwqDCoMKgwqDCoMKgwqDCoHVpbnQ2NF90
-IGFobmQ7Cj4gQEAgLTgzLDYgKzg0LDE1IEBAIHR5cGVkZWYgc3RydWN0IGlndF9zcGluIHsKPiDC
-oCNkZWZpbmUgU1BJTl9DTEZMVVNIICgxIDw8IDApCj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgc3Ry
-dWN0IGlndF9zcGluX2ZhY3Rvcnkgb3B0czsKPiArCj4gK8KgwqDCoMKgwqDCoMKgdWludDMyX3Qg
-c3RhcnQ7Cj4gK8KgwqDCoMKgwqDCoMKgdWludDMyX3QgZW5kOwo+ICvCoMKgwqDCoMKgwqDCoHNp
-emVfdCBib19zaXplOwo+ICvCoMKgwqDCoMKgwqDCoHVpbnQ2NF90IGFkZHJlc3M7Cj4gK8KgwqDC
-oMKgwqDCoMKgdW5zaWduZWQgaW50IGVuZ2luZTsKPiArwqDCoMKgwqDCoMKgwqB1aW50MzJfdCB2
-bTsKPiArwqDCoMKgwqDCoMKgwqB1aW50MzJfdCBzeW5jb2JqOwo+ICsKPiDCoH0gaWd0X3NwaW5f
-dDsKPiDCoAo+IMKgCj4gZGlmZiAtLWdpdCBhL2xpYi94ZS94ZV9zcGluLmMgYi9saWIveGUveGVf
-c3Bpbi5jCj4gaW5kZXggODU2ZDBiYTIuLjVmM2EzYjRmIDEwMDY0NAo+IC0tLSBhL2xpYi94ZS94
-ZV9zcGluLmMKPiArKysgYi9saWIveGUveGVfc3Bpbi5jCj4gQEAgLTE1LDYgKzE1LDcgQEAKPiDC
-oCNpbmNsdWRlICJpbnRlbF9yZWcuaCIKPiDCoCNpbmNsdWRlICJ4ZV9pb2N0bC5oIgo+IMKgI2lu
-Y2x1ZGUgInhlX3NwaW4uaCIKPiArI2luY2x1ZGUgImxpYi9pZ3RfZHVtbXlsb2FkLmgiCj4gwqAK
-PiDCoC8qKgo+IMKgICogeGVfc3Bpbl9pbml0Ogo+IEBAIC04Miw2ICs4Myw3MiBAQCB2b2lkIHhl
-X3NwaW5fZW5kKHN0cnVjdCB4ZV9zcGluICpzcGluKQo+IMKgwqDCoMKgwqDCoMKgwqBzcGluLT5l
-bmQgPSAwOwo+IMKgfQo+IMKgCj4gK2lndF9zcGluX3QgKgo+ICt4ZV9zcGluX2NyZWF0ZShpbnQg
-ZmQsIGNvbnN0IHN0cnVjdCBpZ3Rfc3Bpbl9mYWN0b3J5ICpvcHQpCj4gK3sKPiArwqDCoMKgwqDC
-oMKgwqBzaXplX3QgYm9fc2l6ZSA9IHhlX2dldF9kZWZhdWx0X2FsaWdubWVudChmZCk7Cj4gK8Kg
-wqDCoMKgwqDCoMKgdWludDMyX3QgYm87Cj4gK8KgwqDCoMKgwqDCoMKgdWludDY0X3QgYWhuZCA9
-IG9wdC0+YWhuZCwgYWRkcjsKPiArwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgaWd0X3NwaW4gKnNwaW47
-Cj4gK8KgwqDCoMKgwqDCoMKgc3RydWN0IHhlX3NwaW4gKnhlX3NwaW47Cj4gK8KgwqDCoMKgwqDC
-oMKgc3RydWN0IGRybV94ZV9zeW5jIHN5bmMgPSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoC5mbGFncyA9IERSTV9YRV9TWU5DX1NZTkNPQkogfCBEUk1fWEVfU1lOQ19TSUdOQUws
-Cj4gK8KgwqDCoMKgwqDCoMKgfTsKPiArwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgZHJtX3hlX2V4ZWMg
-ZXhlYyA9IHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLm51bV9iYXRjaF9idWZm
-ZXIgPSAxLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAubnVtX3N5bmNzID0gMSwK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLnN5bmNzID0gdG9fdXNlcl9wb2ludGVy
-KCZzeW5jKSwKPiArwqDCoMKgwqDCoMKgwqB9Owo+ICsKPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNz
-ZXJ0KGFobmQpOwo+ICvCoMKgwqDCoMKgwqDCoHhlX3NwaW4gPSBjYWxsb2MoMSwgc2l6ZW9mKHN0
-cnVjdCB4ZV9zcGluKSk7Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydCh4ZV9zcGluKTsKPiAr
-wqDCoMKgwqDCoMKgwqBzcGluID0gY2FsbG9jKDEsIHNpemVvZihzdHJ1Y3QgaWd0X3NwaW4pKTsK
-PiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KHNwaW4pOwo+ICsKPiArwqDCoMKgwqDCoMKgwqBz
-cGluLT52bSA9IHhlX3ZtX2NyZWF0ZShmZCwgMCwgMCk7Cj4gK8KgwqDCoMKgwqDCoMKgYm8gPSB4
-ZV9ib19jcmVhdGUoZmQsIG9wdC0+aHdlLT5ndF9pZCwgc3Bpbi0+dm0sIGJvX3NpemUpOwo+ICvC
-oMKgwqDCoMKgwqDCoHNwaW4gPSB4ZV9ib19tYXAoZmQsIGJvLCAweDEwMDApOwoKVGhpcyBsb29r
-cyBhIGJpdCBzdHJhbmdlLiBZb3UgYXJlIGFsbG9jYXRpbmcgc3BpbiBhYm92ZSBhbmQgdGhlbgpz
-ZXR0aW5nIHRoZSBwb2ludGVyIGhlcmUuCgpJIHRyaWVkIHlvdXIgY29kZSBhZ2FpbiB3aXRoIG15
-IHRlc3RjYXNlLiBTdGlsbCBJJ20gc2VlaW5nCmNyYXNoZXMvZmFpbHVyZXMuIERvIHlvdSBoYXZl
-IHNvbWUgZXhhbXBsZSB0ZXN0Y2FzZSBob3cgdGhpcyBpcwpzdXBwb3NlZCB0byBiZSB1c2VkPwoK
-PiArwqDCoMKgwqDCoMKgwqBzcGluLT5oYW5kbGUgPSBibzsKPiArwqDCoMKgwqDCoMKgwqBpZiAo
-b3B0LT5lbmdpbmUpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHNwaW4tPmVuZ2lu
-ZSA9IG9wdC0+ZW5naW5lOwo+ICvCoMKgwqDCoMKgwqDCoGVsc2UKPiArwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgc3Bpbi0+ZW5naW5lID0geGVfZW5naW5lX2NyZWF0ZShmZCwgc3Bpbi0+
-dm0sIG9wdC0KPiA+aHdlLCAwKTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgc3Bpbi0+c3luY29iaiA9
-IHN5bmNvYmpfY3JlYXRlKGZkLCAwKTsKPiArwqDCoMKgwqDCoMKgwqBhZGRyID0gaW50ZWxfYWxs
-b2NhdG9yX2FsbG9jX3dpdGhfc3RyYXRlZ3koYWhuZCwgYm8sIGJvX3NpemUsCj4gMCwgQUxMT0Nf
-U1RSQVRFR1lfTE9XX1RPX0hJR0gpOwo+ICvCoMKgwqDCoMKgwqDCoHhlX3ZtX2JpbmRfc3luYyhm
-ZCwgc3Bpbi0+dm0sIGJvLCAwLCBhZGRyLCBib19zaXplKTsKPiArCj4gK8KgwqDCoMKgwqDCoMKg
-eGVfc3Bpbl9pbml0KHhlX3NwaW4sIGFkZHIsIHRydWUpOwo+ICvCoMKgwqDCoMKgwqDCoGV4ZWMu
-ZW5naW5lX2lkID0gc3Bpbi0+ZW5naW5lOwo+ICvCoMKgwqDCoMKgwqDCoGV4ZWMuYWRkcmVzcyA9
-IGFkZHI7Cj4gK8KgwqDCoMKgwqDCoMKgc3luYy5oYW5kbGUgPSBzcGluLT5zeW5jb2JqOwo+ICvC
-oMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZXEoaWd0X2lvY3RsKGZkLCBEUk1fSU9DVExfWEVfRVhF
-QywgJmV4ZWMpLCAwKTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgc3Bpbi0+YmF0Y2ggPSB4ZV9zcGlu
-LT5iYXRjaDsKPiArwqDCoMKgwqDCoMKgwqBzcGluLT5zdGFydCA9IHhlX3NwaW4tPnN0YXJ0Owo+
-ICvCoMKgwqDCoMKgwqDCoHNwaW4tPmVuZCA9IHhlX3NwaW4tPmVuZDsKPiArwqDCoMKgwqDCoMKg
-wqBzcGluLT5ib19zaXplID0gYm9fc2l6ZTsKPiArwqDCoMKgwqDCoMKgwqBzcGluLT5hZGRyZXNz
-ID0gYWRkcjsKPiArwqDCoMKgwqDCoMKgwqByZXR1cm4gc3BpbjsKPiArCj4gK30KPiArCj4gK3Zv
-aWQgeGVfc3Bpbl9zeW5jX3dhaXQoaW50IGZkLCBzdHJ1Y3QgaWd0X3NwaW4gKnNwaW4pCj4gK3sK
-PiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KHN5bmNvYmpfd2FpdChmZCwgJnNwaW4tPnN5bmNv
-YmosIDEsIElOVDY0X01BWCwgMCwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBOVUxMKSk7Cj4gK30KPiArCj4gK3ZvaWQgeGVf
-c3Bpbl9mcmVlKGludCBmZCwgc3RydWN0IGlndF9zcGluICpzcGluKQo+ICt7Cj4gK8KgwqDCoMKg
-wqDCoMKgeGVfdm1fdW5iaW5kX3N5bmMoZmQsIHNwaW4tPnZtLCAwLCBzcGluLT5hZGRyZXNzLCBz
-cGluLQo+ID5ib19zaXplKTsKPiArwqDCoMKgwqDCoMKgwqBzcGluLT5lbmQgPSAwOwo+ICvCoMKg
-wqDCoMKgwqDCoHN5bmNvYmpfZGVzdHJveShmZCwgc3Bpbi0+c3luY29iaik7Cj4gK8KgwqDCoMKg
-wqDCoMKgeGVfZW5naW5lX2Rlc3Ryb3koZmQsIHNwaW4tPmVuZ2luZSk7Cj4gK8KgwqDCoMKgwqDC
-oMKgZ2VtX2Nsb3NlKGZkLCBzcGluLT5oYW5kbGUpOwo+ICt9Cj4gKwo+IMKgdm9pZCB4ZV9jb3Jr
-X2luaXQoaW50IGZkLCBzdHJ1Y3QgZHJtX3hlX2VuZ2luZV9jbGFzc19pbnN0YW5jZSAqaHdlLAo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3RydWN0IHhlX2NvcmsgKmNvcmsp
-Cj4gwqB7Cj4gZGlmZiAtLWdpdCBhL2xpYi94ZS94ZV9zcGluLmggYi9saWIveGUveGVfc3Bpbi5o
-Cj4gaW5kZXggNzNmOWEwMjYuLjQ4ODY3ZWI4IDEwMDY0NAo+IC0tLSBhL2xpYi94ZS94ZV9zcGlu
-LmgKPiArKysgYi9saWIveGUveGVfc3Bpbi5oCj4gQEAgLTEzLDE5ICsxMywyNiBAQAo+IMKgI2lu
-Y2x1ZGUgPHN0ZGJvb2wuaD4KPiDCoAo+IMKgI2luY2x1ZGUgInhlX3F1ZXJ5LmgiCj4gKyNpbmNs
-dWRlICJsaWIvaWd0X2R1bW15bG9hZC5oIgo+IMKgCj4gwqAvKiBNYXBwZWQgR1BVIG9iamVjdCAq
-Lwo+ICsKPiDCoHN0cnVjdCB4ZV9zcGluIHsKPiDCoMKgwqDCoMKgwqDCoMKgdWludDMyX3QgYmF0
-Y2hbMTZdOwo+IMKgwqDCoMKgwqDCoMKgwqB1aW50NjRfdCBwYWQ7Cj4gwqDCoMKgwqDCoMKgwqDC
-oHVpbnQzMl90IHN0YXJ0Owo+IMKgwqDCoMKgwqDCoMKgwqB1aW50MzJfdCBlbmQ7Cj4gKwo+IMKg
-fTsKPiDCoAo+ICtpZ3Rfc3Bpbl90ICoKPiAreGVfc3Bpbl9jcmVhdGUoaW50IGZkLCBjb25zdCBz
-dHJ1Y3QgaWd0X3NwaW5fZmFjdG9yeSAqb3B0KTsKPiDCoHZvaWQgeGVfc3Bpbl9pbml0KHN0cnVj
-dCB4ZV9zcGluICpzcGluLCB1aW50NjRfdCBhZGRyLCBib29sCj4gcHJlZW1wdCk7Cj4gwqBib29s
-IHhlX3NwaW5fc3RhcnRlZChzdHJ1Y3QgeGVfc3BpbiAqc3Bpbik7Cj4gK3ZvaWQgeGVfc3Bpbl9z
-eW5jX3dhaXQoaW50IGZkLCBzdHJ1Y3QgaWd0X3NwaW4gKnNwaW4pOwo+IMKgdm9pZCB4ZV9zcGlu
-X3dhaXRfc3RhcnRlZChzdHJ1Y3QgeGVfc3BpbiAqc3Bpbik7Cj4gwqB2b2lkIHhlX3NwaW5fZW5k
-KHN0cnVjdCB4ZV9zcGluICpzcGluKTsKPiArdm9pZCB4ZV9zcGluX2ZyZWUoaW50IGZkLCBzdHJ1
-Y3QgaWd0X3NwaW4gKnNwaW4pOwo+IMKgCj4gwqBzdHJ1Y3QgeGVfY29yayB7Cj4gwqDCoMKgwqDC
-oMKgwqDCoHN0cnVjdCB4ZV9zcGluICpzcGluOwoK
+From: Jeevan B <jeevan.b@intel.com>
+
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist |   9 +-
+ tests/kms_pipe_crc_basic.c            | 292 ++++++++++++++++++++++++--
+ 2 files changed, 285 insertions(+), 16 deletions(-)
+
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index d9fcb62d..4af9e8d2 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -118,7 +118,14 @@ igt@kms_force_connector_basic@force-edid
+ igt@kms_force_connector_basic@force-load-detect
+ igt@kms_force_connector_basic@prune-stale-modes
+ igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-red
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-green
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-blue
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-red
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-green
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-blue
+ igt@kms_pipe_crc_basic@hang-read-crc
+ igt@kms_pipe_crc_basic@nonblocking-crc
+ igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 65afc9f6..6b9def05 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -177,6 +177,108 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+ 	igt_display_commit(display);
+ }
+ 
++static void test_compare_crc_xrgb(data_t *data, enum pipe pipe, igt_output_t *output, int color)
++{
++	igt_display_t *display = &data->display;
++	igt_plane_t *primary;
++	drmModeModeInfo *mode;
++	igt_crc_t ref_crc, crc;
++	igt_pipe_crc_t *pipe_crc = NULL;
++	struct igt_fb fb0, fb1;
++
++	igt_display_reset(display);
++	igt_output_set_pipe(output, pipe);
++
++	mode = igt_output_get_mode(output);
++
++	/* Create two framebuffers with the same color info. */
++	switch (color) {
++	case 1:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 0.0, 0.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 0.0, 0.0,
++				&fb1);
++		break;
++	case 2:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fb1);
++		break;
++	case 3:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 0.0, 1.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 0.0, 1.0,
++				&fb1);
++		break;
++	default:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 1.0, 1.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 1.0, 1.0,
++				&fb1);
++	}
++
++	/* Flip FB0 with the Primary plane & collect the CRC as ref CRC. */
++	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(primary, &fb0);
++	igt_display_commit(display);
++
++	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++				    IGT_PIPE_CRC_SOURCE_AUTO);
++	igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
++
++	/* Flip FB1 with the Primary plane & compare the CRC with ref CRC. */
++	igt_plane_set_fb(primary, &fb1);
++	igt_display_commit(display);
++
++	igt_pipe_crc_collect_crc(pipe_crc, &crc);
++	igt_assert_crc_equal(&crc, &ref_crc);
++
++	/* Clean-up */
++	igt_pipe_crc_free(pipe_crc);
++	igt_plane_set_fb(primary, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit(display);
++
++	igt_remove_fb(data->drm_fd, &fb0);
++	igt_remove_fb(data->drm_fd, &fb1);
++}
+ /*
+  * CRC-sanity test, to make sure there would be no CRC mismatches
+  *
+@@ -187,7 +289,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+  *
+  *   No CRC mismatch should happen
+  */
+-static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
++static void test_compare_crc_nv12(data_t *data, enum pipe pipe, igt_output_t *output, int color)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_plane_t *primary;
+@@ -202,18 +304,64 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	mode = igt_output_get_mode(output);
+ 
+ 	/* Create two framebuffers with the same color info. */
+-	igt_create_color_fb(data->drm_fd,
+-			mode->hdisplay, mode->vdisplay,
+-			DRM_FORMAT_XRGB8888,
+-			DRM_FORMAT_MOD_LINEAR,
+-			1.0, 1.0, 1.0,
+-			&fb0);
+-	igt_create_color_fb(data->drm_fd,
+-			mode->hdisplay, mode->vdisplay,
+-			DRM_FORMAT_XRGB8888,
+-			DRM_FORMAT_MOD_LINEAR,
+-			1.0, 1.0, 1.0,
+-			&fb1);
++	switch (color) {
++	case 1:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 0.0, 0.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 0.0, 0.0,
++				&fb1);
++	case 2:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fb1);
++	case 3:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 0.0, 1.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				0.0, 0.0, 1.0,
++				&fb1);
++	default:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 1.0, 1.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_NV12,
++				DRM_FORMAT_MOD_LINEAR,
++				1.0, 1.0, 1.0,
++				&fb1);
++	}
+ 
+ 	/* Flip FB0 with the Primary plane & collect the CRC as ref CRC. */
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+@@ -418,7 +566,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_describe("Basic sanity check for CRC mismatches");
+-	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 			if (simulation_constraint(pipe))
+ 				continue;
+@@ -427,7 +575,121 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 				continue;
+ 
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+-				test_compare_crc(&data, pipe, output);
++				test_compare_crc_xrgb(&data, pipe, output, 0);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-red") {
++			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if (simulation_constraint(pipe))
++					continue;
++
++				if(!pipe_output_combo_valid(&data.display, pipe, output))
++					continue;
++
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++					test_compare_crc_xrgb(&data, pipe, output, 1);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-green") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc_xrgb(&data, pipe, output, 2);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-blue") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc_xrgb(&data, pipe, output, 3);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc_nv12(&data, pipe, output, 0);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-red") {
++			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if (simulation_constraint(pipe))
++					continue;
++
++				if(!pipe_output_combo_valid(&data.display, pipe, output))
++					continue;
++
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++					test_compare_crc_nv12(&data, pipe, output, 1);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-green") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc_nv12(&data, pipe, output, 2);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-blue") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc_nv12(&data, pipe, output, 3);
++
++			break;
+ 		}
+ 	}
+ 
+-- 
+2.25.1
