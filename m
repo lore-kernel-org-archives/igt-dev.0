@@ -1,27 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com
- [IPv6:2607:f8b0:4864:20::d31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 135B110E6CF
- for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 14:18:52 +0000 (UTC)
-Received: by mail-io1-xd31.google.com with SMTP id
- ca18e2360f4ac-76c5c806fc5so114103839f.1
- for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 07:18:52 -0700 (PDT)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10FD010E6CF
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 14:28:13 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com
+Date: Fri, 12 May 2023 20:00:33 +0530
+Message-Id: <20230512143033.3830748-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-References: <20230131113237.3707217-1-tvrtko.ursulin@linux.intel.com>
- <20230131113237.3707217-9-tvrtko.ursulin@linux.intel.com>
- <CAJs_Fx6viBKQwoRofup8z4ZBcGC6dabvLarzT8aoevBEjQe8Ew@mail.gmail.com>
- <c80ae665-0177-355e-e38c-a7cce5043617@linux.intel.com>
- <CAF6AEGvP-AfKW7AtJuz3a020_E15fRa_vmKvNOBy_QQo5-zopQ@mail.gmail.com>
- <c288faf6-28ad-b0bc-c77d-16628ba93475@linux.intel.com>
-In-Reply-To: <c288faf6-28ad-b0bc-c77d-16628ba93475@linux.intel.com>
-From: Rob Clark <robdclark@chromium.org>
-Date: Fri, 12 May 2023 07:18:40 -0700
-Message-ID: <CAJs_Fx7=zKUeE5sejc-ZCjUZ47W6Taw4_AP9ZWT7e-kkzL3h2g@mail.gmail.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t 8/8] gputop: Basic vendor agnostic GPU
- top tool
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_evict: Update beng-large subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,69 +17,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
- Intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 6, 2023 at 7:33=E2=80=AFAM Tvrtko Ursulin
-<tvrtko.ursulin@linux.intel.com> wrote:
->
->
-> On 06/04/2023 15:21, Rob Clark wrote:
-> > On Thu, Apr 6, 2023 at 4:08=E2=80=AFAM Tvrtko Ursulin
-> > <tvrtko.ursulin@linux.intel.com> wrote:
-> >>
-> >>
-> >> On 05/04/2023 18:57, Rob Clark wrote:
-> >>> On Tue, Jan 31, 2023 at 3:33=E2=80=AFAM Tvrtko Ursulin
-> >>> <tvrtko.ursulin@linux.intel.com> wrote:
-> >>>>
-> >>>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> >>>>
-> >>>> Rudimentary vendor agnostic example of how lib_igt_drm_clients can b=
-e used
-> >>>> to display a sorted by card and usage list of processes using GPUs.
-> >>>>
-> >>>> Borrows a bit of code from intel_gpu_top but for now omits the fancy
-> >>>> features like interactive functionality, card selection, client
-> >>>> aggregation, sort modes, JSON output  and pretty engine names. Also =
-no
-> >>>> support for global GPU or system metrics.
-> >>>>
-> >>>> On the other hand it shows clients from all DRM cards which
-> >>>> intel_gpu_top does not do.
-> >>>>
-> >>>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> >>>> Cc: Rob Clark <robdclark@chromium.org>
-> >>>> Cc: Christian K=C3=B6nig <ckoenig.leichtzumerken@gmail.com>
-> >>>> Acked-by: Christian K=C3=B6nig <christian.koenig@amd.com>
-> >>>
-> >>> Reviewed-by: Rob Clark <robdclark@chromium.org>
-> >>
-> >> Presumably for 8/8 only?
-> >>
-> >> The rest of the series does not apply any more by now. I need to rebas=
-e..
-> >
-> > I didn't look closely at the rest of the series (was kinda assuming
-> > that was mostly just moving things around).. but I see you rebased it
-> > so I can take a look.
->
-> There's a lot in there - first patch is extracting some code into a
-> library, with the corresponding renames, but then there are six patches
-> of tweaks and feature additions which finally make gputop possible.
->
-> Hopefully you can penetrate the concepts. It was all at least Valgrind
-> clean back in the day I first did it.
->
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-by now I've read (and rebased locally) the series, and even added a
-couple things on top.. so r-b for the series, we should get this
-landed
+Add missing bind engine flag.
 
-BR,
--R
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+---
+ tests/xe/xe_evict.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/xe/xe_evict.c b/tests/xe/xe_evict.c
+index 5687cce3..7fef4efc 100644
+--- a/tests/xe/xe_evict.c
++++ b/tests/xe/xe_evict.c
+@@ -564,7 +564,7 @@ igt_main
+ 			EXTERNAL_OBJ },
+ 		{ "beng-small-multi-vm", 16, 256, 1, 128, BIND_ENGINE |
+ 			MULTI_VM },
+-		{ "beng-large", 4, 16, 1, 4, 0 },
++		{ "beng-large", 4, 16, 1, 4, BIND_ENGINE },
+ 		{ "beng-large-external", 4, 16, 1, 4, BIND_ENGINE |
+ 			EXTERNAL_OBJ },
+ 		{ "beng-large-multi-vm", 4, 8, 3, 8, BIND_ENGINE | MULTI_VM },
+-- 
+2.25.1
