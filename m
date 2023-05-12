@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBB0010E696
- for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 12:10:45 +0000 (UTC)
-Date: Fri, 12 May 2023 14:10:41 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230512121041.z5mw4qasnbw6de6h@kamilkon-desk1>
-References: <20230502051921.2183579-1-fei.yang@intel.com>
- <20230502051921.2183579-2-fei.yang@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A03410E696
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 12:14:41 +0000 (UTC)
+Message-ID: <4e5b3e07-8c09-4532-a07c-0818e3650e5d@linux.intel.com>
+Date: Fri, 12 May 2023 13:14:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230502051921.2183579-2-fei.yang@intel.com>
-Subject: Re: [igt-dev] [PATCH v2 1/1] test/gem_create: exercise
- gem_create_ext_set_pat
+Content-Language: en-US
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+References: <20230506005528.1890922-1-umesh.nerlige.ramappa@intel.com>
+ <20230506005528.1890922-2-umesh.nerlige.ramappa@intel.com>
+ <87mt2az3j7.wl-ashutosh.dixit@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <87mt2az3j7.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 01/15] perf_pmu: Support multi-tile in
+ rc6 subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,147 +24,193 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: fei.yang@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Fei,
 
-On 2023-05-01 at 22:19:21 -0700, fei.yang@intel.com wrote:
-> From: Fei Yang <fei.yang@intel.com>
+On 12/05/2023 03:28, Dixit, Ashutosh wrote:
+> On Fri, 05 May 2023 17:55:14 -0700, Umesh Nerlige Ramappa wrote:
+>>
 > 
-> Gem_create uAPI has been extended with capability of setting PAT index.
-> Add a test case to exercise this new extension.
+> Hi Umesh/Tvrtko,
 > 
-> Signed-off-by: Fei Yang <fei.yang@intel.com>
-> ---
->  include/drm-uapi/i915_drm.h | 33 ++++++++++++++++++++++++++++
+>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>
+>> Teach test how to wake up a particular tile and make it iterate all of
+>> them using dynamic subtests.
+>>
+>> v2: Finalize SHIFT to 60. Drop FIXME from i915_drm.h
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>> ---
+>>   include/drm-uapi/i915_drm.h | 17 ++++++++++++++-
+>>   tests/i915/perf_pmu.c       | 41 ++++++++++++++++++++++++++-----------
+>>   2 files changed, 45 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+>> index a0876ee41..e164ad014 100644
+>> --- a/include/drm-uapi/i915_drm.h
+>> +++ b/include/drm-uapi/i915_drm.h
+>> @@ -280,7 +280,16 @@ enum drm_i915_pmu_engine_sample {
+>>   #define I915_PMU_ENGINE_SEMA(class, instance) \
+>> 	__I915_PMU_ENGINE(class, instance, I915_SAMPLE_SEMA)
+>>
+>> -#define __I915_PMU_OTHER(x) (__I915_PMU_ENGINE(0xff, 0xff, 0xf) + 1 + (x))
+>> +/*
+>> + * Top 4 bits of every non-engine counter are GT id.
+>> + */
+>> +#define __I915_PMU_GT_SHIFT (60)
+>> +
+>> +#define ___I915_PMU_OTHER(gt, x) \
+>> +	(((__u64)__I915_PMU_ENGINE(0xff, 0xff, 0xf) + 1 + (x)) | \
+>> +	((__u64)(gt) << __I915_PMU_GT_SHIFT))
+>> +
+>> +#define __I915_PMU_OTHER(x) ___I915_PMU_OTHER(0, x)
+> 
+> Typically we don't modify include/drm-uapi/i915_drm.h directly, it is
+> sync'd with the kernel.
+> 
+> So maybe let's add the above to lib/i915/i915_drm_local.h.
+> 
+>>
+>>   #define I915_PMU_ACTUAL_FREQUENCY	__I915_PMU_OTHER(0)
+>>   #define I915_PMU_REQUESTED_FREQUENCY	__I915_PMU_OTHER(1)
+>> @@ -290,6 +299,12 @@ enum drm_i915_pmu_engine_sample {
+>>
+>>   #define I915_PMU_LAST /* Deprecated - do not use */ I915_PMU_RC6_RESIDENCY
+>>
+>> +#define __I915_PMU_ACTUAL_FREQUENCY(gt)		___I915_PMU_OTHER(gt, 0)
+>> +#define __I915_PMU_REQUESTED_FREQUENCY(gt)	___I915_PMU_OTHER(gt, 1)
+>> +#define __I915_PMU_INTERRUPTS(gt)		___I915_PMU_OTHER(gt, 2)
+>> +#define __I915_PMU_RC6_RESIDENCY(gt)		___I915_PMU_OTHER(gt, 3)
+>> +#define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	___I915_PMU_OTHER(gt, 4)
+>> +
+>>   /* Each region is a minimum of 16k, and there are at most 255 of them.
+>>    */
+>>   #define I915_NR_TEX_REGIONS 255	/* table size 2k - maximum due to use
+>> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+>> index c5f083bbd..97ad09d76 100644
+>> --- a/tests/i915/perf_pmu.c
+>> +++ b/tests/i915/perf_pmu.c
+>> @@ -1707,8 +1707,16 @@ static bool wait_for_suspended(int gem_fd)
+>> 	return suspended;
+>>   }
+>>
+>> +static int open_forcewake_handle(int fd, unsigned int gt)
+>> +{
+>> +	if (getenv("IGT_NO_FORCEWAKE"))
+>> +		return -1;
+>> +
+>> +	return igt_debugfs_gt_open(fd, gt, "forcewake_user", O_WRONLY);
+>> +}
+> 
+> Let's create a new function igt_open_forcewake_gt_handle() below
+> igt_open_forcewake_handle() in lib/igt_gt.c and add this code there so the
+> code can be shared.
 
-Please use lib/i915/i915_drm_local.h
-until this land in drm-tip ./include/uapi/drm/i915_drm.h
+Typically we'd move to lib/ only when there are 2-3 callers and so it is 
+clear helper is useful. Don't know, I am okay either way.
 
-After it will land there send separate patch to sync uapi.
+>> +
+>>   static void
+>> -test_rc6(int gem_fd, unsigned int flags)
+>> +test_rc6(int gem_fd, unsigned int gt, unsigned int flags)
+>>   {
+>> 	int64_t duration_ns = 2e9;
+>> 	uint64_t idle, busy, prev, ts[2];
+>> @@ -1717,7 +1725,7 @@ test_rc6(int gem_fd, unsigned int flags)
+>>
+>> 	gem_quiescent_gpu(gem_fd);
+>>
+>> -	fd = open_pmu(gem_fd, I915_PMU_RC6_RESIDENCY);
+>> +	fd = open_pmu(gem_fd, __I915_PMU_RC6_RESIDENCY(gt));
+>>
+>> 	if (flags & TEST_RUNTIME_PM) {
+>> 		drmModeRes *res;
+>> @@ -1784,8 +1792,8 @@ test_rc6(int gem_fd, unsigned int flags)
+>> 	assert_within_epsilon(idle - prev, ts[1] - ts[0], tolerance);
+>>
+>> 	/* Wake up device and check no RC6. */
+>> -	fw = igt_open_forcewake_handle(gem_fd);
+>> -	igt_assert(fw >= 0);
+>> +	fw = open_forcewake_handle(gem_fd, gt);
+>> +	igt_require(fw >= 0);
+> 
+> Why not igt_assert?
+
+It probably was to support running the test on old kernels. Although I 
+am not sure if recently we have been disciplined enough with this 
+requirement.
+
+>> 	usleep(1e3); /* wait for the rc6 cycle counter to stop ticking */
+>>
+>> 	prev = pmu_read_single(fd);
+>> @@ -2174,12 +2182,17 @@ static void pmu_read(int i915)
+>> 		for_each_if((e)->class == I915_ENGINE_CLASS_RENDER) \
+>> 			igt_dynamic_f("%s", e->name)
+>>
+>> +#define for_each_gt(i915, gtid, tmp) \
+>> +	for ((gtid) = 0; \
+>> +	     ((tmp) = igt_sysfs_gt_open((i915), (gtid))) != -1; \
+>> +	     close(tmp), (gtid)++)
+> 
+> Use i915_for_each_gt from lib/ here.
+
+Yeah I guess these patches predate much of the IGT code added for 
+supporting multi-tile in the upstream since. Shrug.
 
 Regards,
-Kamil
 
->  tests/i915/gem_create.c     | 44 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 77 insertions(+)
+Tvrtko
+
 > 
-> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-> index a0876ee4..1fdaa372 100644
-> --- a/include/drm-uapi/i915_drm.h
-> +++ b/include/drm-uapi/i915_drm.h
-> @@ -3499,6 +3499,7 @@ struct drm_i915_gem_create_ext {
->  	 */
->  #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
->  #define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
-> +#define I915_GEM_CREATE_EXT_SET_PAT 2
->  	__u64 extensions;
->  };
->  
-> @@ -3616,6 +3617,38 @@ struct drm_i915_gem_create_ext_protected_content {
->  /* ID of the protected content session managed by i915 when PXP is active */
->  #define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
->  
-> +/**
-> + * struct drm_i915_gem_create_ext_set_pat - The
-> + * I915_GEM_CREATE_EXT_SET_PAT extension.
-> + *
-> + * If this extension is provided, the specified caching policy (PAT index) is
-> + * applied to the buffer object.
-> + *
-> + * Below is an example on how to create an object with specific caching policy:
-> + *
-> + * .. code-block:: C
-> + *
-> + *      struct drm_i915_gem_create_ext_set_pat set_pat_ext = {
-> + *              .base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
-> + *              .pat_index = 0,
-> + *      };
-> + *      struct drm_i915_gem_create_ext create_ext = {
-> + *              .size = PAGE_SIZE,
-> + *              .extensions = (uintptr_t)&set_pat_ext,
-> + *      };
-> + *
-> + *      int err = ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
-> + *      if (err) ...
-> + */
-> +struct drm_i915_gem_create_ext_set_pat {
-> +	/** @base: Extension link. See struct i915_user_extension. */
-> +	struct i915_user_extension base;
-> +	/** @pat_index: PAT index to be set */
-> +	__u32 pat_index;
-> +	/** @rsvd: reserved for future use */
-> +	__u32 rsvd;
-> +};
-> +
->  #if defined(__cplusplus)
->  }
->  #endif
-> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-> index c719ab6c..20c71afb 100644
-> --- a/tests/i915/gem_create.c
-> +++ b/tests/i915/gem_create.c
-> @@ -537,6 +537,45 @@ static void create_ext_placement_each(int fd)
->  	free(regions);
->  }
->  
-> +static void create_ext_set_pat(int fd)
-> +{
-> +	struct drm_i915_gem_create_ext_set_pat setparam_pat = {
-> +		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
-> +		.pat_index = 0,
-> +	};
-> +	struct drm_i915_gem_create_ext_set_pat setparam_inv_pat = {
-> +		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
-> +		.pat_index = 65,
-> +	};
-> +	struct drm_i915_gem_caching arg;
-> +	uint64_t size;
-> +	uint32_t handle;
-> +	int ret;
-> +
-> +	size = PAGE_SIZE;
-> +
-> +	ret = __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base);
-> +
-> +	/* Returning -EFAULT indicates set_pat extension is not supported */
-> +	if (ret == -EFAULT)
-> +		igt_info("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
-> +	igt_assert(ret == 0);
-> +
-> +	/* {set|get}_caching ioctl should fail for objects created with set_pat */
-> +	igt_assert(__gem_set_caching(fd, handle, 1) == -EOPNOTSUPP);
-> +
-> +	memset(&arg, 0, sizeof(arg));
-> +	arg.handle = handle;
-> +	igt_assert(ioctl(fd, DRM_IOCTL_I915_GEM_GET_CACHING, &arg) < 0 &&
-> +		   errno == EOPNOTSUPP);
-> +
-> +	/* gem_create should fail with -EINVAL if invalid pat index specified */
-> +	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle, &setparam_inv_pat.base),
-> +		      -EINVAL);
-> +
-> +	gem_close(fd, handle);
-> +}
-> +
->  static bool supports_needs_cpu_access(int fd)
->  {
->  	struct drm_i915_gem_memory_class_instance regions[] = {
-> @@ -897,6 +936,11 @@ igt_main
->  	igt_subtest("create-ext-placement-all")
->  		create_ext_placement_all(fd);
->  
-> +	igt_describe("Create objects with specific cache setting"
-> +		     " create-ext.");
-> +	igt_subtest("create-ext-set-pat")
-> +		    create_ext_set_pat(fd);
-> +
->  	igt_describe("Verify the basic functionally and expected ABI contract around I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS");
->  	igt_subtest("create-ext-cpu-access-sanity-check") {
->  		igt_require(supports_needs_cpu_access(fd));
-> -- 
-> 2.25.1
+> Thanks.
+> --
+> Ashutosh
 > 
+>> +
+>>   igt_main
+>>   {
+>> 	const struct intel_execution_engine2 *e;
+>> 	unsigned int num_engines = 0;
+>> 	const intel_ctx_t *ctx = NULL;
+>> -	int fd = -1;
+>> +	int gt, tmp, fd = -1;
+>>
+>> 	/**
+>> 	 * All PMU should be accompanied by a test.
+>> @@ -2396,17 +2409,21 @@ igt_main
+>> 	/**
+>> 	 * Test RC6 residency reporting.
+>> 	 */
+>> -	igt_subtest("rc6")
+>> -		test_rc6(fd, 0);
+>> +	igt_subtest_with_dynamic("rc6") {
+>> +		for_each_gt(fd, gt, tmp) {
+>> +			igt_dynamic_f("gt%u", gt)
+>> +				test_rc6(fd, gt, 0);
+>>
+>> -	igt_subtest("rc6-runtime-pm")
+>> -		test_rc6(fd, TEST_RUNTIME_PM);
+>> +			igt_dynamic_f("runtime-pm-gt%u", gt)
+>> +				test_rc6(fd, gt, TEST_RUNTIME_PM);
+>>
+>> -	igt_subtest("rc6-runtime-pm-long")
+>> -		test_rc6(fd, TEST_RUNTIME_PM | FLAG_LONG);
+>> +			igt_dynamic_f("runtime-pm-long-gt%u", gt)
+>> +				test_rc6(fd, gt, TEST_RUNTIME_PM | FLAG_LONG);
+>> +		}
+>> +	}
+>>
+>> 	igt_subtest("rc6-suspend")
+>> -		test_rc6(fd, TEST_S3);
+>> +		test_rc6(fd, 0, TEST_S3);
+>>
+>> 	/**
+>> 	 * Test GT wakeref tracking (similar to RC0, opposite of RC6)
+>> --
+>> 2.34.1
+>>
