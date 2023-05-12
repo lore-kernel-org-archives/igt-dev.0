@@ -3,12 +3,12 @@ Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 09 May 2023 07:48:37 -0000
-Message-ID: <168361851709.14157.50531629102856951@emeril.freedesktop.org>
-References: <20230509073426.1154390-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230509073426.1154390-1-mauro.chehab@linux.intel.com>
+Date: Fri, 12 May 2023 10:05:43 -0000
+Message-ID: <168388594385.26099.16589535596510060339@emeril.freedesktop.org>
+References: <20230509104203.1163545-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230509104203.1163545-1-mauro.chehab@linux.intel.com>
 Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
- =?utf-8?q?dd_an_option_to_protect_Xe_test_builds?=
+ =?utf-8?q?dd_an_option_to_protect_Xe_test_builds_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,38 +25,38 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Add an option to protect Xe test builds
-URL   : https://patchwork.freedesktop.org/series/117500/
+Series: Add an option to protect Xe test builds (rev2)
+URL   : https://patchwork.freedesktop.org/series/117511/
 State : warning
 
 == Summary ==
 
 Pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/876499 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/879307 for the overview.
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41376086):
-  Program rst2man-3 found: NO
-  Program rst2man found: NO
-  Program rst2man.sh found: YES (/builds/gfx-ci/igt-ci-tags/man/rst2man.sh)
-  Program igt_doc.py found: YES (/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py)
-  Program gen_rst_index skipped: feature sphinx disabled
-  Dependency gtk-doc found: NO (tried pkgconfig and cmake)
-  Program sphinx-build skipped: feature sphinx disabled
-  Program rst2html-3 found: NO
-  Program rst2html found: NO
-  Program rst2pdf found: NO
-  
-  docs/testplan/meson.build:34:3: ERROR:  Unknown variable "build_xe".
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1683618036:step_script
-  section_start:1683618036:cleanup_file_variables
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41594515):
+  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=41594493 responseStatus=200 OK token=64_tPDiE
+  section_end:1683885667:download_artifacts
+  section_start:1683885667:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh  | sh
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  Login Succeeded!
+  $ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
+  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-f20fa6309000698751174416b61992fb4662963e
+  Error: error creating build container: Error initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-f20fa6309000698751174416b61992fb4662963e: Error reading manifest commit-f20fa6309000698751174416b61992fb4662963e in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora: received unexpected HTTP status: 500 Internal Server Error
+  section_end:1683885669:step_script
+  section_start:1683885669:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1683618036:cleanup_file_variables
+  section_end:1683885671:cleanup_file_variables
   ERROR: Job failed: exit code 1
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/876499
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/879307
 
