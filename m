@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E99910E669
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6584A10E666
  for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 09:27:43 +0000 (UTC)
 From: Nirmoy Das <nirmoy.das@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 12 May 2023 11:27:27 +0200
-Message-Id: <20230512092728.6612-1-nirmoy.das@intel.com>
+Date: Fri, 12 May 2023 11:27:28 +0200
+Message-Id: <20230512092728.6612-2-nirmoy.das@intel.com>
+In-Reply-To: <20230512092728.6612-1-nirmoy.das@intel.com>
+References: <20230512092728.6612-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] test/prime_vgem: Remove test_userptr
- test
+Subject: [igt-dev] [PATCH i-g-t 2/2] intel-ci: Remove prime_vgem userptr test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,83 +23,24 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-vgem objects are flagged with VM_PFNMAP which
-doesn't work with get_user_pages which is needed
-for userptr test.
+This is test is not valid anymore so remove it.
 
-References: https://patchwork.freedesktop.org/patch/449741/
 Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- tests/prime_vgem.c | 49 ----------------------------------------------
- 1 file changed, 49 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index 9aa767c9cd..dcf9e78d4b 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -294,51 +294,6 @@ static void test_write(int vgem, int i915)
- 	munmap(ptr, scratch.size);
- }
- 
--static bool has_userptr(int i915)
--{
--	uint32_t handle = 0;
--	void *ptr;
--
--	igt_assert(posix_memalign(&ptr, 4096, 4096) == 0);
--	if (__gem_userptr(i915, ptr, 4096, 0, 0, &handle) == 0)
--		gem_close(i915, handle);
--	free(ptr);
--
--	return handle;
--}
--
--static void test_userptr(int vgem, int i915)
--{
--	struct drm_i915_gem_exec_object2 obj = {};
--	struct drm_i915_gem_execbuffer2 execbuf = {
--		.buffers_ptr = to_user_pointer(&obj),
--		.buffer_count = 1,
--	};
--	struct vgem_bo scratch;
--	uint32_t *ptr;
--
--	igt_require(has_userptr(i915));
--
--	scratch.width = 1024;
--	scratch.height = 1024;
--	scratch.bpp = 32;
--	vgem_create(vgem, &scratch);
--
--	/* vgem is acting as a simple provider of a single vma backed by pages */
--	ptr = vgem_mmap(vgem, &scratch, PROT_WRITE);
--	gem_close(vgem, scratch.handle);
--	*ptr = MI_BATCH_BUFFER_END;
--
--	gem_userptr(i915, ptr, scratch.size, 0, 0, &obj.handle);
--	if (igt_has_set_caching(intel_get_drm_devid(i915)))
--		gem_set_caching(i915, obj.handle, I915_CACHING_NONE); /* for !llc exec */
--
--	gem_execbuf(i915, &execbuf);
--	gem_close(i915, obj.handle);
--
--	munmap(ptr, scratch.size);
--}
--
- static void test_gtt(int vgem, int i915)
- {
- 	struct vgem_bo scratch;
-@@ -1141,10 +1096,6 @@ igt_main
- 	igt_subtest("basic-write")
- 		test_write(vgem, i915);
- 
--	igt_describe("Check that we wrap the vgem mmap with userptr.");
--	igt_subtest("basic-userptr")
--		test_userptr(vgem, i915);
--
- 	igt_describe("Examine access path through GTT.");
- 	igt_subtest("basic-gtt") {
- 		gem_require_mappable_ggtt(i915);
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index d9fcb62d6e..cfe7cb4aa3 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -145,7 +145,6 @@ igt@prime_vgem@basic-fence-read
+ igt@prime_vgem@basic-gtt
+ igt@prime_vgem@basic-read
+ igt@prime_vgem@basic-write
+-igt@prime_vgem@basic-userptr
+ igt@vgem_basic@setversion
+ igt@vgem_basic@create
+ igt@vgem_basic@debugfs
 -- 
 2.39.0
