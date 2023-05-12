@@ -1,14 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDD0D10E073
- for <igt-dev@lists.freedesktop.org>; Thu, 11 May 2023 15:22:58 +0000 (UTC)
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 11 May 2023 17:22:51 +0200
-Message-Id: <20230511152251.18043-1-nirmoy.das@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B1D310E61C
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 07:51:12 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Fri, 12 May 2023 07:51:06 +0000
+Message-ID: <SA0PR11MB47503900A588A4B5C2010877AE759@SA0PR11MB4750.namprd11.prod.outlook.com>
+References: <20230511193617.86458-1-zbigniew.kempczynski@intel.com>
+ <20230511193617.86458-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230511193617.86458-2-zbigniew.kempczynski@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] test/prime_vgem: Remove test_userptr test
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/intel_batchbuffer: Add
+ bind/unbind debug for single bo for Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,87 +23,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-vgem objects are flagged with VM_PFNMAP which
-doesn't work with get_user_pages which is needed
-for userptr test.
-
-References: https://patchwork.freedesktop.org/patch/449741/
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
----
- tests/prime_vgem.c | 49 ----------------------------------------------
- 1 file changed, 49 deletions(-)
-
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index 9aa767c9cd..dcf9e78d4b 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -294,51 +294,6 @@ static void test_write(int vgem, int i915)
- 	munmap(ptr, scratch.size);
- }
- 
--static bool has_userptr(int i915)
--{
--	uint32_t handle = 0;
--	void *ptr;
--
--	igt_assert(posix_memalign(&ptr, 4096, 4096) == 0);
--	if (__gem_userptr(i915, ptr, 4096, 0, 0, &handle) == 0)
--		gem_close(i915, handle);
--	free(ptr);
--
--	return handle;
--}
--
--static void test_userptr(int vgem, int i915)
--{
--	struct drm_i915_gem_exec_object2 obj = {};
--	struct drm_i915_gem_execbuffer2 execbuf = {
--		.buffers_ptr = to_user_pointer(&obj),
--		.buffer_count = 1,
--	};
--	struct vgem_bo scratch;
--	uint32_t *ptr;
--
--	igt_require(has_userptr(i915));
--
--	scratch.width = 1024;
--	scratch.height = 1024;
--	scratch.bpp = 32;
--	vgem_create(vgem, &scratch);
--
--	/* vgem is acting as a simple provider of a single vma backed by pages */
--	ptr = vgem_mmap(vgem, &scratch, PROT_WRITE);
--	gem_close(vgem, scratch.handle);
--	*ptr = MI_BATCH_BUFFER_END;
--
--	gem_userptr(i915, ptr, scratch.size, 0, 0, &obj.handle);
--	if (igt_has_set_caching(intel_get_drm_devid(i915)))
--		gem_set_caching(i915, obj.handle, I915_CACHING_NONE); /* for !llc exec */
--
--	gem_execbuf(i915, &execbuf);
--	gem_close(i915, obj.handle);
--
--	munmap(ptr, scratch.size);
--}
--
- static void test_gtt(int vgem, int i915)
- {
- 	struct vgem_bo scratch;
-@@ -1141,10 +1096,6 @@ igt_main
- 	igt_subtest("basic-write")
- 		test_write(vgem, i915);
- 
--	igt_describe("Check that we wrap the vgem mmap with userptr.");
--	igt_subtest("basic-userptr")
--		test_userptr(vgem, i915);
--
- 	igt_describe("Examine access path through GTT.");
- 	igt_subtest("basic-gtt") {
- 		gem_require_mappable_ggtt(i915);
--- 
-2.39.0
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGlndC1kZXYgPGlndC1kZXYt
+Ym91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBaYmlnbmlldw0KPiBL
+ZW1wY3p5bnNraQ0KPiBTZW50OiAxMiBNYXkgMjAyMyAwMTowNg0KPiBUbzogaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRDSCBpLWctdCAxLzJd
+IGxpYi9pbnRlbF9iYXRjaGJ1ZmZlcjogQWRkIGJpbmQvdW5iaW5kIGRlYnVnDQo+IGZvciBzaW5n
+bGUgYm8gZm9yIFhlDQo+IA0KPiBXZSdyZSBzdGlsbCBpbiBlYXJseSBwaGFzZSBvZiBpbnRlZ3Jh
+dGluZyBpbnRlbC1iYiBpbmZyYSB3aXRoIFhlIHNvIGRlYnVnZ2luZw0KPiBpbmZvcm1hdGlvbiBh
+Ym91dCBiaW5kL3VuYmluZCBtaWdodCBiZSBoYW5keS4gQmluZGluZyBwYXRoIGZvciBzaW5nbGUv
+bXVsdGlwbGUNCj4gZGlmZmVycyBzbyBsZXRzIGFkZCBpdCBmb3Igc2luZ2xlIGNhc2UgYXMgaXQg
+d2FzIG1pc3Npbmcgbm93Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWE
+c2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IENjOiBLYW1pbCBLb25pZWN6
+bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQo+IC0tLQ0KPiAgbGliL2ludGVs
+X2JhdGNoYnVmZmVyLmMgfCA3ICsrKysrKysNCj4gIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlv
+bnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS9saWIvaW50ZWxfYmF0Y2hidWZmZXIuYyBiL2xpYi9p
+bnRlbF9iYXRjaGJ1ZmZlci5jIGluZGV4DQo+IDU0NWQxNzA1NDguLjE0ZWQ4MDU3ZTggMTAwNjQ0
+DQo+IC0tLSBhL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jDQo+ICsrKyBiL2xpYi9pbnRlbF9iYXRj
+aGJ1ZmZlci5jDQo+IEBAIC0xMzEzLDggKzEzMTMsMTEgQEAgc3RhdGljIHZvaWQgX191bmJpbmRf
+eGVfb2JqZWN0cyhzdHJ1Y3QgaW50ZWxfYmIgKmliYikNCj4gIAkJCQkgaWJiLT5udW1fb2JqZWN0
+cywgc3luY3MsIDIpOw0KPiAgCQlmcmVlKGJpbmRfb3BzKTsNCj4gIAl9IGVsc2Ugew0KPiArCQlp
+Z3RfZGVidWcoImJpbmQ6IFVOTUFQXG4iKTsNCj4gIAkJeGVfdm1fdW5iaW5kX2FzeW5jKGliYi0+
+ZmQsIGliYi0+dm1faWQsIDAsIDAsDQo+ICAJCQkJICAgaWJiLT5iYXRjaF9vZmZzZXQsIGliYi0+
+c2l6ZSwgc3luY3MsIDIpOw0KPiArCQlpZ3RfZGVidWcoIiAgb2Zmc2V0OiAlbGx4LCBzaXplOiAl
+bGx4XG4iLA0KPiArCQkJICAobG9uZyBsb25nKWliYi0+YmF0Y2hfb2Zmc2V0LCAobG9uZyBsb25n
+KWliYi0+c2l6ZSk7DQo+ICAJfQ0KPiAgCXJldCA9IHN5bmNvYmpfd2FpdF9lcnIoaWJiLT5mZCwg
+JnN5bmNzWzFdLmhhbmRsZSwgMSwgSU5UNjRfTUFYLCAwKTsNCj4gIAlpZ3RfYXNzZXJ0X2VxKHJl
+dCwgMCk7DQo+IEBAIC0yMzI2LDggKzIzMjksMTIgQEAgX194ZV9iYl9leGVjKHN0cnVjdCBpbnRl
+bF9iYiAqaWJiLCB1aW50NjRfdCBmbGFncywNCj4gYm9vbCBzeW5jKQ0KPiAgCQkJCSBpYmItPm51
+bV9vYmplY3RzLCBzeW5jcywgMSk7DQo+ICAJCWZyZWUoYmluZF9vcHMpOw0KPiAgCX0gZWxzZSB7
+DQo+ICsJCWlndF9kZWJ1ZygiYmluZDogTUFQXG4iKTsNCj4gIAkJeGVfdm1fYmluZF9hc3luYyhp
+YmItPmZkLCBpYmItPnZtX2lkLCAwLCBpYmItPmhhbmRsZSwgMCwNCj4gIAkJCQkgaWJiLT5iYXRj
+aF9vZmZzZXQsIGliYi0+c2l6ZSwgc3luY3MsIDEpOw0KPiArCQlpZ3RfZGVidWcoIiAgaGFuZGxl
+OiAldSwgb2Zmc2V0OiAlbGx4LCBzaXplOiAlbGx4XG4iLA0KPiArCQkJICBpYmItPmhhbmRsZSwg
+KGxvbmcgbG9uZylpYmItPmJhdGNoX29mZnNldCwNCj4gKwkJCSAgKGxvbmcgbG9uZylpYmItPnNp
+emUpOw0KPiAgCX0NCj4gIAlpYmItPnhlX2JvdW5kID0gdHJ1ZTsNCj4gDQo+IC0tDQo+IDIuMzQu
+MQ0KDQpBY2tlZC1ieTogSmFuZ2EgUmFodWwgS3VtYXIgPGphbmdhLnJhaHVsLmt1bWFyQGludGVs
+LmNvbT4NCg0KVGhhbmtzLA0KUmFodWwNCg0K
