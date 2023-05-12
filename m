@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1146201560736707012=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Yang, Fei" <fei.yang@intel.com>
-Date: Fri, 12 May 2023 20:26:06 -0000
-Message-ID: <168392316661.26102.11907925345110530435@emeril.freedesktop.org>
-References: <20230512175108.1171586-1-fei.yang@intel.com>
-In-Reply-To: <20230512175108.1171586-1-fei.yang@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9n?=
- =?utf-8?q?em=5Fcreate=3A_exercise_gem=5Fcreate=5Fext=5Fset=5Fpat?=
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Date: Fri, 12 May 2023 20:52:53 -0000
+Message-ID: <168392477307.26101.10714113852836062579@emeril.freedesktop.org>
+References: <20230512183512.57843-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20230512183512.57843-1-kamil.konieczny@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBVc2Ug?=
+ =?utf-8?q?new_procps_library_libproc2?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,229 +23,92 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1146201560736707012==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+=3D=3D Series Details =3D=3D
 
-== Series Details ==
+Series: Use new procps library libproc2
+URL   : https://patchwork.freedesktop.org/series/117699/
+State : failure
 
-Series: test/gem_create: exercise gem_create_ext_set_pat
-URL   : https://patchwork.freedesktop.org/series/117695/
-State : success
+=3D=3D Summary =3D=3D
 
-== Summary ==
+IGT patchset build failed on latest successful build
+a482779488f11c432d7ddcb1980691ab1603f356 lib/drmtest: Add function drm_reop=
+en_driver()
 
-CI Bug Log - changes from CI_DRM_13143 -> IGTPW_8952
-====================================================
+ninja: Entering directory `/opt/igt/build'
+[1/1051] Generating version.h with a custom command.
+[2/1049] Linking static target lib/libigt-i915_intel_memory_region_c.a.
+[3/1049] Linking static target lib/libigt-i915_intel_decode_c.a.
+[4/1049] Linking static target lib/libigt-igt_collection_c.a.
+[5/1049] Linking static target lib/libigt-i915_i915_blt_c.a.
+[6/1049] Linking static target lib/libigt-igt_debugfs_c.a.
+[7/1049] Linking static target lib/libigt-igt_device_scan_c.a.
+[8/1049] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
+FAILED: lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o=20
+cc -Ilib/76b5a35@@igt-igt_aux_c@sta -Ilib -I../../../usr/src/igt-gpu-tools/=
+lib -I../../../usr/src/igt-gpu-tools/include -I../../../usr/src/igt-gpu-too=
+ls/include/drm-uapi -I../../../usr/src/igt-gpu-tools/include/linux-uapi -I.=
+./../../usr/src/igt-gpu-tools/lib/stubs/syscalls -I. -I../../../usr/src/igt=
+-gpu-tools/ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-=
+linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/u=
+sr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/i=
+nclude/x86_64-linux-gnu -I/usr/include/valgrind -I/usr/include -fdiagnostic=
+s-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra=
+ -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 =
+-Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-f=
+allthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribu=
+te -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-def=
+inition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wun=
+initialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-f=
+ield-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sig=
+n-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=
+=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -W=
+error=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=
+=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dse=
+quence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-mallo=
+c -fno-builtin-calloc -fPIC -pthread '-DIGT_DATADIR=3D"/opt/igt/share/igt-g=
+pu-tools"' '-DIGT_SRCDIR=3D"/usr/src/igt-gpu-tools/tests"' '-DIGT_LOG_DOMAI=
+N=3D"igt_aux"' -MD -MQ 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o' -MF 'li=
+b/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o.d' -o 'lib/76b5a35@@igt-igt_aux_c@=
+sta/igt_aux.c.o' -c ../../../usr/src/igt-gpu-tools/lib/igt_aux.c
+../../../usr/src/igt-gpu-tools/lib/igt_aux.c: In function =E2=80=98open_pro=
+cess=E2=80=99:
+../../../usr/src/igt-gpu-tools/lib/igt_aux.c:1235:55: error: macro "igt_ass=
+ert" passed 2 arguments, but takes just 1
+ 1235 |  igt_assert(prcs->proc !=3D NULL, "procps open failed\n");
+      |                                                       ^
+In file included from ../../../usr/src/igt-gpu-tools/lib/drmtest.h:39,
+                 from ../../../usr/src/igt-gpu-tools/lib/igt_aux.c:66:
+../../../usr/src/igt-gpu-tools/lib/igt_core.h:675: note: macro "igt_assert"=
+ defined here
+  675 | #define igt_assert(expr) \
+      |=20
+../../../usr/src/igt-gpu-tools/lib/igt_aux.c:1235:2: error: =E2=80=98igt_as=
+sert=E2=80=99 undeclared (first use in this function)
+ 1235 |  igt_assert(prcs->proc !=3D NULL, "procps open failed\n");
+      |  ^~~~~~~~~~
+../../../usr/src/igt-gpu-tools/lib/igt_aux.c:1235:2: note: each undeclared =
+identifier is reported only once for each function it appears in
+../../../usr/src/igt-gpu-tools/lib/igt_aux.c: In function =E2=80=98close_pr=
+ocess=E2=80=99:
+../../../usr/src/igt-gpu-tools/lib/igt_aux.c:1257:15: warning: passing argu=
+ment 1 of =E2=80=98freeproc=E2=80=99 from incompatible pointer type [-Winco=
+mpatible-pointer-types]
+ 1257 |  freeproc(prcs->proc);
+      |           ~~~~^~~~~~
+      |               |
+      |               PROCTAB * {aka struct PROCTAB *}
+In file included from ../../../usr/src/igt-gpu-tools/lib/igt_aux.c:56:
+/usr/include/proc/readproc.h:264:30: note: expected =E2=80=98proc_t *=E2=80=
+=99 {aka =E2=80=98struct proc_t *=E2=80=99} but argument is of type =E2=80=
+=98PROCTAB *=E2=80=99 {aka =E2=80=98struct PROCTAB *=E2=80=99}
+  264 | extern void freeproc(proc_t* p);
+      |                      ~~~~~~~~^
+../../../usr/src/igt-gpu-tools/lib/igt_aux.c: In function =E2=80=98get_proc=
+ess_ids=E2=80=99:
+../../../usr/src/igt-gpu-tools/lib/igt_aux.c:1277:6: error: =E2=80=98proc_i=
+nfo=E2=80=99 undeclared (first use in this function)
+ 1277 |  if (proc_info) {
+      |      ^~~~~~~~~
+ninja: build stopped: subcommand failed.
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html
-
-Participating hosts (38 -> 36)
-------------------------------
-
-  Missing    (2): fi-apl-guc fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8952 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_backlight@basic-brightness@edp-1:
-    - bat-rplp-1:         NOTRUN -> [ABORT][1] ([i915#7077])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-rpls-2:         [PASS][2] -> [TIMEOUT][3] ([i915#6794] / [i915#7392])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rpls-2/igt@i915_selftest@live@mman.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-2/igt@i915_selftest@live@mman.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-1:         [PASS][4] -> [ABORT][5] ([i915#4983] / [i915#7911] / [i915#7920] / [i915#7953])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rpls-1/igt@i915_selftest@live@requests.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-1/igt@i915_selftest@live@requests.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - bat-rpls-2:         NOTRUN -> [ABORT][6] ([i915#6687])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:
-    - bat-dg2-8:          [PASS][7] -> [FAIL][8] ([i915#7932])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@requests:
-    - {bat-mtlp-8}:       [ABORT][9] ([i915#4983] / [i915#7920] / [i915#7953]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  
-#### Warnings ####
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         [ABORT][11] ([i915#4579] / [i915#8260]) -> [SKIP][12] ([i915#3555] / [i915#4579])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
-  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
-  [i915#7392]: https://gitlab.freedesktop.org/drm/intel/issues/7392
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
-  [i915#8260]: https://gitlab.freedesktop.org/drm/intel/issues/8260
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7286 -> IGTPW_8952
-
-  CI-20190529: 20190529
-  CI_DRM_13143: 222ff19f23b0bd6aca0b52001d69699f78f5a206 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8952: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html
-  IGT_7286: a482779488f11c432d7ddcb1980691ab1603f356 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@gem_create@create-ext-set-pat
--igt@kms_fb_coherency@memset-crc
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html
-
---===============1146201560736707012==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>test/gem_create: exercise gem_create_ext_set_pat</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117695/">https://patchwork.freedesktop.org/series/117695/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13143 -&gt; IGTPW_8952</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html</p>
-<h2>Participating hosts (38 -&gt; 36)</h2>
-<p>Missing    (2): fi-apl-guc fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8952 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness@edp-1:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rpls-2/igt@i915_selftest@live@mman.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-2/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@requests:<ul>
-<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_setmode@basic-clone-single-crtc:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8260">i915#8260</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7286 -&gt; IGTPW_8952</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13143: 222ff19f23b0bd6aca0b52001d69699f78f5a206 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8952: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html<br />
-  IGT_7286: a482779488f11c432d7ddcb1980691ab1603f356 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@gem_create@create-ext-set-pat<br />
--igt@kms_fb_coherency@memset-crc</p>
-
-</body>
-</html>
-
---===============1146201560736707012==--
