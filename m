@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============2420795287144721248=="
+ boundary="===============3021197231926632870=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 12 May 2023 13:20:10 -0000
-Message-ID: <168389761048.26102.7811012101691627543@emeril.freedesktop.org>
+Date: Fri, 12 May 2023 11:35:07 -0000
+Message-ID: <168389130740.26100.5782379720715508024@emeril.freedesktop.org>
 References: <20230509104203.1163545-1-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230509104203.1163545-1-mauro.chehab@linux.intel.com>
 Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGFu?=
@@ -23,7 +23,7 @@ To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2420795287144721248==
+--===============3021197231926632870==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -68,9 +68,9 @@ Possible new issues
 
 #### Possible regressions ####
 
-  * igt@gem_busy@busy@all-engines:
-    - bat-adls-5:         NOTRUN -> [DMESG-WARN][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@gem_busy@busy@all-engines.html
+  * igt@kms_addfb_basic@bad-pitch-0:
+    - bat-adls-5:         NOTRUN -> [DMESG-WARN][1] +37 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_addfb_basic@bad-pitch-0.html
 
   
 Known issues
@@ -129,78 +129,74 @@ Known issues
     - bat-rpls-1:         NOTRUN -> [ABORT][14] ([i915#6687] / [i915#7953] / [i915#7978])
    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
 
-  * igt@kms_addfb_basic@bad-pitch-0:
-    - bat-adls-5:         NOTRUN -> [DMESG-WARN][15] ([i915#8449]) +36 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_addfb_basic@bad-pitch-0.html
-
   * igt@kms_chamelium_hpd@dp-hpd-fast:
-    - bat-adls-5:         NOTRUN -> [SKIP][16] ([i915#7828]) +8 similar issues
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_chamelium_hpd@dp-hpd-fast.html
+    - bat-adls-5:         NOTRUN -> [SKIP][15] ([i915#7828]) +8 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_chamelium_hpd@dp-hpd-fast.html
 
   * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][17] ([fdo#109271]) +15 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-    - bat-adls-5:         NOTRUN -> [SKIP][18] ([i915#4103]) +1 similar issue
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][16] ([fdo#109271]) +15 similar issues
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+    - bat-adls-5:         NOTRUN -> [SKIP][17] ([i915#4103]) +1 similar issue
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
 
   * igt@kms_force_connector_basic@force-load-detect:
-    - bat-adls-5:         NOTRUN -> [SKIP][19] ([fdo#109285])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_force_connector_basic@force-load-detect.html
+    - bat-adls-5:         NOTRUN -> [SKIP][18] ([fdo#109285])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_force_connector_basic@force-load-detect.html
 
   * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-11:         NOTRUN -> [SKIP][20] ([i915#1845] / [i915#5354]) +2 similar issues
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][19] ([i915#1845] / [i915#5354]) +2 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
 
   * igt@kms_psr@primary_page_flip:
-    - bat-adls-5:         NOTRUN -> [SKIP][21] ([i915#668]) +3 similar issues
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_psr@primary_page_flip.html
+    - bat-adls-5:         NOTRUN -> [SKIP][20] ([i915#668]) +3 similar issues
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_psr@primary_page_flip.html
 
   * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         NOTRUN -> [SKIP][22] ([i915#3555] / [i915#4579])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-    - bat-adls-5:         NOTRUN -> [SKIP][23] ([i915#3555] / [i915#4579])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][24] ([fdo#109271] / [i915#4579])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/fi-kbl-soraka/igt@kms_setmode@basic-clone-single-crtc.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][21] ([i915#3555] / [i915#4579])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
+    - bat-adls-5:         NOTRUN -> [SKIP][22] ([i915#3555] / [i915#4579])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][23] ([fdo#109271] / [i915#4579])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/fi-kbl-soraka/igt@kms_setmode@basic-clone-single-crtc.html
 
   * igt@prime_vgem@basic-read:
-    - bat-adls-5:         NOTRUN -> [SKIP][25] ([fdo#109295] / [i915#3291]) +2 similar issues
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@prime_vgem@basic-read.html
+    - bat-adls-5:         NOTRUN -> [SKIP][24] ([fdo#109295] / [i915#3291]) +2 similar issues
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@prime_vgem@basic-read.html
 
   * igt@prime_vgem@basic-userptr:
-    - bat-adls-5:         NOTRUN -> [SKIP][26] ([fdo#109295] / [i915#3301])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@prime_vgem@basic-userptr.html
+    - bat-adls-5:         NOTRUN -> [SKIP][25] ([fdo#109295] / [i915#3301])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@prime_vgem@basic-userptr.html
 
   
 #### Possible fixes ####
 
   * igt@i915_module_load@load:
-    - bat-adls-5:         [ABORT][27] -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7286/bat-adls-5/igt@i915_module_load@load.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@i915_module_load@load.html
+    - bat-adls-5:         [ABORT][26] -> [PASS][27]
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7286/bat-adls-5/igt@i915_module_load@load.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@i915_module_load@load.html
 
   * igt@i915_selftest@live@requests:
-    - {bat-mtlp-8}:       [ABORT][29] ([i915#4983] / [i915#7920] / [i915#7953]) -> [PASS][30]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7286/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-mtlp-8/igt@i915_selftest@live@requests.html
+    - {bat-mtlp-8}:       [ABORT][28] ([i915#4983] / [i915#7920] / [i915#7953]) -> [PASS][29]
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7286/bat-mtlp-8/igt@i915_selftest@live@requests.html
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-mtlp-8/igt@i915_selftest@live@requests.html
 
   * igt@i915_selftest@live@reset:
-    - bat-rpls-1:         [ABORT][31] ([i915#4983] / [i915#7461] / [i915#7953] / [i915#8347] / [i915#8384]) -> [PASS][32]
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7286/bat-rpls-1/igt@i915_selftest@live@reset.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-rpls-1/igt@i915_selftest@live@reset.html
+    - bat-rpls-1:         [ABORT][30] ([i915#4983] / [i915#7461] / [i915#7953] / [i915#8347] / [i915#8384]) -> [PASS][31]
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7286/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-rpls-1/igt@i915_selftest@live@reset.html
 
   * igt@i915_selftest@live@workarounds:
-    - bat-adlm-1:         [DMESG-FAIL][33] ([i915#7904]) -> [PASS][34]
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7286/bat-adlm-1/igt@i915_selftest@live@workarounds.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adlm-1/igt@i915_selftest@live@workarounds.html
+    - bat-adlm-1:         [DMESG-FAIL][32] ([i915#7904]) -> [PASS][33]
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7286/bat-adlm-1/igt@i915_selftest@live@workarounds.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adlm-1/igt@i915_selftest@live@workarounds.html
 
   
 #### Warnings ####
 
   * igt@kms_psr@primary_mmap_gtt:
-    - bat-rplp-1:         [ABORT][35] -> [SKIP][36] ([i915#1072])
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7286/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+    - bat-rplp-1:         [ABORT][34] -> [SKIP][35] ([i915#1072])
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7286/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -240,7 +236,6 @@ Known issues
   [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
   [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
   [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
-  [i915#8449]: https://gitlab.freedesktop.org/drm/intel/issues/8449
 
 
 Build changes
@@ -265,7 +260,7 @@ Testlist changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/index.html
 
---===============2420795287144721248==
+--===============3021197231926632870==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -311,8 +306,8 @@ Content-Transfer-Encoding: 7bit
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
-<li>igt@gem_busy@busy@all-engines:<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@gem_busy@busy@all-engines.html">DMESG-WARN</a></li>
+<li>igt@kms_addfb_basic@bad-pitch-0:<ul>
+<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> +37 similar issues</li>
 </ul>
 </li>
 </ul>
@@ -390,12 +385,6 @@ Content-Transfer-Encoding: 7bit
 <p>igt@i915_suspend@basic-s3-without-i915:</p>
 <ul>
 <li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@bad-pitch-0:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8949/bat-adls-5/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8449">i915#8449</a>) +36 similar issues</li>
 </ul>
 </li>
 <li>
@@ -512,5 +501,5 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============2420795287144721248==--
+--===============3021197231926632870==--
 
