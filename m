@@ -1,24 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 57E8910E696
- for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 12:06:25 +0000 (UTC)
-Message-ID: <265919ae-a4f2-eb65-c422-c1c444e32725@linux.intel.com>
-Date: Fri, 12 May 2023 13:06:21 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBB0010E696
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 12:10:45 +0000 (UTC)
+Date: Fri, 12 May 2023 14:10:41 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230512121041.z5mw4qasnbw6de6h@kamilkon-desk1>
+References: <20230502051921.2183579-1-fei.yang@intel.com>
+ <20230502051921.2183579-2-fei.yang@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-References: <20230506005528.1890922-1-umesh.nerlige.ramappa@intel.com>
- <20230506005528.1890922-16-umesh.nerlige.ramappa@intel.com>
- <04a7f10e-99ff-e1cd-0fe7-6f63d9e896d0@linux.intel.com>
- <ZFwXTD5H9uDZBo/8@orsosgc001.jf.intel.com>
- <575087db-30d4-e9d7-8ed0-529c651e3e53@linux.intel.com>
- <ZF0vLUFghg4yTrgl@orsosgc001.jf.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <ZF0vLUFghg4yTrgl@orsosgc001.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 15/15] intel_gpu_top: Add gt specific
- values to header in interactive mode
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230502051921.2183579-2-fei.yang@intel.com>
+Subject: Re: [igt-dev] [PATCH v2 1/1] test/gem_create: exercise
+ gem_create_ext_set_pat
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,106 +21,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: fei.yang@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Fei,
 
-On 11/05/2023 19:08, Umesh Nerlige Ramappa wrote:
-> On Thu, May 11, 2023 at 08:50:58AM +0100, Tvrtko Ursulin wrote:
->>
->> On 10/05/2023 23:14, Umesh Nerlige Ramappa wrote:
->>> On Wed, May 10, 2023 at 09:46:53AM +0100, Tvrtko Ursulin wrote:
->>>>
->>>> On 06/05/2023 01:55, Umesh Nerlige Ramappa wrote:
->>>>> If -p options is specified in INTERACTIVE mode, show the gt specific
->>>>> values.
->>>>>
->>>>> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
->>>>> ---
->>>>>  tools/intel_gpu_top.c | 33 +++++++++++++++++++++++++--------
->>>>>  1 file changed, 25 insertions(+), 8 deletions(-)
->>>>>
->>>>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->>>>> index 0acc81e9e..7018499c7 100644
->>>>> --- a/tools/intel_gpu_top.c
->>>>> +++ b/tools/intel_gpu_top.c
->>>>> @@ -1988,14 +1988,31 @@ print_header(const struct igt_device_card 
->>>>> *card,
->>>>>      lines = print_header_token(" @ ", lines, con_w, con_h, &rem,
->>>>>                     "%s", card->card);
->>>>> -    lines = print_header_token(" - ", lines, con_w, con_h, &rem,
->>>>> -                   "%s/%s MHz",
->>>>> -                   freq_items[1].buf,
->>>>> -                   freq_items[0].buf);
->>>>> -
->>>>> -    lines = print_header_token("; ", lines, con_w, con_h, &rem,
->>>>> -                   "%s%% RC6",
->>>>> -                   rc6_items[0].buf);
->>>>> +    if (class_view || engines->num_gts == 1) {
->>>>> +        lines = print_header_token(" - ", lines, con_w, con_h, &rem,
->>>>> +                       "%s/%s MHz",
->>>>> +                       freq_items[1].buf,
->>>>> +                       freq_items[0].buf);
->>>>> +
->>>>> +        lines = print_header_token("; ", lines, con_w, con_h, &rem,
->>>>> +                       "%s%% RC6",
->>>>> +                       rc6_items[0].buf);
->>>>> +    } else {
->>>>> +        for (i = 0; i < engines->num_gts; i++) {
->>>>> +            const char *cont = !i ? " - ": "; ";
->>>>> +
->>>>> +            lines = print_header_token(cont, lines, con_w, con_h, 
->>>>> &rem,
->>>>> +                           "%s/%s MHz(gt%d)",
->>>>> +                           freq_items_gt[i * 4 + 1].buf,
->>>>> +                           freq_items_gt[i * 4 + 0].buf,
->>>>> +                           i);
->>>>> +
->>>>> +            lines = print_header_token("; ", lines, con_w, con_h, 
->>>>> &rem,
->>>>> +                           "%s%% RC6(gt%d)",
->>>>> +                           rc6_items_gt[i * 3].buf,
->>>>> +                           i);
->>>>> +        }
->>>>> +    }
->>>>>      if (engines->r_gpu.present) {
->>>>>          lines = print_header_token("; ", lines, con_w, con_h,
->>>>
->>>> Series was a super easy read, thanks for that! Pretty much r-b for 
->>>> the lot from me but I would just like to visualize how the output 
->>>> looks like first. Would you mind pasting some examples for all the 
->>>> modes?
->>>
->>> great, I am attaching the outputs in text files for MTL and DG2 here, 
->>> hope that is visible. If not, I can paste it in pastebin.
->>>
->>> MTL shows the gt specific changes. DG2 is single tile, so there are 
->>> no changes.
->>
->> Thank you, looks solid.
->>
->> Only thing I would change is use uppercase GTn in the interactive 
->> output, so it matches with -l and -c.
->>
->> Is it also doable to make the formatting of those labels match like 
->> "MHz GT0", or "GT0 MHz"?
+On 2023-05-01 at 22:19:21 -0700, fei.yang@intel.com wrote:
+> From: Fei Yang <fei.yang@intel.com>
 > 
-> MHz GT0 looks good to me because that will keep the unit adjacent to the 
-> value. Something like this:
+> Gem_create uAPI has been extended with capability of setting PAT index.
+> Add a test case to exercise this new extension.
 > 
-> intel-gpu-top: Intel Meteorlake (Gen12) @ /dev/dri/card0 -      0/     0 
-> MHz GT0;      100% RC6 GT0;      0/     0 MHz GT1;      100% RC6 GT1;  
-> 0.00/ 4.98 W;        0 irqs/s
-> 
-> Let me know if that's not what you meant.
+> Signed-off-by: Fei Yang <fei.yang@intel.com>
+> ---
+>  include/drm-uapi/i915_drm.h | 33 ++++++++++++++++++++++++++++
 
-Yes that looks better and is more consistent with the other output 
-modes. It all looks good to me. For the series:
+Please use lib/i915/i915_drm_local.h
+until this land in drm-tip ./include/uapi/drm/i915_drm.h
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+After it will land there send separate patch to sync uapi.
 
 Regards,
+Kamil
 
-Tvrtko
+>  tests/i915/gem_create.c     | 44 +++++++++++++++++++++++++++++++++++++
+>  2 files changed, 77 insertions(+)
+> 
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index a0876ee4..1fdaa372 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -3499,6 +3499,7 @@ struct drm_i915_gem_create_ext {
+>  	 */
+>  #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
+>  #define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
+> +#define I915_GEM_CREATE_EXT_SET_PAT 2
+>  	__u64 extensions;
+>  };
+>  
+> @@ -3616,6 +3617,38 @@ struct drm_i915_gem_create_ext_protected_content {
+>  /* ID of the protected content session managed by i915 when PXP is active */
+>  #define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
+>  
+> +/**
+> + * struct drm_i915_gem_create_ext_set_pat - The
+> + * I915_GEM_CREATE_EXT_SET_PAT extension.
+> + *
+> + * If this extension is provided, the specified caching policy (PAT index) is
+> + * applied to the buffer object.
+> + *
+> + * Below is an example on how to create an object with specific caching policy:
+> + *
+> + * .. code-block:: C
+> + *
+> + *      struct drm_i915_gem_create_ext_set_pat set_pat_ext = {
+> + *              .base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
+> + *              .pat_index = 0,
+> + *      };
+> + *      struct drm_i915_gem_create_ext create_ext = {
+> + *              .size = PAGE_SIZE,
+> + *              .extensions = (uintptr_t)&set_pat_ext,
+> + *      };
+> + *
+> + *      int err = ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
+> + *      if (err) ...
+> + */
+> +struct drm_i915_gem_create_ext_set_pat {
+> +	/** @base: Extension link. See struct i915_user_extension. */
+> +	struct i915_user_extension base;
+> +	/** @pat_index: PAT index to be set */
+> +	__u32 pat_index;
+> +	/** @rsvd: reserved for future use */
+> +	__u32 rsvd;
+> +};
+> +
+>  #if defined(__cplusplus)
+>  }
+>  #endif
+> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+> index c719ab6c..20c71afb 100644
+> --- a/tests/i915/gem_create.c
+> +++ b/tests/i915/gem_create.c
+> @@ -537,6 +537,45 @@ static void create_ext_placement_each(int fd)
+>  	free(regions);
+>  }
+>  
+> +static void create_ext_set_pat(int fd)
+> +{
+> +	struct drm_i915_gem_create_ext_set_pat setparam_pat = {
+> +		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
+> +		.pat_index = 0,
+> +	};
+> +	struct drm_i915_gem_create_ext_set_pat setparam_inv_pat = {
+> +		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
+> +		.pat_index = 65,
+> +	};
+> +	struct drm_i915_gem_caching arg;
+> +	uint64_t size;
+> +	uint32_t handle;
+> +	int ret;
+> +
+> +	size = PAGE_SIZE;
+> +
+> +	ret = __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base);
+> +
+> +	/* Returning -EFAULT indicates set_pat extension is not supported */
+> +	if (ret == -EFAULT)
+> +		igt_info("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
+> +	igt_assert(ret == 0);
+> +
+> +	/* {set|get}_caching ioctl should fail for objects created with set_pat */
+> +	igt_assert(__gem_set_caching(fd, handle, 1) == -EOPNOTSUPP);
+> +
+> +	memset(&arg, 0, sizeof(arg));
+> +	arg.handle = handle;
+> +	igt_assert(ioctl(fd, DRM_IOCTL_I915_GEM_GET_CACHING, &arg) < 0 &&
+> +		   errno == EOPNOTSUPP);
+> +
+> +	/* gem_create should fail with -EINVAL if invalid pat index specified */
+> +	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle, &setparam_inv_pat.base),
+> +		      -EINVAL);
+> +
+> +	gem_close(fd, handle);
+> +}
+> +
+>  static bool supports_needs_cpu_access(int fd)
+>  {
+>  	struct drm_i915_gem_memory_class_instance regions[] = {
+> @@ -897,6 +936,11 @@ igt_main
+>  	igt_subtest("create-ext-placement-all")
+>  		create_ext_placement_all(fd);
+>  
+> +	igt_describe("Create objects with specific cache setting"
+> +		     " create-ext.");
+> +	igt_subtest("create-ext-set-pat")
+> +		    create_ext_set_pat(fd);
+> +
+>  	igt_describe("Verify the basic functionally and expected ABI contract around I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS");
+>  	igt_subtest("create-ext-cpu-access-sanity-check") {
+>  		igt_require(supports_needs_cpu_access(fd));
+> -- 
+> 2.25.1
+> 
