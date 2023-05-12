@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0626910E23B
- for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 18:15:51 +0000 (UTC)
-From: "Yang, Fei" <fei.yang@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 12 May 2023 18:15:29 +0000
-Message-ID: <BYAPR11MB2567A0FC85928DD0745728DC9A759@BYAPR11MB2567.namprd11.prod.outlook.com>
-References: <20230502051921.2183579-1-fei.yang@intel.com>
- <20230502051921.2183579-2-fei.yang@intel.com>
- <20230512121041.z5mw4qasnbw6de6h@kamilkon-desk1>
-In-Reply-To: <20230512121041.z5mw4qasnbw6de6h@kamilkon-desk1>
-Content-Language: en-US
-Content-Type: multipart/alternative;
- boundary="_000_BYAPR11MB2567A0FC85928DD0745728DC9A759BYAPR11MB2567namp_"
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E7F010E270
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 18:35:26 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 12 May 2023 20:35:11 +0200
+Message-Id: <20230512183512.57843-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20230512183512.57843-1-kamil.konieczny@linux.intel.com>
+References: <20230512183512.57843-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 1/1] test/gem_create: exercise
- gem_create_ext_set_pat
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] Use the new procps library libproc2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,416 +18,531 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Craig Small <csmall@dropbear.xyz>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_000_BYAPR11MB2567A0FC85928DD0745728DC9A759BYAPR11MB2567namp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+From: Craig Small <csmall@dropbear.xyz>
 
-> On 2023-05-01 at 22:19:21 -0700, fei.yang@intel.com wrote:
->> From: Fei Yang <fei.yang@intel.com>
->>
->> Gem_create uAPI has been extended with capability of setting PAT index.
->> Add a test case to exercise this new extension.
->>
->> Signed-off-by: Fei Yang <fei.yang@intel.com>
->> ---
->>  include/drm-uapi/i915_drm.h | 33 ++++++++++++++++++++++++++++
->
-> Please use lib/i915/i915_drm_local.h
+Added support for new libproc2.
 
-Updated in v3, https://patchwork.freedesktop.org/series/117695/
+[Corrected some errors pointed by checkpatch.pl,
+ add linux includes in #ifdef __linux__ section]
+v2: changed to igt_fork_helper and added error print [Kamil]
+v3: removed include <limits.h> pointed by Mauro [Kamil]
 
-> until this land in drm-tip ./include/uapi/drm/i915_drm.h
->
-> After it will land there send separate patch to sync uapi.
+Signed-off-by: Craig Small <csmall@dropbear.xyz>
+---
+ lib/igt_aux.c   | 246 +++++++++++++++++++++++++++++++++++++++---------
+ lib/meson.build |   7 +-
+ meson.build     |  10 +-
+ 3 files changed, 219 insertions(+), 44 deletions(-)
 
-Will do.
-
-> Regards,
-> Kamil
->
->>  tests/i915/gem_create.c     | 44 +++++++++++++++++++++++++++++++++++++
->>  2 files changed, 77 insertions(+)
->>
->> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
->> index a0876ee4..1fdaa372 100644
->> --- a/include/drm-uapi/i915_drm.h
->> +++ b/include/drm-uapi/i915_drm.h
->> @@ -3499,6 +3499,7 @@ struct drm_i915_gem_create_ext {
->>         */
->>  #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
->>  #define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
->> +#define I915_GEM_CREATE_EXT_SET_PAT 2
->>        __u64 extensions;
->>  };
->>
->> @@ -3616,6 +3617,38 @@ struct drm_i915_gem_create_ext_protected_content =
-{
->>  /* ID of the protected content session managed by i915 when PXP is acti=
-ve */
->>  #define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
->>
->> +/**
->> + * struct drm_i915_gem_create_ext_set_pat - The
->> + * I915_GEM_CREATE_EXT_SET_PAT extension.
->> + *
->> + * If this extension is provided, the specified caching policy (PAT ind=
-ex) is
->> + * applied to the buffer object.
->> + *
->> + * Below is an example on how to create an object with specific caching=
- policy:
->> + *
->> + * .. code-block:: C
->> + *
->> + *      struct drm_i915_gem_create_ext_set_pat set_pat_ext =3D {
->> + *              .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },
->> + *              .pat_index =3D 0,
->> + *      };
->> + *      struct drm_i915_gem_create_ext create_ext =3D {
->> + *              .size =3D PAGE_SIZE,
->> + *              .extensions =3D (uintptr_t)&set_pat_ext,
->> + *      };
->> + *
->> + *      int err =3D ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ex=
-t);
->> + *      if (err) ...
->> + */
->> +struct drm_i915_gem_create_ext_set_pat {
->> +     /** @base: Extension link. See struct i915_user_extension. */
->> +     struct i915_user_extension base;
->> +     /** @pat_index: PAT index to be set */
->> +     __u32 pat_index;
->> +     /** @rsvd: reserved for future use */
->> +     __u32 rsvd;
->> +};
->> +
->>  #if defined(__cplusplus)
->>  }
->>  #endif
->> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
->> index c719ab6c..20c71afb 100644
->> --- a/tests/i915/gem_create.c
->> +++ b/tests/i915/gem_create.c
->> @@ -537,6 +537,45 @@ static void create_ext_placement_each(int fd)
->>        free(regions);
->>  }
->>
->> +static void create_ext_set_pat(int fd)
->> +{
->> +     struct drm_i915_gem_create_ext_set_pat setparam_pat =3D {
->> +             .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },
->> +             .pat_index =3D 0,
->> +     };
->> +     struct drm_i915_gem_create_ext_set_pat setparam_inv_pat =3D {
->> +             .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },
->> +             .pat_index =3D 65,
->> +     };
->> +     struct drm_i915_gem_caching arg;
->> +     uint64_t size;
->> +     uint32_t handle;
->> +     int ret;
->> +
->> +     size =3D PAGE_SIZE;
->> +
->> +     ret =3D __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base=
-);
->> +
->> +     /* Returning -EFAULT indicates set_pat extension is not supported =
-*/
->> +     if (ret =3D=3D -EFAULT)
->> +             igt_info("I915_GEM_CREATE_EXT_SET_PAT is not supported\n")=
-;
->> +     igt_assert(ret =3D=3D 0);
->> +
->> +     /* {set|get}_caching ioctl should fail for objects created with se=
-t_pat */
->> +     igt_assert(__gem_set_caching(fd, handle, 1) =3D=3D -EOPNOTSUPP);
->> +
->> +     memset(&arg, 0, sizeof(arg));
->> +     arg.handle =3D handle;
->> +     igt_assert(ioctl(fd, DRM_IOCTL_I915_GEM_GET_CACHING, &arg) < 0 &&
->> +                errno =3D=3D EOPNOTSUPP);
->> +
->> +     /* gem_create should fail with -EINVAL if invalid pat index specif=
-ied */
->> +     igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle, &setparam_in=
-v_pat.base),
->> +                   -EINVAL);
->> +
->> +     gem_close(fd, handle);
->> +}
->> +
->>  static bool supports_needs_cpu_access(int fd)
->>  {
->>        struct drm_i915_gem_memory_class_instance regions[] =3D {
->> @@ -897,6 +936,11 @@ igt_main
->>        igt_subtest("create-ext-placement-all")
->>                create_ext_placement_all(fd);
->>
->> +     igt_describe("Create objects with specific cache setting"
->> +                  " create-ext.");
->> +     igt_subtest("create-ext-set-pat")
->> +                 create_ext_set_pat(fd);
->> +
->>        igt_describe("Verify the basic functionally and expected ABI cont=
-ract around I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS");
->>        igt_subtest("create-ext-cpu-access-sanity-check") {
->>                igt_require(supports_needs_cpu_access(fd));
->> --
->> 2.25.1
-
-
---_000_BYAPR11MB2567A0FC85928DD0745728DC9A759BYAPR11MB2567namp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof ContentPasted0 Conten=
-tPasted1 ContentPasted2 ContentPasted3">
-&gt; On 2023-05-01 at 22:19:21 -0700, fei.yang@intel.com wrote:
-<div class=3D"ContentPasted0">&gt;&gt; From: Fei Yang &lt;fei.yang@intel.co=
-m&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; Gem_create uAPI has been extended wi=
-th capability of setting PAT index.</div>
-<div class=3D"ContentPasted0">&gt;&gt; Add a test case to exercise this new=
- extension.</div>
-<div class=3D"ContentPasted0">&gt;&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; Signed-off-by: Fei Yang &lt;fei.yang=
-@intel.com&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; ---</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp;include/drm-uapi/i915_drm.h | =
-33 ++++++++++++++++++++++++++++</div>
-<div class=3D"ContentPasted0">&gt;</div>
-<div class=3D"ContentPasted0">&gt; Please use lib/i915/i915_drm_local.h</di=
-v>
-<div><br class=3D"ContentPasted0">
-</div>
-<div class=3D"ContentPasted0">Updated in v3, https://patchwork.freedesktop.=
-org/series/117695/</div>
-<div><br class=3D"ContentPasted0">
-</div>
-<div class=3D"ContentPasted0">&gt; until this land in drm-tip ./include/uap=
-i/drm/i915_drm.h</div>
-<div class=3D"ContentPasted0">&gt;</div>
-<div class=3D"ContentPasted0">&gt; After it will land there send separate p=
-atch to sync uapi.</div>
-<div><br class=3D"ContentPasted0">
-</div>
-<div class=3D"ContentPasted0">Will do.</div>
-<div><br class=3D"ContentPasted0">
-</div>
-<div class=3D"ContentPasted0">&gt; Regards,</div>
-<div class=3D"ContentPasted0">&gt; Kamil</div>
-<div class=3D"ContentPasted0">&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp;tests/i915/gem_create.c &nbsp;=
- &nbsp; | 44 +++++++++++++++++++++++++++++++++++++</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp;2 files changed, 77 insertions=
-(+)</div>
-<div class=3D"ContentPasted0">&gt;&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; diff --git a/include/drm-uapi/i915_d=
-rm.h b/include/drm-uapi/i915_drm.h</div>
-<div class=3D"ContentPasted0">&gt;&gt; index a0876ee4..1fdaa372 100644</div=
->
-<div class=3D"ContentPasted0">&gt;&gt; --- a/include/drm-uapi/i915_drm.h</d=
-iv>
-<div class=3D"ContentPasted0">&gt;&gt; +++ b/include/drm-uapi/i915_drm.h</d=
-iv>
-<div class=3D"ContentPasted0">&gt;&gt; @@ -3499,6 +3499,7 @@ struct drm_i91=
-5_gem_create_ext {</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp; */</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp;#define I915_GEM_CREATE_EXT_ME=
-MORY_REGIONS 0</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp;#define I915_GEM_CREATE_EXT_PR=
-OTECTED_CONTENT 1</div>
-<div class=3D"ContentPasted0">&gt;&gt; +#define I915_GEM_CREATE_EXT_SET_PAT=
- 2</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp;__u64 ext=
-ensions;</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp;};</div>
-<div class=3D"ContentPasted0">&gt;&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; @@ -3616,6 +3617,38 @@ struct drm_i9=
-15_gem_create_ext_protected_content {</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp;/* ID of the protected content=
- session managed by i915 when PXP is active */</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp;#define I915_PROTECTED_CONTENT=
-_DEFAULT_SESSION 0xf</div>
-&gt;&gt;
-<div class=3D"ContentPasted1">&gt;&gt; +/**</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * struct drm_i915_gem_create_ext_s=
-et_pat - The</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * I915_GEM_CREATE_EXT_SET_PAT exte=
-nsion.</div>
-<div class=3D"ContentPasted1">&gt;&gt; + *</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * If this extension is provided, t=
-he specified caching policy (PAT index) is</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * applied to the buffer object.</d=
-iv>
-<div class=3D"ContentPasted1">&gt;&gt; + *</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * Below is an example on how to cr=
-eate an object with specific caching policy:</div>
-<div class=3D"ContentPasted1">&gt;&gt; + *</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * .. code-block:: C</div>
-<div class=3D"ContentPasted1">&gt;&gt; + *</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp; &nbsp; &nbsp;struct drm_i=
-915_gem_create_ext_set_pat set_pat_ext =3D {</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
-p; &nbsp; &nbsp;.base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
-p; &nbsp; &nbsp;.pat_index =3D 0,</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp; &nbsp; &nbsp;};</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp; &nbsp; &nbsp;struct drm_i=
-915_gem_create_ext create_ext =3D {</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
-p; &nbsp; &nbsp;.size =3D PAGE_SIZE,</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
-p; &nbsp; &nbsp;.extensions =3D (uintptr_t)&amp;set_pat_ext,</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp; &nbsp; &nbsp;};</div>
-<div class=3D"ContentPasted1">&gt;&gt; + *</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp; &nbsp; &nbsp;int err =3D =
-ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &amp;create_ext);</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp; &nbsp; &nbsp;if (err) ...=
-</div>
-<div class=3D"ContentPasted1">&gt;&gt; + */</div>
-<div class=3D"ContentPasted1">&gt;&gt; +struct drm_i915_gem_create_ext_set_=
-pat {</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; /** @base: Extension=
- link. See struct i915_user_extension. */</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; struct i915_user_ext=
-ension base;</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; /** @pat_index: PAT =
-index to be set */</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; __u32 pat_index;</di=
-v>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; /** @rsvd: reserved =
-for future use */</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; __u32 rsvd;</div>
-<div class=3D"ContentPasted1">&gt;&gt; +};</div>
-<div class=3D"ContentPasted1">&gt;&gt; +</div>
-<div class=3D"ContentPasted1">&gt;&gt; &nbsp;#if defined(__cplusplus)</div>
-<div class=3D"ContentPasted1">&gt;&gt; &nbsp;}</div>
-<div class=3D"ContentPasted1">&gt;&gt; &nbsp;#endif</div>
-<div class=3D"ContentPasted1">&gt;&gt; diff --git a/tests/i915/gem_create.c=
- b/tests/i915/gem_create.c</div>
-<div class=3D"ContentPasted1">&gt;&gt; index c719ab6c..20c71afb 100644</div=
->
-<div class=3D"ContentPasted1">&gt;&gt; --- a/tests/i915/gem_create.c</div>
-<div class=3D"ContentPasted1">&gt;&gt; +++ b/tests/i915/gem_create.c</div>
-<div class=3D"ContentPasted1">&gt;&gt; @@ -537,6 +537,45 @@ static void cre=
-ate_ext_placement_each(int fd)</div>
-&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp;free(regions);
-<div class=3D"ContentPasted2">&gt;&gt; &nbsp;}</div>
-<div class=3D"ContentPasted2">&gt;&gt;</div>
-<div class=3D"ContentPasted2">&gt;&gt; +static void create_ext_set_pat(int =
-fd)</div>
-<div class=3D"ContentPasted2">&gt;&gt; +{</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; struct drm_i915_gem_=
-create_ext_set_pat setparam_pat =3D {</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; .pat_index =3D 0,</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; };</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; struct drm_i915_gem_=
-create_ext_set_pat setparam_inv_pat =3D {</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; .pat_index =3D 65,</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; };</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; struct drm_i915_gem_=
-caching arg;</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; uint64_t size;</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; uint32_t handle;</di=
-v>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; int ret;</div>
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; size =3D PAGE_SIZE;<=
-/div>
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; ret =3D __gem_create=
-_ext(fd, &amp;size, 0, &amp;handle, &amp;setparam_pat.base);</div>
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; /* Returning -EFAULT=
- indicates set_pat extension is not supported */</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; if (ret =3D=3D -EFAU=
-LT)</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; igt_info(&quot;I915_GEM_CREATE_EXT_SET_PAT is not supported\n&quot;=
-);</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; igt_assert(ret =3D=
-=3D 0);</div>
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; /* {set|get}_caching=
- ioctl should fail for objects created with set_pat */</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; igt_assert(__gem_set=
-_caching(fd, handle, 1) =3D=3D -EOPNOTSUPP);</div>
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; memset(&amp;arg, 0, =
-sizeof(arg));</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; arg.handle =3D handl=
-e;</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; igt_assert(ioctl(fd,=
- DRM_IOCTL_I915_GEM_GET_CACHING, &amp;arg) &lt; 0 &amp;&amp;</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; &nbsp; &nbsp;errno =3D=3D EOPNOTSUPP);</div>
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; /* gem_create should=
- fail with -EINVAL if invalid pat index specified */</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; igt_assert_eq(__gem_=
-create_ext(fd, &amp;size, 0, &amp;handle, &amp;setparam_inv_pat.base),</div=
->
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; &nbsp; &nbsp; &nbsp; -EINVAL);</div>
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; gem_close(fd, handle=
-);</div>
-<div class=3D"ContentPasted2">&gt;&gt; +}</div>
-&gt;&gt; +
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp;static bool supports_needs_cpu=
-_access(int fd)</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp;{</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp;struct dr=
-m_i915_gem_memory_class_instance regions[] =3D {</div>
-<div class=3D"ContentPasted3">&gt;&gt; @@ -897,6 +936,11 @@ igt_main</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp;igt_subte=
-st(&quot;create-ext-placement-all&quot;)</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &=
-nbsp; &nbsp; &nbsp;create_ext_placement_all(fd);</div>
-<div class=3D"ContentPasted3">&gt;&gt;</div>
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp; igt_describe(&quot;C=
-reate objects with specific cache setting&quot;</div>
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; &nbsp; &nbsp; &nbsp;&quot; create-ext.&quot;);</div>
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp; igt_subtest(&quot;cr=
-eate-ext-set-pat&quot;)</div>
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; &nbsp; &nbsp; create_ext_set_pat(fd);</div>
-<div class=3D"ContentPasted3">&gt;&gt; +</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp;igt_descr=
-ibe(&quot;Verify the basic functionally and expected ABI contract around I9=
-15_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS&quot;);</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp;igt_subte=
-st(&quot;create-ext-cpu-access-sanity-check&quot;) {</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &=
-nbsp; &nbsp; &nbsp;igt_require(supports_needs_cpu_access(fd));</div>
-<div class=3D"ContentPasted3">&gt;&gt; --</div>
-<div class=3D"ContentPasted3">&gt;&gt; 2.25.1</div>
-<br>
-</div>
-</body>
-</html>
-
---_000_BYAPR11MB2567A0FC85928DD0745728DC9A759BYAPR11MB2567namp_--
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 672d7d4b0..4c24b0928 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -52,8 +52,16 @@
+ #include <assert.h>
+ #include <grp.h>
+ 
+-#include <proc/readproc.h>
+-#include <libudev.h>
++#ifdef HAVE_LIBPROCPS
++#  include <proc/readproc.h>
++#else
++#  include <libproc2/pids.h>
++#endif
++
++#include <dirent.h>
++#ifdef __linux__
++#  include <libudev.h>
++#endif
+ 
+ #include "drmtest.h"
+ #include "i915_drm.h"
+@@ -1217,6 +1225,7 @@ void igt_unlock_mem(void)
+  */
+ int igt_is_process_running(const char *comm)
+ {
++#if HAVE_LIBPROCPS
+ 	PROCTAB *proc;
+ 	proc_t *proc_info;
+ 	bool found = false;
+@@ -1235,6 +1244,26 @@ int igt_is_process_running(const char *comm)
+ 
+ 	closeproc(proc);
+ 	return found;
++#else
++	enum pids_item Item[] = { PIDS_CMD };
++	struct pids_info *info = NULL;
++	struct pids_stack *stack;
++	char *pid_comm;
++	bool found = false;
++
++	if (procps_pids_new(&info, Item, 1) < 0)
++		return false;
++	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
++		pid_comm = PIDS_VAL(0, str, stack, info);
++		if (!strncasecmp(pid_comm, comm, strlen(pid_comm))) {
++			found = true;
++			break;
++		}
++	}
++
++	procps_pids_unref(&info);
++	return found;
++#endif
+ }
+ 
+ /**
+@@ -1251,6 +1280,7 @@ int igt_is_process_running(const char *comm)
+  */
+ int igt_terminate_process(int sig, const char *comm)
+ {
++#if HAVE_LIBPROCPS
+ 	PROCTAB *proc;
+ 	proc_t *proc_info;
+ 	int err = 0;
+@@ -1272,6 +1302,28 @@ int igt_terminate_process(int sig, const char *comm)
+ 
+ 	closeproc(proc);
+ 	return err;
++#else
++	enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD };
++	struct pids_info *info = NULL;
++	struct pids_stack *stack;
++	char *pid_comm;
++	int pid;
++	int err = 0;
++
++	if (procps_pids_new(&info, Items, 2) < 0)
++		return -errno;
++	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
++		pid = PIDS_VAL(0, s_int, stack, info);
++		pid_comm = PIDS_VAL(1, str, stack, info);
++		if (!strncasecmp(pid_comm, comm, strlen(pid_comm))) {
++			if (kill(pid, sig) < 0)
++				err = -errno;
++			break;
++		}
++	}
++	procps_pids_unref(&info);
++	return err;
++#endif
+ }
+ 
+ struct pinfo {
+@@ -1341,9 +1393,9 @@ igt_show_stat_header(void)
+ }
+ 
+ static void
+-igt_show_stat(proc_t *info, int *state, const char *fn)
++igt_show_stat(const pid_t tid, const char *cmd, int *state, const char *fn)
+ {
+-	struct pinfo p = { .pid = info->tid, .comm = info->cmd, .fn = fn };
++	struct pinfo p = { .pid = tid, .comm = cmd, .fn = fn };
+ 
+ 	if (!*state)
+ 		igt_show_stat_header();
+@@ -1353,7 +1405,7 @@ igt_show_stat(proc_t *info, int *state, const char *fn)
+ }
+ 
+ static void
+-__igt_lsof_fds(proc_t *proc_info, int *state, char *proc_path, const char *dir)
++__igt_lsof_fds(const pid_t tid, const char *cmd, int *state, char *proc_path, const char *dir)
+ {
+ 	struct dirent *d;
+ 	struct stat st;
+@@ -1400,7 +1452,7 @@ again:
+ 		dirn = dirname(copy_fd_lnk);
+ 
+ 		if (!strncmp(dir, dirn, strlen(dir)))
+-			igt_show_stat(proc_info, state, fd_lnk);
++			igt_show_stat(tid, cmd, state, fd_lnk);
+ 
+ 		free(copy_fd_lnk);
+ 		free(fd_lnk);
+@@ -1416,13 +1468,13 @@ again:
+ static void
+ __igt_lsof(const char *dir)
+ {
+-	PROCTAB *proc;
+-	proc_t *proc_info;
+-
+ 	char path[30];
+ 	char *name_lnk;
+ 	struct stat st;
+ 	int state = 0;
++#ifdef HAVE_LIBPROCPS
++	PROCTAB *proc;
++	proc_t *proc_info;
+ 
+ 	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
+ 	igt_assert(proc != NULL);
+@@ -1443,19 +1495,56 @@ __igt_lsof(const char *dir)
+ 		name_lnk[read] = '\0';
+ 
+ 		if (!strncmp(dir, name_lnk, strlen(dir)))
+-			igt_show_stat(proc_info, &state, name_lnk);
++			igt_show_stat(proc_info->tid, proc_info->cmd, &state, name_lnk);
+ 
+ 		/* check also fd, seems that lsof(8) doesn't look here */
+ 		memset(path, 0, sizeof(path));
+ 		snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid);
+ 
+-		__igt_lsof_fds(proc_info, &state, path, dir);
++		__igt_lsof_fds(proc_info->tid, proc_info->cmd, &state, path, dir);
+ 
+ 		free(name_lnk);
+ 		freeproc(proc_info);
+ 	}
+ 
+ 	closeproc(proc);
++#else
++	enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD };
++	struct pids_info *info = NULL;
++	struct pids_stack *stack;
++
++	if (procps_pids_new(&info, Items, 2) < 0)
++		return;
++	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
++		ssize_t read;
++		int tid = PIDS_VAL(0, s_int, stack, info);
++		char *pid_comm = PIDS_VAL(1, str, stack, info);
++
++		/* check current working directory */
++		memset(path, 0, sizeof(path));
++		snprintf(path, sizeof(path), "/proc/%d/cwd", tid);
++
++		if (stat(path, &st) == -1)
++			continue;
++
++		name_lnk = malloc(st.st_size + 1);
++
++		igt_assert((read = readlink(path, name_lnk, st.st_size + 1)));
++		name_lnk[read] = '\0';
++
++		if (!strncmp(dir, name_lnk, strlen(dir)))
++			igt_show_stat(tid, pid_comm, &state, name_lnk);
++
++		/* check also fd, seems that lsof(8) doesn't look here */
++		memset(path, 0, sizeof(path));
++		snprintf(path, sizeof(path), "/proc/%d/fd", tid);
++
++		__igt_lsof_fds(tid, pid_comm, &state, path, dir);
++
++		free(name_lnk);
++	}
++	procps_pids_unref(&info);
++#endif
+ }
+ 
+ /**
+@@ -1490,7 +1579,7 @@ igt_lsof(const char *dpath)
+ 	free(sanitized);
+ }
+ 
+-static void pulseaudio_unload_module(proc_t *proc_info)
++static void pulseaudio_unload_module(const uid_t euid, const gid_t egid)
+ {
+ 	struct igt_helper_process pa_proc = {};
+ 	char xdg_dir[PATH_MAX];
+@@ -1498,14 +1587,14 @@ static void pulseaudio_unload_module(proc_t *proc_info)
+ 	struct passwd *pw;
+ 
+ 	igt_fork_helper(&pa_proc) {
+-		pw = getpwuid(proc_info->euid);
++		pw = getpwuid(euid);
+ 		homedir = pw->pw_dir;
+-		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
++		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", euid);
+ 
+ 		igt_info("Request pulseaudio to stop using audio device\n");
+ 
+-		setgid(proc_info->egid);
+-		setuid(proc_info->euid);
++		setgid(egid);
++		setuid(euid);
+ 		clearenv();
+ 		setenv("HOME", homedir, 1);
+ 		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
+@@ -1524,10 +1613,13 @@ static void pipewire_reserve_wait(void)
+ 	char xdg_dir[PATH_MAX];
+ 	const char *homedir;
+ 	struct passwd *pw;
+-	proc_t *proc_info;
+-	PROCTAB *proc;
++	int tid = 0, euid, egid;
+ 
++#ifdef HAVE_LIBPROCPS
+ 	igt_fork_helper(&pw_reserve_proc) {
++		proc_t *proc_info;
++		PROCTAB *proc;
++
+ 		igt_info("Preventing pipewire-pulse to use the audio drivers\n");
+ 
+ 		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
+@@ -1540,19 +1632,45 @@ static void pipewire_reserve_wait(void)
+ 		}
+ 		closeproc(proc);
+ 
++		tid = proc_info->tid;
++		euid = proc_info->euid;
++		egid = proc_info->egid;
++		freeproc(proc_info);
++#else
++	igt_fork_helper(&pw_reserve_proc) {
++		enum pids_item Items[] = { PIDS_ID_PID, PIDS_ID_EUID, PIDS_ID_EGID };
++		enum rel_items { EU_PID, EU_EUID, EU_EGID };
++		struct pids_info *info = NULL;
++		struct pids_stack *stack;
++
++		igt_info("Preventing pipewire-pulse to use the audio drivers\n");
++
++		if (procps_pids_new(&info, Items, 3) < 0) {
++			igt_info("error getting pids: %d\n", errno);
++			exit(errno);
++		}
++		while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
++			tid = PIDS_VAL(EU_PID, s_int, stack, info);
++			if (pipewire_pulse_pid == tid)
++				break;
++		}
++		euid = PIDS_VAL(EU_EUID, s_int, stack, info);
++		egid = PIDS_VAL(EU_EGID, s_int, stack, info);
++		procps_pids_unref(&info);
++#endif
++
+ 		/* Sanity check: if it can't find the process, it means it has gone */
+-		if (pipewire_pulse_pid != proc_info->tid)
++		if (pipewire_pulse_pid != tid)
+ 			exit(0);
+ 
+-		pw = getpwuid(proc_info->euid);
++		pw = getpwuid(euid);
+ 		homedir = pw->pw_dir;
+-		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
+-		setgid(proc_info->egid);
+-		setuid(proc_info->euid);
++		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", euid);
++		setgid(egid);
++		setuid(euid);
+ 		clearenv();
+ 		setenv("HOME", homedir, 1);
+ 		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
+-		freeproc(proc_info);
+ 
+ 		/*
+ 		 * pw-reserve will run in background. It will only exit when
+@@ -1570,9 +1688,7 @@ static void pipewire_reserve_wait(void)
+ int pipewire_pulse_start_reserve(void)
+ {
+ 	bool is_pw_reserve_running = false;
+-	proc_t *proc_info;
+ 	int attempts = 0;
+-	PROCTAB *proc;
+ 
+ 	if (!pipewire_pulse_pid)
+ 		return 0;
+@@ -1584,6 +1700,10 @@ int pipewire_pulse_start_reserve(void)
+ 	 * pipewire version 0.3.50 or upper.
+ 	 */
+ 	for (attempts = 0; attempts < PIPEWIRE_RESERVE_MAX_TIME; attempts++) {
++#ifdef HAVE_LIBPROCPS
++		PROCTAB *proc;
++		proc_t *proc_info;
++
+ 		usleep(1000);
+ 		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
+ 		igt_assert(proc != NULL);
+@@ -1598,6 +1718,24 @@ int pipewire_pulse_start_reserve(void)
+ 			freeproc(proc_info);
+ 		}
+ 		closeproc(proc);
++#else
++		enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD };
++		struct pids_info *info = NULL;
++		struct pids_stack *stack;
++
++		usleep(1000);
++
++		if (procps_pids_new(&info, Items, 2) < 0)
++			return 1;
++		while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
++			if (!strcmp(PIDS_VAL(1, str, stack, info), "pw-reserve")) {
++				is_pw_reserve_running = true;
++				pipewire_pw_reserve_pid = PIDS_VAL(0, s_int, stack, info);
++				break;
++			}
++		}
++		procps_pids_unref(&info);
++#endif
+ 		if (is_pw_reserve_running)
+ 			break;
+ 	}
+@@ -1645,7 +1783,7 @@ void pipewire_pulse_stop_reserve(void)
+  * If the check fails, it means that the process can simply be killed.
+  */
+ static int
+-__igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
++__igt_lsof_audio_and_kill_proc(const pid_t tid, const char *cmd, const uid_t euid, const gid_t egid, char *proc_path)
+ {
+ 	const char *audio_dev = "/dev/snd/";
+ 	char path[PATH_MAX * 2];
+@@ -1670,10 +1808,10 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
+ 	 * 2) unload/unbind the the audio driver(s);
+ 	 * 3) stop the pw-reserve thread.
+ 	 */
+-	if (!strcmp(proc_info->cmd, "pipewire-pulse")) {
++	if (!strcmp(cmd, "pipewire-pulse")) {
+ 		igt_info("process %d (%s) is using audio device. Should be requested to stop using them.\n",
+-			 proc_info->tid, proc_info->cmd);
+-		pipewire_pulse_pid = proc_info->tid;
++			 tid, cmd);
++		pipewire_pulse_pid = tid;
+ 		return 0;
+ 	}
+ 	/*
+@@ -1685,9 +1823,9 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
+ 	 * will respawn them. So, just ignore here, they'll honor pw-reserve,
+ 	 * when the time comes.
+ 	 */
+-	if (!strcmp(proc_info->cmd, "pipewire-media-session"))
++	if (!strcmp(cmd, "pipewire-media-session"))
+ 		return 0;
+-	if (!strcmp(proc_info->cmd, "wireplumber"))
++	if (!strcmp(cmd, "wireplumber"))
+ 		return 0;
+ 
+ 	dp = opendir(proc_path);
+@@ -1723,22 +1861,22 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
+ 		 * enough to unbind audio modules and won't cause race issues
+ 		 * with systemd trying to reload it.
+ 		 */
+-		if (!strcmp(proc_info->cmd, "pulseaudio")) {
+-			pulseaudio_unload_module(proc_info);
++		if (!strcmp(cmd, "pulseaudio")) {
++			pulseaudio_unload_module(euid, egid);
+ 			break;
+ 		}
+ 
+ 		/* For all other processes, just kill them */
+ 		igt_info("process %d (%s) is using audio device. Should be terminated.\n",
+-				proc_info->tid, proc_info->cmd);
++				tid, cmd);
+ 
+-		if (kill(proc_info->tid, SIGTERM) < 0) {
++		if (kill(tid, SIGTERM) < 0) {
+ 			igt_info("Fail to terminate %s (pid: %d) with SIGTERM\n",
+-				proc_info->cmd, proc_info->tid);
+-			if (kill(proc_info->tid, SIGABRT) < 0) {
++				cmd, tid);
++			if (kill(tid, SIGABRT) < 0) {
+ 				fail++;
+ 				igt_info("Fail to terminate %s (pid: %d) with SIGABRT\n",
+-					proc_info->cmd, proc_info->tid);
++					cmd, tid);
+ 			}
+ 		}
+ 
+@@ -1760,23 +1898,47 @@ int
+ igt_lsof_kill_audio_processes(void)
+ {
+ 	char path[PATH_MAX];
++	int fail = 0;
++
++#ifdef HAVE_LIBPROCPS
+ 	proc_t *proc_info;
+ 	PROCTAB *proc;
+-	int fail = 0;
+ 
+ 	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
+ 	igt_assert(proc != NULL);
+ 	pipewire_pulse_pid = 0;
+-
+ 	while ((proc_info = readproc(proc, NULL))) {
+ 		if (snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid) < 1)
+ 			fail++;
+ 		else
+-			fail += __igt_lsof_audio_and_kill_proc(proc_info, path);
++			fail += __igt_lsof_audio_and_kill_proc(proc_info->tid, proc_info->cmd, proc_info->euid, proc_info->egid, path);
+ 
+ 		freeproc(proc_info);
+ 	}
+ 	closeproc(proc);
++#else
++	enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD, PIDS_ID_EUID, PIDS_ID_EGID };
++	enum rel_items { EU_PID, EU_CMD, EU_EUID, EU_EGID };
++	struct pids_info *info = NULL;
++	struct pids_stack *stack;
++	pid_t tid;
++
++	if (procps_pids_new(&info, Items, 4) < 0)
++		return 1;
++	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
++		tid = PIDS_VAL(EU_PID, s_int, stack, info);
++
++		if (snprintf(path, sizeof(path), "/proc/%d/fd", tid) < 1)
++			fail++;
++		else
++			fail += __igt_lsof_audio_and_kill_proc(tid,
++				PIDS_VAL(EU_CMD, str, stack, info),
++				PIDS_VAL(EU_EUID, s_int, stack, info),
++				PIDS_VAL(EU_EGID, s_int, stack, info),
++				path);
++	}
++	procps_pids_unref(&info);
++#endif
+ 
+ 	return fail;
+ }
+diff --git a/lib/meson.build b/lib/meson.build
+index b21c252b5..48a27a612 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -113,7 +113,6 @@ lib_deps = [
+ 	libdrm,
+ 	libdw,
+ 	libkmod,
+-	libprocps,
+ 	libudev,
+ 	math,
+ 	pciaccess,
+@@ -177,6 +176,12 @@ if chamelium.found()
+ 	lib_sources += 'monitor_edids/monitor_edids_helper.c'
+ endif
+ 
++if libprocps.found()
++	lib_deps += libprocps
++else
++	lib_deps += libproc2
++endif
++
+ if get_option('srcdir') != ''
+     srcdir = join_paths(get_option('srcdir'), 'tests')
+ else
+diff --git a/meson.build b/meson.build
+index 036217844..98acc8daf 100644
+--- a/meson.build
++++ b/meson.build
+@@ -124,7 +124,15 @@ build_info += 'With libdrm: ' + ','.join(libdrm_info)
+ 
+ pciaccess = dependency('pciaccess', version : '>=0.10')
+ libkmod = dependency('libkmod')
+-libprocps = dependency('libprocps', required : true)
++libprocps = dependency('libprocps', required : false)
++libproc2 = dependency('libproc2', required : false)
++if libprocps.found()
++  config.set('HAVE_LIBPROCPS', 1)
++elif libproc2.found()
++  config.set('HAVE_LIBPROC2', 1)
++else
++  error('Either libprocps or libproc2 is required')
++endif
+ 
+ libunwind = dependency('libunwind', required : get_option('libunwind'))
+ build_info += 'With libunwind: @0@'.format(libunwind.found())
+-- 
+2.39.2
