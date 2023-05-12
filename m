@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E7F010E270
- for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 18:35:26 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 12 May 2023 20:35:11 +0200
-Message-Id: <20230512183512.57843-2-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20230512183512.57843-1-kamil.konieczny@linux.intel.com>
-References: <20230512183512.57843-1-kamil.konieczny@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1146201560736707012=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] Use the new procps library libproc2
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Yang, Fei" <fei.yang@intel.com>
+Date: Fri, 12 May 2023 20:26:06 -0000
+Message-ID: <168392316661.26102.11907925345110530435@emeril.freedesktop.org>
+References: <20230512175108.1171586-1-fei.yang@intel.com>
+In-Reply-To: <20230512175108.1171586-1-fei.yang@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9n?=
+ =?utf-8?q?em=5Fcreate=3A_exercise_gem=5Fcreate=5Fext=5Fset=5Fpat?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,531 +17,235 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Craig Small <csmall@dropbear.xyz>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Craig Small <csmall@dropbear.xyz>
+--===============1146201560736707012==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Added support for new libproc2.
+== Series Details ==
 
-[Corrected some errors pointed by checkpatch.pl,
- add linux includes in #ifdef __linux__ section]
-v2: changed to igt_fork_helper and added error print [Kamil]
-v3: removed include <limits.h> pointed by Mauro [Kamil]
+Series: test/gem_create: exercise gem_create_ext_set_pat
+URL   : https://patchwork.freedesktop.org/series/117695/
+State : success
 
-Signed-off-by: Craig Small <csmall@dropbear.xyz>
----
- lib/igt_aux.c   | 246 +++++++++++++++++++++++++++++++++++++++---------
- lib/meson.build |   7 +-
- meson.build     |  10 +-
- 3 files changed, 219 insertions(+), 44 deletions(-)
+== Summary ==
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index 672d7d4b0..4c24b0928 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -52,8 +52,16 @@
- #include <assert.h>
- #include <grp.h>
- 
--#include <proc/readproc.h>
--#include <libudev.h>
-+#ifdef HAVE_LIBPROCPS
-+#  include <proc/readproc.h>
-+#else
-+#  include <libproc2/pids.h>
-+#endif
-+
-+#include <dirent.h>
-+#ifdef __linux__
-+#  include <libudev.h>
-+#endif
- 
- #include "drmtest.h"
- #include "i915_drm.h"
-@@ -1217,6 +1225,7 @@ void igt_unlock_mem(void)
-  */
- int igt_is_process_running(const char *comm)
- {
-+#if HAVE_LIBPROCPS
- 	PROCTAB *proc;
- 	proc_t *proc_info;
- 	bool found = false;
-@@ -1235,6 +1244,26 @@ int igt_is_process_running(const char *comm)
- 
- 	closeproc(proc);
- 	return found;
-+#else
-+	enum pids_item Item[] = { PIDS_CMD };
-+	struct pids_info *info = NULL;
-+	struct pids_stack *stack;
-+	char *pid_comm;
-+	bool found = false;
-+
-+	if (procps_pids_new(&info, Item, 1) < 0)
-+		return false;
-+	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-+		pid_comm = PIDS_VAL(0, str, stack, info);
-+		if (!strncasecmp(pid_comm, comm, strlen(pid_comm))) {
-+			found = true;
-+			break;
-+		}
-+	}
-+
-+	procps_pids_unref(&info);
-+	return found;
-+#endif
- }
- 
- /**
-@@ -1251,6 +1280,7 @@ int igt_is_process_running(const char *comm)
-  */
- int igt_terminate_process(int sig, const char *comm)
- {
-+#if HAVE_LIBPROCPS
- 	PROCTAB *proc;
- 	proc_t *proc_info;
- 	int err = 0;
-@@ -1272,6 +1302,28 @@ int igt_terminate_process(int sig, const char *comm)
- 
- 	closeproc(proc);
- 	return err;
-+#else
-+	enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD };
-+	struct pids_info *info = NULL;
-+	struct pids_stack *stack;
-+	char *pid_comm;
-+	int pid;
-+	int err = 0;
-+
-+	if (procps_pids_new(&info, Items, 2) < 0)
-+		return -errno;
-+	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-+		pid = PIDS_VAL(0, s_int, stack, info);
-+		pid_comm = PIDS_VAL(1, str, stack, info);
-+		if (!strncasecmp(pid_comm, comm, strlen(pid_comm))) {
-+			if (kill(pid, sig) < 0)
-+				err = -errno;
-+			break;
-+		}
-+	}
-+	procps_pids_unref(&info);
-+	return err;
-+#endif
- }
- 
- struct pinfo {
-@@ -1341,9 +1393,9 @@ igt_show_stat_header(void)
- }
- 
- static void
--igt_show_stat(proc_t *info, int *state, const char *fn)
-+igt_show_stat(const pid_t tid, const char *cmd, int *state, const char *fn)
- {
--	struct pinfo p = { .pid = info->tid, .comm = info->cmd, .fn = fn };
-+	struct pinfo p = { .pid = tid, .comm = cmd, .fn = fn };
- 
- 	if (!*state)
- 		igt_show_stat_header();
-@@ -1353,7 +1405,7 @@ igt_show_stat(proc_t *info, int *state, const char *fn)
- }
- 
- static void
--__igt_lsof_fds(proc_t *proc_info, int *state, char *proc_path, const char *dir)
-+__igt_lsof_fds(const pid_t tid, const char *cmd, int *state, char *proc_path, const char *dir)
- {
- 	struct dirent *d;
- 	struct stat st;
-@@ -1400,7 +1452,7 @@ again:
- 		dirn = dirname(copy_fd_lnk);
- 
- 		if (!strncmp(dir, dirn, strlen(dir)))
--			igt_show_stat(proc_info, state, fd_lnk);
-+			igt_show_stat(tid, cmd, state, fd_lnk);
- 
- 		free(copy_fd_lnk);
- 		free(fd_lnk);
-@@ -1416,13 +1468,13 @@ again:
- static void
- __igt_lsof(const char *dir)
- {
--	PROCTAB *proc;
--	proc_t *proc_info;
--
- 	char path[30];
- 	char *name_lnk;
- 	struct stat st;
- 	int state = 0;
-+#ifdef HAVE_LIBPROCPS
-+	PROCTAB *proc;
-+	proc_t *proc_info;
- 
- 	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
- 	igt_assert(proc != NULL);
-@@ -1443,19 +1495,56 @@ __igt_lsof(const char *dir)
- 		name_lnk[read] = '\0';
- 
- 		if (!strncmp(dir, name_lnk, strlen(dir)))
--			igt_show_stat(proc_info, &state, name_lnk);
-+			igt_show_stat(proc_info->tid, proc_info->cmd, &state, name_lnk);
- 
- 		/* check also fd, seems that lsof(8) doesn't look here */
- 		memset(path, 0, sizeof(path));
- 		snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid);
- 
--		__igt_lsof_fds(proc_info, &state, path, dir);
-+		__igt_lsof_fds(proc_info->tid, proc_info->cmd, &state, path, dir);
- 
- 		free(name_lnk);
- 		freeproc(proc_info);
- 	}
- 
- 	closeproc(proc);
-+#else
-+	enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD };
-+	struct pids_info *info = NULL;
-+	struct pids_stack *stack;
-+
-+	if (procps_pids_new(&info, Items, 2) < 0)
-+		return;
-+	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-+		ssize_t read;
-+		int tid = PIDS_VAL(0, s_int, stack, info);
-+		char *pid_comm = PIDS_VAL(1, str, stack, info);
-+
-+		/* check current working directory */
-+		memset(path, 0, sizeof(path));
-+		snprintf(path, sizeof(path), "/proc/%d/cwd", tid);
-+
-+		if (stat(path, &st) == -1)
-+			continue;
-+
-+		name_lnk = malloc(st.st_size + 1);
-+
-+		igt_assert((read = readlink(path, name_lnk, st.st_size + 1)));
-+		name_lnk[read] = '\0';
-+
-+		if (!strncmp(dir, name_lnk, strlen(dir)))
-+			igt_show_stat(tid, pid_comm, &state, name_lnk);
-+
-+		/* check also fd, seems that lsof(8) doesn't look here */
-+		memset(path, 0, sizeof(path));
-+		snprintf(path, sizeof(path), "/proc/%d/fd", tid);
-+
-+		__igt_lsof_fds(tid, pid_comm, &state, path, dir);
-+
-+		free(name_lnk);
-+	}
-+	procps_pids_unref(&info);
-+#endif
- }
- 
- /**
-@@ -1490,7 +1579,7 @@ igt_lsof(const char *dpath)
- 	free(sanitized);
- }
- 
--static void pulseaudio_unload_module(proc_t *proc_info)
-+static void pulseaudio_unload_module(const uid_t euid, const gid_t egid)
- {
- 	struct igt_helper_process pa_proc = {};
- 	char xdg_dir[PATH_MAX];
-@@ -1498,14 +1587,14 @@ static void pulseaudio_unload_module(proc_t *proc_info)
- 	struct passwd *pw;
- 
- 	igt_fork_helper(&pa_proc) {
--		pw = getpwuid(proc_info->euid);
-+		pw = getpwuid(euid);
- 		homedir = pw->pw_dir;
--		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
-+		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", euid);
- 
- 		igt_info("Request pulseaudio to stop using audio device\n");
- 
--		setgid(proc_info->egid);
--		setuid(proc_info->euid);
-+		setgid(egid);
-+		setuid(euid);
- 		clearenv();
- 		setenv("HOME", homedir, 1);
- 		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
-@@ -1524,10 +1613,13 @@ static void pipewire_reserve_wait(void)
- 	char xdg_dir[PATH_MAX];
- 	const char *homedir;
- 	struct passwd *pw;
--	proc_t *proc_info;
--	PROCTAB *proc;
-+	int tid = 0, euid, egid;
- 
-+#ifdef HAVE_LIBPROCPS
- 	igt_fork_helper(&pw_reserve_proc) {
-+		proc_t *proc_info;
-+		PROCTAB *proc;
-+
- 		igt_info("Preventing pipewire-pulse to use the audio drivers\n");
- 
- 		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
-@@ -1540,19 +1632,45 @@ static void pipewire_reserve_wait(void)
- 		}
- 		closeproc(proc);
- 
-+		tid = proc_info->tid;
-+		euid = proc_info->euid;
-+		egid = proc_info->egid;
-+		freeproc(proc_info);
-+#else
-+	igt_fork_helper(&pw_reserve_proc) {
-+		enum pids_item Items[] = { PIDS_ID_PID, PIDS_ID_EUID, PIDS_ID_EGID };
-+		enum rel_items { EU_PID, EU_EUID, EU_EGID };
-+		struct pids_info *info = NULL;
-+		struct pids_stack *stack;
-+
-+		igt_info("Preventing pipewire-pulse to use the audio drivers\n");
-+
-+		if (procps_pids_new(&info, Items, 3) < 0) {
-+			igt_info("error getting pids: %d\n", errno);
-+			exit(errno);
-+		}
-+		while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-+			tid = PIDS_VAL(EU_PID, s_int, stack, info);
-+			if (pipewire_pulse_pid == tid)
-+				break;
-+		}
-+		euid = PIDS_VAL(EU_EUID, s_int, stack, info);
-+		egid = PIDS_VAL(EU_EGID, s_int, stack, info);
-+		procps_pids_unref(&info);
-+#endif
-+
- 		/* Sanity check: if it can't find the process, it means it has gone */
--		if (pipewire_pulse_pid != proc_info->tid)
-+		if (pipewire_pulse_pid != tid)
- 			exit(0);
- 
--		pw = getpwuid(proc_info->euid);
-+		pw = getpwuid(euid);
- 		homedir = pw->pw_dir;
--		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
--		setgid(proc_info->egid);
--		setuid(proc_info->euid);
-+		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", euid);
-+		setgid(egid);
-+		setuid(euid);
- 		clearenv();
- 		setenv("HOME", homedir, 1);
- 		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
--		freeproc(proc_info);
- 
- 		/*
- 		 * pw-reserve will run in background. It will only exit when
-@@ -1570,9 +1688,7 @@ static void pipewire_reserve_wait(void)
- int pipewire_pulse_start_reserve(void)
- {
- 	bool is_pw_reserve_running = false;
--	proc_t *proc_info;
- 	int attempts = 0;
--	PROCTAB *proc;
- 
- 	if (!pipewire_pulse_pid)
- 		return 0;
-@@ -1584,6 +1700,10 @@ int pipewire_pulse_start_reserve(void)
- 	 * pipewire version 0.3.50 or upper.
- 	 */
- 	for (attempts = 0; attempts < PIPEWIRE_RESERVE_MAX_TIME; attempts++) {
-+#ifdef HAVE_LIBPROCPS
-+		PROCTAB *proc;
-+		proc_t *proc_info;
-+
- 		usleep(1000);
- 		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
- 		igt_assert(proc != NULL);
-@@ -1598,6 +1718,24 @@ int pipewire_pulse_start_reserve(void)
- 			freeproc(proc_info);
- 		}
- 		closeproc(proc);
-+#else
-+		enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD };
-+		struct pids_info *info = NULL;
-+		struct pids_stack *stack;
-+
-+		usleep(1000);
-+
-+		if (procps_pids_new(&info, Items, 2) < 0)
-+			return 1;
-+		while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-+			if (!strcmp(PIDS_VAL(1, str, stack, info), "pw-reserve")) {
-+				is_pw_reserve_running = true;
-+				pipewire_pw_reserve_pid = PIDS_VAL(0, s_int, stack, info);
-+				break;
-+			}
-+		}
-+		procps_pids_unref(&info);
-+#endif
- 		if (is_pw_reserve_running)
- 			break;
- 	}
-@@ -1645,7 +1783,7 @@ void pipewire_pulse_stop_reserve(void)
-  * If the check fails, it means that the process can simply be killed.
-  */
- static int
--__igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
-+__igt_lsof_audio_and_kill_proc(const pid_t tid, const char *cmd, const uid_t euid, const gid_t egid, char *proc_path)
- {
- 	const char *audio_dev = "/dev/snd/";
- 	char path[PATH_MAX * 2];
-@@ -1670,10 +1808,10 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
- 	 * 2) unload/unbind the the audio driver(s);
- 	 * 3) stop the pw-reserve thread.
- 	 */
--	if (!strcmp(proc_info->cmd, "pipewire-pulse")) {
-+	if (!strcmp(cmd, "pipewire-pulse")) {
- 		igt_info("process %d (%s) is using audio device. Should be requested to stop using them.\n",
--			 proc_info->tid, proc_info->cmd);
--		pipewire_pulse_pid = proc_info->tid;
-+			 tid, cmd);
-+		pipewire_pulse_pid = tid;
- 		return 0;
- 	}
- 	/*
-@@ -1685,9 +1823,9 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
- 	 * will respawn them. So, just ignore here, they'll honor pw-reserve,
- 	 * when the time comes.
- 	 */
--	if (!strcmp(proc_info->cmd, "pipewire-media-session"))
-+	if (!strcmp(cmd, "pipewire-media-session"))
- 		return 0;
--	if (!strcmp(proc_info->cmd, "wireplumber"))
-+	if (!strcmp(cmd, "wireplumber"))
- 		return 0;
- 
- 	dp = opendir(proc_path);
-@@ -1723,22 +1861,22 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
- 		 * enough to unbind audio modules and won't cause race issues
- 		 * with systemd trying to reload it.
- 		 */
--		if (!strcmp(proc_info->cmd, "pulseaudio")) {
--			pulseaudio_unload_module(proc_info);
-+		if (!strcmp(cmd, "pulseaudio")) {
-+			pulseaudio_unload_module(euid, egid);
- 			break;
- 		}
- 
- 		/* For all other processes, just kill them */
- 		igt_info("process %d (%s) is using audio device. Should be terminated.\n",
--				proc_info->tid, proc_info->cmd);
-+				tid, cmd);
- 
--		if (kill(proc_info->tid, SIGTERM) < 0) {
-+		if (kill(tid, SIGTERM) < 0) {
- 			igt_info("Fail to terminate %s (pid: %d) with SIGTERM\n",
--				proc_info->cmd, proc_info->tid);
--			if (kill(proc_info->tid, SIGABRT) < 0) {
-+				cmd, tid);
-+			if (kill(tid, SIGABRT) < 0) {
- 				fail++;
- 				igt_info("Fail to terminate %s (pid: %d) with SIGABRT\n",
--					proc_info->cmd, proc_info->tid);
-+					cmd, tid);
- 			}
- 		}
- 
-@@ -1760,23 +1898,47 @@ int
- igt_lsof_kill_audio_processes(void)
- {
- 	char path[PATH_MAX];
-+	int fail = 0;
-+
-+#ifdef HAVE_LIBPROCPS
- 	proc_t *proc_info;
- 	PROCTAB *proc;
--	int fail = 0;
- 
- 	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
- 	igt_assert(proc != NULL);
- 	pipewire_pulse_pid = 0;
--
- 	while ((proc_info = readproc(proc, NULL))) {
- 		if (snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid) < 1)
- 			fail++;
- 		else
--			fail += __igt_lsof_audio_and_kill_proc(proc_info, path);
-+			fail += __igt_lsof_audio_and_kill_proc(proc_info->tid, proc_info->cmd, proc_info->euid, proc_info->egid, path);
- 
- 		freeproc(proc_info);
- 	}
- 	closeproc(proc);
-+#else
-+	enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD, PIDS_ID_EUID, PIDS_ID_EGID };
-+	enum rel_items { EU_PID, EU_CMD, EU_EUID, EU_EGID };
-+	struct pids_info *info = NULL;
-+	struct pids_stack *stack;
-+	pid_t tid;
-+
-+	if (procps_pids_new(&info, Items, 4) < 0)
-+		return 1;
-+	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-+		tid = PIDS_VAL(EU_PID, s_int, stack, info);
-+
-+		if (snprintf(path, sizeof(path), "/proc/%d/fd", tid) < 1)
-+			fail++;
-+		else
-+			fail += __igt_lsof_audio_and_kill_proc(tid,
-+				PIDS_VAL(EU_CMD, str, stack, info),
-+				PIDS_VAL(EU_EUID, s_int, stack, info),
-+				PIDS_VAL(EU_EGID, s_int, stack, info),
-+				path);
-+	}
-+	procps_pids_unref(&info);
-+#endif
- 
- 	return fail;
- }
-diff --git a/lib/meson.build b/lib/meson.build
-index b21c252b5..48a27a612 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -113,7 +113,6 @@ lib_deps = [
- 	libdrm,
- 	libdw,
- 	libkmod,
--	libprocps,
- 	libudev,
- 	math,
- 	pciaccess,
-@@ -177,6 +176,12 @@ if chamelium.found()
- 	lib_sources += 'monitor_edids/monitor_edids_helper.c'
- endif
- 
-+if libprocps.found()
-+	lib_deps += libprocps
-+else
-+	lib_deps += libproc2
-+endif
-+
- if get_option('srcdir') != ''
-     srcdir = join_paths(get_option('srcdir'), 'tests')
- else
-diff --git a/meson.build b/meson.build
-index 036217844..98acc8daf 100644
---- a/meson.build
-+++ b/meson.build
-@@ -124,7 +124,15 @@ build_info += 'With libdrm: ' + ','.join(libdrm_info)
- 
- pciaccess = dependency('pciaccess', version : '>=0.10')
- libkmod = dependency('libkmod')
--libprocps = dependency('libprocps', required : true)
-+libprocps = dependency('libprocps', required : false)
-+libproc2 = dependency('libproc2', required : false)
-+if libprocps.found()
-+  config.set('HAVE_LIBPROCPS', 1)
-+elif libproc2.found()
-+  config.set('HAVE_LIBPROC2', 1)
-+else
-+  error('Either libprocps or libproc2 is required')
-+endif
- 
- libunwind = dependency('libunwind', required : get_option('libunwind'))
- build_info += 'With libunwind: @0@'.format(libunwind.found())
--- 
-2.39.2
+CI Bug Log - changes from CI_DRM_13143 -> IGTPW_8952
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): fi-apl-guc fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8952 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_backlight@basic-brightness@edp-1:
+    - bat-rplp-1:         NOTRUN -> [ABORT][1] ([i915#7077])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-rpls-2:         [PASS][2] -> [TIMEOUT][3] ([i915#6794] / [i915#7392])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rpls-2/igt@i915_selftest@live@mman.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-2/igt@i915_selftest@live@mman.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [PASS][4] -> [ABORT][5] ([i915#4983] / [i915#7911] / [i915#7920] / [i915#7953])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-rpls-2:         NOTRUN -> [ABORT][6] ([i915#6687])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:
+    - bat-dg2-8:          [PASS][7] -> [FAIL][8] ([i915#7932])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - {bat-mtlp-8}:       [ABORT][9] ([i915#4983] / [i915#7920] / [i915#7953]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-mtlp-8/igt@i915_selftest@live@requests.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-mtlp-8/igt@i915_selftest@live@requests.html
+
+  
+#### Warnings ####
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-rplp-1:         [ABORT][11] ([i915#4579] / [i915#8260]) -> [SKIP][12] ([i915#3555] / [i915#4579])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
+  [i915#7392]: https://gitlab.freedesktop.org/drm/intel/issues/7392
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
+  [i915#8260]: https://gitlab.freedesktop.org/drm/intel/issues/8260
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7286 -> IGTPW_8952
+
+  CI-20190529: 20190529
+  CI_DRM_13143: 222ff19f23b0bd6aca0b52001d69699f78f5a206 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8952: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html
+  IGT_7286: a482779488f11c432d7ddcb1980691ab1603f356 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@gem_create@create-ext-set-pat
+-igt@kms_fb_coherency@memset-crc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html
+
+--===============1146201560736707012==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/gem_create: exercise gem_create_ext_set_pat</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117695/">https://patchwork.freedesktop.org/series/117695/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13143 -&gt; IGTPW_8952</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): fi-apl-guc fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8952 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness@edp-1:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rpls-2/igt@i915_selftest@live@mman.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-2/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@requests:<ul>
+<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_setmode@basic-clone-single-crtc:<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13143/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8260">i915#8260</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7286 -&gt; IGTPW_8952</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13143: 222ff19f23b0bd6aca0b52001d69699f78f5a206 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8952: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8952/index.html<br />
+  IGT_7286: a482779488f11c432d7ddcb1980691ab1603f356 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@gem_create@create-ext-set-pat<br />
+-igt@kms_fb_coherency@memset-crc</p>
+
+</body>
+</html>
+
+--===============1146201560736707012==--
