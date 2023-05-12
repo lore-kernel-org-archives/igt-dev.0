@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36D4310E5A0
- for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 05:14:48 +0000 (UTC)
-Date: Fri, 12 May 2023 07:14:44 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230512051444.6s5fwx2g2uzak423@zkempczy-mobl2>
-References: <20230511193617.86458-1-zbigniew.kempczynski@intel.com>
- <168386349712.26102.697831563960859240@emeril.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 578CB10E116
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 May 2023 08:57:37 +0000 (UTC)
+Message-ID: <f0bb9cf4-933c-9cc6-77db-2d8cb05f747a@intel.com>
+Date: Fri, 12 May 2023 10:57:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <168386349712.26102.697831563960859240@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgTGltaXQg?=
- =?utf-8?q?intel-bb_to_48-bit?=
+Content-Language: en-US
+To: Nirmoy Das <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230511152251.18043-1-nirmoy.das@intel.com>
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+In-Reply-To: <20230511152251.18043-1-nirmoy.das@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] test/prime_vgem: Remove test_userptr
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,171 +21,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: SaiX Nandan Yedireswarapu <saix.nandan.yedireswarapu@intel.com>
+Cc: chris.p.wilson@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, May 12, 2023 at 03:51:37AM +0000, Patchwork wrote:
->    Patch Details
-> 
->    Series:  Limit intel-bb to 48-bit                                       
->    URL:     https://patchwork.freedesktop.org/series/117649/               
->    State:   failure                                                        
->    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8945/index.html 
-> 
->          CI Bug Log - changes from CI_DRM_13138_full -> IGTPW_8945_full
-> 
-> Summary
-> 
->    FAILURE
-> 
->    Serious unknown changes coming with IGTPW_8945_full absolutely need to be
->    verified manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_8945_full, please notify your bug team to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
->    External URL:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8945/index.html
-> 
-> Participating hosts (7 -> 7)
-> 
->    No changes in participating hosts
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in
->    IGTPW_8945_full:
-> 
->   IGT changes
-> 
->     Possible regressions
-> 
->      * igt@kms_plane_cursor@viewport@pipe-b-dp-1-size-64:
->           * shard-apl: PASS -> FAIL
 
-Unrelated to the change.
 
---
-Zbigniew
+On 11.05.2023 17:22, Nirmoy Das wrote:
+> vgem objects are flagged with VM_PFNMAP which
+> doesn't work with get_user_pages which is needed
+> for userptr test.
+>
+> References: https://patchwork.freedesktop.org/patch/449741/
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 
-> 
->     Suppressed
-> 
->    The following results come from untrusted machines, tests, or statuses.
->    They do not affect the overall result.
-> 
->      * igt@gem_eio@reset-stress:
->           * {shard-dg1}: PASS -> INCOMPLETE
-> 
-> Known issues
-> 
->    Here are the changes found in IGTPW_8945_full that come from known issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@gen9_exec_parse@allowed-single:
-> 
->           * shard-apl: PASS -> ABORT (i915#5566)
-> 
->           * shard-glk: PASS -> ABORT (i915#5566)
-> 
->      * igt@i915_selftest@live@sanitycheck:
-> 
->           * shard-snb: PASS -> ABORT (i915#4528 / i915#4579)
->      * igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs:
-> 
->           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#3886) +2 similar
->             issues
->      * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:
-> 
->           * shard-apl: PASS -> FAIL (i915#2346)
->      * igt@kms_hdr@invalid-hdr:
-> 
->           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#4579) +2 similar
->             issues
->      * igt@kms_psr2_su@page_flip-nv12:
-> 
->           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#658)
->      * igt@kms_vblank@pipe-d-wait-busy-hang:
-> 
->           * shard-glk: NOTRUN -> SKIP (fdo#109271) +37 similar issues
-> 
->     Possible fixes
-> 
->      * igt@gem_ctx_exec@basic-close-race:
-> 
->           * {shard-dg1}: DMESG-WARN -> PASS
->      * igt@gem_eio@in-flight-contexts-immediate:
-> 
->           * shard-apl: TIMEOUT (i915#3063) -> PASS
->      * igt@gem_eio@unwedge-stress:
-> 
->           * {shard-tglu}: TIMEOUT (i915#3063 / i915#7941) -> PASS
->      * igt@gem_exec_fair@basic-deadline:
-> 
->           * shard-glk: FAIL (i915#2846) -> PASS
->      * igt@gem_exec_fair@basic-pace-share@rcs0:
-> 
->           * {shard-rkl}: FAIL (i915#2842) -> PASS
->      * igt@gem_exec_fair@basic-pace-solo@rcs0:
-> 
->           * shard-apl: FAIL (i915#2842) -> PASS
->      * igt@gem_lmem_swapping@smem-oom@lmem0:
-> 
->           * {shard-dg1}: TIMEOUT (i915#5493) -> PASS
->      * igt@i915_pm_dc@dc6-dpms:
-> 
->           * {shard-tglu}: FAIL (i915#3989 / i915#454) -> PASS
->      * igt@i915_pm_dc@dc9-dpms:
-> 
->           * shard-apl: SKIP (fdo#109271) -> PASS
->      * igt@i915_pm_rpm@dpms-non-lpsp:
-> 
->           * {shard-rkl}: SKIP (i915#1397) -> PASS +1 similar issue
->      * igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-async-flip:
-> 
->           * {shard-rkl}: FAIL (i915#3743) -> PASS
->      * igt@kms_hdr@bpc-switch-dpms@pipe-a-dp-1:
-> 
->           * shard-apl: FAIL (i915#1188) -> PASS
->      * igt@kms_plane_lowres@tiling-y@pipe-a-hdmi-a-2:
-> 
->           * {shard-rkl}: ABORT -> PASS
->      * igt@perf@stress-open-close@0-rcs0:
-> 
->           * shard-glk: ABORT (i915#5213 / i915#7941) -> PASS
-> 
->     Warnings
-> 
->      * igt@kms_content_protection@mei_interface:
-> 
->           * shard-apl: SKIP (fdo#109271 / i915#4579) -> SKIP (fdo#109271)
-> 
->           * shard-snb: SKIP (fdo#109271 / i915#4579) -> SKIP (fdo#109271)
-> 
->           * shard-glk: SKIP (fdo#109271 / i915#4579) -> SKIP (fdo#109271)
-> 
->    {name}: This element is suppressed. This means it is ignored when
->    computing
->    the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
-> Build changes
-> 
->      * CI: CI-20190529 -> None
->      * IGT: IGT_7285 -> IGTPW_8945
->      * Piglit: piglit_4509 -> None
-> 
->    CI-20190529: 20190529
->    CI_DRM_13138: b35107d813ef012806df9eeeea1ff9f37adf0400 @
->    git://anongit.freedesktop.org/gfx-ci/linux
->    IGTPW_8945: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8945/index.html
->    IGT_7285: d1cbf2bad9c2664ab8bd3bd0946510a52800912f @
->    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->    piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @
->    git://anongit.freedesktop.org/piglit
+
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+
+Regards
+Andrzej
+
+> ---
+>   tests/prime_vgem.c | 49 ----------------------------------------------
+>   1 file changed, 49 deletions(-)
+>
+> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> index 9aa767c9cd..dcf9e78d4b 100644
+> --- a/tests/prime_vgem.c
+> +++ b/tests/prime_vgem.c
+> @@ -294,51 +294,6 @@ static void test_write(int vgem, int i915)
+>   	munmap(ptr, scratch.size);
+>   }
+>   
+> -static bool has_userptr(int i915)
+> -{
+> -	uint32_t handle = 0;
+> -	void *ptr;
+> -
+> -	igt_assert(posix_memalign(&ptr, 4096, 4096) == 0);
+> -	if (__gem_userptr(i915, ptr, 4096, 0, 0, &handle) == 0)
+> -		gem_close(i915, handle);
+> -	free(ptr);
+> -
+> -	return handle;
+> -}
+> -
+> -static void test_userptr(int vgem, int i915)
+> -{
+> -	struct drm_i915_gem_exec_object2 obj = {};
+> -	struct drm_i915_gem_execbuffer2 execbuf = {
+> -		.buffers_ptr = to_user_pointer(&obj),
+> -		.buffer_count = 1,
+> -	};
+> -	struct vgem_bo scratch;
+> -	uint32_t *ptr;
+> -
+> -	igt_require(has_userptr(i915));
+> -
+> -	scratch.width = 1024;
+> -	scratch.height = 1024;
+> -	scratch.bpp = 32;
+> -	vgem_create(vgem, &scratch);
+> -
+> -	/* vgem is acting as a simple provider of a single vma backed by pages */
+> -	ptr = vgem_mmap(vgem, &scratch, PROT_WRITE);
+> -	gem_close(vgem, scratch.handle);
+> -	*ptr = MI_BATCH_BUFFER_END;
+> -
+> -	gem_userptr(i915, ptr, scratch.size, 0, 0, &obj.handle);
+> -	if (igt_has_set_caching(intel_get_drm_devid(i915)))
+> -		gem_set_caching(i915, obj.handle, I915_CACHING_NONE); /* for !llc exec */
+> -
+> -	gem_execbuf(i915, &execbuf);
+> -	gem_close(i915, obj.handle);
+> -
+> -	munmap(ptr, scratch.size);
+> -}
+> -
+>   static void test_gtt(int vgem, int i915)
+>   {
+>   	struct vgem_bo scratch;
+> @@ -1141,10 +1096,6 @@ igt_main
+>   	igt_subtest("basic-write")
+>   		test_write(vgem, i915);
+>   
+> -	igt_describe("Check that we wrap the vgem mmap with userptr.");
+> -	igt_subtest("basic-userptr")
+> -		test_userptr(vgem, i915);
+> -
+>   	igt_describe("Examine access path through GTT.");
+>   	igt_subtest("basic-gtt") {
+>   		gem_require_mappable_ggtt(i915);
