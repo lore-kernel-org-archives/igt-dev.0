@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE5B510E720
- for <igt-dev@lists.freedesktop.org>; Sat, 13 May 2023 02:22:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 384A610E09E
+ for <igt-dev@lists.freedesktop.org>; Sat, 13 May 2023 02:22:42 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri, 12 May 2023 19:22:28 -0700
-Message-Id: <20230513022234.2832233-10-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
-References: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 12 May 2023 19:22:19 -0700
+Message-Id: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 09/15] intel_gpu_top: Switch pmu_counter to
- use aggregated values
+Subject: [igt-dev] [PATCH i-g-t 00/15] PMU: multi-tile support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,92 +22,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Aggregate gt specific values for freq and rc6 counters.
+Enable IGT PMU support for multi-tile platforms.
+Add multi-tile support for intel_gpu_top.
+
+v2: (Tvrtko)
+- Instead of adding gtN suffix to item, add it to parent group
+- Show split gt values only if -p option is specified
+- Display aggregate value as default without -p option
+- Break down patches into reviewable units
+
+v3: (Ashutosh, Tvrtko)
+- Reformat GT info in INTERACTIVE mode
+- Use i915_for_each_gt
+- Move uapi to i915_drm_local.h
+- Use gem_list_engines() and drop unnecessary code
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- tools/intel_gpu_top.c | 49 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 38 insertions(+), 11 deletions(-)
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index b0c177329..d995c39b9 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -554,6 +554,26 @@ static int get_num_gts(uint64_t type)
- 	return cnt;
- }
- 
-+static void init_aggregate_counters(struct engines *engines)
-+{
-+	struct pmu_counter *pmu;
-+
-+	pmu = &engines->freq_req;
-+	pmu->type = igt_perf_type_id(engines->device);
-+	pmu->config = I915_PMU_REQUESTED_FREQUENCY;
-+	pmu->present = true;
-+
-+	pmu = &engines->freq_act;
-+	pmu->type = igt_perf_type_id(engines->device);
-+	pmu->config = I915_PMU_ACTUAL_FREQUENCY;
-+	pmu->present = true;
-+
-+	pmu = &engines->rc6;
-+	pmu->type = igt_perf_type_id(engines->device);
-+	pmu->config = I915_PMU_RC6_RESIDENCY;
-+	pmu->present = true;
-+}
-+
- static int pmu_init(struct engines *engines)
- {
- 	unsigned int i;
-@@ -569,14 +589,7 @@ static int pmu_init(struct engines *engines)
- 	if (fd < 0)
- 		return -1;
- 
--	engines->freq_req.config = I915_PMU_REQUESTED_FREQUENCY;
--	_open_pmu(type, engines->num_counters, &engines->freq_req, engines->fd);
--
--	engines->freq_act.config = I915_PMU_ACTUAL_FREQUENCY;
--	_open_pmu(type, engines->num_counters, &engines->freq_act, engines->fd);
--
--	engines->rc6.config = I915_PMU_RC6_RESIDENCY;
--	_open_pmu(type, engines->num_counters, &engines->rc6, engines->fd);
-+	init_aggregate_counters(engines);
- 
- 	for (i = 0; i < engines->num_gts; i++) {
- 		engines->freq_req_gt[i].config = __I915_PMU_REQUESTED_FREQUENCY(i);
-@@ -692,14 +705,28 @@ static void pmu_sample(struct engines *engines)
- 
- 	for (i = 0; i < engines->num_gts; i++) {
- 		update_sample(&engines->freq_req_gt[i], val);
-+		engines->freq_req.val.cur += engines->freq_req_gt[i].val.cur;
-+		engines->freq_req.val.prev += engines->freq_req_gt[i].val.prev;
-+
- 		update_sample(&engines->freq_act_gt[i], val);
-+		engines->freq_act.val.cur += engines->freq_act_gt[i].val.cur;
-+		engines->freq_act.val.prev += engines->freq_act_gt[i].val.prev;
-+
- 		update_sample(&engines->rc6_gt[i], val);
-+		engines->rc6.val.cur += engines->rc6_gt[i].val.cur;
-+		engines->rc6.val.prev += engines->rc6_gt[i].val.prev;
- 	}
- 
--	update_sample(&engines->freq_req, val);
--	update_sample(&engines->freq_act, val);
-+	engines->freq_req.val.cur /= engines->num_gts;
-+	engines->freq_req.val.prev /= engines->num_gts;
-+
-+	engines->freq_act.val.cur /= engines->num_gts;
-+	engines->freq_act.val.prev /= engines->num_gts;
-+
-+	engines->rc6.val.cur /= engines->num_gts;
-+	engines->rc6.val.prev /= engines->num_gts;
-+
- 	update_sample(&engines->irq, val);
--	update_sample(&engines->rc6, val);
- 
- 	for (i = 0; i < engines->num_engines; i++) {
- 		struct engine *engine = engine_ptr(engines, i);
+Riana Tauro (1):
+  perf_pmu: Use correct pmu config for multi-tile
+
+Tvrtko Ursulin (3):
+  perf_pmu: Support multi-tile in rc6 subtest
+  perf_pmu: Two new rc6 subtests
+  perf_pmu: Support multi-tile in frequency subtest
+
+Umesh Nerlige Ramappa (11):
+  perf_pmu: Quiesce GPU if measuring idle busyness without spinner
+  intel_gpu_top: Add an array of freq and rc6 counters
+  intel_gpu_top: Determine number of tiles
+  intel_gpu_top: Capture freq and rc6 counters from each gt
+  intel_gpu_top: Switch pmu_counter to use aggregated values
+  intel_gpu_top: Add definitions for gt-specific items and groups
+  intel_gpu_top: Bump up size of groups to accomodate multi-gt
+  intel_gpu_top: Increase visibility for class_view
+  intel_gpu_top: Show gt specific values if requested
+  intel_gpu_top: Reduce one level of indent
+  intel_gpu_top: Add gt specific values to header in interactive mode
+
+ lib/i915/i915_drm_local.h |  15 ++
+ tests/i915/perf_pmu.c     | 307 +++++++++++++++++++++++++++-----------
+ tools/intel_gpu_top.c     | 238 ++++++++++++++++++++++++-----
+ 3 files changed, 432 insertions(+), 128 deletions(-)
+
 -- 
 2.36.1
