@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4757210E71E
- for <igt-dev@lists.freedesktop.org>; Sat, 13 May 2023 02:22:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE5B510E720
+ for <igt-dev@lists.freedesktop.org>; Sat, 13 May 2023 02:22:43 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri, 12 May 2023 19:22:23 -0700
-Message-Id: <20230513022234.2832233-5-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 12 May 2023 19:22:28 -0700
+Message-Id: <20230513022234.2832233-10-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
 References: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 04/15] perf_pmu: Quiesce GPU if measuring
- idle busyness without spinner
+Subject: [igt-dev] [PATCH i-g-t 09/15] intel_gpu_top: Switch pmu_counter to
+ use aggregated values
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,38 +25,92 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The assumption in some tests is that the engines are not busy if no
-spinners are being run. This is not true in some cases where we see
-that the render is busy at the start of the test. Quiesce GPU to wait
-for such work to complete before checking for idle busyness.
-
-v2: Move gem_quiescent_gpu to beginning of test (Tvrtko)
+Aggregate gt specific values for freq and rc6 counters.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tests/i915/perf_pmu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/intel_gpu_top.c | 49 +++++++++++++++++++++++++++++++++----------
+ 1 file changed, 38 insertions(+), 11 deletions(-)
 
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index 155fc5f48..38bdee650 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -279,6 +279,7 @@ single(int gem_fd, const intel_ctx_t *ctx,
- 	int fd;
- 	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index b0c177329..d995c39b9 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -554,6 +554,26 @@ static int get_num_gts(uint64_t type)
+ 	return cnt;
+ }
  
-+	gem_quiescent_gpu(gem_fd);
- 	fd = open_pmu(gem_fd, I915_PMU_ENGINE_BUSY(e->class, e->instance));
++static void init_aggregate_counters(struct engines *engines)
++{
++	struct pmu_counter *pmu;
++
++	pmu = &engines->freq_req;
++	pmu->type = igt_perf_type_id(engines->device);
++	pmu->config = I915_PMU_REQUESTED_FREQUENCY;
++	pmu->present = true;
++
++	pmu = &engines->freq_act;
++	pmu->type = igt_perf_type_id(engines->device);
++	pmu->config = I915_PMU_ACTUAL_FREQUENCY;
++	pmu->present = true;
++
++	pmu = &engines->rc6;
++	pmu->type = igt_perf_type_id(engines->device);
++	pmu->config = I915_PMU_RC6_RESIDENCY;
++	pmu->present = true;
++}
++
+ static int pmu_init(struct engines *engines)
+ {
+ 	unsigned int i;
+@@ -569,14 +589,7 @@ static int pmu_init(struct engines *engines)
+ 	if (fd < 0)
+ 		return -1;
  
- 	if (flags & TEST_BUSY)
-@@ -639,6 +640,7 @@ no_sema(int gem_fd, const intel_ctx_t *ctx,
- 	int fd[2];
- 	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
+-	engines->freq_req.config = I915_PMU_REQUESTED_FREQUENCY;
+-	_open_pmu(type, engines->num_counters, &engines->freq_req, engines->fd);
+-
+-	engines->freq_act.config = I915_PMU_ACTUAL_FREQUENCY;
+-	_open_pmu(type, engines->num_counters, &engines->freq_act, engines->fd);
+-
+-	engines->rc6.config = I915_PMU_RC6_RESIDENCY;
+-	_open_pmu(type, engines->num_counters, &engines->rc6, engines->fd);
++	init_aggregate_counters(engines);
  
-+	gem_quiescent_gpu(gem_fd);
- 	fd[0] = open_group(gem_fd, I915_PMU_ENGINE_SEMA(e->class, e->instance),
- 			   -1);
- 	fd[1] = open_group(gem_fd, I915_PMU_ENGINE_WAIT(e->class, e->instance),
+ 	for (i = 0; i < engines->num_gts; i++) {
+ 		engines->freq_req_gt[i].config = __I915_PMU_REQUESTED_FREQUENCY(i);
+@@ -692,14 +705,28 @@ static void pmu_sample(struct engines *engines)
+ 
+ 	for (i = 0; i < engines->num_gts; i++) {
+ 		update_sample(&engines->freq_req_gt[i], val);
++		engines->freq_req.val.cur += engines->freq_req_gt[i].val.cur;
++		engines->freq_req.val.prev += engines->freq_req_gt[i].val.prev;
++
+ 		update_sample(&engines->freq_act_gt[i], val);
++		engines->freq_act.val.cur += engines->freq_act_gt[i].val.cur;
++		engines->freq_act.val.prev += engines->freq_act_gt[i].val.prev;
++
+ 		update_sample(&engines->rc6_gt[i], val);
++		engines->rc6.val.cur += engines->rc6_gt[i].val.cur;
++		engines->rc6.val.prev += engines->rc6_gt[i].val.prev;
+ 	}
+ 
+-	update_sample(&engines->freq_req, val);
+-	update_sample(&engines->freq_act, val);
++	engines->freq_req.val.cur /= engines->num_gts;
++	engines->freq_req.val.prev /= engines->num_gts;
++
++	engines->freq_act.val.cur /= engines->num_gts;
++	engines->freq_act.val.prev /= engines->num_gts;
++
++	engines->rc6.val.cur /= engines->num_gts;
++	engines->rc6.val.prev /= engines->num_gts;
++
+ 	update_sample(&engines->irq, val);
+-	update_sample(&engines->rc6, val);
+ 
+ 	for (i = 0; i < engines->num_engines; i++) {
+ 		struct engine *engine = engine_ptr(engines, i);
 -- 
 2.36.1
