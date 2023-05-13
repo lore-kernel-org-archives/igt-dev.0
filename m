@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCE5510E09E
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0189D10E720
  for <igt-dev@lists.freedesktop.org>; Sat, 13 May 2023 02:22:43 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri, 12 May 2023 19:22:30 -0700
-Message-Id: <20230513022234.2832233-12-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 12 May 2023 19:22:24 -0700
+Message-Id: <20230513022234.2832233-6-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
 References: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 11/15] intel_gpu_top: Bump up size of groups
- to accomodate multi-gt
+Subject: [igt-dev] [PATCH i-g-t 05/15] perf_pmu: Use correct pmu config for
+ multi-tile
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,32 +25,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Create more space in groups to add gt specific freq and rc6 groups.
+From: Riana Tauro <riana.tauro@intel.com>
 
+Use the correct perf_pmu config for actual and requested frequency in
+multi-tile frequency test.
+
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tools/intel_gpu_top.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tests/i915/perf_pmu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 63ce9fade..87d869802 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1929,7 +1929,13 @@ print_header(const struct igt_device_card *card,
- 		.display_name = "Power W",
- 		.items = power_items,
- 	};
--	struct cnt_group *groups[] = {
-+	/*
-+	 * Array size calculation:
-+	 * One group each for period, irq, power, NULL = 4
-+	 * One group per gt for freq = MAX_GTS
-+	 * One group per gt for rc6  = MAX_GTS
-+	 */
-+	struct cnt_group *groups[4 + MAX_GTS + MAX_GTS] = {
- 		&period_group,
- 		&freq_group,
- 		&irq_group,
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index 38bdee650..4f4a616eb 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -1601,8 +1601,8 @@ test_frequency(int gem_fd, unsigned int gt)
+ 	igt_require(max_freq > min_freq);
+ 	igt_require(boost_freq > min_freq);
+ 
+-	fd[0] = open_group(gem_fd, I915_PMU_REQUESTED_FREQUENCY, -1);
+-	fd[1] = open_group(gem_fd, I915_PMU_ACTUAL_FREQUENCY, fd[0]);
++	fd[0] = open_group(gem_fd, __I915_PMU_REQUESTED_FREQUENCY(gt), -1);
++	fd[1] = open_group(gem_fd, __I915_PMU_ACTUAL_FREQUENCY(gt), fd[0]);
+ 
+ 	/*
+ 	 * Set GPU to min frequency and read PMU counters.
+@@ -1695,8 +1695,8 @@ test_frequency_idle(int gem_fd, unsigned int gt)
+ 
+ 	/* While parked, our convention is to report the GPU at 0Hz */
+ 
+-	fd[0] = open_group(gem_fd, I915_PMU_REQUESTED_FREQUENCY, -1);
+-	fd[1] = open_group(gem_fd, I915_PMU_ACTUAL_FREQUENCY, fd[0]);
++	fd[0] = open_group(gem_fd, __I915_PMU_REQUESTED_FREQUENCY(gt), -1);
++	fd[1] = open_group(gem_fd, __I915_PMU_ACTUAL_FREQUENCY(gt), fd[0]);
+ 
+ 	gem_quiescent_gpu(gem_fd); /* Be idle! */
+ 	measured_usleep(2000); /* Wait for timers to cease */
 -- 
 2.36.1
