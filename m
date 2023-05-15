@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A116410E172
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68D1710E184
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:03 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:19 +0530
-Message-Id: <20230515081720.3713293-19-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:21 +0530
+Message-Id: <20230515081720.3713293-21-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 18/79] tests/i915/kms_fence_pin_leak: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t 20/79] tests/i915/kms_flip_tiling: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,32 +28,32 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_fence_pin_leak.c | 13 +++++++++++++
+ tests/i915/kms_flip_tiling.c | 13 +++++++++++++
  1 file changed, 13 insertions(+)
 
-diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
-index 63657a742..7c6251837 100644
---- a/tests/i915/kms_fence_pin_leak.c
-+++ b/tests/i915/kms_fence_pin_leak.c
+diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
+index a22f12382..2efd82175 100644
+--- a/tests/i915/kms_flip_tiling.c
++++ b/tests/i915/kms_flip_tiling.c
 @@ -30,6 +30,19 @@
+ #include <string.h>
  
- #include "i915/gem.h"
  #include "igt.h"
 +/**
-+ * TEST: kms fence pin leak
++ * TEST: kms flip tiling
 + * Category: Display
-+ * Description: Exercises full ppgtt fence pin_count leak in the kernel.
++ * Description: Test page flips and tiling scenarios
 + *
-+ * SUBTEST:
-+ * Description: Exercises full ppgtt fence pin_count leak in the kernel.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, synchronization
++ * SUBTEST: flip-change-tiling
++ * Description: Check pageflip between modifiers
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- IGT_TEST_DESCRIPTION("Exercises full ppgtt fence pin_count leak in the "
- 		     "kernel.");
+ IGT_TEST_DESCRIPTION("Test page flips and tiling scenarios");
+ 
 -- 
 2.40.0
