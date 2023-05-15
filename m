@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EE7A10E17E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DE5D10E185
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:02 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:16 +0530
-Message-Id: <20230515081720.3713293-16-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:20 +0530
+Message-Id: <20230515081720.3713293-20-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 15/79] tests/i915/kms_draw_crc: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t 19/79] tests/i915/kms_flip_scaled_crc: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,93 +28,212 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_draw_crc.c | 71 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 69 insertions(+), 2 deletions(-)
+ tests/i915/kms_flip_scaled_crc.c | 191 +++++++++++++++++++++++++++++++
+ 1 file changed, 191 insertions(+)
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index db6d71f2e..d6694faee 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -22,11 +22,78 @@
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index f5dc430e3..6768926b0 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -22,8 +22,199 @@
   *
   */
  
--/* This program tests whether the igt_draw library actually works. */
--
 +/**
-+ * TEST: kms draw crc
++ * TEST: kms flip scaled crc
 + * Category: Display
-+ * Description: Tests whether the igt_draw library actually works.
++ * Description: Test flipping between scaled/nonscaled framebuffers
 + */
- #include "i915/gem.h"
  #include "igt.h"
  
 +/**
-+ * SUBTEST: draw-method-blt
-+ * Description: Verify that igt draw library works for the BLIT method with
-+ *              different modifiers & DRM formats.
++ * SUBTEST: flip-64bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling
++ * Description: Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling
++ * Description: Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-linear-to-64bpp-linear-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
++ * Functionality: vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: draw-method-mmap-cpu
-+ * Description: Verify that igt draw library works for the MMAP-CPU method with
-+ *              different modifiers & DRM formats.
++ * SUBTEST: flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-%s
++ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
 + * Driver requirement: i915
-+ * Functionality: kms_gem_interop
++ * Functionality: vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: draw-method-mmap-gtt
-+ * Description: Verify that igt draw library works for the MMAP-GTT method with
-+ *              different modifiers & DRM formats.
++ * SUBTEST: flip-32bpp-4tile-to-64bpp-4tile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
 + * Driver requirement: i915
-+ * Functionality: gtt, kms_gem_interop
++ * Functionality: vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: draw-method-mmap-wc
-+ * Description: Verify that igt draw library works for the MMAP-WC method with
-+ *              different modifiers & DRM formats.
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: draw-method-pwrite
-+ * Description: Verify that igt draw library works for the PWRITE method with
-+ *              different modifiers & DRM formats.
++ * SUBTEST: flip-32bpp-xtile-to-64bpp-xtile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
 + * Driver requirement: i915
-+ * Functionality: kms_gem_interop
++ * Functionality: vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: draw-method-render
-+ * Description: Verify that igt draw library works for the RENDER method with
-+ *              different modifiers & DRM formats.
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: fill-fb
-+ * Description: This subtest verifies CRC after filling fb with x-tiling or none.
++ * SUBTEST: flip-32bpp-yftile-to-32bpp-yftileccs-%s
++ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
 + * Driver requirement: i915
-+ * Functionality: kms_gem_interop
++ * Functionality: vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-yftile-to-64bpp-yftile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-yftileccs-to-64bpp-yftile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-ytile-to-32bpp-ytileccs-%s
++ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-%s
++ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-ytile-to-64bpp-ytile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-ytileccs-to-64bpp-ytile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-%s
++ * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @downscaling:        Downscaled
++ * @upscaling:          Upscaled
 + */
 +
- #define MAX_CONNECTORS 32
++/**
++ * SUBTEST: flip-64bpp-4tile-to-%dbpp-4tile-%s
++ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
++ *              CD clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-64bpp-xtile-to-%dbpp-xtile-%s
++ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
++ *              CD clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-64bpp-yftile-to-%dbpp-yftile-%s
++ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
++ *              CD clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-64bpp-ytile-to-%dbpp-ytile-%s
++ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
++ *              CD clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-64bpp-linear-to-%dbpp-linear-%s
++ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
++ *              CD clock programming
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1].values: 16, 32
++ * arg[2]:
++ *
++ * @downscaling:        Downscaled
++ * @upscaling:          Upscaled
++ */
++
+ IGT_TEST_DESCRIPTION("Test flipping between scaled/nonscaled framebuffers");
  
- int drm_fd;
+ typedef struct {
 -- 
 2.40.0
