@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14B1510E133
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 04:32:30 +0000 (UTC)
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gandi,
- Ramadevi" <ramadevi.gandi@intel.com>, "Kumar, Janga Rahul"
- <janga.rahul.kumar@intel.com>
-Date: Mon, 15 May 2023 04:32:25 +0000
-Message-ID: <DM6PR11MB44921040042BDADBC113E90A8D789@DM6PR11MB4492.namprd11.prod.outlook.com>
-References: <20230512143033.3830748-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230512143033.3830748-1-janga.rahul.kumar@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89EA210E16E
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:37 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 15 May 2023 13:46:03 +0530
+Message-Id: <20230515081720.3713293-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
+References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe/xe_evict: Update beng-large
- subtest
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t 02/79] tests/dsc: Move dsc helpers to lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,43 +23,105 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+The correct place for helpers is lib as the tests directory is
+supposed to have test files, also having the helpers in tests
+dir will break the compilation of testplan. Hence move all
+helpers to library.
 
+Expectation is to have an executable binary for each .c file
+the "tests" dir.
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> janga.rahul.kumar@intel.com
-> Sent: 12 May 2023 08:01 PM
-> To: igt-dev@lists.freedesktop.org; Gandi, Ramadevi
-> <ramadevi.gandi@intel.com>; Kumar, Janga Rahul
-> <janga.rahul.kumar@intel.com>
-> Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_evict: Update beng-large sub=
-test
->=20
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
->=20
-> Add missing bind engine flag.
->=20
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> ---
->  tests/xe/xe_evict.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/tests/xe/xe_evict.c b/tests/xe/xe_evict.c index 5687cce3..7f=
-ef4efc
-> 100644
-> --- a/tests/xe/xe_evict.c
-> +++ b/tests/xe/xe_evict.c
-> @@ -564,7 +564,7 @@ igt_main
->  			EXTERNAL_OBJ },
->  		{ "beng-small-multi-vm", 16, 256, 1, 128, BIND_ENGINE |
->  			MULTI_VM },
-> -		{ "beng-large", 4, 16, 1, 4, 0 },
-> +		{ "beng-large", 4, 16, 1, 4, BIND_ENGINE },
->  		{ "beng-large-external", 4, 16, 1, 4, BIND_ENGINE |
->  			EXTERNAL_OBJ },
->  		{ "beng-large-multi-vm", 4, 8, 3, 8, BIND_ENGINE |
-> MULTI_VM },
-> --
-LGTM
-Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 2.25.1
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/i915/kms_dsc_helper.c => lib/igt_dsc_helper.c | 2 +-
+ tests/i915/kms_dsc_helper.h => lib/igt_dsc_helper.h | 0
+ lib/meson.build                                     | 1 +
+ tests/i915/kms_dsc.c                                | 2 +-
+ tests/i915/kms_psr2_sf.c                            | 2 +-
+ tests/meson.build                                   | 4 ++--
+ 6 files changed, 6 insertions(+), 5 deletions(-)
+ rename tests/i915/kms_dsc_helper.c => lib/igt_dsc_helper.c (99%)
+ rename tests/i915/kms_dsc_helper.h => lib/igt_dsc_helper.h (100%)
+
+diff --git a/tests/i915/kms_dsc_helper.c b/lib/igt_dsc_helper.c
+similarity index 99%
+rename from tests/i915/kms_dsc_helper.c
+rename to lib/igt_dsc_helper.c
+index 02d1a4848..600a90746 100644
+--- a/tests/i915/kms_dsc_helper.c
++++ b/lib/igt_dsc_helper.c
+@@ -3,7 +3,7 @@
+  * Copyright © 2023 Intel Corporation
+  */
+ 
+-#include "kms_dsc_helper.h"
++#include "igt_dsc_helper.h"
+ 
+ static bool force_dsc_en_orig;
+ static int force_dsc_restore_fd = -1;
+diff --git a/tests/i915/kms_dsc_helper.h b/lib/igt_dsc_helper.h
+similarity index 100%
+rename from tests/i915/kms_dsc_helper.h
+rename to lib/igt_dsc_helper.h
+diff --git a/lib/meson.build b/lib/meson.build
+index 847488f0e..3f42b40e0 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -100,6 +100,7 @@ lib_sources = [
+ 	'veboxcopy_gen12.c',
+ 	'igt_msm.c',
+ 	'igt_dsc.c',
++	'igt_dsc_helper.c',
+ 	'xe/xe_compute.c',
+ 	'xe/xe_compute_square_kernels.c',
+ 	'xe/xe_ioctl.c',
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 3ce28f848..4af48b196 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -30,7 +30,7 @@
+  *
+  */
+ 
+-#include "kms_dsc_helper.h"
++#include "igt_dsc_helper.h"
+ 
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index 4cf986440..7c21970a5 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -25,7 +25,7 @@
+ #include "igt.h"
+ #include "igt_sysfs.h"
+ #include "igt_psr.h"
+-#include "kms_dsc_helper.h"
++#include "igt_dsc_helper.h"
+ #include <errno.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+diff --git a/tests/meson.build b/tests/meson.build
+index 8fac23ec4..e077dfb4b 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -474,7 +474,7 @@ test_executables += executable('kms_color',
+ test_list += 'kms_color'
+ 
+ test_executables += executable('kms_dsc',
+-	   [ join_paths('i915', 'kms_dsc.c'), join_paths ('i915', 'kms_dsc_helper.c')],
++	   join_paths('i915', 'kms_dsc.c'),
+ 	   dependencies : test_deps,
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -482,7 +482,7 @@ test_executables += executable('kms_dsc',
+ test_list += 'kms_dsc'
+ 
+ test_executables += executable('kms_psr2_sf',
+-	   [ join_paths('i915', 'kms_psr2_sf.c'), join_paths ('i915', 'kms_dsc_helper.c')],
++	   join_paths('i915', 'kms_psr2_sf.c'),
+ 	   dependencies : test_deps,
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+-- 
+2.40.0
