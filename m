@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 15 May 2023 22:02:51 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230515200251.n53v73uik7yd5w7r@kamilkon-desk1>
-References: <20230515085020.16325-1-janusz.krzysztofik@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C013710E278
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 20:23:12 +0000 (UTC)
+From: "Yang, Fei" <fei.yang@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 15 May 2023 20:23:08 +0000
+Message-ID: <BYAPR11MB2567ECD38D740E324C2EACCA9A789@BYAPR11MB2567.namprd11.prod.outlook.com>
+References: <20230512175108.1171586-1-fei.yang@intel.com>
+ <20230512175108.1171586-2-fei.yang@intel.com>
+ <4e39db9d-61ff-a5d1-6b68-d1f25e020d02@linux.intel.com>
+In-Reply-To: <4e39db9d-61ff-a5d1-6b68-d1f25e020d02@linux.intel.com>
+Content-Language: en-US
+Content-Type: multipart/alternative;
+ boundary="_000_BYAPR11MB2567ECD38D740E324C2EACCA9A789BYAPR11MB2567namp_"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230515085020.16325-1-janusz.krzysztofik@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915: Exercise coherency of
- mmapped frame buffers
+Subject: Re: [igt-dev] [PATCH v3 1/1] test/gem_create: exercise
+ gem_create_ext_set_pat
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,439 +24,424 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janusz,
+--_000_BYAPR11MB2567ECD38D740E324C2EACCA9A789BYAPR11MB2567namp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-On 2023-05-15 at 10:50:20 +0200, Janusz Krzysztofik wrote:
-> Visible glitches have been observed when running graphics applications on
-> Linux under Xen hypervisor.  Those observations have been confirmed with
-> failures from kms_pwrite_crc IGT test that verifies data coherency of DRM
-> frame buffer objects using hardware CRC checksums calculated by display
-> controllers, exposed to userspace via debugfs.  Since not all applications
-> exhibit the issue, we need to exercise more methods than just pwrite in
-> order to identify all affected processing paths.
-> 
-> Create a new test focused on exercising coherency of future scanout
-> buffers populated over mmap.  Cover all available mmap methods and caching
-> modes expected to be device coherent.
-> 
+> On 12/05/2023 18:51, fei.yang@intel.com wrote:
+>> From: Fei Yang <fei.yang@intel.com>
+>>
+>> Gem_create uAPI has been extended with capability of setting PAT index.
+>> Add a test case to exercise this new extension.
+>>
+>> Signed-off-by: Fei Yang <fei.yang@intel.com>
+>> ---
+>>   lib/i915/i915_drm_local.h | 34 ++++++++++++++++++++++++++++++
+>>   tests/i915/gem_create.c   | 44 +++++++++++++++++++++++++++++++++++++++
+>>   2 files changed, 78 insertions(+)
+>>
+>> diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
+>> index af017650..35929a0c 100644
+>> --- a/lib/i915/i915_drm_local.h
+>> +++ b/lib/i915/i915_drm_local.h
+>> @@ -26,6 +26,40 @@ extern "C" {
+>>   #define DRM_I915_PERF_PROP_OA_ENGINE_CLASS 9
+>>   #define DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE      10
+>>
+>> +#define I915_GEM_CREATE_EXT_SET_PAT 2
+>> +
+>> +/**
+>> + * struct drm_i915_gem_create_ext_set_pat - The
+>> + * I915_GEM_CREATE_EXT_SET_PAT extension.
+>> + *
+>> + * If this extension is provided, the specified caching policy (PAT
+>> +index) is
+>> + * applied to the buffer object.
+>> + *
+>> + * Below is an example on how to create an object with specific caching=
+ policy:
+>> + *
+>> + * .. code-block:: C
+>> + *
+>> + *  struct drm_i915_gem_create_ext_set_pat set_pat_ext =3D {
+>> + *          .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },
+>> + *          .pat_index =3D 0,
+>> + *  };
+>> + *  struct drm_i915_gem_create_ext create_ext =3D {
+>> + *          .size =3D PAGE_SIZE,
+>> + *          .extensions =3D (uintptr_t)&set_pat_ext,
+>> + *  };
+>> + *
+>> + *  int err =3D ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
+>> + *  if (err) ...
+>> + */
+>> +struct drm_i915_gem_create_ext_set_pat {
+>> +    /** @base: Extension link. See struct i915_user_extension. */
+>> +    struct i915_user_extension base;
+>> +    /** @pat_index: PAT index to be set */
+>> +    __u32 pat_index;
+>> +    /** @rsvd: reserved for future use */
+>> +    __u32 rsvd;
+>> +};
+>> +
+>>   #if defined(__cplusplus)
+>>   }
+>>   #endif
+>> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c index
+>> c719ab6c..20c71afb 100644
+>> --- a/tests/i915/gem_create.c
+>> +++ b/tests/i915/gem_create.c
+>> @@ -537,6 +537,45 @@ static void create_ext_placement_each(int fd)
+>>      free(regions);
+>>   }
+>>
+>> +static void create_ext_set_pat(int fd) {
+>> +    struct drm_i915_gem_create_ext_set_pat setparam_pat =3D {
+>> +            .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },
+>> +            .pat_index =3D 0,
+>> +    };
+>> +    struct drm_i915_gem_create_ext_set_pat setparam_inv_pat =3D {
+>> +            .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },
+>> +            .pat_index =3D 65,
+>> +    };
+>> +    struct drm_i915_gem_caching arg;
+>> +    uint64_t size;
+>> +    uint32_t handle;
+>> +    int ret;
+>> +
+>> +    size =3D PAGE_SIZE;
+>> +
+>> +    ret =3D __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base)=
+;
+>> +
+>> +    /* Returning -EFAULT indicates set_pat extension is not supported *=
+/
+>> +    if (ret =3D=3D -EFAULT)
+>> +            igt_info("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
+>
+> Is this correct? EFAULT should be data access issues while unsupported ex=
+tensions should be EINVAL.
 
-+cc kms dev Bhanuprakash Modem
+Wil correct.
 
-> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/7648
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> ---
->  tests/i915/kms_fb_coherency.c | 354 ++++++++++++++++++++++++++++++++++
->  tests/meson.build             |   1 +
->  2 files changed, 355 insertions(+)
->  create mode 100644 tests/i915/kms_fb_coherency.c
-> 
-> diff --git a/tests/i915/kms_fb_coherency.c b/tests/i915/kms_fb_coherency.c
-> new file mode 100644
-> index 0000000000..9223f13b05
-> --- /dev/null
-> +++ b/tests/i915/kms_fb_coherency.c
-> @@ -0,0 +1,354 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + *
-> + * Derived from tests/i915/kms_pwrite_crc.c
-> + * Copyright © 2014 Intel Corporation
+>> +    igt_assert(ret =3D=3D 0);
+>
+> Extension not supported should be a skip I would say.
 
-imho you do not need above two lines, you already wrote this
-in description.
+Will replace igt_info with igt_skip.
 
-> + */
-> +
-> +/**
-> + * TEST: kms_fb_coherency
-> + * Description: Exercise coherency of future scanout buffer objects
-> + */
-> +
-> +#include "igt.h"
+> EFAULT test is then something else, ie. hitting this path from the kernel=
+ ioctl handler:
+>
+> ext_set_pat()
+> ...
+> +     if (copy_from_user(&ext, base, sizeof(ext)))
+> +             return -EFAULT;
+>
+>> +
+>> +    /* {set|get}_caching ioctl should fail for objects created with set=
+_pat */
+>> +    igt_assert(__gem_set_caching(fd, handle, 1) =3D=3D -EOPNOTSUPP);
+>
+> Easy to test get too as the comment suggests?
 
-Put this after sys includes below.
+The ioctl right below is exercising get_caching ioctl.
+I couldn't use gem_get_caching() because it overwrites errno.
 
-> +#include <errno.h>
-> +#include <limits.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +
+> Regards,
+>
+> Tvrtko
+>
+>> +
+>> +    memset(&arg, 0, sizeof(arg));
+>> +    arg.handle =3D handle;
+>> +    igt_assert(ioctl(fd, DRM_IOCTL_I915_GEM_GET_CACHING, &arg) < 0 &&
+>> +               errno =3D=3D EOPNOTSUPP);
+>> +
+>> +    /* gem_create should fail with -EINVAL if invalid pat index specifi=
+ed */
+>> +    igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle, &setparam_inv=
+_pat.base),
+>> +                  -EINVAL);
+>> +
+>> +    gem_close(fd, handle);
+>> +}
+>> +
+>>   static bool supports_needs_cpu_access(int fd)
+>>   {
+>>      struct drm_i915_gem_memory_class_instance regions[] =3D { @@ -897,6
+>> +936,11 @@ igt_main
+>>      igt_subtest("create-ext-placement-all")
+>>              create_ext_placement_all(fd);
+>>
+>> +    igt_describe("Create objects with specific cache setting"
+>> +                 " create-ext.");
+>> +    igt_subtest("create-ext-set-pat")
+>> +                create_ext_set_pat(fd);
+>> +
+>>      igt_describe("Verify the basic functionally and expected ABI contra=
+ct around I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS");
+>>      igt_subtest("create-ext-cpu-access-sanity-check") {
+>>              igt_require(supports_needs_cpu_access(fd));
 
-Here put any igt include(s).
+--_000_BYAPR11MB2567ECD38D740E324C2EACCA9A789BYAPR11MB2567namp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	igt_display_t display;
-> +	struct igt_fb fb[2];
-> +	igt_output_t *output;
-> +	igt_plane_t *primary;
-> +	enum pipe pipe;
-> +	igt_crc_t ref_crc;
-> +	igt_pipe_crc_t *pipe_crc;
-> +	uint32_t devid;
-> +} data_t;
-> +
-> +static void prepare_crtc(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	igt_output_t *output = data->output;
-> +	drmModeModeInfo *mode;
-> +
-> +	igt_display_reset(display);
-> +	/* select the pipe we want to use */
-> +	igt_output_set_pipe(output, data->pipe);
-> +
-> +	mode = igt_output_get_mode(output);
-> +
-> +	/* create a white reference fb and flip to it */
-> +	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +			    1.0, 1.0, 1.0, &data->fb[0]);
-> +
-> +	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_plane_set_fb(data->primary, &data->fb[0]);
-> +	igt_display_commit(display);
-> +
-> +	if (data->pipe_crc)
-> +		igt_pipe_crc_free(data->pipe_crc);
-> +
-> +	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-> +					  IGT_PIPE_CRC_SOURCE_AUTO);
-> +
-> +	/* get reference crc for the white fb */
-> +	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
-> +}
-> +
-> +static struct igt_fb *prepare_fb(data_t *data)
-> +{
-> +	igt_output_t *output = data->output;
-> +	struct igt_fb *fb = &data->fb[1];
-> +	drmModeModeInfo *mode;
-> +
-> +	prepare_crtc(data);
-> +
-> +	mode = igt_output_get_mode(output);
-> +
-> +	/* create a non-white fb we can overwrite later */
-> +	igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, fb);
-> +
-> +	/* flip to it to make it UC/WC and fully flushed */
-> +	drmModeSetPlane(data->drm_fd,
-> +			data->primary->drm_plane->plane_id,
-> +			output->config.crtc->crtc_id,
-> +			fb->fb_id, 0,
-> +			0, 0, fb->width, fb->height,
-> +			0, 0, fb->width << 16, fb->height << 16);
-> +
-> +	/* flip back the original white buffer */
-> +	drmModeSetPlane(data->drm_fd,
-> +			data->primary->drm_plane->plane_id,
-> +			output->config.crtc->crtc_id,
-> +			data->fb[0].fb_id, 0,
-> +			0, 0, fb->width, fb->height,
-> +			0, 0, fb->width << 16, fb->height << 16);
-> +
-> +	if (!gem_has_lmem(data->drm_fd)) {
-> +		uint32_t caching;
-> +
-> +		/* make sure caching mode has become UC/WT */
-> +		caching = gem_get_caching(data->drm_fd, fb->gem_handle);
-> +		igt_assert(caching == I915_CACHING_NONE ||
-> +			   caching == I915_CACHING_DISPLAY);
-> +	}
-> +
-> +	return fb;
-> +}
-> +
-> +static igt_crc_t get_buf_crc(data_t *data, void *buf, igt_fb_t *fb)
-> +{
-> +	igt_crc_t crc;
-> +
-> +	/* use memset to make the mmapped fb all white */
-> +	memset(buf, 0xff, fb->size);
-> +	munmap(buf, fb->size);
-> +
-> +	/* and flip to it */
-> +	drmModeSetPlane(data->drm_fd,
-> +			data->primary->drm_plane->plane_id,
-> +			data->output->config.crtc->crtc_id,
-> +			fb->fb_id, 0,
-> +			0, 0, fb->width, fb->height,
-> +			0, 0, fb->width << 16, fb->height << 16);
-> +
-> +	/* check that the crc is as expected, which requires that caches got flushed */
----------- ^
-Checks happen later, here you collect it.
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof ContentPasted0 Conten=
+tPasted1">
+&gt; On 12/05/2023 18:51, fei.yang@intel.com wrote:
+<div class=3D"ContentPasted0">&gt;&gt; From: Fei Yang &lt;fei.yang@intel.co=
+m&gt;</div>
+<div class=3D"ContentPasted0">&gt;&gt;</div>
+<div class=3D"ContentPasted0">&gt;&gt; Gem_create uAPI has been extended wi=
+th capability of setting PAT index.</div>
+<div class=3D"ContentPasted0">&gt;&gt; Add a test case to exercise this new=
+ extension.</div>
+<div class=3D"ContentPasted0">&gt;&gt;</div>
+<div class=3D"ContentPasted0">&gt;&gt; Signed-off-by: Fei Yang &lt;fei.yang=
+@intel.com&gt;</div>
+<div class=3D"ContentPasted0">&gt;&gt; ---</div>
+<div class=3D"ContentPasted0">&gt;&gt; &nbsp; lib/i915/i915_drm_local.h | 3=
+4 ++++++++++++++++++++++++++++++</div>
+<div class=3D"ContentPasted0">&gt;&gt; &nbsp; tests/i915/gem_create.c &nbsp=
+; | 44 +++++++++++++++++++++++++++++++++++++++</div>
+<div class=3D"ContentPasted0">&gt;&gt; &nbsp; 2 files changed, 78 insertion=
+s(+)</div>
+<div class=3D"ContentPasted0">&gt;&gt;</div>
+<div class=3D"ContentPasted0">&gt;&gt; diff --git a/lib/i915/i915_drm_local=
+.h b/lib/i915/i915_drm_local.h</div>
+<div class=3D"ContentPasted0">&gt;&gt; index af017650..35929a0c 100644</div=
+>
+<div class=3D"ContentPasted0">&gt;&gt; --- a/lib/i915/i915_drm_local.h</div=
+>
+<div class=3D"ContentPasted0">&gt;&gt; +++ b/lib/i915/i915_drm_local.h</div=
+>
+<div class=3D"ContentPasted0">&gt;&gt; @@ -26,6 +26,40 @@ extern &quot;C&qu=
+ot; {</div>
+<div class=3D"ContentPasted0">&gt;&gt; &nbsp; #define DRM_I915_PERF_PROP_OA=
+_ENGINE_CLASS 9</div>
+<div class=3D"ContentPasted0">&gt;&gt; &nbsp; #define DRM_I915_PERF_PROP_OA=
+_ENGINE_INSTANCE &nbsp; &nbsp; &nbsp;10</div>
+<div class=3D"ContentPasted0">&gt;&gt;</div>
+<div class=3D"ContentPasted0">&gt;&gt; +#define I915_GEM_CREATE_EXT_SET_PAT=
+ 2</div>
+<div class=3D"ContentPasted0">&gt;&gt; +</div>
+<div class=3D"ContentPasted0">&gt;&gt; +/**</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * struct drm_i915_gem_create_ext_s=
+et_pat - The</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * I915_GEM_CREATE_EXT_SET_PAT exte=
+nsion.</div>
+<div class=3D"ContentPasted0">&gt;&gt; + *</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * If this extension is provided, t=
+he specified caching policy (PAT</div>
+<div class=3D"ContentPasted0">&gt;&gt; +index) is</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * applied to the buffer object.</d=
+iv>
+<div class=3D"ContentPasted0">&gt;&gt; + *</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * Below is an example on how to cr=
+eate an object with specific caching policy:</div>
+<div class=3D"ContentPasted0">&gt;&gt; + *</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * .. code-block:: C</div>
+<div class=3D"ContentPasted0">&gt;&gt; + *</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp;struct drm_i915_gem_create=
+_ext_set_pat set_pat_ext =3D {</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
+p;.base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
+p;.pat_index =3D 0,</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp;};</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp;struct drm_i915_gem_create=
+_ext create_ext =3D {</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
+p;.size =3D PAGE_SIZE,</div>
+<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
+p;.extensions =3D (uintptr_t)&amp;set_pat_ext,</div>
+&gt;&gt; + * &nbsp;};
+<div class=3D"ContentPasted1">&gt;&gt; + *</div>
+<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp;int err =3D ioctl(fd, DRM_=
+IOCTL_I915_GEM_CREATE_EXT, &amp;create_ext);</div>
+<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp;if (err) ...</div>
+<div class=3D"ContentPasted1">&gt;&gt; + */</div>
+<div class=3D"ContentPasted1">&gt;&gt; +struct drm_i915_gem_create_ext_set_=
+pat {</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;/** @base: Extension =
+link. See struct i915_user_extension. */</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;struct i915_user_exte=
+nsion base;</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;/** @pat_index: PAT i=
+ndex to be set */</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;__u32 pat_index;</div=
+>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;/** @rsvd: reserved f=
+or future use */</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;__u32 rsvd;</div>
+<div class=3D"ContentPasted1">&gt;&gt; +};</div>
+<div class=3D"ContentPasted1">&gt;&gt; +</div>
+<div class=3D"ContentPasted1">&gt;&gt; &nbsp; #if defined(__cplusplus)</div=
+>
+<div class=3D"ContentPasted1">&gt;&gt; &nbsp; }</div>
+<div class=3D"ContentPasted1">&gt;&gt; &nbsp; #endif</div>
+<div class=3D"ContentPasted1">&gt;&gt; diff --git a/tests/i915/gem_create.c=
+ b/tests/i915/gem_create.c index</div>
+<div class=3D"ContentPasted1">&gt;&gt; c719ab6c..20c71afb 100644</div>
+<div class=3D"ContentPasted1">&gt;&gt; --- a/tests/i915/gem_create.c</div>
+<div class=3D"ContentPasted1">&gt;&gt; +++ b/tests/i915/gem_create.c</div>
+<div class=3D"ContentPasted1">&gt;&gt; @@ -537,6 +537,45 @@ static void cre=
+ate_ext_placement_each(int fd)</div>
+<div class=3D"ContentPasted1">&gt;&gt; &nbsp; &nbsp; &nbsp;free(regions);</=
+div>
+<div class=3D"ContentPasted1">&gt;&gt; &nbsp; }</div>
+<div class=3D"ContentPasted1">&gt;&gt;</div>
+<div class=3D"ContentPasted1">&gt;&gt; +static void create_ext_set_pat(int =
+fd) {</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;struct drm_i915_gem_c=
+reate_ext_set_pat setparam_pat =3D {</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp;.base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp;.pat_index =3D 0,</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;};</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;struct drm_i915_gem_c=
+reate_ext_set_pat setparam_inv_pat =3D {</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp;.base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp;.pat_index =3D 65,</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;};</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;struct drm_i915_gem_c=
+aching arg;</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;uint64_t size;</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;uint32_t handle;</div=
+>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;int ret;</div>
+<div class=3D"ContentPasted1">&gt;&gt; +</div>
+<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;size =3D PAGE_SIZE;</=
+div>
+<div class=3D"ContentPasted1">&gt;&gt; +</div>
+<div class=3D"ContentPasted1 ContentPasted2 ContentPasted3">&gt;&gt; + &nbs=
+p; &nbsp;ret =3D __gem_create_ext(fd, &amp;size, 0, &amp;handle, &amp;setpa=
+ram_pat.base);
+<div class=3D"ContentPasted2">&gt;&gt; +</div>
+<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;/* Returning -EFAULT =
+indicates set_pat extension is not supported */</div>
+<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;if (ret =3D=3D -EFAUL=
+T)</div>
+<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp;igt_info(&quot;I915_GEM_CREATE_EXT_SET_PAT is not supported\n&quot;)=
+;</div>
+<div class=3D"ContentPasted2">&gt;</div>
+<div class=3D"ContentPasted2">&gt; Is this correct? EFAULT should be data a=
+ccess issues while unsupported extensions should be EINVAL.</div>
+<div><br class=3D"ContentPasted2">
+</div>
+<div class=3D"ContentPasted2">Wil correct.</div>
+<div><br class=3D"ContentPasted2">
+</div>
+<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;igt_assert(ret =3D=3D=
+ 0);</div>
+<div class=3D"ContentPasted2">&gt;</div>
+<div class=3D"ContentPasted2">&gt; Extension not supported should be a skip=
+ I would say.</div>
+<div><br class=3D"ContentPasted2">
+</div>
+<div class=3D"ContentPasted2">Will replace igt_info with igt_skip.</div>
+<div><br class=3D"ContentPasted2">
+</div>
+<div class=3D"ContentPasted2">&gt; EFAULT test is then something else, ie. =
+hitting this path from the kernel ioctl handler:</div>
+<div class=3D"ContentPasted2">&gt;</div>
+<div class=3D"ContentPasted2">&gt; ext_set_pat()</div>
+<div class=3D"ContentPasted2">&gt; ...</div>
+<div class=3D"ContentPasted2">&gt; + &nbsp; &nbsp; if (copy_from_user(&amp;=
+ext, base, sizeof(ext)))</div>
+<div class=3D"ContentPasted2">&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nb=
+sp; return -EFAULT;</div>
+<div class=3D"ContentPasted2">&gt;</div>
+<div class=3D"ContentPasted2">&gt;&gt; +</div>
+<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;/* {set|get}_caching =
+ioctl should fail for objects created with set_pat */</div>
+<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;igt_assert(__gem_set_=
+caching(fd, handle, 1) =3D=3D -EOPNOTSUPP);</div>
+<div class=3D"ContentPasted2">&gt;</div>
+<div class=3D"ContentPasted2">&gt; Easy to test get too as the comment sugg=
+ests?</div>
+<div><br class=3D"ContentPasted2">
+</div>
+<div class=3D"ContentPasted2">The ioctl right below is exercising get_cachi=
+ng ioctl.</div>
+<div class=3D"ContentPasted2">I couldn't use gem_get_caching() because it o=
+verwrites errno.</div>
+<div><br class=3D"ContentPasted2">
+</div>
+<div class=3D"ContentPasted2">&gt; Regards,</div>
+<div class=3D"ContentPasted2">&gt;</div>
+<div class=3D"ContentPasted2">&gt; Tvrtko</div>
+<div class=3D"ContentPasted2">&gt;</div>
+<div class=3D"ContentPasted2">&gt;&gt; +</div>
+<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;memset(&amp;arg, 0, s=
+izeof(arg));</div>
+<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;arg.handle =3D handle=
+;</div>
+<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;igt_assert(ioctl(fd, =
+DRM_IOCTL_I915_GEM_GET_CACHING, &amp;arg) &lt; 0 &amp;&amp;</div>
+<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp; &nbsp; errno =3D=3D EOPNOTSUPP);</div>
+<div class=3D"ContentPasted2">&gt;&gt; +</div>
+&gt;&gt; + &nbsp; &nbsp;/* gem_create should fail with -EINVAL if invalid p=
+at index specified */
+<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp;igt_assert_eq(__gem_c=
+reate_ext(fd, &amp;size, 0, &amp;handle, &amp;setparam_inv_pat.base),</div>
+<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp; &nbsp; &nbsp; &nbsp;-EINVAL);</div>
+<div class=3D"ContentPasted3">&gt;&gt; +</div>
+<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp;gem_close(fd, handle)=
+;</div>
+<div class=3D"ContentPasted3">&gt;&gt; +}</div>
+<div class=3D"ContentPasted3">&gt;&gt; +</div>
+<div class=3D"ContentPasted3">&gt;&gt; &nbsp; static bool supports_needs_cp=
+u_access(int fd)</div>
+<div class=3D"ContentPasted3">&gt;&gt; &nbsp; {</div>
+<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp;struct drm_i915_=
+gem_memory_class_instance regions[] =3D { @@ -897,6</div>
+<div class=3D"ContentPasted3">&gt;&gt; +936,11 @@ igt_main</div>
+<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp;igt_subtest(&quo=
+t;create-ext-placement-all&quot;)</div>
+<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &=
+nbsp; &nbsp;create_ext_placement_all(fd);</div>
+<div class=3D"ContentPasted3">&gt;&gt;</div>
+<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp;igt_describe(&quot;Cr=
+eate objects with specific cache setting&quot;</div>
+<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp; &nbsp; &nbsp; &quot; create-ext.&quot;);</div>
+<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp;igt_subtest(&quot;cre=
+ate-ext-set-pat&quot;)</div>
+<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp; &nbsp; &nbsp;create_ext_set_pat(fd);</div>
+<div class=3D"ContentPasted3">&gt;&gt; +</div>
+<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp;igt_describe(&qu=
+ot;Verify the basic functionally and expected ABI contract around I915_GEM_=
+CREATE_EXT_FLAG_NEEDS_CPU_ACCESS&quot;);</div>
+<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp;igt_subtest(&quo=
+t;create-ext-cpu-access-sanity-check&quot;) {</div>
+<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &=
+nbsp; &nbsp;igt_require(supports_needs_cpu_access(fd));</div>
+</div>
+</div>
+</body>
+</html>
 
-> +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
-
-Add newline.
-
-> +	return crc;
-> +}
-> +
-> +static void cleanup_crtc(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	igt_output_t *output = data->output;
-> +
-> +	igt_pipe_crc_free(data->pipe_crc);
-> +	data->pipe_crc = NULL;
-> +
-> +	igt_plane_set_fb(data->primary, NULL);
-> +
-> +	igt_output_set_pipe(output, PIPE_ANY);
-> +	igt_display_commit(display);
-> +
-> +	igt_remove_fb(data->drm_fd, &data->fb[0]);
-> +	igt_remove_fb(data->drm_fd, &data->fb[1]);
-> +
-
-Remove empty line.
-
-> +}
-> +
-> +static void test_mmap_gtt(data_t *data)
-> +{
-> +	igt_crc_t crc;
-> +	igt_fb_t *fb;
-> +	void *buf;
-> +
-> +	gem_require_mappable_ggtt(data->drm_fd);
-> +
-> +	fb = prepare_fb(data);
-> +
-> +	buf = gem_mmap__gtt(data->drm_fd, fb->gem_handle, fb->size, PROT_WRITE);
-> +
-> +	crc = get_buf_crc(data, buf, fb);
-> +	igt_assert_crc_equal(&crc, &data->ref_crc);
-> +}
-> +
-> +static void test_mmap_offset_wc(data_t *data)
-> +{
-> +	igt_crc_t crc;
-> +	igt_fb_t *fb;
-> +	void *buf;
-> +
-> +	igt_require(gem_mmap_offset__has_wc(data->drm_fd));
-> +
-> +	fb = prepare_fb(data);
-> +
-> +	buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
-> +
-> +	crc = get_buf_crc(data, buf, fb);
-> +	igt_assert_crc_equal(&crc, &data->ref_crc);
-> +}
-> +
-> +static void test_mmap_offset_wb(data_t *data)
-> +{
-> +	igt_crc_t crc;
-> +	igt_fb_t *fb;
-> +	void *buf;
-> +
-> +	igt_require(gem_has_mmap_offset(data->drm_fd));
-> +	igt_skip_on(gem_has_lmem(data->drm_fd));
-> +
-> +	fb = prepare_fb(data);
-> +
-> +	/* mmap the fb */
-> +	buf = gem_mmap_offset__cpu(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
-> +
-> +	crc = get_buf_crc(data, buf, fb);
-> +	igt_fail_on(igt_check_crc_equal(&crc, &data->ref_crc));
-
-Why not use igt_assert_crc_equal ?
-
-> +}
-> +
-> +static void test_mmap_offset_uc(data_t *data)
-> +{
-> +	igt_crc_t crc;
-> +	igt_fb_t *fb;
-> +	void *buf;
-> +
-> +	igt_require(gem_has_mmap_offset(data->drm_fd));
-> +	igt_skip_on(gem_has_lmem(data->drm_fd));
-> +
-> +	fb = prepare_fb(data);
-> +
-> +	/* mmap the fb */
-> +	buf = __gem_mmap_offset(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE,
-> +				I915_MMAP_OFFSET_UC);
-> +	igt_assert(buf);
-> +
-> +	crc = get_buf_crc(data, buf, fb);
-> +	igt_assert_crc_equal(&crc, &data->ref_crc);
-> +}
-> +
-> +static void test_mmap_offset_fixed(data_t *data)
-> +{
-> +	igt_crc_t crc;
-> +	igt_fb_t *fb;
-> +	void *buf;
-> +
-> +	igt_require(gem_has_lmem(data->drm_fd));
-> +
-> +	fb = prepare_fb(data);
-> +
-> +	/* mmap the fb */
-> +	buf = gem_mmap_offset__fixed(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
-> +
-> +	crc = get_buf_crc(data, buf, fb);
-> +	igt_assert_crc_equal(&crc, &data->ref_crc);
-> +}
-> +
-> +static void test_legacy_mmap_wc(data_t *data)
-> +{
-> +	igt_crc_t crc;
-> +	igt_fb_t *fb;
-> +	void *buf;
-> +
-> +	igt_require(gem_has_legacy_mmap(data->drm_fd));
-> +	igt_require(gem_mmap__has_wc(data->drm_fd));
-> +
-> +	fb = prepare_fb(data);
-> +
-> +	/* mmap the fb */
-> +	buf = gem_mmap__wc(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
-> +
-> +	crc = get_buf_crc(data, buf, fb);
-> +	igt_assert_crc_equal(&crc, &data->ref_crc);
-> +}
-> +
-> +static void test_legacy_mmap_cpu(data_t *data)
-> +{
-> +	igt_crc_t crc;
-> +	igt_fb_t *fb;
-> +	void *buf;
-> +
-> +	igt_require(gem_has_legacy_mmap(data->drm_fd));
-> +
-> +	fb = prepare_fb(data);
-> +
-> +	/* mmap the fb */
-> +	buf = gem_mmap__cpu(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
-> +
-> +	crc = get_buf_crc(data, buf, fb);
-> +	igt_fail_on(igt_check_crc_equal(&crc, &data->ref_crc));
-
-Same here, use igt_assert_crc_equal ?
-
-Regards,
-Kamil
-
-> +}
-> +
-> +static void select_valid_pipe_output_combo(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +
-> +	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
-> +		igt_display_reset(display);
-> +
-> +		igt_output_set_pipe(data->output, data->pipe);
-> +		if (!i915_pipe_output_combo_valid(display))
-> +			continue;
-> +
-> +		/* one is enough */
-> +		return;
-> +	}
-> +
-> +	igt_skip("no valid crtc/connector combinations found\n");
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data;
-> +
-> +	igt_fixture {
-> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +
-> +		data.devid = intel_get_drm_devid(data.drm_fd);
-> +
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_require_pipe_crc(data.drm_fd);
-> +
-> +		igt_display_require(&data.display, data.drm_fd);
-> +
-> +		select_valid_pipe_output_combo(&data);
-> +	}
-> +
-> +	/**
-> +	 * SUBTEST: memset-crc
-> +	 * Description: Use display controller CRC hardware to validate (non)coherency
-> +	 *		of memset operations on future scanout buffer objects
-> +	 *		mmapped with different mmap methods and different caching modes.
-> +	 */
-> +	igt_subtest_with_dynamic("memset-crc") {
-> +		if (gem_has_mappable_ggtt(data.drm_fd)) {
-> +			igt_dynamic("mmap-gtt")
-> +				test_mmap_gtt(&data);
-> +
-> +			cleanup_crtc(&data);
-> +		}
-> +
-> +		if (gem_mmap_offset__has_wc(data.drm_fd)) {
-> +			igt_dynamic("mmap-offset-wc")
-> +				test_mmap_offset_wc(&data);
-> +
-> +			cleanup_crtc(&data);
-> +		}
-> +
-> +		if (gem_has_mmap_offset(data.drm_fd)) {
-> +			if (gem_has_lmem(data.drm_fd)) {
-> +				igt_dynamic("mmap-offset-fixed")
-> +					test_mmap_offset_fixed(&data);
-> +
-> +				cleanup_crtc(&data);
-> +
-> +			} else {
-> +				igt_dynamic("mmap-offset-uc")
-> +					test_mmap_offset_uc(&data);
-> +
-> +				cleanup_crtc(&data);
-> +			}
-> +		}
-> +
-> +		if (gem_has_legacy_mmap(data.drm_fd) &&
-> +		    gem_mmap__has_wc(data.drm_fd)) {
-> +			igt_dynamic("mmap-legacy-wc")
-> +				test_legacy_mmap_wc(&data);
-> +
-> +			cleanup_crtc(&data);
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		igt_display_fini(&data.display);
-> +		close(data.drm_fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index c15eb3a08c..371b501992 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -224,6 +224,7 @@ i915_progs = [
->  	'kms_ccs',
->  	'kms_cdclk',
->  	'kms_draw_crc',
-> +	'kms_fb_coherency',
->  	'kms_fbcon_fbt',
->  	'kms_fence_pin_leak',
->  	'kms_flip_scaled_crc',
-> -- 
-> 2.40.1
-> 
+--_000_BYAPR11MB2567ECD38D740E324C2EACCA9A789BYAPR11MB2567namp_--
