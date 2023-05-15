@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C013710E278
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 20:23:12 +0000 (UTC)
-From: "Yang, Fei" <fei.yang@intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 15 May 2023 20:23:08 +0000
-Message-ID: <BYAPR11MB2567ECD38D740E324C2EACCA9A789@BYAPR11MB2567.namprd11.prod.outlook.com>
-References: <20230512175108.1171586-1-fei.yang@intel.com>
- <20230512175108.1171586-2-fei.yang@intel.com>
- <4e39db9d-61ff-a5d1-6b68-d1f25e020d02@linux.intel.com>
-In-Reply-To: <4e39db9d-61ff-a5d1-6b68-d1f25e020d02@linux.intel.com>
-Content-Language: en-US
 Content-Type: multipart/alternative;
- boundary="_000_BYAPR11MB2567ECD38D740E324C2EACCA9A789BYAPR11MB2567namp_"
+ boundary="===============6359388410158614193=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v3 1/1] test/gem_create: exercise
- gem_create_ext_set_pat
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Date: Mon, 15 May 2023 20:31:04 -0000
+Message-ID: <168418266457.22015.8552296250175688767@emeril.freedesktop.org>
+References: <20230515184604.64135-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20230515184604.64135-1-kamil.konieczny@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgVXNlIG5l?=
+ =?utf-8?q?w_procps_library_libproc2_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,424 +17,317 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_000_BYAPR11MB2567ECD38D740E324C2EACCA9A789BYAPR11MB2567namp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+--===============6359388410158614193==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> On 12/05/2023 18:51, fei.yang@intel.com wrote:
->> From: Fei Yang <fei.yang@intel.com>
->>
->> Gem_create uAPI has been extended with capability of setting PAT index.
->> Add a test case to exercise this new extension.
->>
->> Signed-off-by: Fei Yang <fei.yang@intel.com>
->> ---
->>   lib/i915/i915_drm_local.h | 34 ++++++++++++++++++++++++++++++
->>   tests/i915/gem_create.c   | 44 +++++++++++++++++++++++++++++++++++++++
->>   2 files changed, 78 insertions(+)
->>
->> diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
->> index af017650..35929a0c 100644
->> --- a/lib/i915/i915_drm_local.h
->> +++ b/lib/i915/i915_drm_local.h
->> @@ -26,6 +26,40 @@ extern "C" {
->>   #define DRM_I915_PERF_PROP_OA_ENGINE_CLASS 9
->>   #define DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE      10
->>
->> +#define I915_GEM_CREATE_EXT_SET_PAT 2
->> +
->> +/**
->> + * struct drm_i915_gem_create_ext_set_pat - The
->> + * I915_GEM_CREATE_EXT_SET_PAT extension.
->> + *
->> + * If this extension is provided, the specified caching policy (PAT
->> +index) is
->> + * applied to the buffer object.
->> + *
->> + * Below is an example on how to create an object with specific caching=
- policy:
->> + *
->> + * .. code-block:: C
->> + *
->> + *  struct drm_i915_gem_create_ext_set_pat set_pat_ext =3D {
->> + *          .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },
->> + *          .pat_index =3D 0,
->> + *  };
->> + *  struct drm_i915_gem_create_ext create_ext =3D {
->> + *          .size =3D PAGE_SIZE,
->> + *          .extensions =3D (uintptr_t)&set_pat_ext,
->> + *  };
->> + *
->> + *  int err =3D ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
->> + *  if (err) ...
->> + */
->> +struct drm_i915_gem_create_ext_set_pat {
->> +    /** @base: Extension link. See struct i915_user_extension. */
->> +    struct i915_user_extension base;
->> +    /** @pat_index: PAT index to be set */
->> +    __u32 pat_index;
->> +    /** @rsvd: reserved for future use */
->> +    __u32 rsvd;
->> +};
->> +
->>   #if defined(__cplusplus)
->>   }
->>   #endif
->> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c index
->> c719ab6c..20c71afb 100644
->> --- a/tests/i915/gem_create.c
->> +++ b/tests/i915/gem_create.c
->> @@ -537,6 +537,45 @@ static void create_ext_placement_each(int fd)
->>      free(regions);
->>   }
->>
->> +static void create_ext_set_pat(int fd) {
->> +    struct drm_i915_gem_create_ext_set_pat setparam_pat =3D {
->> +            .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },
->> +            .pat_index =3D 0,
->> +    };
->> +    struct drm_i915_gem_create_ext_set_pat setparam_inv_pat =3D {
->> +            .base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },
->> +            .pat_index =3D 65,
->> +    };
->> +    struct drm_i915_gem_caching arg;
->> +    uint64_t size;
->> +    uint32_t handle;
->> +    int ret;
->> +
->> +    size =3D PAGE_SIZE;
->> +
->> +    ret =3D __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base)=
-;
->> +
->> +    /* Returning -EFAULT indicates set_pat extension is not supported *=
-/
->> +    if (ret =3D=3D -EFAULT)
->> +            igt_info("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
->
-> Is this correct? EFAULT should be data access issues while unsupported ex=
-tensions should be EINVAL.
+== Series Details ==
 
-Wil correct.
+Series: Use new procps library libproc2 (rev2)
+URL   : https://patchwork.freedesktop.org/series/117699/
+State : failure
 
->> +    igt_assert(ret =3D=3D 0);
->
-> Extension not supported should be a skip I would say.
+== Summary ==
 
-Will replace igt_info with igt_skip.
+CI Bug Log - changes from IGT_7291 -> IGTPW_8967
+====================================================
 
-> EFAULT test is then something else, ie. hitting this path from the kernel=
- ioctl handler:
->
-> ext_set_pat()
-> ...
-> +     if (copy_from_user(&ext, base, sizeof(ext)))
-> +             return -EFAULT;
->
->> +
->> +    /* {set|get}_caching ioctl should fail for objects created with set=
-_pat */
->> +    igt_assert(__gem_set_caching(fd, handle, 1) =3D=3D -EOPNOTSUPP);
->
-> Easy to test get too as the comment suggests?
+Summary
+-------
 
-The ioctl right below is exercising get_caching ioctl.
-I couldn't use gem_get_caching() because it overwrites errno.
+  **FAILURE**
 
-> Regards,
->
-> Tvrtko
->
->> +
->> +    memset(&arg, 0, sizeof(arg));
->> +    arg.handle =3D handle;
->> +    igt_assert(ioctl(fd, DRM_IOCTL_I915_GEM_GET_CACHING, &arg) < 0 &&
->> +               errno =3D=3D EOPNOTSUPP);
->> +
->> +    /* gem_create should fail with -EINVAL if invalid pat index specifi=
-ed */
->> +    igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle, &setparam_inv=
-_pat.base),
->> +                  -EINVAL);
->> +
->> +    gem_close(fd, handle);
->> +}
->> +
->>   static bool supports_needs_cpu_access(int fd)
->>   {
->>      struct drm_i915_gem_memory_class_instance regions[] =3D { @@ -897,6
->> +936,11 @@ igt_main
->>      igt_subtest("create-ext-placement-all")
->>              create_ext_placement_all(fd);
->>
->> +    igt_describe("Create objects with specific cache setting"
->> +                 " create-ext.");
->> +    igt_subtest("create-ext-set-pat")
->> +                create_ext_set_pat(fd);
->> +
->>      igt_describe("Verify the basic functionally and expected ABI contra=
-ct around I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS");
->>      igt_subtest("create-ext-cpu-access-sanity-check") {
->>              igt_require(supports_needs_cpu_access(fd));
+  Serious unknown changes coming with IGTPW_8967 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8967, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
---_000_BYAPR11MB2567ECD38D740E324C2EACCA9A789BYAPR11MB2567namp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/index.html
 
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
+Participating hosts (37 -> 36)
+------------------------------
+
+  Additional (1): bat-mtlp-8 
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8967:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_gttfill@basic:
+    - bat-atsm-1:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-atsm-1/igt@gem_exec_gttfill@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-atsm-1/igt@gem_exec_gttfill@basic.html
+
+  * igt@i915_module_load@reload:
+    - bat-adls-5:         [PASS][3] -> [ABORT][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-adls-5/igt@i915_module_load@reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-adls-5/igt@i915_module_load@reload.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8967 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][5] -> [DMESG-FAIL][6] ([i915#5334])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [PASS][7] -> [DMESG-WARN][8] ([i915#7699] / [i915#7953])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         NOTRUN -> [ABORT][9] ([i915#4983] / [i915#7461] / [i915#7953] / [i915#8347] / [i915#8384])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         NOTRUN -> [DMESG-WARN][10] ([i915#6367])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:
+    - bat-dg2-8:          [PASS][11] -> [FAIL][12] ([i915#7932])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - bat-adlp-9:         NOTRUN -> [SKIP][13] ([i915#3546]) +1 similar issue
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3:
+    - bat-dg2-11:         [PASS][14] -> [INCOMPLETE][15] ([i915#7908] / [i915#7953])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@mman:
+    - bat-rpls-2:         [TIMEOUT][16] ([i915#6794] / [i915#7392]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-rpls-2/igt@i915_selftest@live@mman.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-rpls-2/igt@i915_selftest@live@mman.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [ABORT][18] ([i915#7911] / [i915#7920] / [i915#7953]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#7392]: https://gitlab.freedesktop.org/drm/intel/issues/7392
+  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
+  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7908]: https://gitlab.freedesktop.org/drm/intel/issues/7908
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
+  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
+  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7291 -> IGTPW_8967
+
+  CI-20190529: 20190529
+  CI_DRM_13148: 57a535e042517014a85f33be6fa5ed22145c56e9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8967: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/index.html
+  IGT_7291: a536bd30aaeb1ab02dc4f37d2d723c37be356d8d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@kms_fb_coherency@memset-crc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/index.html
+
+--===============6359388410158614193==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
 </head>
-<body dir=3D"ltr">
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof ContentPasted0 Conten=
-tPasted1">
-&gt; On 12/05/2023 18:51, fei.yang@intel.com wrote:
-<div class=3D"ContentPasted0">&gt;&gt; From: Fei Yang &lt;fei.yang@intel.co=
-m&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; Gem_create uAPI has been extended wi=
-th capability of setting PAT index.</div>
-<div class=3D"ContentPasted0">&gt;&gt; Add a test case to exercise this new=
- extension.</div>
-<div class=3D"ContentPasted0">&gt;&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; Signed-off-by: Fei Yang &lt;fei.yang=
-@intel.com&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; ---</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp; lib/i915/i915_drm_local.h | 3=
-4 ++++++++++++++++++++++++++++++</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp; tests/i915/gem_create.c &nbsp=
-; | 44 +++++++++++++++++++++++++++++++++++++++</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp; 2 files changed, 78 insertion=
-s(+)</div>
-<div class=3D"ContentPasted0">&gt;&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; diff --git a/lib/i915/i915_drm_local=
-.h b/lib/i915/i915_drm_local.h</div>
-<div class=3D"ContentPasted0">&gt;&gt; index af017650..35929a0c 100644</div=
->
-<div class=3D"ContentPasted0">&gt;&gt; --- a/lib/i915/i915_drm_local.h</div=
->
-<div class=3D"ContentPasted0">&gt;&gt; +++ b/lib/i915/i915_drm_local.h</div=
->
-<div class=3D"ContentPasted0">&gt;&gt; @@ -26,6 +26,40 @@ extern &quot;C&qu=
-ot; {</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp; #define DRM_I915_PERF_PROP_OA=
-_ENGINE_CLASS 9</div>
-<div class=3D"ContentPasted0">&gt;&gt; &nbsp; #define DRM_I915_PERF_PROP_OA=
-_ENGINE_INSTANCE &nbsp; &nbsp; &nbsp;10</div>
-<div class=3D"ContentPasted0">&gt;&gt;</div>
-<div class=3D"ContentPasted0">&gt;&gt; +#define I915_GEM_CREATE_EXT_SET_PAT=
- 2</div>
-<div class=3D"ContentPasted0">&gt;&gt; +</div>
-<div class=3D"ContentPasted0">&gt;&gt; +/**</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * struct drm_i915_gem_create_ext_s=
-et_pat - The</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * I915_GEM_CREATE_EXT_SET_PAT exte=
-nsion.</div>
-<div class=3D"ContentPasted0">&gt;&gt; + *</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * If this extension is provided, t=
-he specified caching policy (PAT</div>
-<div class=3D"ContentPasted0">&gt;&gt; +index) is</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * applied to the buffer object.</d=
-iv>
-<div class=3D"ContentPasted0">&gt;&gt; + *</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * Below is an example on how to cr=
-eate an object with specific caching policy:</div>
-<div class=3D"ContentPasted0">&gt;&gt; + *</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * .. code-block:: C</div>
-<div class=3D"ContentPasted0">&gt;&gt; + *</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp;struct drm_i915_gem_create=
-_ext_set_pat set_pat_ext =3D {</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
-p;.base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
-p;.pat_index =3D 0,</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp;};</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp;struct drm_i915_gem_create=
-_ext create_ext =3D {</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
-p;.size =3D PAGE_SIZE,</div>
-<div class=3D"ContentPasted0">&gt;&gt; + * &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
-p;.extensions =3D (uintptr_t)&amp;set_pat_ext,</div>
-&gt;&gt; + * &nbsp;};
-<div class=3D"ContentPasted1">&gt;&gt; + *</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp;int err =3D ioctl(fd, DRM_=
-IOCTL_I915_GEM_CREATE_EXT, &amp;create_ext);</div>
-<div class=3D"ContentPasted1">&gt;&gt; + * &nbsp;if (err) ...</div>
-<div class=3D"ContentPasted1">&gt;&gt; + */</div>
-<div class=3D"ContentPasted1">&gt;&gt; +struct drm_i915_gem_create_ext_set_=
-pat {</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;/** @base: Extension =
-link. See struct i915_user_extension. */</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;struct i915_user_exte=
-nsion base;</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;/** @pat_index: PAT i=
-ndex to be set */</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;__u32 pat_index;</div=
->
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;/** @rsvd: reserved f=
-or future use */</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;__u32 rsvd;</div>
-<div class=3D"ContentPasted1">&gt;&gt; +};</div>
-<div class=3D"ContentPasted1">&gt;&gt; +</div>
-<div class=3D"ContentPasted1">&gt;&gt; &nbsp; #if defined(__cplusplus)</div=
->
-<div class=3D"ContentPasted1">&gt;&gt; &nbsp; }</div>
-<div class=3D"ContentPasted1">&gt;&gt; &nbsp; #endif</div>
-<div class=3D"ContentPasted1">&gt;&gt; diff --git a/tests/i915/gem_create.c=
- b/tests/i915/gem_create.c index</div>
-<div class=3D"ContentPasted1">&gt;&gt; c719ab6c..20c71afb 100644</div>
-<div class=3D"ContentPasted1">&gt;&gt; --- a/tests/i915/gem_create.c</div>
-<div class=3D"ContentPasted1">&gt;&gt; +++ b/tests/i915/gem_create.c</div>
-<div class=3D"ContentPasted1">&gt;&gt; @@ -537,6 +537,45 @@ static void cre=
-ate_ext_placement_each(int fd)</div>
-<div class=3D"ContentPasted1">&gt;&gt; &nbsp; &nbsp; &nbsp;free(regions);</=
-div>
-<div class=3D"ContentPasted1">&gt;&gt; &nbsp; }</div>
-<div class=3D"ContentPasted1">&gt;&gt;</div>
-<div class=3D"ContentPasted1">&gt;&gt; +static void create_ext_set_pat(int =
-fd) {</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;struct drm_i915_gem_c=
-reate_ext_set_pat setparam_pat =3D {</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp;.base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp;.pat_index =3D 0,</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;};</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;struct drm_i915_gem_c=
-reate_ext_set_pat setparam_inv_pat =3D {</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp;.base =3D { .name =3D I915_GEM_CREATE_EXT_SET_PAT },</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp;.pat_index =3D 65,</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;};</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;struct drm_i915_gem_c=
-aching arg;</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;uint64_t size;</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;uint32_t handle;</div=
->
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;int ret;</div>
-<div class=3D"ContentPasted1">&gt;&gt; +</div>
-<div class=3D"ContentPasted1">&gt;&gt; + &nbsp; &nbsp;size =3D PAGE_SIZE;</=
-div>
-<div class=3D"ContentPasted1">&gt;&gt; +</div>
-<div class=3D"ContentPasted1 ContentPasted2 ContentPasted3">&gt;&gt; + &nbs=
-p; &nbsp;ret =3D __gem_create_ext(fd, &amp;size, 0, &amp;handle, &amp;setpa=
-ram_pat.base);
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;/* Returning -EFAULT =
-indicates set_pat extension is not supported */</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;if (ret =3D=3D -EFAUL=
-T)</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp;igt_info(&quot;I915_GEM_CREATE_EXT_SET_PAT is not supported\n&quot;)=
-;</div>
-<div class=3D"ContentPasted2">&gt;</div>
-<div class=3D"ContentPasted2">&gt; Is this correct? EFAULT should be data a=
-ccess issues while unsupported extensions should be EINVAL.</div>
-<div><br class=3D"ContentPasted2">
-</div>
-<div class=3D"ContentPasted2">Wil correct.</div>
-<div><br class=3D"ContentPasted2">
-</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;igt_assert(ret =3D=3D=
- 0);</div>
-<div class=3D"ContentPasted2">&gt;</div>
-<div class=3D"ContentPasted2">&gt; Extension not supported should be a skip=
- I would say.</div>
-<div><br class=3D"ContentPasted2">
-</div>
-<div class=3D"ContentPasted2">Will replace igt_info with igt_skip.</div>
-<div><br class=3D"ContentPasted2">
-</div>
-<div class=3D"ContentPasted2">&gt; EFAULT test is then something else, ie. =
-hitting this path from the kernel ioctl handler:</div>
-<div class=3D"ContentPasted2">&gt;</div>
-<div class=3D"ContentPasted2">&gt; ext_set_pat()</div>
-<div class=3D"ContentPasted2">&gt; ...</div>
-<div class=3D"ContentPasted2">&gt; + &nbsp; &nbsp; if (copy_from_user(&amp;=
-ext, base, sizeof(ext)))</div>
-<div class=3D"ContentPasted2">&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nb=
-sp; return -EFAULT;</div>
-<div class=3D"ContentPasted2">&gt;</div>
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;/* {set|get}_caching =
-ioctl should fail for objects created with set_pat */</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;igt_assert(__gem_set_=
-caching(fd, handle, 1) =3D=3D -EOPNOTSUPP);</div>
-<div class=3D"ContentPasted2">&gt;</div>
-<div class=3D"ContentPasted2">&gt; Easy to test get too as the comment sugg=
-ests?</div>
-<div><br class=3D"ContentPasted2">
-</div>
-<div class=3D"ContentPasted2">The ioctl right below is exercising get_cachi=
-ng ioctl.</div>
-<div class=3D"ContentPasted2">I couldn't use gem_get_caching() because it o=
-verwrites errno.</div>
-<div><br class=3D"ContentPasted2">
-</div>
-<div class=3D"ContentPasted2">&gt; Regards,</div>
-<div class=3D"ContentPasted2">&gt;</div>
-<div class=3D"ContentPasted2">&gt; Tvrtko</div>
-<div class=3D"ContentPasted2">&gt;</div>
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;memset(&amp;arg, 0, s=
-izeof(arg));</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;arg.handle =3D handle=
-;</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp;igt_assert(ioctl(fd, =
-DRM_IOCTL_I915_GEM_GET_CACHING, &amp;arg) &lt; 0 &amp;&amp;</div>
-<div class=3D"ContentPasted2">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; &nbsp; errno =3D=3D EOPNOTSUPP);</div>
-<div class=3D"ContentPasted2">&gt;&gt; +</div>
-&gt;&gt; + &nbsp; &nbsp;/* gem_create should fail with -EINVAL if invalid p=
-at index specified */
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp;igt_assert_eq(__gem_c=
-reate_ext(fd, &amp;size, 0, &amp;handle, &amp;setparam_inv_pat.base),</div>
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; &nbsp; &nbsp; &nbsp;-EINVAL);</div>
-<div class=3D"ContentPasted3">&gt;&gt; +</div>
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp;gem_close(fd, handle)=
-;</div>
-<div class=3D"ContentPasted3">&gt;&gt; +}</div>
-<div class=3D"ContentPasted3">&gt;&gt; +</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; static bool supports_needs_cp=
-u_access(int fd)</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; {</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp;struct drm_i915_=
-gem_memory_class_instance regions[] =3D { @@ -897,6</div>
-<div class=3D"ContentPasted3">&gt;&gt; +936,11 @@ igt_main</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp;igt_subtest(&quo=
-t;create-ext-placement-all&quot;)</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &=
-nbsp; &nbsp;create_ext_placement_all(fd);</div>
-<div class=3D"ContentPasted3">&gt;&gt;</div>
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp;igt_describe(&quot;Cr=
-eate objects with specific cache setting&quot;</div>
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; &nbsp; &nbsp; &quot; create-ext.&quot;);</div>
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp;igt_subtest(&quot;cre=
-ate-ext-set-pat&quot;)</div>
-<div class=3D"ContentPasted3">&gt;&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp; &nbsp; &nbsp;create_ext_set_pat(fd);</div>
-<div class=3D"ContentPasted3">&gt;&gt; +</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp;igt_describe(&qu=
-ot;Verify the basic functionally and expected ABI contract around I915_GEM_=
-CREATE_EXT_FLAG_NEEDS_CPU_ACCESS&quot;);</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp;igt_subtest(&quo=
-t;create-ext-cpu-access-sanity-check&quot;) {</div>
-<div class=3D"ContentPasted3">&gt;&gt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &=
-nbsp; &nbsp;igt_require(supports_needs_cpu_access(fd));</div>
-</div>
-</div>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Use new procps library libproc2 (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117699/">https://patchwork.freedesktop.org/series/117699/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7291 -&gt; IGTPW_8967</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8967 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8967, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/index.html</p>
+<h2>Participating hosts (37 -&gt; 36)</h2>
+<p>Additional (1): bat-mtlp-8 <br />
+  Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8967:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-atsm-1/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-atsm-1/igt@gem_exec_gttfill@basic.html">INCOMPLETE</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>bat-adls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-adls-5/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-adls-5/igt@i915_module_load@reload.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8967 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7908">i915#7908</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-rpls-2/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-rpls-2/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7291 -&gt; IGTPW_8967</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13148: 57a535e042517014a85f33be6fa5ed22145c56e9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8967: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8967/index.html<br />
+  IGT_7291: a536bd30aaeb1ab02dc4f37d2d723c37be356d8d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@kms_fb_coherency@memset-crc</p>
+
 </body>
 </html>
 
---_000_BYAPR11MB2567ECD38D740E324C2EACCA9A789BYAPR11MB2567namp_--
+--===============6359388410158614193==--
