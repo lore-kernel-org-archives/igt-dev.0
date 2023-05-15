@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <e94c4470-d9b1-19db-9948-3d8caaf8b7b8@linux.intel.com>
-Date: Mon, 15 May 2023 12:10:43 +0100
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C6D410E056
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 12:04:39 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 15 May 2023 17:33:33 +0530
+Message-Id: <20230515120334.220022-2-swati2.sharma@intel.com>
+In-Reply-To: <20230515120334.220022-1-swati2.sharma@intel.com>
+References: <20230515120334.220022-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Rob Clark <robdclark@chromium.org>
-References: <20230131113237.3707217-1-tvrtko.ursulin@linux.intel.com>
- <20230131113237.3707217-9-tvrtko.ursulin@linux.intel.com>
- <CAJs_Fx6viBKQwoRofup8z4ZBcGC6dabvLarzT8aoevBEjQe8Ew@mail.gmail.com>
- <c80ae665-0177-355e-e38c-a7cce5043617@linux.intel.com>
- <CAF6AEGvP-AfKW7AtJuz3a020_E15fRa_vmKvNOBy_QQo5-zopQ@mail.gmail.com>
- <c288faf6-28ad-b0bc-c77d-16628ba93475@linux.intel.com>
- <CAJs_Fx7=zKUeE5sejc-ZCjUZ47W6Taw4_AP9ZWT7e-kkzL3h2g@mail.gmail.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <CAJs_Fx7=zKUeE5sejc-ZCjUZ47W6Taw4_AP9ZWT7e-kkzL3h2g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 8/8] gputop: Basic vendor agnostic GPU
- top tool
+Subject: [igt-dev] [PATCH i-g-t 2/3] tests/kms_pipe_crc_basic: Add NV12 CRC
+ sanitycheck tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,73 +19,256 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
- =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>,
- Intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+New CRC sanitycheck test cases are added with NV12 format (white
+and solid rgb).
+Existing test case(with format XRGB) is modified to validate CRC
+with solid rgb in addition to white color fb)
 
-On 12/05/2023 15:18, Rob Clark wrote:
-> On Thu, Apr 6, 2023 at 7:33 AM Tvrtko Ursulin
-> <tvrtko.ursulin@linux.intel.com> wrote:
->>
->>
->> On 06/04/2023 15:21, Rob Clark wrote:
->>> On Thu, Apr 6, 2023 at 4:08 AM Tvrtko Ursulin
->>> <tvrtko.ursulin@linux.intel.com> wrote:
->>>>
->>>>
->>>> On 05/04/2023 18:57, Rob Clark wrote:
->>>>> On Tue, Jan 31, 2023 at 3:33 AM Tvrtko Ursulin
->>>>> <tvrtko.ursulin@linux.intel.com> wrote:
->>>>>>
->>>>>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>>>>>
->>>>>> Rudimentary vendor agnostic example of how lib_igt_drm_clients can be used
->>>>>> to display a sorted by card and usage list of processes using GPUs.
->>>>>>
->>>>>> Borrows a bit of code from intel_gpu_top but for now omits the fancy
->>>>>> features like interactive functionality, card selection, client
->>>>>> aggregation, sort modes, JSON output  and pretty engine names. Also no
->>>>>> support for global GPU or system metrics.
->>>>>>
->>>>>> On the other hand it shows clients from all DRM cards which
->>>>>> intel_gpu_top does not do.
->>>>>>
->>>>>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>>>>> Cc: Rob Clark <robdclark@chromium.org>
->>>>>> Cc: Christian König <ckoenig.leichtzumerken@gmail.com>
->>>>>> Acked-by: Christian König <christian.koenig@amd.com>
->>>>>
->>>>> Reviewed-by: Rob Clark <robdclark@chromium.org>
->>>>
->>>> Presumably for 8/8 only?
->>>>
->>>> The rest of the series does not apply any more by now. I need to rebase..
->>>
->>> I didn't look closely at the rest of the series (was kinda assuming
->>> that was mostly just moving things around).. but I see you rebased it
->>> so I can take a look.
->>
->> There's a lot in there - first patch is extracting some code into a
->> library, with the corresponding renames, but then there are six patches
->> of tweaks and feature additions which finally make gputop possible.
->>
->> Hopefully you can penetrate the concepts. It was all at least Valgrind
->> clean back in the day I first did it.
->>
-> 
-> by now I've read (and rebased locally) the series, and even added a
-> couple things on top.. so r-b for the series, we should get this
-> landed
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/kms_pipe_crc_basic.c | 198 ++++++++++++++++++++++++++++++++++---
+ 1 file changed, 182 insertions(+), 16 deletions(-)
 
-Thanks for the reviews, pushed!
-
-Lets see if the future holds for this small tool.
-
-Regards,
-
-Tvrtko
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 84c73fd7..a340d5b1 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -239,13 +239,15 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+  * CRC-sanity test, to make sure there would be no CRC mismatches
+  *
+  * - Create two framebuffers (FB0 & FB1) with same color info
++ *   with different formats (RGB/NV12)
+  * - Flip FB0 with the Primary plane & collect the CRC as ref CRC.
+  * - Flip FB1 with the Primary plane, collect the CRC & compare with
+  *   the ref CRC.
+  *
+  *   No CRC mismatch should happen
+  */
+-static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
++static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output,
++			     uint32_t format, int color)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_plane_t *primary;
+@@ -260,18 +262,60 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	mode = igt_output_get_mode(output);
+ 
+ 	/* Create two framebuffers with the same color info. */
+-	igt_create_color_fb(data->drm_fd,
+-			mode->hdisplay, mode->vdisplay,
+-			DRM_FORMAT_XRGB8888,
+-			DRM_FORMAT_MOD_LINEAR,
+-			1.0, 1.0, 1.0,
+-			&fb0);
+-	igt_create_color_fb(data->drm_fd,
+-			mode->hdisplay, mode->vdisplay,
+-			DRM_FORMAT_XRGB8888,
+-			DRM_FORMAT_MOD_LINEAR,
+-			1.0, 1.0, 1.0,
+-			&fb1);
++	switch (color) {
++	case 1:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				format, DRM_FORMAT_MOD_LINEAR,
++				1.0, 0.0, 0.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				format, DRM_FORMAT_MOD_LINEAR,
++				1.0, 0.0, 0.0,
++				&fb1);
++		break;
++	case 2:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				format, DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				format, DRM_FORMAT_MOD_LINEAR,
++				0.0, 1.0, 0.0,
++				&fb1);
++		break;
++	case 3:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				format, DRM_FORMAT_MOD_LINEAR,
++				0.0, 0.0, 1.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				format, DRM_FORMAT_MOD_LINEAR,
++				0.0, 0.0, 1.0,
++				&fb1);
++		break;
++	case 0:
++	default:
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				format, DRM_FORMAT_MOD_LINEAR,
++				1.0, 1.0, 1.0,
++				&fb0);
++
++		igt_create_color_fb(data->drm_fd,
++				mode->hdisplay, mode->vdisplay,
++				format, DRM_FORMAT_MOD_LINEAR,
++				1.0, 1.0, 1.0,
++				&fb1);
++	}
+ 
+ 	/* Flip FB0 with the Primary plane & collect the CRC as ref CRC. */
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+@@ -475,8 +519,77 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 		}
+ 	}
+ 
+-	igt_describe("Basic sanity check for CRC mismatches");
+-	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
++	igt_describe("Basic sanity check for CRC mismatches with XRGB format "
++		     "and white color fb.");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc(&data, pipe, output, DRM_FORMAT_XRGB8888, 0);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches with XRGB format "
++		     "and red solid color fb.");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-red") {
++			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if (simulation_constraint(pipe))
++					continue;
++
++				if(!pipe_output_combo_valid(&data.display, pipe, output))
++					continue;
++
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++					test_compare_crc(&data, pipe, output, DRM_FORMAT_XRGB8888, 1);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches with XRGB format "
++		     "and green solid color fb.");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-green") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc(&data, pipe, output, DRM_FORMAT_XRGB8888, 2);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches with XRGB format "
++		     "and blue solid color fb.");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-xrgb-blue") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc(&data, pipe, output, DRM_FORMAT_XRGB8888, 3);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches with NV12 format "
++		     "and white color fb.");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 			if (simulation_constraint(pipe))
+ 				continue;
+@@ -485,7 +598,60 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 				continue;
+ 
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+-				test_compare_crc(&data, pipe, output);
++				test_compare_crc(&data, pipe, output, DRM_FORMAT_NV12, 0);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches with NV12 format "
++		     "and red solid color fb.");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-red") {
++			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if (simulation_constraint(pipe))
++					continue;
++
++				if(!pipe_output_combo_valid(&data.display, pipe, output))
++					continue;
++
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++					test_compare_crc(&data, pipe, output, DRM_FORMAT_NV12, 1);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches with NV12 format "
++		     "and green solid color fb.");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-green") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc(&data, pipe, output, DRM_FORMAT_NV12, 2);
++
++			break;
++		}
++	}
++
++	igt_describe("Basic sanity check for CRC mismatches with NV12 format "
++		     "and blue solid color fb.");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12-blue") {
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (simulation_constraint(pipe))
++				continue;
++
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc(&data, pipe, output, DRM_FORMAT_NV12, 3);
++
++			break;
+ 		}
+ 	}
+ 
+-- 
+2.25.1
