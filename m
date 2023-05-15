@@ -2,13 +2,13 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Mon, 15 May 2023 14:36:29 +0100
-Message-Id: <20230515133630.2163170-2-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
-References: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+Date: Mon, 15 May 2023 14:36:28 +0100
+Message-Id: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] gputop: Move client name last
+Subject: [igt-dev] [PATCH i-g-t 0/2] gputop/intel_gpu_top: Move name to be
+ the last field
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,80 +24,46 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Move client name to be the right most field which visually aligns better
-with top(1) and prepares for inserting memory usage fields somewhere in
-the middle.
+Rob,
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+I thought maybe when you add memory stats the same field order like top(1)
+would feel more natural? That is client name comes last and is left justified.
+All other stats then come in the middle, between PID and NAME.
+
+DRM minor 0
+    PID     render         copy         video     video-enhance  NAME
+   2704 |▌           ||            ||            ||            | kwin_x11
+   2734 |▏           ||            ||            ||            | plasmashell
+   3932 |            ||            ||            ||            | krunner
+   4414 |            ||            ||            ||            | xdg-desktop-por
+1999477 |            ||            ||            ||            | firefox
+2162094 |            ||            ||            ||            | thunderbir
+
+intel-gpu-top: Intel Alderlake_s (Gen12) @ /dev/dri/card0 -   15/  15 MHz
+    99% RC6;  0.01/ 5.46 W;       34 irqs/s
+
+         ENGINES     BUSY                                        MI_SEMA MI_WAIT
+       Render/3D    1.31% |▌                                   |      0%      0%
+         Blitter    0.00% |                                    |      0%      0%
+           Video    0.00% |                                    |      0%      0%
+    VideoEnhance    0.00% |                                    |      0%      0%
+
+    PID   Render/3D      Blitter        Video      VideoEnhance  NAME
+   2734 |▏           ||            ||            ||            | plasmashell
+   2704 |▏           ||            ||            ||            | kwin_x11
+   1837 |▏           ||            ||            ||            | Xorg
+3429732 |            ||            ||            ||            | kwrite
+2162094 |            ||            ||            ||            | thunderbird
+
 Cc: Rob Clark <robdclark@chromium.org>
----
- tools/gputop.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/tools/gputop.c b/tools/gputop.c
-index 4fb5ce63e07c..681f0a6bb748 100644
---- a/tools/gputop.c
-+++ b/tools/gputop.c
-@@ -80,15 +80,15 @@ print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
- 		return lines;
- 
- 	putchar('\n');
--	len = printf("%*s %*s ",
--		     c->clients->max_pid_len, "PID",
--		     c->clients->max_name_len, "NAME");
-+	len = printf("%*s ", c->clients->max_pid_len, "PID");
- 
- 	if (c->engines->num_engines) {
- 		unsigned int i;
- 		int width;
- 
--		*engine_w = width = (con_w - len) / c->engines->num_engines;
-+		*engine_w = width =
-+			(con_w - len - c->clients->max_name_len - 1) /
-+			c->engines->num_engines;
- 
- 		for (i = 0; i <= c->engines->max_engine_id; i++) {
- 			const char *name = c->engines->names[i];
-@@ -109,8 +109,7 @@ print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
- 		}
- 	}
- 
--	n_spaces(con_w - len);
--	printf("\033[0m\n");
-+	printf(" %-*s\033[0m\n", con_w - len - 1, "NAME");
- 
- 	return lines;
- }
-@@ -128,6 +127,7 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
- 	     unsigned int period_us, int *engine_w)
- {
- 	unsigned int i;
-+	int len;
- 
- 	/* Filter out idle clients. */
- 	if (!c->total_runtime || c->samples < 2)
-@@ -142,9 +142,7 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
- 
- 	*prevc = c;
- 
--	printf("%*s %*s ",
--	       c->clients->max_pid_len, c->pid_str,
--	       c->clients->max_name_len, c->print_name);
-+	len = printf("%*s ", c->clients->max_pid_len, c->pid_str);
- 	lines++;
- 
- 	for (i = 0; c->samples > 1 && i <= c->engines->max_engine_id; i++) {
-@@ -164,9 +162,10 @@ print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
- 			pct = 100.0;
- 
- 		print_percentage_bar(pct, *engine_w);
-+		len += *engine_w;
- 	}
- 
--	putchar('\n');
-+	printf(" %-*s\n", con_w - len - 1, c->print_name);
- 
- 	return lines;
- }
+Tvrtko Ursulin (2):
+  gputop: Move client name last
+  intel_gpu_top: Move client name last
+
+ tools/gputop.c        | 19 +++++++++----------
+ tools/intel_gpu_top.c | 19 +++++++++----------
+ 2 files changed, 18 insertions(+), 20 deletions(-)
+
 -- 
 2.37.2
