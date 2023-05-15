@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6331864159751503160=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Date: Mon, 15 May 2023 17:33:17 -0000
-Message-ID: <168417199768.22016.6461966166037455344@emeril.freedesktop.org>
-References: <20230515163908.50961-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20230515163908.50961-1-kamil.konieczny@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbWVzb246?=
- =?utf-8?q?_fix_testplan_building_for_old_meson?=
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 17:38:41 -0000
+Message-ID: <168417232125.22016.11233618986027224686@emeril.freedesktop.org>
+References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_D?=
+ =?utf-8?q?ocument_KMS_tests_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,461 +23,127 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6331864159751503160==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: meson: fix testplan building for old meson
-URL   : https://patchwork.freedesktop.org/series/117780/
-State : success
+Series: Document KMS tests (rev4)
+URL   : https://patchwork.freedesktop.org/series/117749/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_13148 -> IGTPW_8961
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881644 for the overview.
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/index.html
-
-Participating hosts (36 -> 35)
-------------------------------
-
-  Additional (1): fi-apl-guc 
-  Missing    (2): fi-snb-2520m bat-mtlp-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8961 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - bat-adls-5:         NOTRUN -> [SKIP][1] ([i915#7456])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@debugfs_test@basic-hwmon.html
-
-  * igt@fbdev@eof:
-    - bat-adls-5:         NOTRUN -> [SKIP][2] ([i915#2582]) +4 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@fbdev@eof.html
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - fi-rkl-11600:       [PASS][3] -> [FAIL][4] ([fdo#103375] / [i915#8011])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-apl-guc:         NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/fi-apl-guc/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_lmem_swapping@random-engines:
-    - bat-adls-5:         NOTRUN -> [SKIP][6] ([i915#4613]) +3 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@gem_tiled_pread_basic:
-    - bat-adls-5:         NOTRUN -> [SKIP][7] ([i915#3282])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - bat-adls-5:         NOTRUN -> [SKIP][8] ([i915#7561])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@i915_pm_backlight@basic-brightness.html
-
-  * igt@i915_pm_backlight@basic-brightness@edp-1:
-    - bat-rplp-1:         NOTRUN -> [ABORT][9] ([i915#7077])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html
-
-  * igt@i915_selftest@live@guc:
-    - bat-rpls-2:         NOTRUN -> [DMESG-WARN][10] ([i915#7852])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rpls-2/igt@i915_selftest@live@guc.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-adls-5:         NOTRUN -> [DMESG-WARN][11] ([i915#5591])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - bat-rpls-2:         NOTRUN -> [ABORT][12] ([i915#6687])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@kms_chamelium_hpd@vga-hpd-fast:
-    - bat-adls-5:         NOTRUN -> [SKIP][13] ([i915#7828]) +8 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_chamelium_hpd@vga-hpd-fast.html
-    - fi-apl-guc:         NOTRUN -> [SKIP][14] ([fdo#109271]) +20 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/fi-apl-guc/igt@kms_chamelium_hpd@vga-hpd-fast.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adls-5:         NOTRUN -> [SKIP][15] ([i915#3637]) +3 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-adls-5:         NOTRUN -> [SKIP][16] ([fdo#109285])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adls-5:         NOTRUN -> [SKIP][17] ([i915#1849])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
-    - bat-adls-5:         NOTRUN -> [SKIP][18] ([i915#1845]) +15 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
-
-  * igt@kms_psr@primary_mmap_gtt:
-    - bat-rplp-1:         NOTRUN -> [SKIP][19] ([i915#1072])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-adls-5:         NOTRUN -> [SKIP][20] ([i915#1072]) +3 similar issues
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_psr@sprite_plane_onoff.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         NOTRUN -> [SKIP][21] ([i915#3555] / [i915#4579])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-    - bat-adls-5:         NOTRUN -> [SKIP][22] ([i915#3555] / [i915#4579])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-apl-guc:         NOTRUN -> [SKIP][23] ([fdo#109271] / [i915#4579])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/fi-apl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - bat-adls-5:         NOTRUN -> [SKIP][24] ([fdo#109295] / [i915#1845])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@prime_vgem@basic-fence-flip.html
-
-  * igt@prime_vgem@basic-read:
-    - bat-adls-5:         NOTRUN -> [SKIP][25] ([fdo#109295] / [i915#3291]) +2 similar issues
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@prime_vgem@basic-read.html
-
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41759739):
+     chamelium_port_get_connector(data->chamelium, port, true);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
+  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
+    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
+    ^~~~~~~~~~~~~~~~~~~~~~~
+    chamelium_set_edid
+  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
+  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+     chamelium_port_get_connector(data->chamelium, port, false);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1684172004:step_script
+  section_start:1684172004:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684172005:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
-#### Possible fixes ####
 
-  * igt@i915_module_load@load:
-    - bat-adls-5:         [ABORT][26] -> [PASS][27]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-adls-5/igt@i915_module_load@load.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@i915_module_load@load.html
-
-  * igt@i915_selftest@live@requests:
-    - {bat-mtlp-8}:       [ABORT][28] ([i915#4983] / [i915#7920] / [i915#7953]) -> [PASS][29]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-2:         [ABORT][30] ([i915#4983] / [i915#7461] / [i915#7913] / [i915#8347]) -> [PASS][31]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-rpls-2/igt@i915_selftest@live@reset.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rpls-2/igt@i915_selftest@live@reset.html
-
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-1:         [DMESG-WARN][32] ([i915#6367] / [i915#7953]) -> [PASS][33]
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
-    - bat-dg2-8:          [FAIL][34] ([i915#7932]) -> [PASS][35]
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41759738):
+     chamelium_port_get_connector(data->chamelium, port, true);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
+  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
+    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
+    ^~~~~~~~~~~~~~~~~~~~~~~
+    chamelium_set_edid
+  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
+  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+     chamelium_port_get_connector(data->chamelium, port, false);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1684172003:step_script
+  section_start:1684172003:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684172004:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
-#### Warnings ####
 
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-rplp-1:         [ABORT][36] ([i915#8442]) -> [SKIP][37] ([i915#1072])
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41759740):
+     chamelium_port_get_connector(data->chamelium, port, true);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
+  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
+    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
+    ^~~~~~~~~~~~~~~~~~~~~~~
+    chamelium_set_edid
+  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
+  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+     chamelium_port_get_connector(data->chamelium, port, false);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1684172001:step_script
+  section_start:1684172001:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684172002:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
-  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
-  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7852]: https://gitlab.freedesktop.org/drm/intel/issues/7852
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
-  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
-  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
-  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41759737):
+     chamelium_port_get_connector(data->chamelium, port, true);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
+  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
+    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
+    ^~~~~~~~~~~~~~~~~~~~~~~
+    chamelium_set_edid
+  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
+  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+     chamelium_port_get_connector(data->chamelium, port, false);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1684172001:step_script
+  section_start:1684172001:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684172003:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7290 -> IGTPW_8961
-
-  CI-20190529: 20190529
-  CI_DRM_13148: 57a535e042517014a85f33be6fa5ed22145c56e9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8961: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/index.html
-  IGT_7290: 0261157319fe993ccefaf270b2fc7a8ebef418ae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41759733):
+  Program igt_doc.py found: YES (/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py)
+  Program gen_rst_index skipped: feature sphinx disabled
+  Native dependency gtk-doc found: YES 1.29
+  Program generate_description_xml.py found: YES (/builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/generate_description_xml.py)
+  Program generate_programs_xml.sh found: YES (/builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/generate_programs_xml.sh)
+  Configuring version.xml using configuration
+  Program sphinx-build skipped: feature sphinx disabled
+  Program rst2html-3 found: NO
+  Program rst2html found: YES (/usr/bin/rst2html)
+  Program rst2pdf found: NO
+  
+  docs/testplan/meson.build:35:1: ERROR:  The += operator currently only works with arrays, strings or ints 
+  
+  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
+  section_end:1684172001:step_script
+  section_start:1684172001:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684172002:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/index.html
-
---===============6331864159751503160==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>meson: fix testplan building for old meson</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117780/">https://patchwork.freedesktop.org/series/117780/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13148 -&gt; IGTPW_8961</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/index.html</p>
-<h2>Participating hosts (36 -&gt; 35)</h2>
-<p>Additional (1): fi-apl-guc <br />
-  Missing    (2): fi-snb-2520m bat-mtlp-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8961 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7456">i915#7456</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@eof:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@fbdev@eof.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/fi-rkl-11600/igt@gem_exec_suspend@basic-s0@smem.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8011">i915#8011</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7561">i915#7561</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness@edp-1:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@guc:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rpls-2/igt@i915_selftest@live@guc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7852">i915#7852</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5591">i915#5591</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@vga-hpd-fast:</p>
-<ul>
-<li>
-<p>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_chamelium_hpd@vga-hpd-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>) +8 similar issues</p>
-</li>
-<li>
-<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/fi-apl-guc/igt@kms_chamelium_hpd@vga-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +20 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_flip@basic-flip-vs-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +15 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_mmap_gtt:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>
-<p>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</p>
-</li>
-<li>
-<p>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</p>
-</li>
-<li>
-<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/fi-apl-guc/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-read:</p>
-<ul>
-<li>bat-adls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a>) +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>bat-adls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-adls-5/igt@i915_module_load@load.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-adls-5/igt@i915_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@sprite_plane_onoff:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13148/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7290 -&gt; IGTPW_8961</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13148: 57a535e042517014a85f33be6fa5ed22145c56e9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8961: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8961/index.html<br />
-  IGT_7290: 0261157319fe993ccefaf270b2fc7a8ebef418ae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6331864159751503160==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881644
