@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1128310E183
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1EFDF10E177
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:36 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:41 +0530
-Message-Id: <20230515081720.3713293-41-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:43 +0530
+Message-Id: <20230515081720.3713293-43-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 40/79] tests/kms_cursor_crc: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t 42/79] tests/kms_cursor_legacy: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,39 +28,33 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_cursor_crc.c | 64 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+ tests/kms_cursor_legacy.c | 217 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 216 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 3a353a032..1e6075ffc 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -29,6 +29,18 @@
- #include <stdio.h>
- #include <string.h>
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index f7a6202cf..7a077a381 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -23,8 +23,9 @@
+  */
  
-+/**
-+ * TEST: kms cursor crc
-+ * Category: Display
-+ * Description: Use the display CRC support to validate cursor plane functionality.
-+ *              The test will position the cursor plane either fully onscreen,
-+ *              partially onscreen, or fully offscreen, using either a fully
-+ *              opaque or fully transparent surface. In each case, it enables
-+ *              the cursor plane and then reads the PF CRC (hardware test) and
-+ *              compares it with the CRC value obtained when the cursor plane
-+ *              was disabled and its drawing is directly inserted on the PF by
-+ *              software.
-+ */
+ /**
+- * TEST: Stress legacy cursor ioctl
++ * TEST: kms cursor legacy
+  * Category: Display
++ * Description: Stress legacy cursor ioctl
+  */
  
- IGT_TEST_DESCRIPTION(
-    "Use the display CRC support to validate cursor plane functionality. "
-@@ -639,6 +651,27 @@ static bool require_cursor_size(data_t *data, int w, int h)
- 	return !!ret;
+ #include <sched.h>
+@@ -77,6 +78,28 @@ static void override_output_modes(igt_display_t *display,
+ 	igt_output_set_pipe(output2, PIPE_NONE);
  }
  
 +/**
-+ * SUBTEST: cursor-%s
-+ * Description: %arg[1]
++ * SUBTEST: %s-%s
++ * Description: Test checks how many cursor updates we can fit between vblanks
++ *              on single/all pipes with different modes, priority and number
++ *              of processes
 + * Driver requirement: any
 + * Functionality: cursor
 + * Mega feature: General Display Features
@@ -69,56 +63,284 @@ index 3a353a032..1e6075ffc 100644
 + *
 + * arg[1]:
 + *
-+ * @alpha-opaque:       Validates the composition of a fully opaque cursor plane,
-+ *                      i.e., alpha channel equal to 1.0.
-+ * @alpha-transparent:  Validates the composition of a fully transparent cursor
-+ *                      plane, i.e., alpha channel equal to 0.0.
-+ * @dpms:               Check random placement of a cursor with DPMS.
-+ * @size-change:        Create a maximum size cursor, then change the size in
-+ *                      flight to smaller ones to see that the size is applied
-+ *                      correctly.
-+ * @suspend:            Check random placement of a cursor with suspend.
-+ */
- static void run_test(data_t *data, void (*testfunc)(data_t *), int cursor_w, int cursor_h)
- {
- 	prepare_crtc(data, cursor_w, cursor_h);
-@@ -732,6 +765,37 @@ static bool execution_constraint(enum pipe pipe)
- }
- 
- 
-+/**
-+ * SUBTEST: cursor-%s-%s
-+ * Description: Check if a %arg[2] cursor is %arg[1].
-+ * Driver requirement: any
-+ * Functionality: cursor
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @offscreen:             well-positioned outside the screen
-+ * @onscreen:              well-positioned inside the screen
-+ * @random:                randomly placed
-+ * @rapid-movement:        rapidly udates for movements
-+ * @sliding:               smooth for horizontal, vertical & diagonal movements
++ * @single:      Single
++ * @torture:     Torture
++ * @forked:      Forked
 + *
 + * arg[2]:
 + *
-+ * @128x128:               128x128 size
-+ * @128x42:                128x42 size
-+ * @256x256:               256x256 size
-+ * @256x85:                256x85 size
-+ * @32x10:                 32x10 size
-+ * @32x32:                 32x32 size
-+ * @512x170:               512x170 size
-+ * @512x512:               512x512 size
-+ * @64x21:                 64x21 size
-+ * @64x64:                 64x64 size
-+ * @max-size:              Max supported size
++ * @bo:          BO
++ * @move:        Move
 + */
- static void run_size_tests(data_t *data, int w, int h)
+ static void stress(igt_display_t *display,
+ 		   enum pipe pipe, int num_children, unsigned mode,
+ 		   int timeout)
+@@ -544,11 +567,20 @@ enum basic_flip_cursor {
+ /**
+  * SUBTEST: basic-busy-flip-before-cursor-%s
+  * Description: Cursor test with %arg[1] mode
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: cursor
+  * Mega feature: General Display Features
+  *
++ * SUBTEST: basic-busy-flip-before-cursor-varying-size
++ * Description: Change the size of cursor b/w 64*64 to maxw x maxh.
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
+  * arg[1]:
+  *
+  * @atomic:	atomic
+@@ -558,6 +590,7 @@ enum basic_flip_cursor {
+ /**
+  * SUBTEST: basic-flip-after-cursor-%s
+  * Description: Cursor test with %arg[1]
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: cursor
+@@ -565,6 +598,7 @@ enum basic_flip_cursor {
+  *
+  * SUBTEST: basic-flip-before-cursor-%s
+  * Description: Cursor test with %arg[1]
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: cursor
+@@ -576,6 +610,53 @@ enum basic_flip_cursor {
+  * @legacy:        legacy mode
+  * @varying-size:  varying size
+  */
++
++/**
++ * SUBTEST: %s-flip-before-cursor-%s
++ * Description: Adds variety of tests:
++ *		- varying-size: change the size of cursor b/w 64*64 to maxw x maxh.\n
++ *		- atomic-transition: alternates between a full screen sprite plane
++ *		                     and full screen primary plane.\n"
++ *		- toggle: which toggles cursor visibility and make sure cursor moves
++ *		          between updates.
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @short:
++ * @short-busy:
++ *
++ * arg[2]:
++ *
++ * @atomic-transitions:
++ * @atomic-transitions-varying-size:
++ * @toggle:
++ */
++
++/**
++ * SUBTEST: short-flip-after-cursor-%s
++ * Description: Adds variety of tests:
++ *		- varying-size: change the size of cursor b/w 64*64 to maxw x maxh.\n
++ *		- atomic-transition: alternates between a full screen sprite plane
++ *		                     and full screen primary plane.\n"
++ *		- toggle: which toggles cursor visibility and make sure cursor moves
++ *		          between updates.
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic-transitions:
++ * @atomic-transitions-varying-size:
++ * @toggle:
++ */
+ static void basic_flip_cursor(igt_display_t *display,
+ 			      enum flip_test mode,
+ 			      enum basic_flip_cursor order,
+@@ -894,6 +975,25 @@ static void flip_vs_cursor(igt_display_t *display, enum flip_test mode, int nloo
+ 		igt_remove_fb(display->drm_fd, &cursor_fb2);
+ }
+ 
++/**
++ * SUBTEST: long-nonblocking-modeset-vs-cursor-atomic
++ * Description: Test checks how many cursor updates we can fit between vblanks
++ *              on all pipes with different modes, priority and number of processes
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: nonblocking-modeset-vs-cursor-atomic
++ * Description: Test checks how many cursor updates we can fit between vblanks
++ *              on all pipes with different modes, priority and number of processes
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void nonblocking_modeset_vs_cursor(igt_display_t *display, int loops)
  {
- 	enum pipe pipe;
+ 	struct igt_fb fb_info, cursor_fb;
+@@ -993,6 +1093,44 @@ static void wait_for_modeset(igt_display_t *display, unsigned flags, int timeout
+ 	igt_reset_timeout();
+ }
+ 
++/**
++ * SUBTEST: 2x-%s-%s
++ * Description: This test executes flips on both CRTCs while running cursor
++ *              updates in parallel
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @flip-vs-cursor:
++ * @flip-vs-cursor:
++ * @long-flip-vs-cursor:
++ * @long-flip-vs-cursor:
++ *
++ * arg[2]:
++ *
++ * @atomic:
++ * @legacy:
++ */
++
++/**
++ * SUBTEST: 2x-%s-atomic
++ * Description: This test executes flips on both CRTCs while running cursor
++ *              updates in parallel
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @long-nonblocking-modeset-vs-cursor:
++ * @nonblocking-modeset-vs-cursor:
++ */
+ static void two_screens_flip_vs_cursor(igt_display_t *display, int nloops, bool modeset, bool atomic)
+ {
+ 	struct drm_mode_cursor arg1[2], arg2[2];
+@@ -1180,6 +1318,34 @@ done:
+ 	munmap((void *)shared, PAGE_SIZE);
+ }
+ 
++/**
++ * SUBTEST: %s-%s
++ * Description: The essence of the basic test is that neither the cursor nor the
++ *              nonblocking flip stall the application of the next
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor-vs-flip:
++ * @cursorA-vs-flipA:
++ * @cursorA-vs-flipB:
++ * @cursorB-vs-flipA:
++ * @cursorB-vs-flipB:
++ * @flip-vs-cursor:
++ *
++ * arg[2]:
++ *
++ * @atomic:
++ * @atomic-transitions:
++ * @atomic-transitions-varying-size:
++ * @legacy:
++ * @toggle:
++ * @varying-size:
++ */
+ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloops)
+ {
+ 	struct drm_mode_cursor arg[2];
+@@ -1292,6 +1458,27 @@ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloo
+ 		igt_remove_fb(display->drm_fd, &cursor_fb2);
+ }
+ 
++/**
++ * SUBTEST: 2x-%s-%s
++ * Description: This test executes flips on both CRTCs while running cursor updates in parallel
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor-vs-flip:
++ * @cursor-vs-flip:
++ * @long-cursor-vs-flip:
++ * @long-cursor-vs-flip:
++ *
++ * arg[2]:
++ *
++ * @atomic:
++ * @legacy:
++ */
+ static void two_screens_cursor_vs_flip(igt_display_t *display, int nloops, bool atomic)
+ {
+ 	struct drm_mode_cursor arg[2][2];
+@@ -1420,6 +1607,20 @@ static void two_screens_cursor_vs_flip(igt_display_t *display, int nloops, bool
+ 	munmap((void *)shared, PAGE_SIZE);
+ }
+ 
++/**
++ * SUBTEST: flip-vs-cursor-crc-%s
++ * Description: this test perform a page flip followed by a cursor update
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic:
++ * @legacy:
++ */
+ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
+ {
+ 	struct drm_mode_cursor arg[2];
+@@ -1492,6 +1693,20 @@ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
+ 	igt_remove_fb(display->drm_fd, &cursor_fb);
+ }
+ 
++/**
++ * SUBTEST: flip-vs-cursor-busy-crc-%s
++ * Description: this test perform a busy bo update followed by a cursor update
++ * Driver requirement: i915
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic:
++ * @legacy:
++ */
+ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ {
+ 	struct drm_mode_cursor arg[2];
 -- 
 2.40.0
