@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 740FB10E0EC
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 16:48:18 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC69810E0EC
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 16:48:54 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 22:13:06 +0530
-Message-Id: <20230515164306.3858327-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230515081720.3713293-26-bhanuprakash.modem@intel.com>
-References: <20230515081720.3713293-26-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 22:13:42 +0530
+Message-Id: <20230515164342.3858386-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230515081720.3713293-58-bhanuprakash.modem@intel.com>
+References: <20230515081720.3713293-58-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 25/79] tests/i915/kms_psr: Document each
+Subject: [igt-dev] [i-g-t V2 57/79] tests/kms_pipe_crc_basic: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -30,261 +30,118 @@ V2: - Add missing "Driver requirement" field
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_psr.c | 213 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 212 insertions(+), 1 deletion(-)
+ tests/kms_pipe_crc_basic.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
-index 6c89de45d..f0a6360c2 100644
---- a/tests/i915/kms_psr.c
-+++ b/tests/i915/kms_psr.c
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 84c73fd7f..1b4a4e014 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
 @@ -23,8 +23,9 @@
   */
  
  /**
-- * TEST: Tests behaviour of PSR & PSR2
-+ * TEST: kms psr
+- * TEST: Tests behaviour of CRC
++ * TEST: kms pipe crc basic
   * Category: Display
-+ * Description: Tests behaviour of PSR & PSR2
++ * Description: Tests behaviour of CRC
   */
  
  #include "igt.h"
-@@ -36,6 +37,213 @@
- #include <string.h>
- #include "xe/xe_ioctl.h"
+@@ -64,6 +65,15 @@ static bool simulation_constraint(enum pipe pipe)
+ 	return false;
+ }
  
 +/**
-+ * SUBTEST: basic
-+ * Description: Basic check for psr if it is detecting changes made in planes
++ * SUBTEST: bad-source
++ * Description: Tests error handling when the bad source is set.
 + * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
++ * Functionality: crc
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * SUBTEST: %s_%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1]
-+ * Driver requirement: i915
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:             Cursor plane
-+ * @primary:            Primary plane
-+ * @sprite:             Sprite plane
-+ *
-+ * arg[2]:
-+ *
-+ * @mmap_cpu:           MMAP CPU
-+ * @mmap_gtt:           MMAP GTT
 + */
-+
-+/**
-+ * SUBTEST: sprite_plane_move
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on sprite planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: %s_%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:             Cursor plane
-+ * @sprite:             Sprite plane
-+ *
-+ * arg[2]:
-+ *
-+ * @blt:                Blitter
-+ * @render:             Render
-+ * @plane_onoff:        Plane On off
-+ */
-+
-+/**
-+ * SUBTEST: primary_%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @blt:                Blitter
-+ * @render:             Render
-+ */
-+
-+/**
-+ * SUBTEST: dpms
-+ * Description: Check if psr is detecting changes when rendering operation is
-+ *              performed  with dpms enabled or disabled
-+ * Driver requirement: any
-+ * Functionality: dpms, psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: no_drrs
-+ * Description: Check if psr is detecting changes when drrs is disabled
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: suspend
-+ * Description: Check if psr is detecting changes when plane operation
-+ *              is performed with suspend resume cycles
-+ * Driver requirement: any
-+ * Functionality: psr, suspend
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_dpms
-+ * Description: Check if psr is detecting changes when rendering operation
-+ *              is performed  with dpms enabled or disabled
-+ * Driver requirement: any
-+ * Functionality: psr, psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_no_drrs
-+ * Description: Check if psr is detecting changes when drrs is disabled
-+ * Driver requirement: any
-+ * Functionality: psr, psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_suspend
-+ * Description: Check if psr is detecting changes when plane operation is
-+ *              performed with suspend resume cycles
-+ * Driver requirement: any
-+ * Functionality: psr, psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_basic
-+ * Description: Basic check for psr if it is detecting changes made in planes
-+ * Driver requirement: any
-+ * Functionality: psr, psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_%s_%s
-+ * Description: Check if psr2 is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: i915
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:             Cursor plane
-+ * @primary:            Primary plane
-+ * @sprite:             Sprite plane
-+ *
-+ * arg[2]:
-+ *
-+ * @mmap_cpu:           MMAP CPU
-+ * @mmap_gtt:           MMAP GTT
-+ */
-+
-+/**
-+ * SUBTEST: psr2_primary_page_flip
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_primary_%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @blt:                Blitter
-+ * @render:             Render
-+ */
-+
-+/**
-+ * SUBTEST: psr2_%s_%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:             Cursor plane
-+ * @sprite:             Sprite plane
-+ *
-+ * arg[2]:
-+ *
-+ * @blt:                Blitter
-+ * @render:             Render
-+ * @plane_onoff:        Plane On off
-+ * @plane_move:         Move plane position
-+ */
-+
- enum operations {
- 	PAGE_FLIP,
- 	MMAP_GTT,
-@@ -309,6 +517,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
-  * SUBTEST: cursor_plane_move
-  * Description: Check if psr is detecting the plane operations performed on
-  *		cursor planes
+ static void test_bad_source(data_t *data)
+ {
+ 	errno = 0;
+@@ -88,6 +98,7 @@ enum {
+ /**
+  * SUBTEST: read-crc
+  * Description: Test for pipe CRC reads
 + * Driver requirement: any
   * Test category: functionality test
   * Run type: BAT
-  * Functionality: psr
-@@ -317,6 +526,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
-  * SUBTEST: primary_page_flip
-  * Description: Check if psr is detecting page-flipping operations performed
-  *		on primary planes
+  * Functionality: crc
+@@ -95,6 +106,7 @@ enum {
+  *
+  * SUBTEST: read-crc-frame-sequence
+  * Description: Tests the pipe CRC read and ensure frame sequence
 + * Driver requirement: any
   * Test category: functionality test
   * Run type: BAT
-  * Functionality: psr
-@@ -325,6 +535,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
-  * SUBTEST: sprite_plane_onoff
-  * Description: Check if psr is detecting the plane operations performed on
-  *		sprite planes
+  * Functionality: crc
+@@ -102,6 +114,7 @@ enum {
+  *
+  * SUBTEST: nonblocking-crc
+  * Description: Test for O_NONBLOCK CRC reads
 + * Driver requirement: any
   * Test category: functionality test
   * Run type: BAT
-  * Functionality: psr
+  * Functionality: crc
+@@ -109,6 +122,7 @@ enum {
+  *
+  * SUBTEST: nonblocking-crc-frame-sequence
+  * Description: Test for O_NONBLOCK CRC reads and ensure frame sequence
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+@@ -116,6 +130,7 @@ enum {
+  *
+  * SUBTEST: suspend-read-crc
+  * Description: Suspend test for pipe CRC reads
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+@@ -123,12 +138,12 @@ enum {
+  *
+  * SUBTEST: hang-read-crc
+  * Description: Hang test for pipe CRC read
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+  * Mega feature: General Display Features
+  */
+-
+ static void test_read_crc(data_t *data, enum pipe pipe,
+ 			  igt_output_t *output, unsigned flags)
+ {
+@@ -229,6 +244,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+ /**
+  * SUBTEST: compare-crc-sanitycheck
+  * Description: Basic sanity check for CRC mismatches
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+@@ -299,6 +315,16 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_remove_fb(data->drm_fd, &fb1);
+ }
+ 
++/**
++ * SUBTEST: disable-crc-after-crtc
++ * Description: Check that disabling CRCs on a CRTC after having disabled the
++ *              CRTC does not cause issues.
++ * Driver requirement: any
++ * Functionality: crc
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+ 					igt_output_t *output)
+ {
 -- 
 2.40.0
