@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D342410E16E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D4F010E17A
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:47 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:52 +0530
-Message-Id: <20230515081720.3713293-52-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:51 +0530
+Message-Id: <20230515081720.3713293-51-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 51/79] tests/kms_hdmi_inject: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t 50/79] tests/kms_getfb: Document each subtest for
+ testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,44 +28,137 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_hdmi_inject.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ tests/kms_getfb.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
 
-diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
-index 2085d1453..244768f36 100644
---- a/tests/kms_hdmi_inject.c
-+++ b/tests/kms_hdmi_inject.c
-@@ -30,6 +30,31 @@
- #include "igt_edid.h"
- #include "igt_eld.h"
- #include "xe/xe_query.h"
-+/**
-+ * TEST: kms hdmi inject
-+ * Category: Display
-+ * Description: Test that in-kernel EDID parsing is producing expected results
-+ *              by forcing a HDMI connector with a known EDID and checking that
-+ *              the metadata exposed to user space matches.
-+ *
-+ * SUBTEST: inject-4k
-+ * Description: Make sure that 4K modes exposed by DRM match the forced EDID and
-+ *              modesetting using it succeed.
-+ * Driver requirement: any
-+ * Functionality: force_connector
-+ * Mega feature: HDMI
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: inject-audio
-+ * Description: Make sure that audio information exposed by ALSA match the forced
-+ *              EDID.
-+ * Driver requirement: any
-+ * Functionality: force_connector
-+ * Mega feature: Disply Audio
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index 4adc7eee2..8ca724720 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -27,6 +27,11 @@
+  *
+  */
  
- #define HDISPLAY_4K	3840
- #define VDISPLAY_4K	2160
++/**
++ * TEST: kms getfb
++ * Category: Display
++ * Description: Tests GETFB and GETFB2 ioctls.
++ */
+ #include "igt.h"
+ #include <unistd.h>
+ #include <stdlib.h>
+@@ -164,6 +169,22 @@ static uint32_t get_any_prop_id(int fd)
+ 	return 0;
+ }
+ 
++/**
++ * SUBTEST: getfb-handle-%s
++ * Description: Tests error handling %arg[1]
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @closed:       when passing a handle that has been closed.
++ * @not-fb:       when passing an invalid handle.
++ * @valid:        when passing an valid handle.
++ * @zero:         for a zero'd input.
++ */
+ static void test_handle_input(int fd)
+ {
+ 	struct drm_mode_fb_cmd2 add = {};
+@@ -219,6 +240,30 @@ static void test_handle_input(int fd)
+ 		gem_close(fd, add.handles[0]);
+ }
+ 
++/**
++ * SUBTEST: getfb-reject-ccs
++ * Description: Tests error handling while requesting CCS buffers it should
++ *              refuse because getfb supports returning a single buffer handle.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: getfb-%s-different-handles
++ * Description: Tests error handling while requesting for two different handles
++ *              from %arg[1].
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @addfb:           same fd
++ * @repeated:        different fd
++ */
+ static void test_duplicate_handles(int fd)
+ {
+ 	struct drm_mode_fb_cmd2 add = {};
+@@ -284,6 +329,37 @@ static void test_duplicate_handles(int fd)
+ 	}
+ }
+ 
++/**
++ * SUBTEST: getfb2-accept-ccs
++ * Description: Tests outputs are correct when retrieving a CCS framebuffer.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: getfb2-into-addfb2
++ * Description: Output check by passing the output of GETFB2 into ADDFB2.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: getfb2-handle-%s
++ * Description: Tests error handling %arg[1].
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @closed:                  when passing a handle that has been closed
++ * @not-fb:                  when passing an invalid handle
++ * @zero:                    for a zero'd input
++ */
+ static void test_getfb2(int fd)
+ {
+ 	struct drm_mode_fb_cmd2 add_basic = {};
+@@ -392,6 +468,20 @@ static void test_getfb2(int fd)
+ 	}
+ }
+ 
++/**
++ * SUBTEST: %s-handle-protection
++ * Description: Make sure %arg[1] return handles if caller is non-root or non-master.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @getfb:      GETFB ioctl
++ * @getfb2:     GETFB2 ioctl
++ */
+ static void test_handle_protection(void) {
+ 	int non_master_fd;
+ 	struct drm_mode_fb_cmd2 non_master_add = {};
 -- 
 2.40.0
