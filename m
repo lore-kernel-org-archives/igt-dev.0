@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B00F910E19C
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B77C10E18F
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:19 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:47:15 +0530
-Message-Id: <20230515081720.3713293-75-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:47:13 +0530
+Message-Id: <20230515081720.3713293-73-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 74/79] tests/kms_tv_load_detect: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t 72/79] tests/kms_setmode: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,32 +28,77 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_tv_load_detect.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/kms_setmode.c | 58 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
-diff --git a/tests/kms_tv_load_detect.c b/tests/kms_tv_load_detect.c
-index 80ced9918..5cbe6f65f 100644
---- a/tests/kms_tv_load_detect.c
-+++ b/tests/kms_tv_load_detect.c
-@@ -23,6 +23,19 @@
-  */
- 
- #include "igt.h"
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index a611d9382..8c0cb7f1c 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -31,6 +31,64 @@
+ #include <sys/time.h>
+ #include <math.h>
+ #include "xe/xe_query.h"
 +/**
-+ * TEST: kms tv load detect
++ * TEST: kms setmode
 + * Category: Display
-+ * Description: Check tv load detection works correctly.
 + *
-+ * SUBTEST: load-detect
-+ * Description: Check tv load detection works correctly.
++ * SUBTEST: basic
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
 + * Driver requirement: any
-+ * Functionality: obsolete
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: basic-clone-single-crtc
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: clone-exclusive-crtc
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: invalid-clone-exclusive-crtc
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: invalid-clone-single-crtc
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: invalid-clone-single-crtc-stealing
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
++ * Driver requirement: any
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- IGT_TEST_DESCRIPTION("Check tv load detection works correctly.");
- 
+ #define MAX_CONNECTORS  10
+ #define MAX_CRTCS       6
 -- 
 2.40.0
