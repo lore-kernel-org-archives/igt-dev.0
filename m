@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Mon, 15 May 2023 14:58:02 -0000
-Message-ID: <168416268232.22015.2566722700897732473@emeril.freedesktop.org>
-References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_D?=
- =?utf-8?q?ocument_KMS_tests_=28rev2=29?=
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Mon, 15 May 2023 15:28:10 -0000
+Message-ID: <168416449027.22015.10436751987083148586@emeril.freedesktop.org>
+References: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_g?=
+ =?utf-8?q?putop/intel=5Fgpu=5Ftop=3A_Move_name_to_be_the_last_field?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,105 +25,17 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Document KMS tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/117749/
+Series: gputop/intel_gpu_top: Move name to be the last field
+URL   : https://patchwork.freedesktop.org/series/117768/
 State : warning
 
 == Summary ==
 
 Pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881517 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881545 for the overview.
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41744268):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684162315:step_script
-  section_start:1684162315:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684162315:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41744267):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684162337:step_script
-  section_start:1684162337:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684162343:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41744269):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684162316:step_script
-  section_start:1684162316:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684162317:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41744266):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684162314:step_script
-  section_start:1684162314:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684162316:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41744262):
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41747357):
   Program igt_doc.py found: YES (/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py)
   Program gen_rst_index skipped: feature sphinx disabled
   Native dependency gtk-doc found: YES 1.29
@@ -138,12 +50,12 @@ build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-c
   docs/testplan/meson.build:35:1: ERROR:  The += operator currently only works with arrays, strings or ints 
   
   A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1684162335:step_script
-  section_start:1684162335:cleanup_file_variables
+  section_end:1684164286:step_script
+  section_start:1684164286:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1684162344:cleanup_file_variables
+  section_end:1684164287:cleanup_file_variables
   ERROR: Job failed: exit code 1
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881517
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881545
