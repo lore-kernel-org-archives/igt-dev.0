@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com
+ [IPv6:2607:f8b0:4864:20::12b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80F5C10E1E9
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 14:14:47 +0000 (UTC)
+Received: by mail-il1-x12b.google.com with SMTP id
+ e9e14a558f8ab-33131d7a26eso90281555ab.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 07:14:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Mon, 15 May 2023 14:02:47 -0000
-Message-ID: <168415936765.22016.4314440036252039378@emeril.freedesktop.org>
-References: <20230515120334.220022-1-swati2.sharma@intel.com>
-In-Reply-To: <20230515120334.220022-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/3=5D_lib/igt=5Ffb=3A_round_rgb?=
- =?utf-8?q?-=3Eyuv_conversion_results?=
+References: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+From: Rob Clark <robdclark@chromium.org>
+Date: Mon, 15 May 2023 07:14:35 -0700
+Message-ID: <CAJs_Fx4tPYkPo-Oc2BduuzC09OfkB3PbFwBQ3b7U9rG_Akh_Fw@mail.gmail.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t 0/2] gputop/intel_gpu_top: Move name to
+ be the last field
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,45 +24,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Mon, May 15, 2023 at 6:36=E2=80=AFAM Tvrtko Ursulin
+<tvrtko.ursulin@linux.intel.com> wrote:
+>
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>
+> Rob,
+>
+> I thought maybe when you add memory stats the same field order like top(1=
+)
+> would feel more natural? That is client name comes last and is left justi=
+fied.
+> All other stats then come in the middle, between PID and NAME.
+>
+> DRM minor 0
+>     PID     render         copy         video     video-enhance  NAME
+>    2704 |=E2=96=8C           ||            ||            ||            | =
+kwin_x11
+>    2734 |=E2=96=8F           ||            ||            ||            | =
+plasmashell
+>    3932 |            ||            ||            ||            | krunner
+>    4414 |            ||            ||            ||            | xdg-desk=
+top-por
+> 1999477 |            ||            ||            ||            | firefox
+> 2162094 |            ||            ||            ||            | thunderb=
+ir
 
-Series: series starting with [i-g-t,1/3] lib/igt_fb: round rgb->yuv conversion results
-URL   : https://patchwork.freedesktop.org/series/117764/
-State : warning
+Seems like a good idea, and more in line with top/htop/nvtop
 
-== Summary ==
+BR,
+-R
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881463 for the overview.
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41738294):
-  Program igt_doc.py found: YES (/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py)
-  Program gen_rst_index skipped: feature sphinx disabled
-  Native dependency gtk-doc found: YES 1.29
-  Program generate_description_xml.py found: YES (/builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/generate_description_xml.py)
-  Program generate_programs_xml.sh found: YES (/builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/generate_programs_xml.sh)
-  Configuring version.xml using configuration
-  Program sphinx-build skipped: feature sphinx disabled
-  Program rst2html-3 found: NO
-  Program rst2html found: YES (/usr/bin/rst2html)
-  Program rst2pdf found: NO
-  
-  docs/testplan/meson.build:35:1: ERROR:  The += operator currently only works with arrays, strings or ints 
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1684158844:step_script
-  section_start:1684158844:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684158845:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881463
+> intel-gpu-top: Intel Alderlake_s (Gen12) @ /dev/dri/card0 -   15/  15 MHz
+>     99% RC6;  0.01/ 5.46 W;       34 irqs/s
+>
+>          ENGINES     BUSY                                        MI_SEMA =
+MI_WAIT
+>        Render/3D    1.31% |=E2=96=8C                                   | =
+     0%      0%
+>          Blitter    0.00% |                                    |      0% =
+     0%
+>            Video    0.00% |                                    |      0% =
+     0%
+>     VideoEnhance    0.00% |                                    |      0% =
+     0%
+>
+>     PID   Render/3D      Blitter        Video      VideoEnhance  NAME
+>    2734 |=E2=96=8F           ||            ||            ||            | =
+plasmashell
+>    2704 |=E2=96=8F           ||            ||            ||            | =
+kwin_x11
+>    1837 |=E2=96=8F           ||            ||            ||            | =
+Xorg
+> 3429732 |            ||            ||            ||            | kwrite
+> 2162094 |            ||            ||            ||            | thunderb=
+ird
+>
+> Cc: Rob Clark <robdclark@chromium.org>
+>
+> Tvrtko Ursulin (2):
+>   gputop: Move client name last
+>   intel_gpu_top: Move client name last
+>
+>  tools/gputop.c        | 19 +++++++++----------
+>  tools/intel_gpu_top.c | 19 +++++++++----------
+>  2 files changed, 18 insertions(+), 20 deletions(-)
+>
+> --
+> 2.37.2
+>
