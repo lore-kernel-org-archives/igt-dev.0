@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B77C10E18F
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D958310E180
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:14 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:47:13 +0530
-Message-Id: <20230515081720.3713293-73-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:57 +0530
+Message-Id: <20230515081720.3713293-57-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 72/79] tests/kms_setmode: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t 56/79] tests/kms_panel_fitting: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,77 +28,40 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_setmode.c | 58 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+ tests/kms_panel_fitting.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index a611d9382..8c0cb7f1c 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -31,6 +31,64 @@
- #include <sys/time.h>
+diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+index 97ef1ae48..1d0bcb4e0 100644
+--- a/tests/kms_panel_fitting.c
++++ b/tests/kms_panel_fitting.c
+@@ -26,6 +26,27 @@
+ #include <limits.h>
  #include <math.h>
- #include "xe/xe_query.h"
+ #include <sys/stat.h>
 +/**
-+ * TEST: kms setmode
++ * TEST: kms panel fitting
 + * Category: Display
++ * Description: Test display panel fitting
 + *
-+ * SUBTEST: basic
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * SUBTEST: atomic-fastset
++ * Description: Tests panel fitting usages with atomic fastset.
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: eDP, panel_fitting
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: basic-clone-single-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * SUBTEST: legacy
++ * Description: Tests panel fitting usages with legacy style commit.
 + * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: clone-exclusive-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: invalid-clone-exclusive-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: invalid-clone-single-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: invalid-clone-single-crtc-stealing
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
-+ * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: eDP, panel_fitting
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- #define MAX_CONNECTORS  10
- #define MAX_CRTCS       6
+ IGT_TEST_DESCRIPTION("Test display panel fitting");
+ 
 -- 
 2.40.0
