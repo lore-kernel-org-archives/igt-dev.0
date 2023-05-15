@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC69810E0EC
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 16:48:54 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 22:13:42 +0530
-Message-Id: <20230515164342.3858386-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230515081720.3713293-58-bhanuprakash.modem@intel.com>
-References: <20230515081720.3713293-58-bhanuprakash.modem@intel.com>
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
+ [IPv6:2a00:1450:4864:20::129])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC6B110E0CC
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 17:32:03 +0000 (UTC)
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4f14ec8d72aso13016320e87.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 10:32:03 -0700 (PDT)
+Date: Mon, 15 May 2023 20:32:00 +0300
+From: Petri Latvala <adrinael@adrinael.net>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <ZGJskEaPVEnc0mkJ@adrinael.net>
+References: <20230515163908.50961-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 57/79] tests/kms_pipe_crc_basic: Document each
- subtest for testplan
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230515163908.50961-1-kamil.konieczny@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] meson: fix testplan building for old
+ meson
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,129 +24,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+On Mon, May 15, 2023 at 06:39:08PM +0200, Kamil Konieczny wrote:
+> Old meson 0.47.2 do not support dictionary adding so fix
+> testplan building.
+> 
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-V2: - Add missing "Driver requirement" field
+Acked-by: Petri Latvala <adrinael@adrinael.net>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_pipe_crc_basic.c | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
-
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 84c73fd7f..1b4a4e014 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -23,8 +23,9 @@
-  */
- 
- /**
-- * TEST: Tests behaviour of CRC
-+ * TEST: kms pipe crc basic
-  * Category: Display
-+ * Description: Tests behaviour of CRC
-  */
- 
- #include "igt.h"
-@@ -64,6 +65,15 @@ static bool simulation_constraint(enum pipe pipe)
- 	return false;
- }
- 
-+/**
-+ * SUBTEST: bad-source
-+ * Description: Tests error handling when the bad source is set.
-+ * Driver requirement: any
-+ * Functionality: crc
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_bad_source(data_t *data)
- {
- 	errno = 0;
-@@ -88,6 +98,7 @@ enum {
- /**
-  * SUBTEST: read-crc
-  * Description: Test for pipe CRC reads
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -95,6 +106,7 @@ enum {
-  *
-  * SUBTEST: read-crc-frame-sequence
-  * Description: Tests the pipe CRC read and ensure frame sequence
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -102,6 +114,7 @@ enum {
-  *
-  * SUBTEST: nonblocking-crc
-  * Description: Test for O_NONBLOCK CRC reads
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -109,6 +122,7 @@ enum {
-  *
-  * SUBTEST: nonblocking-crc-frame-sequence
-  * Description: Test for O_NONBLOCK CRC reads and ensure frame sequence
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -116,6 +130,7 @@ enum {
-  *
-  * SUBTEST: suspend-read-crc
-  * Description: Suspend test for pipe CRC reads
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -123,12 +138,12 @@ enum {
-  *
-  * SUBTEST: hang-read-crc
-  * Description: Hang test for pipe CRC read
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-  * Mega feature: General Display Features
-  */
--
- static void test_read_crc(data_t *data, enum pipe pipe,
- 			  igt_output_t *output, unsigned flags)
- {
-@@ -229,6 +244,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- /**
-  * SUBTEST: compare-crc-sanitycheck
-  * Description: Basic sanity check for CRC mismatches
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -299,6 +315,16 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_remove_fb(data->drm_fd, &fb1);
- }
- 
-+/**
-+ * SUBTEST: disable-crc-after-crtc
-+ * Description: Check that disabling CRCs on a CRTC after having disabled the
-+ *              CRTC does not cause issues.
-+ * Driver requirement: any
-+ * Functionality: crc
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
- 					igt_output_t *output)
- {
--- 
-2.40.0
+> ---
+>  docs/testplan/meson.build | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+> index 2014f91b5..6454f2933 100644
+> --- a/docs/testplan/meson.build
+> +++ b/docs/testplan/meson.build
+> @@ -27,12 +27,15 @@ xe_test_dict = {
+>  		 'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+>  	       }
+>  
+> -test_dict = {
+> +if build_xe
+> +	test_dict = {
+> +		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
+> +		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+> +	    }
+> +else
+> +	test_dict = {
+>  	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
+>  	    }
+> -
+> -if build_xe
+> -	test_dict += xe_test_dict
+>  endif
+>  
+>  foreach testplan, fields: test_dict
+> -- 
+> 2.39.2
+> 
