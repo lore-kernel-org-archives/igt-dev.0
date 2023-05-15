@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6196453024282573503=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 15 May 2023 20:01:52 -0000
-Message-ID: <168418091228.22014.7390066916022703382@emeril.freedesktop.org>
+Date: Mon, 15 May 2023 22:02:51 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230515200251.n53v73uik7yd5w7r@kamilkon-desk1>
 References: <20230515085020.16325-1-janusz.krzysztofik@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <20230515085020.16325-1-janusz.krzysztofik@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?i915=3A_Exercise_coherency_of_mmapped_frame_buffers_=28rev2=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915: Exercise coherency of
+ mmapped frame buffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,297 +18,439 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6196453024282573503==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Janusz,
 
-== Series Details ==
+On 2023-05-15 at 10:50:20 +0200, Janusz Krzysztofik wrote:
+> Visible glitches have been observed when running graphics applications on
+> Linux under Xen hypervisor.  Those observations have been confirmed with
+> failures from kms_pwrite_crc IGT test that verifies data coherency of DRM
+> frame buffer objects using hardware CRC checksums calculated by display
+> controllers, exposed to userspace via debugfs.  Since not all applications
+> exhibit the issue, we need to exercise more methods than just pwrite in
+> order to identify all affected processing paths.
+> 
+> Create a new test focused on exercising coherency of future scanout
+> buffers populated over mmap.  Cover all available mmap methods and caching
+> modes expected to be device coherent.
+> 
 
-Series: tests/i915: Exercise coherency of mmapped frame buffers (rev2)
-URL   : https://patchwork.freedesktop.org/series/117751/
-State : failure
++cc kms dev Bhanuprakash Modem
 
-== Summary ==
+> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/7648
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  tests/i915/kms_fb_coherency.c | 354 ++++++++++++++++++++++++++++++++++
+>  tests/meson.build             |   1 +
+>  2 files changed, 355 insertions(+)
+>  create mode 100644 tests/i915/kms_fb_coherency.c
+> 
+> diff --git a/tests/i915/kms_fb_coherency.c b/tests/i915/kms_fb_coherency.c
+> new file mode 100644
+> index 0000000000..9223f13b05
+> --- /dev/null
+> +++ b/tests/i915/kms_fb_coherency.c
+> @@ -0,0 +1,354 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + *
+> + * Derived from tests/i915/kms_pwrite_crc.c
+> + * Copyright © 2014 Intel Corporation
 
-CI Bug Log - changes from IGT_7291 -> IGTPW_8965
-====================================================
+imho you do not need above two lines, you already wrote this
+in description.
 
-Summary
--------
+> + */
+> +
+> +/**
+> + * TEST: kms_fb_coherency
+> + * Description: Exercise coherency of future scanout buffer objects
+> + */
+> +
+> +#include "igt.h"
 
-  **FAILURE**
+Put this after sys includes below.
 
-  Serious unknown changes coming with IGTPW_8965 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8965, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+> +#include <errno.h>
+> +#include <limits.h>
+> +#include <stdbool.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/index.html
+Here put any igt include(s).
 
-Participating hosts (37 -> 35)
-------------------------------
+> +
+> +typedef struct {
+> +	int drm_fd;
+> +	igt_display_t display;
+> +	struct igt_fb fb[2];
+> +	igt_output_t *output;
+> +	igt_plane_t *primary;
+> +	enum pipe pipe;
+> +	igt_crc_t ref_crc;
+> +	igt_pipe_crc_t *pipe_crc;
+> +	uint32_t devid;
+> +} data_t;
+> +
+> +static void prepare_crtc(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	igt_output_t *output = data->output;
+> +	drmModeModeInfo *mode;
+> +
+> +	igt_display_reset(display);
+> +	/* select the pipe we want to use */
+> +	igt_output_set_pipe(output, data->pipe);
+> +
+> +	mode = igt_output_get_mode(output);
+> +
+> +	/* create a white reference fb and flip to it */
+> +	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +			    1.0, 1.0, 1.0, &data->fb[0]);
+> +
+> +	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	igt_plane_set_fb(data->primary, &data->fb[0]);
+> +	igt_display_commit(display);
+> +
+> +	if (data->pipe_crc)
+> +		igt_pipe_crc_free(data->pipe_crc);
+> +
+> +	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
+> +					  IGT_PIPE_CRC_SOURCE_AUTO);
+> +
+> +	/* get reference crc for the white fb */
+> +	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
+> +}
+> +
+> +static struct igt_fb *prepare_fb(data_t *data)
+> +{
+> +	igt_output_t *output = data->output;
+> +	struct igt_fb *fb = &data->fb[1];
+> +	drmModeModeInfo *mode;
+> +
+> +	prepare_crtc(data);
+> +
+> +	mode = igt_output_get_mode(output);
+> +
+> +	/* create a non-white fb we can overwrite later */
+> +	igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, fb);
+> +
+> +	/* flip to it to make it UC/WC and fully flushed */
+> +	drmModeSetPlane(data->drm_fd,
+> +			data->primary->drm_plane->plane_id,
+> +			output->config.crtc->crtc_id,
+> +			fb->fb_id, 0,
+> +			0, 0, fb->width, fb->height,
+> +			0, 0, fb->width << 16, fb->height << 16);
+> +
+> +	/* flip back the original white buffer */
+> +	drmModeSetPlane(data->drm_fd,
+> +			data->primary->drm_plane->plane_id,
+> +			output->config.crtc->crtc_id,
+> +			data->fb[0].fb_id, 0,
+> +			0, 0, fb->width, fb->height,
+> +			0, 0, fb->width << 16, fb->height << 16);
+> +
+> +	if (!gem_has_lmem(data->drm_fd)) {
+> +		uint32_t caching;
+> +
+> +		/* make sure caching mode has become UC/WT */
+> +		caching = gem_get_caching(data->drm_fd, fb->gem_handle);
+> +		igt_assert(caching == I915_CACHING_NONE ||
+> +			   caching == I915_CACHING_DISPLAY);
+> +	}
+> +
+> +	return fb;
+> +}
+> +
+> +static igt_crc_t get_buf_crc(data_t *data, void *buf, igt_fb_t *fb)
+> +{
+> +	igt_crc_t crc;
+> +
+> +	/* use memset to make the mmapped fb all white */
+> +	memset(buf, 0xff, fb->size);
+> +	munmap(buf, fb->size);
+> +
+> +	/* and flip to it */
+> +	drmModeSetPlane(data->drm_fd,
+> +			data->primary->drm_plane->plane_id,
+> +			data->output->config.crtc->crtc_id,
+> +			fb->fb_id, 0,
+> +			0, 0, fb->width, fb->height,
+> +			0, 0, fb->width << 16, fb->height << 16);
+> +
+> +	/* check that the crc is as expected, which requires that caches got flushed */
+---------- ^
+Checks happen later, here you collect it.
 
-  Additional (1): bat-mtlp-8 
-  Missing    (3): fi-kbl-soraka fi-snb-2520m bat-mtlp-6 
+> +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
 
-Possible new issues
--------------------
+Add newline.
 
-  Here are the unknown changes that may have been introduced in IGTPW_8965:
+> +	return crc;
+> +}
+> +
+> +static void cleanup_crtc(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	igt_output_t *output = data->output;
+> +
+> +	igt_pipe_crc_free(data->pipe_crc);
+> +	data->pipe_crc = NULL;
+> +
+> +	igt_plane_set_fb(data->primary, NULL);
+> +
+> +	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_display_commit(display);
+> +
+> +	igt_remove_fb(data->drm_fd, &data->fb[0]);
+> +	igt_remove_fb(data->drm_fd, &data->fb[1]);
+> +
 
-### IGT changes ###
+Remove empty line.
 
-#### Possible regressions ####
+> +}
+> +
+> +static void test_mmap_gtt(data_t *data)
+> +{
+> +	igt_crc_t crc;
+> +	igt_fb_t *fb;
+> +	void *buf;
+> +
+> +	gem_require_mappable_ggtt(data->drm_fd);
+> +
+> +	fb = prepare_fb(data);
+> +
+> +	buf = gem_mmap__gtt(data->drm_fd, fb->gem_handle, fb->size, PROT_WRITE);
+> +
+> +	crc = get_buf_crc(data, buf, fb);
+> +	igt_assert_crc_equal(&crc, &data->ref_crc);
+> +}
+> +
+> +static void test_mmap_offset_wc(data_t *data)
+> +{
+> +	igt_crc_t crc;
+> +	igt_fb_t *fb;
+> +	void *buf;
+> +
+> +	igt_require(gem_mmap_offset__has_wc(data->drm_fd));
+> +
+> +	fb = prepare_fb(data);
+> +
+> +	buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
+> +
+> +	crc = get_buf_crc(data, buf, fb);
+> +	igt_assert_crc_equal(&crc, &data->ref_crc);
+> +}
+> +
+> +static void test_mmap_offset_wb(data_t *data)
+> +{
+> +	igt_crc_t crc;
+> +	igt_fb_t *fb;
+> +	void *buf;
+> +
+> +	igt_require(gem_has_mmap_offset(data->drm_fd));
+> +	igt_skip_on(gem_has_lmem(data->drm_fd));
+> +
+> +	fb = prepare_fb(data);
+> +
+> +	/* mmap the fb */
+> +	buf = gem_mmap_offset__cpu(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
+> +
+> +	crc = get_buf_crc(data, buf, fb);
+> +	igt_fail_on(igt_check_crc_equal(&crc, &data->ref_crc));
 
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - bat-adls-5:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-adls-5/igt@i915_suspend@basic-s2idle-without-i915.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-adls-5/igt@i915_suspend@basic-s2idle-without-i915.html
+Why not use igt_assert_crc_equal ?
 
-  
-Known issues
-------------
+> +}
+> +
+> +static void test_mmap_offset_uc(data_t *data)
+> +{
+> +	igt_crc_t crc;
+> +	igt_fb_t *fb;
+> +	void *buf;
+> +
+> +	igt_require(gem_has_mmap_offset(data->drm_fd));
+> +	igt_skip_on(gem_has_lmem(data->drm_fd));
+> +
+> +	fb = prepare_fb(data);
+> +
+> +	/* mmap the fb */
+> +	buf = __gem_mmap_offset(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE,
+> +				I915_MMAP_OFFSET_UC);
+> +	igt_assert(buf);
+> +
+> +	crc = get_buf_crc(data, buf, fb);
+> +	igt_assert_crc_equal(&crc, &data->ref_crc);
+> +}
+> +
+> +static void test_mmap_offset_fixed(data_t *data)
+> +{
+> +	igt_crc_t crc;
+> +	igt_fb_t *fb;
+> +	void *buf;
+> +
+> +	igt_require(gem_has_lmem(data->drm_fd));
+> +
+> +	fb = prepare_fb(data);
+> +
+> +	/* mmap the fb */
+> +	buf = gem_mmap_offset__fixed(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
+> +
+> +	crc = get_buf_crc(data, buf, fb);
+> +	igt_assert_crc_equal(&crc, &data->ref_crc);
+> +}
+> +
+> +static void test_legacy_mmap_wc(data_t *data)
+> +{
+> +	igt_crc_t crc;
+> +	igt_fb_t *fb;
+> +	void *buf;
+> +
+> +	igt_require(gem_has_legacy_mmap(data->drm_fd));
+> +	igt_require(gem_mmap__has_wc(data->drm_fd));
+> +
+> +	fb = prepare_fb(data);
+> +
+> +	/* mmap the fb */
+> +	buf = gem_mmap__wc(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
+> +
+> +	crc = get_buf_crc(data, buf, fb);
+> +	igt_assert_crc_equal(&crc, &data->ref_crc);
+> +}
+> +
+> +static void test_legacy_mmap_cpu(data_t *data)
+> +{
+> +	igt_crc_t crc;
+> +	igt_fb_t *fb;
+> +	void *buf;
+> +
+> +	igt_require(gem_has_legacy_mmap(data->drm_fd));
+> +
+> +	fb = prepare_fb(data);
+> +
+> +	/* mmap the fb */
+> +	buf = gem_mmap__cpu(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
+> +
+> +	crc = get_buf_crc(data, buf, fb);
+> +	igt_fail_on(igt_check_crc_equal(&crc, &data->ref_crc));
 
-  Here are the changes found in IGTPW_8965 that come from known issues:
+Same here, use igt_assert_crc_equal ?
 
-### IGT changes ###
+Regards,
+Kamil
 
-#### Issues hit ####
-
-  * igt@i915_module_load@reload:
-    - bat-adls-5:         [PASS][3] -> [DMESG-WARN][4] ([i915#4391])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-adls-5/igt@i915_module_load@reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-adls-5/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-adlp-9:         [PASS][5] -> [DMESG-FAIL][6] ([i915#7699] / [i915#7913])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-adlp-9/igt@i915_selftest@live@migrate.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-adlp-9/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-2:         NOTRUN -> [ABORT][7] ([i915#4983] / [i915#7461] / [i915#7913] / [i915#8347])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-rpls-2/igt@i915_selftest@live@reset.html
-    - bat-rpls-1:         NOTRUN -> [ABORT][8] ([i915#4983] / [i915#7461] / [i915#7953] / [i915#8347] / [i915#8384])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-rpls-1/igt@i915_selftest@live@reset.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@mman:
-    - bat-rpls-2:         [TIMEOUT][9] ([i915#6794] / [i915#7392]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-rpls-2/igt@i915_selftest@live@mman.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-rpls-2/igt@i915_selftest@live@mman.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-1:         [ABORT][11] ([i915#7911] / [i915#7920] / [i915#7953]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-rpls-1/igt@i915_selftest@live@requests.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-rpls-1/igt@i915_selftest@live@requests.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
-    - bat-dg2-8:          [FAIL][13] ([i915#7932]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
-  [i915#7392]: https://gitlab.freedesktop.org/drm/intel/issues/7392
-  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
-  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
-  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
-  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7291 -> IGTPW_8965
-
-  CI-20190529: 20190529
-  CI_DRM_13148: 57a535e042517014a85f33be6fa5ed22145c56e9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8965: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/index.html
-  IGT_7291: a536bd30aaeb1ab02dc4f37d2d723c37be356d8d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_fb_coherency@memset-crc
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-blue
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-green
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-red
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-blue
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-green
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-red
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/index.html
-
---===============6196453024282573503==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915: Exercise coherency of mmapped frame buffers (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117751/">https://patchwork.freedesktop.org/series/117751/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7291 -&gt; IGTPW_8965</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8965 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8965, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/index.html</p>
-<h2>Participating hosts (37 -&gt; 35)</h2>
-<p>Additional (1): bat-mtlp-8 <br />
-  Missing    (3): fi-kbl-soraka fi-snb-2520m bat-mtlp-6 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8965:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_suspend@basic-s2idle-without-i915:<ul>
-<li>bat-adls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-adls-5/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-adls-5/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8965 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>bat-adls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-adls-5/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-adls-5/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4391">i915#4391</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-adlp-9/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-adlp-9/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>
-<p>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a>)</p>
-</li>
-<li>
-<p>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-rpls-2/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-rpls-2/igt@i915_selftest@live@mman.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7291 -&gt; IGTPW_8965</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13148: 57a535e042517014a85f33be6fa5ed22145c56e9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8965: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8965/index.html<br />
-  IGT_7291: a536bd30aaeb1ab02dc4f37d2d723c37be356d8d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_fb_coherency@memset-crc<br />
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck<br />
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12<br />
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-blue<br />
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-green<br />
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12-red<br />
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb<br />
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-blue<br />
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-green<br />
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb-red</p>
-
-</body>
-</html>
-
---===============6196453024282573503==--
+> +}
+> +
+> +static void select_valid_pipe_output_combo(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +
+> +	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
+> +		igt_display_reset(display);
+> +
+> +		igt_output_set_pipe(data->output, data->pipe);
+> +		if (!i915_pipe_output_combo_valid(display))
+> +			continue;
+> +
+> +		/* one is enough */
+> +		return;
+> +	}
+> +
+> +	igt_skip("no valid crtc/connector combinations found\n");
+> +}
+> +
+> +igt_main
+> +{
+> +	data_t data;
+> +
+> +	igt_fixture {
+> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +
+> +		data.devid = intel_get_drm_devid(data.drm_fd);
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_require_pipe_crc(data.drm_fd);
+> +
+> +		igt_display_require(&data.display, data.drm_fd);
+> +
+> +		select_valid_pipe_output_combo(&data);
+> +	}
+> +
+> +	/**
+> +	 * SUBTEST: memset-crc
+> +	 * Description: Use display controller CRC hardware to validate (non)coherency
+> +	 *		of memset operations on future scanout buffer objects
+> +	 *		mmapped with different mmap methods and different caching modes.
+> +	 */
+> +	igt_subtest_with_dynamic("memset-crc") {
+> +		if (gem_has_mappable_ggtt(data.drm_fd)) {
+> +			igt_dynamic("mmap-gtt")
+> +				test_mmap_gtt(&data);
+> +
+> +			cleanup_crtc(&data);
+> +		}
+> +
+> +		if (gem_mmap_offset__has_wc(data.drm_fd)) {
+> +			igt_dynamic("mmap-offset-wc")
+> +				test_mmap_offset_wc(&data);
+> +
+> +			cleanup_crtc(&data);
+> +		}
+> +
+> +		if (gem_has_mmap_offset(data.drm_fd)) {
+> +			if (gem_has_lmem(data.drm_fd)) {
+> +				igt_dynamic("mmap-offset-fixed")
+> +					test_mmap_offset_fixed(&data);
+> +
+> +				cleanup_crtc(&data);
+> +
+> +			} else {
+> +				igt_dynamic("mmap-offset-uc")
+> +					test_mmap_offset_uc(&data);
+> +
+> +				cleanup_crtc(&data);
+> +			}
+> +		}
+> +
+> +		if (gem_has_legacy_mmap(data.drm_fd) &&
+> +		    gem_mmap__has_wc(data.drm_fd)) {
+> +			igt_dynamic("mmap-legacy-wc")
+> +				test_legacy_mmap_wc(&data);
+> +
+> +			cleanup_crtc(&data);
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_display_fini(&data.display);
+> +		close(data.drm_fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index c15eb3a08c..371b501992 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -224,6 +224,7 @@ i915_progs = [
+>  	'kms_ccs',
+>  	'kms_cdclk',
+>  	'kms_draw_crc',
+> +	'kms_fb_coherency',
+>  	'kms_fbcon_fbt',
+>  	'kms_fence_pin_leak',
+>  	'kms_flip_scaled_crc',
+> -- 
+> 2.40.1
+> 
