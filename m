@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1C8710E18B
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FC8010E18A
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:10 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:24 +0530
-Message-Id: <20230515081720.3713293-24-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:25 +0530
+Message-Id: <20230515081720.3713293-25-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 23/79] tests/i915/kms_mmap_write_crc: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t 24/79] tests/i915/kms_pipe_b_c_ivb: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,33 +28,71 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_mmap_write_crc.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tests/i915/kms_pipe_b_c_ivb.c | 52 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-index bc51975f6..254e28e06 100644
---- a/tests/i915/kms_mmap_write_crc.c
-+++ b/tests/i915/kms_mmap_write_crc.c
-@@ -37,6 +37,20 @@
- #include "intel_chipset.h"
- #include "ioctl_wrappers.h"
- #include "igt_aux.h"
+diff --git a/tests/i915/kms_pipe_b_c_ivb.c b/tests/i915/kms_pipe_b_c_ivb.c
+index af11e3262..542559d40 100644
+--- a/tests/i915/kms_pipe_b_c_ivb.c
++++ b/tests/i915/kms_pipe_b_c_ivb.c
+@@ -25,6 +25,58 @@
+  */
+ 
+ #include "igt.h"
 +/**
-+ * TEST: kms mmap write crc
++ * TEST: kms pipe b c ivb
 + * Category: Display
-+ * Description: Use the display CRC support to validate mmap write to an already
-+ *              uncached future scanout buffer.
++ * Description: Exercise the FDI lane bifurcation code for IVB in the kernel by
++ *              setting different combinations of modes for pipes B and C.
 + *
-+ * SUBTEST: main
-+ * Description: Tests that caching mode has become UC/WT and flushed using mmap write
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
++ * SUBTEST: disable-pipe-B-enable-pipe-C
++ * Description: Tests pipe-B and pipe-C interactions in IVB by disabling pipe-B
++ *              and then setting mode on pipe-C.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: enable-pipe-C-while-B-has-3-lanes
++ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-C
++ *              while pipe-B has 3-lanes
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: from-pipe-C-to-B-with-3-lanes
++ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B
++ *              with 3 lanes from pipe-C.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: pipe-B-double-modeset-then-modeset-pipe-C
++ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling two
++ *              different modes on pipe-B and then a single mode on pipe-C.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: pipe-B-dpms-off-modeset-pipe-C
++ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B
++ *              with mode that requires 3 lanes and then enabling pipe-c with
++ *              dpms off/on pipe-B.
++ * Driver requirement: i915
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
  IGT_TEST_DESCRIPTION(
-    "Use the display CRC support to validate mmap write to an already uncached future scanout buffer.");
+ "Exercise the FDI lane bifurcation code for IVB in the kernel by setting"
 -- 
 2.40.0
