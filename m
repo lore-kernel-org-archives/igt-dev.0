@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF7D510E17E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1128310E183
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:33 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:40 +0530
-Message-Id: <20230515081720.3713293-40-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:41 +0530
+Message-Id: <20230515081720.3713293-41-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 39/79] tests/kms_content_protection: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t 40/79] tests/kms_cursor_crc: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,114 +28,97 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_content_protection.c | 81 ++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ tests/kms_cursor_crc.c | 64 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 64 insertions(+)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 344cac505..c3bc74f44 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -22,6 +22,11 @@
-  *
-  */
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index 3a353a032..1e6075ffc 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -29,6 +29,18 @@
+ #include <stdio.h>
+ #include <string.h>
  
 +/**
-+ * TEST: kms content protection
++ * TEST: kms cursor crc
 + * Category: Display
-+ * Description: Test content protection (HDCP)
++ * Description: Use the display CRC support to validate cursor plane functionality.
++ *              The test will position the cursor plane either fully onscreen,
++ *              partially onscreen, or fully offscreen, using either a fully
++ *              opaque or fully transparent surface. In each case, it enables
++ *              the cursor plane and then reads the PF CRC (hardware test) and
++ *              compares it with the CRC value obtained when the cursor plane
++ *              was disabled and its drawing is directly inserted on the PF by
++ *              software.
 + */
- #include <poll.h>
- #include <fcntl.h>
- #include <sys/epoll.h>
-@@ -485,6 +490,66 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
- 	igt_display_commit2(&data.display, s);
+ 
+ IGT_TEST_DESCRIPTION(
+    "Use the display CRC support to validate cursor plane functionality. "
+@@ -639,6 +651,27 @@ static bool require_cursor_size(data_t *data, int w, int h)
+ 	return !!ret;
  }
  
 +/**
-+ * SUBTEST: LIC
-+ * Description: Test for the integrity of link.
++ * SUBTEST: cursor-%s
++ * Description: %arg[1]
 + * Driver requirement: any
-+ * Functionality: hdcp
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: content_type_change
-+ * Description: Test the content type change when the content protection already
-+ *              enabled
-+ * Driver requirement: any
-+ * Functionality: hdcp, hdcp2.2
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: mei_interface
-+ * Description: Test the teardown and rebuild of the interface between Intel
-+ *              and mei hdcp.
-+ * Driver requirement: any
-+ * Functionality: hdcp, hdcp2.2
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: srm
-+ * Description: This test writes the facsimile SRM into the /lib/firmware/ and
-+ *              check the kernel parsing of it by invoking the hdcp authentication.
-+ * Driver requirement: any
-+ * Functionality: hdcp
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: uevent
-+ * Description: Test to detect the HDCP status change when we are reading the
-+ *              uevent sent with the corresponding connector id and property id.
-+ * Driver requirement: any
-+ * Functionality: hdcp
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: %s
-+ * Description: Test content protection with %arg[1]
-+ * Driver requirement: any
-+ * Functionality: hdcp
-+ * Mega feature: HDCP
++ * Functionality: cursor
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @atomic:         atomic modesetting
-+ * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
-+ * @legacy:         legacy style commit
-+ * @type1:          content type 1 that can be handled only through HDCP2.2.
++ * @alpha-opaque:       Validates the composition of a fully opaque cursor plane,
++ *                      i.e., alpha channel equal to 1.0.
++ * @alpha-transparent:  Validates the composition of a fully transparent cursor
++ *                      plane, i.e., alpha channel equal to 0.0.
++ * @dpms:               Check random placement of a cursor with DPMS.
++ * @size-change:        Create a maximum size cursor, then change the size in
++ *                      flight to smaller ones to see that the size is applied
++ *                      correctly.
++ * @suspend:            Check random placement of a cursor with suspend.
 + */
- static void
- test_content_protection(enum igt_commit_style s, int content_type)
+ static void run_test(data_t *data, void (*testfunc)(data_t *), int cursor_w, int cursor_h)
  {
-@@ -602,6 +667,22 @@ static void test_cp_lic_on_mst(igt_output_t *mst_outputs[], int valid_outputs, b
- 	}
+ 	prepare_crtc(data, cursor_w, cursor_h);
+@@ -732,6 +765,37 @@ static bool execution_constraint(enum pipe pipe)
  }
  
+ 
 +/**
-+ * SUBTEST: dp-mst-%s
-+ * Description: Test Content protection %arg[1] over DP MST.
++ * SUBTEST: cursor-%s-%s
++ * Description: Check if a %arg[2] cursor is %arg[1].
 + * Driver requirement: any
-+ * Functionality: hdcp
-+ * Mega feature: HDCP
++ * Functionality: cursor
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @lic-type-0:   Type 0 with LIC
-+ * @lic-type-1:   Type 1 with LIC.
-+ * @type-0:       Type 0
-+ * @type-1:       Type 1
++ * @offscreen:             well-positioned outside the screen
++ * @onscreen:              well-positioned inside the screen
++ * @random:                randomly placed
++ * @rapid-movement:        rapidly udates for movements
++ * @sliding:               smooth for horizontal, vertical & diagonal movements
++ *
++ * arg[2]:
++ *
++ * @128x128:               128x128 size
++ * @128x42:                128x42 size
++ * @256x256:               256x256 size
++ * @256x85:                256x85 size
++ * @32x10:                 32x10 size
++ * @32x32:                 32x32 size
++ * @512x170:               512x170 size
++ * @512x512:               512x512 size
++ * @64x21:                 64x21 size
++ * @64x64:                 64x64 size
++ * @max-size:              Max supported size
 + */
- static void
- test_content_protection_mst(int content_type)
+ static void run_size_tests(data_t *data, int w, int h)
  {
+ 	enum pipe pipe;
 -- 
 2.40.0
