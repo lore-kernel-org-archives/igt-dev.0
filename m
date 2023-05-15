@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 746EA10E178
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 09:13:14 +0000 (UTC)
-From: "Murthy, Arun R" <arun.r.murthy@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 15 May 2023 09:13:10 +0000
-Message-ID: <DM6PR11MB3177D6F82EACC3A4CC2787CFBA789@DM6PR11MB3177.namprd11.prod.outlook.com>
-References: <20230131120646.27434-1-ville.syrjala@linux.intel.com>
- <20230131120646.27434-4-ville.syrjala@linux.intel.com>
-In-Reply-To: <20230131120646.27434-4-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3D5C10E18E
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 09:51:17 +0000 (UTC)
+Message-ID: <d90365bc-6a54-56f5-be22-460db0568689@intel.com>
+Date: Mon, 15 May 2023 11:51:13 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/6] tests/kms_async_flips: Ger rid of
- i915 specific fb creation
+Content-Language: en-US
+To: Anna Karas <anna.karas@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230420191454.497237-1-anna.karas@intel.com>
+ <20230420191454.497237-2-anna.karas@intel.com>
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+In-Reply-To: <20230420191454.497237-2-anna.karas@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [RFC 1/2] lib/xe_gpu: Introduce xe_gpu library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,47 +21,213 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Joonas Lahtinen <joonas.lahtinen@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVmlsbGUgU3lyamFsYSA8
-dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIEphbnVhcnkg
-MzEsIDIwMjMgNTozNyBQTQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4g
-Q2M6IE11cnRoeSwgQXJ1biBSIDxhcnVuLnIubXVydGh5QGludGVsLmNvbT4NCj4gU3ViamVjdDog
-W1BBVENIIGktZy10IDMvNl0gdGVzdHMva21zX2FzeW5jX2ZsaXBzOiBHZXIgcmlkIG9mIGk5MTUg
-c3BlY2lmaWMgZmINCj4gY3JlYXRpb24NCj4gDQo+IEZyb206IFZpbGxlIFN5cmrDpGzDpCA8dmls
-bGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+DQo+IA0KPiBObyBpZGVhIHdoeSB0aGUgdGVzdCB3
-YW50cyB0byBjcmVhdGUgdGhlIGZiIGRpZmZlcmVudGx5IGJldHdlZW4gaTkxNSB2cy4NCj4gb3Ro
-ZXJzLiBVbmlmeSBpdC4NCj4gDQo+IENjOiBBcnVuIFIgTXVydGh5IDxhcnVuLnIubXVydGh5QGlu
-dGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxh
-QGxpbnV4LmludGVsLmNvbT4NCj4gLS0tDQpSZXZpZXdlZC1ieTogQXJ1biBSIE11cnRoeSA8YXJ1
-bi5yLm11cnRoeUBpbnRlbC5jb20+DQoNClRoYW5rcyBhbmQgUmVnYXJkcywNCkFydW4gUiBNdXJ0
-aHkNCi0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gIHRlc3RzL2ttc19hc3luY19mbGlwcy5jIHwgMTkg
-KysrKysrKysrKystLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDExIGluc2VydGlvbnMoKyks
-IDggZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2FzeW5jX2ZsaXBz
-LmMgYi90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYyBpbmRleA0KPiA1NWJlMGJkODc0YWQuLmY4Yzk3
-ZTAyOWM1OSAxMDA2NDQNCj4gLS0tIGEvdGVzdHMva21zX2FzeW5jX2ZsaXBzLmMNCj4gKysrIGIv
-dGVzdHMva21zX2FzeW5jX2ZsaXBzLmMNCj4gQEAgLTExNSw2ICsxMTUsMTUgQEAgc3RhdGljIHZv
-aWQgd2FpdF9mbGlwX2V2ZW50KGRhdGFfdCAqZGF0YSkNCj4gIAl9DQo+ICB9DQo+IA0KPiArc3Rh
-dGljIHVpbnQ2NF90IGRlZmF1bHRfbW9kaWZpZXIoZGF0YV90ICpkYXRhKSB7DQo+ICsJaWYgKGln
-dF9kaXNwbGF5X2hhc19mb3JtYXRfbW9kKCZkYXRhLT5kaXNwbGF5LA0KPiBEUk1fRk9STUFUX1hS
-R0I4ODg4LA0KPiArCQkJCSAgICAgICBJOTE1X0ZPUk1BVF9NT0RfWF9USUxFRCkpDQo+ICsJCXJl
-dHVybiBJOTE1X0ZPUk1BVF9NT0RfWF9USUxFRDsNCj4gKwllbHNlDQo+ICsJCXJldHVybiBEUk1f
-Rk9STUFUX01PRF9MSU5FQVI7DQo+ICt9DQo+ICsNCj4gIHN0YXRpYyB2b2lkIG1ha2VfZmIoZGF0
-YV90ICpkYXRhLCBzdHJ1Y3QgaWd0X2ZiICpmYiwNCj4gIAkJICAgIHVpbnQzMl90IHdpZHRoLCB1
-aW50MzJfdCBoZWlnaHQsIGludCBpbmRleCkgIHsgQEAgLTEyMywxNA0KPiArMTMyLDggQEAgc3Rh
-dGljIHZvaWQgbWFrZV9mYihkYXRhX3QgKmRhdGEsIHN0cnVjdCBpZ3RfZmIgKmZiLA0KPiANCj4g
-IAlyZWNfd2lkdGggPSB3aWR0aCAvIChBUlJBWV9TSVpFKGRhdGEtPmJ1ZnMpICogMik7DQo+IA0K
-PiAtCWlmIChpc19pOTE1X2RldmljZShkYXRhLT5kcm1fZmQpKSB7DQo+IC0JCWlndF9jcmVhdGVf
-ZmIoZGF0YS0+ZHJtX2ZkLCB3aWR0aCwgaGVpZ2h0LA0KPiBEUk1fRk9STUFUX1hSR0I4ODg4LA0K
-PiAtCQkJICAgICAgSTkxNV9GT1JNQVRfTU9EX1hfVElMRUQsIGZiKTsNCj4gLQkJaWd0X2RyYXdf
-ZmlsbF9mYihkYXRhLT5kcm1fZmQsIGZiLCAweDg4KTsNCj4gLQl9IGVsc2Ugew0KPiAtCQlpZ3Rf
-Y3JlYXRlX2NvbG9yX2ZiKGRhdGEtPmRybV9mZCwgd2lkdGgsIGhlaWdodCwNCj4gRFJNX0ZPUk1B
-VF9YUkdCODg4OCwNCj4gLQkJCQkgICAgRFJNX0ZPUk1BVF9NT0RfTElORUFSLCAwLjAsIDAuMCwg
-MC41LA0KPiBmYik7DQo+IC0JfQ0KPiArCWlndF9jcmVhdGVfY29sb3JfZmIoZGF0YS0+ZHJtX2Zk
-LCB3aWR0aCwgaGVpZ2h0LA0KPiBEUk1fRk9STUFUX1hSR0I4ODg4LA0KPiArCQkJICAgIGRlZmF1
-bHRfbW9kaWZpZXIoZGF0YSksIDAuMCwgMC4wLCAwLjUsIGZiKTsNCj4gDQo+ICAJY3IgPSBpZ3Rf
-Z2V0X2NhaXJvX2N0eChkYXRhLT5kcm1fZmQsIGZiKTsNCj4gIAlpZ3RfcGFpbnRfY29sb3JfcmFu
-ZChjciwgcmVjX3dpZHRoICogMiArIHJlY193aWR0aCAqIGluZGV4LCAwLA0KPiByZWNfd2lkdGgs
-IGhlaWdodCk7DQo+IC0tDQo+IDIuMzkuMQ0KDQo=
+Hi Anna,
+
+On 20.04.2023 21:14, Anna Karas wrote:
+> Add helpers for requiring the XE driver, reopening drm fd and restoring
+> engine properties between tests.
+> This lib is a direct port of gem.c from i915.
+> 
+> Reference: Jira VLK-46235
+> Signed-off-by: Anna Karas <anna.karas@intel.com>
+> ---
+>   lib/meson.build |   1 +
+>   lib/xe/xe_gpu.c | 136 ++++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/xe/xe_gpu.h |  19 +++++++
+>   3 files changed, 156 insertions(+)
+>   create mode 100644 lib/xe/xe_gpu.c
+>   create mode 100644 lib/xe/xe_gpu.h
+> 
+> diff --git a/lib/meson.build b/lib/meson.build
+> index b21c252b..b33f8ae6 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -100,6 +100,7 @@ lib_sources = [
+>   	'igt_msm.c',
+>   	'igt_dsc.c',
+>   	'xe/xe_compute.c',
+> +	'xe/xe_gpu.c',
+>   	'xe/xe_compute_square_kernels.c',
+>   	'xe/xe_ioctl.c',
+>   	'xe/xe_query.c',
+> diff --git a/lib/xe/xe_gpu.c b/lib/xe/xe_gpu.c
+> new file mode 100644
+> index 00000000..7abd8057
+> --- /dev/null
+> +++ b/lib/xe/xe_gpu.c
+> @@ -0,0 +1,136 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + *
+> + * Authors:
+> + *    Anna Karas <anna.karas@intel.com>
+> + */
+> +
+> +#include <dirent.h>
+> +#include <fcntl.h>
+> +#include <sys/ioctl.h>
+> +
+> +#include "xe/xe_gpu.h"
+> +#include "igt_sysfs.h"
+> +#include "igt.h"
+> +
+> +
+> +/*
+> + * Resets all engine properties to defaults prior to the start of a test.
+> + */
+> +static void __restore_defaults(int engine)
+> +{
+> +	struct dirent *de;
+> +	int defaults;
+> +	DIR *dir;
+> +
+> +	defaults = openat(engine, ".defaults", O_RDONLY);
+> +	if (defaults < 0)
+> +		return;
+> +
+> +	dir = fdopendir(defaults);
+> +	if (!dir) {
+> +		close(defaults);
+> +		return;
+> +	}
+> +
+> +	while ((de = readdir(dir))) {
+> +		char buf[256];
+> +		int fd, len;
+> +
+> +		if (*de->d_name == '.')
+> +			continue;
+> +
+> +		fd = openat(defaults, de->d_name, O_RDONLY);
+> +		if (fd < 0)
+> +			continue;
+> +
+> +		len = read(fd, buf, sizeof(buf));
+> +		close(fd);
+> +		if (len < 0)
+> +			continue;
+> +
+> +		fd = openat(engine, de->d_name, O_WRONLY);
+> +		if (fd < 0)
+> +			continue;
+> +
+> +		write(fd, buf, len);
+> +		close(fd);
+> +	}
+> +
+> +	closedir(dir);
+> +}
+> +
+> +static void restore_defaults(int fd)
+> +{
+> +	struct dirent *de;
+> +	int engines;
+> +	DIR *dir;
+> +	int sys;
+> +
+> +	sys = igt_sysfs_open(fd);
+> +	if (sys < 0)
+> +		return;
+> +
+> +	engines = openat(sys, "engine", O_RDONLY);
+> +	if (engines < 0)
+> +		goto close_sys;
+> +
+> +	dir = fdopendir(engines);
+> +	if (!dir) {
+> +		close(engines);
+> +		goto close_sys;
+> +	}
+> +
+> +	while ((de = readdir(dir))) {
+> +		int engine;
+> +
+> +		if (*de->d_name == '.')
+> +			continue;
+> +
+> +		engine = openat(engines, de->d_name, O_RDONLY);
+> +		if (engine < 0)
+> +			continue;
+> +
+> +		__restore_defaults(engine);
+> +		close(engine);
+> +	}
+> +
+> +	closedir(dir);
+> +
+> +close_sys:
+> +	close(sys);
+> +}
+
+Looks like this duplicates 'restore_defaults' and '__restore_defaults' 
+from lib/i915/gem.c. Maybe better just move the existing code higher up 
+and reuse it?
+
+Christoph
+
+
+> +
+> +/**
+> + * xe_reopen_driver:
+> + * @fd: re-open the xe drm file descriptor
+> + *
+> + * Re-opens the drm fd which is useful in instances where a clean default
+> + * context is needed.
+> + */
+> +int xe_reopen_driver(int fd)
+> +{
+> +	char path[256];
+> +
+> +	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
+> +	fd = open(path, O_RDWR);
+> +	igt_assert_fd(fd);
+> +
+> +	return fd;
+> +}
+> +
+> +/**
+> + * xe_require_gpu:
+> + * @fd: the xe drm file descriptor
+> + *
+> + * Helper to be used prior to the start of a tests, useful in instances
+> + * where a clean default context is needed.
+> + */
+> +void xe_require_gpu(int fd)
+> +{
+> +	igt_require_xe(fd);
+> +	fd = xe_reopen_driver(fd);
+> +	restore_defaults(fd);
+> +	close(fd);
+> +}
+> diff --git a/lib/xe/xe_gpu.h b/lib/xe/xe_gpu.h
+> new file mode 100644
+> index 00000000..020040ac
+> --- /dev/null
+> +++ b/lib/xe/xe_gpu.h
+> @@ -0,0 +1,19 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + *
+> + * Authors:
+> + *    Anna Karas <anna.karas@intel.com>
+> + */
+> +
+> +#ifndef XE_GPU_H
+> +#define XE_GPU_H
+> +
+> +#include <stdint.h>
+> +#include <xe_drm.h>
+> +
+> +int xe_reopen_driver(int fd);
+> +void xe_require_gpu(int fd);
+> +
+> +#endif	/* XE_GPU_H */
+> +
