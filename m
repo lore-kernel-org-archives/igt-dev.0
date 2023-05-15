@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8268810E178
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE94D10E17E
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:49 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:09 +0530
-Message-Id: <20230515081720.3713293-9-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:11 +0530
+Message-Id: <20230515081720.3713293-11-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 08/79] tests/chamelium/kms_chamelium_frames:
- Document each subtest for testplan
+Subject: [igt-dev] [i-g-t 10/79] tests/i915/kms_big_fb: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,165 +28,200 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_chamelium_frames.c | 102 ++++++++++++++++++++++++-
- 1 file changed, 100 insertions(+), 2 deletions(-)
+ tests/i915/kms_big_fb.c | 153 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 153 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
-index 2d90b45b2..1081cb1c1 100644
---- a/tests/chamelium/kms_chamelium_frames.c
-+++ b/tests/chamelium/kms_chamelium_frames.c
-@@ -25,10 +25,10 @@
+diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+index a0d5ef730..d0afb9dcc 100644
+--- a/tests/i915/kms_big_fb.c
++++ b/tests/i915/kms_big_fb.c
+@@ -21,6 +21,12 @@
+  * IN THE SOFTWARE.
   */
  
- /**
-- * TEST: Tests to capture frames using chamelium
-+ * TEST: kms chamelium frames
-  * Category: Display
-+ * Description: Tests requiring a Chamelium board
-  */
--
- #include "igt_eld.h"
- #include "igt_infoframe.h"
- #include "igt_chamelium_helper.h"
-@@ -547,6 +547,7 @@ static void prepare_randomized_plane(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: dp
-  * Mega feature: DP
-+ * Driver requirement: any
-  *
-  * SUBTEST: hdmi-crc-fast
-  * Description: Pick the first mode of the IGT base EDID, display and capture
-@@ -555,6 +556,23 @@ static void prepare_randomized_plane(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: hdmi
-  * Mega feature: HDMI
-+ * Driver requirement: any
++/**
++ * TEST: kms big fb
++ * Category: Display
++ * Description: Test big framebuffers
++ */
++
+ #include "igt.h"
+ #include <errno.h>
+ #include <stdbool.h>
+@@ -579,6 +585,93 @@ max_hw_stride_async_flip_test(data_t *data)
+ 	return true;
+ }
+ 
++/**
++ * SUBTEST: %s-%dbpp-rotate-%d
++ * Description: Sanity check if addfb ioctl works correctly for given combination
++ *              of %arg[1] with %arg[2]-bpp & %arg[3]-rotation
++ * Driver requirement: i915
++ * Functionality: xorg_big_displays
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @4-tiled:                  TILE-4 modifier
++ * @x-tiled:                  TILE-X modifier
++ * @y-tiled:                  TILE-Y modifier
++ * @yf-tiled:                 TILE-YF modifier
++ *
++ * arg[2].values: 8, 16, 32, 64
++ * arg[3].values: 0, 90, 180, 270
 + */
 +
 +/**
-+ * SUBTEST: hdmi-%s-formats
-+ * Description: Pick the first mode of the IGT base EDID, display and capture a
-+ *              few frames, then check captured frames are correct
-+ * Test category: functionality test
++ * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d
++ * Description: Test maximum hardware supported stride length for given combination
++ *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
++ *              and %arg[3]-rotation
++ * Driver requirement: i915
++ * Functionality: xorg_big_displays
++ * Mega feature: General Display Features
 + * Run type: FULL
-+ * Functionality: hdmi
-+ * Mega feature: HDMI
-+ * Driver requirement: any
++ * Test category: functionality test
++ *
++ * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d-%s
++ * Description: Test maximum hardware supported stride length for given combination
++ *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
++ *              and %arg[3]-rotation with %arg[4] mode
++ * Driver requirement: i915
++ * Functionality: xorg_big_displays
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @crc-nonplanar:     CRC with non planar formats
-+ * @cmp-planar:        Compare with planar formats
-  */
- static const char test_display_one_mode_desc[] =
- 	"Pick the first mode of the IGT base EDID, display and capture a few "
-@@ -592,6 +610,39 @@ static void test_display_one_mode(chamelium_data_t *data,
- 	drmModeFreeConnector(connector);
++ * @4-tiled:                  TILE-4 modifier
++ * @x-tiled:                  TILE-X modifier
++ * @y-tiled:                  TILE-Y modifier
++ * @yf-tiled:                 TILE-YF modifier
++ *
++ * arg[2].values: 32, 64
++ * arg[3].values: 0, 180
++ *
++ * arg[4]:
++ *
++ * @async-flip:         Async flip
++ * @hflip:              H-flip
++ * @hflip-async-flip:   Async & H-flip
++ */
++
++/**
++ * SUBTEST: linear-%dbpp-rotate-%d
++ * Description: Sanity check if addfb ioctl works correctly for given combination
++ *              of Linear modifier with %arg[1]-bpp & %arg[2]-rotation
++ * Driver requirement: any
++ * Functionality: xorg_big_displays
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1].values: 8, 16, 32, 64
++ * arg[2].values: 0, 90, 180, 270
++ */
++
++/**
++ * SUBTEST: linear-max-hw-stride-%dbpp-rotate-%d
++ * Description: Sanity check if addfb ioctl works correctly for given combination
++ *              of Linear modifier with max hardware stride length with
++ *              %arg[1]-bpp & %arg[2]-rotation
++ * Driver requirement: any
++ * Functionality: xorg_big_displays
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1].values: 32, 64
++ * arg[2].values: 0, 180
++ */
+ static void test_scanout(data_t *data)
+ {
+ 	igt_output_t *output;
+@@ -624,6 +717,23 @@ static void test_scanout(data_t *data)
+ 	igt_skip("unsupported configuration\n");
  }
  
 +/**
-+ * SUBTEST: vga-frame-dump
-+ * Description: For each mode of the IGT base EDID, display and capture a few
-+ *              frames, then check captured frames are correct
-+ * Test category: functionality test
++ * SUBTEST: %s-addfb-size-overflow
++ * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
++ *              with small bo.
++ * Driver requirement: i915
++ * Functionality: xorg_big_displays
++ * Mega feature: General Display Features
 + * Run type: FULL
-+ * Functionality: vga
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: dp-crc-%s
-+ * Description: For each mode of the IGT base EDID, display and capture a %arg[1]
-+ *              frame(s), then check captured frame(s) are correct
 + * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-crc-%s
-+ * Description: For each mode of the IGT base EDID, display and capture a %arg[1]
-+ *              frame(s), then check captured frame(s) are correct
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi
-+ * Mega feature: HDMI
-+ * Driver requirement: any
 + *
 + * arg[1]:
 + *
-+ * @single:    single
-+ * @multiple:  multiple
++ * @4-tiled:    TILE-4
++ * @x-tiled:    TILE-X
++ * @y-tiled:    TILE-Y
++ * @yf-tiled:   TILE-YF
 + */
- static const char test_display_all_modes_desc[] =
- 	"For each mode of the IGT base EDID, display and capture a few "
- 	"frames, then check captured frames are correct";
-@@ -650,6 +701,27 @@ static void test_display_all_modes(chamelium_data_t *data,
- 	} while (++i < count_modes);
+ static void
+ test_size_overflow(data_t *data)
+ {
+@@ -663,6 +773,23 @@ test_size_overflow(data_t *data)
+ 	gem_close(data->drm_fd, bo);
  }
  
 +/**
-+ * SUBTEST: dp-frame-dump
-+ * Description: For each mode of the IGT base EDID, display and capture a few
-+ *              frames, then download the captured frames and compare them
-+ *              bit-by-bit to the sent ones
-+ * Test category: functionality test
++ * SUBTEST: %s-addfb-size-offset-overflow
++ * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
++ *              and offsets with small bo
++ * Driver requirement: i915
++ * Functionality: xorg_big_displays
++ * Mega feature: General Display Features
 + * Run type: FULL
-+ * Functionality: dp
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-frame-dump
-+ * Description: For each mode of the IGT base EDID, display and capture a few
-+ *              frames, then download the captured frames and compare them
-+ *              bit-by-bit to the sent ones
 + * Test category: functionality test
-+ * Run type: BAT
-+ * Functionality: hdmi
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ */
- static const char test_display_frame_dump_desc[] =
- 	"For each mode of the IGT base EDID, display and capture a few "
- 	"frames, then download the captured frames and compare them "
-@@ -718,6 +790,16 @@ static void test_display_frame_dump(chamelium_data_t *data,
- 	} while (++i < count_modes);
- }
- 
-+/**
-+ * SUBTEST: hdmi-aspect-ratio
-+ * Description: Pick a mode with a picture aspect-ratio, capture AVI InfoFrames
-+ *              and check they include the relevant fields
-+ * Test category: functionality test
-+ * Run type: BAT
-+ * Functionality: hdmi
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ */
- static const char test_display_aspect_ratio_desc[] =
- 	"Pick a mode with a picture aspect-ratio, capture AVI InfoFrames and "
- 	"check they include the relevant fields";
-@@ -798,6 +880,22 @@ static void test_display_aspect_ratio(chamelium_data_t *data,
- 	drmModeFreeConnector(connector);
- }
- 
-+/**
-+ *
-+ * SUBTEST: hdmi-%s-planes-random
-+ * Description: Setup a few overlay planes with random parameters, capture the
-+ *              frame and check it matches the expected output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi
-+ * Mega feature: HDMI
-+ * Driver requirement: any
 + *
 + * arg[1]:
 + *
-+ * @crc:     CRC check
-+ * @cmp:     Compare
++ * @4-tiled:    TILE-4
++ * @x-tiled:    TILE-X
++ * @y-tiled:    TILE-Y
++ * @yf-tiled:   TILE-YF
 + */
- static const char test_display_planes_random_desc[] =
- 	"Setup a few overlay planes with random parameters, capture the frame "
- 	"and check it matches the expected output";
+ static void
+ test_size_offset_overflow(data_t *data)
+ {
+@@ -715,6 +842,32 @@ static int rmfb(int fd, uint32_t id)
+ 	return err;
+ }
+ 
++/**
++ * SUBTEST: linear-addfb
++ * Description: Sanity check if addfb ioctl works correctly with linear modifier
++ *              for given size and strides of fb
++ * Driver requirement: any
++ * Functionality: xorg_big_displays
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: %s-tiled-addfb
++ * Description: Sanity check if addfb ioctl works correctly with %arg[1] modifier
++ *              for given size and strides of fb
++ * Driver requirement: i915
++ * Functionality: xorg_big_displays
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @4:    TILE-4
++ * @x:    TILE-X
++ * @y:    TILE-Y
++ * @yf:   TILE-YF
++ */
+ static void
+ test_addfb(data_t *data)
+ {
 -- 
 2.40.0
