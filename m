@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 89EA210E16E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 23FB710E16C
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:36 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:03 +0530
-Message-Id: <20230515081720.3713293-3-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:02 +0530
+Message-Id: <20230515081720.3713293-2-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 02/79] tests/dsc: Move dsc helpers to lib
+Subject: [igt-dev] [i-g-t 01/79] tests/chamelium: Move chamelium helpers to
+ lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,95 +33,122 @@ the "tests" dir.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_dsc_helper.c => lib/igt_dsc_helper.c | 2 +-
- tests/i915/kms_dsc_helper.h => lib/igt_dsc_helper.h | 0
- lib/meson.build                                     | 1 +
- tests/i915/kms_dsc.c                                | 2 +-
- tests/i915/kms_psr2_sf.c                            | 2 +-
- tests/meson.build                                   | 4 ++--
- 6 files changed, 6 insertions(+), 5 deletions(-)
- rename tests/i915/kms_dsc_helper.c => lib/igt_dsc_helper.c (99%)
- rename tests/i915/kms_dsc_helper.h => lib/igt_dsc_helper.h (100%)
+ .../kms_chamelium_helper.c => lib/igt_chamelium_helper.c      | 4 ++--
+ .../kms_chamelium_helper.h => lib/igt_chamelium_helper.h      | 0
+ lib/meson.build                                               | 1 +
+ tests/chamelium/kms_chamelium_audio.c                         | 2 +-
+ tests/chamelium/kms_chamelium_edid.c                          | 2 +-
+ tests/chamelium/kms_chamelium_frames.c                        | 2 +-
+ tests/chamelium/kms_chamelium_hpd.c                           | 2 +-
+ tests/meson.build                                             | 3 +--
+ 8 files changed, 8 insertions(+), 8 deletions(-)
+ rename tests/chamelium/kms_chamelium_helper.c => lib/igt_chamelium_helper.c (99%)
+ rename tests/chamelium/kms_chamelium_helper.h => lib/igt_chamelium_helper.h (100%)
 
-diff --git a/tests/i915/kms_dsc_helper.c b/lib/igt_dsc_helper.c
+diff --git a/tests/chamelium/kms_chamelium_helper.c b/lib/igt_chamelium_helper.c
 similarity index 99%
-rename from tests/i915/kms_dsc_helper.c
-rename to lib/igt_dsc_helper.c
-index 02d1a4848..600a90746 100644
---- a/tests/i915/kms_dsc_helper.c
-+++ b/lib/igt_dsc_helper.c
-@@ -3,7 +3,7 @@
-  * Copyright © 2023 Intel Corporation
+rename from tests/chamelium/kms_chamelium_helper.c
+rename to lib/igt_chamelium_helper.c
+index 197d29be9..3c1a802d3 100644
+--- a/tests/chamelium/kms_chamelium_helper.c
++++ b/lib/igt_chamelium_helper.c
+@@ -25,7 +25,7 @@
   */
  
--#include "kms_dsc_helper.h"
-+#include "igt_dsc_helper.h"
+ #include "igt_edid.h"
+-#include "kms_chamelium_helper.h"
++#include "igt_chamelium_helper.h"
  
- static bool force_dsc_en_orig;
- static int force_dsc_restore_fd = -1;
-diff --git a/tests/i915/kms_dsc_helper.h b/lib/igt_dsc_helper.h
+ void chamelium_init_test(chamelium_data_t *data)
+ {
+@@ -344,4 +344,4 @@ bool chamelium_check_analog_bridge(chamelium_data_t *data,
+ 		return true;
+ 
+ 	return false;
+-}
+\ No newline at end of file
++}
+diff --git a/tests/chamelium/kms_chamelium_helper.h b/lib/igt_chamelium_helper.h
 similarity index 100%
-rename from tests/i915/kms_dsc_helper.h
-rename to lib/igt_dsc_helper.h
+rename from tests/chamelium/kms_chamelium_helper.h
+rename to lib/igt_chamelium_helper.h
 diff --git a/lib/meson.build b/lib/meson.build
-index 847488f0e..3f42b40e0 100644
+index b21c252b5..847488f0e 100644
 --- a/lib/meson.build
 +++ b/lib/meson.build
-@@ -100,6 +100,7 @@ lib_sources = [
- 	'veboxcopy_gen12.c',
- 	'igt_msm.c',
- 	'igt_dsc.c',
-+	'igt_dsc_helper.c',
- 	'xe/xe_compute.c',
- 	'xe/xe_compute_square_kernels.c',
- 	'xe/xe_ioctl.c',
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 3ce28f848..4af48b196 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -30,7 +30,7 @@
-  *
+@@ -17,6 +17,7 @@ lib_sources = [
+ 	'i915/intel_cmds_info.c',
+ 	'i915/i915_blt.c',
+ 	'i915/i915_crc.c',
++	'igt_chamelium_helper.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
+ 	'igt_crc.c',
+diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
+index 6c6177fc5..a4204fbb6 100644
+--- a/tests/chamelium/kms_chamelium_audio.c
++++ b/tests/chamelium/kms_chamelium_audio.c
+@@ -26,7 +26,7 @@
+ 
+ #include "igt_eld.h"
+ #include "igt_infoframe.h"
+-#include "kms_chamelium_helper.h"
++#include "igt_chamelium_helper.h"
+ 
+ /* Playback parameters control the audio signal we synthesize and send */
+ #define PLAYBACK_CHANNELS 2
+diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
+index 4a52e6922..fc78d4a07 100644
+--- a/tests/chamelium/kms_chamelium_edid.c
++++ b/tests/chamelium/kms_chamelium_edid.c
+@@ -42,7 +42,7 @@
+ #include "igt_eld.h"
+ #include "igt_vc4.h"
+ #include "igt_infoframe.h"
+-#include "kms_chamelium_helper.h"
++#include "igt_chamelium_helper.h"
+ #include "monitor_edids/dp_edids.h"
+ #include "monitor_edids/hdmi_edids.h"
+ #include "monitor_edids/monitor_edids_helper.h"
+diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
+index 22a7ba936..2d90b45b2 100644
+--- a/tests/chamelium/kms_chamelium_frames.c
++++ b/tests/chamelium/kms_chamelium_frames.c
+@@ -31,7 +31,7 @@
+ 
+ #include "igt_eld.h"
+ #include "igt_infoframe.h"
+-#include "kms_chamelium_helper.h"
++#include "igt_chamelium_helper.h"
+ 
+ #define connector_dynamic_subtest(name__, type__)                   \
+ 	igt_subtest_with_dynamic(name__)                            \
+diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
+index efd40ba54..ea0ee10e7 100644
+--- a/tests/chamelium/kms_chamelium_hpd.c
++++ b/tests/chamelium/kms_chamelium_hpd.c
+@@ -29,7 +29,7 @@
+  * Category: Display
   */
  
--#include "kms_dsc_helper.h"
-+#include "igt_dsc_helper.h"
+-#include "kms_chamelium_helper.h"
++#include "igt_chamelium_helper.h"
  
- IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- 
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index 4cf986440..7c21970a5 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -25,7 +25,7 @@
- #include "igt.h"
- #include "igt_sysfs.h"
- #include "igt_psr.h"
--#include "kms_dsc_helper.h"
-+#include "igt_dsc_helper.h"
- #include <errno.h>
- #include <stdbool.h>
- #include <stdio.h>
+ #define HPD_STORM_PULSE_INTERVAL_DP 100 /* ms */
+ #define HPD_STORM_PULSE_INTERVAL_HDMI 200 /* ms */
 diff --git a/tests/meson.build b/tests/meson.build
-index 8fac23ec4..e077dfb4b 100644
+index c15eb3a08..8fac23ec4 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -474,7 +474,7 @@ test_executables += executable('kms_color',
- test_list += 'kms_color'
- 
- test_executables += executable('kms_dsc',
--	   [ join_paths('i915', 'kms_dsc.c'), join_paths ('i915', 'kms_dsc_helper.c')],
-+	   join_paths('i915', 'kms_dsc.c'),
- 	   dependencies : test_deps,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -482,7 +482,7 @@ test_executables += executable('kms_dsc',
- test_list += 'kms_dsc'
- 
- test_executables += executable('kms_psr2_sf',
--	   [ join_paths('i915', 'kms_psr2_sf.c'), join_paths ('i915', 'kms_dsc_helper.c')],
-+	   join_paths('i915', 'kms_psr2_sf.c'),
- 	   dependencies : test_deps,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
+@@ -339,8 +339,7 @@ endforeach
+ if chamelium.found()
+ 	foreach prog : chamelium_progs
+ 		test_executables += executable(prog,
+-				 [join_paths('chamelium', prog + '.c'),
+-					join_paths('chamelium', 'kms_chamelium_helper.c')],
++				 join_paths('chamelium', prog + '.c'),
+ 				 dependencies : test_deps,
+ 				 install_dir : libexecdir,
+ 				 install_rpath : libexecdir_rpathdir,
 -- 
 2.40.0
