@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C51B410E182
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF7D510E17E
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:31 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:38 +0530
-Message-Id: <20230515081720.3713293-38-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:40 +0530
+Message-Id: <20230515081720.3713293-40-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 37/79] tests/kms_color: Document each subtest for
- testplan
+Subject: [igt-dev] [i-g-t 39/79] tests/kms_content_protection: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,155 +28,114 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ tests/kms_content_protection.c | 81 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index cd2d38329..8beccb296 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -22,10 +22,24 @@
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 344cac505..c3bc74f44 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -22,6 +22,11 @@
   *
   */
  
 +/**
-+ * TEST: kms color
++ * TEST: kms content protection
 + * Category: Display
-+ * Description: Test Color Features at Pipe level
++ * Description: Test content protection (HDCP)
 + */
- #include "igt_color_helper.h"
- 
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
- 
-+/**
-+ * SUBTEST: degamma
-+ * Description: Verify that degamma LUT transformation works correctly
-+ * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static bool test_pipe_degamma(data_t *data,
- 			      igt_plane_t *primary)
- {
-@@ -114,6 +128,16 @@ static bool test_pipe_degamma(data_t *data,
- 	return ret;
+ #include <poll.h>
+ #include <fcntl.h>
+ #include <sys/epoll.h>
+@@ -485,6 +490,66 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
+ 	igt_display_commit2(&data.display, s);
  }
  
 +/**
-+ * SUBTEST: gamma
-+ * Description: Verify that gamma LUT transformation works correctly
++ * SUBTEST: LIC
++ * Description: Test for the integrity of link.
 + * Driver requirement: any
-+ * Functionality: colorspace, colorspace_gamma
-+ * Mega feature: Color mgmt
++ * Functionality: hdcp
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
-+ */
-+
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out gamma
-  * LUT and verify we have the same CRC as drawing solid color rectangles.
-@@ -202,6 +226,16 @@ static bool test_pipe_gamma(data_t *data,
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: legacy-gamma
-+ * Description: Verify that legacy gamma LUT transformation works correctly
++ *
++ * SUBTEST: content_type_change
++ * Description: Test the content type change when the content protection already
++ *              enabled
 + * Driver requirement: any
-+ * Functionality: colorspace, colorspace_gamma
-+ * Mega feature: Color mgmt
++ * Functionality: hdcp, hdcp2.2
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
-+ */
-+
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out legacy
-  * gamma LUT and verify we have the same CRC as drawing solid color rectangles
-@@ -314,6 +348,17 @@ static bool test_pipe_legacy_gamma(data_t *data,
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: legacy-gamma-reset
-+ * Description: Verify that setting the legacy gamma LUT resets the gamma LUT
-+ *              set through GAMMA_LUT property
++ *
++ * SUBTEST: mei_interface
++ * Description: Test the teardown and rebuild of the interface between Intel
++ *              and mei hdcp.
 + * Driver requirement: any
-+ * Functionality: colorspace, colorspace_gamma
-+ * Mega feature: Color mgmt
++ * Functionality: hdcp, hdcp2.2
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
-+ */
-+
- /*
-  * Verify that setting the legacy gamma LUT resets the gamma LUT set
-  * through the GAMMA_LUT property.
-@@ -448,6 +493,27 @@ end:
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: ctm-%s
-+ * Description: Check the color transformation %arg[1]
++ *
++ * SUBTEST: srm
++ * Description: This test writes the facsimile SRM into the /lib/firmware/ and
++ *              check the kernel parsing of it by invoking the hdcp authentication.
 + * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
++ * Functionality: hdcp
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: uevent
++ * Description: Test to detect the HDCP status change when we are reading the
++ *              uevent sent with the corresponding connector id and property id.
++ * Driver requirement: any
++ * Functionality: hdcp
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: %s
++ * Description: Test content protection with %arg[1]
++ * Driver requirement: any
++ * Functionality: hdcp
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @0-25:           for 0.25 transparency
-+ * @0-50:           for 0.50 transparency
-+ * @0-75:           for 0.75 transparency
-+ * @blue-to-red:    from blue to red
-+ * @green-to-red:   from green to red
-+ * @max:            for maximum transparency
-+ * @negative:       for negative transparency
-+ * @red-to-blue:    from red to blue
-+ */
-+
- /*
-  * Draw 3 rectangles using before colors with the ctm matrix apply and verify
-  * the CRC is equal to using after colors with an identify ctm matrix.
-@@ -795,6 +861,15 @@ out:
- 	test_cleanup(data);
- }
- 
-+/**
-+ * SUBTEST: deep-color
-+ * Description: Verify that deep color works correctly
-+ * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
++ * @atomic:         atomic modesetting
++ * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
++ * @legacy:         legacy style commit
++ * @type1:          content type 1 that can be handled only through HDCP2.2.
 + */
  static void
- run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ test_content_protection(enum igt_commit_style s, int content_type)
  {
-@@ -885,6 +960,21 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 	test_cleanup(data);
+@@ -602,6 +667,22 @@ static void test_cp_lic_on_mst(igt_output_t *mst_outputs[], int valid_outputs, b
+ 	}
  }
  
 +/**
-+ * SUBTEST: invalid-%s-sizes
-+ * Description: Negative check for %arg[1] sizes
++ * SUBTEST: dp-mst-%s
++ * Description: Test Content protection %arg[1] over DP MST.
 + * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
++ * Functionality: hdcp
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @ctm-matrix:         Color transformation matrix
-+ * @degamma-lut:        Degamma LUT
-+ * @gamma-lut:          Gamma LUT
++ * @lic-type-0:   Type 0 with LIC
++ * @lic-type-1:   Type 1 with LIC.
++ * @type-0:       Type 0
++ * @type-1:       Type 1
 + */
  static void
- run_invalid_tests_for_pipe(data_t *data)
+ test_content_protection_mst(int content_type)
  {
 -- 
 2.40.0
