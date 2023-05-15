@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E8D210E17E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C745F10E181
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:55 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:15 +0530
-Message-Id: <20230515081720.3713293-15-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:13 +0530
+Message-Id: <20230515081720.3713293-13-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 14/79] tests/i915/kms_cdclk: Document each subtest
+Subject: [igt-dev] [i-g-t 12/79] tests/i915/kms_busy: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,65 +28,102 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_cdclk.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ tests/i915/kms_busy.c | 62 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
 
-diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
-index 0f9b8dc58..ef0c5ee61 100644
---- a/tests/i915/kms_cdclk.c
-+++ b/tests/i915/kms_cdclk.c
-@@ -24,6 +24,11 @@
-  *  Swati Sharma <swati2.sharma@intel.com>
+diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
+index 20d3058fb..94590c86e 100644
+--- a/tests/i915/kms_busy.c
++++ b/tests/i915/kms_busy.c
+@@ -21,6 +21,11 @@
+  * IN THE SOFTWARE.
   */
  
 +/**
-+ * TEST: kms cdclk
++ * TEST: kms busy
 + * Category: Display
-+ * Description: Test cdclk features : crawling and squashing
++ * Description: Basic check of KMS ABI with busy framebuffers.
 + */
- #include "igt.h"
- 
- IGT_TEST_DESCRIPTION("Test cdclk features : crawling and squashing");
-@@ -248,6 +253,16 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
- 	igt_remove_fb(display->drm_fd, &fb);
+ #include <sys/poll.h>
+ #include <signal.h>
+ #include <time.h>
+@@ -131,6 +136,23 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
+ 	put_ahnd(ahnd);
  }
  
 +/**
-+ * SUBTEST: mode-transition-all-outputs
-+ * Description: Mode transition (low to high) test to validate cdclk frequency
-+ *              change by simultaneous modesets on all pipes with valid outputs.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_mode_transition_on_all_outputs(data_t *data)
- {
- 	igt_display_t *display = &data->display;
-@@ -344,6 +359,23 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 	igt_remove_fb(data->drm_fd, &fb);
- }
- 
-+/**
-+ * SUBTEST: mode-transition
-+ * Description: Mode transition (low to high) test to validate cdclk frequency change.
-+ * Driver requirement: any
++ * SUBTEST: basic
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
 + * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: plane-scaling
-+ * Description: Plane scaling test to validate cdclk frequency change.
-+ * Driver requirement: any
++ * SUBTEST: basic-hang
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
 + * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void run_cdclk_test(data_t *data, uint32_t flags)
+ static void test_flip(igt_display_t *dpy, int pipe,
+ 		      igt_output_t *output, bool modeset)
  {
- 	igt_display_t *display = &data->display;
+@@ -223,6 +245,37 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
+ 	put_ahnd(ahnd);
+ }
+ 
++/**
++ * SUBTEST: extended-modeset-hang-%s
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @newfb:                New framebuffer
++ * @oldfb:                Old framebuffer
++ * @newfb-with-reset:     New framebuffer with reset
++ * @oldfb-with-reset:     Old framebuffer with reset
++ */
++
++/**
++ * SUBTEST: extended-pageflip-hang-%s
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @newfb:     New framebuffer
++ * @oldfb:     Old framebuffer
++ */
+ static void test_hang(igt_display_t *dpy,
+ 		      enum pipe pipe, igt_output_t *output,
+ 		      bool modeset, bool hang_newfb)
+@@ -270,6 +323,15 @@ static void test_hang(igt_display_t *dpy,
+ 	igt_remove_fb(dpy->drm_fd, &fb[0]);
+ }
+ 
++/**
++ * SUBTEST: extended-pageflip-modeset-hang-oldfb
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void
+ test_pageflip_modeset_hang(igt_display_t *dpy,
+ 			   igt_output_t *output, enum pipe pipe)
 -- 
 2.40.0
