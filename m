@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFCC810E17E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 692F010E17E
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:13 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:53 +0530
-Message-Id: <20230515081720.3713293-53-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:55 +0530
+Message-Id: <20230515081720.3713293-55-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 52/79] tests/kms_hdr: Document each subtest for
+Subject: [igt-dev] [i-g-t 54/79] tests/kms_lease: Document each subtest for
  testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,85 +28,206 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_hdr.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ tests/kms_lease.c | 180 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 180 insertions(+)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index e9e52a9a1..79b108bc2 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -20,6 +20,11 @@
-  * OTHER DEALINGS IN THE SOFTWARE.
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 29a774ae8..291d22c6f 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -26,6 +26,11 @@
+  * This is a test of DRM leases
   */
  
 +/**
-+ * TEST: kms hdr
++ * TEST: kms lease
 + * Category: Display
-+ * Description: Test HDR metadata interfaces and bpc switch
++ * Description: Test of CreateLease.
 + */
+ 
  #include "igt.h"
- #include <fcntl.h>
- #include <termios.h>
-@@ -208,6 +213,21 @@ static bool has_max_bpc(igt_output_t *output)
- 	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
- }
+ #include <stdlib.h>
+@@ -45,6 +50,181 @@
+ #include <drm.h>
+ #include "igt_device.h"
  
 +/**
-+ * SUBTEST: bpc-%s
-+ * Description: Tests switching between different display output bpc modes %arg[1]
++ * SUBTEST: atomic_implicit_crtc
++ * Description: Negative test by using a different crtc with atomic ioctl
 + * Driver requirement: any
-+ * Functionality: kms_hdr
++ * Functionality: lease
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
++ * SUBTEST: cursor_implicit_plane
++ * Description: Negative test by using a non-primary plane with setcursor ioctl
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + *
-+ * @switch:              default
-+ * @switch-dpms:         with dpms
-+ * @switch-suspend:      with suspend
++ * SUBTEST: empty_lease
++ * Description: Check that creating an empty lease works
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: implicit-plane-lease
++ * Description: Tests the implicitly added planes.
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: invalid-create-leases
++ * Description: Tests error handling while creating invalid corner-cases for
++ *              create-lease ioctl
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease-uevent
++ * Description: Tests all the uevent cases
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_again
++ * Description: Tests leasing objects more than once
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_get
++ * Description: Tests getting the required contents of a lease
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_invalid_connector
++ * Description: Tests leasing an invalid connector
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_invalid_crtc
++ * Description: Tests leasing an invalid crtc
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_invalid_plane
++ * Description: Tests leasing an invalid plane
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_revoke
++ * Description: Tests revocation of lease
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_unleased_connector
++ * Description: Negative test by trying to use an unleased connector
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lease_unleased_crtc
++ * Description: Negative test by trying to use an unleased crtc
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: lessee_list
++ * Description: Check if listed lease is same as created one
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: master-vs-lease
++ * Description: Tests the drop/set_master interactions.
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: multimaster-lease
++ * Description: Tests that the 2nd master can only create leases while being
++ *              active master, and that leases on the first master don't prevent
++ *              lease creation for the 2nd master.
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: page_flip_implicit_plane
++ * Description: Negative test by using a non-primary plane with the page flip ioctl
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: possible-crtcs-filtering
++ * Description: Tests that  possible_crtcs logically match between master and
++ *              lease, and that the values are correctly renumbered on the lease
++ *              side.
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: setcrtc_implicit_plane
++ * Description: Negative test by using a non-primary plane with the setcrtc ioctl
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: simple_lease
++ * Description: Check if create lease ioctl call works
++ * Driver requirement: any
++ * Functionality: lease
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
- static void test_bpc_switch(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
-@@ -561,6 +581,38 @@ static bool has_hdr(igt_output_t *output)
- 	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
- }
++
+ IGT_TEST_DESCRIPTION("Test of CreateLease.");
  
-+/**
-+ * SUBTEST: invalid-hdr
-+ * Description: Test to ensure HDR is not enabled on non-HDR panel
-+ * Driver requirement: any
-+ * Functionality: kms_hdr
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: invalid-metadata-sizes
-+ * Description: Tests invalid HDR metadata sizes
-+ * Driver requirement: any
-+ * Functionality: kms_hdr
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: static-%s
-+ * Description: Tests %arg[1].
-+ * Driver requirement: any
-+ * Functionality: kms_hdr
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @swap:                    swapping static HDR metadata
-+ * @toggle:                  entering and exiting HDR mode
-+ * @toggle-dpms:             static toggle with dpms
-+ * @toggle-suspend:          static toggle with suspend
-+ */
- static void test_hdr(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
+ typedef struct {
 -- 
 2.40.0
