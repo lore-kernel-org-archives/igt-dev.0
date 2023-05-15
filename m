@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8359A10E177
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59FC010E172
  for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:41 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:04 +0530
-Message-Id: <20230515081720.3713293-4-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:05 +0530
+Message-Id: <20230515081720.3713293-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 03/79] tests/color: Move color helpers to lib
+Subject: [igt-dev] [i-g-t 04/79] testplan/kms: Add support to differentiate
+ b/w drivers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,106 +23,36 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The correct place for helpers is lib as the tests directory is
-supposed to have test files, also having the helpers in tests
-dir will break the compilation of testplan. Hence move all
-helpers to library.
+Add support to differentiate the subtests based on the driver
+support, since many kms tests supports both i915 & xe drivers.
 
-Expectation is to have an executable binary for each .c file
-the "tests" dir.
+Add a new field "Driver requirement" to test_config.json
+
+Example:
+- Driver requirement: i915 (i915 specific test)
+- Driver requirement: xe   (xe specific test)
+- Driver requirement: any  (tests supports both i915 & xe)
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color_helper.c => lib/igt_color_helper.c | 2 +-
- tests/kms_color_helper.h => lib/igt_color_helper.h | 0
- lib/meson.build                                    | 1 +
- tests/chamelium/kms_chamelium_color.c              | 2 +-
- tests/kms_color.c                                  | 2 +-
- tests/meson.build                                  | 5 ++---
- 6 files changed, 6 insertions(+), 6 deletions(-)
- rename tests/kms_color_helper.c => lib/igt_color_helper.c (99%)
- rename tests/kms_color_helper.h => lib/igt_color_helper.h (100%)
+ tests/kms_test_config.json | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/kms_color_helper.c b/lib/igt_color_helper.c
-similarity index 99%
-rename from tests/kms_color_helper.c
-rename to lib/igt_color_helper.c
-index b01c38ef6..87fd096c1 100644
---- a/tests/kms_color_helper.c
-+++ b/lib/igt_color_helper.c
-@@ -22,7 +22,7 @@
-  *
-  */
- 
--#include "kms_color_helper.h"
-+#include "igt_color_helper.h"
- 
- bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
- {
-diff --git a/tests/kms_color_helper.h b/lib/igt_color_helper.h
-similarity index 100%
-rename from tests/kms_color_helper.h
-rename to lib/igt_color_helper.h
-diff --git a/lib/meson.build b/lib/meson.build
-index 3f42b40e0..da35b1247 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -20,6 +20,7 @@ lib_sources = [
- 	'igt_chamelium_helper.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
-+	'igt_color_helper.c',
- 	'igt_crc.c',
- 	'igt_debugfs.c',
- 	'igt_device.c',
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index 26239a6b8..bbb929b64 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -22,7 +22,7 @@
-  *
-  */
- 
--#include "kms_color_helper.h"
-+#include "igt_color_helper.h"
- 
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
- 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index fdc7120c7..cd2d38329 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -22,7 +22,7 @@
-  *
-  */
- 
--#include "kms_color_helper.h"
-+#include "igt_color_helper.h"
- 
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
- 
-diff --git a/tests/meson.build b/tests/meson.build
-index e077dfb4b..4dfe83156 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -465,8 +465,7 @@ executable('testdisplay', ['testdisplay.c', 'testdisplay_hotplug.c'],
- 	   install : true)
- test_list += 'testdisplay'
- 
--test_executables += executable('kms_color',
--	   [ 'kms_color.c', 'kms_color_helper.c' ],
-+test_executables += executable('kms_color', 'kms_color.c',
- 	   dependencies : test_deps,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
-@@ -491,7 +490,7 @@ test_list += 'kms_psr2_sf'
- 
- if chamelium.found()
-        test_executables += executable('kms_chamelium_color',
--                             [ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
-+                             join_paths('chamelium', 'kms_chamelium_color.c'),
-                              dependencies : test_deps + [ chamelium ],
-                              install_dir : libexecdir,
-                              install_rpath : libexecdir_rpathdir,
+diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
+index d2d6357d1..0238c51dc 100644
+--- a/tests/kms_test_config.json
++++ b/tests/kms_test_config.json
+@@ -22,6 +22,11 @@
+                 "description": "Defines what category of testlist it belongs"
+             }
+         },
++        "Driver requirement": {
++            "_properties_": {
++                "description": "Describes any Driver specific requrirement, like i915/xe."
++            }
++        },
+         "Test category": {
+             "_properties_": {
+                 "description": "Defines the test category. Usually used at subtest level."
 -- 
 2.40.0
