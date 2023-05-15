@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 23FB710E16C
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8359A10E177
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:41 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:02 +0530
-Message-Id: <20230515081720.3713293-2-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:04 +0530
+Message-Id: <20230515081720.3713293-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 01/79] tests/chamelium: Move chamelium helpers to
- lib
+Subject: [igt-dev] [i-g-t 03/79] tests/color: Move color helpers to lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,122 +32,96 @@ the "tests" dir.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- .../kms_chamelium_helper.c => lib/igt_chamelium_helper.c      | 4 ++--
- .../kms_chamelium_helper.h => lib/igt_chamelium_helper.h      | 0
- lib/meson.build                                               | 1 +
- tests/chamelium/kms_chamelium_audio.c                         | 2 +-
- tests/chamelium/kms_chamelium_edid.c                          | 2 +-
- tests/chamelium/kms_chamelium_frames.c                        | 2 +-
- tests/chamelium/kms_chamelium_hpd.c                           | 2 +-
- tests/meson.build                                             | 3 +--
- 8 files changed, 8 insertions(+), 8 deletions(-)
- rename tests/chamelium/kms_chamelium_helper.c => lib/igt_chamelium_helper.c (99%)
- rename tests/chamelium/kms_chamelium_helper.h => lib/igt_chamelium_helper.h (100%)
+ tests/kms_color_helper.c => lib/igt_color_helper.c | 2 +-
+ tests/kms_color_helper.h => lib/igt_color_helper.h | 0
+ lib/meson.build                                    | 1 +
+ tests/chamelium/kms_chamelium_color.c              | 2 +-
+ tests/kms_color.c                                  | 2 +-
+ tests/meson.build                                  | 5 ++---
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+ rename tests/kms_color_helper.c => lib/igt_color_helper.c (99%)
+ rename tests/kms_color_helper.h => lib/igt_color_helper.h (100%)
 
-diff --git a/tests/chamelium/kms_chamelium_helper.c b/lib/igt_chamelium_helper.c
+diff --git a/tests/kms_color_helper.c b/lib/igt_color_helper.c
 similarity index 99%
-rename from tests/chamelium/kms_chamelium_helper.c
-rename to lib/igt_chamelium_helper.c
-index 197d29be9..3c1a802d3 100644
---- a/tests/chamelium/kms_chamelium_helper.c
-+++ b/lib/igt_chamelium_helper.c
-@@ -25,7 +25,7 @@
+rename from tests/kms_color_helper.c
+rename to lib/igt_color_helper.c
+index b01c38ef6..87fd096c1 100644
+--- a/tests/kms_color_helper.c
++++ b/lib/igt_color_helper.c
+@@ -22,7 +22,7 @@
+  *
   */
  
- #include "igt_edid.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
+-#include "kms_color_helper.h"
++#include "igt_color_helper.h"
  
- void chamelium_init_test(chamelium_data_t *data)
+ bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
  {
-@@ -344,4 +344,4 @@ bool chamelium_check_analog_bridge(chamelium_data_t *data,
- 		return true;
- 
- 	return false;
--}
-\ No newline at end of file
-+}
-diff --git a/tests/chamelium/kms_chamelium_helper.h b/lib/igt_chamelium_helper.h
+diff --git a/tests/kms_color_helper.h b/lib/igt_color_helper.h
 similarity index 100%
-rename from tests/chamelium/kms_chamelium_helper.h
-rename to lib/igt_chamelium_helper.h
+rename from tests/kms_color_helper.h
+rename to lib/igt_color_helper.h
 diff --git a/lib/meson.build b/lib/meson.build
-index b21c252b5..847488f0e 100644
+index 3f42b40e0..da35b1247 100644
 --- a/lib/meson.build
 +++ b/lib/meson.build
-@@ -17,6 +17,7 @@ lib_sources = [
- 	'i915/intel_cmds_info.c',
- 	'i915/i915_blt.c',
- 	'i915/i915_crc.c',
-+	'igt_chamelium_helper.c',
+@@ -20,6 +20,7 @@ lib_sources = [
+ 	'igt_chamelium_helper.c',
  	'igt_collection.c',
  	'igt_color_encoding.c',
++	'igt_color_helper.c',
  	'igt_crc.c',
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index 6c6177fc5..a4204fbb6 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -26,7 +26,7 @@
- 
- #include "igt_eld.h"
- #include "igt_infoframe.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- 
- /* Playback parameters control the audio signal we synthesize and send */
- #define PLAYBACK_CHANNELS 2
-diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
-index 4a52e6922..fc78d4a07 100644
---- a/tests/chamelium/kms_chamelium_edid.c
-+++ b/tests/chamelium/kms_chamelium_edid.c
-@@ -42,7 +42,7 @@
- #include "igt_eld.h"
- #include "igt_vc4.h"
- #include "igt_infoframe.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- #include "monitor_edids/dp_edids.h"
- #include "monitor_edids/hdmi_edids.h"
- #include "monitor_edids/monitor_edids_helper.h"
-diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
-index 22a7ba936..2d90b45b2 100644
---- a/tests/chamelium/kms_chamelium_frames.c
-+++ b/tests/chamelium/kms_chamelium_frames.c
-@@ -31,7 +31,7 @@
- 
- #include "igt_eld.h"
- #include "igt_infoframe.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- 
- #define connector_dynamic_subtest(name__, type__)                   \
- 	igt_subtest_with_dynamic(name__)                            \
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index efd40ba54..ea0ee10e7 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -29,7 +29,7 @@
-  * Category: Display
+ 	'igt_debugfs.c',
+ 	'igt_device.c',
+diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
+index 26239a6b8..bbb929b64 100644
+--- a/tests/chamelium/kms_chamelium_color.c
++++ b/tests/chamelium/kms_chamelium_color.c
+@@ -22,7 +22,7 @@
+  *
   */
  
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
+-#include "kms_color_helper.h"
++#include "igt_color_helper.h"
  
- #define HPD_STORM_PULSE_INTERVAL_DP 100 /* ms */
- #define HPD_STORM_PULSE_INTERVAL_HDMI 200 /* ms */
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
+ 
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index fdc7120c7..cd2d38329 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -22,7 +22,7 @@
+  *
+  */
+ 
+-#include "kms_color_helper.h"
++#include "igt_color_helper.h"
+ 
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+ 
 diff --git a/tests/meson.build b/tests/meson.build
-index c15eb3a08..8fac23ec4 100644
+index e077dfb4b..4dfe83156 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -339,8 +339,7 @@ endforeach
+@@ -465,8 +465,7 @@ executable('testdisplay', ['testdisplay.c', 'testdisplay_hotplug.c'],
+ 	   install : true)
+ test_list += 'testdisplay'
+ 
+-test_executables += executable('kms_color',
+-	   [ 'kms_color.c', 'kms_color_helper.c' ],
++test_executables += executable('kms_color', 'kms_color.c',
+ 	   dependencies : test_deps,
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+@@ -491,7 +490,7 @@ test_list += 'kms_psr2_sf'
+ 
  if chamelium.found()
- 	foreach prog : chamelium_progs
- 		test_executables += executable(prog,
--				 [join_paths('chamelium', prog + '.c'),
--					join_paths('chamelium', 'kms_chamelium_helper.c')],
-+				 join_paths('chamelium', prog + '.c'),
- 				 dependencies : test_deps,
- 				 install_dir : libexecdir,
- 				 install_rpath : libexecdir_rpathdir,
+        test_executables += executable('kms_chamelium_color',
+-                             [ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
++                             join_paths('chamelium', 'kms_chamelium_color.c'),
+                              dependencies : test_deps + [ chamelium ],
+                              install_dir : libexecdir,
+                              install_rpath : libexecdir_rpathdir,
 -- 
 2.40.0
