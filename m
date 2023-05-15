@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69B8010E18E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24B5810E1B3
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:23 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:47:19 +0530
-Message-Id: <20230515081720.3713293-79-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:47:16 +0530
+Message-Id: <20230515081720.3713293-76-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 78/79] tests/kms_writeback: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t 75/79] tests/kms_universal_plane: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,61 +28,86 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_writeback.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ tests/kms_universal_plane.c | 67 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index c4808b02c..ee3c5dba1 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -32,6 +32,48 @@
- #include "igt_core.h"
- #include "igt_fb.h"
- #include "sw_sync.h"
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index 635a136ab..c7344477d 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -28,6 +28,73 @@
+ #include <string.h>
+ #include <fcntl.h>
+ 
 +/**
-+ * TEST: kms writeback
++ * TEST: kms universal plane
 + * Category: Display
-+ * Description: This test validates the expected behavior of the writeback
-+ *              connectors feature by checking if the target device support
-+ *              writeback; it validates bad and good combination, check color
-+ *              format, and check the output result by using CRC.
 + *
-+ * SUBTEST: writeback-check-output
-+ * Description: Check writeback output with CRC validation
++ * SUBTEST: cursor-fb-leak-pipe-%s
++ * Description: Check for cursor leaks after performing cursor operations
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: writeback-fb-id
-+ * Description: Validate WRITEBACK_FB_ID with valid and invalid options
++ * SUBTEST: disable-primary-vs-flip-pipe-%s
++ * Description: Check pageflips while primary plane is disabled before IOCTL or
++ *              between IOCTL and pageflip execution
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: writeback-invalid-parameters
-+ * Description: Writeback has a couple of parameters linked together(output
-+ *              framebuffer and fence); this test goes throughthe combination
-+ *              of possible bad options
++ * SUBTEST: universal-plane-pageflip-windowed-pipe-%s
++ * Description: Check if pageflip succeeds in windowed setting
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: writeback-pixel-formats
-+ * Description: Check the writeback format
++ * arg[1]:
++ *
++ * @A:
++ * @B:
++ * @C:
++ * @D:
++ * @E:
++ * @F:
++ * @G:
++ * @H:
++ */
++
++/**
++ * SUBTEST: universal-plane-pipe-%s-%s
++ * Description: Check %arg[1]
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @A:
++ * @B:
++ * @C:
++ * @D:
++ * @E:
++ * @F:
++ * @G:
++ * @H:
++ *
++ * arg[2]:
++ *
++ * @functional: the switching between different primary plane fbs with CRTC off
++ * @sanity:     for scale-up or scale-down using universal plane API without
++ *              covering CRTC
 + */
  
- IGT_TEST_DESCRIPTION(
-    "This test validates the expected behavior of the writeback connectors "
+ typedef struct {
+ 	int drm_fd;
 -- 
 2.40.0
