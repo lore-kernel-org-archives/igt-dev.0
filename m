@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3D5C10E18E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 09:51:17 +0000 (UTC)
-Message-ID: <d90365bc-6a54-56f5-be22-460db0568689@intel.com>
-Date: Mon, 15 May 2023 11:51:13 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B86D10E1A5
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 10:49:58 +0000 (UTC)
+Message-ID: <4e39db9d-61ff-a5d1-6b68-d1f25e020d02@linux.intel.com>
+Date: Mon, 15 May 2023 11:49:55 +0100
 MIME-Version: 1.0
 Content-Language: en-US
-To: Anna Karas <anna.karas@intel.com>, igt-dev@lists.freedesktop.org
-References: <20230420191454.497237-1-anna.karas@intel.com>
- <20230420191454.497237-2-anna.karas@intel.com>
-From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
-In-Reply-To: <20230420191454.497237-2-anna.karas@intel.com>
+To: fei.yang@intel.com, igt-dev@lists.freedesktop.org
+References: <20230512175108.1171586-1-fei.yang@intel.com>
+ <20230512175108.1171586-2-fei.yang@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230512175108.1171586-2-fei.yang@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [RFC 1/2] lib/xe_gpu: Introduce xe_gpu library
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH v3 1/1] test/gem_create: exercise
+ gem_create_ext_set_pat
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,213 +22,149 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Joonas Lahtinen <joonas.lahtinen@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Anna,
 
-On 20.04.2023 21:14, Anna Karas wrote:
-> Add helpers for requiring the XE driver, reopening drm fd and restoring
-> engine properties between tests.
-> This lib is a direct port of gem.c from i915.
+On 12/05/2023 18:51, fei.yang@intel.com wrote:
+> From: Fei Yang <fei.yang@intel.com>
 > 
-> Reference: Jira VLK-46235
-> Signed-off-by: Anna Karas <anna.karas@intel.com>
+> Gem_create uAPI has been extended with capability of setting PAT index.
+> Add a test case to exercise this new extension.
+> 
+> Signed-off-by: Fei Yang <fei.yang@intel.com>
 > ---
->   lib/meson.build |   1 +
->   lib/xe/xe_gpu.c | 136 ++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/xe/xe_gpu.h |  19 +++++++
->   3 files changed, 156 insertions(+)
->   create mode 100644 lib/xe/xe_gpu.c
->   create mode 100644 lib/xe/xe_gpu.h
+>   lib/i915/i915_drm_local.h | 34 ++++++++++++++++++++++++++++++
+>   tests/i915/gem_create.c   | 44 +++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 78 insertions(+)
 > 
-> diff --git a/lib/meson.build b/lib/meson.build
-> index b21c252b..b33f8ae6 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -100,6 +100,7 @@ lib_sources = [
->   	'igt_msm.c',
->   	'igt_dsc.c',
->   	'xe/xe_compute.c',
-> +	'xe/xe_gpu.c',
->   	'xe/xe_compute_square_kernels.c',
->   	'xe/xe_ioctl.c',
->   	'xe/xe_query.c',
-> diff --git a/lib/xe/xe_gpu.c b/lib/xe/xe_gpu.c
-> new file mode 100644
-> index 00000000..7abd8057
-> --- /dev/null
-> +++ b/lib/xe/xe_gpu.c
-> @@ -0,0 +1,136 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + *
-> + * Authors:
-> + *    Anna Karas <anna.karas@intel.com>
-> + */
-> +
-> +#include <dirent.h>
-> +#include <fcntl.h>
-> +#include <sys/ioctl.h>
-> +
-> +#include "xe/xe_gpu.h"
-> +#include "igt_sysfs.h"
-> +#include "igt.h"
-> +
-> +
-> +/*
-> + * Resets all engine properties to defaults prior to the start of a test.
-> + */
-> +static void __restore_defaults(int engine)
-> +{
-> +	struct dirent *de;
-> +	int defaults;
-> +	DIR *dir;
-> +
-> +	defaults = openat(engine, ".defaults", O_RDONLY);
-> +	if (defaults < 0)
-> +		return;
-> +
-> +	dir = fdopendir(defaults);
-> +	if (!dir) {
-> +		close(defaults);
-> +		return;
-> +	}
-> +
-> +	while ((de = readdir(dir))) {
-> +		char buf[256];
-> +		int fd, len;
-> +
-> +		if (*de->d_name == '.')
-> +			continue;
-> +
-> +		fd = openat(defaults, de->d_name, O_RDONLY);
-> +		if (fd < 0)
-> +			continue;
-> +
-> +		len = read(fd, buf, sizeof(buf));
-> +		close(fd);
-> +		if (len < 0)
-> +			continue;
-> +
-> +		fd = openat(engine, de->d_name, O_WRONLY);
-> +		if (fd < 0)
-> +			continue;
-> +
-> +		write(fd, buf, len);
-> +		close(fd);
-> +	}
-> +
-> +	closedir(dir);
-> +}
-> +
-> +static void restore_defaults(int fd)
-> +{
-> +	struct dirent *de;
-> +	int engines;
-> +	DIR *dir;
-> +	int sys;
-> +
-> +	sys = igt_sysfs_open(fd);
-> +	if (sys < 0)
-> +		return;
-> +
-> +	engines = openat(sys, "engine", O_RDONLY);
-> +	if (engines < 0)
-> +		goto close_sys;
-> +
-> +	dir = fdopendir(engines);
-> +	if (!dir) {
-> +		close(engines);
-> +		goto close_sys;
-> +	}
-> +
-> +	while ((de = readdir(dir))) {
-> +		int engine;
-> +
-> +		if (*de->d_name == '.')
-> +			continue;
-> +
-> +		engine = openat(engines, de->d_name, O_RDONLY);
-> +		if (engine < 0)
-> +			continue;
-> +
-> +		__restore_defaults(engine);
-> +		close(engine);
-> +	}
-> +
-> +	closedir(dir);
-> +
-> +close_sys:
-> +	close(sys);
-> +}
-
-Looks like this duplicates 'restore_defaults' and '__restore_defaults' 
-from lib/i915/gem.c. Maybe better just move the existing code higher up 
-and reuse it?
-
-Christoph
-
-
+> diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
+> index af017650..35929a0c 100644
+> --- a/lib/i915/i915_drm_local.h
+> +++ b/lib/i915/i915_drm_local.h
+> @@ -26,6 +26,40 @@ extern "C" {
+>   #define DRM_I915_PERF_PROP_OA_ENGINE_CLASS	9
+>   #define DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE	10
+>   
+> +#define I915_GEM_CREATE_EXT_SET_PAT 2
 > +
 > +/**
-> + * xe_reopen_driver:
-> + * @fd: re-open the xe drm file descriptor
+> + * struct drm_i915_gem_create_ext_set_pat - The
+> + * I915_GEM_CREATE_EXT_SET_PAT extension.
 > + *
-> + * Re-opens the drm fd which is useful in instances where a clean default
-> + * context is needed.
+> + * If this extension is provided, the specified caching policy (PAT index) is
+> + * applied to the buffer object.
+> + *
+> + * Below is an example on how to create an object with specific caching policy:
+> + *
+> + * .. code-block:: C
+> + *
+> + *	struct drm_i915_gem_create_ext_set_pat set_pat_ext = {
+> + *		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
+> + *		.pat_index = 0,
+> + *	};
+> + *	struct drm_i915_gem_create_ext create_ext = {
+> + *		.size = PAGE_SIZE,
+> + *		.extensions = (uintptr_t)&set_pat_ext,
+> + *	};
+> + *
+> + *	int err = ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
+> + *	if (err) ...
 > + */
-> +int xe_reopen_driver(int fd)
+> +struct drm_i915_gem_create_ext_set_pat {
+> +	/** @base: Extension link. See struct i915_user_extension. */
+> +	struct i915_user_extension base;
+> +	/** @pat_index: PAT index to be set */
+> +	__u32 pat_index;
+> +	/** @rsvd: reserved for future use */
+> +	__u32 rsvd;
+> +};
+> +
+>   #if defined(__cplusplus)
+>   }
+>   #endif
+> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+> index c719ab6c..20c71afb 100644
+> --- a/tests/i915/gem_create.c
+> +++ b/tests/i915/gem_create.c
+> @@ -537,6 +537,45 @@ static void create_ext_placement_each(int fd)
+>   	free(regions);
+>   }
+>   
+> +static void create_ext_set_pat(int fd)
 > +{
-> +	char path[256];
+> +	struct drm_i915_gem_create_ext_set_pat setparam_pat = {
+> +		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
+> +		.pat_index = 0,
+> +	};
+> +	struct drm_i915_gem_create_ext_set_pat setparam_inv_pat = {
+> +		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
+> +		.pat_index = 65,
+> +	};
+> +	struct drm_i915_gem_caching arg;
+> +	uint64_t size;
+> +	uint32_t handle;
+> +	int ret;
 > +
-> +	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-> +	fd = open(path, O_RDWR);
-> +	igt_assert_fd(fd);
+> +	size = PAGE_SIZE;
 > +
-> +	return fd;
+> +	ret = __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base);
+> +
+> +	/* Returning -EFAULT indicates set_pat extension is not supported */
+> +	if (ret == -EFAULT)
+> +		igt_info("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
+
+Is this correct? EFAULT should be data access issues while unsupported 
+extensions should be EINVAL.
+
+> +	igt_assert(ret == 0);
+
+Extension not supported should be a skip I would say.
+
+EFAULT test is then something else, ie. hitting this path from the 
+kernel ioctl handler:
+
+ext_set_pat()
+...
++	if (copy_from_user(&ext, base, sizeof(ext)))
++		return -EFAULT;
+
+> +
+> +	/* {set|get}_caching ioctl should fail for objects created with set_pat */
+> +	igt_assert(__gem_set_caching(fd, handle, 1) == -EOPNOTSUPP);
+
+Easy to test get too as the comment suggests?
+
+Regards,
+
+Tvrtko
+
+> +
+> +	memset(&arg, 0, sizeof(arg));
+> +	arg.handle = handle;
+> +	igt_assert(ioctl(fd, DRM_IOCTL_I915_GEM_GET_CACHING, &arg) < 0 &&
+> +		   errno == EOPNOTSUPP);
+> +
+> +	/* gem_create should fail with -EINVAL if invalid pat index specified */
+> +	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle, &setparam_inv_pat.base),
+> +		      -EINVAL);
+> +
+> +	gem_close(fd, handle);
 > +}
 > +
-> +/**
-> + * xe_require_gpu:
-> + * @fd: the xe drm file descriptor
-> + *
-> + * Helper to be used prior to the start of a tests, useful in instances
-> + * where a clean default context is needed.
-> + */
-> +void xe_require_gpu(int fd)
-> +{
-> +	igt_require_xe(fd);
-> +	fd = xe_reopen_driver(fd);
-> +	restore_defaults(fd);
-> +	close(fd);
-> +}
-> diff --git a/lib/xe/xe_gpu.h b/lib/xe/xe_gpu.h
-> new file mode 100644
-> index 00000000..020040ac
-> --- /dev/null
-> +++ b/lib/xe/xe_gpu.h
-> @@ -0,0 +1,19 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + *
-> + * Authors:
-> + *    Anna Karas <anna.karas@intel.com>
-> + */
+>   static bool supports_needs_cpu_access(int fd)
+>   {
+>   	struct drm_i915_gem_memory_class_instance regions[] = {
+> @@ -897,6 +936,11 @@ igt_main
+>   	igt_subtest("create-ext-placement-all")
+>   		create_ext_placement_all(fd);
+>   
+> +	igt_describe("Create objects with specific cache setting"
+> +		     " create-ext.");
+> +	igt_subtest("create-ext-set-pat")
+> +		    create_ext_set_pat(fd);
 > +
-> +#ifndef XE_GPU_H
-> +#define XE_GPU_H
-> +
-> +#include <stdint.h>
-> +#include <xe_drm.h>
-> +
-> +int xe_reopen_driver(int fd);
-> +void xe_require_gpu(int fd);
-> +
-> +#endif	/* XE_GPU_H */
-> +
+>   	igt_describe("Verify the basic functionally and expected ABI contract around I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS");
+>   	igt_subtest("create-ext-cpu-access-sanity-check") {
+>   		igt_require(supports_needs_cpu_access(fd));
