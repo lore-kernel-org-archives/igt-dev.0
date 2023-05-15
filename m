@@ -2,13 +2,13 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Mon, 15 May 2023 14:36:28 +0100
-Message-Id: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+Date: Mon, 15 May 2023 14:36:30 +0100
+Message-Id: <20230515133630.2163170-3-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+References: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] gputop/intel_gpu_top: Move name to be
- the last field
+Subject: [igt-dev] [PATCH i-g-t 2/2] intel_gpu_top: Move client name last
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,46 +24,82 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Rob,
+Move client name to be the right most field which visually aligns better
+with top(1) and prepares for inserting memory usage fields somewhere in
+the middle.
 
-I thought maybe when you add memory stats the same field order like top(1)
-would feel more natural? That is client name comes last and is left justified.
-All other stats then come in the middle, between PID and NAME.
-
-DRM minor 0
-    PID     render         copy         video     video-enhance  NAME
-   2704 |▌           ||            ||            ||            | kwin_x11
-   2734 |▏           ||            ||            ||            | plasmashell
-   3932 |            ||            ||            ||            | krunner
-   4414 |            ||            ||            ||            | xdg-desktop-por
-1999477 |            ||            ||            ||            | firefox
-2162094 |            ||            ||            ||            | thunderbir
-
-intel-gpu-top: Intel Alderlake_s (Gen12) @ /dev/dri/card0 -   15/  15 MHz
-    99% RC6;  0.01/ 5.46 W;       34 irqs/s
-
-         ENGINES     BUSY                                        MI_SEMA MI_WAIT
-       Render/3D    1.31% |▌                                   |      0%      0%
-         Blitter    0.00% |                                    |      0%      0%
-           Video    0.00% |                                    |      0%      0%
-    VideoEnhance    0.00% |                                    |      0%      0%
-
-    PID   Render/3D      Blitter        Video      VideoEnhance  NAME
-   2734 |▏           ||            ||            ||            | plasmashell
-   2704 |▏           ||            ||            ||            | kwin_x11
-   1837 |▏           ||            ||            ||            | Xorg
-3429732 |            ||            ||            ||            | kwrite
-2162094 |            ||            ||            ||            | thunderbird
-
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Cc: Rob Clark <robdclark@chromium.org>
-
-Tvrtko Ursulin (2):
-  gputop: Move client name last
-  intel_gpu_top: Move client name last
-
- tools/gputop.c        | 19 +++++++++----------
+---
  tools/intel_gpu_top.c | 19 +++++++++----------
- 2 files changed, 18 insertions(+), 20 deletions(-)
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 453090c298bc..937280a7151a 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -1809,9 +1809,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+ 			return lines;
+ 
+ 		printf("\033[7m");
+-		len = printf("%*s %*s ",
+-			     clients->max_pid_len, "PID",
+-			     clients->max_name_len, "NAME");
++		len = printf("%*s ", clients->max_pid_len, "PID");
+ 
+ 		if (lines++ >= con_h || len >= con_w)
+ 			return lines;
+@@ -1825,7 +1823,9 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+ 					num_active++;
+ 			}
+ 
+-			*class_w = width = (con_w - len) / num_active;
++			*class_w = width =
++				(con_w - len - clients->max_name_len - 1) /
++				num_active;
+ 
+ 			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
+ 				const char *name = iclients->classes.names[i];
+@@ -1846,8 +1846,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+ 			}
+ 		}
+ 
+-		n_spaces(con_w - len);
+-		printf("\033[0m\n");
++		printf(" %-*s\033[0m\n", con_w - len - 1, "NAME");
+ 	} else {
+ 		if (iclients->classes.num_engines)
+ 			pops->open_struct("clients");
+@@ -1866,6 +1865,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+ 	struct igt_drm_clients *clients = c->clients;
+ 	struct intel_clients *iclients = clients->private_data;
+ 	unsigned int i;
++	int len;
+ 
+ 	if (output_mode == INTERACTIVE) {
+ 		if (filter_idle && (!c->total_runtime || c->samples < 2))
+@@ -1873,9 +1873,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+ 
+ 		lines++;
+ 
+-		printf("%*s %*s ",
+-		       clients->max_pid_len, c->pid_str,
+-		       clients->max_name_len, c->print_name);
++		len = printf("%*s ", clients->max_pid_len, c->pid_str);
+ 
+ 		for (i = 0;
+ 		     c->samples > 1 && i <= iclients->classes.max_engine_id;
+@@ -1898,9 +1896,10 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+ 
+ 			print_percentage_bar(pct, max, *class_w,
+ 					     numeric_clients);
++			len += *class_w;
+ 		}
+ 
+-		putchar('\n');
++		printf(" %-*s\n", con_w - len - 1, c->print_name);
+ 	} else if (output_mode == JSON) {
+ 		char buf[64];
+ 
 -- 
 2.37.2
