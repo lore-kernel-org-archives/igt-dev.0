@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4469A10E3B7
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:01 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:09 +0530
-Message-Id: <20230517063323.4146387-8-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
-References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 07/81] tests/chamelium/kms_chamelium_color:
- Document each subtest for testplan
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 15 May 2023 16:18:20 -0000
+Message-ID: <168416750098.22014.6470137250321637925@emeril.freedesktop.org>
+References: <20230515143923.1545926-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230515143923.1545926-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
+ =?utf-8?q?eson=2Ebuild=3A_update_minimal_version_to_0=2E48?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,94 +16,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, mchehab@kernel.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+== Series Details ==
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/chamelium/kms_chamelium_color.c | 45 +++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+Series: meson.build: update minimal version to 0.48
+URL   : https://patchwork.freedesktop.org/series/117774/
+State : warning
 
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index bbb929b64..709b6ec2c 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -22,10 +22,25 @@
-  *
-  */
- 
-+/**
-+ * TEST: kms chamelium color
-+ * Category: Display
-+ * Description: Test Color Features at Pipe level using Chamelium to verify instead of CRC
-+ */
-+
- #include "igt_color_helper.h"
- 
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
- 
-+/**
-+ * SUBTEST: degamma
-+ * Description: Verify that degamma LUT transformation works correctly
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ */
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
-  * degamma LUT and verify we have the same frame dump as drawing solid color
-@@ -115,6 +130,15 @@ static bool test_pipe_degamma(data_t *data,
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: gamma
-+ * Description: Verify that gamma LUT transformation works correctly
-+ * Functionality: colorspace_gamma
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ */
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
-  * gamma LUT and verify we have the same frame dump as drawing solid
-@@ -465,6 +489,27 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
- }
- 
-+/**
-+ * SUBTEST: ctm-%s
-+ * Description: Check the color transformation %arg[1]
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ *
-+ * arg[1]:
-+ *
-+ * @0-25:            for 0.25 transparancy
-+ * @0-50:            for 0.50 transparancy
-+ * @0-75:            for 0.75 transparancy
-+ * @blue-to-red:     from blue to red
-+ * @green-to-red:    from green to red
-+ * @limited-range:   with identity matrix
-+ * @max:             for max transparancy
-+ * @negative:        for negative transparancy
-+ * @red-to-blue:     from red to blue
-+ */
- static void
- run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 		       color_t *expected_colors,
--- 
-2.40.0
+== Summary ==
 
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881582 for the overview.
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41753426):
+  Installing collected packages: meson
+    Running setup.py install for meson: started
+      Running setup.py install for meson: finished with status 'done'
+  Successfully installed meson-0.47.2
+  $ meson $MESON_OPTIONS build
+  The Meson build system
+  Version: 0.47.2
+  Source dir: /builds/gfx-ci/igt-ci-tags
+  Build dir: /builds/gfx-ci/igt-ci-tags/build
+  Build type: native build
+  
+  meson.build:1:0: ERROR:  Meson version is 0.47.2 but project requires >=0.48.
+  
+  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
+  section_end:1684167162:step_script
+  section_start:1684167162:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684167165:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881582
 
