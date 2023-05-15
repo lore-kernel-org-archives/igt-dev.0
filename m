@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9432710E18E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 69B8010E18E
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:27 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:47:11 +0530
-Message-Id: <20230515081720.3713293-71-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:47:19 +0530
+Message-Id: <20230515081720.3713293-79-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 70/79] tests/kms_selftest: Document each subtest
+Subject: [igt-dev] [i-g-t 78/79] tests/kms_writeback: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,24 +28,53 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_selftest.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/kms_writeback.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/tests/kms_selftest.c b/tests/kms_selftest.c
-index abc4bfe98..1052d1f32 100644
---- a/tests/kms_selftest.c
-+++ b/tests/kms_selftest.c
-@@ -23,6 +23,19 @@
- 
- #include "igt.h"
- #include "igt_kmod.h"
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index c4808b02c..ee3c5dba1 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -32,6 +32,48 @@
+ #include "igt_core.h"
+ #include "igt_fb.h"
+ #include "sw_sync.h"
 +/**
-+ * TEST: kms selftest
++ * TEST: kms writeback
 + * Category: Display
-+ * Description: Basic sanity check of KMS selftests.
++ * Description: This test validates the expected behavior of the writeback
++ *              connectors feature by checking if the target device support
++ *              writeback; it validates bad and good combination, check color
++ *              format, and check the output result by using CRC.
 + *
-+ * SUBTEST: all-tests
-+ * Description: Basic sanity check of KMS selftests.
++ * SUBTEST: writeback-check-output
++ * Description: Check writeback output with CRC validation
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: writeback-fb-id
++ * Description: Validate WRITEBACK_FB_ID with valid and invalid options
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: writeback-invalid-parameters
++ * Description: Writeback has a couple of parameters linked together(output
++ *              framebuffer and fence); this test goes throughthe combination
++ *              of possible bad options
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: writeback-pixel-formats
++ * Description: Check the writeback format
 + * Driver requirement: any
 + * Functionality: kms_core
 + * Mega feature: General Display Features
@@ -53,7 +82,7 @@ index abc4bfe98..1052d1f32 100644
 + * Test category: functionality test
 + */
  
- IGT_TEST_DESCRIPTION("Basic sanity check of KMS selftests.");
- 
+ IGT_TEST_DESCRIPTION(
+    "This test validates the expected behavior of the writeback connectors "
 -- 
 2.40.0
