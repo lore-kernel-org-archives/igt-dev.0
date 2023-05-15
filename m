@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5273110E181
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0B4610E181
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:57 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:14 +0530
-Message-Id: <20230515081720.3713293-14-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:17 +0530
+Message-Id: <20230515081720.3713293-17-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 13/79] tests/i915/kms_ccs: Document each subtest
+Subject: [igt-dev] [i-g-t 16/79] tests/i915/kms_dsc: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,106 +28,48 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_ccs.c | 83 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+ tests/i915/kms_dsc.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
-index 1b3462ea9..42485fa56 100644
---- a/tests/i915/kms_ccs.c
-+++ b/tests/i915/kms_ccs.c
-@@ -22,10 +22,93 @@
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 4af48b196..8047aac27 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -30,8 +30,35 @@
   *
   */
  
 +/**
-+ * TEST: kms ccs
++ * TEST: kms dsc
 + * Category: Display
-+ * Description: Test render compression (RC), in which the main surface is
-+ *              complemented by a color control surface (CCS) that the display
-+ *              uses to interpret the compressed data.
++ * Description: Test to validate display stream compression
 + */
- #include "igt.h"
- 
- #include "i915/gem_create.h"
+ #include "igt_dsc_helper.h"
  
 +/**
-+ * SUBTEST: %s-%s-%s
-+ * Description: Test %arg[2] with given %arg[3] modifier
-+ * Driver requirement: i915
-+ * Functionality: ccs
-+ * Mega feature: General Display Features
++ * SUBTEST: dsc-%s
++ * Description: Tests basic display stream compression functionality if supported
++ *              by a connector by forcing %arg[1]
++ * Driver requirement: any
++ * Functionality: dsc
++ * Mega feature: VDSC
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @pipe-A:                    Pipe A
-+ * @pipe-B:                    Pipe B
-+ * @pipe-C:                    Pipe C
-+ * @pipe-D:                    Pipe D
-+ * @pipe-E:                    Pipe E
-+ * @pipe-F:                    Pipe F
-+ * @pipe-G:                    Pipe G
-+ * @pipe-H:                    Pipe H
-+ *
-+ * arg[2]:
-+ *
-+ * @bad-aux-stride:            Bad AUX stride
-+ * @ccs-on-another-bo:         CCS with different BO
-+ * @missing-ccs-buffer:        Missing CCS buffer
-+ *
-+ * arg[3]:
-+ *
-+ * @y_tiled_ccs:               Y tiled ccs
-+ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-+ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-+ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-+ * @yf_tiled_ccs:              YF tiled ccs
++ * @basic:                DSC on all connectors that support it with default parameters
++ * @with-bpc:             DSC on all connectors that support it with certain input BPC
++ *                        for the connector
++ * @with-bpc-formats:     DSC on all connectors that support it with certain input
++ *                        BPC for the connector with diff formats
++ * @with-formats:         DSC on all connectors that support it with default parameters
++ *                        and creating fb with diff formats
++ * @with-output-formats:  DSC and output format on all connectors that support it
 + */
 +
-+/**
-+ * SUBTEST: %s-%s-%s
-+ * Description: Test %arg[2] with %arg[3] modifier
-+ * Driver requirement: i915
-+ * Functionality: ccs
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @pipe-A:                      Pipe A
-+ * @pipe-B:                      Pipe B
-+ * @pipe-C:                      Pipe C
-+ * @pipe-D:                      Pipe D
-+ * @pipe-E:                      Pipe E
-+ * @pipe-F:                      Pipe F
-+ * @pipe-G:                      Pipe G
-+ * @pipe-H:                      Pipe H
-+ *
-+ * arg[2]:
-+ *
-+ * @bad-pixel-format:            Bad pixel format
-+ * @bad-rotation-90:             90 degree rotation
-+ * @crc-primary-basic:           Primary plane CRC compatibility
-+ * @crc-primary-rotation-180:    180 degree rotation
-+ * @crc-sprite-planes-basic:     Sprite plane CRC compatability
-+ * @random-ccs-data:             Random CCS data
-+ *
-+ * arg[3]:
-+ *
-+ * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
-+ * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
-+ * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
-+ * @y_tiled_ccs:               Y tiled ccs
-+ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-+ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-+ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-+ * @yf_tiled_ccs:              YF tiled ccs
-+ */
-+
- #define SDR_PLANE_BASE	3
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
  
- IGT_TEST_DESCRIPTION("Test render compression (RC), in which the main surface "
+ enum dsc_test_type {
 -- 
 2.40.0
