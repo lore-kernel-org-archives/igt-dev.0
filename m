@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 096C810E17A
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D342410E16E
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:48 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:50 +0530
-Message-Id: <20230515081720.3713293-50-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:52 +0530
+Message-Id: <20230515081720.3713293-52-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 49/79] tests/kms_force_connector_basic: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t 51/79] tests/kms_hdmi_inject: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,63 +28,44 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_force_connector_basic.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ tests/kms_hdmi_inject.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
-index 7e35693cf..26398a7ce 100644
---- a/tests/kms_force_connector_basic.c
-+++ b/tests/kms_force_connector_basic.c
-@@ -23,8 +23,9 @@
-  */
- 
- /**
-- * TEST: Check the debugfs force connector/edid features work correctly
-+ * TEST: kms force connector basic
-  * Category: Display
-+ * Description: Check the debugfs force connector/edid features work correctly.
-  */
- 
- #include "igt.h"
-@@ -68,6 +69,15 @@ static void reset_connectors(void)
- 	close(drm_fd);
- }
- 
+diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
+index 2085d1453..244768f36 100644
+--- a/tests/kms_hdmi_inject.c
++++ b/tests/kms_hdmi_inject.c
+@@ -30,6 +30,31 @@
+ #include "igt_edid.h"
+ #include "igt_eld.h"
+ #include "xe/xe_query.h"
 +/**
-+ * SUBTEST: force-load-detect
-+ * Description: Test to detect forced load.
-+ * Driver requirement: i915
-+ * Functionality: force_connector, vga
-+ * Mega feature: General Display Features
++ * TEST: kms hdmi inject
++ * Category: Display
++ * Description: Test that in-kernel EDID parsing is producing expected results
++ *              by forcing a HDMI connector with a known EDID and checking that
++ *              the metadata exposed to user space matches.
++ *
++ * SUBTEST: inject-4k
++ * Description: Make sure that 4K modes exposed by DRM match the forced EDID and
++ *              modesetting using it succeed.
++ * Driver requirement: any
++ * Functionality: force_connector
++ * Mega feature: HDMI
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: inject-audio
++ * Description: Make sure that audio information exposed by ALSA match the forced
++ *              EDID.
++ * Driver requirement: any
++ * Functionality: force_connector
++ * Mega feature: Disply Audio
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmModeRes *res)
- {
- 	int i, j, w = 64, h = 64;
-@@ -159,6 +169,7 @@ static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmMode
- /**
-  * SUBTEST: force-connector-state
-  * Description: Test to check the forced connector state
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: force_connector
-@@ -206,6 +217,7 @@ static void force_connector_state(int drm_fd, drmModeConnectorPtr connector)
- /**
-  * SUBTEST: force-edid
-  * Description: Test to check the values after forcing edid
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: force_connector
-@@ -255,6 +267,7 @@ static void force_edid(int drm_fd, drmModeConnectorPtr connector)
- /**
-  * SUBTEST: prune-stale-modes
-  * Description: Tests pruning of stale modes
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: force_connector
+ 
+ #define HDISPLAY_4K	3840
+ #define VDISPLAY_4K	2160
 -- 
 2.40.0
