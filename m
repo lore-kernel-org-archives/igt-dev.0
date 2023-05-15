@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B99910E18E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B93610E17A
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:47:14 +0530
-Message-Id: <20230515081720.3713293-74-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:47:07 +0530
+Message-Id: <20230515081720.3713293-67-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 73/79] tests/kms_sysfs_edid_timing: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t 66/79] tests/kms_properties: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,40 +28,66 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_sysfs_edid_timing.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ tests/kms_properties.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
-index 775211089..e185eaf6d 100644
---- a/tests/kms_sysfs_edid_timing.c
-+++ b/tests/kms_sysfs_edid_timing.c
-@@ -25,6 +25,27 @@
- #include <dirent.h>
- #include <fcntl.h>
- #include <sys/stat.h>
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index 2fe8dfa66..b32bac4af 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -28,6 +28,31 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <time.h>
 +/**
-+ * TEST: kms sysfs edid timing
++ * TEST: kms properties
 + * Category: Display
-+ * Description: This test checks the time it takes to reprobe each connector and
-+ *              fails if either the time it takes for one reprobe is too long or
-+ *              if the mean time it takes to reprobe one connector is too long.
-+ *              Additionally, make sure that the mean time for all connectors is
-+ *              not too long.
 + *
-+ * SUBTEST:
-+ * Description: This test checks the time it takes to reprobe each connector and
-+ *              fails if either the time it takes for one reprobe is too long or
-+ *              if the mean time it takes to reprobe one connector is too long.
-+ *              Additionally, make sure that the mean time for all connectors is
-+ *              not too long.
++ * SUBTEST: %s-properties-%s
++ * Description: Tests %arg[1] properties with %arg[2] commit
 + * Driver requirement: any
 + * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @connector:       Connector
++ * @crtc:            CRTC
++ * @plane:           Plane
++ * @invalid:         Invalid (connector/crtc/plane)
++ *
++ * arg[2]:
++ *
++ * @atomic:          atomic
++ * @legacy:          legacy
 + */
++
  
- #define THRESHOLD_PER_CONNECTOR		150
- #define THRESHOLD_PER_CONNECTOR_MEAN	140
+ struct additional_test {
+ 	const char *name;
+@@ -687,6 +712,21 @@ static void expect_no_props(int fd, uint32_t obj_type, uint32_t obj_id)
+ 	igt_assert_neq(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES, &properties), 0);
+ }
+ 
++/**
++ * SUBTEST: get_properties-sanity-%s
++ * Description: Test validates the properties of all planes, crtc and connectors
++ *              with %arg[1] commit
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic:          atomic
++ * @non-atomic:      legacy
++ */
+ static void get_prop_sanity(igt_display_t *display, bool atomic)
+ {
+ 	int fd = display->drm_fd;
 -- 
 2.40.0
