@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7D3E10E177
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A754510E174
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:23:39 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:42 +0530
-Message-Id: <20230515081720.3713293-42-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:45 +0530
+Message-Id: <20230515081720.3713293-45-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 41/79] tests/kms_cursor_edge_walk: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t 44/79] tests/kms_dither: Document each subtest for
+ testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,45 +28,48 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_cursor_edge_walk.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ tests/kms_dither.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index 5f423a18f..24b1c42e1 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -28,6 +28,32 @@
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
+diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+index 95be6e136..f62bc90d9 100644
+--- a/tests/kms_dither.c
++++ b/tests/kms_dither.c
+@@ -25,6 +25,11 @@
+  *
+  */
+ 
 +/**
-+ * TEST: kms cursor edge walk
++ * TEST: kms dither
 + * Category: Display
-+ * Description: Exercise CHV pipe C cursor fail
-+ *
-+ * SUBTEST: %s-%s
-+ * Description: Checking cursor size %arg[1] by walking %arg[2] of screen
++ * Description: Test Dithering block status
++ */
+ #include "igt.h"
+ #include <fcntl.h>
+ #include <termios.h>
+@@ -181,6 +186,23 @@ static bool is_supported(igt_output_t *output)
+ 		igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
+ }
+ 
++/**
++ * SUBTEST: FB-8BPC-Vs-Panel-6BPC
++ * Description: Framebuffer BPC:8, Panel BPC:6, Expected Dither:Enable
 + * Driver requirement: any
-+ * Functionality: cursor
++ * Functionality: kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
-+ *
-+ * @128x128:          128x128
-+ * @256x256:          256x256
-+ * @64x64:            64x64
-+ *
-+ * arg[2]:
-+ *
-+ * @left-edge:        Left edge
-+ * @right-edge:       Right edge
-+ * @top-bottom:       Top to bottom
-+ * @top-edge:         Top edge
++ * SUBTEST: FB-8BPC-Vs-Panel-8BPC
++ * Description: Framebuffer BPC:8, Panel BPC:8, Expected Dither:Disable
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
- 
- IGT_TEST_DESCRIPTION("Exercise CHV pipe C cursor fail");
- 
+ static void
+ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
+ {
 -- 
 2.40.0
