@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Mon, 15 May 2023 14:36:30 +0100
-Message-Id: <20230515133630.2163170-3-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
-References: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] intel_gpu_top: Move client name last
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Mon, 15 May 2023 14:02:47 -0000
+Message-ID: <168415936765.22016.4314440036252039378@emeril.freedesktop.org>
+References: <20230515120334.220022-1-swati2.sharma@intel.com>
+In-Reply-To: <20230515120334.220022-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/3=5D_lib/igt=5Ffb=3A_round_rgb?=
+ =?utf-8?q?-=3Eyuv_conversion_results?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,90 +18,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+== Series Details ==
 
-Move client name to be the right most field which visually aligns better
-with top(1) and prepares for inserting memory usage fields somewhere in
-the middle.
+Series: series starting with [i-g-t,1/3] lib/igt_fb: round rgb->yuv conversion results
+URL   : https://patchwork.freedesktop.org/series/117764/
+State : warning
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Rob Clark <robdclark@chromium.org>
----
- tools/intel_gpu_top.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+== Summary ==
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 453090c298bc..937280a7151a 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1809,9 +1809,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
- 			return lines;
- 
- 		printf("\033[7m");
--		len = printf("%*s %*s ",
--			     clients->max_pid_len, "PID",
--			     clients->max_name_len, "NAME");
-+		len = printf("%*s ", clients->max_pid_len, "PID");
- 
- 		if (lines++ >= con_h || len >= con_w)
- 			return lines;
-@@ -1825,7 +1823,9 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
- 					num_active++;
- 			}
- 
--			*class_w = width = (con_w - len) / num_active;
-+			*class_w = width =
-+				(con_w - len - clients->max_name_len - 1) /
-+				num_active;
- 
- 			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
- 				const char *name = iclients->classes.names[i];
-@@ -1846,8 +1846,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
- 			}
- 		}
- 
--		n_spaces(con_w - len);
--		printf("\033[0m\n");
-+		printf(" %-*s\033[0m\n", con_w - len - 1, "NAME");
- 	} else {
- 		if (iclients->classes.num_engines)
- 			pops->open_struct("clients");
-@@ -1866,6 +1865,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
- 	struct igt_drm_clients *clients = c->clients;
- 	struct intel_clients *iclients = clients->private_data;
- 	unsigned int i;
-+	int len;
- 
- 	if (output_mode == INTERACTIVE) {
- 		if (filter_idle && (!c->total_runtime || c->samples < 2))
-@@ -1873,9 +1873,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
- 
- 		lines++;
- 
--		printf("%*s %*s ",
--		       clients->max_pid_len, c->pid_str,
--		       clients->max_name_len, c->print_name);
-+		len = printf("%*s ", clients->max_pid_len, c->pid_str);
- 
- 		for (i = 0;
- 		     c->samples > 1 && i <= iclients->classes.max_engine_id;
-@@ -1898,9 +1896,10 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
- 
- 			print_percentage_bar(pct, max, *class_w,
- 					     numeric_clients);
-+			len += *class_w;
- 		}
- 
--		putchar('\n');
-+		printf(" %-*s\n", con_w - len - 1, c->print_name);
- 	} else if (output_mode == JSON) {
- 		char buf[64];
- 
--- 
-2.37.2
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881463 for the overview.
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41738294):
+  Program igt_doc.py found: YES (/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py)
+  Program gen_rst_index skipped: feature sphinx disabled
+  Native dependency gtk-doc found: YES 1.29
+  Program generate_description_xml.py found: YES (/builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/generate_description_xml.py)
+  Program generate_programs_xml.sh found: YES (/builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/generate_programs_xml.sh)
+  Configuring version.xml using configuration
+  Program sphinx-build skipped: feature sphinx disabled
+  Program rst2html-3 found: NO
+  Program rst2html found: YES (/usr/bin/rst2html)
+  Program rst2pdf found: NO
+  
+  docs/testplan/meson.build:35:1: ERROR:  The += operator currently only works with arrays, strings or ints 
+  
+  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
+  section_end:1684158844:step_script
+  section_start:1684158844:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684158845:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881463
