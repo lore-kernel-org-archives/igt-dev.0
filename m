@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3129A10E17A
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6894A10E18F
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:24:18 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:47:06 +0530
-Message-Id: <20230515081720.3713293-66-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:47:10 +0530
+Message-Id: <20230515081720.3713293-70-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 65/79] tests/kms_prop_blob: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t 69/79] tests/kms_scaling_modes: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,87 +28,39 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_prop_blob.c | 46 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
+ tests/kms_scaling_modes.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/tests/kms_prop_blob.c b/tests/kms_prop_blob.c
-index 6a5a5f410..14616b14f 100644
---- a/tests/kms_prop_blob.c
-+++ b/tests/kms_prop_blob.c
-@@ -26,8 +26,9 @@
+diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+index 906ae76de..9aace5147 100644
+--- a/tests/kms_scaling_modes.c
++++ b/tests/kms_scaling_modes.c
+@@ -25,6 +25,26 @@
   */
  
- /**
-- * TEST: Tests behaviour of mass-data 'blob' properties
-+ * TEST: kms prop blob
-  * Category: Display
-+ * Description: Tests behaviour of mass-data 'blob' properties.
-  */
  #include "igt.h"
- #include <errno.h>
-@@ -122,6 +123,29 @@ destroy_prop(int fd, uint32_t prop_id)
- 	return 0;
- }
- 
 +/**
-+ * SUBTEST: blob-multiple
-+ * Description: Test validates destroying multiple properties explicitly works as needed.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * TEST: kms scaling modes
++ * Category: Display
++ * Description: Test display scaling modes
 + *
-+ * SUBTEST: blob-prop-%s
-+ * Description: Tests validates the %arg[1] of the properties created.
++ * SUBTEST: scaling-mode-%s
++ * Description: Tests %arg[1] display scaling mode
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @core:        validity
-+ * @lifetime:    lifetime
-+ * @validate:    blob size
++ * @center:           center
++ * @full:             full
++ * @full-aspect:      full aspect
++ * @none:             none (no scaling)
 + */
- static void
- test_validate(int fd)
- {
-@@ -245,6 +269,7 @@ test_core(int fd)
- /**
-  * SUBTEST: basic
-  * Description: Test to ensure property support exists
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_core
-@@ -260,6 +285,25 @@ test_basic(int fd)
- 	igt_assert_eq(destroy_prop(fd, prop_id), 0);
- }
  
-+/**
-+ * SUBTEST: invalid-%s-%s
-+ * Description: Tests error handling when invalid properties are %ar[1] with %arg[2].
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @get:            fetched
-+ * @set:            set
-+ *
-+ * arg[2]:
-+ *
-+ * @prop:           blob object type
-+ * @prop-any:       object of any type
-+ */
- static void prop_tests(int fd)
- {
- 	struct drm_mode_obj_get_properties get_props = {};
+ IGT_TEST_DESCRIPTION("Test display scaling modes");
+ 
 -- 
 2.40.0
