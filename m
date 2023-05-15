@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE94D10E17E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5273110E181
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 08:22:56 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 May 2023 13:46:11 +0530
-Message-Id: <20230515081720.3713293-11-bhanuprakash.modem@intel.com>
+Date: Mon, 15 May 2023 13:46:14 +0530
+Message-Id: <20230515081720.3713293-14-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 10/79] tests/i915/kms_big_fb: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t 13/79] tests/i915/kms_ccs: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,200 +28,106 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_big_fb.c | 153 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 153 insertions(+)
+ tests/i915/kms_ccs.c | 83 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
-diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-index a0d5ef730..d0afb9dcc 100644
---- a/tests/i915/kms_big_fb.c
-+++ b/tests/i915/kms_big_fb.c
-@@ -21,6 +21,12 @@
-  * IN THE SOFTWARE.
+diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
+index 1b3462ea9..42485fa56 100644
+--- a/tests/i915/kms_ccs.c
++++ b/tests/i915/kms_ccs.c
+@@ -22,10 +22,93 @@
+  *
   */
  
 +/**
-+ * TEST: kms big fb
++ * TEST: kms ccs
 + * Category: Display
-+ * Description: Test big framebuffers
++ * Description: Test render compression (RC), in which the main surface is
++ *              complemented by a color control surface (CCS) that the display
++ *              uses to interpret the compressed data.
 + */
-+
  #include "igt.h"
- #include <errno.h>
- #include <stdbool.h>
-@@ -579,6 +585,93 @@ max_hw_stride_async_flip_test(data_t *data)
- 	return true;
- }
+ 
+ #include "i915/gem_create.h"
  
 +/**
-+ * SUBTEST: %s-%dbpp-rotate-%d
-+ * Description: Sanity check if addfb ioctl works correctly for given combination
-+ *              of %arg[1] with %arg[2]-bpp & %arg[3]-rotation
++ * SUBTEST: %s-%s-%s
++ * Description: Test %arg[2] with given %arg[3] modifier
 + * Driver requirement: i915
-+ * Functionality: xorg_big_displays
++ * Functionality: ccs
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @4-tiled:                  TILE-4 modifier
-+ * @x-tiled:                  TILE-X modifier
-+ * @y-tiled:                  TILE-Y modifier
-+ * @yf-tiled:                 TILE-YF modifier
++ * @pipe-A:                    Pipe A
++ * @pipe-B:                    Pipe B
++ * @pipe-C:                    Pipe C
++ * @pipe-D:                    Pipe D
++ * @pipe-E:                    Pipe E
++ * @pipe-F:                    Pipe F
++ * @pipe-G:                    Pipe G
++ * @pipe-H:                    Pipe H
 + *
-+ * arg[2].values: 8, 16, 32, 64
-+ * arg[3].values: 0, 90, 180, 270
++ * arg[2]:
++ *
++ * @bad-aux-stride:            Bad AUX stride
++ * @ccs-on-another-bo:         CCS with different BO
++ * @missing-ccs-buffer:        Missing CCS buffer
++ *
++ * arg[3]:
++ *
++ * @y_tiled_ccs:               Y tiled ccs
++ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
++ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
++ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
++ * @yf_tiled_ccs:              YF tiled ccs
 + */
 +
 +/**
-+ * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d
-+ * Description: Test maximum hardware supported stride length for given combination
-+ *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
-+ *              and %arg[3]-rotation
++ * SUBTEST: %s-%s-%s
++ * Description: Test %arg[2] with %arg[3] modifier
 + * Driver requirement: i915
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d-%s
-+ * Description: Test maximum hardware supported stride length for given combination
-+ *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
-+ *              and %arg[3]-rotation with %arg[4] mode
-+ * Driver requirement: i915
-+ * Functionality: xorg_big_displays
++ * Functionality: ccs
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @4-tiled:                  TILE-4 modifier
-+ * @x-tiled:                  TILE-X modifier
-+ * @y-tiled:                  TILE-Y modifier
-+ * @yf-tiled:                 TILE-YF modifier
++ * @pipe-A:                      Pipe A
++ * @pipe-B:                      Pipe B
++ * @pipe-C:                      Pipe C
++ * @pipe-D:                      Pipe D
++ * @pipe-E:                      Pipe E
++ * @pipe-F:                      Pipe F
++ * @pipe-G:                      Pipe G
++ * @pipe-H:                      Pipe H
 + *
-+ * arg[2].values: 32, 64
-+ * arg[3].values: 0, 180
++ * arg[2]:
 + *
-+ * arg[4]:
++ * @bad-pixel-format:            Bad pixel format
++ * @bad-rotation-90:             90 degree rotation
++ * @crc-primary-basic:           Primary plane CRC compatibility
++ * @crc-primary-rotation-180:    180 degree rotation
++ * @crc-sprite-planes-basic:     Sprite plane CRC compatability
++ * @random-ccs-data:             Random CCS data
 + *
-+ * @async-flip:         Async flip
-+ * @hflip:              H-flip
-+ * @hflip-async-flip:   Async & H-flip
++ * arg[3]:
++ *
++ * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
++ * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
++ * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
++ * @y_tiled_ccs:               Y tiled ccs
++ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
++ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
++ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
++ * @yf_tiled_ccs:              YF tiled ccs
 + */
 +
-+/**
-+ * SUBTEST: linear-%dbpp-rotate-%d
-+ * Description: Sanity check if addfb ioctl works correctly for given combination
-+ *              of Linear modifier with %arg[1]-bpp & %arg[2]-rotation
-+ * Driver requirement: any
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1].values: 8, 16, 32, 64
-+ * arg[2].values: 0, 90, 180, 270
-+ */
-+
-+/**
-+ * SUBTEST: linear-max-hw-stride-%dbpp-rotate-%d
-+ * Description: Sanity check if addfb ioctl works correctly for given combination
-+ *              of Linear modifier with max hardware stride length with
-+ *              %arg[1]-bpp & %arg[2]-rotation
-+ * Driver requirement: any
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1].values: 32, 64
-+ * arg[2].values: 0, 180
-+ */
- static void test_scanout(data_t *data)
- {
- 	igt_output_t *output;
-@@ -624,6 +717,23 @@ static void test_scanout(data_t *data)
- 	igt_skip("unsupported configuration\n");
- }
+ #define SDR_PLANE_BASE	3
  
-+/**
-+ * SUBTEST: %s-addfb-size-overflow
-+ * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
-+ *              with small bo.
-+ * Driver requirement: i915
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @4-tiled:    TILE-4
-+ * @x-tiled:    TILE-X
-+ * @y-tiled:    TILE-Y
-+ * @yf-tiled:   TILE-YF
-+ */
- static void
- test_size_overflow(data_t *data)
- {
-@@ -663,6 +773,23 @@ test_size_overflow(data_t *data)
- 	gem_close(data->drm_fd, bo);
- }
- 
-+/**
-+ * SUBTEST: %s-addfb-size-offset-overflow
-+ * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
-+ *              and offsets with small bo
-+ * Driver requirement: i915
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @4-tiled:    TILE-4
-+ * @x-tiled:    TILE-X
-+ * @y-tiled:    TILE-Y
-+ * @yf-tiled:   TILE-YF
-+ */
- static void
- test_size_offset_overflow(data_t *data)
- {
-@@ -715,6 +842,32 @@ static int rmfb(int fd, uint32_t id)
- 	return err;
- }
- 
-+/**
-+ * SUBTEST: linear-addfb
-+ * Description: Sanity check if addfb ioctl works correctly with linear modifier
-+ *              for given size and strides of fb
-+ * Driver requirement: any
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: %s-tiled-addfb
-+ * Description: Sanity check if addfb ioctl works correctly with %arg[1] modifier
-+ *              for given size and strides of fb
-+ * Driver requirement: i915
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @4:    TILE-4
-+ * @x:    TILE-X
-+ * @y:    TILE-Y
-+ * @yf:   TILE-YF
-+ */
- static void
- test_addfb(data_t *data)
- {
+ IGT_TEST_DESCRIPTION("Test render compression (RC), in which the main surface "
 -- 
 2.40.0
