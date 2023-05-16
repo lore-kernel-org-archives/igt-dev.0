@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B80C10E0EA
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 13:05:46 +0000 (UTC)
-Message-ID: <5ed31faf-0c5f-9418-d928-ecc17a5e8bf0@intel.com>
-Date: Tue, 16 May 2023 18:35:15 +0530
+Content-Type: multipart/alternative;
+ boundary="===============5240724352830443926=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230504115155.3070843-1-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230504115155.3070843-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t] tests:
- s/i915_pipe_output_combo_valid/intel_pipe_output_combo_valid/
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Tue, 16 May 2023 01:23:27 -0000
+Message-ID: <168420020722.14224.15554441089652787005@emeril.freedesktop.org>
+References: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgZ3B1dG9w?=
+ =?utf-8?q?/intel=5Fgpu=5Ftop=3A_Move_name_to_be_the_last_field_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,814 +17,531 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
+--===============5240724352830443926==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+== Series Details ==
 
-On 04-May-23 5:21 PM, Bhanuprakash Modem wrote:
-> As i915_pipe_output_combo_valid() is no more i915 specific, and
-> it supports both i915 & XE then rename the helper.
-> 
-> s/i915_pipe_output_combo_valid/intel_pipe_output_combo_valid/
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   lib/igt_kms.c                         | 4 ++--
->   lib/igt_kms.h                         | 2 +-
->   tests/i915/kms_big_fb.c               | 2 +-
->   tests/i915/kms_busy.c                 | 2 +-
->   tests/i915/kms_ccs.c                  | 2 +-
->   tests/i915/kms_cdclk.c                | 4 ++--
->   tests/i915/kms_draw_crc.c             | 2 +-
->   tests/i915/kms_dsc.c                  | 2 +-
->   tests/i915/kms_fence_pin_leak.c       | 2 +-
->   tests/i915/kms_flip_scaled_crc.c      | 4 ++--
->   tests/i915/kms_flip_tiling.c          | 2 +-
->   tests/i915/kms_frontbuffer_tracking.c | 2 +-
->   tests/i915/kms_mmap_write_crc.c       | 2 +-
->   tests/i915/kms_psr.c                  | 2 +-
->   tests/i915/kms_psr2_sf.c              | 2 +-
->   tests/i915/kms_psr2_su.c              | 2 +-
->   tests/i915/kms_psr_stress_test.c      | 2 +-
->   tests/i915/kms_pwrite_crc.c           | 2 +-
->   tests/kms_async_flips.c               | 2 +-
->   tests/kms_atomic.c                    | 2 +-
->   tests/kms_atomic_interruptible.c      | 2 +-
->   tests/kms_atomic_transition.c         | 6 +++---
->   tests/kms_color_helper.c              | 2 +-
->   tests/kms_concurrent.c                | 2 +-
->   tests/kms_content_protection.c        | 2 +-
->   tests/kms_cursor_crc.c                | 2 +-
->   tests/kms_cursor_edge_walk.c          | 2 +-
->   tests/kms_cursor_legacy.c             | 2 +-
->   tests/kms_display_modes.c             | 2 +-
->   tests/kms_dp_tiled_display.c          | 2 +-
->   tests/kms_flip_event_leak.c           | 2 +-
->   tests/kms_invalid_mode.c              | 2 +-
->   tests/kms_lease.c                     | 2 +-
->   tests/kms_pipe_crc_basic.c            | 2 +-
->   tests/kms_plane.c                     | 2 +-
->   tests/kms_plane_alpha_blend.c         | 2 +-
->   tests/kms_plane_cursor.c              | 2 +-
->   tests/kms_plane_lowres.c              | 2 +-
->   tests/kms_plane_multiple.c            | 2 +-
->   tests/kms_plane_scaling.c             | 4 ++--
->   tests/kms_prime.c                     | 2 +-
->   tests/kms_properties.c                | 6 +++---
->   tests/kms_rmfb.c                      | 2 +-
->   tests/kms_rotation_crc.c              | 6 +++---
->   tests/kms_scaling_modes.c             | 2 +-
->   tests/kms_sequence.c                  | 2 +-
->   tests/kms_universal_plane.c           | 2 +-
->   tests/kms_vblank.c                    | 6 +++---
->   tests/kms_vrr.c                       | 2 +-
->   49 files changed, 61 insertions(+), 61 deletions(-)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index e085e234a..57cc7b39b 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -5975,7 +5975,7 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
->   }
->   
->   /*
-> - * i915_pipe_output_combo_valid:
-> + * intel_pipe_output_combo_valid:
->    * @display: a pointer to an #igt_display_t structure
->    *
->    * Every individual test must use igt_output_set_pipe() before calling this
-> @@ -5993,7 +5993,7 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
->    *
->    * Returns: true if a valid pipe/output mode combo found, else false
->    */
-> -bool i915_pipe_output_combo_valid(igt_display_t *display)
-> +bool intel_pipe_output_combo_valid(igt_display_t *display)
->   {
->   	int combo = 0;
->   	igt_output_t *output;
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 483b41651..bb6e62946 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -996,6 +996,6 @@ int igt_get_max_dotclock(int fd);
->   bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
->   bool igt_check_bigjoiner_support(igt_display_t *display);
->   bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
-> -bool i915_pipe_output_combo_valid(igt_display_t *display);
-> +bool intel_pipe_output_combo_valid(igt_display_t *display);
->   
->   #endif /* __IGT_KMS_H__ */
-> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-> index a0d5ef730..2ba88f2c3 100644
-> --- a/tests/i915/kms_big_fb.c
-> +++ b/tests/i915/kms_big_fb.c
-> @@ -608,7 +608,7 @@ static void test_scanout(data_t *data)
->   		igt_display_reset(&data->display);
->   
->   		igt_output_set_pipe(data->output, data->pipe);
-> -		if (!i915_pipe_output_combo_valid(&data->display))
-> +		if (!intel_pipe_output_combo_valid(&data->display))
->   			continue;
->   
->   		if (data->async_flip_test) {
-> diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
-> index 20d3058fb..c7b74f0fb 100644
-> --- a/tests/i915/kms_busy.c
-> +++ b/tests/i915/kms_busy.c
-> @@ -319,7 +319,7 @@ pipe_output_combo_valid(igt_display_t *dpy,
->   	igt_display_reset(dpy);
->   
->   	igt_output_set_pipe(output, pipe);
-> -	if (!i915_pipe_output_combo_valid(dpy))
-> +	if (!intel_pipe_output_combo_valid(dpy))
->   		ret = false;
->   	igt_output_set_pipe(output, PIPE_NONE);
->   
-> diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
-> index 1b3462ea9..9e5968c09 100644
-> --- a/tests/i915/kms_ccs.c
-> +++ b/tests/i915/kms_ccs.c
-> @@ -596,7 +596,7 @@ static void test_output(data_t *data, const int testnum)
->   			igt_display_reset(&data->display);
->   
->   			igt_output_set_pipe(data->output, data->pipe);
-> -			if (i915_pipe_output_combo_valid(&data->display)) {
-> +			if (intel_pipe_output_combo_valid(&data->display)) {
->   				found = true;
->   				break;
->   			}
-> diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
-> index 0f9b8dc58..9e8044062 100644
-> --- a/tests/i915/kms_cdclk.c
-> +++ b/tests/i915/kms_cdclk.c
-> @@ -283,7 +283,7 @@ static void test_mode_transition_on_all_outputs(data_t *data)
->   		igt_output_override_mode(output, mode_hi);
->   		i++;
->   	}
-> -	igt_require(i915_pipe_output_combo_valid(display));
-> +	igt_require(intel_pipe_output_combo_valid(display));
->   	igt_display_reset(display);
->   
->   	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> @@ -352,7 +352,7 @@ static void run_cdclk_test(data_t *data, uint32_t flags)
->   
->   	for_each_pipe_with_valid_output(display, pipe, output) {
->   		igt_output_set_pipe(output, pipe);
-> -		if (!i915_pipe_output_combo_valid(display)) {
-> +		if (!intel_pipe_output_combo_valid(display)) {
->   			igt_output_set_pipe(output, PIPE_NONE);
->   			continue;
->   		}
-> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-> index db6d71f2e..3f78bac8b 100644
-> --- a/tests/i915/kms_draw_crc.c
-> +++ b/tests/i915/kms_draw_crc.c
-> @@ -63,7 +63,7 @@ static void find_modeset_params(void)
->   		igt_display_reset(&display);
->   
->   		igt_output_set_pipe(output, pipe);
-> -		if (!i915_pipe_output_combo_valid(&display))
-> +		if (!intel_pipe_output_combo_valid(&display))
->   			continue;
->   
->   		mode = igt_output_get_mode(output);
-> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> index c4dfc9251..98dc56479 100644
-> --- a/tests/i915/kms_dsc.c
-> +++ b/tests/i915/kms_dsc.c
-> @@ -83,7 +83,7 @@ static bool pipe_output_combo_valid(data_t *data)
->   	igt_output_set_pipe(output, data->pipe);
->   	igt_output_override_mode(output, mode);
->   
-> -	if (!i915_pipe_output_combo_valid(&data->display))
-> +	if (!intel_pipe_output_combo_valid(&data->display))
->   		ret = false;
->   
->   	igt_output_set_pipe(output, PIPE_NONE);
-> diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
-> index 63657a742..6b678668e 100644
-> --- a/tests/i915/kms_fence_pin_leak.c
-> +++ b/tests/i915/kms_fence_pin_leak.c
-> @@ -202,7 +202,7 @@ static void run_test(data_t *data)
->   		igt_display_reset(display);
->   
->   		igt_output_set_pipe(output, p);
-> -		if (!i915_pipe_output_combo_valid(display))
-> +		if (!intel_pipe_output_combo_valid(display))
->   			continue;
->   
->   		run_single_test(data, p, output);
-> diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
-> index f5dc430e3..987f5f54a 100644
-> --- a/tests/i915/kms_flip_scaled_crc.c
-> +++ b/tests/i915/kms_flip_scaled_crc.c
-> @@ -660,7 +660,7 @@ igt_main
->   					igt_output_set_pipe(output, pipe);
->   					igt_output_override_mode(output, modetoset);
->   
-> -					if (modetoset && i915_pipe_output_combo_valid(&data.display)) {
-> +					if (modetoset && intel_pipe_output_combo_valid(&data.display)) {
->   						found = true;
->   						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
->   							run_tests(&data, index, pipe, output, modetoset);
-> @@ -672,7 +672,7 @@ igt_main
->   						igt_display_reset(&data.display);
->   
->   						igt_output_set_pipe(output, pipe);
-> -						if (!i915_pipe_output_combo_valid(&data.display))
-> +						if (!intel_pipe_output_combo_valid(&data.display))
->   							continue;
->   
->   						modetoset = NULL;
-> diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
-> index a22f12382..01c27efef 100644
-> --- a/tests/i915/kms_flip_tiling.c
-> +++ b/tests/i915/kms_flip_tiling.c
-> @@ -199,7 +199,7 @@ igt_main
->   			pipe_crc_free(&data);
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(&data.display))
-> +			if (!intel_pipe_output_combo_valid(&data.display))
->   				continue;
->   
->   			plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-> index 650e14a77..c7af27be4 100644
-> --- a/tests/i915/kms_frontbuffer_tracking.c
-> +++ b/tests/i915/kms_frontbuffer_tracking.c
-> @@ -415,7 +415,7 @@ static bool find_connector(bool edp_only, bool pipe_a,
->   
->   		igt_output_set_pipe(output, pipe);
->   		igt_output_override_mode(output, connector_get_mode(output));
-> -		if (i915_pipe_output_combo_valid(&drm.display)) {
-> +		if (intel_pipe_output_combo_valid(&drm.display)) {
->   			*ret_output = output;
->   			*ret_pipe = pipe;
->   			return true;
-> diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-> index bc51975f6..5f7750041 100644
-> --- a/tests/i915/kms_mmap_write_crc.c
-> +++ b/tests/i915/kms_mmap_write_crc.c
-> @@ -280,7 +280,7 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
->   			igt_display_reset(&data.display);
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(&data.display))
-> +			if (!intel_pipe_output_combo_valid(&data.display))
->   				continue;
->   
->   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-> diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
-> index 0e8d7f4f0..4f8a49b36 100644
-> --- a/tests/i915/kms_psr.c
-> +++ b/tests/i915/kms_psr.c
-> @@ -105,7 +105,7 @@ static void setup_output(data_t *data)
->   
->   		igt_display_reset(display);
->   		igt_output_set_pipe(output, pipe);
-> -		if (!i915_pipe_output_combo_valid(display))
-> +		if (!intel_pipe_output_combo_valid(display))
->   			continue;
->   
->   		data->crtc_id = output->config.crtc->crtc_id;
-> diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-> index 4cf986440..d55b818ef 100644
-> --- a/tests/i915/kms_psr2_sf.c
-> +++ b/tests/i915/kms_psr2_sf.c
-> @@ -879,7 +879,7 @@ pipe_output_combo_valid(igt_display_t *display,
->   	igt_display_reset(display);
->   
->   	igt_output_set_pipe(output, pipe);
-> -	if (!i915_pipe_output_combo_valid(display))
-> +	if (!intel_pipe_output_combo_valid(display))
->   		ret = false;
->   	igt_output_set_pipe(output, PIPE_NONE);
->   
-> diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
-> index 65e67b8c9..43fed4241 100644
-> --- a/tests/i915/kms_psr2_su.c
-> +++ b/tests/i915/kms_psr2_su.c
-> @@ -106,7 +106,7 @@ static void setup_output(data_t *data)
->   
->   		igt_display_reset(display);
->   		igt_output_set_pipe(output, pipe);
-> -		if (!i915_pipe_output_combo_valid(display))
-> +		if (!intel_pipe_output_combo_valid(display))
->   			continue;
->   
->   		data->output = output;
-> diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
-> index a4cb3194e..0812bcdd1 100644
-> --- a/tests/i915/kms_psr_stress_test.c
-> +++ b/tests/i915/kms_psr_stress_test.c
-> @@ -74,7 +74,7 @@ static void setup_output(data_t *data)
->   
->   		igt_display_reset(display);
->   		igt_output_set_pipe(output, pipe);
-> -		if (!i915_pipe_output_combo_valid(display)) {
-> +		if (!intel_pipe_output_combo_valid(display)) {
->   			igt_output_set_pipe(output, PIPE_NONE);
->   			continue;
->   		}
-> diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
-> index 3278d876d..e8481b545 100644
-> --- a/tests/i915/kms_pwrite_crc.c
-> +++ b/tests/i915/kms_pwrite_crc.c
-> @@ -162,7 +162,7 @@ static void run_test(data_t *data)
->   		igt_display_reset(display);
->   
->   		igt_output_set_pipe(data->output, data->pipe);
-> -		if (!i915_pipe_output_combo_valid(display))
-> +		if (!intel_pipe_output_combo_valid(display))
->   			continue;
->   
->   		prepare_crtc(data);
-> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index 51ffa523a..1b13b04dd 100644
-> --- a/tests/kms_async_flips.c
-> +++ b/tests/kms_async_flips.c
-> @@ -554,7 +554,7 @@ static void run_test(data_t *data, void (*test)(data_t *))
->   			igt_display_reset(display);
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(display))
-> +			if (!intel_pipe_output_combo_valid(display))
->   				continue;
->   
->   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-> index 037db2d36..c2232bacb 100644
-> --- a/tests/kms_atomic.c
-> +++ b/tests/kms_atomic.c
-> @@ -1312,7 +1312,7 @@ igt_main
->   			igt_display_reset(&display);
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (i915_pipe_output_combo_valid(&display)) {
-> +			if (intel_pipe_output_combo_valid(&display)) {
->   				valid_config = true;
->   				break;
->   			}
-> diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-> index 74b2e246a..a21830f26 100644
-> --- a/tests/kms_atomic_interruptible.c
-> +++ b/tests/kms_atomic_interruptible.c
-> @@ -277,7 +277,7 @@ static bool pipe_output_combo_valid(igt_display_t *display,
->   	igt_display_reset(display);
->   
->   	igt_output_set_pipe(output, pipe);
-> -	if (!i915_pipe_output_combo_valid(display))
-> +	if (!intel_pipe_output_combo_valid(display))
->   		ret = false;
->   	igt_output_set_pipe(output, PIPE_NONE);
->   
-> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-> index 9f39d033d..cd6df6cf2 100644
-> --- a/tests/kms_atomic_transition.c
-> +++ b/tests/kms_atomic_transition.c
-> @@ -767,7 +767,7 @@ static unsigned set_combinations(data_t *data, unsigned mask, struct igt_fb *fb)
->   				continue;
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (i915_pipe_output_combo_valid(&data->display)) {
-> +			if (intel_pipe_output_combo_valid(&data->display)) {
->   				mode = igt_output_get_mode(output);
->   				break;
->   			} else {
-> @@ -857,7 +857,7 @@ retry:
->   				continue;
->   
->   			igt_output_set_pipe(output, i);
-> -			if (i915_pipe_output_combo_valid(&data->display)) {
-> +			if (intel_pipe_output_combo_valid(&data->display)) {
->   				mode = igt_output_get_mode(output);
->   
->   				igt_info("(pipe %s + %s), mode:",
-> @@ -1013,7 +1013,7 @@ static bool pipe_output_combo_valid(igt_display_t *display,
->   	igt_display_reset(display);
->   
->   	igt_output_set_pipe(output, pipe);
-> -	if (!i915_pipe_output_combo_valid(display))
-> +	if (!intel_pipe_output_combo_valid(display))
->   		ret = false;
->   	igt_output_set_pipe(output, PIPE_NONE);
->   
-> diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-> index b01c38ef6..c756b280e 100644
-> --- a/tests/kms_color_helper.c
-> +++ b/tests/kms_color_helper.c
-> @@ -29,7 +29,7 @@ bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
->   	bool ret = true;
->   
->   	igt_output_set_pipe(data->output, pipe);
-> -	if (!i915_pipe_output_combo_valid(&data->display))
-> +	if (!intel_pipe_output_combo_valid(&data->display))
->   		ret = false;
->   	igt_output_set_pipe(data->output, PIPE_NONE);
->   
-> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-> index e1e581723..1ba2d11be 100644
-> --- a/tests/kms_concurrent.c
-> +++ b/tests/kms_concurrent.c
-> @@ -334,7 +334,7 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
->   			igt_display_reset(&data->display);
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(&data->display))
-> +			if (!intel_pipe_output_combo_valid(&data->display))
->   				continue;
->   
->   			igt_output_set_pipe(output, PIPE_NONE);
-> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-> index 344cac505..0b12d9c2f 100644
-> --- a/tests/kms_content_protection.c
-> +++ b/tests/kms_content_protection.c
-> @@ -509,7 +509,7 @@ test_content_protection(enum igt_commit_style s, int content_type)
->   			igt_display_reset(display);
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(display))
-> +			if (!intel_pipe_output_combo_valid(display))
->   				continue;
->   
->   			modeset_with_fb(pipe, output, s);
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index 3a353a032..8e7f32aee 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -713,7 +713,7 @@ static bool valid_pipe_output_combo(data_t *data)
->   	igt_display_reset(display);
->   	igt_output_set_pipe(data->output, data->pipe);
->   
-> -	if (i915_pipe_output_combo_valid(display))
-> +	if (intel_pipe_output_combo_valid(display))
->   		ret = true;
->   
->   	igt_output_set_pipe(data->output, PIPE_NONE);
-> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-> index 5f423a18f..e4323b18d 100644
-> --- a/tests/kms_cursor_edge_walk.c
-> +++ b/tests/kms_cursor_edge_walk.c
-> @@ -375,7 +375,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   
->   					igt_display_reset(&data.display);
->   					igt_output_set_pipe(data.output, data.pipe);
-> -					if (!i915_pipe_output_combo_valid(&data.display))
-> +					if (!intel_pipe_output_combo_valid(&data.display))
->   						continue;
->   
->   					igt_output_set_pipe(data.output, PIPE_NONE);
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 7df6a6125..7e689c485 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -247,7 +247,7 @@ find_connected_pipe(igt_display_t *display, bool second, igt_output_t **output)
->   				continue;
->   
->   			igt_output_set_pipe(*output, pipe);
-> -			if (i915_pipe_output_combo_valid(display)) {
-> +			if (intel_pipe_output_combo_valid(display)) {
->   				found = true;
->   
->   				if (second) {
-> diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-> index d69c7b931..9fbea228b 100644
-> --- a/tests/kms_display_modes.c
-> +++ b/tests/kms_display_modes.c
-> @@ -156,7 +156,7 @@ static void run_extendedmode_test(data_t *data) {
->   					igt_output_set_pipe(output1, pipe1);
->   					igt_output_set_pipe(output2, pipe2);
->   
-> -					if (!i915_pipe_output_combo_valid(display))
-> +					if (!intel_pipe_output_combo_valid(display))
->   						continue;
->   
->   					igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
-> diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
-> index 07b803a50..77d5352ac 100644
-> --- a/tests/kms_dp_tiled_display.c
-> +++ b/tests/kms_dp_tiled_display.c
-> @@ -272,7 +272,7 @@ static void setup_mode(data_t *data)
->   		igt_require(found);
->   		igt_output_override_mode(output, mode);
->   	}
-> -	igt_require(i915_pipe_output_combo_valid(data->display));
-> +	igt_require(intel_pipe_output_combo_valid(data->display));
->   	igt_display_commit_atomic(data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
->   				  NULL);
->   }
-> diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-> index b79cd5030..84a83b544 100644
-> --- a/tests/kms_flip_event_leak.c
-> +++ b/tests/kms_flip_event_leak.c
-> @@ -110,7 +110,7 @@ igt_main
->   			igt_display_reset(&data.display);
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(&data.display))
-> +			if (!intel_pipe_output_combo_valid(&data.display))
->   				continue;
->   
->   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-> index ec0483055..271408ba1 100644
-> --- a/tests/kms_invalid_mode.c
-> +++ b/tests/kms_invalid_mode.c
-> @@ -283,7 +283,7 @@ igt_main
->   				igt_display_reset(&data.display);
->   
->   				igt_output_set_pipe(output, pipe);
-> -				if (!i915_pipe_output_combo_valid(&data.display))
-> +				if (!intel_pipe_output_combo_valid(&data.display))
->   					continue;
->   
->   				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
-> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-> index 29a774ae8..52080f11f 100644
-> --- a/tests/kms_lease.c
-> +++ b/tests/kms_lease.c
-> @@ -1227,7 +1227,7 @@ igt_main
->   					igt_display_reset(display);
->   
->   					igt_output_set_pipe(output, data.pipe);
-> -					if (!i915_pipe_output_combo_valid(display))
-> +					if (!intel_pipe_output_combo_valid(display))
->   						continue;
->   
->   					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe),
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index 65afc9f60..791bd3348 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -295,7 +295,7 @@ static bool pipe_output_combo_valid(igt_display_t *display,
->   	igt_display_reset(display);
->   
->   	igt_output_set_pipe(output, pipe);
-> -	if (!i915_pipe_output_combo_valid(display))
-> +	if (!intel_pipe_output_combo_valid(display))
->   		ret = false;
->   	igt_output_set_pipe(output, PIPE_NONE);
->   
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 10e16b638..3aa3bf6cb 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -1206,7 +1206,7 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
->   		igt_display_reset(&data->display);
->   
->   		igt_output_set_pipe(data->output, pipe);
-> -		if (!i915_pipe_output_combo_valid(&data->display))
-> +		if (!intel_pipe_output_combo_valid(&data->display))
->   			continue;
->   
->   		igt_output_set_pipe(data->output, PIPE_NONE);
-> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-> index 0d03e178a..5444cd337 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -655,7 +655,7 @@ static void run_subtests(data_t *data)
->   				igt_display_reset(&data->display);
->   
->   				igt_output_set_pipe(output, pipe);
-> -				if (!i915_pipe_output_combo_valid(&data->display))
-> +				if (!intel_pipe_output_combo_valid(&data->display))
->   					continue;
->   
->   				prepare_crtc(data, output, pipe);
-> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-> index 59b105c60..11fe77387 100644
-> --- a/tests/kms_plane_cursor.c
-> +++ b/tests/kms_plane_cursor.c
-> @@ -86,7 +86,7 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
->   	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
->   
->   	igt_output_set_pipe(data->output, data->pipe_id);
-> -	igt_require(i915_pipe_output_combo_valid(display));
-> +	igt_require(intel_pipe_output_combo_valid(display));
->   
->   	igt_info("Using (pipe %s + %s) to run the subtest.\n",
->   		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
-> diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-> index db9f5a54c..2b1050413 100644
-> --- a/tests/kms_plane_lowres.c
-> +++ b/tests/kms_plane_lowres.c
-> @@ -280,7 +280,7 @@ static void run_test(data_t *data, uint64_t modifier)
->   			igt_display_reset(&data->display);
->   			igt_output_set_pipe(data->output, data->pipe);
->   
-> -			if (!i915_pipe_output_combo_valid(&data->display))
-> +			if (!intel_pipe_output_combo_valid(&data->display))
->   				continue;
->   
->   			data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-> index 7dd9d586d..4ef3be3e4 100644
-> --- a/tests/kms_plane_multiple.c
-> +++ b/tests/kms_plane_multiple.c
-> @@ -386,7 +386,7 @@ static void run_test(data_t *data, uint64_t modifier)
->   		igt_display_reset(display);
->   
->   		igt_output_set_pipe(output, pipe);
-> -		if (!i915_pipe_output_combo_valid(display))
-> +		if (!intel_pipe_output_combo_valid(display))
->   			continue;
->   
->   		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-> index a37abd16d..3b329e777 100644
-> --- a/tests/kms_plane_scaling.c
-> +++ b/tests/kms_plane_scaling.c
-> @@ -646,7 +646,7 @@ find_connected_pipe(igt_display_t *display, bool second, igt_output_t **output)
->   				continue;
->   
->   			igt_output_set_pipe(*output, pipe);
-> -			if (i915_pipe_output_combo_valid(display)) {
-> +			if (intel_pipe_output_combo_valid(display)) {
->   				found = true;
->   
->   				if (second) {
-> @@ -1085,7 +1085,7 @@ pipe_output_combo_valid(igt_display_t *display,
->   	igt_display_reset(display);
->   
->   	igt_output_set_pipe(output, pipe);
-> -	if (!i915_pipe_output_combo_valid(display))
-> +	if (!intel_pipe_output_combo_valid(display))
->   		ret = false;
->   	igt_output_set_pipe(output, PIPE_NONE);
->   
-> diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-> index dd5ab993e..5f4d11993 100644
-> --- a/tests/kms_prime.c
-> +++ b/tests/kms_prime.c
-> @@ -92,7 +92,7 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
->   		igt_display_reset(display);
->   
->   		igt_output_set_pipe(output, *pipe);
-> -		if (i915_pipe_output_combo_valid(display)) {
-> +		if (intel_pipe_output_combo_valid(display)) {
->   			found = true;
->   			break;
->   		}
-> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-> index 2fe8dfa66..3f66f364b 100644
-> --- a/tests/kms_properties.c
-> +++ b/tests/kms_properties.c
-> @@ -244,7 +244,7 @@ static void plane_properties(igt_display_t *display, bool atomic)
->   			igt_display_reset(display);
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(display))
-> +			if (!intel_pipe_output_combo_valid(display))
->   				continue;
->   
->   			found_any = found = true;
-> @@ -273,7 +273,7 @@ static void crtc_properties(igt_display_t *display, bool atomic)
->   			igt_display_reset(display);
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(display))
-> +			if (!intel_pipe_output_combo_valid(display))
->   				continue;
->   
->   			found_any_valid_pipe = found = true;
-> @@ -305,7 +305,7 @@ static void connector_properties(igt_display_t *display, bool atomic)
->   			igt_display_reset(display);
->   
->   			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(display))
-> +			if (!intel_pipe_output_combo_valid(display))
->   				continue;
->   
->   			found = true;
-> diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-> index 50df42953..0e10a536c 100644
-> --- a/tests/kms_rmfb.c
-> +++ b/tests/kms_rmfb.c
-> @@ -161,7 +161,7 @@ run_rmfb_test(struct rmfb_data *data, bool reopen)
->   		igt_display_reset(display);
->   
->   		igt_output_set_pipe(output, pipe);
-> -		if (!i915_pipe_output_combo_valid(display))
-> +		if (!intel_pipe_output_combo_valid(display))
->   			continue;
->   
->   		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-> index 28b4fd27c..8169b165d 100644
-> --- a/tests/kms_rotation_crc.c
-> +++ b/tests/kms_rotation_crc.c
-> @@ -215,7 +215,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
->   	cleanup_crtc(data);
->   
->   	igt_output_set_pipe(output, pipe);
-> -	igt_require(i915_pipe_output_combo_valid(display));
-> +	igt_require(intel_pipe_output_combo_valid(display));
->   
->   	igt_plane_set_rotation(plane, IGT_ROTATION_0);
->   
-> @@ -502,7 +502,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
->   		igt_display_reset(display);
->   
->   		igt_output_set_pipe(output, pipe);
-> -		if (!i915_pipe_output_combo_valid(display))
-> +		if (!intel_pipe_output_combo_valid(display))
->   			continue;
->   
->   		found = true;
-> @@ -824,7 +824,7 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
->   		igt_display_reset(display);
->   
->   		igt_output_set_pipe(output, pipe);
-> -		if (!i915_pipe_output_combo_valid(display))
-> +		if (!intel_pipe_output_combo_valid(display))
->   			continue;
->   
->   		found = true;
-> diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
-> index 906ae76de..50fb53109 100644
-> --- a/tests/kms_scaling_modes.c
-> +++ b/tests/kms_scaling_modes.c
-> @@ -99,7 +99,7 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
->   			continue;
->   
->   		igt_output_set_pipe(output, pipe);
-> -		if (!i915_pipe_output_combo_valid(display))
-> +		if (!intel_pipe_output_combo_valid(display))
->   			continue;
->   
->   		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
-> diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-> index c8a3d6bbd..c1ae8d1f4 100644
-> --- a/tests/kms_sequence.c
-> +++ b/tests/kms_sequence.c
-> @@ -288,7 +288,7 @@ igt_main
->   					igt_display_reset(&data.display);
->   
->   					igt_output_set_pipe(output, p);
-> -					if (!i915_pipe_output_combo_valid(&data.display))
-> +					if (!intel_pipe_output_combo_valid(&data.display))
->   						continue;
->   
->   					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
-> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-> index 635a136ab..d45a57af5 100644
-> --- a/tests/kms_universal_plane.c
-> +++ b/tests/kms_universal_plane.c
-> @@ -793,7 +793,7 @@ pipe_output_combo_valid(igt_display_t *display,
->   	igt_display_reset(display);
->   
->   	igt_output_set_pipe(output, pipe);
-> -	if (!i915_pipe_output_combo_valid(display))
-> +	if (!intel_pipe_output_combo_valid(display))
->   		ret = false;
->   	igt_output_set_pipe(output, PIPE_NONE);
->   
-> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-> index da0ada78e..09814b8ea 100644
-> --- a/tests/kms_vblank.c
-> +++ b/tests/kms_vblank.c
-> @@ -183,7 +183,7 @@ pipe_output_combo_valid(igt_display_t *display,
->   	igt_display_reset(display);
->   
->   	igt_output_set_pipe(output, pipe);
-> -	if (!i915_pipe_output_combo_valid(display))
-> +	if (!intel_pipe_output_combo_valid(display))
->   		ret = false;
->   	igt_output_set_pipe(output, PIPE_NONE);
->   
-> @@ -206,7 +206,7 @@ static void crtc_id_subtest(data_t *data, int fd)
->   		igt_display_reset(display);
->   
->   		igt_output_set_pipe(output, p);
-> -		if (!i915_pipe_output_combo_valid(display))
-> +		if (!intel_pipe_output_combo_valid(display))
->   			continue;
->   
->   		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-> @@ -532,7 +532,7 @@ static void invalid_subtest(data_t *data, int fd)
->   	data->output = output;
->   
->   	igt_output_set_pipe(output, pipe);
-> -	igt_require(i915_pipe_output_combo_valid(display));
-> +	igt_require(intel_pipe_output_combo_valid(display));
->   
->   	igt_info("Using (pipe %s + %s) to run the subtest.\n",
->   		 kmstest_pipe_name(pipe), igt_output_name(output));
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index d2d79c4eb..cd136593c 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -477,7 +477,7 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
->   				igt_display_reset(&data->display);
->   
->   				igt_output_set_pipe(output, pipe);
-> -				if (!i915_pipe_output_combo_valid(&data->display))
-> +				if (!intel_pipe_output_combo_valid(&data->display))
->   					continue;
->   
->   				igt_dynamic_f("pipe-%s-%s",
+Series: gputop/intel_gpu_top: Move name to be the last field (rev2)
+URL   : https://patchwork.freedesktop.org/series/117768/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7291_full -> IGTPW_8963_full
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/index.html
+
+Participating hosts (7 -> 7)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8963_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@verify-random-ccs:
+    - shard-glk:          NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#4613]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk9/igt@gem_lmem_swapping@verify-random-ccs.html
+
+  * igt@gem_ppgtt@blt-vs-render-ctxn:
+    - shard-snb:          [PASS][2] -> [DMESG-FAIL][3] ([i915#8295])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-snb5/igt@gem_ppgtt@blt-vs-render-ctxn.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-snb6/igt@gem_ppgtt@blt-vs-render-ctxn.html
+
+  * igt@gem_render_copy@y-tiled-ccs-to-y-tiled-mc-ccs:
+    - shard-glk:          NOTRUN -> [SKIP][4] ([fdo#109271]) +96 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk7/igt@gem_render_copy@y-tiled-ccs-to-y-tiled-mc-ccs.html
+
+  * igt@gem_userptr_blits@dmabuf-sync:
+    - shard-glk:          NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#3323])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk8/igt@gem_userptr_blits@dmabuf-sync.html
+
+  * igt@gen9_exec_parse@allowed-all:
+    - shard-apl:          [PASS][6] -> [ABORT][7] ([i915#5566])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-apl2/igt@gen9_exec_parse@allowed-all.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-apl4/igt@gen9_exec_parse@allowed-all.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - shard-apl:          [PASS][8] -> [DMESG-FAIL][9] ([i915#5334])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-apl2/igt@i915_selftest@live@gt_heartbeat.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-apl2/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_ccs@pipe-c-missing-ccs-buffer-y_tiled_gen12_rc_ccs_cc:
+    - shard-glk:          NOTRUN -> [SKIP][10] ([fdo#109271] / [i915#3886]) +4 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk7/igt@kms_ccs@pipe-c-missing-ccs-buffer-y_tiled_gen12_rc_ccs_cc.html
+
+  * igt@kms_cursor_crc@cursor-random-max-size:
+    - shard-glk:          NOTRUN -> [SKIP][11] ([fdo#109271] / [i915#4579]) +7 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk1/igt@kms_cursor_crc@cursor-random-max-size.html
+
+  * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:
+    - shard-apl:          [PASS][12] -> [FAIL][13] ([i915#2346]) +1 similar issue
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-apl4/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-apl7/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html
+
+  * igt@kms_flip@flip-vs-expired-vblank-interruptible@b-vga1:
+    - shard-snb:          [PASS][14] -> [FAIL][15] ([i915#79])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-snb7/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-vga1.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-snb2/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-vga1.html
+
+  * igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1:
+    - shard-glk:          [PASS][16] -> [FAIL][17] ([i915#79])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-glk4/igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk8/igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1.html
+
+  * igt@kms_plane_alpha_blend@alpha-opaque-fb@pipe-a-hdmi-a-1:
+    - shard-glk:          NOTRUN -> [FAIL][18] ([i915#4573]) +1 similar issue
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk4/igt@kms_plane_alpha_blend@alpha-opaque-fb@pipe-a-hdmi-a-1.html
+
+  * igt@kms_psr2_su@page_flip-nv12:
+    - shard-glk:          NOTRUN -> [SKIP][19] ([fdo#109271] / [i915#658]) +1 similar issue
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk5/igt@kms_psr2_su@page_flip-nv12.html
+
+  * igt@kms_vblank@pipe-d-wait-idle:
+    - shard-glk:          NOTRUN -> [SKIP][20] ([fdo#109271] / [i915#533])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk5/igt@kms_vblank@pipe-d-wait-idle.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_ctx_freq@sysfs:
+    - {shard-dg1}:        [FAIL][21] ([i915#6786]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-dg1-17/igt@gem_ctx_freq@sysfs.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-dg1-16/igt@gem_ctx_freq@sysfs.html
+
+  * igt@gem_eio@hibernate:
+    - {shard-dg1}:        [ABORT][23] ([i915#7975] / [i915#8213]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-dg1-14/igt@gem_eio@hibernate.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-dg1-17/igt@gem_eio@hibernate.html
+
+  * igt@gem_exec_fair@basic-none-share@rcs0:
+    - {shard-rkl}:        [FAIL][25] ([i915#2842]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-rkl-1/igt@gem_exec_fair@basic-none-share@rcs0.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-rkl-7/igt@gem_exec_fair@basic-none-share@rcs0.html
+
+  * igt@gem_exec_fair@basic-pace-share@rcs0:
+    - {shard-tglu}:       [FAIL][27] ([i915#2842]) -> [PASS][28]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-tglu-4/igt@gem_exec_fair@basic-pace-share@rcs0.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-tglu-8/igt@gem_exec_fair@basic-pace-share@rcs0.html
+
+  * igt@gem_exec_fair@basic-pace-solo@rcs0:
+    - shard-apl:          [FAIL][29] ([i915#2842]) -> [PASS][30]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-apl3/igt@gem_exec_fair@basic-pace-solo@rcs0.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-apl7/igt@gem_exec_fair@basic-pace-solo@rcs0.html
+
+  * igt@gem_exec_schedule@u-fairslice@vecs0:
+    - {shard-rkl}:        [ABORT][31] -> [PASS][32]
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-rkl-6/igt@gem_exec_schedule@u-fairslice@vecs0.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-rkl-4/igt@gem_exec_schedule@u-fairslice@vecs0.html
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - {shard-tglu}:       [ABORT][33] ([i915#7953]) -> [PASS][34]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-tglu-9/igt@gem_exec_suspend@basic-s0@smem.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-tglu-10/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@gem_lmem_swapping@smem-oom@lmem0:
+    - {shard-dg1}:        [TIMEOUT][35] ([i915#5493]) -> [PASS][36]
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-dg1-14/igt@gem_lmem_swapping@smem-oom@lmem0.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-dg1-18/igt@gem_lmem_swapping@smem-oom@lmem0.html
+
+  * igt@i915_pm_dc@dc6-dpms:
+    - {shard-tglu}:       [FAIL][37] ([i915#3989] / [i915#454]) -> [PASS][38]
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-tglu-3/igt@i915_pm_dc@dc6-dpms.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-tglu-2/igt@i915_pm_dc@dc6-dpms.html
+
+  * igt@i915_pm_rpm@modeset-lpsp-stress-no-wait:
+    - {shard-rkl}:        [SKIP][39] ([i915#1397]) -> [PASS][40]
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-rkl-3/igt@i915_pm_rpm@modeset-lpsp-stress-no-wait.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-rkl-7/igt@i915_pm_rpm@modeset-lpsp-stress-no-wait.html
+
+  * igt@kms_cursor_legacy@forked-move@pipe-b:
+    - {shard-rkl}:        [INCOMPLETE][41] ([i915#8011]) -> [PASS][42]
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-rkl-7/igt@kms_cursor_legacy@forked-move@pipe-b.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-rkl-3/igt@kms_cursor_legacy@forked-move@pipe-b.html
+
+  * igt@perf_pmu@all-busy-idle-check-all:
+    - {shard-dg1}:        [FAIL][43] ([i915#5234]) -> [PASS][44]
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-dg1-15/igt@perf_pmu@all-busy-idle-check-all.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-dg1-12/igt@perf_pmu@all-busy-idle-check-all.html
+
+  * igt@perf_pmu@idle@rcs0:
+    - {shard-dg1}:        [FAIL][45] ([i915#4349]) -> [PASS][46] +3 similar issues
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-dg1-18/igt@perf_pmu@idle@rcs0.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-dg1-16/igt@perf_pmu@idle@rcs0.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109274]: https://bugs.freedesktop.org/show_bug.cgi?id=109274
+  [fdo#109280]: https://bugs.freedesktop.org/show_bug.cgi?id=109280
+  [fdo#109289]: https://bugs.freedesktop.org/show_bug.cgi?id=109289
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#109300]: https://bugs.freedesktop.org/show_bug.cgi?id=109300
+  [fdo#109303]: https://bugs.freedesktop.org/show_bug.cgi?id=109303
+  [fdo#109312]: https://bugs.freedesktop.org/show_bug.cgi?id=109312
+  [fdo#109313]: https://bugs.freedesktop.org/show_bug.cgi?id=109313
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
+  [fdo#110723]: https://bugs.freedesktop.org/show_bug.cgi?id=110723
+  [fdo#111614]: https://bugs.freedesktop.org/show_bug.cgi?id=111614
+  [fdo#111615]: https://bugs.freedesktop.org/show_bug.cgi?id=111615
+  [fdo#111656]: https://bugs.freedesktop.org/show_bug.cgi?id=111656
+  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
+  [i915#1825]: https://gitlab.freedesktop.org/drm/intel/issues/1825
+  [i915#1839]: https://gitlab.freedesktop.org/drm/intel/issues/1839
+  [i915#1937]: https://gitlab.freedesktop.org/drm/intel/issues/1937
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+  [i915#2436]: https://gitlab.freedesktop.org/drm/intel/issues/2436
+  [i915#2527]: https://gitlab.freedesktop.org/drm/intel/issues/2527
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#2587]: https://gitlab.freedesktop.org/drm/intel/issues/2587
+  [i915#2672]: https://gitlab.freedesktop.org/drm/intel/issues/2672
+  [i915#2705]: https://gitlab.freedesktop.org/drm/intel/issues/2705
+  [i915#2842]: https://gitlab.freedesktop.org/drm/intel/issues/2842
+  [i915#2846]: https://gitlab.freedesktop.org/drm/intel/issues/2846
+  [i915#2856]: https://gitlab.freedesktop.org/drm/intel/issues/2856
+  [i915#3023]: https://gitlab.freedesktop.org/drm/intel/issues/3023
+  [i915#3116]: https://gitlab.freedesktop.org/drm/intel/issues/3116
+  [i915#315]: https://gitlab.freedesktop.org/drm/intel/issues/315
+  [i915#3281]: https://gitlab.freedesktop.org/drm/intel/issues/3281
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3297]: https://gitlab.freedesktop.org/drm/intel/issues/3297
+  [i915#3318]: https://gitlab.freedesktop.org/drm/intel/issues/3318
+  [i915#3323]: https://gitlab.freedesktop.org/drm/intel/issues/3323
+  [i915#3359]: https://gitlab.freedesktop.org/drm/intel/issues/3359
+  [i915#3458]: https://gitlab.freedesktop.org/drm/intel/issues/3458
+  [i915#3539]: https://gitlab.freedesktop.org/drm/intel/issues/3539
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3591]: https://gitlab.freedesktop.org/drm/intel/issues/3591
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3638]: https://gitlab.freedesktop.org/drm/intel/issues/3638
+  [i915#3689]: https://gitlab.freedesktop.org/drm/intel/issues/3689
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3734]: https://gitlab.freedesktop.org/drm/intel/issues/3734
+  [i915#3742]: https://gitlab.freedesktop.org/drm/intel/issues/3742
+  [i915#3886]: https://gitlab.freedesktop.org/drm/intel/issues/3886
+  [i915#3989]: https://gitlab.freedesktop.org/drm/intel/issues/3989
+  [i915#4070]: https://gitlab.freedesktop.org/drm/intel/issues/4070
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
+  [i915#4270]: https://gitlab.freedesktop.org/drm/intel/issues/4270
+  [i915#4349]: https://gitlab.freedesktop.org/drm/intel/issues/4349
+  [i915#4525]: https://gitlab.freedesktop.org/drm/intel/issues/4525
+  [i915#4538]: https://gitlab.freedesktop.org/drm/intel/issues/4538
+  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
+  [i915#4573]: https://gitlab.freedesktop.org/drm/intel/issues/4573
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4816]: https://gitlab.freedesktop.org/drm/intel/issues/4816
+  [i915#4833]: https://gitlab.freedesktop.org/drm/intel/issues/4833
+  [i915#4852]: https://gitlab.freedesktop.org/drm/intel/issues/4852
+  [i915#4860]: https://gitlab.freedesktop.org/drm/intel/issues/4860
+  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
+  [i915#5176]: https://gitlab.freedesktop.org/drm/intel/issues/5176
+  [i915#5234]: https://gitlab.freedesktop.org/drm/intel/issues/5234
+  [i915#5235]: https://gitlab.freedesktop.org/drm/intel/issues/5235
+  [i915#5286]: https://gitlab.freedesktop.org/drm/intel/issues/5286
+  [i915#5325]: https://gitlab.freedesktop.org/drm/intel/issues/5325
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#5493]: https://gitlab.freedesktop.org/drm/intel/issues/5493
+  [i915#5566]: https://gitlab.freedesktop.org/drm/intel/issues/5566
+  [i915#5723]: https://gitlab.freedesktop.org/drm/intel/issues/5723
+  [i915#6095]: https://gitlab.freedesktop.org/drm/intel/issues/6095
+  [i915#6230]: https://gitlab.freedesktop.org/drm/intel/issues/6230
+  [i915#6268]: https://gitlab.freedesktop.org/drm/intel/issues/6268
+  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
+  [i915#6768]: https://gitlab.freedesktop.org/drm/intel/issues/6768
+  [i915#6786]: https://gitlab.freedesktop.org/drm/intel/issues/6786
+  [i915#6953]: https://gitlab.freedesktop.org/drm/intel/issues/6953
+  [i915#7116]: https://gitlab.freedesktop.org/drm/intel/issues/7116
+  [i915#7118]: https://gitlab.freedesktop.org/drm/intel/issues/7118
+  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
+  [i915#7711]: https://gitlab.freedesktop.org/drm/intel/issues/7711
+  [i915#7742]: https://gitlab.freedesktop.org/drm/intel/issues/7742
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#79]: https://gitlab.freedesktop.org/drm/intel/issues/79
+  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
+  [i915#7975]: https://gitlab.freedesktop.org/drm/intel/issues/7975
+  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
+  [i915#8211]: https://gitlab.freedesktop.org/drm/intel/issues/8211
+  [i915#8213]: https://gitlab.freedesktop.org/drm/intel/issues/8213
+  [i915#8228]: https://gitlab.freedesktop.org/drm/intel/issues/8228
+  [i915#8234]: https://gitlab.freedesktop.org/drm/intel/issues/8234
+  [i915#8292]: https://gitlab.freedesktop.org/drm/intel/issues/8292
+  [i915#8295]: https://gitlab.freedesktop.org/drm/intel/issues/8295
+  [i915#8414]: https://gitlab.freedesktop.org/drm/intel/issues/8414
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7291 -> IGTPW_8963
+
+  CI-20190529: 20190529
+  CI_DRM_13148: 57a535e042517014a85f33be6fa5ed22145c56e9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8963: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/index.html
+  IGT_7291: a536bd30aaeb1ab02dc4f37d2d723c37be356d8d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/index.html
+
+--===============5240724352830443926==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>gputop/intel_gpu_top: Move name to be the last field (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117768/">https://patchwork.freedesktop.org/series/117768/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7291_full -&gt; IGTPW_8963_full</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/index.html</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8963_full that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@verify-random-ccs:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk9/igt@gem_lmem_swapping@verify-random-ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ppgtt@blt-vs-render-ctxn:</p>
+<ul>
+<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-snb5/igt@gem_ppgtt@blt-vs-render-ctxn.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-snb6/igt@gem_ppgtt@blt-vs-render-ctxn.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8295">i915#8295</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_copy@y-tiled-ccs-to-y-tiled-mc-ccs:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk7/igt@gem_render_copy@y-tiled-ccs-to-y-tiled-mc-ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +96 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@dmabuf-sync:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk8/igt@gem_userptr_blits@dmabuf-sync.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3323">i915#3323</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@allowed-all:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-apl2/igt@gen9_exec_parse@allowed-all.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-apl4/igt@gen9_exec_parse@allowed-all.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5566">i915#5566</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-apl2/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-apl2/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@pipe-c-missing-ccs-buffer-y_tiled_gen12_rc_ccs_cc:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk7/igt@kms_ccs@pipe-c-missing-ccs-buffer-y_tiled_gen12_rc_ccs_cc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3886">i915#3886</a>) +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-random-max-size:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk1/igt@kms_cursor_crc@cursor-random-max-size.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-apl4/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-apl7/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank-interruptible@b-vga1:</p>
+<ul>
+<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-snb7/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-vga1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-snb2/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-vga1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/79">i915#79</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-glk4/igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk8/igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/79">i915#79</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_alpha_blend@alpha-opaque-fb@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk4/igt@kms_plane_alpha_blend@alpha-opaque-fb@pipe-a-hdmi-a-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4573">i915#4573</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_su@page_flip-nv12:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk5/igt@kms_psr2_su@page_flip-nv12.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/658">i915#658</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vblank@pipe-d-wait-idle:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-glk5/igt@kms_vblank@pipe-d-wait-idle.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_ctx_freq@sysfs:</p>
+<ul>
+<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-dg1-17/igt@gem_ctx_freq@sysfs.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6786">i915#6786</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-dg1-16/igt@gem_ctx_freq@sysfs.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_eio@hibernate:</p>
+<ul>
+<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-dg1-14/igt@gem_eio@hibernate.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7975">i915#7975</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8213">i915#8213</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-dg1-17/igt@gem_eio@hibernate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-none-share@rcs0:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-rkl-1/igt@gem_exec_fair@basic-none-share@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-rkl-7/igt@gem_exec_fair@basic-none-share@rcs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-pace-share@rcs0:</p>
+<ul>
+<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-tglu-4/igt@gem_exec_fair@basic-pace-share@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-tglu-8/igt@gem_exec_fair@basic-pace-share@rcs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-pace-solo@rcs0:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-apl3/igt@gem_exec_fair@basic-pace-solo@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-apl7/igt@gem_exec_fair@basic-pace-solo@rcs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_schedule@u-fairslice@vecs0:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-rkl-6/igt@gem_exec_schedule@u-fairslice@vecs0.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-rkl-4/igt@gem_exec_schedule@u-fairslice@vecs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-tglu-9/igt@gem_exec_suspend@basic-s0@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-tglu-10/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@smem-oom@lmem0:</p>
+<ul>
+<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-dg1-14/igt@gem_lmem_swapping@smem-oom@lmem0.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5493">i915#5493</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-dg1-18/igt@gem_lmem_swapping@smem-oom@lmem0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_dc@dc6-dpms:</p>
+<ul>
+<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-tglu-3/igt@i915_pm_dc@dc6-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3989">i915#3989</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/454">i915#454</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-tglu-2/igt@i915_pm_dc@dc6-dpms.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@modeset-lpsp-stress-no-wait:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-rkl-3/igt@i915_pm_rpm@modeset-lpsp-stress-no-wait.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-rkl-7/igt@i915_pm_rpm@modeset-lpsp-stress-no-wait.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@forked-move@pipe-b:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-rkl-7/igt@kms_cursor_legacy@forked-move@pipe-b.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8011">i915#8011</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-rkl-3/igt@kms_cursor_legacy@forked-move@pipe-b.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@perf_pmu@all-busy-idle-check-all:</p>
+<ul>
+<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-dg1-15/igt@perf_pmu@all-busy-idle-check-all.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5234">i915#5234</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-dg1-12/igt@perf_pmu@all-busy-idle-check-all.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@perf_pmu@idle@rcs0:</p>
+<ul>
+<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7291/shard-dg1-18/igt@perf_pmu@idle@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4349">i915#4349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/shard-dg1-16/igt@perf_pmu@idle@rcs0.html">PASS</a> +3 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7291 -&gt; IGTPW_8963</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13148: 57a535e042517014a85f33be6fa5ed22145c56e9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8963: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8963/index.html<br />
+  IGT_7291: a536bd30aaeb1ab02dc4f37d2d723c37be356d8d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5240724352830443926==--
