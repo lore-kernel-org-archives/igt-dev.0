@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F14710E27D
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 16:56:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5252E10E27F
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 16:56:20 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
  janga.rahul.kumar@intel.com
-Date: Tue, 16 May 2023 22:20:40 +0530
-Message-Id: <20230516165058.4047595-3-bhanuprakash.modem@intel.com>
+Date: Tue, 16 May 2023 22:20:41 +0530
+Message-Id: <20230516165058.4047595-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
 References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 02/20] lib: Cache xe_device at driver open/close
- level
+Subject: [igt-dev] [i-g-t 03/20] lib/xe/xe_query: Add xe_config() interface
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,109 +23,45 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of caching the xe_device struct at subtest level, cache
-just after opening the driver. And remove from the cache just
-before closing the driver.
-
-V2: - Place the logic in correct helpers (Zbigniew)
+Add support to get XE configuration from xe_device.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/drmtest.c   | 24 +++++++++++++++++++++---
- lib/igt_types.c |  6 ++++++
- 2 files changed, 27 insertions(+), 3 deletions(-)
+ lib/xe/xe_query.c | 8 ++++++++
+ lib/xe/xe_query.h | 1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 41ad2694c..cfcb630ed 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -64,6 +64,7 @@
- #include "intel_reg.h"
- #include "ioctl_wrappers.h"
- #include "igt_dummyload.h"
-+#include "xe/xe_query.h"
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index bd5eb1d18..d254a23cb 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -479,6 +479,14 @@ uint32_t xe_min_page_size(int fd, uint64_t region)
+ 	return xe_mem_region(fd, region)->min_page_size;
+ }
  
++/**
++ * xe_config:
++ * @fd: xe device fd
++ *
++ * Returns xe configuration of xe device @fd.
++ */
++xe_dev_FN(xe_config, config, struct drm_xe_query_config *);
++
  /**
-  * SECTION:drmtest
-@@ -465,9 +466,14 @@ int __drm_open_driver_another(int idx, int chipset)
- 		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
- 	}
- 
--	if (fd >= 0)
-+	if (fd >= 0) {
- 		_set_opened_fd(idx, fd);
- 
-+		/* Cache xe_device struct. */
-+		if (is_xe_device(fd))
-+			xe_device_get(fd);
-+	}
-+
- 	return fd;
- }
- 
-@@ -491,6 +497,8 @@ int __drm_open_driver(int chipset)
- 
- int __drm_open_driver_render(int chipset)
- {
-+	int fd;
-+
- 	if (chipset != DRIVER_VGEM && igt_device_filter_count() > 0) {
- 		struct igt_device_card card;
- 		bool found;
-@@ -500,10 +508,16 @@ int __drm_open_driver_render(int chipset)
- 		if (!found || !strlen(card.render))
- 			return -1;
- 
--		return __open_driver_exact(card.render, chipset);
-+		fd = __open_driver_exact(card.render, chipset);
-+	} else {
-+		fd = __open_driver("/dev/dri/renderD", 128, chipset, 0);
- 	}
- 
--	return __open_driver("/dev/dri/renderD", 128, chipset, 0);
-+	/* Cache xe_device struct. */
-+	if (fd >= 0 && is_xe_device(fd))
-+		xe_device_get(fd);
-+
-+	return fd;
- }
- 
- static int at_exit_drm_fd = -1;
-@@ -622,6 +636,10 @@ int drm_close_driver(int fd)
- 		return -1;
- 	}
- 
-+	/* Remove xe_device from cache. */
-+	if (is_xe_device(fd))
-+		xe_device_put(fd);
-+
- 	return close(fd);
- }
- 
-diff --git a/lib/igt_types.c b/lib/igt_types.c
-index 392f30fca..d5d444889 100644
---- a/lib/igt_types.c
-+++ b/lib/igt_types.c
-@@ -5,13 +5,19 @@
- 
- #include <unistd.h>
- 
-+#include "drmtest.h"
- #include "igt_types.h"
-+#include "xe/xe_query.h"
- 
- void igt_cleanup_fd(volatile int *fd)
- {
- 	if (!fd || *fd < 0)
- 		return;
- 
-+	/* Remove xe_device from cache. */
-+	if (is_xe_device(*fd))
-+		xe_device_put(*fd);
-+
- 	close(*fd);
- 	*fd = -1;
- }
+  * xe_number_hw_engine:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index cc6e7cefd..63f32ca92 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -86,6 +86,7 @@ struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
+ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
+ const char *xe_region_name(uint64_t region);
+ uint32_t xe_min_page_size(int fd, uint64_t region);
++struct drm_xe_query_config *xe_config(int fd);
+ unsigned int xe_number_hw_engines(int fd);
+ bool xe_has_vram(int fd);
+ uint64_t xe_vram_size(int fd, int gt);
 -- 
 2.40.0
