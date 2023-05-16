@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F82B10E25E
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 15:45:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99F2310E25D
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 15:45:55 +0000 (UTC)
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 16 May 2023 17:44:31 +0200
-Message-Id: <20230516154434.810356-6-dominik.grzegorzek@intel.com>
+Date: Tue, 16 May 2023 17:44:30 +0200
+Message-Id: <20230516154434.810356-5-dominik.grzegorzek@intel.com>
 In-Reply-To: <20230516154434.810356-1-dominik.grzegorzek@intel.com>
 References: <20230516154434.810356-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/8] xe/xe_eudebug: exercise read_event ioctl
+Subject: [igt-dev] [PATCH i-g-t 4/8] xe/xe_eudebug: test open close events
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,126 +22,129 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Introduce synchronous test, which validates eu debugger read_event
-ioctl.
+Introduce basic tests which validate client create/destroy events
+sent on xe drm client open/close.
 
+Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- tests/xe/xe_eudebug.c | 81 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ tests/xe/xe_eudebug.c | 88 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
 
 diff --git a/tests/xe/xe_eudebug.c b/tests/xe/xe_eudebug.c
-index cf49a4bd4..31f0f274d 100644
+index 7202da689..cf49a4bd4 100644
 --- a/tests/xe/xe_eudebug.c
 +++ b/tests/xe/xe_eudebug.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright © 2023 Intel Corporation
+@@ -4,8 +4,68 @@
   */
-+#include <poll.h>
  
  #include <xe_drm_tmp.h>
- #include "xe/xe_eudebug.h"
-@@ -66,6 +67,34 @@ static void session_destroy(struct session *s)
- 	xe_eudebug_client_destroy(s->c);
- }
++#include "xe/xe_eudebug.h"
+ #include "igt.h"
  
-+static int __read_event(int debugfd, struct drm_xe_eudebug_event *event)
++static void run_basic_client(struct xe_eudebug_client *c)
 +{
-+	int ret;
++	int fd;
 +
-+	ret = igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_READ_EVENT, event);
-+	if (ret < 0)
-+		return -errno;
-+
-+	return ret;
++	fd = xe_eudebug_client_open_driver(c);
++	xe_eudebug_client_close_driver(c, fd);
 +}
 +
-+static int poll_event(int fd, int timeout_ms)
++struct session {
++	unsigned int flags;
++	struct xe_eudebug_debugger *d;
++	struct xe_eudebug_client *c;
++};
++
++static struct session *session_create(int fd, xe_eudebug_client_work_fn work, unsigned int flags)
 +{
-+	int ret;
++	struct session *s;
 +
-+	struct pollfd p = {
-+		.fd = fd,
-+		.events = POLLIN,
-+		.revents = 0,
-+	};
++	s = calloc(1, sizeof(*s));
++	igt_assert(s);
 +
-+	ret = poll(&p, 1, timeout_ms);
-+	if (ret == -1)
-+		return -errno;
++	s->c = xe_eudebug_client_create(work, flags);
++	s->d = xe_eudebug_debugger_create(fd, flags);
 +
-+	return ret == 1 && (p.revents & POLLIN);
++	return s;
++}
++
++static void session_run(struct session *s)
++{
++	struct xe_eudebug_debugger *debugger = s->d;
++	struct xe_eudebug_client *client = s->c;
++
++	igt_assert_eq(xe_eudebug_debugger_attach(debugger, client->pid), 0);
++
++	xe_eudebug_debugger_start_worker(debugger);
++
++	xe_eudebug_client_start(client);
++	xe_eudebug_client_wait_done(client);
++
++	xe_eudebug_debugger_stop_worker(debugger, 1);
++
++	xe_eudebug_event_log_print(debugger->log, true);
++	xe_eudebug_event_log_print(client->log, true);
++}
++
++static void session_check(struct session *s, bool match_opposite)
++{
++	xe_eudebug_event_log_compare(s->c->log, s->d->log);
++
++	if (match_opposite)
++		xe_eudebug_event_log_match_opposite(s->d->log);
++}
++
++static void session_destroy(struct session *s)
++{
++	xe_eudebug_debugger_destroy(s->d);
++	xe_eudebug_client_destroy(s->c);
 +}
 +
  static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect_param *param)
  {
  	int ret = 0;
-@@ -174,6 +203,55 @@ static void test_close(int fd)
+@@ -114,6 +174,28 @@ static void test_close(int fd)
  	close(debug_fd1);
  }
  
-+#define MAX_EVENT_SIZE (32 * 1024)
-+static void test_read_event(int fd)
++static void test_basic_sessions(int fd, unsigned int flags, int count)
 +{
-+	struct drm_xe_eudebug_event event = {};
-+	struct xe_eudebug_debugger *d;
-+	struct xe_eudebug_client *c;
++	struct session **s;
++	int i;
 +
-+	c = xe_eudebug_client_create(run_basic_client, 0);
-+	d = xe_eudebug_debugger_create(fd, 0);
++	s = calloc(count, sizeof(*s));
 +
-+	igt_assert_eq(xe_eudebug_debugger_attach(d, c->pid), 0);
-+	igt_assert_eq(poll_event(d->fd, 500), 0);
++	igt_assert(s);
 +
-+	event.size = 1;
-+	event.type = DRM_XE_EUDEBUG_EVENT_NONE;
-+	igt_assert_eq(__read_event(d->fd, &event), -EINVAL);
++	for (i = 0; i < count; i++)
++		s[i] = session_create(fd, run_basic_client, flags);
 +
-+	event.size = MAX_EVENT_SIZE;
-+	event.type = DRM_XE_EUDEBUG_EVENT_NONE;
-+	igt_assert_eq(__read_event(d->fd, &event), -EINVAL);
++	for (i = 0; i < count; i++)
++		session_run(s[i]);
 +
-+	xe_eudebug_client_start(c);
++	for (i = 0; i < count; i++)
++		session_check(s[i], true);
 +
-+	igt_assert_eq(poll_event(d->fd, 500), 1);
-+	event.type = DRM_XE_EUDEBUG_EVENT_READ;
-+	igt_assert_eq(__read_event(d->fd, &event), 0);
-+
-+	igt_assert_eq(poll_event(d->fd, 500), 1);
-+	event.size = MAX_EVENT_SIZE;
-+	event.flags = 0;
-+	event.type = DRM_XE_EUDEBUG_EVENT_READ;
-+	igt_assert_eq(__read_event(d->fd, &event), 0);
-+
-+	igt_assert_eq(poll_event(d->fd, 500), 0);
-+	event.size = MAX_EVENT_SIZE;
-+	event.flags = 0;
-+	event.type = DRM_XE_EUDEBUG_EVENT_READ;
-+	igt_assert_eq(__read_event(d->fd, &event), -ENOENT);
-+
-+	xe_eudebug_client_wait_done(c);
-+	xe_eudebug_client_stop(c);
-+
-+	igt_assert_eq(poll_event(d->fd, 500), 0);
-+	igt_assert_eq(__read_event(d->fd, &event), -ENOENT);
-+
-+	xe_eudebug_debugger_destroy(d);
-+	xe_eudebug_client_destroy(c);
++	for (i = 0; i < count; i++)
++		session_destroy(s[i]);
 +}
 +
- static void test_basic_sessions(int fd, unsigned int flags, int count)
+ igt_main
  {
- 	struct session **s;
-@@ -210,6 +288,9 @@ igt_main
+ 	int fd;
+@@ -128,6 +210,12 @@ igt_main
  	igt_subtest("basic-close")
  		test_close(fd);
  
-+	igt_subtest("basic-read-event")
-+		test_read_event(fd);
++	igt_subtest("basic-client")
++		test_basic_sessions(fd, 0, 1);
 +
- 	igt_subtest("basic-client")
- 		test_basic_sessions(fd, 0, 1);
- 
++	igt_subtest("multiple-sessions")
++		test_basic_sessions(fd, 0, 4);
++
+ 	igt_fixture
+ 		close(fd);
+ }
 -- 
 2.34.1
