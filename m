@@ -1,29 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F2DAD10E331
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 09:33:39 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.15.32])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 36F02580D24
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 02:33:38 -0700 (PDT)
-Received: from localhost ([127.0.0.1])
- by linux.intel.com with esmtp (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pyr3n-006hDY-34
- for igt-dev@lists.freedesktop.org; Tue, 16 May 2023 11:33:35 +0200
-Message-ID: <b61cd0a1-0f6a-65d9-0ca8-633ac92db0bb@linux.intel.com>
-Date: Tue, 16 May 2023 11:33:35 +0200
-MIME-Version: 1.0
-Content-Language: en-US
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-References: <20230515184604.64135-1-kamil.konieczny@linux.intel.com>
- <20230515184604.64135-2-kamil.konieczny@linux.intel.com>
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-In-Reply-To: <20230515184604.64135-2-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] Use the new procps library libproc2
+Date: Tue, 16 May 2023 12:05:11 +0200
+Message-Id: <20230516100511.33150-1-janusz.krzysztofik@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/i915: Exercise coherency of
+ mmapped frame buffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,533 +15,365 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Patch series LGTM.
+Visible glitches have been observed when running graphics applications on
+Linux under Xen hypervisor.  Those observations have been confirmed with
+failures from kms_pwrite_crc IGT test that verifies data coherency of DRM
+frame buffer objects using hardware CRC checksums calculated by display
+controllers, exposed to userspace via debugfs.  Since not all applications
+exhibit the issue, we need to exercise more methods than just pwrite in
+order to identify all affected processing paths.
 
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Create a new test focused on exercising coherency of future scanout
+buffers populated over mmap.  Cover all available mmap methods and caching
+modes expected to be device coherent.
 
-On 5/15/23 20:46, Kamil Konieczny wrote:
-> From: Craig Small <csmall@dropbear.xyz>
->
-> Added support for new libproc2.
->
-> [Corrected some errors pointed by checkpatch.pl,
->   add linux includes in #ifdef __linux__ section]
-> v2: changed to igt_fork_helper and added error print [Kamil]
-> v3: removed include <limits.h> pointed by Mauro [Kamil]
->
-> Signed-off-by: Craig Small <csmall@dropbear.xyz>
-> ---
->   lib/igt_aux.c   | 246 +++++++++++++++++++++++++++++++++++++++---------
->   lib/meson.build |   7 +-
->   meson.build     |  10 +-
->   3 files changed, 219 insertions(+), 44 deletions(-)
->
-> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> index 672d7d4b0..4c24b0928 100644
-> --- a/lib/igt_aux.c
-> +++ b/lib/igt_aux.c
-> @@ -52,8 +52,16 @@
->   #include <assert.h>
->   #include <grp.h>
->   
-> -#include <proc/readproc.h>
-> -#include <libudev.h>
-> +#ifdef HAVE_LIBPROCPS
-> +#  include <proc/readproc.h>
-> +#else
-> +#  include <libproc2/pids.h>
-> +#endif
-> +
-> +#include <dirent.h>
-> +#ifdef __linux__
-> +#  include <libudev.h>
-> +#endif
->   
->   #include "drmtest.h"
->   #include "i915_drm.h"
-> @@ -1217,6 +1225,7 @@ void igt_unlock_mem(void)
->    */
->   int igt_is_process_running(const char *comm)
->   {
-> +#if HAVE_LIBPROCPS
->   	PROCTAB *proc;
->   	proc_t *proc_info;
->   	bool found = false;
-> @@ -1235,6 +1244,26 @@ int igt_is_process_running(const char *comm)
->   
->   	closeproc(proc);
->   	return found;
-> +#else
-> +	enum pids_item Item[] = { PIDS_CMD };
-> +	struct pids_info *info = NULL;
-> +	struct pids_stack *stack;
-> +	char *pid_comm;
-> +	bool found = false;
-> +
-> +	if (procps_pids_new(&info, Item, 1) < 0)
-> +		return false;
-> +	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-> +		pid_comm = PIDS_VAL(0, str, stack, info);
-> +		if (!strncasecmp(pid_comm, comm, strlen(pid_comm))) {
-> +			found = true;
-> +			break;
-> +		}
-> +	}
-> +
-> +	procps_pids_unref(&info);
-> +	return found;
-> +#endif
->   }
->   
->   /**
-> @@ -1251,6 +1280,7 @@ int igt_is_process_running(const char *comm)
->    */
->   int igt_terminate_process(int sig, const char *comm)
->   {
-> +#if HAVE_LIBPROCPS
->   	PROCTAB *proc;
->   	proc_t *proc_info;
->   	int err = 0;
-> @@ -1272,6 +1302,28 @@ int igt_terminate_process(int sig, const char *comm)
->   
->   	closeproc(proc);
->   	return err;
-> +#else
-> +	enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD };
-> +	struct pids_info *info = NULL;
-> +	struct pids_stack *stack;
-> +	char *pid_comm;
-> +	int pid;
-> +	int err = 0;
-> +
-> +	if (procps_pids_new(&info, Items, 2) < 0)
-> +		return -errno;
-> +	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-> +		pid = PIDS_VAL(0, s_int, stack, info);
-> +		pid_comm = PIDS_VAL(1, str, stack, info);
-> +		if (!strncasecmp(pid_comm, comm, strlen(pid_comm))) {
-> +			if (kill(pid, sig) < 0)
-> +				err = -errno;
-> +			break;
-> +		}
-> +	}
-> +	procps_pids_unref(&info);
-> +	return err;
-> +#endif
->   }
->   
->   struct pinfo {
-> @@ -1341,9 +1393,9 @@ igt_show_stat_header(void)
->   }
->   
->   static void
-> -igt_show_stat(proc_t *info, int *state, const char *fn)
-> +igt_show_stat(const pid_t tid, const char *cmd, int *state, const char *fn)
->   {
-> -	struct pinfo p = { .pid = info->tid, .comm = info->cmd, .fn = fn };
-> +	struct pinfo p = { .pid = tid, .comm = cmd, .fn = fn };
->   
->   	if (!*state)
->   		igt_show_stat_header();
-> @@ -1353,7 +1405,7 @@ igt_show_stat(proc_t *info, int *state, const char *fn)
->   }
->   
->   static void
-> -__igt_lsof_fds(proc_t *proc_info, int *state, char *proc_path, const char *dir)
-> +__igt_lsof_fds(const pid_t tid, const char *cmd, int *state, char *proc_path, const char *dir)
->   {
->   	struct dirent *d;
->   	struct stat st;
-> @@ -1400,7 +1452,7 @@ again:
->   		dirn = dirname(copy_fd_lnk);
->   
->   		if (!strncmp(dir, dirn, strlen(dir)))
-> -			igt_show_stat(proc_info, state, fd_lnk);
-> +			igt_show_stat(tid, cmd, state, fd_lnk);
->   
->   		free(copy_fd_lnk);
->   		free(fd_lnk);
-> @@ -1416,13 +1468,13 @@ again:
->   static void
->   __igt_lsof(const char *dir)
->   {
-> -	PROCTAB *proc;
-> -	proc_t *proc_info;
-> -
->   	char path[30];
->   	char *name_lnk;
->   	struct stat st;
->   	int state = 0;
-> +#ifdef HAVE_LIBPROCPS
-> +	PROCTAB *proc;
-> +	proc_t *proc_info;
->   
->   	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
->   	igt_assert(proc != NULL);
-> @@ -1443,19 +1495,56 @@ __igt_lsof(const char *dir)
->   		name_lnk[read] = '\0';
->   
->   		if (!strncmp(dir, name_lnk, strlen(dir)))
-> -			igt_show_stat(proc_info, &state, name_lnk);
-> +			igt_show_stat(proc_info->tid, proc_info->cmd, &state, name_lnk);
->   
->   		/* check also fd, seems that lsof(8) doesn't look here */
->   		memset(path, 0, sizeof(path));
->   		snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid);
->   
-> -		__igt_lsof_fds(proc_info, &state, path, dir);
-> +		__igt_lsof_fds(proc_info->tid, proc_info->cmd, &state, path, dir);
->   
->   		free(name_lnk);
->   		freeproc(proc_info);
->   	}
->   
->   	closeproc(proc);
-> +#else
-> +	enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD };
-> +	struct pids_info *info = NULL;
-> +	struct pids_stack *stack;
-> +
-> +	if (procps_pids_new(&info, Items, 2) < 0)
-> +		return;
-> +	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-> +		ssize_t read;
-> +		int tid = PIDS_VAL(0, s_int, stack, info);
-> +		char *pid_comm = PIDS_VAL(1, str, stack, info);
-> +
-> +		/* check current working directory */
-> +		memset(path, 0, sizeof(path));
-> +		snprintf(path, sizeof(path), "/proc/%d/cwd", tid);
-> +
-> +		if (stat(path, &st) == -1)
-> +			continue;
-> +
-> +		name_lnk = malloc(st.st_size + 1);
-> +
-> +		igt_assert((read = readlink(path, name_lnk, st.st_size + 1)));
-> +		name_lnk[read] = '\0';
-> +
-> +		if (!strncmp(dir, name_lnk, strlen(dir)))
-> +			igt_show_stat(tid, pid_comm, &state, name_lnk);
-> +
-> +		/* check also fd, seems that lsof(8) doesn't look here */
-> +		memset(path, 0, sizeof(path));
-> +		snprintf(path, sizeof(path), "/proc/%d/fd", tid);
-> +
-> +		__igt_lsof_fds(tid, pid_comm, &state, path, dir);
-> +
-> +		free(name_lnk);
-> +	}
-> +	procps_pids_unref(&info);
-> +#endif
->   }
->   
->   /**
-> @@ -1490,7 +1579,7 @@ igt_lsof(const char *dpath)
->   	free(sanitized);
->   }
->   
-> -static void pulseaudio_unload_module(proc_t *proc_info)
-> +static void pulseaudio_unload_module(const uid_t euid, const gid_t egid)
->   {
->   	struct igt_helper_process pa_proc = {};
->   	char xdg_dir[PATH_MAX];
-> @@ -1498,14 +1587,14 @@ static void pulseaudio_unload_module(proc_t *proc_info)
->   	struct passwd *pw;
->   
->   	igt_fork_helper(&pa_proc) {
-> -		pw = getpwuid(proc_info->euid);
-> +		pw = getpwuid(euid);
->   		homedir = pw->pw_dir;
-> -		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
-> +		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", euid);
->   
->   		igt_info("Request pulseaudio to stop using audio device\n");
->   
-> -		setgid(proc_info->egid);
-> -		setuid(proc_info->euid);
-> +		setgid(egid);
-> +		setuid(euid);
->   		clearenv();
->   		setenv("HOME", homedir, 1);
->   		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
-> @@ -1524,10 +1613,13 @@ static void pipewire_reserve_wait(void)
->   	char xdg_dir[PATH_MAX];
->   	const char *homedir;
->   	struct passwd *pw;
-> -	proc_t *proc_info;
-> -	PROCTAB *proc;
-> +	int tid = 0, euid, egid;
->   
-> +#ifdef HAVE_LIBPROCPS
->   	igt_fork_helper(&pw_reserve_proc) {
-> +		proc_t *proc_info;
-> +		PROCTAB *proc;
-> +
->   		igt_info("Preventing pipewire-pulse to use the audio drivers\n");
->   
->   		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
-> @@ -1540,19 +1632,45 @@ static void pipewire_reserve_wait(void)
->   		}
->   		closeproc(proc);
->   
-> +		tid = proc_info->tid;
-> +		euid = proc_info->euid;
-> +		egid = proc_info->egid;
-> +		freeproc(proc_info);
-> +#else
-> +	igt_fork_helper(&pw_reserve_proc) {
-> +		enum pids_item Items[] = { PIDS_ID_PID, PIDS_ID_EUID, PIDS_ID_EGID };
-> +		enum rel_items { EU_PID, EU_EUID, EU_EGID };
-> +		struct pids_info *info = NULL;
-> +		struct pids_stack *stack;
-> +
-> +		igt_info("Preventing pipewire-pulse to use the audio drivers\n");
-> +
-> +		if (procps_pids_new(&info, Items, 3) < 0) {
-> +			igt_info("error getting pids: %d\n", errno);
-> +			exit(errno);
-> +		}
-> +		while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-> +			tid = PIDS_VAL(EU_PID, s_int, stack, info);
-> +			if (pipewire_pulse_pid == tid)
-> +				break;
-> +		}
-> +		euid = PIDS_VAL(EU_EUID, s_int, stack, info);
-> +		egid = PIDS_VAL(EU_EGID, s_int, stack, info);
-> +		procps_pids_unref(&info);
-> +#endif
-> +
->   		/* Sanity check: if it can't find the process, it means it has gone */
-> -		if (pipewire_pulse_pid != proc_info->tid)
-> +		if (pipewire_pulse_pid != tid)
->   			exit(0);
->   
-> -		pw = getpwuid(proc_info->euid);
-> +		pw = getpwuid(euid);
->   		homedir = pw->pw_dir;
-> -		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
-> -		setgid(proc_info->egid);
-> -		setuid(proc_info->euid);
-> +		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", euid);
-> +		setgid(egid);
-> +		setuid(euid);
->   		clearenv();
->   		setenv("HOME", homedir, 1);
->   		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
-> -		freeproc(proc_info);
->   
->   		/*
->   		 * pw-reserve will run in background. It will only exit when
-> @@ -1570,9 +1688,7 @@ static void pipewire_reserve_wait(void)
->   int pipewire_pulse_start_reserve(void)
->   {
->   	bool is_pw_reserve_running = false;
-> -	proc_t *proc_info;
->   	int attempts = 0;
-> -	PROCTAB *proc;
->   
->   	if (!pipewire_pulse_pid)
->   		return 0;
-> @@ -1584,6 +1700,10 @@ int pipewire_pulse_start_reserve(void)
->   	 * pipewire version 0.3.50 or upper.
->   	 */
->   	for (attempts = 0; attempts < PIPEWIRE_RESERVE_MAX_TIME; attempts++) {
-> +#ifdef HAVE_LIBPROCPS
-> +		PROCTAB *proc;
-> +		proc_t *proc_info;
-> +
->   		usleep(1000);
->   		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
->   		igt_assert(proc != NULL);
-> @@ -1598,6 +1718,24 @@ int pipewire_pulse_start_reserve(void)
->   			freeproc(proc_info);
->   		}
->   		closeproc(proc);
-> +#else
-> +		enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD };
-> +		struct pids_info *info = NULL;
-> +		struct pids_stack *stack;
-> +
-> +		usleep(1000);
-> +
-> +		if (procps_pids_new(&info, Items, 2) < 0)
-> +			return 1;
-> +		while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-> +			if (!strcmp(PIDS_VAL(1, str, stack, info), "pw-reserve")) {
-> +				is_pw_reserve_running = true;
-> +				pipewire_pw_reserve_pid = PIDS_VAL(0, s_int, stack, info);
-> +				break;
-> +			}
-> +		}
-> +		procps_pids_unref(&info);
-> +#endif
->   		if (is_pw_reserve_running)
->   			break;
->   	}
-> @@ -1645,7 +1783,7 @@ void pipewire_pulse_stop_reserve(void)
->    * If the check fails, it means that the process can simply be killed.
->    */
->   static int
-> -__igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
-> +__igt_lsof_audio_and_kill_proc(const pid_t tid, const char *cmd, const uid_t euid, const gid_t egid, char *proc_path)
->   {
->   	const char *audio_dev = "/dev/snd/";
->   	char path[PATH_MAX * 2];
-> @@ -1670,10 +1808,10 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
->   	 * 2) unload/unbind the the audio driver(s);
->   	 * 3) stop the pw-reserve thread.
->   	 */
-> -	if (!strcmp(proc_info->cmd, "pipewire-pulse")) {
-> +	if (!strcmp(cmd, "pipewire-pulse")) {
->   		igt_info("process %d (%s) is using audio device. Should be requested to stop using them.\n",
-> -			 proc_info->tid, proc_info->cmd);
-> -		pipewire_pulse_pid = proc_info->tid;
-> +			 tid, cmd);
-> +		pipewire_pulse_pid = tid;
->   		return 0;
->   	}
->   	/*
-> @@ -1685,9 +1823,9 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
->   	 * will respawn them. So, just ignore here, they'll honor pw-reserve,
->   	 * when the time comes.
->   	 */
-> -	if (!strcmp(proc_info->cmd, "pipewire-media-session"))
-> +	if (!strcmp(cmd, "pipewire-media-session"))
->   		return 0;
-> -	if (!strcmp(proc_info->cmd, "wireplumber"))
-> +	if (!strcmp(cmd, "wireplumber"))
->   		return 0;
->   
->   	dp = opendir(proc_path);
-> @@ -1723,22 +1861,22 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
->   		 * enough to unbind audio modules and won't cause race issues
->   		 * with systemd trying to reload it.
->   		 */
-> -		if (!strcmp(proc_info->cmd, "pulseaudio")) {
-> -			pulseaudio_unload_module(proc_info);
-> +		if (!strcmp(cmd, "pulseaudio")) {
-> +			pulseaudio_unload_module(euid, egid);
->   			break;
->   		}
->   
->   		/* For all other processes, just kill them */
->   		igt_info("process %d (%s) is using audio device. Should be terminated.\n",
-> -				proc_info->tid, proc_info->cmd);
-> +				tid, cmd);
->   
-> -		if (kill(proc_info->tid, SIGTERM) < 0) {
-> +		if (kill(tid, SIGTERM) < 0) {
->   			igt_info("Fail to terminate %s (pid: %d) with SIGTERM\n",
-> -				proc_info->cmd, proc_info->tid);
-> -			if (kill(proc_info->tid, SIGABRT) < 0) {
-> +				cmd, tid);
-> +			if (kill(tid, SIGABRT) < 0) {
->   				fail++;
->   				igt_info("Fail to terminate %s (pid: %d) with SIGABRT\n",
-> -					proc_info->cmd, proc_info->tid);
-> +					cmd, tid);
->   			}
->   		}
->   
-> @@ -1760,23 +1898,47 @@ int
->   igt_lsof_kill_audio_processes(void)
->   {
->   	char path[PATH_MAX];
-> +	int fail = 0;
-> +
-> +#ifdef HAVE_LIBPROCPS
->   	proc_t *proc_info;
->   	PROCTAB *proc;
-> -	int fail = 0;
->   
->   	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
->   	igt_assert(proc != NULL);
->   	pipewire_pulse_pid = 0;
-> -
->   	while ((proc_info = readproc(proc, NULL))) {
->   		if (snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid) < 1)
->   			fail++;
->   		else
-> -			fail += __igt_lsof_audio_and_kill_proc(proc_info, path);
-> +			fail += __igt_lsof_audio_and_kill_proc(proc_info->tid, proc_info->cmd, proc_info->euid, proc_info->egid, path);
->   
->   		freeproc(proc_info);
->   	}
->   	closeproc(proc);
-> +#else
-> +	enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD, PIDS_ID_EUID, PIDS_ID_EGID };
-> +	enum rel_items { EU_PID, EU_CMD, EU_EUID, EU_EGID };
-> +	struct pids_info *info = NULL;
-> +	struct pids_stack *stack;
-> +	pid_t tid;
-> +
-> +	if (procps_pids_new(&info, Items, 4) < 0)
-> +		return 1;
-> +	while ((stack = procps_pids_get(info, PIDS_FETCH_TASKS_ONLY))) {
-> +		tid = PIDS_VAL(EU_PID, s_int, stack, info);
-> +
-> +		if (snprintf(path, sizeof(path), "/proc/%d/fd", tid) < 1)
-> +			fail++;
-> +		else
-> +			fail += __igt_lsof_audio_and_kill_proc(tid,
-> +				PIDS_VAL(EU_CMD, str, stack, info),
-> +				PIDS_VAL(EU_EUID, s_int, stack, info),
-> +				PIDS_VAL(EU_EGID, s_int, stack, info),
-> +				path);
-> +	}
-> +	procps_pids_unref(&info);
-> +#endif
->   
->   	return fail;
->   }
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 85f100f75..55efdc83b 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -114,7 +114,6 @@ lib_deps = [
->   	libdrm,
->   	libdw,
->   	libkmod,
-> -	libprocps,
->   	libudev,
->   	math,
->   	pciaccess,
-> @@ -178,6 +177,12 @@ if chamelium.found()
->   	lib_sources += 'monitor_edids/monitor_edids_helper.c'
->   endif
->   
-> +if libprocps.found()
-> +	lib_deps += libprocps
-> +else
-> +	lib_deps += libproc2
-> +endif
-> +
->   if get_option('srcdir') != ''
->       srcdir = join_paths(get_option('srcdir'), 'tests')
->   else
-> diff --git a/meson.build b/meson.build
-> index 1c872cc9c..0487158dc 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -125,7 +125,15 @@ build_info += 'With libdrm: ' + ','.join(libdrm_info)
->   
->   pciaccess = dependency('pciaccess', version : '>=0.10')
->   libkmod = dependency('libkmod')
-> -libprocps = dependency('libprocps', required : true)
-> +libprocps = dependency('libprocps', required : false)
-> +libproc2 = dependency('libproc2', required : false)
-> +if libprocps.found()
-> +  config.set('HAVE_LIBPROCPS', 1)
-> +elif libproc2.found()
-> +  config.set('HAVE_LIBPROC2', 1)
-> +else
-> +  error('Either libprocps or libproc2 is required')
-> +endif
->   
->   libunwind = dependency('libunwind', required : get_option('libunwind'))
->   build_info += 'With libunwind: @0@'.format(libunwind.found())
+v2: Drop unused functions -- left-overs from unsuccessful negative subtest
+    attempts requiring consistent crc mismatches in non-coherent modes,
+  - since all subtests now call igt_assert_crc_equal(), move it from
+    subtest bodies to an updated and renamed helper,
+  - drop "derived from ..." info from copyrights comment (Kamil),
+  - fix order of includes (Kamil),
+  - fix whitespace (Kamil),
+  - Cc: Bhanuprakash (Kamil).
+
+Link: https://gitlab.freedesktop.org/drm/intel/-/issues/7648
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/i915/kms_fb_coherency.c | 305 ++++++++++++++++++++++++++++++++++
+ tests/meson.build             |   1 +
+ 2 files changed, 306 insertions(+)
+ create mode 100644 tests/i915/kms_fb_coherency.c
+
+diff --git a/tests/i915/kms_fb_coherency.c b/tests/i915/kms_fb_coherency.c
+new file mode 100644
+index 0000000000..b3f055c2b1
+--- /dev/null
++++ b/tests/i915/kms_fb_coherency.c
+@@ -0,0 +1,305 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++/**
++ * TEST: kms_fb_coherency
++ * Description: Exercise coherency of future scanout buffer objects
++ */
++
++#include <errno.h>
++#include <limits.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <string.h>
++
++#include "igt.h"
++
++typedef struct {
++	int drm_fd;
++	igt_display_t display;
++	struct igt_fb fb[2];
++	igt_output_t *output;
++	igt_plane_t *primary;
++	enum pipe pipe;
++	igt_crc_t ref_crc;
++	igt_pipe_crc_t *pipe_crc;
++	uint32_t devid;
++} data_t;
++
++static void prepare_crtc(data_t *data)
++{
++	igt_display_t *display = &data->display;
++	igt_output_t *output = data->output;
++	drmModeModeInfo *mode;
++
++	igt_display_reset(display);
++	/* select the pipe we want to use */
++	igt_output_set_pipe(output, data->pipe);
++
++	mode = igt_output_get_mode(output);
++
++	/* create a white reference fb and flip to it */
++	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++			    1.0, 1.0, 1.0, &data->fb[0]);
++
++	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++
++	igt_plane_set_fb(data->primary, &data->fb[0]);
++	igt_display_commit(display);
++
++	if (data->pipe_crc)
++		igt_pipe_crc_free(data->pipe_crc);
++
++	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++					  IGT_PIPE_CRC_SOURCE_AUTO);
++
++	/* get reference crc for the white fb */
++	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
++}
++
++static struct igt_fb *prepare_fb(data_t *data)
++{
++	igt_output_t *output = data->output;
++	struct igt_fb *fb = &data->fb[1];
++	drmModeModeInfo *mode;
++
++	prepare_crtc(data);
++
++	mode = igt_output_get_mode(output);
++
++	/* create a non-white fb we can overwrite later */
++	igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
++			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, fb);
++
++	/* flip to it to make it UC/WC and fully flushed */
++	drmModeSetPlane(data->drm_fd,
++			data->primary->drm_plane->plane_id,
++			output->config.crtc->crtc_id,
++			fb->fb_id, 0,
++			0, 0, fb->width, fb->height,
++			0, 0, fb->width << 16, fb->height << 16);
++
++	/* flip back the original white buffer */
++	drmModeSetPlane(data->drm_fd,
++			data->primary->drm_plane->plane_id,
++			output->config.crtc->crtc_id,
++			data->fb[0].fb_id, 0,
++			0, 0, fb->width, fb->height,
++			0, 0, fb->width << 16, fb->height << 16);
++
++	if (!gem_has_lmem(data->drm_fd)) {
++		uint32_t caching;
++
++		/* make sure caching mode has become UC/WT */
++		caching = gem_get_caching(data->drm_fd, fb->gem_handle);
++		igt_assert(caching == I915_CACHING_NONE ||
++			   caching == I915_CACHING_DISPLAY);
++	}
++
++	return fb;
++}
++
++static void check_buf_crc(data_t *data, void *buf, igt_fb_t *fb)
++{
++	igt_crc_t crc;
++
++	/* use memset to make the mmapped fb all white */
++	memset(buf, 0xff, fb->size);
++	munmap(buf, fb->size);
++
++	/* and flip to it */
++	drmModeSetPlane(data->drm_fd,
++			data->primary->drm_plane->plane_id,
++			data->output->config.crtc->crtc_id,
++			fb->fb_id, 0,
++			0, 0, fb->width, fb->height,
++			0, 0, fb->width << 16, fb->height << 16);
++
++	/* check that the crc is as expected, which requires that caches got flushed */
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
++	igt_assert_crc_equal(&crc, &data->ref_crc);
++}
++
++static void cleanup_crtc(data_t *data)
++{
++	igt_display_t *display = &data->display;
++	igt_output_t *output = data->output;
++
++	igt_pipe_crc_free(data->pipe_crc);
++	data->pipe_crc = NULL;
++
++	igt_plane_set_fb(data->primary, NULL);
++
++	igt_output_set_pipe(output, PIPE_ANY);
++	igt_display_commit(display);
++
++	igt_remove_fb(data->drm_fd, &data->fb[0]);
++	igt_remove_fb(data->drm_fd, &data->fb[1]);
++}
++
++static void test_mmap_gtt(data_t *data)
++{
++	igt_fb_t *fb;
++	void *buf;
++
++	gem_require_mappable_ggtt(data->drm_fd);
++
++	fb = prepare_fb(data);
++
++	buf = gem_mmap__gtt(data->drm_fd, fb->gem_handle, fb->size, PROT_WRITE);
++
++	check_buf_crc(data, buf, fb);
++}
++
++static void test_mmap_offset_wc(data_t *data)
++{
++	igt_fb_t *fb;
++	void *buf;
++
++	igt_require(gem_mmap_offset__has_wc(data->drm_fd));
++
++	fb = prepare_fb(data);
++
++	buf = gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
++
++	check_buf_crc(data, buf, fb);
++}
++
++static void test_mmap_offset_uc(data_t *data)
++{
++	igt_fb_t *fb;
++	void *buf;
++
++	igt_require(gem_has_mmap_offset(data->drm_fd));
++	igt_skip_on(gem_has_lmem(data->drm_fd));
++
++	fb = prepare_fb(data);
++
++	/* mmap the fb */
++	buf = __gem_mmap_offset(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE,
++				I915_MMAP_OFFSET_UC);
++	igt_assert(buf);
++
++	check_buf_crc(data, buf, fb);
++}
++
++static void test_mmap_offset_fixed(data_t *data)
++{
++	igt_fb_t *fb;
++	void *buf;
++
++	igt_require(gem_has_lmem(data->drm_fd));
++
++	fb = prepare_fb(data);
++
++	/* mmap the fb */
++	buf = gem_mmap_offset__fixed(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
++
++	check_buf_crc(data, buf, fb);
++}
++
++static void test_legacy_mmap_wc(data_t *data)
++{
++	igt_fb_t *fb;
++	void *buf;
++
++	igt_require(gem_has_legacy_mmap(data->drm_fd));
++	igt_require(gem_mmap__has_wc(data->drm_fd));
++
++	fb = prepare_fb(data);
++
++	/* mmap the fb */
++	buf = gem_mmap__wc(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
++
++	check_buf_crc(data, buf, fb);
++}
++
++static void select_valid_pipe_output_combo(data_t *data)
++{
++	igt_display_t *display = &data->display;
++
++	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
++		igt_display_reset(display);
++
++		igt_output_set_pipe(data->output, data->pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
++
++		/* one is enough */
++		return;
++	}
++
++	igt_skip("no valid crtc/connector combinations found\n");
++}
++
++igt_main
++{
++	data_t data;
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++
++		data.devid = intel_get_drm_devid(data.drm_fd);
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_require_pipe_crc(data.drm_fd);
++
++		igt_display_require(&data.display, data.drm_fd);
++
++		select_valid_pipe_output_combo(&data);
++	}
++
++	/**
++	 * SUBTEST: memset-crc
++	 * Description: Use display controller CRC hardware to validate (non)coherency
++	 *		of memset operations on future scanout buffer objects
++	 *		mmapped with different mmap methods and different caching modes.
++	 */
++	igt_subtest_with_dynamic("memset-crc") {
++		if (gem_has_mappable_ggtt(data.drm_fd)) {
++			igt_dynamic("mmap-gtt")
++				test_mmap_gtt(&data);
++
++			cleanup_crtc(&data);
++		}
++
++		if (gem_mmap_offset__has_wc(data.drm_fd)) {
++			igt_dynamic("mmap-offset-wc")
++				test_mmap_offset_wc(&data);
++
++			cleanup_crtc(&data);
++		}
++
++		if (gem_has_mmap_offset(data.drm_fd)) {
++			if (gem_has_lmem(data.drm_fd)) {
++				igt_dynamic("mmap-offset-fixed")
++					test_mmap_offset_fixed(&data);
++
++				cleanup_crtc(&data);
++
++			} else {
++				igt_dynamic("mmap-offset-uc")
++					test_mmap_offset_uc(&data);
++
++				cleanup_crtc(&data);
++			}
++		}
++
++		if (gem_has_legacy_mmap(data.drm_fd) &&
++		    gem_mmap__has_wc(data.drm_fd)) {
++			igt_dynamic("mmap-legacy-wc")
++				test_legacy_mmap_wc(&data);
++
++			cleanup_crtc(&data);
++		}
++	}
++
++	igt_fixture {
++		igt_display_fini(&data.display);
++		close(data.drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 38f080f7c2..f71be1dbe5 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -224,6 +224,7 @@ i915_progs = [
+ 	'kms_ccs',
+ 	'kms_cdclk',
+ 	'kms_draw_crc',
++	'kms_fb_coherency',
+ 	'kms_fbcon_fbt',
+ 	'kms_fence_pin_leak',
+ 	'kms_flip_scaled_crc',
+-- 
+2.40.1
