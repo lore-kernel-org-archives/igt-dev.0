@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com
- [IPv6:2a00:1450:4864:20::235])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45C2110E259
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 15:44:03 +0000 (UTC)
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2ac88d9edf3so141792651fa.0
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 08:44:03 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 16 May 2023 18:43:28 +0300
-Message-Id: <20230516154329.9002-4-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230516154329.9002-1-juhapekka.heikkila@gmail.com>
-References: <20230516154329.9002-1-juhapekka.heikkila@gmail.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3F6310E295
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 16:56:53 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
+ janga.rahul.kumar@intel.com
+Date: Tue, 16 May 2023 22:20:56 +0530
+Message-Id: <20230516165058.4047595-19-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
+References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/4] tests/i915/kms_ccs: enable mtl aux ccs
- tests
+Subject: [igt-dev] [i-g-t 18/20] tests/xe/xe_debugfs: Use xe_config() helper
+ to get the config
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,40 +24,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added
-I915_FORMAT_MOD_4_TILED_MTL_RC_CCS
-I915_FORMAT_MOD_4_TILED_MTL_MC_CCS
-I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC
-for testing.
+Use xe_config() helper to get the config.
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_ccs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tests/xe/xe_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
-index 1b3462ea..abe464b4 100644
---- a/tests/i915/kms_ccs.c
-+++ b/tests/i915/kms_ccs.c
-@@ -101,6 +101,9 @@ static const struct {
- 	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, "4_tiled_dg2_rc_ccs"},
- 	{I915_FORMAT_MOD_4_TILED_DG2_MC_CCS, "4_tiled_dg2_mc_ccs"},
- 	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC, "4_tiled_dg2_rc_ccs_cc"},
-+	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, "4_tiled_mtl_rc_ccs"},
-+	{I915_FORMAT_MOD_4_TILED_MTL_MC_CCS, "4_tiled_mtl_mc_ccs"},
-+	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC, "4_tiled_mtl_rc_ccs_cc"},
- };
+diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
+index 4006981c6..10dd05740 100644
+--- a/tests/xe/xe_debugfs.c
++++ b/tests/xe/xe_debugfs.c
+@@ -252,7 +252,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	}
  
- static bool check_ccs_planes;
-@@ -161,7 +164,8 @@ create_fb_prepare_add(int drm_fd, int width, int height,
- static bool is_ccs_cc_modifier(uint64_t modifier)
- {
- 	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
--		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC;
-+	       modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
-+	       modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
- }
+ 	igt_subtest("base") {
+-		test_base(fd, xe_dev->config);
++		test_base(fd, xe_config(fd));
+ 	}
  
- /*
+ 
 -- 
-2.25.1
+2.40.0
