@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB91E10E28E
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 16:56:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3480D10E283
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 16:56:23 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
  janga.rahul.kumar@intel.com
-Date: Tue, 16 May 2023 22:20:43 +0530
-Message-Id: <20230516165058.4047595-6-bhanuprakash.modem@intel.com>
+Date: Tue, 16 May 2023 22:20:42 +0530
+Message-Id: <20230516165058.4047595-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
 References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 05/20] tests/amdgpu: Close the fd before exit
+Subject: [igt-dev] [i-g-t 04/20] lib/igt_msm: Use drm_close_driver() to
+ close the drm fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,99 +20,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: David Zhang <dingchen.zhang@amd.com>
+Cc: Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Close the file descriptor before exiting the test.
+To close the drm file descriptor, use igt helper drm_close_driver()
+instead of using close().
 
-Cc: David Zhang <dingchen.zhang@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
+cc: Rob Clark <robdclark@chromium.org>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/amdgpu/amd_abm.c                 | 1 +
- tests/amdgpu/amd_assr.c                | 1 +
- tests/amdgpu/amd_freesync_video_mode.c | 1 +
- tests/amdgpu/amd_mem_leak.c            | 1 +
- tests/amdgpu/amd_psr.c                 | 3 ++-
- tests/amdgpu/amd_vrr_range.c           | 1 +
- 6 files changed, 7 insertions(+), 1 deletion(-)
+ lib/igt_msm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
-index 9400ed806..082da7ed6 100644
---- a/tests/amdgpu/amd_abm.c
-+++ b/tests/amdgpu/amd_abm.c
-@@ -378,5 +378,6 @@ igt_main
+diff --git a/lib/igt_msm.c b/lib/igt_msm.c
+index 8c0380f42..a236898b6 100644
+--- a/lib/igt_msm.c
++++ b/lib/igt_msm.c
+@@ -87,7 +87,7 @@ igt_msm_dev_close(struct msm_device *dev)
+ {
+ 	if (!dev)
+ 		return;
+-	close(dev->fd);
++	drm_close_driver(dev->fd);
+ 	free(dev);
+ }
  
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
- 	}
- }
-diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
-index 80cbbe8e9..fc2367f99 100644
---- a/tests/amdgpu/amd_assr.c
-+++ b/tests/amdgpu/amd_assr.c
-@@ -299,5 +299,6 @@ igt_main
- 	igt_fixture
- 	{
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.fd);
- 	}
- }
-diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
-index 579d24436..62d42a06c 100644
---- a/tests/amdgpu/amd_freesync_video_mode.c
-+++ b/tests/amdgpu/amd_freesync_video_mode.c
-@@ -868,5 +868,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
- 	}
- }
-diff --git a/tests/amdgpu/amd_mem_leak.c b/tests/amdgpu/amd_mem_leak.c
-index dee563cbe..e4a4b5c47 100644
---- a/tests/amdgpu/amd_mem_leak.c
-+++ b/tests/amdgpu/amd_mem_leak.c
-@@ -232,5 +232,6 @@ igt_main
- 	igt_fixture
- 	{
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.fd);
- 	}
- }
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index 966a0dccf..3932e143a 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -640,7 +640,7 @@ static void run_check_psr_su_cursor(data_t *data, bool test_mpo)
- 	 * panning the primary plane at the top-left of screen
- 	 * set alpha region in overlay plane and set alpha to 0.0 to show primary plane
- 	 * set cursor plane and starting from position of (0, 0)
--	 */ 
-+	 */
- 	draw_color_alpha(&data->ov_fb[0], 0, 0, data->pfb_w, data->pfb_h, 1.0, 1.0, 1.0, .0);
- 	igt_plane_set_fb(data->primary, &data->pm_fb[0]);
- 	igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
-@@ -763,5 +763,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		}
- 		close(data.debugfs_fd);
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.fd);
- 	}
- }
-diff --git a/tests/amdgpu/amd_vrr_range.c b/tests/amdgpu/amd_vrr_range.c
-index 2f27296dd..cacd668cd 100644
---- a/tests/amdgpu/amd_vrr_range.c
-+++ b/tests/amdgpu/amd_vrr_range.c
-@@ -338,5 +338,6 @@ igt_main
- 	igt_fixture
- 	{
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.fd);
- 	}
- }
 -- 
 2.40.0
