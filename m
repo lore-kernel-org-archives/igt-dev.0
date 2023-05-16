@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5BBE10E2F4
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 06:42:46 +0000 (UTC)
+Date: Tue, 16 May 2023 08:42:41 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230516084241.45226c0e@maurocar-mobl2>
+In-Reply-To: <20230515163908.50961-1-kamil.konieczny@linux.intel.com>
+References: <20230515163908.50961-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Tue, 16 May 2023 06:30:55 -0000
-Message-ID: <168421865553.14225.240589547997843952@emeril.freedesktop.org>
-References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_D?=
- =?utf-8?q?ocument_KMS_tests_=28rev7=29?=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] meson: fix testplan building for old
+ meson
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,111 +20,86 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Kamil,
 
-Series: Document KMS tests (rev7)
-URL   : https://patchwork.freedesktop.org/series/117749/
-State : warning
+On Mon, 15 May 2023 18:39:08 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-== Summary ==
+> Old meson 0.47.2 do not support dictionary adding so fix
+> testplan building.
+> 
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  docs/testplan/meson.build | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+> index 2014f91b5..6454f2933 100644
+> --- a/docs/testplan/meson.build
+> +++ b/docs/testplan/meson.build
+> @@ -27,12 +27,15 @@ xe_test_dict = {
+>  		 'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+>  	       }
+>  
+> -test_dict = {
+> +if build_xe
+> +	test_dict = {
+> +		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
+> +		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+> +	    }
+> +else
+> +	test_dict = {
+>  	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
+>  	    }
 
-Pipeline status: FAILED.
+This would mean that, for every new driver with documentation we'll
+need two changes. It would be even harder if we ever need to add options
+to control other driver builds.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/882036 for the overview.
+Btw, I double-checked that, with meson, we can't update the directory
+with something like:
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41792316):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684218188:step_script
-  section_start:1684218188:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684218192:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+	xe_tests = { 'input': xe_test_config, 'extra_args': check_testlist }
+	test_dict['xe_tests'] = xe_tests
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41792315):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684218181:step_script
-  section_start:1684218181:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684218181:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+As this would generate this error:
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41792317):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684218186:step_script
-  section_start:1684218186:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684218186:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+	../docs/testplan/meson.build:33:1: ERROR: Assignment target must be an id.
+		test_dict['xe_tests'] = xe_tests
+	 ^
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41792314):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684218187:step_script
-  section_start:1684218187:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684218193:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+According to [1]:
 
-== Logs ==
+	"All objects are immutable, you can not change the contents 
+	 of them. You can only create new ones. 
+	 (which is what += does behind the scenes)."
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/882036
+[1] https://github.com/mesonbuild/meson/issues/3931#issuecomment-407180830
+
+On other words, with version < 0.48, we're stuck with data or code
+duplication.
+
+So, IMO, we should:
+
+	1. Change the gitlab's "build:tests-fedora-oldest-meson" pipeline
+	   to honor the minimal version from meson.build file, e. g.:
+
+		$ MESON_MIN_VERSION=$(perl -ne "print \$1 if (m/meson_version\s*:\s*'([^']+)/)" meson.build)
+		$ echo $MESON_MIN_VERSION
+		>=0.47.2
+
+	2. Update the minimal version to at least 0.48.
+
+Yet, if there are strong reasons why keeping support for such old version,
+feel free to add my ack:
+
+Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> # if we can't update meson_version to at least >= 0.48
+
+Regards,
+Mauro
