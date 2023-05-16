@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 845DB10E26E
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 15:46:00 +0000 (UTC)
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 16 May 2023 17:44:34 +0200
-Message-Id: <20230516154434.810356-9-dominik.grzegorzek@intel.com>
-In-Reply-To: <20230516154434.810356-1-dominik.grzegorzek@intel.com>
-References: <20230516154434.810356-1-dominik.grzegorzek@intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org, Andrzej Hajda <andrzej.hajda@intel.com>
+Date: Tue, 16 May 2023 17:50:18 +0200
+Message-ID: <2630797.BddDVKsqQX@jkrzyszt-mobl2.ger.corp.intel.com>
+In-Reply-To: <7b350790-cbfb-78b2-7335-9344d6554335@intel.com>
+References: <20230516100511.33150-1-janusz.krzysztofik@linux.intel.com>
+ <7b350790-cbfb-78b2-7335-9344d6554335@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 8/8] xe/xe_eudebug: Add TEST/SUBTEST
- documentation
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2] tests/i915: Exercise
+ coherency of mmapped frame buffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,111 +18,441 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Document xe_eudebug test, to reflect its internal logic.
+Hi Andrzej,
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- tests/xe/xe_eudebug.c | 49 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
+Thanks for review.
 
-diff --git a/tests/xe/xe_eudebug.c b/tests/xe/xe_eudebug.c
-index 92eaab7de..2aca01b10 100644
---- a/tests/xe/xe_eudebug.c
-+++ b/tests/xe/xe_eudebug.c
-@@ -2,6 +2,15 @@
- /*
-  * Copyright © 2023 Intel Corporation
-  */
-+
-+/**
-+ * TEST: Test EU Debugger functionality
-+ * Category: Software building block
-+ * Sub-category: eu debugger
-+ * Test category: functionality test
-+ * Run type: BAT
-+ */
-+
- #include <poll.h>
- 
- #include <xe_drm_tmp.h>
-@@ -123,6 +132,12 @@ static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect_p
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: basic-connect
-+ * Description:
-+ * 	Exercise XE_EUDEBG_CONNECT ioctl with passing
-+ *	valid and invalid params.
-+ */
- static void test_connect(int fd)
- {
- 	struct drm_xe_eudebug_connect_param param = {};
-@@ -193,6 +208,11 @@ static void test_connect(int fd)
- 	close(debugfd);
- }
- 
-+/**
-+ * SUBTEST: basic-close
-+ * Description:
-+ * 	Test whether eudebug can be reattached after closure.
-+ */
- static void test_close(int fd)
- {
- 	struct drm_xe_eudebug_connect_param param = { 0,  };
-@@ -216,6 +236,11 @@ static void test_close(int fd)
- 	close(debug_fd1);
- }
- 
-+/**
-+ * SUBTEST: basic-read-event
-+ * Description:
-+ * 	Synchronously exercise eu debugger event polling and reading.
-+ */
- #define MAX_EVENT_SIZE (32 * 1024)
- static void test_read_event(int fd)
- {
-@@ -265,6 +290,20 @@ static void test_read_event(int fd)
- 	xe_eudebug_client_destroy(c);
- }
- 
-+/**
-+ * SUBTEST: basic-client
-+ * Description:
-+ * 	Attach the debugger to proccess which opens and closes xe drm client.
-+ *
-+ * SUBTEST: multiple-sessions
-+ * Description:
-+ * 	Simultaneusly attach many debuggers to many proccesses.
-+ * 	Each proccess opens and closes xe drm client.
-+ *
-+ * SUBTEST: basic-vms
-+ * Description:
-+ * 	Attach the debugger to procces which creates and destroys a few vms.
-+ */
- static void test_basic_sessions(int fd, unsigned int flags, int count)
- {
- 	struct session **s;
-@@ -320,6 +359,16 @@ static void run_discovery_client(struct xe_eudebug_client *c)
- 	}
- }
- 
-+/**
-+ * SUBTEST: discovery-%s
-+ * Description: Race discovery against %arg[1] and the debugger dettach.
-+ *
-+ * arg[1]:
-+ *
-+ * @race:		resources creation
-+ * @empty:		resources destruction
-+ * @empty-clients:	client closure
-+ */
- static void *discovery_race_thread(void *data)
- {
- 	struct {
--- 
-2.34.1
+On Tuesday, 16 May 2023 16:08:26 CEST Andrzej Hajda wrote:
+> On 16.05.2023 12:05, Janusz Krzysztofik wrote:
+> > Visible glitches have been observed when running graphics applications =
+on
+> > Linux under Xen hypervisor.  Those observations have been confirmed with
+> > failures from kms_pwrite_crc IGT test that verifies data coherency of D=
+RM
+> > frame buffer objects using hardware CRC checksums calculated by display
+> > controllers, exposed to userspace via debugfs.  Since not all applicati=
+ons
+> > exhibit the issue, we need to exercise more methods than just pwrite in
+> > order to identify all affected processing paths.
+> >=20
+> > Create a new test focused on exercising coherency of future scanout
+> > buffers populated over mmap.  Cover all available mmap methods and cach=
+ing
+> > modes expected to be device coherent.
+> >=20
+> > v2: Drop unused functions -- left-overs from unsuccessful negative subt=
+est
+> >      attempts requiring consistent crc mismatches in non-coherent modes,
+> >    - since all subtests now call igt_assert_crc_equal(), move it from
+> >      subtest bodies to an updated and renamed helper,
+> >    - drop "derived from ..." info from copyrights comment (Kamil),
+> >    - fix order of includes (Kamil),
+> >    - fix whitespace (Kamil),
+> >    - Cc: Bhanuprakash (Kamil).
+> >=20
+> > Link: https://gitlab.freedesktop.org/drm/intel/-/issues/7648
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > ---
+> >   tests/i915/kms_fb_coherency.c | 305 ++++++++++++++++++++++++++++++++++
+> >   tests/meson.build             |   1 +
+> >   2 files changed, 306 insertions(+)
+> >   create mode 100644 tests/i915/kms_fb_coherency.c
+> >=20
+> > diff --git a/tests/i915/kms_fb_coherency.c b/tests/i915/kms_fb_coherenc=
+y.c
+> > new file mode 100644
+> > index 0000000000..b3f055c2b1
+> > --- /dev/null
+> > +++ b/tests/i915/kms_fb_coherency.c
+> > @@ -0,0 +1,305 @@
+> > +// SPDX-License-Identifier: MIT
+> > +/*
+> > + * Copyright =A9 2023 Intel Corporation
+> > + */
+> > +
+> > +/**
+> > + * TEST: kms_fb_coherency
+> > + * Description: Exercise coherency of future scanout buffer objects
+> > + */
+> > +
+> > +#include <errno.h>
+> > +#include <limits.h>
+> > +#include <stdbool.h>
+> > +#include <stdio.h>
+> > +#include <string.h>
+> > +
+> > +#include "igt.h"
+> > +
+> > +typedef struct {
+> > +	int drm_fd;
+> > +	igt_display_t display;
+> > +	struct igt_fb fb[2];
+> > +	igt_output_t *output;
+> > +	igt_plane_t *primary;
+> > +	enum pipe pipe;
+> > +	igt_crc_t ref_crc;
+> > +	igt_pipe_crc_t *pipe_crc;
+> > +	uint32_t devid;
+> > +} data_t;
+> > +
+> > +static void prepare_crtc(data_t *data)
+> > +{
+> > +	igt_display_t *display =3D &data->display;
+> > +	igt_output_t *output =3D data->output;
+> > +	drmModeModeInfo *mode;
+> > +
+> > +	igt_display_reset(display);
+> > +	/* select the pipe we want to use */
+> > +	igt_output_set_pipe(output, data->pipe);
+> > +
+> > +	mode =3D igt_output_get_mode(output);
+> > +
+> > +	/* create a white reference fb and flip to it */
+> > +	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> > +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> > +			    1.0, 1.0, 1.0, &data->fb[0]);
+> > +
+> > +	data->primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PR=
+IMARY);
+> > +
+> > +	igt_plane_set_fb(data->primary, &data->fb[0]);
+> > +	igt_display_commit(display);
+> > +
+> > +	if (data->pipe_crc)
+> > +		igt_pipe_crc_free(data->pipe_crc);
+> > +
+> > +	data->pipe_crc =3D igt_pipe_crc_new(data->drm_fd, data->pipe,
+> > +					  IGT_PIPE_CRC_SOURCE_AUTO);
+> > +
+> > +	/* get reference crc for the white fb */
+> > +	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
+> > +}
+> > +
+> > +static struct igt_fb *prepare_fb(data_t *data)
+> > +{
+> > +	igt_output_t *output =3D data->output;
+> > +	struct igt_fb *fb =3D &data->fb[1];
+> > +	drmModeModeInfo *mode;
+> > +
+> > +	prepare_crtc(data);
+> > +
+> > +	mode =3D igt_output_get_mode(output);
+> > +
+> > +	/* create a non-white fb we can overwrite later */
+> > +	igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> > +			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, fb);
+> > +
+> > +	/* flip to it to make it UC/WC and fully flushed */
+> > +	drmModeSetPlane(data->drm_fd,
+> > +			data->primary->drm_plane->plane_id,
+> > +			output->config.crtc->crtc_id,
+> > +			fb->fb_id, 0,
+> > +			0, 0, fb->width, fb->height,
+> > +			0, 0, fb->width << 16, fb->height << 16);
+> > +
+> > +	/* flip back the original white buffer */
+> > +	drmModeSetPlane(data->drm_fd,
+> > +			data->primary->drm_plane->plane_id,
+> > +			output->config.crtc->crtc_id,
+> > +			data->fb[0].fb_id, 0,
+> > +			0, 0, fb->width, fb->height,
+> > +			0, 0, fb->width << 16, fb->height << 16);
+> > +
+> > +	if (!gem_has_lmem(data->drm_fd)) {
+> > +		uint32_t caching;
+> > +
+> > +		/* make sure caching mode has become UC/WT */
+> > +		caching =3D gem_get_caching(data->drm_fd, fb->gem_handle);
+> > +		igt_assert(caching =3D=3D I915_CACHING_NONE ||
+> > +			   caching =3D=3D I915_CACHING_DISPLAY);
+> > +	}
+> > +
+> > +	return fb;
+> > +}
+> > +
+> > +static void check_buf_crc(data_t *data, void *buf, igt_fb_t *fb)
+> > +{
+> > +	igt_crc_t crc;
+> > +
+> > +	/* use memset to make the mmapped fb all white */
+> > +	memset(buf, 0xff, fb->size);
+> > +	munmap(buf, fb->size);
+> > +
+> > +	/* and flip to it */
+> > +	drmModeSetPlane(data->drm_fd,
+> > +			data->primary->drm_plane->plane_id,
+> > +			data->output->config.crtc->crtc_id,
+> > +			fb->fb_id, 0,
+> > +			0, 0, fb->width, fb->height,
+> > +			0, 0, fb->width << 16, fb->height << 16);
+> > +
+> > +	/* check that the crc is as expected, which requires that caches got =
+flushed */
+> > +	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
+> > +	igt_assert_crc_equal(&crc, &data->ref_crc);
+> > +}
+> > +
+> > +static void cleanup_crtc(data_t *data)
+> > +{
+> > +	igt_display_t *display =3D &data->display;
+> > +	igt_output_t *output =3D data->output;
+> > +
+> > +	igt_pipe_crc_free(data->pipe_crc);
+> > +	data->pipe_crc =3D NULL;
+> > +
+> > +	igt_plane_set_fb(data->primary, NULL);
+> > +
+> > +	igt_output_set_pipe(output, PIPE_ANY);
+> > +	igt_display_commit(display);
+> > +
+> > +	igt_remove_fb(data->drm_fd, &data->fb[0]);
+> > +	igt_remove_fb(data->drm_fd, &data->fb[1]);
+> > +}
+> > +
+> > +static void test_mmap_gtt(data_t *data)
+> > +{
+> > +	igt_fb_t *fb;
+> > +	void *buf;
+> > +
+> > +	gem_require_mappable_ggtt(data->drm_fd);
+> > +
+> > +	fb =3D prepare_fb(data);
+> > +
+> > +	buf =3D gem_mmap__gtt(data->drm_fd, fb->gem_handle, fb->size, PROT_WR=
+ITE);
+> > +
+> > +	check_buf_crc(data, buf, fb);
+> > +}
+> > +
+> > +static void test_mmap_offset_wc(data_t *data)
+> > +{
+> > +	igt_fb_t *fb;
+> > +	void *buf;
+> > +
+> > +	igt_require(gem_mmap_offset__has_wc(data->drm_fd));
+> > +
+> > +	fb =3D prepare_fb(data);
+> > +
+> > +	buf =3D gem_mmap_offset__wc(data->drm_fd, fb->gem_handle, 0, fb->size=
+, PROT_WRITE);
+> > +
+> > +	check_buf_crc(data, buf, fb);
+> > +}
+> > +
+> > +static void test_mmap_offset_uc(data_t *data)
+> > +{
+> > +	igt_fb_t *fb;
+> > +	void *buf;
+> > +
+> > +	igt_require(gem_has_mmap_offset(data->drm_fd));
+> > +	igt_skip_on(gem_has_lmem(data->drm_fd));
+> > +
+> > +	fb =3D prepare_fb(data);
+> > +
+> > +	/* mmap the fb */
+> > +	buf =3D __gem_mmap_offset(data->drm_fd, fb->gem_handle, 0, fb->size, =
+PROT_WRITE,
+> > +				I915_MMAP_OFFSET_UC);
+> > +	igt_assert(buf);
+> > +
+> > +	check_buf_crc(data, buf, fb);
+> > +}
+> > +
+> > +static void test_mmap_offset_fixed(data_t *data)
+> > +{
+> > +	igt_fb_t *fb;
+> > +	void *buf;
+> > +
+> > +	igt_require(gem_has_lmem(data->drm_fd));
+> > +
+> > +	fb =3D prepare_fb(data);
+> > +
+> > +	/* mmap the fb */
+> > +	buf =3D gem_mmap_offset__fixed(data->drm_fd, fb->gem_handle, 0, fb->s=
+ize, PROT_WRITE);
+> > +
+> > +	check_buf_crc(data, buf, fb);
+> > +}
+> > +
+> > +static void test_legacy_mmap_wc(data_t *data)
+> > +{
+> > +	igt_fb_t *fb;
+> > +	void *buf;
+> > +
+> > +	igt_require(gem_has_legacy_mmap(data->drm_fd));
+> > +	igt_require(gem_mmap__has_wc(data->drm_fd));
+>=20
+>=20
+> Do we need these check if they are already performed below? Just asking :)
+
+No, not really :)
+
+>=20
+> > +
+> > +	fb =3D prepare_fb(data);
+> > +
+> > +	/* mmap the fb */
+> > +	buf =3D gem_mmap__wc(data->drm_fd, fb->gem_handle, 0, fb->size, PROT_=
+WRITE);
+> > +
+> > +	check_buf_crc(data, buf, fb);
+> > +}
+> > +
+> > +static void select_valid_pipe_output_combo(data_t *data)
+> > +{
+> > +	igt_display_t *display =3D &data->display;
+> > +
+> > +	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
+> > +		igt_display_reset(display);
+> > +
+> > +		igt_output_set_pipe(data->output, data->pipe);
+> > +		if (!i915_pipe_output_combo_valid(display))
+> > +			continue;
+> > +
+> > +		/* one is enough */
+> > +		return;
+>=20
+> if (i915_pipe_output_combo_valid(display))
+> 	return;
+>=20
+> is shorter
+
+Indeed.
+
+>=20
+> > +	}
+> > +
+> > +	igt_skip("no valid crtc/connector combinations found\n");
+> > +}
+> > +
+> > +igt_main
+> > +{
+> > +	data_t data;
+> > +
+> > +	igt_fixture {
+> > +		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
+> > +
+> > +		data.devid =3D intel_get_drm_devid(data.drm_fd);
+> > +
+> > +		kmstest_set_vt_graphics_mode();
+> > +
+> > +		igt_require_pipe_crc(data.drm_fd);
+> > +
+> > +		igt_display_require(&data.display, data.drm_fd);
+> > +
+> > +		select_valid_pipe_output_combo(&data);
+> > +	}
+> > +
+> > +	/**
+> > +	 * SUBTEST: memset-crc
+> > +	 * Description: Use display controller CRC hardware to validate (non)=
+coherency
+> > +	 *		of memset operations on future scanout buffer objects
+> > +	 *		mmapped with different mmap methods and different caching modes.
+> > +	 */
+> > +	igt_subtest_with_dynamic("memset-crc") {
+> > +		if (gem_has_mappable_ggtt(data.drm_fd)) {
+> > +			igt_dynamic("mmap-gtt")
+> > +				test_mmap_gtt(&data);
+> > +
+> > +			cleanup_crtc(&data);
+> > +		}
+> > +
+> > +		if (gem_mmap_offset__has_wc(data.drm_fd)) {
+>=20
+> I wonder how these checks will work with static .testlist?
+
+There were two options:
+a) a static list of subtests, always executed and skipping if not supported,
+b) a dynamically generated list of dynamic sub-subtests, based on platform=
+=20
+   capabilities.
+
+I think that b) will work with static .testlists just as other dynamic test=
+s=20
+that iterate over e.g. engines or memomry regions do -- here we "iterate" o=
+ver=20
+available mmap methods / caching modes.  I've chosen b) because I think tha=
+t=20
+it produces less noise in CI, however I'm open to switching to a static lis=
+t=20
+of subtests.
+
+>=20
+>=20
+> Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+
+If there are no requests for switching to a static list of subtests, nor an=
+y=20
+other comments, I'll drop the above pointed out redundant checks from subte=
+st=20
+bodies, apply your continue -> return simplification, and use your R-b.
+
+Thanks,
+Janusz
+
+
+>=20
+> Regards
+> Andrzej
+>=20
+> > +			igt_dynamic("mmap-offset-wc")
+> > +				test_mmap_offset_wc(&data);
+> > +
+> > +			cleanup_crtc(&data);
+> > +		}
+> > +
+> > +		if (gem_has_mmap_offset(data.drm_fd)) {
+> > +			if (gem_has_lmem(data.drm_fd)) {
+> > +				igt_dynamic("mmap-offset-fixed")
+> > +					test_mmap_offset_fixed(&data);
+> > +
+> > +				cleanup_crtc(&data);
+> > +
+> > +			} else {
+> > +				igt_dynamic("mmap-offset-uc")
+> > +					test_mmap_offset_uc(&data);
+> > +
+> > +				cleanup_crtc(&data);
+> > +			}
+> > +		}
+> > +
+> > +		if (gem_has_legacy_mmap(data.drm_fd) &&
+> > +		    gem_mmap__has_wc(data.drm_fd)) {
+> > +			igt_dynamic("mmap-legacy-wc")
+> > +				test_legacy_mmap_wc(&data);
+> > +
+> > +			cleanup_crtc(&data);
+> > +		}
+> > +	}
+> > +
+> > +	igt_fixture {
+> > +		igt_display_fini(&data.display);
+> > +		close(data.drm_fd);
+> > +	}
+> > +}
+> > diff --git a/tests/meson.build b/tests/meson.build
+> > index 38f080f7c2..f71be1dbe5 100644
+> > --- a/tests/meson.build
+> > +++ b/tests/meson.build
+> > @@ -224,6 +224,7 @@ i915_progs =3D [
+> >   	'kms_ccs',
+> >   	'kms_cdclk',
+> >   	'kms_draw_crc',
+> > +	'kms_fb_coherency',
+> >   	'kms_fbcon_fbt',
+> >   	'kms_fence_pin_leak',
+> >   	'kms_flip_scaled_crc',
+>=20
+>=20
+
+
+
