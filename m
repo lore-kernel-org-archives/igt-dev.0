@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E68810E27B
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 16:47:45 +0000 (UTC)
-Date: Tue, 16 May 2023 18:47:34 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD76810E276
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 16:28:31 +0000 (UTC)
+Date: Tue, 16 May 2023 18:28:26 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230516164734.zulree7ks5j42jrs@kamilkon-desk1>
+Message-ID: <20230516162826.fi7wdgqwvq6wkrkt@kamilkon-desk1>
 References: <20230509090738.1157939-1-mauro.chehab@linux.intel.com>
  <20230509090738.1157939-6-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
@@ -27,9 +27,6 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
 
-while I was reading 6/6 I realised that test names were stripped
-from uderscores, '_', see example below.
-
 On 2023-05-09 at 11:07:37 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
@@ -39,6 +36,19 @@ On 2023-05-09 at 11:07:37 +0200, Mauro Carvalho Chehab wrote:
 > buckets, which is used by some Intel CI scripts.
 > 
 > Place them inside i915 comments.
+
+Some subtest names are dynamicaly generated with
+engine_name + engine_number, may we adjust it and shorten them ?
+For example see gem_ctx_switch.
+
+With or without that it looks correct, though I only skimmed
+over all descriptions,
+
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Regards,
+Kamil
+
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
@@ -227,12 +237,6 @@ On 2023-05-09 at 11:07:37 +0200, Mauro Carvalho Chehab wrote:
 >  #include "drm.h"
 > +/**
 > + * TEST: core auth
---------------- ^
-No underscore in test name.
-
-Regards,
-Kamil
-
 > + * Description: Call drmGetMagic() and drmAuthMagic() and see if it behaves.
 > + * Feature: core
 > + *
