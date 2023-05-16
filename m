@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E89F210E2D0
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 03:59:11 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 16 May 2023 09:23:58 +0530
-Message-Id: <20230516035358.3879159-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230515121700.3804073-1-bhanuprakash.modem@intel.com>
-References: <20230515121700.3804073-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 79/79] testplan/kms: Make documentation is
- mandatory for all kms subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Tue, 16 May 2023 04:10:27 -0000
+Message-ID: <168421022744.14225.774684467403197676@emeril.freedesktop.org>
+References: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230515081720.3713293-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_D?=
+ =?utf-8?q?ocument_KMS_tests_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,39 +17,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As testplan documentation is ready for all kms tests, update the
-testplan config to make sure we are not missing the documentation
-all the kms tests.
+== Series Details ==
 
-V2, V3: - Rebase
+Series: Document KMS tests (rev6)
+URL   : https://patchwork.freedesktop.org/series/117749/
+State : warning
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- docs/testplan/meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+== Summary ==
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index 6454f2933..704d4b3a2 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -29,12 +29,12 @@ xe_test_dict = {
- 
- if build_xe
- 	test_dict = {
--		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
-+		'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist },
- 		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
- 	    }
- else
- 	test_dict = {
--	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
-+	      'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist }
- 	    }
- endif
- 
--- 
-2.40.0
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881973 for the overview.
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41787791):
+     chamelium_port_get_connector(data->chamelium, port, true);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
+  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
+    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
+    ^~~~~~~~~~~~~~~~~~~~~~~
+    chamelium_set_edid
+  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
+  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+     chamelium_port_get_connector(data->chamelium, port, false);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1684209773:step_script
+  section_start:1684209773:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684209775:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41787790):
+     chamelium_port_get_connector(data->chamelium, port, true);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
+  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
+    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
+    ^~~~~~~~~~~~~~~~~~~~~~~
+    chamelium_set_edid
+  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
+  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+     chamelium_port_get_connector(data->chamelium, port, false);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1684209763:step_script
+  section_start:1684209763:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684209763:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41787792):
+     chamelium_port_get_connector(data->chamelium, port, true);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
+  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
+    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
+    ^~~~~~~~~~~~~~~~~~~~~~~
+    chamelium_set_edid
+  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
+  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+     chamelium_port_get_connector(data->chamelium, port, false);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1684209762:step_script
+  section_start:1684209762:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684209764:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41787789):
+     chamelium_port_get_connector(data->chamelium, port, true);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
+  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
+    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
+    ^~~~~~~~~~~~~~~~~~~~~~~
+    chamelium_set_edid
+  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
+  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
+  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+     chamelium_port_get_connector(data->chamelium, port, false);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1684209771:step_script
+  section_start:1684209771:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1684209772:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/881973
