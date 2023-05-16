@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4335E10E279
- for <igt-dev@lists.freedesktop.org>; Thu,  4 May 2023 05:02:35 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Thu,  4 May 2023 10:27:24 +0530
-Message-Id: <20230504045726.2954788-5-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230504045726.2954788-1-bhanuprakash.modem@intel.com>
-References: <20230504045726.2954788-1-bhanuprakash.modem@intel.com>
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com
+ [IPv6:2a00:1450:4864:20::135])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26E2F10E0A6
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 13:30:20 +0000 (UTC)
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-4f00d41df22so4417075e87.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 06:30:20 -0700 (PDT)
+Date: Tue, 16 May 2023 16:30:16 +0300
+From: Petri Latvala <adrinael@adrinael.net>
+Message-ID: <ZGOFaEP9/zBClGYL@adrinael.net>
+References: <20230515163908.50961-1-kamil.konieczny@linux.intel.com>
+ <20230516084241.45226c0e@maurocar-mobl2>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 4/6] Revert "lib/igt_kms: Cache xe_device info for
- kms tests"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230516084241.45226c0e@maurocar-mobl2>
+Subject: Re: [igt-dev] [PATCH i-g-t] meson: fix testplan building for old
+ meson
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,53 +26,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, ankit.k.nautiyal@intel.com, mchehab@kernel.org, kamil.konieczny@linux.intel.com, zbigniew.kempczynski@intel.com, karthik.b.s@intel.com, swati2.sharma@intel.com
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As this logic is moved to driver open/close level, this is
-redundant, hence revert this logic.
+On Tue, May 16, 2023 at 08:42:41AM +0200, Mauro Carvalho Chehab wrote:
+> Hi Kamil,
+> 
+> On Mon, 15 May 2023 18:39:08 +0200
+> Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+> 
+> > Old meson 0.47.2 do not support dictionary adding so fix
+> > testplan building.
+> > 
+> > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  docs/testplan/meson.build | 11 +++++++----
+> >  1 file changed, 7 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+> > index 2014f91b5..6454f2933 100644
+> > --- a/docs/testplan/meson.build
+> > +++ b/docs/testplan/meson.build
+> > @@ -27,12 +27,15 @@ xe_test_dict = {
+> >  		 'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+> >  	       }
+> >  
+> > -test_dict = {
+> > +if build_xe
+> > +	test_dict = {
+> > +		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
+> > +		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+> > +	    }
+> > +else
+> > +	test_dict = {
+> >  	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
+> >  	    }
+> 
+> This would mean that, for every new driver with documentation we'll
+> need two changes. It would be even harder if we ever need to add options
+> to control other driver builds.
+> 
+> Btw, I double-checked that, with meson, we can't update the directory
+> with something like:
+> 
+> 	xe_tests = { 'input': xe_test_config, 'extra_args': check_testlist }
+> 	test_dict['xe_tests'] = xe_tests
+> 
+> As this would generate this error:
+> 
+> 	../docs/testplan/meson.build:33:1: ERROR: Assignment target must be an id.
+> 		test_dict['xe_tests'] = xe_tests
+> 	 ^
+> 
+> According to [1]:
+> 
+> 	"All objects are immutable, you can not change the contents 
+> 	 of them. You can only create new ones. 
+> 	 (which is what += does behind the scenes)."
+> 
+> [1] https://github.com/mesonbuild/meson/issues/3931#issuecomment-407180830
+> 
+> On other words, with version < 0.48, we're stuck with data or code
+> duplication.
+> 
+> So, IMO, we should:
+> 
+> 	1. Change the gitlab's "build:tests-fedora-oldest-meson" pipeline
+> 	   to honor the minimal version from meson.build file, e. g.:
+> 
+> 		$ MESON_MIN_VERSION=$(perl -ne "print \$1 if (m/meson_version\s*:\s*'([^']+)/)" meson.build)
+> 		$ echo $MESON_MIN_VERSION
+> 		>=0.47.2
+> 
+> 	2. Update the minimal version to at least 0.48.
+> 
+> Yet, if there are strong reasons why keeping support for such old version,
+> feel free to add my ack:
+> 
+> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> # if we can't update meson_version to at least >= 0.48
 
-This reverts commit 3e049d7c5048c8e4d0b0cfc22afca18e9e897e9a.
+The ideal fix for this is indeed bumping the minimum required version
+to the oldest that's in Ubuntu LTS / Debian Stable / etc. However that
+requires changing the docker image building in gitlab-CI to use the
+new version and no one has had time to look into why any changes there
+break all kinds of stuff. In other words: Not impossible, just not
+possible quickly.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/igt_kms.c | 8 --------
- 1 file changed, 8 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e085e234a..9125a8ccb 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -59,7 +59,6 @@
- #include "igt_device.h"
- #include "igt_sysfs.h"
- #include "sw_sync.h"
--#include "xe/xe_query.h"
- #ifdef HAVE_CHAMELIUM
- #include "igt_chamelium.h"
- #endif
-@@ -2639,9 +2638,6 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	}
- #endif
- 
--	if (is_xe_device(drm_fd))
--		xe_device_get(drm_fd);
--
- 	display->n_pipes = IGT_MAX_PIPES;
- 	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
- 	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
-@@ -2978,10 +2974,6 @@ static void igt_output_fini(igt_output_t *output)
- void igt_display_fini(igt_display_t *display)
- {
- 	int i;
--	int drm_fd = display->drm_fd;
--
--	if (is_xe_device(drm_fd))
--		xe_device_put(drm_fd);
- 
- 	for (i = 0; i < display->n_planes; ++i) {
- 		igt_plane_t *plane = &display->planes[i];
 -- 
-2.40.0
-
+Petri Latvala
 
