@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C1C610E295
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 16:56:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E18F610E295
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 16:56:42 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
  janga.rahul.kumar@intel.com
-Date: Tue, 16 May 2023 22:20:50 +0530
-Message-Id: <20230516165058.4047595-13-bhanuprakash.modem@intel.com>
+Date: Tue, 16 May 2023 22:20:51 +0530
+Message-Id: <20230516165058.4047595-14-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
 References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 12/20] tests/v3d: Use drm_close_driver() to close
+Subject: [igt-dev] [i-g-t 13/20] tests/vc4: Use drm_close_driver() to close
  the drm fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,24 +32,25 @@ Cc: Melissa Wen <mwen@igalia.com>
 Cc: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/v3d/v3d_create_bo.c      | 4 ++--
- tests/v3d/v3d_get_bo_offset.c  | 2 +-
- tests/v3d/v3d_get_param.c      | 2 +-
- tests/v3d/v3d_job_submission.c | 2 +-
- tests/v3d/v3d_mmap.c           | 2 +-
- tests/v3d/v3d_perfmon.c        | 2 +-
- tests/v3d/v3d_submit_cl.c      | 2 +-
- tests/v3d/v3d_submit_csd.c     | 2 +-
- tests/v3d/v3d_wait_bo.c        | 2 +-
- 9 files changed, 10 insertions(+), 10 deletions(-)
+ tests/vc4/vc4_create_bo.c    | 4 ++--
+ tests/vc4/vc4_dmabuf_poll.c  | 2 +-
+ tests/vc4/vc4_label_bo.c     | 2 +-
+ tests/vc4/vc4_lookup_fail.c  | 2 +-
+ tests/vc4/vc4_mmap.c         | 2 +-
+ tests/vc4/vc4_perfmon.c      | 2 +-
+ tests/vc4/vc4_purgeable_bo.c | 2 +-
+ tests/vc4/vc4_tiling.c       | 2 +-
+ tests/vc4/vc4_wait_bo.c      | 2 +-
+ tests/vc4/vc4_wait_seqno.c   | 2 +-
+ 10 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/tests/v3d/v3d_create_bo.c b/tests/v3d/v3d_create_bo.c
-index 4142fb5f6..07d237e96 100644
---- a/tests/v3d/v3d_create_bo.c
-+++ b/tests/v3d/v3d_create_bo.c
-@@ -63,9 +63,9 @@ igt_main
- 			igt_assert_eq_u32(((uint32_t *)bo->map)[i], 0x0);
- 		igt_v3d_free_bo(fd2, bo);
+diff --git a/tests/vc4/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
+index c17f25b04..ba7db1985 100644
+--- a/tests/vc4/vc4_create_bo.c
++++ b/tests/vc4/vc4_create_bo.c
+@@ -72,9 +72,9 @@ igt_main
+ 		munmap(map, size);
+ 		gem_close(fd2, handle);
  
 -		close(fd2);
 +		drm_close_driver(fd2);
@@ -59,10 +60,32 @@ index 4142fb5f6..07d237e96 100644
 -		close(fd);
 +		drm_close_driver(fd);
  }
-diff --git a/tests/v3d/v3d_get_bo_offset.c b/tests/v3d/v3d_get_bo_offset.c
-index 5c208f940..533488420 100644
---- a/tests/v3d/v3d_get_bo_offset.c
-+++ b/tests/v3d/v3d_get_bo_offset.c
+diff --git a/tests/vc4/vc4_dmabuf_poll.c b/tests/vc4/vc4_dmabuf_poll.c
+index c76d4950e..56f60b202 100644
+--- a/tests/vc4/vc4_dmabuf_poll.c
++++ b/tests/vc4/vc4_dmabuf_poll.c
+@@ -73,5 +73,5 @@ igt_main
+ 	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
+ }
+diff --git a/tests/vc4/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
+index 252bd1ed8..5d626a92d 100644
+--- a/tests/vc4/vc4_label_bo.c
++++ b/tests/vc4/vc4_label_bo.c
+@@ -82,5 +82,5 @@ igt_main
+ 	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
+ }
+diff --git a/tests/vc4/vc4_lookup_fail.c b/tests/vc4/vc4_lookup_fail.c
+index 5e709a7d3..9f179a3fd 100644
+--- a/tests/vc4/vc4_lookup_fail.c
++++ b/tests/vc4/vc4_lookup_fail.c
 @@ -67,5 +67,5 @@ igt_main
  	}
  
@@ -70,83 +93,71 @@ index 5c208f940..533488420 100644
 -		close(fd);
 +		drm_close_driver(fd);
  }
-diff --git a/tests/v3d/v3d_get_param.c b/tests/v3d/v3d_get_param.c
-index 0ca330eb5..0d8fbf3d6 100644
---- a/tests/v3d/v3d_get_param.c
-+++ b/tests/v3d/v3d_get_param.c
-@@ -69,5 +69,5 @@ igt_main
+diff --git a/tests/vc4/vc4_mmap.c b/tests/vc4/vc4_mmap.c
+index 8094f4a2d..fef25f334 100644
+--- a/tests/vc4/vc4_mmap.c
++++ b/tests/vc4/vc4_mmap.c
+@@ -49,5 +49,5 @@ igt_main
  	}
  
  	igt_fixture
 -		close(fd);
 +		drm_close_driver(fd);
  }
-diff --git a/tests/v3d/v3d_job_submission.c b/tests/v3d/v3d_job_submission.c
-index d6e415bb2..e4ca7e89d 100644
---- a/tests/v3d/v3d_job_submission.c
-+++ b/tests/v3d/v3d_job_submission.c
-@@ -219,5 +219,5 @@ igt_main
+diff --git a/tests/vc4/vc4_perfmon.c b/tests/vc4/vc4_perfmon.c
+index 664633a3f..b25e92096 100644
+--- a/tests/vc4/vc4_perfmon.c
++++ b/tests/vc4/vc4_perfmon.c
+@@ -135,5 +135,5 @@ igt_main
  	}
  
  	igt_fixture
 -		close(fd);
 +		drm_close_driver(fd);
  }
-diff --git a/tests/v3d/v3d_mmap.c b/tests/v3d/v3d_mmap.c
-index 567940a80..642c55c65 100644
---- a/tests/v3d/v3d_mmap.c
-+++ b/tests/v3d/v3d_mmap.c
-@@ -75,5 +75,5 @@ igt_main
+diff --git a/tests/vc4/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
+index 9d6a3b438..7e9ac1718 100644
+--- a/tests/vc4/vc4_purgeable_bo.c
++++ b/tests/vc4/vc4_purgeable_bo.c
+@@ -249,5 +249,5 @@ igt_main
  	}
  
  	igt_fixture
 -		close(fd);
 +		drm_close_driver(fd);
  }
-diff --git a/tests/v3d/v3d_perfmon.c b/tests/v3d/v3d_perfmon.c
-index 3f55ddb1d..4d6ea465f 100644
---- a/tests/v3d/v3d_perfmon.c
-+++ b/tests/v3d/v3d_perfmon.c
-@@ -142,5 +142,5 @@ igt_main
+diff --git a/tests/vc4/vc4_tiling.c b/tests/vc4/vc4_tiling.c
+index f5bf31f56..e9d3ebfb3 100644
+--- a/tests/vc4/vc4_tiling.c
++++ b/tests/vc4/vc4_tiling.c
+@@ -124,5 +124,5 @@ igt_main
  	}
  
  	igt_fixture
 -		close(fd);
 +		drm_close_driver(fd);
  }
-diff --git a/tests/v3d/v3d_submit_cl.c b/tests/v3d/v3d_submit_cl.c
-index 725bc1dff..293b146e2 100644
---- a/tests/v3d/v3d_submit_cl.c
-+++ b/tests/v3d/v3d_submit_cl.c
-@@ -376,5 +376,5 @@ igt_main
- 	}
+diff --git a/tests/vc4/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
+index c88a4ac46..d309acc95 100644
+--- a/tests/vc4/vc4_wait_bo.c
++++ b/tests/vc4/vc4_wait_bo.c
+@@ -111,5 +111,5 @@ igt_main
+ 		test_used_bo(fd, ~0ull);
  
  	igt_fixture
 -		close(fd);
 +		drm_close_driver(fd);
  }
-diff --git a/tests/v3d/v3d_submit_csd.c b/tests/v3d/v3d_submit_csd.c
-index 3ec0ee49f..0e19913c6 100644
---- a/tests/v3d/v3d_submit_csd.c
-+++ b/tests/v3d/v3d_submit_csd.c
-@@ -360,5 +360,5 @@ igt_main
+diff --git a/tests/vc4/vc4_wait_seqno.c b/tests/vc4/vc4_wait_seqno.c
+index 78984fa32..e029a613e 100644
+--- a/tests/vc4/vc4_wait_seqno.c
++++ b/tests/vc4/vc4_wait_seqno.c
+@@ -55,5 +55,5 @@ igt_main
  	}
  
  	igt_fixture
 -		close(fd);
 +		drm_close_driver(fd);
- }
-diff --git a/tests/v3d/v3d_wait_bo.c b/tests/v3d/v3d_wait_bo.c
-index 9e51b6a05..6ed999426 100644
---- a/tests/v3d/v3d_wait_bo.c
-+++ b/tests/v3d/v3d_wait_bo.c
-@@ -122,6 +122,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_v3d_free_bo(fd, bo);
--		close(fd);
-+		drm_close_driver(fd);
- 	}
  }
 -- 
 2.40.0
