@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C67610E291
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 16:56:56 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 530CC10E073
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 17:01:12 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
- janga.rahul.kumar@intel.com
-Date: Tue, 16 May 2023 22:20:57 +0530
-Message-Id: <20230516165058.4047595-20-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
-References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 16 May 2023 22:25:58 +0530
+Message-Id: <20230516165558.4061781-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 19/20] tests: Drop xe_device get/put from test
- level
+Subject: [igt-dev] [i-g-t] tests:
+ s/i915_pipe_output_combo_valid/intel_pipe_output_combo_valid/
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,1096 +21,810 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As xe_device get/put is already handled at driver open/close
-level, drop these checks from tests.
+As i915_pipe_output_combo_valid() is no more i915 specific, and
+it supports both i915 & XE then rename the helper.
 
-V2: - New patch for xe_config()
+s/i915_pipe_output_combo_valid/intel_pipe_output_combo_valid/
+
+V2: - Rebase
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_3d.c                  |  6 ------
- tests/kms_addfb_basic.c         |  9 +--------
- tests/kms_flip.c                |  9 +--------
- tests/kms_flip_event_leak.c     |  4 ----
- tests/kms_getfb.c               | 15 +--------------
- tests/kms_hdmi_inject.c         |  7 -------
- tests/kms_setmode.c             |  7 -------
- tests/xe/xe_compute.c           |  8 ++------
- tests/xe/xe_create.c            |  9 ++-------
- tests/xe/xe_debugfs.c           |  6 +-----
- tests/xe/xe_dma_buf_sync.c      | 11 ++---------
- tests/xe/xe_evict.c             |  5 -----
- tests/xe/xe_exec_balancer.c     |  8 ++------
- tests/xe/xe_exec_basic.c        |  8 ++------
- tests/xe/xe_exec_compute_mode.c |  8 ++------
- tests/xe/xe_exec_fault_mode.c   |  5 +----
- tests/xe/xe_exec_reset.c        | 23 +++++------------------
- tests/xe/xe_exec_threads.c      | 20 ++++----------------
- tests/xe/xe_gpgpu_fill.c        |  3 ---
- tests/xe/xe_guc_pc.c            |  2 --
- tests/xe/xe_huc_copy.c          |  8 ++------
- tests/xe/xe_intel_bb.c          |  2 --
- tests/xe/xe_mmap.c              |  8 ++------
- tests/xe/xe_mmio.c              |  8 ++------
- tests/xe/xe_noexec_ping_pong.c  |  2 --
- tests/xe/xe_pm.c                |  3 ---
- tests/xe/xe_prime_self_import.c | 31 +------------------------------
- tests/xe/xe_query.c             |  8 ++------
- tests/xe/xe_vm.c                |  5 +----
- tests/xe/xe_waitfence.c         |  8 ++------
- 30 files changed, 38 insertions(+), 218 deletions(-)
+ lib/igt_kms.c                         | 4 ++--
+ lib/igt_kms.h                         | 2 +-
+ tests/i915/kms_big_fb.c               | 2 +-
+ tests/i915/kms_busy.c                 | 2 +-
+ tests/i915/kms_ccs.c                  | 2 +-
+ tests/i915/kms_cdclk.c                | 4 ++--
+ tests/i915/kms_draw_crc.c             | 2 +-
+ tests/i915/kms_dsc.c                  | 2 +-
+ tests/i915/kms_fence_pin_leak.c       | 2 +-
+ tests/i915/kms_flip_scaled_crc.c      | 4 ++--
+ tests/i915/kms_flip_tiling.c          | 2 +-
+ tests/i915/kms_frontbuffer_tracking.c | 2 +-
+ tests/i915/kms_mmap_write_crc.c       | 2 +-
+ tests/i915/kms_psr.c                  | 2 +-
+ tests/i915/kms_psr2_sf.c              | 2 +-
+ tests/i915/kms_psr2_su.c              | 2 +-
+ tests/i915/kms_psr_stress_test.c      | 2 +-
+ tests/i915/kms_pwrite_crc.c           | 2 +-
+ tests/kms_async_flips.c               | 2 +-
+ tests/kms_atomic.c                    | 2 +-
+ tests/kms_atomic_interruptible.c      | 2 +-
+ tests/kms_atomic_transition.c         | 6 +++---
+ tests/kms_color_helper.c              | 2 +-
+ tests/kms_concurrent.c                | 2 +-
+ tests/kms_content_protection.c        | 2 +-
+ tests/kms_cursor_crc.c                | 2 +-
+ tests/kms_cursor_edge_walk.c          | 2 +-
+ tests/kms_cursor_legacy.c             | 2 +-
+ tests/kms_display_modes.c             | 2 +-
+ tests/kms_dp_tiled_display.c          | 2 +-
+ tests/kms_flip_event_leak.c           | 2 +-
+ tests/kms_invalid_mode.c              | 2 +-
+ tests/kms_lease.c                     | 2 +-
+ tests/kms_pipe_crc_basic.c            | 2 +-
+ tests/kms_plane.c                     | 2 +-
+ tests/kms_plane_alpha_blend.c         | 2 +-
+ tests/kms_plane_cursor.c              | 2 +-
+ tests/kms_plane_lowres.c              | 2 +-
+ tests/kms_plane_multiple.c            | 2 +-
+ tests/kms_plane_scaling.c             | 4 ++--
+ tests/kms_prime.c                     | 2 +-
+ tests/kms_properties.c                | 6 +++---
+ tests/kms_rmfb.c                      | 2 +-
+ tests/kms_rotation_crc.c              | 6 +++---
+ tests/kms_scaling_modes.c             | 2 +-
+ tests/kms_sequence.c                  | 2 +-
+ tests/kms_universal_plane.c           | 2 +-
+ tests/kms_vblank.c                    | 6 +++---
+ tests/kms_vrr.c                       | 2 +-
+ 49 files changed, 61 insertions(+), 61 deletions(-)
 
-diff --git a/tests/kms_3d.c b/tests/kms_3d.c
-index 55e1d8058..c7a9d42d2 100644
---- a/tests/kms_3d.c
-+++ b/tests/kms_3d.c
-@@ -37,9 +37,6 @@ igt_simple_main
- 
- 	drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
--	if (is_xe_device(drm_fd))
--		xe_device_get(drm_fd);
--
- 	res = drmModeGetResources(drm_fd);
- 	igt_require(res);
- 
-@@ -116,8 +113,5 @@ igt_simple_main
- 
- 	drmModeFreeConnector(connector);
- 
--	if (is_xe_device(drm_fd))
--		xe_device_put(drm_fd);
--
- 	drm_close_driver(drm_fd);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index c54841486..fcafcb66e 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -5993,7 +5993,7 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
  }
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 53a6a007a..065f21975 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -974,9 +974,6 @@ igt_main
- 	igt_fixture {
- 		fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_require(has_addfb2_iface(fd));
--
--		if (is_xe_device(fd))
--			xe_device_get(fd);
+ 
+ /*
+- * i915_pipe_output_combo_valid:
++ * intel_pipe_output_combo_valid:
+  * @display: a pointer to an #igt_display_t structure
+  *
+  * Every individual test must use igt_output_set_pipe() before calling this
+@@ -6011,7 +6011,7 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
+  *
+  * Returns: true if a valid pipe/output mode combo found, else false
+  */
+-bool i915_pipe_output_combo_valid(igt_display_t *display)
++bool intel_pipe_output_combo_valid(igt_display_t *display)
+ {
+ 	int combo = 0;
+ 	igt_output_t *output;
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 1b6988c17..afa75b334 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1003,6 +1003,6 @@ int igt_get_max_dotclock(int fd);
+ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
+ bool igt_check_bigjoiner_support(igt_display_t *display);
+ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+-bool i915_pipe_output_combo_valid(igt_display_t *display);
++bool intel_pipe_output_combo_valid(igt_display_t *display);
+ 
+ #endif /* __IGT_KMS_H__ */
+diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+index a0d5ef730..2ba88f2c3 100644
+--- a/tests/i915/kms_big_fb.c
++++ b/tests/i915/kms_big_fb.c
+@@ -608,7 +608,7 @@ static void test_scanout(data_t *data)
+ 		igt_display_reset(&data->display);
+ 
+ 		igt_output_set_pipe(data->output, data->pipe);
+-		if (!i915_pipe_output_combo_valid(&data->display))
++		if (!intel_pipe_output_combo_valid(&data->display))
+ 			continue;
+ 
+ 		if (data->async_flip_test) {
+diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
+index 20d3058fb..c7b74f0fb 100644
+--- a/tests/i915/kms_busy.c
++++ b/tests/i915/kms_busy.c
+@@ -319,7 +319,7 @@ pipe_output_combo_valid(igt_display_t *dpy,
+ 	igt_display_reset(dpy);
+ 
+ 	igt_output_set_pipe(output, pipe);
+-	if (!i915_pipe_output_combo_valid(dpy))
++	if (!intel_pipe_output_combo_valid(dpy))
+ 		ret = false;
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 
+diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
+index 1b3462ea9..9e5968c09 100644
+--- a/tests/i915/kms_ccs.c
++++ b/tests/i915/kms_ccs.c
+@@ -596,7 +596,7 @@ static void test_output(data_t *data, const int testnum)
+ 			igt_display_reset(&data->display);
+ 
+ 			igt_output_set_pipe(data->output, data->pipe);
+-			if (i915_pipe_output_combo_valid(&data->display)) {
++			if (intel_pipe_output_combo_valid(&data->display)) {
+ 				found = true;
+ 				break;
+ 			}
+diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+index 0f9b8dc58..9e8044062 100644
+--- a/tests/i915/kms_cdclk.c
++++ b/tests/i915/kms_cdclk.c
+@@ -283,7 +283,7 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 		igt_output_override_mode(output, mode_hi);
+ 		i++;
  	}
+-	igt_require(i915_pipe_output_combo_valid(display));
++	igt_require(intel_pipe_output_combo_valid(display));
+ 	igt_display_reset(display);
  
- 	invalid_tests(fd);
-@@ -1008,10 +1005,6 @@ igt_main
- 			igt_display_fini(&display);
- 	}
+ 	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+@@ -352,7 +352,7 @@ static void run_cdclk_test(data_t *data, uint32_t flags)
  
--	igt_fixture {
--		if (is_xe_device(fd))
--			xe_device_put(fd);
--
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index efff06e1c..d57990240 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1858,9 +1858,6 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		igt_install_exit_handler(kms_flip_exit_handler);
- 		get_timestamp_format();
- 
--		if (is_xe_device(drm_fd))
--			xe_device_get(drm_fd);
--
- 		if (is_i915_device(drm_fd)) {
- 			bops = buf_ops_create(drm_fd);
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
+ 		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(display)) {
++		if (!intel_pipe_output_combo_valid(display)) {
+ 			igt_output_set_pipe(output, PIPE_NONE);
+ 			continue;
  		}
-@@ -1926,10 +1923,6 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 	}
- 	igt_stop_signal_helper();
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index db6d71f2e..3f78bac8b 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -63,7 +63,7 @@ static void find_modeset_params(void)
+ 		igt_display_reset(&display);
  
--	igt_fixture {
--		if (is_xe_device(drm_fd))
--			xe_device_put(drm_fd);
--
-+	igt_fixture
- 		drm_close_driver(drm_fd);
--	}
+ 		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(&display))
++		if (!intel_pipe_output_combo_valid(&display))
+ 			continue;
+ 
+ 		mode = igt_output_get_mode(output);
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 3ce28f848..5846159f7 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -156,7 +156,7 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 
+ 		igt_output_override_mode(output, mode);
+ 
+-		if (!i915_pipe_output_combo_valid(display)) {
++		if (!intel_pipe_output_combo_valid(display)) {
+ 			if (data->output_format == DSC_FORMAT_RGB) {
+ 				igt_info("No valid pipe/output/mode found.\n");
+ 
+diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
+index 63657a742..6b678668e 100644
+--- a/tests/i915/kms_fence_pin_leak.c
++++ b/tests/i915/kms_fence_pin_leak.c
+@@ -202,7 +202,7 @@ static void run_test(data_t *data)
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_pipe(output, p);
+-		if (!i915_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+ 		run_single_test(data, p, output);
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index f5dc430e3..987f5f54a 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -660,7 +660,7 @@ igt_main
+ 					igt_output_set_pipe(output, pipe);
+ 					igt_output_override_mode(output, modetoset);
+ 
+-					if (modetoset && i915_pipe_output_combo_valid(&data.display)) {
++					if (modetoset && intel_pipe_output_combo_valid(&data.display)) {
+ 						found = true;
+ 						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
+ 							run_tests(&data, index, pipe, output, modetoset);
+@@ -672,7 +672,7 @@ igt_main
+ 						igt_display_reset(&data.display);
+ 
+ 						igt_output_set_pipe(output, pipe);
+-						if (!i915_pipe_output_combo_valid(&data.display))
++						if (!intel_pipe_output_combo_valid(&data.display))
+ 							continue;
+ 
+ 						modetoset = NULL;
+diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
+index a22f12382..01c27efef 100644
+--- a/tests/i915/kms_flip_tiling.c
++++ b/tests/i915/kms_flip_tiling.c
+@@ -199,7 +199,7 @@ igt_main
+ 			pipe_crc_free(&data);
+ 
+ 			igt_output_set_pipe(output, pipe);
+-			if (!i915_pipe_output_combo_valid(&data.display))
++			if (!intel_pipe_output_combo_valid(&data.display))
+ 				continue;
+ 
+ 			plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+index 650e14a77..c7af27be4 100644
+--- a/tests/i915/kms_frontbuffer_tracking.c
++++ b/tests/i915/kms_frontbuffer_tracking.c
+@@ -415,7 +415,7 @@ static bool find_connector(bool edp_only, bool pipe_a,
+ 
+ 		igt_output_set_pipe(output, pipe);
+ 		igt_output_override_mode(output, connector_get_mode(output));
+-		if (i915_pipe_output_combo_valid(&drm.display)) {
++		if (intel_pipe_output_combo_valid(&drm.display)) {
+ 			*ret_output = output;
+ 			*ret_pipe = pipe;
+ 			return true;
+diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
+index bc51975f6..5f7750041 100644
+--- a/tests/i915/kms_mmap_write_crc.c
++++ b/tests/i915/kms_mmap_write_crc.c
+@@ -280,7 +280,7 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
+ 			igt_display_reset(&data.display);
+ 
+ 			igt_output_set_pipe(output, pipe);
+-			if (!i915_pipe_output_combo_valid(&data.display))
++			if (!intel_pipe_output_combo_valid(&data.display))
+ 				continue;
+ 
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+index 6c89de45d..ec8cb8fe2 100644
+--- a/tests/i915/kms_psr.c
++++ b/tests/i915/kms_psr.c
+@@ -110,7 +110,7 @@ static void setup_output(data_t *data)
+ 
+ 		igt_display_reset(display);
+ 		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+ 		data->crtc_id = output->config.crtc->crtc_id;
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index 4cf986440..d55b818ef 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -879,7 +879,7 @@ pipe_output_combo_valid(igt_display_t *display,
+ 	igt_display_reset(display);
+ 
+ 	igt_output_set_pipe(output, pipe);
+-	if (!i915_pipe_output_combo_valid(display))
++	if (!intel_pipe_output_combo_valid(display))
+ 		ret = false;
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 
+diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+index 65e67b8c9..43fed4241 100644
+--- a/tests/i915/kms_psr2_su.c
++++ b/tests/i915/kms_psr2_su.c
+@@ -106,7 +106,7 @@ static void setup_output(data_t *data)
+ 
+ 		igt_display_reset(display);
+ 		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+ 		data->output = output;
+diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
+index a4cb3194e..0812bcdd1 100644
+--- a/tests/i915/kms_psr_stress_test.c
++++ b/tests/i915/kms_psr_stress_test.c
+@@ -74,7 +74,7 @@ static void setup_output(data_t *data)
+ 
+ 		igt_display_reset(display);
+ 		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(display)) {
++		if (!intel_pipe_output_combo_valid(display)) {
+ 			igt_output_set_pipe(output, PIPE_NONE);
+ 			continue;
+ 		}
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index 3278d876d..e8481b545 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -162,7 +162,7 @@ static void run_test(data_t *data)
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_pipe(data->output, data->pipe);
+-		if (!i915_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+ 		prepare_crtc(data);
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 51ffa523a..1b13b04dd 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -554,7 +554,7 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ 			igt_display_reset(display);
+ 
+ 			igt_output_set_pipe(output, pipe);
+-			if (!i915_pipe_output_combo_valid(display))
++			if (!intel_pipe_output_combo_valid(display))
+ 				continue;
+ 
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index 037db2d36..c2232bacb 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -1312,7 +1312,7 @@ igt_main
+ 			igt_display_reset(&display);
+ 
+ 			igt_output_set_pipe(output, pipe);
+-			if (i915_pipe_output_combo_valid(&display)) {
++			if (intel_pipe_output_combo_valid(&display)) {
+ 				valid_config = true;
+ 				break;
+ 			}
+diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
+index 74b2e246a..a21830f26 100644
+--- a/tests/kms_atomic_interruptible.c
++++ b/tests/kms_atomic_interruptible.c
+@@ -277,7 +277,7 @@ static bool pipe_output_combo_valid(igt_display_t *display,
+ 	igt_display_reset(display);
+ 
+ 	igt_output_set_pipe(output, pipe);
+-	if (!i915_pipe_output_combo_valid(display))
++	if (!intel_pipe_output_combo_valid(display))
+ 		ret = false;
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 9f39d033d..cd6df6cf2 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -767,7 +767,7 @@ static unsigned set_combinations(data_t *data, unsigned mask, struct igt_fb *fb)
+ 				continue;
+ 
+ 			igt_output_set_pipe(output, pipe);
+-			if (i915_pipe_output_combo_valid(&data->display)) {
++			if (intel_pipe_output_combo_valid(&data->display)) {
+ 				mode = igt_output_get_mode(output);
+ 				break;
+ 			} else {
+@@ -857,7 +857,7 @@ retry:
+ 				continue;
+ 
+ 			igt_output_set_pipe(output, i);
+-			if (i915_pipe_output_combo_valid(&data->display)) {
++			if (intel_pipe_output_combo_valid(&data->display)) {
+ 				mode = igt_output_get_mode(output);
+ 
+ 				igt_info("(pipe %s + %s), mode:",
+@@ -1013,7 +1013,7 @@ static bool pipe_output_combo_valid(igt_display_t *display,
+ 	igt_display_reset(display);
+ 
+ 	igt_output_set_pipe(output, pipe);
+-	if (!i915_pipe_output_combo_valid(display))
++	if (!intel_pipe_output_combo_valid(display))
+ 		ret = false;
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index b01c38ef6..c756b280e 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -29,7 +29,7 @@ bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
+ 	bool ret = true;
+ 
+ 	igt_output_set_pipe(data->output, pipe);
+-	if (!i915_pipe_output_combo_valid(&data->display))
++	if (!intel_pipe_output_combo_valid(&data->display))
+ 		ret = false;
+ 	igt_output_set_pipe(data->output, PIPE_NONE);
+ 
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index e1e581723..1ba2d11be 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -334,7 +334,7 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 			igt_display_reset(&data->display);
+ 
+ 			igt_output_set_pipe(output, pipe);
+-			if (!i915_pipe_output_combo_valid(&data->display))
++			if (!intel_pipe_output_combo_valid(&data->display))
+ 				continue;
+ 
+ 			igt_output_set_pipe(output, PIPE_NONE);
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 344cac505..0b12d9c2f 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -509,7 +509,7 @@ test_content_protection(enum igt_commit_style s, int content_type)
+ 			igt_display_reset(display);
+ 
+ 			igt_output_set_pipe(output, pipe);
+-			if (!i915_pipe_output_combo_valid(display))
++			if (!intel_pipe_output_combo_valid(display))
+ 				continue;
+ 
+ 			modeset_with_fb(pipe, output, s);
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index 3a353a032..8e7f32aee 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -713,7 +713,7 @@ static bool valid_pipe_output_combo(data_t *data)
+ 	igt_display_reset(display);
+ 	igt_output_set_pipe(data->output, data->pipe);
+ 
+-	if (i915_pipe_output_combo_valid(display))
++	if (intel_pipe_output_combo_valid(display))
+ 		ret = true;
+ 
+ 	igt_output_set_pipe(data->output, PIPE_NONE);
+diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+index 5f423a18f..e4323b18d 100644
+--- a/tests/kms_cursor_edge_walk.c
++++ b/tests/kms_cursor_edge_walk.c
+@@ -375,7 +375,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 					igt_display_reset(&data.display);
+ 					igt_output_set_pipe(data.output, data.pipe);
+-					if (!i915_pipe_output_combo_valid(&data.display))
++					if (!intel_pipe_output_combo_valid(&data.display))
+ 						continue;
+ 
+ 					igt_output_set_pipe(data.output, PIPE_NONE);
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index f7a6202cf..2d74861d0 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -252,7 +252,7 @@ find_connected_pipe(igt_display_t *display, bool second, igt_output_t **output)
+ 				continue;
+ 
+ 			igt_output_set_pipe(*output, pipe);
+-			if (i915_pipe_output_combo_valid(display)) {
++			if (intel_pipe_output_combo_valid(display)) {
+ 				found = true;
+ 
+ 				if (second) {
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+index d69c7b931..9fbea228b 100644
+--- a/tests/kms_display_modes.c
++++ b/tests/kms_display_modes.c
+@@ -156,7 +156,7 @@ static void run_extendedmode_test(data_t *data) {
+ 					igt_output_set_pipe(output1, pipe1);
+ 					igt_output_set_pipe(output2, pipe2);
+ 
+-					if (!i915_pipe_output_combo_valid(display))
++					if (!intel_pipe_output_combo_valid(display))
+ 						continue;
+ 
+ 					igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
+diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
+index 07b803a50..77d5352ac 100644
+--- a/tests/kms_dp_tiled_display.c
++++ b/tests/kms_dp_tiled_display.c
+@@ -272,7 +272,7 @@ static void setup_mode(data_t *data)
+ 		igt_require(found);
+ 		igt_output_override_mode(output, mode);
+ 	}
+-	igt_require(i915_pipe_output_combo_valid(data->display));
++	igt_require(intel_pipe_output_combo_valid(data->display));
+ 	igt_display_commit_atomic(data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
+ 				  NULL);
  }
 diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-index 7e46f5ec0..423ce40df 100644
+index b79cd5030..84a83b544 100644
 --- a/tests/kms_flip_event_leak.c
 +++ b/tests/kms_flip_event_leak.c
-@@ -65,8 +65,6 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_device_drop_master(data->drm_fd);
+@@ -110,7 +110,7 @@ igt_main
+ 			igt_display_reset(&data.display);
  
- 	igt_device_set_master(fd);
--	if (is_xe_device(fd))
--		xe_device_get(fd);
+ 			igt_output_set_pipe(output, pipe);
+-			if (!i915_pipe_output_combo_valid(&data.display))
++			if (!intel_pipe_output_combo_valid(&data.display))
+ 				continue;
  
- 	igt_create_fb(fd, mode->hdisplay, mode->vdisplay,
- 		      DRM_FORMAT_XRGB8888,
-@@ -77,8 +75,6 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
- 			      data);
- 	igt_assert_eq(ret, 0);
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index ec0483055..271408ba1 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -283,7 +283,7 @@ igt_main
+ 				igt_display_reset(&data.display);
  
--	if (is_xe_device(fd))
--		xe_device_put(fd);
- 	ret = drm_close_driver(fd);
- 	igt_assert_eq(ret, 0);
+ 				igt_output_set_pipe(output, pipe);
+-				if (!i915_pipe_output_combo_valid(&data.display))
++				if (!intel_pipe_output_combo_valid(&data.display))
+ 					continue;
  
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index 3cb568808..0b2e66ddf 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -399,9 +399,6 @@ static void test_handle_protection(void) {
- 	igt_fixture {
- 		non_master_fd = drm_open_driver(DRIVER_ANY);
+ 				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 29a774ae8..52080f11f 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -1227,7 +1227,7 @@ igt_main
+ 					igt_display_reset(display);
  
--		if (is_xe_device(non_master_fd))
--			xe_device_get(non_master_fd);
--
- 		non_master_add.width = 1024;
- 		non_master_add.height = 1024;
- 		non_master_add.pixel_format = DRM_FORMAT_XRGB8888;
-@@ -449,9 +446,6 @@ static void test_handle_protection(void) {
- 		do_ioctl(non_master_fd, DRM_IOCTL_MODE_RMFB, &non_master_add.fb_id);
- 		gem_close(non_master_fd, non_master_add.handles[0]);
+ 					igt_output_set_pipe(output, data.pipe);
+-					if (!i915_pipe_output_combo_valid(display))
++					if (!intel_pipe_output_combo_valid(display))
+ 						continue;
  
--		if (is_xe_device(non_master_fd))
--			xe_device_get(non_master_fd);
--
- 		drm_close_driver(non_master_fd);
- 	}
- }
-@@ -463,9 +457,6 @@ igt_main
- 	igt_fixture {
- 		fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_require(has_getfb_iface(fd));
--
--		if (is_xe_device(fd))
--			xe_device_get(fd);
- 	}
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe),
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 84c73fd7f..ece943c52 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -353,7 +353,7 @@ static bool pipe_output_combo_valid(igt_display_t *display,
+ 	igt_display_reset(display);
  
- 	igt_subtest_group
-@@ -480,10 +471,6 @@ igt_main
- 	igt_subtest_group
- 		test_handle_protection();
+ 	igt_output_set_pipe(output, pipe);
+-	if (!i915_pipe_output_combo_valid(display))
++	if (!intel_pipe_output_combo_valid(display))
+ 		ret = false;
+ 	igt_output_set_pipe(output, PIPE_NONE);
  
--	igt_fixture {
--		if (is_xe_device(fd))
--			xe_device_put(fd);
--
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
-index e3db34502..9aa5c59fc 100644
---- a/tests/kms_hdmi_inject.c
-+++ b/tests/kms_hdmi_inject.c
-@@ -206,9 +206,6 @@ igt_main
- 		igt_require(connector);
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 10e16b638..3aa3bf6cb 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -1206,7 +1206,7 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+ 		igt_display_reset(&data->display);
  
- 		kmstest_unset_all_crtcs(drm_fd, res);
--
--		if (is_xe_device(drm_fd))
--			xe_device_get(drm_fd);
- 	}
+ 		igt_output_set_pipe(data->output, pipe);
+-		if (!i915_pipe_output_combo_valid(&data->display))
++		if (!intel_pipe_output_combo_valid(&data->display))
+ 			continue;
  
- 	igt_describe("Make sure that 4K modes exposed by DRM match the "
-@@ -223,10 +220,6 @@ igt_main
+ 		igt_output_set_pipe(data->output, PIPE_NONE);
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index 0d03e178a..5444cd337 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -655,7 +655,7 @@ static void run_subtests(data_t *data)
+ 				igt_display_reset(&data->display);
  
- 	igt_fixture {
- 		drmModeFreeConnector(connector);
--
--		if (is_xe_device(drm_fd))
--			xe_device_put(drm_fd);
--
- 		drm_close_driver(drm_fd);
- 	}
- }
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index a85f4eaf2..035bbd0b0 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -955,9 +955,6 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+ 				igt_output_set_pipe(output, pipe);
+-				if (!i915_pipe_output_combo_valid(&data->display))
++				if (!intel_pipe_output_combo_valid(&data->display))
+ 					continue;
  
- 		drm_resources = drmModeGetResources(drm_fd);
- 		igt_require(drm_resources);
--
--		if (is_xe_device(drm_fd))
--			xe_device_get(drm_fd);
- 	}
+ 				prepare_crtc(data, output, pipe);
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index 59b105c60..11fe77387 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -86,7 +86,7 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
+ 	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
  
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-@@ -974,10 +971,6 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+ 	igt_output_set_pipe(data->output, data->pipe_id);
+-	igt_require(i915_pipe_output_combo_valid(display));
++	igt_require(intel_pipe_output_combo_valid(display));
  
- 	igt_fixture {
- 		drmModeFreeResources(drm_resources);
--
--		if (is_xe_device(drm_fd))
--			xe_device_put(drm_fd);
--
- 		drm_close_driver(drm_fd);
- 	}
- }
-diff --git a/tests/xe/xe_compute.c b/tests/xe/xe_compute.c
-index 5e6cd8529..d2d198a95 100644
---- a/tests/xe/xe_compute.c
-+++ b/tests/xe/xe_compute.c
-@@ -35,16 +35,12 @@ igt_main
- {
- 	int xe;
+ 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+ 		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index db9f5a54c..2b1050413 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -280,7 +280,7 @@ static void run_test(data_t *data, uint64_t modifier)
+ 			igt_display_reset(&data->display);
+ 			igt_output_set_pipe(data->output, data->pipe);
  
--	igt_fixture {
-+	igt_fixture
- 		xe = drm_open_driver(DRIVER_XE);
--		xe_device_get(xe);
--	}
+-			if (!i915_pipe_output_combo_valid(&data->display))
++			if (!intel_pipe_output_combo_valid(&data->display))
+ 				continue;
  
- 	igt_subtest("compute-square")
- 		test_compute_square(xe);
+ 			data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
+diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+index 7dd9d586d..4ef3be3e4 100644
+--- a/tests/kms_plane_multiple.c
++++ b/tests/kms_plane_multiple.c
+@@ -386,7 +386,7 @@ static void run_test(data_t *data, uint64_t modifier)
+ 		igt_display_reset(display);
  
--	igt_fixture {
--		xe_device_put(xe);
-+	igt_fixture
- 		drm_close_driver(xe);
--	}
- }
-diff --git a/tests/xe/xe_create.c b/tests/xe/xe_create.c
-index 959dd27e7..11dc7ceaa 100644
---- a/tests/xe/xe_create.c
-+++ b/tests/xe/xe_create.c
-@@ -111,10 +111,8 @@ igt_main
- {
- 	int xe;
+ 		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
  
--	igt_fixture {
-+	igt_fixture
- 		xe = drm_open_driver(DRIVER_XE);
--		xe_device_get(xe);
--	}
+ 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 0e7cd4a2a..09c2855c5 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -647,7 +647,7 @@ find_connected_pipe(igt_display_t *display, bool second, igt_output_t **output)
+ 				continue;
  
- 	igt_subtest("create-invalid-size") {
- 		create_invalid_size(xe);
-@@ -124,9 +122,6 @@ igt_main
- 		create_massive_size(xe);
- 	}
+ 			igt_output_set_pipe(*output, pipe);
+-			if (i915_pipe_output_combo_valid(display)) {
++			if (intel_pipe_output_combo_valid(display)) {
+ 				found = true;
  
--
--	igt_fixture {
--		xe_device_put(xe);
-+	igt_fixture
- 		drm_close_driver(xe);
--	}
- }
-diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
-index 10dd05740..c4396a37a 100644
---- a/tests/xe/xe_debugfs.c
-+++ b/tests/xe/xe_debugfs.c
-@@ -240,14 +240,12 @@ static int opt_handler(int option, int option_index, void *input)
+ 				if (second) {
+@@ -1086,7 +1086,7 @@ pipe_output_combo_valid(igt_display_t *display,
+ 	igt_display_reset(display);
  
- igt_main_args("", long_options, help_str, opt_handler, NULL)
- {
--	struct xe_device *xe_dev;
- 	char devnode[PATH_MAX];
- 	int fd;
- 	int gt;
+ 	igt_output_set_pipe(output, pipe);
+-	if (!i915_pipe_output_combo_valid(display))
++	if (!intel_pipe_output_combo_valid(display))
+ 		ret = false;
+ 	igt_output_set_pipe(output, PIPE_NONE);
  
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_dev = xe_device_get(fd);
- 		__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
- 	}
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index dd5ab993e..5f4d11993 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -92,7 +92,7 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+ 		igt_display_reset(display);
  
-@@ -268,8 +266,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		test_forcewake(fd);
- 	}
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_dma_buf_sync.c b/tests/xe/xe_dma_buf_sync.c
-index 81ece2428..64027d68f 100644
---- a/tests/xe/xe_dma_buf_sync.c
-+++ b/tests/xe/xe_dma_buf_sync.c
-@@ -113,7 +113,6 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
- 
- 	for (i = 0; i < N_FD; ++i) {
- 		fd[i] = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd[0]);
- 		vm[i] = xe_vm_create(fd[i], 0, 0);
- 		engine[i] = xe_engine_create(fd[i], vm[i], !i ? hwe0 : hwe1, 0);
- 	}
-@@ -218,11 +217,8 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
- 		close(dma_buf_fd[i]);
- 	}
- 
--	for (i = 0; i < N_FD; ++i) {
--		xe_device_put(fd[i]);
-+	for (i = 0; i < N_FD; ++i)
- 		drm_close_driver(fd[i]);
--	}
--
- }
- 
- igt_main
-@@ -232,7 +228,6 @@ igt_main
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
- 
- 		xe_for_each_hw_engine(fd, hwe)
- 			if (hwe0 == NULL) {
-@@ -255,8 +250,6 @@ igt_main
- 	igt_subtest("export-dma-buf-many-read-sync")
- 		test_export_dma_buf(hwe0, hwe1, 16, READ_SYNC);
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_evict.c b/tests/xe/xe_evict.c
-index 4b66dd683..c3b5b86c4 100644
---- a/tests/xe/xe_evict.c
-+++ b/tests/xe/xe_evict.c
-@@ -62,7 +62,6 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 	igt_assert(bo);
- 
- 	fd = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd);
- 
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
- 	if (flags & BIND_ENGINE)
-@@ -200,7 +199,6 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 		xe_vm_destroy(fd, vm2);
- 		xe_vm_destroy(fd, vm3);
- 	}
--	xe_device_put(fd);
- 	drm_close_driver(fd);
- }
- 
-@@ -239,7 +237,6 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
- 	igt_assert(bo);
- 
- 	fd = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd);
- 
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
- 			  DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
-@@ -368,7 +365,6 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
- 	xe_vm_destroy(fd, vm);
- 	if (flags & MULTI_VM)
- 		xe_vm_destroy(fd, vm2);
--	xe_device_put(fd);
- 	drm_close_driver(fd);
- }
- 
-@@ -668,7 +664,6 @@ igt_main
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
- 		igt_require(xe_has_vram(fd));
- 		vram_size = xe_vram_size(fd, 0);
- 		igt_assert(vram_size);
-diff --git a/tests/xe/xe_exec_balancer.c b/tests/xe/xe_exec_balancer.c
-index fb4592903..81ec526e7 100644
---- a/tests/xe/xe_exec_balancer.c
-+++ b/tests/xe/xe_exec_balancer.c
-@@ -626,10 +626,8 @@ igt_main
- 	int class;
- 	int fd;
- 
--	igt_fixture {
-+	igt_fixture
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	igt_subtest("virtual-all-active")
- 		xe_for_each_gt(fd, gt)
-@@ -706,8 +704,6 @@ igt_main
- 					test_cm(fd, gt, class, 1, 0, s->flags);
- 	}
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_exec_basic.c b/tests/xe/xe_exec_basic.c
-index d14a764f4..d1f39e4b6 100644
---- a/tests/xe/xe_exec_basic.c
-+++ b/tests/xe/xe_exec_basic.c
-@@ -311,10 +311,8 @@ igt_main
- 	};
- 	int fd;
- 
--	igt_fixture {
-+	igt_fixture
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	for (const struct section *s = sections; s->name; s++) {
- 		igt_subtest_f("once-%s", s->name)
-@@ -351,8 +349,6 @@ igt_main
- 				test_exec(fd, hwe, 1, 0, 1, s->flags);
- 	}
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_exec_compute_mode.c b/tests/xe/xe_exec_compute_mode.c
-index 950cb6159..a58067e64 100644
---- a/tests/xe/xe_exec_compute_mode.c
-+++ b/tests/xe/xe_exec_compute_mode.c
-@@ -327,10 +327,8 @@ igt_main
- 	};
- 	int fd;
- 
--	igt_fixture {
-+	igt_fixture
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	for (const struct section *s = sections; s->name; s++) {
- 		igt_subtest_f("once-%s", s->name)
-@@ -359,8 +357,6 @@ igt_main
- 					  s->flags);
- 	}
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_exec_fault_mode.c b/tests/xe/xe_exec_fault_mode.c
-index 8cd883c09..ee167f359 100644
---- a/tests/xe/xe_exec_fault_mode.c
-+++ b/tests/xe/xe_exec_fault_mode.c
-@@ -524,7 +524,6 @@ igt_main
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
- 		igt_require(xe_supports_faults(fd));
- 	}
- 
-@@ -568,8 +567,6 @@ igt_main
- 		xe_for_each_hw_engine(fd, hwe)
- 			test_atomic(fd, hwe, 8, WAIT_ATOMIC);
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_exec_reset.c b/tests/xe/xe_exec_reset.c
-index 3700b8dce..bd8ad76fc 100644
---- a/tests/xe/xe_exec_reset.c
-+++ b/tests/xe/xe_exec_reset.c
-@@ -178,10 +178,8 @@ test_balancer(int fd, int gt, int class, int n_engines, int n_execs,
- 
- 	igt_assert(n_engines <= MAX_N_ENGINES);
- 
--	if (flags & CLOSE_FD) {
-+	if (flags & CLOSE_FD)
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	xe_for_each_hw_engine(fd, hwe) {
- 		if (hwe->engine_class != class || hwe->gt_id != gt)
-@@ -293,7 +291,6 @@ test_balancer(int fd, int gt, int class, int n_engines, int n_execs,
- 			for (i = 0; i < n_engines; i++)
- 				xe_engine_destroy(fd, engines[i]);
+ 		igt_output_set_pipe(output, *pipe);
+-		if (i915_pipe_output_combo_valid(display)) {
++		if (intel_pipe_output_combo_valid(display)) {
+ 			found = true;
+ 			break;
  		}
--		xe_device_put(fd);
- 		drm_close_driver(fd);
- 		/* FIXME: wait for idle */
- 		usleep(150000);
-@@ -388,10 +385,8 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	igt_assert(n_engines <= MAX_N_ENGINES);
- 
--	if (flags & CLOSE_FD) {
-+	if (flags & CLOSE_FD)
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
- 	bo_size = sizeof(*data) * n_execs;
-@@ -474,7 +469,6 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 			for (i = 0; i < n_engines; i++)
- 				xe_engine_destroy(fd, engines[i]);
- 		}
--		xe_device_put(fd);
- 		drm_close_driver(fd);
- 		/* FIXME: wait for idle */
- 		usleep(150000);
-@@ -566,10 +560,8 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	igt_assert(n_engines <= MAX_N_ENGINES);
- 
--	if (flags & CLOSE_FD) {
-+	if (flags & CLOSE_FD)
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
- 			  DRM_XE_VM_CREATE_COMPUTE_MODE, 0);
-@@ -654,7 +646,6 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 			for (i = 0; i < n_engines; i++)
- 				xe_engine_destroy(fd, engines[i]);
- 		}
--		xe_device_put(fd);
- 		drm_close_driver(fd);
- 		/* FIXME: wait for idle */
- 		usleep(150000);
-@@ -831,10 +822,8 @@ igt_main
- 	int class;
- 	int fd;
- 
--	igt_fixture {
-+	igt_fixture
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	igt_subtest("spin")
- 		xe_for_each_hw_engine(fd, hwe)
-@@ -944,8 +933,6 @@ igt_main
- 	igt_subtest("gt-reset-stress")
- 		gt_reset(fd, 4, 1);
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_exec_threads.c b/tests/xe/xe_exec_threads.c
-index bde92a9c5..6450d1e40 100644
---- a/tests/xe/xe_exec_threads.c
-+++ b/tests/xe/xe_exec_threads.c
-@@ -73,7 +73,6 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	if (!fd) {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
- 		owns_fd = true;
- 	}
- 
-@@ -243,10 +242,8 @@ test_balancer(int fd, int gt, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	}
- 	if (owns_vm)
- 		xe_vm_destroy(fd, vm);
--	if (owns_fd) {
--		xe_device_put(fd);
-+	if (owns_fd)
- 		drm_close_driver(fd);
--	}
- }
- 
- static void
-@@ -282,7 +279,6 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	if (!fd) {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
- 		owns_fd = true;
- 	}
- 
-@@ -453,7 +449,6 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	if (owns_vm)
- 		xe_vm_destroy(fd, vm);
- 	if (owns_fd) {
--		xe_device_put(fd);
- 		drm_close_driver(fd);
- 	}
- }
-@@ -491,7 +486,6 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	if (!fd) {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
- 		owns_fd = true;
- 	}
- 
-@@ -696,10 +690,8 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	}
- 	if (owns_vm)
- 		xe_vm_destroy(fd, vm);
--	if (owns_fd) {
--		xe_device_put(fd);
-+	if (owns_fd)
- 		drm_close_driver(fd);
--	}
- }
- 
- struct thread_data {
-@@ -1391,18 +1383,14 @@ igt_main
- 	};
- 	int fd;
- 
--	igt_fixture {
-+	igt_fixture
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	for (const struct section *s = sections; s->name; s++) {
- 		igt_subtest_f("threads-%s", s->name)
- 			threads(fd, s->flags);
- 	}
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_gpgpu_fill.c b/tests/xe/xe_gpgpu_fill.c
-index 28ad2382b..b1f55ea64 100644
---- a/tests/xe/xe_gpgpu_fill.c
-+++ b/tests/xe/xe_gpgpu_fill.c
-@@ -120,8 +120,6 @@ igt_main
- 
- 		fill_fn = igt_get_gpgpu_fillfunc(data.devid);
- 		igt_require_f(fill_fn, "no gpgpu-fill function\n");
--
--		xe_device_get(data.drm_fd);
- 	}
- 
- 	igt_subtest("basic") {
-@@ -129,7 +127,6 @@ igt_main
- 	}
- 
- 	igt_fixture {
--		xe_device_put(data.drm_fd);
- 		buf_ops_destroy(data.bops);
- 		drm_close_driver(data.drm_fd);
- 	}
-diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
-index 56d4f9190..13b862c5a 100644
---- a/tests/xe/xe_guc_pc.c
-+++ b/tests/xe/xe_guc_pc.c
-@@ -387,7 +387,6 @@ igt_main
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
- 
- 		sysfs = igt_sysfs_open(fd);
- 		igt_assert(sysfs != -1);
-@@ -495,7 +494,6 @@ igt_main
- 			set_freq(sysfs, gt, "max", stash_max);
- 		}
- 		close(sysfs);
--		xe_device_put(fd);
- 		drm_close_driver(fd);
- 	}
- }
-diff --git a/tests/xe/xe_huc_copy.c b/tests/xe/xe_huc_copy.c
-index ccdfe8622..d4377f9a1 100644
---- a/tests/xe/xe_huc_copy.c
-+++ b/tests/xe/xe_huc_copy.c
-@@ -176,10 +176,8 @@ igt_main
- {
- 	int xe;
- 
--	igt_fixture {
-+	igt_fixture
- 		xe = drm_open_driver(DRIVER_XE);
--		xe_device_get(xe);
--	}
- 
- 	igt_subtest("huc_copy") {
- 		/*
-@@ -190,8 +188,6 @@ igt_main
- 		test_huc_copy(xe);
- 	}
- 
--	igt_fixture {
--		xe_device_put(xe);
-+	igt_fixture
- 		drm_close_driver(xe);
--	}
- }
-diff --git a/tests/xe/xe_intel_bb.c b/tests/xe/xe_intel_bb.c
-index f43beb1a8..59740d4d2 100644
---- a/tests/xe/xe_intel_bb.c
-+++ b/tests/xe/xe_intel_bb.c
-@@ -1105,7 +1105,6 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
- 		bops = buf_ops_create(xe);
--		xe_device_get(xe);
- 	}
- 
- 	igt_describe("Ensure reset is possible on fresh bb");
-@@ -1178,7 +1177,6 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_fixture {
--		xe_device_put(xe);
- 		buf_ops_destroy(bops);
- 		drm_close_driver(xe);
- 	}
-diff --git a/tests/xe/xe_mmap.c b/tests/xe/xe_mmap.c
-index 352cbcab4..463d0cac7 100644
---- a/tests/xe/xe_mmap.c
-+++ b/tests/xe/xe_mmap.c
-@@ -61,10 +61,8 @@ igt_main
- {
- 	int fd;
- 
--	igt_fixture {
-+	igt_fixture
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	igt_subtest("system")
- 		test_mmap(fd, system_memory(fd));
-@@ -75,8 +73,6 @@ igt_main
- 	igt_subtest("vram-system")
- 		test_mmap(fd, vram_memory(fd, 0) | system_memory(fd));
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_mmio.c b/tests/xe/xe_mmio.c
-index 77a38b8d1..6825478f0 100644
---- a/tests/xe/xe_mmio.c
-+++ b/tests/xe/xe_mmio.c
-@@ -77,18 +77,14 @@ igt_main
- {
- 	int fd;
- 
--	igt_fixture {
-+	igt_fixture
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	igt_subtest("mmio-timestamp")
- 		test_xe_mmio_timestamp(fd);
- 	igt_subtest("mmio-invalid")
- 		test_xe_mmio_invalid(fd);
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_noexec_ping_pong.c b/tests/xe/xe_noexec_ping_pong.c
-index f276e694c..3c2b340bd 100644
---- a/tests/xe/xe_noexec_ping_pong.c
-+++ b/tests/xe/xe_noexec_ping_pong.c
-@@ -99,10 +99,8 @@ igt_simple_main
- {
- 
- 	fd = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd);
- 
- 	test_ping_pong(fd, xe_hw_engine(fd, 0));
- 
--	xe_device_put(fd);
- 	drm_close_driver(fd);
- }
-diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c
-index 7bec294ed..b4d5fe252 100644
---- a/tests/xe/xe_pm.c
-+++ b/tests/xe/xe_pm.c
-@@ -370,8 +370,6 @@ igt_main
- 		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
- 		device.pci_root = igt_device_get_pci_root_port(device.fd_xe);
- 
--		xe_device_get(device.fd_xe);
--
- 		/* Always perform initial once-basic exec checking for health */
- 		xe_for_each_hw_engine(device.fd_xe, hwe)
- 			test_exec(device, hwe, 1, 1, NO_SUSPEND, NO_RPM);
-@@ -440,7 +438,6 @@ igt_main
- 	igt_fixture {
- 		set_d3cold_allowed(device.pci_xe, d3cold_allowed);
- 		igt_restore_runtime_pm();
--		xe_device_put(device.fd_xe);
- 		drm_close_driver(device.fd_xe);
- 	}
- }
-diff --git a/tests/xe/xe_prime_self_import.c b/tests/xe/xe_prime_self_import.c
-index a86d0e9f2..5b21a39ea 100644
---- a/tests/xe/xe_prime_self_import.c
-+++ b/tests/xe/xe_prime_self_import.c
-@@ -104,9 +104,7 @@ static void test_with_fd_dup(void)
- 	counter = 0;
- 
- 	fd1 = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd1);
- 	fd2 = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd2);
- 
- 	handle = xe_bo_create(fd1, 0, 0, BO_SIZE);
- 
-@@ -121,9 +119,7 @@ static void test_with_fd_dup(void)
- 	close(dma_buf_fd2);
- 	check_bo(fd2, handle_import, fd2, handle_import);
- 
--	xe_device_put(fd1);
- 	drm_close_driver(fd1);
--	xe_device_put(fd2);
- 	drm_close_driver(fd2);
- }
- 
-@@ -143,9 +139,7 @@ static void test_with_two_bos(void)
- 	counter = 0;
- 
- 	fd1 = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd1);
- 	fd2 = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd2);
- 
- 	handle1 = xe_bo_create(fd1, 0, 0, BO_SIZE);
- 	handle2 = xe_bo_create(fd1, 0, 0, BO_SIZE);
-@@ -165,9 +159,7 @@ static void test_with_two_bos(void)
- 
- 	check_bo(fd2, handle_import, fd2, handle_import);
- 
--	xe_device_put(fd1);
- 	drm_close_driver(fd1);
--	xe_device_put(fd2);
- 	drm_close_driver(fd2);
- }
- 
-@@ -185,9 +177,7 @@ static void test_with_one_bo_two_files(void)
- 	int dma_buf_fd1, dma_buf_fd2;
- 
- 	fd1 = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd1);
- 	fd2 = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd2);
- 
- 	handle_orig = xe_bo_create(fd1, 0, 0, BO_SIZE);
- 	dma_buf_fd1 = prime_handle_to_fd(fd1, handle_orig);
-@@ -201,9 +191,7 @@ static void test_with_one_bo_two_files(void)
- 	/* dma-buf self importing an flink bo should give the same handle */
- 	igt_assert_eq_u32(handle_import, handle_open);
- 
--	xe_device_put(fd1);
- 	drm_close_driver(fd1);
--	xe_device_put(fd2);
- 	drm_close_driver(fd2);
- 	close(dma_buf_fd1);
- 	close(dma_buf_fd2);
-@@ -222,9 +210,7 @@ static void test_with_one_bo(void)
- 	int dma_buf_fd;
- 
- 	fd1 = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd1);
- 	fd2 = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd2);
- 
- 	handle = xe_bo_create(fd1, 0, 0, BO_SIZE);
- 
-@@ -258,10 +244,8 @@ static void test_with_one_bo(void)
- 	check_bo(fd1, handle, fd2, handle_import1);
- 
- 	/* Completely rip out exporting fd. */
--	xe_device_put(fd1);
- 	drm_close_driver(fd1);
- 	check_bo(fd2, handle_import1, fd2, handle_import1);
--	xe_device_put(fd2);
- 	drm_close_driver(fd2);
- }
- 
-@@ -314,7 +298,6 @@ static void *thread_fn_reimport_vs_close(void *p)
- 	threads = calloc(num_threads, sizeof(pthread_t));
- 
- 	fds[0] = drm_open_driver(DRIVER_XE);
--	xe_device_get(fds[0]);
- 
- 	handle = xe_bo_create(fds[0], 0, 0, BO_SIZE);
- 
-@@ -334,7 +317,6 @@ static void *thread_fn_reimport_vs_close(void *p)
- 	}
- 
- 	pthread_barrier_destroy(&g_barrier);
--	xe_device_put(fds[0]);
- 	drm_close_driver(fds[0]);
- 	close(fds[1]);
- 
-@@ -406,13 +388,11 @@ static void test_export_close_race(void)
- 	/* Allocate exit handler fds in here so that we dont screw
- 	 * up the counts */
- 	fake = drm_open_driver(DRIVER_XE);
--	xe_device_get(fake);
- 
- 	/* TODO: Read object count */
- 	obj_count = 0;
- 
- 	fd = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd);
- 	pthread_barrier_init(&g_barrier, NULL, num_threads);
- 
- 	for (i = 0; i < num_threads; i++) {
-@@ -428,7 +408,6 @@ static void test_export_close_race(void)
- 	}
- 
- 	pthread_barrier_destroy(&g_barrier);
--	xe_device_put(fd);
- 	drm_close_driver(fd);
- 
- 	/* TODO: Read object count */
-@@ -436,7 +415,6 @@ static void test_export_close_race(void)
- 
- 	igt_info("leaked %i objects\n", obj_count);
- 
--	xe_device_put(fake);
- 	drm_close_driver(fake);
- 
- 	igt_assert_eq(obj_count, 0);
-@@ -458,7 +436,6 @@ static void test_llseek_size(void)
- 	counter = 0;
- 
- 	fd = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd);
- 
- 	for (i = 0; i < 10; i++) {
- 		int bufsz = xe_get_default_alignment(fd) << i;
-@@ -473,7 +450,6 @@ static void test_llseek_size(void)
- 		close(dma_buf_fd);
- 	}
- 
--	xe_device_put(fd);
- 	drm_close_driver(fd);
- }
- 
-@@ -493,7 +469,6 @@ static void test_llseek_bad(void)
- 	counter = 0;
- 
- 	fd = drm_open_driver(DRIVER_XE);
--	xe_device_get(fd);
- 
- 	handle = xe_bo_create(fd, 0, 0, BO_SIZE);
- 	dma_buf_fd = prime_handle_to_fd(fd, handle);
-@@ -510,7 +485,6 @@ static void test_llseek_bad(void)
- 
- 	close(dma_buf_fd);
- 
--	xe_device_put(fd);
- 	drm_close_driver(fd);
- }
- 
-@@ -534,7 +508,6 @@ igt_main
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-@@ -542,8 +515,6 @@ igt_main
- 			tests[i].fn();
- 	}
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_query.c b/tests/xe/xe_query.c
-index 1c06534d4..99e92b7c1 100644
---- a/tests/xe/xe_query.c
-+++ b/tests/xe/xe_query.c
-@@ -457,10 +457,8 @@ igt_main
- {
- 	int xe;
- 
--	igt_fixture {
-+	igt_fixture
- 		xe = drm_open_driver(DRIVER_XE);
--		xe_device_get(xe);
--	}
- 
- 	igt_subtest("query-engines")
- 		test_query_engines(xe);
-@@ -489,8 +487,6 @@ igt_main
- 	igt_subtest("query-invalid-extension")
- 		test_query_invalid_extension(xe);
- 
--	igt_fixture {
--		xe_device_put(xe);
-+	igt_fixture
- 		drm_close_driver(xe);
--	}
- }
-diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
-index 9015a5a57..13295cbe1 100644
---- a/tests/xe/xe_vm.c
-+++ b/tests/xe/xe_vm.c
-@@ -1621,7 +1621,6 @@ igt_main
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
- 
- 		xe_for_each_hw_engine(fd, hwe)
- 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COPY) {
-@@ -1837,8 +1836,6 @@ igt_main
- 		}
- 	}
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
-diff --git a/tests/xe/xe_waitfence.c b/tests/xe/xe_waitfence.c
-index 8bfb741f6..c9d7f6981 100644
---- a/tests/xe/xe_waitfence.c
-+++ b/tests/xe/xe_waitfence.c
-@@ -88,16 +88,12 @@ igt_main
- {
- 	int fd;
- 
--	igt_fixture {
-+	igt_fixture
- 		fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(fd);
--	}
- 
- 	igt_subtest("test")
- 		test(fd);
- 
--	igt_fixture {
--		xe_device_put(fd);
-+	igt_fixture
- 		drm_close_driver(fd);
--	}
- }
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index 2fe8dfa66..3f66f364b 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -244,7 +244,7 @@ static void plane_properties(igt_display_t *display, bool atomic)
+ 			igt_display_reset(display);
+ 
+ 			igt_output_set_pipe(output, pipe);
+-			if (!i915_pipe_output_combo_valid(display))
++			if (!intel_pipe_output_combo_valid(display))
+ 				continue;
+ 
+ 			found_any = found = true;
+@@ -273,7 +273,7 @@ static void crtc_properties(igt_display_t *display, bool atomic)
+ 			igt_display_reset(display);
+ 
+ 			igt_output_set_pipe(output, pipe);
+-			if (!i915_pipe_output_combo_valid(display))
++			if (!intel_pipe_output_combo_valid(display))
+ 				continue;
+ 
+ 			found_any_valid_pipe = found = true;
+@@ -305,7 +305,7 @@ static void connector_properties(igt_display_t *display, bool atomic)
+ 			igt_display_reset(display);
+ 
+ 			igt_output_set_pipe(output, pipe);
+-			if (!i915_pipe_output_combo_valid(display))
++			if (!intel_pipe_output_combo_valid(display))
+ 				continue;
+ 
+ 			found = true;
+diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+index 50df42953..0e10a536c 100644
+--- a/tests/kms_rmfb.c
++++ b/tests/kms_rmfb.c
+@@ -161,7 +161,7 @@ run_rmfb_test(struct rmfb_data *data, bool reopen)
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+ 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 28b4fd27c..8169b165d 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -215,7 +215,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	cleanup_crtc(data);
+ 
+ 	igt_output_set_pipe(output, pipe);
+-	igt_require(i915_pipe_output_combo_valid(display));
++	igt_require(intel_pipe_output_combo_valid(display));
+ 
+ 	igt_plane_set_rotation(plane, IGT_ROTATION_0);
+ 
+@@ -502,7 +502,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+ 		found = true;
+@@ -824,7 +824,7 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+ 		found = true;
+diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+index 906ae76de..50fb53109 100644
+--- a/tests/kms_scaling_modes.c
++++ b/tests/kms_scaling_modes.c
+@@ -99,7 +99,7 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
+ 			continue;
+ 
+ 		igt_output_set_pipe(output, pipe);
+-		if (!i915_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+ 		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index c8a3d6bbd..c1ae8d1f4 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -288,7 +288,7 @@ igt_main
+ 					igt_display_reset(&data.display);
+ 
+ 					igt_output_set_pipe(output, p);
+-					if (!i915_pipe_output_combo_valid(&data.display))
++					if (!intel_pipe_output_combo_valid(&data.display))
+ 						continue;
+ 
+ 					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index 635a136ab..d45a57af5 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -793,7 +793,7 @@ pipe_output_combo_valid(igt_display_t *display,
+ 	igt_display_reset(display);
+ 
+ 	igt_output_set_pipe(output, pipe);
+-	if (!i915_pipe_output_combo_valid(display))
++	if (!intel_pipe_output_combo_valid(display))
+ 		ret = false;
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index da0ada78e..09814b8ea 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -183,7 +183,7 @@ pipe_output_combo_valid(igt_display_t *display,
+ 	igt_display_reset(display);
+ 
+ 	igt_output_set_pipe(output, pipe);
+-	if (!i915_pipe_output_combo_valid(display))
++	if (!intel_pipe_output_combo_valid(display))
+ 		ret = false;
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 
+@@ -206,7 +206,7 @@ static void crtc_id_subtest(data_t *data, int fd)
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_pipe(output, p);
+-		if (!i915_pipe_output_combo_valid(display))
++		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+ 		igt_info("Using (pipe %s + %s) to run the subtest.\n",
+@@ -532,7 +532,7 @@ static void invalid_subtest(data_t *data, int fd)
+ 	data->output = output;
+ 
+ 	igt_output_set_pipe(output, pipe);
+-	igt_require(i915_pipe_output_combo_valid(display));
++	igt_require(intel_pipe_output_combo_valid(display));
+ 
+ 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+ 		 kmstest_pipe_name(pipe), igt_output_name(output));
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index d2d79c4eb..cd136593c 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -477,7 +477,7 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ 				igt_display_reset(&data->display);
+ 
+ 				igt_output_set_pipe(output, pipe);
+-				if (!i915_pipe_output_combo_valid(&data->display))
++				if (!intel_pipe_output_combo_valid(&data->display))
+ 					continue;
+ 
+ 				igt_dynamic_f("pipe-%s-%s",
 -- 
 2.40.0
