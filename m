@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5BBE10E2F4
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 06:42:46 +0000 (UTC)
-Date: Tue, 16 May 2023 08:42:41 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230516084241.45226c0e@maurocar-mobl2>
-In-Reply-To: <20230515163908.50961-1-kamil.konieczny@linux.intel.com>
-References: <20230515163908.50961-1-kamil.konieczny@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B78C610E2F7
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 06:55:38 +0000 (UTC)
+From: "Saarinen, Jani" <jani.saarinen@intel.com>
+To: "Murthy, Arun R" <arun.r.murthy@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 16 May 2023 06:55:34 +0000
+Message-ID: <DM8PR11MB5655781B1A9DB8847E75B1EBE0799@DM8PR11MB5655.namprd11.prod.outlook.com>
+References: <20230516062206.1064604-1-arun.r.murthy@intel.com>
+In-Reply-To: <20230516062206.1064604-1-arun.r.murthy@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] meson: fix testplan building for old
- meson
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] tests/kms_async_flips: Ger rid of
+ i915 specific fb creation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,86 +22,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Murthy, Arun R" <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
-
-On Mon, 15 May 2023 18:39:08 +0200
-Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
-
-> Old meson 0.47.2 do not support dictionary adding so fix
-> testplan building.
-> 
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  docs/testplan/meson.build | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> index 2014f91b5..6454f2933 100644
-> --- a/docs/testplan/meson.build
-> +++ b/docs/testplan/meson.build
-> @@ -27,12 +27,15 @@ xe_test_dict = {
->  		 'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
->  	       }
->  
-> -test_dict = {
-> +if build_xe
-> +	test_dict = {
-> +		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
-> +		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
-> +	    }
-> +else
-> +	test_dict = {
->  	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
->  	    }
-
-This would mean that, for every new driver with documentation we'll
-need two changes. It would be even harder if we ever need to add options
-to control other driver builds.
-
-Btw, I double-checked that, with meson, we can't update the directory
-with something like:
-
-	xe_tests = { 'input': xe_test_config, 'extra_args': check_testlist }
-	test_dict['xe_tests'] = xe_tests
-
-As this would generate this error:
-
-	../docs/testplan/meson.build:33:1: ERROR: Assignment target must be an id.
-		test_dict['xe_tests'] = xe_tests
-	 ^
-
-According to [1]:
-
-	"All objects are immutable, you can not change the contents 
-	 of them. You can only create new ones. 
-	 (which is what += does behind the scenes)."
-
-[1] https://github.com/mesonbuild/meson/issues/3931#issuecomment-407180830
-
-On other words, with version < 0.48, we're stuck with data or code
-duplication.
-
-So, IMO, we should:
-
-	1. Change the gitlab's "build:tests-fedora-oldest-meson" pipeline
-	   to honor the minimal version from meson.build file, e. g.:
-
-		$ MESON_MIN_VERSION=$(perl -ne "print \$1 if (m/meson_version\s*:\s*'([^']+)/)" meson.build)
-		$ echo $MESON_MIN_VERSION
-		>=0.47.2
-
-	2. Update the minimal version to at least 0.48.
-
-Yet, if there are strong reasons why keeping support for such old version,
-feel free to add my ack:
-
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> # if we can't update meson_version to at least >= 0.48
-
-Regards,
-Mauro
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
+di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIEFydW4gUg0KPiBN
+dXJ0aHkNCj4gU2VudDogVHVlc2RheSwgTWF5IDE2LCAyMDIzIDk6MjIgQU0NCj4gVG86IGlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBNdXJ0aHksIEFydW4gUiA8YXJ1bi5yLm11
+cnRoeUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXQgMS80XSB0
+ZXN0cy9rbXNfYXN5bmNfZmxpcHM6IEdlciByaWQgb2YgaTkxNSBzcGVjaWZpYyBmYiBjcmVhdGlv
+bg0KR2VyIHJpZCBvZiA9PiBHZXQgcmlkIG9mLCBzYW1lIHRvIHBhdGNoICMyLiANCg0KPiANCj4g
+Tm8gaWRlYSB3aHkgdGhlIHRlc3Qgd2FudHMgdG8gY3JlYXRlIHRoZSBmYiBkaWZmZXJlbnRseSBi
+ZXR3ZWVuIGk5MTUgdnMuIG90aGVycy4NCj4gVW5pZnkgaXQuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5
+OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPg0KPiBTaWdu
+ZWQtb2ZmLWJ5OiBBcnVuIFIgTXVydGh5IDxhcnVuLnIubXVydGh5QGludGVsLmNvbT4NCj4gLS0t
+DQo+ICB0ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYyB8IDE5ICsrKysrKysrKysrLS0tLS0tLS0NCj4g
+IDEgZmlsZSBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQ0KPiANCj4g
+ZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19hc3luY19mbGlwcy5jIGIvdGVzdHMva21zX2FzeW5jX2Zs
+aXBzLmMgaW5kZXgNCj4gNTFmZmE1MjMuLmZlMjdhOWVjIDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9r
+bXNfYXN5bmNfZmxpcHMuYw0KPiArKysgYi90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYw0KPiBAQCAt
+MTE1LDYgKzExNSwxNSBAQCBzdGF0aWMgdm9pZCB3YWl0X2ZsaXBfZXZlbnQoZGF0YV90ICpkYXRh
+KQ0KPiAgCX0NCj4gIH0NCj4gDQo+ICtzdGF0aWMgdWludDY0X3QgZGVmYXVsdF9tb2RpZmllcihk
+YXRhX3QgKmRhdGEpIHsNCj4gKwlpZiAoaWd0X2Rpc3BsYXlfaGFzX2Zvcm1hdF9tb2QoJmRhdGEt
+PmRpc3BsYXksDQo+IERSTV9GT1JNQVRfWFJHQjg4ODgsDQo+ICsJCQkJICAgICAgIEk5MTVfRk9S
+TUFUX01PRF9YX1RJTEVEKSkNCj4gKwkJcmV0dXJuIEk5MTVfRk9STUFUX01PRF9YX1RJTEVEOw0K
+PiArCWVsc2UNCj4gKwkJcmV0dXJuIERSTV9GT1JNQVRfTU9EX0xJTkVBUjsNCj4gK30NCj4gKw0K
+PiAgc3RhdGljIHZvaWQgbWFrZV9mYihkYXRhX3QgKmRhdGEsIHN0cnVjdCBpZ3RfZmIgKmZiLA0K
+PiAgCQkgICAgdWludDMyX3Qgd2lkdGgsIHVpbnQzMl90IGhlaWdodCwgaW50IGluZGV4KSAgeyBA
+QCAtMTIzLDE0ICsxMzIsOA0KPiBAQCBzdGF0aWMgdm9pZCBtYWtlX2ZiKGRhdGFfdCAqZGF0YSwg
+c3RydWN0IGlndF9mYiAqZmIsDQo+IA0KPiAgCXJlY193aWR0aCA9IHdpZHRoIC8gKEFSUkFZX1NJ
+WkUoZGF0YS0+YnVmcykgKiAyKTsNCj4gDQo+IC0JaWYgKGlzX2k5MTVfZGV2aWNlKGRhdGEtPmRy
+bV9mZCkpIHsNCj4gLQkJaWd0X2NyZWF0ZV9mYihkYXRhLT5kcm1fZmQsIHdpZHRoLCBoZWlnaHQs
+DQo+IERSTV9GT1JNQVRfWFJHQjg4ODgsDQo+IC0JCQkgICAgICBJOTE1X0ZPUk1BVF9NT0RfWF9U
+SUxFRCwgZmIpOw0KPiAtCQlpZ3RfZHJhd19maWxsX2ZiKGRhdGEtPmRybV9mZCwgZmIsIDB4ODgp
+Ow0KPiAtCX0gZWxzZSB7DQo+IC0JCWlndF9jcmVhdGVfY29sb3JfZmIoZGF0YS0+ZHJtX2ZkLCB3
+aWR0aCwgaGVpZ2h0LA0KPiBEUk1fRk9STUFUX1hSR0I4ODg4LA0KPiAtCQkJCSAgICBEUk1fRk9S
+TUFUX01PRF9MSU5FQVIsIDAuMCwgMC4wLCAwLjUsIGZiKTsNCj4gLQl9DQo+ICsJaWd0X2NyZWF0
+ZV9jb2xvcl9mYihkYXRhLT5kcm1fZmQsIHdpZHRoLCBoZWlnaHQsDQo+IERSTV9GT1JNQVRfWFJH
+Qjg4ODgsDQo+ICsJCQkgICAgZGVmYXVsdF9tb2RpZmllcihkYXRhKSwgMC4wLCAwLjAsIDAuNSwg
+ZmIpOw0KPiANCj4gIAljciA9IGlndF9nZXRfY2Fpcm9fY3R4KGRhdGEtPmRybV9mZCwgZmIpOw0K
+PiAgCWlndF9wYWludF9jb2xvcl9yYW5kKGNyLCByZWNfd2lkdGggKiAyICsgcmVjX3dpZHRoICog
+aW5kZXgsIDAsIHJlY193aWR0aCwNCj4gaGVpZ2h0KTsNCj4gLS0NCj4gMi4yNS4xDQoNCg==
