@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 94D6D10E2F8
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 07:00:05 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.15.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 5AF84580D24
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 00:00:03 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pyofA-006f2b-3C
+ for igt-dev@lists.freedesktop.org; Tue, 16 May 2023 09:00:00 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 16 May 2023 08:59:59 +0200
+Message-Id: <20230516065959.1587719-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Thu, 18 May 2023 15:51:15 -0000
-Message-ID: <168442507559.2371.14738971532180705725@emeril.freedesktop.org>
-References: <20230518151842.287294-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230518151842.287294-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_N?=
- =?utf-8?q?ew_dir_structure_for_intel_specific_tests_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] meson.build: update minimal version to
+ 0.48
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +26,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Series: New dir structure for intel specific tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/117227/
-State : warning
+changeset 8ac9440e7bec ("meson: add an option to control Xe test builds")
+require updating a dict with values from another dict. This seems
+to be supported only on version 0.48 or above.
 
-== Summary ==
+Updated meson minimal version from 0.47.2 to 0.48.
 
-Pipeline status: FAILED.
+Fixes: 8ac9440e7bec ("meson: add an option to control Xe test builds")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ Dockerfile.build-fedora | 2 +-
+ meson.build             | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/884498 for the overview.
-
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42003543):
-  22db2d88b566ddd29ec36d263a8ec742b777f6d0fb4b312365130dd30dd2336c
-  STEP 3: COPY .gitlab-ci/docker-help.sh /usr/local/bin/docker-help.sh
-  de2e35eaefb72accfb6588f973e9fcb60926560ae77d17a39ec5cce744d1d585
-  STEP 4: ENV PATH="/opt/igt/bin:${PATH}"
-  068d0c4d29d361cca8484c8730fc89a0d8e2ec546fd291104795118860b418bb
-  STEP 5: ENV LD_LIBRARY_PATH="/opt/igt/lib:/opt/igt/lib64:${LD_LIBRARY_PATH}"
-  17d8ec9db281a1eed13c3827831edb43f686091879248f12ae02e2a4d520b47e
-  STEP 6: ENV IGT_TEST_ROOT="/opt/igt/libexec/igt-gpu-tools"
-  353452200ee48e6bcc31ada71aa4f464d5429fb46f8232cc4a5513d0f5d0b7cd
-  STEP 7: CMD docker-help.sh
-  STEP 8: COMMIT registry.freedesktop.org/gfx-ci/igt-ci-tags/igt:commit-b00d2d19450128e7ef5262d3980309d1f02ffcaf
-  6c31c64d05c7ec5e5289b9783762a1e0c367a054a87fe8d94f965b236e440205
-  Getting image source signatures
-  Error: Error copying image to the remote destination: Error trying to reuse blob sha256:3504a8337d3b7eaabfd338d6a971d02441d28ebef8bd81f730d87f936ed58079 at destination: failed to read from destination repository gfx-ci/igt-ci-tags/igt: 500 (Internal Server Error)
-  section_end:1684424984:step_script
-  section_start:1684424984:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684424985:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/884498
+diff --git a/Dockerfile.build-fedora b/Dockerfile.build-fedora
+index dc5d1b16b488..eff92a21e6e6 100644
+--- a/Dockerfile.build-fedora
++++ b/Dockerfile.build-fedora
+@@ -45,6 +45,6 @@ RUN dnf install -y findutils
+ 
+ # Meson version switching shenanigans
+ RUN dnf install -y python3-pip
+-RUN curl -o "/usr/src/#1" "https://files.pythonhosted.org/packages/e8/ec/3e6a68c9e0fd4b4f4fb6877a3ccfb6f6e6d09f2b4fc87674e671bf64b7b8/{meson-0.47.2.tar.gz}"
++RUN curl -o "/usr/src/#1" "https://files.pythonhosted.org/packages/df/df/8d5c006f87a3c75f588aeadcf089726bba1e567997a1088655fe7ed68f3d/{meson-0.48.0.tar.gz}"
+ 
+ RUN dnf clean all
+diff --git a/meson.build b/meson.build
+index 1c872cc9cb02..a1f646ee9239 100644
+--- a/meson.build
++++ b/meson.build
+@@ -7,7 +7,7 @@ project('igt-gpu-tools', 'c',
+           'buildtype=debugoptimized',
+         ],
+ 	license : 'MIT',
+-	meson_version : '>=0.47.2')
++	meson_version : '>=0.48')
+ 
+ if get_option('b_ndebug') != 'false'
+ 	error('Building without -Db_ndebug=false is not supported')
+-- 
+2.40.1
