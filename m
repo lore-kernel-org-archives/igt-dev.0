@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E47A10E02A
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 15:45:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF16710E25B
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 15:45:51 +0000 (UTC)
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 16 May 2023 17:44:27 +0200
-Message-Id: <20230516154434.810356-2-dominik.grzegorzek@intel.com>
+Date: Tue, 16 May 2023 17:44:28 +0200
+Message-Id: <20230516154434.810356-3-dominik.grzegorzek@intel.com>
 In-Reply-To: <20230516154434.810356-1-dominik.grzegorzek@intel.com>
 References: <20230516154434.810356-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/8] xe: sync uapi headers
+Subject: [igt-dev] [PATCH i-g-t 2/8] xe/xe_eudebug: test eudebug connection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,93 +23,166 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- include/drm-uapi/xe_drm_tmp.h | 76 +++++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
- create mode 100644 include/drm-uapi/xe_drm_tmp.h
+Add basic tests checking xe eudebug connection capability.
 
-diff --git a/include/drm-uapi/xe_drm_tmp.h b/include/drm-uapi/xe_drm_tmp.h
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+---
+ tests/meson.build     |   1 +
+ tests/xe/xe_eudebug.c | 133 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 134 insertions(+)
+ create mode 100644 tests/xe/xe_eudebug.c
+
+diff --git a/tests/meson.build b/tests/meson.build
+index 38f080f7c..6f6b39e56 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -247,6 +247,7 @@ xe_progs = [
+ 	'xe_compute',
+ 	'xe_dma_buf_sync',
+ 	'xe_debugfs',
++	'xe_eudebug',
+ 	'xe_evict',
+ 	'xe_exec_balancer',
+ 	'xe_exec_basic',
+diff --git a/tests/xe/xe_eudebug.c b/tests/xe/xe_eudebug.c
 new file mode 100644
-index 000000000..9829cd724
+index 000000000..7202da689
 --- /dev/null
-+++ b/include/drm-uapi/xe_drm_tmp.h
-@@ -0,0 +1,76 @@
-+#ifndef _UAPI_XE_DRM_TMP_H_
-+#define _UAPI_XE_DRM_TMP_H_
-+
-+#include "xe_drm.h"
-+
-+#if defined(__cplusplus)
-+extern "C" {
-+#endif
-+
-+#define DRM_XE_EUDEBUG_CONNECT			0x5f
-+
-+#define DRM_IOCTL_XE_EUDEBUG_CONNECT		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EUDEBUG_CONNECT, struct drm_xe_eudebug_connect_param)
-+
-+/**
-+ * Do a eudebug event read for a debugger connection.
-+ *
-+ * This ioctl is available in debug version 1.
-+ */
-+#define DRM_XE_EUDEBUG_IOCTL_READ_EVENT _IO('j', 0x0)
-+
-+/* XXX: Document events to match their internal counterparts when moved to xe_drm.h */
-+struct drm_xe_eudebug_event {
-+	struct xe_user_extension ext;
-+
-+	__u32 type;
-+#define DRM_XE_EUDEBUG_EVENT_NONE     0
-+#define DRM_XE_EUDEBUG_EVENT_READ     1
-+#define DRM_XE_EUDEBUG_EVENT_OPEN     2
-+#define DRM_XE_EUDEBUG_EVENT_VM	      3
-+#define DRM_XE_EUDEBUG_EVENT_MAX_EVENT DRM_XE_EUDEBUG_EVENT_VM
-+
-+	__u32 flags;
-+#define DRM_XE_EUDEBUG_EVENT_CREATE	(1 << 0)
-+#define DRM_XE_EUDEBUG_EVENT_DESTROY	(1 << 1)
-+#define DRM_XE_EUDEBUG_EVENT_STATE_CHANGE (1 << 2)
-+
-+	__u64 seqno;
-+	__u64 size;
-+} __attribute__((packed));
-+
-+struct drm_xe_eudebug_event_client {
-+	struct drm_xe_eudebug_event base; /* .flags = CREATE/DESTROY */
-+
-+	__u64 client_handle; /* This is unique per debug connection */
-+} __attribute__((packed));
-+
-+struct drm_xe_eudebug_event_vm {
-+	struct drm_xe_eudebug_event base;
-+
-+	__u64 client_handle;
-+	__u64 vm_handle;
-+} __attribute__((packed));
-+
++++ b/tests/xe/xe_eudebug.c
+@@ -0,0 +1,133 @@
++// SPDX-License-Identifier: MIT
 +/*
-+ * Debugger ABI (ioctl and events) Version History:
-+ * 0 - No debugger available
-+ * 1 - Initial version
++ * Copyright © 2023 Intel Corporation
 + */
-+#define DRM_XE_EUDEBUG_VERSION 1
 +
-+struct drm_xe_eudebug_connect_param {
-+	struct xe_user_extension ext;
++#include <xe_drm_tmp.h>
++#include "igt.h"
 +
-+	__u64 pid; /* input: Target process ID */
-+	__u32 flags;
++static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect_param *param)
++{
++	int ret = 0;
 +
-+	__u32 version; /* output: current ABI (ioctl / events) version */
-+	__u64 events;  /* input: event types to subscribe to */
-+	__u64 extensions; /* MBZ */
-+};
++	*debugfd = igt_ioctl(fd, DRM_IOCTL_XE_EUDEBUG_CONNECT, param);
 +
-+#if defined(__cplusplus)
++	if (*debugfd < 0) {
++		ret = -errno;
++		igt_assume(ret != 0);
++	}
++
++	errno = 0;
++	return ret;
 +}
-+#endif
 +
-+#endif /* _UAPI_XE_DRM_TMP_H_ */
++static void test_connect(int fd)
++{
++	struct drm_xe_eudebug_connect_param param = {};
++	int debugfd, ret;
++	pid_t *pid;
++
++	pid = mmap(NULL, sizeof(pid_t), PROT_WRITE,
++		   MAP_SHARED | MAP_ANON, -1, 0);
++
++	/* get fresh unrelated pid */
++	igt_fork(child, 1)
++		*pid = getpid();
++
++	igt_waitchildren();
++	param.pid = *pid;
++	munmap(pid, sizeof(pid_t));
++
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, param.pid ? -ENOENT : -EINVAL);
++
++	param.pid = 0;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, -EINVAL);
++
++	igt_fork(child, 1) {
++		int newfd = drm_open_driver(DRIVER_XE);
++
++		igt_drop_root();
++
++		param.pid = 1;
++		ret = __debug_connect(newfd, &debugfd, &param);
++		igt_assert(debugfd == -1);
++		igt_assert_eq(ret, -EACCES);
++	}
++	igt_waitchildren();
++
++	param.pid = getpid();
++	param.version = -1;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, -EINVAL);
++
++	param.version = 0;
++	param.flags = ~0;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, -EINVAL);
++
++	param.flags = 0;
++	param.events = ~0;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, -EINVAL);
++
++	param.events = 0;
++	param.extensions = ~0;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, -EINVAL);
++
++	param.extensions = 0;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert_neq(debugfd, -1);
++	igt_assert_eq(ret, 0);
++
++	close(debugfd);
++}
++
++static void test_close(int fd)
++{
++	struct drm_xe_eudebug_connect_param param = { 0,  };
++	int debug_fd1, debug_fd2;
++	int fd2;
++
++	param.pid = getpid();
++
++	igt_assert_eq(__debug_connect(fd, &debug_fd1, &param), 0);
++	igt_assert(debug_fd1 >= 0);
++	igt_assert_eq(__debug_connect(fd, &debug_fd2, &param), -EBUSY);
++	igt_assert_eq(debug_fd2, -1);
++
++	close(debug_fd1);
++	fd2 = drm_open_driver(DRIVER_XE);
++
++	igt_assert_eq(__debug_connect(fd2, &debug_fd2, &param), 0);
++	igt_assert(debug_fd2 >= 0);
++	close(fd2);
++	close(debug_fd2);
++	close(debug_fd1);
++}
++
++igt_main
++{
++	int fd;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++	}
++
++	igt_subtest("basic-connect")
++		test_connect(fd);
++
++	igt_subtest("basic-close")
++		test_close(fd);
++
++	igt_fixture
++		close(fd);
++}
 -- 
 2.34.1
