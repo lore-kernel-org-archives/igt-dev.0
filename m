@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8033410E3BD
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:40:01 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:52 +0530
-Message-Id: <20230517063323.4146387-51-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
-References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D017910E34B
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 13:17:27 +0000 (UTC)
+Message-ID: <03d5feef-b247-40a0-db40-e956b55255b3@intel.com>
+Date: Tue, 16 May 2023 18:47:02 +0530
+References: <20230504045726.2954788-1-bhanuprakash.modem@intel.com>
+ <20230504045726.2954788-2-bhanuprakash.modem@intel.com>
+ <20230509103058.3jajdqpxvvlqfzi4@kamilkon-desk1>
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230509103058.3jajdqpxvvlqfzi4@kamilkon-desk1>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 50/81] tests/kms_force_connector_basic:
- Document each subtest for testplan
+Subject: Re: [igt-dev] [i-g-t 1/6] lib: Interface to close the drm fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,73 +23,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, mchehab@kernel.org
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, igt-dev@lists.freedesktop.org, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, ankit.k.nautiyal@intel.com, mchehab@kernel.org, zbigniew.kempczynski@intel.com, karthik.b.s@intel.com, swati2.sharma@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+Hi Kamil,
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_force_connector_basic.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+On Tue-09-05-2023 04:00 pm, Kamil Konieczny wrote:
+> Hi Bhanuprakash,
+> 
+> On 2023-05-04 at 10:27:21 +0530, Bhanuprakash Modem wrote:
+>> Add new helper drm_close_driver() to close the drm fd. So that
+> -------------------------------------------------------- ^^^^^^^
+> s/So that/Now/
+> 
+>> every user could call drm_close_driver() instead of close().
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   lib/drmtest.c | 17 +++++++++++++++++
+>>   lib/drmtest.h |  1 +
+>>   2 files changed, 18 insertions(+)
+>>
+>> diff --git a/lib/drmtest.c b/lib/drmtest.c
+>> index c91a91425..03b5239b2 100644
+>> --- a/lib/drmtest.c
+>> +++ b/lib/drmtest.c
+>> @@ -604,6 +604,23 @@ int drm_open_driver(int chipset)
+>>   	return fd;
+>>   }
+>>   
+>> +/**
+>> + * drm_close_driver:
+>> + * @fd: a drm file descriptor
+>> + *
+>> + * Close the drm file descriptor @fd.
+>> + *
+>> + * Returns: 0 on success or -1 on error.
+>> + */
+>> +int drm_close_driver(int fd)
+>> +{
+>> +	/* Avoid closing standard file descriptors (0, 1, and 2). */
+>> +	if (fd < 3)
+> 
+> -1 is ok here, if you are concerned about 0...2 imho print debug
+> message here for these.
 
-diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
-index 7e35693cf..26398a7ce 100644
---- a/tests/kms_force_connector_basic.c
-+++ b/tests/kms_force_connector_basic.c
-@@ -23,8 +23,9 @@
-  */
- 
- /**
-- * TEST: Check the debugfs force connector/edid features work correctly
-+ * TEST: kms force connector basic
-  * Category: Display
-+ * Description: Check the debugfs force connector/edid features work correctly.
-  */
- 
- #include "igt.h"
-@@ -68,6 +69,15 @@ static void reset_connectors(void)
- 	close(drm_fd);
- }
- 
-+/**
-+ * SUBTEST: force-load-detect
-+ * Description: Test to detect forced load.
-+ * Driver requirement: i915
-+ * Functionality: force_connector, vga
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmModeRes *res)
- {
- 	int i, j, w = 64, h = 64;
-@@ -159,6 +169,7 @@ static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmMode
- /**
-  * SUBTEST: force-connector-state
-  * Description: Test to check the forced connector state
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: force_connector
-@@ -206,6 +217,7 @@ static void force_connector_state(int drm_fd, drmModeConnectorPtr connector)
- /**
-  * SUBTEST: force-edid
-  * Description: Test to check the values after forcing edid
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: force_connector
-@@ -255,6 +267,7 @@ static void force_edid(int drm_fd, drmModeConnectorPtr connector)
- /**
-  * SUBTEST: prune-stale-modes
-  * Description: Tests pruning of stale modes
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: force_connector
--- 
-2.40.0
+Sure, will fix this in next rev.
 
+> 
+>> +		return -1;
+>> +
+>> +	return close(fd);
+>> +}
+>> +
+>>   /**
+>>    * drm_open_driver_master:
+>>    * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
+>> diff --git a/lib/drmtest.h b/lib/drmtest.h
+>> index 3c88b85c6..2b7ffc765 100644
+>> --- a/lib/drmtest.h
+>> +++ b/lib/drmtest.h
+>> @@ -105,6 +105,7 @@ int drm_open_driver_render(int chipset);
+>>   int __drm_open_driver_another(int idx, int chipset);
+>>   int __drm_open_driver(int chipset);
+>>   int __drm_open_driver_render(int chipset);
+>> +int drm_close_driver(int fd);
+> 
+> imho this may be __drm_close_driver(int fd) and drm_close_driver
+> could be macro with setting fd to -1 after succesfull close ?
+
+Not understood, why do we need to set fd = -1 ?
+
+- Bhanu
+
+> 
+> Regards,
+> Kamil
+> 
+>>   
+>>   void igt_require_amdgpu(int fd);
+>>   void igt_require_intel(int fd);
+>> -- 
+>> 2.40.0
+>>
 
