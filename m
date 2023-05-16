@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C1C010E0A6
- for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 13:42:03 +0000 (UTC)
-Message-ID: <ea7bf812-1a71-f108-352b-d119e790d617@intel.com>
-Date: Tue, 16 May 2023 19:11:35 +0530
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20230504045726.2954788-1-bhanuprakash.modem@intel.com>
- <20230504045726.2954788-3-bhanuprakash.modem@intel.com>
- <20230511053006.glmndozicu2zpdf5@zkempczy-mobl2>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230511053006.glmndozicu2zpdf5@zkempczy-mobl2>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com
+ [IPv6:2a00:1450:4864:20::235])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45C2110E259
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 15:44:03 +0000 (UTC)
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2ac88d9edf3so141792651fa.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 May 2023 08:44:03 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 16 May 2023 18:43:28 +0300
+Message-Id: <20230516154329.9002-4-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230516154329.9002-1-juhapekka.heikkila@gmail.com>
+References: <20230516154329.9002-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 2/6] lib: Cache xe_device at driver open/close
- level
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 3/4] tests/i915/kms_ccs: enable mtl aux ccs
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,77 +23,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+Added
+I915_FORMAT_MOD_4_TILED_MTL_RC_CCS
+I915_FORMAT_MOD_4_TILED_MTL_MC_CCS
+I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC
+for testing.
 
-On Thu-11-05-2023 11:00 am, Zbigniew Kempczyński wrote:
-> On Thu, May 04, 2023 at 10:27:22AM +0530, Bhanuprakash Modem wrote:
->> Instead of caching the xe_device struct at subtest level, cache
->> just after opening the driver. And remove from the cache just
->> before closing the driver.
->>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> ---
->>   lib/drmtest.c | 9 +++++++++
->>   1 file changed, 9 insertions(+)
->>
->> diff --git a/lib/drmtest.c b/lib/drmtest.c
->> index 03b5239b2..f6cd8e500 100644
->> --- a/lib/drmtest.c
->> +++ b/lib/drmtest.c
->> @@ -63,6 +63,7 @@
->>   #include "intel_reg.h"
->>   #include "ioctl_wrappers.h"
->>   #include "igt_dummyload.h"
->> +#include "xe/xe_query.h"
->>   
->>   /**
->>    * SECTION:drmtest
->> @@ -601,6 +602,10 @@ int drm_open_driver(int chipset)
->>   		}
->>   	}
->>   
->> +	/* Cache xe_device struct. */
->> +	if (is_xe_device(fd))
->> +		xe_device_get(fd);
->> +
->>   	return fd;
->>   }
->>   
-> 
-> Imo this should land to __drm_open_driver_another() and
-> __drm_open_driver_render().
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/i915/kms_ccs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Agreed, will float a new rev with these changes.
-
-> 
-> gem_reopen_driver() still requires explicit device get for xe.
-
-This fix is already landed in IGT:
-https://cgit.freedesktop.org/drm/igt-gpu-tools/commit/?id=a48277948
-
-- Bhanu
-
-> 
-> --
-> Zbigniew
-> 
-> 
->> @@ -618,6 +623,10 @@ int drm_close_driver(int fd)
->>   	if (fd < 3)
->>   		return -1;
->>   
->> +	/* Remove xe_device from cache. */
->> +	if (is_xe_device(fd))
->> +		xe_device_put(fd);
->> +
->>   	return close(fd);
->>   }
->>   
->> -- 
->> 2.40.0
->>
+diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
+index 1b3462ea..abe464b4 100644
+--- a/tests/i915/kms_ccs.c
++++ b/tests/i915/kms_ccs.c
+@@ -101,6 +101,9 @@ static const struct {
+ 	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, "4_tiled_dg2_rc_ccs"},
+ 	{I915_FORMAT_MOD_4_TILED_DG2_MC_CCS, "4_tiled_dg2_mc_ccs"},
+ 	{I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC, "4_tiled_dg2_rc_ccs_cc"},
++	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, "4_tiled_mtl_rc_ccs"},
++	{I915_FORMAT_MOD_4_TILED_MTL_MC_CCS, "4_tiled_mtl_mc_ccs"},
++	{I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC, "4_tiled_mtl_rc_ccs_cc"},
+ };
+ 
+ static bool check_ccs_planes;
+@@ -161,7 +164,8 @@ create_fb_prepare_add(int drm_fd, int width, int height,
+ static bool is_ccs_cc_modifier(uint64_t modifier)
+ {
+ 	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
+-		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC;
++	       modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
++	       modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
+ }
+ 
+ /*
+-- 
+2.25.1
