@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C3BB10E49B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9903F10E48D
  for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 21:25:46 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 17 May 2023 14:25:31 -0700
-Message-Id: <20230517212542.3681862-5-umesh.nerlige.ramappa@intel.com>
+Date: Wed, 17 May 2023 14:25:33 -0700
+Message-Id: <20230517212542.3681862-7-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230517212542.3681862-1-umesh.nerlige.ramappa@intel.com>
 References: <20230517212542.3681862-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 04/15] perf_pmu: Quiesce GPU if measuring
- idle busyness without spinner
+Subject: [igt-dev] [PATCH i-g-t v2 06/15] intel_gpu_top: Add an array of
+ freq and rc6 counters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,38 +23,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The assumption in some tests is that the engines are not busy if no
-spinners are being run. This is not true in some cases where we see
-that the render is busy at the start of the test. Quiesce GPU to wait
-for such work to complete before checking for idle busyness.
-
-v2: Move gem_quiescent_gpu to beginning of test (Tvrtko)
+Since rc6 and frequency events are specific to a tile in multi-tile platforms,
+prepare support for multi-tile by storing these events in an array.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tests/i915/perf_pmu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/intel_gpu_top.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index c476c422c..6c9cd5ca8 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -417,6 +417,7 @@ single(int gem_fd, const intel_ctx_t *ctx,
- 	int fd;
- 	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 453090c29..ae086ae12 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -88,6 +88,7 @@ struct engine {
+ 	struct pmu_counter sema;
+ };
  
-+	gem_quiescent_gpu(gem_fd);
- 	fd = open_pmu(gem_fd, I915_PMU_ENGINE_BUSY(e->class, e->instance));
++#define MAX_GTS 4
+ struct engines {
+ 	unsigned int num_engines;
+ 	unsigned int num_classes;
+@@ -107,9 +108,12 @@ struct engines {
+ 	unsigned int num_imc;
  
- 	if (flags & TEST_BUSY)
-@@ -777,6 +778,7 @@ no_sema(int gem_fd, const intel_ctx_t *ctx,
- 	int fd[2];
- 	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
+ 	struct pmu_counter freq_req;
++	struct pmu_counter freq_req_gt[MAX_GTS];
+ 	struct pmu_counter freq_act;
++	struct pmu_counter freq_act_gt[MAX_GTS];
+ 	struct pmu_counter irq;
+ 	struct pmu_counter rc6;
++	struct pmu_counter rc6_gt[MAX_GTS];
  
-+	gem_quiescent_gpu(gem_fd);
- 	fd[0] = open_group(gem_fd, I915_PMU_ENGINE_SEMA(e->class, e->instance),
- 			   -1);
- 	fd[1] = open_group(gem_fd, I915_PMU_ENGINE_WAIT(e->class, e->instance),
+ 	bool discrete;
+ 	char *device;
 -- 
 2.36.1
