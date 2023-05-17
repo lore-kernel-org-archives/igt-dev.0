@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8ADBE10E3BD
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBB3010E3D4
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:40:35 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:32 +0530
-Message-Id: <20230517063323.4146387-31-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:03:14 +0530
+Message-Id: <20230517063323.4146387-73-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 30/81] tests/i915/kms_pwrite_crc: Document each
+Subject: [igt-dev] [i-g-t V2 72/81] tests/kms_sequence: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,35 +28,63 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_pwrite_crc.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tests/kms_sequence.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
-index 3278d876d..7a358d045 100644
---- a/tests/i915/kms_pwrite_crc.c
-+++ b/tests/i915/kms_pwrite_crc.c
-@@ -29,6 +29,21 @@
- #include <stdio.h>
- #include <string.h>
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index c8a3d6bbd..c6f5741a5 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -27,6 +27,11 @@
+  * This is a test of drmCrtcGetSequence and drmCrtcQueueSequence
+  */
  
 +/**
-+ * TEST: kms pwrite crc
++ * TEST: kms sequence
 + * Category: Display
-+ * Description: Use the display CRC support to validate pwrite to an already
-+ *              uncached future scanout buffer.
-+ *
-+ * SUBTEST:
-+ * Description: Use the display CRC support to validate pwrite to an already
-+ *              uncached future scanout buffer.
-+ * Driver requirement: i915
-+ * Functionality: kms_gem_interop
++ * Description: Test CrtcGetSequence and CrtcQueueSequence.
++ */
+ #include "igt.h"
+ #include <stdlib.h>
+ #include <stdio.h>
+@@ -136,6 +141,37 @@ static int crtc_queue_sequence(int fd, struct drm_crtc_queue_sequence *cqs)
+ 	return err;
+ }
+ 
++/**
++ * SUBTEST: get-%s
++ * Description: This is a test of drmCrtcGetSequence and drmCrtcQueueSequence
++ * Driver requirement: any
++ * Functionality: vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @busy:
++ * @forked:
++ * @forked-busy:
++ * @idle:
 + */
- 
- IGT_TEST_DESCRIPTION(
-    "Use the display CRC support to validate pwrite to an already uncached future scanout buffer.");
++
++/**
++ * SUBTEST: queue-%s
++ * Description: This is a test of drmCrtcGetSequence and drmCrtcQueueSequence
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @busy:
++ * @idle:
++ */
+ static void run_test(data_t *data, int fd, void (*testfunc)(data_t *, int, int))
+ {
+ 	int nchildren =
 -- 
 2.40.0
 
