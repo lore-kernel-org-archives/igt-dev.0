@@ -1,15 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 214A2891CC
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 15:13:25 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.15.102])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 10B61580D99
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 08:11:14 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pzIo4-007Ayz-0M
+ for igt-dev@lists.freedesktop.org; Wed, 17 May 2023 17:11:12 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 17 May 2023 17:11:05 +0200
+Message-Id: <20230517151110.1710407-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230517151110.1710407-1-mauro.chehab@linux.intel.com>
+References: <20230517151110.1710407-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Auld" <matthew.auld@intel.com>
-Date: Wed, 17 May 2023 14:40:31 -0000
-Message-ID: <168433443130.6588.11836373140475813020@emeril.freedesktop.org>
-References: <20230329115642.244296-1-matthew.auld@intel.com>
-In-Reply-To: <20230329115642.244296-1-matthew.auld@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJR1Qg?=
- =?utf-8?q?bits_for_small-bar_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/6] tests: better document core_* tests
+ used for i915 validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,58 +28,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Series: IGT bits for small-bar (rev2)
-URL   : https://patchwork.freedesktop.org/series/115786/
-State : failure
+Merge data from some ancillary internal documentation to improve
+core test descriptions.
 
-== Summary ==
+This patch was auto-generated via script.
 
-Applying: xe: sync small-bar uapi
-Applying: lib/xe: add visible vram helpers
-Using index info to reconstruct a base tree...
-M	lib/xe/xe_query.c
-M	lib/xe/xe_query.h
-Falling back to patching base and 3-way merge...
-Auto-merging lib/xe/xe_query.h
-Auto-merging lib/xe/xe_query.c
-Applying: tests/xe: handle small-bar systems
-Using index info to reconstruct a base tree...
-M	tests/xe/xe_dma_buf_sync.c
-M	tests/xe/xe_evict.c
-M	tests/xe/xe_exec_balancer.c
-M	tests/xe/xe_exec_basic.c
-M	tests/xe/xe_exec_compute_mode.c
-M	tests/xe/xe_exec_fault_mode.c
-M	tests/xe/xe_exec_reset.c
-M	tests/xe/xe_exec_threads.c
-M	tests/xe/xe_guc_pc.c
-M	tests/xe/xe_pm.c
-M	tests/xe/xe_prime_self_import.c
-M	tests/xe/xe_vm.c
-Falling back to patching base and 3-way merge...
-Auto-merging tests/xe/xe_vm.c
-CONFLICT (content): Merge conflict in tests/xe/xe_vm.c
-Auto-merging tests/xe/xe_prime_self_import.c
-Auto-merging tests/xe/xe_pm.c
-Auto-merging tests/xe/xe_guc_pc.c
-Auto-merging tests/xe/xe_exec_threads.c
-Auto-merging tests/xe/xe_exec_reset.c
-Auto-merging tests/xe/xe_exec_fault_mode.c
-Auto-merging tests/xe/xe_exec_compute_mode.c
-Auto-merging tests/xe/xe_exec_basic.c
-Auto-merging tests/xe/xe_exec_balancer.c
-Auto-merging tests/xe/xe_evict.c
-Auto-merging tests/xe/xe_dma_buf_sync.c
-Patch failed at 0003 tests/xe: handle small-bar systems
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/core_auth.c              | 4 ++++
+ tests/core_getclient.c         | 4 ++++
+ tests/core_getstats.c          | 4 ++++
+ tests/core_getversion.c        | 4 ++++
+ tests/core_hotunplug.c         | 2 ++
+ tests/core_setmaster.c         | 4 ++++
+ tests/core_setmaster_vs_auth.c | 4 ++++
+ 7 files changed, 26 insertions(+)
 
+diff --git a/tests/core_auth.c b/tests/core_auth.c
+index ee7fbaabfa92..ed736e1ae39f 100644
+--- a/tests/core_auth.c
++++ b/tests/core_auth.c
+@@ -44,8 +44,12 @@
+ #include "drm.h"
+ /**
+  * TEST: core auth
++ * Category: Desktop client
+  * Description: Call drmGetMagic() and drmAuthMagic() and see if it behaves.
+  * Feature: core
++ * Functionality: permission management for clients
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-auth
+  * Description: Test magic numbers for master and slave.
+diff --git a/tests/core_getclient.c b/tests/core_getclient.c
+index 1ab56e9f304c..993801ead5a0 100644
+--- a/tests/core_getclient.c
++++ b/tests/core_getclient.c
+@@ -33,9 +33,13 @@
+ 
+ /**
+  * TEST: core getclient
++ * Category: Desktop client
+  * Description: Tests the DRM_IOCTL_GET_CLIENT ioctl.
+  * Feature: core
++ * Functionality: permission management for clients
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST:
+  */
+diff --git a/tests/core_getstats.c b/tests/core_getstats.c
+index f2b1abac738e..fef12258356e 100644
+--- a/tests/core_getstats.c
++++ b/tests/core_getstats.c
+@@ -34,9 +34,13 @@
+ 
+ /**
+  * TEST: core getstats
++ * Category: Desktop client
+  * Description: Tests the DRM_IOCTL_GET_STATS ioctl.
+  * Feature: core
++ * Functionality: permission management for clients
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST:
+  */
+diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+index ae6fc8f8d7d9..36ba01b865c5 100644
+--- a/tests/core_getversion.c
++++ b/tests/core_getversion.c
+@@ -30,9 +30,13 @@
+ #include <sys/ioctl.h>
+ /**
+  * TEST: core getversion
++ * Category: Desktop client
+  * Description: Tests the DRM_IOCTL_GET_VERSION ioctl and libdrm's drmGetVersion() interface to it.
+  * Feature: core
++ * Functionality: permission management for clients
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST:
+  */
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 472e9237ddc2..9a027bfdf5a8 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -43,6 +43,8 @@
+  * TEST: core hotunplug
+  * Description: Examine behavior of a driver on device hot unplug
+  * Feature: SMI, core
++ * Functionality: device hotplug
++ * Test category: SysMan
+  *
+  * SUBTEST: hotrebind
+  * Description:
+diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
+index 95a131a4d3c9..621bc24696a8 100644
+--- a/tests/core_setmaster.c
++++ b/tests/core_setmaster.c
+@@ -40,9 +40,13 @@
+ #include <sys/stat.h>
+ /**
+  * TEST: core setmaster
++ * Category: Desktop client
+  * Description: Check that Drop/SetMaster behaves correctly wrt root/user access
+  * Feature: core
++ * Functionality: permission management for clients
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: master-drop-set-root
+  * Description: Ensure that root can Set/DropMaster
+diff --git a/tests/core_setmaster_vs_auth.c b/tests/core_setmaster_vs_auth.c
+index 37bb378ab011..adca1c1117d3 100644
+--- a/tests/core_setmaster_vs_auth.c
++++ b/tests/core_setmaster_vs_auth.c
+@@ -42,9 +42,13 @@
+ #include "igt_device.h"
+ /**
+  * TEST: core setmaster vs auth
++ * Category: Desktop client
+  * Description: Check that drop/setMaster correctly transfer master state
+  * Feature: core
++ * Functionality: permission management for clients
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST:
+  */
+-- 
+2.40.1
