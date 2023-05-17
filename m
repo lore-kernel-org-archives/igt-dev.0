@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B9F110E3C6
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92C3010E3D4
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:40:37 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:36 +0530
-Message-Id: <20230517063323.4146387-35-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:03:15 +0530
+Message-Id: <20230517063323.4146387-74-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 34/81] tests/kms_atomic: Document each subtest
+Subject: [igt-dev] [i-g-t V2 73/81] tests/kms_setmode: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,178 +28,78 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_atomic.c | 102 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 100 insertions(+), 2 deletions(-)
+ tests/kms_setmode.c | 58 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 037db2d36..27c0e6368 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -27,8 +27,10 @@
-  *    Pekka Paalanen <pekka.paalanen@collabora.co.uk>
-  */
- 
--/*
-- * Testcase: testing atomic modesetting API
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index a611d9382..8c0cb7f1c 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -31,6 +31,64 @@
+ #include <sys/time.h>
+ #include <math.h>
+ #include "xe/xe_query.h"
 +/**
-+ * TEST: kms atomic
++ * TEST: kms setmode
 + * Category: Display
-+ * Description: Test atomic modesetting API
-  */
- 
- #include <unistd.h>
-@@ -287,6 +289,16 @@ static uint32_t plane_get_igt_format(igt_plane_t *plane)
- 	return 0;
- }
- 
-+/**
-+ * SUBTEST: plane-primary-overlay-mutable-zpos
-+ * Description: Verify that the overlay plane can cover the primary one (and
-+ *              vice versa) by changing their zpos property.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void
- plane_primary_overlay_mutable_zpos(igt_pipe_t *pipe, igt_output_t *output,
- 				   igt_plane_t *primary, igt_plane_t *overlay,
-@@ -369,6 +381,16 @@ plane_primary_overlay_mutable_zpos(igt_pipe_t *pipe, igt_output_t *output,
- 	igt_assert_eq_u64(igt_plane_get_prop(overlay, IGT_PLANE_ZPOS), 1);
- }
- 
-+/**
-+ * SUBTEST: plane-immutable-zpos
-+ * Description: Verify the reported zpos property of planes by making sure only
-+ *              higher zpos planes cover the lower zpos ones.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void
- plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
- 		     igt_output_t *output)
-@@ -505,6 +527,22 @@ plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
- 	igt_remove_fb(display->drm_fd, &fb_upper);
- }
- 
-+/**
-+ * SUBTEST: plane-%s-legacy
-+ * Description: Test for KMS atomic modesetting on %arg[1] and ensure coherency
-+ *              between legacy and atomic interfaces.
++ *
++ * SUBTEST: basic
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
 + * Driver requirement: any
 + * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
-+ *
-+ * @cursor:         Cursor plane
-+ * @overlay:        Overlay plane
-+ * @primary:        Primary plane
-+ */
- static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *plane)
- {
- 	drmModeModeInfo *mode = igt_output_get_mode(output);
-@@ -579,6 +617,17 @@ static void plane_primary(igt_pipe_t *pipe, igt_plane_t *plane, struct igt_fb *f
- 	plane_commit(plane, COMMIT_UNIVERSAL, ATOMIC_RELAX_NONE);
- }
- 
-+/**
-+ * SUBTEST: test-only
-+ * Description: Test to ensure that DRM_MODE_ATOMIC_TEST_ONLY really only touches
-+ *              the free-standing state objects and nothing else.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
-+
- /* test to ensure that DRM_MODE_ATOMIC_TEST_ONLY really only touches the
-  * free-standing state objects and nothing else.
-  */
-@@ -687,6 +736,20 @@ static void plane_cursor(igt_pipe_t *pipe_obj,
- 	plane_commit(cursor, COMMIT_LEGACY, ATOMIC_RELAX_NONE);
- }
- 
-+/**
-+ * SUBTEST: plane-invalid-%s
-+ * Description: Test error handling when invalid %arg[1] are passed
++ * SUBTEST: basic-clone-single-crtc
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
 + * Driver requirement: any
 + * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
-+ *
-+ * @params:           plane parameters
-+ * @params-fence:     plane fence parameters
-+ */
- static void plane_invalid_params(igt_pipe_t *pipe,
- 				 igt_output_t *output,
- 				 igt_plane_t *plane,
-@@ -776,6 +839,20 @@ static void plane_invalid_params_fence(igt_pipe_t *pipe,
- 	close(timeline);
- }
- 
-+/**
-+ * SUBTEST: crtc-invalid-%s
-+ * Description: Test error handling when invalid %arg[1] are passed
++ * SUBTEST: clone-exclusive-crtc
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
 + * Driver requirement: any
 + * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
++ * SUBTEST: invalid-clone-exclusive-crtc
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + *
-+ * @params:           crtc parameters
-+ * @params-fence:     crtc fence parameters
-+ */
- static void crtc_invalid_params(igt_pipe_t *pipe,
- 				igt_output_t *output,
- 				igt_plane_t *plane,
-@@ -923,6 +1000,18 @@ static void crtc_invalid_params_fence(igt_pipe_t *pipe,
- 	igt_assert(pipe->out_fence_fd != -1);
- }
- 
-+/**
-+ * SUBTEST: atomic-invalid-params
-+ * Description: Test abuse the atomic ioctl directly in order to test various
-+ *              invalid conditions which the libdrm wrapper won't allow us to
-+ *              create.
++ * SUBTEST: invalid-clone-single-crtc
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: invalid-clone-single-crtc-stealing
++ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
++ *              combinations
 + * Driver requirement: any
 + * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
-+
- /* Abuse the atomic ioctl directly in order to test various invalid conditions,
-  * which the libdrm wrapper won't allow us to create. */
- static void atomic_invalid_params(igt_pipe_t *pipe,
-@@ -1064,6 +1153,15 @@ static void atomic_invalid_params(igt_pipe_t *pipe,
- 	do_ioctl_err(display->drm_fd, DRM_IOCTL_MODE_ATOMIC, &ioc, EFAULT);
- }
  
-+/**
-+ * SUBTEST: atomic_plane_damage
-+ * Description: Simple test cases to use FB_DAMAGE_CLIPS plane property
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void atomic_plane_damage(igt_pipe_t *pipe, igt_plane_t *plane, struct igt_fb *fb)
- {
- 	struct drm_mode_rect damage[2];
+ #define MAX_CONNECTORS  10
+ #define MAX_CRTCS       6
 -- 
 2.40.0
 
