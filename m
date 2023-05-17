@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C3BB10E49B
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 21:25:46 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 17 May 2023 14:25:31 -0700
+Message-Id: <20230517212542.3681862-5-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20230517212542.3681862-1-umesh.nerlige.ramappa@intel.com>
+References: <20230517212542.3681862-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
-Date: Wed, 17 May 2023 21:05:29 -0000
-Message-ID: <168435752978.6588.15304618358704983453@emeril.freedesktop.org>
-References: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBQTVU6?=
- =?utf-8?q?_multi-tile_support_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 04/15] perf_pmu: Quiesce GPU if measuring
+ idle busyness without spinner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,33 +19,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+The assumption in some tests is that the engines are not busy if no
+spinners are being run. This is not true in some cases where we see
+that the render is busy at the start of the test. Quiesce GPU to wait
+for such work to complete before checking for idle busyness.
 
-Series: PMU: multi-tile support (rev3)
-URL   : https://patchwork.freedesktop.org/series/117406/
-State : failure
+v2: Move gem_quiescent_gpu to beginning of test (Tvrtko)
 
-== Summary ==
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/perf_pmu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Applying: perf_pmu: Support multi-tile in rc6 subtest
-Applying: perf_pmu: Two new rc6 subtests
-Applying: perf_pmu: Support multi-tile in frequency subtest
-Applying: perf_pmu: Quiesce GPU if measuring idle busyness without spinner
-Applying: perf_pmu: Use correct pmu config for multi-tile
-Applying: intel_gpu_top: Add an array of freq and rc6 counters
-Using index info to reconstruct a base tree...
-M	tools/intel_gpu_top.c
-Falling back to patching base and 3-way merge...
-Auto-merging tools/intel_gpu_top.c
-CONFLICT (content): Merge conflict in tools/intel_gpu_top.c
-Patch failed at 0006 intel_gpu_top: Add an array of freq and rc6 counters
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index c476c422c..6c9cd5ca8 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -417,6 +417,7 @@ single(int gem_fd, const intel_ctx_t *ctx,
+ 	int fd;
+ 	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
+ 
++	gem_quiescent_gpu(gem_fd);
+ 	fd = open_pmu(gem_fd, I915_PMU_ENGINE_BUSY(e->class, e->instance));
+ 
+ 	if (flags & TEST_BUSY)
+@@ -777,6 +778,7 @@ no_sema(int gem_fd, const intel_ctx_t *ctx,
+ 	int fd[2];
+ 	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
+ 
++	gem_quiescent_gpu(gem_fd);
+ 	fd[0] = open_group(gem_fd, I915_PMU_ENGINE_SEMA(e->class, e->instance),
+ 			   -1);
+ 	fd[1] = open_group(gem_fd, I915_PMU_ENGINE_WAIT(e->class, e->instance),
+-- 
+2.36.1
