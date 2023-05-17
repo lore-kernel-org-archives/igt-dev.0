@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0495410E237
- for <igt-dev@lists.freedesktop.org>; Mon, 15 May 2023 16:39:38 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Date: Mon, 15 May 2023 18:39:08 +0200
-Message-Id: <20230515163908.50961-1-kamil.konieczny@linux.intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 81F1D10E3B7
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:00 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:02:07 +0530
+Message-Id: <20230517063323.4146387-6-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
+References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] meson: fix testplan building for old meson
+Subject: [igt-dev] [i-g-t V2 05/81] testplan/kms: Add support to
+ differentiate b/w drivers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,43 +20,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, mchehab@kernel.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Old meson 0.47.2 do not support dictionary adding so fix
-testplan building.
+Add support to differentiate the subtests based on the driver
+support, since many kms tests supports both i915 & xe drivers.
 
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Add a new field "Driver requirement" to test_config.json
+
+Example:
+- Driver requirement: i915 (i915 specific test)
+- Driver requirement: xe   (xe specific test)
+- Driver requirement: any  (tests supports both i915 & xe)
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- docs/testplan/meson.build | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tests/kms_test_config.json | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index 2014f91b5..6454f2933 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -27,12 +27,15 @@ xe_test_dict = {
- 		 'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
- 	       }
- 
--test_dict = {
-+if build_xe
-+	test_dict = {
-+		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
-+		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
-+	    }
-+else
-+	test_dict = {
- 	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
- 	    }
--
--if build_xe
--	test_dict += xe_test_dict
- endif
- 
- foreach testplan, fields: test_dict
+diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
+index b81b3ba55..e563bbd12 100644
+--- a/tests/kms_test_config.json
++++ b/tests/kms_test_config.json
+@@ -22,6 +22,11 @@
+                 "description": "Defines what category of testlist it belongs"
+             }
+         },
++        "Driver requirement": {
++            "_properties_": {
++                "description": "Describes any Driver specific requrirement, like i915/xe."
++            }
++        },
+         "Test category": {
+             "_properties_": {
+                 "description": "Defines the test category. Usually used at subtest level."
 -- 
-2.39.2
+2.40.0
 
 
