@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 25BFF10E3BB
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E90C410E3BF
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:06 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:29 +0530
-Message-Id: <20230517063323.4146387-28-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:02:18 +0530
+Message-Id: <20230517063323.4146387-17-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 27/81] tests/i915/kms_psr2_sf: Document each
+Subject: [igt-dev] [i-g-t V2 16/81] tests/i915/kms_draw_crc: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,105 +28,94 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_psr2_sf.c | 85 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
+ tests/i915/kms_draw_crc.c | 71 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index 7c21970a5..7ccfeb7de 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -30,6 +30,91 @@
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index db6d71f2e..d6694faee 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -22,11 +22,78 @@
+  *
+  */
+ 
+-/* This program tests whether the igt_draw library actually works. */
+-
 +/**
-+ * TEST: kms psr2 sf
++ * TEST: kms draw crc
 + * Category: Display
-+ * Description: Tests to varify PSR2 selective fetch by sending multiple damaged
-+ *              areas
-+ *
-+ * SUBTEST: %s-plane-move-continuous-%s
-+ * Description: Test that selective fetch works on moving %arg[1] plane %arg[2]
-+ *              visible area (no update)
++ * Description: Tests whether the igt_draw library actually works.
++ */
+ #include "i915/gem.h"
+ #include "igt.h"
+ 
++/**
++ * SUBTEST: draw-method-blt
++ * Description: Verify that igt draw library works for the BLIT method with
++ *              different modifiers & DRM formats.
 + * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
++ * SUBTEST: draw-method-mmap-cpu
++ * Description: Verify that igt draw library works for the MMAP-CPU method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: i915
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + *
-+ * @cursor:               Cursor
-+ * @overlay:              Overlay
++ * SUBTEST: draw-method-mmap-gtt
++ * Description: Verify that igt draw library works for the MMAP-GTT method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: i915
++ * Functionality: gtt, kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + *
-+ * arg[2]:
++ * SUBTEST: draw-method-mmap-wc
++ * Description: Verify that igt draw library works for the MMAP-WC method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + *
-+ * @exceed-fully-sf:      exceeding fully
-+ * @exceed-sf:            exceeding paritally
-+ * @sf:                   default
++ * SUBTEST: draw-method-pwrite
++ * Description: Verify that igt draw library works for the PWRITE method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: i915
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: draw-method-render
++ * Description: Verify that igt draw library works for the RENDER method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: fill-fb
++ * Description: This subtest verifies CRC after filling fb with x-tiling or none.
++ * Driver requirement: i915
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
 +
-+/**
-+ * SUBTEST: cursor-plane-update-sf
-+ * Description: Test that selective fetch works on cursor plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: overlay-plane-update-continuous-sf
-+ * Description: Test that selective fetch works on overlay plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: overlay-plane-update-sf-dmg-area
-+ * Description: Test that selective fetch works on overlay plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: overlay-primary-update-sf-dmg-area
-+ * Description: Test that selective fetch works on primary plane with blended
-+ *              overlay plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: plane-move-sf-dmg-area
-+ * Description: Test that selective fetch works on moving overlay plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: primary-plane-update-sf-dmg-area
-+ * Description: Test that selective fetch works on primary plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: primary-plane-update-sf-dmg-area-big-fb
-+ * Description: Test that selective fetch works on primary plane with big fb
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
+ #define MAX_CONNECTORS 32
  
- IGT_TEST_DESCRIPTION("Tests to varify PSR2 selective fetch by sending multiple"
- 		     " damaged areas");
+ int drm_fd;
 -- 
 2.40.0
 
