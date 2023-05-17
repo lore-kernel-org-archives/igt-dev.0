@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99FDA10E3DD
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:40:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BCF210E3BF
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:40:26 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:03:22 +0530
-Message-Id: <20230517063323.4146387-81-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:03:08 +0530
+Message-Id: <20230517063323.4146387-67-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 80/81] tests/testdisplay: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V2 66/81] tests/kms_prop_blob: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,33 +28,88 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/testdisplay.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/kms_prop_blob.c | 46 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 45 insertions(+), 1 deletion(-)
 
-diff --git a/tests/testdisplay.c b/tests/testdisplay.c
-index ee272dfb2..ac696c7fe 100644
---- a/tests/testdisplay.c
-+++ b/tests/testdisplay.c
-@@ -69,6 +69,19 @@
- #include <stdlib.h>
- #include <signal.h>
+diff --git a/tests/kms_prop_blob.c b/tests/kms_prop_blob.c
+index 6a5a5f410..14616b14f 100644
+--- a/tests/kms_prop_blob.c
++++ b/tests/kms_prop_blob.c
+@@ -26,8 +26,9 @@
+  */
+ 
+ /**
+- * TEST: Tests behaviour of mass-data 'blob' properties
++ * TEST: kms prop blob
+  * Category: Display
++ * Description: Tests behaviour of mass-data 'blob' properties.
+  */
+ #include "igt.h"
+ #include <errno.h>
+@@ -122,6 +123,29 @@ destroy_prop(int fd, uint32_t prop_id)
+ 	return 0;
+ }
  
 +/**
-+ * TEST: testdisplay
-+ * Category: Display
-+ * Description: Tests basic display functionality.
-+ *
-+ * SUBTEST:
-+ * Description: Tests basic display functionality.
++ * SUBTEST: blob-multiple
++ * Description: Test validates destroying multiple properties explicitly works as needed.
 + * Driver requirement: any
 + * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * SUBTEST: blob-prop-%s
++ * Description: Tests validates the %arg[1] of the properties created.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @core:        validity
++ * @lifetime:    lifetime
++ * @validate:    blob size
 + */
- IGT_TEST_DESCRIPTION("Tests basic display functionality.");
+ static void
+ test_validate(int fd)
+ {
+@@ -245,6 +269,7 @@ test_core(int fd)
+ /**
+  * SUBTEST: basic
+  * Description: Test to ensure property support exists
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: kms_core
+@@ -260,6 +285,25 @@ test_basic(int fd)
+ 	igt_assert_eq(destroy_prop(fd, prop_id), 0);
+ }
  
- enum {
++/**
++ * SUBTEST: invalid-%s-%s
++ * Description: Tests error handling when invalid properties are %ar[1] with %arg[2].
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @get:            fetched
++ * @set:            set
++ *
++ * arg[2]:
++ *
++ * @prop:           blob object type
++ * @prop-any:       object of any type
++ */
+ static void prop_tests(int fd)
+ {
+ 	struct drm_mode_obj_get_properties get_props = {};
 -- 
 2.40.0
 
