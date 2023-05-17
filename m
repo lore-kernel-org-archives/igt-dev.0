@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1505310E3B9
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B411110E3CF
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:40:18 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:20 +0530
-Message-Id: <20230517063323.4146387-19-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:03:03 +0530
+Message-Id: <20230517063323.4146387-62-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 18/81] tests/i915/kms_fbcon_fbt: Document each
+Subject: [igt-dev] [i-g-t V2 61/81] tests/kms_plane_cursor: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,62 +28,50 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_fbcon_fbt.c | 42 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ tests/kms_plane_cursor.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
-index 831ec867a..09cedbce1 100644
---- a/tests/i915/kms_fbcon_fbt.c
-+++ b/tests/i915/kms_fbcon_fbt.c
-@@ -32,6 +32,48 @@
- #include <sys/stat.h>
- #include <fcntl.h>
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index 59b105c60..760ee7cf5 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -21,6 +21,36 @@
+  */
  
+ #include "igt.h"
 +/**
-+ * TEST: kms fbcon fbt
++ * TEST: kms plane cursor
 + * Category: Display
-+ * Description: Test the relationship between fbcon and the frontbuffer tracking
-+ *              infrastructure.
++ * Description: Tests cursor interactions with primary and overlay planes.
 + *
-+ * SUBTEST: fbc
-+ * Description: Test the relationship between fbcon and the frontbuffer tracking
-+ *              infrastructure with fbc enabled.
-+ * Driver requirement: i915
-+ * Functionality: fbc, fbcon
++ * SUBTEST: overlay
++ * Description: Tests atomic cursor positioning on primary plane and overlay plane
++ * Driver requirement: any
++ * Functionality: cursor, plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: fbc-suspend
-+ * Description: Suspend test to validate  the relationship between fbcon and the
-+ *              frontbuffer tracking infrastructure with fbc enabled.
-+ * Driver requirement: i915
-+ * Functionality: fbc, fbcon
++ * SUBTEST: primary
++ * Description: Tests atomic cursor positioning on primary plane
++ * Driver requirement: any
++ * Functionality: cursor, plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: psr
-+ * Description: Test the relationship between fbcon and the frontbuffer tracking
-+ *              infrastructure with psr enabled.
-+ * Driver requirement: i915
-+ * Functionality: fbcon, psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr-suspend
-+ * Description: Suspend test to validate the relationship between fbcon and the
-+ *              frontbuffer tracking infrastructure with psr enabled.
-+ * Driver requirement: i915
-+ * Functionality: fbcon, psr
-+ * Mega feature: PSR
++ * SUBTEST: viewport
++ * Description: Tests atomic cursor positioning on primary plane and overlay plane
++ *              with buffer larger than viewport used for display
++ * Driver requirement: any
++ * Functionality: cursor, plane
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- IGT_TEST_DESCRIPTION("Test the relationship between fbcon and the frontbuffer "
- 		     "tracking infrastructure.");
+ /*
+  * This file tests cursor interactions with primary and overlay planes.
 -- 
 2.40.0
 
