@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D97A10E49C
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E99210E499
  for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 21:25:47 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 17 May 2023 14:25:38 -0700
-Message-Id: <20230517212542.3681862-12-umesh.nerlige.ramappa@intel.com>
+Date: Wed, 17 May 2023 14:25:35 -0700
+Message-Id: <20230517212542.3681862-9-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230517212542.3681862-1-umesh.nerlige.ramappa@intel.com>
 References: <20230517212542.3681862-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 11/15] intel_gpu_top: Bump up size of
- groups to accomodate multi-gt
+Subject: [igt-dev] [PATCH i-g-t v2 08/15] intel_gpu_top: Capture freq and
+ rc6 counters from each gt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,32 +23,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Create more space in groups to add gt specific freq and rc6 groups.
+Loop through available gts and store the frequency and rc6 counters.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tools/intel_gpu_top.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/intel_gpu_top.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index c8b6b92dd..9bb933cab 100644
+index fc57f6857..aab301bd1 100644
 --- a/tools/intel_gpu_top.c
 +++ b/tools/intel_gpu_top.c
-@@ -1511,7 +1511,13 @@ print_header(const struct igt_device_card *card,
- 		.display_name = "Power W",
- 		.items = power_items,
- 	};
--	struct cnt_group *groups[] = {
-+	/*
-+	 * Array size calculation:
-+	 * One group each for period, irq, power, NULL = 4
-+	 * One group per gt for freq = MAX_GTS
-+	 * One group per gt for rc6  = MAX_GTS
-+	 */
-+	struct cnt_group *groups[4 + MAX_GTS + MAX_GTS] = {
- 		&period_group,
- 		&freq_group,
- 		&irq_group,
+@@ -584,6 +584,17 @@ static int pmu_init(struct engines *engines)
+ 	engines->rc6.config = I915_PMU_RC6_RESIDENCY;
+ 	_open_pmu(type, engines->num_counters, &engines->rc6, engines->fd);
+ 
++	for (i = 0; i < engines->num_gts; i++) {
++		engines->freq_req_gt[i].config = __I915_PMU_REQUESTED_FREQUENCY(i);
++		_open_pmu(type, engines->num_counters, &engines->freq_req_gt[i], engines->fd);
++
++		engines->freq_act_gt[i].config = __I915_PMU_ACTUAL_FREQUENCY(i);
++		_open_pmu(type, engines->num_counters, &engines->freq_act_gt[i], engines->fd);
++
++		engines->rc6_gt[i].config = __I915_PMU_RC6_RESIDENCY(i);
++		_open_pmu(type, engines->num_counters, &engines->rc6_gt[i], engines->fd);
++	}
++
+ 	for (i = 0; i < engines->num_engines; i++) {
+ 		struct engine *engine = engine_ptr(engines, i);
+ 		struct {
+@@ -685,6 +696,12 @@ static void pmu_sample(struct engines *engines)
+ 	engines->ts.prev = engines->ts.cur;
+ 	engines->ts.cur = pmu_read_multi(engines->fd, num_val, val);
+ 
++	for (i = 0; i < engines->num_gts; i++) {
++		update_sample(&engines->freq_req_gt[i], val);
++		update_sample(&engines->freq_act_gt[i], val);
++		update_sample(&engines->rc6_gt[i], val);
++	}
++
+ 	update_sample(&engines->freq_req, val);
+ 	update_sample(&engines->freq_act, val);
+ 	update_sample(&engines->irq, val);
 -- 
 2.36.1
