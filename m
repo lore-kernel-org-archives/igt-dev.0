@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3878E10E765
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 21:04:42 +0000 (UTC)
-Date: Thu, 25 May 2023 23:04:36 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230525210436.kvy5bpfi2xegm3af@kamilkon-desk1>
-References: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
- <20230525090535.2791739-10-mauro.chehab@linux.intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22F3F10E3B5
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:55 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:02:48 +0530
+Message-Id: <20230517063323.4146387-47-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
+References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230525090535.2791739-10-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 09/11] scripts/test_list.py: add
- dynamic subtest support
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V2 46/81] tests/kms_dp_aux_dev: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,47 +20,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, mchehab@kernel.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-05-25 at 11:05:33 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> dynamic subtests can't be checked, as --list-subtests won't show
-> them. So, we need to change the test check logic to support it,
-> as otherwise, spurious warnings will be produced.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Add documentation for all kms tests which is used by IGT testplan
+documentation.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_dp_aux_dev.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-> ---
->  scripts/test_list.py | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index 21767870b1c1..9744d1cc5e6a 100755
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -863,10 +863,14 @@ class TestList:
->          if self.filters:
->              print("NOTE: test checks are affected by filters")
->  
-> -        doc_subtests = sorted(self.get_subtests()[""])
-> +        doc_subtests = set()
->  
-> -        for i in range(0, len(doc_subtests)): # pylint: disable=C0200
-> -            doc_subtests[i] = re.sub(r'\<[^\>]+\>', r'\\d+', doc_subtests[i])
-> +        for subtest in self.get_subtests()[""]:
-> +            subtest = "@".join(subtest.split("@")[:3])
-> +            subtest = re.sub(r'\<[^\>]+\>', r'\\d+', subtest)
-> +            doc_subtests.add(subtest)
-> +
-> +        doc_subtests = list(sorted(doc_subtests))
->  
->          # Get a list of tests from
->          run_subtests = self.get_testlist()
-> -- 
-> 2.40.1
-> 
+diff --git a/tests/kms_dp_aux_dev.c b/tests/kms_dp_aux_dev.c
+index 69edc1585..fc8cb91e3 100644
+--- a/tests/kms_dp_aux_dev.c
++++ b/tests/kms_dp_aux_dev.c
+@@ -31,6 +31,19 @@
+ 
+ #include "igt.h"
+ #include "igt_kms.h"
++/**
++ * TEST: kms dp aux dev
++ * Category: Display
++ * Description: Test that /dev/drm_dp_aux reads work
++ *
++ * SUBTEST:
++ * Description: Test that /dev/drm_dp_aux reads work
++ * Driver requirement: any
++ * Functionality: dp
++ * Mega feature: DP
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ 
+ IGT_TEST_DESCRIPTION("Test that /dev/drm_dp_aux reads work");
+ 
+-- 
+2.40.0
+
 
