@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C90C891CC
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85A1D10E442
  for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 15:13:25 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.15.102])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 0F508580D96
+ by linux.intel.com (Postfix) with ESMTPS id 1CF9C580DA7
  for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 08:11:14 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pzIo4-007Az2-0P
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pzIo4-007Az8-0W
  for igt-dev@lists.freedesktop.org; Wed, 17 May 2023 17:11:12 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 17 May 2023 17:11:06 +0200
-Message-Id: <20230517151110.1710407-3-mauro.chehab@linux.intel.com>
+Date: Wed, 17 May 2023 17:11:08 +0200
+Message-Id: <20230517151110.1710407-5-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230517151110.1710407-1-mauro.chehab@linux.intel.com>
 References: <20230517151110.1710407-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/6] tests: better document the remaining
- core used by i915 validation
+Subject: [igt-dev] [PATCH i-g-t 4/6] i915/gem_ctx_*: better document i915
+ context tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,396 +35,279 @@ List-ID: <igt-dev@lists.freedesktop.org>
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 Merge data from some ancillary internal documentation to improve
-test descriptions for the remaining core tests used during i915
-validation.
+i915 gem_ctx test descriptions.
 
 This patch was auto-generated via script.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/debugfs_test.c         | 15 +++++++++++++--
- tests/device_reset.c         |  8 +++++++-
- tests/dmabuf.c               |  2 +-
- tests/dumb_buffer.c          |  4 ++++
- tests/prime_busy.c           |  4 ++++
- tests/prime_mmap.c           |  4 ++++
- tests/prime_mmap_coherency.c |  4 ++++
- tests/prime_self_import.c    |  4 ++++
- tests/prime_vgem.c           |  9 ++++-----
- tests/sw_sync.c              |  4 ++++
- tests/syncobj_basic.c        |  4 ++++
- tests/syncobj_timeline.c     |  4 ++++
- tests/syncobj_wait.c         |  4 ++++
- tests/vgem_basic.c           | 14 ++++++++++++++
- tests/vgem_slow.c            |  4 ++++
- 15 files changed, 79 insertions(+), 9 deletions(-)
+ tests/i915/gem_ctx_bad_destroy.c |  4 ++++
+ tests/i915/gem_ctx_create.c      |  8 ++++++++
+ tests/i915/gem_ctx_engines.c     |  4 ++++
+ tests/i915/gem_ctx_exec.c        | 12 ++++++++++++
+ tests/i915/gem_ctx_freq.c        |  4 ++++
+ tests/i915/gem_ctx_isolation.c   | 26 +++++++++++++++++++++++++-
+ tests/i915/gem_ctx_param.c       |  4 ++++
+ tests/i915/gem_ctx_persistence.c |  4 ++++
+ tests/i915/gem_ctx_shared.c      | 22 ++++++++++++++++++++++
+ 9 files changed, 87 insertions(+), 1 deletion(-)
 
-diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
-index 39b001671bcc..d6439e139790 100644
---- a/tests/debugfs_test.c
-+++ b/tests/debugfs_test.c
-@@ -33,14 +33,20 @@
-  * TEST: debugfs test
-  * Description: Read entries from debugfs, hwmon and sysfs paths.
-  * Feature: core
+diff --git a/tests/i915/gem_ctx_bad_destroy.c b/tests/i915/gem_ctx_bad_destroy.c
+index 90495da8ab2e..8c47e7c1cb67 100644
+--- a/tests/i915/gem_ctx_bad_destroy.c
++++ b/tests/i915/gem_ctx_bad_destroy.c
+@@ -36,9 +36,13 @@
+ 
+ /**
+  * TEST: gem ctx bad destroy
++ * Category: Infrastructure
+  * Description: Negative test cases for destroy contexts.
+  * Feature: context
++ * Functionality: context management
+  * Run type: FULL
++ * Sub-category: i915
 + * Test category: GEM_Legacy
   *
-  * SUBTEST: basic-hwmon
-  * Description: Read all entries from hwmon path
-  * Run type: BAT
+  * SUBTEST: double-destroy
   *
-  * SUBTEST: read_all_entries
-- * Description: Read all entries from debugfs path.
-+ * Category: Infrastructure
-+ * Description:
-+ *   Read all entries from debugfs path.
-+ *   validating debugfs entries
-+ * Functionality: debugfs entries
-  * Run type: BAT
-+ * Sub-category: i915
-  *
-  * SUBTEST: read_all_entries_display_off
-  * Description: Read all debugfs entries with display on/off.
-@@ -51,8 +57,13 @@
+diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
+index 0c65027bc838..3c806ee5b9d9 100644
+--- a/tests/i915/gem_ctx_create.c
++++ b/tests/i915/gem_ctx_create.c
+@@ -51,12 +51,20 @@
   * Run type: FULL
   *
-  * SUBTEST: sysfs
-- * Description: Read all entries from sysfs path.
+  * SUBTEST: basic
 + * Category: Infrastructure
-+ * Description:
-+ *   Read all entries from sysfs path.
-+ *   validating debugfs entries
-+ * Functionality: debugfs entries
+  * Description: Test random context creation
++ * Functionality: context management
+  * Run type: BAT
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-files
++ * Category: Infrastructure
+  * Description: Exercise implicit per-fd context creation
++ * Functionality: context management
+  * Run type: BAT
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: ext-param
+  * Description: Verify valid and invalid context extensions
+diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+index d15a7b7e5f67..61718494e86a 100644
+--- a/tests/i915/gem_ctx_engines.c
++++ b/tests/i915/gem_ctx_engines.c
+@@ -45,8 +45,12 @@
+ #include "sw_sync.h"
+ /**
+  * TEST: gem ctx engines
++ * Category: Infrastructure
+  * Feature: context
++ * Functionality: context management
   * Run type: FULL
 + * Sub-category: i915
-  */
- 
- IGT_TEST_DESCRIPTION("Read entries from debugfs, hwmon and sysfs paths.");
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index 0c23aecff595..9ebd479dfefa 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -32,8 +32,14 @@
-  * Feature: reset
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: unbind-reset-rebind
-- * Description: Unbinds driver from device, initiates reset then rebinds driver to device
+  * SUBTEST: execute-allforone
+  *
+diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
+index 9fec2bb10fdf..4109eb3f03d1 100644
+--- a/tests/i915/gem_ctx_exec.c
++++ b/tests/i915/gem_ctx_exec.c
+@@ -51,26 +51,38 @@
+  * TEST: gem ctx exec
+  * Description: Test context batch buffer execution.
+  * Feature: context
++ * Functionality: command submission
++ * Sub-category: i915
+  *
+  * SUBTEST: basic
++ * Category: Infrastructure
+  * Description: Check the basic context batch buffer execution.
+  * Run type: BAT
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-close-race
++ * Category: Infrastructure
+  * Description: Race the execution and interrupt handlers along a context, while closing it at a random time.
+  * Run type: FULL
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-invalid-context
++ * Category: Infrastructure
+  * Description: Verify that execbuf with invalid context fails.
+  * Run type: FULL
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-nohangcheck
 + * Category: Server
-+ * Description:
-+ *   Unbinds driver from device, initiates reset then rebinds driver to device
-+ *   validating device resets
-  * Feature: reset, sriov-reset
-+ * Functionality: reset
-+ * Sub-category: sysman
-+ * Test category: GEM_Legacy
-  */
- 
- IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
-diff --git a/tests/dmabuf.c b/tests/dmabuf.c
-index 4bc9b35b619d..acd3080cf3d3 100644
---- a/tests/dmabuf.c
-+++ b/tests/dmabuf.c
-@@ -27,9 +27,9 @@
-  * TEST: dmabuf
-  * Description: Kernel selftests for the dmabuf API
-  * Feature: mapping, prime
-- * Run type: BAT
-  *
-  * SUBTEST: all-tests
-+ * Run type: BAT
-  */
- 
- IGT_TEST_DESCRIPTION("Kernel selftests for the dmabuf API");
-diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
-index 0c7ce714eb6c..9495d28ff724 100644
---- a/tests/dumb_buffer.c
-+++ b/tests/dumb_buffer.c
-@@ -51,9 +51,13 @@
- #include "ioctl_wrappers.h"
- /**
-  * TEST: dumb buffer
-+ * Category: Desktop client
-  * Description: This is a test for the generic dumb buffer interface.
-  * Feature: prime
-+ * Functionality: IOCTL check for buffer management
+  * Description: Verify that contexts are automatically shotdown on close, if hangchecking is disabled.
   * Run type: FULL
-+ * Sub-category: Compositor
 + * Test category: GEM_Legacy
   *
-  * SUBTEST: create-clear
-  *
-diff --git a/tests/prime_busy.c b/tests/prime_busy.c
-index 4f7dba7d0e3c..6b0d7310b806 100644
---- a/tests/prime_busy.c
-+++ b/tests/prime_busy.c
-@@ -28,9 +28,13 @@
- #include "igt.h"
- /**
-  * TEST: prime busy
-+ * Category: Infrastructure
-  * Description: Basic check of polling for prime fences.
-  * Feature: prime
-+ * Functionality: buffer management
+  * SUBTEST: basic-norecovery
++ * Category: Server
+  * Description: Check the status of context after a hang by setting and unsetting the RECOVERABLE.
   * Run type: FULL
-+ * Sub-category: DRM
 + * Test category: GEM_Legacy
   *
-  * SUBTEST: after
-  *
-diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
-index 8ffe37fe199f..efd4deff921e 100644
---- a/tests/prime_mmap.c
-+++ b/tests/prime_mmap.c
-@@ -52,8 +52,12 @@
- #include "i915/intel_memory_region.h"
+  * SUBTEST: eviction
+  * Description: Check maximum number of buffers it can evict for a context.
+diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
+index 8e432cbdf8f5..2c30934daa23 100644
+--- a/tests/i915/gem_ctx_freq.c
++++ b/tests/i915/gem_ctx_freq.c
+@@ -36,8 +36,12 @@
+ #include "sw_sync.h"
  /**
-  * TEST: prime mmap
-+ * Category: Infrastructure
-  * Feature: prime
-+ * Functionality: memory management
+  * TEST: gem ctx freq
++ * Category: Server
+  * Feature: context
++ * Functionality: frequency management
   * Run type: FULL
-+ * Sub-category: DRM
++ * Sub-category: Performance
 + * Test category: GEM_Legacy
-  *
-  * SUBTEST: test_aperture_limit
-  *
-diff --git a/tests/prime_mmap_coherency.c b/tests/prime_mmap_coherency.c
-index e50f52fdfdb0..e5f7c92b2324 100644
---- a/tests/prime_mmap_coherency.c
-+++ b/tests/prime_mmap_coherency.c
-@@ -33,11 +33,15 @@
- #include "igt.h"
- /**
-  * TEST: prime mmap coherency
-+ * Category: Infrastructure
-  * Description:
-  *   Test dma-buf mmap on !llc platforms mostly and provoke coherency bugs so we know for sure where
-  *   we need the sync ioctls.
-  * Feature: prime
-+ * Functionality: memory management
-  * Run type: FULL
-+ * Sub-category: DRM
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: ioctl-errors
-  *
-diff --git a/tests/prime_self_import.c b/tests/prime_self_import.c
-index 7d423b8cd442..30f2bf013cb5 100644
---- a/tests/prime_self_import.c
-+++ b/tests/prime_self_import.c
-@@ -47,8 +47,12 @@
- #include "i915/gem_create.h"
- /**
-  * TEST: prime self import
-+ * Category: Infrastructure
-  * Description: Check whether prime import/export works on the same device... but with different fds.
-  * Feature: prime
-+ * Functionality: buffer management
-+ * Sub-category: DRM
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-llseek-bad
-  * Description: Check dmabuf llseek support with invalid values.
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index 27b3744014bb..827d9b1d496c 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -32,7 +32,11 @@
- #include "intel_batchbuffer.h"	/* igt_blitter_src_copy() */
- /**
-  * TEST: prime vgem
-+ * Category: Infrastructure
-  * Description: Basic check of polling for prime/vgem fences.
-+ * Functionality: mock device
-+ * Sub-category: DRM
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-blt
-  * Description: Examine blitter access path.
-@@ -69,11 +73,6 @@
-  * Feature: gtt, prime
-  * Run type: BAT
-  *
-- * SUBTEST: basic-userptr
-- * Description: Check that we wrap the vgem mmap with userptr.
-- * Feature: prime
-- * Run type: BAT
-- *
-  * SUBTEST: basic-write
-  * Description: Examine write access path.
-  * Feature: gtt, prime
-diff --git a/tests/sw_sync.c b/tests/sw_sync.c
-index e626cd14cd28..6c476ff46776 100644
---- a/tests/sw_sync.c
-+++ b/tests/sw_sync.c
-@@ -40,9 +40,13 @@
- 
- /**
-  * TEST: sw sync
-+ * Category: Infrastructure
-  * Description: Test SW Sync Framework
-  * Feature: synchronization
-+ * Functionality: semaphore
-  * Run type: FULL
-+ * Sub-category: DRM
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: alloc_fence
-  *
-diff --git a/tests/syncobj_basic.c b/tests/syncobj_basic.c
-index 8d98137e7bd6..3252dbd693fb 100644
---- a/tests/syncobj_basic.c
-+++ b/tests/syncobj_basic.c
-@@ -28,9 +28,13 @@
- #include "drm.h"
- /**
-  * TEST: syncobj basic
-+ * Category: Infrastructure
-  * Description: Basic check for drm sync objects.
-  * Feature: synchronization
-+ * Functionality: semaphore
-  * Run type: FULL
-+ * Sub-category: DRM
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: bad-create-flags
-  *
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index 1158a99fe58f..134a6099512e 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -32,9 +32,13 @@
- #include "drm.h"
- /**
-  * TEST: syncobj timeline
-+ * Category: Infrastructure
-  * Description: Tests for the drm timeline sync object API
-  * Feature: synchronization
-+ * Functionality: semaphore
-  * Run type: FULL
-+ * Sub-category: DRM
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: 32bits-limit
-  * Description:
-diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
-index 930096f6d10e..2583ef72eb1d 100644
---- a/tests/syncobj_wait.c
-+++ b/tests/syncobj_wait.c
-@@ -32,9 +32,13 @@
- #include "drm.h"
- /**
-  * TEST: syncobj wait
-+ * Category: Infrastructure
-  * Description: Tests for the drm sync object wait API
-  * Feature: synchronization
-+ * Functionality: semaphore
-  * Run type: FULL
-+ * Sub-category: DRM
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-multi-wait-all-unsubmitted
-  *
-diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
-index 2a5f6242e995..f2255a61902d 100644
---- a/tests/vgem_basic.c
-+++ b/tests/vgem_basic.c
-@@ -33,7 +33,10 @@
- #include <dirent.h>
- /**
-  * TEST: vgem basic
-+ * Category: Infrastructure
-  * Description: Basic sanity check of Virtual GEM module (vGEM).
-+ * Functionality: mock device
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: bad-fence
-  * Description: Make sure a non-existent fence cannot be signaled.
-@@ -64,56 +67,67 @@
-  * Description: Check the basic working of vgem_create ioctl.
-  * Feature: vgem
-  * Run type: BAT
-+ * Sub-category: DRM
-  *
-  * SUBTEST: debugfs
-  * Description: Check the basic access to debugfs and also try to read entries in the directory.
-  * Feature: vgem
-  * Run type: BAT
-+ * Sub-category: DRM
-  *
-  * SUBTEST: dmabuf-export
-  * Description: Check whether it can export/import the vgem handle using prime.
-  * Feature: prime, vgem
-  * Run type: BAT
-+ * Sub-category: DRM
-  *
-  * SUBTEST: dmabuf-fence
-  * Description: Check the working of dma-buf fence interop.
-  * Feature: prime, vgem
-  * Run type: BAT
-+ * Sub-category: DRM
-  *
-  * SUBTEST: dmabuf-fence-before
-  * Description: Attach a fence before exporting a vgem handle and check the working of fence.
-  * Feature: prime, vgem
-  * Run type: BAT
-+ * Sub-category: DRM
-  *
-  * SUBTEST: dmabuf-mmap
-  * Description: Export the vgem handle along with RDWR capabilities using prime and check if it can be mmaped.
-  * Feature: prime, vgem
-  * Run type: BAT
-+ * Sub-category: DRM
-  *
-  * SUBTEST: mmap
-  * Description: Create a vgem handle and check if it can be mmaped.
-  * Feature: vgem
-  * Run type: BAT
-+ * Sub-category: DRM
-  *
-  * SUBTEST: second-client
-  * Description: Check whether it can open multiple clients.
-  * Feature: vgem
-  * Run type: BAT
-+ * Sub-category: DRM
-  *
-  * SUBTEST: setversion
-  * Description: Check the working of SET_VERSION ioctl.
-  * Feature: vgem
-  * Run type: BAT
-+ * Sub-category: DRM
   *
   * SUBTEST: sysfs
-  * Description: Check the basic access to sysfs and also try to read entries in the directory.
-  * Feature: vgem
-  * Run type: BAT
-+ * Sub-category: DRM
-  *
-  * SUBTEST: unload
-  * Description: Basic test for handling of module unload.
-  * Feature: vgem
-  * Run type: BAT
-+ * Sub-category: DRM
   */
- 
- IGT_TEST_DESCRIPTION("Basic sanity check of Virtual GEM module (vGEM).");
-diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
-index d2a7effff115..0c91cdb9dece 100644
---- a/tests/vgem_slow.c
-+++ b/tests/vgem_slow.c
-@@ -32,9 +32,13 @@
- #include <dirent.h>
+diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+index 2c2da296d301..4f806a22cb4a 100644
+--- a/tests/i915/gem_ctx_isolation.c
++++ b/tests/i915/gem_ctx_isolation.c
+@@ -28,26 +28,50 @@
+ #include "igt_types.h"
  /**
-  * TEST: vgem slow
+  * TEST: gem ctx isolation
+- * Feature: context
 + * Category: Infrastructure
-  * Description: Extended sanity check of Virtual GEM module (vGEM).
-  * Feature: vgem
-+ * Functionality: mock device
   * Run type: FULL
-+ * Sub-category: DRM
++ * Sub-category: HW
+  *
+  * SUBTEST: clean
++ * Feature: context
++ * Functionality: security
 + * Test category: GEM_Legacy
   *
-  * SUBTEST: nohang
+  * SUBTEST: dirty-create
++ * Feature: context
++ * Functionality: security
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: dirty-switch
++ * Feature: context
++ * Functionality: security
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: nonpriv
++ * Feature: context
++ * Functionality: security
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: nonpriv-switch
++ * Feature: context
++ * Functionality: security
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preservation
++ * Feature: context
++ * Functionality: security
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preservation-S3
++ * Feature: context
+  *
+  * SUBTEST: preservation-S4
++ * Feature: context
+  *
+  * SUBTEST: preservation-reset
++ * Feature: context
++ * Functionality: security
++ * Test category: GEM_Legacy
   */
+ 
+ /* MAX_REG must be greater than the maximum register address. */
+diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
+index 5e56c645572b..dddc946a28af 100644
+--- a/tests/i915/gem_ctx_param.c
++++ b/tests/i915/gem_ctx_param.c
+@@ -32,8 +32,12 @@
+ #include "i915/gem_vm.h"
+ /**
+  * TEST: gem ctx param
++ * Category: Infrastructure
+  * Description: Basic test for context set/get param input validation.
++ * Functionality: context management
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic
+  * Description: Basic test for context get/set param ioctls using valid context
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 42cf9632989e..bc5a4b5b41ba 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -47,8 +47,12 @@
+ #include "sw_sync.h"
+ /**
+  * TEST: gem ctx persistence
++ * Category: Server
+  * Feature: context
++ * Functionality: security
+  * Run type: FULL
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-cleanup
+  *
+diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
+index 98827f09f9ea..f29005518c40 100644
+--- a/tests/i915/gem_ctx_shared.c
++++ b/tests/i915/gem_ctx_shared.c
+@@ -66,20 +66,42 @@
+  * SUBTEST: Q-smoketest-all
+  *
+  * SUBTEST: create-shared-gtt
++ * Category: Desktop client
++ * Functionality: context management
++ * Sub-category: Media
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: detached-shared-gtt
++ * Category: Desktop client
++ * Functionality: context management
++ * Sub-category: Media
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: disjoint-timelines
++ * Category: Desktop client
++ * Functionality: context management
++ * Sub-category: Media
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: exec-shared-gtt
++ * Category: Desktop client
++ * Functionality: context management
++ * Sub-category: Media
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: exec-single-timeline
++ * Category: Desktop client
++ * Functionality: context management
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: exhaust-shared-gtt
+  *
+  * SUBTEST: exhaust-shared-gtt-lrc
+  *
+  * SUBTEST: single-timeline
++ * Category: Desktop client
++ * Functionality: context management
++ * Test category: GEM_Legacy
+  */
+ 
+ #define LO 0
 -- 
 2.40.1
