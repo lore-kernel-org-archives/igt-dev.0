@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 723F710E428
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 14:14:39 +0000 (UTC)
-Date: Wed, 17 May 2023 16:14:27 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230517141427.acl6hxurx3gm2po5@kamilkon-desk1>
-References: <20230515184604.64135-1-kamil.konieczny@linux.intel.com>
- <563af8f9-cdeb-4259-4b8a-3bf3edc67bd0@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <563af8f9-cdeb-4259-4b8a-3bf3edc67bd0@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Use new procps library libproc2
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Wed, 17 May 2023 14:40:31 -0000
+Message-ID: <168433443130.6588.11836373140475813020@emeril.freedesktop.org>
+References: <20230329115642.244296-1-matthew.auld@intel.com>
+In-Reply-To: <20230329115642.244296-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJR1Qg?=
+ =?utf-8?q?bits_for_small-bar_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,52 +17,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+== Series Details ==
 
-On 2023-05-16 at 09:48:06 +0100, Tvrtko Ursulin wrote:
-> 
-> Hi,
-> 
-> On 15/05/2023 19:46, Kamil Konieczny wrote:
-> > This is resend of following patch with minor corrections:
-> > 
-> > https://patchwork.freedesktop.org/series/111015/
-> > Use the new procps library libproc2
-> 
-> Is this series required to build on latest distros by any chance?
-> 
-> Regards,
-> 
-> Tvrtko
+Series: IGT bits for small-bar (rev2)
+URL   : https://patchwork.freedesktop.org/series/115786/
+State : failure
 
-Yes on latest Ubuntu 23.04
+== Summary ==
 
-Regards,
-Kamil
+Applying: xe: sync small-bar uapi
+Applying: lib/xe: add visible vram helpers
+Using index info to reconstruct a base tree...
+M	lib/xe/xe_query.c
+M	lib/xe/xe_query.h
+Falling back to patching base and 3-way merge...
+Auto-merging lib/xe/xe_query.h
+Auto-merging lib/xe/xe_query.c
+Applying: tests/xe: handle small-bar systems
+Using index info to reconstruct a base tree...
+M	tests/xe/xe_dma_buf_sync.c
+M	tests/xe/xe_evict.c
+M	tests/xe/xe_exec_balancer.c
+M	tests/xe/xe_exec_basic.c
+M	tests/xe/xe_exec_compute_mode.c
+M	tests/xe/xe_exec_fault_mode.c
+M	tests/xe/xe_exec_reset.c
+M	tests/xe/xe_exec_threads.c
+M	tests/xe/xe_guc_pc.c
+M	tests/xe/xe_pm.c
+M	tests/xe/xe_prime_self_import.c
+M	tests/xe/xe_vm.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/xe/xe_vm.c
+CONFLICT (content): Merge conflict in tests/xe/xe_vm.c
+Auto-merging tests/xe/xe_prime_self_import.c
+Auto-merging tests/xe/xe_pm.c
+Auto-merging tests/xe/xe_guc_pc.c
+Auto-merging tests/xe/xe_exec_threads.c
+Auto-merging tests/xe/xe_exec_reset.c
+Auto-merging tests/xe/xe_exec_fault_mode.c
+Auto-merging tests/xe/xe_exec_compute_mode.c
+Auto-merging tests/xe/xe_exec_basic.c
+Auto-merging tests/xe/xe_exec_balancer.c
+Auto-merging tests/xe/xe_evict.c
+Auto-merging tests/xe/xe_dma_buf_sync.c
+Patch failed at 0003 tests/xe: handle small-bar systems
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-> > I also added second patch with some simplifications suggested
-> > by Mauro in:
-> > 
-> > https://patchwork.freedesktop.org/series/116896/
-> > Use new library libproc2
-> > 
-> > v2: corrected 2/2 "lib/igt_aux: unify procps processing"
-> >      on old lib path
-> > 
-> > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> > 
-> > Craig Small (1):
-> >    Use the new procps library libproc2
-> > 
-> > Kamil Konieczny (1):
-> >    lib/igt_aux: unify procps processing
-> > 
-> >   lib/igt_aux.c   | 276 +++++++++++++++++++++++++++++++-----------------
-> >   lib/meson.build |   7 +-
-> >   meson.build     |  10 +-
-> >   3 files changed, 194 insertions(+), 99 deletions(-)
-> > 
