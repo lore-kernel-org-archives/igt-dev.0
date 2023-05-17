@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C6E610E3B6
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 07:25:29 +0000 (UTC)
+Date: Wed, 17 May 2023 09:25:24 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230517092524.6085346d@maurocar-mobl2>
+In-Reply-To: <20230516164734.zulree7ks5j42jrs@kamilkon-desk1>
+References: <20230509090738.1157939-1-mauro.chehab@linux.intel.com>
+ <20230509090738.1157939-6-mauro.chehab@linux.intel.com>
+ <20230516164734.zulree7ks5j42jrs@kamilkon-desk1>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 07:20:13 -0000
-Message-ID: <168430801363.6589.3932042269228406105@emeril.freedesktop.org>
-References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_D?=
- =?utf-8?q?ocument_KMS_tests_=28rev8=29?=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v3 5/6] tests/i915: Improve test
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,111 +22,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Tue, 16 May 2023 18:47:34 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-Series: Document KMS tests (rev8)
-URL   : https://patchwork.freedesktop.org/series/117749/
-State : warning
+> Hi Mauro,
+> 
+> while I was reading 6/6 I realised that test names were stripped
+> from uderscores, '_', see example below.
+> 
 
-== Summary ==
+...
 
-Pipeline status: FAILED.
+> > diff --git a/tests/core_auth.c b/tests/core_auth.c
+> > index 257f124820a4..ee7fbaabfa92 100644
+> > --- a/tests/core_auth.c
+> > +++ b/tests/core_auth.c
+> > @@ -42,6 +42,27 @@
+> >  #include <sys/poll.h>
+> >  #include <sys/resource.h>
+> >  #include "drm.h"
+> > +/**
+> > + * TEST: core auth  
+> --------------- ^
+> No underscore in test name.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/883037 for the overview.
+That's by purpose. The idea here is just to have a summary of the contents 
+of a test file.
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41880596):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684307561:step_script
-  section_start:1684307561:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684307562:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+This is produced via this python code:
+ 
+                    if desc == '':
+                        desc = re.sub(r'[-_]', ' ', basename)
+                        desc = re.sub(r'\.c', '', desc)
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41880595):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684307567:step_script
-  section_start:1684307567:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684307569:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+                    out += '/**\n'
+                    out += f' * TEST: {desc}\n'
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41880597):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684307570:step_script
-  section_start:1684307570:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684307575:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+It is basically the name of the file without .c and replacing
+- and _ by spaces.
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41880594):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684307568:step_script
-  section_start:1684307568:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684307574:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+Please notice that the normal output, produced at build time will just ignore
+it. This is only seen if one calls the tool with "--per-test" flag:
 
-== Logs ==
+	$ ./scripts/igt_doc.py --config tests/i915/*.json --per-test --file tests/core_auth.c
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/883037
+	=============
+	igt@core_auth
+	=============
+
+	:Category: Desktop client
+	:Description: Call drmGetMagic() and drmAuthMagic() and see if it behaves.
+	:Feature: core
+	:File: tests/core_auth.c
+	:Functionality: permission management for clients
+	:Sub-category: DRM
+	:Summary: core auth
+	:Test category: GEM_Legacy
+
+	igt@core_auth@basic-auth
+	========================
+
+	:Description: Test magic numbers for master and slave.
+	:Run type: BAT
+	...
+
+There, "core auth" is mapped there at the Summary field:
+
+	=============
+	igt@core_auth
+	=============
+	...	
+	:Summary: core auth
+
+The file name is always preserved, and comes from either the config file
+or from the --file <files> parameter:
+
+	:File: tests/core_auth.c
+
+Btw, Summary is the only field that it is not inherited by subtests. All
+other fields if not replaced by subtest-specific fields are inherited.
+So, on a normal hierarchical output (without --per-test), we'll see them
+mapped using the hierarchy defined at the JSON config file:
+
+	./scripts/igt_doc.py --config tests/i915/*.json --file tests/core_auth.c
+	
+	=================================
+	Implemented tests for I915 driver
+	=================================
+
+	Category: Desktop client
+	========================
+
+	Sub-category: DRM
+	-----------------
+
+	Functionality: permission management for clients
+	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+	Feature: core
+	_____________
+
+	Run type: BAT
+	~~~~~~~~~~~~~
+
+
+	``igt@core_auth@basic-auth``
+
+	:Description: Test magic numbers for master and slave.
+	:Test category: GEM_Legacy
+
+	...
+
+Regards,
+Mauro
