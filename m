@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A8B710E3CB
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 08:58:18 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Wed, 17 May 2023 14:28:17 +0530
-Message-Id: <20230517085817.4097456-1-janga.rahul.kumar@intel.com>
-MIME-Version: 1.0
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F31FD10E131
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 09:01:45 +0000 (UTC)
+Message-ID: <6e4e2fa2-1e61-53c1-5e45-38d6eb39c39f@intel.com>
+Date: Wed, 17 May 2023 14:31:30 +0530
+To: Arun R Murthy <arun.r.murthy@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230516062206.1064604-1-arun.r.murthy@intel.com>
+ <20230516062206.1064604-4-arun.r.murthy@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230516062206.1064604-4-arun.r.murthy@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/instdone: GEN12 INSTDONE initialization
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/kms_async_flips: Test all
+ modifiers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,105 +26,170 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Add GEN12 INSTDONE initialization as per spec.
+On 5/16/2023 11:52 AM, Arun R Murthy wrote:
+> Run the basic async flip test for all modifiers reported
+> by the plane (for the XRGB8888 format). The driver may not
+> support async flip with all modifiers so we allow this to fail.
+>
+> TODO: probably shuould add an even more basic subtest that
+>        makes sure the driver accepts async flips with a least
+>        one format/modifier combo, if it advertises async flip
+>        support
+>
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
+> ---
+>   tests/kms_async_flips.c | 53 +++++++++++++++++++++++++++++++++--------
+>   1 file changed, 43 insertions(+), 10 deletions(-)
+>
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index f54bd7ca..3b8cb988 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -53,6 +53,8 @@ typedef struct {
+>   	igt_output_t *output;
+>   	unsigned long flip_timestamp_us;
+>   	double flip_interval;
+> +	uint64_t modifier;
+> +	igt_plane_t *plane;
+>   	igt_pipe_crc_t *pipe_crc;
+>   	igt_crc_t ref_crc;
+>   	int flip_count;
+> @@ -61,6 +63,7 @@ typedef struct {
+>   	bool extended;
+>   	enum pipe pipe;
+>   	bool alternate_sync_async;
+> +	bool allow_fail;
+>   } data_t;
+>   
+>   static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+> @@ -133,7 +136,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+>   	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
+>   
+>   	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+> -			    default_modifier(data), 0.0, 0.0, 0.5, fb);
+> +			    data->modifier, 0.0, 0.0, 0.5, fb);
+>   
+>   	cr = igt_get_cairo_ctx(data->drm_fd, fb);
+>   	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0, rec_width, height);
+> @@ -159,24 +162,26 @@ static void test_init(data_t *data)
+>   	data->refresh_rate = mode->vrefresh;
+>   
+>   	igt_output_set_pipe(data->output, data->pipe);
+> +
+> +	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+>   }
+>   
+>   static void test_init_fbs(data_t *data)
+>   {
+>   	int i;
+>   	uint32_t width, height;
+> -	igt_plane_t *plane;
+>   	static uint32_t prev_output_id;
+> +	static uint64_t prev_modifier;
+>   	drmModeModeInfo *mode;
+>   
+>   	mode = igt_output_get_mode(data->output);
+>   	width = mode->hdisplay;
+>   	height = mode->vdisplay;
+>   
+> -	plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+> -
+> -	if (prev_output_id != data->output->id) {
+> +	if (prev_output_id != data->output->id ||
+> +	    prev_modifier != data->modifier) {
+>   		prev_output_id = data->output->id;
+> +		prev_modifier = data->modifier;
+>   
+>   		if (data->bufs[0].fb_id) {
+>   			for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
+> @@ -187,8 +192,8 @@ static void test_init_fbs(data_t *data)
+>   			make_fb(data, &data->bufs[i], width, height, i);
+>   	}
+>   
+> -	igt_plane_set_fb(plane, &data->bufs[0]);
+> -	igt_plane_set_size(plane, width, height);
+> +	igt_plane_set_fb(data->plane, &data->bufs[0]);
+> +	igt_plane_set_size(data->plane, width, height);
+>   
+>   	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>   }
+> @@ -243,8 +248,10 @@ static void test_async_flip(data_t *data)
+>   		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+>   				      data->bufs[frame % 4].fb_id,
+>   				      flags, data);
+> -
+> -		igt_assert(ret == 0);
+> +		if (frame == 1 && data->allow_fail)
+> +			igt_skip_on(ret == -EINVAL);
+> +		else
+> +			igt_assert(ret == 0);
+>   
+>   		wait_flip_event(data);
+>   
+> @@ -556,6 +563,8 @@ static void run_test(data_t *data, void (*test)(data_t *))
+>   			continue;
+>   
+>   		test_init(data);
+> +		data->allow_fail = false;
+> +		data->modifier = default_modifier(data);
+>   		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
+>   			test_init_fbs(data);
+>   			test(data);
+> @@ -566,6 +575,30 @@ static void run_test(data_t *data, void (*test)(data_t *))
+>   	}
+>   }
+>   
+> +static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
+> +{
+> +	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
 
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- lib/instdone.c | 69 +++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 68 insertions(+), 1 deletion(-)
+Hi,
 
-diff --git a/lib/instdone.c b/lib/instdone.c
-index a83f8836..d1c92793 100644
---- a/lib/instdone.c
-+++ b/lib/instdone.c
-@@ -274,6 +274,30 @@
- # define GEN6_VS0_DONE			(1 << 1)
- # define GEN6_VF_DONE			(1 << 0)
- 
-+# define GEN12_TSG1_DONE		(1 << 24)
-+# define GEN12_RCCFBC_CS_DONE		(1 << 23)
-+# define GEN12_SDE_DONE			(1 << 22)
-+# define GEN12_CS_DONE			(1 << 21)
-+# define GEN12_RS_DONE			(1 << 20)
-+# define GEN12_GAFD_DONE		(1 << 19)
-+# define GEN12_GAFM_DONE		(1 << 18)
-+# define GEN12_TSG0_DONE		(1 << 17)
-+# define GEN12_VFE_DONE			(1 << 16)
-+# define GEN12_GAFS_DONE		(1 << 15)
-+# define GEN12_SVG_DONE			(1 << 14)
-+# define GEN12_URBM_DONE		(1 << 13)
-+# define GEN12_TDG0_DONE		(1 << 12)
-+# define GEN12_TDG1_DONE		(1 << 11)
-+# define GEN12_SF_DONE			(1 << 9)
-+# define GEN12_CL_DONE			(1 << 8)
-+# define GEN12_SOL_DONE			(1 << 7)
-+# define GEN12_GS_DONE			(1 << 6)
-+# define GEN12_DS_DONE			(1 << 5)
-+# define GEN12_TE_DONE			(1 << 4)
-+# define GEN12_HS_DONE			(1 << 3)
-+# define GEN12_VS_DONE			(1 << 2)
-+# define GEN12_VFG_DONE			(1 << 1)
-+
- struct instdone_bit instdone_bits[MAX_INSTDONE_BITS];
- int num_instdone_bits = 0;
- 
-@@ -425,10 +449,53 @@ init_gen11_instdone(void)
- 	init_gen8_instdone();
- }
- 
-+static void
-+init_xehp_instdone(void)
-+{
-+	gen6_instdone1_bit(GEN12_RCCFBC_CS_DONE, "RCCFBC CS");
-+	gen6_instdone1_bit(GEN12_CS_DONE, "CS");
-+	gen6_instdone1_bit(GEN12_RS_DONE, "RS");
-+	gen6_instdone1_bit(GEN12_VFE_DONE, "VFE");
-+	gen6_instdone1_bit(GEN12_VFG_DONE, "VFG");
-+}
-+
-+static void
-+init_gen12_instdone(uint32_t devid)
-+{
-+	if (intel_graphics_ver(devid) >= IP_VER(12, 50)) {
-+		init_xehp_instdone();
-+	} else {
-+		gen6_instdone1_bit(GEN12_TSG1_DONE, "TSG1");
-+		gen6_instdone1_bit(GEN12_RCCFBC_CS_DONE, "RCCFBC CS");
-+		gen6_instdone1_bit(GEN12_SDE_DONE, "SDE");
-+		gen6_instdone1_bit(GEN12_CS_DONE, "CS");
-+		gen6_instdone1_bit(GEN12_RS_DONE, "RS");
-+		gen6_instdone1_bit(GEN12_GAFD_DONE, "GAFD");
-+		gen6_instdone1_bit(GEN12_GAFM_DONE, "GAFM");
-+		gen6_instdone1_bit(GEN12_TSG0_DONE, "TSG0");
-+		gen6_instdone1_bit(GEN12_VFE_DONE, "VFE");
-+		gen6_instdone1_bit(GEN12_GAFS_DONE, "GAFS");
-+		gen6_instdone1_bit(GEN12_SVG_DONE, "SVG");
-+		gen6_instdone1_bit(GEN12_URBM_DONE, "URBM");
-+		gen6_instdone1_bit(GEN12_TDG0_DONE, "TDG0");
-+		gen6_instdone1_bit(GEN12_TDG1_DONE, "TDG1");
-+		gen6_instdone1_bit(GEN12_SF_DONE, "SF");
-+		gen6_instdone1_bit(GEN12_CL_DONE, "CL");
-+		gen6_instdone1_bit(GEN12_SOL_DONE, "SOL");
-+		gen6_instdone1_bit(GEN12_GS_DONE, "GS");
-+		gen6_instdone1_bit(GEN12_DS_DONE, "DS");
-+		gen6_instdone1_bit(GEN12_TE_DONE, "TE");
-+		gen6_instdone1_bit(GEN12_HS_DONE, "HS");
-+		gen6_instdone1_bit(GEN12_VS_DONE, "VS");
-+		gen6_instdone1_bit(GEN12_VFG_DONE, "VFG");
-+	}
-+}
- bool
- init_instdone_definitions(uint32_t devid)
- {
--	if (IS_GEN11(devid)) {
-+	if (IS_GEN12(devid)) {
-+		init_gen12_instdone(devid);
-+	} else if (IS_GEN11(devid)) {
- 		init_gen11_instdone();
- 	} else if (IS_GEN8(devid) || IS_GEN9(devid) || IS_GEN10(devid)) {
- 		init_gen8_instdone();
--- 
-2.25.1
+Don't we want to run this with all pipes at least once like the other 
+subtests? Any particular reason for this?
+
+> +		test_init(data);
+> +
+> +		for (int i = 0; i < data->plane->format_mod_count; i++) {
+> +			if (data->plane->formats[i] != DRM_FORMAT_XRGB8888)
+> +				continue;
+> +
+> +			data->allow_fail = true;
+> +			data->modifier = data->plane->modifiers[i];
+> +
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe),
+
+Please add output name print here as well, like in patch 2.
+
+> +				      igt_fb_modifier_name(data->modifier)) {
+> +				test_init_fbs(data);
+> +				test(data);
+> +			}
+> +		}
+> +
+> +		if (!data->extended)
+> +			break;
+
+Should this be removed similar to patch 2, so that all outputs can be 
+verified even on normal CI run?
+
+Thanks,
+Karthik.B.S
+
+> +	}
+> +}
+> +
+>   static int opt_handler(int opt, int opt_index, void *_data)
+>   {
+>   	data_t *data = _data;
+> @@ -612,7 +645,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+>   		igt_describe("Wait for page flip events in between successive asynchronous flips");
+>   		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
+>   			data.alternate_sync_async = false;
+> -			run_test(&data, test_async_flip);
+> +			run_test_with_modifiers(&data, test_async_flip);
+>   		}
+>   
+>   		igt_describe("Alternate between sync and async flips");
