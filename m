@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ADEFE10E3B1
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:40:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F09E610E3BA
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:03 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:57 +0530
-Message-Id: <20230517063323.4146387-56-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:02:16 +0530
+Message-Id: <20230517063323.4146387-15-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 55/81] tests/kms_lease: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V2 14/81] tests/i915/kms_ccs: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,207 +28,107 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_lease.c | 180 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 180 insertions(+)
+ tests/i915/kms_ccs.c | 83 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 29a774ae8..291d22c6f 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -26,6 +26,11 @@
-  * This is a test of DRM leases
+diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
+index 1b3462ea9..42485fa56 100644
+--- a/tests/i915/kms_ccs.c
++++ b/tests/i915/kms_ccs.c
+@@ -22,10 +22,93 @@
+  *
   */
  
 +/**
-+ * TEST: kms lease
++ * TEST: kms ccs
 + * Category: Display
-+ * Description: Test of CreateLease.
++ * Description: Test render compression (RC), in which the main surface is
++ *              complemented by a color control surface (CCS) that the display
++ *              uses to interpret the compressed data.
 + */
- 
  #include "igt.h"
- #include <stdlib.h>
-@@ -45,6 +50,181 @@
- #include <drm.h>
- #include "igt_device.h"
+ 
+ #include "i915/gem_create.h"
  
 +/**
-+ * SUBTEST: atomic_implicit_crtc
-+ * Description: Negative test by using a different crtc with atomic ioctl
-+ * Driver requirement: any
-+ * Functionality: lease
++ * SUBTEST: %s-%s-%s
++ * Description: Test %arg[2] with given %arg[3] modifier
++ * Driver requirement: i915
++ * Functionality: ccs
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: cursor_implicit_plane
-+ * Description: Negative test by using a non-primary plane with setcursor ioctl
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * arg[1]:
 + *
-+ * SUBTEST: empty_lease
-+ * Description: Check that creating an empty lease works
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * @pipe-A:                    Pipe A
++ * @pipe-B:                    Pipe B
++ * @pipe-C:                    Pipe C
++ * @pipe-D:                    Pipe D
++ * @pipe-E:                    Pipe E
++ * @pipe-F:                    Pipe F
++ * @pipe-G:                    Pipe G
++ * @pipe-H:                    Pipe H
 + *
-+ * SUBTEST: implicit-plane-lease
-+ * Description: Tests the implicitly added planes.
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * arg[2]:
 + *
-+ * SUBTEST: invalid-create-leases
-+ * Description: Tests error handling while creating invalid corner-cases for
-+ *              create-lease ioctl
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * @bad-aux-stride:            Bad AUX stride
++ * @ccs-on-another-bo:         CCS with different BO
++ * @missing-ccs-buffer:        Missing CCS buffer
 + *
-+ * SUBTEST: lease-uevent
-+ * Description: Tests all the uevent cases
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * arg[3]:
 + *
-+ * SUBTEST: lease_again
-+ * Description: Tests leasing objects more than once
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_get
-+ * Description: Tests getting the required contents of a lease
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_invalid_connector
-+ * Description: Tests leasing an invalid connector
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_invalid_crtc
-+ * Description: Tests leasing an invalid crtc
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_invalid_plane
-+ * Description: Tests leasing an invalid plane
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_revoke
-+ * Description: Tests revocation of lease
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_unleased_connector
-+ * Description: Negative test by trying to use an unleased connector
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_unleased_crtc
-+ * Description: Negative test by trying to use an unleased crtc
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lessee_list
-+ * Description: Check if listed lease is same as created one
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: master-vs-lease
-+ * Description: Tests the drop/set_master interactions.
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: multimaster-lease
-+ * Description: Tests that the 2nd master can only create leases while being
-+ *              active master, and that leases on the first master don't prevent
-+ *              lease creation for the 2nd master.
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: page_flip_implicit_plane
-+ * Description: Negative test by using a non-primary plane with the page flip ioctl
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: possible-crtcs-filtering
-+ * Description: Tests that  possible_crtcs logically match between master and
-+ *              lease, and that the values are correctly renumbered on the lease
-+ *              side.
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: setcrtc_implicit_plane
-+ * Description: Negative test by using a non-primary plane with the setcrtc ioctl
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: simple_lease
-+ * Description: Check if create lease ioctl call works
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * @y_tiled_ccs:               Y tiled ccs
++ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
++ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
++ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
++ * @yf_tiled_ccs:              YF tiled ccs
 + */
 +
- IGT_TEST_DESCRIPTION("Test of CreateLease.");
++/**
++ * SUBTEST: %s-%s-%s
++ * Description: Test %arg[2] with %arg[3] modifier
++ * Driver requirement: i915
++ * Functionality: ccs
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @pipe-A:                      Pipe A
++ * @pipe-B:                      Pipe B
++ * @pipe-C:                      Pipe C
++ * @pipe-D:                      Pipe D
++ * @pipe-E:                      Pipe E
++ * @pipe-F:                      Pipe F
++ * @pipe-G:                      Pipe G
++ * @pipe-H:                      Pipe H
++ *
++ * arg[2]:
++ *
++ * @bad-pixel-format:            Bad pixel format
++ * @bad-rotation-90:             90 degree rotation
++ * @crc-primary-basic:           Primary plane CRC compatibility
++ * @crc-primary-rotation-180:    180 degree rotation
++ * @crc-sprite-planes-basic:     Sprite plane CRC compatability
++ * @random-ccs-data:             Random CCS data
++ *
++ * arg[3]:
++ *
++ * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
++ * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
++ * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
++ * @y_tiled_ccs:               Y tiled ccs
++ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
++ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
++ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
++ * @yf_tiled_ccs:              YF tiled ccs
++ */
++
+ #define SDR_PLANE_BASE	3
  
- typedef struct {
+ IGT_TEST_DESCRIPTION("Test render compression (RC), in which the main surface "
 -- 
 2.40.0
 
