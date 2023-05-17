@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BCD410E3B7
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5B5210E3B9
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:40:24 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:49 +0530
-Message-Id: <20230517063323.4146387-48-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:03:07 +0530
+Message-Id: <20230517063323.4146387-66-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 47/81] tests/kms_dp_tiled_display: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V2 65/81] tests/kms_prime: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,47 +28,55 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_dp_tiled_display.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ tests/kms_prime.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
-index 07b803a50..cd792ec51 100644
---- a/tests/kms_dp_tiled_display.c
-+++ b/tests/kms_dp_tiled_display.c
-@@ -36,12 +36,33 @@
-  * the displays supported by the kernel at the moment.
-  */
- 
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index dd5ab993e..02f5eca78 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -30,6 +30,41 @@
+ #include <sys/ioctl.h>
+ #include <sys/poll.h>
+ #include <time.h>
 +/**
-+ * TEST: kms dp tiled display
++ * TEST: kms prime
 + * Category: Display
-+ * Description: Test for Transcoder Port Sync for Display Port Tiled Displays
-+ */
- #include "igt.h"
- #include "poll.h"
- #include "drm_mode.h"
- #include "drm_fourcc.h"
- #include "igt_edid.h"
- 
-+/**
-+ * SUBTEST: basic-test-%s
-+ * Description: Make sure the Tiled CRTCs are synchronized and we get page flips
-+ *              for all tiled CRTCs in one vblank (%arg[1]).
++ * Description: Prime tests, focusing on KMS side
++ *
++ * SUBTEST: D3hot
++ * Description: Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU
 + * Driver requirement: any
-+ * Functionality: tiled_display
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: basic-modeset-hybrid
++ * Description: Basic modeset on the one device when the other device is active
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: basic-crc-%s
++ * Description: Make a dumb color buffer, export to another device and compare
++ *              the CRCs with a buffer native to that device
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @pattern:                  executes on real panel
-+ * @pattern-with-chamelium:   executes on chamelium.
++ * @hybrid:
++ * @vgem:
 + */
-+
- IGT_TEST_DESCRIPTION("Test for Transcoder Port Sync for Display Port Tiled Displays");
  
- typedef struct {
+ #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+ #define KMS_POLL_DISABLE 0
 -- 
 2.40.0
 
