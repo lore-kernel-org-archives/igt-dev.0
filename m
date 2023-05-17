@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E40D610E3B7
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB33610E3BD
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:08 +0530
-Message-Id: <20230517063323.4146387-7-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:02:51 +0530
+Message-Id: <20230517063323.4146387-50-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 06/81] tests/chamelium/kms_chamelium_audio:
- Document each subtest for testplan
+Subject: [igt-dev] [i-g-t V2 49/81] tests/kms_flip_event_leak: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,78 +28,39 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_chamelium_audio.c | 44 +++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ tests/kms_flip_event_leak.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index a4204fbb6..e657f7791 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -28,6 +28,12 @@
- #include "igt_infoframe.h"
- #include "igt_chamelium_helper.h"
+diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+index b79cd5030..398c58259 100644
+--- a/tests/kms_flip_event_leak.c
++++ b/tests/kms_flip_event_leak.c
+@@ -30,6 +30,25 @@
  
+ #include "igt_device.h"
+ #include "xe/xe_query.h"
 +/**
-+ * TEST: kms chamelium audio
++ * TEST: kms flip event leak
 + * Category: Display
-+ * Description: Testing Audio with a Chamelium board
-+ */
-+
- /* Playback parameters control the audio signal we synthesize and send */
- #define PLAYBACK_CHANNELS 2
- #define PLAYBACK_SAMPLES 1024
-@@ -669,6 +675,25 @@ static bool check_audio_configuration(struct alsa *alsa,
- 	return true;
- }
- 
-+/**
-+ * SUBTEST: dp-audio
-+ * Description: Playback various audio signals with various audio formats/rates,
-+ *              capture them and check they are correct
-+ * Functionality: dp_audio
-+ * Mega feature: DP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
++ * Description: This test tries to provoke the kernel into leaking a pending
++ *              page flip event when the fd is closed before the flip has
++ *              completed. The test itself won't fail even if the kernel leaks
++ *              the event, but the resulting dmesg WARN will indicate a failure.
 + *
-+ * SUBTEST: hdmi-audio
-+ * Description: Playback various audio signals with various audio formats/rates,
-+ *              capture them and check they are correct
-+ * Functionality: hdmi_audio
-+ * Mega feature: HDMI
++ * SUBTEST: basic
++ * Description: This test tries to provoke the kernel into leaking a pending
++ *              page flip event when the fd is closed before the flip has
++ *              completed. The test itself won't fail even if the kernel leaks
++ *              the event, but the resulting dmesg WARN will indicate a failure.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ * Driver requirement: any
 + */
- static const char test_display_audio_desc[] =
- 	"Playback various audio signals with various audio formats/rates, "
- 	"capture them and check they are correct";
-@@ -763,6 +788,25 @@ static void test_display_audio(chamelium_data_t *data,
- 	free(alsa);
- }
  
-+/**
-+ * SUBTEST: dp-audio-edid
-+ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-+ *              EDID-Like Data reports the correct audio parameters
-+ * Functionality: dp_audio
-+ * Mega feature: DP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-audio-edid
-+ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-+ *              EDID-Like Data reports the correct audio parameters
-+ * Functionality: hdmi_audio
-+ * Mega feature: HDMI
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ */
- static const char test_display_audio_edid_desc[] =
- 	"Plug a connector with an EDID suitable for audio, check ALSA's "
- 	"EDID-Like Data reports the correct audio parameters";
+ typedef struct {
+ 	int drm_fd;
 -- 
 2.40.0
 
