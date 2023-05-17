@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com
- [66.111.4.26])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBF8110E482
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 19:55:45 +0000 (UTC)
-Message-ID: <45482f9c-b6e1-d99e-7145-07e15bc65c68@fastmail.com>
-Date: Wed, 17 May 2023 12:55:36 -0700
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
- janga.rahul.kumar@intel.com
-References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
- <20230516165058.4047595-15-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-From: "\"Maaz Mombasawala (VMware)" <maazm@fastmail.com>
-In-Reply-To: <20230516165058.4047595-15-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t 14/20] tests/vmwgfx: Use drm_close_driver() to
- close the drm fd
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
+Date: Wed, 17 May 2023 21:05:29 -0000
+Message-ID: <168435752978.6588.15304618358704983453@emeril.freedesktop.org>
+References: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20230513022234.2832233-1-umesh.nerlige.ramappa@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBQTVU6?=
+ =?utf-8?q?_multi-tile_support_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,19 +17,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Martin Krastev <krastevm@vmware.com>,
- Maaz Mombasawala <mombasawalam@vmware.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 5/16/23 09:50, Bhanuprakash Modem wrote:
-> |Bhanuprakash Modem <bhanuprakash.modem@intel.com> |
+== Series Details ==
 
--- 
+Series: PMU: multi-tile support (rev3)
+URL   : https://patchwork.freedesktop.org/series/117406/
+State : failure
 
-LGTM
+== Summary ==
 
-Reviewed-by: Maaz Mombasawala <mombasawalam@vmware.com>
+Applying: perf_pmu: Support multi-tile in rc6 subtest
+Applying: perf_pmu: Two new rc6 subtests
+Applying: perf_pmu: Support multi-tile in frequency subtest
+Applying: perf_pmu: Quiesce GPU if measuring idle busyness without spinner
+Applying: perf_pmu: Use correct pmu config for multi-tile
+Applying: intel_gpu_top: Add an array of freq and rc6 counters
+Using index info to reconstruct a base tree...
+M	tools/intel_gpu_top.c
+Falling back to patching base and 3-way merge...
+Auto-merging tools/intel_gpu_top.c
+CONFLICT (content): Merge conflict in tools/intel_gpu_top.c
+Patch failed at 0006 intel_gpu_top: Add an array of freq and rc6 counters
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-Maaz Mombasawala (VMware) <maazm@fastmail.com>
