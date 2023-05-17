@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41C2410E3EC
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 11:11:10 +0000 (UTC)
-Date: Wed, 17 May 2023 13:10:52 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230517111052.6sfgt2rechcfycat@kamilkon-desk1>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 29EB610E3EE
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 11:26:40 +0000 (UTC)
+From: "Murthy, Arun R" <arun.r.murthy@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 17 May 2023 11:26:36 +0000
+Message-ID: <DM6PR11MB317736E3359812E38F1CC47BBA7E9@DM6PR11MB3177.namprd11.prod.outlook.com>
 References: <20230516062206.1064604-1-arun.r.murthy@intel.com>
  <20230516062206.1064604-2-arun.r.murthy@intel.com>
+ <20230517111052.6sfgt2rechcfycat@kamilkon-desk1>
+In-Reply-To: <20230517111052.6sfgt2rechcfycat@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230516062206.1064604-2-arun.r.murthy@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t 2/4] tests/kms_async_flips: Ger rid of
  i915 specific fb creation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,70 +24,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Arun,
-
-On 2023-05-16 at 11:52:04 +0530, Arun R Murthy wrote:
-> No idea why the test wants to create the fb differently between i915
-> vs. others. Unify it.
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
-> ---
->  tests/kms_async_flips.c | 25 +++++++++----------------
->  1 file changed, 9 insertions(+), 16 deletions(-)
-> 
-> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index fe27a9ec..1c036426 100644
-> --- a/tests/kms_async_flips.c
-> +++ b/tests/kms_async_flips.c
-> @@ -548,27 +548,20 @@ static void test_crc(data_t *data)
->  
->  static void run_test(data_t *data, void (*test)(data_t *))
->  {
-> -	igt_output_t *output;
-> -	enum pipe pipe;
->  	igt_display_t *display = &data->display;
->  
-> -	for_each_pipe(display, pipe) {
-> -		for_each_valid_output_on_pipe(display, pipe, output) {
-> -			igt_display_reset(display);
-> +	for_each_valid_output_on_pipe(display, data->pipe, data->output) {
-> +		igt_display_reset(display);
-
-Above change is not described, is it really the same functionality ?
-
-Regards,
-Kamil
-
->  
-> -			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(display))
-> -				continue;
-> +		igt_output_set_pipe(data->output, data->pipe);
-> +		if (!i915_pipe_output_combo_valid(display))
-> +			continue;
->  
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-> -				data->output = output;
-> -				data->pipe = pipe;
-> -				test(data);
-> -			}
-> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name)
-> +			test(data);
->  
-> -			if (!data->extended)
-> -				break;
-> -		}
-> +		if (!data->extended)
-> +			break;
->  	}
->  }
->  
-> -- 
-> 2.25.1
-> 
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBLYW1pbCBLb25pZWN6bnkgPGth
+bWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgTWF5IDE3
+LCAyMDIzIDQ6NDEgUE0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENj
+OiBNdXJ0aHksIEFydW4gUiA8YXJ1bi5yLm11cnRoeUBpbnRlbC5jb20+OyBWaWxsZSBTeXJqw6Rs
+w6QNCj4gPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW2ln
+dC1kZXZdIFtQQVRDSCBpLWctdCAyLzRdIHRlc3RzL2ttc19hc3luY19mbGlwczogR2VyIHJpZCBv
+ZiBpOTE1DQo+IHNwZWNpZmljIGZiIGNyZWF0aW9uDQo+IA0KPiBIaSBBcnVuLA0KPiANCj4gT24g
+MjAyMy0wNS0xNiBhdCAxMTo1MjowNCArMDUzMCwgQXJ1biBSIE11cnRoeSB3cm90ZToNCj4gPiBO
+byBpZGVhIHdoeSB0aGUgdGVzdCB3YW50cyB0byBjcmVhdGUgdGhlIGZiIGRpZmZlcmVudGx5IGJl
+dHdlZW4gaTkxNQ0KPiA+IHZzLiBvdGhlcnMuIFVuaWZ5IGl0Lg0KPiA+DQo+ID4gU2lnbmVkLW9m
+Zi1ieTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4NCj4g
+PiBTaWduZWQtb2ZmLWJ5OiBBcnVuIFIgTXVydGh5IDxhcnVuLnIubXVydGh5QGludGVsLmNvbT4N
+Cj4gPiAtLS0NCj4gPiAgdGVzdHMva21zX2FzeW5jX2ZsaXBzLmMgfCAyNSArKysrKysrKystLS0t
+LS0tLS0tLS0tLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDE2IGRl
+bGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19hc3luY19mbGlwcy5j
+IGIvdGVzdHMva21zX2FzeW5jX2ZsaXBzLmMgaW5kZXgNCj4gPiBmZTI3YTllYy4uMWMwMzY0MjYg
+MTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMva21zX2FzeW5jX2ZsaXBzLmMNCj4gPiArKysgYi90ZXN0
+cy9rbXNfYXN5bmNfZmxpcHMuYw0KPiA+IEBAIC01NDgsMjcgKzU0OCwyMCBAQCBzdGF0aWMgdm9p
+ZCB0ZXN0X2NyYyhkYXRhX3QgKmRhdGEpDQo+ID4NCj4gPiAgc3RhdGljIHZvaWQgcnVuX3Rlc3Qo
+ZGF0YV90ICpkYXRhLCB2b2lkICgqdGVzdCkoZGF0YV90ICopKSAgew0KPiA+IC0JaWd0X291dHB1
+dF90ICpvdXRwdXQ7DQo+ID4gLQllbnVtIHBpcGUgcGlwZTsNCj4gPiAgCWlndF9kaXNwbGF5X3Qg
+KmRpc3BsYXkgPSAmZGF0YS0+ZGlzcGxheTsNCj4gPg0KPiA+IC0JZm9yX2VhY2hfcGlwZShkaXNw
+bGF5LCBwaXBlKSB7DQo+ID4gLQkJZm9yX2VhY2hfdmFsaWRfb3V0cHV0X29uX3BpcGUoZGlzcGxh
+eSwgcGlwZSwgb3V0cHV0KSB7DQo+ID4gLQkJCWlndF9kaXNwbGF5X3Jlc2V0KGRpc3BsYXkpOw0K
+PiA+ICsJZm9yX2VhY2hfdmFsaWRfb3V0cHV0X29uX3BpcGUoZGlzcGxheSwgZGF0YS0+cGlwZSwg
+ZGF0YS0+b3V0cHV0KSB7DQo+ID4gKwkJaWd0X2Rpc3BsYXlfcmVzZXQoZGlzcGxheSk7DQo+IA0K
+PiBBYm92ZSBjaGFuZ2UgaXMgbm90IGRlc2NyaWJlZCwgaXMgaXQgcmVhbGx5IHRoZSBzYW1lIGZ1
+bmN0aW9uYWxpdHkgPw0KPiANCkhhdmUgdXBkYXRlZCB0aGUgcGF0Y2ggZGVzY3JpcHRpb24gaW4g
+dGhlIGxhdGVzdCB2ZXJzaW9uLg0KUGxlYXNlIHJldmlldyB0aGUgbGF0ZXN0IHZlcnNpb24gMi4N
+Cg0KVGhhbmtzIGFuZCBSZWdhcmRzLA0KQXJ1biBSIE11cnRoeQ0KLS0tLS0tLS0tLS0tLS0tLS0t
+LS0NCj4gUmVnYXJkcywNCj4gS2FtaWwNCj4gDQo+ID4NCj4gPiAtCQkJaWd0X291dHB1dF9zZXRf
+cGlwZShvdXRwdXQsIHBpcGUpOw0KPiA+IC0JCQlpZiAoIWk5MTVfcGlwZV9vdXRwdXRfY29tYm9f
+dmFsaWQoZGlzcGxheSkpDQo+ID4gLQkJCQljb250aW51ZTsNCj4gPiArCQlpZ3Rfb3V0cHV0X3Nl
+dF9waXBlKGRhdGEtPm91dHB1dCwgZGF0YS0+cGlwZSk7DQo+ID4gKwkJaWYgKCFpOTE1X3BpcGVf
+b3V0cHV0X2NvbWJvX3ZhbGlkKGRpc3BsYXkpKQ0KPiA+ICsJCQljb250aW51ZTsNCj4gPg0KPiA+
+IC0JCQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzLSVzIiwNCj4ga21zdGVzdF9waXBlX25hbWUocGlw
+ZSksIG91dHB1dC0+bmFtZSkgew0KPiA+IC0JCQkJZGF0YS0+b3V0cHV0ID0gb3V0cHV0Ow0KPiA+
+IC0JCQkJZGF0YS0+cGlwZSA9IHBpcGU7DQo+ID4gLQkJCQl0ZXN0KGRhdGEpOw0KPiA+IC0JCQl9
+DQo+ID4gKwkJaWd0X2R5bmFtaWNfZigicGlwZS0lcy0lcyIsIGttc3Rlc3RfcGlwZV9uYW1lKGRh
+dGEtDQo+ID5waXBlKSwgZGF0YS0+b3V0cHV0LT5uYW1lKQ0KPiA+ICsJCQl0ZXN0KGRhdGEpOw0K
+PiA+DQo+ID4gLQkJCWlmICghZGF0YS0+ZXh0ZW5kZWQpDQo+ID4gLQkJCQlicmVhazsNCj4gPiAt
+CQl9DQo+ID4gKwkJaWYgKCFkYXRhLT5leHRlbmRlZCkNCj4gPiArCQkJYnJlYWs7DQo+ID4gIAl9
+DQo+ID4gIH0NCj4gPg0KPiA+IC0tDQo+ID4gMi4yNS4xDQo+ID4NCg==
