@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDE3510E3BB
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 382B210E3BC
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:58 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:35 +0530
-Message-Id: <20230517063323.4146387-34-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:02:50 +0530
+Message-Id: <20230517063323.4146387-49-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 33/81] tests/kms_async_flips: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V2 48/81] tests/kms_flip: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,117 +28,232 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_async_flips.c | 62 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+ tests/kms_flip.c | 178 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 176 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 51ffa523a..a53212a57 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -25,6 +25,11 @@
-  *  Karthik B S <karthik.b.s@intel.com>
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index f1e0700c1..e5a4406b9 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -22,8 +22,9 @@
   */
  
-+/**
-+ * TEST: kms async flips
-+ * Category: Display
-+ * Description: Test asynchronous page flips.
-+ */
- #include "igt.h"
- #include "igt_aux.h"
- #include "igt_psr.h"
-@@ -182,6 +187,25 @@ static void test_init(data_t *data)
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
+ /**
+- * TEST: Tests for validating modeset, dpms and pageflips
++ * TEST: kms flip
+  * Category: Display
++ * Description: Tests for validating modeset, dpms and pageflips
+  */
  
+ #include "config.h"
+@@ -39,6 +40,169 @@
+ #include <sys/poll.h>
+ #include <sys/time.h>
+ #include <sys/ioctl.h>
 +/**
-+ * SUBTEST: alternate-sync-async-flip
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Alternate between sync and async flips
++ * SUBTEST: 2x-flip-vs-fences
++ * Description: Test for validating modeset, dpms and pageflips with a pair of connected displays
 + * Driver requirement: i915
-+ * Functionality: kms_core
++ * Functionality: gtt, vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: async-flip-with-page-flip-events
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Wait for page flip events in between successive asynchronous flips
++ * SUBTEST: 2x-flip-vs-fences-interruptible
++ * Description: Interrupt test for validating modeset, dpms and pageflips with pair of connected displays
++ * Driver requirement: any
++ * Functionality: gtt, vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-vs-fences
++ * Description: Basic test for validating modeset, dpms and pageflips
 + * Driver requirement: i915
-+ * Functionality: kms_core
++ * Functionality: gtt, vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-vs-fences-interruptible
++ * Description: Interrupt test for validating modeset, dpms and pageflips
++ * Driver requirement: i915
++ * Functionality: gtt, vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void test_async_flip(data_t *data)
++
++/**
++ * SUBTEST: %s
++ * Description: Basic test for validating modeset, dpms and pageflips
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @dpms-off-confusion:
++ * @bo-too-big:
++ */
++
++/**
++ * SUBTEST: %s
++ * Description: Basic test for validating modeset, dpms and pageflips
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: 2x-%s
++ * Description: Test for validating modeset, dpms and pageflips with a pair of
++ *              connected displays
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @wf_vblank-ts-check:
++ * @blocking-wf_vblank:
++ * @absolute-wf_vblank:
++ * @blocking-absolute-wf_vblank:
++ * @busy-flip:
++ * @plain-flip-ts-check:
++ * @plain-flip-fb-recreate:
++ * @flip-vs-rmfb:
++ * @flip-vs-panning:
++ * @flip-vs-expired-vblank:
++ * @flip-vs-absolute-wf_vblank:
++ * @flip-vs-blocking-wf-vblank:
++ * @flip-vs-modeset-vs-hang:
++ * @flip-vs-panning-vs-hang:
++ * @flip-vs-dpms-off-vs-modeset:
++ * @single-buffer-flip-vs-dpms-off-vs-modeset:
++ * @nonexisting-fb:
++ * @dpms-vs-vblank-race:
++ * @modeset-vs-vblank-race:
++ * @flip-vs-suspend:
++ */
++
++/**
++ * SUBTEST: 2x-%s
++ * Description: Test for validating modeset, dpms and pageflips with a pair of
++ *              connected displays
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @plain-flip:
++ * @flip-vs-dpms:
++ * @flip-vs-modeset:
++ * @flip-vs-wf_vblank:
++ */
++
++/**
++ * SUBTEST: %s-interruptible
++ * Description: Basic test for validating modeset, dpms and pageflips
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @dpms-off-confusion:
++ * @bo-too-big:
++ */
++
++/**
++ * SUBTEST: %s-interruptible
++ * Description: Basic test for validating modeset, dpms and pageflips
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: 2x-%s-interruptible
++ * Description: Test for validating modeset, dpms and pageflips with a pair of
++ *              connected displays
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @wf_vblank-ts-check:
++ * @absolute-wf_vblank:
++ * @blocking-absolute-wf_vblank:
++ * @plain-flip:
++ * @plain-flip-ts-check:
++ * @plain-flip-fb-recreate:
++ * @flip-vs-rmfb:
++ * @flip-vs-panning:
++ * @flip-vs-expired-vblank:
++ * @flip-vs-absolute-wf_vblank:
++ * @flip-vs-wf_vblank:
++ * @flip-vs-dpms-off-vs-modeset:
++ * @single-buffer-flip-vs-dpms-off-vs-modeset:
++ * @nonexisting-fb:
++ * @dpms-vs-vblank-race:
++ * @modeset-vs-vblank-race:
++ * @flip-vs-suspend:
++ */
++
+ #ifdef HAVE_LINUX_KD_H
+ #include <linux/kd.h>
+ #elif HAVE_SYS_KD_H
+@@ -1564,6 +1728,7 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ /**
+  * SUBTEST: basic-flip-vs-%s
+  * Description: Basic test to valide %arg[1]
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: vblank
+@@ -1577,12 +1742,12 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+  *
+  * SUBTEST: basic-plain-flip
+  * Description: Basic test for validating page flip
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: vblank
+  * Mega feature: General Display Features
+  */
+-
+ static void run_test(int duration, int flags)
  {
- 	int ret, frame;
-@@ -277,6 +301,17 @@ static void wait_for_vblank(data_t *data, unsigned long *vbl_time, unsigned int
- 	*seq = wait_vbl.reply.sequence;
+ 	struct test_output o;
+@@ -1759,6 +1924,15 @@ static void kms_flip_exit_handler(int sig)
+ 		kmstest_set_connector_dpms(drm_fd, last_connector, DRM_MODE_DPMS_ON);
  }
  
 +/**
-+ * SUBTEST: test-time-stamp
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Verify that the async flip timestamp does not coincide with either
-+ *              previous or next vblank
-+ * Driver requirement: i915
-+ * Functionality: kms_core
++ * SUBTEST: nonblocking-read
++ * Description: Tests that nonblocking reading fails correctly
++ * Driver requirement: any
++ * Functionality: vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void test_timestamp(data_t *data)
+ static void test_nonblocking_read(int in)
  {
- 	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
-@@ -323,6 +358,15 @@ static void test_timestamp(data_t *data)
- 		     "Async flip time stamp is expected to be in between 2 vblank time stamps\n");
- }
- 
-+/**
-+ * SUBTEST: test-cursor
-+ * Description: Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_cursor(data_t *data)
- {
- 	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
-@@ -479,6 +523,15 @@ static unsigned int clock_ms(void)
- 	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
- }
- 
-+/**
-+ * SUBTEST: crc
-+ * Description: Use CRC to verify async flip scans out the correct framebuffer
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_crc(data_t *data)
- {
- 	unsigned int frame = 0;
-@@ -543,6 +596,15 @@ static void test_crc(data_t *data)
- 	igt_assert_lt(data->frame_count * 2, data->flip_count);
- }
- 
-+/**
-+ * SUBTEST: invalid-async-flip
-+ * Description: Negative case to verify if changes in fb are rejected from kernel as expected
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void run_test(data_t *data, void (*test)(data_t *))
- {
- 	igt_output_t *output;
+ 	char buffer[1024];
 -- 
 2.40.0
 
