@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3FA6B10E3B9
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5011210E3D2
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:40:31 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:43 +0530
-Message-Id: <20230517063323.4146387-42-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:03:11 +0530
+Message-Id: <20230517063323.4146387-70-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 41/81] tests/kms_cursor_crc: Document each
+Subject: [igt-dev] [i-g-t V2 69/81] tests/kms_rotation_crc: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,98 +28,171 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_cursor_crc.c | 64 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+ tests/kms_rotation_crc.c | 130 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 130 insertions(+)
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 3a353a032..1e6075ffc 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -29,6 +29,18 @@
- #include <stdio.h>
- #include <string.h>
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 28b4fd27c..8b38cbd7d 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -22,6 +22,11 @@
+  *
+  */
  
 +/**
-+ * TEST: kms cursor crc
++ * TEST: kms rotation crc
 + * Category: Display
-+ * Description: Use the display CRC support to validate cursor plane functionality.
-+ *              The test will position the cursor plane either fully onscreen,
-+ *              partially onscreen, or fully offscreen, using either a fully
-+ *              opaque or fully transparent surface. In each case, it enables
-+ *              the cursor plane and then reads the PF CRC (hardware test) and
-+ *              compares it with the CRC value obtained when the cursor plane
-+ *              was disabled and its drawing is directly inserted on the PF by
-+ *              software.
++ * Description: Tests different rotations with different planes & formats
 + */
- 
- IGT_TEST_DESCRIPTION(
-    "Use the display CRC support to validate cursor plane functionality. "
-@@ -639,6 +651,27 @@ static bool require_cursor_size(data_t *data, int w, int h)
- 	return !!ret;
+ #include "igt.h"
+ #include "igt_vec.h"
+ #include <math.h>
+@@ -474,6 +479,97 @@ static bool test_format(data_t *data,
+ 	return true;
  }
  
 +/**
-+ * SUBTEST: cursor-%s
-+ * Description: %arg[1]
++ * SUBTEST: %s-rotation-180
++ * Description: Rotation test with 180 degree for %arg[1] planes
 + * Driver requirement: any
-+ * Functionality: cursor
++ * Functionality: rotation
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @alpha-opaque:       Validates the composition of a fully opaque cursor plane,
-+ *                      i.e., alpha channel equal to 1.0.
-+ * @alpha-transparent:  Validates the composition of a fully transparent cursor
-+ *                      plane, i.e., alpha channel equal to 0.0.
-+ * @dpms:               Check random placement of a cursor with DPMS.
-+ * @size-change:        Create a maximum size cursor, then change the size in
-+ *                      flight to smaller ones to see that the size is applied
-+ *                      correctly.
-+ * @suspend:            Check random placement of a cursor with suspend.
++ * @primary:    primary
++ * @sprite:     sprite
++ * @cursor:     cursor
 + */
- static void run_test(data_t *data, void (*testfunc)(data_t *), int cursor_w, int cursor_h)
- {
- 	prepare_crtc(data, cursor_w, cursor_h);
-@@ -732,6 +765,37 @@ static bool execution_constraint(enum pipe pipe)
- }
- 
- 
++
 +/**
-+ * SUBTEST: cursor-%s-%s
-+ * Description: Check if a %arg[2] cursor is %arg[1].
++ * SUBTEST: %s-rotation-%d
++ * Description: Rotation test with %arg[2] degree for %arg[1] planes of gen9+
 + * Driver requirement: any
-+ * Functionality: cursor
++ * Functionality: rotation
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @offscreen:             well-positioned outside the screen
-+ * @onscreen:              well-positioned inside the screen
-+ * @random:                randomly placed
-+ * @rapid-movement:        rapidly udates for movements
-+ * @sliding:               smooth for horizontal, vertical & diagonal movements
++ * @primary:    primary
++ * @sprite:     sprite
 + *
-+ * arg[2]:
-+ *
-+ * @128x128:               128x128 size
-+ * @128x42:                128x42 size
-+ * @256x256:               256x256 size
-+ * @256x85:                256x85 size
-+ * @32x10:                 32x10 size
-+ * @32x32:                 32x32 size
-+ * @512x170:               512x170 size
-+ * @512x512:               512x512 size
-+ * @64x21:                 64x21 size
-+ * @64x64:                 64x64 size
-+ * @max-size:              Max supported size
++ * arg[2].values: 90, 270
 + */
- static void run_size_tests(data_t *data, int w, int h)
++
++/**
++ * SUBTEST: bad-%s
++ * Description: Checking unsupported %arg[1] for gen9+ with 90 degree of rotation
++ * Driver requirement: any
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @pixel-format:       pixel format
++ * @tiling:             tiling
++ */
++
++/**
++ * SUBTEST: primary-%s-tiled-reflect-x-%d
++ * Description: Test for %arg[1] & %arg[2] degree rotation on primary plane
++ * Driver requirement: i915
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @4:      4 tiling
++ * @x:      x tiling
++ * @y:      y tiling
++ * @yf:     yf tiling
++ *
++ * arg[2].values: 0, 180
++ */
++
++/**
++ * SUBTEST: primary-%s-tiled-reflect-x-%d
++ * Description: Test for %arg[1] & %arg[2] degree rotation on primary plane
++ * Driver requirement: i915
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @y:      y tiling
++ * @yf:     yf tiling
++ *
++ * arg[2].values: 90, 270
++ *
++ * SUBTEST: sprite-rotation-90-pos-100-0
++ * Description: Rotation test with 90 degree for a plane of gen9+ with given position
++ * Driver requirement: any
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_format)
  {
- 	enum pipe pipe;
+ 	igt_display_t *display = &data->display;
+@@ -779,6 +875,31 @@ static bool reusecrcfromlastround(planeinfos p[2], int lastroundp1format,
+ 
+ 	return true;
+ }
++
++/**
++ * SUBTEST: multiplane-rotation
++ * Description: Rotation test on both planes by making them fully visible
++ * Driver requirement: any
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: multiplane-rotation-cropping-%s
++ * Description: Rotation test on both planes by cropping left/%arg[1] corner of
++ *              primary plane and right/%arg[1] corner of sprite plane
++ * Driver requirement: any
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @bottom:   bottom
++ * @top:      top
++ */
++
+ /*
+  * Here is pipe parameter which is now used only for first pipe.
+  * It is left here if this test ever was wanted to be run on
+@@ -980,6 +1101,15 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 	igt_require_f(found, "No valid pipe/output combo found.\n");
+ }
+ 
++/**
++ * SUBTEST: exhaust-fences
++ * Description: This test intends to check for fence leaks exhaustively
++ * Driver requirement: i915
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_plane_rotation_exhaust_fences(data_t *data,
+ 					       enum pipe pipe,
+ 					       igt_output_t *output,
 -- 
 2.40.0
 
