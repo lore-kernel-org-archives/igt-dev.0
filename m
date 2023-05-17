@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 31C5D10E3C9
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8ADBE10E3BD
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:33 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:37 +0530
-Message-Id: <20230517063323.4146387-36-bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:02:32 +0530
+Message-Id: <20230517063323.4146387-31-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 35/81] tests/kms_atomic_interruptible: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V2 30/81] tests/i915/kms_pwrite_crc: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,77 +28,35 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_atomic_interruptible.c | 50 ++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ tests/i915/kms_pwrite_crc.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-index 74b2e246a..be28127d8 100644
---- a/tests/kms_atomic_interruptible.c
-+++ b/tests/kms_atomic_interruptible.c
-@@ -21,6 +21,11 @@
-  * IN THE SOFTWARE.
-  */
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index 3278d876d..7a358d045 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -29,6 +29,21 @@
+ #include <stdio.h>
+ #include <string.h>
  
 +/**
-+ * TEST: kms atomic interruptible
++ * TEST: kms pwrite crc
 + * Category: Display
-+ * Description: Tests that interrupt various atomic ioctls.
++ * Description: Use the display CRC support to validate pwrite to an already
++ *              uncached future scanout buffer.
++ *
++ * SUBTEST:
++ * Description: Use the display CRC support to validate pwrite to an already
++ *              uncached future scanout buffer.
++ * Driver requirement: i915
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
- #include <signal.h>
  
- #include "igt.h"
-@@ -74,6 +79,51 @@ static drmEventContext drm_events = {
- 	.page_flip_handler = ev_page_flip
- };
- 
-+/**
-+ * SUBTEST: %s-setmode
-+ * Description: Tests the interrupt properties of %arg[1] modeset
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @atomic:      atomic
-+ * @legacy:      legacy
-+ */
-+
-+/**
-+ * SUBTEST: legacy-%s
-+ * Description: Tests the interrupt properties for %arg[1]
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:         Cursor
-+ * @dpms:           DPMS
-+ * @pageflip:       Page flip
-+ */
-+
-+/**
-+ * SUBTEST: universal-setplane-%s
-+ * Description: Tests the interrupt properties for %arg[1]
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:         Cursor plane
-+ * @primary:        Primary plane
-+ */
- static void run_plane_test(igt_display_t *display, enum pipe pipe, igt_output_t *output,
- 			   enum plane_test_type test_type, unsigned plane_type)
- {
+ IGT_TEST_DESCRIPTION(
+    "Use the display CRC support to validate pwrite to an already uncached future scanout buffer.");
 -- 
 2.40.0
 
