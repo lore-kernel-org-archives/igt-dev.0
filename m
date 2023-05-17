@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DA0C10E769
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 21:06:48 +0000 (UTC)
-Date: Thu, 25 May 2023 23:06:44 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230525210644.7nnhrabq6buc4cu6@kamilkon-desk1>
-References: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
- <20230525090535.2791739-11-mauro.chehab@linux.intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59FEE10E3BD
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:05 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Wed, 17 May 2023 12:02:17 +0530
+Message-Id: <20230517063323.4146387-16-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
+References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230525090535.2791739-11-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 10/11] i915_test_config.json: exclude
- gem_concurrent_blit.c
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V2 15/81] tests/i915/kms_cdclk: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,60 +20,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, mchehab@kernel.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+Add documentation for all kms tests which is used by IGT testplan
+documentation.
 
-On 2023-05-25 at 11:05:34 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> This is actually a subset of gem_concurrent_all.c, which can't
-> be described, as it containd 400k+ tests on it. It also has an
-> insane number of tests:
-> 
-> 	$ ./build/tests/gem_concurrent_all --list |wc -l
-> 	428400
-> 	$ ./build/tests/gem_concurrent_blit --list |wc -l
-> 	57120
-> 
-> It makes no sense to document all of them. So, exclude it as
-> well, as otherwise adding a logic to check for missing documentation
-> on i915 will complain with:
-> 
-> 	...
-> 	Warning: Missing documentation for igt@gem_concurrent_blit@4KiB-tiny-wc-blt-read-read-bcs-forked
-> 	Warning: Missing documentation for igt@gem_concurrent_blit@4KiB-tiny-wc-blt-read-read-bcs-interruptible
-> 	Warning: Missing documentation for igt@gem_concurrent_blit@4KiB-tiny-wc-blt-read-read-rcs
-> 	...
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  tests/i915/i915_test_config.json | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/i915_test_config.json b/tests/i915/i915_test_config.json
-> index 812cb73b9f52..ae8317b6aefe 100644
-> --- a/tests/i915/i915_test_config.json
-> +++ b/tests/i915/i915_test_config.json
-> @@ -11,7 +11,7 @@
->                 "../prime_vgem.c", "../sw_sync.c", "../syncobj_basic.c",
->                 "../syncobj_timeline.c", "../syncobj_wait.c",
->                 "../vgem_basic.c", "../vgem_slow.c" ],
-> -    "exclude_files": [ "kms_*", "gem_concurrent_all.c" ],
-> +    "exclude_files": [ "kms_*", "gem_concurrent_all.c", "gem_concurrent_blit.c" ],
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/i915/kms_cdclk.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-Looks good,
+diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+index 0f9b8dc58..ef0c5ee61 100644
+--- a/tests/i915/kms_cdclk.c
++++ b/tests/i915/kms_cdclk.c
+@@ -24,6 +24,11 @@
+  *  Swati Sharma <swati2.sharma@intel.com>
+  */
+ 
++/**
++ * TEST: kms cdclk
++ * Category: Display
++ * Description: Test cdclk features : crawling and squashing
++ */
+ #include "igt.h"
+ 
+ IGT_TEST_DESCRIPTION("Test cdclk features : crawling and squashing");
+@@ -248,6 +253,16 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
+ 	igt_remove_fb(display->drm_fd, &fb);
+ }
+ 
++/**
++ * SUBTEST: mode-transition-all-outputs
++ * Description: Mode transition (low to high) test to validate cdclk frequency
++ *              change by simultaneous modesets on all pipes with valid outputs.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_mode_transition_on_all_outputs(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
+@@ -344,6 +359,23 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 	igt_remove_fb(data->drm_fd, &fb);
+ }
+ 
++/**
++ * SUBTEST: mode-transition
++ * Description: Mode transition (low to high) test to validate cdclk frequency change.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-scaling
++ * Description: Plane scaling test to validate cdclk frequency change.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void run_cdclk_test(data_t *data, uint32_t flags)
+ {
+ 	igt_display_t *display = &data->display;
+-- 
+2.40.0
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
---
-Kamil
-
->      "fields": {
->  	"Mega feature": {
->                  "_properties_": {
-> -- 
-> 2.40.1
-> 
 
