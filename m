@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC52410E0E3
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 07:51:10 +0000 (UTC)
-From: "Murthy, Arun R" <arun.r.murthy@intel.com>
-To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Wed, 17 May 2023 07:51:02 +0000
-Message-ID: <DM6PR11MB317793FE314A49B0FF99A54ABA7E9@DM6PR11MB3177.namprd11.prod.outlook.com>
-References: <20230516062206.1064604-1-arun.r.murthy@intel.com>
- <20230517035052.1099227-1-arun.r.murthy@intel.com>
- <20230517035052.1099227-2-arun.r.murthy@intel.com>
- <1d1da706-9e84-ff86-92e4-4bd241ec6e5b@intel.com>
-In-Reply-To: <1d1da706-9e84-ff86-92e4-4bd241ec6e5b@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A8B710E3CB
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 08:58:18 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com
+Date: Wed, 17 May 2023 14:28:17 +0530
+Message-Id: <20230517085817.4097456-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCHv2 i-g-t 2/4] tests/kms_async_flips: Run the
- test only once per pipe
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/instdone: GEN12 INSTDONE initialization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,46 +21,105 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQiBTLCBLYXJ0aGlrIDxr
-YXJ0aGlrLmIuc0BpbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgTWF5IDE3LCAyMDIzIDEy
-OjA0IFBNDQo+IFRvOiBNdXJ0aHksIEFydW4gUiA8YXJ1bi5yLm11cnRoeUBpbnRlbC5jb20+OyBp
-Z3QtDQo+IGRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IFZpbGxlIFN5cmrDpGzDpCA8
-dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0h2MiBp
-LWctdCAyLzRdIHRlc3RzL2ttc19hc3luY19mbGlwczogUnVuIHRoZSB0ZXN0IG9ubHkgb25jZQ0K
-PiBwZXIgcGlwZQ0KPiANCj4gDQo+IE9uIDUvMTcvMjAyMyA5OjIwIEFNLCBBcnVuIFIgTXVydGh5
-IHdyb3RlOg0KPiA+IE5vIHJlYWwgcmVhc29uIHRvIGl0ZXJhdGUgb3ZlciBhbGwgdGhlIG91dHB1
-dHMgaGVyZS4gSnVzdCBkbyB0aGUgdGVzdA0KPiA+IG9uY2UgcGVyIHBpcGUuDQo+ID4NCj4gPiB2
-MjogY29ycmVjdGVkIGNvbW1pdCBtZXNzYWdlDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBWaWxs
-ZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPg0KPiA+IFNpZ25lZC1v
-ZmYtYnk6IEFydW4gUiBNdXJ0aHkgPGFydW4uci5tdXJ0aHlAaW50ZWwuY29tPg0KPiA+IC0tLQ0K
-PiA+ICAgdGVzdHMva21zX2FzeW5jX2ZsaXBzLmMgfCAyNSArKysrKysrKystLS0tLS0tLS0tLS0t
-LS0tDQo+ID4gICAxIGZpbGUgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCAxNiBkZWxldGlvbnMo
-LSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYyBiL3Rlc3Rz
-L2ttc19hc3luY19mbGlwcy5jIGluZGV4DQo+ID4gZmUyN2E5ZWMuLjFjMDM2NDI2IDEwMDY0NA0K
-PiA+IC0tLSBhL3Rlc3RzL2ttc19hc3luY19mbGlwcy5jDQo+ID4gKysrIGIvdGVzdHMva21zX2Fz
-eW5jX2ZsaXBzLmMNCj4gPiBAQCAtNTQ4LDI3ICs1NDgsMjAgQEAgc3RhdGljIHZvaWQgdGVzdF9j
-cmMoZGF0YV90ICpkYXRhKQ0KPiA+DQo+ID4gICBzdGF0aWMgdm9pZCBydW5fdGVzdChkYXRhX3Qg
-KmRhdGEsIHZvaWQgKCp0ZXN0KShkYXRhX3QgKikpDQo+ID4gICB7DQo+ID4gLQlpZ3Rfb3V0cHV0
-X3QgKm91dHB1dDsNCj4gPiAtCWVudW0gcGlwZSBwaXBlOw0KPiA+ICAgCWlndF9kaXNwbGF5X3Qg
-KmRpc3BsYXkgPSAmZGF0YS0+ZGlzcGxheTsNCj4gPg0KPiA+IC0JZm9yX2VhY2hfcGlwZShkaXNw
-bGF5LCBwaXBlKSB7DQo+ID4gLQkJZm9yX2VhY2hfdmFsaWRfb3V0cHV0X29uX3BpcGUoZGlzcGxh
-eSwgcGlwZSwgb3V0cHV0KSB7DQo+ID4gLQkJCWlndF9kaXNwbGF5X3Jlc2V0KGRpc3BsYXkpOw0K
-PiA+ICsJZm9yX2VhY2hfdmFsaWRfb3V0cHV0X29uX3BpcGUoZGlzcGxheSwgZGF0YS0+cGlwZSwg
-ZGF0YS0+b3V0cHV0KSB7DQo+ID4gKwkJaWd0X2Rpc3BsYXlfcmVzZXQoZGlzcGxheSk7DQo+ID4N
-Cj4gPiAtCQkJaWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXQsIHBpcGUpOw0KPiA+IC0JCQlpZiAo
-IWk5MTVfcGlwZV9vdXRwdXRfY29tYm9fdmFsaWQoZGlzcGxheSkpDQo+ID4gLQkJCQljb250aW51
-ZTsNCj4gPiArCQlpZ3Rfb3V0cHV0X3NldF9waXBlKGRhdGEtPm91dHB1dCwgZGF0YS0+cGlwZSk7
-DQo+ID4gKwkJaWYgKCFpOTE1X3BpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKGRpc3BsYXkpKQ0KPiA+
-ICsJCQljb250aW51ZTsNCj4gPg0KPiA+IC0JCQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzLSVzIiwN
-Cj4ga21zdGVzdF9waXBlX25hbWUocGlwZSksIG91dHB1dC0+bmFtZSkgew0KPiA+IC0JCQkJZGF0
-YS0+b3V0cHV0ID0gb3V0cHV0Ow0KPiA+IC0JCQkJZGF0YS0+cGlwZSA9IHBpcGU7DQo+ID4gLQkJ
-CQl0ZXN0KGRhdGEpOw0KPiA+IC0JCQl9DQo+ID4gKwkJaWd0X2R5bmFtaWNfZigicGlwZS0lcy0l
-cyIsIGttc3Rlc3RfcGlwZV9uYW1lKGRhdGEtDQo+ID5waXBlKSwgZGF0YS0+b3V0cHV0LT5uYW1l
-KQ0KPiA+ICsJCQl0ZXN0KGRhdGEpOw0KPiA+DQo+ID4gLQkJCWlmICghZGF0YS0+ZXh0ZW5kZWQp
-DQo+ID4gLQkJCQlicmVhazsNCj4gPiAtCQl9DQo+ID4gKwkJaWYgKCFkYXRhLT5leHRlbmRlZCkN
-Cj4gPiArCQkJYnJlYWs7DQo+IA0KPiBIaSwNCj4gDQo+IEJhc2VkIG9uIGRpc2N1c3Npb24gb24g
-dGhlIHByZXZpb3VzIHJldmlzaW9uLCBJIHRoaW5rIGl0IHdvdWxkIGJlIGJldHRlciB0bw0KPiBy
-ZW1vdmUgdGhpcyBjb21wbGV0ZWx5IGFuZCBydW4gb24gYWxsIG91dHB1dHMgZXZlbiBvbiByZWd1
-bGFyIENJIHJ1bnM/DQo+IA0KT2ssIEFncmVlIHdpbGwgcmVtb3ZlIHRoaXMgcGF0Y2guDQoNClRo
-YW5rcyBhbmQgUmVnYXJkcywNCkFydW4gUiBNdXJ0aHkNCi0tLS0tLS0tLS0tLS0tLS0tLS0tDQoN
-Cj4gVGhhbmtzLA0KPiBLYXJ0aGlrLkIuUw0KPiA+ICAgCX0NCj4gPiAgIH0NCj4gPg0K
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+
+Add GEN12 INSTDONE initialization as per spec.
+
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+---
+ lib/instdone.c | 69 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 68 insertions(+), 1 deletion(-)
+
+diff --git a/lib/instdone.c b/lib/instdone.c
+index a83f8836..d1c92793 100644
+--- a/lib/instdone.c
++++ b/lib/instdone.c
+@@ -274,6 +274,30 @@
+ # define GEN6_VS0_DONE			(1 << 1)
+ # define GEN6_VF_DONE			(1 << 0)
+ 
++# define GEN12_TSG1_DONE		(1 << 24)
++# define GEN12_RCCFBC_CS_DONE		(1 << 23)
++# define GEN12_SDE_DONE			(1 << 22)
++# define GEN12_CS_DONE			(1 << 21)
++# define GEN12_RS_DONE			(1 << 20)
++# define GEN12_GAFD_DONE		(1 << 19)
++# define GEN12_GAFM_DONE		(1 << 18)
++# define GEN12_TSG0_DONE		(1 << 17)
++# define GEN12_VFE_DONE			(1 << 16)
++# define GEN12_GAFS_DONE		(1 << 15)
++# define GEN12_SVG_DONE			(1 << 14)
++# define GEN12_URBM_DONE		(1 << 13)
++# define GEN12_TDG0_DONE		(1 << 12)
++# define GEN12_TDG1_DONE		(1 << 11)
++# define GEN12_SF_DONE			(1 << 9)
++# define GEN12_CL_DONE			(1 << 8)
++# define GEN12_SOL_DONE			(1 << 7)
++# define GEN12_GS_DONE			(1 << 6)
++# define GEN12_DS_DONE			(1 << 5)
++# define GEN12_TE_DONE			(1 << 4)
++# define GEN12_HS_DONE			(1 << 3)
++# define GEN12_VS_DONE			(1 << 2)
++# define GEN12_VFG_DONE			(1 << 1)
++
+ struct instdone_bit instdone_bits[MAX_INSTDONE_BITS];
+ int num_instdone_bits = 0;
+ 
+@@ -425,10 +449,53 @@ init_gen11_instdone(void)
+ 	init_gen8_instdone();
+ }
+ 
++static void
++init_xehp_instdone(void)
++{
++	gen6_instdone1_bit(GEN12_RCCFBC_CS_DONE, "RCCFBC CS");
++	gen6_instdone1_bit(GEN12_CS_DONE, "CS");
++	gen6_instdone1_bit(GEN12_RS_DONE, "RS");
++	gen6_instdone1_bit(GEN12_VFE_DONE, "VFE");
++	gen6_instdone1_bit(GEN12_VFG_DONE, "VFG");
++}
++
++static void
++init_gen12_instdone(uint32_t devid)
++{
++	if (intel_graphics_ver(devid) >= IP_VER(12, 50)) {
++		init_xehp_instdone();
++	} else {
++		gen6_instdone1_bit(GEN12_TSG1_DONE, "TSG1");
++		gen6_instdone1_bit(GEN12_RCCFBC_CS_DONE, "RCCFBC CS");
++		gen6_instdone1_bit(GEN12_SDE_DONE, "SDE");
++		gen6_instdone1_bit(GEN12_CS_DONE, "CS");
++		gen6_instdone1_bit(GEN12_RS_DONE, "RS");
++		gen6_instdone1_bit(GEN12_GAFD_DONE, "GAFD");
++		gen6_instdone1_bit(GEN12_GAFM_DONE, "GAFM");
++		gen6_instdone1_bit(GEN12_TSG0_DONE, "TSG0");
++		gen6_instdone1_bit(GEN12_VFE_DONE, "VFE");
++		gen6_instdone1_bit(GEN12_GAFS_DONE, "GAFS");
++		gen6_instdone1_bit(GEN12_SVG_DONE, "SVG");
++		gen6_instdone1_bit(GEN12_URBM_DONE, "URBM");
++		gen6_instdone1_bit(GEN12_TDG0_DONE, "TDG0");
++		gen6_instdone1_bit(GEN12_TDG1_DONE, "TDG1");
++		gen6_instdone1_bit(GEN12_SF_DONE, "SF");
++		gen6_instdone1_bit(GEN12_CL_DONE, "CL");
++		gen6_instdone1_bit(GEN12_SOL_DONE, "SOL");
++		gen6_instdone1_bit(GEN12_GS_DONE, "GS");
++		gen6_instdone1_bit(GEN12_DS_DONE, "DS");
++		gen6_instdone1_bit(GEN12_TE_DONE, "TE");
++		gen6_instdone1_bit(GEN12_HS_DONE, "HS");
++		gen6_instdone1_bit(GEN12_VS_DONE, "VS");
++		gen6_instdone1_bit(GEN12_VFG_DONE, "VFG");
++	}
++}
+ bool
+ init_instdone_definitions(uint32_t devid)
+ {
+-	if (IS_GEN11(devid)) {
++	if (IS_GEN12(devid)) {
++		init_gen12_instdone(devid);
++	} else if (IS_GEN11(devid)) {
+ 		init_gen11_instdone();
+ 	} else if (IS_GEN8(devid) || IS_GEN9(devid) || IS_GEN10(devid)) {
+ 		init_gen8_instdone();
+-- 
+2.25.1
