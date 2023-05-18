@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2283410E4D3
- for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 05:28:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C87010E4D3
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 05:28:45 +0000 (UTC)
 From: Arun R Murthy <arun.r.murthy@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 18 May 2023 10:51:41 +0530
-Message-Id: <20230518052143.1135162-1-arun.r.murthy@intel.com>
+Date: Thu, 18 May 2023 10:51:42 +0530
+Message-Id: <20230518052143.1135162-2-arun.r.murthy@intel.com>
+In-Reply-To: <20230518052143.1135162-1-arun.r.murthy@intel.com>
+References: <20230518052143.1135162-1-arun.r.murthy@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCHv2 i-g-t 1/3] tests/kms_async_flips: Get rid of
- i915 specific fb
+Subject: [igt-dev] [PATCH i-g-t 2/3] tests/kms_async_flips: Split test_init()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,54 +24,115 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-No idea why the test wants to create the fb differently between i915
-vs. others. Unify it.
-
-v2: some correction in commit message
+Split the test_init() into two parts: one sets up the mode, the
+other the framebuffers. Will be useful for testing different
+modifiers.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_async_flips.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ tests/kms_async_flips.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
 diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 51ffa523..fe27a9ec 100644
+index fe27a9ec..1e96d7fc 100644
 --- a/tests/kms_async_flips.c
 +++ b/tests/kms_async_flips.c
-@@ -115,6 +115,15 @@ static void wait_flip_event(data_t *data)
- 	}
- }
+@@ -148,23 +148,31 @@ static void require_monotonic_timestamp(int fd)
  
-+static uint64_t default_modifier(data_t *data)
-+{
-+	if (igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
-+				       I915_FORMAT_MOD_X_TILED))
-+		return I915_FORMAT_MOD_X_TILED;
-+	else
-+		return DRM_FORMAT_MOD_LINEAR;
+ static void test_init(data_t *data)
+ {
+-	int i;
+-	uint32_t width, height;
+-	igt_plane_t *plane;
+-	static uint32_t prev_output_id;
+ 	drmModeModeInfo *mode;
+ 
+ 	igt_display_reset(&data->display);
+ 	igt_display_commit(&data->display);
+ 
+ 	mode = igt_output_get_mode(data->output);
+-	width = mode->hdisplay;
+-	height = mode->vdisplay;
+ 
+ 	data->crtc_id = data->display.pipes[data->pipe].crtc_id;
+ 	data->refresh_rate = mode->vrefresh;
+ 
+ 	igt_output_set_pipe(data->output, data->pipe);
 +}
 +
- static void make_fb(data_t *data, struct igt_fb *fb,
- 		    uint32_t width, uint32_t height, int index)
- {
-@@ -123,14 +132,8 @@ static void make_fb(data_t *data, struct igt_fb *fb,
++static void test_init_fbs(data_t *data)
++{
++	int i;
++	uint32_t width, height;
++	igt_plane_t *plane;
++	static uint32_t prev_output_id;
++	drmModeModeInfo *mode;
++
++	mode = igt_output_get_mode(data->output);
++	width = mode->hdisplay;
++	height = mode->vdisplay;
++
+ 	plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
  
- 	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
+ 	if (prev_output_id != data->output->id) {
+@@ -191,8 +199,6 @@ static void test_async_flip(data_t *data)
+ 	long long int fps;
+ 	struct timeval start, end, diff;
  
--	if (is_i915_device(data->drm_fd)) {
--		igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
--			      I915_FORMAT_MOD_X_TILED, fb);
--		igt_draw_fill_fb(data->drm_fd, fb, 0x88);
--	} else {
--		igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
--				    DRM_FORMAT_MOD_LINEAR, 0.0, 0.0, 0.5, fb);
--	}
-+	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-+			    default_modifier(data), 0.0, 0.0, 0.5, fb);
+-	test_init(data);
+-
+ 	gettimeofday(&start, NULL);
+ 	frame = 1;
+ 	do {
+@@ -287,8 +293,6 @@ static void test_timestamp(data_t *data)
+ 	unsigned int seq, seq1;
+ 	int ret;
  
- 	cr = igt_get_cairo_ctx(data->drm_fd, fb);
- 	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0, rec_width, height);
+-	test_init(data);
+-
+ 	/*
+ 	 * In older platforms(<= gen10), async address update bit is double buffered.
+ 	 * So flip timestamp can be verified only from the second flip.
+@@ -346,8 +350,6 @@ static void test_cursor(data_t *data)
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &width));
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &height));
+ 
+-	test_init(data);
+-
+ 	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_ARGB8888,
+ 			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
+ 
+@@ -388,8 +390,6 @@ static void test_invalid(data_t *data)
+ 	width = mode->hdisplay;
+ 	height = mode->vdisplay;
+ 
+-	test_init(data);
+-
+ 	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+ 		      I915_FORMAT_MOD_Y_TILED, &fb);
+ 
+@@ -493,8 +493,6 @@ static void test_crc(data_t *data)
+ 	data->frame_count = 0;
+ 	data->flip_pending = false;
+ 
+-	test_init(data);
+-
+ 	cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
+ 	igt_paint_color(cr, 0, 0, data->bufs[frame].width, data->bufs[frame].height, 1.0, 0.0, 0.0);
+ 	igt_put_cairo_ctx(cr);
+@@ -560,9 +558,11 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ 			if (!i915_pipe_output_combo_valid(display))
+ 				continue;
+ 
++			test_init(data);
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+ 				data->output = output;
+ 				data->pipe = pipe;
++				test_init_fbs(data);
+ 				test(data);
+ 			}
+ 
 -- 
 2.25.1
