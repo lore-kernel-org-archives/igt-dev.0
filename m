@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2443610E513
- for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 11:56:56 +0000 (UTC)
-Message-ID: <ebd11479-602c-8ba4-c025-e49209fd404c@intel.com>
-Date: Thu, 18 May 2023 17:26:42 +0530
-To: Arun R Murthy <arun.r.murthy@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230516062206.1064604-1-arun.r.murthy@intel.com>
- <20230518112550.1144906-1-arun.r.murthy@intel.com>
- <20230518112550.1144906-2-arun.r.murthy@intel.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230518112550.1144906-2-arun.r.murthy@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCHv3 i-g-t 2/4] tests/kms_async_flips: Run the
- test for all outputs
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Arun R Murthy" <arun.r.murthy@intel.com>
+Date: Thu, 18 May 2023 11:58:44 -0000
+Message-ID: <168441112401.2370.7604133377918736801@emeril.freedesktop.org>
+References: <20230516062206.1064604-1-arun.r.murthy@intel.com>
+In-Reply-To: <20230516062206.1064604-1-arun.r.murthy@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBzZXJp?=
+ =?utf-8?q?es_starting_with_=5Bi-g-t=2C3/4=5D_tests/kms=5Fasync=5Fflips=3A?=
+ =?utf-8?q?_Split_test=5Finit=28=29_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,99 +18,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+== Series Details ==
 
-On 5/18/2023 4:55 PM, Arun R Murthy wrote:
-> Iterate all outputs, in case we have output specific stuff
-> (eg. PSR) that could affect the behaviour or async flips
->
-> v2: corrected commit message
-> v3: run test for all outputs
->
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
-> ---
->   tests/kms_async_flips.c | 43 ++++++++---------------------------------
->   1 file changed, 8 insertions(+), 35 deletions(-)
->
-> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index fe27a9ec..99653f1e 100644
-> --- a/tests/kms_async_flips.c
-> +++ b/tests/kms_async_flips.c
-> @@ -58,7 +58,6 @@ typedef struct {
->   	int flip_count;
->   	int frame_count;
->   	bool flip_pending;
-> -	bool extended;
->   	enum pipe pipe;
->   	bool alternate_sync_async;
->   } data_t;
-> @@ -548,49 +547,23 @@ static void test_crc(data_t *data)
->   
->   static void run_test(data_t *data, void (*test)(data_t *))
->   {
-> -	igt_output_t *output;
-> -	enum pipe pipe;
->   	igt_display_t *display = &data->display;
->   
-> -	for_each_pipe(display, pipe) {
-> -		for_each_valid_output_on_pipe(display, pipe, output) {
-> -			igt_display_reset(display);
-> -
-> -			igt_output_set_pipe(output, pipe);
-> -			if (!i915_pipe_output_combo_valid(display))
-> -				continue;
-> -
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-> -				data->output = output;
-> -				data->pipe = pipe;
-> -				test(data);
-> -			}
-> -
-> -			if (!data->extended)
-> -				break;
-> -		}
-> -	}
-> -}
-> +	for_each_valid_output_on_pipe(display, data->pipe, data->output) {
+Series: series starting with [i-g-t,3/4] tests/kms_async_flips: Split test_init() (rev5)
+URL   : https://patchwork.freedesktop.org/series/117798/
+State : failure
 
-Hi,
+== Summary ==
 
-Please replace this with 'for_each_pipe_with_valid_output' to iterate 
-over all pipes.
+Applying: tests/kms_async_flips: Split test_init()
+Using index info to reconstruct a base tree...
+M	tests/kms_async_flips.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/kms_async_flips.c
+CONFLICT (content): Merge conflict in tests/kms_async_flips.c
+Patch failed at 0001 tests/kms_async_flips: Split test_init()
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-Thanks,
-Karthik.B.S
-> +		igt_display_reset(display);
->   
-> -static int opt_handler(int opt, int opt_index, void *_data)
-> -{
-> -	data_t *data = _data;
-> +		igt_output_set_pipe(data->output, data->pipe);
-> +		if (!i915_pipe_output_combo_valid(display))
-> +			continue;
->   
-> -	switch (opt) {
-> -	case 'e':
-> -		data->extended = true;
-> -		break;
-> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name)
-> +			test(data);
->   	}
-> -
-> -	return IGT_OPT_HANDLER_SUCCESS;
->   }
->   
-> -static const char help_str[] =
-> -	"  --e \t\tRun the extended tests\n";
-> -
->   static data_t data;
->   
-> -igt_main_args("e", NULL, help_str, opt_handler, &data)
-> +igt_main_args("e", NULL, NULL, NULL, &data)
->   {
->   	int i;
->   
