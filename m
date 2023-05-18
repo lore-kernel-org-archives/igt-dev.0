@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6356310E5D4
- for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 06:51:59 +0000 (UTC)
-From: Arun R Murthy <arun.r.murthy@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 19 May 2023 12:14:53 +0530
-Message-Id: <20230519064453.1334690-5-arun.r.murthy@intel.com>
-In-Reply-To: <20230519064453.1334690-1-arun.r.murthy@intel.com>
-References: <20230519064453.1334690-1-arun.r.murthy@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D46B10E53E
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 18:36:04 +0000 (UTC)
+Date: Thu, 18 May 2023 20:35:59 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <20230518183559.7nric3exlkg5qmhk@zkempczy-mobl2>
+References: <20230504045726.2954788-1-bhanuprakash.modem@intel.com>
+ <20230504045726.2954788-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCHv2 i-g-t 4/4] tests/kms_async_flips: Test all
- modifiers
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230504045726.2954788-2-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t 1/6] lib: Interface to close the drm fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,155 +20,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Run the basic async flip test for all modifiers reported
-by the plane (for the XRGB8888 format). The driver may not
-support async flip with all modifiers so we allow this to fail.
+On Thu, May 04, 2023 at 10:27:21AM +0530, Bhanuprakash Modem wrote:
+> Add new helper drm_close_driver() to close the drm fd. So that
+> every user could call drm_close_driver() instead of close().
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  lib/drmtest.c | 17 +++++++++++++++++
+>  lib/drmtest.h |  1 +
+>  2 files changed, 18 insertions(+)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index c91a91425..03b5239b2 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -604,6 +604,23 @@ int drm_open_driver(int chipset)
+>  	return fd;
+>  }
+>  
+> +/**
+> + * drm_close_driver:
+> + * @fd: a drm file descriptor
+> + *
+> + * Close the drm file descriptor @fd.
+> + *
+> + * Returns: 0 on success or -1 on error.
+> + */
+> +int drm_close_driver(int fd)
+> +{
+> +	/* Avoid closing standard file descriptors (0, 1, and 2). */
+> +	if (fd < 3)
+> +		return -1;
+> +
+> +	return close(fd);
+> +}
 
-v2: print output name along with the modifier
+Drm fd also can be 0-2 if one of it was previously closed so I'm
+not sure you should check this way. Maybe readlink() or sth else?
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_async_flips.c | 51 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 41 insertions(+), 10 deletions(-)
+--
+Zbigniew
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index ccec981c..5cb797de 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -53,6 +53,8 @@ typedef struct {
- 	igt_output_t *output;
- 	unsigned long flip_timestamp_us;
- 	double flip_interval;
-+	uint64_t modifier;
-+	igt_plane_t *plane;
- 	igt_pipe_crc_t *pipe_crc;
- 	igt_crc_t ref_crc;
- 	int flip_count;
-@@ -60,6 +62,7 @@ typedef struct {
- 	bool flip_pending;
- 	enum pipe pipe;
- 	bool alternate_sync_async;
-+	bool allow_fail;
- } data_t;
- 
- static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
-@@ -132,7 +135,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
- 	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
- 
- 	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
--			    default_modifier(data), 0.0, 0.0, 0.5, fb);
-+			    data->modifier, 0.0, 0.0, 0.5, fb);
- 
- 	cr = igt_get_cairo_ctx(data->drm_fd, fb);
- 	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0, rec_width, height);
-@@ -158,24 +161,26 @@ static void test_init(data_t *data)
- 	data->refresh_rate = mode->vrefresh;
- 
- 	igt_output_set_pipe(data->output, data->pipe);
-+
-+	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
- }
- 
- static void test_init_fbs(data_t *data)
- {
- 	int i;
- 	uint32_t width, height;
--	igt_plane_t *plane;
- 	static uint32_t prev_output_id;
-+	static uint64_t prev_modifier;
- 	drmModeModeInfo *mode;
- 
- 	mode = igt_output_get_mode(data->output);
- 	width = mode->hdisplay;
- 	height = mode->vdisplay;
- 
--	plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
--
--	if (prev_output_id != data->output->id) {
-+	if (prev_output_id != data->output->id ||
-+	    prev_modifier != data->modifier) {
- 		prev_output_id = data->output->id;
-+		prev_modifier = data->modifier;
- 
- 		if (data->bufs[0].fb_id) {
- 			for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-@@ -186,8 +191,8 @@ static void test_init_fbs(data_t *data)
- 			make_fb(data, &data->bufs[i], width, height, i);
- 	}
- 
--	igt_plane_set_fb(plane, &data->bufs[0]);
--	igt_plane_set_size(plane, width, height);
-+	igt_plane_set_fb(data->plane, &data->bufs[0]);
-+	igt_plane_set_size(data->plane, width, height);
- 
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
-@@ -242,8 +247,10 @@ static void test_async_flip(data_t *data)
- 		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
- 				      data->bufs[frame % 4].fb_id,
- 				      flags, data);
--
--		igt_assert(ret == 0);
-+		if (frame == 1 && data->allow_fail)
-+			igt_skip_on(ret == -EINVAL);
-+		else
-+			igt_assert(ret == 0);
- 
- 		wait_flip_event(data);
- 
-@@ -555,6 +562,8 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 			continue;
- 
- 		test_init(data);
-+		data->allow_fail = false;
-+		data->modifier = default_modifier(data);
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
- 			test_init_fbs(data);
- 			test(data);
-@@ -562,6 +571,28 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 	}
- }
- 
-+static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
-+{
-+	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
-+		test_init(data);
-+
-+		for (int i = 0; i < data->plane->format_mod_count; i++) {
-+			if (data->plane->formats[i] != DRM_FORMAT_XRGB8888)
-+				continue;
-+
-+			data->allow_fail = true;
-+			data->modifier = data->plane->modifiers[i];
-+
-+			igt_dynamic_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
-+				      data->output->name,
-+				      igt_fb_modifier_name(data->modifier)) {
-+				test_init_fbs(data);
-+				test(data);
-+			}
-+		}
-+	}
-+}
-+
- static data_t data;
- 
- igt_main
-@@ -592,7 +623,7 @@ igt_main
- 		igt_describe("Wait for page flip events in between successive asynchronous flips");
- 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
- 			data.alternate_sync_async = false;
--			run_test(&data, test_async_flip);
-+			run_test_with_modifiers(&data, test_async_flip);
- 		}
- 
- 		igt_describe("Alternate between sync and async flips");
--- 
-2.25.1
+> +
+>  /**
+>   * drm_open_driver_master:
+>   * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index 3c88b85c6..2b7ffc765 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -105,6 +105,7 @@ int drm_open_driver_render(int chipset);
+>  int __drm_open_driver_another(int idx, int chipset);
+>  int __drm_open_driver(int chipset);
+>  int __drm_open_driver_render(int chipset);
+> +int drm_close_driver(int fd);
+>  
+>  void igt_require_amdgpu(int fd);
+>  void igt_require_intel(int fd);
+> -- 
+> 2.40.0
+> 
