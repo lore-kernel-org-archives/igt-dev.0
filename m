@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F30310E08F
- for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 11:34:14 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Date: Thu, 18 May 2023 16:58:58 +0530
-Message-Id: <20230518112858.246095-1-bhanuprakash.modem@intel.com>
-MIME-Version: 1.0
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2443610E513
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 11:56:56 +0000 (UTC)
+Message-ID: <ebd11479-602c-8ba4-c025-e49209fd404c@intel.com>
+Date: Thu, 18 May 2023 17:26:42 +0530
+To: Arun R Murthy <arun.r.murthy@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230516062206.1064604-1-arun.r.murthy@intel.com>
+ <20230518112550.1144906-1-arun.r.murthy@intel.com>
+ <20230518112550.1144906-2-arun.r.murthy@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230518112550.1144906-2-arun.r.murthy@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] tests/intel-ci: Add display blacklist for XE
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCHv3 i-g-t 2/4] tests/kms_async_flips: Run the
+ test for all outputs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,73 +27,95 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add display blacklist for XE, until we complete the testplan
-documentation.
 
-This will unblock the CI to enable the XE full run, once testplan
-documentation changes got landed, we can revert this patch.
+On 5/18/2023 4:55 PM, Arun R Murthy wrote:
+> Iterate all outputs, in case we have output specific stuff
+> (eg. PSR) that could affect the behaviour or async flips
+>
+> v2: corrected commit message
+> v3: run test for all outputs
+>
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
+> ---
+>   tests/kms_async_flips.c | 43 ++++++++---------------------------------
+>   1 file changed, 8 insertions(+), 35 deletions(-)
+>
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index fe27a9ec..99653f1e 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -58,7 +58,6 @@ typedef struct {
+>   	int flip_count;
+>   	int frame_count;
+>   	bool flip_pending;
+> -	bool extended;
+>   	enum pipe pipe;
+>   	bool alternate_sync_async;
+>   } data_t;
+> @@ -548,49 +547,23 @@ static void test_crc(data_t *data)
+>   
+>   static void run_test(data_t *data, void (*test)(data_t *))
+>   {
+> -	igt_output_t *output;
+> -	enum pipe pipe;
+>   	igt_display_t *display = &data->display;
+>   
+> -	for_each_pipe(display, pipe) {
+> -		for_each_valid_output_on_pipe(display, pipe, output) {
+> -			igt_display_reset(display);
+> -
+> -			igt_output_set_pipe(output, pipe);
+> -			if (!i915_pipe_output_combo_valid(display))
+> -				continue;
+> -
+> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+> -				data->output = output;
+> -				data->pipe = pipe;
+> -				test(data);
+> -			}
+> -
+> -			if (!data->extended)
+> -				break;
+> -		}
+> -	}
+> -}
+> +	for_each_valid_output_on_pipe(display, data->pipe, data->output) {
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/meson.build      |  1 +
- tests/intel-ci/xe.blacklist.txt | 37 +++++++++++++++++++++++++++++++++
- 2 files changed, 38 insertions(+)
- create mode 100644 tests/intel-ci/xe.blacklist.txt
+Hi,
 
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index bbbd55700..b16765172 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -6,6 +6,7 @@ intelci_files = [
-   'blacklist.txt',
-   'blacklist-pre-merge.txt',
-   'xe-fast-feedback.testlist',
-+  'xe.blacklist.txt',
- ]
- 
- install_data(sources : intelci_files, install_dir : datadir)
-diff --git a/tests/intel-ci/xe.blacklist.txt b/tests/intel-ci/xe.blacklist.txt
-new file mode 100644
-index 000000000..4285881be
---- /dev/null
-+++ b/tests/intel-ci/xe.blacklist.txt
-@@ -0,0 +1,37 @@
-+##################################################################
-+#Pipe E, F, G and H
-+##################################################################
-+igt@.*@.*pipe-(e|f|g|h).*
-+##################################################################
-+# Multidisplay
-+##################################################################
-+igt@kms_bw@.*-(5|6|7|8)-displays-.*
-+##################################################################
-+igt@kms_draw_crc@draw-method-(mmap-cpu|mmap-gtt|pwrite)
-+igt@kms_draw_crc@fill-fb
-+igt@kms_pipe_b_c_ivb@.*
-+igt@kms_pwrite_crc
-+igt@kms_ccs@.*
-+igt@kms_frontbuffer_tracking@.*
-+igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
-+igt@kms_fence_pin_leak
-+igt@kms_busy@.*
-+igt@kms_psr@.*_mmap_(cpu|gtt)
-+igt@kms_legacy_colorkey@basic
-+igt@kms_legacy_colorkey@invalid-plane
-+igt@kms_flip_scaled_crc@flip-(32|64)bpp-(4|x|y|yf)tile-.*
-+igt@kms_big_fb@(4|x|y|yf)-tiled-.*
-+igt@kms_flip@2x-flip-vs-fences
-+igt@kms_flip@flip-vs-fences(-interruptible)
-+igt@kms_addfb_basic@clobberred-modifier
-+igt@kms_addfb_basic@.*-tiling
-+igt@kms_addfb_basic@.*-(4|x|y|yf)-.*
-+igt@kms_async_flips@.*
-+igt@kms_plane_multiple@tiling-(4|x|y|yf)
-+igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-(atomic|legacy)
-+igt@kms_rotation_crc@primary-(4|x|y|yf)-tiled-.*
-+igt@kms_rotation_crc@exhaust-fences
-+igt@kms_force_connector_basic@force-load-detect
-+igt@kms_getfb@.*-ccs
-+igt@kms_plane_lowres@tiling-(4|x|y|yf)
-+##################################################################
--- 
-2.40.0
+Please replace this with 'for_each_pipe_with_valid_output' to iterate 
+over all pipes.
+
+Thanks,
+Karthik.B.S
+> +		igt_display_reset(display);
+>   
+> -static int opt_handler(int opt, int opt_index, void *_data)
+> -{
+> -	data_t *data = _data;
+> +		igt_output_set_pipe(data->output, data->pipe);
+> +		if (!i915_pipe_output_combo_valid(display))
+> +			continue;
+>   
+> -	switch (opt) {
+> -	case 'e':
+> -		data->extended = true;
+> -		break;
+> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name)
+> +			test(data);
+>   	}
+> -
+> -	return IGT_OPT_HANDLER_SUCCESS;
+>   }
+>   
+> -static const char help_str[] =
+> -	"  --e \t\tRun the extended tests\n";
+> -
+>   static data_t data;
+>   
+> -igt_main_args("e", NULL, help_str, opt_handler, &data)
+> +igt_main_args("e", NULL, NULL, NULL, &data)
+>   {
+>   	int i;
+>   
