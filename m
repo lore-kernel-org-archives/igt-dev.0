@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7455F10E513
- for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 11:32:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C119210E513
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 11:32:52 +0000 (UTC)
 From: Arun R Murthy <arun.r.murthy@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 18 May 2023 16:55:48 +0530
-Message-Id: <20230518112550.1144906-2-arun.r.murthy@intel.com>
-In-Reply-To: <20230518112550.1144906-1-arun.r.murthy@intel.com>
+Date: Thu, 18 May 2023 16:55:47 +0530
+Message-Id: <20230518112550.1144906-1-arun.r.murthy@intel.com>
+In-Reply-To: <20230516062206.1064604-1-arun.r.murthy@intel.com>
 References: <20230516062206.1064604-1-arun.r.murthy@intel.com>
- <20230518112550.1144906-1-arun.r.murthy@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCHv3 i-g-t 2/4] tests/kms_async_flips: Run the test
- for all outputs
+Subject: [igt-dev] [PATCHv2 i-g-t 1/4] tests/kms_async_flips: Get rid of
+ i915 specific fb creation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,87 +25,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Iterate all outputs, in case we have output specific stuff
-(eg. PSR) that could affect the behaviour or async flips
+No idea why the test wants to create the fb differently between i915
+vs. others. Unify it.
 
-v2: corrected commit message
-v3: run test for all outputs
+v2: some correction in commit message
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_async_flips.c | 43 ++++++++---------------------------------
- 1 file changed, 8 insertions(+), 35 deletions(-)
+ tests/kms_async_flips.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
 diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index fe27a9ec..99653f1e 100644
+index 51ffa523..fe27a9ec 100644
 --- a/tests/kms_async_flips.c
 +++ b/tests/kms_async_flips.c
-@@ -58,7 +58,6 @@ typedef struct {
- 	int flip_count;
- 	int frame_count;
- 	bool flip_pending;
--	bool extended;
- 	enum pipe pipe;
- 	bool alternate_sync_async;
- } data_t;
-@@ -548,49 +547,23 @@ static void test_crc(data_t *data)
- 
- static void run_test(data_t *data, void (*test)(data_t *))
- {
--	igt_output_t *output;
--	enum pipe pipe;
- 	igt_display_t *display = &data->display;
- 
--	for_each_pipe(display, pipe) {
--		for_each_valid_output_on_pipe(display, pipe, output) {
--			igt_display_reset(display);
--
--			igt_output_set_pipe(output, pipe);
--			if (!i915_pipe_output_combo_valid(display))
--				continue;
--
--			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
--				data->output = output;
--				data->pipe = pipe;
--				test(data);
--			}
--
--			if (!data->extended)
--				break;
--		}
--	}
--}
-+	for_each_valid_output_on_pipe(display, data->pipe, data->output) {
-+		igt_display_reset(display);
- 
--static int opt_handler(int opt, int opt_index, void *_data)
--{
--	data_t *data = _data;
-+		igt_output_set_pipe(data->output, data->pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
- 
--	switch (opt) {
--	case 'e':
--		data->extended = true;
--		break;
-+		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name)
-+			test(data);
+@@ -115,6 +115,15 @@ static void wait_flip_event(data_t *data)
  	}
--
--	return IGT_OPT_HANDLER_SUCCESS;
  }
  
--static const char help_str[] =
--	"  --e \t\tRun the extended tests\n";
--
- static data_t data;
- 
--igt_main_args("e", NULL, help_str, opt_handler, &data)
-+igt_main_args("e", NULL, NULL, NULL, &data)
++static uint64_t default_modifier(data_t *data)
++{
++	if (igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
++				       I915_FORMAT_MOD_X_TILED))
++		return I915_FORMAT_MOD_X_TILED;
++	else
++		return DRM_FORMAT_MOD_LINEAR;
++}
++
+ static void make_fb(data_t *data, struct igt_fb *fb,
+ 		    uint32_t width, uint32_t height, int index)
  {
- 	int i;
+@@ -123,14 +132,8 @@ static void make_fb(data_t *data, struct igt_fb *fb,
  
+ 	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
+ 
+-	if (is_i915_device(data->drm_fd)) {
+-		igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+-			      I915_FORMAT_MOD_X_TILED, fb);
+-		igt_draw_fill_fb(data->drm_fd, fb, 0x88);
+-	} else {
+-		igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+-				    DRM_FORMAT_MOD_LINEAR, 0.0, 0.0, 0.5, fb);
+-	}
++	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
++			    default_modifier(data), 0.0, 0.0, 0.5, fb);
+ 
+ 	cr = igt_get_cairo_ctx(data->drm_fd, fb);
+ 	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0, rec_width, height);
 -- 
 2.25.1
