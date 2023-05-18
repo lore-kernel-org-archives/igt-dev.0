@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D63E10E012
- for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 18:51:11 +0000 (UTC)
-Date: Thu, 18 May 2023 20:51:07 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A33E10E012
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 18:55:03 +0000 (UTC)
+Date: Thu, 18 May 2023 20:54:56 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230518185107.zdawqykbc5puswee@zkempczy-mobl2>
+Message-ID: <20230518185456.of46ba4deqpsmwps@zkempczy-mobl2>
 References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
  <20230516165058.4047595-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
@@ -63,16 +63,8 @@ On Tue, May 16, 2023 at 10:20:39PM +0530, Bhanuprakash Modem wrote:
 > +		return -1;
 > +	}
 
-Maybe you shouldn't allow passing invalid descriptor at all and assert?
-
-igt_assert(fd >= 0);
-
-?
-
-We can avoid situation when test will blow up long time after this code.
-
-If you want to verify your fd is really drm fd just check what fd is
-leading to. Like readlink() with checking /dev/dri/card|render or sth.
+Just noticed you've altered other gpus tests. That means you shouldn't
+assume 0-2 are standard fds.
 
 --
 Zbigniew
