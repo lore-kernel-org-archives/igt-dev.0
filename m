@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7153457673455757031=="
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42B4010E36A
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 15:24:22 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	kamil.konieczny@linux.intel.com
+Date: Thu, 18 May 2023 20:48:40 +0530
+Message-Id: <20230518151842.287294-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Arun R Murthy" <arun.r.murthy@intel.com>
-Date: Thu, 18 May 2023 12:56:44 -0000
-Message-ID: <168441460488.2371.15245394838030017848@emeril.freedesktop.org>
-References: <20230518121353.1146097-1-arun.r.murthy@intel.com>
-In-Reply-To: <20230518121353.1146097-1-arun.r.murthy@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5BPATCHv2=2Ci-g-t=2C1/4=5D_tests/kms=5Fasync=5F?=
- =?utf-8?q?flips=3A_Get_rid_of_i915_specific_fb_creation?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V2 0/2] New dir structure for intel specific tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,252 +17,433 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7153457673455757031==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-order to organize tests, move all intel specific tests to
+a new directory "tests/intel". And rename all intel specific
+tests to represent the supported driver. Test name should start
+with the driver_name prefix. Below are the Examples.
 
-== Series Details ==
+- tests/intel/i915_*.c : All i915 specific tests. Ex: i915_module_load.c
+- tests/intel/xe_*.c   : All XE specific tests. Ex: xe_module_load.c
+- tests/intel/kms_*.c  : All kms tests. Ex: kms_psr.c
+- tests/intel/intel_*.c: All tests those supports both i915 & XE.
 
-Series: series starting with [PATCHv2,i-g-t,1/4] tests/kms_async_flips: Get rid of i915 specific fb creation
-URL   : https://patchwork.freedesktop.org/series/117954/
-State : success
+V2: - Rebase
 
-== Summary ==
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-CI Bug Log - changes from CI_DRM_13163 -> IGTPW_8997
-====================================================
+Bhanuprakash Modem (2):
+  tests: New dir structure for intel specific tests
+  tests: Rename tests to represent the driver name
 
-Summary
--------
+ README.md                                     |   2 +-
+ docs/testplan/meson.build                     |   2 +-
+ tests/intel-ci/blacklist-pre-merge.txt        |  14 +-
+ tests/intel-ci/blacklist.txt                  | 102 +++---
+ tests/intel-ci/fast-feedback.testlist         |  92 ++---
+ .../i915_api_intel_allocator.c}               |   0
+ .../i915_api_intel_bb.c}                      |   0
+ .../drm_fdinfo.c => intel/i915_drm_fdinfo.c}  |   0
+ tests/{i915 => intel}/i915_fb_tiling.c        |   0
+ .../i915_gem_bad_reloc.c}                     |   0
+ .../i915_gem_barrier_race.c}                  |   0
+ .../gem_basic.c => intel/i915_gem_basic.c}    |   0
+ .../gem_blits.c => intel/i915_gem_blits.c}    |   0
+ .../gem_busy.c => intel/i915_gem_busy.c}      |   0
+ .../i915_gem_caching.c}                       |   0
+ .../{i915/gem_ccs.c => intel/i915_gem_ccs.c}  |   0
+ .../gem_close.c => intel/i915_gem_close.c}    |   0
+ .../i915_gem_close_race.c}                    |   0
+ .../i915_gem_concurrent_all.c}                |   0
+ .../i915_gem_concurrent_blit.c}               |   2 +-
+ .../gem_create.c => intel/i915_gem_create.c}  |   0
+ .../gem_cs_tlb.c => intel/i915_gem_cs_tlb.c}  |   0
+ .../i915_gem_ctx_bad_destroy.c}               |   0
+ .../i915_gem_ctx_create.c}                    |   0
+ .../i915_gem_ctx_engines.c}                   |   0
+ .../i915_gem_ctx_exec.c}                      |   0
+ .../i915_gem_ctx_freq.c}                      |   0
+ .../i915_gem_ctx_isolation.c}                 |   0
+ .../i915_gem_ctx_param.c}                     |   0
+ .../i915_gem_ctx_persistence.c}               |   0
+ .../i915_gem_ctx_shared.c}                    |   0
+ .../i915_gem_ctx_sseu.c}                      |   0
+ .../i915_gem_ctx_switch.c}                    |   0
+ .../{i915/gem_eio.c => intel/i915_gem_eio.c}  |   0
+ .../i915_gem_evict_alignment.c}               |   0
+ .../i915_gem_evict_everything.c}              |   0
+ .../i915_gem_exec_alignment.c}                |   0
+ .../i915_gem_exec_async.c}                    |   0
+ .../i915_gem_exec_await.c}                    |   0
+ .../i915_gem_exec_balancer.c}                 |   0
+ .../i915_gem_exec_basic.c}                    |   0
+ .../i915_gem_exec_big.c}                      |   0
+ .../i915_gem_exec_capture.c}                  |   0
+ .../i915_gem_exec_create.c}                   |   0
+ .../i915_gem_exec_endless.c}                  |   0
+ .../i915_gem_exec_fair.c}                     |   0
+ .../i915_gem_exec_fence.c}                    |   0
+ .../i915_gem_exec_flush.c}                    |   0
+ .../i915_gem_exec_gttfill.c}                  |   0
+ .../i915_gem_exec_latency.c}                  |   0
+ .../i915_gem_exec_lut_handle.c}               |   0
+ .../i915_gem_exec_nop.c}                      |   0
+ .../i915_gem_exec_parallel.c}                 |   0
+ .../i915_gem_exec_params.c}                   |   0
+ .../i915_gem_exec_reloc.c}                    |   0
+ .../i915_gem_exec_schedule.c}                 |   0
+ .../i915_gem_exec_store.c}                    |   0
+ .../i915_gem_exec_suspend.c}                  |   0
+ .../i915_gem_exec_whisper.c}                  |   0
+ .../i915_gem_exercise_blt.c}                  |   0
+ .../i915_gem_fd_exhaustion.c}                 |   0
+ .../i915_gem_fence_thrash.c}                  |   0
+ .../i915_gem_fence_upload.c}                  |   0
+ .../i915_gem_fenced_exec_thrash.c}            |   0
+ .../i915_gem_flink_basic.c}                   |   0
+ .../i915_gem_flink_race.c}                    |   0
+ .../i915_gem_gpgpu_fill.c}                    |   0
+ .../i915_gem_gtt_cpu_tlb.c}                   |   0
+ .../i915_gem_gtt_hog.c}                       |   0
+ .../i915_gem_gtt_speed.c}                     |   0
+ .../i915_gem_huc_copy.c}                      |   0
+ .../i915_gem_linear_blits.c}                  |   0
+ .../i915_gem_lmem_evict.c}                    |   0
+ .../i915_gem_lmem_swapping.c}                 |   0
+ .../i915_gem_lut_handle.c}                    |   0
+ .../i915_gem_madvise.c}                       |   0
+ .../i915_gem_media_fill.c}                    |   0
+ .../i915_gem_media_vme.c}                     |   0
+ .../gem_mmap.c => intel/i915_gem_mmap.c}      |   0
+ .../i915_gem_mmap_gtt.c}                      |   0
+ .../i915_gem_mmap_offset.c}                   |   0
+ .../i915_gem_mmap_wc.c}                       |   0
+ .../i915_gem_partial_pwrite_pread.c}          |   0
+ .../i915_gem_pipe_control_store_loop.c}       |   0
+ .../gem_ppgtt.c => intel/i915_gem_ppgtt.c}    |   0
+ .../gem_pread.c => intel/i915_gem_pread.c}    |   0
+ .../i915_gem_pread_after_blit.c}              |   0
+ .../gem_pwrite.c => intel/i915_gem_pwrite.c}  |   0
+ .../i915_gem_pwrite_snooped.c}                |   0
+ .../{i915/gem_pxp.c => intel/i915_gem_pxp.c}  |   0
+ .../i915_gem_read_read_speed.c}               |   0
+ .../i915_gem_readwrite.c}                     |   0
+ .../i915_gem_reg_read.c}                      |   0
+ .../i915_gem_render_copy.c}                   |   0
+ .../i915_gem_render_copy_redux.c}             |   0
+ .../i915_gem_render_linear_blits.c}           |   0
+ .../i915_gem_render_tiled_blits.c}            |   0
+ .../i915_gem_request_retire.c}                |   0
+ .../i915_gem_reset_stats.c}                   |   0
+ .../i915_gem_ringfill.c}                      |   0
+ .../i915_gem_set_tiling_vs_blt.c}             |   0
+ .../i915_gem_set_tiling_vs_gtt.c}             |   0
+ .../i915_gem_set_tiling_vs_pwrite.c}          |   0
+ .../gem_shrink.c => intel/i915_gem_shrink.c}  |   0
+ .../i915_gem_softpin.c}                       |   0
+ .../i915_gem_spin_batch.c}                    |   0
+ .../i915_gem_streaming_writes.c}              |   0
+ .../gem_stress.c => intel/i915_gem_stress.c}  |   0
+ .../gem_sync.c => intel/i915_gem_sync.c}      |   0
+ .../i915_gem_tiled_blits.c}                   |   0
+ .../i915_gem_tiled_fence_blits.c}             |   0
+ .../i915_gem_tiled_partial_pwrite_pread.c}    |   0
+ .../i915_gem_tiled_pread_basic.c}             |   0
+ .../i915_gem_tiled_pread_pwrite.c}            |   0
+ .../i915_gem_tiled_swapping.c}                |   0
+ .../i915_gem_tiled_wb.c}                      |   0
+ .../i915_gem_tiled_wc.c}                      |   0
+ .../i915_gem_tiling_max_stride.c}             |   0
+ .../i915_gem_unfence_active_buffers.c}        |   0
+ .../i915_gem_unref_active_buffers.c}          |   0
+ .../i915_gem_userptr_blits.c}                 |   0
+ .../i915_gem_vm_create.c}                     |   0
+ .../gem_wait.c => intel/i915_gem_wait.c}      |   0
+ .../i915_gem_watchdog.c}                      |   0
+ .../i915_gem_workarounds.c}                   |   0
+ .../i915_gen3_mixed_blits.c}                  |   0
+ .../i915_gen3_render_linear_blits.c}          |   0
+ .../i915_gen3_render_mixed_blits.c}           |   0
+ .../i915_gen3_render_tiledx_blits.c}          |   0
+ .../i915_gen3_render_tiledy_blits.c}          |   0
+ .../i915_gen7_exec_parse.c}                   |   0
+ .../i915_gen9_exec_parse.c}                   |   0
+ tests/{i915 => intel}/i915_getparams_basic.c  |   0
+ tests/{i915 => intel}/i915_hangman.c          |   0
+ tests/{i915 => intel}/i915_hwmon.c            |   0
+ tests/{i915 => intel}/i915_module_load.c      |   0
+ tests/{i915 => intel}/i915_pciid.c            |   0
+ tests/{i915/perf.c => intel/i915_perf.c}      |   0
+ .../perf_pmu.c => intel/i915_perf_pmu.c}      |   0
+ tests/{i915 => intel}/i915_pipe_stress.c      |   0
+ tests/{i915 => intel}/i915_pm_backlight.c     |   0
+ tests/{i915 => intel}/i915_pm_dc.c            |   0
+ tests/{i915 => intel}/i915_pm_freq_api.c      |   0
+ tests/{i915 => intel}/i915_pm_freq_mult.c     |   0
+ tests/{i915 => intel}/i915_pm_lpsp.c          |   0
+ tests/{i915 => intel}/i915_pm_rc6_residency.c |   0
+ tests/{i915 => intel}/i915_pm_rpm.c           |   0
+ tests/{i915 => intel}/i915_pm_rps.c           |   0
+ tests/{i915 => intel}/i915_pm_sseu.c          |   0
+ tests/{i915 => intel}/i915_power.c            |   0
+ tests/{i915 => intel}/i915_query.c            |   0
+ tests/{i915 => intel}/i915_selftest.c         |   0
+ tests/{i915 => intel}/i915_suspend.c          |   0
+ .../i915_sysfs_defaults.c}                    |   0
+ .../i915_sysfs_heartbeat_interval.c}          |   0
+ .../i915_sysfs_preempt_timeout.c}             |   0
+ .../i915_sysfs_timeslice_duration.c}          |   0
+ tests/{i915 => intel}/kms_big_fb.c            |   0
+ tests/{i915 => intel}/kms_big_joiner.c        |   0
+ tests/{i915 => intel}/kms_busy.c              |   0
+ tests/{i915 => intel}/kms_ccs.c               |   0
+ tests/{i915 => intel}/kms_cdclk.c             |   0
+ tests/{i915 => intel}/kms_draw_crc.c          |   0
+ tests/{i915 => intel}/kms_dsc.c               |   0
+ tests/{i915 => intel}/kms_dsc_helper.c        |   0
+ tests/{i915 => intel}/kms_dsc_helper.h        |   0
+ tests/{i915 => intel}/kms_fbcon_fbt.c         |   0
+ tests/{i915 => intel}/kms_fence_pin_leak.c    |   0
+ tests/{i915 => intel}/kms_flip_scaled_crc.c   |   0
+ tests/{i915 => intel}/kms_flip_tiling.c       |   0
+ .../kms_frontbuffer_tracking.c                |   0
+ tests/{i915 => intel}/kms_legacy_colorkey.c   |   0
+ tests/{i915 => intel}/kms_mmap_write_crc.c    |   0
+ tests/{i915 => intel}/kms_pipe_b_c_ivb.c      |   0
+ tests/{i915 => intel}/kms_psr.c               |   0
+ tests/{i915 => intel}/kms_psr2_sf.c           |   0
+ tests/{i915 => intel}/kms_psr2_su.c           |   0
+ tests/{i915 => intel}/kms_psr_stress_test.c   |   0
+ tests/{i915 => intel}/kms_pwrite_crc.c        |   0
+ tests/{xe => intel}/xe_compute.c              |   0
+ tests/{xe => intel}/xe_create.c               |   0
+ tests/{xe => intel}/xe_debugfs.c              |   0
+ tests/{xe => intel}/xe_dma_buf_sync.c         |   0
+ tests/{xe => intel}/xe_evict.c                |   0
+ tests/{xe => intel}/xe_exec_balancer.c        |   0
+ tests/{xe => intel}/xe_exec_basic.c           |   0
+ tests/{xe => intel}/xe_exec_compute_mode.c    |   0
+ tests/{xe => intel}/xe_exec_fault_mode.c      |   0
+ tests/{xe => intel}/xe_exec_reset.c           |   0
+ tests/{xe => intel}/xe_exec_threads.c         |   0
+ tests/{xe => intel}/xe_gpgpu_fill.c           |   0
+ tests/{xe => intel}/xe_guc_pc.c               |   0
+ tests/{xe => intel}/xe_huc_copy.c             |   0
+ tests/{xe => intel}/xe_intel_bb.c             |   0
+ tests/{xe => intel}/xe_mmap.c                 |   0
+ tests/{xe => intel}/xe_mmio.c                 |   0
+ tests/{xe => intel}/xe_module_load.c          |   0
+ tests/{xe => intel}/xe_noexec_ping_pong.c     |   0
+ tests/{xe => intel}/xe_pm.c                   |   0
+ tests/{xe => intel}/xe_prime_self_import.c    |   0
+ tests/{xe => intel}/xe_query.c                |   0
+ tests/{xe => intel}/xe_test_config.json       |   0
+ tests/{xe => intel}/xe_vm.c                   |   0
+ tests/{xe => intel}/xe_waitfence.c            |   0
+ tests/meson.build                             | 334 +++++++++---------
+ 205 files changed, 266 insertions(+), 282 deletions(-)
+ rename tests/{i915/api_intel_allocator.c => intel/i915_api_intel_allocator.c} (100%)
+ rename tests/{i915/api_intel_bb.c => intel/i915_api_intel_bb.c} (100%)
+ rename tests/{i915/drm_fdinfo.c => intel/i915_drm_fdinfo.c} (100%)
+ rename tests/{i915 => intel}/i915_fb_tiling.c (100%)
+ rename tests/{i915/gem_bad_reloc.c => intel/i915_gem_bad_reloc.c} (100%)
+ rename tests/{i915/gem_barrier_race.c => intel/i915_gem_barrier_race.c} (100%)
+ rename tests/{i915/gem_basic.c => intel/i915_gem_basic.c} (100%)
+ rename tests/{i915/gem_blits.c => intel/i915_gem_blits.c} (100%)
+ rename tests/{i915/gem_busy.c => intel/i915_gem_busy.c} (100%)
+ rename tests/{i915/gem_caching.c => intel/i915_gem_caching.c} (100%)
+ rename tests/{i915/gem_ccs.c => intel/i915_gem_ccs.c} (100%)
+ rename tests/{i915/gem_close.c => intel/i915_gem_close.c} (100%)
+ rename tests/{i915/gem_close_race.c => intel/i915_gem_close_race.c} (100%)
+ rename tests/{i915/gem_concurrent_all.c => intel/i915_gem_concurrent_all.c} (100%)
+ rename tests/{i915/gem_concurrent_blit.c => intel/i915_gem_concurrent_blit.c} (91%)
+ rename tests/{i915/gem_create.c => intel/i915_gem_create.c} (100%)
+ rename tests/{i915/gem_cs_tlb.c => intel/i915_gem_cs_tlb.c} (100%)
+ rename tests/{i915/gem_ctx_bad_destroy.c => intel/i915_gem_ctx_bad_destroy.c} (100%)
+ rename tests/{i915/gem_ctx_create.c => intel/i915_gem_ctx_create.c} (100%)
+ rename tests/{i915/gem_ctx_engines.c => intel/i915_gem_ctx_engines.c} (100%)
+ rename tests/{i915/gem_ctx_exec.c => intel/i915_gem_ctx_exec.c} (100%)
+ rename tests/{i915/gem_ctx_freq.c => intel/i915_gem_ctx_freq.c} (100%)
+ rename tests/{i915/gem_ctx_isolation.c => intel/i915_gem_ctx_isolation.c} (100%)
+ rename tests/{i915/gem_ctx_param.c => intel/i915_gem_ctx_param.c} (100%)
+ rename tests/{i915/gem_ctx_persistence.c => intel/i915_gem_ctx_persistence.c} (100%)
+ rename tests/{i915/gem_ctx_shared.c => intel/i915_gem_ctx_shared.c} (100%)
+ rename tests/{i915/gem_ctx_sseu.c => intel/i915_gem_ctx_sseu.c} (100%)
+ rename tests/{i915/gem_ctx_switch.c => intel/i915_gem_ctx_switch.c} (100%)
+ rename tests/{i915/gem_eio.c => intel/i915_gem_eio.c} (100%)
+ rename tests/{i915/gem_evict_alignment.c => intel/i915_gem_evict_alignment.c} (100%)
+ rename tests/{i915/gem_evict_everything.c => intel/i915_gem_evict_everything.c} (100%)
+ rename tests/{i915/gem_exec_alignment.c => intel/i915_gem_exec_alignment.c} (100%)
+ rename tests/{i915/gem_exec_async.c => intel/i915_gem_exec_async.c} (100%)
+ rename tests/{i915/gem_exec_await.c => intel/i915_gem_exec_await.c} (100%)
+ rename tests/{i915/gem_exec_balancer.c => intel/i915_gem_exec_balancer.c} (100%)
+ rename tests/{i915/gem_exec_basic.c => intel/i915_gem_exec_basic.c} (100%)
+ rename tests/{i915/gem_exec_big.c => intel/i915_gem_exec_big.c} (100%)
+ rename tests/{i915/gem_exec_capture.c => intel/i915_gem_exec_capture.c} (100%)
+ rename tests/{i915/gem_exec_create.c => intel/i915_gem_exec_create.c} (100%)
+ rename tests/{i915/gem_exec_endless.c => intel/i915_gem_exec_endless.c} (100%)
+ rename tests/{i915/gem_exec_fair.c => intel/i915_gem_exec_fair.c} (100%)
+ rename tests/{i915/gem_exec_fence.c => intel/i915_gem_exec_fence.c} (100%)
+ rename tests/{i915/gem_exec_flush.c => intel/i915_gem_exec_flush.c} (100%)
+ rename tests/{i915/gem_exec_gttfill.c => intel/i915_gem_exec_gttfill.c} (100%)
+ rename tests/{i915/gem_exec_latency.c => intel/i915_gem_exec_latency.c} (100%)
+ rename tests/{i915/gem_exec_lut_handle.c => intel/i915_gem_exec_lut_handle.c} (100%)
+ rename tests/{i915/gem_exec_nop.c => intel/i915_gem_exec_nop.c} (100%)
+ rename tests/{i915/gem_exec_parallel.c => intel/i915_gem_exec_parallel.c} (100%)
+ rename tests/{i915/gem_exec_params.c => intel/i915_gem_exec_params.c} (100%)
+ rename tests/{i915/gem_exec_reloc.c => intel/i915_gem_exec_reloc.c} (100%)
+ rename tests/{i915/gem_exec_schedule.c => intel/i915_gem_exec_schedule.c} (100%)
+ rename tests/{i915/gem_exec_store.c => intel/i915_gem_exec_store.c} (100%)
+ rename tests/{i915/gem_exec_suspend.c => intel/i915_gem_exec_suspend.c} (100%)
+ rename tests/{i915/gem_exec_whisper.c => intel/i915_gem_exec_whisper.c} (100%)
+ rename tests/{i915/gem_exercise_blt.c => intel/i915_gem_exercise_blt.c} (100%)
+ rename tests/{i915/gem_fd_exhaustion.c => intel/i915_gem_fd_exhaustion.c} (100%)
+ rename tests/{i915/gem_fence_thrash.c => intel/i915_gem_fence_thrash.c} (100%)
+ rename tests/{i915/gem_fence_upload.c => intel/i915_gem_fence_upload.c} (100%)
+ rename tests/{i915/gem_fenced_exec_thrash.c => intel/i915_gem_fenced_exec_thrash.c} (100%)
+ rename tests/{i915/gem_flink_basic.c => intel/i915_gem_flink_basic.c} (100%)
+ rename tests/{i915/gem_flink_race.c => intel/i915_gem_flink_race.c} (100%)
+ rename tests/{i915/gem_gpgpu_fill.c => intel/i915_gem_gpgpu_fill.c} (100%)
+ rename tests/{i915/gem_gtt_cpu_tlb.c => intel/i915_gem_gtt_cpu_tlb.c} (100%)
+ rename tests/{i915/gem_gtt_hog.c => intel/i915_gem_gtt_hog.c} (100%)
+ rename tests/{i915/gem_gtt_speed.c => intel/i915_gem_gtt_speed.c} (100%)
+ rename tests/{i915/gem_huc_copy.c => intel/i915_gem_huc_copy.c} (100%)
+ rename tests/{i915/gem_linear_blits.c => intel/i915_gem_linear_blits.c} (100%)
+ rename tests/{i915/gem_lmem_evict.c => intel/i915_gem_lmem_evict.c} (100%)
+ rename tests/{i915/gem_lmem_swapping.c => intel/i915_gem_lmem_swapping.c} (100%)
+ rename tests/{i915/gem_lut_handle.c => intel/i915_gem_lut_handle.c} (100%)
+ rename tests/{i915/gem_madvise.c => intel/i915_gem_madvise.c} (100%)
+ rename tests/{i915/gem_media_fill.c => intel/i915_gem_media_fill.c} (100%)
+ rename tests/{i915/gem_media_vme.c => intel/i915_gem_media_vme.c} (100%)
+ rename tests/{i915/gem_mmap.c => intel/i915_gem_mmap.c} (100%)
+ rename tests/{i915/gem_mmap_gtt.c => intel/i915_gem_mmap_gtt.c} (100%)
+ rename tests/{i915/gem_mmap_offset.c => intel/i915_gem_mmap_offset.c} (100%)
+ rename tests/{i915/gem_mmap_wc.c => intel/i915_gem_mmap_wc.c} (100%)
+ rename tests/{i915/gem_partial_pwrite_pread.c => intel/i915_gem_partial_pwrite_pread.c} (100%)
+ rename tests/{i915/gem_pipe_control_store_loop.c => intel/i915_gem_pipe_control_store_loop.c} (100%)
+ rename tests/{i915/gem_ppgtt.c => intel/i915_gem_ppgtt.c} (100%)
+ rename tests/{i915/gem_pread.c => intel/i915_gem_pread.c} (100%)
+ rename tests/{i915/gem_pread_after_blit.c => intel/i915_gem_pread_after_blit.c} (100%)
+ rename tests/{i915/gem_pwrite.c => intel/i915_gem_pwrite.c} (100%)
+ rename tests/{i915/gem_pwrite_snooped.c => intel/i915_gem_pwrite_snooped.c} (100%)
+ rename tests/{i915/gem_pxp.c => intel/i915_gem_pxp.c} (100%)
+ rename tests/{i915/gem_read_read_speed.c => intel/i915_gem_read_read_speed.c} (100%)
+ rename tests/{i915/gem_readwrite.c => intel/i915_gem_readwrite.c} (100%)
+ rename tests/{i915/gem_reg_read.c => intel/i915_gem_reg_read.c} (100%)
+ rename tests/{i915/gem_render_copy.c => intel/i915_gem_render_copy.c} (100%)
+ rename tests/{i915/gem_render_copy_redux.c => intel/i915_gem_render_copy_redux.c} (100%)
+ rename tests/{i915/gem_render_linear_blits.c => intel/i915_gem_render_linear_blits.c} (100%)
+ rename tests/{i915/gem_render_tiled_blits.c => intel/i915_gem_render_tiled_blits.c} (100%)
+ rename tests/{i915/gem_request_retire.c => intel/i915_gem_request_retire.c} (100%)
+ rename tests/{i915/gem_reset_stats.c => intel/i915_gem_reset_stats.c} (100%)
+ rename tests/{i915/gem_ringfill.c => intel/i915_gem_ringfill.c} (100%)
+ rename tests/{i915/gem_set_tiling_vs_blt.c => intel/i915_gem_set_tiling_vs_blt.c} (100%)
+ rename tests/{i915/gem_set_tiling_vs_gtt.c => intel/i915_gem_set_tiling_vs_gtt.c} (100%)
+ rename tests/{i915/gem_set_tiling_vs_pwrite.c => intel/i915_gem_set_tiling_vs_pwrite.c} (100%)
+ rename tests/{i915/gem_shrink.c => intel/i915_gem_shrink.c} (100%)
+ rename tests/{i915/gem_softpin.c => intel/i915_gem_softpin.c} (100%)
+ rename tests/{i915/gem_spin_batch.c => intel/i915_gem_spin_batch.c} (100%)
+ rename tests/{i915/gem_streaming_writes.c => intel/i915_gem_streaming_writes.c} (100%)
+ rename tests/{i915/gem_stress.c => intel/i915_gem_stress.c} (100%)
+ rename tests/{i915/gem_sync.c => intel/i915_gem_sync.c} (100%)
+ rename tests/{i915/gem_tiled_blits.c => intel/i915_gem_tiled_blits.c} (100%)
+ rename tests/{i915/gem_tiled_fence_blits.c => intel/i915_gem_tiled_fence_blits.c} (100%)
+ rename tests/{i915/gem_tiled_partial_pwrite_pread.c => intel/i915_gem_tiled_partial_pwrite_pread.c} (100%)
+ rename tests/{i915/gem_tiled_pread_basic.c => intel/i915_gem_tiled_pread_basic.c} (100%)
+ rename tests/{i915/gem_tiled_pread_pwrite.c => intel/i915_gem_tiled_pread_pwrite.c} (100%)
+ rename tests/{i915/gem_tiled_swapping.c => intel/i915_gem_tiled_swapping.c} (100%)
+ rename tests/{i915/gem_tiled_wb.c => intel/i915_gem_tiled_wb.c} (100%)
+ rename tests/{i915/gem_tiled_wc.c => intel/i915_gem_tiled_wc.c} (100%)
+ rename tests/{i915/gem_tiling_max_stride.c => intel/i915_gem_tiling_max_stride.c} (100%)
+ rename tests/{i915/gem_unfence_active_buffers.c => intel/i915_gem_unfence_active_buffers.c} (100%)
+ rename tests/{i915/gem_unref_active_buffers.c => intel/i915_gem_unref_active_buffers.c} (100%)
+ rename tests/{i915/gem_userptr_blits.c => intel/i915_gem_userptr_blits.c} (100%)
+ rename tests/{i915/gem_vm_create.c => intel/i915_gem_vm_create.c} (100%)
+ rename tests/{i915/gem_wait.c => intel/i915_gem_wait.c} (100%)
+ rename tests/{i915/gem_watchdog.c => intel/i915_gem_watchdog.c} (100%)
+ rename tests/{i915/gem_workarounds.c => intel/i915_gem_workarounds.c} (100%)
+ rename tests/{i915/gen3_mixed_blits.c => intel/i915_gen3_mixed_blits.c} (100%)
+ rename tests/{i915/gen3_render_linear_blits.c => intel/i915_gen3_render_linear_blits.c} (100%)
+ rename tests/{i915/gen3_render_mixed_blits.c => intel/i915_gen3_render_mixed_blits.c} (100%)
+ rename tests/{i915/gen3_render_tiledx_blits.c => intel/i915_gen3_render_tiledx_blits.c} (100%)
+ rename tests/{i915/gen3_render_tiledy_blits.c => intel/i915_gen3_render_tiledy_blits.c} (100%)
+ rename tests/{i915/gen7_exec_parse.c => intel/i915_gen7_exec_parse.c} (100%)
+ rename tests/{i915/gen9_exec_parse.c => intel/i915_gen9_exec_parse.c} (100%)
+ rename tests/{i915 => intel}/i915_getparams_basic.c (100%)
+ rename tests/{i915 => intel}/i915_hangman.c (100%)
+ rename tests/{i915 => intel}/i915_hwmon.c (100%)
+ rename tests/{i915 => intel}/i915_module_load.c (100%)
+ rename tests/{i915 => intel}/i915_pciid.c (100%)
+ rename tests/{i915/perf.c => intel/i915_perf.c} (100%)
+ rename tests/{i915/perf_pmu.c => intel/i915_perf_pmu.c} (100%)
+ rename tests/{i915 => intel}/i915_pipe_stress.c (100%)
+ rename tests/{i915 => intel}/i915_pm_backlight.c (100%)
+ rename tests/{i915 => intel}/i915_pm_dc.c (100%)
+ rename tests/{i915 => intel}/i915_pm_freq_api.c (100%)
+ rename tests/{i915 => intel}/i915_pm_freq_mult.c (100%)
+ rename tests/{i915 => intel}/i915_pm_lpsp.c (100%)
+ rename tests/{i915 => intel}/i915_pm_rc6_residency.c (100%)
+ rename tests/{i915 => intel}/i915_pm_rpm.c (100%)
+ rename tests/{i915 => intel}/i915_pm_rps.c (100%)
+ rename tests/{i915 => intel}/i915_pm_sseu.c (100%)
+ rename tests/{i915 => intel}/i915_power.c (100%)
+ rename tests/{i915 => intel}/i915_query.c (100%)
+ rename tests/{i915 => intel}/i915_selftest.c (100%)
+ rename tests/{i915 => intel}/i915_suspend.c (100%)
+ rename tests/{i915/sysfs_defaults.c => intel/i915_sysfs_defaults.c} (100%)
+ rename tests/{i915/sysfs_heartbeat_interval.c => intel/i915_sysfs_heartbeat_interval.c} (100%)
+ rename tests/{i915/sysfs_preempt_timeout.c => intel/i915_sysfs_preempt_timeout.c} (100%)
+ rename tests/{i915/sysfs_timeslice_duration.c => intel/i915_sysfs_timeslice_duration.c} (100%)
+ rename tests/{i915 => intel}/kms_big_fb.c (100%)
+ rename tests/{i915 => intel}/kms_big_joiner.c (100%)
+ rename tests/{i915 => intel}/kms_busy.c (100%)
+ rename tests/{i915 => intel}/kms_ccs.c (100%)
+ rename tests/{i915 => intel}/kms_cdclk.c (100%)
+ rename tests/{i915 => intel}/kms_draw_crc.c (100%)
+ rename tests/{i915 => intel}/kms_dsc.c (100%)
+ rename tests/{i915 => intel}/kms_dsc_helper.c (100%)
+ rename tests/{i915 => intel}/kms_dsc_helper.h (100%)
+ rename tests/{i915 => intel}/kms_fbcon_fbt.c (100%)
+ rename tests/{i915 => intel}/kms_fence_pin_leak.c (100%)
+ rename tests/{i915 => intel}/kms_flip_scaled_crc.c (100%)
+ rename tests/{i915 => intel}/kms_flip_tiling.c (100%)
+ rename tests/{i915 => intel}/kms_frontbuffer_tracking.c (100%)
+ rename tests/{i915 => intel}/kms_legacy_colorkey.c (100%)
+ rename tests/{i915 => intel}/kms_mmap_write_crc.c (100%)
+ rename tests/{i915 => intel}/kms_pipe_b_c_ivb.c (100%)
+ rename tests/{i915 => intel}/kms_psr.c (100%)
+ rename tests/{i915 => intel}/kms_psr2_sf.c (100%)
+ rename tests/{i915 => intel}/kms_psr2_su.c (100%)
+ rename tests/{i915 => intel}/kms_psr_stress_test.c (100%)
+ rename tests/{i915 => intel}/kms_pwrite_crc.c (100%)
+ rename tests/{xe => intel}/xe_compute.c (100%)
+ rename tests/{xe => intel}/xe_create.c (100%)
+ rename tests/{xe => intel}/xe_debugfs.c (100%)
+ rename tests/{xe => intel}/xe_dma_buf_sync.c (100%)
+ rename tests/{xe => intel}/xe_evict.c (100%)
+ rename tests/{xe => intel}/xe_exec_balancer.c (100%)
+ rename tests/{xe => intel}/xe_exec_basic.c (100%)
+ rename tests/{xe => intel}/xe_exec_compute_mode.c (100%)
+ rename tests/{xe => intel}/xe_exec_fault_mode.c (100%)
+ rename tests/{xe => intel}/xe_exec_reset.c (100%)
+ rename tests/{xe => intel}/xe_exec_threads.c (100%)
+ rename tests/{xe => intel}/xe_gpgpu_fill.c (100%)
+ rename tests/{xe => intel}/xe_guc_pc.c (100%)
+ rename tests/{xe => intel}/xe_huc_copy.c (100%)
+ rename tests/{xe => intel}/xe_intel_bb.c (100%)
+ rename tests/{xe => intel}/xe_mmap.c (100%)
+ rename tests/{xe => intel}/xe_mmio.c (100%)
+ rename tests/{xe => intel}/xe_module_load.c (100%)
+ rename tests/{xe => intel}/xe_noexec_ping_pong.c (100%)
+ rename tests/{xe => intel}/xe_pm.c (100%)
+ rename tests/{xe => intel}/xe_prime_self_import.c (100%)
+ rename tests/{xe => intel}/xe_query.c (100%)
+ rename tests/{xe => intel}/xe_test_config.json (100%)
+ rename tests/{xe => intel}/xe_vm.c (100%)
+ rename tests/{xe => intel}/xe_waitfence.c (100%)
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/index.html
-
-Participating hosts (37 -> 36)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8997 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_backlight@basic-brightness@edp-1:
-    - bat-rplp-1:         NOTRUN -> [ABORT][1] ([i915#7077])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-adls-5:         [PASS][2] -> [DMESG-WARN][3] ([i915#5591])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/bat-adls-5/igt@i915_selftest@live@hangcheck.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-adls-5/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-dg2-11:         [PASS][4] -> [DMESG-WARN][5] ([i915#7699])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/bat-dg2-11/igt@i915_selftest@live@migrate.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-dg2-11/igt@i915_selftest@live@migrate.html
-    - bat-rpls-1:         [PASS][6] -> [DMESG-FAIL][7] ([i915#7699])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/bat-rpls-1/igt@i915_selftest@live@migrate.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rpls-1/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-2:         [PASS][8] -> [ABORT][9] ([i915#4983] / [i915#7913])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/bat-rpls-2/igt@i915_selftest@live@requests.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rpls-2/igt@i915_selftest@live@requests.html
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - bat-dg2-11:         NOTRUN -> [SKIP][10] ([i915#1845] / [i915#5354]) +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html
-
-  * igt@kms_psr@primary_mmap_gtt:
-    - bat-rplp-1:         NOTRUN -> [SKIP][11] ([i915#1072])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         NOTRUN -> [SKIP][12] ([i915#3555] / [i915#4579])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-7567u:       [DMESG-FAIL][13] ([i915#5334] / [i915#7872]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-rplp-1:         [ABORT][15] ([i915#8434] / [i915#8442]) -> [SKIP][16] ([i915#1072])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
-  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#8434]: https://gitlab.freedesktop.org/drm/intel/issues/8434
-  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7295 -> IGTPW_8997
-
-  CI-20190529: 20190529
-  CI_DRM_13163: b0e2432ff9ab0f200107e6c566f378cd04de2703 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8997: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/index.html
-  IGT_7295: 34168d9156c5780c9e9790475c894fd829840e32 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/index.html
-
---===============7153457673455757031==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [PATCHv2,i-g-t,1/4] tests/kms_async_flips: Get rid of i915 specific fb creation</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117954/">https://patchwork.freedesktop.org/series/117954/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13163 -&gt; IGTPW_8997</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/index.html</p>
-<h2>Participating hosts (37 -&gt; 36)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8997 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness@edp-1:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-adls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/bat-adls-5/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-adls-5/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5591">i915#5591</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>
-<p>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</p>
-</li>
-<li>
-<p>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/bat-rpls-1/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rpls-1/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_mmap_gtt:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_heartbeat:<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@sprite_plane_onoff:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13163/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8434">i915#8434</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7295 -&gt; IGTPW_8997</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13163: b0e2432ff9ab0f200107e6c566f378cd04de2703 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8997: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8997/index.html<br />
-  IGT_7295: 34168d9156c5780c9e9790475c894fd829840e32 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7153457673455757031==--
+--
+2.40.0
