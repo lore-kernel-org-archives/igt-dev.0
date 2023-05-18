@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F221410E4D3
- for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 05:27:59 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2283410E4D3
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 05:28:43 +0000 (UTC)
+From: Arun R Murthy <arun.r.murthy@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 18 May 2023 10:57:22 +0530
-Message-Id: <20230518052722.249768-1-swati2.sharma@intel.com>
+Date: Thu, 18 May 2023 10:51:41 +0530
+Message-Id: <20230518052143.1135162-1-arun.r.murthy@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_dsc: add has_dsc()
+Subject: [igt-dev] [PATCHv2 i-g-t 1/3] tests/kms_async_flips: Get rid of
+ i915 specific fb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,55 +18,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of assuming dsc is supported gen11+, lets use has_dsc
-flag in i915_capability to check h/w support.
+No idea why the test wants to create the fb differently between i915
+vs. others. Unify it.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+v2: some correction in commit message
+
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/i915/kms_dsc.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ tests/kms_async_flips.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 3ce28f84..ad698f27 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -253,6 +253,24 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 51ffa523..fe27a9ec 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -115,6 +115,15 @@ static void wait_flip_event(data_t *data)
  	}
  }
  
-+static bool has_dsc(data_t *data)
++static uint64_t default_modifier(data_t *data)
 +{
-+	char buf[4096];
-+	int dir, res;
-+
-+	dir = igt_debugfs_dir(data->drm_fd);
-+	igt_assert(dir >= 0);
-+
-+	igt_require_intel(data->drm_fd);
-+
-+	res = igt_debugfs_simple_read(dir, "i915_capabilities",
-+				      buf, sizeof(buf));
-+	igt_require(res > 0);
-+	close(dir);
-+
-+	return strstr(buf, "has_dsc: yes");
++	if (igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
++				       I915_FORMAT_MOD_X_TILED))
++		return I915_FORMAT_MOD_X_TILED;
++	else
++		return DRM_FORMAT_MOD_LINEAR;
 +}
 +
- igt_main
+ static void make_fb(data_t *data, struct igt_fb *fb,
+ 		    uint32_t width, uint32_t height, int index)
  {
- 	data_t data = {};
-@@ -265,7 +283,7 @@ igt_main
- 		igt_install_exit_handler(kms_dsc_exit_handler);
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
--		igt_require(data.disp_ver >= 11);
-+		igt_require(has_dsc(&data));
- 	}
+@@ -123,14 +132,8 @@ static void make_fb(data_t *data, struct igt_fb *fb,
  
- 	igt_describe("Tests basic display stream compression functionality if supported "
+ 	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
+ 
+-	if (is_i915_device(data->drm_fd)) {
+-		igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+-			      I915_FORMAT_MOD_X_TILED, fb);
+-		igt_draw_fill_fb(data->drm_fd, fb, 0x88);
+-	} else {
+-		igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+-				    DRM_FORMAT_MOD_LINEAR, 0.0, 0.0, 0.5, fb);
+-	}
++	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
++			    default_modifier(data), 0.0, 0.0, 0.5, fb);
+ 
+ 	cr = igt_get_cairo_ctx(data->drm_fd, fb);
+ 	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0, rec_width, height);
 -- 
 2.25.1
