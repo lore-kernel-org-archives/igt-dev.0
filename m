@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D46B10E53E
- for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 18:36:04 +0000 (UTC)
-Date: Thu, 18 May 2023 20:35:59 +0200
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C12110E53F
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 May 2023 18:46:27 +0000 (UTC)
+Date: Thu, 18 May 2023 20:46:16 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230518183559.7nric3exlkg5qmhk@zkempczy-mobl2>
-References: <20230504045726.2954788-1-bhanuprakash.modem@intel.com>
- <20230504045726.2954788-2-bhanuprakash.modem@intel.com>
+Message-ID: <20230518184616.ik5ecw6ebgz7xzhm@zkempczy-mobl2>
+References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
+ <20230516165058.4047595-3-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230504045726.2954788-2-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t 1/6] lib: Interface to close the drm fd
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230516165058.4047595-3-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t 02/20] lib: Cache xe_device at driver
+ open/close level
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,63 +27,119 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, May 04, 2023 at 10:27:21AM +0530, Bhanuprakash Modem wrote:
-> Add new helper drm_close_driver() to close the drm fd. So that
-> every user could call drm_close_driver() instead of close().
+On Tue, May 16, 2023 at 10:20:40PM +0530, Bhanuprakash Modem wrote:
+> Instead of caching the xe_device struct at subtest level, cache
+> just after opening the driver. And remove from the cache just
+> before closing the driver.
+> 
+> V2: - Place the logic in correct helpers (Zbigniew)
 > 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  lib/drmtest.c | 17 +++++++++++++++++
->  lib/drmtest.h |  1 +
->  2 files changed, 18 insertions(+)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index c91a91425..03b5239b2 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -604,6 +604,23 @@ int drm_open_driver(int chipset)
->  	return fd;
->  }
->  
-> +/**
-> + * drm_close_driver:
-> + * @fd: a drm file descriptor
-> + *
-> + * Close the drm file descriptor @fd.
-> + *
-> + * Returns: 0 on success or -1 on error.
-> + */
-> +int drm_close_driver(int fd)
-> +{
-> +	/* Avoid closing standard file descriptors (0, 1, and 2). */
-> +	if (fd < 3)
-> +		return -1;
-> +
-> +	return close(fd);
-> +}
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Drm fd also can be 0-2 if one of it was previously closed so I'm
-not sure you should check this way. Maybe readlink() or sth else?
+LGTM too:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
-> +
->  /**
->   * drm_open_driver_master:
->   * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 3c88b85c6..2b7ffc765 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -105,6 +105,7 @@ int drm_open_driver_render(int chipset);
->  int __drm_open_driver_another(int idx, int chipset);
->  int __drm_open_driver(int chipset);
->  int __drm_open_driver_render(int chipset);
-> +int drm_close_driver(int fd);
+> ---
+>  lib/drmtest.c   | 24 +++++++++++++++++++++---
+>  lib/igt_types.c |  6 ++++++
+>  2 files changed, 27 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 41ad2694c..cfcb630ed 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -64,6 +64,7 @@
+>  #include "intel_reg.h"
+>  #include "ioctl_wrappers.h"
+>  #include "igt_dummyload.h"
+> +#include "xe/xe_query.h"
 >  
->  void igt_require_amdgpu(int fd);
->  void igt_require_intel(int fd);
+>  /**
+>   * SECTION:drmtest
+> @@ -465,9 +466,14 @@ int __drm_open_driver_another(int idx, int chipset)
+>  		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
+>  	}
+>  
+> -	if (fd >= 0)
+> +	if (fd >= 0) {
+>  		_set_opened_fd(idx, fd);
+>  
+> +		/* Cache xe_device struct. */
+> +		if (is_xe_device(fd))
+> +			xe_device_get(fd);
+> +	}
+> +
+>  	return fd;
+>  }
+>  
+> @@ -491,6 +497,8 @@ int __drm_open_driver(int chipset)
+>  
+>  int __drm_open_driver_render(int chipset)
+>  {
+> +	int fd;
+> +
+>  	if (chipset != DRIVER_VGEM && igt_device_filter_count() > 0) {
+>  		struct igt_device_card card;
+>  		bool found;
+> @@ -500,10 +508,16 @@ int __drm_open_driver_render(int chipset)
+>  		if (!found || !strlen(card.render))
+>  			return -1;
+>  
+> -		return __open_driver_exact(card.render, chipset);
+> +		fd = __open_driver_exact(card.render, chipset);
+> +	} else {
+> +		fd = __open_driver("/dev/dri/renderD", 128, chipset, 0);
+>  	}
+>  
+> -	return __open_driver("/dev/dri/renderD", 128, chipset, 0);
+> +	/* Cache xe_device struct. */
+> +	if (fd >= 0 && is_xe_device(fd))
+> +		xe_device_get(fd);
+> +
+> +	return fd;
+>  }
+>  
+>  static int at_exit_drm_fd = -1;
+> @@ -622,6 +636,10 @@ int drm_close_driver(int fd)
+>  		return -1;
+>  	}
+>  
+> +	/* Remove xe_device from cache. */
+> +	if (is_xe_device(fd))
+> +		xe_device_put(fd);
+> +
+>  	return close(fd);
+>  }
+>  
+> diff --git a/lib/igt_types.c b/lib/igt_types.c
+> index 392f30fca..d5d444889 100644
+> --- a/lib/igt_types.c
+> +++ b/lib/igt_types.c
+> @@ -5,13 +5,19 @@
+>  
+>  #include <unistd.h>
+>  
+> +#include "drmtest.h"
+>  #include "igt_types.h"
+> +#include "xe/xe_query.h"
+>  
+>  void igt_cleanup_fd(volatile int *fd)
+>  {
+>  	if (!fd || *fd < 0)
+>  		return;
+>  
+> +	/* Remove xe_device from cache. */
+> +	if (is_xe_device(*fd))
+> +		xe_device_put(*fd);
+> +
+>  	close(*fd);
+>  	*fd = -1;
+>  }
 > -- 
 > 2.40.0
 > 
