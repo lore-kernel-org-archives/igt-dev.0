@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41D2610E4C7
- for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 15:15:23 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1942A10E112
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 15:46:54 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 19 May 2023 20:39:56 +0530
-Message-Id: <20230519150956.519525-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230516165058.4047595-2-bhanuprakash.modem@intel.com>
-References: <20230516165058.4047595-2-bhanuprakash.modem@intel.com>
+Date: Fri, 19 May 2023 08:46:34 -0700
+Message-Id: <20230519154650.3751855-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 01/20] lib: Interface to close the drm fd
+Subject: [igt-dev] [PATCH i-g-t v3 00/16] PMU: multi-tile support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,86 +20,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new helper drm_close_driver() to close the drm fd. Now
-every user could call drm_close_driver() instead of close().
+Enable IGT PMU support for multi-tile platforms.
+Add multi-tile support for intel_gpu_top.
 
-V2: - Fix commit message
-    - Add debug prints
-V3: - Check the validity of fd before close
+v2: (Tvrtko)
+- Instead of adding gtN suffix to item, add it to parent group
+- Show split gt values only if -p option is specified
+- Display aggregate value as default without -p option
+- Break down patches into reviewable units
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/drmtest.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- lib/drmtest.h |  1 +
- 2 files changed, 45 insertions(+)
+v3: (Ashutosh, Tvrtko)
+- Reformat GT info in INTERACTIVE mode
+- Use i915_for_each_gt
+- Move uapi to i915_drm_local.h
+- Use gem_list_engines() and drop unnecessary code
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 7630bb793..d148211a2 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -605,6 +605,50 @@ int drm_open_driver(int chipset)
- 	return fd;
- }
- 
-+static bool is_valid_fd(int fd)
-+{
-+	char path[32];
-+	char buf[PATH_MAX];
-+	int len;
-+
-+	if (fd < 0)
-+		return false;
-+
-+	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-+
-+	memset(buf, 0, sizeof(buf));
-+	len = readlink(path, buf, sizeof(buf) - 1);
-+	if (len <= 0)
-+		return false;
-+
-+	buf[len] = '\0';
-+	if (strstr(buf, "/dev/dri/card") == buf ||
-+	    strstr(buf, "/dev/dri/renderD") == buf)
-+		return true;
-+
-+	return false;
-+}
-+
-+/**
-+ * drm_close_driver:
-+ * @fd: a drm file descriptor
-+ *
-+ * Check the given drm file descriptor @fd is valid & Close if it is
-+ * an valid drm fd.
-+ *
-+ * Returns: 0 on success or -1 on error.
-+ */
-+int drm_close_driver(int fd)
-+{
-+	if (!is_valid_fd(fd)) {
-+		igt_debug("Don't attempt to close standard/invalid file "
-+			  "descriptor: %d\n", fd);
-+		return -1;
-+	}
-+
-+	return close(fd);
-+}
-+
- /**
-  * drm_open_driver_master:
-  * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index ae86ee19a..9c3ea5d14 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -105,6 +105,7 @@ int drm_open_driver_render(int chipset);
- int __drm_open_driver_another(int idx, int chipset);
- int __drm_open_driver(int chipset);
- int __drm_open_driver_render(int chipset);
-+int drm_close_driver(int fd);
- 
- int drm_reopen_driver(int fd);
- 
+v4: Rebase to resolve conflict and rerun CI
+v5: Include Ashutosh's patch for CI runs
+
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+
+Ashutosh Dixit (1):
+  i915/gem_engine_topology: Support gem_list_engines on platforms prior
+    to MTL
+
+Riana Tauro (1):
+  perf_pmu: Use correct pmu config for multi-tile
+
+Tvrtko Ursulin (3):
+  perf_pmu: Support multi-tile in rc6 subtest
+  perf_pmu: Two new rc6 subtests
+  perf_pmu: Support multi-tile in frequency subtest
+
+Umesh Nerlige Ramappa (11):
+  perf_pmu: Quiesce GPU if measuring idle busyness without spinner
+  intel_gpu_top: Add an array of freq and rc6 counters
+  intel_gpu_top: Determine number of tiles
+  intel_gpu_top: Capture freq and rc6 counters from each gt
+  intel_gpu_top: Switch pmu_counter to use aggregated values
+  intel_gpu_top: Add definitions for gt-specific items and groups
+  intel_gpu_top: Bump up size of groups to accomodate multi-gt
+  intel_gpu_top: Increase visibility for class_view
+  intel_gpu_top: Show gt specific values if requested
+  intel_gpu_top: Reduce one level of indent
+  intel_gpu_top: Add gt specific values to header in interactive mode
+
+ lib/i915/gem_engine_topology.c |   8 +-
+ lib/i915/i915_drm_local.h      |  15 ++
+ tests/i915/perf_pmu.c          | 307 +++++++++++++++++++++++----------
+ tools/intel_gpu_top.c          | 238 ++++++++++++++++++++-----
+ 4 files changed, 438 insertions(+), 130 deletions(-)
+
 -- 
-2.40.0
+2.36.1
