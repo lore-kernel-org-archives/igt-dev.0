@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 587DF10E0FA
- for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 12:45:52 +0000 (UTC)
-Date: Fri, 19 May 2023 14:45:25 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41D2610E4C7
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 15:15:23 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230519124525.uw3aqwjge6i65rpg@kamilkon-desk1>
-References: <20230519083049.3739356-1-ashutosh.dixit@intel.com>
+Date: Fri, 19 May 2023 20:39:56 +0530
+Message-Id: <20230519150956.519525-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230516165058.4047595-2-bhanuprakash.modem@intel.com>
+References: <20230516165058.4047595-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230519083049.3739356-1-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_engine_topology: Support
- gem_list_engines on platforms prior to MTL
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V3 01/20] lib: Interface to close the drm fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,65 +19,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: vikas.srivastava@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Ashutosh,
+Add new helper drm_close_driver() to close the drm fd. Now
+every user could call drm_close_driver() instead of close().
 
-On 2023-05-19 at 01:30:49 -0700, Ashutosh Dixit wrote:
-> gem_list_engines() should list engines correctly on platforms prior to
-> MTL. But at present it doesn't, it only supports MTL, and it skips on the
------------------------------------------------------ ^
-s/, and/ and/
+V2: - Fix commit message
+    - Add debug prints
+V3: - Check the validity of fd before close
 
-> 'igt_require(IS_METEORLAKE)' check for prior platforms. Fix this by
--- ^
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ lib/drmtest.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/drmtest.h |  1 +
+ 2 files changed, 45 insertions(+)
 
-imho better: 
-s/skips on the ... prior platforms/skips on other platforms/
-
-> modifying gem_engine_to_gt_map() to return gt 0 for prior platforms,
-> because the only multi-gt platform supported at present in MTL.
---------------------------------------------------------- ^
-s/in/is/
-
-We do support multi-gpu, for example two or more DG2 or
-ATS-M cards ?
-
-> 
-> Fixes: d2f39ce8186a ("lib/i915/gem_engine_topology: list engines specific to gt")
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
-> ---
->  lib/i915/gem_engine_topology.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-> index 6c8929ec591a..7c6cd9ba97db 100644
-> --- a/lib/i915/gem_engine_topology.c
-> +++ b/lib/i915/gem_engine_topology.c
-> @@ -372,8 +372,12 @@ mtl_engine_to_gt_map(const struct i915_engine_class_instance *e)
->  
->  static int gem_engine_to_gt_map(int i915, const struct i915_engine_class_instance *engine)
->  {
-> -	igt_require(IS_METEORLAKE(intel_get_drm_devid(i915)));
-> -	return mtl_engine_to_gt_map(engine);
-> +	uint32_t devid = intel_get_drm_devid(i915);
-> +
-> +	/* Only MTL multi-gt supported at present */
-> +	igt_require(intel_graphics_ver(devid) <= IP_VER(12, 70));
-> +
-> +	return IS_METEORLAKE(devid) ? mtl_engine_to_gt_map(engine) : 0;
->  }
->  
->  /**
-> -- 
-> 2.38.0
-> 
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 7630bb793..d148211a2 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -605,6 +605,50 @@ int drm_open_driver(int chipset)
+ 	return fd;
+ }
+ 
++static bool is_valid_fd(int fd)
++{
++	char path[32];
++	char buf[PATH_MAX];
++	int len;
++
++	if (fd < 0)
++		return false;
++
++	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
++
++	memset(buf, 0, sizeof(buf));
++	len = readlink(path, buf, sizeof(buf) - 1);
++	if (len <= 0)
++		return false;
++
++	buf[len] = '\0';
++	if (strstr(buf, "/dev/dri/card") == buf ||
++	    strstr(buf, "/dev/dri/renderD") == buf)
++		return true;
++
++	return false;
++}
++
++/**
++ * drm_close_driver:
++ * @fd: a drm file descriptor
++ *
++ * Check the given drm file descriptor @fd is valid & Close if it is
++ * an valid drm fd.
++ *
++ * Returns: 0 on success or -1 on error.
++ */
++int drm_close_driver(int fd)
++{
++	if (!is_valid_fd(fd)) {
++		igt_debug("Don't attempt to close standard/invalid file "
++			  "descriptor: %d\n", fd);
++		return -1;
++	}
++
++	return close(fd);
++}
++
+ /**
+  * drm_open_driver_master:
+  * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index ae86ee19a..9c3ea5d14 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -105,6 +105,7 @@ int drm_open_driver_render(int chipset);
+ int __drm_open_driver_another(int idx, int chipset);
+ int __drm_open_driver(int chipset);
+ int __drm_open_driver_render(int chipset);
++int drm_close_driver(int fd);
+ 
+ int drm_reopen_driver(int fd);
+ 
+-- 
+2.40.0
