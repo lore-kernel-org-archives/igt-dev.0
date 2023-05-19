@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF0C710E123
- for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 15:46:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 878C810E533
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 15:46:56 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 19 May 2023 08:46:39 -0700
-Message-Id: <20230519154650.3751855-6-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 19 May 2023 08:46:48 -0700
+Message-Id: <20230519154650.3751855-15-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230519154650.3751855-1-umesh.nerlige.ramappa@intel.com>
 References: <20230519154650.3751855-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 05/16] perf_pmu: Quiesce GPU if measuring
- idle busyness without spinner
+Subject: [igt-dev] [PATCH i-g-t v3 14/16] intel_gpu_top: Show gt specific
+ values if requested
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,38 +23,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The assumption in some tests is that the engines are not busy if no
-spinners are being run. This is not true in some cases where we see
-that the render is busy at the start of the test. Quiesce GPU to wait
-for such work to complete before checking for idle busyness.
-
-v2: Move gem_quiescent_gpu to beginning of test (Tvrtko)
+On multi-gt platforms, the aggregate values are displayed as default. If
+user passes -p (physical) option for these platforms, show gt specific
+counter values.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tests/i915/perf_pmu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/intel_gpu_top.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index c476c422c..6c9cd5ca8 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -417,6 +417,7 @@ single(int gem_fd, const intel_ctx_t *ctx,
- 	int fd;
- 	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 2b867f8dc..6e9b3416c 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -1526,6 +1526,26 @@ print_header(const struct igt_device_card *card,
+ 		&power_group,
+ 		NULL
+ 	};
++	int i;
++
++	/*
++	 * If we have multi-gt and the user has specified -p options, show gt
++	 * specific values.
++	 */
++	if (!class_view && engines->num_gts > 1) {
++		int j = 0;
++
++		groups[j++] = &period_group;
++		for (i = 0; i < engines->num_gts; i++)
++			groups[j++] = &freq_group_gt[i];
++
++		groups[j++] = &irq_group;
++		for (i = 0; i < engines->num_gts; i++)
++			groups[j++] = &rc6_group_gt[i];
++
++		groups[j++] = &power_group;
++		groups[j++] = NULL;
++	}
  
-+	gem_quiescent_gpu(gem_fd);
- 	fd = open_pmu(gem_fd, I915_PMU_ENGINE_BUSY(e->class, e->instance));
- 
- 	if (flags & TEST_BUSY)
-@@ -777,6 +778,7 @@ no_sema(int gem_fd, const intel_ctx_t *ctx,
- 	int fd[2];
- 	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
- 
-+	gem_quiescent_gpu(gem_fd);
- 	fd[0] = open_group(gem_fd, I915_PMU_ENGINE_SEMA(e->class, e->instance),
- 			   -1);
- 	fd[1] = open_group(gem_fd, I915_PMU_ENGINE_WAIT(e->class, e->instance),
+ 	if (output_mode != JSON)
+ 		memmove(&groups[0], &groups[1],
 -- 
 2.36.1
