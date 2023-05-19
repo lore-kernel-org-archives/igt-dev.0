@@ -1,23 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF4C310E5D7
- for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 07:47:35 +0000 (UTC)
-From: "Dec, Katarzyna" <katarzyna.dec@intel.com>
-To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>, "Gandi, Ramadevi"
- <ramadevi.gandi@intel.com>, "Kumar, Janga Rahul"
- <janga.rahul.kumar@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Fri, 19 May 2023 07:47:23 +0000
-Message-ID: <IA1PR11MB6097B8A50CF51B87FCB9D5F4E27C9@IA1PR11MB6097.namprd11.prod.outlook.com>
-References: <20230519062127.3884826-1-priyanka.dandamudi@intel.com>
- <IA1PR11MB60973BA4A70617373570AD3CE27C9@IA1PR11MB6097.namprd11.prod.outlook.com>
-In-Reply-To: <IA1PR11MB60973BA4A70617373570AD3CE27C9@IA1PR11MB6097.namprd11.prod.outlook.com>
-Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci/xe-fast-feedback.testlist: Add
- pagefault tests
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dec, Katarzyna" <katarzyna.dec@intel.com>
+Date: Fri, 19 May 2023 08:22:08 -0000
+Message-ID: <168448452848.26992.7312921399699118342@emeril.freedesktop.org>
+References: <20230519062127.3884826-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20230519062127.3884826-1-priyanka.dandamudi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBpbnRl?=
+ =?utf-8?q?l-ci/xe-fast-feedback=2Etestlist=3A_Add_pagefault_tests_=28rev3?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,78 +18,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QnV0IGxvb2tpbmcgYXQgcGF0Y2h3b3JrIC0gaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Au
-b3JnL3Nlcmllcy8xMTc5OTUvIC0gc2VyaWVzIGRpZCBub3QgYnVpbGQuIFBsZWFzZSBmaXggdGhh
-dCBiZWZvcmUgbWVyZ2luZy4NCg0KS2FzaWENCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0N
-CkZyb206IERlYywgS2F0YXJ6eW5hIA0KU2VudDogRnJpZGF5LCBNYXkgMTksIDIwMjMgOTo0NSBB
-TQ0KVG86IERhbmRhbXVkaSwgUHJpeWFua2EgPFByaXlhbmthLkRhbmRhbXVkaUBpbnRlbC5jb20+
-OyBHYW5kaSwgUmFtYWRldmkgPFJhbWFkZXZpLkdhbmRpQGludGVsLmNvbT47IEt1bWFyLCBKYW5n
-YSBSYWh1bCA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcNClN1YmplY3Q6IFJFOiBbUEFUQ0ggaS1nLXRdIGludGVsLWNpL3hlLWZhc3Qt
-ZmVlZGJhY2sudGVzdGxpc3Q6IEFkZCBwYWdlZmF1bHQgdGVzdHMNCg0KQWNrZWQtYnk6IEthdGFy
-enluYSBEZWMgPGthdGFyenluYS5kZWNAaW50ZWwuY29tPg0KDQpLYXNpYSDwn5iKDQoNCi0tLS0t
-T3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBEYW5kYW11ZGksIFByaXlhbmthIDxwcml5YW5r
-YS5kYW5kYW11ZGlAaW50ZWwuY29tPiANClNlbnQ6IEZyaWRheSwgTWF5IDE5LCAyMDIzIDg6MjEg
-QU0NClRvOiBEYW5kYW11ZGksIFByaXlhbmthIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29t
-PjsgR2FuZGksIFJhbWFkZXZpIDxyYW1hZGV2aS5nYW5kaUBpbnRlbC5jb20+OyBLdW1hciwgSmFu
-Z2EgUmFodWwgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT47IERlYywgS2F0YXJ6eW5hIDxr
-YXRhcnp5bmEuZGVjQGludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpT
-dWJqZWN0OiBbUEFUQ0ggaS1nLXRdIGludGVsLWNpL3hlLWZhc3QtZmVlZGJhY2sudGVzdGxpc3Q6
-IEFkZCBwYWdlZmF1bHQgdGVzdHMNCg0KRnJvbTogUHJpeWFua2EgRGFuZGFtdWRpIDxwcml5YW5r
-YS5kYW5kYW11ZGlAaW50ZWwuY29tPg0KDQpBZGQgcGFnZWZhdWx0IHRlc3RzLg0KDQpDYzogS2F0
-YXJ6eW5hIERlYyA8a2F0YXJ6eW5hLmRlY0BpbnRlbC5jb20+DQpDYzogSmFuZ2EgUmFodWwgS3Vt
-YXIgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NClNpZ25lZC1vZmYtYnk6IFByaXlhbmth
-IERhbmRhbXVkaSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4NCi0tLQ0KIHRlc3RzL2lu
-dGVsLWNpL3hlLWZhc3QtZmVlZGJhY2sudGVzdGxpc3QgfCAzOSArKysrKysrKysrKysrKysrKysr
-KysrKysNCiAxIGZpbGUgY2hhbmdlZCwgMzkgaW5zZXJ0aW9ucygrKQ0KDQpkaWZmIC0tZ2l0IGEv
-dGVzdHMvaW50ZWwtY2kveGUtZmFzdC1mZWVkYmFjay50ZXN0bGlzdCBiL3Rlc3RzL2ludGVsLWNp
-L3hlLWZhc3QtZmVlZGJhY2sudGVzdGxpc3QNCmluZGV4IDhhY2Q3ZjRjLi43MjQyYzhkOCAxMDA2
-NDQNCi0tLSBhL3Rlc3RzL2ludGVsLWNpL3hlLWZhc3QtZmVlZGJhY2sudGVzdGxpc3QNCisrKyBi
-L3Rlc3RzL2ludGVsLWNpL3hlLWZhc3QtZmVlZGJhY2sudGVzdGxpc3QNCkBAIC05NSw2ICs5NSw0
-NSBAQCBpZ3RAeGVfZXhlY19jb21wdXRlX21vZGVAdHdpY2UtYmluZGVuZ2luZS1yZWJpbmQNCiBp
-Z3RAeGVfZXhlY19jb21wdXRlX21vZGVAdHdpY2UtYmluZGVuZ2luZS11c2VycHRyLXJlYmluZA0K
-IGlndEB4ZV9leGVjX2NvbXB1dGVfbW9kZUB0d2ljZS1iaW5kZW5naW5lLXVzZXJwdHItaW52YWxp
-ZGF0ZQ0KIGlndEB4ZV9leGVjX2NvbXB1dGVfbW9kZUB0d2ljZS1iaW5kZW5naW5lLXVzZXJwdHIt
-aW52YWxpZGF0ZS1yYWNlDQoraWd0QHhlX2V4ZWNfZmF1bHRfbW9kZUB0d2ljZS1iYXNpYw0KK2ln
-dEB4ZV9leGVjX2ZhdWx0X21vZGVAbWFueS1iYXNpYw0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVA
-dHdpY2UtdXNlcnB0cg0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtcmViaW5kDQoraWd0
-QHhlX2V4ZWNfZmF1bHRfbW9kZUB0d2ljZS11c2VycHRyLXJlYmluZA0KK2lndEB4ZV9leGVjX2Zh
-dWx0X21vZGVAdHdpY2UtdXNlcnB0ci1pbnZhbGlkYXRlDQoraWd0QHhlX2V4ZWNfZmF1bHRfbW9k
-ZUB0d2ljZS11c2VycHRyLWludmFsaWRhdGUtcmFjZQ0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVA
-dHdpY2UtYmluZGVuZ2luZQ0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtYmluZGVuZ2lu
-ZS11c2VycHRyDQoraWd0QHhlX2V4ZWNfZmF1bHRfbW9kZUB0d2ljZS1iaW5kZW5naW5lLXJlYmlu
-ZA0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtYmluZGVuZ2luZS11c2VycHRyLXJlYmlu
-ZA0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtYmluZGVuZ2luZS11c2VycHRyLWludmFs
-aWRhdGUNCitpZ3RAeGVfZXhlY19mYXVsdF9tb2RlQHR3aWNlLWJpbmRlbmdpbmUtdXNlcnB0ci1p
-bnZhbGlkYXRlLXJhY2UNCitpZ3RAeGVfZXhlY19mYXVsdF9tb2RlQHR3aWNlLWJhc2ljLWltbQ0K
-K2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtdXNlcnB0ci1pbW0NCitpZ3RAeGVfZXhlY19m
-YXVsdF9tb2RlQHR3aWNlLXJlYmluZC1pbW0NCitpZ3RAeGVfZXhlY19mYXVsdF9tb2RlQHR3aWNl
-LXVzZXJwdHItcmViaW5kLWltbQ0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtdXNlcnB0
-ci1pbnZhbGlkYXRlLWltbQ0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtdXNlcnB0ci1p
-bnZhbGlkYXRlLXJhY2UtaW1tDQoraWd0QHhlX2V4ZWNfZmF1bHRfbW9kZUB0d2ljZS1iaW5kZW5n
-aW5lLWltbQ0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtYmluZGVuZ2luZS11c2VycHRy
-LWltbQ0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtYmluZGVuZ2luZS1yZWJpbmQtaW1t
-DQoraWd0QHhlX2V4ZWNfZmF1bHRfbW9kZUB0d2ljZS1iaW5kZW5naW5lLXVzZXJwdHItcmViaW5k
-LWltbQ0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtYmluZGVuZ2luZS11c2VycHRyLWlu
-dmFsaWRhdGUtaW1tDQoraWd0QHhlX2V4ZWNfZmF1bHRfbW9kZUB0d2ljZS1iaW5kZW5naW5lLXVz
-ZXJwdHItaW52YWxpZGF0ZS1yYWNlLWltbQ0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2Ut
-YmFzaWMtcHJlZmV0Y2gNCitpZ3RAeGVfZXhlY19mYXVsdF9tb2RlQHR3aWNlLXVzZXJwdHItcHJl
-ZmV0Y2gNCitpZ3RAeGVfZXhlY19mYXVsdF9tb2RlQHR3aWNlLXJlYmluZC1wcmVmZXRjaA0KK2ln
-dEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtdXNlcnB0ci1yZWJpbmQtcHJlZmV0Y2gNCitpZ3RA
-eGVfZXhlY19mYXVsdF9tb2RlQHR3aWNlLXVzZXJwdHItaW52YWxpZGF0ZS1wcmVmZXRjaA0KK2ln
-dEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtdXNlcnB0ci1pbnZhbGlkYXRlLXJhY2UtcHJlZmV0
-Y2gNCitpZ3RAeGVfZXhlY19mYXVsdF9tb2RlQHR3aWNlLWJpbmRlbmdpbmUtcHJlZmV0Y2gNCitp
-Z3RAeGVfZXhlY19mYXVsdF9tb2RlQHR3aWNlLWJpbmRlbmdpbmUtdXNlcnB0ci1wcmVmZXRjaA0K
-K2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdpY2UtYmluZGVuZ2luZS1yZWJpbmQtcHJlZmV0Y2gN
-CitpZ3RAeGVfZXhlY19mYXVsdF9tb2RlQHR3aWNlLWJpbmRlbmdpbmUtdXNlcnB0ci1yZWJpbmQt
-cHJlZmV0Y2gNCitpZ3RAeGVfZXhlY19mYXVsdF9tb2RlQHR3aWNlLWJpbmRlbmdpbmUtdXNlcnB0
-ci1pbnZhbGlkYXRlLXByZWZldGNoDQoraWd0QHhlX2V4ZWNfZmF1bHRfbW9kZUB0d2ljZS1iaW5k
-ZW5naW5lLXVzZXJwdHItaW52YWxpZGF0ZS1yYWNlLXByZWZldGMNCitoIGlndEB4ZV9leGVjX2Zh
-dWx0X21vZGVAdHdpY2UtaW52YWxpZC1mYXVsdA0KK2lndEB4ZV9leGVjX2ZhdWx0X21vZGVAdHdp
-Y2UtaW52YWxpZC11c2VycHRyLWZhdWx0DQogaWd0QHhlX2V4ZWNfcmVzZXRAY2xvc2UtZmQtbm8t
-ZXhlYw0KIGlndEB4ZV9leGVjX3Jlc2V0QGNtLWNsb3NlLWZkLW5vLWV4ZWMNCiBpZ3RAeGVfZXhl
-Y19yZXNldEB2aXJ0dWFsLWNsb3NlLWZkLW5vLWV4ZWMNCi0tDQoyLjI1LjENCg0K
+== Series Details ==
+
+Series: intel-ci/xe-fast-feedback.testlist: Add pagefault tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/117995/
+State : failure
+
+== Summary ==
+
+Applying: intel-ci/xe-fast-feedback.testlist: Add pagefault tests
+Using index info to reconstruct a base tree...
+Patch failed at 0001 intel-ci/xe-fast-feedback.testlist: Add pagefault tests
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
