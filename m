@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB84D10E5BC
- for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 04:39:20 +0000 (UTC)
-From: Arun R Murthy <arun.r.murthy@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 19 May 2023 10:02:19 +0530
-Message-Id: <20230519043219.1331143-1-arun.r.murthy@intel.com>
-In-Reply-To: <20230518121353.1146097-4-arun.r.murthy@intel.com>
-References: <20230518121353.1146097-4-arun.r.murthy@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFC5110E5C0
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 05:09:06 +0000 (UTC)
+Message-ID: <ea415d38-fcea-e260-700d-0e2989e28915@intel.com>
+Date: Fri, 19 May 2023 10:38:51 +0530
+To: Arun R Murthy <arun.r.murthy@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230518121353.1146097-1-arun.r.murthy@intel.com>
+ <20230518121353.1146097-2-arun.r.murthy@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230518121353.1146097-2-arun.r.murthy@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCHv2 i-g-t 4/4] tests/kms_async_flips: Test all
- modifiers
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCHv3 i-g-t 2/4] tests/kms_async_flips: Run the
+ test for all outputs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,155 +22,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Run the basic async flip test for all modifiers reported
-by the plane (for the XRGB8888 format). The driver may not
-support async flip with all modifiers so we allow this to fail.
 
-v2: print output name along with the modifier
+On 5/18/2023 5:43 PM, Arun R Murthy wrote:
+> Iterate all outputs, in case we have output specific stuff
+> (eg. PSR) that could affect the behaviour or async flips
+>
+> v2: corrected commit message
+> v3: run test for all outputs
+>
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
+> ---
+>   tests/kms_async_flips.c | 43 ++++++++---------------------------------
+>   1 file changed, 8 insertions(+), 35 deletions(-)
+>
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index fe27a9ec..99653f1e 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -58,7 +58,6 @@ typedef struct {
+>   	int flip_count;
+>   	int frame_count;
+>   	bool flip_pending;
+> -	bool extended;
+>   	enum pipe pipe;
+>   	bool alternate_sync_async;
+>   } data_t;
+> @@ -548,49 +547,23 @@ static void test_crc(data_t *data)
+>   
+>   static void run_test(data_t *data, void (*test)(data_t *))
+>   {
+> -	igt_output_t *output;
+> -	enum pipe pipe;
+>   	igt_display_t *display = &data->display;
+>   
+> -	for_each_pipe(display, pipe) {
+> -		for_each_valid_output_on_pipe(display, pipe, output) {
+> -			igt_display_reset(display);
+> -
+> -			igt_output_set_pipe(output, pipe);
+> -			if (!i915_pipe_output_combo_valid(display))
+> -				continue;
+> -
+> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+> -				data->output = output;
+> -				data->pipe = pipe;
+> -				test(data);
+> -			}
+> -
+> -			if (!data->extended)
+> -				break;
+> -		}
+> -	}
+> -}
+> +	for_each_valid_output_on_pipe(display, data->pipe, data->output) {
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_async_flips.c | 51 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 41 insertions(+), 10 deletions(-)
+This still needs to be replaced with 'for_each_pipe_with_valid_output' 
+as previously mentioned. Please update this.
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index c86bc18b..3fbd4084 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -53,6 +53,8 @@ typedef struct {
- 	igt_output_t *output;
- 	unsigned long flip_timestamp_us;
- 	double flip_interval;
-+	uint64_t modifier;
-+	igt_plane_t *plane;
- 	igt_pipe_crc_t *pipe_crc;
- 	igt_crc_t ref_crc;
- 	int flip_count;
-@@ -60,6 +62,7 @@ typedef struct {
- 	bool flip_pending;
- 	enum pipe pipe;
- 	bool alternate_sync_async;
-+	bool allow_fail;
- } data_t;
- 
- static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
-@@ -132,7 +135,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
- 	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
- 
- 	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
--			    default_modifier(data), 0.0, 0.0, 0.5, fb);
-+			    data->modifier, 0.0, 0.0, 0.5, fb);
- 
- 	cr = igt_get_cairo_ctx(data->drm_fd, fb);
- 	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0, rec_width, height);
-@@ -158,24 +161,26 @@ static void test_init(data_t *data)
- 	data->refresh_rate = mode->vrefresh;
- 
- 	igt_output_set_pipe(data->output, data->pipe);
-+
-+	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
- }
- 
- static void test_init_fbs(data_t *data)
- {
- 	int i;
- 	uint32_t width, height;
--	igt_plane_t *plane;
- 	static uint32_t prev_output_id;
-+	static uint64_t prev_modifier;
- 	drmModeModeInfo *mode;
- 
- 	mode = igt_output_get_mode(data->output);
- 	width = mode->hdisplay;
- 	height = mode->vdisplay;
- 
--	plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
--
--	if (prev_output_id != data->output->id) {
-+	if (prev_output_id != data->output->id ||
-+	    prev_modifier != data->modifier) {
- 		prev_output_id = data->output->id;
-+		prev_modifier = data->modifier;
- 
- 		if (data->bufs[0].fb_id) {
- 			for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-@@ -186,8 +191,8 @@ static void test_init_fbs(data_t *data)
- 			make_fb(data, &data->bufs[i], width, height, i);
- 	}
- 
--	igt_plane_set_fb(plane, &data->bufs[0]);
--	igt_plane_set_size(plane, width, height);
-+	igt_plane_set_fb(data->plane, &data->bufs[0]);
-+	igt_plane_set_size(data->plane, width, height);
- 
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
-@@ -242,8 +247,10 @@ static void test_async_flip(data_t *data)
- 		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
- 				      data->bufs[frame % 4].fb_id,
- 				      flags, data);
--
--		igt_assert(ret == 0);
-+		if (frame == 1 && data->allow_fail)
-+			igt_skip_on(ret == -EINVAL);
-+		else
-+			igt_assert(ret == 0);
- 
- 		wait_flip_event(data);
- 
-@@ -555,6 +562,8 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 			continue;
- 
- 		test_init(data);
-+		data->allow_fail = false;
-+		data->modifier = default_modifier(data);
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
- 			test_init_fbs(data);
- 			test(data);
-@@ -562,6 +571,28 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 	}
- }
- 
-+static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
-+{
-+	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
-+		test_init(data);
-+
-+		for (int i = 0; i < data->plane->format_mod_count; i++) {
-+			if (data->plane->formats[i] != DRM_FORMAT_XRGB8888)
-+				continue;
-+
-+			data->allow_fail = true;
-+			data->modifier = data->plane->modifiers[i];
-+
-+			igt_dynamic_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
-+				      data->output->name,
-+				      igt_fb_modifier_name(data->modifier)) {
-+				test_init_fbs(data);
-+				test(data);
-+			}
-+		}
-+	}
-+}
-+
- static data_t data;
- 
- igt_main_args("e", NULL, NULL, NULL, &data)
-@@ -592,7 +623,7 @@ igt_main_args("e", NULL, NULL, NULL, &data)
- 		igt_describe("Wait for page flip events in between successive asynchronous flips");
- 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
- 			data.alternate_sync_async = false;
--			run_test(&data, test_async_flip);
-+			run_test_with_modifiers(&data, test_async_flip);
- 		}
- 
- 		igt_describe("Alternate between sync and async flips");
--- 
-2.25.1
+Also, this line is adding a whitespace error in patch 3. I guess with 
+the above fix this line will go away from patch 3, but please keep note.
+
+> +		igt_display_reset(display);
+>   
+> -static int opt_handler(int opt, int opt_index, void *_data)
+> -{
+> -	data_t *data = _data;
+> +		igt_output_set_pipe(data->output, data->pipe);
+> +		if (!i915_pipe_output_combo_valid(display))
+> +			continue;
+>   
+> -	switch (opt) {
+> -	case 'e':
+> -		data->extended = true;
+> -		break;
+> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name)
+> +			test(data);
+>   	}
+> -
+> -	return IGT_OPT_HANDLER_SUCCESS;
+>   }
+>   
+> -static const char help_str[] =
+> -	"  --e \t\tRun the extended tests\n";
+> -
+>   static data_t data;
+>   
+> -igt_main_args("e", NULL, help_str, opt_handler, &data)
+> +igt_main_args("e", NULL, NULL, NULL, &data)
+
+Please replace this with igt_main as we are not using any args anymore.
+
+Thanks,
+Karthik.B.S
+>   {
+>   	int i;
+>   
