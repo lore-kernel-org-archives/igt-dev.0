@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50CBB10E068
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 May 2023 08:31:09 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 19 May 2023 01:30:49 -0700
+Message-Id: <20230519083049.3739356-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dec, Katarzyna" <katarzyna.dec@intel.com>
-Date: Fri, 19 May 2023 08:22:08 -0000
-Message-ID: <168448452848.26992.7312921399699118342@emeril.freedesktop.org>
-References: <20230519062127.3884826-1-priyanka.dandamudi@intel.com>
-In-Reply-To: <20230519062127.3884826-1-priyanka.dandamudi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBpbnRl?=
- =?utf-8?q?l-ci/xe-fast-feedback=2Etestlist=3A_Add_pagefault_tests_=28rev3?=
- =?utf-8?q?=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_engine_topology: Support
+ gem_list_engines on platforms prior to MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,24 +17,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: vikas.srivastava@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+gem_list_engines() should list engines correctly on platforms prior to
+MTL. But at present it doesn't, it only supports MTL, and it skips on the
+'igt_require(IS_METEORLAKE)' check for prior platforms. Fix this by
+modifying gem_engine_to_gt_map() to return gt 0 for prior platforms,
+because the only multi-gt platform supported at present in MTL.
 
-Series: intel-ci/xe-fast-feedback.testlist: Add pagefault tests (rev3)
-URL   : https://patchwork.freedesktop.org/series/117995/
-State : failure
+Fixes: d2f39ce8186a ("lib/i915/gem_engine_topology: list engines specific to gt")
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/i915/gem_engine_topology.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-== Summary ==
-
-Applying: intel-ci/xe-fast-feedback.testlist: Add pagefault tests
-Using index info to reconstruct a base tree...
-Patch failed at 0001 intel-ci/xe-fast-feedback.testlist: Add pagefault tests
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index 6c8929ec591a..7c6cd9ba97db 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -372,8 +372,12 @@ mtl_engine_to_gt_map(const struct i915_engine_class_instance *e)
+ 
+ static int gem_engine_to_gt_map(int i915, const struct i915_engine_class_instance *engine)
+ {
+-	igt_require(IS_METEORLAKE(intel_get_drm_devid(i915)));
+-	return mtl_engine_to_gt_map(engine);
++	uint32_t devid = intel_get_drm_devid(i915);
++
++	/* Only MTL multi-gt supported at present */
++	igt_require(intel_graphics_ver(devid) <= IP_VER(12, 70));
++
++	return IS_METEORLAKE(devid) ? mtl_engine_to_gt_map(engine) : 0;
+ }
+ 
+ /**
+-- 
+2.38.0
