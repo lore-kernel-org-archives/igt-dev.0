@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8AF810E329
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 13:20:12 +0000 (UTC)
-Date: Mon, 22 May 2023 15:20:08 +0200
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56DDC10E158
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 13:25:59 +0000 (UTC)
+Date: Mon, 22 May 2023 15:25:54 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230522132008.p4wjgghozqxge7uu@kamilkon-desk1>
-References: <20230425152904.238487-1-mcanal@igalia.com>
+Message-ID: <20230522132554.ypfumkzydjpppc7r@kamilkon-desk1>
+References: <20230403130124.15946-1-mcanal@igalia.com>
+ <20230403130124.15946-2-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230425152904.238487-1-mcanal@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_plane: allow pixel-format
- tests to run on drivers without legacy LUT
+In-Reply-To: <20230403130124.15946-2-mcanal@igalia.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] tests/kms_rotation_crc: make the
+ subtest "bad-pixel-format" i915-specific
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,42 +28,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Maira,
 
-On 2023-04-25 at 12:29:04 -0300, Maíra Canal wrote:
-> Currently, the tests pixel-format and pixel-format-source-clamping
-> fail for drivers that doesn't have support for legacy LUT, as they
-> are not able to complete drmModeCrtcSetGamma() successfully. Therefore,
-> if !crtc->gamma_size, don't set legacy LUT and allow the pixel-format
-> tests to run even if the driver doesn't support legacy LUT.
+On 2023-04-03 at 10:01:21 -0300, Maíra Canal wrote:
+> The subtest "bad-pixel-format" expects that RGB565 rotation is not
+> supported for 90 degrees, which is not necessarily true for non-i915
+> devices. Therefore, require the device to be i915 before running the
+> subtest "bad-pixel-format", as we can only guarantee bad pixel formats
+> for i915 devices.
 > 
 > Signed-off-by: Maíra Canal <mcanal@igalia.com>
 > ---
->  tests/kms_plane.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  tests/kms_rotation_crc.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 62aee9ad..9b49f951 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -455,6 +455,9 @@ static void set_legacy_lut(data_t *data, enum pipe pipe,
----------------------------- ^
-Maybe you should change that to bool.
-
->  	lut_size = crtc->gamma_size;
->  	drmModeFreeCrtc(crtc);
+> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+> index 295aed76..0d7b3962 100644
+> --- a/tests/kms_rotation_crc.c
+> +++ b/tests/kms_rotation_crc.c
+> @@ -1181,6 +1181,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
 >  
-> +	if (!crtc->gamma_size)
------------ ^
-Use lut_size here, see function set_c8_legacy_lut
-and correct caller sites to check if it is supported.
+>  	igt_describe("Checking unsupported pixel format for gen9+ with 90 degree of rotation");
+>  	igt_subtest_f("bad-pixel-format") {
+> +		igt_require(is_i915_device(data.gfx_fd));
+------------------------------ ^
+Please change this into is_intel_device
 
 Regards,
 Kamil
 
-> +		return;
 > +
->  	lut = malloc(sizeof(uint16_t) * lut_size);
->  
->  	for (i = 0; i < lut_size; i++)
+>  		 /* gen11 enables RGB565 rotation for 90/270 degrees.
+>  		  * so apart from this, any other gen11+ pixel format
+>  		  * can be used which doesn't support 90/270 degree
 > -- 
-> 2.40.0
+> 2.39.2
 > 
