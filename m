@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F16A10E30C
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 12:54:37 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 22 May 2023 12:54:32 +0000
-Message-ID: <MW4PR11MB7054F7C2D45FE49F0C36163DEF439@MW4PR11MB7054.namprd11.prod.outlook.com>
-References: <20230516154329.9002-1-juhapekka.heikkila@gmail.com>
- <20230516154329.9002-4-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230516154329.9002-4-juhapekka.heikkila@gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E8AF810E329
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 13:20:12 +0000 (UTC)
+Date: Mon, 22 May 2023 15:20:08 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230522132008.p4wjgghozqxge7uu@kamilkon-desk1>
+References: <20230425152904.238487-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/i915/kms_ccs: enable mtl aux
- ccs tests
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230425152904.238487-1-mcanal@igalia.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_plane: allow pixel-format
+ tests to run on drivers without legacy LUT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,34 +25,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
-dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgSnVoYS1QZWtrYSBIZWlr
-a2lsYQ0KPiBTZW50OiBUdWVzZGF5LCBNYXkgMTYsIDIwMjMgNjo0MyBQTQ0KPiBUbzogaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRDSCBpLWct
-dCAzLzRdIHRlc3RzL2k5MTUva21zX2NjczogZW5hYmxlIG10bCBhdXggY2NzIHRlc3RzDQo+IA0K
-PiBBZGRlZA0KPiBJOTE1X0ZPUk1BVF9NT0RfNF9USUxFRF9NVExfUkNfQ0NTDQo+IEk5MTVfRk9S
-TUFUX01PRF80X1RJTEVEX01UTF9NQ19DQ1MNCj4gSTkxNV9GT1JNQVRfTU9EXzRfVElMRURfTVRM
-X1JDX0NDU19DQw0KPiBmb3IgdGVzdGluZy4NCj4gDQoNClJldmlld2VkLWJ5OiBNaWthIEthaG9s
-YSA8bWlrYS5rYWhvbGFAaW50ZWwuY29tPg0KDQo+IFNpZ25lZC1vZmYtYnk6IEp1aGEtUGVra2Eg
-SGVpa2tpbGEgPGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+DQo+IC0tLQ0KPiAgdGVzdHMv
-aTkxNS9rbXNfY2NzLmMgfCA2ICsrKysrLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9u
-cygrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUva21zX2Nj
-cy5jIGIvdGVzdHMvaTkxNS9rbXNfY2NzLmMgaW5kZXggMWIzNDYyZWEuLmFiZTQ2NGI0IDEwMDY0
-NA0KPiAtLS0gYS90ZXN0cy9pOTE1L2ttc19jY3MuYw0KPiArKysgYi90ZXN0cy9pOTE1L2ttc19j
-Y3MuYw0KPiBAQCAtMTAxLDYgKzEwMSw5IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgew0KPiAgCXtJ
-OTE1X0ZPUk1BVF9NT0RfNF9USUxFRF9ERzJfUkNfQ0NTLCAiNF90aWxlZF9kZzJfcmNfY2NzIn0s
-DQo+ICAJe0k5MTVfRk9STUFUX01PRF80X1RJTEVEX0RHMl9NQ19DQ1MsICI0X3RpbGVkX2RnMl9t
-Y19jY3MifSwNCj4gIAl7STkxNV9GT1JNQVRfTU9EXzRfVElMRURfREcyX1JDX0NDU19DQywgIjRf
-dGlsZWRfZGcyX3JjX2Njc19jYyJ9LA0KPiArCXtJOTE1X0ZPUk1BVF9NT0RfNF9USUxFRF9NVExf
-UkNfQ0NTLCAiNF90aWxlZF9tdGxfcmNfY2NzIn0sDQo+ICsJe0k5MTVfRk9STUFUX01PRF80X1RJ
-TEVEX01UTF9NQ19DQ1MsICI0X3RpbGVkX210bF9tY19jY3MifSwNCj4gKwl7STkxNV9GT1JNQVRf
-TU9EXzRfVElMRURfTVRMX1JDX0NDU19DQywgIjRfdGlsZWRfbXRsX3JjX2Njc19jYyJ9LA0KPiAg
-fTsNCj4gDQo+ICBzdGF0aWMgYm9vbCBjaGVja19jY3NfcGxhbmVzOw0KPiBAQCAtMTYxLDcgKzE2
-NCw4IEBAIGNyZWF0ZV9mYl9wcmVwYXJlX2FkZChpbnQgZHJtX2ZkLCBpbnQgd2lkdGgsIGludCBo
-ZWlnaHQsICBzdGF0aWMgYm9vbCBpc19jY3NfY2NfbW9kaWZpZXIodWludDY0X3QNCj4gbW9kaWZp
-ZXIpICB7DQo+ICAJcmV0dXJuIG1vZGlmaWVyID09IEk5MTVfRk9STUFUX01PRF9ZX1RJTEVEX0dF
-TjEyX1JDX0NDU19DQyB8fA0KPiAtCQltb2RpZmllciA9PSBJOTE1X0ZPUk1BVF9NT0RfNF9USUxF
-RF9ERzJfUkNfQ0NTX0NDOw0KPiArCSAgICAgICBtb2RpZmllciA9PSBJOTE1X0ZPUk1BVF9NT0Rf
-NF9USUxFRF9ERzJfUkNfQ0NTX0NDIHx8DQo+ICsJICAgICAgIG1vZGlmaWVyID09IEk5MTVfRk9S
-TUFUX01PRF80X1RJTEVEX01UTF9SQ19DQ1NfQ0M7DQo+ICB9DQo+IA0KPiAgLyoNCj4gLS0NCj4g
-Mi4yNS4xDQoNCg==
+Hi Maira,
+
+On 2023-04-25 at 12:29:04 -0300, Maíra Canal wrote:
+> Currently, the tests pixel-format and pixel-format-source-clamping
+> fail for drivers that doesn't have support for legacy LUT, as they
+> are not able to complete drmModeCrtcSetGamma() successfully. Therefore,
+> if !crtc->gamma_size, don't set legacy LUT and allow the pixel-format
+> tests to run even if the driver doesn't support legacy LUT.
+> 
+> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+> ---
+>  tests/kms_plane.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 62aee9ad..9b49f951 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -455,6 +455,9 @@ static void set_legacy_lut(data_t *data, enum pipe pipe,
+---------------------------- ^
+Maybe you should change that to bool.
+
+>  	lut_size = crtc->gamma_size;
+>  	drmModeFreeCrtc(crtc);
+>  
+> +	if (!crtc->gamma_size)
+----------- ^
+Use lut_size here, see function set_c8_legacy_lut
+and correct caller sites to check if it is supported.
+
+Regards,
+Kamil
+
+> +		return;
+> +
+>  	lut = malloc(sizeof(uint16_t) * lut_size);
+>  
+>  	for (i = 0; i < lut_size; i++)
+> -- 
+> 2.40.0
+> 
