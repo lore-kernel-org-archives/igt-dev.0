@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F7CD10E2DC
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 11:36:12 +0000 (UTC)
-Date: Mon, 22 May 2023 13:36:08 +0200
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 852B110E2E2
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 11:39:46 +0000 (UTC)
+Date: Mon, 22 May 2023 13:39:42 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: priyanka.dandamudi@intel.com
-Message-ID: <20230522113608.nrunvvomeuwogc46@zkempczy-mobl2>
+Message-ID: <20230522113942.c3z3ody2gclob4re@zkempczy-mobl2>
 References: <20230520121056.3926557-1-priyanka.dandamudi@intel.com>
  <20230520121056.3926557-2-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
@@ -55,20 +55,23 @@ On Sat, May 20, 2023 at 05:40:54PM +0530, priyanka.dandamudi@intel.com wrote:
 > + */
 > +static void test_bad_flags(int fd)
 > +{
+	uint64_t size = xe_get_default_alignment(fd);
+
 > +	struct drm_xe_gem_mmap_offset mmo = {
 > +		.handle = xe_bo_create(fd, 0, 0, 4096),
-
-When we start rejecting unaligned allocations you'll assert at gem create.
-
---
-Zbigniew
-
+                                                 ^ -> size
 > +		.flags = -1u,
 > +	};
 > +
 > +	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo, EINVAL);
 > +	gem_close(fd, mmo.handle);
 > +}
+
+Rest looks correct.
+
+--
+Zbigniew
+
 > +
 >  igt_main
 >  {
