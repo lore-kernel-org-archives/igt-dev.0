@@ -1,23 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AFF110E35B
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 15:23:53 +0000 (UTC)
-Date: Mon, 22 May 2023 17:23:44 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Message-ID: <20230522152344.2i7vrxmhx4x524vb@zkempczy-mobl2>
-References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
- <20230516165058.4047595-7-bhanuprakash.modem@intel.com>
- <20230518185810.6bmmdgmni5uif3c2@zkempczy-mobl2>
- <948b1464-c716-caa1-3022-a2705568d9d5@intel.com>
- <20230522112148.snwb2z4c7z4w2kcj@zkempczy-mobl2>
- <aa82dbd0-829e-a952-ad89-d9e8b0cfc2e0@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA9AB10E33A
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 14:22:10 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.249.143.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 3466E580DA8
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 07:22:08 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1q16QH-00AbdE-1e
+ for igt-dev@lists.freedesktop.org; Mon, 22 May 2023 16:22:05 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 22 May 2023 16:22:01 +0200
+Message-Id: <20230522142201.2527800-7-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230522142201.2527800-1-mauro.chehab@linux.intel.com>
+References: <20230522142201.2527800-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aa82dbd0-829e-a952-ad89-d9e8b0cfc2e0@intel.com>
-Subject: Re: [igt-dev] [i-g-t 06/20] tests/i915: Close the fd before exit
+Subject: [igt-dev] [PATCH i-g-t 6/6] scripts/doc_to_xls.py: add an script to
+ generate a doc spreadsheet
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,285 +28,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, May 22, 2023 at 06:03:18PM +0530, Modem, Bhanuprakash wrote:
-> 
-> On Mon-22-05-2023 04:51 pm, Zbigniew Kempczyński wrote:
-> > On Mon, May 22, 2023 at 10:57:41AM +0530, Modem, Bhanuprakash wrote:
-> > > Hi Zbigniew,
-> > > 
-> > > On Fri-19-05-2023 12:28 am, Zbigniew Kempczyński wrote:
-> > > > On Tue, May 16, 2023 at 10:20:44PM +0530, Bhanuprakash Modem wrote:
-> > > > > Close the file descriptor before exiting the test.
-> > > > > 
-> > > > > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> > > > > ---
-> > > > >    tests/dmabuf_sync_file.c        | 3 +++
-> > > > >    tests/drm_read.c                | 3 +++
-> > > > >    tests/i915/gem_barrier_race.c   | 3 +++
-> > > > >    tests/i915/gem_basic.c          | 3 +++
-> > > > >    tests/i915/gem_concurrent_all.c | 5 +++++
-> > > > >    tests/i915/gem_ctx_engines.c    | 4 +++-
-> > > > >    tests/i915/gem_ctx_exec.c       | 3 +++
-> > > > >    tests/i915/gem_ctx_freq.c       | 3 +++
-> > > > >    tests/i915/gem_ctx_shared.c     | 3 +++
-> > > > >    tests/i915/gem_eio.c            | 3 +++
-> > > > >    tests/i915/gem_exec_alignment.c | 3 +++
-> > > > >    tests/i915/gem_exec_balancer.c  | 3 +++
-> > > > >    tests/i915/gem_exec_endless.c   | 3 +++
-> > > > >    tests/i915/gem_flink_basic.c    | 3 +++
-> > > > >    tests/i915/gem_userptr_blits.c  | 3 +++
-> > > > >    tests/i915/gem_workarounds.c    | 3 +++
-> > > > >    tests/i915/i915_pm_rps.c        | 3 +++
-> > > > >    17 files changed, 53 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
-> > > > > index 25bb6ad75..cfa73117b 100644
-> > > > > --- a/tests/dmabuf_sync_file.c
-> > > > > +++ b/tests/dmabuf_sync_file.c
-> > > > > @@ -380,4 +380,7 @@ igt_main
-> > > > >    		     "operations.");
-> > > > >    	igt_subtest("import-multiple-read-write")
-> > > > >    		test_import_multiple(fd, true);
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(fd);
-> > > > 
-> > > > I think this is handled by igt_types.c:igt_cleanup_fd()
-> > > 
-> > > I am not 100% sure, I think we need to declare the fd as "igt_fd_t(fd)",
-> > > then only igt_cleanup_fd() will takecare of it.
-> > 
-> > Yes, I've picked gem_basic.c and this was the reason of my comment. I see
-> > also gem_ctx_engines.c, gem_ctx_shared.c, gem_exec_alignment.c, gem_exec_balancer.c
-> > gem_flink_basic.c, gem_userptr_blits.c and gem_workarounds.c already contains
-> > this declaration.
-> 
-> Then, shall we drop these tests from this patch?
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Yes. BTW I've noticed in gem_basic.c there's explicit fd close
-inside create-fd-close test so igt_warn/igt_debug will be called
-from drm_close_driver(). I wonder to reopen the driver for this
-case to avoid double close.
+Add a script to convert documentation to a spreadsheet.
 
---
-Zbigniew
+The logic here can read multiple config files. It will retrieve
+documentation from the files that are configured inside each input
+JSON file.
 
-> 
-> - Bhanu
-> 
-> > 
-> > --
-> > Zbigniew
-> > 
-> > > 
-> > > Also, as it is a good practice to close the fd before exit, still I can
-> > > recommend to use drm_close_driver().
-> > > 
-> > > - Bhanu
-> > > 
-> > > > 
-> > > > --
-> > > > Zbigniew
-> > > > 
-> > > > >    }
-> > > > > diff --git a/tests/drm_read.c b/tests/drm_read.c
-> > > > > index 36dc623ed..e989e7bfb 100644
-> > > > > --- a/tests/drm_read.c
-> > > > > +++ b/tests/drm_read.c
-> > > > > @@ -311,4 +311,7 @@ igt_main
-> > > > >    	igt_subtest("short-buffer-wakeup")
-> > > > >    		test_short_buffer_wakeup(fd, pipe);
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(fd);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_barrier_race.c b/tests/i915/gem_barrier_race.c
-> > > > > index faeec3617..46273ab55 100644
-> > > > > --- a/tests/i915/gem_barrier_race.c
-> > > > > +++ b/tests/i915/gem_barrier_race.c
-> > > > > @@ -153,4 +153,7 @@ igt_main
-> > > > >    			break;
-> > > > >    		}
-> > > > >    	}
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(fd);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_basic.c b/tests/i915/gem_basic.c
-> > > > > index 3dd790c6c..4e063febd 100644
-> > > > > --- a/tests/i915/gem_basic.c
-> > > > > +++ b/tests/i915/gem_basic.c
-> > > > > @@ -117,4 +117,7 @@ igt_main
-> > > > >    	igt_describe("Verify that closing drm driver is possible with opened gem object.");
-> > > > >    	igt_subtest("create-fd-close")
-> > > > >    		test_create_fd_close(fd);
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(fd);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_concurrent_all.c b/tests/i915/gem_concurrent_all.c
-> > > > > index fb3b5f5d8..0bf46c0a2 100644
-> > > > > --- a/tests/i915/gem_concurrent_all.c
-> > > > > +++ b/tests/i915/gem_concurrent_all.c
-> > > > > @@ -2015,4 +2015,9 @@ igt_main
-> > > > >    			}
-> > > > >    		}
-> > > > >    	}
-> > > > > +
-> > > > > +	igt_fixture {
-> > > > > +		drm_close_driver(fd);
-> > > > > +		drm_close_driver(vgem_drv);
-> > > > > +	}
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
-> > > > > index b87a21fa4..3daed16a0 100644
-> > > > > --- a/tests/i915/gem_ctx_engines.c
-> > > > > +++ b/tests/i915/gem_ctx_engines.c
-> > > > > @@ -633,6 +633,8 @@ igt_main
-> > > > >    			independent_all(i915, ctx);
-> > > > >    	}
-> > > > > -	igt_fixture
-> > > > > +	igt_fixture {
-> > > > >    		igt_stop_hang_detector();
-> > > > > +		drm_close_driver(i915);
-> > > > > +	}
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-> > > > > index 20fa1159e..40a373ab6 100644
-> > > > > --- a/tests/i915/gem_ctx_exec.c
-> > > > > +++ b/tests/i915/gem_ctx_exec.c
-> > > > > @@ -546,4 +546,7 @@ igt_main
-> > > > >    		gem_context_destroy(fd, ctx_id);
-> > > > >    		put_ahnd(ahnd);
-> > > > >    	}
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(fd);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
-> > > > > index 18e736c73..ce4c0ba55 100644
-> > > > > --- a/tests/i915/gem_ctx_freq.c
-> > > > > +++ b/tests/i915/gem_ctx_freq.c
-> > > > > @@ -213,4 +213,7 @@ igt_main
-> > > > >    	igt_subtest_f("sysfs")
-> > > > >    		sysfs_range(i915);
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(i915);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
-> > > > > index 8629992e8..77a210d03 100644
-> > > > > --- a/tests/i915/gem_ctx_shared.c
-> > > > > +++ b/tests/i915/gem_ctx_shared.c
-> > > > > @@ -1088,4 +1088,7 @@ igt_main
-> > > > >    			igt_stop_hang_detector();
-> > > > >    		}
-> > > > >    	}
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(i915);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-> > > > > index 81e55e165..18eec0413 100644
-> > > > > --- a/tests/i915/gem_eio.c
-> > > > > +++ b/tests/i915/gem_eio.c
-> > > > > @@ -1126,4 +1126,7 @@ igt_main
-> > > > >    			intel_allocator_multiprocess_stop();
-> > > > >    		}
-> > > > >    	}
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(fd);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_exec_alignment.c b/tests/i915/gem_exec_alignment.c
-> > > > > index 5059572f1..ddddad533 100644
-> > > > > --- a/tests/i915/gem_exec_alignment.c
-> > > > > +++ b/tests/i915/gem_exec_alignment.c
-> > > > > @@ -546,4 +546,7 @@ igt_main
-> > > > >    		prio_inversion(fd, SHARED);
-> > > > >    	igt_subtest("pi-isolated")
-> > > > >    		prio_inversion(fd, ISOLATED);
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(fd);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-> > > > > index 1c655e583..df16f8bec 100644
-> > > > > --- a/tests/i915/gem_exec_balancer.c
-> > > > > +++ b/tests/i915/gem_exec_balancer.c
-> > > > > @@ -3482,4 +3482,7 @@ igt_main
-> > > > >    		igt_subtest("nohangcheck")
-> > > > >    			nohangcheck(i915);
-> > > > >    	}
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(i915);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_exec_endless.c b/tests/i915/gem_exec_endless.c
-> > > > > index 77719de83..f895c6783 100644
-> > > > > --- a/tests/i915/gem_exec_endless.c
-> > > > > +++ b/tests/i915/gem_exec_endless.c
-> > > > > @@ -367,4 +367,7 @@ igt_main
-> > > > >    			intel_register_access_fini(&mmio);
-> > > > >    		}
-> > > > >    	}
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(i915);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_flink_basic.c b/tests/i915/gem_flink_basic.c
-> > > > > index 2620bc55d..e9b915082 100644
-> > > > > --- a/tests/i915/gem_flink_basic.c
-> > > > > +++ b/tests/i915/gem_flink_basic.c
-> > > > > @@ -188,4 +188,7 @@ igt_main
-> > > > >    	igt_describe("Tests flink lifetime by referencing from multiple descriptors.");
-> > > > >    	igt_subtest("flink-lifetime")
-> > > > >    		test_flink_lifetime(fd);
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(fd);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> > > > > index baba7cf3c..056c7a7ac 100644
-> > > > > --- a/tests/i915/gem_userptr_blits.c
-> > > > > +++ b/tests/i915/gem_userptr_blits.c
-> > > > > @@ -2703,4 +2703,7 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
-> > > > >    		igt_require(has_userptr_probe(fd));
-> > > > >    		test_probe(fd);
-> > > > >    	}
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(fd);
-> > > > >    }
-> > > > > diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
-> > > > > index ae544adbc..7462dc600 100644
-> > > > > --- a/tests/i915/gem_workarounds.c
-> > > > > +++ b/tests/i915/gem_workarounds.c
-> > > > > @@ -339,4 +339,7 @@ igt_main
-> > > > >    			}
-> > > > >    		}
-> > > > >    	}
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(device);
-> > > > >    }
-> > > > > diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-> > > > > index d4ee2d58a..f2374aff0 100644
-> > > > > --- a/tests/i915/i915_pm_rps.c
-> > > > > +++ b/tests/i915/i915_pm_rps.c
-> > > > > @@ -959,4 +959,7 @@ igt_main
-> > > > >    		waitboost(drm_fd, true);
-> > > > >    		igt_disallow_hang(drm_fd, hang);
-> > > > >    	}
-> > > > > +
-> > > > > +	igt_fixture
-> > > > > +		drm_close_driver(drm_fd);
-> > > > >    }
-> > > > > -- 
-> > > > > 2.40.0
-> > > > > 
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ scripts/doc_to_xls.py | 70 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
+ create mode 100755 scripts/doc_to_xls.py
+
+diff --git a/scripts/doc_to_xls.py b/scripts/doc_to_xls.py
+new file mode 100755
+index 000000000000..1f33c1828ceb
+--- /dev/null
++++ b/scripts/doc_to_xls.py
+@@ -0,0 +1,70 @@
++#!/usr/bin/env python3
++# pylint: disable=C0103, C0200
++# SPDX-License-Identifier: (GPL-2.0 OR MIT)
++
++## Copyright (C) 2023    Intel Corporation                 ##
++## Author: Mauro Carvalho Chehab <mchehab@kernel.org>      ##
++##                                                         ##
++## Allow keeping inlined test documentation and validate   ##
++## if the documentation is kept updated.                   ##
++
++"""Maintain test plan and test implementation documentation on IGT."""
++
++import argparse
++
++from openpyxl import Workbook
++
++from test_list import TestList
++
++parser = argparse.ArgumentParser(description = "Print formatted kernel documentation to stdout.",
++                                 formatter_class = argparse.ArgumentDefaultsHelpFormatter,
++                                 epilog = 'If no action specified, assume --rest.')
++parser.add_argument("--config", required = True,  nargs='+',
++                    help="JSON file describing the test plan template")
++parser.add_argument("--include-plan", action="store_true",
++                    help="Include test plans, if any.")
++parser.add_argument("--xls", required = True,
++                    help="Output XLS file.")
++
++parse_args = parser.parse_args()
++
++tests = []
++for config_file in parse_args.config:
++    # Implemented tests
++    tests.append(TestList(config_file, parse_args.include_plan))
++
++wb = Workbook()
++ws = None
++
++for row in range(len(tests)):
++    test = tests[row]
++    sheet_name = test.title
++
++    if not ws:
++        ws = wb.active
++        ws.title = sheet_name
++    else:
++        ws = wb.create_sheet(sheet_name)
++
++    sheet = test.get_spreadsheet()
++
++    max_length = []
++    for col in range(len(sheet[row])):
++        max_length.append(0)
++
++    for row in range(len(sheet)):
++        for col in range(len(sheet[row])):
++            ws.cell(row = row + 1, column = col + 1, value = sheet[row][col])
++            if len(sheet[row][col]) > max_length[col]:
++                max_length[col] = len(sheet[row][col])
++
++    col = 0
++    for c in ws.columns:
++        column = c[0].column_letter
++
++        adjusted_width = (max_length[col] + 2) * 1.2
++        ws.column_dimensions[column].width = adjusted_width
++
++        col += 1
++
++wb.save(parse_args.xls)
+-- 
+2.40.1
