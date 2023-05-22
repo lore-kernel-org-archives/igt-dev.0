@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 772FC10E2CA
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 11:16:21 +0000 (UTC)
-Date: Mon, 22 May 2023 13:16:17 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7178B10E2CB
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 11:21:53 +0000 (UTC)
+Date: Mon, 22 May 2023 13:21:48 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230522111617.mugrfldam6q4ak47@zkempczy-mobl2>
-References: <20230516165058.4047595-2-bhanuprakash.modem@intel.com>
- <20230519150956.519525-1-bhanuprakash.modem@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Message-ID: <20230522112148.snwb2z4c7z4w2kcj@zkempczy-mobl2>
+References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
+ <20230516165058.4047595-7-bhanuprakash.modem@intel.com>
+ <20230518185810.6bmmdgmni5uif3c2@zkempczy-mobl2>
+ <948b1464-c716-caa1-3022-a2705568d9d5@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230519150956.519525-1-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t V3 01/20] lib: Interface to close the drm fd
+In-Reply-To: <948b1464-c716-caa1-3022-a2705568d9d5@intel.com>
+Subject: Re: [igt-dev] [i-g-t 06/20] tests/i915: Close the fd before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,97 +28,263 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, May 19, 2023 at 08:39:56PM +0530, Bhanuprakash Modem wrote:
-> Add new helper drm_close_driver() to close the drm fd. Now
-> every user could call drm_close_driver() instead of close().
+On Mon, May 22, 2023 at 10:57:41AM +0530, Modem, Bhanuprakash wrote:
+> Hi Zbigniew,
 > 
-> V2: - Fix commit message
->     - Add debug prints
-> V3: - Check the validity of fd before close
+> On Fri-19-05-2023 12:28 am, Zbigniew Kempczyński wrote:
+> > On Tue, May 16, 2023 at 10:20:44PM +0530, Bhanuprakash Modem wrote:
+> > > Close the file descriptor before exiting the test.
+> > > 
+> > > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > > ---
+> > >   tests/dmabuf_sync_file.c        | 3 +++
+> > >   tests/drm_read.c                | 3 +++
+> > >   tests/i915/gem_barrier_race.c   | 3 +++
+> > >   tests/i915/gem_basic.c          | 3 +++
+> > >   tests/i915/gem_concurrent_all.c | 5 +++++
+> > >   tests/i915/gem_ctx_engines.c    | 4 +++-
+> > >   tests/i915/gem_ctx_exec.c       | 3 +++
+> > >   tests/i915/gem_ctx_freq.c       | 3 +++
+> > >   tests/i915/gem_ctx_shared.c     | 3 +++
+> > >   tests/i915/gem_eio.c            | 3 +++
+> > >   tests/i915/gem_exec_alignment.c | 3 +++
+> > >   tests/i915/gem_exec_balancer.c  | 3 +++
+> > >   tests/i915/gem_exec_endless.c   | 3 +++
+> > >   tests/i915/gem_flink_basic.c    | 3 +++
+> > >   tests/i915/gem_userptr_blits.c  | 3 +++
+> > >   tests/i915/gem_workarounds.c    | 3 +++
+> > >   tests/i915/i915_pm_rps.c        | 3 +++
+> > >   17 files changed, 53 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
+> > > index 25bb6ad75..cfa73117b 100644
+> > > --- a/tests/dmabuf_sync_file.c
+> > > +++ b/tests/dmabuf_sync_file.c
+> > > @@ -380,4 +380,7 @@ igt_main
+> > >   		     "operations.");
+> > >   	igt_subtest("import-multiple-read-write")
+> > >   		test_import_multiple(fd, true);
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(fd);
+> > 
+> > I think this is handled by igt_types.c:igt_cleanup_fd()
 > 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  lib/drmtest.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
->  lib/drmtest.h |  1 +
->  2 files changed, 45 insertions(+)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 7630bb793..d148211a2 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -605,6 +605,50 @@ int drm_open_driver(int chipset)
->  	return fd;
->  }
->  
-> +static bool is_valid_fd(int fd)
-> +{
-> +	char path[32];
-> +	char buf[PATH_MAX];
-> +	int len;
-> +
-> +	if (fd < 0)
-> +		return false;
-> +
-> +	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-> +
-> +	memset(buf, 0, sizeof(buf));
-> +	len = readlink(path, buf, sizeof(buf) - 1);
-> +	if (len <= 0)
-> +		return false;
-> +
-> +	buf[len] = '\0';
-> +	if (strstr(buf, "/dev/dri/card") == buf ||
-> +	    strstr(buf, "/dev/dri/renderD") == buf)
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +/**
-> + * drm_close_driver:
-> + * @fd: a drm file descriptor
-> + *
-> + * Check the given drm file descriptor @fd is valid & Close if it is
-> + * an valid drm fd.
-> + *
-> + * Returns: 0 on success or -1 on error.
-> + */
-> +int drm_close_driver(int fd)
-> +{
-> +	if (!is_valid_fd(fd)) {
-> +		igt_debug("Don't attempt to close standard/invalid file "
-> +			  "descriptor: %d\n", fd);
+> I am not 100% sure, I think we need to declare the fd as "igt_fd_t(fd)",
+> then only igt_cleanup_fd() will takecare of it.
 
-I would change this debug to igt_warn(). Closing not drm fd looks like
-programmer mistake and should be fixed. With this minor fix:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Yes, I've picked gem_basic.c and this was the reason of my comment. I see
+also gem_ctx_engines.c, gem_ctx_shared.c, gem_exec_alignment.c, gem_exec_balancer.c
+gem_flink_basic.c, gem_userptr_blits.c and gem_workarounds.c already contains
+this declaration.
 
 --
 Zbigniew
 
-> +		return -1;
-> +	}
-> +
-> +	return close(fd);
-> +}
-> +
->  /**
->   * drm_open_driver_master:
->   * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index ae86ee19a..9c3ea5d14 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -105,6 +105,7 @@ int drm_open_driver_render(int chipset);
->  int __drm_open_driver_another(int idx, int chipset);
->  int __drm_open_driver(int chipset);
->  int __drm_open_driver_render(int chipset);
-> +int drm_close_driver(int fd);
->  
->  int drm_reopen_driver(int fd);
->  
-> -- 
-> 2.40.0
 > 
+> Also, as it is a good practice to close the fd before exit, still I can
+> recommend to use drm_close_driver().
+> 
+> - Bhanu
+> 
+> > 
+> > --
+> > Zbigniew
+> > 
+> > >   }
+> > > diff --git a/tests/drm_read.c b/tests/drm_read.c
+> > > index 36dc623ed..e989e7bfb 100644
+> > > --- a/tests/drm_read.c
+> > > +++ b/tests/drm_read.c
+> > > @@ -311,4 +311,7 @@ igt_main
+> > >   	igt_subtest("short-buffer-wakeup")
+> > >   		test_short_buffer_wakeup(fd, pipe);
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(fd);
+> > >   }
+> > > diff --git a/tests/i915/gem_barrier_race.c b/tests/i915/gem_barrier_race.c
+> > > index faeec3617..46273ab55 100644
+> > > --- a/tests/i915/gem_barrier_race.c
+> > > +++ b/tests/i915/gem_barrier_race.c
+> > > @@ -153,4 +153,7 @@ igt_main
+> > >   			break;
+> > >   		}
+> > >   	}
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(fd);
+> > >   }
+> > > diff --git a/tests/i915/gem_basic.c b/tests/i915/gem_basic.c
+> > > index 3dd790c6c..4e063febd 100644
+> > > --- a/tests/i915/gem_basic.c
+> > > +++ b/tests/i915/gem_basic.c
+> > > @@ -117,4 +117,7 @@ igt_main
+> > >   	igt_describe("Verify that closing drm driver is possible with opened gem object.");
+> > >   	igt_subtest("create-fd-close")
+> > >   		test_create_fd_close(fd);
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(fd);
+> > >   }
+> > > diff --git a/tests/i915/gem_concurrent_all.c b/tests/i915/gem_concurrent_all.c
+> > > index fb3b5f5d8..0bf46c0a2 100644
+> > > --- a/tests/i915/gem_concurrent_all.c
+> > > +++ b/tests/i915/gem_concurrent_all.c
+> > > @@ -2015,4 +2015,9 @@ igt_main
+> > >   			}
+> > >   		}
+> > >   	}
+> > > +
+> > > +	igt_fixture {
+> > > +		drm_close_driver(fd);
+> > > +		drm_close_driver(vgem_drv);
+> > > +	}
+> > >   }
+> > > diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+> > > index b87a21fa4..3daed16a0 100644
+> > > --- a/tests/i915/gem_ctx_engines.c
+> > > +++ b/tests/i915/gem_ctx_engines.c
+> > > @@ -633,6 +633,8 @@ igt_main
+> > >   			independent_all(i915, ctx);
+> > >   	}
+> > > -	igt_fixture
+> > > +	igt_fixture {
+> > >   		igt_stop_hang_detector();
+> > > +		drm_close_driver(i915);
+> > > +	}
+> > >   }
+> > > diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
+> > > index 20fa1159e..40a373ab6 100644
+> > > --- a/tests/i915/gem_ctx_exec.c
+> > > +++ b/tests/i915/gem_ctx_exec.c
+> > > @@ -546,4 +546,7 @@ igt_main
+> > >   		gem_context_destroy(fd, ctx_id);
+> > >   		put_ahnd(ahnd);
+> > >   	}
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(fd);
+> > >   }
+> > > diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
+> > > index 18e736c73..ce4c0ba55 100644
+> > > --- a/tests/i915/gem_ctx_freq.c
+> > > +++ b/tests/i915/gem_ctx_freq.c
+> > > @@ -213,4 +213,7 @@ igt_main
+> > >   	igt_subtest_f("sysfs")
+> > >   		sysfs_range(i915);
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(i915);
+> > >   }
+> > > diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
+> > > index 8629992e8..77a210d03 100644
+> > > --- a/tests/i915/gem_ctx_shared.c
+> > > +++ b/tests/i915/gem_ctx_shared.c
+> > > @@ -1088,4 +1088,7 @@ igt_main
+> > >   			igt_stop_hang_detector();
+> > >   		}
+> > >   	}
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(i915);
+> > >   }
+> > > diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
+> > > index 81e55e165..18eec0413 100644
+> > > --- a/tests/i915/gem_eio.c
+> > > +++ b/tests/i915/gem_eio.c
+> > > @@ -1126,4 +1126,7 @@ igt_main
+> > >   			intel_allocator_multiprocess_stop();
+> > >   		}
+> > >   	}
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(fd);
+> > >   }
+> > > diff --git a/tests/i915/gem_exec_alignment.c b/tests/i915/gem_exec_alignment.c
+> > > index 5059572f1..ddddad533 100644
+> > > --- a/tests/i915/gem_exec_alignment.c
+> > > +++ b/tests/i915/gem_exec_alignment.c
+> > > @@ -546,4 +546,7 @@ igt_main
+> > >   		prio_inversion(fd, SHARED);
+> > >   	igt_subtest("pi-isolated")
+> > >   		prio_inversion(fd, ISOLATED);
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(fd);
+> > >   }
+> > > diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+> > > index 1c655e583..df16f8bec 100644
+> > > --- a/tests/i915/gem_exec_balancer.c
+> > > +++ b/tests/i915/gem_exec_balancer.c
+> > > @@ -3482,4 +3482,7 @@ igt_main
+> > >   		igt_subtest("nohangcheck")
+> > >   			nohangcheck(i915);
+> > >   	}
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(i915);
+> > >   }
+> > > diff --git a/tests/i915/gem_exec_endless.c b/tests/i915/gem_exec_endless.c
+> > > index 77719de83..f895c6783 100644
+> > > --- a/tests/i915/gem_exec_endless.c
+> > > +++ b/tests/i915/gem_exec_endless.c
+> > > @@ -367,4 +367,7 @@ igt_main
+> > >   			intel_register_access_fini(&mmio);
+> > >   		}
+> > >   	}
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(i915);
+> > >   }
+> > > diff --git a/tests/i915/gem_flink_basic.c b/tests/i915/gem_flink_basic.c
+> > > index 2620bc55d..e9b915082 100644
+> > > --- a/tests/i915/gem_flink_basic.c
+> > > +++ b/tests/i915/gem_flink_basic.c
+> > > @@ -188,4 +188,7 @@ igt_main
+> > >   	igt_describe("Tests flink lifetime by referencing from multiple descriptors.");
+> > >   	igt_subtest("flink-lifetime")
+> > >   		test_flink_lifetime(fd);
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(fd);
+> > >   }
+> > > diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+> > > index baba7cf3c..056c7a7ac 100644
+> > > --- a/tests/i915/gem_userptr_blits.c
+> > > +++ b/tests/i915/gem_userptr_blits.c
+> > > @@ -2703,4 +2703,7 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
+> > >   		igt_require(has_userptr_probe(fd));
+> > >   		test_probe(fd);
+> > >   	}
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(fd);
+> > >   }
+> > > diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
+> > > index ae544adbc..7462dc600 100644
+> > > --- a/tests/i915/gem_workarounds.c
+> > > +++ b/tests/i915/gem_workarounds.c
+> > > @@ -339,4 +339,7 @@ igt_main
+> > >   			}
+> > >   		}
+> > >   	}
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(device);
+> > >   }
+> > > diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
+> > > index d4ee2d58a..f2374aff0 100644
+> > > --- a/tests/i915/i915_pm_rps.c
+> > > +++ b/tests/i915/i915_pm_rps.c
+> > > @@ -959,4 +959,7 @@ igt_main
+> > >   		waitboost(drm_fd, true);
+> > >   		igt_disallow_hang(drm_fd, hang);
+> > >   	}
+> > > +
+> > > +	igt_fixture
+> > > +		drm_close_driver(drm_fd);
+> > >   }
+> > > -- 
+> > > 2.40.0
+> > > 
