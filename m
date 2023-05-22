@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 275378995F
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 12:50:56 +0000 (UTC)
-Date: Mon, 22 May 2023 14:50:41 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB9C810E30A
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 12:42:58 +0000 (UTC)
+Date: Mon, 22 May 2023 14:42:54 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230522125041.iwctoxng6ycgffby@kamilkon-desk1>
+Message-ID: <20230522124254.b2qt7nxal3lehql5@kamilkon-desk1>
 References: <20230522071230.2494402-1-mauro.chehab@linux.intel.com>
  <20230522071230.2494402-6-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
@@ -25,16 +25,6 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-
-I did give you r-b based on diff of previous series but
-there are some functionality fields which looks more like
-a descripton. Could you and Jari cross-check that ? See below
-for some examples.
-If it really is maybe we should postpone write of these field?
-Or should we merge this as is and correct them later? It is up
-to you.
-
 On 2023-05-22 at 09:12:29 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
@@ -44,6 +34,9 @@ On 2023-05-22 at 09:12:29 +0200, Mauro Carvalho Chehab wrote:
 > This patch was auto-generated via script.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
 >  tests/i915/perf.c     |  68 ++++++++++++++++++----------
 >  tests/i915/perf_pmu.c | 103 ++++++++++++++++++++++++++++--------------
@@ -210,9 +203,6 @@ On 2023-05-22 at 09:12:29 +0200, Mauro Carvalho Chehab wrote:
 > - * Feature: oa
 > + * Feature: i915 streaming interface, oa
 > + * Functionality: Test the i915 perf metrics streaming interface
--------------------- ^
-More like description than functionality.
-
 >   *
 >   * SUBTEST: unprivileged-single-ctx-counters
 >   * Feature: oa, obsolete
@@ -221,9 +211,6 @@ More like description than functionality.
 > - * Feature: oa
 > + * Feature: i915 streaming interface, oa
 > + * Functionality: Test the i915 perf metrics streaming interface
--------------------- ^
-Same here.
-
 >   */
 >  
 >  IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
@@ -251,9 +238,6 @@ Same here.
 > - * Feature: pmu
 > + * Feature: i915 pmu perf interface, pmu
 > + * Functionality: Test to ensure gpu is busy when there a workload by reading engine busyness pmu counters
--------------------- ^
-Same here.
-
 >   *
 >   * SUBTEST: busy-accuracy-2
 > - * Feature: pmu
@@ -274,9 +258,6 @@ Same here.
 > - * Feature: pmu
 > + * Feature: i915 pmu perf interface, pmu
 > + * Functionality: Test to ensure gpu all engines report busy when there is a workload by reading engine busyness pmu counters
--------------------- ^
-Same here and also all below.
-
 >   *
 >   * SUBTEST: busy-double-start
 > - * Feature: pmu
@@ -312,9 +293,6 @@ Same here and also all below.
 > - * Feature: pmu
 > + * Feature: i915 pmu perf interface, pmu
 > + * Functionality: Test to verify gpu busyness through engine business pmu counters
--------------------- ^
-Up to here.
-
 >   *
 >   * SUBTEST: cpu-hotplug
 > - * Feature: pmu
@@ -335,12 +313,6 @@ Up to here.
 > - * Feature: pmu
 > + * Feature: i915 pmu perf interface, pmu
 > + * Functionality: Read requested freq and actual frequency via PMU within specified time interval for any given workload changes
--------------------- ^
-Same here and below.
-
-Regards,
-Kamil
-
 >   *
 >   * SUBTEST: frequency-idle
 >   * Feature: pmu
