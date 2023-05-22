@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8083C10E307
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 12:36:11 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- sai.gowtham.ch@intel.com
-Date: Mon, 22 May 2023 18:06:05 +0530
-Message-Id: <20230522123605.17416-3-sai.gowtham.ch@intel.com>
-In-Reply-To: <20230522123605.17416-1-sai.gowtham.ch@intel.com>
-References: <20230522123605.17416-1-sai.gowtham.ch@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F16A10E30C
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 12:54:37 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 22 May 2023 12:54:32 +0000
+Message-ID: <MW4PR11MB7054F7C2D45FE49F0C36163DEF439@MW4PR11MB7054.namprd11.prod.outlook.com>
+References: <20230516154329.9002-1-juhapekka.heikkila@gmail.com>
+ <20230516154329.9002-4-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230516154329.9002-4-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/xe/xe_spin_batch: Add new test to
- exercise igt_spin_new for xe.
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/i915/kms_ccs: enable mtl aux
+ ccs tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,149 +27,34 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-
-xe_spin_batch test exercises basic igt_spin_new submissions and
-and with all engines.
-
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
----
- tests/meson.build        |   1 +
- tests/xe/xe_spin_batch.c | 113 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 114 insertions(+)
- create mode 100644 tests/xe/xe_spin_batch.c
-
-diff --git a/tests/meson.build b/tests/meson.build
-index f71be1db..e794b75a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -268,6 +268,7 @@ xe_progs = [
- 	'xe_query',
- 	'xe_vm',
- 	'xe_waitfence',
-+	'xe_spin_batch',
- ]
- 
- msm_progs = [
-diff --git a/tests/xe/xe_spin_batch.c b/tests/xe/xe_spin_batch.c
-new file mode 100644
-index 00000000..55fbca92
---- /dev/null
-+++ b/tests/xe/xe_spin_batch.c
-@@ -0,0 +1,113 @@
-+#include "igt.h"
-+#include "lib/intel_reg.h"
-+#include "xe_drm.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+
-+#define MAX_INSTANCE 9
-+/**
-+ * TEST: Basic test for spin batch submission.
-+ *
-+ * SUBTEST: spin-batch
-+ * Description: Simple test!
-+ * Run type: FULL
-+ * TODO: change ``'Run type' == FULL`` to a better category
-+ *
-+ */
-+
-+static void spin(int fd, struct drm_xe_engine_class_instance *hwe)
-+{
-+	uint64_t ahnd;
-+	unsigned int engine;
-+	uint32_t vm;
-+	igt_spin_t *spin;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	engine = xe_engine_create(fd, vm, hwe, 0);
-+	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+
-+	spin = __igt_spin_new(fd, .ahnd = ahnd, .hwe = hwe, .engine = engine, .vm = vm);
-+	igt_assert(spin);
-+
-+	igt_spin_free(fd, spin);
-+	put_ahnd(ahnd);
-+}
-+
-+/**
-+ * TEST: Test for spin batch submissions.
-+ * SUBTEST: spin-all
-+ * Description: Spinner test to run on all the engines!
-+ * Run type: FULL
-+ * TODO: change ``'Run type' == FULL`` to a better category
-+ *
-+ */
-+
-+static void spin_all (int fd, int gt, int class)
-+{
-+	uint64_t ahnd;
-+	uint32_t engines[MAX_INSTANCE];
-+	uint32_t vm[MAX_INSTANCE];
-+	int i, num_placements = 0;
-+	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
-+	igt_spin_t *spin[MAX_INSTANCE];
-+	struct drm_xe_engine_class_instance *hwe;
-+
-+	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+
-+	xe_for_each_hw_engine(fd, hwe) {
-+		if (hwe->engine_class != class || hwe->gt_id != gt)
-+			continue;
-+		eci[num_placements++] = *hwe;
-+	}
-+	if (num_placements < 2)
-+		return;
-+
-+	for (i = 0; i < num_placements; i++) {
-+		struct drm_xe_engine_create create;
-+		vm[i] = xe_vm_create(fd, 0, 0);
-+
-+		create.vm_id = vm[i];
-+		create.width = 1;
-+		create.num_placements = num_placements;
-+		create.instances = to_user_pointer(eci);
-+
-+		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE,
-+					&create), 0);
-+		engines[i] = create.engine_id;
-+		spin[i] = __igt_spin_new(fd, .ahnd = ahnd, .hwe = eci, .engine = engines[i], .vm = vm[i]);
-+	}
-+
-+	for (i = 0; i < num_placements; i++) {
-+		igt_assert(spin[i]);
-+		igt_spin_free(fd, spin[i]);
-+	}
-+}
-+
-+igt_main
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	int fd;
-+	int gt, class;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		xe_device_get(fd);
-+	}
-+
-+	igt_subtest("spin-batch")
-+		xe_for_each_hw_engine(fd, hwe)
-+			spin(fd, hwe);
-+
-+	igt_subtest("spin-all") {
-+		xe_for_each_gt(fd, gt)
-+			xe_for_each_hw_engine_class(class)
-+				spin_all(fd, gt, class);
-+	}
-+
-+	igt_fixture {
-+		xe_device_put(fd);
-+		close(fd);
-+	}
-+}
-+
-+
--- 
-2.39.1
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
+dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgSnVoYS1QZWtrYSBIZWlr
+a2lsYQ0KPiBTZW50OiBUdWVzZGF5LCBNYXkgMTYsIDIwMjMgNjo0MyBQTQ0KPiBUbzogaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRDSCBpLWct
+dCAzLzRdIHRlc3RzL2k5MTUva21zX2NjczogZW5hYmxlIG10bCBhdXggY2NzIHRlc3RzDQo+IA0K
+PiBBZGRlZA0KPiBJOTE1X0ZPUk1BVF9NT0RfNF9USUxFRF9NVExfUkNfQ0NTDQo+IEk5MTVfRk9S
+TUFUX01PRF80X1RJTEVEX01UTF9NQ19DQ1MNCj4gSTkxNV9GT1JNQVRfTU9EXzRfVElMRURfTVRM
+X1JDX0NDU19DQw0KPiBmb3IgdGVzdGluZy4NCj4gDQoNClJldmlld2VkLWJ5OiBNaWthIEthaG9s
+YSA8bWlrYS5rYWhvbGFAaW50ZWwuY29tPg0KDQo+IFNpZ25lZC1vZmYtYnk6IEp1aGEtUGVra2Eg
+SGVpa2tpbGEgPGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+DQo+IC0tLQ0KPiAgdGVzdHMv
+aTkxNS9rbXNfY2NzLmMgfCA2ICsrKysrLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9u
+cygrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUva21zX2Nj
+cy5jIGIvdGVzdHMvaTkxNS9rbXNfY2NzLmMgaW5kZXggMWIzNDYyZWEuLmFiZTQ2NGI0IDEwMDY0
+NA0KPiAtLS0gYS90ZXN0cy9pOTE1L2ttc19jY3MuYw0KPiArKysgYi90ZXN0cy9pOTE1L2ttc19j
+Y3MuYw0KPiBAQCAtMTAxLDYgKzEwMSw5IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgew0KPiAgCXtJ
+OTE1X0ZPUk1BVF9NT0RfNF9USUxFRF9ERzJfUkNfQ0NTLCAiNF90aWxlZF9kZzJfcmNfY2NzIn0s
+DQo+ICAJe0k5MTVfRk9STUFUX01PRF80X1RJTEVEX0RHMl9NQ19DQ1MsICI0X3RpbGVkX2RnMl9t
+Y19jY3MifSwNCj4gIAl7STkxNV9GT1JNQVRfTU9EXzRfVElMRURfREcyX1JDX0NDU19DQywgIjRf
+dGlsZWRfZGcyX3JjX2Njc19jYyJ9LA0KPiArCXtJOTE1X0ZPUk1BVF9NT0RfNF9USUxFRF9NVExf
+UkNfQ0NTLCAiNF90aWxlZF9tdGxfcmNfY2NzIn0sDQo+ICsJe0k5MTVfRk9STUFUX01PRF80X1RJ
+TEVEX01UTF9NQ19DQ1MsICI0X3RpbGVkX210bF9tY19jY3MifSwNCj4gKwl7STkxNV9GT1JNQVRf
+TU9EXzRfVElMRURfTVRMX1JDX0NDU19DQywgIjRfdGlsZWRfbXRsX3JjX2Njc19jYyJ9LA0KPiAg
+fTsNCj4gDQo+ICBzdGF0aWMgYm9vbCBjaGVja19jY3NfcGxhbmVzOw0KPiBAQCAtMTYxLDcgKzE2
+NCw4IEBAIGNyZWF0ZV9mYl9wcmVwYXJlX2FkZChpbnQgZHJtX2ZkLCBpbnQgd2lkdGgsIGludCBo
+ZWlnaHQsICBzdGF0aWMgYm9vbCBpc19jY3NfY2NfbW9kaWZpZXIodWludDY0X3QNCj4gbW9kaWZp
+ZXIpICB7DQo+ICAJcmV0dXJuIG1vZGlmaWVyID09IEk5MTVfRk9STUFUX01PRF9ZX1RJTEVEX0dF
+TjEyX1JDX0NDU19DQyB8fA0KPiAtCQltb2RpZmllciA9PSBJOTE1X0ZPUk1BVF9NT0RfNF9USUxF
+RF9ERzJfUkNfQ0NTX0NDOw0KPiArCSAgICAgICBtb2RpZmllciA9PSBJOTE1X0ZPUk1BVF9NT0Rf
+NF9USUxFRF9ERzJfUkNfQ0NTX0NDIHx8DQo+ICsJICAgICAgIG1vZGlmaWVyID09IEk5MTVfRk9S
+TUFUX01PRF80X1RJTEVEX01UTF9SQ19DQ1NfQ0M7DQo+ICB9DQo+IA0KPiAgLyoNCj4gLS0NCj4g
+Mi4yNS4xDQoNCg==
