@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A1F9710E2A1
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 09:57:53 +0000 (UTC)
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 22 May 2023 11:57:14 +0200
-Message-Id: <f2528001a96a33492973dc3cd21e3dc1ffd381e2.1684747649.git.karolina.stolarek@intel.com>
-In-Reply-To: <cover.1684747649.git.karolina.stolarek@intel.com>
-References: <cover.1684747649.git.karolina.stolarek@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D93EB10E30C
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 12:56:20 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 22 May 2023 12:56:15 +0000
+Message-ID: <MW4PR11MB70548789801C1A81347C777AEF439@MW4PR11MB7054.namprd11.prod.outlook.com>
+References: <20230516154329.9002-1-juhapekka.heikkila@gmail.com>
+ <20230516154329.9002-5-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230516154329.9002-5-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4] tests/i915/i915_pm_rpm: Check command
- property instead of gen
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/kms_getfb: Add meteorlake
+ related ccs modifiers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,59 +27,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update submit_blt_cmd() function to check if a platform uses a long
-version of XY_COLOR_BLT when building the command. Remove checks
-related to the gen alone.
-
-Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
----
- tests/i915/i915_pm_rpm.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index b23eba544..8656f5531 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1489,20 +1489,24 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
- 	uint32_t batch_handle;
- 	int batch_size = 8 * sizeof(uint32_t);
- 	uint32_t batch_buf[batch_size];
-+	bool cmd_extended;
- 	struct drm_i915_gem_execbuffer2 execbuf = {};
- 	struct drm_i915_gem_exec_object2 objs[2] = {{}, {}};
- 	struct drm_i915_gem_relocation_entry relocs[1] = {{}};
- 	struct drm_i915_gem_wait gem_wait;
- 	uint64_t ahnd = get_reloc_ahnd(drm_fd, 0), dst_offset;
-+	const struct intel_cmds_info *cmds_info = intel_get_cmds_info(ms_data.devid);
- 
- 	if (ahnd)
- 		dst_offset = get_offset(ahnd, dst_handle, dst_size, 0);
- 	else
- 		dst_offset = *presumed_dst_offset;
- 
-+	cmd_extended = blt_cmd_has_property(cmds_info, XY_COLOR_BLT,
-+					    BLT_CMD_EXTENDED);
- 	i = 0;
- 
--	if (intel_gen(ms_data.devid) >= 8)
-+	if (cmd_extended)
- 		batch_buf[i++] = XY_COLOR_BLT_CMD_NOLEN |
- 				 XY_COLOR_BLT_WRITE_ALPHA |
- 				 XY_COLOR_BLT_WRITE_RGB | 0x5;
-@@ -1515,12 +1519,12 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
- 	batch_buf[i++] = ((y + height) << 16) | (x + width);
- 	reloc_pos = i;
- 	batch_buf[i++] = dst_offset;
--	if (intel_gen(ms_data.devid) >= 8)
-+	if (cmd_extended)
- 		batch_buf[i++] = dst_offset >> 32;
- 	batch_buf[i++] = color;
- 
- 	batch_buf[i++] = MI_BATCH_BUFFER_END;
--	if (intel_gen(ms_data.devid) < 8)
-+	if (!cmd_extended)
- 		batch_buf[i++] = MI_NOOP;
- 
- 	igt_assert(i * sizeof(uint32_t) == batch_size);
--- 
-2.25.1
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
+dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgSnVoYS1QZWtrYSBIZWlr
+a2lsYQ0KPiBTZW50OiBUdWVzZGF5LCBNYXkgMTYsIDIwMjMgNjo0MyBQTQ0KPiBUbzogaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRDSCBpLWct
+dCA0LzRdIHRlc3RzL2ttc19nZXRmYjogQWRkIG1ldGVvcmxha2UgcmVsYXRlZCBjY3MgbW9kaWZp
+ZXJzDQo+IA0KPiBBZGQgbWV0ZW9ybGFrZSByZWxhdGVkIGNjcyBtb2RpZmllcnMgZm9yIGdldGZi
+Mi1hY2NlcHQtY2NzIGFuZCBnZXRmYi1yZWplY3QtY2NzIHN1YnRlc3RzIHRvIGFsbG93IHRoZW0g
+dG8gcnVuIHdpdGhvdXQgc2tpcHBpbmcuDQo+IA0KDQpSZXZpZXdlZC1ieTogTWlrYSBLYWhvbGEg
+PG1pa2Eua2Fob2xhQGludGVsLmNvbT4NCg0KPiBTaWduZWQtb2ZmLWJ5OiBKdWhhLVBla2thIEhl
+aWtraWxhIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPg0KPiAtLS0NCj4gIHRlc3RzL2tt
+c19nZXRmYi5jIHwgMTMgKysrKysrKysrLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDkgaW5zZXJ0
+aW9ucygrKSwgNCBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZ2V0
+ZmIuYyBiL3Rlc3RzL2ttc19nZXRmYi5jIGluZGV4IDRhZGM3ZWVlLi5mNDRmNDI1NSAxMDA2NDQN
+Cj4gLS0tIGEvdGVzdHMva21zX2dldGZiLmMNCj4gKysrIGIvdGVzdHMva21zX2dldGZiLmMNCj4g
+QEAgLTEwMCwxMCArMTAwLDE1IEBAIHN0YXRpYyB2b2lkIGdldF9jY3NfZmIoaW50IGZkLCBzdHJ1
+Y3QgZHJtX21vZGVfZmJfY21kMiAqcmV0KQ0KPiAgCQlzaXplID0gYWRkLnBpdGNoZXNbMF0gKiBB
+TElHTihhZGQuaGVpZ2h0LCA4KTsNCj4gIAkJc2l6ZSA9IEFMSUdOKHNpemUsIDQwOTYpOw0KPiAg
+CX0gZWxzZSBpZiAoKGludGVsX2Rpc3BsYXlfdmVyKGRldmlkKSkgPj0gMTIpIHsNCj4gLQkJYWRk
+Lm1vZGlmaWVyWzBdID0gSTkxNV9GT1JNQVRfTU9EX1lfVElMRURfR0VOMTJfUkNfQ0NTOw0KPiAt
+CQlhZGQubW9kaWZpZXJbMV0gPSBJOTE1X0ZPUk1BVF9NT0RfWV9USUxFRF9HRU4xMl9SQ19DQ1M7
+DQo+ICsJCWFkZC5tb2RpZmllclswXSA9IElTX01FVEVPUkxBS0UoZGV2aWQpID8NCj4gKwkJCUk5
+MTVfRk9STUFUX01PRF80X1RJTEVEX01UTF9SQ19DQ1MgOg0KPiArCQkJSTkxNV9GT1JNQVRfTU9E
+X1lfVElMRURfR0VOMTJfUkNfQ0NTOw0KPiANCj4gLQkJLyogVGhlIG1haW4gc3VyZmFjZSBmb3Ig
+VEdMIGlzIDR4NCB0aWxlcyBhbGlnbmVkDQo+ICsJCWFkZC5tb2RpZmllclsxXSA9IElTX01FVEVP
+UkxBS0UoZGV2aWQpID8NCj4gKwkJCUk5MTVfRk9STUFUX01PRF80X1RJTEVEX01UTF9SQ19DQ1Mg
+Og0KPiArCQkJSTkxNV9GT1JNQVRfTU9EX1lfVElMRURfR0VOMTJfUkNfQ0NTOw0KPiArDQo+ICsJ
+CS8qIFRoZSBtYWluIHN1cmZhY2UgZm9yIEdlbjEyKyBpcyA0eDQgdGlsZXMgYWxpZ25lZA0KPiAg
+CQkgKiBGb3IgMzJicHAgdGhlIHBpdGNoIGlzIDQqNCozMiBieXRlcyBpLmUuIDUxMiBieXRlcw0K
+PiAgCQkgKi8NCj4gIAkJYWRkLnBpdGNoZXNbMF0gPSBBTElHTihhZGQud2lkdGggKiA0LCA0ICog
+MTI4KTsgQEAgLTEzOCw3ICsxNDMsNyBAQCBzdGF0aWMgdm9pZCBnZXRfY2NzX2ZiKGludCBmZCwg
+c3RydWN0DQo+IGRybV9tb2RlX2ZiX2NtZDIgKnJldCkNCj4gIAlhZGQuaGFuZGxlc1swXSA9IGdl
+bV9idWZmZXJfY3JlYXRlX2ZiX29iaihmZCwgc2l6ZSk7DQo+ICAJaWd0X3JlcXVpcmUoYWRkLmhh
+bmRsZXNbMF0gIT0gMCk7DQo+IA0KPiAtCWlmICghSEFTX0ZMQVRDQ1MoaW50ZWxfZ2V0X2RybV9k
+ZXZpZChmZCkpKQ0KPiArCWlmICghSEFTX0ZMQVRDQ1MoZGV2aWQpKQ0KPiAgCQlhZGQuaGFuZGxl
+c1sxXSA9IGFkZC5oYW5kbGVzWzBdOw0KPiANCj4gIAlpZiAoZHJtSW9jdGwoZmQsIERSTV9JT0NU
+TF9NT0RFX0FEREZCMiwgJmFkZCkgPT0gMCkNCj4gLS0NCj4gMi4yNS4xDQoNCg==
