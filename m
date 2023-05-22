@@ -1,26 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B1F910E24D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D71B410E250
  for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 07:12:38 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.249.143.217])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 77676580D7C
+ by linux.intel.com (Postfix) with ESMTPS id 742FE580D79
  for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 00:12:35 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1q0zia-00ASwx-28
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1q0zia-00ASx0-2C
  for igt-dev@lists.freedesktop.org; Mon, 22 May 2023 09:12:32 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 22 May 2023 09:12:28 +0200
-Message-Id: <20230522071230.2494402-5-mauro.chehab@linux.intel.com>
+Date: Mon, 22 May 2023 09:12:29 +0200
+Message-Id: <20230522071230.2494402-6-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230522071230.2494402-1-mauro.chehab@linux.intel.com>
 References: <20230522071230.2494402-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 4/6] i915/gem_ctx_*: better document i915
- context tests
+Subject: [igt-dev] [PATCH i-g-t v2 5/6] i915/perf_*: better document tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,280 +34,382 @@ List-ID: <igt-dev@lists.freedesktop.org>
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 Merge data from some ancillary internal documentation to improve
-i915 gem_ctx test descriptions.
+i915 perf test descriptions.
 
 This patch was auto-generated via script.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/gem_ctx_bad_destroy.c |  4 ++++
- tests/i915/gem_ctx_create.c      |  8 ++++++++
- tests/i915/gem_ctx_engines.c     |  4 ++++
- tests/i915/gem_ctx_exec.c        | 12 ++++++++++++
- tests/i915/gem_ctx_freq.c        |  4 ++++
- tests/i915/gem_ctx_isolation.c   | 26 +++++++++++++++++++++++++-
- tests/i915/gem_ctx_param.c       |  4 ++++
- tests/i915/gem_ctx_persistence.c |  4 ++++
- tests/i915/gem_ctx_shared.c      | 22 ++++++++++++++++++++++
- 9 files changed, 87 insertions(+), 1 deletion(-)
+ tests/i915/perf.c     |  68 ++++++++++++++++++----------
+ tests/i915/perf_pmu.c | 103 ++++++++++++++++++++++++++++--------------
+ 2 files changed, 112 insertions(+), 59 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_bad_destroy.c b/tests/i915/gem_ctx_bad_destroy.c
-index 90495da8ab2e..8c47e7c1cb67 100644
---- a/tests/i915/gem_ctx_bad_destroy.c
-+++ b/tests/i915/gem_ctx_bad_destroy.c
-@@ -36,9 +36,13 @@
- 
- /**
-  * TEST: gem ctx bad destroy
-+ * Category: Infrastructure
-  * Description: Negative test cases for destroy contexts.
-  * Feature: context
-+ * Functionality: context management
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index 1b1c39aafb8b..b7fa2924888e 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -49,23 +49,27 @@
+  * TEST: perf
+  * Description: Test the i915 perf metrics streaming interface
   * Run type: FULL
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
++ * Test category: Perf
   *
-  * SUBTEST: double-destroy
+  * SUBTEST: blocking
+  * Description: Test blocking read with default hrtimer frequency
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
   *
-diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
-index 0c65027bc838..3c806ee5b9d9 100644
---- a/tests/i915/gem_ctx_create.c
-+++ b/tests/i915/gem_ctx_create.c
-@@ -51,12 +51,20 @@
-  * Run type: FULL
+  * SUBTEST: blocking-parameterized
+  * Description: Test blocking read with different hrtimer frequencies
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
   *
-  * SUBTEST: basic
-+ * Category: Infrastructure
-  * Description: Test random context creation
-+ * Functionality: context management
-  * Run type: BAT
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
+  * SUBTEST: buffer-fill
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: basic-files
-+ * Category: Infrastructure
-  * Description: Exercise implicit per-fd context creation
-+ * Functionality: context management
-  * Run type: BAT
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
+  * SUBTEST: create-destroy-userspace-config
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: ext-param
-  * Description: Verify valid and invalid context extensions
-diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
-index d15a7b7e5f67..61718494e86a 100644
---- a/tests/i915/gem_ctx_engines.c
-+++ b/tests/i915/gem_ctx_engines.c
-@@ -45,8 +45,12 @@
- #include "sw_sync.h"
- /**
-  * TEST: gem ctx engines
-+ * Category: Infrastructure
-  * Feature: context
-+ * Functionality: context management
-  * Run type: FULL
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
+  * SUBTEST: disabled-read-error
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: execute-allforone
+  * SUBTEST: enable-disable
+  * Feature: oa
+@@ -84,7 +88,7 @@
   *
-diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-index 9fec2bb10fdf..4109eb3f03d1 100644
---- a/tests/i915/gem_ctx_exec.c
-+++ b/tests/i915/gem_ctx_exec.c
-@@ -51,26 +51,38 @@
-  * TEST: gem ctx exec
-  * Description: Test context batch buffer execution.
-  * Feature: context
-+ * Functionality: command submission
-+ * Sub-category: i915
+  * SUBTEST: gen12-invalid-class-instance
+  * Description: Verify invalid class instance
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
   *
-  * SUBTEST: basic
-+ * Category: Infrastructure
-  * Description: Check the basic context batch buffer execution.
-  * Run type: BAT
-+ * Test category: GEM_Legacy
+  * SUBTEST: gen12-mi-rpc
+  * Description: Test MI REPORT PERF COUNT for Gen 12
+@@ -92,7 +96,7 @@
   *
-  * SUBTEST: basic-close-race
-+ * Category: Infrastructure
-  * Description: Race the execution and interrupt handlers along a context, while closing it at a random time.
-  * Run type: FULL
-+ * Test category: GEM_Legacy
+  * SUBTEST: gen12-oa-tlb-invalidate
+  * Description: Test OA TLB invalidate
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
   *
-  * SUBTEST: basic-invalid-context
-+ * Category: Infrastructure
-  * Description: Verify that execbuf with invalid context fails.
-  * Run type: FULL
-+ * Test category: GEM_Legacy
+  * SUBTEST: gen12-unprivileged-single-ctx-counters
+  * Description: Measure performance for a specific context using OAR in Gen 12
+@@ -110,84 +114,98 @@
+  * Feature: oa
   *
-  * SUBTEST: basic-nohangcheck
-+ * Category: Server
-  * Description: Verify that contexts are automatically shotdown on close, if hangchecking is disabled.
-  * Run type: FULL
-+ * Test category: GEM_Legacy
+  * SUBTEST: i915-ref-count
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: basic-norecovery
-+ * Category: Server
-  * Description: Check the status of context after a hang by setting and unsetting the RECOVERABLE.
-  * Run type: FULL
-+ * Test category: GEM_Legacy
+  * SUBTEST: invalid-create-userspace-config
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: eviction
-  * Description: Check maximum number of buffers it can evict for a context.
-diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
-index 8e432cbdf8f5..2c30934daa23 100644
---- a/tests/i915/gem_ctx_freq.c
-+++ b/tests/i915/gem_ctx_freq.c
-@@ -36,8 +36,12 @@
- #include "sw_sync.h"
- /**
-  * TEST: gem ctx freq
-+ * Category: Server
-  * Feature: context
-+ * Functionality: frequency management
-  * Run type: FULL
-+ * Sub-category: Performance
-+ * Test category: GEM_Legacy
+  * SUBTEST: invalid-oa-exponent
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: sysfs
-  */
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-index 2c2da296d301..4f806a22cb4a 100644
---- a/tests/i915/gem_ctx_isolation.c
-+++ b/tests/i915/gem_ctx_isolation.c
-@@ -28,26 +28,50 @@
- #include "igt_types.h"
- /**
-  * TEST: gem ctx isolation
-- * Feature: context
-+ * Category: Infrastructure
-  * Run type: FULL
-+ * Sub-category: HW
+  * SUBTEST: invalid-oa-format-id
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: clean
-+ * Feature: context
-+ * Functionality: security
-+ * Test category: GEM_Legacy
+  * SUBTEST: invalid-oa-metric-set-id
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: dirty-create
-+ * Feature: context
-+ * Functionality: security
-+ * Test category: GEM_Legacy
+  * SUBTEST: invalid-open-flags
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: dirty-switch
-+ * Feature: context
-+ * Functionality: security
-+ * Test category: GEM_Legacy
+  * SUBTEST: invalid-remove-userspace-config
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: nonpriv
-+ * Feature: context
-+ * Functionality: security
-+ * Test category: GEM_Legacy
+  * SUBTEST: low-oa-exponent-permissions
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: nonpriv-switch
-+ * Feature: context
-+ * Functionality: security
-+ * Test category: GEM_Legacy
+  * SUBTEST: mi-rpc
+  * Feature: oa
   *
-  * SUBTEST: preservation
-+ * Feature: context
-+ * Functionality: security
-+ * Test category: GEM_Legacy
+  * SUBTEST: missing-sample-flags
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: preservation-S3
-+ * Feature: context
+  * SUBTEST: non-sampling-read-error
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   *
-  * SUBTEST: preservation-S4
-+ * Feature: context
+  * SUBTEST: non-system-wide-paranoid
+  * Feature: oa
   *
-  * SUBTEST: preservation-reset
-+ * Feature: context
-+ * Functionality: security
-+ * Test category: GEM_Legacy
+  * SUBTEST: non-zero-reason
+  * Description: Test that reason field in OA reports is never 0 on Gen8+
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
+  *
+  * SUBTEST: oa-exponents
+  * Feature: oa
+  *
+  * SUBTEST: oa-formats
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
+  *
+  * SUBTEST: per-context-mode-unprivileged
+  * Feature: oa, obsolete
+  *
+  * SUBTEST: polling
+  * Description: Test polled read with default hrtimer frequency
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
+  *
+  * SUBTEST: polling-parameterized
+  * Description: Test polled read with different hrtimer frequencies
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
+  *
+  * SUBTEST: polling-small-buf
+  * Description: Test polled read with buffer size smaller than available data
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
+  *
+  * SUBTEST: rc6-disable
+  * Feature: oa
+  *
+  * SUBTEST: short-reads
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
+  *
+  * SUBTEST: stress-open-close
+  * Description: Stress tests opening & closing the i915-perf stream in a busy loop
+  * Feature: oa
+  *
+  * SUBTEST: sysctl-defaults
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
+  *
+  * SUBTEST: unprivileged-single-ctx-counters
+  * Feature: oa, obsolete
+  *
+  * SUBTEST: whitelisted-registers-userspace-config
+- * Feature: oa
++ * Feature: i915 streaming interface, oa
++ * Functionality: Test the i915 perf metrics streaming interface
   */
  
- /* MAX_REG must be greater than the maximum register address. */
-diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
-index 5e56c645572b..dddc946a28af 100644
---- a/tests/i915/gem_ctx_param.c
-+++ b/tests/i915/gem_ctx_param.c
-@@ -32,8 +32,12 @@
- #include "i915/gem_vm.h"
- /**
-  * TEST: gem ctx param
-+ * Category: Infrastructure
-  * Description: Basic test for context set/get param input validation.
-+ * Functionality: context management
+ IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index bedadbe92797..bc0d517007d6 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -53,54 +53,71 @@
+  * TEST: perf pmu
+  * Description: Test the i915 pmu perf interface
   * Run type: FULL
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
++ * Test category: Perf
   *
-  * SUBTEST: basic
-  * Description: Basic test for context get/set param ioctls using valid context
-diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-index 42cf9632989e..bc5a4b5b41ba 100644
---- a/tests/i915/gem_ctx_persistence.c
-+++ b/tests/i915/gem_ctx_persistence.c
-@@ -47,8 +47,12 @@
- #include "sw_sync.h"
- /**
-  * TEST: gem ctx persistence
-+ * Category: Server
-  * Feature: context
-+ * Functionality: security
-  * Run type: FULL
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
+  * SUBTEST: all-busy-check-all
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
   *
-  * SUBTEST: engines-cleanup
+  * SUBTEST: all-busy-idle-check-all
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
   *
-diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
-index 98827f09f9ea..f29005518c40 100644
---- a/tests/i915/gem_ctx_shared.c
-+++ b/tests/i915/gem_ctx_shared.c
-@@ -66,20 +66,42 @@
-  * SUBTEST: Q-smoketest-all
+  * SUBTEST: busy
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to ensure gpu is busy when there a workload by reading engine busyness pmu counters
   *
-  * SUBTEST: create-shared-gtt
-+ * Category: Desktop client
-+ * Functionality: context management
-+ * Sub-category: Media
-+ * Test category: GEM_Legacy
+  * SUBTEST: busy-accuracy-2
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
   *
-  * SUBTEST: detached-shared-gtt
-+ * Category: Desktop client
-+ * Functionality: context management
-+ * Sub-category: Media
-+ * Test category: GEM_Legacy
+  * SUBTEST: busy-accuracy-50
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
   *
-  * SUBTEST: disjoint-timelines
-+ * Category: Desktop client
-+ * Functionality: context management
-+ * Sub-category: Media
-+ * Test category: GEM_Legacy
+  * SUBTEST: busy-accuracy-98
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
   *
-  * SUBTEST: exec-shared-gtt
-+ * Category: Desktop client
-+ * Functionality: context management
-+ * Sub-category: Media
-+ * Test category: GEM_Legacy
+  * SUBTEST: busy-check-all
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to ensure gpu all engines report busy when there is a workload by reading engine busyness pmu counters
   *
-  * SUBTEST: exec-single-timeline
-+ * Category: Desktop client
-+ * Functionality: context management
-+ * Test category: GEM_Legacy
+  * SUBTEST: busy-double-start
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
   *
-  * SUBTEST: exhaust-shared-gtt
+  * SUBTEST: busy-hang
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to ensure there is no hanf when all engines are busy
   *
-  * SUBTEST: exhaust-shared-gtt-lrc
+  * SUBTEST: busy-idle
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to ensure gpu engine reports idle when there is no workload
   *
-  * SUBTEST: single-timeline
-+ * Category: Desktop client
-+ * Functionality: context management
-+ * Test category: GEM_Legacy
+  * SUBTEST: busy-idle-check-all
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to ensure gpu all engine reports idle when there is no workload
+  *
+  * SUBTEST: busy-idle-no-semaphores
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to verify gpu idle through engine business pmu counters
+  *
+  * SUBTEST: busy-no-semaphores
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to verify gpu busyness through engine business pmu counters
+  *
+  * SUBTEST: busy-start
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to verify gpu busyness through engine business pmu counters
+  *
+  * SUBTEST: cpu-hotplug
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: enable-race
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: event-wait
+  * Feature: obsolete, pmu
+@@ -109,52 +126,67 @@
+  * Feature: pmu
+  *
+  * SUBTEST: frequency
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Read requested freq and actual frequency via PMU within specified time interval for any given workload changes
+  *
+  * SUBTEST: frequency-idle
+  * Feature: pmu
+  *
+  * SUBTEST: gt-awake
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Setup workload on all engines,measure gt awake time via pmu
+  *
+  * SUBTEST: idle
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to ensure gpu is idle when there is no workload by reading engine busyness pmu counters
+  *
+  * SUBTEST: idle-no-semaphores
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to ensure gpu is idle when there is no workload by reading engine busyness pmu counters
+  *
+  * SUBTEST: init-busy
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to verify gpu busyness init through pmu perf interface
+  *
+  * SUBTEST: init-sema
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to verify gpu busyness init through pmu perf interface
+  *
+  * SUBTEST: init-wait
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test to verify gpu busyness init through pmu perf interface
+  *
+  * SUBTEST: interrupts
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: interrupts-sync
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: invalid-init
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Tests that i915 PMU corectly errors out in invalid initialization
+  *
+  * SUBTEST: invalid-open
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: module-unload
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: most-busy-check-all
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: most-busy-idle-check-all
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: multi-client
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: pmu-read
+  * Description: Verify i915 pmu dir exists and read all events
+@@ -179,13 +211,16 @@
+  * Feature: pmu
+  *
+  * SUBTEST: semaphore-busy
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: semaphore-wait
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
+  *
+  * SUBTEST: semaphore-wait-idle
+- * Feature: pmu
++ * Feature: i915 pmu perf interface, pmu
++ * Functionality: Test the i915 pmu perf interface
   */
  
- #define LO 0
+ IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
 -- 
 2.40.1
