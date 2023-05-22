@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4865110E338
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 14:03:17 +0000 (UTC)
-Date: Mon, 22 May 2023 16:02:33 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4495510E33A
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 14:22:11 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.249.143.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 2A4E8580D67
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 07:22:08 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1q16QH-00Abcw-1K
+ for igt-dev@lists.freedesktop.org; Mon, 22 May 2023 16:22:05 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230522140233.qgebzajkhjhp47tl@kamilkon-desk1>
-References: <20230403130124.15946-1-mcanal@igalia.com>
- <20230403130124.15946-5-mcanal@igalia.com>
+Date: Mon, 22 May 2023 16:21:55 +0200
+Message-Id: <20230522142201.2527800-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230403130124.15946-5-mcanal@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/kms_rotation_crc: create
- generic reflection tests
+Subject: [igt-dev] [PATCH i-g-t 0/6] Add a method to create spreadsheets
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,95 +29,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Maíra,
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-On 2023-04-03 at 10:01:24 -0300, Maíra Canal wrote:
-> Currently, kms_rotation_crc doesn't have any tests for the reflect-x and
-> reflect-y properties. Therefore, add generic reflection tests for the
-> primary and overlay planes. Note that this tests should skip on i915
------------------------------------------------------------------ ^
-intel
+It can be useful to have all documentation from IGT tests on a single
+XLS spreadsheet. Add a method to do that. With that, it should be
+easy to produce an "igt_tests.xls" file containing one sheet per
+config file with:
 
-+cc Ville, Juha-Pekka and Bhanuprakash
+	./scripts/doc_to_xls.py --xls igt_tests.xls --config tests/*/*json tests/kms*.json
 
-> devices, as i915 devices use reflect-x together with specific modifiers.
-> 
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
-> ---
->  tests/kms_rotation_crc.c | 31 +++++++++++++++++++++++++++++++
->  1 file changed, 31 insertions(+)
-> 
-> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-> index 441a298b..47a3973b 100644
-> --- a/tests/kms_rotation_crc.c
-> +++ b/tests/kms_rotation_crc.c
-> @@ -131,6 +131,9 @@ static void rotate_colors(rgb_color_t *tl, rgb_color_t *tr, rgb_color_t *br,
->  	if (rotation & IGT_REFLECT_X) {
->  		igt_swap(*tl, *tr);
->  		igt_swap(*bl, *br);
-> +	} else if (rotation & IGT_REFLECT_Y) {
-> +		igt_swap(*tl, *bl);
-> +		igt_swap(*tr, *br);
->  	}
->  
->  	if (rotation & IGT_ROTATION_90) {
-> @@ -1055,6 +1058,10 @@ static const char *rot_test_str(igt_rotation_t rot)
->  		return "180";
->  	case IGT_ROTATION_270:
->  		return "270";
-> +	case IGT_REFLECT_X:
-> +		return "x";
-> +	case IGT_REFLECT_Y:
-> +		return "y";
->  	default:
->  		igt_assert(0);
->  	}
-> @@ -1151,6 +1158,17 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->  		{ 0, 0 }
->  	};
->  
-> +	struct generic_reflect {
-> +		unsigned int plane;
-> +		igt_rotation_t rot;
-> +	} *generic_reflect, generic_reflect_subtests[] = {
-> +		{ DRM_PLANE_TYPE_PRIMARY, IGT_REFLECT_X },
-> +		{ DRM_PLANE_TYPE_PRIMARY, IGT_REFLECT_Y },
-> +		{ DRM_PLANE_TYPE_OVERLAY, IGT_REFLECT_X },
-> +		{ DRM_PLANE_TYPE_OVERLAY, IGT_REFLECT_Y },
-> +		{ 0, 0 }
-> +	};
-> +
->  	int gen = 0;
->  
->  	igt_fixture {
-> @@ -1187,6 +1205,19 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->  		}
->  	}
->  
-> +	igt_describe("Generic reflection tests for primary and sprite planes");
-> +	for (generic_reflect = generic_reflect_subtests; generic_reflect->rot; generic_reflect++) {
-> +		igt_subtest_f("%s-reflect-%s",
-> +			      plane_test_str(generic_reflect->plane),
-> +			      rot_test_str(generic_reflect->rot)) {
-> +			/* i915 devices have specific modifiers for reflection */
--------------------------- ^
-intel
-> +			igt_require(!is_i915_device(data.gfx_fd));
---------------------------------------- ^
-is_intel_device
+Mauro Carvalho Chehab (6):
+  scripts/test_list.py: add support to define a name at the config file
+  kms_test_config.json: add a name for the KMS Intel testset
+  i915_test_config.json: add a driver name
+  xe_test_config.json: add a driver name
+  scripts/test_list.py: add a method to return an spreadsheet-like array
+  scripts/doc_to_xls.py: add an script to generate a doc spreadsheet
 
-Regards,
-Kamil
+ scripts/doc_to_xls.py            | 70 ++++++++++++++++++++++++++++++++
+ scripts/test_list.py             | 50 +++++++++++++++++++++--
+ tests/i915/i915_test_config.json |  1 +
+ tests/kms_test_config.json       |  1 +
+ tests/xe/xe_test_config.json     |  1 +
+ 5 files changed, 119 insertions(+), 4 deletions(-)
+ create mode 100755 scripts/doc_to_xls.py
 
-> +
-> +			data.rotation = IGT_ROTATION_0 | generic_reflect->rot;
-> +			test_plane_rotation(&data, generic_reflect->plane, false);
-> +		}
-> +	}
-> +
->  	igt_describe("Rotation test with 90/180/270 degree for a plane of gen9+ with given position");
->  	for (rot_pos = rot_pos_subtests; rot_pos->rot; rot_pos++) {
->  		igt_subtest_f("sprite-rotation-%s-pos-%d-%d", rot_test_str(rot_pos->rot),
-> -- 
-> 2.39.2
-> 
+-- 
+2.40.1
