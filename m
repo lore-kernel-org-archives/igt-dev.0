@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B92C10E2D5
- for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 11:32:07 +0000 (UTC)
-Date: Mon, 22 May 2023 13:32:02 +0200
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F7CD10E2DC
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 May 2023 11:36:12 +0000 (UTC)
+Date: Mon, 22 May 2023 13:36:08 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230522113202.feostmbye6zfkozh@zkempczy-mobl2>
-References: <cover.1684747649.git.karolina.stolarek@intel.com>
- <6390a099791da99b9570b7143fd0cbb519450435.1684747649.git.karolina.stolarek@intel.com>
+To: priyanka.dandamudi@intel.com
+Message-ID: <20230522113608.nrunvvomeuwogc46@zkempczy-mobl2>
+References: <20230520121056.3926557-1-priyanka.dandamudi@intel.com>
+ <20230520121056.3926557-2-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6390a099791da99b9570b7143fd0cbb519450435.1684747649.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/intel_cmds_info: Drop
- BLT_CMD_LONG flag
+In-Reply-To: <20230520121056.3926557-2-priyanka.dandamudi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] xe/xe_mmap: Negative test for mmap
+ flags
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,53 +21,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
+ ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, May 22, 2023 at 11:57:13AM +0200, Karolina Stolarek wrote:
-> It looks like a separate flag for longer commands isn't needed
-> and we can use BLT_CMD_EXTENDED instead.
+On Sat, May 20, 2023 at 05:40:54PM +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> Add negative test by adding invalid mmap flags and check
+> for related errors.
+> 
+> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  tests/xe/xe_mmap.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+> 
+> diff --git a/tests/xe/xe_mmap.c b/tests/xe/xe_mmap.c
+> index 6b313a18..011b8893 100644
+> --- a/tests/xe/xe_mmap.c
+> +++ b/tests/xe/xe_mmap.c
+> @@ -57,6 +57,22 @@ test_mmap(int fd, uint32_t flags)
+>  	gem_close(fd, bo);
+>  }
+>  
+> +/**
+> + * SUBTEST: bad-flags
+> + * Description: Test mmap offset with bad flags.
+> + *
+> + */
+> +static void test_bad_flags(int fd)
+> +{
+> +	struct drm_xe_gem_mmap_offset mmo = {
+> +		.handle = xe_bo_create(fd, 0, 0, 4096),
 
-If so what for you're introducing this flag in patch 1/4?
+When we start rejecting unaligned allocations you'll assert at gem create.
 
 --
 Zbigniew
 
-> 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-> ---
->  lib/i915/intel_cmds_info.c | 2 +-
->  lib/i915/intel_cmds_info.h | 1 -
->  2 files changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/lib/i915/intel_cmds_info.c b/lib/i915/intel_cmds_info.c
-> index 3ce2fd74b..09b612279 100644
-> --- a/lib/i915/intel_cmds_info.c
-> +++ b/lib/i915/intel_cmds_info.c
-> @@ -87,7 +87,7 @@ static const struct blt_cmd_info
->  						 BIT(T_LINEAR) |
->  						 BIT(T_YMAJOR) |
->  						 BIT(T_XMAJOR),
-> -						 BLT_CMD_LONG);
-> +						 BLT_CMD_EXTENDED);
+> +		.flags = -1u,
+> +	};
+> +
+> +	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo, EINVAL);
+> +	gem_close(fd, mmo.handle);
+> +}
+> +
+>  igt_main
+>  {
+>  	int fd;
+> @@ -75,6 +91,9 @@ igt_main
+>  	igt_subtest("vram-system")
+>  		test_mmap(fd, vram_memory(fd, 0) | system_memory(fd));
 >  
->  static const struct blt_cmd_info
->  		pre_gen6_xy_color_blt = BLT_INFO(XY_COLOR_BLT,
-> diff --git a/lib/i915/intel_cmds_info.h b/lib/i915/intel_cmds_info.h
-> index 5998a35ca..91d0f15ec 100644
-> --- a/lib/i915/intel_cmds_info.h
-> +++ b/lib/i915/intel_cmds_info.h
-> @@ -34,7 +34,6 @@ struct blt_cmd_info {
->  	uint32_t flags;
->  #define BLT_CMD_EXTENDED               (1 << 0)
->  #define BLT_CMD_SUPPORTS_COMPRESSION   (1 << 1)
-> -#define BLT_CMD_LONG                   (1 << 2)
->  };
->  
->  struct intel_cmds_info {
+> +	igt_subtest("bad-flags")
+> +		test_bad_flags(fd);
+> +
+>  	igt_fixture {
+>  		xe_device_put(fd);
+>  		close(fd);
 > -- 
 > 2.25.1
 > 
