@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 23 May 2023 12:51:58 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230523105158.wsjsnbjld4knkbr3@kamilkon-desk1>
-References: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
- <20230515133630.2163170-3-tvrtko.ursulin@linux.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C6FF892AE
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 11:07:00 +0000 (UTC)
+Date: Tue, 23 May 2023 13:06:57 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230523110657.nljlr5a54tb22fbl@zkempczy-mobl2>
+References: <20230522163918.31881-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230515133630.2163170-3-tvrtko.ursulin@linux.intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/2] intel_gpu_top: Move
- client name last
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230522163918.31881-1-kamil.konieczny@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/drmtest: Igt info msg on opened
+ device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,94 +21,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-05-15 at 14:36:30 +0100, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On Mon, May 22, 2023 at 06:39:18PM +0200, Kamil Konieczny wrote:
+> From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > 
-> Move client name to be the right most field which visually aligns better
-> with top(1) and prepares for inserting memory usage fields somewhere in
-> the middle.
+> Log info of each opened device path (ex. "Opened device: /dev/dri/card0")
+> to have a trace of devices under test.
+> Device path opened for the first time is logged at info level,
+> subsequent opens (if any) are logged at debug level.
 > 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Rob Clark <robdclark@chromium.org>
-
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  tools/intel_gpu_top.c | 19 +++++++++----------
->  1 file changed, 9 insertions(+), 10 deletions(-)
+>  lib/drmtest.c | 32 +++++++++++++++++++++++++++++++-
+>  1 file changed, 31 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index 453090c298bc..937280a7151a 100644
-> --- a/tools/intel_gpu_top.c
-> +++ b/tools/intel_gpu_top.c
-> @@ -1809,9 +1809,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
->  			return lines;
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 7630bb793..4181644bf 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -205,6 +205,33 @@ static const struct module {
+>  	{}
+>  };
 >  
->  		printf("\033[7m");
-> -		len = printf("%*s %*s ",
-> -			     clients->max_pid_len, "PID",
-> -			     clients->max_name_len, "NAME");
-> +		len = printf("%*s ", clients->max_pid_len, "PID");
->  
->  		if (lines++ >= con_h || len >= con_w)
->  			return lines;
-> @@ -1825,7 +1823,9 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
->  					num_active++;
->  			}
->  
-> -			*class_w = width = (con_w - len) / num_active;
-> +			*class_w = width =
-> +				(con_w - len - clients->max_name_len - 1) /
-> +				num_active;
->  
->  			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
->  				const char *name = iclients->classes.names[i];
-> @@ -1846,8 +1846,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
->  			}
+> +struct _opened_device_path {
+> +	char *path;
+> +	struct igt_list_head link;
+> +};
+> +
+> +/* Logs path of opened device. Device path opened for the first time is logged at info level,
+> +   subsequent opens (if any) are logged at debug level */
+> +static void log_opened_device_path(const char *device_path)
+> +{
+> +	static IGT_LIST_HEAD(opened_paths);
+> +	struct _opened_device_path *item;
+> +
+> +	igt_list_for_each_entry(item, &opened_paths, link) {
+> +		if (!strcmp(item->path, device_path)) {
+> +			igt_debug("Opened previously opened device: %s\n", device_path);
+> +			return;
+> +		}
+> +	}
+> +
+> +	item = calloc(1, sizeof(struct _opened_device_path));
+> +	igt_assert(item);
+> +	item->path = strdup(device_path);
+> +	igt_assert(item->path);
+
+Maybe assert on 'device_path' at function beginning. Regardless decision
+looks correct from my perspective.
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
+> +	igt_list_add(&item->link, &opened_paths);
+> +	igt_info("Opened device: %s\n", item->path);
+> +}
+> +
+>  static int open_device(const char *name, unsigned int chipset)
+>  {
+>  	const char *forced;
+> @@ -235,8 +262,11 @@ static int open_device(const char *name, unsigned int chipset)
+>  			break;
 >  		}
+>  	}
+> -	if ((chipset & chip) == chip)
+> +
+> +	if ((chipset & chip) == chip) {
+> +		log_opened_device_path(name);
+>  		return fd;
+> +	}
 >  
-> -		n_spaces(con_w - len);
-> -		printf("\033[0m\n");
-> +		printf(" %-*s\033[0m\n", con_w - len - 1, "NAME");
->  	} else {
->  		if (iclients->classes.num_engines)
->  			pops->open_struct("clients");
-> @@ -1866,6 +1865,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
->  	struct igt_drm_clients *clients = c->clients;
->  	struct intel_clients *iclients = clients->private_data;
->  	unsigned int i;
-> +	int len;
->  
->  	if (output_mode == INTERACTIVE) {
->  		if (filter_idle && (!c->total_runtime || c->samples < 2))
-> @@ -1873,9 +1873,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
->  
->  		lines++;
->  
-> -		printf("%*s %*s ",
-> -		       clients->max_pid_len, c->pid_str,
-> -		       clients->max_name_len, c->print_name);
-> +		len = printf("%*s ", clients->max_pid_len, c->pid_str);
->  
->  		for (i = 0;
->  		     c->samples > 1 && i <= iclients->classes.max_engine_id;
-> @@ -1898,9 +1896,10 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
->  
->  			print_percentage_bar(pct, max, *class_w,
->  					     numeric_clients);
-> +			len += *class_w;
->  		}
->  
-> -		putchar('\n');
-> +		printf(" %-*s\n", con_w - len - 1, c->print_name);
->  	} else if (output_mode == JSON) {
->  		char buf[64];
->  
+>  err:
+>  	close(fd);
 > -- 
-> 2.37.2
+> 2.39.2
 > 
