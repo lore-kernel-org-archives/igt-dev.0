@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45AE810E3DD
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D6A610E3D9
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:48 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:28 +0530
-Message-Id: <20230523063243.669540-8-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:33 +0530
+Message-Id: <20230523063243.669540-13-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 07/82] tests/chamelium/kms_chamelium_color:
- Document each subtest for testplan
+Subject: [igt-dev] [i-g-t V3 12/82] tests/i915/kms_big_joiner: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,82 +28,73 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_chamelium_color.c | 45 +++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+ tests/i915/kms_big_joiner.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index bbb929b64..709b6ec2c 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -22,10 +22,25 @@
-  *
+diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
+index b9dda58f6..acc8476c9 100644
+--- a/tests/i915/kms_big_joiner.c
++++ b/tests/i915/kms_big_joiner.c
+@@ -24,6 +24,11 @@
+  *  Karthik B S <karthik.b.s@intel.com>
   */
  
 +/**
-+ * TEST: kms chamelium color
++ * TEST: kms big joiner
 + * Category: Display
-+ * Description: Test Color Features at Pipe level using Chamelium to verify instead of CRC
++ * Description: Test big joiner
 + */
-+
- #include "igt_color_helper.h"
+ #include "igt.h"
  
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
+ #define MAX_HDISPLAY_PER_PIPE 5120
+@@ -40,6 +45,16 @@ typedef struct {
+ 	uint32_t big_joiner_output[2];
+ } data_t;
  
 +/**
-+ * SUBTEST: degamma
-+ * Description: Verify that degamma LUT transformation works correctly
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
++ * SUBTEST: invalid-modeset
++ * Description: Verify if the modeset on the adjoining pipe is rejected when
++ *              the pipe is active with a big joiner modeset
++ * Driver requirement: any
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
 + * Run type: FULL
 + * Test category: functionality test
-+ * Driver requirement: any
 + */
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
-  * degamma LUT and verify we have the same frame dump as drawing solid color
-@@ -115,6 +130,15 @@ static bool test_pipe_degamma(data_t *data,
- 	return ret;
+ static void test_invalid_modeset(data_t *data)
+ {
+ 	igt_output_t *output;
+@@ -80,6 +95,15 @@ static void test_invalid_modeset(data_t *data)
+ 	igt_assert_lt(ret, 0);
  }
  
 +/**
-+ * SUBTEST: gamma
-+ * Description: Verify that gamma LUT transformation works correctly
-+ * Functionality: colorspace_gamma
-+ * Mega feature: Color mgmt
++ * SUBTEST: basic
++ * Description: Verify the basic modeset on big joiner mode on all pipes
++ * Driver requirement: any
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
 + * Run type: FULL
 + * Test category: functionality test
-+ * Driver requirement: any
 + */
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
-  * gamma LUT and verify we have the same frame dump as drawing solid
-@@ -465,6 +489,27 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
+ static void test_basic_modeset(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
+@@ -118,6 +142,15 @@ static void test_basic_modeset(data_t *data)
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
  }
  
 +/**
-+ * SUBTEST: ctm-%s
-+ * Description: Check the color transformation %arg[1]
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
++ * SUBTEST: 2x-modeset
++ * Description: Verify simultaneous modeset on 2 big joiner outputs
++ * Driver requirement: any
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
 + * Run type: FULL
 + * Test category: functionality test
-+ * Driver requirement: any
-+ *
-+ * arg[1]:
-+ *
-+ * @0-25:            for 0.25 transparancy
-+ * @0-50:            for 0.50 transparancy
-+ * @0-75:            for 0.75 transparancy
-+ * @blue-to-red:     from blue to red
-+ * @green-to-red:    from green to red
-+ * @limited-range:   with identity matrix
-+ * @max:             for max transparancy
-+ * @negative:        for negative transparancy
-+ * @red-to-blue:     from red to blue
 + */
- static void
- run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 		       color_t *expected_colors,
+ static void test_dual_display(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
 -- 
 2.40.0
