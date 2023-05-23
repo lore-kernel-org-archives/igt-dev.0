@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AF4110E3F6
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:40:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABDD310E3D9
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:40:04 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:42 +0530
-Message-Id: <20230523063243.669540-82-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:39 +0530
+Message-Id: <20230523063243.669540-79-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 81/82] tests/testdisplay: Document each subtest
+Subject: [igt-dev] [i-g-t V3 78/82] tests/kms_vblank: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,32 +28,88 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/testdisplay.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/kms_vblank.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/tests/testdisplay.c b/tests/testdisplay.c
-index ee272dfb2..ac696c7fe 100644
---- a/tests/testdisplay.c
-+++ b/tests/testdisplay.c
-@@ -69,6 +69,19 @@
- #include <stdlib.h>
- #include <signal.h>
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index da0ada78e..1849e8cc5 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -40,6 +40,75 @@
+ #include <sys/wait.h>
  
+ #include <drm.h>
 +/**
-+ * TEST: testdisplay
++ * TEST: kms vblank
 + * Category: Display
-+ * Description: Tests basic display functionality.
++ * Description: Test speed of WaitVblank.
 + *
-+ * SUBTEST:
-+ * Description: Tests basic display functionality.
++ * SUBTEST: crtc-id
++ * Description: check the Vblank and flip events works with given crtc id
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: vblank
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * SUBTEST: invalid
++ * Description: Negative test for vblank request
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: pipe-%s-%s
++ * Description: Check if test run while hanging by introducing NOHANG flag (or)
++ *              Check if injected hang is working properly
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @A:
++ * @B:
++ * @C:
++ * @D:
++ * @E:
++ * @F:
++ * @G:
++ * @H:
++ *
++ * arg[2]:
++ *
++ * @accuracy-idle:
++ * @query-busy:
++ * @query-busy-hang:
++ * @query-forked:
++ * @query-forked-busy:
++ * @query-forked-busy-hang:
++ * @query-forked-hang:
++ * @query-idle:
++ * @query-idle-hang:
++ * @ts-continuation-dpms-rpm:
++ * @ts-continuation-dpms-suspend:
++ * @ts-continuation-idle:
++ * @ts-continuation-idle-hang:
++ * @ts-continuation-modeset:
++ * @ts-continuation-modeset-hang:
++ * @ts-continuation-modeset-rpm:
++ * @ts-continuation-suspend:
++ * @wait-busy:
++ * @wait-busy-hang:
++ * @wait-forked:
++ * @wait-forked-busy:
++ * @wait-forked-busy-hang:
++ * @wait-forked-hang:
++ * @wait-idle:
++ * @wait-idle-hang:
 + */
- IGT_TEST_DESCRIPTION("Tests basic display functionality.");
  
- enum {
+ IGT_TEST_DESCRIPTION("Test speed of WaitVblank.");
+ 
 -- 
 2.40.0
