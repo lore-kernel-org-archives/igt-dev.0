@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 532F410E084
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 08:41:27 +0000 (UTC)
+From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
+Date: Tue, 23 May 2023 08:41:08 +0000
+Message-ID: <BYAPR11MB3413B96CF75752B33A2C26CDD0409@BYAPR11MB3413.namprd11.prod.outlook.com>
+References: <20230522123605.17416-1-sai.gowtham.ch@intel.com>
+ <20230522123605.17416-2-sai.gowtham.ch@intel.com>
+ <20230522161954.i2xmqalvgb6xdbs7@zkempczy-mobl2>
+In-Reply-To: <20230522161954.i2xmqalvgb6xdbs7@zkempczy-mobl2>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Tue, 23 May 2023 07:08:50 -0000
-Message-ID: <168482573064.14422.5927843960277340620@emeril.freedesktop.org>
-References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_D?=
- =?utf-8?q?ocument_KMS_tests_=28rev10=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe/xe_spin: Integrate
+ igt_spin_new with Xe.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,111 +23,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: Document KMS tests (rev10)
-URL   : https://patchwork.freedesktop.org/series/117749/
-State : warning
-
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/888013 for the overview.
-
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42247278):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684825269:step_script
-  section_start:1684825269:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684825270:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42247277):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684825270:step_script
-  section_start:1684825270:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684825271:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42247279):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684825284:step_script
-  section_start:1684825284:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684825285:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42247276):
-     chamelium_port_get_connector(data->chamelium, port, true);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_set_edid’:
-  ../lib/igt_chamelium_helper.c:304:2: error: implicit declaration of function ‘chamelium_port_set_edid’; did you mean ‘chamelium_set_edid’? [-Werror=implicit-function-declaration]
-    chamelium_port_set_edid(data->chamelium, port, data->edids[edid]);
-    ^~~~~~~~~~~~~~~~~~~~~~~
-    chamelium_set_edid
-  ../lib/igt_chamelium_helper.c:304:2: warning: nested extern declaration of ‘chamelium_port_set_edid’ [-Wnested-externs]
-  ../lib/igt_chamelium_helper.c: In function ‘chamelium_check_analog_bridge’:
-  ../lib/igt_chamelium_helper.c:319:3: warning: initialization of ‘drmModeConnector *’ {aka ‘struct _drmModeConnector *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-     chamelium_port_get_connector(data->chamelium, port, false);
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1684825279:step_script
-  section_start:1684825279:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684825280:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/888013
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2VtcGN6eW5za2ksIFpi
+aWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwg
+TWF5IDIyLCAyMDIzIDk6NTAgUE0NCj4gVG86IENoLCBTYWkgR293dGhhbSA8c2FpLmdvd3RoYW0u
+Y2hAaW50ZWwuY29tPg0KPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3Vi
+amVjdDogUmU6IFtQQVRDSCBpLWctdCAxLzJdIGxpYi94ZS94ZV9zcGluOiBJbnRlZ3JhdGUgaWd0
+X3NwaW5fbmV3IHdpdGggWGUuDQo+IA0KPiBPbiBNb24sIE1heSAyMiwgMjAyMyBhdCAwNjowNjow
+NFBNICswNTMwLCBzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20NCj4gd3JvdGU6DQo+ID4gRnJvbTog
+U2FpIEdvd3RoYW0gQ2ggPHNhaS5nb3d0aGFtLmNoQGludGVsLmNvbT4NCj4gPg0KPiA+IEV4dGVu
+ZGluZyB0aGUgc3Bpbl9jcmVhdGUgaW1wbGVtZW50YXRpb24gYW5kIGFsbG9jYXRvciBoYW5kbGUg
+c3VwcG9ydA0KPiA+IGluIHhlLCB3aGVyZSBpdCBzdWJtaXRzIGR1bW15IHdvcmsgbG9hZHMgdG8g
+ZW5naW5lLiBUaGlzDQo+ID4gSW1wbGVtZW50YXRpb24gaXMgd3JhcHBlZCBhcm91bmQgdm1fYmlu
+ZCBhbmQgdW5iaW5kIGFzIHdlIGFyZSBzdXBwb3NlZCB0bw0KPiBkbyBpdCBtYW51YWxseSBmb3Ig
+eGUuDQo+ID4NCj4gPiBDYzogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5
+bnNraUBpbnRlbC5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogU2FpIEdvd3RoYW0gQ2ggPHNhaS5n
+b3d0aGFtLmNoQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgbGliL2lndF9kdW1teWxvYWQuYyB8
+IDI0ICsrKysrKysrKysrKy0tLS0gIGxpYi9pZ3RfZHVtbXlsb2FkLmggfCAxMQ0KPiA+ICsrKysr
+KysrDQo+ID4gIGxpYi94ZS94ZV9zcGluLmMgICAgfCA2OCArKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAgbGliL3hlL3hlX3NwaW4uaCAgICB8ICA3ICsr
+KysrDQo+ID4gIDQgZmlsZXMgY2hhbmdlZCwgMTA0IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25z
+KC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9kdW1teWxvYWQuYyBiL2xpYi9pZ3Rf
+ZHVtbXlsb2FkLmMgaW5kZXgNCj4gPiA3NDBhNThmMy4uNmU4OWI3MmQgMTAwNjQ0DQo+ID4gLS0t
+IGEvbGliL2lndF9kdW1teWxvYWQuYw0KPiA+ICsrKyBiL2xpYi9pZ3RfZHVtbXlsb2FkLmMNCj4g
+PiBAQCAtNDYsNiArNDYsNyBAQA0KPiA+ICAjaW5jbHVkZSAiaW50ZWxfcmVnLmgiDQo+ID4gICNp
+bmNsdWRlICJpb2N0bF93cmFwcGVycy5oIg0KPiA+ICAjaW5jbHVkZSAic3dfc3luYy5oIg0KPiA+
+ICsjaW5jbHVkZSAieGUveGVfc3Bpbi5oIg0KPiA+DQo+ID4gIC8qKg0KPiA+ICAgKiBTRUNUSU9O
+OmlndF9kdW1teWxvYWQNCj4gPiBAQCAtNDQ3LDcgKzQ0OCwxMCBAQCBzcGluX2NyZWF0ZShpbnQg
+ZmQsIGNvbnN0IHN0cnVjdCBpZ3Rfc3Bpbl9mYWN0b3J5DQo+ID4gKm9wdHMpICBpZ3Rfc3Bpbl90
+ICogIF9faWd0X3NwaW5fZmFjdG9yeShpbnQgZmQsIGNvbnN0IHN0cnVjdA0KPiA+IGlndF9zcGlu
+X2ZhY3RvcnkgKm9wdHMpICB7DQo+ID4gLQlyZXR1cm4gc3Bpbl9jcmVhdGUoZmQsIG9wdHMpOw0K
+PiA+ICsJaWYgKGlzX3hlX2RldmljZShmZCkpDQo+ID4gKwkJcmV0dXJuIHhlX3NwaW5fY3JlYXRl
+KGZkLCBvcHRzKTsNCj4gPiArCWVsc2UNCj4gPiArCQlyZXR1cm4gc3Bpbl9jcmVhdGUoZmQsIG9w
+dHMpOw0KPiA+ICB9DQo+ID4NCj4gPiAgLyoqDQo+ID4gQEAgLTQ2Nyw2ICs0NzEsMTEgQEAgaWd0
+X3NwaW5fZmFjdG9yeShpbnQgZmQsIGNvbnN0IHN0cnVjdA0KPiA+IGlndF9zcGluX2ZhY3Rvcnkg
+Km9wdHMpICB7DQo+ID4gIAlpZ3Rfc3Bpbl90ICpzcGluOw0KPiA+DQo+ID4gKwlpZiAoaXNfeGVf
+ZGV2aWNlKGZkKSkgew0KPiA+ICsJCXNwaW4gPSB4ZV9zcGluX2NyZWF0ZShmZCwgb3B0cyk7DQo+
+ID4gKwkJcmV0dXJuIHNwaW47DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICAJaWYgKChvcHRzLT5mbGFn
+cyAmIElHVF9TUElOX1BPTExfUlVOKSAmJiBvcHRzLT5lbmdpbmUgIT0NCj4gQUxMX0VOR0lORVMp
+IHsNCj4gPiAgCQl1bnNpZ25lZCBpbnQgY2xhc3M7DQo+ID4NCj4gPiBAQCAtNjQ3LDExICs2NTYs
+MTQgQEAgdm9pZCBpZ3Rfc3Bpbl9mcmVlKGludCBmZCwgaWd0X3NwaW5fdCAqc3BpbikNCj4gPiAg
+CWlmICghc3BpbikNCj4gPiAgCQlyZXR1cm47DQo+ID4NCj4gPiAtCXB0aHJlYWRfbXV0ZXhfbG9j
+aygmbGlzdF9sb2NrKTsNCj4gPiAtCWlndF9saXN0X2RlbCgmc3Bpbi0+bGluayk7DQo+ID4gLQlw
+dGhyZWFkX211dGV4X3VubG9jaygmbGlzdF9sb2NrKTsNCj4gPiAtDQo+ID4gLQlfX2lndF9zcGlu
+X2ZyZWUoZmQsIHNwaW4pOw0KPiA+ICsJaWYgKGlzX3hlX2RldmljZShmZCkpIHsNCj4gPiArCQl4
+ZV9zcGluX2ZyZWUoZmQsIHNwaW4pOw0KPiA+ICsJfSBlbHNlIHsNCj4gPiArCQlwdGhyZWFkX211
+dGV4X2xvY2soJmxpc3RfbG9jayk7DQo+ID4gKwkJaWd0X2xpc3RfZGVsKCZzcGluLT5saW5rKTsN
+Cj4gPiArCQlwdGhyZWFkX211dGV4X3VubG9jaygmbGlzdF9sb2NrKTsNCj4gPiArCQlfX2lndF9z
+cGluX2ZyZWUoZmQsIHNwaW4pOw0KPiA+ICsJfQ0KPiA+ICB9DQo+ID4NCj4gPiAgdm9pZCBpZ3Rf
+dGVybWluYXRlX3NwaW5zKHZvaWQpDQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZHVtbXlsb2Fk
+LmggYi9saWIvaWd0X2R1bW15bG9hZC5oIGluZGV4DQo+ID4gYjI0N2FiMDIuLjRkYTRlNWE1IDEw
+MDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3RfZHVtbXlsb2FkLmgNCj4gPiArKysgYi9saWIvaWd0X2R1
+bW15bG9hZC5oDQo+ID4gQEAgLTUxLDggKzUxLDEwIEBAIHR5cGVkZWYgc3RydWN0IGlndF9zcGlu
+X2ZhY3Rvcnkgew0KPiA+ICAJdWludDMyX3QgZGVwZW5kZW5jeTsNCj4gPiAgCXVpbnQ2NF90IGRl
+cGVuZGVuY3lfc2l6ZTsNCj4gPiAgCXVuc2lnbmVkIGludCBlbmdpbmU7DQo+ID4gKwlzdHJ1Y3Qg
+ZHJtX3hlX2VuZ2luZV9jbGFzc19pbnN0YW5jZSAqaHdlOw0KPiA+ICAJdW5zaWduZWQgaW50IGZs
+YWdzOw0KPiA+ICAJaW50IGZlbmNlOw0KPiA+ICsJdWludDMyX3Qgdm07DQo+ID4gIAl1aW50NjRf
+dCBhaG5kOw0KPiA+ICB9IGlndF9zcGluX2ZhY3RvcnlfdDsNCj4gPg0KPiA+IEBAIC04Myw2ICs4
+NSwxNSBAQCB0eXBlZGVmIHN0cnVjdCBpZ3Rfc3BpbiB7ICAjZGVmaW5lIFNQSU5fQ0xGTFVTSCAo
+MQ0KPiA+IDw8IDApDQo+ID4NCj4gPiAgCXN0cnVjdCBpZ3Rfc3Bpbl9mYWN0b3J5IG9wdHM7DQo+
+ID4gKw0KPiA+ICsJdWludDMyX3Qgc3RhcnQ7DQo+ID4gKwl1aW50MzJfdCBlbmQ7DQo+ID4gKwlz
+aXplX3QgYm9fc2l6ZTsNCj4gPiArCXVpbnQ2NF90IGFkZHJlc3M7DQo+ID4gKwl1bnNpZ25lZCBp
+bnQgZW5naW5lOw0KPiA+ICsJdWludDMyX3Qgdm07DQo+ID4gKwl1aW50MzJfdCBzeW5jb2JqOw0K
+PiA+ICsNCj4gPiAgfSBpZ3Rfc3Bpbl90Ow0KPiA+DQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvbGli
+L3hlL3hlX3NwaW4uYyBiL2xpYi94ZS94ZV9zcGluLmMgaW5kZXgNCj4gPiA4NTZkMGJhMi4uOWE0
+ZmJlYjggMTAwNjQ0DQo+ID4gLS0tIGEvbGliL3hlL3hlX3NwaW4uYw0KPiA+ICsrKyBiL2xpYi94
+ZS94ZV9zcGluLmMNCj4gPiBAQCAtMTUsNiArMTUsNyBAQA0KPiA+ICAjaW5jbHVkZSAiaW50ZWxf
+cmVnLmgiDQo+ID4gICNpbmNsdWRlICJ4ZV9pb2N0bC5oIg0KPiA+ICAjaW5jbHVkZSAieGVfc3Bp
+bi5oIg0KPiA+ICsjaW5jbHVkZSAibGliL2lndF9kdW1teWxvYWQuaCINCj4gPg0KPiA+ICAvKioN
+Cj4gPiAgICogeGVfc3Bpbl9pbml0Og0KPiA+IEBAIC04Miw2ICs4Myw3MyBAQCB2b2lkIHhlX3Nw
+aW5fZW5kKHN0cnVjdCB4ZV9zcGluICpzcGluKQ0KPiA+ICAJc3Bpbi0+ZW5kID0gMDsNCj4gPiAg
+fQ0KPiA+DQo+ID4gK2lndF9zcGluX3QgKg0KPiA+ICt4ZV9zcGluX2NyZWF0ZShpbnQgZmQsIGNv
+bnN0IHN0cnVjdCBpZ3Rfc3Bpbl9mYWN0b3J5ICpvcHQpIHsNCj4gPiArCXNpemVfdCBib19zaXpl
+ID0geGVfZ2V0X2RlZmF1bHRfYWxpZ25tZW50KGZkKTsNCj4gPiArCXVpbnQzMl90IGJvOw0KPiA+
+ICsJdWludDY0X3QgYWhuZCA9IG9wdC0+YWhuZCwgYWRkcjsNCj4gPiArCXN0cnVjdCBpZ3Rfc3Bp
+biAqc3BpbjsNCj4gPiArCXN0cnVjdCB4ZV9zcGluICp4ZV9zcGluOw0KPiA+ICsJc3RydWN0IGRy
+bV94ZV9zeW5jIHN5bmMgPSB7DQo+ID4gKwkJLmZsYWdzID0gRFJNX1hFX1NZTkNfU1lOQ09CSiB8
+IERSTV9YRV9TWU5DX1NJR05BTCwNCj4gPiArCX07DQo+ID4gKwlzdHJ1Y3QgZHJtX3hlX2V4ZWMg
+ZXhlYyA9IHsNCj4gPiArCQkubnVtX2JhdGNoX2J1ZmZlciA9IDEsDQo+ID4gKwkJLm51bV9zeW5j
+cyA9IDEsDQo+ID4gKwkJLnN5bmNzID0gdG9fdXNlcl9wb2ludGVyKCZzeW5jKSwNCj4gPiArCX07
+DQo+ID4gKw0KPiA+ICsJaWd0X2Fzc2VydChhaG5kKTsNCj4gPiArCXhlX3NwaW4gPSBjYWxsb2Mo
+MSwgc2l6ZW9mKHN0cnVjdCB4ZV9zcGluKSk7DQo+ID4gKwlpZ3RfYXNzZXJ0KHhlX3NwaW4pOw0K
+PiANCj4gV2hhdCBpcyBoYXBwZW5pbmcgd2l0aCB4ZV9zcGluIGxhdGVyPyBJIG1lYW4gaXQgaXMg
+YWxsb2NhdGVkIGFuZD8NCj4gDQo+ID4gKwlzcGluID0gY2FsbG9jKDEsIHNpemVvZihzdHJ1Y3Qg
+aWd0X3NwaW4pKTsNCj4gPiArCWlndF9hc3NlcnQoc3Bpbik7DQo+ID4gKw0KPiA+ICsJaWYgKG9w
+dC0+ZW5naW5lKSB7DQo+ID4gKwkJc3Bpbi0+ZW5naW5lID0gb3B0LT5lbmdpbmU7DQo+ID4gKwkJ
+c3Bpbi0+dm0gPSBvcHQtPnZtOw0KPiA+ICsJfSBlbHNlIHsNCj4gPiArCQlzcGluLT52bSA9IHhl
+X3ZtX2NyZWF0ZShmZCwgMCwgMCk7DQo+ID4gKwkJc3Bpbi0+ZW5naW5lID0geGVfZW5naW5lX2Ny
+ZWF0ZShmZCwgc3Bpbi0+dm0sIG9wdC0+aHdlLCAwKTsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwli
+byA9IHhlX2JvX2NyZWF0ZShmZCwgb3B0LT5od2UtPmd0X2lkLCBzcGluLT52bSwgYm9fc2l6ZSk7
+DQo+ID4gKwlzcGluLT5oYW5kbGUgPSBibzsNCj4gPiArCXNwaW4tPnN5bmNvYmogPSBzeW5jb2Jq
+X2NyZWF0ZShmZCwgMCk7DQo+ID4gKwlhZGRyID0gaW50ZWxfYWxsb2NhdG9yX2FsbG9jX3dpdGhf
+c3RyYXRlZ3koYWhuZCwgc3Bpbi0+aGFuZGxlLCBib19zaXplLA0KPiAwLCBBTExPQ19TVFJBVEVH
+WV9MT1dfVE9fSElHSCk7DQo+ID4gKwl4ZV92bV9iaW5kX3N5bmMoZmQsIHNwaW4tPnZtLCBzcGlu
+LT5oYW5kbGUsIDAsIGFkZHIsIGJvX3NpemUpOw0KPiA+ICsNCj4gPiArCXhlX3NwaW5faW5pdCh4
+ZV9zcGluLCBhZGRyLCB0cnVlKTsNCj4gPiArCWV4ZWMuZW5naW5lX2lkID0gc3Bpbi0+ZW5naW5l
+Ow0KPiA+ICsJZXhlYy5hZGRyZXNzID0gYWRkcjsNCj4gPiArCXN5bmMuaGFuZGxlID0gc3Bpbi0+
+c3luY29iajsNCj4gPiArCWlndF9hc3NlcnRfZXEoaWd0X2lvY3RsKGZkLCBEUk1fSU9DVExfWEVf
+RVhFQywgJmV4ZWMpLCAwKTsNCj4gDQo+IFRoaXMgY29kZSBzdWJtaXRzIHRoZSBqb2IsIGJ1dCB0
+aGVyZSdyZSBubyBpbnN0cnVjdGlvbnMgaW4gYm8gZG1lc2cgY29tcGxhaW5zDQo+IHdpdGggZXJy
+b3JzLiBDaGVjayB5b3VyIHNwaW4gaXMgbm90IHN0YXJ0aW5nIGJ5IGFkZGluZyBoZXJlOg0KPiAN
+CkknbSB0cnlpbmcgdG8gdW5kZXJzdGFuZCBtb3JlIGhlcmUsIHdoYXQgZG8geW91IG1lYW4gYnkg
+bm8gaW5zdHJ1Y3Rpb25zIGluIGJvID8gDQo+IHhlX3NwaW5fd2FpdF9zdGFydGVkKHhlX3NwaW4p
+Ow0KPiANCkRvIHlvdSBtZWFuIHdlIGhhdmUgdG8gd2FpdCBzcGluIGZvciB1bmNvbXBsZXRlZCBz
+dG9yZS1kd29yZCBhZnRlciBzdWJtaXR0aW5nIGV4ZWMgPw0KPiBjcHUgd2lsbCBzdHVjayB3YWl0
+aW5nIGZvciB1bmNvbXBsZXRlZCBzdG9yZS1kd29yZC4NCj4gDQo+IEhpbnQ6IGNoZWNrIHlvdXIg
+Ym8uDQo+IA0KPiAtLQ0KPiBaYmlnbmlldw0KPiANCj4gPiArDQo+ID4gKwlzcGluLT5iYXRjaCA9
+IHhlX3NwaW4tPmJhdGNoOw0KPiA+ICsJc3Bpbi0+c3RhcnQgPSB4ZV9zcGluLT5zdGFydDsNCj4g
+PiArCXNwaW4tPmVuZCA9IHhlX3NwaW4tPmVuZDsNCj4gPiArCXNwaW4tPmJvX3NpemUgPSBib19z
+aXplOw0KPiA+ICsJc3Bpbi0+YWRkcmVzcyA9IGFkZHI7DQo+ID4gKwlyZXR1cm4gc3BpbjsNCj4g
+PiArDQo+ID4gK30NCj4gPiArDQo+ID4gK3ZvaWQgeGVfc3Bpbl9zeW5jX3dhaXQoaW50IGZkLCBz
+dHJ1Y3QgaWd0X3NwaW4gKnNwaW4pIHsNCj4gPiArCWlndF9hc3NlcnQoc3luY29ial93YWl0KGZk
+LCAmc3Bpbi0+c3luY29iaiwgMSwgSU5UNjRfTUFYLCAwLA0KPiA+ICsJCQkJTlVMTCkpOw0KPiA+
+ICt9DQo+ID4gKw0KPiA+ICt2b2lkIHhlX3NwaW5fZnJlZShpbnQgZmQsIHN0cnVjdCBpZ3Rfc3Bp
+biAqc3Bpbikgew0KPiA+ICsJeGVfdm1fdW5iaW5kX3N5bmMoZmQsIHNwaW4tPnZtLCAwLCBzcGlu
+LT5hZGRyZXNzLCBzcGluLT5ib19zaXplKTsNCj4gPiArCXNwaW4tPmVuZCA9IDA7DQo+ID4gKwlz
+eW5jb2JqX2Rlc3Ryb3koZmQsIHNwaW4tPnN5bmNvYmopOw0KPiA+ICsJeGVfZW5naW5lX2Rlc3Ry
+b3koZmQsIHNwaW4tPmVuZ2luZSk7DQo+ID4gKwlnZW1fY2xvc2UoZmQsIHNwaW4tPmhhbmRsZSk7
+DQo+ID4gK30NCj4gPiArDQo+ID4gIHZvaWQgeGVfY29ya19pbml0KGludCBmZCwgc3RydWN0IGRy
+bV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKmh3ZSwNCj4gPiAgCQkgIHN0cnVjdCB4ZV9jb3Jr
+ICpjb3JrKQ0KPiA+ICB7DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi94ZS94ZV9zcGluLmggYi9saWIv
+eGUveGVfc3Bpbi5oIGluZGV4DQo+ID4gNzNmOWEwMjYuLjQ4ODY3ZWI4IDEwMDY0NA0KPiA+IC0t
+LSBhL2xpYi94ZS94ZV9zcGluLmgNCj4gPiArKysgYi9saWIveGUveGVfc3Bpbi5oDQo+ID4gQEAg
+LTEzLDE5ICsxMywyNiBAQA0KPiA+ICAjaW5jbHVkZSA8c3RkYm9vbC5oPg0KPiA+DQo+ID4gICNp
+bmNsdWRlICJ4ZV9xdWVyeS5oIg0KPiA+ICsjaW5jbHVkZSAibGliL2lndF9kdW1teWxvYWQuaCIN
+Cj4gPg0KPiA+ICAvKiBNYXBwZWQgR1BVIG9iamVjdCAqLw0KPiA+ICsNCj4gPiAgc3RydWN0IHhl
+X3NwaW4gew0KPiA+ICAJdWludDMyX3QgYmF0Y2hbMTZdOw0KPiA+ICAJdWludDY0X3QgcGFkOw0K
+PiA+ICAJdWludDMyX3Qgc3RhcnQ7DQo+ID4gIAl1aW50MzJfdCBlbmQ7DQo+ID4gKw0KPiA+ICB9
+Ow0KPiA+DQo+ID4gK2lndF9zcGluX3QgKg0KPiA+ICt4ZV9zcGluX2NyZWF0ZShpbnQgZmQsIGNv
+bnN0IHN0cnVjdCBpZ3Rfc3Bpbl9mYWN0b3J5ICpvcHQpOw0KPiA+ICB2b2lkIHhlX3NwaW5faW5p
+dChzdHJ1Y3QgeGVfc3BpbiAqc3BpbiwgdWludDY0X3QgYWRkciwgYm9vbCBwcmVlbXB0KTsNCj4g
+PiBib29sIHhlX3NwaW5fc3RhcnRlZChzdHJ1Y3QgeGVfc3BpbiAqc3Bpbik7DQo+ID4gK3ZvaWQg
+eGVfc3Bpbl9zeW5jX3dhaXQoaW50IGZkLCBzdHJ1Y3QgaWd0X3NwaW4gKnNwaW4pOw0KPiA+ICB2
+b2lkIHhlX3NwaW5fd2FpdF9zdGFydGVkKHN0cnVjdCB4ZV9zcGluICpzcGluKTsgIHZvaWQNCj4g
+PiB4ZV9zcGluX2VuZChzdHJ1Y3QgeGVfc3BpbiAqc3Bpbik7DQo+ID4gK3ZvaWQgeGVfc3Bpbl9m
+cmVlKGludCBmZCwgc3RydWN0IGlndF9zcGluICpzcGluKTsNCj4gPg0KPiA+ICBzdHJ1Y3QgeGVf
+Y29yayB7DQo+ID4gIAlzdHJ1Y3QgeGVfc3BpbiAqc3BpbjsNCj4gPiAtLQ0KPiA+IDIuMzkuMQ0K
+PiA+DQo=
