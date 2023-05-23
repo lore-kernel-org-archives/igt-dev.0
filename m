@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 070F910E3DE
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5280F10E3E0
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:37 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:17 +0530
-Message-Id: <20230523063243.669540-57-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:20 +0530
+Message-Id: <20230523063243.669540-60-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 56/82] tests/kms_lease: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V3 59/82] tests/kms_pipe_crc_basic: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,208 +26,122 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
+V2: - Add missing "Driver requirement" field
+
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_lease.c | 180 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 180 insertions(+)
+ tests/kms_pipe_crc_basic.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 29a774ae8..291d22c6f 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -26,6 +26,11 @@
-  * This is a test of DRM leases
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 84c73fd7f..1b4a4e014 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -23,8 +23,9 @@
   */
  
-+/**
-+ * TEST: kms lease
-+ * Category: Display
-+ * Description: Test of CreateLease.
-+ */
+ /**
+- * TEST: Tests behaviour of CRC
++ * TEST: kms pipe crc basic
+  * Category: Display
++ * Description: Tests behaviour of CRC
+  */
  
  #include "igt.h"
- #include <stdlib.h>
-@@ -45,6 +50,181 @@
- #include <drm.h>
- #include "igt_device.h"
+@@ -64,6 +65,15 @@ static bool simulation_constraint(enum pipe pipe)
+ 	return false;
+ }
  
 +/**
-+ * SUBTEST: atomic_implicit_crtc
-+ * Description: Negative test by using a different crtc with atomic ioctl
++ * SUBTEST: bad-source
++ * Description: Tests error handling when the bad source is set.
 + * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: cursor_implicit_plane
-+ * Description: Negative test by using a non-primary plane with setcursor ioctl
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: empty_lease
-+ * Description: Check that creating an empty lease works
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: implicit-plane-lease
-+ * Description: Tests the implicitly added planes.
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: invalid-create-leases
-+ * Description: Tests error handling while creating invalid corner-cases for
-+ *              create-lease ioctl
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease-uevent
-+ * Description: Tests all the uevent cases
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_again
-+ * Description: Tests leasing objects more than once
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_get
-+ * Description: Tests getting the required contents of a lease
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_invalid_connector
-+ * Description: Tests leasing an invalid connector
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_invalid_crtc
-+ * Description: Tests leasing an invalid crtc
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_invalid_plane
-+ * Description: Tests leasing an invalid plane
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_revoke
-+ * Description: Tests revocation of lease
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_unleased_connector
-+ * Description: Negative test by trying to use an unleased connector
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lease_unleased_crtc
-+ * Description: Negative test by trying to use an unleased crtc
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: lessee_list
-+ * Description: Check if listed lease is same as created one
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: master-vs-lease
-+ * Description: Tests the drop/set_master interactions.
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: multimaster-lease
-+ * Description: Tests that the 2nd master can only create leases while being
-+ *              active master, and that leases on the first master don't prevent
-+ *              lease creation for the 2nd master.
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: page_flip_implicit_plane
-+ * Description: Negative test by using a non-primary plane with the page flip ioctl
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: possible-crtcs-filtering
-+ * Description: Tests that  possible_crtcs logically match between master and
-+ *              lease, and that the values are correctly renumbered on the lease
-+ *              side.
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: setcrtc_implicit_plane
-+ * Description: Negative test by using a non-primary plane with the setcrtc ioctl
-+ * Driver requirement: any
-+ * Functionality: lease
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: simple_lease
-+ * Description: Check if create lease ioctl call works
-+ * Driver requirement: any
-+ * Functionality: lease
++ * Functionality: crc
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
-+
- IGT_TEST_DESCRIPTION("Test of CreateLease.");
+ static void test_bad_source(data_t *data)
+ {
+ 	errno = 0;
+@@ -88,6 +98,7 @@ enum {
+ /**
+  * SUBTEST: read-crc
+  * Description: Test for pipe CRC reads
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+@@ -95,6 +106,7 @@ enum {
+  *
+  * SUBTEST: read-crc-frame-sequence
+  * Description: Tests the pipe CRC read and ensure frame sequence
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+@@ -102,6 +114,7 @@ enum {
+  *
+  * SUBTEST: nonblocking-crc
+  * Description: Test for O_NONBLOCK CRC reads
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+@@ -109,6 +122,7 @@ enum {
+  *
+  * SUBTEST: nonblocking-crc-frame-sequence
+  * Description: Test for O_NONBLOCK CRC reads and ensure frame sequence
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+@@ -116,6 +130,7 @@ enum {
+  *
+  * SUBTEST: suspend-read-crc
+  * Description: Suspend test for pipe CRC reads
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+@@ -123,12 +138,12 @@ enum {
+  *
+  * SUBTEST: hang-read-crc
+  * Description: Hang test for pipe CRC read
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+  * Mega feature: General Display Features
+  */
+-
+ static void test_read_crc(data_t *data, enum pipe pipe,
+ 			  igt_output_t *output, unsigned flags)
+ {
+@@ -229,6 +244,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+ /**
+  * SUBTEST: compare-crc-sanitycheck
+  * Description: Basic sanity check for CRC mismatches
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+@@ -299,6 +315,16 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_remove_fb(data->drm_fd, &fb1);
+ }
  
- typedef struct {
++/**
++ * SUBTEST: disable-crc-after-crtc
++ * Description: Check that disabling CRCs on a CRTC after having disabled the
++ *              CRTC does not cause issues.
++ * Driver requirement: any
++ * Functionality: crc
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+ 					igt_output_t *output)
+ {
 -- 
 2.40.0
