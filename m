@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F28B610E3F6
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A397A10E3D9
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:20 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:59 +0530
-Message-Id: <20230523063243.669540-39-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:08 +0530
+Message-Id: <20230523063243.669540-48-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 38/82] tests/kms_bw: Document each subtest for
- testplan
+Subject: [igt-dev] [i-g-t V3 47/82] tests/kms_dp_aux_dev: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,39 +28,32 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_bw.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ tests/kms_dp_aux_dev.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index b66473e60..331be5755 100644
---- a/tests/kms_bw.c
-+++ b/tests/kms_bw.c
-@@ -25,6 +25,26 @@
- #include "drm.h"
- #include <stdio.h>
- #include <xf86drmMode.h>
+diff --git a/tests/kms_dp_aux_dev.c b/tests/kms_dp_aux_dev.c
+index 69edc1585..fc8cb91e3 100644
+--- a/tests/kms_dp_aux_dev.c
++++ b/tests/kms_dp_aux_dev.c
+@@ -31,6 +31,19 @@
+ 
+ #include "igt.h"
+ #include "igt_kms.h"
 +/**
-+ * TEST: kms bw
++ * TEST: kms dp aux dev
 + * Category: Display
++ * Description: Test that /dev/drm_dp_aux reads work
 + *
-+ * SUBTEST: linear-tiling-%d-displays-%s
-+ * Description: bw test with %arg[2]
++ * SUBTEST:
++ * Description: Test that /dev/drm_dp_aux reads work
 + * Driver requirement: any
-+ * Functionality: obsolete
-+ * Mega feature: General Display Features
++ * Functionality: dp
++ * Mega feature: DP
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * arg[1].values: 1, 2, 3, 4, 5, 6, 7, 8
-+ *
-+ * arg[2]:
-+ *
-+ * @1920x1080p:       1920x1080 resolution
-+ * @2560x1440p:       2560x1440 resolution
-+ * @3840x2160p:       3840x2160 resolution
 + */
  
- /* Common test data. */
- typedef struct data {
+ IGT_TEST_DESCRIPTION("Test that /dev/drm_dp_aux reads work");
+ 
 -- 
 2.40.0
