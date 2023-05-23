@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62CB010E3DE
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2259C10E3E0
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:04 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:50 +0530
-Message-Id: <20230523063243.669540-30-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:57 +0530
+Message-Id: <20230523063243.669540-37-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 29/82] tests/i915/kms_psr2_su: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V3 36/82] tests/kms_atomic_interruptible: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,46 +28,76 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_psr2_su.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ tests/kms_atomic_interruptible.c | 50 ++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
-index 65e67b8c9..0818d432c 100644
---- a/tests/i915/kms_psr2_su.c
-+++ b/tests/i915/kms_psr2_su.c
-@@ -30,6 +30,33 @@
- #include <stdio.h>
- #include <string.h>
- #include <sys/timerfd.h>
+diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
+index 74b2e246a..be28127d8 100644
+--- a/tests/kms_atomic_interruptible.c
++++ b/tests/kms_atomic_interruptible.c
+@@ -21,6 +21,11 @@
+  * IN THE SOFTWARE.
+  */
+ 
 +/**
-+ * TEST: kms psr2 su
++ * TEST: kms atomic interruptible
 + * Category: Display
-+ * Description: Test PSR2 selective update
-+ *
-+ * SUBTEST: frontbuffer-XRGB8888
-+ * Description: Test that selective update works when screen changes
++ * Description: Tests that interrupt various atomic ioctls.
++ */
+ #include <signal.h>
+ 
+ #include "igt.h"
+@@ -74,6 +79,51 @@ static drmEventContext drm_events = {
+ 	.page_flip_handler = ev_page_flip
+ };
+ 
++/**
++ * SUBTEST: %s-setmode
++ * Description: Tests the interrupt properties of %arg[1] modeset
 + * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: page_flip-%s
-+ * Description: Test the selective update with %arg[1] when screen changes
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
++ * Functionality: kms_core
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @NV12:        NV12 format
-+ * @P010:        P010 format
-+ * @XRGB8888:    XRGB8888 format
++ * @atomic:      atomic
++ * @legacy:      legacy
 + */
- 
- IGT_TEST_DESCRIPTION("Test PSR2 selective update");
- 
++
++/**
++ * SUBTEST: legacy-%s
++ * Description: Tests the interrupt properties for %arg[1]
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor:         Cursor
++ * @dpms:           DPMS
++ * @pageflip:       Page flip
++ */
++
++/**
++ * SUBTEST: universal-setplane-%s
++ * Description: Tests the interrupt properties for %arg[1]
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor:         Cursor plane
++ * @primary:        Primary plane
++ */
+ static void run_plane_test(igt_display_t *display, enum pipe pipe, igt_output_t *output,
+ 			   enum plane_test_type test_type, unsigned plane_type)
+ {
 -- 
 2.40.0
