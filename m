@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 360E010E3EE
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAF1210E3D9
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:25 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:29 +0530
-Message-Id: <20230523063243.669540-69-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:12 +0530
+Message-Id: <20230523063243.669540-52-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 68/82] tests/kms_properties: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V3 51/82] tests/kms_force_connector_basic:
+ Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,66 +28,63 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_properties.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ tests/kms_force_connector_basic.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index 2fe8dfa66..b32bac4af 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -28,6 +28,31 @@
- #include <stdio.h>
- #include <string.h>
- #include <time.h>
-+/**
-+ * TEST: kms properties
-+ * Category: Display
-+ *
-+ * SUBTEST: %s-properties-%s
-+ * Description: Tests %arg[1] properties with %arg[2] commit
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @connector:       Connector
-+ * @crtc:            CRTC
-+ * @plane:           Plane
-+ * @invalid:         Invalid (connector/crtc/plane)
-+ *
-+ * arg[2]:
-+ *
-+ * @atomic:          atomic
-+ * @legacy:          legacy
-+ */
-+
+diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
+index 7e35693cf..26398a7ce 100644
+--- a/tests/kms_force_connector_basic.c
++++ b/tests/kms_force_connector_basic.c
+@@ -23,8 +23,9 @@
+  */
  
- struct additional_test {
- 	const char *name;
-@@ -687,6 +712,21 @@ static void expect_no_props(int fd, uint32_t obj_type, uint32_t obj_id)
- 	igt_assert_neq(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES, &properties), 0);
+ /**
+- * TEST: Check the debugfs force connector/edid features work correctly
++ * TEST: kms force connector basic
+  * Category: Display
++ * Description: Check the debugfs force connector/edid features work correctly.
+  */
+ 
+ #include "igt.h"
+@@ -68,6 +69,15 @@ static void reset_connectors(void)
+ 	close(drm_fd);
  }
  
 +/**
-+ * SUBTEST: get_properties-sanity-%s
-+ * Description: Test validates the properties of all planes, crtc and connectors
-+ *              with %arg[1] commit
-+ * Driver requirement: any
-+ * Functionality: kms_core
++ * SUBTEST: force-load-detect
++ * Description: Test to detect forced load.
++ * Driver requirement: i915
++ * Functionality: force_connector, vga
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @atomic:          atomic
-+ * @non-atomic:      legacy
 + */
- static void get_prop_sanity(igt_display_t *display, bool atomic)
+ static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmModeRes *res)
  {
- 	int fd = display->drm_fd;
+ 	int i, j, w = 64, h = 64;
+@@ -159,6 +169,7 @@ static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmMode
+ /**
+  * SUBTEST: force-connector-state
+  * Description: Test to check the forced connector state
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: force_connector
+@@ -206,6 +217,7 @@ static void force_connector_state(int drm_fd, drmModeConnectorPtr connector)
+ /**
+  * SUBTEST: force-edid
+  * Description: Test to check the values after forcing edid
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: force_connector
+@@ -255,6 +267,7 @@ static void force_edid(int drm_fd, drmModeConnectorPtr connector)
+ /**
+  * SUBTEST: prune-stale-modes
+  * Description: Tests pruning of stale modes
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: force_connector
 -- 
 2.40.0
