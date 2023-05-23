@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B9D610E3DB
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F0F410E3D9
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:14 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:16 +0530
-Message-Id: <20230523063243.669540-56-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:04 +0530
+Message-Id: <20230523063243.669540-44-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 55/82] tests/kms_invalid_mode: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V3 43/82] tests/kms_cursor_edge_walk: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,55 +28,45 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_invalid_mode.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ tests/kms_cursor_edge_walk.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index ec0483055..465169d10 100644
---- a/tests/kms_invalid_mode.c
-+++ b/tests/kms_invalid_mode.c
-@@ -22,10 +22,42 @@
-  *
-  */
- 
-+/**
-+ * TEST: kms invalid mode
-+ * Category: Display
-+ * Description: Make sure all modesets are rejected when the requested mode is
-+ *              invalid
-+ */
- #include "igt.h"
- #include <limits.h>
+diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+index 5f423a18f..24b1c42e1 100644
+--- a/tests/kms_cursor_edge_walk.c
++++ b/tests/kms_cursor_edge_walk.c
+@@ -28,6 +28,32 @@
  #include <stdbool.h>
- 
+ #include <stdio.h>
+ #include <string.h>
 +/**
-+ * SUBTEST: %s
-+ * Description: Make sure all modesets are rejected when the requested mode is
-+ *              invalid
++ * TEST: kms cursor edge walk
++ * Category: Display
++ * Description: Exercise CHV pipe C cursor fail
++ *
++ * SUBTEST: %s-%s
++ * Description: Checking cursor size %arg[1] by walking %arg[2] of screen
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: cursor
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @bad-hsync-end:
-+ * @bad-hsync-start:
-+ * @bad-htotal:
-+ * @bad-vsync-end:
-+ * @bad-vsync-start:
-+ * @bad-vtotal:
-+ * @clock-too-high:
-+ * @int-max-clock:
-+ * @uint-max-clock:
-+ * @zero-clock:
-+ * @zero-hdisplay:
-+ * @zero-vdisplay:
++ * @128x128:          128x128
++ * @256x256:          256x256
++ * @64x64:            64x64
++ *
++ * arg[2]:
++ *
++ * @left-edge:        Left edge
++ * @right-edge:       Right edge
++ * @top-bottom:       Top to bottom
++ * @top-edge:         Top edge
 + */
-+
- IGT_TEST_DESCRIPTION("Make sure all modesets are rejected when the requested mode is invalid");
  
- typedef struct _data data_t;
+ IGT_TEST_DESCRIPTION("Exercise CHV pipe C cursor fail");
+ 
 -- 
 2.40.0
