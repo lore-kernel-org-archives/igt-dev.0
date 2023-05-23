@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3EB8110E3D4
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F24FA10E3D4
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:13 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:21 +0530
-Message-Id: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:23 +0530
+Message-Id: <20230523063243.669540-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
+References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 00/82] Document KMS tests
+Subject: [igt-dev] [i-g-t V3 02/82] tests/dsc: Move dsc helpers to lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,199 +23,128 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+The correct place for helpers is lib as the tests directory is
+supposed to have test files, also having the helpers in tests
+dir will break the compilation of testplan. Hence move all
+helpers to library.
 
-This series also includes:
-- Move all kms helpers to lib
-- New config field to differentiate b/w the drivers
-- Add documentation for all kms tests
+Expectation is to have an executable binary for each .c file
+the "tests" dir.
 
-V2: - Include testdisplay.c
-V3: - Improve documentation for kms_fb_coherency.c
-    - Other minor cleanups
+V2: - Drop special case compilation method
 
-Bhanuprakash Modem (82):
-  tests/chamelium: Move chamelium helpers to lib
-  tests/dsc: Move dsc helpers to lib
-  tests/color: Move color helpers to lib
-  testplan/kms: Include testdisplay to kms testplan config
-  testplan/kms: Add support to differentiate b/w drivers
-  tests/chamelium/kms_chamelium_audio: Document each subtest for
-    testplan
-  tests/chamelium/kms_chamelium_color: Document each subtest for
-    testplan
-  tests/chamelium/kms_chamelium_edid: Document each subtest for testplan
-  tests/chamelium/kms_chamelium_frames: Document each subtest for
-    testplan
-  tests/chamelium/kms_chamelium_hpd: Document each subtest for testplan
-  tests/i915/kms_big_fb: Document each subtest for testplan
-  tests/i915/kms_big_joiner: Document each subtest for testplan
-  tests/i915/kms_busy: Document each subtest for testplan
-  tests/i915/kms_ccs: Document each subtest for testplan
-  tests/i915/kms_cdclk: Document each subtest for testplan
-  tests/i915/kms_draw_crc: Document each subtest for testplan
-  tests/i915/kms_dsc: Document each subtest for testplan
-  tests/i915/kms_fb_coherency: Document each subtest for testplan
-  tests/i915/kms_fbcon_fbt: Document each subtest for testplan
-  tests/i915/kms_fence_pin_leak: Document each subtest for testplan
-  tests/i915/kms_flip_scaled_crc: Document each subtest for testplan
-  tests/i915/kms_flip_tiling: Document each subtest for testplan
-  tests/i915/kms_frontbuffer_tracking: Document each subtest for
-    testplan
-  tests/i915/kms_legacy_colorkey: Document each subtest for testplan
-  tests/i915/kms_mmap_write_crc: Document each subtest for testplan
-  tests/i915/kms_pipe_b_c_ivb: Document each subtest for testplan
-  tests/i915/kms_psr: Document each subtest for testplan
-  tests/i915/kms_psr2_sf: Document each subtest for testplan
-  tests/i915/kms_psr2_su: Document each subtest for testplan
-  tests/i915/kms_psr_stress_test: Document each subtest for testplan
-  tests/i915/kms_pwrite_crc: Document each subtest for testplan
-  tests/kms_3d: Document each subtest for testplan
-  tests/kms_addfb_basic: Document each subtest for testplan
-  tests/kms_async_flips: Document each subtest for testplan
-  tests/kms_atomic: Document each subtest for testplan
-  tests/kms_atomic_interruptible: Document each subtest for testplan
-  tests/kms_atomic_transition: Document each subtest for testplan
-  tests/kms_bw: Document each subtest for testplan
-  tests/kms_color: Document each subtest for testplan
-  tests/kms_concurrent: Document each subtest for testplan
-  tests/kms_content_protection: Document each subtest for testplan
-  tests/kms_cursor_crc: Document each subtest for testplan
-  tests/kms_cursor_edge_walk: Document each subtest for testplan
-  tests/kms_cursor_legacy: Document each subtest for testplan
-  tests/kms_display_modes: Document each subtest for testplan
-  tests/kms_dither: Document each subtest for testplan
-  tests/kms_dp_aux_dev: Document each subtest for testplan
-  tests/kms_dp_tiled_display: Document each subtest for testplan
-  tests/kms_flip: Document each subtest for testplan
-  tests/kms_flip_event_leak: Document each subtest for testplan
-  tests/kms_force_connector_basic: Document each subtest for testplan
-  tests/kms_getfb: Document each subtest for testplan
-  tests/kms_hdmi_inject: Document each subtest for testplan
-  tests/kms_hdr: Document each subtest for testplan
-  tests/kms_invalid_mode: Document each subtest for testplan
-  tests/kms_lease: Document each subtest for testplan
-  tests/kms_multipipe_modeset: Document each subtest for testplan
-  tests/kms_panel_fitting: Document each subtest for testplan
-  tests/kms_pipe_crc_basic: Document each subtest for testplan
-  tests/kms_plane: Document each subtest for testplan
-  tests/kms_plane_alpha_blend: Document each subtest for testplan
-  tests/kms_plane_cursor: Document each subtest for testplan
-  tests/kms_plane_lowres: Document each subtest for testplan
-  tests/kms_plane_multiple: Document each subtest for testplan
-  tests/kms_plane_scaling: Document each subtest for testplan
-  tests/kms_prime: Document each subtest for testplan
-  tests/kms_prop_blob: Document each subtest for testplan
-  tests/kms_properties: Document each subtest for testplan
-  tests/kms_rmfb: Document each subtest for testplan
-  tests/kms_rotation_crc: Document each subtest for testplan
-  tests/kms_scaling_modes: Document each subtest for testplan
-  tests/kms_selftest: Document each subtest for testplan
-  tests/kms_sequence: Document each subtest for testplan
-  tests/kms_setmode: Document each subtest for testplan
-  tests/kms_sysfs_edid_timing: Document each subtest for testplan
-  tests/kms_tv_load_detect: Document each subtest for testplan
-  tests/kms_universal_plane: Document each subtest for testplan
-  tests/kms_vblank: Document each subtest for testplan
-  tests/kms_vrr: Document each subtest for testplan
-  tests/kms_writeback: Document each subtest for testplan
-  tests/testdisplay: Document each subtest for testplan
-  testplan/kms: Make documentation is mandatory for all kms subtests
-
- docs/testplan/meson.build                     |    4 +-
- .../igt_chamelium_helper.c                    |    4 +-
- .../igt_chamelium_helper.h                    |    0
- .../igt_color_helper.c                        |    2 +-
- .../igt_color_helper.h                        |    0
- .../kms_dsc_helper.c => lib/igt_dsc_helper.c  |    2 +-
- .../kms_dsc_helper.h => lib/igt_dsc_helper.h  |    0
- lib/meson.build                               |    3 +
- tests/chamelium/kms_chamelium_audio.c         |   46 +-
- tests/chamelium/kms_chamelium_color.c         |   47 +-
- tests/chamelium/kms_chamelium_edid.c          |   92 +-
- tests/chamelium/kms_chamelium_frames.c        |  104 +-
- tests/chamelium/kms_chamelium_hpd.c           |  188 +-
- tests/i915/kms_big_fb.c                       |  153 +
- tests/i915/kms_big_joiner.c                   |   33 +
- tests/i915/kms_busy.c                         |   62 +
- tests/i915/kms_ccs.c                          |   83 +
- tests/i915/kms_cdclk.c                        |   32 +
- tests/i915/kms_draw_crc.c                     |   71 +-
- tests/i915/kms_dsc.c                          |   29 +-
- tests/i915/kms_fb_coherency.c                 |    5 +
- tests/i915/kms_fbcon_fbt.c                    |   42 +
- tests/i915/kms_fence_pin_leak.c               |   13 +
- tests/i915/kms_flip_scaled_crc.c              |  191 +
- tests/i915/kms_flip_tiling.c                  |   13 +
- tests/i915/kms_frontbuffer_tracking.c         | 7092 +++++++++++++++++
- tests/i915/kms_legacy_colorkey.c              |   21 +
- tests/i915/kms_mmap_write_crc.c               |   14 +
- tests/i915/kms_pipe_b_c_ivb.c                 |   52 +
- tests/i915/kms_psr.c                          |  213 +-
- tests/i915/kms_psr2_sf.c                      |   87 +-
- tests/i915/kms_psr2_su.c                      |   27 +
- tests/i915/kms_psr_stress_test.c              |   22 +
- tests/i915/kms_pwrite_crc.c                   |   15 +
- tests/kms_3d.c                                |   13 +
- tests/kms_addfb_basic.c                       |  188 +-
- tests/kms_async_flips.c                       |   62 +
- tests/kms_atomic.c                            |  102 +-
- tests/kms_atomic_interruptible.c              |   50 +
- tests/kms_atomic_transition.c                 |  100 +
- tests/kms_bw.c                                |   20 +
- tests/kms_color.c                             |   92 +-
- tests/kms_concurrent.c                        |   26 +
- tests/kms_content_protection.c                |   81 +
- tests/kms_cursor_crc.c                        |   64 +
- tests/kms_cursor_edge_walk.c                  |   26 +
- tests/kms_cursor_legacy.c                     |  217 +-
- tests/kms_display_modes.c                     |   15 +
- tests/kms_dither.c                            |   22 +
- tests/kms_dp_aux_dev.c                        |   13 +
- tests/kms_dp_tiled_display.c                  |   21 +
- tests/kms_flip.c                              |  178 +-
- tests/kms_flip_event_leak.c                   |   19 +
- tests/kms_force_connector_basic.c             |   15 +-
- tests/kms_getfb.c                             |   90 +
- tests/kms_hdmi_inject.c                       |   25 +
- tests/kms_hdr.c                               |   52 +
- tests/kms_invalid_mode.c                      |   32 +
- tests/kms_lease.c                             |  180 +
- tests/kms_multipipe_modeset.c                 |   14 +
- tests/kms_panel_fitting.c                     |   21 +
- tests/kms_pipe_crc_basic.c                    |   30 +-
- tests/kms_plane.c                             |   58 +
- tests/kms_plane_alpha_blend.c                 |   55 +
- tests/kms_plane_cursor.c                      |   30 +
- tests/kms_plane_lowres.c                      |   32 +
- tests/kms_plane_multiple.c                    |   33 +
- tests/kms_plane_scaling.c                     |  261 +
- tests/kms_prime.c                             |   35 +
- tests/kms_prop_blob.c                         |   46 +-
- tests/kms_properties.c                        |   40 +
- tests/kms_rmfb.c                              |   24 +
- tests/kms_rotation_crc.c                      |  130 +
- tests/kms_scaling_modes.c                     |   20 +
- tests/kms_selftest.c                          |   13 +
- tests/kms_sequence.c                          |   36 +
- tests/kms_setmode.c                           |   58 +
- tests/kms_sysfs_edid_timing.c                 |   21 +
- tests/kms_test_config.json                    |    7 +-
- tests/kms_tv_load_detect.c                    |   13 +
- tests/kms_universal_plane.c                   |   67 +
- tests/kms_vblank.c                            |   69 +
- tests/kms_vrr.c                               |   47 +
- tests/kms_writeback.c                         |   42 +
- tests/meson.build                             |   41 +-
- tests/testdisplay.c                           |   13 +
- 86 files changed, 11618 insertions(+), 103 deletions(-)
- rename tests/chamelium/kms_chamelium_helper.c => lib/igt_chamelium_helper.c (99%)
- rename tests/chamelium/kms_chamelium_helper.h => lib/igt_chamelium_helper.h (100%)
- rename tests/kms_color_helper.c => lib/igt_color_helper.c (99%)
- rename tests/kms_color_helper.h => lib/igt_color_helper.h (100%)
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ .../kms_dsc_helper.c => lib/igt_dsc_helper.c   |  2 +-
+ .../kms_dsc_helper.h => lib/igt_dsc_helper.h   |  0
+ lib/meson.build                                |  1 +
+ tests/i915/kms_dsc.c                           |  2 +-
+ tests/i915/kms_psr2_sf.c                       |  2 +-
+ tests/meson.build                              | 18 ++----------------
+ 6 files changed, 6 insertions(+), 19 deletions(-)
  rename tests/i915/kms_dsc_helper.c => lib/igt_dsc_helper.c (99%)
  rename tests/i915/kms_dsc_helper.h => lib/igt_dsc_helper.h (100%)
 
---
+diff --git a/tests/i915/kms_dsc_helper.c b/lib/igt_dsc_helper.c
+similarity index 99%
+rename from tests/i915/kms_dsc_helper.c
+rename to lib/igt_dsc_helper.c
+index 02d1a4848..600a90746 100644
+--- a/tests/i915/kms_dsc_helper.c
++++ b/lib/igt_dsc_helper.c
+@@ -3,7 +3,7 @@
+  * Copyright © 2023 Intel Corporation
+  */
+ 
+-#include "kms_dsc_helper.h"
++#include "igt_dsc_helper.h"
+ 
+ static bool force_dsc_en_orig;
+ static int force_dsc_restore_fd = -1;
+diff --git a/tests/i915/kms_dsc_helper.h b/lib/igt_dsc_helper.h
+similarity index 100%
+rename from tests/i915/kms_dsc_helper.h
+rename to lib/igt_dsc_helper.h
+diff --git a/lib/meson.build b/lib/meson.build
+index 2d3456577..75e52580b 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -101,6 +101,7 @@ lib_sources = [
+ 	'veboxcopy_gen12.c',
+ 	'igt_msm.c',
+ 	'igt_dsc.c',
++	'igt_dsc_helper.c',
+ 	'xe/xe_compute.c',
+ 	'xe/xe_compute_square_kernels.c',
+ 	'xe/xe_ioctl.c',
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 3ce28f848..4af48b196 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -30,7 +30,7 @@
+  *
+  */
+ 
+-#include "kms_dsc_helper.h"
++#include "igt_dsc_helper.h"
+ 
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index 4cf986440..7c21970a5 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -25,7 +25,7 @@
+ #include "igt.h"
+ #include "igt_sysfs.h"
+ #include "igt_psr.h"
+-#include "kms_dsc_helper.h"
++#include "igt_dsc_helper.h"
+ #include <errno.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+diff --git a/tests/meson.build b/tests/meson.build
+index 5d2c573d5..48e9164f8 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -224,6 +224,7 @@ i915_progs = [
+ 	'kms_ccs',
+ 	'kms_cdclk',
+ 	'kms_draw_crc',
++	'kms_dsc',
+ 	'kms_fb_coherency',
+ 	'kms_fbcon_fbt',
+ 	'kms_fence_pin_leak',
+@@ -234,6 +235,7 @@ i915_progs = [
+ 	'kms_mmap_write_crc',
+ 	'kms_pipe_b_c_ivb',
+ 	'kms_psr',
++	'kms_psr2_sf',
+ 	'kms_psr2_su',
+ 	'kms_psr_stress_test',
+ 	'kms_pwrite_crc',
+@@ -477,22 +479,6 @@ test_executables += executable('kms_color',
+ 	   install : true)
+ test_list += 'kms_color'
+ 
+-test_executables += executable('kms_dsc',
+-	   [ join_paths('i915', 'kms_dsc.c'), join_paths ('i915', 'kms_dsc_helper.c')],
+-	   dependencies : test_deps,
+-	   install_dir : libexecdir,
+-	   install_rpath : libexecdir_rpathdir,
+-	   install : true)
+-test_list += 'kms_dsc'
+-
+-test_executables += executable('kms_psr2_sf',
+-	   [ join_paths('i915', 'kms_psr2_sf.c'), join_paths ('i915', 'kms_dsc_helper.c')],
+-	   dependencies : test_deps,
+-	   install_dir : libexecdir,
+-	   install_rpath : libexecdir_rpathdir,
+-	   install : true)
+-test_list += 'kms_psr2_sf'
+-
+ if chamelium.found()
+        test_executables += executable('kms_chamelium_color',
+                              [ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
+-- 
 2.40.0
