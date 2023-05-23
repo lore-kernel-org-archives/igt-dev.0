@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF1BE10E3D9
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C68D10E3EE
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:53 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:10 +0530
-Message-Id: <20230523063243.669540-50-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:31 +0530
+Message-Id: <20230523063243.669540-71-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 49/82] tests/kms_flip: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V3 70/82] tests/kms_rotation_crc: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,231 +28,170 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_flip.c | 178 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 176 insertions(+), 2 deletions(-)
+ tests/kms_rotation_crc.c | 130 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 130 insertions(+)
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index f1e0700c1..e5a4406b9 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -22,8 +22,9 @@
-  */
- 
- /**
-- * TEST: Tests for validating modeset, dpms and pageflips
-+ * TEST: kms flip
-  * Category: Display
-+ * Description: Tests for validating modeset, dpms and pageflips
-  */
- 
- #include "config.h"
-@@ -39,6 +40,169 @@
- #include <sys/poll.h>
- #include <sys/time.h>
- #include <sys/ioctl.h>
-+/**
-+ * SUBTEST: 2x-flip-vs-fences
-+ * Description: Test for validating modeset, dpms and pageflips with a pair of connected displays
-+ * Driver requirement: i915
-+ * Functionality: gtt, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: 2x-flip-vs-fences-interruptible
-+ * Description: Interrupt test for validating modeset, dpms and pageflips with pair of connected displays
-+ * Driver requirement: any
-+ * Functionality: gtt, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-vs-fences
-+ * Description: Basic test for validating modeset, dpms and pageflips
-+ * Driver requirement: i915
-+ * Functionality: gtt, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-vs-fences-interruptible
-+ * Description: Interrupt test for validating modeset, dpms and pageflips
-+ * Driver requirement: i915
-+ * Functionality: gtt, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
-+
-+/**
-+ * SUBTEST: %s
-+ * Description: Basic test for validating modeset, dpms and pageflips
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @dpms-off-confusion:
-+ * @bo-too-big:
-+ */
-+
-+/**
-+ * SUBTEST: %s
-+ * Description: Basic test for validating modeset, dpms and pageflips
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: 2x-%s
-+ * Description: Test for validating modeset, dpms and pageflips with a pair of
-+ *              connected displays
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @wf_vblank-ts-check:
-+ * @blocking-wf_vblank:
-+ * @absolute-wf_vblank:
-+ * @blocking-absolute-wf_vblank:
-+ * @busy-flip:
-+ * @plain-flip-ts-check:
-+ * @plain-flip-fb-recreate:
-+ * @flip-vs-rmfb:
-+ * @flip-vs-panning:
-+ * @flip-vs-expired-vblank:
-+ * @flip-vs-absolute-wf_vblank:
-+ * @flip-vs-blocking-wf-vblank:
-+ * @flip-vs-modeset-vs-hang:
-+ * @flip-vs-panning-vs-hang:
-+ * @flip-vs-dpms-off-vs-modeset:
-+ * @single-buffer-flip-vs-dpms-off-vs-modeset:
-+ * @nonexisting-fb:
-+ * @dpms-vs-vblank-race:
-+ * @modeset-vs-vblank-race:
-+ * @flip-vs-suspend:
-+ */
-+
-+/**
-+ * SUBTEST: 2x-%s
-+ * Description: Test for validating modeset, dpms and pageflips with a pair of
-+ *              connected displays
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @plain-flip:
-+ * @flip-vs-dpms:
-+ * @flip-vs-modeset:
-+ * @flip-vs-wf_vblank:
-+ */
-+
-+/**
-+ * SUBTEST: %s-interruptible
-+ * Description: Basic test for validating modeset, dpms and pageflips
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @dpms-off-confusion:
-+ * @bo-too-big:
-+ */
-+
-+/**
-+ * SUBTEST: %s-interruptible
-+ * Description: Basic test for validating modeset, dpms and pageflips
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: 2x-%s-interruptible
-+ * Description: Test for validating modeset, dpms and pageflips with a pair of
-+ *              connected displays
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @wf_vblank-ts-check:
-+ * @absolute-wf_vblank:
-+ * @blocking-absolute-wf_vblank:
-+ * @plain-flip:
-+ * @plain-flip-ts-check:
-+ * @plain-flip-fb-recreate:
-+ * @flip-vs-rmfb:
-+ * @flip-vs-panning:
-+ * @flip-vs-expired-vblank:
-+ * @flip-vs-absolute-wf_vblank:
-+ * @flip-vs-wf_vblank:
-+ * @flip-vs-dpms-off-vs-modeset:
-+ * @single-buffer-flip-vs-dpms-off-vs-modeset:
-+ * @nonexisting-fb:
-+ * @dpms-vs-vblank-race:
-+ * @modeset-vs-vblank-race:
-+ * @flip-vs-suspend:
-+ */
-+
- #ifdef HAVE_LINUX_KD_H
- #include <linux/kd.h>
- #elif HAVE_SYS_KD_H
-@@ -1564,6 +1728,7 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- /**
-  * SUBTEST: basic-flip-vs-%s
-  * Description: Basic test to valide %arg[1]
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: vblank
-@@ -1577,12 +1742,12 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 28b4fd27c..8b38cbd7d 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -22,6 +22,11 @@
   *
-  * SUBTEST: basic-plain-flip
-  * Description: Basic test for validating page flip
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: vblank
-  * Mega feature: General Display Features
   */
--
- static void run_test(int duration, int flags)
- {
- 	struct test_output o;
-@@ -1759,6 +1924,15 @@ static void kms_flip_exit_handler(int sig)
- 		kmstest_set_connector_dpms(drm_fd, last_connector, DRM_MODE_DPMS_ON);
+ 
++/**
++ * TEST: kms rotation crc
++ * Category: Display
++ * Description: Tests different rotations with different planes & formats
++ */
+ #include "igt.h"
+ #include "igt_vec.h"
+ #include <math.h>
+@@ -474,6 +479,97 @@ static bool test_format(data_t *data,
+ 	return true;
  }
  
 +/**
-+ * SUBTEST: nonblocking-read
-+ * Description: Tests that nonblocking reading fails correctly
++ * SUBTEST: %s-rotation-180
++ * Description: Rotation test with 180 degree for %arg[1] planes
 + * Driver requirement: any
-+ * Functionality: vblank
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @primary:    primary
++ * @sprite:     sprite
++ * @cursor:     cursor
++ */
++
++/**
++ * SUBTEST: %s-rotation-%d
++ * Description: Rotation test with %arg[2] degree for %arg[1] planes of gen9+
++ * Driver requirement: any
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @primary:    primary
++ * @sprite:     sprite
++ *
++ * arg[2].values: 90, 270
++ */
++
++/**
++ * SUBTEST: bad-%s
++ * Description: Checking unsupported %arg[1] for gen9+ with 90 degree of rotation
++ * Driver requirement: any
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @pixel-format:       pixel format
++ * @tiling:             tiling
++ */
++
++/**
++ * SUBTEST: primary-%s-tiled-reflect-x-%d
++ * Description: Test for %arg[1] & %arg[2] degree rotation on primary plane
++ * Driver requirement: i915
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @4:      4 tiling
++ * @x:      x tiling
++ * @y:      y tiling
++ * @yf:     yf tiling
++ *
++ * arg[2].values: 0, 180
++ */
++
++/**
++ * SUBTEST: primary-%s-tiled-reflect-x-%d
++ * Description: Test for %arg[1] & %arg[2] degree rotation on primary plane
++ * Driver requirement: i915
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @y:      y tiling
++ * @yf:     yf tiling
++ *
++ * arg[2].values: 90, 270
++ *
++ * SUBTEST: sprite-rotation-90-pos-100-0
++ * Description: Rotation test with 90 degree for a plane of gen9+ with given position
++ * Driver requirement: any
++ * Functionality: rotation
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void test_nonblocking_read(int in)
+ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_format)
  {
- 	char buffer[1024];
+ 	igt_display_t *display = &data->display;
+@@ -779,6 +875,31 @@ static bool reusecrcfromlastround(planeinfos p[2], int lastroundp1format,
+ 
+ 	return true;
+ }
++
++/**
++ * SUBTEST: multiplane-rotation
++ * Description: Rotation test on both planes by making them fully visible
++ * Driver requirement: any
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: multiplane-rotation-cropping-%s
++ * Description: Rotation test on both planes by cropping left/%arg[1] corner of
++ *              primary plane and right/%arg[1] corner of sprite plane
++ * Driver requirement: any
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @bottom:   bottom
++ * @top:      top
++ */
++
+ /*
+  * Here is pipe parameter which is now used only for first pipe.
+  * It is left here if this test ever was wanted to be run on
+@@ -980,6 +1101,15 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 	igt_require_f(found, "No valid pipe/output combo found.\n");
+ }
+ 
++/**
++ * SUBTEST: exhaust-fences
++ * Description: This test intends to check for fence leaks exhaustively
++ * Driver requirement: i915
++ * Functionality: rotation
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_plane_rotation_exhaust_fences(data_t *data,
+ 					       enum pipe pipe,
+ 					       igt_output_t *output,
 -- 
 2.40.0
