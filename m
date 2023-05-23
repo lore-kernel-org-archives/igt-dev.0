@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C5D510E3D9
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2EBD10E40F
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:12 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:00 +0530
-Message-Id: <20230523063243.669540-40-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:03 +0530
+Message-Id: <20230523063243.669540-43-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 39/82] tests/kms_color: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V3 42/82] tests/kms_cursor_crc: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,155 +28,97 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ tests/kms_cursor_crc.c | 64 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 64 insertions(+)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index cd2d38329..8beccb296 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -22,10 +22,24 @@
-  *
-  */
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index 3a353a032..1e6075ffc 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -29,6 +29,18 @@
+ #include <stdio.h>
+ #include <string.h>
  
 +/**
-+ * TEST: kms color
++ * TEST: kms cursor crc
 + * Category: Display
-+ * Description: Test Color Features at Pipe level
++ * Description: Use the display CRC support to validate cursor plane functionality.
++ *              The test will position the cursor plane either fully onscreen,
++ *              partially onscreen, or fully offscreen, using either a fully
++ *              opaque or fully transparent surface. In each case, it enables
++ *              the cursor plane and then reads the PF CRC (hardware test) and
++ *              compares it with the CRC value obtained when the cursor plane
++ *              was disabled and its drawing is directly inserted on the PF by
++ *              software.
 + */
- #include "igt_color_helper.h"
  
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
- 
-+/**
-+ * SUBTEST: degamma
-+ * Description: Verify that degamma LUT transformation works correctly
-+ * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static bool test_pipe_degamma(data_t *data,
- 			      igt_plane_t *primary)
- {
-@@ -114,6 +128,16 @@ static bool test_pipe_degamma(data_t *data,
- 	return ret;
+ IGT_TEST_DESCRIPTION(
+    "Use the display CRC support to validate cursor plane functionality. "
+@@ -639,6 +651,27 @@ static bool require_cursor_size(data_t *data, int w, int h)
+ 	return !!ret;
  }
  
 +/**
-+ * SUBTEST: gamma
-+ * Description: Verify that gamma LUT transformation works correctly
++ * SUBTEST: cursor-%s
++ * Description: %arg[1]
 + * Driver requirement: any
-+ * Functionality: colorspace, colorspace_gamma
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
-+
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out gamma
-  * LUT and verify we have the same CRC as drawing solid color rectangles.
-@@ -202,6 +226,16 @@ static bool test_pipe_gamma(data_t *data,
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: legacy-gamma
-+ * Description: Verify that legacy gamma LUT transformation works correctly
-+ * Driver requirement: any
-+ * Functionality: colorspace, colorspace_gamma
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
-+
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out legacy
-  * gamma LUT and verify we have the same CRC as drawing solid color rectangles
-@@ -314,6 +348,17 @@ static bool test_pipe_legacy_gamma(data_t *data,
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: legacy-gamma-reset
-+ * Description: Verify that setting the legacy gamma LUT resets the gamma LUT
-+ *              set through GAMMA_LUT property
-+ * Driver requirement: any
-+ * Functionality: colorspace, colorspace_gamma
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
-+
- /*
-  * Verify that setting the legacy gamma LUT resets the gamma LUT set
-  * through the GAMMA_LUT property.
-@@ -448,6 +493,27 @@ end:
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: ctm-%s
-+ * Description: Check the color transformation %arg[1]
-+ * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
++ * Functionality: cursor
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @0-25:           for 0.25 transparency
-+ * @0-50:           for 0.50 transparency
-+ * @0-75:           for 0.75 transparency
-+ * @blue-to-red:    from blue to red
-+ * @green-to-red:   from green to red
-+ * @max:            for maximum transparency
-+ * @negative:       for negative transparency
-+ * @red-to-blue:    from red to blue
++ * @alpha-opaque:       Validates the composition of a fully opaque cursor plane,
++ *                      i.e., alpha channel equal to 1.0.
++ * @alpha-transparent:  Validates the composition of a fully transparent cursor
++ *                      plane, i.e., alpha channel equal to 0.0.
++ * @dpms:               Check random placement of a cursor with DPMS.
++ * @size-change:        Create a maximum size cursor, then change the size in
++ *                      flight to smaller ones to see that the size is applied
++ *                      correctly.
++ * @suspend:            Check random placement of a cursor with suspend.
 + */
-+
- /*
-  * Draw 3 rectangles using before colors with the ctm matrix apply and verify
-  * the CRC is equal to using after colors with an identify ctm matrix.
-@@ -795,6 +861,15 @@ out:
- 	test_cleanup(data);
- }
- 
-+/**
-+ * SUBTEST: deep-color
-+ * Description: Verify that deep color works correctly
-+ * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void
- run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ static void run_test(data_t *data, void (*testfunc)(data_t *), int cursor_w, int cursor_h)
  {
-@@ -885,6 +960,21 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 	test_cleanup(data);
+ 	prepare_crtc(data, cursor_w, cursor_h);
+@@ -732,6 +765,37 @@ static bool execution_constraint(enum pipe pipe)
  }
  
+ 
 +/**
-+ * SUBTEST: invalid-%s-sizes
-+ * Description: Negative check for %arg[1] sizes
++ * SUBTEST: cursor-%s-%s
++ * Description: Check if a %arg[2] cursor is %arg[1].
 + * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
++ * Functionality: cursor
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @ctm-matrix:         Color transformation matrix
-+ * @degamma-lut:        Degamma LUT
-+ * @gamma-lut:          Gamma LUT
++ * @offscreen:             well-positioned outside the screen
++ * @onscreen:              well-positioned inside the screen
++ * @random:                randomly placed
++ * @rapid-movement:        rapidly udates for movements
++ * @sliding:               smooth for horizontal, vertical & diagonal movements
++ *
++ * arg[2]:
++ *
++ * @128x128:               128x128 size
++ * @128x42:                128x42 size
++ * @256x256:               256x256 size
++ * @256x85:                256x85 size
++ * @32x10:                 32x10 size
++ * @32x32:                 32x32 size
++ * @512x170:               512x170 size
++ * @512x512:               512x512 size
++ * @64x21:                 64x21 size
++ * @64x64:                 64x64 size
++ * @max-size:              Max supported size
 + */
- static void
- run_invalid_tests_for_pipe(data_t *data)
+ static void run_size_tests(data_t *data, int w, int h)
  {
+ 	enum pipe pipe;
 -- 
 2.40.0
