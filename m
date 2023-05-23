@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F52110E3D9
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8864110E3DA
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:40:06 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:35 +0530
-Message-Id: <20230523063243.669540-75-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:40 +0530
+Message-Id: <20230523063243.669540-80-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 74/82] tests/kms_setmode: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V3 79/82] tests/kms_vrr: Document each subtest for
+ testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,77 +28,66 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_setmode.c | 58 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+ tests/kms_vrr.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index a611d9382..8c0cb7f1c 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -31,6 +31,64 @@
- #include <sys/time.h>
- #include <math.h>
- #include "xe/xe_query.h"
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index d2d79c4eb..fb58822e3 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -24,6 +24,53 @@
+ #include "sw_sync.h"
+ #include <fcntl.h>
+ #include <signal.h>
 +/**
-+ * TEST: kms setmode
++ * TEST: kms vrr
 + * Category: Display
 + *
-+ * SUBTEST: basic
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * SUBTEST: flip-basic
++ * Description: Tests that VRR is enabled and that the difference between flip
++ *              timestamps converges to the requested rate
 + * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
++ * Functionality: vrr
++ * Mega feature: VRR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: basic-clone-single-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * SUBTEST: flip-dpms
++ * Description: Tests with DPMS that VRR is enabled and that the difference
++ *              between flip timestamps converges to the requested rate.
 + * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
++ * Functionality: vrr
++ * Mega feature: VRR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: clone-exclusive-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * SUBTEST: flip-suspend
++ * Description: Tests that VRR is enabled and that the difference between flip
++ *              timestamps converges to the requested rate in a suspend test
 + * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
++ * Functionality: vrr
++ * Mega feature: VRR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: invalid-clone-exclusive-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * SUBTEST: flipline
++ * Description: Make sure that flips happen at flipline decision boundary.
 + * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
++ * Functionality: vrr
++ * Mega feature: VRR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: invalid-clone-single-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * SUBTEST: negative-basic
++ * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
 + * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: invalid-clone-single-crtc-stealing
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
++ * Functionality: vrr
++ * Mega feature: VRR
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- #define MAX_CONNECTORS  10
- #define MAX_CRTCS       6
+ #define NSECS_PER_SEC (1000000000ull)
+ 
 -- 
 2.40.0
