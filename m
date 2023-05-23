@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B6C410E3DE
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 04C2B10E3E8
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:56 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:49 +0530
-Message-Id: <20230523063243.669540-29-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:52 +0530
+Message-Id: <20230523063243.669540-32-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 28/82] tests/i915/kms_psr2_sf: Document each
+Subject: [igt-dev] [i-g-t V3 31/82] tests/i915/kms_pwrite_crc: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,104 +28,34 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_psr2_sf.c | 85 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
+ tests/i915/kms_pwrite_crc.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index 7c21970a5..7ccfeb7de 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -30,6 +30,91 @@
- #include <stdbool.h>
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index 3278d876d..7a358d045 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -29,6 +29,21 @@
  #include <stdio.h>
  #include <string.h>
+ 
 +/**
-+ * TEST: kms psr2 sf
++ * TEST: kms pwrite crc
 + * Category: Display
-+ * Description: Tests to varify PSR2 selective fetch by sending multiple damaged
-+ *              areas
++ * Description: Use the display CRC support to validate pwrite to an already
++ *              uncached future scanout buffer.
 + *
-+ * SUBTEST: %s-plane-move-continuous-%s
-+ * Description: Test that selective fetch works on moving %arg[1] plane %arg[2]
-+ *              visible area (no update)
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:               Cursor
-+ * @overlay:              Overlay
-+ *
-+ * arg[2]:
-+ *
-+ * @exceed-fully-sf:      exceeding fully
-+ * @exceed-sf:            exceeding paritally
-+ * @sf:                   default
-+ */
-+
-+/**
-+ * SUBTEST: cursor-plane-update-sf
-+ * Description: Test that selective fetch works on cursor plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: overlay-plane-update-continuous-sf
-+ * Description: Test that selective fetch works on overlay plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: overlay-plane-update-sf-dmg-area
-+ * Description: Test that selective fetch works on overlay plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: overlay-primary-update-sf-dmg-area
-+ * Description: Test that selective fetch works on primary plane with blended
-+ *              overlay plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: plane-move-sf-dmg-area
-+ * Description: Test that selective fetch works on moving overlay plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: primary-plane-update-sf-dmg-area
-+ * Description: Test that selective fetch works on primary plane
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: primary-plane-update-sf-dmg-area-big-fb
-+ * Description: Test that selective fetch works on primary plane with big fb
-+ * Driver requirement: any
-+ * Functionality: psr2
-+ * Mega feature: PSR
++ * SUBTEST:
++ * Description: Use the display CRC support to validate pwrite to an already
++ *              uncached future scanout buffer.
++ * Driver requirement: i915
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- IGT_TEST_DESCRIPTION("Tests to varify PSR2 selective fetch by sending multiple"
- 		     " damaged areas");
+ IGT_TEST_DESCRIPTION(
+    "Use the display CRC support to validate pwrite to an already uncached future scanout buffer.");
 -- 
 2.40.0
