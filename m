@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68BE710E3D4
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 732B610E3DE
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:50 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:34 +0530
-Message-Id: <20230523063243.669540-14-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:43 +0530
+Message-Id: <20230523063243.669540-23-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 13/82] tests/i915/kms_busy: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V3 22/82] tests/i915/kms_flip_tiling: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,102 +28,32 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_busy.c | 62 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+ tests/i915/kms_flip_tiling.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
-index 20d3058fb..94590c86e 100644
---- a/tests/i915/kms_busy.c
-+++ b/tests/i915/kms_busy.c
-@@ -21,6 +21,11 @@
-  * IN THE SOFTWARE.
-  */
+diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
+index a22f12382..2efd82175 100644
+--- a/tests/i915/kms_flip_tiling.c
++++ b/tests/i915/kms_flip_tiling.c
+@@ -30,6 +30,19 @@
+ #include <string.h>
  
+ #include "igt.h"
 +/**
-+ * TEST: kms busy
++ * TEST: kms flip tiling
 + * Category: Display
-+ * Description: Basic check of KMS ABI with busy framebuffers.
++ * Description: Test page flips and tiling scenarios
++ *
++ * SUBTEST: flip-change-tiling
++ * Description: Check pageflip between modifiers
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
- #include <sys/poll.h>
- #include <signal.h>
- #include <time.h>
-@@ -131,6 +136,23 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
- 	put_ahnd(ahnd);
- }
  
-+/**
-+ * SUBTEST: basic
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: basic-hang
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_flip(igt_display_t *dpy, int pipe,
- 		      igt_output_t *output, bool modeset)
- {
-@@ -223,6 +245,37 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
- 	put_ahnd(ahnd);
- }
+ IGT_TEST_DESCRIPTION("Test page flips and tiling scenarios");
  
-+/**
-+ * SUBTEST: extended-modeset-hang-%s
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @newfb:                New framebuffer
-+ * @oldfb:                Old framebuffer
-+ * @newfb-with-reset:     New framebuffer with reset
-+ * @oldfb-with-reset:     Old framebuffer with reset
-+ */
-+
-+/**
-+ * SUBTEST: extended-pageflip-hang-%s
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @newfb:     New framebuffer
-+ * @oldfb:     Old framebuffer
-+ */
- static void test_hang(igt_display_t *dpy,
- 		      enum pipe pipe, igt_output_t *output,
- 		      bool modeset, bool hang_newfb)
-@@ -270,6 +323,15 @@ static void test_hang(igt_display_t *dpy,
- 	igt_remove_fb(dpy->drm_fd, &fb[0]);
- }
- 
-+/**
-+ * SUBTEST: extended-pageflip-modeset-hang-oldfb
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void
- test_pageflip_modeset_hang(igt_display_t *dpy,
- 			   igt_output_t *output, enum pipe pipe)
 -- 
 2.40.0
