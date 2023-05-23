@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE64410E469
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 15:58:37 +0000 (UTC)
-Date: Tue, 23 May 2023 17:58:32 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <20230523155832.fgqjpbh4vbsb44wk@zkempczy-mobl2>
-References: <20230522123605.17416-1-sai.gowtham.ch@intel.com>
- <20230522123605.17416-2-sai.gowtham.ch@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BFFA10E46C
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 16:00:57 +0000 (UTC)
+Date: Tue, 23 May 2023 18:00:52 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230523160052.42kxvhu3np6wvzio@kamilkon-desk1>
+References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
+ <20230523063243.669540-4-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230522123605.17416-2-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe/xe_spin: Integrate
- igt_spin_new with Xe.
+In-Reply-To: <20230523063243.669540-4-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t V3 03/82] tests/color: Move color helpers to
+ lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,256 +21,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, May 22, 2023 at 06:06:04PM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Hi Bhanuprakash,
+
+On 2023-05-23 at 12:01:24 +0530, Bhanuprakash Modem wrote:
+> The correct place for helpers is lib as the tests directory is
+> supposed to have test files, also having the helpers in tests
+> dir will break the compilation of testplan. Hence move all
+> helpers to library.
 > 
-> Extending the spin_create implementation and allocator handle support in xe,
-> where it submits dummy work loads to engine. This Implementation is wrapped
-> around vm_bind and unbind as we are supposed to do it manually for xe.
+> Expectation is to have an executable binary for each .c file
+> the "tests" dir.
 > 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> V2: - Drop special case compilation method
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+When moving into library you should at least document public
+functions, maybe as a separate later patch. Please also send
+cc to developers, here +cc Swati and Jouni
+
+Regards,
+Kamil
+
 > ---
->  lib/igt_dummyload.c | 24 ++++++++++++----
->  lib/igt_dummyload.h | 11 ++++++++
->  lib/xe/xe_spin.c    | 68 +++++++++++++++++++++++++++++++++++++++++++++
->  lib/xe/xe_spin.h    |  7 +++++
->  4 files changed, 104 insertions(+), 6 deletions(-)
+>  .../igt_color_helper.c                        |  2 +-
+>  .../igt_color_helper.h                        |  0
+>  lib/meson.build                               |  1 +
+>  tests/chamelium/kms_chamelium_color.c         |  2 +-
+>  tests/kms_color.c                             |  2 +-
+>  tests/meson.build                             | 20 ++-----------------
+>  6 files changed, 6 insertions(+), 21 deletions(-)
+>  rename tests/kms_color_helper.c => lib/igt_color_helper.c (99%)
+>  rename tests/kms_color_helper.h => lib/igt_color_helper.h (100%)
 > 
-> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-> index 740a58f3..6e89b72d 100644
-> --- a/lib/igt_dummyload.c
-> +++ b/lib/igt_dummyload.c
-> @@ -46,6 +46,7 @@
->  #include "intel_reg.h"
->  #include "ioctl_wrappers.h"
->  #include "sw_sync.h"
-> +#include "xe/xe_spin.h"
+> diff --git a/tests/kms_color_helper.c b/lib/igt_color_helper.c
+> similarity index 99%
+> rename from tests/kms_color_helper.c
+> rename to lib/igt_color_helper.c
+> index b01c38ef6..87fd096c1 100644
+> --- a/tests/kms_color_helper.c
+> +++ b/lib/igt_color_helper.c
+> @@ -22,7 +22,7 @@
+>   *
+>   */
 >  
->  /**
->   * SECTION:igt_dummyload
-> @@ -447,7 +448,10 @@ spin_create(int fd, const struct igt_spin_factory *opts)
->  igt_spin_t *
->  __igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+> -#include "kms_color_helper.h"
+> +#include "igt_color_helper.h"
+>  
+>  bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
 >  {
-> -	return spin_create(fd, opts);
-> +	if (is_xe_device(fd))
-> +		return xe_spin_create(fd, opts);
-> +	else
-> +		return spin_create(fd, opts);
->  }
-
-You may use enum intel_driver and cache what's the device underneath to
-avoid this check in free path. See __intel_bb_create() as a reference.
-
+> diff --git a/tests/kms_color_helper.h b/lib/igt_color_helper.h
+> similarity index 100%
+> rename from tests/kms_color_helper.h
+> rename to lib/igt_color_helper.h
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 75e52580b..1cc859f17 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -20,6 +20,7 @@ lib_sources = [
+>  	'igt_chamelium_helper.c',
+>  	'igt_collection.c',
+>  	'igt_color_encoding.c',
+> +	'igt_color_helper.c',
+>  	'igt_crc.c',
+>  	'igt_debugfs.c',
+>  	'igt_device.c',
+> diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
+> index 26239a6b8..bbb929b64 100644
+> --- a/tests/chamelium/kms_chamelium_color.c
+> +++ b/tests/chamelium/kms_chamelium_color.c
+> @@ -22,7 +22,7 @@
+>   *
+>   */
 >  
->  /**
-> @@ -467,6 +471,11 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
->  {
->  	igt_spin_t *spin;
+> -#include "kms_color_helper.h"
+> +#include "igt_color_helper.h"
 >  
-> +	if (is_xe_device(fd)) {
-> +		spin = xe_spin_create(fd, opts);
-> +		return spin;
-> +	}
-> +
->  	if ((opts->flags & IGT_SPIN_POLL_RUN) && opts->engine != ALL_ENGINES) {
->  		unsigned int class;
+>  IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
 >  
-> @@ -647,11 +656,14 @@ void igt_spin_free(int fd, igt_spin_t *spin)
->  	if (!spin)
->  		return;
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index fdc7120c7..cd2d38329 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -22,7 +22,7 @@
+>   *
+>   */
 >  
-> -	pthread_mutex_lock(&list_lock);
-> -	igt_list_del(&spin->link);
-> -	pthread_mutex_unlock(&list_lock);
+> -#include "kms_color_helper.h"
+> +#include "igt_color_helper.h"
+>  
+>  IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+>  
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 48e9164f8..1c33e5605 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -21,6 +21,7 @@ test_progs = [
+>  	'kms_atomic_interruptible',
+>  	'kms_atomic_transition',
+>  	'kms_bw',
+> +	'kms_color',
+>  	'kms_concurrent',
+>  	'kms_content_protection',
+>  	'kms_cursor_crc',
+> @@ -281,6 +282,7 @@ msm_progs = [
+>  
+>  chamelium_progs = [
+>  	'kms_chamelium_audio',
+> +	'kms_chamelium_color',
+>  	'kms_chamelium_edid',
+>  	'kms_chamelium_frames',
+>  	'kms_chamelium_hpd',
+> @@ -471,24 +473,6 @@ executable('testdisplay', ['testdisplay.c', 'testdisplay_hotplug.c'],
+>  	   install : true)
+>  test_list += 'testdisplay'
+>  
+> -test_executables += executable('kms_color',
+> -	   [ 'kms_color.c', 'kms_color_helper.c' ],
+> -	   dependencies : test_deps,
+> -	   install_dir : libexecdir,
+> -	   install_rpath : libexecdir_rpathdir,
+> -	   install : true)
+> -test_list += 'kms_color'
 > -
-> -	__igt_spin_free(fd, spin);
-> +	if (is_xe_device(fd)) {
-> +		xe_spin_free(fd, spin);
-> +	} else {
-> +		pthread_mutex_lock(&list_lock);
-> +		igt_list_del(&spin->link);
-> +		pthread_mutex_unlock(&list_lock);
-> +		__igt_spin_free(fd, spin);
-> +	}
->  }
->  
->  void igt_terminate_spins(void)
-> diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-> index b247ab02..4da4e5a5 100644
-> --- a/lib/igt_dummyload.h
-> +++ b/lib/igt_dummyload.h
-> @@ -51,8 +51,10 @@ typedef struct igt_spin_factory {
->  	uint32_t dependency;
->  	uint64_t dependency_size;
->  	unsigned int engine;
-> +	struct drm_xe_engine_class_instance *hwe;
->  	unsigned int flags;
->  	int fence;
-> +	uint32_t vm;
->  	uint64_t ahnd;
-
-Keep xe arguments on the end.
-
->  } igt_spin_factory_t;
->  
-> @@ -83,6 +85,15 @@ typedef struct igt_spin {
->  #define SPIN_CLFLUSH (1 << 0)
->  
->  	struct igt_spin_factory opts;
-> +
-> +	uint32_t start;
-> +	uint32_t end;
-> +	size_t bo_size;
-> +	uint64_t address;
-> +	unsigned int engine;
-> +	uint32_t vm;
-> +	uint32_t syncobj;
-> +
-
-start and end are not necessary. Use struct xe_spin *xe_spin instead.
-Other fields are ok.
-
->  } igt_spin_t;
->  
->  
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 856d0ba2..9a4fbeb8 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -15,6 +15,7 @@
->  #include "intel_reg.h"
->  #include "xe_ioctl.h"
->  #include "xe_spin.h"
-> +#include "lib/igt_dummyload.h"
->  
->  /**
->   * xe_spin_init:
-> @@ -82,6 +83,73 @@ void xe_spin_end(struct xe_spin *spin)
->  	spin->end = 0;
->  }
->  
-> +igt_spin_t *
-> +xe_spin_create(int fd, const struct igt_spin_factory *opt)
-> +{
-> +	size_t bo_size = xe_get_default_alignment(fd);
-> +	uint32_t bo;
-> +	uint64_t ahnd = opt->ahnd, addr;
-> +	struct igt_spin *spin;
-> +	struct xe_spin *xe_spin;
-> +	struct drm_xe_sync sync = {
-> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-> +	};
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 1,
-> +		.syncs = to_user_pointer(&sync),
-> +	};
-> +
-> +	igt_assert(ahnd);
-> +	xe_spin = calloc(1, sizeof(struct xe_spin));
-> +	igt_assert(xe_spin);
-> +	spin = calloc(1, sizeof(struct igt_spin));
-> +	igt_assert(spin);
-> +
-> +	if (opt->engine) {
-> +		spin->engine = opt->engine;
-> +		spin->vm = opt->vm;
-> +	} else {
-> +		spin->vm = xe_vm_create(fd, 0, 0);
-> +		spin->engine = xe_engine_create(fd, spin->vm, opt->hwe, 0);
-> +	}
-> +
-> +	bo = xe_bo_create(fd, opt->hwe->gt_id, spin->vm, bo_size);
-> +	spin->handle = bo;
-> +	spin->syncobj = syncobj_create(fd, 0);
-> +	addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
-> +	xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
-> +
-> +	xe_spin_init(xe_spin, addr, true);
-> +	exec.engine_id = spin->engine;
-> +	exec.address = addr;
-> +	sync.handle = spin->syncobj;
-> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
-> +
-> +	spin->batch = xe_spin->batch;
-> +	spin->start = xe_spin->start;
-> +	spin->end = xe_spin->end;
-> +	spin->bo_size = bo_size;
-> +	spin->address = addr;
-
-Blank line here will make this code more readable.
-> +	return spin;
-> +
-
-And this blank line is unnecessary.
-> +}
-> +
-> +void xe_spin_sync_wait(int fd, struct igt_spin *spin)
-> +{
-> +	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0,
-> +				NULL));
-> +}
-> +
-> +void xe_spin_free(int fd, struct igt_spin *spin)
-> +{
-> +	xe_vm_unbind_sync(fd, spin->vm, 0, spin->address, spin->bo_size);
-> +	spin->end = 0;
-
-Are you really sure you want to unbind then stop the spinner?
-And use xe_spin_end() for stopping the spinner.
-
-> +	syncobj_destroy(fd, spin->syncobj);
-> +	xe_engine_destroy(fd, spin->engine);
-> +	gem_close(fd, spin->handle);
-
-Spin memory will leak here.
-
---
-Zbigniew
-
-> +}
-> +
->  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
->  		  struct xe_cork *cork)
->  {
-> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index 73f9a026..48867eb8 100644
-> --- a/lib/xe/xe_spin.h
-> +++ b/lib/xe/xe_spin.h
-> @@ -13,19 +13,26 @@
->  #include <stdbool.h>
->  
->  #include "xe_query.h"
-> +#include "lib/igt_dummyload.h"
->  
->  /* Mapped GPU object */
-> +
->  struct xe_spin {
->  	uint32_t batch[16];
->  	uint64_t pad;
->  	uint32_t start;
->  	uint32_t end;
-> +
->  };
->  
-> +igt_spin_t *
-> +xe_spin_create(int fd, const struct igt_spin_factory *opt);
->  void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
->  bool xe_spin_started(struct xe_spin *spin);
-> +void xe_spin_sync_wait(int fd, struct igt_spin *spin);
->  void xe_spin_wait_started(struct xe_spin *spin);
->  void xe_spin_end(struct xe_spin *spin);
-> +void xe_spin_free(int fd, struct igt_spin *spin);
->  
->  struct xe_cork {
->  	struct xe_spin *spin;
+> -if chamelium.found()
+> -       test_executables += executable('kms_chamelium_color',
+> -                             [ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
+> -                             dependencies : test_deps + [ chamelium ],
+> -                             install_dir : libexecdir,
+> -                             install_rpath : libexecdir_rpathdir,
+> -                             install : true)
+> -       test_list += 'kms_chamelium_color'
+> -endif
+> -
+>  test_executables += executable('sw_sync', 'sw_sync.c',
+>  	   dependencies : test_deps + [ libatomic ],
+>  	   install_dir : libexecdir,
 > -- 
-> 2.39.1
+> 2.40.0
 > 
