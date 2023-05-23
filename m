@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A397A10E3D9
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C5D510E3D9
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:08 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:08 +0530
-Message-Id: <20230523063243.669540-48-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:00 +0530
+Message-Id: <20230523063243.669540-40-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 47/82] tests/kms_dp_aux_dev: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V3 39/82] tests/kms_color: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,32 +28,155 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_dp_aux_dev.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/kms_color.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
 
-diff --git a/tests/kms_dp_aux_dev.c b/tests/kms_dp_aux_dev.c
-index 69edc1585..fc8cb91e3 100644
---- a/tests/kms_dp_aux_dev.c
-+++ b/tests/kms_dp_aux_dev.c
-@@ -31,6 +31,19 @@
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index cd2d38329..8beccb296 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -22,10 +22,24 @@
+  *
+  */
  
- #include "igt.h"
- #include "igt_kms.h"
 +/**
-+ * TEST: kms dp aux dev
++ * TEST: kms color
 + * Category: Display
-+ * Description: Test that /dev/drm_dp_aux reads work
-+ *
-+ * SUBTEST:
-+ * Description: Test that /dev/drm_dp_aux reads work
++ * Description: Test Color Features at Pipe level
++ */
+ #include "igt_color_helper.h"
+ 
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+ 
++/**
++ * SUBTEST: degamma
++ * Description: Verify that degamma LUT transformation works correctly
 + * Driver requirement: any
-+ * Functionality: dp
-+ * Mega feature: DP
++ * Functionality: colorspace
++ * Mega feature: Color mgmt
 + * Run type: FULL
 + * Test category: functionality test
 + */
+ static bool test_pipe_degamma(data_t *data,
+ 			      igt_plane_t *primary)
+ {
+@@ -114,6 +128,16 @@ static bool test_pipe_degamma(data_t *data,
+ 	return ret;
+ }
  
- IGT_TEST_DESCRIPTION("Test that /dev/drm_dp_aux reads work");
++/**
++ * SUBTEST: gamma
++ * Description: Verify that gamma LUT transformation works correctly
++ * Driver requirement: any
++ * Functionality: colorspace, colorspace_gamma
++ * Mega feature: Color mgmt
++ * Run type: FULL
++ * Test category: functionality test
++ */
++
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out gamma
+  * LUT and verify we have the same CRC as drawing solid color rectangles.
+@@ -202,6 +226,16 @@ static bool test_pipe_gamma(data_t *data,
+ 	return ret;
+ }
  
++/**
++ * SUBTEST: legacy-gamma
++ * Description: Verify that legacy gamma LUT transformation works correctly
++ * Driver requirement: any
++ * Functionality: colorspace, colorspace_gamma
++ * Mega feature: Color mgmt
++ * Run type: FULL
++ * Test category: functionality test
++ */
++
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out legacy
+  * gamma LUT and verify we have the same CRC as drawing solid color rectangles
+@@ -314,6 +348,17 @@ static bool test_pipe_legacy_gamma(data_t *data,
+ 	return ret;
+ }
+ 
++/**
++ * SUBTEST: legacy-gamma-reset
++ * Description: Verify that setting the legacy gamma LUT resets the gamma LUT
++ *              set through GAMMA_LUT property
++ * Driver requirement: any
++ * Functionality: colorspace, colorspace_gamma
++ * Mega feature: Color mgmt
++ * Run type: FULL
++ * Test category: functionality test
++ */
++
+ /*
+  * Verify that setting the legacy gamma LUT resets the gamma LUT set
+  * through the GAMMA_LUT property.
+@@ -448,6 +493,27 @@ end:
+ 	return ret;
+ }
+ 
++/**
++ * SUBTEST: ctm-%s
++ * Description: Check the color transformation %arg[1]
++ * Driver requirement: any
++ * Functionality: colorspace
++ * Mega feature: Color mgmt
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @0-25:           for 0.25 transparency
++ * @0-50:           for 0.50 transparency
++ * @0-75:           for 0.75 transparency
++ * @blue-to-red:    from blue to red
++ * @green-to-red:   from green to red
++ * @max:            for maximum transparency
++ * @negative:       for negative transparency
++ * @red-to-blue:    from red to blue
++ */
++
+ /*
+  * Draw 3 rectangles using before colors with the ctm matrix apply and verify
+  * the CRC is equal to using after colors with an identify ctm matrix.
+@@ -795,6 +861,15 @@ out:
+ 	test_cleanup(data);
+ }
+ 
++/**
++ * SUBTEST: deep-color
++ * Description: Verify that deep color works correctly
++ * Driver requirement: any
++ * Functionality: colorspace
++ * Mega feature: Color mgmt
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void
+ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ {
+@@ -885,6 +960,21 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 	test_cleanup(data);
+ }
+ 
++/**
++ * SUBTEST: invalid-%s-sizes
++ * Description: Negative check for %arg[1] sizes
++ * Driver requirement: any
++ * Functionality: colorspace
++ * Mega feature: Color mgmt
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @ctm-matrix:         Color transformation matrix
++ * @degamma-lut:        Degamma LUT
++ * @gamma-lut:          Gamma LUT
++ */
+ static void
+ run_invalid_tests_for_pipe(data_t *data)
+ {
 -- 
 2.40.0
