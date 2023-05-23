@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF7A910E3E0
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3B1610E3DF
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:52 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:56 +0530
-Message-Id: <20230523063243.669540-36-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:45 +0530
+Message-Id: <20230523063243.669540-25-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 35/82] tests/kms_atomic: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V3 24/82] tests/i915/kms_legacy_colorkey: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,177 +28,40 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_atomic.c | 102 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 100 insertions(+), 2 deletions(-)
+ tests/i915/kms_legacy_colorkey.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 037db2d36..27c0e6368 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -27,8 +27,10 @@
-  *    Pekka Paalanen <pekka.paalanen@collabora.co.uk>
-  */
+diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/i915/kms_legacy_colorkey.c
+index 5b2fd64ba..b21e0f1a9 100644
+--- a/tests/i915/kms_legacy_colorkey.c
++++ b/tests/i915/kms_legacy_colorkey.c
+@@ -24,6 +24,27 @@
+ #include "igt.h"
+ #include <errno.h>
  
--/*
-- * Testcase: testing atomic modesetting API
 +/**
-+ * TEST: kms atomic
++ * TEST: kms legacy colorkey
 + * Category: Display
-+ * Description: Test atomic modesetting API
-  */
- 
- #include <unistd.h>
-@@ -287,6 +289,16 @@ static uint32_t plane_get_igt_format(igt_plane_t *plane)
- 	return 0;
- }
- 
-+/**
-+ * SUBTEST: plane-primary-overlay-mutable-zpos
-+ * Description: Verify that the overlay plane can cover the primary one (and
-+ *              vice versa) by changing their zpos property.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void
- plane_primary_overlay_mutable_zpos(igt_pipe_t *pipe, igt_output_t *output,
- 				   igt_plane_t *primary, igt_plane_t *overlay,
-@@ -369,6 +381,16 @@ plane_primary_overlay_mutable_zpos(igt_pipe_t *pipe, igt_output_t *output,
- 	igt_assert_eq_u64(igt_plane_get_prop(overlay, IGT_PLANE_ZPOS), 1);
- }
- 
-+/**
-+ * SUBTEST: plane-immutable-zpos
-+ * Description: Verify the reported zpos property of planes by making sure only
-+ *              higher zpos planes cover the lower zpos ones.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void
- plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
- 		     igt_output_t *output)
-@@ -505,6 +527,22 @@ plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
- 	igt_remove_fb(display->drm_fd, &fb_upper);
- }
- 
-+/**
-+ * SUBTEST: plane-%s-legacy
-+ * Description: Test for KMS atomic modesetting on %arg[1] and ensure coherency
-+ *              between legacy and atomic interfaces.
-+ * Driver requirement: any
-+ * Functionality: kms_core
++ * Description: Check that the legacy set colorkey ioctl only works on sprite planes.
++ *
++ * SUBTEST: basic
++ * Description: Test to check the legacy set colorkey ioctl only works for sprite planes.
++ * Driver requirement: i915
++ * Functionality: xorg_xv
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
-+ *
-+ * @cursor:         Cursor plane
-+ * @overlay:        Overlay plane
-+ * @primary:        Primary plane
-+ */
- static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *plane)
- {
- 	drmModeModeInfo *mode = igt_output_get_mode(output);
-@@ -579,6 +617,17 @@ static void plane_primary(igt_pipe_t *pipe, igt_plane_t *plane, struct igt_fb *f
- 	plane_commit(plane, COMMIT_UNIVERSAL, ATOMIC_RELAX_NONE);
- }
- 
-+/**
-+ * SUBTEST: test-only
-+ * Description: Test to ensure that DRM_MODE_ATOMIC_TEST_ONLY really only touches
-+ *              the free-standing state objects and nothing else.
-+ * Driver requirement: any
-+ * Functionality: kms_core
++ * SUBTEST: invalid-plane
++ * Description: Check invalid plane id's, zero and outrange
++ * Driver requirement: i915
++ * Functionality: xorg_xv
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
-+
- /* test to ensure that DRM_MODE_ATOMIC_TEST_ONLY really only touches the
-  * free-standing state objects and nothing else.
-  */
-@@ -687,6 +736,20 @@ static void plane_cursor(igt_pipe_t *pipe_obj,
- 	plane_commit(cursor, COMMIT_LEGACY, ATOMIC_RELAX_NONE);
- }
  
-+/**
-+ * SUBTEST: plane-invalid-%s
-+ * Description: Test error handling when invalid %arg[1] are passed
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @params:           plane parameters
-+ * @params-fence:     plane fence parameters
-+ */
- static void plane_invalid_params(igt_pipe_t *pipe,
- 				 igt_output_t *output,
- 				 igt_plane_t *plane,
-@@ -776,6 +839,20 @@ static void plane_invalid_params_fence(igt_pipe_t *pipe,
- 	close(timeline);
- }
+ IGT_TEST_DESCRIPTION("Check that the legacy set colorkey ioctl only works on sprite planes.");
  
-+/**
-+ * SUBTEST: crtc-invalid-%s
-+ * Description: Test error handling when invalid %arg[1] are passed
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @params:           crtc parameters
-+ * @params-fence:     crtc fence parameters
-+ */
- static void crtc_invalid_params(igt_pipe_t *pipe,
- 				igt_output_t *output,
- 				igt_plane_t *plane,
-@@ -923,6 +1000,18 @@ static void crtc_invalid_params_fence(igt_pipe_t *pipe,
- 	igt_assert(pipe->out_fence_fd != -1);
- }
- 
-+/**
-+ * SUBTEST: atomic-invalid-params
-+ * Description: Test abuse the atomic ioctl directly in order to test various
-+ *              invalid conditions which the libdrm wrapper won't allow us to
-+ *              create.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
-+
- /* Abuse the atomic ioctl directly in order to test various invalid conditions,
-  * which the libdrm wrapper won't allow us to create. */
- static void atomic_invalid_params(igt_pipe_t *pipe,
-@@ -1064,6 +1153,15 @@ static void atomic_invalid_params(igt_pipe_t *pipe,
- 	do_ioctl_err(display->drm_fd, DRM_IOCTL_MODE_ATOMIC, &ioc, EFAULT);
- }
- 
-+/**
-+ * SUBTEST: atomic_plane_damage
-+ * Description: Simple test cases to use FB_DAMAGE_CLIPS plane property
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void atomic_plane_damage(igt_pipe_t *pipe, igt_plane_t *plane, struct igt_fb *fb)
- {
- 	struct drm_mode_rect damage[2];
 -- 
 2.40.0
