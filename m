@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 769A610E3D4
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5311A10E3D9
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:47 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:25 +0530
-Message-Id: <20230523063243.669540-65-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:30 +0530
+Message-Id: <20230523063243.669540-10-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 64/82] tests/kms_plane_multiple: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V3 09/82] tests/chamelium/kms_chamelium_frames:
+ Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,59 +28,165 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane_multiple.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ tests/chamelium/kms_chamelium_frames.c | 102 ++++++++++++++++++++++++-
+ 1 file changed, 100 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 7dd9d586d..6ee648b2d 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -22,6 +22,11 @@
-  *
+diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
+index 2d90b45b2..1081cb1c1 100644
+--- a/tests/chamelium/kms_chamelium_frames.c
++++ b/tests/chamelium/kms_chamelium_frames.c
+@@ -25,10 +25,10 @@
   */
  
-+/**
-+ * TEST: kms plane multiple
-+ * Category: Display
-+ * Description: Test atomic mode setting with multiple planes.
-+ */
- #include "igt.h"
- #include "drmtest.h"
- #include <errno.h>
-@@ -373,6 +378,34 @@ test_plane_position(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t
- 					n_planes, modifier);
- }
- 
-+/**
-+ * SUBTEST: tiling-none
-+ * Description: Check that the kernel handles atomic updates of multiple planes
-+ *              correctly by changing their geometry and making sure the changes
-+ *              are reflected immediately after each commit.
+ /**
+- * TEST: Tests to capture frames using chamelium
++ * TEST: kms chamelium frames
+  * Category: Display
++ * Description: Tests requiring a Chamelium board
+  */
+-
+ #include "igt_eld.h"
+ #include "igt_infoframe.h"
+ #include "igt_chamelium_helper.h"
+@@ -547,6 +547,7 @@ static void prepare_randomized_plane(chamelium_data_t *data,
+  * Run type: BAT
+  * Functionality: dp
+  * Mega feature: DP
 + * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
+  *
+  * SUBTEST: hdmi-crc-fast
+  * Description: Pick the first mode of the IGT base EDID, display and capture
+@@ -555,6 +556,23 @@ static void prepare_randomized_plane(chamelium_data_t *data,
+  * Run type: BAT
+  * Functionality: hdmi
+  * Mega feature: HDMI
++ * Driver requirement: any
++ */
++
++/**
++ * SUBTEST: hdmi-%s-formats
++ * Description: Pick the first mode of the IGT base EDID, display and capture a
++ *              few frames, then check captured frames are correct
 + * Test category: functionality test
-+ *
-+ * SUBTEST: tiling-%s
-+ * Description: Check that the kernel handles atomic updates of multiple planes
-+ *              correctly by changing their geometry and making sure the changes
-+ *              are reflected immediately after each commit.
-+ * Driver requirement: i915
-+ * Functionality: plane
-+ * Mega feature: General Display Features
 + * Run type: FULL
-+ * Test category: functionality test
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
 + *
 + * arg[1]:
 + *
-+ * @4:           4-tiling
-+ * @x:           x-tiling
-+ * @y:           y-tiling
-+ * @yf:          yf-tiling
++ * @crc-nonplanar:     CRC with non planar formats
++ * @cmp-planar:        Compare with planar formats
+  */
+ static const char test_display_one_mode_desc[] =
+ 	"Pick the first mode of the IGT base EDID, display and capture a few "
+@@ -592,6 +610,39 @@ static void test_display_one_mode(chamelium_data_t *data,
+ 	drmModeFreeConnector(connector);
+ }
+ 
++/**
++ * SUBTEST: vga-frame-dump
++ * Description: For each mode of the IGT base EDID, display and capture a few
++ *              frames, then check captured frames are correct
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: vga
++ * Mega feature: VGA
++ * Driver requirement: any
++ *
++ * SUBTEST: dp-crc-%s
++ * Description: For each mode of the IGT base EDID, display and capture a %arg[1]
++ *              frame(s), then check captured frame(s) are correct
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: dp
++ * Mega feature: DP
++ * Driver requirement: any
++ *
++ * SUBTEST: hdmi-crc-%s
++ * Description: For each mode of the IGT base EDID, display and capture a %arg[1]
++ *              frame(s), then check captured frame(s) are correct
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
++ *
++ * arg[1]:
++ *
++ * @single:    single
++ * @multiple:  multiple
 + */
- static void run_test(data_t *data, uint64_t modifier)
- {
- 	enum pipe pipe;
+ static const char test_display_all_modes_desc[] =
+ 	"For each mode of the IGT base EDID, display and capture a few "
+ 	"frames, then check captured frames are correct";
+@@ -650,6 +701,27 @@ static void test_display_all_modes(chamelium_data_t *data,
+ 	} while (++i < count_modes);
+ }
+ 
++/**
++ * SUBTEST: dp-frame-dump
++ * Description: For each mode of the IGT base EDID, display and capture a few
++ *              frames, then download the captured frames and compare them
++ *              bit-by-bit to the sent ones
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: dp
++ * Mega feature: DP
++ * Driver requirement: any
++ *
++ * SUBTEST: hdmi-frame-dump
++ * Description: For each mode of the IGT base EDID, display and capture a few
++ *              frames, then download the captured frames and compare them
++ *              bit-by-bit to the sent ones
++ * Test category: functionality test
++ * Run type: BAT
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
++ */
+ static const char test_display_frame_dump_desc[] =
+ 	"For each mode of the IGT base EDID, display and capture a few "
+ 	"frames, then download the captured frames and compare them "
+@@ -718,6 +790,16 @@ static void test_display_frame_dump(chamelium_data_t *data,
+ 	} while (++i < count_modes);
+ }
+ 
++/**
++ * SUBTEST: hdmi-aspect-ratio
++ * Description: Pick a mode with a picture aspect-ratio, capture AVI InfoFrames
++ *              and check they include the relevant fields
++ * Test category: functionality test
++ * Run type: BAT
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
++ */
+ static const char test_display_aspect_ratio_desc[] =
+ 	"Pick a mode with a picture aspect-ratio, capture AVI InfoFrames and "
+ 	"check they include the relevant fields";
+@@ -798,6 +880,22 @@ static void test_display_aspect_ratio(chamelium_data_t *data,
+ 	drmModeFreeConnector(connector);
+ }
+ 
++/**
++ *
++ * SUBTEST: hdmi-%s-planes-random
++ * Description: Setup a few overlay planes with random parameters, capture the
++ *              frame and check it matches the expected output
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
++ *
++ * arg[1]:
++ *
++ * @crc:     CRC check
++ * @cmp:     Compare
++ */
+ static const char test_display_planes_random_desc[] =
+ 	"Setup a few overlay planes with random parameters, capture the frame "
+ 	"and check it matches the expected output";
 -- 
 2.40.0
