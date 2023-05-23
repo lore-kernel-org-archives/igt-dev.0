@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9FAF310E3EE
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5ED9710E3D9
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:40:00 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:30 +0530
-Message-Id: <20230523063243.669540-70-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:36 +0530
+Message-Id: <20230523063243.669540-76-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 69/82] tests/kms_rmfb: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V3 75/82] tests/kms_sysfs_edid_timing: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,43 +28,40 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_rmfb.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ tests/kms_sysfs_edid_timing.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-index 50df42953..6987d87bd 100644
---- a/tests/kms_rmfb.c
-+++ b/tests/kms_rmfb.c
-@@ -28,6 +28,30 @@
- #include <stdio.h>
- #include <string.h>
- #include <time.h>
+diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
+index 775211089..e185eaf6d 100644
+--- a/tests/kms_sysfs_edid_timing.c
++++ b/tests/kms_sysfs_edid_timing.c
+@@ -25,6 +25,27 @@
+ #include <dirent.h>
+ #include <fcntl.h>
+ #include <sys/stat.h>
 +/**
-+ * TEST: kms rmfb
++ * TEST: kms sysfs edid timing
 + * Category: Display
-+ * Description: This tests rmfb and close-fd behavior. In these casesthe
-+ *              framebuffers should be removed from the crtc.
++ * Description: This test checks the time it takes to reprobe each connector and
++ *              fails if either the time it takes for one reprobe is too long or
++ *              if the mean time it takes to reprobe one connector is too long.
++ *              Additionally, make sure that the mean time for all connectors is
++ *              not too long.
 + *
-+ * SUBTEST: close-fd
-+ * Description: RMFB is supposed to free the framebuffers from any and all planes
-+ *              so test this and make sure it works with fd close and reopen.
++ * SUBTEST:
++ * Description: This test checks the time it takes to reprobe each connector and
++ *              fails if either the time it takes for one reprobe is too long or
++ *              if the mean time it takes to reprobe one connector is too long.
++ *              Additionally, make sure that the mean time for all connectors is
++ *              not too long.
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: rmfb-ioctl
-+ * Description: RMFB is supposed to free the framebuffers from any and all planes
-+ *              so test this and make sure it works.
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- #ifndef DRM_CAP_CURSOR_WIDTH
- #define DRM_CAP_CURSOR_WIDTH 0x8
+ #define THRESHOLD_PER_CONNECTOR		150
+ #define THRESHOLD_PER_CONNECTOR_MEAN	140
 -- 
 2.40.0
