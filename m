@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDD0710E3D9
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45AE810E3DD
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:21 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:31 +0530
-Message-Id: <20230523063243.669540-11-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:28 +0530
+Message-Id: <20230523063243.669540-8-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 10/82] tests/chamelium/kms_chamelium_hpd:
+Subject: [igt-dev] [i-g-t V3 07/82] tests/chamelium/kms_chamelium_color:
  Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,269 +28,82 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_chamelium_hpd.c | 186 +++++++++++++++++++++++++++-
- 1 file changed, 185 insertions(+), 1 deletion(-)
+ tests/chamelium/kms_chamelium_color.c | 45 +++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index ea0ee10e7..6926dcb6b 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -25,8 +25,9 @@
+diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
+index bbb929b64..709b6ec2c 100644
+--- a/tests/chamelium/kms_chamelium_color.c
++++ b/tests/chamelium/kms_chamelium_color.c
+@@ -22,10 +22,25 @@
+  *
   */
  
- /**
-- * TEST: Tests behaviour of hpd using chamelium
-+ * TEST: kms chamelium hpd
-  * Category: Display
-+ * Description: Testing HPD with a Chamelium board
-  */
++/**
++ * TEST: kms chamelium color
++ * Category: Display
++ * Description: Test Color Features at Pipe level using Chamelium to verify instead of CRC
++ */
++
+ #include "igt_color_helper.h"
  
- #include "igt_chamelium_helper.h"
-@@ -117,6 +118,7 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: dp_hotplug
-  * Mega feature: DP
-+ * Driver requirement: any
-  *
-  * SUBTEST: hdmi-hpd-fast
-  * Description: Check that we get uevents and updated connector status on
-@@ -125,6 +127,7 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: hdmi_hotplug
-  * Mega feature: HDMI
-+ * Driver requirement: any
-  *
-  * SUBTEST: vga-hpd-fast
-  * Description: Check that we get uevents and updated connector status on
-@@ -133,6 +136,66 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: vga_hotplug
-  * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: dp-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
+ 
++/**
++ * SUBTEST: degamma
++ * Description: Verify that degamma LUT transformation works correctly
++ * Functionality: colorspace
++ * Mega feature: Color mgmt
 + * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
 + * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
 + * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
++ */
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
+  * degamma LUT and verify we have the same frame dump as drawing solid color
+@@ -115,6 +130,15 @@ static bool test_pipe_degamma(data_t *data,
+ 	return ret;
+ }
+ 
++/**
++ * SUBTEST: gamma
++ * Description: Verify that gamma LUT transformation works correctly
++ * Functionality: colorspace_gamma
++ * Mega feature: Color mgmt
 + * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
++ * Test category: functionality test
 + * Driver requirement: any
-+ *
-+ * SUBTEST: dp-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
++ */
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
+  * gamma LUT and verify we have the same frame dump as drawing solid
+@@ -465,6 +489,27 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
+ 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
+ }
+ 
++/**
++ * SUBTEST: ctm-%s
++ * Description: Check the color transformation %arg[1]
++ * Functionality: colorspace
++ * Mega feature: Color mgmt
 + * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
 + * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
 + * Driver requirement: any
 + *
 + * arg[1]:
 + *
-+ * @enable-disable-mode:     Toggle the mode
-+ * @with-enabled-mode:       Enabling the mode
-  */
- static const char test_basic_hotplug_desc[] =
- 	"Check that we get uevents and updated connector status on "
-@@ -200,6 +263,34 @@ static void test_hotplug(chamelium_data_t *data, struct chamelium_port *port,
- 	igt_remove_fb(data->drm_fd, &fb);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
++ * @0-25:            for 0.25 transparancy
++ * @0-50:            for 0.50 transparancy
++ * @0-75:            for 0.75 transparancy
++ * @blue-to-red:     from blue to red
++ * @green-to-red:    from green to red
++ * @limited-range:   with identity matrix
++ * @max:             for max transparancy
++ * @negative:        for negative transparancy
++ * @red-to-blue:     from red to blue
 + */
- static const char test_hotplug_for_each_pipe_desc[] =
- 	"Check that we get uevents and updated connector status on "
- 	"hotplug and unplug for each pipe with valid output";
-@@ -245,6 +336,39 @@ static void test_hotplug_for_each_pipe(chamelium_data_t *data,
- 	igt_hpd_storm_reset(data->drm_fd);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-after-%s
-+ * Description: Toggle HPD during %arg[1], check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-after-%s
-+ * Description: Toggle HPD during %arg[1], check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-after-%s
-+ * Description: Toggle HPD during %arg[1], check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * arg[1]:
-+ *
-+ * @hibernate:     Hibernation
-+ * @suspend:       Suspend
-+ */
- static const char test_suspend_resume_hpd_desc[] =
- 	"Toggle HPD during suspend, check that uevents are sent and connector "
- 	"status is updated";
-@@ -276,6 +400,16 @@ static void test_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: hotplug
-  * Mega feature: General Display Features
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: common-hpd-after-hibernate
-+ * Description: Toggle HPD during suspend on all connectors, check that uevents
-+ *              are sent and connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hotplug
-+ * Mega feature: General Display Features
-+ * Driver requirement: any
-  */
- static const char test_suspend_resume_hpd_common_desc[] =
- 	"Toggle HPD during suspend on all connectors, check that uevents are "
-@@ -306,6 +440,16 @@ static void test_suspend_resume_hpd_common(chamelium_data_t *data,
- 	igt_cleanup_uevents(mon);
- }
- 
-+/**
-+ * SUBTEST: vga-hpd-without-ddc
-+ * Description: Disable DDC on a VGA connector, check we still get a uevent on
-+ *              hotplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ */
- static const char test_hpd_without_ddc_desc[] =
- 	"Disable DDC on a VGA connector, check we still get a uevent on hotplug";
- static void test_hpd_without_ddc(chamelium_data_t *data,
-@@ -332,6 +476,27 @@ static void test_hpd_without_ddc(chamelium_data_t *data,
- 	igt_cleanup_uevents(mon);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-storm
-+ * Description: Trigger a series of hotplugs in a very small timeframe to
-+ *              simulate abad cable, check the kernel falls back to polling
-+ *              to avoid a hotplug storm
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-storm
-+ * Description: Trigger a series of hotplugs in a very small timeframe to
-+ *              simulate abad cable, check the kernel falls back to polling
-+ *              to avoid a hotplug storm
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ */
- static const char test_hpd_storm_detect_desc[] =
- 	"Trigger a series of hotplugs in a very small timeframe to simulate a"
- 	"bad cable, check the kernel falls back to polling to avoid a hotplug "
-@@ -366,6 +531,25 @@ static void test_hpd_storm_detect(chamelium_data_t *data,
- 	igt_hpd_storm_reset(data->drm_fd);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-storm-disable
-+ * Description: Disable HPD storm detection, trigger a storm and check the
-+ *              kernel doesn't detect one
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-storm-disable
-+ * Description: Disable HPD storm detection, trigger a storm and check the
-+ *              kernel doesn't detect one
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ */
- static const char test_hpd_storm_disable_desc[] =
- 	"Disable HPD storm detection, trigger a storm and check the kernel "
- 	"doesn't detect one";
+ static void
+ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 		       color_t *expected_colors,
 -- 
 2.40.0
