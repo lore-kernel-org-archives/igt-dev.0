@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7CC4810E3D9
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6967810E3E0
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:34 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:09 +0530
-Message-Id: <20230523063243.669540-49-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:18 +0530
+Message-Id: <20230523063243.669540-58-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 48/82] tests/kms_dp_tiled_display: Document
+Subject: [igt-dev] [i-g-t V3 57/82] tests/kms_multipipe_modeset: Document
  each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,46 +28,33 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_dp_tiled_display.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ tests/kms_multipipe_modeset.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
-index 07b803a50..cd792ec51 100644
---- a/tests/kms_dp_tiled_display.c
-+++ b/tests/kms_dp_tiled_display.c
-@@ -36,12 +36,33 @@
-  * the displays supported by the kernel at the moment.
+diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c
+index 1fdfb9a9f..a06a6c4b5 100644
+--- a/tests/kms_multipipe_modeset.c
++++ b/tests/kms_multipipe_modeset.c
+@@ -25,6 +25,20 @@
   */
  
-+/**
-+ * TEST: kms dp tiled display
-+ * Category: Display
-+ * Description: Test for Transcoder Port Sync for Display Port Tiled Displays
-+ */
  #include "igt.h"
- #include "poll.h"
- #include "drm_mode.h"
- #include "drm_fourcc.h"
- #include "igt_edid.h"
- 
 +/**
-+ * SUBTEST: basic-test-%s
-+ * Description: Make sure the Tiled CRTCs are synchronized and we get page flips
-+ *              for all tiled CRTCs in one vblank (%arg[1]).
++ * TEST: kms multipipe modeset
++ * Category: Display
++ * Description: Test simultaneous modeset on all the supported pipes
++ *
++ * SUBTEST: basic-max-pipe-crc-check
++ * Description: Verify if simultaneous modesets on all the supported pipes is
++ *              successful. Validate using CRC verification
 + * Driver requirement: any
-+ * Functionality: tiled_display
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @pattern:                  executes on real panel
-+ * @pattern-with-chamelium:   executes on chamelium.
 + */
-+
- IGT_TEST_DESCRIPTION("Test for Transcoder Port Sync for Display Port Tiled Displays");
  
- typedef struct {
+ IGT_TEST_DESCRIPTION("Test simultaneous modeset on all the supported pipes");
+ 
 -- 
 2.40.0
