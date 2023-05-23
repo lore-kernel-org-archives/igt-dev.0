@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C54B810E3F1
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FAF310E3EE
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:51 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:28 +0530
-Message-Id: <20230523063243.669540-68-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:30 +0530
+Message-Id: <20230523063243.669540-70-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 67/82] tests/kms_prop_blob: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V3 69/82] tests/kms_rmfb: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,87 +28,43 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_prop_blob.c | 46 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
+ tests/kms_rmfb.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/tests/kms_prop_blob.c b/tests/kms_prop_blob.c
-index 6a5a5f410..14616b14f 100644
---- a/tests/kms_prop_blob.c
-+++ b/tests/kms_prop_blob.c
-@@ -26,8 +26,9 @@
-  */
- 
- /**
-- * TEST: Tests behaviour of mass-data 'blob' properties
-+ * TEST: kms prop blob
-  * Category: Display
-+ * Description: Tests behaviour of mass-data 'blob' properties.
-  */
- #include "igt.h"
- #include <errno.h>
-@@ -122,6 +123,29 @@ destroy_prop(int fd, uint32_t prop_id)
- 	return 0;
- }
- 
+diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+index 50df42953..6987d87bd 100644
+--- a/tests/kms_rmfb.c
++++ b/tests/kms_rmfb.c
+@@ -28,6 +28,30 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <time.h>
 +/**
-+ * SUBTEST: blob-multiple
-+ * Description: Test validates destroying multiple properties explicitly works as needed.
++ * TEST: kms rmfb
++ * Category: Display
++ * Description: This tests rmfb and close-fd behavior. In these casesthe
++ *              framebuffers should be removed from the crtc.
++ *
++ * SUBTEST: close-fd
++ * Description: RMFB is supposed to free the framebuffers from any and all planes
++ *              so test this and make sure it works with fd close and reopen.
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: blob-prop-%s
-+ * Description: Tests validates the %arg[1] of the properties created.
++ * SUBTEST: rmfb-ioctl
++ * Description: RMFB is supposed to free the framebuffers from any and all planes
++ *              so test this and make sure it works.
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @core:        validity
-+ * @lifetime:    lifetime
-+ * @validate:    blob size
 + */
- static void
- test_validate(int fd)
- {
-@@ -245,6 +269,7 @@ test_core(int fd)
- /**
-  * SUBTEST: basic
-  * Description: Test to ensure property support exists
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_core
-@@ -260,6 +285,25 @@ test_basic(int fd)
- 	igt_assert_eq(destroy_prop(fd, prop_id), 0);
- }
  
-+/**
-+ * SUBTEST: invalid-%s-%s
-+ * Description: Tests error handling when invalid properties are %ar[1] with %arg[2].
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @get:            fetched
-+ * @set:            set
-+ *
-+ * arg[2]:
-+ *
-+ * @prop:           blob object type
-+ * @prop-any:       object of any type
-+ */
- static void prop_tests(int fd)
- {
- 	struct drm_mode_obj_get_properties get_props = {};
+ #ifndef DRM_CAP_CURSOR_WIDTH
+ #define DRM_CAP_CURSOR_WIDTH 0x8
 -- 
 2.40.0
