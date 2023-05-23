@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F50910E0E1
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 15:23:54 +0000 (UTC)
-From: Christoph Manszewski <christoph.manszewski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 17:21:46 +0200
-Message-Id: <20230523152146.908499-1-christoph.manszewski@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE64410E469
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 15:58:37 +0000 (UTC)
+Date: Tue, 23 May 2023 17:58:32 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: sai.gowtham.ch@intel.com
+Message-ID: <20230523155832.fgqjpbh4vbsb44wk@zkempczy-mobl2>
+References: <20230522123605.17416-1-sai.gowtham.ch@intel.com>
+ <20230522123605.17416-2-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] lib/intel_bb: Enable custom engine support for xe
+In-Reply-To: <20230522123605.17416-2-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe/xe_spin: Integrate
+ igt_spin_new with Xe.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,127 +22,256 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently the 'ctx' field in batch buffer creation is interpreted as
-a vm id for xe. In i915 it is interpreted as a context id. Since a xe
-engine more closely resembles an i915 context, change the current
-behaviour and interpret the 'ctx' fied as an xe engine id. This also
-allows us to use the compute engine on xe, which currently is not
-possible, due to reliance on legacy i915 flags.
+On Mon, May 22, 2023 at 06:06:04PM +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> 
+> Extending the spin_create implementation and allocator handle support in xe,
+> where it submits dummy work loads to engine. This Implementation is wrapped
+> around vm_bind and unbind as we are supposed to do it manually for xe.
+> 
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> ---
+>  lib/igt_dummyload.c | 24 ++++++++++++----
+>  lib/igt_dummyload.h | 11 ++++++++
+>  lib/xe/xe_spin.c    | 68 +++++++++++++++++++++++++++++++++++++++++++++
+>  lib/xe/xe_spin.h    |  7 +++++
+>  4 files changed, 104 insertions(+), 6 deletions(-)
+> 
+> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+> index 740a58f3..6e89b72d 100644
+> --- a/lib/igt_dummyload.c
+> +++ b/lib/igt_dummyload.c
+> @@ -46,6 +46,7 @@
+>  #include "intel_reg.h"
+>  #include "ioctl_wrappers.h"
+>  #include "sw_sync.h"
+> +#include "xe/xe_spin.h"
+>  
+>  /**
+>   * SECTION:igt_dummyload
+> @@ -447,7 +448,10 @@ spin_create(int fd, const struct igt_spin_factory *opts)
+>  igt_spin_t *
+>  __igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+>  {
+> -	return spin_create(fd, opts);
+> +	if (is_xe_device(fd))
+> +		return xe_spin_create(fd, opts);
+> +	else
+> +		return spin_create(fd, opts);
+>  }
 
-Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/intel_batchbuffer.c | 26 ++++++++++++++++++--------
- tests/xe/xe_intel_bb.c  |  6 ++++--
- 2 files changed, 22 insertions(+), 10 deletions(-)
+You may use enum intel_driver and cache what's the device underneath to
+avoid this check in free path. See __intel_bb_create() as a reference.
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index dfccc4f4..a423172f 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -946,15 +946,13 @@ __intel_bb_create(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
- 		ibb->gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
- 		end = ibb->gtt_size;
- 
--		if (!ctx)
--			ctx = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+		ibb->vm_id = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
- 
- 		ibb->uses_full_ppgtt = true;
- 		ibb->allocator_handle =
--			intel_allocator_open_full(fd, ctx, start, end,
-+			intel_allocator_open_full(fd, ibb->vm_id, start, end,
- 						  allocator_type, strategy,
- 						  ibb->alignment);
--		ibb->vm_id = ctx;
- 		ibb->last_engine = ~0U;
- 	}
- 
-@@ -1228,6 +1226,16 @@ static void __intel_bb_remove_intel_bufs(struct intel_bb *ibb)
- 		intel_bb_remove_intel_buf(ibb, entry);
- }
- 
-+static void __xe_bb_destroy(struct intel_bb *ibb)
-+{
-+	if (ibb->engine_id)
-+		xe_engine_destroy(ibb->fd, ibb->engine_id);
-+	if (ibb->ctx)
-+		xe_engine_destroy(ibb->fd, ibb->ctx);
-+	if (ibb->vm_id)
-+		xe_vm_destroy(ibb->fd, ibb->vm_id);
-+}
-+
- /**
-  * intel_bb_destroy:
-  * @ibb: pointer to intel_bb
-@@ -1262,8 +1270,8 @@ void intel_bb_destroy(struct intel_bb *ibb)
- 		close(ibb->fence);
- 	if (ibb->engine_syncobj)
- 		syncobj_destroy(ibb->fd, ibb->engine_syncobj);
--	if (ibb->vm_id && !ibb->ctx)
--		xe_vm_destroy(ibb->fd, ibb->vm_id);
-+	if (ibb->driver == INTEL_DRIVER_XE)
-+		__xe_bb_destroy(ibb);
- 
- 	free(ibb->batch);
- 	free(ibb->cfg);
-@@ -2298,7 +2306,9 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
- 	igt_assert_eq(ibb->num_relocs, 0);
- 	igt_assert_eq(ibb->xe_bound, false);
- 
--	if (ibb->last_engine != engine) {
-+	if (ibb->ctx) {
-+		engine_id = ibb->ctx;
-+	} else if (ibb->last_engine != engine) {
- 		struct drm_xe_engine_class_instance inst = { };
- 
- 		inst.engine_instance =
-@@ -2325,10 +2335,10 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
- 
- 		ibb->engine_id = engine_id =
- 			xe_engine_create(ibb->fd, ibb->vm_id, &inst, 0);
-+		ibb->last_engine = engine;
- 	} else {
- 		engine_id = ibb->engine_id;
- 	}
--	ibb->last_engine = engine;
- 
- 	map = xe_bo_map(ibb->fd, ibb->handle, ibb->size);
- 	memcpy(map, ibb->batch, ibb->size);
-diff --git a/tests/xe/xe_intel_bb.c b/tests/xe/xe_intel_bb.c
-index 35d61608..c6d0ec81 100644
---- a/tests/xe/xe_intel_bb.c
-+++ b/tests/xe/xe_intel_bb.c
-@@ -177,6 +177,7 @@ static void simple_bb(struct buf_ops *bops, bool new_context)
- 	int xe = buf_ops_get_fd(bops);
- 	struct intel_bb *ibb;
- 	uint32_t ctx = 0;
-+	uint32_t vm = 0;
- 
- 	ibb = intel_bb_create_with_allocator(xe, ctx, NULL, PAGE_SIZE,
- 					     INTEL_ALLOCATOR_SIMPLE);
-@@ -195,7 +196,8 @@ static void simple_bb(struct buf_ops *bops, bool new_context)
- 	intel_bb_reset(ibb, true);
- 
- 	if (new_context) {
--		ctx = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+		vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+		ctx = xe_engine_create(xe, vm, xe_hw_engine(xe, 0), 0);
- 		intel_bb_destroy(ibb);
- 		ibb = intel_bb_create_with_context(xe, ctx, NULL, PAGE_SIZE);
- 		intel_bb_out(ibb, MI_BATCH_BUFFER_END);
-@@ -203,7 +205,7 @@ static void simple_bb(struct buf_ops *bops, bool new_context)
- 		intel_bb_exec(ibb, intel_bb_offset(ibb),
- 			      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC,
- 			      true);
--		xe_vm_destroy(xe, ctx);
-+		xe_vm_destroy(xe, vm);
- 	}
- 
- 	intel_bb_destroy(ibb);
--- 
-2.40.1
+>  
+>  /**
+> @@ -467,6 +471,11 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+>  {
+>  	igt_spin_t *spin;
+>  
+> +	if (is_xe_device(fd)) {
+> +		spin = xe_spin_create(fd, opts);
+> +		return spin;
+> +	}
+> +
+>  	if ((opts->flags & IGT_SPIN_POLL_RUN) && opts->engine != ALL_ENGINES) {
+>  		unsigned int class;
+>  
+> @@ -647,11 +656,14 @@ void igt_spin_free(int fd, igt_spin_t *spin)
+>  	if (!spin)
+>  		return;
+>  
+> -	pthread_mutex_lock(&list_lock);
+> -	igt_list_del(&spin->link);
+> -	pthread_mutex_unlock(&list_lock);
+> -
+> -	__igt_spin_free(fd, spin);
+> +	if (is_xe_device(fd)) {
+> +		xe_spin_free(fd, spin);
+> +	} else {
+> +		pthread_mutex_lock(&list_lock);
+> +		igt_list_del(&spin->link);
+> +		pthread_mutex_unlock(&list_lock);
+> +		__igt_spin_free(fd, spin);
+> +	}
+>  }
+>  
+>  void igt_terminate_spins(void)
+> diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+> index b247ab02..4da4e5a5 100644
+> --- a/lib/igt_dummyload.h
+> +++ b/lib/igt_dummyload.h
+> @@ -51,8 +51,10 @@ typedef struct igt_spin_factory {
+>  	uint32_t dependency;
+>  	uint64_t dependency_size;
+>  	unsigned int engine;
+> +	struct drm_xe_engine_class_instance *hwe;
+>  	unsigned int flags;
+>  	int fence;
+> +	uint32_t vm;
+>  	uint64_t ahnd;
+
+Keep xe arguments on the end.
+
+>  } igt_spin_factory_t;
+>  
+> @@ -83,6 +85,15 @@ typedef struct igt_spin {
+>  #define SPIN_CLFLUSH (1 << 0)
+>  
+>  	struct igt_spin_factory opts;
+> +
+> +	uint32_t start;
+> +	uint32_t end;
+> +	size_t bo_size;
+> +	uint64_t address;
+> +	unsigned int engine;
+> +	uint32_t vm;
+> +	uint32_t syncobj;
+> +
+
+start and end are not necessary. Use struct xe_spin *xe_spin instead.
+Other fields are ok.
+
+>  } igt_spin_t;
+>  
+>  
+> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+> index 856d0ba2..9a4fbeb8 100644
+> --- a/lib/xe/xe_spin.c
+> +++ b/lib/xe/xe_spin.c
+> @@ -15,6 +15,7 @@
+>  #include "intel_reg.h"
+>  #include "xe_ioctl.h"
+>  #include "xe_spin.h"
+> +#include "lib/igt_dummyload.h"
+>  
+>  /**
+>   * xe_spin_init:
+> @@ -82,6 +83,73 @@ void xe_spin_end(struct xe_spin *spin)
+>  	spin->end = 0;
+>  }
+>  
+> +igt_spin_t *
+> +xe_spin_create(int fd, const struct igt_spin_factory *opt)
+> +{
+> +	size_t bo_size = xe_get_default_alignment(fd);
+> +	uint32_t bo;
+> +	uint64_t ahnd = opt->ahnd, addr;
+> +	struct igt_spin *spin;
+> +	struct xe_spin *xe_spin;
+> +	struct drm_xe_sync sync = {
+> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(&sync),
+> +	};
+> +
+> +	igt_assert(ahnd);
+> +	xe_spin = calloc(1, sizeof(struct xe_spin));
+> +	igt_assert(xe_spin);
+> +	spin = calloc(1, sizeof(struct igt_spin));
+> +	igt_assert(spin);
+> +
+> +	if (opt->engine) {
+> +		spin->engine = opt->engine;
+> +		spin->vm = opt->vm;
+> +	} else {
+> +		spin->vm = xe_vm_create(fd, 0, 0);
+> +		spin->engine = xe_engine_create(fd, spin->vm, opt->hwe, 0);
+> +	}
+> +
+> +	bo = xe_bo_create(fd, opt->hwe->gt_id, spin->vm, bo_size);
+> +	spin->handle = bo;
+> +	spin->syncobj = syncobj_create(fd, 0);
+> +	addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
+> +	xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
+> +
+> +	xe_spin_init(xe_spin, addr, true);
+> +	exec.engine_id = spin->engine;
+> +	exec.address = addr;
+> +	sync.handle = spin->syncobj;
+> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
+> +
+> +	spin->batch = xe_spin->batch;
+> +	spin->start = xe_spin->start;
+> +	spin->end = xe_spin->end;
+> +	spin->bo_size = bo_size;
+> +	spin->address = addr;
+
+Blank line here will make this code more readable.
+> +	return spin;
+> +
+
+And this blank line is unnecessary.
+> +}
+> +
+> +void xe_spin_sync_wait(int fd, struct igt_spin *spin)
+> +{
+> +	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0,
+> +				NULL));
+> +}
+> +
+> +void xe_spin_free(int fd, struct igt_spin *spin)
+> +{
+> +	xe_vm_unbind_sync(fd, spin->vm, 0, spin->address, spin->bo_size);
+> +	spin->end = 0;
+
+Are you really sure you want to unbind then stop the spinner?
+And use xe_spin_end() for stopping the spinner.
+
+> +	syncobj_destroy(fd, spin->syncobj);
+> +	xe_engine_destroy(fd, spin->engine);
+> +	gem_close(fd, spin->handle);
+
+Spin memory will leak here.
+
+--
+Zbigniew
+
+> +}
+> +
+>  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+>  		  struct xe_cork *cork)
+>  {
+> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+> index 73f9a026..48867eb8 100644
+> --- a/lib/xe/xe_spin.h
+> +++ b/lib/xe/xe_spin.h
+> @@ -13,19 +13,26 @@
+>  #include <stdbool.h>
+>  
+>  #include "xe_query.h"
+> +#include "lib/igt_dummyload.h"
+>  
+>  /* Mapped GPU object */
+> +
+>  struct xe_spin {
+>  	uint32_t batch[16];
+>  	uint64_t pad;
+>  	uint32_t start;
+>  	uint32_t end;
+> +
+>  };
+>  
+> +igt_spin_t *
+> +xe_spin_create(int fd, const struct igt_spin_factory *opt);
+>  void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
+>  bool xe_spin_started(struct xe_spin *spin);
+> +void xe_spin_sync_wait(int fd, struct igt_spin *spin);
+>  void xe_spin_wait_started(struct xe_spin *spin);
+>  void xe_spin_end(struct xe_spin *spin);
+> +void xe_spin_free(int fd, struct igt_spin *spin);
+>  
+>  struct xe_cork {
+>  	struct xe_spin *spin;
+> -- 
+> 2.39.1
+> 
