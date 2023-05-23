@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48A1E10E3F6
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACB5A10E3DD
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:28 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:02 +0530
-Message-Id: <20230523063243.669540-42-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:14 +0530
+Message-Id: <20230523063243.669540-54-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 41/82] tests/kms_content_protection: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V3 53/82] tests/kms_hdmi_inject: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,114 +28,44 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_content_protection.c | 81 ++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ tests/kms_hdmi_inject.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 344cac505..c3bc74f44 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -22,6 +22,11 @@
-  *
-  */
- 
+diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
+index 2085d1453..244768f36 100644
+--- a/tests/kms_hdmi_inject.c
++++ b/tests/kms_hdmi_inject.c
+@@ -30,6 +30,31 @@
+ #include "igt_edid.h"
+ #include "igt_eld.h"
+ #include "xe/xe_query.h"
 +/**
-+ * TEST: kms content protection
++ * TEST: kms hdmi inject
 + * Category: Display
-+ * Description: Test content protection (HDCP)
++ * Description: Test that in-kernel EDID parsing is producing expected results
++ *              by forcing a HDMI connector with a known EDID and checking that
++ *              the metadata exposed to user space matches.
++ *
++ * SUBTEST: inject-4k
++ * Description: Make sure that 4K modes exposed by DRM match the forced EDID and
++ *              modesetting using it succeed.
++ * Driver requirement: any
++ * Functionality: force_connector
++ * Mega feature: HDMI
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: inject-audio
++ * Description: Make sure that audio information exposed by ALSA match the forced
++ *              EDID.
++ * Driver requirement: any
++ * Functionality: force_connector
++ * Mega feature: Disply Audio
++ * Run type: FULL
++ * Test category: functionality test
 + */
- #include <poll.h>
- #include <fcntl.h>
- #include <sys/epoll.h>
-@@ -485,6 +490,66 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
- 	igt_display_commit2(&data.display, s);
- }
  
-+/**
-+ * SUBTEST: LIC
-+ * Description: Test for the integrity of link.
-+ * Driver requirement: any
-+ * Functionality: hdcp
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: content_type_change
-+ * Description: Test the content type change when the content protection already
-+ *              enabled
-+ * Driver requirement: any
-+ * Functionality: hdcp, hdcp2.2
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: mei_interface
-+ * Description: Test the teardown and rebuild of the interface between Intel
-+ *              and mei hdcp.
-+ * Driver requirement: any
-+ * Functionality: hdcp, hdcp2.2
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: srm
-+ * Description: This test writes the facsimile SRM into the /lib/firmware/ and
-+ *              check the kernel parsing of it by invoking the hdcp authentication.
-+ * Driver requirement: any
-+ * Functionality: hdcp
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: uevent
-+ * Description: Test to detect the HDCP status change when we are reading the
-+ *              uevent sent with the corresponding connector id and property id.
-+ * Driver requirement: any
-+ * Functionality: hdcp
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: %s
-+ * Description: Test content protection with %arg[1]
-+ * Driver requirement: any
-+ * Functionality: hdcp
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @atomic:         atomic modesetting
-+ * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
-+ * @legacy:         legacy style commit
-+ * @type1:          content type 1 that can be handled only through HDCP2.2.
-+ */
- static void
- test_content_protection(enum igt_commit_style s, int content_type)
- {
-@@ -602,6 +667,22 @@ static void test_cp_lic_on_mst(igt_output_t *mst_outputs[], int valid_outputs, b
- 	}
- }
- 
-+/**
-+ * SUBTEST: dp-mst-%s
-+ * Description: Test Content protection %arg[1] over DP MST.
-+ * Driver requirement: any
-+ * Functionality: hdcp
-+ * Mega feature: HDCP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @lic-type-0:   Type 0 with LIC
-+ * @lic-type-1:   Type 1 with LIC.
-+ * @type-0:       Type 0
-+ * @type-1:       Type 1
-+ */
- static void
- test_content_protection_mst(int content_type)
- {
+ #define HDISPLAY_4K	3840
+ #define VDISPLAY_4K	2160
 -- 
 2.40.0
