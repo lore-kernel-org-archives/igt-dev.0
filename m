@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E272310E3DC
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 847A110E3D9
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:48 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:47 +0530
-Message-Id: <20230523063243.669540-27-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:36 +0530
+Message-Id: <20230523063243.669540-16-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 26/82] tests/i915/kms_pipe_b_c_ivb: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V3 15/82] tests/i915/kms_cdclk: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,71 +28,65 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_pipe_b_c_ivb.c | 52 +++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ tests/i915/kms_cdclk.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/tests/i915/kms_pipe_b_c_ivb.c b/tests/i915/kms_pipe_b_c_ivb.c
-index af11e3262..542559d40 100644
---- a/tests/i915/kms_pipe_b_c_ivb.c
-+++ b/tests/i915/kms_pipe_b_c_ivb.c
-@@ -25,6 +25,58 @@
+diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+index 0f9b8dc58..ef0c5ee61 100644
+--- a/tests/i915/kms_cdclk.c
++++ b/tests/i915/kms_cdclk.c
+@@ -24,6 +24,11 @@
+  *  Swati Sharma <swati2.sharma@intel.com>
   */
  
- #include "igt.h"
 +/**
-+ * TEST: kms pipe b c ivb
++ * TEST: kms cdclk
 + * Category: Display
-+ * Description: Exercise the FDI lane bifurcation code for IVB in the kernel by
-+ *              setting different combinations of modes for pipes B and C.
-+ *
-+ * SUBTEST: disable-pipe-B-enable-pipe-C
-+ * Description: Tests pipe-B and pipe-C interactions in IVB by disabling pipe-B
-+ *              and then setting mode on pipe-C.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: enable-pipe-C-while-B-has-3-lanes
-+ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-C
-+ *              while pipe-B has 3-lanes
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: from-pipe-C-to-B-with-3-lanes
-+ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B
-+ *              with 3 lanes from pipe-C.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pipe-B-double-modeset-then-modeset-pipe-C
-+ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling two
-+ *              different modes on pipe-B and then a single mode on pipe-C.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pipe-B-dpms-off-modeset-pipe-C
-+ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B
-+ *              with mode that requires 3 lanes and then enabling pipe-c with
-+ *              dpms off/on pipe-B.
-+ * Driver requirement: i915
++ * Description: Test cdclk features : crawling and squashing
++ */
+ #include "igt.h"
+ 
+ IGT_TEST_DESCRIPTION("Test cdclk features : crawling and squashing");
+@@ -248,6 +253,16 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
+ 	igt_remove_fb(display->drm_fd, &fb);
+ }
+ 
++/**
++ * SUBTEST: mode-transition-all-outputs
++ * Description: Mode transition (low to high) test to validate cdclk frequency
++ *              change by simultaneous modesets on all pipes with valid outputs.
++ * Driver requirement: any
 + * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
+ static void test_mode_transition_on_all_outputs(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
+@@ -344,6 +359,23 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 	igt_remove_fb(data->drm_fd, &fb);
+ }
  
- IGT_TEST_DESCRIPTION(
- "Exercise the FDI lane bifurcation code for IVB in the kernel by setting"
++/**
++ * SUBTEST: mode-transition
++ * Description: Mode transition (low to high) test to validate cdclk frequency change.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-scaling
++ * Description: Plane scaling test to validate cdclk frequency change.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void run_cdclk_test(data_t *data, uint32_t flags)
+ {
+ 	igt_display_t *display = &data->display;
 -- 
 2.40.0
