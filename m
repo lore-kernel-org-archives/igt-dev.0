@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BFFA10E46C
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 16:00:57 +0000 (UTC)
-Date: Tue, 23 May 2023 18:00:52 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230523160052.42kxvhu3np6wvzio@kamilkon-desk1>
-References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
- <20230523063243.669540-4-bhanuprakash.modem@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B40EE10E49F
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 18:57:59 +0000 (UTC)
+Date: Tue, 23 May 2023 20:57:55 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Christoph Manszewski <christoph.manszewski@intel.com>
+Message-ID: <20230523185755.5xeeoda42fudeegw@zkempczy-mobl2>
+References: <20230523152146.908499-1-christoph.manszewski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230523063243.669540-4-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t V3 03/82] tests/color: Move color helpers to
- lib
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230523152146.908499-1-christoph.manszewski@intel.com>
+Subject: Re: [igt-dev] [PATCH] lib/intel_bb: Enable custom engine support
+ for xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,146 +21,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanuprakash,
-
-On 2023-05-23 at 12:01:24 +0530, Bhanuprakash Modem wrote:
-> The correct place for helpers is lib as the tests directory is
-> supposed to have test files, also having the helpers in tests
-> dir will break the compilation of testplan. Hence move all
-> helpers to library.
+On Tue, May 23, 2023 at 05:21:46PM +0200, Christoph Manszewski wrote:
+> Currently the 'ctx' field in batch buffer creation is interpreted as
+> a vm id for xe. In i915 it is interpreted as a context id. Since a xe
+> engine more closely resembles an i915 context, change the current
+> behaviour and interpret the 'ctx' fied as an xe engine id. This also
+> allows us to use the compute engine on xe, which currently is not
+> possible, due to reliance on legacy i915 flags.
 > 
-> Expectation is to have an executable binary for each .c file
-> the "tests" dir.
-> 
-> V2: - Drop special case compilation method
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
-When moving into library you should at least document public
-functions, maybe as a separate later patch. Please also send
-cc to developers, here +cc Swati and Jouni
-
-Regards,
-Kamil
-
+> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->  .../igt_color_helper.c                        |  2 +-
->  .../igt_color_helper.h                        |  0
->  lib/meson.build                               |  1 +
->  tests/chamelium/kms_chamelium_color.c         |  2 +-
->  tests/kms_color.c                             |  2 +-
->  tests/meson.build                             | 20 ++-----------------
->  6 files changed, 6 insertions(+), 21 deletions(-)
->  rename tests/kms_color_helper.c => lib/igt_color_helper.c (99%)
->  rename tests/kms_color_helper.h => lib/igt_color_helper.h (100%)
+>  lib/intel_batchbuffer.c | 26 ++++++++++++++++++--------
+>  tests/xe/xe_intel_bb.c  |  6 ++++--
+>  2 files changed, 22 insertions(+), 10 deletions(-)
 > 
-> diff --git a/tests/kms_color_helper.c b/lib/igt_color_helper.c
-> similarity index 99%
-> rename from tests/kms_color_helper.c
-> rename to lib/igt_color_helper.c
-> index b01c38ef6..87fd096c1 100644
-> --- a/tests/kms_color_helper.c
-> +++ b/lib/igt_color_helper.c
-> @@ -22,7 +22,7 @@
->   *
->   */
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index dfccc4f4..a423172f 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -946,15 +946,13 @@ __intel_bb_create(int fd, uint32_t ctx, const intel_ctx_cfg_t *cfg,
+>  		ibb->gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
+>  		end = ibb->gtt_size;
 >  
-> -#include "kms_color_helper.h"
-> +#include "igt_color_helper.h"
+> -		if (!ctx)
+> -			ctx = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +		ibb->vm_id = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
 >  
->  bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
->  {
-> diff --git a/tests/kms_color_helper.h b/lib/igt_color_helper.h
-> similarity index 100%
-> rename from tests/kms_color_helper.h
-> rename to lib/igt_color_helper.h
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 75e52580b..1cc859f17 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -20,6 +20,7 @@ lib_sources = [
->  	'igt_chamelium_helper.c',
->  	'igt_collection.c',
->  	'igt_color_encoding.c',
-> +	'igt_color_helper.c',
->  	'igt_crc.c',
->  	'igt_debugfs.c',
->  	'igt_device.c',
-> diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-> index 26239a6b8..bbb929b64 100644
-> --- a/tests/chamelium/kms_chamelium_color.c
-> +++ b/tests/chamelium/kms_chamelium_color.c
-> @@ -22,7 +22,7 @@
->   *
->   */
+>  		ibb->uses_full_ppgtt = true;
+>  		ibb->allocator_handle =
+> -			intel_allocator_open_full(fd, ctx, start, end,
+> +			intel_allocator_open_full(fd, ibb->vm_id, start, end,
+>  						  allocator_type, strategy,
+>  						  ibb->alignment);
+> -		ibb->vm_id = ctx;
+>  		ibb->last_engine = ~0U;
+>  	}
 >  
-> -#include "kms_color_helper.h"
-> +#include "igt_color_helper.h"
+> @@ -1228,6 +1226,16 @@ static void __intel_bb_remove_intel_bufs(struct intel_bb *ibb)
+>  		intel_bb_remove_intel_buf(ibb, entry);
+>  }
 >  
->  IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
+> +static void __xe_bb_destroy(struct intel_bb *ibb)
+> +{
+> +	if (ibb->engine_id)
+> +		xe_engine_destroy(ibb->fd, ibb->engine_id);
+> +	if (ibb->ctx)
+> +		xe_engine_destroy(ibb->fd, ibb->ctx);
+
+Why do you want to destroy engine you don't have ownership to?
+
+> +	if (ibb->vm_id)
+> +		xe_vm_destroy(ibb->fd, ibb->vm_id);
+> +}
+> +
+>  /**
+>   * intel_bb_destroy:
+>   * @ibb: pointer to intel_bb
+> @@ -1262,8 +1270,8 @@ void intel_bb_destroy(struct intel_bb *ibb)
+>  		close(ibb->fence);
+>  	if (ibb->engine_syncobj)
+>  		syncobj_destroy(ibb->fd, ibb->engine_syncobj);
+> -	if (ibb->vm_id && !ibb->ctx)
+> -		xe_vm_destroy(ibb->fd, ibb->vm_id);
+> +	if (ibb->driver == INTEL_DRIVER_XE)
+> +		__xe_bb_destroy(ibb);
 >  
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index fdc7120c7..cd2d38329 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -22,7 +22,7 @@
->   *
->   */
+>  	free(ibb->batch);
+>  	free(ibb->cfg);
+> @@ -2298,7 +2306,9 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
+>  	igt_assert_eq(ibb->num_relocs, 0);
+>  	igt_assert_eq(ibb->xe_bound, false);
 >  
-> -#include "kms_color_helper.h"
-> +#include "igt_color_helper.h"
+> -	if (ibb->last_engine != engine) {
+> +	if (ibb->ctx) {
+> +		engine_id = ibb->ctx;
+> +	} else if (ibb->last_engine != engine) {
+>  		struct drm_xe_engine_class_instance inst = { };
 >  
->  IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+>  		inst.engine_instance =
+> @@ -2325,10 +2335,10 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
 >  
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 48e9164f8..1c33e5605 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -21,6 +21,7 @@ test_progs = [
->  	'kms_atomic_interruptible',
->  	'kms_atomic_transition',
->  	'kms_bw',
-> +	'kms_color',
->  	'kms_concurrent',
->  	'kms_content_protection',
->  	'kms_cursor_crc',
-> @@ -281,6 +282,7 @@ msm_progs = [
+>  		ibb->engine_id = engine_id =
+>  			xe_engine_create(ibb->fd, ibb->vm_id, &inst, 0);
+> +		ibb->last_engine = engine;
+>  	} else {
+>  		engine_id = ibb->engine_id;
+>  	}
+> -	ibb->last_engine = engine;
 >  
->  chamelium_progs = [
->  	'kms_chamelium_audio',
-> +	'kms_chamelium_color',
->  	'kms_chamelium_edid',
->  	'kms_chamelium_frames',
->  	'kms_chamelium_hpd',
-> @@ -471,24 +473,6 @@ executable('testdisplay', ['testdisplay.c', 'testdisplay_hotplug.c'],
->  	   install : true)
->  test_list += 'testdisplay'
+>  	map = xe_bo_map(ibb->fd, ibb->handle, ibb->size);
+>  	memcpy(map, ibb->batch, ibb->size);
+> diff --git a/tests/xe/xe_intel_bb.c b/tests/xe/xe_intel_bb.c
+> index 35d61608..c6d0ec81 100644
+> --- a/tests/xe/xe_intel_bb.c
+> +++ b/tests/xe/xe_intel_bb.c
+> @@ -177,6 +177,7 @@ static void simple_bb(struct buf_ops *bops, bool new_context)
+>  	int xe = buf_ops_get_fd(bops);
+>  	struct intel_bb *ibb;
+>  	uint32_t ctx = 0;
+> +	uint32_t vm = 0;
 >  
-> -test_executables += executable('kms_color',
-> -	   [ 'kms_color.c', 'kms_color_helper.c' ],
-> -	   dependencies : test_deps,
-> -	   install_dir : libexecdir,
-> -	   install_rpath : libexecdir_rpathdir,
-> -	   install : true)
-> -test_list += 'kms_color'
-> -
-> -if chamelium.found()
-> -       test_executables += executable('kms_chamelium_color',
-> -                             [ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
-> -                             dependencies : test_deps + [ chamelium ],
-> -                             install_dir : libexecdir,
-> -                             install_rpath : libexecdir_rpathdir,
-> -                             install : true)
-> -       test_list += 'kms_chamelium_color'
-> -endif
-> -
->  test_executables += executable('sw_sync', 'sw_sync.c',
->  	   dependencies : test_deps + [ libatomic ],
->  	   install_dir : libexecdir,
+>  	ibb = intel_bb_create_with_allocator(xe, ctx, NULL, PAGE_SIZE,
+>  					     INTEL_ALLOCATOR_SIMPLE);
+> @@ -195,7 +196,8 @@ static void simple_bb(struct buf_ops *bops, bool new_context)
+>  	intel_bb_reset(ibb, true);
+>  
+>  	if (new_context) {
+> -		ctx = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +		vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +		ctx = xe_engine_create(xe, vm, xe_hw_engine(xe, 0), 0);
+
+In this case test (caller) should destroy the engine, not bb.
+
+--
+Zbigniew
+
+>  		intel_bb_destroy(ibb);
+>  		ibb = intel_bb_create_with_context(xe, ctx, NULL, PAGE_SIZE);
+>  		intel_bb_out(ibb, MI_BATCH_BUFFER_END);
+> @@ -203,7 +205,7 @@ static void simple_bb(struct buf_ops *bops, bool new_context)
+>  		intel_bb_exec(ibb, intel_bb_offset(ibb),
+>  			      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC,
+>  			      true);
+> -		xe_vm_destroy(xe, ctx);
+> +		xe_vm_destroy(xe, vm);
+>  	}
+>  
+>  	intel_bb_destroy(ibb);
 > -- 
-> 2.40.0
+> 2.40.1
 > 
