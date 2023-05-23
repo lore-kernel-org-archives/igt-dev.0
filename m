@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20F6410E3D4
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68BE710E3D4
  for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:48 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:32 +0530
-Message-Id: <20230523063243.669540-12-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:34 +0530
+Message-Id: <20230523063243.669540-14-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 11/82] tests/i915/kms_big_fb: Document each
+Subject: [igt-dev] [i-g-t V3 13/82] tests/i915/kms_busy: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,200 +28,102 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_big_fb.c | 153 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 153 insertions(+)
+ tests/i915/kms_busy.c | 62 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
 
-diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-index c120a14a6..e6518057e 100644
---- a/tests/i915/kms_big_fb.c
-+++ b/tests/i915/kms_big_fb.c
-@@ -21,6 +21,12 @@
+diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
+index 20d3058fb..94590c86e 100644
+--- a/tests/i915/kms_busy.c
++++ b/tests/i915/kms_busy.c
+@@ -21,6 +21,11 @@
   * IN THE SOFTWARE.
   */
  
 +/**
-+ * TEST: kms big fb
++ * TEST: kms busy
 + * Category: Display
-+ * Description: Test big framebuffers
++ * Description: Basic check of KMS ABI with busy framebuffers.
 + */
-+
- #include "igt.h"
- #include <errno.h>
- #include <stdbool.h>
-@@ -582,6 +588,93 @@ max_hw_stride_async_flip_test(data_t *data)
- 	return true;
+ #include <sys/poll.h>
+ #include <signal.h>
+ #include <time.h>
+@@ -131,6 +136,23 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
+ 	put_ahnd(ahnd);
  }
  
 +/**
-+ * SUBTEST: %s-%dbpp-rotate-%d
-+ * Description: Sanity check if addfb ioctl works correctly for given combination
-+ *              of %arg[1] with %arg[2]-bpp & %arg[3]-rotation
++ * SUBTEST: basic
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
 + * Driver requirement: i915
-+ * Functionality: xorg_big_displays
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
-+ *
-+ * @4-tiled:                  TILE-4 modifier
-+ * @x-tiled:                  TILE-X modifier
-+ * @y-tiled:                  TILE-Y modifier
-+ * @yf-tiled:                 TILE-YF modifier
-+ *
-+ * arg[2].values: 8, 16, 32, 64
-+ * arg[3].values: 0, 90, 180, 270
-+ */
-+
-+/**
-+ * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d
-+ * Description: Test maximum hardware supported stride length for given combination
-+ *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
-+ *              and %arg[3]-rotation
++ * SUBTEST: basic-hang
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
 + * Driver requirement: i915
-+ * Functionality: xorg_big_displays
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d-%s
-+ * Description: Test maximum hardware supported stride length for given combination
-+ *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
-+ *              and %arg[3]-rotation with %arg[4] mode
-+ * Driver requirement: i915
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @4-tiled:                  TILE-4 modifier
-+ * @x-tiled:                  TILE-X modifier
-+ * @y-tiled:                  TILE-Y modifier
-+ * @yf-tiled:                 TILE-YF modifier
-+ *
-+ * arg[2].values: 32, 64
-+ * arg[3].values: 0, 180
-+ *
-+ * arg[4]:
-+ *
-+ * @async-flip:         Async flip
-+ * @hflip:              H-flip
-+ * @hflip-async-flip:   Async & H-flip
 + */
-+
-+/**
-+ * SUBTEST: linear-%dbpp-rotate-%d
-+ * Description: Sanity check if addfb ioctl works correctly for given combination
-+ *              of Linear modifier with %arg[1]-bpp & %arg[2]-rotation
-+ * Driver requirement: any
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1].values: 8, 16, 32, 64
-+ * arg[2].values: 0, 90, 180, 270
-+ */
-+
-+/**
-+ * SUBTEST: linear-max-hw-stride-%dbpp-rotate-%d
-+ * Description: Sanity check if addfb ioctl works correctly for given combination
-+ *              of Linear modifier with max hardware stride length with
-+ *              %arg[1]-bpp & %arg[2]-rotation
-+ * Driver requirement: any
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1].values: 32, 64
-+ * arg[2].values: 0, 180
-+ */
- static void test_scanout(data_t *data)
+ static void test_flip(igt_display_t *dpy, int pipe,
+ 		      igt_output_t *output, bool modeset)
  {
- 	igt_output_t *output;
-@@ -627,6 +720,23 @@ static void test_scanout(data_t *data)
- 	igt_skip("unsupported configuration\n");
+@@ -223,6 +245,37 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
+ 	put_ahnd(ahnd);
  }
  
 +/**
-+ * SUBTEST: %s-addfb-size-overflow
-+ * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
-+ *              with small bo.
++ * SUBTEST: extended-modeset-hang-%s
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
 + * Driver requirement: i915
-+ * Functionality: xorg_big_displays
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @4-tiled:    TILE-4
-+ * @x-tiled:    TILE-X
-+ * @y-tiled:    TILE-Y
-+ * @yf-tiled:   TILE-YF
++ * @newfb:                New framebuffer
++ * @oldfb:                Old framebuffer
++ * @newfb-with-reset:     New framebuffer with reset
++ * @oldfb-with-reset:     Old framebuffer with reset
++ */
++
++/**
++ * SUBTEST: extended-pageflip-hang-%s
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @newfb:     New framebuffer
++ * @oldfb:     Old framebuffer
++ */
+ static void test_hang(igt_display_t *dpy,
+ 		      enum pipe pipe, igt_output_t *output,
+ 		      bool modeset, bool hang_newfb)
+@@ -270,6 +323,15 @@ static void test_hang(igt_display_t *dpy,
+ 	igt_remove_fb(dpy->drm_fd, &fb[0]);
+ }
+ 
++/**
++ * SUBTEST: extended-pageflip-modeset-hang-oldfb
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
  static void
- test_size_overflow(data_t *data)
- {
-@@ -671,6 +781,23 @@ test_size_overflow(data_t *data)
- 	gem_close(data->drm_fd, bo);
- }
- 
-+/**
-+ * SUBTEST: %s-addfb-size-offset-overflow
-+ * Description: Sanity check if addfb ioctl fails correctly for (%arg[1]) modifier
-+ *              and offsets with small bo
-+ * Driver requirement: i915
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @4-tiled:    TILE-4
-+ * @x-tiled:    TILE-X
-+ * @y-tiled:    TILE-Y
-+ * @yf-tiled:   TILE-YF
-+ */
- static void
- test_size_offset_overflow(data_t *data)
- {
-@@ -729,6 +856,32 @@ static int rmfb(int fd, uint32_t id)
- 	return err;
- }
- 
-+/**
-+ * SUBTEST: linear-addfb
-+ * Description: Sanity check if addfb ioctl works correctly with linear modifier
-+ *              for given size and strides of fb
-+ * Driver requirement: any
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: %s-tiled-addfb
-+ * Description: Sanity check if addfb ioctl works correctly with %arg[1] modifier
-+ *              for given size and strides of fb
-+ * Driver requirement: i915
-+ * Functionality: xorg_big_displays
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @4:    TILE-4
-+ * @x:    TILE-X
-+ * @y:    TILE-Y
-+ * @yf:   TILE-YF
-+ */
- static void
- test_addfb(data_t *data)
- {
+ test_pageflip_modeset_hang(igt_display_t *dpy,
+ 			   igt_output_t *output, enum pipe pipe)
 -- 
 2.40.0
