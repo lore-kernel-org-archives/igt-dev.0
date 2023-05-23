@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF1B510E3DD
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:45:16 +0000 (UTC)
-Date: Tue, 23 May 2023 08:45:11 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230523084511.6b80275f@maurocar-mobl2>
-In-Reply-To: <20230523063243.669540-5-bhanuprakash.modem@intel.com>
-References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
- <20230523063243.669540-5-bhanuprakash.modem@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Intel-gfx@lists.freedesktop.org
+Date: Tue, 23 May 2023 16:24:07 +0100
+Message-Id: <20230523152407.828236-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t V3 04/82] testplan/kms: Include testdisplay to
- kms testplan config
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] intel_gpu_top: Fix frequency and rc6
+ counters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,35 +15,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 23 May 2023 12:01:25 +0530
-Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-> As testdisplay.c is belongs to display, add it to the kms
-> testplan config.
+Need to reset aggregated counters before adding to them otherwise numbers
+will grow endlessly.
 
-LGTM.
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Fixes: 3dadeff69d4a ("intel_gpu_top: Switch pmu_counter to use aggregated values")
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tools/intel_gpu_top.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/kms_test_config.json | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
-> index d2d6357d1..b81b3ba55 100644
-> --- a/tests/kms_test_config.json
-> +++ b/tests/kms_test_config.json
-> @@ -1,6 +1,6 @@
->  {
->      "description": "JSON file to be used to parse KMS documentation",
-> -    "files": [ "chamelium/kms_*.c", "i915/kms_*.c", "kms_*.c" ],
-> +    "files": [ "chamelium/kms_*.c", "i915/kms_*.c", "kms_*.c", "testdisplay.c" ],
->      "fields": {
->          "Category": {
->              "_properties_": {
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 4e49367a70c7..a89f13d46f11 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -710,6 +710,10 @@ static void pmu_sample(struct engines *engines)
+ 	engines->ts.prev = engines->ts.cur;
+ 	engines->ts.cur = pmu_read_multi(engines->fd, num_val, val);
+ 
++	engines->freq_req.val.cur = engines->freq_req.val.prev = 0;
++	engines->freq_act.val.cur = engines->freq_act.val.prev = 0;
++	engines->rc6.val.cur = engines->rc6.val.prev = 0;
++
+ 	for (i = 0; i < engines->num_gts; i++) {
+ 		update_sample(&engines->freq_req_gt[i], val);
+ 		engines->freq_req.val.cur += engines->freq_req_gt[i].val.cur;
+-- 
+2.39.2
