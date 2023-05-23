@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Tue, 23 May 2023 11:51:39 +0100
-Message-Id: <20230523105139.626772-1-tvrtko.ursulin@linux.intel.com>
+Date: Tue, 23 May 2023 12:51:58 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230523105158.wsjsnbjld4knkbr3@kamilkon-desk1>
+References: <20230515133630.2163170-1-tvrtko.ursulin@linux.intel.com>
+ <20230515133630.2163170-3-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915_pm_rps: Exercise sysfs thresholds
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230515133630.2163170-3-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/2] intel_gpu_top: Move
+ client name last
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,282 +18,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Rob Clark <robdclark@chromium.org>, Intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On 2023-05-15 at 14:36:30 +0100, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> Move client name to be the right most field which visually aligns better
+> with top(1) and prepares for inserting memory usage fields somewhere in
+> the middle.
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: Rob Clark <robdclark@chromium.org>
 
-Exercise a bunch of up and down rps thresholds to verify hardware
-is happy with them all.
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-To limit the overall runtime relies on probability and number of runs
-to approach complete coverage.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- tests/i915/i915_pm_rps.c | 232 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 232 insertions(+)
-
-diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-index 050d68a16559..acff59207311 100644
---- a/tests/i915/i915_pm_rps.c
-+++ b/tests/i915/i915_pm_rps.c
-@@ -39,8 +39,10 @@
- #include "i915/gem.h"
- #include "i915/gem_create.h"
- #include "igt.h"
-+#include "igt_aux.h"
- #include "igt_dummyload.h"
- #include "igt_perf.h"
-+#include "igt_rand.h"
- #include "igt_sysfs.h"
- /**
-  * TEST: i915 pm rps
-@@ -914,6 +916,200 @@ static void pm_rps_exit_handler(int sig)
- 	close(drm_fd);
- }
- 
-+static igt_spin_t *__spin_poll(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
-+			       const struct intel_execution_engine2 *e)
-+{
-+	struct igt_spin_factory opts = {
-+		.ahnd = ahnd,
-+		.ctx = ctx,
-+		.engine = e->flags,
-+	};
-+
-+	if (gem_class_can_store_dword(fd, e->class))
-+		opts.flags |= IGT_SPIN_POLL_RUN;
-+
-+	return __igt_spin_factory(fd, &opts);
-+}
-+
-+static unsigned long __spin_wait(int fd, igt_spin_t *spin)
-+{
-+	struct timespec start = { };
-+
-+	igt_nsec_elapsed(&start);
-+
-+	if (igt_spin_has_poll(spin)) {
-+		unsigned long timeout = 0;
-+
-+		while (!igt_spin_has_started(spin)) {
-+			unsigned long t = igt_nsec_elapsed(&start);
-+
-+			igt_assert(gem_bo_busy(fd, spin->handle));
-+			if ((t - timeout) > 250e6) {
-+				timeout = t;
-+				igt_warn("Spinner not running after %.2fms\n",
-+					 (double)t / 1e6);
-+				igt_assert(t < 2e9);
-+			}
-+		}
-+	} else {
-+		igt_debug("__spin_wait - usleep mode\n");
-+		usleep(500e3); /* Better than nothing! */
-+	}
-+
-+	igt_assert(gem_bo_busy(fd, spin->handle));
-+	return igt_nsec_elapsed(&start);
-+}
-+
-+static igt_spin_t *__spin_sync(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
-+			       const struct intel_execution_engine2 *e)
-+{
-+	igt_spin_t *spin = __spin_poll(fd, ahnd, ctx, e);
-+
-+	__spin_wait(fd, spin);
-+
-+	return spin;
-+}
-+
-+static struct i915_engine_class_instance
-+find_dword_engine(int i915, const unsigned int gt)
-+{
-+	struct i915_engine_class_instance *engines, ci = { -1, -1 };
-+	unsigned int i, count;
-+
-+	engines = gem_list_engines(i915, 1u << gt, ~0u, &count);
-+	igt_assert(engines);
-+
-+	for (i = 0; i < count; i++) {
-+		if (!gem_class_can_store_dword(i915, engines[i].engine_class))
-+			continue;
-+
-+		ci = engines[i];
-+		break;
-+	}
-+
-+	free(engines);
-+
-+	return ci;
-+}
-+
-+static igt_spin_t *spin_sync_gt(int i915, uint64_t ahnd, unsigned int gt,
-+				const intel_ctx_t **ctx)
-+{
-+	struct i915_engine_class_instance ci = { -1, -1 };
-+	struct intel_execution_engine2 e = { };
-+
-+	ci = find_dword_engine(i915, gt);
-+
-+	igt_require(ci.engine_class != (uint16_t)I915_ENGINE_CLASS_INVALID);
-+
-+	if (gem_has_contexts(i915)) {
-+		e.class = ci.engine_class;
-+		e.instance = ci.engine_instance;
-+		e.flags = 0;
-+		*ctx = intel_ctx_create_for_engine(i915, e.class, e.instance);
-+	} else {
-+		igt_require(gt == 0); /* Impossible anyway. */
-+		e.class = gem_execbuf_flags_to_engine_class(I915_EXEC_DEFAULT);
-+		e.instance = 0;
-+		e.flags = I915_EXEC_DEFAULT;
-+		*ctx = intel_ctx_0(i915);
-+	}
-+
-+	igt_debug("Using engine %u:%u\n", e.class, e.instance);
-+
-+	return __spin_sync(i915, ahnd, *ctx, &e);
-+}
-+
-+#define TEST_IDLE 0x1
-+#define TEST_PARK 0x2
-+static void test_thresholds(int i915, unsigned int gt, unsigned int flags)
-+{
-+	uint64_t ahnd = get_reloc_ahnd(i915, 0);
-+	const unsigned int points = 10;
-+	unsigned int def_up, def_down;
-+	igt_spin_t *spin = NULL;
-+	const intel_ctx_t *ctx;
-+	unsigned int *ta, *tb;
-+	unsigned int i;
-+	int sysfs;
-+
-+	sysfs = igt_sysfs_gt_open(i915, gt);
-+	igt_require(sysfs >= 0);
-+
-+	/* Feature test */
-+	def_up = igt_sysfs_get_u32(sysfs, "rps_up_threshold_pct");
-+	def_down = igt_sysfs_get_u32(sysfs, "rps_down_threshold_pct");
-+	igt_require(def_up && def_down);
-+
-+	/* Check invalid percentages are rejected */
-+	igt_assert_eq(igt_sysfs_set_u32(sysfs, "rps_up_threshold_pct", 101), false);
-+	igt_assert_eq(igt_sysfs_set_u32(sysfs, "rps_down_threshold_pct", 101), false);
-+
-+	/*
-+	 * Invent some random up-down thresholds, but always include 0 and 100
-+	 * just to have some wild edge cases.
-+	 */
-+	ta = calloc(points, sizeof(unsigned int));
-+	tb = calloc(points, sizeof(unsigned int));
-+	igt_require(ta && tb);
-+
-+	ta[0] = tb[0] = 0;
-+	ta[1] = tb[1] = 100;
-+	hars_petruska_f54_1_random_seed(time(NULL));
-+	for (i = 2; i < points; i++) {
-+		ta[i] = hars_petruska_f54_1_random_unsafe_max(100);
-+		tb[i] = hars_petruska_f54_1_random_unsafe_max(100);
-+	}
-+	igt_permute_array(ta, points, igt_exchange_int);
-+	igt_permute_array(tb, points, igt_exchange_int);
-+
-+	/* Exercise the thresholds with a GPU load to trigger park/unpark etc */
-+	for (i = 0; i < points; i++) {
-+		igt_info("Testing thresholds up %u%% and down %u%%...\n", ta[i], tb[i]);
-+		igt_assert_eq(igt_sysfs_set_u32(sysfs, "rps_up_threshold_pct", ta[i]), true);
-+		igt_assert_eq(igt_sysfs_set_u32(sysfs, "rps_down_threshold_pct", tb[i]), true);
-+
-+		if (flags & TEST_IDLE) {
-+			gem_quiescent_gpu(i915);
-+		} else if (spin) {
-+			intel_ctx_destroy(i915, ctx);
-+			igt_spin_free(i915, spin);
-+			spin = NULL;
-+			if (flags & TEST_PARK) {
-+				gem_quiescent_gpu(i915);
-+				usleep(500000);
-+			}
-+		}
-+		spin = spin_sync_gt(i915, ahnd, gt, &ctx);
-+		usleep(1000000);
-+		if (flags & TEST_IDLE) {
-+			intel_ctx_destroy(i915, ctx);
-+			igt_spin_free(i915, spin);
-+			if (flags & TEST_PARK) {
-+				gem_quiescent_gpu(i915);
-+				usleep(500000);
-+			}
-+			spin = NULL;
-+		}
-+	}
-+
-+	if (spin) {
-+		intel_ctx_destroy(i915, ctx);
-+		igt_spin_free(i915, spin);
-+	}
-+
-+	gem_quiescent_gpu(i915);
-+
-+	/* Restore defaults */
-+	igt_assert_eq(igt_sysfs_set_u32(sysfs, "rps_up_threshold_pct", def_up), true);
-+	igt_assert_eq(igt_sysfs_set_u32(sysfs, "rps_down_threshold_pct", def_down), true);
-+
-+	free(ta);
-+	free(tb);
-+	close(sysfs);
-+	put_ahnd(ahnd);
-+}
-+
- igt_main
- {
- 	igt_fixture {
-@@ -993,4 +1189,40 @@ igt_main
- 		waitboost(drm_fd, true);
- 		igt_disallow_hang(drm_fd, hang);
- 	}
-+
-+	igt_subtest_with_dynamic("thresholds-idle") {
-+		int tmp, gt;
-+
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			igt_dynamic_f("gt%u", gt)
-+				test_thresholds(drm_fd, gt, TEST_IDLE);
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("thresholds") {
-+		int tmp, gt;
-+
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			igt_dynamic_f("gt%u", gt)
-+				test_thresholds(drm_fd, gt, 0);
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("thresholds-park") {
-+		int tmp, gt;
-+
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			igt_dynamic_f("gt%u", gt)
-+				test_thresholds(drm_fd, gt, TEST_PARK);
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("thresholds-idle-park") {
-+		int tmp, gt;
-+
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			igt_dynamic_f("gt%u", gt)
-+				test_thresholds(drm_fd, gt, TEST_IDLE | TEST_PARK);
-+		}
-+	}
- }
--- 
-2.39.2
+> ---
+>  tools/intel_gpu_top.c | 19 +++++++++----------
+>  1 file changed, 9 insertions(+), 10 deletions(-)
+> 
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index 453090c298bc..937280a7151a 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -1809,9 +1809,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+>  			return lines;
+>  
+>  		printf("\033[7m");
+> -		len = printf("%*s %*s ",
+> -			     clients->max_pid_len, "PID",
+> -			     clients->max_name_len, "NAME");
+> +		len = printf("%*s ", clients->max_pid_len, "PID");
+>  
+>  		if (lines++ >= con_h || len >= con_w)
+>  			return lines;
+> @@ -1825,7 +1823,9 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+>  					num_active++;
+>  			}
+>  
+> -			*class_w = width = (con_w - len) / num_active;
+> +			*class_w = width =
+> +				(con_w - len - clients->max_name_len - 1) /
+> +				num_active;
+>  
+>  			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
+>  				const char *name = iclients->classes.names[i];
+> @@ -1846,8 +1846,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+>  			}
+>  		}
+>  
+> -		n_spaces(con_w - len);
+> -		printf("\033[0m\n");
+> +		printf(" %-*s\033[0m\n", con_w - len - 1, "NAME");
+>  	} else {
+>  		if (iclients->classes.num_engines)
+>  			pops->open_struct("clients");
+> @@ -1866,6 +1865,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+>  	struct igt_drm_clients *clients = c->clients;
+>  	struct intel_clients *iclients = clients->private_data;
+>  	unsigned int i;
+> +	int len;
+>  
+>  	if (output_mode == INTERACTIVE) {
+>  		if (filter_idle && (!c->total_runtime || c->samples < 2))
+> @@ -1873,9 +1873,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+>  
+>  		lines++;
+>  
+> -		printf("%*s %*s ",
+> -		       clients->max_pid_len, c->pid_str,
+> -		       clients->max_name_len, c->print_name);
+> +		len = printf("%*s ", clients->max_pid_len, c->pid_str);
+>  
+>  		for (i = 0;
+>  		     c->samples > 1 && i <= iclients->classes.max_engine_id;
+> @@ -1898,9 +1896,10 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+>  
+>  			print_percentage_bar(pct, max, *class_w,
+>  					     numeric_clients);
+> +			len += *class_w;
+>  		}
+>  
+> -		putchar('\n');
+> +		printf(" %-*s\n", con_w - len - 1, c->print_name);
+>  	} else if (output_mode == JSON) {
+>  		char buf[64];
+>  
+> -- 
+> 2.37.2
+> 
