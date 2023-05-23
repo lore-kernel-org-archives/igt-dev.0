@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 582E610E3ED
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 360E010E3EE
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:50 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:27 +0530
-Message-Id: <20230523063243.669540-67-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:29 +0530
+Message-Id: <20230523063243.669540-69-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 66/82] tests/kms_prime: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V3 68/82] tests/kms_properties: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,54 +28,66 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_prime.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ tests/kms_properties.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index dd5ab993e..02f5eca78 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -30,6 +30,41 @@
- #include <sys/ioctl.h>
- #include <sys/poll.h>
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index 2fe8dfa66..b32bac4af 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -28,6 +28,31 @@
+ #include <stdio.h>
+ #include <string.h>
  #include <time.h>
 +/**
-+ * TEST: kms prime
++ * TEST: kms properties
 + * Category: Display
-+ * Description: Prime tests, focusing on KMS side
 + *
-+ * SUBTEST: D3hot
-+ * Description: Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU
++ * SUBTEST: %s-properties-%s
++ * Description: Tests %arg[1] properties with %arg[2] commit
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: basic-modeset-hybrid
-+ * Description: Basic modeset on the one device when the other device is active
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: basic-crc-%s
-+ * Description: Make a dumb color buffer, export to another device and compare
-+ *              the CRCs with a buffer native to that device
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @hybrid:
-+ * @vgem:
++ * @connector:       Connector
++ * @crtc:            CRTC
++ * @plane:           Plane
++ * @invalid:         Invalid (connector/crtc/plane)
++ *
++ * arg[2]:
++ *
++ * @atomic:          atomic
++ * @legacy:          legacy
 + */
++
  
- #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
- #define KMS_POLL_DISABLE 0
+ struct additional_test {
+ 	const char *name;
+@@ -687,6 +712,21 @@ static void expect_no_props(int fd, uint32_t obj_type, uint32_t obj_id)
+ 	igt_assert_neq(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES, &properties), 0);
+ }
+ 
++/**
++ * SUBTEST: get_properties-sanity-%s
++ * Description: Test validates the properties of all planes, crtc and connectors
++ *              with %arg[1] commit
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic:          atomic
++ * @non-atomic:      legacy
++ */
+ static void get_prop_sanity(igt_display_t *display, bool atomic)
+ {
+ 	int fd = display->drm_fd;
 -- 
 2.40.0
