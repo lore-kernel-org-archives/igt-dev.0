@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5B9B10E3EF
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 582E610E3ED
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:39:47 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:02:21 +0530
-Message-Id: <20230523063243.669540-61-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:02:27 +0530
+Message-Id: <20230523063243.669540-67-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 60/82] tests/kms_plane: Document each subtest
+Subject: [igt-dev] [i-g-t V3 66/82] tests/kms_prime: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,105 +28,54 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+ tests/kms_prime.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 10e16b638..b93e33662 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -24,6 +24,11 @@
-  *   Damien Lespiau <damien.lespiau@intel.com>
-  */
- 
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index dd5ab993e..02f5eca78 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -30,6 +30,41 @@
+ #include <sys/ioctl.h>
+ #include <sys/poll.h>
+ #include <time.h>
 +/**
-+ * TEST: kms plane
++ * TEST: kms prime
 + * Category: Display
-+ * Description: Testes for KMS Plane
-+ */
- #include "igt.h"
- #include "igt_vec.h"
- #include <errno.h>
-@@ -272,6 +277,21 @@ test_plane_position_with_output(data_t *data,
- 	igt_remove_fb(data->drm_fd, &sprite_fb);
- }
- 
-+/**
-+ * SUBTEST: plane-position-%s
-+ * Description: Verify plane position using two planes to create a %arg[1]
++ * Description: Prime tests, focusing on KMS side
++ *
++ * SUBTEST: D3hot
++ * Description: Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU
 + * Driver requirement: any
-+ * Functionality: plane
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: basic-modeset-hybrid
++ * Description: Basic modeset on the one device when the other device is active
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: basic-crc-%s
++ * Description: Make a dumb color buffer, export to another device and compare
++ *              the CRCs with a buffer native to that device
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @covered:           fully covered screen
-+ * @hole:              partially covered screen
-+ * @hole-dpms:         partially covered screen and check for DPMS
++ * @hybrid:
++ * @vgem:
 + */
- static void
- test_plane_position(data_t *data, enum pipe pipe)
- {
-@@ -380,6 +400,21 @@ test_plane_panning_with_output(data_t *data,
- 	igt_remove_fb(data->drm_fd, &primary_fb);
- }
  
-+/**
-+ * SUBTEST: plane-panning-%s
-+ * Description: Verify plane panning at %arg[1] using primary plane
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @bottom-right:               bottom-right position
-+ * @bottom-right-suspend:       bottom-right position with suspend
-+ * @top-left:                   top-left position
-+ */
- static void
- test_plane_panning(data_t *data, enum pipe pipe)
- {
-@@ -1087,6 +1122,20 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
- 	return index != 0 && index != 3 && index != 5;
- }
- 
-+/**
-+ * SUBTEST: pixel-%s
-+ * Description: verify the pixel formats for given plane and pipe
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @format:
-+ * @format-source-clamping:          with source clamping
-+ */
- static void
- test_pixel_formats(data_t *data, enum pipe pipe)
- {
-@@ -1143,6 +1192,15 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 	igt_assert_f(result, "At least one CRC mismatch happened\n");
- }
- 
-+/**
-+ * SUBTEST: invalid-pixel-format-settings
-+ * Description: verify invalid settings for pixel format are not accepted
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_invalid_settings(data_t *data)
- {
- 	enum pipe pipe = PIPE_A;
+ #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+ #define KMS_POLL_DISABLE 0
 -- 
 2.40.0
