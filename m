@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04C2B10E3E8
- for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85C6C10E3E8
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 May 2023 06:38:55 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 May 2023 12:01:52 +0530
-Message-Id: <20230523063243.669540-32-bhanuprakash.modem@intel.com>
+Date: Tue, 23 May 2023 12:01:51 +0530
+Message-Id: <20230523063243.669540-31-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 References: <20230523063243.669540-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 31/82] tests/i915/kms_pwrite_crc: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V3 30/82] tests/i915/kms_psr_stress_test: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,34 +28,41 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_pwrite_crc.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tests/i915/kms_psr_stress_test.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
-index 3278d876d..7a358d045 100644
---- a/tests/i915/kms_pwrite_crc.c
-+++ b/tests/i915/kms_pwrite_crc.c
-@@ -29,6 +29,21 @@
+diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
+index a4cb3194e..401dcbf19 100644
+--- a/tests/i915/kms_psr_stress_test.c
++++ b/tests/i915/kms_psr_stress_test.c
+@@ -7,6 +7,28 @@
  #include <stdio.h>
  #include <string.h>
- 
+ #include <sys/timerfd.h>
 +/**
-+ * TEST: kms pwrite crc
++ * TEST: kms psr stress test
 + * Category: Display
-+ * Description: Use the display CRC support to validate pwrite to an already
-+ *              uncached future scanout buffer.
 + *
-+ * SUBTEST:
-+ * Description: Use the display CRC support to validate pwrite to an already
-+ *              uncached future scanout buffer.
-+ * Driver requirement: i915
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
++ * SUBTEST: flip-primary-invalidate-overlay
++ * Description: Mix page flips in primary plane and frontbuffer writes to overlay
++ *              plane and check for warnings, underruns or PSR state changes
++ * Driver requirement: any
++ * Functionality: psr
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: invalidate-primary-flip-overlay
++ * Description: Mix frontbuffer writes to the primary plane and page flips in the
++ *              overlay plane and check for warnings, underruns or PSR state changes
++ * Driver requirement: any
++ * Functionality: psr
++ * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- IGT_TEST_DESCRIPTION(
-    "Use the display CRC support to validate pwrite to an already uncached future scanout buffer.");
+ #define INVALIDATES_PER_SEC 15
+ #define FLIPS_PER_SEC 30
 -- 
 2.40.0
