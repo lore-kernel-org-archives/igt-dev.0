@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Erico Nunes <nunes.erico@gmail.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68F4B10E119
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 14:29:58 +0000 (UTC)
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 24 May 2023 15:49:29 +0200
-Message-Id: <20230524134930.61911-3-nunes.erico@gmail.com>
-In-Reply-To: <20230524134930.61911-1-nunes.erico@gmail.com>
-References: <20230524134930.61911-1-nunes.erico@gmail.com>
+Date: Wed, 24 May 2023 16:29:23 +0200
+Message-Id: <20230524142931.119823-2-dominik.grzegorzek@intel.com>
+In-Reply-To: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
+References: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] lib/lima: Add lima helpers
+Subject: [igt-dev] [PATCH i-g-t 1/9] xe: sync uapi headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,168 +18,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: anarsoul@gmail.com, yuq825@gmail.com, lima@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add initial gem helpers for lima tests, based on the panfrost ones.
-
-Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- lib/igt_lima.c  | 97 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_lima.h  | 26 +++++++++++++
- lib/meson.build |  1 +
- 3 files changed, 124 insertions(+)
- create mode 100644 lib/igt_lima.c
- create mode 100644 lib/igt_lima.h
+ include/drm-uapi/xe_drm_tmp.h | 76 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
+ create mode 100644 include/drm-uapi/xe_drm_tmp.h
 
-diff --git a/lib/igt_lima.c b/lib/igt_lima.c
+diff --git a/include/drm-uapi/xe_drm_tmp.h b/include/drm-uapi/xe_drm_tmp.h
 new file mode 100644
-index 00000000..0d0f3c80
+index 000000000..9829cd724
 --- /dev/null
-+++ b/lib/igt_lima.c
-@@ -0,0 +1,97 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Erico Nunes
-+ */
++++ b/include/drm-uapi/xe_drm_tmp.h
+@@ -0,0 +1,76 @@
++#ifndef _UAPI_XE_DRM_TMP_H_
++#define _UAPI_XE_DRM_TMP_H_
 +
-+#include <assert.h>
-+#include <string.h>
-+#include <signal.h>
-+#include <errno.h>
-+#include <sys/mman.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <sys/ioctl.h>
-+#include <fcntl.h>
++#include "xe_drm.h"
 +
-+#include "drmtest.h"
-+#include "igt_aux.h"
-+#include "igt_core.h"
-+#include "igt_lima.h"
-+#include "ioctl_wrappers.h"
-+#include "lima_drm.h"
++#if defined(__cplusplus)
++extern "C" {
++#endif
++
++#define DRM_XE_EUDEBUG_CONNECT			0x5f
++
++#define DRM_IOCTL_XE_EUDEBUG_CONNECT		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EUDEBUG_CONNECT, struct drm_xe_eudebug_connect_param)
 +
 +/**
-+ * SECTION:igt_lima
-+ * @short_description: LIMA support library
-+ * @title: LIMA
-+ * @include: igt.h
++ * Do a eudebug event read for a debugger connection.
 + *
-+ * This library provides various auxiliary helper functions for writing Lima
-+ * tests.
++ * This ioctl is available in debug version 1.
 + */
++#define DRM_XE_EUDEBUG_IOCTL_READ_EVENT _IO('j', 0x0)
 +
-+struct lima_bo *
-+igt_lima_gem_new(int fd, size_t size)
-+{
-+	struct lima_bo *bo = calloc(1, sizeof(*bo));
++/* XXX: Document events to match their internal counterparts when moved to xe_drm.h */
++struct drm_xe_eudebug_event {
++	struct xe_user_extension ext;
 +
-+	struct drm_lima_gem_create create_bo = {
-+		.size = size,
-+		.flags = 0,
-+	};
++	__u32 type;
++#define DRM_XE_EUDEBUG_EVENT_NONE     0
++#define DRM_XE_EUDEBUG_EVENT_READ     1
++#define DRM_XE_EUDEBUG_EVENT_OPEN     2
++#define DRM_XE_EUDEBUG_EVENT_VM	      3
++#define DRM_XE_EUDEBUG_EVENT_MAX_EVENT DRM_XE_EUDEBUG_EVENT_VM
 +
-+	do_ioctl(fd, DRM_IOCTL_LIMA_GEM_CREATE, &create_bo);
++	__u32 flags;
++#define DRM_XE_EUDEBUG_EVENT_CREATE	(1 << 0)
++#define DRM_XE_EUDEBUG_EVENT_DESTROY	(1 << 1)
++#define DRM_XE_EUDEBUG_EVENT_STATE_CHANGE (1 << 2)
 +
-+	bo->handle = create_bo.handle;
-+	bo->size = size;
-+	return bo;
-+}
++	__u64 seqno;
++	__u64 size;
++} __attribute__((packed));
 +
-+void
-+igt_lima_free_bo(int fd, struct lima_bo *bo)
-+{
-+	if (!bo)
-+		return;
++struct drm_xe_eudebug_event_client {
++	struct drm_xe_eudebug_event base; /* .flags = CREATE/DESTROY */
 +
-+	if (bo->map)
-+		munmap(bo->map, bo->size);
-+	gem_close(fd, bo->handle);
-+	free(bo);
-+}
++	__u64 client_handle; /* This is unique per debug connection */
++} __attribute__((packed));
 +
-+uint64_t
-+igt_lima_get_bo_offset(int fd, uint32_t handle)
-+{
-+	struct drm_lima_gem_info gem_info = {
-+		.handle = handle,
-+	};
++struct drm_xe_eudebug_event_vm {
++	struct drm_xe_eudebug_event base;
 +
-+	do_ioctl(fd, DRM_IOCTL_LIMA_GEM_INFO, &gem_info);
++	__u64 client_handle;
++	__u64 vm_handle;
++} __attribute__((packed));
 +
-+	return gem_info.offset;
-+}
-+
-+uint32_t
-+igt_lima_get_param(int fd, int param)
-+{
-+	struct drm_lima_get_param get = {
-+		.param = param,
-+	};
-+
-+	do_ioctl(fd, DRM_IOCTL_LIMA_GET_PARAM, &get);
-+
-+	return get.value;
-+}
-+
-+void *
-+igt_lima_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned int prot)
-+{
-+	uint64_t offset = igt_lima_get_bo_offset(fd, handle);
-+	void *ptr;
-+
-+	ptr = mmap(0, size, prot, MAP_SHARED, fd, offset);
-+	if (ptr == MAP_FAILED)
-+		return NULL;
-+	else
-+		return ptr;
-+}
-diff --git a/lib/igt_lima.h b/lib/igt_lima.h
-new file mode 100644
-index 00000000..83ca401f
---- /dev/null
-+++ b/lib/igt_lima.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: MIT */
 +/*
-+ * Copyright © 2023 Erico Nunes
++ * Debugger ABI (ioctl and events) Version History:
++ * 0 - No debugger available
++ * 1 - Initial version
 + */
++#define DRM_XE_EUDEBUG_VERSION 1
 +
-+#ifndef IGT_LIMA_H
-+#define IGT_LIMA_H
++struct drm_xe_eudebug_connect_param {
++	struct xe_user_extension ext;
 +
-+#include "lima_drm.h"
++	__u64 pid; /* input: Target process ID */
++	__u32 flags;
 +
-+struct lima_bo {
-+	int handle;
-+	uint64_t offset;
-+	uint32_t size;
-+	void *map;
++	__u32 version; /* output: current ABI (ioctl / events) version */
++	__u64 events;  /* input: event types to subscribe to */
++	__u64 extensions; /* MBZ */
 +};
 +
-+struct lima_bo *igt_lima_gem_new(int fd, size_t size);
-+void igt_lima_free_bo(int fd, struct lima_bo *bo);
++#if defined(__cplusplus)
++}
++#endif
 +
-+/* IOCTL wrappers */
-+uint64_t igt_lima_get_bo_offset(int fd, uint32_t handle);
-+uint32_t igt_lima_get_param(int fd, int param);
-+void *igt_lima_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned int prot)
-+
-+#endif /* IGT_LIMA_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index 85f100f7..a0f92941 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -89,6 +89,7 @@ lib_sources = [
- 	'uwildmat/uwildmat.c',
- 	'igt_kmod.c',
- 	'igt_panfrost.c',
-+	'igt_lima.c',
- 	'igt_v3d.c',
- 	'igt_vc4.c',
- 	'igt_vmwgfx.c',
++#endif /* _UAPI_XE_DRM_TMP_H_ */
 -- 
-2.40.1
+2.34.1
