@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7931110E228
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:10 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:14 +0530
-Message-Id: <20230529052835.860047-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
-References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 01/82] tests/chamelium: Move chamelium helpers
- to lib
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Erico Nunes" <nunes.erico@gmail.com>
+Date: Wed, 24 May 2023 15:27:07 -0000
+Message-ID: <168494202728.11321.7670302085991469592@emeril.freedesktop.org>
+References: <20230524134930.61911-1-nunes.erico@gmail.com>
+In-Reply-To: <20230524134930.61911-1-nunes.erico@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJbml0?=
+ =?utf-8?q?ial_tests_for_the_lima_drm_driver?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,137 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The correct place for helpers is lib as the tests directory is
-supposed to have test files, also having the helpers in tests
-dir will break the compilation of testplan. Hence move all
-helpers to library.
+== Series Details ==
 
-Expectation is to have an executable binary for each .c file
-the "tests" dir.
+Series: Initial tests for the lima drm driver
+URL   : https://patchwork.freedesktop.org/series/118303/
+State : failure
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- .../kms_chamelium_helper.c => lib/igt_chamelium_helper.c      | 4 ++--
- .../kms_chamelium_helper.h => lib/igt_chamelium_helper.h      | 0
- lib/meson.build                                               | 1 +
- tests/chamelium/kms_chamelium_audio.c                         | 2 +-
- tests/chamelium/kms_chamelium_edid.c                          | 2 +-
- tests/chamelium/kms_chamelium_frames.c                        | 2 +-
- tests/chamelium/kms_chamelium_hpd.c                           | 2 +-
- tests/meson.build                                             | 3 +--
- 8 files changed, 8 insertions(+), 8 deletions(-)
- rename tests/chamelium/kms_chamelium_helper.c => lib/igt_chamelium_helper.c (99%)
- rename tests/chamelium/kms_chamelium_helper.h => lib/igt_chamelium_helper.h (100%)
+== Summary ==
 
-diff --git a/tests/chamelium/kms_chamelium_helper.c b/lib/igt_chamelium_helper.c
-similarity index 99%
-rename from tests/chamelium/kms_chamelium_helper.c
-rename to lib/igt_chamelium_helper.c
-index 197d29be9..3c1a802d3 100644
---- a/tests/chamelium/kms_chamelium_helper.c
-+++ b/lib/igt_chamelium_helper.c
-@@ -25,7 +25,7 @@
-  */
- 
- #include "igt_edid.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- 
- void chamelium_init_test(chamelium_data_t *data)
- {
-@@ -344,4 +344,4 @@ bool chamelium_check_analog_bridge(chamelium_data_t *data,
- 		return true;
- 
- 	return false;
--}
-\ No newline at end of file
-+}
-diff --git a/tests/chamelium/kms_chamelium_helper.h b/lib/igt_chamelium_helper.h
-similarity index 100%
-rename from tests/chamelium/kms_chamelium_helper.h
-rename to lib/igt_chamelium_helper.h
-diff --git a/lib/meson.build b/lib/meson.build
-index 85f100f75..2d3456577 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -17,6 +17,7 @@ lib_sources = [
- 	'i915/intel_cmds_info.c',
- 	'i915/i915_blt.c',
- 	'i915/i915_crc.c',
-+	'igt_chamelium_helper.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
- 	'igt_crc.c',
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index 6c6177fc5..a4204fbb6 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -26,7 +26,7 @@
- 
- #include "igt_eld.h"
- #include "igt_infoframe.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- 
- /* Playback parameters control the audio signal we synthesize and send */
- #define PLAYBACK_CHANNELS 2
-diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
-index 4a52e6922..fc78d4a07 100644
---- a/tests/chamelium/kms_chamelium_edid.c
-+++ b/tests/chamelium/kms_chamelium_edid.c
-@@ -42,7 +42,7 @@
- #include "igt_eld.h"
- #include "igt_vc4.h"
- #include "igt_infoframe.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- #include "monitor_edids/dp_edids.h"
- #include "monitor_edids/hdmi_edids.h"
- #include "monitor_edids/monitor_edids_helper.h"
-diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
-index 22a7ba936..2d90b45b2 100644
---- a/tests/chamelium/kms_chamelium_frames.c
-+++ b/tests/chamelium/kms_chamelium_frames.c
-@@ -31,7 +31,7 @@
- 
- #include "igt_eld.h"
- #include "igt_infoframe.h"
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- 
- #define connector_dynamic_subtest(name__, type__)                   \
- 	igt_subtest_with_dynamic(name__)                            \
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index efd40ba54..ea0ee10e7 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -29,7 +29,7 @@
-  * Category: Display
-  */
- 
--#include "kms_chamelium_helper.h"
-+#include "igt_chamelium_helper.h"
- 
- #define HPD_STORM_PULSE_INTERVAL_DP 100 /* ms */
- #define HPD_STORM_PULSE_INTERVAL_HDMI 200 /* ms */
-diff --git a/tests/meson.build b/tests/meson.build
-index f71be1dbe..5d2c573d5 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -343,8 +343,7 @@ endforeach
- if chamelium.found()
- 	foreach prog : chamelium_progs
- 		test_executables += executable(prog,
--				 [join_paths('chamelium', prog + '.c'),
--					join_paths('chamelium', 'kms_chamelium_helper.c')],
-+				 join_paths('chamelium', prog + '.c'),
- 				 dependencies : test_deps,
- 				 install_dir : libexecdir,
- 				 install_rpath : libexecdir_rpathdir,
--- 
-2.40.0
+IGT patchset build failed on latest successful build
+de4b71f2c13f6fdcae15a4c3fac7fbe5f5737685 intel_gpu_top: Move client name last
+
+                 from ../../../usr/src/igt-gpu-tools/lib/igt_lima.c:20:
+../../../usr/src/igt-gpu-tools/lib/i915/intel_memory_region.h:173:1: warning: empty declaration
+  173 | struct gem_memory_region {
+      | ^~~~~~
+In file included from ../../../usr/src/igt-gpu-tools/lib/igt_lima.c:20:
+../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:51:14: error: storage class specified for parameter ‘igt_ioctl’
+   51 | extern int (*igt_ioctl)(int fd, unsigned long request, void *arg);
+      |              ^~~~~~~~~
+../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:120:1: warning: empty declaration
+  120 | struct local_dma_buf_sync {
+      | ^~~~~~
+../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:168:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+  168 | {
+      | ^
+../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:178:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+  178 | {
+      | ^
+../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:188:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+  188 | {
+      | ^
+../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:198:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+  198 | {
+      | ^
+../../../usr/src/igt-gpu-tools/lib/igt_lima.c:35:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+   35 | {
+      | ^
+../../../usr/src/igt-gpu-tools/lib/igt_lima.c:52:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+   52 | {
+      | ^
+../../../usr/src/igt-gpu-tools/lib/igt_lima.c:64:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+   64 | {
+      | ^
+../../../usr/src/igt-gpu-tools/lib/igt_lima.c:76:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+   76 | {
+      | ^
+../../../usr/src/igt-gpu-tools/lib/igt_lima.c:88:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+   88 | {
+      | ^
+In file included from ../../../usr/src/igt-gpu-tools/lib/igt_lima.c:19:
+../../../usr/src/igt-gpu-tools/lib/igt_lima.h:24:7: error: old-style parameter declarations in prototyped function definition
+   24 | void *igt_lima_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned int prot)
+      |       ^~~~~~~~~~~~~~~~
+../../../usr/src/igt-gpu-tools/lib/igt_lima.c:97: error: expected ‘{’ at end of input
+   97 | }
+      | 
+../../../usr/src/igt-gpu-tools/lib/igt_lima.c:97: error: control reaches end of non-void function [-Werror=return-type]
+   97 | }
+      | 
+cc1: some warnings being treated as errors
+ninja: build stopped: subcommand failed.
+
