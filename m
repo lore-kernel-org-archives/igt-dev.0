@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68F4B10E119
- for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 14:29:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 106E510E119
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 14:29:57 +0000 (UTC)
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 24 May 2023 16:29:23 +0200
-Message-Id: <20230524142931.119823-2-dominik.grzegorzek@intel.com>
-In-Reply-To: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
-References: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
+Date: Wed, 24 May 2023 16:29:22 +0200
+Message-Id: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/9] xe: sync uapi headers
+Subject: [igt-dev] [RFC v2 i-g-t 0/9] Add initial eudebug coverage
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,93 +20,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- include/drm-uapi/xe_drm_tmp.h | 76 +++++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
- create mode 100644 include/drm-uapi/xe_drm_tmp.h
+This series introduces test coverage for eudebug event
+interface recently proposed as an RFC.
+(https://patchwork.freedesktop.org/series/116442/) 
 
-diff --git a/include/drm-uapi/xe_drm_tmp.h b/include/drm-uapi/xe_drm_tmp.h
-new file mode 100644
-index 000000000..9829cd724
---- /dev/null
-+++ b/include/drm-uapi/xe_drm_tmp.h
-@@ -0,0 +1,76 @@
-+#ifndef _UAPI_XE_DRM_TMP_H_
-+#define _UAPI_XE_DRM_TMP_H_
-+
-+#include "xe_drm.h"
-+
-+#if defined(__cplusplus)
-+extern "C" {
-+#endif
-+
-+#define DRM_XE_EUDEBUG_CONNECT			0x5f
-+
-+#define DRM_IOCTL_XE_EUDEBUG_CONNECT		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EUDEBUG_CONNECT, struct drm_xe_eudebug_connect_param)
-+
-+/**
-+ * Do a eudebug event read for a debugger connection.
-+ *
-+ * This ioctl is available in debug version 1.
-+ */
-+#define DRM_XE_EUDEBUG_IOCTL_READ_EVENT _IO('j', 0x0)
-+
-+/* XXX: Document events to match their internal counterparts when moved to xe_drm.h */
-+struct drm_xe_eudebug_event {
-+	struct xe_user_extension ext;
-+
-+	__u32 type;
-+#define DRM_XE_EUDEBUG_EVENT_NONE     0
-+#define DRM_XE_EUDEBUG_EVENT_READ     1
-+#define DRM_XE_EUDEBUG_EVENT_OPEN     2
-+#define DRM_XE_EUDEBUG_EVENT_VM	      3
-+#define DRM_XE_EUDEBUG_EVENT_MAX_EVENT DRM_XE_EUDEBUG_EVENT_VM
-+
-+	__u32 flags;
-+#define DRM_XE_EUDEBUG_EVENT_CREATE	(1 << 0)
-+#define DRM_XE_EUDEBUG_EVENT_DESTROY	(1 << 1)
-+#define DRM_XE_EUDEBUG_EVENT_STATE_CHANGE (1 << 2)
-+
-+	__u64 seqno;
-+	__u64 size;
-+} __attribute__((packed));
-+
-+struct drm_xe_eudebug_event_client {
-+	struct drm_xe_eudebug_event base; /* .flags = CREATE/DESTROY */
-+
-+	__u64 client_handle; /* This is unique per debug connection */
-+} __attribute__((packed));
-+
-+struct drm_xe_eudebug_event_vm {
-+	struct drm_xe_eudebug_event base;
-+
-+	__u64 client_handle;
-+	__u64 vm_handle;
-+} __attribute__((packed));
-+
-+/*
-+ * Debugger ABI (ioctl and events) Version History:
-+ * 0 - No debugger available
-+ * 1 - Initial version
-+ */
-+#define DRM_XE_EUDEBUG_VERSION 1
-+
-+struct drm_xe_eudebug_connect_param {
-+	struct xe_user_extension ext;
-+
-+	__u64 pid; /* input: Target process ID */
-+	__u32 flags;
-+
-+	__u32 version; /* output: current ABI (ioctl / events) version */
-+	__u64 events;  /* input: event types to subscribe to */
-+	__u64 extensions; /* MBZ */
-+};
-+
-+#if defined(__cplusplus)
-+}
-+#endif
-+
-+#endif /* _UAPI_XE_DRM_TMP_H_ */
+This series adds xe_eudebug tests together with 
+a library that encapsulates common paths in current 
+and future eu debugger scenarios. It provides an abstraction
+over debugger and debuggee processes, asynchronous event reader,
+and event log buffers for post-mortem analysis.
+
+Place xe_eudebug tests inside xe/staging/ directory
+and behind xe_staging build option as the kernel part 
+won't be merged anytime soon.
+
+Dominik Grzegorzek (8):
+  xe: sync uapi headers
+  meson: Introduce xe_staging build option
+  xe/staging/xe_eudebug: test eudebug connection
+  lib/staging/xe_eudebug: introduce eu debug testing framework
+  xe/staging/xe_eudebug: test open close events
+  xe/staging/xe_eudebug: exercise read_event ioctl
+  xe/staging/xe_eudebug: add vm events sanity check
+  xe/staging/xe_eudebug: Race discovery against eudebug attach.
+  xe/staging/xe_eudebug: Add TEST/SUBTEST documentation
+
+ include/drm-uapi/xe_drm_tmp.h |   76 +++
+ lib/meson.build               |    3 +-
+ lib/xe/staging/xe_eudebug.c   | 1047 +++++++++++++++++++++++++++++++++
+ lib/xe/staging/xe_eudebug.h   |   89 +++
+ meson.build                   |    1 +
+ meson_options.txt             |    5 +
+ tests/meson.build             |   17 +
+ tests/xe/staging/xe_eudebug.c |  639 ++++++++++++++++++++
+ 8 files changed, 1876 insertions(+), 1 deletion(-)
+ create mode 100644 include/drm-uapi/xe_drm_tmp.h
+ create mode 100644 lib/xe/staging/xe_eudebug.c
+ create mode 100644 lib/xe/staging/xe_eudebug.h
+ create mode 100644 tests/xe/staging/xe_eudebug.c
+
 -- 
 2.34.1
