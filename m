@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6465F10E677
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8573210E67D
  for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 15:55:31 +0000 (UTC)
 From: fei.yang@intel.com
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 24 May 2023 08:56:09 -0700
-Message-Id: <20230524155610.360748-1-fei.yang@intel.com>
+Date: Wed, 24 May 2023 08:56:10 -0700
+Message-Id: <20230524155610.360748-2-fei.yang@intel.com>
+In-Reply-To: <20230524155610.360748-1-fei.yang@intel.com>
+References: <20230524155610.360748-1-fei.yang@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v5 0/1] test/gem_create: exercise
+Subject: [igt-dev] [PATCH v5 1/1] test/gem_create: exercise
  gem_create_ext_set_pat
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -24,22 +26,141 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Fei Yang <fei.yang@intel.com>
 
-This is the first draft of a new test case exercising the set_pat
-extension for GEM_CREATE.
+Gem_create uAPI has been extended with capability of setting PAT index.
+Add a test case to exercise it.
 
-v2: make sure {get|set}_caching ioctls are disabled.
-v3: move header change to lib/i915/i915_drm_local.h, will submit a
-    separate patch for include/uapi/drm/i915_drm.h after the kernel
-    change lands in upstream.
-v4: GEM_CREATE returns -EINVAL if set_pat is unsupported.
-v5: address comments from Kamil Konieczny
+PAT index is a page attribute that gets programmed into Page Table
+Entry (PTE) for caching policy control. Please refer to kernel patch
+for implementation details.
 
-Fei Yang (1):
-  test/gem_create: exercise gem_create_ext_set_pat
+https://patchwork.freedesktop.org/series/116870/
 
+Signed-off-by: Fei Yang <fei.yang@intel.com>
+---
  lib/i915/i915_drm_local.h | 34 +++++++++++++++++++++++
  tests/i915/gem_create.c   | 58 +++++++++++++++++++++++++++++++++++++++
  2 files changed, 92 insertions(+)
 
+diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
+index bb2ebef3..0f47578c 100644
+--- a/lib/i915/i915_drm_local.h
++++ b/lib/i915/i915_drm_local.h
+@@ -41,6 +41,40 @@ extern "C" {
+ #define __I915_PMU_RC6_RESIDENCY(gt)		___I915_PMU_OTHER(gt, 3)
+ #define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	___I915_PMU_OTHER(gt, 4)
+ 
++#define I915_GEM_CREATE_EXT_SET_PAT 2
++
++/**
++ * struct drm_i915_gem_create_ext_set_pat - The
++ * I915_GEM_CREATE_EXT_SET_PAT extension.
++ *
++ * If this extension is provided, the specified caching policy (PAT index) is
++ * applied to the buffer object.
++ *
++ * Below is an example on how to create an object with specific caching policy:
++ *
++ * .. code-block:: C
++ *
++ *	struct drm_i915_gem_create_ext_set_pat set_pat_ext = {
++ *		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
++ *		.pat_index = 0,
++ *	};
++ *	struct drm_i915_gem_create_ext create_ext = {
++ *		.size = PAGE_SIZE,
++ *		.extensions = (uintptr_t)&set_pat_ext,
++ *	};
++ *
++ *	int err = ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
++ *	if (err) ...
++ */
++struct drm_i915_gem_create_ext_set_pat {
++	/** @base: Extension link. See struct i915_user_extension. */
++	struct i915_user_extension base;
++	/** @pat_index: PAT index to be set */
++	__u32 pat_index;
++	/** @rsvd: reserved for future use */
++	__u32 rsvd;
++};
++
+ #if defined(__cplusplus)
+ }
+ #endif
+diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+index fc991894..2e0c0ab9 100644
+--- a/tests/i915/gem_create.c
++++ b/tests/i915/gem_create.c
+@@ -587,6 +587,60 @@ static void create_ext_placement_each(int fd)
+ 	free(regions);
+ }
+ 
++/**
++  * TEST: GEM create uAPI
++  * Category: Infrastructure
++  * Description: Tests the DRM_IOCTL_I915_GEM_CREATE_EXT ioctl.
++  * Feature: core
++  * Functionality: Create GEM object with specific PAT index
++  * Run type: BAT
++  * Sub-category: i915
++  * Test category: GEM_Legacy
++  *
++  * SUBTEST: create-ext-set-pat
++  */
++static void create_ext_set_pat(int fd)
++{
++	struct drm_i915_gem_create_ext_set_pat setparam_pat = {
++		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
++		.pat_index = 0,
++	};
++	struct drm_i915_gem_create_ext_set_pat setparam_inv_pat = {
++		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
++		.pat_index = 65,
++	};
++	struct drm_i915_gem_caching arg;
++	uint64_t size;
++	uint32_t handle;
++	int ret;
++
++	size = PAGE_SIZE;
++
++	ret = __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base);
++
++	/*
++	 * With a valid PAT index specified, returning -EINVAL here
++	 * indicates set_pat extension is not supported
++	 */
++	if (ret == -EINVAL)
++		igt_skip("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
++	igt_assert(ret == 0);
++
++	/* {set|get}_caching ioctl should fail for objects created with set_pat */
++	igt_assert_eq(__gem_set_caching(fd, handle, 1), -EOPNOTSUPP);
++
++	memset(&arg, 0, sizeof(arg));
++	arg.handle = handle;
++	igt_assert(ioctl(fd, DRM_IOCTL_I915_GEM_GET_CACHING, &arg) < 0 &&
++		   errno == EOPNOTSUPP);
++
++	/* gem_create should fail with -EINVAL if invalid pat index specified */
++	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle, &setparam_inv_pat.base),
++		      -EINVAL);
++
++	gem_close(fd, handle);
++}
++
+ static bool supports_needs_cpu_access(int fd)
+ {
+ 	struct drm_i915_gem_memory_class_instance regions[] = {
+@@ -947,6 +1001,10 @@ igt_main
+ 	igt_subtest("create-ext-placement-all")
+ 		create_ext_placement_all(fd);
+ 
++	igt_describe("Validate basic creation of objects with PAT cache setting.");
++	igt_subtest("create-ext-set-pat")
++		create_ext_set_pat(fd);
++
+ 	igt_describe("Verify the basic functionally and expected ABI contract around I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS");
+ 	igt_subtest("create-ext-cpu-access-sanity-check") {
+ 		igt_require(supports_needs_cpu_access(fd));
 -- 
 2.25.1
