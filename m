@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EEB9A10E2D2
- for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 14:30:10 +0000 (UTC)
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 592D410E226
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 15:04:18 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 24 May 2023 16:29:29 +0200
-Message-Id: <20230524142931.119823-8-dominik.grzegorzek@intel.com>
-In-Reply-To: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
-References: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
+Date: Wed, 24 May 2023 17:04:03 +0200
+Message-Id: <20230524150403.31460-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 7/9] xe/staging/xe_eudebug: add vm events
- sanity check
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_core: add helper for srandom seed
+ initialization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,56 +22,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add basic test validating eudebug vm events.
+From: Łukasz Łaguna <lukasz.laguna@intel.com>
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+It allows to set specific value with IGT_SRANDOM environment variable.
+
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Signed-off-by: Łukasz Łaguna <lukasz.laguna@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/xe/staging/xe_eudebug.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ lib/igt_core.c | 16 ++++++++++++++++
+ lib/igt_core.h |  2 ++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/tests/xe/staging/xe_eudebug.c b/tests/xe/staging/xe_eudebug.c
-index 771089179..0f81dcd7e 100644
---- a/tests/xe/staging/xe_eudebug.c
-+++ b/tests/xe/staging/xe_eudebug.c
-@@ -7,13 +7,26 @@
- #include <xe_drm_tmp.h>
- 
- #include "igt.h"
-+#include "xe/xe_ioctl.h"
- #include "xe/staging/xe_eudebug.h"
- 
-+#define CREATE_VMS	(1 << 0)
- static void run_basic_client(struct xe_eudebug_client *c)
- {
--	int fd;
-+	int fd, i;
- 
- 	fd = xe_eudebug_client_open_driver(c);
-+
-+	if (c->flags & CREATE_VMS) {
-+		uint32_t vms[igt_fls(DRM_XE_VM_CREATE_ASYNC_BIND_OPS)];
-+
-+		for (i = 0; (1 << i) <= DRM_XE_VM_CREATE_ASYNC_BIND_OPS; i++)
-+			vms[i] = xe_eudebug_client_vm_create(c, fd, 1 << i, 0);
-+
-+		for (i--; i >= 0; i--)
-+			xe_eudebug_client_vm_destroy(c, fd, vms[i]);
-+	}
-+
- 	xe_eudebug_client_close_driver(c, fd);
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index eff3d4272..cd9c2002d 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -3367,6 +3367,22 @@ err:
+ 	return -1;
  }
  
-@@ -296,7 +309,10 @@ igt_main
- 		test_basic_sessions(fd, 0, 1);
- 
- 	igt_subtest("multiple-sessions")
--		test_basic_sessions(fd, 0, 4);
-+		test_basic_sessions(fd, CREATE_VMS, 4);
++/**
++ * igt_srandom:
++ *
++ * It initializes seed for random number generator.
++ * If specific value is needed it can be set with IGT_SRANDOM environment
++ * variable.
++ */
++void igt_srandom(void)
++{
++	const char *param = getenv("IGT_SRANDOM");
++	int seed = param ? atoi(param) : time(NULL);
 +
-+	igt_subtest("basic-vms")
-+		test_basic_sessions(fd, CREATE_VMS, 1);
++	srandom(seed);
++	igt_info("Using IGT_SRANDOM=%d for randomisation\n", seed);
++}
++
+ /* IGT wrappers around libpciaccess init/cleanup functions */
  
- 	igt_fixture
- 		close(fd);
+ static void pci_system_exit_handler(int sig)
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 5d5593e05..ef6bed6a5 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1448,6 +1448,8 @@ int igt_system_quiet(const char *command);
+ 		free(buf); \
+ 	} while (0)
+ 
++void igt_srandom(void);
++
+ /**
+  * igt_trace:
+  * @format: printf-style format string with optional args
 -- 
-2.34.1
+2.39.2
