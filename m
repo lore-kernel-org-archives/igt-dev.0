@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4B6D10E592
- for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 08:03:13 +0000 (UTC)
-Date: Wed, 24 May 2023 10:03:09 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C48C10E2D3
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 14:30:14 +0000 (UTC)
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230524080309.h5u3y3geirg72a32@kamilkon-desk1>
-References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
- <20230516165058.4047595-21-bhanuprakash.modem@intel.com>
+Date: Wed, 24 May 2023 16:29:31 +0200
+Message-Id: <20230524142931.119823-10-dominik.grzegorzek@intel.com>
+In-Reply-To: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
+References: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230516165058.4047595-21-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t 20/20] Revert "lib/igt_kms: Cache xe_device
- info for kms tests"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 9/9] xe/staging/xe_eudebug: Add TEST/SUBTEST
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,53 +24,107 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-05-16 at 22:20:58 +0530, Bhanuprakash Modem wrote:
-> As this logic is moved to driver open/close level, this is
-> redundant, hence revert this logic.
-> 
-> This reverts commit 3e049d7c5048c8e4d0b0cfc22afca18e9e897e9a.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Document xe_eudebug test, to reflect its internal logic.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+---
+ tests/xe/staging/xe_eudebug.c | 49 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
-> ---
->  lib/igt_kms.c | 8 --------
->  1 file changed, 8 deletions(-)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index c54841486..bb3b924c9 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -59,7 +59,6 @@
->  #include "igt_device.h"
->  #include "igt_sysfs.h"
->  #include "sw_sync.h"
-> -#include "xe/xe_query.h"
->  #ifdef HAVE_CHAMELIUM
->  #include "igt_chamelium.h"
->  #endif
-> @@ -2657,9 +2656,6 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->  	}
->  #endif
->  
-> -	if (is_xe_device(drm_fd))
-> -		xe_device_get(drm_fd);
-> -
->  	display->n_pipes = IGT_MAX_PIPES;
->  	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
->  	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
-> @@ -2996,10 +2992,6 @@ static void igt_output_fini(igt_output_t *output)
->  void igt_display_fini(igt_display_t *display)
->  {
->  	int i;
-> -	int drm_fd = display->drm_fd;
-> -
-> -	if (is_xe_device(drm_fd))
-> -		xe_device_put(drm_fd);
->  
->  	for (i = 0; i < display->n_planes; ++i) {
->  		igt_plane_t *plane = &display->planes[i];
-> -- 
-> 2.40.0
-> 
+diff --git a/tests/xe/staging/xe_eudebug.c b/tests/xe/staging/xe_eudebug.c
+index 29d4d8926..1491fa0aa 100644
+--- a/tests/xe/staging/xe_eudebug.c
++++ b/tests/xe/staging/xe_eudebug.c
+@@ -2,6 +2,15 @@
+ /*
+  * Copyright © 2023 Intel Corporation
+  */
++
++/**
++ * TEST: Test EU Debugger functionality
++ * Category: Software building block
++ * Sub-category: eu debugger
++ * Test category: functionality test
++ * Run type: BAT
++ */
++
+ #include <poll.h>
+ 
+ #include <xe_drm_tmp.h>
+@@ -124,6 +133,12 @@ static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect_p
+ 	return ret;
+ }
+ 
++/**
++ * SUBTEST: basic-connect
++ * Description:
++ * 	Exercise XE_EUDEBG_CONNECT ioctl with passing
++ *	valid and invalid params.
++ */
+ static void test_connect(int fd)
+ {
+ 	struct drm_xe_eudebug_connect_param param = {};
+@@ -194,6 +209,11 @@ static void test_connect(int fd)
+ 	close(debugfd);
+ }
+ 
++/**
++ * SUBTEST: basic-close
++ * Description:
++ * 	Test whether eudebug can be reattached after closure.
++ */
+ static void test_close(int fd)
+ {
+ 	struct drm_xe_eudebug_connect_param param = { 0,  };
+@@ -217,6 +237,11 @@ static void test_close(int fd)
+ 	close(debug_fd1);
+ }
+ 
++/**
++ * SUBTEST: basic-read-event
++ * Description:
++ * 	Synchronously exercise eu debugger event polling and reading.
++ */
+ #define MAX_EVENT_SIZE (32 * 1024)
+ static void test_read_event(int fd)
+ {
+@@ -266,6 +291,20 @@ static void test_read_event(int fd)
+ 	xe_eudebug_client_destroy(c);
+ }
+ 
++/**
++ * SUBTEST: basic-client
++ * Description:
++ * 	Attach the debugger to proccess which opens and closes xe drm client.
++ *
++ * SUBTEST: multiple-sessions
++ * Description:
++ * 	Simultaneusly attach many debuggers to many proccesses.
++ * 	Each proccess opens and closes xe drm client.
++ *
++ * SUBTEST: basic-vms
++ * Description:
++ * 	Attach the debugger to procces which creates and destroys a few vms.
++ */
+ static void test_basic_sessions(int fd, unsigned int flags, int count)
+ {
+ 	struct session **s;
+@@ -321,6 +360,16 @@ static void run_discovery_client(struct xe_eudebug_client *c)
+ 	}
+ }
+ 
++/**
++ * SUBTEST: discovery-%s
++ * Description: Race discovery against %arg[1] and the debugger dettach.
++ *
++ * arg[1]:
++ *
++ * @race:		resources creation
++ * @empty:		resources destruction
++ * @empty-clients:	client closure
++ */
+ static void *discovery_race_thread(void *data)
+ {
+ 	struct {
+-- 
+2.34.1
