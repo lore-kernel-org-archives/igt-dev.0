@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7051710E2B8
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 15:33:14 +0000 (UTC)
+From: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Date: Wed, 24 May 2023 15:32:12 +0000
+Message-ID: <c8a9fadb65810a77bd572c7850ad945a1a9cb372.camel@intel.com>
+References: <20230524113836.1029582-1-christoph.manszewski@intel.com>
+In-Reply-To: <20230524113836.1029582-1-christoph.manszewski@intel.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
+Content-ID: <C36A24DF4FFF0E489A38B135B441419C@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Erico Nunes" <nunes.erico@gmail.com>
-Date: Wed, 24 May 2023 15:27:07 -0000
-Message-ID: <168494202728.11321.7670302085991469592@emeril.freedesktop.org>
-References: <20230524134930.61911-1-nunes.erico@gmail.com>
-In-Reply-To: <20230524134930.61911-1-nunes.erico@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJbml0?=
- =?utf-8?q?ial_tests_for_the_lima_drm_driver?=
+Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/intel_bb: Enable custom engine
+ support for xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +23,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: Initial tests for the lima drm driver
-URL   : https://patchwork.freedesktop.org/series/118303/
-State : failure
-
-== Summary ==
-
-IGT patchset build failed on latest successful build
-de4b71f2c13f6fdcae15a4c3fac7fbe5f5737685 intel_gpu_top: Move client name last
-
-                 from ../../../usr/src/igt-gpu-tools/lib/igt_lima.c:20:
-../../../usr/src/igt-gpu-tools/lib/i915/intel_memory_region.h:173:1: warning: empty declaration
-  173 | struct gem_memory_region {
-      | ^~~~~~
-In file included from ../../../usr/src/igt-gpu-tools/lib/igt_lima.c:20:
-../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:51:14: error: storage class specified for parameter ‘igt_ioctl’
-   51 | extern int (*igt_ioctl)(int fd, unsigned long request, void *arg);
-      |              ^~~~~~~~~
-../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:120:1: warning: empty declaration
-  120 | struct local_dma_buf_sync {
-      | ^~~~~~
-../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:168:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
-  168 | {
-      | ^
-../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:178:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
-  178 | {
-      | ^
-../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:188:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
-  188 | {
-      | ^
-../../../usr/src/igt-gpu-tools/lib/ioctl_wrappers.h:198:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
-  198 | {
-      | ^
-../../../usr/src/igt-gpu-tools/lib/igt_lima.c:35:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
-   35 | {
-      | ^
-../../../usr/src/igt-gpu-tools/lib/igt_lima.c:52:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
-   52 | {
-      | ^
-../../../usr/src/igt-gpu-tools/lib/igt_lima.c:64:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
-   64 | {
-      | ^
-../../../usr/src/igt-gpu-tools/lib/igt_lima.c:76:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
-   76 | {
-      | ^
-../../../usr/src/igt-gpu-tools/lib/igt_lima.c:88:1: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
-   88 | {
-      | ^
-In file included from ../../../usr/src/igt-gpu-tools/lib/igt_lima.c:19:
-../../../usr/src/igt-gpu-tools/lib/igt_lima.h:24:7: error: old-style parameter declarations in prototyped function definition
-   24 | void *igt_lima_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned int prot)
-      |       ^~~~~~~~~~~~~~~~
-../../../usr/src/igt-gpu-tools/lib/igt_lima.c:97: error: expected ‘{’ at end of input
-   97 | }
-      | 
-../../../usr/src/igt-gpu-tools/lib/igt_lima.c:97: error: control reaches end of non-void function [-Werror=return-type]
-   97 | }
-      | 
-cc1: some warnings being treated as errors
-ninja: build stopped: subcommand failed.
-
+T24gV2VkLCAyMDIzLTA1LTI0IGF0IDEzOjM4ICswMjAwLCBDaHJpc3RvcGggTWFuc3pld3NraSB3
+cm90ZToNCj4gQ3VycmVudGx5IHRoZSAnY3R4JyBmaWVsZCBpbiBiYXRjaCBidWZmZXIgY3JlYXRp
+b24gaXMgaW50ZXJwcmV0ZWQgYXMNCj4gYSB2bSBpZCBmb3IgeGUuIEluIGk5MTUgaXQgaXMgaW50
+ZXJwcmV0ZWQgYXMgYSBjb250ZXh0IGlkLiBTaW5jZSBhIHhlDQo+IGVuZ2luZSBtb3JlIGNsb3Nl
+bHkgcmVzZW1ibGVzIGFuIGk5MTUgY29udGV4dCwgY2hhbmdlIHRoZSBjdXJyZW50DQo+IGJlaGF2
+aW91ciBhbmQgaW50ZXJwcmV0IHRoZSAnY3R4JyBmaWVkIGFzIGFuIHhlIGVuZ2luZSBpZC4gVGhp
+cyBhbHNvDQo+IGFsbG93cyB1cyB0byB1c2UgdGhlIGNvbXB1dGUgZW5naW5lIG9uIHhlLCB3aGlj
+aCBjdXJyZW50bHkgaXMgbm90DQo+IHBvc3NpYmxlLCBkdWUgdG8gcmVsaWFuY2Ugb24gbGVnYWN5
+IGk5MTUgZmxhZ3MuDQo+IA0KPiB2MjoNCj4gIC0gZG9uJ3QgZGVzdHJveSB1c2VyIHByb3ZpZGVk
+IGVuZ2luZSBpbiAnaW50ZWxfYmJfZGVzdHJveScgKFpiaWduaWV3KQ0KPiAgLSBkZXN0cm95IGlu
+dGVybmFsbHkgY3JlYXRlZCBlbmdpbmUgYmVmb3JlIGNyZWF0aW5nIGEgbmV3IG9uZQ0KPiANCj4g
+U2lnbmVkLW9mZi1ieTogQ2hyaXN0b3BoIE1hbnN6ZXdza2kgPGNocmlzdG9waC5tYW5zemV3c2tp
+QGludGVsLmNvbT4NCj4gQ2M6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6
+eW5za2lAaW50ZWwuY29tPg0KPiAtLS0NCj4gIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jIHwgMjcg
+KysrKysrKysrKysrKysrKysrKy0tLS0tLS0tDQo+ICB0ZXN0cy94ZS94ZV9pbnRlbF9iYi5jICB8
+ICA3ICsrKysrLS0NCj4gIDIgZmlsZXMgY2hhbmdlZCwgMjQgaW5zZXJ0aW9ucygrKSwgMTAgZGVs
+ZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2JhdGNoYnVmZmVyLmMgYi9s
+aWIvaW50ZWxfYmF0Y2hidWZmZXIuYw0KPiBpbmRleCBkZmNjYzRmNC4uZDZhNDRkN2UgMTAwNjQ0
+DQo+IC0tLSBhL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jDQo+ICsrKyBiL2xpYi9pbnRlbF9iYXRj
+aGJ1ZmZlci5jDQo+IEBAIC05NDYsMTUgKzk0NiwxMyBAQCBfX2ludGVsX2JiX2NyZWF0ZShpbnQg
+ZmQsIHVpbnQzMl90IGN0eCwgY29uc3QgaW50ZWxfY3R4X2NmZ190ICpjZmcsDQo+ICAJCWliYi0+
+Z3R0X3NpemUgPSAxdWxsIDw8IG1pbl90KHVpbnQzMl90LCB4ZV92YV9iaXRzKGZkKSwgNDgpOw0K
+PiAgCQllbmQgPSBpYmItPmd0dF9zaXplOw0KPiAgDQo+IC0JCWlmICghY3R4KQ0KPiAtCQkJY3R4
+ID0geGVfdm1fY3JlYXRlKGZkLCBEUk1fWEVfVk1fQ1JFQVRFX0FTWU5DX0JJTkRfT1BTLCAwKTsN
+Cj4gKwkJaWJiLT52bV9pZCA9IHhlX3ZtX2NyZWF0ZShmZCwgRFJNX1hFX1ZNX0NSRUFURV9BU1lO
+Q19CSU5EX09QUywgMCk7DQoNCkFzIEkgc2VlIGliYi0+dm1faWQgaXMgdXNlZCBmb3Igdm1fYmlu
+ZC4gU28gd2UgcGFzcyB4ZV9lbmdpbmUsIHdoaWNoIGhhcyBpdCBvd24gdm0gdW5kZXIgdGhlIGhv
+b2QsDQphbmQgd2UgdXNlIGl0IGluIGV4ZWNidWYuIEF0IHRoZSBzYW1lIHRpbWUgd2UgYXJlIGJp
+bmRpbmcgb2JqZWN0cyB0byBuZXcsIGNvbXBsZXRseSBkaWZmZXJlbnQgdm0uIA0KRG8gSSBtaXNz
+IHN0aCBoZXJlPyANCg0KSW4gaTkxNSwgYW4gaW50ZWxfYmIgY291bGQgbGl2ZSB3aXRob3V0IGtu
+b3dsZWRnZSB3aGljaCB2bSBoaWRlcyBiZWhpbmQgdGhlIGNvbnRleHQsDQphcyBpdCB3YXMgbm90
+IHVzaW5nIHZtX2JpbmQuIEhlcmUgSSB0aGluayB3ZSB3b3VsZCBuZWVkIHRvIGhhdmUgYm90aCBw
+YXNzZWQgYnkgdGhlIGNhbGxlci4NCg0KUmVnYXJkcywNCkRvbWluaWsNCg0KDQoNCj4gIA0KPiAg
+CQlpYmItPnVzZXNfZnVsbF9wcGd0dCA9IHRydWU7DQo+ICAJCWliYi0+YWxsb2NhdG9yX2hhbmRs
+ZSA9DQo+IC0JCQlpbnRlbF9hbGxvY2F0b3Jfb3Blbl9mdWxsKGZkLCBjdHgsIHN0YXJ0LCBlbmQs
+DQo+ICsJCQlpbnRlbF9hbGxvY2F0b3Jfb3Blbl9mdWxsKGZkLCBpYmItPnZtX2lkLCBzdGFydCwg
+ZW5kLA0KPiAgCQkJCQkJICBhbGxvY2F0b3JfdHlwZSwgc3RyYXRlZ3ksDQo+ICAJCQkJCQkgIGli
+Yi0+YWxpZ25tZW50KTsNCj4gLQkJaWJiLT52bV9pZCA9IGN0eDsNCj4gIAkJaWJiLT5sYXN0X2Vu
+Z2luZSA9IH4wVTsNCj4gIAl9DQo+ICANCj4gQEAgLTEyMjgsNiArMTIyNiwxNCBAQCBzdGF0aWMg
+dm9pZCBfX2ludGVsX2JiX3JlbW92ZV9pbnRlbF9idWZzKHN0cnVjdCBpbnRlbF9iYiAqaWJiKQ0K
+PiAgCQlpbnRlbF9iYl9yZW1vdmVfaW50ZWxfYnVmKGliYiwgZW50cnkpOw0KPiAgfQ0KPiAgDQo+
+ICtzdGF0aWMgdm9pZCBfX3hlX2JiX2Rlc3Ryb3koc3RydWN0IGludGVsX2JiICppYmIpDQo+ICt7
+DQo+ICsJaWYgKGliYi0+ZW5naW5lX2lkKQ0KPiArCQl4ZV9lbmdpbmVfZGVzdHJveShpYmItPmZk
+LCBpYmItPmVuZ2luZV9pZCk7DQo+ICsJaWYgKGliYi0+dm1faWQpDQo+ICsJCXhlX3ZtX2Rlc3Ry
+b3koaWJiLT5mZCwgaWJiLT52bV9pZCk7DQo+ICt9DQo+ICsNCj4gIC8qKg0KPiAgICogaW50ZWxf
+YmJfZGVzdHJveToNCj4gICAqIEBpYmI6IHBvaW50ZXIgdG8gaW50ZWxfYmINCj4gQEAgLTEyNjIs
+OCArMTI2OCw4IEBAIHZvaWQgaW50ZWxfYmJfZGVzdHJveShzdHJ1Y3QgaW50ZWxfYmIgKmliYikN
+Cj4gIAkJY2xvc2UoaWJiLT5mZW5jZSk7DQo+ICAJaWYgKGliYi0+ZW5naW5lX3N5bmNvYmopDQo+
+ICAJCXN5bmNvYmpfZGVzdHJveShpYmItPmZkLCBpYmItPmVuZ2luZV9zeW5jb2JqKTsNCj4gLQlp
+ZiAoaWJiLT52bV9pZCAmJiAhaWJiLT5jdHgpDQo+IC0JCXhlX3ZtX2Rlc3Ryb3koaWJiLT5mZCwg
+aWJiLT52bV9pZCk7DQo+ICsJaWYgKGliYi0+ZHJpdmVyID09IElOVEVMX0RSSVZFUl9YRSkNCj4g
+KwkJX194ZV9iYl9kZXN0cm95KGliYik7DQo+ICANCj4gIAlmcmVlKGliYi0+YmF0Y2gpOw0KPiAg
+CWZyZWUoaWJiLT5jZmcpOw0KPiBAQCAtMjI5OCw3ICsyMzA0LDkgQEAgX194ZV9iYl9leGVjKHN0
+cnVjdCBpbnRlbF9iYiAqaWJiLCB1aW50NjRfdCBmbGFncywgYm9vbCBzeW5jKQ0KPiAgCWlndF9h
+c3NlcnRfZXEoaWJiLT5udW1fcmVsb2NzLCAwKTsNCj4gIAlpZ3RfYXNzZXJ0X2VxKGliYi0+eGVf
+Ym91bmQsIGZhbHNlKTsNCj4gIA0KPiAtCWlmIChpYmItPmxhc3RfZW5naW5lICE9IGVuZ2luZSkg
+ew0KPiArCWlmIChpYmItPmN0eCkgew0KPiArCQllbmdpbmVfaWQgPSBpYmItPmN0eDsNCj4gKwl9
+IGVsc2UgaWYgKGliYi0+bGFzdF9lbmdpbmUgIT0gZW5naW5lKSB7DQo+ICAJCXN0cnVjdCBkcm1f
+eGVfZW5naW5lX2NsYXNzX2luc3RhbmNlIGluc3QgPSB7IH07DQo+ICANCj4gIAkJaW5zdC5lbmdp
+bmVfaW5zdGFuY2UgPQ0KPiBAQCAtMjMyMywxMiArMjMzMSwxNSBAQCBfX3hlX2JiX2V4ZWMoc3Ry
+dWN0IGludGVsX2JiICppYmIsIHVpbnQ2NF90IGZsYWdzLCBib29sIHN5bmMpDQo+ICAJCX0NCj4g
+IAkJaWd0X2RlYnVnKCJSdW4gb24gJXNcbiIsIHhlX2VuZ2luZV9jbGFzc19zdHJpbmcoaW5zdC5l
+bmdpbmVfY2xhc3MpKTsNCj4gIA0KPiArCQlpZiAoaWJiLT5lbmdpbmVfaWQpDQo+ICsJCQl4ZV9l
+bmdpbmVfZGVzdHJveShpYmItPmZkLCBpYmItPmVuZ2luZV9pZCk7DQo+ICsNCj4gIAkJaWJiLT5l
+bmdpbmVfaWQgPSBlbmdpbmVfaWQgPQ0KPiAgCQkJeGVfZW5naW5lX2NyZWF0ZShpYmItPmZkLCBp
+YmItPnZtX2lkLCAmaW5zdCwgMCk7DQo+ICsJCWliYi0+bGFzdF9lbmdpbmUgPSBlbmdpbmU7DQo+
+ICAJfSBlbHNlIHsNCj4gIAkJZW5naW5lX2lkID0gaWJiLT5lbmdpbmVfaWQ7DQo+ICAJfQ0KPiAt
+CWliYi0+bGFzdF9lbmdpbmUgPSBlbmdpbmU7DQo+ICANCj4gIAltYXAgPSB4ZV9ib19tYXAoaWJi
+LT5mZCwgaWJiLT5oYW5kbGUsIGliYi0+c2l6ZSk7DQo+ICAJbWVtY3B5KG1hcCwgaWJiLT5iYXRj
+aCwgaWJiLT5zaXplKTsNCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3hlL3hlX2ludGVsX2JiLmMgYi90
+ZXN0cy94ZS94ZV9pbnRlbF9iYi5jDQo+IGluZGV4IDM1ZDYxNjA4Li40ZmNjMzE0NCAxMDA2NDQN
+Cj4gLS0tIGEvdGVzdHMveGUveGVfaW50ZWxfYmIuYw0KPiArKysgYi90ZXN0cy94ZS94ZV9pbnRl
+bF9iYi5jDQo+IEBAIC0xNzcsNiArMTc3LDcgQEAgc3RhdGljIHZvaWQgc2ltcGxlX2JiKHN0cnVj
+dCBidWZfb3BzICpib3BzLCBib29sIG5ld19jb250ZXh0KQ0KPiAgCWludCB4ZSA9IGJ1Zl9vcHNf
+Z2V0X2ZkKGJvcHMpOw0KPiAgCXN0cnVjdCBpbnRlbF9iYiAqaWJiOw0KPiAgCXVpbnQzMl90IGN0
+eCA9IDA7DQo+ICsJdWludDMyX3Qgdm0gPSAwOw0KPiAgDQo+ICAJaWJiID0gaW50ZWxfYmJfY3Jl
+YXRlX3dpdGhfYWxsb2NhdG9yKHhlLCBjdHgsIE5VTEwsIFBBR0VfU0laRSwNCj4gIAkJCQkJICAg
+ICBJTlRFTF9BTExPQ0FUT1JfU0lNUExFKTsNCj4gQEAgLTE5NSw3ICsxOTYsOCBAQCBzdGF0aWMg
+dm9pZCBzaW1wbGVfYmIoc3RydWN0IGJ1Zl9vcHMgKmJvcHMsIGJvb2wgbmV3X2NvbnRleHQpDQo+
+ICAJaW50ZWxfYmJfcmVzZXQoaWJiLCB0cnVlKTsNCj4gIA0KPiAgCWlmIChuZXdfY29udGV4dCkg
+ew0KPiAtCQljdHggPSB4ZV92bV9jcmVhdGUoeGUsIERSTV9YRV9WTV9DUkVBVEVfQVNZTkNfQklO
+RF9PUFMsIDApOw0KPiArCQl2bSA9IHhlX3ZtX2NyZWF0ZSh4ZSwgRFJNX1hFX1ZNX0NSRUFURV9B
+U1lOQ19CSU5EX09QUywgMCk7DQo+ICsJCWN0eCA9IHhlX2VuZ2luZV9jcmVhdGUoeGUsIHZtLCB4
+ZV9od19lbmdpbmUoeGUsIDApLCAwKTsNCj4gIAkJaW50ZWxfYmJfZGVzdHJveShpYmIpOw0KPiAg
+CQlpYmIgPSBpbnRlbF9iYl9jcmVhdGVfd2l0aF9jb250ZXh0KHhlLCBjdHgsIE5VTEwsIFBBR0Vf
+U0laRSk7DQo+ICAJCWludGVsX2JiX291dChpYmIsIE1JX0JBVENIX0JVRkZFUl9FTkQpOw0KPiBA
+QCAtMjAzLDcgKzIwNSw4IEBAIHN0YXRpYyB2b2lkIHNpbXBsZV9iYihzdHJ1Y3QgYnVmX29wcyAq
+Ym9wcywgYm9vbCBuZXdfY29udGV4dCkNCj4gIAkJaW50ZWxfYmJfZXhlYyhpYmIsIGludGVsX2Ji
+X29mZnNldChpYmIpLA0KPiAgCQkJICAgICAgSTkxNV9FWEVDX0RFRkFVTFQgfCBJOTE1X0VYRUNf
+Tk9fUkVMT0MsDQo+ICAJCQkgICAgICB0cnVlKTsNCj4gLQkJeGVfdm1fZGVzdHJveSh4ZSwgY3R4
+KTsNCj4gKwkJeGVfZW5naW5lX2Rlc3Ryb3koeGUsIGN0eCk7DQo+ICsJCXhlX3ZtX2Rlc3Ryb3ko
+eGUsIHZtKTsNCj4gIAl9DQo+ICANCj4gIAlpbnRlbF9iYl9kZXN0cm95KGliYik7DQoNCg==
