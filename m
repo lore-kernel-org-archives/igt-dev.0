@@ -1,25 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC1DF10E45F
- for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 15:51:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 600F810E4C7
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 15:51:08 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.249.128.49])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id B6E2A580D67
- for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 08:50:59 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id B198D580C63
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 08:50:58 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1q1qlD-00BTBa-1x
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1q1qlD-00BTBU-1q
  for igt-dev@lists.freedesktop.org; Wed, 24 May 2023 17:50:47 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 24 May 2023 17:50:44 +0200
-Message-Id: <20230524155045.2733552-7-mauro.chehab@linux.intel.com>
+Date: Wed, 24 May 2023 17:50:42 +0200
+Message-Id: <20230524155045.2733552-5-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230524155045.2733552-1-mauro.chehab@linux.intel.com>
 References: <20230524155045.2733552-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 6/7] i915/perf_*: better document tests
+Subject: [igt-dev] [PATCH i-g-t v3 4/7] i915/gem_exec_*: better document gem
+ exec tests used for i915 validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,442 +35,1682 @@ List-ID: <igt-dev@lists.freedesktop.org>
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 Merge data from some ancillary internal documentation to improve
-i915 perf test descriptions.
+core test descriptions.
 
 This patch was auto-generated via script.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/perf.c     |  96 +++++++++++++++++++++--------
- tests/i915/perf_pmu.c | 137 +++++++++++++++++++++++++++++++-----------
- 2 files changed, 173 insertions(+), 60 deletions(-)
+ tests/i915/gem_exec_alignment.c |   4 +
+ tests/i915/gem_exec_async.c     |   4 +
+ tests/i915/gem_exec_await.c     |   4 +
+ tests/i915/gem_exec_balancer.c  | 100 ++++++++++++++++
+ tests/i915/gem_exec_basic.c     |   8 +-
+ tests/i915/gem_exec_big.c       |   4 +
+ tests/i915/gem_exec_capture.c   |  12 ++
+ tests/i915/gem_exec_create.c    |  21 +++-
+ tests/i915/gem_exec_endless.c   |   4 +
+ tests/i915/gem_exec_fence.c     | 122 ++++++++++++++++++-
+ tests/i915/gem_exec_gttfill.c   |  12 ++
+ tests/i915/gem_exec_nop.c       |  12 ++
+ tests/i915/gem_exec_parallel.c  |  26 +++-
+ tests/i915/gem_exec_params.c    |  76 ++++++++++++
+ tests/i915/gem_exec_schedule.c  | 204 ++++++++++++++++++++++++++++++++
+ tests/i915/gem_exec_store.c     |   4 +
+ tests/i915/gem_exec_suspend.c   |  20 +++-
+ tests/i915/gem_exec_whisper.c   |  90 ++++++++++++++
+ 18 files changed, 718 insertions(+), 9 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 1b1c39aafb8b..55594ea6c671 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -52,20 +52,28 @@
-  *
-  * SUBTEST: blocking
-  * Description: Test blocking read with default hrtimer frequency
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: blocking-parameterized
-  * Description: Test blocking read with different hrtimer frequencies
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: buffer-fill
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: create-destroy-userspace-config
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: disabled-read-error
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: enable-disable
-  * Feature: oa
-@@ -84,7 +92,8 @@
-  *
-  * SUBTEST: gen12-invalid-class-instance
-  * Description: Verify invalid class instance
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: gen12-mi-rpc
-  * Description: Test MI REPORT PERF COUNT for Gen 12
-@@ -92,7 +101,8 @@
-  *
-  * SUBTEST: gen12-oa-tlb-invalidate
-  * Description: Test OA TLB invalidate
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: gen12-unprivileged-single-ctx-counters
-  * Description: Measure performance for a specific context using OAR in Gen 12
-@@ -110,84 +120,118 @@
-  * Feature: oa
-  *
-  * SUBTEST: i915-ref-count
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-create-userspace-config
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-oa-exponent
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-oa-format-id
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-oa-metric-set-id
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-open-flags
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-remove-userspace-config
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: low-oa-exponent-permissions
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: mi-rpc
-  * Feature: oa
-  *
-  * SUBTEST: missing-sample-flags
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: non-sampling-read-error
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: non-system-wide-paranoid
-  * Feature: oa
-  *
-  * SUBTEST: non-zero-reason
-- * Description: Test that reason field in OA reports is never 0 on Gen8+
-- * Feature: oa
-+ * Description:
-+ *   Test that reason field in OA reports is never 0 on Gen8+.
-+ *   Test that reason field in OA reports is never 0 on Gen8+
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: oa-exponents
-  * Feature: oa
-  *
-  * SUBTEST: oa-formats
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: per-context-mode-unprivileged
-  * Feature: oa, obsolete
-  *
-  * SUBTEST: polling
-  * Description: Test polled read with default hrtimer frequency
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: polling-parameterized
-  * Description: Test polled read with different hrtimer frequencies
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: polling-small-buf
-  * Description: Test polled read with buffer size smaller than available data
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: rc6-disable
-  * Feature: oa
-  *
-  * SUBTEST: short-reads
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: stress-open-close
-  * Description: Stress tests opening & closing the i915-perf stream in a busy loop
-  * Feature: oa
-  *
-  * SUBTEST: sysctl-defaults
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: unprivileged-single-ctx-counters
-  * Feature: oa, obsolete
-  *
-  * SUBTEST: whitelisted-registers-userspace-config
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  */
- 
- IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index bedadbe92797..28897797f81c 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -55,52 +55,84 @@
+diff --git a/tests/i915/gem_exec_alignment.c b/tests/i915/gem_exec_alignment.c
+index 6f7b9ac9b909..9d965270fa9f 100644
+--- a/tests/i915/gem_exec_alignment.c
++++ b/tests/i915/gem_exec_alignment.c
+@@ -47,9 +47,13 @@
+ #include "igt_types.h"
+ /**
+  * TEST: gem exec alignment
++ * Category: Desktop client
+  * Description: Exercises the basic execbuffer using object alignments
+  * Feature: cmd_submission
++ * Functionality: command submission
   * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: all-busy-check-all
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: forked
   *
-  * SUBTEST: all-busy-idle-check-all
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+diff --git a/tests/i915/gem_exec_async.c b/tests/i915/gem_exec_async.c
+index 1153c0bf2e30..f3c2f671f6ec 100644
+--- a/tests/i915/gem_exec_async.c
++++ b/tests/i915/gem_exec_async.c
+@@ -26,9 +26,13 @@
+ #include "igt.h"
+ /**
+  * TEST: gem exec async
++ * Category: Infrastructure
+  * Description: Check that we can issue concurrent writes across the engines.
+  * Feature: cmd_submission
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: concurrent-writes
+  *
+diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
+index c7f949c9cd2b..c78403466480 100644
+--- a/tests/i915/gem_exec_await.c
++++ b/tests/i915/gem_exec_await.c
+@@ -33,8 +33,12 @@
+ #include "igt_vgem.h"
+ /**
+  * TEST: gem exec await
++ * Category: Infrastructure
+  * Feature: cmd_submission
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: wide-all
+  *
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index d1d92e6ba689..3ab0903ac89e 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -65,95 +65,195 @@
+  * Feature: cmd_submission, media_scalability
   *
   * SUBTEST: busy
-- * Feature: pmu
-+ * Description: Test to ensure gpu is busy when there a workload by reading engine busyness pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: busy-accuracy-2
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: fairslice
+  * Feature: cmd_submission, media_scalability
   *
-  * SUBTEST: busy-accuracy-50
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: full
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: busy-accuracy-98
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: full-late
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: busy-check-all
-- * Feature: pmu
-+ * Description: Test to ensure gpu all engines report busy when there is a workload by reading engine busyness pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: full-late-pulse
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: busy-double-start
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: full-pulse
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: busy-hang
-- * Feature: pmu
-+ * Description: Test to ensure there is no hanf when all engines are busy
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: hang
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: busy-idle
-- * Feature: pmu
-+ * Description: Test to ensure gpu engine reports idle when there is no workload
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: hog
+  * Feature: cmd_submission, media_scalability
   *
-  * SUBTEST: busy-idle-check-all
-- * Feature: pmu
-+ * Description: Test to ensure gpu all engine reports idle when there is no workload
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: indices
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: busy-idle-no-semaphores
-- * Feature: pmu
-+ * Description: Test to verify gpu idle through engine business pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: individual
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: busy-no-semaphores
-- * Feature: pmu
-+ * Description: Test to verify gpu busyness through engine business pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: invalid-balancer
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: busy-start
-- * Feature: pmu
-+ * Description: Test to verify gpu busyness through engine business pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: invalid-bonds
+  * Feature: cmd_submission, media_scalability
   *
-  * SUBTEST: cpu-hotplug
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: nohangcheck
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: enable-race
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: noheartbeat
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: event-wait
-  * Feature: obsolete, pmu
-@@ -109,56 +141,87 @@
-  * Feature: pmu
+  * SUBTEST: nop
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: frequency
-- * Feature: pmu
-+ * Description: Read requested freq and actual frequency via PMU within specified time interval for any given workload changes
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: parallel
++ * Category: Desktop client
+  * Feature: cmd_submission, media_scalability
++ * Functionality: command submission
++ * Sub-category: Media
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: frequency-idle
-  * Feature: pmu
+  * SUBTEST: parallel-balancer
++ * Category: Desktop client
+  * Feature: cmd_submission, media_scalability
++ * Functionality: command submission
++ * Sub-category: Media
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: gt-awake
-- * Feature: pmu
-+ * Description: Setup workload on all engines,measure gt awake time via pmu
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: parallel-bb-first
++ * Category: Desktop client
+  * Feature: cmd_submission, media_scalability
++ * Functionality: command submission
++ * Sub-category: Media
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: idle
-- * Feature: pmu
-+ * Description: Test to ensure gpu is idle when there is no workload by reading engine busyness pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: parallel-contexts
++ * Category: Desktop client
+  * Feature: cmd_submission, media_scalability
++ * Functionality: command submission
++ * Sub-category: Media
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: idle-no-semaphores
-- * Feature: pmu
-+ * Description: Test to ensure gpu is idle when there is no workload by reading engine busyness pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: parallel-dmabuf-import-out-fence
+  * Description: Regression test to check that dmabuf imported sync file can handle fence array
+  * Feature: cmd_submission, media_scalability
   *
-  * SUBTEST: init-busy
-- * Feature: pmu
-+ * Description: Test to verify gpu busyness init through pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: parallel-keep-in-fence
++ * Category: Desktop client
+  * Feature: cmd_submission, media_scalability
++ * Functionality: command submission
++ * Sub-category: Media
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: init-sema
-- * Feature: pmu
-+ * Description: Test to verify gpu busyness init through pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: parallel-keep-submit-fence
++ * Category: Desktop client
+  * Feature: cmd_submission, media_scalability
++ * Functionality: command submission
++ * Sub-category: Media
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: init-wait
-- * Feature: pmu
-+ * Description: Test to verify gpu busyness init through pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: parallel-ordering
++ * Category: Desktop client
+  * Feature: cmd_submission, media_scalability
++ * Functionality: command submission
++ * Sub-category: Media
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: interrupts
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: parallel-out-fence
++ * Category: Desktop client
+  * Feature: cmd_submission, media_scalability
++ * Functionality: command submission
++ * Sub-category: Media
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: interrupts-sync
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: persistence
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: invalid-init
-- * Feature: pmu
-+ * Description: Tests that i915 PMU corectly errors out in invalid initialization
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: semaphore
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability, multictx
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: invalid-open
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: sequential
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: module-unload
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: sliced
+  * Feature: cmd_submission, media_scalability
   *
-  * SUBTEST: most-busy-check-all
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: smoke
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: most-busy-idle-check-all
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: multi-client
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: pmu-read
-  * Description: Verify i915 pmu dir exists and read all events
-  * Feature: pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: rc6
-  * Feature: pmu
-@@ -179,13 +242,19 @@
-  * Feature: pmu
-  *
-  * SUBTEST: semaphore-busy
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: semaphore-wait
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: semaphore-wait-idle
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: waits
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, media_scalability
++ * Functionality: load balancing
++ * Sub-category: Media & Compute
++ * Test category: GEM_Legacy
   */
  
- IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
+ IGT_TEST_DESCRIPTION("Exercise in-kernel load-balancing");
+diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
+index 437ce0954557..623f1ee52fb6 100644
+--- a/tests/i915/gem_exec_basic.c
++++ b/tests/i915/gem_exec_basic.c
+@@ -28,13 +28,17 @@
+ /**
+  * TEST: gem exec basic
+  * Description: Basic sanity check of execbuf-ioctl rings.
+- * Feature: cmd_submission
+- * Run type: BAT
+  *
+  * SUBTEST: basic
++ * Category: Infrastructure
+  * Description:
+  *   Check basic functionality of GEM_EXECBUFFER2 ioctl on every ring and iterating over memory
+  *   regions.
++ * Feature: cmd_submission
++ * Functionality: command submission
++ * Run type: BAT
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  */
+ 
+ IGT_TEST_DESCRIPTION("Basic sanity check of execbuf-ioctl rings.");
+diff --git a/tests/i915/gem_exec_big.c b/tests/i915/gem_exec_big.c
+index 7f07cf6c69db..3acdb3741f65 100644
+--- a/tests/i915/gem_exec_big.c
++++ b/tests/i915/gem_exec_big.c
+@@ -57,6 +57,10 @@
+  * SUBTEST: exhaustive
+  *
+  * SUBTEST: single
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  */
+ 
+ IGT_TEST_DESCRIPTION("Run a large nop batch to stress test the error capture"
+diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+index aa72e9ee9ed3..453ae1af9101 100644
+--- a/tests/i915/gem_exec_capture.c
++++ b/tests/i915/gem_exec_capture.c
+@@ -38,6 +38,10 @@
+  * Run type: FULL
+  *
+  * SUBTEST: capture
++ * Category: Server
++ * Functionality: offline debugging
++ * Sub-category: debugger
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: capture-invisible
+  * Description:
+@@ -58,8 +62,16 @@
+  * SUBTEST: many-4K-zero
+  *
+  * SUBTEST: pi
++ * Category: Server
++ * Functionality: offline debugging
++ * Sub-category: debugger
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: userptr
++ * Category: Server
++ * Functionality: offline debugging
++ * Sub-category: debugger
++ * Test category: GEM_Legacy
+  */
+ 
+ #define MAX_RESET_TIME	600
+diff --git a/tests/i915/gem_exec_create.c b/tests/i915/gem_exec_create.c
+index 89e9a8ec8ad3..00c190115ae2 100644
+--- a/tests/i915/gem_exec_create.c
++++ b/tests/i915/gem_exec_create.c
+@@ -52,25 +52,44 @@
+  *   This test overloads the driver with transient active objects and checks if we don't kill the
+  *   system under the memory pressure some of the symptoms this test look for include mysterious
+  *   hangs.
+- * Feature: cmd_submission
+  *
+  * SUBTEST: basic
++ * Category: Infrastructure
+  * Description: Check if we kill system by overloading it with active objects iterating over all engines.
++ * Feature: cmd_submission
++ * Functionality: buffer management
+  * Run type: BAT
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: forked
++ * Category: Infrastructure
+  * Description: Concurrently overloads system with active objects and checks if we kill system.
++ * Feature: cmd_submission
++ * Functionality: buffer management
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy
++ * Category: Infrastructure
+  * Description:
+  *   Check if we kill the system by overloading it with active objects iterating over legacy
+  *   engines.
++ * Feature: cmd_submission
++ * Functionality: buffer management
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: madvise
++ * Category: Infrastructure
+  * Description: This test does a forced reclaim, behaving like a bad application leaking its bo cache.
++ * Feature: cmd_submission
++ * Functionality: buffer management
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  */
+ 
+ IGT_TEST_DESCRIPTION("This test overloads the driver with transient active objects"
+diff --git a/tests/i915/gem_exec_endless.c b/tests/i915/gem_exec_endless.c
+index 25ad16898761..42991c018bff 100644
+--- a/tests/i915/gem_exec_endless.c
++++ b/tests/i915/gem_exec_endless.c
+@@ -32,8 +32,12 @@
+ #include "sw_sync.h"
+ /**
+  * TEST: gem exec endless
++ * Category: Server
+  * Feature: cmd_submission
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: dispatch
+  */
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index 76a86e8f4197..1d09cfe07135 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -47,27 +47,37 @@
+  * SUBTEST: basic-await
+  * Description: Basic check for explicit fence with async wait on each engine.
+  * Feature: cmd_submission, multitile, synchronization
++ * Functionality: semaphore
+  * Run type: BAT
++ * Test category: MultiTile
+  *
+  * SUBTEST: basic-busy
+  * Description: Basic check for explicit fence on each busy engine.
+  * Feature: cmd_submission, multitile, synchronization
++ * Functionality: semaphore
+  * Run type: BAT
++ * Test category: MultiTile
+  *
+  * SUBTEST: basic-busy-all
+  * Description: Basic check for composite fence on all busy engines.
+  * Feature: cmd_submission, multitile, synchronization
+  * Run type: FULL
++ * Test category: MultiTile
+  *
+  * SUBTEST: basic-wait
+- * Description: Basic check for explicit fence with additinal wait time on each busy engine.
++ * Description: Basic check for explicit fence with additional wait time on each busy engine.
+  * Feature: cmd_submission, multitile, synchronization
++ * Functionality: semaphore
+  * Run type: BAT
++ * Test category: MultiTile
+  *
+  * SUBTEST: basic-wait-all
+- * Description: Basic check for composite fence with additional wait on all busy engines.
++ * Description:
++ *   Basic check for composite fence with additional wait on all busy engines.
++ *   Execute the same batch on each engine and check that the composite fence across all engines completes only after the batch is completed on every engine.
+  * Feature: cmd_submission, multitile, synchronization
+  * Run type: FULL
++ * Test category: MultiTile
+  *
+  * SUBTEST: busy-hang
+  * Description: Check for explicit fence on each busy engine with a pending gpu hang.
+@@ -85,36 +95,57 @@
+  * Run type: FULL
+  *
+  * SUBTEST: expired-history
++ * Category: Infrastructure
+  * Description: Verifies long history of fences are expired.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-fence-array
++ * Category: Infrastructure
+  * Description: Verifies invalid fence-array pointers are rejected.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-timeline-fence-array
++ * Category: Infrastructure
+  * Description:
+  *   Verifies invalid execbuf parameters in drm_i915_gem_execbuffer_ext_timeline_fences
+  *   are rejected
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: keep-in-fence
+  * Description: Check in-fence is not overwritten with out-fence on each engine.
+  * Feature: cmd_submission, multitile, synchronization
+  * Run type: FULL
++ * Test category: MultiTile
+  *
+  * SUBTEST: long-history
++ * Category: Infrastructure
+  * Description: Verifies accumulation of long history of fences.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: nb-await
+- * Description: Check for explicit fence with non-blocking wait on each engine.
++ * Description:
++ *   Check for explicit fence with non-blocking wait on each engine.
++ *   Check for explicit fence with non-blocking wait on each
+  * Feature: cmd_submission, multitile, synchronization
++ * Functionality: semaphore
+  * Run type: BAT
++ * Test category: MultiTile
+  *
+  * SUBTEST: nb-await-hang
+  * Description: Check for explicit fence with non-blocking async wait on each engine with a pending gpu hang.
+@@ -122,9 +153,12 @@
+  * Run type: FULL
+  *
+  * SUBTEST: parallel
+- * Description: Check for EXEC_FENCE_SUBMIT in parallel execution scenarios on each engine.
++ * Description:
++ *   Check for EXEC_FENCE_SUBMIT in parallel execution scenarios on each engine.
++ *   Check for EXEC_FENCE_SUBMIT in parallel execution scenarios
+  * Feature: cmd_submission, multitile, synchronization
+  * Run type: FULL
++ * Test category: MultiTile
+  *
+  * SUBTEST: submit
+  * Description: Check timeslicing on submit-fence.
+@@ -149,117 +183,197 @@
+  * Run type: FULL
+  *
+  * SUBTEST: syncobj-backward-timeline-chain-engines
++ * Category: Infrastructure
+  * Description:
+  *   Engine chaining tests to verify ordering of timeline syncobjs with backward timeline
+  *   points.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-channel
++ * Category: Infrastructure
+  * Description: Verifies two clients racing for syncobj using channel.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-export
++ * Category: Infrastructure
+  * Description: Verify exporting of fence-array syncobj signaled by i915.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-import
++ * Category: Infrastructure
+  * Description: Verifies creating of a syncobj from explicit fence.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-invalid-flags
++ * Category: Infrastructure
+  * Description: Verifies that invalid fence flags in fence-array are rejected.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-invalid-wait
++ * Category: Infrastructure
+  * Description: Verifies that submitting an execbuf with a wait on a syncobj that doesn't exists is rejected.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-repeat
++ * Category: Infrastructure
+  * Description: Verifies that waiting & signaling a same fence-array syncobj within the same execbuf works.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-signal
++ * Category: Infrastructure
+  * Description: Verifies proper signaling of a fence-array syncobj through execbuf.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-stationary-timeline-chain-engines
++ * Category: Infrastructure
+  * Description:
+  *   Engine chaining tests to verify ordering of timeline syncobj with stationary timeline
+  *   points.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-timeline-chain-engines
++ * Category: Infrastructure
+  * Description: Engine chaining tests to verify ordering of timeline syncobjs through execbuf.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-timeline-export
++ * Category: Infrastructure
+  * Description: Verify exporting of timeline syncobj signaled by i915
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-timeline-invalid-flags
++ * Category: Infrastructure
+  * Description:
+  *   Verifies that invalid fence flags in drm_i915_gem_execbuffer_ext_timeline_fences are
+  *   rejected
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-timeline-invalid-wait
++ * Category: Infrastructure
+  * Description:
+  *   Verifies that submitting an execbuf with a wait on a timeline syncobj point that does not
+  *   exists is rejected
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-timeline-multiple-ext-nodes
++ * Category: Infrastructure
+  * Description: Verify that passing multiple execbuffer_ext nodes works
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-timeline-repeat
++ * Category: Infrastructure
+  * Description:
+  *   Verifies that waiting & signaling a same timeline syncobj point within the same execbuf
+  *   fworks
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-timeline-signal
++ * Category: Infrastructure
+  * Description: Verifies proper signaling of a timeline syncobj through execbuf
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-timeline-unused-fence
++ * Category: Infrastructure
+  * Description:
+  *   Verifies that a timeline syncobj passed into
+  *   drm_i915_gem_execbuffer_ext_timeline_fences but with no signal/wait flag is left
+  *   untouched
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-timeline-wait
++ * Category: Infrastructure
+  * Description: Verifies that waiting on a timeline syncobj point between engines works
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-unused-fence
++ * Category: Infrastructure
+  * Description: Verifies that a syncobj passed into execbuf but with no signal/wait flag is left untouched.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: syncobj-wait
++ * Category: Infrastructure
+  * Description: Verifies that waiting on a timeline syncobj point between engines works.
+  * Feature: cmd_submission, synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: wait-hang
+  * Description:
+diff --git a/tests/i915/gem_exec_gttfill.c b/tests/i915/gem_exec_gttfill.c
+index 496ad6e8bb16..4c32a04c0b0a 100644
+--- a/tests/i915/gem_exec_gttfill.c
++++ b/tests/i915/gem_exec_gttfill.c
+@@ -31,23 +31,35 @@
+  * Description: Fill the GTT with batches.
+  *
+  * SUBTEST: all-engines
++ * Category: Infrastructure
+  * Description: Stress test check behaviour/correctness of handling batches to fill gtt
+  * Feature: cmd_submission, gtt
++ * Functionality: command submission
+  * Run type: FULL
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic
++ * Category: Infrastructure
+  * Description: Checks if it can handle enough batches to fill gtt
+  * Feature: cmd_submission, gtt
++ * Functionality: command submission
+  * Run type: BAT
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines
++ * Category: Infrastructure
+  * Description: Checks the correctness of handling enough batches to fill gtt for each engine
+  * Feature: cmd_submission, gtt
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: multigpu-basic
+  * Feature: cmd_submission, gtt, multigpu
+  * Run type: FULL
++ * Test category: MultiGPU
+  */
+ 
+ IGT_TEST_DESCRIPTION("Fill the GTT with batches.");
+diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
+index b06c3ac8a696..067c92b47365 100644
+--- a/tests/i915/gem_exec_nop.c
++++ b/tests/i915/gem_exec_nop.c
+@@ -53,13 +53,25 @@
+  * Run type: FULL
+  *
+  * SUBTEST: basic-parallel
++ * Category: Infrastructure
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-sequential
++ * Category: Infrastructure
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-series
++ * Category: Infrastructure
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: context-sequential
+  * Feature: cmd_submission
+diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
+index 7e6500d60257..bba861185631 100644
+--- a/tests/i915/gem_exec_parallel.c
++++ b/tests/i915/gem_exec_parallel.c
+@@ -36,27 +36,51 @@
+ /**
+  * TEST: gem exec parallel
+  * Description: Exercise filling buffers by many clients working in parallel.
+- * Feature: cmd_submission
+  *
+  * SUBTEST: basic
++ * Category: Infrastructure
+  * Description: Check basic functionality per engine.
++ * Feature: cmd_submission
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: contexts
++ * Category: Infrastructure
+  * Description: Check with many contexts.
++ * Feature: cmd_submission
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines
++ * Category: Infrastructure
+  * Description: Check with engines working in parallel.
++ * Feature: cmd_submission
++ * Functionality: command submission
+  * Run type: BAT
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: fds
++ * Category: Infrastructure
+  * Description: Check with many fds.
++ * Feature: cmd_submission
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: userptr
++ * Category: Infrastructure
+  * Description: Check basic userptr thrashing.
++ * Feature: cmd_submission
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  */
+ 
+ IGT_TEST_DESCRIPTION("Exercise filling buffers by many clients working in parallel.");
+diff --git a/tests/i915/gem_exec_params.c b/tests/i915/gem_exec_params.c
+index bd7ec2cd1f39..16ae7a5a6bb5 100644
+--- a/tests/i915/gem_exec_params.c
++++ b/tests/i915/gem_exec_params.c
+@@ -55,22 +55,46 @@
+  * Feature: cmd_submission
+  *
+  * SUBTEST: batch-first
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: cliprects-invalid
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: cliprects_ptr-dirt
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-batch-start-offset
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-bsd-ring
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-bsd1-flag-on-blt
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-bsd1-flag-on-render
+  * Feature: cmd_submission
+@@ -79,7 +103,11 @@
+  * Feature: cmd_submission
+  *
+  * SUBTEST: invalid-bsd2-flag-on-blt
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-bsd2-flag-on-render
+  * Feature: cmd_submission
+@@ -88,25 +116,53 @@
+  * Feature: cmd_submission
+  *
+  * SUBTEST: invalid-fence-in
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-fence-in-submit
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-flag
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-ring
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-ring2
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: larger-than-life-batch
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: mmapped
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: no-blt
+  * Feature: cmd_submission
+@@ -118,19 +174,35 @@
+  * Feature: cmd_submission
+  *
+  * SUBTEST: readonly
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: rel-constants-invalid
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: rel-constants-invalid-rel-gen5
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: rel-constants-invalid-ring
+  * Feature: cmd_submission
+  *
+  * SUBTEST: rs-invalid
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: rsvd2-dirt
+  * Feature: cmd_submission
+@@ -145,7 +217,11 @@
+  * Feature: cmd_submission
+  *
+  * SUBTEST: sol-reset-not-gen7
++ * Category: Desktop client
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  */
+ 
+ #define ALIGNMENT (1 << 22)
+diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+index d17d07893f07..c9be726abdd7 100644
+--- a/tests/i915/gem_exec_schedule.c
++++ b/tests/i915/gem_exec_schedule.c
+@@ -50,82 +50,178 @@
+  * Run type: FULL
+  *
+  * SUBTEST: deep
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: fairslice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: fairslice-all
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: fifo
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: implicit-boths
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: implicit-read-write
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: implicit-write-read
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: in-order
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: independent
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: lateslice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: manyslice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: noreorder
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: noreorder-corked
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: noreorder-priority
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: out-order
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: pi-common
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: pi-distinct-iova
+  * Feature: cmd_submission
+  *
+  * SUBTEST: pi-ringfull
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: pi-shared-iova
+  * Feature: cmd_submission
+  *
+  * SUBTEST: pi-userfault
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preempt
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preempt-contexts
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, multictx
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preempt-engines
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, multictx
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preempt-hang
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, multictx
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preempt-other
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, multictx
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preempt-other-chain
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, multictx
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preempt-queue
+  * Feature: cmd_submission, multictx
+@@ -140,91 +236,199 @@
+  * Feature: cmd_submission, multictx
+  *
+  * SUBTEST: preempt-self
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, multictx
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preempt-user
++ * Category: Desktop \ Server
+  * Feature: cmd_submission, multictx
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preemptive-hang
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: promotion
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: reorder-wide
+  * Feature: cmd_submission
+  *
+  * SUBTEST: semaphore-codependency
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: semaphore-noskip
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: semaphore-power
+  * Feature: cmd_submission
+  *
+  * SUBTEST: semaphore-resolve
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: semaphore-user
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: smoketest
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: smoketest-all
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: submit-early-slice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: submit-golden-slice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: submit-late-slice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: thriceslice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: timeslicing
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-fairslice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-fairslice-all
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-independent
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-lateslice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-semaphore-codependency
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-semaphore-noskip
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-semaphore-resolve
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-semaphore-user
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-submit-early-slice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-submit-golden-slice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: u-submit-late-slice
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: wide
++ * Category: Desktop \ Server
+  * Feature: cmd_submission
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  */
+ 
+ #define LO 0
+diff --git a/tests/i915/gem_exec_store.c b/tests/i915/gem_exec_store.c
+index 19c1a060e3b0..d61072dfa6c0 100644
+--- a/tests/i915/gem_exec_store.c
++++ b/tests/i915/gem_exec_store.c
+@@ -36,8 +36,12 @@
+ #include "igt_gt.h"
+ /**
+  * TEST: gem exec store
++ * Category: Infrastructure
+  * Description: Exercise store dword functionality using execbuf-ioctl
+  * Feature: cmd_submission
++ * Functionality: coherency
++ * Sub-category: HW
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic
+  * Description: Verify that all capable engines can store dwords to a common buffer object
+diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+index de1864224438..73fbf8cf653f 100644
+--- a/tests/i915/gem_exec_suspend.c
++++ b/tests/i915/gem_exec_suspend.c
+@@ -39,82 +39,100 @@
+ /**
+  * TEST: gem exec suspend
+  * Description: Exercise simple execbufs runs across various suspend/resume cycles.
+- * Feature: cmd_submission, suspend
+  *
+  * SUBTEST: basic
+  * Description: Check basic functionality without any suspend/resume cycle.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: basic-S0
+  * Description: Check with suspend-to-idle target state.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: basic-S3
+  * Description: Check full cycle of suspend-to-mem.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: basic-S3-devices
+  * Description: Check with suspend-to-mem with devices only.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: basic-S4
+  * Description: Check full cycle of suspend-to-disk.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: basic-S4-devices
+  * Description: Check with suspend-to-disk with devices only.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: cached
+  * Description: Check without suspend/resume cycle state with cached object.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: cached-S3
+  * Description: Check suspend-to-mem state with cached object.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: cached-S4
+  * Description: Check suspend-to-disk state with cached object.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: fixed
+  * Description: Check without suspend/resume cycle state with fixed object.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: fixed-S3
+  * Description: Check suspend-to-mem state with fixed object.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: fixed-S4
+  * Description: Check suspend-to-disk state with fixed object.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: hang-S3
+  * Description: Check full cycle of suspend-to-mem with a pending GPU hang.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: hang-S4
+  * Description: Check full cycle of suspend-to-disk with a pending GPU hang.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: power-S0
+  * Description: Check power consumption during idle state.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: power-S3
+  * Description: Check power consumption during suspend-to-mem state.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: uncached
+  * Description: Check without suspend/resume cycle state with uncached object.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: uncached-S3
+  * Description: Check suspend-to-mem state with uncached object.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  *
+  * SUBTEST: uncached-S4
+  * Description: Check suspend-to-disk state with uncached object.
++ * Feature: cmd_submission, suspend
+  * Run type: FULL
+  */
+ 
+diff --git a/tests/i915/gem_exec_whisper.c b/tests/i915/gem_exec_whisper.c
+index 978b1b4a8455..1379f10dce1f 100644
+--- a/tests/i915/gem_exec_whisper.c
++++ b/tests/i915/gem_exec_whisper.c
+@@ -43,52 +43,142 @@
+  * Run type: FULL
+  *
+  * SUBTEST: basic-contexts
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-contexts-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-contexts-forked
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-contexts-forked-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-contexts-priority
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-contexts-priority-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-fds
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-fds-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-fds-forked
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-fds-forked-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-fds-priority
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-fds-priority-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-forked
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-forked-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-normal
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-normal-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-queues
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-queues-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-queues-forked
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-queues-forked-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-queues-priority
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-queues-priority-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-sync
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-sync-all
++ * Category: Infrastructure
++ * Functionality: command submission
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: chain
+  *
 -- 
 2.40.1
