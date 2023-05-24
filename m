@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFD0110E498
- for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 17:08:46 +0000 (UTC)
-Date: Wed, 24 May 2023 19:08:32 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230524170832.jt2aobpvmf4h5egl@kamilkon-desk1>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3895210E087
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 18:06:46 +0000 (UTC)
+Date: Wed, 24 May 2023 20:06:40 +0200
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: fei.yang@intel.com
+Message-ID: <ZG5SMFirVWSDgWEa@ashyti-mobl2.lan>
 References: <20230524155610.360748-1-fei.yang@intel.com>
  <20230524155610.360748-2-fei.yang@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20230524155610.360748-2-fei.yang@intel.com>
 Subject: Re: [igt-dev] [PATCH v5 1/1] test/gem_create: exercise
@@ -21,35 +21,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: fei.yang@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-05-24 at 08:56:10 -0700, fei.yang@intel.com wrote:
+Hi Fei,
+
+On Wed, May 24, 2023 at 08:56:10AM -0700, fei.yang@intel.com wrote:
 > From: Fei Yang <fei.yang@intel.com>
 > 
 > Gem_create uAPI has been extended with capability of setting PAT index.
 > Add a test case to exercise it.
-> 
+
+As we discussed offline, can we:
+
+/PAT/PAT (Page Attribute Table)/
+
+But I think Kamil can fix this before pushing it.
+
 > PAT index is a page attribute that gets programmed into Page Table
 > Entry (PTE) for caching policy control. Please refer to kernel patch
 > for implementation details.
 > 
 > https://patchwork.freedesktop.org/series/116870/
-
-Before merging imho we should add here also:
-
-("drm/i915: Allow user to set cache at BO creation")
-
-as this is likely easier to search for (and www link can break
-in future).
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
---
-Kamil
-
 > 
 > Signed-off-by: Fei Yang <fei.yang@intel.com>
 > ---
@@ -140,7 +135,22 @@ Kamil
 > +	size = PAGE_SIZE;
 > +
 > +	ret = __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base);
-> +
+
+Tvrtko was talking about a -EFAULT path that can come only from
+the use extention, unless I missed any other path.
+
+I'm OK if we skip it as it would triggered by setting:
+
+	"name = <something_random>"
+
+right?
+
+In any case:
+
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com> 
+
+Andi
+
 > +	/*
 > +	 * With a valid PAT index specified, returning -EINVAL here
 > +	 * indicates set_pat extension is not supported
@@ -180,4 +190,3 @@ Kamil
 >  		igt_require(supports_needs_cpu_access(fd));
 > -- 
 > 2.25.1
-> 
