@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Erico Nunes <nunes.erico@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 24 May 2023 15:49:28 +0200
-Message-Id: <20230524134930.61911-2-nunes.erico@gmail.com>
+Date: Wed, 24 May 2023 15:49:30 +0200
+Message-Id: <20230524134930.61911-4-nunes.erico@gmail.com>
 In-Reply-To: <20230524134930.61911-1-nunes.erico@gmail.com>
 References: <20230524134930.61911-1-nunes.erico@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib: Add support for opening lima
- devices
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/lima: Add initial tests for lima
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,47 +21,110 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This will be to test the lima drm driver specific ioctls, so adding lima
-to the list.
+Some gem tests based on the panfrost and v3d ones.
 
 Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
 ---
- lib/drmtest.c | 3 +++
- lib/drmtest.h | 1 +
- 2 files changed, 4 insertions(+)
+ tests/lima_gem_new.c | 78 ++++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build    |  1 +
+ 2 files changed, 79 insertions(+)
+ create mode 100644 tests/lima_gem_new.c
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index aa2e6b08..677f411c 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -195,6 +195,7 @@ static const struct module {
- } modules[] = {
- 	{ DRIVER_AMDGPU, "amdgpu" },
- 	{ DRIVER_INTEL, "i915", modprobe_i915 },
-+	{ DRIVER_LIMA, "lima" },
- 	{ DRIVER_MSM, "msm" },
- 	{ DRIVER_PANFROST, "panfrost" },
- 	{ DRIVER_V3D, "v3d" },
-@@ -596,6 +597,8 @@ static const char *chipset_to_str(int chipset)
- 		return "xe";
- 	case DRIVER_VMWGFX:
- 		return "vmwgfx";
-+	case DRIVER_LIMA:
-+		return "lima";
- 	case DRIVER_ANY:
- 		return "any";
- 	default:
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index ae86ee19..cedac89b 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -53,6 +53,7 @@
- #define DRIVER_MSM	(1 << 6)
- #define DRIVER_XE	(1 << 7)
- #define DRIVER_VMWGFX   (1 << 8)
-+#define DRIVER_LIMA	(1 << 9)
- 
- /*
-  * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+diff --git a/tests/lima_gem_new.c b/tests/lima_gem_new.c
+new file mode 100644
+index 00000000..3b054317
+--- /dev/null
++++ b/tests/lima_gem_new.c
+@@ -0,0 +1,78 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Erico Nunes
++ */
++
++#include "igt.h"
++#include "igt_lima.h"
++#include <unistd.h>
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <fcntl.h>
++#include <inttypes.h>
++#include <errno.h>
++#include <sys/stat.h>
++#include <sys/ioctl.h>
++#include "lima_drm.h"
++
++igt_main
++{
++	int fd;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_LIMA);
++	}
++
++	igt_describe("Sanity check for creating a BO with size 4096.");
++	igt_subtest("gem-new-4096") {
++		struct lima_bo *bo = igt_lima_gem_new(fd, 4096);
++
++		igt_lima_free_bo(fd, bo);
++	}
++
++	igt_describe("Make sure a BO cannot be created with size zero.");
++	igt_subtest("gem-new-0") {
++		struct drm_lima_gem_create arg = {
++			.size = 0,
++		};
++
++		do_ioctl_err(fd, DRM_IOCTL_LIMA_GEM_CREATE, &arg, EINVAL);
++	}
++
++	igt_describe("Make sure that BOs can be allocated in different fd without "
++		     "carrying old contents from one another.");
++	igt_subtest("gem-new-zeroed") {
++		int fd2 = drm_open_driver(DRIVER_LIMA);
++		struct lima_bo *bo;
++		uint32_t *map;
++		/* A size different from any used in our other tests, to try
++		 * to convince it to land as the only one of its size in the
++		 * kernel BO cache
++		 */
++		size_t size = 3 * 4096;
++		size_t i;
++
++		/* Make a BO and free it on our main fd. */
++		bo = igt_lima_gem_new(fd, size);
++		map = igt_lima_mmap_bo(fd, bo->handle, size, PROT_READ | PROT_WRITE);
++		memset(map, 0xd0, size);
++		munmap(map, size);
++		igt_lima_free_bo(fd, bo);
++
++		/* Now, allocate a BO on the other fd and make sure it doesn't
++		 * have the old contents.
++		 */
++		bo = igt_lima_gem_new(fd2, size);
++		map = igt_lima_mmap_bo(fd2, bo->handle, size, PROT_READ | PROT_WRITE);
++		for (i = 0; i < size / 4; i++)
++			igt_assert_eq_u32(map[i], 0x0);
++		munmap(map, size);
++		igt_lima_free_bo(fd2, bo);
++
++		close(fd2);
++	}
++
++	igt_fixture
++		close(fd);
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index f71be1db..980e77e9 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -62,6 +62,7 @@ test_progs = [
+ 	'kms_vblank',
+ 	'kms_vrr',
+ 	'kms_writeback',
++	'lima_gem_new',
+ 	'meta_test',
+ 	'panfrost_get_param',
+ 	'panfrost_gem_new',
 -- 
 2.40.1
