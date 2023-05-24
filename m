@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CB5C10E226
- for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 14:30:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 94FA310E226
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 14:30:04 +0000 (UTC)
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 24 May 2023 16:29:27 +0200
-Message-Id: <20230524142931.119823-6-dominik.grzegorzek@intel.com>
+Date: Wed, 24 May 2023 16:29:25 +0200
+Message-Id: <20230524142931.119823-4-dominik.grzegorzek@intel.com>
 In-Reply-To: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
 References: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/9] xe/staging/xe_eudebug: test open close
- events
+Subject: [igt-dev] [PATCH i-g-t 3/9] xe/staging/xe_eudebug: test eudebug
+ connection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,129 +24,166 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Introduce basic tests which validate client create/destroy events
-sent on xe drm client open/close.
+Add basic tests checking xe eudebug connection capability.
 
-Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 ---
- tests/xe/staging/xe_eudebug.c | 89 +++++++++++++++++++++++++++++++++++
- 1 file changed, 89 insertions(+)
+ tests/meson.build             |   1 +
+ tests/xe/staging/xe_eudebug.c | 133 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 134 insertions(+)
+ create mode 100644 tests/xe/staging/xe_eudebug.c
 
-diff --git a/tests/xe/staging/xe_eudebug.c b/tests/xe/staging/xe_eudebug.c
-index 7202da689..6b97a4851 100644
---- a/tests/xe/staging/xe_eudebug.c
-+++ b/tests/xe/staging/xe_eudebug.c
-@@ -4,7 +4,68 @@
-  */
+diff --git a/tests/meson.build b/tests/meson.build
+index 8c7055ed9..afe3e86a2 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -270,6 +270,7 @@ xe_progs = [
+ ]
  
- #include <xe_drm_tmp.h>
+ xe_staging_progs = [
++	'xe_eudebug',
+ ]
+ 
+ msm_progs = [
+diff --git a/tests/xe/staging/xe_eudebug.c b/tests/xe/staging/xe_eudebug.c
+new file mode 100644
+index 000000000..7202da689
+--- /dev/null
++++ b/tests/xe/staging/xe_eudebug.c
+@@ -0,0 +1,133 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
 +
- #include "igt.h"
-+#include "xe/staging/xe_eudebug.h"
++#include <xe_drm_tmp.h>
++#include "igt.h"
 +
-+static void run_basic_client(struct xe_eudebug_client *c)
++static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect_param *param)
++{
++	int ret = 0;
++
++	*debugfd = igt_ioctl(fd, DRM_IOCTL_XE_EUDEBUG_CONNECT, param);
++
++	if (*debugfd < 0) {
++		ret = -errno;
++		igt_assume(ret != 0);
++	}
++
++	errno = 0;
++	return ret;
++}
++
++static void test_connect(int fd)
++{
++	struct drm_xe_eudebug_connect_param param = {};
++	int debugfd, ret;
++	pid_t *pid;
++
++	pid = mmap(NULL, sizeof(pid_t), PROT_WRITE,
++		   MAP_SHARED | MAP_ANON, -1, 0);
++
++	/* get fresh unrelated pid */
++	igt_fork(child, 1)
++		*pid = getpid();
++
++	igt_waitchildren();
++	param.pid = *pid;
++	munmap(pid, sizeof(pid_t));
++
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, param.pid ? -ENOENT : -EINVAL);
++
++	param.pid = 0;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, -EINVAL);
++
++	igt_fork(child, 1) {
++		int newfd = drm_open_driver(DRIVER_XE);
++
++		igt_drop_root();
++
++		param.pid = 1;
++		ret = __debug_connect(newfd, &debugfd, &param);
++		igt_assert(debugfd == -1);
++		igt_assert_eq(ret, -EACCES);
++	}
++	igt_waitchildren();
++
++	param.pid = getpid();
++	param.version = -1;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, -EINVAL);
++
++	param.version = 0;
++	param.flags = ~0;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, -EINVAL);
++
++	param.flags = 0;
++	param.events = ~0;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, -EINVAL);
++
++	param.events = 0;
++	param.extensions = ~0;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert(debugfd == -1);
++	igt_assert_eq(ret, -EINVAL);
++
++	param.extensions = 0;
++	ret = __debug_connect(fd, &debugfd, &param);
++	igt_assert_neq(debugfd, -1);
++	igt_assert_eq(ret, 0);
++
++	close(debugfd);
++}
++
++static void test_close(int fd)
++{
++	struct drm_xe_eudebug_connect_param param = { 0,  };
++	int debug_fd1, debug_fd2;
++	int fd2;
++
++	param.pid = getpid();
++
++	igt_assert_eq(__debug_connect(fd, &debug_fd1, &param), 0);
++	igt_assert(debug_fd1 >= 0);
++	igt_assert_eq(__debug_connect(fd, &debug_fd2, &param), -EBUSY);
++	igt_assert_eq(debug_fd2, -1);
++
++	close(debug_fd1);
++	fd2 = drm_open_driver(DRIVER_XE);
++
++	igt_assert_eq(__debug_connect(fd2, &debug_fd2, &param), 0);
++	igt_assert(debug_fd2 >= 0);
++	close(fd2);
++	close(debug_fd2);
++	close(debug_fd1);
++}
++
++igt_main
 +{
 +	int fd;
 +
-+	fd = xe_eudebug_client_open_driver(c);
-+	xe_eudebug_client_close_driver(c, fd);
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++	}
++
++	igt_subtest("basic-connect")
++		test_connect(fd);
++
++	igt_subtest("basic-close")
++		test_close(fd);
++
++	igt_fixture
++		close(fd);
 +}
-+
-+struct session {
-+	unsigned int flags;
-+	struct xe_eudebug_debugger *d;
-+	struct xe_eudebug_client *c;
-+};
-+
-+static struct session *session_create(int fd, xe_eudebug_client_work_fn work, unsigned int flags)
-+{
-+	struct session *s;
-+
-+	s = calloc(1, sizeof(*s));
-+	igt_assert(s);
-+
-+	s->c = xe_eudebug_client_create(work, flags);
-+	s->d = xe_eudebug_debugger_create(fd, flags);
-+
-+	return s;
-+}
-+
-+static void session_run(struct session *s)
-+{
-+	struct xe_eudebug_debugger *debugger = s->d;
-+	struct xe_eudebug_client *client = s->c;
-+
-+	igt_assert_eq(xe_eudebug_debugger_attach(debugger, client->pid), 0);
-+
-+	xe_eudebug_debugger_start_worker(debugger);
-+
-+	xe_eudebug_client_start(client);
-+	xe_eudebug_client_wait_done(client);
-+
-+	xe_eudebug_debugger_stop_worker(debugger, 1);
-+
-+	xe_eudebug_event_log_print(debugger->log, true);
-+	xe_eudebug_event_log_print(client->log, true);
-+}
-+
-+static void session_check(struct session *s, bool match_opposite)
-+{
-+	xe_eudebug_event_log_compare(s->c->log, s->d->log);
-+
-+	if (match_opposite)
-+		xe_eudebug_event_log_match_opposite(s->d->log);
-+}
-+
-+static void session_destroy(struct session *s)
-+{
-+	xe_eudebug_debugger_destroy(s->d);
-+	xe_eudebug_client_destroy(s->c);
-+}
- 
- static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect_param *param)
- {
-@@ -114,6 +175,28 @@ static void test_close(int fd)
- 	close(debug_fd1);
- }
- 
-+static void test_basic_sessions(int fd, unsigned int flags, int count)
-+{
-+	struct session **s;
-+	int i;
-+
-+	s = calloc(count, sizeof(*s));
-+
-+	igt_assert(s);
-+
-+	for (i = 0; i < count; i++)
-+		s[i] = session_create(fd, run_basic_client, flags);
-+
-+	for (i = 0; i < count; i++)
-+		session_run(s[i]);
-+
-+	for (i = 0; i < count; i++)
-+		session_check(s[i], true);
-+
-+	for (i = 0; i < count; i++)
-+		session_destroy(s[i]);
-+}
-+
- igt_main
- {
- 	int fd;
-@@ -128,6 +211,12 @@ igt_main
- 	igt_subtest("basic-close")
- 		test_close(fd);
- 
-+	igt_subtest("basic-client")
-+		test_basic_sessions(fd, 0, 1);
-+
-+	igt_subtest("multiple-sessions")
-+		test_basic_sessions(fd, 0, 4);
-+
- 	igt_fixture
- 		close(fd);
- }
 -- 
 2.34.1
