@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CDCC610E847
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A65ED10E83D
  for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 09:06:00 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.20.31])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 1B2EF580DB0
+ by linux.intel.com (Postfix) with ESMTPS id 1F520580DB3
  for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 02:05:41 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1q26uh-00BiHz-0E
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1q26uh-00BiHo-02
  for igt-dev@lists.freedesktop.org; Thu, 25 May 2023 11:05:39 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 25 May 2023 11:05:32 +0200
-Message-Id: <20230525090535.2791739-9-mauro.chehab@linux.intel.com>
+Date: Thu, 25 May 2023 11:05:29 +0200
+Message-Id: <20230525090535.2791739-6-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
 References: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 08/11] tests: add documentation for
- dynamic subtests
+Subject: [igt-dev] [PATCH i-g-t v4 05/11] i915/gem_ctx_*: better document
+ i915 context tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,729 +34,734 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Dynamic subtests are a special case, as those can't be listed
-by passing --list-subtests:
+Merge data from some ancillary internal documentation to improve
+i915 gem_ctx test descriptions.
 
-	$ ./build/tests/dmabuf --list-subtests
-	all-tests
-
-So, the import script requires a special logic to import
-those.
-
-Add documentation for such tests.
+This patch was auto-generated via script.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/dmabuf.c             |  12 +
- tests/drm_mm.c             | 120 +++++++++
- tests/i915/gem_busy.c      |   6 +
- tests/i915/gem_wait.c      |  12 +
- tests/i915/i915_selftest.c | 485 +++++++++++++++++++++++++++++++++++++
- 5 files changed, 635 insertions(+)
+ tests/i915/gem_ctx_bad_destroy.c |   4 ++
+ tests/i915/gem_ctx_create.c      |  22 +++++-
+ tests/i915/gem_ctx_engines.c     |   4 ++
+ tests/i915/gem_ctx_exec.c        |  28 +++++++-
+ tests/i915/gem_ctx_freq.c        |   4 ++
+ tests/i915/gem_ctx_isolation.c   |  38 ++++++++++-
+ tests/i915/gem_ctx_param.c       |  76 +++++++++++++++++++++
+ tests/i915/gem_ctx_persistence.c | 112 +++++++++++++++++++++++++++++++
+ tests/i915/gem_ctx_shared.c      |  37 +++++++++-
+ 9 files changed, 321 insertions(+), 4 deletions(-)
 
-diff --git a/tests/dmabuf.c b/tests/dmabuf.c
-index 4bc9b35b619d..2ac10542312c 100644
---- a/tests/dmabuf.c
-+++ b/tests/dmabuf.c
-@@ -30,6 +30,18 @@
+diff --git a/tests/i915/gem_ctx_bad_destroy.c b/tests/i915/gem_ctx_bad_destroy.c
+index 90495da8ab2e..8c47e7c1cb67 100644
+--- a/tests/i915/gem_ctx_bad_destroy.c
++++ b/tests/i915/gem_ctx_bad_destroy.c
+@@ -36,9 +36,13 @@
+ 
+ /**
+  * TEST: gem ctx bad destroy
++ * Category: Infrastructure
+  * Description: Negative test cases for destroy contexts.
+  * Feature: context
++ * Functionality: context management
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: double-destroy
+  *
+diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
+index 0c65027bc838..95e219482de6 100644
+--- a/tests/i915/gem_ctx_create.c
++++ b/tests/i915/gem_ctx_create.c
+@@ -38,70 +38,90 @@
+ /**
+  * TEST: gem ctx create
+  * Description: Test the context create ioctls
+- * Feature: context
+  *
+  * SUBTEST: active
+  * Description:
+  *   For each engine calculate the average performance of context creation execution and
+  *   exercise context reclaim
++ * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: active-all
+  * Description: Calculate the average performance of context creation and it's execution using all engines
++ * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: basic
++ * Category: Infrastructure
+  * Description: Test random context creation
++ * Feature: context
++ * Functionality: context management
   * Run type: BAT
++ * Sub-category: i915
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: all-tests
-+ *
-+ * SUBTEST: all-tests@dma_fence
+  * SUBTEST: basic-files
 + * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@sanitycheck
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-  */
- 
- IGT_TEST_DESCRIPTION("Kernel selftests for the dmabuf API");
-diff --git a/tests/drm_mm.c b/tests/drm_mm.c
-index 4cc2891ee129..0bce7139d4c8 100644
---- a/tests/drm_mm.c
-+++ b/tests/drm_mm.c
-@@ -30,6 +30,126 @@
-  * Run type: FULL
-  *
-  * SUBTEST: all-tests
-+ *
-+ * SUBTEST: all-tests@align
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@align32
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@align64
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@bottomup
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@color
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@color_evict
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@color_evict_range
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@debug
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@evict
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@evict_range
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@frag
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@highest
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@init
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@insert
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@insert_range
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@lowest
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@replace
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@reserve
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@sanitycheck
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: all-tests@topdown
-+ * Category: Infrastructure
-+ * Description: drm_mm range manager SW validation
-+ * Functionality: DRM memory mangemnt
-+ * Test category: GEM_Legacy
-  */
- 
- IGT_TEST_DESCRIPTION("Basic sanity check of DRM's range manager (struct drm_mm)");
-diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
-index 0f48dbbfe75c..b796ebb2bb5c 100644
---- a/tests/i915/gem_busy.c
-+++ b/tests/i915/gem_busy.c
-@@ -43,6 +43,12 @@
-  * Sub-category: i915
-  * Test category: GEM_Legacy
-  *
-+ * SUBTEST: busy@all
-+ * Functionality: Semaphore
-+ *
-+ * SUBTEST: busy@all-engines
-+ * Run type: BAT
-+ *
-  * SUBTEST: close-race
-  * Category: Desktop client
-  * Description: Test to check race condition by randomly closing the handle using gem_close.
-diff --git a/tests/i915/gem_wait.c b/tests/i915/gem_wait.c
-index 5549d8927e2c..c1cd37e63c24 100644
---- a/tests/i915/gem_wait.c
-+++ b/tests/i915/gem_wait.c
-@@ -51,6 +51,12 @@
-  * Sub-category: i915
-  * Test category: GEM_Legacy
-  *
-+ * SUBTEST: busy@all
-+ * Functionality: semaphore
-+ *
-+ * SUBTEST: busy@all-engines
-+ * Run type: BAT
-+ *
-  * SUBTEST: hang-busy
-  * Description: Verify GEM_WAIT functionality in busy mode, when hang is allowed.
-  *
-@@ -84,6 +90,12 @@
-  * Sub-category: i915
-  * Test category: GEM_Legacy
-  *
-+ * SUBTEST: wait@all
-+ * Functionality: semaphore
-+ *
-+ * SUBTEST: wait@all-engines
-+ * Run type: BAT
-+ *
-  * SUBTEST: write-busy
-  * Category: Infrastructure
-  * Description: Verify GEM_WAIT functionality in write-busy mode.
-diff --git a/tests/i915/i915_selftest.c b/tests/i915/i915_selftest.c
-index 8863274405ba..bb0e844e9ed9 100644
---- a/tests/i915/i915_selftest.c
-+++ b/tests/i915/i915_selftest.c
-@@ -31,13 +31,498 @@
-  * Feature: gem_core
+  * Description: Exercise implicit per-fd context creation
++ * Feature: context
++ * Functionality: context management
   * Run type: BAT
++ * Sub-category: i915
++ * Test category: GEM_Legacy
   *
-+ * SUBTEST: live@active
-+ * Category: Selftest
-+ * Functionality: semaphore
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@blt
-+ * Category: Selftest
-+ * Description: Blitter validation
-+ * Functionality: command streamer
-+ * Sub-category: i915 / HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@client
-+ * Category: Selftest
-+ * Description: Internal API over blitter
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@coherency
-+ * Category: Selftest
-+ * Description: Cache management
-+ * Functionality: memory management
-+ * Sub-category: i915 / HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@debugger
-+ * Category: Selftest
-+ * Functionality: device management
-+ * Sub-category: debugger
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@display
-+ * Category: Selftest
-+ * Functionality: display sanity
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@dmabuf
-+ * Category: Selftest
-+ * Functionality: buffer management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@evict
-+ * Category: Selftest
-+ * Functionality: GTT eviction
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@execlists
-+ * Category: Selftest
-+ * Description: command submission backend
-+ * Functionality: command submission
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gem
-+ * Category: Selftest
-+ * Functionality: command submission
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gem_contexts
-+ * Category: Selftest
-+ * Description: User isolation and execution at the context level
-+ * Functionality: context management
-+ * Sub-category: i915 / HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gem_execbuf
-+ * Category: Selftest
-+ * Description: command submission support
-+ * Functionality: command submission
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gt_ccs_mode
-+ * Category: Selftest
-+ * Description: Multi-ccs internal validation
-+ * Functionality: multii-ccs
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gt_contexts
-+ * Category: Selftest
-+ * Description: HW isolation and HW context validation
-+ * Functionality: context management
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gt_engines
-+ * Category: Selftest
-+ * Description: command submission topology validation
-+ * Functionality: command submission
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gt_gtt
-+ * Category: Selftest
-+ * Description: Validation of virtual address management and execution
-+ * Functionality: memory management
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gt_heartbeat
-+ * Category: Selftest
-+ * Description: Stall detection interface validation
-+ * Functionality: reset
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gt_lrc
-+ * Category: Selftest
-+ * Description: HW isolation and HW context validation
-+ * Functionality: context management
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gt_mocs
-+ * Category: Selftest
-+ * Description: Verification of mocs registers
-+ * Functionality: mocs
-+ * Sub-category: i915 / HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gt_pm
-+ * Category: Selftest
-+ * Description: Basic i915 driver module selftests
-+ * Feature: rps, rc6
-+ * Test category: rps, rc6
-+ *
-+ * SUBTEST: live@gt_timelines
-+ * Category: Selftest
-+ * Description: semaphore tracking
-+ * Functionality: semaphore
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gt_tlb
-+ * Category: Selftest
-+ * Test category: Memory Management
-+ *
-+ * SUBTEST: live@gtt
-+ * Category: Selftest
-+ * Description: Virtual address management interface validation
-+ * Functionality: memory management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@gtt_l4wa
-+ * Category: Selftest
-+ * Description: Check the L4WA is enabled when it was required
-+ * Functionality: workarounds
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@guc
-+ * Category: Selftest
-+ * Feature: GuC
-+ * Functionality: Guc specific selftests
-+ * Test category: GuC
-+ *
-+ * SUBTEST: live@guc_doorbells
-+ * Category: Selftest
-+ * Feature: GuC
-+ * Functionality: Guc specific selftests
-+ * Test category: GuC
-+ *
-+ * SUBTEST: live@guc_hang
-+ * Category: Selftest
-+ * Feature: GuC
-+ * Functionality: Guc specific selftests
-+ * Test category: GuC
-+ *
-+ * SUBTEST: live@guc_multi_lrc
-+ * Category: Selftest
-+ * Feature: GuC
-+ * Functionality: Guc specific selftests
-+ * Test category: GuC
-+ *
-+ * SUBTEST: live@hangcheck
-+ * Category: Selftest
-+ * Description: reset handling after stall detection
-+ * Functionality: reset
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@hugepages
-+ * Category: Selftest
-+ * Description: Large page support validation
-+ * Functionality: memory management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@late_gt_pm
-+ * Category: Selftest
-+ * Feature: rc6
-+ * Functionality: Basic i915 driver module selftests
-+ * Test category: rc6
-+ *
-+ * SUBTEST: live@lmem
-+ * Category: Selftest
-+ *
-+ * SUBTEST: live@memory_region
-+ * Category: Selftest
-+ * Description: memory topology validation and migration checks
-+ * Functionality: memory management
-+ * Sub-category: i915 / HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@memory_region_cross_tile
-+ * Category: Selftest
-+ * Functionality: Multi-tile memory topology validation
-+ * Test category: MultiTile
-+ *
-+ * SUBTEST: live@mman
-+ * Category: Selftest
-+ * Description: memory management validation
-+ * Functionality: memory management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@obj_lock
-+ * Category: Selftest
-+ * Description: Validation of per-object locking patterns
-+ * Functionality: per-object lockling
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@objects
-+ * Category: Selftest
-+ * Description: User object allocation and isolation checks
-+ * Functionality: buffer management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@perf
-+ * Category: Selftest
-+ * Feature: i915 perf selftests
-+ * Functionality: Basic i915 module perf unit selftests
-+ * Test category: Perf
-+ *
-+ * SUBTEST: live@remote_tiles
-+ * Category: Selftest
-+ * Functionality: Tile meta data validation
-+ * Test category: MultiTile
-+ *
-+ * SUBTEST: live@requests
-+ * Category: Selftest
-+ * Description: Validation of internal i915 command submission interface
-+ * Functionality: command submission
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@reset
-+ * Category: Selftest
-+ * Description: engine/GT resets
-+ * Functionality: reset
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@sanitycheck
-+ * Category: Selftest
-+ * Description: Checks the selftest infrastructure itself
-+ * Functionality: selftests
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@scheduler
-+ * Category: Selftest
-+ * Test category: Cmd Submission
-+ *
-+ * SUBTEST: live@semaphores
-+ * Category: Selftest
-+ * Description: GuC semaphore management
-+ * Functionality: semaphore
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@slpc
-+ * Category: Selftest
-+ * Feature: slpc / pm_rps
-+ * Functionality: Basic i915 driver module selftests
-+ * Test category: slpc / pm_rps
-+ *
-+ * SUBTEST: live@uncore
-+ * Category: Selftest
-+ * Description: Basic i915 driver module selftests
-+ * Feature: forcewake
-+ * Test category: forcewake
-+ *
-+ * SUBTEST: live@vma
-+ * Category: Selftest
-+ * Description: Per-object virtual address management
-+ * Functionality: memory management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@win_blt_copy
-+ * Category: Selftest
-+ * Description: Validation of migration interface
-+ * Functionality: migration interface
-+ * Sub-category: i915 / HW
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: live@workarounds
-+ * Category: Selftest
-+ * Description: Check workarounds persist or are reapplied after resets and other power management events
-+ * Functionality: workarounds
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-+ *
-  * SUBTEST: mock
-  * Feature: gem_core
+  * SUBTEST: ext-param
+  * Description: Verify valid and invalid context extensions
++ * Feature: context
   * Run type: FULL
   *
-+ * SUBTEST: mock@buddy
-+ * Category: Selftest
-+ * Description: Buddy allocation
-+ * Functionality: memory management
-+ * Sub-category: DRM
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@contexts
-+ * Category: Selftest
-+ * Description: GEM context internal API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@dmabuf
-+ * Category: Selftest
-+ * Description: dma-buf (buffer management) API checks
-+ * Functionality: API checks
-+ * Sub-category: DRM
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@engine
-+ * Category: Selftest
-+ * Description: Engine topology API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@evict
-+ * Category: Selftest
-+ * Description: GTT eviction API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@fence
-+ * Category: Selftest
-+ * Description: semaphore API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@gtt
-+ * Category: Selftest
-+ * Description: Virtual address management API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@hugepages
-+ * Category: Selftest
-+ * Description: Hugepage API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@memory_region
-+ * Category: Selftest
-+ * Description: Memory region API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@objects
-+ * Category: Selftest
-+ * Description: Buffer object API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@phys
-+ * Category: Selftest
-+ * Description: legacy physical object API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@requests
-+ * Category: Selftest
-+ * Description: Internal command submission API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@ring
-+ * Category: Selftest
-+ * Description: Ringbuffer management API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@sanitycheck
-+ * Category: Selftest
-+ * Description: Selftest for the selftest
-+ * Functionality: selftests
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@scatterlist
-+ * Category: Selftest
-+ * Description: Scatterlist API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@shmem
-+ * Category: Selftest
-+ * Description: SHM utils API checks
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@syncmap
-+ * Category: Selftest
-+ * Description: API checks for the contracted radixtree
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@timelines
-+ * Category: Selftest
-+ * Description: API checks for semaphore tracking
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: mock@tlb
-+ * Category: Selftest
-+ * Test category: Memory Management
-+ *
-+ * SUBTEST: mock@uncore
-+ * Category: Selftest
-+ * Description: Basic i915 driver module selftests
-+ * Feature: forcewake
-+ * Test category: forcewake
-+ *
-+ * SUBTEST: mock@vma
-+ * Category: Selftest
-+ * Description: API checks for virtual address management
-+ * Functionality: API checks
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-+ *
-  * SUBTEST: perf
-  * Feature: oa
+  * SUBTEST: files
+  * Description: Exercise implicit per-fd context creation on 1 CPU for long duration
++ * Feature: context
   * Run type: FULL
-+ *
-+ * SUBTEST: perf@blt
-+ * Category: Selftest
-+ * Feature: i915 perf selftests
-+ * Functionality: Basic i915 module perf unit selftests
-+ * Test category: Perf
-+ *
-+ * SUBTEST: perf@engine_cs
-+ * Category: Selftest
-+ * Feature: i915 perf selftests
-+ * Functionality: Basic i915 module perf unit selftests
-+ * Test category: Perf
-+ *
-+ * SUBTEST: perf@region
-+ * Category: Selftest
-+ * Feature: i915 perf selftests
-+ * Functionality: Basic i915 module perf unit selftests
-+ * Test category: Perf
-+ *
-+ * SUBTEST: perf@request
-+ * Category: Selftest
-+ * Functionality: Basic i915 module perf unit selftests
-+ * Test category: Perf
-+ *
-+ * SUBTEST: perf@scheduler
-+ * Category: Selftest
-+ * Functionality: Basic i915 module perf unit selftests
-+ * Test category: Perf
+  *
+  * SUBTEST: forked-active
+  * Description:
+  *   For each engine calculate the average performance of context creation and execution on
+  *   multiple parallel processes
++ * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: forked-active-all
+  * Description:
+  *   Calculate the average performance of context creation and it's execution using all engines
+  *   on multiple parallel processes
++ * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: forked-files
+  * Description: Exercise implicit per-fd context creation on all CPUs for long duration
++ * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: hog
+  * Description:
+  *   For each engine calculate the average performance of context creation and execution while
+  *   all other engines are hogging the resources
++ * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: iris-pipeline
+  * Description: Set, validate and execute particular context params
++ * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: maximum-mem
+  * Description:
+  *   Create contexts upto available RAM size, calculate the average performance of their
+  *   execution on multiple parallel processes
++ * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: maximum-swap
+  * Description:
+  *   Create contexts upto available RAM+SWAP size, calculate the average performance of their
+  *   execution on multiple parallel processes
++ * Feature: context
+  * Run type: FULL
   */
  
- IGT_TEST_DESCRIPTION("Basic unit tests for i915.ko");
+diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+index d15a7b7e5f67..61718494e86a 100644
+--- a/tests/i915/gem_ctx_engines.c
++++ b/tests/i915/gem_ctx_engines.c
+@@ -45,8 +45,12 @@
+ #include "sw_sync.h"
+ /**
+  * TEST: gem ctx engines
++ * Category: Infrastructure
+  * Feature: context
++ * Functionality: context management
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: execute-allforone
+  *
+diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
+index 9fec2bb10fdf..bd6671ec8d90 100644
+--- a/tests/i915/gem_ctx_exec.c
++++ b/tests/i915/gem_ctx_exec.c
+@@ -50,34 +50,60 @@
+ /**
+  * TEST: gem ctx exec
+  * Description: Test context batch buffer execution.
+- * Feature: context
+  *
+  * SUBTEST: basic
++ * Category: Infrastructure
+  * Description: Check the basic context batch buffer execution.
++ * Feature: context
++ * Functionality: command submission
+  * Run type: BAT
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-close-race
++ * Category: Infrastructure
+  * Description: Race the execution and interrupt handlers along a context, while closing it at a random time.
++ * Feature: context
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-invalid-context
++ * Category: Infrastructure
+  * Description: Verify that execbuf with invalid context fails.
++ * Feature: context
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-nohangcheck
++ * Category: Server
+  * Description: Verify that contexts are automatically shotdown on close, if hangchecking is disabled.
++ * Feature: context
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-norecovery
++ * Category: Server
+  * Description: Check the status of context after a hang by setting and unsetting the RECOVERABLE.
++ * Feature: context
++ * Functionality: command submission
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: eviction
+  * Description: Check maximum number of buffers it can evict for a context.
++ * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: reset-pin-leak
+  * Description: Check if the kernel doesn't leak the vma pin_count for the last context on reset.
++ * Feature: context
+  * Run type: FULL
+  */
+ 
+diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
+index 8e432cbdf8f5..2c30934daa23 100644
+--- a/tests/i915/gem_ctx_freq.c
++++ b/tests/i915/gem_ctx_freq.c
+@@ -36,8 +36,12 @@
+ #include "sw_sync.h"
+ /**
+  * TEST: gem ctx freq
++ * Category: Server
+  * Feature: context
++ * Functionality: frequency management
+  * Run type: FULL
++ * Sub-category: Performance
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: sysfs
+  */
+diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+index 2c2da296d301..d50a90597e6f 100644
+--- a/tests/i915/gem_ctx_isolation.c
++++ b/tests/i915/gem_ctx_isolation.c
+@@ -28,26 +28,62 @@
+ #include "igt_types.h"
+ /**
+  * TEST: gem ctx isolation
+- * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: clean
++ * Category: Infrastructure
++ * Feature: context
++ * Functionality: security
++ * Sub-category: HW
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: dirty-create
++ * Category: Infrastructure
++ * Feature: context
++ * Functionality: security
++ * Sub-category: HW
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: dirty-switch
++ * Category: Infrastructure
++ * Feature: context
++ * Functionality: security
++ * Sub-category: HW
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: nonpriv
++ * Category: Infrastructure
++ * Feature: context
++ * Functionality: security
++ * Sub-category: HW
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: nonpriv-switch
++ * Category: Infrastructure
++ * Feature: context
++ * Functionality: security
++ * Sub-category: HW
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preservation
++ * Category: Infrastructure
++ * Feature: context
++ * Functionality: security
++ * Sub-category: HW
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: preservation-S3
++ * Feature: context
+  *
+  * SUBTEST: preservation-S4
++ * Feature: context
+  *
+  * SUBTEST: preservation-reset
++ * Category: Infrastructure
++ * Feature: context
++ * Functionality: security
++ * Sub-category: HW
++ * Test category: GEM_Legacy
+  */
+ 
+ /* MAX_REG must be greater than the maximum register address. */
+diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
+index 5e56c645572b..7c59fe3ed0db 100644
+--- a/tests/i915/gem_ctx_param.c
++++ b/tests/i915/gem_ctx_param.c
+@@ -36,71 +36,139 @@
+  * Run type: FULL
+  *
+  * SUBTEST: basic
++ * Category: Infrastructure
+  * Description: Basic test for context get/set param ioctls using valid context
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-default
++ * Category: Infrastructure
+  * Description: Basic test for context get/set param ioctls using default context
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: get-priority-new-ctx
++ * Category: Infrastructure
+  * Description:
+  *   Test performed with context param set to priority.
+  *   Verify that priority is default for newly created context
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-ctx-get
++ * Category: Infrastructure
+  * Description: Verify that context get param ioctl using invalid context returns relevant error
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-ctx-set
++ * Category: Infrastructure
+  * Description: Verify that context set param ioctl using invalid context returns relevant error
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-get-engines
++ * Category: Infrastructure
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-get-no-zeromap
++ * Category: Infrastructure
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-get-ringsize
++ * Category: Infrastructure
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-param-get
++ * Category: Infrastructure
+  * Description: Checks that fetching context parameters using an unused param value is erroneous
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-param-set
++ * Category: Infrastructure
+  * Description: Checks that setting context parameters using an unused param value is erroneous
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-set-no-zeromap
++ * Category: Infrastructure
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-set-ringsize
++ * Category: Infrastructure
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-size-get
++ * Category: Infrastructure
+  * Description: Verify that context get param ioctl returns valid size for valid context
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-size-set
++ * Category: Infrastructure
+  * Description: Verify that context set param ioctl using invalid size returns relevant error
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: non-root-set
++ * Category: Infrastructure
+  * Description: Verify that context set param ioctl returns relevant error in non root mode
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: root-set
++ * Category: Infrastructure
+  * Description: Verify that context set param ioctl works fine in root mode
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: set-priority-invalid-size
++ * Category: Infrastructure
+  * Description:
+  *   Test performed with context param set to priority.
+  *   Verify that relevant error is returned on setting invalid ctx size with default priority
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: set-priority-not-supported
+  * Description:
+@@ -109,14 +177,22 @@
+  * Feature: context, no-set-priority
+  *
+  * SUBTEST: set-priority-range
++ * Category: Infrastructure
+  * Description:
+  *   Test performed with context param set to priority.
+  *   Change priority range to test value overflow
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: vm
++ * Category: Infrastructure
+  * Description: Tests that multiple contexts can share the same VMA
+  * Feature: context
++ * Functionality: context management
++ * Sub-category: i915
++ * Test category: GEM_Legacy
+  */
+ 
+ IGT_TEST_DESCRIPTION("Basic test for context set/get param input validation.");
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 42cf9632989e..584137db4546 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -51,68 +51,180 @@
+  * Run type: FULL
+  *
+  * SUBTEST: engines-cleanup
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-hang
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-hostile
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-hostile-preempt
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-mixed
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-mixed-process
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-persistence
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: engines-queued
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: file
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: hang
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: heartbeat-close
+  *
+  * SUBTEST: heartbeat-hang
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: heartbeat-hostile
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: heartbeat-many
+  *
+  * SUBTEST: heartbeat-stop
+  *
+  * SUBTEST: hostile
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: idempotent
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-cleanup
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-hang
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-hostile
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-hostile-preempt
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-mixed
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-mixed-process
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-persistence
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: legacy-engines-queued
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: many-contexts
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: process
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: processes
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: saturated-hostile
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: saturated-hostile-nopreempt
+  *
+  * SUBTEST: smoketest
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: userptr
++ * Category: Server
++ * Functionality: security
++ * Sub-category: Compute
++ * Test category: GEM_Legacy
+  */
+ 
+ #define RESET_TIMEOUT_MS 2 * MSEC_PER_SEC; /* default: 640ms */
+diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
+index 98827f09f9ea..ede6db13b265 100644
+--- a/tests/i915/gem_ctx_shared.c
++++ b/tests/i915/gem_ctx_shared.c
+@@ -50,36 +50,71 @@
+ /**
+  * TEST: gem ctx shared
+  * Description: Test shared contexts.
+- * Feature: context
+  * Run type: FULL
+  *
+  * SUBTEST: Q-in-order
++ * Feature: context
+  *
+  * SUBTEST: Q-independent
++ * Feature: context
+  *
+  * SUBTEST: Q-out-order
++ * Feature: context
+  *
+  * SUBTEST: Q-promotion
++ * Feature: context
+  *
+  * SUBTEST: Q-smoketest
++ * Feature: context
+  *
+  * SUBTEST: Q-smoketest-all
++ * Feature: context
+  *
+  * SUBTEST: create-shared-gtt
++ * Category: Desktop client
++ * Feature: context
++ * Functionality: context management
++ * Sub-category: Media
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: detached-shared-gtt
++ * Category: Desktop client
++ * Feature: context
++ * Functionality: context management
++ * Sub-category: Media
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: disjoint-timelines
++ * Category: Desktop client
++ * Feature: context
++ * Functionality: context management
++ * Sub-category: Media
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: exec-shared-gtt
++ * Category: Desktop client
++ * Feature: context
++ * Functionality: context management
++ * Sub-category: Media
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: exec-single-timeline
++ * Category: Desktop client
++ * Feature: context
++ * Functionality: context management
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: exhaust-shared-gtt
++ * Feature: context
+  *
+  * SUBTEST: exhaust-shared-gtt-lrc
++ * Feature: context
+  *
+  * SUBTEST: single-timeline
++ * Category: Desktop client
++ * Feature: context
++ * Functionality: context management
++ * Test category: GEM_Legacy
+  */
+ 
+ #define LO 0
 -- 
 2.40.1
