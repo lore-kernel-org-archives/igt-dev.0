@@ -1,22 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D86D410E7E7
- for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 10:59:59 +0000 (UTC)
-From: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Date: Fri, 26 May 2023 10:59:53 +0000
-Message-ID: <8970c716f621d227d84d4dfc5f2a9ca7ce4a9328.camel@intel.com>
-References: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
- <20230524142931.119823-3-dominik.grzegorzek@intel.com>
- <20230526105100.6wxkiwov2mzyxipa@zkempczy-mobl2>
-In-Reply-To: <20230526105100.6wxkiwov2mzyxipa@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3FDF1ACA706F31478BF371542FBB7F16@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7473510E6BE
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 16:19:28 +0000 (UTC)
+Date: Thu, 25 May 2023 09:18:56 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+To: <janga.rahul.kumar@intel.com>
+Message-ID: <20230525161856.GI6250@mdroper-desk1.amr.corp.intel.com>
+References: <20230517085817.4097456-1-janga.rahul.kumar@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230517085817.4097456-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/9] meson: Introduce xe_staging build
- option
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/instdone: GEN12 INSTDONE
+ initialization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,75 +20,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIzLTA1LTI2IGF0IDEyOjUxICswMjAwLCBaYmlnbmlldyBLZW1wY3p5xYRza2kg
-d3JvdGU6DQo+IE9uIFdlZCwgTWF5IDI0LCAyMDIzIGF0IDA0OjI5OjI0UE0gKzAyMDAsIERvbWlu
-aWsgR3J6ZWdvcnplayB3cm90ZToNCj4gPiBUaGVyZSBhcmUgc29tZSBtYWpvciBmZWF0dXJlcywg
-d2hpY2ggaW4gYSBjdXJyZW50IHN0YXRlIGNhbm5vdCBiZSBtZXJnZWQNCj4gPiB1cHN0cmVhbS4g
-QSBnb29kIGV4YW1wbGUgaGVyZSBpbiBhbiBFVSBkZWJ1Z2dlciwgd2hpY2ggZG9lcyBub3QNCj4g
-PiBtZWV0IHRoZSByZXF1aXJlbWVudCBvZiBoYXZpbmcgYW4gb3BlbnNvdXJjZWQgY2xpZW50LiBX
-aGlsZSB0aG9zZQ0KPiA+IGZlYXR1cmVzIGFyZSBpbiB0aGUgZGV2ZWxvcG1lbnQgd2UgbmVlZCBh
-IHdheSBvZiBwcm92aWRpbmcgdGhlbQ0KPiA+IHZhbGlkYXRpb24uIFNvIGludHJvZHVjZSB4ZV9z
-dGFnaW5nIGJ1aWxkIG9wdGlvbiB1bmRlciB3aGljaA0KPiA+IHdlIGNhbiBrZWVwIHRlc3RzIG9m
-IGZlYXR1cmVzIHRoYXQgYXJlIHVuZGVyIGhhZXZ5IGRldmVsb3BtZW50IGFuZCBub3QNCj4gPiB5
-ZXQgYWNjZXB0ZWQgdXBzdHJlYW0gb3Igbm90IHlldCBjb21wbGV0ZWQuDQo+ID4gDQo+ID4gU2ln
-bmVkLW9mZi1ieTogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlrLmdyemVnb3J6ZWtAaW50ZWwu
-Y29tPg0KPiA+IENjOiBNYXVybyBDYXJ2YWxobyBDaGVoYWIgPG1jaGVoYWJAa2VybmVsLm9yZz4N
-Cj4gPiBDYzogS2FtaWwgS29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29t
-Pg0KPiA+IC0tLQ0KPiA+ICBtZXNvbi5idWlsZCAgICAgICB8ICAxICsNCj4gPiAgbWVzb25fb3B0
-aW9ucy50eHQgfCAgNSArKysrKw0KPiA+ICB0ZXN0cy9tZXNvbi5idWlsZCB8IDE2ICsrKysrKysr
-KysrKysrKysNCj4gPiAgMyBmaWxlcyBjaGFuZ2VkLCAyMiBpbnNlcnRpb25zKCspDQo+ID4gDQo+
-ID4gZGlmZiAtLWdpdCBhL21lc29uLmJ1aWxkIGIvbWVzb24uYnVpbGQNCj4gPiBpbmRleCAxYzg3
-MmNjOWMuLmFlMjIwNmQ2ZSAxMDA2NDQNCj4gPiAtLS0gYS9tZXNvbi5idWlsZA0KPiA+ICsrKyBi
-L21lc29uLmJ1aWxkDQo+ID4gQEAgLTg2LDYgKzg2LDcgQEAgYnVpbGRfY2hhbWVsaXVtID0gZ2V0
-X29wdGlvbignY2hhbWVsaXVtJykNCj4gPiAgYnVpbGRfZG9jcyA9IGdldF9vcHRpb24oJ2RvY3Mn
-KQ0KPiA+ICBidWlsZF90ZXN0cyA9IG5vdCBnZXRfb3B0aW9uKCd0ZXN0cycpLmRpc2FibGVkKCkN
-Cj4gPiAgYnVpbGRfeGUgPSBub3QgZ2V0X29wdGlvbigneGVfZHJpdmVyJykuZGlzYWJsZWQoKQ0K
-PiA+ICtidWlsZF94ZV9zdGFnaW5nID0gbm90IGdldF9vcHRpb24oJ3hlX3N0YWdpbmcnKS5kaXNh
-YmxlZCgpDQo+ID4gIHdpdGhfbGliZHJtID0gZ2V0X29wdGlvbignbGliZHJtX2RyaXZlcnMnKQ0K
-PiA+ICANCj4gPiAgYnVpbGRfaW5mbyA9IFsnQnVpbGQgdHlwZTogJyArIGdldF9vcHRpb24oJ2J1
-aWxkdHlwZScpXQ0KPiA+IGRpZmYgLS1naXQgYS9tZXNvbl9vcHRpb25zLnR4dCBiL21lc29uX29w
-dGlvbnMudHh0DQo+ID4gaW5kZXggN2I1YTgxOGNiLi40NmVlOTFmZTYgMTAwNjQ0DQo+ID4gLS0t
-IGEvbWVzb25fb3B0aW9ucy50eHQNCj4gPiArKysgYi9tZXNvbl9vcHRpb25zLnR4dA0KPiA+IEBA
-IC00Niw2ICs0NiwxMSBAQCBvcHRpb24oJ3hlX2RyaXZlcicsDQo+ID4gICAgICAgICB0eXBlIDog
-J2ZlYXR1cmUnLA0KPiA+ICAgICAgICAgZGVzY3JpcHRpb24gOiAnQnVpbGQgdGVzdHMgZm9yIFhl
-IGRyaXZlciAoZXhwZXJpbWVudGFsKScpDQo+ID4gIA0KPiA+ICtvcHRpb24oJ3hlX3N0YWdpbmcn
-LA0KPiA+ICsgICAgICAgdHlwZSA6ICdmZWF0dXJlJywNCj4gPiArICAgICAgIHZhbHVlIDogJ2Rp
-c2FibGVkJywNCj4gPiArICAgICAgIGRlc2NyaXB0aW9uIDogJ0J1aWxkIHRlc3RzIGZvciBYZSBm
-ZWF0dXJlcyB0aGF0IGNhbm5vdCBiZSB1cHN0cmVhbWVkIHlldCAoZXhwZXJpbWVudGFsKScpDQo+
-ID4gKw0KPiA+ICBvcHRpb24oJ2xpYmRybV9kcml2ZXJzJywNCj4gPiAgICAgICAgIHR5cGUgOiAn
-YXJyYXknLA0KPiA+ICAgICAgICAgdmFsdWUgOiBbJ2F1dG8nXSwNCj4gPiBkaWZmIC0tZ2l0IGEv
-dGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiA+IGluZGV4IDM4ZjA4MGY3
-Yy4uOGM3MDU1ZWQ5IDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL21lc29uLmJ1aWxkDQo+ID4gKysr
-IGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gPiBAQCAtMjY5LDYgKzI2OSw5IEBAIHhlX3Byb2dzID0g
-Ww0KPiA+ICAJJ3hlX3dhaXRmZW5jZScsDQo+ID4gIF0NCj4gPiAgDQo+ID4gK3hlX3N0YWdpbmdf
-cHJvZ3MgPSBbDQo+ID4gK10NCj4gPiArDQo+ID4gIG1zbV9wcm9ncyA9IFsNCj4gPiAgCSdtc21f
-bWFwcGluZycsDQo+ID4gIAknbXNtX3JlY292ZXJ5JywNCj4gPiBAQCAtMzMwLDYgKzMzMywxOSBA
-QCBpZiBidWlsZF94ZQ0KPiA+ICAJYnVpbGRfaW5mbyArPSAnWGUgKipleHBlcmltZW50YWwqKiB0
-ZXN0cyBlbmFibGVkLicNCj4gPiAgZW5kaWYNCj4gDQo+IEkgZ290IHNwdXJpb3VzIGluZm9ybWF0
-aW9uIG9uICdtZXNvbmluZyc6DQo+IA0KPiBNZXNzYWdlOiBYZSAqKmV4cGVyaW1lbnRhbCoqIHRl
-c3RzIGVuYWJsZWQuDQo+IA0KPiBDb25maWd1cmF0aW9uIGxvb2tzOg0KPiANCj4gJCBtZXNvbiBj
-b25maWd1cmUgfCBncmVwIHN0YWdpbmcNCj4gICB4ZV9zdGFnaW5nICAgICAgICAgICAgICAgICAg
-ICAgZGlzYWJsZWQgICAgICAgICAgICAgICAgICAgICAgICAgW2VuYWJsZWQsIGRpc2FibGVkLCBh
-dXRvXSAgICAgICAgQnVpbGQgdGVzdHMgZm9yIFhlIGZlYXR1cmVzIHRoYXQgY2Fubm90IGJlIHVw
-c3RyZWFtZWQgeWV0IA0KPiANCj4gLS0NCj4gWmJpZ25pZXcNClRoZSBtZXNzYWdlIHlvdSBwb2lu
-dGVkLCBjb21lcyBmcm9tIHhlX2RyaXZlciBwYXJhbS4gDQpJZiB4ZV9zdGFnaW5nIGlzIGVuYWJs
-ZWQgd2UgYWRkICdXb3JrIGluIHByb2dyZXNzIHRlc3RzIGVuYWJsZWQuJyB0byB0aGF0IGluZm8g
-bG9nLg0KQXMgSSdtIGxvb2tpbmcgYXQgaXQgbm93IGl0IGNvdWxkIGJlIGp1c3QgIlhFIHN0YWdp
-bmcgdGVzdHMgZW5hYmxlZC4iLCB3aWxsIGNoYW5nZSB0aGF0IQ0KDQpSZWdhcmRzLCANCkRvbWlu
-aWsNCj4gDQo+ID4gIA0KPiA+ICtpZiBidWlsZF94ZV9zdGFnaW5nDQo+ID4gKyAgICAgICAgZm9y
-ZWFjaCBwcm9nIDogeGVfc3RhZ2luZ19wcm9ncw0KPiA+ICsJCXRlc3RfZXhlY3V0YWJsZXMgKz0g
-ZXhlY3V0YWJsZShwcm9nLA0KPiA+ICsJCSAgICAgICAgICAgam9pbl9wYXRocygneGUvc3RhZ2lu
-ZycsIHByb2cgKyAnLmMnKSwNCj4gPiArCQkJICAgZGVwZW5kZW5jaWVzIDogdGVzdF9kZXBzLA0K
-PiA+ICsJCQkgICBpbnN0YWxsX2RpciA6IGxpYmV4ZWNkaXIsDQo+ID4gKwkJCSAgIGluc3RhbGxf
-cnBhdGggOiBsaWJleGVjZGlyX3JwYXRoZGlyLA0KPiA+ICsJCQkgICBpbnN0YWxsIDogdHJ1ZSkN
-Cj4gPiArCQl0ZXN0X2xpc3QgKz0gcHJvZw0KPiA+ICsJZW5kZm9yZWFjaA0KPiA+ICsJYnVpbGRf
-aW5mbyArPSAnV29yayBpbiBwcm9ncmVzcyB0ZXN0cyBlbmFibGVkLicNCj4gPiArZW5kaWYNCj4g
-PiArDQo+ID4gIGZvcmVhY2ggcHJvZyA6IG1zbV9wcm9ncw0KPiA+ICAJdGVzdF9leGVjdXRhYmxl
-cyArPSBleGVjdXRhYmxlKHByb2csIGpvaW5fcGF0aHMoJ21zbScsIHByb2cgKyAnLmMnKSwNCj4g
-PiAgCQkJCSAgICAgICBkZXBlbmRlbmNpZXMgOiB0ZXN0X2RlcHMsDQo+ID4gLS0gDQo+ID4gMi4z
-NC4xDQo+ID4gDQoNCg==
+On Wed, May 17, 2023 at 02:28:17PM +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> 
+> Add GEN12 INSTDONE initialization as per spec.
+> 
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> ---
+>  lib/instdone.c | 69 +++++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 68 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/instdone.c b/lib/instdone.c
+> index a83f8836..d1c92793 100644
+> --- a/lib/instdone.c
+> +++ b/lib/instdone.c
+> @@ -274,6 +274,30 @@
+>  # define GEN6_VS0_DONE			(1 << 1)
+>  # define GEN6_VF_DONE			(1 << 0)
+>  
+> +# define GEN12_TSG1_DONE		(1 << 24)
+> +# define GEN12_RCCFBC_CS_DONE		(1 << 23)
+> +# define GEN12_SDE_DONE			(1 << 22)
+> +# define GEN12_CS_DONE			(1 << 21)
+> +# define GEN12_RS_DONE			(1 << 20)
+> +# define GEN12_GAFD_DONE		(1 << 19)
+> +# define GEN12_GAFM_DONE		(1 << 18)
+> +# define GEN12_TSG0_DONE		(1 << 17)
+> +# define GEN12_VFE_DONE			(1 << 16)
+> +# define GEN12_GAFS_DONE		(1 << 15)
+> +# define GEN12_SVG_DONE			(1 << 14)
+> +# define GEN12_URBM_DONE		(1 << 13)
+> +# define GEN12_TDG0_DONE		(1 << 12)
+> +# define GEN12_TDG1_DONE		(1 << 11)
+> +# define GEN12_SF_DONE			(1 << 9)
+> +# define GEN12_CL_DONE			(1 << 8)
+> +# define GEN12_SOL_DONE			(1 << 7)
+> +# define GEN12_GS_DONE			(1 << 6)
+> +# define GEN12_DS_DONE			(1 << 5)
+> +# define GEN12_TE_DONE			(1 << 4)
+> +# define GEN12_HS_DONE			(1 << 3)
+> +# define GEN12_VS_DONE			(1 << 2)
+> +# define GEN12_VFG_DONE			(1 << 1)
+> +
+>  struct instdone_bit instdone_bits[MAX_INSTDONE_BITS];
+>  int num_instdone_bits = 0;
+>  
+> @@ -425,10 +449,53 @@ init_gen11_instdone(void)
+>  	init_gen8_instdone();
+>  }
+>  
+> +static void
+> +init_xehp_instdone(void)
+> +{
+> +	gen6_instdone1_bit(GEN12_RCCFBC_CS_DONE, "RCCFBC CS");
+> +	gen6_instdone1_bit(GEN12_CS_DONE, "CS");
+> +	gen6_instdone1_bit(GEN12_RS_DONE, "RS");
+> +	gen6_instdone1_bit(GEN12_VFE_DONE, "VFE");
+> +	gen6_instdone1_bit(GEN12_VFG_DONE, "VFG");
+> +}
+> +
+> +static void
+> +init_gen12_instdone(uint32_t devid)
+> +{
+> +	if (intel_graphics_ver(devid) >= IP_VER(12, 50)) {
+> +		init_xehp_instdone();
+
+Rather than putting this inside the init_gen12_instdone function it
+would be better to add this to the top of the if/else ladder in
+init_instdone_definitions().  Even though Xe_HP platforms have a version
+number that starts with 12, they're not considered to be "gen12"
+platforms so putting it here is confusing.
+
+Aside from that minor change,
+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+
+> +	} else {
+> +		gen6_instdone1_bit(GEN12_TSG1_DONE, "TSG1");
+> +		gen6_instdone1_bit(GEN12_RCCFBC_CS_DONE, "RCCFBC CS");
+> +		gen6_instdone1_bit(GEN12_SDE_DONE, "SDE");
+> +		gen6_instdone1_bit(GEN12_CS_DONE, "CS");
+> +		gen6_instdone1_bit(GEN12_RS_DONE, "RS");
+> +		gen6_instdone1_bit(GEN12_GAFD_DONE, "GAFD");
+> +		gen6_instdone1_bit(GEN12_GAFM_DONE, "GAFM");
+> +		gen6_instdone1_bit(GEN12_TSG0_DONE, "TSG0");
+> +		gen6_instdone1_bit(GEN12_VFE_DONE, "VFE");
+> +		gen6_instdone1_bit(GEN12_GAFS_DONE, "GAFS");
+> +		gen6_instdone1_bit(GEN12_SVG_DONE, "SVG");
+> +		gen6_instdone1_bit(GEN12_URBM_DONE, "URBM");
+> +		gen6_instdone1_bit(GEN12_TDG0_DONE, "TDG0");
+> +		gen6_instdone1_bit(GEN12_TDG1_DONE, "TDG1");
+> +		gen6_instdone1_bit(GEN12_SF_DONE, "SF");
+> +		gen6_instdone1_bit(GEN12_CL_DONE, "CL");
+> +		gen6_instdone1_bit(GEN12_SOL_DONE, "SOL");
+> +		gen6_instdone1_bit(GEN12_GS_DONE, "GS");
+> +		gen6_instdone1_bit(GEN12_DS_DONE, "DS");
+> +		gen6_instdone1_bit(GEN12_TE_DONE, "TE");
+> +		gen6_instdone1_bit(GEN12_HS_DONE, "HS");
+> +		gen6_instdone1_bit(GEN12_VS_DONE, "VS");
+> +		gen6_instdone1_bit(GEN12_VFG_DONE, "VFG");
+> +	}
+> +}
+>  bool
+>  init_instdone_definitions(uint32_t devid)
+>  {
+> -	if (IS_GEN11(devid)) {
+> +	if (IS_GEN12(devid)) {
+> +		init_gen12_instdone(devid);
+> +	} else if (IS_GEN11(devid)) {
+>  		init_gen11_instdone();
+>  	} else if (IS_GEN8(devid) || IS_GEN9(devid) || IS_GEN10(devid)) {
+>  		init_gen8_instdone();
+> -- 
+> 2.25.1
+> 
+
+-- 
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
