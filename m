@@ -1,19 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6014810ED66
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 06:08:16 +0000 (UTC)
-Date: Thu, 25 May 2023 08:08:11 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230525060811.rp6loqhas6mufzxv@zkempczy-mobl2>
-References: <20230524150403.31460-1-kamil.konieczny@linux.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FDFB10EDC1
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 06:38:14 +0000 (UTC)
+Received: from linux.intel.com (unknown [10.252.20.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id A789C580D67
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 23:38:12 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1q24by-00Bbxc-2E
+ for igt-dev@lists.freedesktop.org; Thu, 25 May 2023 08:38:10 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 25 May 2023 08:37:59 +0200
+Message-Id: <20230525063805.2767417-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230525063805.2767417-1-mauro.chehab@linux.intel.com>
+References: <20230525063805.2767417-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230524150403.31460-1-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_core: add helper for srandom
- seed initialization
+Subject: [igt-dev] [PATCH i-g-t v3 1/7] gem_exec_fence: fix a typo
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,72 +26,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, May 24, 2023 at 05:04:03PM +0200, Kamil Konieczny wrote:
-> From: Łukasz Łaguna <lukasz.laguna@intel.com>
-> 
-> It allows to set specific value with IGT_SRANDOM environment variable.
-> 
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Signed-off-by: Łukasz Łaguna <lukasz.laguna@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  lib/igt_core.c | 16 ++++++++++++++++
->  lib/igt_core.h |  2 ++
->  2 files changed, 18 insertions(+)
-> 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index eff3d4272..cd9c2002d 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -3367,6 +3367,22 @@ err:
->  	return -1;
->  }
->  
-> +/**
-> + * igt_srandom:
-> + *
-> + * It initializes seed for random number generator.
-> + * If specific value is needed it can be set with IGT_SRANDOM environment
-> + * variable.
-> + */
-> +void igt_srandom(void)
-> +{
-> +	const char *param = getenv("IGT_SRANDOM");
-> +	int seed = param ? atoi(param) : time(NULL);
-> +
-> +	srandom(seed);
-> +	igt_info("Using IGT_SRANDOM=%d for randomisation\n", seed);
-> +}
-> +
->  /* IGT wrappers around libpciaccess init/cleanup functions */
->  
->  static void pci_system_exit_handler(int sig)
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index 5d5593e05..ef6bed6a5 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -1448,6 +1448,8 @@ int igt_system_quiet(const char *command);
->  		free(buf); \
->  	} while (0)
->  
-> +void igt_srandom(void);
-> +
->  /**
->   * igt_trace:
->   * @format: printf-style format string with optional args
-> -- 
-> 2.39.2
->
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Patch looks good for me. Have you thought to add this to constructor
-section?
+additinal -> additional
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/i915/gem_exec_fence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---
-Zbigniew 
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index 5a67a93e8eed..76a86e8f4197 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -3284,7 +3284,7 @@ igt_main
+ 				}
+ 			}
+ 
+-			igt_describe("Basic check for explicit fence with additinal wait time on"
++			igt_describe("Basic check for explicit fence with additional wait time on"
+ 				     " each busy engine.");
+ 			igt_subtest_with_dynamic("basic-wait") {
+ 				for_each_ctx_engine(i915, ctx, e) {
+-- 
+2.40.1
