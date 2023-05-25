@@ -1,26 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A65ED10E83D
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 09:06:00 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.20.31])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 1F520580DB3
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 02:05:41 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1q26uh-00BiHo-02
- for igt-dev@lists.freedesktop.org; Thu, 25 May 2023 11:05:39 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 25 May 2023 11:05:29 +0200
-Message-Id: <20230525090535.2791739-6-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
-References: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
-MIME-Version: 1.0
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F92410E878
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 09:35:58 +0000 (UTC)
+Message-ID: <bbfcebb6-d59b-754e-2b2d-04453fd2c26a@intel.com>
+Date: Thu, 25 May 2023 11:35:24 +0200
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <cover.1684747649.git.karolina.stolarek@intel.com>
+ <7e7b6ba7fd27f0863c0ce47c2b87961afdeea84d.1684747649.git.karolina.stolarek@intel.com>
+ <20230522112943.rx2tfp6wmgbocwcj@zkempczy-mobl2>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230522112943.rx2tfp6wmgbocwcj@zkempczy-mobl2>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 05/11] i915/gem_ctx_*: better document
- i915 context tests
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] tests/i915/i915_pm_rpm: Modify
+ gem-execbuf test for gen12+
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,740 +23,298 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On 22.05.2023 13:29, Zbigniew Kempczyński wrote:
+> On Mon, May 22, 2023 at 11:57:12AM +0200, Karolina Stolarek wrote:
+>> From: Vikas Srivastava <vikas.srivastava@intel.com>
+>>
+>> xy_color_blt is not supported on MTL and other gen12+ target
+>> hence an IGT test update needs to be done. Modify the test
+>> to add a lib API to check for xy_color_blt support.
+>>
+>> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
+>> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+>> ---
+>>   tests/i915/i915_pm_rpm.c | 185 ++++++++++++++++++++++++++++++---------
+>>   1 file changed, 146 insertions(+), 39 deletions(-)
+>>
+>> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+>> index d9b4cbbfe..b23eba544 100644
+>> --- a/tests/i915/i915_pm_rpm.c
+>> +++ b/tests/i915/i915_pm_rpm.c
+>> @@ -243,6 +243,7 @@
+>>   #include "igt_debugfs.h"
+>>   #include "igt_device.h"
+>>   #include "igt_edid.h"
+>> +#include "i915/i915_blt.h"
+>>   
+>>   #define MSR_PC8_RES	0x630
+>>   #define MSR_PC9_RES	0x631
+>> @@ -252,6 +253,11 @@
+>>   #define MAX_ENCODERS	32
+>>   #define MAX_CRTCS	16
+>>   
+>> +#define WIDTH 64
+>> +#define HEIGHT 64
+>> +#define STRIDE (WIDTH)
+>> +#define SIZE (HEIGHT * STRIDE)
+>> +
+>>   enum pc8_status {
+>>   	PC8_ENABLED,
+>>   	PC8_DISABLED
+>> @@ -308,10 +314,57 @@ struct modeset_params {
+>>   	drmModeModeInfoPtr mode;
+>>   };
+>>   
+>> +struct data_t {
+>> +	int width;
+>> +	int height;
+>> +	uint32_t region;
+>> +};
+>> +
+>>   struct modeset_params lpsp_mode_params;
+>>   struct modeset_params non_lpsp_mode_params;
+>>   struct modeset_params *default_mode_params;
+>>   
+>> +/* API to create mmap buffer */
+>> +static struct intel_buf *
+>> +create_buf(struct data_t *data, uint32_t color)
+>> +{
+>> +	struct intel_buf *buf;
+>> +	uint8_t *ptr;
+>> +	uint32_t handle;
+>> +	struct buf_ops *bops;
+>> +	int i;
+>> +
+>> +	buf = calloc(1, sizeof(*buf));
+>> +	igt_assert(buf);
+>> +	bops = buf_ops_create(drm_fd);
+>> +
+>> +	handle = gem_create_in_memory_regions(drm_fd, SIZE, data->region);
+>> +	intel_buf_init_using_handle(bops, handle, buf,
+>> +				    data->width / 4, data->height, 32, 0,
+>> +				    I915_TILING_NONE, 0);
+>> +
+>> +	ptr = gem_mmap__cpu_coherent(drm_fd, buf->handle, 0,
+>> +				     buf->surface[0].size, PROT_WRITE);
+>> +
+>> +	for (i = 0; i < buf->surface[0].size; i++)
+>> +		ptr[i] = color;
+>> +
+>> +	munmap(ptr, buf->surface[0].size);
+>> +
+>> +	return buf;
+>> +}
+>> +
+>> +/* checking the buffer content is correct or not */
+>> +static void buf_check(uint8_t *ptr, int x, int y, uint8_t color)
+>> +{
+>> +	uint8_t val;
+>> +
+>> +	val = ptr[y * WIDTH + x];
+>> +	igt_assert_f(val == color,
+>> +		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
+>> +		     color, val, x, y);
+>> +}
+>> +
+>>   static int modprobe(const char *driver)
+>>   {
+>>   	return igt_kmod_load(driver, NULL);
+>> @@ -1522,7 +1575,7 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
+>>   /* Make sure we can submit a batch buffer and verify its result. */
+>>   static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_regions)
+>>   {
+>> -	int x, y;
+>> +	int x, y, i, j;
+>>   	uint32_t handle;
+>>   	int bpp = 4;
+>>   	int pitch = 128 * bpp;
+>> @@ -1531,10 +1584,31 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
+>>   	uint32_t presumed_offset = 0;
+>>   	int sq_x = 5, sq_y = 10, sq_w = 15, sq_h = 20;
+>>   	uint32_t color;
+>> +	struct intel_buf *buf;
+>> +	uint8_t *ptr;
+>> +	struct data_t data = {0, };
+>> +	struct igt_collection *region;
+>> +	struct drm_i915_query_memory_regions *region_info;
+>> +	struct igt_collection *region_set;
+>> +	uint32_t id;
+>>   
+>>   	igt_require_gem(drm_fd);
+>>   	gem_require_blitter(drm_fd);
+>>   
+>> +	region_info = gem_get_query_memory_regions(drm_fd);
+>> +	igt_assert(region_info);
+>> +	region_set = get_memory_region_set(region_info,
+>> +					   I915_SYSTEM_MEMORY,
+>> +					   I915_DEVICE_MEMORY);
+>> +	for_each_combination(region, 1, region_set) {
+>> +		id = igt_collection_get_value(region, 0);
+>> +		break;
+>> +	}
+> 
+> All above region work finally lead to simple gem_create() in
+> system memory (break). I think order of SYSTEM and DEVICE
+> regions has meaning here (I guess you want to prefer DEVICE
+> on discrete instead of SYSTEM).
+> 
 
-Merge data from some ancillary internal documentation to improve
-i915 gem_ctx test descriptions.
+Hmm, interesting. I believe this definition was inspired by what was 
+already in the code, but I can try and move things around.
 
-This patch was auto-generated via script.
+Many thanks,
+Karolina
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/i915/gem_ctx_bad_destroy.c |   4 ++
- tests/i915/gem_ctx_create.c      |  22 +++++-
- tests/i915/gem_ctx_engines.c     |   4 ++
- tests/i915/gem_ctx_exec.c        |  28 +++++++-
- tests/i915/gem_ctx_freq.c        |   4 ++
- tests/i915/gem_ctx_isolation.c   |  38 ++++++++++-
- tests/i915/gem_ctx_param.c       |  76 +++++++++++++++++++++
- tests/i915/gem_ctx_persistence.c | 112 +++++++++++++++++++++++++++++++
- tests/i915/gem_ctx_shared.c      |  37 +++++++++-
- 9 files changed, 321 insertions(+), 4 deletions(-)
-
-diff --git a/tests/i915/gem_ctx_bad_destroy.c b/tests/i915/gem_ctx_bad_destroy.c
-index 90495da8ab2e..8c47e7c1cb67 100644
---- a/tests/i915/gem_ctx_bad_destroy.c
-+++ b/tests/i915/gem_ctx_bad_destroy.c
-@@ -36,9 +36,13 @@
- 
- /**
-  * TEST: gem ctx bad destroy
-+ * Category: Infrastructure
-  * Description: Negative test cases for destroy contexts.
-  * Feature: context
-+ * Functionality: context management
-  * Run type: FULL
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: double-destroy
-  *
-diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
-index 0c65027bc838..95e219482de6 100644
---- a/tests/i915/gem_ctx_create.c
-+++ b/tests/i915/gem_ctx_create.c
-@@ -38,70 +38,90 @@
- /**
-  * TEST: gem ctx create
-  * Description: Test the context create ioctls
-- * Feature: context
-  *
-  * SUBTEST: active
-  * Description:
-  *   For each engine calculate the average performance of context creation execution and
-  *   exercise context reclaim
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: active-all
-  * Description: Calculate the average performance of context creation and it's execution using all engines
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: basic
-+ * Category: Infrastructure
-  * Description: Test random context creation
-+ * Feature: context
-+ * Functionality: context management
-  * Run type: BAT
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-files
-+ * Category: Infrastructure
-  * Description: Exercise implicit per-fd context creation
-+ * Feature: context
-+ * Functionality: context management
-  * Run type: BAT
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: ext-param
-  * Description: Verify valid and invalid context extensions
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: files
-  * Description: Exercise implicit per-fd context creation on 1 CPU for long duration
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: forked-active
-  * Description:
-  *   For each engine calculate the average performance of context creation and execution on
-  *   multiple parallel processes
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: forked-active-all
-  * Description:
-  *   Calculate the average performance of context creation and it's execution using all engines
-  *   on multiple parallel processes
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: forked-files
-  * Description: Exercise implicit per-fd context creation on all CPUs for long duration
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: hog
-  * Description:
-  *   For each engine calculate the average performance of context creation and execution while
-  *   all other engines are hogging the resources
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: iris-pipeline
-  * Description: Set, validate and execute particular context params
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: maximum-mem
-  * Description:
-  *   Create contexts upto available RAM size, calculate the average performance of their
-  *   execution on multiple parallel processes
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: maximum-swap
-  * Description:
-  *   Create contexts upto available RAM+SWAP size, calculate the average performance of their
-  *   execution on multiple parallel processes
-+ * Feature: context
-  * Run type: FULL
-  */
- 
-diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
-index d15a7b7e5f67..61718494e86a 100644
---- a/tests/i915/gem_ctx_engines.c
-+++ b/tests/i915/gem_ctx_engines.c
-@@ -45,8 +45,12 @@
- #include "sw_sync.h"
- /**
-  * TEST: gem ctx engines
-+ * Category: Infrastructure
-  * Feature: context
-+ * Functionality: context management
-  * Run type: FULL
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: execute-allforone
-  *
-diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-index 9fec2bb10fdf..bd6671ec8d90 100644
---- a/tests/i915/gem_ctx_exec.c
-+++ b/tests/i915/gem_ctx_exec.c
-@@ -50,34 +50,60 @@
- /**
-  * TEST: gem ctx exec
-  * Description: Test context batch buffer execution.
-- * Feature: context
-  *
-  * SUBTEST: basic
-+ * Category: Infrastructure
-  * Description: Check the basic context batch buffer execution.
-+ * Feature: context
-+ * Functionality: command submission
-  * Run type: BAT
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-close-race
-+ * Category: Infrastructure
-  * Description: Race the execution and interrupt handlers along a context, while closing it at a random time.
-+ * Feature: context
-+ * Functionality: command submission
-  * Run type: FULL
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-invalid-context
-+ * Category: Infrastructure
-  * Description: Verify that execbuf with invalid context fails.
-+ * Feature: context
-+ * Functionality: command submission
-  * Run type: FULL
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-nohangcheck
-+ * Category: Server
-  * Description: Verify that contexts are automatically shotdown on close, if hangchecking is disabled.
-+ * Feature: context
-+ * Functionality: command submission
-  * Run type: FULL
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-norecovery
-+ * Category: Server
-  * Description: Check the status of context after a hang by setting and unsetting the RECOVERABLE.
-+ * Feature: context
-+ * Functionality: command submission
-  * Run type: FULL
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: eviction
-  * Description: Check maximum number of buffers it can evict for a context.
-+ * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: reset-pin-leak
-  * Description: Check if the kernel doesn't leak the vma pin_count for the last context on reset.
-+ * Feature: context
-  * Run type: FULL
-  */
- 
-diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
-index 8e432cbdf8f5..2c30934daa23 100644
---- a/tests/i915/gem_ctx_freq.c
-+++ b/tests/i915/gem_ctx_freq.c
-@@ -36,8 +36,12 @@
- #include "sw_sync.h"
- /**
-  * TEST: gem ctx freq
-+ * Category: Server
-  * Feature: context
-+ * Functionality: frequency management
-  * Run type: FULL
-+ * Sub-category: Performance
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: sysfs
-  */
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-index 2c2da296d301..d50a90597e6f 100644
---- a/tests/i915/gem_ctx_isolation.c
-+++ b/tests/i915/gem_ctx_isolation.c
-@@ -28,26 +28,62 @@
- #include "igt_types.h"
- /**
-  * TEST: gem ctx isolation
-- * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: clean
-+ * Category: Infrastructure
-+ * Feature: context
-+ * Functionality: security
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: dirty-create
-+ * Category: Infrastructure
-+ * Feature: context
-+ * Functionality: security
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: dirty-switch
-+ * Category: Infrastructure
-+ * Feature: context
-+ * Functionality: security
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: nonpriv
-+ * Category: Infrastructure
-+ * Feature: context
-+ * Functionality: security
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: nonpriv-switch
-+ * Category: Infrastructure
-+ * Feature: context
-+ * Functionality: security
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: preservation
-+ * Category: Infrastructure
-+ * Feature: context
-+ * Functionality: security
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: preservation-S3
-+ * Feature: context
-  *
-  * SUBTEST: preservation-S4
-+ * Feature: context
-  *
-  * SUBTEST: preservation-reset
-+ * Category: Infrastructure
-+ * Feature: context
-+ * Functionality: security
-+ * Sub-category: HW
-+ * Test category: GEM_Legacy
-  */
- 
- /* MAX_REG must be greater than the maximum register address. */
-diff --git a/tests/i915/gem_ctx_param.c b/tests/i915/gem_ctx_param.c
-index 5e56c645572b..7c59fe3ed0db 100644
---- a/tests/i915/gem_ctx_param.c
-+++ b/tests/i915/gem_ctx_param.c
-@@ -36,71 +36,139 @@
-  * Run type: FULL
-  *
-  * SUBTEST: basic
-+ * Category: Infrastructure
-  * Description: Basic test for context get/set param ioctls using valid context
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: basic-default
-+ * Category: Infrastructure
-  * Description: Basic test for context get/set param ioctls using default context
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: get-priority-new-ctx
-+ * Category: Infrastructure
-  * Description:
-  *   Test performed with context param set to priority.
-  *   Verify that priority is default for newly created context
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-ctx-get
-+ * Category: Infrastructure
-  * Description: Verify that context get param ioctl using invalid context returns relevant error
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-ctx-set
-+ * Category: Infrastructure
-  * Description: Verify that context set param ioctl using invalid context returns relevant error
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-get-engines
-+ * Category: Infrastructure
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-get-no-zeromap
-+ * Category: Infrastructure
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-get-ringsize
-+ * Category: Infrastructure
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-param-get
-+ * Category: Infrastructure
-  * Description: Checks that fetching context parameters using an unused param value is erroneous
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-param-set
-+ * Category: Infrastructure
-  * Description: Checks that setting context parameters using an unused param value is erroneous
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-set-no-zeromap
-+ * Category: Infrastructure
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-set-ringsize
-+ * Category: Infrastructure
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-size-get
-+ * Category: Infrastructure
-  * Description: Verify that context get param ioctl returns valid size for valid context
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: invalid-size-set
-+ * Category: Infrastructure
-  * Description: Verify that context set param ioctl using invalid size returns relevant error
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: non-root-set
-+ * Category: Infrastructure
-  * Description: Verify that context set param ioctl returns relevant error in non root mode
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: root-set
-+ * Category: Infrastructure
-  * Description: Verify that context set param ioctl works fine in root mode
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: set-priority-invalid-size
-+ * Category: Infrastructure
-  * Description:
-  *   Test performed with context param set to priority.
-  *   Verify that relevant error is returned on setting invalid ctx size with default priority
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: set-priority-not-supported
-  * Description:
-@@ -109,14 +177,22 @@
-  * Feature: context, no-set-priority
-  *
-  * SUBTEST: set-priority-range
-+ * Category: Infrastructure
-  * Description:
-  *   Test performed with context param set to priority.
-  *   Change priority range to test value overflow
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: vm
-+ * Category: Infrastructure
-  * Description: Tests that multiple contexts can share the same VMA
-  * Feature: context
-+ * Functionality: context management
-+ * Sub-category: i915
-+ * Test category: GEM_Legacy
-  */
- 
- IGT_TEST_DESCRIPTION("Basic test for context set/get param input validation.");
-diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-index 42cf9632989e..584137db4546 100644
---- a/tests/i915/gem_ctx_persistence.c
-+++ b/tests/i915/gem_ctx_persistence.c
-@@ -51,68 +51,180 @@
-  * Run type: FULL
-  *
-  * SUBTEST: engines-cleanup
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: engines-hang
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: engines-hostile
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: engines-hostile-preempt
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: engines-mixed
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: engines-mixed-process
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: engines-persistence
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: engines-queued
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: file
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: hang
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: heartbeat-close
-  *
-  * SUBTEST: heartbeat-hang
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: heartbeat-hostile
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: heartbeat-many
-  *
-  * SUBTEST: heartbeat-stop
-  *
-  * SUBTEST: hostile
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: idempotent
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: legacy-engines-cleanup
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: legacy-engines-hang
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: legacy-engines-hostile
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: legacy-engines-hostile-preempt
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: legacy-engines-mixed
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: legacy-engines-mixed-process
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: legacy-engines-persistence
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: legacy-engines-queued
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: many-contexts
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: process
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: processes
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: saturated-hostile
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: saturated-hostile-nopreempt
-  *
-  * SUBTEST: smoketest
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: userptr
-+ * Category: Server
-+ * Functionality: security
-+ * Sub-category: Compute
-+ * Test category: GEM_Legacy
-  */
- 
- #define RESET_TIMEOUT_MS 2 * MSEC_PER_SEC; /* default: 640ms */
-diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
-index 98827f09f9ea..ede6db13b265 100644
---- a/tests/i915/gem_ctx_shared.c
-+++ b/tests/i915/gem_ctx_shared.c
-@@ -50,36 +50,71 @@
- /**
-  * TEST: gem ctx shared
-  * Description: Test shared contexts.
-- * Feature: context
-  * Run type: FULL
-  *
-  * SUBTEST: Q-in-order
-+ * Feature: context
-  *
-  * SUBTEST: Q-independent
-+ * Feature: context
-  *
-  * SUBTEST: Q-out-order
-+ * Feature: context
-  *
-  * SUBTEST: Q-promotion
-+ * Feature: context
-  *
-  * SUBTEST: Q-smoketest
-+ * Feature: context
-  *
-  * SUBTEST: Q-smoketest-all
-+ * Feature: context
-  *
-  * SUBTEST: create-shared-gtt
-+ * Category: Desktop client
-+ * Feature: context
-+ * Functionality: context management
-+ * Sub-category: Media
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: detached-shared-gtt
-+ * Category: Desktop client
-+ * Feature: context
-+ * Functionality: context management
-+ * Sub-category: Media
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: disjoint-timelines
-+ * Category: Desktop client
-+ * Feature: context
-+ * Functionality: context management
-+ * Sub-category: Media
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: exec-shared-gtt
-+ * Category: Desktop client
-+ * Feature: context
-+ * Functionality: context management
-+ * Sub-category: Media
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: exec-single-timeline
-+ * Category: Desktop client
-+ * Feature: context
-+ * Functionality: context management
-+ * Test category: GEM_Legacy
-  *
-  * SUBTEST: exhaust-shared-gtt
-+ * Feature: context
-  *
-  * SUBTEST: exhaust-shared-gtt-lrc
-+ * Feature: context
-  *
-  * SUBTEST: single-timeline
-+ * Category: Desktop client
-+ * Feature: context
-+ * Functionality: context management
-+ * Test category: GEM_Legacy
-  */
- 
- #define LO 0
--- 
-2.40.1
+> --
+> Zbigniew
+> 
+>> +
+>> +	data.width = WIDTH;
+>> +	data.height = HEIGHT;
+>> +	data.region = id;
+>> +
+>>   	/* Create and set data while the device is active. */
+>>   	enable_one_screen_or_forcewake_get_and_wait(&ms_data);
+>>   
+>> @@ -1549,62 +1623,95 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
+>>   	disable_all_screens_or_forcewake_put_and_wait(&ms_data);
+>>   
+>>   	color = 0x12345678;
+>> -	submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
+>> -		       &presumed_offset);
+>> -	igt_assert(wait_for_suspended());
+>> +	if (blt_has_xy_color(drm_fd)) {
+>> +		submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
+>> +			       &presumed_offset);
+>> +		igt_assert(wait_for_suspended());
+>>   
+>> -	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+>> -	igt_assert(wait_for_suspended());
+>> -	for (y = 0; y < 128; y++) {
+>> -		for (x = 0; x < 128; x++) {
+>> -			uint32_t px = cpu_buf[y * 128 + x];
+>> +		gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+>> +		for (y = 0; y < 128; y++) {
+>> +			for (x = 0; x < 128; x++) {
+>> +				uint32_t px = cpu_buf[y * 128 + x];
+>>   
+>> -			if (y >= sq_y && y < (sq_y + sq_h) &&
+>> -			    x >= sq_x && x < (sq_x + sq_w))
+>> -				igt_assert_eq_u32(px, color);
+>> -			else
+>> -				igt_assert(px == 0);
+>> +				if (y >= sq_y && y < (sq_y + sq_h) &&
+>> +				    x >= sq_x && x < (sq_x + sq_w))
+>> +					igt_assert_eq_u32(px, color);
+>> +				else
+>> +					igt_assert(px == 0);
+>> +			}
+>>   		}
+>> +	} else {
+>> +		buf = create_buf(&data, color);
+>> +		ptr = gem_mmap__device_coherent(drm_fd, buf->handle, 0,
+>> +						buf->surface[0].size, PROT_READ);
+>> +		igt_assert(wait_for_suspended());
+>> +
+>> +		for (i = 0; i < WIDTH; i++)
+>> +			for (j = 0; j < HEIGHT; j++)
+>> +				buf_check(ptr, i, j, color);
+>> +		munmap(ptr, buf->surface[0].size);
+>>   	}
+>>   
+>>   	/* Now resume and check for it again. */
+>>   	enable_one_screen_or_forcewake_get_and_wait(&ms_data);
+>>   
+>> -	memset(cpu_buf, 0, dst_size);
+>> -	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+>> -	for (y = 0; y < 128; y++) {
+>> -		for (x = 0; x < 128; x++) {
+>> -			uint32_t px = cpu_buf[y * 128 + x];
+>> -
+>> -			if (y >= sq_y && y < (sq_y + sq_h) &&
+>> -			    x >= sq_x && x < (sq_x + sq_w))
+>> -				igt_assert_eq_u32(px, color);
+>> -			else
+>> -				igt_assert(px == 0);
+>> +	if (blt_has_xy_color(drm_fd)) {
+>> +		memset(cpu_buf, 0, dst_size);
+>> +		gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+>> +
+>> +		for (y = 0; y < 128; y++) {
+>> +			for (x = 0; x < 128; x++) {
+>> +				uint32_t px = cpu_buf[y * 128 + x];
+>> +
+>> +				if (y >= sq_y && y < (sq_y + sq_h) &&
+>> +				    x >= sq_x && x < (sq_x + sq_w))
+>> +					igt_assert_eq_u32(px, color);
+>> +				else
+>> +					igt_assert(px == 0);
+>> +			}
+>>   		}
+>> +	} else {
+>> +		buf = create_buf(&data, color);
+>> +		ptr = gem_mmap__device_coherent(drm_fd, buf->handle, 0,
+>> +						buf->surface[0].size, PROT_READ);
+>> +		for (i = 0; i < WIDTH; i++)
+>> +			for (j = 0; j < HEIGHT; j++)
+>> +				buf_check(ptr, i, j, color);
+>> +		munmap(ptr, buf->surface[0].size);
+>>   	}
+>>   
+>>   	/* Now we'll do the opposite: do the blt while active, then read while
+>>   	 * suspended. We use the same spot, but a different color. As a bonus,
+>>   	 * we're testing the presumed_offset from the previous command. */
+>>   	color = 0x87654321;
+>> -	submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
+>> -		       &presumed_offset);
+>> +	if (blt_has_xy_color(drm_fd)) {
+>>   
+>> -	disable_all_screens_or_forcewake_put_and_wait(&ms_data);
+>> +		submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
+>> +			       &presumed_offset);
+>>   
+>> -	memset(cpu_buf, 0, dst_size);
+>> -	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+>> -	for (y = 0; y < 128; y++) {
+>> -		for (x = 0; x < 128; x++) {
+>> -			uint32_t px = cpu_buf[y * 128 + x];
+>> -
+>> -			if (y >= sq_y && y < (sq_y + sq_h) &&
+>> -			    x >= sq_x && x < (sq_x + sq_w))
+>> -				igt_assert_eq_u32(px, color);
+>> -			else
+>> -				igt_assert(px == 0);
+>> +		disable_all_screens_or_forcewake_put_and_wait(&ms_data);
+>> +
+>> +		memset(cpu_buf, 0, dst_size);
+>> +		gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+>> +		for (y = 0; y < 128; y++) {
+>> +			for (x = 0; x < 128; x++) {
+>> +				uint32_t px = cpu_buf[y * 128 + x];
+>> +
+>> +				if (y >= sq_y && y < (sq_y + sq_h) &&
+>> +				    x >= sq_x && x < (sq_x + sq_w))
+>> +					igt_assert_eq_u32(px, color);
+>> +				else
+>> +					igt_assert(px == 0);
+>> +			}
+>>   		}
+>> +	} else {
+>> +		buf = create_buf(&data, color);
+>> +		ptr = gem_mmap__device_coherent(drm_fd, buf->handle, 0,
+>> +						buf->surface[0].size, PROT_READ);
+>> +		for (i = 0; i < WIDTH; i++)
+>> +			for (j = 0; j < HEIGHT; j++)
+>> +				buf_check(ptr, i, j, color);
+>> +		munmap(ptr, buf->surface[0].size);
+>>   	}
+>>   
+>>   	gem_close(drm_fd, handle);
+>> -- 
+>> 2.25.1
+>>
