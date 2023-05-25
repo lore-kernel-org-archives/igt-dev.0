@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6014810ED66
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 06:08:16 +0000 (UTC)
+Date: Thu, 25 May 2023 08:08:11 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230525060811.rp6loqhas6mufzxv@zkempczy-mobl2>
+References: <20230524150403.31460-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Date: Thu, 25 May 2023 06:07:45 -0000
-Message-ID: <168499486558.5913.14827094372959651649@emeril.freedesktop.org>
-References: <20230525055519.10098-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20230525055519.10098-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
- =?utf-8?q?ntegrate_igt=5Fspin=5Fnew_with_Xe=2E_=28rev2=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230524150403.31460-1-kamil.konieczny@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_core: add helper for srandom
+ seed initialization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,133 +21,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Wed, May 24, 2023 at 05:04:03PM +0200, Kamil Konieczny wrote:
+> From: Łukasz Łaguna <lukasz.laguna@intel.com>
+> 
+> It allows to set specific value with IGT_SRANDOM environment variable.
+> 
+> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Signed-off-by: Łukasz Łaguna <lukasz.laguna@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  lib/igt_core.c | 16 ++++++++++++++++
+>  lib/igt_core.h |  2 ++
+>  2 files changed, 18 insertions(+)
+> 
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index eff3d4272..cd9c2002d 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -3367,6 +3367,22 @@ err:
+>  	return -1;
+>  }
+>  
+> +/**
+> + * igt_srandom:
+> + *
+> + * It initializes seed for random number generator.
+> + * If specific value is needed it can be set with IGT_SRANDOM environment
+> + * variable.
+> + */
+> +void igt_srandom(void)
+> +{
+> +	const char *param = getenv("IGT_SRANDOM");
+> +	int seed = param ? atoi(param) : time(NULL);
+> +
+> +	srandom(seed);
+> +	igt_info("Using IGT_SRANDOM=%d for randomisation\n", seed);
+> +}
+> +
+>  /* IGT wrappers around libpciaccess init/cleanup functions */
+>  
+>  static void pci_system_exit_handler(int sig)
+> diff --git a/lib/igt_core.h b/lib/igt_core.h
+> index 5d5593e05..ef6bed6a5 100644
+> --- a/lib/igt_core.h
+> +++ b/lib/igt_core.h
+> @@ -1448,6 +1448,8 @@ int igt_system_quiet(const char *command);
+>  		free(buf); \
+>  	} while (0)
+>  
+> +void igt_srandom(void);
+> +
+>  /**
+>   * igt_trace:
+>   * @format: printf-style format string with optional args
+> -- 
+> 2.39.2
+>
 
-Series: Integrate igt_spin_new with Xe. (rev2)
-URL   : https://patchwork.freedesktop.org/series/118121/
-State : warning
+Patch looks good for me. Have you thought to add this to constructor
+section?
 
-== Summary ==
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/890115 for the overview.
-
-build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42415062):
-  time="2023-05-25T06:02:24Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:c722db24a050621ee87ea07acd5d066d3d6a94737c32012f27d73a1ad5cc645c
-  Copying config sha256:8b5601a5a7f855241ac7f372ec0042e793b0b3eb3f3a601014845f22bd371c90
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-05-25T06:02:29Z" level=warning msg="signal: killed"
-  time="2023-05-25T06:02:29Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1684994551:step_script
-  section_start:1684994551:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684994552:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42415064):
-  time="2023-05-25T06:02:23Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:c722db24a050621ee87ea07acd5d066d3d6a94737c32012f27d73a1ad5cc645c
-  Copying config sha256:8b5601a5a7f855241ac7f372ec0042e793b0b3eb3f3a601014845f22bd371c90
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-05-25T06:02:26Z" level=warning msg="signal: killed"
-  time="2023-05-25T06:02:26Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1684994546:step_script
-  section_start:1684994546:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684994548:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42415063):
-  time="2023-05-25T06:02:28Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:c722db24a050621ee87ea07acd5d066d3d6a94737c32012f27d73a1ad5cc645c
-  Copying config sha256:8b5601a5a7f855241ac7f372ec0042e793b0b3eb3f3a601014845f22bd371c90
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-05-25T06:02:32Z" level=warning msg="signal: killed"
-  time="2023-05-25T06:02:32Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1684994554:step_script
-  section_start:1684994554:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684994559:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42415065):
-  time="2023-05-25T06:02:24Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:c722db24a050621ee87ea07acd5d066d3d6a94737c32012f27d73a1ad5cc645c
-  Copying config sha256:8b5601a5a7f855241ac7f372ec0042e793b0b3eb3f3a601014845f22bd371c90
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-05-25T06:02:28Z" level=warning msg="signal: killed"
-  time="2023-05-25T06:02:28Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1684994549:step_script
-  section_start:1684994549:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684994550:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42415066):
-  time="2023-05-25T06:02:27Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM fedora:31
-  Getting image source signatures
-  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
-  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
-  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-05-25T06:02:31Z" level=warning msg="signal: killed"
-  time="2023-05-25T06:02:31Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
-  section_end:1684994552:step_script
-  section_start:1684994552:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684994554:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/890115
+--
+Zbigniew 
