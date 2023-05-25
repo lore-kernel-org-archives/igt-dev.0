@@ -1,25 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B25D10E83C
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 09:06:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D34B10E0A3
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 09:05:59 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.20.31])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id E952F580D79
+ by linux.intel.com (Postfix) with ESMTPS id EF813580DA7
  for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 02:05:40 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1q26uh-00BiHr-05
- for igt-dev@lists.freedesktop.org; Thu, 25 May 2023 11:05:39 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1q26ug-00BiHi-37
+ for igt-dev@lists.freedesktop.org; Thu, 25 May 2023 11:05:38 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 25 May 2023 11:05:30 +0200
-Message-Id: <20230525090535.2791739-7-mauro.chehab@linux.intel.com>
+Date: Thu, 25 May 2023 11:05:27 +0200
+Message-Id: <20230525090535.2791739-4-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
 References: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 06/11] i915/perf_*: better document tests
+Subject: [igt-dev] [PATCH i-g-t v4 03/11] tests: better document the
+ remaining core used by i915 validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,442 +35,464 @@ List-ID: <igt-dev@lists.freedesktop.org>
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 Merge data from some ancillary internal documentation to improve
-i915 perf test descriptions.
+test descriptions for the remaining core tests used during i915
+validation.
 
 This patch was auto-generated via script.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/perf.c     |  96 +++++++++++++++++++++--------
- tests/i915/perf_pmu.c | 137 +++++++++++++++++++++++++++++++-----------
- 2 files changed, 173 insertions(+), 60 deletions(-)
+ tests/debugfs_test.c         | 23 +++++++++++++++++++---
+ tests/device_reset.c         |  8 +++++++-
+ tests/dumb_buffer.c          |  4 ++++
+ tests/prime_busy.c           |  4 ++++
+ tests/prime_mmap.c           |  4 ++++
+ tests/prime_mmap_coherency.c |  4 ++++
+ tests/prime_self_import.c    |  4 ++++
+ tests/prime_vgem.c           | 37 +++++++++++++++++++++++++++++++-----
+ tests/sw_sync.c              |  4 ++++
+ tests/syncobj_basic.c        |  4 ++++
+ tests/syncobj_timeline.c     |  4 ++++
+ tests/syncobj_wait.c         |  4 ++++
+ tests/vgem_basic.c           | 14 ++++++++++++++
+ tests/vgem_slow.c            |  4 ++++
+ 14 files changed, 113 insertions(+), 9 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 1b1c39aafb8b..55594ea6c671 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -52,20 +52,28 @@
+diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
+index 39b001671bcc..5ee615abaf6d 100644
+--- a/tests/debugfs_test.c
++++ b/tests/debugfs_test.c
+@@ -35,12 +35,23 @@
+  * Feature: core
   *
-  * SUBTEST: blocking
-  * Description: Test blocking read with default hrtimer frequency
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: blocking-parameterized
-  * Description: Test blocking read with different hrtimer frequencies
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: buffer-fill
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: create-destroy-userspace-config
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: disabled-read-error
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: enable-disable
-  * Feature: oa
-@@ -84,7 +92,8 @@
-  *
-  * SUBTEST: gen12-invalid-class-instance
-  * Description: Verify invalid class instance
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: gen12-mi-rpc
-  * Description: Test MI REPORT PERF COUNT for Gen 12
-@@ -92,7 +101,8 @@
-  *
-  * SUBTEST: gen12-oa-tlb-invalidate
-  * Description: Test OA TLB invalidate
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: gen12-unprivileged-single-ctx-counters
-  * Description: Measure performance for a specific context using OAR in Gen 12
-@@ -110,84 +120,118 @@
-  * Feature: oa
-  *
-  * SUBTEST: i915-ref-count
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-create-userspace-config
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-oa-exponent
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-oa-format-id
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-oa-metric-set-id
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-open-flags
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-remove-userspace-config
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: low-oa-exponent-permissions
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: mi-rpc
-  * Feature: oa
-  *
-  * SUBTEST: missing-sample-flags
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: non-sampling-read-error
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: non-system-wide-paranoid
-  * Feature: oa
-  *
-  * SUBTEST: non-zero-reason
-- * Description: Test that reason field in OA reports is never 0 on Gen8+
-- * Feature: oa
+  * SUBTEST: basic-hwmon
+- * Description: Read all entries from hwmon path
++ * Category: Infrastructure
 + * Description:
-+ *   Test that reason field in OA reports is never 0 on Gen8+.
-+ *   Test that reason field in OA reports is never 0 on Gen8+
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
++ *   Read all entries from hwmon path
++ *   validating debugfs entries
++ * Functionality: debugfs entries
+  * Run type: BAT
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: oa-exponents
-  * Feature: oa
+  * SUBTEST: read_all_entries
+- * Description: Read all entries from debugfs path.
++ * Category: Infrastructure
++ * Description:
++ *   Read all entries from debugfs path.
++ *   validating debugfs entries
++ * Functionality: debugfs entries
+  * Run type: BAT
++ * Sub-category: i915
++ * Test category: GEM_Legacy
   *
-  * SUBTEST: oa-formats
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: per-context-mode-unprivileged
-  * Feature: oa, obsolete
-  *
-  * SUBTEST: polling
-  * Description: Test polled read with default hrtimer frequency
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: polling-parameterized
-  * Description: Test polled read with different hrtimer frequencies
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: polling-small-buf
-  * Description: Test polled read with buffer size smaller than available data
-- * Feature: oa
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: rc6-disable
-  * Feature: oa
-  *
-  * SUBTEST: short-reads
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: stress-open-close
-  * Description: Stress tests opening & closing the i915-perf stream in a busy loop
-  * Feature: oa
-  *
-  * SUBTEST: sysctl-defaults
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  *
-  * SUBTEST: unprivileged-single-ctx-counters
-  * Feature: oa, obsolete
-  *
-  * SUBTEST: whitelisted-registers-userspace-config
-- * Feature: oa
-+ * Description: Test the i915 perf metrics streaming interface
-+ * Feature: i915 streaming interface, oa
-+ * Test category: Perf
-  */
- 
- IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index bedadbe92797..28897797f81c 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -55,52 +55,84 @@
+  * SUBTEST: read_all_entries_display_off
+  * Description: Read all debugfs entries with display on/off.
+@@ -51,8 +62,14 @@
   * Run type: FULL
   *
-  * SUBTEST: all-busy-check-all
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: all-busy-idle-check-all
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy
-- * Feature: pmu
-+ * Description: Test to ensure gpu is busy when there a workload by reading engine busyness pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-accuracy-2
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-accuracy-50
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-accuracy-98
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-check-all
-- * Feature: pmu
-+ * Description: Test to ensure gpu all engines report busy when there is a workload by reading engine busyness pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-double-start
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-hang
-- * Feature: pmu
-+ * Description: Test to ensure there is no hanf when all engines are busy
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-idle
-- * Feature: pmu
-+ * Description: Test to ensure gpu engine reports idle when there is no workload
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-idle-check-all
-- * Feature: pmu
-+ * Description: Test to ensure gpu all engine reports idle when there is no workload
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-idle-no-semaphores
-- * Feature: pmu
-+ * Description: Test to verify gpu idle through engine business pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-no-semaphores
-- * Feature: pmu
-+ * Description: Test to verify gpu busyness through engine business pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: busy-start
-- * Feature: pmu
-+ * Description: Test to verify gpu busyness through engine business pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: cpu-hotplug
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: enable-race
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: event-wait
-  * Feature: obsolete, pmu
-@@ -109,56 +141,87 @@
-  * Feature: pmu
-  *
-  * SUBTEST: frequency
-- * Feature: pmu
-+ * Description: Read requested freq and actual frequency via PMU within specified time interval for any given workload changes
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: frequency-idle
-  * Feature: pmu
-  *
-  * SUBTEST: gt-awake
-- * Feature: pmu
-+ * Description: Setup workload on all engines,measure gt awake time via pmu
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: idle
-- * Feature: pmu
-+ * Description: Test to ensure gpu is idle when there is no workload by reading engine busyness pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: idle-no-semaphores
-- * Feature: pmu
-+ * Description: Test to ensure gpu is idle when there is no workload by reading engine busyness pmu counters
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: init-busy
-- * Feature: pmu
-+ * Description: Test to verify gpu busyness init through pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: init-sema
-- * Feature: pmu
-+ * Description: Test to verify gpu busyness init through pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: init-wait
-- * Feature: pmu
-+ * Description: Test to verify gpu busyness init through pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: interrupts
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: interrupts-sync
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-init
-- * Feature: pmu
-+ * Description: Tests that i915 PMU corectly errors out in invalid initialization
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: invalid-open
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: module-unload
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: most-busy-check-all
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: most-busy-idle-check-all
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: multi-client
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: pmu-read
-  * Description: Verify i915 pmu dir exists and read all events
-  * Feature: pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: rc6
-  * Feature: pmu
-@@ -179,13 +242,19 @@
-  * Feature: pmu
-  *
-  * SUBTEST: semaphore-busy
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: semaphore-wait
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
-  *
-  * SUBTEST: semaphore-wait-idle
-- * Feature: pmu
-+ * Description: Test the i915 pmu perf interface
-+ * Feature: i915 pmu perf interface, pmu
-+ * Test category: Perf
+  * SUBTEST: sysfs
+- * Description: Read all entries from sysfs path.
++ * Category: Infrastructure
++ * Description:
++ *   Read all entries from sysfs path.
++ *   validating debugfs entries
++ * Functionality: debugfs entries
+  * Run type: FULL
++ * Sub-category: i915
++ * Test category: GEM_Legacy
   */
  
- IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
+ IGT_TEST_DESCRIPTION("Read entries from debugfs, hwmon and sysfs paths.");
+diff --git a/tests/device_reset.c b/tests/device_reset.c
+index 0c23aecff595..9ebd479dfefa 100644
+--- a/tests/device_reset.c
++++ b/tests/device_reset.c
+@@ -32,8 +32,14 @@
+  * Feature: reset
+  *
+  * SUBTEST: unbind-reset-rebind
+- * Description: Unbinds driver from device, initiates reset then rebinds driver to device
++ * Category: Server
++ * Description:
++ *   Unbinds driver from device, initiates reset then rebinds driver to device
++ *   validating device resets
+  * Feature: reset, sriov-reset
++ * Functionality: reset
++ * Sub-category: sysman
++ * Test category: GEM_Legacy
+  */
+ 
+ IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
+diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+index 0c7ce714eb6c..9495d28ff724 100644
+--- a/tests/dumb_buffer.c
++++ b/tests/dumb_buffer.c
+@@ -51,9 +51,13 @@
+ #include "ioctl_wrappers.h"
+ /**
+  * TEST: dumb buffer
++ * Category: Desktop client
+  * Description: This is a test for the generic dumb buffer interface.
+  * Feature: prime
++ * Functionality: IOCTL check for buffer management
+  * Run type: FULL
++ * Sub-category: Compositor
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: create-clear
+  *
+diff --git a/tests/prime_busy.c b/tests/prime_busy.c
+index 4f7dba7d0e3c..6b0d7310b806 100644
+--- a/tests/prime_busy.c
++++ b/tests/prime_busy.c
+@@ -28,9 +28,13 @@
+ #include "igt.h"
+ /**
+  * TEST: prime busy
++ * Category: Infrastructure
+  * Description: Basic check of polling for prime fences.
+  * Feature: prime
++ * Functionality: buffer management
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: after
+  *
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index 8ffe37fe199f..efd4deff921e 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -52,8 +52,12 @@
+ #include "i915/intel_memory_region.h"
+ /**
+  * TEST: prime mmap
++ * Category: Infrastructure
+  * Feature: prime
++ * Functionality: memory management
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: test_aperture_limit
+  *
+diff --git a/tests/prime_mmap_coherency.c b/tests/prime_mmap_coherency.c
+index e50f52fdfdb0..e5f7c92b2324 100644
+--- a/tests/prime_mmap_coherency.c
++++ b/tests/prime_mmap_coherency.c
+@@ -33,11 +33,15 @@
+ #include "igt.h"
+ /**
+  * TEST: prime mmap coherency
++ * Category: Infrastructure
+  * Description:
+  *   Test dma-buf mmap on !llc platforms mostly and provoke coherency bugs so we know for sure where
+  *   we need the sync ioctls.
+  * Feature: prime
++ * Functionality: memory management
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: ioctl-errors
+  *
+diff --git a/tests/prime_self_import.c b/tests/prime_self_import.c
+index 7d423b8cd442..30f2bf013cb5 100644
+--- a/tests/prime_self_import.c
++++ b/tests/prime_self_import.c
+@@ -47,8 +47,12 @@
+ #include "i915/gem_create.h"
+ /**
+  * TEST: prime self import
++ * Category: Infrastructure
+  * Description: Check whether prime import/export works on the same device... but with different fds.
+  * Feature: prime
++ * Functionality: buffer management
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-llseek-bad
+  * Description: Check dmabuf llseek support with invalid values.
+diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+index 27b3744014bb..85b9cf880331 100644
+--- a/tests/prime_vgem.c
++++ b/tests/prime_vgem.c
+@@ -35,14 +35,22 @@
+  * Description: Basic check of polling for prime/vgem fences.
+  *
+  * SUBTEST: basic-blt
++ * Category: Infrastructure
+  * Description: Examine blitter access path.
+  * Feature: prime
++ * Functionality: mock device
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-fence-blt
++ * Category: Infrastructure
+  * Description: Examine blitter access path fencing.
+  * Feature: prime
++ * Functionality: mock device
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: basic-fence-flip
+  * Description: Examine vgem bo front/back flip fencing.
+@@ -69,25 +77,28 @@
+  * Feature: gtt, prime
+  * Run type: BAT
+  *
+- * SUBTEST: basic-userptr
+- * Description: Check that we wrap the vgem mmap with userptr.
+- * Feature: prime
+- * Run type: BAT
+- *
+  * SUBTEST: basic-write
+  * Description: Examine write access path.
+  * Feature: gtt, prime
+  * Run type: BAT
+  *
+  * SUBTEST: busy
++ * Category: Infrastructure
+  * Description: Examine busy check of polling for vgem fence.
+  * Feature: prime
++ * Functionality: mock device
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: coherency-blt
++ * Category: Infrastructure
+  * Description: Examine blitter access path WC coherency.
+  * Feature: prime
++ * Functionality: mock device
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: coherency-gtt
+  * Description: Examine concurrent access of vgem bo.
+@@ -105,9 +116,13 @@
+  * Run type: FULL
+  *
+  * SUBTEST: fence-wait
++ * Category: Infrastructure
+  * Description: Examine basic dma-buf fence interop.
+  * Feature: prime, synchronization
++ * Functionality: mock device
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: fence-write-hang
+  * Description: Examine write access path fencing with a pending gpu hang.
+@@ -115,19 +130,31 @@
+  * Run type: FULL
+  *
+  * SUBTEST: shrink
++ * Category: Infrastructure
+  * Description: Examine link establishment between shrinker and vgem bo.
+  * Feature: prime
++ * Functionality: mock device
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: sync
++ * Category: Infrastructure
+  * Description: Examine sync on vgem fence.
+  * Feature: prime
++ * Functionality: mock device
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: wait
++ * Category: Infrastructure
+  * Description: Examine wait on vgem fence.
+  * Feature: prime
++ * Functionality: mock device
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  */
+ 
+ IGT_TEST_DESCRIPTION("Basic check of polling for prime/vgem fences.");
+diff --git a/tests/sw_sync.c b/tests/sw_sync.c
+index e626cd14cd28..6c476ff46776 100644
+--- a/tests/sw_sync.c
++++ b/tests/sw_sync.c
+@@ -40,9 +40,13 @@
+ 
+ /**
+  * TEST: sw sync
++ * Category: Infrastructure
+  * Description: Test SW Sync Framework
+  * Feature: synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: alloc_fence
+  *
+diff --git a/tests/syncobj_basic.c b/tests/syncobj_basic.c
+index 8d98137e7bd6..3252dbd693fb 100644
+--- a/tests/syncobj_basic.c
++++ b/tests/syncobj_basic.c
+@@ -28,9 +28,13 @@
+ #include "drm.h"
+ /**
+  * TEST: syncobj basic
++ * Category: Infrastructure
+  * Description: Basic check for drm sync objects.
+  * Feature: synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: bad-create-flags
+  *
+diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+index 1158a99fe58f..134a6099512e 100644
+--- a/tests/syncobj_timeline.c
++++ b/tests/syncobj_timeline.c
+@@ -32,9 +32,13 @@
+ #include "drm.h"
+ /**
+  * TEST: syncobj timeline
++ * Category: Infrastructure
+  * Description: Tests for the drm timeline sync object API
+  * Feature: synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: 32bits-limit
+  * Description:
+diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+index 930096f6d10e..2583ef72eb1d 100644
+--- a/tests/syncobj_wait.c
++++ b/tests/syncobj_wait.c
+@@ -32,9 +32,13 @@
+ #include "drm.h"
+ /**
+  * TEST: syncobj wait
++ * Category: Infrastructure
+  * Description: Tests for the drm sync object wait API
+  * Feature: synchronization
++ * Functionality: semaphore
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: invalid-multi-wait-all-unsubmitted
+  *
+diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
+index 2a5f6242e995..f2255a61902d 100644
+--- a/tests/vgem_basic.c
++++ b/tests/vgem_basic.c
+@@ -33,7 +33,10 @@
+ #include <dirent.h>
+ /**
+  * TEST: vgem basic
++ * Category: Infrastructure
+  * Description: Basic sanity check of Virtual GEM module (vGEM).
++ * Functionality: mock device
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: bad-fence
+  * Description: Make sure a non-existent fence cannot be signaled.
+@@ -64,56 +67,67 @@
+  * Description: Check the basic working of vgem_create ioctl.
+  * Feature: vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  *
+  * SUBTEST: debugfs
+  * Description: Check the basic access to debugfs and also try to read entries in the directory.
+  * Feature: vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  *
+  * SUBTEST: dmabuf-export
+  * Description: Check whether it can export/import the vgem handle using prime.
+  * Feature: prime, vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  *
+  * SUBTEST: dmabuf-fence
+  * Description: Check the working of dma-buf fence interop.
+  * Feature: prime, vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  *
+  * SUBTEST: dmabuf-fence-before
+  * Description: Attach a fence before exporting a vgem handle and check the working of fence.
+  * Feature: prime, vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  *
+  * SUBTEST: dmabuf-mmap
+  * Description: Export the vgem handle along with RDWR capabilities using prime and check if it can be mmaped.
+  * Feature: prime, vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  *
+  * SUBTEST: mmap
+  * Description: Create a vgem handle and check if it can be mmaped.
+  * Feature: vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  *
+  * SUBTEST: second-client
+  * Description: Check whether it can open multiple clients.
+  * Feature: vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  *
+  * SUBTEST: setversion
+  * Description: Check the working of SET_VERSION ioctl.
+  * Feature: vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  *
+  * SUBTEST: sysfs
+  * Description: Check the basic access to sysfs and also try to read entries in the directory.
+  * Feature: vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  *
+  * SUBTEST: unload
+  * Description: Basic test for handling of module unload.
+  * Feature: vgem
+  * Run type: BAT
++ * Sub-category: DRM
+  */
+ 
+ IGT_TEST_DESCRIPTION("Basic sanity check of Virtual GEM module (vGEM).");
+diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
+index d2a7effff115..0c91cdb9dece 100644
+--- a/tests/vgem_slow.c
++++ b/tests/vgem_slow.c
+@@ -32,9 +32,13 @@
+ #include <dirent.h>
+ /**
+  * TEST: vgem slow
++ * Category: Infrastructure
+  * Description: Extended sanity check of Virtual GEM module (vGEM).
+  * Feature: vgem
++ * Functionality: mock device
+  * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
+  *
+  * SUBTEST: nohang
+  */
 -- 
 2.40.1
