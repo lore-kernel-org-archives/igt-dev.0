@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F89610ECD4
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 05:55:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB85F10ECCE
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 05:55:27 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  sai.gowtham.ch@intel.com
-Date: Thu, 25 May 2023 11:25:19 +0530
-Message-Id: <20230525055519.10098-3-sai.gowtham.ch@intel.com>
+Date: Thu, 25 May 2023 11:25:18 +0530
+Message-Id: <20230525055519.10098-2-sai.gowtham.ch@intel.com>
 In-Reply-To: <20230525055519.10098-1-sai.gowtham.ch@intel.com>
 References: <20230525055519.10098-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/xe/xe_spin_batch: Add new test to
- exercise igt_spin_new for xe.
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib/xe/xe_spin: Integrate igt_spin_new
+ with Xe.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,172 +27,240 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-xe_spin_batch test exercises basic igt_spin_new submissions and
-and with all engines.
+Extending the spin_create implementation and allocator handle support in xe,
+where it submits dummy work loads to engine. This Implementation is wrapped
+around vm_bind and unbind as we are supposed to do it manually for xe.
 
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/meson.build        |   1 +
- tests/xe/xe_spin_batch.c | 138 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 139 insertions(+)
- create mode 100644 tests/xe/xe_spin_batch.c
+ lib/igt_dummyload.c | 24 +++++++++---
+ lib/igt_dummyload.h | 10 +++++
+ lib/xe/xe_spin.c    | 89 +++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_spin.h    |  7 ++++
+ 4 files changed, 124 insertions(+), 6 deletions(-)
 
-diff --git a/tests/meson.build b/tests/meson.build
-index f71be1db..e794b75a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -268,6 +268,7 @@ xe_progs = [
- 	'xe_query',
- 	'xe_vm',
- 	'xe_waitfence',
-+	'xe_spin_batch',
- ]
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index 740a58f3..6e89b72d 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -46,6 +46,7 @@
+ #include "intel_reg.h"
+ #include "ioctl_wrappers.h"
+ #include "sw_sync.h"
++#include "xe/xe_spin.h"
  
- msm_progs = [
-diff --git a/tests/xe/xe_spin_batch.c b/tests/xe/xe_spin_batch.c
-new file mode 100644
-index 00000000..1b216199
---- /dev/null
-+++ b/tests/xe/xe_spin_batch.c
-@@ -0,0 +1,138 @@
-+#include "igt.h"
-+#include "lib/intel_reg.h"
-+#include "xe_drm.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
+ /**
+  * SECTION:igt_dummyload
+@@ -447,7 +448,10 @@ spin_create(int fd, const struct igt_spin_factory *opts)
+ igt_spin_t *
+ __igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+ {
+-	return spin_create(fd, opts);
++	if (is_xe_device(fd))
++		return xe_spin_create(fd, opts);
++	else
++		return spin_create(fd, opts);
+ }
+ 
+ /**
+@@ -467,6 +471,11 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+ {
+ 	igt_spin_t *spin;
+ 
++	if (is_xe_device(fd)) {
++		spin = xe_spin_create(fd, opts);
++		return spin;
++	}
 +
-+#define MAX_INSTANCE 9
-+/**
-+ * TEST:Test for spin batch submissons.
-+ *
-+ * SUBTEST: spin-batch
-+ * Description: Test to submit spin batch with engines and vm.
-+ * Run type: FULL
-+ * TODO: change ``'Run type' == FULL`` to a better category
-+ *
-+ */
+ 	if ((opts->flags & IGT_SPIN_POLL_RUN) && opts->engine != ALL_ENGINES) {
+ 		unsigned int class;
+ 
+@@ -647,11 +656,14 @@ void igt_spin_free(int fd, igt_spin_t *spin)
+ 	if (!spin)
+ 		return;
+ 
+-	pthread_mutex_lock(&list_lock);
+-	igt_list_del(&spin->link);
+-	pthread_mutex_unlock(&list_lock);
+-
+-	__igt_spin_free(fd, spin);
++	if (is_xe_device(fd)) {
++		xe_spin_free(fd, spin);
++	} else {
++		pthread_mutex_lock(&list_lock);
++		igt_list_del(&spin->link);
++		pthread_mutex_unlock(&list_lock);
++		__igt_spin_free(fd, spin);
++	}
+ }
+ 
+ void igt_terminate_spins(void)
+diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+index b247ab02..7bcc7b56 100644
+--- a/lib/igt_dummyload.h
++++ b/lib/igt_dummyload.h
+@@ -54,6 +54,8 @@ typedef struct igt_spin_factory {
+ 	unsigned int flags;
+ 	int fence;
+ 	uint64_t ahnd;
++	struct drm_xe_engine_class_instance *hwe;
++	uint32_t vm;
+ } igt_spin_factory_t;
+ 
+ typedef struct igt_spin {
+@@ -83,6 +85,14 @@ typedef struct igt_spin {
+ #define SPIN_CLFLUSH (1 << 0)
+ 
+ 	struct igt_spin_factory opts;
 +
-+static void spin(int fd, struct drm_xe_engine_class_instance *hwe)
-+{
-+	uint64_t ahnd;
++	struct xe_spin *xe_spin;
++	size_t bo_size;
++	uint64_t address;
 +	unsigned int engine;
 +	uint32_t vm;
-+	igt_spin_t *spin;
++	uint32_t syncobj;
 +
-+	vm = xe_vm_create(fd, 0, 0);
-+	engine = xe_engine_create(fd, vm, hwe, 0);
-+	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+ } igt_spin_t;
+ 
+ 
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 856d0ba2..3a8c7bb3 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -15,6 +15,7 @@
+ #include "intel_reg.h"
+ #include "xe_ioctl.h"
+ #include "xe_spin.h"
++#include "lib/igt_dummyload.h"
+ 
+ /**
+  * xe_spin_init:
+@@ -82,6 +83,94 @@ void xe_spin_end(struct xe_spin *spin)
+ 	spin->end = 0;
+ }
+ 
++igt_spin_t *
++xe_spin_create(int fd, const struct igt_spin_factory *opt)
++{
++	size_t bo_size = xe_get_default_alignment(fd);
++	uint32_t bo;
++	uint64_t ahnd = opt->ahnd, addr;
++	struct igt_spin *spin;
++	struct xe_spin *xe_spin;
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
 +
-+	spin = __igt_spin_new(fd, .ahnd = ahnd, .engine = engine, .vm = vm);
++	igt_assert(ahnd);
++	spin = calloc(1, sizeof(struct igt_spin));
 +	igt_assert(spin);
 +
-+	igt_spin_free(fd, spin);
-+	put_ahnd(ahnd);
++	spin->syncobj = syncobj_create(fd, 0);
++	if (opt->engine) {
++		spin->opts.engine = opt->engine;
++		spin->opts.vm = opt->vm;
++
++		spin->handle = xe_bo_create(fd, 0, spin->opts.vm, bo_size);
++		xe_spin = xe_bo_map(fd, spin->handle, bo_size);
++		addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
++		xe_vm_bind_sync(fd, spin->opts.vm, spin->handle, 0, addr, bo_size);
++
++		xe_spin_init(xe_spin, addr, true);
++		exec.engine_id = spin->opts.engine;
++		exec.address = addr;
++	} else {
++		spin->vm = xe_vm_create(fd, 0, 0);
++		spin->engine = xe_engine_create(fd, spin->vm, opt->hwe, 0);
++
++		bo = xe_bo_create(fd, 0, spin->vm, bo_size);
++		spin->handle = bo;
++		xe_spin = xe_bo_map(fd, spin->handle, bo_size);
++		addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
++		xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
++
++		xe_spin_init(xe_spin, addr, true);
++		exec.engine_id = spin->engine;
++		exec.address = addr;
++	}
++	sync.handle = spin->syncobj;
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
++	xe_spin_wait_started(xe_spin);
++	igt_info("Spinner started\n");
++
++	spin->bo_size = bo_size;
++	spin->address = addr;
++	spin->xe_spin = xe_spin;
++
++	return spin;
 +}
 +
-+/**
-+ * TEST: Basic test for spin batch submission.
-+ *
-+ * SUBTEST: spin-basic
-+ * Description: Basic test which validates the functionality of spinner.
-+ * Run type: FULL
-+ * TODO: change ``'Run type' == FULL`` to a better category
-+ *
-+ */
-+static void spin_basic(int fd, struct drm_xe_engine_class_instance *hwe)
++void xe_spin_sync_wait(int fd, struct igt_spin *spin)
 +{
-+	uint64_t ahnd;
-+	igt_spin_t *spin;
-+
-+	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+	spin = __igt_spin_new(fd, .ahnd = ahnd, .hwe = hwe);
-+	igt_assert(spin);
-+
-+	igt_spin_free(fd, spin);
-+	put_ahnd(ahnd);
++	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0,
++				NULL));
 +}
 +
-+/**
-+ * TEST: Test for spin batch submissions.
-+ * SUBTEST: spin-all
-+ * Description: Spinner test to run on all the engines!
-+ * Run type: FULL
-+ * TODO: change ``'Run type' == FULL`` to a better category
-+ *
-+ */
-+
-+static void spin_all (int fd, int gt, int class)
++void xe_spin_free(int fd, struct igt_spin *spin)
 +{
-+	uint64_t ahnd;
-+	uint32_t engines[MAX_INSTANCE];
-+	uint32_t vm[MAX_INSTANCE];
-+	int i, num_placements = 0;
-+	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
-+	igt_spin_t *spin[MAX_INSTANCE];
-+	struct drm_xe_engine_class_instance *hwe;
++	xe_spin_end(spin->xe_spin);
++	xe_spin_sync_wait(fd, spin);
 +
-+	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+
-+	xe_for_each_hw_engine(fd, hwe) {
-+		if (hwe->engine_class != class || hwe->gt_id != gt)
-+			continue;
-+		eci[num_placements++] = *hwe;
-+	}
-+	if (num_placements < 2)
-+		return;
-+
-+	for (i = 0; i < num_placements; i++) {
-+		struct drm_xe_engine_create create;
-+		vm[i] = xe_vm_create(fd, 0, 0);
-+
-+		create.vm_id = vm[i];
-+		create.width = 1;
-+		create.num_placements = num_placements;
-+		create.instances = to_user_pointer(eci);
-+
-+		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE,
-+					&create), 0);
-+		engines[i] = create.engine_id;
-+		spin[i] = __igt_spin_new(fd, .ahnd = ahnd, .engine = engines[i], .vm = vm[i]);
++	if (!spin->opts.engine) {
++		xe_vm_unbind_sync(fd, spin->vm, 0, spin->address, spin->bo_size);
++	} else {
++		xe_vm_unbind_sync(fd, spin->opts.vm, 0, spin->address, spin->bo_size);
 +	}
 +
-+	for (i = 0; i < num_placements; i++) {
-+		igt_assert(spin[i]);
-+		igt_spin_free(fd, spin[i]);
++	syncobj_destroy(fd, spin->syncobj);
++	gem_munmap(spin->xe_spin, spin->bo_size);
++	gem_close(fd, spin->handle);
++
++	if (!spin->opts.engine) {
++		xe_engine_destroy(fd, spin->engine);
++		xe_vm_destroy(fd, spin->vm);
 +	}
-+	put_ahnd(ahnd);
++	free(spin);
 +}
 +
-+igt_main
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	int fd;
-+	int gt, class;
+ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+ 		  struct xe_cork *cork)
+ {
+diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+index 73f9a026..48867eb8 100644
+--- a/lib/xe/xe_spin.h
++++ b/lib/xe/xe_spin.h
+@@ -13,19 +13,26 @@
+ #include <stdbool.h>
+ 
+ #include "xe_query.h"
++#include "lib/igt_dummyload.h"
+ 
+ /* Mapped GPU object */
 +
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		xe_device_get(fd);
-+	}
+ struct xe_spin {
+ 	uint32_t batch[16];
+ 	uint64_t pad;
+ 	uint32_t start;
+ 	uint32_t end;
 +
-+	igt_subtest("spin-batch")
-+		xe_for_each_hw_engine(fd, hwe)
-+			spin(fd, hwe);
-+
-+	igt_subtest("spin-basic")
-+		xe_for_each_hw_engine(fd, hwe)
-+			spin_basic(fd, hwe);
-+
-+	igt_subtest("spin-all") {
-+		xe_for_each_gt(fd, gt)
-+			xe_for_each_hw_engine_class(class)
-+				spin_all(fd, gt, class);
-+	}
-+
-+	igt_fixture {
-+		xe_device_put(fd);
-+		close(fd);
-+	}
-+}
+ };
+ 
++igt_spin_t *
++xe_spin_create(int fd, const struct igt_spin_factory *opt);
+ void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
+ bool xe_spin_started(struct xe_spin *spin);
++void xe_spin_sync_wait(int fd, struct igt_spin *spin);
+ void xe_spin_wait_started(struct xe_spin *spin);
+ void xe_spin_end(struct xe_spin *spin);
++void xe_spin_free(int fd, struct igt_spin *spin);
+ 
+ struct xe_cork {
+ 	struct xe_spin *spin;
 -- 
 2.39.1
