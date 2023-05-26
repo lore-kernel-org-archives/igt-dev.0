@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1A3410E7EB
- for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 10:44:54 +0000 (UTC)
-Date: Fri, 26 May 2023 12:44:48 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9CB4910E7E7
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 10:51:31 +0000 (UTC)
+Date: Fri, 26 May 2023 12:51:00 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: priyanka.dandamudi@intel.com
-Message-ID: <20230526104448.64x6dlmuusyxcd2v@zkempczy-mobl2>
-References: <20230526050855.4115107-1-priyanka.dandamudi@intel.com>
- <20230526050855.4115107-4-priyanka.dandamudi@intel.com>
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Message-ID: <20230526105100.6wxkiwov2mzyxipa@zkempczy-mobl2>
+References: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
+ <20230524142931.119823-3-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230526050855.4115107-4-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] xe/xe_mmap: Negative test to object
+In-Reply-To: <20230524142931.119823-3-dominik.grzegorzek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/9] meson: Introduce xe_staging build
+ option
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,71 +21,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- ramadevi.gandi@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, May 26, 2023 at 10:38:55AM +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+On Wed, May 24, 2023 at 04:29:24PM +0200, Dominik Grzegorzek wrote:
+> There are some major features, which in a current state cannot be merged
+> upstream. A good example here in an EU debugger, which does not
+> meet the requirement of having an opensourced client. While those
+> features are in the development we need a way of providing them
+> validation. So introduce xe_staging build option under which
+> we can keep tests of features that are under haevy development and not
+> yet accepted upstream or not yet completed.
 > 
-> Add negative test to check bad object.
-> 
-> v2: Add default alignment for the object size
->  and remove positive case.(Zbigniew)
-> 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  meson.build       |  1 +
+>  meson_options.txt |  5 +++++
+>  tests/meson.build | 16 ++++++++++++++++
+>  3 files changed, 22 insertions(+)
+> 
+> diff --git a/meson.build b/meson.build
+> index 1c872cc9c..ae2206d6e 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -86,6 +86,7 @@ build_chamelium = get_option('chamelium')
+>  build_docs = get_option('docs')
+>  build_tests = not get_option('tests').disabled()
+>  build_xe = not get_option('xe_driver').disabled()
+> +build_xe_staging = not get_option('xe_staging').disabled()
+>  with_libdrm = get_option('libdrm_drivers')
+>  
+>  build_info = ['Build type: ' + get_option('buildtype')]
+> diff --git a/meson_options.txt b/meson_options.txt
+> index 7b5a818cb..46ee91fe6 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -46,6 +46,11 @@ option('xe_driver',
+>         type : 'feature',
+>         description : 'Build tests for Xe driver (experimental)')
+>  
+> +option('xe_staging',
+> +       type : 'feature',
+> +       value : 'disabled',
+> +       description : 'Build tests for Xe features that cannot be upstreamed yet (experimental)')
+> +
+>  option('libdrm_drivers',
+>         type : 'array',
+>         value : ['auto'],
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 38f080f7c..8c7055ed9 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -269,6 +269,9 @@ xe_progs = [
+>  	'xe_waitfence',
+>  ]
+>  
+> +xe_staging_progs = [
+> +]
+> +
+>  msm_progs = [
+>  	'msm_mapping',
+>  	'msm_recovery',
+> @@ -330,6 +333,19 @@ if build_xe
+>  	build_info += 'Xe **experimental** tests enabled.'
+>  endif
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+I got spurious information on 'mesoning':
+
+Message: Xe **experimental** tests enabled.
+
+Configuration looks:
+
+$ meson configure | grep staging
+  xe_staging                     disabled                         [enabled, disabled, auto]        Build tests for Xe features that cannot be upstreamed yet 
 
 --
 Zbigniew
 
-> ---
->  tests/xe/xe_mmap.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/tests/xe/xe_mmap.c b/tests/xe/xe_mmap.c
-> index a5da6fa9..be1f9791 100644
-> --- a/tests/xe/xe_mmap.c
-> +++ b/tests/xe/xe_mmap.c
-> @@ -94,6 +94,22 @@ static void test_bad_extensions(int fd)
->  	gem_close(fd, mmo.handle);
->  }
 >  
-> +/**
-> + * SUBTEST: bad-object
-> + * Description: Test mmap offset with bad object.
-> + *
-> + */
-> +static void test_bad_object(int fd)
-> +{
-> +	uint64_t size = xe_get_default_alignment(fd);
-> +	struct drm_xe_gem_mmap_offset mmo = {
-> +		.handle = xe_bo_create(fd, 0, 0, size),
-> +	};
+> +if build_xe_staging
+> +        foreach prog : xe_staging_progs
+> +		test_executables += executable(prog,
+> +		           join_paths('xe/staging', prog + '.c'),
+> +			   dependencies : test_deps,
+> +			   install_dir : libexecdir,
+> +			   install_rpath : libexecdir_rpathdir,
+> +			   install : true)
+> +		test_list += prog
+> +	endforeach
+> +	build_info += 'Work in progress tests enabled.'
+> +endif
 > +
-> +	mmo.handle = 0xdeadbeef;
-> +	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo, ENOENT);
-> +}
-> +
->  igt_main
->  {
->  	int fd;
-> @@ -118,6 +134,9 @@ igt_main
->  	igt_subtest("bad-extensions")
->  		test_bad_extensions(fd);
->  
-> +	igt_subtest("bad-object")
-> +		test_bad_object(fd);
-> +
->  	igt_fixture {
->  		xe_device_put(fd);
->  		close(fd);
+>  foreach prog : msm_progs
+>  	test_executables += executable(prog, join_paths('msm', prog + '.c'),
+>  				       dependencies : test_deps,
 > -- 
-> 2.25.1
+> 2.34.1
 > 
