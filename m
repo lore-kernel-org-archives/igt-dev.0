@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 970E910E1C8
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 11:56:36 +0000 (UTC)
+Date: Fri, 26 May 2023 13:56:32 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230526115632.2sj3yp5kwbea2eml@kamilkon-desk1>
+References: <20230522142201.2527800-1-mauro.chehab@linux.intel.com>
+ <20230522142201.2527800-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 16 May 2023 07:21:07 -0000
-Message-ID: <168422166781.14225.354652773924145769@emeril.freedesktop.org>
-References: <20230516065959.1587719-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230516065959.1587719-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
- =?utf-8?q?eson=2Ebuild=3A_update_minimal_version_to_0=2E48_=28rev2=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230522142201.2527800-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/6] scripts/test_list.py: add support
+ to define a name at the config file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,47 +20,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 2023-05-22 at 16:21:56 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Instead of inferring the driver name from the test directory, allow
+> specifying it at the JSON config file.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Series: meson.build: update minimal version to 0.48 (rev2)
-URL   : https://patchwork.freedesktop.org/series/117774/
-State : warning
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/882067 for the overview.
-
-build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/41794126):
-  time="2023-05-16T07:19:25Z" level=fatal msg="Error reading manifest dockerfile-43ff3b172fd9c8b33b1b2c5fc642a721d51047e8 in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora: manifest unknown: manifest unknown" 
-  Building!
-  STEP 1: FROM fedora:31
-  Getting image source signatures
-  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
-  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
-  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-05-16T07:19:31Z" level=warning msg="signal: killed"
-  time="2023-05-16T07:19:31Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
-  section_end:1684221573:step_script
-  section_start:1684221573:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1684221574:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/882067
+> ---
+>  scripts/test_list.py | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 21767870b1c1..654ccd8692d4 100755
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -337,16 +337,16 @@ class TestList:
+>          if has_implemented:
+>              if has_planned:
+>                  planned_class = "Planned"
+> -                self.title = "Planned and implemented tests for "
+> +                self.title = "Planned and implemented "
+>              else:
+> -                self.title = "Implemented tests for "
+> +                self.title = "Implemented "
+>          else:
+>              if has_planned:
+> -                self.title = "Planned tests for "
+> +                self.title = "Planned "
+>              else:
+>                  sys.exit("Need file names to be processed")
+>  
+> -        self.title += driver_name + " driver"
+> +        self.title += self.config.get("name", "tests for " + driver_name + " driver")
+>  
+>          # Parse files, expanding wildcards
+>          field_re = re.compile(r"(" + '|'.join(self.field_list.keys()) + r'):\s*(.*)', re.I)
+> -- 
+> 2.40.1
+> 
 
