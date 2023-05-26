@@ -1,28 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5C0010E1B4
- for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 05:54:18 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.1.196])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 82553580583
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 22:54:17 -0700 (PDT)
-Message-ID: <35d1edaa-e657-7e95-0c23-ee138856beb7@linux.intel.com>
-Date: Fri, 26 May 2023 07:54:14 +0200
-MIME-Version: 1.0
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E19610E1B4
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 05:59:51 +0000 (UTC)
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Fri, 26 May 2023 05:59:46 +0000
+Message-ID: <DM6PR11MB4492C94D1B89AADAB16D2C508D479@DM6PR11MB4492.namprd11.prod.outlook.com>
+References: <20230525193411.174802-1-zbigniew.kempczynski@intel.com>
+ <20230525193411.174802-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230525193411.174802-2-zbigniew.kempczynski@intel.com>
 Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
- <20230525090535.2791739-12-mauro.chehab@linux.intel.com>
- <20230525211144.snixsj3tbhkypi4a@kamilkon-desk1>
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-In-Reply-To: <20230525211144.snixsj3tbhkypi4a@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v4 11/11] testplan/meson.build: make it
- check for missing i915 documentation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] xe/xe_query: Add engine class
+ checker
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,25 +27,41 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 5/25/23 23:11, Kamil Konieczny wrote:
-> Hi Mauro,
->
-> On 2023-05-25 at 11:05:35 +0200, Mauro Carvalho Chehab wrote:
->> From: Mauro Carvalho Chehab <mchehab@kernel.org>
->>
->> Now that i915 is fully documented, check it at build time.
-> This is not working now, see GitLab log:
->
-> Warning: Missing documentation for igt@perf_pmu@rc6-all-gts
-> ninja: build stopped: subcommand failed.
->
-> Can we not turn it on until we fill in all gaps ?
->
-> Regards,
-> Kamil
-
-Sure. I'll drop it when merging it. We can add this later on.
-
-Regards,
-Mauro
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
+di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mDQo+IFpiaWduaWV3
+IEtlbXBjenluc2tpDQo+IFNlbnQ6IDI2IE1heSAyMDIzIDAxOjA0IEFNDQo+IFRvOiBpZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBTdWJqZWN0OiBbaWd0LWRldl0gW1BBVENIIGktZy10
+IDEvMl0geGUveGVfcXVlcnk6IEFkZCBlbmdpbmUgY2xhc3MgY2hlY2tlcg0KPiANCj4gU29tZSBw
+bGF0Zm9ybXMgbWlnaHQgYmUgbm90IGVxdWlwcGVkIHdpdGggc29tZSBlbmdpbmUgY2xhc3NlcyBz
+byBjaGVjaw0KPiBiZWZvcmUgZXhlY3V0aW9uIGlzIHJlYXNvbmFibGUgY2hvaWNlLiBBZGQgc2lt
+cGxlIGVuZ2luZSBjaGVjayB0byB1c2UgaW4NCj4gaWd0X3JlcXVpcmUoKSBjb25zdHJ1Y3RzLg0K
+PiANCj4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1w
+Y3p5bnNraUBpbnRlbC5jb20+DQo+IENjOiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pu
+eUBsaW51eC5pbnRlbC5jb20+DQo+IC0tLQ0KPiAgbGliL3hlL3hlX3F1ZXJ5LmMgfCAyMSArKysr
+KysrKysrKysrKysrKysrKysgIGxpYi94ZS94ZV9xdWVyeS5oIHwgIDEgKw0KPiAgMiBmaWxlcyBj
+aGFuZ2VkLCAyMiBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL3hlL3hlX3F1
+ZXJ5LmMgYi9saWIveGUveGVfcXVlcnkuYyBpbmRleA0KPiBiZDVlYjFkMTg5Li40N2JlOGYzMDFh
+IDEwMDY0NA0KPiAtLS0gYS9saWIveGUveGVfcXVlcnkuYw0KPiArKysgYi9saWIveGUveGVfcXVl
+cnkuYw0KPiBAQCAtNTM2LDYgKzUzNiwyNyBAQCB4ZV9kZXZfRk4oeGVfdmFfYml0cywgdmFfYml0
+cywgdWludDMyX3QpOw0KPiAgICovDQo+ICB4ZV9kZXZfRk4oeGVfZGV2X2lkLCBkZXZfaWQsIHVp
+bnQxNl90KTsNCj4gDQo+ICsvKioNCj4gKyAqIHhlX2hhc19lbmdpbmVfY2xhc3M6DQo+ICsgKiBA
+ZmQ6IHhlIGRldmljZSBmZA0KPiArICogQGVuZ2luZV9jbGFzczogZW5naW5lIGNsYXNzDQo+ICsg
+Kg0KPiArICogUmV0dXJucyB0cnVlIGlmIGRldmljZSBAZmQgaGFzIGhhcmR3YXJlIGVuZ2luZSBA
+Y2xhc3Mgb3RoZXJ3aXNlIGZhbHNlLg0KPiArICovDQo+ICtib29sIHhlX2hhc19lbmdpbmVfY2xh
+c3MoaW50IGZkLCB1aW50MTZfdCBlbmdpbmVfY2xhc3MpIHsNCj4gKwlzdHJ1Y3QgeGVfZGV2aWNl
+ICp4ZV9kZXY7DQo+ICsNCj4gKwl4ZV9kZXYgPSBmaW5kX2luX2NhY2hlKGZkKTsNCj4gKwlpZ3Rf
+YXNzZXJ0KHhlX2Rldik7DQo+ICsNCj4gKwlmb3IgKGludCBpID0gMDsgaSA8IHhlX2Rldi0+bnVt
+YmVyX2h3X2VuZ2luZXM7IGkrKykNCj4gKwkJaWYgKHhlX2Rldi0+aHdfZW5naW5lc1tpXS5lbmdp
+bmVfY2xhc3MgPT0gZW5naW5lX2NsYXNzKQ0KPiArCQkJcmV0dXJuIHRydWU7DQo+ICsNCj4gKwly
+ZXR1cm4gZmFsc2U7DQo+ICt9DQo+ICsNCj4gIGlndF9jb25zdHJ1Y3Rvcg0KPiAgew0KPiAgCXhl
+X2RldmljZV9jYWNoZV9pbml0KCk7DQo+IGRpZmYgLS1naXQgYS9saWIveGUveGVfcXVlcnkuaCBi
+L2xpYi94ZS94ZV9xdWVyeS5oIGluZGV4DQo+IGNjNmU3Y2VmZGMuLjk0M2NhNTU4YTUgMTAwNjQ0
+DQo+IC0tLSBhL2xpYi94ZS94ZV9xdWVyeS5oDQo+ICsrKyBiL2xpYi94ZS94ZV9xdWVyeS5oDQo+
+IEBAIC05NCw2ICs5NCw3IEBAIHVpbnQzMl90IHhlX3ZhX2JpdHMoaW50IGZkKTsgIHVpbnQxNl90
+IHhlX2Rldl9pZChpbnQgZmQpOw0KPiBib29sIHhlX3N1cHBvcnRzX2ZhdWx0cyhpbnQgZmQpOyAg
+Y29uc3QgY2hhciAqeGVfZW5naW5lX2NsYXNzX3N0cmluZyh1aW50MzJfdA0KPiBlbmdpbmVfY2xh
+c3MpOw0KPiArYm9vbCB4ZV9oYXNfZW5naW5lX2NsYXNzKGludCBmZCwgdWludDE2X3QgZW5naW5l
+X2NsYXNzKTsNCj4gDQo+ICBzdHJ1Y3QgeGVfZGV2aWNlICp4ZV9kZXZpY2VfZ2V0KGludCBmZCk7
+ICB2b2lkIHhlX2RldmljZV9wdXQoaW50IGZkKTsNCj4gLS0NCj4gMi4zNC4xDQpMR1RNDQpSZXZp
+ZXdlZC1ieTogUHJpeWFua2EgRGFuZGFtdWRpIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29t
+Pg0KDQo=
