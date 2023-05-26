@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1212310E1C8
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 11:57:13 +0000 (UTC)
+Date: Fri, 26 May 2023 13:57:09 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230526115709.dgewoyhcwuwy4oar@kamilkon-desk1>
+References: <20230522142201.2527800-1-mauro.chehab@linux.intel.com>
+ <20230522142201.2527800-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 25 May 2023 09:33:26 -0000
-Message-ID: <168500720633.5912.6477220385475621138@emeril.freedesktop.org>
-References: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJbXBy?=
- =?utf-8?q?ove_description_of_tests_used_by_i915_validation?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230522142201.2527800-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/6] kms_test_config.json: add a name
+ for the KMS Intel testset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,31 +20,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 2023-05-22 at 16:21:57 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Instead of inferring the name automatically, which is broken on this
+> case, as it would use "Tests" place it at the file.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Series: Improve description of tests used by i915 validation
-URL   : https://patchwork.freedesktop.org/series/118357/
-State : failure
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
-
-IGT patchset build failed on latest successful build
-8f09a9f1da506db907b549bb477f3233b5416733 intel_gpu_top: Fix frequency and rc6 counters
-
-ninja: Entering directory `/opt/igt/build'
-[1/441] Generating version.h with a custom command.
-[2/4] Generating i915_tests.rst with a custom command.
-FAILED: docs/testplan/i915_tests.rst 
-/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/i915/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /opt/igt/build
-Warning: Missing documentation for igt@perf_pmu@rc6-all-gts
-ninja: build stopped: subcommand failed.
-
-
+> ---
+>  tests/kms_test_config.json | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
+> index d2d6357d1bc7..5fbe40bdc487 100644
+> --- a/tests/kms_test_config.json
+> +++ b/tests/kms_test_config.json
+> @@ -1,5 +1,6 @@
+>  {
+>      "description": "JSON file to be used to parse KMS documentation",
+> +    "name": "Display and KMS Tests for Intel i915 and Xe Drivers",
+>      "files": [ "chamelium/kms_*.c", "i915/kms_*.c", "kms_*.c" ],
+>      "fields": {
+>          "Category": {
+> -- 
+> 2.40.1
+> 
 
