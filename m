@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com
- [IPv6:2a00:1450:4864:20::32d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96C1510E16A
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 14:24:24 +0000 (UTC)
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3f6042d610fso7209845e9.1
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 07:24:24 -0700 (PDT)
-Message-ID: <b8e66d62-55a1-75ef-64f3-638ee9088936@gmail.com>
-Date: Thu, 25 May 2023 17:24:15 +0300
-MIME-Version: 1.0
-To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
-References: <20230516115656.229418-1-swati2.sharma@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D86D410E7E7
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 10:59:59 +0000 (UTC)
+From: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
+Date: Fri, 26 May 2023 10:59:53 +0000
+Message-ID: <8970c716f621d227d84d4dfc5f2a9ca7ce4a9328.camel@intel.com>
+References: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
+ <20230524142931.119823-3-dominik.grzegorzek@intel.com>
+ <20230526105100.6wxkiwov2mzyxipa@zkempczy-mobl2>
+In-Reply-To: <20230526105100.6wxkiwov2mzyxipa@zkempczy-mobl2>
 Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230516115656.229418-1-swati2.sharma@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: enable test for sim env
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3FDF1ACA706F31478BF371542FBB7F16@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 2/9] meson: Introduce xe_staging build
+ option
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,57 +24,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-On 16.5.2023 14.56, Swati Sharma wrote:
-> Lets do some tweaks to enable this test on simulation
-> environment.
-> 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/kms_plane.c | 13 +++++++++----
->   1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 10e16b63..90b68a47 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -41,7 +41,8 @@
->   #define LUT_MASK 0xf800
->   
->   /* restricted pipe count */
-> -#define CRTC_RESTRICT_CNT 2
-> +#define CRTC_RESTRICT_CNT	2
-> +#define SIM_CRTC_RESTRICT_CNT	1
->   
->   typedef struct {
->   	float red;
-> @@ -614,7 +615,7 @@ static void capture_crc(data_t *data, unsigned int vblank, igt_crc_t *crc)
->   {
->   	igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc, vblank, crc);
->   
-> -	igt_fail_on_f(!igt_skip_crc_compare &&
-> +	igt_fail_on_f(!igt_skip_crc_compare && !igt_run_in_simulation() &&
->   		      crc->has_valid_frame && crc->frame != vblank,
->   		      "Got CRC for the wrong frame (got %u, expected %u). CRC buffer overflow?\n",
->   		      crc->frame, vblank);
-> @@ -1193,8 +1194,12 @@ static void test_invalid_settings(data_t *data)
->   	}
->   }
->   
-> -static bool is_pipe_limit_reached(int count) {
-> -	return count >= CRTC_RESTRICT_CNT && !all_pipes;
-> +static bool is_pipe_limit_reached(int count)
-> +{
-> +	if (igt_run_in_simulation())
-> +		return count >= SIM_CRTC_RESTRICT_CNT && !all_pipes;
-> +	else
-> +		return count >= CRTC_RESTRICT_CNT && !all_pipes;
->   }
->   
->   static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+T24gRnJpLCAyMDIzLTA1LTI2IGF0IDEyOjUxICswMjAwLCBaYmlnbmlldyBLZW1wY3p5xYRza2kg
+d3JvdGU6DQo+IE9uIFdlZCwgTWF5IDI0LCAyMDIzIGF0IDA0OjI5OjI0UE0gKzAyMDAsIERvbWlu
+aWsgR3J6ZWdvcnplayB3cm90ZToNCj4gPiBUaGVyZSBhcmUgc29tZSBtYWpvciBmZWF0dXJlcywg
+d2hpY2ggaW4gYSBjdXJyZW50IHN0YXRlIGNhbm5vdCBiZSBtZXJnZWQNCj4gPiB1cHN0cmVhbS4g
+QSBnb29kIGV4YW1wbGUgaGVyZSBpbiBhbiBFVSBkZWJ1Z2dlciwgd2hpY2ggZG9lcyBub3QNCj4g
+PiBtZWV0IHRoZSByZXF1aXJlbWVudCBvZiBoYXZpbmcgYW4gb3BlbnNvdXJjZWQgY2xpZW50LiBX
+aGlsZSB0aG9zZQ0KPiA+IGZlYXR1cmVzIGFyZSBpbiB0aGUgZGV2ZWxvcG1lbnQgd2UgbmVlZCBh
+IHdheSBvZiBwcm92aWRpbmcgdGhlbQ0KPiA+IHZhbGlkYXRpb24uIFNvIGludHJvZHVjZSB4ZV9z
+dGFnaW5nIGJ1aWxkIG9wdGlvbiB1bmRlciB3aGljaA0KPiA+IHdlIGNhbiBrZWVwIHRlc3RzIG9m
+IGZlYXR1cmVzIHRoYXQgYXJlIHVuZGVyIGhhZXZ5IGRldmVsb3BtZW50IGFuZCBub3QNCj4gPiB5
+ZXQgYWNjZXB0ZWQgdXBzdHJlYW0gb3Igbm90IHlldCBjb21wbGV0ZWQuDQo+ID4gDQo+ID4gU2ln
+bmVkLW9mZi1ieTogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlrLmdyemVnb3J6ZWtAaW50ZWwu
+Y29tPg0KPiA+IENjOiBNYXVybyBDYXJ2YWxobyBDaGVoYWIgPG1jaGVoYWJAa2VybmVsLm9yZz4N
+Cj4gPiBDYzogS2FtaWwgS29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29t
+Pg0KPiA+IC0tLQ0KPiA+ICBtZXNvbi5idWlsZCAgICAgICB8ICAxICsNCj4gPiAgbWVzb25fb3B0
+aW9ucy50eHQgfCAgNSArKysrKw0KPiA+ICB0ZXN0cy9tZXNvbi5idWlsZCB8IDE2ICsrKysrKysr
+KysrKysrKysNCj4gPiAgMyBmaWxlcyBjaGFuZ2VkLCAyMiBpbnNlcnRpb25zKCspDQo+ID4gDQo+
+ID4gZGlmZiAtLWdpdCBhL21lc29uLmJ1aWxkIGIvbWVzb24uYnVpbGQNCj4gPiBpbmRleCAxYzg3
+MmNjOWMuLmFlMjIwNmQ2ZSAxMDA2NDQNCj4gPiAtLS0gYS9tZXNvbi5idWlsZA0KPiA+ICsrKyBi
+L21lc29uLmJ1aWxkDQo+ID4gQEAgLTg2LDYgKzg2LDcgQEAgYnVpbGRfY2hhbWVsaXVtID0gZ2V0
+X29wdGlvbignY2hhbWVsaXVtJykNCj4gPiAgYnVpbGRfZG9jcyA9IGdldF9vcHRpb24oJ2RvY3Mn
+KQ0KPiA+ICBidWlsZF90ZXN0cyA9IG5vdCBnZXRfb3B0aW9uKCd0ZXN0cycpLmRpc2FibGVkKCkN
+Cj4gPiAgYnVpbGRfeGUgPSBub3QgZ2V0X29wdGlvbigneGVfZHJpdmVyJykuZGlzYWJsZWQoKQ0K
+PiA+ICtidWlsZF94ZV9zdGFnaW5nID0gbm90IGdldF9vcHRpb24oJ3hlX3N0YWdpbmcnKS5kaXNh
+YmxlZCgpDQo+ID4gIHdpdGhfbGliZHJtID0gZ2V0X29wdGlvbignbGliZHJtX2RyaXZlcnMnKQ0K
+PiA+ICANCj4gPiAgYnVpbGRfaW5mbyA9IFsnQnVpbGQgdHlwZTogJyArIGdldF9vcHRpb24oJ2J1
+aWxkdHlwZScpXQ0KPiA+IGRpZmYgLS1naXQgYS9tZXNvbl9vcHRpb25zLnR4dCBiL21lc29uX29w
+dGlvbnMudHh0DQo+ID4gaW5kZXggN2I1YTgxOGNiLi40NmVlOTFmZTYgMTAwNjQ0DQo+ID4gLS0t
+IGEvbWVzb25fb3B0aW9ucy50eHQNCj4gPiArKysgYi9tZXNvbl9vcHRpb25zLnR4dA0KPiA+IEBA
+IC00Niw2ICs0NiwxMSBAQCBvcHRpb24oJ3hlX2RyaXZlcicsDQo+ID4gICAgICAgICB0eXBlIDog
+J2ZlYXR1cmUnLA0KPiA+ICAgICAgICAgZGVzY3JpcHRpb24gOiAnQnVpbGQgdGVzdHMgZm9yIFhl
+IGRyaXZlciAoZXhwZXJpbWVudGFsKScpDQo+ID4gIA0KPiA+ICtvcHRpb24oJ3hlX3N0YWdpbmcn
+LA0KPiA+ICsgICAgICAgdHlwZSA6ICdmZWF0dXJlJywNCj4gPiArICAgICAgIHZhbHVlIDogJ2Rp
+c2FibGVkJywNCj4gPiArICAgICAgIGRlc2NyaXB0aW9uIDogJ0J1aWxkIHRlc3RzIGZvciBYZSBm
+ZWF0dXJlcyB0aGF0IGNhbm5vdCBiZSB1cHN0cmVhbWVkIHlldCAoZXhwZXJpbWVudGFsKScpDQo+
+ID4gKw0KPiA+ICBvcHRpb24oJ2xpYmRybV9kcml2ZXJzJywNCj4gPiAgICAgICAgIHR5cGUgOiAn
+YXJyYXknLA0KPiA+ICAgICAgICAgdmFsdWUgOiBbJ2F1dG8nXSwNCj4gPiBkaWZmIC0tZ2l0IGEv
+dGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiA+IGluZGV4IDM4ZjA4MGY3
+Yy4uOGM3MDU1ZWQ5IDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL21lc29uLmJ1aWxkDQo+ID4gKysr
+IGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gPiBAQCAtMjY5LDYgKzI2OSw5IEBAIHhlX3Byb2dzID0g
+Ww0KPiA+ICAJJ3hlX3dhaXRmZW5jZScsDQo+ID4gIF0NCj4gPiAgDQo+ID4gK3hlX3N0YWdpbmdf
+cHJvZ3MgPSBbDQo+ID4gK10NCj4gPiArDQo+ID4gIG1zbV9wcm9ncyA9IFsNCj4gPiAgCSdtc21f
+bWFwcGluZycsDQo+ID4gIAknbXNtX3JlY292ZXJ5JywNCj4gPiBAQCAtMzMwLDYgKzMzMywxOSBA
+QCBpZiBidWlsZF94ZQ0KPiA+ICAJYnVpbGRfaW5mbyArPSAnWGUgKipleHBlcmltZW50YWwqKiB0
+ZXN0cyBlbmFibGVkLicNCj4gPiAgZW5kaWYNCj4gDQo+IEkgZ290IHNwdXJpb3VzIGluZm9ybWF0
+aW9uIG9uICdtZXNvbmluZyc6DQo+IA0KPiBNZXNzYWdlOiBYZSAqKmV4cGVyaW1lbnRhbCoqIHRl
+c3RzIGVuYWJsZWQuDQo+IA0KPiBDb25maWd1cmF0aW9uIGxvb2tzOg0KPiANCj4gJCBtZXNvbiBj
+b25maWd1cmUgfCBncmVwIHN0YWdpbmcNCj4gICB4ZV9zdGFnaW5nICAgICAgICAgICAgICAgICAg
+ICAgZGlzYWJsZWQgICAgICAgICAgICAgICAgICAgICAgICAgW2VuYWJsZWQsIGRpc2FibGVkLCBh
+dXRvXSAgICAgICAgQnVpbGQgdGVzdHMgZm9yIFhlIGZlYXR1cmVzIHRoYXQgY2Fubm90IGJlIHVw
+c3RyZWFtZWQgeWV0IA0KPiANCj4gLS0NCj4gWmJpZ25pZXcNClRoZSBtZXNzYWdlIHlvdSBwb2lu
+dGVkLCBjb21lcyBmcm9tIHhlX2RyaXZlciBwYXJhbS4gDQpJZiB4ZV9zdGFnaW5nIGlzIGVuYWJs
+ZWQgd2UgYWRkICdXb3JrIGluIHByb2dyZXNzIHRlc3RzIGVuYWJsZWQuJyB0byB0aGF0IGluZm8g
+bG9nLg0KQXMgSSdtIGxvb2tpbmcgYXQgaXQgbm93IGl0IGNvdWxkIGJlIGp1c3QgIlhFIHN0YWdp
+bmcgdGVzdHMgZW5hYmxlZC4iLCB3aWxsIGNoYW5nZSB0aGF0IQ0KDQpSZWdhcmRzLCANCkRvbWlu
+aWsNCj4gDQo+ID4gIA0KPiA+ICtpZiBidWlsZF94ZV9zdGFnaW5nDQo+ID4gKyAgICAgICAgZm9y
+ZWFjaCBwcm9nIDogeGVfc3RhZ2luZ19wcm9ncw0KPiA+ICsJCXRlc3RfZXhlY3V0YWJsZXMgKz0g
+ZXhlY3V0YWJsZShwcm9nLA0KPiA+ICsJCSAgICAgICAgICAgam9pbl9wYXRocygneGUvc3RhZ2lu
+ZycsIHByb2cgKyAnLmMnKSwNCj4gPiArCQkJICAgZGVwZW5kZW5jaWVzIDogdGVzdF9kZXBzLA0K
+PiA+ICsJCQkgICBpbnN0YWxsX2RpciA6IGxpYmV4ZWNkaXIsDQo+ID4gKwkJCSAgIGluc3RhbGxf
+cnBhdGggOiBsaWJleGVjZGlyX3JwYXRoZGlyLA0KPiA+ICsJCQkgICBpbnN0YWxsIDogdHJ1ZSkN
+Cj4gPiArCQl0ZXN0X2xpc3QgKz0gcHJvZw0KPiA+ICsJZW5kZm9yZWFjaA0KPiA+ICsJYnVpbGRf
+aW5mbyArPSAnV29yayBpbiBwcm9ncmVzcyB0ZXN0cyBlbmFibGVkLicNCj4gPiArZW5kaWYNCj4g
+PiArDQo+ID4gIGZvcmVhY2ggcHJvZyA6IG1zbV9wcm9ncw0KPiA+ICAJdGVzdF9leGVjdXRhYmxl
+cyArPSBleGVjdXRhYmxlKHByb2csIGpvaW5fcGF0aHMoJ21zbScsIHByb2cgKyAnLmMnKSwNCj4g
+PiAgCQkJCSAgICAgICBkZXBlbmRlbmNpZXMgOiB0ZXN0X2RlcHMsDQo+ID4gLS0gDQo+ID4gMi4z
+NC4xDQo+ID4gDQoNCg==
