@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8808689502141385959=="
+From: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	igt-dev@lists.freedesktop.org
+Date: Fri, 26 May 2023 22:00:07 +0530
+Message-Id: <20230526163008.428809-1-aravind.iddamsetty@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Andrzej Hajda" <andrzej.hajda@intel.com>
-Date: Fri, 26 May 2023 15:39:20 -0000
-Message-ID: <168511556038.32384.12247465744143114009@emeril.freedesktop.org>
-References: <20230526142004.310852-1-andrzej.hajda@intel.com>
-In-Reply-To: <20230526142004.310852-1-andrzej.hajda@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fctx=5Fpersistence=3A_skip_heartbeat_tests_with_GuC_=28rev3?=
- =?utf-8?q?=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [RFC i-g-t 0/1] A tool to demonstrate use of netlink
+ sockets to read RAS error counters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,339 +15,324 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: alexander.deucher@amd.com, ogabbay@kernel.org, airlied@gmail.com,
+ daniel@ffwll.ch
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8808689502141385959==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This tool is to demonstrate the use of netlink sockets to read RAS error
+counters, which is being proposed via series
+"[RFC 0/5] Proposal to use netlink for RAS and Telemetry across drm subsystem".
 
-== Series Details ==
+The tool supports the following commands:
+READ_ONE, READ_ALL, WAIT_ON_EVENT, LIST_ERRORS
 
-Series: i915/gem_ctx_persistence: skip heartbeat tests with GuC (rev3)
-URL   : https://patchwork.freedesktop.org/series/118423/
-State : success
+read single error counter:
 
-== Summary ==
+$ ./drm_ras READ_ONE --device=drm:/dev/dri/card1 --error_id=0x0000000000000005
+counter value 0
 
-CI Bug Log - changes from IGT_7306 -> IGTPW_9048
-====================================================
+read all error counters:
 
-Summary
--------
+$ ./drm_ras READ_ALL --device=drm:/dev/dri/card1
+name                                                    config-id               counter
 
-  **SUCCESS**
+error-gt0-correctable-guc                               0x0000000000000001      0
+error-gt0-correctable-slm                               0x0000000000000003      0
+error-gt0-correctable-eu-ic                             0x0000000000000004      0
+error-gt0-correctable-eu-grf                            0x0000000000000005      0
+error-gt0-fatal-guc                                     0x0000000000000009      0
+error-gt0-fatal-slm                                     0x000000000000000d      0
+error-gt0-fatal-eu-grf                                  0x000000000000000f      0
+error-gt0-fatal-fpu                                     0x0000000000000010      0
+error-gt0-fatal-tlb                                     0x0000000000000011      0
+error-gt0-fatal-l3-fabric                               0x0000000000000012      0
+error-gt0-correctable-subslice                          0x0000000000000013      0
+error-gt0-correctable-l3bank                            0x0000000000000014      0
+error-gt0-fatal-subslice                                0x0000000000000015      0
+error-gt0-fatal-l3bank                                  0x0000000000000016      0
+error-gt0-sgunit-correctable                            0x0000000000000017      0
+error-gt0-sgunit-nonfatal                               0x0000000000000018      0
+error-gt0-sgunit-fatal                                  0x0000000000000019      0
+error-gt0-soc-fatal-psf-csc-0                           0x000000000000001a      0
+error-gt0-soc-fatal-psf-csc-1                           0x000000000000001b      0
+error-gt0-soc-fatal-psf-csc-2                           0x000000000000001c      0
+error-gt0-soc-fatal-punit                               0x000000000000001d      0
+error-gt0-soc-fatal-psf-0                               0x000000000000001e      0
+error-gt0-soc-fatal-psf-1                               0x000000000000001f      0
+error-gt0-soc-fatal-psf-2                               0x0000000000000020      0
+error-gt0-soc-fatal-cd0                                 0x0000000000000021      0
+error-gt0-soc-fatal-cd0-mdfi                            0x0000000000000022      0
+error-gt0-soc-fatal-mdfi-east                           0x0000000000000023      0
+error-gt0-soc-fatal-mdfi-south                          0x0000000000000024      0
+error-gt0-soc-fatal-hbm-ss0-0                           0x0000000000000025      0
+error-gt0-soc-fatal-hbm-ss0-1                           0x0000000000000026      0
+error-gt0-soc-fatal-hbm-ss0-2                           0x0000000000000027      0
+error-gt0-soc-fatal-hbm-ss0-3                           0x0000000000000028      0
+error-gt0-soc-fatal-hbm-ss0-4                           0x0000000000000029      0
+error-gt0-soc-fatal-hbm-ss0-5                           0x000000000000002a      0
+error-gt0-soc-fatal-hbm-ss0-6                           0x000000000000002b      0
+error-gt0-soc-fatal-hbm-ss0-7                           0x000000000000002c      0
+error-gt0-soc-fatal-hbm-ss1-0                           0x000000000000002d      0
+error-gt0-soc-fatal-hbm-ss1-1                           0x000000000000002e      0
+error-gt0-soc-fatal-hbm-ss1-2                           0x000000000000002f      0
+error-gt0-soc-fatal-hbm-ss1-3                           0x0000000000000030      0
+error-gt0-soc-fatal-hbm-ss1-4                           0x0000000000000031      0
+error-gt0-soc-fatal-hbm-ss1-5                           0x0000000000000032      0
+error-gt0-soc-fatal-hbm-ss1-6                           0x0000000000000033      0
+error-gt0-soc-fatal-hbm-ss1-7                           0x0000000000000034      0
+error-gt0-soc-fatal-hbm-ss2-0                           0x0000000000000035      0
+error-gt0-soc-fatal-hbm-ss2-1                           0x0000000000000036      0
+error-gt0-soc-fatal-hbm-ss2-2                           0x0000000000000037      0
+error-gt0-soc-fatal-hbm-ss2-3                           0x0000000000000038      0
+error-gt0-soc-fatal-hbm-ss2-4                           0x0000000000000039      0
+error-gt0-soc-fatal-hbm-ss2-5                           0x000000000000003a      0
+error-gt0-soc-fatal-hbm-ss2-6                           0x000000000000003b      0
+error-gt0-soc-fatal-hbm-ss2-7                           0x000000000000003c      0
+error-gt0-soc-fatal-hbm-ss3-0                           0x000000000000003d      0
+error-gt0-soc-fatal-hbm-ss3-1                           0x000000000000003e      0
+error-gt0-soc-fatal-hbm-ss3-2                           0x000000000000003f      0
+error-gt0-soc-fatal-hbm-ss3-3                           0x0000000000000040      0
+error-gt0-soc-fatal-hbm-ss3-4                           0x0000000000000041      0
+error-gt0-soc-fatal-hbm-ss3-5                           0x0000000000000042      0
+error-gt0-soc-fatal-hbm-ss3-6                           0x0000000000000043      0
+error-gt0-soc-fatal-hbm-ss3-7                           0x0000000000000044      0
+error-gt0-gsc-correctable-sram-ecc                      0x0000000000000045      0
+error-gt0-gsc-nonfatal-mia-shutdown                     0x0000000000000046      0
+error-gt0-gsc-nonfatal-mia-int                          0x0000000000000047      0
+error-gt0-gsc-nonfatal-sram-ecc                         0x0000000000000048      0
+error-gt0-gsc-nonfatal-wdg-timeout                      0x0000000000000049      0
+error-gt0-gsc-nonfatal-rom-parity                       0x000000000000004a      0
+error-gt0-gsc-nonfatal-ucode-parity                     0x000000000000004b      0
+error-gt0-gsc-nonfatal-glitch-det                       0x000000000000004c      0
+error-gt0-gsc-nonfatal-fuse-pull                        0x000000000000004d      0
+error-gt0-gsc-nonfatal-fuse-crc-check                   0x000000000000004e      0
+error-gt0-gsc-nonfatal-selfmbist                        0x000000000000004f      0
+error-gt0-gsc-nonfatal-aon-parity                       0x0000000000000050      0
+error-gt1-correctable-guc                               0x1000000000000001      0
+error-gt1-correctable-slm                               0x1000000000000003      0
+error-gt1-correctable-eu-ic                             0x1000000000000004      0
+error-gt1-correctable-eu-grf                            0x1000000000000005      0
+error-gt1-fatal-guc                                     0x1000000000000009      0
+error-gt1-fatal-slm                                     0x100000000000000d      0
+error-gt1-fatal-eu-grf                                  0x100000000000000f      0
+error-gt1-fatal-fpu                                     0x1000000000000010      0
+error-gt1-fatal-tlb                                     0x1000000000000011      0
+error-gt1-fatal-l3-fabric                               0x1000000000000012      0
+error-gt1-correctable-subslice                          0x1000000000000013      0
+error-gt1-correctable-l3bank                            0x1000000000000014      0
+error-gt1-fatal-subslice                                0x1000000000000015      0
+error-gt1-fatal-l3bank                                  0x1000000000000016      0
+error-gt1-sgunit-correctable                            0x1000000000000017      0
+error-gt1-sgunit-nonfatal                               0x1000000000000018      0
+error-gt1-sgunit-fatal                                  0x1000000000000019      0
+error-gt1-soc-fatal-psf-csc-0                           0x100000000000001a      0
+error-gt1-soc-fatal-psf-csc-1                           0x100000000000001b      0
+error-gt1-soc-fatal-psf-csc-2                           0x100000000000001c      0
+error-gt1-soc-fatal-punit                               0x100000000000001d      0
+error-gt1-soc-fatal-psf-0                               0x100000000000001e      0
+error-gt1-soc-fatal-psf-1                               0x100000000000001f      0
+error-gt1-soc-fatal-psf-2                               0x1000000000000020      0
+error-gt1-soc-fatal-cd0                                 0x1000000000000021      0
+error-gt1-soc-fatal-cd0-mdfi                            0x1000000000000022      0
+error-gt1-soc-fatal-mdfi-east                           0x1000000000000023      0
+error-gt1-soc-fatal-mdfi-south                          0x1000000000000024      0
+error-gt1-soc-fatal-hbm-ss0-0                           0x1000000000000025      0
+error-gt1-soc-fatal-hbm-ss0-1                           0x1000000000000026      0
+error-gt1-soc-fatal-hbm-ss0-2                           0x1000000000000027      0
+error-gt1-soc-fatal-hbm-ss0-3                           0x1000000000000028      0
+error-gt1-soc-fatal-hbm-ss0-4                           0x1000000000000029      0
+error-gt1-soc-fatal-hbm-ss0-5                           0x100000000000002a      0
+error-gt1-soc-fatal-hbm-ss0-6                           0x100000000000002b      0
+error-gt1-soc-fatal-hbm-ss0-7                           0x100000000000002c      0
+error-gt1-soc-fatal-hbm-ss1-0                           0x100000000000002d      0
+error-gt1-soc-fatal-hbm-ss1-1                           0x100000000000002e      0
+error-gt1-soc-fatal-hbm-ss1-2                           0x100000000000002f      0
+error-gt1-soc-fatal-hbm-ss1-3                           0x1000000000000030      0
+error-gt1-soc-fatal-hbm-ss1-4                           0x1000000000000031      0
+error-gt1-soc-fatal-hbm-ss1-5                           0x1000000000000032      0
+error-gt1-soc-fatal-hbm-ss1-6                           0x1000000000000033      0
+error-gt1-soc-fatal-hbm-ss1-7                           0x1000000000000034      0
+error-gt1-soc-fatal-hbm-ss2-0                           0x1000000000000035      0
+error-gt1-soc-fatal-hbm-ss2-1                           0x1000000000000036      0
+error-gt1-soc-fatal-hbm-ss2-2                           0x1000000000000037      0
+error-gt1-soc-fatal-hbm-ss2-3                           0x1000000000000038      0
+error-gt1-soc-fatal-hbm-ss2-4                           0x1000000000000039      0
+error-gt1-soc-fatal-hbm-ss2-5                           0x100000000000003a      0
+error-gt1-soc-fatal-hbm-ss2-6                           0x100000000000003b      0
+error-gt1-soc-fatal-hbm-ss2-7                           0x100000000000003c      0
+error-gt1-soc-fatal-hbm-ss3-0                           0x100000000000003d      0
+error-gt1-soc-fatal-hbm-ss3-1                           0x100000000000003e      0
+error-gt1-soc-fatal-hbm-ss3-2                           0x100000000000003f      0
+error-gt1-soc-fatal-hbm-ss3-3                           0x1000000000000040      0
+error-gt1-soc-fatal-hbm-ss3-4                           0x1000000000000041      0
+error-gt1-soc-fatal-hbm-ss3-5                           0x1000000000000042      0
+error-gt1-soc-fatal-hbm-ss3-6                           0x1000000000000043      0
+error-gt1-soc-fatal-hbm-ss3-7                           0x1000000000000044      0
 
-  No regressions found.
+wait on a error event:
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/index.html
+$ ./drm_ras WAIT_ON_EVENT --device=drm:/dev/dri/card1
+waiting for error event
+error event received
+counter value 0
 
-Participating hosts (38 -> 39)
-------------------------------
+list all errors:
 
-  Additional (2): fi-kbl-soraka bat-mtlp-6 
-  Missing    (1): fi-snb-2520m 
+$ ./drm_ras LIST_ERRORS --device=drm:/dev/dri/card1
+name                                                    config-id
 
-Known issues
-------------
+error-gt0-correctable-guc                               0x0000000000000001
+error-gt0-correctable-slm                               0x0000000000000003
+error-gt0-correctable-eu-ic                             0x0000000000000004
+error-gt0-correctable-eu-grf                            0x0000000000000005
+error-gt0-fatal-guc                                     0x0000000000000009
+error-gt0-fatal-slm                                     0x000000000000000d
+error-gt0-fatal-eu-grf                                  0x000000000000000f
+error-gt0-fatal-fpu                                     0x0000000000000010
+error-gt0-fatal-tlb                                     0x0000000000000011
+error-gt0-fatal-l3-fabric                               0x0000000000000012
+error-gt0-correctable-subslice                          0x0000000000000013
+error-gt0-correctable-l3bank                            0x0000000000000014
+error-gt0-fatal-subslice                                0x0000000000000015
+error-gt0-fatal-l3bank                                  0x0000000000000016
+error-gt0-sgunit-correctable                            0x0000000000000017
+error-gt0-sgunit-nonfatal                               0x0000000000000018
+error-gt0-sgunit-fatal                                  0x0000000000000019
+error-gt0-soc-fatal-psf-csc-0                           0x000000000000001a
+error-gt0-soc-fatal-psf-csc-1                           0x000000000000001b
+error-gt0-soc-fatal-psf-csc-2                           0x000000000000001c
+error-gt0-soc-fatal-punit                               0x000000000000001d
+error-gt0-soc-fatal-psf-0                               0x000000000000001e
+error-gt0-soc-fatal-psf-1                               0x000000000000001f
+error-gt0-soc-fatal-psf-2                               0x0000000000000020
+error-gt0-soc-fatal-cd0                                 0x0000000000000021
+error-gt0-soc-fatal-cd0-mdfi                            0x0000000000000022
+error-gt0-soc-fatal-mdfi-east                           0x0000000000000023
+error-gt0-soc-fatal-mdfi-south                          0x0000000000000024
+error-gt0-soc-fatal-hbm-ss0-0                           0x0000000000000025
+error-gt0-soc-fatal-hbm-ss0-1                           0x0000000000000026
+error-gt0-soc-fatal-hbm-ss0-2                           0x0000000000000027
+error-gt0-soc-fatal-hbm-ss0-3                           0x0000000000000028
+error-gt0-soc-fatal-hbm-ss0-4                           0x0000000000000029
+error-gt0-soc-fatal-hbm-ss0-5                           0x000000000000002a
+error-gt0-soc-fatal-hbm-ss0-6                           0x000000000000002b
+error-gt0-soc-fatal-hbm-ss0-7                           0x000000000000002c
+error-gt0-soc-fatal-hbm-ss1-0                           0x000000000000002d
+error-gt0-soc-fatal-hbm-ss1-1                           0x000000000000002e
+error-gt0-soc-fatal-hbm-ss1-2                           0x000000000000002f
+error-gt0-soc-fatal-hbm-ss1-3                           0x0000000000000030
+error-gt0-soc-fatal-hbm-ss1-4                           0x0000000000000031
+error-gt0-soc-fatal-hbm-ss1-5                           0x0000000000000032
+error-gt0-soc-fatal-hbm-ss1-6                           0x0000000000000033
+error-gt0-soc-fatal-hbm-ss1-7                           0x0000000000000034
+error-gt0-soc-fatal-hbm-ss2-0                           0x0000000000000035
+error-gt0-soc-fatal-hbm-ss2-1                           0x0000000000000036
+error-gt0-soc-fatal-hbm-ss2-2                           0x0000000000000037
+error-gt0-soc-fatal-hbm-ss2-3                           0x0000000000000038
+error-gt0-soc-fatal-hbm-ss2-4                           0x0000000000000039
+error-gt0-soc-fatal-hbm-ss2-5                           0x000000000000003a
+error-gt0-soc-fatal-hbm-ss2-6                           0x000000000000003b
+error-gt0-soc-fatal-hbm-ss2-7                           0x000000000000003c
+error-gt0-soc-fatal-hbm-ss3-0                           0x000000000000003d
+error-gt0-soc-fatal-hbm-ss3-1                           0x000000000000003e
+error-gt0-soc-fatal-hbm-ss3-2                           0x000000000000003f
+error-gt0-soc-fatal-hbm-ss3-3                           0x0000000000000040
+error-gt0-soc-fatal-hbm-ss3-4                           0x0000000000000041
+error-gt0-soc-fatal-hbm-ss3-5                           0x0000000000000042
+error-gt0-soc-fatal-hbm-ss3-6                           0x0000000000000043
+error-gt0-soc-fatal-hbm-ss3-7                           0x0000000000000044
+error-gt0-gsc-correctable-sram-ecc                      0x0000000000000045
+error-gt0-gsc-nonfatal-mia-shutdown                     0x0000000000000046
+error-gt0-gsc-nonfatal-mia-int                          0x0000000000000047
+error-gt0-gsc-nonfatal-sram-ecc                         0x0000000000000048
+error-gt0-gsc-nonfatal-wdg-timeout                      0x0000000000000049
+error-gt0-gsc-nonfatal-rom-parity                       0x000000000000004a
+error-gt0-gsc-nonfatal-ucode-parity                     0x000000000000004b
+error-gt0-gsc-nonfatal-glitch-det                       0x000000000000004c
+error-gt0-gsc-nonfatal-fuse-pull                        0x000000000000004d
+error-gt0-gsc-nonfatal-fuse-crc-check                   0x000000000000004e
+error-gt0-gsc-nonfatal-selfmbist                        0x000000000000004f
+error-gt0-gsc-nonfatal-aon-parity                       0x0000000000000050
+error-gt1-correctable-guc                               0x1000000000000001
+error-gt1-correctable-slm                               0x1000000000000003
+error-gt1-correctable-eu-ic                             0x1000000000000004
+error-gt1-correctable-eu-grf                            0x1000000000000005
+error-gt1-fatal-guc                                     0x1000000000000009
+error-gt1-fatal-slm                                     0x100000000000000d
+error-gt1-fatal-eu-grf                                  0x100000000000000f
+error-gt1-fatal-fpu                                     0x1000000000000010
+error-gt1-fatal-tlb                                     0x1000000000000011
+error-gt1-fatal-l3-fabric                               0x1000000000000012
+error-gt1-correctable-subslice                          0x1000000000000013
+error-gt1-correctable-l3bank                            0x1000000000000014
+error-gt1-fatal-subslice                                0x1000000000000015
+error-gt1-fatal-l3bank                                  0x1000000000000016
+error-gt1-sgunit-correctable                            0x1000000000000017
+error-gt1-sgunit-nonfatal                               0x1000000000000018
+error-gt1-sgunit-fatal                                  0x1000000000000019
+error-gt1-soc-fatal-psf-csc-0                           0x100000000000001a
+error-gt1-soc-fatal-psf-csc-1                           0x100000000000001b
+error-gt1-soc-fatal-psf-csc-2                           0x100000000000001c
+error-gt1-soc-fatal-punit                               0x100000000000001d
+error-gt1-soc-fatal-psf-0                               0x100000000000001e
+error-gt1-soc-fatal-psf-1                               0x100000000000001f
+error-gt1-soc-fatal-psf-2                               0x1000000000000020
+error-gt1-soc-fatal-cd0                                 0x1000000000000021
+error-gt1-soc-fatal-cd0-mdfi                            0x1000000000000022
+error-gt1-soc-fatal-mdfi-east                           0x1000000000000023
+error-gt1-soc-fatal-mdfi-south                          0x1000000000000024
+error-gt1-soc-fatal-hbm-ss0-0                           0x1000000000000025
+error-gt1-soc-fatal-hbm-ss0-1                           0x1000000000000026
+error-gt1-soc-fatal-hbm-ss0-2                           0x1000000000000027
+error-gt1-soc-fatal-hbm-ss0-3                           0x1000000000000028
+error-gt1-soc-fatal-hbm-ss0-4                           0x1000000000000029
+error-gt1-soc-fatal-hbm-ss0-5                           0x100000000000002a
+error-gt1-soc-fatal-hbm-ss0-6                           0x100000000000002b
+error-gt1-soc-fatal-hbm-ss0-7                           0x100000000000002c
+error-gt1-soc-fatal-hbm-ss1-0                           0x100000000000002d
+error-gt1-soc-fatal-hbm-ss1-1                           0x100000000000002e
+error-gt1-soc-fatal-hbm-ss1-2                           0x100000000000002f
+error-gt1-soc-fatal-hbm-ss1-3                           0x1000000000000030
+error-gt1-soc-fatal-hbm-ss1-4                           0x1000000000000031
+error-gt1-soc-fatal-hbm-ss1-5                           0x1000000000000032
+error-gt1-soc-fatal-hbm-ss1-6                           0x1000000000000033
+error-gt1-soc-fatal-hbm-ss1-7                           0x1000000000000034
+error-gt1-soc-fatal-hbm-ss2-0                           0x1000000000000035
+error-gt1-soc-fatal-hbm-ss2-1                           0x1000000000000036
+error-gt1-soc-fatal-hbm-ss2-2                           0x1000000000000037
+error-gt1-soc-fatal-hbm-ss2-3                           0x1000000000000038
+error-gt1-soc-fatal-hbm-ss2-4                           0x1000000000000039
+error-gt1-soc-fatal-hbm-ss2-5                           0x100000000000003a
+error-gt1-soc-fatal-hbm-ss2-6                           0x100000000000003b
+error-gt1-soc-fatal-hbm-ss2-7                           0x100000000000003c
+error-gt1-soc-fatal-hbm-ss3-0                           0x100000000000003d
+error-gt1-soc-fatal-hbm-ss3-1                           0x100000000000003e
+error-gt1-soc-fatal-hbm-ss3-2                           0x100000000000003f
+error-gt1-soc-fatal-hbm-ss3-3                           0x1000000000000040
+error-gt1-soc-fatal-hbm-ss3-4                           0x1000000000000041
+error-gt1-soc-fatal-hbm-ss3-5                           0x1000000000000042
+error-gt1-soc-fatal-hbm-ss3-6                           0x1000000000000043
+error-gt1-soc-fatal-hbm-ss3-7                           0x1000000000000044
 
-  Here are the changes found in IGTPW_9048 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][3] ([i915#1886] / [i915#7913])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-2:         [PASS][4] -> [ABORT][5] ([i915#4983] / [i915#7461] / [i915#7913] / [i915#8347])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-rpls-2/igt@i915_selftest@live@reset.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-rpls-2/igt@i915_selftest@live@reset.html
-
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-1:         NOTRUN -> [DMESG-WARN][6] ([i915#6367])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-rpls-1:         NOTRUN -> [ABORT][7] ([i915#6687] / [i915#7978])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_chamelium_frames@hdmi-crc-fast:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271]) +14 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][9] ([fdo#109271]) +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-bsw-nick/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][10] ([fdo#109271] / [i915#4579])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-kbl-soraka/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [ABORT][11] ([i915#7911] / [i915#7913]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-dg2-11:         [DMESG-WARN][13] ([i915#7699]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-dg2-11/igt@i915_selftest@live@migrate.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-dg2-11/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@requests:
-    - {bat-mtlp-8}:       [DMESG-FAIL][15] ([i915#8497]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-1:         [ABORT][17] ([i915#4983] / [i915#7461] / [i915#7981] / [i915#8347] / [i915#8384]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-rpls-1/igt@i915_selftest@live@reset.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-rpls-1/igt@i915_selftest@live@reset.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - {bat-mtlp-8}:       [DMESG-WARN][19] ([i915#1982]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-mtlp-8/igt@i915_suspend@basic-s2idle-without-i915.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-mtlp-8/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-rplp-1:         [SKIP][21] ([i915#1072]) -> [ABORT][22] ([i915#8442])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [IGT#6]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/6
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4342]: https://gitlab.freedesktop.org/drm/intel/issues/4342
-  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
-  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
-  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#7981]: https://gitlab.freedesktop.org/drm/intel/issues/7981
-  [i915#8189]: https://gitlab.freedesktop.org/drm/intel/issues/8189
-  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
-  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
-  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
-  [i915#8497]: https://gitlab.freedesktop.org/drm/intel/issues/8497
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7306 -> IGTPW_9048
-
-  CI-20190529: 20190529
-  CI_DRM_13195: 8de6f7d7e58a51740d5bcaf203d2eb4a94762f5d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9048: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/index.html
-  IGT_7306: f5fc83091e82de0b99e85466177c8dc2158247cc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/index.html
-
---===============8808689502141385959==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Oded Gabbay <ogabbay@kernel.org>
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+Aravind Iddamsetty (1):
+  tools/RAS: A tool to read error counters
 
+ include/drm-uapi/drm_netlink.h |  58 +++++
+ meson.build                    |   4 +
+ tools/drm_ras.c                | 403 +++++++++++++++++++++++++++++++++
+ tools/meson.build              |   5 +
+ 4 files changed, 470 insertions(+)
+ create mode 100644 include/drm-uapi/drm_netlink.h
+ create mode 100644 tools/drm_ras.c
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/gem_ctx_persistence: skip heartbeat tests with GuC (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/118423/">https://patchwork.freedesktop.org/series/118423/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7306 -&gt; IGTPW_9048</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/index.html</p>
-<h2>Participating hosts (38 -&gt; 39)</h2>
-<p>Additional (2): fi-kbl-soraka bat-mtlp-6 <br />
-  Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9048 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +14 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-bsw-nick/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-kbl-soraka/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-mtlp-8/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8497">i915#8497</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7981">i915#7981</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-mtlp-8/igt@i915_suspend@basic-s2idle-without-i915.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-mtlp-8/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@sprite_plane_onoff:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7306/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7306 -&gt; IGTPW_9048</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13195: 8de6f7d7e58a51740d5bcaf203d2eb4a94762f5d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9048: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9048/index.html<br />
-  IGT_7306: f5fc83091e82de0b99e85466177c8dc2158247cc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8808689502141385959==--
+-- 
+2.25.1
