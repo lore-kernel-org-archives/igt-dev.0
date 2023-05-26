@@ -1,24 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F83710E0EF
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2E5310E0EF
  for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 06:46:29 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.1.196])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 25CA6580BA1
+ by linux.intel.com (Postfix) with ESMTPS id 214FB5807A3
  for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 23:46:28 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1q2RDV-00C6og-2E
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1q2RDV-00C6om-2M
  for igt-dev@lists.freedesktop.org; Fri, 26 May 2023 08:46:25 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 26 May 2023 08:46:22 +0200
-Message-Id: <20230526064624.2886063-1-mauro.chehab@linux.intel.com>
+Date: Fri, 26 May 2023 08:46:24 +0200
+Message-Id: <20230526064624.2886063-3-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230526064624.2886063-1-mauro.chehab@linux.intel.com>
+References: <20230526064624.2886063-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] Enable documentation check for i915
- driver
+Subject: [igt-dev] [PATCH i-g-t 2/2] testplan/meson.build: make it check for
+ missing i915 documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,21 +34,32 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Don't let documentation to be out of sync with test changes for
-i915.
+Now that i915 is fully documented, check it at build time.
 
-The first patch contains a change on some subtsts at i915/perf_pmu
-that happened after the patches adding documentation to i915.
-
-After fixing it, we can now enable the check at build time.
-
-Mauro Carvalho Chehab (2):
-  i915/perf_pmu: sync documentation with latest changes
-  testplan/meson.build: make it check for missing i915 documentation
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
  docs/testplan/meson.build | 4 ++--
- tests/i915/perf_pmu.c     | 8 +-------
- 2 files changed, 3 insertions(+), 9 deletions(-)
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index 6cd44be5ccd3..bf73dd32a15f 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -30,13 +30,13 @@ xe_test_dict = {
+ 
+ if build_xe
+ 	test_dict = {
+-		'i915_tests': { 'input': i915_test_config, 'extra_args': [] },
++		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+ 		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
+ 		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+ 	    }
+ else
+ 	test_dict = {
+-	      'i915_tests': { 'input': i915_test_config, 'extra_args': [] },
++	      'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+ 	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
+ 	    }
+ endif
 -- 
 2.40.1
