@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2E5310E0EF
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B90C10E1B7
  for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 06:46:29 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.1.196])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 214FB5807A3
+ by linux.intel.com (Postfix) with ESMTPS id 28CEE580BE1
  for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 23:46:28 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1q2RDV-00C6om-2M
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1q2RDV-00C6oj-2J
  for igt-dev@lists.freedesktop.org; Fri, 26 May 2023 08:46:25 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 26 May 2023 08:46:24 +0200
-Message-Id: <20230526064624.2886063-3-mauro.chehab@linux.intel.com>
+Date: Fri, 26 May 2023 08:46:23 +0200
+Message-Id: <20230526064624.2886063-2-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230526064624.2886063-1-mauro.chehab@linux.intel.com>
 References: <20230526064624.2886063-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] testplan/meson.build: make it check for
- missing i915 documentation
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915/perf_pmu: sync documentation with
+ latest changes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,32 +34,41 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Now that i915 is fully documented, check it at build time.
+There are some changes on some test names since when the
+documentation was generated for this file.
+
+Update it to keep in sync with the actual tests.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- docs/testplan/meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/i915/perf_pmu.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index 6cd44be5ccd3..bf73dd32a15f 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -30,13 +30,13 @@ xe_test_dict = {
- 
- if build_xe
- 	test_dict = {
--		'i915_tests': { 'input': i915_test_config, 'extra_args': [] },
-+		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
- 		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
- 		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
- 	    }
- else
- 	test_dict = {
--	      'i915_tests': { 'input': i915_test_config, 'extra_args': [] },
-+	      'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
- 	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
- 	    }
- endif
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index 2aa018e13aff..8b31df7b229e 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -145,9 +145,6 @@
+  * Feature: i915 pmu perf interface, pmu
+  * Test category: Perf
+  *
+- * SUBTEST: frequency-idle
+- * Feature: pmu
+- *
+  * SUBTEST: gt-awake
+  * Description: Setup workload on all engines,measure gt awake time via pmu
+  * Feature: i915 pmu perf interface, pmu
+@@ -226,10 +223,7 @@
+  * SUBTEST: rc6
+  * Feature: pmu
+  *
+- * SUBTEST: rc6-runtime-pm
+- * Feature: pmu
+- *
+- * SUBTEST: rc6-runtime-pm-long
++ * SUBTEST: rc6-all-gts
+  * Feature: pmu
+  *
+  * SUBTEST: rc6-suspend
 -- 
 2.40.1
