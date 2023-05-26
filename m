@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D20B10E3CD
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:40:15 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:03:01 +0530
-Message-Id: <20230517063323.4146387-60-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
-References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7469610E06F
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 12:18:12 +0000 (UTC)
+Date: Fri, 26 May 2023 14:18:08 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230526121808.t5azwfolhhcttuue@kamilkon-desk1>
+References: <20230522142201.2527800-1-mauro.chehab@linux.intel.com>
+ <20230522142201.2527800-6-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 59/81] tests/kms_plane: Document each subtest
- for testplan
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230522142201.2527800-6-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 5/6] scripts/test_list.py: add a method
+ to return an spreadsheet-like array
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,115 +22,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, mchehab@kernel.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+On 2023-05-22 at 16:22:00 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> It can be useful to convert the contents of the tests into a
+> spreadsheet. Add a method for doing that at the TestList class.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_plane.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 10e16b638..b93e33662 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -24,6 +24,11 @@
-  *   Damien Lespiau <damien.lespiau@intel.com>
-  */
- 
-+/**
-+ * TEST: kms plane
-+ * Category: Display
-+ * Description: Testes for KMS Plane
-+ */
- #include "igt.h"
- #include "igt_vec.h"
- #include <errno.h>
-@@ -272,6 +277,21 @@ test_plane_position_with_output(data_t *data,
- 	igt_remove_fb(data->drm_fd, &sprite_fb);
- }
- 
-+/**
-+ * SUBTEST: plane-position-%s
-+ * Description: Verify plane position using two planes to create a %arg[1]
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @covered:           fully covered screen
-+ * @hole:              partially covered screen
-+ * @hole-dpms:         partially covered screen and check for DPMS
-+ */
- static void
- test_plane_position(data_t *data, enum pipe pipe)
- {
-@@ -380,6 +400,21 @@ test_plane_panning_with_output(data_t *data,
- 	igt_remove_fb(data->drm_fd, &primary_fb);
- }
- 
-+/**
-+ * SUBTEST: plane-panning-%s
-+ * Description: Verify plane panning at %arg[1] using primary plane
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @bottom-right:               bottom-right position
-+ * @bottom-right-suspend:       bottom-right position with suspend
-+ * @top-left:                   top-left position
-+ */
- static void
- test_plane_panning(data_t *data, enum pipe pipe)
- {
-@@ -1087,6 +1122,20 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
- 	return index != 0 && index != 3 && index != 5;
- }
- 
-+/**
-+ * SUBTEST: pixel-%s
-+ * Description: verify the pixel formats for given plane and pipe
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @format:
-+ * @format-source-clamping:          with source clamping
-+ */
- static void
- test_pixel_formats(data_t *data, enum pipe pipe)
- {
-@@ -1143,6 +1192,15 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 	igt_assert_f(result, "At least one CRC mismatch happened\n");
- }
- 
-+/**
-+ * SUBTEST: invalid-pixel-format-settings
-+ * Description: verify invalid settings for pixel format are not accepted
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_invalid_settings(data_t *data)
- {
- 	enum pipe pipe = PIPE_A;
--- 
-2.40.0
-
+> ---
+>  scripts/test_list.py | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 42 insertions(+)
+> 
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 654ccd8692d4..58a2457d6e77 100755
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -651,6 +651,48 @@ class TestList:
+>              handler.close()
+>              sys.stdout = original_stdout
+>  
+> +    def get_spreadsheet(self):
+> +
+> +        """
+> +        Return a bidimentional array with the test contents.
+> +
+> +        Its output is similar to a spreadsheet, so it can be used by a
+> +        separate python file that would create a workbook's sheet.
+> +        """
+> +
+> +        sheet = []
+> +        row = 0
+> +        sheet.append([])
+> +        sheet[row].append('Test name')
+> +
+> +        subtest_dict = self.expand_dictionary(True)
+> +
+> +                # Identify the sort order for the fields
+> +        fields_order = []
+> +        fields = sorted(self.props.items(), key = _sort_per_level)
+> +        for item in fields:
+> +            fields_order.append(item[0])
+> +            sheet[row].append(item[0])
+> +
+> +        # Receives a flat subtest dictionary, with wildcards expanded
+> +        subtest_dict = self.expand_dictionary(True)
+> +
+> +        subtests = sorted(subtest_dict.items(),
+> +                          key = lambda x: _sort_using_array(x, fields_order))
+> +
+> +        for subtest, fields in subtests:
+> +            row += 1
+> +            sheet.append([])
+> +
+> +            sheet[row].append(subtest)
+> +
+> +            for field in fields_order:
+> +                if field in fields:
+> +                    sheet[row].append(fields[field])
+> +                else:
+> +                    sheet[row].append('')
+> +        return sheet
+> +
+>      def print_nested_rest(self, filename):
+>  
+>          """Print tests and subtests ordered by tests"""
+> -- 
+> 2.40.1
+> 
 
