@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CB4910E7E7
- for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 10:51:31 +0000 (UTC)
-Date: Fri, 26 May 2023 12:51:00 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Message-ID: <20230526105100.6wxkiwov2mzyxipa@zkempczy-mobl2>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 209C210E0BE
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 10:57:09 +0000 (UTC)
+From: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
+Date: Fri, 26 May 2023 10:57:06 +0000
+Message-ID: <b9a3ca101f6939dc2d53c404191efea7f1c13756.camel@intel.com>
 References: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
- <20230524142931.119823-3-dominik.grzegorzek@intel.com>
+ <20230524142931.119823-2-dominik.grzegorzek@intel.com>
+ <20230526103738.ooi4fy2br4eh7gty@zkempczy-mobl2>
+In-Reply-To: <20230526103738.ooi4fy2br4eh7gty@zkempczy-mobl2>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D9F19ADCA137254A8FF540E571AEFBDF@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230524142931.119823-3-dominik.grzegorzek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/9] meson: Introduce xe_staging build
- option
+Subject: Re: [igt-dev] [PATCH i-g-t 1/9] xe: sync uapi headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,104 +23,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, May 24, 2023 at 04:29:24PM +0200, Dominik Grzegorzek wrote:
-> There are some major features, which in a current state cannot be merged
-> upstream. A good example here in an EU debugger, which does not
-> meet the requirement of having an opensourced client. While those
-> features are in the development we need a way of providing them
-> validation. So introduce xe_staging build option under which
-> we can keep tests of features that are under haevy development and not
-> yet accepted upstream or not yet completed.
-> 
-> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  meson.build       |  1 +
->  meson_options.txt |  5 +++++
->  tests/meson.build | 16 ++++++++++++++++
->  3 files changed, 22 insertions(+)
-> 
-> diff --git a/meson.build b/meson.build
-> index 1c872cc9c..ae2206d6e 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -86,6 +86,7 @@ build_chamelium = get_option('chamelium')
->  build_docs = get_option('docs')
->  build_tests = not get_option('tests').disabled()
->  build_xe = not get_option('xe_driver').disabled()
-> +build_xe_staging = not get_option('xe_staging').disabled()
->  with_libdrm = get_option('libdrm_drivers')
->  
->  build_info = ['Build type: ' + get_option('buildtype')]
-> diff --git a/meson_options.txt b/meson_options.txt
-> index 7b5a818cb..46ee91fe6 100644
-> --- a/meson_options.txt
-> +++ b/meson_options.txt
-> @@ -46,6 +46,11 @@ option('xe_driver',
->         type : 'feature',
->         description : 'Build tests for Xe driver (experimental)')
->  
-> +option('xe_staging',
-> +       type : 'feature',
-> +       value : 'disabled',
-> +       description : 'Build tests for Xe features that cannot be upstreamed yet (experimental)')
-> +
->  option('libdrm_drivers',
->         type : 'array',
->         value : ['auto'],
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 38f080f7c..8c7055ed9 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -269,6 +269,9 @@ xe_progs = [
->  	'xe_waitfence',
->  ]
->  
-> +xe_staging_progs = [
-> +]
-> +
->  msm_progs = [
->  	'msm_mapping',
->  	'msm_recovery',
-> @@ -330,6 +333,19 @@ if build_xe
->  	build_info += 'Xe **experimental** tests enabled.'
->  endif
-
-I got spurious information on 'mesoning':
-
-Message: Xe **experimental** tests enabled.
-
-Configuration looks:
-
-$ meson configure | grep staging
-  xe_staging                     disabled                         [enabled, disabled, auto]        Build tests for Xe features that cannot be upstreamed yet 
-
---
-Zbigniew
-
->  
-> +if build_xe_staging
-> +        foreach prog : xe_staging_progs
-> +		test_executables += executable(prog,
-> +		           join_paths('xe/staging', prog + '.c'),
-> +			   dependencies : test_deps,
-> +			   install_dir : libexecdir,
-> +			   install_rpath : libexecdir_rpathdir,
-> +			   install : true)
-> +		test_list += prog
-> +	endforeach
-> +	build_info += 'Work in progress tests enabled.'
-> +endif
-> +
->  foreach prog : msm_progs
->  	test_executables += executable(prog, join_paths('msm', prog + '.c'),
->  				       dependencies : test_deps,
-> -- 
-> 2.34.1
-> 
+T24gRnJpLCAyMDIzLTA1LTI2IGF0IDEyOjM3ICswMjAwLCBaYmlnbmlldyBLZW1wY3p5xYRza2kg
+d3JvdGU6DQo+IE9uIFdlZCwgTWF5IDI0LCAyMDIzIGF0IDA0OjI5OjIzUE0gKzAyMDAsIERvbWlu
+aWsgR3J6ZWdvcnplayB3cm90ZToNCj4gPiBTaWduZWQtb2ZmLWJ5OiBEb21pbmlrIEdyemVnb3J6
+ZWsgPGRvbWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4gIGluY2x1ZGUv
+ZHJtLXVhcGkveGVfZHJtX3RtcC5oIHwgNzYgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDc2IGluc2VydGlvbnMoKykNCj4gPiAgY3JlYXRl
+IG1vZGUgMTAwNjQ0IGluY2x1ZGUvZHJtLXVhcGkveGVfZHJtX3RtcC5oDQo+ID4gDQo+ID4gZGlm
+ZiAtLWdpdCBhL2luY2x1ZGUvZHJtLXVhcGkveGVfZHJtX3RtcC5oIGIvaW5jbHVkZS9kcm0tdWFw
+aS94ZV9kcm1fdG1wLmgNCj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+IGluZGV4IDAwMDAw
+MDAwMC4uOTgyOWNkNzI0DQo+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ICsrKyBiL2luY2x1ZGUvZHJt
+LXVhcGkveGVfZHJtX3RtcC5oDQo+IA0KPiBNYXliZSB4ZV9kcm1fbG9jYWwuaCBvciB4ZV9kcm1f
+c3RhZ2luZy5oPyB0bXAgbG9va3Mgd2VpcmQgaW1vLg0KDQpJIGRvIG5vdCBsaWtlIHRoZSBuYW1l
+IHRvbywganVzdCB0b29rIHRoZSBleGFjdCBmaWxlIGZyb20gS01EIHJmYy4gV2lsbCB0YWxrIHdp
+dGggTWlrYQ0KYWJvdXQgcmVuYW1pbmcgaXQgdG8geGVfZHJtX3N0YWdpbmcuIFRhIQ0KPiANCj4g
+LS0NCj4gWmJpZ25pZXcNCj4gDQo+IA0KPiA+IEBAIC0wLDAgKzEsNzYgQEANCj4gPiArI2lmbmRl
+ZiBfVUFQSV9YRV9EUk1fVE1QX0hfDQo+ID4gKyNkZWZpbmUgX1VBUElfWEVfRFJNX1RNUF9IXw0K
+PiA+ICsNCj4gPiArI2luY2x1ZGUgInhlX2RybS5oIg0KPiA+ICsNCj4gPiArI2lmIGRlZmluZWQo
+X19jcGx1c3BsdXMpDQo+ID4gK2V4dGVybiAiQyIgew0KPiA+ICsjZW5kaWYNCj4gPiArDQo+ID4g
+KyNkZWZpbmUgRFJNX1hFX0VVREVCVUdfQ09OTkVDVAkJCTB4NWYNCj4gPiArDQo+ID4gKyNkZWZp
+bmUgRFJNX0lPQ1RMX1hFX0VVREVCVUdfQ09OTkVDVAkJRFJNX0lPV1IoRFJNX0NPTU1BTkRfQkFT
+RSArIERSTV9YRV9FVURFQlVHX0NPTk5FQ1QsIHN0cnVjdCBkcm1feGVfZXVkZWJ1Z19jb25uZWN0
+X3BhcmFtKQ0KPiA+ICsNCj4gPiArLyoqDQo+ID4gKyAqIERvIGEgZXVkZWJ1ZyBldmVudCByZWFk
+IGZvciBhIGRlYnVnZ2VyIGNvbm5lY3Rpb24uDQo+ID4gKyAqDQo+ID4gKyAqIFRoaXMgaW9jdGwg
+aXMgYXZhaWxhYmxlIGluIGRlYnVnIHZlcnNpb24gMS4NCj4gPiArICovDQo+ID4gKyNkZWZpbmUg
+RFJNX1hFX0VVREVCVUdfSU9DVExfUkVBRF9FVkVOVCBfSU8oJ2onLCAweDApDQo+ID4gKw0KPiA+
+ICsvKiBYWFg6IERvY3VtZW50IGV2ZW50cyB0byBtYXRjaCB0aGVpciBpbnRlcm5hbCBjb3VudGVy
+cGFydHMgd2hlbiBtb3ZlZCB0byB4ZV9kcm0uaCAqLw0KPiA+ICtzdHJ1Y3QgZHJtX3hlX2V1ZGVi
+dWdfZXZlbnQgew0KPiA+ICsJc3RydWN0IHhlX3VzZXJfZXh0ZW5zaW9uIGV4dDsNCj4gPiArDQo+
+ID4gKwlfX3UzMiB0eXBlOw0KPiA+ICsjZGVmaW5lIERSTV9YRV9FVURFQlVHX0VWRU5UX05PTkUg
+ICAgIDANCj4gPiArI2RlZmluZSBEUk1fWEVfRVVERUJVR19FVkVOVF9SRUFEICAgICAxDQo+ID4g
+KyNkZWZpbmUgRFJNX1hFX0VVREVCVUdfRVZFTlRfT1BFTiAgICAgMg0KPiA+ICsjZGVmaW5lIERS
+TV9YRV9FVURFQlVHX0VWRU5UX1ZNCSAgICAgIDMNCj4gPiArI2RlZmluZSBEUk1fWEVfRVVERUJV
+R19FVkVOVF9NQVhfRVZFTlQgRFJNX1hFX0VVREVCVUdfRVZFTlRfVk0NCj4gPiArDQo+ID4gKwlf
+X3UzMiBmbGFnczsNCj4gPiArI2RlZmluZSBEUk1fWEVfRVVERUJVR19FVkVOVF9DUkVBVEUJKDEg
+PDwgMCkNCj4gPiArI2RlZmluZSBEUk1fWEVfRVVERUJVR19FVkVOVF9ERVNUUk9ZCSgxIDw8IDEp
+DQo+ID4gKyNkZWZpbmUgRFJNX1hFX0VVREVCVUdfRVZFTlRfU1RBVEVfQ0hBTkdFICgxIDw8IDIp
+DQo+ID4gKw0KPiA+ICsJX191NjQgc2Vxbm87DQo+ID4gKwlfX3U2NCBzaXplOw0KPiA+ICt9IF9f
+YXR0cmlidXRlX18oKHBhY2tlZCkpOw0KPiA+ICsNCj4gPiArc3RydWN0IGRybV94ZV9ldWRlYnVn
+X2V2ZW50X2NsaWVudCB7DQo+ID4gKwlzdHJ1Y3QgZHJtX3hlX2V1ZGVidWdfZXZlbnQgYmFzZTsg
+LyogLmZsYWdzID0gQ1JFQVRFL0RFU1RST1kgKi8NCj4gPiArDQo+ID4gKwlfX3U2NCBjbGllbnRf
+aGFuZGxlOyAvKiBUaGlzIGlzIHVuaXF1ZSBwZXIgZGVidWcgY29ubmVjdGlvbiAqLw0KPiA+ICt9
+IF9fYXR0cmlidXRlX18oKHBhY2tlZCkpOw0KPiA+ICsNCj4gPiArc3RydWN0IGRybV94ZV9ldWRl
+YnVnX2V2ZW50X3ZtIHsNCj4gPiArCXN0cnVjdCBkcm1feGVfZXVkZWJ1Z19ldmVudCBiYXNlOw0K
+PiA+ICsNCj4gPiArCV9fdTY0IGNsaWVudF9oYW5kbGU7DQo+ID4gKwlfX3U2NCB2bV9oYW5kbGU7
+DQo+ID4gK30gX19hdHRyaWJ1dGVfXygocGFja2VkKSk7DQo+ID4gKw0KPiA+ICsvKg0KPiA+ICsg
+KiBEZWJ1Z2dlciBBQkkgKGlvY3RsIGFuZCBldmVudHMpIFZlcnNpb24gSGlzdG9yeToNCj4gPiAr
+ICogMCAtIE5vIGRlYnVnZ2VyIGF2YWlsYWJsZQ0KPiA+ICsgKiAxIC0gSW5pdGlhbCB2ZXJzaW9u
+DQo+ID4gKyAqLw0KPiA+ICsjZGVmaW5lIERSTV9YRV9FVURFQlVHX1ZFUlNJT04gMQ0KPiA+ICsN
+Cj4gPiArc3RydWN0IGRybV94ZV9ldWRlYnVnX2Nvbm5lY3RfcGFyYW0gew0KPiA+ICsJc3RydWN0
+IHhlX3VzZXJfZXh0ZW5zaW9uIGV4dDsNCj4gPiArDQo+ID4gKwlfX3U2NCBwaWQ7IC8qIGlucHV0
+OiBUYXJnZXQgcHJvY2VzcyBJRCAqLw0KPiA+ICsJX191MzIgZmxhZ3M7DQo+ID4gKw0KPiA+ICsJ
+X191MzIgdmVyc2lvbjsgLyogb3V0cHV0OiBjdXJyZW50IEFCSSAoaW9jdGwgLyBldmVudHMpIHZl
+cnNpb24gKi8NCj4gPiArCV9fdTY0IGV2ZW50czsgIC8qIGlucHV0OiBldmVudCB0eXBlcyB0byBz
+dWJzY3JpYmUgdG8gKi8NCj4gPiArCV9fdTY0IGV4dGVuc2lvbnM7IC8qIE1CWiAqLw0KPiA+ICt9
+Ow0KPiA+ICsNCj4gPiArI2lmIGRlZmluZWQoX19jcGx1c3BsdXMpDQo+ID4gK30NCj4gPiArI2Vu
+ZGlmDQo+ID4gKw0KPiA+ICsjZW5kaWYgLyogX1VBUElfWEVfRFJNX1RNUF9IXyAqLw0KPiA+IC0t
+IA0KPiA+IDIuMzQuMQ0KPiA+IA0KDQo=
