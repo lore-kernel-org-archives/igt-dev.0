@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22F3F10E3B5
- for <igt-dev@lists.freedesktop.org>; Wed, 17 May 2023 06:39:55 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Wed, 17 May 2023 12:02:48 +0530
-Message-Id: <20230517063323.4146387-47-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
-References: <20230517063323.4146387-1-bhanuprakash.modem@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DBF6A10E7EE
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 11:59:07 +0000 (UTC)
+Date: Fri, 26 May 2023 13:59:04 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230526115904.6kitxly2fkzdjr3z@kamilkon-desk1>
+References: <20230522142201.2527800-1-mauro.chehab@linux.intel.com>
+ <20230522142201.2527800-5-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 46/81] tests/kms_dp_aux_dev: Document each
- subtest for testplan
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230522142201.2527800-5-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/6] xe_test_config.json: add a driver
+ name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,42 +22,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, mchehab@kernel.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+On 2023-05-22 at 16:21:59 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Instead	of inferring the name automatically, place it at the file.
+--------- ^^^^^^
+Too much spaces, please correct this before merging.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_dp_aux_dev.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-diff --git a/tests/kms_dp_aux_dev.c b/tests/kms_dp_aux_dev.c
-index 69edc1585..fc8cb91e3 100644
---- a/tests/kms_dp_aux_dev.c
-+++ b/tests/kms_dp_aux_dev.c
-@@ -31,6 +31,19 @@
- 
- #include "igt.h"
- #include "igt_kms.h"
-+/**
-+ * TEST: kms dp aux dev
-+ * Category: Display
-+ * Description: Test that /dev/drm_dp_aux reads work
-+ *
-+ * SUBTEST:
-+ * Description: Test that /dev/drm_dp_aux reads work
-+ * Driver requirement: any
-+ * Functionality: dp
-+ * Mega feature: DP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- 
- IGT_TEST_DESCRIPTION("Test that /dev/drm_dp_aux reads work");
- 
--- 
-2.40.0
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+> ---
+>  tests/xe/xe_test_config.json | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tests/xe/xe_test_config.json b/tests/xe/xe_test_config.json
+> index 666fe6cd315c..334d372d1330 100644
+> --- a/tests/xe/xe_test_config.json
+> +++ b/tests/xe/xe_test_config.json
+> @@ -1,5 +1,6 @@
+>  {
+>      "description": "JSON file to be used to parse Xe documentation",
+> +    "name": "Tests for Xe Driver",
+>      "files": [ "xe_*.c" ],
+>      "fields": {
+>          "Category": {
+> -- 
+> 2.40.1
+> 
 
