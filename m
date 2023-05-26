@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96F1610E0E6
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 18:41:53 +0000 (UTC)
-Date: Thu, 25 May 2023 20:41:32 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79CBC10E1C6
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 12:25:11 +0000 (UTC)
+Date: Fri, 26 May 2023 14:25:07 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230525184132.3bbf2jedgb347mrh@kamilkon-desk1>
-References: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
- <20230525090535.2791739-2-mauro.chehab@linux.intel.com>
+Message-ID: <20230526122507.5egosg4zjnucllwz@kamilkon-desk1>
+References: <20230526064624.2886063-1-mauro.chehab@linux.intel.com>
+ <20230526064624.2886063-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230525090535.2791739-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 01/11] gem_exec_fence: fix a typo
+In-Reply-To: <20230526064624.2886063-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/perf_pmu: sync documentation
+ with latest changes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,32 +25,48 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-05-25 at 11:05:25 +0200, Mauro Carvalho Chehab wrote:
+On 2023-05-26 at 08:46:23 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> additinal -> additional
+> There are some changes on some test names since when the
+> documentation was generated for this file.
+> 
+> Update it to keep in sync with the actual tests.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  tests/i915/gem_exec_fence.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-> index 5a67a93e8eed..76a86e8f4197 100644
-> --- a/tests/i915/gem_exec_fence.c
-> +++ b/tests/i915/gem_exec_fence.c
-> @@ -3284,7 +3284,7 @@ igt_main
->  				}
->  			}
->  
-> -			igt_describe("Basic check for explicit fence with additinal wait time on"
-> +			igt_describe("Basic check for explicit fence with additional wait time on"
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
->  				     " each busy engine.");
->  			igt_subtest_with_dynamic("basic-wait") {
->  				for_each_ctx_engine(i915, ctx, e) {
+> ---
+>  tests/i915/perf_pmu.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
+> 
+> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+> index 2aa018e13aff..8b31df7b229e 100644
+> --- a/tests/i915/perf_pmu.c
+> +++ b/tests/i915/perf_pmu.c
+> @@ -145,9 +145,6 @@
+>   * Feature: i915 pmu perf interface, pmu
+>   * Test category: Perf
+>   *
+> - * SUBTEST: frequency-idle
+> - * Feature: pmu
+> - *
+>   * SUBTEST: gt-awake
+>   * Description: Setup workload on all engines,measure gt awake time via pmu
+>   * Feature: i915 pmu perf interface, pmu
+> @@ -226,10 +223,7 @@
+>   * SUBTEST: rc6
+>   * Feature: pmu
+>   *
+> - * SUBTEST: rc6-runtime-pm
+> - * Feature: pmu
+> - *
+> - * SUBTEST: rc6-runtime-pm-long
+> + * SUBTEST: rc6-all-gts
+>   * Feature: pmu
+>   *
+>   * SUBTEST: rc6-suspend
 > -- 
 > 2.40.1
 > 
