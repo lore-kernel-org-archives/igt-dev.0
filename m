@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6AAB10E1E1
- for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 17:43:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B253510E1E2
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 17:43:44 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 26 May 2023 23:13:04 +0530
-Message-Id: <20230526174305.319725-2-swati2.sharma@intel.com>
+Date: Fri, 26 May 2023 23:13:05 +0530
+Message-Id: <20230526174305.319725-3-swati2.sharma@intel.com>
 In-Reply-To: <20230526174305.319725-1-swati2.sharma@intel.com>
 References: <20230526174305.319725-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests/kms_pipe_crc_basic: add nv12 crc
- sanity check
+Subject: [igt-dev] [PATCH i-g-t 3/3] intel-ci: update fastfeedback testlist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,128 +22,26 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-New CRC sanitycheck test case is added with NV12 format.
-kms_plane@pixel-format test is validating all formats.
-To improve BAT coverage we can have one planar format crc
-sanity test.
+Update fastfeedback testlist.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_pipe_crc_basic.c | 49 +++++++++++++++++++++++++++-----------
- 1 file changed, 35 insertions(+), 14 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 84c73fd7..a280a5c2 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -227,25 +227,34 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- }
- 
- /**
-- * SUBTEST: compare-crc-sanitycheck
-- * Description: Basic sanity check for CRC mismatches
-+ * SUBTEST: compare-crc-sanitycheck-xr24
-+ * Description: Basic sanity check for CRC mismatches with XR24 format
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-  * Mega feature: General Display Features
-+ *
-+ * SUBTEST: compare-crc-sanitycheck-nv12
-+ * Description: Basic sanity check for CRC mismatches with NV12 format
-+ * Test category: functionality test
-+ * Run type: BAT
-+ * Functionality: crc
-+ * Mega feature: General Display Features
-+
-  */
- 
- /*
-  * CRC-sanity test, to make sure there would be no CRC mismatches
-  *
-- * - Create two framebuffers (FB0 & FB1) with same color info
-- * - Flip FB0 with the Primary plane & collect the CRC as ref CRC.
-- * - Flip FB1 with the Primary plane, collect the CRC & compare with
-+ * - Create two framebuffers (FB0 & FB1)
-+ * - Flip FB0 with the primary plane & collect the CRC as ref CRC.
-+ * - Flip FB1 with the primary plane, collect the CRC & compare with
-  *   the ref CRC.
-  *
-  *   No CRC mismatch should happen
-  */
--static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
-+static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output,
-+			     uint32_t format)
- {
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *primary;
-@@ -259,7 +268,6 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- 	mode = igt_output_get_mode(output);
- 
--	/* Create two framebuffers with the same color info. */
- 	igt_create_color_fb(data->drm_fd,
- 			mode->hdisplay, mode->vdisplay,
- 			DRM_FORMAT_XRGB8888,
-@@ -267,13 +275,12 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
- 			1.0, 1.0, 1.0,
- 			&fb0);
- 	igt_create_color_fb(data->drm_fd,
--			mode->hdisplay, mode->vdisplay,
--			DRM_FORMAT_XRGB8888,
-+			mode->hdisplay, mode->vdisplay, format,
- 			DRM_FORMAT_MOD_LINEAR,
- 			1.0, 1.0, 1.0,
- 			&fb1);
- 
--	/* Flip FB0 with the Primary plane & collect the CRC as ref CRC. */
-+	/* Flip FB0 with the primary plane & collect the CRC as ref CRC. */
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, &fb0);
- 	igt_display_commit(display);
-@@ -282,7 +289,7 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
- 				    IGT_PIPE_CRC_SOURCE_AUTO);
- 	igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
- 
--	/* Flip FB1 with the Primary plane & compare the CRC with ref CRC. */
-+	/* Flip FB1 with the primary plane & compare the CRC with ref CRC. */
- 	igt_plane_set_fb(primary, &fb1);
- 	igt_display_commit(display);
- 
-@@ -475,8 +482,22 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		}
- 	}
- 
--	igt_describe("Basic sanity check for CRC mismatches");
--	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
-+	igt_describe("Basic sanity check for CRC mismatches with XR24 format");
-+	igt_subtest_with_dynamic("compare-crc-sanitycheck-xr24") {
-+		for_each_pipe_with_single_output(&data.display, pipe, output) {
-+			if (simulation_constraint(pipe))
-+				continue;
-+
-+			if(!pipe_output_combo_valid(&data.display, pipe, output))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-+				test_compare_crc(&data, pipe, output, DRM_FORMAT_XRGB8888);
-+		}
-+	}
-+
-+	igt_describe("Basic sanity check for CRC mismatches with NV12 format");
-+	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12") {
- 		for_each_pipe_with_single_output(&data.display, pipe, output) {
- 			if (simulation_constraint(pipe))
- 				continue;
-@@ -485,7 +506,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 				continue;
- 
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
--				test_compare_crc(&data, pipe, output);
-+				test_compare_crc(&data, pipe, output, DRM_FORMAT_NV12);
- 		}
- 	}
- 
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index cfe7cb4a..40096faf 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -118,7 +118,8 @@ igt@kms_force_connector_basic@force-edid
+ igt@kms_force_connector_basic@force-load-detect
+ igt@kms_force_connector_basic@prune-stale-modes
+ igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xrgb888
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
+ igt@kms_pipe_crc_basic@hang-read-crc
+ igt@kms_pipe_crc_basic@nonblocking-crc
+ igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
 -- 
 2.25.1
