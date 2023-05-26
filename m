@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Erico Nunes <nunes.erico@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 26 May 2023 15:00:00 +0200
-Message-Id: <20230526130001.71730-3-nunes.erico@gmail.com>
+Date: Fri, 26 May 2023 15:00:01 +0200
+Message-Id: <20230526130001.71730-4-nunes.erico@gmail.com>
 In-Reply-To: <20230526130001.71730-1-nunes.erico@gmail.com>
 References: <20230526130001.71730-1-nunes.erico@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/3] lib/lima: Add lima helpers
+Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/lima: Add initial tests for
+ lima
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,163 +22,110 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add initial gem helpers for lima tests, based on the panfrost ones.
+Some gem tests based on the panfrost and v3d ones.
 
 Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
 ---
- lib/igt_lima.c  | 97 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_lima.h  | 26 +++++++++++++
- lib/meson.build |  1 +
- 3 files changed, 124 insertions(+)
- create mode 100644 lib/igt_lima.c
- create mode 100644 lib/igt_lima.h
+ tests/lima_gem_new.c | 78 ++++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build    |  1 +
+ 2 files changed, 79 insertions(+)
+ create mode 100644 tests/lima_gem_new.c
 
-diff --git a/lib/igt_lima.c b/lib/igt_lima.c
+diff --git a/tests/lima_gem_new.c b/tests/lima_gem_new.c
 new file mode 100644
-index 00000000..0d0f3c80
+index 00000000..3b054317
 --- /dev/null
-+++ b/lib/igt_lima.c
-@@ -0,0 +1,97 @@
++++ b/tests/lima_gem_new.c
+@@ -0,0 +1,78 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2023 Erico Nunes
 + */
 +
-+#include <assert.h>
++#include "igt.h"
++#include "igt_lima.h"
++#include <unistd.h>
++#include <stdlib.h>
++#include <stdio.h>
 +#include <string.h>
-+#include <signal.h>
++#include <fcntl.h>
++#include <inttypes.h>
 +#include <errno.h>
-+#include <sys/mman.h>
-+#include <sys/types.h>
 +#include <sys/stat.h>
 +#include <sys/ioctl.h>
-+#include <fcntl.h>
-+
-+#include "drmtest.h"
-+#include "igt_aux.h"
-+#include "igt_core.h"
-+#include "igt_lima.h"
-+#include "ioctl_wrappers.h"
 +#include "lima_drm.h"
 +
-+/**
-+ * SECTION:igt_lima
-+ * @short_description: LIMA support library
-+ * @title: LIMA
-+ * @include: igt.h
-+ *
-+ * This library provides various auxiliary helper functions for writing Lima
-+ * tests.
-+ */
-+
-+struct lima_bo *
-+igt_lima_gem_new(int fd, size_t size)
++igt_main
 +{
-+	struct lima_bo *bo = calloc(1, sizeof(*bo));
++	int fd;
 +
-+	struct drm_lima_gem_create create_bo = {
-+		.size = size,
-+		.flags = 0,
-+	};
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_LIMA);
++	}
 +
-+	do_ioctl(fd, DRM_IOCTL_LIMA_GEM_CREATE, &create_bo);
++	igt_describe("Sanity check for creating a BO with size 4096.");
++	igt_subtest("gem-new-4096") {
++		struct lima_bo *bo = igt_lima_gem_new(fd, 4096);
 +
-+	bo->handle = create_bo.handle;
-+	bo->size = size;
-+	return bo;
++		igt_lima_free_bo(fd, bo);
++	}
++
++	igt_describe("Make sure a BO cannot be created with size zero.");
++	igt_subtest("gem-new-0") {
++		struct drm_lima_gem_create arg = {
++			.size = 0,
++		};
++
++		do_ioctl_err(fd, DRM_IOCTL_LIMA_GEM_CREATE, &arg, EINVAL);
++	}
++
++	igt_describe("Make sure that BOs can be allocated in different fd without "
++		     "carrying old contents from one another.");
++	igt_subtest("gem-new-zeroed") {
++		int fd2 = drm_open_driver(DRIVER_LIMA);
++		struct lima_bo *bo;
++		uint32_t *map;
++		/* A size different from any used in our other tests, to try
++		 * to convince it to land as the only one of its size in the
++		 * kernel BO cache
++		 */
++		size_t size = 3 * 4096;
++		size_t i;
++
++		/* Make a BO and free it on our main fd. */
++		bo = igt_lima_gem_new(fd, size);
++		map = igt_lima_mmap_bo(fd, bo->handle, size, PROT_READ | PROT_WRITE);
++		memset(map, 0xd0, size);
++		munmap(map, size);
++		igt_lima_free_bo(fd, bo);
++
++		/* Now, allocate a BO on the other fd and make sure it doesn't
++		 * have the old contents.
++		 */
++		bo = igt_lima_gem_new(fd2, size);
++		map = igt_lima_mmap_bo(fd2, bo->handle, size, PROT_READ | PROT_WRITE);
++		for (i = 0; i < size / 4; i++)
++			igt_assert_eq_u32(map[i], 0x0);
++		munmap(map, size);
++		igt_lima_free_bo(fd2, bo);
++
++		close(fd2);
++	}
++
++	igt_fixture
++		close(fd);
 +}
-+
-+void
-+igt_lima_free_bo(int fd, struct lima_bo *bo)
-+{
-+	if (!bo)
-+		return;
-+
-+	if (bo->map)
-+		munmap(bo->map, bo->size);
-+	gem_close(fd, bo->handle);
-+	free(bo);
-+}
-+
-+uint64_t
-+igt_lima_get_bo_offset(int fd, uint32_t handle)
-+{
-+	struct drm_lima_gem_info gem_info = {
-+		.handle = handle,
-+	};
-+
-+	do_ioctl(fd, DRM_IOCTL_LIMA_GEM_INFO, &gem_info);
-+
-+	return gem_info.offset;
-+}
-+
-+uint32_t
-+igt_lima_get_param(int fd, int param)
-+{
-+	struct drm_lima_get_param get = {
-+		.param = param,
-+	};
-+
-+	do_ioctl(fd, DRM_IOCTL_LIMA_GET_PARAM, &get);
-+
-+	return get.value;
-+}
-+
-+void *
-+igt_lima_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned int prot)
-+{
-+	uint64_t offset = igt_lima_get_bo_offset(fd, handle);
-+	void *ptr;
-+
-+	ptr = mmap(0, size, prot, MAP_SHARED, fd, offset);
-+	if (ptr == MAP_FAILED)
-+		return NULL;
-+	else
-+		return ptr;
-+}
-diff --git a/lib/igt_lima.h b/lib/igt_lima.h
-new file mode 100644
-index 00000000..3c4eaf3d
---- /dev/null
-+++ b/lib/igt_lima.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Erico Nunes
-+ */
-+
-+#ifndef IGT_LIMA_H
-+#define IGT_LIMA_H
-+
-+#include "lima_drm.h"
-+
-+struct lima_bo {
-+	int handle;
-+	uint64_t offset;
-+	uint32_t size;
-+	void *map;
-+};
-+
-+struct lima_bo *igt_lima_gem_new(int fd, size_t size);
-+void igt_lima_free_bo(int fd, struct lima_bo *bo);
-+
-+/* IOCTL wrappers */
-+uint64_t igt_lima_get_bo_offset(int fd, uint32_t handle);
-+uint32_t igt_lima_get_param(int fd, int param);
-+void *igt_lima_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned int prot);
-+
-+#endif /* IGT_LIMA_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index 85f100f7..a0f92941 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -89,6 +89,7 @@ lib_sources = [
- 	'uwildmat/uwildmat.c',
- 	'igt_kmod.c',
- 	'igt_panfrost.c',
-+	'igt_lima.c',
- 	'igt_v3d.c',
- 	'igt_vc4.c',
- 	'igt_vmwgfx.c',
+diff --git a/tests/meson.build b/tests/meson.build
+index f71be1db..980e77e9 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -62,6 +62,7 @@ test_progs = [
+ 	'kms_vblank',
+ 	'kms_vrr',
+ 	'kms_writeback',
++	'lima_gem_new',
+ 	'meta_test',
+ 	'panfrost_get_param',
+ 	'panfrost_gem_new',
 -- 
 2.40.1
