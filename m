@@ -1,26 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B90C10E1B7
- for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 06:46:29 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.1.196])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 28CEE580BE1
- for <igt-dev@lists.freedesktop.org>; Thu, 25 May 2023 23:46:28 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1q2RDV-00C6oj-2J
- for igt-dev@lists.freedesktop.org; Fri, 26 May 2023 08:46:25 +0200
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1ED9B10E093
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 06:55:12 +0000 (UTC)
+Date: Fri, 26 May 2023 08:55:08 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 26 May 2023 08:46:23 +0200
-Message-Id: <20230526064624.2886063-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230526064624.2886063-1-mauro.chehab@linux.intel.com>
-References: <20230526064624.2886063-1-mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230526085508.3fb9e96d@maurocar-mobl2>
+In-Reply-To: <20230525211144.snixsj3tbhkypi4a@kamilkon-desk1>
+References: <20230525090535.2791739-1-mauro.chehab@linux.intel.com>
+ <20230525090535.2791739-12-mauro.chehab@linux.intel.com>
+ <20230525211144.snixsj3tbhkypi4a@kamilkon-desk1>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] i915/perf_pmu: sync documentation with
- latest changes
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v4 11/11] testplan/meson.build: make it
+ check for missing i915 documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,47 +22,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On Thu, 25 May 2023 23:11:44 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-There are some changes on some test names since when the
-documentation was generated for this file.
+> Hi Mauro,
+> 
+> On 2023-05-25 at 11:05:35 +0200, Mauro Carvalho Chehab wrote:
+> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > 
+> > Now that i915 is fully documented, check it at build time.  
+> 
+> This is not working now, see GitLab log:
+> 
+> Warning: Missing documentation for igt@perf_pmu@rc6-all-gts
+> ninja: build stopped: subcommand failed.
 
-Update it to keep in sync with the actual tests.
+Btw, this shows why such change pays-off. What happened is that
+changeset 446187157b00 ("perf_pmu: Two new rc6 subtests"), created a
+new rc6-all-gts subtest:
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/i915/perf_pmu.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
++       igt_subtest("rc6-all-gts")
++               test_rc6(fd, 0, num_gt, TEST_ALL | TEST_OTHER);
 
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index 2aa018e13aff..8b31df7b229e 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -145,9 +145,6 @@
-  * Feature: i915 pmu perf interface, pmu
-  * Test category: Perf
-  *
-- * SUBTEST: frequency-idle
-- * Feature: pmu
-- *
-  * SUBTEST: gt-awake
-  * Description: Setup workload on all engines,measure gt awake time via pmu
-  * Feature: i915 pmu perf interface, pmu
-@@ -226,10 +223,7 @@
-  * SUBTEST: rc6
-  * Feature: pmu
-  *
-- * SUBTEST: rc6-runtime-pm
-- * Feature: pmu
-- *
-- * SUBTEST: rc6-runtime-pm-long
-+ * SUBTEST: rc6-all-gts
-  * Feature: pmu
-  *
-  * SUBTEST: rc6-suspend
--- 
-2.40.1
+also, changeset a00f3ad8a783 ("perf_pmu: Support multi-tile in rc6 subtest")
+dropped two tests.
+
+I ran the sync scripts before those patches got merged.
+
+Just send a patch series syncing with both changes and applying the
+documentation check patch:
+
+	https://patchwork.freedesktop.org/series/118411/
+
+Regards,
+Mauro
