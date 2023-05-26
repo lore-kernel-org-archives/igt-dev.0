@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9AF510E214
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:13 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99FE510E1E1
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 17:43:42 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:17 +0530
-Message-Id: <20230529052835.860047-5-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
-References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
+Date: Fri, 26 May 2023 23:13:03 +0530
+Message-Id: <20230526174305.319725-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 04/82] testplan/kms: Include testdisplay to kms
- testplan config
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_fb: round rgb->yuv conversion
+ results
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,29 +21,88 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As testdisplay.c is belongs to display, add it to the kms
-testplan config.
+Round rgb->yuv conversion results.
 
-V2: - Rebase
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Ville Syrjala <ville.syrjala@linux.intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_test_config.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/igt_fb.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
-index 5fbe40bdc..2c6181e55 100644
---- a/tests/kms_test_config.json
-+++ b/tests/kms_test_config.json
-@@ -1,7 +1,7 @@
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 71a199d4..11a5d6c0 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -3064,11 +3064,16 @@ static void igt_fb_destroy_cairo_shadow_buffer(struct igt_fb *shadow,
+ 	munmap(ptr, shadow->size);
+ }
+ 
+-static uint8_t clamprgb(float val)
++static uint8_t clamp8(float val)
  {
-     "description": "JSON file to be used to parse KMS documentation",
-     "name": "Display and KMS Tests for Intel i915 and Xe Drivers",
--    "files": [ "chamelium/kms_*.c", "i915/kms_*.c", "kms_*.c" ],
-+    "files": [ "chamelium/kms_*.c", "i915/kms_*.c", "kms_*.c", "testdisplay.c" ],
-     "fields": {
-         "Category": {
-             "_properties_": {
+ 	return clamp((int)(val + 0.5f), 0, 255);
+ }
+ 
++static uint8_t clamp16(float val)
++{
++	return clamp((int)(val + 0.5f), 0, 65535);
++}
++
+ static void read_rgb(struct igt_vec4 *rgb, const uint8_t *rgb24)
+ {
+ 	rgb->d[0] = rgb24[2];
+@@ -3079,9 +3084,9 @@ static void read_rgb(struct igt_vec4 *rgb, const uint8_t *rgb24)
+ 
+ static void write_rgb(uint8_t *rgb24, const struct igt_vec4 *rgb)
+ {
+-	rgb24[2] = clamprgb(rgb->d[0]);
+-	rgb24[1] = clamprgb(rgb->d[1]);
+-	rgb24[0] = clamprgb(rgb->d[2]);
++	rgb24[2] = clamp8(rgb->d[0]);
++	rgb24[1] = clamp8(rgb->d[1]);
++	rgb24[0] = clamp8(rgb->d[2]);
+ }
+ 
+ struct fb_convert_buf {
+@@ -3401,7 +3406,7 @@ static void convert_rgb24_to_yuv(struct fb_convert *cvt)
+ 
+ 			rgb_tmp += bpp;
+ 
+-			*y_tmp = yuv.d[0];
++			*y_tmp = clamp8(yuv.d[0]);
+ 			y_tmp += params.ay_inc;
+ 
+ 			if ((i % dst_fmt->vsub) || (j % dst_fmt->hsub))
+@@ -3431,8 +3436,8 @@ static void convert_rgb24_to_yuv(struct fb_convert *cvt)
+ 			read_rgb(&pair_rgb, pair_rgb24);
+ 			pair_yuv = igt_matrix_transform(&m, &pair_rgb);
+ 
+-			*u_tmp = (yuv.d[1] + pair_yuv.d[1]) / 2.0f;
+-			*v_tmp = (yuv.d[2] + pair_yuv.d[2]) / 2.0f;
++			*u_tmp = clamp8((yuv.d[1] + pair_yuv.d[1]) / 2.0f);
++			*v_tmp = clamp8((yuv.d[2] + pair_yuv.d[2]) / 2.0f);
+ 
+ 			u_tmp += params.uv_inc;
+ 			v_tmp += params.uv_inc;
+@@ -3590,7 +3595,7 @@ static void convert_float_to_yuv16(struct fb_convert *cvt, bool alpha)
+ 
+ 			rgb_tmp += fpp;
+ 
+-			*y_tmp = yuv.d[0];
++			*y_tmp = clamp16(yuv.d[0]);
+ 			y_tmp += params.ay_inc;
+ 
+ 			if ((i % dst_fmt->vsub) || (j % dst_fmt->hsub))
+@@ -3620,8 +3625,8 @@ static void convert_float_to_yuv16(struct fb_convert *cvt, bool alpha)
+ 			read_rgbf(&pair_rgb, pair_float);
+ 			pair_yuv = igt_matrix_transform(&m, &pair_rgb);
+ 
+-			*u_tmp = (yuv.d[1] + pair_yuv.d[1]) / 2.0f;
+-			*v_tmp = (yuv.d[2] + pair_yuv.d[2]) / 2.0f;
++			*u_tmp = clamp16((yuv.d[1] + pair_yuv.d[1]) / 2.0f);
++			*v_tmp = clamp16((yuv.d[2] + pair_yuv.d[2]) / 2.0f);
+ 
+ 			u_tmp += params.uv_inc;
+ 			v_tmp += params.uv_inc;
 -- 
-2.40.0
+2.25.1
