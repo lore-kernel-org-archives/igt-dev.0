@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 209C210E0BE
- for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 10:57:09 +0000 (UTC)
-From: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Date: Fri, 26 May 2023 10:57:06 +0000
-Message-ID: <b9a3ca101f6939dc2d53c404191efea7f1c13756.camel@intel.com>
-References: <20230524142931.119823-1-dominik.grzegorzek@intel.com>
- <20230524142931.119823-2-dominik.grzegorzek@intel.com>
- <20230526103738.ooi4fy2br4eh7gty@zkempczy-mobl2>
-In-Reply-To: <20230526103738.ooi4fy2br4eh7gty@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D9F19ADCA137254A8FF540E571AEFBDF@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA4AC10E1C8
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 11:49:11 +0000 (UTC)
+Date: Fri, 26 May 2023 13:49:05 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230526114905.a3il3775nq4sup3m@kamilkon-desk1>
+References: <20230526101803.299705-1-andrzej.hajda@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/9] xe: sync uapi headers
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230526101803.299705-1-andrzej.hajda@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_ctx_persistence: skip
+ heartbeat tests with GuC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,65 +20,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIzLTA1LTI2IGF0IDEyOjM3ICswMjAwLCBaYmlnbmlldyBLZW1wY3p5xYRza2kg
-d3JvdGU6DQo+IE9uIFdlZCwgTWF5IDI0LCAyMDIzIGF0IDA0OjI5OjIzUE0gKzAyMDAsIERvbWlu
-aWsgR3J6ZWdvcnplayB3cm90ZToNCj4gPiBTaWduZWQtb2ZmLWJ5OiBEb21pbmlrIEdyemVnb3J6
-ZWsgPGRvbWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4gIGluY2x1ZGUv
-ZHJtLXVhcGkveGVfZHJtX3RtcC5oIHwgNzYgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDc2IGluc2VydGlvbnMoKykNCj4gPiAgY3JlYXRl
-IG1vZGUgMTAwNjQ0IGluY2x1ZGUvZHJtLXVhcGkveGVfZHJtX3RtcC5oDQo+ID4gDQo+ID4gZGlm
-ZiAtLWdpdCBhL2luY2x1ZGUvZHJtLXVhcGkveGVfZHJtX3RtcC5oIGIvaW5jbHVkZS9kcm0tdWFw
-aS94ZV9kcm1fdG1wLmgNCj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+IGluZGV4IDAwMDAw
-MDAwMC4uOTgyOWNkNzI0DQo+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ICsrKyBiL2luY2x1ZGUvZHJt
-LXVhcGkveGVfZHJtX3RtcC5oDQo+IA0KPiBNYXliZSB4ZV9kcm1fbG9jYWwuaCBvciB4ZV9kcm1f
-c3RhZ2luZy5oPyB0bXAgbG9va3Mgd2VpcmQgaW1vLg0KDQpJIGRvIG5vdCBsaWtlIHRoZSBuYW1l
-IHRvbywganVzdCB0b29rIHRoZSBleGFjdCBmaWxlIGZyb20gS01EIHJmYy4gV2lsbCB0YWxrIHdp
-dGggTWlrYQ0KYWJvdXQgcmVuYW1pbmcgaXQgdG8geGVfZHJtX3N0YWdpbmcuIFRhIQ0KPiANCj4g
-LS0NCj4gWmJpZ25pZXcNCj4gDQo+IA0KPiA+IEBAIC0wLDAgKzEsNzYgQEANCj4gPiArI2lmbmRl
-ZiBfVUFQSV9YRV9EUk1fVE1QX0hfDQo+ID4gKyNkZWZpbmUgX1VBUElfWEVfRFJNX1RNUF9IXw0K
-PiA+ICsNCj4gPiArI2luY2x1ZGUgInhlX2RybS5oIg0KPiA+ICsNCj4gPiArI2lmIGRlZmluZWQo
-X19jcGx1c3BsdXMpDQo+ID4gK2V4dGVybiAiQyIgew0KPiA+ICsjZW5kaWYNCj4gPiArDQo+ID4g
-KyNkZWZpbmUgRFJNX1hFX0VVREVCVUdfQ09OTkVDVAkJCTB4NWYNCj4gPiArDQo+ID4gKyNkZWZp
-bmUgRFJNX0lPQ1RMX1hFX0VVREVCVUdfQ09OTkVDVAkJRFJNX0lPV1IoRFJNX0NPTU1BTkRfQkFT
-RSArIERSTV9YRV9FVURFQlVHX0NPTk5FQ1QsIHN0cnVjdCBkcm1feGVfZXVkZWJ1Z19jb25uZWN0
-X3BhcmFtKQ0KPiA+ICsNCj4gPiArLyoqDQo+ID4gKyAqIERvIGEgZXVkZWJ1ZyBldmVudCByZWFk
-IGZvciBhIGRlYnVnZ2VyIGNvbm5lY3Rpb24uDQo+ID4gKyAqDQo+ID4gKyAqIFRoaXMgaW9jdGwg
-aXMgYXZhaWxhYmxlIGluIGRlYnVnIHZlcnNpb24gMS4NCj4gPiArICovDQo+ID4gKyNkZWZpbmUg
-RFJNX1hFX0VVREVCVUdfSU9DVExfUkVBRF9FVkVOVCBfSU8oJ2onLCAweDApDQo+ID4gKw0KPiA+
-ICsvKiBYWFg6IERvY3VtZW50IGV2ZW50cyB0byBtYXRjaCB0aGVpciBpbnRlcm5hbCBjb3VudGVy
-cGFydHMgd2hlbiBtb3ZlZCB0byB4ZV9kcm0uaCAqLw0KPiA+ICtzdHJ1Y3QgZHJtX3hlX2V1ZGVi
-dWdfZXZlbnQgew0KPiA+ICsJc3RydWN0IHhlX3VzZXJfZXh0ZW5zaW9uIGV4dDsNCj4gPiArDQo+
-ID4gKwlfX3UzMiB0eXBlOw0KPiA+ICsjZGVmaW5lIERSTV9YRV9FVURFQlVHX0VWRU5UX05PTkUg
-ICAgIDANCj4gPiArI2RlZmluZSBEUk1fWEVfRVVERUJVR19FVkVOVF9SRUFEICAgICAxDQo+ID4g
-KyNkZWZpbmUgRFJNX1hFX0VVREVCVUdfRVZFTlRfT1BFTiAgICAgMg0KPiA+ICsjZGVmaW5lIERS
-TV9YRV9FVURFQlVHX0VWRU5UX1ZNCSAgICAgIDMNCj4gPiArI2RlZmluZSBEUk1fWEVfRVVERUJV
-R19FVkVOVF9NQVhfRVZFTlQgRFJNX1hFX0VVREVCVUdfRVZFTlRfVk0NCj4gPiArDQo+ID4gKwlf
-X3UzMiBmbGFnczsNCj4gPiArI2RlZmluZSBEUk1fWEVfRVVERUJVR19FVkVOVF9DUkVBVEUJKDEg
-PDwgMCkNCj4gPiArI2RlZmluZSBEUk1fWEVfRVVERUJVR19FVkVOVF9ERVNUUk9ZCSgxIDw8IDEp
-DQo+ID4gKyNkZWZpbmUgRFJNX1hFX0VVREVCVUdfRVZFTlRfU1RBVEVfQ0hBTkdFICgxIDw8IDIp
-DQo+ID4gKw0KPiA+ICsJX191NjQgc2Vxbm87DQo+ID4gKwlfX3U2NCBzaXplOw0KPiA+ICt9IF9f
-YXR0cmlidXRlX18oKHBhY2tlZCkpOw0KPiA+ICsNCj4gPiArc3RydWN0IGRybV94ZV9ldWRlYnVn
-X2V2ZW50X2NsaWVudCB7DQo+ID4gKwlzdHJ1Y3QgZHJtX3hlX2V1ZGVidWdfZXZlbnQgYmFzZTsg
-LyogLmZsYWdzID0gQ1JFQVRFL0RFU1RST1kgKi8NCj4gPiArDQo+ID4gKwlfX3U2NCBjbGllbnRf
-aGFuZGxlOyAvKiBUaGlzIGlzIHVuaXF1ZSBwZXIgZGVidWcgY29ubmVjdGlvbiAqLw0KPiA+ICt9
-IF9fYXR0cmlidXRlX18oKHBhY2tlZCkpOw0KPiA+ICsNCj4gPiArc3RydWN0IGRybV94ZV9ldWRl
-YnVnX2V2ZW50X3ZtIHsNCj4gPiArCXN0cnVjdCBkcm1feGVfZXVkZWJ1Z19ldmVudCBiYXNlOw0K
-PiA+ICsNCj4gPiArCV9fdTY0IGNsaWVudF9oYW5kbGU7DQo+ID4gKwlfX3U2NCB2bV9oYW5kbGU7
-DQo+ID4gK30gX19hdHRyaWJ1dGVfXygocGFja2VkKSk7DQo+ID4gKw0KPiA+ICsvKg0KPiA+ICsg
-KiBEZWJ1Z2dlciBBQkkgKGlvY3RsIGFuZCBldmVudHMpIFZlcnNpb24gSGlzdG9yeToNCj4gPiAr
-ICogMCAtIE5vIGRlYnVnZ2VyIGF2YWlsYWJsZQ0KPiA+ICsgKiAxIC0gSW5pdGlhbCB2ZXJzaW9u
-DQo+ID4gKyAqLw0KPiA+ICsjZGVmaW5lIERSTV9YRV9FVURFQlVHX1ZFUlNJT04gMQ0KPiA+ICsN
-Cj4gPiArc3RydWN0IGRybV94ZV9ldWRlYnVnX2Nvbm5lY3RfcGFyYW0gew0KPiA+ICsJc3RydWN0
-IHhlX3VzZXJfZXh0ZW5zaW9uIGV4dDsNCj4gPiArDQo+ID4gKwlfX3U2NCBwaWQ7IC8qIGlucHV0
-OiBUYXJnZXQgcHJvY2VzcyBJRCAqLw0KPiA+ICsJX191MzIgZmxhZ3M7DQo+ID4gKw0KPiA+ICsJ
-X191MzIgdmVyc2lvbjsgLyogb3V0cHV0OiBjdXJyZW50IEFCSSAoaW9jdGwgLyBldmVudHMpIHZl
-cnNpb24gKi8NCj4gPiArCV9fdTY0IGV2ZW50czsgIC8qIGlucHV0OiBldmVudCB0eXBlcyB0byBz
-dWJzY3JpYmUgdG8gKi8NCj4gPiArCV9fdTY0IGV4dGVuc2lvbnM7IC8qIE1CWiAqLw0KPiA+ICt9
-Ow0KPiA+ICsNCj4gPiArI2lmIGRlZmluZWQoX19jcGx1c3BsdXMpDQo+ID4gK30NCj4gPiArI2Vu
-ZGlmDQo+ID4gKw0KPiA+ICsjZW5kaWYgLyogX1VBUElfWEVfRFJNX1RNUF9IXyAqLw0KPiA+IC0t
-IA0KPiA+IDIuMzQuMQ0KPiA+IA0KDQo=
+Hi Andrzej,
+
+On 2023-05-26 at 12:18:03 +0200, Andrzej Hajda wrote:
+> GuC does not support fully updating of persisting contexts, especially
+> heartbeat related parameters.
+> 
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> ---
+>  tests/i915/gem_ctx_persistence.c | 25 +++++++++++++++----------
+>  1 file changed, 15 insertions(+), 10 deletions(-)
+> 
+> diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+> index 584137db454..00fdc19e76c 100644
+> --- a/tests/i915/gem_ctx_persistence.c
+> +++ b/tests/i915/gem_ctx_persistence.c
+> @@ -1481,16 +1481,21 @@ igt_main
+>  	igt_subtest("hang")
+>  		test_nohangcheck_hang(i915, &empty_cfg);
+>  
+> -	igt_subtest("heartbeat-stop")
+> -		test_noheartbeat_many(i915, 1, 0);
+> -	igt_subtest("heartbeat-hang")
+> -		test_noheartbeat_many(i915, 1, IGT_SPIN_NO_PREEMPTION);
+> -	igt_subtest("heartbeat-many")
+> -		test_noheartbeat_many(i915, 16, 0);
+> -	igt_subtest("heartbeat-close")
+> -		test_noheartbeat_close(i915, 0);
+> -	igt_subtest("heartbeat-hostile")
+> -		test_noheartbeat_close(i915, IGT_SPIN_NO_PREEMPTION);
+> +	igt_subtest_group {
+> +		igt_fixture
+> +			igt_require(!gem_using_guc_submission(i915));
+
+Do not place igt_require until you want to skip all subtests.
+
+> +
+> +		igt_subtest("heartbeat-stop")
+> +			test_noheartbeat_many(i915, 1, 0);
+> +		igt_subtest("heartbeat-hang")
+> +			test_noheartbeat_many(i915, 1, IGT_SPIN_NO_PREEMPTION);
+> +		igt_subtest("heartbeat-many")
+> +			test_noheartbeat_many(i915, 16, 0);
+----------------------- ^
+Place that igt_require at begin of function.
+
+> +		igt_subtest("heartbeat-close")
+> +			test_noheartbeat_close(i915, 0);
+----------------------- ^
+Same here.
+
+Regards,
+Kamil
+
+> +		igt_subtest("heartbeat-hostile")
+> +			test_noheartbeat_close(i915, IGT_SPIN_NO_PREEMPTION);
+> +	}
+>  
+>  	igt_subtest_group {
+>  		igt_fixture
+> -- 
+> 2.34.1
+> 
