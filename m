@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0625510E214
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAE6E10E238
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:27 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:19 +0530
-Message-Id: <20230529052835.860047-7-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:29 +0530
+Message-Id: <20230529052835.860047-17-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 06/82] tests/chamelium/kms_chamelium_audio:
- Document each subtest for testplan
+Subject: [igt-dev] [i-g-t V4 16/82] tests/i915/kms_draw_crc: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,77 +28,93 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_chamelium_audio.c | 44 +++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ tests/i915/kms_draw_crc.c | 71 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 2 deletions(-)
 
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index a4204fbb6..e657f7791 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -28,6 +28,12 @@
- #include "igt_infoframe.h"
- #include "igt_chamelium_helper.h"
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index db6d71f2e..d6694faee 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -22,11 +22,78 @@
+  *
+  */
+ 
+-/* This program tests whether the igt_draw library actually works. */
+-
++/**
++ * TEST: kms draw crc
++ * Category: Display
++ * Description: Tests whether the igt_draw library actually works.
++ */
+ #include "i915/gem.h"
+ #include "igt.h"
  
 +/**
-+ * TEST: kms chamelium audio
-+ * Category: Display
-+ * Description: Testing Audio with a Chamelium board
++ * SUBTEST: draw-method-blt
++ * Description: Verify that igt draw library works for the BLIT method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: draw-method-mmap-cpu
++ * Description: Verify that igt draw library works for the MMAP-CPU method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: i915
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: draw-method-mmap-gtt
++ * Description: Verify that igt draw library works for the MMAP-GTT method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: i915
++ * Functionality: gtt, kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: draw-method-mmap-wc
++ * Description: Verify that igt draw library works for the MMAP-WC method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: draw-method-pwrite
++ * Description: Verify that igt draw library works for the PWRITE method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: i915
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: draw-method-render
++ * Description: Verify that igt draw library works for the RENDER method with
++ *              different modifiers & DRM formats.
++ * Driver requirement: any
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: fill-fb
++ * Description: This subtest verifies CRC after filling fb with x-tiling or none.
++ * Driver requirement: i915
++ * Functionality: kms_gem_interop
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
 +
- /* Playback parameters control the audio signal we synthesize and send */
- #define PLAYBACK_CHANNELS 2
- #define PLAYBACK_SAMPLES 1024
-@@ -669,6 +675,25 @@ static bool check_audio_configuration(struct alsa *alsa,
- 	return true;
- }
+ #define MAX_CONNECTORS 32
  
-+/**
-+ * SUBTEST: dp-audio
-+ * Description: Playback various audio signals with various audio formats/rates,
-+ *              capture them and check they are correct
-+ * Functionality: dp_audio
-+ * Mega feature: DP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-audio
-+ * Description: Playback various audio signals with various audio formats/rates,
-+ *              capture them and check they are correct
-+ * Functionality: hdmi_audio
-+ * Mega feature: HDMI
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ */
- static const char test_display_audio_desc[] =
- 	"Playback various audio signals with various audio formats/rates, "
- 	"capture them and check they are correct";
-@@ -763,6 +788,25 @@ static void test_display_audio(chamelium_data_t *data,
- 	free(alsa);
- }
- 
-+/**
-+ * SUBTEST: dp-audio-edid
-+ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-+ *              EDID-Like Data reports the correct audio parameters
-+ * Functionality: dp_audio
-+ * Mega feature: DP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-audio-edid
-+ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-+ *              EDID-Like Data reports the correct audio parameters
-+ * Functionality: hdmi_audio
-+ * Mega feature: HDMI
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ */
- static const char test_display_audio_edid_desc[] =
- 	"Plug a connector with an EDID suitable for audio, check ALSA's "
- 	"EDID-Like Data reports the correct audio parameters";
+ int drm_fd;
 -- 
 2.40.0
