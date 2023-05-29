@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3603310E21C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9717710E21C
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:25 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:23 +0530
-Message-Id: <20230529052835.860047-11-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:27 +0530
+Message-Id: <20230529052835.860047-15-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 10/82] tests/chamelium/kms_chamelium_hpd:
- Document each subtest for testplan
+Subject: [igt-dev] [i-g-t V4 14/82] tests/i915/kms_ccs: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,271 +26,116 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
+V2: - Include mtl ccs tests
+
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_chamelium_hpd.c | 186 +++++++++++++++++++++++++++-
- 1 file changed, 185 insertions(+), 1 deletion(-)
+ tests/i915/kms_ccs.c | 89 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 89 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index ea0ee10e7..6926dcb6b 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -25,8 +25,9 @@
-  */
- 
- /**
-- * TEST: Tests behaviour of hpd using chamelium
-+ * TEST: kms chamelium hpd
-  * Category: Display
-+ * Description: Testing HPD with a Chamelium board
-  */
- 
- #include "igt_chamelium_helper.h"
-@@ -117,6 +118,7 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: dp_hotplug
-  * Mega feature: DP
-+ * Driver requirement: any
+diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
+index abe464b47..2bce8d8cc 100644
+--- a/tests/i915/kms_ccs.c
++++ b/tests/i915/kms_ccs.c
+@@ -22,10 +22,99 @@
   *
-  * SUBTEST: hdmi-hpd-fast
-  * Description: Check that we get uevents and updated connector status on
-@@ -125,6 +127,7 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: hdmi_hotplug
-  * Mega feature: HDMI
-+ * Driver requirement: any
-  *
-  * SUBTEST: vga-hpd-fast
-  * Description: Check that we get uevents and updated connector status on
-@@ -133,6 +136,66 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: vga_hotplug
-  * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: dp-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: dp-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * arg[1]:
-+ *
-+ * @enable-disable-mode:     Toggle the mode
-+ * @with-enabled-mode:       Enabling the mode
   */
- static const char test_basic_hotplug_desc[] =
- 	"Check that we get uevents and updated connector status on "
-@@ -200,6 +263,34 @@ static void test_hotplug(chamelium_data_t *data, struct chamelium_port *port,
- 	igt_remove_fb(data->drm_fd, &fb);
- }
  
 +/**
-+ * SUBTEST: dp-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
++ * TEST: kms ccs
++ * Category: Display
++ * Description: Test render compression (RC), in which the main surface is
++ *              complemented by a color control surface (CCS) that the display
++ *              uses to interpret the compressed data.
 + */
- static const char test_hotplug_for_each_pipe_desc[] =
- 	"Check that we get uevents and updated connector status on "
- 	"hotplug and unplug for each pipe with valid output";
-@@ -245,6 +336,39 @@ static void test_hotplug_for_each_pipe(chamelium_data_t *data,
- 	igt_hpd_storm_reset(data->drm_fd);
- }
+ #include "igt.h"
+ 
+ #include "i915/gem_create.h"
  
 +/**
-+ * SUBTEST: dp-hpd-after-%s
-+ * Description: Toggle HPD during %arg[1], check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-after-%s
-+ * Description: Toggle HPD during %arg[1], check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-after-%s
-+ * Description: Toggle HPD during %arg[1], check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * arg[1]:
-+ *
-+ * @hibernate:     Hibernation
-+ * @suspend:       Suspend
-+ */
- static const char test_suspend_resume_hpd_desc[] =
- 	"Toggle HPD during suspend, check that uevents are sent and connector "
- 	"status is updated";
-@@ -276,6 +400,16 @@ static void test_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: hotplug
-  * Mega feature: General Display Features
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: common-hpd-after-hibernate
-+ * Description: Toggle HPD during suspend on all connectors, check that uevents
-+ *              are sent and connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hotplug
++ * SUBTEST: %s-%s-%s
++ * Description: Test %arg[2] with given %arg[3] modifier
++ * Driver requirement: i915
++ * Functionality: ccs
 + * Mega feature: General Display Features
-+ * Driver requirement: any
-  */
- static const char test_suspend_resume_hpd_common_desc[] =
- 	"Toggle HPD during suspend on all connectors, check that uevents are "
-@@ -306,6 +440,16 @@ static void test_suspend_resume_hpd_common(chamelium_data_t *data,
- 	igt_cleanup_uevents(mon);
- }
- 
-+/**
-+ * SUBTEST: vga-hpd-without-ddc
-+ * Description: Disable DDC on a VGA connector, check we still get a uevent on
-+ *              hotplug
-+ * Test category: functionality test
 + * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ */
- static const char test_hpd_without_ddc_desc[] =
- 	"Disable DDC on a VGA connector, check we still get a uevent on hotplug";
- static void test_hpd_without_ddc(chamelium_data_t *data,
-@@ -332,6 +476,27 @@ static void test_hpd_without_ddc(chamelium_data_t *data,
- 	igt_cleanup_uevents(mon);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-storm
-+ * Description: Trigger a series of hotplugs in a very small timeframe to
-+ *              simulate abad cable, check the kernel falls back to polling
-+ *              to avoid a hotplug storm
 + * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
 + *
-+ * SUBTEST: hdmi-hpd-storm
-+ * Description: Trigger a series of hotplugs in a very small timeframe to
-+ *              simulate abad cable, check the kernel falls back to polling
-+ *              to avoid a hotplug storm
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ */
- static const char test_hpd_storm_detect_desc[] =
- 	"Trigger a series of hotplugs in a very small timeframe to simulate a"
- 	"bad cable, check the kernel falls back to polling to avoid a hotplug "
-@@ -366,6 +531,25 @@ static void test_hpd_storm_detect(chamelium_data_t *data,
- 	igt_hpd_storm_reset(data->drm_fd);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-storm-disable
-+ * Description: Disable HPD storm detection, trigger a storm and check the
-+ *              kernel doesn't detect one
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
++ * arg[1]:
 + *
-+ * SUBTEST: hdmi-hpd-storm-disable
-+ * Description: Disable HPD storm detection, trigger a storm and check the
-+ *              kernel doesn't detect one
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
++ * @pipe-A:                    Pipe A
++ * @pipe-B:                    Pipe B
++ * @pipe-C:                    Pipe C
++ * @pipe-D:                    Pipe D
++ * @pipe-E:                    Pipe E
++ * @pipe-F:                    Pipe F
++ * @pipe-G:                    Pipe G
++ * @pipe-H:                    Pipe H
++ *
++ * arg[2]:
++ *
++ * @bad-aux-stride:            Bad AUX stride
++ * @ccs-on-another-bo:         CCS with different BO
++ * @missing-ccs-buffer:        Missing CCS buffer
++ *
++ * arg[3]:
++ *
++ * @y_tiled_ccs:               Y tiled ccs
++ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
++ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
++ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
++ * @yf_tiled_ccs:              YF tiled ccs
++ * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
++ * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
++ * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
 + */
- static const char test_hpd_storm_disable_desc[] =
- 	"Disable HPD storm detection, trigger a storm and check the kernel "
- 	"doesn't detect one";
++
++/**
++ * SUBTEST: %s-%s-%s
++ * Description: Test %arg[2] with %arg[3] modifier
++ * Driver requirement: i915
++ * Functionality: ccs
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @pipe-A:                      Pipe A
++ * @pipe-B:                      Pipe B
++ * @pipe-C:                      Pipe C
++ * @pipe-D:                      Pipe D
++ * @pipe-E:                      Pipe E
++ * @pipe-F:                      Pipe F
++ * @pipe-G:                      Pipe G
++ * @pipe-H:                      Pipe H
++ *
++ * arg[2]:
++ *
++ * @bad-pixel-format:            Bad pixel format
++ * @bad-rotation-90:             90 degree rotation
++ * @crc-primary-basic:           Primary plane CRC compatibility
++ * @crc-primary-rotation-180:    180 degree rotation
++ * @crc-sprite-planes-basic:     Sprite plane CRC compatability
++ * @random-ccs-data:             Random CCS data
++ *
++ * arg[3]:
++ *
++ * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
++ * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
++ * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
++ * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
++ * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
++ * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
++ * @y_tiled_ccs:               Y tiled ccs
++ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
++ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
++ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
++ * @yf_tiled_ccs:              YF tiled ccs
++ */
++
+ #define SDR_PLANE_BASE	3
+ 
+ IGT_TEST_DESCRIPTION("Test render compression (RC), in which the main surface "
 -- 
 2.40.0
