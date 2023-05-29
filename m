@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80D8D10E238
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF3E510E22C
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:26 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:31 +0530
-Message-Id: <20230529052835.860047-19-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:28 +0530
+Message-Id: <20230529052835.860047-16-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 18/82] tests/i915/kms_fb_coherency: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V4 15/82] tests/i915/kms_cdclk: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,24 +28,65 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_fb_coherency.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/i915/kms_cdclk.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/tests/i915/kms_fb_coherency.c b/tests/i915/kms_fb_coherency.c
-index b530bf5dc..9d2506ce8 100644
---- a/tests/i915/kms_fb_coherency.c
-+++ b/tests/i915/kms_fb_coherency.c
-@@ -243,6 +243,11 @@ igt_main
- 	 * Description: Use display controller CRC hardware to validate (non)coherency
- 	 *		of memset operations on future scanout buffer objects
- 	 *		mmapped with different mmap methods and different caching modes.
-+	 * Driver requirement: i915
-+	 * Functionality: kms_core
-+	 * Run type: FULL
-+	 * Mega feature: General Display Features
-+	 * Test category: functionality test
- 	 */
- 	igt_subtest_with_dynamic("memset-crc") {
- 		if (gem_has_mappable_ggtt(data.drm_fd)) {
+diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+index 0f9b8dc58..ef0c5ee61 100644
+--- a/tests/i915/kms_cdclk.c
++++ b/tests/i915/kms_cdclk.c
+@@ -24,6 +24,11 @@
+  *  Swati Sharma <swati2.sharma@intel.com>
+  */
+ 
++/**
++ * TEST: kms cdclk
++ * Category: Display
++ * Description: Test cdclk features : crawling and squashing
++ */
+ #include "igt.h"
+ 
+ IGT_TEST_DESCRIPTION("Test cdclk features : crawling and squashing");
+@@ -248,6 +253,16 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
+ 	igt_remove_fb(display->drm_fd, &fb);
+ }
+ 
++/**
++ * SUBTEST: mode-transition-all-outputs
++ * Description: Mode transition (low to high) test to validate cdclk frequency
++ *              change by simultaneous modesets on all pipes with valid outputs.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_mode_transition_on_all_outputs(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
+@@ -344,6 +359,23 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 	igt_remove_fb(data->drm_fd, &fb);
+ }
+ 
++/**
++ * SUBTEST: mode-transition
++ * Description: Mode transition (low to high) test to validate cdclk frequency change.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-scaling
++ * Description: Plane scaling test to validate cdclk frequency change.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void run_cdclk_test(data_t *data, uint32_t flags)
+ {
+ 	igt_display_t *display = &data->display;
 -- 
 2.40.0
