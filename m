@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3818820616957219204=="
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61CFA10E214
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 06:47:04 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com
+Date: Mon, 29 May 2023 12:17:19 +0530
+Message-Id: <20230529064719.461815-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Mon, 29 May 2023 06:38:26 -0000
-Message-ID: <168534230683.27509.12553739041221903779@emeril.freedesktop.org>
-References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgRG9jdW1l?=
- =?utf-8?q?nt_KMS_tests_=28rev11=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/instdone: GEN12 and XEHP INSTDONE
+ initialization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,245 +18,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3818820616957219204==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-== Series Details ==
+Add GEN12 and XEHP INSTDONE initialization as per spec.
 
-Series: Document KMS tests (rev11)
-URL   : https://patchwork.freedesktop.org/series/117749/
-State : success
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+---
+ lib/instdone.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 66 insertions(+), 1 deletion(-)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13198 -> IGTPW_9052
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/index.html
-
-Participating hosts (38 -> 37)
-------------------------------
-
-  Missing    (1): bat-jsl-3 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9052 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-rpls-1:         NOTRUN -> [ABORT][1] ([i915#6687] / [i915#7978])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][2] ([fdo#109271])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/fi-skl-6600u/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  
-#### Possible fixes ####
-
-  * igt@dmabuf@all-tests@dma_fence:
-    - fi-skl-6600u:       [DMESG-FAIL][3] ([i915#8189]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/fi-skl-6600u/igt@dmabuf@all-tests@dma_fence.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/fi-skl-6600u/igt@dmabuf@all-tests@dma_fence.html
-
-  * igt@dmabuf@all-tests@sanitycheck:
-    - fi-skl-6600u:       [ABORT][5] -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/fi-skl-6600u/igt@dmabuf@all-tests@sanitycheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/fi-skl-6600u/igt@dmabuf@all-tests@sanitycheck.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-1:         [ABORT][7] ([i915#4983] / [i915#7911] / [i915#7920]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/bat-rpls-1/igt@i915_selftest@live@requests.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-rpls-1/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@slpc:
-    - {bat-mtlp-6}:       [DMESG-WARN][9] ([i915#6367]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/bat-mtlp-6/igt@i915_selftest@live@slpc.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-mtlp-6/igt@i915_selftest@live@slpc.html
-    - bat-rpls-2:         [DMESG-WARN][11] ([i915#6367]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/bat-rpls-2/igt@i915_selftest@live@slpc.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-rpls-2/igt@i915_selftest@live@slpc.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:
-    - bat-dg2-8:          [FAIL][13] ([i915#7932]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
-
-  
-#### Warnings ####
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         [SKIP][15] ([i915#3555] / [i915#4579]) -> [ABORT][16] ([i915#4579] / [i915#8260])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#8189]: https://gitlab.freedesktop.org/drm/intel/issues/8189
-  [i915#8260]: https://gitlab.freedesktop.org/drm/intel/issues/8260
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7308 -> IGTPW_9052
-
-  CI-20190529: 20190529
-  CI_DRM_13198: cf59b48ea3c0c0075d7c4e8538177d38999da7b0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9052: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/index.html
-  IGT_7308: 766edf96979bf13a10c9985c007f2baca5c9e308 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/index.html
-
---===============3818820616957219204==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Document KMS tests (rev11)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/117749/">https://patchwork.freedesktop.org/series/117749/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13198 -&gt; IGTPW_9052</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/index.html</p>
-<h2>Participating hosts (38 -&gt; 37)</h2>
-<p>Missing    (1): bat-jsl-3 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9052 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/fi-skl-6600u/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests@dma_fence:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/fi-skl-6600u/igt@dmabuf@all-tests@dma_fence.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8189">i915#8189</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/fi-skl-6600u/igt@dmabuf@all-tests@dma_fence.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@dmabuf@all-tests@sanitycheck:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/fi-skl-6600u/igt@dmabuf@all-tests@sanitycheck.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/fi-skl-6600u/igt@dmabuf@all-tests@sanitycheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>
-<p>{bat-mtlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/bat-mtlp-6/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-mtlp-6/igt@i915_selftest@live@slpc.html">PASS</a></p>
-</li>
-<li>
-<p>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-rpls-2/igt@i915_selftest@live@slpc.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_setmode@basic-clone-single-crtc:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13198/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8260">i915#8260</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7308 -&gt; IGTPW_9052</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13198: cf59b48ea3c0c0075d7c4e8538177d38999da7b0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9052: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9052/index.html<br />
-  IGT_7308: 766edf96979bf13a10c9985c007f2baca5c9e308 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3818820616957219204==--
+diff --git a/lib/instdone.c b/lib/instdone.c
+index a83f8836..0cdddca8 100644
+--- a/lib/instdone.c
++++ b/lib/instdone.c
+@@ -274,6 +274,30 @@
+ # define GEN6_VS0_DONE			(1 << 1)
+ # define GEN6_VF_DONE			(1 << 0)
+ 
++# define GEN12_TSG1_DONE		(1 << 24)
++# define GEN12_RCCFBC_CS_DONE		(1 << 23)
++# define GEN12_SDE_DONE			(1 << 22)
++# define GEN12_CS_DONE			(1 << 21)
++# define GEN12_RS_DONE			(1 << 20)
++# define GEN12_GAFD_DONE		(1 << 19)
++# define GEN12_GAFM_DONE		(1 << 18)
++# define GEN12_TSG0_DONE		(1 << 17)
++# define GEN12_VFE_DONE			(1 << 16)
++# define GEN12_GAFS_DONE		(1 << 15)
++# define GEN12_SVG_DONE			(1 << 14)
++# define GEN12_URBM_DONE		(1 << 13)
++# define GEN12_TDG0_DONE		(1 << 12)
++# define GEN12_TDG1_DONE		(1 << 11)
++# define GEN12_SF_DONE			(1 << 9)
++# define GEN12_CL_DONE			(1 << 8)
++# define GEN12_SOL_DONE			(1 << 7)
++# define GEN12_GS_DONE			(1 << 6)
++# define GEN12_DS_DONE			(1 << 5)
++# define GEN12_TE_DONE			(1 << 4)
++# define GEN12_HS_DONE			(1 << 3)
++# define GEN12_VS_DONE			(1 << 2)
++# define GEN12_VFG_DONE			(1 << 1)
++
+ struct instdone_bit instdone_bits[MAX_INSTDONE_BITS];
+ int num_instdone_bits = 0;
+ 
+@@ -425,10 +449,51 @@ init_gen11_instdone(void)
+ 	init_gen8_instdone();
+ }
+ 
++static void
++init_xehp_instdone(void)
++{
++	gen6_instdone1_bit(GEN12_RCCFBC_CS_DONE, "RCCFBC CS");
++	gen6_instdone1_bit(GEN12_CS_DONE, "CS");
++	gen6_instdone1_bit(GEN12_RS_DONE, "RS");
++	gen6_instdone1_bit(GEN12_VFE_DONE, "VFE");
++	gen6_instdone1_bit(GEN12_VFG_DONE, "VFG");
++}
++
++static void
++init_gen12_instdone(uint32_t devid)
++{
++	gen6_instdone1_bit(GEN12_TSG1_DONE, "TSG1");
++	gen6_instdone1_bit(GEN12_RCCFBC_CS_DONE, "RCCFBC CS");
++	gen6_instdone1_bit(GEN12_SDE_DONE, "SDE");
++	gen6_instdone1_bit(GEN12_CS_DONE, "CS");
++	gen6_instdone1_bit(GEN12_RS_DONE, "RS");
++	gen6_instdone1_bit(GEN12_GAFD_DONE, "GAFD");
++	gen6_instdone1_bit(GEN12_GAFM_DONE, "GAFM");
++	gen6_instdone1_bit(GEN12_TSG0_DONE, "TSG0");
++	gen6_instdone1_bit(GEN12_VFE_DONE, "VFE");
++	gen6_instdone1_bit(GEN12_GAFS_DONE, "GAFS");
++	gen6_instdone1_bit(GEN12_SVG_DONE, "SVG");
++	gen6_instdone1_bit(GEN12_URBM_DONE, "URBM");
++	gen6_instdone1_bit(GEN12_TDG0_DONE, "TDG0");
++	gen6_instdone1_bit(GEN12_TDG1_DONE, "TDG1");
++	gen6_instdone1_bit(GEN12_SF_DONE, "SF");
++	gen6_instdone1_bit(GEN12_CL_DONE, "CL");
++	gen6_instdone1_bit(GEN12_SOL_DONE, "SOL");
++	gen6_instdone1_bit(GEN12_GS_DONE, "GS");
++	gen6_instdone1_bit(GEN12_DS_DONE, "DS");
++	gen6_instdone1_bit(GEN12_TE_DONE, "TE");
++	gen6_instdone1_bit(GEN12_HS_DONE, "HS");
++	gen6_instdone1_bit(GEN12_VS_DONE, "VS");
++	gen6_instdone1_bit(GEN12_VFG_DONE, "VFG");
++}
+ bool
+ init_instdone_definitions(uint32_t devid)
+ {
+-	if (IS_GEN11(devid)) {
++	if (intel_graphics_ver(devid) >= IP_VER(12, 50)) {
++		init_xehp_instdone();
++	} else if (IS_GEN12(devid)) {
++		init_gen12_instdone(devid);
++	} else if (IS_GEN11(devid)) {
+ 		init_gen11_instdone();
+ 	} else if (IS_GEN8(devid) || IS_GEN9(devid) || IS_GEN10(devid)) {
+ 		init_gen8_instdone();
+-- 
+2.25.1
