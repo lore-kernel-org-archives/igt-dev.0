@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF3E510E22C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7DC3D10E214
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:12 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:28 +0530
-Message-Id: <20230529052835.860047-16-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:16 +0530
+Message-Id: <20230529052835.860047-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 15/82] tests/i915/kms_cdclk: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V4 03/82] tests/color: Move color helpers to lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,70 +22,131 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+The correct place for helpers is lib as the tests directory is
+supposed to have test files, also having the helpers in tests
+dir will break the compilation of testplan. Hence move all
+helpers to library.
+
+Expectation is to have an executable binary for each .c file
+the "tests" dir.
+
+V2: - Drop special case compilation method
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/kms_cdclk.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ .../igt_color_helper.c                        |  2 +-
+ .../igt_color_helper.h                        |  0
+ lib/meson.build                               |  1 +
+ tests/chamelium/kms_chamelium_color.c         |  2 +-
+ tests/kms_color.c                             |  2 +-
+ tests/meson.build                             | 20 ++-----------------
+ 6 files changed, 6 insertions(+), 21 deletions(-)
+ rename tests/kms_color_helper.c => lib/igt_color_helper.c (99%)
+ rename tests/kms_color_helper.h => lib/igt_color_helper.h (100%)
 
-diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
-index 0f9b8dc58..ef0c5ee61 100644
---- a/tests/i915/kms_cdclk.c
-+++ b/tests/i915/kms_cdclk.c
-@@ -24,6 +24,11 @@
-  *  Swati Sharma <swati2.sharma@intel.com>
+diff --git a/tests/kms_color_helper.c b/lib/igt_color_helper.c
+similarity index 99%
+rename from tests/kms_color_helper.c
+rename to lib/igt_color_helper.c
+index 69cf2362e..584a6a145 100644
+--- a/tests/kms_color_helper.c
++++ b/lib/igt_color_helper.c
+@@ -22,7 +22,7 @@
+  *
   */
  
-+/**
-+ * TEST: kms cdclk
-+ * Category: Display
-+ * Description: Test cdclk features : crawling and squashing
-+ */
- #include "igt.h"
+-#include "kms_color_helper.h"
++#include "igt_color_helper.h"
  
- IGT_TEST_DESCRIPTION("Test cdclk features : crawling and squashing");
-@@ -248,6 +253,16 @@ static void test_mode_transition(data_t *data, enum pipe pipe, igt_output_t *out
- 	igt_remove_fb(display->drm_fd, &fb);
- }
- 
-+/**
-+ * SUBTEST: mode-transition-all-outputs
-+ * Description: Mode transition (low to high) test to validate cdclk frequency
-+ *              change by simultaneous modesets on all pipes with valid outputs.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_mode_transition_on_all_outputs(data_t *data)
+ bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
  {
- 	igt_display_t *display = &data->display;
-@@ -344,6 +359,23 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 	igt_remove_fb(data->drm_fd, &fb);
- }
+diff --git a/tests/kms_color_helper.h b/lib/igt_color_helper.h
+similarity index 100%
+rename from tests/kms_color_helper.h
+rename to lib/igt_color_helper.h
+diff --git a/lib/meson.build b/lib/meson.build
+index 75e52580b..1cc859f17 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -20,6 +20,7 @@ lib_sources = [
+ 	'igt_chamelium_helper.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
++	'igt_color_helper.c',
+ 	'igt_crc.c',
+ 	'igt_debugfs.c',
+ 	'igt_device.c',
+diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
+index 26239a6b8..bbb929b64 100644
+--- a/tests/chamelium/kms_chamelium_color.c
++++ b/tests/chamelium/kms_chamelium_color.c
+@@ -22,7 +22,7 @@
+  *
+  */
  
-+/**
-+ * SUBTEST: mode-transition
-+ * Description: Mode transition (low to high) test to validate cdclk frequency change.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: plane-scaling
-+ * Description: Plane scaling test to validate cdclk frequency change.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void run_cdclk_test(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
+-#include "kms_color_helper.h"
++#include "igt_color_helper.h"
+ 
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
+ 
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 1d93ebbee..8964fc415 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -22,7 +22,7 @@
+  *
+  */
+ 
+-#include "kms_color_helper.h"
++#include "igt_color_helper.h"
+ 
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+ 
+diff --git a/tests/meson.build b/tests/meson.build
+index 48e9164f8..1c33e5605 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -21,6 +21,7 @@ test_progs = [
+ 	'kms_atomic_interruptible',
+ 	'kms_atomic_transition',
+ 	'kms_bw',
++	'kms_color',
+ 	'kms_concurrent',
+ 	'kms_content_protection',
+ 	'kms_cursor_crc',
+@@ -281,6 +282,7 @@ msm_progs = [
+ 
+ chamelium_progs = [
+ 	'kms_chamelium_audio',
++	'kms_chamelium_color',
+ 	'kms_chamelium_edid',
+ 	'kms_chamelium_frames',
+ 	'kms_chamelium_hpd',
+@@ -471,24 +473,6 @@ executable('testdisplay', ['testdisplay.c', 'testdisplay_hotplug.c'],
+ 	   install : true)
+ test_list += 'testdisplay'
+ 
+-test_executables += executable('kms_color',
+-	   [ 'kms_color.c', 'kms_color_helper.c' ],
+-	   dependencies : test_deps,
+-	   install_dir : libexecdir,
+-	   install_rpath : libexecdir_rpathdir,
+-	   install : true)
+-test_list += 'kms_color'
+-
+-if chamelium.found()
+-       test_executables += executable('kms_chamelium_color',
+-                             [ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
+-                             dependencies : test_deps + [ chamelium ],
+-                             install_dir : libexecdir,
+-                             install_rpath : libexecdir_rpathdir,
+-                             install : true)
+-       test_list += 'kms_chamelium_color'
+-endif
+-
+ test_executables += executable('sw_sync', 'sw_sync.c',
+ 	   dependencies : test_deps + [ libatomic ],
+ 	   install_dir : libexecdir,
 -- 
 2.40.0
