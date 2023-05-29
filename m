@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3061F10E0A9
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 11:30:54 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com
+ [IPv6:2a00:1450:4864:20::22e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2132810E283
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 11:44:59 +0000 (UTC)
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2af2f4e719eso34230841fa.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 04:44:58 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 17:08:09 +0530
-Message-Id: <20230529113809.5538-1-nidhi1.gupta@intel.com>
+Date: Mon, 29 May 2023 14:44:50 +0300
+Message-Id: <20230529114450.4633-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_vrr: Increase time test
- measurement step runs to ~7 seconds
+Subject: [igt-dev] [PATCH i-g-t] tools/intel_gpu_top: fix segfault on
+ discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,35 +21,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Eero Tamminen <eero.t.tamminen@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Increase time test measurement step runs to ~7 seconds.
-This gives a decent sample size + enough time for any
-adaptation to occur if necessary.
+in case no display clients ignore display client list
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reported-by: Eero Tamminen <eero.t.tamminen@intel.com>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/kms_vrr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/intel_gpu_top.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index d2d79c4eb..9b909e21f 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -28,10 +28,10 @@
- #define NSECS_PER_SEC (1000000000ull)
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index a89f13d4..cef1d3c7 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -837,6 +837,9 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
+ 	struct igt_drm_clients *aggregated;
+ 	int tmp, num = 0;
  
- /*
-- * Each test measurement step runs for ~5 seconds.
-+ * Each test measurement step runs for ~7 seconds.
-  * This gives a decent sample size + enough time for any adaptation to occur if necessary.
-  */
--#define TEST_DURATION_NS (5000000000ull)
-+#define TEST_DURATION_NS (7000000000ull)
++	if (!clients)
++		return NULL;
++
+ 	if (!aggregate_pids)
+ 		goto out;
  
- #define DRM_MODE_FMT    "\"%s\": %d %d %d %d %d %d %d %d %d %d 0x%x 0x%x"
- #define DRM_MODE_ARG(m) \
 -- 
-2.39.0
+2.25.1
