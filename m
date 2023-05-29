@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9717710E21C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 496E910E215
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:27 +0530
-Message-Id: <20230529052835.860047-15-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:20 +0530
+Message-Id: <20230529052835.860047-8-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 14/82] tests/i915/kms_ccs: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V4 07/82] tests/chamelium/kms_chamelium_color:
+ Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,116 +26,84 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Include mtl ccs tests
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_ccs.c | 89 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 89 insertions(+)
+ tests/chamelium/kms_chamelium_color.c | 45 +++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
-index abe464b47..2bce8d8cc 100644
---- a/tests/i915/kms_ccs.c
-+++ b/tests/i915/kms_ccs.c
-@@ -22,10 +22,99 @@
+diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
+index bbb929b64..709b6ec2c 100644
+--- a/tests/chamelium/kms_chamelium_color.c
++++ b/tests/chamelium/kms_chamelium_color.c
+@@ -22,10 +22,25 @@
   *
   */
  
 +/**
-+ * TEST: kms ccs
++ * TEST: kms chamelium color
 + * Category: Display
-+ * Description: Test render compression (RC), in which the main surface is
-+ *              complemented by a color control surface (CCS) that the display
-+ *              uses to interpret the compressed data.
++ * Description: Test Color Features at Pipe level using Chamelium to verify instead of CRC
 + */
- #include "igt.h"
++
+ #include "igt_color_helper.h"
  
- #include "i915/gem_create.h"
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
  
 +/**
-+ * SUBTEST: %s-%s-%s
-+ * Description: Test %arg[2] with given %arg[3] modifier
-+ * Driver requirement: i915
-+ * Functionality: ccs
-+ * Mega feature: General Display Features
++ * SUBTEST: degamma
++ * Description: Verify that degamma LUT transformation works correctly
++ * Functionality: colorspace
++ * Mega feature: Color mgmt
 + * Run type: FULL
 + * Test category: functionality test
++ * Driver requirement: any
++ */
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
+  * degamma LUT and verify we have the same frame dump as drawing solid color
+@@ -115,6 +130,15 @@ static bool test_pipe_degamma(data_t *data,
+ 	return ret;
+ }
+ 
++/**
++ * SUBTEST: gamma
++ * Description: Verify that gamma LUT transformation works correctly
++ * Functionality: colorspace_gamma
++ * Mega feature: Color mgmt
++ * Run type: FULL
++ * Test category: functionality test
++ * Driver requirement: any
++ */
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
+  * gamma LUT and verify we have the same frame dump as drawing solid
+@@ -465,6 +489,27 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
+ 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
+ }
+ 
++/**
++ * SUBTEST: ctm-%s
++ * Description: Check the color transformation %arg[1]
++ * Functionality: colorspace
++ * Mega feature: Color mgmt
++ * Run type: FULL
++ * Test category: functionality test
++ * Driver requirement: any
 + *
 + * arg[1]:
 + *
-+ * @pipe-A:                    Pipe A
-+ * @pipe-B:                    Pipe B
-+ * @pipe-C:                    Pipe C
-+ * @pipe-D:                    Pipe D
-+ * @pipe-E:                    Pipe E
-+ * @pipe-F:                    Pipe F
-+ * @pipe-G:                    Pipe G
-+ * @pipe-H:                    Pipe H
-+ *
-+ * arg[2]:
-+ *
-+ * @bad-aux-stride:            Bad AUX stride
-+ * @ccs-on-another-bo:         CCS with different BO
-+ * @missing-ccs-buffer:        Missing CCS buffer
-+ *
-+ * arg[3]:
-+ *
-+ * @y_tiled_ccs:               Y tiled ccs
-+ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-+ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-+ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-+ * @yf_tiled_ccs:              YF tiled ccs
-+ * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
-+ * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
-+ * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
++ * @0-25:            for 0.25 transparancy
++ * @0-50:            for 0.50 transparancy
++ * @0-75:            for 0.75 transparancy
++ * @blue-to-red:     from blue to red
++ * @green-to-red:    from green to red
++ * @limited-range:   with identity matrix
++ * @max:             for max transparancy
++ * @negative:        for negative transparancy
++ * @red-to-blue:     from red to blue
 + */
-+
-+/**
-+ * SUBTEST: %s-%s-%s
-+ * Description: Test %arg[2] with %arg[3] modifier
-+ * Driver requirement: i915
-+ * Functionality: ccs
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @pipe-A:                      Pipe A
-+ * @pipe-B:                      Pipe B
-+ * @pipe-C:                      Pipe C
-+ * @pipe-D:                      Pipe D
-+ * @pipe-E:                      Pipe E
-+ * @pipe-F:                      Pipe F
-+ * @pipe-G:                      Pipe G
-+ * @pipe-H:                      Pipe H
-+ *
-+ * arg[2]:
-+ *
-+ * @bad-pixel-format:            Bad pixel format
-+ * @bad-rotation-90:             90 degree rotation
-+ * @crc-primary-basic:           Primary plane CRC compatibility
-+ * @crc-primary-rotation-180:    180 degree rotation
-+ * @crc-sprite-planes-basic:     Sprite plane CRC compatability
-+ * @random-ccs-data:             Random CCS data
-+ *
-+ * arg[3]:
-+ *
-+ * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
-+ * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
-+ * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
-+ * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
-+ * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
-+ * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
-+ * @y_tiled_ccs:               Y tiled ccs
-+ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-+ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-+ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-+ * @yf_tiled_ccs:              YF tiled ccs
-+ */
-+
- #define SDR_PLANE_BASE	3
- 
- IGT_TEST_DESCRIPTION("Test render compression (RC), in which the main surface "
+ static void
+ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 		       color_t *expected_colors,
 -- 
 2.40.0
