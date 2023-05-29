@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD9E110E214
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 550DE10E205
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:11 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:18 +0530
-Message-Id: <20230529052835.860047-6-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:15 +0530
+Message-Id: <20230529052835.860047-3-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 05/82] testplan/kms: Add support to
- differentiate b/w drivers
+Subject: [igt-dev] [i-g-t V4 02/82] tests/dsc: Move dsc helpers to lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,37 +23,129 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support to differentiate the subtests based on the driver
-support, since many kms tests supports both i915 & xe drivers.
+The correct place for helpers is lib as the tests directory is
+supposed to have test files, also having the helpers in tests
+dir will break the compilation of testplan. Hence move all
+helpers to library.
 
-Add a new field "Driver requirement" to test_config.json
+Expectation is to have an executable binary for each .c file
+the "tests" dir.
 
-Example:
-- Driver requirement: i915 (i915 specific test)
-- Driver requirement: xe   (xe specific test)
-- Driver requirement: any  (tests supports both i915 & xe)
+V2: - Drop special case compilation method
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_test_config.json | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../kms_dsc_helper.c => lib/igt_dsc_helper.c   |  2 +-
+ .../kms_dsc_helper.h => lib/igt_dsc_helper.h   |  0
+ lib/meson.build                                |  1 +
+ tests/i915/kms_dsc.c                           |  2 +-
+ tests/i915/kms_psr2_sf.c                       |  2 +-
+ tests/meson.build                              | 18 ++----------------
+ 6 files changed, 6 insertions(+), 19 deletions(-)
+ rename tests/i915/kms_dsc_helper.c => lib/igt_dsc_helper.c (99%)
+ rename tests/i915/kms_dsc_helper.h => lib/igt_dsc_helper.h (100%)
 
-diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
-index 2c6181e55..39025c41d 100644
---- a/tests/kms_test_config.json
-+++ b/tests/kms_test_config.json
-@@ -23,6 +23,11 @@
-                 "description": "Defines what category of testlist it belongs"
-             }
-         },
-+        "Driver requirement": {
-+            "_properties_": {
-+                "description": "Describes any Driver specific requrirement, like i915/xe."
-+            }
-+        },
-         "Test category": {
-             "_properties_": {
-                 "description": "Defines the test category. Usually used at subtest level."
+diff --git a/tests/i915/kms_dsc_helper.c b/lib/igt_dsc_helper.c
+similarity index 99%
+rename from tests/i915/kms_dsc_helper.c
+rename to lib/igt_dsc_helper.c
+index 02d1a4848..600a90746 100644
+--- a/tests/i915/kms_dsc_helper.c
++++ b/lib/igt_dsc_helper.c
+@@ -3,7 +3,7 @@
+  * Copyright © 2023 Intel Corporation
+  */
+ 
+-#include "kms_dsc_helper.h"
++#include "igt_dsc_helper.h"
+ 
+ static bool force_dsc_en_orig;
+ static int force_dsc_restore_fd = -1;
+diff --git a/tests/i915/kms_dsc_helper.h b/lib/igt_dsc_helper.h
+similarity index 100%
+rename from tests/i915/kms_dsc_helper.h
+rename to lib/igt_dsc_helper.h
+diff --git a/lib/meson.build b/lib/meson.build
+index 2d3456577..75e52580b 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -101,6 +101,7 @@ lib_sources = [
+ 	'veboxcopy_gen12.c',
+ 	'igt_msm.c',
+ 	'igt_dsc.c',
++	'igt_dsc_helper.c',
+ 	'xe/xe_compute.c',
+ 	'xe/xe_compute_square_kernels.c',
+ 	'xe/xe_ioctl.c',
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 3ce28f848..4af48b196 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -30,7 +30,7 @@
+  *
+  */
+ 
+-#include "kms_dsc_helper.h"
++#include "igt_dsc_helper.h"
+ 
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index 4cf986440..7c21970a5 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -25,7 +25,7 @@
+ #include "igt.h"
+ #include "igt_sysfs.h"
+ #include "igt_psr.h"
+-#include "kms_dsc_helper.h"
++#include "igt_dsc_helper.h"
+ #include <errno.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+diff --git a/tests/meson.build b/tests/meson.build
+index 5d2c573d5..48e9164f8 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -224,6 +224,7 @@ i915_progs = [
+ 	'kms_ccs',
+ 	'kms_cdclk',
+ 	'kms_draw_crc',
++	'kms_dsc',
+ 	'kms_fb_coherency',
+ 	'kms_fbcon_fbt',
+ 	'kms_fence_pin_leak',
+@@ -234,6 +235,7 @@ i915_progs = [
+ 	'kms_mmap_write_crc',
+ 	'kms_pipe_b_c_ivb',
+ 	'kms_psr',
++	'kms_psr2_sf',
+ 	'kms_psr2_su',
+ 	'kms_psr_stress_test',
+ 	'kms_pwrite_crc',
+@@ -477,22 +479,6 @@ test_executables += executable('kms_color',
+ 	   install : true)
+ test_list += 'kms_color'
+ 
+-test_executables += executable('kms_dsc',
+-	   [ join_paths('i915', 'kms_dsc.c'), join_paths ('i915', 'kms_dsc_helper.c')],
+-	   dependencies : test_deps,
+-	   install_dir : libexecdir,
+-	   install_rpath : libexecdir_rpathdir,
+-	   install : true)
+-test_list += 'kms_dsc'
+-
+-test_executables += executable('kms_psr2_sf',
+-	   [ join_paths('i915', 'kms_psr2_sf.c'), join_paths ('i915', 'kms_dsc_helper.c')],
+-	   dependencies : test_deps,
+-	   install_dir : libexecdir,
+-	   install_rpath : libexecdir_rpathdir,
+-	   install : true)
+-test_list += 'kms_psr2_sf'
+-
+ if chamelium.found()
+        test_executables += executable('kms_chamelium_color',
+                              [ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
 -- 
 2.40.0
