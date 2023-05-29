@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 234FB10E1DB
- for <igt-dev@lists.freedesktop.org>; Fri, 26 May 2023 17:21:44 +0000 (UTC)
-From: fei.yang@intel.com
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A9AF510E214
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:13 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 26 May 2023 10:22:20 -0700
-Message-Id: <20230526172221.1438998-1-fei.yang@intel.com>
+Date: Mon, 29 May 2023 10:57:17 +0530
+Message-Id: <20230529052835.860047-5-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
+References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v6 0/1] test/gem_create: exercise
- gem_create_ext_set_pat
+Subject: [igt-dev] [i-g-t V4 04/82] testplan/kms: Include testdisplay to kms
+ testplan config
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,30 +19,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Fei Yang <fei.yang@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Fei Yang <fei.yang@intel.com>
+As testdisplay.c is belongs to display, add it to the kms
+testplan config.
 
-This is the first draft of a new test case exercising the set_pat
-extension for GEM_CREATE.
+V2: - Rebase
 
-v2: make sure {get|set}_caching ioctls are disabled.
-v3: move header change to lib/i915/i915_drm_local.h, will submit a
-    separate patch for include/uapi/drm/i915_drm.h after the kernel
-    change lands in upstream.
-v4: GEM_CREATE returns -EINVAL if set_pat is unsupported.
-v5: address comments from Kamil Konieczny
-v6: checking {get|set}_caching ioctls only for iGPU.
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/kms_test_config.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Fei Yang (1):
-  test/gem_create: exercise gem_create_ext_set_pat
-
- lib/i915/i915_drm_local.h | 34 +++++++++++++++++++++
- tests/i915/gem_create.c   | 64 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 98 insertions(+)
-
+diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
+index 5fbe40bdc..2c6181e55 100644
+--- a/tests/kms_test_config.json
++++ b/tests/kms_test_config.json
+@@ -1,7 +1,7 @@
+ {
+     "description": "JSON file to be used to parse KMS documentation",
+     "name": "Display and KMS Tests for Intel i915 and Xe Drivers",
+-    "files": [ "chamelium/kms_*.c", "i915/kms_*.c", "kms_*.c" ],
++    "files": [ "chamelium/kms_*.c", "i915/kms_*.c", "kms_*.c", "testdisplay.c" ],
+     "fields": {
+         "Category": {
+             "_properties_": {
 -- 
-2.25.1
+2.40.0
