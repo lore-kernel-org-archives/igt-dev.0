@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1257E10E252
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 885F010E215
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:37 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:52 +0530
-Message-Id: <20230529052835.860047-40-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:34 +0530
+Message-Id: <20230529052835.860047-22-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 39/82] tests/kms_color: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V4 21/82] tests/i915/kms_flip_scaled_crc: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,160 +26,214 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Include ctm-signed test
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color.c | 91 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
+ tests/i915/kms_flip_scaled_crc.c | 191 +++++++++++++++++++++++++++++++
+ 1 file changed, 191 insertions(+)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 8964fc415..5bfc8f39b 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -22,10 +22,24 @@
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index f5dc430e3..6768926b0 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -22,8 +22,199 @@
   *
   */
  
 +/**
-+ * TEST: kms color
++ * TEST: kms flip scaled crc
 + * Category: Display
-+ * Description: Test Color Features at Pipe level
++ * Description: Test flipping between scaled/nonscaled framebuffers
 + */
- #include "igt_color_helper.h"
- 
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+ #include "igt.h"
  
 +/**
-+ * SUBTEST: degamma
-+ * Description: Verify that degamma LUT transformation works correctly
-+ * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
++ * SUBTEST: flip-64bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling
++ * Description: Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ */
- static bool test_pipe_degamma(data_t *data,
- 			      igt_plane_t *primary)
- {
-@@ -114,6 +128,16 @@ static bool test_pipe_degamma(data_t *data,
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: gamma
-+ * Description: Verify that gamma LUT transformation works correctly
-+ * Driver requirement: any
-+ * Functionality: colorspace, colorspace_gamma
-+ * Mega feature: Color mgmt
++ *
++ * SUBTEST: flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling
++ * Description: Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ */
-+
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out gamma
-  * LUT and verify we have the same CRC as drawing solid color rectangles.
-@@ -202,6 +226,16 @@ static bool test_pipe_gamma(data_t *data,
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: legacy-gamma
-+ * Description: Verify that legacy gamma LUT transformation works correctly
++ *
++ * SUBTEST: flip-32bpp-linear-to-64bpp-linear-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
 + * Driver requirement: any
-+ * Functionality: colorspace, colorspace_gamma
-+ * Mega feature: Color mgmt
++ * Functionality: vblank
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ */
-+
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out legacy
-  * gamma LUT and verify we have the same CRC as drawing solid color rectangles
-@@ -314,6 +348,17 @@ static bool test_pipe_legacy_gamma(data_t *data,
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: legacy-gamma-reset
-+ * Description: Verify that setting the legacy gamma LUT resets the gamma LUT
-+ *              set through GAMMA_LUT property
-+ * Driver requirement: any
-+ * Functionality: colorspace, colorspace_gamma
-+ * Mega feature: Color mgmt
++ *
++ * SUBTEST: flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-%s
++ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ */
-+
- /*
-  * Verify that setting the legacy gamma LUT resets the gamma LUT set
-  * through the GAMMA_LUT property.
-@@ -448,6 +493,28 @@ end:
- 	return ret;
- }
- 
-+/**
-+ * SUBTEST: ctm-%s
-+ * Description: Check the color transformation %arg[1]
-+ * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
++ *
++ * SUBTEST: flip-32bpp-4tile-to-64bpp-4tile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-xtile-to-64bpp-xtile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-yftile-to-32bpp-yftileccs-%s
++ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-yftile-to-64bpp-yftile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-yftileccs-to-64bpp-yftile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-ytile-to-32bpp-ytileccs-%s
++ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-%s
++ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-ytile-to-64bpp-ytile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-32bpp-ytileccs-to-64bpp-ytile-%s
++ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-%s
++ * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress CD
++ *              clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @0-25:           for 0.25 transparency
-+ * @0-50:           for 0.50 transparency
-+ * @0-75:           for 0.75 transparency
-+ * @blue-to-red:    from blue to red
-+ * @green-to-red:   from green to red
-+ * @max:            for maximum transparency
-+ * @negative:       for negative transparency
-+ * @red-to-blue:    from red to blue
-+ * @signed:         for correct signed handling
++ * @downscaling:        Downscaled
++ * @upscaling:          Upscaled
 + */
 +
- /*
-  * Draw 3 rectangles using before colors with the ctm matrix apply and verify
-  * the CRC is equal to using after colors with an identify ctm matrix.
-@@ -807,6 +874,15 @@ out:
- 	test_cleanup(data);
- }
- 
 +/**
-+ * SUBTEST: deep-color
-+ * Description: Verify that deep color works correctly
-+ * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void
- run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- {
-@@ -899,6 +975,21 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 	test_cleanup(data);
- }
- 
-+/**
-+ * SUBTEST: invalid-%s-sizes
-+ * Description: Negative check for %arg[1] sizes
-+ * Driver requirement: any
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
++ * SUBTEST: flip-64bpp-4tile-to-%dbpp-4tile-%s
++ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
++ *              CD clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
++ * SUBTEST: flip-64bpp-xtile-to-%dbpp-xtile-%s
++ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
++ *              CD clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + *
-+ * @ctm-matrix:         Color transformation matrix
-+ * @degamma-lut:        Degamma LUT
-+ * @gamma-lut:          Gamma LUT
++ * SUBTEST: flip-64bpp-yftile-to-%dbpp-yftile-%s
++ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
++ *              CD clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-64bpp-ytile-to-%dbpp-ytile-%s
++ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
++ *              CD clock programming
++ * Driver requirement: i915
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: flip-64bpp-linear-to-%dbpp-linear-%s
++ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
++ *              CD clock programming
++ * Driver requirement: any
++ * Functionality: vblank
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1].values: 16, 32
++ * arg[2]:
++ *
++ * @downscaling:        Downscaled
++ * @upscaling:          Upscaled
 + */
- static void
- run_invalid_tests_for_pipe(data_t *data)
- {
++
+ IGT_TEST_DESCRIPTION("Test flipping between scaled/nonscaled framebuffers");
+ 
+ typedef struct {
 -- 
 2.40.0
