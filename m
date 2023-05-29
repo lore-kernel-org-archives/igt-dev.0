@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4881710E21C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D838310E21C
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:41 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:27 +0530
-Message-Id: <20230529052835.860047-75-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:30 +0530
+Message-Id: <20230529052835.860047-78-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 74/82] tests/kms_setmode: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V4 77/82] tests/kms_universal_plane: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,77 +28,86 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_setmode.c | 58 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+ tests/kms_universal_plane.c | 67 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index a611d9382..8c0cb7f1c 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -31,6 +31,64 @@
- #include <sys/time.h>
- #include <math.h>
- #include "xe/xe_query.h"
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index 635a136ab..c7344477d 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -28,6 +28,73 @@
+ #include <string.h>
+ #include <fcntl.h>
+ 
 +/**
-+ * TEST: kms setmode
++ * TEST: kms universal plane
 + * Category: Display
 + *
-+ * SUBTEST: basic
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * SUBTEST: cursor-fb-leak-pipe-%s
++ * Description: Check for cursor leaks after performing cursor operations
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: basic-clone-single-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * SUBTEST: disable-primary-vs-flip-pipe-%s
++ * Description: Check pageflips while primary plane is disabled before IOCTL or
++ *              between IOCTL and pageflip execution
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: clone-exclusive-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * SUBTEST: universal-plane-pageflip-windowed-pipe-%s
++ * Description: Check if pageflip succeeds in windowed setting
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: invalid-clone-exclusive-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
++ * arg[1]:
++ *
++ * @A:
++ * @B:
++ * @C:
++ * @D:
++ * @E:
++ * @F:
++ * @G:
++ * @H:
++ */
++
++/**
++ * SUBTEST: universal-plane-pipe-%s-%s
++ * Description: Check %arg[1]
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: invalid-clone-single-crtc
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * arg[1]:
 + *
-+ * SUBTEST: invalid-clone-single-crtc-stealing
-+ * Description: Tests the mode by iterating through all valid/invalid crtc/connector
-+ *              combinations
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * @A:
++ * @B:
++ * @C:
++ * @D:
++ * @E:
++ * @F:
++ * @G:
++ * @H:
++ *
++ * arg[2]:
++ *
++ * @functional: the switching between different primary plane fbs with CRTC off
++ * @sanity:     for scale-up or scale-down using universal plane API without
++ *              covering CRTC
 + */
  
- #define MAX_CONNECTORS  10
- #define MAX_CRTCS       6
+ typedef struct {
+ 	int drm_fd;
 -- 
 2.40.0
