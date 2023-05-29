@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 885F010E215
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2ADE10E215
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:43 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:34 +0530
-Message-Id: <20230529052835.860047-22-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:41 +0530
+Message-Id: <20230529052835.860047-29-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 21/82] tests/i915/kms_flip_scaled_crc: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V4 28/82] tests/i915/kms_psr2_sf: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,212 +28,104 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_flip_scaled_crc.c | 191 +++++++++++++++++++++++++++++++
- 1 file changed, 191 insertions(+)
+ tests/i915/kms_psr2_sf.c | 85 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
 
-diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
-index f5dc430e3..6768926b0 100644
---- a/tests/i915/kms_flip_scaled_crc.c
-+++ b/tests/i915/kms_flip_scaled_crc.c
-@@ -22,8 +22,199 @@
-  *
-  */
- 
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index 7c21970a5..7ccfeb7de 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -30,6 +30,91 @@
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <string.h>
 +/**
-+ * TEST: kms flip scaled crc
++ * TEST: kms psr2 sf
 + * Category: Display
-+ * Description: Test flipping between scaled/nonscaled framebuffers
-+ */
- #include "igt.h"
- 
-+/**
-+ * SUBTEST: flip-64bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling
-+ * Description: Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * Description: Tests to varify PSR2 selective fetch by sending multiple damaged
++ *              areas
 + *
-+ * SUBTEST: flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling
-+ * Description: Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-linear-to-64bpp-linear-%s
-+ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
-+ *              clock programming
++ * SUBTEST: %s-plane-move-continuous-%s
++ * Description: Test that selective fetch works on moving %arg[1] plane %arg[2]
++ *              visible area (no update)
 + * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-%s
-+ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-4tile-to-64bpp-4tile-%s
-+ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-xtile-to-64bpp-xtile-%s
-+ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-yftile-to-32bpp-yftileccs-%s
-+ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-yftile-to-64bpp-yftile-%s
-+ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-yftileccs-to-64bpp-yftile-%s
-+ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-ytile-to-32bpp-ytileccs-%s
-+ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-%s
-+ * Description: Flip from 32bpp non scaled fb to 32bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-ytile-to-64bpp-ytile-%s
-+ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-32bpp-ytileccs-to-64bpp-ytile-%s
-+ * Description: Flip from 32bpp non scaled fb to 64bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-%s
-+ * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress CD
-+ *              clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
++ * Functionality: psr2
++ * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @downscaling:        Downscaled
-+ * @upscaling:          Upscaled
++ * @cursor:               Cursor
++ * @overlay:              Overlay
++ *
++ * arg[2]:
++ *
++ * @exceed-fully-sf:      exceeding fully
++ * @exceed-sf:            exceeding paritally
++ * @sf:                   default
 + */
 +
 +/**
-+ * SUBTEST: flip-64bpp-4tile-to-%dbpp-4tile-%s
-+ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
-+ *              CD clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-64bpp-xtile-to-%dbpp-xtile-%s
-+ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
-+ *              CD clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-64bpp-yftile-to-%dbpp-yftile-%s
-+ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
-+ *              CD clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-64bpp-ytile-to-%dbpp-ytile-%s
-+ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
-+ *              CD clock programming
-+ * Driver requirement: i915
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-64bpp-linear-to-%dbpp-linear-%s
-+ * Description: Flip from 64bpp non scaled fb to %arg[1]bpp %arg[2] fb to stress
-+ *              CD clock programming
++ * SUBTEST: cursor-plane-update-sf
++ * Description: Test that selective fetch works on cursor plane
 + * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
++ * Functionality: psr2
++ * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1].values: 16, 32
-+ * arg[2]:
++ * SUBTEST: overlay-plane-update-continuous-sf
++ * Description: Test that selective fetch works on overlay plane
++ * Driver requirement: any
++ * Functionality: psr2
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
 + *
-+ * @downscaling:        Downscaled
-+ * @upscaling:          Upscaled
++ * SUBTEST: overlay-plane-update-sf-dmg-area
++ * Description: Test that selective fetch works on overlay plane
++ * Driver requirement: any
++ * Functionality: psr2
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: overlay-primary-update-sf-dmg-area
++ * Description: Test that selective fetch works on primary plane with blended
++ *              overlay plane
++ * Driver requirement: any
++ * Functionality: psr2
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-move-sf-dmg-area
++ * Description: Test that selective fetch works on moving overlay plane
++ * Driver requirement: any
++ * Functionality: psr2
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: primary-plane-update-sf-dmg-area
++ * Description: Test that selective fetch works on primary plane
++ * Driver requirement: any
++ * Functionality: psr2
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: primary-plane-update-sf-dmg-area-big-fb
++ * Description: Test that selective fetch works on primary plane with big fb
++ * Driver requirement: any
++ * Functionality: psr2
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
 + */
-+
- IGT_TEST_DESCRIPTION("Test flipping between scaled/nonscaled framebuffers");
  
- typedef struct {
+ IGT_TEST_DESCRIPTION("Tests to varify PSR2 selective fetch by sending multiple"
+ 		     " damaged areas");
 -- 
 2.40.0
