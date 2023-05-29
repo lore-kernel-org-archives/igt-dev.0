@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 973EA10E068
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 16:40:59 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E56D10E068
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 16:54:29 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 22:10:22 +0530
-Message-Id: <20230529164022.339814-1-swati2.sharma@intel.com>
+Date: Mon, 29 May 2023 18:54:15 +0200
+Message-Id: <20230529165417.347129-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/i915/kms_dsc: add limited flag
+Subject: [igt-dev] [PATCH i-g-t 0/2] Add PVC support for gpgpu fill
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,66 +21,21 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add limited flag to restrict test execution to one valid pipe-output
-combination. By default all tests will run on all valid pipe-output
-combinations.
+Used both for i915 and xe.
 
-v2: -rename extended to limited (Kamil)
+Dominik Grzegorzek (1):
+  lib/gpgpu_fill/xehpc: Adjust gpgpu_fillfunc for PVC
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/i915/kms_dsc.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+Zbigniew Kempczyński (1):
+  lib/intel_batchbuffer: Use COMPUTE instead RENDER engine for Xe on PVC
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 3ce28f84..9ddb441d 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -51,6 +51,7 @@ typedef struct {
- 	int input_bpc;
- 	int disp_ver;
- 	enum pipe pipe;
-+	bool limited;
- } data_t;
- 
- static int output_format_list[] = {DSC_FORMAT_YCBCR420, DSC_FORMAT_YCBCR444};
-@@ -250,13 +251,34 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- 
- 		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
- 			update_display(data, test_type);
-+
-+		if (data->limited)
-+			break;
- 	}
- }
- 
--igt_main
-+static int opt_handler(int opt, int opt_index, void *_data)
- {
--	data_t data = {};
-+	data_t *data = _data;
-+
-+	switch (opt) {
-+	case 'l':
-+		data->limited = true;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+static const char help_str[] =
-+	"  --limited\t\tLimit execution to 1 valid pipe-output combo\n";
- 
-+static data_t data = {};
-+
-+igt_main_args("l", NULL, help_str, opt_handler, &data)
-+{
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 		data.devid = intel_get_drm_devid(data.drm_fd);
+ lib/gpgpu_fill.c                              | 23 +++++++++++++++++++
+ lib/gpgpu_fill.h                              |  8 +++++++
+ lib/gpu_cmds.c                                |  3 ++-
+ .../shaders/gpgpu/gen12p72_gpgpu_kernel.asm   | 12 ++++++++++
+ lib/intel_batchbuffer.c                       |  9 ++++++--
+ 5 files changed, 52 insertions(+), 3 deletions(-)
+ create mode 100644 lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
+
 -- 
-2.25.1
+2.34.1
