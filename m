@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 637B210E205
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0B6B10E205
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:05 +0530
-Message-Id: <20230529052835.860047-53-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:10 +0530
+Message-Id: <20230529052835.860047-58-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 52/82] tests/kms_getfb: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V4 57/82] tests/kms_multipipe_modeset: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,137 +28,33 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_getfb.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ tests/kms_multipipe_modeset.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index f44f42551..c05b1429e 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -27,6 +27,11 @@
-  *
+diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c
+index 1fdfb9a9f..a06a6c4b5 100644
+--- a/tests/kms_multipipe_modeset.c
++++ b/tests/kms_multipipe_modeset.c
+@@ -25,6 +25,20 @@
   */
  
-+/**
-+ * TEST: kms getfb
-+ * Category: Display
-+ * Description: Tests GETFB and GETFB2 ioctls.
-+ */
  #include "igt.h"
- #include <unistd.h>
- #include <stdlib.h>
-@@ -169,6 +174,22 @@ static uint32_t get_any_prop_id(int fd)
- 	return 0;
- }
- 
 +/**
-+ * SUBTEST: getfb-handle-%s
-+ * Description: Tests error handling %arg[1]
++ * TEST: kms multipipe modeset
++ * Category: Display
++ * Description: Test simultaneous modeset on all the supported pipes
++ *
++ * SUBTEST: basic-max-pipe-crc-check
++ * Description: Verify if simultaneous modesets on all the supported pipes is
++ *              successful. Validate using CRC verification
 + * Driver requirement: any
 + * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @closed:       when passing a handle that has been closed.
-+ * @not-fb:       when passing an invalid handle.
-+ * @valid:        when passing an valid handle.
-+ * @zero:         for a zero'd input.
 + */
- static void test_handle_input(int fd)
- {
- 	struct drm_mode_fb_cmd2 add = {};
-@@ -224,6 +245,30 @@ static void test_handle_input(int fd)
- 		gem_close(fd, add.handles[0]);
- }
  
-+/**
-+ * SUBTEST: getfb-reject-ccs
-+ * Description: Tests error handling while requesting CCS buffers it should
-+ *              refuse because getfb supports returning a single buffer handle.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: getfb-%s-different-handles
-+ * Description: Tests error handling while requesting for two different handles
-+ *              from %arg[1].
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @addfb:           same fd
-+ * @repeated:        different fd
-+ */
- static void test_duplicate_handles(int fd)
- {
- 	struct drm_mode_fb_cmd2 add = {};
-@@ -289,6 +334,37 @@ static void test_duplicate_handles(int fd)
- 	}
- }
+ IGT_TEST_DESCRIPTION("Test simultaneous modeset on all the supported pipes");
  
-+/**
-+ * SUBTEST: getfb2-accept-ccs
-+ * Description: Tests outputs are correct when retrieving a CCS framebuffer.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: getfb2-into-addfb2
-+ * Description: Output check by passing the output of GETFB2 into ADDFB2.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: getfb2-handle-%s
-+ * Description: Tests error handling %arg[1].
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @closed:                  when passing a handle that has been closed
-+ * @not-fb:                  when passing an invalid handle
-+ * @zero:                    for a zero'd input
-+ */
- static void test_getfb2(int fd)
- {
- 	struct drm_mode_fb_cmd2 add_basic = {};
-@@ -397,6 +473,20 @@ static void test_getfb2(int fd)
- 	}
- }
- 
-+/**
-+ * SUBTEST: %s-handle-protection
-+ * Description: Make sure %arg[1] return handles if caller is non-root or non-master.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @getfb:      GETFB ioctl
-+ * @getfb2:     GETFB2 ioctl
-+ */
- static void test_handle_protection(void) {
- 	int non_master_fd;
- 	struct drm_mode_fb_cmd2 non_master_add = {};
 -- 
 2.40.0
