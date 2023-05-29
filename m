@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 23D3B10E25D
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9393310E205
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:12 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:58 +0530
-Message-Id: <20230529052835.860047-46-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:06 +0530
+Message-Id: <20230529052835.860047-54-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 45/82] tests/kms_display_modes: Document each
+Subject: [igt-dev] [i-g-t V4 53/82] tests/kms_hdmi_inject: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,41 +28,44 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_display_modes.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tests/kms_hdmi_inject.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index d69c7b931..ef9559ec3 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -24,6 +24,11 @@
-  *  Jeevan B <jeevan.b@intel.com>
-  */
- 
+diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
+index 2085d1453..244768f36 100644
+--- a/tests/kms_hdmi_inject.c
++++ b/tests/kms_hdmi_inject.c
+@@ -30,6 +30,31 @@
+ #include "igt_edid.h"
+ #include "igt_eld.h"
+ #include "xe/xe_query.h"
 +/**
-+ * TEST: kms display modes
++ * TEST: kms hdmi inject
 + * Category: Display
-+ * Description: Test Display Modes
-+ */
- #include "igt.h"
- 
- IGT_TEST_DESCRIPTION("Test Display Modes");
-@@ -134,6 +139,16 @@ static void run_extendedmode_basic(data_t *data,
- 	for_each_connected_output_local((display), (output)) \
- 		for_each_if (igt_pipe_connector_valid((pipe), (output)))
- 
-+/**
-+ * SUBTEST: extended-mode-basic
-+ * Description: Test for validating display extended mode with a pair of connected
-+ *              displays
++ * Description: Test that in-kernel EDID parsing is producing expected results
++ *              by forcing a HDMI connector with a known EDID and checking that
++ *              the metadata exposed to user space matches.
++ *
++ * SUBTEST: inject-4k
++ * Description: Make sure that 4K modes exposed by DRM match the forced EDID and
++ *              modesetting using it succeed.
 + * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
++ * Functionality: force_connector
++ * Mega feature: HDMI
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: inject-audio
++ * Description: Make sure that audio information exposed by ALSA match the forced
++ *              EDID.
++ * Driver requirement: any
++ * Functionality: force_connector
++ * Mega feature: Disply Audio
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void run_extendedmode_test(data_t *data) {
- 	enum pipe pipe1, pipe2;
- 	igt_output_t *output1, *output2;
+ 
+ #define HDISPLAY_4K	3840
+ #define VDISPLAY_4K	2160
 -- 
 2.40.0
