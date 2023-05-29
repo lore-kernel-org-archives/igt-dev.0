@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FEA710E205
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB49410E205
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:06 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:13 +0530
-Message-Id: <20230529052835.860047-61-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:01 +0530
+Message-Id: <20230529052835.860047-49-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 60/82] tests/kms_plane: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V4 48/82] tests/kms_dp_tiled_display: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,105 +28,46 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+ tests/kms_dp_tiled_display.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 90b68a472..2e349203e 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -24,6 +24,11 @@
-  *   Damien Lespiau <damien.lespiau@intel.com>
+diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
+index 07b803a50..cd792ec51 100644
+--- a/tests/kms_dp_tiled_display.c
++++ b/tests/kms_dp_tiled_display.c
+@@ -36,12 +36,33 @@
+  * the displays supported by the kernel at the moment.
   */
  
 +/**
-+ * TEST: kms plane
++ * TEST: kms dp tiled display
 + * Category: Display
-+ * Description: Testes for KMS Plane
++ * Description: Test for Transcoder Port Sync for Display Port Tiled Displays
 + */
  #include "igt.h"
- #include "igt_vec.h"
- #include <errno.h>
-@@ -273,6 +278,21 @@ test_plane_position_with_output(data_t *data,
- 	igt_remove_fb(data->drm_fd, &sprite_fb);
- }
+ #include "poll.h"
+ #include "drm_mode.h"
+ #include "drm_fourcc.h"
+ #include "igt_edid.h"
  
 +/**
-+ * SUBTEST: plane-position-%s
-+ * Description: Verify plane position using two planes to create a %arg[1]
++ * SUBTEST: basic-test-%s
++ * Description: Make sure the Tiled CRTCs are synchronized and we get page flips
++ *              for all tiled CRTCs in one vblank (%arg[1]).
 + * Driver requirement: any
-+ * Functionality: plane
++ * Functionality: tiled_display
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @covered:           fully covered screen
-+ * @hole:              partially covered screen
-+ * @hole-dpms:         partially covered screen and check for DPMS
++ * @pattern:                  executes on real panel
++ * @pattern-with-chamelium:   executes on chamelium.
 + */
- static void
- test_plane_position(data_t *data, enum pipe pipe)
- {
-@@ -381,6 +401,21 @@ test_plane_panning_with_output(data_t *data,
- 	igt_remove_fb(data->drm_fd, &primary_fb);
- }
++
+ IGT_TEST_DESCRIPTION("Test for Transcoder Port Sync for Display Port Tiled Displays");
  
-+/**
-+ * SUBTEST: plane-panning-%s
-+ * Description: Verify plane panning at %arg[1] using primary plane
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @bottom-right:               bottom-right position
-+ * @bottom-right-suspend:       bottom-right position with suspend
-+ * @top-left:                   top-left position
-+ */
- static void
- test_plane_panning(data_t *data, enum pipe pipe)
- {
-@@ -1088,6 +1123,20 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
- 	return index != 0 && index != 3 && index != 5;
- }
- 
-+/**
-+ * SUBTEST: pixel-%s
-+ * Description: verify the pixel formats for given plane and pipe
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @format:
-+ * @format-source-clamping:          with source clamping
-+ */
- static void
- test_pixel_formats(data_t *data, enum pipe pipe)
- {
-@@ -1144,6 +1193,15 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 	igt_assert_f(result, "At least one CRC mismatch happened\n");
- }
- 
-+/**
-+ * SUBTEST: invalid-pixel-format-settings
-+ * Description: verify invalid settings for pixel format are not accepted
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_invalid_settings(data_t *data)
- {
- 	enum pipe pipe = PIPE_A;
+ typedef struct {
 -- 
 2.40.0
