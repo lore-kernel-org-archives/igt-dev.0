@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8ED9410E205
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B937310E228
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:34 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:14 +0530
-Message-Id: <20230529052835.860047-62-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:24 +0530
+Message-Id: <20230529052835.860047-72-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 61/82] tests/kms_plane_alpha_blend: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V4 71/82] tests/kms_scaling_modes: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,32 +28,24 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane_alpha_blend.c | 55 +++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ tests/kms_scaling_modes.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index 0d03e178a..51f4713a2 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -24,6 +24,11 @@
-  *   Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+index 906ae76de..9aace5147 100644
+--- a/tests/kms_scaling_modes.c
++++ b/tests/kms_scaling_modes.c
+@@ -25,6 +25,26 @@
   */
  
-+/**
-+ * TEST: kms plane alpha blend
-+ * Category: Display
-+ * Description: Test plane alpha and blending mode properties
-+ */
  #include "igt.h"
- 
- IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
-@@ -477,6 +482,56 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
- 	igt_pipe_crc_stop(data->pipe_crc);
- }
- 
 +/**
-+ * SUBTEST: alpha-%s
-+ * Description: Test to %arg[1]
++ * TEST: kms scaling modes
++ * Category: Display
++ * Description: Test display scaling modes
++ *
++ * SUBTEST: scaling-mode-%s
++ * Description: Tests %arg[1] display scaling mode
 + * Driver requirement: any
 + * Functionality: plane
 + * Mega feature: General Display Features
@@ -62,47 +54,13 @@ index 0d03e178a..51f4713a2 100644
 + *
 + * arg[1]:
 + *
-+ * @7efc:                validate alpha values 0x7e and 0xfc are swappable on
-+ *                       pre-multiplied blend mode.
-+ * @basic:               basic plane alpha properties.
-+ * @opaque-fb:           alpha properties with opaque fb.
-+ * @transparent-fb:      alpha property with transparent fb.
++ * @center:           center
++ * @full:             full
++ * @full-aspect:      full aspect
++ * @none:             none (no scaling)
 + */
-+
-+/**
-+ * SUBTEST: coverage-vs-premult-vs-constant
-+ * Description: Tests pipe coverage blending properties.
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: coverage-7efc
-+ * Description: Uses alpha values 0x7e and 0xfc to validate fg.alpha and
-+ *              plane_alpha are swappable on coverage blend mode.
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: constant-alpha-%s
-+ * Description: Tests plane alpha and blending properties with %arg[1].
-+ * Driver requirement: any
-+ * Functionality: plane
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @max:            maximum alpha value
-+ * @mid:            medium  alpha value
-+ * @min:            minimum alpha value
-+ */
- static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *output,
- 				    bool blend, bool must_multiply,
- 				    void(*test)(data_t *, enum pipe, igt_plane_t *))
+ 
+ IGT_TEST_DESCRIPTION("Test display scaling modes");
+ 
 -- 
 2.40.0
