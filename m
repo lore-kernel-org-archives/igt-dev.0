@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE9DF10E21C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E903710E222
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:54 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:29 +0530
-Message-Id: <20230529052835.860047-77-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:51 +0530
+Message-Id: <20230529052835.860047-39-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 76/82] tests/kms_tv_load_detect: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V4 38/82] tests/kms_bw: Document each subtest for
+ testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,32 +28,39 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_tv_load_detect.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/kms_bw.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/tests/kms_tv_load_detect.c b/tests/kms_tv_load_detect.c
-index 80ced9918..5cbe6f65f 100644
---- a/tests/kms_tv_load_detect.c
-+++ b/tests/kms_tv_load_detect.c
-@@ -23,6 +23,19 @@
-  */
- 
- #include "igt.h"
+diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+index b66473e60..331be5755 100644
+--- a/tests/kms_bw.c
++++ b/tests/kms_bw.c
+@@ -25,6 +25,26 @@
+ #include "drm.h"
+ #include <stdio.h>
+ #include <xf86drmMode.h>
 +/**
-+ * TEST: kms tv load detect
++ * TEST: kms bw
 + * Category: Display
-+ * Description: Check tv load detection works correctly.
 + *
-+ * SUBTEST: load-detect
-+ * Description: Check tv load detection works correctly.
++ * SUBTEST: linear-tiling-%d-displays-%s
++ * Description: bw test with %arg[2]
 + * Driver requirement: any
 + * Functionality: obsolete
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1].values: 1, 2, 3, 4, 5, 6, 7, 8
++ *
++ * arg[2]:
++ *
++ * @1920x1080p:       1920x1080 resolution
++ * @2560x1440p:       2560x1440 resolution
++ * @3840x2160p:       3840x2160 resolution
 + */
  
- IGT_TEST_DESCRIPTION("Check tv load detection works correctly.");
- 
+ /* Common test data. */
+ typedef struct data {
 -- 
 2.40.0
