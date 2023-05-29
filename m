@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A6AE10E259
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85A0E10E222
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:58 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:40 +0530
-Message-Id: <20230529052835.860047-28-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:54 +0530
+Message-Id: <20230529052835.860047-42-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 27/82] tests/i915/kms_psr: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V4 41/82] tests/kms_content_protection: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,265 +26,116 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Add missing "Driver requirement" field
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_psr.c | 213 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 212 insertions(+), 1 deletion(-)
+ tests/kms_content_protection.c | 81 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
-diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
-index 6c89de45d..f0a6360c2 100644
---- a/tests/i915/kms_psr.c
-+++ b/tests/i915/kms_psr.c
-@@ -23,8 +23,9 @@
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 344cac505..c3bc74f44 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -22,6 +22,11 @@
+  *
   */
  
- /**
-- * TEST: Tests behaviour of PSR & PSR2
-+ * TEST: kms psr
-  * Category: Display
-+ * Description: Tests behaviour of PSR & PSR2
-  */
++/**
++ * TEST: kms content protection
++ * Category: Display
++ * Description: Test content protection (HDCP)
++ */
+ #include <poll.h>
+ #include <fcntl.h>
+ #include <sys/epoll.h>
+@@ -485,6 +490,66 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
+ 	igt_display_commit2(&data.display, s);
+ }
  
- #include "igt.h"
-@@ -36,6 +37,213 @@
- #include <string.h>
- #include "xe/xe_ioctl.h"
++/**
++ * SUBTEST: LIC
++ * Description: Test for the integrity of link.
++ * Driver requirement: any
++ * Functionality: hdcp
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: content_type_change
++ * Description: Test the content type change when the content protection already
++ *              enabled
++ * Driver requirement: any
++ * Functionality: hdcp, hdcp2.2
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: mei_interface
++ * Description: Test the teardown and rebuild of the interface between Intel
++ *              and mei hdcp.
++ * Driver requirement: any
++ * Functionality: hdcp, hdcp2.2
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: srm
++ * Description: This test writes the facsimile SRM into the /lib/firmware/ and
++ *              check the kernel parsing of it by invoking the hdcp authentication.
++ * Driver requirement: any
++ * Functionality: hdcp
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: uevent
++ * Description: Test to detect the HDCP status change when we are reading the
++ *              uevent sent with the corresponding connector id and property id.
++ * Driver requirement: any
++ * Functionality: hdcp
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: %s
++ * Description: Test content protection with %arg[1]
++ * Driver requirement: any
++ * Functionality: hdcp
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic:         atomic modesetting
++ * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
++ * @legacy:         legacy style commit
++ * @type1:          content type 1 that can be handled only through HDCP2.2.
++ */
+ static void
+ test_content_protection(enum igt_commit_style s, int content_type)
+ {
+@@ -602,6 +667,22 @@ static void test_cp_lic_on_mst(igt_output_t *mst_outputs[], int valid_outputs, b
+ 	}
+ }
  
 +/**
-+ * SUBTEST: basic
-+ * Description: Basic check for psr if it is detecting changes made in planes
++ * SUBTEST: dp-mst-%s
++ * Description: Test Content protection %arg[1] over DP MST.
 + * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: %s_%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1]
-+ * Driver requirement: i915
-+ * Functionality: psr
-+ * Mega feature: PSR
++ * Functionality: hdcp
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @cursor:             Cursor plane
-+ * @primary:            Primary plane
-+ * @sprite:             Sprite plane
-+ *
-+ * arg[2]:
-+ *
-+ * @mmap_cpu:           MMAP CPU
-+ * @mmap_gtt:           MMAP GTT
++ * @lic-type-0:   Type 0 with LIC
++ * @lic-type-1:   Type 1 with LIC.
++ * @type-0:       Type 0
++ * @type-1:       Type 1
 + */
-+
-+/**
-+ * SUBTEST: sprite_plane_move
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on sprite planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: %s_%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:             Cursor plane
-+ * @sprite:             Sprite plane
-+ *
-+ * arg[2]:
-+ *
-+ * @blt:                Blitter
-+ * @render:             Render
-+ * @plane_onoff:        Plane On off
-+ */
-+
-+/**
-+ * SUBTEST: primary_%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @blt:                Blitter
-+ * @render:             Render
-+ */
-+
-+/**
-+ * SUBTEST: dpms
-+ * Description: Check if psr is detecting changes when rendering operation is
-+ *              performed  with dpms enabled or disabled
-+ * Driver requirement: any
-+ * Functionality: dpms, psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: no_drrs
-+ * Description: Check if psr is detecting changes when drrs is disabled
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: suspend
-+ * Description: Check if psr is detecting changes when plane operation
-+ *              is performed with suspend resume cycles
-+ * Driver requirement: any
-+ * Functionality: psr, suspend
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_dpms
-+ * Description: Check if psr is detecting changes when rendering operation
-+ *              is performed  with dpms enabled or disabled
-+ * Driver requirement: any
-+ * Functionality: psr, psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_no_drrs
-+ * Description: Check if psr is detecting changes when drrs is disabled
-+ * Driver requirement: any
-+ * Functionality: psr, psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_suspend
-+ * Description: Check if psr is detecting changes when plane operation is
-+ *              performed with suspend resume cycles
-+ * Driver requirement: any
-+ * Functionality: psr, psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_basic
-+ * Description: Basic check for psr if it is detecting changes made in planes
-+ * Driver requirement: any
-+ * Functionality: psr, psr2
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_%s_%s
-+ * Description: Check if psr2 is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: i915
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:             Cursor plane
-+ * @primary:            Primary plane
-+ * @sprite:             Sprite plane
-+ *
-+ * arg[2]:
-+ *
-+ * @mmap_cpu:           MMAP CPU
-+ * @mmap_gtt:           MMAP GTT
-+ */
-+
-+/**
-+ * SUBTEST: psr2_primary_page_flip
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr2_primary_%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on primary planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @blt:                Blitter
-+ * @render:             Render
-+ */
-+
-+/**
-+ * SUBTEST: psr2_%s_%s
-+ * Description: Check if psr is detecting memory mapping, rendering and plane
-+ *              operations performed on %arg[1] planes
-+ * Driver requirement: any
-+ * Functionality: psr
-+ * Mega feature: PSR
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:             Cursor plane
-+ * @sprite:             Sprite plane
-+ *
-+ * arg[2]:
-+ *
-+ * @blt:                Blitter
-+ * @render:             Render
-+ * @plane_onoff:        Plane On off
-+ * @plane_move:         Move plane position
-+ */
-+
- enum operations {
- 	PAGE_FLIP,
- 	MMAP_GTT,
-@@ -309,6 +517,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
-  * SUBTEST: cursor_plane_move
-  * Description: Check if psr is detecting the plane operations performed on
-  *		cursor planes
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: psr
-@@ -317,6 +526,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
-  * SUBTEST: primary_page_flip
-  * Description: Check if psr is detecting page-flipping operations performed
-  *		on primary planes
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: psr
-@@ -325,6 +535,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
-  * SUBTEST: sprite_plane_onoff
-  * Description: Check if psr is detecting the plane operations performed on
-  *		sprite planes
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: psr
+ static void
+ test_content_protection_mst(int content_type)
+ {
 -- 
 2.40.0
