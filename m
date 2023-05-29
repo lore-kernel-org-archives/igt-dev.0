@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A981C10E04F
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 14:34:09 +0000 (UTC)
-Date: Mon, 29 May 2023 16:34:06 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230529143406.pb5k53jr2723jshq@kamilkon-desk1>
-References: <20230529114450.4633-1-juhapekka.heikkila@gmail.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA64A10E2C3
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 14:40:28 +0000 (UTC)
+Message-ID: <bb4775e0-dad8-5036-734b-87817a77cea2@intel.com>
+Date: Mon, 29 May 2023 20:10:24 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230529114450.4633-1-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tools/intel_gpu_top: fix segfault on
- discrete
+Content-Language: en-US
+To: juhapekka.heikkila@gmail.com, igt-dev@lists.freedesktop.org
+References: <20230526064520.310041-1-swati2.sharma@intel.com>
+ <20230526064520.310041-3-swati2.sharma@intel.com>
+ <2c6f4996-8548-2abd-eb19-3f4e4c07526b@gmail.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <2c6f4996-8548-2abd-eb19-3f4e4c07526b@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/kms_display_modes: reduce
+ exec. time for sim env
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,40 +23,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Eero Tamminen <eero.t.tamminen@intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-05-29 at 14:44:50 +0300, Juha-Pekka Heikkila wrote:
-> in case no display clients ignore display client list
+Thanks for the review. Pushed!
+
+On 29-May-23 6:00 PM, Juha-Pekka Heikkila wrote:
+> Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > 
-> Reported-by: Eero Tamminen <eero.t.tamminen@intel.com>
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-+cc Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> ---
->  tools/intel_gpu_top.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index a89f13d4..cef1d3c7 100644
-> --- a/tools/intel_gpu_top.c
-> +++ b/tools/intel_gpu_top.c
-> @@ -837,6 +837,9 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
->  	struct igt_drm_clients *aggregated;
->  	int tmp, num = 0;
->  
-> +	if (!clients)
-> +		return NULL;
-> +
->  	if (!aggregate_pids)
->  		goto out;
->  
-> -- 
-> 2.25.1
+> On 26.5.2023 9.45, Swati Sharma wrote:
+>> For simulation environment, we can reduce execution time
+>> by running test only on one valid output on pipe.
+>>
+>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>> ---
+>>   tests/kms_display_modes.c | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+>> index d69c7b93..b963c609 100644
+>> --- a/tests/kms_display_modes.c
+>> +++ b/tests/kms_display_modes.c
+>> @@ -169,6 +169,12 @@ static void run_extendedmode_test(data_t *data) {
+>>                                   pipe2, output2);
+>>                   }
+>>               }
+>> +            /*
+>> +             * For simulation env, no need to run
+>> +             * test with each valid output on pipe.
+>> +             */
+>> +            if (igt_run_in_simulation())
+>> +                break;
+>>           }
+>>       }
+>>   }
 > 
