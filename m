@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE55E10E21C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D61810E21C
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:43 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:32 +0530
-Message-Id: <20230529052835.860047-80-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:31 +0530
+Message-Id: <20230529052835.860047-79-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 79/82] tests/kms_vrr: Document each subtest for
- testplan
+Subject: [igt-dev] [i-g-t V4 78/82] tests/kms_vblank: Document each subtest
+ for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,66 +28,88 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ tests/kms_vblank.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index d2d79c4eb..fb58822e3 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -24,6 +24,53 @@
- #include "sw_sync.h"
- #include <fcntl.h>
- #include <signal.h>
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index da0ada78e..1849e8cc5 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -40,6 +40,75 @@
+ #include <sys/wait.h>
+ 
+ #include <drm.h>
 +/**
-+ * TEST: kms vrr
++ * TEST: kms vblank
 + * Category: Display
++ * Description: Test speed of WaitVblank.
 + *
-+ * SUBTEST: flip-basic
-+ * Description: Tests that VRR is enabled and that the difference between flip
-+ *              timestamps converges to the requested rate
++ * SUBTEST: crtc-id
++ * Description: check the Vblank and flip events works with given crtc id
 + * Driver requirement: any
-+ * Functionality: vrr
-+ * Mega feature: VRR
++ * Functionality: vblank
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: flip-dpms
-+ * Description: Tests with DPMS that VRR is enabled and that the difference
-+ *              between flip timestamps converges to the requested rate.
++ * SUBTEST: invalid
++ * Description: Negative test for vblank request
 + * Driver requirement: any
-+ * Functionality: vrr
-+ * Mega feature: VRR
++ * Functionality: vblank
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: flip-suspend
-+ * Description: Tests that VRR is enabled and that the difference between flip
-+ *              timestamps converges to the requested rate in a suspend test
++ * SUBTEST: pipe-%s-%s
++ * Description: Check if test run while hanging by introducing NOHANG flag (or)
++ *              Check if injected hang is working properly
 + * Driver requirement: any
-+ * Functionality: vrr
-+ * Mega feature: VRR
++ * Functionality: vblank
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: flipline
-+ * Description: Make sure that flips happen at flipline decision boundary.
-+ * Driver requirement: any
-+ * Functionality: vrr
-+ * Mega feature: VRR
-+ * Run type: FULL
-+ * Test category: functionality test
++ * arg[1]:
 + *
-+ * SUBTEST: negative-basic
-+ * Description: Make sure that VRR should not be enabled on the Non-VRR panel.
-+ * Driver requirement: any
-+ * Functionality: vrr
-+ * Mega feature: VRR
-+ * Run type: FULL
-+ * Test category: functionality test
++ * @A:
++ * @B:
++ * @C:
++ * @D:
++ * @E:
++ * @F:
++ * @G:
++ * @H:
++ *
++ * arg[2]:
++ *
++ * @accuracy-idle:
++ * @query-busy:
++ * @query-busy-hang:
++ * @query-forked:
++ * @query-forked-busy:
++ * @query-forked-busy-hang:
++ * @query-forked-hang:
++ * @query-idle:
++ * @query-idle-hang:
++ * @ts-continuation-dpms-rpm:
++ * @ts-continuation-dpms-suspend:
++ * @ts-continuation-idle:
++ * @ts-continuation-idle-hang:
++ * @ts-continuation-modeset:
++ * @ts-continuation-modeset-hang:
++ * @ts-continuation-modeset-rpm:
++ * @ts-continuation-suspend:
++ * @wait-busy:
++ * @wait-busy-hang:
++ * @wait-forked:
++ * @wait-forked-busy:
++ * @wait-forked-busy-hang:
++ * @wait-forked-hang:
++ * @wait-idle:
++ * @wait-idle-hang:
 + */
  
- #define NSECS_PER_SEC (1000000000ull)
+ IGT_TEST_DESCRIPTION("Test speed of WaitVblank.");
  
 -- 
 2.40.0
