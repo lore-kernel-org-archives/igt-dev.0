@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AA6210E228
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3497A10E21C
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:47 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:22 +0530
-Message-Id: <20230529052835.860047-70-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:34 +0530
+Message-Id: <20230529052835.860047-82-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 69/82] tests/kms_rmfb: Document each subtest
+Subject: [igt-dev] [i-g-t V4 81/82] tests/testdisplay: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,43 +28,32 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_rmfb.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ tests/testdisplay.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-index 50df42953..6987d87bd 100644
---- a/tests/kms_rmfb.c
-+++ b/tests/kms_rmfb.c
-@@ -28,6 +28,30 @@
- #include <stdio.h>
- #include <string.h>
- #include <time.h>
+diff --git a/tests/testdisplay.c b/tests/testdisplay.c
+index ee272dfb2..ac696c7fe 100644
+--- a/tests/testdisplay.c
++++ b/tests/testdisplay.c
+@@ -69,6 +69,19 @@
+ #include <stdlib.h>
+ #include <signal.h>
+ 
 +/**
-+ * TEST: kms rmfb
++ * TEST: testdisplay
 + * Category: Display
-+ * Description: This tests rmfb and close-fd behavior. In these casesthe
-+ *              framebuffers should be removed from the crtc.
++ * Description: Tests basic display functionality.
 + *
-+ * SUBTEST: close-fd
-+ * Description: RMFB is supposed to free the framebuffers from any and all planes
-+ *              so test this and make sure it works with fd close and reopen.
++ * SUBTEST:
++ * Description: Tests basic display functionality.
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: rmfb-ioctl
-+ * Description: RMFB is supposed to free the framebuffers from any and all planes
-+ *              so test this and make sure it works.
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
+ IGT_TEST_DESCRIPTION("Tests basic display functionality.");
  
- #ifndef DRM_CAP_CURSOR_WIDTH
- #define DRM_CAP_CURSOR_WIDTH 0x8
+ enum {
 -- 
 2.40.0
