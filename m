@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 592D410E226
- for <igt-dev@lists.freedesktop.org>; Wed, 24 May 2023 15:04:18 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7931110E228
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:10 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 24 May 2023 17:04:03 +0200
-Message-Id: <20230524150403.31460-1-kamil.konieczny@linux.intel.com>
+Date: Mon, 29 May 2023 10:57:14 +0530
+Message-Id: <20230529052835.860047-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
+References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_core: add helper for srandom seed
- initialization
+Subject: [igt-dev] [i-g-t V4 01/82] tests/chamelium: Move chamelium helpers
+ to lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,57 +23,133 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Łukasz Łaguna <lukasz.laguna@intel.com>
+The correct place for helpers is lib as the tests directory is
+supposed to have test files, also having the helpers in tests
+dir will break the compilation of testplan. Hence move all
+helpers to library.
 
-It allows to set specific value with IGT_SRANDOM environment variable.
+Expectation is to have an executable binary for each .c file
+the "tests" dir.
 
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Signed-off-by: Łukasz Łaguna <lukasz.laguna@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/igt_core.c | 16 ++++++++++++++++
- lib/igt_core.h |  2 ++
- 2 files changed, 18 insertions(+)
+ .../kms_chamelium_helper.c => lib/igt_chamelium_helper.c      | 4 ++--
+ .../kms_chamelium_helper.h => lib/igt_chamelium_helper.h      | 0
+ lib/meson.build                                               | 1 +
+ tests/chamelium/kms_chamelium_audio.c                         | 2 +-
+ tests/chamelium/kms_chamelium_edid.c                          | 2 +-
+ tests/chamelium/kms_chamelium_frames.c                        | 2 +-
+ tests/chamelium/kms_chamelium_hpd.c                           | 2 +-
+ tests/meson.build                                             | 3 +--
+ 8 files changed, 8 insertions(+), 8 deletions(-)
+ rename tests/chamelium/kms_chamelium_helper.c => lib/igt_chamelium_helper.c (99%)
+ rename tests/chamelium/kms_chamelium_helper.h => lib/igt_chamelium_helper.h (100%)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index eff3d4272..cd9c2002d 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -3367,6 +3367,22 @@ err:
- 	return -1;
- }
+diff --git a/tests/chamelium/kms_chamelium_helper.c b/lib/igt_chamelium_helper.c
+similarity index 99%
+rename from tests/chamelium/kms_chamelium_helper.c
+rename to lib/igt_chamelium_helper.c
+index 197d29be9..3c1a802d3 100644
+--- a/tests/chamelium/kms_chamelium_helper.c
++++ b/lib/igt_chamelium_helper.c
+@@ -25,7 +25,7 @@
+  */
  
-+/**
-+ * igt_srandom:
-+ *
-+ * It initializes seed for random number generator.
-+ * If specific value is needed it can be set with IGT_SRANDOM environment
-+ * variable.
-+ */
-+void igt_srandom(void)
-+{
-+	const char *param = getenv("IGT_SRANDOM");
-+	int seed = param ? atoi(param) : time(NULL);
-+
-+	srandom(seed);
-+	igt_info("Using IGT_SRANDOM=%d for randomisation\n", seed);
+ #include "igt_edid.h"
+-#include "kms_chamelium_helper.h"
++#include "igt_chamelium_helper.h"
+ 
+ void chamelium_init_test(chamelium_data_t *data)
+ {
+@@ -344,4 +344,4 @@ bool chamelium_check_analog_bridge(chamelium_data_t *data,
+ 		return true;
+ 
+ 	return false;
+-}
+\ No newline at end of file
 +}
-+
- /* IGT wrappers around libpciaccess init/cleanup functions */
+diff --git a/tests/chamelium/kms_chamelium_helper.h b/lib/igt_chamelium_helper.h
+similarity index 100%
+rename from tests/chamelium/kms_chamelium_helper.h
+rename to lib/igt_chamelium_helper.h
+diff --git a/lib/meson.build b/lib/meson.build
+index 85f100f75..2d3456577 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -17,6 +17,7 @@ lib_sources = [
+ 	'i915/intel_cmds_info.c',
+ 	'i915/i915_blt.c',
+ 	'i915/i915_crc.c',
++	'igt_chamelium_helper.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
+ 	'igt_crc.c',
+diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
+index 6c6177fc5..a4204fbb6 100644
+--- a/tests/chamelium/kms_chamelium_audio.c
++++ b/tests/chamelium/kms_chamelium_audio.c
+@@ -26,7 +26,7 @@
  
- static void pci_system_exit_handler(int sig)
-diff --git a/lib/igt_core.h b/lib/igt_core.h
-index 5d5593e05..ef6bed6a5 100644
---- a/lib/igt_core.h
-+++ b/lib/igt_core.h
-@@ -1448,6 +1448,8 @@ int igt_system_quiet(const char *command);
- 		free(buf); \
- 	} while (0)
+ #include "igt_eld.h"
+ #include "igt_infoframe.h"
+-#include "kms_chamelium_helper.h"
++#include "igt_chamelium_helper.h"
  
-+void igt_srandom(void);
-+
- /**
-  * igt_trace:
-  * @format: printf-style format string with optional args
+ /* Playback parameters control the audio signal we synthesize and send */
+ #define PLAYBACK_CHANNELS 2
+diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
+index 4a52e6922..fc78d4a07 100644
+--- a/tests/chamelium/kms_chamelium_edid.c
++++ b/tests/chamelium/kms_chamelium_edid.c
+@@ -42,7 +42,7 @@
+ #include "igt_eld.h"
+ #include "igt_vc4.h"
+ #include "igt_infoframe.h"
+-#include "kms_chamelium_helper.h"
++#include "igt_chamelium_helper.h"
+ #include "monitor_edids/dp_edids.h"
+ #include "monitor_edids/hdmi_edids.h"
+ #include "monitor_edids/monitor_edids_helper.h"
+diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
+index 22a7ba936..2d90b45b2 100644
+--- a/tests/chamelium/kms_chamelium_frames.c
++++ b/tests/chamelium/kms_chamelium_frames.c
+@@ -31,7 +31,7 @@
+ 
+ #include "igt_eld.h"
+ #include "igt_infoframe.h"
+-#include "kms_chamelium_helper.h"
++#include "igt_chamelium_helper.h"
+ 
+ #define connector_dynamic_subtest(name__, type__)                   \
+ 	igt_subtest_with_dynamic(name__)                            \
+diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
+index efd40ba54..ea0ee10e7 100644
+--- a/tests/chamelium/kms_chamelium_hpd.c
++++ b/tests/chamelium/kms_chamelium_hpd.c
+@@ -29,7 +29,7 @@
+  * Category: Display
+  */
+ 
+-#include "kms_chamelium_helper.h"
++#include "igt_chamelium_helper.h"
+ 
+ #define HPD_STORM_PULSE_INTERVAL_DP 100 /* ms */
+ #define HPD_STORM_PULSE_INTERVAL_HDMI 200 /* ms */
+diff --git a/tests/meson.build b/tests/meson.build
+index f71be1dbe..5d2c573d5 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -343,8 +343,7 @@ endforeach
+ if chamelium.found()
+ 	foreach prog : chamelium_progs
+ 		test_executables += executable(prog,
+-				 [join_paths('chamelium', prog + '.c'),
+-					join_paths('chamelium', 'kms_chamelium_helper.c')],
++				 join_paths('chamelium', prog + '.c'),
+ 				 dependencies : test_deps,
+ 				 install_dir : libexecdir,
+ 				 install_rpath : libexecdir_rpathdir,
 -- 
-2.39.2
+2.40.0
