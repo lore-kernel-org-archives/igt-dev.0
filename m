@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B28010E277
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 11:02:57 +0000 (UTC)
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Date: Mon, 29 May 2023 11:02:53 +0000
-Message-ID: <BYAPR11MB3413B19E83E164793BA8F102D04A9@BYAPR11MB3413.namprd11.prod.outlook.com>
-References: <20230525055519.10098-1-sai.gowtham.ch@intel.com>
- <20230525055519.10098-3-sai.gowtham.ch@intel.com>
- <20230529055728.ttmspxtvvmrsfeoy@zkempczy-mobl2>
-In-Reply-To: <20230529055728.ttmspxtvvmrsfeoy@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB8F210E277
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 11:09:00 +0000 (UTC)
+Date: Mon, 29 May 2023 13:08:56 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230529110856.wneo36ymuad4vztn@kamilkon-desk1>
+References: <20230526172221.1438998-1-fei.yang@intel.com>
+ <20230526172221.1438998-2-fei.yang@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/xe/xe_spin_batch: Add new
- test to exercise igt_spin_new for xe.
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230526172221.1438998-2-fei.yang@intel.com>
+Subject: Re: [igt-dev] [PATCH v6 1/1] test/gem_create: exercise
+ gem_create_ext_set_pat
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,119 +21,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: fei.yang@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2VtcGN6eW5za2ksIFpi
-aWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwg
-TWF5IDI5LCAyMDIzIDExOjI3IEFNDQo+IFRvOiBDaCwgU2FpIEdvd3RoYW0gPHNhaS5nb3d0aGFt
-LmNoQGludGVsLmNvbT4NCj4gQ2M6IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1
-YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXQgMi8yXSB0ZXN0cy94ZS94ZV9zcGluX2JhdGNoOiBBZGQg
-bmV3IHRlc3QgdG8gZXhlcmNpc2UNCj4gaWd0X3NwaW5fbmV3IGZvciB4ZS4NCj4gDQo+IE9uIFRo
-dSwgTWF5IDI1LCAyMDIzIGF0IDExOjI1OjE5QU0gKzA1MzAsIHNhaS5nb3d0aGFtLmNoQGludGVs
-LmNvbSB3cm90ZToNCj4gPiBGcm9tOiBTYWkgR293dGhhbSBDaCA8c2FpLmdvd3RoYW0uY2hAaW50
-ZWwuY29tPg0KPiA+DQo+ID4geGVfc3Bpbl9iYXRjaCB0ZXN0IGV4ZXJjaXNlcyBiYXNpYyBpZ3Rf
-c3Bpbl9uZXcgc3VibWlzc2lvbnMgYW5kIGFuZA0KPiA+IHdpdGggYWxsIGVuZ2luZXMuDQo+ID4N
-Cj4gPiBDYzogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRl
-bC5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogU2FpIEdvd3RoYW0gQ2ggPHNhaS5nb3d0aGFtLmNo
-QGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMvbWVzb24uYnVpbGQgICAgICAgIHwgICAx
-ICsNCj4gPiAgdGVzdHMveGUveGVfc3Bpbl9iYXRjaC5jIHwgMTM4DQo+ID4gKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gIDIgZmlsZXMgY2hhbmdlZCwgMTM5IGlu
-c2VydGlvbnMoKykNCj4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL3hlL3hlX3NwaW5fYmF0
-Y2guYw0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMvbWVz
-b24uYnVpbGQgaW5kZXgNCj4gPiBmNzFiZTFkYi4uZTc5NGI3NWEgMTAwNjQ0DQo+ID4gLS0tIGEv
-dGVzdHMvbWVzb24uYnVpbGQNCj4gPiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiA+IEBAIC0y
-NjgsNiArMjY4LDcgQEAgeGVfcHJvZ3MgPSBbDQo+ID4gIAkneGVfcXVlcnknLA0KPiA+ICAJJ3hl
-X3ZtJywNCj4gPiAgCSd4ZV93YWl0ZmVuY2UnLA0KPiA+ICsJJ3hlX3NwaW5fYmF0Y2gnLA0KPiA+
-ICBdDQo+ID4NCj4gPiAgbXNtX3Byb2dzID0gWw0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy94ZS94
-ZV9zcGluX2JhdGNoLmMgYi90ZXN0cy94ZS94ZV9zcGluX2JhdGNoLmMgbmV3DQo+ID4gZmlsZSBt
-b2RlIDEwMDY0NCBpbmRleCAwMDAwMDAwMC4uMWIyMTYxOTkNCj4gPiAtLS0gL2Rldi9udWxsDQo+
-ID4gKysrIGIvdGVzdHMveGUveGVfc3Bpbl9iYXRjaC5jDQo+ID4gQEAgLTAsMCArMSwxMzggQEAN
-Cj4gPiArI2luY2x1ZGUgImlndC5oIg0KPiA+ICsjaW5jbHVkZSAibGliL2ludGVsX3JlZy5oIg0K
-PiA+ICsjaW5jbHVkZSAieGVfZHJtLmgiDQo+ID4gKyNpbmNsdWRlICJ4ZS94ZV9pb2N0bC5oIg0K
-PiA+ICsjaW5jbHVkZSAieGUveGVfcXVlcnkuaCINCj4gPiArDQo+ID4gKyNkZWZpbmUgTUFYX0lO
-U1RBTkNFIDkNCj4gPiArLyoqDQo+ID4gKyAqIFRFU1Q6VGVzdCBmb3Igc3BpbiBiYXRjaCBzdWJt
-aXNzb25zLg0KPiA+ICsgKg0KPiA+ICsgKiBTVUJURVNUOiBzcGluLWJhdGNoDQo+ID4gKyAqIERl
-c2NyaXB0aW9uOiBUZXN0IHRvIHN1Ym1pdCBzcGluIGJhdGNoIHdpdGggZW5naW5lcyBhbmQgdm0u
-DQo+ID4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ID4gKyAqIFRPRE86IGNoYW5nZSBgYCdSdW4gdHlw
-ZScgPT0gRlVMTGBgIHRvIGEgYmV0dGVyIGNhdGVnb3J5DQo+ID4gKyAqDQo+ID4gKyAqLw0KPiA+
-ICsNCj4gPiArc3RhdGljIHZvaWQgc3BpbihpbnQgZmQsIHN0cnVjdCBkcm1feGVfZW5naW5lX2Ns
-YXNzX2luc3RhbmNlICpod2UpIHsNCj4gPiArCXVpbnQ2NF90IGFobmQ7DQo+ID4gKwl1bnNpZ25l
-ZCBpbnQgZW5naW5lOw0KPiA+ICsJdWludDMyX3Qgdm07DQo+ID4gKwlpZ3Rfc3Bpbl90ICpzcGlu
-Ow0KPiA+ICsNCj4gPiArCXZtID0geGVfdm1fY3JlYXRlKGZkLCAwLCAwKTsNCj4gPiArCWVuZ2lu
-ZSA9IHhlX2VuZ2luZV9jcmVhdGUoZmQsIHZtLCBod2UsIDApOw0KPiA+ICsJYWhuZCA9IGludGVs
-X2FsbG9jYXRvcl9vcGVuKGZkLCAwLCBJTlRFTF9BTExPQ0FUT1JfUkVMT0MpOw0KPiA+ICsNCj4g
-PiArCXNwaW4gPSBfX2lndF9zcGluX25ldyhmZCwgLmFobmQgPSBhaG5kLCAuZW5naW5lID0gZW5n
-aW5lLCAudm0gPSB2bSk7DQo+ID4gKwlpZ3RfYXNzZXJ0KHNwaW4pOw0KPiA+ICsNCj4gPiArCWln
-dF9zcGluX2ZyZWUoZmQsIHNwaW4pOw0KPiANCj4gWW91IHNob3VsZG4ndCBpbW8gZGVzdHJveSBl
-bmdpbmUvdm0gaW5zaWRlIGlndF9zcGluX2ZyZWUoKS4gQ2FsbGVyIGlzIHRoZSBvd25lcg0KPiBh
-bmQgdGhleSBzaG91bGQgc3RheSBpbnRhY3QuDQo+IA0KPiBJZiBpbnN0ZWFkIC5lbmdpbmUgeW91
-J2xsIHBhc3MgLmh3ZSB5b3UgbWF5IGNyZWF0ZSBlbmdpbmUgb24gdG9wIG9mIHZtIChpZg0KPiBw
-YXNzZWQsIGlmIG5vdCBjcmVhdGUgbmV3IG9uZSkgYW5kIGRlc3Ryb3kgaW4gaWd0X3NwaW5fZnJl
-ZSgpLg0KPiANCj4gUmVzdW1lOiB0cmFjayB0aGUgb3duZXJzaGlwcGluZy4NCkknbSBoYW5kbGlu
-ZyB0aGlzIGluIGlndF9zcGluX2ZyZWUgaXRzZWxmLCBpZiB5b3UgbG9vayBhdCB0aGUgaWd0X3Nw
-aW5fZnJlZSBjb2RlIHRoYXQgSSd2ZSBzZW50IGZvciByZXZpZXcgSSdtIGNoZWNraW5nIGlmIGl0
-J3MgcGFzc2VkIGZyb20gdGhlIGlndCB0ZXN0IG9yIA0KSXMgaXQgY3JlYXRlZCBpbnNpZGUgdGhl
-IHhlX3NwaW5fY3JlYXRlLCBJJ20gbm90IGRlc3Ryb3lpbmcgZW5naW5lIGFuZCB2bSB3aGVuIGl0
-J3MgcGFzc2VkIGZyb20gaWd0IHRlc3QuDQo+IA0KPiA+ICsJcHV0X2FobmQoYWhuZCk7DQo+ID4g
-K30NCj4gPiArDQo+ID4gKy8qKg0KPiA+ICsgKiBURVNUOiBCYXNpYyB0ZXN0IGZvciBzcGluIGJh
-dGNoIHN1Ym1pc3Npb24uDQo+ID4gKyAqDQo+ID4gKyAqIFNVQlRFU1Q6IHNwaW4tYmFzaWMNCj4g
-PiArICogRGVzY3JpcHRpb246IEJhc2ljIHRlc3Qgd2hpY2ggdmFsaWRhdGVzIHRoZSBmdW5jdGlv
-bmFsaXR5IG9mIHNwaW5uZXIuDQo+ID4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ID4gKyAqIFRPRE86
-IGNoYW5nZSBgYCdSdW4gdHlwZScgPT0gRlVMTGBgIHRvIGEgYmV0dGVyIGNhdGVnb3J5DQo+ID4g
-KyAqDQo+ID4gKyAqLw0KPiA+ICtzdGF0aWMgdm9pZCBzcGluX2Jhc2ljKGludCBmZCwgc3RydWN0
-IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UNCj4gPiArKmh3ZSkgew0KPiA+ICsJdWludDY0
-X3QgYWhuZDsNCj4gPiArCWlndF9zcGluX3QgKnNwaW47DQo+ID4gKw0KPiA+ICsJYWhuZCA9IGlu
-dGVsX2FsbG9jYXRvcl9vcGVuKGZkLCAwLCBJTlRFTF9BTExPQ0FUT1JfUkVMT0MpOw0KPiA+ICsJ
-c3BpbiA9IF9faWd0X3NwaW5fbmV3KGZkLCAuYWhuZCA9IGFobmQsIC5od2UgPSBod2UpOw0KPiA+
-ICsJaWd0X2Fzc2VydChzcGluKTsNCj4gPiArDQo+ID4gKwlpZ3Rfc3Bpbl9mcmVlKGZkLCBzcGlu
-KTsNCj4gPiArCXB1dF9haG5kKGFobmQpOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICsvKioNCj4gPiAr
-ICogVEVTVDogVGVzdCBmb3Igc3BpbiBiYXRjaCBzdWJtaXNzaW9ucy4NCj4gPiArICogU1VCVEVT
-VDogc3Bpbi1hbGwNCj4gPiArICogRGVzY3JpcHRpb246IFNwaW5uZXIgdGVzdCB0byBydW4gb24g
-YWxsIHRoZSBlbmdpbmVzIQ0KPiA+ICsgKiBSdW4gdHlwZTogRlVMTA0KPiA+ICsgKiBUT0RPOiBj
-aGFuZ2UgYGAnUnVuIHR5cGUnID09IEZVTExgYCB0byBhIGJldHRlciBjYXRlZ29yeQ0KPiA+ICsg
-Kg0KPiA+ICsgKi8NCj4gPiArDQo+ID4gK3N0YXRpYyB2b2lkIHNwaW5fYWxsIChpbnQgZmQsIGlu
-dCBndCwgaW50IGNsYXNzKSB7DQo+ID4gKwl1aW50NjRfdCBhaG5kOw0KPiA+ICsJdWludDMyX3Qg
-ZW5naW5lc1tNQVhfSU5TVEFOQ0VdOw0KPiA+ICsJdWludDMyX3Qgdm1bTUFYX0lOU1RBTkNFXTsN
-Cj4gPiArCWludCBpLCBudW1fcGxhY2VtZW50cyA9IDA7DQo+ID4gKwlzdHJ1Y3QgZHJtX3hlX2Vu
-Z2luZV9jbGFzc19pbnN0YW5jZSBlY2lbTUFYX0lOU1RBTkNFXTsNCj4gPiArCWlndF9zcGluX3Qg
-KnNwaW5bTUFYX0lOU1RBTkNFXTsNCj4gPiArCXN0cnVjdCBkcm1feGVfZW5naW5lX2NsYXNzX2lu
-c3RhbmNlICpod2U7DQo+ID4gKw0KPiA+ICsJYWhuZCA9IGludGVsX2FsbG9jYXRvcl9vcGVuKGZk
-LCAwLCBJTlRFTF9BTExPQ0FUT1JfUkVMT0MpOw0KPiA+ICsNCj4gPiArCXhlX2Zvcl9lYWNoX2h3
-X2VuZ2luZShmZCwgaHdlKSB7DQo+ID4gKwkJaWYgKGh3ZS0+ZW5naW5lX2NsYXNzICE9IGNsYXNz
-IHx8IGh3ZS0+Z3RfaWQgIT0gZ3QpDQo+ID4gKwkJCWNvbnRpbnVlOw0KPiA+ICsJCWVjaVtudW1f
-cGxhY2VtZW50cysrXSA9ICpod2U7DQo+ID4gKwl9DQo+ID4gKwlpZiAobnVtX3BsYWNlbWVudHMg
-PCAyKQ0KPiA+ICsJCXJldHVybjsNCj4gPiArDQo+ID4gKwlmb3IgKGkgPSAwOyBpIDwgbnVtX3Bs
-YWNlbWVudHM7IGkrKykgew0KPiA+ICsJCXN0cnVjdCBkcm1feGVfZW5naW5lX2NyZWF0ZSBjcmVh
-dGU7DQo+ID4gKwkJdm1baV0gPSB4ZV92bV9jcmVhdGUoZmQsIDAsIDApOw0KPiA+ICsNCj4gPiAr
-CQljcmVhdGUudm1faWQgPSB2bVtpXTsNCj4gPiArCQljcmVhdGUud2lkdGggPSAxOw0KPiA+ICsJ
-CWNyZWF0ZS5udW1fcGxhY2VtZW50cyA9IG51bV9wbGFjZW1lbnRzOw0KPiA+ICsJCWNyZWF0ZS5p
-bnN0YW5jZXMgPSB0b191c2VyX3BvaW50ZXIoZWNpKTsNCj4gPiArDQo+ID4gKwkJaWd0X2Fzc2Vy
-dF9lcShpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9YRV9FTkdJTkVfQ1JFQVRFLA0KPiA+ICsJCQkJ
-CSZjcmVhdGUpLCAwKTsNCj4gPiArCQllbmdpbmVzW2ldID0gY3JlYXRlLmVuZ2luZV9pZDsNCj4g
-PiArCQlzcGluW2ldID0gX19pZ3Rfc3Bpbl9uZXcoZmQsIC5haG5kID0gYWhuZCwgLmVuZ2luZSA9
-IGVuZ2luZXNbaV0sDQo+IC52bSA9IHZtW2ldKTsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwlmb3Ig
-KGkgPSAwOyBpIDwgbnVtX3BsYWNlbWVudHM7IGkrKykgew0KPiA+ICsJCWlndF9hc3NlcnQoc3Bp
-bltpXSk7DQo+ID4gKwkJaWd0X3NwaW5fZnJlZShmZCwgc3BpbltpXSk7DQo+ID4gKwl9DQo+ID4g
-KwlwdXRfYWhuZChhaG5kKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiAraWd0X21haW4NCj4gPiArew0K
-PiA+ICsJc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKmh3ZTsNCj4gPiArCWlu
-dCBmZDsNCj4gPiArCWludCBndCwgY2xhc3M7DQo+ID4gKw0KPiA+ICsJaWd0X2ZpeHR1cmUgew0K
-PiA+ICsJCWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9YRSk7DQo+ID4gKwkJeGVfZGV2aWNl
-X2dldChmZCk7DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJaWd0X3N1YnRlc3QoInNwaW4tYmF0Y2gi
-KQ0KPiA+ICsJCXhlX2Zvcl9lYWNoX2h3X2VuZ2luZShmZCwgaHdlKQ0KPiA+ICsJCQlzcGluKGZk
-LCBod2UpOw0KPiANCj4gVGVzdCBib3RoIHZhcmlhbnRzOiB3aXRoIGVuZ2luZS92bSBjcmVhdGVk
-IGluIHRoZSB0ZXN0IGFuZCBwYXNzZWQgdmlhIC5lbmdpbmUgKw0KPiAudm0gZmllbGQgYW5kIHdp
-dGggcGFzc2luZyAuaHdlIG9ubHkuIEFkZCBhbHNvIHN1cHBvcnQgZm9yIEFMTF9FTkdJTkVTIGZs
-YWcuDQo+IA0KSSB0aGluayBzcGluLWJhdGNoIGFscmVhZHkgY292ZXJzIHRoYXQsIGl0IHBhc3Nl
-cyBib3RoIGVuZ2luZSBhbmQgdm0gdG8gaWd0X3NwaW5fbmV3IHdoaWNoIGFyZSBjcmVhdGVkIGlu
-IHRoZSB0ZXN0Lg0KQW5kIHNwaW4tYmFzaWMgcGFzc2VzIG9ubHkgLmh3ZSB0byBpZ3Rfc3Bpbl9u
-ZXcuDQoNClRoYW5rcywNCkdvd3RoYW0gDQo+IC0tDQo+IFpiaWduaWV3DQo+IA0KPiA+ICsNCj4g
-PiArCWlndF9zdWJ0ZXN0KCJzcGluLWJhc2ljIikNCj4gPiArCQl4ZV9mb3JfZWFjaF9od19lbmdp
-bmUoZmQsIGh3ZSkNCj4gPiArCQkJc3Bpbl9iYXNpYyhmZCwgaHdlKTsNCj4gPiArDQo+ID4gKwlp
-Z3Rfc3VidGVzdCgic3Bpbi1hbGwiKSB7DQo+ID4gKwkJeGVfZm9yX2VhY2hfZ3QoZmQsIGd0KQ0K
-PiA+ICsJCQl4ZV9mb3JfZWFjaF9od19lbmdpbmVfY2xhc3MoY2xhc3MpDQo+ID4gKwkJCQlzcGlu
-X2FsbChmZCwgZ3QsIGNsYXNzKTsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwlpZ3RfZml4dHVyZSB7
-DQo+ID4gKwkJeGVfZGV2aWNlX3B1dChmZCk7DQo+ID4gKwkJY2xvc2UoZmQpOw0KPiA+ICsJfQ0K
-PiA+ICt9DQo+ID4gLS0NCj4gPiAyLjM5LjENCj4gPg0K
+On 2023-05-26 at 10:22:21 -0700, fei.yang@intel.com wrote:
+> From: Fei Yang <fei.yang@intel.com>
+> 
+> Gem_create uAPI has been extended with capability of setting PAT index.
+> Add a test case to exercise it.
+> 
+> PAT index is a page attribute that gets programmed into Page Table
+> Entry (PTE) for caching policy control. Please refer to kernel patch
+> for implementation details.
+> 
+> https://patchwork.freedesktop.org/series/116870/
+> 
+> Signed-off-by: Fei Yang <fei.yang@intel.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> ---
+>  lib/i915/i915_drm_local.h | 34 +++++++++++++++++++++
+>  tests/i915/gem_create.c   | 64 +++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 98 insertions(+)
+> 
+> diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
+> index bb2ebef3..0f47578c 100644
+> --- a/lib/i915/i915_drm_local.h
+> +++ b/lib/i915/i915_drm_local.h
+> @@ -41,6 +41,40 @@ extern "C" {
+>  #define __I915_PMU_RC6_RESIDENCY(gt)		___I915_PMU_OTHER(gt, 3)
+>  #define __I915_PMU_SOFTWARE_GT_AWAKE_TIME(gt)	___I915_PMU_OTHER(gt, 4)
+>  
+> +#define I915_GEM_CREATE_EXT_SET_PAT 2
+> +
+> +/**
+> + * struct drm_i915_gem_create_ext_set_pat - The
+> + * I915_GEM_CREATE_EXT_SET_PAT extension.
+> + *
+> + * If this extension is provided, the specified caching policy (PAT index) is
+> + * applied to the buffer object.
+> + *
+> + * Below is an example on how to create an object with specific caching policy:
+> + *
+> + * .. code-block:: C
+> + *
+> + *	struct drm_i915_gem_create_ext_set_pat set_pat_ext = {
+> + *		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
+> + *		.pat_index = 0,
+> + *	};
+> + *	struct drm_i915_gem_create_ext create_ext = {
+> + *		.size = PAGE_SIZE,
+> + *		.extensions = (uintptr_t)&set_pat_ext,
+> + *	};
+> + *
+> + *	int err = ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
+> + *	if (err) ...
+> + */
+> +struct drm_i915_gem_create_ext_set_pat {
+> +	/** @base: Extension link. See struct i915_user_extension. */
+> +	struct i915_user_extension base;
+> +	/** @pat_index: PAT index to be set */
+> +	__u32 pat_index;
+> +	/** @rsvd: reserved for future use */
+> +	__u32 rsvd;
+> +};
+> +
+>  #if defined(__cplusplus)
+>  }
+>  #endif
+> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+> index 3320717f..e9e8216d 100644
+> --- a/tests/i915/gem_create.c
+> +++ b/tests/i915/gem_create.c
+> @@ -635,6 +635,66 @@ static void create_ext_placement_each(int fd)
+>  	free(regions);
+>  }
+>  
+> +/**
+> +  * TEST: GEM create uAPI
+> +  * Category: Infrastructure
+> +  * Description: Tests the DRM_IOCTL_I915_GEM_CREATE_EXT ioctl.
+> +  * Feature: core
+> +  * Functionality: Create GEM object with specific PAT index
+> +  * Run type: BAT
+> +  * Sub-category: i915
+> +  * Test category: GEM_Legacy
+> +  *
+> +  * SUBTEST: create-ext-set-pat
+> +  */
+> +static void create_ext_set_pat(int fd)
+> +{
+> +	struct drm_i915_gem_create_ext_set_pat setparam_pat = {
+> +		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
+> +		.pat_index = 0,
+> +	};
+> +	struct drm_i915_gem_create_ext_set_pat setparam_inv_pat = {
+> +		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
+> +		.pat_index = 65,
+> +	};
+> +	struct drm_i915_gem_caching arg;
+> +	uint64_t size;
+> +	uint32_t handle;
+> +	int ret;
+> +
+> +	size = PAGE_SIZE;
+> +
+> +	ret = __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base);
+> +
+> +	/*
+> +	 * With a valid PAT index specified, returning -EINVAL here
+> +	 * indicates set_pat extension is not supported
+> +	 */
+> +	if (ret == -EINVAL)
+> +		igt_skip("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
+> +	igt_assert(ret == 0);
+> +
+> +	/*
+> +	 * {set|get}_caching ioctl should fail for objects created with set_pat
+> +	 * Also note, dGPU doesn't support {set|get}_caching ioctl, so checking
+> +	 * this for iGPU only.
+> +	 */
+> +	if (!gem_has_lmem(fd)) {
+> +		igt_assert_eq(__gem_set_caching(fd, handle, 1), -EOPNOTSUPP);
+> +
+> +		memset(&arg, 0, sizeof(arg));
+> +		arg.handle = handle;
+> +		igt_assert(ioctl(fd, DRM_IOCTL_I915_GEM_GET_CACHING, &arg) < 0 &&
+> +			   errno == EOPNOTSUPP);
+> +	}
+> +
+> +	/* gem_create should fail with -EINVAL if invalid pat index specified */
+> +	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle, &setparam_inv_pat.base),
+> +		      -EINVAL);
+> +
+> +	gem_close(fd, handle);
+> +}
+> +
+>  static bool supports_needs_cpu_access(int fd)
+>  {
+>  	struct drm_i915_gem_memory_class_instance regions[] = {
+> @@ -995,6 +1055,10 @@ igt_main
+>  	igt_subtest("create-ext-placement-all")
+>  		create_ext_placement_all(fd);
+>  
+> +	igt_describe("Validate basic creation of objects with PAT cache setting.");
+> +	igt_subtest("create-ext-set-pat")
+> +		create_ext_set_pat(fd);
+> +
+>  	igt_describe("Verify the basic functionally and expected ABI contract around I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS");
+>  	igt_subtest("create-ext-cpu-access-sanity-check") {
+>  		igt_require(supports_needs_cpu_access(fd));
+> -- 
+> 2.25.1
+> 
