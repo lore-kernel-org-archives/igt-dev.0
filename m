@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43C0E10E22C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80D8D10E238
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:30 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:25 +0530
-Message-Id: <20230529052835.860047-13-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:31 +0530
+Message-Id: <20230529052835.860047-19-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 12/82] tests/i915/kms_big_joiner: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V4 18/82] tests/i915/kms_fb_coherency: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,73 +28,24 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_big_joiner.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ tests/i915/kms_fb_coherency.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
-index b9dda58f6..acc8476c9 100644
---- a/tests/i915/kms_big_joiner.c
-+++ b/tests/i915/kms_big_joiner.c
-@@ -24,6 +24,11 @@
-  *  Karthik B S <karthik.b.s@intel.com>
-  */
- 
-+/**
-+ * TEST: kms big joiner
-+ * Category: Display
-+ * Description: Test big joiner
-+ */
- #include "igt.h"
- 
- #define MAX_HDISPLAY_PER_PIPE 5120
-@@ -40,6 +45,16 @@ typedef struct {
- 	uint32_t big_joiner_output[2];
- } data_t;
- 
-+/**
-+ * SUBTEST: invalid-modeset
-+ * Description: Verify if the modeset on the adjoining pipe is rejected when
-+ *              the pipe is active with a big joiner modeset
-+ * Driver requirement: any
-+ * Functionality: 2p1p
-+ * Mega feature: Bigjoiner
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_invalid_modeset(data_t *data)
- {
- 	igt_output_t *output;
-@@ -80,6 +95,15 @@ static void test_invalid_modeset(data_t *data)
- 	igt_assert_lt(ret, 0);
- }
- 
-+/**
-+ * SUBTEST: basic
-+ * Description: Verify the basic modeset on big joiner mode on all pipes
-+ * Driver requirement: any
-+ * Functionality: 2p1p
-+ * Mega feature: Bigjoiner
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_basic_modeset(data_t *data)
- {
- 	drmModeModeInfo *mode;
-@@ -118,6 +142,15 @@ static void test_basic_modeset(data_t *data)
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- }
- 
-+/**
-+ * SUBTEST: 2x-modeset
-+ * Description: Verify simultaneous modeset on 2 big joiner outputs
-+ * Driver requirement: any
-+ * Functionality: 2p1p
-+ * Mega feature: Bigjoiner
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_dual_display(data_t *data)
- {
- 	drmModeModeInfo *mode;
+diff --git a/tests/i915/kms_fb_coherency.c b/tests/i915/kms_fb_coherency.c
+index b530bf5dc..9d2506ce8 100644
+--- a/tests/i915/kms_fb_coherency.c
++++ b/tests/i915/kms_fb_coherency.c
+@@ -243,6 +243,11 @@ igt_main
+ 	 * Description: Use display controller CRC hardware to validate (non)coherency
+ 	 *		of memset operations on future scanout buffer objects
+ 	 *		mmapped with different mmap methods and different caching modes.
++	 * Driver requirement: i915
++	 * Functionality: kms_core
++	 * Run type: FULL
++	 * Mega feature: General Display Features
++	 * Test category: functionality test
+ 	 */
+ 	igt_subtest_with_dynamic("memset-crc") {
+ 		if (gem_has_mappable_ggtt(data.drm_fd)) {
 -- 
 2.40.0
