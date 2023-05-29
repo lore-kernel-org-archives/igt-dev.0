@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FB4F10E21C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 646E310E21C
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:48 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:26 +0530
-Message-Id: <20230529052835.860047-74-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:35 +0530
+Message-Id: <20230529052835.860047-83-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 73/82] tests/kms_sequence: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V4 82/82] testplan/kms: Make documentation is
+ mandatory for all kms subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,67 +23,37 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+As testplan documentation is ready for all kms tests, update the
+testplan config to make sure we are not missing the documentation
+all the kms tests.
+
+V2, V3, V4, V5: - Rebase
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_sequence.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ docs/testplan/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index c8a3d6bbd..c6f5741a5 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -27,6 +27,11 @@
-  * This is a test of drmCrtcGetSequence and drmCrtcQueueSequence
-  */
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index bf73dd32a..8b8ee5abd 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -31,13 +31,13 @@ xe_test_dict = {
+ if build_xe
+ 	test_dict = {
+ 		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+-		'kms_tests': { 'input': kms_test_config, 'extra_args': [] },
++		'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist },
+ 		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+ 	    }
+ else
+ 	test_dict = {
+ 	      'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+-	      'kms_tests': { 'input': kms_test_config, 'extra_args': [] }
++	      'kms_tests': { 'input': kms_test_config, 'extra_args': check_testlist }
+ 	    }
+ endif
  
-+/**
-+ * TEST: kms sequence
-+ * Category: Display
-+ * Description: Test CrtcGetSequence and CrtcQueueSequence.
-+ */
- #include "igt.h"
- #include <stdlib.h>
- #include <stdio.h>
-@@ -136,6 +141,37 @@ static int crtc_queue_sequence(int fd, struct drm_crtc_queue_sequence *cqs)
- 	return err;
- }
- 
-+/**
-+ * SUBTEST: get-%s
-+ * Description: This is a test of drmCrtcGetSequence and drmCrtcQueueSequence
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @busy:
-+ * @forked:
-+ * @forked-busy:
-+ * @idle:
-+ */
-+
-+/**
-+ * SUBTEST: queue-%s
-+ * Description: This is a test of drmCrtcGetSequence and drmCrtcQueueSequence
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @busy:
-+ * @idle:
-+ */
- static void run_test(data_t *data, int fd, void (*testfunc)(data_t *, int, int))
- {
- 	int nchildren =
 -- 
 2.40.0
