@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3EE910E215
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89B4110E213
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:52 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:33 +0530
-Message-Id: <20230529052835.860047-21-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:49 +0530
+Message-Id: <20230529052835.860047-37-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 20/82] tests/i915/kms_fence_pin_leak: Document
+Subject: [igt-dev] [i-g-t V4 36/82] tests/kms_atomic_interruptible: Document
  each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,32 +28,76 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_fence_pin_leak.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/kms_atomic_interruptible.c | 50 ++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
-index 63657a742..7c6251837 100644
---- a/tests/i915/kms_fence_pin_leak.c
-+++ b/tests/i915/kms_fence_pin_leak.c
-@@ -30,6 +30,19 @@
+diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
+index 74b2e246a..be28127d8 100644
+--- a/tests/kms_atomic_interruptible.c
++++ b/tests/kms_atomic_interruptible.c
+@@ -21,6 +21,11 @@
+  * IN THE SOFTWARE.
+  */
  
- #include "i915/gem.h"
- #include "igt.h"
 +/**
-+ * TEST: kms fence pin leak
++ * TEST: kms atomic interruptible
 + * Category: Display
-+ * Description: Exercises full ppgtt fence pin_count leak in the kernel.
-+ *
-+ * SUBTEST:
-+ * Description: Exercises full ppgtt fence pin_count leak in the kernel.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, synchronization
++ * Description: Tests that interrupt various atomic ioctls.
++ */
+ #include <signal.h>
+ 
+ #include "igt.h"
+@@ -74,6 +79,51 @@ static drmEventContext drm_events = {
+ 	.page_flip_handler = ev_page_flip
+ };
+ 
++/**
++ * SUBTEST: %s-setmode
++ * Description: Tests the interrupt properties of %arg[1] modeset
++ * Driver requirement: any
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic:      atomic
++ * @legacy:      legacy
 + */
- 
- IGT_TEST_DESCRIPTION("Exercises full ppgtt fence pin_count leak in the "
- 		     "kernel.");
++
++/**
++ * SUBTEST: legacy-%s
++ * Description: Tests the interrupt properties for %arg[1]
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor:         Cursor
++ * @dpms:           DPMS
++ * @pageflip:       Page flip
++ */
++
++/**
++ * SUBTEST: universal-setplane-%s
++ * Description: Tests the interrupt properties for %arg[1]
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor:         Cursor plane
++ * @primary:        Primary plane
++ */
+ static void run_plane_test(igt_display_t *display, enum pipe pipe, igt_output_t *output,
+ 			   enum plane_test_type test_type, unsigned plane_type)
+ {
 -- 
 2.40.0
