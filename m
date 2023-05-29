@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C296C10E038
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:51:25 +0000 (UTC)
-Date: Mon, 29 May 2023 07:51:22 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <20230529055122.eikdtj365xdqkass@zkempczy-mobl2>
-References: <20230525055519.10098-1-sai.gowtham.ch@intel.com>
- <20230525055519.10098-2-sai.gowtham.ch@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4059410E038
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:52:34 +0000 (UTC)
+Message-ID: <4407ed87-8fdf-7647-cbfa-0dbe94d10ff6@intel.com>
+Date: Mon, 29 May 2023 11:22:05 +0530
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230526174305.319725-1-swati2.sharma@intel.com>
+ <20230526174305.319725-2-swati2.sharma@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230526174305.319725-2-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230525055519.10098-2-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe/xe_spin: Integrate
- igt_spin_new with Xe.
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/kms_pipe_crc_basic: add nv12
+ crc sanity check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,270 +22,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, May 25, 2023 at 11:25:18AM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Hi Swati,
+
+On Fri-26-05-2023 11:13 pm, Swati Sharma wrote:
+> New CRC sanitycheck test case is added with NV12 format.
+> kms_plane@pixel-format test is validating all formats.
+> To improve BAT coverage we can have one planar format crc
+> sanity test.
 > 
-> Extending the spin_create implementation and allocator handle support in xe,
-> where it submits dummy work loads to engine. This Implementation is wrapped
-> around vm_bind and unbind as we are supposed to do it manually for xe.
-> 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->  lib/igt_dummyload.c | 24 +++++++++---
->  lib/igt_dummyload.h | 10 +++++
->  lib/xe/xe_spin.c    | 89 +++++++++++++++++++++++++++++++++++++++++++++
->  lib/xe/xe_spin.h    |  7 ++++
->  4 files changed, 124 insertions(+), 6 deletions(-)
+>   tests/kms_pipe_crc_basic.c | 49 +++++++++++++++++++++++++++-----------
+>   1 file changed, 35 insertions(+), 14 deletions(-)
 > 
-> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-> index 740a58f3..6e89b72d 100644
-> --- a/lib/igt_dummyload.c
-> +++ b/lib/igt_dummyload.c
-> @@ -46,6 +46,7 @@
->  #include "intel_reg.h"
->  #include "ioctl_wrappers.h"
->  #include "sw_sync.h"
-> +#include "xe/xe_spin.h"
->  
->  /**
->   * SECTION:igt_dummyload
-> @@ -447,7 +448,10 @@ spin_create(int fd, const struct igt_spin_factory *opts)
->  igt_spin_t *
->  __igt_spin_factory(int fd, const struct igt_spin_factory *opts)
->  {
-> -	return spin_create(fd, opts);
-> +	if (is_xe_device(fd))
-> +		return xe_spin_create(fd, opts);
-> +	else
-> +		return spin_create(fd, opts);
->  }
->  
->  /**
-> @@ -467,6 +471,11 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
->  {
->  	igt_spin_t *spin;
->  
-> +	if (is_xe_device(fd)) {
-> +		spin = xe_spin_create(fd, opts);
-> +		return spin;
+> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+> index 84c73fd7..a280a5c2 100644
+> --- a/tests/kms_pipe_crc_basic.c
+> +++ b/tests/kms_pipe_crc_basic.c
+> @@ -227,25 +227,34 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+>   }
+>   
+>   /**
+> - * SUBTEST: compare-crc-sanitycheck
+> - * Description: Basic sanity check for CRC mismatches
+> + * SUBTEST: compare-crc-sanitycheck-xr24
+> + * Description: Basic sanity check for CRC mismatches with XR24 format
+>    * Test category: functionality test
+>    * Run type: BAT
+>    * Functionality: crc
+>    * Mega feature: General Display Features
+> + *
+> + * SUBTEST: compare-crc-sanitycheck-nv12
+> + * Description: Basic sanity check for CRC mismatches with NV12 format
+> + * Test category: functionality test
+> + * Run type: BAT
+> + * Functionality: crc
+> + * Mega feature: General Display Features
+
+You may update this documentation as below:
+
+/**
+  * SUBTEST: compare-crc-sanitycheck-%s
+  * Description: Basic sanity check for CRC mismatches with %arg[1].
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: crc
+  * Mega feature: General Display Features
+  *
+  * arg[1]:
+  *
+  * @xr24    : XR24 format
+  * @nv12    : NV12 format
+  */
+
+See https://gfx-linux.intel.com/igt-doc.html#igt-test-documentation
+
+- Bhanu
+
+> +
+>    */
+>   
+>   /*
+>    * CRC-sanity test, to make sure there would be no CRC mismatches
+>    *
+> - * - Create two framebuffers (FB0 & FB1) with same color info
+> - * - Flip FB0 with the Primary plane & collect the CRC as ref CRC.
+> - * - Flip FB1 with the Primary plane, collect the CRC & compare with
+> + * - Create two framebuffers (FB0 & FB1)
+> + * - Flip FB0 with the primary plane & collect the CRC as ref CRC.
+> + * - Flip FB1 with the primary plane, collect the CRC & compare with
+>    *   the ref CRC.
+>    *
+>    *   No CRC mismatch should happen
+>    */
+> -static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+> +static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output,
+> +			     uint32_t format)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_plane_t *primary;
+> @@ -259,7 +268,6 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+>   
+>   	mode = igt_output_get_mode(output);
+>   
+> -	/* Create two framebuffers with the same color info. */
+>   	igt_create_color_fb(data->drm_fd,
+>   			mode->hdisplay, mode->vdisplay,
+>   			DRM_FORMAT_XRGB8888,
+> @@ -267,13 +275,12 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+>   			1.0, 1.0, 1.0,
+>   			&fb0);
+>   	igt_create_color_fb(data->drm_fd,
+> -			mode->hdisplay, mode->vdisplay,
+> -			DRM_FORMAT_XRGB8888,
+> +			mode->hdisplay, mode->vdisplay, format,
+>   			DRM_FORMAT_MOD_LINEAR,
+>   			1.0, 1.0, 1.0,
+>   			&fb1);
+>   
+> -	/* Flip FB0 with the Primary plane & collect the CRC as ref CRC. */
+> +	/* Flip FB0 with the primary plane & collect the CRC as ref CRC. */
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   	igt_plane_set_fb(primary, &fb0);
+>   	igt_display_commit(display);
+> @@ -282,7 +289,7 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+>   				    IGT_PIPE_CRC_SOURCE_AUTO);
+>   	igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
+>   
+> -	/* Flip FB1 with the Primary plane & compare the CRC with ref CRC. */
+> +	/* Flip FB1 with the primary plane & compare the CRC with ref CRC. */
+>   	igt_plane_set_fb(primary, &fb1);
+>   	igt_display_commit(display);
+>   
+> @@ -475,8 +482,22 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   		}
+>   	}
+>   
+> -	igt_describe("Basic sanity check for CRC mismatches");
+> -	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
+> +	igt_describe("Basic sanity check for CRC mismatches with XR24 format");
+> +	igt_subtest_with_dynamic("compare-crc-sanitycheck-xr24") {
+> +		for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +			if (simulation_constraint(pipe))
+> +				continue;
+> +
+> +			if(!pipe_output_combo_valid(&data.display, pipe, output))
+> +				continue;
+> +
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+> +				test_compare_crc(&data, pipe, output, DRM_FORMAT_XRGB8888);
+> +		}
 > +	}
 > +
->  	if ((opts->flags & IGT_SPIN_POLL_RUN) && opts->engine != ALL_ENGINES) {
->  		unsigned int class;
->  
-> @@ -647,11 +656,14 @@ void igt_spin_free(int fd, igt_spin_t *spin)
->  	if (!spin)
->  		return;
->  
-> -	pthread_mutex_lock(&list_lock);
-> -	igt_list_del(&spin->link);
-> -	pthread_mutex_unlock(&list_lock);
-> -
-> -	__igt_spin_free(fd, spin);
-> +	if (is_xe_device(fd)) {
-> +		xe_spin_free(fd, spin);
-> +	} else {
-> +		pthread_mutex_lock(&list_lock);
-> +		igt_list_del(&spin->link);
-> +		pthread_mutex_unlock(&list_lock);
-> +		__igt_spin_free(fd, spin);
-> +	}
->  }
->  
->  void igt_terminate_spins(void)
-> diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-> index b247ab02..7bcc7b56 100644
-> --- a/lib/igt_dummyload.h
-> +++ b/lib/igt_dummyload.h
-> @@ -54,6 +54,8 @@ typedef struct igt_spin_factory {
->  	unsigned int flags;
->  	int fence;
->  	uint64_t ahnd;
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	uint32_t vm;
->  } igt_spin_factory_t;
->  
->  typedef struct igt_spin {
-> @@ -83,6 +85,14 @@ typedef struct igt_spin {
->  #define SPIN_CLFLUSH (1 << 0)
->  
->  	struct igt_spin_factory opts;
-> +
-> +	struct xe_spin *xe_spin;
-> +	size_t bo_size;
-> +	uint64_t address;
-> +	unsigned int engine;
-> +	uint32_t vm;
-> +	uint32_t syncobj;
-> +
->  } igt_spin_t;
->  
->  
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 856d0ba2..3a8c7bb3 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -15,6 +15,7 @@
->  #include "intel_reg.h"
->  #include "xe_ioctl.h"
->  #include "xe_spin.h"
-> +#include "lib/igt_dummyload.h"
->  
->  /**
->   * xe_spin_init:
-> @@ -82,6 +83,94 @@ void xe_spin_end(struct xe_spin *spin)
->  	spin->end = 0;
->  }
->  
-> +igt_spin_t *
-> +xe_spin_create(int fd, const struct igt_spin_factory *opt)
-> +{
-> +	size_t bo_size = xe_get_default_alignment(fd);
-> +	uint32_t bo;
-> +	uint64_t ahnd = opt->ahnd, addr;
-> +	struct igt_spin *spin;
-> +	struct xe_spin *xe_spin;
-> +	struct drm_xe_sync sync = {
-> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-> +	};
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 1,
-> +		.syncs = to_user_pointer(&sync),
-> +	};
-> +
-> +	igt_assert(ahnd);
-> +	spin = calloc(1, sizeof(struct igt_spin));
-> +	igt_assert(spin);
-> +
-> +	spin->syncobj = syncobj_create(fd, 0);
-> +	if (opt->engine) {
-> +		spin->opts.engine = opt->engine;
-> +		spin->opts.vm = opt->vm;
-> +
-> +		spin->handle = xe_bo_create(fd, 0, spin->opts.vm, bo_size);
-> +		xe_spin = xe_bo_map(fd, spin->handle, bo_size);
-> +		addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
-> +		xe_vm_bind_sync(fd, spin->opts.vm, spin->handle, 0, addr, bo_size);
-> +
-> +		xe_spin_init(xe_spin, addr, true);
-> +		exec.engine_id = spin->opts.engine;
-> +		exec.address = addr;
-> +	} else {
-> +		spin->vm = xe_vm_create(fd, 0, 0);
-> +		spin->engine = xe_engine_create(fd, spin->vm, opt->hwe, 0);
-> +
-> +		bo = xe_bo_create(fd, 0, spin->vm, bo_size);
-> +		spin->handle = bo;
-> +		xe_spin = xe_bo_map(fd, spin->handle, bo_size);
-> +		addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
-> +		xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
-> +
-> +		xe_spin_init(xe_spin, addr, true);
-> +		exec.engine_id = spin->engine;
-> +		exec.address = addr;
-> +	}
-
-I think you should support two variants of executing spinners:
-
-1. hwe != NULL (in this case engine must be 0):
-   if (!vm) -> create vm;
-   create engine for vm according to hwe
-
-2. engine != 0, vm must be vm on top of which engine was created
-   hwe must be NULL in this case
-   see Dominik answer about passing engine+vm in:
-   https://patchwork.freedesktop.org/patch/539173/?series=118227&rev=2
-
-And add support ALL_ENGINES flag (then iterate over all hw engines
-like Bhanu suggested). And track engine ownership - if caller
-is the engine/vm owner use it but don't destroy, if spinner code
-is creating engine you may freely destroy it in spinner free path().
-
---
-Zbigniew
-
-
-> +	sync.handle = spin->syncobj;
-> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
-> +	xe_spin_wait_started(xe_spin);
-> +	igt_info("Spinner started\n");
-> +
-> +	spin->bo_size = bo_size;
-> +	spin->address = addr;
-> +	spin->xe_spin = xe_spin;
-> +
-> +	return spin;
-> +}
-> +
-> +void xe_spin_sync_wait(int fd, struct igt_spin *spin)
-> +{
-> +	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0,
-> +				NULL));
-> +}
-> +
-> +void xe_spin_free(int fd, struct igt_spin *spin)
-> +{
-> +	xe_spin_end(spin->xe_spin);
-> +	xe_spin_sync_wait(fd, spin);
-> +
-> +	if (!spin->opts.engine) {
-> +		xe_vm_unbind_sync(fd, spin->vm, 0, spin->address, spin->bo_size);
-> +	} else {
-> +		xe_vm_unbind_sync(fd, spin->opts.vm, 0, spin->address, spin->bo_size);
-> +	}
-> +
-> +	syncobj_destroy(fd, spin->syncobj);
-> +	gem_munmap(spin->xe_spin, spin->bo_size);
-> +	gem_close(fd, spin->handle);
-> +
-> +	if (!spin->opts.engine) {
-> +		xe_engine_destroy(fd, spin->engine);
-> +		xe_vm_destroy(fd, spin->vm);
-> +	}
-> +	free(spin);
-> +}
-> +
->  void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
->  		  struct xe_cork *cork)
->  {
-> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index 73f9a026..48867eb8 100644
-> --- a/lib/xe/xe_spin.h
-> +++ b/lib/xe/xe_spin.h
-> @@ -13,19 +13,26 @@
->  #include <stdbool.h>
->  
->  #include "xe_query.h"
-> +#include "lib/igt_dummyload.h"
->  
->  /* Mapped GPU object */
-> +
->  struct xe_spin {
->  	uint32_t batch[16];
->  	uint64_t pad;
->  	uint32_t start;
->  	uint32_t end;
-> +
->  };
->  
-> +igt_spin_t *
-> +xe_spin_create(int fd, const struct igt_spin_factory *opt);
->  void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
->  bool xe_spin_started(struct xe_spin *spin);
-> +void xe_spin_sync_wait(int fd, struct igt_spin *spin);
->  void xe_spin_wait_started(struct xe_spin *spin);
->  void xe_spin_end(struct xe_spin *spin);
-> +void xe_spin_free(int fd, struct igt_spin *spin);
->  
->  struct xe_cork {
->  	struct xe_spin *spin;
-> -- 
-> 2.39.1
-> 
+> +	igt_describe("Basic sanity check for CRC mismatches with NV12 format");
+> +	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12") {
+>   		for_each_pipe_with_single_output(&data.display, pipe, output) {
+>   			if (simulation_constraint(pipe))
+>   				continue;
+> @@ -485,7 +506,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   				continue;
+>   
+>   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+> -				test_compare_crc(&data, pipe, output);
+> +				test_compare_crc(&data, pipe, output, DRM_FORMAT_NV12);
+>   		}
+>   	}
+>   
