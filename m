@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 496E910E215
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6966810E21C
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:24 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:20 +0530
-Message-Id: <20230529052835.860047-8-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:26 +0530
+Message-Id: <20230529052835.860047-14-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 07/82] tests/chamelium/kms_chamelium_color:
- Document each subtest for testplan
+Subject: [igt-dev] [i-g-t V4 13/82] tests/i915/kms_busy: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,82 +28,102 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_chamelium_color.c | 45 +++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+ tests/i915/kms_busy.c | 62 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index bbb929b64..709b6ec2c 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -22,10 +22,25 @@
-  *
+diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
+index 20d3058fb..94590c86e 100644
+--- a/tests/i915/kms_busy.c
++++ b/tests/i915/kms_busy.c
+@@ -21,6 +21,11 @@
+  * IN THE SOFTWARE.
   */
  
 +/**
-+ * TEST: kms chamelium color
++ * TEST: kms busy
 + * Category: Display
-+ * Description: Test Color Features at Pipe level using Chamelium to verify instead of CRC
++ * Description: Basic check of KMS ABI with busy framebuffers.
 + */
-+
- #include "igt_color_helper.h"
- 
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
- 
-+/**
-+ * SUBTEST: degamma
-+ * Description: Verify that degamma LUT transformation works correctly
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ */
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
-  * degamma LUT and verify we have the same frame dump as drawing solid color
-@@ -115,6 +130,15 @@ static bool test_pipe_degamma(data_t *data,
- 	return ret;
+ #include <sys/poll.h>
+ #include <signal.h>
+ #include <time.h>
+@@ -131,6 +136,23 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
+ 	put_ahnd(ahnd);
  }
  
 +/**
-+ * SUBTEST: gamma
-+ * Description: Verify that gamma LUT transformation works correctly
-+ * Functionality: colorspace_gamma
-+ * Mega feature: Color mgmt
++ * SUBTEST: basic
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ * Driver requirement: any
++ *
++ * SUBTEST: basic-hang
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
-  * gamma LUT and verify we have the same frame dump as drawing solid
-@@ -465,6 +489,27 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
+ static void test_flip(igt_display_t *dpy, int pipe,
+ 		      igt_output_t *output, bool modeset)
+ {
+@@ -223,6 +245,37 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
+ 	put_ahnd(ahnd);
  }
  
 +/**
-+ * SUBTEST: ctm-%s
-+ * Description: Check the color transformation %arg[1]
-+ * Functionality: colorspace
-+ * Mega feature: Color mgmt
++ * SUBTEST: extended-modeset-hang-%s
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ * Driver requirement: any
 + *
 + * arg[1]:
 + *
-+ * @0-25:            for 0.25 transparancy
-+ * @0-50:            for 0.50 transparancy
-+ * @0-75:            for 0.75 transparancy
-+ * @blue-to-red:     from blue to red
-+ * @green-to-red:    from green to red
-+ * @limited-range:   with identity matrix
-+ * @max:             for max transparancy
-+ * @negative:        for negative transparancy
-+ * @red-to-blue:     from red to blue
++ * @newfb:                New framebuffer
++ * @oldfb:                Old framebuffer
++ * @newfb-with-reset:     New framebuffer with reset
++ * @oldfb-with-reset:     Old framebuffer with reset
++ */
++
++/**
++ * SUBTEST: extended-pageflip-hang-%s
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @newfb:     New framebuffer
++ * @oldfb:     Old framebuffer
++ */
+ static void test_hang(igt_display_t *dpy,
+ 		      enum pipe pipe, igt_output_t *output,
+ 		      bool modeset, bool hang_newfb)
+@@ -270,6 +323,15 @@ static void test_hang(igt_display_t *dpy,
+ 	igt_remove_fb(dpy->drm_fd, &fb[0]);
+ }
+ 
++/**
++ * SUBTEST: extended-pageflip-modeset-hang-oldfb
++ * Description: Test for basic check of KMS ABI with busy framebuffers.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
 + */
  static void
- run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 		       color_t *expected_colors,
+ test_pageflip_modeset_hang(igt_display_t *dpy,
+ 			   igt_output_t *output, enum pipe pipe)
 -- 
 2.40.0
