@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D61810E21C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E902210E25A
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:24 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:31 +0530
-Message-Id: <20230529052835.860047-79-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:16 +0530
+Message-Id: <20230529052835.860047-64-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 78/82] tests/kms_vblank: Document each subtest
- for testplan
+Subject: [igt-dev] [i-g-t V4 63/82] tests/kms_plane_lowres: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,88 +28,58 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vblank.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+ tests/kms_plane_lowres.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index da0ada78e..1849e8cc5 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -40,6 +40,75 @@
- #include <sys/wait.h>
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index db9f5a54c..1d5635c97 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -22,6 +22,12 @@
+  *
+  */
  
- #include <drm.h>
 +/**
-+ * TEST: kms vblank
++ * TEST: kms plane lowres
 + * Category: Display
-+ * Description: Test speed of WaitVblank.
-+ *
-+ * SUBTEST: crtc-id
-+ * Description: check the Vblank and flip events works with given crtc id
++ * Description: Test atomic mode setting with a plane by switching between high
++ *              and low resolutions
++ */
+ #include "igt.h"
+ #include "drmtest.h"
+ #include <errno.h>
+@@ -261,6 +267,32 @@ static void test_cleanup(data_t *data)
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ }
+ 
++/**
++ * SUBTEST: tiling-none
++ * Description: Tests the visibility of the planes when switching between high
++ *              and low resolution with tiling-none
 + * Driver requirement: any
-+ * Functionality: vblank
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: invalid
-+ * Description: Negative test for vblank request
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pipe-%s-%s
-+ * Description: Check if test run while hanging by introducing NOHANG flag (or)
-+ *              Check if injected hang is working properly
-+ * Driver requirement: any
-+ * Functionality: vblank
++ * SUBTEST: tiling-%s
++ * Description: Tests the visibility of the planes when switching between high
++ *              and low resolution with %arg[1]
++ * Driver requirement: i915
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @A:
-+ * @B:
-+ * @C:
-+ * @D:
-+ * @E:
-+ * @F:
-+ * @G:
-+ * @H:
-+ *
-+ * arg[2]:
-+ *
-+ * @accuracy-idle:
-+ * @query-busy:
-+ * @query-busy-hang:
-+ * @query-forked:
-+ * @query-forked-busy:
-+ * @query-forked-busy-hang:
-+ * @query-forked-hang:
-+ * @query-idle:
-+ * @query-idle-hang:
-+ * @ts-continuation-dpms-rpm:
-+ * @ts-continuation-dpms-suspend:
-+ * @ts-continuation-idle:
-+ * @ts-continuation-idle-hang:
-+ * @ts-continuation-modeset:
-+ * @ts-continuation-modeset-hang:
-+ * @ts-continuation-modeset-rpm:
-+ * @ts-continuation-suspend:
-+ * @wait-busy:
-+ * @wait-busy-hang:
-+ * @wait-forked:
-+ * @wait-forked-busy:
-+ * @wait-forked-busy-hang:
-+ * @wait-forked-hang:
-+ * @wait-idle:
-+ * @wait-idle-hang:
++ * @4:           4-tiling
++ * @x:           x-tiling
++ * @y:           y-tiling
++ * @yf:          yf-tiling
 + */
- 
- IGT_TEST_DESCRIPTION("Test speed of WaitVblank.");
- 
+ static void run_test(data_t *data, uint64_t modifier)
+ {
+ 	enum pipe pipe;
 -- 
 2.40.0
