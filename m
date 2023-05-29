@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39B6610E258
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84B2C10E25A
  for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:43 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:37 +0530
-Message-Id: <20230529052835.860047-25-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:39 +0530
+Message-Id: <20230529052835.860047-27-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 24/82] tests/i915/kms_legacy_colorkey: Document
+Subject: [igt-dev] [i-g-t V4 26/82] tests/i915/kms_pipe_b_c_ivb: Document
  each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,40 +28,71 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_legacy_colorkey.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ tests/i915/kms_pipe_b_c_ivb.c | 52 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/i915/kms_legacy_colorkey.c
-index 5b2fd64ba..b21e0f1a9 100644
---- a/tests/i915/kms_legacy_colorkey.c
-+++ b/tests/i915/kms_legacy_colorkey.c
-@@ -24,6 +24,27 @@
- #include "igt.h"
- #include <errno.h>
+diff --git a/tests/i915/kms_pipe_b_c_ivb.c b/tests/i915/kms_pipe_b_c_ivb.c
+index af11e3262..542559d40 100644
+--- a/tests/i915/kms_pipe_b_c_ivb.c
++++ b/tests/i915/kms_pipe_b_c_ivb.c
+@@ -25,6 +25,58 @@
+  */
  
+ #include "igt.h"
 +/**
-+ * TEST: kms legacy colorkey
++ * TEST: kms pipe b c ivb
 + * Category: Display
-+ * Description: Check that the legacy set colorkey ioctl only works on sprite planes.
++ * Description: Exercise the FDI lane bifurcation code for IVB in the kernel by
++ *              setting different combinations of modes for pipes B and C.
 + *
-+ * SUBTEST: basic
-+ * Description: Test to check the legacy set colorkey ioctl only works for sprite planes.
++ * SUBTEST: disable-pipe-B-enable-pipe-C
++ * Description: Tests pipe-B and pipe-C interactions in IVB by disabling pipe-B
++ *              and then setting mode on pipe-C.
 + * Driver requirement: i915
-+ * Functionality: xorg_xv
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: invalid-plane
-+ * Description: Check invalid plane id's, zero and outrange
++ * SUBTEST: enable-pipe-C-while-B-has-3-lanes
++ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-C
++ *              while pipe-B has 3-lanes
 + * Driver requirement: i915
-+ * Functionality: xorg_xv
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: from-pipe-C-to-B-with-3-lanes
++ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B
++ *              with 3 lanes from pipe-C.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: pipe-B-double-modeset-then-modeset-pipe-C
++ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling two
++ *              different modes on pipe-B and then a single mode on pipe-C.
++ * Driver requirement: i915
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: pipe-B-dpms-off-modeset-pipe-C
++ * Description: Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B
++ *              with mode that requires 3 lanes and then enabling pipe-c with
++ *              dpms off/on pipe-B.
++ * Driver requirement: i915
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
  
- IGT_TEST_DESCRIPTION("Check that the legacy set colorkey ioctl only works on sprite planes.");
- 
+ IGT_TEST_DESCRIPTION(
+ "Exercise the FDI lane bifurcation code for IVB in the kernel by setting"
 -- 
 2.40.0
