@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6966810E21C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0625510E214
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:15 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:26 +0530
-Message-Id: <20230529052835.860047-14-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:19 +0530
+Message-Id: <20230529052835.860047-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 13/82] tests/i915/kms_busy: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V4 06/82] tests/chamelium/kms_chamelium_audio:
+ Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,102 +28,77 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_busy.c | 62 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+ tests/chamelium/kms_chamelium_audio.c | 44 +++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
-index 20d3058fb..94590c86e 100644
---- a/tests/i915/kms_busy.c
-+++ b/tests/i915/kms_busy.c
-@@ -21,6 +21,11 @@
-  * IN THE SOFTWARE.
-  */
+diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
+index a4204fbb6..e657f7791 100644
+--- a/tests/chamelium/kms_chamelium_audio.c
++++ b/tests/chamelium/kms_chamelium_audio.c
+@@ -28,6 +28,12 @@
+ #include "igt_infoframe.h"
+ #include "igt_chamelium_helper.h"
  
 +/**
-+ * TEST: kms busy
++ * TEST: kms chamelium audio
 + * Category: Display
-+ * Description: Basic check of KMS ABI with busy framebuffers.
-+ */
- #include <sys/poll.h>
- #include <signal.h>
- #include <time.h>
-@@ -131,6 +136,23 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
- 	put_ahnd(ahnd);
- }
- 
-+/**
-+ * SUBTEST: basic
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: basic-hang
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_flip(igt_display_t *dpy, int pipe,
- 		      igt_output_t *output, bool modeset)
- {
-@@ -223,6 +245,37 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
- 	put_ahnd(ahnd);
- }
- 
-+/**
-+ * SUBTEST: extended-modeset-hang-%s
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @newfb:                New framebuffer
-+ * @oldfb:                Old framebuffer
-+ * @newfb-with-reset:     New framebuffer with reset
-+ * @oldfb-with-reset:     Old framebuffer with reset
++ * Description: Testing Audio with a Chamelium board
 + */
 +
-+/**
-+ * SUBTEST: extended-pageflip-hang-%s
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @newfb:     New framebuffer
-+ * @oldfb:     Old framebuffer
-+ */
- static void test_hang(igt_display_t *dpy,
- 		      enum pipe pipe, igt_output_t *output,
- 		      bool modeset, bool hang_newfb)
-@@ -270,6 +323,15 @@ static void test_hang(igt_display_t *dpy,
- 	igt_remove_fb(dpy->drm_fd, &fb[0]);
+ /* Playback parameters control the audio signal we synthesize and send */
+ #define PLAYBACK_CHANNELS 2
+ #define PLAYBACK_SAMPLES 1024
+@@ -669,6 +675,25 @@ static bool check_audio_configuration(struct alsa *alsa,
+ 	return true;
  }
  
 +/**
-+ * SUBTEST: extended-pageflip-modeset-hang-oldfb
-+ * Description: Test for basic check of KMS ABI with busy framebuffers.
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
++ * SUBTEST: dp-audio
++ * Description: Playback various audio signals with various audio formats/rates,
++ *              capture them and check they are correct
++ * Functionality: dp_audio
++ * Mega feature: DP
 + * Run type: FULL
 + * Test category: functionality test
++ * Driver requirement: any
++ *
++ * SUBTEST: hdmi-audio
++ * Description: Playback various audio signals with various audio formats/rates,
++ *              capture them and check they are correct
++ * Functionality: hdmi_audio
++ * Mega feature: HDMI
++ * Run type: FULL
++ * Test category: functionality test
++ * Driver requirement: any
 + */
- static void
- test_pageflip_modeset_hang(igt_display_t *dpy,
- 			   igt_output_t *output, enum pipe pipe)
+ static const char test_display_audio_desc[] =
+ 	"Playback various audio signals with various audio formats/rates, "
+ 	"capture them and check they are correct";
+@@ -763,6 +788,25 @@ static void test_display_audio(chamelium_data_t *data,
+ 	free(alsa);
+ }
+ 
++/**
++ * SUBTEST: dp-audio-edid
++ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
++ *              EDID-Like Data reports the correct audio parameters
++ * Functionality: dp_audio
++ * Mega feature: DP
++ * Run type: FULL
++ * Test category: functionality test
++ * Driver requirement: any
++ *
++ * SUBTEST: hdmi-audio-edid
++ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
++ *              EDID-Like Data reports the correct audio parameters
++ * Functionality: hdmi_audio
++ * Mega feature: HDMI
++ * Run type: FULL
++ * Test category: functionality test
++ * Driver requirement: any
++ */
+ static const char test_display_audio_edid_desc[] =
+ 	"Plug a connector with an EDID suitable for audio, check ALSA's "
+ 	"EDID-Like Data reports the correct audio parameters";
 -- 
 2.40.0
