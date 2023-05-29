@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8DC3A10E205
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B1F610E205
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:10 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:08 +0530
-Message-Id: <20230529052835.860047-56-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:04 +0530
+Message-Id: <20230529052835.860047-52-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 55/82] tests/kms_invalid_mode: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V4 51/82] tests/kms_force_connector_basic:
+ Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,55 +28,63 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_invalid_mode.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ tests/kms_force_connector_basic.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index ec0483055..465169d10 100644
---- a/tests/kms_invalid_mode.c
-+++ b/tests/kms_invalid_mode.c
-@@ -22,10 +22,42 @@
-  *
+diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
+index 7e35693cf..26398a7ce 100644
+--- a/tests/kms_force_connector_basic.c
++++ b/tests/kms_force_connector_basic.c
+@@ -23,8 +23,9 @@
   */
  
-+/**
-+ * TEST: kms invalid mode
-+ * Category: Display
-+ * Description: Make sure all modesets are rejected when the requested mode is
-+ *              invalid
-+ */
+ /**
+- * TEST: Check the debugfs force connector/edid features work correctly
++ * TEST: kms force connector basic
+  * Category: Display
++ * Description: Check the debugfs force connector/edid features work correctly.
+  */
+ 
  #include "igt.h"
- #include <limits.h>
- #include <stdbool.h>
+@@ -68,6 +69,15 @@ static void reset_connectors(void)
+ 	close(drm_fd);
+ }
  
 +/**
-+ * SUBTEST: %s
-+ * Description: Make sure all modesets are rejected when the requested mode is
-+ *              invalid
-+ * Driver requirement: any
-+ * Functionality: kms_core
++ * SUBTEST: force-load-detect
++ * Description: Test to detect forced load.
++ * Driver requirement: i915
++ * Functionality: force_connector, vga
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @bad-hsync-end:
-+ * @bad-hsync-start:
-+ * @bad-htotal:
-+ * @bad-vsync-end:
-+ * @bad-vsync-start:
-+ * @bad-vtotal:
-+ * @clock-too-high:
-+ * @int-max-clock:
-+ * @uint-max-clock:
-+ * @zero-clock:
-+ * @zero-hdisplay:
-+ * @zero-vdisplay:
 + */
-+
- IGT_TEST_DESCRIPTION("Make sure all modesets are rejected when the requested mode is invalid");
- 
- typedef struct _data data_t;
+ static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmModeRes *res)
+ {
+ 	int i, j, w = 64, h = 64;
+@@ -159,6 +169,7 @@ static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmMode
+ /**
+  * SUBTEST: force-connector-state
+  * Description: Test to check the forced connector state
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: force_connector
+@@ -206,6 +217,7 @@ static void force_connector_state(int drm_fd, drmModeConnectorPtr connector)
+ /**
+  * SUBTEST: force-edid
+  * Description: Test to check the values after forcing edid
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: force_connector
+@@ -255,6 +267,7 @@ static void force_edid(int drm_fd, drmModeConnectorPtr connector)
+ /**
+  * SUBTEST: prune-stale-modes
+  * Description: Tests pruning of stale modes
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: force_connector
 -- 
 2.40.0
