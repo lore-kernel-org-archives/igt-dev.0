@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F180E10E2C5
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 14:22:50 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A981C10E04F
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 14:34:09 +0000 (UTC)
+Date: Mon, 29 May 2023 16:34:06 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 19:52:11 +0530
-Message-Id: <20230529142211.333069-3-swati2.sharma@intel.com>
-In-Reply-To: <20230529142211.333069-1-swati2.sharma@intel.com>
-References: <20230529142211.333069-1-swati2.sharma@intel.com>
+Message-ID: <20230529143406.pb5k53jr2723jshq@kamilkon-desk1>
+References: <20230529114450.4633-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] intel-ci: update fastfeedback
- testlist
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230529114450.4633-1-juhapekka.heikkila@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tools/intel_gpu_top: fix segfault on
+ discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,48 +20,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Eero Tamminen <eero.t.tamminen@intel.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update fastfeedback testlist.
+On 2023-05-29 at 14:44:50 +0300, Juha-Pekka Heikkila wrote:
+> in case no display clients ignore display client list
+> 
+> Reported-by: Eero Tamminen <eero.t.tamminen@intel.com>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-v2: -fixed typo, renamed xrg888 to xr24 (Bhanu)
-    -updated xe fastfeedback testlist too (Bhanu)
++cc Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel-ci/fast-feedback.testlist    | 3 ++-
- tests/intel-ci/xe-fast-feedback.testlist | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index cfe7cb4a..31639c89 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -118,7 +118,8 @@ igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@force-load-detect
- igt@kms_force_connector_basic@prune-stale-modes
- igt@kms_frontbuffer_tracking@basic
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
- igt@kms_pipe_crc_basic@hang-read-crc
- igt@kms_pipe_crc_basic@nonblocking-crc
- igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 7242c8d8..bdd12e57 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -259,7 +259,8 @@ igt@kms_flip@basic-plain-flip
- igt@kms_force_connector_basic@force-connector-state
- igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
- igt@kms_pipe_crc_basic@hang-read-crc
- igt@kms_pipe_crc_basic@nonblocking-crc
- igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--- 
-2.25.1
+> ---
+>  tools/intel_gpu_top.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index a89f13d4..cef1d3c7 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -837,6 +837,9 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
+>  	struct igt_drm_clients *aggregated;
+>  	int tmp, num = 0;
+>  
+> +	if (!clients)
+> +		return NULL;
+> +
+>  	if (!aggregate_pids)
+>  		goto out;
+>  
+> -- 
+> 2.25.1
+> 
