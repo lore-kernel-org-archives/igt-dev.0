@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 89B4110E213
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BDFA10E222
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:57 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:49 +0530
-Message-Id: <20230529052835.860047-37-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:53 +0530
+Message-Id: <20230529052835.860047-41-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 36/82] tests/kms_atomic_interruptible: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V4 40/82] tests/kms_concurrent: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,76 +28,45 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_atomic_interruptible.c | 50 ++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ tests/kms_concurrent.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-index 74b2e246a..be28127d8 100644
---- a/tests/kms_atomic_interruptible.c
-+++ b/tests/kms_atomic_interruptible.c
-@@ -21,6 +21,11 @@
-  * IN THE SOFTWARE.
-  */
- 
-+/**
-+ * TEST: kms atomic interruptible
-+ * Category: Display
-+ * Description: Tests that interrupt various atomic ioctls.
-+ */
- #include <signal.h>
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index e1e581723..a7bb64374 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -24,6 +24,32 @@
  
  #include "igt.h"
-@@ -74,6 +79,51 @@ static drmEventContext drm_events = {
- 	.page_flip_handler = ev_page_flip
- };
+ #include "drmtest.h"
++/**
++ * TEST: kms concurrent
++ * Category: Display
++ * Description: Test atomic mode setting concurrently with multiple planes and
++ *              screen resolution
++ *
++ * SUBTEST: pipe-%s
++ * Description: Test atomic mode setting concurrently with multiple planes and
++ *              screen resolution on %arg[1].
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @A:      pipe A
++ * @B:      pipe B
++ * @C:      pipe C
++ * @D:      pipe D
++ * @E:      pipe E
++ * @F:      pipe F
++ * @G:      pipe G
++ * @H:      pipe H
++ */
  
-+/**
-+ * SUBTEST: %s-setmode
-+ * Description: Tests the interrupt properties of %arg[1] modeset
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @atomic:      atomic
-+ * @legacy:      legacy
-+ */
-+
-+/**
-+ * SUBTEST: legacy-%s
-+ * Description: Tests the interrupt properties for %arg[1]
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:         Cursor
-+ * @dpms:           DPMS
-+ * @pageflip:       Page flip
-+ */
-+
-+/**
-+ * SUBTEST: universal-setplane-%s
-+ * Description: Tests the interrupt properties for %arg[1]
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @cursor:         Cursor plane
-+ * @primary:        Primary plane
-+ */
- static void run_plane_test(igt_display_t *display, enum pipe pipe, igt_output_t *output,
- 			   enum plane_test_type test_type, unsigned plane_type)
- {
+ IGT_TEST_DESCRIPTION("Test atomic mode setting concurrently with multiple planes and screen resolution");
+ 
 -- 
 2.40.0
