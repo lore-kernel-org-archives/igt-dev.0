@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB49410E205
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5030710E205
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:09 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:01 +0530
-Message-Id: <20230529052835.860047-49-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:03 +0530
+Message-Id: <20230529052835.860047-51-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 48/82] tests/kms_dp_tiled_display: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V4 50/82] tests/kms_flip_event_leak: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,46 +28,38 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_dp_tiled_display.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ tests/kms_flip_event_leak.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
-index 07b803a50..cd792ec51 100644
---- a/tests/kms_dp_tiled_display.c
-+++ b/tests/kms_dp_tiled_display.c
-@@ -36,12 +36,33 @@
-  * the displays supported by the kernel at the moment.
-  */
+diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+index b79cd5030..398c58259 100644
+--- a/tests/kms_flip_event_leak.c
++++ b/tests/kms_flip_event_leak.c
+@@ -30,6 +30,25 @@
  
+ #include "igt_device.h"
+ #include "xe/xe_query.h"
 +/**
-+ * TEST: kms dp tiled display
++ * TEST: kms flip event leak
 + * Category: Display
-+ * Description: Test for Transcoder Port Sync for Display Port Tiled Displays
-+ */
- #include "igt.h"
- #include "poll.h"
- #include "drm_mode.h"
- #include "drm_fourcc.h"
- #include "igt_edid.h"
- 
-+/**
-+ * SUBTEST: basic-test-%s
-+ * Description: Make sure the Tiled CRTCs are synchronized and we get page flips
-+ *              for all tiled CRTCs in one vblank (%arg[1]).
++ * Description: This test tries to provoke the kernel into leaking a pending
++ *              page flip event when the fd is closed before the flip has
++ *              completed. The test itself won't fail even if the kernel leaks
++ *              the event, but the resulting dmesg WARN will indicate a failure.
++ *
++ * SUBTEST: basic
++ * Description: This test tries to provoke the kernel into leaking a pending
++ *              page flip event when the fd is closed before the flip has
++ *              completed. The test itself won't fail even if the kernel leaks
++ *              the event, but the resulting dmesg WARN will indicate a failure.
 + * Driver requirement: any
-+ * Functionality: tiled_display
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @pattern:                  executes on real panel
-+ * @pattern-with-chamelium:   executes on chamelium.
 + */
-+
- IGT_TEST_DESCRIPTION("Test for Transcoder Port Sync for Display Port Tiled Displays");
  
  typedef struct {
+ 	int drm_fd;
 -- 
 2.40.0
