@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4387910E205
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAC0310E214
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:23 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:12 +0530
-Message-Id: <20230529052835.860047-60-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:15 +0530
+Message-Id: <20230529052835.860047-63-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 59/82] tests/kms_pipe_crc_basic: Document each
+Subject: [igt-dev] [i-g-t V4 62/82] tests/kms_plane_cursor: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,122 +26,51 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Add missing "Driver requirement" field
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_pipe_crc_basic.c | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ tests/kms_plane_cursor.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 84c73fd7f..1b4a4e014 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -23,8 +23,9 @@
-  */
- 
- /**
-- * TEST: Tests behaviour of CRC
-+ * TEST: kms pipe crc basic
-  * Category: Display
-+ * Description: Tests behaviour of CRC
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index 59b105c60..760ee7cf5 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -21,6 +21,36 @@
   */
  
  #include "igt.h"
-@@ -64,6 +65,15 @@ static bool simulation_constraint(enum pipe pipe)
- 	return false;
- }
- 
 +/**
-+ * SUBTEST: bad-source
-+ * Description: Tests error handling when the bad source is set.
++ * TEST: kms plane cursor
++ * Category: Display
++ * Description: Tests cursor interactions with primary and overlay planes.
++ *
++ * SUBTEST: overlay
++ * Description: Tests atomic cursor positioning on primary plane and overlay plane
 + * Driver requirement: any
-+ * Functionality: crc
++ * Functionality: cursor, plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: primary
++ * Description: Tests atomic cursor positioning on primary plane
++ * Driver requirement: any
++ * Functionality: cursor, plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: viewport
++ * Description: Tests atomic cursor positioning on primary plane and overlay plane
++ *              with buffer larger than viewport used for display
++ * Driver requirement: any
++ * Functionality: cursor, plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void test_bad_source(data_t *data)
- {
- 	errno = 0;
-@@ -88,6 +98,7 @@ enum {
- /**
-  * SUBTEST: read-crc
-  * Description: Test for pipe CRC reads
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -95,6 +106,7 @@ enum {
-  *
-  * SUBTEST: read-crc-frame-sequence
-  * Description: Tests the pipe CRC read and ensure frame sequence
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -102,6 +114,7 @@ enum {
-  *
-  * SUBTEST: nonblocking-crc
-  * Description: Test for O_NONBLOCK CRC reads
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -109,6 +122,7 @@ enum {
-  *
-  * SUBTEST: nonblocking-crc-frame-sequence
-  * Description: Test for O_NONBLOCK CRC reads and ensure frame sequence
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -116,6 +130,7 @@ enum {
-  *
-  * SUBTEST: suspend-read-crc
-  * Description: Suspend test for pipe CRC reads
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -123,12 +138,12 @@ enum {
-  *
-  * SUBTEST: hang-read-crc
-  * Description: Hang test for pipe CRC read
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-  * Mega feature: General Display Features
-  */
--
- static void test_read_crc(data_t *data, enum pipe pipe,
- 			  igt_output_t *output, unsigned flags)
- {
-@@ -229,6 +244,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- /**
-  * SUBTEST: compare-crc-sanitycheck
-  * Description: Basic sanity check for CRC mismatches
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-@@ -299,6 +315,16 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_remove_fb(data->drm_fd, &fb1);
- }
  
-+/**
-+ * SUBTEST: disable-crc-after-crtc
-+ * Description: Check that disabling CRCs on a CRTC after having disabled the
-+ *              CRTC does not cause issues.
-+ * Driver requirement: any
-+ * Functionality: crc
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
- 					igt_output_t *output)
- {
+ /*
+  * This file tests cursor interactions with primary and overlay planes.
 -- 
 2.40.0
