@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D23BE10E205
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8ED9410E205
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:22 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:07 +0530
-Message-Id: <20230529052835.860047-55-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:58:14 +0530
+Message-Id: <20230529052835.860047-62-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 54/82] tests/kms_hdr: Document each subtest for
- testplan
+Subject: [igt-dev] [i-g-t V4 61/82] tests/kms_plane_alpha_blend: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,85 +28,81 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_hdr.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ tests/kms_plane_alpha_blend.c | 55 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index e9e52a9a1..79b108bc2 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -20,6 +20,11 @@
-  * OTHER DEALINGS IN THE SOFTWARE.
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index 0d03e178a..51f4713a2 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -24,6 +24,11 @@
+  *   Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
   */
  
 +/**
-+ * TEST: kms hdr
++ * TEST: kms plane alpha blend
 + * Category: Display
-+ * Description: Test HDR metadata interfaces and bpc switch
++ * Description: Test plane alpha and blending mode properties
 + */
  #include "igt.h"
- #include <fcntl.h>
- #include <termios.h>
-@@ -208,6 +213,21 @@ static bool has_max_bpc(igt_output_t *output)
- 	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
+ 
+ IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
+@@ -477,6 +482,56 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
+ 	igt_pipe_crc_stop(data->pipe_crc);
  }
  
 +/**
-+ * SUBTEST: bpc-%s
-+ * Description: Tests switching between different display output bpc modes %arg[1]
++ * SUBTEST: alpha-%s
++ * Description: Test to %arg[1]
 + * Driver requirement: any
-+ * Functionality: kms_hdr
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @switch:              default
-+ * @switch-dpms:         with dpms
-+ * @switch-suspend:      with suspend
++ * @7efc:                validate alpha values 0x7e and 0xfc are swappable on
++ *                       pre-multiplied blend mode.
++ * @basic:               basic plane alpha properties.
++ * @opaque-fb:           alpha properties with opaque fb.
++ * @transparent-fb:      alpha property with transparent fb.
 + */
- static void test_bpc_switch(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
-@@ -561,6 +581,38 @@ static bool has_hdr(igt_output_t *output)
- 	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
- }
- 
++
 +/**
-+ * SUBTEST: invalid-hdr
-+ * Description: Test to ensure HDR is not enabled on non-HDR panel
++ * SUBTEST: coverage-vs-premult-vs-constant
++ * Description: Tests pipe coverage blending properties.
 + * Driver requirement: any
-+ * Functionality: kms_hdr
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: invalid-metadata-sizes
-+ * Description: Tests invalid HDR metadata sizes
++ * SUBTEST: coverage-7efc
++ * Description: Uses alpha values 0x7e and 0xfc to validate fg.alpha and
++ *              plane_alpha are swappable on coverage blend mode.
 + * Driver requirement: any
-+ * Functionality: kms_hdr
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: static-%s
-+ * Description: Tests %arg[1].
++ * SUBTEST: constant-alpha-%s
++ * Description: Tests plane alpha and blending properties with %arg[1].
 + * Driver requirement: any
-+ * Functionality: kms_hdr
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @swap:                    swapping static HDR metadata
-+ * @toggle:                  entering and exiting HDR mode
-+ * @toggle-dpms:             static toggle with dpms
-+ * @toggle-suspend:          static toggle with suspend
++ * @max:            maximum alpha value
++ * @mid:            medium  alpha value
++ * @min:            minimum alpha value
 + */
- static void test_hdr(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
+ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *output,
+ 				    bool blend, bool must_multiply,
+ 				    void(*test)(data_t *, enum pipe, igt_plane_t *))
 -- 
 2.40.0
