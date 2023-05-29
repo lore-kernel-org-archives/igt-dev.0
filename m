@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6AAD10E222
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E4C410E215
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:18 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:56 +0530
-Message-Id: <20230529052835.860047-44-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:21 +0530
+Message-Id: <20230529052835.860047-9-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 43/82] tests/kms_cursor_edge_walk: Document
- each subtest for testplan
+Subject: [igt-dev] [i-g-t V4 08/82] tests/chamelium/kms_chamelium_edid:
+ Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,45 +28,159 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_cursor_edge_walk.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ tests/chamelium/kms_chamelium_edid.c | 90 +++++++++++++++++++++++++++-
+ 1 file changed, 89 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index 5f423a18f..24b1c42e1 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -28,6 +28,32 @@
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
-+/**
-+ * TEST: kms cursor edge walk
-+ * Category: Display
-+ * Description: Exercise CHV pipe C cursor fail
-+ *
-+ * SUBTEST: %s-%s
-+ * Description: Checking cursor size %arg[1] by walking %arg[2] of screen
+diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
+index fc78d4a07..3eb413070 100644
+--- a/tests/chamelium/kms_chamelium_edid.c
++++ b/tests/chamelium/kms_chamelium_edid.c
+@@ -25,8 +25,9 @@
+  */
+ 
+ /**
+- * TEST: Tests behaviour of edid & timings using chamelium
++ * TEST: kms chamelium edid
+  * Category: Display
++ * Description: Testing EDID with a Chamelium board
+  */
+ 
+ #include <fcntl.h>
+@@ -151,6 +152,7 @@ static void check_mode(struct chamelium *chamelium, struct chamelium_port *port,
+  * Run type: BAT
+  * Functionality: dp
+  * Mega feature: DP
 + * Driver requirement: any
-+ * Functionality: cursor
-+ * Mega feature: General Display Features
-+ * Run type: FULL
+  *
+  * SUBTEST: hdmi-edid-read
+  * Description: Make sure the EDID exposed by KMS is the same as the screen's
+@@ -158,6 +160,7 @@ static void check_mode(struct chamelium *chamelium, struct chamelium_port *port,
+  * Run type: BAT
+  * Functionality: hdmi
+  * Mega feature: HDMI
++ * Driver requirement: any
+  *
+  * SUBTEST: vga-edid-read
+  * Description: Make sure the EDID exposed by KMS is the same as the screen's
+@@ -165,6 +168,7 @@ static void check_mode(struct chamelium *chamelium, struct chamelium_port *port,
+  * Run type: BAT
+  * Functionality: vga
+  * Mega feature: VGA
++ * Driver requirement: any
+  */
+ static const char igt_custom_edid_type_read_desc[] =
+ 	"Make sure the EDID exposed by KMS is the same as the screen's";
+@@ -205,6 +209,32 @@ static void igt_custom_edid_type_read(chamelium_data_t *data,
+ 	drmModeFreeConnector(connector);
+ }
+ 
++/**
++ * SUBTEST: dp-edid-stress-resolution-%s
++ * Description: Stress test the DUT by testing multiple EDIDs, one right after
++ *              the other, and ensure their validity by check the real screen
++ *              resolution vs the advertised mode (%arg[1]) resolution.
 + * Test category: functionality test
++ * Run type: FULL
++ * Functionality: dp
++ * Mega feature: DP
++ * Driver requirement: any
++ *
++ * SUBTEST: hdmi-edid-stress-resolution-%s
++ * Description: Stress test the DUT by testing multiple EDIDs, one right after
++ *              the other, and ensure their validity by check the real screen
++ *              resolution vs the advertised mode (%arg[1]) resolution.
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: hdmi
++ * Mega feature: HDMI
++ * Driver requirement: any
 + *
 + * arg[1]:
 + *
-+ * @128x128:          128x128
-+ * @256x256:          256x256
-+ * @64x64:            64x64
-+ *
-+ * arg[2]:
-+ *
-+ * @left-edge:        Left edge
-+ * @right-edge:       Right edge
-+ * @top-bottom:       Top to bottom
-+ * @top-edge:         Top edge
++ * @4k:      4K
++ * @non-4k:  Non 4K
 + */
+ static const char igt_edid_stress_resolution_desc[] =
+ 	"Stress test the DUT by testing multiple EDIDs, one right after the other, "
+ 	"and ensure their validity by check the real screen resolution vs the "
+@@ -274,6 +304,17 @@ static void edid_stress_resolution(chamelium_data_t *data,
+ 			      data->ports, data->port_count);
+ }
  
- IGT_TEST_DESCRIPTION("Exercise CHV pipe C cursor fail");
++/**
++ * SUBTEST: dp-edid-resolution-list
++ * Description: Get an EDID with many modes of different configurations, set
++ *              them on the screen and check the screen resolution matches the
++ *              mode resolution.
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: dp
++ * Mega feature: DP
++ * Driver requirement: any
++ */
+ static const char igt_edid_resolution_list_desc[] =
+ 	"Get an EDID with many modes of different configurations, set them on the screen and check the"
+ 	" screen resolution matches the mode resolution.";
+@@ -337,6 +378,32 @@ static void edid_resolution_list(chamelium_data_t *data,
+ 	drmModeFreeConnector(connector);
+ }
  
++/**
++ * SUBTEST: dp-edid-change-during-%s
++ * Description: Simulate a screen being unplugged and another screen being
++ *              plugged during suspend, check that a uevent is sent and
++ *              connector status is updated during %arg[1]
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: dp
++ * Mega feature: DP
++ * Driver requirement: any
++ *
++ * SUBTEST: hdmi-edid-change-during-%s
++ * Description: Simulate a screen being unplugged and another screen being
++ *              plugged during suspend, check that a uevent is sent and
++ *              connector status is updated during %arg[1]
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: dp
++ * Mega feature: DP
++ * Driver requirement: any
++ *
++ * arg[1]:
++ *
++ * @hibernate:    hibernation
++ * @suspend:      suspend
++ */
+ static const char test_suspend_resume_edid_change_desc[] =
+ 	"Simulate a screen being unplugged and another screen being plugged "
+ 	"during suspend, check that a uevent is sent and connector status is "
+@@ -389,6 +456,27 @@ static void test_suspend_resume_edid_change(chamelium_data_t *data,
+ 			    link_status_failed[1][p]);
+ }
+ 
++/**
++ * SUBTEST: dp-mode-timings
++ * Description: For each mode of the IGT base EDID, perform a modeset and check
++ *              the mode detected by the Chamelium receiver matches the mode we
++ *              set
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: dp
++ * Mega feature: DP
++ * Driver requirement: any
++ *
++ * SUBTEST: hdmi-mode-timings
++ * Description: For each mode of the IGT base EDID, perform a modeset and check
++ *              the mode detected by the Chamelium receiver matches the mode we
++ *              set
++ * Test category: functionality test
++ * Run type: FULL
++ * Functionality: dp
++ * Mega feature: DP
++ * Driver requirement: any
++ */
+ static const char test_mode_timings_desc[] =
+ 	"For each mode of the IGT base EDID, perform a modeset and check the "
+ 	"mode detected by the Chamelium receiver matches the mode we set";
 -- 
 2.40.0
