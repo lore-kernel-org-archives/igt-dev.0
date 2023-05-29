@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CAC810E228
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:35:33 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:58:23 +0530
-Message-Id: <20230529052835.860047-71-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
-References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DEB5810E025
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 14:40:08 +0000 (UTC)
+Message-ID: <f8382366-3825-b8ee-d1dc-3ec0e0911746@intel.com>
+Date: Mon, 29 May 2023 20:10:02 +0530
 MIME-Version: 1.0
+Content-Language: en-US
+To: juhapekka.heikkila@gmail.com, igt-dev@lists.freedesktop.org
+References: <20230526064520.310041-1-swati2.sharma@intel.com>
+ <20230526064520.310041-2-swati2.sharma@intel.com>
+ <e4fddd3d-008a-80e9-8641-0a18ae36e31d@gmail.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <e4fddd3d-008a-80e9-8641-0a18ae36e31d@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 70/82] tests/kms_rotation_crc: Document each
- subtest for testplan
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/tests/kms_cursor_crc: remove
+ extra \n
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,175 +27,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for all kms tests which is used by IGT testplan
-documentation.
+Thanks for the review. Pushed!
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_rotation_crc.c | 130 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 130 insertions(+)
-
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 28b4fd27c..8b38cbd7d 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -22,6 +22,11 @@
-  *
-  */
- 
-+/**
-+ * TEST: kms rotation crc
-+ * Category: Display
-+ * Description: Tests different rotations with different planes & formats
-+ */
- #include "igt.h"
- #include "igt_vec.h"
- #include <math.h>
-@@ -474,6 +479,97 @@ static bool test_format(data_t *data,
- 	return true;
- }
- 
-+/**
-+ * SUBTEST: %s-rotation-180
-+ * Description: Rotation test with 180 degree for %arg[1] planes
-+ * Driver requirement: any
-+ * Functionality: rotation
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @primary:    primary
-+ * @sprite:     sprite
-+ * @cursor:     cursor
-+ */
-+
-+/**
-+ * SUBTEST: %s-rotation-%d
-+ * Description: Rotation test with %arg[2] degree for %arg[1] planes of gen9+
-+ * Driver requirement: any
-+ * Functionality: rotation
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @primary:    primary
-+ * @sprite:     sprite
-+ *
-+ * arg[2].values: 90, 270
-+ */
-+
-+/**
-+ * SUBTEST: bad-%s
-+ * Description: Checking unsupported %arg[1] for gen9+ with 90 degree of rotation
-+ * Driver requirement: any
-+ * Functionality: rotation
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @pixel-format:       pixel format
-+ * @tiling:             tiling
-+ */
-+
-+/**
-+ * SUBTEST: primary-%s-tiled-reflect-x-%d
-+ * Description: Test for %arg[1] & %arg[2] degree rotation on primary plane
-+ * Driver requirement: i915
-+ * Functionality: rotation
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @4:      4 tiling
-+ * @x:      x tiling
-+ * @y:      y tiling
-+ * @yf:     yf tiling
-+ *
-+ * arg[2].values: 0, 180
-+ */
-+
-+/**
-+ * SUBTEST: primary-%s-tiled-reflect-x-%d
-+ * Description: Test for %arg[1] & %arg[2] degree rotation on primary plane
-+ * Driver requirement: i915
-+ * Functionality: rotation
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @y:      y tiling
-+ * @yf:     yf tiling
-+ *
-+ * arg[2].values: 90, 270
-+ *
-+ * SUBTEST: sprite-rotation-90-pos-100-0
-+ * Description: Rotation test with 90 degree for a plane of gen9+ with given position
-+ * Driver requirement: any
-+ * Functionality: rotation
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_format)
- {
- 	igt_display_t *display = &data->display;
-@@ -779,6 +875,31 @@ static bool reusecrcfromlastround(planeinfos p[2], int lastroundp1format,
- 
- 	return true;
- }
-+
-+/**
-+ * SUBTEST: multiplane-rotation
-+ * Description: Rotation test on both planes by making them fully visible
-+ * Driver requirement: any
-+ * Functionality: rotation
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: multiplane-rotation-cropping-%s
-+ * Description: Rotation test on both planes by cropping left/%arg[1] corner of
-+ *              primary plane and right/%arg[1] corner of sprite plane
-+ * Driver requirement: any
-+ * Functionality: rotation
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @bottom:   bottom
-+ * @top:      top
-+ */
-+
- /*
-  * Here is pipe parameter which is now used only for first pipe.
-  * It is left here if this test ever was wanted to be run on
-@@ -980,6 +1101,15 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 	igt_require_f(found, "No valid pipe/output combo found.\n");
- }
- 
-+/**
-+ * SUBTEST: exhaust-fences
-+ * Description: This test intends to check for fence leaks exhaustively
-+ * Driver requirement: i915
-+ * Functionality: rotation
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_plane_rotation_exhaust_fences(data_t *data,
- 					       enum pipe pipe,
- 					       igt_output_t *output,
--- 
-2.40.0
+On 29-May-23 6:00 PM, Juha-Pekka Heikkila wrote:
+> Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> 
+> On 26.5.2023 9.45, Swati Sharma wrote:
+>> Remove extra newline.
+>>
+>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>> ---
+>>   tests/kms_cursor_crc.c | 2 --
+>>   1 file changed, 2 deletions(-)
+>>
+>> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+>> index f837dbc4..f5eb061d 100644
+>> --- a/tests/kms_cursor_crc.c
+>> +++ b/tests/kms_cursor_crc.c
+>> @@ -29,7 +29,6 @@
+>>   #include <stdio.h>
+>>   #include <string.h>
+>> -
+>>   IGT_TEST_DESCRIPTION(
+>>      "Use the display CRC support to validate cursor plane 
+>> functionality. "
+>>      "The test will position the cursor plane either fully onscreen, "
+>> @@ -87,7 +86,6 @@ static bool extended;
+>>   static enum pipe active_pipes[IGT_MAX_PIPES];
+>>   static uint32_t last_pipe;
+>> -
+>>   #define TEST_DPMS (1<<0)
+>>   #define TEST_SUSPEND (1<<1)
+> 
