@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36D1010E213
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4FFC10E213
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:53 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:47 +0530
-Message-Id: <20230529052835.860047-35-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:50 +0530
+Message-Id: <20230529052835.860047-38-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 34/82] tests/kms_async_flips: Document each
- subtest for testplan
+Subject: [igt-dev] [i-g-t V4 37/82] tests/kms_atomic_transition: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,116 +28,140 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_async_flips.c | 62 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+ tests/kms_atomic_transition.c | 100 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 100 insertions(+)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 5cb797dec..572aa171b 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -25,6 +25,11 @@
-  *  Karthik B S <karthik.b.s@intel.com>
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 9f39d033d..446ce571f 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -21,6 +21,10 @@
+  * IN THE SOFTWARE.
   */
  
 +/**
-+ * TEST: kms async flips
++ * TEST: kms atomic transition
 + * Category: Display
-+ * Description: Test asynchronous page flips.
 + */
  #include "igt.h"
- #include "igt_aux.h"
- #include "igt_psr.h"
-@@ -197,6 +202,25 @@ static void test_init_fbs(data_t *data)
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ #include "igt_rand.h"
+ #include "drmtest.h"
+@@ -58,6 +62,15 @@ int *timeline;
+ pthread_t *thread;
+ int *seqno;
+ 
++/**
++ * SUBTEST: plane-primary-toggle-with-vblank-wait
++ * Description: Check toggling of primary plane with vblank
++ * Driver requirement: any
++ * Functionality: watermark
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void
+ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+@@ -470,6 +483,77 @@ static void wait_for_transition(data_t *data, enum pipe pipe, bool nonblocking,
+ 	}
  }
  
 +/**
-+ * SUBTEST: alternate-sync-async-flip
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Alternate between sync and async flips
-+ * Driver requirement: i915
-+ * Functionality: kms_core
++ * SUBTEST: plane-all-modeset-%s
++ * Description: Modeset test for all plane combinations %arg[1]
++ * Driver requirement: any
++ * Functionality: watermark
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: async-flip-with-page-flip-events
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Wait for page flip events in between successive asynchronous flips
-+ * Driver requirement: i915
-+ * Functionality: kms_core
++ * arg[1]:
++ *
++ * @transition:                           default
++ * @transition-fencing:                   with fencing commit
++ */
++
++/**
++ * SUBTEST: plane-all-modeset-%s
++ * Description: Modeset test for all plane combinations %arg[1]
++ * Driver requirement: any
++ * Functionality: watermark
++ * Mega feature: eDP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @transition-fencing-internal-panels:   on internal panels with fencing commit
++ * @transition-internal-panels:           on internal panels
++ */
++
++/**
++ * SUBTEST: plane-all-%s
++ * Description: Transition test for all plane combinations %arg[1]
++ * Driver requirement: any
++ * Functionality: watermark
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @transition:                           default
++ * @transition-fencing:                   with fencing commit
++ * @transition-nonblocking:               with non-blocking commit
++ * @transition-nonblocking-fencing:       with non-blocking & fencing commit
 + */
- static void test_async_flip(data_t *data)
- {
- 	int ret, frame;
-@@ -292,6 +316,17 @@ static void wait_for_vblank(data_t *data, unsigned long *vbl_time, unsigned int
- 	*seq = wait_vbl.reply.sequence;
++
++/**
++ * SUBTEST: plane-toggle-modeset-transition
++ * Description: Check toggling and modeset transition on plane
++ * Driver requirement: any
++ * Functionality: watermark
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-use-after-nonblocking-%s
++ * Description: Transition test with non %arg[1] and make sure commit of disabled
++ *              plane has to complete before atomic commit on that plane
++ * Driver requirement: any
++ * Functionality: watermark
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @unbind:           blocking commit
++ * @unbind-fencing:   blocking commit with fencing
++ */
++
+ /*
+  * 1. Set primary plane to a known fb.
+  * 2. Make sure getcrtc returns the correct fb id.
+@@ -959,6 +1043,22 @@ retry:
+ 	}
  }
  
 +/**
-+ * SUBTEST: test-time-stamp
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *              Verify that the async flip timestamp does not coincide with either
-+ *              previous or next vblank
-+ * Driver requirement: i915
-+ * Functionality: kms_core
++ * SUBTEST: modeset-%s
++ * Description: Modeset transition tests for combinations of %arg[1]
++ * Driver requirement: any
++ * Functionality: watermark
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @transition:                     crtc enabled
++ * @transition-fencing:             crtc enabled with fencing commit
++ * @transition-nonblocking:         crtc enabled with nonblocking commit
++ * @transition-nonblocking-fencing: crtc enabled with nonblocking & fencing commit
 + */
- static void test_timestamp(data_t *data)
+ static void run_modeset_transition(data_t *data, int requested_outputs, bool nonblocking, bool fencing)
  {
- 	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
-@@ -336,6 +371,15 @@ static void test_timestamp(data_t *data)
- 		     "Async flip time stamp is expected to be in between 2 vblank time stamps\n");
- }
- 
-+/**
-+ * SUBTEST: test-cursor
-+ * Description: Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_cursor(data_t *data)
- {
- 	int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
-@@ -488,6 +532,15 @@ static unsigned int clock_ms(void)
- 	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
- }
- 
-+/**
-+ * SUBTEST: crc
-+ * Description: Use CRC to verify async flip scans out the correct framebuffer
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void test_crc(data_t *data)
- {
- 	unsigned int frame = 0;
-@@ -550,6 +603,15 @@ static void test_crc(data_t *data)
- 	igt_assert_lt(data->frame_count * 2, data->flip_count);
- }
- 
-+/**
-+ * SUBTEST: invalid-async-flip
-+ * Description: Negative case to verify if changes in fb are rejected from kernel as expected
-+ * Driver requirement: i915
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
- static void run_test(data_t *data, void (*test)(data_t *))
- {
- 	igt_display_t *display = &data->display;
+ 	igt_output_t *outputs[IGT_MAX_PIPES] = {};
 -- 
 2.40.0
