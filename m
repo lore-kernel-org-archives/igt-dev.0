@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 785E010E252
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 08:59:31 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 218E210E264
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 09:51:11 +0000 (UTC)
 From: janga.rahul.kumar@intel.com
 To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  janga.rahul.kumar@intel.com
-Date: Mon, 29 May 2023 14:29:31 +0530
-Message-Id: <20230529085931.473267-1-janga.rahul.kumar@intel.com>
+Date: Mon, 29 May 2023 15:21:26 +0530
+Message-Id: <20230529095126.481130-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] intel-ci/xe-fast-feedback.testlist: Add
- multi threaded eviction tests
+Subject: [igt-dev] [PATCH i-g-t] tests/xe_exec_threads: Increase fence
+ timeout for simulation env
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,39 +24,83 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Add VRAM eviction tests with multi-threading.
+Increase fence timeout to 30 seconds for simulation env.
+Value is determined based on experiments.
 
 Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 ---
- tests/intel-ci/xe-fast-feedback.testlist | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/xe/xe_exec_threads.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 7242c8d8..69e70118 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -7,17 +7,22 @@ igt@xe_debugfs@gt
- igt@xe_debugfs@forcewake
- igt@xe_dma_buf_sync@export-dma-buf-once
- igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
-+igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
- igt@xe_evict@evict-beng-small
- igt@xe_evict@evict-beng-small-cm
- igt@xe_evict@evict-beng-small-external
- igt@xe_evict@evict-beng-small-external-cm
- igt@xe_evict@evict-beng-small-multi-vm
-+igt@xe_evict@evict-cm-threads-small
-+igt@xe_evict@evict-mixed-threads-small
-+igt@xe_evict@evict-mixed-threads-small-multi-vm
- igt@xe_evict@evict-small
- igt@xe_evict@evict-small-cm
- igt@xe_evict@evict-small-external
- igt@xe_evict@evict-small-external-cm
- igt@xe_evict@evict-small-multi-vm
- igt@xe_evict@evict-small-multi-vm-cm
-+igt@xe_evict@evict-threads-small
- igt@xe_exec_balancer@twice-virtual-basic
- igt@xe_exec_balancer@no-exec-virtual-basic
- igt@xe_exec_balancer@twice-cm-virtual-basic
+diff --git a/tests/xe/xe_exec_threads.c b/tests/xe/xe_exec_threads.c
+index 3f2c2de9..2e777977 100644
+--- a/tests/xe/xe_exec_threads.c
++++ b/tests/xe/xe_exec_threads.c
+@@ -264,6 +264,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 		.num_syncs = 1,
+ 		.syncs = to_user_pointer(sync),
+ 	};
++	int64_t fence_timeout;
+ 	uint32_t engines[MAX_N_ENGINES];
+ 	size_t bo_size;
+ 	uint32_t bo = 0;
+@@ -335,7 +336,11 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 		xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(data), addr,
+ 					 bo_size, sync, 1);
+ #define THREE_SEC	3000
+-	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
++#define THIRTY_SEC	30000
++
++	fence_timeout = igt_run_in_simulation() ? THIRTY_SEC : THREE_SEC;
++
++	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
+ 	data[0].vm_sync = 0;
+ 
+ 	for (i = 0; i < n_execs; i++) {
+@@ -363,7 +368,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 			for (j = i - 0x20; j <= i; ++j)
+ 				xe_wait_ufence(fd, &data[j].exec_sync,
+ 					       USER_FENCE_VALUE,
+-					       NULL, THREE_SEC);
++					       NULL, fence_timeout);
+ 			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
+ 					   NULL, 0);
+ 
+@@ -378,7 +383,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 							 addr, bo_size, sync,
+ 							 1);
+ 			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+-				       NULL, THREE_SEC);
++				       NULL, fence_timeout);
+ 			data[0].vm_sync = 0;
+ 		}
+ 
+@@ -393,7 +398,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 				for (j = i == 0x20 ? 0 : i - 0x1f; j <= i; ++j)
+ 					xe_wait_ufence(fd, &data[j].exec_sync,
+ 						       USER_FENCE_VALUE,
+-						       NULL, THREE_SEC);
++						       NULL, fence_timeout);
+ 				igt_assert_eq(data[i].data, 0xc0ffee);
+ 			} else if (i * 2 != n_execs) {
+ 				/*
+@@ -426,7 +431,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 		(flags & RACE ? n_execs / 2 + 1 : n_execs - 1) : 0;
+ 	for (i = j; i < n_execs; i++)
+ 		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
+-			       THREE_SEC);
++			       fence_timeout);
+ 
+ 	/* Wait for all execs to complete */
+ 	if (flags & INVALIDATE)
+@@ -434,7 +439,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 
+ 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+-	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
++	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
+ 
+ 	for (i = j; i < n_execs; i++)
+ 		igt_assert_eq(data[i].data, 0xc0ffee);
 -- 
 2.25.1
