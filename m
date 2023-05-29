@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5997F10E22E
- for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43C0E10E22C
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 May 2023 05:34:23 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 29 May 2023 10:57:30 +0530
-Message-Id: <20230529052835.860047-18-bhanuprakash.modem@intel.com>
+Date: Mon, 29 May 2023 10:57:25 +0530
+Message-Id: <20230529052835.860047-13-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 17/82] tests/i915/kms_dsc: Document each
+Subject: [igt-dev] [i-g-t V4 12/82] tests/i915/kms_big_joiner: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,48 +28,73 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_dsc.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ tests/i915/kms_big_joiner.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 4af48b196..8047aac27 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -30,8 +30,35 @@
-  *
+diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
+index b9dda58f6..acc8476c9 100644
+--- a/tests/i915/kms_big_joiner.c
++++ b/tests/i915/kms_big_joiner.c
+@@ -24,6 +24,11 @@
+  *  Karthik B S <karthik.b.s@intel.com>
   */
  
 +/**
-+ * TEST: kms dsc
++ * TEST: kms big joiner
 + * Category: Display
-+ * Description: Test to validate display stream compression
++ * Description: Test big joiner
 + */
- #include "igt_dsc_helper.h"
+ #include "igt.h"
+ 
+ #define MAX_HDISPLAY_PER_PIPE 5120
+@@ -40,6 +45,16 @@ typedef struct {
+ 	uint32_t big_joiner_output[2];
+ } data_t;
  
 +/**
-+ * SUBTEST: dsc-%s
-+ * Description: Tests basic display stream compression functionality if supported
-+ *              by a connector by forcing %arg[1]
++ * SUBTEST: invalid-modeset
++ * Description: Verify if the modeset on the adjoining pipe is rejected when
++ *              the pipe is active with a big joiner modeset
 + * Driver requirement: any
-+ * Functionality: dsc
-+ * Mega feature: VDSC
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @basic:                DSC on all connectors that support it with default parameters
-+ * @with-bpc:             DSC on all connectors that support it with certain input BPC
-+ *                        for the connector
-+ * @with-bpc-formats:     DSC on all connectors that support it with certain input
-+ *                        BPC for the connector with diff formats
-+ * @with-formats:         DSC on all connectors that support it with default parameters
-+ *                        and creating fb with diff formats
-+ * @with-output-formats:  DSC and output format on all connectors that support it
 + */
-+
- IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ static void test_invalid_modeset(data_t *data)
+ {
+ 	igt_output_t *output;
+@@ -80,6 +95,15 @@ static void test_invalid_modeset(data_t *data)
+ 	igt_assert_lt(ret, 0);
+ }
  
- enum dsc_test_type {
++/**
++ * SUBTEST: basic
++ * Description: Verify the basic modeset on big joiner mode on all pipes
++ * Driver requirement: any
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_basic_modeset(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
+@@ -118,6 +142,15 @@ static void test_basic_modeset(data_t *data)
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ }
+ 
++/**
++ * SUBTEST: 2x-modeset
++ * Description: Verify simultaneous modeset on 2 big joiner outputs
++ * Driver requirement: any
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_dual_display(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
 -- 
 2.40.0
