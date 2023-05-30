@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4DA510E337
- for <igt-dev@lists.freedesktop.org>; Tue, 30 May 2023 04:39:24 +0000 (UTC)
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Modem,
- Bhanuprakash" <bhanuprakash.modem@intel.com>, "Gandi, Ramadevi"
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4976010E337
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 May 2023 04:44:03 +0000 (UTC)
+Message-ID: <e73b31fb-140d-97e4-d55c-38abf86a78bb@intel.com>
+Date: Tue, 30 May 2023 10:13:40 +0530
+Content-Language: en-US
+To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>, "Kempczynski, Zbigniew"
+ <zbigniew.kempczynski@intel.com>, "Gandi, Ramadevi"
  <ramadevi.gandi@intel.com>
-Date: Tue, 30 May 2023 04:39:13 +0000
-Message-ID: <BYAPR11MB341365193B79B48167E54959D04B9@BYAPR11MB3413.namprd11.prod.outlook.com>
 References: <20230525055519.10098-1-sai.gowtham.ch@intel.com>
  <20230525055519.10098-2-sai.gowtham.ch@intel.com>
  <20230529055122.eikdtj365xdqkass@zkempczy-mobl2>
-In-Reply-To: <20230529055122.eikdtj365xdqkass@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <BYAPR11MB341365193B79B48167E54959D04B9@BYAPR11MB3413.namprd11.prod.outlook.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <BYAPR11MB341365193B79B48167E54959D04B9@BYAPR11MB3413.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe/xe_spin: Integrate
  igt_spin_new with Xe.
@@ -30,165 +31,294 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2VtcGN6eW5za2ksIFpi
-aWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwg
-TWF5IDI5LCAyMDIzIDExOjIxIEFNDQo+IFRvOiBDaCwgU2FpIEdvd3RoYW0gPHNhaS5nb3d0aGFt
-LmNoQGludGVsLmNvbT4NCj4gQ2M6IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1
-YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXQgMS8yXSBsaWIveGUveGVfc3BpbjogSW50ZWdyYXRlIGln
-dF9zcGluX25ldyB3aXRoIFhlLg0KPiANCj4gT24gVGh1LCBNYXkgMjUsIDIwMjMgYXQgMTE6MjU6
-MThBTSArMDUzMCwgc2FpLmdvd3RoYW0uY2hAaW50ZWwuY29tIHdyb3RlOg0KPiA+IEZyb206IFNh
-aSBHb3d0aGFtIENoIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+DQo+ID4NCj4gPiBFeHRlbmRp
-bmcgdGhlIHNwaW5fY3JlYXRlIGltcGxlbWVudGF0aW9uIGFuZCBhbGxvY2F0b3IgaGFuZGxlIHN1
-cHBvcnQNCj4gPiBpbiB4ZSwgd2hlcmUgaXQgc3VibWl0cyBkdW1teSB3b3JrIGxvYWRzIHRvIGVu
-Z2luZS4gVGhpcw0KPiA+IEltcGxlbWVudGF0aW9uIGlzIHdyYXBwZWQgYXJvdW5kIHZtX2JpbmQg
-YW5kIHVuYmluZCBhcyB3ZSBhcmUgc3VwcG9zZWQgdG8NCj4gZG8gaXQgbWFudWFsbHkgZm9yIHhl
-Lg0KPiA+DQo+ID4gQ2M6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5z
-a2lAaW50ZWwuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFNhaSBHb3d0aGFtIENoIDxzYWkuZ293
-dGhhbS5jaEBpbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4gIGxpYi9pZ3RfZHVtbXlsb2FkLmMgfCAy
-NCArKysrKysrKystLS0gIGxpYi9pZ3RfZHVtbXlsb2FkLmggfCAxMCArKysrKw0KPiA+ICBsaWIv
-eGUveGVfc3Bpbi5jICAgIHwgODkgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrDQo+ID4gIGxpYi94ZS94ZV9zcGluLmggICAgfCAgNyArKysrDQo+ID4gIDQgZmls
-ZXMgY2hhbmdlZCwgMTI0IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBk
-aWZmIC0tZ2l0IGEvbGliL2lndF9kdW1teWxvYWQuYyBiL2xpYi9pZ3RfZHVtbXlsb2FkLmMgaW5k
-ZXgNCj4gPiA3NDBhNThmMy4uNmU4OWI3MmQgMTAwNjQ0DQo+ID4gLS0tIGEvbGliL2lndF9kdW1t
-eWxvYWQuYw0KPiA+ICsrKyBiL2xpYi9pZ3RfZHVtbXlsb2FkLmMNCj4gPiBAQCAtNDYsNiArNDYs
-NyBAQA0KPiA+ICAjaW5jbHVkZSAiaW50ZWxfcmVnLmgiDQo+ID4gICNpbmNsdWRlICJpb2N0bF93
-cmFwcGVycy5oIg0KPiA+ICAjaW5jbHVkZSAic3dfc3luYy5oIg0KPiA+ICsjaW5jbHVkZSAieGUv
-eGVfc3Bpbi5oIg0KPiA+DQo+ID4gIC8qKg0KPiA+ICAgKiBTRUNUSU9OOmlndF9kdW1teWxvYWQN
-Cj4gPiBAQCAtNDQ3LDcgKzQ0OCwxMCBAQCBzcGluX2NyZWF0ZShpbnQgZmQsIGNvbnN0IHN0cnVj
-dCBpZ3Rfc3Bpbl9mYWN0b3J5DQo+ID4gKm9wdHMpICBpZ3Rfc3Bpbl90ICogIF9faWd0X3NwaW5f
-ZmFjdG9yeShpbnQgZmQsIGNvbnN0IHN0cnVjdA0KPiA+IGlndF9zcGluX2ZhY3RvcnkgKm9wdHMp
-ICB7DQo+ID4gLQlyZXR1cm4gc3Bpbl9jcmVhdGUoZmQsIG9wdHMpOw0KPiA+ICsJaWYgKGlzX3hl
-X2RldmljZShmZCkpDQo+ID4gKwkJcmV0dXJuIHhlX3NwaW5fY3JlYXRlKGZkLCBvcHRzKTsNCj4g
-PiArCWVsc2UNCj4gPiArCQlyZXR1cm4gc3Bpbl9jcmVhdGUoZmQsIG9wdHMpOw0KPiA+ICB9DQo+
-ID4NCj4gPiAgLyoqDQo+ID4gQEAgLTQ2Nyw2ICs0NzEsMTEgQEAgaWd0X3NwaW5fZmFjdG9yeShp
-bnQgZmQsIGNvbnN0IHN0cnVjdA0KPiA+IGlndF9zcGluX2ZhY3RvcnkgKm9wdHMpICB7DQo+ID4g
-IAlpZ3Rfc3Bpbl90ICpzcGluOw0KPiA+DQo+ID4gKwlpZiAoaXNfeGVfZGV2aWNlKGZkKSkgew0K
-PiA+ICsJCXNwaW4gPSB4ZV9zcGluX2NyZWF0ZShmZCwgb3B0cyk7DQo+ID4gKwkJcmV0dXJuIHNw
-aW47DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICAJaWYgKChvcHRzLT5mbGFncyAmIElHVF9TUElOX1BP
-TExfUlVOKSAmJiBvcHRzLT5lbmdpbmUgIT0NCj4gQUxMX0VOR0lORVMpIHsNCj4gPiAgCQl1bnNp
-Z25lZCBpbnQgY2xhc3M7DQo+ID4NCj4gPiBAQCAtNjQ3LDExICs2NTYsMTQgQEAgdm9pZCBpZ3Rf
-c3Bpbl9mcmVlKGludCBmZCwgaWd0X3NwaW5fdCAqc3BpbikNCj4gPiAgCWlmICghc3BpbikNCj4g
-PiAgCQlyZXR1cm47DQo+ID4NCj4gPiAtCXB0aHJlYWRfbXV0ZXhfbG9jaygmbGlzdF9sb2NrKTsN
-Cj4gPiAtCWlndF9saXN0X2RlbCgmc3Bpbi0+bGluayk7DQo+ID4gLQlwdGhyZWFkX211dGV4X3Vu
-bG9jaygmbGlzdF9sb2NrKTsNCj4gPiAtDQo+ID4gLQlfX2lndF9zcGluX2ZyZWUoZmQsIHNwaW4p
-Ow0KPiA+ICsJaWYgKGlzX3hlX2RldmljZShmZCkpIHsNCj4gPiArCQl4ZV9zcGluX2ZyZWUoZmQs
-IHNwaW4pOw0KPiA+ICsJfSBlbHNlIHsNCj4gPiArCQlwdGhyZWFkX211dGV4X2xvY2soJmxpc3Rf
-bG9jayk7DQo+ID4gKwkJaWd0X2xpc3RfZGVsKCZzcGluLT5saW5rKTsNCj4gPiArCQlwdGhyZWFk
-X211dGV4X3VubG9jaygmbGlzdF9sb2NrKTsNCj4gPiArCQlfX2lndF9zcGluX2ZyZWUoZmQsIHNw
-aW4pOw0KPiA+ICsJfQ0KPiA+ICB9DQo+ID4NCj4gPiAgdm9pZCBpZ3RfdGVybWluYXRlX3NwaW5z
-KHZvaWQpDQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZHVtbXlsb2FkLmggYi9saWIvaWd0X2R1
-bW15bG9hZC5oIGluZGV4DQo+ID4gYjI0N2FiMDIuLjdiY2M3YjU2IDEwMDY0NA0KPiA+IC0tLSBh
-L2xpYi9pZ3RfZHVtbXlsb2FkLmgNCj4gPiArKysgYi9saWIvaWd0X2R1bW15bG9hZC5oDQo+ID4g
-QEAgLTU0LDYgKzU0LDggQEAgdHlwZWRlZiBzdHJ1Y3QgaWd0X3NwaW5fZmFjdG9yeSB7DQo+ID4g
-IAl1bnNpZ25lZCBpbnQgZmxhZ3M7DQo+ID4gIAlpbnQgZmVuY2U7DQo+ID4gIAl1aW50NjRfdCBh
-aG5kOw0KPiA+ICsJc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKmh3ZTsNCj4g
-PiArCXVpbnQzMl90IHZtOw0KPiA+ICB9IGlndF9zcGluX2ZhY3RvcnlfdDsNCj4gPg0KPiA+ICB0
-eXBlZGVmIHN0cnVjdCBpZ3Rfc3BpbiB7DQo+ID4gQEAgLTgzLDYgKzg1LDE0IEBAIHR5cGVkZWYg
-c3RydWN0IGlndF9zcGluIHsgICNkZWZpbmUgU1BJTl9DTEZMVVNIICgxDQo+ID4gPDwgMCkNCj4g
-Pg0KPiA+ICAJc3RydWN0IGlndF9zcGluX2ZhY3Rvcnkgb3B0czsNCj4gPiArDQo+ID4gKwlzdHJ1
-Y3QgeGVfc3BpbiAqeGVfc3BpbjsNCj4gPiArCXNpemVfdCBib19zaXplOw0KPiA+ICsJdWludDY0
-X3QgYWRkcmVzczsNCj4gPiArCXVuc2lnbmVkIGludCBlbmdpbmU7DQo+ID4gKwl1aW50MzJfdCB2
-bTsNCj4gPiArCXVpbnQzMl90IHN5bmNvYmo7DQo+ID4gKw0KPiA+ICB9IGlndF9zcGluX3Q7DQo+
-ID4NCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9saWIveGUveGVfc3Bpbi5jIGIvbGliL3hlL3hlX3Nw
-aW4uYyBpbmRleA0KPiA+IDg1NmQwYmEyLi4zYThjN2JiMyAxMDA2NDQNCj4gPiAtLS0gYS9saWIv
-eGUveGVfc3Bpbi5jDQo+ID4gKysrIGIvbGliL3hlL3hlX3NwaW4uYw0KPiA+IEBAIC0xNSw2ICsx
-NSw3IEBADQo+ID4gICNpbmNsdWRlICJpbnRlbF9yZWcuaCINCj4gPiAgI2luY2x1ZGUgInhlX2lv
-Y3RsLmgiDQo+ID4gICNpbmNsdWRlICJ4ZV9zcGluLmgiDQo+ID4gKyNpbmNsdWRlICJsaWIvaWd0
-X2R1bW15bG9hZC5oIg0KPiA+DQo+ID4gIC8qKg0KPiA+ICAgKiB4ZV9zcGluX2luaXQ6DQo+ID4g
-QEAgLTgyLDYgKzgzLDk0IEBAIHZvaWQgeGVfc3Bpbl9lbmQoc3RydWN0IHhlX3NwaW4gKnNwaW4p
-DQo+ID4gIAlzcGluLT5lbmQgPSAwOw0KPiA+ICB9DQo+ID4NCj4gPiAraWd0X3NwaW5fdCAqDQo+
-ID4gK3hlX3NwaW5fY3JlYXRlKGludCBmZCwgY29uc3Qgc3RydWN0IGlndF9zcGluX2ZhY3Rvcnkg
-Km9wdCkgew0KPiA+ICsJc2l6ZV90IGJvX3NpemUgPSB4ZV9nZXRfZGVmYXVsdF9hbGlnbm1lbnQo
-ZmQpOw0KPiA+ICsJdWludDMyX3QgYm87DQo+ID4gKwl1aW50NjRfdCBhaG5kID0gb3B0LT5haG5k
-LCBhZGRyOw0KPiA+ICsJc3RydWN0IGlndF9zcGluICpzcGluOw0KPiA+ICsJc3RydWN0IHhlX3Nw
-aW4gKnhlX3NwaW47DQo+ID4gKwlzdHJ1Y3QgZHJtX3hlX3N5bmMgc3luYyA9IHsNCj4gPiArCQku
-ZmxhZ3MgPSBEUk1fWEVfU1lOQ19TWU5DT0JKIHwgRFJNX1hFX1NZTkNfU0lHTkFMLA0KPiA+ICsJ
-fTsNCj4gPiArCXN0cnVjdCBkcm1feGVfZXhlYyBleGVjID0gew0KPiA+ICsJCS5udW1fYmF0Y2hf
-YnVmZmVyID0gMSwNCj4gPiArCQkubnVtX3N5bmNzID0gMSwNCj4gPiArCQkuc3luY3MgPSB0b191
-c2VyX3BvaW50ZXIoJnN5bmMpLA0KPiA+ICsJfTsNCj4gPiArDQo+ID4gKwlpZ3RfYXNzZXJ0KGFo
-bmQpOw0KPiA+ICsJc3BpbiA9IGNhbGxvYygxLCBzaXplb2Yoc3RydWN0IGlndF9zcGluKSk7DQo+
-ID4gKwlpZ3RfYXNzZXJ0KHNwaW4pOw0KPiA+ICsNCj4gPiArCXNwaW4tPnN5bmNvYmogPSBzeW5j
-b2JqX2NyZWF0ZShmZCwgMCk7DQo+ID4gKwlpZiAob3B0LT5lbmdpbmUpIHsNCj4gPiArCQlzcGlu
-LT5vcHRzLmVuZ2luZSA9IG9wdC0+ZW5naW5lOw0KPiA+ICsJCXNwaW4tPm9wdHMudm0gPSBvcHQt
-PnZtOw0KPiA+ICsNCj4gPiArCQlzcGluLT5oYW5kbGUgPSB4ZV9ib19jcmVhdGUoZmQsIDAsIHNw
-aW4tPm9wdHMudm0sIGJvX3NpemUpOw0KPiA+ICsJCXhlX3NwaW4gPSB4ZV9ib19tYXAoZmQsIHNw
-aW4tPmhhbmRsZSwgYm9fc2l6ZSk7DQo+ID4gKwkJYWRkciA9IGludGVsX2FsbG9jYXRvcl9hbGxv
-Y193aXRoX3N0cmF0ZWd5KGFobmQsIHNwaW4tPmhhbmRsZSwNCj4gYm9fc2l6ZSwgMCwgQUxMT0Nf
-U1RSQVRFR1lfTE9XX1RPX0hJR0gpOw0KPiA+ICsJCXhlX3ZtX2JpbmRfc3luYyhmZCwgc3Bpbi0+
-b3B0cy52bSwgc3Bpbi0+aGFuZGxlLCAwLCBhZGRyLA0KPiBib19zaXplKTsNCj4gPiArDQo+ID4g
-KwkJeGVfc3Bpbl9pbml0KHhlX3NwaW4sIGFkZHIsIHRydWUpOw0KPiA+ICsJCWV4ZWMuZW5naW5l
-X2lkID0gc3Bpbi0+b3B0cy5lbmdpbmU7DQo+ID4gKwkJZXhlYy5hZGRyZXNzID0gYWRkcjsNCj4g
-PiArCX0gZWxzZSB7DQo+ID4gKwkJc3Bpbi0+dm0gPSB4ZV92bV9jcmVhdGUoZmQsIDAsIDApOw0K
-PiA+ICsJCXNwaW4tPmVuZ2luZSA9IHhlX2VuZ2luZV9jcmVhdGUoZmQsIHNwaW4tPnZtLCBvcHQt
-Pmh3ZSwgMCk7DQo+ID4gKw0KPiA+ICsJCWJvID0geGVfYm9fY3JlYXRlKGZkLCAwLCBzcGluLT52
-bSwgYm9fc2l6ZSk7DQo+ID4gKwkJc3Bpbi0+aGFuZGxlID0gYm87DQo+ID4gKwkJeGVfc3BpbiA9
-IHhlX2JvX21hcChmZCwgc3Bpbi0+aGFuZGxlLCBib19zaXplKTsNCj4gPiArCQlhZGRyID0gaW50
-ZWxfYWxsb2NhdG9yX2FsbG9jX3dpdGhfc3RyYXRlZ3koYWhuZCwgc3Bpbi0+aGFuZGxlLA0KPiBi
-b19zaXplLCAwLCBBTExPQ19TVFJBVEVHWV9MT1dfVE9fSElHSCk7DQo+ID4gKwkJeGVfdm1fYmlu
-ZF9zeW5jKGZkLCBzcGluLT52bSwgc3Bpbi0+aGFuZGxlLCAwLCBhZGRyLCBib19zaXplKTsNCj4g
-PiArDQo+ID4gKwkJeGVfc3Bpbl9pbml0KHhlX3NwaW4sIGFkZHIsIHRydWUpOw0KPiA+ICsJCWV4
-ZWMuZW5naW5lX2lkID0gc3Bpbi0+ZW5naW5lOw0KPiA+ICsJCWV4ZWMuYWRkcmVzcyA9IGFkZHI7
-DQo+ID4gKwl9DQo+IA0KPiBJIHRoaW5rIHlvdSBzaG91bGQgc3VwcG9ydCB0d28gdmFyaWFudHMg
-b2YgZXhlY3V0aW5nIHNwaW5uZXJzOg0KPiANCj4gMS4gaHdlICE9IE5VTEwgKGluIHRoaXMgY2Fz
-ZSBlbmdpbmUgbXVzdCBiZSAwKToNCj4gICAgaWYgKCF2bSkgLT4gY3JlYXRlIHZtOw0KPiAgICBj
-cmVhdGUgZW5naW5lIGZvciB2bSBhY2NvcmRpbmcgdG8gaHdlDQo+IA0KPiAyLiBlbmdpbmUgIT0g
-MCwgdm0gbXVzdCBiZSB2bSBvbiB0b3Agb2Ygd2hpY2ggZW5naW5lIHdhcyBjcmVhdGVkDQo+ICAg
-IGh3ZSBtdXN0IGJlIE5VTEwgaW4gdGhpcyBjYXNlDQo+ICAgIHNlZSBEb21pbmlrIGFuc3dlciBh
-Ym91dCBwYXNzaW5nIGVuZ2luZSt2bSBpbjoNCj4gICAgaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRl
-c2t0b3Aub3JnL3BhdGNoLzUzOTE3My8/c2VyaWVzPTExODIyNyZyZXY9Mg0KPiANCj4gQW5kIGFk
-ZCBzdXBwb3J0IEFMTF9FTkdJTkVTIGZsYWcgKHRoZW4gaXRlcmF0ZSBvdmVyIGFsbCBodyBlbmdp
-bmVzIGxpa2UgQmhhbnUNCj4gc3VnZ2VzdGVkKS4gQW5kIHRyYWNrIGVuZ2luZSBvd25lcnNoaXAg
-LSBpZiBjYWxsZXIgaXMgdGhlIGVuZ2luZS92bSBvd25lciB1c2UgaXQNCj4gYnV0IGRvbid0IGRl
-c3Ryb3ksIGlmIHNwaW5uZXIgY29kZSBpcyBjcmVhdGluZyBlbmdpbmUgeW91IG1heSBmcmVlbHkg
-ZGVzdHJveSBpdCBpbg0KPiBzcGlubmVyIGZyZWUgcGF0aCgpLg0KPiANCkRvIHdlIGhhdmUgRHJp
-dmVyIHN1cHBvcnQgZm9yIEFMTF9FTkdJTkVTIGZsYWcgPz8gDQoNCkkgdGhpbmsgd2hhdCBCaGFu
-dSBhc2tpbmcgZm9yIGlzIGFzIGttcyB0ZXN0cyAgZG9lc27igJl0IG5lZWQgaHdlLCBXZSBoYXZl
-IHRvIHBhc3MgaHdlIGZyb20gdGhlIHhlX3NwaW5fY3JlYXRlIGl0IHNlbGYuIA0KSW4gdGhhdCBj
-YXNlIHdlIGNhbiBhZGQgYSBzdXBwb3J0IGluIHhlX3NwaW5fY3JlYXRlIHdoZXJlIGh3ZSA9IDAg
-YW5kIGVuZ2luZSA9IDAgKCBOb3RlICB0aGlzIGlzIG9ubHkgZm9yIGttcyB0ZXN0cykgLg0KDQpJ
-IGZlZWwgQUxMX0VOR0lORVMgc3VwcG9ydCBjYW4gYmUgYWRkZWQgbGF0ZXIsIE9uY2Uga21zIHRl
-c3RzIGFyZSB1bmJsb2NrZWQuDQoNClJlZ2FyZGluZyBpZ3Rfc3Bpbl9mcmVlLCBJJ3ZlIGFscmVh
-ZHkgYWRkZWQgc3VwcG9ydCBub3QgdG8gZGVzdHJveSB2bSBhbmQgZW5naW5lcyBpZiB0aGV5IGFy
-ZSBwYXNzZWQgZnJvbSB0aGUgaWd0IHRlc3QuIENhbiB5b3UgaGF2ZSBhIGxvb2sgYXQgaWd0X3Nw
-aW5fZnJlZSAoVmVyaWZpZWQgaXQncyB3b3JraW5nIGZpbmUgZm9yIG1lKS4NCi0tLS0tDQpHb3d0
-aGFtDQo+IC0tDQo+IFpiaWduaWV3DQo+IA0KPiANCj4gPiArCXN5bmMuaGFuZGxlID0gc3Bpbi0+
-c3luY29iajsNCj4gPiArCWlndF9hc3NlcnRfZXEoaWd0X2lvY3RsKGZkLCBEUk1fSU9DVExfWEVf
-RVhFQywgJmV4ZWMpLCAwKTsNCj4gPiArCXhlX3NwaW5fd2FpdF9zdGFydGVkKHhlX3NwaW4pOw0K
-PiA+ICsJaWd0X2luZm8oIlNwaW5uZXIgc3RhcnRlZFxuIik7DQo+ID4gKw0KPiA+ICsJc3Bpbi0+
-Ym9fc2l6ZSA9IGJvX3NpemU7DQo+ID4gKwlzcGluLT5hZGRyZXNzID0gYWRkcjsNCj4gPiArCXNw
-aW4tPnhlX3NwaW4gPSB4ZV9zcGluOw0KPiA+ICsNCj4gPiArCXJldHVybiBzcGluOw0KPiA+ICt9
-DQo+ID4gKw0KPiA+ICt2b2lkIHhlX3NwaW5fc3luY193YWl0KGludCBmZCwgc3RydWN0IGlndF9z
-cGluICpzcGluKSB7DQo+ID4gKwlpZ3RfYXNzZXJ0KHN5bmNvYmpfd2FpdChmZCwgJnNwaW4tPnN5
-bmNvYmosIDEsIElOVDY0X01BWCwgMCwNCj4gPiArCQkJCU5VTEwpKTsNCj4gPiArfQ0KPiA+ICsN
-Cj4gPiArdm9pZCB4ZV9zcGluX2ZyZWUoaW50IGZkLCBzdHJ1Y3QgaWd0X3NwaW4gKnNwaW4pIHsN
-Cj4gPiArCXhlX3NwaW5fZW5kKHNwaW4tPnhlX3NwaW4pOw0KPiA+ICsJeGVfc3Bpbl9zeW5jX3dh
-aXQoZmQsIHNwaW4pOw0KPiA+ICsNCj4gPiArCWlmICghc3Bpbi0+b3B0cy5lbmdpbmUpIHsNCj4g
-PiArCQl4ZV92bV91bmJpbmRfc3luYyhmZCwgc3Bpbi0+dm0sIDAsIHNwaW4tPmFkZHJlc3MsIHNw
-aW4tDQo+ID5ib19zaXplKTsNCj4gPiArCX0gZWxzZSB7DQo+ID4gKwkJeGVfdm1fdW5iaW5kX3N5
-bmMoZmQsIHNwaW4tPm9wdHMudm0sIDAsIHNwaW4tPmFkZHJlc3MsIHNwaW4tDQo+ID5ib19zaXpl
-KTsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwlzeW5jb2JqX2Rlc3Ryb3koZmQsIHNwaW4tPnN5bmNv
-YmopOw0KPiA+ICsJZ2VtX211bm1hcChzcGluLT54ZV9zcGluLCBzcGluLT5ib19zaXplKTsNCj4g
-PiArCWdlbV9jbG9zZShmZCwgc3Bpbi0+aGFuZGxlKTsNCj4gPiArDQo+ID4gKwlpZiAoIXNwaW4t
-Pm9wdHMuZW5naW5lKSB7DQo+ID4gKwkJeGVfZW5naW5lX2Rlc3Ryb3koZmQsIHNwaW4tPmVuZ2lu
-ZSk7DQo+ID4gKwkJeGVfdm1fZGVzdHJveShmZCwgc3Bpbi0+dm0pOw0KPiA+ICsJfQ0KPiA+ICsJ
-ZnJlZShzcGluKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgdm9pZCB4ZV9jb3JrX2luaXQoaW50IGZk
-LCBzdHJ1Y3QgZHJtX3hlX2VuZ2luZV9jbGFzc19pbnN0YW5jZSAqaHdlLA0KPiA+ICAJCSAgc3Ry
-dWN0IHhlX2NvcmsgKmNvcmspDQo+ID4gIHsNCj4gPiBkaWZmIC0tZ2l0IGEvbGliL3hlL3hlX3Nw
-aW4uaCBiL2xpYi94ZS94ZV9zcGluLmggaW5kZXgNCj4gPiA3M2Y5YTAyNi4uNDg4NjdlYjggMTAw
-NjQ0DQo+ID4gLS0tIGEvbGliL3hlL3hlX3NwaW4uaA0KPiA+ICsrKyBiL2xpYi94ZS94ZV9zcGlu
-LmgNCj4gPiBAQCAtMTMsMTkgKzEzLDI2IEBADQo+ID4gICNpbmNsdWRlIDxzdGRib29sLmg+DQo+
-ID4NCj4gPiAgI2luY2x1ZGUgInhlX3F1ZXJ5LmgiDQo+ID4gKyNpbmNsdWRlICJsaWIvaWd0X2R1
-bW15bG9hZC5oIg0KPiA+DQo+ID4gIC8qIE1hcHBlZCBHUFUgb2JqZWN0ICovDQo+ID4gKw0KPiA+
-ICBzdHJ1Y3QgeGVfc3BpbiB7DQo+ID4gIAl1aW50MzJfdCBiYXRjaFsxNl07DQo+ID4gIAl1aW50
-NjRfdCBwYWQ7DQo+ID4gIAl1aW50MzJfdCBzdGFydDsNCj4gPiAgCXVpbnQzMl90IGVuZDsNCj4g
-PiArDQo+ID4gIH07DQo+ID4NCj4gPiAraWd0X3NwaW5fdCAqDQo+ID4gK3hlX3NwaW5fY3JlYXRl
-KGludCBmZCwgY29uc3Qgc3RydWN0IGlndF9zcGluX2ZhY3RvcnkgKm9wdCk7DQo+ID4gIHZvaWQg
-eGVfc3Bpbl9pbml0KHN0cnVjdCB4ZV9zcGluICpzcGluLCB1aW50NjRfdCBhZGRyLCBib29sIHBy
-ZWVtcHQpOw0KPiA+IGJvb2wgeGVfc3Bpbl9zdGFydGVkKHN0cnVjdCB4ZV9zcGluICpzcGluKTsN
-Cj4gPiArdm9pZCB4ZV9zcGluX3N5bmNfd2FpdChpbnQgZmQsIHN0cnVjdCBpZ3Rfc3BpbiAqc3Bp
-bik7DQo+ID4gIHZvaWQgeGVfc3Bpbl93YWl0X3N0YXJ0ZWQoc3RydWN0IHhlX3NwaW4gKnNwaW4p
-OyAgdm9pZA0KPiA+IHhlX3NwaW5fZW5kKHN0cnVjdCB4ZV9zcGluICpzcGluKTsNCj4gPiArdm9p
-ZCB4ZV9zcGluX2ZyZWUoaW50IGZkLCBzdHJ1Y3QgaWd0X3NwaW4gKnNwaW4pOw0KPiA+DQo+ID4g
-IHN0cnVjdCB4ZV9jb3JrIHsNCj4gPiAgCXN0cnVjdCB4ZV9zcGluICpzcGluOw0KPiA+IC0tDQo+
-ID4gMi4zOS4xDQo+ID4NCg==
+Hi Sai,
+
+On Tue-30-05-2023 10:09 am, Ch, Sai Gowtham wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
+>> Sent: Monday, May 29, 2023 11:21 AM
+>> To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
+>> Cc: igt-dev@lists.freedesktop.org
+>> Subject: Re: [PATCH i-g-t 1/2] lib/xe/xe_spin: Integrate igt_spin_new with Xe.
+>>
+>> On Thu, May 25, 2023 at 11:25:18AM +0530, sai.gowtham.ch@intel.com wrote:
+>>> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>>>
+>>> Extending the spin_create implementation and allocator handle support
+>>> in xe, where it submits dummy work loads to engine. This
+>>> Implementation is wrapped around vm_bind and unbind as we are supposed to
+>> do it manually for xe.
+>>>
+>>> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+>>> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>>> ---
+>>>   lib/igt_dummyload.c | 24 +++++++++---  lib/igt_dummyload.h | 10 +++++
+>>>   lib/xe/xe_spin.c    | 89 +++++++++++++++++++++++++++++++++++++++++++++
+>>>   lib/xe/xe_spin.h    |  7 ++++
+>>>   4 files changed, 124 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c index
+>>> 740a58f3..6e89b72d 100644
+>>> --- a/lib/igt_dummyload.c
+>>> +++ b/lib/igt_dummyload.c
+>>> @@ -46,6 +46,7 @@
+>>>   #include "intel_reg.h"
+>>>   #include "ioctl_wrappers.h"
+>>>   #include "sw_sync.h"
+>>> +#include "xe/xe_spin.h"
+>>>
+>>>   /**
+>>>    * SECTION:igt_dummyload
+>>> @@ -447,7 +448,10 @@ spin_create(int fd, const struct igt_spin_factory
+>>> *opts)  igt_spin_t *  __igt_spin_factory(int fd, const struct
+>>> igt_spin_factory *opts)  {
+>>> -	return spin_create(fd, opts);
+>>> +	if (is_xe_device(fd))
+>>> +		return xe_spin_create(fd, opts);
+>>> +	else
+>>> +		return spin_create(fd, opts);
+>>>   }
+>>>
+>>>   /**
+>>> @@ -467,6 +471,11 @@ igt_spin_factory(int fd, const struct
+>>> igt_spin_factory *opts)  {
+>>>   	igt_spin_t *spin;
+>>>
+>>> +	if (is_xe_device(fd)) {
+>>> +		spin = xe_spin_create(fd, opts);
+>>> +		return spin;
+>>> +	}
+>>> +
+>>>   	if ((opts->flags & IGT_SPIN_POLL_RUN) && opts->engine !=
+>> ALL_ENGINES) {
+>>>   		unsigned int class;
+>>>
+>>> @@ -647,11 +656,14 @@ void igt_spin_free(int fd, igt_spin_t *spin)
+>>>   	if (!spin)
+>>>   		return;
+>>>
+>>> -	pthread_mutex_lock(&list_lock);
+>>> -	igt_list_del(&spin->link);
+>>> -	pthread_mutex_unlock(&list_lock);
+>>> -
+>>> -	__igt_spin_free(fd, spin);
+>>> +	if (is_xe_device(fd)) {
+>>> +		xe_spin_free(fd, spin);
+>>> +	} else {
+>>> +		pthread_mutex_lock(&list_lock);
+>>> +		igt_list_del(&spin->link);
+>>> +		pthread_mutex_unlock(&list_lock);
+>>> +		__igt_spin_free(fd, spin);
+>>> +	}
+>>>   }
+>>>
+>>>   void igt_terminate_spins(void)
+>>> diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h index
+>>> b247ab02..7bcc7b56 100644
+>>> --- a/lib/igt_dummyload.h
+>>> +++ b/lib/igt_dummyload.h
+>>> @@ -54,6 +54,8 @@ typedef struct igt_spin_factory {
+>>>   	unsigned int flags;
+>>>   	int fence;
+>>>   	uint64_t ahnd;
+>>> +	struct drm_xe_engine_class_instance *hwe;
+>>> +	uint32_t vm;
+>>>   } igt_spin_factory_t;
+>>>
+>>>   typedef struct igt_spin {
+>>> @@ -83,6 +85,14 @@ typedef struct igt_spin {  #define SPIN_CLFLUSH (1
+>>> << 0)
+>>>
+>>>   	struct igt_spin_factory opts;
+>>> +
+>>> +	struct xe_spin *xe_spin;
+>>> +	size_t bo_size;
+>>> +	uint64_t address;
+>>> +	unsigned int engine;
+>>> +	uint32_t vm;
+>>> +	uint32_t syncobj;
+>>> +
+>>>   } igt_spin_t;
+>>>
+>>>
+>>> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c index
+>>> 856d0ba2..3a8c7bb3 100644
+>>> --- a/lib/xe/xe_spin.c
+>>> +++ b/lib/xe/xe_spin.c
+>>> @@ -15,6 +15,7 @@
+>>>   #include "intel_reg.h"
+>>>   #include "xe_ioctl.h"
+>>>   #include "xe_spin.h"
+>>> +#include "lib/igt_dummyload.h"
+>>>
+>>>   /**
+>>>    * xe_spin_init:
+>>> @@ -82,6 +83,94 @@ void xe_spin_end(struct xe_spin *spin)
+>>>   	spin->end = 0;
+>>>   }
+>>>
+>>> +igt_spin_t *
+>>> +xe_spin_create(int fd, const struct igt_spin_factory *opt) {
+>>> +	size_t bo_size = xe_get_default_alignment(fd);
+>>> +	uint32_t bo;
+>>> +	uint64_t ahnd = opt->ahnd, addr;
+>>> +	struct igt_spin *spin;
+>>> +	struct xe_spin *xe_spin;
+>>> +	struct drm_xe_sync sync = {
+>>> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+>>> +	};
+>>> +	struct drm_xe_exec exec = {
+>>> +		.num_batch_buffer = 1,
+>>> +		.num_syncs = 1,
+>>> +		.syncs = to_user_pointer(&sync),
+>>> +	};
+>>> +
+>>> +	igt_assert(ahnd);
+>>> +	spin = calloc(1, sizeof(struct igt_spin));
+>>> +	igt_assert(spin);
+>>> +
+>>> +	spin->syncobj = syncobj_create(fd, 0);
+>>> +	if (opt->engine) {
+>>> +		spin->opts.engine = opt->engine;
+>>> +		spin->opts.vm = opt->vm;
+>>> +
+>>> +		spin->handle = xe_bo_create(fd, 0, spin->opts.vm, bo_size);
+>>> +		xe_spin = xe_bo_map(fd, spin->handle, bo_size);
+>>> +		addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle,
+>> bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
+>>> +		xe_vm_bind_sync(fd, spin->opts.vm, spin->handle, 0, addr,
+>> bo_size);
+>>> +
+>>> +		xe_spin_init(xe_spin, addr, true);
+>>> +		exec.engine_id = spin->opts.engine;
+>>> +		exec.address = addr;
+>>> +	} else {
+>>> +		spin->vm = xe_vm_create(fd, 0, 0);
+>>> +		spin->engine = xe_engine_create(fd, spin->vm, opt->hwe, 0);
+>>> +
+>>> +		bo = xe_bo_create(fd, 0, spin->vm, bo_size);
+>>> +		spin->handle = bo;
+>>> +		xe_spin = xe_bo_map(fd, spin->handle, bo_size);
+>>> +		addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle,
+>> bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
+>>> +		xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
+>>> +
+>>> +		xe_spin_init(xe_spin, addr, true);
+>>> +		exec.engine_id = spin->engine;
+>>> +		exec.address = addr;
+>>> +	}
+>>
+>> I think you should support two variants of executing spinners:
+>>
+>> 1. hwe != NULL (in this case engine must be 0):
+>>     if (!vm) -> create vm;
+>>     create engine for vm according to hwe
+>>
+>> 2. engine != 0, vm must be vm on top of which engine was created
+>>     hwe must be NULL in this case
+>>     see Dominik answer about passing engine+vm in:
+>>     https://patchwork.freedesktop.org/patch/539173/?series=118227&rev=2
+>>
+>> And add support ALL_ENGINES flag (then iterate over all hw engines like Bhanu
+>> suggested). And track engine ownership - if caller is the engine/vm owner use it
+>> but don't destroy, if spinner code is creating engine you may freely destroy it in
+>> spinner free path().
+>>
+> Do we have Driver support for ALL_ENGINES flag ??
+> 
+> I think what Bhanu asking for is as kms tests  doesn’t need hwe, We have to pass hwe from the xe_spin_create it self.
+> In that case we can add a support in xe_spin_create where hwe = 0 and engine = 0 ( Note  this is only for kms tests) .
+
+Yes, KMS tests are not supposed to pass hwe or engines.
+
+- Bhanu
+
+> 
+> I feel ALL_ENGINES support can be added later, Once kms tests are unblocked.
+> 
+> Regarding igt_spin_free, I've already added support not to destroy vm and engines if they are passed from the igt test. Can you have a look at igt_spin_free (Verified it's working fine for me).
+> -----
+> Gowtham
+>> --
+>> Zbigniew
+>>
+>>
+>>> +	sync.handle = spin->syncobj;
+>>> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
+>>> +	xe_spin_wait_started(xe_spin);
+>>> +	igt_info("Spinner started\n");
+>>> +
+>>> +	spin->bo_size = bo_size;
+>>> +	spin->address = addr;
+>>> +	spin->xe_spin = xe_spin;
+>>> +
+>>> +	return spin;
+>>> +}
+>>> +
+>>> +void xe_spin_sync_wait(int fd, struct igt_spin *spin) {
+>>> +	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0,
+>>> +				NULL));
+>>> +}
+>>> +
+>>> +void xe_spin_free(int fd, struct igt_spin *spin) {
+>>> +	xe_spin_end(spin->xe_spin);
+>>> +	xe_spin_sync_wait(fd, spin);
+>>> +
+>>> +	if (!spin->opts.engine) {
+>>> +		xe_vm_unbind_sync(fd, spin->vm, 0, spin->address, spin-
+>>> bo_size);
+>>> +	} else {
+>>> +		xe_vm_unbind_sync(fd, spin->opts.vm, 0, spin->address, spin-
+>>> bo_size);
+>>> +	}
+>>> +
+>>> +	syncobj_destroy(fd, spin->syncobj);
+>>> +	gem_munmap(spin->xe_spin, spin->bo_size);
+>>> +	gem_close(fd, spin->handle);
+>>> +
+>>> +	if (!spin->opts.engine) {
+>>> +		xe_engine_destroy(fd, spin->engine);
+>>> +		xe_vm_destroy(fd, spin->vm);
+>>> +	}
+>>> +	free(spin);
+>>> +}
+>>> +
+>>>   void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+>>>   		  struct xe_cork *cork)
+>>>   {
+>>> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h index
+>>> 73f9a026..48867eb8 100644
+>>> --- a/lib/xe/xe_spin.h
+>>> +++ b/lib/xe/xe_spin.h
+>>> @@ -13,19 +13,26 @@
+>>>   #include <stdbool.h>
+>>>
+>>>   #include "xe_query.h"
+>>> +#include "lib/igt_dummyload.h"
+>>>
+>>>   /* Mapped GPU object */
+>>> +
+>>>   struct xe_spin {
+>>>   	uint32_t batch[16];
+>>>   	uint64_t pad;
+>>>   	uint32_t start;
+>>>   	uint32_t end;
+>>> +
+>>>   };
+>>>
+>>> +igt_spin_t *
+>>> +xe_spin_create(int fd, const struct igt_spin_factory *opt);
+>>>   void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
+>>> bool xe_spin_started(struct xe_spin *spin);
+>>> +void xe_spin_sync_wait(int fd, struct igt_spin *spin);
+>>>   void xe_spin_wait_started(struct xe_spin *spin);  void
+>>> xe_spin_end(struct xe_spin *spin);
+>>> +void xe_spin_free(int fd, struct igt_spin *spin);
+>>>
+>>>   struct xe_cork {
+>>>   	struct xe_spin *spin;
+>>> --
+>>> 2.39.1
+>>>
