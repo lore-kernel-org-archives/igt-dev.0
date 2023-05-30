@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8560D10E169
- for <igt-dev@lists.freedesktop.org>; Tue, 30 May 2023 14:55:43 +0000 (UTC)
-Message-ID: <60097a7b-c74c-ee47-59ca-b32e85a1ac65@linux.intel.com>
-Date: Tue, 30 May 2023 16:55:40 +0200
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2057.outbound.protection.outlook.com [40.107.237.57])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A55EC10E3C2
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 May 2023 15:05:29 +0000 (UTC)
+From: Hersen Wu <hersenxs.wu@amd.com>
+To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
+ <aurabindo.pillai@amd.com>, <alex.hung@amd.com>, <stylon.wang@amd.com>,
+ <hamza.mahfooz@amd.com>
+Date: Tue, 30 May 2023 11:05:19 -0400
+Message-ID: <20230530150519.697148-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230529124824.1876093-1-maarten.lankhorst@linux.intel.com>
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-In-Reply-To: <20230529124824.1876093-1-maarten.lankhorst@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add a test for corner cases
- of eviction.
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_vrr_range: add vrr range
+ check for edp
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,358 +21,494 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Hersen Wu <hersenxs.wu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Cc
+run test for display connected instead of hard coded connector type.
+for dp, edp, video timing of hard coded vrr edid need only 2 dp
+lanes. this will let test pass without bandwidth failure on 2 lanes
+dp or edp display.
+add vrr range check for edp
 
-On 2023-05-29 14:48, Maarten Lankhorst wrote:
-> Gitlab issues 194 and 239 show some corner cases. In particular,
-> signal handling, pt eviction and losing track of external objects
-> on the list.
->
-> The patch series to fix those was sent as
-> https://patchwork.freedesktop.org/series/118428/
->
-> But because it's tricky to reproduce those issues, I had to add some
-> custom igt's to handle those.
->
-> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> ---
->  tests/meson.build     |   1 +
->  tests/xe/xe_evicted.c | 313 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 314 insertions(+)
->  create mode 100644 tests/xe/xe_evicted.c
->
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 6551194fe..166937b6c 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -248,6 +248,7 @@ xe_progs = [
->  	'xe_dma_buf_sync',
->  	'xe_debugfs',
->  	'xe_evict',
-> +	'xe_evicted',
->  	'xe_exec_balancer',
->  	'xe_exec_basic',
->  	'xe_exec_compute_mode',
-> diff --git a/tests/xe/xe_evicted.c b/tests/xe/xe_evicted.c
-> new file mode 100644
-> index 000000000..3f5e6a82c
-> --- /dev/null
-> +++ b/tests/xe/xe_evicted.c
-> @@ -0,0 +1,313 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: Test various eviction and ENOMEM corner cases.
-> + * Category: Software building block
-> + * Sub-category: VM_BIND / eviction
-> + * Test category: functionality test
-> + */
-> +
-> +#include "igt.h"
-> +#include "lib/igt_syncobj.h"
-> +#include "lib/intel_reg.h"
-> +#include "xe_drm.h"
-> +
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +#include "xe/xe_spin.h"
-> +#include <string.h>
-> +
-> +static void evict_mem(struct xe_device *xe)
-> +{
-> +	if (xe->has_vram)
-> +		igt_debugfs_write(xe->fd, "vram0_evict", "1");
-> +	else
-> +		igt_debugfs_write(xe->fd, "gtt_evict", "1");
-> +}
-> +
-> +static void execstress(struct xe_device *xe, uint32_t engine, uint32_t addr)
-> +{
-> +	struct timespec start, end;
-> +
-> +	igt_fork(child, 2) {
-> +		struct drm_xe_sync sync = {
-> +			.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-> +			.handle = syncobj_create(xe->fd, 0),
-> +		};
-> +
-> +		clock_gettime(CLOCK_MONOTONIC, &start);
-> +
-> +		do {
-> +			if (!child)
-> +				evict_mem(xe);
-> +			else
-> +				xe_exec_sync(xe->fd, engine, addr, &sync, 1);
-> +
-> +			clock_gettime(CLOCK_MONOTONIC, &end);
-> +		} while (end.tv_sec - start.tv_sec <= 3);
-> +
-> +		if (child)
-> +			igt_assert(syncobj_wait(xe->fd, &sync.handle, 1, INT64_MAX, 0, NULL));
-> +		syncobj_destroy(xe->fd, sync.handle);
-> +	}
-> +
-> +	igt_waitchildren();
-> +
-> +	/* Leave function in a known state */
-> +	evict_mem(xe);
-> +}
-> +
-> +/* See issue 194, unbinding first VMA may cause BO not to be locked correctly */
-> +static void test_multimap(struct xe_device *xe, bool external)
-> +{
-> +	uint64_t size = xe->default_alignment;
-> +	uint32_t vm = xe_vm_create(xe->fd, DRM_XE_VM_CREATE_SCRATCH_PAGE, 0);
-> +	uint32_t bo = xe_bo_create(xe->fd, 0, external ? 0 : vm, size);
-> +	uint32_t engine = xe_engine_create_class(xe->fd, vm, DRM_XE_ENGINE_CLASS_COPY);
-> +	uint32_t *map = xe_bo_map(xe->fd, bo, size);
-> +
-> +	*map = MI_BATCH_BUFFER_END;
-> +	munmap(map, size);
-> +
-> +	/* Create 2 mappings */
-> +	xe_vm_bind_sync(xe->fd, vm, bo, 0, 0, size);
-> +	xe_vm_bind_sync(xe->fd, vm, bo, 0, size, size);
-> +
-> +	execstress(xe, engine, size);
-> +
-> +	/* Unbind the first one, to possibly confuse stuff */
-> +	xe_vm_unbind_sync(xe->fd, vm, 0, 0, size);
-> +
-> +	execstress(xe, engine, size);
-> +
-> +	/* Teardown.. */
-> +	xe_engine_destroy(xe->fd, engine);
-> +	xe_vm_destroy(xe->fd, vm);
-> +	gem_close(xe->fd, bo);
-> +}
-> +
-> +static uint64_t avail_vram(struct xe_device **xe)
-> +{
-> +	int fd = (*xe)->fd;
-> +	int region_idx;
-> +
-> +	/* Refresh to get up-to-date values */
-> +	xe_device_put(fd);
-> +	*xe = xe_device_get(fd);
-> +
-> +	region_idx = ffs((*xe)->gts->gts[0].native_mem_regions) - 1;
-> +
-> +	return (*xe)->mem_usage->regions[region_idx].total_size -
-> +	       (*xe)->mem_usage->regions[region_idx].used;
-> +}
-> +
-> +static void test_pt_eviction(struct xe_device *xe, bool external)
-> +{
-> +	uint32_t bo, i;
-> +	uint64_t size, full_size, full_addr, addr, avail;
-> +	uint32_t vm;
-> +	uint32_t engine;
-> +	uint32_t *map;
-> +	struct drm_xe_exec exec = {};
-> +	igt_require(xe->has_vram);
-> +
-> +	vm = xe_vm_create(xe->fd, 0, 0);
-> +	engine = xe_engine_create_class(xe->fd, vm, DRM_XE_ENGINE_CLASS_COPY);
-> +
-> +	/* Refresh xe_device size after creating vm + engine */
-> +	evict_mem(xe);
-> +	full_size = (avail_vram(&xe) - (2 << 20ULL)) & ~((2 << 20ULL) - 1);
-> +
-> +	bo = xe_bo_create(xe->fd, 0, external ? 0 : vm, full_size);
-> +
-> +	/* Only map what we need.. */
-> +	map = xe_bo_map(xe->fd, bo, xe->default_alignment);
-> +	*map = MI_BATCH_BUFFER_END;
-> +	munmap(map, xe->default_alignment);
-> +
-> +	/* Stuff bo at the end, so we can use start for partial bo's */
-> +	full_addr = (1ULL << (uint64_t)xe_va_bits(xe->fd)) - full_size;
-> +	xe_vm_bind_sync(xe->fd, vm, bo, 0, full_addr, full_size);
-> +
-> +	exec.engine_id = engine;
-> +	exec.num_batch_buffer = 1;
-> +	exec.address = full_addr;
-> +
-> +	/* Now map partially at 0, and see how many pagetables we can still fill.. */
-> +	addr = 0;
-> +	size = xe->default_alignment;
-> +	xe_vm_bind_sync(xe->fd, vm, bo, 0, addr, size);
-> +
-> +	xe_exec_sync(xe->fd, engine, full_addr, NULL, 0);
-> +
-> +	avail = full_size >> 12;
-> +	while (1) {
-> +		uint64_t new_avail = avail_vram(&xe) >> 12;
-> +
-> +		if (new_avail >= avail)
-> +			igt_info("TTM delayed destroy may have freed some memory\n");
-> +		avail = new_avail;
-> +
-> +		igt_info("%"PRIu64" available 4K pages left\n", avail);
-> +		if (!avail)
-> +			break;
-> +
-> +		if (avail == 1) {
-> +			xe_vm_bind_sync(xe->fd, vm, bo, 0, 2 << 20ULL, size);
-> +			break;
-> +		}
-> +
-> +		addr += 1 << 30ULL;
-> +
-> +		/* Remove 1 for second level PT */
-> +		avail--;
-> +
-> +		for (i = 0; i < min((uint64_t)512, avail); i++) {
-> +			uint64_t this_addr = addr + (i << 21);
-> +
-> +			xe_vm_bind_sync(xe->fd, vm, bo, 0, this_addr, size);
-> +		}
-> +	}
-> +
-> +	/* Verify that with 0 memory available, exec still completes */
-> +	xe_exec_sync(xe->fd, engine, full_addr, NULL, 0);
-> +
-> +	/* Bind 1 more to go over the edge, this should never succeed.. */
-> +	if (__xe_vm_bind(xe->fd, vm, 0, bo, 0, 4 << 20ULL, size,
-> +			 XE_VM_BIND_OP_MAP, NULL, 0, 0, 0) == 0) {
-> +
-> +		/* Boom! */
-> +		igt_assert(igt_ioctl(xe->fd, DRM_IOCTL_XE_EXEC, &exec) < 0 &&
-> +			   errno == ENOMEM);
-> +
-> +		xe_vm_unbind_sync(xe->fd, vm, 0, 4 << 20ULL, size);
-> +	} else {
-> +		igt_assert(errno == ENOMEM);
-> +	}
-> +
-> +	/*
-> +	 * After evicting, we may end up creating new page tables,
-> +	 * so this should fail..
-> +	 */
-> +	evict_mem(xe);
-> +	igt_assert(igt_ioctl(xe->fd, DRM_IOCTL_XE_EXEC, &exec) < 0 &&
-> +		   errno == ENOMEM);
-> +
-> +	/* Cleanup */
-> +	xe_engine_destroy(xe->fd, engine);
-> +	xe_vm_destroy(xe->fd, vm);
-> +	gem_close(xe->fd, bo);
-> +}
-> +
-> +/* Test OOM with signal handler enabled, to mimic X.org (issue #239) */
-> +static void test_signal_oom(struct xe_device *xe, bool external)
-> +{
-> +	uint32_t bo[13], num_bo = 0, i;
-> +	uint64_t binds, size = xe->has_vram ? xe->vram_size[0] : igt_get_avail_ram_mb();
-> +	uint32_t vm = xe_vm_create(xe->fd, DRM_XE_VM_CREATE_SCRATCH_PAGE, 0);
-> +	uint32_t engine = xe_engine_create_class(xe->fd, vm, DRM_XE_ENGINE_CLASS_COPY);
-> +	int err;
-> +	struct drm_xe_gem_create create = {
-> +		.flags = vram_if_possible(xe->fd, 0),
-> +	};
-> +	struct drm_xe_sync sync[2] = {
-> +		{
-> +			.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-> +			.handle = syncobj_create(xe->fd, 0),
-> +		},
-> +		{
-> +			.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-> +			.handle = syncobj_create(xe->fd, 0),
-> +		},
-> +	};
-> +	struct drm_xe_exec exec = {
-> +		.engine_id = engine,
-> +		.syncs = (uintptr_t)sync,
-> +		.num_syncs = ARRAY_SIZE(sync),
-> +		.address = 0,
-> +		.num_batch_buffer = 1,
-> +	};
-> +
-> +	size /= 12;
-> +	size &= ~(xe->default_alignment - 1);
-> +
-> +	create.size = size;
-> +	if (!external)
-> +		create.vm_id = vm;
-> +
-> +	/* Create as many bo's as we can without OOMs */
-> +	while (num_bo < ARRAY_SIZE(bo)) {
-> +		igt_while_interruptible(true) {
-> +			if (num_bo >= ARRAY_SIZE(bo))
-> +				continue;
-> +
-> +			create.handle = 0;
-> +			err = igt_ioctl(xe->fd, DRM_IOCTL_XE_GEM_CREATE, &create);
-> +			if (!err)
-> +				bo[num_bo++] = create.handle;
-> +		}
-> +
-> +		igt_assert(err == 0 || errno == ENOMEM);
-> +		if (err) {
-> +			igt_assert(!xe->has_vram || num_bo > 9);
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_info("Created %u bo's (total: %"PRIu64" MB)\n",
-> +		 num_bo, (num_bo * size) >> 20ULL);
-> +
-> +	binds = 0;
-> +	for (i = 0; i < num_bo; i++) {
-> +		evict_mem(xe);
-> +		igt_debug("Binding bo %i, total attempts %"PRIi64"\n", i, binds);
-> +
-> +		igt_while_interruptible(true)
-> +			xe_vm_bind(xe->fd, vm, bo[i], 0, ((binds++) << 32ULL), size, sync, 1);
-> +	}
-> +
-> +	sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
-> +
-> +	/* Try a few times, why not? */
-> +	for (i = 0; i < 4; i++) {
-> +		igt_while_interruptible(true) {
-> +			err = igt_ioctl(xe->fd, DRM_IOCTL_XE_EXEC, &exec);
-> +			igt_assert(err < 0 && errno == ENOMEM);
-> +		}
-> +	}
-> +
-> +	xe_vm_destroy(xe->fd, vm);
-> +	while (num_bo--)
-> +		gem_close(xe->fd, bo[num_bo]);
-> +	syncobj_destroy(xe->fd, sync[1].handle);
-> +	syncobj_destroy(xe->fd, sync[0].handle);
-> +}
-> +
-> +igt_main
-> +{
-> +	int fd;
-> +
-> +	igt_fixture
-> +		fd = drm_open_driver(DRIVER_XE);
-> +
-> +	igt_subtest("multimap-internal")
-> +		test_multimap(xe_device_get(fd), false);
-> +
-> +	igt_subtest("multimap-external")
-> +		test_multimap(xe_device_get(fd), true);
-> +
-> +	igt_subtest("pt-eviction-internal")
-> +		test_pt_eviction(xe_device_get(fd), false);
-> +
-> +	igt_subtest("pt-eviction-external")
-> +		test_pt_eviction(xe_device_get(fd), false);
-> +
-> +	igt_subtest("signal-oom-internal")
-> +		test_signal_oom(xe_device_get(fd), false);
-> +
-> +	igt_subtest("signal-oom-external")
-> +		test_signal_oom(xe_device_get(fd), false);
-> +}
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+---
+ lib/igt_amd.c                |  31 ++++
+ lib/igt_amd.h                |   2 +
+ tests/amdgpu/amd_vrr_range.c | 297 ++++++++++++++++++++++-------------
+ 3 files changed, 222 insertions(+), 108 deletions(-)
+
+diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+index 09923101f..8837714f7 100644
+--- a/lib/igt_amd.c
++++ b/lib/igt_amd.c
+@@ -1111,6 +1111,37 @@ int igt_amd_read_psr_state(int drm_fd, char *connector_name)
+ 	return strtol(buf, NULL, 10);
+ }
+ 
++/**
++ * igt_amd_allow_edp_hotplug_detect: notify kernel read edp edid all the time
++ * @drm_fd: DRM file descriptor
++ * @connector_name: The connector's name
++ * @enable: allow or disable kernel read eDP EDID for each display detection
++ * example usage: echo 0x1 >
++ * /sys/kernel/debug/dri/0/eDP-1/allow_edp_hotplug_detection
++ */
++void igt_amd_allow_edp_hotplug_detect(int drm_fd, char *connector_name, bool enable)
++{
++	int fd, hpd_fd, wr_len;
++	const char *allow_hotplug_detect = "1";
++	const char *dis_allow_hotplug_detect = "0";
++
++	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
++	igt_assert(fd >= 0);
++	hpd_fd = openat(fd, DEBUGFS_ALLOW_EDP_HOTPLUG_DETECT, O_WRONLY);
++	close(fd);
++	igt_assert(hpd_fd >= 0);
++
++	if (enable) {
++		wr_len = write(hpd_fd, allow_hotplug_detect, strlen(allow_hotplug_detect));
++		igt_assert_eq(wr_len, strlen(allow_hotplug_detect));
++	} else {
++		wr_len = write(hpd_fd, dis_allow_hotplug_detect, strlen(dis_allow_hotplug_detect));
++		igt_assert_eq(wr_len, strlen(dis_allow_hotplug_detect));
++	}
++
++	close(hpd_fd);
++}
++
+ /**
+  * @brief check if AMDGPU DM visual confirm debugfs interface entry exist and defined
+  *
+diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+index 428bfe6f7..d57390405 100644
+--- a/lib/igt_amd.h
++++ b/lib/igt_amd.h
+@@ -48,6 +48,7 @@
+ #define MAX_SUPPORTED_ILR 8
+ #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
+ #define DEBUGFS_EDP_PSR_STATE	"psr_state"
++#define DEBUGFS_ALLOW_EDP_HOTPLUG_DETECT "allow_edp_hotplug_detection"
+ 
+ /* amdgpu DM interface entries */
+ #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
+@@ -187,6 +188,7 @@ bool igt_amd_psr_support_sink(int drm_fd, char *connector_name, enum psr_mode mo
+ bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mode);
+ bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name);
+ int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
++void igt_amd_allow_edp_hotplug_detect(int drm_fd, char *connector_name, bool enable);
+ 
+ /* DM interface helpers */
+ bool igt_amd_has_visual_confirm(int drm_fd);
+diff --git a/tests/amdgpu/amd_vrr_range.c b/tests/amdgpu/amd_vrr_range.c
+index 2f27296dd..c9a7bb973 100644
+--- a/tests/amdgpu/amd_vrr_range.c
++++ b/tests/amdgpu/amd_vrr_range.c
+@@ -27,11 +27,14 @@
+ 
+ IGT_TEST_DESCRIPTION("Test EDID parsing and debugfs reporting on Freesync displays");
+ 
++/* Maximumm pipes on any AMD ASIC. */
++#define MAX_PIPES 6
++
+ /* Common test data. */
+ typedef struct data {
+ 	igt_display_t display;
+ 	igt_plane_t *primary;
+-	igt_output_t *output;
++	igt_output_t *output[MAX_PIPES];
+ 	int fd;
+ } data_t;
+ 
+@@ -53,45 +56,46 @@ struct {
+ 	const range_t range;
+ } edid_database[] = {
+ 	{
+-		/* DP EDID from Benq EL-2870u */
+-		"Benq EL-2870u DP",
++		/* EDID Version 1.4. Timing requires 2 DP lanes. */
++		"External DP",
+ 		DRM_MODE_CONNECTOR_DisplayPort,
+ 		{
+ 		0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00,
+-		0x09, 0xd1, 0x49, 0x79, 0x45, 0x54, 0x00, 0x00,
+-		0x0c, 0x1e, 0x01, 0x04, 0xb5, 0x3e, 0x22, 0x78,
+-		0x3f, 0x08, 0xa5, 0xa2, 0x57, 0x4f, 0xa2, 0x28,
+-		0x0f, 0x50, 0x54, 0xa5, 0x6b, 0x80, 0xd1, 0xc0,
+-		0x81, 0xc0, 0x81, 0x00, 0x81, 0x80, 0xa9, 0xc0,
+-		0xb3, 0x00, 0xa9, 0x40, 0x01, 0x01, 0x4d, 0xd0,
+-		0x00, 0xa0, 0xf0, 0x70, 0x3e, 0x80, 0x30, 0x20,
+-		0x35, 0x00, 0x6d, 0x55, 0x21, 0x00, 0x00, 0x1a,
+-		0x00, 0x00, 0x00, 0xff, 0x00, 0x46, 0x33, 0x4c,
+-		0x30, 0x34, 0x33, 0x33, 0x33, 0x53, 0x4c, 0x30,
+-		0x0a, 0x20, 0x00, 0x00, 0x00, 0xfd, 0x00, 0x28,
+-		0x3c, 0x87, 0x87, 0x3c, 0x01, 0x0a, 0x20, 0x20,
+-		0x20, 0x20, 0x20, 0x20, 0x00, 0x00, 0x00, 0xfc,
+-		0x00, 0x42, 0x65, 0x6e, 0x51, 0x20, 0x45, 0x4c,
+-		0x32, 0x38, 0x37, 0x30, 0x55, 0x0a, 0x01, 0xa8,
+-		0x02, 0x03, 0x2e, 0xf1, 0x56, 0x61, 0x60, 0x5d,
+-		0x5e, 0x5f, 0x10, 0x05, 0x04, 0x03, 0x02, 0x07,
+-		0x06, 0x0f, 0x1f, 0x20, 0x21, 0x22, 0x14, 0x13,
+-		0x12, 0x16, 0x01, 0x23, 0x09, 0x07, 0x07, 0x83,
+-		0x01, 0x00, 0x00, 0xe3, 0x05, 0xc0, 0x00, 0xe6,
+-		0x06, 0x05, 0x01, 0x5a, 0x53, 0x44, 0x02, 0x3a,
++		0x06, 0xb3, 0xaf, 0x24, 0x01, 0x01, 0x01, 0x01,
++		0x00, 0x1d, 0x01, 0x04, 0x80, 0x35, 0x1e, 0x78,
++		0x2b, 0x51, 0xb5, 0xa4, 0x54, 0x4f, 0xa0, 0x26,
++		0x0d, 0x50, 0x54, 0xbf, 0xcf, 0x00, 0x81, 0x40,
++		0x81, 0x80, 0x95, 0x00, 0x71, 0x4f, 0x81, 0xc0,
++		0xb3, 0x00, 0x01, 0x01, 0x01, 0x01, 0x02, 0x3a,
+ 		0x80, 0x18, 0x71, 0x38, 0x2d, 0x40, 0x58, 0x2c,
+-		0x45, 0x00, 0x6d, 0x55, 0x21, 0x00, 0x00, 0x1e,
+-		0x56, 0x5e, 0x00, 0xa0, 0xa0, 0xa0, 0x29, 0x50,
+-		0x30, 0x20, 0x35, 0x00, 0x6d, 0x55, 0x21, 0x00,
+-		0x00, 0x1a, 0x8c, 0x64, 0x00, 0x50, 0xf0, 0x70,
+-		0x1f, 0x80, 0x08, 0x20, 0x18, 0x04, 0x6d, 0x55,
+-		0x21, 0x00, 0x00, 0x1a, 0x00, 0x00, 0x00, 0x00,
++		0x45, 0x00, 0x0f, 0x28, 0x21, 0x00, 0x00, 0x1e,
++		0xfc, 0x7e, 0x80, 0x88, 0x70, 0x38, 0x12, 0x40,
++		0x18, 0x20, 0x35, 0x00, 0x0f, 0x28, 0x21, 0x00,
++		0x00, 0x1e, 0x00, 0x00, 0x00, 0xfd, 0x00, 0x30,
++		0x90, 0x1e, 0xb4, 0x22, 0x01, 0x0a, 0x20, 0x20,
++		0x20, 0x20, 0x20, 0x20, 0x00, 0x00, 0x00, 0xfc,
++		0x00, 0x41, 0x53, 0x55, 0x53, 0x20, 0x56, 0x50,
++		0x32, 0x34, 0x39, 0x0a, 0x20, 0x20, 0x01, 0x91,
++		0x02, 0x03, 0x2d, 0xf1, 0x4f, 0x01, 0x03, 0x04,
++		0x13, 0x1f, 0x12, 0x02, 0x11, 0x90, 0x0e, 0x0f,
++		0x1d, 0x1e, 0x3f, 0x40, 0x23, 0x09, 0x07, 0x07,
++		0x83, 0x01, 0x00, 0x00, 0x67, 0x03, 0x0c, 0x00,
++		0x10, 0x00, 0x00, 0x44, 0x68, 0x1a, 0x00, 0x00,
++		0x01, 0x01, 0x30, 0x90, 0xe6, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+ 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+ 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+-		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x93
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16
+ 		},
+-		{40, 60},
++		{48, 144},
+ 	},
++
+ 	{
+ 		/* HDMI EDID from ASUS VP249QGR */
+ 		"ASUS VP249QGR HDMI",
+@@ -132,26 +136,63 @@ struct {
+ 		},
+ 		{48, 144},
+ 	},
++
++	{
++		/* EDID Version 1.4. Timing requires 2 DP lanes. */
++		"eDP",
++		DRM_MODE_CONNECTOR_eDP,
++		{
++		0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00,
++		0x06, 0xb3, 0xaf, 0x24, 0x01, 0x01, 0x01, 0x01,
++		0x00, 0x1d, 0x01, 0x04, 0x80, 0x35, 0x1e, 0x78,
++		0x2b, 0x51, 0xb5, 0xa4, 0x54, 0x4f, 0xa0, 0x26,
++		0x0d, 0x50, 0x54, 0xbf, 0xcf, 0x00, 0x81, 0x40,
++		0x81, 0x80, 0x95, 0x00, 0x71, 0x4f, 0x81, 0xc0,
++		0xb3, 0x00, 0x01, 0x01, 0x01, 0x01, 0x02, 0x3a,
++		0x80, 0x18, 0x71, 0x38, 0x2d, 0x40, 0x58, 0x2c,
++		0x45, 0x00, 0x0f, 0x28, 0x21, 0x00, 0x00, 0x1e,
++		0xfc, 0x7e, 0x80, 0x88, 0x70, 0x38, 0x12, 0x40,
++		0x18, 0x20, 0x35, 0x00, 0x0f, 0x28, 0x21, 0x00,
++		0x00, 0x1e, 0x00, 0x00, 0x00, 0xfd, 0x00, 0x30,
++		0x90, 0x1e, 0xb4, 0x22, 0x01, 0x0a, 0x20, 0x20,
++		0x20, 0x20, 0x20, 0x20, 0x00, 0x00, 0x00, 0xfc,
++		0x00, 0x41, 0x53, 0x55, 0x53, 0x20, 0x56, 0x50,
++		0x32, 0x34, 0x39, 0x0a, 0x20, 0x20, 0x01, 0x91,
++		0x02, 0x03, 0x2d, 0xf1, 0x4f, 0x01, 0x03, 0x04,
++		0x13, 0x1f, 0x12, 0x02, 0x11, 0x90, 0x0e, 0x0f,
++		0x1d, 0x1e, 0x3f, 0x40, 0x23, 0x09, 0x07, 0x07,
++		0x83, 0x01, 0x00, 0x00, 0x67, 0x03, 0x0c, 0x00,
++		0x10, 0x00, 0x00, 0x44, 0x68, 0x1a, 0x00, 0x00,
++		0x01, 0x01, 0x30, 0x90, 0xe6, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16
++		},
++		{48, 144},
++	},
+ };
+ 
+ /* Common test setup. */
+-static void test_init(data_t *data, uint32_t connector_type)
++//static void test_init(data_t *data, uint32_t connector_type)
++static void test_init(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
++	int i;
+ 
+-	igt_display_reset(display);
++	for_each_pipe(display, i) {
++		igt_output_t *output = &display->outputs[i];
+ 
+-	/* find connected outputs */
+-	data->output = NULL;
+-	for (int i=0; i < data->display.n_outputs; ++i) {
+-		drmModeConnector *connector = data->display.outputs[i].config.connector;
+-		if (connector->connection == DRM_MODE_CONNECTED &&
+-			connector->connector_type == connector_type) {
+-			data->output = &data->display.outputs[i];
+-		}
++		data->output[i] = output;
+ 	}
+-	igt_assert_f(data->output, "Requires connected output\n");
+ 
++	igt_display_reset(display);
+ }
+ 
+ /* Common test cleanup. */
+@@ -185,6 +226,7 @@ static range_t get_freesync_range(data_t *data, igt_output_t *output)
+ 	fd = igt_debugfs_connector_dir(data->fd, output->name, O_RDONLY);
+ 	igt_assert(fd >= 0);
+ 
++	/* example usage: cat /sys/kernel/debug/dri/0/DP-1/vrr_range */
+ 	res = igt_debugfs_simple_read(fd, "vrr_range", buf, sizeof(buf));
+ 	igt_require(res > 0);
+ 
+@@ -199,56 +241,86 @@ static range_t get_freesync_range(data_t *data, igt_output_t *output)
+ 	return range;
+ }
+ 
+-static void trigger_edid_parse(data_t *data, uint32_t test_flags)
++static void trigger_edid_parse(data_t *data, igt_output_t *output, uint32_t test_flags)
+ {
+ 	if (test_flags & TEST_SUSPEND)
+ 		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+ 					      SUSPEND_TEST_NONE);
+ 	else
+-		igt_amd_trigger_hotplug(data->fd, data->output->name);
++		igt_amd_trigger_hotplug(data->fd, output->name);
+ 
+ 	/* more safe margin until resume and hotplug is completed */
+ 	usleep(1500000);
+ }
+ 
+ /* Check if EDID parsing is correctly reporting Freesync capability
+- * by overriding EDID with ones from golden sample. Display under test
+- * must still support Freesync.
++ * by overriding EDID with ones from golden sample.
+  */
+-static void test_freesync_parsing(data_t *data, uint32_t connector_type,
+-		uint32_t test_flags)
++static void test_freesync_parsing_base(data_t *data, uint32_t test_flags)
+ {
+ 	const struct edid *edid;
+ 	range_t range, expected_range;
+-	int i;
++	igt_output_t *output;
++	int i, j, test_conn_cnt = 0;
+ 
+-	test_init(data, connector_type);
++	test_init(data);
+ 
+ 	igt_amd_require_hpd(&data->display, data->fd);
+ 
+-	/* find a test EDID */
+-	i = find_test_edid_index(connector_type);
+-	edid = (const struct edid *)edid_database[i].edid;
+-	expected_range = edid_database[i].range;
++	for_each_pipe(&data->display, i) {
++		/* setup the output */
++		output = data->output[i];
++		if (!output || !igt_output_is_connected(output))
++			continue;
++
++		/* find a test EDID */
++		j = find_test_edid_index(output->config.connector->connector_type);
++
++		edid = (const struct edid *)edid_database[j].edid;
++		expected_range = edid_database[j].range;
++
++		/* eDP allow read edid for each display detection */
++		if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP)
++			igt_amd_allow_edp_hotplug_detect(data->fd, output->name, true);
++
++		/* force to use hard coded VRR EDID */
++		kmstest_force_edid(data->fd, output->config.connector, edid);
+ 
+-	kmstest_force_edid(data->fd, data->output->config.connector, edid);
++		trigger_edid_parse(data, output, test_flags);
+ 
+-	trigger_edid_parse(data, test_flags);
++		range = get_freesync_range(data, output);
+ 
+-	range = get_freesync_range(data, data->output);
++		/* undo EDID override. re-parse EDID of display */
++		kmstest_force_edid(data->fd, output->config.connector, NULL);
+ 
+-	/* undo EDID override and trigger a re-parsing of EDID */
+-	kmstest_force_edid(data->fd, data->output->config.connector, NULL);
+-	igt_amd_trigger_hotplug(data->fd, data->output->name);
++		igt_amd_trigger_hotplug(data->fd, output->name);
++
++		/* eDP dis-allow read edid for each display detection */
++		if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP)
++			igt_amd_allow_edp_hotplug_detect(data->fd, output->name, false);
++
++		test_conn_cnt++;
++
++		igt_assert_f(range.min == expected_range.min &&
++				range.max == expected_range.max,
++				"Expecting Freesync range %d-%d, got %d-%d\n",
++				expected_range.min, expected_range.max,
++				range.min, range.max);
++		igt_info("%s Freesync range: %d-%d\n", output->name, range.min, range.max);
++	}
+ 
+ 	test_fini(data);
++	igt_skip_on(test_conn_cnt == 0);
++}
++
++static void test_freesync_parsing(data_t *data)
++{
++	test_freesync_parsing_base(data, TEST_NONE);
++}
+ 
+-	igt_assert_f(range.min == expected_range.min &&
+-			range.max == expected_range.max,
+-			"Expecting Freesync range %d-%d, got %d-%d\n",
+-			expected_range.min, expected_range.max,
+-			range.min, range.max);
+-	igt_info("Freesync range: %d-%d\n", range.min, range.max);
++static void test_freesync_parsing_suspend(data_t *data)
++{
++	test_freesync_parsing_base(data, TEST_SUSPEND);
+ }
+ 
+ /* Returns true if an output supports VRR. */
+@@ -260,32 +332,57 @@ static bool has_vrr(igt_output_t *output)
+ 
+ /* More relaxed checking on Freesync capability.
+  * Only checks if frame rate range is within legal range.
++ * Display under test MUST be VRR capable.
+  */
+-static void test_freesync_range(data_t *data, uint32_t connector_type,
+-		uint32_t test_flags)
++static void test_freesync_range_base(data_t *data, uint32_t test_flags)
+ {
+ 	range_t range;
++	igt_output_t *output;
++	int i, test_conn_cnt = 0;
+ 
+-	test_init(data, connector_type);
++	test_init(data);
+ 
+ 	igt_amd_require_hpd(&data->display, data->fd);
+ 
+-	igt_assert_f(has_vrr(data->output),
+-			"connector %s is not VRR capable\n",
+-			data->output->name);
++	for_each_pipe(&data->display, i) {
++		/* setup the output */
++		output = data->output[i];
++		if (!output || !igt_output_is_connected(output))
++			continue;
++
++		igt_debug_on_f(!has_vrr(output), "Requires output supports VRR\n");
++
++		if (!has_vrr(output)) {
++			igt_info("connector %s is not VRR capable\n", output->name);
++			continue;
++		}
++
++		trigger_edid_parse(data, output, test_flags);
++
++		range = get_freesync_range(data, output);
+ 
+-	trigger_edid_parse(data, test_flags);
++		igt_assert_f(range.min != 0 &&
++				range.max != 0 &&
++				range.max - range.min > 10,
++				"Invalid Freesync range %d-%d\n",
++				range.min, range.max);
++		igt_info("%s Freesync range: %d-%d\n", output->name, range.min, range.max);
+ 
+-	range = get_freesync_range(data, data->output);
++		test_conn_cnt++;
++	}
+ 
+ 	test_fini(data);
++	igt_skip_on(test_conn_cnt == 0);
++}
++
++static void test_freesync_range(data_t *data)
++{
++	test_freesync_range_base(data, TEST_NONE);
++}
+ 
+-	igt_assert_f(range.min != 0 &&
+-			range.max != 0 &&
+-			range.max - range.min > 10,
+-			"Invalid Freesync range %d-%d\n",
+-			range.min, range.max);
+-	igt_info("Freesync range: %d-%d\n", range.min, range.max);
++static void test_freesync_range_suspend(data_t *data)
++{
++	test_freesync_range_base(data, TEST_SUSPEND);
+ }
+ 
+ igt_main
+@@ -307,33 +404,17 @@ igt_main
+ 		igt_display_require_output(&data.display);
+ 	}
+ 
+-	igt_describe("Freesync EDID parsing on HDMI");
+-	igt_subtest("freesync-parsing-hdmi") test_freesync_parsing(&data,
+-			DRM_MODE_CONNECTOR_HDMIA, TEST_NONE);
+-	igt_describe("Freesync EDID parsing on DP");
+-	igt_subtest("freesync-parsing-dp") test_freesync_parsing(&data,
+-			DRM_MODE_CONNECTOR_DisplayPort, TEST_NONE);
+-
+-	igt_describe("Freesync EDID parsing on HDMI after suspend");
+-	igt_subtest("freesync-parsing-hdmi-suspend") test_freesync_parsing(&data,
+-			DRM_MODE_CONNECTOR_HDMIA, TEST_SUSPEND);
+-	igt_describe("Freesync EDID parsing on DP after suspend");
+-	igt_subtest("freesync-parsing-dp-suspend") test_freesync_parsing(&data,
+-			DRM_MODE_CONNECTOR_DisplayPort, TEST_SUSPEND);
+-
+-	igt_describe("Freesync range on HDMI");
+-	igt_subtest("freesync-range-hdmi") test_freesync_range(&data,
+-			DRM_MODE_CONNECTOR_HDMIA, TEST_NONE);
+-	igt_describe("Freesync range on DP");
+-	igt_subtest("freesync-range-dp") test_freesync_range(&data,
+-			DRM_MODE_CONNECTOR_DisplayPort, TEST_NONE);
+-
+-	igt_describe("Freesync range on HDMI after suspend");
+-	igt_subtest("freesync-range-hdmi-suspend") test_freesync_range(&data,
+-			DRM_MODE_CONNECTOR_HDMIA, TEST_SUSPEND);
+-	igt_describe("Freesync range on DP after suspend");
+-	igt_subtest("freesync-range-dp-suspend") test_freesync_range(&data,
+-			DRM_MODE_CONNECTOR_DisplayPort, TEST_SUSPEND);
++	igt_describe("Hard coded Freesync EDID parsing");
++	igt_subtest("freesync-parsing") test_freesync_parsing(&data);
++
++	igt_describe("Hard coded Freesync EDID parsing after suspend");
++	igt_subtest("freesync-parsing-suspend") test_freesync_parsing_suspend(&data);
++
++	igt_describe("Freesync range from display");
++	igt_subtest("freesync-range") test_freesync_range(&data);
++
++	igt_describe("Freesync range from display after suspend");
++	igt_subtest("freesync-range-suspend") test_freesync_range_suspend(&data);
+ 
+ 	igt_fixture
+ 	{
+-- 
+2.25.1
