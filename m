@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4976010E337
- for <igt-dev@lists.freedesktop.org>; Tue, 30 May 2023 04:44:03 +0000 (UTC)
-Message-ID: <e73b31fb-140d-97e4-d55c-38abf86a78bb@intel.com>
-Date: Tue, 30 May 2023 10:13:40 +0530
-Content-Language: en-US
-To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>, "Kempczynski, Zbigniew"
- <zbigniew.kempczynski@intel.com>, "Gandi, Ramadevi"
- <ramadevi.gandi@intel.com>
-References: <20230525055519.10098-1-sai.gowtham.ch@intel.com>
- <20230525055519.10098-2-sai.gowtham.ch@intel.com>
- <20230529055122.eikdtj365xdqkass@zkempczy-mobl2>
- <BYAPR11MB341365193B79B48167E54959D04B9@BYAPR11MB3413.namprd11.prod.outlook.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <BYAPR11MB341365193B79B48167E54959D04B9@BYAPR11MB3413.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B192410E337
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 May 2023 04:47:33 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 30 May 2023 10:16:45 +0530
+Message-Id: <20230530044645.341877-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe/xe_spin: Integrate
- igt_spin_new with Xe.
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_scaling: add
+ get_num_scalers()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,299 +17,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Sai,
+Verify the count of supported scalers per CRTC, and proceed with
+executing tests if the necessary number of scalers is available.
+With the exception of "planes-.*" and "2x-scaler-multi-pipe"
+subtests, a minimum of 1 scaler is needed for all other tests,
+while these specific tests require a minimum of 2 scalers.
 
-On Tue-30-05-2023 10:09 am, Ch, Sai Gowtham wrote:
-> 
-> 
->> -----Original Message-----
->> From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
->> Sent: Monday, May 29, 2023 11:21 AM
->> To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
->> Cc: igt-dev@lists.freedesktop.org
->> Subject: Re: [PATCH i-g-t 1/2] lib/xe/xe_spin: Integrate igt_spin_new with Xe.
->>
->> On Thu, May 25, 2023 at 11:25:18AM +0530, sai.gowtham.ch@intel.com wrote:
->>> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->>>
->>> Extending the spin_create implementation and allocator handle support
->>> in xe, where it submits dummy work loads to engine. This
->>> Implementation is wrapped around vm_bind and unbind as we are supposed to
->> do it manually for xe.
->>>
->>> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->>> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->>> ---
->>>   lib/igt_dummyload.c | 24 +++++++++---  lib/igt_dummyload.h | 10 +++++
->>>   lib/xe/xe_spin.c    | 89 +++++++++++++++++++++++++++++++++++++++++++++
->>>   lib/xe/xe_spin.h    |  7 ++++
->>>   4 files changed, 124 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c index
->>> 740a58f3..6e89b72d 100644
->>> --- a/lib/igt_dummyload.c
->>> +++ b/lib/igt_dummyload.c
->>> @@ -46,6 +46,7 @@
->>>   #include "intel_reg.h"
->>>   #include "ioctl_wrappers.h"
->>>   #include "sw_sync.h"
->>> +#include "xe/xe_spin.h"
->>>
->>>   /**
->>>    * SECTION:igt_dummyload
->>> @@ -447,7 +448,10 @@ spin_create(int fd, const struct igt_spin_factory
->>> *opts)  igt_spin_t *  __igt_spin_factory(int fd, const struct
->>> igt_spin_factory *opts)  {
->>> -	return spin_create(fd, opts);
->>> +	if (is_xe_device(fd))
->>> +		return xe_spin_create(fd, opts);
->>> +	else
->>> +		return spin_create(fd, opts);
->>>   }
->>>
->>>   /**
->>> @@ -467,6 +471,11 @@ igt_spin_factory(int fd, const struct
->>> igt_spin_factory *opts)  {
->>>   	igt_spin_t *spin;
->>>
->>> +	if (is_xe_device(fd)) {
->>> +		spin = xe_spin_create(fd, opts);
->>> +		return spin;
->>> +	}
->>> +
->>>   	if ((opts->flags & IGT_SPIN_POLL_RUN) && opts->engine !=
->> ALL_ENGINES) {
->>>   		unsigned int class;
->>>
->>> @@ -647,11 +656,14 @@ void igt_spin_free(int fd, igt_spin_t *spin)
->>>   	if (!spin)
->>>   		return;
->>>
->>> -	pthread_mutex_lock(&list_lock);
->>> -	igt_list_del(&spin->link);
->>> -	pthread_mutex_unlock(&list_lock);
->>> -
->>> -	__igt_spin_free(fd, spin);
->>> +	if (is_xe_device(fd)) {
->>> +		xe_spin_free(fd, spin);
->>> +	} else {
->>> +		pthread_mutex_lock(&list_lock);
->>> +		igt_list_del(&spin->link);
->>> +		pthread_mutex_unlock(&list_lock);
->>> +		__igt_spin_free(fd, spin);
->>> +	}
->>>   }
->>>
->>>   void igt_terminate_spins(void)
->>> diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h index
->>> b247ab02..7bcc7b56 100644
->>> --- a/lib/igt_dummyload.h
->>> +++ b/lib/igt_dummyload.h
->>> @@ -54,6 +54,8 @@ typedef struct igt_spin_factory {
->>>   	unsigned int flags;
->>>   	int fence;
->>>   	uint64_t ahnd;
->>> +	struct drm_xe_engine_class_instance *hwe;
->>> +	uint32_t vm;
->>>   } igt_spin_factory_t;
->>>
->>>   typedef struct igt_spin {
->>> @@ -83,6 +85,14 @@ typedef struct igt_spin {  #define SPIN_CLFLUSH (1
->>> << 0)
->>>
->>>   	struct igt_spin_factory opts;
->>> +
->>> +	struct xe_spin *xe_spin;
->>> +	size_t bo_size;
->>> +	uint64_t address;
->>> +	unsigned int engine;
->>> +	uint32_t vm;
->>> +	uint32_t syncobj;
->>> +
->>>   } igt_spin_t;
->>>
->>>
->>> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c index
->>> 856d0ba2..3a8c7bb3 100644
->>> --- a/lib/xe/xe_spin.c
->>> +++ b/lib/xe/xe_spin.c
->>> @@ -15,6 +15,7 @@
->>>   #include "intel_reg.h"
->>>   #include "xe_ioctl.h"
->>>   #include "xe_spin.h"
->>> +#include "lib/igt_dummyload.h"
->>>
->>>   /**
->>>    * xe_spin_init:
->>> @@ -82,6 +83,94 @@ void xe_spin_end(struct xe_spin *spin)
->>>   	spin->end = 0;
->>>   }
->>>
->>> +igt_spin_t *
->>> +xe_spin_create(int fd, const struct igt_spin_factory *opt) {
->>> +	size_t bo_size = xe_get_default_alignment(fd);
->>> +	uint32_t bo;
->>> +	uint64_t ahnd = opt->ahnd, addr;
->>> +	struct igt_spin *spin;
->>> +	struct xe_spin *xe_spin;
->>> +	struct drm_xe_sync sync = {
->>> +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
->>> +	};
->>> +	struct drm_xe_exec exec = {
->>> +		.num_batch_buffer = 1,
->>> +		.num_syncs = 1,
->>> +		.syncs = to_user_pointer(&sync),
->>> +	};
->>> +
->>> +	igt_assert(ahnd);
->>> +	spin = calloc(1, sizeof(struct igt_spin));
->>> +	igt_assert(spin);
->>> +
->>> +	spin->syncobj = syncobj_create(fd, 0);
->>> +	if (opt->engine) {
->>> +		spin->opts.engine = opt->engine;
->>> +		spin->opts.vm = opt->vm;
->>> +
->>> +		spin->handle = xe_bo_create(fd, 0, spin->opts.vm, bo_size);
->>> +		xe_spin = xe_bo_map(fd, spin->handle, bo_size);
->>> +		addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle,
->> bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
->>> +		xe_vm_bind_sync(fd, spin->opts.vm, spin->handle, 0, addr,
->> bo_size);
->>> +
->>> +		xe_spin_init(xe_spin, addr, true);
->>> +		exec.engine_id = spin->opts.engine;
->>> +		exec.address = addr;
->>> +	} else {
->>> +		spin->vm = xe_vm_create(fd, 0, 0);
->>> +		spin->engine = xe_engine_create(fd, spin->vm, opt->hwe, 0);
->>> +
->>> +		bo = xe_bo_create(fd, 0, spin->vm, bo_size);
->>> +		spin->handle = bo;
->>> +		xe_spin = xe_bo_map(fd, spin->handle, bo_size);
->>> +		addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle,
->> bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
->>> +		xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
->>> +
->>> +		xe_spin_init(xe_spin, addr, true);
->>> +		exec.engine_id = spin->engine;
->>> +		exec.address = addr;
->>> +	}
->>
->> I think you should support two variants of executing spinners:
->>
->> 1. hwe != NULL (in this case engine must be 0):
->>     if (!vm) -> create vm;
->>     create engine for vm according to hwe
->>
->> 2. engine != 0, vm must be vm on top of which engine was created
->>     hwe must be NULL in this case
->>     see Dominik answer about passing engine+vm in:
->>     https://patchwork.freedesktop.org/patch/539173/?series=118227&rev=2
->>
->> And add support ALL_ENGINES flag (then iterate over all hw engines like Bhanu
->> suggested). And track engine ownership - if caller is the engine/vm owner use it
->> but don't destroy, if spinner code is creating engine you may freely destroy it in
->> spinner free path().
->>
-> Do we have Driver support for ALL_ENGINES flag ??
-> 
-> I think what Bhanu asking for is as kms tests  doesn’t need hwe, We have to pass hwe from the xe_spin_create it self.
-> In that case we can add a support in xe_spin_create where hwe = 0 and engine = 0 ( Note  this is only for kms tests) .
+v2: -improved commit message (Kamil)
+    -handled get_num_scalers() for non-intel devices (Kamil)
 
-Yes, KMS tests are not supposed to pass hwe or engines.
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_plane_scaling.c | 50 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-- Bhanu
-
-> 
-> I feel ALL_ENGINES support can be added later, Once kms tests are unblocked.
-> 
-> Regarding igt_spin_free, I've already added support not to destroy vm and engines if they are passed from the igt test. Can you have a look at igt_spin_free (Verified it's working fine for me).
-> -----
-> Gowtham
->> --
->> Zbigniew
->>
->>
->>> +	sync.handle = spin->syncobj;
->>> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
->>> +	xe_spin_wait_started(xe_spin);
->>> +	igt_info("Spinner started\n");
->>> +
->>> +	spin->bo_size = bo_size;
->>> +	spin->address = addr;
->>> +	spin->xe_spin = xe_spin;
->>> +
->>> +	return spin;
->>> +}
->>> +
->>> +void xe_spin_sync_wait(int fd, struct igt_spin *spin) {
->>> +	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0,
->>> +				NULL));
->>> +}
->>> +
->>> +void xe_spin_free(int fd, struct igt_spin *spin) {
->>> +	xe_spin_end(spin->xe_spin);
->>> +	xe_spin_sync_wait(fd, spin);
->>> +
->>> +	if (!spin->opts.engine) {
->>> +		xe_vm_unbind_sync(fd, spin->vm, 0, spin->address, spin-
->>> bo_size);
->>> +	} else {
->>> +		xe_vm_unbind_sync(fd, spin->opts.vm, 0, spin->address, spin-
->>> bo_size);
->>> +	}
->>> +
->>> +	syncobj_destroy(fd, spin->syncobj);
->>> +	gem_munmap(spin->xe_spin, spin->bo_size);
->>> +	gem_close(fd, spin->handle);
->>> +
->>> +	if (!spin->opts.engine) {
->>> +		xe_engine_destroy(fd, spin->engine);
->>> +		xe_vm_destroy(fd, spin->vm);
->>> +	}
->>> +	free(spin);
->>> +}
->>> +
->>>   void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
->>>   		  struct xe_cork *cork)
->>>   {
->>> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h index
->>> 73f9a026..48867eb8 100644
->>> --- a/lib/xe/xe_spin.h
->>> +++ b/lib/xe/xe_spin.h
->>> @@ -13,19 +13,26 @@
->>>   #include <stdbool.h>
->>>
->>>   #include "xe_query.h"
->>> +#include "lib/igt_dummyload.h"
->>>
->>>   /* Mapped GPU object */
->>> +
->>>   struct xe_spin {
->>>   	uint32_t batch[16];
->>>   	uint64_t pad;
->>>   	uint32_t start;
->>>   	uint32_t end;
->>> +
->>>   };
->>>
->>> +igt_spin_t *
->>> +xe_spin_create(int fd, const struct igt_spin_factory *opt);
->>>   void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
->>> bool xe_spin_started(struct xe_spin *spin);
->>> +void xe_spin_sync_wait(int fd, struct igt_spin *spin);
->>>   void xe_spin_wait_started(struct xe_spin *spin);  void
->>> xe_spin_end(struct xe_spin *spin);
->>> +void xe_spin_free(int fd, struct igt_spin *spin);
->>>
->>>   struct xe_cork {
->>>   	struct xe_spin *spin;
->>> --
->>> 2.39.1
->>>
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 0e7cd4a2..4033d2ea 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -368,6 +368,32 @@ const struct {
+ 	},
+ };
+ 
++/* Returns num_scalers from the crtc debugfs. */
++static int get_num_scalers(data_t *data, enum pipe pipe)
++{
++	char buf[512];
++	char *start_loc;
++	int dir, res;
++	int num_scalers = 0;
++
++	if (is_intel_device(data->drm_fd) &&
++	    intel_display_ver(intel_get_drm_devid(data->drm_fd)) >= 9) {
++
++		dir = igt_debugfs_dir(data->drm_fd);
++		igt_assert(dir >= 0);
++
++		res = igt_debugfs_simple_read(dir, "i915_display_info", buf, sizeof(buf));
++		close(dir);
++		igt_require(res > 0);
++
++		igt_assert(start_loc = strstr(buf, "num_scalers="));
++		igt_assert_eq(sscanf(start_loc, "num_scalers=%d", &num_scalers), 1);
++
++	}
++
++	return num_scalers;
++}
++
+ static int get_width(drmModeModeInfo *mode, double scaling_factor)
+ {
+ 	if (scaling_factor == 0.0)
+@@ -873,6 +899,9 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ 	igt_output_set_pipe(output1, pipe1);
+ 	igt_output_set_pipe(output2, pipe2);
+ 
++	igt_require(get_num_scalers(d, pipe1) >= 2);
++	igt_require(get_num_scalers(d, pipe2) >= 2);
++
+ 	plane[0] = igt_output_get_plane(output1, 0);
+ 	igt_require(plane[0]);
+ 	plane[1] = igt_output_get_plane(output1, 0);
+@@ -963,6 +992,8 @@ static void invalid_parameter_tests(data_t *d)
+ 		igt_output_set_pipe(output, pipe);
+ 		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
++		igt_require(get_num_scalers(d, pipe) >= 1);
++
+ 		igt_create_fb(d->drm_fd, 256, 256,
+ 			      DRM_FORMAT_XRGB8888,
+ 			      DRM_FORMAT_MOD_LINEAR,
+@@ -1138,6 +1169,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 							continue;
++						if (get_num_scalers(&data, pipe) < 1)
++							continue;
+ 
+ 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+ 							drmModeModeInfo *mode = igt_output_get_mode(output);
+@@ -1161,6 +1194,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 							continue;
++						if (get_num_scalers(&data, pipe) < 1)
++							continue;
+ 
+ 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+ 							drmModeModeInfo *mode = igt_output_get_mode(output);
+@@ -1184,6 +1219,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 							continue;
++						if (get_num_scalers(&data, pipe) < 1)
++							continue;
+ 
+ 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+ 							drmModeModeInfo *mode = igt_output_get_mode(output);
+@@ -1206,6 +1243,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
++					if (get_num_scalers(&data, pipe) < 1)
++							continue;
+ 
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+ 						drmModeModeInfo *mode = igt_output_get_mode(output);
+@@ -1224,6 +1263,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
++					if (get_num_scalers(&data, pipe) < 1)
++						continue;
+ 
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+ 						drmModeModeInfo *mode = igt_output_get_mode(output);
+@@ -1242,6 +1283,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
++					if (get_num_scalers(&data, pipe) < 1)
++						continue;
+ 
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+ 						drmModeModeInfo *mode = igt_output_get_mode(output);
+@@ -1260,6 +1303,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
++					if (get_num_scalers(&data, pipe) < 2)
++						continue;
+ 
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+ 						drmModeModeInfo *mode = igt_output_get_mode(output);
+@@ -1282,6 +1327,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			igt_subtest_with_dynamic(intel_paramtests[index].testname) {
+ 				igt_require_intel(data.drm_fd);
+ 				for_each_pipe(&data.display, pipe) {
++					if (get_num_scalers(&data, pipe) < 1)
++						continue;
++
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						drmModeModeInfo *mode = NULL;
+ 						/*
+@@ -1307,6 +1355,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 				if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 					continue;
++				if (get_num_scalers(&data, pipe) < 1)
++					continue;
+ 
+ 				igt_dynamic_f("pipe-%s-%s-invalid-num-scalers",
+ 					       kmstest_pipe_name(pipe), igt_output_name(output))
+-- 
+2.25.1
