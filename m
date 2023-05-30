@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BD2010E16A
- for <igt-dev@lists.freedesktop.org>; Tue, 30 May 2023 14:53:09 +0000 (UTC)
-Message-ID: <81f2276a-9dbe-f472-ad79-4f37f4058b93@intel.com>
-Date: Tue, 30 May 2023 16:53:05 +0200
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8560D10E169
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 May 2023 14:55:43 +0000 (UTC)
+Message-ID: <60097a7b-c74c-ee47-59ca-b32e85a1ac65@linux.intel.com>
+Date: Tue, 30 May 2023 16:55:40 +0200
 MIME-Version: 1.0
 Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
+To: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20230529165417.347129-1-zbigniew.kempczynski@intel.com>
- <20230529165417.347129-2-zbigniew.kempczynski@intel.com>
-From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
-In-Reply-To: <20230529165417.347129-2-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20230529124824.1876093-1-maarten.lankhorst@linux.intel.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20230529124824.1876093-1-maarten.lankhorst@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/gpgpu_fill/xehpc: Adjust
- gpgpu_fillfunc for PVC
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add a test for corner cases
+ of eviction.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,136 +26,354 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+Cc
 
-On 29.05.2023 18:54, Zbigniew Kempczyński wrote:
-> From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> 
-> gpgpu_fillfunc for XEHPSDV can be reused for PVC with minor changes.
-> PVC COMPUTE_WALKER instruction has additional restriction. Message
-> SIMD(dw4:17) has to be equal to Thread SIMD.(SIMD16 in our case).
-> PVC also required a kernel recompilation.
-> 
-> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Christoph Manszewski <christoph.manszewski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+On 2023-05-29 14:48, Maarten Lankhorst wrote:
+> Gitlab issues 194 and 239 show some corner cases. In particular,
+> signal handling, pt eviction and losing track of external objects
+> on the list.
+>
+> The patch series to fix those was sent as
+> https://patchwork.freedesktop.org/series/118428/
+>
+> But because it's tricky to reproduce those issues, I had to add some
+> custom igt's to handle those.
+>
+> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 > ---
->   lib/gpgpu_fill.c                              | 23 +++++++++++++++++++
->   lib/gpgpu_fill.h                              |  8 +++++++
->   lib/gpu_cmds.c                                |  3 ++-
->   .../shaders/gpgpu/gen12p72_gpgpu_kernel.asm   | 12 ++++++++++
->   lib/intel_batchbuffer.c                       |  4 +++-
->   5 files changed, 48 insertions(+), 2 deletions(-)
->   create mode 100644 lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
-> 
-> diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
-> index 4db8775145..d854fbf7a0 100644
-> --- a/lib/gpgpu_fill.c
-> +++ b/lib/gpgpu_fill.c
-> @@ -112,6 +112,18 @@ static const uint32_t xehp_gpgpu_kernel[][4] = {
->   	{ 0x00030031, 0x00000004, 0x3000500c, 0x00000000 },
->   };
->   
-> +static const uint32_t xehpc_gpgpu_kernel[][4] = {
-> +	{ 0x00080061, 0x01050000, 0x00000104, 0x00000000 },
-> +	{ 0x00000069, 0x02058220, 0x02000014, 0x00000004 },
-> +	{ 0x00000061, 0x02150220, 0x00000064, 0x00000000 },
-> +	{ 0x000c0061, 0x04050220, 0x00460005, 0x00000000 },
-> +	{ 0x00041a61, 0x04050220, 0x00220205, 0x00000000 },
-> +	{ 0x00000061, 0x04254220, 0x00000000, 0x0000000f },
-> +	{ 0x00101e61, 0x05050220, 0x00000104, 0x00000000 },
-> +	{ 0x00132031, 0x00000000, 0xc0000414, 0x02a00000 },
-> +	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
-> +};
-> +
->   /*
->    * This sets up the gpgpu pipeline,
->    *
-> @@ -377,3 +389,14 @@ void xehp_gpgpu_fillfunc(int i915,
->   			      xehp_gpgpu_kernel,
->   			      sizeof(xehp_gpgpu_kernel));
->   }
-> +
-> +void xehpc_gpgpu_fillfunc(int i915,
-> +			  struct intel_buf *buf,
-> +			  unsigned int x, unsigned int y,
-> +			  unsigned int width, unsigned int height,
-> +			  uint8_t color)
-> +{
-> +	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
-> +			      xehpc_gpgpu_kernel,
-> +			      sizeof(xehpc_gpgpu_kernel));
-> +}
-> diff --git a/lib/gpgpu_fill.h b/lib/gpgpu_fill.h
-> index 3d199acd63..f81cd0b53c 100644
-> --- a/lib/gpgpu_fill.h
-> +++ b/lib/gpgpu_fill.h
-> @@ -67,4 +67,12 @@ xehp_gpgpu_fillfunc(int i915,
->   		    unsigned int x, unsigned int y,
->   		    unsigned int width, unsigned int height,
->   		    uint8_t color);
-> +
-> +void
-> +xehpc_gpgpu_fillfunc(int i915,
-> +		     struct intel_buf *dst,
-> +		     unsigned int x, unsigned int y,
-> +		     unsigned int width, unsigned int height,
-> +		     uint8_t color);
-> +
->   #endif /* GPGPU_FILL_H */
-> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-> index afb26d2990..1f321ae4a0 100644
-> --- a/lib/gpu_cmds.c
-> +++ b/lib/gpu_cmds.c
-> @@ -975,7 +975,8 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
->   	intel_bb_out(ibb, 0); /* indirect data offset */	//dw3
->   
->   	/* SIMD size */
-> -	intel_bb_out(ibb, 1 << 30 | 1 << 25); /* SIMD16 | enable inline */ //dw4
-> +	/* SIMD16 | enable inline | Message SIMD16 */
-> +	intel_bb_out(ibb, 1 << 30 | 1 << 25 | 1 << 17);		//dw4
->   
->   	/* Execution mask */
->   	intel_bb_out(ibb, 0xffffffff);				//dw5
-> diff --git a/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
+>  tests/meson.build     |   1 +
+>  tests/xe/xe_evicted.c | 313 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 314 insertions(+)
+>  create mode 100644 tests/xe/xe_evicted.c
+>
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 6551194fe..166937b6c 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -248,6 +248,7 @@ xe_progs = [
+>  	'xe_dma_buf_sync',
+>  	'xe_debugfs',
+>  	'xe_evict',
+> +	'xe_evicted',
+>  	'xe_exec_balancer',
+>  	'xe_exec_basic',
+>  	'xe_exec_compute_mode',
+> diff --git a/tests/xe/xe_evicted.c b/tests/xe/xe_evicted.c
 > new file mode 100644
-> index 0000000000..52699a475e
+> index 000000000..3f5e6a82c
 > --- /dev/null
-> +++ b/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
-
-Nit: shouldn't this be called 'xehpc_gpgpu_kernel'?
-
-Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
-
-Christoph
-
-
-> @@ -0,0 +1,12 @@
-> +L0:
-> +         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub
-> +         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud
-> +         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
-> +         mov (8|M0)               r4.0<1>:ud    r0.0<8;8,1>:ud
-> +         mov (2|M0)               r4.0<1>:ud    r2.0<2;2,1>:ud                   {I@2}
-> +         mov (1|M0)               r4.2<1>:ud    0xF:ud
-> +         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                   {I@6}
-> +(W)      sync.nop                             null                             {I@1}
-> +         send.dc1 (16|M0)         null     r4      null:0    0x0         0x40A8000  {$0} //    wr:2h+0, rd:0, Media Block Write msc:0, to #0
-> +         send.gtwy (8|M0)         null     r80     null:0    0x0         0x02000000 {EOT}
-> +L176:
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index dfccc4f4ac..9f65536173 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -755,7 +755,9 @@ igt_fillfunc_t igt_get_gpgpu_fillfunc(int devid)
->   {
->   	igt_fillfunc_t fill = NULL;
->   
-> -	if (intel_graphics_ver(devid) >= IP_VER(12, 50))
-> +	if (intel_graphics_ver(devid) >= IP_VER(12, 60))
-> +		fill = xehpc_gpgpu_fillfunc;
-> +	else if (intel_graphics_ver(devid) >= IP_VER(12, 50))
->   		fill = xehp_gpgpu_fillfunc;
->   	else if (IS_GEN12(devid))
->   		fill = gen12_gpgpu_fillfunc;
+> +++ b/tests/xe/xe_evicted.c
+> @@ -0,0 +1,313 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: Test various eviction and ENOMEM corner cases.
+> + * Category: Software building block
+> + * Sub-category: VM_BIND / eviction
+> + * Test category: functionality test
+> + */
+> +
+> +#include "igt.h"
+> +#include "lib/igt_syncobj.h"
+> +#include "lib/intel_reg.h"
+> +#include "xe_drm.h"
+> +
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_spin.h"
+> +#include <string.h>
+> +
+> +static void evict_mem(struct xe_device *xe)
+> +{
+> +	if (xe->has_vram)
+> +		igt_debugfs_write(xe->fd, "vram0_evict", "1");
+> +	else
+> +		igt_debugfs_write(xe->fd, "gtt_evict", "1");
+> +}
+> +
+> +static void execstress(struct xe_device *xe, uint32_t engine, uint32_t addr)
+> +{
+> +	struct timespec start, end;
+> +
+> +	igt_fork(child, 2) {
+> +		struct drm_xe_sync sync = {
+> +			.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+> +			.handle = syncobj_create(xe->fd, 0),
+> +		};
+> +
+> +		clock_gettime(CLOCK_MONOTONIC, &start);
+> +
+> +		do {
+> +			if (!child)
+> +				evict_mem(xe);
+> +			else
+> +				xe_exec_sync(xe->fd, engine, addr, &sync, 1);
+> +
+> +			clock_gettime(CLOCK_MONOTONIC, &end);
+> +		} while (end.tv_sec - start.tv_sec <= 3);
+> +
+> +		if (child)
+> +			igt_assert(syncobj_wait(xe->fd, &sync.handle, 1, INT64_MAX, 0, NULL));
+> +		syncobj_destroy(xe->fd, sync.handle);
+> +	}
+> +
+> +	igt_waitchildren();
+> +
+> +	/* Leave function in a known state */
+> +	evict_mem(xe);
+> +}
+> +
+> +/* See issue 194, unbinding first VMA may cause BO not to be locked correctly */
+> +static void test_multimap(struct xe_device *xe, bool external)
+> +{
+> +	uint64_t size = xe->default_alignment;
+> +	uint32_t vm = xe_vm_create(xe->fd, DRM_XE_VM_CREATE_SCRATCH_PAGE, 0);
+> +	uint32_t bo = xe_bo_create(xe->fd, 0, external ? 0 : vm, size);
+> +	uint32_t engine = xe_engine_create_class(xe->fd, vm, DRM_XE_ENGINE_CLASS_COPY);
+> +	uint32_t *map = xe_bo_map(xe->fd, bo, size);
+> +
+> +	*map = MI_BATCH_BUFFER_END;
+> +	munmap(map, size);
+> +
+> +	/* Create 2 mappings */
+> +	xe_vm_bind_sync(xe->fd, vm, bo, 0, 0, size);
+> +	xe_vm_bind_sync(xe->fd, vm, bo, 0, size, size);
+> +
+> +	execstress(xe, engine, size);
+> +
+> +	/* Unbind the first one, to possibly confuse stuff */
+> +	xe_vm_unbind_sync(xe->fd, vm, 0, 0, size);
+> +
+> +	execstress(xe, engine, size);
+> +
+> +	/* Teardown.. */
+> +	xe_engine_destroy(xe->fd, engine);
+> +	xe_vm_destroy(xe->fd, vm);
+> +	gem_close(xe->fd, bo);
+> +}
+> +
+> +static uint64_t avail_vram(struct xe_device **xe)
+> +{
+> +	int fd = (*xe)->fd;
+> +	int region_idx;
+> +
+> +	/* Refresh to get up-to-date values */
+> +	xe_device_put(fd);
+> +	*xe = xe_device_get(fd);
+> +
+> +	region_idx = ffs((*xe)->gts->gts[0].native_mem_regions) - 1;
+> +
+> +	return (*xe)->mem_usage->regions[region_idx].total_size -
+> +	       (*xe)->mem_usage->regions[region_idx].used;
+> +}
+> +
+> +static void test_pt_eviction(struct xe_device *xe, bool external)
+> +{
+> +	uint32_t bo, i;
+> +	uint64_t size, full_size, full_addr, addr, avail;
+> +	uint32_t vm;
+> +	uint32_t engine;
+> +	uint32_t *map;
+> +	struct drm_xe_exec exec = {};
+> +	igt_require(xe->has_vram);
+> +
+> +	vm = xe_vm_create(xe->fd, 0, 0);
+> +	engine = xe_engine_create_class(xe->fd, vm, DRM_XE_ENGINE_CLASS_COPY);
+> +
+> +	/* Refresh xe_device size after creating vm + engine */
+> +	evict_mem(xe);
+> +	full_size = (avail_vram(&xe) - (2 << 20ULL)) & ~((2 << 20ULL) - 1);
+> +
+> +	bo = xe_bo_create(xe->fd, 0, external ? 0 : vm, full_size);
+> +
+> +	/* Only map what we need.. */
+> +	map = xe_bo_map(xe->fd, bo, xe->default_alignment);
+> +	*map = MI_BATCH_BUFFER_END;
+> +	munmap(map, xe->default_alignment);
+> +
+> +	/* Stuff bo at the end, so we can use start for partial bo's */
+> +	full_addr = (1ULL << (uint64_t)xe_va_bits(xe->fd)) - full_size;
+> +	xe_vm_bind_sync(xe->fd, vm, bo, 0, full_addr, full_size);
+> +
+> +	exec.engine_id = engine;
+> +	exec.num_batch_buffer = 1;
+> +	exec.address = full_addr;
+> +
+> +	/* Now map partially at 0, and see how many pagetables we can still fill.. */
+> +	addr = 0;
+> +	size = xe->default_alignment;
+> +	xe_vm_bind_sync(xe->fd, vm, bo, 0, addr, size);
+> +
+> +	xe_exec_sync(xe->fd, engine, full_addr, NULL, 0);
+> +
+> +	avail = full_size >> 12;
+> +	while (1) {
+> +		uint64_t new_avail = avail_vram(&xe) >> 12;
+> +
+> +		if (new_avail >= avail)
+> +			igt_info("TTM delayed destroy may have freed some memory\n");
+> +		avail = new_avail;
+> +
+> +		igt_info("%"PRIu64" available 4K pages left\n", avail);
+> +		if (!avail)
+> +			break;
+> +
+> +		if (avail == 1) {
+> +			xe_vm_bind_sync(xe->fd, vm, bo, 0, 2 << 20ULL, size);
+> +			break;
+> +		}
+> +
+> +		addr += 1 << 30ULL;
+> +
+> +		/* Remove 1 for second level PT */
+> +		avail--;
+> +
+> +		for (i = 0; i < min((uint64_t)512, avail); i++) {
+> +			uint64_t this_addr = addr + (i << 21);
+> +
+> +			xe_vm_bind_sync(xe->fd, vm, bo, 0, this_addr, size);
+> +		}
+> +	}
+> +
+> +	/* Verify that with 0 memory available, exec still completes */
+> +	xe_exec_sync(xe->fd, engine, full_addr, NULL, 0);
+> +
+> +	/* Bind 1 more to go over the edge, this should never succeed.. */
+> +	if (__xe_vm_bind(xe->fd, vm, 0, bo, 0, 4 << 20ULL, size,
+> +			 XE_VM_BIND_OP_MAP, NULL, 0, 0, 0) == 0) {
+> +
+> +		/* Boom! */
+> +		igt_assert(igt_ioctl(xe->fd, DRM_IOCTL_XE_EXEC, &exec) < 0 &&
+> +			   errno == ENOMEM);
+> +
+> +		xe_vm_unbind_sync(xe->fd, vm, 0, 4 << 20ULL, size);
+> +	} else {
+> +		igt_assert(errno == ENOMEM);
+> +	}
+> +
+> +	/*
+> +	 * After evicting, we may end up creating new page tables,
+> +	 * so this should fail..
+> +	 */
+> +	evict_mem(xe);
+> +	igt_assert(igt_ioctl(xe->fd, DRM_IOCTL_XE_EXEC, &exec) < 0 &&
+> +		   errno == ENOMEM);
+> +
+> +	/* Cleanup */
+> +	xe_engine_destroy(xe->fd, engine);
+> +	xe_vm_destroy(xe->fd, vm);
+> +	gem_close(xe->fd, bo);
+> +}
+> +
+> +/* Test OOM with signal handler enabled, to mimic X.org (issue #239) */
+> +static void test_signal_oom(struct xe_device *xe, bool external)
+> +{
+> +	uint32_t bo[13], num_bo = 0, i;
+> +	uint64_t binds, size = xe->has_vram ? xe->vram_size[0] : igt_get_avail_ram_mb();
+> +	uint32_t vm = xe_vm_create(xe->fd, DRM_XE_VM_CREATE_SCRATCH_PAGE, 0);
+> +	uint32_t engine = xe_engine_create_class(xe->fd, vm, DRM_XE_ENGINE_CLASS_COPY);
+> +	int err;
+> +	struct drm_xe_gem_create create = {
+> +		.flags = vram_if_possible(xe->fd, 0),
+> +	};
+> +	struct drm_xe_sync sync[2] = {
+> +		{
+> +			.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+> +			.handle = syncobj_create(xe->fd, 0),
+> +		},
+> +		{
+> +			.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+> +			.handle = syncobj_create(xe->fd, 0),
+> +		},
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.engine_id = engine,
+> +		.syncs = (uintptr_t)sync,
+> +		.num_syncs = ARRAY_SIZE(sync),
+> +		.address = 0,
+> +		.num_batch_buffer = 1,
+> +	};
+> +
+> +	size /= 12;
+> +	size &= ~(xe->default_alignment - 1);
+> +
+> +	create.size = size;
+> +	if (!external)
+> +		create.vm_id = vm;
+> +
+> +	/* Create as many bo's as we can without OOMs */
+> +	while (num_bo < ARRAY_SIZE(bo)) {
+> +		igt_while_interruptible(true) {
+> +			if (num_bo >= ARRAY_SIZE(bo))
+> +				continue;
+> +
+> +			create.handle = 0;
+> +			err = igt_ioctl(xe->fd, DRM_IOCTL_XE_GEM_CREATE, &create);
+> +			if (!err)
+> +				bo[num_bo++] = create.handle;
+> +		}
+> +
+> +		igt_assert(err == 0 || errno == ENOMEM);
+> +		if (err) {
+> +			igt_assert(!xe->has_vram || num_bo > 9);
+> +			break;
+> +		}
+> +	}
+> +
+> +	igt_info("Created %u bo's (total: %"PRIu64" MB)\n",
+> +		 num_bo, (num_bo * size) >> 20ULL);
+> +
+> +	binds = 0;
+> +	for (i = 0; i < num_bo; i++) {
+> +		evict_mem(xe);
+> +		igt_debug("Binding bo %i, total attempts %"PRIi64"\n", i, binds);
+> +
+> +		igt_while_interruptible(true)
+> +			xe_vm_bind(xe->fd, vm, bo[i], 0, ((binds++) << 32ULL), size, sync, 1);
+> +	}
+> +
+> +	sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
+> +
+> +	/* Try a few times, why not? */
+> +	for (i = 0; i < 4; i++) {
+> +		igt_while_interruptible(true) {
+> +			err = igt_ioctl(xe->fd, DRM_IOCTL_XE_EXEC, &exec);
+> +			igt_assert(err < 0 && errno == ENOMEM);
+> +		}
+> +	}
+> +
+> +	xe_vm_destroy(xe->fd, vm);
+> +	while (num_bo--)
+> +		gem_close(xe->fd, bo[num_bo]);
+> +	syncobj_destroy(xe->fd, sync[1].handle);
+> +	syncobj_destroy(xe->fd, sync[0].handle);
+> +}
+> +
+> +igt_main
+> +{
+> +	int fd;
+> +
+> +	igt_fixture
+> +		fd = drm_open_driver(DRIVER_XE);
+> +
+> +	igt_subtest("multimap-internal")
+> +		test_multimap(xe_device_get(fd), false);
+> +
+> +	igt_subtest("multimap-external")
+> +		test_multimap(xe_device_get(fd), true);
+> +
+> +	igt_subtest("pt-eviction-internal")
+> +		test_pt_eviction(xe_device_get(fd), false);
+> +
+> +	igt_subtest("pt-eviction-external")
+> +		test_pt_eviction(xe_device_get(fd), false);
+> +
+> +	igt_subtest("signal-oom-internal")
+> +		test_signal_oom(xe_device_get(fd), false);
+> +
+> +	igt_subtest("signal-oom-external")
+> +		test_signal_oom(xe_device_get(fd), false);
+> +}
