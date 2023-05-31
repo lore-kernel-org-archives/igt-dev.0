@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 557A810E1BD
- for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 10:08:31 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Sat, 30 Apr 2022 07:13:47 +0530
-Message-Id: <20220430014347.94210-1-mohammed.thasleem@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F32010E4EC
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 14:28:42 +0000 (UTC)
+Message-ID: <fc179dff-daea-b524-b0a2-51dc00f712ff@intel.com>
+Date: Wed, 31 May 2023 16:25:41 +0200
 MIME-Version: 1.0
+To: Anna Karas <anna.karas@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230531134950.483688-1-anna.karas@intel.com>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+In-Reply-To: <20230531134950.483688-1-anna.karas@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_lease: Terminate lease on bad
- connector id
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add xe_module_error test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,32 +20,194 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-igt_skip_on make resource busy for sub sequence tests.
-To avoid this terminate the lease on bad connector id.
+Hi Anna,
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/kms_lease.c | 4 ++++
- 1 file changed, 4 insertions(+)
+On 31.05.2023 15:49, Anna Karas wrote:
+> Port i915_module_error test to XE. This test checks if we can access
+> debugfs/sysfs after a module load error, in this case a guc load error,
+> for capturing the requisite debug info.
+> 
+> Signed-off-by: Anna Karas <anna.karas@intel.com>
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 29a774ae8..03538cf8c 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -682,6 +682,10 @@ static void lease_unleased_connector(data_t *data)
- 			bad_connector_id = data->master.display.outputs[o].id;
- 	}
- 
-+	/* Terminate lease on bad connector id before skip. */
-+	if (bad_connector_id == 0)
-+		terminate_lease(&lease);
-+
- 	/* Give up if there isn't another connector */
- 	igt_skip_on(bad_connector_id == 0);
- 
--- 
-2.25.1
+Since this code is almost entirely copied, I think it would be good 
+practice to credit the original author by adding a 'Authored-by' or 
+'Signed-off-by' line.
+
+Christoph
+
+
+> ---
+>   tests/meson.build          |   1 +
+>   tests/xe/xe_module_error.c | 145 +++++++++++++++++++++++++++++++++++++
+>   2 files changed, 146 insertions(+)
+>   create mode 100644 tests/xe/xe_module_error.c
+> 
+> diff --git a/tests/meson.build b/tests/meson.build
+> index f71be1db..533c96e8 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -261,6 +261,7 @@ xe_progs = [
+>   	'xe_intel_bb',
+>   	'xe_mmap',
+>   	'xe_mmio',
+> +        'xe_module_error',
+>   	'xe_module_load',
+>   	'xe_noexec_ping_pong',
+>   	'xe_pm',
+> diff --git a/tests/xe/xe_module_error.c b/tests/xe/xe_module_error.c
+> new file mode 100644
+> index 00000000..a17d85ca
+> --- /dev/null
+> +++ b/tests/xe/xe_module_error.c
+> @@ -0,0 +1,145 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +#include <dirent.h>
+> +
+> +#include "igt.h"
+> +#include "igt_kmod.h"
+> +#include "igt_debugfs.h"
+> +#include "igt_sysfs.h"
+> +#include "xe_drm.h"
+> +
+> +#include "xe/xe_spin.h"
+> +
+> +/**
+> + * TEST: Check if we can access sysfs/debugfs after a module load error
+> + * Category: Software building block
+> + * Sub-category: debugfs
+> + * Test category: functionality test
+> + * Run type: BAT
+> + */
+> +
+> +/**
+> + * SUBTEST: sysfs
+> + * Description: Read all entries from sysfs path
+> + * Run type: FULL
+> + */
+> +
+> +/**
+> + * SUBTEST: debugfs
+> + * Description: Read all entries from debugfs path
+> + * Run type: FULL
+> + */
+> +static void read_sysfs_entries(int path, int indent)
+> +{
+> +	char tabs[] = "\t\t\t\t\t\t\t\t";
+> +	struct dirent *dirent;
+> +	DIR *dir;
+> +
+> +	igt_assert(indent < sizeof(tabs) - 1);
+> +	tabs[indent] = '\0';
+> +
+> +	dir = fdopendir(path);
+> +	if (!dir)
+> +		return;
+> +
+> +	while ((dirent = readdir(dir))) {
+> +		if (!strcmp(dirent->d_name, ".") ||
+> +		    !strcmp(dirent->d_name, ".."))
+> +			continue;
+> +
+> +		if (dirent->d_type == DT_DIR) {
+> +			int sub;
+> +
+> +			sub = openat(path, dirent->d_name, O_RDONLY | O_DIRECTORY);
+> +			if (sub < 0)
+> +				continue;
+> +
+> +			igt_kmsg(KMSG_DEBUG "Reading directory \"%s\"\n", dirent->d_name);
+> +			igt_debug("%sEntering subdir %s\n", tabs, dirent->d_name);
+> +			read_sysfs_entries(sub, indent + 1);
+> +			close(sub);
+> +		} else if (dirent->d_type == DT_REG) {
+> +			char buf[512];
+> +			int sub;
+> +			ssize_t ret;
+> +
+> +			igt_kmsg(KMSG_DEBUG "Reading file \"%s\"\n", dirent->d_name);
+> +			igt_debug("%sReading file \"%s\"\n", tabs, dirent->d_name);
+> +			igt_set_timeout(igt_run_in_simulation() ? 30 : 5,
+> +					"reading sysfs entry");
+> +
+> +			sub = openat(path, dirent->d_name, O_RDONLY | O_NONBLOCK);
+> +			if (sub == -1) {
+> +				igt_debug("%sCould not open file \"%s\" with error: %m\n",
+> +					  tabs, dirent->d_name);
+> +				continue;
+> +			}
+> +
+> +			do {
+> +				ret = read(sub, buf, sizeof(buf));
+> +			} while (ret == sizeof(buf));
+> +
+> +			if (ret == -1)
+> +				igt_debug("%sCould not read file \"%s\" with error: %m\n",
+> +					  tabs, dirent->d_name);
+> +
+> +			igt_reset_timeout();
+> +			close(sub);
+> +		}
+> +	}
+> +
+> +	closedir(dir);
+> +}
+> +
+> +static void abort_if_loaded(const char *module_name)
+> +{
+> +	int err;
+> +
+> +	err = igt_kmod_unload(module_name, 0);
+> +	if (err == 0 || err == -ENOENT) /* -ENOENT == unloaded already */
+> +		return;
+> +
+> +	igt_abort_on_f(err,
+> +		       "Failed to unload '%s' err:%d, leaving dangerous modparams intact!\n",
+> +		       module_name, err);
+> +}
+> +
+> +static void unload(int sig)
+> +{
+> +	igt_xe_driver_unload();
+> +	abort_if_loaded("xe");
+> +}
+> +
+> +igt_main
+> +{
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		igt_xe_driver_unload();
+> +		igt_xe_driver_load("guc_firmware_path=/dev/null inject_probe_failure=-1 force_probe=*");
+> +		igt_install_exit_handler(unload);
+> +
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		xe_device_get(fd);
+> +	}
+> +
+> +	igt_subtest("sysfs") {
+> +		igt_fork(child, 1)
+> +			read_sysfs_entries(igt_sysfs_open(fd), 0);
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("debugfs") {
+> +		igt_fork(child, 1)
+> +			read_sysfs_entries(igt_debugfs_dir(fd), 0);
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_fixture {
+> +		xe_device_put(fd);
+> +		close(fd);
+> +	}
+> +}
