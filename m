@@ -1,25 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
- [IPv6:2a00:1450:4864:20::133])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90D4410E4F2
- for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 15:50:47 +0000 (UTC)
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4f122ff663eso6930148e87.2
- for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 08:50:47 -0700 (PDT)
-Message-ID: <dcb5cf93-2d1f-2171-e8c8-ec6553088c9a@gmail.com>
-Date: Wed, 31 May 2023 18:50:39 +0300
-MIME-Version: 1.0
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C0B010E1CB
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 15:59:37 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 31 May 2023 15:58:44 +0000
+Message-ID: <MW3PR11MB4748892C517A0AC411059E4BAE489@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20230529124824.1876093-1-maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20230529124824.1876093-1-maarten.lankhorst@linux.intel.com>
 Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20230328183043.16258-1-juhapekka.heikkila@gmail.com>
- <20230328183043.16258-3-juhapekka.heikkila@gmail.com>
- <20230403061753.6bu3tprz5j4e3bdk@zkempczy-mobl2>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230403061753.6bu3tprz5j4e3bdk@zkempczy-mobl2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/igt_fb: switch blitcopy to use
- lib/i915/i915_blt functions
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add a test for corner cases
+ of eviction.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,314 +22,206 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 3.4.2023 9.17, Zbigniew Kempczyński wrote:
-> On Tue, Mar 28, 2023 at 09:30:42PM +0300, Juha-Pekka Heikkila wrote:
->> reduce code duplication
->>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> ---
->>   lib/igt_fb.c | 214 +++++++++++++++++++++++++++++++++++++++++++++------
->>   1 file changed, 191 insertions(+), 23 deletions(-)
->>
->> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->> index ba89e1f60..7668fc553 100644
->> --- a/lib/igt_fb.c
->> +++ b/lib/igt_fb.c
->> @@ -35,6 +35,8 @@
->>   #include "drmtest.h"
->>   #include "i915/gem_create.h"
->>   #include "i915/gem_mman.h"
->> +#include "i915/i915_blt.h"
->> +#include "i915/intel_mocs.h"
->>   #include "igt_aux.h"
->>   #include "igt_color_encoding.h"
->>   #include "igt_fb.h"
->> @@ -2680,12 +2682,132 @@ static void copy_with_engine(struct fb_blit_upload *blit,
->>   	fini_buf(src);
->>   }
->>   
->> +static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
->> +					   uint32_t plane, uint32_t memregion)
->> +{
->> +	uint32_t name, handle;
->> +	struct blt_copy_object *blt;
->> +	enum blt_tiling_type blt_tile;
->> +	uint64_t stride;
->> +
->> +	blt = malloc(sizeof(*blt));
->> +	igt_assert(blt);
->> +
->> +	name = gem_flink(fb->fd, fb->gem_handle);
->> +	handle = gem_open(fb->fd, name);
->> +
->> +	switch (igt_fb_mod_to_tiling(fb->modifier)) {
->> +	case I915_TILING_X:
->> +		blt_tile = T_XMAJOR;
->> +		stride = fb->strides[plane] / 4;
->> +		break;
->> +	case I915_TILING_Y:
->> +		blt_tile = T_YMAJOR;
->> +		stride = fb->strides[plane] / 4;
->> +		break;
->> +	case I915_TILING_4:
->> +		blt_tile = T_TILE4;
->> +		stride = fb->strides[plane] / 4;
->> +		break;
->> +	case I915_TILING_NONE:
->> +	default:
->> +		blt_tile = T_LINEAR;
->> +		stride = fb->strides[plane];
->> +		break;
->> +	}
->> +
->> +	blt_set_object(blt, handle, fb->size, memregion,
->> +		       intel_get_uc_mocs(fb->fd),
->> +		       blt_tile,
->> +		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
->> +		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
->> +
->> +	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
->> +
->> +	blt->offset = fb->offsets[plane];
->> +
->> +	blt->ptr = gem_mmap__device_coherent(fb->fd, handle, 0, fb->size,
->> +					     PROT_READ | PROT_WRITE);
->> +	return blt;
->> +}
->> +
->> +static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
->> +{
->> +	switch (fb->plane_bpp[0]) {
->> +	case 8:
->> +		return CD_8bit;
->> +	case 16:
->> +		return CD_16bit;
->> +	case 32:
->> +		return CD_32bit;
->> +	case 64:
->> +		return CD_64bit;
->> +	case 96:
->> +		return CD_96bit;
->> +	case 128:
->> +		return CD_128bit;
->> +	default:
->> +		igt_assert(0);
->> +	}
->> +}
->> +
->> +#define BLT_TARGET_RC(x) (x.compression == COMPRESSION_ENABLED && \
->> +			  x.compression_type == COMPRESSION_TYPE_3D)
->> +
->> +#define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
->> +			  x.compression_type == COMPRESSION_TYPE_MEDIA)
->> +
->> +static uint32_t blt_compression_format(struct blt_copy_data *blt,
->> +				       const struct igt_fb *fb)
->> +{
->> +	if (blt->src.compression == COMPRESSION_DISABLED &&
->> +	    blt->dst.compression == COMPRESSION_DISABLED)
->> +		return 0;
->> +
->> +	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst)) {
->> +		switch (blt->color_depth) {
->> +		case CD_32bit:
->> +			return 8;
->> +		default:
->> +			igt_assert_f(0, "COMPRESSION_TYPE_3D unknown color depth\n");
->> +		}
->> +	}
->> +
->> +	if (BLT_TARGET_MC(blt->src) || BLT_TARGET_MC(blt->dst)) {
->> +		switch (fb->drm_format) {
->> +		case DRM_FORMAT_XRGB8888:
->> +			return 8;
->> +		case DRM_FORMAT_XYUV8888:
->> +			return 9;
->> +		case DRM_FORMAT_NV12:
->> +			return 9;
->> +		case DRM_FORMAT_P010:
->> +		case DRM_FORMAT_P012:
->> +		case DRM_FORMAT_P016:
->> +			return 8;
->> +		default:
->> +			igt_assert_f(0, "COMPRESSION_TYPE_MEDIA unknown format\n");
->> +		}
->> +	} else {
->> +		igt_assert_f(0, "unknown compression\n");
->> +	}
->> +}
->> +
->>   static void blitcopy(const struct igt_fb *dst_fb,
->>   		     const struct igt_fb *src_fb)
->>   {
->>   	uint32_t src_tiling, dst_tiling;
->>   	uint32_t ctx = 0;
->>   	uint64_t ahnd = 0;
->> +	const intel_ctx_t *ictx = intel_ctx_create_all_physical(src_fb->fd);
->> +	struct intel_execution_engine2 *e;
->> +	uint32_t bb;
->> +	uint64_t bb_size = 4096;
->> +	struct blt_copy_data blt = {};
->> +	struct blt_copy_object *src, *dst;
->> +	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
->> +	uint32_t mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
->> +			   ? REGION_LMEM(0) : REGION_SMEM;
->>   
->>   	igt_assert_eq(dst_fb->fd, src_fb->fd);
->>   	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
->> @@ -2697,36 +2819,81 @@ static void blitcopy(const struct igt_fb *dst_fb,
->>   		igt_require(gem_has_contexts(dst_fb->fd));
->>   		ctx = gem_context_create(dst_fb->fd);
->>   		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
->> +
->> +		igt_assert(__gem_create_in_memory_regions(src_fb->fd,
->> +							  &bb,
->> +							  &bb_size,
->> +							  mem_region) == 0);
->> +
->> +		for_each_ctx_engine(src_fb->fd, ictx, e) {
->> +			if (gem_engine_can_block_copy(src_fb->fd, e))
->> +				break;
-> 
-> Hmm, this means we need to be careful when using cmds_info. As
-> not all engines support block-copy simple information from the
-> library (blt_has_block_copy()) is not enough.
-
-Thanks for the comments Zbigniew, I fell out from this work for a while 
-with Covid and now finally reached to state with all other things I can 
-continue with this.
-
-I wasn't certain what you meant with above comment? There would be 
-better way to find correct engine for doing block copy? As is I'm 
-testing new version of this set where these parts are bit changed, I'll 
-probably today/tomorrow send another version for ci to show what I still 
-missed.
-
-My final target with all this is blitter path would do rc ccs and I'd 
-need Vebox only for compressing mc ccs.
-
-/Juha-Pekka
-
-> 
->> +		}
->>   	}
->>   
->>   	for (int i = 0; i < dst_fb->num_planes; i++) {
->>   		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
->>   		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
->>   		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
->> -		/*
->> -		 * On GEN12+ X-tiled format support is removed from the fast
->> -		 * blit command, so use the XY_SRC blit command for it
->> -		 * instead.
->> -		 */
->> -		if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
->> -			igt_blitter_fast_copy__raw(dst_fb->fd,
->> -						   ahnd, ctx, NULL,
->> -						   src_fb->gem_handle,
->> -						   src_fb->offsets[i],
->> -						   src_fb->strides[i],
->> -						   src_tiling,
->> -						   0, 0, /* src_x, src_y */
->> -						   src_fb->size,
->> -						   dst_fb->plane_width[i],
->> -						   dst_fb->plane_height[i],
->> -						   dst_fb->plane_bpp[i],
->> -						   dst_fb->gem_handle,
->> -						   dst_fb->offsets[i],
->> -						   dst_fb->strides[i],
->> -						   dst_tiling,
->> -						   0, 0 /* dst_x, dst_y */,
->> -						   dst_fb->size);
->> +
->> +		if (ahnd && fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
->> +			memset(&blt, 0, sizeof(blt));
->> +			blt.color_depth = blt_get_bpp(src_fb);
->> +
->> +			src = blt_fb_init(src_fb, i, mem_region);
->> +			dst = blt_fb_init(dst_fb, i, mem_region);
->> +
->> +			blt_set_copy_object(&blt.src, src);
->> +			blt_set_copy_object(&blt.dst, dst);
->> +
->> +			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
->> +
->> +			blt_fast_copy(src_fb->fd, ictx, e, ahnd, &blt);
-> 
-> Do we require block-copy engine here?
-> 
->> +			gem_sync(src_fb->fd, blt.dst.handle);
->> +
->> +			blt_destroy_object(src_fb->fd, src);
->> +			blt_destroy_object(dst_fb->fd, dst);
->> +		} else if (ahnd && blt_has_block_copy(src_fb->fd)) {
->> +			/*
->> +			* On GEN12+ X-tiled format support is removed from
->> +			* the fast blit command, so use the block copy blit
->> +			* command for it instead.
->> +			*/
->> +			src = blt_fb_init(src_fb, i, mem_region);
->> +			dst = blt_fb_init(dst_fb, i, mem_region);
->> +
->> +			memset(&blt, 0, sizeof(blt));
->> +			blt.print_bb = true;
->> +			blt.color_depth = blt_get_bpp(src_fb);
->> +			blt_set_copy_object(&blt.src, src);
->> +			blt_set_copy_object(&blt.dst, dst);
->> +
->> +			if (HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))) {
->> +				blt_set_object_ext(&ext.src,
->> +						   blt_compression_format(&blt, src_fb),
->> +						   src_fb->width, src_fb->height,
->> +						   SURFACE_TYPE_2D);
->> +
->> +				blt_set_object_ext(&ext.dst,
->> +						   blt_compression_format(&blt, dst_fb),
->> +						   dst_fb->width, dst_fb->height,
->> +						   SURFACE_TYPE_2D);
->> +
->> +				pext = &ext;
->> +			}
->> +
->> +			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
->> +
->> +			blt_block_copy(src_fb->fd, ictx, e, ahnd, &blt, pext);
-> 
-> I think to prepend with:
-> 
-> igt_assert(e);
-> 
-> for potential situation there's no block-copy capable engine.
-> 
-> --
-> Zbigniew
-> 
->> +			gem_sync(src_fb->fd, blt.dst.handle);
->> +
->> +			blt_destroy_object(src_fb->fd, src);
->> +			blt_destroy_object(dst_fb->fd, dst);
->>   		} else {
->> +			/*
->> +			 * If on legacy hardware where relocations are supported
->> +			 * we'll use XY_SRC blit command instead
->> +			 */
->>   			igt_blitter_src_copy(dst_fb->fd,
->>   					     ahnd, ctx, NULL,
->>   					     src_fb->gem_handle,
->> @@ -2750,6 +2917,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
->>   	if (ctx)
->>   		gem_context_destroy(dst_fb->fd, ctx);
->>   	put_ahnd(ahnd);
->> +	intel_ctx_destroy(src_fb->fd, ictx);
->>   }
->>   
->>   static void free_linear_mapping(struct fb_blit_upload *blit)
->> -- 
->> 2.39.0
->>
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
+di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIE1hYXJ0ZW4NCj4g
+TGFua2hvcnN0DQo+IFNlbnQ6IDI5IE1heSAyMDIzIDE4OjE4DQo+IFRvOiBpZ3QtZGV2QGxpc3Rz
+LmZyZWVkZXNrdG9wLm9yZw0KPiBTdWJqZWN0OiBbaWd0LWRldl0gW1BBVENIIGktZy10XSB0ZXN0
+cy94ZTogQWRkIGEgdGVzdCBmb3IgY29ybmVyIGNhc2VzIG9mIGV2aWN0aW9uLg0KPiANCj4gR2l0
+bGFiIGlzc3VlcyAxOTQgYW5kIDIzOSBzaG93IHNvbWUgY29ybmVyIGNhc2VzLiBJbiBwYXJ0aWN1
+bGFyLCBzaWduYWwgaGFuZGxpbmcsDQo+IHB0IGV2aWN0aW9uIGFuZCBsb3NpbmcgdHJhY2sgb2Yg
+ZXh0ZXJuYWwgb2JqZWN0cyBvbiB0aGUgbGlzdC4NCj4gDQo+IFRoZSBwYXRjaCBzZXJpZXMgdG8g
+Zml4IHRob3NlIHdhcyBzZW50IGFzDQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9y
+Zy9zZXJpZXMvMTE4NDI4Lw0KPiANCj4gQnV0IGJlY2F1c2UgaXQncyB0cmlja3kgdG8gcmVwcm9k
+dWNlIHRob3NlIGlzc3VlcywgSSBoYWQgdG8gYWRkIHNvbWUgY3VzdG9tIGlndCdzDQo+IHRvIGhh
+bmRsZSB0aG9zZS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IE1hYXJ0ZW4gTGFua2hvcnN0IDxtYWFy
+dGVuLmxhbmtob3JzdEBsaW51eC5pbnRlbC5jb20+DQo+IC0tLQ0KPiAgdGVzdHMvbWVzb24uYnVp
+bGQgICAgIHwgICAxICsNCj4gIHRlc3RzL3hlL3hlX2V2aWN0ZWQuYyB8IDMxMyArKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gIDIgZmlsZXMgY2hhbmdlZCwgMzE0
+IGluc2VydGlvbnMoKykNCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy94ZS94ZV9ldmljdGVk
+LmMNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1
+aWxkIGluZGV4IDY1NTExOTRmZS4uMTY2OTM3YjZjDQo+IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9t
+ZXNvbi5idWlsZA0KPiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiBAQCAtMjQ4LDYgKzI0OCw3
+IEBAIHhlX3Byb2dzID0gWw0KPiAgCSd4ZV9kbWFfYnVmX3N5bmMnLA0KPiAgCSd4ZV9kZWJ1Z2Zz
+JywNCj4gIAkneGVfZXZpY3QnLA0KPiArCSd4ZV9ldmljdGVkJywNCj4gIAkneGVfZXhlY19iYWxh
+bmNlcicsDQo+ICAJJ3hlX2V4ZWNfYmFzaWMnLA0KPiAgCSd4ZV9leGVjX2NvbXB1dGVfbW9kZScs
+DQo+IGRpZmYgLS1naXQgYS90ZXN0cy94ZS94ZV9ldmljdGVkLmMgYi90ZXN0cy94ZS94ZV9ldmlj
+dGVkLmMgbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gaW5kZXggMDAwMDAwMDAwLi4zZjVlNmE4MmMN
+Cj4gLS0tIC9kZXYvbnVsbA0KPiArKysgYi90ZXN0cy94ZS94ZV9ldmljdGVkLmMNCj4gQEAgLTAs
+MCArMSwzMTMgQEANCj4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQNCj4gKy8qDQo+
+ICsgKiBDb3B5cmlnaHQgwqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlvbg0KPiArICovDQo+ICsNCj4g
+Ky8qKg0KPiArICogVEVTVDogVGVzdCB2YXJpb3VzIGV2aWN0aW9uIGFuZCBFTk9NRU0gY29ybmVy
+IGNhc2VzLg0KPiArICogQ2F0ZWdvcnk6IFNvZnR3YXJlIGJ1aWxkaW5nIGJsb2NrDQo+ICsgKiBT
+dWItY2F0ZWdvcnk6IFZNX0JJTkQgLyBldmljdGlvbg0KPiArICogVGVzdCBjYXRlZ29yeTogZnVu
+Y3Rpb25hbGl0eSB0ZXN0DQo+ICsgKi8NCj4gKw0KPiArI2luY2x1ZGUgImlndC5oIg0KPiArI2lu
+Y2x1ZGUgImxpYi9pZ3Rfc3luY29iai5oIg0KPiArI2luY2x1ZGUgImxpYi9pbnRlbF9yZWcuaCIN
+Cj4gKyNpbmNsdWRlICJ4ZV9kcm0uaCINCj4gKw0KPiArI2luY2x1ZGUgInhlL3hlX2lvY3RsLmgi
+DQo+ICsjaW5jbHVkZSAieGUveGVfcXVlcnkuaCINCj4gKyNpbmNsdWRlICJ4ZS94ZV9zcGluLmgi
+DQo+ICsjaW5jbHVkZSA8c3RyaW5nLmg+DQo+ICsNCj4gK3N0YXRpYyB2b2lkIGV2aWN0X21lbShz
+dHJ1Y3QgeGVfZGV2aWNlICp4ZSkgew0KPiArCWlmICh4ZS0+aGFzX3ZyYW0pDQo+ICsJCWlndF9k
+ZWJ1Z2ZzX3dyaXRlKHhlLT5mZCwgInZyYW0wX2V2aWN0IiwgIjEiKTsNCj4gKwllbHNlDQo+ICsJ
+CWlndF9kZWJ1Z2ZzX3dyaXRlKHhlLT5mZCwgImd0dF9ldmljdCIsICIxIik7IH0NCj4gKw0KPiAr
+c3RhdGljIHZvaWQgZXhlY3N0cmVzcyhzdHJ1Y3QgeGVfZGV2aWNlICp4ZSwgdWludDMyX3QgZW5n
+aW5lLCB1aW50MzJfdA0KPiArYWRkcikgew0KPiArCXN0cnVjdCB0aW1lc3BlYyBzdGFydCwgZW5k
+Ow0KPiArDQo+ICsJaWd0X2ZvcmsoY2hpbGQsIDIpIHsNCj4gKwkJc3RydWN0IGRybV94ZV9zeW5j
+IHN5bmMgPSB7DQo+ICsJCQkuZmxhZ3MgPSBEUk1fWEVfU1lOQ19TWU5DT0JKIHwNCj4gRFJNX1hF
+X1NZTkNfU0lHTkFMLA0KPiArCQkJLmhhbmRsZSA9IHN5bmNvYmpfY3JlYXRlKHhlLT5mZCwgMCks
+DQo+ICsJCX07DQo+ICsNCj4gKwkJY2xvY2tfZ2V0dGltZShDTE9DS19NT05PVE9OSUMsICZzdGFy
+dCk7DQo+ICsNCj4gKwkJZG8gew0KPiArCQkJaWYgKCFjaGlsZCkNCj4gKwkJCQlldmljdF9tZW0o
+eGUpOw0KPiArCQkJZWxzZQ0KPiArCQkJCXhlX2V4ZWNfc3luYyh4ZS0+ZmQsIGVuZ2luZSwgYWRk
+ciwgJnN5bmMsIDEpOw0KPiArDQo+ICsJCQljbG9ja19nZXR0aW1lKENMT0NLX01PTk9UT05JQywg
+JmVuZCk7DQo+ICsJCX0gd2hpbGUgKGVuZC50dl9zZWMgLSBzdGFydC50dl9zZWMgPD0gMyk7DQo+
+ICsNCj4gKwkJaWYgKGNoaWxkKQ0KPiArCQkJaWd0X2Fzc2VydChzeW5jb2JqX3dhaXQoeGUtPmZk
+LCAmc3luYy5oYW5kbGUsIDEsDQo+IElOVDY0X01BWCwgMCwgTlVMTCkpOw0KPiArCQlzeW5jb2Jq
+X2Rlc3Ryb3koeGUtPmZkLCBzeW5jLmhhbmRsZSk7DQo+ICsJfQ0KPiArDQo+ICsJaWd0X3dhaXRj
+aGlsZHJlbigpOw0KPiArDQo+ICsJLyogTGVhdmUgZnVuY3Rpb24gaW4gYSBrbm93biBzdGF0ZSAq
+Lw0KPiArCWV2aWN0X21lbSh4ZSk7DQo+ICt9DQo+ICsNCj4gKy8qIFNlZSBpc3N1ZSAxOTQsIHVu
+YmluZGluZyBmaXJzdCBWTUEgbWF5IGNhdXNlIEJPIG5vdCB0byBiZSBsb2NrZWQNCj4gK2NvcnJl
+Y3RseSAqLyBzdGF0aWMgdm9pZCB0ZXN0X211bHRpbWFwKHN0cnVjdCB4ZV9kZXZpY2UgKnhlLCBi
+b29sDQo+ICtleHRlcm5hbCkgew0KPiArCXVpbnQ2NF90IHNpemUgPSB4ZS0+ZGVmYXVsdF9hbGln
+bm1lbnQ7DQo+ICsJdWludDMyX3Qgdm0gPSB4ZV92bV9jcmVhdGUoeGUtPmZkLA0KPiBEUk1fWEVf
+Vk1fQ1JFQVRFX1NDUkFUQ0hfUEFHRSwgMCk7DQo+ICsJdWludDMyX3QgYm8gPSB4ZV9ib19jcmVh
+dGUoeGUtPmZkLCAwLCBleHRlcm5hbCA/IDAgOiB2bSwgc2l6ZSk7DQo+ICsJdWludDMyX3QgZW5n
+aW5lID0geGVfZW5naW5lX2NyZWF0ZV9jbGFzcyh4ZS0+ZmQsIHZtLA0KPiBEUk1fWEVfRU5HSU5F
+X0NMQVNTX0NPUFkpOw0KPiArCXVpbnQzMl90ICptYXAgPSB4ZV9ib19tYXAoeGUtPmZkLCBibywg
+c2l6ZSk7DQo+ICsNCj4gKwkqbWFwID0gTUlfQkFUQ0hfQlVGRkVSX0VORDsNCj4gKwltdW5tYXAo
+bWFwLCBzaXplKTsNCj4gKw0KPiArCS8qIENyZWF0ZSAyIG1hcHBpbmdzICovDQo+ICsJeGVfdm1f
+YmluZF9zeW5jKHhlLT5mZCwgdm0sIGJvLCAwLCAwLCBzaXplKTsNCj4gKwl4ZV92bV9iaW5kX3N5
+bmMoeGUtPmZkLCB2bSwgYm8sIDAsIHNpemUsIHNpemUpOw0KPiArDQo+ICsJZXhlY3N0cmVzcyh4
+ZSwgZW5naW5lLCBzaXplKTsNCj4gKw0KPiArCS8qIFVuYmluZCB0aGUgZmlyc3Qgb25lLCB0byBw
+b3NzaWJseSBjb25mdXNlIHN0dWZmICovDQo+ICsJeGVfdm1fdW5iaW5kX3N5bmMoeGUtPmZkLCB2
+bSwgMCwgMCwgc2l6ZSk7DQo+ICsNCj4gKwlleGVjc3RyZXNzKHhlLCBlbmdpbmUsIHNpemUpOw0K
+PiArDQo+ICsJLyogVGVhcmRvd24uLiAqLw0KPiArCXhlX2VuZ2luZV9kZXN0cm95KHhlLT5mZCwg
+ZW5naW5lKTsNCj4gKwl4ZV92bV9kZXN0cm95KHhlLT5mZCwgdm0pOw0KPiArCWdlbV9jbG9zZSh4
+ZS0+ZmQsIGJvKTsNCj4gK30NCj4gKw0KPiArc3RhdGljIHVpbnQ2NF90IGF2YWlsX3ZyYW0oc3Ry
+dWN0IHhlX2RldmljZSAqKnhlKSB7DQo+ICsJaW50IGZkID0gKCp4ZSktPmZkOw0KPiArCWludCBy
+ZWdpb25faWR4Ow0KPiArDQo+ICsJLyogUmVmcmVzaCB0byBnZXQgdXAtdG8tZGF0ZSB2YWx1ZXMg
+Ki8NCj4gKwl4ZV9kZXZpY2VfcHV0KGZkKTsNCj4gKwkqeGUgPSB4ZV9kZXZpY2VfZ2V0KGZkKTsN
+Cj4gKw0KPiArCXJlZ2lvbl9pZHggPSBmZnMoKCp4ZSktPmd0cy0+Z3RzWzBdLm5hdGl2ZV9tZW1f
+cmVnaW9ucykgLSAxOw0KPiArDQo+ICsJcmV0dXJuICgqeGUpLT5tZW1fdXNhZ2UtPnJlZ2lvbnNb
+cmVnaW9uX2lkeF0udG90YWxfc2l6ZSAtDQo+ICsJICAgICAgICgqeGUpLT5tZW1fdXNhZ2UtPnJl
+Z2lvbnNbcmVnaW9uX2lkeF0udXNlZDsNCj4gK30NCj4gKw0KPiArc3RhdGljIHZvaWQgdGVzdF9w
+dF9ldmljdGlvbihzdHJ1Y3QgeGVfZGV2aWNlICp4ZSwgYm9vbCBleHRlcm5hbCkgew0KPiArCXVp
+bnQzMl90IGJvLCBpOw0KPiArCXVpbnQ2NF90IHNpemUsIGZ1bGxfc2l6ZSwgZnVsbF9hZGRyLCBh
+ZGRyLCBhdmFpbDsNCj4gKwl1aW50MzJfdCB2bTsNCj4gKwl1aW50MzJfdCBlbmdpbmU7DQo+ICsJ
+dWludDMyX3QgKm1hcDsNCj4gKwlzdHJ1Y3QgZHJtX3hlX2V4ZWMgZXhlYyA9IHt9Ow0KPiArCWln
+dF9yZXF1aXJlKHhlLT5oYXNfdnJhbSk7DQo+ICsNCj4gKwl2bSA9IHhlX3ZtX2NyZWF0ZSh4ZS0+
+ZmQsIDAsIDApOw0KPiArCWVuZ2luZSA9IHhlX2VuZ2luZV9jcmVhdGVfY2xhc3MoeGUtPmZkLCB2
+bSwNCj4gRFJNX1hFX0VOR0lORV9DTEFTU19DT1BZKTsNCj4gKw0KPiArCS8qIFJlZnJlc2ggeGVf
+ZGV2aWNlIHNpemUgYWZ0ZXIgY3JlYXRpbmcgdm0gKyBlbmdpbmUgKi8NCj4gKwlldmljdF9tZW0o
+eGUpOw0KPiArCWZ1bGxfc2l6ZSA9IChhdmFpbF92cmFtKCZ4ZSkgLSAoMiA8PCAyMFVMTCkpICYg
+figoMiA8PCAyMFVMTCkgLSAxKTsNCj4gKw0KPiArCWJvID0geGVfYm9fY3JlYXRlKHhlLT5mZCwg
+MCwgZXh0ZXJuYWwgPyAwIDogdm0sIGZ1bGxfc2l6ZSk7DQo+ICsNCj4gKwkvKiBPbmx5IG1hcCB3
+aGF0IHdlIG5lZWQuLiAqLw0KPiArCW1hcCA9IHhlX2JvX21hcCh4ZS0+ZmQsIGJvLCB4ZS0+ZGVm
+YXVsdF9hbGlnbm1lbnQpOw0KPiArCSptYXAgPSBNSV9CQVRDSF9CVUZGRVJfRU5EOw0KPiArCW11
+bm1hcChtYXAsIHhlLT5kZWZhdWx0X2FsaWdubWVudCk7DQo+ICsNCj4gKwkvKiBTdHVmZiBibyBh
+dCB0aGUgZW5kLCBzbyB3ZSBjYW4gdXNlIHN0YXJ0IGZvciBwYXJ0aWFsIGJvJ3MgKi8NCj4gKwlm
+dWxsX2FkZHIgPSAoMVVMTCA8PCAodWludDY0X3QpeGVfdmFfYml0cyh4ZS0+ZmQpKSAtIGZ1bGxf
+c2l6ZTsNCj4gKwl4ZV92bV9iaW5kX3N5bmMoeGUtPmZkLCB2bSwgYm8sIDAsIGZ1bGxfYWRkciwg
+ZnVsbF9zaXplKTsNCj4gKw0KPiArCWV4ZWMuZW5naW5lX2lkID0gZW5naW5lOw0KPiArCWV4ZWMu
+bnVtX2JhdGNoX2J1ZmZlciA9IDE7DQo+ICsJZXhlYy5hZGRyZXNzID0gZnVsbF9hZGRyOw0KPiAr
+DQo+ICsJLyogTm93IG1hcCBwYXJ0aWFsbHkgYXQgMCwgYW5kIHNlZSBob3cgbWFueSBwYWdldGFi
+bGVzIHdlIGNhbiBzdGlsbA0KPiBmaWxsLi4gKi8NCj4gKwlhZGRyID0gMDsNCj4gKwlzaXplID0g
+eGUtPmRlZmF1bHRfYWxpZ25tZW50Ow0KPiArCXhlX3ZtX2JpbmRfc3luYyh4ZS0+ZmQsIHZtLCBi
+bywgMCwgYWRkciwgc2l6ZSk7DQo+ICsNCj4gKwl4ZV9leGVjX3N5bmMoeGUtPmZkLCBlbmdpbmUs
+IGZ1bGxfYWRkciwgTlVMTCwgMCk7DQo+ICsNCj4gKwlhdmFpbCA9IGZ1bGxfc2l6ZSA+PiAxMjsN
+Cj4gKwl3aGlsZSAoMSkgew0KPiArCQl1aW50NjRfdCBuZXdfYXZhaWwgPSBhdmFpbF92cmFtKCZ4
+ZSkgPj4gMTI7DQo+ICsNCj4gKwkJaWYgKG5ld19hdmFpbCA+PSBhdmFpbCkNCj4gKwkJCWlndF9p
+bmZvKCJUVE0gZGVsYXllZCBkZXN0cm95IG1heSBoYXZlIGZyZWVkIHNvbWUNCj4gbWVtb3J5XG4i
+KTsNCj4gKwkJYXZhaWwgPSBuZXdfYXZhaWw7DQo+ICsNCj4gKwkJaWd0X2luZm8oIiUiUFJJdTY0
+IiBhdmFpbGFibGUgNEsgcGFnZXMgbGVmdFxuIiwgYXZhaWwpOw0KPiArCQlpZiAoIWF2YWlsKQ0K
+PiArCQkJYnJlYWs7DQo+ICsNCj4gKwkJaWYgKGF2YWlsID09IDEpIHsNCj4gKwkJCXhlX3ZtX2Jp
+bmRfc3luYyh4ZS0+ZmQsIHZtLCBibywgMCwgMiA8PCAyMFVMTCwgc2l6ZSk7DQo+ICsJCQlicmVh
+azsNCj4gKwkJfQ0KPiArDQo+ICsJCWFkZHIgKz0gMSA8PCAzMFVMTDsNCj4gKw0KPiArCQkvKiBS
+ZW1vdmUgMSBmb3Igc2Vjb25kIGxldmVsIFBUICovDQo+ICsJCWF2YWlsLS07DQo+ICsNCj4gKwkJ
+Zm9yIChpID0gMDsgaSA8IG1pbigodWludDY0X3QpNTEyLCBhdmFpbCk7IGkrKykgew0KPiArCQkJ
+dWludDY0X3QgdGhpc19hZGRyID0gYWRkciArIChpIDw8IDIxKTsNCj4gKw0KPiArCQkJeGVfdm1f
+YmluZF9zeW5jKHhlLT5mZCwgdm0sIGJvLCAwLCB0aGlzX2FkZHIsIHNpemUpOw0KPiArCQl9DQo+
+ICsJfQ0KPiArDQo+ICsJLyogVmVyaWZ5IHRoYXQgd2l0aCAwIG1lbW9yeSBhdmFpbGFibGUsIGV4
+ZWMgc3RpbGwgY29tcGxldGVzICovDQo+ICsJeGVfZXhlY19zeW5jKHhlLT5mZCwgZW5naW5lLCBm
+dWxsX2FkZHIsIE5VTEwsIDApOw0KPiArDQo+ICsJLyogQmluZCAxIG1vcmUgdG8gZ28gb3ZlciB0
+aGUgZWRnZSwgdGhpcyBzaG91bGQgbmV2ZXIgc3VjY2VlZC4uICovDQo+ICsJaWYgKF9feGVfdm1f
+YmluZCh4ZS0+ZmQsIHZtLCAwLCBibywgMCwgNCA8PCAyMFVMTCwgc2l6ZSwNCj4gKwkJCSBYRV9W
+TV9CSU5EX09QX01BUCwgTlVMTCwgMCwgMCwgMCkgPT0gMCkgew0KPiArDQo+ICsJCS8qIEJvb20h
+ICovDQo+ICsJCWlndF9hc3NlcnQoaWd0X2lvY3RsKHhlLT5mZCwgRFJNX0lPQ1RMX1hFX0VYRUMs
+ICZleGVjKSA8IDANCj4gJiYNCj4gKwkJCSAgIGVycm5vID09IEVOT01FTSk7DQo+ICsNCj4gKwkJ
+eGVfdm1fdW5iaW5kX3N5bmMoeGUtPmZkLCB2bSwgMCwgNCA8PCAyMFVMTCwgc2l6ZSk7DQo+ICsJ
+fSBlbHNlIHsNCj4gKwkJaWd0X2Fzc2VydChlcnJubyA9PSBFTk9NRU0pOw0KPiArCX0NCj4gKw0K
+PiArCS8qDQo+ICsJICogQWZ0ZXIgZXZpY3RpbmcsIHdlIG1heSBlbmQgdXAgY3JlYXRpbmcgbmV3
+IHBhZ2UgdGFibGVzLA0KPiArCSAqIHNvIHRoaXMgc2hvdWxkIGZhaWwuLg0KPiArCSAqLw0KPiAr
+CWV2aWN0X21lbSh4ZSk7DQo+ICsJaWd0X2Fzc2VydChpZ3RfaW9jdGwoeGUtPmZkLCBEUk1fSU9D
+VExfWEVfRVhFQywgJmV4ZWMpIDwgMCAmJg0KPiArCQkgICBlcnJubyA9PSBFTk9NRU0pOw0KPiAr
+DQo+ICsJLyogQ2xlYW51cCAqLw0KPiArCXhlX2VuZ2luZV9kZXN0cm95KHhlLT5mZCwgZW5naW5l
+KTsNCj4gKwl4ZV92bV9kZXN0cm95KHhlLT5mZCwgdm0pOw0KPiArCWdlbV9jbG9zZSh4ZS0+ZmQs
+IGJvKTsNCj4gK30NCj4gKw0KPiArLyogVGVzdCBPT00gd2l0aCBzaWduYWwgaGFuZGxlciBlbmFi
+bGVkLCB0byBtaW1pYyBYLm9yZyAoaXNzdWUgIzIzOSkgKi8NCldoZW4geW91IGFyZSBjaGVja2lu
+ZyB0aGVzZSBPT00gdGVzdHMsIENhbiB0aGUgaWd0IHByb2Nlc3MgZ2V0IGtpbGxlZCBkdWUgdG8g
+T09NIGtpbGxlciA/IGhvdyBhcmUgeW91IHByZXZlbnRpbmcgaXQgaW4gdGhpcyB0ZXN0LCBpcyB0
+aGlzIHRlc3QgcGFzc2luZyBvbiBhbnkgcGxhdGZvcm0uDQo+ICtzdGF0aWMgdm9pZCB0ZXN0X3Np
+Z25hbF9vb20oc3RydWN0IHhlX2RldmljZSAqeGUsIGJvb2wgZXh0ZXJuYWwpIHsNCj4gKwl1aW50
+MzJfdCBib1sxM10sIG51bV9ibyA9IDAsIGk7DQo+ICsJdWludDY0X3QgYmluZHMsIHNpemUgPSB4
+ZS0+aGFzX3ZyYW0gPyB4ZS0+dnJhbV9zaXplWzBdIDoNCj4gaWd0X2dldF9hdmFpbF9yYW1fbWIo
+KTsNCj4gKwl1aW50MzJfdCB2bSA9IHhlX3ZtX2NyZWF0ZSh4ZS0+ZmQsDQo+IERSTV9YRV9WTV9D
+UkVBVEVfU0NSQVRDSF9QQUdFLCAwKTsNCj4gKwl1aW50MzJfdCBlbmdpbmUgPSB4ZV9lbmdpbmVf
+Y3JlYXRlX2NsYXNzKHhlLT5mZCwgdm0sDQo+IERSTV9YRV9FTkdJTkVfQ0xBU1NfQ09QWSk7DQo+
+ICsJaW50IGVycjsNCj4gKwlzdHJ1Y3QgZHJtX3hlX2dlbV9jcmVhdGUgY3JlYXRlID0gew0KPiAr
+CQkuZmxhZ3MgPSB2cmFtX2lmX3Bvc3NpYmxlKHhlLT5mZCwgMCksDQo+ICsJfTsNCj4gKwlzdHJ1
+Y3QgZHJtX3hlX3N5bmMgc3luY1syXSA9IHsNCj4gKwkJew0KPiArCQkJLmZsYWdzID0gRFJNX1hF
+X1NZTkNfU1lOQ09CSiB8DQo+IERSTV9YRV9TWU5DX1NJR05BTCwNCj4gKwkJCS5oYW5kbGUgPSBz
+eW5jb2JqX2NyZWF0ZSh4ZS0+ZmQsIDApLA0KPiArCQl9LA0KPiArCQl7DQo+ICsJCQkuZmxhZ3Mg
+PSBEUk1fWEVfU1lOQ19TWU5DT0JKIHwNCj4gRFJNX1hFX1NZTkNfU0lHTkFMLA0KPiArCQkJLmhh
+bmRsZSA9IHN5bmNvYmpfY3JlYXRlKHhlLT5mZCwgMCksDQo+ICsJCX0sDQo+ICsJfTsNCj4gKwlz
+dHJ1Y3QgZHJtX3hlX2V4ZWMgZXhlYyA9IHsNCj4gKwkJLmVuZ2luZV9pZCA9IGVuZ2luZSwNCj4g
+KwkJLnN5bmNzID0gKHVpbnRwdHJfdClzeW5jLA0KPiArCQkubnVtX3N5bmNzID0gQVJSQVlfU0la
+RShzeW5jKSwNCj4gKwkJLmFkZHJlc3MgPSAwLA0KPiArCQkubnVtX2JhdGNoX2J1ZmZlciA9IDEs
+DQo+ICsJfTsNCj4gKw0KPiArCXNpemUgLz0gMTI7DQo+ICsJc2l6ZSAmPSB+KHhlLT5kZWZhdWx0
+X2FsaWdubWVudCAtIDEpOw0KPiArDQo+ICsJY3JlYXRlLnNpemUgPSBzaXplOw0KPiArCWlmICgh
+ZXh0ZXJuYWwpDQo+ICsJCWNyZWF0ZS52bV9pZCA9IHZtOw0KPiArDQo+ICsJLyogQ3JlYXRlIGFz
+IG1hbnkgYm8ncyBhcyB3ZSBjYW4gd2l0aG91dCBPT01zICovDQo+ICsJd2hpbGUgKG51bV9ibyA8
+IEFSUkFZX1NJWkUoYm8pKSB7DQo+ICsJCWlndF93aGlsZV9pbnRlcnJ1cHRpYmxlKHRydWUpIHsN
+Cj4gKwkJCWlmIChudW1fYm8gPj0gQVJSQVlfU0laRShibykpDQo+ICsJCQkJY29udGludWU7DQo+
+ICsNCj4gKwkJCWNyZWF0ZS5oYW5kbGUgPSAwOw0KPiArCQkJZXJyID0gaWd0X2lvY3RsKHhlLT5m
+ZCwgRFJNX0lPQ1RMX1hFX0dFTV9DUkVBVEUsDQo+ICZjcmVhdGUpOw0KPiArCQkJaWYgKCFlcnIp
+DQo+ICsJCQkJYm9bbnVtX2JvKytdID0gY3JlYXRlLmhhbmRsZTsNCj4gKwkJfQ0KPiArDQo+ICsJ
+CWlndF9hc3NlcnQoZXJyID09IDAgfHwgZXJybm8gPT0gRU5PTUVNKTsNCj4gKwkJaWYgKGVycikg
+ew0KPiArCQkJaWd0X2Fzc2VydCgheGUtPmhhc192cmFtIHx8IG51bV9ibyA+IDkpOw0KCQkJQ2Fu
+IHlvdSBjb21tZW50IHdoeSB5b3UgYXJlIGNoZWNraW5nIHdpdGggbnVtX2JvIHdpdGggOSA/IElu
+c3RlYWQgb2YgZGVmaW5pbmcgYm8gYXJyYXkgc2l6ZSBhcyAxMywgaWYgeW91IGFyZSB0cnlpbmcg
+dG8gY2hlY2sgdGhlIHZyYW0gZXZpY3Rpb24sIGNhbiB5b3UgdXNlIHRoZSBhdmFpbGFibGUgU3lz
+dGVtIG1lbW9yeSBhbmQgVlJBTSAsICBhbGxvd2VkIG1lbW9yeSBsaW1pdCBmb3IgZXZpY3Rpb24g
+YW5kIGRlcml2ZSB0aGVzZSBsaW1pdHMgYmFzZWQgb24gY2FsY3VsYXRpb24gc28gdGhhdCB0aGV5
+IGNhbiB3b3JrIGZvciBhbGwgcGxhdGZvcm1zLg0KPiArCQkJYnJlYWs7DQo+ICsJCX0NCj4gKwl9
+DQo+ICsNCj4gKwlpZ3RfaW5mbygiQ3JlYXRlZCAldSBibydzICh0b3RhbDogJSJQUkl1NjQiIE1C
+KVxuIiwNCj4gKwkJIG51bV9ibywgKG51bV9ibyAqIHNpemUpID4+IDIwVUxMKTsNCj4gKw0KPiAr
+CWJpbmRzID0gMDsNCj4gKwlmb3IgKGkgPSAwOyBpIDwgbnVtX2JvOyBpKyspIHsNCj4gKwkJZXZp
+Y3RfbWVtKHhlKTsNCj4gKwkJaWd0X2RlYnVnKCJCaW5kaW5nIGJvICVpLCB0b3RhbCBhdHRlbXB0
+cyAlIlBSSWk2NCJcbiIsIGksIGJpbmRzKTsNCj4gKw0KPiArCQlpZ3Rfd2hpbGVfaW50ZXJydXB0
+aWJsZSh0cnVlKQ0KPiArCQkJeGVfdm1fYmluZCh4ZS0+ZmQsIHZtLCBib1tpXSwgMCwgKChiaW5k
+cysrKSA8PCAzMlVMTCksDQo+IHNpemUsIHN5bmMsIDEpOw0KPiArCX0NCj4gKw0KPiArCXN5bmNb
+MF0uZmxhZ3MgJj0gfkRSTV9YRV9TWU5DX1NJR05BTDsNCj4gKw0KPiArCS8qIFRyeSBhIGZldyB0
+aW1lcywgd2h5IG5vdD8gKi8NCj4gKwlmb3IgKGkgPSAwOyBpIDwgNDsgaSsrKSB7DQo+ICsJCWln
+dF93aGlsZV9pbnRlcnJ1cHRpYmxlKHRydWUpIHsNCj4gKwkJCWVyciA9IGlndF9pb2N0bCh4ZS0+
+ZmQsIERSTV9JT0NUTF9YRV9FWEVDLCAmZXhlYyk7DQo+ICsJCQlpZ3RfYXNzZXJ0KGVyciA8IDAg
+JiYgZXJybm8gPT0gRU5PTUVNKTsNCj4gKwkJfQ0KPiArCX0NCj4gKw0KPiArCXhlX3ZtX2Rlc3Ry
+b3koeGUtPmZkLCB2bSk7DQo+ICsJd2hpbGUgKG51bV9iby0tKQ0KPiArCQlnZW1fY2xvc2UoeGUt
+PmZkLCBib1tudW1fYm9dKTsNCj4gKwlzeW5jb2JqX2Rlc3Ryb3koeGUtPmZkLCBzeW5jWzFdLmhh
+bmRsZSk7DQo+ICsJc3luY29ial9kZXN0cm95KHhlLT5mZCwgc3luY1swXS5oYW5kbGUpOyB9DQo+
+ICsNCj4gK2lndF9tYWluDQo+ICt7DQo+ICsJaW50IGZkOw0KPiArDQo+ICsJaWd0X2ZpeHR1cmUN
+Cj4gKwkJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX1hFKTsNCj4gKw0KPiArCWlndF9zdWJ0
+ZXN0KCJtdWx0aW1hcC1pbnRlcm5hbCIpDQo+ICsJCXRlc3RfbXVsdGltYXAoeGVfZGV2aWNlX2dl
+dChmZCksIGZhbHNlKTsNCj4gKw0KPiArCWlndF9zdWJ0ZXN0KCJtdWx0aW1hcC1leHRlcm5hbCIp
+DQo+ICsJCXRlc3RfbXVsdGltYXAoeGVfZGV2aWNlX2dldChmZCksIHRydWUpOw0KPiArDQo+ICsJ
+aWd0X3N1YnRlc3QoInB0LWV2aWN0aW9uLWludGVybmFsIikNCj4gKwkJdGVzdF9wdF9ldmljdGlv
+bih4ZV9kZXZpY2VfZ2V0KGZkKSwgZmFsc2UpOw0KPiArDQo+ICsJaWd0X3N1YnRlc3QoInB0LWV2
+aWN0aW9uLWV4dGVybmFsIikNCj4gKwkJdGVzdF9wdF9ldmljdGlvbih4ZV9kZXZpY2VfZ2V0KGZk
+KSwgZmFsc2UpOw0KCQlGb3IgdGVzdGluZyBleHRlcm5hbCAsIGNoYW5nZSBhYm92ZSBsaW5lIHRv
+IHRlc3RfcHRfZXZpY3Rpb24oeGVfZGV2aWNlX2dldChmZCksIHRydWUpOw0KPiArDQo+ICsJaWd0
+X3N1YnRlc3QoInNpZ25hbC1vb20taW50ZXJuYWwiKQ0KPiArCQl0ZXN0X3NpZ25hbF9vb20oeGVf
+ZGV2aWNlX2dldChmZCksIGZhbHNlKTsNCj4gKw0KPiArCWlndF9zdWJ0ZXN0KCJzaWduYWwtb29t
+LWV4dGVybmFsIikNCj4gKwkJdGVzdF9zaWduYWxfb29tKHhlX2RldmljZV9nZXQoZmQpLCBmYWxz
+ZSk7DQoJCUZvciB0ZXN0aW5nIGV4dGVybmFsICwgY2hhbmdlIGFib3ZlIGxpbmUgdG8gdGVzdF9z
+aWduYWxfb29tKHhlX2RldmljZV9nZXQoZmQpLCB0cnVlKTsNCg0KVGhhbmtzLA0KUmFodWwNCiB9
+DQo+IC0tDQo+IDIuMzQuMQ0KDQo=
