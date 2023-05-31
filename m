@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BE2210E50F
- for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 19:31:02 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDE9910E50E
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 19:31:15 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 31 May 2023 21:30:43 +0200
-Message-Id: <20230531193043.558461-4-zbigniew.kempczynski@intel.com>
+Date: Wed, 31 May 2023 21:30:41 +0200
+Message-Id: <20230531193043.558461-2-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230531193043.558461-1-zbigniew.kempczynski@intel.com>
 References: <20230531193043.558461-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] tests/xe_waitfence: Add abstime wait
- subtest
+Subject: [igt-dev] [PATCH i-g-t 1/3] xe/xe_ioctl: Add
+ xe_wait_ufence_abstime() helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,92 +24,60 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-User fence wait supports two methods of passing timeout - relative
-and absolute. Add absolute with passing timeout as nanoseconds.
+Xe user fences supports passing timeout in relative or absolute form.
+Add helper for absolute one.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 ---
-Requires changes in kernel uapi proposed in:
-https://patchwork.freedesktop.org/series/118670/
----
- tests/xe/xe_waitfence.c | 38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ lib/xe/xe_ioctl.c | 20 ++++++++++++++++++++
+ lib/xe/xe_ioctl.h |  3 +++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/tests/xe/xe_waitfence.c b/tests/xe/xe_waitfence.c
-index cdfcacdb47..1440ae4e7e 100644
---- a/tests/xe/xe_waitfence.c
-+++ b/tests/xe/xe_waitfence.c
-@@ -37,12 +37,23 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
- 	xe_vm_bind(fd, vm, bo, offset, addr, size, sync, 1);
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 66a8393fe9..fe61b70a83 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -418,6 +418,26 @@ void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
  }
  
-+#define MS_TO_NS(ms) (((long)ms) * 1000000)
-+enum waittype {
-+	RELATIVE,
-+	ABSTIME,
-+};
++long xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
++			    struct drm_xe_engine_class_instance *eci,
++			    int64_t timeout)
++{
++	struct drm_xe_wait_user_fence wait = {
++		.addr = to_user_pointer(addr),
++		.op = DRM_XE_UFENCE_WAIT_EQ,
++		.flags = !eci ? DRM_XE_UFENCE_WAIT_SOFT_OP | DRM_XE_UFENCE_WAIT_ABSTIME : 0,
++		.value = value,
++		.mask = DRM_XE_UFENCE_WAIT_U64,
++		.timeout = timeout,
++		.num_engines = eci ? 1 : 0,
++		.instances = eci ? to_user_pointer(eci) : 0,
++	};
 +
- /**
-  * SUBTEST: test
-- * Description: Check basic waitfences functionality
-+ * Description: Check basic waitfences functionality with timeout
-+ *              as relative timeout in nanoseconds
-+ *
-+ * SUBTEST: test-abstime
-+ * Description: Check basic waitfences functionality with timeout
-+ *              passed as absolute time in nanoseconds
-  */
- static void
--test(int fd)
-+test(int fd, enum waittype wt)
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
++
++	return wait.timeout;
++}
++
+ void xe_force_gt_reset(int fd, int gt)
  {
- 	uint32_t bo_1;
- 	uint32_t bo_2;
-@@ -51,6 +62,7 @@ test(int fd)
- 	uint32_t bo_5;
- 	uint32_t bo_6;
- 	uint32_t bo_7;
-+	long timeout;
- 
- 	uint32_t vm = xe_vm_create(fd, 0, 0);
- 	bo_1 = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
-@@ -67,7 +79,22 @@ test(int fd)
- 	do_bind(fd, vm, bo_6, 0, 0xc0040000, 0x1c0000, 6);
- 	bo_7 = xe_bo_create_flags(fd, vm, 0x10000, MY_FLAG);
- 	do_bind(fd, vm, bo_7, 0, 0xeffff0000, 0x10000, 7);
--	xe_wait_ufence(fd, &wait_fence, 7, NULL, 2000);
-+
-+	if (wt == RELATIVE) {
-+		timeout = xe_wait_ufence(fd, &wait_fence, 7, NULL, MS_TO_NS(10));
-+		igt_info("wait type: RELATIVE - timeout: %ld, timeout left: %ld\n",
-+			  MS_TO_NS(10), timeout);
-+	} else {
-+		struct timespec ts;
-+		long left;
-+
-+		clock_gettime(CLOCK_MONOTONIC, &ts);
-+		timeout = ts.tv_sec * 1e9 + ts.tv_nsec + (long) MS_TO_NS(10);
-+		left = xe_wait_ufence_abstime(fd, &wait_fence, 7, NULL, timeout);
-+		igt_info("wait type: ABSTIME - timeout: %ld, left: %ld\n",
-+			  timeout, left);
-+	}
-+
- 	xe_vm_unbind_sync(fd, vm, 0, 0x200000, 0x40000);
- 	xe_vm_unbind_sync(fd, vm, 0, 0xc0000000, 0x40000);
- 	xe_vm_unbind_sync(fd, vm, 0, 0x180000000, 0x40000);
-@@ -94,7 +121,10 @@ igt_main
- 	}
- 
- 	igt_subtest("test")
--		test(fd);
-+		test(fd, RELATIVE);
-+
-+	igt_subtest("test-abstime")
-+		test(fd, ABSTIME);
- 
- 	igt_fixture {
- 		xe_device_put(fd);
+ 	char reset_string[128];
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 049cd183d6..9b44892fe9 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -82,6 +82,9 @@ void xe_exec_wait(int fd, uint32_t engine, uint64_t addr);
+ void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		    struct drm_xe_engine_class_instance *eci,
+ 		    int64_t timeout);
++long xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
++			    struct drm_xe_engine_class_instance *eci,
++			    int64_t timeout);
+ void xe_force_gt_reset(int fd, int gt);
+ void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t size,
+ 		   uint32_t property, uint32_t value);
 -- 
 2.34.1
