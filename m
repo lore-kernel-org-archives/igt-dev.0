@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D1B310E499
- for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 09:16:54 +0000 (UTC)
-Message-ID: <cb3cd5ba-639f-bd05-a64a-b78c76cd9de0@intel.com>
-Date: Wed, 31 May 2023 14:46:48 +0530
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A452E10E4A0
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 09:21:58 +0000 (UTC)
+Message-ID: <b867884c-dd80-e996-784f-49ea48ed1d82@intel.com>
+Date: Wed, 31 May 2023 14:51:52 +0530
 MIME-Version: 1.0
 Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20230529164022.339814-1-swati2.sharma@intel.com>
- <20230530173510.qi55lelzipcdclit@zkempczy-mobl2>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230331071426.8568-1-swati2.sharma@intel.com>
+ <20230406090403.577rbyr3c5zgbdot@kamilkon-desk1>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230530173510.qi55lelzipcdclit@zkempczy-mobl2>
+In-Reply-To: <20230406090403.577rbyr3c5zgbdot@kamilkon-desk1>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/kms_dsc: add limited flag
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/kms_fbcon_fbt: Add crct_id to
+ struct
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,97 +23,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Thanks for the review. Floated v2:
+https://patchwork.freedesktop.org/series/118537/
 
-
-On 30-May-23 11:05 PM, Zbigniew Kempczyński wrote:
-> On Mon, May 29, 2023 at 10:10:22PM +0530, Swati Sharma wrote:
->> Add limited flag to restrict test execution to one valid pipe-output
->> combination. By default all tests will run on all valid pipe-output
->> combinations.
+On 06-Apr-23 2:34 PM, Kamil Konieczny wrote:
+> Hi Swati,
+> 
+> On 2023-03-31 at 12:44:26 +0530, Swati Sharma wrote:
+> 
+> may you change patch description from subject ? I would like
+> to see there something like you wrote below, for example:
+> 
+> i915/kms_fbcon_fbt: remove hard-coding of PIPE_A for CRC calc
+> 
+>> Remove hard-coding of PIPE_A while computing CRC.
+> 
+> You can write here how you did it (added crtc_id to drm_info
+> struct) but imho it is not needed.
+> 
+> Please also test it again as CI didn't tested it.
+> 
+> Regards,
+> Kamil
+> 
 >>
->> v2: -rename extended to limited (Kamil)
->>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 >> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 >> ---
->>   tests/i915/kms_dsc.c | 26 ++++++++++++++++++++++++--
->>   1 file changed, 24 insertions(+), 2 deletions(-)
+>>   tests/i915/kms_fbcon_fbt.c | 12 ++++++------
+>>   1 file changed, 6 insertions(+), 6 deletions(-)
 >>
->> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
->> index 3ce28f84..9ddb441d 100644
->> --- a/tests/i915/kms_dsc.c
->> +++ b/tests/i915/kms_dsc.c
->> @@ -51,6 +51,7 @@ typedef struct {
->>   	int input_bpc;
->>   	int disp_ver;
->>   	enum pipe pipe;
->> +	bool limited;
->>   } data_t;
+>> diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
+>> index 831ec867a..6c557dca7 100644
+>> --- a/tests/i915/kms_fbcon_fbt.c
+>> +++ b/tests/i915/kms_fbcon_fbt.c
+>> @@ -39,7 +39,7 @@ IGT_TEST_DESCRIPTION("Test the relationship between fbcon and the frontbuffer "
+>>   #define MAX_CONNECTORS 32
 >>   
->>   static int output_format_list[] = {DSC_FORMAT_YCBCR420, DSC_FORMAT_YCBCR444};
->> @@ -250,13 +251,34 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+>>   struct drm_info {
+>> -	int fd, debugfs_fd;
+>> +	int fd, debugfs_fd, crtc_id;
+>>   	struct igt_fb fb;
+>>   	drmModeResPtr res;
+>>   	drmModeConnectorPtr connectors[MAX_CONNECTORS];
+>> @@ -117,9 +117,10 @@ static bool fbc_check_cursor_blinking(struct drm_info *drm)
+>>   	igt_pipe_crc_t *pipe_crc;
+>>   	igt_crc_t crc[2];
+>>   	bool ret;
+>> -	int i;
+>> +	int i, pipe;
 >>   
->>   		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
->>   			update_display(data, test_type);
->> +
->> +		if (data->limited)
->> +			break;
->>   	}
->>   }
+>> -	pipe_crc = igt_pipe_crc_new(drm->fd, PIPE_A, IGT_PIPE_CRC_SOURCE_AUTO);
+>> +	pipe = kmstest_get_pipe_from_crtc_id(drm->fd, drm->crtc_id);
+>> +	pipe_crc = igt_pipe_crc_new(drm->fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
 >>   
->> -igt_main
->> +static int opt_handler(int opt, int opt_index, void *_data)
+>>   	igt_pipe_crc_start(pipe_crc);
+>>   	igt_pipe_crc_drain(pipe_crc);
+>> @@ -165,7 +166,6 @@ static void set_mode_for_one_screen(struct drm_info *drm,
+>>   				    connector_possible_fn connector_possible)
 >>   {
->> -	data_t data = {};
-> 
-> You don't need to introduce static data below, handler has pointer
-> to it, and functions are called with &data so keeping this on stack
-> is better for me (protects from global access in any place).
-> 
->> +	data_t *data = _data;
->> +
->> +	switch (opt) {
->> +	case 'l':
->> +		data->limited = true;
->> +		break;
->> +	default:
->> +		return IGT_OPT_HANDLER_ERROR;
->> +	}
->> +
->> +	return IGT_OPT_HANDLER_SUCCESS;
->> +}
->> +
->> +static const char help_str[] =
->> +	"  --limited\t\tLimit execution to 1 valid pipe-output combo\n";
-> 
-> I see you're using short option '-l', just add this to line above like:
-> 
-> "  --limited\t-l\tLimit ..."
-> 
+>>   	int i, rc;
+>> -	uint32_t crtc_id;
+>>   	drmModeModeInfoPtr mode;
+>>   	uint32_t buffer_id;
+>>   	drmModeConnectorPtr c = NULL;
+>> @@ -182,7 +182,7 @@ static void set_mode_for_one_screen(struct drm_info *drm,
+>>   	igt_require_f(i < drm->res->count_connectors,
+>>   		      "No connector available\n");
 >>   
->> +static data_t data = {};
-> 
-> Keep this on stack. With this nit fixed:
-> 
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
-Thanks Zbigniew for the review. With above changes floated v3.
-
-> 
-> --
-> Zbigniew
-> 
->> +
->> +igt_main_args("l", NULL, help_str, opt_handler, &data)
->> +{
->>   	igt_fixture {
->>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
->>   		data.devid = intel_get_drm_devid(data.drm_fd);
+>> -	crtc_id = kmstest_find_crtc_for_connector(drm->fd, drm->res, c, 0);
+>> +	drm->crtc_id = kmstest_find_crtc_for_connector(drm->fd, drm->res, c, 0);
+>>   
+>>   	buffer_id = igt_create_fb(drm->fd, mode->hdisplay, mode->vdisplay,
+>>   				  DRM_FORMAT_XRGB8888,
+>> @@ -193,7 +193,7 @@ static void set_mode_for_one_screen(struct drm_info *drm,
+>>   		 mode->hdisplay, mode->vdisplay,
+>>   		 kmstest_connector_type_str(c->connector_type));
+>>   
+>> -	rc = drmModeSetCrtc(drm->fd, crtc_id, buffer_id, 0, 0,
+>> +	rc = drmModeSetCrtc(drm->fd, drm->crtc_id, buffer_id, 0, 0,
+>>   			    &c->connector_id, 1, mode);
+>>   	igt_assert_eq(rc, 0);
+>>   }
 >> -- 
 >> 2.25.1
 >>
