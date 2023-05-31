@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBE7510E1B5
- for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 06:52:21 +0000 (UTC)
-Date: Wed, 31 May 2023 08:52:13 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>
-Message-ID: <20230531085213.4f86f261@maurocar-mobl2>
-In-Reply-To: <ab16d720-902e-8ab8-fd16-88173780a1f7@intel.com>
-References: <20230529052835.860047-1-bhanuprakash.modem@intel.com>
- <ab16d720-902e-8ab8-fd16-88173780a1f7@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D62710E47F
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 06:54:45 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 31 May 2023 12:24:06 +0530
+Message-Id: <20230531065407.362625-3-swati2.sharma@intel.com>
+In-Reply-To: <20230531065407.362625-1-swati2.sharma@intel.com>
+References: <20230531065407.362625-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t V4 00/82] Document KMS tests
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/3] tests:
+ s/check_dsc_on_connector/is_dsc_supported_by_sink
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,37 +19,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 30 May 2023 20:30:08 +0530
-"Sharma, Swati2" <swati2.sharma@intel.com> wrote:
+Rename function.
 
-> Hi Bhanu,
-> 
-> IMO, functionality and mega feature seems to be redundant
-> + * Functionality: vrr
-> + * Mega feature: VRR
-> 
-> Any thoughts?
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/i915/kms_dsc.c        | 2 +-
+ tests/i915/kms_dsc_helper.c | 2 +-
+ tests/i915/kms_dsc_helper.h | 2 +-
+ tests/i915/kms_psr2_sf.c    | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-They're not identical. See, for instance, General Display Features
-mega feature. It contains several different functionalities: crc, cursor,
-force_connector, hotplug... This is on the patches that were already 
-merged.
-
-The idea is that mega feature will contain a top level group of features,
-while functionality will contain the more technical low-level one.
-
-> Mauro/Bhanu,
-> What are our plans for igt_decribe(). It seems desriptions and 
-> igt_describe() is unneeded.
-
-Yes. It is on our todo list to remove igt_describe(), igt_describe_f()
-and IGT_TEST_DESCRIPTION() from the files that are documented via
-C comments.
-
-Regards,
-Mauro
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 3ce28f84..d142fae2 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -227,7 +227,7 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 		data->output = output;
+ 		data->pipe = pipe;
+ 
+-		if (!check_dsc_on_connector(data->drm_fd, data->output))
++		if (!is_dsc_supported_by_sink(data->drm_fd, data->output))
+ 			continue;
+ 
+ 		if (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
+diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
+index 1adf920b..c90d833d 100644
+--- a/tests/i915/kms_dsc_helper.c
++++ b/tests/i915/kms_dsc_helper.c
+@@ -53,7 +53,7 @@ void kms_dsc_exit_handler(int sig)
+ 	restore_force_dsc_en();
+ }
+ 
+-bool check_dsc_on_connector(int drmfd, igt_output_t *output)
++bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output)
+ {
+ 	if (!igt_is_dsc_supported_by_sink(drmfd, output->name)) {
+ 		igt_debug("DSC not supported on connector %s\n",
+diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
+index 198f5afa..f66191c7 100644
+--- a/tests/i915/kms_dsc_helper.h
++++ b/tests/i915/kms_dsc_helper.h
+@@ -26,7 +26,7 @@ void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc);
+ void save_force_dsc_en(int drmfd, igt_output_t *output);
+ void restore_force_dsc_en(void);
+ void kms_dsc_exit_handler(int sig);
+-bool check_dsc_on_connector(int drmfd, igt_output_t *output);
++bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output);
+ bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe);
+ bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc);
+ void force_dsc_output_format(int drmfd, igt_output_t *output,
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index 4cf98644..ffc41f98 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -934,7 +934,7 @@ igt_main
+ 				pipes[n_pipes] = data.pipe;
+ 				outputs[n_pipes] = data.output;
+ 
+-				if (check_dsc_on_connector(data.drm_fd, data.output))
++				if (is_dsc_supported_by_sink(data.drm_fd, data.output))
+ 					coexist_features[n_pipes] |= FEATURE_DSC;
+ 
+ 				n_pipes++;
+-- 
+2.25.1
