@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6EFBF10E4D8
- for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 13:44:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 667E110E4D8
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 13:44:39 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 31 May 2023 19:18:25 +0530
-Message-Id: <20230531134831.2451929-1-kunal1.joshi@intel.com>
+Date: Wed, 31 May 2023 19:18:27 +0530
+Message-Id: <20230531134831.2451929-3-kunal1.joshi@intel.com>
+In-Reply-To: <20230531134831.2451929-1-kunal1.joshi@intel.com>
+References: <20230531134831.2451929-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/6] RFC Enable kms_frontbuffer_tracking on
- XE
+Subject: [igt-dev] [PATCH i-g-t 2/6] RFC Added is_xe to check if xe device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,23 +23,38 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series is intended to extend kms_frontbuffer_tracking
-test to be supported on xe driver
+Added is_xe for test to have XE checks
 
-Kunal Joshi (6):
-  RFC tests/i915/kms_frontbuffer_tracking: Add xe support
-  RFC Added is_xe to check if xe device
-  RFC tests/i915/kms_frontbuffer_tracking: xe doesn't support tiling as
-    of now
-  tests/i915/kms_frontbuffer_tracking: all gem ioctls are not supported
-    for xe as of now
-  RFC lib/ioctl_wrappers: GEM_SET_DOMAIN ioctl not supported on xe
-  RFC tests/i915/kms_frontbuffer_tracking: xe only supports MMAP_WC,
-    BLT, RENDER
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/i915/kms_frontbuffer_tracking.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
- lib/ioctl_wrappers.c                  |  7 ++-
- tests/i915/kms_frontbuffer_tracking.c | 81 ++++++++++++++++++---------
- 2 files changed, 62 insertions(+), 26 deletions(-)
-
+diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+index c2b99670..3bef46b6 100644
+--- a/tests/i915/kms_frontbuffer_tracking.c
++++ b/tests/i915/kms_frontbuffer_tracking.c
+@@ -309,6 +309,8 @@ struct {
+ 	.stop = true,
+ };
+ 
++static bool is_xe;
++
+ static drmModeModeInfo *get_connector_smallest_mode(igt_output_t *output)
+ {
+ 	drmModeConnector *c = output->config.connector;
+@@ -1341,6 +1343,12 @@ static void setup_drm(void)
+ 	drm.fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 	drm.debugfs = igt_debugfs_dir(drm.fd);
+ 
++	/*
++	 * Test has XE checks as we don't have gem IOCTLS
++	 * on XE used in this test, for now ignore it if XE
++	 */
++	is_xe = is_xe_device(drm.fd);
++
+ 	kmstest_set_vt_graphics_mode();
+ 	igt_display_require(&drm.display, drm.fd);
+ 
 -- 
 2.25.1
