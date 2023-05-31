@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C76BA10E492
- for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 07:46:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1BAF10E492
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 May 2023 07:46:06 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 31 May 2023 13:15:29 +0530
-Message-Id: <20230531074530.367036-3-swati2.sharma@intel.com>
+Date: Wed, 31 May 2023 13:15:28 +0530
+Message-Id: <20230531074530.367036-2-swati2.sharma@intel.com>
 In-Reply-To: <20230531074530.367036-1-swati2.sharma@intel.com>
 References: <20230531074530.367036-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/3] tests/kms_pipe_crc_basic: add nv12
- crc sanity check
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_fb: round rgb->yuv conversion
+ results
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,132 +23,88 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-New CRC sanitycheck test case is added with NV12 format.
-kms_plane@pixel-format test is validating all formats.
-To improve BAT coverage we can have one planar format crc
-sanity test.
+Round rgb->yuv conversion results.
 
-v2: -improved documentation (Bhanu)
-v3: -added check to skip format if not supported (CI)
-
+Signed-off-by: Ville Syrjala <ville.syrjala@linux.intel.com>
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_pipe_crc_basic.c | 50 ++++++++++++++++++++++++++------------
- 1 file changed, 35 insertions(+), 15 deletions(-)
+ lib/igt_fb.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 84c73fd7..9ce9f5e5 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -227,25 +227,31 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 71a199d4..11a5d6c0 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -3064,11 +3064,16 @@ static void igt_fb_destroy_cairo_shadow_buffer(struct igt_fb *shadow,
+ 	munmap(ptr, shadow->size);
  }
  
- /**
-- * SUBTEST: compare-crc-sanitycheck
-- * Description: Basic sanity check for CRC mismatches
-+ * SUBTEST: compare-crc-sanitycheck-%s
-+ * Description: Basic sanity check for CRC mismatches with %arg[1]
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: crc
-  * Mega feature: General Display Features
-+ *
-+ * arg[1]:
-+ *
-+ * @xr24:	XR24 format
-+ * @nv12:	NV12 format
-  */
- 
- /*
-  * CRC-sanity test, to make sure there would be no CRC mismatches
-  *
-- * - Create two framebuffers (FB0 & FB1) with same color info
-- * - Flip FB0 with the Primary plane & collect the CRC as ref CRC.
-- * - Flip FB1 with the Primary plane, collect the CRC & compare with
-+ * - Create two framebuffers (FB0 & FB1).
-+ * - Flip FB0 with the primary plane & collect the CRC as ref CRC.
-+ * - Flip FB1 with the primary plane, collect the CRC & compare with
-  *   the ref CRC.
-  *
-  *   No CRC mismatch should happen
-  */
--static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
-+static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output,
-+			     uint32_t plane_format)
+-static uint8_t clamprgb(float val)
++static uint8_t clamp8(float val)
  {
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *primary;
-@@ -259,7 +265,9 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	return clamp((int)(val + 0.5f), 0, 255);
+ }
  
- 	mode = igt_output_get_mode(output);
- 
--	/* Create two framebuffers with the same color info. */
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_skip_on(!igt_plane_has_format_mod(primary, plane_format, DRM_FORMAT_MOD_LINEAR));
++static uint8_t clamp16(float val)
++{
++	return clamp((int)(val + 0.5f), 0, 65535);
++}
 +
- 	igt_create_color_fb(data->drm_fd,
- 			mode->hdisplay, mode->vdisplay,
- 			DRM_FORMAT_XRGB8888,
-@@ -267,14 +275,12 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
- 			1.0, 1.0, 1.0,
- 			&fb0);
- 	igt_create_color_fb(data->drm_fd,
--			mode->hdisplay, mode->vdisplay,
--			DRM_FORMAT_XRGB8888,
-+			mode->hdisplay, mode->vdisplay, plane_format,
- 			DRM_FORMAT_MOD_LINEAR,
- 			1.0, 1.0, 1.0,
- 			&fb1);
+ static void read_rgb(struct igt_vec4 *rgb, const uint8_t *rgb24)
+ {
+ 	rgb->d[0] = rgb24[2];
+@@ -3079,9 +3084,9 @@ static void read_rgb(struct igt_vec4 *rgb, const uint8_t *rgb24)
  
--	/* Flip FB0 with the Primary plane & collect the CRC as ref CRC. */
--	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	/* Flip FB0 with the primary plane & collect the CRC as ref CRC. */
- 	igt_plane_set_fb(primary, &fb0);
- 	igt_display_commit(display);
+ static void write_rgb(uint8_t *rgb24, const struct igt_vec4 *rgb)
+ {
+-	rgb24[2] = clamprgb(rgb->d[0]);
+-	rgb24[1] = clamprgb(rgb->d[1]);
+-	rgb24[0] = clamprgb(rgb->d[2]);
++	rgb24[2] = clamp8(rgb->d[0]);
++	rgb24[1] = clamp8(rgb->d[1]);
++	rgb24[0] = clamp8(rgb->d[2]);
+ }
  
-@@ -282,7 +288,7 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
- 				    IGT_PIPE_CRC_SOURCE_AUTO);
- 	igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
+ struct fb_convert_buf {
+@@ -3401,7 +3406,7 @@ static void convert_rgb24_to_yuv(struct fb_convert *cvt)
  
--	/* Flip FB1 with the Primary plane & compare the CRC with ref CRC. */
-+	/* Flip FB1 with the primary plane & compare the CRC with ref CRC. */
- 	igt_plane_set_fb(primary, &fb1);
- 	igt_display_commit(display);
+ 			rgb_tmp += bpp;
  
-@@ -475,8 +481,22 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		}
- 	}
+-			*y_tmp = yuv.d[0];
++			*y_tmp = clamp8(yuv.d[0]);
+ 			y_tmp += params.ay_inc;
  
--	igt_describe("Basic sanity check for CRC mismatches");
--	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
-+	igt_describe("Basic sanity check for CRC mismatches with XR24 format");
-+	igt_subtest_with_dynamic("compare-crc-sanitycheck-xr24") {
-+		for_each_pipe_with_single_output(&data.display, pipe, output) {
-+			if (simulation_constraint(pipe))
-+				continue;
-+
-+			if(!pipe_output_combo_valid(&data.display, pipe, output))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-+				test_compare_crc(&data, pipe, output, DRM_FORMAT_XRGB8888);
-+		}
-+	}
-+
-+	igt_describe("Basic sanity check for CRC mismatches with NV12 format");
-+	igt_subtest_with_dynamic("compare-crc-sanitycheck-nv12") {
- 		for_each_pipe_with_single_output(&data.display, pipe, output) {
- 			if (simulation_constraint(pipe))
- 				continue;
-@@ -485,7 +505,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 				continue;
+ 			if ((i % dst_fmt->vsub) || (j % dst_fmt->hsub))
+@@ -3431,8 +3436,8 @@ static void convert_rgb24_to_yuv(struct fb_convert *cvt)
+ 			read_rgb(&pair_rgb, pair_rgb24);
+ 			pair_yuv = igt_matrix_transform(&m, &pair_rgb);
  
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
--				test_compare_crc(&data, pipe, output);
-+				test_compare_crc(&data, pipe, output, DRM_FORMAT_NV12);
- 		}
- 	}
+-			*u_tmp = (yuv.d[1] + pair_yuv.d[1]) / 2.0f;
+-			*v_tmp = (yuv.d[2] + pair_yuv.d[2]) / 2.0f;
++			*u_tmp = clamp8((yuv.d[1] + pair_yuv.d[1]) / 2.0f);
++			*v_tmp = clamp8((yuv.d[2] + pair_yuv.d[2]) / 2.0f);
  
+ 			u_tmp += params.uv_inc;
+ 			v_tmp += params.uv_inc;
+@@ -3590,7 +3595,7 @@ static void convert_float_to_yuv16(struct fb_convert *cvt, bool alpha)
+ 
+ 			rgb_tmp += fpp;
+ 
+-			*y_tmp = yuv.d[0];
++			*y_tmp = clamp16(yuv.d[0]);
+ 			y_tmp += params.ay_inc;
+ 
+ 			if ((i % dst_fmt->vsub) || (j % dst_fmt->hsub))
+@@ -3620,8 +3625,8 @@ static void convert_float_to_yuv16(struct fb_convert *cvt, bool alpha)
+ 			read_rgbf(&pair_rgb, pair_float);
+ 			pair_yuv = igt_matrix_transform(&m, &pair_rgb);
+ 
+-			*u_tmp = (yuv.d[1] + pair_yuv.d[1]) / 2.0f;
+-			*v_tmp = (yuv.d[2] + pair_yuv.d[2]) / 2.0f;
++			*u_tmp = clamp16((yuv.d[1] + pair_yuv.d[1]) / 2.0f);
++			*v_tmp = clamp16((yuv.d[2] + pair_yuv.d[2]) / 2.0f);
+ 
+ 			u_tmp += params.uv_inc;
+ 			v_tmp += params.uv_inc;
 -- 
 2.25.1
