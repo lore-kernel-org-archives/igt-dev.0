@@ -1,25 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com
- [IPv6:2a00:1450:4864:20::630])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D99578914B
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Jun 2023 16:43:45 +0000 (UTC)
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-97392066d04so146526466b.3
- for <igt-dev@lists.freedesktop.org>; Thu, 01 Jun 2023 09:43:45 -0700 (PDT)
-Message-ID: <543e5c37-fb93-79cd-ad3d-256e3dc8dd5f@gmail.com>
-Date: Thu, 1 Jun 2023 19:43:37 +0300
+Content-Type: multipart/alternative;
+ boundary="===============6955243557153863313=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230601130850.26359-7-ville.syrjala@linux.intel.com>
- <20230601161308.16837-1-ville.syrjala@linux.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230601161308.16837-1-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3 6/7] lib/edid: Add support for making
- DisplayID tile blocks
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Date: Thu, 01 Jun 2023 16:56:43 -0000
+Message-ID: <168563860309.16229.9883587022967605780@emeril.freedesktop.org>
+References: <20230601130850.26359-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20230601130850.26359-1-ville.syrjala@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Iga21zOiBS?=
+ =?utf-8?q?un_tiled_display_tests_on_any_set_of_connectors_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,226 +17,329 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+--===============6955243557153863313==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 1.6.2023 19.13, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> We want to test tiled display support without actually having tiled
-> displays. To that end we will want to construct fake tile infromation
-> and append it to the EDID.
-> 
-> v2: Document the functiosn (Juha-Pekka)
-> 
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->   lib/igt_edid.c | 120 +++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_edid.h |  49 ++++++++++++++++++++
->   2 files changed, 169 insertions(+)
-> 
-> diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-> index 68dc4f75478b..80dcea11275d 100644
-> --- a/lib/igt_edid.c
-> +++ b/lib/igt_edid.c
-> @@ -578,3 +578,123 @@ void edid_ext_set_cea(struct edid_ext *ext, size_t data_blocks_size,
->   	cea->dtd_start = 4 + data_blocks_size;
->   	cea->misc = flags | num_native_dtds;
->   }
-> +
-> +/**
-> + * dispid_block_tiled:
-> + * @ptr: The DisplayID data block
-> + * @num_htiles: Total number of horizontal tiles
-> + * @num_vtiles: Total number of vertical tiles
-> + * @htile: Horizontal tile location
-> + * @vtile: Vertical tile location
-> + * @hsize: Horizontal size
-> + * @vsize: Vertical size
-> + * @topology_id: Tiled display topology ID
-> + *
-> + * Fill a DisplayID tiled display topology data block
-> + *
-> + * Returns:
-> + * A pointer to the next data block
-> + */
-> +void *dispid_block_tiled(void *ptr,
-> +			 int num_htiles, int num_vtiles,
-> +			 int htile, int vtile,
-> +			 int hsize, int vsize,
-> +			 const char *topology_id)
-> +{
-> +	struct dispid_block_header *block = ptr;
-> +	struct dispid_tiled_block *tiled = (void*)(block + 1);
-> +	size_t len;
-> +
-> +	block->tag = 0x12;
-> +	block->rev = 0;
-> +	block->num_bytes = sizeof(*tiled);
-> +
-> +	num_htiles--;
-> +	num_vtiles--;
-> +	hsize--;
-> +	vsize--;
-> +
-> +	tiled->tile_caps =
-> +		DISPID_MULTI_TILE_AT_TILE_LOCATION |
-> +		DISPID_SINGLE_TILE_AT_TILE_LOCATION;
-> +
-> +	tiled->topo[0] = (num_htiles & 0xf) << 4 |
-> +		(num_vtiles & 0xf) << 0;
-> +
-> +	tiled->topo[1] = (htile & 0xf) << 4 |
-> +		(vtile & 0xf) << 0;
-> +
-> +	tiled->topo[2] = (num_htiles >> 4) << 6 |
-> +		(num_vtiles >> 4) << 4 |
-> +		(htile >> 4) << 2 |
-> +		(vtile >> 4) << 0;
-> +
-> +	tiled->tile_size[0] = hsize;
-> +	tiled->tile_size[1] = hsize >> 8;
-> +	tiled->tile_size[2] = vsize;
-> +	tiled->tile_size[3] = vsize >> 8;
-> +
-> +	len = min(strlen(topology_id), sizeof(tiled->topology_id));
-> +	memcpy(tiled->topology_id, topology_id, len);
-> +
-> +	return tiled + 1;
-> +}
-> +
-> +/**
-> + * edid_ext_dispid:
-> + * @ext: EDID extension block
-> + *
-> + * Mark the EDID extentions block as DisplayID.
-> +
-> + * Returns:
-> + * A pointer to the contained DisplayID.
-> + */
-> +void *edid_ext_dispid(struct edid_ext *ext)
-> +{
-> +	struct edid_dispid *dispid = &ext->data.dispid;
-> +
-> +	edid_ext_set_displayid(ext);
-> +
-> +	return dispid;
-> +}
-> +
-> +/**
-> + * dispid_init:
-> + * @ptr: Pointer to the DisplayID
-> + *
-> + * Initialize the DisplayID header.
-> + *
-> + * Returns:
-> + * A pointer to the first data block.
-> + */
-> +void *dispid_init(void *ptr)
-> +{
-> +	struct dispid_header *dispid = ptr;
-> +
-> +	dispid->rev = 0x10;
-> +	dispid->prod_id = 0x3;
-> +	dispid->ext_count = 0;
-> +
-> +	return dispid + 1;
-> +}
-> +
-> +/**
-> + * dispid_done:
-> + * @dispid: Pointer to the DisplayID
-> + * @ptr: Pointer to the end of the DisplayID (the checksum byte)
-> + *
-> + * Finalize the DisplayID (fill the number of bytes and checksum).
-> + *
-> + * Returns:
-> + * A pointer just past the end of the DisplayID.
-> + */
-> +void *dispid_done(struct dispid_header *dispid, void *ptr)
-> +{
-> +	int bytes = ptr - (void *)dispid;
-> +
-> +	dispid->num_bytes = bytes - sizeof(*dispid);
-> +
-> +	*(uint8_t *)ptr = compute_checksum((void*)dispid, bytes + 1);
-> +
-> +	return ptr + 1;
-> +}
-> diff --git a/lib/igt_edid.h b/lib/igt_edid.h
-> index 85a9ef5e1a25..02645345f0d0 100644
-> --- a/lib/igt_edid.h
-> +++ b/lib/igt_edid.h
-> @@ -303,6 +303,44 @@ struct edid_cea {
->   	uint8_t checksum;
->   } __attribute__((packed));
->   
-> +enum dispid_tile_caps {
-> +	DISPID_SINGLE_PHYSICAL_ENCLOSURE = 1 << 7,
-> +	DISPID_BEZEL_INFORMATION_PRESENT = 1 << 6,
-> +	DISPID_MULTI_TILE_UNKNOWN = 0 << 3,
-> +	DISPID_MULTI_TILE_AT_TILE_LOCATION = 1 << 3,
-> +	DISPID_SINGLE_TILE_UNKNOWN = 0 << 0,
-> +	DISPID_SINGLE_TILE_AT_TILE_LOCATION = 1 << 0,
-> +	DISPID_SINGLE_TILE_SCALED_FULLSCREEN = 2 << 0,
-> +	DISPID_SINGLE_TILE_CLONED_TO_ALL_TILES = 3 << 0,
-> +};
-> +
-> +struct dispid_header {
-> +	uint8_t rev;
-> +	uint8_t num_bytes;
-> +	uint8_t prod_id;
-> +	uint8_t ext_count;
-> +} __attribute__((packed));
-> +
-> +struct dispid_block_header {
-> +	uint8_t tag;
-> +	uint8_t rev;
-> +	uint8_t num_bytes;
-> +} __attribute__((packed));
-> +
-> +struct dispid_tiled_block {
-> +	uint8_t tile_caps;
-> +	uint8_t topo[3];
-> +	uint8_t tile_size[4];
-> +	uint8_t tile_pixel_bezel[5];
-> +	uint8_t topology_id[9];
-> +} __attribute__((packed));
-> +
-> +struct edid_dispid {
-> +	struct dispid_header header;
-> +	char data[122];
-> +	uint8_t checksum;
-> +} __attribute__((packed));
-> +
->   enum edid_ext_tag {
->   	EDID_EXT_CEA = 0x02,
->   	EDID_EXT_DISPLAYID = 0x70,
-> @@ -329,6 +367,7 @@ struct edid_ext {
->   	union {
->   		struct edid_cea cea;
->   		struct edid_tile tile;
-> +		struct edid_dispid dispid;
->   	} data;
->   } __attribute__((packed));
->   
-> @@ -408,4 +447,14 @@ void edid_ext_set_cea(struct edid_ext *ext, size_t data_blocks_size,
->   		      uint8_t num_native_dtds, uint8_t flags);
->   
->   void edid_ext_set_displayid(struct edid_ext *ext);
-> +
-> +void *edid_ext_dispid(struct edid_ext *ext);
-> +void *dispid_init(void *ptr);
-> +void *dispid_done(struct dispid_header *dispid, void *ptr);
-> +void *dispid_block_tiled(void *ptr,
-> +			 int num_htiles, int num_vtiles,
-> +			 int htile, int vtile,
-> +			 int hsize, int vsize,
-> +			 const char *topology_id);
-> +
->   #endif
+== Series Details ==
+
+Series: kms: Run tiled display tests on any set of connectors (rev4)
+URL   : https://patchwork.freedesktop.org/series/96027/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13216 -> IGTPW_9094
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/index.html
+
+Participating hosts (37 -> 36)
+------------------------------
+
+  Missing    (1): fi-kbl-8809g 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9094 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_backlight@basic-brightness@edp-1:
+    - bat-rplp-1:         NOTRUN -> [ABORT][1] ([i915#7077])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [PASS][2] -> [ABORT][3] ([i915#4983] / [i915#7911] / [i915#7920])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         NOTRUN -> [DMESG-WARN][4] ([i915#6367])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-rpls-2:         NOTRUN -> [ABORT][5] ([i915#6687])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][6] ([i915#1845] / [i915#5354]) +2 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
+    - bat-dg2-8:          [PASS][7] -> [FAIL][8] ([i915#7932])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - bat-rplp-1:         NOTRUN -> [SKIP][9] ([i915#1072]) +1 similar issue
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-rplp-1:         NOTRUN -> [SKIP][10] ([i915#3555] / [i915#4579])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_auth@basic-auth:
+    - {bat-mtlp-8}:       [DMESG-WARN][11] ([i915#1982]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-mtlp-8/igt@core_auth@basic-auth.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-mtlp-8/igt@core_auth@basic-auth.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-hsw-4770:        [SKIP][13] ([fdo#109271]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/fi-hsw-4770/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/fi-hsw-4770/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-hsw-4770:        [FAIL][15] ([i915#7364]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/fi-hsw-4770/igt@i915_pm_rpm@basic-rte.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/fi-hsw-4770/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - bat-rpls-2:         [DMESG-FAIL][17] ([i915#4258] / [i915#7913]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg2-8:          [DMESG-FAIL][19] ([i915#6998] / [i915#7913]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-dg2-8/igt@i915_selftest@live@hangcheck.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-dg2-8/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - {bat-mtlp-6}:       [DMESG-FAIL][21] ([i915#8497]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-mtlp-6/igt@i915_selftest@live@requests.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-mtlp-6/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-2:         [ABORT][23] ([i915#4983] / [i915#7461] / [i915#7913] / [i915#8347]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  
+#### Warnings ####
+
+  * igt@kms_psr@cursor_plane_move:
+    - bat-rplp-1:         [ABORT][25] ([i915#8434]) -> [SKIP][26] ([i915#1072])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6998]: https://gitlab.freedesktop.org/drm/intel/issues/6998
+  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
+  [i915#7364]: https://gitlab.freedesktop.org/drm/intel/issues/7364
+  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
+  [i915#8434]: https://gitlab.freedesktop.org/drm/intel/issues/8434
+  [i915#8497]: https://gitlab.freedesktop.org/drm/intel/issues/8497
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7317 -> IGTPW_9094
+
+  CI-20190529: 20190529
+  CI_DRM_13216: 192fe33ac4d87d2bd3bd7c677f6ff48588ec0990 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9094: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/index.html
+  IGT_7317: c902b72df45aa49faa38205bc5be3c748d33a3e0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/index.html
+
+--===============6955243557153863313==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>kms: Run tiled display tests on any set of connectors (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96027/">https://patchwork.freedesktop.org/series/96027/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13216 -&gt; IGTPW_9094</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/index.html</p>
+<h2>Participating hosts (37 -&gt; 36)</h2>
+<p>Missing    (1): fi-kbl-8809g </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9094 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness@edp-1:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_auth@basic-auth:</p>
+<ul>
+<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-mtlp-8/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-mtlp-8/igt@core_auth@basic-auth.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/fi-hsw-4770/igt@i915_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/fi-hsw-4770/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/fi-hsw-4770/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7364">i915#7364</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/fi-hsw-4770/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-rpls-2/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4258">i915#4258</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rpls-2/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-dg2-8/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6998">i915#6998</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-dg2-8/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>{bat-mtlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-mtlp-6/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8497">i915#8497</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_psr@cursor_plane_move:<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13216/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8434">i915#8434</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7317 -&gt; IGTPW_9094</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13216: 192fe33ac4d87d2bd3bd7c677f6ff48588ec0990 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9094: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9094/index.html<br />
+  IGT_7317: c902b72df45aa49faa38205bc5be3c748d33a3e0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6955243557153863313==--
