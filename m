@@ -1,23 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com
- [IPv6:2a00:1450:4864:20::531])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EB8410E21A
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Jun 2023 08:08:33 +0000 (UTC)
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5149bdb59daso853747a12.2
- for <igt-dev@lists.freedesktop.org>; Thu, 01 Jun 2023 01:08:33 -0700 (PDT)
-Message-ID: <3a533248-c958-927f-1b7e-89647df5b8c8@gmail.com>
-Date: Thu, 1 Jun 2023 11:08:25 +0300
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F98B10E21A
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Jun 2023 08:10:38 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com,
+ ramadevi.gandi@intel.com, janga.rahul.kumar@intel.com
+Date: Thu,  1 Jun 2023 13:40:56 +0530
+Message-Id: <20230601081056.643382-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
-References: <20230530051852.342524-1-swati2.sharma@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230530051852.342524-1-swati2.sharma@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: make test name
- uniform
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/xe_evict: Update Run Type
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,51 +18,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-On 30.5.2023 8.18, Swati Sharma wrote:
-> Rename "upscale" test to "upscale-factor" to align with rest of
-> the tests.
-> 
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/kms_plane_scaling.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-> index 0e7cd4a2..77bb905b 100644
-> --- a/tests/kms_plane_scaling.c
-> +++ b/tests/kms_plane_scaling.c
-> @@ -312,7 +312,7 @@ const struct {
->   	},
->   	{
->   		"Tests downscaling (scaling factor 0.25) and upscaling (scaling factor 0.25) of 2 planes.",
-> -		"planes-downscale-factor-0-25-upscale-0-25",
-> +		"planes-downscale-factor-0-25-upscale-factor-0-25",
->   		0.25,
->   		0.25,
->   		TEST_PLANES_DOWNSCALE_UPSCALE,
-> @@ -333,7 +333,7 @@ const struct {
->   	},
->   	{
->   		"Tests downscaling (scaling factor 0.5) and upscaling (scaling factor 0.25) of 2 planes.",
-> -		"planes-downscale-factor-0-5-upscale-0-25",
-> +		"planes-downscale-factor-0-5-upscale-factor-0-25",
->   		0.5,
->   		0.25,
->   		TEST_PLANES_DOWNSCALE_UPSCALE,
-> @@ -354,7 +354,7 @@ const struct {
->   	},
->   	{
->   		"Tests downscaling (scaling factor 0.75) and upscaling (scaling factor 0.25) of 2 planes.",
-> -		"planes-downscale-factor-0-75-upscale-0-25",
-> +		"planes-downscale-factor-0-75-upscale-factor-0-25",
->   		0.75,
->   		0.25,
->   		TEST_PLANES_DOWNSCALE_UPSCALE,
+Change Run Type to BAT for subtests which are part of BAT testlist.
+
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+---
+ tests/xe/xe_evict.c | 47 +++++++++++++++++++++++++++------------------
+ 1 file changed, 28 insertions(+), 19 deletions(-)
+
+diff --git a/tests/xe/xe_evict.c b/tests/xe/xe_evict.c
+index 7fef4efc..37933820 100644
+--- a/tests/xe/xe_evict.c
++++ b/tests/xe/xe_evict.c
+@@ -466,35 +466,20 @@ static uint64_t calc_bo_size(uint64_t vram_size, int mul, int div)
+  *
+  * arg[1]:
+  *
+- * @small:			small
+- * @small-external:		small external
+- * @small-multi-vm:		small multi VM
+  * @large:			large
+  * @large-external:		large external
+  * @large-multi-vm:		large multi VM
+- * @beng-small:			small bind engine
+- * @beng-small-external:	small external bind engine
+- * @beng-small-multi-vm:	small multi VM bind ending
+  * @beng-large:			large bind engine
+  * @beng-large-external:	large external bind engine
+  * @beng-large-multi-vm:	large multi VM bind engine
+  *
+- * @small-cm:			small compute machine
+- * @small-external-cm:		small external compute machine
+- * @small-multi-vm-cm:		small multi VM compute machine
+  * @large-cm:			large compute machine
+  * @large-external-cm:		large external compute machine
+  * @large-multi-vm-cm:		large multi VM compute machine
+- * @beng-small-cm:		small bind engine compute machine
+- * @beng-small-external-cm:	small external bind engine compute machine
+- * @beng-small-multi-vm-cm:	small multi VM bind ending compute machine
+  * @beng-large-cm:		large bind engine compute machine
+  * @beng-large-external-cm:	large external bind engine compute machine
+  * @beng-large-multi-vm-cm:	large multi VM bind engine compute machine
+  *
+- * @threads-small:		threads small
+- * @cm-threads-small:		compute mode threads small
+- * @mixed-threads-small:	mixed threads small
+  * @mixed-many-threads-small:	mixed many threads small
+  * @threads-large:		threads large
+  * @cm-threads-large:		compute mode threads large
+@@ -506,8 +491,6 @@ static uint64_t calc_bo_size(uint64_t vram_size, int mul, int div)
+  * 				mixed threads small multi vm
+  * @threads-large-multi-vm:	threads large multi vm
+  * @cm-threads-large-multi-vm:	compute mode threads large multi vm
+- * @mixed-threads-large-multi-vm:
+- *				mixed threads large multi vm
+  * @beng-threads-small:		bind engine threads small
+  * @beng-cm-threads-small:	bind engine compute mode threads small
+  * @beng-mixed-threads-small:	bind engine mixed threads small
+@@ -522,14 +505,40 @@ static uint64_t calc_bo_size(uint64_t vram_size, int mul, int div)
+  *				bind engine threads small multi vm
+  * @beng-cm-threads-small-multi-vm:
+  *				bind engine compute mode threads small multi vm
+- * @beng-mixed-threads-small-multi-vm:
+- *				bind engine mixed threads small multi vm
+  * @beng-threads-large-multi-vm:
+  *				bind engine threads large multi vm
+  * @beng-cm-threads-large-multi-vm:
+  *				bind engine compute mode threads large multi vm
+  * @beng-mixed-threads-large-multi-vm:
+  *				bind engine mixed threads large multi vm
++ *
++ * SUBTEST: evict-%s
++ * Description:  %arg[1] evict test.
++ * Run type: BAT
++ *
++ * arg[1]:
++ *
++ * @small:			small
++ * @small-external:		small external
++ * @small-multi-vm:		small multi VM
++ * @beng-small:			small bind engine
++ * @beng-small-external:	small external bind engine
++ * @beng-small-multi-vm:	small multi VM bind ending
++ *
++ * @small-cm:			small compute machine
++ * @small-external-cm:		small external compute machine
++ * @small-multi-vm-cm:		small multi VM compute machine
++ * @beng-small-cm:		small bind engine compute machine
++ * @beng-small-external-cm:	small external bind engine compute machine
++ * @beng-small-multi-vm-cm:	small multi VM bind ending compute machine
++ *
++ * @threads-small:		threads small
++ * @cm-threads-small:		compute mode threads small
++ * @mixed-threads-small:	mixed threads small
++ * @mixed-threads-large-multi-vm:
++ * 				mixed threads large multi vm
++ * @beng-mixed-threads-small-multi-vm:
++ * 				bind engine mixed threads small multi vm
+  */
+ 
+ /*
+-- 
+2.25.1
