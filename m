@@ -1,24 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1D0010E089
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Jun 2023 11:31:06 +0000 (UTC)
-Message-ID: <4c7c908a-74c3-dde7-730f-872324387999@intel.com>
-Date: Thu, 1 Jun 2023 17:00:52 +0530
-Content-Language: en-US
-To: "Hogander, Jouni" <jouni.hogander@intel.com>,
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 138FF10E089
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Jun 2023 11:31:31 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20230601050928.2487611-1-kunal1.joshi@intel.com>
- <20230601050928.2487611-4-kunal1.joshi@intel.com>
- <8c8f99e86bfd03f388491d9cd71f452cfc1b8e78.camel@intel.com>
- <ae67320b-5871-baba-6a1c-90c888303462@intel.com>
- <4204d49177c441be0d21ff5838fac011f37d2a0c.camel@intel.com>
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <4204d49177c441be0d21ff5838fac011f37d2a0c.camel@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Thu, 1 Jun 2023 11:31:28 +0000
+Message-ID: <MW3PR11MB47484E9E84074CE48607E064AE499@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20230531193043.558461-1-zbigniew.kempczynski@intel.com>
+ <20230531193043.558461-3-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230531193043.558461-3-zbigniew.kempczynski@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/6] RFC
- tests/i915/kms_frontbuffer_tracking: xe doesn't support tiling as of now
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] xe/xe_ioctl: Return remaining
+ timeout of user fence wait
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,33 +27,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 6/1/2023 4:53 PM, Hogander, Jouni wrote:
-> On Thu, 2023-06-01 at 16:39 +0530, Joshi, Kunal1 wrote:
->> On 6/1/2023 4:12 PM, Hogander, Jouni wrote:
->>> On Thu, 2023-06-01 at 10:39 +0530, Kunal Joshi wrote:
->>>> XE doesn't support tiling as of now, so set tiling to linear
->>> Maybe this should be taken into account in opt_handler as well?
->>> I.e.
->>> Trying to use tiling other than liner for Xe should result error.
->> Hello Jouni,
->>
->> This will be over written in setup_drm where we set tiling to linear
->> if xe,
->> To handle this in opt_handler we will need to open ,close fd,
->> can i have debug print stating opt.tiling parameter is overridden as
->> XE
->> supports onlylinear tiling,
->> how do you see it?
-> how about:
->
-> igt_assert(is_xe_device() && (opt.tiling == TILING_DEFAULT ||
-> opt.tiling == TILING_LINEAR));
->
-> in setup_drm() ?
->
-Ok Jouni, will use this approach.
-
-Thanks and Regards
-Kunal Joshi
-
+TEdUTQ0KUmV2aWV3ZWQtYnk6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5rdW1hckBp
+bnRlbC5jb20+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRl
+diA8aWd0LWRldi1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mDQo+
+IFpiaWduaWV3IEtlbXBjenluc2tpDQo+IFNlbnQ6IDAxIEp1bmUgMjAyMyAwMTowMQ0KPiBUbzog
+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRD
+SCBpLWctdCAyLzNdIHhlL3hlX2lvY3RsOiBSZXR1cm4gcmVtYWluaW5nIHRpbWVvdXQgb2YNCj4g
+dXNlciBmZW5jZSB3YWl0DQo+IA0KPiBXaGVuIHVzZXIgZmVuY2UgaXMgc2lnbmFsbGVkIHdlIG1h
+eSB3YW50IHRvIGJlIGF3YXJlIGhvdyBsb25nIGRpZCBpdCB0YWtlLg0KPiBSZXR1cm4gcmVtYWlu
+aW5nIHRpbWVvdXQgYWZ0ZXIgZmVuY2Ugd2FzIHN1Y2Nlc3NmdWxseSBzaWduYWxsZWQuDQo+IA0K
+PiBTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenlu
+c2tpQGludGVsLmNvbT4NCj4gQ2M6IEthbWlsIEtvbmllY3pueSA8a2FtaWwua29uaWVjem55QGxp
+bnV4LmludGVsLmNvbT4NCj4gLS0tDQo+ICBsaWIveGUveGVfaW9jdGwuYyB8IDQgKysrLQ0KPiAg
+bGliL3hlL3hlX2lvY3RsLmggfCAyICstDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDQgaW5zZXJ0aW9u
+cygrKSwgMiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9saWIveGUveGVfaW9jdGwu
+YyBiL2xpYi94ZS94ZV9pb2N0bC5jIGluZGV4IGZlNjFiNzBhODMuLjgyMzQwYzZhOTcNCj4gMTAw
+NjQ0DQo+IC0tLSBhL2xpYi94ZS94ZV9pb2N0bC5jDQo+ICsrKyBiL2xpYi94ZS94ZV9pb2N0bC5j
+DQo+IEBAIC00MDAsNyArNDAwLDcgQEAgdm9pZCB4ZV9leGVjX3dhaXQoaW50IGZkLCB1aW50MzJf
+dCBlbmdpbmUsIHVpbnQ2NF90DQo+IGFkZHIpDQo+ICAJc3luY29ial9kZXN0cm95KGZkLCBzeW5j
+LmhhbmRsZSk7DQo+ICB9DQo+IA0KPiAtdm9pZCB4ZV93YWl0X3VmZW5jZShpbnQgZmQsIHVpbnQ2
+NF90ICphZGRyLCB1aW50NjRfdCB2YWx1ZSwNCj4gK2xvbmcgeGVfd2FpdF91ZmVuY2UoaW50IGZk
+LCB1aW50NjRfdCAqYWRkciwgdWludDY0X3QgdmFsdWUsDQo+ICAJCSAgICBzdHJ1Y3QgZHJtX3hl
+X2VuZ2luZV9jbGFzc19pbnN0YW5jZSAqZWNpLA0KPiAgCQkgICAgaW50NjRfdCB0aW1lb3V0KQ0K
+PiAgew0KPiBAQCAtNDE2LDYgKzQxNiw4IEBAIHZvaWQgeGVfd2FpdF91ZmVuY2UoaW50IGZkLCB1
+aW50NjRfdCAqYWRkciwgdWludDY0X3QNCj4gdmFsdWUsDQo+ICAJfTsNCj4gDQo+ICAJaWd0X2Fz
+c2VydF9lcShpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9YRV9XQUlUX1VTRVJfRkVOQ0UsDQo+ICZ3
+YWl0KSwgMCk7DQo+ICsNCj4gKwlyZXR1cm4gd2FpdC50aW1lb3V0Ow0KPiAgfQ0KPiANCj4gIGxv
+bmcgeGVfd2FpdF91ZmVuY2VfYWJzdGltZShpbnQgZmQsIHVpbnQ2NF90ICphZGRyLCB1aW50NjRf
+dCB2YWx1ZSwgZGlmZiAtLQ0KPiBnaXQgYS9saWIveGUveGVfaW9jdGwuaCBiL2xpYi94ZS94ZV9p
+b2N0bC5oIGluZGV4IDliNDQ4OTJmZTkuLjg2MGRlOWFmNTgNCj4gMTAwNjQ0DQo+IC0tLSBhL2xp
+Yi94ZS94ZV9pb2N0bC5oDQo+ICsrKyBiL2xpYi94ZS94ZV9pb2N0bC5oDQo+IEBAIC03OSw3ICs3
+OSw3IEBAIHZvaWQgeGVfZXhlYyhpbnQgZmQsIHN0cnVjdCBkcm1feGVfZXhlYyAqZXhlYyk7ICB2
+b2lkDQo+IHhlX2V4ZWNfc3luYyhpbnQgZmQsIHVpbnQzMl90IGVuZ2luZSwgdWludDY0X3QgYWRk
+ciwNCj4gIAkJICBzdHJ1Y3QgZHJtX3hlX3N5bmMgKnN5bmMsIHVpbnQzMl90IG51bV9zeW5jcyk7
+ICB2b2lkDQo+IHhlX2V4ZWNfd2FpdChpbnQgZmQsIHVpbnQzMl90IGVuZ2luZSwgdWludDY0X3Qg
+YWRkcik7IC12b2lkDQo+IHhlX3dhaXRfdWZlbmNlKGludCBmZCwgdWludDY0X3QgKmFkZHIsIHVp
+bnQ2NF90IHZhbHVlLA0KPiArbG9uZyB4ZV93YWl0X3VmZW5jZShpbnQgZmQsIHVpbnQ2NF90ICph
+ZGRyLCB1aW50NjRfdCB2YWx1ZSwNCj4gIAkJICAgIHN0cnVjdCBkcm1feGVfZW5naW5lX2NsYXNz
+X2luc3RhbmNlICplY2ksDQo+ICAJCSAgICBpbnQ2NF90IHRpbWVvdXQpOw0KPiAgbG9uZyB4ZV93
+YWl0X3VmZW5jZV9hYnN0aW1lKGludCBmZCwgdWludDY0X3QgKmFkZHIsIHVpbnQ2NF90IHZhbHVl
+LA0KPiAtLQ0KPiAyLjM0LjENCg0K
