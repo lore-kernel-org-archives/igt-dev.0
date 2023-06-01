@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7671546069513685052=="
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B70C10E036
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Jun 2023 16:13:51 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  1 Jun 2023 19:13:08 +0300
+Message-Id: <20230601161308.16837-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20230601130850.26359-7-ville.syrjala@linux.intel.com>
+References: <20230601130850.26359-7-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
-Date: Thu, 01 Jun 2023 15:28:45 -0000
-Message-ID: <168563332537.16230.8144589563687562102@emeril.freedesktop.org>
-References: <20230601130850.26359-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20230601130850.26359-1-ville.syrjala@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Iga21zOiBS?=
- =?utf-8?q?un_tiled_display_tests_on_any_set_of_connectors_=28rev3=29?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 6/7] lib/edid: Add support for making
+ DisplayID tile blocks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,391 +20,224 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7671546069513685052==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-== Series Details ==
+We want to test tiled display support without actually having tiled
+displays. To that end we will want to construct fake tile infromation
+and append it to the EDID.
 
-Series: kms: Run tiled display tests on any set of connectors (rev3)
-URL   : https://patchwork.freedesktop.org/series/96027/
-State : success
+v2: Document the functiosn (Juha-Pekka)
 
-== Summary ==
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ lib/igt_edid.c | 120 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_edid.h |  49 ++++++++++++++++++++
+ 2 files changed, 169 insertions(+)
 
-CI Bug Log - changes from CI_DRM_13215 -> IGTPW_9093
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/index.html
-
-Participating hosts (37 -> 36)
-------------------------------
-
-  Additional (1): bat-dg1-5 
-  Missing    (2): fi-kbl-soraka bat-mtlp-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9093 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_mmap@basic:
-    - bat-dg1-5:          NOTRUN -> [SKIP][1] ([i915#4083])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@gem_mmap@basic.html
-
-  * igt@gem_tiled_fence_blits@basic:
-    - bat-dg1-5:          NOTRUN -> [SKIP][2] ([i915#4077]) +2 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@gem_tiled_fence_blits@basic.html
-
-  * igt@gem_tiled_pread_basic:
-    - bat-dg1-5:          NOTRUN -> [SKIP][3] ([i915#4079]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - bat-dg1-5:          NOTRUN -> [SKIP][4] ([i915#7561])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@i915_pm_backlight@basic-brightness.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-dg1-5:          NOTRUN -> [SKIP][5] ([i915#6621])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [PASS][6] -> [DMESG-FAIL][7] ([i915#5334])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-rpls-1:         [PASS][8] -> [INCOMPLETE][9] ([i915#4983])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@guc:
-    - bat-rpls-2:         [PASS][10] -> [DMESG-WARN][11] ([i915#7852])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/bat-rpls-2/igt@i915_selftest@live@guc.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-rpls-2/igt@i915_selftest@live@guc.html
-
-  * igt@kms_addfb_basic@basic-x-tiled-legacy:
-    - bat-dg1-5:          NOTRUN -> [SKIP][12] ([i915#4212]) +7 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_addfb_basic@basic-x-tiled-legacy.html
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-dg1-5:          NOTRUN -> [SKIP][13] ([i915#4215])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_chamelium_hpd@vga-hpd-fast:
-    - bat-dg1-5:          NOTRUN -> [SKIP][14] ([i915#7828]) +8 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_chamelium_hpd@vga-hpd-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - bat-dg1-5:          NOTRUN -> [SKIP][15] ([i915#4103] / [i915#4213]) +1 similar issue
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-dg1-5:          NOTRUN -> [SKIP][16] ([fdo#109285])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-dg1-5:          NOTRUN -> [SKIP][17] ([i915#1072] / [i915#4078]) +3 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_psr@sprite_plane_onoff.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-dg1-5:          NOTRUN -> [SKIP][18] ([i915#3555] / [i915#4579])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-read:
-    - bat-dg1-5:          NOTRUN -> [SKIP][19] ([i915#3708]) +3 similar issues
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@prime_vgem@basic-fence-read.html
-
-  * igt@prime_vgem@basic-gtt:
-    - bat-dg1-5:          NOTRUN -> [SKIP][20] ([i915#3708] / [i915#4077]) +1 similar issue
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@prime_vgem@basic-gtt.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-hsw-4770:        [SKIP][21] ([fdo#109271]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/fi-hsw-4770/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/fi-hsw-4770/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-hsw-4770:        [FAIL][23] ([i915#7364]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/fi-hsw-4770/igt@i915_pm_rpm@basic-rte.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/fi-hsw-4770/igt@i915_pm_rpm@basic-rte.html
-
-  * igt@i915_selftest@live@gt_mocs:
-    - bat-rpls-2:         [DMESG-FAIL][25] ([i915#7059]) -> [PASS][26]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/bat-rpls-2/igt@i915_selftest@live@gt_mocs.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-rpls-2/igt@i915_selftest@live@gt_mocs.html
-
-  * igt@i915_selftest@live@requests:
-    - {bat-mtlp-8}:       [DMESG-FAIL][27] ([i915#8497]) -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
-  [i915#7364]: https://gitlab.freedesktop.org/drm/intel/issues/7364
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7852]: https://gitlab.freedesktop.org/drm/intel/issues/7852
-  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
-  [i915#8497]: https://gitlab.freedesktop.org/drm/intel/issues/8497
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7317 -> IGTPW_9093
-
-  CI-20190529: 20190529
-  CI_DRM_13215: 89016ff511ceed03fbfabdb1c4700bb2c87c0b88 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9093: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/index.html
-  IGT_7317: c902b72df45aa49faa38205bc5be3c748d33a3e0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_tiled_display@basic-test-pattern
-+igt@kms_tiled_display@basic-test-pattern-with-chamelium
--igt@kms_dp_tiled_display@basic-test-pattern
--igt@kms_dp_tiled_display@basic-test-pattern-with-chamelium
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/index.html
-
---===============7671546069513685052==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>kms: Run tiled display tests on any set of connectors (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96027/">https://patchwork.freedesktop.org/series/96027/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13215 -&gt; IGTPW_9093</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/index.html</p>
-<h2>Participating hosts (37 -&gt; 36)</h2>
-<p>Additional (1): bat-dg1-5 <br />
-  Missing    (2): fi-kbl-soraka bat-mtlp-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9093 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_mmap@basic:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4083">i915#4083</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_fence_blits@basic:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@gem_tiled_fence_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4079">i915#4079</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7561">i915#7561</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@guc:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/bat-rpls-2/igt@i915_selftest@live@guc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-rpls-2/igt@i915_selftest@live@guc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7852">i915#7852</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@basic-x-tiled-legacy:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_addfb_basic@basic-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4215">i915#4215</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@vga-hpd-fast:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_chamelium_hpd@vga-hpd-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4213">i915#4213</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4078">i915#4078</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-read:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-gtt:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-dg1-5/igt@prime_vgem@basic-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/fi-hsw-4770/igt@i915_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/fi-hsw-4770/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-rte:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/fi-hsw-4770/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7364">i915#7364</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/fi-hsw-4770/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_mocs:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/bat-rpls-2/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-rpls-2/igt@i915_selftest@live@gt_mocs.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13215/bat-mtlp-8/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8497">i915#8497</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7317 -&gt; IGTPW_9093</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13215: 89016ff511ceed03fbfabdb1c4700bb2c87c0b88 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9093: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9093/index.html<br />
-  IGT_7317: c902b72df45aa49faa38205bc5be3c748d33a3e0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_tiled_display@basic-test-pattern<br />
-+igt@kms_tiled_display@basic-test-pattern-with-chamelium<br />
--igt@kms_dp_tiled_display@basic-test-pattern<br />
--igt@kms_dp_tiled_display@basic-test-pattern-with-chamelium</p>
-
-</body>
-</html>
-
---===============7671546069513685052==--
+diff --git a/lib/igt_edid.c b/lib/igt_edid.c
+index 68dc4f75478b..80dcea11275d 100644
+--- a/lib/igt_edid.c
++++ b/lib/igt_edid.c
+@@ -578,3 +578,123 @@ void edid_ext_set_cea(struct edid_ext *ext, size_t data_blocks_size,
+ 	cea->dtd_start = 4 + data_blocks_size;
+ 	cea->misc = flags | num_native_dtds;
+ }
++
++/**
++ * dispid_block_tiled:
++ * @ptr: The DisplayID data block
++ * @num_htiles: Total number of horizontal tiles
++ * @num_vtiles: Total number of vertical tiles
++ * @htile: Horizontal tile location
++ * @vtile: Vertical tile location
++ * @hsize: Horizontal size
++ * @vsize: Vertical size
++ * @topology_id: Tiled display topology ID
++ *
++ * Fill a DisplayID tiled display topology data block
++ *
++ * Returns:
++ * A pointer to the next data block
++ */
++void *dispid_block_tiled(void *ptr,
++			 int num_htiles, int num_vtiles,
++			 int htile, int vtile,
++			 int hsize, int vsize,
++			 const char *topology_id)
++{
++	struct dispid_block_header *block = ptr;
++	struct dispid_tiled_block *tiled = (void*)(block + 1);
++	size_t len;
++
++	block->tag = 0x12;
++	block->rev = 0;
++	block->num_bytes = sizeof(*tiled);
++
++	num_htiles--;
++	num_vtiles--;
++	hsize--;
++	vsize--;
++
++	tiled->tile_caps =
++		DISPID_MULTI_TILE_AT_TILE_LOCATION |
++		DISPID_SINGLE_TILE_AT_TILE_LOCATION;
++
++	tiled->topo[0] = (num_htiles & 0xf) << 4 |
++		(num_vtiles & 0xf) << 0;
++
++	tiled->topo[1] = (htile & 0xf) << 4 |
++		(vtile & 0xf) << 0;
++
++	tiled->topo[2] = (num_htiles >> 4) << 6 |
++		(num_vtiles >> 4) << 4 |
++		(htile >> 4) << 2 |
++		(vtile >> 4) << 0;
++
++	tiled->tile_size[0] = hsize;
++	tiled->tile_size[1] = hsize >> 8;
++	tiled->tile_size[2] = vsize;
++	tiled->tile_size[3] = vsize >> 8;
++
++	len = min(strlen(topology_id), sizeof(tiled->topology_id));
++	memcpy(tiled->topology_id, topology_id, len);
++
++	return tiled + 1;
++}
++
++/**
++ * edid_ext_dispid:
++ * @ext: EDID extension block
++ *
++ * Mark the EDID extentions block as DisplayID.
++
++ * Returns:
++ * A pointer to the contained DisplayID.
++ */
++void *edid_ext_dispid(struct edid_ext *ext)
++{
++	struct edid_dispid *dispid = &ext->data.dispid;
++
++	edid_ext_set_displayid(ext);
++
++	return dispid;
++}
++
++/**
++ * dispid_init:
++ * @ptr: Pointer to the DisplayID
++ *
++ * Initialize the DisplayID header.
++ *
++ * Returns:
++ * A pointer to the first data block.
++ */
++void *dispid_init(void *ptr)
++{
++	struct dispid_header *dispid = ptr;
++
++	dispid->rev = 0x10;
++	dispid->prod_id = 0x3;
++	dispid->ext_count = 0;
++
++	return dispid + 1;
++}
++
++/**
++ * dispid_done:
++ * @dispid: Pointer to the DisplayID
++ * @ptr: Pointer to the end of the DisplayID (the checksum byte)
++ *
++ * Finalize the DisplayID (fill the number of bytes and checksum).
++ *
++ * Returns:
++ * A pointer just past the end of the DisplayID.
++ */
++void *dispid_done(struct dispid_header *dispid, void *ptr)
++{
++	int bytes = ptr - (void *)dispid;
++
++	dispid->num_bytes = bytes - sizeof(*dispid);
++
++	*(uint8_t *)ptr = compute_checksum((void*)dispid, bytes + 1);
++
++	return ptr + 1;
++}
+diff --git a/lib/igt_edid.h b/lib/igt_edid.h
+index 85a9ef5e1a25..02645345f0d0 100644
+--- a/lib/igt_edid.h
++++ b/lib/igt_edid.h
+@@ -303,6 +303,44 @@ struct edid_cea {
+ 	uint8_t checksum;
+ } __attribute__((packed));
+ 
++enum dispid_tile_caps {
++	DISPID_SINGLE_PHYSICAL_ENCLOSURE = 1 << 7,
++	DISPID_BEZEL_INFORMATION_PRESENT = 1 << 6,
++	DISPID_MULTI_TILE_UNKNOWN = 0 << 3,
++	DISPID_MULTI_TILE_AT_TILE_LOCATION = 1 << 3,
++	DISPID_SINGLE_TILE_UNKNOWN = 0 << 0,
++	DISPID_SINGLE_TILE_AT_TILE_LOCATION = 1 << 0,
++	DISPID_SINGLE_TILE_SCALED_FULLSCREEN = 2 << 0,
++	DISPID_SINGLE_TILE_CLONED_TO_ALL_TILES = 3 << 0,
++};
++
++struct dispid_header {
++	uint8_t rev;
++	uint8_t num_bytes;
++	uint8_t prod_id;
++	uint8_t ext_count;
++} __attribute__((packed));
++
++struct dispid_block_header {
++	uint8_t tag;
++	uint8_t rev;
++	uint8_t num_bytes;
++} __attribute__((packed));
++
++struct dispid_tiled_block {
++	uint8_t tile_caps;
++	uint8_t topo[3];
++	uint8_t tile_size[4];
++	uint8_t tile_pixel_bezel[5];
++	uint8_t topology_id[9];
++} __attribute__((packed));
++
++struct edid_dispid {
++	struct dispid_header header;
++	char data[122];
++	uint8_t checksum;
++} __attribute__((packed));
++
+ enum edid_ext_tag {
+ 	EDID_EXT_CEA = 0x02,
+ 	EDID_EXT_DISPLAYID = 0x70,
+@@ -329,6 +367,7 @@ struct edid_ext {
+ 	union {
+ 		struct edid_cea cea;
+ 		struct edid_tile tile;
++		struct edid_dispid dispid;
+ 	} data;
+ } __attribute__((packed));
+ 
+@@ -408,4 +447,14 @@ void edid_ext_set_cea(struct edid_ext *ext, size_t data_blocks_size,
+ 		      uint8_t num_native_dtds, uint8_t flags);
+ 
+ void edid_ext_set_displayid(struct edid_ext *ext);
++
++void *edid_ext_dispid(struct edid_ext *ext);
++void *dispid_init(void *ptr);
++void *dispid_done(struct dispid_header *dispid, void *ptr);
++void *dispid_block_tiled(void *ptr,
++			 int num_htiles, int num_vtiles,
++			 int htile, int vtile,
++			 int hsize, int vsize,
++			 const char *topology_id);
++
+ #endif
+-- 
+2.39.3
