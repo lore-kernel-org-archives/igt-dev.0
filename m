@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DADBB10E23E
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Jun 2023 17:13:37 +0000 (UTC)
-Date: Thu, 1 Jun 2023 19:13:22 +0200
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B371E10E244
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Jun 2023 17:32:58 +0000 (UTC)
+Date: Thu, 1 Jun 2023 19:32:57 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230601171322.d3zqhshbfdttre5c@kamilkon-desk1>
-References: <20230601100250.747088-1-andrzej.hajda@intel.com>
+Message-ID: <20230601173257.w3ypbnwzxvw6ok2y@kamilkon-desk1>
+References: <20230531193043.558461-1-zbigniew.kempczynski@intel.com>
+ <20230531193043.558461-2-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230601100250.747088-1-andrzej.hajda@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] gem_exec_balancer: move no-GuC
- requirement to test functions
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230531193043.558461-2-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] xe/xe_ioctl: Add
+ xe_wait_ufence_abstime() helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,66 +22,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Andrzej,
+Hi Zbigniew,
 
-On 2023-06-01 at 12:02:50 +0200, Andrzej Hajda wrote:
-> Requirements put into igt_subtest_group/igt_fixture are checked for
-> all tests in the file. Even if they do not influence test execution
-> they print misleading infos.
+On 2023-05-31 at 21:30:41 +0200, Zbigniew Kempczyński wrote:
+> Xe user fences supports passing timeout in relative or absolute form.
+> Add helper for absolute one.
 
-Could you provide example ? You can use something like:
+Please add lib/ in Subject, for example:
 
-./gem_exec_balancer --r nop
-...test output...
-Subtest nop: SUCCESS (36,896s)
-Test requirement not met in [...]gem_exec_balancer.c:3608:
-Test requirement: !gem_using_guc_submission(i915)
+lib/xe_ioctl: Add xe_wait_ufence_abstime() helper
 
-Please also mension that such output may happen before or after
-subtest and may additionally confuse when some error happens.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  lib/xe/xe_ioctl.c | 20 ++++++++++++++++++++
+>  lib/xe/xe_ioctl.h |  3 +++
+>  2 files changed, 23 insertions(+)
+> 
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index 66a8393fe9..fe61b70a83 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -418,6 +418,26 @@ void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+>  }
+>  
+
+Please write documentation for this new public function.
 
 Regards,
 Kamil
 
-> 
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-> ---
->  tests/i915/gem_exec_balancer.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-> index 004ba9a14fe..9190fc2383f 100644
-> --- a/tests/i915/gem_exec_balancer.c
-> +++ b/tests/i915/gem_exec_balancer.c
-> @@ -1525,6 +1525,7 @@ bonded_runner(int i915,
->  	 * submission across multiple engines.
->  	 */
->  	igt_require(gem_scheduler_has_preemption(i915));
-> +	igt_require(!gem_using_guc_submission(i915));
->  
->  	cycles = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
->  
-> @@ -1996,6 +1997,7 @@ static void sliced(int i915)
->  
->  	igt_require(gem_scheduler_has_preemption(i915));
->  	igt_require(gem_scheduler_has_semaphores(i915));
-> +	igt_require(!gem_using_guc_submission(i915));
->  
->  	for (int class = 0; class < 32; class++) {
->  		struct i915_engine_class_instance *ci;
-> @@ -3605,7 +3607,6 @@ igt_main
->  
->  	igt_subtest_group {
->  		igt_fixture {
-> -			igt_require(!gem_using_guc_submission(i915));
->  			intel_allocator_multiprocess_start();
->  		}
->  
+> +long xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+> +			    struct drm_xe_engine_class_instance *eci,
+> +			    int64_t timeout)
+> +{
+> +	struct drm_xe_wait_user_fence wait = {
+> +		.addr = to_user_pointer(addr),
+> +		.op = DRM_XE_UFENCE_WAIT_EQ,
+> +		.flags = !eci ? DRM_XE_UFENCE_WAIT_SOFT_OP | DRM_XE_UFENCE_WAIT_ABSTIME : 0,
+> +		.value = value,
+> +		.mask = DRM_XE_UFENCE_WAIT_U64,
+> +		.timeout = timeout,
+> +		.num_engines = eci ? 1 : 0,
+> +		.instances = eci ? to_user_pointer(eci) : 0,
+> +	};
+> +
+> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+> +
+> +	return wait.timeout;
+> +}
+> +
+>  void xe_force_gt_reset(int fd, int gt)
+>  {
+>  	char reset_string[128];
+> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> index 049cd183d6..9b44892fe9 100644
+> --- a/lib/xe/xe_ioctl.h
+> +++ b/lib/xe/xe_ioctl.h
+> @@ -82,6 +82,9 @@ void xe_exec_wait(int fd, uint32_t engine, uint64_t addr);
+>  void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		    struct drm_xe_engine_class_instance *eci,
+>  		    int64_t timeout);
+> +long xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+> +			    struct drm_xe_engine_class_instance *eci,
+> +			    int64_t timeout);
+>  void xe_force_gt_reset(int fd, int gt);
+>  void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t size,
+>  		   uint32_t property, uint32_t value);
 > -- 
 > 2.34.1
 > 
