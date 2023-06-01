@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF73910E21A
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Jun 2023 08:03:49 +0000 (UTC)
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-To: "Karas, Anna" <anna.karas@intel.com>, "Manszewski, Christoph"
- <christoph.manszewski@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Thu, 1 Jun 2023 08:03:38 +0000
-Message-ID: <BYAPR11MB3413E72592A095558E4238B8D0499@BYAPR11MB3413.namprd11.prod.outlook.com>
-References: <20230531134950.483688-1-anna.karas@intel.com>
- <fc179dff-daea-b524-b0a2-51dc00f712ff@intel.com>
- <11479e2f-3093-70f0-5124-c4a999ff98df@intel.com>
-In-Reply-To: <11479e2f-3093-70f0-5124-c4a999ff98df@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 304E810E52E
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Jun 2023 08:04:20 +0000 (UTC)
+Date: Thu, 1 Jun 2023 10:04:17 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230601080417.ly22fr7kgjyoojul@kamilkon-desk1>
+References: <20230601061753.1028181-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add xe_module_error test
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230601061753.1028181-1-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t] tests/intel-ci/xe: Blocklist non-Xe tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,137 +19,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQW5uYQ0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEthcmFzLCBB
-bm5hIDxhbm5hLmthcmFzQGludGVsLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIEp1bmUgMSwgMjAy
-MyAxOjI0IFBNDQo+IFRvOiBNYW5zemV3c2tpLCBDaHJpc3RvcGggPGNocmlzdG9waC5tYW5zemV3
-c2tpQGludGVsLmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzog
-Q2gsIFNhaSBHb3d0aGFtIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+OyBDaHJpcyBXaWxzb24N
-Cj4gPGNocmlzLnAud2lsc29uQGxpbnV4LmludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtpZ3Qt
-ZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL3hlOiBBZGQgeGVfbW9kdWxlX2Vycm9yIHRlc3QNCj4g
-DQo+IEhpIENocmlzdG9waCwNCj4gDQo+IE9uIDMxLjA1LjIwMjMgMTY6MjUsIE1hbnN6ZXdza2ks
-IENocmlzdG9waCB3cm90ZToNCj4gPiBIaSBBbm5hLA0KPiA+DQo+ID4gT24gMzEuMDUuMjAyMyAx
-NTo0OSwgQW5uYSBLYXJhcyB3cm90ZToNCj4gPj4gUG9ydCBpOTE1X21vZHVsZV9lcnJvciB0ZXN0
-IHRvIFhFLiBUaGlzIHRlc3QgY2hlY2tzIGlmIHdlIGNhbiBhY2Nlc3MNCj4gPj4gZGVidWdmcy9z
-eXNmcyBhZnRlciBhIG1vZHVsZSBsb2FkIGVycm9yLCBpbiB0aGlzIGNhc2UgYSBndWMgbG9hZA0K
-PiA+PiBlcnJvciwgZm9yIGNhcHR1cmluZyB0aGUgcmVxdWlzaXRlIGRlYnVnIGluZm8uDQo+ID4+
-DQo+ID4+IFNpZ25lZC1vZmYtYnk6IEFubmEgS2FyYXMgPGFubmEua2FyYXNAaW50ZWwuY29tPg0K
-PiA+DQo+ID4gU2luY2UgdGhpcyBjb2RlIGlzIGFsbW9zdCBlbnRpcmVseSBjb3BpZWQsIEkgdGhp
-bmsgaXQgd291bGQgYmUgZ29vZA0KPiA+IHByYWN0aWNlIHRvIGNyZWRpdCB0aGUgb3JpZ2luYWwg
-YXV0aG9yIGJ5IGFkZGluZyBhICdBdXRob3JlZC1ieScgb3INCj4gPiAnU2lnbmVkLW9mZi1ieScg
-bGluZS4NCj4gPg0KPiA+IENocmlzdG9waA0KPiA+DQo+IA0KPiBJIHdpbGwgYWRkIGl0IHRvIHYy
-LiBUaGFua3MhDQo+ID4NCj4gPj4gLS0tDQo+ID4+IMKgIHRlc3RzL21lc29uLmJ1aWxkwqDCoMKg
-wqDCoMKgwqDCoMKgIHzCoMKgIDEgKw0KPiA+PiDCoCB0ZXN0cy94ZS94ZV9tb2R1bGVfZXJyb3Iu
-YyB8IDE0NQ0KPiA+PiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4+
-IMKgIDIgZmlsZXMgY2hhbmdlZCwgMTQ2IGluc2VydGlvbnMoKykNCj4gPj4gwqAgY3JlYXRlIG1v
-ZGUgMTAwNjQ0IHRlc3RzL3hlL3hlX21vZHVsZV9lcnJvci5jDQo+ID4+DQo+ID4+IGRpZmYgLS1n
-aXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1aWxkIGluZGV4DQo+ID4+IGY3
-MWJlMWRiLi41MzNjOTZlOCAxMDA2NDQNCj4gPj4gLS0tIGEvdGVzdHMvbWVzb24uYnVpbGQNCj4g
-Pj4gKysrIGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gPj4gQEAgLTI2MSw2ICsyNjEsNyBAQCB4ZV9w
-cm9ncyA9IFsNCj4gPj4gwqDCoMKgwqDCoCAneGVfaW50ZWxfYmInLA0KPiA+PiDCoMKgwqDCoMKg
-ICd4ZV9tbWFwJywNCj4gPj4gwqDCoMKgwqDCoCAneGVfbW1pbycsDQo+ID4+ICvCoMKgwqDCoMKg
-wqDCoCAneGVfbW9kdWxlX2Vycm9yJywNCkNhbiB5b3UgY2hlY2sgaWYgdGhlIHNwYWNpbmcgaXMg
-Y29ycmVjdCBoZXJlLg0KDQpSZXN0IG9mIHRoZSB0ZXN0IGxvb2tzIGdvb2QgdG8gbWUsIEhvd2V2
-ZXIganVzdCB0byBjaGVjayBoYXZlIHlvdSB2ZXJpZmllZCB0aGlzIHRlc3QgPw0KDQotLS0tDQpH
-b3d0aGFtIA0KPiA+PiDCoMKgwqDCoMKgICd4ZV9tb2R1bGVfbG9hZCcsDQo+ID4+IMKgwqDCoMKg
-wqAgJ3hlX25vZXhlY19waW5nX3BvbmcnLA0KPiA+PiDCoMKgwqDCoMKgICd4ZV9wbScsDQo+ID4+
-IGRpZmYgLS1naXQgYS90ZXN0cy94ZS94ZV9tb2R1bGVfZXJyb3IuYyBiL3Rlc3RzL3hlL3hlX21v
-ZHVsZV9lcnJvci5jDQo+ID4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0IGluZGV4IDAwMDAwMDAwLi5h
-MTdkODVjYQ0KPiA+PiAtLS0gL2Rldi9udWxsDQo+ID4+ICsrKyBiL3Rlc3RzL3hlL3hlX21vZHVs
-ZV9lcnJvci5jDQo+ID4+IEBAIC0wLDAgKzEsMTQ1IEBADQo+ID4+ICsvLyBTUERYLUxpY2Vuc2Ut
-SWRlbnRpZmllcjogTUlUDQo+ID4+ICsvKg0KPiA+PiArICogQ29weXJpZ2h0IMKpIDIwMjMgSW50
-ZWwgQ29ycG9yYXRpb24gICovDQo+ID4+ICsNCj4gPj4gKyNpbmNsdWRlIDxkaXJlbnQuaD4NCj4g
-Pj4gKw0KPiA+PiArI2luY2x1ZGUgImlndC5oIg0KPiA+PiArI2luY2x1ZGUgImlndF9rbW9kLmgi
-DQo+ID4+ICsjaW5jbHVkZSAiaWd0X2RlYnVnZnMuaCINCj4gPj4gKyNpbmNsdWRlICJpZ3Rfc3lz
-ZnMuaCINCj4gPj4gKyNpbmNsdWRlICJ4ZV9kcm0uaCINCj4gPj4gKw0KPiA+PiArI2luY2x1ZGUg
-InhlL3hlX3NwaW4uaCINCj4gPj4gKw0KPiA+PiArLyoqDQo+ID4+ICsgKiBURVNUOiBDaGVjayBp
-ZiB3ZSBjYW4gYWNjZXNzIHN5c2ZzL2RlYnVnZnMgYWZ0ZXIgYSBtb2R1bGUgbG9hZA0KPiA+PiAr
-ZXJyb3INCj4gPj4gKyAqIENhdGVnb3J5OiBTb2Z0d2FyZSBidWlsZGluZyBibG9jaw0KPiA+PiAr
-ICogU3ViLWNhdGVnb3J5OiBkZWJ1Z2ZzDQo+ID4+ICsgKiBUZXN0IGNhdGVnb3J5OiBmdW5jdGlv
-bmFsaXR5IHRlc3QNCj4gPj4gKyAqIFJ1biB0eXBlOiBCQVQNCj4gPj4gKyAqLw0KPiA+PiArDQo+
-ID4+ICsvKioNCj4gPj4gKyAqIFNVQlRFU1Q6IHN5c2ZzDQo+ID4+ICsgKiBEZXNjcmlwdGlvbjog
-UmVhZCBhbGwgZW50cmllcyBmcm9tIHN5c2ZzIHBhdGgNCj4gPj4gKyAqIFJ1biB0eXBlOiBGVUxM
-DQo+ID4+ICsgKi8NCj4gPj4gKw0KPiA+PiArLyoqDQo+ID4+ICsgKiBTVUJURVNUOiBkZWJ1Z2Zz
-DQo+ID4+ICsgKiBEZXNjcmlwdGlvbjogUmVhZCBhbGwgZW50cmllcyBmcm9tIGRlYnVnZnMgcGF0
-aA0KPiA+PiArICogUnVuIHR5cGU6IEZVTEwNCj4gPj4gKyAqLw0KPiA+PiArc3RhdGljIHZvaWQg
-cmVhZF9zeXNmc19lbnRyaWVzKGludCBwYXRoLCBpbnQgaW5kZW50KSB7DQo+ID4+ICvCoMKgwqAg
-Y2hhciB0YWJzW10gPSAiXHRcdFx0XHRcdFx0XHRcdCI7DQo+ID4+ICvCoMKgwqAgc3RydWN0IGRp
-cmVudCAqZGlyZW50Ow0KPiA+PiArwqDCoMKgIERJUiAqZGlyOw0KPiA+PiArDQo+ID4+ICvCoMKg
-wqAgaWd0X2Fzc2VydChpbmRlbnQgPCBzaXplb2YodGFicykgLSAxKTsNCj4gPj4gK8KgwqDCoCB0
-YWJzW2luZGVudF0gPSAnXDAnOw0KPiA+PiArDQo+ID4+ICvCoMKgwqAgZGlyID0gZmRvcGVuZGly
-KHBhdGgpOw0KPiA+PiArwqDCoMKgIGlmICghZGlyKQ0KPiA+PiArwqDCoMKgwqDCoMKgwqAgcmV0
-dXJuOw0KPiA+PiArDQo+ID4+ICvCoMKgwqAgd2hpbGUgKChkaXJlbnQgPSByZWFkZGlyKGRpcikp
-KSB7DQo+ID4+ICvCoMKgwqDCoMKgwqDCoCBpZiAoIXN0cmNtcChkaXJlbnQtPmRfbmFtZSwgIi4i
-KSB8fA0KPiA+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAhc3RyY21wKGRpcmVudC0+ZF9uYW1l
-LCAiLi4iKSkNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29udGludWU7DQo+ID4+ICsN
-Cj4gPj4gK8KgwqDCoMKgwqDCoMKgIGlmIChkaXJlbnQtPmRfdHlwZSA9PSBEVF9ESVIpIHsNCj4g
-Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaW50IHN1YjsNCj4gPj4gKw0KPiA+PiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCBzdWIgPSBvcGVuYXQocGF0aCwgZGlyZW50LT5kX25hbWUsIE9fUkRP
-TkxZIHwNCj4gPj4gK09fRElSRUNUT1JZKTsNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-aWYgKHN1YiA8IDApDQo+ID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29udGlu
-dWU7DQo+ID4+ICsNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X2ttc2coS01TR19E
-RUJVRyAiUmVhZGluZyBkaXJlY3RvcnkgXCIlc1wiXG4iLA0KPiA+PiBkaXJlbnQtPmRfbmFtZSk7
-DQo+ID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9kZWJ1ZygiJXNFbnRlcmluZyBzdWJk
-aXIgJXNcbiIsIHRhYnMsDQo+ID4+ICtkaXJlbnQtPmRfbmFtZSk7DQo+ID4+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIHJlYWRfc3lzZnNfZW50cmllcyhzdWIsIGluZGVudCArIDEpOw0KPiA+PiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjbG9zZShzdWIpOw0KPiA+PiArwqDCoMKgwqDCoMKgwqAg
-fSBlbHNlIGlmIChkaXJlbnQtPmRfdHlwZSA9PSBEVF9SRUcpIHsNCj4gPj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgY2hhciBidWZbNTEyXTsNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-aW50IHN1YjsNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3NpemVfdCByZXQ7DQo+ID4+
-ICsNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X2ttc2coS01TR19ERUJVRyAiUmVh
-ZGluZyBmaWxlIFwiJXNcIlxuIiwNCj4gPj4gZGlyZW50LT5kX25hbWUpOw0KPiA+PiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCBpZ3RfZGVidWcoIiVzUmVhZGluZyBmaWxlIFwiJXNcIlxuIiwgdGFi
-cywNCj4gPj4gK2RpcmVudC0+ZF9uYW1lKTsNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-aWd0X3NldF90aW1lb3V0KGlndF9ydW5faW5fc2ltdWxhdGlvbigpID8gMzAgOiA1LA0KPiA+PiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgInJlYWRpbmcgc3lzZnMgZW50
-cnkiKTsNCj4gPj4gKw0KPiA+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzdWIgPSBvcGVuYXQo
-cGF0aCwgZGlyZW50LT5kX25hbWUsIE9fUkRPTkxZIHwNCj4gPj4gK09fTk9OQkxPQ0spOw0KPiA+
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoc3ViID09IC0xKSB7DQo+ID4+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X2RlYnVnKCIlc0NvdWxkIG5vdCBvcGVuIGZpbGUg
-XCIlc1wiIHdpdGggZXJyb3I6DQo+ID4+ICVtXG4iLA0KPiA+PiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHRhYnMsIGRpcmVudC0+ZF9uYW1lKTsNCj4gPj4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb250aW51ZTsNCj4gPj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgfQ0KPiA+PiArDQo+ID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRvIHsN
-Cj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXQgPSByZWFkKHN1YiwgYnVm
-LCBzaXplb2YoYnVmKSk7DQo+ID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH0gd2hpbGUgKHJl
-dCA9PSBzaXplb2YoYnVmKSk7DQo+ID4+ICsNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-aWYgKHJldCA9PSAtMSkNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZ3Rf
-ZGVidWcoIiVzQ291bGQgbm90IHJlYWQgZmlsZSBcIiVzXCIgd2l0aCBlcnJvcjoNCj4gPj4gJW1c
-biIsDQo+ID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdGFi
-cywgZGlyZW50LT5kX25hbWUpOw0KPiA+PiArDQo+ID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IGlndF9yZXNldF90aW1lb3V0KCk7DQo+ID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNsb3Nl
-KHN1Yik7DQo+ID4+ICvCoMKgwqDCoMKgwqDCoCB9DQo+ID4+ICvCoMKgwqAgfQ0KPiA+PiArDQo+
-ID4+ICvCoMKgwqAgY2xvc2VkaXIoZGlyKTsNCj4gPj4gK30NCj4gPj4gKw0KPiA+PiArc3RhdGlj
-IHZvaWQgYWJvcnRfaWZfbG9hZGVkKGNvbnN0IGNoYXIgKm1vZHVsZV9uYW1lKSB7DQo+ID4+ICvC
-oMKgwqAgaW50IGVycjsNCj4gPj4gKw0KPiA+PiArwqDCoMKgIGVyciA9IGlndF9rbW9kX3VubG9h
-ZChtb2R1bGVfbmFtZSwgMCk7DQo+ID4+ICvCoMKgwqAgaWYgKGVyciA9PSAwIHx8IGVyciA9PSAt
-RU5PRU5UKSAvKiAtRU5PRU5UID09IHVubG9hZGVkIGFscmVhZHkNCj4gPj4gKyovDQo+ID4+ICvC
-oMKgwqDCoMKgwqDCoCByZXR1cm47DQo+ID4+ICsNCj4gPj4gK8KgwqDCoCBpZ3RfYWJvcnRfb25f
-ZihlcnIsDQo+ID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJGYWlsZWQgdG8gdW5s
-b2FkICclcycgZXJyOiVkLCBsZWF2aW5nIGRhbmdlcm91cw0KPiA+PiBtb2RwYXJhbXMgaW50YWN0
-IVxuIiwNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbW9kdWxlX25hbWUsIGVy
-cik7DQo+ID4+ICt9DQo+ID4+ICsNCj4gPj4gK3N0YXRpYyB2b2lkIHVubG9hZChpbnQgc2lnKQ0K
-PiA+PiArew0KPiA+PiArwqDCoMKgIGlndF94ZV9kcml2ZXJfdW5sb2FkKCk7DQo+ID4+ICvCoMKg
-wqAgYWJvcnRfaWZfbG9hZGVkKCJ4ZSIpOw0KPiA+PiArfQ0KPiA+PiArDQo+ID4+ICtpZ3RfbWFp
-bg0KPiA+PiArew0KPiA+PiArwqDCoMKgIGludCBmZDsNCj4gPj4gKw0KPiA+PiArwqDCoMKgIGln
-dF9maXh0dXJlIHsNCj4gPj4gK8KgwqDCoMKgwqDCoMKgIGlndF94ZV9kcml2ZXJfdW5sb2FkKCk7
-DQo+ID4+ICvCoMKgwqDCoMKgwqDCoCBpZ3RfeGVfZHJpdmVyX2xvYWQoImd1Y19maXJtd2FyZV9w
-YXRoPS9kZXYvbnVsbA0KPiA+PiBpbmplY3RfcHJvYmVfZmFpbHVyZT0tMSBmb3JjZV9wcm9iZT0q
-Iik7DQo+ID4+ICvCoMKgwqDCoMKgwqDCoCBpZ3RfaW5zdGFsbF9leGl0X2hhbmRsZXIodW5sb2Fk
-KTsNCj4gPj4gKw0KPiA+PiArwqDCoMKgwqDCoMKgwqAgZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJ
-VkVSX1hFKTsNCj4gPj4gK8KgwqDCoMKgwqDCoMKgIHhlX2RldmljZV9nZXQoZmQpOw0KPiA+PiAr
-wqDCoMKgIH0NCj4gPj4gKw0KPiA+PiArwqDCoMKgIGlndF9zdWJ0ZXN0KCJzeXNmcyIpIHsNCj4g
-Pj4gK8KgwqDCoMKgwqDCoMKgIGlndF9mb3JrKGNoaWxkLCAxKQ0KPiA+PiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCByZWFkX3N5c2ZzX2VudHJpZXMoaWd0X3N5c2ZzX29wZW4oZmQpLCAwKTsNCj4g
-Pj4gK8KgwqDCoMKgwqDCoMKgIGlndF93YWl0Y2hpbGRyZW4oKTsNCj4gPj4gK8KgwqDCoCB9DQo+
-ID4+ICsNCj4gPj4gK8KgwqDCoCBpZ3Rfc3VidGVzdCgiZGVidWdmcyIpIHsNCj4gPj4gK8KgwqDC
-oMKgwqDCoMKgIGlndF9mb3JrKGNoaWxkLCAxKQ0KPiA+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCByZWFkX3N5c2ZzX2VudHJpZXMoaWd0X2RlYnVnZnNfZGlyKGZkKSwgMCk7DQo+ID4+ICvCoMKg
-wqDCoMKgwqDCoCBpZ3Rfd2FpdGNoaWxkcmVuKCk7DQo+ID4+ICvCoMKgwqAgfQ0KPiA+PiArDQo+
-ID4+ICvCoMKgwqAgaWd0X2ZpeHR1cmUgew0KPiA+PiArwqDCoMKgwqDCoMKgwqAgeGVfZGV2aWNl
-X3B1dChmZCk7DQo+ID4+ICvCoMKgwqDCoMKgwqDCoCBjbG9zZShmZCk7DQo+ID4+ICvCoMKgwqAg
-fQ0KPiA+PiArfQ0K
+Hi Bhanuprakash,
+
+On 2023-06-01 at 11:47:53 +0530, Bhanuprakash Modem wrote:
+> To enable the CI for Xe full run, exclude all non-Xe tests.
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  tests/intel-ci/xe.blocklist.txt | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+> index 4285881be07..d035604c1b6 100644
+> --- a/tests/intel-ci/xe.blocklist.txt
+> +++ b/tests/intel-ci/xe.blocklist.txt
+> @@ -1,4 +1,35 @@
+>  ##################################################################
+> +# Non-Xe tests
+
+Please split it into: non-Xe arch like amdgpu, i915, msm,
+nouveau, panfrost ...
+and then write other, so we will change only other sections.
+Also look at i915 blocklist, imho metatest should be copied from
+there, so first line:
+
+igt@meta_test(@.*)?
+
+then: 
+##################################################################
+# Non-Xe driver tests
+##################################################################
+igt@amdgpu.*
+igt@i915_.*
+igt@msm_.*
+igt@nouveau_.*
+igt@panfrost_.*
+igt@v3d.*
+igt@vc4.*
+igt@vgem_.*
+igt@vmwgfx.*
+
+and then: 
+##################################################################
+# exclude i915-specific tests
+##################################################################
+igt@gem.*
+igt@gen.*
+igt@i915_.*
+igt@perf.*
+
+and last:
+##################################################################
+# exclude all other non-Xe tests
+##################################################################
+igt@api.*
+igt@core.*
+igt@debugfs.*
+igt@device_reset
+igt@dmabuf.*
+igt@drm.*
+igt@dumb.*
+igt@fbdev
+igt@feature_discovery
+igt@prime_.*
+igt@sw_sync
+igt@syncobj_.*
+igt@sysfs_.*
+igt@template
+igt@tools_test
+
+Regards,
+Kamil
+
+> +##################################################################
+> +igt@amdgpu.*
+> +igt@api.*
+> +igt@core.*
+> +igt@debugfs.*
+> +igt@device_reset
+> +igt@dmabuf.*
+> +igt@drm.*
+> +igt@dumb.*
+> +igt@fbdev
+> +igt@feature_discovery
+> +igt@gem.*
+> +igt@gen.*
+> +igt@i915_.*
+> +igt@meta_test
+> +igt@msm_.*
+> +igt@nouveau_.*
+> +igt@panfrost_.*
+> +igt@perf.*
+> +igt@prime_.*
+> +igt@sw_sync
+> +igt@syncobj_.*
+> +igt@sysfs_.*
+> +igt@template
+> +igt@tools_test
+> +igt@v3d.*
+> +igt@vc4.*
+> +igt@vgem_.*
+> +igt@vmwgfx.*
+> +##################################################################
+>  #Pipe E, F, G and H
+>  ##################################################################
+>  igt@.*@.*pipe-(e|f|g|h).*
+> -- 
+> 2.40.0
+> 
