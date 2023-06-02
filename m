@@ -1,22 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C943210E09E
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Jun 2023 07:24:11 +0000 (UTC)
-Message-ID: <f404b0fd-ab95-ca5f-2684-0071ab27476d@intel.com>
-Date: Fri, 2 Jun 2023 12:54:01 +0530
-MIME-Version: 1.0
-Content-Language: en-US
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E28D10E0B5
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Jun 2023 07:45:54 +0000 (UTC)
+Date: Fri, 2 Jun 2023 09:45:50 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-References: <20230531065407.362625-1-swati2.sharma@intel.com>
- <20230531065407.362625-4-swati2.sharma@intel.com>
- <20230601135559.3cnml6oqozfooxkb@kamilkon-desk1>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20230601135559.3cnml6oqozfooxkb@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] tests: add
- igt_is_dsc_supported_by_source()
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20230602074550.bgpl2na5szswdbdi@zkempczy-mobl2>
+References: <20230531193043.558461-1-zbigniew.kempczynski@intel.com>
+ <20230531193043.558461-4-zbigniew.kempczynski@intel.com>
+ <20230601173843.2nowuvw6pcg5ufcq@kamilkon-desk1>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230601173843.2nowuvw6pcg5ufcq@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/xe_waitfence: Add abstime
+ wait subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,173 +29,119 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
-
-Thanks for the reviews. Please find my reply inline.
-
-On 01-Jun-23 7:25 PM, Kamil Konieczny wrote:
-> Hi Swati,
+On Thu, Jun 01, 2023 at 07:38:43PM +0200, Kamil Konieczny wrote:
+> Hi Zbigniew,
 > 
-> On 2023-05-31 at 12:24:07 +0530, Swati Sharma wrote:
->> Instead of assuming dsc is supported on gen11+ platforms,
->> lets use has_dsc flag in i915_capability to check hardware
->> support.
->>
->> v2: -moved changes to lib (Ankit)
->> v3: -keep includes in alphabetical order (Kamil)
->>      -don't use igt_require() in lib (Kamil)
->>      -improve return statement (Kamil)
->>
->> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
->> ---
->>   lib/igt_dsc.c               | 22 ++++++++++++++++++++++
->>   lib/igt_dsc.h               |  1 +
->>   tests/i915/kms_dsc.c        |  2 +-
->>   tests/i915/kms_dsc_helper.c | 10 ++++++++++
->>   tests/i915/kms_dsc_helper.h |  1 +
->>   tests/kms_invalid_mode.c    |  3 +--
->>   6 files changed, 36 insertions(+), 3 deletions(-)
->>
->> diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
->> index 6cbd8bae..76a420c1 100644
->> --- a/lib/igt_dsc.c
->> +++ b/lib/igt_dsc.c
->> @@ -6,6 +6,7 @@
->>   #include <unistd.h>
->>   #include <fcntl.h>
->>   #include <string.h>
->> +#include "igt_core.h"
->>   #include "igt_dsc.h"
->>   #include "igt_sysfs.h"
->>   
->> @@ -41,6 +42,27 @@ static int write_dsc_debugfs(int drmfd, char *connector_name, const char *file_n
->>   	return ret;
->>   }
->>   
->> +/*
->> + * igt_is_dsc_supported_by_source:
->> + * @drmfd: A drm file descriptor
->> + *
->> + * Returns: True if DSC is supported by source, false otherwise.
->> + */
->> +bool igt_is_dsc_supported_by_source(int drmfd)
->> +{
->> +	char buf[4096];
->> +	int dir, res;
->> +
->> +	dir = igt_debugfs_dir(drmfd);
->> +	igt_assert(dir >= 0);
->> +
->> +	res = igt_debugfs_simple_read(dir, "i915_capabilities",
->> +				      buf, sizeof(buf));
->> +	close(dir);
->> +
->> +	return res > 0 ? strstr(buf, "has_dsc: yes") : 0;
->> +}
->> +
->>   /*
->>    * igt_is_dsc_supported_by_sink:
->>    * @drmfd: A drm file descriptor
->> diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
->> index 241fc0ac..b58743b5 100644
->> --- a/lib/igt_dsc.h
->> +++ b/lib/igt_dsc.h
->> @@ -9,6 +9,7 @@
->>   #include "igt_fb.h"
->>   #include "igt_kms.h"
->>   
->> +bool igt_is_dsc_supported_by_source(int drmfd);
->>   bool igt_is_dsc_supported_by_sink(int drmfd, char *connector_name);
->>   bool igt_is_fec_supported(int drmfd, char *connector_name);
->>   bool igt_is_dsc_enabled(int drmfd, char *connector_name);
->> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
->> index d142fae2..b46c4449 100644
->> --- a/tests/i915/kms_dsc.c
->> +++ b/tests/i915/kms_dsc.c
->> @@ -265,7 +265,7 @@ igt_main
->>   		igt_install_exit_handler(kms_dsc_exit_handler);
->>   		igt_display_require(&data.display, data.drm_fd);
->>   		igt_display_require_output(&data.display);
->> -		igt_require(data.disp_ver >= 11);
->> +		igt_require(is_dsc_supported_by_source(data.drm_fd));
->>   	}
->>   
->>   	igt_describe("Tests basic display stream compression functionality if supported "
->> diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
->> index c90d833d..61f76dde 100644
->> --- a/tests/i915/kms_dsc_helper.c
->> +++ b/tests/i915/kms_dsc_helper.c
->> @@ -53,6 +53,16 @@ void kms_dsc_exit_handler(int sig)
->>   	restore_force_dsc_en();
->>   }
->>   
->> +bool is_dsc_supported_by_source(int drmfd)
->> +{
->> +	if (!igt_is_dsc_supported_by_source(drmfd)) {
->> +		igt_debug("DSC not supported by source\n");
->> +		return false;
->> +	}
->> +
->> +	return true;
->> +}
->> +
->>   bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output)
->>   {
->>   	if (!igt_is_dsc_supported_by_sink(drmfd, output->name)) {
->> diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
->> index f66191c7..2109bd76 100644
->> --- a/tests/i915/kms_dsc_helper.h
->> +++ b/tests/i915/kms_dsc_helper.h
->> @@ -27,6 +27,7 @@ void save_force_dsc_en(int drmfd, igt_output_t *output);
->>   void restore_force_dsc_en(void);
->>   void kms_dsc_exit_handler(int sig);
->>   bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output);
->> +bool is_dsc_supported_by_source(int drmfd);
->>   bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe);
->>   bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc);
->>   void force_dsc_output_format(int drmfd, igt_output_t *output,
->> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
->> index 63da3a1c..e4ab65f2 100644
->> --- a/tests/kms_invalid_mode.c
->> +++ b/tests/kms_invalid_mode.c
->> @@ -60,9 +60,8 @@ can_bigjoiner(data_t *data)
->>   	if (intel_display_ver(devid) > 12) {
->>   		igt_debug("Platform supports uncompressed bigjoiner\n");
->>   		return true;
->> -	} else if (intel_display_ver(devid) >= 11) {
-> ---------------------------------------------- ^
-> imho you should keep it here unless there are platforms <= 10 with
-> that capability ?
-
-i915 driver supports dsc from display_ver >= 11
-The whole point of removing this check is to get info from i915_cap to 
-know if h/w supports dsc or not.
-
-> Also previous if had braces { } so you should also use them after else:
-
-okay.
-
+> On 2023-05-31 at 21:30:43 +0200, Zbigniew Kempczyński wrote:
+> > User fence wait supports two methods of passing timeout - relative
+> > and absolute. Add absolute with passing timeout as nanoseconds.
+> ------------------ ^
+> Please clarify somewhat description, maybe insert
+> "subtest for testing " ?
 > 
->> +	} else if (igt_is_dsc_supported_by_source(data->drm_fd))
-> ------------- ^
->>   		return igt_is_dsc_supported_by_sink(data->drm_fd, data->output->name);
->> -	}
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > 
+> > ---
+> > Requires changes in kernel uapi proposed in:
+> > https://patchwork.freedesktop.org/series/118670/
+> > ---
+> >  tests/xe/xe_waitfence.c | 38 ++++++++++++++++++++++++++++++++++----
+> >  1 file changed, 34 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/tests/xe/xe_waitfence.c b/tests/xe/xe_waitfence.c
+> > index cdfcacdb47..1440ae4e7e 100644
+> > --- a/tests/xe/xe_waitfence.c
+> > +++ b/tests/xe/xe_waitfence.c
+> > @@ -37,12 +37,23 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+> >  	xe_vm_bind(fd, vm, bo, offset, addr, size, sync, 1);
+> >  }
+> >  
+> > +#define MS_TO_NS(ms) (((long)ms) * 1000000)
+> > +enum waittype {
+> > +	RELATIVE,
+> > +	ABSTIME,
+> > +};
+> > +
+> >  /**
+> >   * SUBTEST: test
+> -------------- ^
 > 
-> imho better:
-> 	} else if (intel_display_ver(devid) >= 11) {
-> 		return igt_is_dsc_supported_by_source(data->drm_fd) &&
-> 		       igt_is_dsc_supported_by_sink(data->drm_fd, data->output->name);
-> 	}
+> > - * Description: Check basic waitfences functionality
+> > + * Description: Check basic waitfences functionality with timeout
+> > + *              as relative timeout in nanoseconds
+> > + *
+> > + * SUBTEST: test-abstime
+> -------------- ^
+> This name is a little confusing, consider changing it with
+> separate patch, maybe before this one ? From description maybe
+> it should be "basic" ?
+
+To be honest I would rename this to 'relative' and 'absolute' subtests.
+Any objections about that?
+
+Thank you for the review.
+
+--
+Zbigniew
 > 
 > Regards,
 > Kamil
 > 
->> -	}
->>   
->>   	return false;
->>   }
->> -- 
->> 2.25.1
->>
+> > + * Description: Check basic waitfences functionality with timeout
+> > + *              passed as absolute time in nanoseconds
+> >   */
+> >  static void
+> > -test(int fd)
+> > +test(int fd, enum waittype wt)
+> >  {
+> >  	uint32_t bo_1;
+> >  	uint32_t bo_2;
+> > @@ -51,6 +62,7 @@ test(int fd)
+> >  	uint32_t bo_5;
+> >  	uint32_t bo_6;
+> >  	uint32_t bo_7;
+> > +	long timeout;
+> >  
+> >  	uint32_t vm = xe_vm_create(fd, 0, 0);
+> >  	bo_1 = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
+> > @@ -67,7 +79,22 @@ test(int fd)
+> >  	do_bind(fd, vm, bo_6, 0, 0xc0040000, 0x1c0000, 6);
+> >  	bo_7 = xe_bo_create_flags(fd, vm, 0x10000, MY_FLAG);
+> >  	do_bind(fd, vm, bo_7, 0, 0xeffff0000, 0x10000, 7);
+> > -	xe_wait_ufence(fd, &wait_fence, 7, NULL, 2000);
+> > +
+> > +	if (wt == RELATIVE) {
+> > +		timeout = xe_wait_ufence(fd, &wait_fence, 7, NULL, MS_TO_NS(10));
+> > +		igt_info("wait type: RELATIVE - timeout: %ld, timeout left: %ld\n",
+> > +			  MS_TO_NS(10), timeout);
+> > +	} else {
+> > +		struct timespec ts;
+> > +		long left;
+> > +
+> > +		clock_gettime(CLOCK_MONOTONIC, &ts);
+> > +		timeout = ts.tv_sec * 1e9 + ts.tv_nsec + (long) MS_TO_NS(10);
+> > +		left = xe_wait_ufence_abstime(fd, &wait_fence, 7, NULL, timeout);
+> > +		igt_info("wait type: ABSTIME - timeout: %ld, left: %ld\n",
+> > +			  timeout, left);
+> > +	}
+> > +
+> >  	xe_vm_unbind_sync(fd, vm, 0, 0x200000, 0x40000);
+> >  	xe_vm_unbind_sync(fd, vm, 0, 0xc0000000, 0x40000);
+> >  	xe_vm_unbind_sync(fd, vm, 0, 0x180000000, 0x40000);
+> > @@ -94,7 +121,10 @@ igt_main
+> >  	}
+> >  
+> >  	igt_subtest("test")
+> > -		test(fd);
+> > +		test(fd, RELATIVE);
+> > +
+> > +	igt_subtest("test-abstime")
+> > +		test(fd, ABSTIME);
+> >  
+> >  	igt_fixture {
+> >  		xe_device_put(fd);
+> > -- 
+> > 2.34.1
+> > 
