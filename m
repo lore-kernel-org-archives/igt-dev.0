@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67A5E10E22A
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Jun 2023 08:27:39 +0000 (UTC)
-From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Jun 2023 10:27:17 +0200
-Message-Id: <20230602082721.7818-3-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20230602082721.7818-1-dominik.karol.piatkowski@intel.com>
-References: <20230602082721.7818-1-dominik.karol.piatkowski@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/6] lib/igt_kmod.c: check if module is
- builtin before attempting to unload it
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dominik Karol Piatkowski" <dominik.karol.piatkowski@intel.com>
+Date: Fri, 02 Jun 2023 09:16:24 -0000
+Message-ID: <168569738411.15698.2235826233400317529@emeril.freedesktop.org>
+References: <20230602082721.7818-1-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20230602082721.7818-1-dominik.karol.piatkowski@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
+ =?utf-8?q?ntroduce_KUnit_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,41 +17,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Isabella Basso <isabbasso@riseup.net>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Isabella Basso <isabbasso@riseup.net>
+== Series Details ==
 
-This change makes `igt_kmod_unload_r` safer as it checks whether the
-module can be unloaded before attempting it.
+Series: Introduce KUnit (rev4)
+URL   : https://patchwork.freedesktop.org/series/114612/
+State : warning
 
-v2 -> v3:
-- Fix commit message
-- Make return value clearer
+== Summary ==
 
-Acked-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Isabella Basso <isabbasso@riseup.net>
+Pipeline status: FAILED.
 
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
----
- lib/igt_kmod.c | 3 +++
- 1 file changed, 3 insertions(+)
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/897380 for the overview.
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 93fa2006..26d58e29 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -259,6 +259,9 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
- 	int err, tries;
- 	const char *mod_name = kmod_module_get_name(kmod);
- 
-+	if (kmod_module_get_initstate(kmod) == KMOD_MODULE_BUILTIN)
-+		return 0;
-+
- 	holders = kmod_module_get_holders(kmod);
- 	kmod_list_foreach(pos, holders) {
- 		struct kmod_module *it = kmod_module_get_module(pos);
--- 
-2.34.1
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42942059):
+  379/383 assembler test/rnde-intsrc              OK       0.02 s 
+  380/383 assembler test/rndz                     OK       0.02 s 
+  381/383 assembler test/lzd                      OK       0.01 s 
+  382/383 assembler test/not                      OK       0.01 s 
+  383/383 assembler test/immediate                OK       0.02 s 
+  
+  Ok:                  376
+  Expected Fail:         4
+  Fail:                  3
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1685697309:step_script
+  section_start:1685697309:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1685697312:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/42942058):
+  379/383 assembler test/rnde-intsrc              OK       0.01 s 
+  380/383 assembler test/rndz                     OK       0.01 s 
+  381/383 assembler test/lzd                      OK       0.01 s 
+  382/383 assembler test/not                      OK       0.01 s 
+  383/383 assembler test/immediate                OK       0.01 s 
+  
+  Ok:                  376
+  Expected Fail:         4
+  Fail:                  3
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1685697255:step_script
+  section_start:1685697255:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1685697257:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/897380
