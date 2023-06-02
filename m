@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F80A10E5C8
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Jun 2023 16:20:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5FC710E209
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Jun 2023 16:20:25 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Jun 2023 18:20:08 +0200
-Message-Id: <20230602162011.90097-2-zbigniew.kempczynski@intel.com>
+Date: Fri,  2 Jun 2023 18:20:09 +0200
+Message-Id: <20230602162011.90097-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230602162011.90097-1-zbigniew.kempczynski@intel.com>
 References: <20230602162011.90097-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/4] lib/xe_ioctl: Add
- xe_wait_ufence_abstime() helper
+Subject: [igt-dev] [PATCH i-g-t v2 2/4] lib/xe_ioctl: Return remaining
+ timeout of user fence wait
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,85 +24,50 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Xe user fences supports passing timeout in relative or absolute form.
-Add helper for absolute one.
+When user fence is signalled we may want to be aware how long did it
+take. Return remaining timeout after fence was successfully signalled.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 ---
-v2: Add documentation and change subject (Kamil).
----
- lib/xe/xe_ioctl.c | 35 +++++++++++++++++++++++++++++++++++
- lib/xe/xe_ioctl.h |  3 +++
- 2 files changed, 38 insertions(+)
+ lib/xe/xe_ioctl.c | 4 +++-
+ lib/xe/xe_ioctl.h | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 66a8393fe9..3331046b46 100644
+index 3331046b46..e73c581f9f 100644
 --- a/lib/xe/xe_ioctl.c
 +++ b/lib/xe/xe_ioctl.c
-@@ -36,6 +36,7 @@
- #define major(__v__) (((__v__) >> 8) & 0xff)
- #define minor(__v__) ((__v__) & 0xff)
- #endif
-+#include <time.h>
- 
- #include "config.h"
- #include "drmtest.h"
-@@ -418,6 +419,40 @@ void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+@@ -401,7 +401,7 @@ void xe_exec_wait(int fd, uint32_t engine, uint64_t addr)
+ 	syncobj_destroy(fd, sync.handle);
  }
  
-+/**
-+ * xe_wait_ufence_abstime:
-+ * @fd: xe device fd
-+ * @addr: address of value to compare
-+ * @value: expected value (equal) in @address
-+ * @eci: engine class instance
-+ * @timeout: absolute time when wait expire
-+ *
-+ * Function compares @value with memory pointed by @addr until they are equal.
-+ *
-+ * Returns elapsed time in nanoseconds if user fence was signalled.
-+ */
-+long xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
-+			    struct drm_xe_engine_class_instance *eci,
-+			    int64_t timeout)
-+{
-+	struct drm_xe_wait_user_fence wait = {
-+		.addr = to_user_pointer(addr),
-+		.op = DRM_XE_UFENCE_WAIT_EQ,
-+		.flags = !eci ? DRM_XE_UFENCE_WAIT_SOFT_OP | DRM_XE_UFENCE_WAIT_ABSTIME : 0,
-+		.value = value,
-+		.mask = DRM_XE_UFENCE_WAIT_U64,
-+		.timeout = timeout,
-+		.num_engines = eci ? 1 : 0,
-+		.instances = eci ? to_user_pointer(eci) : 0,
-+	};
-+	struct timespec ts;
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
-+	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &ts), 0);
-+
-+	return ts.tv_sec * 1e9 + ts.tv_nsec;
-+}
-+
- void xe_force_gt_reset(int fd, int gt)
+-void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
++long xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		    struct drm_xe_engine_class_instance *eci,
+ 		    int64_t timeout)
  {
- 	char reset_string[128];
+@@ -417,6 +417,8 @@ void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 	};
+ 
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
++
++	return wait.timeout;
+ }
+ 
+ /**
 diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 049cd183d6..9b44892fe9 100644
+index 9b44892fe9..860de9af58 100644
 --- a/lib/xe/xe_ioctl.h
 +++ b/lib/xe/xe_ioctl.h
-@@ -82,6 +82,9 @@ void xe_exec_wait(int fd, uint32_t engine, uint64_t addr);
- void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+@@ -79,7 +79,7 @@ void xe_exec(int fd, struct drm_xe_exec *exec);
+ void xe_exec_sync(int fd, uint32_t engine, uint64_t addr,
+ 		  struct drm_xe_sync *sync, uint32_t num_syncs);
+ void xe_exec_wait(int fd, uint32_t engine, uint64_t addr);
+-void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
++long xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
  		    struct drm_xe_engine_class_instance *eci,
  		    int64_t timeout);
-+long xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
-+			    struct drm_xe_engine_class_instance *eci,
-+			    int64_t timeout);
- void xe_force_gt_reset(int fd, int gt);
- void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t size,
- 		   uint32_t property, uint32_t value);
+ long xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
 -- 
 2.34.1
