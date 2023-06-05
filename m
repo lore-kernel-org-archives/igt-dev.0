@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7EEB10E28B
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Jun 2023 11:05:12 +0000 (UTC)
-Date: Mon, 5 Jun 2023 13:05:03 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-Message-ID: <20230605130503.2599da97@maurocar-mobl2>
-In-Reply-To: <20230605104716.5678-9-dominik.karol.piatkowski@intel.com>
-References: <20230605104716.5678-1-dominik.karol.piatkowski@intel.com>
- <20230605104716.5678-9-dominik.karol.piatkowski@intel.com>
+Date: Mon, 5 Jun 2023 13:17:38 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230605111738.stcgxju5kjqkdjyi@kamilkon-desk1>
+References: <20230526130001.71730-1-nunes.erico@gmail.com>
+ <20230526130001.71730-4-nunes.erico@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t 8/8] lib/igt_kmod: fix nesting
- igt_fixture in igt_subtest
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230526130001.71730-4-nunes.erico@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/3] tests/lima: Add initial tests
+ for lima
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,156 +19,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: anarsoul@gmail.com, yuq825@gmail.com, lima@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon,  5 Jun 2023 12:47:16 +0200
-Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com> wrote:
+Hi Erico,
 
-> Fix the following issue:
-> 	$ ./build/tests/drm_buddy
-> 	Starting subtest: all-tests
-> 	nesting igt_fixture in igt_subtest is invalid
-> 	please refer to lib/igt_core documentation
->=20
-> Signed-off-by: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@in=
-tel.com>
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+On 2023-05-26 at 15:00:01 +0200, Erico Nunes wrote:
+> Some gem tests based on the panfrost and v3d ones.
 
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Could you write a little more what new tests you added ?
 
+> 
+> Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
 > ---
->  lib/igt_kmod.c | 80 ++++++++++++++++++++++++--------------------------
->  1 file changed, 38 insertions(+), 42 deletions(-)
->=20
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index c62eb97a..2c0cc026 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -772,47 +772,45 @@ static int __igt_kunit(const char *module_name, con=
-st char *opts)
->  		return ret;
->  	}
-> =20
-> -	igt_fixture {
-> -		if (igt_ktest_begin(&tst) !=3D 0) {
-> -			igt_warn("Unable to begin ktest for %s\n", module_name);
-> +	if (igt_ktest_begin(&tst) !=3D 0) {
-> +		igt_warn("Unable to begin ktest for %s\n", module_name);
-> =20
-> -			igt_ktest_fini(&tst);
-> -			return ret;
-> -		}
-> +		igt_ktest_fini(&tst);
-> +		return ret;
+>  tests/lima_gem_new.c | 78 ++++++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build    |  1 +
+>  2 files changed, 79 insertions(+)
+>  create mode 100644 tests/lima_gem_new.c
+> 
+> diff --git a/tests/lima_gem_new.c b/tests/lima_gem_new.c
+> new file mode 100644
+> index 00000000..3b054317
+> --- /dev/null
+> +++ b/tests/lima_gem_new.c
+> @@ -0,0 +1,78 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Erico Nunes
+> + */
+> +
+> +#include "igt.h"
+------------ ^
+> +#include "igt_lima.h"
+------------ ^
+Move this after system includes.
+
+> +#include <unistd.h>
+------------ ^
+Sort includes alphabetically.
+
+> +#include <stdlib.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +#include <fcntl.h>
+> +#include <inttypes.h>
+> +#include <errno.h>
+> +#include <sys/stat.h>
+> +#include <sys/ioctl.h>
+
+Add newline after system includes.
+Put here "igt...h" headers.
+
+> +#include "lima_drm.h"
+> +
+
+Write here global description with
+
+IGT_TEST_DESCRIPTION("Global test description.")
+
+> +igt_main
+> +{
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_LIMA);
+
+You can put here
+		igt_require(fd > 0);
+
 > +	}
-> =20
-> -		if (tst.kmsg < 0) {
-> -			igt_warn("Could not open /dev/kmsg\n");
-> -			goto unload;
-> -		}
-> +	if (tst.kmsg < 0) {
-> +		igt_warn("Could not open /dev/kmsg\n");
-> +		goto unload;
+> +
+> +	igt_describe("Sanity check for creating a BO with size 4096.");
+> +	igt_subtest("gem-new-4096") {
+> +		struct lima_bo *bo = igt_lima_gem_new(fd, 4096);
+> +
+> +		igt_lima_free_bo(fd, bo);
 > +	}
-> =20
-> -		if (lseek(tst.kmsg, 0, SEEK_END)) {
-> -			igt_warn("Could not seek the end of /dev/kmsg\n");
-> -			goto unload;
-> -		}
-> +	if (lseek(tst.kmsg, 0, SEEK_END)) {
-> +		igt_warn("Could not seek the end of /dev/kmsg\n");
-> +		goto unload;
+> +
+> +	igt_describe("Make sure a BO cannot be created with size zero.");
+> +	igt_subtest("gem-new-0") {
+> +		struct drm_lima_gem_create arg = {
+> +			.size = 0,
+> +		};
+> +
+> +		do_ioctl_err(fd, DRM_IOCTL_LIMA_GEM_CREATE, &arg, EINVAL);
 > +	}
-> =20
-> -		f =3D fdopen(tst.kmsg, "r");
-> +	f =3D fdopen(tst.kmsg, "r");
-> =20
-> -		if (f =3D=3D NULL) {
-> -			igt_warn("Could not turn /dev/kmsg file descriptor into a FILE pointe=
-r\n");
-> -			goto unload;
-> -		}
-> +	if (f =3D=3D NULL) {
-> +		igt_warn("Could not turn /dev/kmsg file descriptor into a FILE pointer=
-\n");
-> +		goto unload;
+> +
+> +	igt_describe("Make sure that BOs can be allocated in different fd without "
+> +		     "carrying old contents from one another.");
+> +	igt_subtest("gem-new-zeroed") {
+> +		int fd2 = drm_open_driver(DRIVER_LIMA);
+> +		struct lima_bo *bo;
+> +		uint32_t *map;
+> +		/* A size different from any used in our other tests, to try
+> +		 * to convince it to land as the only one of its size in the
+> +		 * kernel BO cache
+> +		 */
+> +		size_t size = 3 * 4096;
+> +		size_t i;
+> +
+> +		/* Make a BO and free it on our main fd. */
+> +		bo = igt_lima_gem_new(fd, size);
+> +		map = igt_lima_mmap_bo(fd, bo->handle, size, PROT_READ | PROT_WRITE);
+--------------- ^
+In your current implementation you can get NULL here.
+
+> +		memset(map, 0xd0, size);
+> +		munmap(map, size);
+> +		igt_lima_free_bo(fd, bo);
+> +
+> +		/* Now, allocate a BO on the other fd and make sure it doesn't
+> +		 * have the old contents.
+> +		 */
+> +		bo = igt_lima_gem_new(fd2, size);
+> +		map = igt_lima_mmap_bo(fd2, bo->handle, size, PROT_READ | PROT_WRITE);
+--------------- ^
+Same here, mey be NULL.
+
+> +		for (i = 0; i < size / 4; i++)
+-------------------------------------- ^
+It may be also sizeof(map[0]) instead of 4.
+
+Regards,
+Kamil
+
+> +			igt_assert_eq_u32(map[i], 0x0);
+> +		munmap(map, size);
+> +		igt_lima_free_bo(fd2, bo);
+> +
+> +		close(fd2);
 > +	}
-> =20
-> -		/* The KUnit module is required for running any KUnit tests */
-> -		if (igt_kmod_load("kunit", NULL) !=3D 0 ||
-> -		    kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod) !=3D 0=
-) {
-> -			igt_warn("Unable to load KUnit\n");
-> -			igt_fail(IGT_EXIT_FAILURE);
-> -		}
-> +	/* The KUnit module is required for running any KUnit tests */
-> +	if (igt_kmod_load("kunit", NULL) !=3D 0 ||
-> +	    kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod) !=3D 0)=
- {
-> +		igt_warn("Unable to load KUnit\n");
-> +		igt_fail(IGT_EXIT_FAILURE);
-> +	}
-> =20
-> -		is_builtin =3D kmod_module_get_initstate(kunit_kmod) =3D=3D KMOD_MODUL=
-E_BUILTIN;
-> +	is_builtin =3D kmod_module_get_initstate(kunit_kmod) =3D=3D KMOD_MODULE=
-_BUILTIN;
-> =20
-> -		results =3D ktap_parser_start(f, is_builtin);
-> +	results =3D ktap_parser_start(f, is_builtin);
-> =20
-> -		if (igt_kmod_load(module_name, opts) !=3D 0) {
-> -			igt_warn("Unable to load %s module\n", module_name);
-> -			ret =3D ktap_parser_stop();
-> -			igt_fail(IGT_EXIT_FAILURE);
-> -		}
-> +	if (igt_kmod_load(module_name, opts) !=3D 0) {
-> +		igt_warn("Unable to load %s module\n", module_name);
-> +		ret =3D ktap_parser_stop();
-> +		igt_fail(IGT_EXIT_FAILURE);
->  	}
-> =20
->  	while (READ_ONCE(results->still_running) || READ_ONCE(results->head) !=
-=3D NULL)
-> @@ -820,7 +818,7 @@ static int __igt_kunit(const char *module_name, const=
- char *opts)
->  		if (READ_ONCE(results->head) !=3D NULL) {
->  			pthread_mutex_lock(&results->mutex);
-> =20
-> -			igt_subtest(results->head->test_name) {
-> +			igt_dynamic(results->head->test_name) {
->  				if (READ_ONCE(results->head->passed))
->  					igt_success();
->  				else
-> @@ -836,19 +834,17 @@ static int __igt_kunit(const char *module_name, con=
-st char *opts)
->  	}
-> =20
->  unload:
-> -	igt_fixture {
-> -		igt_ktest_end(&tst);
-> +	igt_ktest_end(&tst);
-> =20
-> -		igt_ktest_fini(&tst);
-> +	igt_ktest_fini(&tst);
-> =20
-> -		ret =3D ktap_parser_stop();
-> +	ret =3D ktap_parser_stop();
-> =20
-> -		if (ret !=3D 0)
-> -			ret =3D IGT_EXIT_ABORT;
-> +	if (ret !=3D 0)
-> +		ret =3D IGT_EXIT_ABORT;
-> =20
-> -		if (ret =3D=3D 0)
-> -			igt_success();
-> -	}
-> +	if (ret =3D=3D 0)
-> +		igt_success();
->  	return ret;
->  }
-> =20
+> +
+> +	igt_fixture
+> +		close(fd);
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index f71be1db..980e77e9 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -62,6 +62,7 @@ test_progs = [
+>  	'kms_vblank',
+>  	'kms_vrr',
+>  	'kms_writeback',
+> +	'lima_gem_new',
+>  	'meta_test',
+>  	'panfrost_get_param',
+>  	'panfrost_gem_new',
+> -- 
+> 2.40.1
+> 
