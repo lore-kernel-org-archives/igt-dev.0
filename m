@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 5 Jun 2023 13:03:10 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230605110310.s6owlebfxot72ntj@kamilkon-desk1>
-References: <20230526130001.71730-1-nunes.erico@gmail.com>
- <20230526130001.71730-3-nunes.erico@gmail.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7EEB10E28B
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Jun 2023 11:05:12 +0000 (UTC)
+Date: Mon, 5 Jun 2023 13:05:03 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+Message-ID: <20230605130503.2599da97@maurocar-mobl2>
+In-Reply-To: <20230605104716.5678-9-dominik.karol.piatkowski@intel.com>
+References: <20230605104716.5678-1-dominik.karol.piatkowski@intel.com>
+ <20230605104716.5678-9-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230526130001.71730-3-nunes.erico@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/3] lib/lima: Add lima helpers
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t 8/8] lib/igt_kmod: fix nesting
+ igt_fixture in igt_subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,205 +21,156 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: anarsoul@gmail.com, yuq825@gmail.com, lima@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Erico,
+On Mon,  5 Jun 2023 12:47:16 +0200
+Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com> wrote:
 
-On 2023-05-26 at 15:00:00 +0200, Erico Nunes wrote:
-> Add initial gem helpers for lima tests, based on the panfrost ones.
-> 
-> Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+> Fix the following issue:
+> 	$ ./build/tests/drm_buddy
+> 	Starting subtest: all-tests
+> 	nesting igt_fixture in igt_subtest is invalid
+> 	please refer to lib/igt_core documentation
+>=20
+> Signed-off-by: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@in=
+tel.com>
+> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+
+Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
 > ---
->  lib/igt_lima.c  | 97 +++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_lima.h  | 26 +++++++++++++
->  lib/meson.build |  1 +
->  3 files changed, 124 insertions(+)
->  create mode 100644 lib/igt_lima.c
->  create mode 100644 lib/igt_lima.h
-> 
-> diff --git a/lib/igt_lima.c b/lib/igt_lima.c
-> new file mode 100644
-> index 00000000..0d0f3c80
-> --- /dev/null
-> +++ b/lib/igt_lima.c
-> @@ -0,0 +1,97 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Erico Nunes
-> + */
-> +
-> +#include <assert.h>
-> +#include <string.h>
-> +#include <signal.h>
------------- ^
-Please sort all system headers alphabetically.
-
-> +#include <errno.h>
------------- ^
-
-> +#include <sys/mman.h>
-> +#include <sys/types.h>
-> +#include <sys/stat.h>
-> +#include <sys/ioctl.h>
-> +#include <fcntl.h>
------------- ^
-
-> +
-> +#include "drmtest.h"
-> +#include "igt_aux.h"
-> +#include "igt_core.h"
-> +#include "igt_lima.h"
-> +#include "ioctl_wrappers.h"
-> +#include "lima_drm.h"
-> +
-> +/**
-> + * SECTION:igt_lima
-> + * @short_description: LIMA support library
-> + * @title: LIMA
-> + * @include: igt.h
-> + *
-> + * This library provides various auxiliary helper functions for writing Lima
-> + * tests.
-> + */
-> +
-
-Remove empty line.
-
-> +struct lima_bo *
-> +igt_lima_gem_new(int fd, size_t size)
-> +{
-> +	struct lima_bo *bo = calloc(1, sizeof(*bo));
-> +
-> +	struct drm_lima_gem_create create_bo = {
-> +		.size = size,
-> +		.flags = 0,
-> +	};
-> +
-> +	do_ioctl(fd, DRM_IOCTL_LIMA_GEM_CREATE, &create_bo);
-> +
-> +	bo->handle = create_bo.handle;
-> +	bo->size = size;
-> +	return bo;
-> +}
-> +
-
-Please add descriptions to all new public functions.
-
-> +void
-> +igt_lima_free_bo(int fd, struct lima_bo *bo)
-> +{
-> +	if (!bo)
-> +		return;
-> +
-> +	if (bo->map)
-> +		munmap(bo->map, bo->size);
-
-You ignore error here.
-
-> +	gem_close(fd, bo->handle);
-> +	free(bo);
-> +}
-> +
-
-Write description for igt_lima_get_bo_offset.
-
-> +uint64_t
-> +igt_lima_get_bo_offset(int fd, uint32_t handle)
-> +{
-> +	struct drm_lima_gem_info gem_info = {
-> +		.handle = handle,
-> +	};
-> +
-> +	do_ioctl(fd, DRM_IOCTL_LIMA_GEM_INFO, &gem_info);
-> +
-> +	return gem_info.offset;
-> +}
-> +
-
-Same here.
-
-> +uint32_t
-> +igt_lima_get_param(int fd, int param)
-> +{
-> +	struct drm_lima_get_param get = {
-> +		.param = param,
-> +	};
-> +
-> +	do_ioctl(fd, DRM_IOCTL_LIMA_GET_PARAM, &get);
-> +
-> +	return get.value;
-> +}
-> +
-
-Same here.
-
-> +void *
-> +igt_lima_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned int prot)
-> +{
-> +	uint64_t offset = igt_lima_get_bo_offset(fd, handle);
-> +	void *ptr;
-> +
-> +	ptr = mmap(0, size, prot, MAP_SHARED, fd, offset);
-> +	if (ptr == MAP_FAILED)
-> +		return NULL;
-
-We name __igt_function for functions which run regardless of
-error, while igt_function fails on error. Above you used
-do_ioctl which will fail on error. Your choice.
-
-Regards,
-Kamil
-
-> +	else
-> +		return ptr;
-> +}
-> diff --git a/lib/igt_lima.h b/lib/igt_lima.h
-> new file mode 100644
-> index 00000000..3c4eaf3d
-> --- /dev/null
-> +++ b/lib/igt_lima.h
-> @@ -0,0 +1,26 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2023 Erico Nunes
-> + */
-> +
-> +#ifndef IGT_LIMA_H
-> +#define IGT_LIMA_H
-> +
-> +#include "lima_drm.h"
-> +
-> +struct lima_bo {
-> +	int handle;
-> +	uint64_t offset;
-> +	uint32_t size;
-> +	void *map;
-> +};
-> +
-> +struct lima_bo *igt_lima_gem_new(int fd, size_t size);
-> +void igt_lima_free_bo(int fd, struct lima_bo *bo);
-> +
-> +/* IOCTL wrappers */
-> +uint64_t igt_lima_get_bo_offset(int fd, uint32_t handle);
-> +uint32_t igt_lima_get_param(int fd, int param);
-> +void *igt_lima_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned int prot);
-> +
-> +#endif /* IGT_LIMA_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 85f100f7..a0f92941 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -89,6 +89,7 @@ lib_sources = [
->  	'uwildmat/uwildmat.c',
->  	'igt_kmod.c',
->  	'igt_panfrost.c',
-> +	'igt_lima.c',
->  	'igt_v3d.c',
->  	'igt_vc4.c',
->  	'igt_vmwgfx.c',
-> -- 
-> 2.40.1
-> 
+>  lib/igt_kmod.c | 80 ++++++++++++++++++++++++--------------------------
+>  1 file changed, 38 insertions(+), 42 deletions(-)
+>=20
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index c62eb97a..2c0cc026 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -772,47 +772,45 @@ static int __igt_kunit(const char *module_name, con=
+st char *opts)
+>  		return ret;
+>  	}
+> =20
+> -	igt_fixture {
+> -		if (igt_ktest_begin(&tst) !=3D 0) {
+> -			igt_warn("Unable to begin ktest for %s\n", module_name);
+> +	if (igt_ktest_begin(&tst) !=3D 0) {
+> +		igt_warn("Unable to begin ktest for %s\n", module_name);
+> =20
+> -			igt_ktest_fini(&tst);
+> -			return ret;
+> -		}
+> +		igt_ktest_fini(&tst);
+> +		return ret;
+> +	}
+> =20
+> -		if (tst.kmsg < 0) {
+> -			igt_warn("Could not open /dev/kmsg\n");
+> -			goto unload;
+> -		}
+> +	if (tst.kmsg < 0) {
+> +		igt_warn("Could not open /dev/kmsg\n");
+> +		goto unload;
+> +	}
+> =20
+> -		if (lseek(tst.kmsg, 0, SEEK_END)) {
+> -			igt_warn("Could not seek the end of /dev/kmsg\n");
+> -			goto unload;
+> -		}
+> +	if (lseek(tst.kmsg, 0, SEEK_END)) {
+> +		igt_warn("Could not seek the end of /dev/kmsg\n");
+> +		goto unload;
+> +	}
+> =20
+> -		f =3D fdopen(tst.kmsg, "r");
+> +	f =3D fdopen(tst.kmsg, "r");
+> =20
+> -		if (f =3D=3D NULL) {
+> -			igt_warn("Could not turn /dev/kmsg file descriptor into a FILE pointe=
+r\n");
+> -			goto unload;
+> -		}
+> +	if (f =3D=3D NULL) {
+> +		igt_warn("Could not turn /dev/kmsg file descriptor into a FILE pointer=
+\n");
+> +		goto unload;
+> +	}
+> =20
+> -		/* The KUnit module is required for running any KUnit tests */
+> -		if (igt_kmod_load("kunit", NULL) !=3D 0 ||
+> -		    kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod) !=3D 0=
+) {
+> -			igt_warn("Unable to load KUnit\n");
+> -			igt_fail(IGT_EXIT_FAILURE);
+> -		}
+> +	/* The KUnit module is required for running any KUnit tests */
+> +	if (igt_kmod_load("kunit", NULL) !=3D 0 ||
+> +	    kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod) !=3D 0)=
+ {
+> +		igt_warn("Unable to load KUnit\n");
+> +		igt_fail(IGT_EXIT_FAILURE);
+> +	}
+> =20
+> -		is_builtin =3D kmod_module_get_initstate(kunit_kmod) =3D=3D KMOD_MODUL=
+E_BUILTIN;
+> +	is_builtin =3D kmod_module_get_initstate(kunit_kmod) =3D=3D KMOD_MODULE=
+_BUILTIN;
+> =20
+> -		results =3D ktap_parser_start(f, is_builtin);
+> +	results =3D ktap_parser_start(f, is_builtin);
+> =20
+> -		if (igt_kmod_load(module_name, opts) !=3D 0) {
+> -			igt_warn("Unable to load %s module\n", module_name);
+> -			ret =3D ktap_parser_stop();
+> -			igt_fail(IGT_EXIT_FAILURE);
+> -		}
+> +	if (igt_kmod_load(module_name, opts) !=3D 0) {
+> +		igt_warn("Unable to load %s module\n", module_name);
+> +		ret =3D ktap_parser_stop();
+> +		igt_fail(IGT_EXIT_FAILURE);
+>  	}
+> =20
+>  	while (READ_ONCE(results->still_running) || READ_ONCE(results->head) !=
+=3D NULL)
+> @@ -820,7 +818,7 @@ static int __igt_kunit(const char *module_name, const=
+ char *opts)
+>  		if (READ_ONCE(results->head) !=3D NULL) {
+>  			pthread_mutex_lock(&results->mutex);
+> =20
+> -			igt_subtest(results->head->test_name) {
+> +			igt_dynamic(results->head->test_name) {
+>  				if (READ_ONCE(results->head->passed))
+>  					igt_success();
+>  				else
+> @@ -836,19 +834,17 @@ static int __igt_kunit(const char *module_name, con=
+st char *opts)
+>  	}
+> =20
+>  unload:
+> -	igt_fixture {
+> -		igt_ktest_end(&tst);
+> +	igt_ktest_end(&tst);
+> =20
+> -		igt_ktest_fini(&tst);
+> +	igt_ktest_fini(&tst);
+> =20
+> -		ret =3D ktap_parser_stop();
+> +	ret =3D ktap_parser_stop();
+> =20
+> -		if (ret !=3D 0)
+> -			ret =3D IGT_EXIT_ABORT;
+> +	if (ret !=3D 0)
+> +		ret =3D IGT_EXIT_ABORT;
+> =20
+> -		if (ret =3D=3D 0)
+> -			igt_success();
+> -	}
+> +	if (ret =3D=3D 0)
+> +		igt_success();
+>  	return ret;
+>  }
+> =20
