@@ -1,23 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4358A10E1AB
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Jun 2023 08:59:22 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
-Date: Mon, 5 Jun 2023 08:59:15 +0000
-Message-ID: <MW3PR11MB4748208C1E474D7132A21C5BAE4DA@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20230604195811.9487-1-sai.gowtham.ch@intel.com>
- <20230604195811.9487-3-sai.gowtham.ch@intel.com>
-In-Reply-To: <20230604195811.9487-3-sai.gowtham.ch@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Date: Mon, 5 Jun 2023 11:22:10 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Erico Nunes <nunes.erico@gmail.com>
+Message-ID: <20230605092210.tyc4imcsvfyifc7z@zkempczy-mobl2>
+References: <20230526130001.71730-1-nunes.erico@gmail.com>
+ <CAK4VdL1Y0pc7=mCnSBwqtawg1WrC3NoSuMQGG0BR-S+TenskDA@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/xe/xe_spin_batch: Add new
- test to exercise igt_spin_new for xe
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK4VdL1Y0pc7=mCnSBwqtawg1WrC3NoSuMQGG0BR-S+TenskDA@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 0/3] Initial tests for the lima drm
+ driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,110 +19,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, anarsoul@gmail.com, yuq825@gmail.com,
+ lima@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ2gsIFNhaSBHb3d0aGFt
-IDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+DQo+IFNlbnQ6IDA1IEp1bmUgMjAyMyAwMToyOA0K
-PiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IEtlbXBjenluc2tpLCBaYmlnbmll
-dw0KPiA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPjsgQ2gsIFNhaSBHb3d0aGFtDQo+
-IDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+OyBLdW1hciwgSmFuZ2EgUmFodWwNCj4gPGphbmdh
-LnJhaHVsLmt1bWFyQGludGVsLmNvbT47IGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20N
-Cj4gU3ViamVjdDogW1BBVENIIGktZy10IDIvMl0gdGVzdHMveGUveGVfc3Bpbl9iYXRjaDogQWRk
-IG5ldyB0ZXN0IHRvIGV4ZXJjaXNlDQo+IGlndF9zcGluX25ldyBmb3IgeGUNCj4gDQo+IEZyb206
-IFNhaSBHb3d0aGFtIENoIDxzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20+DQo+IA0KPiB4ZV9zcGlu
-X2JhdGNoIHRlc3QgZXhlcmNpc2VzIGlndF9zcGluX25ldyBzdWJtaXNzaW9ucyB3aXRoIGRpZmZl
-cmVudA0KPiBjb21iaW5hdGlvbi4NCj4gDQo+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpi
-aWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogU2FpIEdvd3Ro
-YW0gQ2ggPHNhaS5nb3d0aGFtLmNoQGludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9tZXNvbi5i
-dWlsZCAgICAgICAgfCAgIDEgKw0KPiAgdGVzdHMveGUveGVfc3Bpbl9iYXRjaC5jIHwgMTY4ICsr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgMiBmaWxlcyBjaGFuZ2Vk
-LCAxNjkgaW5zZXJ0aW9ucygrKQ0KPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL3hlL3hlX3Nw
-aW5fYmF0Y2guYw0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMv
-bWVzb24uYnVpbGQgaW5kZXggZjcxYmUxZGIuLmU3OTRiNzVhDQo+IDEwMDY0NA0KPiAtLS0gYS90
-ZXN0cy9tZXNvbi5idWlsZA0KPiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiBAQCAtMjY4LDYg
-KzI2OCw3IEBAIHhlX3Byb2dzID0gWw0KPiAgCSd4ZV9xdWVyeScsDQo+ICAJJ3hlX3ZtJywNCj4g
-IAkneGVfd2FpdGZlbmNlJywNCj4gKwkneGVfc3Bpbl9iYXRjaCcsDQo+ICBdDQo+IA0KPiAgbXNt
-X3Byb2dzID0gWw0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMveGUveGVfc3Bpbl9iYXRjaC5jIGIvdGVz
-dHMveGUveGVfc3Bpbl9iYXRjaC5jIG5ldyBmaWxlIG1vZGUNCj4gMTAwNjQ0IGluZGV4IDAwMDAw
-MDAwLi5hYzUzMTExMA0KPiAtLS0gL2Rldi9udWxsDQo+ICsrKyBiL3Rlc3RzL3hlL3hlX3NwaW5f
-YmF0Y2guYw0KPiBAQCAtMCwwICsxLDE2OCBAQA0KPiArI2luY2x1ZGUgImlndC5oIg0KPiArI2lu
-Y2x1ZGUgImxpYi9pbnRlbF9yZWcuaCINCj4gKyNpbmNsdWRlICJ4ZV9kcm0uaCINCj4gKyNpbmNs
-dWRlICJ4ZS94ZV9pb2N0bC5oIg0KPiArI2luY2x1ZGUgInhlL3hlX3F1ZXJ5LmgiDQo+ICsNCj4g
-KyNkZWZpbmUgTUFYX0lOU1RBTkNFIDkNCj4gKw0KPiArLyoqDQo+ICsgKiBURVNUOiBCYXNpYyB0
-ZXN0IGZvciBzcGluIGJhdGNoIHN1Ym1pc3NvbnMuDQo+ICsgKg0KPiArICogU1VCVEVTVDogc3Bp
-bi1iYXNpYw0KPiArICogRGVzY3JpcHRpb246IEJhc2ljIHRlc3QgdG8gc3VibWl0IHNwaW4gYmF0
-Y2ggc3VibWlzc29ucyBvbiBjb3B5IGVuZ2luZS4NCj4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ICsg
-KiBUT0RPOiBjaGFuZ2UgYGAnUnVuIHR5cGUnID09IEZVTExgYCB0byBhIGJldHRlciBjYXRlZ29y
-eQ0KPiArICoNCj4gKyAqLw0KPiArDQo+ICtzdGF0aWMgdm9pZCBzcGluX2Jhc2ljKGludCBmZCkN
-Cj4gK3sNCj4gKwl1aW50NjRfdCBhaG5kOw0KPiArCWlndF9zcGluX3QgKnNwaW47DQo+ICsNCj4g
-KwlhaG5kID0gaW50ZWxfYWxsb2NhdG9yX29wZW4oZmQsIDAsIElOVEVMX0FMTE9DQVRPUl9SRUxP
-Qyk7DQo+ICsJc3BpbiA9IF9faWd0X3NwaW5fbmV3KGZkLCAuYWhuZCA9IGFobmQpOw0KPiArCWln
-dF9hc3NlcnQoc3Bpbik7DQo+ICsNCj4gKwlpZ3Rfc3Bpbl9mcmVlKGZkLCBzcGluKTsNCj4gKwlw
-dXRfYWhuZChhaG5kKTsNCj4gK30NCj4gKw0KPiArLyoqDQo+ICsgKiBURVNUOlRlc3QgZm9yIHNw
-aW4gYmF0Y2ggc3VibWlzc29ucy4NCj4gKyAqDQo+ICsgKiBTVUJURVNUOiBzcGluLWJhdGNoDQo+
-ICsgKiBEZXNjcmlwdGlvbjogQ3JlYXRlIHZtIGFuZCBlbmdpbmUgb2YgaHdlIGNsYXNzIGFuZCBy
-dW4gdGhlIHNwaW5uZXIgb24gaXQuDQo+ICsgKiBSdW4gdHlwZTogRlVMTA0KPiArICogVE9ETzog
-Y2hhbmdlIGBgJ1J1biB0eXBlJyA9PSBGVUxMYGAgdG8gYSBiZXR0ZXIgY2F0ZWdvcnkNCj4gKyAq
-DQo+ICsgKi8NCj4gKw0KPiArc3RhdGljIHZvaWQgc3BpbihpbnQgZmQsIHN0cnVjdCBkcm1feGVf
-ZW5naW5lX2NsYXNzX2luc3RhbmNlICpod2UpIHsNCj4gKwl1aW50NjRfdCBhaG5kOw0KPiArCXVu
-c2lnbmVkIGludCBlbmdpbmU7DQo+ICsJdWludDMyX3Qgdm07DQo+ICsJaWd0X3NwaW5fdCAqc3Bp
-bjsNCj4gKw0KPiArCXZtID0geGVfdm1fY3JlYXRlKGZkLCAwLCAwKTsNCj4gKwllbmdpbmUgPSB4
-ZV9lbmdpbmVfY3JlYXRlKGZkLCB2bSwgaHdlLCAwKTsNCj4gKwlhaG5kID0gaW50ZWxfYWxsb2Nh
-dG9yX29wZW4oZmQsIDAsIElOVEVMX0FMTE9DQVRPUl9SRUxPQyk7DQo+ICsNCj4gKwlzcGluID0g
-aWd0X3NwaW5fbmV3KGZkLCAuYWhuZCA9IGFobmQsIC5lbmdpbmUgPSBlbmdpbmUsIC52bSA9IHZt
-KTsNCj4gKwlpZ3RfYXNzZXJ0KHNwaW4pOw0KPiArDQo+ICsJaWd0X3NwaW5fZnJlZShmZCwgc3Bp
-bik7DQo+ICsJeGVfZW5naW5lX2Rlc3Ryb3koZmQsIGVuZ2luZSk7DQo+ICsJeGVfdm1fZGVzdHJv
-eShmZCwgdm0pOw0KPiArDQo+ICsJcHV0X2FobmQoYWhuZCk7DQo+ICt9DQo+ICsNCj4gKy8qKg0K
-PiArICogVEVTVDogQmFzaWMgdGVzdCBmb3Igc3BpbiBiYXRjaCBzdWJtaXNzaW9uIG9uIGFsbCBo
-d2UuDQo+ICsgKg0KPiArICogU1VCVEVTVDogc3Bpbi1iYXNpYy1hbGwNCj4gKyAqIERlc2NyaXB0
-aW9uOiBCYXNpYyB0ZXN0IHdoaWNoIHZhbGlkYXRlcyB0aGUgZnVuY3Rpb25hbGl0eSBvZiBzcGlu
-bmVyIG9uIGFsbA0KPiBod2UuDQo+ICsgKiBSdW4gdHlwZTogRlVMTA0KPiArICogVE9ETzogY2hh
-bmdlIGBgJ1J1biB0eXBlJyA9PSBGVUxMYGAgdG8gYSBiZXR0ZXIgY2F0ZWdvcnkNCj4gKyAqDQo+
-ICsgKi8NCj4gK3N0YXRpYyB2b2lkIHNwaW5fYmFzaWNfYWxsKGludCBmZCwgc3RydWN0IGRybV94
-ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UNCj4gKypod2UpIHsNCj4gKwl1aW50NjRfdCBhaG5kOw0K
-PiArCWlndF9zcGluX3QgKnNwaW47DQo+ICsNCj4gKwlhaG5kID0gaW50ZWxfYWxsb2NhdG9yX29w
-ZW4oZmQsIDAsIElOVEVMX0FMTE9DQVRPUl9SRUxPQyk7DQo+ICsJc3BpbiA9IF9faWd0X3NwaW5f
-bmV3KGZkLCAuYWhuZCA9IGFobmQsIC5od2UgPSBod2UpOw0KPiArCWlndF9hc3NlcnQoc3Bpbik7
-DQo+ICsNCj4gKwlpZ3Rfc3Bpbl9mcmVlKGZkLCBzcGluKTsNCj4gKwlwdXRfYWhuZChhaG5kKTsN
-Cj4gK30NCj4gKw0KPiArLyoqDQo+ICsgKiBURVNUOiBUZXN0IGZvciBzcGluIGJhdGNoIHN1Ym1p
-c3Npb25zLg0KPiArICogU1VCVEVTVDogc3Bpbi1hbGwNCj4gKyAqIERlc2NyaXB0aW9uOiBTcGlu
-bmVyIHRlc3QgdG8gcnVuIG9uIGFsbCB0aGUgZW5naW5lcyENCj4gKyAqIFJ1biB0eXBlOiBGVUxM
-DQo+ICsgKiBUT0RPOiBjaGFuZ2UgYGAnUnVuIHR5cGUnID09IEZVTExgYCB0byBhIGJldHRlciBj
-YXRlZ29yeQ0KPiArICoNCj4gKyAqLw0KPiArDQo+ICtzdGF0aWMgdm9pZCBzcGluX2FsbCAoaW50
-IGZkLCBpbnQgZ3QsIGludCBjbGFzcykgew0KPiArCXVpbnQ2NF90IGFobmQ7DQo+ICsJdWludDMy
-X3QgZW5naW5lc1tNQVhfSU5TVEFOQ0VdOw0KPiArCXVpbnQzMl90IHZtW01BWF9JTlNUQU5DRV07
-DQo+ICsJaW50IGksIG51bV9wbGFjZW1lbnRzID0gMDsNCj4gKwlzdHJ1Y3QgZHJtX3hlX2VuZ2lu
-ZV9jbGFzc19pbnN0YW5jZSBlY2lbTUFYX0lOU1RBTkNFXTsNCj4gKwlpZ3Rfc3Bpbl90ICpzcGlu
-W01BWF9JTlNUQU5DRV07DQo+ICsJc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2Ug
-Kmh3ZTsNCj4gKw0KPiArCWFobmQgPSBpbnRlbF9hbGxvY2F0b3Jfb3BlbihmZCwgMCwgSU5URUxf
-QUxMT0NBVE9SX1JFTE9DKTsNCj4gKw0KPiArCXhlX2Zvcl9lYWNoX2h3X2VuZ2luZShmZCwgaHdl
-KSB7DQo+ICsJCWlmIChod2UtPmVuZ2luZV9jbGFzcyAhPSBjbGFzcyB8fCBod2UtPmd0X2lkICE9
-IGd0KQ0KPiArCQkJY29udGludWU7DQo+ICsJCWVjaVtudW1fcGxhY2VtZW50cysrXSA9ICpod2U7
-DQo+ICsJfQ0KPiArCWlmIChudW1fcGxhY2VtZW50cyA8IDIpDQo+ICsJCXJldHVybjsNCj4gKw0K
-PiArCWZvciAoaSA9IDA7IGkgPCBudW1fcGxhY2VtZW50czsgaSsrKSB7DQo+ICsJCXN0cnVjdCBk
-cm1feGVfZW5naW5lX2NyZWF0ZSBjcmVhdGU7DQo+ICsJCXZtW2ldID0geGVfdm1fY3JlYXRlKGZk
-LCAwLCAwKTsNCj4gKw0KPiArCQljcmVhdGUudm1faWQgPSB2bVtpXTsNCj4gKwkJY3JlYXRlLndp
-ZHRoID0gMTsNCj4gKwkJY3JlYXRlLm51bV9wbGFjZW1lbnRzID0gbnVtX3BsYWNlbWVudHM7DQo+
-ICsJCWNyZWF0ZS5pbnN0YW5jZXMgPSB0b191c2VyX3BvaW50ZXIoZWNpKTsNCj4gKw0KPiArCQlp
-Z3RfYXNzZXJ0X2VxKGlndF9pb2N0bChmZCwgRFJNX0lPQ1RMX1hFX0VOR0lORV9DUkVBVEUsDQo+
-ICsJCQkJCSZjcmVhdGUpLCAwKTsNCj4gKwkJZW5naW5lc1tpXSA9IGNyZWF0ZS5lbmdpbmVfaWQ7
-DQo+ICsJCXNwaW5baV0gPSBfX2lndF9zcGluX25ldyhmZCwgLmFobmQgPSBhaG5kLCAuZW5naW5l
-ID0gZW5naW5lc1tpXSwNCj4gLnZtID0gdm1baV0pOw0KPiArCX0NCj4gKw0KPiArCWZvciAoaSA9
-IDA7IGkgPCBudW1fcGxhY2VtZW50czsgaSsrKSB7DQo+ICsJCWlndF9hc3NlcnQoc3BpbltpXSk7
-DQo+ICsJCWlndF9zcGluX2ZyZWUoZmQsIHNwaW5baV0pOw0KPiArCX0NCj4gKwlwdXRfYWhuZChh
-aG5kKTsNCj4gK30NCj4gKw0KPiAraWd0X21haW4NCj4gK3sNCj4gKwlzdHJ1Y3QgZHJtX3hlX2Vu
-Z2luZV9jbGFzc19pbnN0YW5jZSAqaHdlOw0KPiArCWludCBmZDsNCj4gKwlpbnQgZ3QsIGNsYXNz
-Ow0KPiArDQo+ICsJaWd0X2ZpeHR1cmUgew0KPiArCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklW
-RVJfWEUpOw0KPiArCQl4ZV9kZXZpY2VfZ2V0KGZkKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3Rfc3Vi
-dGVzdCgic3Bpbi1iYXNpYyIpDQo+ICsJCXNwaW5fYmFzaWMoZmQpOw0KPiArDQo+ICsJaWd0X3N1
-YnRlc3QoInNwaW4tYmF0Y2giKQ0KPiArCQl4ZV9mb3JfZWFjaF9od19lbmdpbmUoZmQsIGh3ZSkN
-Cj4gKwkJCXNwaW4oZmQsIGh3ZSk7DQo+ICsNCj4gKwlpZ3Rfc3VidGVzdCgic3Bpbi1iYXNpYy1h
-bGwiKQ0KPiArCQl4ZV9mb3JfZWFjaF9od19lbmdpbmUoZmQsIGh3ZSkNCj4gKwkJCXNwaW5fYmFz
-aWNfYWxsKGZkLCBod2UpOw0KPiArDQo+ICsJaWd0X3N1YnRlc3QoInNwaW4tYWxsIikgew0KPiAr
-CQl4ZV9mb3JfZWFjaF9ndChmZCwgZ3QpDQo+ICsJCQl4ZV9mb3JfZWFjaF9od19lbmdpbmVfY2xh
-c3MoY2xhc3MpDQo+ICsJCQkJc3Bpbl9hbGwoZmQsIGd0LCBjbGFzcyk7DQo+ICsJfQ0KPiArDQo+
-ICsJaWd0X2ZpeHR1cmUgew0KPiArCQl4ZV9kZXZpY2VfcHV0KGZkKTsNCj4gKwkJY2xvc2UoZmQp
-Ow0KPiArCX0NCj4gK30NCj4gLS0NCj4gMi4zOS4xDQoNCkxHVE0sDQpBY2tlZC1ieTogSmFuZ2Eg
-UmFodWwgS3VtYXIgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCg==
+On Sun, Jun 04, 2023 at 09:05:56PM +0200, Erico Nunes wrote:
+> Hello,
+> 
+> On Fri, May 26, 2023 at 3:00 PM Erico Nunes <nunes.erico@gmail.com> wrote:
+> >
+> > I started working on something for the lima drm driver and realized that
+> > there is no coverage for it in igt yet. It would be nice to have some to
+> > check the driver specific ioctls and support that work.
+> > Here are some to get some basic support and if we can get these in, we
+> > can follow up with more tests to cover the remaining ioctls.
+> > I used the panfrost and v3d gem tests as a reference for these initial
+> > tests.
+> >
+> > v2: fixed build after CI failure
+> >
+> > Erico Nunes (3):
+> >   lib: Add support for opening lima devices
+> >   lib/lima: Add lima helpers
+> >   tests/lima: Add initial tests for lima
+> >
+> >  lib/drmtest.c        |  3 ++
+> >  lib/drmtest.h        |  1 +
+> >  lib/igt_lima.c       | 97 ++++++++++++++++++++++++++++++++++++++++++++
+> >  lib/igt_lima.h       | 26 ++++++++++++
+> >  lib/meson.build      |  1 +
+> >  tests/lima_gem_new.c | 78 +++++++++++++++++++++++++++++++++++
+> >  tests/meson.build    |  1 +
+> >  7 files changed, 207 insertions(+)
+> >  create mode 100644 lib/igt_lima.c
+> >  create mode 100644 lib/igt_lima.h
+> >  create mode 100644 tests/lima_gem_new.c
+> 
+> Looks like this series got stuck, maybe because there are no owners
+> for it yet in igt.
+> Could any of the igt maintainers take a look?
+> 
+> Thanks
+> 
+> Erico
+
+Hi.
+
+I'm not the maintainer but sometimes I put my fingers here and there
+so I got a question and a nit. Do you have people involved in the
+project who contains the hardware and may verify test is working fine?
+And definitely they can better review internal aspects of the test.
+IGT imo is correct place to put your tests in, only what I would change
+is to create additional 'lima/' directory. We treat 'tests/' directory
+as common so your specific driver tests should land to separate dir.
+lib/igt_lima.* is fine, but lima_gem_new.c should land to 'lima/'.
+
+--
+Zbigniew
