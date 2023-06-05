@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11E5010E2D3
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Jun 2023 15:12:31 +0000 (UTC)
-Date: Mon, 5 Jun 2023 17:12:27 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230605151227.jlmimezv2nsci5g4@kamilkon-desk1>
-References: <20230531074530.367036-1-swati2.sharma@intel.com>
- <20230531074530.367036-2-swati2.sharma@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6870F10E2DE
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Jun 2023 15:25:35 +0000 (UTC)
+Message-ID: <89da414d-c72f-2f19-b320-294a7f8f3d4c@intel.com>
+Date: Mon, 5 Jun 2023 20:55:29 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230531074530.367036-2-swati2.sharma@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_fb: round rgb->yuv
- conversion results
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230602105001.7610-1-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20230602105001.7610-1-juhapekka.heikkila@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: Add debug prints for
+ pixel format tests if couldn't use custom plane size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,102 +26,92 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
+LGTM
 
-On 2023-05-31 at 13:15:28 +0530, Swati Sharma wrote:
-> Round rgb->yuv conversion results.
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+
+On 02-Jun-23 4:20 PM, Juha-Pekka Heikkila wrote:
+> Moved check for setting 64x64 plane size for pixel format tests into its own
+> function and added debug prints if couldn't use smaller than full mode size
+> plane for testing.
 > 
-> Signed-off-by: Ville Syrjala <ville.syrjala@linux.intel.com>
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > ---
->  lib/igt_fb.c | 25 +++++++++++++++----------
->  1 file changed, 15 insertions(+), 10 deletions(-)
+>   tests/kms_plane.c | 57 +++++++++++++++++++++++++++++------------------
+>   1 file changed, 35 insertions(+), 22 deletions(-)
 > 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 71a199d4..11a5d6c0 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -3064,11 +3064,16 @@ static void igt_fb_destroy_cairo_shadow_buffer(struct igt_fb *shadow,
->  	munmap(ptr, shadow->size);
->  }
->  
-> -static uint8_t clamprgb(float val)
-> +static uint8_t clamp8(float val)
->  {
->  	return clamp((int)(val + 0.5f), 0, 255);
->  }
->  
-> +static uint8_t clamp16(float val)
-------------- ^
-imho this should be 16, uint16_t as name suggest and
-following range is 64K ?
-
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 90b68a47..dfc6a8c5 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -896,6 +896,40 @@ struct format_mod {
+>   	uint32_t format;
+>   };
+>   
+> +/*
+> + * See if test can go use 64x64 plane size for testing. If driver is not
+> + * reporting to be atomic, will not try to use 64x64 plane size.
+> +*/
+> +static void check_allowed_plane_size_64x64(data_t *data, igt_plane_t *plane,
+> +					   uint64_t *width, uint64_t *height,
+> +					   uint32_t format)
 > +{
-> +	return clamp((int)(val + 0.5f), 0, 65535);
------------------------------------------- ^
-This is 64K.
-
-Regards,
-Kamil
-
+> +	struct igt_fb test_fb;
+> +	int ret;
+> +
+> +	if (!data->display.is_atomic) {
+> +		igt_debug("Not using 64x64 plane size on non-atomic platform\n");
+> +		return;
+> +	}
+> +
+> +	igt_create_fb(data->drm_fd, 64, 64, format, DRM_FORMAT_MOD_LINEAR, &test_fb);
+> +	igt_plane_set_fb(plane, &test_fb);
+> +
+> +	ret = igt_display_try_commit_atomic(&data->display,
+> +					    DRM_MODE_ATOMIC_TEST_ONLY |
+> +					    DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +					    NULL);
+> +	if (!ret) {
+> +		*width = test_fb.width;
+> +		*height = test_fb.height;
+> +	} else {
+> +		igt_debug("Not using 64x64 plane size, atomic commit did not "
+> +			  "accept 64x64 plane size\n");
+> +	}
+> +
+> +	igt_remove_fb(data->drm_fd, &test_fb);
 > +}
 > +
->  static void read_rgb(struct igt_vec4 *rgb, const uint8_t *rgb24)
->  {
->  	rgb->d[0] = rgb24[2];
-> @@ -3079,9 +3084,9 @@ static void read_rgb(struct igt_vec4 *rgb, const uint8_t *rgb24)
->  
->  static void write_rgb(uint8_t *rgb24, const struct igt_vec4 *rgb)
->  {
-> -	rgb24[2] = clamprgb(rgb->d[0]);
-> -	rgb24[1] = clamprgb(rgb->d[1]);
-> -	rgb24[0] = clamprgb(rgb->d[2]);
-> +	rgb24[2] = clamp8(rgb->d[0]);
-> +	rgb24[1] = clamp8(rgb->d[1]);
-> +	rgb24[0] = clamp8(rgb->d[2]);
->  }
->  
->  struct fb_convert_buf {
-> @@ -3401,7 +3406,7 @@ static void convert_rgb24_to_yuv(struct fb_convert *cvt)
->  
->  			rgb_tmp += bpp;
->  
-> -			*y_tmp = yuv.d[0];
-> +			*y_tmp = clamp8(yuv.d[0]);
->  			y_tmp += params.ay_inc;
->  
->  			if ((i % dst_fmt->vsub) || (j % dst_fmt->hsub))
-> @@ -3431,8 +3436,8 @@ static void convert_rgb24_to_yuv(struct fb_convert *cvt)
->  			read_rgb(&pair_rgb, pair_rgb24);
->  			pair_yuv = igt_matrix_transform(&m, &pair_rgb);
->  
-> -			*u_tmp = (yuv.d[1] + pair_yuv.d[1]) / 2.0f;
-> -			*v_tmp = (yuv.d[2] + pair_yuv.d[2]) / 2.0f;
-> +			*u_tmp = clamp8((yuv.d[1] + pair_yuv.d[1]) / 2.0f);
-> +			*v_tmp = clamp8((yuv.d[2] + pair_yuv.d[2]) / 2.0f);
->  
->  			u_tmp += params.uv_inc;
->  			v_tmp += params.uv_inc;
-> @@ -3590,7 +3595,7 @@ static void convert_float_to_yuv16(struct fb_convert *cvt, bool alpha)
->  
->  			rgb_tmp += fpp;
->  
-> -			*y_tmp = yuv.d[0];
-> +			*y_tmp = clamp16(yuv.d[0]);
->  			y_tmp += params.ay_inc;
->  
->  			if ((i % dst_fmt->vsub) || (j % dst_fmt->hsub))
-> @@ -3620,8 +3625,8 @@ static void convert_float_to_yuv16(struct fb_convert *cvt, bool alpha)
->  			read_rgbf(&pair_rgb, pair_float);
->  			pair_yuv = igt_matrix_transform(&m, &pair_rgb);
->  
-> -			*u_tmp = (yuv.d[1] + pair_yuv.d[1]) / 2.0f;
-> -			*v_tmp = (yuv.d[2] + pair_yuv.d[2]) / 2.0f;
-> +			*u_tmp = clamp16((yuv.d[1] + pair_yuv.d[1]) / 2.0f);
-> +			*v_tmp = clamp16((yuv.d[2] + pair_yuv.d[2]) / 2.0f);
->  
->  			u_tmp += params.uv_inc;
->  			v_tmp += params.uv_inc;
-> -- 
-> 2.25.1
-> 
+>   static bool test_format_plane(data_t *data, enum pipe pipe,
+>   			      igt_output_t *output, igt_plane_t *plane, igt_fb_t *primary_fb)
+>   {
+> @@ -944,28 +978,7 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+>   		 IGT_FORMAT_ARGS(ref.format), IGT_MODIFIER_ARGS(ref.modifier),
+>   		 kmstest_pipe_name(pipe), plane->index);
+>   
+> -	if (data->display.is_atomic) {
+> -		struct igt_fb test_fb;
+> -		int ret;
+> -
+> -		igt_create_fb(data->drm_fd, 64, 64, ref.format,
+> -			      DRM_FORMAT_MOD_LINEAR, &test_fb);
+> -
+> -		igt_plane_set_fb(plane, &test_fb);
+> -
+> -		ret = igt_display_try_commit_atomic(&data->display,
+> -						    DRM_MODE_ATOMIC_TEST_ONLY |
+> -						    DRM_MODE_ATOMIC_ALLOW_MODESET,
+> -						    NULL);
+> -		if (!ret) {
+> -			width = test_fb.width;
+> -			height = test_fb.height;
+> -		}
+> -
+> -		igt_plane_set_fb(plane, clear_fb);
+> -
+> -		igt_remove_fb(data->drm_fd, &test_fb);
+> -	}
+> +	check_allowed_plane_size_64x64(data, plane, &width, &height, ref.format);
+>   
+>   	capture_format_crcs_single(data, pipe, plane, ref.format, ref.modifier,
+>   				   width, height, IGT_COLOR_YCBCR_BT709,
