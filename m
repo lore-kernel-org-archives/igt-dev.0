@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10B7410E290
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Jun 2023 10:48:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0EA7B10E28A
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Jun 2023 10:47:54 +0000 (UTC)
 From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-Date: Mon,  5 Jun 2023 12:47:15 +0200
-Message-Id: <20230605104716.5678-8-dominik.karol.piatkowski@intel.com>
+Date: Mon,  5 Jun 2023 12:47:09 +0200
+Message-Id: <20230605104716.5678-2-dominik.karol.piatkowski@intel.com>
 In-Reply-To: <20230605104716.5678-1-dominik.karol.piatkowski@intel.com>
 References: <20230605104716.5678-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 7/8] kunit tests: add an optional name for
- the selftests
+Subject: [igt-dev] [PATCH i-g-t 1/8] lib/igt_kmod: rename kselftest
+ functions to ktest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,146 +22,142 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Isabella Basso <isabbasso@riseup.net>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+From: Isabella Basso <isabbasso@riseup.net>
 
-When multiple KUnit tests are called by the same program, it is
-interesting to group them with a name. This would allow IGT
-namespace to better refer to the KUnit tests and will give some
-filtering capability to it.
+This aims at making IGT's structure more general to different kernel
+testing frameworks such as KUnit, as they use a lot of the same
+functionality.
 
-After those changes, the IGT kUnit tests will be better named:
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Isabella Basso <isabbasso@riseup.net>
 
-	$ for i in kms_selftest drm_buddy drm_mm; do echo $i:; build/tests/$i --list; echo; done
-	kms_selftest:
-	drm_cmdline
-	drm_damage
-	drm_dp_mst
-	drm_format_helper
-	drm_format
-	framebuffer
-	drm_plane
-	all-tests
-
-	drm_buddy:
-	all-tests
-
-	drm_mm:
-	all-tests
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 ---
- lib/igt_kmod.c       |  7 +++++--
- lib/igt_kmod.h       |  2 +-
- tests/drm_buddy.c    |  2 +-
- tests/drm_mm.c       |  3 ++-
- tests/kms_selftest.c | 23 +++++++++++++++++------
- 5 files changed, 26 insertions(+), 11 deletions(-)
+ lib/igt_kmod.c | 22 +++++++++++-----------
+ lib/igt_kmod.h | 12 ++++++------
+ 2 files changed, 17 insertions(+), 17 deletions(-)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 1309ab21..c62eb97a 100644
+index ccf0063c..93fa2006 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
-@@ -852,7 +852,7 @@ unload:
- 	return ret;
+@@ -749,8 +749,8 @@ static int open_parameters(const char *module_name)
+ 	return open(path, O_RDONLY);
  }
  
--int igt_kunit(const char *module_name, const char *opts)
-+int igt_kunit(const char *module_name, const char *name, const char *opts)
+-int igt_kselftest_init(struct igt_kselftest *tst,
+-		       const char *module_name)
++int igt_ktest_init(struct igt_ktest *tst,
++		   const char *module_name)
  {
- 	/*
- 	 * We need to use igt_subtest here, as otherwise it may crash with:
-@@ -861,7 +861,10 @@ int igt_kunit(const char *module_name, const char *opts)
- 	 * proper namespace for dynamic subtests, with is required for CI
- 	 * and for documentation.
- 	 */
--	igt_subtest_with_dynamic("all-tests")
-+	if (name == NULL)
-+		name = "all-tests";
-+
-+	igt_subtest_with_dynamic(name)
- 		return __igt_kunit(module_name, opts);
+ 	int err;
+ 
+@@ -769,7 +769,7 @@ int igt_kselftest_init(struct igt_kselftest *tst,
  	return 0;
  }
+ 
+-int igt_kselftest_begin(struct igt_kselftest *tst)
++int igt_ktest_begin(struct igt_ktest *tst)
+ {
+ 	int err;
+ 
+@@ -784,7 +784,7 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
+ 	return 0;
+ }
+ 
+-int igt_kselftest_execute(struct igt_kselftest *tst,
++int igt_kselftest_execute(struct igt_ktest *tst,
+ 			  struct igt_kselftest_list *tl,
+ 			  const char *options,
+ 			  const char *result)
+@@ -822,13 +822,13 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
+ 	return err;
+ }
+ 
+-void igt_kselftest_end(struct igt_kselftest *tst)
++void igt_ktest_end(struct igt_ktest *tst)
+ {
+ 	kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
+ 	close(tst->kmsg);
+ }
+ 
+-void igt_kselftest_fini(struct igt_kselftest *tst)
++void igt_ktest_fini(struct igt_ktest *tst)
+ {
+ 	free(tst->module_name);
+ 	kmod_module_unref(tst->kmod);
+@@ -851,15 +851,15 @@ void igt_kselftests(const char *module_name,
+ 		    const char *result,
+ 		    const char *filter)
+ {
+-	struct igt_kselftest tst;
++	struct igt_ktest tst;
+ 	IGT_LIST_HEAD(tests);
+ 	struct igt_kselftest_list *tl, *tn;
+ 
+-	if (igt_kselftest_init(&tst, module_name) != 0)
++	if (igt_ktest_init(&tst, module_name) != 0)
+ 		return;
+ 
+ 	igt_fixture
+-		igt_require(igt_kselftest_begin(&tst) == 0);
++		igt_require(igt_ktest_begin(&tst) == 0);
+ 
+ 	igt_kselftest_get_tests(tst.kmod, filter, &tests);
+ 	igt_subtest_with_dynamic(filter ?: "all-tests") {
+@@ -878,9 +878,9 @@ void igt_kselftests(const char *module_name,
+ 	}
+ 
+ 	igt_fixture {
+-		igt_kselftest_end(&tst);
++		igt_ktest_end(&tst);
+ 		igt_require(!igt_list_empty(&tests));
+ 	}
+ 
+-	igt_kselftest_fini(&tst);
++	igt_ktest_fini(&tst);
+ }
 diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index ce17c714..24895547 100644
+index d05af4a6..ff59f1ec 100644
 --- a/lib/igt_kmod.h
 +++ b/lib/igt_kmod.h
-@@ -71,7 +71,7 @@ static inline int igt_xe_driver_unload(void)
- int igt_amdgpu_driver_load(const char *opts);
- int igt_amdgpu_driver_unload(void);
+@@ -76,7 +76,7 @@ void igt_kselftests(const char *module_name,
+ 		    const char *result_option,
+ 		    const char *filter);
  
--int igt_kunit(const char *module_name, const char *opts);
-+int igt_kunit(const char *module_name, const char *name, const char *opts);
+-struct igt_kselftest {
++struct igt_ktest {
+ 	struct kmod_module *kmod;
+ 	char *module_name;
+ 	int kmsg;
+@@ -89,19 +89,19 @@ struct igt_kselftest_list {
+ 	char param[];
+ };
  
- void igt_kselftests(const char *module_name,
- 		    const char *module_options,
-diff --git a/tests/drm_buddy.c b/tests/drm_buddy.c
-index 3261f0d6..09feaf63 100644
---- a/tests/drm_buddy.c
-+++ b/tests/drm_buddy.c
-@@ -10,7 +10,7 @@ IGT_TEST_DESCRIPTION("Basic sanity check of DRM's buddy allocator (struct drm_bu
+-int igt_kselftest_init(struct igt_kselftest *tst,
++int igt_ktest_init(struct igt_ktest *tst,
+ 		       const char *module_name);
+-int igt_kselftest_begin(struct igt_kselftest *tst);
++int igt_ktest_begin(struct igt_ktest *tst);
  
- igt_main
- {
--	int ret = igt_kunit("drm_buddy_test", NULL);
-+	int ret = igt_kunit("drm_buddy_test", NULL, NULL);
- 	if (ret != 0 && ret != IGT_EXIT_ABORT)
- 		igt_kselftests("test-drm_buddy", NULL, NULL, NULL);
- }
-diff --git a/tests/drm_mm.c b/tests/drm_mm.c
-index 88f76a57..ada8cb93 100644
---- a/tests/drm_mm.c
-+++ b/tests/drm_mm.c
-@@ -156,7 +156,8 @@ IGT_TEST_DESCRIPTION("Basic sanity check of DRM's range manager (struct drm_mm)"
+ void igt_kselftest_get_tests(struct kmod_module *kmod,
+ 			     const char *filter,
+ 			     struct igt_list_head *tests);
+-int igt_kselftest_execute(struct igt_kselftest *tst,
++int igt_kselftest_execute(struct igt_ktest *tst,
+ 			  struct igt_kselftest_list *tl,
+ 			  const char *module_options,
+ 			  const char *result);
  
- igt_main
- {
--	int ret = igt_kunit("drm_mm_test", NULL);
-+	int ret = igt_kunit("drm_mm_test", NULL, NULL);
-+
- 	if (ret != 0 && ret != IGT_EXIT_ABORT)
- 		igt_kselftests("test-drm_mm", NULL, NULL, NULL);
- }
-diff --git a/tests/kms_selftest.c b/tests/kms_selftest.c
-index b27f60fb..d83e5ff4 100644
---- a/tests/kms_selftest.c
-+++ b/tests/kms_selftest.c
-@@ -26,15 +26,26 @@
+-void igt_kselftest_end(struct igt_kselftest *tst);
+-void igt_kselftest_fini(struct igt_kselftest *tst);
++void igt_ktest_end(struct igt_ktest *tst);
++void igt_ktest_fini(struct igt_ktest *tst);
  
- IGT_TEST_DESCRIPTION("Basic sanity check of KMS selftests.");
- 
-+struct kms_kunittests {
-+	const char *kunit;
-+	const char *name;
-+};
-+
- igt_main
- {
--	static const char *kunit_subtests[] = { "drm_cmdline_parser_test", "drm_damage_helper_test",
--						"drm_dp_mst_helper_test", "drm_format_helper_test",
--						"drm_format_test", "drm_framebuffer_test",
--						"drm_plane_helper_test", NULL };
-+	static const struct kms_kunittests kunit_subtests[] = {
-+		{ "drm_cmdline_parser_test",	"drm_cmdline" },
-+		{ "drm_damage_helper_test",	"drm_damage" },
-+		{ "drm_dp_mst_helper_test",	"drm_dp_mst" },
-+		{ "drm_format_helper_test",	"drm_format_helper" },
-+		{ "drm_format_test",		"drm_format" },
-+		{ "drm_framebuffer_test",	"framebuffer" },
-+		{ "drm_plane_helper_test",	"drm_plane" },
-+		{ NULL, NULL}
-+	};
- 
--	for (int i = 0; kunit_subtests[i] != NULL; i++)
--		igt_kunit(kunit_subtests[i], NULL);
-+	for (int i = 0; kunit_subtests[i].kunit != NULL; i++)
-+		igt_kunit(kunit_subtests[i].kunit, kunit_subtests[i].name, NULL);
- 
- 	igt_kselftests("test-drm_modeset", NULL, NULL, NULL);
- }
+ #endif /* IGT_KMOD_H */
 -- 
 2.34.1
 
