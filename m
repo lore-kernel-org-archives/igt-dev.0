@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C88610E244
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 17:56:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B83D110E394
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 17:56:52 +0000 (UTC)
 From: Andi Shyti <andi.shyti@linux.intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Fei Yang <fei.yang@intel.com>
-Date: Tue,  6 Jun 2023 19:52:25 +0200
-Message-Id: <20230606175226.502703-1-andi.shyti@linux.intel.com>
+Date: Tue,  6 Jun 2023 19:52:26 +0200
+Message-Id: <20230606175226.502703-2-andi.shyti@linux.intel.com>
+In-Reply-To: <20230606175226.502703-1-andi.shyti@linux.intel.com>
+References: <20230606175226.502703-1-andi.shyti@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 0/1] test/gem_create: limit set_pat only to
+Subject: [igt-dev] [PATCH v3 1/1] test/gem_create: limit set_pat only to
  Meteor Lake
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,23 +28,36 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Fei Yang <fei.yang@intel.com>
 
-An agreement was reached to expose gem_create_ext_set_pat
-extension to Meteor Lake only. For older platforms the extension
-would return -ENODEV.
+For platforms other than Meteor Lake the set_pat extension should
+return -ENODEV.
 
-Thanks Kamil for the review!
-
-v3: Fix misleading commit log.
-    Use igt_assert_eq() instead of igt_assert(==).
-    Check for -EINVAL first and then for MTL.
-    Do not return after igt_assert_eq.
-v2: Limit the test to Meteor Lake.
-
-Fei Yang (1):
-  test/gem_create: limit set_pat only to Meteor Lake
-
+Signed-off-by: Fei Yang <fei.yang@intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+---
  tests/i915/gem_create.c | 4 ++++
  1 file changed, 4 insertions(+)
 
+diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+index e9e8216d2b..b7961d9ef2 100644
+--- a/tests/i915/gem_create.c
++++ b/tests/i915/gem_create.c
+@@ -657,6 +657,7 @@ static void create_ext_set_pat(int fd)
+ 		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
+ 		.pat_index = 65,
+ 	};
++	uint32_t devid = intel_get_drm_devid(fd);
+ 	struct drm_i915_gem_caching arg;
+ 	uint64_t size;
+ 	uint32_t handle;
+@@ -672,6 +673,9 @@ static void create_ext_set_pat(int fd)
+ 	 */
+ 	if (ret == -EINVAL)
+ 		igt_skip("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
++	else if (!IS_METEORLAKE(devid))
++		igt_assert_eq(ret, -ENODEV);
++
+ 	igt_assert(ret == 0);
+ 
+ 	/*
 -- 
 2.40.1
