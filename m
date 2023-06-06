@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C30A910E3CE
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 21:32:18 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>, igt-dev@lists.freedesktop.org
-Date: Tue,  6 Jun 2023 21:29:30 +0000
-Message-Id: <20230606212930.125031-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tools/intel_gpu_top: Return the error to the
- caller of pmu_init
+References: <20230526130001.71730-1-nunes.erico@gmail.com>
+ <CAK4VdL1Y0pc7=mCnSBwqtawg1WrC3NoSuMQGG0BR-S+TenskDA@mail.gmail.com>
+ <20230605092210.tyc4imcsvfyifc7z@zkempczy-mobl2>
+In-Reply-To: <20230605092210.tyc4imcsvfyifc7z@zkempczy-mobl2>
+From: Erico Nunes <nunes.erico@gmail.com>
+Date: Tue, 6 Jun 2023 16:43:16 +0200
+Message-ID: <CAK4VdL1FM6bAk80GCq0-mThNPRM_4MbHt9f9rbrw66ork=VCug@mail.gmail.com>
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t v2 0/3] Initial tests for the lima drm
+ driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,66 +19,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, anarsoul@gmail.com, yuq825@gmail.com,
+ lima@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When run as a regular user, we see an assert instead of a proper error
-message.  Propagate errors correctly to caller.
+Hi,
 
-Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/139
-Fixes: (c67825ba40de: intel_gpu_top: Determine number of tiles)
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tools/intel_gpu_top.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+On Mon, Jun 5, 2023 at 11:22=E2=80=AFAM Zbigniew Kempczy=C5=84ski
+<zbigniew.kempczynski@intel.com> wrote:
+> I'm not the maintainer but sometimes I put my fingers here and there
+> so I got a question and a nit. Do you have people involved in the
+> project who contains the hardware and may verify test is working fine?
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 7018499c..24fba88b 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -536,7 +536,7 @@ static void imc_reads_open(struct pmu_counter *pmu, struct engines *engines)
- 	imc_open(pmu, "data_reads", engines);
- }
- 
--static int get_num_gts(uint64_t type)
-+static int get_num_gts(uint64_t type, int *num_gts)
- {
- 	int fd, cnt;
- 
-@@ -548,11 +548,13 @@ static int get_num_gts(uint64_t type)
- 
- 		close(fd);
- 	}
--	assert(!errno || errno == ENOENT);
-+	if (errno && errno != ENOENT)
-+		return fd;
-+
- 	assert(cnt > 0);
--	errno = 0;
-+	*num_gts = cnt;
- 
--	return cnt;
-+	return 0;
- }
- 
- static void init_aggregate_counters(struct engines *engines)
-@@ -578,12 +580,14 @@ static void init_aggregate_counters(struct engines *engines)
- static int pmu_init(struct engines *engines)
- {
- 	unsigned int i;
--	int fd;
-+	int fd, ret;
- 	uint64_t type = igt_perf_type_id(engines->device);
- 
- 	engines->fd = -1;
- 	engines->num_counters = 0;
--	engines->num_gts = get_num_gts(type);
-+	ret = get_num_gts(type, &engines->num_gts);
-+	if (ret)
-+		return ret;
- 
- 	engines->irq.config = I915_PMU_INTERRUPTS;
- 	fd = _open_pmu(type, engines->num_counters, &engines->irq, engines->fd);
--- 
-2.34.1
+I'm one of the project contributors in both mesa and kernel, I should
+be able to test/review contributions on what is related to the
+specific hardware. Other project contributors are in cc.
+As a side note I also noticed that there is hardware enrolled in
+kernel-ci which can run the tests. Currently they already run igt, but
+run generic igt tests since there have been no hardware specific ones
+until now, and we could change it with these new tests.
+
+> And definitely they can better review internal aspects of the test.
+> IGT imo is correct place to put your tests in, only what I would change
+> is to create additional 'lima/' directory. We treat 'tests/' directory
+> as common so your specific driver tests should land to separate dir.
+> lib/igt_lima.* is fine, but lima_gem_new.c should land to 'lima/'.
+
+I'm fine with that, I'll change it in the next revision.
+
+Thanks
+
+Erico
