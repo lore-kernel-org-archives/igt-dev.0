@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8894164389739193911=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 07 Jun 2023 02:03:40 -0000
-Message-ID: <168610342083.21180.14846091944518671958@emeril.freedesktop.org>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1643C10E383
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 16:19:41 +0000 (UTC)
+Date: Tue, 6 Jun 2023 18:16:16 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230606161616.qfiv2vwmb75s2ikx@kamilkon-desk1>
 References: <20230606091409.3143765-1-mauro.chehab@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 In-Reply-To: <20230606091409.3143765-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2NyaXB0?=
- =?utf-8?q?s/xls=5Fto=5Fdoc=2Epy=3A_add_an_script_to_partially_import_data?=
- =?utf-8?q?_from_a_spreadsheet?=
+Subject: Re: [igt-dev] [PATCH i-g-t] scripts/xls_to_doc.py: add an script to
+ partially import data from a spreadsheet
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,537 +19,504 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8894164389739193911==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
 
-== Series Details ==
+On 2023-06-06 at 11:14:09 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Sometimes, it is interesting to import data from spreadsheets into
+> the documentation. This is not error-prone, specially when using
+> wildcards. The logic here does its best to update the data from a
+> spreadsheet, but manual review is needed.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  scripts/test_list.py  |  35 +++--
+>  scripts/xls_to_doc.py | 347 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 368 insertions(+), 14 deletions(-)
+>  create mode 100755 scripts/xls_to_doc.py
+> 
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 2810c23586cb..f676024c9571 100755
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -412,7 +412,7 @@ class TestList:
+>          # None of the filtering rules were applied
+>          return False
+>  
+> -    def expand_subtest(self, fname, test_name, test, allow_inherit):
+> +    def expand_subtest(self, fname, test_name, test, allow_inherit, with_lines = False, with_subtest_nr = False):
+>  
+>          """Expand subtest wildcards providing an array with subtests"""
+>  
+> @@ -426,6 +426,7 @@ class TestList:
+>                  continue
+>  
+>              num_vars = summary.count('%')
+> +            file_ln = self.doc[test]["subtest_line"][subtest]
+>  
+>              # Handle trivial case: no wildcards
+>              if num_vars == 0:
+> @@ -434,9 +435,7 @@ class TestList:
+>                  subtest_dict["Summary"] = summary
+>  
+>                  for k in sorted(self.doc[test]["subtest"][subtest].keys()):
+> -                    if k == 'Summary':
+> -                        continue
+> -                    if k == 'arg':
+> +                    if k in [ 'Summary', 'arg', 'subtest_line' ]:
+>                          continue
+>  
+>                      if not allow_inherit:
+> @@ -445,6 +444,12 @@ class TestList:
+>  
+>                      subtest_dict[k] = self.doc[test]["subtest"][subtest][k]
+>  
+> +                if with_lines:
+> +                    subtest_dict["line"] = file_ln
+> +
+> +                if with_subtest_nr:
+> +                    subtest_dict["subtest_nr"] = subtest
+> +
+>                  subtest_array.append(subtest_dict)
+>  
+>                  continue
+> @@ -499,9 +504,7 @@ class TestList:
+>                  subtest_dict["Summary"] = arg_summary
+>  
+>                  for field in sorted(self.doc[test]["subtest"][subtest].keys()):
+> -                    if field == 'Summary':
+> -                        continue
+> -                    if field == 'arg':
+> +                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
+>                          continue
+>  
+>                      sub_field = self.doc[test]["subtest"][subtest][field]
+> @@ -514,6 +517,12 @@ class TestList:
+>  
+>                      subtest_dict[field] = sub_field
+>  
+> +                if with_lines:
+> +                    subtest_dict["line"] = file_ln
+> +
+> +                if with_subtest_nr:
+> +                    subtest_dict["subtest_nr"] = subtest
+> +
+>                  subtest_array.append(subtest_dict)
+>  
+>                  # Increment variable inside the array
+> @@ -567,9 +576,7 @@ class TestList:
+>  
+>                  dic[summary] = {}
+>                  for field in sorted(subtest.keys()):
+> -                    if field == 'Summary':
+> -                        continue
+> -                    if field == 'arg':
+> +                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
+>                          continue
+>                      dic[summary][field] = subtest[field]
+>  
+> @@ -635,9 +642,7 @@ class TestList:
+>                  print("")
+>  
+>                  for field in sorted(subtest.keys()):
+> -                    if field == 'Summary':
+> -                        continue
+> -                    if field == 'arg':
+> +                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
+>                          continue
+>  
+>                      print(f":{field}:", subtest[field])
+> @@ -979,7 +984,7 @@ class TestList:
+>              current_test = ''
+>              subtest_number = 0
+>  
+> -            for file_ln,file_line in enumerate(handle):
+> +            for file_ln, file_line in enumerate(handle):
+>                  file_line = file_line.rstrip()
+>  
+>                  if re.match(r'^\s*\*$', file_line):
+> @@ -1021,6 +1026,7 @@ class TestList:
+>                          self.doc[current_test]["Summary"] = match.group(1)
+>                          self.doc[current_test]["File"] = fname
+>                          self.doc[current_test]["subtest"] = {}
+> +                        self.doc[current_test]["subtest_line"] = {}
+>  
+>                          if implemented_class:
+>                              self.doc[current_test]["Class"] = implemented_class
+> @@ -1057,6 +1063,7 @@ class TestList:
+>  
+>                      self.doc[current_test]["subtest"][current_subtest]["Summary"] = match.group(1)
+>                      self.doc[current_test]["subtest"][current_subtest]["Description"] = ''
+> +                    self.doc[current_test]["subtest_line"][current_subtest] = file_ln
+>  
+>                      if not arg_ref:
+>                          arg_ref = arg_number
+> diff --git a/scripts/xls_to_doc.py b/scripts/xls_to_doc.py
+> new file mode 100755
+> index 000000000000..ed56a02bf5ca
+> --- /dev/null
+> +++ b/scripts/xls_to_doc.py
+> @@ -0,0 +1,347 @@
+> +#!/usr/bin/env python3
+> +# pylint: disable=C0301,C0302,C0103,C0116,C0114,R0912,R0914,R0915,R1702,C0115,R0913
+> +# SPDX-License-Identifier: (GPL-2.0 OR MIT)
+> +
+> +## Copyright (C) 2023    Intel Corporation                 ##
+> +## Author: Mauro Carvalho Chehab <mchehab@kernel.org>      ##
+> +
+> +import argparse
+> +import json
+> +import os
+> +import re
+> +import sys
+> +
+> +from openpyxl import load_workbook
+> +
+> +from test_list import TestList
+> +
+> +EPILOG=""
+> +
+> +#
+> +# FillTests class definition
+> +#
+> +class FillTests(TestList):
+> +    def __init__(self, config_path):
+> +        self.tests = {}
+> +        self.spreadsheet_data = {}
+> +
+> +        TestList.__init__(self, config_path)
+> +
+> +        self.testname_regex = re.compile(r'^\s*(igt@[^\n\@]+)\@?(\S*)\s*')
+> +        self.key_has_wildcard = re.compile(r'\%?arg\[(\d+)\]')
+> +        self.field_re = re.compile(r"(" + '|'.join(self.field_list.keys()) + r'):\s*(.*)', re.I)
+> +
+> +        for test in self.doc:                   # pylint: disable=C0206
+> +            fname = self.doc[test]["File"]
+> +
+> +            name = re.sub(r'.*/', '', fname)
+> +            name = re.sub(r'\.[\w+]$', '', name)
+> +            name = "igt@" + name
+> +
+> +            subtest_array = self.expand_subtest(fname, name, test, True, True, True)
+> +            for subtest_dict in subtest_array:
+> +                name = subtest_dict["Summary"]
+> +                del subtest_dict["Summary"]
+> +
+> +                match = self.testname_regex.match(name)
+> +                if not match:
+> +                    sys.exit(f"Error: can't parse {name}")
+> +
+> +                testname = match.group(1)
+> +                if match.group(2):
+> +                    subtest = match.group(2)
+> +                else:
+> +                    subtest = ''
+> +
+> +                if testname not in self.tests:
+> +                    self.tests[testname] = {}
+> +                    self.tests[testname]["subtests"] = {}
+> +
+> +                    self.tests[testname]["Test"] = test
+> +                    self.tests[testname]["File"] = fname
+> +
+> +                self.tests[testname]["subtests"][subtest] = subtest_dict
+> +
+> +    def add_field(self, dic, field, value):
+> +        if field in dic and dic[field] != '':
+> +            fields = sorted(dic[field].split(", "))
+> +            fields.append(value)
+> +            value = ", ".join(sorted(fields))
+> +
+> +        dic[field] = value
+> +
+> +    def read_testlist(self, filename):
+> +        if re.match("^xe", filename):
+> +            return
+> +        name = re.sub(r"(.*/)?(.*)\.testlist$", r"\2", filename)
+> +        if name == "fast-feedback":
+> +            name = "BAT"
+> +        elif name == "eu-debugger-fast-feedback":
+> +            name = "BAT eudebugger"
+> +        elif name == "fast-feedback-extras-for-simulator":
+> +            name = "BAT simulator"
+> +        elif name == "fast-feedback_suspend":
+> +            name = "suspend"
+> +
+> +        name = re.sub(r"eu-debugger", "eudebugger ", name)
+> +        name = re.sub(r"\bbat\b", "BAT", name)
+> +        name = re.sub(r"[._\-]", " ", name)
+> +
+> +        with open(filename, 'r', newline = '', encoding = 'utf8') as fp:
+> +            for line in fp:
+> +                match = re.match(r"^\s*(igt@[^\s\@]+)(\S*)\#?", line)
+> +                if match:
+> +                    testname = match.group(1)
+> +                    subtest = match.group(2)
+> +                    if testname not in self.tests:
+> +                        self.tests[testname] = {}
+> +                        self.tests[testname]["properties"] ={}
+> +                        self.tests[testname]["subtests"] = {}
+> +                    if subtest not in self.tests[testname]["subtests"]:
+> +                        self.tests[testname]["subtests"][subtest] = {}
+> +                    self.add_field(self.tests[testname]["subtests"][subtest], "Run type", name)
+> +
+> +    def get_testlists(self, path):
+> +        # Create a dictionary with filenames
+> +
+> +        regex = re.compile(r".*\.testlist")
+> +
+> +        for root,d_names,f_names in os.walk(path):          # pylint: disable=W0612
+> +            for filename in f_names:
+> +                if regex.match(filename):
+> +                    self.read_testlist(os.path.join(root, filename))
+> +
+> +    def process_spreadsheet_sheet(self, sheet):
+> +
+> +        column_list=[]
+> +        for cell in sheet[1]:
+> +            column_list.append(cell.value)
+> +
+> +        for row in range(2, sheet.max_row):
+> +            if sheet[row][0].value is None:
+> +                print(f"Ignoring sheet after A{row} row, as test name is empty")
+> +                return
+> +            if not isinstance(sheet[row][0].value, str):
+> +                print(f"Ignoring A{row} row on {sheet.title}: test name is not a string: {sheet[row][0].value}")
+> +                continue
+> +            test_name = sheet[row][0].value.strip()
+> +            if not re.match(r'^igt\@', test_name):
+> +                print(f"Ignoring A{row} row on {sheet.title}: not a valid test name: {test_name}")
+> +                continue
+> +
+> +            if test_name not in self.spreadsheet_data:
+> +                self.spreadsheet_data[test_name] = {}
+> +
+> +            i = 1
+> +            for col in range(2, sheet.max_column + 1):
+> +                val = sheet.cell(row=row, column=col).value
+> +                if val:
+> +                    if isinstance(val, str):
+> +                        val = val.strip()
+> +
+> +                    self.spreadsheet_data[test_name][column_list[i]] = val
+> +
+> +                i += 1
+> +
+> +    def read_spreadsheet_file(self, fname, sheets):
+> +
+> +        # Iterate the loop to read the cell values
+> +        wb = load_workbook(filename = fname)
+> +
+> +        # Handle first "normal" sheets
+> +        for sheet in wb:
+> +            if sheets and sheet.title not in sheets:
+> +                continue
+> +
+> +            self.process_spreadsheet_sheet(sheet)
+> +
+> +        return dict(sorted(self.spreadsheet_data.items()))
+> +
+> +    def change_value(self, content, subtest, line, field, value):
+> +
+> +        current_field = None
+> +        i = line
+> +        while 1:
+> +            i += 1
+> +            if i >= len(content):
+> +                break
+> +
+> +            file_line = content[i]
+> +
+> +            if re.match(r'^\s*\*\/\s*$', file_line):
+> +                break
+> +
+> +            file_line = re.sub(r'^\s*\* ?', '', file_line)
+> +
+> +            match = re.match(r'^SUBTESTS?:\s*(.*)', file_line)
+> +            if match and match.group(1) != subtest:
+> +                break
+> +
+> +            match = re.match(r'^TEST:\s*(.*)', file_line)
+> +            if match and match.group(1) != subtest:
+> +                break
+> +
+> +            match = re.match(r'arg\[(\d+)\]:\s*(.*)', file_line)
+> +            if match:
+> +                break
+> +
+> +            match = re.match(r'\@(\S+):\s*(.*)', file_line)
+> +            if match:
+> +                break
+> +
+> +            match = re.match(r'arg\[(\d+)\]\.values:\s*(.*)', file_line)
+> +            if match:
+> +                break
+> +
+> +            match = re.match(self.field_re, file_line)
+> +            if match:
+> +                current_field = self.field_list[match.group(1).lower()]
+> +                if current_field != field:
+> +                    continue
+> +                content[i] = ""
+> +
+> +            # Handle continuation lines
+> +            if current_field:
+> +                match = re.match(r'\s+(.*)', file_line)
+> +                if match:
+> +                    if current_field != field:
+> +                        continue
+> +
+> +                    content[i] = ""
+> +
+> +        content.insert(i, f' * {field}: {value}\n')
+> +
+> +    def parse_spreadsheet(self, fname, sheets = None):
+> +        if not os.path.isfile(fname):
+> +            print(f'Warning: {fname} not found. Skipping spreadsheet parser')
+> +            return
+> +
+> +        data = self.read_spreadsheet_file(fname, sheets)
+> +
+> +        for test, row in data.items():
+> +            match = self.testname_regex.match(test)
+> +            if not match:
+> +                sys.exit(f"Error: can't parse {test}")
+> +
+> +            testname = match.group(1)
+> +            if match.group(2):
+> +                subtest = match.group(2)
+> +            else:
+> +                subtest = ''
+> +
+> +            if testname not in self.tests:
+> +                print(f"Ignoring {test}, as test is not documented.")
+> +                continue
+> +
+> +            if subtest not in self.tests[testname]["subtests"]:
+> +                self.tests[testname]["subtests"][subtest] = {}
+> +
+> +            for key, value in row.items():
+> +                self.tests[testname]["subtests"][subtest][key] = value
+> +
+> +    def update_test_file(self, testname):
+> +        try:
+> +#            print(f"Updating {testname}")
+> +
+> +            sourcename = self.tests[testname]["File"]
+> +            with open(sourcename, 'r', encoding='utf8') as in_fp:
+> +                content = in_fp.read().splitlines(True)
+> +        except EnvironmentError:
+> +            sys.exit(f'Failed to read {sourcename}')
+> +
+> +        try:
+> +
+> +            test_nr = self.tests[testname]["Test"]
+> +
+> +            for subtest, subtest_content in sorted(self.tests[testname]["subtests"].items()):
+> +                if "line" not in subtest_content:
+> +                    print(f"Warning: didn't find where {subtest} is documented.")
+> +                    continue
+> +
+> +                line = subtest_content['line']
+> +                subtest_nr = subtest_content['subtest_nr']
+> +
+> +                if subtest_nr not in self.doc[test_nr]["subtest"]:
+> +                    print(f"Error: missing subtest {subtest_nr} at {self.doc[test_nr]['subtest']}")
+> +
+> +                doc_content = self.doc[test_nr]["subtest"][subtest_nr]
+> +
+> +                # Handling wildcards is not easy. Let's just skip those
+> +                for field, value in sorted(subtest_content.items()):
+> +                    if field in [ 'line', 'subtest_nr' ]:
+> +                        continue
+> +                    doc_value = doc_content.get(field)
+> +                    if doc_value:
+> +                        if self.key_has_wildcard.search(doc_value):
+> +                            print(f"Warning: {subtest} field {field} has wildcards.")
+> +                            continue
+> +                        if doc_value == value:
+> +                            print(f"{testname}@{subtest} field {field}: Value unchanged. Ignoring it")
+> +                            continue
+> +
+> +                    print(f"Update {testname}@{subtest} field {field} on line {line}:")
+> +                    print(f"  Change from {doc_value} to {value}")
+> +
+> +                    # Just in case, handle continuation lines
+> +                    value = re.sub(r"\n", "\n *   ", value)
+> +
+> +                    self.change_value(content, subtest, line, field, value)
+> +
+> +                    # Update line numbers after insert
+> +                    skip = True
+> +                    for sub, sub_content in sorted(self.tests[testname]["subtests"].items()):
+> +                        if sub == subtest:
+> +                            skip = False
+> +                            continue
+> +                        if skip:
+> +                            continue
+> +                        sub_line = sub_content['line']
+> +                        if sub_line >= line:
+> +                            sub_content['line'] += 1
+> +
+> +        except EnvironmentError as err:
+> +            sys.exit(f'Error: {err}')
+> +
+> +        # Write changes
+> +        try:
+> +            print(f"Writing to {sourcename}")
+> +            with open(sourcename, 'w', encoding='utf8') as out_fp:
+> +                out_fp.write("".join(content))
+> +        except EnvironmentError:
+> +            print(f'Failed to write to {sourcename}')
+> +
+> +    def update_test_files(self):
+> +
+> +        """ Populate documentation """
+> +
+> +        for testname in self.tests:
+> +            self.update_test_file(testname)
+> +
+> +######
+> +# Main
+> +######
+> +
+> +parser = argparse.ArgumentParser(description=__doc__,
+> +                                    formatter_class = argparse.RawDescriptionHelpFormatter,
+> +                                    epilog = EPILOG)
+> +parser.add_argument("--config", required = True,
+> +                    help="JSON file describing the test plan template")
+> +parser.add_argument("--xls", required = True,
+> +                    help="Input XLS file.")
+> +parser.add_argument("--sheets", nargs = "*",
+> +                    help="Input only some specific sheets from the XLS file.")
+> +
+> +parse_args = parser.parse_args()
+> +
+> +fill_test = FillTests(parse_args.config)
+> +
+> +fill_test.parse_spreadsheet(parse_args.xls, parse_args.sheets)
+> +
+> +## DEBUG: remove it later on
+> +with open("fill_test.json", "w", encoding='utf8') as write_file:
+> +    json.dump(fill_test.tests, write_file, indent = 4)
+> +with open("doc.json", "w", encoding='utf8') as write_file:
+> +    json.dump(fill_test.doc, write_file, indent = 4)
+> +
+> +
+> +fill_test.update_test_files()
 
-Series: scripts/xls_to_doc.py: add an script to partially import data from a spreadsheet
-URL   : https://patchwork.freedesktop.org/series/118912/
-State : success
+Please add also a few examples for usage.
+With that,
 
-== Summary ==
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-CI Bug Log - changes from IGT_7320_full -> IGTPW_9113_full
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/index.html
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9113_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_fair@basic-none-share@rcs0:
-    - shard-glk:          [PASS][1] -> [FAIL][2] ([i915#2842])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk5/igt@gem_exec_fair@basic-none-share@rcs0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk4/igt@gem_exec_fair@basic-none-share@rcs0.html
-
-  * igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_rc_ccs:
-    - shard-apl:          NOTRUN -> [SKIP][3] ([fdo#109271]) +52 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl6/igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_rc_ccs.html
-
-  * igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs:
-    - shard-apl:          NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#3886])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl2/igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs.html
-
-  * igt@kms_ccs@pipe-c-missing-ccs-buffer-4_tiled_mtl_rc_ccs:
-    - shard-snb:          NOTRUN -> [SKIP][5] ([fdo#109271]) +27 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-snb6/igt@kms_ccs@pipe-c-missing-ccs-buffer-4_tiled_mtl_rc_ccs.html
-
-  * igt@kms_content_protection@uevent@pipe-a-dp-1:
-    - shard-apl:          NOTRUN -> [FAIL][6] ([i915#1339])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl1/igt@kms_content_protection@uevent@pipe-a-dp-1.html
-
-  * igt@kms_cursor_crc@cursor-random-32x32:
-    - shard-apl:          NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#4579]) +3 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl7/igt@kms_cursor_crc@cursor-random-32x32.html
-
-  * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:
-    - shard-glk:          [PASS][8] -> [FAIL][9] ([i915#2346])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk1/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk1/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
-
-  * igt@kms_flip@flip-vs-expired-vblank@b-hdmi-a2:
-    - shard-glk:          [PASS][10] -> [FAIL][11] ([i915#79])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk9/igt@kms_flip@flip-vs-expired-vblank@b-hdmi-a2.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk7/igt@kms_flip@flip-vs-expired-vblank@b-hdmi-a2.html
-
-  * igt@kms_plane_scaling@plane-downscale-with-pixel-format-factor-0-5@pipe-b-hdmi-a-1:
-    - shard-snb:          NOTRUN -> [SKIP][12] ([fdo#109271] / [i915#4579]) +7 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-snb1/igt@kms_plane_scaling@plane-downscale-with-pixel-format-factor-0-5@pipe-b-hdmi-a-1.html
-
-  * igt@kms_psr2_sf@overlay-plane-move-continuous-exceed-sf:
-    - shard-apl:          NOTRUN -> [SKIP][13] ([fdo#109271] / [i915#658])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl1/igt@kms_psr2_sf@overlay-plane-move-continuous-exceed-sf.html
-
-  * igt@kms_writeback@writeback-invalid-parameters:
-    - shard-apl:          NOTRUN -> [SKIP][14] ([fdo#109271] / [i915#2437])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl4/igt@kms_writeback@writeback-invalid-parameters.html
-
-  * igt@perf_pmu@busy-double-start@bcs0:
-    - shard-glk:          [PASS][15] -> [DMESG-WARN][16] ([i915#118])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk6/igt@perf_pmu@busy-double-start@bcs0.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk7/igt@perf_pmu@busy-double-start@bcs0.html
-
-  
-#### Possible fixes ####
-
-  * igt@drm_fdinfo@most-busy-idle-check-all@rcs0:
-    - {shard-rkl}:        [FAIL][17] ([i915#7742]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-rkl-3/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-rkl-7/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html
-
-  * igt@gem_barrier_race@remote-request@rcs0:
-    - shard-apl:          [ABORT][19] ([i915#7461] / [i915#8190]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-apl6/igt@gem_barrier_race@remote-request@rcs0.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl3/igt@gem_barrier_race@remote-request@rcs0.html
-    - {shard-dg1}:        [ABORT][21] ([i915#7461] / [i915#8234]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-dg1-15/igt@gem_barrier_race@remote-request@rcs0.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-dg1-17/igt@gem_barrier_race@remote-request@rcs0.html
-
-  * igt@gem_ctx_freq@sysfs:
-    - {shard-dg1}:        [FAIL][23] ([i915#6786]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-dg1-13/igt@gem_ctx_freq@sysfs.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-dg1-16/igt@gem_ctx_freq@sysfs.html
-
-  * igt@gem_eio@hibernate:
-    - {shard-dg1}:        [ABORT][25] ([i915#4391] / [i915#7975] / [i915#8213]) -> [PASS][26]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-dg1-14/igt@gem_eio@hibernate.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-dg1-12/igt@gem_eio@hibernate.html
-
-  * igt@gem_eio@unwedge-stress:
-    - {shard-dg1}:        [FAIL][27] ([i915#5784]) -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-dg1-18/igt@gem_eio@unwedge-stress.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-dg1-12/igt@gem_eio@unwedge-stress.html
-
-  * igt@gem_exec_fair@basic-pace-share@rcs0:
-    - shard-glk:          [FAIL][29] ([i915#2842]) -> [PASS][30] +2 similar issues
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk4/igt@gem_exec_fair@basic-pace-share@rcs0.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk5/igt@gem_exec_fair@basic-pace-share@rcs0.html
-    - {shard-rkl}:        [FAIL][31] ([i915#2842]) -> [PASS][32]
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-rkl-6/igt@gem_exec_fair@basic-pace-share@rcs0.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-rkl-3/igt@gem_exec_fair@basic-pace-share@rcs0.html
-
-  * igt@gem_exec_fair@basic-pace-solo@rcs0:
-    - shard-apl:          [FAIL][33] ([i915#2842]) -> [PASS][34]
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-apl7/igt@gem_exec_fair@basic-pace-solo@rcs0.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl1/igt@gem_exec_fair@basic-pace-solo@rcs0.html
-
-  * igt@i915_module_load@reload:
-    - shard-snb:          [ABORT][35] ([i915#4528]) -> [PASS][36]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-snb7/igt@i915_module_load@reload.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-snb5/igt@i915_module_load@reload.html
-
-  * igt@i915_pm_dc@dc9-dpms:
-    - shard-apl:          [SKIP][37] ([fdo#109271]) -> [PASS][38]
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-apl2/igt@i915_pm_dc@dc9-dpms.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl6/igt@i915_pm_dc@dc9-dpms.html
-
-  * igt@i915_pm_rpm@dpms-lpsp:
-    - {shard-dg1}:        [SKIP][39] ([i915#1397]) -> [PASS][40] +1 similar issue
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-dg1-18/igt@i915_pm_rpm@dpms-lpsp.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-dg1-19/igt@i915_pm_rpm@dpms-lpsp.html
-
-  * igt@i915_pm_rpm@dpms-non-lpsp:
-    - {shard-rkl}:        [SKIP][41] ([i915#1397]) -> [PASS][42] +1 similar issue
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-rkl-7/igt@i915_pm_rpm@dpms-non-lpsp.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-rkl-6/igt@i915_pm_rpm@dpms-non-lpsp.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - shard-apl:          [DMESG-FAIL][43] ([i915#5334]) -> [PASS][44]
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-apl4/igt@i915_selftest@live@gt_heartbeat.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl4/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1:
-    - shard-glk:          [FAIL][45] ([i915#2122]) -> [PASS][46]
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk9/igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk7/igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1.html
-
-  * igt@kms_plane_scaling@intel-max-src-size@pipe-a-hdmi-a-1:
-    - {shard-tglu}:       [FAIL][47] ([i915#8292]) -> [PASS][48]
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-tglu-3/igt@kms_plane_scaling@intel-max-src-size@pipe-a-hdmi-a-1.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-tglu-7/igt@kms_plane_scaling@intel-max-src-size@pipe-a-hdmi-a-1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109274]: https://bugs.freedesktop.org/show_bug.cgi?id=109274
-  [fdo#109280]: https://bugs.freedesktop.org/show_bug.cgi?id=109280
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109289]: https://bugs.freedesktop.org/show_bug.cgi?id=109289
-  [fdo#109300]: https://bugs.freedesktop.org/show_bug.cgi?id=109300
-  [fdo#109307]: https://bugs.freedesktop.org/show_bug.cgi?id=109307
-  [fdo#109312]: https://bugs.freedesktop.org/show_bug.cgi?id=109312
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
-  [fdo#110723]: https://bugs.freedesktop.org/show_bug.cgi?id=110723
-  [fdo#111614]: https://bugs.freedesktop.org/show_bug.cgi?id=111614
-  [fdo#111615]: https://bugs.freedesktop.org/show_bug.cgi?id=111615
-  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [fdo#112283]: https://bugs.freedesktop.org/show_bug.cgi?id=112283
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#118]: https://gitlab.freedesktop.org/drm/intel/issues/118
-  [i915#1339]: https://gitlab.freedesktop.org/drm/intel/issues/1339
-  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
-  [i915#1825]: https://gitlab.freedesktop.org/drm/intel/issues/1825
-  [i915#2122]: https://gitlab.freedesktop.org/drm/intel/issues/2122
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-  [i915#2433]: https://gitlab.freedesktop.org/drm/intel/issues/2433
-  [i915#2437]: https://gitlab.freedesktop.org/drm/intel/issues/2437
-  [i915#2527]: https://gitlab.freedesktop.org/drm/intel/issues/2527
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#2705]: https://gitlab.freedesktop.org/drm/intel/issues/2705
-  [i915#2842]: https://gitlab.freedesktop.org/drm/intel/issues/2842
-  [i915#3023]: https://gitlab.freedesktop.org/drm/intel/issues/3023
-  [i915#3116]: https://gitlab.freedesktop.org/drm/intel/issues/3116
-  [i915#3281]: https://gitlab.freedesktop.org/drm/intel/issues/3281
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3297]: https://gitlab.freedesktop.org/drm/intel/issues/3297
-  [i915#3299]: https://gitlab.freedesktop.org/drm/intel/issues/3299
-  [i915#3458]: https://gitlab.freedesktop.org/drm/intel/issues/3458
-  [i915#3539]: https://gitlab.freedesktop.org/drm/intel/issues/3539
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3638]: https://gitlab.freedesktop.org/drm/intel/issues/3638
-  [i915#3689]: https://gitlab.freedesktop.org/drm/intel/issues/3689
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3734]: https://gitlab.freedesktop.org/drm/intel/issues/3734
-  [i915#3804]: https://gitlab.freedesktop.org/drm/intel/issues/3804
-  [i915#3886]: https://gitlab.freedesktop.org/drm/intel/issues/3886
-  [i915#4070]: https://gitlab.freedesktop.org/drm/intel/issues/4070
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4270]: https://gitlab.freedesktop.org/drm/intel/issues/4270
-  [i915#4281]: https://gitlab.freedesktop.org/drm/intel/issues/4281
-  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4538]: https://gitlab.freedesktop.org/drm/intel/issues/4538
-  [i915#4565]: https://gitlab.freedesktop.org/drm/intel/issues/4565
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4812]: https://gitlab.freedesktop.org/drm/intel/issues/4812
-  [i915#4816]: https://gitlab.freedesktop.org/drm/intel/issues/4816
-  [i915#4818]: https://gitlab.freedesktop.org/drm/intel/issues/4818
-  [i915#4833]: https://gitlab.freedesktop.org/drm/intel/issues/4833
-  [i915#4852]: https://gitlab.freedesktop.org/drm/intel/issues/4852
-  [i915#4860]: https://gitlab.freedesktop.org/drm/intel/issues/4860
-  [i915#4885]: https://gitlab.freedesktop.org/drm/intel/issues/4885
-  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
-  [i915#5176]: https://gitlab.freedesktop.org/drm/intel/issues/5176
-  [i915#5235]: https://gitlab.freedesktop.org/drm/intel/issues/5235
-  [i915#5251]: https://gitlab.freedesktop.org/drm/intel/issues/5251
-  [i915#5286]: https://gitlab.freedesktop.org/drm/intel/issues/5286
-  [i915#5289]: https://gitlab.freedesktop.org/drm/intel/issues/5289
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5493]: https://gitlab.freedesktop.org/drm/intel/issues/5493
-  [i915#5784]: https://gitlab.freedesktop.org/drm/intel/issues/5784
-  [i915#6095]: https://gitlab.freedesktop.org/drm/intel/issues/6095
-  [i915#6268]: https://gitlab.freedesktop.org/drm/intel/issues/6268
-  [i915#6301]: https://gitlab.freedesktop.org/drm/intel/issues/6301
-  [i915#6335]: https://gitlab.freedesktop.org/drm/intel/issues/6335
-  [i915#6433]: https://gitlab.freedesktop.org/drm/intel/issues/6433
-  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
-  [i915#6590]: https://gitlab.freedesktop.org/drm/intel/issues/6590
-  [i915#6768]: https://gitlab.freedesktop.org/drm/intel/issues/6768
-  [i915#6786]: https://gitlab.freedesktop.org/drm/intel/issues/6786
-  [i915#6953]: https://gitlab.freedesktop.org/drm/intel/issues/6953
-  [i915#7116]: https://gitlab.freedesktop.org/drm/intel/issues/7116
-  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
-  [i915#7711]: https://gitlab.freedesktop.org/drm/intel/issues/7711
-  [i915#7742]: https://gitlab.freedesktop.org/drm/intel/issues/7742
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#79]: https://gitlab.freedesktop.org/drm/intel/issues/79
-  [i915#7975]: https://gitlab.freedesktop.org/drm/intel/issues/7975
-  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
-  [i915#8190]: https://gitlab.freedesktop.org/drm/intel/issues/8190
-  [i915#8213]: https://gitlab.freedesktop.org/drm/intel/issues/8213
-  [i915#8228]: https://gitlab.freedesktop.org/drm/intel/issues/8228
-  [i915#8234]: https://gitlab.freedesktop.org/drm/intel/issues/8234
-  [i915#8292]: https://gitlab.freedesktop.org/drm/intel/issues/8292
-  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
-  [i915#8381]: https://gitlab.freedesktop.org/drm/intel/issues/8381
-  [i915#8411]: https://gitlab.freedesktop.org/drm/intel/issues/8411
-  [i915#8414]: https://gitlab.freedesktop.org/drm/intel/issues/8414
-  [i915#8502]: https://gitlab.freedesktop.org/drm/intel/issues/8502
-  [i915#8555]: https://gitlab.freedesktop.org/drm/intel/issues/8555
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7320 -> IGTPW_9113
-
-  CI-20190529: 20190529
-  CI_DRM_13235: 98a84b63adc57ae6500c03f8076f94e5d5a1743b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9113: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/index.html
-  IGT_7320: 1c96b08a4cde6f2d49824a8cc3303bd860617b52 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/index.html
-
---===============8894164389739193911==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>scripts/xls_to_doc.py: add an script to partially import data from a spreadsheet</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/118912/">https://patchwork.freedesktop.org/series/118912/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7320_full -&gt; IGTPW_9113_full</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/index.html</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9113_full that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_fair@basic-none-share@rcs0:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk5/igt@gem_exec_fair@basic-none-share@rcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk4/igt@gem_exec_fair@basic-none-share@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_rc_ccs:</p>
-<ul>
-<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl6/igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_rc_ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +52 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs:</p>
-<ul>
-<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl2/igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3886">i915#3886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-c-missing-ccs-buffer-4_tiled_mtl_rc_ccs:</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-snb6/igt@kms_ccs@pipe-c-missing-ccs-buffer-4_tiled_mtl_rc_ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +27 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_content_protection@uevent@pipe-a-dp-1:</p>
-<ul>
-<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl1/igt@kms_content_protection@uevent@pipe-a-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1339">i915#1339</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_crc@cursor-random-32x32:</p>
-<ul>
-<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl7/igt@kms_cursor_crc@cursor-random-32x32.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk1/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk1/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-expired-vblank@b-hdmi-a2:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk9/igt@kms_flip@flip-vs-expired-vblank@b-hdmi-a2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk7/igt@kms_flip@flip-vs-expired-vblank@b-hdmi-a2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/79">i915#79</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_plane_scaling@plane-downscale-with-pixel-format-factor-0-5@pipe-b-hdmi-a-1:</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-snb1/igt@kms_plane_scaling@plane-downscale-with-pixel-format-factor-0-5@pipe-b-hdmi-a-1.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@overlay-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl1/igt@kms_psr2_sf@overlay-plane-move-continuous-exceed-sf.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/658">i915#658</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_writeback@writeback-invalid-parameters:</p>
-<ul>
-<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl4/igt@kms_writeback@writeback-invalid-parameters.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2437">i915#2437</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@perf_pmu@busy-double-start@bcs0:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk6/igt@perf_pmu@busy-double-start@bcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk7/igt@perf_pmu@busy-double-start@bcs0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/118">i915#118</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@drm_fdinfo@most-busy-idle-check-all@rcs0:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-rkl-3/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7742">i915#7742</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-rkl-7/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_barrier_race@remote-request@rcs0:</p>
-<ul>
-<li>
-<p>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-apl6/igt@gem_barrier_race@remote-request@rcs0.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8190">i915#8190</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl3/igt@gem_barrier_race@remote-request@rcs0.html">PASS</a></p>
-</li>
-<li>
-<p>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-dg1-15/igt@gem_barrier_race@remote-request@rcs0.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8234">i915#8234</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-dg1-17/igt@gem_barrier_race@remote-request@rcs0.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_ctx_freq@sysfs:</p>
-<ul>
-<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-dg1-13/igt@gem_ctx_freq@sysfs.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6786">i915#6786</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-dg1-16/igt@gem_ctx_freq@sysfs.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_eio@hibernate:</p>
-<ul>
-<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-dg1-14/igt@gem_eio@hibernate.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4391">i915#4391</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7975">i915#7975</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8213">i915#8213</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-dg1-12/igt@gem_eio@hibernate.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_eio@unwedge-stress:</p>
-<ul>
-<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-dg1-18/igt@gem_eio@unwedge-stress.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5784">i915#5784</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-dg1-12/igt@gem_eio@unwedge-stress.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-pace-share@rcs0:</p>
-<ul>
-<li>
-<p>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk4/igt@gem_exec_fair@basic-pace-share@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk5/igt@gem_exec_fair@basic-pace-share@rcs0.html">PASS</a> +2 similar issues</p>
-</li>
-<li>
-<p>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-rkl-6/igt@gem_exec_fair@basic-pace-share@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-rkl-3/igt@gem_exec_fair@basic-pace-share@rcs0.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-pace-solo@rcs0:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-apl7/igt@gem_exec_fair@basic-pace-solo@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl1/igt@gem_exec_fair@basic-pace-solo@rcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-snb7/igt@i915_module_load@reload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-snb5/igt@i915_module_load@reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_dc@dc9-dpms:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-apl2/igt@i915_pm_dc@dc9-dpms.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl6/igt@i915_pm_dc@dc9-dpms.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@dpms-lpsp:</p>
-<ul>
-<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-dg1-18/igt@i915_pm_rpm@dpms-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-dg1-19/igt@i915_pm_rpm@dpms-lpsp.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@dpms-non-lpsp:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-rkl-7/igt@i915_pm_rpm@dpms-non-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-rkl-6/igt@i915_pm_rpm@dpms-non-lpsp.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-apl4/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-apl4/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-glk9/igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2122">i915#2122</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-glk7/igt@kms_flip@flip-vs-expired-vblank@a-hdmi-a1.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_plane_scaling@intel-max-src-size@pipe-a-hdmi-a-1:</p>
-<ul>
-<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7320/shard-tglu-3/igt@kms_plane_scaling@intel-max-src-size@pipe-a-hdmi-a-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8292">i915#8292</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/shard-tglu-7/igt@kms_plane_scaling@intel-max-src-size@pipe-a-hdmi-a-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7320 -&gt; IGTPW_9113</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13235: 98a84b63adc57ae6500c03f8076f94e5d5a1743b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9113: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9113/index.html<br />
-  IGT_7320: 1c96b08a4cde6f2d49824a8cc3303bd860617b52 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8894164389739193911==--
+> -- 
+> 2.40.1
+> 
 
