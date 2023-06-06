@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 References: <20230526130001.71730-1-nunes.erico@gmail.com>
- <CAK4VdL1Y0pc7=mCnSBwqtawg1WrC3NoSuMQGG0BR-S+TenskDA@mail.gmail.com>
- <20230605092210.tyc4imcsvfyifc7z@zkempczy-mobl2>
-In-Reply-To: <20230605092210.tyc4imcsvfyifc7z@zkempczy-mobl2>
+ <20230526130001.71730-4-nunes.erico@gmail.com>
+ <20230605111738.stcgxju5kjqkdjyi@kamilkon-desk1>
+In-Reply-To: <20230605111738.stcgxju5kjqkdjyi@kamilkon-desk1>
 From: Erico Nunes <nunes.erico@gmail.com>
-Date: Tue, 6 Jun 2023 16:43:16 +0200
-Message-ID: <CAK4VdL1FM6bAk80GCq0-mThNPRM_4MbHt9f9rbrw66ork=VCug@mail.gmail.com>
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 6 Jun 2023 16:51:39 +0200
+Message-ID: <CAK4VdL0++Pch_7xW_u2KFGTC_XkmzaxAzbsphyBHMM09GXvufw@mail.gmail.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Erico Nunes <nunes.erico@gmail.com>, anarsoul@gmail.com, yuq825@gmail.com,
+ lima@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t v2 0/3] Initial tests for the lima drm
- driver
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/3] tests/lima: Add initial tests
+ for lima
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,35 +22,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, anarsoul@gmail.com, yuq825@gmail.com,
- lima@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+Hi Kamil,
 
-On Mon, Jun 5, 2023 at 11:22=E2=80=AFAM Zbigniew Kempczy=C5=84ski
-<zbigniew.kempczynski@intel.com> wrote:
-> I'm not the maintainer but sometimes I put my fingers here and there
-> so I got a question and a nit. Do you have people involved in the
-> project who contains the hardware and may verify test is working fine?
+On Mon, Jun 5, 2023 at 1:18=E2=80=AFPM Kamil Konieczny
+<kamil.konieczny@linux.intel.com> wrote:
+> > +             map =3D igt_lima_mmap_bo(fd, bo->handle, size, PROT_READ =
+| PROT_WRITE);
+> --------------- ^
+> In your current implementation you can get NULL here.
+>
+> > +             memset(map, 0xd0, size);
+> > +             munmap(map, size);
+> > +             igt_lima_free_bo(fd, bo);
+> > +
+> > +             /* Now, allocate a BO on the other fd and make sure it do=
+esn't
+> > +              * have the old contents.
+> > +              */
+> > +             bo =3D igt_lima_gem_new(fd2, size);
+> > +             map =3D igt_lima_mmap_bo(fd2, bo->handle, size, PROT_READ=
+ | PROT_WRITE);
+> --------------- ^
+> Same here, mey be NULL.
+>
+> > +             for (i =3D 0; i < size / 4; i++)
+> -------------------------------------- ^
+> It may be also sizeof(map[0]) instead of 4.
 
-I'm one of the project contributors in both mesa and kernel, I should
-be able to test/review contributions on what is related to the
-specific hardware. Other project contributors are in cc.
-As a side note I also noticed that there is hardware enrolled in
-kernel-ci which can run the tests. Currently they already run igt, but
-run generic igt tests since there have been no hardware specific ones
-until now, and we could change it with these new tests.
-
-> And definitely they can better review internal aspects of the test.
-> IGT imo is correct place to put your tests in, only what I would change
-> is to create additional 'lima/' directory. We treat 'tests/' directory
-> as common so your specific driver tests should land to separate dir.
-> lib/igt_lima.* is fine, but lima_gem_new.c should land to 'lima/'.
-
-I'm fine with that, I'll change it in the next revision.
+Thanks for the review. I'll send a v3 addressing these and the reviews
+on previous patches in this series.
+I just didn't do some of the changes pointed out here as I carried it
+on as-is from the v3d/panfrost tests which I used as a reference. But
+I can address they here for the initial lima tests.
 
 Thanks
 
