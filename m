@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6209484875107482050=="
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 47D8810E328
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 10:00:58 +0000 (UTC)
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  6 Jun 2023 15:35:01 +0530
+Message-Id: <20230606100501.2990928-1-himal.prasad.ghimiray@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Date: Tue, 06 Jun 2023 10:44:48 -0000
-Message-ID: <168604828842.22675.4224500013847963437@emeril.freedesktop.org>
-References: <20230606085015.6751-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20230606085015.6751-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50ZWdy?=
- =?utf-8?q?ate_igt=5Fspin=5Fnew_with_Xe_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t] [RFC 1/1] Support querying number of tiles for xe
+ device.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,337 +17,279 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6209484875107482050==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Patch is based on uapi changes introduced in:
+https://patchwork.freedesktop.org/series/118918/
 
-== Series Details ==
+With tile and GT seperation in KMD, we need to query
+number of tiles supported by platform.
+We will need to access tile associated properties from IGT.
+Hence adding iterator for all supported tiles.
 
-Series: Integrate igt_spin_new with Xe (rev3)
-URL   : https://patchwork.freedesktop.org/series/118837/
-State : success
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+---
+ include/drm-uapi/xe_drm.h | 58 +++++++++++++++++++++++++++++++--------
+ lib/xe/xe_query.c         |  9 ++++++
+ lib/xe/xe_query.h         |  6 ++++
+ 3 files changed, 61 insertions(+), 12 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_13235 -> IGTPW_9112
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/index.html
-
-Participating hosts (40 -> 39)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_9112:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * {igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5}:
-    - {bat-adlp-11}:      [PASS][1] -> [FAIL][2] +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9112 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_backlight@basic-brightness@edp-1:
-    - bat-rplp-1:         NOTRUN -> [ABORT][3] ([i915#7077])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-dg2-11:         NOTRUN -> [DMESG-WARN][4] ([i915#7699])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-dg2-11/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-2:         [PASS][5] -> [ABORT][6] ([i915#7913] / [i915#7982])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-rpls-2/igt@i915_selftest@live@requests.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-rpls-2/igt@i915_selftest@live@requests.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-rpls-1:         NOTRUN -> [ABORT][7] ([i915#6687] / [i915#7978])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - bat-dg2-11:         NOTRUN -> [SKIP][8] ([i915#7828])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - {bat-adlp-11}:      [ABORT][9] ([i915#7953]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-adlp-11/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-adlp-11/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-dg2-11:         [INCOMPLETE][11] ([i915#7609] / [i915#7913]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-adlp-9:         [DMESG-FAIL][13] ([i915#7699] / [i915#7913]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-adlp-9/igt@i915_selftest@live@migrate.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-adlp-9/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-1:         [ABORT][15] ([i915#4983] / [i915#7911] / [i915#7920]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-rpls-1/igt@i915_selftest@live@requests.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-rpls-1/igt@i915_selftest@live@requests.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-rkl-11600:       [FAIL][17] ([fdo#103375]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
-    - bat-dg2-8:          [FAIL][19] ([i915#7932]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-
-  
-#### Warnings ####
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         [ABORT][21] ([i915#4579] / [i915#8260]) -> [SKIP][22] ([i915#3555] / [i915#4579])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
-  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
-  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#7953]: https://gitlab.freedesktop.org/drm/intel/issues/7953
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
-  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
-  [i915#8260]: https://gitlab.freedesktop.org/drm/intel/issues/8260
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7319 -> IGTPW_9112
-
-  CI-20190529: 20190529
-  CI_DRM_13235: 98a84b63adc57ae6500c03f8076f94e5d5a1743b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9112: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/index.html
-  IGT_7319: 2e1bcd49944452b5f9516eecee48e1fa3ae6a636 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@xe_spin_batch@spin-all
-+igt@xe_spin_batch@spin-basic
-+igt@xe_spin_batch@spin-basic-all
-+igt@xe_spin_batch@spin-batch
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/index.html
-
---===============6209484875107482050==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Integrate igt_spin_new with Xe (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/118837/">https://patchwork.freedesktop.org/series/118837/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13235 -&gt; IGTPW_9112</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_9112:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>{igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5}:<ul>
-<li>{bat-adlp-11}:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5.html">FAIL</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9112 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness@edp-1:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>{bat-adlp-11}:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-adlp-11/igt@i915_pm_rpm@basic-pci-d3-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7953">i915#7953</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-adlp-11/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7609">i915#7609</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-adlp-9/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-adlp-9/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_setmode@basic-clone-single-crtc:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13235/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8260">i915#8260</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7319 -&gt; IGTPW_9112</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13235: 98a84b63adc57ae6500c03f8076f94e5d5a1743b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9112: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9112/index.html<br />
-  IGT_7319: 2e1bcd49944452b5f9516eecee48e1fa3ae6a636 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_spin_batch@spin-all<br />
-+igt@xe_spin_batch@spin-basic<br />
-+igt@xe_spin_batch@spin-basic-all<br />
-+igt@xe_spin_batch@spin-batch</p>
-
-</body>
-</html>
-
---===============6209484875107482050==--
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 593b01ba..8e552aa5 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -37,7 +37,7 @@ extern "C" {
+  */
+ 
+ /**
+- * struct i915_user_extension - Base class for defining a chain of extensions
++ * struct xe_user_extension - Base class for defining a chain of extensions
+  *
+  * Many interfaces need to grow over time. In most cases we can simply
+  * extend the struct and have userspace pass in more data. Another option,
+@@ -55,20 +55,20 @@ extern "C" {
+  *
+  * .. code-block:: C
+  *
+- *	struct i915_user_extension ext3 {
++ *	struct xe_user_extension ext3 {
+  *		.next_extension = 0, // end
+  *		.name = ...,
+  *	};
+- *	struct i915_user_extension ext2 {
++ *	struct xe_user_extension ext2 {
+  *		.next_extension = (uintptr_t)&ext3,
+  *		.name = ...,
+  *	};
+- *	struct i915_user_extension ext1 {
++ *	struct xe_user_extension ext1 {
+  *		.next_extension = (uintptr_t)&ext2,
+  *		.name = ...,
+  *	};
+  *
+- * Typically the struct i915_user_extension would be embedded in some uAPI
++ * Typically the struct xe_user_extension would be embedded in some uAPI
+  * struct, and in this case we would feed it the head of the chain(i.e ext1),
+  * which would then apply all of the above extensions.
+  *
+@@ -77,7 +77,7 @@ struct xe_user_extension {
+ 	/**
+ 	 * @next_extension:
+ 	 *
+-	 * Pointer to the next struct i915_user_extension, or zero if the end.
++	 * Pointer to the next struct xe_user_extension, or zero if the end.
+ 	 */
+ 	__u64 next_extension;
+ 	/**
+@@ -87,11 +87,11 @@ struct xe_user_extension {
+ 	 *
+ 	 * Also note that the name space for this is not global for the whole
+ 	 * driver, but rather its scope/meaning is limited to the specific piece
+-	 * of uAPI which has embedded the struct i915_user_extension.
++	 * of uAPI which has embedded the struct xe_user_extension.
+ 	 */
+ 	__u32 name;
+ 	/**
+-	 * @flags: MBZ
++	 * @pad: MBZ
+ 	 *
+ 	 * All undefined bits must be zero.
+ 	 */
+@@ -99,7 +99,7 @@ struct xe_user_extension {
+ };
+ 
+ /*
+- * i915 specific ioctls.
++ * xe specific ioctls.
+  *
+  * The device specific ioctl range is [DRM_COMMAND_BASE, DRM_COMMAND_END) ie
+  * [0x40, 0xa0) (a0 is excluded). The numbers below are defined as offset
+@@ -184,7 +184,9 @@ struct drm_xe_query_config {
+ #define XE_QUERY_CONFIG_VA_BITS			3
+ #define XE_QUERY_CONFIG_GT_COUNT		4
+ #define XE_QUERY_CONFIG_MEM_REGION_COUNT	5
+-#define XE_QUERY_CONFIG_NUM_PARAM		XE_QUERY_CONFIG_MEM_REGION_COUNT + 1
++#define XE_QUERY_CONFIG_MAX_ENGINE_PRIORITY	6
++#define XE_QUERY_CONFIG_TILE_COUNT		7
++#define XE_QUERY_CONFIG_NUM_PARAM		XE_QUERY_CONFIG_TILE_COUNT + 1
+ 	__u64 info[];
+ };
+ 
+@@ -290,6 +292,9 @@ struct drm_xe_gem_create {
+ 	 */
+ 	__u32 handle;
+ 
++	/** @pad: MBZ */
++	__u32 pad;
++
+ 	/** @reserved: Reserved */
+ 	__u64 reserved[2];
+ };
+@@ -334,6 +339,9 @@ struct drm_xe_ext_vm_set_property {
+ #define XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS		0
+ 	__u32 property;
+ 
++	/** @pad: MBZ */
++	__u32 pad;
++
+ 	/** @value: property value */
+ 	__u64 value;
+ 
+@@ -378,6 +386,9 @@ struct drm_xe_vm_bind_op {
+ 	 */
+ 	__u32 obj;
+ 
++	/** @pad: MBZ */
++	__u32 pad;
++
+ 	union {
+ 		/**
+ 		 * @obj_offset: Offset into the object, MBZ for CLEAR_RANGE,
+@@ -397,10 +408,10 @@ struct drm_xe_vm_bind_op {
+ 	__u64 addr;
+ 
+ 	/**
+-	 * @gt_mask: Mask for which GTs to create binds for, 0 == All GTs,
++	 * @tile_mask: Mask for which tiles to create binds for, 0 == All tiles,
+ 	 * only applies to creating new VMAs
+ 	 */
+-	__u64 gt_mask;
++	__u64 tile_mask;
+ 
+ 	/** @op: Operation to perform (lower 16 bits) and flags (upper 16 bits) */
+ 	__u32 op;
+@@ -468,6 +479,9 @@ struct drm_xe_vm_bind {
+ 	/** @num_binds: number of binds in this IOCTL */
+ 	__u32 num_binds;
+ 
++	/** @pad: MBZ */
++	__u32 pad;
++
+ 	union {
+ 		/** @bind: used if num_binds == 1 */
+ 		struct drm_xe_vm_bind_op bind;
+@@ -481,6 +495,9 @@ struct drm_xe_vm_bind {
+ 	/** @num_syncs: amount of syncs to wait on */
+ 	__u32 num_syncs;
+ 
++	/** @pad2: MBZ */
++	__u32 pad2;
++
+ 	/** @syncs: pointer to struct drm_xe_sync array */
+ 	__u64 syncs;
+ 
+@@ -496,6 +513,9 @@ struct drm_xe_ext_engine_set_property {
+ 	/** @property: property to set */
+ 	__u32 property;
+ 
++	/** @pad: MBZ */
++	__u32 pad;
++
+ 	/** @value: property value */
+ 	__u64 value;
+ };
+@@ -611,6 +631,9 @@ struct drm_xe_sync {
+ #define DRM_XE_SYNC_USER_FENCE		0x3
+ #define DRM_XE_SYNC_SIGNAL		0x10
+ 
++	/** @pad: MBZ */
++	__u32 pad;
++
+ 	union {
+ 		__u32 handle;
+ 		/**
+@@ -655,6 +678,9 @@ struct drm_xe_exec {
+ 	 */
+ 	__u16 num_batch_buffer;
+ 
++	/** @pad: MBZ */
++	__u16 pad[3];
++
+ 	/** @reserved: Reserved */
+ 	__u64 reserved[2];
+ };
+@@ -717,6 +743,8 @@ struct drm_xe_wait_user_fence {
+ #define DRM_XE_UFENCE_WAIT_ABSTIME	(1 << 1)
+ #define DRM_XE_UFENCE_WAIT_VM_ERROR	(1 << 2)
+ 	__u16 flags;
++	/** @pad: MBZ */
++	__u32 pad;
+ 	/** @value: compare value */
+ 	__u64 value;
+ 	/** @mask: comparison mask */
+@@ -749,6 +777,9 @@ struct drm_xe_vm_madvise {
+ 	/** @vm_id: The ID VM in which the VMA exists */
+ 	__u32 vm_id;
+ 
++	/** @pad: MBZ */
++	__u32 pad;
++
+ 	/** @range: Number of bytes in the VMA */
+ 	__u64 range;
+ 
+@@ -793,6 +824,9 @@ struct drm_xe_vm_madvise {
+ 	/** @property: property to set */
+ 	__u32 property;
+ 
++	/** @pad2: MBZ */
++	__u32 pad2;
++
+ 	/** @value: property value */
+ 	__u64 value;
+ 
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 47be8f30..64b3aacb 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -239,6 +239,7 @@ struct xe_device *xe_device_get(int fd)
+ 	xe_dev->fd = fd;
+ 	xe_dev->config = xe_query_config_new(fd);
+ 	xe_dev->number_gt = xe_dev->config->info[XE_QUERY_CONFIG_GT_COUNT];
++	xe_dev->number_tiles =  xe_dev->config->info[XE_QUERY_CONFIG_TILE_COUNT];
+ 	xe_dev->va_bits = xe_dev->config->info[XE_QUERY_CONFIG_VA_BITS];
+ 	xe_dev->dev_id = xe_dev->config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+ 	xe_dev->gts = xe_query_gts_new(fd);
+@@ -344,6 +345,14 @@ _TYPE _NAME(int fd)			\
+  */
+ xe_dev_FN(xe_number_gt, number_gt, unsigned int);
+ 
++/**
++ * xe_number_tiles:
++ * @fd: xe device fd
++ *
++ * Return number of tiles for xe device fd.
++ */
++xe_dev_FN(xe_number_tiles, number_tiles, unsigned int);
++
+ /**
+  * all_memory_regions:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 943ca558..4c975afc 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -32,6 +32,9 @@ struct xe_device {
+ 	/** @number_gt: number of gt */
+ 	unsigned int number_gt;
+ 
++	/** @number_tiles: number of tiles */
++	unsigned int number_tiles;
++
+ 	/** @gts: bitmask of all memory regions */
+ 	uint64_t memory_regions;
+ 
+@@ -68,6 +71,9 @@ struct xe_device {
+ 	     ++__class)
+ #define xe_for_each_gt(__fd, __gt) \
+ 	for (__gt = 0; __gt < xe_number_gt(__fd); ++__gt)
++#define xe_for_each_tile(__fd, __tile) \
++	for (__tile = 0; __tile < xe_number_tiles(__fd); ++__tile)
++
+ 
+ #define xe_for_each_mem_region(__fd, __memreg, __r) \
+ 	for (uint64_t __i = 0; __i < igt_fls(__memreg); __i++) \
+-- 
+2.25.1
