@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A190A10E2B8
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 07:59:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D024510E2D8
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 07:59:32 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Jun 2023 13:32:06 +0530
-Message-Id: <20230606080208.2683342-4-kunal1.joshi@intel.com>
+Date: Tue,  6 Jun 2023 13:32:07 +0530
+Message-Id: <20230606080208.2683342-5-kunal1.joshi@intel.com>
 In-Reply-To: <20230606080208.2683342-1-kunal1.joshi@intel.com>
 References: <20230606080208.2683342-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/5] tests/i915/kms_frontbuffer_tracking:
- all gem ioctls are not supported for xe as of now
+Subject: [igt-dev] [PATCH i-g-t 4/5] RFC lib/ioctl_wrappers: GEM_SET_DOMAIN
+ ioctl not supported on xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,28 +24,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-XE doesn't support all gem ioctls
-
-Open :- Find replacement for igt_require_gem() for xe
+xe doesn't support GEM_SET_DOMAIN ioctl
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/i915/kms_frontbuffer_tracking.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ lib/ioctl_wrappers.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 4bb4b2f5..9561abef 100644
---- a/tests/i915/kms_frontbuffer_tracking.c
-+++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -3700,7 +3700,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	t.flip = FLIP_PAGEFLIP;
- 	t.tiling = opt.tiling;
- 	igt_subtest("basic") {
--		igt_require_gem(drm.fd);
-+		if (!is_xe_device(drm.fd))
-+			igt_require_gem(drm.fd);
- 		basic_subtest(&t);
- 	}
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index ebd8a2f3..1180d4c6 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -534,7 +534,12 @@ int __gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write)
+  */
+ void gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write)
+ {
+-	int ret = __gem_set_domain(fd, handle, read, write);
++	int ret;
++
++	if (is_xe_device(fd))
++		return;
++
++	ret = __gem_set_domain(fd, handle, read, write);
  
+ 	if (ret == -ENODEV && gem_has_lmem(fd))
+ 		igt_assert_eq(gem_wait(fd, handle, 0), 0);
 -- 
 2.34.1
