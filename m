@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EA1710E31A
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 09:51:58 +0000 (UTC)
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Fei Yang <fei.yang@intel.com>
-Date: Tue,  6 Jun 2023 11:51:23 +0200
-Message-Id: <20230606095123.476130-2-andi.shyti@linux.intel.com>
-In-Reply-To: <20230606095123.476130-1-andi.shyti@linux.intel.com>
-References: <20230606095123.476130-1-andi.shyti@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 1/1] test/gem_create: limit set_pat to GEN12+
- platforms
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sai.gowtham.ch@intel.com
+Date: Tue, 06 Jun 2023 10:12:44 -0000
+Message-ID: <168604636407.22675.9890757951439232713@emeril.freedesktop.org>
+References: <20230606085015.6751-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20230606085015.6751-1-sai.gowtham.ch@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
+ =?utf-8?q?ntegrate_igt=5Fspin=5Fnew_with_Xe_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,48 +17,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: IGT dev <igt-dev@lists.freedesktop.org>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Fei Yang <fei.yang@intel.com>
+== Series Details ==
 
-For platforms prior to GEN12 the set_pat extension should
-return -ENODEV.
+Series: Integrate igt_spin_new with Xe (rev3)
+URL   : https://patchwork.freedesktop.org/series/118837/
+State : warning
 
-Signed-off-by: Fei Yang <fei.yang@intel.com>
----
- tests/i915/gem_create.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+== Summary ==
 
-diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-index e9e8216d2b..a3428e5890 100644
---- a/tests/i915/gem_create.c
-+++ b/tests/i915/gem_create.c
-@@ -657,6 +657,7 @@ static void create_ext_set_pat(int fd)
- 		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
- 		.pat_index = 65,
- 	};
-+	uint32_t devid = intel_get_drm_devid(fd);
- 	struct drm_i915_gem_caching arg;
- 	uint64_t size;
- 	uint32_t handle;
-@@ -670,8 +671,13 @@ static void create_ext_set_pat(int fd)
- 	 * With a valid PAT index specified, returning -EINVAL here
- 	 * indicates set_pat extension is not supported
- 	 */
--	if (ret == -EINVAL)
-+	if (!IS_METEORLAKE(devid)) {
-+		igt_assert(ret == -ENODEV);
-+		return;
-+	} else if (ret == -EINVAL) {
- 		igt_skip("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
-+	}
-+
- 	igt_assert(ret == 0);
- 
- 	/*
--- 
-2.40.1
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/901001 for the overview.
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/43179016):
+  Running with gitlab-runner 15.9.1 (d540b510)
+    on fdo-equinix-m3l-17 7f7FXSjW, system ID: s_1d7dfffdd4ac
+  section_start:1686046237:prepare_executor
+  Preparing the "docker" executor
+  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-1ed7ec6eddf08e43c1fed442c42ce431c2dbb0c1 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-1ed7ec6eddf08e43c1fed442c42ce431c2dbb0c1 ...
+  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-1ed7ec6eddf08e43c1fed442c42ce431c2dbb0c1: reading manifest commit-1ed7ec6eddf08e43c1fed442c42ce431c2dbb0c1 in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian-mips: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian-mips:commit-1ed7ec6eddf08e43c1fed442c42ce431c2dbb0c1 not found (manager.go:237:4s)
+  section_end:1686046244:prepare_executor
+  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-1ed7ec6eddf08e43c1fed442c42ce431c2dbb0c1" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-1ed7ec6eddf08e43c1fed442c42ce431c2dbb0c1: reading manifest commit-1ed7ec6eddf08e43c1fed442c42ce431c2dbb0c1 in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-debian-mips: unknown: artifact cache/gfx-ci/igt-ci-tags/build-debian-mips:commit-1ed7ec6eddf08e43c1fed442c42ce431c2dbb0c1 not found (manager.go:237:4s)
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/901001
