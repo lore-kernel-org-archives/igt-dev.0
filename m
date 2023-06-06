@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 369AF10E338
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 12:37:48 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Jun 2023 14:37:41 +0200
-Message-Id: <20230606123741.72759-1-zbigniew.kempczynski@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E777B10E240
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 13:57:31 +0000 (UTC)
+Date: Tue, 6 Jun 2023 15:57:27 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Message-ID: <20230606155727.032e0fa3@maurocar-mobl2>
+In-Reply-To: <4686292.rnE6jSC6OK@jkrzyszt-mobl2.ger.corp.intel.com>
+References: <20230605104716.5678-1-dominik.karol.piatkowski@intel.com>
+ <2084363.bB369e8A3T@jkrzyszt-mobl2.ger.corp.intel.com>
+ <20230606111850.5fc2d92d@maurocar-mobl2>
+ <4686292.rnE6jSC6OK@jkrzyszt-mobl2.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe_create: Add multiple engines
- create/destroy subtest
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 6/8] lib/igt_kmod: place KUnit tests on
+ a subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,127 +23,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Exercise basic engine concurrency create/destroy functionality.
+On Tue, 06 Jun 2023 12:03:04 +0200
+Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/xe/xe_create.c | 92 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+> > > > > > +	igt_subtest_with_dynamic("all-tests")      
+> > > > > 
+> > > > > Why can't we use module_name as subtest name?    
+> > > > 
+> > > > We can, but this preserves the old behavior. So, the existing   
+> documentation
+> > > > won't break.    
+> > > 
+> > > Where is this old behavior documented?  In the current code I can't find   
+> any 
+> > > occurrence of "test-all" other than inside igt_kmod.c:igt_ksleftest(), not 
+> > > documented in any way.
+> > > 
+> > > Wasn't the old behavior a result of a limitation rather than a feature?  
+> > 
+> > Take a look at igt_kselftests():
+> > 
+> >         igt_subtest_with_dynamic(filter ?: "all-tests") {
+> >                 igt_list_for_each_entry_safe(tl, tn, &tests, link) {
+> >                         unsigned long taints;
+> > 
+> >                         igt_dynamic_f("%s", unfilter(filter, tl->name))
+> >                                 igt_kselftest_execute(&tst, tl, options,   
+> result);
+> >                         free(tl);
+> > 
+> > The default when "filter" is not used is "all-tests".  
+> 
+> Yes, I did look into igt_kselftest() and did notice the use of "all-tests", 
+> but for me that's not a documentation of an expected behavior, only a not 
+> quite fortunate implementation detail, forced by a mix of IGT contraints on 
+> one hand and implementation specifics of kernel side of i915 selftests on the 
+> other.
 
-diff --git a/tests/xe/xe_create.c b/tests/xe/xe_create.c
-index ae21154646..e139cb8e7f 100644
---- a/tests/xe/xe_create.c
-+++ b/tests/xe/xe_create.c
-@@ -88,6 +88,92 @@ static void create_invalid_size(int fd)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+enum engine_destroy {
-+	NOLEAK,
-+	LEAK
-+};
-+
-+static uint32_t __xe_engine_create(int fd, uint32_t vm,
-+				   struct drm_xe_engine_class_instance *instance,
-+				   uint64_t ext,
-+				   uint32_t *enginep)
-+{
-+	struct drm_xe_engine_create create = {
-+		.extensions = ext,
-+		.vm_id = vm,
-+		.width = 1,
-+		.num_placements = 1,
-+		.instances = to_user_pointer(instance),
-+	};
-+	int err = 0;
-+
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE, &create) == 0) {
-+		*enginep = create.engine_id;
-+	} else {
-+		igt_warn("Can't create engine, errno: %d\n", errno);
-+		err = -errno;
-+		igt_assume(err);
-+	}
-+	errno = 0;
-+
-+	return err;
-+}
-+
-+#define MAXENGINES 2048
-+
-+/**
-+ * SUBTEST: create-engines-%s
-+ * Description: Check process ability of multiple engines creation
-+ * Run type: FULL
-+ *
-+ * arg[1]:
-+ *
-+ * @noleak:				destroy engines in the code
-+ * @leak:				destroy engines in close() path
-+ */
-+static void create_engines(int fd, enum engine_destroy ed)
-+{
-+	uint32_t num_engines, engines_per_process, vm;
-+	int nproc = sysconf(_SC_NPROCESSORS_ONLN);
-+
-+	fd = drm_reopen_driver(fd);
-+	num_engines = xe_number_hw_engines(fd);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+
-+	engines_per_process = max_t(uint32_t, 1, MAXENGINES / nproc);
-+	igt_debug("nproc: %u, engines per process: %u\n", nproc, engines_per_process);
-+
-+	igt_fork(n, nproc) {
-+		struct drm_xe_engine_class_instance *hwe;
-+		uint32_t engine, engines[engines_per_process];
-+		int idx, err, i;
-+
-+		for (i = 0; i < engines_per_process; i++) {
-+			idx = rand() % num_engines;
-+			hwe = xe_hw_engine(fd, idx);
-+			err = __xe_engine_create(fd, vm, hwe, 0, &engine);
-+			igt_debug("[%2d] Create engine: err=%d, engine=%u [idx = %d]\n",
-+				  n, err, engine, i);
-+			if (err)
-+				break;
-+
-+			if (ed == NOLEAK)
-+				engines[i] = engine;
-+		}
-+
-+		if (ed == NOLEAK) {
-+			while (--i >= 0) {
-+				igt_debug("[%2d] Destroy engine: %u\n", n, engines[i]);
-+				xe_engine_destroy(fd, engines[i]);
-+			}
-+		}
-+	}
-+	igt_waitchildren();
-+
-+	xe_vm_destroy(fd, vm);
-+	close(fd);
-+}
-+
- /**
-  * SUBTEST: create-massive-size
-  * Description: Verifies xe bo create returns expected error code on massive
-@@ -121,6 +207,12 @@ igt_main
- 		create_invalid_size(xe);
- 	}
- 
-+	igt_subtest("create-engines-noleak")
-+		create_engines(xe, NOLEAK);
-+
-+	igt_subtest("create-engines-leak")
-+		create_engines(xe, LEAK);
-+
- 	igt_subtest("create-massive-size") {
- 		create_massive_size(xe);
- 	}
--- 
-2.34.1
+No, it is not just that. The tests actually announce that at runtime.
+So, if you run the test with --list, you'll see:
+
+	$ ./build/tests/drm_mm --list-subtests
+	all-tests
+
+And this is what it is used to check for testplan documentation.
+
+> When you call an IGT test with a subtest name specified then only that subtest 
+> is executed, no matter if that's a selftest or a userspace test.
+> 
+> When you call a userspace IGT test with no subtest name (pattern) specified 
+> then all subtests are executed and their names displayed.  But when you do the 
+> same for an IGT selftest then all selftests are executed as one subtest named 
+> "all-tests".  Do you think that's intentional, not a result of some 
+> constraints which no longer apply for kunit tests?  Why do you prefer to keep 
+> the old inconsistent behavior instead of implementing IGT kunit tests to 
+> behave consistently with userspace IGT tests?
+
+We can use whatever other name, provided that the output of
+--list-subtests will be identical to the dynamic subtest. If not,
+build will fail when checking for documentation inconsistencies.
+
+Regards,
+Mauro
