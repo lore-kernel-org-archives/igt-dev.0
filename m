@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <c1db933b-0087-79d3-f1b4-f6be4aef1abf@intel.com>
-Date: Wed, 7 Jun 2023 12:14:00 +0100
+Content-Type: multipart/alternative;
+ boundary="===============3686657030540579453=="
 MIME-Version: 1.0
-Content-Language: en-GB
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20230602114817.849486-1-matthew.auld@intel.com>
- <20230607095508.xhpireixyx5jxzpj@zkempczy-mobl2>
- <cd537b6b-6d2b-4d9d-4bc1-444e1a1d6d40@intel.com>
- <20230607110929.ujptuuvsptdyo5d5@zkempczy-mobl2>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20230607110929.ujptuuvsptdyo5d5@zkempczy-mobl2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t] tests/xe/xe_intel_bb: ensure
- valid next page
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Wed, 07 Jun 2023 13:19:09 -0000
+Message-ID: <168614394948.21185.2032605967022693580@emeril.freedesktop.org>
+References: <20230607113222.226473-1-matthew.auld@intel.com>
+In-Reply-To: <20230607113222.226473-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?xe/intel=5Fbb=3A_remove_full-batch?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,167 +17,310 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 07/06/2023 12:09, Zbigniew Kempczyński wrote:
-> On Wed, Jun 07, 2023 at 11:27:41AM +0100, Matthew Auld wrote:
->> On 07/06/2023 10:55, Zbigniew Kempczyński wrote:
->>> On Fri, Jun 02, 2023 at 12:48:17PM +0100, Matthew Auld wrote:
->>>> Due to over-fetch, recommendation is to ensure we have a single valid
->>>> extra page beyond the batch. We currently lack this which seems to
->>>> explain why xe_intel_bb@full-batch generates CAT errors.
->>>>
->>>> Currently we allow using the last GTT page, but this looks to be no-go,
->>>> since the next page will be beyond the actual GTT, in the case of
->>>> full-batch. The i915 path looks to already account for this. However
->>>> even with that fixed, Xe doesn't use scratch pages by default so the
->>>> next page will still not be valid.
->>>>
->>>> With Xe rather expect that callers know about HW over-fetch, ensuring
->>>> that the batch has an extra page, if needed. Alternatively we could
->>>> apply the DRM_XE_VM_CREATE_SCRATCH_PAGE when creating the vm, but really
->>>> we want to get away from such things.
->>>>
->>>> Bspec: 60223
->>>> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/262
->>>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->>>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->>>> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->>>
->>> I observe this not only on the last page. I've introduced
->>>
->>> index 3cd680072e..ef3f782df7 100644
->>> --- a/lib/intel_batchbuffer.c
->>> +++ b/lib/intel_batchbuffer.c
->>> @@ -947,7 +947,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
->>>                   /* Limit to 48-bit due to MI_* address limitation */
->>>                   ibb->gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
->>> -               end = ibb->gtt_size;
->>> +               end = ibb->gtt_size - xe_get_default_alignment(fd)*2;
->>>
->>> or even:
->>>
->>> +               end = ibb->gtt_size/2;
->>>
->>> Having:
->>>
->>> ADLP:~/igt-upstream/build/tests# ./xe_intel_bb --run full-batch --debug
->>> IGT-Version: 1.27.1-NO-GIT (x86_64) (Linux: 6.3.0-xe+ x86_64)
->>> Opened device: /dev/dri/card0
->>> (xe_intel_bb:11420) drmtest-DEBUG: Test requirement passed: !(fd<0)
->>> (xe_intel_bb:11420) intel_bufops-DEBUG: generation: 12, supported tiles: 0x3f, driver: xe
->>> Starting subtest: full-batch
->>> (xe_intel_bb:11420) intel_allocator_simple-DEBUG: Using simple allocator
->>> (xe_intel_bb:11420) intel_batchbuffer-DEBUG: Run on DRM_XE_ENGINE_CLASS_COPY
->>> (xe_intel_bb:11420) intel_batchbuffer-DEBUG: bind: MAP
->>> (xe_intel_bb:11420) intel_batchbuffer-DEBUG:   handle: 1, offset: ffffffffd000, size: 1000
->>> (xe_intel_bb:11420) intel_batchbuffer-DEBUG: bind: UNMAP
->>> (xe_intel_bb:11420) intel_batchbuffer-DEBUG:   offset: ffffffffd000, size: 1000
->>>
->>> And I still observe failure, what means problem is with prefetching from
->>> next page, regardless location.
->>
->> Yeah, AFAICT the CAT error will trigger for any overfetch that hits an bogus
->> GTT address. Either because it goes beyond the GTT boundary or because the
->> PTE is marked as invalid and we aren't able to fault it in it.
->>
->>>
->>> That means imo umd and any consumer have to overallocate to avoid
->>> hitting:
->>>
->>> [ 1406.062731] xe 0000:00:02.0: [drm] Engine memory cat error: guc_id=2
->>> [ 1406.070519] xe 0000:00:02.0: [drm] Timedout job: seqno=4294967169, guc_id=2, flags=0x4
->>> [ 1406.070535] xe 0000:00:02.0: [drm:xe_devcoredump [xe]] Multiple hangs are occurring, but only the first snapshot was taken
->>> [ 1406.071182] xe 0000:00:02.0: [drm] Engine reset: guc_id=2
->>>
->>> So from my perspective you've avoided failure but that wasn't my intention
->>> when I've written this test. Do you maybe know does umd has mitigation
->>> code which prevents of entering area which starts prefetching from next
->>> page?
->>
->> Userspace should be aware of such HW behaviour I think. In Mesa + Xe I think
->> it still currently forces scratch pages, but AFAIK they want to get rid of
->> that once they are sure that all potential overfetch can't trigger CAT
->> errors or similar. If the vm doesn't have scratch pages, then I think it's
->> up to userspace to deal with overfetch, and I think that must involve
->> inflating the batch size or somehow ensuring the next page always has
->> something valid bound.
->>
->> Do you know if this test is specifically trying to poke at the overfetch
->> behaviour, or does this test just want a PAGE_SIZE worth of NOOPS + BB_END?
->> I wasn't sure given that currently on DG2/ATS-M the batch is always going to
->> be 64K underneath, and so the overfetch is never going to find issues on
->> such platforms.
-> 
-> You're right, for discrete instead of PAGE_SIZE I should pick 64K
-> (xe_get_default_alignment()).
-> 
->>
->> If the test cares specifically about triggering overfetch we could maybe
->> enable scratch pages for the vm in full-batch, and on DG2/ATS-M also do
->> s/PAGE_SIZE/64K/ or use system memory for the batch. And then ofc ensure the
->> last GTT page is never given out. If we later decide to remove scratch pages
->> completely in Xe then I guess we just remove the test. What do you think?
-> 
-> Test was written to exercise last page on i915. Looks we got no influence
-> on prefetching we always get the error when we enter last 512B if I'm not
-> wrong. Scratch pages are not default option for intel-bb vm and I think it
-> never will be so I would just remove the test.
+--===============3686657030540579453==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Ok, will remove instead. Thanks for taking a look.
+== Series Details ==
 
->   
-> --
-> Zbigniew
-> 
->>
->>>
->>> --
->>> Zbigniew
->>>
->>>
->>>> ---
->>>>    lib/intel_batchbuffer.c | 6 ++++++
->>>>    tests/xe/xe_intel_bb.c  | 8 +++++++-
->>>>    2 files changed, 13 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
->>>> index 3cd680072..035facfc4 100644
->>>> --- a/lib/intel_batchbuffer.c
->>>> +++ b/lib/intel_batchbuffer.c
->>>> @@ -881,6 +881,12 @@ static inline uint64_t __intel_bb_get_offset(struct intel_bb *ibb,
->>>>     * passed in. If this is the case, it copies the information over to the
->>>>     * newly created batch buffer.
->>>>     *
->>>> + * NOTE: On Xe scratch pages are not used by default. Due to over-fetch (~512
->>>> + * bytes) there might need to be a valid next page to avoid hangs or CAT errors
->>>> + * if the batch is quite large and approaches the end boundary of the batch
->>>> + * itself.  Inflate the @size to ensure there is a valid next page in such
->>>> + * cases.
->>>> + *
->>>>     * Returns:
->>>>     *
->>>>     * Pointer the intel_bb, asserts on failure.
->>>> diff --git a/tests/xe/xe_intel_bb.c b/tests/xe/xe_intel_bb.c
->>>> index 755cc530e..af8462af5 100644
->>>> --- a/tests/xe/xe_intel_bb.c
->>>> +++ b/tests/xe/xe_intel_bb.c
->>>> @@ -952,7 +952,13 @@ static void full_batch(struct buf_ops *bops)
->>>>    	struct intel_bb *ibb;
->>>>    	int i;
->>>> -	ibb = intel_bb_create(xe, PAGE_SIZE);
->>>> +	/*
->>>> +	 * Add an extra page to ensure over-fetch always sees a valid next page,
->>>> +	 * which includes not going beyond the actual GTT, and ensuring we have
->>>> +	 * a valid GTT entry, given that on xe we don't use scratch pages by
->>>> +	 * default.
->>>> +	 */
->>>> +	ibb = intel_bb_create(xe, 2 * PAGE_SIZE);
->>>>    	if (debug_bb)
->>>>    		intel_bb_set_debug(ibb, true);
->>>> -- 
->>>> 2.40.1
->>>>
+Series: tests/xe/intel_bb: remove full-batch
+URL   : https://patchwork.freedesktop.org/series/119006/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13241 -> IGTPW_9126
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_9126 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_9126, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/index.html
+
+Participating hosts (40 -> 40)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_9126:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-rkl-11600:       [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9126 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@migrate:
+    - bat-atsm-1:         [PASS][3] -> [DMESG-FAIL][4] ([i915#7699] / [i915#7913])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-atsm-1/igt@i915_selftest@live@migrate.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-atsm-1/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [PASS][5] -> [ABORT][6] ([i915#4983] / [i915#7461] / [i915#8347] / [i915#8384])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-rpls-2:         NOTRUN -> [ABORT][7] ([i915#6687])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-dg2-11:         NOTRUN -> [SKIP][8] ([i915#7828])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][9] ([fdo#109271]) +37 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][10] ([fdo#109271] / [i915#4579])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/fi-pnv-d510/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@lmem0:
+    - bat-dg2-11:         [INCOMPLETE][11] ([i915#6311]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-2:         [ABORT][13] ([i915#7913]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-rpls-2/igt@i915_selftest@live@requests.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-rpls-2/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@slpc:
+    - {bat-mtlp-8}:       [DMESG-WARN][15] ([i915#6367]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-mtlp-8/igt@i915_selftest@live@slpc.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-mtlp-8/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_flip@basic-plain-flip@d-dp6:
+    - {bat-adlp-11}:      [DMESG-WARN][17] ([i915#4309]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-adlp-11/igt@kms_flip@basic-plain-flip@d-dp6.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-adlp-11/igt@kms_flip@basic-plain-flip@d-dp6.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
+    - bat-dg2-8:          [FAIL][19] ([i915#7932]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#4309]: https://gitlab.freedesktop.org/drm/intel/issues/4309
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
+  [i915#7269]: https://gitlab.freedesktop.org/drm/intel/issues/7269
+  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
+  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7321 -> IGTPW_9126
+
+  CI-20190529: 20190529
+  CI_DRM_13241: 706687736630aa84845a7a2a12f2c457c26828e7 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9126: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/index.html
+  IGT_7321: f52cfd53f353fdaca537c810fbc35e09ffd07345 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@xe_intel_bb@full-batch
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/index.html
+
+--===============3686657030540579453==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe/intel_bb: remove full-batch</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119006/">https://patchwork.freedesktop.org/series/119006/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13241 -&gt; IGTPW_9126</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_9126 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_9126, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/index.html</p>
+<h2>Participating hosts (40 -&gt; 40)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_9126:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_heartbeat:<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/fi-rkl-11600/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9126 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-atsm-1/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-atsm-1/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +37 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/fi-pnv-d510/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@lmem0:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6311">i915#6311</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-mtlp-8/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-mtlp-8/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@d-dp6:</p>
+<ul>
+<li>{bat-adlp-11}:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-adlp-11/igt@kms_flip@basic-plain-flip@d-dp6.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4309">i915#4309</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-adlp-11/igt@kms_flip@basic-plain-flip@d-dp6.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13241/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7321 -&gt; IGTPW_9126</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13241: 706687736630aa84845a7a2a12f2c457c26828e7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9126: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9126/index.html<br />
+  IGT_7321: f52cfd53f353fdaca537c810fbc35e09ffd07345 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@xe_intel_bb@full-batch</p>
+
+</body>
+</html>
+
+--===============3686657030540579453==--
