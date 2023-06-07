@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B200610E4C4
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jun 2023 11:59:26 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  7 Jun 2023 17:23:33 +0530
-Message-Id: <20230607115333.55940-3-mohammed.thasleem@intel.com>
-In-Reply-To: <20230607115333.55940-1-mohammed.thasleem@intel.com>
-References: <20230607115333.55940-1-mohammed.thasleem@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E805710E4CB
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jun 2023 12:09:55 +0000 (UTC)
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Date: Wed, 07 Jun 2023 14:09:50 +0200
+Message-ID: <13279393.dW097sEU6C@jkrzyszt-mobl2.ger.corp.intel.com>
+In-Reply-To: <20230605180359.39899-1-kamil.konieczny@linux.intel.com>
+References: <20230605180359.39899-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/2] tests/i915/kms_cdclk: Fixed mode
- selection for MST modeset
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: Shut some excessive debug messages
+ up
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,52 +21,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When two monitors connected through MST. This will find the
-connector mode combo that fits into the bandwidth when more
-than one monitor is connected.
+Hi Kamil,
 
-Example:
-  When two monitors connected through MST, the second monitor
-  also tries to use the same mode. So two such modes may not
-  fit into the link bandwidth. So, iterate through connected
-  outputs & modes and find a combination of modes those fit
-  into the link BW.
+On Monday, 5 June 2023 20:03:59 CEST Kamil Konieczny wrote:
+> From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> 
+> In case of tests which extensively use debugfs, tons of useless debug
+> messages about opening a debugfs directory are emitted.  If the test fails
+> then important debug messages with details of the failure, interleaved
+> with sequences of those useless messages, are hard to find and read.
+> 
+> Replace igt_debug() with conditional igt_debug_on_f() emitting a message
+> about debugfs directory path only if open() fails.
+> 
+> v2: emit a message on NULL debugfs path
+> 
+> Cc: Chris Wilson <chris.p.wilson@intel.com>
+> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-v2: -Removed if loop checks.
-    -Added igt override to avoid dp mst bw failure.
-v3: Rebased on tip.
+As an author, I'm probably not expected to provide any kind of an ack, but 
+since nobody responded, I'm providing one, in case it helps you to apply the 
+change to upstream.
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/i915/kms_cdclk.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Acked-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
-index 0f9b8dc5..bf93d940 100644
---- a/tests/i915/kms_cdclk.c
-+++ b/tests/i915/kms_cdclk.c
-@@ -257,6 +257,7 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 	int valid_outputs = 0;
- 	int cdclk_ref, cdclk_new;
- 	uint16_t width = 0, height = 0;
-+	bool found;
- 	struct igt_fb fb;
- 	igt_pipe_t *pipe;
- 	igt_plane_t *plane;
-@@ -332,6 +333,10 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 		j++;
- 	}
- 
-+	/* In case of DP-MST find suitable mode(s) to fit into the link BW. */
-+	found = igt_override_all_active_output_modes_to_fit_bw(display);
-+	igt_require_f(found, "No valid mode combo found for MST modeset.\n");
-+
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 	cdclk_new = get_current_cdclk_freq(debugfs_fd);
- 	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
--- 
-2.25.1
+Thanks,
+Janusz
+
+> ---
+>  lib/igt_debugfs.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+> index afde2da62..a7b54bae5 100644
+> --- a/lib/igt_debugfs.c
+> +++ b/lib/igt_debugfs.c
+> @@ -208,13 +208,16 @@ char *igt_debugfs_path(int device, char *path, int 
+pathlen)
+>   */
+>  int igt_debugfs_dir(int device)
+>  {
+> +	int debugfs_dir_fd;
+>  	char path[200];
+>  
+> -	if (!igt_debugfs_path(device, path, sizeof(path)))
+> +	if (igt_debug_on(!igt_debugfs_path(device, path, sizeof(path))))
+>  		return -1;
+>  
+> -	igt_debug("Opening debugfs directory '%s'\n", path);
+> -	return open(path, O_RDONLY);
+> +	debugfs_dir_fd = open(path, O_RDONLY);
+> +	igt_debug_on_f(debugfs_dir_fd < 0, "path: %s\n", path);
+> +
+> +	return debugfs_dir_fd;
+>  }
+>  
+>  /**
+> 
+
+
+
