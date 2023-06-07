@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFEE510E456
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jun 2023 08:03:27 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Wed,  7 Jun 2023 13:33:52 +0530
-Message-Id: <20230607080352.950226-3-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230607080352.950226-1-janga.rahul.kumar@intel.com>
-References: <20230607080352.950226-1-janga.rahul.kumar@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C57A510E08C
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jun 2023 08:10:28 +0000 (UTC)
+Date: Wed, 7 Jun 2023 10:10:24 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Message-ID: <20230607101024.75ad82bc@maurocar-mobl2>
+In-Reply-To: <2884858.e9J7NaK4W3@jkrzyszt-mobl2.ger.corp.intel.com>
+References: <20230605104716.5678-1-dominik.karol.piatkowski@intel.com>
+ <4686292.rnE6jSC6OK@jkrzyszt-mobl2.ger.corp.intel.com>
+ <20230606155727.032e0fa3@maurocar-mobl2>
+ <2884858.e9J7NaK4W3@jkrzyszt-mobl2.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/xe_vm.c: Add Negative test to VM
- error capture
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 6/8] lib/igt_kmod: place KUnit tests on
+ a subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,64 +23,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On Tue, 06 Jun 2023 16:22:21 +0200
+Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
 
-Add negative test to check invalid arguments.
+> > We can use whatever other name, provided that the output of
+> > --list-subtests will be identical to the dynamic subtest. If not,
+> > build will fail when checking for documentation inconsistencies.   
+> 
+> AFAICU, that checking process compares subtest names found in a documentation, 
+> here the source code, as pointed by you in one of your previouse answers as 
+> the source of the documentation, against --list output.  But that sounds 
+> weird.  What a sophisticated code parser must be used to resolve subtest names 
+> potentially provided via expressions?  Another compiler?
+> Or is there another source of documentation, which I already asked you for a 
+> reference to, and you didn't clearly answered yet, used by the build process 
+> for that checking?
 
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
----
- tests/xe/xe_vm.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+There's no other source of documentation. The documentation toolset
+has a --check tool that calls the binaries using "--list" parameter,
+comparing them with the documentation inside the source code.
 
-diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
-index 0da6c847..7f369fc4 100644
---- a/tests/xe/xe_vm.c
-+++ b/tests/xe/xe_vm.c
-@@ -1638,6 +1638,31 @@ vm_error_capture_address(int fd)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+/**
-+ * SUBTEST: vm-error-capture-address-invalid-val
-+ * Description: Negative test to check vm error capture
-+ * Functionality: error capture
-+ * Run type: FULL
-+ * TODO: change ``'Run type' == FULL`` to a better category
-+ *
-+ */
-+static void
-+vm_error_capture_address_invalid_val(int fd)
-+{
-+	struct drm_xe_ext_vm_set_property ext = {
-+		.base.next_extension = 0,
-+		.base.name = XE_VM_EXTENSION_SET_PROPERTY,
-+		.property = XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS,
-+		.value = 0,
-+	};
-+
-+	struct drm_xe_vm_create create = {
-+		.extensions = to_user_pointer(&ext),
-+		.flags = DRM_XE_VM_CREATE_ASYNC_BIND_OPS,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL);
-+}
- 
- igt_main
- {
-@@ -1924,6 +1949,9 @@ igt_main
- 	igt_subtest("vm-error-capture-address")
- 		vm_error_capture_address(fd);
- 
-+	igt_subtest("vm-error-capture-address-invalid-val")
-+		vm_error_capture_address_invalid_val(fd);
-+
- 	igt_fixture {
- 		xe_device_put(fd);
- 		close(fd);
--- 
-2.25.1
+So, for tests/drm_mm.c file, the documentation is on its source:
+
+	/**
+	 * TEST: drm mm
+	 * Description: Basic sanity check of DRM's range manager (struct drm_mm)
+	 * Feature: mapping
+	 * Run type: FULL
+	 *
+	 * SUBTEST: all-tests
+	 *
+	 * SUBTEST: all-tests@align
+	 * Category: Infrastructure
+	 * Description: drm_mm range manager SW validation
+	 * Functionality: DRM memory mangemnt
+	 * Test category: GEM_Legacy
+	...
+
+It will run build/tests/drm_mm --list in order to compare "SUBTEST"
+the fields. The ones with "@" are dynamic subtests and are currently
+ignored, as --list is currently not capable of reporting dynamic 
+subtests.
+
+Now, it is possible to change from "all-tests" to something else, but
+such patch also needs to change it inside tests/drm_mm.c.
+
+Regards,
+Mauro
