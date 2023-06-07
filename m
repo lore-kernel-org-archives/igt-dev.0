@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F20C10E4BA
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jun 2023 11:31:55 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9C2E10E4B6
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jun 2023 11:34:02 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  7 Jun 2023 16:55:58 +0530
-Message-Id: <20230607112558.55830-3-mohammed.thasleem@intel.com>
-In-Reply-To: <20230607112558.55830-1-mohammed.thasleem@intel.com>
-References: <20230607112558.55830-1-mohammed.thasleem@intel.com>
+Date: Wed,  7 Jun 2023 12:32:22 +0100
+Message-Id: <20230607113222.226473-1-matthew.auld@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/2] tests/i915/kms_cdclk: Fixed mode
- selection for MST modeset
+Subject: [igt-dev] [PATCH i-g-t] tests/xe/intel_bb: remove full-batch
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,48 +21,84 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When two monitors connected through MST. This will find the
-connector mode combo that fits into the bandwidth when more
-than one monitor is connected.
+Currently this generates CAT errors due to over-fetch going beyond the
+boundaries of the GTT. However we also don't use scratch pages by
+default in Xe (hopeful plan is to get rid them completely), so no
+address with full-batch will be valid if HW over-fetches into the next
+page, unless we either inflate the batch size with padding, which
+defeats the purpose of the test, or enable scratch pages, which is not
+something we really want moving forward. With that rather just remove
+full-batch on Xe.
 
-Example:
-  When two monitors connected through MST, the second monitor
-  also tries to use the same mode. So two such modes may not
-  fit into the link bandwidth. So, iterate through connected
-  outputs & modes and find a combination of modes those fit
-  into the link BW.
-
-v2: -Removed if loop checks.
-    -Added igt override to avoid dp mst bw failure.
-v3: Rebased on tip.
-
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Bspec: 60223
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/262
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/kms_cdclk.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/intel-ci/xe-fast-feedback.testlist |  1 -
+ tests/xe/xe_intel_bb.c                   | 31 ------------------------
+ 2 files changed, 32 deletions(-)
 
-diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
-index 0f9b8dc5..bf93d940 100644
---- a/tests/i915/kms_cdclk.c
-+++ b/tests/i915/kms_cdclk.c
-@@ -257,6 +257,7 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 	int valid_outputs = 0;
- 	int cdclk_ref, cdclk_new;
- 	uint16_t width = 0, height = 0;
-+	bool found;
- 	struct igt_fb fb;
- 	igt_pipe_t *pipe;
- 	igt_plane_t *plane;
-@@ -332,6 +333,10 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 		j++;
- 	}
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index be243197a..fb5acd8a0 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -169,7 +169,6 @@ igt@xe_intel_bb@blit-simple
+ igt@xe_intel_bb@create-in-region
+ igt@xe_intel_bb@delta-check
+ igt@xe_intel_bb@destroy-bb
+-igt@xe_intel_bb@full-batch
+ igt@xe_intel_bb@intel-bb-blit-none
+ igt@xe_intel_bb@intel-bb-blit-x
+ igt@xe_intel_bb@intel-bb-blit-y
+diff --git a/tests/xe/xe_intel_bb.c b/tests/xe/xe_intel_bb.c
+index ed3529a1b..29b5ececb 100644
+--- a/tests/xe/xe_intel_bb.c
++++ b/tests/xe/xe_intel_bb.c
+@@ -941,34 +941,6 @@ static void delta_check(struct buf_ops *bops)
+ 		     expected, val);
+ }
  
-+	/* In case of DP-MST find suitable mode(s) to fit into the link BW. */
-+	found = igt_override_all_active_output_modes_to_fit_bw(display);
-+	igt_require_f(found, "No valid mode combo found for MST modeset.\n");
-+
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 	cdclk_new = get_current_cdclk_freq(debugfs_fd);
- 	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
+-/**
+- * SUBTEST: full-batch
+- * Description: check bb totally filled is executing correct
+- * Run type: FULL
+- * TODO: change ``'Run type' == FULL`` to a better category
+- */
+-static void full_batch(struct buf_ops *bops)
+-{
+-	int xe = buf_ops_get_fd(bops);
+-	struct intel_bb *ibb;
+-	int i;
+-
+-	ibb = intel_bb_create(xe, PAGE_SIZE);
+-	if (debug_bb)
+-		intel_bb_set_debug(ibb, true);
+-
+-	for (i = 0; i < PAGE_SIZE / sizeof(uint32_t) - 1; i++)
+-		intel_bb_out(ibb, 0);
+-	intel_bb_emit_bbe(ibb);
+-
+-	igt_assert(intel_bb_offset(ibb) == PAGE_SIZE);
+-	intel_bb_exec(ibb, intel_bb_offset(ibb),
+-		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
+-	intel_bb_reset(ibb, false);
+-
+-	intel_bb_destroy(ibb);
+-}
+-
+ /**
+  * SUBTEST: render
+  * Description: check intel-bb render pipeline
+@@ -1166,9 +1138,6 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
+ 	igt_subtest("delta-check")
+ 		delta_check(bops);
+ 
+-	igt_subtest("full-batch")
+-		full_batch(bops);
+-
+ 	igt_subtest_with_dynamic("render") {
+ 		igt_require(xe_has_engine_class(xe, DRM_XE_ENGINE_CLASS_RENDER));
+ 
 -- 
-2.25.1
+2.40.1
