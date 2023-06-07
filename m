@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 05D8810E42E
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jun 2023 06:39:40 +0000 (UTC)
-Date: Wed, 7 Jun 2023 08:39:35 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E98F10E42E
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Jun 2023 06:47:54 +0000 (UTC)
+Date: Wed, 7 Jun 2023 08:47:50 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230607063935.kc7m6lgnpva24zrf@zkempczy-mobl2>
-References: <20230605183612.41463-1-kamil.konieczny@linux.intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <20230607064750.6ddobbfqbui5ycrw@zkempczy-mobl2>
+References: <20230531192104.6307-1-juhapekka.heikkila@gmail.com>
+ <20230531192104.6307-3-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230605183612.41463-1-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib: Cancel all outstanding requests at
- the start of a test
+In-Reply-To: <20230531192104.6307-3-juhapekka.heikkila@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/igt_fb: switch blitcopy to use
+ lib/i915/i915_blt functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,101 +22,340 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>,
- Chris Wilson <chris.p.wilson@intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jun 05, 2023 at 08:36:12PM +0200, Kamil Konieczny wrote:
-> From: Chris Wilson <chris@chris-wilson.co.uk>
+On Wed, May 31, 2023 at 10:21:03PM +0300, Juha-Pekka Heikkila wrote:
+> reduce code duplication
 > 
-> Currently, we try to cancel all outstanding requests at the end of a
-> test, as commit ("40de31df52ffed5e392d607a83e3aea4efb150e6")
->   Author: Chris Wilson <chris@chris-wilson.co.uk>
->   Date:   Fri Sep 7 09:27:20 2018 +0100
-> 
->   lib: Cancel all outstanding requests at the end of a test
-> 
->   Quite often on catastrophic failure the test leaves a long queue of
->   unterminated batches pending execution. Each runs until hangcheck fires
->   and skips onto the next, leaving us waiting for a very long time at test
->   exit.
-> 
-> However, given that the runner may send a SIGKILL the atexist handler may
-> not be run, leaking the requests into the start of the next test where
-> we only wait for the requests to idle. Forcibly cancel those requests as
-> well.
-> 
-> v1: corrected description, fixed checkpatch error [Kamil]
-> 
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Chris Wilson <chris.p.wilson@intel.com>
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > ---
->  lib/drmtest.c | 22 ++++++++++++++++------
->  1 file changed, 16 insertions(+), 6 deletions(-)
+>  lib/igt_fb.c | 243 +++++++++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 205 insertions(+), 38 deletions(-)
 > 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index aa2e6b08f..b9f83bb29 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -603,6 +603,17 @@ static const char *chipset_to_str(int chipset)
->  	}
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 71a199d4..b3fc3766 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -35,6 +35,8 @@
+>  #include "drmtest.h"
+>  #include "i915/gem_create.h"
+>  #include "i915/gem_mman.h"
+> +#include "i915/i915_blt.h"
+> +#include "i915/intel_mocs.h"
+>  #include "igt_aux.h"
+>  #include "igt_color_encoding.h"
+>  #include "igt_fb.h"
+> @@ -2453,21 +2455,30 @@ struct fb_blit_upload {
+>  	struct intel_bb *ibb;
+>  };
+>  
+> -static bool fast_blit_ok(const struct igt_fb *fb)
+> +static enum blt_tiling_type fb_tile_to_blt_tile(uint64_t tile)
+>  {
+> -	int dev_id = intel_get_drm_devid(fb->fd);
+> -	int ver = intel_display_ver(dev_id);
+> -
+> -	if (ver < 9)
+> -		return false;
+> -
+> -	if (ver < 12)
+> -		return true;
+> -
+> -	if (ver >= 13 && !IS_ALDERLAKE_P(dev_id))
+> -		return true;
+> +	switch (igt_fb_mod_to_tiling(tile)) {
+> +	case I915_TILING_NONE:
+> +		return T_LINEAR;
+> +	case I915_TILING_X:
+> +		return T_XMAJOR;
+> +	case I915_TILING_Y:
+> +		return T_YMAJOR;
+> +	case I915_TILING_4:
+> +		return T_TILE4;
+> +	case I915_TILING_Yf:
+> +		return T_YFMAJOR;
+> +	default:
+> +		igt_assert_f(0, "Unknown tiling!\n");
+> +	}
+> +}
+>  
+> -	return fb->modifier != I915_FORMAT_MOD_X_TILED;
+> +static bool fast_blit_ok(const struct igt_fb *fb)
+> +{
+> +	return blt_has_fast_copy(fb->fd) &&
+> +		!is_ccs_modifier(fb->modifier) &&
+> +		blt_block_copy_supports_tiling(fb->fd,
+> +					       fb_tile_to_blt_tile(fb->modifier));
+
+Shouldn't be blt_fast_copy_supports_tiling() here?
+
 >  }
 >  
-> +static int __drm_reopen_driver(int fd)
+>  static bool blitter_ok(const struct igt_fb *fb)
+> @@ -2510,9 +2521,10 @@ static bool use_enginecopy(const struct igt_fb *fb)
+>  		return false;
+>  
+>  	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+> -	       is_ccs_modifier(fb->modifier) ||
+> +	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && is_ccs_modifier(fb->modifier)) ||
+>  	       (is_xe_device(fb->fd) && fb->modifier == DRM_FORMAT_MOD_LINEAR) ||
+> -	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
+> +	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd)) ||
+> +	       is_gen12_mc_ccs_modifier(fb->modifier);
+>  }
+>  
+>  static bool use_blitter(const struct igt_fb *fb)
+> @@ -2712,12 +2724,115 @@ static void copy_with_engine(struct fb_blit_upload *blit,
+>  	fini_buf(src);
+>  }
+>  
+> +static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
+> +					   uint32_t plane, uint32_t memregion)
 > +{
-> +	char path[256];
+> +	uint32_t name, handle;
+> +	struct blt_copy_object *blt;
+> +	enum blt_tiling_type blt_tile;
+> +	uint64_t stride;
 > +
-> +	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-> +	fd = open(path, O_RDWR | O_CLOEXEC);
-> +	igt_assert_fd(fd);
+> +	blt = malloc(sizeof(*blt));
+> +	igt_assert(blt);
 > +
-> +	return fd;
+> +	name = gem_flink(fb->fd, fb->gem_handle);
+> +	handle = gem_open(fb->fd, name);
+> +
+> +	blt_tile = fb_tile_to_blt_tile(fb->modifier);
+> +	stride = blt_tile == T_LINEAR ? fb->strides[plane] : fb->strides[plane] / 4;
+> +
+> +	blt_set_object(blt, handle, fb->size, memregion,
+> +		       intel_get_uc_mocs(fb->fd),
+> +		       blt_tile,
+> +		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
+> +		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
+> +
+> +	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
+> +
+> +	blt->plane_offset = fb->offsets[plane];
+> +
+> +	blt->ptr = gem_mmap__device_coherent(fb->fd, handle, 0, fb->size,
+> +					     PROT_READ | PROT_WRITE);
+> +	return blt;
 > +}
 > +
->  /**
->   * drm_open_driver:
->   * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-> @@ -627,9 +638,8 @@ int drm_open_driver(int chipset)
->  	 */
->  	if (is_i915_device(fd)) {
->  		if (__sync_fetch_and_add(&open_count, 1) == 0) {
-> -			gem_quiescent_gpu(fd);
-> -
-> -			at_exit_drm_fd = __drm_open_driver(chipset);
-> +			__cancel_work_at_exit(fd);
-> +			at_exit_drm_fd = __drm_reopen_driver(fd);
+> +static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
+> +{
+> +	switch (fb->plane_bpp[0]) {
+> +	case 8:
+> +		return CD_8bit;
+> +	case 16:
+> +		return CD_16bit;
+> +	case 32:
+> +		return CD_32bit;
+> +	case 64:
+> +		return CD_64bit;
+> +	case 96:
+> +		return CD_96bit;
+> +	case 128:
+> +		return CD_128bit;
+> +	default:
+> +		igt_assert(0);
+> +	}
+> +}
+> +
+> +#define BLT_TARGET_RC(x) (x.compression == COMPRESSION_ENABLED && \
+> +			  x.compression_type == COMPRESSION_TYPE_3D)
+> +
+> +#define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
+> +			  x.compression_type == COMPRESSION_TYPE_MEDIA)
+> +
+> +static uint32_t blt_compression_format(struct blt_copy_data *blt,
+> +				       const struct igt_fb *fb)
+> +{
+> +	if (blt->src.compression == COMPRESSION_DISABLED &&
+> +	    blt->dst.compression == COMPRESSION_DISABLED)
+> +		return 0;
+> +
+> +	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst)) {
+> +		switch (blt->color_depth) {
+> +		case CD_32bit:
+> +			return 8;
+> +		default:
+> +			igt_assert_f(0, "COMPRESSION_TYPE_3D unknown color depth\n");
+> +		}
+> +	} else if (BLT_TARGET_MC(blt->src)) {
+> +		switch (fb->drm_format) {
+> +		case DRM_FORMAT_XRGB8888:
+> +			return 8;
+> +		case DRM_FORMAT_XYUV8888:
+> +			return 9;
+> +		case DRM_FORMAT_NV12:
+> +			return 9;
+> +		case DRM_FORMAT_P010:
+> +		case DRM_FORMAT_P012:
+> +		case DRM_FORMAT_P016:
+> +			return 8;
+> +		default:
+> +			igt_assert_f(0, "COMPRESSION_TYPE_MEDIA unknown format\n");
+> +		}
+> +	} else if (BLT_TARGET_MC(blt->dst)) {
+> +		igt_assert_f(0, "Destination compression not supported on mc ccs\n");
+> +	} else {
+> +		igt_assert_f(0, "unknown compression\n");
+> +	}
+> +}
+> +
+>  static void blitcopy(const struct igt_fb *dst_fb,
+>  		     const struct igt_fb *src_fb)
+>  {
+>  	uint32_t src_tiling, dst_tiling;
+>  	uint32_t ctx = 0;
+>  	uint64_t ahnd = 0;
+> +	const intel_ctx_t *ictx = intel_ctx_create_all_physical(src_fb->fd);
+> +	struct intel_execution_engine2 *e;
+> +	uint32_t bb;
+> +	uint64_t bb_size = 4096;
+> +	struct blt_copy_data blt = {};
+> +	struct blt_copy_object *src, *dst;
+> +	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
+> +	uint32_t mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
+> +			   ? REGION_LMEM(0) : REGION_SMEM;
+>  
+>  	igt_assert_eq(dst_fb->fd, src_fb->fd);
+>  	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
+> @@ -2729,36 +2844,87 @@ static void blitcopy(const struct igt_fb *dst_fb,
+>  		igt_require(gem_has_contexts(dst_fb->fd));
+>  		ctx = gem_context_create(dst_fb->fd);
+>  		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
+> +
+> +		igt_assert(__gem_create_in_memory_regions(src_fb->fd,
+> +							  &bb,
+> +							  &bb_size,
+> +							  mem_region) == 0);
+>  	}
+>  
+>  	for (int i = 0; i < dst_fb->num_planes; i++) {
+>  		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
+>  		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
+>  		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
+> -		/*
+> -		 * On GEN12+ X-tiled format support is removed from the fast
+> -		 * blit command, so use the XY_SRC blit command for it
+> -		 * instead.
+> -		 */
+> -		if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
+> -			igt_blitter_fast_copy__raw(dst_fb->fd,
+> -						   ahnd, ctx, NULL,
+> -						   src_fb->gem_handle,
+> -						   src_fb->offsets[i],
+> -						   src_fb->strides[i],
+> -						   src_tiling,
+> -						   0, 0, /* src_x, src_y */
+> -						   src_fb->size,
+> -						   dst_fb->plane_width[i],
+> -						   dst_fb->plane_height[i],
+> -						   dst_fb->plane_bpp[i],
+> -						   dst_fb->gem_handle,
+> -						   dst_fb->offsets[i],
+> -						   dst_fb->strides[i],
+> -						   dst_tiling,
+> -						   0, 0 /* dst_x, dst_y */,
+> -						   dst_fb->size);
+> +
+> +		if (ahnd && fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
+> +			for_each_ctx_engine(src_fb->fd, ictx, e) {
+> +				if (e->class == I915_ENGINE_CLASS_COPY)
+> +					break;
+> +			}
+> +			igt_assert_f(e, "No copy engine found!\n");
+> +
+> +			memset(&blt, 0, sizeof(blt));
+> +			blt.color_depth = blt_get_bpp(src_fb);
+> +
+> +			src = blt_fb_init(src_fb, i, mem_region);
+> +			dst = blt_fb_init(dst_fb, i, mem_region);
+> +
+> +			blt_set_copy_object(&blt.src, src);
+> +			blt_set_copy_object(&blt.dst, dst);
+> +
+> +			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
+> +
+> +			blt_fast_copy(src_fb->fd, ictx, e, ahnd, &blt);
+> +			gem_sync(src_fb->fd, blt.dst.handle);
+> +
+> +			blt_destroy_object(src_fb->fd, src);
+> +			blt_destroy_object(dst_fb->fd, dst);
+> +		} else if (ahnd && blt_has_block_copy(src_fb->fd)) {
+> +			/*
+> +			* On GEN12+ X-tiled format support is removed from
+> +			* the fast blit command, so use the block copy blit
+> +			* command for it instead.
+> +			*/
 
-Can't we just use drm_reopen_driver() here? Apart of xe check has same
-code inside.
+I think this comment is inadequate to DG2 and beyond as X-tiling is back
+there.
 
-Anyway - cancelling dangling work makes sense so with above nit addressed:
+Apart of that I haven't spotted other issues here:
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+With above nit addressed:
+
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
->  			igt_install_exit_handler(cancel_work_at_exit);
->  		}
->  	}
-> @@ -676,9 +686,9 @@ int drm_open_driver_render(int chipset)
->  	if (__sync_fetch_and_add(&open_count, 1))
->  		return fd;
+> +			for_each_ctx_engine(src_fb->fd, ictx, e) {
+> +				if (gem_engine_can_block_copy(src_fb->fd, e))
+> +					break;
+> +			}
+> +			igt_assert_f(e, "No block copy capable engine found!\n");
+> +
+> +			src = blt_fb_init(src_fb, i, mem_region);
+> +			dst = blt_fb_init(dst_fb, i, mem_region);
+> +
+> +			memset(&blt, 0, sizeof(blt));
+> +			blt.color_depth = blt_get_bpp(src_fb);
+> +			blt_set_copy_object(&blt.src, src);
+> +			blt_set_copy_object(&blt.dst, dst);
+> +
+> +			if (HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))) {
+> +				blt_set_object_ext(&ext.src,
+> +						   blt_compression_format(&blt, src_fb),
+> +						   src_fb->width, src_fb->height,
+> +						   SURFACE_TYPE_2D);
+> +
+> +				blt_set_object_ext(&ext.dst,
+> +						   blt_compression_format(&blt, dst_fb),
+> +						   dst_fb->width, dst_fb->height,
+> +						   SURFACE_TYPE_2D);
+> +
+> +				pext = &ext;
+> +			}
+> +
+> +			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
+> +
+> +			blt_block_copy(src_fb->fd, ictx, e, ahnd, &blt, pext);
+> +			gem_sync(src_fb->fd, blt.dst.handle);
+> +
+> +			blt_destroy_object(src_fb->fd, src);
+> +			blt_destroy_object(dst_fb->fd, dst);
+>  		} else {
+> +			/*
+> +			 * If on legacy hardware where relocations are supported
+> +			 * we'll use XY_SRC blit command instead
+> +			 */
+>  			igt_blitter_src_copy(dst_fb->fd,
+>  					     ahnd, ctx, NULL,
+>  					     src_fb->gem_handle,
+> @@ -2782,6 +2948,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
+>  	if (ctx)
+>  		gem_context_destroy(dst_fb->fd, ctx);
+>  	put_ahnd(ahnd);
+> +	intel_ctx_destroy(src_fb->fd, ictx);
+>  }
 >  
-> -	at_exit_drm_render_fd = __drm_open_driver(chipset);
-> -	if(chipset & DRIVER_INTEL){
-> -		gem_quiescent_gpu(fd);
-> +	at_exit_drm_render_fd = __drm_reopen_driver(fd);
-> +	if (chipset & DRIVER_INTEL) {
-> +		__cancel_work_at_exit(fd);
->  		igt_install_exit_handler(cancel_work_at_exit_render);
->  	}
->  
+>  static void free_linear_mapping(struct fb_blit_upload *blit)
 > -- 
-> 2.39.2
+> 2.25.1
 > 
