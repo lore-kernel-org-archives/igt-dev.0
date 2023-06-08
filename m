@@ -1,21 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A502B10E05D
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Jun 2023 11:26:48 +0000 (UTC)
-Message-ID: <14e7758e-0db0-97cc-c195-63c2a9ffb891@intel.com>
-Date: Thu, 8 Jun 2023 16:56:26 +0530
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2237F10E586
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Jun 2023 04:36:51 +0000 (UTC)
+From: "Yedireswarapu, SaiX Nandan" <saix.nandan.yedireswarapu@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 8 Jun 2023 04:32:55 +0000
+Message-ID: <PH8PR11MB6952DB87A6CF9B6FCC1ECDFEB350A@PH8PR11MB6952.namprd11.prod.outlook.com>
+References: <20230606123741.72759-1-zbigniew.kempczynski@intel.com>
+ <168605991234.22671.13438817053113387800@emeril.freedesktop.org>
+ <20230606163806.eb6vqbdnbb6bgauu@zkempczy-mobl2>
+In-Reply-To: <20230606163806.eb6vqbdnbb6bgauu@zkempczy-mobl2>
 Content-Language: en-US
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230607115333.55940-1-mohammed.thasleem@intel.com>
- <20230607115333.55940-2-mohammed.thasleem@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230607115333.55940-2-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/kms_display_modes: Fixed
- mode selection for extended mode tests
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?xe=5Fcreate=3A_Add_multiple_engines_create/destroy_subtest?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,81 +25,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Marikkar, SanjuX" <sanjux.marikkar@intel.com>, "Veesam,
+ RavitejaX" <ravitejax.veesam@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-On Wed-07-06-2023 05:23 pm, Mohammed Thasleem wrote:
-> Added check on DP-MST and 4k panels when two moniters connected
-> through MST.
-> This will find the connector mode combo that fits into the
-> bandwidth when more than one monitor is connected.
-> 
-> Example:
->    When two monitors connected through MST, the second monitor
->    also tries to use the same mode. So two such modes may not
->    fit into the link bandwidth. So, iterate through connected
->    outputs & modes and find a combination of modes those fit
->    into the link BW.
-> 
-> v2: -Updated commit msg and description. (Bhanu)
->      -Renamed restart with retry. (Bhanu)
->      -Moved igt_pipe_crc_new before retry. (Bhanu)
->      -Removed unrelated changes and new line. (Bhanu)
->      -Minor changes.
-> v3: Updated discription and added EINVAL check.
-> v4: Removed EINVAL and ENOSPC checks.
->      Added check for DP-MST and 4k panels.
->      Updated discription.
-> v5: Defined 4k display modes globally.
-> v6: -Removed if loop checks.
->      -Added igt override to avoid dp mst bw failure.
-> v7: Rebased on tip.
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->   tests/kms_display_modes.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-> index 93d91ef5..5108b4d4 100644
-> --- a/tests/kms_display_modes.c
-> +++ b/tests/kms_display_modes.c
-> @@ -142,6 +142,7 @@ static void run_extendedmode_basic(data_t *data,
->   	igt_pipe_crc_t *pipe_crc[2] = { 0 };
->   	igt_crc_t ref_crc[2], crc[2];
->   	int width, height;
-> +	bool found;
->   	cairo_t *cr;
->   
->   	igt_display_reset(display);
-> @@ -171,6 +172,10 @@ static void run_extendedmode_basic(data_t *data,
->   	igt_fb_set_size(&fbs[1], plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
->   	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
->   
-> +	/* In case of DP-MST find suitable mode(s) to fit into the link BW. */
-> +	found = igt_override_all_active_output_modes_to_fit_bw(display);
-> +	igt_require_f(found, "No valid mode combo found for MST modeset.\n");
-
-This logic should be moved to the caller.
-
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -273,6 +273,9 @@ static void run_extendedmode_test(data_t *data) {
-           igt_output_set_pipe(output1, pipe1);
-           igt_output_set_pipe(output2, pipe2);
-
-+         if (!igt_override_all_active_output_modes_to_fit_bw(display))
-+                 continue;
-+
-           if (!i915_pipe_output_combo_valid(display))
-                   continue;
-
-- Bhanu
-
-> +
->   	igt_display_commit2(display, COMMIT_ATOMIC);
->   
->   	igt_pipe_crc_collect_crc(pipe_crc[0], &ref_crc[0]);
+SGksDQoNCklzc3VlIHJlLXJlcG9ydGVkLCBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5v
+cmcvc2VyaWVzLzExODkzMS8jcmV2MQ0KDQpUaGFua3MsDQpZIFNhaSBOYW5kYW4NCg0KLS0tLS1P
+cmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IEtlbXBjenluc2tpLCBaYmlnbmlldyA8emJpZ25p
+ZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPiANClNlbnQ6IFR1ZXNkYXksIEp1bmUgNiwgMjAyMyAx
+MDowOCBQTQ0KVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpDYzogWWVkaXJlc3dh
+cmFwdSwgU2FpWCBOYW5kYW4gPHNhaXgubmFuZGFuLnllZGlyZXN3YXJhcHVAaW50ZWwuY29tPg0K
+U3ViamVjdDogUmU6IOKclyBGaS5DSS5CQVQ6IGZhaWx1cmUgZm9yIHRlc3RzL3hlX2NyZWF0ZTog
+QWRkIG11bHRpcGxlIGVuZ2luZXMgY3JlYXRlL2Rlc3Ryb3kgc3VidGVzdA0KDQpPbiBUdWUsIEp1
+biAwNiwgMjAyMyBhdCAwMTo1ODozMlBNICswMDAwLCBQYXRjaHdvcmsgd3JvdGU6DQo+ICAgIFBh
+dGNoIERldGFpbHMNCj4gDQo+ICAgIFNlcmllczogIHRlc3RzL3hlX2NyZWF0ZTogQWRkIG11bHRp
+cGxlIGVuZ2luZXMgY3JlYXRlL2Rlc3Ryb3kgc3VidGVzdCAgIA0KPiAgICBVUkw6ICAgICBodHRw
+czovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzExODkzMS8gICAgICAgICAgICAg
+ICANCj4gICAgU3RhdGU6ICAgZmFpbHVyZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgIERldGFpbHM6IGh0dHBzOi8vaW50ZWwtZ2Z4
+LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfOTExNy9pbmRleC5odG1sIA0KPiANCj4gICAg
+ICAgICAgICAgICBDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV8xMzIzNiAtPiBJR1RQ
+V185MTE3DQo+IA0KPiBTdW1tYXJ5DQo+IA0KPiAgICBGQUlMVVJFDQo+IA0KPiAgICBTZXJpb3Vz
+IHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV185MTE3IGFic29sdXRlbHkgbmVlZCB0
+byBiZQ0KPiAgICB2ZXJpZmllZCBtYW51YWxseS4NCj4gDQo+ICAgIElmIHlvdSB0aGluayB0aGUg
+cmVwb3J0ZWQgY2hhbmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hhbmdlcw0KPiAg
+ICBpbnRyb2R1Y2VkIGluIElHVFBXXzkxMTcsIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbSB0
+byBhbGxvdyB0aGVtDQo+ICAgIHRvIGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1cmUgbW9kZSwgd2hp
+Y2ggd2lsbCByZWR1Y2UgZmFsc2UgcG9zaXRpdmVzIGluDQo+ICAgIENJLg0KPiANCj4gICAgRXh0
+ZXJuYWwgVVJMOg0KPiAgICBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlw
+L0lHVFBXXzkxMTcvaW5kZXguaHRtbA0KPiANCj4gUGFydGljaXBhdGluZyBob3N0cyAoNDEgLT4g
+NDApDQo+IA0KPiAgICBNaXNzaW5nICgxKTogZmktc25iLTI1MjBtDQo+IA0KPiBQb3NzaWJsZSBu
+ZXcgaXNzdWVzDQo+IA0KPiAgICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5
+IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzkxMTc6DQo+IA0KPiAgIElHVCBjaGFuZ2Vz
+DQo+IA0KPiAgICAgUG9zc2libGUgcmVncmVzc2lvbnMNCj4gDQo+ICAgICAgKiBpZ3RAaTkxNV9z
+dXNwZW5kQGJhc2ljLXMzLXdpdGhvdXQtaTkxNToNCj4gICAgICAgICAgICogZmktYXBsLWd1Yzog
+UEFTUyAtPiBBQk9SVA0KDQpVbnJlbGF0ZWQgdG8gdGhpcyBmYWlsdXJlLiBNYXkgSSBhc2sgZm9y
+IHJlc3VtZT8NCg0KLS0NClpiaWduaWV3DQoNCj4gDQo+IEtub3duIGlzc3Vlcw0KPiANCj4gICAg
+SGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfOTExNyB0aGF0IGNvbWUgZnJvbSBr
+bm93biBpc3N1ZXM6DQo+IA0KPiAgIElHVCBjaGFuZ2VzDQo+IA0KPiAgICAgSXNzdWVzIGhpdA0K
+PiANCj4gICAgICAqIGlndEBnZW1fZXhlY19zdXNwZW5kQGJhc2ljLXMwQHNtZW06DQo+IA0KPiAg
+ICAgICAgICAgKiBmaS1za2wtNjYwMHU6IFBBU1MgLT4gQUJPUlQgKGk5MTUjNTEyMikNCj4gICAg
+ICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAZ3RfbHJjOg0KPiANCj4gICAgICAgICAgICogYmF0
+LWRnMi0xMTogUEFTUyAtPiBJTkNPTVBMRVRFIChpOTE1Izc2MDkgLyBpOTE1Izc5MTMpDQo+ICAg
+ICAgKiBpZ3RAaTkxNV9zZWxmdGVzdEBsaXZlQGd1YzoNCj4gDQo+ICAgICAgICAgICAqIGJhdC1y
+cGxzLTE6IE5PVFJVTiAtPiBETUVTRy1XQVJOIChpOTE1Izc4NTIpDQo+ICAgICAgKiBpZ3RAaTkx
+NV9zZWxmdGVzdEBsaXZlQHNscGM6DQo+IA0KPiAgICAgICAgICAgKiBiYXQtcnBscy0xOiBOT1RS
+VU4gLT4gRE1FU0ctV0FSTiAoaTkxNSM2MzY3KQ0KPiAgICAgICogaWd0QGk5MTVfc3VzcGVuZEBi
+YXNpYy1zMy13aXRob3V0LWk5MTU6DQo+IA0KPiAgICAgICAgICAgKiBiYXQtcnBscy0xOiBOT1RS
+VU4gLT4gQUJPUlQgKGk5MTUjNjY4NyAvIGk5MTUjNzk3OCkNCj4gICAgICAqIGlndEBrbXNfcGlw
+ZV9jcmNfYmFzaWNAbm9uYmxvY2tpbmctY3JjLWZyYW1lLXNlcXVlbmNlOg0KPiANCj4gICAgICAg
+ICAgICogYmF0LWRnMi0xMTogTk9UUlVOIC0+IFNLSVAgKGk5MTUjMTg0NSAvIGk5MTUjNTM1NCkg
+KzEgc2ltaWxhcg0KPiAgICAgICAgICAgICBpc3N1ZQ0KPiAgICAgICogaWd0QGttc19waXBlX2Ny
+Y19iYXNpY0Bub25ibG9ja2luZy1jcmNAcGlwZS1jLWRwLTE6DQo+IA0KPiAgICAgICAgICAgKiBi
+YXQtZGcyLTg6IFBBU1MgLT4gRkFJTCAoaTkxNSM3OTMyKQ0KPiANCj4gICAgIFBvc3NpYmxlIGZp
+eGVzDQo+IA0KPiAgICAgICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZUBndF9tb2NzOg0KPiANCj4g
+ICAgICAgICAgICoge2JhdC1tdGxwLTh9OiBETUVTRy1GQUlMIChpOTE1IzcwNTkpIC0+IFBBU1MN
+Cj4gICAgICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAcmVxdWVzdHM6DQo+IA0KPiAgICAgICAg
+ICAgKiBiYXQtcnBscy0xOiBBQk9SVCAoaTkxNSM3OTExIC8gaTkxNSM3OTIwIC8gaTkxNSM3OTgy
+KSAtPiBQQVNTDQo+ICAgICAgKiB7aWd0QGttc19waXBlX2NyY19iYXNpY0Bjb21wYXJlLWNyYy1z
+YW5pdHljaGVjay14cjI0QHBpcGUtZC1kcC01fToNCj4gDQo+ICAgICAgICAgICAqIHtiYXQtYWRs
+cC0xMX06IEZBSUwgLT4gUEFTUw0KPiANCj4gICAge25hbWV9OiBUaGlzIGVsZW1lbnQgaXMgc3Vw
+cHJlc3NlZC4gVGhpcyBtZWFucyBpdCBpcyBpZ25vcmVkIHdoZW4NCj4gICAgY29tcHV0aW5nDQo+
+ICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NFU1MsIFdBUk5JTkcsIG9yIEZB
+SUxVUkUpLg0KPiANCj4gQnVpbGQgY2hhbmdlcw0KPiANCj4gICAgICAqIENJOiBDSS0yMDE5MDUy
+OSAtPiBOb25lDQo+ICAgICAgKiBJR1Q6IElHVF83MzIwIC0+IElHVFBXXzkxMTcNCj4gDQo+ICAg
+IENJLTIwMTkwNTI5OiAyMDE5MDUyOQ0KPiAgICBDSV9EUk1fMTMyMzY6IDZlZjliYTk5MWQ5NjU3
+MjY0OGFhNzVlYjc4MThkOGMxMTFmMmViNGYgQA0KPiAgICBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNr
+dG9wLm9yZy9nZngtY2kvbGludXgNCj4gICAgSUdUUFdfOTExNzogaHR0cHM6Ly9pbnRlbC1nZngt
+Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV185MTE3L2luZGV4Lmh0bWwNCj4gICAgSUdUXzcz
+MjA6IDFjOTZiMDhhNGNkZTZmMmQ0OTgyNGE4Y2MzMzAzYmQ4NjA2MTdiNTIgQA0KPiAgICBodHRw
+czovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2lndC1ncHUtdG9vbHMuZ2l0DQo+IA0KPiBU
+ZXN0bGlzdCBjaGFuZ2VzDQo+IA0KPiAgICAraWd0QHhlX2NyZWF0ZUBjcmVhdGUtZW5naW5lcy1s
+ZWFrDQo+ICAgICtpZ3RAeGVfY3JlYXRlQGNyZWF0ZS1lbmdpbmVzLW5vbGVhaw0K
