@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 283D110E5DB
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Jun 2023 15:48:01 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  8 Jun 2023 08:47:52 -0700
+Message-Id: <20230608154756.2866519-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Thu, 08 Jun 2023 11:43:58 -0000
-Message-ID: <168622463812.18385.10806711630158386556@emeril.freedesktop.org>
-References: <20230607115333.55940-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230607115333.55940-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBGaXhl?=
- =?utf-8?q?d_mode_selection_for_MST_modeset_=28rev6=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 i-g-t 0/4] gem_ctx_freq: multi-gt support and
+ disable efficient freq
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,23 +17,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+v2: Move ignore_slpc_efficient_freq to lib/igt_pm.c (Vinay)
 
-Series: Fixed mode selection for MST modeset (rev6)
-URL   : https://patchwork.freedesktop.org/series/117503/
-State : failure
+Ashutosh Dixit (3):
+  lib/igt_sysfs: Don't assert in igt_sysfs_dir_id_to_name
+  tests/gem_ctx_freq: Disable SLPC efficient freq for the test
+  HAX: Add gem_ctx_freq to BAT testlist
 
-== Summary ==
+Vinay Belgaumkar (1):
+  tests/gem_ctx_freq: Add support for multi-gts
 
-Applying: tests/kms_display_modes: Fixed mode selection for extended mode tests
-Patch failed at 0001 tests/kms_display_modes: Fixed mode selection for extended mode tests
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+ lib/igt_pm.c                          |  17 +++++
+ lib/igt_pm.h                          |   1 +
+ lib/igt_sysfs.c                       |   4 +-
+ tests/i915/gem_ctx_freq.c             | 105 +++++++++++++++++---------
+ tests/intel-ci/fast-feedback.testlist |   1 +
+ 5 files changed, 91 insertions(+), 37 deletions(-)
 
+-- 
+2.38.0
