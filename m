@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80B7910E5DB
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4658F10E5DC
  for <igt-dev@lists.freedesktop.org>; Thu,  8 Jun 2023 15:48:02 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  8 Jun 2023 08:47:55 -0700
-Message-Id: <20230608154756.2866519-4-ashutosh.dixit@intel.com>
+Date: Thu,  8 Jun 2023 08:47:53 -0700
+Message-Id: <20230608154756.2866519-2-ashutosh.dixit@intel.com>
 In-Reply-To: <20230608154756.2866519-1-ashutosh.dixit@intel.com>
 References: <20230608154756.2866519-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 i-g-t 3/4] tests/gem_ctx_freq: Disable SLPC
- efficient freq for the test
+Subject: [igt-dev] [PATCH i-g-t 1/4] tests/gem_ctx_freq: Add support for
+ multi-gts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,82 +23,229 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When SLPC efficient freq is enabled, GPU frequencies can be outside the
-min/max range set from sysfs. Any test which compares actual GPU frequency
-against set frequencies is therefore meaningful only when SLPC efficient
-freq is disabled.
+From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 
-v2: Move ignore_slpc_efficient_freq to lib/igt_pm.c (Vinay)
+Run subtest sysfs-range on available sysfs interfaces.
 
-Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6786
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/igt_pm.c              | 17 +++++++++++++++++
- lib/igt_pm.h              |  1 +
- tests/i915/gem_ctx_freq.c |  6 +++++-
- 3 files changed, 23 insertions(+), 1 deletion(-)
+ tests/i915/gem_ctx_freq.c | 99 ++++++++++++++++++++++++++-------------
+ 1 file changed, 66 insertions(+), 33 deletions(-)
 
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index e60b09a73140..18c84bf3a021 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -1400,3 +1400,20 @@ int igt_pm_get_runtime_usage(struct pci_device *pci_dev)
- 
- 	return usage;
- }
-+
-+/**
-+ * igt_pm_ignore_slpc_efficient_freq
-+ * @i915: open i915 drm file descriptor
-+ * @gtfd: open gt sysfs fd
-+ * @val: value to set
-+ *
-+ * Ignores/un-ignores SLPC efficient frequency
-+ */
-+void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val)
-+{
-+	if (!(gem_using_guc_submission(i915) && i915_is_slpc_enabled(i915)))
-+		return;
-+
-+	igt_require(igt_sysfs_has_attr(gtfd, "slpc_ignore_eff_freq"));
-+	igt_assert(igt_sysfs_set_u32(gtfd, "slpc_ignore_eff_freq", val));
-+}
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index 448cf42de7f1..71ec2f239993 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -88,5 +88,6 @@ bool i915_is_slpc_enabled_gt(int drm_fd, int gt);
- bool i915_is_slpc_enabled(int drm_fd);
- int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
- int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
-+void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
- 
- #endif /* IGT_PM_H */
 diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
-index b2f6c2af55e1..d15f83600480 100644
+index 2c30934daa23..b2f6c2af55e1 100644
 --- a/tests/i915/gem_ctx_freq.c
 +++ b/tests/i915/gem_ctx_freq.c
-@@ -147,9 +147,11 @@ static void sysfs_range(int dirfd, int gt)
- 	 * The sysfs interface sets the global limits and overrides the
- 	 * user's request. So we can to check that if the user requests
- 	 * a range outside of the sysfs, the requests are only run at the
--	 * constriained sysfs range.
-+	 * constrained sysfs range. With GuC SLPC this requires disabling
-+	 * efficient freq.
+@@ -24,12 +24,15 @@
+ 
+ #include <errno.h>
+ #include <fcntl.h>
++#include <limits.h>
+ #include <sched.h>
+ #include <stdlib.h>
+ #include <stdint.h>
+ #include <unistd.h>
+ 
+ #include "i915/gem.h"
++#include "i915/gem_engine_topology.h"
++#include "i915_drm.h"
+ #include "igt.h"
+ #include "igt_perf.h"
+ #include "igt_sysfs.h"
+@@ -49,6 +52,7 @@
+ #define SAMPLE_PERIOD (USEC_PER_SEC / 10)
+ #define PMU_TOLERANCE 100
+ 
++static int i915 = -1;
+ static int sysfs = -1;
+ 
+ static void kick_rps_worker(void)
+@@ -90,7 +94,7 @@ static void pmu_assert(double actual, double target)
+ 		     actual, target, PMU_TOLERANCE);
+ }
+ 
+-static void busy_wait_until_idle(int i915, igt_spin_t *spin)
++static void busy_wait_until_idle(igt_spin_t *spin)
+ {
+ 	igt_spin_end(spin);
+ 	do {
+@@ -98,9 +102,9 @@ static void busy_wait_until_idle(int i915, igt_spin_t *spin)
+ 	} while (gem_bo_busy(i915, spin->handle));
+ }
+ 
+-static void __igt_spin_free_idle(int i915, igt_spin_t *spin)
++static void __igt_spin_free_idle(igt_spin_t *spin)
+ {
+-	busy_wait_until_idle(i915, spin);
++	busy_wait_until_idle(spin);
+ 
+ 	igt_spin_free(i915, spin);
+ }
+@@ -115,23 +119,25 @@ static void triangle_fill(uint32_t *t, unsigned int nstep,
+ 	}
+ }
+ 
+-static void set_sysfs_freq(uint32_t min, uint32_t max)
++static void set_sysfs_freq(int dirfd, uint32_t min, uint32_t max)
+ {
+-	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%u", min);
+-	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%u", max);
++	igt_sysfs_rps_printf(dirfd, RPS_MIN_FREQ_MHZ, "%u", min);
++	igt_sysfs_rps_printf(dirfd, RPS_MAX_FREQ_MHZ, "%u", max);
+ }
+ 
+-static bool get_sysfs_freq(uint32_t *min, uint32_t *max)
++static bool get_sysfs_freq(int dirfd, uint32_t *min, uint32_t *max)
+ {
+-	return (igt_sysfs_scanf(sysfs, "gt_min_freq_mhz", "%u", min) == 1 &&
+-		igt_sysfs_scanf(sysfs, "gt_max_freq_mhz", "%u", max) == 1);
++	return (igt_sysfs_rps_scanf(dirfd, RPS_MIN_FREQ_MHZ, "%u", min) == 1 &&
++		igt_sysfs_rps_scanf(dirfd, RPS_MAX_FREQ_MHZ, "%u", max) == 1);
+ }
+ 
+-static void sysfs_range(int i915)
++static void sysfs_range(int dirfd, int gt)
+ {
+ #define N_STEPS 10
+ 	uint32_t frequencies[TRIANGLE_SIZE(N_STEPS)];
+-	uint32_t sys_min, sys_max;
++	struct i915_engine_class_instance *ci;
++	uint32_t sys_min, sys_max, ctx;
++	unsigned int count;
+ 	igt_spin_t *spin;
+ 	double measured;
+ 	int pmu;
+@@ -144,12 +150,19 @@ static void sysfs_range(int i915)
+ 	 * constriained sysfs range.
  	 */
  
-+	igt_pm_ignore_slpc_efficient_freq(i915, dirfd, true);
- 	igt_require(get_sysfs_freq(dirfd, &sys_min, &sys_max));
+-	igt_require(get_sysfs_freq(&sys_min, &sys_max));
++	igt_require(get_sysfs_freq(dirfd, &sys_min, &sys_max));
  	igt_info("System min freq: %dMHz; max freq: %dMHz\n", sys_min, sys_max);
  
-@@ -199,6 +201,8 @@ static void __restore_sysfs_freq(int dirfd)
+ 	triangle_fill(frequencies, N_STEPS, sys_min, sys_max);
+ 
+-	pmu = perf_i915_open(i915, I915_PMU_REQUESTED_FREQUENCY);
++	ci = gem_list_engines(i915, 1 << gt, ~0U, &count);
++	igt_require(ci);
++	ctx = gem_context_create_for_engine(i915,
++					    ci[0].engine_class,
++					    ci[0].engine_instance);
++	free(ci);
++
++	pmu = perf_i915_open(i915, __I915_PMU_REQUESTED_FREQUENCY(gt));
+ 	igt_require(pmu >= 0);
+ 
+ 	for (int outer = 0; outer <= 2*N_STEPS; outer++) {
+@@ -157,17 +170,17 @@ static void sysfs_range(int i915)
+ 		uint32_t cur, discard;
+ 
+ 		gem_quiescent_gpu(i915);
+-		spin = igt_spin_new(i915, .ahnd = ahnd);
++		spin = igt_spin_new(i915, .ahnd = ahnd, .ctx_id = ctx);
+ 		usleep(10000);
+ 
+-		set_sysfs_freq(sys_freq, sys_freq);
+-		get_sysfs_freq(&cur, &discard);
++		set_sysfs_freq(dirfd, sys_freq, sys_freq);
++		get_sysfs_freq(dirfd, &cur, &discard);
+ 
+ 		measured = measure_frequency(pmu, SAMPLE_PERIOD);
+ 		igt_debugfs_dump(i915, "i915_rps_boost_info");
+ 
+-		set_sysfs_freq(sys_min, sys_max);
+-		__igt_spin_free_idle(i915, spin);
++		set_sysfs_freq(dirfd, sys_min, sys_max);
++		__igt_spin_free_idle(spin);
+ 
+ 		igt_info("sysfs: Measured %.1fMHz, expected %dMhz\n",
+ 			 measured, cur);
+@@ -175,42 +188,57 @@ static void sysfs_range(int i915)
+ 	}
+ 	gem_quiescent_gpu(i915);
+ 
++	gem_context_destroy(i915, ctx);
+ 	close(pmu);
+ 	put_ahnd(ahnd);
+ 
+ #undef N_STEPS
+ }
+ 
+-static void restore_sysfs_freq(int sig)
++static void __restore_sysfs_freq(int dirfd)
  {
  	char buf[256];
  
-+	igt_pm_ignore_slpc_efficient_freq(i915, dirfd, false);
-+
  	if (igt_sysfs_read(sysfs, "gt_RPn_freq_mhz", buf, sizeof(buf)) > 0)
- 		igt_sysfs_rps_set(dirfd, RPS_MIN_FREQ_MHZ, buf);
+-		igt_sysfs_set(sysfs, "gt_min_freq_mhz", buf);
++		igt_sysfs_rps_set(dirfd, RPS_MIN_FREQ_MHZ, buf);
  
+-	if (igt_sysfs_read(sysfs, "gt_RP0_freq_mhz", buf, sizeof(buf)) > 0) {
+-		igt_sysfs_set(sysfs, "gt_max_freq_mhz", buf);
+-		igt_sysfs_set(sysfs, "gt_boost_freq_mhz", buf);
++	if (igt_sysfs_rps_read(dirfd, RPS_RP0_FREQ_MHZ, buf, sizeof(buf)) > 0) {
++		igt_sysfs_rps_set(dirfd, RPS_MAX_FREQ_MHZ, buf);
++		igt_sysfs_rps_set(dirfd, RPS_BOOST_FREQ_MHZ, buf);
+ 	}
+ }
+ 
+-static void disable_boost(void)
++static void restore_sysfs_freq(int sig)
++{
++	int dirfd, gt;
++
++	for_each_sysfs_gt_dirfd(i915, dirfd, gt)
++		__restore_sysfs_freq(dirfd);
++}
++
++static void __disable_boost(int dirfd)
+ {
+ 	char buf[256];
+ 
+-	if (igt_sysfs_read(sysfs, "gt_RPn_freq_mhz", buf, sizeof(buf)) > 0) {
+-		igt_sysfs_set(sysfs, "gt_min_freq_mhz", buf);
+-		igt_sysfs_set(sysfs, "gt_boost_freq_mhz", buf);
++	if (igt_sysfs_rps_read(dirfd, RPS_RPn_FREQ_MHZ, buf, sizeof(buf)) > 0) {
++		igt_sysfs_rps_set(dirfd, RPS_MIN_FREQ_MHZ, buf);
++		igt_sysfs_rps_set(dirfd, RPS_BOOST_FREQ_MHZ, buf);
+ 	}
+ 
+-	if (igt_sysfs_read(sysfs, "gt_RP0_freq_mhz", buf, sizeof(buf)) > 0)
+-		igt_sysfs_set(sysfs, "gt_max_freq_mhz", buf);
++	if (igt_sysfs_rps_read(dirfd, RPS_RP0_FREQ_MHZ, buf, sizeof(buf)) > 0)
++		igt_sysfs_rps_set(dirfd, RPS_MAX_FREQ_MHZ, buf);
+ }
+ 
+-igt_main
++static void disable_boost(void)
+ {
+-	int i915 = -1;
++	int dirfd, gt;
++
++	for_each_sysfs_gt_dirfd(i915, dirfd, gt)
++		__disable_boost(dirfd);
++}
+ 
++igt_main
++{
+ 	igt_fixture {
+ 		i915 = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(i915);
+@@ -222,6 +250,11 @@ igt_main
+ 		disable_boost();
+ 	}
+ 
+-	igt_subtest_f("sysfs")
+-		sysfs_range(i915);
++	igt_subtest_with_dynamic_f("sysfs") {
++		int dirfd, gt;
++
++		for_each_sysfs_gt_dirfd(i915, dirfd, gt)
++			igt_dynamic_f("gt%u", gt)
++				sysfs_range(dirfd, gt);
++	}
+ }
 -- 
 2.38.0
