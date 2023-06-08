@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3453610E53B
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jun 2023 18:23:19 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  7 Jun 2023 20:23:13 +0200
-Message-Id: <20230607182313.82079-1-zbigniew.kempczynski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5637423012699246802=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3] tests/xe_create: Add multiple engines
- create/destroy subtest
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu, 08 Jun 2023 03:41:22 -0000
+Message-ID: <168619568207.18386.13066049986692190508@emeril.freedesktop.org>
+References: <20230606123741.72759-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230606123741.72759-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?xe=5Fcreate=3A_Add_multiple_engines_create/destroy_subtest?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,145 +17,302 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Exercise basic engine concurrency create/destroy functionality.
+--===============5637423012699246802==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: use different random seeds in children to avoid same engine
-    pattern selection (Kamil)
-    check execution time and report failure if it's too long (Kamil)
+== Series Details ==
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/xe/xe_create.c | 106 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 106 insertions(+)
+Series: tests/xe_create: Add multiple engines create/destroy subtest
+URL   : https://patchwork.freedesktop.org/series/118931/
+State : failure
 
-diff --git a/tests/xe/xe_create.c b/tests/xe/xe_create.c
-index ae21154646..d85a22567c 100644
---- a/tests/xe/xe_create.c
-+++ b/tests/xe/xe_create.c
-@@ -88,6 +88,106 @@ static void create_invalid_size(int fd)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+enum engine_destroy {
-+	NOLEAK,
-+	LEAK
-+};
-+
-+static uint32_t __xe_engine_create(int fd, uint32_t vm,
-+				   struct drm_xe_engine_class_instance *instance,
-+				   uint64_t ext,
-+				   uint32_t *enginep)
-+{
-+	struct drm_xe_engine_create create = {
-+		.extensions = ext,
-+		.vm_id = vm,
-+		.width = 1,
-+		.num_placements = 1,
-+		.instances = to_user_pointer(instance),
-+	};
-+	int err = 0;
-+
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE, &create) == 0) {
-+		*enginep = create.engine_id;
-+	} else {
-+		igt_warn("Can't create engine, errno: %d\n", errno);
-+		err = -errno;
-+		igt_assume(err);
-+	}
-+	errno = 0;
-+
-+	return err;
-+}
-+
-+#define MAXENGINES 2048
-+#define MAXTIME 2
-+
-+/**
-+ * SUBTEST: create-engines-%s
-+ * Description: Check process ability of multiple engines creation
-+ * Run type: FULL
-+ *
-+ * arg[1]:
-+ *
-+ * @noleak:				destroy engines in the code
-+ * @leak:				destroy engines in close() path
-+ */
-+static void create_engines(int fd, enum engine_destroy ed)
-+{
-+	struct timespec tv = { };
-+	uint32_t num_engines, engines_per_process, vm;
-+	int nproc = sysconf(_SC_NPROCESSORS_ONLN), seconds;
-+	bool failed = false;
-+
-+	fd = drm_reopen_driver(fd);
-+	num_engines = xe_number_hw_engines(fd);
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+
-+	engines_per_process = max_t(uint32_t, 1, MAXENGINES / nproc);
-+	igt_debug("nproc: %u, engines per process: %u\n", nproc, engines_per_process);
-+
-+	igt_nsec_elapsed(&tv);
-+
-+	igt_fork(n, nproc) {
-+		struct drm_xe_engine_class_instance *hwe;
-+		uint32_t engine, engines[engines_per_process];
-+		int idx, err, i;
-+
-+		srandom(n);
-+
-+		for (i = 0; i < engines_per_process; i++) {
-+			idx = rand() % num_engines;
-+			hwe = xe_hw_engine(fd, idx);
-+			err = __xe_engine_create(fd, vm, hwe, 0, &engine);
-+			igt_debug("[%2d] Create engine: err=%d, engine=%u [idx = %d]\n",
-+				  n, err, engine, i);
-+			if (err)
-+				break;
-+
-+			if (ed == NOLEAK)
-+				engines[i] = engine;
-+		}
-+
-+		if (ed == NOLEAK) {
-+			while (--i >= 0) {
-+				igt_debug("[%2d] Destroy engine: %u\n", n, engines[i]);
-+				xe_engine_destroy(fd, engines[i]);
-+			}
-+		}
-+	}
-+	igt_waitchildren();
-+
-+	xe_vm_destroy(fd, vm);
-+	close(fd);
-+
-+	seconds = igt_seconds_elapsed(&tv);
-+	if (seconds >= MAXTIME)
-+		failed = true;
-+
-+	igt_assert_f(!failed, "Creating %d engines tooks too long: %d [limit: %d]\n",
-+		     MAXENGINES, seconds, MAXTIME);
-+}
-+
- /**
-  * SUBTEST: create-massive-size
-  * Description: Verifies xe bo create returns expected error code on massive
-@@ -121,6 +221,12 @@ igt_main
- 		create_invalid_size(xe);
- 	}
- 
-+	igt_subtest("create-engines-noleak")
-+		create_engines(xe, NOLEAK);
-+
-+	igt_subtest("create-engines-leak")
-+		create_engines(xe, LEAK);
-+
- 	igt_subtest("create-massive-size") {
- 		create_massive_size(xe);
- 	}
--- 
-2.34.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13236 -> IGTPW_9117
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_9117 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_9117, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/index.html
+
+Participating hosts (41 -> 40)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_9117:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-apl-guc:         [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/fi-apl-guc/igt@i915_suspend@basic-s3-without-i915.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/fi-apl-guc/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9117 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - fi-skl-6600u:       [PASS][3] -> [ABORT][4] ([i915#5122])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/fi-skl-6600u/igt@gem_exec_suspend@basic-s0@smem.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/fi-skl-6600u/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-dg2-11:         [PASS][5] -> [INCOMPLETE][6] ([i915#7609] / [i915#7913])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@i915_selftest@live@guc:
+    - bat-rpls-1:         NOTRUN -> [DMESG-WARN][7] ([i915#7852])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-rpls-1/igt@i915_selftest@live@guc.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         NOTRUN -> [DMESG-WARN][8] ([i915#6367])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - bat-rpls-1:         NOTRUN -> [ABORT][9] ([i915#6687] / [i915#7978])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][10] ([i915#1845] / [i915#5354]) +1 similar issue
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:
+    - bat-dg2-8:          [PASS][11] -> [FAIL][12] ([i915#7932])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_mocs:
+    - {bat-mtlp-8}:       [DMESG-FAIL][13] ([i915#7059]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [ABORT][15] ([i915#7911] / [i915#7920] / [i915#7982]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  * {igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5}:
+    - {bat-adlp-11}:      [FAIL][17] ([i915#7336]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
+  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6868]: https://gitlab.freedesktop.org/drm/intel/issues/6868
+  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
+  [i915#7336]: https://gitlab.freedesktop.org/drm/intel/issues/7336
+  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
+  [i915#7852]: https://gitlab.freedesktop.org/drm/intel/issues/7852
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
+  [i915#8497]: https://gitlab.freedesktop.org/drm/intel/issues/8497
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7320 -> IGTPW_9117
+
+  CI-20190529: 20190529
+  CI_DRM_13236: 6ef9ba991d96572648aa75eb7818d8c111f2eb4f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9117: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/index.html
+  IGT_7320: 1c96b08a4cde6f2d49824a8cc3303bd860617b52 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@xe_create@create-engines-leak
++igt@xe_create@create-engines-noleak
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/index.html
+
+--===============5637423012699246802==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe_create: Add multiple engines create/destroy subtest</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/118931/">https://patchwork.freedesktop.org/series/118931/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13236 -&gt; IGTPW_9117</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_9117 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_9117, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/index.html</p>
+<h2>Participating hosts (41 -&gt; 40)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_9117:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_suspend@basic-s3-without-i915:<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/fi-apl-guc/igt@i915_suspend@basic-s3-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/fi-apl-guc/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9117 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/fi-skl-6600u/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/fi-skl-6600u/igt@gem_exec_suspend@basic-s0@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5122">i915#5122</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-dg2-11/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7609">i915#7609</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@guc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-rpls-1/igt@i915_selftest@live@guc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7852">i915#7852</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>{bat-mtlp-8}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5}:</p>
+<ul>
+<li>{bat-adlp-11}:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13236/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7336">i915#7336</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/bat-adlp-11/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-d-dp-5.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7320 -&gt; IGTPW_9117</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13236: 6ef9ba991d96572648aa75eb7818d8c111f2eb4f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9117: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9117/index.html<br />
+  IGT_7320: 1c96b08a4cde6f2d49824a8cc3303bd860617b52 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_create@create-engines-leak<br />
++igt@xe_create@create-engines-noleak</p>
+
+</body>
+</html>
+
+--===============5637423012699246802==--
