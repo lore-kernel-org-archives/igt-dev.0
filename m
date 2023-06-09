@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CE4D10E6A1
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 13:01:38 +0000 (UTC)
-From: Christoph Manszewski <christoph.manszewski@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3395010E6A1
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 13:08:58 +0000 (UTC)
+Date: Fri, 9 Jun 2023 15:08:53 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Jun 2023 15:01:28 +0200
-Message-Id: <20230609130128.2197571-2-christoph.manszewski@intel.com>
-In-Reply-To: <20230609130128.2197571-1-christoph.manszewski@intel.com>
-References: <20230609130128.2197571-1-christoph.manszewski@intel.com>
+Message-ID: <20230609130853.fwfqx5erkoavqnhf@kamilkon-desk1>
+References: <20230529095126.481130-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] lib/[gpu_cmds|intel_bufops]: Enable
- surface state mocs setting.
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230529095126.481130-1-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe_exec_threads: Increase fence
+ timeout for simulation env
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,148 +20,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allow the user to control the setting of surface caching.
-Add 'mocs' field to intel_buf structure and update the surface state
-fill commands to use introduced filed.
+On 2023-05-29 at 15:21:26 +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> 
+> Increase fence timeout to 30 seconds for simulation env.
+> Value is determined based on experiments.
+> 
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
----
- lib/gpu_cmds.c     | 19 +++++++++++++++++++
- lib/intel_bufops.c |  1 +
- lib/intel_bufops.h | 20 ++++++++++++++++++++
- 3 files changed, 40 insertions(+)
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-index 1f321ae4..aa4aa34d 100644
---- a/lib/gpu_cmds.c
-+++ b/lib/gpu_cmds.c
-@@ -23,6 +23,7 @@
-  */
- 
- #include "gpu_cmds.h"
-+#include "intel_mocs.h"
- 
- uint32_t
- gen7_fill_curbe_buffer_data(struct intel_bb *ibb, uint8_t color)
-@@ -135,6 +136,7 @@ gen8_fill_surface_state(struct intel_bb *ibb,
- 	struct gen8_surface_state *ss;
- 	uint32_t write_domain, read_domain, offset;
- 	uint64_t address;
-+	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
- 
- 	if (is_dst) {
- 		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-@@ -154,6 +156,11 @@ gen8_fill_surface_state(struct intel_bb *ibb,
- 	ss->ss0.vertical_alignment = 1; /* align 4 */
- 	ss->ss0.horizontal_alignment = 1; /* align 4 */
- 
-+	if (mocs == INTEL_BUF_MOCS_UC)
-+		ss->ss1.memory_object_control = intel_get_uc_mocs(ibb->fd);
-+	else if (mocs == INTEL_BUF_MOCS_WB)
-+		ss->ss1.memory_object_control = intel_get_wb_mocs(ibb->fd);
-+
- 	if (buf->tiling == I915_TILING_X)
- 		ss->ss0.tiled_mode = 2;
- 	else if (buf->tiling == I915_TILING_Y || buf->tiling == I915_TILING_4)
-@@ -190,6 +197,7 @@ gen11_fill_surface_state(struct intel_bb *ibb,
- 	struct gen8_surface_state *ss;
- 	uint32_t write_domain, read_domain, offset;
- 	uint64_t address;
-+	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
- 
- 	if (is_dst) {
- 		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-@@ -209,6 +217,11 @@ gen11_fill_surface_state(struct intel_bb *ibb,
- 	ss->ss0.vertical_alignment = vertical_alignment; /* align 4 */
- 	ss->ss0.horizontal_alignment = horizontal_alignment; /* align 4 */
- 
-+	if (mocs == INTEL_BUF_MOCS_UC)
-+		ss->ss1.memory_object_control = intel_get_uc_mocs(ibb->fd);
-+	else if (mocs == INTEL_BUF_MOCS_WB)
-+		ss->ss1.memory_object_control = intel_get_wb_mocs(ibb->fd);
-+
- 	if (buf->tiling == I915_TILING_X)
- 		ss->ss0.tiled_mode = 2;
- 	else if (buf->tiling == I915_TILING_Y || buf->tiling == I915_TILING_4)
-@@ -817,6 +830,7 @@ xehp_fill_surface_state(struct intel_bb *ibb,
- 	struct xehp_surface_state *ss;
- 	uint32_t write_domain, read_domain, offset;
- 	uint64_t address;
-+	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
- 
- 	if (is_dst) {
- 		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-@@ -836,6 +850,11 @@ xehp_fill_surface_state(struct intel_bb *ibb,
- 	ss->ss0.vertical_alignment = 1; /* align 4 */
- 	ss->ss0.horizontal_alignment = 1; /* align 4 */
- 
-+	if (mocs == INTEL_BUF_MOCS_UC)
-+		ss->ss1.memory_object_control = intel_get_uc_mocs(ibb->fd);
-+	else if (mocs == INTEL_BUF_MOCS_WB)
-+		ss->ss1.memory_object_control = intel_get_wb_mocs(ibb->fd);
-+
- 	if (buf->tiling == I915_TILING_X)
- 		ss->ss0.tiled_mode = 2;
- 	else if (buf->tiling == I915_TILING_Y || buf->tiling == I915_TILING_4)
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 46fd981f..52475793 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -837,6 +837,7 @@ static void __intel_buf_init(struct buf_ops *bops,
- 	buf->bops = bops;
- 	buf->addr.offset = INTEL_BUF_INVALID_ADDRESS;
- 	IGT_INIT_LIST_HEAD(&buf->link);
-+	buf->mocs = INTEL_BUF_MOCS_DEFAULT;
- 
- 	if (compression) {
- 		igt_require(bops->intel_gen >= 9);
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 0037548a..4dfe4681 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -12,6 +12,12 @@ struct buf_ops;
- #define INTEL_BUF_NAME_MAXSIZE 32
- #define INVALID_ADDR(x) ((x) == INTEL_BUF_INVALID_ADDRESS)
- 
-+enum intel_buf_mocs {
-+	INTEL_BUF_MOCS_DEFAULT,
-+	INTEL_BUF_MOCS_UC,
-+	INTEL_BUF_MOCS_WB,
-+};
-+
- struct intel_buf {
- 	struct buf_ops *bops;
- 
-@@ -23,6 +29,7 @@ struct intel_buf {
- 	uint32_t compression;
- 	uint32_t swizzle_mode;
- 	uint32_t yuv_semiplanar_bpp;
-+	enum intel_buf_mocs mocs;
- 	bool format_is_yuv;
- 	bool format_is_yuv_semiplanar;
- 	struct {
-@@ -212,4 +219,17 @@ const char *intel_buf_set_name(struct intel_buf *buf, const char *name);
- void intel_buf_write_to_png(struct intel_buf *buf, const char *filename);
- void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename);
- 
-+static inline enum intel_buf_mocs intel_buf_get_mocs(const struct intel_buf *buf)
-+{
-+	igt_assert(buf);
-+	return buf->mocs;
-+}
-+
-+static inline void intel_buf_set_mocs(struct intel_buf *buf,
-+				      enum intel_buf_mocs mocs)
-+{
-+	igt_assert(buf);
-+	buf->mocs = mocs;
-+}
-+
- #endif
--- 
-2.40.1
+> ---
+>  tests/xe/xe_exec_threads.c | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/xe/xe_exec_threads.c b/tests/xe/xe_exec_threads.c
+> index 3f2c2de9..2e777977 100644
+> --- a/tests/xe/xe_exec_threads.c
+> +++ b/tests/xe/xe_exec_threads.c
+> @@ -264,6 +264,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>  		.num_syncs = 1,
+>  		.syncs = to_user_pointer(sync),
+>  	};
+> +	int64_t fence_timeout;
+>  	uint32_t engines[MAX_N_ENGINES];
+>  	size_t bo_size;
+>  	uint32_t bo = 0;
+> @@ -335,7 +336,11 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>  		xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(data), addr,
+>  					 bo_size, sync, 1);
+>  #define THREE_SEC	3000
+> -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
+> +#define THIRTY_SEC	30000
+> +
+> +	fence_timeout = igt_run_in_simulation() ? THIRTY_SEC : THREE_SEC;
+> +
+> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
+>  	data[0].vm_sync = 0;
+>  
+>  	for (i = 0; i < n_execs; i++) {
+> @@ -363,7 +368,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>  			for (j = i - 0x20; j <= i; ++j)
+>  				xe_wait_ufence(fd, &data[j].exec_sync,
+>  					       USER_FENCE_VALUE,
+> -					       NULL, THREE_SEC);
+> +					       NULL, fence_timeout);
+>  			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
+>  					   NULL, 0);
+>  
+> @@ -378,7 +383,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>  							 addr, bo_size, sync,
+>  							 1);
+>  			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+> -				       NULL, THREE_SEC);
+> +				       NULL, fence_timeout);
+>  			data[0].vm_sync = 0;
+>  		}
+>  
+> @@ -393,7 +398,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>  				for (j = i == 0x20 ? 0 : i - 0x1f; j <= i; ++j)
+>  					xe_wait_ufence(fd, &data[j].exec_sync,
+>  						       USER_FENCE_VALUE,
+> -						       NULL, THREE_SEC);
+> +						       NULL, fence_timeout);
+>  				igt_assert_eq(data[i].data, 0xc0ffee);
+>  			} else if (i * 2 != n_execs) {
+>  				/*
+> @@ -426,7 +431,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>  		(flags & RACE ? n_execs / 2 + 1 : n_execs - 1) : 0;
+>  	for (i = j; i < n_execs; i++)
+>  		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
+> -			       THREE_SEC);
+> +			       fence_timeout);
+>  
+>  	/* Wait for all execs to complete */
+>  	if (flags & INVALIDATE)
+> @@ -434,7 +439,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>  
+>  	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+>  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+> -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
+> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
+>  
+>  	for (i = j; i < n_execs; i++)
+>  		igt_assert_eq(data[i].data, 0xc0ffee);
+> -- 
+> 2.25.1
+> 
