@@ -1,23 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F9D610E0D7
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 05:44:28 +0000 (UTC)
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gandi,
- Ramadevi" <ramadevi.gandi@intel.com>, "Kumar, Janga Rahul"
- <janga.rahul.kumar@intel.com>
-Date: Fri, 9 Jun 2023 05:44:22 +0000
-Message-ID: <DM6PR11MB449233FD8B085B73EC3180678D51A@DM6PR11MB4492.namprd11.prod.outlook.com>
-References: <20230607080352.950226-1-janga.rahul.kumar@intel.com>
- <20230607080352.950226-3-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230607080352.950226-3-janga.rahul.kumar@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CEF310E0DD
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 05:47:39 +0000 (UTC)
+Message-ID: <10b87ab2-8e55-8274-ed1d-3775b185f250@intel.com>
+Date: Fri, 9 Jun 2023 11:17:19 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230606080208.2683342-1-kunal1.joshi@intel.com>
+ <20230606080208.2683342-6-kunal1.joshi@intel.com>
+ <1d2b71d1-5d94-3454-4597-5982bc6d56ea@intel.com>
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <1d2b71d1-5d94-3454-4597-5982bc6d56ea@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/xe_vm.c: Add Negative test to
- VM error capture
+Subject: Re: [igt-dev] [PATCH i-g-t 5/5] RFC
+ tests/i915/kms_frontbuffer_tracking: xe only supports MMAP_WC, BLT, RENDER
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,74 +28,137 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hello Bhanu,
 
+On 6/8/2023 5:16 PM, Modem, Bhanuprakash wrote:
+>
+>
+> On Tue-06-06-2023 01:32 pm, Kunal Joshi wrote:
+>> xe only supports MMAP_WC, BLT and RENDER methods,
+>>
+>> Open :- does draw method give guarantee for fb to be rendered
+>> on return, if not how to assure, ex for RENDER we have intel_bb_sync
+>>
+>> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+>>
+>> +static bool supported_xe_draw_method(enum igt_draw_method method)
+>> +{
+>> +    return method == IGT_DRAW_MMAP_WC || method == IGT_DRAW_BLT
+>> +             || method == IGT_DRAW_RENDER;
+>> +}
+>
+> Please use igt_draw_supports_method() instead of writing your own 
+> wrapper.
+Sure bhanu, thanks for pointing it out, will float next revision with 
+this change
+>
+>> +
+>>   static drmModeModeInfo *get_connector_smallest_mode(igt_output_t 
+>> *output)
+>>   {
+>>       drmModeConnector *c = output->config.connector;
+>> @@ -1307,10 +1317,12 @@ static void init_crcs(enum pixel_format 
+>> format, enum tiling_type tiling,
+>>           for (r = 0; r < pattern->n_rects; r++)
+>>               for (r_ = 0; r_ <= r; r_++)
+>>                   draw_rect_igt_fb(pattern, &tmp_fbs[r],
+>> -                         IGT_DRAW_PWRITE, r_);
+>> + is_xe_device(drm.fd)?IGT_DRAW_RENDER:IGT_DRAW_PWRITE,
+>> +                         r_);
+>>       } else {
+>>           for (r = 0; r < pattern->n_rects; r++)
+>> -            draw_rect_igt_fb(pattern, &tmp_fbs[r], IGT_DRAW_PWRITE,
+>> +            draw_rect_igt_fb(pattern, &tmp_fbs[r],
+>> + is_xe_device(drm.fd)?IGT_DRAW_RENDER:IGT_DRAW_PWRITE,
+>>                        r);
+>>       }
+>>   @@ -3180,6 +3192,9 @@ static void basic_subtest(const struct 
+>> test_mode *t)
+>>       fb1 = params->primary.fb;
+>>         for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; 
+>> method++) {
+>> +        if (is_xe_device(drm.fd) && !supported_xe_draw_method(method))
+>> +            continue;
+>> +
+>>           if (method == IGT_DRAW_MMAP_GTT &&
+>>               !gem_has_mappable_ggtt(drm.fd))
+>>               continue;
+>> @@ -3413,29 +3428,30 @@ static const char *tiling_str(enum 
+>> tiling_type tiling)
+>>   }
+>>     #define TEST_MODE_ITER_BEGIN(t) \
+>> -    t.format = FORMAT_DEFAULT;                       \
+>> -    t.flip = FLIP_PAGEFLIP;                           \
+>> -    t.tiling = opt.tiling;;                           \
+>> -    for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) 
+>> {       \
+>> -    for (t.pipes = 0; t.pipes < PIPE_COUNT; t.pipes++) {           \
+>> -    for (t.screen = 0; t.screen < SCREEN_COUNT; t.screen++) {       \
+>> -    for (t.plane = 0; t.plane < PLANE_COUNT; t.plane++) {           \
+>> -    for (t.fbs = 0; t.fbs < FBS_COUNT; t.fbs++) {               \
+>> -    for (t.method = 0; t.method < IGT_DRAW_METHOD_COUNT; t.method++) 
+>> { \
+>> -        if (t.pipes == PIPE_SINGLE && t.screen == SCREEN_SCND)       \
+>> -            continue;                       \
+>> -        if (t.screen == SCREEN_OFFSCREEN && t.plane != PLANE_PRI)  \
+>> -            continue;                       \
+>> -        if (!opt.show_hidden && t.pipes == PIPE_DUAL &&           \
+>> -            t.screen == SCREEN_OFFSCREEN)               \
+>> -            continue;                       \
+>> -        if (!opt.show_hidden && t.feature == FEATURE_NONE)       \
+>> -            continue;                       \
+>> -        if (!opt.show_hidden && t.fbs == FBS_SHARED &&           \
+>> -            (t.plane == PLANE_CUR || t.plane == PLANE_SPR))       \
+>> +       t.format = 
+>> FORMAT_DEFAULT;                                               \
+>> +       t.flip = FLIP_PAGEFLIP; \
+>> +       t.tiling = 
+>> opt.tiling;;                                                  \
+>> +       for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) 
+>> {            \
+>> +       for (t.pipes = 0; t.pipes < PIPE_COUNT; t.pipes++) 
+>> {                     \
+>> +       for (t.screen = 0; t.screen < SCREEN_COUNT; t.screen++) 
+>> {                \
+>> +       for (t.plane = 0; t.plane < PLANE_COUNT; t.plane++) 
+>> {                    \
+>> +       for (t.fbs = 0; t.fbs < FBS_COUNT; t.fbs++) 
+>> {                            \
+>> +       for (t.method = 0; t.method < IGT_DRAW_METHOD_COUNT; 
+>> t.method++) {       \
+>> +    if (is_xe_device(drm.fd) && 
+>> !supported_xe_draw_method(t.method))        \
+>> +        continue; 
+>
+> Changes in this macro are irrelevant except above 2 lines.
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> janga.rahul.kumar@intel.com
-> Sent: 07 June 2023 01:34 PM
-> To: igt-dev@lists.freedesktop.org; Gandi, Ramadevi
-> <ramadevi.gandi@intel.com>; Kumar, Janga Rahul
-> <janga.rahul.kumar@intel.com>
-> Subject: [igt-dev] [PATCH i-g-t 2/2] tests/xe_vm.c: Add Negative test to =
-VM
-> error capture
->=20
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
->=20
-> Add negative test to check invalid arguments.
->=20
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> ---
->  tests/xe/xe_vm.c | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
->=20
-> diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c index 0da6c847..7f369fc4
-> 100644
-> --- a/tests/xe/xe_vm.c
-> +++ b/tests/xe/xe_vm.c
-> @@ -1638,6 +1638,31 @@ vm_error_capture_address(int fd)
->  	xe_vm_destroy(fd, vm);
->  }
->=20
-> +/**
-> + * SUBTEST: vm-error-capture-address-invalid-val
-> + * Description: Negative test to check vm error capture
-> + * Functionality: error capture
-> + * Run type: FULL
-> + * TODO: change ``'Run type' =3D=3D FULL`` to a better category
-> + *
-> + */
-> +static void
-> +vm_error_capture_address_invalid_val(int fd) {
-> +	struct drm_xe_ext_vm_set_property ext =3D {
-> +		.base.next_extension =3D 0,
-> +		.base.name =3D XE_VM_EXTENSION_SET_PROPERTY,
-> +		.property =3D
-> XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS,
-> +		.value =3D 0,
-> +	};
-> +
-> +	struct drm_xe_vm_create create =3D {
-> +		.extensions =3D to_user_pointer(&ext),
-> +		.flags =3D DRM_XE_VM_CREATE_ASYNC_BIND_OPS,
-> +	};
-> +
-> +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_CREATE, &create, EINVAL); }
->=20
->  igt_main
->  {
-> @@ -1924,6 +1949,9 @@ igt_main
->  	igt_subtest("vm-error-capture-address")
->  		vm_error_capture_address(fd);
->=20
-> +	igt_subtest("vm-error-capture-address-invalid-val")
-> +		vm_error_capture_address_invalid_val(fd);
-> +
->  	igt_fixture {
->  		xe_device_put(fd);
->  		close(fd);
-LGTM,
-Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> --
-> 2.25.1
+Bhanu for the other line i have placed the \ at the end of the line
+So it looks nice, let me know if its not required
+
+>
+> - Bhanu
+>                                                       \
+>> +    if (t.pipes == PIPE_SINGLE && t.screen == 
+>> SCREEN_SCND)                  \
+>> + continue; \
+>> +    if (t.screen == SCREEN_OFFSCREEN && t.plane != 
+>> PLANE_PRI)               \
+>> + continue; \
+>> +    if (!opt.show_hidden && t.pipes == PIPE_DUAL 
+>> &&                         \
+>> +           t.screen == 
+>> SCREEN_OFFSCREEN)                                \
+>> + continue; \
+>> +    if (!opt.show_hidden && t.feature == 
+>> FEATURE_NONE)                      \
+>> + continue; \
+>> +    if (!opt.show_hidden && t.fbs == FBS_SHARED 
+>> &&                          \
+>> +           (t.plane == PLANE_CUR || t.plane == 
+>> PLANE_SPR))              \
+>>               continue;
+>>   -
+>>   #define TEST_MODE_ITER_END } } } } } }
+>>     struct option long_options[] = {
+Thanks and Regards
+Kunal Joshi
