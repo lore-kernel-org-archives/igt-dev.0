@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2185E10E674
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 09:36:56 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C24DB10E671
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 09:37:35 +0000 (UTC)
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Jun 2023 11:36:41 +0200
-Message-Id: <20230609093641.2075459-2-christoph.manszewski@intel.com>
-In-Reply-To: <20230609093641.2075459-1-christoph.manszewski@intel.com>
-References: <20230609093641.2075459-1-christoph.manszewski@intel.com>
+Date: Fri,  9 Jun 2023 11:37:19 +0200
+Message-Id: <20230609093719.2076046-2-christoph.manszewski@intel.com>
+In-Reply-To: <20230609093719.2076046-1-christoph.manszewski@intel.com>
+References: <20230609093719.2076046-1-christoph.manszewski@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/1] lib: Let gen7 inherit gen4_render.h
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib: Apply rightmost execution mask to
+ xehp gpu walker
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,50 +19,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of redefining pipe selects, use them from gen4_render.h
+The final thread group in each row may need partial execution (not the
+full simd16) in order to fit within the region of interest.
 
-Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- lib/gen7_media.h | 2 +-
- lib/gen8_media.h | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ lib/gpu_cmds.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/lib/gen7_media.h b/lib/gen7_media.h
-index b5e49cae..93dc7312 100644
---- a/lib/gen7_media.h
-+++ b/lib/gen7_media.h
-@@ -3,6 +3,7 @@
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index aecba928..48fe1e13 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -953,7 +953,7 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
+ 		       struct xehp_interface_descriptor_data *pidd,
+ 		       uint8_t color)
+ {
+-	uint32_t x_dim, y_dim;
++	uint32_t x_dim, y_dim, mask;
  
- #include <stdint.h>
- #include "surfaceformat.h"
-+#include "gen4_render.h"
+ 	/*
+ 	 * Simply do SIMD16 based dispatch, so every thread uses
+@@ -969,6 +969,12 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
+ 	x_dim = (x + width + 15) / 16;
+ 	y_dim = y + height;
  
- #define GEN7_FLOATING_POINT_IEEE_754		0
- #define GEN7_FLOATING_POINT_NON_IEEE_754	1
-@@ -13,7 +14,6 @@
- 						((Subopcode) << 16))
++	mask = (x + width) & 15;
++	if (mask == 0)
++		mask = (1 << 16) - 1;
++	else
++		mask = (1 << mask) - 1;
++
+ 	intel_bb_out(ibb, XEHP_COMPUTE_WALKER | 0x25);
  
- #define GEN7_PIPELINE_SELECT			GFXPIPE(1, 1, 4)
--# define PIPELINE_SELECT_3D			(0 << 0)
- # define PIPELINE_SELECT_GPGPU			(2 << 0)
+ 	intel_bb_out(ibb, 0); /* debug object */		//dw1
+@@ -980,7 +986,7 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
+ 	intel_bb_out(ibb, 1 << 30 | 1 << 25 | 1 << 17);		//dw4
  
- #define GEN7_STATE_BASE_ADDRESS			GFXPIPE(0, 1, 1)
-diff --git a/lib/gen8_media.h b/lib/gen8_media.h
-index b5c19e50..01aaa9be 100644
---- a/lib/gen8_media.h
-+++ b/lib/gen8_media.h
-@@ -13,7 +13,6 @@
- 						((Subopcode) << 16))
+ 	/* Execution mask */
+-	intel_bb_out(ibb, 0xffffffff);				//dw5
++	intel_bb_out(ibb, mask);				//dw5
  
- #define GEN8_PIPELINE_SELECT			GFXPIPE(1, 1, 4)
--# define PIPELINE_SELECT_3D			(0 << 0)
- 
- #define GEN8_STATE_BASE_ADDRESS			GFXPIPE(0, 1, 1)
- 
+ 	/* x/y/z max */
+ 	intel_bb_out(ibb, (x_dim << 20) | (y_dim << 10) | 1);	//dw6
 -- 
 2.40.1
