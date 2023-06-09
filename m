@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1FCD10E138
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Jun 2023 08:00:00 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 73AAC10E679
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 10:08:37 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Jun 2023 13:32:08 +0530
-Message-Id: <20230606080208.2683342-6-kunal1.joshi@intel.com>
-In-Reply-To: <20230606080208.2683342-1-kunal1.joshi@intel.com>
-References: <20230606080208.2683342-1-kunal1.joshi@intel.com>
+Date: Fri,  9 Jun 2023 15:42:02 +0530
+Message-Id: <20230609101205.2803975-3-kunal1.joshi@intel.com>
+In-Reply-To: <20230609101205.2803975-1-kunal1.joshi@intel.com>
+References: <20230609101205.2803975-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/5] RFC
- tests/i915/kms_frontbuffer_tracking: xe only supports MMAP_WC, BLT, RENDER
+Subject: [igt-dev] [PATCH i-g-t 2/5] RFC
+ tests/i915/kms_frontbuffer_tracking: xe doesn't support tiling as of now
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,113 +24,60 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-xe only supports MMAP_WC, BLT and RENDER methods,
+XE doesn't support tiling as of now, so set tiling to linear
 
-Open :- does draw method give guarantee for fb to be rendered
-on return, if not how to assure, ex for RENDER we have intel_bb_sync
+v2: use is_xe_device() instead of static variable (Jouni)
+    assert if xe device and unsupported tiling method specified
+    in opt handler (Jouni)
+v3: Fix condition in igt_assert
+v4: Keep tiling check in igt_require (Bhanu)
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/i915/kms_frontbuffer_tracking.c | 62 +++++++++++++++++----------
- 1 file changed, 39 insertions(+), 23 deletions(-)
+ tests/i915/kms_frontbuffer_tracking.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 9561abef..17aed191 100644
+index c2b99670..45a601fe 100644
 --- a/tests/i915/kms_frontbuffer_tracking.c
 +++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -309,6 +309,16 @@ struct {
- 	.stop = true,
- };
+@@ -1341,6 +1341,19 @@ static void setup_drm(void)
+ 	drm.fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+ 	drm.debugfs = igt_debugfs_dir(drm.fd);
  
-+/*
-+ * returns true if draw method is supported on XE
-+ * Currently xe supports on MMAP_WC, BLT and RENDER
-+ */
-+static bool supported_xe_draw_method(enum igt_draw_method method)
-+{
-+	return method == IGT_DRAW_MMAP_WC || method == IGT_DRAW_BLT
-+			 || method == IGT_DRAW_RENDER;
-+}
++	/*
++	 * Assert if xe device and tiling method specified
++	 * in opt_handler
++	 */
++	igt_assert(is_i915_device(drm.fd) || (is_xe_device(drm.fd) && (opt.tiling == TILING_DEFAULT ||
++		   opt.tiling == TILING_LINEAR)));
 +
- static drmModeModeInfo *get_connector_smallest_mode(igt_output_t *output)
- {
- 	drmModeConnector *c = output->config.connector;
-@@ -1307,10 +1317,12 @@ static void init_crcs(enum pixel_format format, enum tiling_type tiling,
- 		for (r = 0; r < pattern->n_rects; r++)
- 			for (r_ = 0; r_ <= r; r_++)
- 				draw_rect_igt_fb(pattern, &tmp_fbs[r],
--						 IGT_DRAW_PWRITE, r_);
-+						 is_xe_device(drm.fd)?IGT_DRAW_RENDER:IGT_DRAW_PWRITE,
-+						 r_);
- 	} else {
- 		for (r = 0; r < pattern->n_rects; r++)
--			draw_rect_igt_fb(pattern, &tmp_fbs[r], IGT_DRAW_PWRITE,
-+			draw_rect_igt_fb(pattern, &tmp_fbs[r],
-+					 is_xe_device(drm.fd)?IGT_DRAW_RENDER:IGT_DRAW_PWRITE,
- 					 r);
- 	}
- 
-@@ -3180,6 +3192,9 @@ static void basic_subtest(const struct test_mode *t)
- 	fb1 = params->primary.fb;
- 
- 	for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
-+		if (is_xe_device(drm.fd) && !supported_xe_draw_method(method))
-+			continue;
++	/*
++	 * XE only support linear tiling
++	 */
++	if (is_xe_device(drm.fd))
++		opt.tiling = TILING_LINEAR;
 +
- 		if (method == IGT_DRAW_MMAP_GTT &&
- 		    !gem_has_mappable_ggtt(drm.fd))
- 			continue;
-@@ -3413,29 +3428,30 @@ static const char *tiling_str(enum tiling_type tiling)
- }
+ 	kmstest_set_vt_graphics_mode();
+ 	igt_display_require(&drm.display, drm.fd);
  
- #define TEST_MODE_ITER_BEGIN(t) \
--	t.format = FORMAT_DEFAULT;					   \
--	t.flip = FLIP_PAGEFLIP;						   \
--	t.tiling = opt.tiling;;						   \
--	for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) {	   \
--	for (t.pipes = 0; t.pipes < PIPE_COUNT; t.pipes++) {		   \
--	for (t.screen = 0; t.screen < SCREEN_COUNT; t.screen++) {	   \
--	for (t.plane = 0; t.plane < PLANE_COUNT; t.plane++) {		   \
--	for (t.fbs = 0; t.fbs < FBS_COUNT; t.fbs++) {			   \
--	for (t.method = 0; t.method < IGT_DRAW_METHOD_COUNT; t.method++) { \
--		if (t.pipes == PIPE_SINGLE && t.screen == SCREEN_SCND)	   \
--			continue;					   \
--		if (t.screen == SCREEN_OFFSCREEN && t.plane != PLANE_PRI)  \
--			continue;					   \
--		if (!opt.show_hidden && t.pipes == PIPE_DUAL &&		   \
--		    t.screen == SCREEN_OFFSCREEN)			   \
--			continue;					   \
--		if (!opt.show_hidden && t.feature == FEATURE_NONE)	   \
--			continue;					   \
--		if (!opt.show_hidden && t.fbs == FBS_SHARED &&		   \
--		    (t.plane == PLANE_CUR || t.plane == PLANE_SPR))	   \
-+       t.format = FORMAT_DEFAULT;                                               \
-+       t.flip = FLIP_PAGEFLIP;                                                  \
-+       t.tiling = opt.tiling;;                                                  \
-+       for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) {            \
-+       for (t.pipes = 0; t.pipes < PIPE_COUNT; t.pipes++) {                     \
-+       for (t.screen = 0; t.screen < SCREEN_COUNT; t.screen++) {                \
-+       for (t.plane = 0; t.plane < PLANE_COUNT; t.plane++) {                    \
-+       for (t.fbs = 0; t.fbs < FBS_COUNT; t.fbs++) {                            \
-+       for (t.method = 0; t.method < IGT_DRAW_METHOD_COUNT; t.method++) {       \
-+	if (is_xe_device(drm.fd) && !supported_xe_draw_method(t.method))        \
-+		continue;                                                       \
-+	if (t.pipes == PIPE_SINGLE && t.screen == SCREEN_SCND)                  \
-+		continue;                                                       \
-+	if (t.screen == SCREEN_OFFSCREEN && t.plane != PLANE_PRI)               \
-+		continue;                                                       \
-+	if (!opt.show_hidden && t.pipes == PIPE_DUAL &&                         \
-+		   t.screen == SCREEN_OFFSCREEN)                                \
-+		continue;                                                       \
-+	if (!opt.show_hidden && t.feature == FEATURE_NONE)                      \
-+		continue;                                                       \
-+	if (!opt.show_hidden && t.fbs == FBS_SHARED &&                          \
-+		   (t.plane == PLANE_CUR || t.plane == PLANE_SPR))              \
- 			continue;
+@@ -3634,6 +3647,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
  
--
- #define TEST_MODE_ITER_END } } } } } }
+ 			for (t.tiling = TILING_LINEAR; t.tiling < TILING_COUNT;
+ 			     t.tiling++) {
++
+ 				if (t.tiling == TILING_X)
+ 					continue;
  
- struct option long_options[] = {
+@@ -3646,6 +3660,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 					      feature_str(t.feature),
+ 					      tiling_str(t.tiling)) {
+ 
++					if (is_xe_device(drm.fd))
++						igt_require(t.tiling == TILING_LINEAR);
++
+ 					/* Tiling Y is only supported on GEN9+ */
+ 					if (t.tiling == TILING_Y) {
+ 						igt_require(AT_LEAST_GEN(devid, 9));
 -- 
 2.34.1
