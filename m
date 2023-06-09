@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3395010E6A1
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 13:08:58 +0000 (UTC)
-Date: Fri, 9 Jun 2023 15:08:53 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19F3810E6A1
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 13:21:12 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230609130853.fwfqx5erkoavqnhf@kamilkon-desk1>
-References: <20230529095126.481130-1-janga.rahul.kumar@intel.com>
+Date: Fri,  9 Jun 2023 18:50:15 +0530
+Message-Id: <20230609132019.508947-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230529095126.481130-1-janga.rahul.kumar@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe_exec_threads: Increase fence
- timeout for simulation env
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/4] Misc. fixes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,95 +16,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-05-29 at 15:21:26 +0530, janga.rahul.kumar@intel.com wrote:
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> 
-> Increase fence timeout to 30 seconds for simulation env.
-> Value is determined based on experiments.
-> 
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Series contains misc. fixes.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Chris Wilson (3):
+  i915/kms_busy: Free spinners after use
+  i915/kms_mmap_write_crc: Free the mmap and dma-buf fd
+  lib: Clear displays on finish before process exit
 
-> ---
->  tests/xe/xe_exec_threads.c | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/xe/xe_exec_threads.c b/tests/xe/xe_exec_threads.c
-> index 3f2c2de9..2e777977 100644
-> --- a/tests/xe/xe_exec_threads.c
-> +++ b/tests/xe/xe_exec_threads.c
-> @@ -264,6 +264,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  		.num_syncs = 1,
->  		.syncs = to_user_pointer(sync),
->  	};
-> +	int64_t fence_timeout;
->  	uint32_t engines[MAX_N_ENGINES];
->  	size_t bo_size;
->  	uint32_t bo = 0;
-> @@ -335,7 +336,11 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  		xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(data), addr,
->  					 bo_size, sync, 1);
->  #define THREE_SEC	3000
-> -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
-> +#define THIRTY_SEC	30000
-> +
-> +	fence_timeout = igt_run_in_simulation() ? THIRTY_SEC : THREE_SEC;
-> +
-> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
->  	data[0].vm_sync = 0;
->  
->  	for (i = 0; i < n_execs; i++) {
-> @@ -363,7 +368,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  			for (j = i - 0x20; j <= i; ++j)
->  				xe_wait_ufence(fd, &data[j].exec_sync,
->  					       USER_FENCE_VALUE,
-> -					       NULL, THREE_SEC);
-> +					       NULL, fence_timeout);
->  			xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
->  					   NULL, 0);
->  
-> @@ -378,7 +383,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  							 addr, bo_size, sync,
->  							 1);
->  			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
-> -				       NULL, THREE_SEC);
-> +				       NULL, fence_timeout);
->  			data[0].vm_sync = 0;
->  		}
->  
-> @@ -393,7 +398,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  				for (j = i == 0x20 ? 0 : i - 0x1f; j <= i; ++j)
->  					xe_wait_ufence(fd, &data[j].exec_sync,
->  						       USER_FENCE_VALUE,
-> -						       NULL, THREE_SEC);
-> +						       NULL, fence_timeout);
->  				igt_assert_eq(data[i].data, 0xc0ffee);
->  			} else if (i * 2 != n_execs) {
->  				/*
-> @@ -426,7 +431,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  		(flags & RACE ? n_execs / 2 + 1 : n_execs - 1) : 0;
->  	for (i = j; i < n_execs; i++)
->  		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
-> -			       THREE_SEC);
-> +			       fence_timeout);
->  
->  	/* Wait for all execs to complete */
->  	if (flags & INVALIDATE)
-> @@ -434,7 +439,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->  
->  	sync[0].addr = to_user_pointer(&data[0].vm_sync);
->  	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
-> -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, THREE_SEC);
-> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, fence_timeout);
->  
->  	for (i = j; i < n_execs; i++)
->  		igt_assert_eq(data[i].data, 0xc0ffee);
-> -- 
-> 2.25.1
-> 
+Matt Roper (1):
+  lib/i915: Add intel_display_ver() and use it in display tests/libs
+
+ lib/igt_draw.c                  | 6 +++---
+ lib/igt_kms.c                   | 3 +++
+ tests/i915/kms_busy.c           | 5 ++---
+ tests/i915/kms_mmap_write_crc.c | 3 +++
+ 4 files changed, 11 insertions(+), 6 deletions(-)
+
+-- 
+2.25.1
