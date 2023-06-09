@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 513B910E668
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 09:22:29 +0000 (UTC)
-From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
-To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 9 Jun 2023 09:22:25 +0000
-Message-ID: <MW4PR11MB7056E3CCD1D864991CCD8CEDB351A@MW4PR11MB7056.namprd11.prod.outlook.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60B4E10E24E
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 09:36:03 +0000 (UTC)
+Date: Fri, 9 Jun 2023 11:35:58 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230609093558.lxt65lzbseb7fw55@kamilkon-desk1>
 References: <20230605055059.2942855-1-himal.prasad.ghimiray@intel.com>
- <MW3PR11MB47482BA43F6F0FFDBE22478BAE51A@MW3PR11MB4748.namprd11.prod.outlook.com>
-In-Reply-To: <MW3PR11MB47482BA43F6F0FFDBE22478BAE51A@MW3PR11MB4748.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230605055059.2942855-1-himal.prasad.ghimiray@intel.com>
 Subject: Re: [igt-dev] [i-g-t,
  1/1] Uevent listener for fake gt reset failure.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -23,119 +21,262 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Gandi, Ramadevi" <ramadevi.gandi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS3VtYXIsIEphbmdhIFJh
-aHVsIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQo+IFNlbnQ6IDA5IEp1bmUgMjAyMyAx
-NDozNQ0KPiBUbzogR2hpbWlyYXksIEhpbWFsIFByYXNhZCA8aGltYWwucHJhc2FkLmdoaW1pcmF5
-QGludGVsLmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogR2hp
-bWlyYXksIEhpbWFsIFByYXNhZCA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGludGVsLmNvbT47IEdh
-bmRpLA0KPiBSYW1hZGV2aSA8cmFtYWRldmkuZ2FuZGlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBS
-RTogW2lndC1kZXZdIFtpLWctdCwgMS8xXSBVZXZlbnQgbGlzdGVuZXIgZm9yIGZha2UgZ3QgcmVz
-ZXQgZmFpbHVyZS4NCj4gDQo+IA0KPiANCj4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0K
-PiA+IEZyb206IGlndC1kZXYgPGlndC1kZXYtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+
-IE9uIEJlaGFsZiBPZg0KPiA+IEhpbWFsIFByYXNhZCBHaGltaXJheQ0KPiA+IFNlbnQ6IDA1IEp1
-bmUgMjAyMyAxMToyMQ0KPiA+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiA+
-IENjOiBHaGltaXJheSwgSGltYWwgUHJhc2FkIDxoaW1hbC5wcmFzYWQuZ2hpbWlyYXlAaW50ZWwu
-Y29tPg0KPiA+IFN1YmplY3Q6IFtpZ3QtZGV2XSBbaS1nLXQsIDEvMV0gVWV2ZW50IGxpc3RlbmVy
-IGZvciBmYWtlIGd0IHJlc2V0IGZhaWx1cmUuDQo+ID4NCj4gPiBUaGlzIHRlc3QgaXMgdG8gY2F1
-c2UgdGhlIGZha2UgcmVzZXQgZmFpbHVyZSBhbmQgY2FwdHVyZSB0aGUgdWV2ZW50DQo+ID4gc2Vu
-dCBpbiBjYXNlIG9mIGd0IHJlc2V0IGZhaWx1cmUuDQo+ID4NCj4gPiBUaGUgc2VuZGluZyBvZiBV
-ZXZlbnQgaXMgdGFrZW4gY2FyZSBieSBzZXJpZXM6DQo+ID4gZHJtL3hlOiBOb3RpZnkgVXNlcnNw
-YWNlIHdoZW4gZW5naW5lL2d0IHJlc2V0IGZhaWxzLg0KPiA+DQo+ID4gVGhlIGluZnJhIHRvIGNh
-dXNlIGZha2UgcmVzZXQgZmFpbHVyZSBpcyBpbiBzZXJpZXM6DQo+ID4gZHJtL3hlOiBBZGQgYSBk
-ZWJ1Z2ZzIGZvciBmYWtpbmcgZ3QgcmVzZXQgZmFpbHVyZS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYt
-Ynk6IEhpbWFsIFByYXNhZCBHaGltaXJheSA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGludGVsLmNv
-bT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMvbWVzb24uYnVpbGQgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgICAxICsNCj4gPiAgLi4uL3hlX3VldmVudF9saXN0ZW5lcl9mYWtlX3Jlc2V0X2Zh
-aWx1cmUuYyAgIHwgMTI4ICsrKysrKysrKysrKysrKysrKw0KPiA+ICAyIGZpbGVzIGNoYW5nZWQs
-IDEyOSBpbnNlcnRpb25zKCspDQo+ID4gIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy94ZS94ZV91
-ZXZlbnRfbGlzdGVuZXJfZmFrZV9yZXNldF9mYWlsdXJlLmMNCj4gPg0KPiA+IGRpZmYgLS1naXQg
-YS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1aWxkIGluZGV4DQo+ID4gZjcxYmUx
-ZGIuLmNjNTg0M2Q3DQo+ID4gMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMvbWVzb24uYnVpbGQNCj4g
-PiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiA+IEBAIC0yNjgsNiArMjY4LDcgQEAgeGVfcHJv
-Z3MgPSBbDQo+ID4gIAkneGVfcXVlcnknLA0KPiA+ICAJJ3hlX3ZtJywNCj4gPiAgCSd4ZV93YWl0
-ZmVuY2UnLA0KPiA+ICsJJ3hlX3VldmVudF9saXN0ZW5lcl9mYWtlX3Jlc2V0X2ZhaWx1cmUnLA0K
-PiBQbGVhc2UgbWFpbnRhaW4gYWJvdmUgbGlzdCBpbiBhbHBoYWJldGljYWxseSBzb3J0ZWQgb3Jk
-ZXINClN1cmUuIFdpbGwgZG8gaW4gbmV4dCBwYXRjaC4gDQo+ID4gIF0NCj4gPg0KPiA+ICBtc21f
-cHJvZ3MgPSBbDQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL3hlL3hlX3VldmVudF9saXN0ZW5lcl9m
-YWtlX3Jlc2V0X2ZhaWx1cmUuYw0KPiA+IGIvdGVzdHMveGUveGVfdWV2ZW50X2xpc3RlbmVyX2Zh
-a2VfcmVzZXRfZmFpbHVyZS5jDQo+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gPiBpbmRleCAw
-MDAwMDAwMC4uZGQyMmU0YzINCj4gPiAtLS0gL2Rldi9udWxsDQo+ID4gKysrIGIvdGVzdHMveGUv
-eGVfdWV2ZW50X2xpc3RlbmVyX2Zha2VfcmVzZXRfZmFpbHVyZS5jDQo+ID4gQEAgLTAsMCArMSwx
-MjggQEANCj4gPiArLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVA0KPiA+ICsvKg0KPiA+
-ICsgKiBDb3B5cmlnaHQgwqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlvbiAgKi8NCj4gPiArDQo+ID4g
-Ky8qKg0KPiA+ICsgKiBURVNUOiBjYXVzZSBmYWtlIGd0IHJlc2V0IGZhaWx1cmUgYW5kIGxpc3Rl
-biB1ZXZlbnQgZnJvbSBLTUQNCj4gPiArICogU1VCVEVTVDpmYWtlX3Jlc2V0X3VldmVudF9saXN0
-ZW5lcg0KPiA+ICsgKiBEZXNjcmlwdGlvbjoNCj4gPiArICoJCVRlc3QgY3JlYXRlcyB1ZXZlbnQg
-bGlzdGVuZXIgYW5kIGNhdXNlcyBmYWtlIHJlc2V0IGZhaWx1cmUgZm9yDQo+IGd0MA0KPiA+ICsg
-KgkJYW5kIHJldHVybnMgc3VjY2VzcyBpZiB1ZXZlbnQgaXMgc2VudCBieSBkcml2ZXIgYW5kIGxp
-c3RlbmVkIGJ5DQo+ID4gbGlzdGVuZXIuDQo+ID4gKyAqLw0KPiA+ICsNCj4gPiArI2luY2x1ZGUg
-ImlndC5oIg0KPiA+ICsjaW5jbHVkZSAieGVfZHJtLmgiDQo+ID4gKyNpbmNsdWRlICJ4ZS94ZV9x
-dWVyeS5oIg0KPiA+ICsjaW5jbHVkZSA8c3RyaW5nLmg+DQo+ID4gKyNpbmNsdWRlIDxsaWJ1ZGV2
-Lmg+DQo+ID4gKyNpbmNsdWRlIDxzeXMvc3RhdC5oPg0KPiA+ICsNCj4gPiArc3RhdGljIGJvb2wg
-eGVfZm9yY2VfZ3RfZmFrZV9yZXNldChpbnQgZmQsIGludCBndCkgew0KPiBNb3ZlIHRoaXMgZnVu
-Y3Rpb24gdG8gbGliDQoNClRoaXMgZnVuY3Rpb24gc2hvdWxkbid0IGJlIHVzZWQgYnkgYW55IG90
-aGVyIHRlc3QgY2FzZXMuDQpJZiBpbiBmdXR1cmUgd2UgZmluZCBhbnkgcmVhc29ucyB0byBjYXVz
-ZSBmYWtlIHJlc2V0IGZhaWx1cmUgd2lsbCBtb3ZlIGl0IHRvIGxpYi4NCj4gPiArCWNoYXIgcmVz
-ZXRfc3RyaW5nWzEyOF07DQo+ID4gKwlzdHJ1Y3Qgc3RhdCBzdDsNCj4gPiArDQo+ID4gKwlpZ3Rf
-YXNzZXJ0X2VxKGZzdGF0KGZkLCAmc3QpLCAwKTsNCj4gPiArCXNucHJpbnRmKHJlc2V0X3N0cmlu
-Zywgc2l6ZW9mKHJlc2V0X3N0cmluZyksDQo+ID4gKwkJICJjYXQgL3N5cy9rZXJuZWwvZGVidWcv
-ZHJpLyVkL2d0JWQvZmFrZV9yZXNldF9mYWlsdXJlIiwNCj4gPiArbWlub3Ioc3Quc3RfcmRldiks
-IGd0KTsNCj4gPiArDQo+ID4gKwlpZiAoc3lzdGVtKHJlc2V0X3N0cmluZykpDQo+ID4gKwkJcmV0
-dXJuIGZhbHNlOw0KPiA+ICsNCj4gPiArCXJldHVybiB0cnVlOw0KPiA+ICt9DQo+ID4gKw0KPiA+
-ICtzdGF0aWMgYm9vbCBsaXN0ZW5fcmVzZXRfZmFpbF91ZXZlbnQoc3RydWN0IHVkZXZfZGV2aWNl
-ICpkZXZpY2UsDQo+ID4gK2NvbnN0IGNoYXIgKnNvdXJjZSwgaW50IGd0X2lkKSB7DQo+ID4gKwlz
-dHJ1Y3QgdWRldl9saXN0X2VudHJ5ICpsaXN0X2VudHJ5Ow0KPiA+ICsJYm9vbCByZXNldF9mYWls
-ZWQgPSBmYWxzZTsNCj4gPiArCWJvb2wgcmVzZXRfdW5pdF9pc19ndCA9IGZhbHNlOw0KPiA+ICsJ
-Ym9vbCBndF9pZF9tYXRjaGVzID0gZmFsc2U7DQo+ID4gKwljb25zdCBjaGFyICpuYW1lLCAqdmFs
-Ow0KPiA+ICsNCj4gPiArCXVkZXZfbGlzdF9lbnRyeV9mb3JlYWNoKGxpc3RfZW50cnksDQo+ID4g
-dWRldl9kZXZpY2VfZ2V0X3Byb3BlcnRpZXNfbGlzdF9lbnRyeShkZXZpY2UpKQ0KPiA+ICsJew0K
-PiA+ICsJCW5hbWUgPSB1ZGV2X2xpc3RfZW50cnlfZ2V0X25hbWUobGlzdF9lbnRyeSk7DQo+ID4g
-KwkJdmFsID0gdWRldl9saXN0X2VudHJ5X2dldF92YWx1ZShsaXN0X2VudHJ5KTsNCj4gPiArDQo+
-ID4gKwkJaWYgKCFzdHJjbXAobmFtZSwgIlJFU0VUX0ZBSUxFRCIpICYmICFzdHJjbXAodmFsLCAi
-MSIpKSB7DQo+ID4gKwkJCXByaW50ZigiJXMgPSAlc1xuIiwgbmFtZSwgdmFsKTsNCj4gPiArCQkJ
-cmVzZXRfZmFpbGVkID0gdHJ1ZTsNCj4gPiArCQkJY29udGludWU7DQo+ID4gKwkJfQ0KPiA+ICsN
-Cj4gPiArCQlpZiAoIXN0cmNtcChuYW1lLCAiUkVTRVRfVU5JVCIpICYmICFzdHJjbXAodmFsLCAi
-Z3QiKSkgew0KPiA+ICsJCQlwcmludGYoIiVzID0gJXNcbiIsIG5hbWUsIHZhbCk7DQo+ID4gKwkJ
-CXJlc2V0X3VuaXRfaXNfZ3QgPSB0cnVlOw0KPiA+ICsJCQljb250aW51ZTsNCj4gPiArCQl9DQo+
-ID4gKw0KPiA+ICsJCWlmICghc3RyY21wKG5hbWUsICJSRVNFVF9JRCIpICYmIChhdG9pKHZhbCkg
-PT0gZ3RfaWQpKSB7DQo+ID4gKwkJCXByaW50ZigiJXMgPSAlc1xuIiwgbmFtZSwgdmFsKTsNCj4g
-PiArCQkJZ3RfaWRfbWF0Y2hlcyA9IHRydWU7DQo+ID4gKwkJCWNvbnRpbnVlOw0KPiA+ICsJCX0N
-Cj4gPiArCX0NCj4gPiArDQo+ID4gKwlyZXR1cm4gKHJlc2V0X2ZhaWxlZCAmJiByZXNldF91bml0
-X2lzX2d0ICYmIGd0X2lkX21hdGNoZXMpOyB9DQo+ID4gKw0KPiA+ICtzdGF0aWMgdm9pZCBmYWtl
-X3Jlc2V0X3VldmVudF9saXN0ZW5lcihpbnQgZmQsIGludCBndF9pZCkgew0KPiA+ICsJc3RydWN0
-IHVkZXYgKnVkZXY7DQo+ID4gKwlzdHJ1Y3QgdWRldl9kZXZpY2UgKmRldjsNCj4gPiArCXN0cnVj
-dCB1ZGV2X21vbml0b3IgKm1vbjsNCj4gPiArCWJvb2wgZXZlbnRfcmVjaWV2ZWQgPSBmYWxzZTsN
-Cj4gPiArCWJvb2wgZXZlbnRfc2VudCA9IGZhbHNlOw0KPiA+ICsNCj4gPiArCS8qIGNyZWF0ZSB1
-ZGV2IG9iamVjdCAqLw0KPiA+ICsJdWRldiA9IHVkZXZfbmV3KCk7DQo+ID4gKwlpZiAoIXVkZXYp
-IHsNCj4gPiArCQlmcHJpbnRmKHN0ZGVyciwgIkNhbid0IGNyZWF0ZSB1ZGV2XG4iKTsNCj4gPiAr
-CQlnb3RvIG5vX3VkZXY7DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJbW9uID0gdWRldl9tb25pdG9y
-X25ld19mcm9tX25ldGxpbmsodWRldiwgImtlcm5lbCIpOw0KPiA+ICsJdWRldl9tb25pdG9yX2Zp
-bHRlcl9hZGRfbWF0Y2hfc3Vic3lzdGVtX2RldnR5cGUobW9uLCAiZHJtIiwNCj4gPiAiZHJtX21p
-bm9yIik7DQo+ID4gKwl1ZGV2X21vbml0b3JfZW5hYmxlX3JlY2VpdmluZyhtb24pOw0KPiA+ICsJ
-aWd0X3VudGlsX3RpbWVvdXQoNSkgew0KPiA+ICsJCQlkZXYgPSB1ZGV2X21vbml0b3JfcmVjZWl2
-ZV9kZXZpY2UobW9uKTsNCj4gPiArDQo+ID4gKwkJCWlmIChkZXYpIHsNCj4gPiArCQkJCWV2ZW50
-X3JlY2lldmVkID0NCj4gbGlzdGVuX3Jlc2V0X2ZhaWxfdWV2ZW50KGRldiwNCj4gPiAia2VybmVs
-IiwgZ3RfaWQpOw0KPiA+ICsJCQkJdWRldl9kZXZpY2VfdW5yZWYoZGV2KTsNCj4gPiArCQkJfQ0K
-PiA+ICsNCj4gPiArCQkJaWYgKGV2ZW50X3NlbnQpDQo+ID4gKwkJCQlnb3RvIGZyZWVfdWRldjsN
-Cj4gPiArDQo+ID4gKwkJZXZlbnRfc2VudCA9IHhlX2ZvcmNlX2d0X2Zha2VfcmVzZXQoZmQsIGd0
-X2lkKTsNCj4gPiArCQl1c2xlZXAoNTAgKiAxMDAwKTsNCj4gPiArCX0NCj4gPiArDQo+ID4gK2Zy
-ZWVfdWRldjoNCj4gPiArCXVkZXZfdW5yZWYodWRldik7DQo+ID4gK25vX3VkZXY6DQo+ID4gKwlp
-Z3RfYXNzZXJ0KGV2ZW50X3JlY2lldmVkKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiAraWd0X21haW4N
-Cj4gPiArew0KPiA+ICsJaW50IGZkOw0KPiA+ICsNCj4gPiArCWlndF9maXh0dXJlIHsNCj4gPiAr
-CQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfWEUpOw0KPiA+ICsJCXhlX2RldmljZV9nZXQo
-ZmQpOw0KPiA+ICsJfQ0KPiA+ICsNCj4gPiArCXVzbGVlcCg1MCAqIDEwMDApOw0KPiA+ICsNCj4g
-PiArCWlndF9zdWJ0ZXN0KCJmYWtlX3Jlc2V0X3VldmVudF9saXN0ZW5lciIpDQo+ID4gKwkJZmFr
-ZV9yZXNldF91ZXZlbnRfbGlzdGVuZXIoZmQsIDApOw0KPiBDaGVjayBmb3IgYWxsIHRoZSBhdmFp
-bGFibGUgR1QncyBhdmFpbGFibGUgb24gdGhlIHRlc3RpbmcgcGxhdGZvcm0uDQpJTU8gcmVxdWly
-ZW1lbnQgaXMgdG8gdGVzdCB3aGV0aGVyIHVldmVudHMgYXJlIGNvbWluZyBmcm9tIEtNRCBpbiBj
-YXNlIG9mIGd0IHJlc2V0IGZhaWx1cmUgb3Igbm90Lg0KU28gdGVzdGluZyBvbmUgb2YgdGhlIEdU
-IHNob3VsZCBiZSBzdWZmaWNpZW50LiANCkJ1dCBpZiByZWNvbW1lbmRhdGlvbiBpcyB0byBkbyBp
-dCBmb3IgYWxsIGd0LCB0aGF0IGNhbiBiZSBkb25lLiANCj4gDQo+IA0KPiBUaGFua3MsDQo+IFJh
-aHVsDQo+ID4gKw0KPiA+ICsJaWd0X2ZpeHR1cmUgew0KPiA+ICsJCXhlX2RldmljZV9wdXQoZmQp
-Ow0KPiA+ICsJCWNsb3NlKGZkKTsNCj4gPiArCX0NCj4gPiArfQ0KPiA+IC0tDQo+ID4gMi4yNS4x
-DQoNCg==
+Hi Himal,
+
+please do not put dot at the end of subject:
+
+Uevent listener for fake gt reset failure.
+-----------------------------------------^
+
+Remove this '.' from the end. Also please add at begin what
+part of igt you modify, here it is adding new xe test so:
+
+tests/xe/xe_uevent: add new test for uevent gt reset failure
+
+On 2023-06-05 at 11:20:59 +0530, Himal Prasad Ghimiray wrote:
+> This test is to cause the fake reset failure and capture the uevent
+--------------------------- ^^^^
+Describe why we need a fake one, not real one.
+
+> sent in case of gt reset failure.
+> 
+> The sending of Uevent is taken care by series:
+> drm/xe: Notify Userspace when engine/gt reset fails.
+
+Please write here link to public patchwork or GitLab or, if you
+prefer to not include it inot this description, put it after
+signed-off-by line and afer "---" line, see below.
+
+> 
+> The infra to cause fake reset failure is in series:
+> drm/xe: Add a debugfs for faking gt reset failure.
+
+Same here, please also provide link.
+
+> 
+> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> ---
+
+---
+Write here other comments or links which you do not want to be merged.
+
+
+>  tests/meson.build                             |   1 +
+>  .../xe_uevent_listener_fake_reset_failure.c   | 128 ++++++++++++++++++
+>  2 files changed, 129 insertions(+)
+>  create mode 100644 tests/xe/xe_uevent_listener_fake_reset_failure.c
+> 
+> diff --git a/tests/meson.build b/tests/meson.build
+> index f71be1db..cc5843d7 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -268,6 +268,7 @@ xe_progs = [
+>  	'xe_query',
+>  	'xe_vm',
+>  	'xe_waitfence',
+> +	'xe_uevent_listener_fake_reset_failure',
+----------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This is too long for a name and also looks like one-only test,
+so please make it short, something like:
+
+	'xe_uevent',
+
+This way we can extend it in future for new subtests.
+Also, as noted by Rahul, keep it sorted alphabetiacally.
+
+>  ]
+>  
+>  msm_progs = [
+> diff --git a/tests/xe/xe_uevent_listener_fake_reset_failure.c b/tests/xe/xe_uevent_listener_fake_reset_failure.c
+> new file mode 100644
+> index 00000000..dd22e4c2
+> --- /dev/null
+> +++ b/tests/xe/xe_uevent_listener_fake_reset_failure.c
+> @@ -0,0 +1,128 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: cause fake gt reset failure and listen uevent from KMD
+> + * SUBTEST:fake_reset_uevent_listener
+> + * Description:
+> + *		Test creates uevent listener and causes fake reset failure for gt0
+> + *		and returns success if uevent is sent by driver and listened by listener.
+> + */
+> +
+> +#include "igt.h"
+------------ ^
+> +#include "xe_drm.h"
+------------ ^
+Keep includes sorted alphabetically, also please put system
+includes first, then write one newline, then igt includes.
+> +#include "xe/xe_query.h"
+
+Newline here to separate system and igt includes.
+
+> +#include <string.h>
+------------ ^
+> +#include <libudev.h>
+------------ ^
+> +#include <sys/stat.h>
+------------ ^
+Same here, sort them and swap (first system headers, then igt).
+
+> +
+> +static bool xe_force_gt_fake_reset(int fd, int gt)
+> +{
+> +	char reset_string[128];
+> +	struct stat st;
+> +
+> +	igt_assert_eq(fstat(fd, &st), 0);
+> +	snprintf(reset_string, sizeof(reset_string),
+> +		 "cat /sys/kernel/debug/dri/%d/gt%d/fake_reset_failure", minor(st.st_rdev), gt);
+----------------- ^
+Just open and write to this file, search for igt helper in lib.
+
+> +
+> +	if (system(reset_string))
+----------- ^
+Direct write is better for error handling.
+
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+> +static bool listen_reset_fail_uevent(struct udev_device *device, const char *source, int gt_id)
+> +{
+> +	struct udev_list_entry *list_entry;
+> +	bool reset_failed = false;
+> +	bool reset_unit_is_gt = false;
+> +	bool gt_id_matches = false;
+> +	const char *name, *val;
+> +
+> +	udev_list_entry_foreach(list_entry, udev_device_get_properties_list_entry(device))
+> +	{
+> +		name = udev_list_entry_get_name(list_entry);
+> +		val = udev_list_entry_get_value(list_entry);
+> +
+> +		if (!strcmp(name, "RESET_FAILED") && !strcmp(val, "1")) {
+> +			printf("%s = %s\n", name, val);
+----------------------- ^
+Do not use printf, use igt_debug or igt_info. Use of igt_debug
+is preferable as to not clobber output.
+
+> +			reset_failed = true;
+> +			continue;
+> +		}
+> +
+> +		if (!strcmp(name, "RESET_UNIT") && !strcmp(val, "gt")) {
+> +			printf("%s = %s\n", name, val);
+----------------------- ^
+Same here.
+
+> +			reset_unit_is_gt = true;
+> +			continue;
+> +		}
+> +
+> +		if (!strcmp(name, "RESET_ID") && (atoi(val) == gt_id)) {
+> +			printf("%s = %s\n", name, val);
+----------------------- ^
+Same here.
+
+> +			gt_id_matches = true;
+> +			continue;
+> +		}
+> +	}
+> +
+> +	return (reset_failed && reset_unit_is_gt && gt_id_matches);
+> +}
+> +
+> +static void fake_reset_uevent_listener(int fd, int gt_id)
+> +{
+> +	struct udev *udev;
+> +	struct udev_device *dev;
+> +	struct udev_monitor *mon;
+> +	bool event_recieved = false;
+> +	bool event_sent = false;
+> +
+> +	/* create udev object */
+> +	udev = udev_new();
+> +	if (!udev) {
+> +		fprintf(stderr, "Can't create udev\n");
+--------------- ^
+use igt_debug
+
+> +		goto no_udev;
+--------------- ^
+Instead of goto please use igt_assert_f(false, "describe fail here\n");
+
+> +	}
+> +
+> +	mon = udev_monitor_new_from_netlink(udev, "kernel");
+> +	udev_monitor_filter_add_match_subsystem_devtype(mon, "drm", "drm_minor");
+> +	udev_monitor_enable_receiving(mon);
+> +	igt_until_timeout(5) {
+------------------------- ^
+Write it as define or constant.
+
+> +			dev = udev_monitor_receive_device(mon);
+> +
+> +			if (dev) {
+> +				event_recieved = listen_reset_fail_uevent(dev, "kernel", gt_id);
+> +				udev_device_unref(dev);
+> +			}
+> +
+> +			if (event_sent)
+> +				goto free_udev;
+------------------------------- ^
+Just
+				break;
+
+is imho better.
+
+> +
+> +		event_sent = xe_force_gt_fake_reset(fd, gt_id);
+> +		usleep(50 * 1000);
+---------------------- ^
+Write it as define or constant also comment why you want to sleep here.
+
+> +	}
+> +
+> +free_udev:
+> +	udev_unref(udev);
+> +no_udev:
+> +	igt_assert(event_recieved);
+> +}
+> +
+> +igt_main
+> +{
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		xe_device_get(fd);
+> +	}
+> +
+> +	usleep(50 * 1000);
+------- ^
+Do not make such sleeps here, why do you need it here?
+
+Regards,
+Kamil
+
+> +
+> +	igt_subtest("fake_reset_uevent_listener")
+> +		fake_reset_uevent_listener(fd, 0);
+> +
+> +	igt_fixture {
+> +		xe_device_put(fd);
+> +		close(fd);
+> +	}
+> +}
+> -- 
+> 2.25.1
+> 
