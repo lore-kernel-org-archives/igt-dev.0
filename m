@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CF9E10E67B
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 10:08:42 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Jun 2023 15:42:05 +0530
-Message-Id: <20230609101205.2803975-6-kunal1.joshi@intel.com>
-In-Reply-To: <20230609101205.2803975-1-kunal1.joshi@intel.com>
-References: <20230609101205.2803975-1-kunal1.joshi@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/5] RFC
- tests/i915/kms_frontbuffer_tracking: xe only supports MMAP_WC, BLT, RENDER
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Christoph Manszewski" <christoph.manszewski@intel.com>
+Date: Fri, 09 Jun 2023 10:25:10 -0000
+Message-ID: <168630631019.15972.12578528984365783632@emeril.freedesktop.org>
+References: <20230609093719.2076046-1-christoph.manszewski@intel.com>
+In-Reply-To: <20230609093719.2076046-1-christoph.manszewski@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/2=5D_lib=3A_Apply_x/y_offsets_?=
+ =?utf-8?q?to_GPGPU_fill?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,208 +18,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: kunal1.joshi@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-xe only supports MMAP_WC, BLT and RENDER methods,
+== Series Details ==
 
-Open :- does draw method give guarantee for fb to be rendered
-on return, if not how to assure, ex for RENDER we have intel_bb_sync
+Series: series starting with [i-g-t,1/2] lib: Apply x/y offsets to GPGPU fill
+URL   : https://patchwork.freedesktop.org/series/119126/
+State : warning
 
-v2: use igt_draw_supports_method (Bhanu)
-    Remove check from macro and put it in igt_require at test level
-    (Bhanu)
+== Summary ==
 
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/i915/kms_frontbuffer_tracking.c | 59 ++++++++++++++++++---------
- 1 file changed, 39 insertions(+), 20 deletions(-)
+Pipeline status: FAILED.
 
-diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 7159cd37..b8dd5cd5 100644
---- a/tests/i915/kms_frontbuffer_tracking.c
-+++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -1307,11 +1307,13 @@ static void init_crcs(enum pixel_format format, enum tiling_type tiling,
- 		for (r = 0; r < pattern->n_rects; r++)
- 			for (r_ = 0; r_ <= r; r_++)
- 				draw_rect_igt_fb(pattern, &tmp_fbs[r],
--						 IGT_DRAW_PWRITE, r_);
-+						 igt_draw_supports_method(drm.fd, IGT_DRAW_PWRITE) ?
-+						 IGT_DRAW_PWRITE : IGT_DRAW_RENDER,
-+						 r_);
- 	} else {
- 		for (r = 0; r < pattern->n_rects; r++)
--			draw_rect_igt_fb(pattern, &tmp_fbs[r], IGT_DRAW_PWRITE,
--					 r);
-+			draw_rect_igt_fb(pattern, &tmp_fbs[r], igt_draw_supports_method(drm.fd, IGT_DRAW_PWRITE) ?
-+					 IGT_DRAW_PWRITE : IGT_DRAW_RENDER, r);
- 	}
- 
- 	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
-@@ -2048,9 +2050,6 @@ static void draw_subtest(const struct test_mode *t)
- 	struct modeset_params *params = pick_params(t);
- 	struct fb_region *target;
- 
--	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
--		    !gem_has_mappable_ggtt(drm.fd));
--
- 	switch (t->screen) {
- 	case SCREEN_PRIM:
- 		if (t->method != IGT_DRAW_MMAP_GTT && t->plane == PLANE_PRI)
-@@ -2150,9 +2149,8 @@ static void multidraw_subtest(const struct test_mode *t)
- 				  igt_draw_get_method_name(m1),
- 				  igt_draw_get_method_name(m2));
- 
--			if ((m1 == IGT_DRAW_MMAP_GTT ||
--			     m2 == IGT_DRAW_MMAP_GTT) &&
--			    !gem_has_mappable_ggtt(drm.fd))
-+			if (!igt_draw_supports_method(drm.fd, m1) ||
-+			    !igt_draw_supports_method(drm.fd, m2))
- 				continue;
- 
- 			for (r = 0; r < pattern->n_rects; r++) {
-@@ -2421,9 +2419,6 @@ static void flip_subtest(const struct test_mode *t)
- 	struct draw_pattern_info *pattern = &pattern1;
- 	enum color bg_color;
- 
--	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
--		    !gem_has_mappable_ggtt(drm.fd));
--
- 	switch (t->screen) {
- 	case SCREEN_PRIM:
- 		assertions |= ASSERT_LAST_ACTION_CHANGED;
-@@ -2483,9 +2478,6 @@ static void fliptrack_subtest(const struct test_mode *t, enum flip_type type)
- 	struct modeset_params *params = pick_params(t);
- 	struct draw_pattern_info *pattern = &pattern1;
- 
--	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
--		    !gem_has_mappable_ggtt(drm.fd));
--
- 	prepare_subtest(t, pattern);
- 
- 	create_fb(t->format, params->primary.fb->width, params->primary.fb->height,
-@@ -2895,9 +2887,6 @@ static void farfromfence_subtest(const struct test_mode *t)
- 	int max_height, assertions = 0;
- 	int gen = intel_display_ver(intel_get_drm_devid(drm.fd));
- 
--	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
--		    !gem_has_mappable_ggtt(drm.fd));
--
- 	switch (gen) {
- 	case 2:
- 		max_height = 2048;
-@@ -3181,8 +3170,7 @@ static void basic_subtest(const struct test_mode *t)
- 	fb1 = params->primary.fb;
- 
- 	for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
--		if (method == IGT_DRAW_MMAP_GTT &&
--		    !gem_has_mappable_ggtt(drm.fd))
-+		if (!igt_draw_supports_method(drm.fd, method))
- 			continue;
- 
- 		if (r == pattern->n_rects) {
-@@ -3487,6 +3475,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	TEST_MODE_ITER_BEGIN(t)
-+		igt_fixture
-+			igt_require(igt_draw_supports_method(drm.fd, t.method));
-+
- 		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
- 			      feature_str(t.feature),
- 			      pipes_str(t.pipes),
-@@ -3503,6 +3494,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    (!opt.show_hidden && t.method != IGT_DRAW_BLT))
- 			continue;
- 
-+		igt_fixture
-+			igt_require(igt_draw_supports_method(drm.fd, t.method));
-+
- 		for (t.flip = 0; t.flip < FLIP_COUNT; t.flip++)
- 			igt_subtest_f("%s-%s-%s-%s-%sflip-%s",
- 				      feature_str(t.feature),
-@@ -3521,6 +3515,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    (t.feature & FEATURE_FBC) == 0)
- 			continue;
- 
-+		igt_fixture
-+			igt_require(igt_draw_supports_method(drm.fd, t.method));
-+
- 		igt_subtest_f("%s-%s-%s-fliptrack-%s",
- 			      feature_str(t.feature),
- 			      pipes_str(t.pipes),
-@@ -3535,6 +3532,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.plane == PLANE_PRI)
- 			continue;
- 
-+		igt_fixture
-+			igt_require(igt_draw_supports_method(drm.fd, t.method));
-+
- 		igt_subtest_f("%s-%s-%s-%s-%s-move",
- 			      feature_str(t.feature),
- 			      pipes_str(t.pipes),
-@@ -3558,6 +3558,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.plane != PLANE_SPR)
- 			continue;
- 
-+		igt_fixture
-+			igt_require(igt_draw_supports_method(drm.fd, t.method));
-+
- 		igt_subtest_f("%s-%s-%s-%s-%s-fullscreen",
- 			      feature_str(t.feature),
- 			      pipes_str(t.pipes),
-@@ -3574,6 +3577,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    (!opt.show_hidden && t.fbs != FBS_INDIVIDUAL))
- 			continue;
- 
-+		igt_fixture
-+			igt_require(igt_draw_supports_method(drm.fd, t.method));
-+
- 		igt_subtest_f("%s-%s-%s-%s-multidraw",
- 			      feature_str(t.feature),
- 			      pipes_str(t.pipes),
-@@ -3590,6 +3596,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.method != IGT_DRAW_MMAP_GTT)
- 			continue;
- 
-+		igt_fixture
-+			igt_require(igt_draw_supports_method(drm.fd, t.method));
-+
- 		igt_subtest_f("%s-farfromfence-%s",
- 			      feature_str(t.feature),
- 			      igt_draw_get_method_name(t.method))
-@@ -3603,6 +3612,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.fbs != FBS_INDIVIDUAL)
- 			continue;
- 
-+		igt_fixture
-+			igt_require(igt_draw_supports_method(drm.fd, t.method));
-+
- 		for (t.format = 0; t.format < FORMAT_COUNT; t.format++) {
- 			/* Skip what we already tested. */
- 			if (t.format == FORMAT_DEFAULT)
-@@ -3622,6 +3634,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.plane != PLANE_PRI ||
- 		    t.method != IGT_DRAW_BLT)
- 			continue;
-+
-+		igt_fixture
-+			igt_require(igt_draw_supports_method(drm.fd, t.method));
-+
- 		igt_subtest_f("%s-%s-scaledprimary",
- 			      feature_str(t.feature),
- 			      fbs_str(t.fbs))
-@@ -3636,6 +3652,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.method != IGT_DRAW_BLT)
- 			continue;
- 
-+		igt_fixture
-+			igt_require(igt_draw_supports_method(drm.fd, t.method));
-+
- 		igt_subtest_f("%s-modesetfrombusy", feature_str(t.feature))
- 			modesetfrombusy_subtest(&t);
- 
--- 
-2.34.1
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/904516 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/43454554):
+  time="2023-06-09T10:23:15Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:c722db24a050621ee87ea07acd5d066d3d6a94737c32012f27d73a1ad5cc645c
+  Copying config sha256:8b5601a5a7f855241ac7f372ec0042e793b0b3eb3f3a601014845f22bd371c90
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-09T10:23:22Z" level=warning msg="signal: killed"
+  time="2023-06-09T10:23:22Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1686306205:step_script
+  section_start:1686306205:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1686306209:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/43454556):
+  time="2023-06-09T10:23:00Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:c722db24a050621ee87ea07acd5d066d3d6a94737c32012f27d73a1ad5cc645c
+  Copying config sha256:8b5601a5a7f855241ac7f372ec0042e793b0b3eb3f3a601014845f22bd371c90
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-09T10:23:04Z" level=warning msg="signal: killed"
+  time="2023-06-09T10:23:04Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1686306184:step_script
+  section_start:1686306184:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1686306185:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/43454557):
+      "DockerVersion": "",
+      "Labels": {},
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Layers": [
+          "sha256:04854e5e3796b945522a085073b5a49cadad51bd1c5414c91654fa3d63d8db4d"
+      ]
+  }
+  Skipping, already built
+  Getting image source signatures
+  Copying blob sha256:04854e5e3796b945522a085073b5a49cadad51bd1c5414c91654fa3d63d8db4d
+  Copying config sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448
+  Writing manifest to image destination
+  time="2023-06-09T10:23:19Z" level=fatal msg="Error writing manifest: Error uploading manifest commit-3fc7d9ad3bad16e7596b9633f1d5ce1cb6fc9c9a to registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips: received unexpected HTTP status: 500 Internal Server Error" 
+  section_end:1686306200:step_script
+  section_start:1686306200:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1686306204:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/43454558):
+      "DockerVersion": "",
+      "Labels": {
+          "maintainer": "Clement Verna \u003ccverna@fedoraproject.org\u003e"
+      },
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Layers": [
+          "sha256:b39735705e69a2516323755ff4698ea5cd86b08b31d8c8287bc83d76d34c3bfc"
+      ]
+  }
+  Skipping, already built
+  Getting image source signatures
+  Copying blob sha256:b39735705e69a2516323755ff4698ea5cd86b08b31d8c8287bc83d76d34c3bfc
+  time="2023-06-09T10:23:03Z" level=fatal msg="Error reading config blob sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  section_end:1686306183:step_script
+  section_start:1686306183:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1686306184:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/904516
