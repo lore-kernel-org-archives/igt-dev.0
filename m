@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAA8610E67B
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 10:08:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E95C10E679
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Jun 2023 10:08:39 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Jun 2023 15:42:04 +0530
-Message-Id: <20230609101205.2803975-5-kunal1.joshi@intel.com>
+Date: Fri,  9 Jun 2023 15:42:03 +0530
+Message-Id: <20230609101205.2803975-4-kunal1.joshi@intel.com>
 In-Reply-To: <20230609101205.2803975-1-kunal1.joshi@intel.com>
 References: <20230609101205.2803975-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/5] RFC lib/ioctl_wrappers: GEM_SET_DOMAIN
- ioctl not supported on xe
+Subject: [igt-dev] [PATCH i-g-t 3/5] tests/i915/kms_frontbuffer_tracking:
+ all gem ioctls are not supported for xe as of now
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,9 +24,8 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-xe doesn't support GEM_SET_DOMAIN ioctl
-
-v2: Keep i915 specific check in test only
+XE doesn't support all gem ioctls
+Open :- Find replacement for igt_require_gem() for xe
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
@@ -34,18 +33,18 @@ Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 09bfd3c3..7159cd37 100644
+index 45a601fe..09bfd3c3 100644
 --- a/tests/i915/kms_frontbuffer_tracking.c
 +++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -1573,7 +1573,8 @@ static void do_flush(const struct test_mode *t)
- 	struct modeset_params *params = pick_params(t);
- 	struct fb_region *target = pick_target(t, params);
+@@ -3701,7 +3701,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	t.flip = FLIP_PAGEFLIP;
+ 	t.tiling = opt.tiling;
+ 	igt_subtest("basic") {
+-		igt_require_gem(drm.fd);
++		if (!is_xe_device(drm.fd))
++			igt_require_gem(drm.fd);
+ 		basic_subtest(&t);
+ 	}
  
--	gem_set_domain(drm.fd, target->fb->gem_handle, I915_GEM_DOMAIN_GTT, 0);
-+	if (is_i915_device(drm.fd))
-+		gem_set_domain(drm.fd, target->fb->gem_handle, I915_GEM_DOMAIN_GTT, 0);
- }
- 
- #define DONT_ASSERT_CRC			(1 << 0)
 -- 
 2.34.1
