@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E65F110E2C1
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jun 2023 18:57:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FFC910E2C0
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jun 2023 18:57:40 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Jun 2023 00:31:30 +0530
-Message-Id: <20230612190134.2902272-3-kunal1.joshi@intel.com>
+Date: Tue, 13 Jun 2023 00:31:33 +0530
+Message-Id: <20230612190134.2902272-6-kunal1.joshi@intel.com>
 In-Reply-To: <20230612190134.2902272-1-kunal1.joshi@intel.com>
 References: <20230612190134.2902272-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/6] RFC
- tests/i915/kms_frontbuffer_tracking: xe doesn't support tiling as of now
+Subject: [igt-dev] [PATCH i-g-t 5/6] RFC
+ tests/i915/kms_frontbuffer_tracking: xe only supports MMAP_WC, BLT, RENDER
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,66 +24,246 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-XE doesn't support tiling as of now, so set tiling to linear
+xe only supports MMAP_WC, BLT and RENDER methods,
 
-v2: use is_xe_device() instead of static variable (Jouni)
-    assert if xe device and unsupported tiling method specified
-    in opt handler (Jouni)
-v3: Fix condition in igt_assert
-v4: Keep tiling check in igt_require (Bhanu)
-v5: Handle opt.tiling elegantly (Bhanu)
+Open :- does draw method give guarantee for fb to be rendered
+on return, if not how to assure, ex for RENDER we have intel_bb_sync
+
+v2: use igt_draw_supports_method (Bhanu)
+    Remove check from macro and put it in igt_require at test level
+    (Bhanu)
+v3: change order of basic subtest to avoid skipping early (Bhanu)
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/i915/kms_frontbuffer_tracking.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ tests/i915/kms_frontbuffer_tracking.c | 87 ++++++++++++++++-----------
+ 1 file changed, 53 insertions(+), 34 deletions(-)
 
 diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index c2b99670..61403afb 100644
+index 22d1a7df..e95c4a0d 100644
 --- a/tests/i915/kms_frontbuffer_tracking.c
 +++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -261,7 +261,6 @@ struct {
- 	.only_pipes = PIPE_COUNT,
- 	.shared_fb_x_offset = 248,
- 	.shared_fb_y_offset = 500,
--	.tiling = TILING_DEFAULT,
- };
+@@ -1306,11 +1306,13 @@ static void init_crcs(enum pixel_format format, enum tiling_type tiling,
+ 		for (r = 0; r < pattern->n_rects; r++)
+ 			for (r_ = 0; r_ <= r; r_++)
+ 				draw_rect_igt_fb(pattern, &tmp_fbs[r],
+-						 IGT_DRAW_PWRITE, r_);
++						 igt_draw_supports_method(drm.fd, IGT_DRAW_PWRITE) ?
++						 IGT_DRAW_PWRITE : IGT_DRAW_RENDER,
++						 r_);
+ 	} else {
+ 		for (r = 0; r < pattern->n_rects; r++)
+-			draw_rect_igt_fb(pattern, &tmp_fbs[r], IGT_DRAW_PWRITE,
+-					 r);
++			draw_rect_igt_fb(pattern, &tmp_fbs[r], igt_draw_supports_method(drm.fd, IGT_DRAW_PWRITE) ?
++					 IGT_DRAW_PWRITE : IGT_DRAW_RENDER, r);
+ 	}
  
- struct modeset_params {
-@@ -1341,6 +1340,16 @@ static void setup_drm(void)
- 	drm.fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 	drm.debugfs = igt_debugfs_dir(drm.fd);
+ 	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
+@@ -2044,9 +2046,6 @@ static void draw_subtest(const struct test_mode *t)
+ 	struct modeset_params *params = pick_params(t);
+ 	struct fb_region *target;
  
-+	/*
-+	 * Skip if xe device and unsupported tiling method specified
-+	 * in opt_handler
-+	 */
-+	if (opt.tiling)
-+		igt_require(is_i915_device(drm.fd) ||
-+			    (is_xe_device(drm.fd) && opt.tiling == TILING_LINEAR));
-+	else
-+		opt.tiling = is_i915_device(drm.fd) ? TILING_DEFAULT : TILING_LINEAR;
+-	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm.fd));
+-
+ 	switch (t->screen) {
+ 	case SCREEN_PRIM:
+ 		if (t->method != IGT_DRAW_MMAP_GTT && t->plane == PLANE_PRI)
+@@ -2146,9 +2145,8 @@ static void multidraw_subtest(const struct test_mode *t)
+ 				  igt_draw_get_method_name(m1),
+ 				  igt_draw_get_method_name(m2));
+ 
+-			if ((m1 == IGT_DRAW_MMAP_GTT ||
+-			     m2 == IGT_DRAW_MMAP_GTT) &&
+-			    !gem_has_mappable_ggtt(drm.fd))
++			if (!igt_draw_supports_method(drm.fd, m1) ||
++			    !igt_draw_supports_method(drm.fd, m2))
+ 				continue;
+ 
+ 			for (r = 0; r < pattern->n_rects; r++) {
+@@ -2417,9 +2415,6 @@ static void flip_subtest(const struct test_mode *t)
+ 	struct draw_pattern_info *pattern = &pattern1;
+ 	enum color bg_color;
+ 
+-	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm.fd));
+-
+ 	switch (t->screen) {
+ 	case SCREEN_PRIM:
+ 		assertions |= ASSERT_LAST_ACTION_CHANGED;
+@@ -2479,9 +2474,6 @@ static void fliptrack_subtest(const struct test_mode *t, enum flip_type type)
+ 	struct modeset_params *params = pick_params(t);
+ 	struct draw_pattern_info *pattern = &pattern1;
+ 
+-	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm.fd));
+-
+ 	prepare_subtest(t, pattern);
+ 
+ 	create_fb(t->format, params->primary.fb->width, params->primary.fb->height,
+@@ -2891,9 +2883,6 @@ static void farfromfence_subtest(const struct test_mode *t)
+ 	int max_height, assertions = 0;
+ 	int gen = intel_display_ver(intel_get_drm_devid(drm.fd));
+ 
+-	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm.fd));
+-
+ 	switch (gen) {
+ 	case 2:
+ 		max_height = 2048;
+@@ -3177,8 +3166,7 @@ static void basic_subtest(const struct test_mode *t)
+ 	fb1 = params->primary.fb;
+ 
+ 	for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
+-		if (method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm.fd))
++		if (!igt_draw_supports_method(drm.fd, method))
+ 			continue;
+ 
+ 		if (r == pattern->n_rects) {
+@@ -3462,6 +3450,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		devid = intel_get_drm_devid(drm.fd);
+ 	}
+ 
++        t.pipes = PIPE_SINGLE;
++        t.screen = SCREEN_PRIM;
++        t.plane = PLANE_PRI;
++        t.fbs = FBS_INDIVIDUAL;
++        t.feature = FEATURE_DEFAULT;
++        t.format = FORMAT_DEFAULT;
++        t.flip = FLIP_PAGEFLIP;
++        t.tiling = opt.tiling;
++        igt_subtest("basic") {
++                if (!is_xe_device(drm.fd))
++                        igt_require_gem(drm.fd);
++                basic_subtest(&t);
++        }
 +
- 	kmstest_set_vt_graphics_mode();
- 	igt_display_require(&drm.display, drm.fd);
+ 	for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) {
+ 		if (!opt.show_hidden && t.feature == FEATURE_NONE)
+ 			continue;
+@@ -3483,6 +3485,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	}
  
-@@ -3634,6 +3643,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 
- 			for (t.tiling = TILING_LINEAR; t.tiling < TILING_COUNT;
- 			     t.tiling++) {
+ 	TEST_MODE_ITER_BEGIN(t)
++		igt_fixture
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
 +
- 				if (t.tiling == TILING_X)
- 					continue;
+ 		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
+ 			      feature_str(t.feature),
+ 			      pipes_str(t.pipes),
+@@ -3499,6 +3504,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    (!opt.show_hidden && t.method != IGT_DRAW_BLT))
+ 			continue;
  
-@@ -3646,6 +3656,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 					      feature_str(t.feature),
- 					      tiling_str(t.tiling)) {
- 
-+					if (is_xe_device(drm.fd))
-+						igt_require(t.tiling == TILING_LINEAR);
++		igt_fixture
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
 +
- 					/* Tiling Y is only supported on GEN9+ */
- 					if (t.tiling == TILING_Y) {
- 						igt_require(AT_LEAST_GEN(devid, 9));
+ 		for (t.flip = 0; t.flip < FLIP_COUNT; t.flip++)
+ 			igt_subtest_f("%s-%s-%s-%s-%sflip-%s",
+ 				      feature_str(t.feature),
+@@ -3517,6 +3525,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    (t.feature & FEATURE_FBC) == 0)
+ 			continue;
+ 
++		igt_fixture
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
++
+ 		igt_subtest_f("%s-%s-%s-fliptrack-%s",
+ 			      feature_str(t.feature),
+ 			      pipes_str(t.pipes),
+@@ -3531,6 +3542,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    t.plane == PLANE_PRI)
+ 			continue;
+ 
++		igt_fixture
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
++
+ 		igt_subtest_f("%s-%s-%s-%s-%s-move",
+ 			      feature_str(t.feature),
+ 			      pipes_str(t.pipes),
+@@ -3554,6 +3568,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    t.plane != PLANE_SPR)
+ 			continue;
+ 
++		igt_fixture
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
++
+ 		igt_subtest_f("%s-%s-%s-%s-%s-fullscreen",
+ 			      feature_str(t.feature),
+ 			      pipes_str(t.pipes),
+@@ -3570,6 +3587,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    (!opt.show_hidden && t.fbs != FBS_INDIVIDUAL))
+ 			continue;
+ 
++		igt_fixture
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
++
+ 		igt_subtest_f("%s-%s-%s-%s-multidraw",
+ 			      feature_str(t.feature),
+ 			      pipes_str(t.pipes),
+@@ -3586,6 +3606,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    t.method != IGT_DRAW_MMAP_GTT)
+ 			continue;
+ 
++		igt_fixture
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
++
+ 		igt_subtest_f("%s-farfromfence-%s",
+ 			      feature_str(t.feature),
+ 			      igt_draw_get_method_name(t.method))
+@@ -3599,6 +3622,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    t.fbs != FBS_INDIVIDUAL)
+ 			continue;
+ 
++		igt_fixture
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
++
+ 		for (t.format = 0; t.format < FORMAT_COUNT; t.format++) {
+ 			/* Skip what we already tested. */
+ 			if (t.format == FORMAT_DEFAULT)
+@@ -3618,6 +3644,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    t.plane != PLANE_PRI ||
+ 		    t.method != IGT_DRAW_BLT)
+ 			continue;
++
++		igt_fixture
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
++
+ 		igt_subtest_f("%s-%s-scaledprimary",
+ 			      feature_str(t.feature),
+ 			      fbs_str(t.fbs))
+@@ -3632,6 +3662,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    t.method != IGT_DRAW_BLT)
+ 			continue;
+ 
++		igt_fixture
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
++
+ 		igt_subtest_f("%s-modesetfrombusy", feature_str(t.feature))
+ 			modesetfrombusy_subtest(&t);
+ 
+@@ -3689,20 +3722,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			suspend_subtest(&t);
+ 	TEST_MODE_ITER_END
+ 
+-	t.pipes = PIPE_SINGLE;
+-	t.screen = SCREEN_PRIM;
+-	t.plane = PLANE_PRI;
+-	t.fbs = FBS_INDIVIDUAL;
+-	t.feature = FEATURE_DEFAULT;
+-	t.format = FORMAT_DEFAULT;
+-	t.flip = FLIP_PAGEFLIP;
+-	t.tiling = opt.tiling;
+-	igt_subtest("basic") {
+-		if (!is_xe_device(drm.fd))
+-			igt_require_gem(drm.fd);
+-		basic_subtest(&t);
+-	}
+-
+ 	igt_fixture
+ 		teardown_environment();
+ }
 -- 
 2.34.1
