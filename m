@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CEEB10E0C7
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jun 2023 17:21:10 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 12 Jun 2023 19:19:08 +0200
+Message-Id: <20230612171908.29906-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Date: Mon, 12 Jun 2023 17:07:21 -0000
-Message-ID: <168658964104.26644.747305202156702792@emeril.freedesktop.org>
-References: <20230612164835.28444-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20230612164835.28444-1-kamil.konieczny@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_i?=
- =?utf-8?q?gt=5Fcore=3A_Show_the_end_of_each_subtest_in_dmesg?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] igt_core: Avoid exit_subtest in subthread
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,46 +16,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: Petri Latvala <petri.latvala@intel.com>
 
-Series: igt_core: Show the end of each subtest in dmesg
-URL   : https://patchwork.freedesktop.org/series/119211/
-State : warning
+If a thread crashes, the signal handler for SIGSEGV and pals try to
+make the subtest fail and eventually longjmps out of the
+subtest. Naturally this can cause multiple threads to yield subtest
+results and other weirdness.
 
-== Summary ==
+We already check for non-main-thread in igt_fail_assert() but the path
+from a signal handler to subtest exit doesn't have such protection.
 
-Pipeline status: FAILED.
+Cc: Petri Latvala <adrinael@adrinael.net>
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/igt_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/906941 for the overview.
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/43614789):
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out b3731917 as detached HEAD (ref is intel/IGTPW_9149)...
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing scripts/__pycache__/
-  
-  Skipping Git submodules setup
-  section_end:1686589484:get_sources
-  section_start:1686589484:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-b3731917a48e2a60372a13c346d9f436eeaf4710 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips@sha256:c829c44880da4782b7a72626c259ac6904b4bd5f08601e66b3be889ca1c0cf79 ...
-  section_end:1686589485:step_script
-  section_start:1686589485:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1686589485:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448: image not known (docker.go:544:0s)
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/906941
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index cd9c2002d..1d8e3a6ee 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -1585,6 +1585,11 @@ __noreturn static void exit_subtest(const char *result)
+ 	struct timespec *thentime = in_dynamic_subtest ? &dynamic_subtest_time : &subtest_time;
+ 	jmp_buf *jmptarget = in_dynamic_subtest ? &igt_dynamic_jmpbuf : &igt_subtest_jmpbuf;
+ 
++	if (!igt_thread_is_main()) {
++		igt_thread_fail();
++		pthread_exit(NULL);
++	}
++
+ 	igt_gettime(&now);
+ 
+ 	if (test_multi_fork_child)
+-- 
+2.39.2
