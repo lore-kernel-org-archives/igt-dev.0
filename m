@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CEEB10E0C7
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jun 2023 17:21:10 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 517AF10E18F
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jun 2023 17:23:22 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Jun 2023 19:19:08 +0200
-Message-Id: <20230612171908.29906-1-kamil.konieczny@linux.intel.com>
+Date: Mon, 12 Jun 2023 19:23:10 +0200
+Message-Id: <20230612172310.30117-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] igt_core: Avoid exit_subtest in subthread
+Subject: [igt-dev] [PATCH i-g-t] lib: Make igt_while_interruptible()
+ thread-safe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,42 +18,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Petri Latvala <petri.latvala@intel.com>
+From: Chris Wilson <chris.p.wilson@linux.intel.com>
 
-If a thread crashes, the signal handler for SIGSEGV and pals try to
-make the subtest fail and eventually longjmps out of the
-subtest. Naturally this can cause multiple threads to yield subtest
-results and other weirdness.
+We have the ability to replace the ioctl() call by a wrapper that
+performs signal injection (triggering the ioctl to return -EINTR). This
+uses a global for handling the signal, which is broken if the test tries
+to mixing SIGINT injection and threads. Switch to a thread-local
+sigaction.
 
-We already check for non-main-thread in igt_fail_assert() but the path
-from a signal handler to subtest exit doesn't have such protection.
-
-Cc: Petri Latvala <adrinael@adrinael.net>
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ lib/igt_aux.c        | 2 +-
+ lib/ioctl_wrappers.c | 2 +-
+ lib/ioctl_wrappers.h | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index cd9c2002d..1d8e3a6ee 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -1585,6 +1585,11 @@ __noreturn static void exit_subtest(const char *result)
- 	struct timespec *thentime = in_dynamic_subtest ? &dynamic_subtest_time : &subtest_time;
- 	jmp_buf *jmptarget = in_dynamic_subtest ? &igt_dynamic_jmpbuf : &igt_subtest_jmpbuf;
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 386e25783..adff1a11d 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -93,7 +93,7 @@
+  * fit into any other topic.
+  */
  
-+	if (!igt_thread_is_main()) {
-+		igt_thread_fail();
-+		pthread_exit(NULL);
-+	}
-+
- 	igt_gettime(&now);
+-static struct __igt_sigiter_global {
++static __thread struct __igt_sigiter_global {
+ 	pid_t tid;
+ 	timer_t timer;
+ 	struct timespec offset;
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index ebd8a2f36..146973f0d 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -89,7 +89,7 @@
+  * distinguish them.
+  */
  
- 	if (test_multi_fork_child)
+-int (*igt_ioctl)(int fd, unsigned long request, void *arg) = drmIoctl;
++__thread int (*igt_ioctl)(int fd, unsigned long request, void *arg) = drmIoctl;
+ 
+ 
+ static int
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 4c232078d..b7d7c2ad9 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -48,7 +48,7 @@
+  * This is a wrapper around drmIoctl(), which can be augmented with special code
+  * blocks like #igt_while_interruptible.
+  */
+-extern int (*igt_ioctl)(int fd, unsigned long request, void *arg);
++extern __thread int (*igt_ioctl)(int fd, unsigned long request, void *arg);
+ 
+ /* ioctl_wrappers.c:
+  *
 -- 
 2.39.2
