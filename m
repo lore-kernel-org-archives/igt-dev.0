@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EA7B10E28A
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Jun 2023 10:47:54 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3C9710E230
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jun 2023 12:49:32 +0000 (UTC)
 From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-Date: Mon,  5 Jun 2023 12:47:09 +0200
-Message-Id: <20230605104716.5678-2-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20230605104716.5678-1-dominik.karol.piatkowski@intel.com>
-References: <20230605104716.5678-1-dominik.karol.piatkowski@intel.com>
+Date: Mon, 12 Jun 2023 14:49:08 +0200
+Message-Id: <20230612124916.7372-2-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20230612124916.7372-1-dominik.karol.piatkowski@intel.com>
+References: <20230612124916.7372-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/8] lib/igt_kmod: rename kselftest
+Subject: [igt-dev] [PATCH i-g-t 1/9] lib/igt_kmod: rename kselftest
  functions to ktest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -35,13 +35,14 @@ Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Signed-off-by: Isabella Basso <isabbasso@riseup.net>
 
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
  lib/igt_kmod.c | 22 +++++++++++-----------
  lib/igt_kmod.h | 12 ++++++------
  2 files changed, 17 insertions(+), 17 deletions(-)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index ccf0063c..93fa2006 100644
+index ccf0063ca..93fa20067 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
 @@ -749,8 +749,8 @@ static int open_parameters(const char *module_name)
@@ -121,7 +122,7 @@ index ccf0063c..93fa2006 100644
 +	igt_ktest_fini(&tst);
  }
 diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index d05af4a6..ff59f1ec 100644
+index d05af4a69..ff59f1ec1 100644
 --- a/lib/igt_kmod.h
 +++ b/lib/igt_kmod.h
 @@ -76,7 +76,7 @@ void igt_kselftests(const char *module_name,
