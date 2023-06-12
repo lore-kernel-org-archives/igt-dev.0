@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4672F10E02F
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jun 2023 05:15:50 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Jun 2023 10:39:54 +0530
-Message-Id: <20230612050954.1412387-1-bhanuprakash.modem@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0014D10E02F
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jun 2023 05:23:59 +0000 (UTC)
+Message-ID: <93d643c7-038c-5fa8-bc22-3eaa5231b89c@intel.com>
+Date: Mon, 12 Jun 2023 10:53:40 +0530
+Content-Language: en-US
+To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230609101205.2803975-1-kunal1.joshi@intel.com>
+ <20230609101205.2803975-2-kunal1.joshi@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230609101205.2803975-2-kunal1.joshi@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] scripts/test_list: Add igt-test-documentation URL
- to the logs
+Subject: Re: [igt-dev] [PATCH i-g-t 1/5] RFC
+ tests/i915/kms_frontbuffer_tracking: Add xe support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,37 +26,29 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For new IGT users, it's helpful to have the URL (in case of
-missing documentation) in IGT logs to refer igt documentation
-page.
 
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- scripts/test_list.py | 4 ++++
- 1 file changed, 4 insertions(+)
+On Fri-09-06-2023 03:42 pm, Kunal Joshi wrote:
+> Add support for DRIVER_XE
+> 
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> ---
+>   tests/i915/kms_frontbuffer_tracking.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+> index 650e14a7..c2b99670 100644
+> --- a/tests/i915/kms_frontbuffer_tracking.c
+> +++ b/tests/i915/kms_frontbuffer_tracking.c
+> @@ -1338,7 +1338,7 @@ static void init_crcs(enum pixel_format format, enum tiling_type tiling,
+>   
+>   static void setup_drm(void)
+>   {
+> -	drm.fd = drm_open_driver_master(DRIVER_INTEL);
+> +	drm.fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
 
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 2810c2358..0d31ac75f 100755
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -21,6 +21,8 @@ MIN_PYTHON = (3, 6)
- if sys.version_info < MIN_PYTHON:
-     sys.exit("Python %s.%s or later is required.\n" % MIN_PYTHON) # pylint: disable=C0209
- 
-+IGT_DOC_URL = "https://gfx-linux.intel.com/igt-doc.html#igt-test-documentation"
-+
- #
- # ancillary functions to sort dictionary hierarchy
- #
-@@ -953,6 +955,8 @@ class TestList:
-         if run_missing:
-             for test_name in run_missing:
-                 print(f'Warning: Missing documentation for {test_name}')
-+            print(f'Please refer: {IGT_DOC_URL}')
-+
-         if doc_uneeded or run_missing:
-             sys.exit(1)
- 
--- 
-2.40.0
+LGTM
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+>   	drm.debugfs = igt_debugfs_dir(drm.fd);
+>   
+>   	kmstest_set_vt_graphics_mode();
