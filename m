@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54E37892A6
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jun 2023 05:28:27 +0000 (UTC)
-Date: Mon, 12 Jun 2023 07:28:22 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEFA410E02F
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jun 2023 05:35:08 +0000 (UTC)
+Date: Mon, 12 Jun 2023 07:35:04 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Christoph Manszewski <christoph.manszewski@intel.com>
-Message-ID: <20230612052822.zi6blish62hh2dm4@zkempczy-mobl2>
-References: <20230609130128.2197571-1-christoph.manszewski@intel.com>
- <20230609130128.2197571-2-christoph.manszewski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20230612053504.zzkfgpb2uvjqgxwc@zkempczy-mobl2>
+References: <20230607182313.82079-1-zbigniew.kempczynski@intel.com>
+ <20230609132227.p427zbtzoinyi6nn@kamilkon-desk1>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230609130128.2197571-2-christoph.manszewski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/[gpu_cmds|intel_bufops]: Enable
- surface state mocs setting.
+In-Reply-To: <20230609132227.p427zbtzoinyi6nn@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/xe_create: Add multiple
+ engines create/destroy subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,166 +24,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jun 09, 2023 at 03:01:28PM +0200, Christoph Manszewski wrote:
-> Allow the user to control the setting of surface caching.
-> Add 'mocs' field to intel_buf structure and update the surface state
-> fill commands to use introduced filed.
+On Fri, Jun 09, 2023 at 03:22:27PM +0200, Kamil Konieczny wrote:
+> Hi Zbigniew,
 > 
-> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
-> ---
->  lib/gpu_cmds.c     | 19 +++++++++++++++++++
->  lib/intel_bufops.c |  1 +
->  lib/intel_bufops.h | 20 ++++++++++++++++++++
->  3 files changed, 40 insertions(+)
+> On 2023-06-07 at 20:23:13 +0200, Zbigniew Kempczyński wrote:
+> > Exercise basic engine concurrency create/destroy functionality.
+> > 
+> > v2: use different random seeds in children to avoid same engine
+> >     pattern selection (Kamil)
+> >     check execution time and report failure if it's too long (Kamil)
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  tests/xe/xe_create.c | 106 +++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 106 insertions(+)
+> > 
+> > diff --git a/tests/xe/xe_create.c b/tests/xe/xe_create.c
+> > index ae21154646..d85a22567c 100644
+> > --- a/tests/xe/xe_create.c
+> > +++ b/tests/xe/xe_create.c
+> > @@ -88,6 +88,106 @@ static void create_invalid_size(int fd)
+> >  	xe_vm_destroy(fd, vm);
+> >  }
+> >  
+> > +enum engine_destroy {
+> > +	NOLEAK,
+> > +	LEAK
+> > +};
+> > +
+> > +static uint32_t __xe_engine_create(int fd, uint32_t vm,
+> > +				   struct drm_xe_engine_class_instance *instance,
+> > +				   uint64_t ext,
+> > +				   uint32_t *enginep)
+> > +{
+> > +	struct drm_xe_engine_create create = {
+> > +		.extensions = ext,
+> > +		.vm_id = vm,
+> > +		.width = 1,
+> > +		.num_placements = 1,
+> > +		.instances = to_user_pointer(instance),
+> > +	};
+> > +	int err = 0;
+> > +
+> > +	if (igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE, &create) == 0) {
+> > +		*enginep = create.engine_id;
+> > +	} else {
+> > +		igt_warn("Can't create engine, errno: %d\n", errno);
+> > +		err = -errno;
+> > +		igt_assume(err);
+> > +	}
+> > +	errno = 0;
+> > +
+> > +	return err;
+> > +}
+> > +
+> > +#define MAXENGINES 2048
+> > +#define MAXTIME 2
+> > +
+> > +/**
+> > + * SUBTEST: create-engines-%s
+> > + * Description: Check process ability of multiple engines creation
+> > + * Run type: FULL
+> > + *
+> > + * arg[1]:
+> > + *
+> > + * @noleak:				destroy engines in the code
+> > + * @leak:				destroy engines in close() path
+> > + */
+> > +static void create_engines(int fd, enum engine_destroy ed)
+> > +{
+> > +	struct timespec tv = { };
+> > +	uint32_t num_engines, engines_per_process, vm;
+> > +	int nproc = sysconf(_SC_NPROCESSORS_ONLN), seconds;
+> > +	bool failed = false;
+> > +
+> > +	fd = drm_reopen_driver(fd);
+> > +	num_engines = xe_number_hw_engines(fd);
+> > +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> > +
+> > +	engines_per_process = max_t(uint32_t, 1, MAXENGINES / nproc);
+> > +	igt_debug("nproc: %u, engines per process: %u\n", nproc, engines_per_process);
+> > +
+> > +	igt_nsec_elapsed(&tv);
+> > +
+> > +	igt_fork(n, nproc) {
+> > +		struct drm_xe_engine_class_instance *hwe;
+> > +		uint32_t engine, engines[engines_per_process];
+> > +		int idx, err, i;
+> > +
+> > +		srandom(n);
+> > +
+> > +		for (i = 0; i < engines_per_process; i++) {
+> > +			idx = rand() % num_engines;
+> > +			hwe = xe_hw_engine(fd, idx);
+> > +			err = __xe_engine_create(fd, vm, hwe, 0, &engine);
+> > +			igt_debug("[%2d] Create engine: err=%d, engine=%u [idx = %d]\n",
+> > +				  n, err, engine, i);
+> > +			if (err)
+> > +				break;
+> > +
+> > +			if (ed == NOLEAK)
+> > +				engines[i] = engine;
+> > +		}
+> > +
+> > +		if (ed == NOLEAK) {
+> > +			while (--i >= 0) {
+> > +				igt_debug("[%2d] Destroy engine: %u\n", n, engines[i]);
+> > +				xe_engine_destroy(fd, engines[i]);
+> > +			}
+> > +		}
+> > +	}
+> > +	igt_waitchildren();
+> > +
+> > +	xe_vm_destroy(fd, vm);
+> > +	close(fd);
+> > +
+> > +	seconds = igt_seconds_elapsed(&tv);
+> > +	if (seconds >= MAXTIME)
+> > +		failed = true;
+> --------------- ^
+> This is the only place when you set it to true and use it
+> below, so maybe drop this var ?
 > 
-> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-> index 1f321ae4..aa4aa34d 100644
-> --- a/lib/gpu_cmds.c
-> +++ b/lib/gpu_cmds.c
-> @@ -23,6 +23,7 @@
->   */
->  
->  #include "gpu_cmds.h"
-> +#include "intel_mocs.h"
->  
->  uint32_t
->  gen7_fill_curbe_buffer_data(struct intel_bb *ibb, uint8_t color)
-> @@ -135,6 +136,7 @@ gen8_fill_surface_state(struct intel_bb *ibb,
->  	struct gen8_surface_state *ss;
->  	uint32_t write_domain, read_domain, offset;
->  	uint64_t address;
-> +	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
->  
->  	if (is_dst) {
->  		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-> @@ -154,6 +156,11 @@ gen8_fill_surface_state(struct intel_bb *ibb,
->  	ss->ss0.vertical_alignment = 1; /* align 4 */
->  	ss->ss0.horizontal_alignment = 1; /* align 4 */
->  
-> +	if (mocs == INTEL_BUF_MOCS_UC)
-> +		ss->ss1.memory_object_control = intel_get_uc_mocs(ibb->fd);
-> +	else if (mocs == INTEL_BUF_MOCS_WB)
-> +		ss->ss1.memory_object_control = intel_get_wb_mocs(ibb->fd);
-> +
+> > +
+> > +	igt_assert_f(!failed, "Creating %d engines tooks too long: %d [limit: %d]\n",
+> -------------------- ^
+> 	igt_assert_f(seconds <= MAXTIME, ...)
+> 
 
-At the moment this if/else if is a dead code (similar in the functions below)
-because you're setting
-
-+	buf->mocs = INTEL_BUF_MOCS_DEFAULT;
-
-and there're no usage of intel_buf_set_mocs() helper.
-
-Is this intentional and preparation for next patches? If yes:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Sure, with your change looks better.
 
 --
 Zbigniew
 
->  	if (buf->tiling == I915_TILING_X)
->  		ss->ss0.tiled_mode = 2;
->  	else if (buf->tiling == I915_TILING_Y || buf->tiling == I915_TILING_4)
-> @@ -190,6 +197,7 @@ gen11_fill_surface_state(struct intel_bb *ibb,
->  	struct gen8_surface_state *ss;
->  	uint32_t write_domain, read_domain, offset;
->  	uint64_t address;
-> +	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
->  
->  	if (is_dst) {
->  		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-> @@ -209,6 +217,11 @@ gen11_fill_surface_state(struct intel_bb *ibb,
->  	ss->ss0.vertical_alignment = vertical_alignment; /* align 4 */
->  	ss->ss0.horizontal_alignment = horizontal_alignment; /* align 4 */
->  
-> +	if (mocs == INTEL_BUF_MOCS_UC)
-> +		ss->ss1.memory_object_control = intel_get_uc_mocs(ibb->fd);
-> +	else if (mocs == INTEL_BUF_MOCS_WB)
-> +		ss->ss1.memory_object_control = intel_get_wb_mocs(ibb->fd);
-> +
->  	if (buf->tiling == I915_TILING_X)
->  		ss->ss0.tiled_mode = 2;
->  	else if (buf->tiling == I915_TILING_Y || buf->tiling == I915_TILING_4)
-> @@ -817,6 +830,7 @@ xehp_fill_surface_state(struct intel_bb *ibb,
->  	struct xehp_surface_state *ss;
->  	uint32_t write_domain, read_domain, offset;
->  	uint64_t address;
-> +	enum intel_buf_mocs mocs = intel_buf_get_mocs(buf);
->  
->  	if (is_dst) {
->  		write_domain = read_domain = I915_GEM_DOMAIN_RENDER;
-> @@ -836,6 +850,11 @@ xehp_fill_surface_state(struct intel_bb *ibb,
->  	ss->ss0.vertical_alignment = 1; /* align 4 */
->  	ss->ss0.horizontal_alignment = 1; /* align 4 */
->  
-> +	if (mocs == INTEL_BUF_MOCS_UC)
-> +		ss->ss1.memory_object_control = intel_get_uc_mocs(ibb->fd);
-> +	else if (mocs == INTEL_BUF_MOCS_WB)
-> +		ss->ss1.memory_object_control = intel_get_wb_mocs(ibb->fd);
-> +
->  	if (buf->tiling == I915_TILING_X)
->  		ss->ss0.tiled_mode = 2;
->  	else if (buf->tiling == I915_TILING_Y || buf->tiling == I915_TILING_4)
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index 46fd981f..52475793 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -837,6 +837,7 @@ static void __intel_buf_init(struct buf_ops *bops,
->  	buf->bops = bops;
->  	buf->addr.offset = INTEL_BUF_INVALID_ADDRESS;
->  	IGT_INIT_LIST_HEAD(&buf->link);
-> +	buf->mocs = INTEL_BUF_MOCS_DEFAULT;
->  
->  	if (compression) {
->  		igt_require(bops->intel_gen >= 9);
-> diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-> index 0037548a..4dfe4681 100644
-> --- a/lib/intel_bufops.h
-> +++ b/lib/intel_bufops.h
-> @@ -12,6 +12,12 @@ struct buf_ops;
->  #define INTEL_BUF_NAME_MAXSIZE 32
->  #define INVALID_ADDR(x) ((x) == INTEL_BUF_INVALID_ADDRESS)
->  
-> +enum intel_buf_mocs {
-> +	INTEL_BUF_MOCS_DEFAULT,
-> +	INTEL_BUF_MOCS_UC,
-> +	INTEL_BUF_MOCS_WB,
-> +};
-> +
->  struct intel_buf {
->  	struct buf_ops *bops;
->  
-> @@ -23,6 +29,7 @@ struct intel_buf {
->  	uint32_t compression;
->  	uint32_t swizzle_mode;
->  	uint32_t yuv_semiplanar_bpp;
-> +	enum intel_buf_mocs mocs;
->  	bool format_is_yuv;
->  	bool format_is_yuv_semiplanar;
->  	struct {
-> @@ -212,4 +219,17 @@ const char *intel_buf_set_name(struct intel_buf *buf, const char *name);
->  void intel_buf_write_to_png(struct intel_buf *buf, const char *filename);
->  void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename);
->  
-> +static inline enum intel_buf_mocs intel_buf_get_mocs(const struct intel_buf *buf)
-> +{
-> +	igt_assert(buf);
-> +	return buf->mocs;
-> +}
-> +
-> +static inline void intel_buf_set_mocs(struct intel_buf *buf,
-> +				      enum intel_buf_mocs mocs)
-> +{
-> +	igt_assert(buf);
-> +	buf->mocs = mocs;
-> +}
-> +
->  #endif
-> -- 
-> 2.40.1
+
+> Regards,
+> Kamil
 > 
+> > +		     MAXENGINES, seconds, MAXTIME);
+> > +}
+> > +
+> >  /**
+> >   * SUBTEST: create-massive-size
+> >   * Description: Verifies xe bo create returns expected error code on massive
+> > @@ -121,6 +221,12 @@ igt_main
+> >  		create_invalid_size(xe);
+> >  	}
+> >  
+> > +	igt_subtest("create-engines-noleak")
+> > +		create_engines(xe, NOLEAK);
+> > +
+> > +	igt_subtest("create-engines-leak")
+> > +		create_engines(xe, LEAK);
+> > +
+> >  	igt_subtest("create-massive-size") {
+> >  		create_massive_size(xe);
+> >  	}
+> > -- 
+> > 2.34.1
+> > 
