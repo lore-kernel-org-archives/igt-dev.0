@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam02on2084.outbound.protection.outlook.com [40.107.95.84])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 432E110E22E
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 12:46:54 +0000 (UTC)
-From: Hersen Wu <hersenxs.wu@amd.com>
-To: <igt-dev@lists.freedesktop.org>, <rodrigo.siqueira@amd.com>,
- <aurabindo.pillai@amd.com>, <alex.hung@amd.com>, <stylon.wang@amd.com>,
- <hamza.mahfooz@amd.com>
-Date: Tue, 13 Jun 2023 08:46:47 -0400
-Message-ID: <20230613124647.37529-1-hersenxs.wu@amd.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C64D110E258
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 13:33:00 +0000 (UTC)
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 13 Jun 2023 19:07:09 +0530
+Message-Id: <20230613133713.3315078-1-himal.prasad.ghimiray@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_vrr_range: fix test
- crash when n_pipes > n_outputs
+Subject: [igt-dev] [PATCH 0/4] Handle GT and tile seperation in IGT.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,71 +16,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Hersen Wu <hersenxs.wu@amd.com>
+Cc: Upadhyay <tejas.upadhyay@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Fix test crash by looping outputs using
-for_each_connected_output(display, output).
+With seperation of GT and tiles in KMD, we will have sysfs entries
+for properties associated with tile and gtX sysfs parent will be moving
+under tileX. This series provides helper functions for accessing tile
+associated sysfs entries and gt specific sysfs under respective tile.
 
-When n_pipes > n_outputs, i >= n_outputs,
-display->outputs[i]->config.connector within
-for_each_pipe(display, i) are invalid.
-Invalid connectors cause test crash.
+series addresses gt related sysfs path change for xe_guc_pc.c test case 
+and introduces new test to verify addr_range for each vram.
 
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
----
- tests/amdgpu/amd_vrr_range.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
+Cc: Upadhyay <tejas.upadhyay@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-diff --git a/tests/amdgpu/amd_vrr_range.c b/tests/amdgpu/amd_vrr_range.c
-index 3f8f23e9a..611f41f95 100644
---- a/tests/amdgpu/amd_vrr_range.c
-+++ b/tests/amdgpu/amd_vrr_range.c
-@@ -258,18 +258,14 @@ static void test_freesync_parsing_base(data_t *data, uint32_t test_flags)
- 	const struct edid *edid;
- 	range_t range, expected_range;
- 	igt_output_t *output;
--	int i, j, test_conn_cnt = 0;
-+	int j, test_conn_cnt = 0;
-+	igt_display_t *display = &data->display;
- 
- 	test_init(data);
- 
- 	igt_amd_require_hpd(&data->display, data->fd);
- 
--	for_each_pipe(&data->display, i) {
--		/* setup the output */
--		output = data->output[i];
--		if (!output || !igt_output_is_connected(output))
--			continue;
--
-+	for_each_connected_output(display, output) {
- 		/* find a test EDID */
- 		j = find_test_edid_index(output->config.connector->connector_type);
- 
-@@ -335,18 +331,14 @@ static void test_freesync_range_base(data_t *data, uint32_t test_flags)
- {
- 	range_t range;
- 	igt_output_t *output;
--	int i, test_conn_cnt = 0;
-+	int test_conn_cnt = 0;
-+	igt_display_t *display = &data->display;
- 
- 	test_init(data);
- 
- 	igt_amd_require_hpd(&data->display, data->fd);
- 
--	for_each_pipe(&data->display, i) {
--		/* setup the output */
--		output = data->output[i];
--		if (!output || !igt_output_is_connected(output))
--			continue;
--
-+	for_each_connected_output(display, output) {
- 		igt_debug_on_f(!has_vrr(output), "Requires output supports VRR\n");
- 
- 		if (!has_vrr(output)) {
+Himal Prasad Ghimiray (4):
+  lib/igt_sysfs: Add support to query number of tiles.
+  lib/igt_sysfs: Handling gt related sysfs uapi changes.
+  test/xe_guc_pc: Change the sysfs paths.
+  tests/xe/xe_tile_prop: adds new test to verify per tile vram
+    addr_range
+
+ lib/igt_sysfs.c         |  28 ++++++
+ lib/igt_sysfs.h         |  11 +++
+ tests/meson.build       |   1 +
+ tests/xe/xe_guc_pc.c    | 199 ++++++++++++++++++++--------------------
+ tests/xe/xe_tile_prop.c |  66 +++++++++++++
+ 5 files changed, 206 insertions(+), 99 deletions(-)
+ create mode 100644 tests/xe/xe_tile_prop.c
+
 -- 
 2.25.1
