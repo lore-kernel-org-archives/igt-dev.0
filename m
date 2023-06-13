@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com
- [IPv6:2a00:1450:4864:20::12e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32AD110E3CA
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 16:21:12 +0000 (UTC)
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-4f62d93f38aso7240956e87.0
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 09:21:12 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB13B10E04F
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 16:24:31 +0000 (UTC)
+Date: Tue, 13 Jun 2023 18:23:59 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Jun 2023 19:21:05 +0300
-Message-Id: <20230613162105.2757-4-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230613162105.2757-1-juhapekka.heikkila@gmail.com>
-References: <20230613162105.2757-1-juhapekka.heikkila@gmail.com>
+Message-ID: <20230613162359.42e5gu7rkb3zb3au@kamilkon-desk1>
+References: <20230613094455.2636571-1-christoph.manszewski@intel.com>
+ <20230613094455.2636571-2-christoph.manszewski@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] lib/igt_fb: On blitter path take clear
- color modifier into account
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230613094455.2636571-2-christoph.manszewski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/1] lib: Let gen7/gen8 inherit
+ gen4_render.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,40 +25,64 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On blitter path take clear color modifier into account so rc ccs cc will
-pass correctly.
+Hi Christoph,
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- lib/igt_fb.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+On 2023-06-13 at 11:44:55 +0200, Christoph Manszewski wrote:
+> Currently 'PIPELINE_SELECT_3D' macros are redifined. This can lead to
+> compiler warnings when including headers containing those redifinitions.
+> Instead of redefining pipe selects, inherit them from gen4_render.h
+> 
+> Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index a2fd9050..84ab7826 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2833,9 +2833,12 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
- 	uint32_t mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
- 			   ? REGION_LMEM(0) : REGION_SMEM;
-+	/* To ignore CC plane */
-+	uint32_t src_cc = src_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
-+	uint32_t dst_cc = dst_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
- 
- 	igt_assert_eq(dst_fb->fd, src_fb->fd);
--	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
-+	igt_assert_eq(dst_fb->num_planes - dst_cc, src_fb->num_planes - src_cc);
- 
- 	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
- 	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
-@@ -2852,7 +2855,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 							  mem_region) == 0);
- 	}
- 
--	for (int i = 0; i < dst_fb->num_planes; i++) {
-+	for (int i = 0; i < dst_fb->num_planes - dst_cc; i++) {
- 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
- 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
- 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
--- 
-2.25.1
+Lgtm,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> ---
+>  lib/gen7_media.h | 2 +-
+>  lib/gen8_media.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/gen7_media.h b/lib/gen7_media.h
+> index b5e49cae..93dc7312 100644
+> --- a/lib/gen7_media.h
+> +++ b/lib/gen7_media.h
+> @@ -3,6 +3,7 @@
+>  
+>  #include <stdint.h>
+>  #include "surfaceformat.h"
+> +#include "gen4_render.h"
+>  
+>  #define GEN7_FLOATING_POINT_IEEE_754		0
+>  #define GEN7_FLOATING_POINT_NON_IEEE_754	1
+> @@ -13,7 +14,6 @@
+>  						((Subopcode) << 16))
+>  
+>  #define GEN7_PIPELINE_SELECT			GFXPIPE(1, 1, 4)
+> -# define PIPELINE_SELECT_3D			(0 << 0)
+>  # define PIPELINE_SELECT_GPGPU			(2 << 0)
+>  
+>  #define GEN7_STATE_BASE_ADDRESS			GFXPIPE(0, 1, 1)
+> diff --git a/lib/gen8_media.h b/lib/gen8_media.h
+> index b5c19e50..07ea2ac0 100644
+> --- a/lib/gen8_media.h
+> +++ b/lib/gen8_media.h
+> @@ -3,6 +3,7 @@
+>  
+>  #include <stdint.h>
+>  #include "surfaceformat.h"
+> +#include "gen4_render.h"
+>  
+>  #define GEN8_FLOATING_POINT_IEEE_754		0
+>  #define GEN8_FLOATING_POINT_NON_IEEE_754	1
+> @@ -13,7 +14,6 @@
+>  						((Subopcode) << 16))
+>  
+>  #define GEN8_PIPELINE_SELECT			GFXPIPE(1, 1, 4)
+> -# define PIPELINE_SELECT_3D			(0 << 0)
+>  
+>  #define GEN8_STATE_BASE_ADDRESS			GFXPIPE(0, 1, 1)
+>  
+> -- 
+> 2.40.1
+> 
