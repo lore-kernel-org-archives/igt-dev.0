@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 885DE10E0E7
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jun 2023 12:58:28 +0000 (UTC)
-Date: Mon, 19 Jun 2023 14:58:26 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230619125826.7jni5hgjg3g2ye2z@kamilkon-desk1>
-References: <20230617094739.3874020-1-mauro.chehab@linux.intel.com>
- <20230617094739.3874020-2-mauro.chehab@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 854E710E33C
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 07:27:39 +0000 (UTC)
+From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+Date: Tue, 13 Jun 2023 09:27:16 +0200
+Message-Id: <20230613072726.4164-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230617094739.3874020-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/xe/xe_module_load: fix a typo
- at the category
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v7 i-g-t 00/10] Introduce KUnit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,34 +21,68 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
-On 2023-06-17 at 11:47:38 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> 	Sofware -> Software
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+This series is a continuation of Isabella's work on introducing
+KUnit to IGT.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Sample drm_buddy output:
+        Starting subtest: drm_buddy_test
+        [thread:23835] TAP version 1
+        [thread:23835] Executing 6 tests in: drm_buddy
+        Starting dynamic subtest: drm_buddy-drm_test_buddy_alloc_limit
+        Dynamic subtest drm_buddy-drm_test_buddy_alloc_limit: SUCCESS (0.000s)
+        Starting dynamic subtest: drm_buddy-drm_test_buddy_alloc_range
+        Dynamic subtest drm_buddy-drm_test_buddy_alloc_range: SUCCESS (0.000s)
+        Starting dynamic subtest: drm_buddy-drm_test_buddy_alloc_optimistic
+        Dynamic subtest drm_buddy-drm_test_buddy_alloc_optimistic: SUCCESS (0.000s)
+        Starting dynamic subtest: drm_buddy-drm_test_buddy_alloc_pessimistic
+        Dynamic subtest drm_buddy-drm_test_buddy_alloc_pessimistic: SUCCESS (0.000s)
+        Starting dynamic subtest: drm_buddy-drm_test_buddy_alloc_smoke
+        Dynamic subtest drm_buddy-drm_test_buddy_alloc_smoke: SUCCESS (0.000s)
+        Starting dynamic subtest: drm_buddy-drm_test_buddy_alloc_pathological
+        Dynamic subtest drm_buddy-drm_test_buddy_alloc_pathological: SUCCESS (0.000s)
+        Starting dynamic subtest: drm_buddy
+        Dynamic subtest drm_buddy: SUCCESS (0.000s)
+        Subtest drm_buddy_test: SUCCESS (0.182s)
 
-> ---
->  tests/xe/xe_module_load.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/xe/xe_module_load.c b/tests/xe/xe_module_load.c
-> index 58e422415fbc..1c2d4a2e2ea3 100644
-> --- a/tests/xe/xe_module_load.c
-> +++ b/tests/xe/xe_module_load.c
-> @@ -5,7 +5,7 @@
->  
->  /**
->   * TEST: Tests the xe module loading
-> - * Category: Sofware building block
-> + * Category: Software building block
->   * Sub-category: driver
->   * Functionality: module load
->   * Test category: functionality test
-> -- 
-> 2.40.1
-> 
+The issue of possibility of too many sublevels occurrence is solved
+by name concatenation.
+
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+
+Dominik Karol Piatkowski (4):
+  Change logic of ktap parser to run on a thread
+  KUnit: Remove igt_kselftest fallback
+  KUnit: Change subtest name from all-tests to module name
+  KUnit: replace abort with graceful skip
+
+Isabella Basso (4):
+  lib/igt_kmod: rename kselftest functions to ktest
+  lib/igt_kmod.c: check if module is builtin before attempting to unload
+    it
+  lib/igt_kmod: add compatibility for KUnit
+  tests: DRM selftests: switch to KUnit
+
+Mauro Carvalho Chehab (2):
+  kunit tests: add an optional name for the selftests
+  tests/xe: Add a test that launches the xe driver live kunit tests
+
+ lib/igt_kmod.c           | 148 +++++++++-
+ lib/igt_kmod.h           |  14 +-
+ lib/igt_ktap.c           | 615 +++++++++++++++++++++++++++++++++++++++
+ lib/igt_ktap.h           |  50 ++++
+ lib/meson.build          |   1 +
+ tests/drm_buddy.c        |   2 +-
+ tests/drm_mm.c           |  44 +--
+ tests/kms_selftest.c     |  19 +-
+ tests/meson.build        |   1 +
+ tests/xe/xe_live_ktest.c |  52 ++++
+ 10 files changed, 905 insertions(+), 41 deletions(-)
+ create mode 100644 lib/igt_ktap.c
+ create mode 100644 lib/igt_ktap.h
+ create mode 100644 tests/xe/xe_live_ktest.c
+
+-- 
+2.34.1
+
 
