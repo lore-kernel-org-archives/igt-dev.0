@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 645FD10E352
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 08:44:18 +0000 (UTC)
-Date: Tue, 13 Jun 2023 10:44:12 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-Message-ID: <20230613104412.0d9e1ec9@maurocar-mobl2>
-In-Reply-To: <20230613072726.4164-6-dominik.karol.piatkowski@intel.com>
-References: <20230613072726.4164-1-dominik.karol.piatkowski@intel.com>
- <20230613072726.4164-6-dominik.karol.piatkowski@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D88510E352
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 08:46:22 +0000 (UTC)
+From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 13 Jun 2023 08:46:18 +0000
+Message-ID: <MW4PR11MB70563F202BA5CB45657A094BB355A@MW4PR11MB7056.namprd11.prod.outlook.com>
+References: <20230605055059.2942855-1-himal.prasad.ghimiray@intel.com>
+ <20230609093558.lxt65lzbseb7fw55@kamilkon-desk1>
+In-Reply-To: <20230609093558.lxt65lzbseb7fw55@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t 05/10] Change logic of ktap parser to
- run on a thread
+Subject: Re: [igt-dev] [i-g-t,
+ 1/1] Uevent listener for fake gt reset failure.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,814 +23,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 13 Jun 2023 09:27:21 +0200
-Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com> wrote:
-
-> The ktap parser should be listening and parsing messages as the tests
-> are executed, and not after the end of module load.
->=20
-> v1 -> v2:
-> - fix coding style
-> - remove usleep
-> - add error check logic
-> - follow the structure of igt_kselftests more closely
->=20
-> v2 -> v3:
-> - fixed sublevel issues by rewriting tap parser flow
->=20
-> v3 -> v4:
-> - fixed delimiter
->=20
-> - squashed lib/igt_kmod: fix nesting igt_fixture in igt_subtest
-> Fix the following issue:
-> 	$ ./build/tests/drm_buddy
-> 	Starting subtest: all-tests
-> 	nesting igt_fixture in igt_subtest is invalid
-> 	please refer to lib/igt_core documentation
->=20
-> - squashed lib/igt_kmod: place KUnit tests on a subtest
-> There's a hidden bug at KUnit implementation: as it doesn't
-> place tests inside a subtest, trying to use it with igt_main
-> causes a crash:
->=20
-> 	$ ./build/tests/drm_mm --list
-> 	skipping is allowed only in fixtures, subtests or igt_simple_main
-> 	please refer to lib/igt_core documentation
-> 	drm_mm: ../lib/igt_core.c:437: internal_assert: Assertion `0' failed.
-> 	Received signal SIGABRT.
-> 	Stack trace:
-> 	 #0 [fatal_sig_handler+0x17b]
-> 	 #1 [__sigaction+0x50]
-> 	 #2 [__pthread_kill_implementation+0x114]
-> 	 #3 [gsignal+0x1e]
-> 	 #4 [abort+0xdf]
-> 	 #5 [__assert_fail_base.cold+0xe]
-> 	 #6 [__assert_fail+0x47]
-> 	 #7 [internal_assert+0xe5]
-> 	 #8 [igt_skip+0x169]
-> 	 #9 [__igt_skip_check+0x1bb]
-> 	 #10 [igt_ktest_begin+0xa6]
-> 	 #11 [igt_kunit+0x70]
-> 	 #12 [main+0x2a]
-> 	 #13 [__libc_start_call_main+0x7a]
-> 	 #14 [__libc_start_main+0x8b]
-> 	 #15 [_start+0x25]
->=20
-> Fix it by using igt_subtests() before actually implememnting
-> KUnit logic.
->=20
-> After the patch, it should now report subtests:
->=20
-> 	$ ./build/tests/drm_mm --list
-> 	all-tests
->=20
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
->=20
-> Signed-off-by: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@in=
-tel.com>
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-
-LGTM.
-
-Acked-by:  Mauro Carvalho Chehab <mchehab@kernel.org>
-
-> ---
->  lib/igt_kmod.c |  51 +++++-
->  lib/igt_ktap.c | 431 ++++++++++++++++++++++++++++++++++++++++---------
->  lib/igt_ktap.h |  21 ++-
->  3 files changed, 421 insertions(+), 82 deletions(-)
->=20
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 21e801bde..73478f75e 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -754,14 +754,15 @@ void igt_kselftest_get_tests(struct kmod_module *km=
-od,
->   *
->   * Returns: IGT default codes
->   */
-> -int igt_kunit(const char *module_name, const char *opts)
-> +static int __igt_kunit(const char *module_name, const char *opts)
->  {
->  	struct igt_ktest tst;
->  	struct kmod_module *kunit_kmod;
-> -	char record[BUF_LEN + 1];
->  	FILE *f;
->  	bool is_builtin;
->  	int ret;
-> +	struct ktap_test_results *results;
-> +	struct ktap_test_results_element *temp;
-> =20
->  	ret =3D IGT_EXIT_INVALID;
-> =20
-> @@ -804,25 +805,63 @@ int igt_kunit(const char *module_name, const char *=
-opts)
-> =20
->  	is_builtin =3D kmod_module_get_initstate(kunit_kmod) =3D=3D KMOD_MODULE=
-_BUILTIN;
-> =20
-> +	results =3D ktap_parser_start(f, is_builtin);
-> +
->  	if (igt_kmod_load(module_name, opts) !=3D 0) {
->  		igt_warn("Unable to load %s module\n", module_name);
-> +		ret =3D ktap_parser_stop();
->  		igt_fail(IGT_EXIT_FAILURE);
->  	}
-> =20
-> -	ret =3D igt_ktap_parser(f, record, is_builtin);
-> -	if (ret !=3D 0)
-> -		ret =3D IGT_EXIT_ABORT;
-> +	while (READ_ONCE(results->still_running) || READ_ONCE(results->head) !=
-=3D NULL)
-> +	{
-> +		if (READ_ONCE(results->head) !=3D NULL) {
-> +			pthread_mutex_lock(&results->mutex);
-> +
-> +			igt_dynamic(results->head->test_name) {
-> +				if (READ_ONCE(results->head->passed))
-> +					igt_success();
-> +				else
-> +					igt_fail(IGT_EXIT_FAILURE);
-> +			}
-> +
-> +			temp =3D results->head;
-> +			results->head =3D results->head->next;
-> +			free(temp);
-> +
-> +			pthread_mutex_unlock(&results->mutex);
-> +		}
-> +	}
-> +
->  unload:
->  	igt_ktest_end(&tst);
-> =20
->  	igt_ktest_fini(&tst);
-> =20
-> +	ret =3D ktap_parser_stop();
-> +
-> +	if (ret !=3D 0)
-> +		ret =3D IGT_EXIT_ABORT;
-> +
->  	if (ret =3D=3D 0)
->  		igt_success();
-> -
->  	return ret;
->  }
-> =20
-> +int igt_kunit(const char *module_name, const char *opts)
-> +{
-> +	/*
-> +	 * We need to use igt_subtest here, as otherwise it may crash with:
-> +	 *  skipping is allowed only in fixtures, subtests or igt_simple_main
-> +	 * if used on igt_main. This is also needed in order to provide
-> +	 * proper namespace for dynamic subtests, with is required for CI
-> +	 * and for documentation.
-> +	 */
-> +	igt_subtest_with_dynamic("all-tests")
-> +		return __igt_kunit(module_name, opts);
-> +	return 0;
-> +}
-> +
->  static int open_parameters(const char *module_name)
->  {
->  	char path[256];
-> diff --git a/lib/igt_ktap.c b/lib/igt_ktap.c
-> index 117598faa..ecdcb8d83 100644
-> --- a/lib/igt_ktap.c
-> +++ b/lib/igt_ktap.c
-> @@ -5,11 +5,25 @@
-> =20
->  #include <ctype.h>
->  #include <limits.h>
-> +#include <libkmod.h>
-> +#include <pthread.h>
-> +#include <errno.h>
-> =20
->  #include "igt_aux.h"
->  #include "igt_core.h"
->  #include "igt_ktap.h"
-> =20
-> +#define DELIMITER "-"
-> +
-> +struct ktap_parser_args {
-> +	FILE *fp;
-> +	bool is_builtin;
-> +	volatile bool is_running;
-> +	int ret;
-> +} ktap_args;
-> +
-> +static struct ktap_test_results results;
-> +
->  static int log_to_end(enum igt_log_level level, FILE *f,
->  		      char *record, const char *format, ...) __attribute__((format(pri=
-ntf, 4, 5)));
-> =20
-> @@ -30,6 +44,14 @@ static int log_to_end(enum igt_log_level level, FILE *=
-f,
->  {
->  	va_list args;
->  	const char *lend;
-> +	int f_fd =3D fileno(f);
-> +
-> +	/* Cutoff after newline character, in order to not display garbage */
-> +	char *cutoff =3D strchr(record, '\n');
-> +	if (cutoff) {
-> +		if (cutoff - record < BUF_LEN)
-> +			cutoff[1] =3D '\0';
-> +	}
-> =20
->  	va_start(args, format);
->  	igt_vlog(IGT_LOG_DOMAIN, level, format, args);
-> @@ -38,10 +60,29 @@ static int log_to_end(enum igt_log_level level, FILE =
-*f,
->  	lend =3D strchrnul(record, '\n');
->  	while (*lend =3D=3D '\0') {
->  		igt_log(IGT_LOG_DOMAIN, level, "%s", record);
-> -		if (fgets(record, BUF_LEN, f) =3D=3D NULL) {
-> +
-> +		while (read(f_fd, record, BUF_LEN) < 0) {
-> +			if (!READ_ONCE(ktap_args.is_running)) {
-> +				igt_warn("ktap parser stopped\n");
-> +				return -2;
-> +			}
-> +
-> +			if (errno =3D=3D EINTR)
-> +				continue;
-> +
-> +			if (errno =3D=3D EPIPE) {
-> +				igt_warn("kmsg truncated: too many messages. You may want to increas=
-e log_buf_len in kmcdline\n");
-> +				return -2;
-> +			}
-> +
-> +			if (errno =3D=3D EAGAIN)
-> +				/* No records available */
-> +				continue;
-> +
->  			igt_warn("kmsg truncated: unknown error (%m)\n");
->  			return -2;
->  		}
-> +
->  		lend =3D strchrnul(record, '\n');
->  	}
->  	return 0;
-> @@ -65,7 +106,7 @@ static long lookup_value(const char *haystack, const c=
-har *needle)
->  	if (needle_rptr =3D=3D NULL)
->  		return -1;
-> =20
-> -	/* skip search string and whitespaces after it */
-> +	/* Skip search string and whitespaces after it */
->  	needle_rptr +=3D strlen(needle);
-> =20
->  	num =3D strtol(needle_rptr, &needle_end, 10);
-> @@ -79,6 +120,41 @@ static long lookup_value(const char *haystack, const =
-char *needle)
->  	return num > 0 ? num : 0;
->  }
-> =20
-> +/**
-> + * tap_version_present:
-> + * @record: buffer with tap data
-> + * @print_info: whether tap version should be printed or not
-> + *
-> + * Returns:
-> + * 0 if not found
-> + * 1 if found
-> + */
-> +static int tap_version_present(char* record, bool print_info)
-> +{
-> +	/*
-> +	 * "(K)TAP version XX" should be the first line on all (sub)tests as per
-> +	 * https://kernel.org/doc/html/latest/dev-tools/ktap.html#version-lines
-> +	 *
-> +	 * but actually isn't, as it currently depends on the KUnit module
-> +	 * being built-in, so we can't rely on it every time
-> +	 */
-> +	const char *version_rptr =3D strcasestr(record, "TAP version ");
-> +	char *cutoff;
-> +
-> +	if (version_rptr =3D=3D NULL)
-> +		return 0;
-> +
-> +	/* Cutoff after newline character, in order to not display garbage */
-> +	cutoff =3D strchr(version_rptr, '\n');
-> +	if (cutoff)
-> +		cutoff[0] =3D '\0';
-> +
-> +	if (print_info)
-> +		igt_info("%s\n", version_rptr);
-> +
-> +	return 1;
-> +}
-> +
->  /**
->   * find_next_tap_subtest:
->   * @fp: FILE pointer
-> @@ -91,11 +167,12 @@ static long lookup_value(const char *haystack, const=
- char *needle)
->   * -2 if there are problems while reading the file.
->   * any other value corresponds to the amount of cases of the next (sub)t=
-est
->   */
-> -static int find_next_tap_subtest(FILE *fp, char *record, bool is_builtin)
-> +static int find_next_tap_subtest(FILE *fp, char *record, char *test_name=
-, bool is_builtin)
->  {
-> -	const char *test_lookup_str, *subtest_lookup_str, *name_rptr, *version_=
-rptr;
-> -	char test_name[BUF_LEN + 1];
-> +	const char *test_lookup_str, *subtest_lookup_str, *name_rptr;
->  	long test_count;
-> +	int fp_fd =3D fileno(fp);
-> +	char *cutoff;
-> =20
->  	test_name[0] =3D '\0';
->  	test_name[BUF_LEN] =3D '\0';
-> @@ -103,21 +180,28 @@ static int find_next_tap_subtest(FILE *fp, char *re=
-cord, bool is_builtin)
->  	test_lookup_str =3D " subtest: ";
->  	subtest_lookup_str =3D " test: ";
-> =20
-> -	/*
-> -	 * "(K)TAP version XX" should be the first line on all (sub)tests as per
-> -	 * https://kernel.org/doc/html/latest/dev-tools/ktap.html#version-lines
-> -	 *
-> -	 * but actually isn't, as it currently depends on the KUnit module
-> -	 * being built-in, so we can't rely on it every time
-> -	 */
-> +	if (!tap_version_present(record, true))
-> +		return -1;
-> +
->  	if (is_builtin) {
-> -		version_rptr =3D strcasestr(record, "TAP version ");
-> -		if (version_rptr =3D=3D NULL)
-> -			return -1;
-> +		while (read(fp_fd, record, BUF_LEN) < 0) {
-> +			if (!READ_ONCE(ktap_args.is_running)) {
-> +				igt_warn("ktap parser stopped\n");
-> +				return -2;
-> +			}
-> +
-> +			if (errno =3D=3D EINTR)
-> +				continue;
-> =20
-> -		igt_info("%s", version_rptr);
-> +			if (errno =3D=3D EPIPE) {
-> +				igt_warn("kmsg truncated: too many messages. You may want to increas=
-e log_buf_len in kmcdline\n");
-> +				return -2;
-> +			}
-> +
-> +			if (errno =3D=3D EAGAIN)
-> +				/* No records available */
-> +				continue;
-> =20
-> -		if (fgets(record, BUF_LEN, fp) =3D=3D NULL) {
->  			igt_warn("kmsg truncated: unknown error (%m)\n");
->  			return -2;
->  		}
-> @@ -134,22 +218,45 @@ static int find_next_tap_subtest(FILE *fp, char *re=
-cord, bool is_builtin)
-> =20
->  	if (name_rptr =3D=3D NULL) {
->  		if (!is_builtin)
-> -			/* we've probably found nothing */
-> +			/* We've probably found nothing */
->  			return -1;
->  		igt_info("Missing test name\n");
->  	} else {
->  		strncpy(test_name, name_rptr, BUF_LEN);
-> -		if (fgets(record, BUF_LEN, fp) =3D=3D NULL) {
-> +		/* Cutoff after newline character, in order to not display garbage */
-> +		cutoff =3D strchr(test_name, '\n');
-> +		if (cutoff)
-> +			cutoff[0] =3D '\0';
-> +
-> +		while (read(fp_fd, record, BUF_LEN) < 0) {
-> +			if (!READ_ONCE(ktap_args.is_running)) {
-> +				igt_warn("ktap parser stopped\n");
-> +				return -2;
-> +			}
-> +
-> +			if (errno =3D=3D EINTR)
-> +				continue;
-> +
-> +			if (errno =3D=3D EPIPE) {
-> +				igt_warn("kmsg truncated: too many messages. You may want to increas=
-e log_buf_len in kmcdline\n");
-> +				return -2;
-> +			}
-> +
-> +			if (errno =3D=3D EAGAIN)
-> +				/* No records available */
-> +				continue;
-> +
->  			igt_warn("kmsg truncated: unknown error (%m)\n");
->  			return -2;
->  		}
-> -		/* now we can be sure we found tests */
-> +
-> +		/* Now we can be sure we found tests */
->  		if (!is_builtin)
->  			igt_info("KUnit is not built-in, skipping version check...\n");
->  	}
-> =20
->  	/*
-> -	 * total test count will almost always appear as 0..N at the beginning
-> +	 * Total test count will almost always appear as 0..N at the beginning
->  	 * of a run, so we use it to reliably identify a new run
->  	 */
->  	test_count =3D lookup_value(record, "..");
-> @@ -159,7 +266,7 @@ static int find_next_tap_subtest(FILE *fp, char *reco=
-rd, bool is_builtin)
->  		if (test_name[0] =3D=3D '\0')
->  			return 0;
->  		if (log_to_end(IGT_LOG_INFO, fp, record,
-> -				"Running some tests in: %s",
-> +				"Running some tests in: %s\n",
->  				test_name) < 0)
->  			return -2;
->  		return 0;
-> @@ -169,7 +276,7 @@ static int find_next_tap_subtest(FILE *fp, char *reco=
-rd, bool is_builtin)
->  	}
-> =20
->  	if (log_to_end(IGT_LOG_INFO, fp, record,
-> -			"Executing %ld tests in: %s",
-> +			"Executing %ld tests in: %s\n",
->  			test_count, test_name) < 0)
->  		return -2;
-> =20
-> @@ -177,7 +284,7 @@ static int find_next_tap_subtest(FILE *fp, char *reco=
-rd, bool is_builtin)
->  }
-> =20
->  /**
-> - * find_next_tap_test:
-> + * parse_kmsg_for_tap:
->   * @fp: FILE pointer
->   * @record: buffer used to read fp
->   * @test_name: buffer to store the test name
-> @@ -225,7 +332,7 @@ static int parse_kmsg_for_tap(FILE *fp, char *record,=
- char *test_name)
-> =20
->  	comment_start =3D strchrnul(lstart, '#');
-> =20
-> -	/* check if we're still in a subtest */
-> +	/* Check if we're still in a subtest */
->  	if (*comment_start !=3D '\0') {
->  		comment_start++;
->  		value_parse_start =3D comment_start;
-> @@ -254,81 +361,255 @@ static int parse_kmsg_for_tap(FILE *fp, char *reco=
-rd, char *test_name)
->  }
-> =20
->  /**
-> - * igt_ktap_parser:
-> + * parse_tap_level:
->   * @fp: FILE pointer
-> - * @record: buffer used to read fp
-> + * @base_test_name: test_name from upper recursion level
-> + * @test_count: test_count of this level
-> + * @failed_tests: top level failed_tests pointer
-> + * @found_tests: top level found_tests pointer
->   * @is_builtin: whether the KUnit module is built-in or not
->   *
-> - * This function parses the output of a ktap script and prints the test =
-results,
-> - * as well as any other output to stdout.
-> - *
-> - * Returns: IGT default codes
-> + * Returns:
-> + * 0 if succeded
-> + * -1 if error occurred
->   */
-> -int igt_ktap_parser(FILE *fp, char *record, bool is_builtin)
-> +static int parse_tap_level(FILE *fp, char *base_test_name, int test_coun=
-t, bool *failed_tests,
-> +			   bool *found_tests, bool is_builtin)
->  {
-> +	int fp_fd =3D fileno(fp);
-> +	char record[BUF_LEN + 1];
-> +	struct ktap_test_results_element *r, *temp;
-> +	int internal_test_count;
->  	char test_name[BUF_LEN + 1];
-> -	bool failed_tests, found_tests;
-> -	int sublevel =3D 0;
-> +	char base_test_name_for_next_level[BUF_LEN + 1];
-> =20
-> -	test_name[0] =3D '\0';
-> -	test_name[BUF_LEN] =3D '\0';
-> +	for (int i =3D 0; i < test_count; i++) {
-> +		while (read(fp_fd, record, BUF_LEN) < 0) {
-> +			if (!READ_ONCE(ktap_args.is_running)) {
-> +				igt_warn("ktap parser stopped\n");
-> +				return -1;
-> +			}
-> =20
-> -	failed_tests =3D false;
-> -	found_tests =3D false;
-> +			if (errno =3D=3D EINTR)
-> +				continue;
-> =20
-> -	while (sublevel >=3D 0) {
-> -		if (fgets(record, BUF_LEN, fp) =3D=3D NULL) {
-> -			if (!found_tests)
-> -				igt_warn("kmsg truncated: unknown error (%m)\n");
-> -			break;
-> +			if (errno =3D=3D EAGAIN)
-> +				/* No records available */
-> +				continue;
-> +
-> +			if (errno =3D=3D EPIPE) {
-> +				igt_warn("kmsg truncated: too many messages. You may want to increas=
-e log_buf_len in kmcdline\n");
-> +				return -1;
-> +			}
-> +
-> +			igt_warn("kmsg truncated: unknown error (%m)\n");
-> +			return -1;
->  		}
-> =20
-> -		switch (find_next_tap_subtest(fp, record, is_builtin)) {
-> -		case -2:
-> -			/* no more data to read */
-> -			return IGT_EXIT_FAILURE;
-> -		case -1:
-> -			/* no test found, so we keep parsing */
-> -			break;
-> -		case 0:
-> -			/*
-> -			 * tests found, but they're missing info, so we might
-> -			 * have read into test output
-> -			 */
-> -			found_tests =3D true;
-> -			sublevel++;
-> -			break;
-> -		default:
-> -			if (fgets(record, BUF_LEN, fp) =3D=3D NULL) {
-> -				igt_warn("kmsg truncated: unknown error (%m)\n");
-> -				return -2;
-> +		/* Sublevel found */
-> +		if (tap_version_present(record, false))
-> +		{
-> +			internal_test_count =3D find_next_tap_subtest(fp, record, test_name,
-> +								    is_builtin);
-> +			switch (internal_test_count) {
-> +			case -2:
-> +				/* No more data to read */
-> +				return -1;
-> +			case -1:
-> +				/* No test found */
-> +				return -1;
-> +			case 0:
-> +				/* Tests found, but they're missing info */
-> +				*found_tests =3D true;
-> +				return -1;
-> +			default:
-> +				*found_tests =3D true;
-> +
-> +				memcpy(base_test_name_for_next_level, base_test_name, BUF_LEN);
-> +				if (strlen(base_test_name_for_next_level) < BUF_LEN - 1 &&
-> +				    base_test_name_for_next_level[0])
-> +					strncat(base_test_name_for_next_level, DELIMITER,
-> +						BUF_LEN - strlen(base_test_name_for_next_level));
-> +				memcpy(base_test_name_for_next_level + strlen(base_test_name_for_nex=
-t_level),
-> +				       test_name, BUF_LEN - strlen(base_test_name_for_next_level));
-> +
-> +				if (parse_tap_level(fp, base_test_name_for_next_level,
-> +						    internal_test_count, failed_tests, found_tests,
-> +						    is_builtin) =3D=3D -1)
-> +					return -1;
-> +				break;
->  			}
-> -			found_tests =3D true;
-> -			sublevel++;
-> -			break;
->  		}
-> =20
->  		switch (parse_kmsg_for_tap(fp, record, test_name)) {
->  		case -2:
-> -			return IGT_EXIT_FAILURE;
-> +			return -1;
->  		case -1:
-> -			sublevel--;
-> -			failed_tests =3D true;
-> -			igt_subtest(test_name)
-> -				igt_fail(IGT_EXIT_FAILURE);
-> +			*failed_tests =3D true;
-> +
-> +			r =3D malloc(sizeof(*r));
-> +
-> +			memcpy(r->test_name, base_test_name, BUF_LEN);
-> +			if (strlen(r->test_name) < BUF_LEN - 1)
-> +				if (r->test_name[0])
-> +					strncat(r->test_name, DELIMITER,
-> +						BUF_LEN - strlen(r->test_name));
-> +			memcpy(r->test_name + strlen(r->test_name), test_name,
-> +			       BUF_LEN - strlen(r->test_name));
-> +			r->test_name[BUF_LEN] =3D '\0';
-> +
-> +			r->passed =3D false;
-> +			r->next =3D NULL;
-> +
-> +			pthread_mutex_lock(&results.mutex);
-> +			if (results.head =3D=3D NULL) {
-> +				results.head =3D r;
-> +			} else {
-> +				temp =3D results.head;
-> +				while (temp->next !=3D NULL)
-> +					temp =3D temp->next;
-> +				temp->next =3D r;
-> +			}
-> +			pthread_mutex_unlock(&results.mutex);
-> +
->  			test_name[0] =3D '\0';
->  			break;
-> -		case 0: /* fallthrough */
-> -			igt_subtest(test_name)
-> -				igt_success();
-> +		case 0:
-> +			r =3D malloc(sizeof(*r));
-> +
-> +			memcpy(r->test_name, base_test_name, BUF_LEN);
-> +			if (strlen(r->test_name) < BUF_LEN - 1)
-> +				if (r->test_name[0])
-> +					strncat(r->test_name, DELIMITER,
-> +						BUF_LEN - strlen(r->test_name));
-> +			memcpy(r->test_name + strlen(r->test_name), test_name,
-> +			       BUF_LEN - strlen(r->test_name));
-> +			r->test_name[BUF_LEN] =3D '\0';
-> +
-> +			r->passed =3D true;
-> +			r->next =3D NULL;
-> +
-> +			pthread_mutex_lock(&results.mutex);
-> +			if (results.head =3D=3D NULL) {
-> +				results.head =3D r;
-> +			} else {
-> +				temp =3D results.head;
-> +				while (temp->next !=3D NULL)
-> +					temp =3D temp->next;
-> +				temp->next =3D r;
-> +			}
-> +			pthread_mutex_unlock(&results.mutex);
-> +
->  			test_name[0] =3D '\0';
-> +			break;
->  		default:
->  			break;
->  		}
->  	}
-> +	return 0;
-> +}
-> +
-> +/**
-> + * igt_ktap_parser:
-> + *
-> + * This function parses the output of a ktap script and passes it to mai=
-n thread.
-> + */
-> +void *igt_ktap_parser(void *unused)
-> +{
-> +	FILE *fp =3D ktap_args.fp;
-> +	int fp_fd =3D fileno(fp);
-> +	char record[BUF_LEN + 1];
-> +	bool is_builtin =3D ktap_args.is_builtin;
-> +	char test_name[BUF_LEN + 1];
-> +	bool failed_tests, found_tests;
-> +	int test_count;
-> +
-> +	failed_tests =3D false;
-> +	found_tests =3D false;
-> +
-> +	if (!READ_ONCE(ktap_args.is_running))
-> +		goto igt_ktap_parser_end;
-> +
-> +igt_ktap_parser_start:
-> +	test_name[0] =3D '\0';
-> +	test_name[BUF_LEN] =3D '\0';
-> +
-> +	while (read(fp_fd, record, BUF_LEN) < 0) {
-> +		if (!READ_ONCE(ktap_args.is_running)) {
-> +			igt_warn("ktap parser stopped\n");
-> +			goto igt_ktap_parser_end;
-> +		}
-> +
-> +		if (errno =3D=3D EAGAIN)
-> +			/* No records available */
-> +			continue;
-> +
-> +		if (errno =3D=3D EINTR)
-> +			continue;
-> +
-> +		if (errno =3D=3D EPIPE) {
-> +			igt_warn("kmsg truncated: too many messages. You may want to increase=
- log_buf_len in kmcdline\n");
-> +			goto igt_ktap_parser_end;
-> +		}
-> +	}
-> +
-> +	test_count =3D find_next_tap_subtest(fp, record, test_name, is_builtin);
-> +
-> +	switch (test_count) {
-> +	case -2:
-> +		/* Problems while reading the file */
-> +		goto igt_ktap_parser_end;
-> +	case -1:
-> +		/* No test found */
-> +		goto igt_ktap_parser_start;
-> +	case 0:
-> +		/* Tests found, but they're missing info */
-> +		found_tests =3D true;
-> +		goto igt_ktap_parser_end;
-> +	default:
-> +		found_tests =3D true;
-> +
-> +		if (parse_tap_level(fp, test_name, test_count, &failed_tests, &found_t=
-ests,
-> +				    is_builtin) =3D=3D -1)
-> +			goto igt_ktap_parser_end;
-> +
-> +		break;
-> +	}
-> +
-> +	/* Parse topmost level */
-> +	test_name[0] =3D '\0';
-> +	parse_tap_level(fp, test_name, test_count, &failed_tests, &found_tests,=
- is_builtin);
-> +
-> +igt_ktap_parser_end:
-> +	results.still_running =3D false;
-> =20
->  	if (failed_tests || !found_tests)
-> -		return IGT_EXIT_FAILURE;
-> +		ktap_args.ret =3D IGT_EXIT_FAILURE;
-> +	else
-> +		ktap_args.ret =3D IGT_EXIT_SUCCESS;
-> +
-> +	return NULL;
-> +}
-> +
-> +static pthread_t ktap_parser_thread;
-> +
-> +struct ktap_test_results *ktap_parser_start(FILE *fp, bool is_builtin)
-> +{
-> +	results.head =3D NULL;
-> +	pthread_mutex_init(&results.mutex, NULL);
-> +	results.still_running =3D true;
-> =20
-> -	return IGT_EXIT_SUCCESS;
-> +	ktap_args.fp =3D fp;
-> +	ktap_args.is_builtin =3D is_builtin;
-> +	ktap_args.is_running =3D true;
-> +	pthread_create(&ktap_parser_thread, NULL, igt_ktap_parser, NULL);
-> +
-> +	return &results;
-> +}
-> +
-> +int ktap_parser_stop(void)
-> +{
-> +	ktap_args.is_running =3D false;
-> +	pthread_join(ktap_parser_thread, NULL);
-> +	return ktap_args.ret;
->  }
-> diff --git a/lib/igt_ktap.h b/lib/igt_ktap.h
-> index b2f69df2d..34fe09572 100644
-> --- a/lib/igt_ktap.h
-> +++ b/lib/igt_ktap.h
-> @@ -26,6 +26,25 @@
-> =20
->  #define BUF_LEN 4096
-> =20
-> -int igt_ktap_parser(FILE *fp, char *record, bool is_builtin);
-> +#include <pthread.h>
-> +
-> +void *igt_ktap_parser(void *unused);
-> +
-> +typedef struct ktap_test_results_element {
-> +	char test_name[BUF_LEN + 1];
-> +	bool passed;
-> +	struct ktap_test_results_element *next;
-> +} ktap_test_results_element;
-> +
-> +struct ktap_test_results {
-> +	ktap_test_results_element *head;
-> +	pthread_mutex_t mutex;
-> +	bool still_running;
-> +};
-> +
-> +
-> +
-> +struct ktap_test_results *ktap_parser_start(FILE *fp, bool is_builtin);
-> +int ktap_parser_stop(void);
-> =20
->  #endif /* IGT_KTAP_H */
+SGkgS2FtaWwsDQpUaGFua3MgZm9yIHRoZSByZXZpZXcuIA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVz
+c2FnZS0tLS0tDQo+IEZyb206IEthbWlsIEtvbmllY3pueSA8a2FtaWwua29uaWVjem55QGxpbnV4
+LmludGVsLmNvbT4NCj4gU2VudDogMDkgSnVuZSAyMDIzIDE1OjA2DQo+IFRvOiBpZ3QtZGV2QGxp
+c3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogR2hpbWlyYXksIEhpbWFsIFByYXNhZCA8aGltYWwu
+cHJhc2FkLmdoaW1pcmF5QGludGVsLmNvbT47IEt1bWFyLA0KPiBKYW5nYSBSYWh1bCA8amFuZ2Eu
+cmFodWwua3VtYXJAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtpLWctdCwg
+MS8xXSBVZXZlbnQgbGlzdGVuZXIgZm9yIGZha2UgZ3QgcmVzZXQgZmFpbHVyZS4NCj4gDQo+IEhp
+IEhpbWFsLA0KPiANCj4gcGxlYXNlIGRvIG5vdCBwdXQgZG90IGF0IHRoZSBlbmQgb2Ygc3ViamVj
+dDoNCj4gDQo+IFVldmVudCBsaXN0ZW5lciBmb3IgZmFrZSBndCByZXNldCBmYWlsdXJlLg0KPiAt
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV4NCj4gDQo+IFJlbW92ZSB0
+aGlzICcuJyBmcm9tIHRoZSBlbmQuIEFsc28gcGxlYXNlIGFkZCBhdCBiZWdpbiB3aGF0IHBhcnQg
+b2YgaWd0IHlvdQ0KPiBtb2RpZnksIGhlcmUgaXQgaXMgYWRkaW5nIG5ldyB4ZSB0ZXN0IHNvOg0K
+PiANCj4gdGVzdHMveGUveGVfdWV2ZW50OiBhZGQgbmV3IHRlc3QgZm9yIHVldmVudCBndCByZXNl
+dCBmYWlsdXJlDQoNCldpbGwgYWRkcmVzcyBpbiBuZXh0IHBhdGNoLg0KPiANCj4gT24gMjAyMy0w
+Ni0wNSBhdCAxMToyMDo1OSArMDUzMCwgSGltYWwgUHJhc2FkIEdoaW1pcmF5IHdyb3RlOg0KPiA+
+IFRoaXMgdGVzdCBpcyB0byBjYXVzZSB0aGUgZmFrZSByZXNldCBmYWlsdXJlIGFuZCBjYXB0dXJl
+IHRoZSB1ZXZlbnQNCj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIF5eXl4NCj4gRGVzY3Jp
+YmUgd2h5IHdlIG5lZWQgYSBmYWtlIG9uZSwgbm90IHJlYWwgb25lLg0KU3VyZS4NCj4gDQo+ID4g
+c2VudCBpbiBjYXNlIG9mIGd0IHJlc2V0IGZhaWx1cmUuDQo+ID4NCj4gPiBUaGUgc2VuZGluZyBv
+ZiBVZXZlbnQgaXMgdGFrZW4gY2FyZSBieSBzZXJpZXM6DQo+ID4gZHJtL3hlOiBOb3RpZnkgVXNl
+cnNwYWNlIHdoZW4gZW5naW5lL2d0IHJlc2V0IGZhaWxzLg0KPiANCldpbGwgdXBsb2FkIHRoZSBw
+YXRjaHdvcmsgbGluayBpbiBuZXh0IHBhdGNoLg0KPiBQbGVhc2Ugd3JpdGUgaGVyZSBsaW5rIHRv
+IHB1YmxpYyBwYXRjaHdvcmsgb3IgR2l0TGFiIG9yLCBpZiB5b3UgcHJlZmVyIHRvIG5vdA0KPiBp
+bmNsdWRlIGl0IGlub3QgdGhpcyBkZXNjcmlwdGlvbiwgcHV0IGl0IGFmdGVyIHNpZ25lZC1vZmYt
+YnkgbGluZSBhbmQgYWZlciAiLS0tIg0KPiBsaW5lLCBzZWUgYmVsb3cuDQo+IA0KPiA+DQo+ID4g
+VGhlIGluZnJhIHRvIGNhdXNlIGZha2UgcmVzZXQgZmFpbHVyZSBpcyBpbiBzZXJpZXM6DQo+ID4g
+ZHJtL3hlOiBBZGQgYSBkZWJ1Z2ZzIGZvciBmYWtpbmcgZ3QgcmVzZXQgZmFpbHVyZS4NCj4gDQo+
+IFNhbWUgaGVyZSwgcGxlYXNlIGFsc28gcHJvdmlkZSBsaW5rLg0KDQpXaWxsIGFkZHJlc3MuDQo+
+IA0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSGltYWwgUHJhc2FkIEdoaW1pcmF5IDxoaW1hbC5w
+cmFzYWQuZ2hpbWlyYXlAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiANCj4gLS0tDQo+IFdyaXRlIGhl
+cmUgb3RoZXIgY29tbWVudHMgb3IgbGlua3Mgd2hpY2ggeW91IGRvIG5vdCB3YW50IHRvIGJlIG1l
+cmdlZC4NCj4gDQo+IA0KPiA+ICB0ZXN0cy9tZXNvbi5idWlsZCAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgfCAgIDEgKw0KPiA+ICAuLi4veGVfdWV2ZW50X2xpc3RlbmVyX2Zha2VfcmVzZXRf
+ZmFpbHVyZS5jICAgfCAxMjggKysrKysrKysrKysrKysrKysrDQo+ID4gIDIgZmlsZXMgY2hhbmdl
+ZCwgMTI5IGluc2VydGlvbnMoKykNCj4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL3hlL3hl
+X3VldmVudF9saXN0ZW5lcl9mYWtlX3Jlc2V0X2ZhaWx1cmUuYw0KPiA+DQo+ID4gZGlmZiAtLWdp
+dCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQgaW5kZXgNCj4gPiBmNzFi
+ZTFkYi4uY2M1ODQzZDcgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMvbWVzb24uYnVpbGQNCj4gPiAr
+KysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiA+IEBAIC0yNjgsNiArMjY4LDcgQEAgeGVfcHJvZ3Mg
+PSBbDQo+ID4gIAkneGVfcXVlcnknLA0KPiA+ICAJJ3hlX3ZtJywNCj4gPiAgCSd4ZV93YWl0ZmVu
+Y2UnLA0KPiA+ICsJJ3hlX3VldmVudF9saXN0ZW5lcl9mYWtlX3Jlc2V0X2ZhaWx1cmUnLA0KPiAt
+LS0tLS0tLS0tLS0tLS0tLSBeXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eIFRoaXMgaXMgdG9v
+IGxvbmcgZm9yIGEgbmFtZQ0KPiBhbmQgYWxzbyBsb29rcyBsaWtlIG9uZS1vbmx5IHRlc3QsIHNv
+IHBsZWFzZSBtYWtlIGl0IHNob3J0LCBzb21ldGhpbmcgbGlrZToNCj4gDQo+IAkneGVfdWV2ZW50
+JywNCj4gDQo+IFRoaXMgd2F5IHdlIGNhbiBleHRlbmQgaXQgaW4gZnV0dXJlIGZvciBuZXcgc3Vi
+dGVzdHMuDQo+IEFsc28sIGFzIG5vdGVkIGJ5IFJhaHVsLCBrZWVwIGl0IHNvcnRlZCBhbHBoYWJl
+dGlhY2FsbHkuDQpTdXJlLiBXaWxsIGFkZHJlc3MgaXQuDQo+IA0KPiA+ICBdDQo+ID4NCj4gPiAg
+bXNtX3Byb2dzID0gWw0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy94ZS94ZV91ZXZlbnRfbGlzdGVu
+ZXJfZmFrZV9yZXNldF9mYWlsdXJlLmMNCj4gPiBiL3Rlc3RzL3hlL3hlX3VldmVudF9saXN0ZW5l
+cl9mYWtlX3Jlc2V0X2ZhaWx1cmUuYw0KPiA+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+ID4gaW5k
+ZXggMDAwMDAwMDAuLmRkMjJlNGMyDQo+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ICsrKyBiL3Rlc3Rz
+L3hlL3hlX3VldmVudF9saXN0ZW5lcl9mYWtlX3Jlc2V0X2ZhaWx1cmUuYw0KPiA+IEBAIC0wLDAg
+KzEsMTI4IEBADQo+ID4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQNCj4gPiArLyoN
+Cj4gPiArICogQ29weXJpZ2h0IMKpIDIwMjMgSW50ZWwgQ29ycG9yYXRpb24gICovDQo+ID4gKw0K
+PiA+ICsvKioNCj4gPiArICogVEVTVDogY2F1c2UgZmFrZSBndCByZXNldCBmYWlsdXJlIGFuZCBs
+aXN0ZW4gdWV2ZW50IGZyb20gS01EDQo+ID4gKyAqIFNVQlRFU1Q6ZmFrZV9yZXNldF91ZXZlbnRf
+bGlzdGVuZXINCj4gPiArICogRGVzY3JpcHRpb246DQo+ID4gKyAqCQlUZXN0IGNyZWF0ZXMgdWV2
+ZW50IGxpc3RlbmVyIGFuZCBjYXVzZXMgZmFrZSByZXNldCBmYWlsdXJlIGZvcg0KPiBndDANCj4g
+PiArICoJCWFuZCByZXR1cm5zIHN1Y2Nlc3MgaWYgdWV2ZW50IGlzIHNlbnQgYnkgZHJpdmVyIGFu
+ZCBsaXN0ZW5lZCBieQ0KPiBsaXN0ZW5lci4NCj4gPiArICovDQo+ID4gKw0KPiA+ICsjaW5jbHVk
+ZSAiaWd0LmgiDQo+IC0tLS0tLS0tLS0tLSBeDQo+ID4gKyNpbmNsdWRlICJ4ZV9kcm0uaCINCj4g
+LS0tLS0tLS0tLS0tIF4NCj4gS2VlcCBpbmNsdWRlcyBzb3J0ZWQgYWxwaGFiZXRpY2FsbHksIGFs
+c28gcGxlYXNlIHB1dCBzeXN0ZW0gaW5jbHVkZXMgZmlyc3QsDQo+IHRoZW4gd3JpdGUgb25lIG5l
+d2xpbmUsIHRoZW4gaWd0IGluY2x1ZGVzLg0KPiA+ICsjaW5jbHVkZSAieGUveGVfcXVlcnkuaCIN
+Cj4gDQo+IE5ld2xpbmUgaGVyZSB0byBzZXBhcmF0ZSBzeXN0ZW0gYW5kIGlndCBpbmNsdWRlcy4N
+Cj4gDQo+ID4gKyNpbmNsdWRlIDxzdHJpbmcuaD4NCj4gLS0tLS0tLS0tLS0tIF4NCj4gPiArI2lu
+Y2x1ZGUgPGxpYnVkZXYuaD4NCj4gLS0tLS0tLS0tLS0tIF4NCj4gPiArI2luY2x1ZGUgPHN5cy9z
+dGF0Lmg+DQo+IC0tLS0tLS0tLS0tLSBeDQo+IFNhbWUgaGVyZSwgc29ydCB0aGVtIGFuZCBzd2Fw
+IChmaXJzdCBzeXN0ZW0gaGVhZGVycywgdGhlbiBpZ3QpLg0KDQpXaWxsIGFkZHJlc3MgdGhlbS4N
+Cj4gDQo+ID4gKw0KPiA+ICtzdGF0aWMgYm9vbCB4ZV9mb3JjZV9ndF9mYWtlX3Jlc2V0KGludCBm
+ZCwgaW50IGd0KSB7DQo+ID4gKwljaGFyIHJlc2V0X3N0cmluZ1sxMjhdOw0KPiA+ICsJc3RydWN0
+IHN0YXQgc3Q7DQo+ID4gKw0KPiA+ICsJaWd0X2Fzc2VydF9lcShmc3RhdChmZCwgJnN0KSwgMCk7
+DQo+ID4gKwlzbnByaW50ZihyZXNldF9zdHJpbmcsIHNpemVvZihyZXNldF9zdHJpbmcpLA0KPiA+
+ICsJCSAiY2F0IC9zeXMva2VybmVsL2RlYnVnL2RyaS8lZC9ndCVkL2Zha2VfcmVzZXRfZmFpbHVy
+ZSIsDQo+ID4gK21pbm9yKHN0LnN0X3JkZXYpLCBndCk7DQo+IC0tLS0tLS0tLS0tLS0tLS0tIF4N
+Cj4gSnVzdCBvcGVuIGFuZCB3cml0ZSB0byB0aGlzIGZpbGUsIHNlYXJjaCBmb3IgaWd0IGhlbHBl
+ciBpbiBsaWIuDQpXaWxsIGxvb2sgaW50byBpdC4NCj4gDQo+ID4gKw0KPiA+ICsJaWYgKHN5c3Rl
+bShyZXNldF9zdHJpbmcpKQ0KPiAtLS0tLS0tLS0tLSBeDQo+IERpcmVjdCB3cml0ZSBpcyBiZXR0
+ZXIgZm9yIGVycm9yIGhhbmRsaW5nLg0KPiANCj4gPiArCQlyZXR1cm4gZmFsc2U7DQo+ID4gKw0K
+PiA+ICsJcmV0dXJuIHRydWU7DQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyBib29sIGxpc3Rl
+bl9yZXNldF9mYWlsX3VldmVudChzdHJ1Y3QgdWRldl9kZXZpY2UgKmRldmljZSwNCj4gPiArY29u
+c3QgY2hhciAqc291cmNlLCBpbnQgZ3RfaWQpIHsNCj4gPiArCXN0cnVjdCB1ZGV2X2xpc3RfZW50
+cnkgKmxpc3RfZW50cnk7DQo+ID4gKwlib29sIHJlc2V0X2ZhaWxlZCA9IGZhbHNlOw0KPiA+ICsJ
+Ym9vbCByZXNldF91bml0X2lzX2d0ID0gZmFsc2U7DQo+ID4gKwlib29sIGd0X2lkX21hdGNoZXMg
+PSBmYWxzZTsNCj4gPiArCWNvbnN0IGNoYXIgKm5hbWUsICp2YWw7DQo+ID4gKw0KPiA+ICsJdWRl
+dl9saXN0X2VudHJ5X2ZvcmVhY2gobGlzdF9lbnRyeSwNCj4gdWRldl9kZXZpY2VfZ2V0X3Byb3Bl
+cnRpZXNfbGlzdF9lbnRyeShkZXZpY2UpKQ0KPiA+ICsJew0KPiA+ICsJCW5hbWUgPSB1ZGV2X2xp
+c3RfZW50cnlfZ2V0X25hbWUobGlzdF9lbnRyeSk7DQo+ID4gKwkJdmFsID0gdWRldl9saXN0X2Vu
+dHJ5X2dldF92YWx1ZShsaXN0X2VudHJ5KTsNCj4gPiArDQo+ID4gKwkJaWYgKCFzdHJjbXAobmFt
+ZSwgIlJFU0VUX0ZBSUxFRCIpICYmICFzdHJjbXAodmFsLCAiMSIpKSB7DQo+ID4gKwkJCXByaW50
+ZigiJXMgPSAlc1xuIiwgbmFtZSwgdmFsKTsNCj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXg0K
+PiBEbyBub3QgdXNlIHByaW50ZiwgdXNlIGlndF9kZWJ1ZyBvciBpZ3RfaW5mby4gVXNlIG9mIGln
+dF9kZWJ1ZyBpcyBwcmVmZXJhYmxlIGFzDQo+IHRvIG5vdCBjbG9iYmVyIG91dHB1dC4NClN1cmUu
+IFdpbGwgYWRkcmVzcyBpbiBuZXh0IHBhdGNoLg0KPiANCj4gPiArCQkJcmVzZXRfZmFpbGVkID0g
+dHJ1ZTsNCj4gPiArCQkJY29udGludWU7DQo+ID4gKwkJfQ0KPiA+ICsNCj4gPiArCQlpZiAoIXN0
+cmNtcChuYW1lLCAiUkVTRVRfVU5JVCIpICYmICFzdHJjbXAodmFsLCAiZ3QiKSkgew0KPiA+ICsJ
+CQlwcmludGYoIiVzID0gJXNcbiIsIG5hbWUsIHZhbCk7DQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tIF4NCj4gU2FtZSBoZXJlLg0KV2lsbCBhZGRyZXNzIGluIG5leHQgcGF0Y2guDQo+IA0KPiA+
+ICsJCQlyZXNldF91bml0X2lzX2d0ID0gdHJ1ZTsNCj4gPiArCQkJY29udGludWU7DQo+ID4gKwkJ
+fQ0KPiA+ICsNCj4gPiArCQlpZiAoIXN0cmNtcChuYW1lLCAiUkVTRVRfSUQiKSAmJiAoYXRvaSh2
+YWwpID09IGd0X2lkKSkgew0KPiA+ICsJCQlwcmludGYoIiVzID0gJXNcbiIsIG5hbWUsIHZhbCk7
+DQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIF4NCj4gU2FtZSBoZXJlLg0KV2lsbCBhZGRyZXNz
+IGluIG5leHQgcGF0Y2guDQo+IA0KPiA+ICsJCQlndF9pZF9tYXRjaGVzID0gdHJ1ZTsNCj4gPiAr
+CQkJY29udGludWU7DQo+ID4gKwkJfQ0KPiA+ICsJfQ0KPiA+ICsNCj4gPiArCXJldHVybiAocmVz
+ZXRfZmFpbGVkICYmIHJlc2V0X3VuaXRfaXNfZ3QgJiYgZ3RfaWRfbWF0Y2hlcyk7IH0NCj4gPiAr
+DQo+ID4gK3N0YXRpYyB2b2lkIGZha2VfcmVzZXRfdWV2ZW50X2xpc3RlbmVyKGludCBmZCwgaW50
+IGd0X2lkKSB7DQo+ID4gKwlzdHJ1Y3QgdWRldiAqdWRldjsNCj4gPiArCXN0cnVjdCB1ZGV2X2Rl
+dmljZSAqZGV2Ow0KPiA+ICsJc3RydWN0IHVkZXZfbW9uaXRvciAqbW9uOw0KPiA+ICsJYm9vbCBl
+dmVudF9yZWNpZXZlZCA9IGZhbHNlOw0KPiA+ICsJYm9vbCBldmVudF9zZW50ID0gZmFsc2U7DQo+
+ID4gKw0KPiA+ICsJLyogY3JlYXRlIHVkZXYgb2JqZWN0ICovDQo+ID4gKwl1ZGV2ID0gdWRldl9u
+ZXcoKTsNCj4gPiArCWlmICghdWRldikgew0KPiA+ICsJCWZwcmludGYoc3RkZXJyLCAiQ2FuJ3Qg
+Y3JlYXRlIHVkZXZcbiIpOw0KPiAtLS0tLS0tLS0tLS0tLS0gXg0KPiB1c2UgaWd0X2RlYnVnDQpT
+dXJlLg0KPiANCj4gPiArCQlnb3RvIG5vX3VkZXY7DQo+IC0tLS0tLS0tLS0tLS0tLSBeDQo+IElu
+c3RlYWQgb2YgZ290byBwbGVhc2UgdXNlIGlndF9hc3NlcnRfZihmYWxzZSwgImRlc2NyaWJlIGZh
+aWwgaGVyZVxuIik7DQpPay4NCj4gDQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJbW9uID0gdWRldl9t
+b25pdG9yX25ld19mcm9tX25ldGxpbmsodWRldiwgImtlcm5lbCIpOw0KPiA+ICsJdWRldl9tb25p
+dG9yX2ZpbHRlcl9hZGRfbWF0Y2hfc3Vic3lzdGVtX2RldnR5cGUobW9uLCAiZHJtIiwNCj4gImRy
+bV9taW5vciIpOw0KPiA+ICsJdWRldl9tb25pdG9yX2VuYWJsZV9yZWNlaXZpbmcobW9uKTsNCj4g
+PiArCWlndF91bnRpbF90aW1lb3V0KDUpIHsNCj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBe
+DQo+IFdyaXRlIGl0IGFzIGRlZmluZSBvciBjb25zdGFudC4NClN1cmUuDQo+IA0KPiA+ICsJCQlk
+ZXYgPSB1ZGV2X21vbml0b3JfcmVjZWl2ZV9kZXZpY2UobW9uKTsNCj4gPiArDQo+ID4gKwkJCWlm
+IChkZXYpIHsNCj4gPiArCQkJCWV2ZW50X3JlY2lldmVkID0NCj4gbGlzdGVuX3Jlc2V0X2ZhaWxf
+dWV2ZW50KGRldiwgImtlcm5lbCIsIGd0X2lkKTsNCj4gPiArCQkJCXVkZXZfZGV2aWNlX3VucmVm
+KGRldik7DQo+ID4gKwkJCX0NCj4gPiArDQo+ID4gKwkJCWlmIChldmVudF9zZW50KQ0KPiA+ICsJ
+CQkJZ290byBmcmVlX3VkZXY7DQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXg0K
+PiBKdXN0DQo+IAkJCQlicmVhazsNCj4gDQo+IGlzIGltaG8gYmV0dGVyLg0KTWFrZXMgc2Vuc2Uu
+DQo+IA0KPiA+ICsNCj4gPiArCQlldmVudF9zZW50ID0geGVfZm9yY2VfZ3RfZmFrZV9yZXNldChm
+ZCwgZ3RfaWQpOw0KPiA+ICsJCXVzbGVlcCg1MCAqIDEwMDApOw0KPiAtLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tIF4NCj4gV3JpdGUgaXQgYXMgZGVmaW5lIG9yIGNvbnN0YW50IGFsc28gY29tbWVudCB3
+aHkgeW91IHdhbnQgdG8gc2xlZXAgaGVyZS4NClN1cmUuDQo+IA0KPiA+ICsJfQ0KPiA+ICsNCj4g
+PiArZnJlZV91ZGV2Og0KPiA+ICsJdWRldl91bnJlZih1ZGV2KTsNCj4gPiArbm9fdWRldjoNCj4g
+PiArCWlndF9hc3NlcnQoZXZlbnRfcmVjaWV2ZWQpOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICtpZ3Rf
+bWFpbg0KPiA+ICt7DQo+ID4gKwlpbnQgZmQ7DQo+ID4gKw0KPiA+ICsJaWd0X2ZpeHR1cmUgew0K
+PiA+ICsJCWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9YRSk7DQo+ID4gKwkJeGVfZGV2aWNl
+X2dldChmZCk7DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJdXNsZWVwKDUwICogMTAwMCk7DQo+IC0t
+LS0tLS0gXg0KPiBEbyBub3QgbWFrZSBzdWNoIHNsZWVwcyBoZXJlLCB3aHkgZG8geW91IG5lZWQg
+aXQgaGVyZT8NCmRybV9vcGVuX2RyaXZlciwgbG9hZHMgZHJpdmVyIGluY2FzZSBpdCBpcyBub3Qg
+bG9hZGVkIGFscmVhZHkuIFdoaWNoIHdpbGwgY2F1c2UgbG90IG9mIHVldmVudHMNCmFuZCBsaXN0
+ZW5lciBtaWdodCBpbnRlcnByZXQgd3JvbmcgZXZlbnRzIGFuZCBjYXVzZSBmYWlsdXJlLiBBYm92
+ZSBkZWxheSBpcyB0byBlbnN1cmUgdWV2ZW50cyB0cmlnZ2VyZWQgZHVyaW5nIGRyaXZlciBsb2Fk
+IGFyZSANCnNldHRsZWQgZG93biBiZWZvcmUgaW5pdGlhdGluZyBsaXN0ZW5lciBmb3IgZmFrZSBy
+ZXNldCBmYWlsdXJlLg0KV2lsbCBhZGQgdGhlIHJlYXNvbiBmb3IgZGVsYXkgaW4gY29tbWVudCBz
+ZWN0aW9uLiANCj4gDQo+IFJlZ2FyZHMsDQo+IEthbWlsDQo+IA0KPiA+ICsNCj4gPiArCWlndF9z
+dWJ0ZXN0KCJmYWtlX3Jlc2V0X3VldmVudF9saXN0ZW5lciIpDQo+ID4gKwkJZmFrZV9yZXNldF91
+ZXZlbnRfbGlzdGVuZXIoZmQsIDApOw0KPiA+ICsNCj4gPiArCWlndF9maXh0dXJlIHsNCj4gPiAr
+CQl4ZV9kZXZpY2VfcHV0KGZkKTsNCj4gPiArCQljbG9zZShmZCk7DQo+ID4gKwl9DQo+ID4gK30N
+Cj4gPiAtLQ0KPiA+IDIuMjUuMQ0KPiA+DQo=
