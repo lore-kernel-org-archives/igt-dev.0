@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AB2010E0FA
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 16:55:52 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB1EC10E25D
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 13:37:45 +0000 (UTC)
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Jun 2023 22:29:31 +0530
-Message-Id: <20230613165936.2930050-2-kunal1.joshi@intel.com>
-In-Reply-To: <20230613165936.2930050-1-kunal1.joshi@intel.com>
-References: <20230613165936.2930050-1-kunal1.joshi@intel.com>
+Date: Tue, 13 Jun 2023 19:11:54 +0530
+Message-Id: <20230613134156.3315199-3-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230613134156.3315199-1-himal.prasad.ghimiray@intel.com>
+References: <20230613134156.3315199-1-himal.prasad.ghimiray@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/6] RFC
- tests/i915/kms_frontbuffer_tracking: Add xe support
+Subject: [igt-dev] [PATCH 2/4] lib/igt_sysfs: Handling gt related sysfs uapi
+ changes.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,31 +19,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: kunal1.joshi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support for DRIVER_XE
+Patch https://patchwork.freedesktop.org/series/118927/
+is moving gt sysfs parent under tile folder.
 
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+With the above patch path for sysfs changes:
+from: /sys/class/drm/cardX/device/gtN/
+to : /sys/class/drm/cardX/device/tileN/gtN
+
+Adding xe_for_each_gt_under_each_tile macro to
+access new path.
+
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 ---
- tests/i915/kms_frontbuffer_tracking.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/igt_sysfs.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 650e14a7..c2b99670 100644
---- a/tests/i915/kms_frontbuffer_tracking.c
-+++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -1338,7 +1338,7 @@ static void init_crcs(enum pixel_format format, enum tiling_type tiling,
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 2fb2303c..6c0ab617 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -78,6 +78,11 @@
  
- static void setup_drm(void)
- {
--	drm.fd = drm_open_driver_master(DRIVER_INTEL);
-+	drm.fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 	drm.debugfs = igt_debugfs_dir(drm.fd);
+ #define xe_for_each_tile for_each_sysfs_tile_dirfd
  
- 	kmstest_set_vt_graphics_mode();
++/* FIXME: Need to revisit if GT indexing under TILE changes from KMD */
++#define xe_for_each_gt_under_each_tile(xe__, gt__, tile__) \
++	for (gt__ = 0, tile__ = 0 ; gt__ < xe_number_gt(xe__); \
++	     (xe_number_gt(xe__) == igt_sysfs_get_num_tiles(xe__)) ? ++gt__, ++tile__ : ++gt__)
++
+ enum i915_attr_id {
+ 	RPS_ACT_FREQ_MHZ,
+ 	RPS_CUR_FREQ_MHZ,
 -- 
-2.34.1
+2.25.1
