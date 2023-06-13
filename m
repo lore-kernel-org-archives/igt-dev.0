@@ -1,26 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1nam02on20602.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7ea9::602])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 839BA893ED
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 17:53:46 +0000 (UTC)
-From: "Wu, Hersen" <hersenxs.wu@amd.com>
-To: "Hung, Alex" <Alex.Hung@amd.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>, "Siqueira, Rodrigo"
- <Rodrigo.Siqueira@amd.com>, "Pillai, Aurabindo" <Aurabindo.Pillai@amd.com>,
- "Wang, Chao-kai (Stylon)" <Stylon.Wang@amd.com>, "Mahfooz, Hamza"
- <Hamza.Mahfooz@amd.com>
-Date: Tue, 13 Jun 2023 17:53:40 +0000
-Message-ID: <PH8PR12MB69625899AA2876B105978242FD55A@PH8PR12MB6962.namprd12.prod.outlook.com>
-References: <20230613124647.37529-1-hersenxs.wu@amd.com>
- <049981b6-e56f-34b9-77c9-e3acfbfec34f@amd.com>
-In-Reply-To: <049981b6-e56f-34b9-77c9-e3acfbfec34f@amd.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FD7710E22D
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 16:55:57 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 13 Jun 2023 22:29:35 +0530
+Message-Id: <20230613165936.2930050-6-kunal1.joshi@intel.com>
+In-Reply-To: <20230613165936.2930050-1-kunal1.joshi@intel.com>
+References: <20230613165936.2930050-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_vrr_range: fix test
- crash when n_pipes > n_outputs
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 5/6] RFC
+ tests/i915/kms_frontbuffer_tracking: xe only supports MMAP_WC, BLT, RENDER
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,74 +19,290 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: kunal1.joshi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEdlbmVyYWxdDQoNCkhpIEFsZXgsDQoNClllcy4gVGVz
-dCBjcmFzaGVzIGlmIHRoZXJlIGFyZSBtb3JlIHBpcGVzIHRoYW4gb3V0cHV0cy4NCg0Kbl9waXBl
-cywgbl9vdXRwdXRzIGFyZSBkZWZpbmVkIHdpdGhpbiBpZ3Rfa21zLmgNCg0Kc3RydWN0IGlndF9k
-aXNwbGF5IHsNCiAgICAgICAgaW50IGRybV9mZDsNCiAgICAgICAgaW50IGxvZ19zaGlmdDsNCiAg
-ICAgICAgaW50IG5fcGlwZXM7ICAgICAgICAgICAgICAgICAgICAgICAgLS0tLT4gICBkaXNwbGF5
-LT5uX3BpcGVzID0gIHJlc291cmNlcy0+Y291bnRfY3J0Y3MgICBJR1RfTUFYX1BJUEVTOw0KICAg
-ICAgICBpbnQgbl9wbGFuZXM7ICAgICAgICAgICAgICAgICAgICAgIC0tLS0+ICAgZGlzcGxheS0+
-bl9wbGFuZXMgPSBwbGFuZV9yZXNvdXJjZXMtPmNvdW50X3BsYW5lczsNCiAgICAgICAgaW50IG5f
-b3V0cHV0czsgICAgICAgICAgICAgICAgICAgIC0tLS0+ICAgZGlzcGxheS0+bl9vdXRwdXRzID0g
-cmVzb3VyY2VzLT5jb3VudF9jb25uZWN0b3JzOw0KICAgICAgICBpZ3Rfb3V0cHV0X3QgKm91dHB1
-dHM7DQogICAgICAgIGlndF9wbGFuZV90ICpwbGFuZXM7DQogICAgICAgIGlndF9waXBlX3QgKnBp
-cGVzOw0KICAgICAgICBib29sIGhhc19jdXJzb3JfcGxhbmU7DQogICAgICAgIGJvb2wgaXNfYXRv
-bWljOw0KICAgICAgICBib29sIGZpcnN0X2NvbW1pdDsNCg0KICAgICAgICB1aW50NjRfdCAqbW9k
-aWZpZXJzOw0KICAgICAgICB1aW50MzJfdCAqZm9ybWF0czsNCiAgICAgICAgaW50IGZvcm1hdF9t
-b2RfY291bnQ7DQp9Ow0KDQpUaGFua3MhDQpIZXJzZW4NCg0KDQoNCi0tLS0tT3JpZ2luYWwgTWVz
-c2FnZS0tLS0tDQpGcm9tOiBIdW5nLCBBbGV4IDxBbGV4Lkh1bmdAYW1kLmNvbT4NClNlbnQ6IFR1
-ZXNkYXksIEp1bmUgMTMsIDIwMjMgMToyMyBQTQ0KVG86IFd1LCBIZXJzZW4gPGhlcnNlbnhzLnd1
-QGFtZC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgU2lxdWVpcmEsIFJvZHJp
-Z28gPFJvZHJpZ28uU2lxdWVpcmFAYW1kLmNvbT47IFBpbGxhaSwgQXVyYWJpbmRvIDxBdXJhYmlu
-ZG8uUGlsbGFpQGFtZC5jb20+OyBXYW5nLCBDaGFvLWthaSAoU3R5bG9uKSA8U3R5bG9uLldhbmdA
-YW1kLmNvbT47IE1haGZvb3osIEhhbXphIDxIYW16YS5NYWhmb296QGFtZC5jb20+DQpTdWJqZWN0
-OiBSZTogW1BBVENIXSBbaS1nLXRdIHRlc3RzL2FtZGdwdS9hbWRfdnJyX3JhbmdlOiBmaXggdGVz
-dCBjcmFzaCB3aGVuIG5fcGlwZXMgPiBuX291dHB1dHMNCg0KVGhlIHN1YmplY3QgYW5kIGNvbW1p
-dCBtZXNzYWdlcyBpbXBseSB0aGVyZSBhcmUgdmFyaWFibGVzICJuX3BpcGVzIiBhbmQgIm5fb3V0
-cHV0cyIsIGJ1dCB0aGVyZSBhcmVuJ3Qgc3VjaCB2YXJpYWJsZXMuDQoNCkRvIHlvdSBtZWFuIHRo
-ZSB0ZXN0IGNyYXNoZXMgaWYgdGhlcmUgYXJlIG1vcmUgcGlwZXMgdGhhbiBvdXRwdXRzPw0KDQpP
-biAyMDIzLTA2LTEzIDA2OjQ2LCBIZXJzZW4gV3Ugd3JvdGU6DQo+IEZpeCB0ZXN0IGNyYXNoIGJ5
-IGxvb3Bpbmcgb3V0cHV0cyB1c2luZw0KPiBmb3JfZWFjaF9jb25uZWN0ZWRfb3V0cHV0KGRpc3Bs
-YXksIG91dHB1dCkuDQo+DQo+IFdoZW4gbl9waXBlcyA+IG5fb3V0cHV0cywgaSA+PSBuX291dHB1
-dHMsDQo+IGRpc3BsYXktPm91dHB1dHNbaV0tPmNvbmZpZy5jb25uZWN0b3Igd2l0aGluDQo+IGZv
-cl9lYWNoX3BpcGUoZGlzcGxheSwgaSkgYXJlIGludmFsaWQuDQo+IEludmFsaWQgY29ubmVjdG9y
-cyBjYXVzZSB0ZXN0IGNyYXNoLg0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBIZXJzZW4gV3UgPGhlcnNl
-bnhzLnd1QGFtZC5jb20+DQo+IC0tLQ0KPiAgIHRlc3RzL2FtZGdwdS9hbWRfdnJyX3JhbmdlLmMg
-fCAyMCArKysrKystLS0tLS0tLS0tLS0tLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlv
-bnMoKyksIDE0IGRlbGV0aW9ucygtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvYW1kZ3B1L2Ft
-ZF92cnJfcmFuZ2UuYw0KPiBiL3Rlc3RzL2FtZGdwdS9hbWRfdnJyX3JhbmdlLmMgaW5kZXggM2Y4
-ZjIzZTlhLi42MTFmNDFmOTUgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2FtZGdwdS9hbWRfdnJyX3Jh
-bmdlLmMNCj4gKysrIGIvdGVzdHMvYW1kZ3B1L2FtZF92cnJfcmFuZ2UuYw0KPiBAQCAtMjU4LDE4
-ICsyNTgsMTQgQEAgc3RhdGljIHZvaWQgdGVzdF9mcmVlc3luY19wYXJzaW5nX2Jhc2UoZGF0YV90
-ICpkYXRhLCB1aW50MzJfdCB0ZXN0X2ZsYWdzKQ0KPiAgICAgICBjb25zdCBzdHJ1Y3QgZWRpZCAq
-ZWRpZDsNCj4gICAgICAgcmFuZ2VfdCByYW5nZSwgZXhwZWN0ZWRfcmFuZ2U7DQo+ICAgICAgIGln
-dF9vdXRwdXRfdCAqb3V0cHV0Ow0KPiAtICAgICBpbnQgaSwgaiwgdGVzdF9jb25uX2NudCA9IDA7
-DQo+ICsgICAgIGludCBqLCB0ZXN0X2Nvbm5fY250ID0gMDsNCj4gKyAgICAgaWd0X2Rpc3BsYXlf
-dCAqZGlzcGxheSA9ICZkYXRhLT5kaXNwbGF5Ow0KPg0KPiAgICAgICB0ZXN0X2luaXQoZGF0YSk7
-DQo+DQo+ICAgICAgIGlndF9hbWRfcmVxdWlyZV9ocGQoJmRhdGEtPmRpc3BsYXksIGRhdGEtPmZk
-KTsNCj4NCj4gLSAgICAgZm9yX2VhY2hfcGlwZSgmZGF0YS0+ZGlzcGxheSwgaSkgew0KPiAtICAg
-ICAgICAgICAgIC8qIHNldHVwIHRoZSBvdXRwdXQgKi8NCj4gLSAgICAgICAgICAgICBvdXRwdXQg
-PSBkYXRhLT5vdXRwdXRbaV07DQo+IC0gICAgICAgICAgICAgaWYgKCFvdXRwdXQgfHwgIWlndF9v
-dXRwdXRfaXNfY29ubmVjdGVkKG91dHB1dCkpDQo+IC0gICAgICAgICAgICAgICAgICAgICBjb250
-aW51ZTsNCj4gLQ0KPiArICAgICBmb3JfZWFjaF9jb25uZWN0ZWRfb3V0cHV0KGRpc3BsYXksIG91
-dHB1dCkgew0KPiAgICAgICAgICAgICAgIC8qIGZpbmQgYSB0ZXN0IEVESUQgKi8NCj4gICAgICAg
-ICAgICAgICBqID0NCj4gZmluZF90ZXN0X2VkaWRfaW5kZXgob3V0cHV0LT5jb25maWcuY29ubmVj
-dG9yLT5jb25uZWN0b3JfdHlwZSk7DQo+DQo+IEBAIC0zMzUsMTggKzMzMSwxNCBAQCBzdGF0aWMg
-dm9pZCB0ZXN0X2ZyZWVzeW5jX3JhbmdlX2Jhc2UoZGF0YV90ICpkYXRhLCB1aW50MzJfdCB0ZXN0
-X2ZsYWdzKQ0KPiAgIHsNCj4gICAgICAgcmFuZ2VfdCByYW5nZTsNCj4gICAgICAgaWd0X291dHB1
-dF90ICpvdXRwdXQ7DQo+IC0gICAgIGludCBpLCB0ZXN0X2Nvbm5fY250ID0gMDsNCj4gKyAgICAg
-aW50IHRlc3RfY29ubl9jbnQgPSAwOw0KPiArICAgICBpZ3RfZGlzcGxheV90ICpkaXNwbGF5ID0g
-JmRhdGEtPmRpc3BsYXk7DQo+DQo+ICAgICAgIHRlc3RfaW5pdChkYXRhKTsNCj4NCj4gICAgICAg
-aWd0X2FtZF9yZXF1aXJlX2hwZCgmZGF0YS0+ZGlzcGxheSwgZGF0YS0+ZmQpOw0KPg0KPiAtICAg
-ICBmb3JfZWFjaF9waXBlKCZkYXRhLT5kaXNwbGF5LCBpKSB7DQo+IC0gICAgICAgICAgICAgLyog
-c2V0dXAgdGhlIG91dHB1dCAqLw0KPiAtICAgICAgICAgICAgIG91dHB1dCA9IGRhdGEtPm91dHB1
-dFtpXTsNCj4gLSAgICAgICAgICAgICBpZiAoIW91dHB1dCB8fCAhaWd0X291dHB1dF9pc19jb25u
-ZWN0ZWQob3V0cHV0KSkNCj4gLSAgICAgICAgICAgICAgICAgICAgIGNvbnRpbnVlOw0KPiAtDQo+
-ICsgICAgIGZvcl9lYWNoX2Nvbm5lY3RlZF9vdXRwdXQoZGlzcGxheSwgb3V0cHV0KSB7DQo+ICAg
-ICAgICAgICAgICAgaWd0X2RlYnVnX29uX2YoIWhhc192cnIob3V0cHV0KSwgIlJlcXVpcmVzIG91
-dHB1dCBzdXBwb3J0cw0KPiBWUlJcbiIpOw0KPg0KPiAgICAgICAgICAgICAgIGlmICghaGFzX3Zy
-cihvdXRwdXQpKSB7DQo=
+xe only supports MMAP_WC, BLT and RENDER methods,
+
+Open :- does draw method give guarantee for fb to be rendered
+on return, if not how to assure, ex for RENDER we have intel_bb_sync
+
+v2: use igt_draw_supports_method (Bhanu)
+    Remove check from macro and put it in igt_require at test level
+    (Bhanu)
+v3: change order of basic subtest to avoid skipping early (Bhanu)
+v4: Avoid changing basic test order, instead keep igt_required inside
+
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/i915/kms_frontbuffer_tracking.c | 79 ++++++++++++++++++++-------
+ 1 file changed, 59 insertions(+), 20 deletions(-)
+
+diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+index 22d1a7df..9edcbf0a 100644
+--- a/tests/i915/kms_frontbuffer_tracking.c
++++ b/tests/i915/kms_frontbuffer_tracking.c
+@@ -1306,11 +1306,13 @@ static void init_crcs(enum pixel_format format, enum tiling_type tiling,
+ 		for (r = 0; r < pattern->n_rects; r++)
+ 			for (r_ = 0; r_ <= r; r_++)
+ 				draw_rect_igt_fb(pattern, &tmp_fbs[r],
+-						 IGT_DRAW_PWRITE, r_);
++						 igt_draw_supports_method(drm.fd, IGT_DRAW_PWRITE) ?
++						 IGT_DRAW_PWRITE : IGT_DRAW_RENDER,
++						 r_);
+ 	} else {
+ 		for (r = 0; r < pattern->n_rects; r++)
+-			draw_rect_igt_fb(pattern, &tmp_fbs[r], IGT_DRAW_PWRITE,
+-					 r);
++			draw_rect_igt_fb(pattern, &tmp_fbs[r], igt_draw_supports_method(drm.fd, IGT_DRAW_PWRITE) ?
++					 IGT_DRAW_PWRITE : IGT_DRAW_RENDER, r);
+ 	}
+ 
+ 	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
+@@ -2044,9 +2046,6 @@ static void draw_subtest(const struct test_mode *t)
+ 	struct modeset_params *params = pick_params(t);
+ 	struct fb_region *target;
+ 
+-	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm.fd));
+-
+ 	switch (t->screen) {
+ 	case SCREEN_PRIM:
+ 		if (t->method != IGT_DRAW_MMAP_GTT && t->plane == PLANE_PRI)
+@@ -2146,9 +2145,8 @@ static void multidraw_subtest(const struct test_mode *t)
+ 				  igt_draw_get_method_name(m1),
+ 				  igt_draw_get_method_name(m2));
+ 
+-			if ((m1 == IGT_DRAW_MMAP_GTT ||
+-			     m2 == IGT_DRAW_MMAP_GTT) &&
+-			    !gem_has_mappable_ggtt(drm.fd))
++			if (!igt_draw_supports_method(drm.fd, m1) ||
++			    !igt_draw_supports_method(drm.fd, m2))
+ 				continue;
+ 
+ 			for (r = 0; r < pattern->n_rects; r++) {
+@@ -2417,9 +2415,6 @@ static void flip_subtest(const struct test_mode *t)
+ 	struct draw_pattern_info *pattern = &pattern1;
+ 	enum color bg_color;
+ 
+-	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm.fd));
+-
+ 	switch (t->screen) {
+ 	case SCREEN_PRIM:
+ 		assertions |= ASSERT_LAST_ACTION_CHANGED;
+@@ -2479,9 +2474,6 @@ static void fliptrack_subtest(const struct test_mode *t, enum flip_type type)
+ 	struct modeset_params *params = pick_params(t);
+ 	struct draw_pattern_info *pattern = &pattern1;
+ 
+-	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm.fd));
+-
+ 	prepare_subtest(t, pattern);
+ 
+ 	create_fb(t->format, params->primary.fb->width, params->primary.fb->height,
+@@ -2891,9 +2883,6 @@ static void farfromfence_subtest(const struct test_mode *t)
+ 	int max_height, assertions = 0;
+ 	int gen = intel_display_ver(intel_get_drm_devid(drm.fd));
+ 
+-	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm.fd));
+-
+ 	switch (gen) {
+ 	case 2:
+ 		max_height = 2048;
+@@ -3177,8 +3166,7 @@ static void basic_subtest(const struct test_mode *t)
+ 	fb1 = params->primary.fb;
+ 
+ 	for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
+-		if (method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm.fd))
++		if (!igt_draw_supports_method(drm.fd, method))
+ 			continue;
+ 
+ 		if (r == pattern->n_rects) {
+@@ -3483,6 +3471,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	TEST_MODE_ITER_BEGIN(t)
++
+ 		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
+ 			      feature_str(t.feature),
+ 			      pipes_str(t.pipes),
+@@ -3490,7 +3479,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			      plane_str(t.plane),
+ 			      fbs_str(t.fbs),
+ 			      igt_draw_get_method_name(t.method))
++		{
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			draw_subtest(&t);
++		}
+ 	TEST_MODE_ITER_END
+ 
+ 	TEST_MODE_ITER_BEGIN(t)
+@@ -3507,7 +3499,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 				      fbs_str(t.fbs),
+ 				      flip_str(t.flip),
+ 				      igt_draw_get_method_name(t.method))
++			{
++				igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 				flip_subtest(&t);
++			}
+ 	TEST_MODE_ITER_END
+ 
+ 	TEST_MODE_ITER_BEGIN(t)
+@@ -3522,7 +3517,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			      pipes_str(t.pipes),
+ 			      fbs_str(t.fbs),
+ 			      igt_draw_get_method_name(t.method))
++		{
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			fliptrack_subtest(&t, FLIP_PAGEFLIP);
++		}
+ 	TEST_MODE_ITER_END
+ 
+ 	TEST_MODE_ITER_BEGIN(t)
+@@ -3537,7 +3535,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			      screen_str(t.screen),
+ 			      plane_str(t.plane),
+ 			      fbs_str(t.fbs))
++		{
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			move_subtest(&t);
++		}
+ 
+ 		igt_subtest_f("%s-%s-%s-%s-%s-onoff",
+ 			      feature_str(t.feature),
+@@ -3545,7 +3546,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			      screen_str(t.screen),
+ 			      plane_str(t.plane),
+ 			      fbs_str(t.fbs))
++		{
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			onoff_subtest(&t);
++		}
+ 	TEST_MODE_ITER_END
+ 
+ 	TEST_MODE_ITER_BEGIN(t)
+@@ -3554,13 +3558,18 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    t.plane != PLANE_SPR)
+ 			continue;
+ 
++
+ 		igt_subtest_f("%s-%s-%s-%s-%s-fullscreen",
+ 			      feature_str(t.feature),
+ 			      pipes_str(t.pipes),
+ 			      screen_str(t.screen),
+ 			      plane_str(t.plane),
+ 			      fbs_str(t.fbs))
++		{
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			fullscreen_plane_subtest(&t);
++		}
++
+ 	TEST_MODE_ITER_END
+ 
+ 	TEST_MODE_ITER_BEGIN(t)
+@@ -3575,7 +3584,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			      pipes_str(t.pipes),
+ 			      plane_str(t.plane),
+ 			      fbs_str(t.fbs))
++		{
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			multidraw_subtest(&t);
++		}
+ 	TEST_MODE_ITER_END
+ 
+ 	TEST_MODE_ITER_BEGIN(t)
+@@ -3589,7 +3601,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		igt_subtest_f("%s-farfromfence-%s",
+ 			      feature_str(t.feature),
+ 			      igt_draw_get_method_name(t.method))
++		{
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			farfromfence_subtest(&t);
++		}
+ 	TEST_MODE_ITER_END
+ 
+ 	TEST_MODE_ITER_BEGIN(t)
+@@ -3608,7 +3623,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 				      feature_str(t.feature),
+ 				      format_str(t.format),
+ 				      igt_draw_get_method_name(t.method))
++			{
++				igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 				format_draw_subtest(&t);
++			}
+ 		}
+ 	TEST_MODE_ITER_END
+ 
+@@ -3618,10 +3636,14 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		    t.plane != PLANE_PRI ||
+ 		    t.method != IGT_DRAW_BLT)
+ 			continue;
++
+ 		igt_subtest_f("%s-%s-scaledprimary",
+ 			      feature_str(t.feature),
+ 			      fbs_str(t.fbs))
++		{
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			scaledprimary_subtest(&t);
++		}
+ 	TEST_MODE_ITER_END
+ 
+ 	TEST_MODE_ITER_BEGIN(t)
+@@ -3633,14 +3655,23 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			continue;
+ 
+ 		igt_subtest_f("%s-modesetfrombusy", feature_str(t.feature))
++		{
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			modesetfrombusy_subtest(&t);
++		}
+ 
+ 		if (t.feature & FEATURE_FBC) {
+ 			igt_subtest_f("%s-badstride", feature_str(t.feature))
++			{
++				igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 				badstride_subtest(&t);
++			}
+ 
+ 			igt_subtest_f("%s-stridechange", feature_str(t.feature))
++			{
++				igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 				stridechange_subtest(&t);
++			}
+ 
+ 			for (t.tiling = TILING_LINEAR; t.tiling < TILING_COUNT;
+ 			     t.tiling++) {
+@@ -3657,6 +3688,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 					      feature_str(t.feature),
+ 					      tiling_str(t.tiling)) {
+ 
++					igt_require(igt_draw_supports_method(drm.fd, t.method));
++
+ 					if (is_xe_device(drm.fd))
+ 						igt_require(t.tiling == TILING_LINEAR);
+ 
+@@ -3683,10 +3716,16 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 
+ 		if ((t.feature & FEATURE_PSR) || (t.feature & FEATURE_DRRS))
+ 			igt_subtest_f("%s-slowdraw", feature_str(t.feature))
++			{
++				igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 				slow_draw_subtest(&t);
++			}
+ 
+ 		igt_subtest_f("%s-suspend", feature_str(t.feature))
++		{
++			igt_require(igt_draw_supports_method(drm.fd, t.method));
+ 			suspend_subtest(&t);
++		}
+ 	TEST_MODE_ITER_END
+ 
+ 	t.pipes = PIPE_SINGLE;
+-- 
+2.34.1
