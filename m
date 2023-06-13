@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54A5110E353
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 08:41:15 +0000 (UTC)
-Date: Tue, 13 Jun 2023 10:41:03 +0200
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 645FD10E352
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 08:44:18 +0000 (UTC)
+Date: Tue, 13 Jun 2023 10:44:12 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-Message-ID: <20230613104103.275638be@maurocar-mobl2>
-In-Reply-To: <20230613072726.4164-11-dominik.karol.piatkowski@intel.com>
+Message-ID: <20230613104412.0d9e1ec9@maurocar-mobl2>
+In-Reply-To: <20230613072726.4164-6-dominik.karol.piatkowski@intel.com>
 References: <20230613072726.4164-1-dominik.karol.piatkowski@intel.com>
- <20230613072726.4164-11-dominik.karol.piatkowski@intel.com>
+ <20230613072726.4164-6-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t 10/10] KUnit: replace abort with
- graceful skip
+Subject: Re: [igt-dev] [PATCH i-g-t 05/10] Change logic of ktap parser to
+ run on a thread
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,115 +26,809 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 13 Jun 2023 09:27:26 +0200
+On Tue, 13 Jun 2023 09:27:21 +0200
 Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com> wrote:
 
-> Sample drm_buddy output with missing requirements:
-> 	Starting subtest: drm_buddy_test
-> 	(drm_buddy:32218) igt_kmod-WARNING: Unable to load KUnit
-> 	Subtest drm_buddy_test: SKIP (0.001s)
+> The ktap parser should be listening and parsing messages as the tests
+> are executed, and not after the end of module load.
+>=20
+> v1 -> v2:
+> - fix coding style
+> - remove usleep
+> - add error check logic
+> - follow the structure of igt_kselftests more closely
+>=20
+> v2 -> v3:
+> - fixed sublevel issues by rewriting tap parser flow
+>=20
+> v3 -> v4:
+> - fixed delimiter
+>=20
+> - squashed lib/igt_kmod: fix nesting igt_fixture in igt_subtest
+> Fix the following issue:
+> 	$ ./build/tests/drm_buddy
+> 	Starting subtest: all-tests
+> 	nesting igt_fixture in igt_subtest is invalid
+> 	please refer to lib/igt_core documentation
+>=20
+> - squashed lib/igt_kmod: place KUnit tests on a subtest
+> There's a hidden bug at KUnit implementation: as it doesn't
+> place tests inside a subtest, trying to use it with igt_main
+> causes a crash:
+>=20
+> 	$ ./build/tests/drm_mm --list
+> 	skipping is allowed only in fixtures, subtests or igt_simple_main
+> 	please refer to lib/igt_core documentation
+> 	drm_mm: ../lib/igt_core.c:437: internal_assert: Assertion `0' failed.
+> 	Received signal SIGABRT.
+> 	Stack trace:
+> 	 #0 [fatal_sig_handler+0x17b]
+> 	 #1 [__sigaction+0x50]
+> 	 #2 [__pthread_kill_implementation+0x114]
+> 	 #3 [gsignal+0x1e]
+> 	 #4 [abort+0xdf]
+> 	 #5 [__assert_fail_base.cold+0xe]
+> 	 #6 [__assert_fail+0x47]
+> 	 #7 [internal_assert+0xe5]
+> 	 #8 [igt_skip+0x169]
+> 	 #9 [__igt_skip_check+0x1bb]
+> 	 #10 [igt_ktest_begin+0xa6]
+> 	 #11 [igt_kunit+0x70]
+> 	 #12 [main+0x2a]
+> 	 #13 [__libc_start_call_main+0x7a]
+> 	 #14 [__libc_start_main+0x8b]
+> 	 #15 [_start+0x25]
+>=20
+> Fix it by using igt_subtests() before actually implememnting
+> KUnit logic.
+>=20
+> After the patch, it should now report subtests:
+>=20
+> 	$ ./build/tests/drm_mm --list
+> 	all-tests
+>=20
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 >=20
 > Signed-off-by: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@in=
 tel.com>
 > Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+
+LGTM.
+
+Acked-by:  Mauro Carvalho Chehab <mchehab@kernel.org>
+
 > ---
->  lib/igt_kmod.c | 20 +++++++++++++-------
->  1 file changed, 13 insertions(+), 7 deletions(-)
+>  lib/igt_kmod.c |  51 +++++-
+>  lib/igt_ktap.c | 431 ++++++++++++++++++++++++++++++++++++++++---------
+>  lib/igt_ktap.h |  21 ++-
+>  3 files changed, 421 insertions(+), 82 deletions(-)
 >=20
 > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 1511bdef4..04220f404 100644
+> index 21e801bde..73478f75e 100644
 > --- a/lib/igt_kmod.c
 > +++ b/lib/igt_kmod.c
-> @@ -763,27 +763,27 @@ static void __igt_kunit(const char *module_name, co=
-nst char *opts)
+> @@ -754,14 +754,15 @@ void igt_kselftest_get_tests(struct kmod_module *km=
+od,
+>   *
+>   * Returns: IGT default codes
+>   */
+> -int igt_kunit(const char *module_name, const char *opts)
+> +static int __igt_kunit(const char *module_name, const char *opts)
+>  {
+>  	struct igt_ktest tst;
+>  	struct kmod_module *kunit_kmod;
+> -	char record[BUF_LEN + 1];
+>  	FILE *f;
+>  	bool is_builtin;
 >  	int ret;
->  	struct ktap_test_results *results;
->  	struct ktap_test_results_element *temp;
-> +	bool skip =3D false;
+> +	struct ktap_test_results *results;
+> +	struct ktap_test_results_element *temp;
 > =20
->  	/* get normalized module name */
->  	if (igt_ktest_init(&tst, module_name) !=3D 0) {
-> -		igt_warn("Unable to initialize ktest for %s\n", module_name);
-> -		igt_fail(IGT_EXIT_SKIP);
-> +		igt_skip("Unable to initialize ktest for %s\n", module_name);
+>  	ret =3D IGT_EXIT_INVALID;
+> =20
+> @@ -804,25 +805,63 @@ int igt_kunit(const char *module_name, const char *=
+opts)
+> =20
+>  	is_builtin =3D kmod_module_get_initstate(kunit_kmod) =3D=3D KMOD_MODULE=
+_BUILTIN;
+> =20
+> +	results =3D ktap_parser_start(f, is_builtin);
+> +
+>  	if (igt_kmod_load(module_name, opts) !=3D 0) {
+>  		igt_warn("Unable to load %s module\n", module_name);
+> +		ret =3D ktap_parser_stop();
+>  		igt_fail(IGT_EXIT_FAILURE);
 >  	}
 > =20
->  	if (igt_ktest_begin(&tst) !=3D 0) {
-> -		igt_warn("Unable to begin ktest for %s\n", module_name);
+> -	ret =3D igt_ktap_parser(f, record, is_builtin);
+> -	if (ret !=3D 0)
+> -		ret =3D IGT_EXIT_ABORT;
+> +	while (READ_ONCE(results->still_running) || READ_ONCE(results->head) !=
+=3D NULL)
+> +	{
+> +		if (READ_ONCE(results->head) !=3D NULL) {
+> +			pthread_mutex_lock(&results->mutex);
+> +
+> +			igt_dynamic(results->head->test_name) {
+> +				if (READ_ONCE(results->head->passed))
+> +					igt_success();
+> +				else
+> +					igt_fail(IGT_EXIT_FAILURE);
+> +			}
+> +
+> +			temp =3D results->head;
+> +			results->head =3D results->head->next;
+> +			free(temp);
+> +
+> +			pthread_mutex_unlock(&results->mutex);
+> +		}
+> +	}
+> +
+>  unload:
+>  	igt_ktest_end(&tst);
+> =20
+>  	igt_ktest_fini(&tst);
+> =20
+> +	ret =3D ktap_parser_stop();
+> +
+> +	if (ret !=3D 0)
+> +		ret =3D IGT_EXIT_ABORT;
+> +
+>  	if (ret =3D=3D 0)
+>  		igt_success();
 > -
->  		igt_ktest_fini(&tst);
-> -		igt_fail(IGT_EXIT_SKIP);
-> +		igt_skip("Unable to begin ktest for %s\n", module_name);
+>  	return ret;
+>  }
+> =20
+> +int igt_kunit(const char *module_name, const char *opts)
+> +{
+> +	/*
+> +	 * We need to use igt_subtest here, as otherwise it may crash with:
+> +	 *  skipping is allowed only in fixtures, subtests or igt_simple_main
+> +	 * if used on igt_main. This is also needed in order to provide
+> +	 * proper namespace for dynamic subtests, with is required for CI
+> +	 * and for documentation.
+> +	 */
+> +	igt_subtest_with_dynamic("all-tests")
+> +		return __igt_kunit(module_name, opts);
+> +	return 0;
+> +}
+> +
+>  static int open_parameters(const char *module_name)
+>  {
+>  	char path[256];
+> diff --git a/lib/igt_ktap.c b/lib/igt_ktap.c
+> index 117598faa..ecdcb8d83 100644
+> --- a/lib/igt_ktap.c
+> +++ b/lib/igt_ktap.c
+> @@ -5,11 +5,25 @@
+> =20
+>  #include <ctype.h>
+>  #include <limits.h>
+> +#include <libkmod.h>
+> +#include <pthread.h>
+> +#include <errno.h>
+> =20
+>  #include "igt_aux.h"
+>  #include "igt_core.h"
+>  #include "igt_ktap.h"
+> =20
+> +#define DELIMITER "-"
+> +
+> +struct ktap_parser_args {
+> +	FILE *fp;
+> +	bool is_builtin;
+> +	volatile bool is_running;
+> +	int ret;
+> +} ktap_args;
+> +
+> +static struct ktap_test_results results;
+> +
+>  static int log_to_end(enum igt_log_level level, FILE *f,
+>  		      char *record, const char *format, ...) __attribute__((format(pri=
+ntf, 4, 5)));
+> =20
+> @@ -30,6 +44,14 @@ static int log_to_end(enum igt_log_level level, FILE *=
+f,
+>  {
+>  	va_list args;
+>  	const char *lend;
+> +	int f_fd =3D fileno(f);
+> +
+> +	/* Cutoff after newline character, in order to not display garbage */
+> +	char *cutoff =3D strchr(record, '\n');
+> +	if (cutoff) {
+> +		if (cutoff - record < BUF_LEN)
+> +			cutoff[1] =3D '\0';
+> +	}
+> =20
+>  	va_start(args, format);
+>  	igt_vlog(IGT_LOG_DOMAIN, level, format, args);
+> @@ -38,10 +60,29 @@ static int log_to_end(enum igt_log_level level, FILE =
+*f,
+>  	lend =3D strchrnul(record, '\n');
+>  	while (*lend =3D=3D '\0') {
+>  		igt_log(IGT_LOG_DOMAIN, level, "%s", record);
+> -		if (fgets(record, BUF_LEN, f) =3D=3D NULL) {
+> +
+> +		while (read(f_fd, record, BUF_LEN) < 0) {
+> +			if (!READ_ONCE(ktap_args.is_running)) {
+> +				igt_warn("ktap parser stopped\n");
+> +				return -2;
+> +			}
+> +
+> +			if (errno =3D=3D EINTR)
+> +				continue;
+> +
+> +			if (errno =3D=3D EPIPE) {
+> +				igt_warn("kmsg truncated: too many messages. You may want to increas=
+e log_buf_len in kmcdline\n");
+> +				return -2;
+> +			}
+> +
+> +			if (errno =3D=3D EAGAIN)
+> +				/* No records available */
+> +				continue;
+> +
+>  			igt_warn("kmsg truncated: unknown error (%m)\n");
+>  			return -2;
+>  		}
+> +
+>  		lend =3D strchrnul(record, '\n');
+>  	}
+>  	return 0;
+> @@ -65,7 +106,7 @@ static long lookup_value(const char *haystack, const c=
+har *needle)
+>  	if (needle_rptr =3D=3D NULL)
+>  		return -1;
+> =20
+> -	/* skip search string and whitespaces after it */
+> +	/* Skip search string and whitespaces after it */
+>  	needle_rptr +=3D strlen(needle);
+> =20
+>  	num =3D strtol(needle_rptr, &needle_end, 10);
+> @@ -79,6 +120,41 @@ static long lookup_value(const char *haystack, const =
+char *needle)
+>  	return num > 0 ? num : 0;
+>  }
+> =20
+> +/**
+> + * tap_version_present:
+> + * @record: buffer with tap data
+> + * @print_info: whether tap version should be printed or not
+> + *
+> + * Returns:
+> + * 0 if not found
+> + * 1 if found
+> + */
+> +static int tap_version_present(char* record, bool print_info)
+> +{
+> +	/*
+> +	 * "(K)TAP version XX" should be the first line on all (sub)tests as per
+> +	 * https://kernel.org/doc/html/latest/dev-tools/ktap.html#version-lines
+> +	 *
+> +	 * but actually isn't, as it currently depends on the KUnit module
+> +	 * being built-in, so we can't rely on it every time
+> +	 */
+> +	const char *version_rptr =3D strcasestr(record, "TAP version ");
+> +	char *cutoff;
+> +
+> +	if (version_rptr =3D=3D NULL)
+> +		return 0;
+> +
+> +	/* Cutoff after newline character, in order to not display garbage */
+> +	cutoff =3D strchr(version_rptr, '\n');
+> +	if (cutoff)
+> +		cutoff[0] =3D '\0';
+> +
+> +	if (print_info)
+> +		igt_info("%s\n", version_rptr);
+> +
+> +	return 1;
+> +}
+> +
+>  /**
+>   * find_next_tap_subtest:
+>   * @fp: FILE pointer
+> @@ -91,11 +167,12 @@ static long lookup_value(const char *haystack, const=
+ char *needle)
+>   * -2 if there are problems while reading the file.
+>   * any other value corresponds to the amount of cases of the next (sub)t=
+est
+>   */
+> -static int find_next_tap_subtest(FILE *fp, char *record, bool is_builtin)
+> +static int find_next_tap_subtest(FILE *fp, char *record, char *test_name=
+, bool is_builtin)
+>  {
+> -	const char *test_lookup_str, *subtest_lookup_str, *name_rptr, *version_=
+rptr;
+> -	char test_name[BUF_LEN + 1];
+> +	const char *test_lookup_str, *subtest_lookup_str, *name_rptr;
+>  	long test_count;
+> +	int fp_fd =3D fileno(fp);
+> +	char *cutoff;
+> =20
+>  	test_name[0] =3D '\0';
+>  	test_name[BUF_LEN] =3D '\0';
+> @@ -103,21 +180,28 @@ static int find_next_tap_subtest(FILE *fp, char *re=
+cord, bool is_builtin)
+>  	test_lookup_str =3D " subtest: ";
+>  	subtest_lookup_str =3D " test: ";
+> =20
+> -	/*
+> -	 * "(K)TAP version XX" should be the first line on all (sub)tests as per
+> -	 * https://kernel.org/doc/html/latest/dev-tools/ktap.html#version-lines
+> -	 *
+> -	 * but actually isn't, as it currently depends on the KUnit module
+> -	 * being built-in, so we can't rely on it every time
+> -	 */
+> +	if (!tap_version_present(record, true))
+> +		return -1;
+> +
+>  	if (is_builtin) {
+> -		version_rptr =3D strcasestr(record, "TAP version ");
+> -		if (version_rptr =3D=3D NULL)
+> -			return -1;
+> +		while (read(fp_fd, record, BUF_LEN) < 0) {
+> +			if (!READ_ONCE(ktap_args.is_running)) {
+> +				igt_warn("ktap parser stopped\n");
+> +				return -2;
+> +			}
+> +
+> +			if (errno =3D=3D EINTR)
+> +				continue;
+> =20
+> -		igt_info("%s", version_rptr);
+> +			if (errno =3D=3D EPIPE) {
+> +				igt_warn("kmsg truncated: too many messages. You may want to increas=
+e log_buf_len in kmcdline\n");
+> +				return -2;
+> +			}
+> +
+> +			if (errno =3D=3D EAGAIN)
+> +				/* No records available */
+> +				continue;
+> =20
+> -		if (fgets(record, BUF_LEN, fp) =3D=3D NULL) {
+>  			igt_warn("kmsg truncated: unknown error (%m)\n");
+>  			return -2;
+>  		}
+> @@ -134,22 +218,45 @@ static int find_next_tap_subtest(FILE *fp, char *re=
+cord, bool is_builtin)
+> =20
+>  	if (name_rptr =3D=3D NULL) {
+>  		if (!is_builtin)
+> -			/* we've probably found nothing */
+> +			/* We've probably found nothing */
+>  			return -1;
+>  		igt_info("Missing test name\n");
+>  	} else {
+>  		strncpy(test_name, name_rptr, BUF_LEN);
+> -		if (fgets(record, BUF_LEN, fp) =3D=3D NULL) {
+> +		/* Cutoff after newline character, in order to not display garbage */
+> +		cutoff =3D strchr(test_name, '\n');
+> +		if (cutoff)
+> +			cutoff[0] =3D '\0';
+> +
+> +		while (read(fp_fd, record, BUF_LEN) < 0) {
+> +			if (!READ_ONCE(ktap_args.is_running)) {
+> +				igt_warn("ktap parser stopped\n");
+> +				return -2;
+> +			}
+> +
+> +			if (errno =3D=3D EINTR)
+> +				continue;
+> +
+> +			if (errno =3D=3D EPIPE) {
+> +				igt_warn("kmsg truncated: too many messages. You may want to increas=
+e log_buf_len in kmcdline\n");
+> +				return -2;
+> +			}
+> +
+> +			if (errno =3D=3D EAGAIN)
+> +				/* No records available */
+> +				continue;
+> +
+>  			igt_warn("kmsg truncated: unknown error (%m)\n");
+>  			return -2;
+>  		}
+> -		/* now we can be sure we found tests */
+> +
+> +		/* Now we can be sure we found tests */
+>  		if (!is_builtin)
+>  			igt_info("KUnit is not built-in, skipping version check...\n");
 >  	}
 > =20
->  	if (tst.kmsg < 0) {
->  		igt_warn("Could not open /dev/kmsg\n");
-> +		skip =3D true;
-
-Hmm.... not being able to read from /dev/kmsg doesn't seem a reason for
-skipping the test.
-
-IMO, the test should be skipped only if:
-
-1. The Kernel is not compiled with KUnit support;
-2. The KUnit test was not compiled.
-
-Errors for all other conditions should be considered as failures.
-
-Now, I'm not sure what would be the proper way to test for such
-skip condition. I suspect you could check the error code at
-igt_kmod_load(), calling igt_skip() if it returns -ENOENT,
-e. g. on this part of __igt_kunit():
-
-        /* The KUnit module is required for running any KUnit tests */
-        if (igt_kmod_load("kunit", NULL) !=3D 0 ||
-            kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod) !=
-=3D 0) {
-                igt_warn("Unable to load KUnit\n");
-                igt_fail(IGT_EXIT_FAILURE);
-        }
-
-        is_builtin =3D kmod_module_get_initstate(kunit_kmod) =3D=3D KMOD_MO=
-DULE_BUILTIN;
-
-        results =3D ktap_parser_start(f, is_builtin);
-
-        if (igt_kmod_load(module_name, opts) !=3D 0) {
-                igt_warn("Unable to load %s module\n", module_name);
-                ret =3D ktap_parser_stop();
-                igt_fail(IGT_EXIT_FAILURE);
-        }
-
-
-This could be replaced by something similar to:
-
-	err =3D igt_kmod_load("kunit", NULL);
-	igt_skip_on(err =3D=3D ENOENT, "KUnit not supported");
-	igt_fail_on_f(err !=3D 0, "Error %d when trying to load kunit", err);
-        if (kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod) !=
-=3D 0) {
-                igt_warn("Unable to load KUnit\n");
-                igt_fail(IGT_EXIT_FAILURE);
-        }
-
-
-        is_builtin =3D kmod_module_get_initstate(kunit_kmod) =3D=3D KMOD_MO=
-DULE_BUILTIN;
-
-        results =3D ktap_parser_start(f, is_builtin);
-
-        err =3D igt_kmod_load(module_name, opts)=20
-	igt_skip_on(err =3D=3D ENOENT, "Module %s not found", module_name);
-	if (err) {
-                igt_warn("Error %d when trying to load %s module\n", err, m=
-odule_name);
-                ret =3D ktap_parser_stop();
-                igt_fail(IGT_EXIT_FAILURE);
-        }
-
-
-In order to explicitly check for (1) and (2).
-
-Regards,
-Mauro
+>  	/*
+> -	 * total test count will almost always appear as 0..N at the beginning
+> +	 * Total test count will almost always appear as 0..N at the beginning
+>  	 * of a run, so we use it to reliably identify a new run
+>  	 */
+>  	test_count =3D lookup_value(record, "..");
+> @@ -159,7 +266,7 @@ static int find_next_tap_subtest(FILE *fp, char *reco=
+rd, bool is_builtin)
+>  		if (test_name[0] =3D=3D '\0')
+>  			return 0;
+>  		if (log_to_end(IGT_LOG_INFO, fp, record,
+> -				"Running some tests in: %s",
+> +				"Running some tests in: %s\n",
+>  				test_name) < 0)
+>  			return -2;
+>  		return 0;
+> @@ -169,7 +276,7 @@ static int find_next_tap_subtest(FILE *fp, char *reco=
+rd, bool is_builtin)
+>  	}
+> =20
+>  	if (log_to_end(IGT_LOG_INFO, fp, record,
+> -			"Executing %ld tests in: %s",
+> +			"Executing %ld tests in: %s\n",
+>  			test_count, test_name) < 0)
+>  		return -2;
+> =20
+> @@ -177,7 +284,7 @@ static int find_next_tap_subtest(FILE *fp, char *reco=
+rd, bool is_builtin)
+>  }
+> =20
+>  /**
+> - * find_next_tap_test:
+> + * parse_kmsg_for_tap:
+>   * @fp: FILE pointer
+>   * @record: buffer used to read fp
+>   * @test_name: buffer to store the test name
+> @@ -225,7 +332,7 @@ static int parse_kmsg_for_tap(FILE *fp, char *record,=
+ char *test_name)
+> =20
+>  	comment_start =3D strchrnul(lstart, '#');
+> =20
+> -	/* check if we're still in a subtest */
+> +	/* Check if we're still in a subtest */
+>  	if (*comment_start !=3D '\0') {
+>  		comment_start++;
+>  		value_parse_start =3D comment_start;
+> @@ -254,81 +361,255 @@ static int parse_kmsg_for_tap(FILE *fp, char *reco=
+rd, char *test_name)
+>  }
+> =20
+>  /**
+> - * igt_ktap_parser:
+> + * parse_tap_level:
+>   * @fp: FILE pointer
+> - * @record: buffer used to read fp
+> + * @base_test_name: test_name from upper recursion level
+> + * @test_count: test_count of this level
+> + * @failed_tests: top level failed_tests pointer
+> + * @found_tests: top level found_tests pointer
+>   * @is_builtin: whether the KUnit module is built-in or not
+>   *
+> - * This function parses the output of a ktap script and prints the test =
+results,
+> - * as well as any other output to stdout.
+> - *
+> - * Returns: IGT default codes
+> + * Returns:
+> + * 0 if succeded
+> + * -1 if error occurred
+>   */
+> -int igt_ktap_parser(FILE *fp, char *record, bool is_builtin)
+> +static int parse_tap_level(FILE *fp, char *base_test_name, int test_coun=
+t, bool *failed_tests,
+> +			   bool *found_tests, bool is_builtin)
+>  {
+> +	int fp_fd =3D fileno(fp);
+> +	char record[BUF_LEN + 1];
+> +	struct ktap_test_results_element *r, *temp;
+> +	int internal_test_count;
+>  	char test_name[BUF_LEN + 1];
+> -	bool failed_tests, found_tests;
+> -	int sublevel =3D 0;
+> +	char base_test_name_for_next_level[BUF_LEN + 1];
+> =20
+> -	test_name[0] =3D '\0';
+> -	test_name[BUF_LEN] =3D '\0';
+> +	for (int i =3D 0; i < test_count; i++) {
+> +		while (read(fp_fd, record, BUF_LEN) < 0) {
+> +			if (!READ_ONCE(ktap_args.is_running)) {
+> +				igt_warn("ktap parser stopped\n");
+> +				return -1;
+> +			}
+> =20
+> -	failed_tests =3D false;
+> -	found_tests =3D false;
+> +			if (errno =3D=3D EINTR)
+> +				continue;
+> =20
+> -	while (sublevel >=3D 0) {
+> -		if (fgets(record, BUF_LEN, fp) =3D=3D NULL) {
+> -			if (!found_tests)
+> -				igt_warn("kmsg truncated: unknown error (%m)\n");
+> -			break;
+> +			if (errno =3D=3D EAGAIN)
+> +				/* No records available */
+> +				continue;
+> +
+> +			if (errno =3D=3D EPIPE) {
+> +				igt_warn("kmsg truncated: too many messages. You may want to increas=
+e log_buf_len in kmcdline\n");
+> +				return -1;
+> +			}
+> +
+> +			igt_warn("kmsg truncated: unknown error (%m)\n");
+> +			return -1;
+>  		}
+> =20
+> -		switch (find_next_tap_subtest(fp, record, is_builtin)) {
+> -		case -2:
+> -			/* no more data to read */
+> -			return IGT_EXIT_FAILURE;
+> -		case -1:
+> -			/* no test found, so we keep parsing */
+> -			break;
+> -		case 0:
+> -			/*
+> -			 * tests found, but they're missing info, so we might
+> -			 * have read into test output
+> -			 */
+> -			found_tests =3D true;
+> -			sublevel++;
+> -			break;
+> -		default:
+> -			if (fgets(record, BUF_LEN, fp) =3D=3D NULL) {
+> -				igt_warn("kmsg truncated: unknown error (%m)\n");
+> -				return -2;
+> +		/* Sublevel found */
+> +		if (tap_version_present(record, false))
+> +		{
+> +			internal_test_count =3D find_next_tap_subtest(fp, record, test_name,
+> +								    is_builtin);
+> +			switch (internal_test_count) {
+> +			case -2:
+> +				/* No more data to read */
+> +				return -1;
+> +			case -1:
+> +				/* No test found */
+> +				return -1;
+> +			case 0:
+> +				/* Tests found, but they're missing info */
+> +				*found_tests =3D true;
+> +				return -1;
+> +			default:
+> +				*found_tests =3D true;
+> +
+> +				memcpy(base_test_name_for_next_level, base_test_name, BUF_LEN);
+> +				if (strlen(base_test_name_for_next_level) < BUF_LEN - 1 &&
+> +				    base_test_name_for_next_level[0])
+> +					strncat(base_test_name_for_next_level, DELIMITER,
+> +						BUF_LEN - strlen(base_test_name_for_next_level));
+> +				memcpy(base_test_name_for_next_level + strlen(base_test_name_for_nex=
+t_level),
+> +				       test_name, BUF_LEN - strlen(base_test_name_for_next_level));
+> +
+> +				if (parse_tap_level(fp, base_test_name_for_next_level,
+> +						    internal_test_count, failed_tests, found_tests,
+> +						    is_builtin) =3D=3D -1)
+> +					return -1;
+> +				break;
+>  			}
+> -			found_tests =3D true;
+> -			sublevel++;
+> -			break;
+>  		}
+> =20
+>  		switch (parse_kmsg_for_tap(fp, record, test_name)) {
+>  		case -2:
+> -			return IGT_EXIT_FAILURE;
+> +			return -1;
+>  		case -1:
+> -			sublevel--;
+> -			failed_tests =3D true;
+> -			igt_subtest(test_name)
+> -				igt_fail(IGT_EXIT_FAILURE);
+> +			*failed_tests =3D true;
+> +
+> +			r =3D malloc(sizeof(*r));
+> +
+> +			memcpy(r->test_name, base_test_name, BUF_LEN);
+> +			if (strlen(r->test_name) < BUF_LEN - 1)
+> +				if (r->test_name[0])
+> +					strncat(r->test_name, DELIMITER,
+> +						BUF_LEN - strlen(r->test_name));
+> +			memcpy(r->test_name + strlen(r->test_name), test_name,
+> +			       BUF_LEN - strlen(r->test_name));
+> +			r->test_name[BUF_LEN] =3D '\0';
+> +
+> +			r->passed =3D false;
+> +			r->next =3D NULL;
+> +
+> +			pthread_mutex_lock(&results.mutex);
+> +			if (results.head =3D=3D NULL) {
+> +				results.head =3D r;
+> +			} else {
+> +				temp =3D results.head;
+> +				while (temp->next !=3D NULL)
+> +					temp =3D temp->next;
+> +				temp->next =3D r;
+> +			}
+> +			pthread_mutex_unlock(&results.mutex);
+> +
+>  			test_name[0] =3D '\0';
+>  			break;
+> -		case 0: /* fallthrough */
+> -			igt_subtest(test_name)
+> -				igt_success();
+> +		case 0:
+> +			r =3D malloc(sizeof(*r));
+> +
+> +			memcpy(r->test_name, base_test_name, BUF_LEN);
+> +			if (strlen(r->test_name) < BUF_LEN - 1)
+> +				if (r->test_name[0])
+> +					strncat(r->test_name, DELIMITER,
+> +						BUF_LEN - strlen(r->test_name));
+> +			memcpy(r->test_name + strlen(r->test_name), test_name,
+> +			       BUF_LEN - strlen(r->test_name));
+> +			r->test_name[BUF_LEN] =3D '\0';
+> +
+> +			r->passed =3D true;
+> +			r->next =3D NULL;
+> +
+> +			pthread_mutex_lock(&results.mutex);
+> +			if (results.head =3D=3D NULL) {
+> +				results.head =3D r;
+> +			} else {
+> +				temp =3D results.head;
+> +				while (temp->next !=3D NULL)
+> +					temp =3D temp->next;
+> +				temp->next =3D r;
+> +			}
+> +			pthread_mutex_unlock(&results.mutex);
+> +
+>  			test_name[0] =3D '\0';
+> +			break;
+>  		default:
+>  			break;
+>  		}
+>  	}
+> +	return 0;
+> +}
+> +
+> +/**
+> + * igt_ktap_parser:
+> + *
+> + * This function parses the output of a ktap script and passes it to mai=
+n thread.
+> + */
+> +void *igt_ktap_parser(void *unused)
+> +{
+> +	FILE *fp =3D ktap_args.fp;
+> +	int fp_fd =3D fileno(fp);
+> +	char record[BUF_LEN + 1];
+> +	bool is_builtin =3D ktap_args.is_builtin;
+> +	char test_name[BUF_LEN + 1];
+> +	bool failed_tests, found_tests;
+> +	int test_count;
+> +
+> +	failed_tests =3D false;
+> +	found_tests =3D false;
+> +
+> +	if (!READ_ONCE(ktap_args.is_running))
+> +		goto igt_ktap_parser_end;
+> +
+> +igt_ktap_parser_start:
+> +	test_name[0] =3D '\0';
+> +	test_name[BUF_LEN] =3D '\0';
+> +
+> +	while (read(fp_fd, record, BUF_LEN) < 0) {
+> +		if (!READ_ONCE(ktap_args.is_running)) {
+> +			igt_warn("ktap parser stopped\n");
+> +			goto igt_ktap_parser_end;
+> +		}
+> +
+> +		if (errno =3D=3D EAGAIN)
+> +			/* No records available */
+> +			continue;
+> +
+> +		if (errno =3D=3D EINTR)
+> +			continue;
+> +
+> +		if (errno =3D=3D EPIPE) {
+> +			igt_warn("kmsg truncated: too many messages. You may want to increase=
+ log_buf_len in kmcdline\n");
+> +			goto igt_ktap_parser_end;
+> +		}
+> +	}
+> +
+> +	test_count =3D find_next_tap_subtest(fp, record, test_name, is_builtin);
+> +
+> +	switch (test_count) {
+> +	case -2:
+> +		/* Problems while reading the file */
+> +		goto igt_ktap_parser_end;
+> +	case -1:
+> +		/* No test found */
+> +		goto igt_ktap_parser_start;
+> +	case 0:
+> +		/* Tests found, but they're missing info */
+> +		found_tests =3D true;
+> +		goto igt_ktap_parser_end;
+> +	default:
+> +		found_tests =3D true;
+> +
+> +		if (parse_tap_level(fp, test_name, test_count, &failed_tests, &found_t=
+ests,
+> +				    is_builtin) =3D=3D -1)
+> +			goto igt_ktap_parser_end;
+> +
+> +		break;
+> +	}
+> +
+> +	/* Parse topmost level */
+> +	test_name[0] =3D '\0';
+> +	parse_tap_level(fp, test_name, test_count, &failed_tests, &found_tests,=
+ is_builtin);
+> +
+> +igt_ktap_parser_end:
+> +	results.still_running =3D false;
+> =20
+>  	if (failed_tests || !found_tests)
+> -		return IGT_EXIT_FAILURE;
+> +		ktap_args.ret =3D IGT_EXIT_FAILURE;
+> +	else
+> +		ktap_args.ret =3D IGT_EXIT_SUCCESS;
+> +
+> +	return NULL;
+> +}
+> +
+> +static pthread_t ktap_parser_thread;
+> +
+> +struct ktap_test_results *ktap_parser_start(FILE *fp, bool is_builtin)
+> +{
+> +	results.head =3D NULL;
+> +	pthread_mutex_init(&results.mutex, NULL);
+> +	results.still_running =3D true;
+> =20
+> -	return IGT_EXIT_SUCCESS;
+> +	ktap_args.fp =3D fp;
+> +	ktap_args.is_builtin =3D is_builtin;
+> +	ktap_args.is_running =3D true;
+> +	pthread_create(&ktap_parser_thread, NULL, igt_ktap_parser, NULL);
+> +
+> +	return &results;
+> +}
+> +
+> +int ktap_parser_stop(void)
+> +{
+> +	ktap_args.is_running =3D false;
+> +	pthread_join(ktap_parser_thread, NULL);
+> +	return ktap_args.ret;
+>  }
+> diff --git a/lib/igt_ktap.h b/lib/igt_ktap.h
+> index b2f69df2d..34fe09572 100644
+> --- a/lib/igt_ktap.h
+> +++ b/lib/igt_ktap.h
+> @@ -26,6 +26,25 @@
+> =20
+>  #define BUF_LEN 4096
+> =20
+> -int igt_ktap_parser(FILE *fp, char *record, bool is_builtin);
+> +#include <pthread.h>
+> +
+> +void *igt_ktap_parser(void *unused);
+> +
+> +typedef struct ktap_test_results_element {
+> +	char test_name[BUF_LEN + 1];
+> +	bool passed;
+> +	struct ktap_test_results_element *next;
+> +} ktap_test_results_element;
+> +
+> +struct ktap_test_results {
+> +	ktap_test_results_element *head;
+> +	pthread_mutex_t mutex;
+> +	bool still_running;
+> +};
+> +
+> +
+> +
+> +struct ktap_test_results *ktap_parser_start(FILE *fp, bool is_builtin);
+> +int ktap_parser_stop(void);
+> =20
+>  #endif /* IGT_KTAP_H */
