@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C626110E28D
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Jun 2023 10:48:01 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2E8210E33C
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 07:27:40 +0000 (UTC)
 From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-Date: Mon,  5 Jun 2023 12:47:14 +0200
-Message-Id: <20230605104716.5678-7-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20230605104716.5678-1-dominik.karol.piatkowski@intel.com>
-References: <20230605104716.5678-1-dominik.karol.piatkowski@intel.com>
+Date: Tue, 13 Jun 2023 09:27:17 +0200
+Message-Id: <20230613072726.4164-2-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20230613072726.4164-1-dominik.karol.piatkowski@intel.com>
+References: <20230613072726.4164-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/8] lib/igt_kmod: place KUnit tests on a
- subtest
+Subject: [igt-dev] [PATCH i-g-t 01/10] lib/igt_kmod: rename kselftest
+ functions to ktest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,85 +22,143 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Isabella Basso <isabbasso@riseup.net>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+From: Isabella Basso <isabbasso@riseup.net>
 
-There's a hidden bug at KUnit implementation: as it doesn't
-place tests inside a subtest, trying to use it with igt_main
-causes a crash:
+This aims at making IGT's structure more general to different kernel
+testing frameworks such as KUnit, as they use a lot of the same
+functionality.
 
-	$ ./build/tests/drm_mm --list
-	skipping is allowed only in fixtures, subtests or igt_simple_main
-	please refer to lib/igt_core documentation
-	drm_mm: ../lib/igt_core.c:437: internal_assert: Assertion `0' failed.
-	Received signal SIGABRT.
-	Stack trace:
-	 #0 [fatal_sig_handler+0x17b]
-	 #1 [__sigaction+0x50]
-	 #2 [__pthread_kill_implementation+0x114]
-	 #3 [gsignal+0x1e]
-	 #4 [abort+0xdf]
-	 #5 [__assert_fail_base.cold+0xe]
-	 #6 [__assert_fail+0x47]
-	 #7 [internal_assert+0xe5]
-	 #8 [igt_skip+0x169]
-	 #9 [__igt_skip_check+0x1bb]
-	 #10 [igt_ktest_begin+0xa6]
-	 #11 [igt_kunit+0x70]
-	 #12 [main+0x2a]
-	 #13 [__libc_start_call_main+0x7a]
-	 #14 [__libc_start_main+0x8b]
-	 #15 [_start+0x25]
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Isabella Basso <isabbasso@riseup.net>
 
-Fix it by using igt_subtests() before actually implememnting
-KUnit logic.
-
-After the patch, it should now report subtests:
-
-	$ ./build/tests/drm_mm --list
-	all-tests
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/igt_kmod.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ lib/igt_kmod.c | 22 +++++++++++-----------
+ lib/igt_kmod.h | 12 ++++++------
+ 2 files changed, 17 insertions(+), 17 deletions(-)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 8cb9cb2e..1309ab21 100644
+index ccf0063ca..93fa20067 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
-@@ -754,7 +754,7 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
-  *
-  * Returns: IGT default codes
-  */
--int igt_kunit(const char *module_name, const char *opts)
-+static int __igt_kunit(const char *module_name, const char *opts)
- {
- 	struct igt_ktest tst;
- 	struct kmod_module *kunit_kmod;
-@@ -852,6 +852,20 @@ unload:
- 	return ret;
+@@ -749,8 +749,8 @@ static int open_parameters(const char *module_name)
+ 	return open(path, O_RDONLY);
  }
  
-+int igt_kunit(const char *module_name, const char *opts)
-+{
-+	/*
-+	 * We need to use igt_subtest here, as otherwise it may crash with:
-+	 *  skipping is allowed only in fixtures, subtests or igt_simple_main
-+	 * if used on igt_main. This is also needed in order to provide
-+	 * proper namespace for dynamic subtests, with is required for CI
-+	 * and for documentation.
-+	 */
-+	igt_subtest_with_dynamic("all-tests")
-+		return __igt_kunit(module_name, opts);
-+	return 0;
-+}
-+
- static int open_parameters(const char *module_name)
+-int igt_kselftest_init(struct igt_kselftest *tst,
+-		       const char *module_name)
++int igt_ktest_init(struct igt_ktest *tst,
++		   const char *module_name)
  {
- 	char path[256];
+ 	int err;
+ 
+@@ -769,7 +769,7 @@ int igt_kselftest_init(struct igt_kselftest *tst,
+ 	return 0;
+ }
+ 
+-int igt_kselftest_begin(struct igt_kselftest *tst)
++int igt_ktest_begin(struct igt_ktest *tst)
+ {
+ 	int err;
+ 
+@@ -784,7 +784,7 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
+ 	return 0;
+ }
+ 
+-int igt_kselftest_execute(struct igt_kselftest *tst,
++int igt_kselftest_execute(struct igt_ktest *tst,
+ 			  struct igt_kselftest_list *tl,
+ 			  const char *options,
+ 			  const char *result)
+@@ -822,13 +822,13 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
+ 	return err;
+ }
+ 
+-void igt_kselftest_end(struct igt_kselftest *tst)
++void igt_ktest_end(struct igt_ktest *tst)
+ {
+ 	kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
+ 	close(tst->kmsg);
+ }
+ 
+-void igt_kselftest_fini(struct igt_kselftest *tst)
++void igt_ktest_fini(struct igt_ktest *tst)
+ {
+ 	free(tst->module_name);
+ 	kmod_module_unref(tst->kmod);
+@@ -851,15 +851,15 @@ void igt_kselftests(const char *module_name,
+ 		    const char *result,
+ 		    const char *filter)
+ {
+-	struct igt_kselftest tst;
++	struct igt_ktest tst;
+ 	IGT_LIST_HEAD(tests);
+ 	struct igt_kselftest_list *tl, *tn;
+ 
+-	if (igt_kselftest_init(&tst, module_name) != 0)
++	if (igt_ktest_init(&tst, module_name) != 0)
+ 		return;
+ 
+ 	igt_fixture
+-		igt_require(igt_kselftest_begin(&tst) == 0);
++		igt_require(igt_ktest_begin(&tst) == 0);
+ 
+ 	igt_kselftest_get_tests(tst.kmod, filter, &tests);
+ 	igt_subtest_with_dynamic(filter ?: "all-tests") {
+@@ -878,9 +878,9 @@ void igt_kselftests(const char *module_name,
+ 	}
+ 
+ 	igt_fixture {
+-		igt_kselftest_end(&tst);
++		igt_ktest_end(&tst);
+ 		igt_require(!igt_list_empty(&tests));
+ 	}
+ 
+-	igt_kselftest_fini(&tst);
++	igt_ktest_fini(&tst);
+ }
+diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+index d05af4a69..ff59f1ec1 100644
+--- a/lib/igt_kmod.h
++++ b/lib/igt_kmod.h
+@@ -76,7 +76,7 @@ void igt_kselftests(const char *module_name,
+ 		    const char *result_option,
+ 		    const char *filter);
+ 
+-struct igt_kselftest {
++struct igt_ktest {
+ 	struct kmod_module *kmod;
+ 	char *module_name;
+ 	int kmsg;
+@@ -89,19 +89,19 @@ struct igt_kselftest_list {
+ 	char param[];
+ };
+ 
+-int igt_kselftest_init(struct igt_kselftest *tst,
++int igt_ktest_init(struct igt_ktest *tst,
+ 		       const char *module_name);
+-int igt_kselftest_begin(struct igt_kselftest *tst);
++int igt_ktest_begin(struct igt_ktest *tst);
+ 
+ void igt_kselftest_get_tests(struct kmod_module *kmod,
+ 			     const char *filter,
+ 			     struct igt_list_head *tests);
+-int igt_kselftest_execute(struct igt_kselftest *tst,
++int igt_kselftest_execute(struct igt_ktest *tst,
+ 			  struct igt_kselftest_list *tl,
+ 			  const char *module_options,
+ 			  const char *result);
+ 
+-void igt_kselftest_end(struct igt_kselftest *tst);
+-void igt_kselftest_fini(struct igt_kselftest *tst);
++void igt_ktest_end(struct igt_ktest *tst);
++void igt_ktest_fini(struct igt_ktest *tst);
+ 
+ #endif /* IGT_KMOD_H */
 -- 
 2.34.1
 
