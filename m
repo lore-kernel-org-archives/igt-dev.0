@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C9D110E449
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 10:58:33 +0000 (UTC)
-From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Jun 2023 12:58:07 +0200
-Message-Id: <20230614105811.3429-7-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20230614105811.3429-1-dominik.karol.piatkowski@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8152110E24E
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 11:02:40 +0000 (UTC)
+Date: Wed, 14 Jun 2023 13:02:35 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+Message-ID: <20230614130235.31261d19@maurocar-mobl2>
+In-Reply-To: <20230614105811.3429-11-dominik.karol.piatkowski@intel.com>
 References: <20230614105811.3429-1-dominik.karol.piatkowski@intel.com>
+ <20230614105811.3429-11-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 06/10] kunit tests: add an optional name for
- the selftests
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t 10/10] KUnit: gracefully skip on missing
+ KUnit or tested module, fail otherwise
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,147 +21,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On Wed, 14 Jun 2023 12:58:11 +0200
+Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com> wrote:
 
-When multiple KUnit tests are called by the same program, it is
-interesting to group them with a name. This would allow IGT
-namespace to better refer to the KUnit tests and will give some
-filtering capability to it.
+> Sample drm_buddy output with missing KUnit module:
+> 	Starting subtest: drm_buddy_test
+> 	(drm_buddy:32218) igt_kmod-WARNING: Unable to load KUnit
+> 	Subtest drm_buddy_test: SKIP (0.001s)
+>=20
+> Signed-off-by: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@in=
+tel.com>
+> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 
-After those changes, the IGT kUnit tests will be better named:
+Works for me.
 
-	$ for i in kms_selftest drm_buddy drm_mm; do echo $i:; build/tests/$i --list; echo; done
-	kms_selftest:
-	drm_cmdline
-	drm_damage
-	drm_dp_mst
-	drm_format_helper
-	drm_format
-	framebuffer
-	drm_plane
-	all-tests
+Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-	drm_buddy:
-	all-tests
-
-	drm_mm:
-	all-tests
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
----
- lib/igt_kmod.c       |  7 +++++--
- lib/igt_kmod.h       |  2 +-
- tests/drm_buddy.c    |  2 +-
- tests/drm_mm.c       |  3 ++-
- tests/kms_selftest.c | 23 +++++++++++++++++------
- 5 files changed, 26 insertions(+), 11 deletions(-)
-
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 73478f75e..2c0cc026d 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -848,7 +848,7 @@ unload:
- 	return ret;
- }
- 
--int igt_kunit(const char *module_name, const char *opts)
-+int igt_kunit(const char *module_name, const char *name, const char *opts)
+> ---
+>  lib/igt_kmod.c | 21 +++++++++++++++++----
+>  1 file changed, 17 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 1511bdef4..66c3028b3 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -763,27 +763,31 @@ static void __igt_kunit(const char *module_name, co=
+nst char *opts)
+>  	int ret;
+>  	struct ktap_test_results *results;
+>  	struct ktap_test_results_element *temp;
+> +	bool skip =3D false;
+> +	bool fail =3D false;
+> =20
+>  	/* get normalized module name */
+>  	if (igt_ktest_init(&tst, module_name) !=3D 0) {
+>  		igt_warn("Unable to initialize ktest for %s\n", module_name);
+> -		igt_fail(IGT_EXIT_SKIP);
+> +		igt_fail(IGT_EXIT_ABORT);
+>  	}
+> =20
+>  	if (igt_ktest_begin(&tst) !=3D 0) {
+>  		igt_warn("Unable to begin ktest for %s\n", module_name);
+> =20
+>  		igt_ktest_fini(&tst);
+> -		igt_fail(IGT_EXIT_SKIP);
+> +		igt_fail(IGT_EXIT_ABORT);
+>  	}
+> =20
+>  	if (tst.kmsg < 0) {
+>  		igt_warn("Could not open /dev/kmsg\n");
+> +		fail =3D true;
+>  		goto unload;
+>  	}
+> =20
+>  	if (lseek(tst.kmsg, 0, SEEK_END)) {
+>  		igt_warn("Could not seek the end of /dev/kmsg\n");
+> +		fail =3D true;
+>  		goto unload;
+>  	}
+> =20
+> @@ -791,6 +795,7 @@ static void __igt_kunit(const char *module_name, cons=
+t char *opts)
+> =20
+>  	if (f =3D=3D NULL) {
+>  		igt_warn("Could not turn /dev/kmsg file descriptor into a FILE pointer=
+\n");
+> +		fail =3D true;
+>  		goto unload;
+>  	}
+> =20
+> @@ -798,7 +803,8 @@ static void __igt_kunit(const char *module_name, cons=
+t char *opts)
+>  	if (igt_kmod_load("kunit", NULL) !=3D 0 ||
+>  	    kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod) !=3D 0)=
  {
- 	/*
- 	 * We need to use igt_subtest here, as otherwise it may crash with:
-@@ -857,7 +857,10 @@ int igt_kunit(const char *module_name, const char *opts)
- 	 * proper namespace for dynamic subtests, with is required for CI
- 	 * and for documentation.
- 	 */
--	igt_subtest_with_dynamic("all-tests")
-+	if (name == NULL)
-+		name = "all-tests";
-+
-+	igt_subtest_with_dynamic(name)
- 		return __igt_kunit(module_name, opts);
- 	return 0;
- }
-diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index ce17c714e..248955475 100644
---- a/lib/igt_kmod.h
-+++ b/lib/igt_kmod.h
-@@ -71,7 +71,7 @@ static inline int igt_xe_driver_unload(void)
- int igt_amdgpu_driver_load(const char *opts);
- int igt_amdgpu_driver_unload(void);
- 
--int igt_kunit(const char *module_name, const char *opts);
-+int igt_kunit(const char *module_name, const char *name, const char *opts);
- 
- void igt_kselftests(const char *module_name,
- 		    const char *module_options,
-diff --git a/tests/drm_buddy.c b/tests/drm_buddy.c
-index 3261f0d61..09feaf635 100644
---- a/tests/drm_buddy.c
-+++ b/tests/drm_buddy.c
-@@ -10,7 +10,7 @@ IGT_TEST_DESCRIPTION("Basic sanity check of DRM's buddy allocator (struct drm_bu
- 
- igt_main
- {
--	int ret = igt_kunit("drm_buddy_test", NULL);
-+	int ret = igt_kunit("drm_buddy_test", NULL, NULL);
- 	if (ret != 0 && ret != IGT_EXIT_ABORT)
- 		igt_kselftests("test-drm_buddy", NULL, NULL, NULL);
- }
-diff --git a/tests/drm_mm.c b/tests/drm_mm.c
-index 88f76a57c..ada8cb936 100644
---- a/tests/drm_mm.c
-+++ b/tests/drm_mm.c
-@@ -156,7 +156,8 @@ IGT_TEST_DESCRIPTION("Basic sanity check of DRM's range manager (struct drm_mm)"
- 
- igt_main
- {
--	int ret = igt_kunit("drm_mm_test", NULL);
-+	int ret = igt_kunit("drm_mm_test", NULL, NULL);
-+
- 	if (ret != 0 && ret != IGT_EXIT_ABORT)
- 		igt_kselftests("test-drm_mm", NULL, NULL, NULL);
- }
-diff --git a/tests/kms_selftest.c b/tests/kms_selftest.c
-index b27f60fb3..d83e5ff4b 100644
---- a/tests/kms_selftest.c
-+++ b/tests/kms_selftest.c
-@@ -26,15 +26,26 @@
- 
- IGT_TEST_DESCRIPTION("Basic sanity check of KMS selftests.");
- 
-+struct kms_kunittests {
-+	const char *kunit;
-+	const char *name;
-+};
-+
- igt_main
- {
--	static const char *kunit_subtests[] = { "drm_cmdline_parser_test", "drm_damage_helper_test",
--						"drm_dp_mst_helper_test", "drm_format_helper_test",
--						"drm_format_test", "drm_framebuffer_test",
--						"drm_plane_helper_test", NULL };
-+	static const struct kms_kunittests kunit_subtests[] = {
-+		{ "drm_cmdline_parser_test",	"drm_cmdline" },
-+		{ "drm_damage_helper_test",	"drm_damage" },
-+		{ "drm_dp_mst_helper_test",	"drm_dp_mst" },
-+		{ "drm_format_helper_test",	"drm_format_helper" },
-+		{ "drm_format_test",		"drm_format" },
-+		{ "drm_framebuffer_test",	"framebuffer" },
-+		{ "drm_plane_helper_test",	"drm_plane" },
-+		{ NULL, NULL}
-+	};
- 
--	for (int i = 0; kunit_subtests[i] != NULL; i++)
--		igt_kunit(kunit_subtests[i], NULL);
-+	for (int i = 0; kunit_subtests[i].kunit != NULL; i++)
-+		igt_kunit(kunit_subtests[i].kunit, kunit_subtests[i].name, NULL);
- 
- 	igt_kselftests("test-drm_modeset", NULL, NULL, NULL);
- }
--- 
-2.34.1
+>  		igt_warn("Unable to load KUnit\n");
+> -		igt_fail(IGT_EXIT_FAILURE);
+> +		skip =3D true;
+> +		goto unload;
+>  	}
+> =20
+>  	is_builtin =3D kmod_module_get_initstate(kunit_kmod) =3D=3D KMOD_MODULE=
+_BUILTIN;
+> @@ -808,7 +814,8 @@ static void __igt_kunit(const char *module_name, cons=
+t char *opts)
+>  	if (igt_kmod_load(module_name, opts) !=3D 0) {
+>  		igt_warn("Unable to load %s module\n", module_name);
+>  		ret =3D ktap_parser_stop();
+> -		igt_fail(IGT_EXIT_FAILURE);
+> +		skip =3D true;
+> +		goto unload;
+>  	}
+> =20
+>  	while (READ_ONCE(results->still_running) || READ_ONCE(results->head) !=
+=3D NULL)
+> @@ -836,6 +843,12 @@ unload:
+> =20
+>  	igt_ktest_fini(&tst);
+> =20
+> +	if (skip)
+> +		igt_skip("");
+> +
+> +	if (fail)
+> +		igt_fail(IGT_EXIT_ABORT);
+> +
+>  	ret =3D ktap_parser_stop();
+> =20
+>  	if (ret !=3D 0)
