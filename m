@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A158310E146
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 12:49:12 +0000 (UTC)
-Message-ID: <88e47f5d-4e6a-a416-05fe-531e0c5876d4@intel.com>
-Date: Wed, 14 Jun 2023 18:18:32 +0530
-Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230531065407.362625-1-swati2.sharma@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230531065407.362625-1-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 227B48911F
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 13:28:09 +0000 (UTC)
+Date: Wed, 14 Jun 2023 15:27:55 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230614132755.vet5lamnk77m6r6s@kamilkon-desk1>
+References: <20230609094457.3355182-1-riana.tauro@intel.com>
+ <20230612132921.3gxbxlzpchqdm6hk@kamilkon-desk1>
+ <7ce21cd4-d8cf-9b0b-f5be-aa2ef536f12b@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 0/3] check dsc hardware capability
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7ce21cd4-d8cf-9b0b-f5be-aa2ef536f12b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add basic idle residency test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,31 +22,214 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Changes LGTM.
+Hi Riana,
 
-With minor comments addressed in Patch#3:
+On 2023-06-13 at 15:17:24 +0530, Riana Tauro wrote:
+> 
+> 
+> On 6/12/2023 6:59 PM, Kamil Konieczny wrote:
+> > Hi Riana,
+> > 
+> > On 2023-06-09 at 15:14:57 +0530, Riana Tauro wrote:
+> > > The test reads idle residency within a time interval and
+> > > checks if its within the tolerance
+> > > 
+> > > Currently the test checks RC6 Residency
+> > > 
+> > > Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> > > ---
+> > >   tests/meson.build     |   1 +
+> > >   tests/xe/xe_gt_idle.c | 117 ++++++++++++++++++++++++++++++++++++++++++
+> > >   2 files changed, 118 insertions(+)
+> > >   create mode 100644 tests/xe/xe_gt_idle.c
+> > > 
+> > > diff --git a/tests/meson.build b/tests/meson.build
+> > > index c15eb3a08..10273ebf5 100644
+> > > --- a/tests/meson.build
+> > > +++ b/tests/meson.build
+> > > @@ -254,6 +254,7 @@ xe_progs = [
+> > >   	'xe_exec_fault_mode',
+> > >   	'xe_exec_reset',
+> > >   	'xe_exec_threads',
+> > > +	'xe_gt_idle',
+> > 
+> > Could you change name to xe_pm or xe_power?
+> > imho xe_pm is better name.
+> 
+> Hi Kamil
+> 
+> There is already a test with xe_pm [Suspend tests].
+> This patch is a test for https://patchwork.freedesktop.org/series/119262/
+> [gtidle properties]
 
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Thank you for pointing this, please include it also in your
+commit description also with name of patch series (as links
+can later dissapear).
 
-On 5/31/2023 12:24 PM, Swati Sharma wrote:
-> Instead of assuming dsc is supported gen11+, lets use has_dsc
-> flag in i915_capability to check h/w support.
->
-> Swati Sharma (3):
->    tests: s/igt_is_dsc_supported/igt_is_dsc_supported_by_sink
->    tests: s/check_dsc_on_connector/is_dsc_supported_by_sink
->    tests: add igt_is_dsc_supported_by_source()
->
->   lib/igt_dsc.c               | 28 +++++++++++++++++++++++++---
->   lib/igt_dsc.h               |  3 ++-
->   tests/i915/kms_dsc.c        |  4 ++--
->   tests/i915/kms_dsc_helper.c | 14 ++++++++++++--
->   tests/i915/kms_dsc_helper.h |  3 ++-
->   tests/i915/kms_psr2_sf.c    |  2 +-
->   tests/kms_invalid_mode.c    |  5 ++---
->   7 files changed, 46 insertions(+), 13 deletions(-)
->
+> 
+> Is xe_gt_idle okay? or should i rename it to xe_pm_residency?
+> 
+> Thanks
+> Riana
+
+This looks better: xe_pm_residency
+
+These are i915 tests related to pm:
+
+ls -1 |grep _pm_
+
+i915_pm_backlight.c
+i915_pm_dc.c
+i915_pm_freq_api.c
+i915_pm_freq_mult.c
+i915_pm_lpsp.c
+i915_pm_rc6_residency.c
+i915_pm_rpm.c
+i915_pm_rps.c
+i915_pm_sseu.c
+
+Why not make it a subtest in xe_pm.c ?
+
+Regards,
+Kamil
+
+> 
+> 
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > >   	'xe_gpgpu_fill',
+> > >   	'xe_guc_pc',
+> > >   	'xe_huc_copy',
+> > > diff --git a/tests/xe/xe_gt_idle.c b/tests/xe/xe_gt_idle.c
+> > > new file mode 100644
+> > > index 000000000..3a1090ffd
+> > > --- /dev/null
+> > > +++ b/tests/xe/xe_gt_idle.c
+> > > @@ -0,0 +1,117 @@
+> > > +// SPDX-License-Identifier: MIT
+> > > +/*
+> > > + * Copyright © 2023 Intel Corporation
+> > > + */
+> > > +
+> > > +/**
+> > > + * TEST: Test gtidle properties
+> > > + * Category: Software building block
+> > > + * Sub-category: Power Management
+> > > + * Functionality: RC6
+> > > + * Test category: functionality test
+> > > + */
+> > > +
+> > > +#include <limits.h>
+> > > +
+> > > +#include "igt.h"
+> > > +#include "igt_sysfs.h"
+> > > +
+> > > +#include "xe/xe_query.h"
+> > > +
+> > > +#define SLEEP_DURATION 3 /* in seconds */
+> > > +
+> > > +const double tolerance = 0.1;
+> > > +
+> > > +#define assert_within_epsilon(x, ref, tol) \
+> > > +	igt_assert_f((double)(x) <= (1.0 + (tol)) * (double)(ref) && \
+> > > +		     (double)(x) >= (1.0 - (tol)) * (double)(ref), \
+> > > +		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
+> > > +		     #x, #ref, (double)(x), \
+> > > +		     (tol) * 100.0, (tol) * 100.0, \
+> > > +		     (double)(ref))
+> > > +
+> > > +static bool in_rc6(int sysfs, int gt)
+> > > +{
+> > > +	char path[PATH_MAX];
+> > > +	char rc[8];
+> > > +
+> > > +	sprintf(path, "device/gt%d/gtidle/idle_status", gt);
+> > > +	if (igt_sysfs_scanf(sysfs, path, "%s", rc) < 0)
+> > > +		return false;
+> > > +
+> > > +	return strcmp(rc, "rc6") == 0;
+> > > +}
+> > > +
+> > > +static bool is_rc_dir(int sysfs, int gt)
+> > > +{
+> > > +	char path[PATH_MAX], name[NAME_MAX];
+> > > +	char rc[8];
+> > > +
+> > > +	sprintf(path, "device/gt%d/gtidle/name", gt);
+> > > +	if (igt_sysfs_scanf(sysfs, path, "%s", rc) < 0)
+> > > +		return false;
+> > > +
+> > > +	sprintf(name, "gt%d-rc", gt);
+> > > +	return strcmp(rc, name) == 0;
+> > > +}
+> > > +
+> > > +static unsigned long read_idle_residency(int sysfs, int gt)
+> > > +{
+> > > +	unsigned long residency;
+> > > +	char path[PATH_MAX];
+> > > +
+> > > +	residency = 0;
+> > > +	sprintf(path, "device/gt%d/gtidle/idle_residency_ms", gt);
+> > > +	igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1);
+> > > +	return residency;
+> > > +}
+> > > +
+> > > +/**
+> > > + * SUBTEST: idle-residency
+> > > + * Description: basic residency test to check idle residency
+> > > + * 		within a time interval
+> > > + * Run type: FULL
+> > > + */
+> > > +static void test_idle(int sysfs, int gt)
+> > > +{
+> > > +	struct timespec tv;
+> > > +	unsigned long elapsed_ms, residency_start, residency_end;
+> > > +
+> > > +	assert(is_rc_dir(sysfs, gt));
+> > > +	assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
+> > > +
+> > > +	igt_gettime(&tv);
+> > > +	residency_start = read_idle_residency(sysfs, gt);
+> > > +	sleep(SLEEP_DURATION);
+> > > +	residency_end = read_idle_residency(sysfs, gt);
+> > > +	elapsed_ms = igt_nsec_elapsed(&tv) / 1000000;
+> > > +
+> > > +	igt_info("Measured %lums of idle residency in %lums\n",
+> > > +		 residency_end - residency_start, elapsed_ms);
+> > > +
+> > > +	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
+> > > +}
+> > > +
+> > > +igt_main
+> > > +{
+> > > +	int fd, gt;
+> > > +	static int sysfs = -1;
+> > > +
+> > > +	igt_fixture {
+> > > +		fd = drm_open_driver(DRIVER_XE);
+> > > +
+> > > +		xe_device_get(fd);
+> > > +		sysfs = igt_sysfs_open(fd);
+> > > +		igt_assert(sysfs != -1);
+> > > +	}
+> > > +
+> > > +	igt_subtest("idle-residency")
+> > > +		xe_for_each_gt(fd, gt)
+> > > +			test_idle(sysfs, gt);
+> > > +
+> > > +	igt_fixture {
+> > > +		close(sysfs);
+> > > +		xe_device_put(fd);
+> > > +		close(fd);
+> > > +	}
+> > > +}
+> > > -- 
+> > > 2.40.0
+> > > 
