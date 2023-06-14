@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2DE310E12B
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 17:43:57 +0000 (UTC)
-Date: Wed, 14 Jun 2023 19:43:53 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <20230614174353.wosjvyqxefbg2dbd@zkempczy-mobl2>
-References: <20230613124247.2504-1-sai.gowtham.ch@intel.com>
- <20230613124247.2504-3-sai.gowtham.ch@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21AB910E469
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 18:02:06 +0000 (UTC)
+Date: Wed, 14 Jun 2023 20:01:41 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230614180141.4ltvvspq5l4uygtw@kamilkon-desk1>
+References: <20230609132019.508947-1-swati2.sharma@intel.com>
+ <20230609132019.508947-5-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230613124247.2504-3-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/xe/xe_spin_batch: Add new
- test to exercise igt_spin_new for xe
+In-Reply-To: <20230609132019.508947-5-swati2.sharma@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] lib/i915: Add intel_display_ver()
+ and use it in display tests/libs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,267 +21,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jun 13, 2023 at 06:12:47PM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Hi Swati,
+
+On 2023-06-09 at 18:50:19 +0530, Swati Sharma wrote:
+> From: Matt Roper <matthew.d.roper@intel.com>
 > 
-> xe_spin_batch test exercises igt_spin_new submissions with different
-> combination.
+
+Please change commit message, patch no longer adds function
+intel_display_ver(), so instead of:
+
+lib/i915: Add intel_display_ver() and use it in display tests/libs
+
+better:
+
+lib/igt_draw: Use intel_display_ver() for drawing with blits
+
+Regards,
+Kamil
+
+> Display code should check the display version of the platform rather
+> than the graphics version; on some platforms these versions won't be the
+> same.
 > 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  tests/meson.build        |   1 +
->  tests/xe/xe_spin_batch.c | 182 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 183 insertions(+)
->  create mode 100644 tests/xe/xe_spin_batch.c
+>  lib/igt_draw.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/meson.build b/tests/meson.build
-> index f908ae88..454b0060 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -268,6 +268,7 @@ xe_progs = [
->  	'xe_query',
->  	'xe_vm',
->  	'xe_waitfence',
-> +	'xe_spin_batch',
->  ]
+> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> index a5c0cbbf..011d5cad 100644
+> --- a/lib/igt_draw.c
+> +++ b/lib/igt_draw.c
+> @@ -674,7 +674,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+>  	struct intel_buf *dst;
+>  	int blt_cmd_len, blt_cmd_tiling, blt_cmd_depth;
+>  	uint32_t devid = intel_get_drm_devid(fd);
+> -	int gen = intel_gen(devid);
+> +	int ver = intel_display_ver(devid);
+>  	int pitch;
 >  
->  msm_progs = [
-> diff --git a/tests/xe/xe_spin_batch.c b/tests/xe/xe_spin_batch.c
-> new file mode 100644
-> index 00000000..435daaf6
-> --- /dev/null
-> +++ b/tests/xe/xe_spin_batch.c
-> @@ -0,0 +1,182 @@
-> +#include "igt.h"
-> +#include "lib/intel_reg.h"
-> +#include "xe_drm.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +
-> +#define MAX_INSTANCE 9
-> +
-> +/**
-> + * TEST: Basic test for spin batch submissons.
-> + *
-> + * SUBTEST: spin-basic
-> + * Description: Basic test to submit spin batch submissons on copy engine.
-> + * Run type: FULL
-> + * TODO: change ``'Run type' == FULL`` to a better category
-> + *
-> + */
-> +
-> +static void spin_basic(int fd)
-> +{
-> +	uint64_t ahnd;
-> +	igt_spin_t *spin;
-> +
-> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-> +	spin = __igt_spin_new(fd, .ahnd = ahnd);
-
-If you want directly use __igt_spin_new() ok, but I thought you want
-to use igt_spin_new() here.
-
-> +	igt_assert(spin);
-
-This assert is not necessary, you may drop it as you have assert
-check in xe_spin_create() codepath which excludes returning spin == NULL:
-
-xe_spin.c: xe_spin_create():
-
-+	spin = calloc(1, sizeof(struct igt_spin));
-+	igt_assert(spin);
-
-> +
-> +	igt_spin_free(fd, spin);
-> +	put_ahnd(ahnd);
-> +}
-> +
-> +/**
-> + * TEST:Test for spin batch submissons.
-> + *
-> + * SUBTEST: spin-batch
-> + * Description: Create vm and engine of hwe class and run the spinner on it.
-> + * Run type: FULL
-> + * TODO: change ``'Run type' == FULL`` to a better category
-> + *
-> + */
-> +
-> +static void spin(int fd, struct drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint64_t ahnd;
-> +	unsigned int engine;
-> +	uint32_t vm;
-> +	igt_spin_t *spin;
-> +
-> +	vm = xe_vm_create(fd, 0, 0);
-> +	engine = xe_engine_create(fd, vm, hwe, 0);
-> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-> +
-> +	spin = igt_spin_new(fd, .ahnd = ahnd, .engine = engine, .vm = vm);
-> +	igt_assert(spin);
-
-You may drop this assert.
-
-> +
-> +	igt_spin_free(fd, spin);
-> +	xe_engine_destroy(fd, engine);
-> +	xe_vm_destroy(fd, vm);
-> +
-> +	put_ahnd(ahnd);
-> +}
-> +
-> +/**
-> + * TEST: Basic test for spin batch submission on all hwe.
-> + *
-> + * SUBTEST: spin-basic-all
-> + * Description: Basic test which validates the functionality of spinner on all hwe.
-> + * Run type: FULL
-> + * TODO: change ``'Run type' == FULL`` to a better category
-> + *
-> + */
-> +static void spin_basic_all(int fd)
-> +{
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	uint64_t ahnd;
-> +	uint32_t vm;
-> +	igt_spin_t **spin;
-> +	int i = 0;
-> +
-> +	vm = xe_vm_create(fd, 0, 0);
-> +	ahnd = intel_allocator_open(fd, vm, INTEL_ALLOCATOR_RELOC);
-> +	spin = malloc(sizeof(*spin) * xe_number_hw_engines(fd));
-> +	xe_for_each_hw_engine(fd, hwe) {
-> +		igt_debug("Run on engine: %s:%d\n",
-> +				xe_engine_class_string(hwe->engine_class), hwe->engine_instance);
-> +		spin[i] = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = hwe);
-> +		igt_assert(spin[i]);
-
-This assert as well.
-
-> +		i++;
-> +	}
-> +
-> +	while (--i>=0)
-
-Minor nit, use:
-
-	while (--i >= 0)
-
-for better readability.
-
-> +		igt_spin_free(fd, spin[i]);
-> +
-> +	put_ahnd(ahnd);
-> +	xe_vm_destroy(fd, vm);
-> +	free(spin);
-> +}
-> +
-> +/**
-> + * TEST: Test for spin batch submissions.
-> + * SUBTEST: spin-all
-> + * Description: Spinner test to run on all the engines!
-> + * Run type: FULL
-> + * TODO: change ``'Run type' == FULL`` to a better category
-> + *
-> + */
-> +
-> +static void spin_all(int fd, int gt, int class)
-> +{
-> +	uint64_t ahnd;
-> +	uint32_t engines[MAX_INSTANCE], vm;
-> +	int i, num_placements = 0;
-> +	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
-> +	igt_spin_t *spin[MAX_INSTANCE];
-> +	struct drm_xe_engine_class_instance *hwe;
-> +
-> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-> +
-> +	xe_for_each_hw_engine(fd, hwe) {
-> +		if (hwe->engine_class != class || hwe->gt_id != gt)
-> +			continue;
-> +		eci[num_placements++] = *hwe;
-> +	}
-> +	if (num_placements < 2)
-> +		return;
-> +	vm = xe_vm_create(fd, 0, 0);
-> +
-> +	for (i = 0; i < num_placements; i++) {
-> +		struct drm_xe_engine_create create = {
-> +			.vm_id = vm,
-> +			.width = 1,
-> +			.num_placements = num_placements,
-> +			.instances = to_user_pointer(eci),
-> +		};
-> +
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE,
-> +					&create), 0);
-> +		engines[i] = create.engine_id;
-> +		spin[i] = igt_spin_new(fd, .ahnd = ahnd, .engine = engines[i], .vm = vm);
-> +	}
-> +
-> +	for (i = 0; i < num_placements; i++) {
-> +		igt_assert(spin[i]);
-
-This assert is not necessary.
-
-> +		igt_spin_free(fd, spin[i]);
-
-But you're not destroying the engines. They are not destroyed
-in the spinner code as spinner is not its owner.
-
-Add:
-+		xe_engine_destroy(fd, engines[i]);
-
-Other things looks good. Resubmit and likely you'll got my rb
-in next turn.
-
---
-Zbigniew
-
-> +	}
-> +
-> +	put_ahnd(ahnd);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +igt_main
-> +{
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	int fd;
-> +	int gt, class;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		xe_device_get(fd);
-> +	}
-> +
-> +	igt_subtest("spin-basic")
-> +		spin_basic(fd);
-> +
-> +	igt_subtest("spin-batch")
-> +		xe_for_each_hw_engine(fd, hwe)
-> +			spin(fd, hwe);
-> +
-> +	igt_subtest("spin-basic-all")
-> +		spin_basic_all(fd);
-> +
-> +	igt_subtest("spin-all") {
-> +		xe_for_each_gt(fd, gt)
-> +			xe_for_each_hw_engine_class(class)
-> +				spin_all(fd, gt, class);
-> +	}
-> +
-> +	igt_fixture {
-> +		xe_device_put(fd);
-> +		close(fd);
-> +	}
-> +}
+>  	if (tiling)
+> @@ -751,9 +751,9 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+>  			igt_assert(false);
+>  		}
+>  
+> -		blt_cmd_len = (gen >= 8) ?  0x5 : 0x4;
+> +		blt_cmd_len = (ver >= 8) ?  0x5 : 0x4;
+>  		blt_cmd_tiling = (tiling) ? XY_COLOR_BLT_TILED : 0;
+> -		pitch = (gen >= 4 && tiling) ? buf->stride / 4 : buf->stride;
+> +		pitch = (ver >= 4 && tiling) ? buf->stride / 4 : buf->stride;
+>  
+>  		switch_blt_tiling(ibb, tiling, true);
+>  
 > -- 
-> 2.39.1
+> 2.25.1
 > 
