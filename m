@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61B1510E226
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 07:58:39 +0000 (UTC)
-Date: Wed, 14 Jun 2023 09:58:34 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <20230614095834.0d0c8c59@maurocar-mobl2>
-In-Reply-To: <13715101.RDIVbhacDa@jkrzyszt-mobl2.ger.corp.intel.com>
-References: <20230613072726.4164-1-dominik.karol.piatkowski@intel.com>
- <843329842.0ifERbkFSE@jkrzyszt-mobl2.ger.corp.intel.com>
- <20230613153400.52ddf090@maurocar-mobl2>
- <13715101.RDIVbhacDa@jkrzyszt-mobl2.ger.corp.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 703FA10E41E
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 08:24:17 +0000 (UTC)
+From: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Date: Wed, 14 Jun 2023 08:24:10 +0000
+Message-ID: <e9bde4300a66ba82dbc9364a5c42f60f1e86b9ea.camel@intel.com>
+References: <20230609093719.2076046-1-christoph.manszewski@intel.com>
+In-Reply-To: <20230609093719.2076046-1-christoph.manszewski@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D720025257083D49ABFE79F0CA3F3F59@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 10/10] KUnit: replace abort with
- graceful skip
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib: Apply x/y offsets to GPGPU fill
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,85 +22,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Wilson, Chris P" <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 13 Jun 2023 16:25:01 +0200
-Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
-
-> > No. Since 2022 - specifically, since those commits:
-> > 
-> > 	- 932da861956a ("drm: selftest: convert drm_buddy selftest to KUnit")
-> > 	- fc8d29e298cf ("drm: selftest: convert drm_mm selftest to KUnit")
-> > 
-> > those tests don't work anymore, as upstream removed support for selftest,
-> > in favor of KUnit. So, those tests currently do nothing.  
-> 
-> In my opinion -- no, those tests currently skip, which is different from doing 
-> nothing.
-> 
-> > 
-> > We are changing because those tests are currently broken on IGT.   
-> 
-> In my opinion -- no, they are not broken, they are outdated.
-
-IGT tests are broken, as IGT is not able anymore to execute drm_buddy and
-drm_mm unit tests. This series fix it.
-
-> 
-> > That
-> > is the reason why we need KUnit support for such tests.
-> >   
-> > > CI expects that behavior, users 
-> > > are used to it.  We shouldn't change that only because we switch from an old 
-> > > underlying kernel selftest format to a new shiny one, I believe, unless we are 
-> > > able to prove that there was something wrong with that former approach, or we 
-> > > can explain why it no longer fits into the kunit variant.  
-> > 
-> > Yes, there's something wrong with the former approach:   
-> 
-> Are you saying that error handling in igt_ksleftest() is broken?  In my 
-> opinion, i915 selftests successfully executing on CI now and again, as well as 
-> the outdated DRM selftests successfully skipping, prove something different.
-
-No, I'm saying that drm core tests are broken on IGT, because drm core doesn't
-support the legacy selftest infrastructure since 2022, and IGT is currently
-missing kUnit support.
-
-On other words, IGT won't run such tests *even* if the Kernel is build with
-support for DRM core tests.
-
-> I believe that igt_kunit() that follows as closely as possible the pattern of 
-> how igt_kselftest() is handling unmet conditions and errors, with full respect 
-> to real differences between kunit and i915-like selftests, would be the best 
-> solution.
-
-I'm not saying anthing different, but KUnit and selftest executions are
-different:
-
-- with selftest, the module loads asynchronously. After the module is
-  loaded with success, the probe() method will be called and the tests
-  will run.
-
-  It means that it is possible to first load the driver and then run
-  igt dynamic subtest logic, parsing the results from dmesg.
-
-- with KUnit, the unit tests will run synchronously at modprobe time.
-  So, when modprobe() finishes execution, all KUnit tests were already
-  executed - and if the Kernel crashes on a KUnit test - results will be
-  lost.
-  
-  It means that all steps needed to execute KUnit should be handled
-  before modprobing, including starting a thread to capture dmesg
-  results during modprobe time. So, igt dynamic subtests should be created 
-  before calling modprobe() function.
-
-due to such difference, igt_subtest_with_dynamic() should be called
-before modprobe(), and, if something goes wrong on that time - for instance
-if the module doesn't exist and returns EENOENT - IGT needs to use
-igt_skip() or igt_fail().
-
-Regards,
-Mauro
+T24gRnJpLCAyMDIzLTA2LTA5IGF0IDExOjM3ICswMjAwLCBDaHJpc3RvcGggTWFuc3pld3NraSB3
+cm90ZToNCj4gQWN0dWFsbHkgaG9ub3VyIHRoZSBjYWxsZXIgcHJvdmlkZWQgZGVzdGluYXRpb24g
+cmVnaW9uIGFuZCBwYXNzIHRoZSB4L3kNCj4gb2Zmc2V0cyB0byB0aGUgdGhyZWFkIGdyb3VwLg0K
+PiANCj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpcy5wLndpbHNvbkBpbnRlbC5j
+b20+DQo+IFNpZ25lZC1vZmYtYnk6IENocmlzdG9waCBNYW5zemV3c2tpIDxjaHJpc3RvcGgubWFu
+c3pld3NraUBpbnRlbC5jb20+DQo+IA0KQWxpZ25zIGJlaGF2aW91ciB3aXRoIGludGVyZmFjZSBh
+dXRob3IgaW5udGVudGlvbi4gRnJvbSBtZSBpdCBpczoNCg0KUmV2aWV3ZWQtYnk6IERvbWluaWsg
+R3J6ZWdvcnplayA8ZG9taW5pay5ncnplZ29yemVrQGludGVsLmNvbT4NCg0KSG93ZXZlciwgd2hl
+biB0aGlzIGlzIGZpbmFsbHkgd29ya2luZywgY291bGQgd2UgdXRpbGl6ZSBpdCBpbiBnZW1fZ3Bn
+cHVfZmlsbC94ZV9ncGdwdV9maWxsPyA6KQ0KDQo+IC0tLQ0KPiAgbGliL2dwZ3B1X2ZpbGwuYyB8
+ICA0ICstLS0NCj4gIGxpYi9ncHVfY21kcy5jICAgfCAyOSArKysrKysrKysrKysrKystLS0tLS0t
+LS0tLS0tLQ0KPiAgbGliL2dwdV9jbWRzLmggICB8ICAxICsNCj4gIDMgZmlsZXMgY2hhbmdlZCwg
+MTcgaW5zZXJ0aW9ucygrKSwgMTcgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGli
+L2dwZ3B1X2ZpbGwuYyBiL2xpYi9ncGdwdV9maWxsLmMNCj4gaW5kZXggZDg1NGZiZjcuLmVlZDgy
+MTg3IDEwMDY0NA0KPiAtLS0gYS9saWIvZ3BncHVfZmlsbC5jDQo+ICsrKyBiL2xpYi9ncGdwdV9m
+aWxsLmMNCj4gQEAgLTMxNSw4ICszMTUsNiBAQCBfX3hlaHBfZ3BncHVfZmlsbGZ1bmMoaW50IGk5
+MTUsDQo+ICB7DQo+ICAJc3RydWN0IGludGVsX2JiICppYmI7DQo+ICAJc3RydWN0IHhlaHBfaW50
+ZXJmYWNlX2Rlc2NyaXB0b3JfZGF0YSBpZGQ7DQo+IC0JKHZvaWQpIHg7DQo+IC0JKHZvaWQpIHk7
+DQo+ICANCj4gIAlpYmIgPSBpbnRlbF9iYl9jcmVhdGUoaTkxNSwgUEFHRV9TSVpFKTsNCj4gIAlp
+bnRlbF9iYl9hZGRfaW50ZWxfYnVmKGliYiwgYnVmLCB0cnVlKTsNCj4gQEAgLTMzNSw3ICszMzMs
+NyBAQCBfX3hlaHBfZ3BncHVfZmlsbGZ1bmMoaW50IGk5MTUsDQo+ICAJeGVocF9lbWl0X3N0YXRl
+X2NvbXB1dGVfbW9kZShpYmIpOw0KPiAgCXhlaHBfZW1pdF9zdGF0ZV9iaW5kaW5nX3RhYmxlX3Bv
+b2xfYWxsb2MoaWJiKTsNCj4gIAl4ZWhwX2VtaXRfY2ZlX3N0YXRlKGliYiwgVEhSRUFEUyk7DQo+
+IC0JeGVocF9lbWl0X2NvbXB1dGVfd2FsayhpYmIsIHdpZHRoLCBoZWlnaHQsICZpZGQsIGNvbG9y
+KTsNCj4gKwl4ZWhwX2VtaXRfY29tcHV0ZV93YWxrKGliYiwgeCwgeSwgd2lkdGgsIGhlaWdodCwg
+JmlkZCwgY29sb3IpOw0KPiAgDQo+ICAJaW50ZWxfYmJfb3V0KGliYiwgTUlfQkFUQ0hfQlVGRkVS
+X0VORCk7DQo+ICAJaW50ZWxfYmJfcHRyX2FsaWduKGliYiwgMzIpOw0KPiBkaWZmIC0tZ2l0IGEv
+bGliL2dwdV9jbWRzLmMgYi9saWIvZ3B1X2NtZHMuYw0KPiBpbmRleCAxZjMyMWFlNC4uYWVjYmE5
+MjggMTAwNjQ0DQo+IC0tLSBhL2xpYi9ncHVfY21kcy5jDQo+ICsrKyBiL2xpYi9ncHVfY21kcy5j
+DQo+IEBAIC02MzYsMTAgKzYzNiwxMCBAQCBnZW43X2VtaXRfZ3BncHVfd2FsayhzdHJ1Y3QgaW50
+ZWxfYmIgKmliYiwNCj4gIAkgKiBUaGVuIHRocmVhZCBncm91cCBYID0gd2lkdGggLyAxNiAoYWxp
+Z25lZCB0byAxNikNCj4gIAkgKiB0aHJlYWQgZ3JvdXAgWSA9IGhlaWdodDsNCj4gIAkgKi8NCj4g
+LQl4X2RpbSA9ICh3aWR0aCArIDE1KSAvIDE2Ow0KPiAtCXlfZGltID0gaGVpZ2h0Ow0KPiArCXhf
+ZGltID0gKHggKyB3aWR0aCArIDE1KSAvIDE2Ow0KPiArCXlfZGltID0geSArIGhlaWdodDsNCj4g
+IA0KPiAtCXRtcCA9IHdpZHRoICYgMTU7DQo+ICsJdG1wID0gKHggKyB3aWR0aCkgJiAxNTsNCj4g
+IAlpZiAodG1wID09IDApDQo+ICAJCXJpZ2h0X21hc2sgPSAoMSA8PCAxNikgLSAxOw0KPiAgCWVs
+c2UNCj4gQEAgLTY1NywxMSArNjU3LDExIEBAIGdlbjdfZW1pdF9ncGdwdV93YWxrKHN0cnVjdCBp
+bnRlbF9iYiAqaWJiLA0KPiAgCQkgIDApOyAvKiB3aWR0aDoxICovDQo+ICANCj4gIAkvKiB0aHJl
+YWQgZ3JvdXAgWCAqLw0KPiAtCWludGVsX2JiX291dChpYmIsIDApOw0KPiArCWludGVsX2JiX291
+dChpYmIsIHggLyAxNik7DQo+ICAJaW50ZWxfYmJfb3V0KGliYiwgeF9kaW0pOw0KPiAgDQo+ICAJ
+LyogdGhyZWFkIGdyb3VwIFkgKi8NCj4gLQlpbnRlbF9iYl9vdXQoaWJiLCAwKTsNCj4gKwlpbnRl
+bF9iYl9vdXQoaWJiLCB5KTsNCj4gIAlpbnRlbF9iYl9vdXQoaWJiLCB5X2RpbSk7DQo+ICANCj4g
+IAkvKiB0aHJlYWQgZ3JvdXAgWiAqLw0KPiBAQCAtNjkzLDEwICs2OTMsMTAgQEAgZ2VuOF9lbWl0
+X2dwZ3B1X3dhbGsoc3RydWN0IGludGVsX2JiICppYmIsDQo+ICAJICogVGhlbiB0aHJlYWQgZ3Jv
+dXAgWCA9IHdpZHRoIC8gMTYgKGFsaWduZWQgdG8gMTYpDQo+ICAJICogdGhyZWFkIGdyb3VwIFkg
+PSBoZWlnaHQ7DQo+ICAJICovDQo+IC0JeF9kaW0gPSAod2lkdGggKyAxNSkgLyAxNjsNCj4gLQl5
+X2RpbSA9IGhlaWdodDsNCj4gKwl4X2RpbSA9ICh4ICsgd2lkdGggKyAxNSkgLyAxNjsNCj4gKwl5
+X2RpbSA9IHkgKyBoZWlnaHQ7DQo+ICANCj4gLQl0bXAgPSB3aWR0aCAmIDE1Ow0KPiArCXRtcCA9
+ICh4ICsgd2lkdGgpICYgMTU7DQo+ICAJaWYgKHRtcCA9PSAwKQ0KPiAgCQlyaWdodF9tYXNrID0g
+KDEgPDwgMTYpIC0gMTsNCj4gIAllbHNlDQo+IEBAIC03MTUsMTIgKzcxNSwxMiBAQCBnZW44X2Vt
+aXRfZ3BncHVfd2FsayhzdHJ1Y3QgaW50ZWxfYmIgKmliYiwNCj4gIAkJICAgICAwKTsgLyogd2lk
+dGg6MSAqLw0KPiAgDQo+ICAJLyogdGhyZWFkIGdyb3VwIFggKi8NCj4gLQlpbnRlbF9iYl9vdXQo
+aWJiLCAwKTsNCj4gKwlpbnRlbF9iYl9vdXQoaWJiLCB4IC8gMTYpOw0KPiAgCWludGVsX2JiX291
+dChpYmIsIDApOw0KPiAgCWludGVsX2JiX291dChpYmIsIHhfZGltKTsNCj4gIA0KPiAgCS8qIHRo
+cmVhZCBncm91cCBZICovDQo+IC0JaW50ZWxfYmJfb3V0KGliYiwgMCk7DQo+ICsJaW50ZWxfYmJf
+b3V0KGliYiwgeSk7DQo+ICAJaW50ZWxfYmJfb3V0KGliYiwgMCk7DQo+ICAJaW50ZWxfYmJfb3V0
+KGliYiwgeV9kaW0pOw0KPiAgDQo+IEBAIC05NDgsNiArOTQ4LDcgQEAgeGVocF9lbWl0X3N0YXRl
+X2Jhc2VfYWRkcmVzcyhzdHJ1Y3QgaW50ZWxfYmIgKmliYikNCj4gIA0KPiAgdm9pZA0KPiAgeGVo
+cF9lbWl0X2NvbXB1dGVfd2FsayhzdHJ1Y3QgaW50ZWxfYmIgKmliYiwNCj4gKwkJICAgICAgIHVu
+c2lnbmVkIGludCB4LCB1bnNpZ25lZCBpbnQgeSwNCj4gIAkJICAgICAgIHVuc2lnbmVkIGludCB3
+aWR0aCwgdW5zaWduZWQgaW50IGhlaWdodCwNCj4gIAkJICAgICAgIHN0cnVjdCB4ZWhwX2ludGVy
+ZmFjZV9kZXNjcmlwdG9yX2RhdGEgKnBpZGQsDQo+ICAJCSAgICAgICB1aW50OF90IGNvbG9yKQ0K
+PiBAQCAtOTY1LDggKzk2Niw4IEBAIHhlaHBfZW1pdF9jb21wdXRlX3dhbGsoc3RydWN0IGludGVs
+X2JiICppYmIsDQo+ICAJICogVGhlbiB0aHJlYWQgZ3JvdXAgWCA9IHdpZHRoIC8gMTYgKGFsaWdu
+ZWQgdG8gMTYpDQo+ICAJICogdGhyZWFkIGdyb3VwIFkgPSBoZWlnaHQ7DQo+ICAJICovDQo+IC0J
+eF9kaW0gPSAod2lkdGggKyAxNSkgLyAxNjsNCj4gLQl5X2RpbSA9IGhlaWdodDsNCj4gKwl4X2Rp
+bSA9ICh4ICsgd2lkdGggKyAxNSkgLyAxNjsNCj4gKwl5X2RpbSA9IHkgKyBoZWlnaHQ7DQo+ICAN
+Cj4gIAlpbnRlbF9iYl9vdXQoaWJiLCBYRUhQX0NPTVBVVEVfV0FMS0VSIHwgMHgyNSk7DQo+ICAN
+Cj4gQEAgLTk5NCw4ICs5OTUsOCBAQCB4ZWhwX2VtaXRfY29tcHV0ZV93YWxrKHN0cnVjdCBpbnRl
+bF9iYiAqaWJiLA0KPiAgCWludGVsX2JiX291dChpYmIsIDEpOwkJCQkJLy9kdzkNCj4gIA0KPiAg
+CS8qIGdyb3VwIGlkIHgveS96ICovDQo+IC0JaW50ZWxfYmJfb3V0KGliYiwgMCk7CQkJCQkvL2R3
+MTANCj4gLQlpbnRlbF9iYl9vdXQoaWJiLCAwKTsJCQkJCS8vZHcxMQ0KPiArCWludGVsX2JiX291
+dChpYmIsIHggLyAxNik7CQkJCS8vZHcxMA0KPiArCWludGVsX2JiX291dChpYmIsIHkpOwkJCQkJ
+Ly9kdzExDQo+ICAJaW50ZWxfYmJfb3V0KGliYiwgMCk7CQkJCQkvL2R3MTINCj4gIA0KPiAgCS8q
+IHBhcnRpdGlvbiBpZCAvIHBhcnRpdGlvbiBzaXplICovDQo+IGRpZmYgLS1naXQgYS9saWIvZ3B1
+X2NtZHMuaCBiL2xpYi9ncHVfY21kcy5oDQo+IGluZGV4IDkyY2JiZGU5Li5iN2VkNjRmOCAxMDA2
+NDQNCj4gLS0tIGEvbGliL2dwdV9jbWRzLmgNCj4gKysrIGIvbGliL2dwdV9jbWRzLmgNCj4gQEAg
+LTEzOCw2ICsxMzgsNyBAQCB4ZWhwX2VtaXRfc3RhdGVfYmFzZV9hZGRyZXNzKHN0cnVjdCBpbnRl
+bF9iYiAqaWJiKTsNCj4gIA0KPiAgdm9pZA0KPiAgeGVocF9lbWl0X2NvbXB1dGVfd2FsayhzdHJ1
+Y3QgaW50ZWxfYmIgKmliYiwNCj4gKwkJICAgICAgIHVuc2lnbmVkIGludCB4LCB1bnNpZ25lZCBp
+bnQgeSwNCj4gIAkJICAgICAgIHVuc2lnbmVkIGludCB3aWR0aCwgdW5zaWduZWQgaW50IGhlaWdo
+dCwNCj4gIAkJICAgICAgIHN0cnVjdCB4ZWhwX2ludGVyZmFjZV9kZXNjcmlwdG9yX2RhdGEgKnBp
+ZGQsDQo+ICAJCSAgICAgICB1aW50OF90IGNvbG9yKTsNCg0K
