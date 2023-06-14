@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C04D10E44A
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 10:58:38 +0000 (UTC)
-From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B38610E0F6
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 11:17:19 +0000 (UTC)
+Date: Wed, 14 Jun 2023 13:17:15 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Jun 2023 12:58:10 +0200
-Message-Id: <20230614105811.3429-10-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20230614105811.3429-1-dominik.karol.piatkowski@intel.com>
-References: <20230614105811.3429-1-dominik.karol.piatkowski@intel.com>
+Message-ID: <20230614111715.pqaxqsdkj3bfut66@kamilkon-desk1>
+References: <20230614094026.1292703-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 09/10] tests/xe: Add a test that launches
- the xe driver live kunit tests
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230614094026.1292703-1-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel-ci/xe: Unblock unbind
+ rebind test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,98 +20,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Hi Janga,
 
-The xe driver live kunit tests live in the xe driver tests/
-subdirectory and are intended to be launched by this igt test.
+On 2023-06-14 at 15:10:26 +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> 
+> Unblock core unbind-rebind test
+> 
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> ---
+>  tests/intel-ci/xe.blocklist.txt | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+> index 6009b70b..d086f5fe 100644
+> --- a/tests/intel-ci/xe.blocklist.txt
+> +++ b/tests/intel-ci/xe.blocklist.txt
+> @@ -30,7 +30,7 @@ igt@kms_selftest.*
+>  ##################################################################
+>  # Exclude all other non-Xe tests
+>  ##################################################################
+> -igt@core.*
+> +^igt@core_(?!hotunplug@unbind-rebind).*
+-- ^
+You do not need to put start of line marker.
+With that fixed,
 
-To begin with we only have one test ("dma-buf").
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-[mchehab: updated to reflect current KUnit tests]
-
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
----
- tests/meson.build        |  1 +
- tests/xe/xe_live_ktest.c | 52 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 53 insertions(+)
- create mode 100644 tests/xe/xe_live_ktest.c
-
-diff --git a/tests/meson.build b/tests/meson.build
-index f908ae885..61dcc0769 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -259,6 +259,7 @@ xe_progs = [
- 	'xe_guc_pc',
- 	'xe_huc_copy',
- 	'xe_intel_bb',
-+	'xe_live_ktest',
- 	'xe_mmap',
- 	'xe_mmio',
- 	'xe_module_load',
-diff --git a/tests/xe/xe_live_ktest.c b/tests/xe/xe_live_ktest.c
-new file mode 100644
-index 000000000..7dcf67906
---- /dev/null
-+++ b/tests/xe/xe_live_ktest.c
-@@ -0,0 +1,52 @@
-+#include "igt.h"
-+#include "igt_kmod.h"
-+
-+/**
-+ * TEST: Xe driver live kunit tests
-+ * Description: Xe driver live dmabuf unit tests
-+ * Category: Software building block
-+ * Sub-category: kunit
-+ * Functionality: kunit
-+ * Test category: functionality test
-+ * Run type: BAT
-+ *
-+ * SUBTEST: bo
-+ * Functionality: bo
-+ *
-+ * SUBTEST: dmabuf
-+ * Functionality: dmabuf
-+ *
-+ * SUBTEST: migrate
-+ * Functionality: migrate
-+ *
-+ * SUBTEST: pci
-+ * Functionality: pci
-+ *
-+ * SUBTEST: rtp
-+ * Functionality: rtp
-+ *
-+ * SUBTEST: wa
-+ * Functionality: workarounds
-+ */
-+
-+struct kunit_tests {
-+	const char *kunit;
-+	const char *name;
-+};
-+
-+static const struct kunit_tests live_tests[] = {
-+	{ "xe_bo_test",		"bo" },
-+	{ "xe_dma_buf_test",	"dmabuf" },
-+	{ "xe_migrate_test",	"migrate" },
-+	{ "xe_pci_test",	"pci" },
-+	{ "xe_rtp_test",	"rtp" },
-+	{ "xe_wa_test",		"wa" },
-+};
-+
-+igt_main
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(live_tests); i++)
-+		igt_kunit(live_tests[i].kunit, live_tests[i].name, NULL);
-+}
--- 
-2.34.1
+>  igt@debugfs.*
+>  igt@device_reset
+>  igt@drm_fdinfo
+> -- 
+> 2.25.1
+> 
