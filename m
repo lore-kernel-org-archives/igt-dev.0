@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9190D10E24C
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 16:44:59 +0000 (UTC)
-Date: Wed, 21 Jun 2023 18:44:55 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230621164455.kdfn7iu7xwczolaq@kamilkon-desk1>
-References: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
- <20230620085522.3984101-2-mauro.chehab@linux.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5461010E45B
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 13:33:20 +0000 (UTC)
+From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+Date: Wed, 14 Jun 2023 15:33:01 +0200
+Message-Id: <20230614133301.4888-2-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20230614133301.4888-1-dominik.karol.piatkowski@intel.com>
+References: <20230614133301.4888-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230620085522.3984101-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/4] scripts/test_list.py: add
- support for ordering testlists
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/1] lib/igt_core.h: Typo fix
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,128 +23,30 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+Fixed IGT_EXIT_ABORT description typo in lib/igt_core.h
 
-On 2023-06-20 at 10:55:19 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Testlists usually require an special order, like:
-> - an initial test which loads the driver;
-> - normal tests;
-> - dangerous tests (like KUnit ones).
-> 
-> Add support to handle order, by adding an "order" property at
-> the config file.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+---
+ lib/igt_core.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index ef6bed6a5..26bb0cb68 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -136,8 +136,8 @@ struct _GKeyFile *igt_load_igtrc(void);
+ /**
+  * IGT_EXIT_ABORT
+  *
+- * Exit status indicating a severe test/enviroment failure, any continued
+- * testing past this point can yeild unexpected reasults and is not recommended
++ * Exit status indicating a severe test/environment failure, any continued
++ * testing past this point can yield unexpected results and is not recommended
+  */
+ #define IGT_EXIT_ABORT 112
+ 
+-- 
+2.34.1
 
-> ---
->  scripts/test_list.py | 55 ++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 48 insertions(+), 7 deletions(-)
-> 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index f676024c9571..76fdcf3dbb4f 100755
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -819,18 +819,25 @@ class TestList:
->      # Subtest list methods
->      #
->  
-> -    def get_subtests(self, sort_field = None, expand = None):
-> +    def get_subtests(self, sort_field = None, expand = None, with_order = False):
->  
->          """Return an array with all subtests"""
->  
->          subtests = {}
->          subtests[""] = []
->  
-> +        order = None
-> +
->          if sort_field:
->              if sort_field.lower() not in self.field_list:
->                  sys.exit(f"Field '{sort_field}' is not defined")
->              sort_field = self.field_list[sort_field.lower()]
->  
-> +            if with_order:
-> +                if "_properties_" in self.props[sort_field]:
-> +                    if "order" in self.props[sort_field]["_properties_"]:
-> +                        order = self.props[sort_field]["_properties_"]["order"]
-> +
->          for test in sorted(self.doc.keys()):
->              fname = self.doc[test]["File"]
->  
-> @@ -848,20 +855,54 @@ class TestList:
->                      if sort_field in subtest:
->                          if expand:
->                              test_list = subtest[sort_field].split(expand)
-> +                            test_list = [s.strip() for s in test_list]
-> +
->                              for test_elem in test_list:
-> -                                test_elem = test_elem.strip()
->                                  if test_elem not in subtests:
->                                      subtests[test_elem] = []
-> -                                subtests[test_elem].append(subtest["Summary"])
-> +                                if order:
-> +                                    subtests[test_elem].append((subtest["Summary"], test_list))
-> +                                else:
-> +                                    subtests[test_elem].append(subtest["Summary"])
->                          else:
->                              if subtest[sort_field] not in subtests:
->                                  subtests[subtest[sort_field]] = []
-> -                            subtests[subtest[sort_field]].append(subtest["Summary"])
-> +                                if order:
-> +                                    subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-> +                                else:
-> +                                    subtests[subtest[sort_field]].append(subtest["Summary"])
-> +                    else:
-> +                        if order:
-> +                            subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-> +                        else:
-> +                            subtests[""].append(subtest["Summary"])
-> +
-> +                else:
-> +                    if order:
-> +                        subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
->                      else:
->                          subtests[""].append(subtest["Summary"])
->  
-> -                else:
-> -                    subtests[""].append(subtest["Summary"])
-> +        if order:
-> +            for group, tests in subtests.items():
-> +                prefix_tests = []
-> +                suffix_tests = []
-> +                middle_tests = []
-> +                is_prefix = True
-> +                for k in order:
-> +                    if k == "__all__":
-> +                        is_prefix = False
-> +                        continue
-> +                    for test in tests:
-> +                        if k in test[1]:
-> +                            if is_prefix:
-> +                                prefix_tests.append(test[0])
-> +                            else:
-> +                                suffix_tests.append(test[0])
-> +                for test in tests:
-> +                    if test[0] not in prefix_tests and test[0] not in suffix_tests:
-> +                        middle_tests.append(test[0])
-> +                subtests[group] = prefix_tests + middle_tests + suffix_tests
->  
->          return subtests
->  
-> @@ -1203,7 +1244,7 @@ class TestList:
->          test_prefix = re.sub(r'^igt@', '', test_prefix)
->  
->          # NOTE: currently, it uses a comma for multi-value delimitter
-> -        test_subtests = self.get_subtests(sort_field, ",")
-> +        test_subtests = self.get_subtests(sort_field, ",", with_order = True)
->  
->          if not os.path.exists(directory):
->              os.makedirs(directory)
-> -- 
-> 2.40.1
-> 
 
