@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 652E310E059
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 15:01:32 +0000 (UTC)
+Message-ID: <e95b5700-40ad-a8c6-aad9-9a5069279142@linux.intel.com>
+Date: Wed, 14 Jun 2023 17:01:20 +0200
 MIME-Version: 1.0
+To: Andrzej Hajda <andrzej.hajda@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230613195241.1619575-1-andrzej.hajda@intel.com>
+Content-Language: en-US
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20230613195241.1619575-1-andrzej.hajda@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dominik Karol Piatkowski" <dominik.karol.piatkowski@intel.com>
-Date: Wed, 14 Jun 2023 14:44:49 -0000
-Message-ID: <168675388916.17429.9744692060996536792@emeril.freedesktop.org>
-References: <20230614105811.3429-1-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20230614105811.3429-1-dominik.karol.piatkowski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJbnRy?=
- =?utf-8?q?oduce_KUnit_=28rev8=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/kms_busy: reduce heartbeat
+ intervals only if neccessary
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,50 +21,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: Introduce KUnit (rev8)
-URL   : https://patchwork.freedesktop.org/series/114612/
-State : failure
-
-== Summary ==
-
-Applying: lib/igt_kmod: rename kselftest functions to ktest
-Using index info to reconstruct a base tree...
-M	lib/igt_kmod.c
-M	lib/igt_kmod.h
-Falling back to patching base and 3-way merge...
-Auto-merging lib/igt_kmod.h
-Auto-merging lib/igt_kmod.c
-No changes -- Patch already applied.
-Applying: lib/igt_kmod.c: check if module is builtin before attempting to unload it
-Using index info to reconstruct a base tree...
-M	lib/igt_kmod.c
-Falling back to patching base and 3-way merge...
-Auto-merging lib/igt_kmod.c
-No changes -- Patch already applied.
-Applying: lib/igt_kmod: add compatibility for KUnit
-Using index info to reconstruct a base tree...
-M	lib/igt_kmod.c
-M	lib/igt_kmod.h
-M	lib/meson.build
-Falling back to patching base and 3-way merge...
-CONFLICT (add/add): Merge conflict in lib/igt_ktap.h
-Auto-merging lib/igt_ktap.h
-CONFLICT (add/add): Merge conflict in lib/igt_ktap.c
-Auto-merging lib/igt_ktap.c
-Auto-merging lib/igt_kmod.h
-CONFLICT (content): Merge conflict in lib/igt_kmod.h
-Auto-merging lib/igt_kmod.c
-CONFLICT (content): Merge conflict in lib/igt_kmod.c
-Patch failed at 0003 lib/igt_kmod: add compatibility for KUnit
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+On 6/13/2023 9:52 PM, Andrzej Hajda wrote:
+> Reducing heartbeat intervals may downgrade individual engine resets
+> to full GPU resets. The latter is not desirable, especially
+> on simulations, which do not support GPU reset. Only tests with
+> reset flag enabled need reduced hearbeat intervals.
+>
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+LGTM
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>   tests/i915/kms_busy.c | 19 ++++++++++++-------
+>   1 file changed, 12 insertions(+), 7 deletions(-)
+>
+> diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
+> index 20d3058fb6f..ccabc38fd3f 100644
+> --- a/tests/i915/kms_busy.c
+> +++ b/tests/i915/kms_busy.c
+> @@ -390,8 +390,6 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   		{ "extended-modeset-hang-oldfb-with-reset", true, false, true },
+>   		{ "extended-modeset-hang-newfb-with-reset", true, true, true },
+>   	};
+> -	struct gem_engine_properties saved_gpu_timeouts[GEM_MAX_ENGINES];
+> -	int num_engines;
+>   	int fd;
+>   
+>   	igt_fixture {
+> @@ -409,8 +407,6 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   		for_each_pipe(&display, pipe)
+>   			active_pipes[last_pipe++] = pipe;
+>   		last_pipe--;
+> -
+> -		gpu_engines_init_timeouts(fd, ARRAY_SIZE(saved_gpu_timeouts), &num_engines, saved_gpu_timeouts);
+>   	}
+>   
+>   	/* XXX Extend to cover atomic rendering tests to all planes + legacy */
+> @@ -488,14 +484,24 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   					continue;
+>   
+>   				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
+> -					if (tests[i].reset)
+> +					struct gem_engine_properties saved_gpu_timeouts[GEM_MAX_ENGINES];
+> +					int num_engines;
+> +
+> +					if (tests[i].reset) {
+> +						gpu_engines_init_timeouts(display.drm_fd,
+> +									  ARRAY_SIZE(saved_gpu_timeouts),
+> +									  &num_engines, saved_gpu_timeouts);
+>   						igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 1);
+> +					}
+>   
+>   					test_hang(&display, pipe, output,
+>   						  tests[i].modeset, tests[i].hang_newfb);
+>   
+> -					if (tests[i].reset)
+> +					if (tests[i].reset) {
+>   						igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 0);
+> +						gpu_engines_restore_timeouts(display.drm_fd, num_engines,
+> +									     saved_gpu_timeouts);
+> +					}
+>   				}
+>   			}
+>   
+> @@ -504,7 +510,6 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   	}
+>   
+>   	igt_fixture {
+> -		gpu_engines_restore_timeouts(fd, num_engines, saved_gpu_timeouts);
+>   		igt_display_fini(&display);
+>   		close(display.drm_fd);
+>   	}
