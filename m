@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5707D10E43C
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 10:34:58 +0000 (UTC)
-Date: Wed, 14 Jun 2023 12:34:54 +0200
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E49D10E43C
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 10:35:46 +0000 (UTC)
+Date: Wed, 14 Jun 2023 12:35:41 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230614103454.3zxcgszfp2vnb2rr@kamilkon-desk1>
+Message-ID: <20230614103541.pzwrtpsvwg3ksyej@kamilkon-desk1>
 References: <20230602162011.90097-1-zbigniew.kempczynski@intel.com>
- <20230602162011.90097-3-zbigniew.kempczynski@intel.com>
+ <20230602162011.90097-4-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230602162011.90097-3-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/4] lib/xe_ioctl: Return remaining
- timeout of user fence wait
+In-Reply-To: <20230602162011.90097-4-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/4] tests/xe_waitfence: Rename vague
+ subtest name "test" to reltime
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,58 +28,63 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Zbigniew,
 
-On 2023-06-02 at 18:20:09 +0200, Zbigniew Kempczyński wrote:
-> When user fence is signalled we may want to be aware how long did it
-> take. Return remaining timeout after fence was successfully signalled.
+On 2023-06-02 at 18:20:10 +0200, Zbigniew Kempczyński wrote:
+> Wait user fence supports two techniques of passing timeout - relative
+> and absolute. Rename current subtest name "test" to reltime to prepare
+> the ground for adding new abstime subtest.
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  lib/xe/xe_ioctl.c | 4 +++-
->  lib/xe/xe_ioctl.h | 2 +-
->  2 files changed, 4 insertions(+), 2 deletions(-)
+>  tests/intel-ci/xe-fast-feedback.testlist | 2 +-
+>  tests/xe/xe_waitfence.c                  | 8 ++++----
+>  2 files changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> index 3331046b46..e73c581f9f 100644
-> --- a/lib/xe/xe_ioctl.c
-> +++ b/lib/xe/xe_ioctl.c
-> @@ -401,7 +401,7 @@ void xe_exec_wait(int fd, uint32_t engine, uint64_t addr)
->  	syncobj_destroy(fd, sync.handle);
->  }
->  
-> -void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-> +long xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
--- ^^^^
-imho this should be uint64_t
-
-Regards,
-Kamil
-
->  		    struct drm_xe_engine_class_instance *eci,
->  		    int64_t timeout)
->  {
-> @@ -417,6 +417,8 @@ void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->  	};
->  
->  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
-> +
-> +	return wait.timeout;
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index 69e70118ed..1552b6ea19 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -214,7 +214,7 @@ igt@xe_vm@munmap-style-unbind-userptr-end
+>  igt@xe_vm@munmap-style-unbind-userptr-front
+>  igt@xe_vm@munmap-style-unbind-userptr-inval-end
+>  igt@xe_vm@munmap-style-unbind-userptr-inval-front
+> -igt@xe_waitfence@test
+> +igt@xe_waitfence@reltime
+>  igt@kms_addfb_basic@addfb25-bad-modifier
+>  igt@kms_addfb_basic@addfb25-modifier-no-flag
+>  igt@kms_addfb_basic@bad-pitch-0
+> diff --git a/tests/xe/xe_waitfence.c b/tests/xe/xe_waitfence.c
+> index cdfcacdb47..390d9b3221 100644
+> --- a/tests/xe/xe_waitfence.c
+> +++ b/tests/xe/xe_waitfence.c
+> @@ -38,11 +38,11 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
 >  }
 >  
 >  /**
-> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-> index 9b44892fe9..860de9af58 100644
-> --- a/lib/xe/xe_ioctl.h
-> +++ b/lib/xe/xe_ioctl.h
-> @@ -79,7 +79,7 @@ void xe_exec(int fd, struct drm_xe_exec *exec);
->  void xe_exec_sync(int fd, uint32_t engine, uint64_t addr,
->  		  struct drm_xe_sync *sync, uint32_t num_syncs);
->  void xe_exec_wait(int fd, uint32_t engine, uint64_t addr);
-> -void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
-> +long xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->  		    struct drm_xe_engine_class_instance *eci,
->  		    int64_t timeout);
->  long xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
+> - * SUBTEST: test
+> + * SUBTEST: reltime
+>   * Description: Check basic waitfences functionality
+>   */
+>  static void
+> -test(int fd)
+> +waitfence(int fd)
+>  {
+>  	uint32_t bo_1;
+>  	uint32_t bo_2;
+> @@ -93,8 +93,8 @@ igt_main
+>  		xe_device_get(fd);
+>  	}
+>  
+> -	igt_subtest("test")
+> -		test(fd);
+> +	igt_subtest("reltime")
+> +		waitfence(fd);
+>  
+>  	igt_fixture {
+>  		xe_device_put(fd);
 > -- 
 > 2.34.1
 > 
