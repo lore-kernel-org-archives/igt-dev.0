@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EB3E10E24E
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 10:58:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 337E710E437
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 10:58:25 +0000 (UTC)
 From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Jun 2023 12:58:02 +0200
-Message-Id: <20230614105811.3429-2-dominik.karol.piatkowski@intel.com>
+Date: Wed, 14 Jun 2023 12:58:03 +0200
+Message-Id: <20230614105811.3429-3-dominik.karol.piatkowski@intel.com>
 In-Reply-To: <20230614105811.3429-1-dominik.karol.piatkowski@intel.com>
 References: <20230614105811.3429-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 01/10] lib/igt_kmod: rename kselftest
- functions to ktest
+Subject: [igt-dev] [PATCH i-g-t 02/10] lib/igt_kmod.c: check if module is
+ builtin before attempting to unload it
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,137 +27,35 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Isabella Basso <isabbasso@riseup.net>
 
-This aims at making IGT's structure more general to different kernel
-testing frameworks such as KUnit, as they use a lot of the same
-functionality.
+This change makes `igt_kmod_unload_r` safer as it checks whether the
+module can be unloaded before attempting it.
 
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+v2 -> v3:
+- Fix commit message
+- Make return value clearer
+
+Acked-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Signed-off-by: Isabella Basso <isabbasso@riseup.net>
 
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/igt_kmod.c | 22 +++++++++++-----------
- lib/igt_kmod.h | 12 ++++++------
- 2 files changed, 17 insertions(+), 17 deletions(-)
+ lib/igt_kmod.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index ccf0063ca..93fa20067 100644
+index 93fa20067..26d58e293 100644
 --- a/lib/igt_kmod.c
 +++ b/lib/igt_kmod.c
-@@ -749,8 +749,8 @@ static int open_parameters(const char *module_name)
- 	return open(path, O_RDONLY);
- }
+@@ -259,6 +259,9 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+ 	int err, tries;
+ 	const char *mod_name = kmod_module_get_name(kmod);
  
--int igt_kselftest_init(struct igt_kselftest *tst,
--		       const char *module_name)
-+int igt_ktest_init(struct igt_ktest *tst,
-+		   const char *module_name)
- {
- 	int err;
- 
-@@ -769,7 +769,7 @@ int igt_kselftest_init(struct igt_kselftest *tst,
- 	return 0;
- }
- 
--int igt_kselftest_begin(struct igt_kselftest *tst)
-+int igt_ktest_begin(struct igt_ktest *tst)
- {
- 	int err;
- 
-@@ -784,7 +784,7 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
- 	return 0;
- }
- 
--int igt_kselftest_execute(struct igt_kselftest *tst,
-+int igt_kselftest_execute(struct igt_ktest *tst,
- 			  struct igt_kselftest_list *tl,
- 			  const char *options,
- 			  const char *result)
-@@ -822,13 +822,13 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
- 	return err;
- }
- 
--void igt_kselftest_end(struct igt_kselftest *tst)
-+void igt_ktest_end(struct igt_ktest *tst)
- {
- 	kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
- 	close(tst->kmsg);
- }
- 
--void igt_kselftest_fini(struct igt_kselftest *tst)
-+void igt_ktest_fini(struct igt_ktest *tst)
- {
- 	free(tst->module_name);
- 	kmod_module_unref(tst->kmod);
-@@ -851,15 +851,15 @@ void igt_kselftests(const char *module_name,
- 		    const char *result,
- 		    const char *filter)
- {
--	struct igt_kselftest tst;
-+	struct igt_ktest tst;
- 	IGT_LIST_HEAD(tests);
- 	struct igt_kselftest_list *tl, *tn;
- 
--	if (igt_kselftest_init(&tst, module_name) != 0)
-+	if (igt_ktest_init(&tst, module_name) != 0)
- 		return;
- 
- 	igt_fixture
--		igt_require(igt_kselftest_begin(&tst) == 0);
-+		igt_require(igt_ktest_begin(&tst) == 0);
- 
- 	igt_kselftest_get_tests(tst.kmod, filter, &tests);
- 	igt_subtest_with_dynamic(filter ?: "all-tests") {
-@@ -878,9 +878,9 @@ void igt_kselftests(const char *module_name,
- 	}
- 
- 	igt_fixture {
--		igt_kselftest_end(&tst);
-+		igt_ktest_end(&tst);
- 		igt_require(!igt_list_empty(&tests));
- 	}
- 
--	igt_kselftest_fini(&tst);
-+	igt_ktest_fini(&tst);
- }
-diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index d05af4a69..ff59f1ec1 100644
---- a/lib/igt_kmod.h
-+++ b/lib/igt_kmod.h
-@@ -76,7 +76,7 @@ void igt_kselftests(const char *module_name,
- 		    const char *result_option,
- 		    const char *filter);
- 
--struct igt_kselftest {
-+struct igt_ktest {
- 	struct kmod_module *kmod;
- 	char *module_name;
- 	int kmsg;
-@@ -89,19 +89,19 @@ struct igt_kselftest_list {
- 	char param[];
- };
- 
--int igt_kselftest_init(struct igt_kselftest *tst,
-+int igt_ktest_init(struct igt_ktest *tst,
- 		       const char *module_name);
--int igt_kselftest_begin(struct igt_kselftest *tst);
-+int igt_ktest_begin(struct igt_ktest *tst);
- 
- void igt_kselftest_get_tests(struct kmod_module *kmod,
- 			     const char *filter,
- 			     struct igt_list_head *tests);
--int igt_kselftest_execute(struct igt_kselftest *tst,
-+int igt_kselftest_execute(struct igt_ktest *tst,
- 			  struct igt_kselftest_list *tl,
- 			  const char *module_options,
- 			  const char *result);
- 
--void igt_kselftest_end(struct igt_kselftest *tst);
--void igt_kselftest_fini(struct igt_kselftest *tst);
-+void igt_ktest_end(struct igt_ktest *tst);
-+void igt_ktest_fini(struct igt_ktest *tst);
- 
- #endif /* IGT_KMOD_H */
++	if (kmod_module_get_initstate(kmod) == KMOD_MODULE_BUILTIN)
++		return 0;
++
+ 	holders = kmod_module_get_holders(kmod);
+ 	kmod_list_foreach(pos, holders) {
+ 		struct kmod_module *it = kmod_module_get_module(pos);
 -- 
 2.34.1
