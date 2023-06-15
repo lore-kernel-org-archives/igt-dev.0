@@ -4,10 +4,10 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: vitaly.prosyak@amd.com
-Date: Thu, 15 Jun 2023 02:38:06 -0000
-Message-ID: <168679668622.10725.11344628393066058919@emeril.freedesktop.org>
-References: <20230615021224.130803-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230615021224.130803-1-vitaly.prosyak@amd.com>
+Date: Thu, 15 Jun 2023 03:13:20 -0000
+Message-ID: <168679880093.10725.11013479461731162461@emeril.freedesktop.org>
+References: <20230615021406.131572-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230615021406.131572-1-vitaly.prosyak@amd.com>
 Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
  =?utf-8?q?eries_starting_with_=5B1/2=5D_tests/amdgpu=3A_add_bo_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -26,18 +26,18 @@ List-ID: <igt-dev@lists.freedesktop.org>
 =3D=3D Series Details =3D=3D
 
 Series: series starting with [1/2] tests/amdgpu: add bo tests
-URL   : https://patchwork.freedesktop.org/series/119357/
+URL   : https://patchwork.freedesktop.org/series/119358/
 State : warning
 
 =3D=3D Summary =3D=3D
 
 Pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/909493 fo=
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/909515 fo=
 r the overview.
 
 build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/43797037):
+igt-ci-tags/-/jobs/43798254):
         amdgpu_cs_syncobj_export_sync_file
   ../tests/amdgpu/amd_syncobj.c:213:6: warning: nested extern declaration o=
 f =E2=80=98amdgpu_cs_syncobj_export_sync_file2=E2=80=99 [-Wnested-externs]
@@ -61,15 +61,15 @@ ration]
 f =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99 [-Wnested-externs]
   cc1: some warnings being treated as errors
   ninja: build stopped: subcommand failed.
-  section_end:1686796480:step_script
-  section_start:1686796480:cleanup_file_variables
+  section_end:1686798418:step_script
+  section_start:1686798418:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1686796481:cleanup_file_variables
+  section_end:1686798420:cleanup_file_variables
   ERROR: Job failed: exit code 1
  =20
 
 build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/43797040):
+fx-ci/igt-ci-tags/-/jobs/43798257):
         amdgpu_cs_syncobj_export_sync_file
   ../tests/amdgpu/amd_syncobj.c:213:6: warning: nested extern declaration o=
 f =E2=80=98amdgpu_cs_syncobj_export_sync_file2=E2=80=99 [-Wnested-externs]
@@ -93,15 +93,15 @@ ration]
 f =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99 [-Wnested-externs]
   cc1: some warnings being treated as errors
   ninja: build stopped: subcommand failed.
-  section_end:1686796487:step_script
-  section_start:1686796487:cleanup_file_variables
+  section_end:1686798420:step_script
+  section_start:1686798420:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1686796490:cleanup_file_variables
+  section_end:1686798421:cleanup_file_variables
   ERROR: Job failed: exit code 1
  =20
 
 build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/43797039):
+fx-ci/igt-ci-tags/-/jobs/43798256):
         amdgpu_cs_syncobj_export_sync_file
   ../tests/amdgpu/amd_syncobj.c:213:6: warning: nested extern declaration o=
 f =E2=80=98amdgpu_cs_syncobj_export_sync_file2=E2=80=99 [-Wnested-externs]
@@ -125,15 +125,15 @@ ration]
 f =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99 [-Wnested-externs]
   cc1: some warnings being treated as errors
   ninja: build stopped: subcommand failed.
-  section_end:1686796496:step_script
-  section_start:1686796496:cleanup_file_variables
+  section_end:1686798441:step_script
+  section_start:1686798441:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1686796497:cleanup_file_variables
+  section_end:1686798441:cleanup_file_variables
   ERROR: Job failed: exit code 1
  =20
 
 build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/43797041):
+x-ci/igt-ci-tags/-/jobs/43798258):
         amdgpu_cs_syncobj_export_sync_file
   ../tests/amdgpu/amd_syncobj.c:213:6: warning: nested extern declaration o=
 f =E2=80=98amdgpu_cs_syncobj_export_sync_file2=E2=80=99 [-Wnested-externs]
@@ -157,18 +157,18 @@ ration]
 f =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99 [-Wnested-externs]
   cc1: some warnings being treated as errors
   ninja: build stopped: subcommand failed.
-  section_end:1686796495:step_script
-  section_start:1686796495:cleanup_file_variables
+  section_end:1686798422:step_script
+  section_start:1686798422:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1686796496:cleanup_file_variables
+  section_end:1686798423:cleanup_file_variables
   ERROR: Job failed: exit code 1
  =20
 
 build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/43797032):
+-tags/-/jobs/43798249):
   ninja: Entering directory `build'
   [1/665] Generating version.h with a custom command.
-  [2/329] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syn=
+  [2/330] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syn=
 cobj.c.o'.
   FAILED: tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syncobj.c.o=20
   cc -Itests/amdgpu/b9f2b1d@@amd_syncobj@exe -Itests/amdgpu -I../tests/amdg=
@@ -207,19 +207,19 @@ ought to be
 handle, false,
         |    ^
   ninja: build stopped: subcommand failed.
-  section_end:1686796479:step_script
-  section_start:1686796479:cleanup_file_variables
+  section_end:1686798423:step_script
+  section_start:1686798423:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1686796481:cleanup_file_variables
+  section_end:1686798423:cleanup_file_variables
   ERROR: Job failed: exit code 1
  =20
 
 build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/43797036):
+igt-ci-tags/-/jobs/43798253):
   ninja: build stopped: subcommand failed.
   ninja: Entering directory `build'
-  [1/667] Generating version.h with a custom command.
-  [2/331] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syn=
+  [1/666] Generating version.h with a custom command.
+  [2/330] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syn=
 cobj.c.o'.
   FAILED: tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syncobj.c.o=20
   clang -Itests/amdgpu/b9f2b1d@@amd_syncobj@exe -Itests/amdgpu -I../tests/a=
@@ -257,18 +257,18 @@ andle, false,
 ~~~~~~~~~~~
   2 errors generated.
   ninja: build stopped: subcommand failed.
-  section_end:1686796489:step_script
-  section_start:1686796489:cleanup_file_variables
+  section_end:1686798432:step_script
+  section_start:1686798432:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1686796492:cleanup_file_variables
+  section_end:1686798433:cleanup_file_variables
   ERROR: Job failed: exit code 1
  =20
 
 build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/43797033):
-  ninja: Entering directory `build'
+gfx-ci/igt-ci-tags/-/jobs/43798250):
   [1/668] Generating version.h with a custom command.
-  [2/333] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syn=
+  [2/335] Linking target tests/amdgpu/amd_abm.
+  [3/335] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syn=
 cobj.c.o'.
   FAILED: tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syncobj.c.o=20
   cc -Itests/amdgpu/b9f2b1d@@amd_syncobj@exe -Itests/amdgpu -I../tests/amdg=
@@ -307,18 +307,18 @@ ought to be
 handle, false,
         |    ^
   ninja: build stopped: subcommand failed.
-  section_end:1686796479:step_script
-  section_start:1686796479:cleanup_file_variables
+  section_end:1686798423:step_script
+  section_start:1686798423:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1686796481:cleanup_file_variables
+  section_end:1686798423:cleanup_file_variables
   ERROR: Job failed: exit code 1
  =20
 
 build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/43797034):
+gfx-ci/igt-ci-tags/-/jobs/43798251):
   ninja: Entering directory `build'
-  [1/664] Generating version.h with a custom command.
-  [2/329] Compiling C object 'tests/amdgpu/tests@amdgpu@@amd_syncobj@exe/am=
+  [1/666] Generating version.h with a custom command.
+  [2/331] Compiling C object 'tests/amdgpu/tests@amdgpu@@amd_syncobj@exe/am=
 d_syncobj.c.o'.
   FAILED: tests/amdgpu/tests@amdgpu@@amd_syncobj@exe/amd_syncobj.c.o=20
   cc -Itests/amdgpu/tests@amdgpu@@amd_syncobj@exe -Itests/amdgpu -I../tests=
@@ -357,13 +357,13 @@ ought to be
 handle, false,
         |    ^
   ninja: build stopped: subcommand failed.
-  section_end:1686796477:step_script
-  section_start:1686796477:cleanup_file_variables
+  section_end:1686798424:step_script
+  section_start:1686798424:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1686796479:cleanup_file_variables
+  section_end:1686798424:cleanup_file_variables
   ERROR: Job failed: exit code 1
 
 =3D=3D Logs =3D=3D
 
 For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/909493
+ipelines/909515
