@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0415010E4DD
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 12:39:28 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.22.209])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 5C9FF580C9B
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 05:39:27 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1q9mG4-00FpQK-2y
- for igt-dev@lists.freedesktop.org; Thu, 15 Jun 2023 14:39:24 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Jun 2023 14:39:23 +0200
-Message-Id: <20230615123923.3772582-1-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] xe-fast-feedback.testlist: better name Xe
- life KUnit tests
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sai.gowtham.ch@intel.com
+Date: Thu, 15 Jun 2023 12:39:59 -0000
+Message-ID: <168683279958.10726.3173081553994715392@emeril.freedesktop.org>
+References: <20230615105954.3751-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20230615105954.3751-1-sai.gowtham.ch@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
+ =?utf-8?q?ntegrate_igt=5Fspin=5Fnew_with_Xe_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,37 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+== Series Details ==
 
-It seems that some CI jobs don't work with wildcards on testlists.
-Replace them by the actual KUnit test names.
+Series: Integrate igt_spin_new with Xe (rev6)
+URL   : https://patchwork.freedesktop.org/series/118837/
+State : warning
 
-As migrate and wa tests are currently problematic, place them
-at the end.
+== Summary ==
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/intel-ci/xe-fast-feedback.testlist | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Pipeline status: FAILED.
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 73b9bbe656a1..53c6be0ed811 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -277,4 +277,9 @@ igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
- 
- # Run KUnit tests at the end
--igt@xe_live_ktest@.*
-+igt@xe_live_ktest@bo
-+igt@xe_live_ktest@dmabuf
-+igt@xe_live_ktest@pci
-+igt@xe_live_ktest@rtp
-+igt@xe_live_ktest@migrate
-+igt@xe_live_ktest@wa
--- 
-2.40.1
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/909912 for the overview.
+
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/43825536):
+  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=43825521 responseStatus=200 OK token=64_SartG
+  section_end:1686832687:download_artifacts
+  section_start:1686832687:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  Login Succeeded!
+  $ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
+  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-fd3a5c12c7c852b10edc4a7c54c96362c7100dd4
+  Error: error creating build container: Error initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-fd3a5c12c7c852b10edc4a7c54c96362c7100dd4: Error reading manifest commit-fd3a5c12c7c852b10edc4a7c54c96362c7100dd4 in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora: received unexpected HTTP status: 500 Internal Server Error
+  section_end:1686832689:step_script
+  section_start:1686832689:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1686832690:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/909912
