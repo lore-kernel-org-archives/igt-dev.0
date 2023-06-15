@@ -1,29 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01F4710E499
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 08:43:15 +0000 (UTC)
-Message-ID: <ade3eec2-32f9-79f3-8778-eaeeb0be1b60@amd.com>
-Date: Thu, 15 Jun 2023 10:43:05 +0200
-Content-Language: en-US
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- vitaly prosyak <vprosyak@amd.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, janga.rahul.kumar@intel.com,
- David Zhang <dingchen.zhang@amd.com>, Harry Wentland <harry.wentland@amd.com>
-References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
- <20230516165058.4047595-6-bhanuprakash.modem@intel.com>
- <20230614123933.5aqzgq2f4y4hrn47@kamilkon-desk1>
- <fd7d8c65-d943-c7ca-2f4d-fc5a9ac7bbd9@amd.com>
- <a52493c8-85c3-6698-0dfa-71235eef9d86@intel.com>
- <ee20db45-ffde-2372-3b41-659f2ce7aa89@amd.com>
- <3038241b-6f6c-36df-ed51-aa809e3a1348@intel.com>
-From: =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-In-Reply-To: <3038241b-6f6c-36df-ed51-aa809e3a1348@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============0760940485782061624=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 05/20] tests/amdgpu: Close the fd before exit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Anshuman Gupta" <anshuman.gupta@intel.com>
+Date: Thu, 15 Jun 2023 09:36:48 -0000
+Message-ID: <168682180841.10724.10503488397516749113@emeril.freedesktop.org>
+References: <20230615083216.1861288-1-anshuman.gupta@intel.com>
+In-Reply-To: <20230615083216.1861288-1-anshuman.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUE0gU3Vz?=
+ =?utf-8?q?pend_debug?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,206 +17,290 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Am 15.06.23 um 10:28 schrieb Modem, Bhanuprakash:
->
->
-> On Thu-15-06-2023 12:43 pm, Christian König wrote:
->> Hi guys,
->>
->> Am 15.06.23 um 06:46 schrieb Modem, Bhanuprakash:
->>> Hi Vitaliy,
->>>
->>> On Thu-15-06-2023 05:44 am, vitaly prosyak wrote:
->>>> Hi Kamil,
->>>>
->>>> Thanks for letting us know about new(?) function
->>>> /drm_close_driver/.
->>>>
->>>> Is there a pending change, I could not find this function in the 
->>>> DRM or IGT.
->>>
->>> Yes, changes are not yet landed into the IGT (WIP).
->>>
->>> Please refer Patch 1/20 in this series:
->>> https://patchwork.freedesktop.org/patch/538070/?series=117263&rev=5
->>
->> well neither this patch here nor the referenced series is correct.
->>
->> The libdrm functions take ownership of the file descriptor given to 
->> them!
->>
->> So the application or in this case IGT is *not* supposed to close 
->> them at all.
->
-> Unfortunately, that is not correct.
->
-> The application (IGT in this case), opens the driver and uses the 
-> libdrm functions to perform operations (like ioctl), but file 
-> descriptor is still with the IGT only.
+--===============0760940485782061624==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Ok, so we dup() the file descriptor somewhere?
+== Series Details ==
 
-Because at least amdgpu_device_free_internal() is clearly closing the fd 
-before freeing the device structure:
+Series: PM Suspend debug
+URL   : https://patchwork.freedesktop.org/series/119371/
+State : success
 
-static void amdgpu_device_free_internal(amdgpu_device_handle dev)
-{
-...
-         close(dev->fd);
-...
-         free(dev);
-}
+== Summary ==
+
+CI Bug Log - changes from IGT_7330 -> IGTPW_9176
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/index.html
+
+Participating hosts (43 -> 40)
+------------------------------
+
+  Missing    (3): fi-kbl-soraka fi-tgl-1115g4 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9176 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@load:
+    - bat-adlp-11:        [PASS][1] -> [ABORT][2] ([i915#4423])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-adlp-11/igt@i915_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-adlp-11/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-mtlp-8:         [PASS][3] -> [DMESG-FAIL][4] ([i915#7059])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-mtlp-8:         [PASS][5] -> [DMESG-FAIL][6] ([i915#7699])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-8/igt@i915_selftest@live@migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-8/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-6:         [PASS][7] -> [DMESG-FAIL][8] ([i915#7269])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-6/igt@i915_selftest@live@requests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-6/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         NOTRUN -> [DMESG-WARN][9] ([i915#6367])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-rpls-2/igt@i915_selftest@live@slpc.html
+    - bat-mtlp-8:         [PASS][10] -> [DMESG-WARN][11] ([i915#6367])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-8/igt@i915_selftest@live@slpc.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-8/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-rpls-2:         NOTRUN -> [ABORT][12] ([i915#6687])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:
+    - bat-dg2-8:          [PASS][13] -> [FAIL][14] ([i915#7932]) +1 similar issue
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-mtlp-6:         [DMESG-FAIL][15] ([i915#7059]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [DMESG-WARN][17] ([i915#7699]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-2:         [ABORT][19] ([i915#4983] / [i915#7461] / [i915#7913] / [i915#8347]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-mtlp-6:         [DMESG-WARN][21] ([i915#6367]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-6/igt@i915_selftest@live@slpc.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-6/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [DMESG-FAIL][23] ([i915#6763]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3:
+    - bat-dg2-11:         [INCOMPLETE][25] ([i915#7908]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html
+
+  
+  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6763]: https://gitlab.freedesktop.org/drm/intel/issues/6763
+  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
+  [i915#7269]: https://gitlab.freedesktop.org/drm/intel/issues/7269
+  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7908]: https://gitlab.freedesktop.org/drm/intel/issues/7908
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
 
 
->
-> Once it is done with the operations performed, it's IGT responsibility 
-> to close the driver (I think there are few gcc options available to 
-> close the device on IGT exit)
+Build changes
+-------------
 
-Well no, that's not related to gcc in any way possible. File descriptors 
-are closed by the kernel on process exit.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7330 -> IGTPW_9176
 
-Regards,
-Christian.
+  CI-20190529: 20190529
+  CI_DRM_13270: a8b181a60198ccf04a1ad1c34f46be4c2a5e64b7 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9176: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/index.html
+  IGT_7330: 592a0e56412b3323fb103ce3cc9977035c29f402 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
->
-> A typical IGT sudo-code:
->
->     fd = open(/dev/device);
->
->     libdrm_call(fd);
->     libdrm_call(fd);
->
->     close(fd);
->
-> - Bhanu
->
->>
->> Regards,
->> Christian.
->>
->>>
->>> - Bhanu
->>>
->>>>
->>>> We open the driver with /drm_open_driver/, but then we use close vs 
->>>> /drm_close_driver/. I makes sense to have a symmetrical call:
->>>> /open/close/ and /drm_open_driver/drm_close_driver/
->>>>
->>>>
->>>> Thanks, Vitaly
->>>>
->>>> On 2023-06-14 08:39, Kamil Konieczny wrote:
->>>>> Hi Bhanuprakash,
->>>>>
->>>>> +cc Vitaliy and Christian
->>>>>
->>>>> Cc: Vitaly Prosyak<vitaly.prosyak@amd.com>
->>>>> Cc: Christian König<christian.koenig@amd.com>
->>>>>
->>>>> Regards,
->>>>> Kamil
->>>>>
->>>>> On 2023-05-16 at 22:20:43 +0530, Bhanuprakash Modem wrote:
->>>>>> Close the file descriptor before exiting the test.
->>>>>>
->>>>>> Cc: David Zhang<dingchen.zhang@amd.com>
->>>>>> Cc: Harry Wentland<harry.wentland@amd.com>
->>>>>> Signed-off-by: Bhanuprakash Modem<bhanuprakash.modem@intel.com>
->>>>>> ---
->>>>>>   tests/amdgpu/amd_abm.c                 | 1 +
->>>>>>   tests/amdgpu/amd_assr.c                | 1 +
->>>>>>   tests/amdgpu/amd_freesync_video_mode.c | 1 +
->>>>>>   tests/amdgpu/amd_mem_leak.c            | 1 +
->>>>>>   tests/amdgpu/amd_psr.c                 | 3 ++-
->>>>>>   tests/amdgpu/amd_vrr_range.c           | 1 +
->>>>>>   6 files changed, 7 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
->>>>>> index 9400ed806..082da7ed6 100644
->>>>>> --- a/tests/amdgpu/amd_abm.c
->>>>>> +++ b/tests/amdgpu/amd_abm.c
->>>>>> @@ -378,5 +378,6 @@ igt_main
->>>>>>         igt_fixture {
->>>>>>           igt_display_fini(&data.display);
->>>>>> +        drm_close_driver(data.drm_fd);
->>>>>>       }
->>>>>>   }
->>>>>> diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
->>>>>> index 80cbbe8e9..fc2367f99 100644
->>>>>> --- a/tests/amdgpu/amd_assr.c
->>>>>> +++ b/tests/amdgpu/amd_assr.c
->>>>>> @@ -299,5 +299,6 @@ igt_main
->>>>>>       igt_fixture
->>>>>>       {
->>>>>>           igt_display_fini(&data.display);
->>>>>> +        drm_close_driver(data.fd);
->>>>>>       }
->>>>>>   }
->>>>>> diff --git a/tests/amdgpu/amd_freesync_video_mode.c 
->>>>>> b/tests/amdgpu/amd_freesync_video_mode.c
->>>>>> index 579d24436..62d42a06c 100644
->>>>>> --- a/tests/amdgpu/amd_freesync_video_mode.c
->>>>>> +++ b/tests/amdgpu/amd_freesync_video_mode.c
->>>>>> @@ -868,5 +868,6 @@ igt_main
->>>>>>         igt_fixture {
->>>>>>           igt_display_fini(&data.display);
->>>>>> +        drm_close_driver(data.drm_fd);
->>>>>>       }
->>>>>>   }
->>>>>> diff --git a/tests/amdgpu/amd_mem_leak.c 
->>>>>> b/tests/amdgpu/amd_mem_leak.c
->>>>>> index dee563cbe..e4a4b5c47 100644
->>>>>> --- a/tests/amdgpu/amd_mem_leak.c
->>>>>> +++ b/tests/amdgpu/amd_mem_leak.c
->>>>>> @@ -232,5 +232,6 @@ igt_main
->>>>>>       igt_fixture
->>>>>>       {
->>>>>>           igt_display_fini(&data.display);
->>>>>> +        drm_close_driver(data.fd);
->>>>>>       }
->>>>>>   }
->>>>>> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
->>>>>> index 966a0dccf..3932e143a 100644
->>>>>> --- a/tests/amdgpu/amd_psr.c
->>>>>> +++ b/tests/amdgpu/amd_psr.c
->>>>>> @@ -640,7 +640,7 @@ static void run_check_psr_su_cursor(data_t 
->>>>>> *data, bool test_mpo)
->>>>>>        * panning the primary plane at the top-left of screen
->>>>>>        * set alpha region in overlay plane and set alpha to 0.0 
->>>>>> to show primary plane
->>>>>>        * set cursor plane and starting from position of (0, 0)
->>>>>> -     */
->>>>>> +     */
->>>>>>       draw_color_alpha(&data->ov_fb[0], 0, 0, data->pfb_w, 
->>>>>> data->pfb_h, 1.0, 1.0, 1.0, .0);
->>>>>>       igt_plane_set_fb(data->primary, &data->pm_fb[0]);
->>>>>>       igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
->>>>>> @@ -763,5 +763,6 @@ igt_main_args("", long_options, help_str, 
->>>>>> opt_handler, NULL)
->>>>>>           }
->>>>>>           close(data.debugfs_fd);
->>>>>>           igt_display_fini(&data.display);
->>>>>> +        drm_close_driver(data.fd);
->>>>>>       }
->>>>>>   }
->>>>>> diff --git a/tests/amdgpu/amd_vrr_range.c 
->>>>>> b/tests/amdgpu/amd_vrr_range.c
->>>>>> index 2f27296dd..cacd668cd 100644
->>>>>> --- a/tests/amdgpu/amd_vrr_range.c
->>>>>> +++ b/tests/amdgpu/amd_vrr_range.c
->>>>>> @@ -338,5 +338,6 @@ igt_main
->>>>>>       igt_fixture
->>>>>>       {
->>>>>>           igt_display_fini(&data.display);
->>>>>> +        drm_close_driver(data.fd);
->>>>>>       }
->>>>>>   }
->>>>>> -- 
->>>>>> 2.40.0
->>>>>>
->>
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/index.html
+
+--===============0760940485782061624==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>PM Suspend debug</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119371/">https://patchwork.freedesktop.org/series/119371/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7330 -&gt; IGTPW_9176</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/index.html</p>
+<h2>Participating hosts (43 -&gt; 40)</h2>
+<p>Missing    (3): fi-kbl-soraka fi-tgl-1115g4 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9176 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-adlp-11/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-adlp-11/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-8/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-8/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-6/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7269">i915#7269</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>
+<p>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</p>
+</li>
+<li>
+<p>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-8/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-8/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-6/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-6/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6763">i915#6763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7908">i915#7908</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7330 -&gt; IGTPW_9176</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13270: a8b181a60198ccf04a1ad1c34f46be4c2a5e64b7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9176: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9176/index.html<br />
+  IGT_7330: 592a0e56412b3323fb103ce3cc9977035c29f402 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0760940485782061624==--
