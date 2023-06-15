@@ -1,15 +1,32 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 511D410E184
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 11:55:34 +0000 (UTC)
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Jun 2023 13:55:16 +0200
-Message-Id: <20230615115516.1684584-1-andrzej.hajda@intel.com>
-MIME-Version: 1.0
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam02on2050.outbound.protection.outlook.com [40.107.95.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3DAF210E185
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 12:03:45 +0000 (UTC)
+Message-ID: <dd666a3b-ca61-b98b-4347-8241ba8a2e17@amd.com>
+Date: Thu, 15 Jun 2023 14:03:34 +0200
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Vitaly Prosyak <vprosyak@amd.com>,
+ Janga Rahul Kumar <janga.rahul.kumar@intel.com>,
+ Harry Wentland <harry.wentland@amd.com>
+References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
+ <20230516165058.4047595-6-bhanuprakash.modem@intel.com>
+ <20230614123933.5aqzgq2f4y4hrn47@kamilkon-desk1>
+ <fd7d8c65-d943-c7ca-2f4d-fc5a9ac7bbd9@amd.com>
+ <a52493c8-85c3-6698-0dfa-71235eef9d86@intel.com>
+ <ee20db45-ffde-2372-3b41-659f2ce7aa89@amd.com>
+ <3038241b-6f6c-36df-ed51-aa809e3a1348@intel.com>
+ <ade3eec2-32f9-79f3-8778-eaeeb0be1b60@amd.com>
+ <20230615114847.w5p3cpezeubyxphx@kamilkon-desk1>
+From: =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20230615114847.w5p3cpezeubyxphx@kamilkon-desk1>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] i915/kms_busy: reduce heartbeat
- intervals only if neccessary
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t 05/20] tests/amdgpu: Close the fd before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,81 +34,237 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reducing heartbeat intervals may downgrade individual engine resets
-to full GPU resets. The latter is not desirable, especially
-on simulations, which do not support GPU reset. Only tests with
-reset flag enabled need reduced hearbeat intervals.
+Am 15.06.23 um 13:48 schrieb Kamil Konieczny:
+> Hi Christian,
+>
+> I dropped David Zhang from Cc because I got bounce:
+>
+> David Zhang (dingchen.zhang@amd.com)<mailto:dingchen.zhang@amd.com>
+> The email address you entered couldn't be found
+>
+> Maybe address should be david.zhang@amd.com ?
 
-v2: moved timeouts init/restore to fixups of affected tests, to allow
-    proper work in case test fail
+David unfortunately doesn't work for AMD any more. Just completely drop him.
 
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
----
- tests/i915/kms_busy.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+>
+> On 2023-06-15 at 10:43:05 +0200, Christian König wrote:
+>> Am 15.06.23 um 10:28 schrieb Modem, Bhanuprakash:
+>>>
+>>> On Thu-15-06-2023 12:43 pm, Christian König wrote:
+>>>> Hi guys,
+>>>>
+>>>> Am 15.06.23 um 06:46 schrieb Modem, Bhanuprakash:
+>>>>> Hi Vitaliy,
+>>>>>
+>>>>> On Thu-15-06-2023 05:44 am, vitaly prosyak wrote:
+>>>>>> Hi Kamil,
+>>>>>>
+>>>>>> Thanks for letting us know about new(?) function
+>>>>>> /drm_close_driver/.
+>>>>>>
+>>>>>> Is there a pending change, I could not find this function in
+>>>>>> the DRM or IGT.
+>>>>> Yes, changes are not yet landed into the IGT (WIP).
+>>>>>
+>>>>> Please refer Patch 1/20 in this series:
+>>>>> https://patchwork.freedesktop.org/patch/538070/?series=117263&rev=5
+>>>> well neither this patch here nor the referenced series is correct.
+>>>>
+>>>> The libdrm functions take ownership of the file descriptor given to
+>>>> them!
+>>>>
+>>>> So the application or in this case IGT is *not* supposed to close
+>>>> them at all.
+>>> Unfortunately, that is not correct.
+>>>
+>>> The application (IGT in this case), opens the driver and uses the libdrm
+>>> functions to perform operations (like ioctl), but file descriptor is
+>>> still with the IGT only.
+>> Ok, so we dup() the file descriptor somewhere?
+>>
+>> Because at least amdgpu_device_free_internal() is clearly closing the fd
+>> before freeing the device structure:
+>>
+>> static void amdgpu_device_free_internal(amdgpu_device_handle dev)
+>> {
+>> ...
+>>          close(dev->fd);
+>> ...
+>>          free(dev);
+>> }
+>>
+> I see, so we should drop amd patches with drm_close_driver()
+> from this patch series.
+>
+> Btw I do see in tests/amdgpu/amd_info.c at last fixture:
+>
+>        igt_fixture {
+>                  amdgpu_device_deinitialize(dev);
+>                  close(fd);
+>          }
+>
+> That "close(fd);" should be removed from amd_info.c test.
 
-diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
-index 20d3058fb6f..3b838cb8005 100644
---- a/tests/i915/kms_busy.c
-+++ b/tests/i915/kms_busy.c
-@@ -390,8 +390,6 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		{ "extended-modeset-hang-oldfb-with-reset", true, false, true },
- 		{ "extended-modeset-hang-newfb-with-reset", true, true, true },
- 	};
--	struct gem_engine_properties saved_gpu_timeouts[GEM_MAX_ENGINES];
--	int num_engines;
- 	int fd;
- 
- 	igt_fixture {
-@@ -409,8 +407,6 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		for_each_pipe(&display, pipe)
- 			active_pipes[last_pipe++] = pipe;
- 		last_pipe--;
--
--		gpu_engines_init_timeouts(fd, ARRAY_SIZE(saved_gpu_timeouts), &num_engines, saved_gpu_timeouts);
- 	}
- 
- 	/* XXX Extend to cover atomic rendering tests to all planes + legacy */
-@@ -470,8 +466,16 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 	}
- 
- 	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
--		igt_fixture
-+		struct gem_engine_properties saved_gpu_timeouts[GEM_MAX_ENGINES];
-+		int num_engines;
-+
-+		igt_fixture {
- 			igt_require(display.is_atomic);
-+			if (tests[i].reset)
-+				gpu_engines_init_timeouts(display.drm_fd,
-+							  ARRAY_SIZE(saved_gpu_timeouts),
-+							  &num_engines, saved_gpu_timeouts);
-+		}
- 
- 		igt_subtest_with_dynamic(tests[i].name) {
- 			igt_hang_t hang;
-@@ -501,10 +505,14 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 
- 			igt_disallow_hang(display.drm_fd, hang);
- 		}
-+
-+		igt_fixture {
-+			if (tests[i].reset)
-+				gpu_engines_restore_timeouts(display.drm_fd, num_engines, saved_gpu_timeouts);
-+		}
- 	}
- 
- 	igt_fixture {
--		gpu_engines_restore_timeouts(fd, num_engines, saved_gpu_timeouts);
- 		igt_display_fini(&display);
- 		close(display.drm_fd);
- 	}
--- 
-2.34.1
+After digging through the full source code I've found the matching dup() 
+to the close in amdgpu_device_free_internal().
+
+It's part of amdgpu_device_initialize() but uses the fnctl() version of 
+dup(), so my "grep dup*" I couldn't find it of hand:
+
+dev->fd = fcntl(fd, F_DUPFD_CLOEXEC, 0);
+
+Sorry for the noise, your original patch was correct to begin with.
+
+Regards,
+Christian.
+
+>
+> Regards,
+> Kamil
+>
+>>> Once it is done with the operations performed, it's IGT responsibility
+>>> to close the driver (I think there are few gcc options available to
+>>> close the device on IGT exit)
+>> Well no, that's not related to gcc in any way possible. File descriptors are
+>> closed by the kernel on process exit.
+>>
+>> Regards,
+>> Christian.
+>>
+>>> A typical IGT sudo-code:
+>>>
+>>>      fd = open(/dev/device);
+>>>
+>>>      libdrm_call(fd);
+>>>      libdrm_call(fd);
+>>>
+>>>      close(fd);
+>>>
+>>> - Bhanu
+>>>
+>>>> Regards,
+>>>> Christian.
+>>>>
+>>>>> - Bhanu
+>>>>>
+>>>>>> We open the driver with /drm_open_driver/, but then we use
+>>>>>> close vs /drm_close_driver/. I makes sense to have a
+>>>>>> symmetrical call:
+>>>>>> /open/close/ and /drm_open_driver/drm_close_driver/
+>>>>>>
+>>>>>>
+>>>>>> Thanks, Vitaly
+>>>>>>
+>>>>>> On 2023-06-14 08:39, Kamil Konieczny wrote:
+>>>>>>> Hi Bhanuprakash,
+>>>>>>>
+>>>>>>> +cc Vitaliy and Christian
+>>>>>>>
+>>>>>>> Cc: Vitaly Prosyak<vitaly.prosyak@amd.com>
+>>>>>>> Cc: Christian König<christian.koenig@amd.com>
+>>>>>>>
+>>>>>>> Regards,
+>>>>>>> Kamil
+>>>>>>>
+>>>>>>> On 2023-05-16 at 22:20:43 +0530, Bhanuprakash Modem wrote:
+>>>>>>>> Close the file descriptor before exiting the test.
+>>>>>>>>
+>>>>>>>> Cc: David Zhang<dingchen.zhang@amd.com>
+>>>>>>>> Cc: Harry Wentland<harry.wentland@amd.com>
+>>>>>>>> Signed-off-by: Bhanuprakash Modem<bhanuprakash.modem@intel.com>
+>>>>>>>> ---
+>>>>>>>>    tests/amdgpu/amd_abm.c                 | 1 +
+>>>>>>>>    tests/amdgpu/amd_assr.c                | 1 +
+>>>>>>>>    tests/amdgpu/amd_freesync_video_mode.c | 1 +
+>>>>>>>>    tests/amdgpu/amd_mem_leak.c            | 1 +
+>>>>>>>>    tests/amdgpu/amd_psr.c                 | 3 ++-
+>>>>>>>>    tests/amdgpu/amd_vrr_range.c           | 1 +
+>>>>>>>>    6 files changed, 7 insertions(+), 1 deletion(-)
+>>>>>>>>
+>>>>>>>> diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
+>>>>>>>> index 9400ed806..082da7ed6 100644
+>>>>>>>> --- a/tests/amdgpu/amd_abm.c
+>>>>>>>> +++ b/tests/amdgpu/amd_abm.c
+>>>>>>>> @@ -378,5 +378,6 @@ igt_main
+>>>>>>>>          igt_fixture {
+>>>>>>>>            igt_display_fini(&data.display);
+>>>>>>>> +        drm_close_driver(data.drm_fd);
+>>>>>>>>        }
+>>>>>>>>    }
+>>>>>>>> diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
+>>>>>>>> index 80cbbe8e9..fc2367f99 100644
+>>>>>>>> --- a/tests/amdgpu/amd_assr.c
+>>>>>>>> +++ b/tests/amdgpu/amd_assr.c
+>>>>>>>> @@ -299,5 +299,6 @@ igt_main
+>>>>>>>>        igt_fixture
+>>>>>>>>        {
+>>>>>>>>            igt_display_fini(&data.display);
+>>>>>>>> +        drm_close_driver(data.fd);
+>>>>>>>>        }
+>>>>>>>>    }
+>>>>>>>> diff --git a/tests/amdgpu/amd_freesync_video_mode.c
+>>>>>>>> b/tests/amdgpu/amd_freesync_video_mode.c
+>>>>>>>> index 579d24436..62d42a06c 100644
+>>>>>>>> --- a/tests/amdgpu/amd_freesync_video_mode.c
+>>>>>>>> +++ b/tests/amdgpu/amd_freesync_video_mode.c
+>>>>>>>> @@ -868,5 +868,6 @@ igt_main
+>>>>>>>>          igt_fixture {
+>>>>>>>>            igt_display_fini(&data.display);
+>>>>>>>> +        drm_close_driver(data.drm_fd);
+>>>>>>>>        }
+>>>>>>>>    }
+>>>>>>>> diff --git a/tests/amdgpu/amd_mem_leak.c
+>>>>>>>> b/tests/amdgpu/amd_mem_leak.c
+>>>>>>>> index dee563cbe..e4a4b5c47 100644
+>>>>>>>> --- a/tests/amdgpu/amd_mem_leak.c
+>>>>>>>> +++ b/tests/amdgpu/amd_mem_leak.c
+>>>>>>>> @@ -232,5 +232,6 @@ igt_main
+>>>>>>>>        igt_fixture
+>>>>>>>>        {
+>>>>>>>>            igt_display_fini(&data.display);
+>>>>>>>> +        drm_close_driver(data.fd);
+>>>>>>>>        }
+>>>>>>>>    }
+>>>>>>>> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+>>>>>>>> index 966a0dccf..3932e143a 100644
+>>>>>>>> --- a/tests/amdgpu/amd_psr.c
+>>>>>>>> +++ b/tests/amdgpu/amd_psr.c
+>>>>>>>> @@ -640,7 +640,7 @@ static void
+>>>>>>>> run_check_psr_su_cursor(data_t *data, bool test_mpo)
+>>>>>>>>         * panning the primary plane at the top-left of screen
+>>>>>>>>         * set alpha region in overlay plane and set
+>>>>>>>> alpha to 0.0 to show primary plane
+>>>>>>>>         * set cursor plane and starting from position of (0, 0)
+>>>>>>>> -     */
+>>>>>>>> +     */
+>>>>>>>>        draw_color_alpha(&data->ov_fb[0], 0, 0,
+>>>>>>>> data->pfb_w, data->pfb_h, 1.0, 1.0, 1.0, .0);
+>>>>>>>>        igt_plane_set_fb(data->primary, &data->pm_fb[0]);
+>>>>>>>>        igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
+>>>>>>>> @@ -763,5 +763,6 @@ igt_main_args("", long_options,
+>>>>>>>> help_str, opt_handler, NULL)
+>>>>>>>>            }
+>>>>>>>>            close(data.debugfs_fd);
+>>>>>>>>            igt_display_fini(&data.display);
+>>>>>>>> +        drm_close_driver(data.fd);
+>>>>>>>>        }
+>>>>>>>>    }
+>>>>>>>> diff --git a/tests/amdgpu/amd_vrr_range.c
+>>>>>>>> b/tests/amdgpu/amd_vrr_range.c
+>>>>>>>> index 2f27296dd..cacd668cd 100644
+>>>>>>>> --- a/tests/amdgpu/amd_vrr_range.c
+>>>>>>>> +++ b/tests/amdgpu/amd_vrr_range.c
+>>>>>>>> @@ -338,5 +338,6 @@ igt_main
+>>>>>>>>        igt_fixture
+>>>>>>>>        {
+>>>>>>>>            igt_display_fini(&data.display);
+>>>>>>>> +        drm_close_driver(data.fd);
+>>>>>>>>        }
+>>>>>>>>    }
+>>>>>>>> -- 
+>>>>>>>> 2.40.0
+>>>>>>>>
