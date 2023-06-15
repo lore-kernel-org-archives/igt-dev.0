@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D09E10E495
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 07:57:57 +0000 (UTC)
-Message-ID: <ddb5f33b-d01a-6fed-935d-543546d39bd7@intel.com>
-Date: Thu, 15 Jun 2023 13:27:45 +0530
-To: "Nilawar, Badal" <badal.nilawar@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230609094457.3355182-1-riana.tauro@intel.com>
- <55ad1a6f-b49f-9899-c1fe-728ee014eaa6@intel.com>
-Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <55ad1a6f-b49f-9899-c1fe-728ee014eaa6@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97B2A10E515
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 17:03:38 +0000 (UTC)
+Date: Thu, 15 Jun 2023 19:02:39 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230615170239.2o54pn7uty3r2rva@kamilkon-desk1>
+References: <20230615021406.131572-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add basic idle residency test
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230615021406.131572-1-vitaly.prosyak@amd.com>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/amdgpu: add bo tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,174 +19,372 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: alexander.deucher@amd.com, michael.strawbridge@amd.com,
+ christian.koenig@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Vitaly,
 
-
-On 6/14/2023 9:28 PM, Nilawar, Badal wrote:
-> Hi Riana,
+On 2023-06-14 at 22:14:05 -0400, vitaly.prosyak@amd.com wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > 
-> On 09-06-2023 15:14, Riana Tauro wrote:
->> The test reads idle residency within a time interval and
->> checks if its within the tolerance
->>
->> Currently the test checks RC6 Residency
->>
->> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
->> ---
->>   tests/meson.build     |   1 +
->>   tests/xe/xe_gt_idle.c | 117 ++++++++++++++++++++++++++++++++++++++++++
->>   2 files changed, 118 insertions(+)
->>   create mode 100644 tests/xe/xe_gt_idle.c
->>
->> diff --git a/tests/meson.build b/tests/meson.build
->> index c15eb3a08..10273ebf5 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -254,6 +254,7 @@ xe_progs = [
->>       'xe_exec_fault_mode',
->>       'xe_exec_reset',
->>       'xe_exec_threads',
->> +    'xe_gt_idle',
->>       'xe_gpgpu_fill',
->>       'xe_guc_pc',
->>       'xe_huc_copy',
->> diff --git a/tests/xe/xe_gt_idle.c b/tests/xe/xe_gt_idle.c
->> new file mode 100644
->> index 000000000..3a1090ffd
->> --- /dev/null
->> +++ b/tests/xe/xe_gt_idle.c
->> @@ -0,0 +1,117 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2023 Intel Corporation
->> + */
->> +
->> +/**
->> + * TEST: Test gtidle properties
->> + * Category: Software building block
->> + * Sub-category: Power Management
->> + * Functionality: RC6
->> + * Test category: functionality test
->> + */
->> +
->> +#include <limits.h>
->> +
->> +#include "igt.h"
->> +#include "igt_sysfs.h"
->> +
->> +#include "xe/xe_query.h"
->> +
->> +#define SLEEP_DURATION 3 /* in seconds */
->> +
->> +const double tolerance = 0.1;
->> +
->> +#define assert_within_epsilon(x, ref, tol) \
->> +    igt_assert_f((double)(x) <= (1.0 + (tol)) * (double)(ref) && \
->> +             (double)(x) >= (1.0 - (tol)) * (double)(ref), \
->> +             "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance 
->> of %f)\n",\
->> +             #x, #ref, (double)(x), \
->> +             (tol) * 100.0, (tol) * 100.0, \
->> +             (double)(ref))
->> +
->> +static bool in_rc6(int sysfs, int gt)
->> +{
->> +    char path[PATH_MAX];
->> +    char rc[8];
->> +
->> +    sprintf(path, "device/gt%d/gtidle/idle_status", gt);
->> +    if (igt_sysfs_scanf(sysfs, path, "%s", rc) < 0)
->> +        return false;
->> +
->> +    return strcmp(rc, "rc6") == 0;
->> +}
-> This function is also defined in xe_guc_pc.c. So how about making this 
-> function as library function may be under new file lib/xe/xe_pm.c.
-Hi Badal
-
-Intention is to move all the rc tests in guc_pc to this file
-Would this be needed by any other tests?
-
-Thanks
-Riana
+> The tests do the validation the following bo features:
+>  - export/import
+>  - write/read metadata and then compare with original
+>  - map/unmap
+>  - alloc/free
+>  - find bo mapping
 > 
-> Regards,
-> Badal
->> +
->> +static bool is_rc_dir(int sysfs, int gt)
->> +{
->> +    char path[PATH_MAX], name[NAME_MAX];
->> +    char rc[8];
->> +
->> +    sprintf(path, "device/gt%d/gtidle/name", gt);
->> +    if (igt_sysfs_scanf(sysfs, path, "%s", rc) < 0)
->> +        return false;
->> +
->> +    sprintf(name, "gt%d-rc", gt);
->> +    return strcmp(rc, name) == 0;
->> +}
->> +
->> +static unsigned long read_idle_residency(int sysfs, int gt)
->> +{
->> +    unsigned long residency;
->> +    char path[PATH_MAX];
->> +
->> +    residency = 0;
->> +    sprintf(path, "device/gt%d/gtidle/idle_residency_ms", gt);
->> +    igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1);
->> +    return residency;
->> +}
->> +
->> +/**
->> + * SUBTEST: idle-residency
->> + * Description: basic residency test to check idle residency
->> + *         within a time interval
->> + * Run type: FULL
->> + */
->> +static void test_idle(int sysfs, int gt)
->> +{
->> +    struct timespec tv;
->> +    unsigned long elapsed_ms, residency_start, residency_end;
->> +
->> +    assert(is_rc_dir(sysfs, gt));
->> +    assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
->> +
->> +    igt_gettime(&tv);
->> +    residency_start = read_idle_residency(sysfs, gt);
->> +    sleep(SLEEP_DURATION);
->> +    residency_end = read_idle_residency(sysfs, gt);
->> +    elapsed_ms = igt_nsec_elapsed(&tv) / 1000000;
->> +
->> +    igt_info("Measured %lums of idle residency in %lums\n",
->> +         residency_end - residency_start, elapsed_ms);
->> +
->> +    assert_within_epsilon(residency_end - residency_start, 
->> elapsed_ms, tolerance);
->> +}
->> +
->> +igt_main
->> +{
->> +    int fd, gt;
->> +    static int sysfs = -1;
->> +
->> +    igt_fixture {
->> +        fd = drm_open_driver(DRIVER_XE);
->> +
->> +        xe_device_get(fd);
->> +        sysfs = igt_sysfs_open(fd);
->> +        igt_assert(sysfs != -1);
->> +    }
->> +
->> +    igt_subtest("idle-residency")
->> +        xe_for_each_gt(fd, gt)
->> +            test_idle(sysfs, gt);
->> +
->> +    igt_fixture {
->> +        close(sysfs);
->> +        xe_device_put(fd);
->> +        close(fd);
->> +    }
->> +}
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> ---
+>  meson.build              |   2 +-
+>  tests/amdgpu/amd_bo.c    | 291 +++++++++++++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build |   1 +
+>  3 files changed, 293 insertions(+), 1 deletion(-)
+>  create mode 100644 tests/amdgpu/amd_bo.c
+> 
+> diff --git a/meson.build b/meson.build
+> index 0487158dc..12269370a 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -4,7 +4,7 @@ project('igt-gpu-tools', 'c',
+>            'warning_level=2',
+>            'c_std=gnu11',
+>            'b_ndebug=false',
+> -          'buildtype=debugoptimized',
+> +          'buildtype=debug',
+
+Drop this change.
+
+>          ],
+>  	license : 'MIT',
+>  	meson_version : '>=0.47.2')
+> diff --git a/tests/amdgpu/amd_bo.c b/tests/amdgpu/amd_bo.c
+> new file mode 100644
+> index 000000000..9a95da237
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_bo.c
+> @@ -0,0 +1,291 @@
+> +// SPDX-License-Identifier: MIT
+
+Add copyright here.
+
+> +
+> +#include <stdio.h>
+> +#include <amdgpu.h>
+> +#include <amdgpu_drm.h>
+
+Put newline here.
+
+> +#include "igt.h"
+> +#include "lib/amdgpu/amd_memory.h"
+> +
+> +
+> +#define BUFFER_SIZE (4*1024)
+> +#define BUFFER_ALIGN (4*1024)
+> +
+> +struct bo_data {
+> +	amdgpu_bo_handle buffer_handle;
+> +	uint64_t virtual_mc_base_address;
+> +	amdgpu_va_handle va_handle;
+> +};
+> +
+> +static int
+> +amdgpu_bo_init(amdgpu_device_handle device_handle, struct bo_data *bo)
+> +{
+> +	struct amdgpu_bo_alloc_request req = {0};
+> +	int r;
+> +
+> +	req.alloc_size = BUFFER_SIZE;
+> +	req.phys_alignment = BUFFER_ALIGN;
+> +	req.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
+> +
+> +	r = amdgpu_bo_alloc(device_handle, &req, &bo->buffer_handle);
+> +	if (r)
+> +		return r;
+> +
+> +	r = amdgpu_va_range_alloc(device_handle,
+> +				  amdgpu_gpu_va_range_general,
+> +				  BUFFER_SIZE, BUFFER_ALIGN, 0,
+> +				  &bo->virtual_mc_base_address, &bo->va_handle, 0);
+> +	if (r)
+> +		goto error_va_alloc;
+> +
+> +	r = amdgpu_bo_va_op(bo->buffer_handle, 0, BUFFER_SIZE,
+> +			bo->virtual_mc_base_address, 0, AMDGPU_VA_OP_MAP);
+> +	if (r)
+> +		goto error_va_map;
+> +
+
+Remove extra empty line.
+
+> +
+> +	return 0;
+> +
+> +error_va_map:
+> +	amdgpu_va_range_free(bo->va_handle);
+> +
+> +error_va_alloc:
+> +	amdgpu_bo_free(bo->buffer_handle);
+> +	return 1;
+-------------- ^
+better:	return r;
+
+Regards,
+Kamil
+
+> +}
+> +
+> +static void
+> +amdgpu_bo_clean(amdgpu_device_handle device_handle, struct bo_data *bo)
+> +{
+> +	int r;
+> +
+> +	r = amdgpu_bo_va_op(bo->buffer_handle, 0, BUFFER_SIZE,
+> +			    bo->virtual_mc_base_address, 0,
+> +			    AMDGPU_VA_OP_UNMAP);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_va_range_free(bo->va_handle);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_bo_free(bo->buffer_handle);
+> +	igt_assert_eq(r, 0);
+> +}
+> +
+> +static void
+> +amdgpu_bo_export_import_do_type(amdgpu_device_handle device_handle,
+> +		struct bo_data *bo, enum amdgpu_bo_handle_type type)
+> +{
+> +	struct amdgpu_bo_import_result res = {0};
+> +	uint32_t shared_handle;
+> +	int r;
+> +
+> +	r = amdgpu_bo_export(bo->buffer_handle, type, &shared_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_bo_import(device_handle, type, shared_handle, &res);
+> +	igt_assert_eq(r, 0);
+> +
+> +	igt_assert(res.buf_handle == bo->buffer_handle);
+> +	igt_assert_eq(res.alloc_size, BUFFER_SIZE);
+> +
+> +	r = amdgpu_bo_free(res.buf_handle);
+> +	igt_assert_eq(r, 0);
+> +}
+> +
+> +static void
+> +amdgpu_bo_export_import(amdgpu_device_handle device, struct bo_data *bo)
+> +{
+> +	amdgpu_bo_export_import_do_type(device, bo,
+> +			amdgpu_bo_handle_type_gem_flink_name);
+> +	amdgpu_bo_export_import_do_type(device, bo,
+> +			amdgpu_bo_handle_type_dma_buf_fd);
+> +}
+> +
+> +static void
+> +amdgpu_bo_metadata(amdgpu_device_handle device, struct bo_data *bo)
+> +{
+> +	struct amdgpu_bo_metadata meta = {0};
+> +	struct amdgpu_bo_info info = {0};
+> +	int r;
+> +
+> +	meta.size_metadata = 4;
+> +	meta.umd_metadata[0] = 0xdeadbeef;
+> +
+> +	r = amdgpu_bo_set_metadata(bo->buffer_handle, &meta);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_bo_query_info(bo->buffer_handle, &info);
+> +	igt_assert_eq(r, 0);
+> +
+> +	igt_assert_eq(info.metadata.size_metadata, 4);
+> +	igt_assert_eq(info.metadata.umd_metadata[0], 0xdeadbeef);
+> +}
+> +
+> +static void
+> +amdgpu_bo_map_unmap(amdgpu_device_handle device, struct bo_data *bo)
+> +{
+> +	uint32_t *ptr;
+> +	int i, r;
+> +
+> +	r = amdgpu_bo_cpu_map(bo->buffer_handle, (void **)&ptr);
+> +	igt_assert_eq(r, 0);
+> +
+> +	for (i = 0; i < (BUFFER_SIZE / 4); ++i)
+> +		ptr[i] = 0xdeadbeef;
+> +
+> +	r = amdgpu_bo_cpu_unmap(bo->buffer_handle);
+> +	igt_assert_eq(r, 0);
+> +}
+> +
+> +static void
+> +amdgpu_memory_alloc(amdgpu_device_handle device_handle)
+> +{
+> +	amdgpu_bo_handle bo;
+> +	amdgpu_va_handle va_handle;
+> +	uint64_t bo_mc;
+> +
+> +	/* Test visible VRAM */
+> +	bo = gpu_mem_alloc(device_handle,
+> +			4096, 4096,
+> +			AMDGPU_GEM_DOMAIN_VRAM,
+> +			AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
+> +			&bo_mc, &va_handle);
+> +
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +
+> +	/* Test invisible VRAM */
+> +	bo = gpu_mem_alloc(device_handle,
+> +			4096, 4096,
+> +			AMDGPU_GEM_DOMAIN_VRAM,
+> +			AMDGPU_GEM_CREATE_NO_CPU_ACCESS,
+> +			&bo_mc, &va_handle);
+> +
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +
+> +	/* Test GART cacheable */
+> +	bo = gpu_mem_alloc(device_handle,
+> +			4096, 4096,
+> +			AMDGPU_GEM_DOMAIN_GTT,
+> +			0, &bo_mc, &va_handle);
+> +
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +
+> +	/* Test GART USWC */
+> +	bo = gpu_mem_alloc(device_handle,
+> +			4096, 4096,
+> +			AMDGPU_GEM_DOMAIN_GTT,
+> +			AMDGPU_GEM_CREATE_CPU_GTT_USWC,
+> +			&bo_mc, &va_handle);
+> +
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +
+> +	/* Test GDS */
+> +	bo = gpu_mem_alloc(device_handle, 1024, 0,
+> +			AMDGPU_GEM_DOMAIN_GDS, 0,
+> +			&bo_mc, &va_handle);
+> +
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +	/* Test GWS */
+> +	bo = gpu_mem_alloc(device_handle, 1, 0,
+> +			AMDGPU_GEM_DOMAIN_GWS, 0,
+> +			&bo_mc, &va_handle);
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +	/* Test OA */
+> +	bo = gpu_mem_alloc(device_handle, 1, 0,
+> +			AMDGPU_GEM_DOMAIN_OA, 0,
+> +			&bo_mc, &va_handle);
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +}
+> +
+> +static void
+> +amdgpu_mem_fail_alloc(amdgpu_device_handle device_handle)
+> +{
+> +	int r;
+> +	struct amdgpu_bo_alloc_request req = {0};
+> +	amdgpu_bo_handle buf_handle;
+> +
+> +	/* Test impossible mem allocation, 1TB */
+> +	req.alloc_size = 0xE8D4A51000;
+> +	req.phys_alignment = 4096;
+> +	req.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
+> +	req.flags = AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
+> +
+> +	r = amdgpu_bo_alloc(device_handle, &req, &buf_handle);
+> +	igt_assert_eq(r, -ENOMEM);
+> +
+> +	if (!r) {
+> +		r = amdgpu_bo_free(buf_handle);
+> +		igt_assert_eq(r, 0);
+> +	}
+> +}
+> +
+> +static void
+> +amdgpu_bo_find_by_cpu_mapping(amdgpu_device_handle device_handle)
+> +{
+> +	amdgpu_bo_handle bo_handle, find_bo_handle;
+> +	amdgpu_va_handle va_handle;
+> +	void *bo_cpu;
+> +	uint64_t bo_mc_address;
+> +	uint64_t offset;
+> +	int r;
+> +
+> +	r = amdgpu_bo_alloc_and_map(device_handle, 4096, 4096,
+> +				    AMDGPU_GEM_DOMAIN_GTT, 0,
+> +				    &bo_handle, &bo_cpu,
+> +				    &bo_mc_address, &va_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_find_bo_by_cpu_mapping(device_handle,
+> +					  bo_cpu,
+> +					  4096,
+> +					  &find_bo_handle,
+> +					  &offset);
+> +	igt_assert_eq(r, 0);
+> +	igt_assert_eq(offset, 0);
+> +
+> +	amdgpu_bo_unmap_and_free(bo_handle, va_handle,
+> +				     bo_mc_address, 4096);
+> +}
+> +
+> +igt_main
+> +{
+> +	amdgpu_device_handle device;
+> +	struct bo_data bo;
+> +	int fd = -1;
+> +
+> +	igt_fixture {
+> +		uint32_t major, minor;
+> +		int err;
+> +
+> +		fd = drm_open_driver(DRIVER_AMDGPU);
+> +		err = amdgpu_device_initialize(fd, &major, &minor, &device);
+> +		igt_require(err == 0);
+> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
+> +			 major, minor);
+> +
+> +		amdgpu_bo_init(device, &bo);
+> +	}
+> +
+> +	igt_subtest("amdgpu_bo_export_import")
+> +	amdgpu_bo_export_import(device, &bo);
+> +
+> +	igt_subtest("amdgpu_bo_metadata")
+> +	amdgpu_bo_metadata(device, &bo);
+> +
+> +	igt_subtest("amdgpu_bo_map_unmap")
+> +	amdgpu_bo_map_unmap(device, &bo);
+> +
+> +	igt_subtest("amdgpu_memory_alloc")
+> +	amdgpu_memory_alloc(device);
+> +
+> +	igt_subtest("amdgpu_mem_fail_alloc")
+> +	amdgpu_mem_fail_alloc(device);
+> +
+> +	igt_subtest("amdgpu_bo_find_by_cpu_mapping")
+> +	amdgpu_bo_find_by_cpu_mapping(device);
+> +
+> +	igt_fixture {
+> +		amdgpu_bo_clean(device, &bo);
+> +		amdgpu_device_deinitialize(device);
+> +		close(fd);
+> +	}
+> +}
+> +
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index 7fff7602f..43326a7c4 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -5,6 +5,7 @@ if libdrm_amdgpu.found()
+>  	amdgpu_progs += [ 'amd_abm',
+>  			  'amd_assr',
+>  			  'amd_basic',
+> +			  'amd_bo',
+>  			  'amd_bypass',
+>  			  'amd_deadlock',
+>  			  'amd_pci_unplug',
+> -- 
+> 2.25.1
+> 
