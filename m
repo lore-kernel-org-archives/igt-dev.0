@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7314F10E4DD
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 12:38:25 +0000 (UTC)
-From: "Garg, Nemesa" <nemesa.garg@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0415010E4DD
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 12:39:28 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.22.209])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 5C9FF580C9B
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 05:39:27 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1q9mG4-00FpQK-2y
+ for igt-dev@lists.freedesktop.org; Thu, 15 Jun 2023 14:39:24 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Jun 2023 18:06:54 +0530
-Message-Id: <20230615123654.1672601-1-nemesa.garg@intel.com>
+Date: Thu, 15 Jun 2023 14:39:23 +0200
+Message-Id: <20230615123923.3772582-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/kms_cursor_legacy: Reducing the
- IOCTL(drm_mode_cursor_ioctl) calls by reducing the timeout.
+Subject: [igt-dev] [PATCH i-g-t] xe-fast-feedback.testlist: better name Xe
+ life KUnit tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,40 +26,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Garg@freedesktop.org, "Garg, Nemesa" <nemesa.garg@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Due to excessive IOCTL calls in a stress test we are getting
-disk limit issue. Hence by reducing the timeout from 20 to 5
-the IOCTL call will get reduced.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Checked with different values and found 5 as optimal value.
+It seems that some CI jobs don't work with wildcards on testlists.
+Replace them by the actual KUnit test names.
 
-Signed-off-by: Garg, Nemesa <nemesa.garg@intel.com>
+As migrate and wa tests are currently problematic, place them
+at the end.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_cursor_legacy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/intel-ci/xe-fast-feedback.testlist | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index f1e55906..13918345 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1562,12 +1562,12 @@ igt_main
- 					errno = 0;
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 73b9bbe656a1..53c6be0ed811 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -277,4 +277,9 @@ igt@kms_psr@cursor_plane_move
+ igt@kms_psr@sprite_plane_onoff
  
- 					igt_dynamic_f("pipe-%s", kmstest_pipe_name(n))
--						stress(&display, n, tests[i].ncpus, tests[i].flags, 20);
-+						stress(&display, n, tests[i].ncpus, tests[i].flags, 5);
- 				}
- 
- 				errno = 0;
- 				igt_dynamic("all-pipes")
--					stress(&display, -1, tests[i].ncpus, tests[i].flags, 20);
-+					stress(&display, -1, tests[i].ncpus, tests[i].flags, 5);
- 			}
- 		}
- 	}
+ # Run KUnit tests at the end
+-igt@xe_live_ktest@.*
++igt@xe_live_ktest@bo
++igt@xe_live_ktest@dmabuf
++igt@xe_live_ktest@pci
++igt@xe_live_ktest@rtp
++igt@xe_live_ktest@migrate
++igt@xe_live_ktest@wa
 -- 
-2.25.1
+2.40.1
