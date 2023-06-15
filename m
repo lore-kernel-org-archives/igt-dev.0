@@ -1,15 +1,27 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C9DBC10E00F
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 05:17:03 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Jun 2023 10:54:38 +0530
-Message-Id: <20230615052438.15220-1-nidhi1.gupta@intel.com>
-MIME-Version: 1.0
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2057.outbound.protection.outlook.com [40.107.93.57])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 82DC210E48A
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 07:14:33 +0000 (UTC)
+Message-ID: <ee20db45-ffde-2372-3b41-659f2ce7aa89@amd.com>
+Date: Thu, 15 Jun 2023 09:13:37 +0200
+Content-Language: en-US
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ vitaly prosyak <vprosyak@amd.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, janga.rahul.kumar@intel.com,
+ David Zhang <dingchen.zhang@amd.com>, Harry Wentland <harry.wentland@amd.com>
+References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
+ <20230516165058.4047595-6-bhanuprakash.modem@intel.com>
+ <20230614123933.5aqzgq2f4y4hrn47@kamilkon-desk1>
+ <fd7d8c65-d943-c7ca-2f4d-fc5a9ac7bbd9@amd.com>
+ <a52493c8-85c3-6698-0dfa-71235eef9d86@intel.com>
+From: =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+In-Reply-To: <a52493c8-85c3-6698-0dfa-71235eef9d86@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_cursor: Pipe-D is invalid
- in big joiner
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t 05/20] tests/amdgpu: Close the fd before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,56 +29,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Pipe D is invalid in big joiner and because of that currently
-test throws as skip for all the pipes as it is within the
-dynamic subtest block.
-Fixed in IGT by not executing the subtest if valid combo of pipe
-and output not found for big joiner and go on to check for the
-next pipe.
+Hi guys,
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_plane_cursor.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Am 15.06.23 um 06:46 schrieb Modem, Bhanuprakash:
+> Hi Vitaliy,
+>
+> On Thu-15-06-2023 05:44 am, vitaly prosyak wrote:
+>> Hi Kamil,
+>>
+>> Thanks for letting us know about new(?) function
+>> /drm_close_driver/.
+>>
+>> Is there a pending change, I could not find this function in the DRM 
+>> or IGT.
+>
+> Yes, changes are not yet landed into the IGT (WIP).
+>
+> Please refer Patch 1/20 in this series:
+> https://patchwork.freedesktop.org/patch/538070/?series=117263&rev=5
 
-diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-index 59b105c6..b1f3cecc 100644
---- a/tests/kms_plane_cursor.c
-+++ b/tests/kms_plane_cursor.c
-@@ -86,7 +86,6 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
- 	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
- 
- 	igt_output_set_pipe(data->output, data->pipe_id);
--	igt_require(i915_pipe_output_combo_valid(display));
- 
- 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
- 		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
-@@ -268,6 +267,7 @@ igt_main
- 	static const int cursor_sizes[] = { 64, 128, 256 };
- 	data_t data = { .max_curw = 64, .max_curh = 64 };
- 	enum pipe pipe;
-+	bool result;
- 	igt_output_t *output;
- 	int i, j;
- 	struct {
-@@ -312,6 +312,13 @@ igt_main
- 
- 				test_init(&data, pipe, output);
- 
-+				result = i915_pipe_output_combo_valid(&data.display);
-+				if (result == false) {
-+					igt_info("pipe %s + %s is not a valid combo for big joiner\n",
-+						kmstest_pipe_name(data.pipe_id), igt_output_name(data.output));
-+					continue;
-+				}
-+
- 				for (j = 0; j < ARRAY_SIZE(cursor_sizes); j++) {
- 					int size = cursor_sizes[j];
- 
--- 
-2.39.0
+well neither this patch here nor the referenced series is correct.
+
+The libdrm functions take ownership of the file descriptor given to them!
+
+So the application or in this case IGT is *not* supposed to close them 
+at all.
+
+Regards,
+Christian.
+
+>
+> - Bhanu
+>
+>>
+>> We open the driver with /drm_open_driver/, but then we use close vs 
+>> /drm_close_driver/. I makes sense to have a symmetrical call:
+>> /open/close/ and /drm_open_driver/drm_close_driver/
+>>
+>>
+>> Thanks, Vitaly
+>>
+>> On 2023-06-14 08:39, Kamil Konieczny wrote:
+>>> Hi Bhanuprakash,
+>>>
+>>> +cc Vitaliy and Christian
+>>>
+>>> Cc: Vitaly Prosyak<vitaly.prosyak@amd.com>
+>>> Cc: Christian König<christian.koenig@amd.com>
+>>>
+>>> Regards,
+>>> Kamil
+>>>
+>>> On 2023-05-16 at 22:20:43 +0530, Bhanuprakash Modem wrote:
+>>>> Close the file descriptor before exiting the test.
+>>>>
+>>>> Cc: David Zhang<dingchen.zhang@amd.com>
+>>>> Cc: Harry Wentland<harry.wentland@amd.com>
+>>>> Signed-off-by: Bhanuprakash Modem<bhanuprakash.modem@intel.com>
+>>>> ---
+>>>>   tests/amdgpu/amd_abm.c                 | 1 +
+>>>>   tests/amdgpu/amd_assr.c                | 1 +
+>>>>   tests/amdgpu/amd_freesync_video_mode.c | 1 +
+>>>>   tests/amdgpu/amd_mem_leak.c            | 1 +
+>>>>   tests/amdgpu/amd_psr.c                 | 3 ++-
+>>>>   tests/amdgpu/amd_vrr_range.c           | 1 +
+>>>>   6 files changed, 7 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
+>>>> index 9400ed806..082da7ed6 100644
+>>>> --- a/tests/amdgpu/amd_abm.c
+>>>> +++ b/tests/amdgpu/amd_abm.c
+>>>> @@ -378,5 +378,6 @@ igt_main
+>>>>         igt_fixture {
+>>>>           igt_display_fini(&data.display);
+>>>> +        drm_close_driver(data.drm_fd);
+>>>>       }
+>>>>   }
+>>>> diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
+>>>> index 80cbbe8e9..fc2367f99 100644
+>>>> --- a/tests/amdgpu/amd_assr.c
+>>>> +++ b/tests/amdgpu/amd_assr.c
+>>>> @@ -299,5 +299,6 @@ igt_main
+>>>>       igt_fixture
+>>>>       {
+>>>>           igt_display_fini(&data.display);
+>>>> +        drm_close_driver(data.fd);
+>>>>       }
+>>>>   }
+>>>> diff --git a/tests/amdgpu/amd_freesync_video_mode.c 
+>>>> b/tests/amdgpu/amd_freesync_video_mode.c
+>>>> index 579d24436..62d42a06c 100644
+>>>> --- a/tests/amdgpu/amd_freesync_video_mode.c
+>>>> +++ b/tests/amdgpu/amd_freesync_video_mode.c
+>>>> @@ -868,5 +868,6 @@ igt_main
+>>>>         igt_fixture {
+>>>>           igt_display_fini(&data.display);
+>>>> +        drm_close_driver(data.drm_fd);
+>>>>       }
+>>>>   }
+>>>> diff --git a/tests/amdgpu/amd_mem_leak.c b/tests/amdgpu/amd_mem_leak.c
+>>>> index dee563cbe..e4a4b5c47 100644
+>>>> --- a/tests/amdgpu/amd_mem_leak.c
+>>>> +++ b/tests/amdgpu/amd_mem_leak.c
+>>>> @@ -232,5 +232,6 @@ igt_main
+>>>>       igt_fixture
+>>>>       {
+>>>>           igt_display_fini(&data.display);
+>>>> +        drm_close_driver(data.fd);
+>>>>       }
+>>>>   }
+>>>> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+>>>> index 966a0dccf..3932e143a 100644
+>>>> --- a/tests/amdgpu/amd_psr.c
+>>>> +++ b/tests/amdgpu/amd_psr.c
+>>>> @@ -640,7 +640,7 @@ static void run_check_psr_su_cursor(data_t 
+>>>> *data, bool test_mpo)
+>>>>        * panning the primary plane at the top-left of screen
+>>>>        * set alpha region in overlay plane and set alpha to 0.0 to 
+>>>> show primary plane
+>>>>        * set cursor plane and starting from position of (0, 0)
+>>>> -     */
+>>>> +     */
+>>>>       draw_color_alpha(&data->ov_fb[0], 0, 0, data->pfb_w, 
+>>>> data->pfb_h, 1.0, 1.0, 1.0, .0);
+>>>>       igt_plane_set_fb(data->primary, &data->pm_fb[0]);
+>>>>       igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
+>>>> @@ -763,5 +763,6 @@ igt_main_args("", long_options, help_str, 
+>>>> opt_handler, NULL)
+>>>>           }
+>>>>           close(data.debugfs_fd);
+>>>>           igt_display_fini(&data.display);
+>>>> +        drm_close_driver(data.fd);
+>>>>       }
+>>>>   }
+>>>> diff --git a/tests/amdgpu/amd_vrr_range.c 
+>>>> b/tests/amdgpu/amd_vrr_range.c
+>>>> index 2f27296dd..cacd668cd 100644
+>>>> --- a/tests/amdgpu/amd_vrr_range.c
+>>>> +++ b/tests/amdgpu/amd_vrr_range.c
+>>>> @@ -338,5 +338,6 @@ igt_main
+>>>>       igt_fixture
+>>>>       {
+>>>>           igt_display_fini(&data.display);
+>>>> +        drm_close_driver(data.fd);
+>>>>       }
+>>>>   }
+>>>> -- 
+>>>> 2.40.0
+>>>>
