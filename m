@@ -1,15 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AFE210E00F
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 04:47:22 +0000 (UTC)
+Message-ID: <a52493c8-85c3-6698-0dfa-71235eef9d86@intel.com>
+Date: Thu, 15 Jun 2023 10:16:55 +0530
+Content-Language: en-US
+To: vitaly prosyak <vprosyak@amd.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, <igt-dev@lists.freedesktop.org>,
+ <janga.rahul.kumar@intel.com>, David Zhang <dingchen.zhang@amd.com>, "Harry
+ Wentland" <harry.wentland@amd.com>, =?UTF-8?Q?Christian_K=c3=b6nig?=
+ <christian.koenig@amd.com>
+References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
+ <20230516165058.4047595-6-bhanuprakash.modem@intel.com>
+ <20230614123933.5aqzgq2f4y4hrn47@kamilkon-desk1>
+ <fd7d8c65-d943-c7ca-2f4d-fc5a9ac7bbd9@amd.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <fd7d8c65-d943-c7ca-2f4d-fc5a9ac7bbd9@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Thu, 15 Jun 2023 03:13:20 -0000
-Message-ID: <168679880093.10725.11013479461731162461@emeril.freedesktop.org>
-References: <20230615021406.131572-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230615021406.131572-1-vitaly.prosyak@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
- =?utf-8?q?eries_starting_with_=5B1/2=5D_tests/amdgpu=3A_add_bo_tests?=
+Subject: Re: [igt-dev] [i-g-t 05/20] tests/amdgpu: Close the fd before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,353 +27,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+Hi Vitaliy,
 
-Series: series starting with [1/2] tests/amdgpu: add bo tests
-URL   : https://patchwork.freedesktop.org/series/119358/
-State : warning
+On Thu-15-06-2023 05:44 am, vitaly prosyak wrote:
+> Hi Kamil,
+> 
+> Thanks for letting us know about new(?) function
+> /drm_close_driver/.
+> 
+> Is there a pending change, I could not find this function in the DRM or IGT.
 
-=3D=3D Summary =3D=3D
+Yes, changes are not yet landed into the IGT (WIP).
 
-Pipeline status: FAILED.
+Please refer Patch 1/20 in this series:
+https://patchwork.freedesktop.org/patch/538070/?series=117263&rev=5
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/909515 fo=
-r the overview.
+- Bhanu
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/43798254):
-        amdgpu_cs_syncobj_export_sync_file
-  ../tests/amdgpu/amd_syncobj.c:213:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_export_sync_file2=E2=80=99 [-Wnested-externs]
-  ../tests/amdgpu/amd_syncobj.c:218:6: error: implicit declaration of funct=
-ion =E2=80=98amdgpu_cs_syncobj_import_sync_file2=E2=80=99; did you mean =E2=
-=80=98amdgpu_cs_syncobj_import_sync_file=E2=80=99? [-Werror=3Dimplicit-func=
-tion-declaration]
-    r =3D amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        amdgpu_cs_syncobj_import_sync_file
-  ../tests/amdgpu/amd_syncobj.c:218:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_import_sync_file2=E2=80=99 [-Wnested-externs]
-  ../tests/amdgpu/amd_syncobj.c:228:6: error: implicit declaration of funct=
-ion =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99; did you mean =E2=
-=80=98amdgpu_cs_syncobj_signal=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    r =3D amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        amdgpu_cs_syncobj_signal
-  ../tests/amdgpu/amd_syncobj.c:228:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1686798418:step_script
-  section_start:1686798418:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1686798420:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/43798257):
-        amdgpu_cs_syncobj_export_sync_file
-  ../tests/amdgpu/amd_syncobj.c:213:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_export_sync_file2=E2=80=99 [-Wnested-externs]
-  ../tests/amdgpu/amd_syncobj.c:218:6: error: implicit declaration of funct=
-ion =E2=80=98amdgpu_cs_syncobj_import_sync_file2=E2=80=99; did you mean =E2=
-=80=98amdgpu_cs_syncobj_import_sync_file=E2=80=99? [-Werror=3Dimplicit-func=
-tion-declaration]
-    r =3D amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        amdgpu_cs_syncobj_import_sync_file
-  ../tests/amdgpu/amd_syncobj.c:218:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_import_sync_file2=E2=80=99 [-Wnested-externs]
-  ../tests/amdgpu/amd_syncobj.c:228:6: error: implicit declaration of funct=
-ion =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99; did you mean =E2=
-=80=98amdgpu_cs_syncobj_signal=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    r =3D amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        amdgpu_cs_syncobj_signal
-  ../tests/amdgpu/amd_syncobj.c:228:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1686798420:step_script
-  section_start:1686798420:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1686798421:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/43798256):
-        amdgpu_cs_syncobj_export_sync_file
-  ../tests/amdgpu/amd_syncobj.c:213:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_export_sync_file2=E2=80=99 [-Wnested-externs]
-  ../tests/amdgpu/amd_syncobj.c:218:6: error: implicit declaration of funct=
-ion =E2=80=98amdgpu_cs_syncobj_import_sync_file2=E2=80=99; did you mean =E2=
-=80=98amdgpu_cs_syncobj_import_sync_file=E2=80=99? [-Werror=3Dimplicit-func=
-tion-declaration]
-    r =3D amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        amdgpu_cs_syncobj_import_sync_file
-  ../tests/amdgpu/amd_syncobj.c:218:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_import_sync_file2=E2=80=99 [-Wnested-externs]
-  ../tests/amdgpu/amd_syncobj.c:228:6: error: implicit declaration of funct=
-ion =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99; did you mean =E2=
-=80=98amdgpu_cs_syncobj_signal=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    r =3D amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        amdgpu_cs_syncobj_signal
-  ../tests/amdgpu/amd_syncobj.c:228:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1686798441:step_script
-  section_start:1686798441:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1686798441:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/43798258):
-        amdgpu_cs_syncobj_export_sync_file
-  ../tests/amdgpu/amd_syncobj.c:213:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_export_sync_file2=E2=80=99 [-Wnested-externs]
-  ../tests/amdgpu/amd_syncobj.c:218:6: error: implicit declaration of funct=
-ion =E2=80=98amdgpu_cs_syncobj_import_sync_file2=E2=80=99; did you mean =E2=
-=80=98amdgpu_cs_syncobj_import_sync_file=E2=80=99? [-Werror=3Dimplicit-func=
-tion-declaration]
-    r =3D amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        amdgpu_cs_syncobj_import_sync_file
-  ../tests/amdgpu/amd_syncobj.c:218:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_import_sync_file2=E2=80=99 [-Wnested-externs]
-  ../tests/amdgpu/amd_syncobj.c:228:6: error: implicit declaration of funct=
-ion =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99; did you mean =E2=
-=80=98amdgpu_cs_syncobj_signal=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    r =3D amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        amdgpu_cs_syncobj_signal
-  ../tests/amdgpu/amd_syncobj.c:228:6: warning: nested extern declaration o=
-f =E2=80=98amdgpu_cs_syncobj_timeline_signal=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1686798422:step_script
-  section_start:1686798422:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1686798423:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/43798249):
-  ninja: Entering directory `build'
-  [1/665] Generating version.h with a custom command.
-  [2/330] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syn=
-cobj.c.o'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syncobj.c.o=20
-  cc -Itests/amdgpu/b9f2b1d@@amd_syncobj@exe -Itests/amdgpu -I../tests/amdg=
-pu -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../li=
-b -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/gli=
-b-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/=
-freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libd=
-rm/nouveau -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe -D_FI=
-LE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -g -D_GNU_SOUR=
-CE -include config.h -Wbad-function-cast -Wdeclaration-after-statement -Wfo=
-rmat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wm=
-issing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-ex=
-terns -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Ws=
-trict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uniniti=
-alized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-p=
-acked-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-=
-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -=
-Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dm=
-issing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dret=
-urn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strin=
-gs -fno-builtin-malloc -fno-builtin-calloc -pthread -MD -MQ 'tests/amdgpu/b=
-9f2b1d@@amd_syncobj@exe/amd_syncobj.c.o' -MF 'tests/amdgpu/b9f2b1d@@amd_syn=
-cobj@exe/amd_syncobj.c.o.d' -o 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_s=
-yncobj.c.o' -c ../tests/amdgpu/amd_syncobj.c
-  ../tests/amdgpu/amd_syncobj.c: In function =E2=80=98syncobj_wait=E2=80=99:
-  ../tests/amdgpu/amd_syncobj.c:125:4: error: void value not ignored as it =
-ought to be
-    125 |  r =3D syncobj_command_submission_helper(sp->device, sp->syncobj_=
-handle, true,
-        |    ^
-  ../tests/amdgpu/amd_syncobj.c: In function =E2=80=98syncobj_signal=E2=80=
-=99:
-  ../tests/amdgpu/amd_syncobj.c:138:4: error: void value not ignored as it =
-ought to be
-    138 |  r =3D syncobj_command_submission_helper(sp->device, sp->syncobj_=
-handle, false,
-        |    ^
-  ninja: build stopped: subcommand failed.
-  section_end:1686798423:step_script
-  section_start:1686798423:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1686798423:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/43798253):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/666] Generating version.h with a custom command.
-  [2/330] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syn=
-cobj.c.o'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syncobj.c.o=20
-  clang -Itests/amdgpu/b9f2b1d@@amd_syncobj@exe -Itests/amdgpu -I../tests/a=
-mdgpu -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I..=
-/lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/=
-glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/inclu=
-de/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/l=
-ibdrm/nouveau -I/usr/include/valgrind -Xclang -fcolor-diagnostics -pipe -D_=
-FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -g -D_GNU_SO=
-URCE -include config.h -Wbad-function-cast -Wdeclaration-after-statement -W=
-format=3D2 -Wmissing-declarations -Wmissing-format-attribute -Wmissing-nore=
-turn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer=
--arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunu=
-sed -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-pack=
-ed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unu=
-sed-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Wer=
-ror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmiss=
-ing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn=
--type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings =
--fno-builtin-malloc -fno-builtin-calloc -pthread -MD -MQ 'tests/amdgpu/b9f2=
-b1d@@amd_syncobj@exe/amd_syncobj.c.o' -MF 'tests/amdgpu/b9f2b1d@@amd_syncob=
-j@exe/amd_syncobj.c.o.d' -o 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_sync=
-obj.c.o' -c ../tests/amdgpu/amd_syncobj.c
-  ../tests/amdgpu/amd_syncobj.c:125:4: error: assigning to 'int' from incom=
-patible type 'void'
-          r =3D syncobj_command_submission_helper(sp->device, sp->syncobj_h=
-andle, true,
-            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~~~~~~~~~~
-  ../tests/amdgpu/amd_syncobj.c:138:4: error: assigning to 'int' from incom=
-patible type 'void'
-          r =3D syncobj_command_submission_helper(sp->device, sp->syncobj_h=
-andle, false,
-            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~~~~~~~~~~~
-  2 errors generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1686798432:step_script
-  section_start:1686798432:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1686798433:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/43798250):
-  [1/668] Generating version.h with a custom command.
-  [2/335] Linking target tests/amdgpu/amd_abm.
-  [3/335] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syn=
-cobj.c.o'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syncobj.c.o=20
-  cc -Itests/amdgpu/b9f2b1d@@amd_syncobj@exe -Itests/amdgpu -I../tests/amdg=
-pu -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../li=
-b -I../lib/stubs/syscalls -I. -I../ -I../lib/stubs/libunwind -I/usr/include=
-/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include=
-/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/l=
-ibdrm -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -fdiagnostics-c=
-olor=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -s=
-td=3Dgnu11 -g -D_GNU_SOURCE -include config.h -Wbad-function-cast -Wdeclara=
-tion-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -=
-Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissi=
-ng-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wred=
-undant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clo=
-bbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointe=
-r-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -W=
-no-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bo=
-unds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -=
-Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-=
-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigra=
-phs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthrea=
-d -MD -MQ 'tests/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syncobj.c.o' -MF 'test=
-s/amdgpu/b9f2b1d@@amd_syncobj@exe/amd_syncobj.c.o.d' -o 'tests/amdgpu/b9f2b=
-1d@@amd_syncobj@exe/amd_syncobj.c.o' -c ../tests/amdgpu/amd_syncobj.c
-  ../tests/amdgpu/amd_syncobj.c: In function =E2=80=98syncobj_wait=E2=80=99:
-  ../tests/amdgpu/amd_syncobj.c:125:4: error: void value not ignored as it =
-ought to be
-    125 |  r =3D syncobj_command_submission_helper(sp->device, sp->syncobj_=
-handle, true,
-        |    ^
-  ../tests/amdgpu/amd_syncobj.c: In function =E2=80=98syncobj_signal=E2=80=
-=99:
-  ../tests/amdgpu/amd_syncobj.c:138:4: error: void value not ignored as it =
-ought to be
-    138 |  r =3D syncobj_command_submission_helper(sp->device, sp->syncobj_=
-handle, false,
-        |    ^
-  ninja: build stopped: subcommand failed.
-  section_end:1686798423:step_script
-  section_start:1686798423:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1686798423:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/43798251):
-  ninja: Entering directory `build'
-  [1/666] Generating version.h with a custom command.
-  [2/331] Compiling C object 'tests/amdgpu/tests@amdgpu@@amd_syncobj@exe/am=
-d_syncobj.c.o'.
-  FAILED: tests/amdgpu/tests@amdgpu@@amd_syncobj@exe/amd_syncobj.c.o=20
-  cc -Itests/amdgpu/tests@amdgpu@@amd_syncobj@exe -Itests/amdgpu -I../tests=
-/amdgpu -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I=
-../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/includ=
-e/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/inc=
-lude/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include=
-/libdrm/nouveau -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe =
--D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O0 -g -D=
-_GNU_SOURCE -include config.h -Wbad-function-cast -Wdeclaration-after-state=
-ment -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declara=
-tions -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -W=
-nested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Ws=
-hadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-mayb=
-e-uninitialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-add=
-ress-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parame=
-ter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Di=
-mplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -W=
-error=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Wer=
-ror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwr=
-ite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread  -MD -MQ 'test=
-s/amdgpu/tests@amdgpu@@amd_syncobj@exe/amd_syncobj.c.o' -MF 'tests/amdgpu/t=
-ests@amdgpu@@amd_syncobj@exe/amd_syncobj.c.o.d' -o 'tests/amdgpu/tests@amdg=
-pu@@amd_syncobj@exe/amd_syncobj.c.o' -c ../tests/amdgpu/amd_syncobj.c
-  ../tests/amdgpu/amd_syncobj.c: In function =E2=80=98syncobj_wait=E2=80=99:
-  ../tests/amdgpu/amd_syncobj.c:125:4: error: void value not ignored as it =
-ought to be
-    125 |  r =3D syncobj_command_submission_helper(sp->device, sp->syncobj_=
-handle, true,
-        |    ^
-  ../tests/amdgpu/amd_syncobj.c: In function =E2=80=98syncobj_signal=E2=80=
-=99:
-  ../tests/amdgpu/amd_syncobj.c:138:4: error: void value not ignored as it =
-ought to be
-    138 |  r =3D syncobj_command_submission_helper(sp->device, sp->syncobj_=
-handle, false,
-        |    ^
-  ninja: build stopped: subcommand failed.
-  section_end:1686798424:step_script
-  section_start:1686798424:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1686798424:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-=3D=3D Logs =3D=3D
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/909515
+> 
+> We open the driver with /drm_open_driver/, but then we use close vs 
+> /drm_close_driver/. I makes sense to have a symmetrical call:
+> /open/close/ and /drm_open_driver/drm_close_driver/
+> 
+> 
+> Thanks, Vitaly
+> 
+> On 2023-06-14 08:39, Kamil Konieczny wrote:
+>> Hi Bhanuprakash,
+>>
+>> +cc Vitaliy and Christian
+>>
+>> Cc: Vitaly Prosyak<vitaly.prosyak@amd.com>
+>> Cc: Christian König<christian.koenig@amd.com>
+>>
+>> Regards,
+>> Kamil
+>>
+>> On 2023-05-16 at 22:20:43 +0530, Bhanuprakash Modem wrote:
+>>> Close the file descriptor before exiting the test.
+>>>
+>>> Cc: David Zhang<dingchen.zhang@amd.com>
+>>> Cc: Harry Wentland<harry.wentland@amd.com>
+>>> Signed-off-by: Bhanuprakash Modem<bhanuprakash.modem@intel.com>
+>>> ---
+>>>   tests/amdgpu/amd_abm.c                 | 1 +
+>>>   tests/amdgpu/amd_assr.c                | 1 +
+>>>   tests/amdgpu/amd_freesync_video_mode.c | 1 +
+>>>   tests/amdgpu/amd_mem_leak.c            | 1 +
+>>>   tests/amdgpu/amd_psr.c                 | 3 ++-
+>>>   tests/amdgpu/amd_vrr_range.c           | 1 +
+>>>   6 files changed, 7 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
+>>> index 9400ed806..082da7ed6 100644
+>>> --- a/tests/amdgpu/amd_abm.c
+>>> +++ b/tests/amdgpu/amd_abm.c
+>>> @@ -378,5 +378,6 @@ igt_main
+>>>   
+>>>   	igt_fixture {
+>>>   		igt_display_fini(&data.display);
+>>> +		drm_close_driver(data.drm_fd);
+>>>   	}
+>>>   }
+>>> diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
+>>> index 80cbbe8e9..fc2367f99 100644
+>>> --- a/tests/amdgpu/amd_assr.c
+>>> +++ b/tests/amdgpu/amd_assr.c
+>>> @@ -299,5 +299,6 @@ igt_main
+>>>   	igt_fixture
+>>>   	{
+>>>   		igt_display_fini(&data.display);
+>>> +		drm_close_driver(data.fd);
+>>>   	}
+>>>   }
+>>> diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
+>>> index 579d24436..62d42a06c 100644
+>>> --- a/tests/amdgpu/amd_freesync_video_mode.c
+>>> +++ b/tests/amdgpu/amd_freesync_video_mode.c
+>>> @@ -868,5 +868,6 @@ igt_main
+>>>   
+>>>   	igt_fixture {
+>>>   		igt_display_fini(&data.display);
+>>> +		drm_close_driver(data.drm_fd);
+>>>   	}
+>>>   }
+>>> diff --git a/tests/amdgpu/amd_mem_leak.c b/tests/amdgpu/amd_mem_leak.c
+>>> index dee563cbe..e4a4b5c47 100644
+>>> --- a/tests/amdgpu/amd_mem_leak.c
+>>> +++ b/tests/amdgpu/amd_mem_leak.c
+>>> @@ -232,5 +232,6 @@ igt_main
+>>>   	igt_fixture
+>>>   	{
+>>>   		igt_display_fini(&data.display);
+>>> +		drm_close_driver(data.fd);
+>>>   	}
+>>>   }
+>>> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+>>> index 966a0dccf..3932e143a 100644
+>>> --- a/tests/amdgpu/amd_psr.c
+>>> +++ b/tests/amdgpu/amd_psr.c
+>>> @@ -640,7 +640,7 @@ static void run_check_psr_su_cursor(data_t *data, bool test_mpo)
+>>>   	 * panning the primary plane at the top-left of screen
+>>>   	 * set alpha region in overlay plane and set alpha to 0.0 to show primary plane
+>>>   	 * set cursor plane and starting from position of (0, 0)
+>>> -	 */
+>>> +	 */
+>>>   	draw_color_alpha(&data->ov_fb[0], 0, 0, data->pfb_w, data->pfb_h, 1.0, 1.0, 1.0, .0);
+>>>   	igt_plane_set_fb(data->primary, &data->pm_fb[0]);
+>>>   	igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
+>>> @@ -763,5 +763,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>>>   		}
+>>>   		close(data.debugfs_fd);
+>>>   		igt_display_fini(&data.display);
+>>> +		drm_close_driver(data.fd);
+>>>   	}
+>>>   }
+>>> diff --git a/tests/amdgpu/amd_vrr_range.c b/tests/amdgpu/amd_vrr_range.c
+>>> index 2f27296dd..cacd668cd 100644
+>>> --- a/tests/amdgpu/amd_vrr_range.c
+>>> +++ b/tests/amdgpu/amd_vrr_range.c
+>>> @@ -338,5 +338,6 @@ igt_main
+>>>   	igt_fixture
+>>>   	{
+>>>   		igt_display_fini(&data.display);
+>>> +		drm_close_driver(data.fd);
+>>>   	}
+>>>   }
+>>> -- 
+>>> 2.40.0
+>>>
