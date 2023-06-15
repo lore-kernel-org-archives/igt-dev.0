@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7122454556195969509=="
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1378A10E4BF
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 10:51:22 +0000 (UTC)
+Date: Thu, 15 Jun 2023 12:51:03 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230615105103.5y6yucq3k74scqmf@kamilkon-desk1>
+References: <20230615094722.3756326-1-mauro.chehab@linux.intel.com>
+ <20230615094722.3756326-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 15 Jun 2023 16:06:31 -0000
-Message-ID: <168684519121.10725.13799444647921447222@emeril.freedesktop.org>
-References: <20230615123923.3772582-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230615123923.3772582-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgeGUtZmFz?=
- =?utf-8?q?t-feedback=2Etestlist=3A_better_name_Xe_life_KUnit_tests?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230615094722.3756326-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] intel-ci: add Xe live KUnit tests
+ to BAT testlist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,61 +20,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7122454556195969509==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
 
-== Series Details ==
+On 2023-06-15 at 11:47:22 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Run Xe live KUnit tests during BAT excecution.
+-------------------------------------- ^
+execution
 
-Series: xe-fast-feedback.testlist: better name Xe life KUnit tests
-URL   : https://patchwork.freedesktop.org/series/119388/
-State : failure
+With that fixed
 
-== Summary ==
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series 119388 revision 1 was fully merged or fully failed: no git log
+Regards,
+Kamil
 
-
-
---===============7122454556195969509==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>xe-fast-feedback.testlist: better name Xe life KUnit tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119388/">https://patchwork.freedesktop.org/series/119388/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-</table>
-
-
-    <p>Series 119388 revision 1 was fully merged or fully failed: no git log</p>
-
-</body>
-</html>
-
---===============7122454556195969509==--
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  tests/intel-ci/xe-fast-feedback.testlist | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index fb5acd8a0637..73b9bbe656a1 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -275,3 +275,6 @@ igt@kms_prop_blob@basic
+>  igt@kms_psr@primary_page_flip
+>  igt@kms_psr@cursor_plane_move
+>  igt@kms_psr@sprite_plane_onoff
+> +
+> +# Run KUnit tests at the end
+> +igt@xe_live_ktest@.*
+> -- 
+> 2.40.1
+> 
 
