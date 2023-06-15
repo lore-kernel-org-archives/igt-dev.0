@@ -1,26 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F4D810E4AD
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 09:47:27 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.22.209])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id DE8B2580D9D
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 02:47:25 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1q9jZb-00FlDQ-1W
- for igt-dev@lists.freedesktop.org; Thu, 15 Jun 2023 11:47:23 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF6AD10E4B3
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 09:53:15 +0000 (UTC)
+Date: Thu, 15 Jun 2023 11:53:11 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Jun 2023 11:47:22 +0200
-Message-Id: <20230615094722.3756326-3-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230615094722.3756326-1-mauro.chehab@linux.intel.com>
-References: <20230615094722.3756326-1-mauro.chehab@linux.intel.com>
+To: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+Message-ID: <20230615115311.63dbc485@maurocar-mobl2>
+In-Reply-To: <20230614133301.4888-2-dominik.karol.piatkowski@intel.com>
+References: <20230614133301.4888-1-dominik.karol.piatkowski@intel.com>
+ <20230614133301.4888-2-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] intel-ci: add Xe live KUnit tests to
- BAT testlist
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] lib/igt_core.h: Typo fix
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,29 +20,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On Wed, 14 Jun 2023 15:33:01 +0200
+Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com> wrote:
 
-Run Xe live KUnit tests during BAT excecution.
+> Fixed IGT_EXIT_ABORT description typo in lib/igt_core.h
+>=20
+> Signed-off-by: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@in=
+tel.com>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/intel-ci/xe-fast-feedback.testlist | 3 +++
- 1 file changed, 3 insertions(+)
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index fb5acd8a0637..73b9bbe656a1 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -275,3 +275,6 @@ igt@kms_prop_blob@basic
- igt@kms_psr@primary_page_flip
- igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
-+
-+# Run KUnit tests at the end
-+igt@xe_live_ktest@.*
--- 
-2.40.1
+> ---
+>  lib/igt_core.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/lib/igt_core.h b/lib/igt_core.h
+> index ef6bed6a5..26bb0cb68 100644
+> --- a/lib/igt_core.h
+> +++ b/lib/igt_core.h
+> @@ -136,8 +136,8 @@ struct _GKeyFile *igt_load_igtrc(void);
+>  /**
+>   * IGT_EXIT_ABORT
+>   *
+> - * Exit status indicating a severe test/enviroment failure, any continued
+> - * testing past this point can yeild unexpected reasults and is not reco=
+mmended
+> + * Exit status indicating a severe test/environment failure, any continu=
+ed
+> + * testing past this point can yield unexpected results and is not recom=
+mended
+>   */
+>  #define IGT_EXIT_ABORT 112
+> =20
