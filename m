@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ACDE710E077
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jun 2023 16:55:05 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Jun 2023 22:24:30 +0530
-Message-Id: <20230614165431.532799-3-swati2.sharma@intel.com>
-In-Reply-To: <20230614165431.532799-1-swati2.sharma@intel.com>
-References: <20230614165431.532799-1-swati2.sharma@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F78510E497
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 07:55:19 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 15 Jun 2023 07:55:14 +0000
+Message-ID: <MW3PR11MB4748A0950D601017ADEEC95AAE5BA@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20230529104932.495519-1-janga.rahul.kumar@intel.com>
+ <20230614134240.qs7akj32z5nd3hwg@kamilkon-desk1>
+In-Reply-To: <20230614134240.qs7akj32z5nd3hwg@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests:
- s/check_dsc_on_connector/is_dsc_supported_by_sink
+Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci/xe-fast-feedback.testlist: Add
+ core hotunplug test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,72 +23,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Gandi, Ramadevi" <ramadevi.gandi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Rename function.
-
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/i915/kms_dsc.c        | 2 +-
- tests/i915/kms_dsc_helper.c | 2 +-
- tests/i915/kms_dsc_helper.h | 2 +-
- tests/i915/kms_psr2_sf.c    | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 3b0ce0d2..5b4abd6a 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -228,7 +228,7 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- 		data->output = output;
- 		data->pipe = pipe;
- 
--		if (!check_dsc_on_connector(data->drm_fd, data->output))
-+		if (!is_dsc_supported_by_sink(data->drm_fd, data->output))
- 			continue;
- 
- 		if (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
-diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
-index 1adf920b..c90d833d 100644
---- a/tests/i915/kms_dsc_helper.c
-+++ b/tests/i915/kms_dsc_helper.c
-@@ -53,7 +53,7 @@ void kms_dsc_exit_handler(int sig)
- 	restore_force_dsc_en();
- }
- 
--bool check_dsc_on_connector(int drmfd, igt_output_t *output)
-+bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output)
- {
- 	if (!igt_is_dsc_supported_by_sink(drmfd, output->name)) {
- 		igt_debug("DSC not supported on connector %s\n",
-diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
-index 198f5afa..f66191c7 100644
---- a/tests/i915/kms_dsc_helper.h
-+++ b/tests/i915/kms_dsc_helper.h
-@@ -26,7 +26,7 @@ void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc);
- void save_force_dsc_en(int drmfd, igt_output_t *output);
- void restore_force_dsc_en(void);
- void kms_dsc_exit_handler(int sig);
--bool check_dsc_on_connector(int drmfd, igt_output_t *output);
-+bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output);
- bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe);
- bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc);
- void force_dsc_output_format(int drmfd, igt_output_t *output,
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index 4cf98644..ffc41f98 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -934,7 +934,7 @@ igt_main
- 				pipes[n_pipes] = data.pipe;
- 				outputs[n_pipes] = data.output;
- 
--				if (check_dsc_on_connector(data.drm_fd, data.output))
-+				if (is_dsc_supported_by_sink(data.drm_fd, data.output))
- 					coexist_features[n_pipes] |= FEATURE_DSC;
- 
- 				n_pipes++;
--- 
-2.25.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
+IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiAxNCBKdW5lIDIwMjMg
+MTk6MTMNCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBLdW1hciwg
+SmFuZ2EgUmFodWwgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT47IEdhbmRpLCBSYW1hZGV2
+aQ0KPiA8cmFtYWRldmkuZ2FuZGlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZd
+IFtQQVRDSCBpLWctdF0gaW50ZWwtY2kveGUtZmFzdC1mZWVkYmFjay50ZXN0bGlzdDogQWRkIGNv
+cmUNCj4gaG90dW5wbHVnIHRlc3QNCj4gDQo+IEhpIEphbmdhLA0KPiANCj4gT24gMjAyMy0wNS0y
+OSBhdCAxNjoxOTozMiArMDUzMCwgamFuZ2EucmFodWwua3VtYXJAaW50ZWwuY29tIHdyb3RlOg0K
+PiA+IEZyb206IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+
+DQo+ID4NCj4gPiBBZGQgY29yZSBob3R1bnBsdWcgdW5iaW5kIGFuZCByZWJpbmQgdGVzdC4NCj4g
+Pg0KPiA+IFNpZ25lZC1vZmYtYnk6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5rdW1h
+ckBpbnRlbC5jb20+DQo+IA0KPiBJcyB0aGlzIHRlc3Qgd29ya2luZyB3aXRoIFhlIGRyaXZlciA/
+DQpZZXMsIFRlc3QgaXMgcGFzc2luZy4gVW5iaW5kLXJlYmluZCBzdWJ0ZXN0IGNvbnRhaW5zIGRy
+bSBpb2N0bCBpbmRlcGVuZGVudCBvZiBpOTE1L1hFIGRyaXZlcg0KRHVlIHRvIHRoYXQgdGVzdCBp
+cyBwYXNzaW5nIG9uIFhFIGFzIHdlbGwuIFJhbiB0ZXN0IG9uIHNpbXVsYXRpb24gYW5kIEhXIGVu
+dmlyb25tZW50Lg0KDQpUaGFua3MsDQpSYWh1bA0KPiANCj4gUmVnYXJkcywNCj4gS2FtaWwNCj4g
+DQo+ID4gLS0tDQo+ID4gIHRlc3RzL2ludGVsLWNpL3hlLWZhc3QtZmVlZGJhY2sudGVzdGxpc3Qg
+fCA2ICsrKysrKw0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspDQo+ID4NCj4g
+PiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwtY2kveGUtZmFzdC1mZWVkYmFjay50ZXN0bGlzdA0K
+PiA+IGIvdGVzdHMvaW50ZWwtY2kveGUtZmFzdC1mZWVkYmFjay50ZXN0bGlzdA0KPiA+IGluZGV4
+IDcyNDJjOGQ4Li5mOGFkMTYwZSAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9pbnRlbC1jaS94ZS1m
+YXN0LWZlZWRiYWNrLnRlc3RsaXN0DQo+ID4gKysrIGIvdGVzdHMvaW50ZWwtY2kveGUtZmFzdC1m
+ZWVkYmFjay50ZXN0bGlzdA0KPiA+IEBAIC0yNzAsMyArMjcwLDkgQEAgaWd0QGttc19wcm9wX2Js
+b2JAYmFzaWMNCj4gPiBpZ3RAa21zX3BzckBwcmltYXJ5X3BhZ2VfZmxpcCAgaWd0QGttc19wc3JA
+Y3Vyc29yX3BsYW5lX21vdmUNCj4gPiBpZ3RAa21zX3BzckBzcHJpdGVfcGxhbmVfb25vZmYNCj4g
+PiArDQo+ID4gKyMgQWxsIHRlc3RzIHRoYXQgZG8gbW9kdWxlIHVubG9hZGluZyBhbmQgcmVsb2Fk
+aW5nIGFyZSBleGVjdXRlZCBsYXN0Lg0KPiA+ICsjIFRoZXkgd2lsbCBzb21ldGltZXMgcmV2ZWFs
+IGlzc3VlcyBvZiBlYXJsaWVyIHRlc3RzIGxlYXZpbmcgdGhlICMNCj4gPiArZHJpdmVyIGluIGEg
+YnJva2VuIHN0YXRlIHRoYXQgaXMgbm90IG90aGVyd2lzZSBub3RpY2VkIGluIHRoYXQgdGVzdC4N
+Cj4gPiArDQo+ID4gK2lndEBjb3JlX2hvdHVucGx1Z0B1bmJpbmQtcmViaW5kDQo+ID4gLS0NCj4g
+PiAyLjI1LjENCj4gPg0K
