@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E80C10E45E
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 12:48:03 +0000 (UTC)
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-Date: Wed, 21 Jun 2023 12:47:37 +0000
-Message-Id: <20230621124737.1827262-2-katarzyna.dec@intel.com>
-In-Reply-To: <20230621124737.1827262-1-katarzyna.dec@intel.com>
-References: <20230621124737.1827262-1-katarzyna.dec@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7122454556195969509=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/1] tests/intel-ci: Add xe_mmap &
- xe_create tests to f-f
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 15 Jun 2023 16:06:31 -0000
+Message-ID: <168684519121.10725.13799444647921447222@emeril.freedesktop.org>
+References: <20230615123923.3772582-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230615123923.3772582-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgeGUtZmFz?=
+ =?utf-8?q?t-feedback=2Etestlist=3A_better_name_Xe_life_KUnit_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,56 +16,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding new tests to BATs:
+--===============7122454556195969509==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-igt@xe_create@create-engines-noleak
-igt@xe_create@create-engines-leak
-igt@xe_create@create-massive-size
-igt@xe_mmap@bad-flags
-igt@xe_mmap@bad-extensions
-igt@xe_mmap@bad-object
+== Series Details ==
 
-v2: Sort tests alphabetically
+Series: xe-fast-feedback.testlist: better name Xe life KUnit tests
+URL   : https://patchwork.freedesktop.org/series/119388/
+State : failure
 
-Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 6 ++++++
- 1 file changed, 6 insertions(+)
+== Summary ==
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index cad1da61f..9d670764b 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -2,6 +2,9 @@
- igt@xe_module_load@load
- 
- igt@xe_compute@compute-square
-+igt@xe_create@create-engines-noleak
-+igt@xe_create@create-engines-leak
-+igt@xe_create@create-massive-size
- igt@xe_debugfs@base
- igt@xe_debugfs@gt
- igt@xe_debugfs@forcewake
-@@ -179,6 +182,9 @@ igt@xe_intel_bb@render
- igt@xe_intel_bb@reset-bb
- igt@xe_intel_bb@simple-bb
- igt@xe_intel_bb@simple-bb-ctx
-+igt@xe_mmap@bad-extensions
-+igt@xe_mmap@bad-flags
-+igt@xe_mmap@bad-object
- igt@xe_mmap@system
- igt@xe_mmap@vram
- igt@xe_mmap@vram-system
--- 
-2.34.1
+Series 119388 revision 1 was fully merged or fully failed: no git log
 
+
+
+--===============7122454556195969509==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>xe-fast-feedback.testlist: better name Xe life KUnit tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119388/">https://patchwork.freedesktop.org/series/119388/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <p>Series 119388 revision 1 was fully merged or fully failed: no git log</p>
+
+</body>
+</html>
+
+--===============7122454556195969509==--
 
