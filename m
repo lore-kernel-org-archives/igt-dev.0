@@ -1,16 +1,27 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8116298732571163975=="
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD31710E189
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 08:30:02 +0000 (UTC)
+Message-ID: <3038241b-6f6c-36df-ed51-aa809e3a1348@intel.com>
+Date: Thu, 15 Jun 2023 13:58:43 +0530
+Content-Language: en-US
+To: =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>, "vitaly
+ prosyak" <vprosyak@amd.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, <igt-dev@lists.freedesktop.org>,
+ <janga.rahul.kumar@intel.com>, David Zhang <dingchen.zhang@amd.com>, "Harry
+ Wentland" <harry.wentland@amd.com>
+References: <20230516165058.4047595-1-bhanuprakash.modem@intel.com>
+ <20230516165058.4047595-6-bhanuprakash.modem@intel.com>
+ <20230614123933.5aqzgq2f4y4hrn47@kamilkon-desk1>
+ <fd7d8c65-d943-c7ca-2f4d-fc5a9ac7bbd9@amd.com>
+ <a52493c8-85c3-6698-0dfa-71235eef9d86@intel.com>
+ <ee20db45-ffde-2372-3b41-659f2ce7aa89@amd.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <ee20db45-ffde-2372-3b41-659f2ce7aa89@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Thu, 15 Jun 2023 08:07:27 -0000
-Message-ID: <168681644784.10724.6806670567068811696@emeril.freedesktop.org>
-References: <20230615052438.15220-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20230615052438.15220-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Fcursor=3A_Pipe-D_is_invalid_in_big_joiner_=28rev2?=
- =?utf-8?q?=29?=
+Subject: Re: [igt-dev] [i-g-t 05/20] tests/amdgpu: Close the fd before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,356 +29,181 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8116298732571163975==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/kms_plane_cursor: Pipe-D is invalid in big joiner (rev2)
-URL   : https://patchwork.freedesktop.org/series/119335/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7330 -> IGTPW_9175
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_9175 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_9175, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/index.html
-
-Participating hosts (43 -> 42)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_9175:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-1:
-    - bat-dg2-8:          [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-1.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-1.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
-    - bat-dg2-11:         NOTRUN -> [INCOMPLETE][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
-
-  * igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-1:
-    - bat-dg2-8:          [PASS][4] -> [DMESG-WARN][5] +4 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-1.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-1.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1:
-    - fi-kbl-7567u:       [PASS][6] -> [FAIL][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/fi-kbl-7567u/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/fi-kbl-7567u/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9175 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_auth@basic-auth:
-    - bat-adlp-11:        [PASS][8] -> [ABORT][9] ([i915#8011])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-adlp-11/igt@core_auth@basic-auth.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-adlp-11/igt@core_auth@basic-auth.html
-
-  * igt@i915_module_load@load:
-    - bat-adlp-11:        [PASS][10] -> [DMESG-WARN][11] ([i915#4423])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-adlp-11/igt@i915_module_load@load.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-adlp-11/igt@i915_module_load@load.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-mtlp-8:         [PASS][12] -> [DMESG-FAIL][13] ([i915#8497])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - bat-rpls-2:         NOTRUN -> [ABORT][14] ([i915#6687])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-1:
-    - bat-dg2-8:          [PASS][15] -> [DMESG-WARN][16] ([i915#7507])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-1.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-1.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
-    - bat-dg2-8:          [PASS][17] -> [DMESG-WARN][18] ([i915#8585])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-1:
-    - bat-dg2-8:          [PASS][19] -> [DMESG-FAIL][20] ([i915#7507])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-1.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-1.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:
-    - bat-dg2-8:          [PASS][21] -> [FAIL][22] ([i915#7932]) +1 similar issue
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [DMESG-FAIL][23] ([i915#5334]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-    - fi-kbl-soraka:      [DMESG-FAIL][25] ([i915#5334] / [i915#7872]) -> [PASS][26]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-2:         [ABORT][27] ([i915#4983] / [i915#7461] / [i915#7913] / [i915#8347]) -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-rpls-2/igt@i915_selftest@live@reset.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-rpls-2/igt@i915_selftest@live@reset.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3:
-    - bat-dg2-11:         [INCOMPLETE][29] ([i915#7908]) -> [PASS][30]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html
-
-  
-#### Warnings ####
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         [SKIP][31] ([i915#3555] / [i915#4579]) -> [ABORT][32] ([i915#4579] / [i915#8260])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
-  [i915#7507]: https://gitlab.freedesktop.org/drm/intel/issues/7507
-  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
-  [i915#7908]: https://gitlab.freedesktop.org/drm/intel/issues/7908
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
-  [i915#8260]: https://gitlab.freedesktop.org/drm/intel/issues/8260
-  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
-  [i915#8497]: https://gitlab.freedesktop.org/drm/intel/issues/8497
-  [i915#8585]: https://gitlab.freedesktop.org/drm/intel/issues/8585
 
 
-Build changes
--------------
+On Thu-15-06-2023 12:43 pm, Christian König wrote:
+> Hi guys,
+> 
+> Am 15.06.23 um 06:46 schrieb Modem, Bhanuprakash:
+>> Hi Vitaliy,
+>>
+>> On Thu-15-06-2023 05:44 am, vitaly prosyak wrote:
+>>> Hi Kamil,
+>>>
+>>> Thanks for letting us know about new(?) function
+>>> /drm_close_driver/.
+>>>
+>>> Is there a pending change, I could not find this function in the DRM 
+>>> or IGT.
+>>
+>> Yes, changes are not yet landed into the IGT (WIP).
+>>
+>> Please refer Patch 1/20 in this series:
+>> https://patchwork.freedesktop.org/patch/538070/?series=117263&rev=5
+> 
+> well neither this patch here nor the referenced series is correct.
+> 
+> The libdrm functions take ownership of the file descriptor given to them!
+> 
+> So the application or in this case IGT is *not* supposed to close them 
+> at all.
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7330 -> IGTPW_9175
+Unfortunately, that is not correct.
 
-  CI-20190529: 20190529
-  CI_DRM_13270: a8b181a60198ccf04a1ad1c34f46be4c2a5e64b7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9175: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/index.html
-  IGT_7330: 592a0e56412b3323fb103ce3cc9977035c29f402 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+The application (IGT in this case), opens the driver and uses the libdrm 
+functions to perform operations (like ioctl), but file descriptor is 
+still with the IGT only.
 
-== Logs ==
+Once it is done with the operations performed, it's IGT responsibility 
+to close the driver (I think there are few gcc options available to 
+close the device on IGT exit)
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/index.html
+A typical IGT sudo-code:
 
---===============8116298732571163975==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+	fd = open(/dev/device);
 
+	libdrm_call(fd);
+	libdrm_call(fd);
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+	close(fd);
 
+- Bhanu
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_cursor: Pipe-D is invalid in big joiner (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119335/">https://patchwork.freedesktop.org/series/119335/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7330 -&gt; IGTPW_9175</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_9175 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_9175, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/index.html</p>
-<h2>Participating hosts (43 -&gt; 42)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_9175:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-1.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-1.html">DMESG-WARN</a> +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/fi-kbl-7567u/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/fi-kbl-7567u/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9175 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_auth@basic-auth:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-adlp-11/igt@core_auth@basic-auth.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-adlp-11/igt@core_auth@basic-auth.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8011">i915#8011</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-adlp-11/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-adlp-11/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-mtlp-8/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8497">i915#8497</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7507">i915#7507</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8585">i915#8585</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-1.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7507">i915#7507</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>
-<p>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></p>
-</li>
-<li>
-<p>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7908">i915#7908</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_setmode@basic-clone-single-crtc:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7330/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8260">i915#8260</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7330 -&gt; IGTPW_9175</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13270: a8b181a60198ccf04a1ad1c34f46be4c2a5e64b7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9175: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9175/index.html<br />
-  IGT_7330: 592a0e56412b3323fb103ce3cc9977035c29f402 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8116298732571163975==--
+> 
+> Regards,
+> Christian.
+> 
+>>
+>> - Bhanu
+>>
+>>>
+>>> We open the driver with /drm_open_driver/, but then we use close vs 
+>>> /drm_close_driver/. I makes sense to have a symmetrical call:
+>>> /open/close/ and /drm_open_driver/drm_close_driver/
+>>>
+>>>
+>>> Thanks, Vitaly
+>>>
+>>> On 2023-06-14 08:39, Kamil Konieczny wrote:
+>>>> Hi Bhanuprakash,
+>>>>
+>>>> +cc Vitaliy and Christian
+>>>>
+>>>> Cc: Vitaly Prosyak<vitaly.prosyak@amd.com>
+>>>> Cc: Christian König<christian.koenig@amd.com>
+>>>>
+>>>> Regards,
+>>>> Kamil
+>>>>
+>>>> On 2023-05-16 at 22:20:43 +0530, Bhanuprakash Modem wrote:
+>>>>> Close the file descriptor before exiting the test.
+>>>>>
+>>>>> Cc: David Zhang<dingchen.zhang@amd.com>
+>>>>> Cc: Harry Wentland<harry.wentland@amd.com>
+>>>>> Signed-off-by: Bhanuprakash Modem<bhanuprakash.modem@intel.com>
+>>>>> ---
+>>>>>   tests/amdgpu/amd_abm.c                 | 1 +
+>>>>>   tests/amdgpu/amd_assr.c                | 1 +
+>>>>>   tests/amdgpu/amd_freesync_video_mode.c | 1 +
+>>>>>   tests/amdgpu/amd_mem_leak.c            | 1 +
+>>>>>   tests/amdgpu/amd_psr.c                 | 3 ++-
+>>>>>   tests/amdgpu/amd_vrr_range.c           | 1 +
+>>>>>   6 files changed, 7 insertions(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
+>>>>> index 9400ed806..082da7ed6 100644
+>>>>> --- a/tests/amdgpu/amd_abm.c
+>>>>> +++ b/tests/amdgpu/amd_abm.c
+>>>>> @@ -378,5 +378,6 @@ igt_main
+>>>>>         igt_fixture {
+>>>>>           igt_display_fini(&data.display);
+>>>>> +        drm_close_driver(data.drm_fd);
+>>>>>       }
+>>>>>   }
+>>>>> diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
+>>>>> index 80cbbe8e9..fc2367f99 100644
+>>>>> --- a/tests/amdgpu/amd_assr.c
+>>>>> +++ b/tests/amdgpu/amd_assr.c
+>>>>> @@ -299,5 +299,6 @@ igt_main
+>>>>>       igt_fixture
+>>>>>       {
+>>>>>           igt_display_fini(&data.display);
+>>>>> +        drm_close_driver(data.fd);
+>>>>>       }
+>>>>>   }
+>>>>> diff --git a/tests/amdgpu/amd_freesync_video_mode.c 
+>>>>> b/tests/amdgpu/amd_freesync_video_mode.c
+>>>>> index 579d24436..62d42a06c 100644
+>>>>> --- a/tests/amdgpu/amd_freesync_video_mode.c
+>>>>> +++ b/tests/amdgpu/amd_freesync_video_mode.c
+>>>>> @@ -868,5 +868,6 @@ igt_main
+>>>>>         igt_fixture {
+>>>>>           igt_display_fini(&data.display);
+>>>>> +        drm_close_driver(data.drm_fd);
+>>>>>       }
+>>>>>   }
+>>>>> diff --git a/tests/amdgpu/amd_mem_leak.c b/tests/amdgpu/amd_mem_leak.c
+>>>>> index dee563cbe..e4a4b5c47 100644
+>>>>> --- a/tests/amdgpu/amd_mem_leak.c
+>>>>> +++ b/tests/amdgpu/amd_mem_leak.c
+>>>>> @@ -232,5 +232,6 @@ igt_main
+>>>>>       igt_fixture
+>>>>>       {
+>>>>>           igt_display_fini(&data.display);
+>>>>> +        drm_close_driver(data.fd);
+>>>>>       }
+>>>>>   }
+>>>>> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+>>>>> index 966a0dccf..3932e143a 100644
+>>>>> --- a/tests/amdgpu/amd_psr.c
+>>>>> +++ b/tests/amdgpu/amd_psr.c
+>>>>> @@ -640,7 +640,7 @@ static void run_check_psr_su_cursor(data_t 
+>>>>> *data, bool test_mpo)
+>>>>>        * panning the primary plane at the top-left of screen
+>>>>>        * set alpha region in overlay plane and set alpha to 0.0 to 
+>>>>> show primary plane
+>>>>>        * set cursor plane and starting from position of (0, 0)
+>>>>> -     */
+>>>>> +     */
+>>>>>       draw_color_alpha(&data->ov_fb[0], 0, 0, data->pfb_w, 
+>>>>> data->pfb_h, 1.0, 1.0, 1.0, .0);
+>>>>>       igt_plane_set_fb(data->primary, &data->pm_fb[0]);
+>>>>>       igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
+>>>>> @@ -763,5 +763,6 @@ igt_main_args("", long_options, help_str, 
+>>>>> opt_handler, NULL)
+>>>>>           }
+>>>>>           close(data.debugfs_fd);
+>>>>>           igt_display_fini(&data.display);
+>>>>> +        drm_close_driver(data.fd);
+>>>>>       }
+>>>>>   }
+>>>>> diff --git a/tests/amdgpu/amd_vrr_range.c 
+>>>>> b/tests/amdgpu/amd_vrr_range.c
+>>>>> index 2f27296dd..cacd668cd 100644
+>>>>> --- a/tests/amdgpu/amd_vrr_range.c
+>>>>> +++ b/tests/amdgpu/amd_vrr_range.c
+>>>>> @@ -338,5 +338,6 @@ igt_main
+>>>>>       igt_fixture
+>>>>>       {
+>>>>>           igt_display_fini(&data.display);
+>>>>> +        drm_close_driver(data.fd);
+>>>>>       }
+>>>>>   }
+>>>>> -- 
+>>>>> 2.40.0
+>>>>>
+> 
