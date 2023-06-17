@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 758D210E08C
- for <igt-dev@lists.freedesktop.org>; Sat, 17 Jun 2023 09:55:51 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 020AC10E08C
+ for <igt-dev@lists.freedesktop.org>; Sat, 17 Jun 2023 09:59:28 +0000 (UTC)
 From: "Garg, Nemesa" <nemesa.garg@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Sat, 17 Jun 2023 15:24:21 +0530
-Message-Id: <20230617095421.2031607-1-nemesa.garg@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Sat, 17 Jun 2023 09:59:21 +0000
+Message-ID: <IA1PR11MB646731FECD678530D1DC3C1AE359A@IA1PR11MB6467.namprd11.prod.outlook.com>
+References: <20230615123654.1672601-1-nemesa.garg@intel.com>
+ <20230616123714.gkdn76y7tosedkmk@kamilkon-desk1>
+In-Reply-To: <20230616123714.gkdn76y7tosedkmk@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/kms_cursor_legacy: Reducing the
- IOCTL(drm_mode_cursor_ioctl) calls by reducing the timeout
+Subject: Re: [igt-dev] [PATCH] tests/kms_cursor_legacy: Reducing the
+ IOCTL(drm_mode_cursor_ioctl) calls by reducing the timeout.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,40 +23,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Garg@freedesktop.org, "Garg, Nemesa" <nemesa.garg@intel.com>
+Cc: "Garg@freedesktop.org" <Garg@freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Due to excessive IOCTL calls in a stress test we are getting
-disk limit issue. Hence by reducing the timeout from 20 to 5
-the IOCTL call will get reduced.
-
-Checked with different values and found 5 as optimal value.
-
-Signed-off-by: Garg, Nemesa <nemesa.garg@intel.com>
----
- tests/kms_cursor_legacy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index f1e55906..13918345 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1562,12 +1562,12 @@ igt_main
- 					errno = 0;
- 
- 					igt_dynamic_f("pipe-%s", kmstest_pipe_name(n))
--						stress(&display, n, tests[i].ncpus, tests[i].flags, 20);
-+						stress(&display, n, tests[i].ncpus, tests[i].flags, 5);
- 				}
- 
- 				errno = 0;
- 				igt_dynamic("all-pipes")
--					stress(&display, -1, tests[i].ncpus, tests[i].flags, 20);
-+					stress(&display, -1, tests[i].ncpus, tests[i].flags, 5);
- 			}
- 		}
- 	}
--- 
-2.25.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
+IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBGcmlkYXksIEp1bmUg
+MTYsIDIwMjMgNjowNyBQTQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4g
+Q2M6IEdhcmcsIE5lbWVzYSA8bmVtZXNhLmdhcmdAaW50ZWwuY29tPjsgR2FyZ0BmcmVlZGVza3Rv
+cC5vcmc7IEp1aGEtDQo+IFBla2thIEhlaWtraWxhIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwu
+Y29tPg0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSF0gdGVzdHMva21zX2N1cnNvcl9s
+ZWdhY3k6IFJlZHVjaW5nIHRoZQ0KPiBJT0NUTChkcm1fbW9kZV9jdXJzb3JfaW9jdGwpIGNhbGxz
+IGJ5IHJlZHVjaW5nIHRoZSB0aW1lb3V0Lg0KPiANCj4gSGkgR2FyZywNCj4gDQo+IHRlc3RzL2tt
+c19jdXJzb3JfbGVnYWN5OiBSZWR1Y2luZyB0aGUgSU9DVEwoZHJtX21vZGVfY3Vyc29yX2lvY3Rs
+KSBjYWxscw0KPiBieSByZWR1Y2luZyB0aGUgdGltZW91dC4NCj4gLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0gXg0KPiANCj4gUGxlYXNlIGRvIG5vdCB3cml0ZSBhIGRvdCBh
+dCB0aGUgZW5kIG9mIFN1YmplY3QsIHNvOg0KPiANCj4gcy90aW1lb3V0Li90aW1lb3V0Lw0KPiAN
+Cj4gUmVnYXJkcywNCj4gS2FtaWwNCj4gDQpIaSBLYW1pbCwNCg0KVGhhbmsgeW91IGZvciB5b3Vy
+IGNvbW1lbnQuIEkgaGF2ZSBtYWRlIHRoZSBjaGFuZ2UgYW5kIHNlbnQgYSBuZXcgcGF0Y2guDQoN
+ClRoYW5rcywNCk5lbWVzYQ0KPiBPbiAyMDIzLTA2LTE1IGF0IDE4OjA2OjU0ICswNTMwLCBHYXJn
+LCBOZW1lc2Egd3JvdGU6DQo+ID4gRHVlIHRvIGV4Y2Vzc2l2ZSBJT0NUTCBjYWxscyBpbiBhIHN0
+cmVzcyB0ZXN0IHdlIGFyZSBnZXR0aW5nIGRpc2sNCj4gPiBsaW1pdCBpc3N1ZS4gSGVuY2UgYnkg
+cmVkdWNpbmcgdGhlIHRpbWVvdXQgZnJvbSAyMCB0byA1IHRoZSBJT0NUTCBjYWxsDQo+ID4gd2ls
+bCBnZXQgcmVkdWNlZC4NCj4gPg0KPiA+IENoZWNrZWQgd2l0aCBkaWZmZXJlbnQgdmFsdWVzIGFu
+ZCBmb3VuZCA1IGFzIG9wdGltYWwgdmFsdWUuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBHYXJn
+LCBOZW1lc2EgPG5lbWVzYS5nYXJnQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMva21z
+X2N1cnNvcl9sZWdhY3kuYyB8IDQgKystLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRp
+b25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19j
+dXJzb3JfbGVnYWN5LmMgYi90ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jDQo+ID4gaW5kZXggZjFl
+NTU5MDYuLjEzOTE4MzQ1IDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2ttc19jdXJzb3JfbGVnYWN5
+LmMNCj4gPiArKysgYi90ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jDQo+ID4gQEAgLTE1NjIsMTIg
+KzE1NjIsMTIgQEAgaWd0X21haW4NCj4gPiAgCQkJCQllcnJubyA9IDA7DQo+ID4NCj4gPiAgCQkJ
+CQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzIiwNCj4ga21zdGVzdF9waXBlX25hbWUobikpDQo+ID4g
+LQkJCQkJCXN0cmVzcygmZGlzcGxheSwgbiwNCj4gdGVzdHNbaV0ubmNwdXMsIHRlc3RzW2ldLmZs
+YWdzLCAyMCk7DQo+ID4gKwkJCQkJCXN0cmVzcygmZGlzcGxheSwgbiwNCj4gdGVzdHNbaV0ubmNw
+dXMsIHRlc3RzW2ldLmZsYWdzLCA1KTsNCj4gPiAgCQkJCX0NCj4gPg0KPiA+ICAJCQkJZXJybm8g
+PSAwOw0KPiA+ICAJCQkJaWd0X2R5bmFtaWMoImFsbC1waXBlcyIpDQo+ID4gLQkJCQkJc3RyZXNz
+KCZkaXNwbGF5LCAtMSwgdGVzdHNbaV0ubmNwdXMsDQo+IHRlc3RzW2ldLmZsYWdzLCAyMCk7DQo+
+ID4gKwkJCQkJc3RyZXNzKCZkaXNwbGF5LCAtMSwgdGVzdHNbaV0ubmNwdXMsDQo+IHRlc3RzW2ld
+LmZsYWdzLCA1KTsNCj4gPiAgCQkJfQ0KPiA+ICAJCX0NCj4gPiAgCX0NCj4gPiAtLQ0KPiA+IDIu
+MjUuMQ0KPiA+DQo=
