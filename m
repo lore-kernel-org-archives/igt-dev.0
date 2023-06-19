@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFDDD10E1F5
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jun 2023 12:05:09 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 40C8510E10E
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jun 2023 12:57:17 +0000 (UTC)
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Jun 2023 17:28:45 +0530
-Message-Id: <20230619115858.2013195-6-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230619115858.2013195-1-bhanuprakash.modem@intel.com>
-References: <20230619115858.2013195-1-bhanuprakash.modem@intel.com>
+Date: Mon, 19 Jun 2023 15:56:32 +0300
+Message-Id: <20230619125633.2395171-4-jouni.hogander@intel.com>
+In-Reply-To: <20230619125633.2395171-1-jouni.hogander@intel.com>
+References: <20230619125633.2395171-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 05/18] tests/kms_addfb_basic: Add tiling support
- for XE
+Subject: [igt-dev] [PATCH i-g-t v5 3/4] lib/xe/xe_spin: Handle spinner timer
+ for Xe as well
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,80 +20,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remove the tiling restrictions in Xe specific tests
+Current spinner implementation for Xe doesn't support setting
+timeout. Fix this by handling timers same way as for i915 as well.
 
-8c3b02be3 (tests/kms_addfb_basic: Add XE support)
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- tests/kms_addfb_basic.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ lib/xe/xe_spin.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index e375f3ad2..426e72c3c 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -391,7 +391,7 @@ static void tiling_tests(int fd)
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 9f511e14f..d8c665f39 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -115,6 +115,7 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
+ 	spin->syncobj = syncobj_create(fd, 0);
+ 	spin->vm = opt->vm;
+ 	spin->engine = opt->engine;
++	spin->timerfd = -1;
  
- 	igt_subtest_group {
- 		igt_fixture {
--			igt_require_i915(fd);
-+			igt_require_intel(fd);
- 			tiled_x_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
- 				DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED,
- 				1024*4, NULL, NULL, NULL);
-@@ -410,7 +410,8 @@ static void tiling_tests(int fd)
- 		f.pitches[0] = 1024*4;
- 		igt_describe("Check if addfb2 and rmfb call works for basic x-tiling test");
- 		igt_subtest("basic-x-tiled-legacy") {
--			igt_require(gem_available_fences(fd) > 0);
-+			if (is_i915_device(fd))
-+				igt_require(gem_available_fences(fd) > 0);
- 			f.handles[0] = tiled_x_bo;
- 
- 			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-@@ -420,6 +421,7 @@ static void tiling_tests(int fd)
- 
- 		igt_describe("Check if addfb2 call works for x and y tiling");
- 		igt_subtest("framebuffer-vs-set-tiling") {
-+			igt_require_i915(fd);
- 			igt_require(gem_available_fences(fd) > 0);
- 			f.handles[0] = gem_bo;
- 
-@@ -434,6 +436,7 @@ static void tiling_tests(int fd)
- 		igt_describe("Test that addfb2 call fails correctly for pitches mismatch");
- 			f.pitches[0] = 512*4;
- 		igt_subtest("tile-pitch-mismatch") {
-+			igt_require_i915(fd);
- 			igt_require(gem_available_fences(fd) > 0);
- 			f.handles[0] = tiled_x_bo;
- 
-@@ -443,8 +446,12 @@ static void tiling_tests(int fd)
- 		igt_describe("Test that addfb2 call fails correctly for basic y-tiling test");
- 		f.pitches[0] = 1024*4;
- 		igt_subtest("basic-y-tiled-legacy") {
--			igt_require(!gem_has_lmem(fd));
--			igt_require(gem_available_fences(fd) > 0);
-+			if (is_i915_device(fd)) {
-+				igt_require(!gem_has_lmem(fd));
-+				igt_require(gem_available_fences(fd) > 0);
-+			} else {
-+				igt_require(!xe_has_vram(fd));
-+			}
- 			f.handles[0] = tiled_y_bo;
- 
- 			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
-@@ -998,7 +1005,7 @@ igt_main
- 		size_tests(fd);
- 
- 		igt_fixture
--			igt_require_i915(fd);
-+			igt_require_intel(fd);
- 
- 		addfb25_ytile(fd);
- 
+ 	if (!spin->vm)
+ 		spin->vm = xe_vm_create(fd, 0, 0);
+@@ -163,6 +164,13 @@ void xe_spin_sync_wait(int fd, struct igt_spin *spin)
+ void xe_spin_free(int fd, struct igt_spin *spin)
+ {
+ 	igt_assert(spin->driver == INTEL_DRIVER_XE);
++
++	if (spin->timerfd >= 0) {
++		pthread_cancel(spin->timer_thread);
++		igt_assert(pthread_join(spin->timer_thread, NULL) == 0);
++		close(spin->timerfd);
++	}
++
+ 	xe_spin_end(spin->xe_spin);
+ 	xe_spin_sync_wait(fd, spin);
+ 	xe_vm_unbind_sync(fd, spin->vm, 0, spin->address, spin->bo_size);
 -- 
-2.40.0
+2.34.1
