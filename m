@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BBC410E4BF
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jun 2023 11:00:27 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- sai.gowtham.ch@intel.com
-Date: Thu, 15 Jun 2023 16:29:53 +0530
-Message-Id: <20230615105954.3751-2-sai.gowtham.ch@intel.com>
-In-Reply-To: <20230615105954.3751-1-sai.gowtham.ch@intel.com>
-References: <20230615105954.3751-1-sai.gowtham.ch@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 894DB10E099
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jun 2023 05:33:02 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 19 Jun 2023 07:32:46 +0200
+Message-Id: <20230619053250.322791-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/xe/xe_spin: Integrate igt_spin_new
- with Xe
+Subject: [igt-dev] [PATCH i-g-t v3 0/4] Add absolute user fence timeout
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,282 +21,26 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+According to kernel proposal:
+	https://patchwork.freedesktop.org/series/118670/
 
-Extending the spin_create implementation and allocator handle support in xe,
-where it submits dummy work loads to engine. This Implementation is wrapped
-around vm_bind and unbind as we are supposed to do it manually for xe.
+add abstime and change relative to use nanoseconds instead of jiffies.
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
----
- lib/igt_dummyload.c | 40 ++++++++++++++++---
- lib/igt_dummyload.h | 12 ++++++
- lib/xe/xe_spin.c    | 97 +++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_spin.h    |  5 ++-
- 4 files changed, 148 insertions(+), 6 deletions(-)
+v2: separate changes for reltime and abstime (Kamil)
+    change abstime timeout behavior to stay intact (Chris)
+v3: use int64_t instead long to avoid being truncate on 32bit archs (Kamil)
 
-diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-index 740a58f3..9f941cef 100644
---- a/lib/igt_dummyload.c
-+++ b/lib/igt_dummyload.c
-@@ -46,6 +46,7 @@
- #include "intel_reg.h"
- #include "ioctl_wrappers.h"
- #include "sw_sync.h"
-+#include "xe/xe_spin.h"
- 
- /**
-  * SECTION:igt_dummyload
-@@ -434,6 +435,7 @@ spin_create(int fd, const struct igt_spin_factory *opts)
- 	spin = calloc(1, sizeof(struct igt_spin));
- 	igt_assert(spin);
- 
-+	spin->driver = INTEL_DRIVER_I915;
- 	spin->timerfd = -1;
- 	spin->out_fence = emit_recursive_batch(spin, fd, opts);
- 
-@@ -447,7 +449,19 @@ spin_create(int fd, const struct igt_spin_factory *opts)
- igt_spin_t *
- __igt_spin_factory(int fd, const struct igt_spin_factory *opts)
- {
--	return spin_create(fd, opts);
-+	if (is_xe_device(fd)) {
-+		igt_spin_t *spin;
-+
-+		spin = xe_spin_create(fd, opts);
-+
-+		pthread_mutex_lock(&list_lock);
-+		igt_list_add(&spin->link, &spin_list);
-+		pthread_mutex_unlock(&list_lock);
-+
-+		return spin;
-+	} else {
-+		return spin_create(fd, opts);
-+	}
- }
- 
- /**
-@@ -467,6 +481,16 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
- {
- 	igt_spin_t *spin;
- 
-+	if (is_xe_device(fd)) {
-+		spin = xe_spin_create(fd, opts);
-+
-+		pthread_mutex_lock(&list_lock);
-+		igt_list_add(&spin->link, &spin_list);
-+		pthread_mutex_unlock(&list_lock);
-+
-+		return spin;
-+	}
-+
- 	if ((opts->flags & IGT_SPIN_POLL_RUN) && opts->engine != ALL_ENGINES) {
- 		unsigned int class;
- 
-@@ -597,8 +621,12 @@ void igt_spin_end(igt_spin_t *spin)
- 	if (!spin)
- 		return;
- 
--	igt_gettime(&spin->last_signal);
--	sync_write(spin, MI_BATCH_BUFFER_END);
-+	if (spin->driver == INTEL_DRIVER_XE) {
-+		xe_spin_end(spin->xe_spin);
-+	} else {
-+		igt_gettime(&spin->last_signal);
-+		sync_write(spin, MI_BATCH_BUFFER_END);
-+	}
- }
- 
- static void __igt_spin_free(int fd, igt_spin_t *spin)
-@@ -646,12 +674,14 @@ void igt_spin_free(int fd, igt_spin_t *spin)
- {
- 	if (!spin)
- 		return;
--
- 	pthread_mutex_lock(&list_lock);
- 	igt_list_del(&spin->link);
- 	pthread_mutex_unlock(&list_lock);
- 
--	__igt_spin_free(fd, spin);
-+	if (spin->driver == INTEL_DRIVER_XE)
-+		xe_spin_free(fd, spin);
-+	else
-+		__igt_spin_free(fd, spin);
- }
- 
- void igt_terminate_spins(void)
-diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-index b247ab02..6eb3f2e6 100644
---- a/lib/igt_dummyload.h
-+++ b/lib/igt_dummyload.h
-@@ -28,6 +28,7 @@
- #include <stdint.h>
- #include <time.h>
- 
-+#include "drmtest.h"
- #include "igt_core.h"
- #include "igt_list.h"
- #include "i915_drm.h"
-@@ -54,6 +55,8 @@ typedef struct igt_spin_factory {
- 	unsigned int flags;
- 	int fence;
- 	uint64_t ahnd;
-+	struct drm_xe_engine_class_instance *hwe;
-+	uint32_t vm;
- } igt_spin_factory_t;
- 
- typedef struct igt_spin {
-@@ -83,6 +86,15 @@ typedef struct igt_spin {
- #define SPIN_CLFLUSH (1 << 0)
- 
- 	struct igt_spin_factory opts;
-+
-+	struct xe_spin *xe_spin;
-+	enum intel_driver driver;
-+	size_t bo_size;
-+	uint64_t address;
-+	unsigned int engine;
-+	uint32_t vm;
-+	uint32_t syncobj;
-+
- } igt_spin_t;
- 
- 
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index 856d0ba2..9f511e14 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -82,6 +82,103 @@ void xe_spin_end(struct xe_spin *spin)
- 	spin->end = 0;
- }
- 
-+/**
-+ * xe_spin_create:
-+ *@opt: controlling options such as allocator handle, engine, vm etc
-+ *
-+ * igt_spin_new for xe, xe_spin_create submits a batch using xe_spin_init
-+ * which wraps around vm bind and unbinding the object associated to it.
-+ * This returs a spinner after submitting a dummy load.
-+ *
-+ */
-+igt_spin_t *
-+xe_spin_create(int fd, const struct igt_spin_factory *opt)
-+{
-+	size_t bo_size = xe_get_default_alignment(fd);
-+	uint64_t ahnd = opt->ahnd, addr;
-+	struct igt_spin *spin;
-+	struct xe_spin *xe_spin;
-+	struct drm_xe_sync sync = {
-+		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+	};
-+
-+	igt_assert(ahnd);
-+	spin = calloc(1, sizeof(struct igt_spin));
-+	igt_assert(spin);
-+
-+	spin->driver = INTEL_DRIVER_XE;
-+	spin->syncobj = syncobj_create(fd, 0);
-+	spin->vm = opt->vm;
-+	spin->engine = opt->engine;
-+
-+	if (!spin->vm)
-+		spin->vm = xe_vm_create(fd, 0, 0);
-+
-+	if (!spin->engine) {
-+		if (opt->hwe)
-+			spin->engine = xe_engine_create(fd, spin->vm, opt->hwe, 0);
-+		else
-+			spin->engine = xe_engine_create_class(fd, spin->vm, DRM_XE_ENGINE_CLASS_COPY);
-+	}
-+
-+	spin->handle = xe_bo_create(fd, 0, spin->vm, bo_size);
-+	xe_spin = xe_bo_map(fd, spin->handle, bo_size);
-+	addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
-+	xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
-+
-+	xe_spin_init(xe_spin, addr, true);
-+	exec.engine_id = spin->engine;
-+	exec.address = addr;
-+	sync.handle = spin->syncobj;
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
-+	xe_spin_wait_started(xe_spin);
-+
-+	spin->bo_size = bo_size;
-+	spin->address = addr;
-+	spin->xe_spin = xe_spin;
-+	spin->opts = *opt;
-+
-+	return spin;
-+}
-+
-+void xe_spin_sync_wait(int fd, struct igt_spin *spin)
-+{
-+	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0, NULL));
-+}
-+
-+/*
-+ * xe_spin_free:
-+ *@spin: spin state from igt_spin_new()
-+ *
-+ * Wrapper to free spinner whhich is triggered by xe_spin_create.
-+ * which distroys vm, engine and unbinds the vm which is binded to
-+ * the engine and bo.
-+ *
-+ */
-+void xe_spin_free(int fd, struct igt_spin *spin)
-+{
-+	igt_assert(spin->driver == INTEL_DRIVER_XE);
-+	xe_spin_end(spin->xe_spin);
-+	xe_spin_sync_wait(fd, spin);
-+	xe_vm_unbind_sync(fd, spin->vm, 0, spin->address, spin->bo_size);
-+	syncobj_destroy(fd, spin->syncobj);
-+	gem_munmap(spin->xe_spin, spin->bo_size);
-+	gem_close(fd, spin->handle);
-+
-+	if (!spin->opts.engine)
-+		xe_engine_destroy(fd, spin->engine);
-+
-+	if (!spin->opts.vm)
-+		xe_vm_destroy(fd, spin->vm);
-+
-+	free(spin);
-+}
-+
- void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
- 		  struct xe_cork *cork)
- {
-diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-index 73f9a026..54a52b40 100644
---- a/lib/xe/xe_spin.h
-+++ b/lib/xe/xe_spin.h
-@@ -13,6 +13,7 @@
- #include <stdbool.h>
- 
- #include "xe_query.h"
-+#include "lib/igt_dummyload.h"
- 
- /* Mapped GPU object */
- struct xe_spin {
-@@ -21,11 +22,13 @@ struct xe_spin {
- 	uint32_t start;
- 	uint32_t end;
- };
--
-+igt_spin_t *xe_spin_create(int fd, const struct igt_spin_factory *opt);
- void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
- bool xe_spin_started(struct xe_spin *spin);
-+void xe_spin_sync_wait(int fd, struct igt_spin *spin);
- void xe_spin_wait_started(struct xe_spin *spin);
- void xe_spin_end(struct xe_spin *spin);
-+void xe_spin_free(int fd, struct igt_spin *spin);
- 
- struct xe_cork {
- 	struct xe_spin *spin;
+Zbigniew Kempczyński (4):
+  lib/xe_ioctl: Add xe_wait_ufence_abstime() helper
+  lib/xe_ioctl: Return remaining timeout of user fence wait
+  tests/xe_waitfence: Rename vague subtest name "test" to reltime
+  tests/xe_waitfence: Add abstime subtest for user fence
+
+ lib/xe/xe_ioctl.c                        | 43 ++++++++++++++++++++--
+ lib/xe/xe_ioctl.h                        |  9 +++--
+ tests/intel-ci/xe-fast-feedback.testlist |  2 +-
+ tests/xe/xe_waitfence.c                  | 45 ++++++++++++++++++++----
+ 4 files changed, 86 insertions(+), 13 deletions(-)
+
 -- 
-2.39.1
+2.34.1
