@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9B9D10E0E7
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jun 2023 12:57:17 +0000 (UTC)
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Jun 2023 15:56:33 +0300
-Message-Id: <20230619125633.2395171-5-jouni.hogander@intel.com>
-In-Reply-To: <20230619125633.2395171-1-jouni.hogander@intel.com>
-References: <20230619125633.2395171-1-jouni.hogander@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 818FC10E1FE
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jun 2023 13:32:12 +0000 (UTC)
+Date: Mon, 19 Jun 2023 15:32:08 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20230619133208.ewn5kufw5d7kt2yg@zkempczy-mobl2>
+References: <20230619053250.322791-1-zbigniew.kempczynski@intel.com>
+ <20230619053250.322791-5-zbigniew.kempczynski@intel.com>
+ <20230619115253.spkc4fq6qgrq2tr5@kamilkon-desk1>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 4/4] tests/kms_dirtyfb: Add new test for
- dirtyfb ioctl
+In-Reply-To: <20230619115253.spkc4fq6qgrq2tr5@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 4/4] tests/xe_waitfence: Add abstime
+ subtest for user fence
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,350 +29,107 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new test to validate dirtyfb ioctl is working properly with GPU
-frontbuffer rendering.
+On Mon, Jun 19, 2023 at 01:52:53PM +0200, Kamil Konieczny wrote:
+> Hi Zbigniew,
+> 
+> On 2023-06-19 at 07:32:50 +0200, Zbigniew Kempczyński wrote:
+> > Start testing timeout passed as absolute time.
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Create big framebuffer and use only lower right corner for the
-plane. Initiate GPU drawing for a rectangle over the whole
-framebuffer and perform dirtyfb ioctl. Then wait for the drawing to
-complete and collect crc and check that it matches with expected.
+Thank you for the review.
 
-v5:
- - Modifiations to support Xe as well
-v4:
- - Check connector type when PSR is tested
-v3:
- - Use spinner
- - Drop allocating big frambuffers
-v2:
- - Change license comment
- - Move disable_features and do not apply for FEATURE_DEFAULT
+--
+Zbigniew
 
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
----
- tests/i915/kms_dirtyfb.c | 301 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |   1 +
- 2 files changed, 302 insertions(+)
- create mode 100644 tests/i915/kms_dirtyfb.c
-
-diff --git a/tests/i915/kms_dirtyfb.c b/tests/i915/kms_dirtyfb.c
-new file mode 100644
-index 000000000..be3827749
---- /dev/null
-+++ b/tests/i915/kms_dirtyfb.c
-@@ -0,0 +1,301 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include <sys/types.h>
-+
-+#include "igt.h"
-+#include "igt_psr.h"
-+
-+#include "i915/intel_drrs.h"
-+#include "i915/intel_fbc.h"
-+
-+#include "xe/xe_query.h"
-+
-+IGT_TEST_DESCRIPTION("Test the DIRTYFB ioctl is working properly with "
-+		     "its related features: FBC, PSR and DRRS");
-+
-+#ifndef PAGE_ALIGN
-+#ifndef PAGE_SIZE
-+#define PAGE_SIZE 4096
-+#endif
-+#define PAGE_ALIGN(x) ALIGN(x, PAGE_SIZE)
-+#endif
-+
-+typedef struct {
-+	int drm_fd;
-+	int debugfs_fd;
-+	igt_display_t display;
-+	drmModeModeInfo *mode;
-+	igt_output_t *output;
-+	igt_pipe_crc_t *pipe_crc;
-+	enum pipe pipe;
-+
-+	struct igt_fb fbs[3];
-+
-+	igt_crc_t ref_crc;
-+
-+	struct buf_ops *bops;
-+	enum {
-+		FEATURE_NONE  = 0,
-+		FEATURE_PSR   = 1,
-+		FEATURE_FBC   = 2,
-+		FEATURE_DRRS  = 4,
-+		FEATURE_COUNT = 8,
-+		FEATURE_DEFAULT = 8,
-+	} feature;
-+} data_t;
-+
-+static const char *feature_str(int feature)
-+{
-+	switch (feature) {
-+	case FEATURE_NONE:
-+		return "nop";
-+	case FEATURE_FBC:
-+		return "fbc";
-+	case FEATURE_PSR:
-+		return "psr";
-+	case FEATURE_DRRS:
-+		return "drrs";
-+	case FEATURE_DEFAULT:
-+		return "default";
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static bool check_support(data_t *data)
-+{
-+	switch (data->feature) {
-+	case FEATURE_NONE:
-+		return true;
-+	case FEATURE_FBC:
-+		return intel_fbc_supported_on_chipset(data->drm_fd, data->pipe);
-+	case FEATURE_PSR:
-+		if (data->output->config.connector->connector_type !=
-+		    DRM_MODE_CONNECTOR_eDP)
-+			return false;
-+		return psr_sink_support(data->drm_fd, data->debugfs_fd,
-+					PSR_MODE_1);
-+	case FEATURE_DRRS:
-+		return intel_is_drrs_supported(data->drm_fd, data->pipe) &&
-+			intel_output_has_drrs(data->drm_fd, data->output);
-+	case FEATURE_DEFAULT:
-+		return true;
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static void enable_feature(data_t *data)
-+{
-+	switch (data->feature) {
-+	case FEATURE_NONE:
-+		break;
-+	case FEATURE_FBC:
-+		intel_fbc_enable(data->drm_fd);
-+		break;
-+	case FEATURE_PSR:
-+		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1);
-+		break;
-+	case FEATURE_DRRS:
-+		intel_drrs_enable(data->drm_fd, data->pipe);
-+		break;
-+	case FEATURE_DEFAULT:
-+		break;
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static void check_feature(data_t *data)
-+{
-+	switch (data->feature) {
-+	case FEATURE_NONE:
-+		break;
-+	case FEATURE_FBC:
-+		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
-+							  data->pipe),
-+			     "FBC still disabled");
-+		break;
-+	case FEATURE_PSR:
-+		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1),
-+			     "PSR still disabled\n");
-+		break;
-+	case FEATURE_DRRS:
-+		igt_assert_f(intel_is_drrs_inactive(data->drm_fd, data->pipe),
-+			     "DRRS INACTIVE\n");
-+		break;
-+	case FEATURE_DEFAULT:
-+		break;
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static void disable_features(data_t *data)
-+{
-+	intel_fbc_disable(data->drm_fd);
-+	psr_disable(data->drm_fd, data->debugfs_fd);
-+	intel_drrs_disable(data->drm_fd, data->pipe);
-+}
-+
-+static void prepare(data_t *data)
-+{
-+	igt_plane_t *primary;
-+
-+	igt_skip_on(!check_support(data));
-+
-+	data->mode = igt_output_get_mode(data->output);
-+
-+	igt_output_set_pipe(data->output, data->pipe);
-+
-+	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-+					 IGT_PIPE_CRC_SOURCE_AUTO);
-+
-+	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
-+			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-+			    &data->fbs[0]);
-+
-+	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[0],
-+			 IGT_DRAW_RENDER, 0, 0, data->fbs[0].width,
-+			 data->fbs[0].height, 0xFF);
-+
-+	primary = igt_output_get_plane_type(data->output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+
-+	igt_plane_set_fb(primary, &data->fbs[0]);
-+
-+	if (data->feature != FEATURE_DEFAULT)
-+		disable_features(data);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
-+
-+	igt_create_color_fb(data->drm_fd,  data->mode->hdisplay,
-+			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-+			    &data->fbs[1]);
-+	igt_draw_rect_fb(data->drm_fd, data->bops, 0, &data->fbs[1],
-+			 IGT_DRAW_RENDER, 0, 0, data->fbs[1].width,
-+			 data->fbs[1].height, 0xFF);
-+
-+	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
-+			     data->mode->vdisplay, DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
-+			    &data->fbs[2]);
-+
-+	igt_plane_set_fb(primary, &data->fbs[2]);
-+
-+	enable_feature(data);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	check_feature(data);
-+}
-+
-+static void cleanup(data_t *data)
-+{
-+	igt_remove_fb(data->drm_fd, &data->fbs[0]);
-+	igt_remove_fb(data->drm_fd, &data->fbs[1]);
-+	igt_remove_fb(data->drm_fd, &data->fbs[2]);
-+
-+	igt_pipe_crc_free(data->pipe_crc);
-+
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+static void run_test(data_t *data)
-+{
-+	igt_crc_t crc;
-+	struct intel_buf *src, *dst;
-+	struct intel_bb *ibb;
-+	igt_spin_t *spin;
-+	uint32_t devid = intel_get_drm_devid(data->drm_fd);
-+	igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
-+	int r;
-+
-+	igt_skip_on(!rendercopy);
-+
-+	src = intel_buf_create_full(data->bops, data->fbs[1].gem_handle,
-+				    data->fbs[1].width,
-+				    data->fbs[1].height,
-+				    igt_drm_format_to_bpp(data->fbs[1].drm_format),
-+				    0,
-+				    igt_fb_mod_to_tiling(data->fbs[1].modifier),
-+				    0, 0, 0, is_xe_device(data->drm_fd) ?
-+				    system_memory(data->drm_fd) : 0);
-+	dst = intel_buf_create_full(data->bops, data->fbs[2].gem_handle,
-+				    data->fbs[2].width,
-+				    data->fbs[2].height,
-+				    igt_drm_format_to_bpp(data->fbs[2].drm_format),
-+				    0, igt_fb_mod_to_tiling(data->fbs[2].modifier),
-+				    0, 0, 0, is_xe_device(data->drm_fd) ?
-+				    system_memory(data->drm_fd) : 0);
-+	ibb = intel_bb_create(data->drm_fd, PAGE_SIZE);
-+
-+	spin = igt_spin_new(data->drm_fd, .ahnd = ibb->allocator_handle);
-+	igt_spin_set_timeout(spin, NSEC_PER_SEC);
-+
-+	rendercopy(ibb, src, 0, 0, data->fbs[2].width, data->fbs[2].height, dst, 0, 0);
-+
-+	/* Perfom dirtyfb right after initiating rendercopy */
-+	r = drmModeDirtyFB(data->drm_fd, data->fbs[2].fb_id, NULL, 0);
-+	igt_assert(r == 0 || r == -ENOSYS);
-+
-+	/* Ensure rendercopy is complete */
-+	intel_bb_sync(ibb);
-+
-+	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
-+	igt_assert_crc_equal(&crc, &data->ref_crc);
-+
-+	igt_spin_free(data->drm_fd, spin);
-+	intel_bb_destroy(ibb);
-+	intel_buf_destroy(src);
-+	intel_buf_destroy(dst);
-+}
-+
-+igt_main
-+{
-+	data_t data = {};
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-+		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.drm_fd);
-+
-+		data.bops = buf_ops_create(data.drm_fd);
-+
-+		igt_display_reset(&data.display);
-+	}
-+
-+	igt_describe("Test dirtyFB ioctl");
-+	igt_subtest_with_dynamic("dirtyfb-ioctl") {
-+		data.pipe = PIPE_A;
-+		for_each_valid_output_on_pipe(&data.display, data.pipe,
-+					      data.output) {
-+			for (data.feature = FEATURE_DEFAULT; data.feature > 0;
-+			     data.feature = data.feature >> 1) {
-+				igt_dynamic_f("%s-%s", feature_str(data.feature),
-+					      igt_output_name(data.output)) {
-+					prepare(&data);
-+					run_test(&data);
-+					cleanup(&data);
-+				}
-+			}
-+		}
-+	}
-+
-+	igt_fixture {
-+		buf_ops_destroy(data.bops);
-+		igt_display_fini(&data.display);
-+		close(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 85ea7e74e..67536c344 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -223,6 +223,7 @@ i915_progs = [
- 	'kms_busy',
- 	'kms_ccs',
- 	'kms_cdclk',
-+	'kms_dirtyfb',
- 	'kms_draw_crc',
- 	'kms_fb_coherency',
- 	'kms_fbcon_fbt',
--- 
-2.34.1
+> 
+> > 
+> > ---
+> > v3: Replace long to int64_t (Kamil)
+> > ---
+> >  tests/xe/xe_waitfence.c | 41 +++++++++++++++++++++++++++++++++++++----
+> >  1 file changed, 37 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/tests/xe/xe_waitfence.c b/tests/xe/xe_waitfence.c
+> > index 40e59e364e..c6b2db125c 100644
+> > --- a/tests/xe/xe_waitfence.c
+> > +++ b/tests/xe/xe_waitfence.c
+> > @@ -38,12 +38,23 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+> >  	xe_vm_bind(fd, vm, bo, offset, addr, size, sync, 1);
+> >  }
+> >  
+> > +#define MS_TO_NS(ms) (((int64_t)ms) * 1000000)
+> > +enum waittype {
+> > +	RELTIME,
+> > +	ABSTIME,
+> > +};
+> > +
+> >  /**
+> >   * SUBTEST: reltime
+> > - * Description: Check basic waitfences functionality
+> > + * Description: Check basic waitfences functionality with timeout
+> > + *              as relative timeout in nanoseconds
+> > + *
+> > + * SUBTEST: abstime
+> > + * Description: Check basic waitfences functionality with timeout
+> > + *              passed as absolute time in nanoseconds
+> >   */
+> >  static void
+> > -waitfence(int fd)
+> > +waitfence(int fd, enum waittype wt)
+> >  {
+> >  	uint32_t bo_1;
+> >  	uint32_t bo_2;
+> > @@ -52,6 +63,7 @@ waitfence(int fd)
+> >  	uint32_t bo_5;
+> >  	uint32_t bo_6;
+> >  	uint32_t bo_7;
+> > +	int64_t timeout;
+> >  
+> >  	uint32_t vm = xe_vm_create(fd, 0, 0);
+> >  	bo_1 = xe_bo_create_flags(fd, vm, 0x40000, MY_FLAG);
+> > @@ -68,7 +80,25 @@ waitfence(int fd)
+> >  	do_bind(fd, vm, bo_6, 0, 0xc0040000, 0x1c0000, 6);
+> >  	bo_7 = xe_bo_create_flags(fd, vm, 0x10000, MY_FLAG);
+> >  	do_bind(fd, vm, bo_7, 0, 0xeffff0000, 0x10000, 7);
+> > -	xe_wait_ufence(fd, &wait_fence, 7, NULL, 2000);
+> > +
+> > +	if (wt == RELTIME) {
+> > +		timeout = xe_wait_ufence(fd, &wait_fence, 7, NULL, MS_TO_NS(10));
+> > +		igt_debug("wait type: RELTIME - timeout: %ld, timeout left: %ld\n",
+> > +			  MS_TO_NS(10), timeout);
+> > +	} else {
+> > +		struct timespec ts;
+> > +		int64_t current, signalled;
+> > +
+> > +		clock_gettime(CLOCK_MONOTONIC, &ts);
+> > +		current = ts.tv_sec * 1e9 + ts.tv_nsec;
+> > +		timeout = current + MS_TO_NS(10);
+> > +		signalled = xe_wait_ufence_abstime(fd, &wait_fence, 7, NULL, timeout);
+> > +		igt_debug("wait type: ABSTIME - timeout: %" PRId64
+> > +			  ", signalled: %" PRId64
+> > +			  ", elapsed: %" PRId64 "\n",
+> > +			  timeout, signalled, signalled - current);
+> > +	}
+> > +
+> >  	xe_vm_unbind_sync(fd, vm, 0, 0x200000, 0x40000);
+> >  	xe_vm_unbind_sync(fd, vm, 0, 0xc0000000, 0x40000);
+> >  	xe_vm_unbind_sync(fd, vm, 0, 0x180000000, 0x40000);
+> > @@ -95,7 +125,10 @@ igt_main
+> >  	}
+> >  
+> >  	igt_subtest("reltime")
+> > -		waitfence(fd);
+> > +		waitfence(fd, RELTIME);
+> > +
+> > +	igt_subtest("abstime")
+> > +		waitfence(fd, ABSTIME);
+> >  
+> >  	igt_fixture {
+> >  		xe_device_put(fd);
+> > -- 
+> > 2.34.1
+> > 
