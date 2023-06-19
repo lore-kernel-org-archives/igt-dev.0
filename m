@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3877310E1F7
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jun 2023 12:05:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 567E810E1FC
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jun 2023 12:05:18 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Jun 2023 17:28:48 +0530
-Message-Id: <20230619115858.2013195-9-bhanuprakash.modem@intel.com>
+Date: Mon, 19 Jun 2023 17:28:51 +0530
+Message-Id: <20230619115858.2013195-12-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230619115858.2013195-1-bhanuprakash.modem@intel.com>
 References: <20230619115858.2013195-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 08/18] tests/kms_plane_scaling: Add tiling support
+Subject: [igt-dev] [i-g-t 11/18] tests/i915/kms_draw_crc: Add tiling support
  for XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,26 +25,26 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Remove the tiling restrictions in Xe specific tests
 
-Fixes: 28bc56a8b (tests/kms_plane_scaling: Add XE support)
+f6d0bacc0 (tests/i915/kms_draw_crc: Add XE support)
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane_scaling.c | 4 ----
+ tests/i915/kms_draw_crc.c | 4 ----
  1 file changed, 4 deletions(-)
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 77bb905b4..1bbc1e009 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -545,10 +545,6 @@ static void test_scaler_with_modifier_pipe(data_t *d,
- 		for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
- 			uint64_t modifier = modifiers[i];
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index db6d71f2e..137ffeb5c 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -295,10 +295,6 @@ igt_main
+ 			for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+ 				modifier = modifiers[modifier_idx];
  
--			if (is_xe_device(d->drm_fd) &&
--			    modifier != DRM_FORMAT_MOD_LINEAR)
--				continue;
+-				/* No tiling support in XE. */
+-				if (is_xe_device(drm_fd) && modifier != DRM_FORMAT_MOD_LINEAR)
+-					continue;
 -
- 			if (igt_plane_has_format_mod(plane, format, modifier))
- 				check_scaling_pipe_plane_rot(d, plane,
- 							     format, modifier,
+ 				for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+ 					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
+ 						continue;
 -- 
 2.40.0
