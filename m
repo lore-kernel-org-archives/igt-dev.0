@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D586310E1D0
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jun 2023 09:53:30 +0000 (UTC)
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Jun 2023 11:53:24 +0200
-Message-Id: <20230619095324.3931861-1-mauro.chehab@linux.intel.com>
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2063.outbound.protection.outlook.com [40.107.243.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1984E10E079
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jun 2023 02:59:23 +0000 (UTC)
+From: Jasber Chen <yipeng.chen@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Mon, 19 Jun 2023 10:58:36 +0800
+Message-ID: <20230619025836.1514883-1-yipeng.chen@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_spin_batch: fix test
- documentation
+Content-Type: text/plain
+Subject: [igt-dev] tests/amdgpu: skips query-timestamp-while-idle test on
+ raven/raven2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,90 +19,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: aditya.chauhan@intel.com, Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Cc: Jasber Chen <yipeng.chen@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+tests/amdgpu: skips query-timestamp-while-idle test on raven/raven2.
+Querying GPU clocks can not work as expected when GPU is idling.
 
-The test documentation is wrong:
-- it should have just one TEST: tag with the contents of the
-  test file;
-- it is missing Category, Sub-category, Functionality and
-  Test category fields. Those are needed for proper grafana
-  functionality mapping.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Jasber Chen <yipeng.chen@amd.com>
 ---
- tests/xe/xe_spin_batch.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ tests/amdgpu/amd_info.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/tests/xe/xe_spin_batch.c b/tests/xe/xe_spin_batch.c
-index bc13bddddf73..29a837251058 100644
---- a/tests/xe/xe_spin_batch.c
-+++ b/tests/xe/xe_spin_batch.c
-@@ -4,15 +4,20 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
+diff --git a/tests/amdgpu/amd_info.c b/tests/amdgpu/amd_info.c
+index d6aea827..8e14e511 100644
+--- a/tests/amdgpu/amd_info.c
++++ b/tests/amdgpu/amd_info.c
+@@ -27,6 +27,7 @@
  
-+/**
-+ * TEST: Tests for spin batch submissons.
-+ * Category: Software building block
-+ * Sub-category: spin
-+ * Functionality: intel-bb
-+ * Test category: functionality test
-+ */
-+
- #define MAX_INSTANCE 9
+ #include <amdgpu.h>
+ #include <amdgpu_drm.h>
++#include "lib/amdgpu/amdgpu_asic_addr.h"
  
- /**
-- * TEST: Basic test for spin batch submissons.
-- *
-  * SUBTEST: spin-basic
-  * Description: Basic test to submit spin batch submissons on copy engine.
-  * Run type: FULL
-- *
-  */
+ static amdgpu_device_handle dev;
  
- static void spin_basic(int fd)
-@@ -28,12 +33,9 @@ static void spin_basic(int fd)
- }
- 
- /**
-- * TEST:Test for spin batch submissons.
-- *
-  * SUBTEST: spin-batch
-  * Description: Create vm and engine of hwe class and run the spinner on it.
-  * Run type: FULL
-- *
-  */
- 
- static void spin(int fd, struct drm_xe_engine_class_instance *hwe)
-@@ -57,12 +59,9 @@ static void spin(int fd, struct drm_xe_engine_class_instance *hwe)
- }
- 
- /**
-- * TEST: Basic test for spin batch submission on all hwe.
-- *
-  * SUBTEST: spin-basic-all
-  * Description: Basic test which validates the functionality of spinner on all hwe.
-  * Run type: FULL
-- *
-  */
- static void spin_basic_all(int fd)
+@@ -124,6 +125,8 @@ IGT_TEST_DESCRIPTION("Test the consistency of the data provided through the "
+ igt_main
  {
-@@ -91,11 +90,9 @@ static void spin_basic_all(int fd)
- }
+ 	int fd = -1;
++	int r = -1;
++	struct amdgpu_gpu_info gpu_info = {0};
  
- /**
-- * TEST: Test for spin batch submissions.
-  * SUBTEST: spin-all
-  * Description: Spinner test to run on all the engines!
-  * Run type: FULL
-- *
-  */
+ 	igt_fixture {
+ 		uint32_t major, minor;
+@@ -136,6 +139,9 @@ igt_main
  
- static void spin_all(int fd, int gt, int class)
+ 		igt_info("Initialized amdgpu, driver version %d.%d\n",
+ 			 major, minor);
++
++		r = amdgpu_query_gpu_info(dev, &gpu_info);
++		igt_assert_eq(r, 0);
+ 	}
+ 
+ 	igt_describe("Make sure we can retrieve the firmware version");
+@@ -149,8 +155,12 @@ igt_main
+ 
+ 	igt_describe("Check that the GPU time keeps on ticking, even during "
+ 		     "long idle times which could lead to clock/power gating");
+-	igt_subtest("query-timestamp-while-idle")
++	igt_subtest("query-timestamp-while-idle") {
++		/* GPU on Raven/Raven2 may not work as expected when idling. */
++		igt_skip_on(ASICREV_IS_RAVEN(gpu_info.chip_external_rev) ||
++			    ASICREV_IS_RAVEN2(gpu_info.chip_external_rev));
+ 		query_timestamp_test(7000000, 1);
++	}
+ 
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(dev);
 -- 
-2.40.1
+2.39.2
