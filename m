@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam02on2085.outbound.protection.outlook.com [40.107.95.85])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F366810E25A
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 05:42:12 +0000 (UTC)
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam04on20620.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e8c::620])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9535810E25A
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 05:53:02 +0000 (UTC)
 From: Jasber Chen <yipeng.chen@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 20 Jun 2023 13:41:52 +0800
-Message-ID: <20230620054152.1599713-1-yipeng.chen@amd.com>
+Date: Tue, 20 Jun 2023 13:52:40 +0800
+Message-ID: <20230620055240.1599974-1-yipeng.chen@amd.com>
 In-Reply-To: <20230619025836.1514883-1-yipeng.chen@amd.com>
 References: <20230619025836.1514883-1-yipeng.chen@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH] Subject: tests/amdgpu: skips
- query-timestamp-while-idle test on raven/raven2
+Subject: [igt-dev] tests/amdgpu: skips query-timestamp-while-idle test on
+ raven/raven2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,7 +23,8 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Cc: Jasber Chen <yipeng.chen@amd.com>,
- Jasber Chen <yipeng.chen@amd.corp-partner.google.com>
+ Jasber Chen <yipeng.chen@amd.corp-partner.google.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
