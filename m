@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC27010E2D6
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 12:19:32 +0000 (UTC)
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 20 Jun 2023 12:19:24 +0000
+Message-ID: <DM6PR11MB449202248F2842F4AA2F78D18D5CA@DM6PR11MB4492.namprd11.prod.outlook.com>
+References: <20230613134156.3315199-1-himal.prasad.ghimiray@intel.com>
+ <20230613134156.3315199-3-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230613134156.3315199-3-himal.prasad.ghimiray@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bommu Krishnaiah" <krishnaiah.bommu@intel.com>
-Date: Tue, 20 Jun 2023 12:09:36 -0000
-Message-ID: <168726297608.10442.6240607411802052845@emeril.freedesktop.org>
-References: <20230620103412.31591-1-krishnaiah.bommu@intel.com>
-In-Reply-To: <20230620103412.31591-1-krishnaiah.bommu@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/xe=5Fexec=5Fcompute=5Fmode=3A_Increase_fence_timeout_for_s?=
- =?utf-8?q?imulation_env?=
+Subject: Re: [igt-dev] [PATCH 2/4] lib/igt_sysfs: Handling gt related sysfs
+ uapi changes.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,45 +23,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: tests/xe_exec_compute_mode: Increase fence timeout for simulation env
-URL   : https://patchwork.freedesktop.org/series/119575/
-State : warning
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/913763 for the overview.
-
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44057219):
-  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=44057204 responseStatus=200 OK token=64_Tm1nU
-  section_end:1687262933:download_artifacts
-  section_start:1687262933:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-  Login Succeeded!
-  $ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
-  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-c6106684914590085ae7690384a330fc77531b5f
-  Error: error creating build container: Error initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-c6106684914590085ae7690384a330fc77531b5f: Error reading manifest commit-c6106684914590085ae7690384a330fc77531b5f in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora: received unexpected HTTP status: 500 Internal Server Error
-  section_end:1687262935:step_script
-  section_start:1687262935:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687262935:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/913763
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Himal
+> Prasad Ghimiray
+> Sent: 13 June 2023 07:12 PM
+> To: igt-dev@lists.freedesktop.org
+> Subject: [igt-dev] [PATCH 2/4] lib/igt_sysfs: Handling gt related sysfs u=
+api
+> changes.
+>=20
+> Patch https://patchwork.freedesktop.org/series/118927/
+> is moving gt sysfs parent under tile folder.
+>=20
+> With the above patch path for sysfs changes:
+> from: /sys/class/drm/cardX/device/gtN/
+> to : /sys/class/drm/cardX/device/tileN/gtN
+>=20
+> Adding xe_for_each_gt_under_each_tile macro to access new path.
+>=20
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> ---
+>  lib/igt_sysfs.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h index 2fb2303c..6c0ab617 1=
+00644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -78,6 +78,11 @@
+>=20
+>  #define xe_for_each_tile for_each_sysfs_tile_dirfd
+>=20
+> +/* FIXME: Need to revisit if GT indexing under TILE changes from KMD */
+> +#define xe_for_each_gt_under_each_tile(xe__, gt__, tile__) \
+> +	for (gt__ =3D 0, tile__ =3D 0 ; gt__ < xe_number_gt(xe__); \
+> +	     (xe_number_gt(xe__) =3D=3D igt_sysfs_get_num_tiles(xe__)) ? ++gt__=
+,
+> +++tile__ : ++gt__)
+> +
+It looks like for PVC, MTL and system memory(without device memory) the abo=
+ve logic works.
+If we have both system memory and device memory, will the above logic work?
+>  enum i915_attr_id {
+>  	RPS_ACT_FREQ_MHZ,
+>  	RPS_CUR_FREQ_MHZ,
+> --
+> 2.25.1
