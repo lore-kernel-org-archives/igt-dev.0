@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F28410E2B8
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 10:58:36 +0000 (UTC)
-Date: Tue, 20 Jun 2023 12:58:28 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Message-ID: <20230620105828.7pzkhofpyehxmsqk@zkempczy-mobl2>
-References: <20230620103412.31591-1-krishnaiah.bommu@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0EC6C10E2C9
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 11:46:01 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Tue, 20 Jun 2023 11:45:58 +0000
+Message-ID: <e8c988224a17417acb2cb23b70c6123b96b634db.camel@intel.com>
+References: <20230306152151.24200-1-kunal1.joshi@intel.com>
+In-Reply-To: <20230306152151.24200-1-kunal1.joshi@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <26F672141A93F141BE7D9ECF294445A0@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230620103412.31591-1-krishnaiah.bommu@intel.com>
-Subject: Re: [igt-dev] [PATCH] tests/xe_exec_compute_mode: Increase fence
- timeout for simulation env
+Subject: Re: [igt-dev] [PATCH i-g-t 0/2] RFC extend kms_psr2_sf for panel
+ replay
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,101 +23,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jun 20, 2023 at 04:04:12PM +0530, Bommu Krishnaiah wrote:
-> Increase fence timeout to 100 seconds for simulation env.
-> Value is determined based on experiments.
-> 
-> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> ---
->  tests/xe/xe_exec_compute_mode.c | 20 ++++++++++++++------
->  1 file changed, 14 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/xe/xe_exec_compute_mode.c b/tests/xe/xe_exec_compute_mode.c
-> index 2d950fdc..e2c9d0f3 100644
-> --- a/tests/xe/xe_exec_compute_mode.c
-> +++ b/tests/xe/xe_exec_compute_mode.c
-> @@ -110,6 +110,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  	} *data;
->  	int i, j, b;
->  	int map_fd = -1;
-> +	int64_t fence_timeout;
->  
->  	igt_assert(n_engines <= MAX_N_ENGINES);
->  
-> @@ -181,7 +182,12 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  					 to_user_pointer(data), addr,
->  					 bo_size, sync, 1);
->  #define ONE_SEC	1000
-> -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-> +#define HUNDRED_SEC	100000
-> +
-> +	fence_timeout = igt_run_in_simulation() ? HUNDRED_SEC : ONE_SEC;
-> +
-> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> +		       fence_timeout);
->  	data[0].vm_sync = 0;
->  
->  	for (i = 0; i < n_execs; i++) {
-> @@ -207,7 +213,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  
->  		if (flags & REBIND && i + 1 != n_execs) {
->  			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
-> -				       NULL, ONE_SEC);
-> +				       NULL, fence_timeout);
->  			xe_vm_unbind_async(fd, vm, bind_engines[e], 0,
->  					   addr, bo_size, NULL, 0);
->  
-> @@ -223,7 +229,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  							 addr, bo_size, sync,
->  							 1);
->  			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
-> -				       NULL, ONE_SEC);
-> +				       NULL, fence_timeout);
->  			data[0].vm_sync = 0;
->  		}
->  
-> @@ -236,7 +242,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  				 * an invalidate.
->  				 */
->  				xe_wait_ufence(fd, &data[i].exec_sync,
-> -					       USER_FENCE_VALUE, NULL, ONE_SEC);
-> +					       USER_FENCE_VALUE, NULL,
-> +					       fence_timeout);
->  				igt_assert_eq(data[i].data, 0xc0ffee);
->  			} else if (i * 2 != n_execs) {
->  				/*
-> @@ -266,7 +273,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  	j = flags & INVALIDATE ? n_execs - 1 : 0;
->  	for (i = j; i < n_execs; i++)
->  		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
-> -			       ONE_SEC);
-> +			       fence_timeout);
->  
->  	/* Wait for all execs to complete */
->  	if (flags & INVALIDATE)
-> @@ -275,7 +282,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  	sync[0].addr = to_user_pointer(&data[0].vm_sync);
->  	xe_vm_unbind_async(fd, vm, bind_engines[0], 0, addr, bo_size,
->  			   sync, 1);
-> -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
-> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
-> +		       fence_timeout);
->  
->  	for (i = j; i < n_execs; i++)
->  		igt_assert_eq(data[i].data, 0xc0ffee);
-> -- 
-> 2.25.1
-> 
-
-There's ack from me for this change, we'll back to it soon
-to alter definitions after uapi change.
-
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
+T24gTW9uLCAyMDIzLTAzLTA2IGF0IDIwOjUxICswNTMwLCBLdW5hbCBKb3NoaSB3cm90ZToNCj4g
+RXh0ZW5kZWQga21zX3BzcjJfc2YgdGVzdCB0byBydW4gb24gc2luayB3aGljaCBzdXBwb3J0cw0K
+PiBwYW5lbCByZXBsYXkuIEFsbCBkZWJ1Z2ZzIGluZm9pcyBhc3N1bWVkIGFuZCBkcml2ZXINCj4g
+bWF5IG5vdCBleHBvc2UgaXQgYXMgY3VycmVudGx5IHJlZmVycmVkLg0KPiANCj4gS3VuYWwgSm9z
+aGkgKDIpOg0KPiDCoCBSRkMgbGliL2lndF9wc3IgQWRkZWQgbGlicmFyeSBmdW5jdGlvbnMgZm9y
+IHBhbmVsIHJlcGxheQ0KPiDCoCBSRkMgdGVzdHMva21zX3BzcjJfc2YgRXh0ZW5kZWQgdGVzdCB0
+byB2YWxpZGF0ZSBwYW5lbCByZXBsYXkNCj4gDQo+IMKgbGliL2lndF9wc3IuY8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAgfMKgIDYyICsrKysrKysrKysrKysrKysrLQ0KPiDCoGxpYi9pZ3RfcHNyLmjC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDUgKysNCj4gwqB0ZXN0cy9pOTE1L2ttc19wc3Iy
+X3NmLmMgfCAxMzcgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLQ0KPiAtLQ0K
+PiDCoDMgZmlsZXMgY2hhbmdlZCwgMTcxIGluc2VydGlvbnMoKyksIDMzIGRlbGV0aW9ucygtKQ0K
+PiANCkhlbGxvIEt1bmFsLA0KDQpIb3cgSSBjdXJyZW50bHkgc2VlIHRoaXMgd2lsbCBiZToNCg0K
+UFNSIG1vZGU6IFBSIGVuYWJsZWQNClNvdXJjZSBQU1IgY3RsOiBlbmFibGVkIFsweFhYWFhYWFhY
+XQ0KU291cmNlIFBTUiBzdGF0dXM6IERFRVBfU0xFRVAgWzB4WFhYWFhYWFhdDQpCdXN5IGZyb250
+YnVmZmVyIGJpdHM6IDB4MDAwMDAwMDANClBlcmZvcm1hbmNlIGNvdW50ZXI6IDANCkZyYW1lOglQ
+U1IyIFNVIGJsb2NrczoNCjAJMA0KMQkwDQoyCTANCjMJMA0KNAkwDQo1CTANCjYJMA0KNwkwDQpQ
+U1IyIHNlbGVjdGl2ZSBmZXRjaDogZW5hYmxlZA0KDQpJLmUuIFBSIG1vZGUgdy8gYW5kIHcvbyBz
+ZWxlY3RpdmUgdXBkYXRlL2ZldGNoLg0KDQpCUiwNCg0KSm91bmkgSMO2Z2FuZGVyDQoNCg==
