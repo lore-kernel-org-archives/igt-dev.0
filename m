@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2064.outbound.protection.outlook.com [40.107.94.64])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F3F810E2A3
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 09:43:41 +0000 (UTC)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on20601.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7eae::601])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57BCE10E25A
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 06:45:14 +0000 (UTC)
 From: Jasber Chen <yipeng.chen@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 20 Jun 2023 17:43:20 +0800
-Message-ID: <20230620094320.1604164-1-yipeng.chen@amd.com>
+Date: Tue, 20 Jun 2023 14:44:53 +0800
+Message-ID: <20230620064453.1600743-1-yipeng.chen@amd.com>
 In-Reply-To: <20230619025836.1514883-1-yipeng.chen@amd.com>
 References: <20230619025836.1514883-1-yipeng.chen@amd.com>
 MIME-Version: 1.0
@@ -22,15 +23,17 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Cc: Jasber Chen <yipeng.chen@amd.com>,
+ Jasber Chen <yipeng.chen@amd.corp-partner.google.com>,
  =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Jasber Chen <yipeng.chen@amd.corp-partner.google.com>
+
 tests/amdgpu: skips query-timestamp-while-idle test on raven/raven2.
 The RLC counter used for GPU clocks can not keep counting in auto level dpm.
-Skips testing GPU clocks on raven/raven2 while GPU is idling, since result
-may not be as expected.
+Querying GPU clocks can not work as expected when GPU is idling.
 
 Signed-off-by: Jasber Chen <yipeng.chen@amd.com>
 Reviewed by: Vitaly Prosyak <vitaly.prosyak@amd.com>
