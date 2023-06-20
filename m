@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D31F10E326
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 16:47:48 +0000 (UTC)
-Date: Wed, 21 Jun 2023 18:46:25 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A02A010E376
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 18:31:15 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230621164625.mcu3g7f4hyoewuok@kamilkon-desk1>
-References: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
- <20230620085522.3984101-4-mauro.chehab@linux.intel.com>
+Date: Tue, 20 Jun 2023 20:31:06 +0200
+Message-Id: <20230620183106.26435-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230620085522.3984101-4-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/4] tests/xe: add run type fields to
- order testlists
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] RFC: runner/resultgen: compress dmesg if
+ size limit hit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,55 +21,162 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+Create possibility for compressing dmesg kernel output in case
+when disk limit option is used and file size actually exceed it.
+Instead of cutting down file, which may later limit search for
+problem solution, copy a few lines from beginning and end of it
+into results.json and then compresses it with the help of
+external program.
 
-On 2023-06-20 at 10:55:21 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Order tests at the fast feedback testlist, when generating
-> testlists based on Run type field:
-> 
-> - add boot to xe_module_load, to run such test first when producing
->   a fast feedback testlist;
-> - place kunit tests at the end of the fast feedback testlist, as they
->   have a higher chance of causing GPU hangups.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Bug: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/129
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/resultgen.c | 38 +++++++++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 13 deletions(-)
 
-> ---
->  tests/xe/xe_live_ktest.c  | 2 +-
->  tests/xe/xe_module_load.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/xe/xe_live_ktest.c b/tests/xe/xe_live_ktest.c
-> index 7dcf679069b8..f0cbf4f623bc 100644
-> --- a/tests/xe/xe_live_ktest.c
-> +++ b/tests/xe/xe_live_ktest.c
-> @@ -8,7 +8,7 @@
->   * Sub-category: kunit
->   * Functionality: kunit
->   * Test category: functionality test
-> - * Run type: BAT
-> + * Run type: BAT, kunit
->   *
->   * SUBTEST: bo
->   * Functionality: bo
-> diff --git a/tests/xe/xe_module_load.c b/tests/xe/xe_module_load.c
-> index 1c2d4a2e2ea3..3b2dc1fdc90f 100644
-> --- a/tests/xe/xe_module_load.c
-> +++ b/tests/xe/xe_module_load.c
-> @@ -99,7 +99,7 @@ static const char * const unwanted_drivers[] = {
->  /**
->   * SUBTEST: force-load
->   * Description: Load the Xe driver passing ``force_probe=*`` parameter
-> - * Run type: BAT
-> + * Run type: BAT, boot
->   *
->   * SUBTEST: load
->   * Description: Load the Xe driver
-> -- 
-> 2.40.1
-> 
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 26883ff9f..7291396ed 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -27,6 +27,8 @@ _Static_assert(INCOMPLETE_EXITCODE != IGT_EXIT_SUCCESS, "exit code clash");
+ _Static_assert(INCOMPLETE_EXITCODE != IGT_EXIT_INVALID, "exit code clash");
+ _Static_assert(INCOMPLETE_EXITCODE != GRACEFUL_EXITCODE, "exit code clash");
+ 
++#define compressor_name "bzip2"
++
+ struct subtest
+ {
+ 	char *name;
+@@ -949,9 +951,9 @@ static void add_dmesg_limited(struct json_object *obj, const char *dname,
+ {
+ 	char *small_buf;
+ 	size_t small_len = 0;
+-	char *smsg, *stmp;
++	const char *smsg, *stmp;
+ 	int line;
+-	size_t len, delta;
++	size_t len;
+ 
+ 	small_buf = malloc(DMESG_LIMIT_MAX_SIZE);
+ 	if (!small_buf) {
+@@ -973,7 +975,7 @@ static void add_dmesg_limited(struct json_object *obj, const char *dname,
+ 		smsg = stmp;
+ 	}
+ 
+-	small_len = dmesg_limit_append(DMESG_LIMIT_MAX_SIZE, small_buf, small_len, dmesg, sdmsg - dmesg);
++	small_len = dmesg_limit_append(DMESG_LIMIT_MAX_SIZE, small_buf, small_len, dmesg, smsg - dmesg);
+ 
+ 	len = dmesglen - 1;
+ 	smsg = dmesg + len;
+@@ -994,7 +996,9 @@ static void add_dmesg_limited(struct json_object *obj, const char *dname,
+ 		small_len = dmesg_limit_append(DMESG_LIMIT_MAX_SIZE, small_buf, small_len, dmesg + len, dmesglen - len);
+ 
+ 	json_object_object_add(obj, dname,
+-			       new_escaped_json_string(dmsg_small, small_len));
++			       new_escaped_json_string(small_buf, small_len));
++
++	free(small_buf);
+ }
+ 
+ static void add_dmesg(struct json_object *obj,
+@@ -1003,14 +1007,14 @@ static void add_dmesg(struct json_object *obj,
+ 		      size_t limit)
+ {
+ 	if (limit)
+-		add_dmesg_limited(obj, "dmesg", dmesg, dmesglen);
++		add_dmesg_limited(obj, "dmesg", dmesg, dmesglen, limit);
+ 	else
+ 		json_object_object_add(obj, "dmesg",
+ 				       new_escaped_json_string(dmesg, dmesglen));
+ 
+ 	if (warnings) {
+ 		if (limit)
+-			add_dmesg_limited(obj, "dmesg-warnings", warnings, warningslen);
++			add_dmesg_limited(obj, "dmesg-warnings", warnings, warningslen, limit);
+ 		else
+ 			json_object_object_add(obj, "dmesg-warnings",
+ 					       new_escaped_json_string(warnings, warningslen));
+@@ -1030,7 +1034,7 @@ static void add_empty_dmesgs_where_missing(struct json_object *tests,
+ 		generate_piglit_name(binary, subtests->subs[i].name, piglit_name, sizeof(piglit_name));
+ 		current_test = get_or_create_json_object(tests, piglit_name);
+ 		if (!json_object_object_get_ex(current_test, "dmesg", NULL)) {
+-			add_dmesg(current_test, "", 0, NULL, 0);
++			add_dmesg(current_test, "", 0, NULL, 0, 0);
+ 		}
+ 
+ 		for (k = 0; k < subtests->subs[i].dynamic_size; k++) {
+@@ -1038,14 +1042,14 @@ static void add_empty_dmesgs_where_missing(struct json_object *tests,
+ 							 dynamic_piglit_name, sizeof(dynamic_piglit_name));
+ 			current_test = get_or_create_json_object(tests, dynamic_piglit_name);
+ 			if (!json_object_object_get_ex(current_test, "dmesg", NULL)) {
+-				add_dmesg(current_test, "", 0, NULL, 0);
++				add_dmesg(current_test, "", 0, NULL, 0, 0);
+ 			}
+ 		}
+ 	}
+ 
+ }
+ 
+-static bool fill_from_dmesg(int fd,
++static bool fill_from_dmesg(int fd, char *dirname,
+ 			    struct settings *settings,
+ 			    char *binary,
+ 			    struct subtest_list *subtests,
+@@ -1076,7 +1080,7 @@ static bool fill_from_dmesg(int fd,
+ 		return false;
+ 	}
+ 
+-	if (!fstat(f, &st)) {
++	if (!fstat(fd, &st)) {
+ 		fprintf(stderr, "Cannot stat file, errno: %d\n", errno);
+ 		fclose(f);
+ 		return false;
+@@ -1201,6 +1205,14 @@ static bool fill_from_dmesg(int fd,
+ 	free(dynamic_warnings);
+ 	g_regex_unref(re);
+ 	fclose(f);
++
++	if (limit) {
++		char comp[PATH_MAX + 256];
++
++		snprintf(comp, sizeof(comp), "%s %s/%s/%s", compressor_name, settings->results_path, dirname, "dmesg.txt");
++		system(comp);
++	}
++
+ 	return true;
+ }
+ 
+@@ -2210,7 +2222,7 @@ static void add_to_totals(const char *binary,
+ 	}
+ }
+ 
+-static bool parse_test_directory(int dirfd,
++static bool parse_test_directory(int dirfd, char *dirname,
+ 				 struct job_list_entry *entry,
+ 				 struct settings *settings,
+ 				 struct results *results)
+@@ -2251,7 +2263,7 @@ static bool parse_test_directory(int dirfd,
+ 		}
+ 	}
+ 
+-	if (!fill_from_dmesg(fds[_F_DMESG], settings, entry->binary, &subtests, results->tests)) {
++	if (!fill_from_dmesg(fds[_F_DMESG], dirname, settings, entry->binary, &subtests, results->tests)) {
+ 		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
+ 		status = false;
+ 		goto parse_output_end;
+@@ -2400,7 +2412,7 @@ struct json_object *generate_results_json(int dirfd)
+ 			continue;
+ 		}
+ 
+-		if (!parse_test_directory(testdirfd, &job_list.entries[i], &settings, &results)) {
++		if (!parse_test_directory(testdirfd, name, &job_list.entries[i], &settings, &results)) {
+ 			close(testdirfd);
+ 			return NULL;
+ 		}
+-- 
+2.39.2
+
 
