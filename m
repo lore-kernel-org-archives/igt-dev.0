@@ -1,24 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5A7010E181
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC83810E181
  for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 08:55:29 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.7.173])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id C8442580C28
+ by linux.intel.com (Postfix) with ESMTPS id C84A9580C3B
  for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 01:55:26 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qBX92-00GiTM-16
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qBX92-00GiTP-1E
  for igt-dev@lists.freedesktop.org; Tue, 20 Jun 2023 10:55:24 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Jun 2023 10:55:18 +0200
-Message-Id: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
+Date: Tue, 20 Jun 2023 10:55:19 +0200
+Message-Id: <20230620085522.3984101-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
+References: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/4] generate an ordered testlist for Xe
- driver
+Subject: [igt-dev] [PATCH i-g-t v2 1/4] scripts/test_list.py: add support
+ for ordering testlists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,25 +34,118 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Add support for ordering tests at the documentation tool, and produce
-Xe fast feedback testlists on an ordered way.
+Testlists usually require an special order, like:
+- an initial test which loads the driver;
+- normal tests;
+- dangerous tests (like KUnit ones).
 
+Add support to handle order, by adding an "order" property at
+the config file.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
+ scripts/test_list.py | 55 ++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 48 insertions(+), 7 deletions(-)
 
-v2: added an extra patch to sort the tests alphabetically before
-    start ordering it.
-
-Mauro Carvalho Chehab (4):
-  scripts/test_list.py: add support for ordering testlists
-  xe_test_config.json: add an order for run type
-  tests/xe: add run type fields to order testlists
-  scripts/test_list.py: produce alphabetically ordered testlists
-
- scripts/test_list.py         | 84 +++++++++++++++++++++++++++---------
- tests/xe/xe_live_ktest.c     |  2 +-
- tests/xe/xe_module_load.c    |  2 +-
- tests/xe/xe_test_config.json |  7 ++-
- 4 files changed, 72 insertions(+), 23 deletions(-)
-
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index f676024c9571..76fdcf3dbb4f 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -819,18 +819,25 @@ class TestList:
+     # Subtest list methods
+     #
+ 
+-    def get_subtests(self, sort_field = None, expand = None):
++    def get_subtests(self, sort_field = None, expand = None, with_order = False):
+ 
+         """Return an array with all subtests"""
+ 
+         subtests = {}
+         subtests[""] = []
+ 
++        order = None
++
+         if sort_field:
+             if sort_field.lower() not in self.field_list:
+                 sys.exit(f"Field '{sort_field}' is not defined")
+             sort_field = self.field_list[sort_field.lower()]
+ 
++            if with_order:
++                if "_properties_" in self.props[sort_field]:
++                    if "order" in self.props[sort_field]["_properties_"]:
++                        order = self.props[sort_field]["_properties_"]["order"]
++
+         for test in sorted(self.doc.keys()):
+             fname = self.doc[test]["File"]
+ 
+@@ -848,20 +855,54 @@ class TestList:
+                     if sort_field in subtest:
+                         if expand:
+                             test_list = subtest[sort_field].split(expand)
++                            test_list = [s.strip() for s in test_list]
++
+                             for test_elem in test_list:
+-                                test_elem = test_elem.strip()
+                                 if test_elem not in subtests:
+                                     subtests[test_elem] = []
+-                                subtests[test_elem].append(subtest["Summary"])
++                                if order:
++                                    subtests[test_elem].append((subtest["Summary"], test_list))
++                                else:
++                                    subtests[test_elem].append(subtest["Summary"])
+                         else:
+                             if subtest[sort_field] not in subtests:
+                                 subtests[subtest[sort_field]] = []
+-                            subtests[subtest[sort_field]].append(subtest["Summary"])
++                                if order:
++                                    subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
++                                else:
++                                    subtests[subtest[sort_field]].append(subtest["Summary"])
++                    else:
++                        if order:
++                            subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
++                        else:
++                            subtests[""].append(subtest["Summary"])
++
++                else:
++                    if order:
++                        subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
+                     else:
+                         subtests[""].append(subtest["Summary"])
+ 
+-                else:
+-                    subtests[""].append(subtest["Summary"])
++        if order:
++            for group, tests in subtests.items():
++                prefix_tests = []
++                suffix_tests = []
++                middle_tests = []
++                is_prefix = True
++                for k in order:
++                    if k == "__all__":
++                        is_prefix = False
++                        continue
++                    for test in tests:
++                        if k in test[1]:
++                            if is_prefix:
++                                prefix_tests.append(test[0])
++                            else:
++                                suffix_tests.append(test[0])
++                for test in tests:
++                    if test[0] not in prefix_tests and test[0] not in suffix_tests:
++                        middle_tests.append(test[0])
++                subtests[group] = prefix_tests + middle_tests + suffix_tests
+ 
+         return subtests
+ 
+@@ -1203,7 +1244,7 @@ class TestList:
+         test_prefix = re.sub(r'^igt@', '', test_prefix)
+ 
+         # NOTE: currently, it uses a comma for multi-value delimitter
+-        test_subtests = self.get_subtests(sort_field, ",")
++        test_subtests = self.get_subtests(sort_field, ",", with_order = True)
+ 
+         if not os.path.exists(directory):
+             os.makedirs(directory)
 -- 
 2.40.1
