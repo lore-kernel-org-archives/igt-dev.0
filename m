@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4997710E2F7
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 14:58:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E232310E2F7
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 14:58:12 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Jun 2023 20:27:34 +0530
-Message-Id: <20230620145737.601858-1-swati2.sharma@intel.com>
+Date: Tue, 20 Jun 2023 20:27:36 +0530
+Message-Id: <20230620145737.601858-3-swati2.sharma@intel.com>
+In-Reply-To: <20230620145737.601858-1-swati2.sharma@intel.com>
+References: <20230620145737.601858-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/3] Misc. fixes
+Subject: [igt-dev] [PATCH i-g-t 2/3] i915/kms_mmap_write_crc: Free the mmap
+ and dma-buf fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,23 +19,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Series contains misc. fixes.
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-Chris Wilson (2):
-  i915/kms_busy: Free spinners after use
-  i915/kms_mmap_write_crc: Free the mmap and dma-buf fd
+Release the dma-buf fd (held also by the mmap) after testing so
+that we can check for kernel resource leaks at exit.
 
-Matt Roper (1):
-  lib/igt_draw: Use intel_display_ver() for drawing with blits
-
- lib/igt_draw.c                  | 6 +++---
- tests/i915/kms_busy.c           | 5 ++---
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
  tests/i915/kms_mmap_write_crc.c | 3 +++
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ 1 file changed, 3 insertions(+)
 
+diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
+index bc51975f..87f51153 100644
+--- a/tests/i915/kms_mmap_write_crc.c
++++ b/tests/i915/kms_mmap_write_crc.c
+@@ -165,6 +165,9 @@ static void test(data_t *data)
+ 	/* check that the crc is as expected, which requires that caches got flushed */
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
+ 	igt_assert_crc_equal(&crc, &data->ref_crc);
++
++	munmap(ptr, fb->size);
++	close(dma_buf_fd);
+ }
+ 
+ static void prepare_crtc(data_t *data)
 -- 
 2.25.1
