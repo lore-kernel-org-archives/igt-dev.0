@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E232310E2F7
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D67410E2F7
  for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 14:58:12 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Jun 2023 20:27:36 +0530
-Message-Id: <20230620145737.601858-3-swati2.sharma@intel.com>
+Date: Tue, 20 Jun 2023 20:27:35 +0530
+Message-Id: <20230620145737.601858-2-swati2.sharma@intel.com>
 In-Reply-To: <20230620145737.601858-1-swati2.sharma@intel.com>
 References: <20230620145737.601858-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] i915/kms_mmap_write_crc: Free the mmap
- and dma-buf fd
+Subject: [igt-dev] [PATCH i-g-t 1/3] i915/kms_busy: Free spinners after use
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,29 +25,39 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Chris Wilson <chris.p.wilson@intel.com>
 
-Release the dma-buf fd (held also by the mmap) after testing so
-that we can check for kernel resource leaks at exit.
+Avoid leaking GEM objects between subtests, eventually leading to
+warnings for leaking kernel resources at exit.
 
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Michael J. Ruhl <michael.j.ruhl@intel.com>
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/i915/kms_mmap_write_crc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/i915/kms_busy.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-index bc51975f..87f51153 100644
---- a/tests/i915/kms_mmap_write_crc.c
-+++ b/tests/i915/kms_mmap_write_crc.c
-@@ -165,6 +165,9 @@ static void test(data_t *data)
- 	/* check that the crc is as expected, which requires that caches got flushed */
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
- 	igt_assert_crc_equal(&crc, &data->ref_crc);
-+
-+	munmap(ptr, fb->size);
-+	close(dma_buf_fd);
+diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
+index 3b838cb8..ad96d6b9 100644
+--- a/tests/i915/kms_busy.c
++++ b/tests/i915/kms_busy.c
+@@ -219,7 +219,7 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
+ 
+ 	igt_assert(read(dpy->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+ 
+-	igt_spin_end(t);
++	igt_spin_free(dpy->drm_fd, t);
+ 	put_ahnd(ahnd);
  }
  
- static void prepare_crtc(data_t *data)
+@@ -304,9 +304,8 @@ test_pageflip_modeset_hang(igt_display_t *dpy,
+ 
+ 	igt_assert(read(dpy->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+ 
+-	igt_spin_end(t);
+ 	put_ahnd(ahnd);
+-
++	igt_spin_free(dpy->drm_fd, t);
+ 	igt_remove_fb(dpy->drm_fd, &fb);
+ }
+ 
 -- 
 2.25.1
