@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0C7C10E28B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C99910E15E
  for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 08:55:29 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.7.173])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id CCB32580BF0
+ by linux.intel.com (Postfix) with ESMTPS id CF75E580DA2
  for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 01:55:26 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qBX92-00GiTY-1O
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qBX92-00GiTV-1L
  for igt-dev@lists.freedesktop.org; Tue, 20 Jun 2023 10:55:24 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Jun 2023 10:55:22 +0200
-Message-Id: <20230620085522.3984101-5-mauro.chehab@linux.intel.com>
+Date: Tue, 20 Jun 2023 10:55:21 +0200
+Message-Id: <20230620085522.3984101-4-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
 References: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 4/4] scripts/test_list.py: produce
- alphabetically ordered testlists
+Subject: [igt-dev] [PATCH i-g-t v2 3/4] tests/xe: add run type fields to
+ order testlists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,102 +34,45 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Before start handling the subtest arrays, order it, in order
-it alphabetically.
+Order tests at the fast feedback testlist, when generating
+testlists based on Run type field:
 
-This should produce a better ordered testlist.
+- add boot to xe_module_load, to run such test first when producing
+  a fast feedback testlist;
+- place kunit tests at the end of the fast feedback testlist, as they
+  have a higher chance of causing GPU hangups.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 59 +++++++++++++++++++++++---------------------
- 1 file changed, 31 insertions(+), 28 deletions(-)
+ tests/xe/xe_live_ktest.c  | 2 +-
+ tests/xe/xe_module_load.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 76fdcf3dbb4f..a55d2977c7c3 100755
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -838,6 +838,7 @@ class TestList:
-                     if "order" in self.props[sort_field]["_properties_"]:
-                         order = self.props[sort_field]["_properties_"]["order"]
- 
-+        subtest_array = []
-         for test in sorted(self.doc.keys()):
-             fname = self.doc[test]["File"]
- 
-@@ -845,44 +846,46 @@ class TestList:
-             test_name = re.sub(r'\.[ch]', '', test_name)
-             test_name = "igt@" + test_name
- 
--            subtest_array = self.expand_subtest(fname, test_name, test, True)
-+            subtest_array += self.expand_subtest(fname, test_name, test, True)
- 
--            for subtest in subtest_array:
--                if self.__filter_subtest(test, subtest, True):
--                    continue
-+        subtest_array.sort(key = lambda x : x.get('Summary'))
- 
--                if sort_field:
--                    if sort_field in subtest:
--                        if expand:
--                            test_list = subtest[sort_field].split(expand)
--                            test_list = [s.strip() for s in test_list]
-+        for subtest in subtest_array:
-+            if self.__filter_subtest(test, subtest, True):
-+                continue
- 
--                            for test_elem in test_list:
--                                if test_elem not in subtests:
--                                    subtests[test_elem] = []
--                                if order:
--                                    subtests[test_elem].append((subtest["Summary"], test_list))
--                                else:
--                                    subtests[test_elem].append(subtest["Summary"])
--                        else:
--                            if subtest[sort_field] not in subtests:
--                                subtests[subtest[sort_field]] = []
--                                if order:
--                                    subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
--                                else:
--                                    subtests[subtest[sort_field]].append(subtest["Summary"])
-+            if sort_field:
-+                if sort_field in subtest:
-+                    if expand:
-+                        test_list = subtest[sort_field].split(expand)
-+                        test_list = [s.strip() for s in test_list]
-+
-+                        for test_elem in test_list:
-+                            if test_elem not in subtests:
-+                                subtests[test_elem] = []
-+                            if order:
-+                                subtests[test_elem].append((subtest["Summary"], test_list))
-+                            else:
-+                                subtests[test_elem].append(subtest["Summary"])
-                     else:
--                        if order:
--                            subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
--                        else:
--                            subtests[""].append(subtest["Summary"])
--
-+                        if subtest[sort_field] not in subtests:
-+                            subtests[subtest[sort_field]] = []
-+                            if order:
-+                                subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-+                            else:
-+                                subtests[subtest[sort_field]].append(subtest["Summary"])
-                 else:
-                     if order:
-                         subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-                     else:
-                         subtests[""].append(subtest["Summary"])
- 
-+            else:
-+                if order:
-+                    subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-+                else:
-+                    subtests[""].append(subtest["Summary"])
-+
-         if order:
-             for group, tests in subtests.items():
-                 prefix_tests = []
+diff --git a/tests/xe/xe_live_ktest.c b/tests/xe/xe_live_ktest.c
+index 7dcf679069b8..f0cbf4f623bc 100644
+--- a/tests/xe/xe_live_ktest.c
++++ b/tests/xe/xe_live_ktest.c
+@@ -8,7 +8,7 @@
+  * Sub-category: kunit
+  * Functionality: kunit
+  * Test category: functionality test
+- * Run type: BAT
++ * Run type: BAT, kunit
+  *
+  * SUBTEST: bo
+  * Functionality: bo
+diff --git a/tests/xe/xe_module_load.c b/tests/xe/xe_module_load.c
+index 1c2d4a2e2ea3..3b2dc1fdc90f 100644
+--- a/tests/xe/xe_module_load.c
++++ b/tests/xe/xe_module_load.c
+@@ -99,7 +99,7 @@ static const char * const unwanted_drivers[] = {
+ /**
+  * SUBTEST: force-load
+  * Description: Load the Xe driver passing ``force_probe=*`` parameter
+- * Run type: BAT
++ * Run type: BAT, boot
+  *
+  * SUBTEST: load
+  * Description: Load the Xe driver
 -- 
 2.40.1
