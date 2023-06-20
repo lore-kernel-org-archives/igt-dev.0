@@ -1,26 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE59110E15E
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 08:55:29 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.7.173])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id CE1C0580BE4
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 01:55:26 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qBX92-00GiTS-1H
- for igt-dev@lists.freedesktop.org; Tue, 20 Jun 2023 10:55:24 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4364910E093
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 10:39:20 +0000 (UTC)
+From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Jun 2023 10:55:20 +0200
-Message-Id: <20230620085522.3984101-3-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
-References: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
+Date: Tue, 20 Jun 2023 16:04:12 +0530
+Message-Id: <20230620103412.31591-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/4] xe_test_config.json: add an order
- for run type
+Subject: [igt-dev] [PATCH] tests/xe_exec_compute_mode: Increase fence
+ timeout for simulation env
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,39 +17,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Increase fence timeout to 100 seconds for simulation env.
+Value is determined based on experiments.
 
-When generating test lists based on run type for the Xe driver,
-order them in a way that the first test will be the one called
-after booting the machine (e. g. module load), then normal tests
-and finally KUnit ones.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 ---
- tests/xe/xe_test_config.json | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tests/xe/xe_exec_compute_mode.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/tests/xe/xe_test_config.json b/tests/xe/xe_test_config.json
-index 334d372d1330..e89f998bc66b 100644
---- a/tests/xe/xe_test_config.json
-+++ b/tests/xe/xe_test_config.json
-@@ -22,7 +22,12 @@
-                     },
-                     "Run type": {
-                         "_properties_": {
--                            "description": "Defines what category of testlist it belongs"
-+                            "description": "Defines what category of testlist it belongs",
-+                            "order": [
-+                                "boot",
-+                                "__all__",
-+                                "kunit"
-+                            ]
-                         }
-                     }
-                 }
+diff --git a/tests/xe/xe_exec_compute_mode.c b/tests/xe/xe_exec_compute_mode.c
+index 2d950fdc..e2c9d0f3 100644
+--- a/tests/xe/xe_exec_compute_mode.c
++++ b/tests/xe/xe_exec_compute_mode.c
+@@ -110,6 +110,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	} *data;
+ 	int i, j, b;
+ 	int map_fd = -1;
++	int64_t fence_timeout;
+ 
+ 	igt_assert(n_engines <= MAX_N_ENGINES);
+ 
+@@ -181,7 +182,12 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 					 to_user_pointer(data), addr,
+ 					 bo_size, sync, 1);
+ #define ONE_SEC	1000
+-	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
++#define HUNDRED_SEC	100000
++
++	fence_timeout = igt_run_in_simulation() ? HUNDRED_SEC : ONE_SEC;
++
++	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
++		       fence_timeout);
+ 	data[0].vm_sync = 0;
+ 
+ 	for (i = 0; i < n_execs; i++) {
+@@ -207,7 +213,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 
+ 		if (flags & REBIND && i + 1 != n_execs) {
+ 			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+-				       NULL, ONE_SEC);
++				       NULL, fence_timeout);
+ 			xe_vm_unbind_async(fd, vm, bind_engines[e], 0,
+ 					   addr, bo_size, NULL, 0);
+ 
+@@ -223,7 +229,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 							 addr, bo_size, sync,
+ 							 1);
+ 			xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+-				       NULL, ONE_SEC);
++				       NULL, fence_timeout);
+ 			data[0].vm_sync = 0;
+ 		}
+ 
+@@ -236,7 +242,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 				 * an invalidate.
+ 				 */
+ 				xe_wait_ufence(fd, &data[i].exec_sync,
+-					       USER_FENCE_VALUE, NULL, ONE_SEC);
++					       USER_FENCE_VALUE, NULL,
++					       fence_timeout);
+ 				igt_assert_eq(data[i].data, 0xc0ffee);
+ 			} else if (i * 2 != n_execs) {
+ 				/*
+@@ -266,7 +273,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	j = flags & INVALIDATE ? n_execs - 1 : 0;
+ 	for (i = j; i < n_execs; i++)
+ 		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, NULL,
+-			       ONE_SEC);
++			       fence_timeout);
+ 
+ 	/* Wait for all execs to complete */
+ 	if (flags & INVALIDATE)
+@@ -275,7 +282,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+ 	xe_vm_unbind_async(fd, vm, bind_engines[0], 0, addr, bo_size,
+ 			   sync, 1);
+-	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL, ONE_SEC);
++	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
++		       fence_timeout);
+ 
+ 	for (i = j; i < n_execs; i++)
+ 		igt_assert_eq(data[i].data, 0xc0ffee);
 -- 
-2.40.1
+2.25.1
