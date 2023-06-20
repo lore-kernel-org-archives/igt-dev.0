@@ -1,26 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C99910E15E
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 08:55:29 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.7.173])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id CF75E580DA2
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 01:55:26 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qBX92-00GiTV-1L
- for igt-dev@lists.freedesktop.org; Tue, 20 Jun 2023 10:55:24 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Jun 2023 10:55:21 +0200
-Message-Id: <20230620085522.3984101-4-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
-References: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75B7310E2A1
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jun 2023 09:38:26 +0000 (UTC)
+From: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
+Date: Tue, 20 Jun 2023 09:38:20 +0000
+Message-ID: <DM4PR11MB5293B68D02D7DAA80F15E8129D5CA@DM4PR11MB5293.namprd11.prod.outlook.com>
+References: <20230616110519.3903-1-krishnaiah.bommu@intel.com>
+ <20230619055231.ggkmac4ygtu5m6py@zkempczy-mobl2>
+In-Reply-To: <20230619055231.ggkmac4ygtu5m6py@zkempczy-mobl2>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/4] tests/xe: add run type fields to
- order testlists
+Subject: Re: [igt-dev] [PATCH] tests/ xe_exec_compute_mode: Increase fence
+ timeout for simulation env
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,51 +22,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Order tests at the fast feedback testlist, when generating
-testlists based on Run type field:
 
-- add boot to xe_module_load, to run such test first when producing
-  a fast feedback testlist;
-- place kunit tests at the end of the fast feedback testlist, as they
-  have a higher chance of causing GPU hangups.
+> -----Original Message-----
+> From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
+> Sent: 19 June 2023 11:23
+> To: Bommu, Krishnaiah <krishnaiah.bommu@intel.com>
+> Cc: igt-dev@lists.freedesktop.org
+> Subject: Re: [igt-dev] [PATCH] tests/ xe_exec_compute_mode: Increase
+> fence timeout for simulation env
+>=20
+> On Fri, Jun 16, 2023 at 04:35:19PM +0530, Bommu Krishnaiah wrote:
+> > Increase fence timeout to 100 seconds for simulation env.
+> > Value is determined based on experiments.
+> >
+> > Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> > ---
+> >  tests/xe/xe_exec_compute_mode.c | 20 ++++++++++++++------
+> >  1 file changed, 14 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/tests/xe/xe_exec_compute_mode.c
+> > b/tests/xe/xe_exec_compute_mode.c index 68519399..aba35c19 100644
+> > --- a/tests/xe/xe_exec_compute_mode.c
+> > +++ b/tests/xe/xe_exec_compute_mode.c
+> > @@ -113,6 +113,7 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> >  	} *data;
+> >  	int i, j, b;
+> >  	int map_fd =3D -1;
+> > +	int64_t fence_timeout;
+> >
+> >  	igt_assert(n_engines <=3D MAX_N_ENGINES);
+> >
+> > @@ -184,7 +185,12 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> >  					 to_user_pointer(data), addr,
+> >  					 bo_size, sync, 1);
+> >  #define ONE_SEC	1000
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> ONE_SEC);
+> > +#define HUNDRED_SEC	100000
+>=20
+> Be aware we're going to switch to nanoseconds as a timeout, more info her=
+e:
+>=20
+> https://patchwork.freedesktop.org/series/118670/
+>=20
+@Kempczynski, Zbigniew should I need to wait until https://patchwork.freede=
+sktop.org/series/118670/ is merged, or should I need to merge with fixme
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/xe/xe_live_ktest.c  | 2 +-
- tests/xe/xe_module_load.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Regards,
+Krishna.
 
-diff --git a/tests/xe/xe_live_ktest.c b/tests/xe/xe_live_ktest.c
-index 7dcf679069b8..f0cbf4f623bc 100644
---- a/tests/xe/xe_live_ktest.c
-+++ b/tests/xe/xe_live_ktest.c
-@@ -8,7 +8,7 @@
-  * Sub-category: kunit
-  * Functionality: kunit
-  * Test category: functionality test
-- * Run type: BAT
-+ * Run type: BAT, kunit
-  *
-  * SUBTEST: bo
-  * Functionality: bo
-diff --git a/tests/xe/xe_module_load.c b/tests/xe/xe_module_load.c
-index 1c2d4a2e2ea3..3b2dc1fdc90f 100644
---- a/tests/xe/xe_module_load.c
-+++ b/tests/xe/xe_module_load.c
-@@ -99,7 +99,7 @@ static const char * const unwanted_drivers[] = {
- /**
-  * SUBTEST: force-load
-  * Description: Load the Xe driver passing ``force_probe=*`` parameter
-- * Run type: BAT
-+ * Run type: BAT, boot
-  *
-  * SUBTEST: load
-  * Description: Load the Xe driver
--- 
-2.40.1
+> --
+> Zbigniew
+>=20
+> > +
+> > +	fence_timeout =3D igt_run_in_simulation() ? HUNDRED_SEC :
+> ONE_SEC;
+> > +
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> > +		       fence_timeout);
+> >  	data[0].vm_sync =3D 0;
+> >
+> >  	for (i =3D 0; i < n_execs; i++) {
+> > @@ -210,7 +216,7 @@ test_exec(int fd, struct
+> > drm_xe_engine_class_instance *eci,
+> >
+> >  		if (flags & REBIND && i + 1 !=3D n_execs) {
+> >  			xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE,
+> > -				       NULL, ONE_SEC);
+> > +				       NULL, fence_timeout);
+> >  			xe_vm_unbind_async(fd, vm, bind_engines[e], 0,
+> >  					   addr, bo_size, NULL, 0);
+> >
+> > @@ -226,7 +232,7 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> >  							 addr, bo_size, sync,
+> >  							 1);
+> >  			xe_wait_ufence(fd, &data[0].vm_sync,
+> USER_FENCE_VALUE,
+> > -				       NULL, ONE_SEC);
+> > +				       NULL, fence_timeout);
+> >  			data[0].vm_sync =3D 0;
+> >  		}
+> >
+> > @@ -239,7 +245,8 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> >  				 * an invalidate.
+> >  				 */
+> >  				xe_wait_ufence(fd, &data[i].exec_sync,
+> > -					       USER_FENCE_VALUE, NULL,
+> ONE_SEC);
+> > +					       USER_FENCE_VALUE, NULL,
+> > +					       fence_timeout);
+> >  				igt_assert_eq(data[i].data, 0xc0ffee);
+> >  			} else if (i * 2 !=3D n_execs) {
+> >  				/*
+> > @@ -269,7 +276,7 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> >  	j =3D flags & INVALIDATE ? n_execs - 1 : 0;
+> >  	for (i =3D j; i < n_execs; i++)
+> >  		xe_wait_ufence(fd, &data[i].exec_sync,
+> USER_FENCE_VALUE, NULL,
+> > -			       ONE_SEC);
+> > +			       fence_timeout);
+> >
+> >  	/* Wait for all execs to complete */
+> >  	if (flags & INVALIDATE)
+> > @@ -278,7 +285,8 @@ test_exec(int fd, struct
+> drm_xe_engine_class_instance *eci,
+> >  	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
+> >  	xe_vm_unbind_async(fd, vm, bind_engines[0], 0, addr, bo_size,
+> >  			   sync, 1);
+> > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> ONE_SEC);
+> > +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, NULL,
+> > +		       fence_timeout);
+> >
+> >  	for (i =3D j; i < n_execs; i++)
+> >  		igt_assert_eq(data[i].data, 0xc0ffee);
+> > --
+> > 2.25.1
+> >
