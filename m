@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 312B410E31C
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 16:36:52 +0000 (UTC)
-Date: Wed, 21 Jun 2023 18:35:57 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF53310E24C
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 16:43:30 +0000 (UTC)
+Date: Wed, 21 Jun 2023 18:43:08 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230621163557.ulu5yqovo6sya5za@kamilkon-desk1>
-References: <20230621090032.611560-1-swati2.sharma@intel.com>
- <20230621090032.611560-2-swati2.sharma@intel.com>
+Message-ID: <20230621164308.xs4osqvq4j7gi2w6@kamilkon-desk1>
+References: <20230620182508.6043-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230621090032.611560-2-swati2.sharma@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] i915/kms_busy: Free spinners after
- use
+In-Reply-To: <20230620182508.6043-1-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_setmode: Fix dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,58 +19,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
+Hi Jeevan,
 
-On 2023-06-21 at 14:30:30 +0530, Swati Sharma wrote:
-> From: Chris Wilson <chris.p.wilson@intel.com>
+On 2023-06-20 at 23:55:08 +0530, Jeevan B wrote:
+> basic-clone-single-crtc and invalid-clone-exclusive-crtc were not
+> part of dynamic subtest so tests were getting skipped. fixed the
+> test to execute skipping tests as expected.
 > 
-> Avoid leaking GEM objects between subtests, eventually leading to
-> warnings for leaking kernel resources at exit.
-> 
-> v2: -placed igt_spin_free() before the put_ahnd()
-> 
-> Acked-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->  tests/i915/kms_busy.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+>  tests/kms_setmode.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
 > 
-> diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
-> index 3b838cb8..e953b814 100644
-> --- a/tests/i915/kms_busy.c
-> +++ b/tests/i915/kms_busy.c
-> @@ -219,7 +219,7 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index a611d938..b1883b10 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -647,20 +647,19 @@ static void test_one_combination(const struct test_config *tconf,
+>  	struct crtc_config crtcs[MAX_CRTCS];
+>  	int crtc_count;
+>  	bool config_valid;
+> +	int i, pos = 0;
+> +	char test_name[256];
 >  
->  	igt_assert(read(dpy->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+>  	setup_crtcs(tconf, cconfs, connector_count, crtcs,
+>  		    &crtc_count, &config_valid);
 >  
-> -	igt_spin_end(t);
-> +	igt_spin_free(dpy->drm_fd, t);
->  	put_ahnd(ahnd);
->  }
->  
-> @@ -304,9 +304,8 @@ test_pageflip_modeset_hang(igt_display_t *dpy,
->  
->  	igt_assert(read(dpy->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
->  
-> -	igt_spin_end(t);
-> +	igt_spin_free(dpy->drm_fd, t);
->  	put_ahnd(ahnd);
+> -	if (config_valid == !(tconf->flags & TEST_INVALID)) {
+> -		int i, pos = 0;
+> -		char test_name[256];
 > -
-- ^
-We should avoid style changes when making fixes, but imho
-here it is minor issue, so
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
->  	igt_remove_fb(dpy->drm_fd, &fb);
->  }
+> -		for (i = 0; i < crtc_count; i++) {
+> -			if (i > 0)
+> -				pos += snprintf(&test_name[pos], ARRAY_SIZE(test_name) - pos, "-");
+> -			pos += get_test_name_str(&crtcs[i], &test_name[pos], ARRAY_SIZE(test_name) - pos);
+> -		}
+> +	for (i = 0; i < crtc_count; i++) {
+> +		if (i > 0)
+> +			pos += snprintf(&test_name[pos], ARRAY_SIZE(test_name) - pos, "-");
+> +		pos += get_test_name_str(&crtcs[i], &test_name[pos], ARRAY_SIZE(test_name) - pos);
+> +	}
 >  
+> +	if (config_valid == !(tconf->flags & TEST_INVALID)) {
+>  		for (i = 0; i < crtc_count; i++) {
+>  			struct crtc_config *crtc = &crtcs[i];
+>  
+> @@ -685,7 +684,8 @@ static void test_one_combination(const struct test_config *tconf,
+>  
+>  		igt_dynamic_f("%s", test_name)
+----------------------------------- ^
+This declares test name.
+
+>  			test_crtc_config(tconf, crtcs, crtc_count);
+----------------------- ^
+And this executes it.
+
+> -	}
+> +	} else
+> +		igt_dynamic_f("%s", test_name)
+
+Call to test is missing here.
+
+Regards,
+Kamil
+
+>  
+>  out:
+>  	cleanup_crtcs(crtcs, crtc_count);
 > -- 
-> 2.25.1
+> 2.36.0
 > 
