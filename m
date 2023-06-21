@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C185810E334
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 16:49:53 +0000 (UTC)
+Date: Wed, 21 Jun 2023 18:48:01 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230621164801.jzujeikpeg23s4wx@kamilkon-desk1>
+References: <20230620085522.3984101-1-mauro.chehab@linux.intel.com>
+ <20230620085522.3984101-5-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 22 Jun 2023 12:43:11 -0000
-Message-ID: <168743779138.4869.7989130016654471094@emeril.freedesktop.org>
-References: <20230622123014.4184296-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230622123014.4184296-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/i915/kms=5Ffb=5Fcoherency=3A_add_mega-feature_and_function?=
- =?utf-8?q?ality?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230620085522.3984101-5-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 4/4] scripts/test_list.py: produce
+ alphabetically ordered testlists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,135 +20,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Mauro,
 
-Series: tests/i915/kms_fb_coherency: add mega-feature and functionality
-URL   : https://patchwork.freedesktop.org/series/119749/
-State : warning
+On 2023-06-20 at 10:55:22 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Before start handling the subtest arrays, order it, in order
+> it alphabetically.
+> 
+> This should produce a better ordered testlist.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Summary ==
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/915883 for the overview.
-
-build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44221443):
-  time="2023-06-22T12:42:02Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-4531af109333176daa2f792b31e35f35aa0ae42d
-  Getting image source signatures
-  Copying blob sha256:2f92e8d0541551f215cc8116b6a6507a714a936f45b19286a6664467db837932
-  Copying config sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-22T12:42:17Z" level=warning msg="signal: killed"
-  time="2023-06-22T12:42:17Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1687437738:step_script
-  section_start:1687437738:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687437739:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44221445):
-  time="2023-06-22T12:42:32Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:ac8bb7e1a32398e26c129ce64e2ddc3e7ec6c34d93424b247f16049f5a91cff4
-  Copying config sha256:49ae9acb659161695228c0667681983289fc1a40d5056e99a72eb66538086c15
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-22T12:42:37Z" level=warning msg="signal: killed"
-  time="2023-06-22T12:42:37Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1687437757:step_script
-  section_start:1687437757:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687437758:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44221444):
-  time="2023-06-22T12:42:28Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:ac8bb7e1a32398e26c129ce64e2ddc3e7ec6c34d93424b247f16049f5a91cff4
-  Copying config sha256:49ae9acb659161695228c0667681983289fc1a40d5056e99a72eb66538086c15
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-22T12:42:32Z" level=warning msg="signal: killed"
-  time="2023-06-22T12:42:32Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1687437753:step_script
-  section_start:1687437753:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687437754:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44221446):
-  time="2023-06-22T12:42:35Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:ac8bb7e1a32398e26c129ce64e2ddc3e7ec6c34d93424b247f16049f5a91cff4
-  Copying config sha256:49ae9acb659161695228c0667681983289fc1a40d5056e99a72eb66538086c15
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-22T12:42:39Z" level=warning msg="signal: killed"
-  time="2023-06-22T12:42:39Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1687437760:step_script
-  section_start:1687437760:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687437760:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44221447):
-  time="2023-06-22T12:42:37Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM fedora:31
-  Getting image source signatures
-  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
-  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
-  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-06-22T12:42:43Z" level=warning msg="signal: killed"
-  time="2023-06-22T12:42:43Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
-  section_end:1687437763:step_script
-  section_start:1687437763:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687437764:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/915883
+> ---
+>  scripts/test_list.py | 59 +++++++++++++++++++++++---------------------
+>  1 file changed, 31 insertions(+), 28 deletions(-)
+> 
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 76fdcf3dbb4f..a55d2977c7c3 100755
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -838,6 +838,7 @@ class TestList:
+>                      if "order" in self.props[sort_field]["_properties_"]:
+>                          order = self.props[sort_field]["_properties_"]["order"]
+>  
+> +        subtest_array = []
+>          for test in sorted(self.doc.keys()):
+>              fname = self.doc[test]["File"]
+>  
+> @@ -845,44 +846,46 @@ class TestList:
+>              test_name = re.sub(r'\.[ch]', '', test_name)
+>              test_name = "igt@" + test_name
+>  
+> -            subtest_array = self.expand_subtest(fname, test_name, test, True)
+> +            subtest_array += self.expand_subtest(fname, test_name, test, True)
+>  
+> -            for subtest in subtest_array:
+> -                if self.__filter_subtest(test, subtest, True):
+> -                    continue
+> +        subtest_array.sort(key = lambda x : x.get('Summary'))
+>  
+> -                if sort_field:
+> -                    if sort_field in subtest:
+> -                        if expand:
+> -                            test_list = subtest[sort_field].split(expand)
+> -                            test_list = [s.strip() for s in test_list]
+> +        for subtest in subtest_array:
+> +            if self.__filter_subtest(test, subtest, True):
+> +                continue
+>  
+> -                            for test_elem in test_list:
+> -                                if test_elem not in subtests:
+> -                                    subtests[test_elem] = []
+> -                                if order:
+> -                                    subtests[test_elem].append((subtest["Summary"], test_list))
+> -                                else:
+> -                                    subtests[test_elem].append(subtest["Summary"])
+> -                        else:
+> -                            if subtest[sort_field] not in subtests:
+> -                                subtests[subtest[sort_field]] = []
+> -                                if order:
+> -                                    subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
+> -                                else:
+> -                                    subtests[subtest[sort_field]].append(subtest["Summary"])
+> +            if sort_field:
+> +                if sort_field in subtest:
+> +                    if expand:
+> +                        test_list = subtest[sort_field].split(expand)
+> +                        test_list = [s.strip() for s in test_list]
+> +
+> +                        for test_elem in test_list:
+> +                            if test_elem not in subtests:
+> +                                subtests[test_elem] = []
+> +                            if order:
+> +                                subtests[test_elem].append((subtest["Summary"], test_list))
+> +                            else:
+> +                                subtests[test_elem].append(subtest["Summary"])
+>                      else:
+> -                        if order:
+> -                            subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
+> -                        else:
+> -                            subtests[""].append(subtest["Summary"])
+> -
+> +                        if subtest[sort_field] not in subtests:
+> +                            subtests[subtest[sort_field]] = []
+> +                            if order:
+> +                                subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
+> +                            else:
+> +                                subtests[subtest[sort_field]].append(subtest["Summary"])
+>                  else:
+>                      if order:
+>                          subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
+>                      else:
+>                          subtests[""].append(subtest["Summary"])
+>  
+> +            else:
+> +                if order:
+> +                    subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
+> +                else:
+> +                    subtests[""].append(subtest["Summary"])
+> +
+>          if order:
+>              for group, tests in subtests.items():
+>                  prefix_tests = []
+> -- 
+> 2.40.1
+> 
 
