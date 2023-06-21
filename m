@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CDFC10E151
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 10:43:49 +0000 (UTC)
+Message-ID: <e124851b-4c3f-2f67-e623-c00837418c8f@intel.com>
+Date: Wed, 21 Jun 2023 12:43:45 +0200
 MIME-Version: 1.0
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230621090032.611560-1-swati2.sharma@intel.com>
+ <20230621090032.611560-4-swati2.sharma@intel.com>
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+In-Reply-To: <20230621090032.611560-4-swati2.sharma@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Katarzyna Dec" <katarzyna.dec@intel.com>
-Date: Wed, 21 Jun 2023 15:04:12 -0000
-Message-ID: <168735985234.7799.8490314604829501801@emeril.freedesktop.org>
-References: <20230621124737.1827262-1-katarzyna.dec@intel.com>
-In-Reply-To: <20230621124737.1827262-1-katarzyna.dec@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
- =?utf-8?q?dd_xe=5Fmmap_=26_xe=5Fcreate_tests_to_f-f?=
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/3] lib/igt_draw: Use
+ intel_display_ver() for drawing with blits
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,36 +22,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: Add xe_mmap & xe_create tests to f-f
-URL   : https://patchwork.freedesktop.org/series/119678/
-State : warning
 
-== Summary ==
+On 21.06.2023 11:00, Swati Sharma wrote:
+> From: Matt Roper <matthew.d.roper@intel.com>
+>
+> Display code should check the display version of the platform
+> rather than the graphics version; on some platforms these
+> versions won't be the same.
+>
+> v2: -fixed subject (Kamil)
+>
+> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 
-Pipeline status: FAILED.
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/914942 for the overview.
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44146157):
-  Running with gitlab-runner 15.10.1 (dcfb4b66)
-    on fdo-equinix-m3l-21 y559XLTy, system ID: s_e106cb9ff99a
-  section_start:1687359640:prepare_executor
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-e4951a98689f4efd9a73d2a0466b50f05bf48684 ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-e4951a98689f4efd9a73d2a0466b50f05bf48684 ...
-  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-e4951a98689f4efd9a73d2a0466b50f05bf48684: reading manifest commit-e4951a98689f4efd9a73d2a0466b50f05bf48684 in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-e4951a98689f4efd9a73d2a0466b50f05bf48684 not found (manager.go:237:4s)
-  section_end:1687359646:prepare_executor
-  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-e4951a98689f4efd9a73d2a0466b50f05bf48684" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-e4951a98689f4efd9a73d2a0466b50f05bf48684: reading manifest commit-e4951a98689f4efd9a73d2a0466b50f05bf48684 in harbor.freedesktop.org/cache/gfx-ci/igt-ci-tags/build-fedora: unknown: artifact cache/gfx-ci/igt-ci-tags/build-fedora:commit-e4951a98689f4efd9a73d2a0466b50f05bf48684 not found (manager.go:237:4s)
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/914942
+Regards
+Andrzej
+> ---
+>   lib/igt_draw.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> index 6f362994..1f814bfc 100644
+> --- a/lib/igt_draw.c
+> +++ b/lib/igt_draw.c
+> @@ -674,7 +674,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+>   	struct intel_buf *dst;
+>   	int blt_cmd_len, blt_cmd_tiling, blt_cmd_depth;
+>   	uint32_t devid = intel_get_drm_devid(fd);
+> -	int gen = intel_gen(devid);
+> +	int ver = intel_display_ver(devid);
+>   	int pitch;
+>   
+>   	if (tiling)
+> @@ -751,9 +751,9 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+>   			igt_assert(false);
+>   		}
+>   
+> -		blt_cmd_len = (gen >= 8) ?  0x5 : 0x4;
+> +		blt_cmd_len = (ver >= 8) ?  0x5 : 0x4;
+>   		blt_cmd_tiling = (tiling) ? XY_COLOR_BLT_TILED : 0;
+> -		pitch = (gen >= 4 && tiling) ? buf->stride / 4 : buf->stride;
+> +		pitch = (ver >= 4 && tiling) ? buf->stride / 4 : buf->stride;
+>   
+>   		switch_blt_tiling(ibb, tiling, true);
+>   
