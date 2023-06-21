@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18AB910E41D
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 09:07:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6D2610E419
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 09:09:59 +0000 (UTC)
 From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
 To: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 21 Jun 2023 09:07:40 +0000
-Message-ID: <MW3PR11MB47487427D6BE736A946CCE30AE5DA@MW3PR11MB4748.namprd11.prod.outlook.com>
+Date: Wed, 21 Jun 2023 09:09:54 +0000
+Message-ID: <MW3PR11MB474804A372A644BC15C6E15BAE5DA@MW3PR11MB4748.namprd11.prod.outlook.com>
 References: <20230613134156.3315199-1-himal.prasad.ghimiray@intel.com>
- <20230613134156.3315199-2-himal.prasad.ghimiray@intel.com>
-In-Reply-To: <20230613134156.3315199-2-himal.prasad.ghimiray@intel.com>
+ <20230613134156.3315199-5-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230613134156.3315199-5-himal.prasad.ghimiray@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 1/4] lib/igt_sysfs: Add support to query
- number of tiles.
+Subject: Re: [igt-dev] [PATCH 4/4] tests/xe/xe_tile_prop: adds new test to
+ verify per tile vram addr_range
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,105 +27,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Himal
-> Prasad Ghimiray
-> Sent: 13 June 2023 19:12
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH 1/4] lib/igt_sysfs: Add support to query number=
- of
-> tiles.
->=20
-> With tile and GT seperation in KMD, we need to know number of tiles suppo=
-rted
-> by platform.
-> We will need to access tile associated properties from IGT.
-> Hence adding iterator for all supported tiles.
->=20
-> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> ---
->  lib/igt_sysfs.c | 28 ++++++++++++++++++++++++++++  lib/igt_sysfs.h |  6
-> ++++++
->  2 files changed, 34 insertions(+)
->=20
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c index 8021ba9c..4606adae 1=
-00644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -289,6 +289,34 @@ int igt_sysfs_get_num_gt(int device)
->  	return num_gts;
->  }
->=20
-> +/**
-> + * igt_sysfs_get_num_tiles:
-> + * @device: fd of the device
-> + *
-> + * Reads number of tiles sysfs entries.
-> + * Asserts for at least one tile entry.
-> + *
-> + * Returns: Number of tiles.
-> + */
-> +int igt_sysfs_get_num_tiles(int device) {
-> +	int num_tiles =3D 0;
-> +	char sysfs[48];
-> +	char tiledir[96];
-> +
-> +	if (!igt_sysfs_path(device, sysfs, sizeof(sysfs)))
-> +		return -1;
-> +
-> +	do {
-> +		sprintf(tiledir, "%s/device/tile%d", sysfs, num_tiles);
-> +		num_tiles++;
-> +	} while (!access(tiledir, F_OK));
-> +
-> +	num_tiles--;
-> +	igt_assert_f(num_tiles > 0, "No tiles sysfs entry is found.");
-> +	return num_tiles;
-> +}
-> +
->  /**
->   * igt_sysfs_write:
->   * @dir: directory for the device from igt_sysfs_open() diff --git a/lib=
-/igt_sysfs.h
-> b/lib/igt_sysfs.h index 978b6906..2fb2303c 100644
-> --- a/lib/igt_sysfs.h
-> +++ b/lib/igt_sysfs.h
-> @@ -38,6 +38,9 @@
->  	     (dirfd__ =3D igt_sysfs_gt_open(i915__, gt__)) !=3D -1; \
->  	     close(dirfd__), gt__++)
->=20
-> +#define for_each_sysfs_tile_dirfd(xe__, tile__) \
-Add local variable and store count to avoid counting num_tiles for each ite=
-ration.
-                tile_count =3D igt_sysfs_get_num_tiles(xe__);
-	for (tile__ =3D 0; tile__ < tile_count; ++tile__)
-Update this in all the patches of this series wherever required.
-
-Thanks,
-Rahul
-> +	for (tile__ =3D 0; tile__ < igt_sysfs_get_num_tiles(xe__); ++tile__)
-> +
->  #define i915_for_each_gt for_each_sysfs_gt_dirfd
->=20
->  #define igt_sysfs_rps_write(dir, id, data, len) \ @@ -73,6 +76,8 @@  #de=
-fine
-> igt_sysfs_rps_set_boolean(dir, id, value) \
->  	igt_sysfs_set_boolean(dir, igt_sysfs_dir_id_to_name(dir, id), value)
->=20
-> +#define xe_for_each_tile for_each_sysfs_tile_dirfd
-> +
->  enum i915_attr_id {
->  	RPS_ACT_FREQ_MHZ,
->  	RPS_CUR_FREQ_MHZ,
-> @@ -97,6 +102,7 @@ int igt_sysfs_open(int device);  char
-> *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);  int
-> igt_sysfs_gt_open(int device, int gt);  int igt_sysfs_get_num_gt(int devi=
-ce);
-> +int igt_sysfs_get_num_tiles(int device);
->  bool igt_sysfs_has_attr(int dir, const char *attr);  const char
-> *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id);  const char
-> *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id);
-> --
-> 2.25.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
+di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIEhpbWFsDQo+IFBy
+YXNhZCBHaGltaXJheQ0KPiBTZW50OiAxMyBKdW5lIDIwMjMgMTk6MTINCj4gVG86IGlndC1kZXZA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1YmplY3Q6IFtpZ3QtZGV2XSBbUEFUQ0ggNC80XSB0
+ZXN0cy94ZS94ZV90aWxlX3Byb3A6IGFkZHMgbmV3IHRlc3QgdG8gdmVyaWZ5IHBlcg0KPiB0aWxl
+IHZyYW0gYWRkcl9yYW5nZQ0KPiANCj4gRm9yIGVhY2ggdGlsZSB0aGUgdGVzdCByZWFkcyB0aGUg
+c3lzZnMgZW50cnkgYWRkcl9yYW5nZSBhbmQgY29tcGFyZXMgdGhlIHZhbHVlDQo+IHdpdGggdnJh
+bSBzaXplIGV4cG9zZWQgZnJvbSBxdWVyeSBpb2N0bC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEhp
+bWFsIFByYXNhZCBHaGltaXJheSA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGludGVsLmNvbT4NCj4g
+LS0tDQo+ICB0ZXN0cy9tZXNvbi5idWlsZCAgICAgICB8ICAxICsNCj4gIHRlc3RzL3hlL3hlX3Rp
+bGVfcHJvcC5jIHwgNjYgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysN
+Cj4gIDIgZmlsZXMgY2hhbmdlZCwgNjcgaW5zZXJ0aW9ucygrKQ0KPiAgY3JlYXRlIG1vZGUgMTAw
+NjQ0IHRlc3RzL3hlL3hlX3RpbGVfcHJvcC5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvbWVz
+b24uYnVpbGQgYi90ZXN0cy9tZXNvbi5idWlsZCBpbmRleCBmNzFiZTFkYi4uZWM4ZjQ2MzINCj4g
+MTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL21lc29uLmJ1aWxkDQo+ICsrKyBiL3Rlc3RzL21lc29uLmJ1
+aWxkDQo+IEBAIC0yNjYsNiArMjY2LDcgQEAgeGVfcHJvZ3MgPSBbDQo+ICAJJ3hlX3BtJywNCj4g
+IAkneGVfcHJpbWVfc2VsZl9pbXBvcnQnLA0KPiAgCSd4ZV9xdWVyeScsDQo+ICsJJ3hlX3RpbGVf
+cHJvcCcsDQpQbHMgdXBkYXRlIHRvIHhlX3N5c2ZzX3RpbGVfcHJvcCAoIGFzIHRlc3QgaXMgbWFp
+bmx5IHRyeWluZyB0byBjb2xsZWN0IGFuZCB2YWxpZGF0ZSB0aGUgc3lzZnMgaW5mbykgDQoNClRo
+YW5rcywNClJhaHVsDQo+ICAJJ3hlX3ZtJywNCj4gIAkneGVfd2FpdGZlbmNlJywNCj4gIF0NCj4g
+ZGlmZiAtLWdpdCBhL3Rlc3RzL3hlL3hlX3RpbGVfcHJvcC5jIGIvdGVzdHMveGUveGVfdGlsZV9w
+cm9wLmMgbmV3IGZpbGUgbW9kZQ0KPiAxMDA2NDQgaW5kZXggMDAwMDAwMDAuLjgwYjFiNzk0DQo+
+IC0tLSAvZGV2L251bGwNCj4gKysrIGIvdGVzdHMveGUveGVfdGlsZV9wcm9wLmMNCj4gQEAgLTAs
+MCArMSw2NiBAQA0KPiArLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVA0KPiArLyoNCj4g
+KyAqIENvcHlyaWdodCDCqSAyMDIzIEludGVsIENvcnBvcmF0aW9uDQo+ICsgKi8NCj4gKw0KPiAr
+LyoqDQo+ICsgKiBURVNUOiBWZXJpZnkgYWRkcl9yYW5nZSBvZiBlYWNoIHRpbGVzDQo+ICsgKiBT
+VUJURVNUOiBhZGRyX3JhbmdlDQo+ICsgKiBEZXNjcmlwdGlvbjoNCj4gKyAqICAgICAgICAgICAg
+IFJlYWQgc3lzZnMgZW50cnkgZm9yIGFkZHJfcmFuZ2UgYW5kIGNvbXBhcmUgd2l0aA0KPiArICog
+ICAgICAgICAgICAgY2FsY3VsYXRlZCBhZGRyX3JhbmdlLiBhZGRyX3JhbmdlIHNob3VsZCBiZSBz
+dW0NCj4gKyAqICAgICAgICAgICAgIHZyYW0gc2l6ZSBhbmQgc3RvbGVuIG1lbW9yeS4NCj4gKyAq
+Lw0KPiArDQo+ICsjaW5jbHVkZSA8c3RyaW5nLmg+DQo+ICsjaW5jbHVkZSA8c3lzL3RpbWUuaD4N
+Cj4gKw0KPiArI2luY2x1ZGUgImlndC5oIg0KPiArI2luY2x1ZGUgImlndF9zeXNmcy5oIg0KPiAr
+DQo+ICsjaW5jbHVkZSAieGVfZHJtLmgiDQo+ICsjaW5jbHVkZSAieGUveGVfaW9jdGwuaCINCj4g
+KyNpbmNsdWRlICJ4ZS94ZV9xdWVyeS5oIg0KPiArDQo+ICtzdGF0aWMgdm9pZCB0ZXN0X3ZyYW1f
+YWRkcl9yYW5nZShpbnQgc3lzZnMsIGludCB0aWxlX251bSwgdTY0DQo+ICt2cmFtX3NpemUpIHsN
+Cj4gKwlpbnQgZXJyID0gLUVBR0FJTjsNCj4gKwl1NjQgYWRkcl9yYW5nZTsNCj4gKwljaGFyIHBh
+dGhbNDBdOw0KPiArDQo+ICsJc3ByaW50ZihwYXRoLCAiZGV2aWNlL3RpbGUlZC9hZGRyX3Jhbmdl
+IiwgdGlsZV9udW0pOw0KPiArCXdoaWxlIChlcnIgPT0gLUVBR0FJTikNCj4gKwkJZXJyID0gaWd0
+X3N5c2ZzX3NjYW5mKHN5c2ZzLCBwYXRoLCAiJWx4IiwgJmFkZHJfcmFuZ2UpOw0KPiArDQo+ICsJ
+aWd0X2Fzc2VydF9sdCh2cmFtX3NpemUsIGFkZHJfcmFuZ2UpOw0KPiArfQ0KPiArDQo+ICtpZ3Rf
+bWFpbg0KPiArew0KPiArCWludCBmZDsNCj4gKwlpbnQgdGlsZTsNCj4gKwlzdGF0aWMgaW50IHN5
+c2ZzID0gLTE7DQo+ICsJdTY0IHZyYW1fc2l6ZTsNCj4gKw0KPiArCWlndF9maXh0dXJlIHsNCj4g
+KwkJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX1hFKTsNCj4gKwkJeGVfZGV2aWNlX2dldChm
+ZCk7DQo+ICsNCj4gKwkJc3lzZnMgPSBpZ3Rfc3lzZnNfb3BlbihmZCk7DQo+ICsJCWlndF9hc3Nl
+cnQoc3lzZnMgIT0gLTEpOw0KPiArCX0NCj4gKw0KPiArCWlndF9zdWJ0ZXN0KCJhZGRyX3Jhbmdl
+Iikgew0KPiArCQlpZ3RfcmVxdWlyZSh4ZV9oYXNfdnJhbShmZCkpOw0KPiArCQl4ZV9mb3JfZWFj
+aF90aWxlKGZkLCB0aWxlKSB7DQo+ICsJCQl2cmFtX3NpemUgPSB4ZV92cmFtX3NpemUoZmQsIHRp
+bGUpOw0KPiArCQkJdGVzdF92cmFtX2FkZHJfcmFuZ2Uoc3lzZnMsIHRpbGUsIHZyYW1fc2l6ZSk7
+DQo+ICsJCX0NCj4gKwl9DQo+ICsNCj4gKwlpZ3RfZml4dHVyZSB7DQo+ICsJCWNsb3NlKHN5c2Zz
+KTsNCj4gKwkJeGVfZGV2aWNlX3B1dChmZCk7DQo+ICsJCWNsb3NlKGZkKTsNCj4gKwl9DQo+ICt9
+DQo+IC0tDQo+IDIuMjUuMQ0KDQo=
