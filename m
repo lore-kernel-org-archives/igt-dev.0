@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61B1610E44F
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 11:59:33 +0000 (UTC)
-Date: Wed, 21 Jun 2023 13:59:27 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230621115927.tqldsfmfxu6uek4y@kamilkon-desk1>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 147D710E430
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 09:56:18 +0000 (UTC)
+From: Katarzyna Dec <katarzyna.dec@intel.com>
+Date: Wed, 21 Jun 2023 09:55:51 +0000
+Message-Id: <20230621095551.1823862-2-katarzyna.dec@intel.com>
+In-Reply-To: <20230621095551.1823862-1-katarzyna.dec@intel.com>
 References: <20230621095551.1823862-1-katarzyna.dec@intel.com>
- <20230621095551.1823862-2-katarzyna.dec@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230621095551.1823862-2-katarzyna.dec@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/intel-ci: Add xe_mmap &
- xe_create tests to f-f
+Subject: [igt-dev] [PATCH i-g-t 1/1] tests/intel-ci: Add xe_mmap & xe_create
+ tests to f-f
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,57 +24,49 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Katarzyna,
+Adding new tests to BATs:
 
-On 2023-06-21 at 09:55:51 +0000, Katarzyna Dec wrote:
-> Adding new tests to BATs:
-> 
-> igt@xe_create@create-engines-noleak
-> igt@xe_create@create-engines-leak
-> igt@xe_create@create-massive-size
-> igt@xe_mmap@bad-flags
-> igt@xe_mmap@bad-extensions
-> igt@xe_mmap@bad-object
-> 
-> Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->  tests/intel-ci/xe-fast-feedback.testlist | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index cad1da61f..a956e10e0 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -2,6 +2,9 @@
->  igt@xe_module_load@load
->  
->  igt@xe_compute@compute-square
-> +igt@xe_create@create-engines-noleak
-> +igt@xe_create@create-engines-leak
-> +igt@xe_create@create-massive-size
->  igt@xe_debugfs@base
->  igt@xe_debugfs@gt
->  igt@xe_debugfs@forcewake
-> @@ -182,6 +185,9 @@ igt@xe_intel_bb@simple-bb-ctx
->  igt@xe_mmap@system
->  igt@xe_mmap@vram
->  igt@xe_mmap@vram-system
-> +igt@xe_mmap@bad-flags
-> +igt@xe_mmap@bad-extensions
-> +igt@xe_mmap@bad-object
+igt@xe_create@create-engines-noleak
+igt@xe_create@create-engines-leak
+igt@xe_create@create-massive-size
+igt@xe_mmap@bad-flags
+igt@xe_mmap@bad-extensions
+igt@xe_mmap@bad-object
 
-Please keep them sorted alphabetically, with that fixed:
+Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index cad1da61f..a956e10e0 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -2,6 +2,9 @@
+ igt@xe_module_load@load
+ 
+ igt@xe_compute@compute-square
++igt@xe_create@create-engines-noleak
++igt@xe_create@create-engines-leak
++igt@xe_create@create-massive-size
+ igt@xe_debugfs@base
+ igt@xe_debugfs@gt
+ igt@xe_debugfs@forcewake
+@@ -182,6 +185,9 @@ igt@xe_intel_bb@simple-bb-ctx
+ igt@xe_mmap@system
+ igt@xe_mmap@vram
+ igt@xe_mmap@vram-system
++igt@xe_mmap@bad-flags
++igt@xe_mmap@bad-extensions
++igt@xe_mmap@bad-object
+ igt@xe_mmio@mmio-timestamp
+ igt@xe_mmio@mmio-invalid
+ igt@xe_prime_self_import@basic-with_one_bo
+-- 
+2.34.1
 
->  igt@xe_mmio@mmio-timestamp
->  igt@xe_mmio@mmio-invalid
->  igt@xe_prime_self_import@basic-with_one_bo
-> -- 
-> 2.34.1
-> 
 
