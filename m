@@ -1,20 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85A0B10E444
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 11:40:40 +0000 (UTC)
-Message-ID: <230f8664-1546-c74e-8afc-5fa57359e8f8@intel.com>
-Date: Wed, 21 Jun 2023 17:10:00 +0530
-Content-Language: en-US
-To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230615083216.1861288-1-anshuman.gupta@intel.com>
- <20230615083216.1861288-2-anshuman.gupta@intel.com>
-From: "Nilawar, Badal" <badal.nilawar@intel.com>
-In-Reply-To: <20230615083216.1861288-2-anshuman.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
+ [IPv6:2a00:1450:4864:20::131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B87F910E444
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 11:47:10 +0000 (UTC)
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-4f76a0a19d4so7954968e87.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 04:47:10 -0700 (PDT)
+Message-ID: <22260e84-a0dd-6a5e-8e67-39034d75abfe@gmail.com>
+Date: Wed, 21 Jun 2023 14:47:00 +0300
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_aux: Disable console
- suspend for suspend test
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org, swati2.sharma@intel.com
+References: <20230621081405.2168956-1-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230621081405.2168956-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t] lib/igt_fb: Stop using rendercopy for linear
+ buffers on XE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,90 +26,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-
-On 15-06-2023 14:02, Anshuman Gupta wrote:
-> We need no_console_suspend to be enable in order to dump the suspend
-> logs over serial console before attempting the suspend during
-> CI Execution.
-> Therefore disable the console_suspend using printk module parameters
-> while executing suspend test.
+On 21.6.2023 11.14, Bhanuprakash Modem wrote:
+> Stop using rendercopy for linear buffers on XE driver, instead
+> use the mmap.
 > 
-> v2:
-> - Keep console_suspend restore only in exit handler. [Ashutosh]
-> - Don't skip the test on open error, while opening printk parameters,
->    instead print warning. [Kmail]
-> 
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-
-Looks good to me.
-
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
-
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   lib/igt_aux.c | 34 ++++++++++++++++++++++++++++++++++
->   1 file changed, 34 insertions(+)
+>   lib/igt_fb.c | 1 -
+>   1 file changed, 1 deletion(-)
 > 
-> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> index 672d7d4b0..425a1f911 100644
-> --- a/lib/igt_aux.c
-> +++ b/lib/igt_aux.c
-> @@ -694,6 +694,10 @@ void igt_print_activity(void)
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 9be312a28..402fadf41 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -2511,7 +2511,6 @@ static bool use_enginecopy(const struct igt_fb *fb)
+>   
+>   	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+>   	       is_ccs_modifier(fb->modifier) ||
+> -	       (is_xe_device(fb->fd) && fb->modifier == DRM_FORMAT_MOD_LINEAR) ||
+>   	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
 >   }
 >   
->   static int autoresume_delay;
-> +bool __console_suspend_saved_state;
-> +
-> +#define SYSFS_MODULE_PRINTK "/sys/module/printk/parameters/"
-> +#define CONSOLE_SUSPEND_DISABLE false
->   
->   static const char *suspend_state_name[] = {
->   	[SUSPEND_STATE_FREEZE] = "freeze",
-> @@ -899,6 +903,35 @@ static bool is_mem_sleep_state_supported(int power_dir, enum igt_mem_sleep state
->   	return str;
->   }
->   
-> +static void igt_aux_pm_suspend_dbg_restore_exit_handler(int sig)
-> +{
-> +	int sysfs_fd;
-> +
-> +	sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY);
-> +
-> +	if (sysfs_fd <  0)
-> +		return;
-> +
-> +	igt_sysfs_set_boolean(sysfs_fd, "console_suspend", __console_suspend_saved_state);
-> +	close(sysfs_fd);
-> +}
-> +
-> +static void igt_aux_enable_pm_suspend_dbg(void)
-> +{
-> +	int sysfs_fd;
-> +
-> +	sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY);
-> +	if (sysfs_fd > 0) {
-> +		__console_suspend_saved_state = igt_sysfs_get_boolean(sysfs_fd, "console_suspend");
-> +		igt_sysfs_set_boolean(sysfs_fd, "console_suspend", CONSOLE_SUSPEND_DISABLE);
-> +		igt_install_exit_handler(igt_aux_pm_suspend_dbg_restore_exit_handler);
-> +	} else {
-> +		igt_warn("Unable to open printk parameters Err:%d\n", errno);
-> +	}
-> +
-> +	close(sysfs_fd);
-> +}
-> +
->   /**
->    * igt_system_suspend_autoresume:
->    * @state: an #igt_suspend_state, the target suspend state
-> @@ -937,6 +970,7 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
->   		      "Suspend to disk requires swap space.\n");
->   
->   	orig_test = get_suspend_test(power_dir);
-> +	igt_aux_enable_pm_suspend_dbg();
->   
->   	if (state == SUSPEND_STATE_S3) {
->   		orig_mem_sleep = get_mem_sleep();
