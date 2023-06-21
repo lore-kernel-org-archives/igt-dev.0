@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34EEF10E41D
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 09:01:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08B1110E41E
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 09:01:31 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 21 Jun 2023 14:30:32 +0530
-Message-Id: <20230621090032.611560-4-swati2.sharma@intel.com>
+Date: Wed, 21 Jun 2023 14:30:31 +0530
+Message-Id: <20230621090032.611560-3-swati2.sharma@intel.com>
 In-Reply-To: <20230621090032.611560-1-swati2.sharma@intel.com>
 References: <20230621090032.611560-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] lib/igt_draw: Use
- intel_display_ver() for drawing with blits
+Subject: [igt-dev] [PATCH i-g-t 2/3] i915/kms_mmap_write_crc: Free the mmap
+ and dma-buf fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,48 +19,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-Display code should check the display version of the platform
-rather than the graphics version; on some platforms these
-versions won't be the same.
+Release the dma-buf fd (held also by the mmap) after testing so
+that we can check for kernel resource leaks at exit.
 
-v2: -fixed subject (Kamil)
-
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_draw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/i915/kms_mmap_write_crc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index 6f362994..1f814bfc 100644
---- a/lib/igt_draw.c
-+++ b/lib/igt_draw.c
-@@ -674,7 +674,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
- 	struct intel_buf *dst;
- 	int blt_cmd_len, blt_cmd_tiling, blt_cmd_depth;
- 	uint32_t devid = intel_get_drm_devid(fd);
--	int gen = intel_gen(devid);
-+	int ver = intel_display_ver(devid);
- 	int pitch;
+diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
+index bc51975f..87f51153 100644
+--- a/tests/i915/kms_mmap_write_crc.c
++++ b/tests/i915/kms_mmap_write_crc.c
+@@ -165,6 +165,9 @@ static void test(data_t *data)
+ 	/* check that the crc is as expected, which requires that caches got flushed */
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
+ 	igt_assert_crc_equal(&crc, &data->ref_crc);
++
++	munmap(ptr, fb->size);
++	close(dma_buf_fd);
+ }
  
- 	if (tiling)
-@@ -751,9 +751,9 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
- 			igt_assert(false);
- 		}
- 
--		blt_cmd_len = (gen >= 8) ?  0x5 : 0x4;
-+		blt_cmd_len = (ver >= 8) ?  0x5 : 0x4;
- 		blt_cmd_tiling = (tiling) ? XY_COLOR_BLT_TILED : 0;
--		pitch = (gen >= 4 && tiling) ? buf->stride / 4 : buf->stride;
-+		pitch = (ver >= 4 && tiling) ? buf->stride / 4 : buf->stride;
- 
- 		switch_blt_tiling(ibb, tiling, true);
- 
+ static void prepare_crtc(data_t *data)
 -- 
 2.25.1
