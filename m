@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam02on2050.outbound.protection.outlook.com [40.107.95.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3ECD110E3CB
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 06:58:17 +0000 (UTC)
-From: Tom Chung <chiahsuan.chung@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 21 Jun 2023 14:57:28 +0800
-Message-ID: <20230621065733.840316-3-chiahsuan.chung@amd.com>
-In-Reply-To: <20230621065733.840316-1-chiahsuan.chung@amd.com>
-References: <20230621065733.840316-1-chiahsuan.chung@amd.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CF3310E450
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 12:01:38 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Wed, 21 Jun 2023 12:01:33 +0000
+Message-ID: <CY5PR11MB6211F6EF0460B794327FF911955DA@CY5PR11MB6211.namprd11.prod.outlook.com>
+References: <20230621095036.4177883-1-riana.tauro@intel.com>
+In-Reply-To: <20230621095036.4177883-1-riana.tauro@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t 3/8] tests/amdgpu/amd_freesync_video_mode:
- Fix wrong resolution setting during the test
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/xe: Add basic idle residency
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,42 +22,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[Why]
-Some monitors may have different resolution for non-Freesync video mode and it may
-cause the IGT test set to a wrong resolution during the test.
-
-[How]
-Check the resolution and use the same one during select the video mode.
-
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
----
- tests/amdgpu/amd_freesync_video_mode.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
-index 8d809015f..a7b10886d 100644
---- a/tests/amdgpu/amd_freesync_video_mode.c
-+++ b/tests/amdgpu/amd_freesync_video_mode.c
-@@ -420,10 +420,11 @@ static drmModeModeInfo* select_mode(
- 	case FSV_NON_FREESYNC_VIDEO_MODE:
- 		for (i = 0; i < data->count_modes; i++) {
- 			mode = &data->modes[i];
--			if (mode->vrefresh == refresh_rate &&
--				!is_freesync_video_mode(data, mode)) {
--				break;
--			}
-+			if (mode->hdisplay == data->hdisplay &&
-+				mode->vdisplay == data->vdisplay &&
-+				mode->vrefresh == refresh_rate &&
-+				!is_freesync_video_mode(data, mode))
-+					break;
- 		}
- 		if (i >= data->count_modes)
- 			mode = NULL;
--- 
-2.34.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVGF1cm8sIFJpYW5hIDxy
+aWFuYS50YXVyb0BpbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgSnVuZSAyMSwgMjAyMyAz
+OjIxIFBNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogVGF1cm8s
+IFJpYW5hIDxyaWFuYS50YXVyb0BpbnRlbC5jb20+OyBHdXB0YSwgQW5zaHVtYW4NCj4gPGFuc2h1
+bWFuLmd1cHRhQGludGVsLmNvbT47IERpeGl0LCBBc2h1dG9zaCA8YXNodXRvc2guZGl4aXRAaW50
+ZWwuY29tPjsNCj4gTmlsYXdhciwgQmFkYWwgPGJhZGFsLm5pbGF3YXJAaW50ZWwuY29tPjsga2Ft
+aWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbQ0KPiBTdWJqZWN0OiBbUEFUQ0ggaS1nLXQgdjJd
+IHRlc3RzL3hlOiBBZGQgYmFzaWMgaWRsZSByZXNpZGVuY3kgdGVzdA0KPiANCj4gVGhlIHRlc3Qg
+cmVhZHMgaWRsZSByZXNpZGVuY3kgd2l0aGluIGEgdGltZSBpbnRlcnZhbCBhbmQgY2hlY2tzIGlm
+IGl0cyB3aXRoaW4gdGhlDQo+IHRvbGVyYW5jZQ0KPiANCj4gUGF0Y2ggZm9yIGd0aWRsZSBwcm9w
+ZXJ0aWVzDQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTE5MjYy
+Lw0KPiANCj4gdjI6DQo+ICAgIC0gcmVuYW1lIGZpbGUgdG8geGVfcG1fcmVzaWRlbmN5DQo+ICAg
+IC0gYWRkIGtlcm5lbCBwYXRjaCBpbiBjb21taXQgbWVzc2FnZSAoS2FtaWwpDQo+IA0KPiBTaWdu
+ZWQtb2ZmLWJ5OiBSaWFuYSBUYXVybyA8cmlhbmEudGF1cm9AaW50ZWwuY29tPg0KPiAtLS0NCj4g
+IHRlc3RzL21lc29uLmJ1aWxkICAgICAgICAgIHwgICAxICsNCj4gIHRlc3RzL3hlL3hlX3BtX3Jl
+c2lkZW5jeS5jIHwgMTE3DQo+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysN
+Cj4gIDIgZmlsZXMgY2hhbmdlZCwgMTE4IGluc2VydGlvbnMoKykNCj4gIGNyZWF0ZSBtb2RlIDEw
+MDY0NCB0ZXN0cy94ZS94ZV9wbV9yZXNpZGVuY3kuYw0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3Rz
+L21lc29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQgaW5kZXgNCj4gZjkwOGFlODg1Li5mODc3
+YjdhMTEgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL21lc29uLmJ1aWxkDQo+ICsrKyBiL3Rlc3RzL21l
+c29uLmJ1aWxkDQo+IEBAIC0yNjQsNiArMjY0LDcgQEAgeGVfcHJvZ3MgPSBbDQo+ICAJJ3hlX21v
+ZHVsZV9sb2FkJywNCj4gIAkneGVfbm9leGVjX3BpbmdfcG9uZycsDQo+ICAJJ3hlX3BtJywNCj4g
+KwkneGVfcG1fcmVzaWRlbmN5JywNCj4gIAkneGVfcHJpbWVfc2VsZl9pbXBvcnQnLA0KPiAgCSd4
+ZV9xdWVyeScsDQo+ICAJJ3hlX3ZtJywNCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3hlL3hlX3BtX3Jl
+c2lkZW5jeS5jIGIvdGVzdHMveGUveGVfcG1fcmVzaWRlbmN5LmMgbmV3DQo+IGZpbGUgbW9kZSAx
+MDA2NDQgaW5kZXggMDAwMDAwMDAwLi4zM2Y4NDAzMjUNCj4gLS0tIC9kZXYvbnVsbA0KPiArKysg
+Yi90ZXN0cy94ZS94ZV9wbV9yZXNpZGVuY3kuYw0KPiBAQCAtMCwwICsxLDExNyBAQA0KPiArLy8g
+U1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVA0KPiArLyoNCj4gKyAqIENvcHlyaWdodCDCqSAy
+MDIzIEludGVsIENvcnBvcmF0aW9uDQo+ICsgKi8NCj4gKw0KPiArLyoqDQo+ICsgKiBURVNUOiBU
+ZXN0IGd0aWRsZSBwcm9wZXJ0aWVzDQo+ICsgKiBDYXRlZ29yeTogU29mdHdhcmUgYnVpbGRpbmcg
+YmxvY2sNCj4gKyAqIFN1Yi1jYXRlZ29yeTogUG93ZXIgTWFuYWdlbWVudA0KPiArICogRnVuY3Rp
+b25hbGl0eTogR1QgQyBTdGF0ZXMNCj4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkg
+dGVzdA0KPiArICovDQo+ICsNCj4gKyNpbmNsdWRlIDxsaW1pdHMuaD4NCj4gKw0KPiArI2luY2x1
+ZGUgImlndC5oIg0KPiArI2luY2x1ZGUgImlndF9zeXNmcy5oIg0KPiArDQo+ICsjaW5jbHVkZSAi
+eGUveGVfcXVlcnkuaCINCj4gKw0KPiArI2RlZmluZSBTTEVFUF9EVVJBVElPTiAzMDAwIC8qIGlu
+IG1pbGxpc2Vjb25kcyAqLw0KPiArDQo+ICtjb25zdCBkb3VibGUgdG9sZXJhbmNlID0gMC4xOw0K
+PiArDQo+ICsjZGVmaW5lIGFzc2VydF93aXRoaW5fZXBzaWxvbih4LCByZWYsIHRvbCkgXA0KPiAr
+CWlndF9hc3NlcnRfZigoZG91YmxlKSh4KSA8PSAoMS4wICsgKHRvbCkpICogKGRvdWJsZSkocmVm
+KSAmJiBcDQo+ICsJCSAgICAgKGRvdWJsZSkoeCkgPj0gKDEuMCAtICh0b2wpKSAqIChkb3VibGUp
+KHJlZiksIFwNCj4gKwkJICAgICAiJyVzJyAhPSAnJXMnICglZiBub3Qgd2l0aGluICslLjFmJSUv
+LSUuMWYlJSB0b2xlcmFuY2Ugb2YNCj4gJWYpXG4iLFwNCj4gKwkJICAgICAjeCwgI3JlZiwgKGRv
+dWJsZSkoeCksIFwNCj4gKwkJICAgICAodG9sKSAqIDEwMC4wLCAodG9sKSAqIDEwMC4wLCBcDQo+
+ICsJCSAgICAgKGRvdWJsZSkocmVmKSkNClRoaXMgbWlnaHQgZ2V0IHVzZWQgYXQgc2V2ZXJhbCBw
+bGFjZXMsIGhvdyBhYm91dCBtb3ZpbmcgaXQgdG8gYSBsaWJyYXJ5ID8NCj4gKw0KPiArc3RhdGlj
+IHVuc2lnbmVkIGludCBtZWFzdXJlZF91c2xlZXAodW5zaWduZWQgaW50IHVzZWMpIHsNCj4gKwlz
+dHJ1Y3QgdGltZXNwZWMgdHMgPSB7IH07DQo+ICsJdW5zaWduZWQgaW50IHNsZXB0Ow0KPiArDQo+
+ICsJc2xlcHQgPSBpZ3RfbnNlY19lbGFwc2VkKCZ0cyk7DQo+ICsJaWd0X2Fzc2VydChzbGVwdCA9
+PSAwKTsNCj4gKwlkbyB7DQo+ICsJCXVzbGVlcCh1c2VjIC0gc2xlcHQpOw0Kc2xlcHQgd2FzIG5z
+ZWMsIHRoZW4gd2h5IGFyZW4ndCB3ZSBjb252ZXJ0aW5nIGl0IHRvIHVzZWMgPw0KPiArCQlzbGVw
+dCA9IGlndF9uc2VjX2VsYXBzZWQoJnRzKSAvIDEwMDA7DQo+ICsJfSB3aGlsZSAoc2xlcHQgPCB1
+c2VjKTsNCj4gKw0KPiArCXJldHVybiBpZ3RfbnNlY19lbGFwc2VkKCZ0cykgLyAxMDAwOw0KPiAr
+fQ0KPiArDQo+ICtzdGF0aWMgYm9vbCBpbl9ndF9jNihpbnQgc3lzZnMsIGludCBndCkgew0KPiAr
+CWNoYXIgcGF0aFtQQVRIX01BWF07DQo+ICsJY2hhciBndF9jX3N0YXRlWzhdOw0KPiArDQo+ICsJ
+c3ByaW50ZihwYXRoLCAiZGV2aWNlL2d0JWQvZ3RpZGxlL2lkbGVfc3RhdHVzIiwgZ3QpOw0KPiAr
+CWlmIChpZ3Rfc3lzZnNfc2NhbmYoc3lzZnMsIHBhdGgsICIlcyIsIGd0X2Nfc3RhdGUpIDwgMCkN
+Cj4gKwkJcmV0dXJuIGZhbHNlOw0KPiArDQo+ICsJcmV0dXJuIHN0cmNtcChndF9jX3N0YXRlLCAi
+Z3QtYzYiKSA9PSAwOyB9DQo+ICsNCj4gK3N0YXRpYyB1bnNpZ25lZCBsb25nIHJlYWRfaWRsZV9y
+ZXNpZGVuY3koaW50IHN5c2ZzLCBpbnQgZ3QpIHsNCj4gKwl1bnNpZ25lZCBsb25nIHJlc2lkZW5j
+eTsNCj4gKwljaGFyIHBhdGhbUEFUSF9NQVhdOw0KPiArDQo+ICsJcmVzaWRlbmN5ID0gMDsNCj4g
+KwlzcHJpbnRmKHBhdGgsICJkZXZpY2UvZ3QlZC9ndGlkbGUvaWRsZV9yZXNpZGVuY3lfbXMiLCBn
+dCk7DQpJTU8gd2UgbmVlZCBzb21ldGhpbmcgbGlrZSBpZ3RfZGVidWdmc19ndF9kaXIoKSBoZXJl
+IGZvciBzeXNmcy4NClRoYW5rcywNCkFuc2h1bWFuIEd1cHRhLg0KPiArCWlndF9hc3NlcnQoaWd0
+X3N5c2ZzX3NjYW5mKHN5c2ZzLCBwYXRoLCAiJWx1IiwgJnJlc2lkZW5jeSkgPT0gMSk7DQo+ICsJ
+cmV0dXJuIHJlc2lkZW5jeTsNCj4gK30NCj4gKw0KPiArLyoqDQo+ICsgKiBTVUJURVNUOiBpZGxl
+LXJlc2lkZW5jeQ0KPiArICogRGVzY3JpcHRpb246IGJhc2ljIHJlc2lkZW5jeSB0ZXN0IHRvIGNo
+ZWNrIGlkbGUgcmVzaWRlbmN5DQo+ICsgKgkJd2l0aGluIGEgdGltZSBpbnRlcnZhbA0KPiArICog
+UnVuIHR5cGU6IEZVTEwNCj4gKyAqLw0KPiArc3RhdGljIHZvaWQgdGVzdF9pZGxlX3Jlc2lkZW5j
+eShpbnQgc3lzZnMsIGludCBndCkgew0KPiArCXVuc2lnbmVkIGxvbmcgZWxhcHNlZF9tcywgcmVz
+aWRlbmN5X3N0YXJ0LCByZXNpZGVuY3lfZW5kOw0KPiArDQo+ICsJYXNzZXJ0KGlndF93YWl0KGlu
+X2d0X2M2KHN5c2ZzLCBndCksIDEwMDAsIDEpKTsNCj4gKw0KPiArCXJlc2lkZW5jeV9zdGFydCA9
+IHJlYWRfaWRsZV9yZXNpZGVuY3koc3lzZnMsIGd0KTsNCj4gKwllbGFwc2VkX21zID0gbWVhc3Vy
+ZWRfdXNsZWVwKFNMRUVQX0RVUkFUSU9OICogMTAwMCkgLyAxMDAwOw0KPiArCXJlc2lkZW5jeV9l
+bmQgPSByZWFkX2lkbGVfcmVzaWRlbmN5KHN5c2ZzLCBndCk7DQo+ICsNCj4gKwlpZ3RfaW5mbygi
+TWVhc3VyZWQgJWx1bXMgb2YgaWRsZSByZXNpZGVuY3kgaW4gJWx1bXNcbiIsDQo+ICsJCSByZXNp
+ZGVuY3lfZW5kIC0gcmVzaWRlbmN5X3N0YXJ0LCBlbGFwc2VkX21zKTsNCj4gKw0KPiArCWFzc2Vy
+dF93aXRoaW5fZXBzaWxvbihyZXNpZGVuY3lfZW5kIC0gcmVzaWRlbmN5X3N0YXJ0LCBlbGFwc2Vk
+X21zLA0KPiArdG9sZXJhbmNlKTsgfQ0KPiArDQo+ICtpZ3RfbWFpbg0KPiArew0KPiArCWludCBm
+ZCwgZ3Q7DQo+ICsJc3RhdGljIGludCBzeXNmcyA9IC0xOw0KPiArDQo+ICsJaWd0X2ZpeHR1cmUg
+ew0KPiArCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfWEUpOw0KPiArDQo+ICsJCXhlX2Rl
+dmljZV9nZXQoZmQpOw0KPiArCQlpZ3RfcmVxdWlyZSghSVNfUE9OVEVWRUNDSElPKHhlX2Rldl9p
+ZChmZCkpKTsNCj4gKw0KPiArCQlzeXNmcyA9IGlndF9zeXNmc19vcGVuKGZkKTsNCj4gKwkJaWd0
+X2Fzc2VydChzeXNmcyAhPSAtMSk7DQo+ICsJfQ0KPiArDQo+ICsJaWd0X3N1YnRlc3QoImlkbGUt
+cmVzaWRlbmN5IikNCj4gKwkJeGVfZm9yX2VhY2hfZ3QoZmQsIGd0KQ0KPiArCQkJdGVzdF9pZGxl
+X3Jlc2lkZW5jeShzeXNmcywgZ3QpOw0KPiArDQo+ICsJaWd0X2ZpeHR1cmUgew0KPiArCQljbG9z
+ZShzeXNmcyk7DQo+ICsJCXhlX2RldmljZV9wdXQoZmQpOw0KPiArCQljbG9zZShmZCk7DQo+ICsJ
+fQ0KPiArfQ0KPiAtLQ0KPiAyLjQwLjANCg0K
