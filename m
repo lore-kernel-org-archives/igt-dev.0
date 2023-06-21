@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 483A810E5D0
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 03:21:58 +0000 (UTC)
-Message-ID: <8b8f4217-e95f-f1db-25e2-58462d07f5a9@intel.com>
-Date: Fri, 23 Jun 2023 08:51:36 +0530
-Content-Language: en-US
-References: <20230622123014.4184296-1-mauro.chehab@linux.intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230622123014.4184296-1-mauro.chehab@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E80C10E45E
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jun 2023 12:48:03 +0000 (UTC)
+From: Katarzyna Dec <katarzyna.dec@intel.com>
+Date: Wed, 21 Jun 2023 12:47:37 +0000
+Message-Id: <20230621124737.1827262-2-katarzyna.dec@intel.com>
+In-Reply-To: <20230621124737.1827262-1-katarzyna.dec@intel.com>
+References: <20230621124737.1827262-1-katarzyna.dec@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_fb_coherency: add
- mega-feature and functionality
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 1/1] tests/intel-ci: Add xe_mmap &
+ xe_create tests to f-f
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,43 +21,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: jari.tahvanainen@intel.com
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+Adding new tests to BATs:
 
-On Thu-22-06-2023 06:00 pm, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> This test is currently missing mega-feature and functionality.
-> Add them.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->   tests/i915/kms_fb_coherency.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/i915/kms_fb_coherency.c b/tests/i915/kms_fb_coherency.c
-> index b530bf5dcd70..ba0ea7068fdf 100644
-> --- a/tests/i915/kms_fb_coherency.c
-> +++ b/tests/i915/kms_fb_coherency.c
-> @@ -6,6 +6,8 @@
->   /**
->    * TEST: kms_fb_coherency
->    * Description: Exercise coherency of future scanout buffer objects
-> + * Mega feature: General Display Features
-> + * Functionality: crc
+igt@xe_create@create-engines-noleak
+igt@xe_create@create-engines-leak
+igt@xe_create@create-massive-size
+igt@xe_mmap@bad-flags
+igt@xe_mmap@bad-extensions
+igt@xe_mmap@bad-object
 
-For display tests, "Mega feature" & "Functionality" should be at SUBTEST 
-level.
+v2: Sort tests alphabetically
 
-Also, Functionality must be gtt or kms_gem_interop, since this test is 
-trying to validate different mappings.
+Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-- Bhanu
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index cad1da61f..9d670764b 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -2,6 +2,9 @@
+ igt@xe_module_load@load
+ 
+ igt@xe_compute@compute-square
++igt@xe_create@create-engines-noleak
++igt@xe_create@create-engines-leak
++igt@xe_create@create-massive-size
+ igt@xe_debugfs@base
+ igt@xe_debugfs@gt
+ igt@xe_debugfs@forcewake
+@@ -179,6 +182,9 @@ igt@xe_intel_bb@render
+ igt@xe_intel_bb@reset-bb
+ igt@xe_intel_bb@simple-bb
+ igt@xe_intel_bb@simple-bb-ctx
++igt@xe_mmap@bad-extensions
++igt@xe_mmap@bad-flags
++igt@xe_mmap@bad-object
+ igt@xe_mmap@system
+ igt@xe_mmap@vram
+ igt@xe_mmap@vram-system
+-- 
+2.34.1
 
->    */
->   
->   #include <errno.h>
 
