@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7509410E4D9
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 07:00:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3559110E4D8
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 07:00:43 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Jun 2023 12:24:00 +0530
-Message-Id: <20230622065422.2235134-2-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Jun 2023 12:24:03 +0530
+Message-Id: <20230622065422.2235134-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230622065422.2235134-1-bhanuprakash.modem@intel.com>
 References: <20230622065422.2235134-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V3 i-g-t 01/23] lib: Interface to close the drm fd
+Subject: [igt-dev] [V3 i-g-t 04/23] lib/igt_msm: Use drm_close_driver() to
+ close the drm fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,92 +19,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new helper drm_close_driver() to close the drm fd. Now
-every user could call drm_close_driver() instead of close().
+To close the drm file descriptor, use igt helper drm_close_driver()
+instead of using close().
 
-V2: - Fix commit message
-    - Add debug prints
-V3: - Check the validity of fd before close
-V4: - s/igt_debug/igt_warn/
-
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Rob Clark <robdclark@chromium.org>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/drmtest.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- lib/drmtest.h |  1 +
- 2 files changed, 45 insertions(+)
+ lib/igt_msm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 220cfb64d..a226ebd91 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -636,6 +636,50 @@ int drm_open_driver(int chipset)
- 	return fd;
+diff --git a/lib/igt_msm.c b/lib/igt_msm.c
+index 8c0380f42..a236898b6 100644
+--- a/lib/igt_msm.c
++++ b/lib/igt_msm.c
+@@ -87,7 +87,7 @@ igt_msm_dev_close(struct msm_device *dev)
+ {
+ 	if (!dev)
+ 		return;
+-	close(dev->fd);
++	drm_close_driver(dev->fd);
+ 	free(dev);
  }
- 
-+static bool is_valid_fd(int fd)
-+{
-+	char path[32];
-+	char buf[PATH_MAX];
-+	int len;
-+
-+	if (fd < 0)
-+		return false;
-+
-+	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-+
-+	memset(buf, 0, sizeof(buf));
-+	len = readlink(path, buf, sizeof(buf) - 1);
-+	if (len <= 0)
-+		return false;
-+
-+	buf[len] = '\0';
-+	if (strstr(buf, "/dev/dri/card") == buf ||
-+	    strstr(buf, "/dev/dri/renderD") == buf)
-+		return true;
-+
-+	return false;
-+}
-+
-+/**
-+ * drm_close_driver:
-+ * @fd: a drm file descriptor
-+ *
-+ * Check the given drm file descriptor @fd is valid & Close if it is
-+ * an valid drm fd.
-+ *
-+ * Returns: 0 on success or -1 on error.
-+ */
-+int drm_close_driver(int fd)
-+{
-+	if (!is_valid_fd(fd)) {
-+		igt_warn("Don't attempt to close standard/invalid file "
-+			 "descriptor: %d\n", fd);
-+		return -1;
-+	}
-+
-+	return close(fd);
-+}
-+
- /**
-  * drm_open_driver_master:
-  * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index ae86ee19a..9c3ea5d14 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -105,6 +105,7 @@ int drm_open_driver_render(int chipset);
- int __drm_open_driver_another(int idx, int chipset);
- int __drm_open_driver(int chipset);
- int __drm_open_driver_render(int chipset);
-+int drm_close_driver(int fd);
- 
- int drm_reopen_driver(int fd);
  
 -- 
 2.40.0
