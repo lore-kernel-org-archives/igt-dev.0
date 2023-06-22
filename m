@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CF1B10E4D9
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 07:00:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F08AE10E4DA
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 07:01:18 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Jun 2023 12:24:07 +0530
-Message-Id: <20230622065422.2235134-9-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Jun 2023 12:24:22 +0530
+Message-Id: <20230622065422.2235134-24-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230622065422.2235134-1-bhanuprakash.modem@intel.com>
 References: <20230622065422.2235134-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V3 i-g-t 08/23] tests/nouveau_crc: Close the fd before
- exit
+Subject: [igt-dev] [V3 i-g-t 23/23] Revert "lib/igt_kms: Cache xe_device
+ info for kms tests"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,30 +23,49 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Close the file descriptor before exiting the test.
+As this logic is moved to driver open/close level, this is
+redundant, hence revert this logic.
 
-Cc: Lyude Paul <lyude@redhat.com>
+This reverts commit 3e049d7c5048c8e4d0b0cfc22afca18e9e897e9a.
+
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/nouveau_crc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ lib/igt_kms.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
-index 785d39bde..d5aa0e650 100644
---- a/tests/nouveau_crc.c
-+++ b/tests/nouveau_crc.c
-@@ -409,7 +409,9 @@ igt_main
- 			close(data.nv_crc_dir);
- 		}
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 5341c6373..f2b0eed57 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -59,7 +59,6 @@
+ #include "igt_device.h"
+ #include "igt_sysfs.h"
+ #include "sw_sync.h"
+-#include "xe/xe_query.h"
+ #ifdef HAVE_CHAMELIUM
+ #include "igt_chamelium.h"
+ #endif
+@@ -2657,9 +2656,6 @@ void igt_display_require(igt_display_t *display, int drm_fd)
  	}
--	igt_fixture
--		igt_display_fini(&data.display);
+ #endif
  
-+	igt_fixture {
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
-+	}
- }
+-	if (is_xe_device(drm_fd))
+-		xe_device_get(drm_fd);
+-
+ 	display->n_pipes = IGT_MAX_PIPES;
+ 	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
+ 	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+@@ -2996,10 +2992,6 @@ static void igt_output_fini(igt_output_t *output)
+ void igt_display_fini(igt_display_t *display)
+ {
+ 	int i;
+-	int drm_fd = display->drm_fd;
+-
+-	if (is_xe_device(drm_fd))
+-		xe_device_put(drm_fd);
+ 
+ 	for (i = 0; i < display->n_planes; ++i) {
+ 		igt_plane_t *plane = &display->planes[i];
 -- 
 2.40.0
