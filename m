@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D76E10E346
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jun 2023 07:28:02 +0000 (UTC)
-From: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-Date: Tue, 13 Jun 2023 09:27:26 +0200
-Message-Id: <20230613072726.4164-11-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20230613072726.4164-1-dominik.karol.piatkowski@intel.com>
-References: <20230613072726.4164-1-dominik.karol.piatkowski@intel.com>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 10/10] KUnit: replace abort with graceful
- skip
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 22 Jun 2023 12:43:11 -0000
+Message-ID: <168743779138.4869.7989130016654471094@emeril.freedesktop.org>
+References: <20230622123014.4184296-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230622123014.4184296-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/i915/kms=5Ffb=5Fcoherency=3A_add_mega-feature_and_function?=
+ =?utf-8?q?ality?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,99 +17,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sample drm_buddy output with missing requirements:
-	Starting subtest: drm_buddy_test
-	(drm_buddy:32218) igt_kmod-WARNING: Unable to load KUnit
-	Subtest drm_buddy_test: SKIP (0.001s)
+== Series Details ==
 
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
----
- lib/igt_kmod.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+Series: tests/i915/kms_fb_coherency: add mega-feature and functionality
+URL   : https://patchwork.freedesktop.org/series/119749/
+State : warning
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 1511bdef4..04220f404 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -763,27 +763,27 @@ static void __igt_kunit(const char *module_name, const char *opts)
- 	int ret;
- 	struct ktap_test_results *results;
- 	struct ktap_test_results_element *temp;
-+	bool skip = false;
- 
- 	/* get normalized module name */
- 	if (igt_ktest_init(&tst, module_name) != 0) {
--		igt_warn("Unable to initialize ktest for %s\n", module_name);
--		igt_fail(IGT_EXIT_SKIP);
-+		igt_skip("Unable to initialize ktest for %s\n", module_name);
- 	}
- 
- 	if (igt_ktest_begin(&tst) != 0) {
--		igt_warn("Unable to begin ktest for %s\n", module_name);
--
- 		igt_ktest_fini(&tst);
--		igt_fail(IGT_EXIT_SKIP);
-+		igt_skip("Unable to begin ktest for %s\n", module_name);
- 	}
- 
- 	if (tst.kmsg < 0) {
- 		igt_warn("Could not open /dev/kmsg\n");
-+		skip = true;
- 		goto unload;
- 	}
- 
- 	if (lseek(tst.kmsg, 0, SEEK_END)) {
- 		igt_warn("Could not seek the end of /dev/kmsg\n");
-+		skip = true;
- 		goto unload;
- 	}
- 
-@@ -791,6 +791,7 @@ static void __igt_kunit(const char *module_name, const char *opts)
- 
- 	if (f == NULL) {
- 		igt_warn("Could not turn /dev/kmsg file descriptor into a FILE pointer\n");
-+		skip = true;
- 		goto unload;
- 	}
- 
-@@ -798,7 +799,8 @@ static void __igt_kunit(const char *module_name, const char *opts)
- 	if (igt_kmod_load("kunit", NULL) != 0 ||
- 	    kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod) != 0) {
- 		igt_warn("Unable to load KUnit\n");
--		igt_fail(IGT_EXIT_FAILURE);
-+		skip = true;
-+		goto unload;
- 	}
- 
- 	is_builtin = kmod_module_get_initstate(kunit_kmod) == KMOD_MODULE_BUILTIN;
-@@ -808,7 +810,8 @@ static void __igt_kunit(const char *module_name, const char *opts)
- 	if (igt_kmod_load(module_name, opts) != 0) {
- 		igt_warn("Unable to load %s module\n", module_name);
- 		ret = ktap_parser_stop();
--		igt_fail(IGT_EXIT_FAILURE);
-+		skip = true;
-+		goto unload;
- 	}
- 
- 	while (READ_ONCE(results->still_running) || READ_ONCE(results->head) != NULL)
-@@ -836,6 +839,9 @@ unload:
- 
- 	igt_ktest_fini(&tst);
- 
-+	if (skip)
-+		igt_skip("");
-+
- 	ret = ktap_parser_stop();
- 
- 	if (ret != 0)
--- 
-2.34.1
+== Summary ==
 
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/915883 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44221443):
+  time="2023-06-22T12:42:02Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-4531af109333176daa2f792b31e35f35aa0ae42d
+  Getting image source signatures
+  Copying blob sha256:2f92e8d0541551f215cc8116b6a6507a714a936f45b19286a6664467db837932
+  Copying config sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-22T12:42:17Z" level=warning msg="signal: killed"
+  time="2023-06-22T12:42:17Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1687437738:step_script
+  section_start:1687437738:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1687437739:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44221445):
+  time="2023-06-22T12:42:32Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:ac8bb7e1a32398e26c129ce64e2ddc3e7ec6c34d93424b247f16049f5a91cff4
+  Copying config sha256:49ae9acb659161695228c0667681983289fc1a40d5056e99a72eb66538086c15
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-22T12:42:37Z" level=warning msg="signal: killed"
+  time="2023-06-22T12:42:37Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1687437757:step_script
+  section_start:1687437757:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1687437758:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44221444):
+  time="2023-06-22T12:42:28Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:ac8bb7e1a32398e26c129ce64e2ddc3e7ec6c34d93424b247f16049f5a91cff4
+  Copying config sha256:49ae9acb659161695228c0667681983289fc1a40d5056e99a72eb66538086c15
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-22T12:42:32Z" level=warning msg="signal: killed"
+  time="2023-06-22T12:42:32Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1687437753:step_script
+  section_start:1687437753:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1687437754:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44221446):
+  time="2023-06-22T12:42:35Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:ac8bb7e1a32398e26c129ce64e2ddc3e7ec6c34d93424b247f16049f5a91cff4
+  Copying config sha256:49ae9acb659161695228c0667681983289fc1a40d5056e99a72eb66538086c15
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-22T12:42:39Z" level=warning msg="signal: killed"
+  time="2023-06-22T12:42:39Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1687437760:step_script
+  section_start:1687437760:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1687437760:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44221447):
+  time="2023-06-22T12:42:37Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM fedora:31
+  Getting image source signatures
+  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
+  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
+  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-06-22T12:42:43Z" level=warning msg="signal: killed"
+  time="2023-06-22T12:42:43Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
+  section_end:1687437763:step_script
+  section_start:1687437763:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1687437764:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/915883
 
