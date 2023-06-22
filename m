@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE24F10E54F
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 11:58:45 +0000 (UTC)
-From: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
-To: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>, "Kumar, Janga
- Rahul" <janga.rahul.kumar@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Thu, 22 Jun 2023 11:58:40 +0000
-Message-ID: <SJ1PR11MB6204B860249C023BF4DA1ACF8122A@SJ1PR11MB6204.namprd11.prod.outlook.com>
-References: <20230613133713.3315078-1-himal.prasad.ghimiray@intel.com>
- <MW3PR11MB4748389214D298270D692A11AE5DA@MW3PR11MB4748.namprd11.prod.outlook.com>
- <MW4PR11MB70560639D51086BAC68BA398B322A@MW4PR11MB7056.namprd11.prod.outlook.com>
-In-Reply-To: <MW4PR11MB70560639D51086BAC68BA398B322A@MW4PR11MB7056.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============8383830798339369097=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 0/4] Handle GT and tile seperation in IGT.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Date: Thu, 22 Jun 2023 12:18:38 -0000
+Message-ID: <168743631844.4869.3675961939926630203@emeril.freedesktop.org>
+References: <20230622111651.9040-1-jeevan.b@intel.com>
+In-Reply-To: <20230622111651.9040-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fsetmode=3A_Fix_dynamic_subtests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,82 +17,372 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============8383830798339369097==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/kms_setmode: Fix dynamic subtests (rev2)
+URL   : https://patchwork.freedesktop.org/series/119631/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_13306 -> IGTPW_9240
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_9240 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_9240, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/index.html
+
+Participating hosts (42 -> 42)
+------------------------------
+
+  Additional (1): bat-dg1-8 
+  Missing    (1): fi-kbl-soraka 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_9240:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_fence@basic-await@ccs2:
+    - bat-dg2-8:          [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-dg2-8/igt@gem_exec_fence@basic-await@ccs2.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-dg2-8/igt@gem_exec_fence@basic-await@ccs2.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@xe_create@create-massive-size}:
+    - {bat-dg1-8}:        NOTRUN -> [FAIL][3] +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-dg1-8/igt@xe_create@create-massive-size.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_13306 and IGTPW_9240:
+
+### New IGT tests (4) ###
+
+  * igt@kms_setmode@basic-clone-single-crtc@pipe-a-dp-1-dp-2:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_setmode@basic-clone-single-crtc@pipe-a-hdmi-a-2-dp-2:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_setmode@basic-clone-single-crtc@pipe-b-dp-1-dp-2:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_setmode@basic-clone-single-crtc@pipe-b-hdmi-a-2-dp-2:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.0] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9240 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@load:
+    - bat-adlp-11:        [PASS][4] -> [ABORT][5] ([i915#4423])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-adlp-11/igt@i915_module_load@load.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-adlp-11/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-2:         [PASS][6] -> [ABORT][7] ([i915#4983] / [i915#7913])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-rpls-2/igt@i915_selftest@live@requests.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-rpls-2/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [PASS][8] -> [DMESG-FAIL][9] ([i915#6763])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][10] ([i915#1845] / [i915#5354])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-rplp-1:         NOTRUN -> [ABORT][11] ([i915#4579] / [i915#8260])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [DMESG-WARN][12] ([i915#7699]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-6:         [DMESG-FAIL][14] ([i915#8497]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-mtlp-6/igt@i915_selftest@live@requests.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-mtlp-6/igt@i915_selftest@live@requests.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
+    - bat-dg2-8:          [FAIL][16] ([i915#7932]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html
+
+  
+#### Warnings ####
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - bat-rplp-1:         [ABORT][18] ([i915#8442]) -> [SKIP][19] ([i915#1072])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
+  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6763]: https://gitlab.freedesktop.org/drm/intel/issues/6763
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+  [i915#8213]: https://gitlab.freedesktop.org/drm/intel/issues/8213
+  [i915#8260]: https://gitlab.freedesktop.org/drm/intel/issues/8260
+  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
+  [i915#8497]: https://gitlab.freedesktop.org/drm/intel/issues/8497
+  [i915#8513]: https://gitlab.freedesktop.org/drm/intel/issues/8513
+  [i915#8676]: https://gitlab.freedesktop.org/drm/intel/issues/8676
+  [i915#8678]: https://gitlab.freedesktop.org/drm/intel/issues/8678
+  [i915#8679]: https://gitlab.freedesktop.org/drm/intel/issues/8679
+  [i915#8698]: https://gitlab.freedesktop.org/drm/intel/issues/8698
+  [i915#8699]: https://gitlab.freedesktop.org/drm/intel/issues/8699
+  [i915#8700]: https://gitlab.freedesktop.org/drm/intel/issues/8700
 
 
-> -----Original Message-----
-> From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
-> Sent: Thursday, June 22, 2023 10:46 AM
-> To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; igt-
-> dev@lists.freedesktop.org
-> Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
-> Subject: RE: [igt-dev] [PATCH 0/4] Handle GT and tile seperation in IGT.
->=20
->=20
->=20
-> > -----Original Message-----
-> > From: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
-> > Sent: 21 June 2023 14:31
-> > To: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; igt-
-> > dev@lists.freedesktop.org
-> > Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
-> > Subject: RE: [igt-dev] [PATCH 0/4] Handle GT and tile seperation in IGT=
-.
-> >
-> >
-> >
-> > > -----Original Message-----
-> > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> > > Himal Prasad Ghimiray
-> > > Sent: 13 June 2023 19:07
-> > > To: igt-dev@lists.freedesktop.org
-> > > Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
-> > > Subject: [igt-dev] [PATCH 0/4] Handle GT and tile seperation in IGT.
-> > please do not put dot at the end of subject:
-> Sure. Will address.
-> > >
-> > > With seperation of GT and tiles in KMD, we will have sysfs entries
-> > > for properties associated with tile and gtX sysfs parent will be
-> > > moving under tileX. This series provides helper functions for
-> > > accessing tile associated sysfs entries and gt specific sysfs under
-> respective tile.
-> > >
-> > > series addresses gt related sysfs path change for xe_guc_pc.c test
-> > > case and introduces new test to verify addr_range for each vram.
-> > >
-> > > Cc: Francois Dugast <francois.dugast@intel.com>
-> > > Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
-> > > Cc: Upadhyay <tejas.upadhyay@intel.com>
-> > > Signed-off-by: Himal Prasad Ghimiray
-> > > <himal.prasad.ghimiray@intel.com>
-> > >
-> > > Himal Prasad Ghimiray (4):
-> > >   lib/igt_sysfs: Add support to query number of tiles.
-> > >   lib/igt_sysfs: Handling gt related sysfs uapi changes.
-> > >   test/xe_guc_pc: Change the sysfs paths.
-> > >   tests/xe/xe_tile_prop: adds new test to verify per tile vram
-> > >     addr_range
+Build changes
+-------------
 
-Not able to get patch somehow in my outlook. But for above patch, size repo=
-rted now in bytes(earlier it was hex) and sysfs entry name has been changed=
- see https://patchwork.freedesktop.org/series/118927/. Please see changes a=
-ccordingly.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7345 -> IGTPW_9240
 
-Thanks,
-Tejas
+  CI-20190529: 20190529
+  CI_DRM_13306: fd802e7196f63720d52eb2bd6451ae9f61df6484 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9240: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/index.html
+  IGT_7345: bedba6f82d70f8eb49c53cb2c45ee60a1eec04d1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-> > >
-> > >  lib/igt_sysfs.c         |  28 ++++++
-> > >  lib/igt_sysfs.h         |  11 +++
-> > >  tests/meson.build       |   1 +
-> > >  tests/xe/xe_guc_pc.c    | 199 ++++++++++++++++++++------------------=
---
-> > >  tests/xe/xe_tile_prop.c |  66 +++++++++++++
-> > >  5 files changed, 206 insertions(+), 99 deletions(-)  create mode
-> > > 100644 tests/xe/xe_tile_prop.c
-> > >
-> > > --
-> > > 2.25.1
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/index.html
+
+--===============8383830798339369097==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_setmode: Fix dynamic subtests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119631/">https://patchwork.freedesktop.org/series/119631/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13306 -&gt; IGTPW_9240</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_9240 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_9240, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/index.html</p>
+<h2>Participating hosts (42 -&gt; 42)</h2>
+<p>Additional (1): bat-dg1-8 <br />
+  Missing    (1): fi-kbl-soraka </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_9240:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@gem_exec_fence@basic-await@ccs2:<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-dg2-8/igt@gem_exec_fence@basic-await@ccs2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-dg2-8/igt@gem_exec_fence@basic-await@ccs2.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>{igt@xe_create@create-massive-size}:<ul>
+<li>{bat-dg1-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-dg1-8/igt@xe_create@create-massive-size.html">FAIL</a> +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_13306 and IGTPW_9240:</p>
+<h3>New IGT tests (4)</h3>
+<ul>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc@pipe-a-dp-1-dp-2:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc@pipe-a-hdmi-a-2-dp-2:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc@pipe-b-dp-1-dp-2:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc@pipe-b-hdmi-a-2-dp-2:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9240 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-adlp-11/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-adlp-11/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6763">i915#6763</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8260">i915#8260</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-mtlp-6/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8497">i915#8497</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_psr@primary_mmap_gtt:<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13306/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7345 -&gt; IGTPW_9240</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13306: fd802e7196f63720d52eb2bd6451ae9f61df6484 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9240: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9240/index.html<br />
+  IGT_7345: bedba6f82d70f8eb49c53cb2c45ee60a1eec04d1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8383830798339369097==--
