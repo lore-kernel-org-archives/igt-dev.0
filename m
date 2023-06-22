@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FEC510E4DE
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 07:00:48 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F32310E1AB
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 12:30:20 +0000 (UTC)
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Jun 2023 12:24:06 +0530
-Message-Id: <20230622065422.2235134-8-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230622065422.2235134-1-bhanuprakash.modem@intel.com>
-References: <20230622065422.2235134-1-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Jun 2023 14:30:14 +0200
+Message-Id: <20230622123014.4184296-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V3 i-g-t 07/23] tests/kms: Close the fd before exit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_fb_coherency: add
+ mega-feature and functionality
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,39 +17,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: jari.tahvanainen@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Close the file descriptor before exiting the test.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+This test is currently missing mega-feature and functionality.
+Add them.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_vrr.c       | 1 +
- tests/kms_writeback.c | 1 +
- 2 files changed, 2 insertions(+)
+ tests/i915/kms_fb_coherency.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index d2d79c4eb..6a766bfb9 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -528,5 +528,6 @@ igt_main
+diff --git a/tests/i915/kms_fb_coherency.c b/tests/i915/kms_fb_coherency.c
+index b530bf5dcd70..ba0ea7068fdf 100644
+--- a/tests/i915/kms_fb_coherency.c
++++ b/tests/i915/kms_fb_coherency.c
+@@ -6,6 +6,8 @@
+ /**
+  * TEST: kms_fb_coherency
+  * Description: Exercise coherency of future scanout buffer objects
++ * Mega feature: General Display Features
++ * Functionality: crc
+  */
  
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
- 	}
- }
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index c4808b02c..db1f0884f 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -606,5 +606,6 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
- 		detach_crtc(&display, output);
- 		igt_remove_fb(display.drm_fd, &input_fb);
- 		igt_display_fini(&display);
-+		drm_close_driver(display.drm_fd);
- 	}
- }
+ #include <errno.h>
 -- 
-2.40.0
+2.40.1
