@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3497534917707858658=="
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D5DD10E4D6
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 07:00:35 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 22 Jun 2023 12:23:59 +0530
+Message-Id: <20230622065422.2235134-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Anshuman Gupta" <anshuman.gupta@intel.com>
-Date: Thu, 22 Jun 2023 07:00:22 -0000
-Message-ID: <168741722281.4871.9211520557149973106@emeril.freedesktop.org>
-References: <20230622060228.2885144-1-anshuman.gupta@intel.com>
-In-Reply-To: <20230622060228.2885144-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUE0gU3Vz?=
- =?utf-8?q?pend_debug_=28rev3=29?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [V3 i-g-t 00/23] XE test cleanup to handle xe_device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,324 +17,341 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3497534917707858658==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Instead of caching the xe_device struct at subtest level, cache
+just after opening the driver. And remove from the cache just
+before closing the driver. So, this series introduces new helper
+drm_close_driver() which helps to remove the xe_device & close
+the drm fd. So that every user must call drm_close_driver()
+instead of close().
 
-== Series Details ==
+V2, V3:
+    - Cleanup
+    - Split the patches into multiple
 
-Series: PM Suspend debug (rev3)
-URL   : https://patchwork.freedesktop.org/series/119371/
-State : success
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-== Summary ==
+Bhanuprakash Modem (23):
+  lib: Interface to close the drm fd
+  lib: Cache xe_device at driver open/close level
+  lib/xe/xe_query: Add xe_config() interface
+  lib/igt_msm: Use drm_close_driver() to close the drm fd
+  tests/amdgpu: Close the fd before exit
+  tests/i915: Close the fd before exit
+  tests/kms: Close the fd before exit
+  tests/nouveau_crc: Close the fd before exit
+  tests/xe/xe_gpgpu_fill: Close the fd before exit
+  tests/i915/kms_mmap_write_crc: Avoid closing the closed fd
+  tests: Use drm_close_driver() to close the drm fd
+  tests/amdgpu: Use drm_close_driver() to close the drm fd
+  tests/chamelium: Use drm_close_driver() to close the drm fd
+  tests/panfrost: Use drm_close_driver() to close the drm fd
+  tests/v3d: Use drm_close_driver() to close the drm fd
+  tests/vc4: Use drm_close_driver() to close the drm fd
+  tests/vmwgfx: Use drm_close_driver() to close the drm fd
+  tests/kms: Use drm_close_driver() to close the drm fd
+  tests/xe: Use drm_close_driver() to close the drm fd
+  tests/i915: Use drm_close_driver() to close the drm fd
+  tests/xe/xe_debugfs: Use xe_config() helper to get the config
+  tests: Drop xe_device get/put from test level
+  Revert "lib/igt_kms: Cache xe_device info for kms tests"
 
-CI Bug Log - changes from IGT_7345 -> IGTPW_9237
-====================================================
+ lib/drmtest.c                               | 68 ++++++++++++++++++++-
+ lib/drmtest.h                               |  1 +
+ lib/igt_kms.c                               |  8 ---
+ lib/igt_msm.c                               |  2 +-
+ lib/igt_types.c                             |  6 ++
+ lib/igt_vmwgfx.c                            |  2 +-
+ lib/xe/xe_query.c                           |  8 +++
+ lib/xe/xe_query.h                           |  1 +
+ tests/amdgpu/amd_abm.c                      |  1 +
+ tests/amdgpu/amd_assr.c                     |  1 +
+ tests/amdgpu/amd_basic.c                    |  2 +-
+ tests/amdgpu/amd_cs_nop.c                   |  2 +-
+ tests/amdgpu/amd_deadlock.c                 |  2 +-
+ tests/amdgpu/amd_freesync_video_mode.c      |  1 +
+ tests/amdgpu/amd_info.c                     |  2 +-
+ tests/amdgpu/amd_mem_leak.c                 |  1 +
+ tests/amdgpu/amd_module_load.c              |  2 +-
+ tests/amdgpu/amd_prime.c                    |  6 +-
+ tests/amdgpu/amd_psr.c                      |  3 +-
+ tests/amdgpu/amd_vrr_range.c                |  1 +
+ tests/chamelium/kms_chamelium_audio.c       |  2 +-
+ tests/chamelium/kms_chamelium_edid.c        |  2 +-
+ tests/chamelium/kms_chamelium_frames.c      |  2 +-
+ tests/chamelium/kms_chamelium_hpd.c         |  2 +-
+ tests/core_auth.c                           | 10 +--
+ tests/core_getclient.c                      |  2 +-
+ tests/core_getstats.c                       |  2 +-
+ tests/core_getversion.c                     |  2 +-
+ tests/core_setmaster.c                      |  6 +-
+ tests/core_setmaster_vs_auth.c              |  6 +-
+ tests/debugfs_test.c                        |  2 +-
+ tests/dmabuf_sync_file.c                    |  3 +
+ tests/dumb_buffer.c                         |  2 +-
+ tests/eviction_common.c                     |  2 +-
+ tests/fbdev.c                               |  2 +-
+ tests/i915/api_intel_allocator.c            |  6 +-
+ tests/i915/api_intel_bb.c                   |  2 +-
+ tests/i915/drm_fdinfo.c                     |  2 +-
+ tests/i915/gem_bad_reloc.c                  |  2 +-
+ tests/i915/gem_barrier_race.c               |  5 +-
+ tests/i915/gem_basic.c                      |  2 +-
+ tests/i915/gem_blits.c                      |  2 +-
+ tests/i915/gem_busy.c                       |  2 +-
+ tests/i915/gem_caching.c                    |  2 +-
+ tests/i915/gem_ccs.c                        |  2 +-
+ tests/i915/gem_close_race.c                 | 14 ++---
+ tests/i915/gem_concurrent_all.c             |  5 ++
+ tests/i915/gem_cs_tlb.c                     |  2 +-
+ tests/i915/gem_ctx_bad_destroy.c            |  2 +-
+ tests/i915/gem_ctx_create.c                 |  4 +-
+ tests/i915/gem_ctx_exec.c                   |  5 +-
+ tests/i915/gem_ctx_freq.c                   |  3 +
+ tests/i915/gem_ctx_param.c                  |  2 +-
+ tests/i915/gem_ctx_persistence.c            |  6 +-
+ tests/i915/gem_ctx_shared.c                 |  2 +-
+ tests/i915/gem_ctx_sseu.c                   |  2 +-
+ tests/i915/gem_ctx_switch.c                 |  2 +-
+ tests/i915/gem_eio.c                        | 19 +++---
+ tests/i915/gem_evict_alignment.c            |  2 +-
+ tests/i915/gem_evict_everything.c           |  2 +-
+ tests/i915/gem_exec_alignment.c             |  2 +-
+ tests/i915/gem_exec_async.c                 |  2 +-
+ tests/i915/gem_exec_await.c                 |  2 +-
+ tests/i915/gem_exec_basic.c                 |  2 +-
+ tests/i915/gem_exec_big.c                   |  2 +-
+ tests/i915/gem_exec_capture.c               |  2 +-
+ tests/i915/gem_exec_create.c                |  2 +-
+ tests/i915/gem_exec_fair.c                  |  2 +-
+ tests/i915/gem_exec_fence.c                 |  4 +-
+ tests/i915/gem_exec_flush.c                 |  2 +-
+ tests/i915/gem_exec_gttfill.c               |  4 +-
+ tests/i915/gem_exec_latency.c               |  2 +-
+ tests/i915/gem_exec_nop.c                   |  2 +-
+ tests/i915/gem_exec_parallel.c              |  4 +-
+ tests/i915/gem_exec_params.c                |  2 +-
+ tests/i915/gem_exec_reloc.c                 |  2 +-
+ tests/i915/gem_exec_schedule.c              |  2 +-
+ tests/i915/gem_exec_store.c                 |  2 +-
+ tests/i915/gem_exec_suspend.c               |  2 +-
+ tests/i915/gem_exec_whisper.c               |  6 +-
+ tests/i915/gem_exercise_blt.c               |  2 +-
+ tests/i915/gem_fd_exhaustion.c              |  2 +-
+ tests/i915/gem_fence_thrash.c               |  2 +-
+ tests/i915/gem_fenced_exec_thrash.c         |  2 +-
+ tests/i915/gem_flink_basic.c                |  4 +-
+ tests/i915/gem_flink_race.c                 |  6 +-
+ tests/i915/gem_gtt_cpu_tlb.c                |  2 +-
+ tests/i915/gem_gtt_hog.c                    |  2 +-
+ tests/i915/gem_gtt_speed.c                  |  2 +-
+ tests/i915/gem_huc_copy.c                   |  2 +-
+ tests/i915/gem_lmem_evict.c                 |  4 +-
+ tests/i915/gem_lmem_swapping.c              | 10 +--
+ tests/i915/gem_madvise.c                    | 12 ++--
+ tests/i915/gem_media_fill.c                 |  2 +-
+ tests/i915/gem_mmap.c                       |  2 +-
+ tests/i915/gem_mmap_gtt.c                   |  6 +-
+ tests/i915/gem_mmap_offset.c                |  8 +--
+ tests/i915/gem_mmap_wc.c                    |  2 +-
+ tests/i915/gem_partial_pwrite_pread.c       |  2 +-
+ tests/i915/gem_pipe_control_store_loop.c    |  2 +-
+ tests/i915/gem_ppgtt.c                      |  8 +--
+ tests/i915/gem_pread.c                      |  2 +-
+ tests/i915/gem_pread_after_blit.c           |  2 +-
+ tests/i915/gem_pwrite.c                     |  2 +-
+ tests/i915/gem_pwrite_snooped.c             |  2 +-
+ tests/i915/gem_pxp.c                        |  2 +-
+ tests/i915/gem_read_read_speed.c            |  2 +-
+ tests/i915/gem_readwrite.c                  |  2 +-
+ tests/i915/gem_reg_read.c                   |  2 +-
+ tests/i915/gem_render_copy.c                |  2 +-
+ tests/i915/gem_render_copy_redux.c          |  2 +-
+ tests/i915/gem_reset_stats.c                | 32 +++++-----
+ tests/i915/gem_ringfill.c                   |  2 +-
+ tests/i915/gem_set_tiling_vs_blt.c          |  2 +-
+ tests/i915/gem_set_tiling_vs_gtt.c          |  2 +-
+ tests/i915/gem_set_tiling_vs_pwrite.c       |  2 +-
+ tests/i915/gem_shrink.c                     | 14 ++---
+ tests/i915/gem_softpin.c                    |  4 +-
+ tests/i915/gem_spin_batch.c                 |  2 +-
+ tests/i915/gem_streaming_writes.c           |  2 +-
+ tests/i915/gem_stress.c                     |  2 +-
+ tests/i915/gem_sync.c                       |  2 +-
+ tests/i915/gem_tiled_blits.c                |  2 +-
+ tests/i915/gem_tiled_fence_blits.c          |  2 +-
+ tests/i915/gem_tiled_partial_pwrite_pread.c |  2 +-
+ tests/i915/gem_tiled_pread_basic.c          |  2 +-
+ tests/i915/gem_tiled_pread_pwrite.c         |  2 +-
+ tests/i915/gem_tiled_swapping.c             |  2 +-
+ tests/i915/gem_tiled_wb.c                   |  2 +-
+ tests/i915/gem_tiled_wc.c                   |  2 +-
+ tests/i915/gem_tiling_max_stride.c          |  2 +-
+ tests/i915/gem_unfence_active_buffers.c     |  2 +-
+ tests/i915/gem_unref_active_buffers.c       |  2 +-
+ tests/i915/gem_userptr_blits.c              |  6 +-
+ tests/i915/gem_vm_create.c                  |  4 +-
+ tests/i915/gem_wait.c                       |  2 +-
+ tests/i915/gem_watchdog.c                   |  2 +-
+ tests/i915/gem_workarounds.c                |  2 +-
+ tests/i915/gen7_exec_parse.c                |  4 +-
+ tests/i915/gen9_exec_parse.c                |  2 +-
+ tests/i915/i915_fb_tiling.c                 |  2 +-
+ tests/i915/i915_getparams_basic.c           |  2 +-
+ tests/i915/i915_hangman.c                   |  4 +-
+ tests/i915/i915_hwmon.c                     |  2 +-
+ tests/i915/i915_module_load.c               |  8 +--
+ tests/i915/i915_pciid.c                     |  2 +-
+ tests/i915/i915_pm_backlight.c              |  2 +-
+ tests/i915/i915_pm_dc.c                     |  2 +-
+ tests/i915/i915_pm_freq_api.c               |  2 +-
+ tests/i915/i915_pm_freq_mult.c              |  2 +-
+ tests/i915/i915_pm_lpsp.c                   |  2 +-
+ tests/i915/i915_pm_rc6_residency.c          |  2 +-
+ tests/i915/i915_pm_rps.c                    |  5 +-
+ tests/i915/i915_pm_sseu.c                   |  2 +-
+ tests/i915/i915_power.c                     |  2 +-
+ tests/i915/i915_query.c                     |  2 +-
+ tests/i915/i915_suspend.c                   |  6 +-
+ tests/i915/kms_big_fb.c                     |  2 +-
+ tests/i915/kms_big_joiner.c                 |  2 +-
+ tests/i915/kms_busy.c                       |  2 +-
+ tests/i915/kms_ccs.c                        |  2 +-
+ tests/i915/kms_cdclk.c                      |  2 +-
+ tests/i915/kms_draw_crc.c                   |  2 +-
+ tests/i915/kms_dsc.c                        |  2 +-
+ tests/i915/kms_fbcon_fbt.c                  |  2 +-
+ tests/i915/kms_fence_pin_leak.c             |  2 +-
+ tests/i915/kms_flip_scaled_crc.c            |  2 +-
+ tests/i915/kms_flip_tiling.c                |  2 +-
+ tests/i915/kms_frontbuffer_tracking.c       |  2 +-
+ tests/i915/kms_legacy_colorkey.c            |  2 +-
+ tests/i915/kms_mmap_write_crc.c             |  3 +-
+ tests/i915/kms_pipe_b_c_ivb.c               |  2 +-
+ tests/i915/kms_psr.c                        |  2 +-
+ tests/i915/kms_psr2_sf.c                    |  2 +-
+ tests/i915/kms_psr2_su.c                    |  2 +-
+ tests/i915/kms_psr_stress_test.c            |  2 +-
+ tests/i915/kms_pwrite_crc.c                 |  2 +-
+ tests/i915/perf.c                           |  6 +-
+ tests/i915/perf_pmu.c                       |  6 +-
+ tests/i915/sysfs_defaults.c                 |  2 +-
+ tests/i915/sysfs_heartbeat_interval.c       |  2 +-
+ tests/i915/sysfs_preempt_timeout.c          |  2 +-
+ tests/i915/sysfs_timeslice_duration.c       |  2 +-
+ tests/kms_3d.c                              |  8 +--
+ tests/kms_addfb_basic.c                     | 13 +---
+ tests/kms_async_flips.c                     |  2 +-
+ tests/kms_atomic.c                          |  2 +-
+ tests/kms_atomic_interruptible.c            |  2 +-
+ tests/kms_atomic_transition.c               |  2 +-
+ tests/kms_color.c                           |  2 +-
+ tests/kms_concurrent.c                      |  2 +-
+ tests/kms_content_protection.c              |  2 +-
+ tests/kms_cursor_crc.c                      |  2 +-
+ tests/kms_cursor_edge_walk.c                |  2 +-
+ tests/kms_cursor_legacy.c                   |  2 +-
+ tests/kms_dither.c                          |  2 +-
+ tests/kms_dp_aux_dev.c                      |  2 +-
+ tests/kms_flip.c                            | 11 +---
+ tests/kms_flip_event_leak.c                 |  8 +--
+ tests/kms_force_connector_basic.c           |  4 +-
+ tests/kms_getfb.c                           | 19 +-----
+ tests/kms_hdmi_inject.c                     |  9 +--
+ tests/kms_hdr.c                             |  2 +-
+ tests/kms_invalid_mode.c                    |  2 +-
+ tests/kms_lease.c                           |  4 +-
+ tests/kms_panel_fitting.c                   |  2 +-
+ tests/kms_pipe_crc_basic.c                  |  2 +-
+ tests/kms_plane.c                           |  2 +-
+ tests/kms_plane_alpha_blend.c               |  2 +-
+ tests/kms_plane_cursor.c                    |  2 +-
+ tests/kms_plane_lowres.c                    |  2 +-
+ tests/kms_plane_multiple.c                  |  2 +-
+ tests/kms_plane_scaling.c                   |  2 +-
+ tests/kms_prime.c                           |  6 +-
+ tests/kms_prop_blob.c                       |  8 +--
+ tests/kms_properties.c                      |  2 +-
+ tests/kms_rmfb.c                            |  4 +-
+ tests/kms_rotation_crc.c                    |  2 +-
+ tests/kms_scaling_modes.c                   |  2 +-
+ tests/kms_sequence.c                        |  2 +-
+ tests/kms_setmode.c                         |  9 +--
+ tests/kms_tiled_display.c                   |  2 +-
+ tests/kms_tv_load_detect.c                  |  2 +-
+ tests/kms_universal_plane.c                 |  2 +-
+ tests/kms_vblank.c                          |  2 +-
+ tests/kms_vrr.c                             |  1 +
+ tests/kms_writeback.c                       |  1 +
+ tests/nouveau_crc.c                         |  6 +-
+ tests/panfrost_gem_new.c                    |  4 +-
+ tests/panfrost_get_param.c                  |  2 +-
+ tests/panfrost_prime.c                      |  4 +-
+ tests/panfrost_submit.c                     |  6 +-
+ tests/prime_busy.c                          |  2 +-
+ tests/prime_mmap.c                          |  2 +-
+ tests/prime_mmap_coherency.c                |  4 +-
+ tests/prime_mmap_kms.c                      |  2 +-
+ tests/prime_self_import.c                   | 26 ++++----
+ tests/prime_vgem.c                          |  4 +-
+ tests/syncobj_basic.c                       |  2 +-
+ tests/syncobj_timeline.c                    |  2 +-
+ tests/syncobj_wait.c                        |  2 +-
+ tests/template.c                            |  2 +-
+ tests/testdisplay.c                         |  4 +-
+ tests/v3d/v3d_create_bo.c                   |  4 +-
+ tests/v3d/v3d_get_bo_offset.c               |  2 +-
+ tests/v3d/v3d_get_param.c                   |  2 +-
+ tests/v3d/v3d_job_submission.c              |  2 +-
+ tests/v3d/v3d_mmap.c                        |  2 +-
+ tests/v3d/v3d_perfmon.c                     |  2 +-
+ tests/v3d/v3d_submit_cl.c                   |  2 +-
+ tests/v3d/v3d_submit_csd.c                  |  2 +-
+ tests/v3d/v3d_wait_bo.c                     |  2 +-
+ tests/vc4/vc4_create_bo.c                   |  4 +-
+ tests/vc4/vc4_dmabuf_poll.c                 |  2 +-
+ tests/vc4/vc4_label_bo.c                    |  2 +-
+ tests/vc4/vc4_lookup_fail.c                 |  2 +-
+ tests/vc4/vc4_mmap.c                        |  2 +-
+ tests/vc4/vc4_perfmon.c                     |  2 +-
+ tests/vc4/vc4_purgeable_bo.c                |  2 +-
+ tests/vc4/vc4_tiling.c                      |  2 +-
+ tests/vc4/vc4_wait_bo.c                     |  2 +-
+ tests/vc4/vc4_wait_seqno.c                  |  2 +-
+ tests/vgem_basic.c                          |  6 +-
+ tests/vgem_slow.c                           |  2 +-
+ tests/vmwgfx/vmw_execution_buffer.c         |  2 +-
+ tests/vmwgfx/vmw_ref_count.c                |  4 +-
+ tests/vmwgfx/vmw_surface_copy.c             |  2 +-
+ tests/xe/xe_compute.c                       | 10 +--
+ tests/xe/xe_create.c                        | 13 ++--
+ tests/xe/xe_debugfs.c                       | 10 +--
+ tests/xe/xe_dma_buf_sync.c                  | 15 ++---
+ tests/xe/xe_evict.c                         | 11 +---
+ tests/xe/xe_exec_balancer.c                 | 10 +--
+ tests/xe/xe_exec_basic.c                    | 10 +--
+ tests/xe/xe_exec_compute_mode.c             | 10 +--
+ tests/xe/xe_exec_fault_mode.c               |  7 +--
+ tests/xe/xe_exec_reset.c                    | 31 +++-------
+ tests/xe/xe_exec_threads.c                  | 28 +++------
+ tests/xe/xe_gpgpu_fill.c                    |  4 +-
+ tests/xe/xe_guc_pc.c                        |  4 +-
+ tests/xe/xe_huc_copy.c                      | 10 +--
+ tests/xe/xe_intel_bb.c                      |  4 +-
+ tests/xe/xe_mmap.c                          | 10 +--
+ tests/xe/xe_mmio.c                          | 10 +--
+ tests/xe/xe_module_load.c                   |  2 +-
+ tests/xe/xe_noexec_ping_pong.c              |  4 +-
+ tests/xe/xe_pm.c                            |  5 +-
+ tests/xe/xe_prime_self_import.c             | 61 +++++-------------
+ tests/xe/xe_query.c                         | 10 +--
+ tests/xe/xe_spin_batch.c                    | 10 +--
+ tests/xe/xe_vm.c                            |  7 +--
+ tests/xe/xe_waitfence.c                     | 10 +--
+ 292 files changed, 581 insertions(+), 662 deletions(-)
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/index.html
-
-Participating hosts (42 -> 42)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9237 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_auth@basic-auth:
-    - bat-adlp-11:        [PASS][1] -> [ABORT][2] ([i915#8011])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-adlp-11/igt@core_auth@basic-auth.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-adlp-11/igt@core_auth@basic-auth.html
-
-  * igt@i915_module_load@load:
-    - bat-adlp-11:        [PASS][3] -> [DMESG-WARN][4] ([i915#4423])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-adlp-11/igt@i915_module_load@load.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-adlp-11/igt@i915_module_load@load.html
-
-  * igt@i915_pm_backlight@basic-brightness@edp-1:
-    - bat-rplp-1:         NOTRUN -> [ABORT][5] ([i915#7077])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-mtlp-8:         [PASS][6] -> [DMESG-FAIL][7] ([i915#8497])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-mtlp-8/igt@i915_selftest@live@requests.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-mtlp-8/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-1:         [PASS][8] -> [DMESG-WARN][9] ([i915#6367])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [PASS][10] -> [DMESG-FAIL][11] ([i915#6763])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-atsm-1:         NOTRUN -> [SKIP][12] ([i915#6645])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-atsm-1/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - bat-atsm-1:         NOTRUN -> [SKIP][13] ([i915#6078])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-atsm-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
-    - bat-dg2-8:          [PASS][14] -> [FAIL][15] ([i915#7932])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][16] ([fdo#109271]) +1 similar issue
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/fi-bsw-nick/igt@kms_pipe_crc_basic@suspend-read-crc.html
-    - bat-atsm-1:         NOTRUN -> [SKIP][17] ([i915#1836])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-atsm-1/igt@kms_pipe_crc_basic@suspend-read-crc.html
-
-  * igt@kms_psr@primary_mmap_gtt:
-    - bat-rplp-1:         NOTRUN -> [SKIP][18] ([i915#1072])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         NOTRUN -> [SKIP][19] ([i915#3555] / [i915#4579])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [ABORT][20] ([i915#7911] / [i915#7913]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-rpls-2:         [TIMEOUT][22] ([i915#6794] / [i915#7392]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-rpls-2/igt@i915_selftest@live@mman.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rpls-2/igt@i915_selftest@live@mman.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-rplp-1:         [ABORT][24] -> [SKIP][25] ([i915#1072])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#6763]: https://gitlab.freedesktop.org/drm/intel/issues/6763
-  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
-  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
-  [i915#7392]: https://gitlab.freedesktop.org/drm/intel/issues/7392
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
-  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
-  [i915#8497]: https://gitlab.freedesktop.org/drm/intel/issues/8497
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7345 -> IGTPW_9237
-
-  CI-20190529: 20190529
-  CI_DRM_13302: 839a0f1c0fba27caa09cb8c3c07ba21ba7428bb6 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9237: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/index.html
-  IGT_7345: bedba6f82d70f8eb49c53cb2c45ee60a1eec04d1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
--igt@kms_dirtyfb@dirtyfb-ioctl
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/index.html
-
---===============3497534917707858658==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>PM Suspend debug (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119371/">https://patchwork.freedesktop.org/series/119371/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7345 -&gt; IGTPW_9237</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/index.html</p>
-<h2>Participating hosts (42 -&gt; 42)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9237 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_auth@basic-auth:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-adlp-11/igt@core_auth@basic-auth.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-adlp-11/igt@core_auth@basic-auth.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8011">i915#8011</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-adlp-11/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-adlp-11/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness@edp-1:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rplp-1/igt@i915_pm_backlight@basic-brightness@edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-mtlp-8/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8497">i915#8497</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6763">i915#6763</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-atsm-1/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6645">i915#6645</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-atsm-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6078">i915#6078</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7932">i915#7932</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
-<ul>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/fi-bsw-nick/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-atsm-1/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1836">i915#1836</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_mmap_gtt:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-rpls-2/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rpls-2/igt@i915_selftest@live@mman.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@sprite_plane_onoff:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7345/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7345 -&gt; IGTPW_9237</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13302: 839a0f1c0fba27caa09cb8c3c07ba21ba7428bb6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9237: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9237/index.html<br />
-  IGT_7345: bedba6f82d70f8eb49c53cb2c45ee60a1eec04d1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>-igt@kms_dirtyfb@dirtyfb-ioctl</p>
-
-</body>
-</html>
-
---===============3497534917707858658==--
+--
+2.40.0
