@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 605C310E55A
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 12:55:38 +0000 (UTC)
-Date: Thu, 22 Jun 2023 14:55:34 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230622125534.cski2zzude2c2o6n@kamilkon-desk1>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85F2610E55F
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 13:03:01 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 22 Jun 2023 13:02:51 +0000
+Message-ID: <DM4PR11MB6312D2BF62243D9C688C0FD29022A@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20230622111651.9040-1-jeevan.b@intel.com>
+ <20230622125534.cski2zzude2c2o6n@kamilkon-desk1>
+In-Reply-To: <20230622125534.cski2zzude2c2o6n@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230622111651.9040-1-jeevan.b@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_setmode: Fix dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,90 +26,81 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jeevan,
-
-On 2023-06-22 at 16:46:51 +0530, Jeevan B wrote:
-> basic-clone-single-crtc and invalid-clone-exclusive-crtc were not
-> part of dynamic subtest so tests were getting skipped. fixed the
-> test to execute skipping tests as expected.
-> 
-> v2: add missing call.
-> 
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->  tests/kms_setmode.c | 26 +++++++++++++-------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
-> 
-> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-> index a611d938..96fb0b4b 100644
-> --- a/tests/kms_setmode.c
-> +++ b/tests/kms_setmode.c
-> @@ -647,20 +647,19 @@ static void test_one_combination(const struct test_config *tconf,
->  	struct crtc_config crtcs[MAX_CRTCS];
->  	int crtc_count;
->  	bool config_valid;
-> +	int i, pos = 0;
-> +	char test_name[256];
->  
->  	setup_crtcs(tconf, cconfs, connector_count, crtcs,
->  		    &crtc_count, &config_valid);
->  
-> -	if (config_valid == !(tconf->flags & TEST_INVALID)) {
-> -		int i, pos = 0;
-> -		char test_name[256];
-> -
-> -		for (i = 0; i < crtc_count; i++) {
-> -			if (i > 0)
-> -				pos += snprintf(&test_name[pos], ARRAY_SIZE(test_name) - pos, "-");
-> -			pos += get_test_name_str(&crtcs[i], &test_name[pos], ARRAY_SIZE(test_name) - pos);
-> -		}
-> +	for (i = 0; i < crtc_count; i++) {
-> +		if (i > 0)
-> +			pos += snprintf(&test_name[pos], ARRAY_SIZE(test_name) - pos, "-");
-> +		pos += get_test_name_str(&crtcs[i], &test_name[pos], ARRAY_SIZE(test_name) - pos);
-> +	}
->  
-> +	if (config_valid == !(tconf->flags & TEST_INVALID)) {
->  		for (i = 0; i < crtc_count; i++) {
->  			struct crtc_config *crtc = &crtcs[i];
->  
-> @@ -679,16 +678,17 @@ static void test_one_combination(const struct test_config *tconf,
->  			    ((i > 0) && (crtc[i - 1].mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
->  			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
->  				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
-> -				goto out;
-> +				cleanup_crtcs(crtcs, crtc_count);
-> +				return;
->  			}
->  		}
->  
->  		igt_dynamic_f("%s", test_name)
->  			test_crtc_config(tconf, crtcs, crtc_count);
-> +	} else {
-> +		igt_dynamic_f("%s", test_name)
-> +			cleanup_crtcs(crtcs, crtc_count);
------------------------ ^
-The name of function and its placement just before function end
-suggest it is a cleanup, not a test.
-
-I would advise going with git log and finding when these two
-tests where executed with "normal", non-dynamic way and then
-adjusting this function, or adding them as separate subtests
-with proper configuration.
-
->  	}
-> -
-> -out:
-> -	cleanup_crtcs(crtcs, crtc_count);
-
-Drop this change, looks dangereous.
-
-Regards,
-Kamil
-
->  }
->  
->  static int assign_crtc_to_connectors(const struct test_config *tconf,
-> -- 
-> 2.41.0
-> 
+SGkgS2FtaWwsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwg
+S29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBUaHVy
+c2RheSwgSnVuZSAyMiwgMjAyMyA2OjI2IFBNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
+dG9wLm9yZw0KPiBDYzogQiwgSmVldmFuIDxqZWV2YW4uYkBpbnRlbC5jb20+OyBNb2RlbSwgQmhh
+bnVwcmFrYXNoDQo+IDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBS
+ZTogW1BBVENIIGktZy10XSB0ZXN0cy9rbXNfc2V0bW9kZTogRml4IGR5bmFtaWMgc3VidGVzdHMN
+Cj4gDQo+IEhpIEplZXZhbiwNCj4gDQo+IE9uIDIwMjMtMDYtMjIgYXQgMTY6NDY6NTEgKzA1MzAs
+IEplZXZhbiBCIHdyb3RlOg0KPiA+IGJhc2ljLWNsb25lLXNpbmdsZS1jcnRjIGFuZCBpbnZhbGlk
+LWNsb25lLWV4Y2x1c2l2ZS1jcnRjIHdlcmUgbm90IHBhcnQNCj4gPiBvZiBkeW5hbWljIHN1YnRl
+c3Qgc28gdGVzdHMgd2VyZSBnZXR0aW5nIHNraXBwZWQuIGZpeGVkIHRoZSB0ZXN0IHRvDQo+ID4g
+ZXhlY3V0ZSBza2lwcGluZyB0ZXN0cyBhcyBleHBlY3RlZC4NCj4gPg0KPiA+IHYyOiBhZGQgbWlz
+c2luZyBjYWxsLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSmVldmFuIEIgPGplZXZhbi5iQGlu
+dGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMva21zX3NldG1vZGUuYyB8IDI2ICsrKysrKysr
+KysrKystLS0tLS0tLS0tLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxMyBpbnNlcnRpb25zKCsp
+LCAxMyBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfc2V0bW9k
+ZS5jIGIvdGVzdHMva21zX3NldG1vZGUuYyBpbmRleA0KPiA+IGE2MTFkOTM4Li45NmZiMGI0YiAx
+MDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9rbXNfc2V0bW9kZS5jDQo+ID4gKysrIGIvdGVzdHMva21z
+X3NldG1vZGUuYw0KPiA+IEBAIC02NDcsMjAgKzY0NywxOSBAQCBzdGF0aWMgdm9pZCB0ZXN0X29u
+ZV9jb21iaW5hdGlvbihjb25zdCBzdHJ1Y3QNCj4gdGVzdF9jb25maWcgKnRjb25mLA0KPiA+ICAJ
+c3RydWN0IGNydGNfY29uZmlnIGNydGNzW01BWF9DUlRDU107DQo+ID4gIAlpbnQgY3J0Y19jb3Vu
+dDsNCj4gPiAgCWJvb2wgY29uZmlnX3ZhbGlkOw0KPiA+ICsJaW50IGksIHBvcyA9IDA7DQo+ID4g
+KwljaGFyIHRlc3RfbmFtZVsyNTZdOw0KPiA+DQo+ID4gIAlzZXR1cF9jcnRjcyh0Y29uZiwgY2Nv
+bmZzLCBjb25uZWN0b3JfY291bnQsIGNydGNzLA0KPiA+ICAJCSAgICAmY3J0Y19jb3VudCwgJmNv
+bmZpZ192YWxpZCk7DQo+ID4NCj4gPiAtCWlmIChjb25maWdfdmFsaWQgPT0gISh0Y29uZi0+Zmxh
+Z3MgJiBURVNUX0lOVkFMSUQpKSB7DQo+ID4gLQkJaW50IGksIHBvcyA9IDA7DQo+ID4gLQkJY2hh
+ciB0ZXN0X25hbWVbMjU2XTsNCj4gPiAtDQo+ID4gLQkJZm9yIChpID0gMDsgaSA8IGNydGNfY291
+bnQ7IGkrKykgew0KPiA+IC0JCQlpZiAoaSA+IDApDQo+ID4gLQkJCQlwb3MgKz0gc25wcmludGYo
+JnRlc3RfbmFtZVtwb3NdLA0KPiBBUlJBWV9TSVpFKHRlc3RfbmFtZSkgLSBwb3MsICItIik7DQo+
+ID4gLQkJCXBvcyArPSBnZXRfdGVzdF9uYW1lX3N0cigmY3J0Y3NbaV0sDQo+ICZ0ZXN0X25hbWVb
+cG9zXSwgQVJSQVlfU0laRSh0ZXN0X25hbWUpIC0gcG9zKTsNCj4gPiAtCQl9DQo+ID4gKwlmb3Ig
+KGkgPSAwOyBpIDwgY3J0Y19jb3VudDsgaSsrKSB7DQo+ID4gKwkJaWYgKGkgPiAwKQ0KPiA+ICsJ
+CQlwb3MgKz0gc25wcmludGYoJnRlc3RfbmFtZVtwb3NdLA0KPiBBUlJBWV9TSVpFKHRlc3RfbmFt
+ZSkgLSBwb3MsICItIik7DQo+ID4gKwkJcG9zICs9IGdldF90ZXN0X25hbWVfc3RyKCZjcnRjc1tp
+XSwgJnRlc3RfbmFtZVtwb3NdLA0KPiBBUlJBWV9TSVpFKHRlc3RfbmFtZSkgLSBwb3MpOw0KPiA+
+ICsJfQ0KPiA+DQo+ID4gKwlpZiAoY29uZmlnX3ZhbGlkID09ICEodGNvbmYtPmZsYWdzICYgVEVT
+VF9JTlZBTElEKSkgew0KPiA+ICAJCWZvciAoaSA9IDA7IGkgPCBjcnRjX2NvdW50OyBpKyspIHsN
+Cj4gPiAgCQkJc3RydWN0IGNydGNfY29uZmlnICpjcnRjID0gJmNydGNzW2ldOw0KPiA+DQo+ID4g
+QEAgLTY3OSwxNiArNjc4LDE3IEBAIHN0YXRpYyB2b2lkIHRlc3Rfb25lX2NvbWJpbmF0aW9uKGNv
+bnN0IHN0cnVjdA0KPiB0ZXN0X2NvbmZpZyAqdGNvbmYsDQo+ID4gIAkJCSAgICAoKGkgPiAwKSAm
+JiAoY3J0Y1tpIC0gMV0ubW9kZS5oZGlzcGxheSA+DQo+IE1BWF9IRElTUExBWV9QRVJfQ1JUQykg
+JiYNCj4gPiAgCQkJICAgICAoYWJzKGNydGMtPmNydGNfaWR4IC0gY3J0Y3NbaSAtIDFdLmNydGNf
+aWR4KSA8PSAxKSkpIHsNCj4gPiAgCQkJCWlndF9pbmZvKCJDb21ibzogJXMgaXMgbm90IHBvc3Np
+YmxlIHdpdGgNCj4gc2VsZWN0ZWQgbW9kZShzKS5cbiIsIHRlc3RfbmFtZSk7DQo+ID4gLQkJCQln
+b3RvIG91dDsNCj4gPiArCQkJCWNsZWFudXBfY3J0Y3MoY3J0Y3MsIGNydGNfY291bnQpOw0KPiA+
+ICsJCQkJcmV0dXJuOw0KPiA+ICAJCQl9DQo+ID4gIAkJfQ0KPiA+DQo+ID4gIAkJaWd0X2R5bmFt
+aWNfZigiJXMiLCB0ZXN0X25hbWUpDQo+ID4gIAkJCXRlc3RfY3J0Y19jb25maWcodGNvbmYsIGNy
+dGNzLCBjcnRjX2NvdW50KTsNCj4gPiArCX0gZWxzZSB7DQo+ID4gKwkJaWd0X2R5bmFtaWNfZigi
+JXMiLCB0ZXN0X25hbWUpDQo+ID4gKwkJCWNsZWFudXBfY3J0Y3MoY3J0Y3MsIGNydGNfY291bnQp
+Ow0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBeDQo+IFRoZSBuYW1lIG9mIGZ1bmN0aW9uIGFu
+ZCBpdHMgcGxhY2VtZW50IGp1c3QgYmVmb3JlIGZ1bmN0aW9uIGVuZCBzdWdnZXN0IGl0IGlzDQo+
+IGEgY2xlYW51cCwgbm90IGEgdGVzdC4NCj4gDQo+IEkgd291bGQgYWR2aXNlIGdvaW5nIHdpdGgg
+Z2l0IGxvZyBhbmQgZmluZGluZyB3aGVuIHRoZXNlIHR3byB0ZXN0cyB3aGVyZQ0KPiBleGVjdXRl
+ZCB3aXRoICJub3JtYWwiLCBub24tZHluYW1pYyB3YXkgYW5kIHRoZW4gYWRqdXN0aW5nIHRoaXMg
+ZnVuY3Rpb24sDQo+IG9yIGFkZGluZyB0aGVtIGFzIHNlcGFyYXRlIHN1YnRlc3RzIHdpdGggcHJv
+cGVyIGNvbmZpZ3VyYXRpb24uDQo+IA0KVGhpcyB3YXMgYmVmb3JlIHRlc3RzIHdlcmUgY29udmVy
+dGVkIHRvIGR5bmFtaWMuICg5ZjMyZDU1MmFmZDdlN2JiMzRiNGNjMzU0MmUxODRiM2JlMWExZGM4
+KQ0KQEAgLTY2NCw4ICs2ODQsMTkgQEAgc3RhdGljIHZvaWQgdGVzdF9vbmVfY29tYmluYXRpb24o
+Y29uc3Qgc3RydWN0IHRlc3RfY29uZmlnICp0Y29uZiwNCiAgICAgICAgc2V0dXBfY3J0Y3ModGNv
+bmYsIGNjb25mcywgY29ubmVjdG9yX2NvdW50LCBjcnRjcywNCiAgICAgICAgICAgICAgICAgICAg
+JmNydGNfY291bnQsICZjb25maWdfdmFsaWQpOw0KDQotICAgICAgIGlmIChjb25maWdfdmFsaWQg
+PT0gISh0Y29uZi0+ZmxhZ3MgJiBURVNUX0lOVkFMSUQpKQ0KLSAgICAgICAgICAgICAgIHRlc3Rf
+Y3J0Y19jb25maWcodGNvbmYsIGNydGNzLCBjcnRjX2NvdW50KTsNCisgICAgICAgaWYgKGNvbmZp
+Z192YWxpZCA9PSAhKHRjb25mLT5mbGFncyAmIFRFU1RfSU5WQUxJRCkpIHsNCisgICAgICAgICAg
+ICAgICBpbnQgaSwgcG9zID0gMDsNCisgICAgICAgICAgICAgICBjaGFyIHRlc3RfbmFtZVsyNTZd
+Ow0KKw0KKyAgICAgICAgICAgICAgIGZvciAoaSA9IDA7IGkgPCBjcnRjX2NvdW50OyBpKyspIHsN
+CisgICAgICAgICAgICAgICAgICAgICAgIGlmIChpID4gMCkNCisgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgcG9zICs9IHNucHJpbnRmKCZ0ZXN0X25hbWVbcG9zXSwgQVJSQVlfU0laRSh0
+ZXN0X25hbWUpIC0gcG9zLCAiLSIpOw0KKyAgICAgICAgICAgICAgICAgICAgICAgcG9zICs9IGdl
+dF90ZXN0X25hbWVfc3RyKCZjcnRjc1tpXSwgJnRlc3RfbmFtZVtwb3NdLCBBUlJBWV9TSVpFKHRl
+c3RfbmFtZSkgLSBwb3MpOw0KKyAgICAgICAgICAgICAgIH0NCisNCisgICAgICAgICAgICAgICBp
+Z3RfZHluYW1pY19mKCIlcyIsIHRlc3RfbmFtZSkNCisgICAgICAgICAgICAgICAgICAgICAgIHRl
+c3RfY3J0Y19jb25maWcodGNvbmYsIGNydGNzLCBjcnRjX2NvdW50KTsNCisgICAgICAgfQ0KDQog
+ICAgICAgIGNsZWFudXBfY3J0Y3MoY3J0Y3MsIGNydGNfY291bnQpOw0KIH0NCg0KPiA+ICAJfQ0K
+PiA+IC0NCj4gPiAtb3V0Og0KPiA+IC0JY2xlYW51cF9jcnRjcyhjcnRjcywgY3J0Y19jb3VudCk7
+DQo+IA0KPiBEcm9wIHRoaXMgY2hhbmdlLCBsb29rcyBkYW5nZXJlb3VzLg0KPiANCj4gUmVnYXJk
+cywNCj4gS2FtaWwNCg0KPiANCj4gPiAgfQ0KPiA+DQo+ID4gIHN0YXRpYyBpbnQgYXNzaWduX2Ny
+dGNfdG9fY29ubmVjdG9ycyhjb25zdCBzdHJ1Y3QgdGVzdF9jb25maWcgKnRjb25mLA0KPiA+IC0t
+DQo+ID4gMi40MS4wDQo+ID4NCg==
