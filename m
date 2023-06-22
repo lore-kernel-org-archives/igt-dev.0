@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DB5C10E13C
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 05:34:06 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>, "kamil.konieczny@linux.intel.com"
- <kamil.konieczny@linux.intel.com>
-Date: Thu, 22 Jun 2023 05:34:00 +0000
-Message-ID: <CY5PR11MB6211F09F8299C52F868498C59522A@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230621095036.4177883-1-riana.tauro@intel.com>
- <CY5PR11MB6211F6EF0460B794327FF911955DA@CY5PR11MB6211.namprd11.prod.outlook.com>
- <76e59168-038f-c67b-834e-a63e44fe6301@intel.com>
-In-Reply-To: <76e59168-038f-c67b-834e-a63e44fe6301@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E41EC10E179
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 05:46:04 +0000 (UTC)
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 22 Jun 2023 08:45:39 +0300
+Message-Id: <20230622054543.3360732-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/xe: Add basic idle residency
- test
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v6 0/4] Testcases for dirtyfb ioctl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,122 +17,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVGF1cm8sIFJpYW5hIDxy
-aWFuYS50YXVyb0BpbnRlbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBKdW5lIDIyLCAyMDIzIDEw
-OjQwIEFNDQo+IFRvOiBHdXB0YSwgQW5zaHVtYW4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47
-IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogRGl4aXQsIEFzaHV0b3No
-IDxhc2h1dG9zaC5kaXhpdEBpbnRlbC5jb20+OyBOaWxhd2FyLCBCYWRhbA0KPiA8YmFkYWwubmls
-YXdhckBpbnRlbC5jb20+OyBrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tOyBCZWxnYXVt
-a2FyLA0KPiBWaW5heSA8dmluYXkuYmVsZ2F1bWthckBpbnRlbC5jb20+OyBTdW5kYXJlc2FuLCBT
-dWphcml0aGENCj4gPHN1amFyaXRoYS5zdW5kYXJlc2FuQGludGVsLmNvbT4NCj4gU3ViamVjdDog
-UmU6IFtQQVRDSCBpLWctdCB2Ml0gdGVzdHMveGU6IEFkZCBiYXNpYyBpZGxlIHJlc2lkZW5jeSB0
-ZXN0DQo+IA0KPiBIaSBBbnNodW1hbg0KPiANCj4gVGhhbmtzIGZvciB0aGUgcmV2aWV3DQo+IA0K
-PiBPbiA2LzIxLzIwMjMgNTozMSBQTSwgR3VwdGEsIEFuc2h1bWFuIHdyb3RlOg0KPiA+DQo+ID4N
-Cj4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPj4gRnJvbTogVGF1cm8sIFJpYW5h
-IDxyaWFuYS50YXVyb0BpbnRlbC5jb20+DQo+ID4+IFNlbnQ6IFdlZG5lc2RheSwgSnVuZSAyMSwg
-MjAyMyAzOjIxIFBNDQo+ID4+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiA+
-PiBDYzogVGF1cm8sIFJpYW5hIDxyaWFuYS50YXVyb0BpbnRlbC5jb20+OyBHdXB0YSwgQW5zaHVt
-YW4NCj4gPj4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47IERpeGl0LCBBc2h1dG9zaA0KPiA+
-PiA8YXNodXRvc2guZGl4aXRAaW50ZWwuY29tPjsgTmlsYXdhciwgQmFkYWwgPGJhZGFsLm5pbGF3
-YXJAaW50ZWwuY29tPjsNCj4gPj4ga2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbQ0KPiA+
-PiBTdWJqZWN0OiBbUEFUQ0ggaS1nLXQgdjJdIHRlc3RzL3hlOiBBZGQgYmFzaWMgaWRsZSByZXNp
-ZGVuY3kgdGVzdA0KPiA+Pg0KPiA+PiBUaGUgdGVzdCByZWFkcyBpZGxlIHJlc2lkZW5jeSB3aXRo
-aW4gYSB0aW1lIGludGVydmFsIGFuZCBjaGVja3MgaWYNCj4gPj4gaXRzIHdpdGhpbiB0aGUgdG9s
-ZXJhbmNlDQo+ID4+DQo+ID4+IFBhdGNoIGZvciBndGlkbGUgcHJvcGVydGllcw0KPiA+PiBodHRw
-czovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzExOTI2Mi8NCj4gPj4NCj4gPj4g
-djI6DQo+ID4+ICAgICAtIHJlbmFtZSBmaWxlIHRvIHhlX3BtX3Jlc2lkZW5jeQ0KPiA+PiAgICAg
-LSBhZGQga2VybmVsIHBhdGNoIGluIGNvbW1pdCBtZXNzYWdlIChLYW1pbCkNCj4gPj4NCj4gPj4g
-U2lnbmVkLW9mZi1ieTogUmlhbmEgVGF1cm8gPHJpYW5hLnRhdXJvQGludGVsLmNvbT4NCj4gPj4g
-LS0tDQo+ID4+ICAgdGVzdHMvbWVzb24uYnVpbGQgICAgICAgICAgfCAgIDEgKw0KPiA+PiAgIHRl
-c3RzL3hlL3hlX3BtX3Jlc2lkZW5jeS5jIHwgMTE3DQo+ID4+ICsrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysNCj4gPj4gICAyIGZpbGVzIGNoYW5nZWQsIDExOCBpbnNlcnRpb25z
-KCspDQo+ID4+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL3hlL3hlX3BtX3Jlc2lkZW5jeS5j
-DQo+ID4+DQo+ID4+IGRpZmYgLS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29u
-LmJ1aWxkIGluZGV4DQo+ID4+IGY5MDhhZTg4NS4uZjg3N2I3YTExIDEwMDY0NA0KPiA+PiAtLS0g
-YS90ZXN0cy9tZXNvbi5idWlsZA0KPiA+PiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiA+PiBA
-QCAtMjY0LDYgKzI2NCw3IEBAIHhlX3Byb2dzID0gWw0KPiA+PiAgIAkneGVfbW9kdWxlX2xvYWQn
-LA0KPiA+PiAgIAkneGVfbm9leGVjX3BpbmdfcG9uZycsDQo+ID4+ICAgCSd4ZV9wbScsDQo+ID4+
-ICsJJ3hlX3BtX3Jlc2lkZW5jeScsDQo+ID4+ICAgCSd4ZV9wcmltZV9zZWxmX2ltcG9ydCcsDQo+
-ID4+ICAgCSd4ZV9xdWVyeScsDQo+ID4+ICAgCSd4ZV92bScsDQo+ID4+IGRpZmYgLS1naXQgYS90
-ZXN0cy94ZS94ZV9wbV9yZXNpZGVuY3kuYyBiL3Rlc3RzL3hlL3hlX3BtX3Jlc2lkZW5jeS5jDQo+
-ID4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0IGluZGV4IDAwMDAwMDAwMC4uMzNmODQwMzI1DQo+ID4+
-IC0tLSAvZGV2L251bGwNCj4gPj4gKysrIGIvdGVzdHMveGUveGVfcG1fcmVzaWRlbmN5LmMNCj4g
-Pj4gQEAgLTAsMCArMSwxMTcgQEANCj4gPj4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBN
-SVQNCj4gPj4gKy8qDQo+ID4+ICsgKiBDb3B5cmlnaHQgwqkgMjAyMyBJbnRlbCBDb3Jwb3JhdGlv
-biAgKi8NCj4gPj4gKw0KPiA+PiArLyoqDQo+ID4+ICsgKiBURVNUOiBUZXN0IGd0aWRsZSBwcm9w
-ZXJ0aWVzDQo+ID4+ICsgKiBDYXRlZ29yeTogU29mdHdhcmUgYnVpbGRpbmcgYmxvY2sNCj4gPj4g
-KyAqIFN1Yi1jYXRlZ29yeTogUG93ZXIgTWFuYWdlbWVudA0KPiA+PiArICogRnVuY3Rpb25hbGl0
-eTogR1QgQyBTdGF0ZXMNCj4gPj4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVz
-dCAgKi8NCj4gPj4gKw0KPiA+PiArI2luY2x1ZGUgPGxpbWl0cy5oPg0KPiA+PiArDQo+ID4+ICsj
-aW5jbHVkZSAiaWd0LmgiDQo+ID4+ICsjaW5jbHVkZSAiaWd0X3N5c2ZzLmgiDQo+ID4+ICsNCj4g
-Pj4gKyNpbmNsdWRlICJ4ZS94ZV9xdWVyeS5oIg0KPiA+PiArDQo+ID4+ICsjZGVmaW5lIFNMRUVQ
-X0RVUkFUSU9OIDMwMDAgLyogaW4gbWlsbGlzZWNvbmRzICovDQo+ID4+ICsNCj4gPj4gK2NvbnN0
-IGRvdWJsZSB0b2xlcmFuY2UgPSAwLjE7DQo+ID4+ICsNCj4gPj4gKyNkZWZpbmUgYXNzZXJ0X3dp
-dGhpbl9lcHNpbG9uKHgsIHJlZiwgdG9sKSBcDQo+ID4+ICsJaWd0X2Fzc2VydF9mKChkb3VibGUp
-KHgpIDw9ICgxLjAgKyAodG9sKSkgKiAoZG91YmxlKShyZWYpICYmIFwNCj4gPj4gKwkJICAgICAo
-ZG91YmxlKSh4KSA+PSAoMS4wIC0gKHRvbCkpICogKGRvdWJsZSkocmVmKSwgXA0KPiA+PiArCQkg
-ICAgICInJXMnICE9ICclcycgKCVmIG5vdCB3aXRoaW4gKyUuMWYlJS8tJS4xZiUlIHRvbGVyYW5j
-ZSBvZg0KPiA+PiAlZilcbiIsXA0KPiA+PiArCQkgICAgICN4LCAjcmVmLCAoZG91YmxlKSh4KSwg
-XA0KPiA+PiArCQkgICAgICh0b2wpICogMTAwLjAsICh0b2wpICogMTAwLjAsIFwNCj4gPj4gKwkJ
-ICAgICAoZG91YmxlKShyZWYpKQ0KPiA+IFRoaXMgbWlnaHQgZ2V0IHVzZWQgYXQgc2V2ZXJhbCBw
-bGFjZXMsIGhvdyBhYm91dCBtb3ZpbmcgaXQgdG8gYSBsaWJyYXJ5ID8NCj4gV2lsbCBtb3ZlIHRo
-aXMgdG8gbGliLiBsaWIvaWd0X3BtIHNob3VsZCBiZSBva2F5Pw0KSSB0aGluayBpZ3RfYXV4LmMg
-d291bGQgYmUgc3VpdGFibGUsIEBrbWFpbCBjYW4gcHJvdmlkZSBtb3JlIGlucHV0IG9uIHRoYXQu
-DQoNCj4gPj4gKw0KPiA+PiArc3RhdGljIHVuc2lnbmVkIGludCBtZWFzdXJlZF91c2xlZXAodW5z
-aWduZWQgaW50IHVzZWMpIHsNCj4gPj4gKwlzdHJ1Y3QgdGltZXNwZWMgdHMgPSB7IH07DQo+ID4+
-ICsJdW5zaWduZWQgaW50IHNsZXB0Ow0KPiA+PiArDQo+ID4+ICsJc2xlcHQgPSBpZ3RfbnNlY19l
-bGFwc2VkKCZ0cyk7DQo+ID4+ICsJaWd0X2Fzc2VydChzbGVwdCA9PSAwKTsNCj4gPj4gKwlkbyB7
-DQo+ID4+ICsJCXVzbGVlcCh1c2VjIC0gc2xlcHQpOw0KPiA+IHNsZXB0IHdhcyBuc2VjLCB0aGVu
-IHdoeSBhcmVuJ3Qgd2UgY29udmVydGluZyBpdCB0byB1c2VjID8NCj4gVGhlIGZpcnN0IHRpbWUg
-c2xlcHQgaXMgMC4gRnJvbSB0aGUgbmV4dCBsb29wIHJ1biwgaXQgaXMgY29udmVydGVkIHRvIHVz
-ZWMuDQo+ID4+ICsJCXNsZXB0ID0gaWd0X25zZWNfZWxhcHNlZCgmdHMpIC8gMTAwMDsNCj4gPj4g
-Kwl9IHdoaWxlIChzbGVwdCA8IHVzZWMpOw0KPiA+PiArDQo+ID4+ICsJcmV0dXJuIGlndF9uc2Vj
-X2VsYXBzZWQoJnRzKSAvIDEwMDA7IH0NCj4gPj4gKw0KPiA+PiArc3RhdGljIGJvb2wgaW5fZ3Rf
-YzYoaW50IHN5c2ZzLCBpbnQgZ3QpIHsNCj4gPj4gKwljaGFyIHBhdGhbUEFUSF9NQVhdOw0KPiA+
-PiArCWNoYXIgZ3RfY19zdGF0ZVs4XTsNCj4gPj4gKw0KPiA+PiArCXNwcmludGYocGF0aCwgImRl
-dmljZS9ndCVkL2d0aWRsZS9pZGxlX3N0YXR1cyIsIGd0KTsNCj4gPj4gKwlpZiAoaWd0X3N5c2Zz
-X3NjYW5mKHN5c2ZzLCBwYXRoLCAiJXMiLCBndF9jX3N0YXRlKSA8IDApDQo+ID4+ICsJCXJldHVy
-biBmYWxzZTsNCj4gPj4gKw0KPiA+PiArCXJldHVybiBzdHJjbXAoZ3RfY19zdGF0ZSwgImd0LWM2
-IikgPT0gMDsgfQ0KPiA+PiArDQo+ID4+ICtzdGF0aWMgdW5zaWduZWQgbG9uZyByZWFkX2lkbGVf
-cmVzaWRlbmN5KGludCBzeXNmcywgaW50IGd0KSB7DQo+ID4+ICsJdW5zaWduZWQgbG9uZyByZXNp
-ZGVuY3k7DQo+ID4+ICsJY2hhciBwYXRoW1BBVEhfTUFYXTsNCj4gPj4gKw0KPiA+PiArCXJlc2lk
-ZW5jeSA9IDA7DQo+ID4+ICsJc3ByaW50ZihwYXRoLCAiZGV2aWNlL2d0JWQvZ3RpZGxlL2lkbGVf
-cmVzaWRlbmN5X21zIiwgZ3QpOw0KPiA+IElNTyB3ZSBuZWVkIHNvbWV0aGluZyBsaWtlIGlndF9k
-ZWJ1Z2ZzX2d0X2RpcigpIGhlcmUgZm9yIHN5c2ZzLg0KPiBzeXNmcyBsaWIgYWxzbyBoYXMgdGhp
-cyBpZ3Rfc3lzZnNfZ3Rfb3BlbiBidXQgdGhlIHBhdGggaXMgc3BlY2lmaWMgdG8gaTkxNS4gSWYg
-dGhpcw0KPiBuZWVkcyB0byBiZSBhZGRlZCwgc2hvdWxkIGl0IGJlIGEgbmV3IGxpYiA/IG9yIHRo
-aXMgY2FuIGJlIGRvbmUgZm9yIHRoZSB0aWxlDQo+IHBhdGNoZXM/DQpIbW0gdGhpcyBjYW4gYmUg
-cHVyc3VlIGxhdGVyIG9uY2Ugd2Ugd2lsbCByZXNvbHZlIHRoZSBwYXRoIG9mIHN5c2ZzLg0KVGhh
-bmtzLA0KQW5zaHVtYW4gR3VwdGEuDQo+IA0KPiBUaGFua3MNCj4gUmlhbmENCj4gPiBUaGFua3Ms
-DQo+ID4gQW5zaHVtYW4gR3VwdGEuDQo+ID4+ICsJaWd0X2Fzc2VydChpZ3Rfc3lzZnNfc2NhbmYo
-c3lzZnMsIHBhdGgsICIlbHUiLCAmcmVzaWRlbmN5KSA9PSAxKTsNCj4gPj4gKwlyZXR1cm4gcmVz
-aWRlbmN5Ow0KPiA+PiArfQ0KPiA+PiArDQo+ID4+ICsvKioNCj4gPj4gKyAqIFNVQlRFU1Q6IGlk
-bGUtcmVzaWRlbmN5DQo+ID4+ICsgKiBEZXNjcmlwdGlvbjogYmFzaWMgcmVzaWRlbmN5IHRlc3Qg
-dG8gY2hlY2sgaWRsZSByZXNpZGVuY3kNCj4gPj4gKyAqCQl3aXRoaW4gYSB0aW1lIGludGVydmFs
-DQo+ID4+ICsgKiBSdW4gdHlwZTogRlVMTA0KPiA+PiArICovDQo+ID4+ICtzdGF0aWMgdm9pZCB0
-ZXN0X2lkbGVfcmVzaWRlbmN5KGludCBzeXNmcywgaW50IGd0KSB7DQo+ID4+ICsJdW5zaWduZWQg
-bG9uZyBlbGFwc2VkX21zLCByZXNpZGVuY3lfc3RhcnQsIHJlc2lkZW5jeV9lbmQ7DQo+ID4+ICsN
-Cj4gPj4gKwlhc3NlcnQoaWd0X3dhaXQoaW5fZ3RfYzYoc3lzZnMsIGd0KSwgMTAwMCwgMSkpOw0K
-PiA+PiArDQo+ID4+ICsJcmVzaWRlbmN5X3N0YXJ0ID0gcmVhZF9pZGxlX3Jlc2lkZW5jeShzeXNm
-cywgZ3QpOw0KPiA+PiArCWVsYXBzZWRfbXMgPSBtZWFzdXJlZF91c2xlZXAoU0xFRVBfRFVSQVRJ
-T04gKiAxMDAwKSAvIDEwMDA7DQo+ID4+ICsJcmVzaWRlbmN5X2VuZCA9IHJlYWRfaWRsZV9yZXNp
-ZGVuY3koc3lzZnMsIGd0KTsNCj4gPj4gKw0KPiA+PiArCWlndF9pbmZvKCJNZWFzdXJlZCAlbHVt
-cyBvZiBpZGxlIHJlc2lkZW5jeSBpbiAlbHVtc1xuIiwNCj4gPj4gKwkJIHJlc2lkZW5jeV9lbmQg
-LSByZXNpZGVuY3lfc3RhcnQsIGVsYXBzZWRfbXMpOw0KPiA+PiArDQo+ID4+ICsJYXNzZXJ0X3dp
-dGhpbl9lcHNpbG9uKHJlc2lkZW5jeV9lbmQgLSByZXNpZGVuY3lfc3RhcnQsIGVsYXBzZWRfbXMs
-DQo+ID4+ICt0b2xlcmFuY2UpOyB9DQo+ID4+ICsNCj4gPj4gK2lndF9tYWluDQo+ID4+ICt7DQo+
-ID4+ICsJaW50IGZkLCBndDsNCj4gPj4gKwlzdGF0aWMgaW50IHN5c2ZzID0gLTE7DQo+ID4+ICsN
-Cj4gPj4gKwlpZ3RfZml4dHVyZSB7DQo+ID4+ICsJCWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZF
-Ul9YRSk7DQo+ID4+ICsNCj4gPj4gKwkJeGVfZGV2aWNlX2dldChmZCk7DQo+ID4+ICsJCWlndF9y
-ZXF1aXJlKCFJU19QT05URVZFQ0NISU8oeGVfZGV2X2lkKGZkKSkpOw0KPiA+PiArDQo+ID4+ICsJ
-CXN5c2ZzID0gaWd0X3N5c2ZzX29wZW4oZmQpOw0KPiA+PiArCQlpZ3RfYXNzZXJ0KHN5c2ZzICE9
-IC0xKTsNCj4gPj4gKwl9DQo+ID4+ICsNCj4gPj4gKwlpZ3Rfc3VidGVzdCgiaWRsZS1yZXNpZGVu
-Y3kiKQ0KPiA+PiArCQl4ZV9mb3JfZWFjaF9ndChmZCwgZ3QpDQo+ID4+ICsJCQl0ZXN0X2lkbGVf
-cmVzaWRlbmN5KHN5c2ZzLCBndCk7DQo+ID4+ICsNCj4gPj4gKwlpZ3RfZml4dHVyZSB7DQo+ID4+
-ICsJCWNsb3NlKHN5c2ZzKTsNCj4gPj4gKwkJeGVfZGV2aWNlX3B1dChmZCk7DQo+ID4+ICsJCWNs
-b3NlKGZkKTsNCj4gPj4gKwl9DQo+ID4+ICt9DQo+ID4+IC0tDQo+ID4+IDIuNDAuMA0KPiA+DQo=
+This patchset is adding new testcases for dirtyfb ioctl with features
+like FBC, PSR and DRRS.
+
+Also some helpers are split from kms_frontbuffer_tracking to be shared
+with a new testcases.
+
+v6:
+ - Perform igt_display_reset in prepare
+v5:
+ - Modifications to support Xe as well
+v4:
+ - Document library interface functions
+ - Check connector type is eDP when PSR is tested
+v3:
+ - Use spinner
+ - Drop allocating big frambuffers
+v2:
+ - Move fbc and drrs into libigt
+ - Change testcase license comment
+ - Move disable_features and do not apply for FEATURE_DEFAULT
+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Jouni Högander (4):
+  tests/i915/kms_frontbuffer_tracking: Split fbc into library
+  tests/i915/kms_frontbuffer_tracking: Split drrs into library
+  lib/xe/xe_spin: Handle spinner timer for Xe as well
+  tests/kms_dirtyfb: Add new test for dirtyfb ioctl
+
+ lib/i915/intel_drrs.c                 | 133 +++++++++++
+ lib/i915/intel_drrs.h                 |  17 ++
+ lib/i915/intel_fbc.c                  |  96 ++++++++
+ lib/i915/intel_fbc.h                  |  19 ++
+ lib/meson.build                       |   2 +
+ lib/xe/xe_spin.c                      |   8 +
+ tests/i915/kms_dirtyfb.c              | 303 ++++++++++++++++++++++++++
+ tests/i915/kms_frontbuffer_tracking.c | 140 ++----------
+ tests/meson.build                     |   1 +
+ 9 files changed, 596 insertions(+), 123 deletions(-)
+ create mode 100644 lib/i915/intel_drrs.c
+ create mode 100644 lib/i915/intel_drrs.h
+ create mode 100644 lib/i915/intel_fbc.c
+ create mode 100644 lib/i915/intel_fbc.h
+ create mode 100644 tests/i915/kms_dirtyfb.c
+
+-- 
+2.34.1
