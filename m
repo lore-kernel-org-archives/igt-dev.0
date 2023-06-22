@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68C2810E13C
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 05:15:50 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5AFCF10E4CA
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jun 2023 05:16:24 +0000 (UTC)
 From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
-To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
+To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 22 Jun 2023 05:15:39 +0000
-Message-ID: <MW4PR11MB705615B6E99963311A6A3329B322A@MW4PR11MB7056.namprd11.prod.outlook.com>
-References: <20230613134156.3315199-1-himal.prasad.ghimiray@intel.com>
- <20230613134156.3315199-3-himal.prasad.ghimiray@intel.com>
- <DM6PR11MB449202248F2842F4AA2F78D18D5CA@DM6PR11MB4492.namprd11.prod.outlook.com>
-In-Reply-To: <DM6PR11MB449202248F2842F4AA2F78D18D5CA@DM6PR11MB4492.namprd11.prod.outlook.com>
+Date: Thu, 22 Jun 2023 05:16:20 +0000
+Message-ID: <MW4PR11MB70560639D51086BAC68BA398B322A@MW4PR11MB7056.namprd11.prod.outlook.com>
+References: <20230613133713.3315078-1-himal.prasad.ghimiray@intel.com>
+ <MW3PR11MB4748389214D298270D692A11AE5DA@MW3PR11MB4748.namprd11.prod.outlook.com>
+In-Reply-To: <MW3PR11MB4748389214D298270D692A11AE5DA@MW3PR11MB4748.namprd11.prod.outlook.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 2/4] lib/igt_sysfs: Handling gt related sysfs
- uapi changes.
+Subject: Re: [igt-dev] [PATCH 0/4] Handle GT and tile seperation in IGT.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,74 +22,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Priyanka,
+
 
 > -----Original Message-----
-> From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-> Sent: 20 June 2023 17:49
+> From: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
+> Sent: 21 June 2023 14:31
 > To: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; igt-
 > dev@lists.freedesktop.org
-> Subject: RE: [igt-dev] [PATCH 2/4] lib/igt_sysfs: Handling gt related sys=
-fs uapi
-> changes.
+> Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
+> Subject: RE: [igt-dev] [PATCH 0/4] Handle GT and tile seperation in IGT.
 >=20
 >=20
 >=20
 > > -----Original Message-----
 > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
 > > Himal Prasad Ghimiray
-> > Sent: 13 June 2023 07:12 PM
+> > Sent: 13 June 2023 19:07
 > > To: igt-dev@lists.freedesktop.org
-> > Subject: [igt-dev] [PATCH 2/4] lib/igt_sysfs: Handling gt related
-> > sysfs uapi changes.
+> > Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
+> > Subject: [igt-dev] [PATCH 0/4] Handle GT and tile seperation in IGT.
+> please do not put dot at the end of subject:
+Sure. Will address.
 > >
-> > Patch https://patchwork.freedesktop.org/series/118927/
-> > is moving gt sysfs parent under tile folder.
+> > With seperation of GT and tiles in KMD, we will have sysfs entries for
+> > properties associated with tile and gtX sysfs parent will be moving
+> > under tileX. This series provides helper functions for accessing tile
+> > associated sysfs entries and gt specific sysfs under respective tile.
 > >
-> > With the above patch path for sysfs changes:
-> > from: /sys/class/drm/cardX/device/gtN/ to :
-> > /sys/class/drm/cardX/device/tileN/gtN
-> >
-> > Adding xe_for_each_gt_under_each_tile macro to access new path.
+> > series addresses gt related sysfs path change for xe_guc_pc.c test
+> > case and introduces new test to verify addr_range for each vram.
 > >
 > > Cc: Francois Dugast <francois.dugast@intel.com>
-> > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
+> > Cc: Upadhyay <tejas.upadhyay@intel.com>
 > > Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> > ---
-> >  lib/igt_sysfs.h | 5 +++++
-> >  1 file changed, 5 insertions(+)
 > >
-> > diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h index
-> > 2fb2303c..6c0ab617 100644
-> > --- a/lib/igt_sysfs.h
-> > +++ b/lib/igt_sysfs.h
-> > @@ -78,6 +78,11 @@
+> > Himal Prasad Ghimiray (4):
+> >   lib/igt_sysfs: Add support to query number of tiles.
+> >   lib/igt_sysfs: Handling gt related sysfs uapi changes.
+> >   test/xe_guc_pc: Change the sysfs paths.
+> >   tests/xe/xe_tile_prop: adds new test to verify per tile vram
+> >     addr_range
 > >
-> >  #define xe_for_each_tile for_each_sysfs_tile_dirfd
+> >  lib/igt_sysfs.c         |  28 ++++++
+> >  lib/igt_sysfs.h         |  11 +++
+> >  tests/meson.build       |   1 +
+> >  tests/xe/xe_guc_pc.c    | 199 ++++++++++++++++++++--------------------
+> >  tests/xe/xe_tile_prop.c |  66 +++++++++++++
+> >  5 files changed, 206 insertions(+), 99 deletions(-)  create mode
+> > 100644 tests/xe/xe_tile_prop.c
 > >
-> > +/* FIXME: Need to revisit if GT indexing under TILE changes from KMD
-> > +*/ #define xe_for_each_gt_under_each_tile(xe__, gt__, tile__) \
-> > +	for (gt__ =3D 0, tile__ =3D 0 ; gt__ < xe_number_gt(xe__); \
-> > +	     (xe_number_gt(xe__) =3D=3D igt_sysfs_get_num_tiles(xe__)) ? ++gt=
-__,
-> > +++tile__ : ++gt__)
-> > +
-> It looks like for PVC, MTL and system memory(without device memory) the
-> above logic works.
-> If we have both system memory and device memory, will the above logic
-> work?
-I don't see any correlation between types of memory and this logic.
-Current patch is applicable for platforms with support of multitile with on=
-e gt per tile and single tile with multiple gt.=20
-The logic needs to be revisited once we have platforms with multigt and mul=
-titile support.
-> >  enum i915_attr_id {
-> >  	RPS_ACT_FREQ_MHZ,
-> >  	RPS_CUR_FREQ_MHZ,
 > > --
 > > 2.25.1
