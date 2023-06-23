@@ -1,9 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EAC7210E106
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 09:11:22 +0000 (UTC)
-Message-ID: <d10cbf61-9f3b-17cc-d119-710671129a27@intel.com>
-Date: Fri, 23 Jun 2023 11:11:08 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 295C210E0F3
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 09:33:31 +0000 (UTC)
+Message-ID: <cd9b36c5-ab79-2db6-36ab-221488a57696@intel.com>
+Date: Fri, 23 Jun 2023 11:33:20 +0200
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <20230623084635.350402-1-zbigniew.kempczynski@intel.com>
@@ -28,10 +28,20 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Zbigniew,
 
-First of all, did you use any script/sed/whatever to rename fields? If 
-so, it would be good to mention it in the commit message.
+I read through this, and apart from that "@short_description" line in 
+intel_blt.h, I think the re-name went well. Once you fixed it, you have my:
 
-Just started to review it, but for now, I have only comment (see below).
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+
+The only other nit would be the patch subject. I'd say that it renames 
+the blit library to be more generic, and keep the description as it is. 
+But it's a minor thing, and the final decision is yours.
+
+A follow-up question -- do you plan to change or update blitter lib 
+tests to support Xe? gem_exercise_blt/gem_ccs tests still refer to i915.
+
+All the best,
+Karolina
 
 On 23.06.2023 10:46, Zbigniew Kempczyński wrote:
 > Migrate i915/i915_blt -> intel_blt as a preparation step before
@@ -619,12 +629,6 @@ On 23.06.2023 10:46, Zbigniew Kempczyński wrote:
 > - * SECTION:i915_blt
 > + * SECTION:intel_blt
 >    * @short_description: i915 blitter library
-
-You've missed that line, could you please update it?
-
-Thanks,
-Karolina
-
 >    * @title: Blitter library
 > - * @include: i915_blt.h
 > + * @include: intel_blt.h
