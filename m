@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E63210E106
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 11:46:16 +0000 (UTC)
-From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 23 Jun 2023 17:19:45 +0530
-Message-Id: <20230623114946.3803540-4-himal.prasad.ghimiray@intel.com>
-In-Reply-To: <20230623114946.3803540-1-himal.prasad.ghimiray@intel.com>
-References: <20230623114946.3803540-1-himal.prasad.ghimiray@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F2A410E106
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 11:50:47 +0000 (UTC)
+From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Fri, 23 Jun 2023 11:50:43 +0000
+Message-ID: <MW4PR11MB70561F90A998A6AE6046851CB323A@MW4PR11MB7056.namprd11.prod.outlook.com>
+References: <20230615130754.3406104-1-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230615130754.3406104-1-himal.prasad.ghimiray@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 3/4] tests/xe/xe_guc_pc: Change the sysfs paths
+Subject: Re: [igt-dev] [i-g-t] [PATCH v1 1/1] tests/xe/xe_uevent: add new
+ test for uevent gt reset failure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,454 +21,209 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Upadhyay <tejas.upadhyay@intel.com>,
- Badal Nilawar <badal.nilawar@intel.com>
+Cc: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Changes to access sysfs entries under tile directory.
-Access freq sysfs from /sys/class/drm/cardX/device/tileN/gtN
-path.
 
-v2:
-- Use snprintf instead of sprintf and check error.
-- Describe what changes are done. (Kamil)
 
-Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
-Cc: Upadhyay <tejas.upadhyay@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Cc: Riana Tauro <riana.tauro@intel.com>
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
----
- tests/xe/xe_guc_pc.c | 202 ++++++++++++++++++++++---------------------
- 1 file changed, 102 insertions(+), 100 deletions(-)
-
-diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
-index 5c71ae14..825b2c5b 100644
---- a/tests/xe/xe_guc_pc.c
-+++ b/tests/xe/xe_guc_pc.c
-@@ -133,23 +133,25 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
- 	xe_vm_destroy(fd, vm);
- }
- 
--static int set_freq(int sysfs, int gt_id, const char *freq_name, uint32_t freq)
-+static int set_freq(int sysfs, int tile_id, int gt_id, const char *freq_name, uint32_t freq)
- {
- 	int ret = -EAGAIN;
- 	char path[32];
- 
--	sprintf(path, "device/gt%d/freq_%s", gt_id, freq_name);
-+	igt_assert(snprintf(path, sizeof(path), "device/tile%d/gt%d/freq_%s",
-+			    tile_id, gt_id, freq_name) < sizeof(path));
- 	while (ret == -EAGAIN)
- 		ret = igt_sysfs_printf(sysfs, path, "%u", freq);
- 	return ret;
- }
- 
--static uint32_t get_freq(int sysfs, int gt_id, const char *freq_name)
-+static uint32_t get_freq(int sysfs, int tile_id, int gt_id, const char *freq_name)
- {
- 	uint32_t freq;
- 	int err = -EAGAIN;
- 	char path[32];
--	sprintf(path, "device/gt%d/freq_%s", gt_id, freq_name);
-+	igt_assert(snprintf(path, sizeof(path), "device/tile%d/gt%d/freq_%s",
-+			    tile_id, gt_id, freq_name) < sizeof(path));
- 	while (err == -EAGAIN)
- 		err = igt_sysfs_scanf(sysfs, path, "%u", &freq);
- 	return freq;
-@@ -162,37 +164,37 @@ static uint32_t get_freq(int sysfs, int gt_id, const char *freq_name)
-  * Run type: BAT
-  */
- 
--static void test_freq_basic_api(int sysfs, int gt_id)
-+static void test_freq_basic_api(int sysfs, int tile_id, int gt_id)
- {
--	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
--	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
--	uint32_t rp0 = get_freq(sysfs, gt_id, "rp0");
-+	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
-+	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
-+	uint32_t rp0 = get_freq(sysfs, tile_id, gt_id, "rp0");
- 
- 	/*
- 	 * Negative bound tests
- 	 * RPn is the floor
- 	 * RP0 is the ceiling
- 	 */
--	igt_assert(set_freq(sysfs, gt_id, "min", rpn - 1) < 0);
--	igt_assert(set_freq(sysfs, gt_id, "min", rp0 + 1) < 0);
--	igt_assert(set_freq(sysfs, gt_id, "max", rpn - 1) < 0);
--	igt_assert(set_freq(sysfs, gt_id, "max", rp0 + 1) < 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn - 1) < 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rp0 + 1) < 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn - 1) < 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rp0 + 1) < 0);
- 
- 	/* Assert min requests are respected from rp0 to rpn */
--	igt_assert(set_freq(sysfs, gt_id, "min", rp0) > 0);
--	igt_assert(get_freq(sysfs, gt_id, "min") == rp0);
--	igt_assert(set_freq(sysfs, gt_id, "min", rpe) > 0);
--	igt_assert(get_freq(sysfs, gt_id, "min") == rpe);
--	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
--	igt_assert(get_freq(sysfs, gt_id, "min") == rpn);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rp0) > 0);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rp0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpe) > 0);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rpe);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rpn);
- 
- 	/* Assert max requests are respected from rpn to rp0 */
--	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
--	igt_assert(get_freq(sysfs, gt_id, "max") == rpn);
--	igt_assert(set_freq(sysfs, gt_id, "max", rpe) > 0);
--	igt_assert(get_freq(sysfs, gt_id, "max") == rpe);
--	igt_assert(set_freq(sysfs, gt_id, "max", rp0) > 0);
--	igt_assert(get_freq(sysfs, gt_id, "max") == rp0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rpn);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpe) > 0);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rpe);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rp0) > 0);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rp0);
- }
- 
- /**
-@@ -206,11 +208,11 @@ static void test_freq_basic_api(int sysfs, int gt_id)
-  * TODO: change ``'Run type' == FULL`` to a better category
-  */
- 
--static void test_freq_fixed(int sysfs, int gt_id)
-+static void test_freq_fixed(int sysfs, int tile_id, int gt_id)
- {
--	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
--	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
--	uint32_t rp0 = get_freq(sysfs, gt_id, "rp0");
-+	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
-+	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
-+	uint32_t rp0 = get_freq(sysfs, tile_id, gt_id, "rp0");
- 
- 	igt_debug("Starting testing fixed request\n");
- 
-@@ -219,27 +221,27 @@ static void test_freq_fixed(int sysfs, int gt_id)
- 	 * Then we check if hardware is actually operating at the desired freq
- 	 * And let's do this for all the 3 known Render Performance (RP) values.
- 	 */
--	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
--	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
- 	usleep(ACT_FREQ_LATENCY_US);
--	igt_assert(get_freq(sysfs, gt_id, "cur") == rpn);
--	igt_assert(get_freq(sysfs, gt_id, "act") == rpn);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpn);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "act") == rpn);
- 
--	igt_assert(set_freq(sysfs, gt_id, "min", rpe) > 0);
--	igt_assert(set_freq(sysfs, gt_id, "max", rpe) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpe) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpe) > 0);
- 	usleep(ACT_FREQ_LATENCY_US);
--	igt_assert(get_freq(sysfs, gt_id, "cur") == rpe);
--	igt_assert(get_freq(sysfs, gt_id, "act") == rpe);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpe);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "act") == rpe);
- 
--	igt_assert(set_freq(sysfs, gt_id, "min", rp0) > 0);
--	igt_assert(set_freq(sysfs, gt_id, "max", rp0) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rp0) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rp0) > 0);
- 	usleep(ACT_FREQ_LATENCY_US);
- 	/*
- 	 * It is unlikely that PCODE will *always* respect any request above RPe
- 	 * So for this level let's only check if GuC PC is doing its job
- 	 * and respecting our request, by propagating it to the hardware.
- 	 */
--	igt_assert(get_freq(sysfs, gt_id, "cur") == rp0);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rp0);
- 
- 	igt_debug("Finished testing fixed request\n");
- }
-@@ -255,20 +257,20 @@ static void test_freq_fixed(int sysfs, int gt_id)
-  * TODO: change ``'Run type' == FULL`` to a better category
-  */
- 
--static void test_freq_range(int sysfs, int gt_id)
-+static void test_freq_range(int sysfs, int tile_id, int gt_id)
- {
--	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
--	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
-+	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
-+	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
- 	uint32_t cur, act;
- 
- 	igt_debug("Starting testing range request\n");
- 
--	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
--	igt_assert(set_freq(sysfs, gt_id, "max", rpe) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpe) > 0);
- 	usleep(ACT_FREQ_LATENCY_US);
--	cur = get_freq(sysfs, gt_id, "cur");
-+	cur = get_freq(sysfs, tile_id, gt_id, "cur");
- 	igt_assert(rpn <= cur && cur <= rpe);
--	act = get_freq(sysfs, gt_id, "act");
-+	act = get_freq(sysfs, tile_id, gt_id, "act");
- 	igt_assert(rpn <= act && act <= rpe);
- 
- 	igt_debug("Finished testing range request\n");
-@@ -281,20 +283,20 @@ static void test_freq_range(int sysfs, int gt_id)
-  * TODO: change ``'Run type' == FULL`` to a better category
-  */
- 
--static void test_freq_low_max(int sysfs, int gt_id)
-+static void test_freq_low_max(int sysfs, int tile_id, int gt_id)
- {
--	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
--	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
-+	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
-+	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
- 
- 	/*
- 	 *  When max request < min request, max is ignored and min works like
- 	 * a fixed one. Let's assert this assumption
- 	 */
--	igt_assert(set_freq(sysfs, gt_id, "min", rpe) > 0);
--	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpe) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
- 	usleep(ACT_FREQ_LATENCY_US);
--	igt_assert(get_freq(sysfs, gt_id, "cur") == rpe);
--	igt_assert(get_freq(sysfs, gt_id, "act") == rpe);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpe);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "act") == rpe);
- }
- 
- /**
-@@ -304,20 +306,20 @@ static void test_freq_low_max(int sysfs, int gt_id)
-  * TODO: change ``'Run type' == FULL`` to a better category
-  */
- 
--static void test_suspend(int sysfs, int gt_id)
-+static void test_suspend(int sysfs, int tile_id, int gt_id)
- {
--	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
-+	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
- 
--	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
--	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
-+	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
- 	usleep(ACT_FREQ_LATENCY_US);
--	igt_assert(get_freq(sysfs, gt_id, "cur") == rpn);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpn);
- 
- 	igt_system_suspend_autoresume(SUSPEND_STATE_S3,
- 				      SUSPEND_TEST_NONE);
- 
--	igt_assert(get_freq(sysfs, gt_id, "min") == rpn);
--	igt_assert(get_freq(sysfs, gt_id, "max") == rpn);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rpn);
-+	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rpn);
- }
- 
- /**
-@@ -332,24 +334,24 @@ static void test_suspend(int sysfs, int gt_id)
-  * TODO: change ``'Run type' == FULL`` to a better category
-  */
- 
--static void test_reset(int fd, int sysfs, int gt_id, int cycles)
-+static void test_reset(int fd, int sysfs, int tile_id, int gt_id, int cycles)
- {
--	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
-+	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
- 
- 	for (int i = 0; i < cycles; i++) {
--		igt_assert_f(set_freq(sysfs, gt_id, "min", rpn) > 0,
-+		igt_assert_f(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0,
- 			     "Failed after %d good cycles\n", i);
--		igt_assert_f(set_freq(sysfs, gt_id, "max", rpn) > 0,
-+		igt_assert_f(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0,
- 			     "Failed after %d good cycles\n", i);
- 		usleep(ACT_FREQ_LATENCY_US);
--		igt_assert_f(get_freq(sysfs, gt_id, "cur") == rpn,
-+		igt_assert_f(get_freq(sysfs, tile_id, gt_id, "cur") == rpn,
- 			     "Failed after %d good cycles\n", i);
- 
- 		xe_force_gt_reset(fd, gt_id);
- 
--		igt_assert_f(get_freq(sysfs, gt_id, "min") == rpn,
-+		igt_assert_f(get_freq(sysfs, tile_id, gt_id, "min") == rpn,
- 			     "Failed after %d good cycles\n", i);
--		igt_assert_f(get_freq(sysfs, gt_id, "max") == rpn,
-+		igt_assert_f(get_freq(sysfs, tile_id, gt_id, "max") == rpn,
- 			     "Failed after %d good cycles\n", i);
- 	}
- }
-@@ -365,11 +367,11 @@ static void test_reset(int fd, int sysfs, int gt_id, int cycles)
-  * Run type: BAT
-  */
- 
--static bool in_rc6(int sysfs, int gt_id)
-+static bool in_rc6(int sysfs, int tile_id, int gt_id)
- {
--	char path[32];
-+	char path[40];
- 	char rc[8];
--	sprintf(path, "device/gt%d/rc_status", gt_id);
-+	sprintf(path, "device/tile%d/gt%d/rc_status", tile_id, gt_id);
- 	if (igt_sysfs_scanf(sysfs, path, "%s", rc) < 0)
- 		return false;
- 	return strcmp(rc, "rc6") == 0;
-@@ -379,7 +381,7 @@ igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
- 	int fd;
--	int gt;
-+	int gt, tile, total_tiles;
- 	static int sysfs = -1;
- 	int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	uint32_t stash_min;
-@@ -392,24 +394,24 @@ igt_main
- 		sysfs = igt_sysfs_open(fd);
- 		igt_assert(sysfs != -1);
- 
--		/* The defaults are the same. Stashing the gt0 is enough */
--		stash_min = get_freq(sysfs, 0, "min");
--		stash_max = get_freq(sysfs, 0, "max");
-+		/* The defaults are the same. Stashing the gt0 in tile0 is enough */
-+		stash_min = get_freq(sysfs, 0, 0, "min");
-+		stash_max = get_freq(sysfs, 0, 0, "max");
- 	}
- 
- 	igt_subtest("freq_basic_api") {
--		xe_for_each_gt(fd, gt)
--			test_freq_basic_api(sysfs, gt);
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles)
-+			test_freq_basic_api(sysfs, tile, gt);
- 	}
- 
- 	igt_subtest("freq_fixed_idle") {
--		xe_for_each_gt(fd, gt) {
--			test_freq_fixed(sysfs, gt);
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
-+			test_freq_fixed(sysfs, tile, gt);
- 		}
- 	}
- 
- 	igt_subtest("freq_fixed_exec") {
--		xe_for_each_gt(fd, gt) {
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
- 			xe_for_each_hw_engine(fd, hwe)
- 				igt_fork(child, ncpus) {
- 					igt_debug("Execution Started\n");
-@@ -417,19 +419,19 @@ igt_main
- 					igt_debug("Execution Finished\n");
- 				}
- 			/* While exec in threads above, let's check the freq */
--			test_freq_fixed(sysfs, gt);
-+			test_freq_fixed(sysfs, tile, gt);
- 			igt_waitchildren();
- 		}
- 	}
- 
- 	igt_subtest("freq_range_idle") {
--		xe_for_each_gt(fd, gt) {
--			test_freq_range(sysfs, gt);
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
-+			test_freq_range(sysfs, tile, gt);
- 		}
- 	}
- 
- 	igt_subtest("freq_range_exec") {
--		xe_for_each_gt(fd, gt) {
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
- 			xe_for_each_hw_engine(fd, hwe)
- 				igt_fork(child, ncpus) {
- 					igt_debug("Execution Started\n");
-@@ -437,46 +439,46 @@ igt_main
- 					igt_debug("Execution Finished\n");
- 				}
- 			/* While exec in threads above, let's check the freq */
--			test_freq_range(sysfs, gt);
-+			test_freq_range(sysfs, tile, gt);
- 			igt_waitchildren();
- 		}
- 	}
- 
- 	igt_subtest("freq_low_max") {
--		xe_for_each_gt(fd, gt) {
--			test_freq_low_max(sysfs, gt);
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
-+			test_freq_low_max(sysfs, tile, gt);
- 		}
- 	}
- 
- 	igt_subtest("freq_suspend") {
--		xe_for_each_gt(fd, gt) {
--			test_suspend(sysfs, gt);
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
-+			test_suspend(sysfs, tile, gt);
- 		}
- 	}
- 
- 	igt_subtest("freq_reset") {
--		xe_for_each_gt(fd, gt) {
--			test_reset(fd, sysfs, gt, 1);
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
-+			test_reset(fd, sysfs, tile, gt, 1);
- 		}
- 	}
- 
- 	igt_subtest("freq_reset_multiple") {
--		xe_for_each_gt(fd, gt) {
--			test_reset(fd, sysfs, gt, 50);
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
-+			test_reset(fd, sysfs, tile, gt, 50);
- 		}
- 	}
- 
- 	igt_subtest("rc6_on_idle") {
- 		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
--		xe_for_each_gt(fd, gt) {
--			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
-+			assert(igt_wait(in_rc6(sysfs, tile, gt), 1000, 1));
- 		}
- 	}
- 
- 	igt_subtest("rc0_on_exec") {
- 		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
--		xe_for_each_gt(fd, gt) {
--			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
-+			assert(igt_wait(in_rc6(sysfs, tile, gt), 1000, 1));
- 			xe_for_each_hw_engine(fd, hwe)
- 				igt_fork(child, ncpus) {
- 					igt_debug("Execution Started\n");
-@@ -484,15 +486,15 @@ igt_main
- 					igt_debug("Execution Finished\n");
- 				}
- 			/* While exec in threads above, let's check rc_status */
--			assert(igt_wait(!in_rc6(sysfs, gt), 1000, 1));
-+			assert(igt_wait(!in_rc6(sysfs, tile, gt), 1000, 1));
- 			igt_waitchildren();
- 		}
- 	}
- 
- 	igt_fixture {
--		xe_for_each_gt(fd, gt) {
--			set_freq(sysfs, gt, "min", stash_min);
--			set_freq(sysfs, gt, "max", stash_max);
-+		xe_for_each_gt_under_each_tile(fd, gt, tile, total_tiles) {
-+			set_freq(sysfs, tile, gt, "min", stash_min);
-+			set_freq(sysfs, tile, gt, "max", stash_max);
- 		}
- 		close(sysfs);
- 		xe_device_put(fd);
--- 
-2.25.1
+> -----Original Message-----
+> From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
+> Sent: 15 June 2023 18:38
+> To: igt-dev@lists.freedesktop.org
+> Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; Kamil
+> Konieczny <kamil.konieczny@linux.intel.com>; Kumar, Janga Rahul
+> <janga.rahul.kumar@intel.com>; Dugast, Francois
+> <francois.dugast@intel.com>
+> Subject: [i-g-t] [PATCH v1 1/1] tests/xe/xe_uevent: add new test for ueve=
+nt gt
+> reset failure
+>=20
+> This test is to cause the fake reset failure and capture the uevent sent =
+in case
+> of gt reset failure. We are relying on debugfs to cause fake reset failur=
+e
+> because there is no hardware mechanism using which we can force gt to fai=
+l
+> its reset.
+>=20
+> The sending of Uevent is taken care by series:
+> drm/xe: Notify Userspace when engine/gt reset fails.
+> https://patchwork.freedesktop.org/series/117504/
+>=20
+> The infra to cause fake reset failure is in series:
+> drm/xe: Add a debugfs for faking gt reset failure.
+> https://patchwork.freedesktop.org/series/119375/
+>=20
+> v2:
+> - Make fake reset for all GT's in platform.
+> - Add test names in order (Rahul)
+> - Add headers in order.
+> - Instead of system call use igt helper for reading debugfs.
+> - Use igt_debug instead of prints.
+> - Use break instead of unnecessary goto.
+> - Change test name.
+> - Define values as constants. (Kamil)
+>=20
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> ---
+>  tests/meson.build    |   1 +
+>  tests/xe/xe_uevent.c | 129
+> +++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 130 insertions(+)
+>  create mode 100644 tests/xe/xe_uevent.c
+>=20
+> diff --git a/tests/meson.build b/tests/meson.build index 61dcc076..27abc1=
+3f
+> 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -267,6 +267,7 @@ xe_progs =3D [
+>  	'xe_pm',
+>  	'xe_prime_self_import',
+>  	'xe_query',
+> +	'xe_uevent',
+>  	'xe_vm',
+>  	'xe_waitfence',
+>  ]
+> diff --git a/tests/xe/xe_uevent.c b/tests/xe/xe_uevent.c new file mode
+> 100644 index 00000000..6326896d
+> --- /dev/null
+> +++ b/tests/xe/xe_uevent.c
+> @@ -0,0 +1,129 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright =C2=A9 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: cause fake gt reset failure and listen uevent from KMD
+> + * SUBTEST:fake_reset_uevent_listener
+> + * Description:
+> + *		Test creates uevent listener and causes fake reset failure for
+> gt0
+> + *		and returns success if uevent is sent by driver and listened by
+> listener.
+> + */
+> +
+> +#include <libudev.h>
+> +#include <string.h>
+> +#include <sys/stat.h>
+> +
+> +#include "igt.h"
+> +
+> +#include "xe_drm.h"
+> +#include "xe/xe_query.h"
+> +
+> +static bool xe_force_gt_fake_reset(int fd, int gt) {
+> +	char rst_fail[32];
+> +
+> +	snprintf(rst_fail, sizeof(rst_fail), "gt%d/fake_reset_failure", gt);
+> +	__igt_debugfs_read(fd, rst_fail, rst_fail, sizeof(rst_fail));
+> +
+> +	return true;
+> +}
+> +
+> +static bool listen_reset_fail_uevent(struct udev_device *device, const
+> +char *source, int gt_id) {
+> +	struct udev_list_entry *list_entry;
+> +	bool reset_failed =3D false;
+> +	bool reset_unit_is_gt =3D false;
+> +	bool gt_id_matches =3D false;
+> +	const char *name, *val;
+> +
+> +	udev_list_entry_foreach(list_entry,
+> udev_device_get_properties_list_entry(device))
+> +	{
+> +		name =3D udev_list_entry_get_name(list_entry);
+> +		val =3D udev_list_entry_get_value(list_entry);
+> +
+> +		if (!strcmp(name, "RESET_FAILED") && !strcmp(val, "1")) {
+> +			igt_debug("%s =3D %s\n", name, val);
+> +			reset_failed =3D true;
+> +			continue;
+> +		}
+> +
+> +		if (!strcmp(name, "RESET_UNIT") && !strcmp(val, "gt")) {
+> +			igt_debug("%s =3D %s\n", name, val);
+> +			reset_unit_is_gt =3D true;
+> +			continue;
+> +		}
+> +
+> +		if (!strcmp(name, "RESET_ID") && (atoi(val) =3D=3D gt_id)) {
+> +			igt_debug("%s =3D %s\n", name, val);
+> +			gt_id_matches =3D true;
+> +			continue;
+> +		}
+> +	}
+> +
+> +	return (reset_failed && reset_unit_is_gt && gt_id_matches); }
+> +
+> +static void fake_reset_uevent_listener(int fd, int gt_id) {
+> +	struct udev *udev;
+> +	struct udev_device *dev;
+> +	struct udev_monitor *mon;
+> +	bool event_received =3D false;
+> +	bool event_sent =3D false;
+> +	const u32 listener_timeout =3D 5;
+> +	const u32 reset_completed =3D 50000;
+> +
+> +	/* create udev object */
+> +	udev =3D udev_new();
+> +	if (!udev)
+> +		igt_assert_f(false, "New udev object creation failed");
+> +
+> +	mon =3D udev_monitor_new_from_netlink(udev, "kernel");
+> +	udev_monitor_filter_add_match_subsystem_devtype(mon, "drm",
+> "drm_minor");
+> +	udev_monitor_enable_receiving(mon);
+> +	igt_until_timeout(listener_timeout) {
+> +			dev =3D udev_monitor_receive_device(mon);
+> +
+> +			if (dev) {
+> +				event_received =3D
+> listen_reset_fail_uevent(dev, "kernel", gt_id);
+> +				udev_device_unref(dev);
+> +			}
+> +
+> +			if (event_sent)
+> +				break;
+> +
+> +		event_sent =3D xe_force_gt_fake_reset(fd, gt_id);
+> +		usleep(reset_completed);
+> +	}
+> +	udev_unref(udev);
+> +	igt_assert_f(event_received, "Event not received"); }
+> +
+> +igt_main
+> +{
+> +	int fd;
+> +	int gt;
+> +	const u32 settle_xe_load_uevents =3D 50000;
+> +
+> +	igt_fixture {
+> +		fd =3D drm_open_driver(DRIVER_XE);
+> +		xe_device_get(fd);
+> +	}
+> +
+> +	/* Ensures uevents triggered in case of driver
+> +	 * load are settled down.
+> +	 */
+> +	usleep(settle_xe_load_uevents);
+> +
+> +	igt_subtest("fake_reset_uevent_listener")
+> +		xe_for_each_gt(fd, gt) {
+> +			fake_reset_uevent_listener(fd, gt);
+> +		}
+> +
+> +	igt_fixture {
+> +		xe_device_put(fd);
+> +		close(fd);
+> +	}
+> +}
+> --
+> 2.25.1
