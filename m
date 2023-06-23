@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com
- [IPv6:2a00:1450:4864:20::431])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8FFD810E6D1
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 23:10:24 +0000 (UTC)
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-312824aa384so1195568f8f.1
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 16:10:24 -0700 (PDT)
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com
+ [IPv6:2a00:1450:4864:20::42b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDEDD10E013
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 23:11:44 +0000 (UTC)
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3112f256941so1188103f8f.1
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 16:11:44 -0700 (PDT)
 From: James Shargo <jshargo@chromium.org>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Fri, 23 Jun 2023 19:09:52 -0400
-Message-ID: <20230623230954.115437-2-jshargo@chromium.org>
+Date: Fri, 23 Jun 2023 19:09:53 -0400
+Message-ID: <20230623230954.115437-3-jshargo@chromium.org>
 In-Reply-To: <20230623230954.115437-1-jshargo@chromium.org>
 References: <20230623230954.115437-1-jshargo@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/drmtest: Add VKMS as a known driver
- type
+Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_aux: Make "is_mountpoint"
+ public ("igt_is_mountpoint")
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,91 +29,108 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Jim Shargo <jshargo@chromium.org>
 
+This change supports the subsequent testing of ConfigFS-based VKMS
+features, which require their own mounting.
+
 Signed-off-by: Jim Shargo <jshargo@chromium.org>
 ---
- lib/drmtest.c | 26 ++++++++++++++++++++++++++
- lib/drmtest.h |  7 ++++++-
- 2 files changed, 32 insertions(+), 1 deletion(-)
+ lib/igt_aux.c     | 25 +++++++++++++++++++++++++
+ lib/igt_aux.h     |  2 ++
+ lib/igt_debugfs.c | 29 ++---------------------------
+ 3 files changed, 29 insertions(+), 27 deletions(-)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 220cfb64d..ad8cbe302 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -150,6 +150,16 @@ bool is_intel_device(int fd)
- 	return is_i915_device(fd) || is_xe_device(fd);
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 386e25783..4ec5fc154 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -1970,6 +1970,31 @@ bool igt_allow_unlimited_files(void)
+ 	return setrlimit(RLIMIT_NOFILE, &rlim) == 0;
  }
  
-+bool is_vkms_device(int fd)
++bool igt_is_mountpoint(const char *path)
 +{
-+	char name[64] = "";
++	char buf[strlen(path) + 4];
++	struct stat st;
++	dev_t dev;
 +
-+	if (__get_drm_device_name(fd, name, sizeof(name) - 1))
++	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
++	if (stat(buf, &st))
 +		return false;
 +
-+	return strncmp("vkms", name, strlen("vkms")) == 0;
++	if (!S_ISDIR(st.st_mode))
++		return false;
++
++	dev = st.st_dev;
++
++	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
++	if (stat(buf, &st))
++		return false;
++
++	if (!S_ISDIR(st.st_mode))
++		return false;
++
++	return dev != st.st_dev;
 +}
 +
- static char _forced_driver[16] = "";
- 
  /**
-@@ -734,3 +744,19 @@ void igt_require_xe(int fd)
- {
- 	igt_require(is_xe_device(fd));
- }
-+
-+void igt_require_vkms(void)
-+{
-+	// Since VKMS can create and destroy virtual drivers at will,
-+	// instead look to make sure the driver is installed.
-+	struct stat s = {};
-+	int ret;
-+	char *vkms_module_dir = "/sys/module/vkms";
-+
-+	ret = stat(vkms_module_dir, &s);
-+
-+	igt_require_f(ret == 0, "VKMS stat of %s returned %d (%s)\n",
-+		      vkms_module_dir, ret, strerror(ret));
-+	igt_require_f(S_ISDIR(s.st_mode),
-+		      "VKMS stat of %s was not a directory\n", vkms_module_dir);
-+}
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index ae86ee19a..1d418e1f6 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -53,14 +53,17 @@
- #define DRIVER_MSM	(1 << 6)
- #define DRIVER_XE	(1 << 7)
- #define DRIVER_VMWGFX   (1 << 8)
-+#define DRIVER_VKMS	(1 << 9)
+  * vfs_file_max: report maximum number of files
+  *
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index fb76b0313..298c610f2 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -311,6 +311,8 @@ double igt_stop_siglatency(struct igt_mean *result);
  
- /*
-  * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
-  * with vgem as well as a supported driver, you can end up with a
-  * near-100% skip rate if you don't explicitly specify the device,
-  * depending on device-load ordering.
-+ *
-+ * Exclude VKMS to prefer hardware drivers.
+ bool igt_allow_unlimited_files(void);
+ 
++bool igt_is_mountpoint(const char *path);
++
+ int igt_is_process_running(const char *comm);
+ int igt_terminate_process(int sig, const char *comm);
+ void igt_lsof(const char *dpath);
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index a7b54bae5..63fc6b9e7 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -67,37 +67,12 @@
+  * General debugfs helpers
   */
--#define DRIVER_ANY 	~(DRIVER_VGEM)
-+#define DRIVER_ANY ~(DRIVER_VGEM | DRIVER_VKMS)
  
- /*
-  * Compile friendly enum for i915/xe.
-@@ -114,6 +117,7 @@ void igt_require_i915(int fd);
- void igt_require_nouveau(int fd);
- void igt_require_vc4(int fd);
- void igt_require_xe(int fd);
-+void igt_require_vkms(void);
+-static bool is_mountpoint(const char *path)
+-{
+-	char buf[strlen(path) + 4];
+-	struct stat st;
+-	dev_t dev;
+-
+-	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
+-	if (stat(buf, &st))
+-		return false;
+-
+-	if (!S_ISDIR(st.st_mode))
+-		return false;
+-
+-	dev = st.st_dev;
+-
+-	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
+-	if (stat(buf, &st))
+-		return false;
+-
+-	if (!S_ISDIR(st.st_mode))
+-		return false;
+-
+-	return dev != st.st_dev;
+-}
+-
+ static const char *__igt_debugfs_mount(void)
+ {
+-	if (is_mountpoint("/sys/kernel/debug"))
++	if (igt_is_mountpoint("/sys/kernel/debug"))
+ 		return "/sys/kernel/debug";
  
- bool is_amdgpu_device(int fd);
- bool is_i915_device(int fd);
-@@ -123,6 +127,7 @@ bool is_nouveau_device(int fd);
- bool is_vc4_device(int fd);
- bool is_xe_device(int fd);
- bool is_intel_device(int fd);
-+bool is_vkms_device(int fd);
+-	if (is_mountpoint("/debug"))
++	if (igt_is_mountpoint("/debug"))
+ 		return "/debug";
  
- /**
-  * do_or_die:
+ 	if (mount("debug", "/sys/kernel/debug", "debugfs", 0, 0))
 -- 
 2.41.0.162.gfafddb0af9-goog
