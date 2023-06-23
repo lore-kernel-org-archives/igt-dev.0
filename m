@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C18D10E5D0
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 03:53:14 +0000 (UTC)
-Message-ID: <fb4bf754-3a4e-7857-b341-8df458ee21bc@intel.com>
-Date: Fri, 23 Jun 2023 09:22:53 +0530
-Content-Language: en-US
-To: "B, Jeevan" <jeevan.b@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4369110E5D1
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jun 2023 04:20:42 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Fri, 23 Jun 2023 04:20:31 +0000
+Message-ID: <DM4PR11MB6312C87DDF6F82CFFC9395869023A@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20230622111651.9040-1-jeevan.b@intel.com>
- <20230622125534.cski2zzude2c2o6n@kamilkon-desk1>
- <DM4PR11MB6312D2BF62243D9C688C0FD29022A@DM4PR11MB6312.namprd11.prod.outlook.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <DM4PR11MB6312D2BF62243D9C688C0FD29022A@DM4PR11MB6312.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+ <1927f15a-be62-ce28-99f5-cd553a647c30@intel.com>
+In-Reply-To: <1927f15a-be62-ce28-99f5-cd553a647c30@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_setmode: Fix dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -28,140 +26,68 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jeevan,
-
-On Thu-22-06-2023 06:32 pm, B, Jeevan wrote:
-> Hi Kamil,
-> 
->> -----Original Message-----
->> From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> Sent: Thursday, June 22, 2023 6:26 PM
->> To: igt-dev@lists.freedesktop.org
->> Cc: B, Jeevan <jeevan.b@intel.com>; Modem, Bhanuprakash
->> <bhanuprakash.modem@intel.com>
->> Subject: Re: [PATCH i-g-t] tests/kms_setmode: Fix dynamic subtests
->>
->> Hi Jeevan,
->>
->> On 2023-06-22 at 16:46:51 +0530, Jeevan B wrote:
->>> basic-clone-single-crtc and invalid-clone-exclusive-crtc were not part
->>> of dynamic subtest so tests were getting skipped. fixed the test to
->>> execute skipping tests as expected.
->>>
->>> v2: add missing call.
->>>
->>> Signed-off-by: Jeevan B <jeevan.b@intel.com>
->>> ---
->>>   tests/kms_setmode.c | 26 +++++++++++++-------------
->>>   1 file changed, 13 insertions(+), 13 deletions(-)
->>>
->>> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c index
->>> a611d938..96fb0b4b 100644
->>> --- a/tests/kms_setmode.c
->>> +++ b/tests/kms_setmode.c
->>> @@ -647,20 +647,19 @@ static void test_one_combination(const struct
->> test_config *tconf,
->>>   	struct crtc_config crtcs[MAX_CRTCS];
->>>   	int crtc_count;
->>>   	bool config_valid;
->>> +	int i, pos = 0;
->>> +	char test_name[256];
->>>
->>>   	setup_crtcs(tconf, cconfs, connector_count, crtcs,
->>>   		    &crtc_count, &config_valid);
->>>
->>> -	if (config_valid == !(tconf->flags & TEST_INVALID)) {
->>> -		int i, pos = 0;
->>> -		char test_name[256];
->>> -
->>> -		for (i = 0; i < crtc_count; i++) {
->>> -			if (i > 0)
->>> -				pos += snprintf(&test_name[pos],
->> ARRAY_SIZE(test_name) - pos, "-");
->>> -			pos += get_test_name_str(&crtcs[i],
->> &test_name[pos], ARRAY_SIZE(test_name) - pos);
->>> -		}
->>> +	for (i = 0; i < crtc_count; i++) {
->>> +		if (i > 0)
->>> +			pos += snprintf(&test_name[pos],
->> ARRAY_SIZE(test_name) - pos, "-");
->>> +		pos += get_test_name_str(&crtcs[i], &test_name[pos],
->> ARRAY_SIZE(test_name) - pos);
->>> +	}
->>>
->>> +	if (config_valid == !(tconf->flags & TEST_INVALID)) {
->>>   		for (i = 0; i < crtc_count; i++) {
->>>   			struct crtc_config *crtc = &crtcs[i];
->>>
->>> @@ -679,16 +678,17 @@ static void test_one_combination(const struct
->> test_config *tconf,
->>>   			    ((i > 0) && (crtc[i - 1].mode.hdisplay >
->> MAX_HDISPLAY_PER_CRTC) &&
->>>   			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
->>>   				igt_info("Combo: %s is not possible with
->> selected mode(s).\n", test_name);
->>> -				goto out;
->>> +				cleanup_crtcs(crtcs, crtc_count);
->>> +				return;
->>>   			}
->>>   		}
->>>
->>>   		igt_dynamic_f("%s", test_name)
->>>   			test_crtc_config(tconf, crtcs, crtc_count);
->>> +	} else {
->>> +		igt_dynamic_f("%s", test_name)
->>> +			cleanup_crtcs(crtcs, crtc_count);
->> ----------------------- ^
->> The name of function and its placement just before function end suggest it is
->> a cleanup, not a test.
->>
->> I would advise going with git log and finding when these two tests where
->> executed with "normal", non-dynamic way and then adjusting this function,
->> or adding them as separate subtests with proper configuration.
->>
-> This was before tests were converted to dynamic. (9f32d552afd7e7bb34b4cc3542e184b3be1a1dc8)
-> @@ -664,8 +684,19 @@ static void test_one_combination(const struct test_config *tconf,
->          setup_crtcs(tconf, cconfs, connector_count, crtcs,
->                      &crtc_count, &config_valid);
-> 
-> -       if (config_valid == !(tconf->flags & TEST_INVALID))
-> -               test_crtc_config(tconf, crtcs, crtc_count);
-> +       if (config_valid == !(tconf->flags & TEST_INVALID)) {
-> +               int i, pos = 0;
-> +               char test_name[256];
-> +
-> +               for (i = 0; i < crtc_count; i++) {
-> +                       if (i > 0)
-> +                               pos += snprintf(&test_name[pos], ARRAY_SIZE(test_name) - pos, "-");
-> +                       pos += get_test_name_str(&crtcs[i], &test_name[pos], ARRAY_SIZE(test_name) - pos);
-> +               }
-> +
-> +               igt_dynamic_f("%s", test_name)
-> +                       test_crtc_config(tconf, crtcs, crtc_count);
-> +       }
-
-What is wrong in this logic & how your patch fixes that?
-
-- Bhanu
-
-> 
->          cleanup_crtcs(crtcs, crtc_count);
->   }
-> 
->>>   	}
->>> -
->>> -out:
->>> -	cleanup_crtcs(crtcs, crtc_count);
->>
->> Drop this change, looks dangereous.
->>
->> Regards,
->> Kamil
-> 
->>
->>>   }
->>>
->>>   static int assign_crtc_to_connectors(const struct test_config *tconf,
->>> --
->>> 2.41.0
->>>
+SGkgQmhhbnUsIA0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBNb2RlbSwg
+QmhhbnVwcmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPg0KPiBTZW50OiBGcmlk
+YXksIEp1bmUgMjMsIDIwMjMgOToyMCBBTQ0KPiBUbzogQiwgSmVldmFuIDxqZWV2YW4uYkBpbnRl
+bC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzoga2FtaWwua29uaWVj
+em55QGxpbnV4LmludGVsLmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIGktZy10XSB0ZXN0cy9r
+bXNfc2V0bW9kZTogRml4IGR5bmFtaWMgc3VidGVzdHMNCj4gDQo+IEhpIEplZXZhbiwNCj4gDQo+
+IE9uIFRodS0yMi0wNi0yMDIzIDA0OjQ2IHBtLCBKZWV2YW4gQiB3cm90ZToNCj4gPiBiYXNpYy1j
+bG9uZS1zaW5nbGUtY3J0YyBhbmQgaW52YWxpZC1jbG9uZS1leGNsdXNpdmUtY3J0YyB3ZXJlIG5v
+dCBwYXJ0DQo+ID4gb2YgZHluYW1pYyBzdWJ0ZXN0IHNvIHRlc3RzIHdlcmUgZ2V0dGluZyBza2lw
+cGVkLiBmaXhlZCB0aGUgdGVzdCB0bw0KPiA+IGV4ZWN1dGUgc2tpcHBpbmcgdGVzdHMgYXMgZXhw
+ZWN0ZWQuDQo+IA0KPiBXaGF0IGRvZXMgaXQgbWVhbiB0aGVzZSB0ZXN0cyBhcmUgbm90IHBhcnQg
+b2YgZHluYW1pYyBzdWJ0ZXN0cz8NCj4gDQo+IEFGQUlLLCBhbGwgYmFzaWMtKiB0ZXN0cyBhcmUg
+cG9zaXRpdmUgdGVzdCBjYXNlcyAmIHRoZXJlIGFyZSBjb3JyZXNwb25kaW5nDQo+IG5lZ2F0aXZl
+IHRlc3QgY2FzZXMgKGludmFsaWQtKikNCj4gDQo+IElmIGFueSBwb3NpdGl2ZSB0ZXN0IGV4ZWN1
+dGVkLCB0aGUgY29ycmVzcG9uZGluZyBuZWdhdGl2ZSB0ZXN0IGlzIHN1cHBvc2VkIHRvDQo+IHNr
+aXAgJiB2aWNlIHZlcnNhLg0KPiANCj4gRXhhbXBsZToNCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2ku
+MDEub3JnL3RyZWUvZHJtLXRpcC9zaGFyZHMtDQo+IGFsbC5odG1sP3Rlc3RmaWx0ZXI9a21zX3Nl
+dG1vZGUmaG9zdHM9c2hhcmQtZ2xrDQo+IA0KPiANCj4gLSBiYXNpYy1jbG9zZS1zaW5nbGUtY3J0
+YzogU0tJUA0KPiAtIGludmFsaWQtY2xvbmUtc2luZ2xlLWNydGM6IFBBU1MNCj4gDQo+IC0gY2xv
+bmUtZXhlY3V0aXZlLWNydGM6IFBBU1MNCj4gLSBpbnZhbGlkLWNsb25lLWV4ZWN1dGl2ZS1jcnRj
+OiBTS0lQDQo+IA0KPiA+DQo+ID4gdjI6IGFkZCBtaXNzaW5nIGNhbGwuDQo+ID4NCj4gPiBTaWdu
+ZWQtb2ZmLWJ5OiBKZWV2YW4gQiA8amVldmFuLmJAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICAg
+dGVzdHMva21zX3NldG1vZGUuYyB8IDI2ICsrKysrKysrKysrKystLS0tLS0tLS0tLS0tDQo+ID4g
+ICAxIGZpbGUgY2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygrKSwgMTMgZGVsZXRpb25zKC0pDQo+ID4N
+Cj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3NldG1vZGUuYyBiL3Rlc3RzL2ttc19zZXRtb2Rl
+LmMgaW5kZXgNCj4gPiBhNjExZDkzOC4uOTZmYjBiNGIgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMv
+a21zX3NldG1vZGUuYw0KPiA+ICsrKyBiL3Rlc3RzL2ttc19zZXRtb2RlLmMNCj4gPiBAQCAtNjQ3
+LDIwICs2NDcsMTkgQEAgc3RhdGljIHZvaWQgdGVzdF9vbmVfY29tYmluYXRpb24oY29uc3Qgc3Ry
+dWN0DQo+IHRlc3RfY29uZmlnICp0Y29uZiwNCj4gPiAgIAlzdHJ1Y3QgY3J0Y19jb25maWcgY3J0
+Y3NbTUFYX0NSVENTXTsNCj4gPiAgIAlpbnQgY3J0Y19jb3VudDsNCj4gPiAgIAlib29sIGNvbmZp
+Z192YWxpZDsNCj4gPiArCWludCBpLCBwb3MgPSAwOw0KPiA+ICsJY2hhciB0ZXN0X25hbWVbMjU2
+XTsNCj4gPg0KPiA+ICAgCXNldHVwX2NydGNzKHRjb25mLCBjY29uZnMsIGNvbm5lY3Rvcl9jb3Vu
+dCwgY3J0Y3MsDQo+ID4gICAJCSAgICAmY3J0Y19jb3VudCwgJmNvbmZpZ192YWxpZCk7DQo+ID4N
+Cj4gPiAtCWlmIChjb25maWdfdmFsaWQgPT0gISh0Y29uZi0+ZmxhZ3MgJiBURVNUX0lOVkFMSUQp
+KSB7DQo+ID4gLQkJaW50IGksIHBvcyA9IDA7DQo+ID4gLQkJY2hhciB0ZXN0X25hbWVbMjU2XTsN
+Cj4gPiAtDQo+ID4gLQkJZm9yIChpID0gMDsgaSA8IGNydGNfY291bnQ7IGkrKykgew0KPiA+IC0J
+CQlpZiAoaSA+IDApDQo+ID4gLQkJCQlwb3MgKz0gc25wcmludGYoJnRlc3RfbmFtZVtwb3NdLA0K
+PiBBUlJBWV9TSVpFKHRlc3RfbmFtZSkgLSBwb3MsICItIik7DQo+ID4gLQkJCXBvcyArPSBnZXRf
+dGVzdF9uYW1lX3N0cigmY3J0Y3NbaV0sDQo+ICZ0ZXN0X25hbWVbcG9zXSwgQVJSQVlfU0laRSh0
+ZXN0X25hbWUpIC0gcG9zKTsNCj4gPiAtCQl9DQo+ID4gKwlmb3IgKGkgPSAwOyBpIDwgY3J0Y19j
+b3VudDsgaSsrKSB7DQo+ID4gKwkJaWYgKGkgPiAwKQ0KPiA+ICsJCQlwb3MgKz0gc25wcmludGYo
+JnRlc3RfbmFtZVtwb3NdLA0KPiBBUlJBWV9TSVpFKHRlc3RfbmFtZSkgLSBwb3MsICItIik7DQo+
+ID4gKwkJcG9zICs9IGdldF90ZXN0X25hbWVfc3RyKCZjcnRjc1tpXSwgJnRlc3RfbmFtZVtwb3Nd
+LA0KPiBBUlJBWV9TSVpFKHRlc3RfbmFtZSkgLSBwb3MpOw0KPiA+ICsJfQ0KPiA+DQo+ID4gKwlp
+ZiAoY29uZmlnX3ZhbGlkID09ICEodGNvbmYtPmZsYWdzICYgVEVTVF9JTlZBTElEKSkgew0KPiA+
+ICAgCQlmb3IgKGkgPSAwOyBpIDwgY3J0Y19jb3VudDsgaSsrKSB7DQo+ID4gICAJCQlzdHJ1Y3Qg
+Y3J0Y19jb25maWcgKmNydGMgPSAmY3J0Y3NbaV07DQo+ID4NCj4gPiBAQCAtNjc5LDE2ICs2Nzgs
+MTcgQEAgc3RhdGljIHZvaWQgdGVzdF9vbmVfY29tYmluYXRpb24oY29uc3Qgc3RydWN0DQo+IHRl
+c3RfY29uZmlnICp0Y29uZiwNCj4gPiAgIAkJCSAgICAoKGkgPiAwKSAmJiAoY3J0Y1tpIC0gMV0u
+bW9kZS5oZGlzcGxheSA+DQo+IE1BWF9IRElTUExBWV9QRVJfQ1JUQykgJiYNCj4gPiAgIAkJCSAg
+ICAgKGFicyhjcnRjLT5jcnRjX2lkeCAtIGNydGNzW2kgLSAxXS5jcnRjX2lkeCkgPD0gMSkpKSB7
+DQo+ID4gICAJCQkJaWd0X2luZm8oIkNvbWJvOiAlcyBpcyBub3QgcG9zc2libGUgd2l0aA0KPiBz
+ZWxlY3RlZCBtb2RlKHMpLlxuIiwgdGVzdF9uYW1lKTsNCj4gPiAtCQkJCWdvdG8gb3V0Ow0KPiA+
+ICsJCQkJY2xlYW51cF9jcnRjcyhjcnRjcywgY3J0Y19jb3VudCk7DQo+ID4gKwkJCQlyZXR1cm47
+DQo+ID4gICAJCQl9DQo+ID4gICAJCX0NCj4gPg0KPiA+ICAgCQlpZ3RfZHluYW1pY19mKCIlcyIs
+IHRlc3RfbmFtZSkNCj4gPiAgIAkJCXRlc3RfY3J0Y19jb25maWcodGNvbmYsIGNydGNzLCBjcnRj
+X2NvdW50KTsNCj4gPiArCX0gZWxzZSB7DQo+ID4gKwkJaWd0X2R5bmFtaWNfZigiJXMiLCB0ZXN0
+X25hbWUpDQo+ID4gKwkJCWNsZWFudXBfY3J0Y3MoY3J0Y3MsIGNydGNfY291bnQpOw0KPiANCj4g
+V2UgYXJlIHN1cHBvc2VkIHRvIGV4ZWN1dGUgdGhlIHRlc3QsIG5vdCBhIGNsZWFudXAuIFRoaXMg
+d2lsbCBhbHdheXMgdGhyb3cNCj4gdGhlIHRlc3QgcmVzdWx0IGFzIFBBU1MgKHdoaWNoIGlzIGJv
+Z3VzKSB3aXRob3V0IGV2ZW4gdGVzdGluZyBhbnl0aGluZy4NCg0KDQpVbmRlcnN0b29kLiBJIHdp
+bGwgbWFrZSB0aGUgY2hhbmdlIGZvciB0aGlzLiANCj4gDQo+IC0gQmhhbnUNCj4gDQo+ID4gICAJ
+fQ0KPiA+IC0NCj4gPiAtb3V0Og0KPiA+IC0JY2xlYW51cF9jcnRjcyhjcnRjcywgY3J0Y19jb3Vu
+dCk7DQo+ID4gICB9DQo+ID4NCj4gPiAgIHN0YXRpYyBpbnQgYXNzaWduX2NydGNfdG9fY29ubmVj
+dG9ycyhjb25zdCBzdHJ1Y3QgdGVzdF9jb25maWcNCj4gPiAqdGNvbmYsDQo=
