@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AD5510E19D
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 05:17:19 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Date: Mon, 26 Jun 2023 10:40:23 +0530
-Message-Id: <20230626051031.2363120-17-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
-References: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DDAD10E085
+ for <igt-dev@lists.freedesktop.org>; Sun, 25 Jun 2023 18:34:57 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 26 Jun 2023 00:04:36 +0530
+Message-Id: <20230625183436.14150-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230607115333.55940-2-mohammed.thasleem@intel.com>
+References: <20230607115333.55940-2-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 i-g-t 16/24] tests/v3d: Use drm_close_driver() to
- close the drm fd
+Subject: [igt-dev] [PATCH v3 1/2] tests/kms_display_modes: Fixed mode
+ selection for extended mode tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,129 +23,50 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To close the drm file descriptor, use igt helper drm_close_driver()
-instead of using close().
+Added check on DP-MST and 4k panels when two moniters connected
+through MST.
+This will find the connector mode combo that fits into the
+bandwidth when more than one monitor is connected.
 
-Cc: Melissa Wen <mwen@igalia.com>
-Cc: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Example:
+  When two monitors connected through MST, the second monitor
+  also tries to use the same mode. So two such modes may not
+  fit into the link bandwidth. So, iterate through connected
+  outputs & modes and find a combination of modes those fit
+  into the link BW.
+
+v2: -Updated commit msg and description. (Bhanu)
+    -Renamed restart with retry. (Bhanu)
+    -Moved igt_pipe_crc_new before retry. (Bhanu)
+    -Removed unrelated changes and new line. (Bhanu)
+    -Minor changes.
+v3: Updated discription and added EINVAL check.
+v4: Removed EINVAL and ENOSPC checks.
+    Added check for DP-MST and 4k panels.
+    Updated discription.
+v5: Defined 4k display modes globally.
+v6: -Removed if loop checks.
+    -Added igt override to avoid dp mst bw failure.
+v7: Resolved conflict.
+
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/v3d/v3d_create_bo.c      | 4 ++--
- tests/v3d/v3d_get_bo_offset.c  | 2 +-
- tests/v3d/v3d_get_param.c      | 2 +-
- tests/v3d/v3d_job_submission.c | 2 +-
- tests/v3d/v3d_mmap.c           | 2 +-
- tests/v3d/v3d_perfmon.c        | 2 +-
- tests/v3d/v3d_submit_cl.c      | 2 +-
- tests/v3d/v3d_submit_csd.c     | 2 +-
- tests/v3d/v3d_wait_bo.c        | 2 +-
- 9 files changed, 10 insertions(+), 10 deletions(-)
+ tests/kms_display_modes.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/v3d/v3d_create_bo.c b/tests/v3d/v3d_create_bo.c
-index 4142fb5f6..07d237e96 100644
---- a/tests/v3d/v3d_create_bo.c
-+++ b/tests/v3d/v3d_create_bo.c
-@@ -63,9 +63,9 @@ igt_main
- 			igt_assert_eq_u32(((uint32_t *)bo->map)[i], 0x0);
- 		igt_v3d_free_bo(fd2, bo);
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+index 93d91ef5..17cb66df 100644
+--- a/tests/kms_display_modes.c
++++ b/tests/kms_display_modes.c
+@@ -253,6 +253,9 @@ static void run_extendedmode_test(data_t *data) {
+ 					igt_output_set_pipe(output1, pipe1);
+ 					igt_output_set_pipe(output2, pipe2);
  
--		close(fd2);
-+		drm_close_driver(fd2);
- 	}
++					if (!igt_override_all_active_output_modes_to_fit_bw(display))
++						continue;
++
+ 					if (!i915_pipe_output_combo_valid(display))
+ 						continue;
  
- 	igt_fixture
--		close(fd);
-+		drm_close_driver(fd);
- }
-diff --git a/tests/v3d/v3d_get_bo_offset.c b/tests/v3d/v3d_get_bo_offset.c
-index 5c208f940..533488420 100644
---- a/tests/v3d/v3d_get_bo_offset.c
-+++ b/tests/v3d/v3d_get_bo_offset.c
-@@ -67,5 +67,5 @@ igt_main
- 	}
- 
- 	igt_fixture
--		close(fd);
-+		drm_close_driver(fd);
- }
-diff --git a/tests/v3d/v3d_get_param.c b/tests/v3d/v3d_get_param.c
-index 0ca330eb5..0d8fbf3d6 100644
---- a/tests/v3d/v3d_get_param.c
-+++ b/tests/v3d/v3d_get_param.c
-@@ -69,5 +69,5 @@ igt_main
- 	}
- 
- 	igt_fixture
--		close(fd);
-+		drm_close_driver(fd);
- }
-diff --git a/tests/v3d/v3d_job_submission.c b/tests/v3d/v3d_job_submission.c
-index d6e415bb2..e4ca7e89d 100644
---- a/tests/v3d/v3d_job_submission.c
-+++ b/tests/v3d/v3d_job_submission.c
-@@ -219,5 +219,5 @@ igt_main
- 	}
- 
- 	igt_fixture
--		close(fd);
-+		drm_close_driver(fd);
- }
-diff --git a/tests/v3d/v3d_mmap.c b/tests/v3d/v3d_mmap.c
-index 567940a80..642c55c65 100644
---- a/tests/v3d/v3d_mmap.c
-+++ b/tests/v3d/v3d_mmap.c
-@@ -75,5 +75,5 @@ igt_main
- 	}
- 
- 	igt_fixture
--		close(fd);
-+		drm_close_driver(fd);
- }
-diff --git a/tests/v3d/v3d_perfmon.c b/tests/v3d/v3d_perfmon.c
-index 3f55ddb1d..4d6ea465f 100644
---- a/tests/v3d/v3d_perfmon.c
-+++ b/tests/v3d/v3d_perfmon.c
-@@ -142,5 +142,5 @@ igt_main
- 	}
- 
- 	igt_fixture
--		close(fd);
-+		drm_close_driver(fd);
- }
-diff --git a/tests/v3d/v3d_submit_cl.c b/tests/v3d/v3d_submit_cl.c
-index 725bc1dff..293b146e2 100644
---- a/tests/v3d/v3d_submit_cl.c
-+++ b/tests/v3d/v3d_submit_cl.c
-@@ -376,5 +376,5 @@ igt_main
- 	}
- 
- 	igt_fixture
--		close(fd);
-+		drm_close_driver(fd);
- }
-diff --git a/tests/v3d/v3d_submit_csd.c b/tests/v3d/v3d_submit_csd.c
-index 3ec0ee49f..0e19913c6 100644
---- a/tests/v3d/v3d_submit_csd.c
-+++ b/tests/v3d/v3d_submit_csd.c
-@@ -360,5 +360,5 @@ igt_main
- 	}
- 
- 	igt_fixture
--		close(fd);
-+		drm_close_driver(fd);
- }
-diff --git a/tests/v3d/v3d_wait_bo.c b/tests/v3d/v3d_wait_bo.c
-index 9e51b6a05..6ed999426 100644
---- a/tests/v3d/v3d_wait_bo.c
-+++ b/tests/v3d/v3d_wait_bo.c
-@@ -122,6 +122,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_v3d_free_bo(fd, bo);
--		close(fd);
-+		drm_close_driver(fd);
- 	}
- }
 -- 
-2.40.0
+2.34.1
