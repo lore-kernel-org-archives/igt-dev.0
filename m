@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3305F10E15D
- for <igt-dev@lists.freedesktop.org>; Sun, 25 Jun 2023 11:14:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5F2410E15E
+ for <igt-dev@lists.freedesktop.org>; Sun, 25 Jun 2023 11:14:05 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: janga.rahul.kumar@intel.com, tejas.upadhyay@intel.com,
  igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com
-Date: Sun, 25 Jun 2023 16:43:13 +0530
-Message-Id: <20230625111316.534770-3-priyanka.dandamudi@intel.com>
+Date: Sun, 25 Jun 2023 16:43:15 +0530
+Message-Id: <20230625111316.534770-5-priyanka.dandamudi@intel.com>
 In-Reply-To: <20230625111316.534770-1-priyanka.dandamudi@intel.com>
 References: <20230625111316.534770-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/5] xe/xe_sysfs_defaults: Verify .defaults
- in engines directory
+Subject: [igt-dev] [PATCH i-g-t 4/5] xe/xe_sysfs_timeslice: Verify
+ timeslice_duration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,36 +27,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Add a new test which verifies .defaults are readonly and all
-parameters are present.
+Basic tests idempotent and invalid are added to verify
+timeslice_duration for each engine.
+It verifies whether parameter value within in the range.
 
 Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/meson.build            |   1 +
- tests/xe/xe_sysfs_defaults.c | 105 +++++++++++++++++++++++++++++++++++
- 2 files changed, 106 insertions(+)
- create mode 100644 tests/xe/xe_sysfs_defaults.c
+ tests/meson.build             |   1 +
+ tests/xe/xe_sysfs_timeslice.c | 138 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 139 insertions(+)
+ create mode 100644 tests/xe/xe_sysfs_timeslice.c
 
 diff --git a/tests/meson.build b/tests/meson.build
-index 85ea7e74..b24bae5c 100644
+index ea6c9239..1474a494 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -270,6 +270,7 @@ xe_progs = [
- 	'xe_vm',
- 	'xe_waitfence',
+@@ -272,6 +272,7 @@ xe_progs = [
  	'xe_spin_batch',
-+	'xe_sysfs_defaults',
+ 	'xe_sysfs_defaults',
+ 	'xe_sysfs_preempt_timeout',
++	'xe_sysfs_timeslice',
  ]
  
  msm_progs = [
-diff --git a/tests/xe/xe_sysfs_defaults.c b/tests/xe/xe_sysfs_defaults.c
+diff --git a/tests/xe/xe_sysfs_timeslice.c b/tests/xe/xe_sysfs_timeslice.c
 new file mode 100644
-index 00000000..1733ade7
+index 00000000..b9cddc8d
 --- /dev/null
-+++ b/tests/xe/xe_sysfs_defaults.c
-@@ -0,0 +1,105 @@
++++ b/tests/xe/xe_sysfs_timeslice.c
+@@ -0,0 +1,138 @@
 +/*
 + * Copyright © 2023 Intel Corporation
 + *
@@ -92,45 +93,77 @@ index 00000000..1733ade7
 +#include "xe/xe_query.h"
 +
 +/**
-+ * TEST: xe sysfs defaults
-+ * Category: Infrastructure
-+ * Functionality: driver handler
++ * TEST: xe sysfs timeslice
 + * Run type: FULL
-+ * Sub-category: xe
++ *
++ * SUBTEST: idempotent
++ * Description: Test to check whether the timelslice_duration_us parameter reports the values set.
 + * Test category: SysMan
-+ * SUBTEST: defaults
++ *
++ * SUBTEST: invalid
++ * Description: Test to check if timeslice_duration parameter rejects any unrepresentable intervals.
++ * Test category: SysMan
 + */
 +
-+static void test_defaults(int xe, int engine)
++#define ATTR "timeslice_duration_us"
++#define ATTR_MIN "timeslice_duration_min"
++#define ATTR_MAX "timeslice_duration_max"
++
++static void set_timeslice_duration(int engine, unsigned int value)
 +{
-+	struct dirent *de;
-+	int defaults;
-+	DIR *dir;
++	unsigned int delay;
 +
-+	defaults = openat(engine, ".defaults", O_DIRECTORY);
-+	igt_require(defaults != -1);
++	igt_assert_lte(0, igt_sysfs_printf(engine, ATTR, "%u", value));
++	igt_sysfs_scanf(engine, ATTR, "%u", &delay);
++	igt_assert_eq(delay, value);
++}
 +
-+	dir = fdopendir(engine);
-+	while ((de = readdir(dir))) {
-+		if (*de->d_name == '.')
-+			continue;
++static void test_idempotent(int xe, int engine)
++{
++	unsigned int delays[] = { 1, 1000, 1234, 10000000 };
++	unsigned int saved;
 +
-+		igt_debug("Checking attr '%s'\n", de->d_name);
++	igt_assert(igt_sysfs_scanf(engine, ATTR, "%u", &saved) == 1);
++	igt_debug("Initial %s:%u\n", ATTR, saved);
 +
-+		igt_assert_f(igt_sysfs_get(defaults, de->d_name),
-+					 "Default value %s is not present!\n",
-+					 de->d_name);
++	for (int i = 0; i < ARRAY_SIZE(delays); i++)
++		set_timeslice_duration(engine, delays[i]);
 +
-+		igt_assert_f(!igt_sysfs_set(defaults, de->d_name, "garbage"),
-+					 "write into default value of %s succeeded!\n",
-+					 de->d_name);
-+	}
-+	closedir(dir);
++	set_timeslice_duration(engine, saved);
++}
++
++static void test_invalid(int xe, int engine)
++{
++	unsigned int saved, set;
++	unsigned int min, max;
++
++	igt_sysfs_scanf(engine, ATTR_MAX, "%u", &max);
++	igt_sysfs_scanf(engine, ATTR_MIN, "%u", &min);
++
++	igt_assert(igt_sysfs_scanf(engine, ATTR, "%u", &saved) == 1);
++	igt_debug("Initial %s:%u\n", ATTR, saved);
++
++	igt_sysfs_printf(engine, ATTR, "%d", max+1);
++	igt_sysfs_scanf(engine, ATTR, "%u", &set);
++	igt_assert_eq(set, saved);
++
++	igt_sysfs_printf(engine, ATTR, "%d", min-1);
++	igt_sysfs_scanf(engine, ATTR, "%u", &set);
++	igt_assert_eq(set, saved);
 +}
 +
 +igt_main
 +{
-+	int xe, sys;
++	static const struct {
++		const char *name;
++		void (*fn)(int, int);
++	} tests[] = {
++		{ "idempotent", test_idempotent },
++		{ "invalid", test_invalid },
++		{ }
++	};
++	int xe = -1;
++	int sys;
 +	int gt;
 +
 +	igt_fixture {
@@ -140,20 +173,21 @@ index 00000000..1733ade7
 +		sys = igt_sysfs_open(xe);
 +		igt_require(sys != -1);
 +	}
-+	igt_subtest_with_dynamic("defaults") {
-+		xe_for_each_gt(xe, gt) {
-+			int engines = -1;
-+			char buf[100];
++	for (typeof(*tests) *t = tests; t->name; t++)
++		igt_subtest_with_dynamic(t->name) {
++			xe_for_each_gt(xe, gt) {
++				int engines = -1;
++				char buf[100];
 +
-+			sprintf(buf, "device/gt%d/engines", gt);
-+			engines = openat(sys, buf, O_RDONLY);
-+			igt_require(engines != -1);
++				sprintf(buf, "device/gt%d/engines", gt);
++				engines = openat(sys, buf, O_RDONLY);
++				igt_require(engines != -1);
 +
-+			igt_sysfs_engines(xe, engines, NULL, test_defaults);
++			    igt_sysfs_engines(xe, engines, ATTR, t->fn);
 +
-+			close(engines);
++				close(engines);
++			}
 +		}
-+	}
 +
 +	igt_fixture {
 +		close(sys);
