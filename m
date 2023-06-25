@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 520AB10E16E
- for <igt-dev@lists.freedesktop.org>; Sun, 25 Jun 2023 12:30:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E32110E16F
+ for <igt-dev@lists.freedesktop.org>; Sun, 25 Jun 2023 12:30:37 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: janga.rahul.kumar@intel.com, tejas.upadhyay@intel.com,
  igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com
-Date: Sun, 25 Jun 2023 17:59:46 +0530
-Message-Id: <20230625122948.535456-4-priyanka.dandamudi@intel.com>
+Date: Sun, 25 Jun 2023 17:59:47 +0530
+Message-Id: <20230625122948.535456-5-priyanka.dandamudi@intel.com>
 In-Reply-To: <20230625122948.535456-1-priyanka.dandamudi@intel.com>
 References: <20230625122948.535456-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/5] xe/xe_sysfs_preempt_timeout: Verify
- preempt_timeout
+Subject: [igt-dev] [PATCH i-g-t 4/5] xe/xe_sysfs_timeslice: Verify
+ timeslice_duration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,40 +28,40 @@ List-ID: <igt-dev@lists.freedesktop.org>
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
 Basic tests idempotent and invalid are added to verify
-preempt_timeout for each engine.
+timeslice_duration for each engine.
 It verifies whether parameter value within in the range.
 
 Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/meson.build                   |   1 +
- tests/xe/xe_sysfs_preempt_timeout.c | 139 ++++++++++++++++++++++++++++
- 2 files changed, 140 insertions(+)
- create mode 100644 tests/xe/xe_sysfs_preempt_timeout.c
+ tests/meson.build             |   1 +
+ tests/xe/xe_sysfs_timeslice.c | 138 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 139 insertions(+)
+ create mode 100644 tests/xe/xe_sysfs_timeslice.c
 
 diff --git a/tests/meson.build b/tests/meson.build
-index b24bae5c..ea6c9239 100644
+index ea6c9239..1474a494 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -271,6 +271,7 @@ xe_progs = [
- 	'xe_waitfence',
+@@ -272,6 +272,7 @@ xe_progs = [
  	'xe_spin_batch',
  	'xe_sysfs_defaults',
-+	'xe_sysfs_preempt_timeout',
+ 	'xe_sysfs_preempt_timeout',
++	'xe_sysfs_timeslice',
  ]
  
  msm_progs = [
-diff --git a/tests/xe/xe_sysfs_preempt_timeout.c b/tests/xe/xe_sysfs_preempt_timeout.c
+diff --git a/tests/xe/xe_sysfs_timeslice.c b/tests/xe/xe_sysfs_timeslice.c
 new file mode 100644
-index 00000000..5a357128
+index 00000000..94bed383
 --- /dev/null
-+++ b/tests/xe/xe_sysfs_preempt_timeout.c
-@@ -0,0 +1,139 @@
++++ b/tests/xe/xe_sysfs_timeslice.c
+@@ -0,0 +1,138 @@
 +/*
 + * Copyright © 2023 Intel Corporation
 + *
-+ * Permission is hereby ggit ranted, free of charge, to any person obtaining a
++ * Permission is hereby granted, free of charge, to any person obtaining a
 + * copy of this software and associated documentation files (the "Software"),
 + * to deal in the Software without restriction, including without limitation
 + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -93,23 +93,23 @@ index 00000000..5a357128
 +#include "xe/xe_query.h"
 +
 +/**
-+ * TEST: xe sysfs preempt timeout
++ * TEST: xe sysfs timeslice
 + * Run type: FULL
 + *
 + * SUBTEST: idempotent
-+ * Description: Test to check whether the preempt_timeout_us parameter reports the values set.
++ * Description: Test to check whether the timelslice_duration_us parameter reports the values set.
 + * Test category: SysMan
 + *
 + * SUBTEST: invalid
-+ * Description: Test to check if preempt_timeout parameter rejects any unrepresentable intervals.
++ * Description: Test to check if timeslice_duration parameter rejects any unrepresentable intervals.
 + * Test category: SysMan
 + */
 +
-+#define ATTR "preempt_timeout_us"
-+#define ATTR_MIN "preempt_timeout_min"
-+#define ATTR_MAX "preempt_timeout_max"
++#define ATTR "timeslice_duration_us"
++#define ATTR_MIN "timeslice_duration_min"
++#define ATTR_MAX "timeslice_duration_max"
 +
-+static void set_preempt_timeout(int engine, unsigned int value)
++static void set_timeslice_duration(int engine, unsigned int value)
 +{
 +	unsigned int delay;
 +
@@ -120,16 +120,16 @@ index 00000000..5a357128
 +
 +static void test_idempotent(int xe, int engine)
 +{
-+	unsigned int delays[] = { 1, 1000, 1234, 54321 };
++	unsigned int delays[] = { 1, 1000, 1234, 10000000 };
 +	unsigned int saved;
 +
 +	igt_assert(igt_sysfs_scanf(engine, ATTR, "%u", &saved) == 1);
 +	igt_debug("Initial %s:%u\n", ATTR, saved);
 +
 +	for (int i = 0; i < ARRAY_SIZE(delays); i++)
-+		set_preempt_timeout(engine, delays[i]);
++		set_timeslice_duration(engine, delays[i]);
 +
-+	set_preempt_timeout(engine, saved);
++	set_timeslice_duration(engine, saved);
 +}
 +
 +static void test_invalid(int xe, int engine)
@@ -173,20 +173,19 @@ index 00000000..5a357128
 +		sys = igt_sysfs_open(xe);
 +		igt_require(sys != -1);
 +	}
-+
 +	for (typeof(*tests) *t = tests; t->name; t++)
-+	    igt_subtest_with_dynamic(t->name) {
-+		    xe_for_each_gt(xe, gt) {
-+			    int engines = -1;
-+			    char buf[100];
++		igt_subtest_with_dynamic(t->name) {
++			xe_for_each_gt(xe, gt) {
++				int engines = -1;
++				char buf[100];
 +
-+			    sprintf(buf, "device/gt%d/engines", gt);
-+			    engines = openat(sys, buf, O_RDONLY);
-+			    igt_require(engines != -1);
++				sprintf(buf, "device/gt%d/engines", gt);
++				engines = openat(sys, buf, O_RDONLY);
++				igt_require(engines != -1);
 +
-+			    igt_sysfs_engines(xe, engines, ATTR, t->fn);
++				igt_sysfs_engines(xe, engines, ATTR, t->fn);
 +
-+			    close(engines);
++				close(engines);
 +			}
 +		}
 +
