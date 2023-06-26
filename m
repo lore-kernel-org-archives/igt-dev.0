@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB35F10E1E8
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 10:51:14 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org,
-	sai.gowtham.ch@intel.com
-Date: Mon, 26 Jun 2023 16:21:12 +0530
-Message-Id: <20230626105112.15705-1-sai.gowtham.ch@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDBB510E047
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 11:00:03 +0000 (UTC)
+From: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
+To: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 26 Jun 2023 10:59:40 +0000
+Message-ID: <SJ1PR11MB62048CDA62274EAC285FDB748126A@SJ1PR11MB6204.namprd11.prod.outlook.com>
+References: <20230623114946.3803540-1-himal.prasad.ghimiray@intel.com>
+ <20230623114946.3803540-5-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230623114946.3803540-5-himal.prasad.ghimiray@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_store: Add xe_store test to
- check store dword functionality
+Subject: Re: [igt-dev] [PATCH v2 4/4] tests/xe/xe_sysfs_tile_prop: adds new
+ test to verify per tile vram addr_range
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,208 +27,69 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-
-Adding xe_store test to valide store dword funtionality, this has basic
-test and test which runs on all the available engines.
-
-Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
----
- tests/meson.build   |   1 +
- tests/xe/xe_store.c | 173 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 174 insertions(+)
- create mode 100644 tests/xe/xe_store.c
-
-diff --git a/tests/meson.build b/tests/meson.build
-index 85ea7e74..2874be77 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -267,6 +267,7 @@ xe_progs = [
- 	'xe_pm',
- 	'xe_prime_self_import',
- 	'xe_query',
-+	'xe_store',
- 	'xe_vm',
- 	'xe_waitfence',
- 	'xe_spin_batch',
-diff --git a/tests/xe/xe_store.c b/tests/xe/xe_store.c
-new file mode 100644
-index 00000000..bb2e5319
---- /dev/null
-+++ b/tests/xe/xe_store.c
-@@ -0,0 +1,173 @@
-+#include "igt.h"
-+#include "lib/igt_syncobj.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include "xe_drm.h"
-+
-+/**
-+ * TEST: Tests to verify store dword functionality.
-+ * Category: Software building block
-+ * Sub-category: spin
-+ * Functionality: intel-bb
-+ * Test category: functionality test
-+ */
-+
-+#define MAX_INSTANCE 9
-+
-+/**
-+ * SUBTEST: basic-store
-+ * Description: Basic test to verify store dword.
-+ * Run type: FULL
-+ */
-+static void store(int fd, struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+	} *data;
-+	uint32_t vm;
-+	uint32_t engine;
-+	size_t bo_size;
-+	uint64_t addr = 0x100000;
-+	uint32_t bo = 0;
-+	int b;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+
-+	bo_size = sizeof(*data);
-+	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-+				xe_get_default_alignment(fd));
-+
-+	bo = xe_bo_create(fd, 0, vm, bo_size);
-+	data = xe_bo_map(fd, bo, bo_size);
-+
-+	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
-+
-+	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
-+	uint64_t batch_addr = addr + batch_offset;
-+	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
-+	uint64_t sdi_addr = addr + sdi_offset;
-+
-+	b = 0;
-+	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	data->batch[b++] = sdi_addr;
-+	data->batch[b++] = sdi_addr >> 32;
-+	data->batch[b++] = 0x123456;
-+	data->batch[b++] = MI_BATCH_BUFFER_END;
-+	igt_assert(b <= ARRAY_SIZE(data->batch));
-+
-+	engine = xe_engine_create(fd, vm, hwe, 0);
-+	xe_exec_wait(fd, engine, batch_addr);
-+
-+	igt_assert_eq(data->data, 0x123456);
-+
-+	xe_vm_unbind_sync(fd, vm, 0, addr, bo_size);
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
-+
-+	xe_engine_destroy(fd, engine);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+/**
-+ * SUBTEST: spin-basic
-+ * Description: Test to verify store dword on all available engine.
-+ * Run type: BAT
-+ */
-+static void store_all(int fd, int gt, int class)
-+{
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+	} *data;
-+	uint32_t vm;
-+	uint32_t engines[MAX_INSTANCE];
-+	size_t bo_size;
-+	uint64_t addr = 0x100000;
-+	uint32_t bo = 0;
-+	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
-+	struct drm_xe_engine_class_instance *hwe;
-+	int b, i, num_placements = 0;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+
-+	bo_size = sizeof(*data);
-+	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-+				xe_get_default_alignment(fd));
-+
-+	bo = xe_bo_create(fd, 0, vm, bo_size);
-+	data = xe_bo_map(fd, bo, bo_size);
-+
-+	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
-+
-+	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
-+	uint64_t batch_addr = addr + batch_offset;
-+	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
-+	uint64_t sdi_addr = addr + sdi_offset;
-+
-+	b = 0;
-+	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	data->batch[b++] = sdi_addr;
-+	data->batch[b++] = sdi_addr >> 32;
-+	data->batch[b++] = 0xc0ffee;
-+	data->batch[b++] = MI_BATCH_BUFFER_END;
-+	igt_assert(b <= ARRAY_SIZE(data->batch));
-+
-+	xe_for_each_hw_engine(fd, hwe) {
-+		if (hwe->engine_class != class || hwe->gt_id != gt)
-+			continue;
-+		eci[num_placements++] = *hwe;
-+	}
-+	if (num_placements < 2)
-+		return;
-+
-+	for (i = 0; i < num_placements; i++) {
-+		struct drm_xe_engine_create create = {
-+			.vm_id = vm,
-+			.width = 1,
-+			.num_placements = num_placements,
-+			.instances = to_user_pointer(eci),
-+		};
-+
-+		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE,
-+					&create), 0);
-+		engines[i] = create.engine_id;
-+		xe_exec_wait(fd, engine[i], batch_addr);
-+		igt_assert_eq(data[i]->data, 0xc0ffee);
-+	}
-+
-+	xe_vm_unbind_sync(fd, vm, 0, addr, bo_size);
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
-+
-+	for (i = 0; i < num_placements; i++) {
-+		xe_engine_destroy(fd, engine[i]);
-+	}
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+igt_main
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	int fd;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		xe_device_get(fd);
-+	}
-+
-+	igt_subtest("basic-store")
-+		xe_for_each_hw_engine(fd, hwe)
-+			store(fd, hwe);
-+
-+	igt_subtest("basic-all") {
-+		xe_for_each_gt(fd, gt)
-+			xe_for_each_hw_engine_class(class)
-+				store_all(fd, gt, class);
-+	}
-+
-+	igt_fixture
-+		close(fd);
-+}
--- 
-2.39.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogR2hpbWlyYXksIEhpbWFs
+IFByYXNhZCA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGludGVsLmNvbT4NCj4gU2VudDogRnJpZGF5
+LCBKdW5lIDIzLCAyMDIzIDU6MjAgUE0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnDQo+IENjOiBHaGltaXJheSwgSGltYWwgUHJhc2FkIDxoaW1hbC5wcmFzYWQuZ2hpbWlyYXlA
+aW50ZWwuY29tPjsgSWRkYW1zZXR0eSwNCj4gQXJhdmluZCA8YXJhdmluZC5pZGRhbXNldHR5QGlu
+dGVsLmNvbT47IFVwYWRoeWF5LCBUZWphcw0KPiA8dGVqYXMudXBhZGh5YXlAaW50ZWwuY29tPjsg
+S3VtYXIsIEphbmdhIFJhaHVsDQo+IDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQo+IFN1
+YmplY3Q6IFtQQVRDSCB2MiA0LzRdIHRlc3RzL3hlL3hlX3N5c2ZzX3RpbGVfcHJvcDogYWRkcyBu
+ZXcgdGVzdCB0byB2ZXJpZnkNCj4gcGVyIHRpbGUgdnJhbSBhZGRyX3JhbmdlDQo+IA0KPiBGb3Ig
+ZWFjaCB0aWxlIHRoZSB0ZXN0IHJlYWRzIHRoZSBzeXNmcyBlbnRyeSBwaHlzaWNhbF92cmFtX3Np
+emVfYnl0ZXMgYW5kDQo+IGNvbXBhcmVzIHRoZSB2YWx1ZSB3aXRoIHZyYW0gc2l6ZSBleHBvc2Vk
+IGZyb20gcXVlcnkgaW9jdGwuDQo+IA0KPiB2MjoNCj4gLSBDaGFuZ2Ugc3lzZnMgZW50cnkgbmFt
+ZS4gKFRlamFzKQ0KPiAtIENoYW5nZSB0ZXN0IG5hbWUgdG8geGVfc3lzZnNfdGlsZV9wcm9wLiAo
+UmFodWwpDQo+IA0KPiBDYzogQXJhdmluZCBJZGRhbXNldHR5IDxhcmF2aW5kLmlkZGFtc2V0dHlA
+aW50ZWwuY29tPg0KPiBDYzogVXBhZGh5YXkgPHRlamFzLnVwYWRoeWF5QGludGVsLmNvbT4NCj4g
+Q2M6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQo+IFNp
+Z25lZC1vZmYtYnk6IEhpbWFsIFByYXNhZCBHaGltaXJheSA8aGltYWwucHJhc2FkLmdoaW1pcmF5
+QGludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9tZXNvbi5idWlsZCAgICAgICAgICAgICB8ICAx
+ICsNCj4gIHRlc3RzL3hlL3hlX3N5c2ZzX3RpbGVfcHJvcC5jIHwgNjcgKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysNCj4gIDIgZmlsZXMgY2hhbmdlZCwgNjggaW5zZXJ0aW9ucygr
+KQ0KPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL3hlL3hlX3N5c2ZzX3RpbGVfcHJvcC5jDQo+
+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0cy9tZXNvbi5idWlsZCBp
+bmRleCA2MWRjYzA3Ni4uNTY5ZjFkMjINCj4gMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL21lc29uLmJ1
+aWxkDQo+ICsrKyBiL3Rlc3RzL21lc29uLmJ1aWxkDQo+IEBAIC0yNjcsNiArMjY3LDcgQEAgeGVf
+cHJvZ3MgPSBbDQo+ICAJJ3hlX3BtJywNCj4gIAkneGVfcHJpbWVfc2VsZl9pbXBvcnQnLA0KPiAg
+CSd4ZV9xdWVyeScsDQo+ICsJJ3hlX3N5c2ZzX3RpbGVfcHJvcCcsDQo+ICAJJ3hlX3ZtJywNCj4g
+IAkneGVfd2FpdGZlbmNlJywNCj4gIF0NCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3hlL3hlX3N5c2Zz
+X3RpbGVfcHJvcC5jIGIvdGVzdHMveGUveGVfc3lzZnNfdGlsZV9wcm9wLmMgbmV3DQo+IGZpbGUg
+bW9kZSAxMDA2NDQgaW5kZXggMDAwMDAwMDAuLmYyMDU5NzBmDQo+IC0tLSAvZGV2L251bGwNCj4g
+KysrIGIvdGVzdHMveGUveGVfc3lzZnNfdGlsZV9wcm9wLmMNCj4gQEAgLTAsMCArMSw2NyBAQA0K
+PiArLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVA0KPiArLyoNCj4gKyAqIENvcHlyaWdo
+dCDCqSAyMDIzIEludGVsIENvcnBvcmF0aW9uDQo+ICsgKi8NCj4gKw0KPiArLyoqDQo+ICsgKiBU
+RVNUOiBWZXJpZnkgYWRkcl9yYW5nZSBvZiBlYWNoIHRpbGVzDQo+ICsgKiBTVUJURVNUOiBhZGRy
+X3JhbmdlDQo+ICsgKiBEZXNjcmlwdGlvbjoNCj4gKyAqICAgICAgICAgICAgIFJlYWQgc3lzZnMg
+ZW50cnkgZm9yIGFkZHJfcmFuZ2UgYW5kIGNvbXBhcmUgd2l0aA0KPiArICogICAgICAgICAgICAg
+Y2FsY3VsYXRlZCBhZGRyX3JhbmdlLiBhZGRyX3JhbmdlIHNob3VsZCBiZSBzdW0NCj4gKyAqICAg
+ICAgICAgICAgIHZyYW0gc2l6ZSBhbmQgc3RvbGVuIG1lbW9yeS4NCj4gKyAqLw0KPiArDQo+ICsj
+aW5jbHVkZSA8c3RyaW5nLmg+DQo+ICsjaW5jbHVkZSA8c3lzL3RpbWUuaD4NCj4gKw0KPiArI2lu
+Y2x1ZGUgImlndC5oIg0KPiArI2luY2x1ZGUgImlndF9zeXNmcy5oIg0KPiArDQo+ICsjaW5jbHVk
+ZSAieGVfZHJtLmgiDQo+ICsjaW5jbHVkZSAieGUveGVfaW9jdGwuaCINCj4gKyNpbmNsdWRlICJ4
+ZS94ZV9xdWVyeS5oIg0KPiArDQo+ICtzdGF0aWMgdm9pZCB0ZXN0X3ZyYW1fYWRkcl9yYW5nZShp
+bnQgc3lzZnMsIGludCB0aWxlX251bSwgdTY0DQo+ICt2cmFtX3NpemUpIHsNCj4gKwlpbnQgZXJy
+ID0gLUVBR0FJTjsNCg0KQ2FuIHdlIHNraXAgaW5pdCBoZXJlIQ0KDQo+ICsJdTY0IGFkZHJfcmFu
+Z2U7DQoNCk1heSBiZSB5b3Ugd2FudCB0byB1cGRhdGUgdGhpcyB2YXJpYWJsZSBuYW1lIG5vdyB0
+byBtYXRjaCAuDQoNCj4gKwljaGFyIHBhdGhbNDBdOw0KDQpCZXR0ZXIgdG8gdXNlIGFscmVhZHkg
+ZGVmaW5lZCBwYXRoIGxlbmd0aCBvciBkZWZpbmUgaW5zdGVhZCBvZiBoYXJkY29kZS4NCg0KPiAr
+DQo+ICsJaWd0X2Fzc2VydChzbnByaW50ZihwYXRoLCBzaXplb2YocGF0aCksDQo+ICJkZXZpY2Uv
+dGlsZSVkL3BoeXNpY2FsX3ZyYW1fc2l6ZV9ieXRlcyIsDQo+ICsJCQkgICAgdGlsZV9udW0pIDwg
+c2l6ZW9mKHBhdGgpKTsNCj4gKwl3aGlsZSAoZXJyID09IC1FQUdBSU4pDQoNCkFuZCB0aGVuIHVz
+ZSBkbyB3aGlsZSBoZXJlLiBJIGRvbuKAmXQgc2VlIHZhbHVlIGluIGNoZWNraW5nIGVyciBhdCBm
+aXJzdCBoZXJlLiBPciBhbSBJIG1pc3Npbmcgc29tZXRoaW5nIGhlcmUhDQoNCj4gKwkJZXJyID0g
+aWd0X3N5c2ZzX3NjYW5mKHN5c2ZzLCBwYXRoLCAiJWx4IiwgJmFkZHJfcmFuZ2UpOw0KPiArDQo+
+ICsJaWd0X2Fzc2VydF9sdCh2cmFtX3NpemUsIGFkZHJfcmFuZ2UpOw0KDQpPaywgdnJhbV9zaXpl
+IGhlcmUgd291bGQgYmUgd2l0aG91dCBzdG9sZW4gY2FuIHdlIGFkZCB2cmFtX3NpemUgd2l0aCBz
+dG9sZW4gYW5kIGNoZWNrIGhlcmU/DQoNClRoYW5rcywNClRlamFzDQo+ICt9DQo+ICsNCj4gK2ln
+dF9tYWluDQo+ICt7DQo+ICsJaW50IGZkOw0KPiArCWludCB0aWxlLCB0b3RhbF90aWxlczsNCj4g
+KwlzdGF0aWMgaW50IHN5c2ZzID0gLTE7DQo+ICsJdTY0IHZyYW1fc2l6ZTsNCj4gKw0KPiArCWln
+dF9maXh0dXJlIHsNCj4gKwkJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX1hFKTsNCj4gKwkJ
+eGVfZGV2aWNlX2dldChmZCk7DQo+ICsNCj4gKwkJc3lzZnMgPSBpZ3Rfc3lzZnNfb3BlbihmZCk7
+DQo+ICsJCWlndF9hc3NlcnQoc3lzZnMgIT0gLTEpOw0KPiArCX0NCj4gKw0KPiArCWlndF9zdWJ0
+ZXN0KCJhZGRyX3JhbmdlIikgew0KPiArCQlpZ3RfcmVxdWlyZSh4ZV9oYXNfdnJhbShmZCkpOw0K
+PiArCQl4ZV9mb3JfZWFjaF90aWxlKGZkLCB0aWxlLCB0b3RhbF90aWxlcykgew0KPiArCQkJdnJh
+bV9zaXplID0geGVfdnJhbV9zaXplKGZkLCB0aWxlKTsNCj4gKwkJCXRlc3RfdnJhbV9hZGRyX3Jh
+bmdlKHN5c2ZzLCB0aWxlLCB2cmFtX3NpemUpOw0KPiArCQl9DQo+ICsJfQ0KPiArDQo+ICsJaWd0
+X2ZpeHR1cmUgew0KPiArCQljbG9zZShzeXNmcyk7DQo+ICsJCXhlX2RldmljZV9wdXQoZmQpOw0K
+PiArCQljbG9zZShmZCk7DQo+ICsJfQ0KPiArfQ0KPiAtLQ0KPiAyLjI1LjENCg0K
