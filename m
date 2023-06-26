@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7ADC610E09A
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 10:14:02 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E7BB10E0B7
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 10:24:12 +0000 (UTC)
 From: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
-To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>, "Kumar, Janga Rahul"
- <janga.rahul.kumar@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 26 Jun 2023 10:13:56 +0000
-Message-ID: <SJ1PR11MB620495177F5B90F214AC15AD8126A@SJ1PR11MB6204.namprd11.prod.outlook.com>
-References: <20230625111316.534770-1-priyanka.dandamudi@intel.com>
-In-Reply-To: <20230625111316.534770-1-priyanka.dandamudi@intel.com>
+To: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 26 Jun 2023 10:24:05 +0000
+Message-ID: <SJ1PR11MB62044D5FD86A614257B19D8F8126A@SJ1PR11MB6204.namprd11.prod.outlook.com>
+References: <20230623114946.3803540-1-himal.prasad.ghimiray@intel.com>
+ <20230623114946.3803540-2-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230623114946.3803540-2-himal.prasad.ghimiray@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 0/5] Add tests for scheduler control
- interface
+Subject: Re: [igt-dev] [PATCH v2 1/4] lib/igt_sysfs: Add support to query
+ number of tiles
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,49 +30,114 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 > -----Original Message-----
-> From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-> Sent: Sunday, June 25, 2023 4:43 PM
-> To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; Upadhyay, Tejas
-> <tejas.upadhyay@intel.com>; igt-dev@lists.freedesktop.org; Dandamudi,
-> Priyanka <priyanka.dandamudi@intel.com>
-> Subject: [PATCH i-g-t 0/5] Add tests for scheduler control interface
+> From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
+> Sent: Friday, June 23, 2023 5:20 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; Iddamsetty,
+> Aravind <aravind.iddamsetty@intel.com>; Upadhyay, Tejas
+> <tejas.upadhyay@intel.com>; Kumar, Janga Rahul
+> <janga.rahul.kumar@intel.com>
+> Subject: [PATCH v2 1/4] lib/igt_sysfs: Add support to query number of til=
+es
 >=20
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> With tile and GT seperation in KMD, we need to know number of tiles
+> supported by platform.
+> We will need to access tile associated properties from IGT.
+> Hence adding iterator for all supported tiles.
 >=20
-> New lib function has been added to iterate over sysfs/engines.
-> Added 4 new tests to validate basic scheduler control interface and its
-> defaults.
+> v2:
+> - Calculate number of tiles once within iterator. (Rahul)
+> - Use snprintf instead of sprintf.
 >=20
+> Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
+> Cc: Upadhyay <tejas.upadhyay@intel.com>
 > Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> ---
+>  lib/igt_sysfs.c | 30 ++++++++++++++++++++++++++++++  lib/igt_sysfs.h |  =
+8
+> ++++++++
+>  2 files changed, 38 insertions(+)
 >=20
-> Priyanka Dandamudi (5):
->   lib/igt_sysfs: Add support to iterate over engines
->   xe/xe_sysfs_defaults: Verify .defaults in engines directory
->   xe/xe_sysfs_preempt_timeout: Verify preempt_timeout
->   xe/xe_sysfs_timeslice: Verify timeslice_duration
->   xe/xe_sysfs_job_timeout: Verify job_timeout
+> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c index 35a4faa9..495b0288 1=
+00644
+> --- a/lib/igt_sysfs.c
+> +++ b/lib/igt_sysfs.c
+> @@ -287,6 +287,36 @@ int igt_sysfs_get_num_gt(int device)
+>  	return num_gts;
+>  }
+>=20
+> +/**
+> + * igt_sysfs_get_num_tiles:
+> + * @device: fd of the device
+> + *
+> + * Reads number of tiles sysfs entries.
+> + * Asserts for at least one tile entry.
+> + *
+> + * Returns: Number of tiles.
+> + */
+> +int igt_sysfs_get_num_tiles(int device) {
+> +	int num_tiles;
+> +	char sysfs[48];
+> +	char tiledir[96];
+> +
+> +	num_tiles =3D0;
+> +	if (!igt_sysfs_path(device, sysfs, sizeof(sysfs)))
+> +		return -1;
+> +
+> +	do {
+> +		igt_assert(snprintf(tiledir, sizeof(tiledir), "%s/device/tile%d",
+> +				    sysfs, num_tiles) < sizeof(tiledir));
 
-These basic tests are enough, though one basic test for min/max cap range w=
-ould complete basic test requirement here.
+I feel this is not best way to count tiles, as because of some reason if we=
+ don't create tile sysfs dir , wrong number of tiles will be detected and t=
+hen logic to follow for_each_gt/tile. But for now as we don't have anything=
+ supporting in kernel right now to give tile info we can rely on this.
 
-Thanks,
-Tejas
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+
+> +		num_tiles++;
+> +	} while (!access(tiledir, F_OK));
+> +
+> +	num_tiles--;
+> +	igt_assert_f(num_tiles > 0, "No tiles sysfs entry is found.");
+> +	return num_tiles;
+> +}
+> +
+>  /**
+>   * igt_sysfs_write:
+>   * @dir: directory for the device from igt_sysfs_open() diff --git
+> a/lib/igt_sysfs.h b/lib/igt_sysfs.h index 978b6906..de2c9a86 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -38,6 +38,11 @@
+>  	     (dirfd__ =3D igt_sysfs_gt_open(i915__, gt__)) !=3D -1; \
+>  	     close(dirfd__), gt__++)
 >=20
->  lib/igt_sysfs.c                     |  35 +++++++
->  lib/igt_sysfs.h                     |   3 +
->  tests/meson.build                   |   4 +
->  tests/xe/xe_sysfs_defaults.c        | 105 +++++++++++++++++++++
->  tests/xe/xe_sysfs_job_timeout.c     | 138 +++++++++++++++++++++++++++
->  tests/xe/xe_sysfs_preempt_timeout.c | 139
-> ++++++++++++++++++++++++++++
->  tests/xe/xe_sysfs_timeslice.c       | 138 +++++++++++++++++++++++++++
->  7 files changed, 562 insertions(+)
->  create mode 100644 tests/xe/xe_sysfs_defaults.c  create mode 100644
-> tests/xe/xe_sysfs_job_timeout.c  create mode 100644
-> tests/xe/xe_sysfs_preempt_timeout.c
->  create mode 100644 tests/xe/xe_sysfs_timeslice.c
+> +#define for_each_sysfs_tile_dirfd(xe__, tile__, tile_cnt__) \
+> +	for (tile__ =3D 0, tile_cnt__ =3D igt_sysfs_get_num_tiles(xe__); \
+> +	     tile__ < tile_cnt__; \
+> +	     ++tile__)
+> +
+>  #define i915_for_each_gt for_each_sysfs_gt_dirfd
 >=20
+>  #define igt_sysfs_rps_write(dir, id, data, len) \ @@ -73,6 +78,8 @@  #de=
+fine
+> igt_sysfs_rps_set_boolean(dir, id, value) \
+>  	igt_sysfs_set_boolean(dir, igt_sysfs_dir_id_to_name(dir, id), value)
+>=20
+> +#define xe_for_each_tile for_each_sysfs_tile_dirfd
+> +
+>  enum i915_attr_id {
+>  	RPS_ACT_FREQ_MHZ,
+>  	RPS_CUR_FREQ_MHZ,
+> @@ -97,6 +104,7 @@ int igt_sysfs_open(int device);  char
+> *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);  int
+> igt_sysfs_gt_open(int device, int gt);  int igt_sysfs_get_num_gt(int devi=
+ce);
+> +int igt_sysfs_get_num_tiles(int device);
+>  bool igt_sysfs_has_attr(int dir, const char *attr);  const char
+> *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id);  const char
+> *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id);
 > --
 > 2.25.1
