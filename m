@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB5A910E073
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 05:16:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6050D10E073
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 05:17:02 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	kamil.konieczny@linux.intel.com
-Date: Mon, 26 Jun 2023 10:40:13 +0530
-Message-Id: <20230626051031.2363120-7-bhanuprakash.modem@intel.com>
+Date: Mon, 26 Jun 2023 10:40:15 +0530
+Message-Id: <20230626051031.2363120-9-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
 References: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 i-g-t 06/24] tests/i915: Close the fd before exit
+Subject: [igt-dev] [V4 i-g-t 08/24] tests/nouveau_crc: Close the fd before
+ exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,104 +26,28 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Close the file descriptor before exiting the test.
 
-V2: - Drop tests those are initializing the fd with igt_fd_t
-
+Cc: Lyude Paul <lyude@redhat.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
 ---
- tests/dmabuf_sync_file.c        | 3 +++
- tests/i915/gem_barrier_race.c   | 3 +++
- tests/i915/gem_concurrent_all.c | 5 +++++
- tests/i915/gem_ctx_exec.c       | 3 +++
- tests/i915/gem_ctx_freq.c       | 3 +++
- tests/i915/gem_eio.c            | 3 +++
- tests/i915/i915_pm_rps.c        | 3 +++
- 7 files changed, 23 insertions(+)
+ tests/nouveau_crc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
-index 25bb6ad75..cfa73117b 100644
---- a/tests/dmabuf_sync_file.c
-+++ b/tests/dmabuf_sync_file.c
-@@ -380,4 +380,7 @@ igt_main
- 		     "operations.");
- 	igt_subtest("import-multiple-read-write")
- 		test_import_multiple(fd, true);
-+
-+	igt_fixture
-+		drm_close_driver(fd);
- }
-diff --git a/tests/i915/gem_barrier_race.c b/tests/i915/gem_barrier_race.c
-index be71d20e7..0ac1da3a4 100644
---- a/tests/i915/gem_barrier_race.c
-+++ b/tests/i915/gem_barrier_race.c
-@@ -165,4 +165,7 @@ igt_main
- 			break;
+diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
+index 785d39bde..d5aa0e650 100644
+--- a/tests/nouveau_crc.c
++++ b/tests/nouveau_crc.c
+@@ -409,7 +409,9 @@ igt_main
+ 			close(data.nv_crc_dir);
  		}
  	}
-+
-+	igt_fixture
-+		drm_close_driver(fd);
- }
-diff --git a/tests/i915/gem_concurrent_all.c b/tests/i915/gem_concurrent_all.c
-index fb3b5f5d8..0bf46c0a2 100644
---- a/tests/i915/gem_concurrent_all.c
-+++ b/tests/i915/gem_concurrent_all.c
-@@ -2015,4 +2015,9 @@ igt_main
- 			}
- 		}
- 	}
-+
+-	igt_fixture
+-		igt_display_fini(&data.display);
+ 
 +	igt_fixture {
-+		drm_close_driver(fd);
-+		drm_close_driver(vgem_drv);
++		igt_display_fini(&data.display);
++		drm_close_driver(data.drm_fd);
 +	}
- }
-diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-index bd6671ec8..f3939df86 100644
---- a/tests/i915/gem_ctx_exec.c
-+++ b/tests/i915/gem_ctx_exec.c
-@@ -605,4 +605,7 @@ igt_main
- 		gem_context_destroy(fd, ctx_id);
- 		put_ahnd(ahnd);
- 	}
-+
-+	igt_fixture
-+		drm_close_driver(fd);
- }
-diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
-index d15f83600..8c0d7db3c 100644
---- a/tests/i915/gem_ctx_freq.c
-+++ b/tests/i915/gem_ctx_freq.c
-@@ -261,4 +261,7 @@ igt_main
- 			igt_dynamic_f("gt%u", gt)
- 				sysfs_range(dirfd, gt);
- 	}
-+
-+	igt_fixture
-+		drm_close_driver(i915);
- }
-diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-index a5ebe6d2d..38fd19e89 100644
---- a/tests/i915/gem_eio.c
-+++ b/tests/i915/gem_eio.c
-@@ -1321,4 +1321,7 @@ igt_main
- 			intel_allocator_multiprocess_stop();
- 		}
- 	}
-+
-+	igt_fixture
-+		drm_close_driver(fd);
- }
-diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-index eaacc7c90..238d39240 100644
---- a/tests/i915/i915_pm_rps.c
-+++ b/tests/i915/i915_pm_rps.c
-@@ -999,4 +999,7 @@ igt_main
- 		waitboost(drm_fd, true);
- 		igt_disallow_hang(drm_fd, hang);
- 	}
-+
-+	igt_fixture
-+		drm_close_driver(drm_fd);
  }
 -- 
 2.40.0
