@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6996F10E1DF
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 11:20:57 +0000 (UTC)
-From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
-To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 26 Jun 2023 11:20:51 +0000
-Message-ID: <MW4PR11MB7056D530E119093E64F4890AB326A@MW4PR11MB7056.namprd11.prod.outlook.com>
-References: <20230623114946.3803540-1-himal.prasad.ghimiray@intel.com>
- <20230623114946.3803540-5-himal.prasad.ghimiray@intel.com>
- <SJ1PR11MB62048CDA62274EAC285FDB748126A@SJ1PR11MB6204.namprd11.prod.outlook.com>
-In-Reply-To: <SJ1PR11MB62048CDA62274EAC285FDB748126A@SJ1PR11MB6204.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 331A010E1F7
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 12:50:59 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 26 Jun 2023 18:20:45 +0530
+Message-Id: <20230626125045.3699311-3-anshuman.gupta@intel.com>
+In-Reply-To: <20230626125045.3699311-1-anshuman.gupta@intel.com>
+References: <20230626125045.3699311-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 4/4] tests/xe/xe_sysfs_tile_prop: adds new
- test to verify per tile vram addr_range
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 2/2] lib/igt_aux: Enable PM Suspend dbg
+ messages
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,90 +19,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVXBhZGh5YXksIFRlamFz
-IDx0ZWphcy51cGFkaHlheUBpbnRlbC5jb20+DQo+IFNlbnQ6IDI2IEp1bmUgMjAyMyAxNjozMA0K
-PiBUbzogR2hpbWlyYXksIEhpbWFsIFByYXNhZCA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGludGVs
-LmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogSWRkYW1zZXR0
-eSwgQXJhdmluZCA8YXJhdmluZC5pZGRhbXNldHR5QGludGVsLmNvbT47IEt1bWFyLCBKYW5nYQ0K
-PiBSYWh1bCA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSRTogW1BB
-VENIIHYyIDQvNF0gdGVzdHMveGUveGVfc3lzZnNfdGlsZV9wcm9wOiBhZGRzIG5ldyB0ZXN0IHRv
-DQo+IHZlcmlmeSBwZXIgdGlsZSB2cmFtIGFkZHJfcmFuZ2UNCj4gDQo+IA0KPiANCj4gPiAtLS0t
-LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+IEZyb206IEdoaW1pcmF5LCBIaW1hbCBQcmFzYWQg
-PGhpbWFsLnByYXNhZC5naGltaXJheUBpbnRlbC5jb20+DQo+ID4gU2VudDogRnJpZGF5LCBKdW5l
-IDIzLCAyMDIzIDU6MjAgUE0NCj4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcN
-Cj4gPiBDYzogR2hpbWlyYXksIEhpbWFsIFByYXNhZCA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGlu
-dGVsLmNvbT47DQo+ID4gSWRkYW1zZXR0eSwgQXJhdmluZCA8YXJhdmluZC5pZGRhbXNldHR5QGlu
-dGVsLmNvbT47IFVwYWRoeWF5LCBUZWphcw0KPiA+IDx0ZWphcy51cGFkaHlheUBpbnRlbC5jb20+
-OyBLdW1hciwgSmFuZ2EgUmFodWwNCj4gPiA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwuY29tPg0K
-PiA+IFN1YmplY3Q6IFtQQVRDSCB2MiA0LzRdIHRlc3RzL3hlL3hlX3N5c2ZzX3RpbGVfcHJvcDog
-YWRkcyBuZXcgdGVzdCB0bw0KPiA+IHZlcmlmeSBwZXIgdGlsZSB2cmFtIGFkZHJfcmFuZ2UNCj4g
-Pg0KPiA+IEZvciBlYWNoIHRpbGUgdGhlIHRlc3QgcmVhZHMgdGhlIHN5c2ZzIGVudHJ5IHBoeXNp
-Y2FsX3ZyYW1fc2l6ZV9ieXRlcw0KPiA+IGFuZCBjb21wYXJlcyB0aGUgdmFsdWUgd2l0aCB2cmFt
-IHNpemUgZXhwb3NlZCBmcm9tIHF1ZXJ5IGlvY3RsLg0KPiA+DQo+ID4gdjI6DQo+ID4gLSBDaGFu
-Z2Ugc3lzZnMgZW50cnkgbmFtZS4gKFRlamFzKQ0KPiA+IC0gQ2hhbmdlIHRlc3QgbmFtZSB0byB4
-ZV9zeXNmc190aWxlX3Byb3AuIChSYWh1bCkNCj4gPg0KPiA+IENjOiBBcmF2aW5kIElkZGFtc2V0
-dHkgPGFyYXZpbmQuaWRkYW1zZXR0eUBpbnRlbC5jb20+DQo+ID4gQ2M6IFVwYWRoeWF5IDx0ZWph
-cy51cGFkaHlheUBpbnRlbC5jb20+DQo+ID4gQ2M6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5y
-YWh1bC5rdW1hckBpbnRlbC5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogSGltYWwgUHJhc2FkIEdo
-aW1pcmF5IDxoaW1hbC5wcmFzYWQuZ2hpbWlyYXlAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICB0
-ZXN0cy9tZXNvbi5idWlsZCAgICAgICAgICAgICB8ICAxICsNCj4gPiAgdGVzdHMveGUveGVfc3lz
-ZnNfdGlsZV9wcm9wLmMgfCA2Nw0KPiA+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrDQo+ID4gIDIgZmlsZXMgY2hhbmdlZCwgNjggaW5zZXJ0aW9ucygrKQ0KPiA+ICBjcmVhdGUg
-bW9kZSAxMDA2NDQgdGVzdHMveGUveGVfc3lzZnNfdGlsZV9wcm9wLmMNCj4gPg0KPiA+IGRpZmYg
-LS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1aWxkIGluZGV4DQo+ID4g
-NjFkY2MwNzYuLjU2OWYxZDIyDQo+ID4gMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMvbWVzb24uYnVp
-bGQNCj4gPiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiA+IEBAIC0yNjcsNiArMjY3LDcgQEAg
-eGVfcHJvZ3MgPSBbDQo+ID4gIAkneGVfcG0nLA0KPiA+ICAJJ3hlX3ByaW1lX3NlbGZfaW1wb3J0
-JywNCj4gPiAgCSd4ZV9xdWVyeScsDQo+ID4gKwkneGVfc3lzZnNfdGlsZV9wcm9wJywNCj4gPiAg
-CSd4ZV92bScsDQo+ID4gIAkneGVfd2FpdGZlbmNlJywNCj4gPiAgXQ0KPiA+IGRpZmYgLS1naXQg
-YS90ZXN0cy94ZS94ZV9zeXNmc190aWxlX3Byb3AuYw0KPiA+IGIvdGVzdHMveGUveGVfc3lzZnNf
-dGlsZV9wcm9wLmMgbmV3IGZpbGUgbW9kZSAxMDA2NDQgaW5kZXgNCj4gPiAwMDAwMDAwMC4uZjIw
-NTk3MGYNCj4gPiAtLS0gL2Rldi9udWxsDQo+ID4gKysrIGIvdGVzdHMveGUveGVfc3lzZnNfdGls
-ZV9wcm9wLmMNCj4gPiBAQCAtMCwwICsxLDY3IEBADQo+ID4gKy8vIFNQRFgtTGljZW5zZS1JZGVu
-dGlmaWVyOiBNSVQNCj4gPiArLyoNCj4gPiArICogQ29weXJpZ2h0IMKpIDIwMjMgSW50ZWwgQ29y
-cG9yYXRpb24gICovDQo+ID4gKw0KPiA+ICsvKioNCj4gPiArICogVEVTVDogVmVyaWZ5IGFkZHJf
-cmFuZ2Ugb2YgZWFjaCB0aWxlcw0KPiA+ICsgKiBTVUJURVNUOiBhZGRyX3JhbmdlDQo+ID4gKyAq
-IERlc2NyaXB0aW9uOg0KPiA+ICsgKiAgICAgICAgICAgICBSZWFkIHN5c2ZzIGVudHJ5IGZvciBh
-ZGRyX3JhbmdlIGFuZCBjb21wYXJlIHdpdGgNCj4gPiArICogICAgICAgICAgICAgY2FsY3VsYXRl
-ZCBhZGRyX3JhbmdlLiBhZGRyX3JhbmdlIHNob3VsZCBiZSBzdW0NCj4gPiArICogICAgICAgICAg
-ICAgdnJhbSBzaXplIGFuZCBzdG9sZW4gbWVtb3J5Lg0KPiA+ICsgKi8NCj4gPiArDQo+ID4gKyNp
-bmNsdWRlIDxzdHJpbmcuaD4NCj4gPiArI2luY2x1ZGUgPHN5cy90aW1lLmg+DQo+ID4gKw0KPiA+
-ICsjaW5jbHVkZSAiaWd0LmgiDQo+ID4gKyNpbmNsdWRlICJpZ3Rfc3lzZnMuaCINCj4gPiArDQo+
-ID4gKyNpbmNsdWRlICJ4ZV9kcm0uaCINCj4gPiArI2luY2x1ZGUgInhlL3hlX2lvY3RsLmgiDQo+
-ID4gKyNpbmNsdWRlICJ4ZS94ZV9xdWVyeS5oIg0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgdGVz
-dF92cmFtX2FkZHJfcmFuZ2UoaW50IHN5c2ZzLCBpbnQgdGlsZV9udW0sIHU2NA0KPiA+ICt2cmFt
-X3NpemUpIHsNCj4gPiArCWludCBlcnIgPSAtRUFHQUlOOw0KPiANCj4gQ2FuIHdlIHNraXAgaW5p
-dCBoZXJlIQ0KPiANCj4gPiArCXU2NCBhZGRyX3JhbmdlOw0KPiANCj4gTWF5IGJlIHlvdSB3YW50
-IHRvIHVwZGF0ZSB0aGlzIHZhcmlhYmxlIG5hbWUgbm93IHRvIG1hdGNoIC4NCk9rLiBzdXJlDQo+
-IA0KPiA+ICsJY2hhciBwYXRoWzQwXTsNCj4gDQo+IEJldHRlciB0byB1c2UgYWxyZWFkeSBkZWZp
-bmVkIHBhdGggbGVuZ3RoIG9yIGRlZmluZSBpbnN0ZWFkIG9mIGhhcmRjb2RlLg0KPiANCj4gPiAr
-DQo+ID4gKwlpZ3RfYXNzZXJ0KHNucHJpbnRmKHBhdGgsIHNpemVvZihwYXRoKSwNCj4gPiAiZGV2
-aWNlL3RpbGUlZC9waHlzaWNhbF92cmFtX3NpemVfYnl0ZXMiLA0KPiA+ICsJCQkgICAgdGlsZV9u
-dW0pIDwgc2l6ZW9mKHBhdGgpKTsNCj4gPiArCXdoaWxlIChlcnIgPT0gLUVBR0FJTikNCj4gDQo+
-IEFuZCB0aGVuIHVzZSBkbyB3aGlsZSBoZXJlLiBJIGRvbuKAmXQgc2VlIHZhbHVlIGluIGNoZWNr
-aW5nIGVyciBhdCBmaXJzdCBoZXJlLiBPcg0KPiBhbSBJIG1pc3Npbmcgc29tZXRoaW5nIGhlcmUh
-DQpZZXMgbm90IHJlcXVpcmVkLiBXaWxsIGFkZHJlc3MgDQo+IA0KPiA+ICsJCWVyciA9IGlndF9z
-eXNmc19zY2FuZihzeXNmcywgcGF0aCwgIiVseCIsICZhZGRyX3JhbmdlKTsNCj4gPiArDQo+ID4g
-KwlpZ3RfYXNzZXJ0X2x0KHZyYW1fc2l6ZSwgYWRkcl9yYW5nZSk7DQo+IA0KPiBPaywgdnJhbV9z
-aXplIGhlcmUgd291bGQgYmUgd2l0aG91dCBzdG9sZW4gY2FuIHdlIGFkZCB2cmFtX3NpemUgd2l0
-aA0KPiBzdG9sZW4gYW5kIGNoZWNrIGhlcmU/DQpTdG9sZW4gcmVwb3J0ZWQgYnkgZGVidWdmcyBp
-cyBvbmx5IHVzYWJsZSBzdG9sZW4gYW5kIGl0IGlzIGJlaW5nIHJlcG9ydGVkIG9ubHkgZm9yIHJv
-b3QgdGlsZS4gU28gcHJvYmFibHkgdXNpbmcgc3RvbGVuIGZvciBjb21wYXJpc29uIGRvZXNuJ3Qg
-bWFrZSBzZW5zZS4NCldsbCB1cGRhdGUgdGhlIGRlc2NyaXB0aW9uIGluIHRlc3QuDQo+IA0KPiBU
-aGFua3MsDQo+IFRlamFzDQo+ID4gK30NCj4gPiArDQo+ID4gK2lndF9tYWluDQo+ID4gK3sNCj4g
-PiArCWludCBmZDsNCj4gPiArCWludCB0aWxlLCB0b3RhbF90aWxlczsNCj4gPiArCXN0YXRpYyBp
-bnQgc3lzZnMgPSAtMTsNCj4gPiArCXU2NCB2cmFtX3NpemU7DQo+ID4gKw0KPiA+ICsJaWd0X2Zp
-eHR1cmUgew0KPiA+ICsJCWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9YRSk7DQo+ID4gKwkJ
-eGVfZGV2aWNlX2dldChmZCk7DQo+ID4gKw0KPiA+ICsJCXN5c2ZzID0gaWd0X3N5c2ZzX29wZW4o
-ZmQpOw0KPiA+ICsJCWlndF9hc3NlcnQoc3lzZnMgIT0gLTEpOw0KPiA+ICsJfQ0KPiA+ICsNCj4g
-PiArCWlndF9zdWJ0ZXN0KCJhZGRyX3JhbmdlIikgew0KPiA+ICsJCWlndF9yZXF1aXJlKHhlX2hh
-c192cmFtKGZkKSk7DQo+ID4gKwkJeGVfZm9yX2VhY2hfdGlsZShmZCwgdGlsZSwgdG90YWxfdGls
-ZXMpIHsNCj4gPiArCQkJdnJhbV9zaXplID0geGVfdnJhbV9zaXplKGZkLCB0aWxlKTsNCj4gPiAr
-CQkJdGVzdF92cmFtX2FkZHJfcmFuZ2Uoc3lzZnMsIHRpbGUsIHZyYW1fc2l6ZSk7DQo+ID4gKwkJ
-fQ0KPiA+ICsJfQ0KPiA+ICsNCj4gPiArCWlndF9maXh0dXJlIHsNCj4gPiArCQljbG9zZShzeXNm
-cyk7DQo+ID4gKwkJeGVfZGV2aWNlX3B1dChmZCk7DQo+ID4gKwkJY2xvc2UoZmQpOw0KPiA+ICsJ
-fQ0KPiA+ICt9DQo+ID4gLS0NCj4gPiAyLjI1LjENCg0K
+Enabling PM Suspend dbg messages by turning on
+/sys/power/pm_debug_messages switch also adding an
+exit handler provision to restore the
+pm_debug_messages state.
+
+v2:
+- Fixed sysfs_fd leak. [Badal]
+v3:
+- Added igt_aux_enable_pm_suspend_dbg() function doc. [Kmail]
+
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
+---
+ lib/igt_aux.c | 35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
+
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 5eb6d9e270..35263b4519 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -703,6 +703,7 @@ void igt_print_activity(void)
+ 
+ static int autoresume_delay;
+ bool __console_suspend_saved_state;
++bool __pm_debug_messages_state;
+ 
+ #define SYSFS_MODULE_PRINTK "/sys/module/printk/parameters/"
+ #define CONSOLE_SUSPEND_DISABLE false
+@@ -913,7 +914,7 @@ static bool is_mem_sleep_state_supported(int power_dir, enum igt_mem_sleep state
+ 
+ static void igt_aux_pm_suspend_dbg_restore_exit_handler(int sig)
+ {
+-	int sysfs_fd;
++	int sysfs_fd, power_dir;
+ 
+ 	sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY);
+ 
+@@ -922,17 +923,30 @@ static void igt_aux_pm_suspend_dbg_restore_exit_handler(int sig)
+ 
+ 	igt_sysfs_set_boolean(sysfs_fd, "console_suspend", __console_suspend_saved_state);
+ 	close(sysfs_fd);
++	power_dir = open("/sys/power", O_RDONLY);
++
++	if (power_dir <  0)
++		return;
++
++	if (!faccessat(power_dir, "pm_debug_messages", R_OK |  W_OK, 0))
++		igt_sysfs_set_boolean(power_dir, "pm_debug_messages", __pm_debug_messages_state);
++
++	close(power_dir);
+ }
+ 
+ /**
+  * igt_aux_enable_pm_suspend_dbg:
++ * @power_dir: /sys/power/ dir fd
+  *
+  * Enhance the System wide suspend/resume debugging by,
+- * disabling console suspend. Disabling console suspend dump the suspend/resume
+- * logs over serial console. That will be useful to debug CI Suspend/Resume issues
+- * tagged with 'Incomplete' result.
++ * disabling console suspend and enabling PM debug messages.
++ * Disabling console suspend dump the suspend/resume logs over serial console.
++ * That will be useful to debug CI Suspend/Resume issues tagged
++ * with 'Incomplete' result.
++ * pm_debug_messages sysfs enables Linux PM Core debug messages, which will
++ * be useful to debug system wide suspend/resume related issues.
+  */
+-static void igt_aux_enable_pm_suspend_dbg(void)
++static void igt_aux_enable_pm_suspend_dbg(int power_dir)
+ {
+ 	int sysfs_fd;
+ 
+@@ -943,11 +957,18 @@ static void igt_aux_enable_pm_suspend_dbg(void)
+ 		if (!igt_sysfs_set_boolean(sysfs_fd, "console_suspend", CONSOLE_SUSPEND_DISABLE))
+ 			igt_warn("Unable to disable console suspend\n");
+ 
+-		igt_install_exit_handler(igt_aux_pm_suspend_dbg_restore_exit_handler);
+ 	} else {
+ 		igt_warn("Unable to open printk parameters Err:%d\n", errno);
+ 	}
+ 
++	/* pm_debug_messages depends on  CONFIG_PM_SLEEP_DEBUG */
++	if (!faccessat(power_dir, "pm_debug_messages", R_OK |  W_OK, 0)) {
++		__pm_debug_messages_state = igt_sysfs_get_boolean(sysfs_fd, "pm_debug_messages");
++		igt_sysfs_set_boolean(power_dir, "pm_debug_messages", true);
++	}
++
++	igt_install_exit_handler(igt_aux_pm_suspend_dbg_restore_exit_handler);
++
+ 	close(sysfs_fd);
+ }
+ 
+@@ -989,7 +1010,7 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
+ 		      "Suspend to disk requires swap space.\n");
+ 
+ 	orig_test = get_suspend_test(power_dir);
+-	igt_aux_enable_pm_suspend_dbg();
++	igt_aux_enable_pm_suspend_dbg(power_dir);
+ 
+ 	if (state == SUSPEND_STATE_S3) {
+ 		orig_mem_sleep = get_mem_sleep();
+-- 
+2.25.1
