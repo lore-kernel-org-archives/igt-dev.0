@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E7BB10E0B7
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 10:24:12 +0000 (UTC)
-From: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAFEE10E12C
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 10:30:31 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
 To: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 26 Jun 2023 10:24:05 +0000
-Message-ID: <SJ1PR11MB62044D5FD86A614257B19D8F8126A@SJ1PR11MB6204.namprd11.prod.outlook.com>
-References: <20230623114946.3803540-1-himal.prasad.ghimiray@intel.com>
- <20230623114946.3803540-2-himal.prasad.ghimiray@intel.com>
-In-Reply-To: <20230623114946.3803540-2-himal.prasad.ghimiray@intel.com>
+Date: Mon, 26 Jun 2023 10:30:25 +0000
+Message-ID: <MW3PR11MB4748597BFA09F3250DA8FBC8AE26A@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20230615130754.3406104-1-himal.prasad.ghimiray@intel.com>
+ <MW4PR11MB70561F90A998A6AE6046851CB323A@MW4PR11MB7056.namprd11.prod.outlook.com>
+In-Reply-To: <MW4PR11MB70561F90A998A6AE6046851CB323A@MW4PR11MB7056.namprd11.prod.outlook.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 1/4] lib/igt_sysfs: Add support to query
- number of tiles
+Subject: Re: [igt-dev] [i-g-t] [PATCH v1 1/1] tests/xe/xe_uevent: add new
+ test for uevent gt reset failure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,121 +23,219 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
+LGTM,
+Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
 > -----Original Message-----
 > From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
-> Sent: Friday, June 23, 2023 5:20 PM
+> Sent: 23 June 2023 17:21
 > To: igt-dev@lists.freedesktop.org
-> Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; Iddamsetty,
-> Aravind <aravind.iddamsetty@intel.com>; Upadhyay, Tejas
-> <tejas.upadhyay@intel.com>; Kumar, Janga Rahul
-> <janga.rahul.kumar@intel.com>
-> Subject: [PATCH v2 1/4] lib/igt_sysfs: Add support to query number of til=
-es
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>; Kumar, Janga Rahul
+> <janga.rahul.kumar@intel.com>; Dugast, Francois
+> <francois.dugast@intel.com>; Upadhyay, Tejas <tejas.upadhyay@intel.com>;
+> Iddamsetty, Aravind <aravind.iddamsetty@intel.com>
+> Subject: RE: [i-g-t] [PATCH v1 1/1] tests/xe/xe_uevent: add new test for =
+uevent
+> gt reset failure
 >=20
-> With tile and GT seperation in KMD, we need to know number of tiles
-> supported by platform.
-> We will need to access tile associated properties from IGT.
-> Hence adding iterator for all supported tiles.
 >=20
-> v2:
-> - Calculate number of tiles once within iterator. (Rahul)
-> - Use snprintf instead of sprintf.
 >=20
-> Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
-> Cc: Upadhyay <tejas.upadhyay@intel.com>
-> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> ---
->  lib/igt_sysfs.c | 30 ++++++++++++++++++++++++++++++  lib/igt_sysfs.h |  =
-8
-> ++++++++
->  2 files changed, 38 insertions(+)
->=20
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c index 35a4faa9..495b0288 1=
-00644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -287,6 +287,36 @@ int igt_sysfs_get_num_gt(int device)
->  	return num_gts;
->  }
->=20
-> +/**
-> + * igt_sysfs_get_num_tiles:
-> + * @device: fd of the device
-> + *
-> + * Reads number of tiles sysfs entries.
-> + * Asserts for at least one tile entry.
-> + *
-> + * Returns: Number of tiles.
-> + */
-> +int igt_sysfs_get_num_tiles(int device) {
-> +	int num_tiles;
-> +	char sysfs[48];
-> +	char tiledir[96];
-> +
-> +	num_tiles =3D0;
-> +	if (!igt_sysfs_path(device, sysfs, sizeof(sysfs)))
-> +		return -1;
-> +
-> +	do {
-> +		igt_assert(snprintf(tiledir, sizeof(tiledir), "%s/device/tile%d",
-> +				    sysfs, num_tiles) < sizeof(tiledir));
-
-I feel this is not best way to count tiles, as because of some reason if we=
- don't create tile sysfs dir , wrong number of tiles will be detected and t=
-hen logic to follow for_each_gt/tile. But for now as we don't have anything=
- supporting in kernel right now to give tile info we can rely on this.
-
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-
-> +		num_tiles++;
-> +	} while (!access(tiledir, F_OK));
-> +
-> +	num_tiles--;
-> +	igt_assert_f(num_tiles > 0, "No tiles sysfs entry is found.");
-> +	return num_tiles;
-> +}
-> +
->  /**
->   * igt_sysfs_write:
->   * @dir: directory for the device from igt_sysfs_open() diff --git
-> a/lib/igt_sysfs.h b/lib/igt_sysfs.h index 978b6906..de2c9a86 100644
-> --- a/lib/igt_sysfs.h
-> +++ b/lib/igt_sysfs.h
-> @@ -38,6 +38,11 @@
->  	     (dirfd__ =3D igt_sysfs_gt_open(i915__, gt__)) !=3D -1; \
->  	     close(dirfd__), gt__++)
->=20
-> +#define for_each_sysfs_tile_dirfd(xe__, tile__, tile_cnt__) \
-> +	for (tile__ =3D 0, tile_cnt__ =3D igt_sysfs_get_num_tiles(xe__); \
-> +	     tile__ < tile_cnt__; \
-> +	     ++tile__)
-> +
->  #define i915_for_each_gt for_each_sysfs_gt_dirfd
->=20
->  #define igt_sysfs_rps_write(dir, id, data, len) \ @@ -73,6 +78,8 @@  #de=
-fine
-> igt_sysfs_rps_set_boolean(dir, id, value) \
->  	igt_sysfs_set_boolean(dir, igt_sysfs_dir_id_to_name(dir, id), value)
->=20
-> +#define xe_for_each_tile for_each_sysfs_tile_dirfd
-> +
->  enum i915_attr_id {
->  	RPS_ACT_FREQ_MHZ,
->  	RPS_CUR_FREQ_MHZ,
-> @@ -97,6 +104,7 @@ int igt_sysfs_open(int device);  char
-> *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);  int
-> igt_sysfs_gt_open(int device, int gt);  int igt_sysfs_get_num_gt(int devi=
-ce);
-> +int igt_sysfs_get_num_tiles(int device);
->  bool igt_sysfs_has_attr(int dir, const char *attr);  const char
-> *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id);  const char
-> *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id);
-> --
-> 2.25.1
+> > -----Original Message-----
+> > From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
+> > Sent: 15 June 2023 18:38
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; Kamil
+> > Konieczny <kamil.konieczny@linux.intel.com>; Kumar, Janga Rahul
+> > <janga.rahul.kumar@intel.com>; Dugast, Francois
+> > <francois.dugast@intel.com>
+> > Subject: [i-g-t] [PATCH v1 1/1] tests/xe/xe_uevent: add new test for
+> > uevent gt reset failure
+> >
+> > This test is to cause the fake reset failure and capture the uevent
+> > sent in case of gt reset failure. We are relying on debugfs to cause
+> > fake reset failure because there is no hardware mechanism using which
+> > we can force gt to fail its reset.
+> >
+> > The sending of Uevent is taken care by series:
+> > drm/xe: Notify Userspace when engine/gt reset fails.
+> > https://patchwork.freedesktop.org/series/117504/
+> >
+> > The infra to cause fake reset failure is in series:
+> > drm/xe: Add a debugfs for faking gt reset failure.
+> > https://patchwork.freedesktop.org/series/119375/
+> >
+> > v2:
+> > - Make fake reset for all GT's in platform.
+> > - Add test names in order (Rahul)
+> > - Add headers in order.
+> > - Instead of system call use igt helper for reading debugfs.
+> > - Use igt_debug instead of prints.
+> > - Use break instead of unnecessary goto.
+> > - Change test name.
+> > - Define values as constants. (Kamil)
+> >
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> > Cc: Francois Dugast <francois.dugast@intel.com>
+> > Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> > ---
+> >  tests/meson.build    |   1 +
+> >  tests/xe/xe_uevent.c | 129
+> > +++++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 130 insertions(+)
+> >  create mode 100644 tests/xe/xe_uevent.c
+> >
+> > diff --git a/tests/meson.build b/tests/meson.build index
+> > 61dcc076..27abc13f
+> > 100644
+> > --- a/tests/meson.build
+> > +++ b/tests/meson.build
+> > @@ -267,6 +267,7 @@ xe_progs =3D [
+> >  	'xe_pm',
+> >  	'xe_prime_self_import',
+> >  	'xe_query',
+> > +	'xe_uevent',
+> >  	'xe_vm',
+> >  	'xe_waitfence',
+> >  ]
+> > diff --git a/tests/xe/xe_uevent.c b/tests/xe/xe_uevent.c new file mode
+> > 100644 index 00000000..6326896d
+> > --- /dev/null
+> > +++ b/tests/xe/xe_uevent.c
+> > @@ -0,0 +1,129 @@
+> > +// SPDX-License-Identifier: MIT
+> > +/*
+> > + * Copyright =C2=A9 2023 Intel Corporation  */
+> > +
+> > +/**
+> > + * TEST: cause fake gt reset failure and listen uevent from KMD
+> > + * SUBTEST:fake_reset_uevent_listener
+> > + * Description:
+> > + *		Test creates uevent listener and causes fake reset failure for
+> > gt0
+> > + *		and returns success if uevent is sent by driver and listened by
+> > listener.
+> > + */
+> > +
+> > +#include <libudev.h>
+> > +#include <string.h>
+> > +#include <sys/stat.h>
+> > +
+> > +#include "igt.h"
+> > +
+> > +#include "xe_drm.h"
+> > +#include "xe/xe_query.h"
+> > +
+> > +static bool xe_force_gt_fake_reset(int fd, int gt) {
+> > +	char rst_fail[32];
+> > +
+> > +	snprintf(rst_fail, sizeof(rst_fail), "gt%d/fake_reset_failure", gt);
+> > +	__igt_debugfs_read(fd, rst_fail, rst_fail, sizeof(rst_fail));
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +static bool listen_reset_fail_uevent(struct udev_device *device,
+> > +const char *source, int gt_id) {
+> > +	struct udev_list_entry *list_entry;
+> > +	bool reset_failed =3D false;
+> > +	bool reset_unit_is_gt =3D false;
+> > +	bool gt_id_matches =3D false;
+> > +	const char *name, *val;
+> > +
+> > +	udev_list_entry_foreach(list_entry,
+> > udev_device_get_properties_list_entry(device))
+> > +	{
+> > +		name =3D udev_list_entry_get_name(list_entry);
+> > +		val =3D udev_list_entry_get_value(list_entry);
+> > +
+> > +		if (!strcmp(name, "RESET_FAILED") && !strcmp(val, "1")) {
+> > +			igt_debug("%s =3D %s\n", name, val);
+> > +			reset_failed =3D true;
+> > +			continue;
+> > +		}
+> > +
+> > +		if (!strcmp(name, "RESET_UNIT") && !strcmp(val, "gt")) {
+> > +			igt_debug("%s =3D %s\n", name, val);
+> > +			reset_unit_is_gt =3D true;
+> > +			continue;
+> > +		}
+> > +
+> > +		if (!strcmp(name, "RESET_ID") && (atoi(val) =3D=3D gt_id)) {
+> > +			igt_debug("%s =3D %s\n", name, val);
+> > +			gt_id_matches =3D true;
+> > +			continue;
+> > +		}
+> > +	}
+> > +
+> > +	return (reset_failed && reset_unit_is_gt && gt_id_matches); }
+> > +
+> > +static void fake_reset_uevent_listener(int fd, int gt_id) {
+> > +	struct udev *udev;
+> > +	struct udev_device *dev;
+> > +	struct udev_monitor *mon;
+> > +	bool event_received =3D false;
+> > +	bool event_sent =3D false;
+> > +	const u32 listener_timeout =3D 5;
+> > +	const u32 reset_completed =3D 50000;
+> > +
+> > +	/* create udev object */
+> > +	udev =3D udev_new();
+> > +	if (!udev)
+> > +		igt_assert_f(false, "New udev object creation failed");
+> > +
+> > +	mon =3D udev_monitor_new_from_netlink(udev, "kernel");
+> > +	udev_monitor_filter_add_match_subsystem_devtype(mon, "drm",
+> > "drm_minor");
+> > +	udev_monitor_enable_receiving(mon);
+> > +	igt_until_timeout(listener_timeout) {
+> > +			dev =3D udev_monitor_receive_device(mon);
+> > +
+> > +			if (dev) {
+> > +				event_received =3D
+> > listen_reset_fail_uevent(dev, "kernel", gt_id);
+> > +				udev_device_unref(dev);
+> > +			}
+> > +
+> > +			if (event_sent)
+> > +				break;
+> > +
+> > +		event_sent =3D xe_force_gt_fake_reset(fd, gt_id);
+> > +		usleep(reset_completed);
+> > +	}
+> > +	udev_unref(udev);
+> > +	igt_assert_f(event_received, "Event not received"); }
+> > +
+> > +igt_main
+> > +{
+> > +	int fd;
+> > +	int gt;
+> > +	const u32 settle_xe_load_uevents =3D 50000;
+> > +
+> > +	igt_fixture {
+> > +		fd =3D drm_open_driver(DRIVER_XE);
+> > +		xe_device_get(fd);
+> > +	}
+> > +
+> > +	/* Ensures uevents triggered in case of driver
+> > +	 * load are settled down.
+> > +	 */
+> > +	usleep(settle_xe_load_uevents);
+> > +
+> > +	igt_subtest("fake_reset_uevent_listener")
+> > +		xe_for_each_gt(fd, gt) {
+> > +			fake_reset_uevent_listener(fd, gt);
+> > +		}
+> > +
+> > +	igt_fixture {
+> > +		xe_device_put(fd);
+> > +		close(fd);
+> > +	}
+> > +}
+> > --
+> > 2.25.1
