@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CFE710E08B
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 17:41:35 +0000 (UTC)
-Date: Mon, 26 Jun 2023 19:41:31 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230626174131.3rokdk5ji2g2cvd4@kamilkon-desk1>
-References: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
- <20230626051031.2363120-12-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230626051031.2363120-12-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [V4 i-g-t 11/24] tests/i915/gem_close_race: Fix the
- double closure of fd
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Hersen Wu" <hersenxs.wu@amd.com>
+Date: Mon, 26 Jun 2023 19:55:50 -0000
+Message-ID: <168780935039.5705.1555760423628472811@emeril.freedesktop.org>
+References: <20230620135425.32639-1-hersenxs.wu@amd.com>
+In-Reply-To: <20230620135425.32639-1-hersenxs.wu@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/amdgpu/amd=5Fcolor=3A_fix_test_crash_within_crtc=5Flut=5Faccu?=
+ =?utf-8?q?racy_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,36 +18,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanuprakash,
-On 2023-06-26 at 10:40:18 +0530, Bhanuprakash Modem wrote:
-> Don't close the fd in each thread, instead leave it to be
-> closed by process termination
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+== Series Details ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: tests/amdgpu/amd_color: fix test crash within crtc_lut_accuracy (rev2)
+URL   : https://patchwork.freedesktop.org/series/119591/
+State : failure
 
-> ---
->  tests/i915/gem_close_race.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
-> index 1a2efeab2..22cdc5874 100644
-> --- a/tests/i915/gem_close_race.c
-> +++ b/tests/i915/gem_close_race.c
-> @@ -303,7 +303,7 @@ static void thread(int fd, struct drm_gem_open name,
->  			n++;
->  		} while (1);
->  
-> -		close(crashme.fd);
-> +		/* leave fd to be closed by process termination */
->  	}
->  
->  	timer_delete(timer);
-> -- 
-> 2.40.0
-> 
+== Summary ==
+
+Applying: tests/amdgpu/amd_color: fix test crash within crtc_lut_accuracy
+Using index info to reconstruct a base tree...
+M	tests/amdgpu/amd_color.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/amdgpu/amd_color.c
+CONFLICT (content): Merge conflict in tests/amdgpu/amd_color.c
+Patch failed at 0001 tests/amdgpu/amd_color: fix test crash within crtc_lut_accuracy
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
