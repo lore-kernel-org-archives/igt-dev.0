@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA3EA10E02B
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 16:13:10 +0000 (UTC)
-Date: Mon, 26 Jun 2023 18:13:05 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com
+ [IPv6:2a00:1450:4864:20::22c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A636210E248
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 19:57:33 +0000 (UTC)
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2b6a6f224a1so13234231fa.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 12:57:33 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230626161305.3mq4zlgjwqcqf7ht@kamilkon-desk1>
-References: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
- <20230626051031.2363120-13-bhanuprakash.modem@intel.com>
+Date: Mon, 26 Jun 2023 22:57:24 +0300
+Message-Id: <20230626195725.3993-3-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230626195725.3993-1-juhapekka.heikkila@gmail.com>
+References: <20230626195725.3993-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230626051031.2363120-13-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [V4 i-g-t 12/24] tests: Use drm_close_driver() to
- close the drm fd
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_fb: include lib/intel_blt
+ functions to blitter path
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,469 +27,313 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanuprakash,
+Use intel_blt functions on blitter path and on i915 devices with
+flat ccs use blitter instead of render copy.
 
-On 2023-06-26 at 10:40:19 +0530, Bhanuprakash Modem wrote:
-> To close the drm file descriptor, use igt helper drm_close_driver()
-> instead of using close().
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/core_auth.c              | 10 +++++-----
->  tests/core_getclient.c         |  2 +-
->  tests/core_getstats.c          |  2 +-
->  tests/core_getversion.c        |  2 +-
->  tests/core_setmaster.c         |  6 +++---
->  tests/core_setmaster_vs_auth.c |  6 +++---
->  tests/debugfs_test.c           |  2 +-
->  tests/dumb_buffer.c            |  2 +-
->  tests/eviction_common.c        |  2 +-
->  tests/fbdev.c                  |  2 +-
->  tests/prime_busy.c             |  2 +-
->  tests/prime_mmap.c             |  2 +-
->  tests/prime_mmap_coherency.c   |  4 ++--
->  tests/prime_mmap_kms.c         |  2 +-
->  tests/prime_self_import.c      | 26 +++++++++++++-------------
->  tests/prime_vgem.c             |  4 ++--
->  tests/syncobj_basic.c          |  2 +-
->  tests/syncobj_timeline.c       |  2 +-
->  tests/syncobj_wait.c           |  2 +-
->  tests/template.c               |  2 +-
->  tests/vgem_basic.c             |  6 +++---
->  tests/vgem_slow.c              |  2 +-
->  22 files changed, 46 insertions(+), 46 deletions(-)
-> 
-> diff --git a/tests/core_auth.c b/tests/core_auth.c
-> index ed736e1ae..bc1b3b8d5 100644
-> --- a/tests/core_auth.c
-> +++ b/tests/core_auth.c
-> @@ -214,7 +214,7 @@ static void test_basic_auth(int master)
->  	igt_assert(drmGetMagic(slave, &magic) == 0);
->  	igt_assert_eq(magic, old_magic);
->  
-> -	close(slave);
-> +	drm_close_driver(slave);
->  }
->  
->  igt_main
-> @@ -226,7 +226,7 @@ igt_main
->  
->  		igt_assert(check_auth(fd) == true);
->  
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  
->  	igt_describe("Use 2 clients, check second is authenticated even when first dropped.");
-> @@ -236,11 +236,11 @@ igt_main
->  
->  		igt_assert(check_auth(fd2) == true);
->  
-> -		close(fd);
-> +		drm_close_driver(fd);
->  
->  		igt_assert(check_auth(fd2) == true);
->  
-> -		close(fd2);
-> +		drm_close_driver(fd2);
->  	}
->  
->  	/* above tests require that no drm fd is open */
-> @@ -249,7 +249,7 @@ igt_main
->  
->  		igt_fixture
->  			master = drm_open_driver_master(DRIVER_ANY);
-> -	
-> +
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ lib/igt_fb.c | 204 +++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 180 insertions(+), 24 deletions(-)
 
-Drop this change.
-
->  		igt_describe("Test magic numbers for master and slave.");
->  		igt_subtest("basic-auth")
->  			test_basic_auth(master);
-> diff --git a/tests/core_getclient.c b/tests/core_getclient.c
-> index 993801ead..839fae36a 100644
-> --- a/tests/core_getclient.c
-> +++ b/tests/core_getclient.c
-> @@ -70,5 +70,5 @@ igt_simple_main
->  	ret = ioctl(fd, DRM_IOCTL_GET_CLIENT, &client);
->  	igt_assert(ret == -1 && errno == EINVAL);
->  
-> -	close(fd);
-> +	drm_close_driver(fd);
->  }
-> diff --git a/tests/core_getstats.c b/tests/core_getstats.c
-> index fef122583..8b5655053 100644
-> --- a/tests/core_getstats.c
-> +++ b/tests/core_getstats.c
-> @@ -64,5 +64,5 @@ igt_simple_main
->  	ret = ioctl(fd, DRM_IOCTL_GET_STATS, &stats);
->  	igt_assert(ret == 0);
->  
-> -	close(fd);
-> +	drm_close_driver(fd);
->  }
-> diff --git a/tests/core_getversion.c b/tests/core_getversion.c
-> index 36ba01b86..32cb976e4 100644
-> --- a/tests/core_getversion.c
-> +++ b/tests/core_getversion.c
-> @@ -58,5 +58,5 @@ igt_simple_main
->  		igt_assert_lte(1, v->version_major);
->  
->  	drmFree(v);
-> -	close(fd);
-> +	drm_close_driver(fd);
->  }
-> diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
-> index 621bc2469..04ee6b8b5 100644
-> --- a/tests/core_setmaster.c
-> +++ b/tests/core_setmaster.c
-> @@ -104,7 +104,7 @@ static void check_drop_set(void)
->  	igt_assert_eq(drmDropMaster(master), 0);
->  	igt_assert_eq(drmSetMaster(master), 0);
->  
-> -	close(master);
-> +	drm_close_driver(master);
->  }
->  
->  static unsigned tweak_perm(uint8_t *saved_perm, unsigned max_perm, bool save)
-> @@ -225,10 +225,10 @@ igt_main
->  			igt_assert_eq(drmSetMaster(master), -1);
->  			igt_assert_eq(errno, EACCES);
->  
-> -			close(master);
-> +			drm_close_driver(master);
->  		}
->  		igt_waitchildren();
->  
-> -		close(master);
-> +		drm_close_driver(master);
->  	}
->  }
-> diff --git a/tests/core_setmaster_vs_auth.c b/tests/core_setmaster_vs_auth.c
-> index adca1c111..b80ed3879 100644
-> --- a/tests/core_setmaster_vs_auth.c
-> +++ b/tests/core_setmaster_vs_auth.c
-> @@ -78,7 +78,7 @@ igt_simple_main
->  	igt_assert_neq(drmAuthMagic(master2, magic), 0);
->  	igt_assert_eq(errno, EINVAL);
->  
-> -	close(client);
-> -	close(master2);
-> -	close(master1);
-> +	drm_close_driver(client);
-> +	drm_close_driver(master2);
-> +	drm_close_driver(master1);
->  }
-> diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
-> index 5ee615aba..b67bfabac 100644
-> --- a/tests/debugfs_test.c
-> +++ b/tests/debugfs_test.c
-> @@ -255,6 +255,6 @@ igt_main
->  	igt_fixture {
->  		close(sysfs);
->  		close(debugfs);
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  }
-> diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
-> index 9495d28ff..9db857f9f 100644
-> --- a/tests/dumb_buffer.c
-> +++ b/tests/dumb_buffer.c
-> @@ -416,6 +416,6 @@ igt_main
->  		always_clear(fd, 30);
->  
->  	igt_fixture {
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  }
-> diff --git a/tests/eviction_common.c b/tests/eviction_common.c
-> index 95af106c1..5948fbc64 100644
-> --- a/tests/eviction_common.c
-> +++ b/tests/eviction_common.c
-> @@ -300,7 +300,7 @@ static int forking_evictions(int fd, struct igt_eviction_test_ops *ops,
->  
->  		/* drmfd closing will take care of additional bo refs */
->  		if (flags & FORKING_EVICTIONS_DUP_DRMFD)
-> -			close(realfd);
-> +			drm_close_driver(realfd);
->  	}
->  
->  	igt_waitchildren();
-> diff --git a/tests/fbdev.c b/tests/fbdev.c
-> index 794882a6a..154e78b0f 100644
-> --- a/tests/fbdev.c
-> +++ b/tests/fbdev.c
-> @@ -443,6 +443,6 @@ igt_main
->  	}
->  
->  	igt_fixture {
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  }
-> diff --git a/tests/prime_busy.c b/tests/prime_busy.c
-> index 6b0d7310b..90d79864f 100644
-> --- a/tests/prime_busy.c
-> +++ b/tests/prime_busy.c
-> @@ -184,6 +184,6 @@ igt_main
->  
->  	igt_fixture {
->  		intel_ctx_destroy(fd, ctx);
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  }
-> diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
-> index efd4deff9..25b2939e9 100644
-> --- a/tests/prime_mmap.c
-> +++ b/tests/prime_mmap.c
-> @@ -590,6 +590,6 @@ igt_main
->  		free(query_info);
->  		igt_collection_destroy(set);
->  		igt_collection_destroy(dma_buf_set);
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  }
-> diff --git a/tests/prime_mmap_coherency.c b/tests/prime_mmap_coherency.c
-> index e5f7c92b2..01eb2002d 100644
-> --- a/tests/prime_mmap_coherency.c
-> +++ b/tests/prime_mmap_coherency.c
-> @@ -267,7 +267,7 @@ static void blit_and_cmp(void)
->  
->  	intel_bb_destroy(local_batch);
->  	buf_ops_destroy(local_bops);
-> -	close(local_fd);
-> +	drm_close_driver(local_fd);
->  }
->  
->  /*
-> @@ -364,6 +364,6 @@ igt_main
->  	igt_fixture {
->  		buf_ops_destroy(bops);
->  
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  }
-> diff --git a/tests/prime_mmap_kms.c b/tests/prime_mmap_kms.c
-> index 8b127a13c..1a63be38f 100644
-> --- a/tests/prime_mmap_kms.c
-> +++ b/tests/prime_mmap_kms.c
-> @@ -263,6 +263,6 @@ igt_main
->  
->  	igt_fixture {
->  		igt_display_fini(&gpu.display);
-> -		close(gpu.drm_fd);
-> +		drm_close_driver(gpu.drm_fd);
->  	}
->  }
-> diff --git a/tests/prime_self_import.c b/tests/prime_self_import.c
-> index 30f2bf013..2dbf4e20f 100644
-> --- a/tests/prime_self_import.c
-> +++ b/tests/prime_self_import.c
-> @@ -147,8 +147,8 @@ static void test_with_fd_dup(void)
->  	close(dma_buf_fd2);
->  	check_bo(fd2, handle_import, fd2, handle_import);
->  
-> -	close(fd1);
-> -	close(fd2);
-> +	drm_close_driver(fd1);
-> +	drm_close_driver(fd2);
->  }
->  
->  static void test_with_two_bos(void)
-> @@ -180,8 +180,8 @@ static void test_with_two_bos(void)
->  
->  	check_bo(fd2, handle_import, fd2, handle_import);
->  
-> -	close(fd1);
-> -	close(fd2);
-> +	drm_close_driver(fd1);
-> +	drm_close_driver(fd2);
->  }
->  
->  static void test_with_one_bo_two_files(void)
-> @@ -205,8 +205,8 @@ static void test_with_one_bo_two_files(void)
->  	/* dma-buf self importing an flink bo should give the same handle */
->  	igt_assert_eq_u32(handle_import, handle_open);
->  
-> -	close(fd1);
-> -	close(fd2);
-> +	drm_close_driver(fd1);
-> +	drm_close_driver(fd2);
->  	close(dma_buf_fd1);
->  	close(dma_buf_fd2);
->  }
-> @@ -252,7 +252,7 @@ static void test_with_one_bo(void)
->  	check_bo(fd1, handle, fd2, handle_import1);
->  
->  	/* Completely rip out exporting fd. */
-> -	close(fd1);
-> +	drm_close_driver(fd1);
->  	check_bo(fd2, handle_import1, fd2, handle_import1);
->  }
->  
-> @@ -316,14 +316,14 @@ static void test_reimport_close_race(void)
->  		igt_assert(status == 0);
->  	}
->  
-> -	close(fds[0]);
-> +	drm_close_driver(fds[0]);
->  	close(fds[1]);
-------- ^^^^^
-this should also be changed ?
-
-Rest looks ok.
-
-Regards,
-Kamil
-
->  
->  	obj_count = igt_get_stable_obj_count(fake) - obj_count;
->  
->  	igt_info("leaked %i objects\n", obj_count);
->  
-> -	close(fake);
-> +	drm_close_driver(fake);
->  
->  	igt_assert_eq(obj_count, 0);
->  }
-> @@ -398,13 +398,13 @@ static void test_export_close_race(void)
->  		igt_assert(status == 0);
->  	}
->  
-> -	close(fd);
-> +	drm_close_driver(fd);
->  
->  	obj_count = igt_get_stable_obj_count(fake) - obj_count;
->  
->  	igt_info("leaked %i objects\n", obj_count);
->  
-> -	close(fake);
-> +	drm_close_driver(fake);
->  
->  	igt_assert_eq(obj_count, 0);
->  }
-> @@ -433,7 +433,7 @@ static void test_llseek_size(void)
->  		close(dma_buf_fd);
->  	}
->  
-> -	close(fd);
-> +	drm_close_driver(fd);
->  }
->  
->  static void test_llseek_bad(void)
-> @@ -462,7 +462,7 @@ static void test_llseek_bad(void)
->  
->  	close(dma_buf_fd);
->  
-> -	close(fd);
-> +	drm_close_driver(fd);
->  }
->  
->  igt_main
-> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-> index 85b9cf880..876e04ed0 100644
-> --- a/tests/prime_vgem.c
-> +++ b/tests/prime_vgem.c
-> @@ -1326,7 +1326,7 @@ igt_main
->  
->  
->  	igt_fixture {
-> -		close(i915);
-> -		close(vgem);
-> +		drm_close_driver(i915);
-> +		drm_close_driver(vgem);
->  	}
->  }
-> diff --git a/tests/syncobj_basic.c b/tests/syncobj_basic.c
-> index 3252dbd69..f079baf09 100644
-> --- a/tests/syncobj_basic.c
-> +++ b/tests/syncobj_basic.c
-> @@ -266,7 +266,7 @@ igt_main
->  		test_valid_cycle(fd);
->  
->  	igt_fixture {
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  
->  }
-> diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-> index 134a60995..b4e1d093a 100644
-> --- a/tests/syncobj_timeline.c
-> +++ b/tests/syncobj_timeline.c
-> @@ -1936,6 +1936,6 @@ igt_main
->  		test_32bits_limit(fd);
->  
->  	igt_fixture {
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  }
-> diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
-> index 2583ef72e..e0ff69b79 100644
-> --- a/tests/syncobj_wait.c
-> +++ b/tests/syncobj_wait.c
-> @@ -1062,6 +1062,6 @@ igt_main
->  		test_wait_interrupted(fd, WAIT_ALL);
->  
->  	igt_fixture {
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  }
-> diff --git a/tests/template.c b/tests/template.c
-> index e23814fb7..ae2681c01 100644
-> --- a/tests/template.c
-> +++ b/tests/template.c
-> @@ -76,6 +76,6 @@ igt_main
->  	 */
->  
->  	igt_fixture {
-> -		close(drm_fd);
-> +		drm_close_driver(drm_fd);
->  	}
->  }
-> diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
-> index f2255a619..63c5c0971 100644
-> --- a/tests/vgem_basic.c
-> +++ b/tests/vgem_basic.c
-> @@ -162,8 +162,8 @@ static void test_setversion(int fd)
->  
->  static void test_client(int fd)
->  {
-> -	close(drm_open_driver(DRIVER_VGEM));
-> -	close(drm_open_driver_render(DRIVER_VGEM));
-> +	drm_close_driver(drm_open_driver(DRIVER_VGEM));
-> +	drm_close_driver(drm_open_driver_render(DRIVER_VGEM));
->  }
->  
->  static void test_create(int fd)
-> @@ -635,6 +635,6 @@ igt_main
->  		test_debugfs_read(fd);
->  
->  	igt_fixture {
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  }
-> diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
-> index 0c91cdb9d..cb9436628 100644
-> --- a/tests/vgem_slow.c
-> +++ b/tests/vgem_slow.c
-> @@ -97,6 +97,6 @@ igt_main
->  		test_nohang(fd);
->  
->  	igt_fixture {
-> -		close(fd);
-> +		drm_close_driver(fd);
->  	}
->  }
-> -- 
-> 2.40.0
-> 
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 402fadf41..fba605f89 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -35,6 +35,8 @@
+ #include "drmtest.h"
+ #include "i915/gem_create.h"
+ #include "i915/gem_mman.h"
++#include "intel_blt.h"
++#include "intel_mocs.h"
+ #include "igt_aux.h"
+ #include "igt_color_encoding.h"
+ #include "igt_fb.h"
+@@ -445,7 +447,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
+ 		*height_ret = 1;
+ 		break;
+ 	case I915_FORMAT_MOD_X_TILED:
+-		igt_require_i915(fd);
++		igt_require_intel(fd);
+ 		if (intel_display_ver(intel_get_drm_devid(fd)) == 2) {
+ 			*width_ret = 128;
+ 			*height_ret = 16;
+@@ -466,7 +468,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
+ 	case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS:
+ 	case I915_FORMAT_MOD_4_TILED_DG2_MC_CCS:
+ 	case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC:
+-		igt_require_i915(fd);
++		igt_require_intel(fd);
+ 		if (intel_display_ver(intel_get_drm_devid(fd)) == 2) {
+ 			*width_ret = 128;
+ 			*height_ret = 16;
+@@ -2453,29 +2455,40 @@ struct fb_blit_upload {
+ 	struct intel_bb *ibb;
+ };
+ 
+-static bool fast_blit_ok(const struct igt_fb *fb)
++static enum blt_tiling_type fb_tile_to_blt_tile(uint64_t tile)
+ {
+-	int dev_id = intel_get_drm_devid(fb->fd);
+-	int ver = intel_display_ver(dev_id);
+-
+-	if (ver < 9)
+-		return false;
+-
+-	if (ver < 12)
+-		return true;
+-
+-	if (ver >= 13 && !IS_ALDERLAKE_P(dev_id))
+-		return true;
++	switch (igt_fb_mod_to_tiling(tile)) {
++	case I915_TILING_NONE:
++		return T_LINEAR;
++	case I915_TILING_X:
++		return T_XMAJOR;
++	case I915_TILING_Y:
++		return T_YMAJOR;
++	case I915_TILING_4:
++		return T_TILE4;
++	case I915_TILING_Yf:
++		return T_YFMAJOR;
++	default:
++		igt_assert_f(0, "Unknown tiling!\n");
++	}
++}
+ 
+-	return fb->modifier != I915_FORMAT_MOD_X_TILED;
++static bool fast_blit_ok(const struct igt_fb *fb)
++{
++	return blt_has_fast_copy(fb->fd) &&
++		!is_ccs_modifier(fb->modifier) &&
++		blt_fast_copy_supports_tiling(fb->fd,
++					       fb_tile_to_blt_tile(fb->modifier));
+ }
+ 
+ static bool blitter_ok(const struct igt_fb *fb)
+ {
+-	if (!is_i915_device(fb->fd))
++	if (!is_intel_device(fb->fd))
+ 		return false;
+ 
+-	if (is_ccs_modifier(fb->modifier))
++	if ((is_ccs_modifier(fb->modifier) &&
++	     !HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
++	     || is_gen12_mc_ccs_modifier(fb->modifier))
+ 		return false;
+ 
+ 	for (int i = 0; i < fb->num_planes; i++) {
+@@ -2510,8 +2523,8 @@ static bool use_enginecopy(const struct igt_fb *fb)
+ 		return false;
+ 
+ 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+-	       is_ccs_modifier(fb->modifier) ||
+-	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
++	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && is_ccs_modifier(fb->modifier)) ||
++	       is_gen12_mc_ccs_modifier(fb->modifier);
+ }
+ 
+ static bool use_blitter(const struct igt_fb *fb)
+@@ -2520,6 +2533,7 @@ static bool use_blitter(const struct igt_fb *fb)
+ 		return false;
+ 
+ 	return fb->modifier == I915_FORMAT_MOD_Y_TILED ||
++	       fb->modifier == I915_FORMAT_MOD_4_TILED ||
+ 	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+ 	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
+ }
+@@ -2711,12 +2725,115 @@ static void copy_with_engine(struct fb_blit_upload *blit,
+ 	fini_buf(src);
+ }
+ 
++static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
++					   uint32_t plane, uint32_t memregion)
++{
++	uint32_t name, handle;
++	struct blt_copy_object *blt;
++	enum blt_tiling_type blt_tile;
++	uint64_t stride;
++
++	blt = malloc(sizeof(*blt));
++	igt_assert(blt);
++
++	name = gem_flink(fb->fd, fb->gem_handle);
++	handle = gem_open(fb->fd, name);
++
++	blt_tile = fb_tile_to_blt_tile(fb->modifier);
++	stride = blt_tile == T_LINEAR ? fb->strides[plane] : fb->strides[plane] / 4;
++
++	blt_set_object(blt, handle, fb->size, memregion,
++		       intel_get_uc_mocs(fb->fd),
++		       blt_tile,
++		       is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
++		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
++
++	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
++
++	blt->plane_offset = fb->offsets[plane];
++
++	blt->ptr = gem_mmap__device_coherent(fb->fd, handle, 0, fb->size,
++					     PROT_READ | PROT_WRITE);
++	return blt;
++}
++
++static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
++{
++	switch (fb->plane_bpp[0]) {
++	case 8:
++		return CD_8bit;
++	case 16:
++		return CD_16bit;
++	case 32:
++		return CD_32bit;
++	case 64:
++		return CD_64bit;
++	case 96:
++		return CD_96bit;
++	case 128:
++		return CD_128bit;
++	default:
++		igt_assert(0);
++	}
++}
++
++#define BLT_TARGET_RC(x) (x.compression == COMPRESSION_ENABLED && \
++			  x.compression_type == COMPRESSION_TYPE_3D)
++
++#define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
++			  x.compression_type == COMPRESSION_TYPE_MEDIA)
++
++static uint32_t blt_compression_format(struct blt_copy_data *blt,
++				       const struct igt_fb *fb)
++{
++	if (blt->src.compression == COMPRESSION_DISABLED &&
++	    blt->dst.compression == COMPRESSION_DISABLED)
++		return 0;
++
++	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst)) {
++		switch (blt->color_depth) {
++		case CD_32bit:
++			return 8;
++		default:
++			igt_assert_f(0, "COMPRESSION_TYPE_3D unknown color depth\n");
++		}
++	} else if (BLT_TARGET_MC(blt->src)) {
++		switch (fb->drm_format) {
++		case DRM_FORMAT_XRGB8888:
++			return 8;
++		case DRM_FORMAT_XYUV8888:
++			return 9;
++		case DRM_FORMAT_NV12:
++			return 9;
++		case DRM_FORMAT_P010:
++		case DRM_FORMAT_P012:
++		case DRM_FORMAT_P016:
++			return 8;
++		default:
++			igt_assert_f(0, "COMPRESSION_TYPE_MEDIA unknown format\n");
++		}
++	} else if (BLT_TARGET_MC(blt->dst)) {
++		igt_assert_f(0, "Destination compression not supported on mc ccs\n");
++	} else {
++		igt_assert_f(0, "unknown compression\n");
++	}
++}
++
+ static void blitcopy(const struct igt_fb *dst_fb,
+ 		     const struct igt_fb *src_fb)
+ {
+ 	uint32_t src_tiling, dst_tiling;
+ 	uint32_t ctx = 0;
+ 	uint64_t ahnd = 0;
++	const intel_ctx_t *ictx = NULL;
++	struct intel_execution_engine2 *e;
++	uint32_t bb;
++	uint64_t bb_size = 4096;
++	struct blt_copy_data blt = {};
++	struct blt_copy_object *src, *dst;
++	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
++	uint32_t mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
++			   ? REGION_LMEM(0) : REGION_SMEM;
+ 
+ 	igt_assert_eq(dst_fb->fd, src_fb->fd);
+ 	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
+@@ -2726,19 +2843,21 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 
+ 	if (is_i915_device(dst_fb->fd) && !gem_has_relocations(dst_fb->fd)) {
+ 		igt_require(gem_has_contexts(dst_fb->fd));
++		ictx = intel_ctx_create_all_physical(src_fb->fd);
+ 		ctx = gem_context_create(dst_fb->fd);
+ 		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
++
++		igt_assert(__gem_create_in_memory_regions(src_fb->fd,
++							  &bb,
++							  &bb_size,
++							  mem_region) == 0);
+ 	}
+ 
+ 	for (int i = 0; i < dst_fb->num_planes; i++) {
+ 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
+ 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
+ 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
+-		/*
+-		 * On GEN12+ X-tiled format support is removed from the fast
+-		 * blit command, so use the XY_SRC blit command for it
+-		 * instead.
+-		 */
++
+ 		if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
+ 			igt_blitter_fast_copy__raw(dst_fb->fd,
+ 						   ahnd, ctx, NULL,
+@@ -2757,6 +2876,42 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 						   dst_tiling,
+ 						   0, 0 /* dst_x, dst_y */,
+ 						   dst_fb->size);
++		} else if (ahnd && blt_has_block_copy(src_fb->fd)) {
++			for_each_ctx_engine(src_fb->fd, ictx, e) {
++				if (gem_engine_can_block_copy(src_fb->fd, e))
++					break;
++			}
++			igt_assert_f(e, "No block copy capable engine found!\n");
++
++			src = blt_fb_init(src_fb, i, mem_region);
++			dst = blt_fb_init(dst_fb, i, mem_region);
++
++			memset(&blt, 0, sizeof(blt));
++			blt.color_depth = blt_get_bpp(src_fb);
++			blt_set_copy_object(&blt.src, src);
++			blt_set_copy_object(&blt.dst, dst);
++
++			if (HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))) {
++				blt_set_object_ext(&ext.src,
++						   blt_compression_format(&blt, src_fb),
++						   src_fb->width, src_fb->height,
++						   SURFACE_TYPE_2D);
++
++				blt_set_object_ext(&ext.dst,
++						   blt_compression_format(&blt, dst_fb),
++						   dst_fb->width, dst_fb->height,
++						   SURFACE_TYPE_2D);
++
++				pext = &ext;
++			}
++
++			blt_set_batch(&blt.bb, bb, bb_size, mem_region);
++
++			blt_block_copy(src_fb->fd, ictx, e, ahnd, &blt, pext);
++			gem_sync(src_fb->fd, blt.dst.handle);
++
++			blt_destroy_object(src_fb->fd, src);
++			blt_destroy_object(dst_fb->fd, dst);
+ 		} else {
+ 			igt_blitter_src_copy(dst_fb->fd,
+ 					     ahnd, ctx, NULL,
+@@ -2781,6 +2936,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 	if (ctx)
+ 		gem_context_destroy(dst_fb->fd, ctx);
+ 	put_ahnd(ahnd);
++	intel_ctx_destroy(src_fb->fd, ictx);
+ }
+ 
+ static void free_linear_mapping(struct fb_blit_upload *blit)
+-- 
+2.25.1
