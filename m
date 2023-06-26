@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6996F10E1DF
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 11:20:57 +0000 (UTC)
+From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
+To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 26 Jun 2023 11:20:51 +0000
+Message-ID: <MW4PR11MB7056D530E119093E64F4890AB326A@MW4PR11MB7056.namprd11.prod.outlook.com>
+References: <20230623114946.3803540-1-himal.prasad.ghimiray@intel.com>
+ <20230623114946.3803540-5-himal.prasad.ghimiray@intel.com>
+ <SJ1PR11MB62048CDA62274EAC285FDB748126A@SJ1PR11MB6204.namprd11.prod.outlook.com>
+In-Reply-To: <SJ1PR11MB62048CDA62274EAC285FDB748126A@SJ1PR11MB6204.namprd11.prod.outlook.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Date: Mon, 26 Jun 2023 11:16:50 -0000
-Message-ID: <168777821093.5707.16612184944278469957@emeril.freedesktop.org>
-References: <20230626105112.15705-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20230626105112.15705-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/xe/xe=5Fstore=3A_Add_xe=5Fstore_test_to_check_store_dword_fun?=
- =?utf-8?q?ctionality?=
+Subject: Re: [igt-dev] [PATCH v2 4/4] tests/xe/xe_sysfs_tile_prop: adds new
+ test to verify per tile vram addr_range
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,114 +24,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
-
-Series: tests/xe/xe_store: Add xe_store test to check store dword functiona=
-lity
-URL   : https://patchwork.freedesktop.org/series/119857/
-State : failure
-
-=3D=3D Summary =3D=3D
-
-IGT patchset build failed on latest successful build
-feb4fdbcce1e53cb1d483aad3d5ec4ff41092359 lib/intel_blt: Prepare blt library=
- to support xe
-
-[343/662] Linking target tests/xe_live_ktest.
-[344/662] Linking target tests/xe_mmap.
-[345/662] Linking target tests/xe_mmio.
-[346/662] Linking target tests/xe_module_load.
-[347/662] Compiling C object 'tests/59830eb@@xe_store@exe/xe_xe_store.c.o'.
-FAILED: tests/59830eb@@xe_store@exe/xe_xe_store.c.o=20
-cc -Itests/59830eb@@xe_store@exe -Itests -I../../../usr/src/igt-gpu-tools/t=
-ests -I../../../usr/src/igt-gpu-tools/include -I../../../usr/src/igt-gpu-to=
-ols/include/drm-uapi -I../../../usr/src/igt-gpu-tools/include/linux-uapi -I=
-lib -I../../../usr/src/igt-gpu-tools/lib -I../../../usr/src/igt-gpu-tools/l=
-ib/stubs/syscalls -I. -I../../../usr/src/igt-gpu-tools/ -I/usr/include/cair=
-o -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/u=
-sr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/inc=
-lude/libpng16 -I/usr/include/libdrm -I/usr/include/x86_64-linux-gnu -I/usr/=
-include/valgrind -I/usr/include -fdiagnostics-color=3Dalways -pipe -D_FILE_=
-OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOU=
-RCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarati=
-on-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wm=
-issing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing=
--prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredun=
-dant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobb=
-ered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-=
-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno=
--unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-boun=
-ds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -We=
-rror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to=
--int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraph=
-s -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread =
--MD -MQ 'tests/59830eb@@xe_store@exe/xe_xe_store.c.o' -MF 'tests/59830eb@@x=
-e_store@exe/xe_xe_store.c.o.d' -o 'tests/59830eb@@xe_store@exe/xe_xe_store.=
-c.o' -c ../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c: In function =E2=80=98st=
-ore=E2=80=99:
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:47:2: warning: ISO C90 f=
-orbids mixed declarations and code [-Wdeclaration-after-statement]
-   47 |  uint64_t batch_offset =3D (char *)&(data->batch) - (char *)data;
-      |  ^~~~~~~~
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c: In function =E2=80=98st=
-ore_all=E2=80=99:
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:105:2: warning: ISO C90 =
-forbids mixed declarations and code [-Wdeclaration-after-statement]
-  105 |  uint64_t batch_offset =3D (char *)&(data->batch) - (char *)data;
-      |  ^~~~~~~~
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:137:20: error: =E2=80=98=
-engine=E2=80=99 undeclared (first use in this function); did you mean =E2=
-=80=98engines=E2=80=99?
-  137 |   xe_exec_wait(fd, engine[i], batch_addr);
-      |                    ^~~~~~
-      |                    engines
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:137:20: note: each undec=
-lared identifier is reported only once for each function it appears in
-In file included from ../../../usr/src/igt-gpu-tools/lib/drmtest.h:39,
-                 from ../../../usr/src/igt-gpu-tools/lib/igt.h:27,
-                 from ../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:1:
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:138:24: error: invalid t=
-ype argument of =E2=80=98->=E2=80=99 (have =E2=80=98struct <anonymous>=E2=
-=80=99)
-  138 |   igt_assert_eq(data[i]->data, 0xc0ffee);
-      |                        ^~
-../../../usr/src/igt-gpu-tools/lib/igt_core.h:737:15: note: in definition o=
-f macro =E2=80=98igt_assert_cmpint=E2=80=99
-  737 |   int __n1 =3D (n1), __n2 =3D (n2); \
-      |               ^~
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:138:3: note: in expansio=
-n of macro =E2=80=98igt_assert_eq=E2=80=99
-  138 |   igt_assert_eq(data[i]->data, 0xc0ffee);
-      |   ^~~~~~~~~~~~~
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:86:11: warning: variable=
- =E2=80=98engines=E2=80=99 set but not used [-Wunused-but-set-variable]
-   86 |  uint32_t engines[MAX_INSTANCE];
-      |           ^~~~~~~
-In file included from ../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:4:
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c: In function =E2=80=98__=
-igt_unique____real_main151=E2=80=99:
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:166:22: error: =E2=80=98=
-gt=E2=80=99 undeclared (first use in this function)
-  166 |   xe_for_each_gt(fd, gt)
-      |                      ^~
-../../../usr/src/igt-gpu-tools/lib/xe/xe_query.h:70:7: note: in definition =
-of macro =E2=80=98xe_for_each_gt=E2=80=99
-   70 |  for (__gt =3D 0; __gt < xe_number_gt(__fd); ++__gt)
-      |       ^~~~
-../../../usr/src/igt-gpu-tools/tests/xe/xe_store.c:167:32: error: =E2=80=98=
-class=E2=80=99 undeclared (first use in this function)
-  167 |    xe_for_each_hw_engine_class(class)
-      |                                ^~~~~
-../../../usr/src/igt-gpu-tools/lib/xe/xe_query.h:67:7: note: in definition =
-of macro =E2=80=98xe_for_each_hw_engine_class=E2=80=99
-   67 |  for (__class =3D 0; __class < DRM_XE_ENGINE_CLASS_COMPUTE + 1; \
-      |       ^~~~~~~
-ninja: build stopped: subcommand failed.
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVXBhZGh5YXksIFRlamFz
+IDx0ZWphcy51cGFkaHlheUBpbnRlbC5jb20+DQo+IFNlbnQ6IDI2IEp1bmUgMjAyMyAxNjozMA0K
+PiBUbzogR2hpbWlyYXksIEhpbWFsIFByYXNhZCA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGludGVs
+LmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogSWRkYW1zZXR0
+eSwgQXJhdmluZCA8YXJhdmluZC5pZGRhbXNldHR5QGludGVsLmNvbT47IEt1bWFyLCBKYW5nYQ0K
+PiBSYWh1bCA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSRTogW1BB
+VENIIHYyIDQvNF0gdGVzdHMveGUveGVfc3lzZnNfdGlsZV9wcm9wOiBhZGRzIG5ldyB0ZXN0IHRv
+DQo+IHZlcmlmeSBwZXIgdGlsZSB2cmFtIGFkZHJfcmFuZ2UNCj4gDQo+IA0KPiANCj4gPiAtLS0t
+LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+IEZyb206IEdoaW1pcmF5LCBIaW1hbCBQcmFzYWQg
+PGhpbWFsLnByYXNhZC5naGltaXJheUBpbnRlbC5jb20+DQo+ID4gU2VudDogRnJpZGF5LCBKdW5l
+IDIzLCAyMDIzIDU6MjAgUE0NCj4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcN
+Cj4gPiBDYzogR2hpbWlyYXksIEhpbWFsIFByYXNhZCA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGlu
+dGVsLmNvbT47DQo+ID4gSWRkYW1zZXR0eSwgQXJhdmluZCA8YXJhdmluZC5pZGRhbXNldHR5QGlu
+dGVsLmNvbT47IFVwYWRoeWF5LCBUZWphcw0KPiA+IDx0ZWphcy51cGFkaHlheUBpbnRlbC5jb20+
+OyBLdW1hciwgSmFuZ2EgUmFodWwNCj4gPiA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwuY29tPg0K
+PiA+IFN1YmplY3Q6IFtQQVRDSCB2MiA0LzRdIHRlc3RzL3hlL3hlX3N5c2ZzX3RpbGVfcHJvcDog
+YWRkcyBuZXcgdGVzdCB0bw0KPiA+IHZlcmlmeSBwZXIgdGlsZSB2cmFtIGFkZHJfcmFuZ2UNCj4g
+Pg0KPiA+IEZvciBlYWNoIHRpbGUgdGhlIHRlc3QgcmVhZHMgdGhlIHN5c2ZzIGVudHJ5IHBoeXNp
+Y2FsX3ZyYW1fc2l6ZV9ieXRlcw0KPiA+IGFuZCBjb21wYXJlcyB0aGUgdmFsdWUgd2l0aCB2cmFt
+IHNpemUgZXhwb3NlZCBmcm9tIHF1ZXJ5IGlvY3RsLg0KPiA+DQo+ID4gdjI6DQo+ID4gLSBDaGFu
+Z2Ugc3lzZnMgZW50cnkgbmFtZS4gKFRlamFzKQ0KPiA+IC0gQ2hhbmdlIHRlc3QgbmFtZSB0byB4
+ZV9zeXNmc190aWxlX3Byb3AuIChSYWh1bCkNCj4gPg0KPiA+IENjOiBBcmF2aW5kIElkZGFtc2V0
+dHkgPGFyYXZpbmQuaWRkYW1zZXR0eUBpbnRlbC5jb20+DQo+ID4gQ2M6IFVwYWRoeWF5IDx0ZWph
+cy51cGFkaHlheUBpbnRlbC5jb20+DQo+ID4gQ2M6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5y
+YWh1bC5rdW1hckBpbnRlbC5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogSGltYWwgUHJhc2FkIEdo
+aW1pcmF5IDxoaW1hbC5wcmFzYWQuZ2hpbWlyYXlAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICB0
+ZXN0cy9tZXNvbi5idWlsZCAgICAgICAgICAgICB8ICAxICsNCj4gPiAgdGVzdHMveGUveGVfc3lz
+ZnNfdGlsZV9wcm9wLmMgfCA2Nw0KPiA+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrDQo+ID4gIDIgZmlsZXMgY2hhbmdlZCwgNjggaW5zZXJ0aW9ucygrKQ0KPiA+ICBjcmVhdGUg
+bW9kZSAxMDA2NDQgdGVzdHMveGUveGVfc3lzZnNfdGlsZV9wcm9wLmMNCj4gPg0KPiA+IGRpZmYg
+LS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1aWxkIGluZGV4DQo+ID4g
+NjFkY2MwNzYuLjU2OWYxZDIyDQo+ID4gMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMvbWVzb24uYnVp
+bGQNCj4gPiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiA+IEBAIC0yNjcsNiArMjY3LDcgQEAg
+eGVfcHJvZ3MgPSBbDQo+ID4gIAkneGVfcG0nLA0KPiA+ICAJJ3hlX3ByaW1lX3NlbGZfaW1wb3J0
+JywNCj4gPiAgCSd4ZV9xdWVyeScsDQo+ID4gKwkneGVfc3lzZnNfdGlsZV9wcm9wJywNCj4gPiAg
+CSd4ZV92bScsDQo+ID4gIAkneGVfd2FpdGZlbmNlJywNCj4gPiAgXQ0KPiA+IGRpZmYgLS1naXQg
+YS90ZXN0cy94ZS94ZV9zeXNmc190aWxlX3Byb3AuYw0KPiA+IGIvdGVzdHMveGUveGVfc3lzZnNf
+dGlsZV9wcm9wLmMgbmV3IGZpbGUgbW9kZSAxMDA2NDQgaW5kZXgNCj4gPiAwMDAwMDAwMC4uZjIw
+NTk3MGYNCj4gPiAtLS0gL2Rldi9udWxsDQo+ID4gKysrIGIvdGVzdHMveGUveGVfc3lzZnNfdGls
+ZV9wcm9wLmMNCj4gPiBAQCAtMCwwICsxLDY3IEBADQo+ID4gKy8vIFNQRFgtTGljZW5zZS1JZGVu
+dGlmaWVyOiBNSVQNCj4gPiArLyoNCj4gPiArICogQ29weXJpZ2h0IMKpIDIwMjMgSW50ZWwgQ29y
+cG9yYXRpb24gICovDQo+ID4gKw0KPiA+ICsvKioNCj4gPiArICogVEVTVDogVmVyaWZ5IGFkZHJf
+cmFuZ2Ugb2YgZWFjaCB0aWxlcw0KPiA+ICsgKiBTVUJURVNUOiBhZGRyX3JhbmdlDQo+ID4gKyAq
+IERlc2NyaXB0aW9uOg0KPiA+ICsgKiAgICAgICAgICAgICBSZWFkIHN5c2ZzIGVudHJ5IGZvciBh
+ZGRyX3JhbmdlIGFuZCBjb21wYXJlIHdpdGgNCj4gPiArICogICAgICAgICAgICAgY2FsY3VsYXRl
+ZCBhZGRyX3JhbmdlLiBhZGRyX3JhbmdlIHNob3VsZCBiZSBzdW0NCj4gPiArICogICAgICAgICAg
+ICAgdnJhbSBzaXplIGFuZCBzdG9sZW4gbWVtb3J5Lg0KPiA+ICsgKi8NCj4gPiArDQo+ID4gKyNp
+bmNsdWRlIDxzdHJpbmcuaD4NCj4gPiArI2luY2x1ZGUgPHN5cy90aW1lLmg+DQo+ID4gKw0KPiA+
+ICsjaW5jbHVkZSAiaWd0LmgiDQo+ID4gKyNpbmNsdWRlICJpZ3Rfc3lzZnMuaCINCj4gPiArDQo+
+ID4gKyNpbmNsdWRlICJ4ZV9kcm0uaCINCj4gPiArI2luY2x1ZGUgInhlL3hlX2lvY3RsLmgiDQo+
+ID4gKyNpbmNsdWRlICJ4ZS94ZV9xdWVyeS5oIg0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgdGVz
+dF92cmFtX2FkZHJfcmFuZ2UoaW50IHN5c2ZzLCBpbnQgdGlsZV9udW0sIHU2NA0KPiA+ICt2cmFt
+X3NpemUpIHsNCj4gPiArCWludCBlcnIgPSAtRUFHQUlOOw0KPiANCj4gQ2FuIHdlIHNraXAgaW5p
+dCBoZXJlIQ0KPiANCj4gPiArCXU2NCBhZGRyX3JhbmdlOw0KPiANCj4gTWF5IGJlIHlvdSB3YW50
+IHRvIHVwZGF0ZSB0aGlzIHZhcmlhYmxlIG5hbWUgbm93IHRvIG1hdGNoIC4NCk9rLiBzdXJlDQo+
+IA0KPiA+ICsJY2hhciBwYXRoWzQwXTsNCj4gDQo+IEJldHRlciB0byB1c2UgYWxyZWFkeSBkZWZp
+bmVkIHBhdGggbGVuZ3RoIG9yIGRlZmluZSBpbnN0ZWFkIG9mIGhhcmRjb2RlLg0KPiANCj4gPiAr
+DQo+ID4gKwlpZ3RfYXNzZXJ0KHNucHJpbnRmKHBhdGgsIHNpemVvZihwYXRoKSwNCj4gPiAiZGV2
+aWNlL3RpbGUlZC9waHlzaWNhbF92cmFtX3NpemVfYnl0ZXMiLA0KPiA+ICsJCQkgICAgdGlsZV9u
+dW0pIDwgc2l6ZW9mKHBhdGgpKTsNCj4gPiArCXdoaWxlIChlcnIgPT0gLUVBR0FJTikNCj4gDQo+
+IEFuZCB0aGVuIHVzZSBkbyB3aGlsZSBoZXJlLiBJIGRvbuKAmXQgc2VlIHZhbHVlIGluIGNoZWNr
+aW5nIGVyciBhdCBmaXJzdCBoZXJlLiBPcg0KPiBhbSBJIG1pc3Npbmcgc29tZXRoaW5nIGhlcmUh
+DQpZZXMgbm90IHJlcXVpcmVkLiBXaWxsIGFkZHJlc3MgDQo+IA0KPiA+ICsJCWVyciA9IGlndF9z
+eXNmc19zY2FuZihzeXNmcywgcGF0aCwgIiVseCIsICZhZGRyX3JhbmdlKTsNCj4gPiArDQo+ID4g
+KwlpZ3RfYXNzZXJ0X2x0KHZyYW1fc2l6ZSwgYWRkcl9yYW5nZSk7DQo+IA0KPiBPaywgdnJhbV9z
+aXplIGhlcmUgd291bGQgYmUgd2l0aG91dCBzdG9sZW4gY2FuIHdlIGFkZCB2cmFtX3NpemUgd2l0
+aA0KPiBzdG9sZW4gYW5kIGNoZWNrIGhlcmU/DQpTdG9sZW4gcmVwb3J0ZWQgYnkgZGVidWdmcyBp
+cyBvbmx5IHVzYWJsZSBzdG9sZW4gYW5kIGl0IGlzIGJlaW5nIHJlcG9ydGVkIG9ubHkgZm9yIHJv
+b3QgdGlsZS4gU28gcHJvYmFibHkgdXNpbmcgc3RvbGVuIGZvciBjb21wYXJpc29uIGRvZXNuJ3Qg
+bWFrZSBzZW5zZS4NCldsbCB1cGRhdGUgdGhlIGRlc2NyaXB0aW9uIGluIHRlc3QuDQo+IA0KPiBU
+aGFua3MsDQo+IFRlamFzDQo+ID4gK30NCj4gPiArDQo+ID4gK2lndF9tYWluDQo+ID4gK3sNCj4g
+PiArCWludCBmZDsNCj4gPiArCWludCB0aWxlLCB0b3RhbF90aWxlczsNCj4gPiArCXN0YXRpYyBp
+bnQgc3lzZnMgPSAtMTsNCj4gPiArCXU2NCB2cmFtX3NpemU7DQo+ID4gKw0KPiA+ICsJaWd0X2Zp
+eHR1cmUgew0KPiA+ICsJCWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9YRSk7DQo+ID4gKwkJ
+eGVfZGV2aWNlX2dldChmZCk7DQo+ID4gKw0KPiA+ICsJCXN5c2ZzID0gaWd0X3N5c2ZzX29wZW4o
+ZmQpOw0KPiA+ICsJCWlndF9hc3NlcnQoc3lzZnMgIT0gLTEpOw0KPiA+ICsJfQ0KPiA+ICsNCj4g
+PiArCWlndF9zdWJ0ZXN0KCJhZGRyX3JhbmdlIikgew0KPiA+ICsJCWlndF9yZXF1aXJlKHhlX2hh
+c192cmFtKGZkKSk7DQo+ID4gKwkJeGVfZm9yX2VhY2hfdGlsZShmZCwgdGlsZSwgdG90YWxfdGls
+ZXMpIHsNCj4gPiArCQkJdnJhbV9zaXplID0geGVfdnJhbV9zaXplKGZkLCB0aWxlKTsNCj4gPiAr
+CQkJdGVzdF92cmFtX2FkZHJfcmFuZ2Uoc3lzZnMsIHRpbGUsIHZyYW1fc2l6ZSk7DQo+ID4gKwkJ
+fQ0KPiA+ICsJfQ0KPiA+ICsNCj4gPiArCWlndF9maXh0dXJlIHsNCj4gPiArCQljbG9zZShzeXNm
+cyk7DQo+ID4gKwkJeGVfZGV2aWNlX3B1dChmZCk7DQo+ID4gKwkJY2xvc2UoZmQpOw0KPiA+ICsJ
+fQ0KPiA+ICt9DQo+ID4gLS0NCj4gPiAyLjI1LjENCg0K
