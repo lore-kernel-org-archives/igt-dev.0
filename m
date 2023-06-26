@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9205C10E19D
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 05:17:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B67510E19D
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 05:17:20 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	kamil.konieczny@linux.intel.com
-Date: Mon, 26 Jun 2023 10:40:21 +0530
-Message-Id: <20230626051031.2363120-15-bhanuprakash.modem@intel.com>
+Date: Mon, 26 Jun 2023 10:40:24 +0530
+Message-Id: <20230626051031.2363120-18-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
 References: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 i-g-t 14/24] tests/chamelium: Use drm_close_driver()
- to close the drm fd
+Subject: [igt-dev] [V4 i-g-t 17/24] tests/vc4: Use drm_close_driver() to
+ close the drm fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,62 +28,137 @@ List-ID: <igt-dev@lists.freedesktop.org>
 To close the drm file descriptor, use igt helper drm_close_driver()
 instead of using close().
 
-Cc: Mark Yacoub <markyacoub@chromium.org>
+Cc: Melissa Wen <mwen@igalia.com>
+Cc: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
 ---
- tests/chamelium/kms_chamelium_audio.c  | 2 +-
- tests/chamelium/kms_chamelium_edid.c   | 2 +-
- tests/chamelium/kms_chamelium_frames.c | 2 +-
- tests/chamelium/kms_chamelium_hpd.c    | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ tests/vc4/vc4_create_bo.c    | 4 ++--
+ tests/vc4/vc4_dmabuf_poll.c  | 2 +-
+ tests/vc4/vc4_label_bo.c     | 2 +-
+ tests/vc4/vc4_lookup_fail.c  | 2 +-
+ tests/vc4/vc4_mmap.c         | 2 +-
+ tests/vc4/vc4_perfmon.c      | 2 +-
+ tests/vc4/vc4_purgeable_bo.c | 2 +-
+ tests/vc4/vc4_tiling.c       | 2 +-
+ tests/vc4/vc4_wait_bo.c      | 2 +-
+ tests/vc4/vc4_wait_seqno.c   | 2 +-
+ 10 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index 6c6177fc5..8fbc1f80e 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -870,6 +870,6 @@ igt_main
+diff --git a/tests/vc4/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
+index c17f25b04..ba7db1985 100644
+--- a/tests/vc4/vc4_create_bo.c
++++ b/tests/vc4/vc4_create_bo.c
+@@ -72,9 +72,9 @@ igt_main
+ 		munmap(map, size);
+ 		gem_close(fd2, handle);
  
- 	igt_fixture {
- 		igt_display_fini(&data.display);
--		close(data.drm_fd);
-+		drm_close_driver(data.drm_fd);
+-		close(fd2);
++		drm_close_driver(fd2);
  	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
  }
-diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
-index 4a52e6922..446bbd204 100644
---- a/tests/chamelium/kms_chamelium_edid.c
-+++ b/tests/chamelium/kms_chamelium_edid.c
-@@ -585,6 +585,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
--		close(data.drm_fd);
-+		drm_close_driver(data.drm_fd);
+diff --git a/tests/vc4/vc4_dmabuf_poll.c b/tests/vc4/vc4_dmabuf_poll.c
+index c76d4950e..56f60b202 100644
+--- a/tests/vc4/vc4_dmabuf_poll.c
++++ b/tests/vc4/vc4_dmabuf_poll.c
+@@ -73,5 +73,5 @@ igt_main
  	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
  }
-diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/kms_chamelium_frames.c
-index 22a7ba936..a56afada4 100644
---- a/tests/chamelium/kms_chamelium_frames.c
-+++ b/tests/chamelium/kms_chamelium_frames.c
-@@ -1102,6 +1102,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
--		close(data.drm_fd);
-+		drm_close_driver(data.drm_fd);
+diff --git a/tests/vc4/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
+index 252bd1ed8..5d626a92d 100644
+--- a/tests/vc4/vc4_label_bo.c
++++ b/tests/vc4/vc4_label_bo.c
+@@ -82,5 +82,5 @@ igt_main
  	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
  }
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index efd40ba54..8b3189ca0 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -564,6 +564,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
--		close(data.drm_fd);
-+		drm_close_driver(data.drm_fd);
+diff --git a/tests/vc4/vc4_lookup_fail.c b/tests/vc4/vc4_lookup_fail.c
+index 5e709a7d3..9f179a3fd 100644
+--- a/tests/vc4/vc4_lookup_fail.c
++++ b/tests/vc4/vc4_lookup_fail.c
+@@ -67,5 +67,5 @@ igt_main
  	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
+ }
+diff --git a/tests/vc4/vc4_mmap.c b/tests/vc4/vc4_mmap.c
+index 8094f4a2d..fef25f334 100644
+--- a/tests/vc4/vc4_mmap.c
++++ b/tests/vc4/vc4_mmap.c
+@@ -49,5 +49,5 @@ igt_main
+ 	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
+ }
+diff --git a/tests/vc4/vc4_perfmon.c b/tests/vc4/vc4_perfmon.c
+index 664633a3f..b25e92096 100644
+--- a/tests/vc4/vc4_perfmon.c
++++ b/tests/vc4/vc4_perfmon.c
+@@ -135,5 +135,5 @@ igt_main
+ 	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
+ }
+diff --git a/tests/vc4/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
+index 9d6a3b438..7e9ac1718 100644
+--- a/tests/vc4/vc4_purgeable_bo.c
++++ b/tests/vc4/vc4_purgeable_bo.c
+@@ -249,5 +249,5 @@ igt_main
+ 	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
+ }
+diff --git a/tests/vc4/vc4_tiling.c b/tests/vc4/vc4_tiling.c
+index f5bf31f56..e9d3ebfb3 100644
+--- a/tests/vc4/vc4_tiling.c
++++ b/tests/vc4/vc4_tiling.c
+@@ -124,5 +124,5 @@ igt_main
+ 	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
+ }
+diff --git a/tests/vc4/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
+index c88a4ac46..d309acc95 100644
+--- a/tests/vc4/vc4_wait_bo.c
++++ b/tests/vc4/vc4_wait_bo.c
+@@ -111,5 +111,5 @@ igt_main
+ 		test_used_bo(fd, ~0ull);
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
+ }
+diff --git a/tests/vc4/vc4_wait_seqno.c b/tests/vc4/vc4_wait_seqno.c
+index 78984fa32..e029a613e 100644
+--- a/tests/vc4/vc4_wait_seqno.c
++++ b/tests/vc4/vc4_wait_seqno.c
+@@ -55,5 +55,5 @@ igt_main
+ 	}
+ 
+ 	igt_fixture
+-		close(fd);
++		drm_close_driver(fd);
  }
 -- 
 2.40.0
