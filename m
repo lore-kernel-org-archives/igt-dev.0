@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E672E10E05F
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 05:16:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 73F1510E0F4
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 05:17:00 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	kamil.konieczny@linux.intel.com
-Date: Mon, 26 Jun 2023 10:40:10 +0530
-Message-Id: <20230626051031.2363120-4-bhanuprakash.modem@intel.com>
+Date: Mon, 26 Jun 2023 10:40:14 +0530
+Message-Id: <20230626051031.2363120-8-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
 References: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 i-g-t 03/24] lib/xe/xe_query: Add xe_config()
- interface
+Subject: [igt-dev] [V4 i-g-t 07/24] tests/kms: Close the fd before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,45 +23,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support to get XE configuration from xe_device.
+Close the file descriptor before exiting the test.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/xe/xe_query.c | 8 ++++++++
- lib/xe/xe_query.h | 1 +
- 2 files changed, 9 insertions(+)
+ tests/kms_vrr.c       | 1 +
+ tests/kms_writeback.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 47be8f301..48fb5afba 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -479,6 +479,14 @@ uint32_t xe_min_page_size(int fd, uint64_t region)
- 	return xe_mem_region(fd, region)->min_page_size;
- }
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index d2d79c4eb..6a766bfb9 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -528,5 +528,6 @@ igt_main
  
-+/**
-+ * xe_config:
-+ * @fd: xe device fd
-+ *
-+ * Returns xe configuration of xe device @fd.
-+ */
-+xe_dev_FN(xe_config, config, struct drm_xe_query_config *);
-+
- /**
-  * xe_number_hw_engine:
-  * @fd: xe device fd
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 943ca558a..3cbf32668 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -86,6 +86,7 @@ struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
- struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
- const char *xe_region_name(uint64_t region);
- uint32_t xe_min_page_size(int fd, uint64_t region);
-+struct drm_xe_query_config *xe_config(int fd);
- unsigned int xe_number_hw_engines(int fd);
- bool xe_has_vram(int fd);
- uint64_t xe_vram_size(int fd, int gt);
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
++		drm_close_driver(data.drm_fd);
+ 	}
+ }
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index c4808b02c..db1f0884f 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -606,5 +606,6 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
+ 		detach_crtc(&display, output);
+ 		igt_remove_fb(display.drm_fd, &input_fb);
+ 		igt_display_fini(&display);
++		drm_close_driver(display.drm_fd);
+ 	}
+ }
 -- 
 2.40.0
