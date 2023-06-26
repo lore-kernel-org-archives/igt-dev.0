@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3620D10E05F
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 05:16:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E672E10E05F
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 05:16:52 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	kamil.konieczny@linux.intel.com
-Date: Mon, 26 Jun 2023 10:40:12 +0530
-Message-Id: <20230626051031.2363120-6-bhanuprakash.modem@intel.com>
+Date: Mon, 26 Jun 2023 10:40:10 +0530
+Message-Id: <20230626051031.2363120-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
 References: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 i-g-t 05/24] tests/amdgpu: Close the fd before exit
+Subject: [igt-dev] [V4 i-g-t 03/24] lib/xe/xe_query: Add xe_config()
+ interface
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,100 +20,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Close the file descriptor before exiting the test.
+Add support to get XE configuration from xe_device.
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/amdgpu/amd_abm.c                 | 1 +
- tests/amdgpu/amd_assr.c                | 1 +
- tests/amdgpu/amd_freesync_video_mode.c | 1 +
- tests/amdgpu/amd_mem_leak.c            | 1 +
- tests/amdgpu/amd_psr.c                 | 3 ++-
- tests/amdgpu/amd_vrr_range.c           | 1 +
- 6 files changed, 7 insertions(+), 1 deletion(-)
+ lib/xe/xe_query.c | 8 ++++++++
+ lib/xe/xe_query.h | 1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
-index 9400ed806..082da7ed6 100644
---- a/tests/amdgpu/amd_abm.c
-+++ b/tests/amdgpu/amd_abm.c
-@@ -378,5 +378,6 @@ igt_main
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 47be8f301..48fb5afba 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -479,6 +479,14 @@ uint32_t xe_min_page_size(int fd, uint64_t region)
+ 	return xe_mem_region(fd, region)->min_page_size;
+ }
  
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
- 	}
- }
-diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
-index 80cbbe8e9..fc2367f99 100644
---- a/tests/amdgpu/amd_assr.c
-+++ b/tests/amdgpu/amd_assr.c
-@@ -299,5 +299,6 @@ igt_main
- 	igt_fixture
- 	{
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.fd);
- 	}
- }
-diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
-index 579d24436..62d42a06c 100644
---- a/tests/amdgpu/amd_freesync_video_mode.c
-+++ b/tests/amdgpu/amd_freesync_video_mode.c
-@@ -868,5 +868,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
- 	}
- }
-diff --git a/tests/amdgpu/amd_mem_leak.c b/tests/amdgpu/amd_mem_leak.c
-index dee563cbe..e4a4b5c47 100644
---- a/tests/amdgpu/amd_mem_leak.c
-+++ b/tests/amdgpu/amd_mem_leak.c
-@@ -232,5 +232,6 @@ igt_main
- 	igt_fixture
- 	{
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.fd);
- 	}
- }
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index 966a0dccf..3932e143a 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -640,7 +640,7 @@ static void run_check_psr_su_cursor(data_t *data, bool test_mpo)
- 	 * panning the primary plane at the top-left of screen
- 	 * set alpha region in overlay plane and set alpha to 0.0 to show primary plane
- 	 * set cursor plane and starting from position of (0, 0)
--	 */ 
-+	 */
- 	draw_color_alpha(&data->ov_fb[0], 0, 0, data->pfb_w, data->pfb_h, 1.0, 1.0, 1.0, .0);
- 	igt_plane_set_fb(data->primary, &data->pm_fb[0]);
- 	igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
-@@ -763,5 +763,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		}
- 		close(data.debugfs_fd);
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.fd);
- 	}
- }
-diff --git a/tests/amdgpu/amd_vrr_range.c b/tests/amdgpu/amd_vrr_range.c
-index 611f41f95..a77895622 100644
---- a/tests/amdgpu/amd_vrr_range.c
-+++ b/tests/amdgpu/amd_vrr_range.c
-@@ -408,5 +408,6 @@ igt_main
- 	igt_fixture
- 	{
- 		igt_display_fini(&data.display);
-+		drm_close_driver(data.fd);
- 	}
- }
++/**
++ * xe_config:
++ * @fd: xe device fd
++ *
++ * Returns xe configuration of xe device @fd.
++ */
++xe_dev_FN(xe_config, config, struct drm_xe_query_config *);
++
+ /**
+  * xe_number_hw_engine:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 943ca558a..3cbf32668 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -86,6 +86,7 @@ struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
+ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
+ const char *xe_region_name(uint64_t region);
+ uint32_t xe_min_page_size(int fd, uint64_t region);
++struct drm_xe_query_config *xe_config(int fd);
+ unsigned int xe_number_hw_engines(int fd);
+ bool xe_has_vram(int fd);
+ uint64_t xe_vram_size(int fd, int gt);
 -- 
 2.40.0
