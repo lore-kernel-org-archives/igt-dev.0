@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D54B10E239
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 16:11:57 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Date: Mon, 26 Jun 2023 21:31:02 +0530
-Message-Id: <20230626160106.2632928-1-bhanuprakash.modem@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA3EA10E02B
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Jun 2023 16:13:10 +0000 (UTC)
+Date: Mon, 26 Jun 2023 18:13:05 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230626161305.3mq4zlgjwqcqf7ht@kamilkon-desk1>
+References: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
+ <20230626051031.2363120-13-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V3 i-g-t 0/4] New dir structure for intel specific tests
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230626051031.2363120-13-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [V4 i-g-t 12/24] tests: Use drm_close_driver() to
+ close the drm fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,451 +25,469 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In-order to organize tests, move all intel specific tests to
-a new directory "tests/intel". And rename all intel specific
-tests to represent the supported driver. Test name should start
-with the driver_name prefix. Below are the Examples.
+Hi Bhanuprakash,
 
-- tests/intel/xe_*.c   : All XE specific tests. Ex: xe_module_load.c
-- tests/intel/kms_*.c  : All kms tests. Ex: kms_psr.c
-- tests/intel/intel_*.c: All tests those supports both i915 & XE.
-- Rest all will be i915 specific
+On 2023-06-26 at 10:40:19 +0530, Bhanuprakash Modem wrote:
+> To close the drm file descriptor, use igt helper drm_close_driver()
+> instead of using close().
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  tests/core_auth.c              | 10 +++++-----
+>  tests/core_getclient.c         |  2 +-
+>  tests/core_getstats.c          |  2 +-
+>  tests/core_getversion.c        |  2 +-
+>  tests/core_setmaster.c         |  6 +++---
+>  tests/core_setmaster_vs_auth.c |  6 +++---
+>  tests/debugfs_test.c           |  2 +-
+>  tests/dumb_buffer.c            |  2 +-
+>  tests/eviction_common.c        |  2 +-
+>  tests/fbdev.c                  |  2 +-
+>  tests/prime_busy.c             |  2 +-
+>  tests/prime_mmap.c             |  2 +-
+>  tests/prime_mmap_coherency.c   |  4 ++--
+>  tests/prime_mmap_kms.c         |  2 +-
+>  tests/prime_self_import.c      | 26 +++++++++++++-------------
+>  tests/prime_vgem.c             |  4 ++--
+>  tests/syncobj_basic.c          |  2 +-
+>  tests/syncobj_timeline.c       |  2 +-
+>  tests/syncobj_wait.c           |  2 +-
+>  tests/template.c               |  2 +-
+>  tests/vgem_basic.c             |  6 +++---
+>  tests/vgem_slow.c              |  2 +-
+>  22 files changed, 46 insertions(+), 46 deletions(-)
+> 
+> diff --git a/tests/core_auth.c b/tests/core_auth.c
+> index ed736e1ae..bc1b3b8d5 100644
+> --- a/tests/core_auth.c
+> +++ b/tests/core_auth.c
+> @@ -214,7 +214,7 @@ static void test_basic_auth(int master)
+>  	igt_assert(drmGetMagic(slave, &magic) == 0);
+>  	igt_assert_eq(magic, old_magic);
+>  
+> -	close(slave);
+> +	drm_close_driver(slave);
+>  }
+>  
+>  igt_main
+> @@ -226,7 +226,7 @@ igt_main
+>  
+>  		igt_assert(check_auth(fd) == true);
+>  
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  
+>  	igt_describe("Use 2 clients, check second is authenticated even when first dropped.");
+> @@ -236,11 +236,11 @@ igt_main
+>  
+>  		igt_assert(check_auth(fd2) == true);
+>  
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  
+>  		igt_assert(check_auth(fd2) == true);
+>  
+> -		close(fd2);
+> +		drm_close_driver(fd2);
+>  	}
+>  
+>  	/* above tests require that no drm fd is open */
+> @@ -249,7 +249,7 @@ igt_main
+>  
+>  		igt_fixture
+>  			master = drm_open_driver_master(DRIVER_ANY);
+> -	
+> +
 
-V2: - Rebase
-V3: - Rebase
-    - Testplan update
+Drop this change.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>  		igt_describe("Test magic numbers for master and slave.");
+>  		igt_subtest("basic-auth")
+>  			test_basic_auth(master);
+> diff --git a/tests/core_getclient.c b/tests/core_getclient.c
+> index 993801ead..839fae36a 100644
+> --- a/tests/core_getclient.c
+> +++ b/tests/core_getclient.c
+> @@ -70,5 +70,5 @@ igt_simple_main
+>  	ret = ioctl(fd, DRM_IOCTL_GET_CLIENT, &client);
+>  	igt_assert(ret == -1 && errno == EINVAL);
+>  
+> -	close(fd);
+> +	drm_close_driver(fd);
+>  }
+> diff --git a/tests/core_getstats.c b/tests/core_getstats.c
+> index fef122583..8b5655053 100644
+> --- a/tests/core_getstats.c
+> +++ b/tests/core_getstats.c
+> @@ -64,5 +64,5 @@ igt_simple_main
+>  	ret = ioctl(fd, DRM_IOCTL_GET_STATS, &stats);
+>  	igt_assert(ret == 0);
+>  
+> -	close(fd);
+> +	drm_close_driver(fd);
+>  }
+> diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+> index 36ba01b86..32cb976e4 100644
+> --- a/tests/core_getversion.c
+> +++ b/tests/core_getversion.c
+> @@ -58,5 +58,5 @@ igt_simple_main
+>  		igt_assert_lte(1, v->version_major);
+>  
+>  	drmFree(v);
+> -	close(fd);
+> +	drm_close_driver(fd);
+>  }
+> diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
+> index 621bc2469..04ee6b8b5 100644
+> --- a/tests/core_setmaster.c
+> +++ b/tests/core_setmaster.c
+> @@ -104,7 +104,7 @@ static void check_drop_set(void)
+>  	igt_assert_eq(drmDropMaster(master), 0);
+>  	igt_assert_eq(drmSetMaster(master), 0);
+>  
+> -	close(master);
+> +	drm_close_driver(master);
+>  }
+>  
+>  static unsigned tweak_perm(uint8_t *saved_perm, unsigned max_perm, bool save)
+> @@ -225,10 +225,10 @@ igt_main
+>  			igt_assert_eq(drmSetMaster(master), -1);
+>  			igt_assert_eq(errno, EACCES);
+>  
+> -			close(master);
+> +			drm_close_driver(master);
+>  		}
+>  		igt_waitchildren();
+>  
+> -		close(master);
+> +		drm_close_driver(master);
+>  	}
+>  }
+> diff --git a/tests/core_setmaster_vs_auth.c b/tests/core_setmaster_vs_auth.c
+> index adca1c111..b80ed3879 100644
+> --- a/tests/core_setmaster_vs_auth.c
+> +++ b/tests/core_setmaster_vs_auth.c
+> @@ -78,7 +78,7 @@ igt_simple_main
+>  	igt_assert_neq(drmAuthMagic(master2, magic), 0);
+>  	igt_assert_eq(errno, EINVAL);
+>  
+> -	close(client);
+> -	close(master2);
+> -	close(master1);
+> +	drm_close_driver(client);
+> +	drm_close_driver(master2);
+> +	drm_close_driver(master1);
+>  }
+> diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
+> index 5ee615aba..b67bfabac 100644
+> --- a/tests/debugfs_test.c
+> +++ b/tests/debugfs_test.c
+> @@ -255,6 +255,6 @@ igt_main
+>  	igt_fixture {
+>  		close(sysfs);
+>  		close(debugfs);
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  }
+> diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+> index 9495d28ff..9db857f9f 100644
+> --- a/tests/dumb_buffer.c
+> +++ b/tests/dumb_buffer.c
+> @@ -416,6 +416,6 @@ igt_main
+>  		always_clear(fd, 30);
+>  
+>  	igt_fixture {
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  }
+> diff --git a/tests/eviction_common.c b/tests/eviction_common.c
+> index 95af106c1..5948fbc64 100644
+> --- a/tests/eviction_common.c
+> +++ b/tests/eviction_common.c
+> @@ -300,7 +300,7 @@ static int forking_evictions(int fd, struct igt_eviction_test_ops *ops,
+>  
+>  		/* drmfd closing will take care of additional bo refs */
+>  		if (flags & FORKING_EVICTIONS_DUP_DRMFD)
+> -			close(realfd);
+> +			drm_close_driver(realfd);
+>  	}
+>  
+>  	igt_waitchildren();
+> diff --git a/tests/fbdev.c b/tests/fbdev.c
+> index 794882a6a..154e78b0f 100644
+> --- a/tests/fbdev.c
+> +++ b/tests/fbdev.c
+> @@ -443,6 +443,6 @@ igt_main
+>  	}
+>  
+>  	igt_fixture {
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  }
+> diff --git a/tests/prime_busy.c b/tests/prime_busy.c
+> index 6b0d7310b..90d79864f 100644
+> --- a/tests/prime_busy.c
+> +++ b/tests/prime_busy.c
+> @@ -184,6 +184,6 @@ igt_main
+>  
+>  	igt_fixture {
+>  		intel_ctx_destroy(fd, ctx);
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  }
+> diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+> index efd4deff9..25b2939e9 100644
+> --- a/tests/prime_mmap.c
+> +++ b/tests/prime_mmap.c
+> @@ -590,6 +590,6 @@ igt_main
+>  		free(query_info);
+>  		igt_collection_destroy(set);
+>  		igt_collection_destroy(dma_buf_set);
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  }
+> diff --git a/tests/prime_mmap_coherency.c b/tests/prime_mmap_coherency.c
+> index e5f7c92b2..01eb2002d 100644
+> --- a/tests/prime_mmap_coherency.c
+> +++ b/tests/prime_mmap_coherency.c
+> @@ -267,7 +267,7 @@ static void blit_and_cmp(void)
+>  
+>  	intel_bb_destroy(local_batch);
+>  	buf_ops_destroy(local_bops);
+> -	close(local_fd);
+> +	drm_close_driver(local_fd);
+>  }
+>  
+>  /*
+> @@ -364,6 +364,6 @@ igt_main
+>  	igt_fixture {
+>  		buf_ops_destroy(bops);
+>  
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  }
+> diff --git a/tests/prime_mmap_kms.c b/tests/prime_mmap_kms.c
+> index 8b127a13c..1a63be38f 100644
+> --- a/tests/prime_mmap_kms.c
+> +++ b/tests/prime_mmap_kms.c
+> @@ -263,6 +263,6 @@ igt_main
+>  
+>  	igt_fixture {
+>  		igt_display_fini(&gpu.display);
+> -		close(gpu.drm_fd);
+> +		drm_close_driver(gpu.drm_fd);
+>  	}
+>  }
+> diff --git a/tests/prime_self_import.c b/tests/prime_self_import.c
+> index 30f2bf013..2dbf4e20f 100644
+> --- a/tests/prime_self_import.c
+> +++ b/tests/prime_self_import.c
+> @@ -147,8 +147,8 @@ static void test_with_fd_dup(void)
+>  	close(dma_buf_fd2);
+>  	check_bo(fd2, handle_import, fd2, handle_import);
+>  
+> -	close(fd1);
+> -	close(fd2);
+> +	drm_close_driver(fd1);
+> +	drm_close_driver(fd2);
+>  }
+>  
+>  static void test_with_two_bos(void)
+> @@ -180,8 +180,8 @@ static void test_with_two_bos(void)
+>  
+>  	check_bo(fd2, handle_import, fd2, handle_import);
+>  
+> -	close(fd1);
+> -	close(fd2);
+> +	drm_close_driver(fd1);
+> +	drm_close_driver(fd2);
+>  }
+>  
+>  static void test_with_one_bo_two_files(void)
+> @@ -205,8 +205,8 @@ static void test_with_one_bo_two_files(void)
+>  	/* dma-buf self importing an flink bo should give the same handle */
+>  	igt_assert_eq_u32(handle_import, handle_open);
+>  
+> -	close(fd1);
+> -	close(fd2);
+> +	drm_close_driver(fd1);
+> +	drm_close_driver(fd2);
+>  	close(dma_buf_fd1);
+>  	close(dma_buf_fd2);
+>  }
+> @@ -252,7 +252,7 @@ static void test_with_one_bo(void)
+>  	check_bo(fd1, handle, fd2, handle_import1);
+>  
+>  	/* Completely rip out exporting fd. */
+> -	close(fd1);
+> +	drm_close_driver(fd1);
+>  	check_bo(fd2, handle_import1, fd2, handle_import1);
+>  }
+>  
+> @@ -316,14 +316,14 @@ static void test_reimport_close_race(void)
+>  		igt_assert(status == 0);
+>  	}
+>  
+> -	close(fds[0]);
+> +	drm_close_driver(fds[0]);
+>  	close(fds[1]);
+------- ^^^^^
+this should also be changed ?
 
-Bhanuprakash Modem (4):
-  tests: New dir structure for intel specific tests
-  tests/intel/prime_mmap_kms: Add missing documentation
-  testplan/i915: Exclude non-i915 tests from i915 testplan
-  testplan/kms: Move kms testplan to intel dir
+Rest looks ok.
 
- docs/testplan/meson.build                     |  6 +-
- tests/{i915 => intel}/api_intel_allocator.c   |  0
- tests/{i915 => intel}/api_intel_bb.c          |  0
- tests/{ => intel}/debugfs_test.c              |  0
- tests/{i915 => intel}/drm_fdinfo.c            |  0
- tests/{i915 => intel}/gem_bad_reloc.c         |  0
- tests/{i915 => intel}/gem_barrier_race.c      |  0
- tests/{i915 => intel}/gem_basic.c             |  0
- tests/{i915 => intel}/gem_blits.c             |  0
- tests/{i915 => intel}/gem_busy.c              |  0
- tests/{i915 => intel}/gem_caching.c           |  0
- tests/{i915 => intel}/gem_ccs.c               |  0
- tests/{i915 => intel}/gem_close.c             |  0
- tests/{i915 => intel}/gem_close_race.c        |  0
- tests/{i915 => intel}/gem_concurrent_all.c    |  0
- tests/{i915 => intel}/gem_concurrent_blit.c   |  0
- tests/{i915 => intel}/gem_create.c            |  0
- tests/{i915 => intel}/gem_cs_tlb.c            |  0
- tests/{i915 => intel}/gem_ctx_bad_destroy.c   |  0
- tests/{i915 => intel}/gem_ctx_create.c        |  0
- tests/{i915 => intel}/gem_ctx_engines.c       |  0
- tests/{i915 => intel}/gem_ctx_exec.c          |  0
- tests/{i915 => intel}/gem_ctx_freq.c          |  0
- tests/{i915 => intel}/gem_ctx_isolation.c     |  0
- tests/{i915 => intel}/gem_ctx_param.c         |  0
- tests/{i915 => intel}/gem_ctx_persistence.c   |  0
- tests/{i915 => intel}/gem_ctx_shared.c        |  0
- tests/{i915 => intel}/gem_ctx_sseu.c          |  0
- tests/{i915 => intel}/gem_ctx_switch.c        |  0
- tests/{i915 => intel}/gem_eio.c               |  0
- tests/{i915 => intel}/gem_evict_alignment.c   |  0
- tests/{i915 => intel}/gem_evict_everything.c  |  0
- tests/{i915 => intel}/gem_exec_alignment.c    |  0
- tests/{i915 => intel}/gem_exec_async.c        |  0
- tests/{i915 => intel}/gem_exec_await.c        |  0
- tests/{i915 => intel}/gem_exec_balancer.c     |  0
- tests/{i915 => intel}/gem_exec_basic.c        |  0
- tests/{i915 => intel}/gem_exec_big.c          |  0
- tests/{i915 => intel}/gem_exec_capture.c      |  0
- tests/{i915 => intel}/gem_exec_create.c       |  0
- tests/{i915 => intel}/gem_exec_endless.c      |  0
- tests/{i915 => intel}/gem_exec_fair.c         |  0
- tests/{i915 => intel}/gem_exec_fence.c        |  0
- tests/{i915 => intel}/gem_exec_flush.c        |  0
- tests/{i915 => intel}/gem_exec_gttfill.c      |  0
- tests/{i915 => intel}/gem_exec_latency.c      |  0
- tests/{i915 => intel}/gem_exec_lut_handle.c   |  0
- tests/{i915 => intel}/gem_exec_nop.c          |  0
- tests/{i915 => intel}/gem_exec_parallel.c     |  0
- tests/{i915 => intel}/gem_exec_params.c       |  0
- tests/{i915 => intel}/gem_exec_reloc.c        |  0
- tests/{i915 => intel}/gem_exec_schedule.c     |  0
- tests/{i915 => intel}/gem_exec_store.c        |  0
- tests/{i915 => intel}/gem_exec_suspend.c      |  0
- tests/{i915 => intel}/gem_exec_whisper.c      |  0
- tests/{i915 => intel}/gem_exercise_blt.c      |  0
- tests/{i915 => intel}/gem_fd_exhaustion.c     |  0
- tests/{i915 => intel}/gem_fence_thrash.c      |  0
- tests/{i915 => intel}/gem_fence_upload.c      |  0
- .../{i915 => intel}/gem_fenced_exec_thrash.c  |  0
- tests/{i915 => intel}/gem_flink_basic.c       |  0
- tests/{i915 => intel}/gem_flink_race.c        |  0
- tests/{i915 => intel}/gem_gpgpu_fill.c        |  0
- tests/{i915 => intel}/gem_gtt_cpu_tlb.c       |  0
- tests/{i915 => intel}/gem_gtt_hog.c           |  0
- tests/{i915 => intel}/gem_gtt_speed.c         |  0
- tests/{i915 => intel}/gem_huc_copy.c          |  0
- tests/{i915 => intel}/gem_linear_blits.c      |  0
- tests/{i915 => intel}/gem_lmem_evict.c        |  0
- tests/{i915 => intel}/gem_lmem_swapping.c     |  0
- tests/{i915 => intel}/gem_lut_handle.c        |  0
- tests/{i915 => intel}/gem_madvise.c           |  0
- tests/{i915 => intel}/gem_media_fill.c        |  0
- tests/{i915 => intel}/gem_media_vme.c         |  0
- tests/{i915 => intel}/gem_mmap.c              |  0
- tests/{i915 => intel}/gem_mmap_gtt.c          |  0
- tests/{i915 => intel}/gem_mmap_offset.c       |  0
- tests/{i915 => intel}/gem_mmap_wc.c           |  0
- .../gem_partial_pwrite_pread.c                |  0
- .../gem_pipe_control_store_loop.c             |  0
- tests/{i915 => intel}/gem_ppgtt.c             |  0
- tests/{i915 => intel}/gem_pread.c             |  0
- tests/{i915 => intel}/gem_pread_after_blit.c  |  0
- tests/{i915 => intel}/gem_pwrite.c            |  0
- tests/{i915 => intel}/gem_pwrite_snooped.c    |  0
- tests/{i915 => intel}/gem_pxp.c               |  0
- tests/{i915 => intel}/gem_read_read_speed.c   |  0
- tests/{i915 => intel}/gem_readwrite.c         |  0
- tests/{i915 => intel}/gem_reg_read.c          |  0
- tests/{i915 => intel}/gem_render_copy.c       |  0
- tests/{i915 => intel}/gem_render_copy_redux.c |  0
- .../{i915 => intel}/gem_render_linear_blits.c |  0
- .../{i915 => intel}/gem_render_tiled_blits.c  |  0
- tests/{i915 => intel}/gem_request_retire.c    |  0
- tests/{i915 => intel}/gem_reset_stats.c       |  0
- tests/{i915 => intel}/gem_ringfill.c          |  0
- tests/{i915 => intel}/gem_set_tiling_vs_blt.c |  0
- tests/{i915 => intel}/gem_set_tiling_vs_gtt.c |  0
- .../gem_set_tiling_vs_pwrite.c                |  0
- tests/{i915 => intel}/gem_shrink.c            |  0
- tests/{i915 => intel}/gem_softpin.c           |  0
- tests/{i915 => intel}/gem_spin_batch.c        |  0
- tests/{i915 => intel}/gem_streaming_writes.c  |  0
- tests/{i915 => intel}/gem_stress.c            |  0
- tests/{i915 => intel}/gem_sync.c              |  0
- tests/{i915 => intel}/gem_tiled_blits.c       |  0
- tests/{i915 => intel}/gem_tiled_fence_blits.c |  0
- .../gem_tiled_partial_pwrite_pread.c          |  0
- tests/{i915 => intel}/gem_tiled_pread_basic.c |  0
- .../{i915 => intel}/gem_tiled_pread_pwrite.c  |  0
- tests/{i915 => intel}/gem_tiled_swapping.c    |  0
- tests/{i915 => intel}/gem_tiled_wb.c          |  0
- tests/{i915 => intel}/gem_tiled_wc.c          |  0
- tests/{i915 => intel}/gem_tiling_max_stride.c |  0
- .../gem_unfence_active_buffers.c              |  0
- .../gem_unref_active_buffers.c                |  0
- tests/{i915 => intel}/gem_userptr_blits.c     |  0
- tests/{i915 => intel}/gem_vm_create.c         |  0
- tests/{i915 => intel}/gem_wait.c              |  0
- tests/{i915 => intel}/gem_watchdog.c          |  0
- tests/{i915 => intel}/gem_workarounds.c       |  0
- tests/{i915 => intel}/gen3_mixed_blits.c      |  0
- .../gen3_render_linear_blits.c                |  0
- .../{i915 => intel}/gen3_render_mixed_blits.c |  0
- .../gen3_render_tiledx_blits.c                |  0
- .../gen3_render_tiledy_blits.c                |  0
- tests/{i915 => intel}/gen7_exec_parse.c       |  0
- tests/{i915 => intel}/gen9_exec_parse.c       |  0
- tests/{i915 => intel}/i915_fb_tiling.c        |  0
- tests/{i915 => intel}/i915_getparams_basic.c  |  0
- tests/{i915 => intel}/i915_hangman.c          |  0
- tests/{i915 => intel}/i915_hwmon.c            |  0
- tests/{i915 => intel}/i915_module_load.c      |  0
- tests/{i915 => intel}/i915_pciid.c            |  0
- tests/{i915 => intel}/i915_pipe_stress.c      |  0
- tests/{i915 => intel}/i915_pm_backlight.c     |  0
- tests/{i915 => intel}/i915_pm_dc.c            |  0
- tests/{i915 => intel}/i915_pm_freq_api.c      |  0
- tests/{i915 => intel}/i915_pm_freq_mult.c     |  0
- tests/{i915 => intel}/i915_pm_lpsp.c          |  0
- tests/{i915 => intel}/i915_pm_rc6_residency.c |  0
- tests/{i915 => intel}/i915_pm_rpm.c           |  0
- tests/{i915 => intel}/i915_pm_rps.c           |  0
- tests/{i915 => intel}/i915_pm_sseu.c          |  0
- tests/{i915 => intel}/i915_power.c            |  0
- tests/{i915 => intel}/i915_query.c            |  0
- tests/{i915 => intel}/i915_selftest.c         |  0
- tests/{i915 => intel}/i915_suspend.c          |  0
- tests/{i915 => intel}/i915_test_config.json   |  9 +-
- tests/{i915 => intel}/kms_big_fb.c            |  0
- tests/{i915 => intel}/kms_big_joiner.c        |  0
- tests/{i915 => intel}/kms_busy.c              |  0
- tests/{i915 => intel}/kms_ccs.c               |  0
- tests/{i915 => intel}/kms_cdclk.c             |  0
- tests/{i915 => intel}/kms_draw_crc.c          |  0
- tests/{i915 => intel}/kms_dsc.c               |  0
- tests/{i915 => intel}/kms_dsc_helper.c        |  0
- tests/{i915 => intel}/kms_dsc_helper.h        |  0
- tests/{i915 => intel}/kms_fb_coherency.c      |  0
- tests/{i915 => intel}/kms_fbcon_fbt.c         |  0
- tests/{i915 => intel}/kms_fence_pin_leak.c    |  0
- tests/{i915 => intel}/kms_flip_scaled_crc.c   |  0
- tests/{i915 => intel}/kms_flip_tiling.c       |  0
- .../kms_frontbuffer_tracking.c                |  0
- tests/{i915 => intel}/kms_legacy_colorkey.c   |  0
- tests/{i915 => intel}/kms_mmap_write_crc.c    |  0
- tests/{i915 => intel}/kms_pipe_b_c_ivb.c      |  0
- tests/{i915 => intel}/kms_psr.c               |  0
- tests/{i915 => intel}/kms_psr2_sf.c           |  0
- tests/{i915 => intel}/kms_psr2_su.c           |  0
- tests/{i915 => intel}/kms_psr_stress_test.c   |  0
- tests/{i915 => intel}/kms_pwrite_crc.c        |  0
- tests/{ => intel}/kms_test_config.json        |  0
- tests/{i915 => intel}/perf.c                  |  0
- tests/{i915 => intel}/perf_pmu.c              |  0
- tests/{ => intel}/prime_busy.c                |  0
- tests/{ => intel}/prime_mmap.c                |  0
- tests/{ => intel}/prime_mmap_coherency.c      |  0
- tests/{ => intel}/prime_mmap_kms.c            | 13 +++
- tests/{ => intel}/prime_self_import.c         |  0
- tests/{i915 => intel}/sysfs_defaults.c        |  0
- .../sysfs_heartbeat_interval.c                |  0
- tests/{i915 => intel}/sysfs_preempt_timeout.c |  0
- .../sysfs_timeslice_duration.c                |  0
- tests/{xe => intel}/xe_compute.c              |  0
- tests/{xe => intel}/xe_create.c               |  0
- tests/{xe => intel}/xe_debugfs.c              |  0
- tests/{xe => intel}/xe_dma_buf_sync.c         |  0
- tests/{xe => intel}/xe_evict.c                |  0
- tests/{xe => intel}/xe_exec_balancer.c        |  0
- tests/{xe => intel}/xe_exec_basic.c           |  0
- tests/{xe => intel}/xe_exec_compute_mode.c    |  0
- tests/{xe => intel}/xe_exec_fault_mode.c      |  0
- tests/{xe => intel}/xe_exec_reset.c           |  0
- tests/{xe => intel}/xe_exec_threads.c         |  0
- tests/{xe => intel}/xe_gpgpu_fill.c           |  0
- tests/{xe => intel}/xe_guc_pc.c               |  0
- tests/{xe => intel}/xe_huc_copy.c             |  0
- tests/{xe => intel}/xe_intel_bb.c             |  0
- tests/{xe => intel}/xe_live_ktest.c           |  0
- tests/{xe => intel}/xe_mmap.c                 |  0
- tests/{xe => intel}/xe_mmio.c                 |  0
- tests/{xe => intel}/xe_module_load.c          |  0
- tests/{xe => intel}/xe_noexec_ping_pong.c     |  0
- tests/{xe => intel}/xe_pm.c                   |  0
- tests/{xe => intel}/xe_prime_self_import.c    |  0
- tests/{xe => intel}/xe_query.c                |  0
- tests/{xe => intel}/xe_spin_batch.c           |  0
- tests/{xe => intel}/xe_test_config.json       |  0
- tests/{xe => intel}/xe_vm.c                   |  0
- tests/{xe => intel}/xe_waitfence.c            |  0
- tests/meson.build                             | 83 ++++++++++---------
- 212 files changed, 62 insertions(+), 49 deletions(-)
- rename tests/{i915 => intel}/api_intel_allocator.c (100%)
- rename tests/{i915 => intel}/api_intel_bb.c (100%)
- rename tests/{ => intel}/debugfs_test.c (100%)
- rename tests/{i915 => intel}/drm_fdinfo.c (100%)
- rename tests/{i915 => intel}/gem_bad_reloc.c (100%)
- rename tests/{i915 => intel}/gem_barrier_race.c (100%)
- rename tests/{i915 => intel}/gem_basic.c (100%)
- rename tests/{i915 => intel}/gem_blits.c (100%)
- rename tests/{i915 => intel}/gem_busy.c (100%)
- rename tests/{i915 => intel}/gem_caching.c (100%)
- rename tests/{i915 => intel}/gem_ccs.c (100%)
- rename tests/{i915 => intel}/gem_close.c (100%)
- rename tests/{i915 => intel}/gem_close_race.c (100%)
- rename tests/{i915 => intel}/gem_concurrent_all.c (100%)
- rename tests/{i915 => intel}/gem_concurrent_blit.c (100%)
- rename tests/{i915 => intel}/gem_create.c (100%)
- rename tests/{i915 => intel}/gem_cs_tlb.c (100%)
- rename tests/{i915 => intel}/gem_ctx_bad_destroy.c (100%)
- rename tests/{i915 => intel}/gem_ctx_create.c (100%)
- rename tests/{i915 => intel}/gem_ctx_engines.c (100%)
- rename tests/{i915 => intel}/gem_ctx_exec.c (100%)
- rename tests/{i915 => intel}/gem_ctx_freq.c (100%)
- rename tests/{i915 => intel}/gem_ctx_isolation.c (100%)
- rename tests/{i915 => intel}/gem_ctx_param.c (100%)
- rename tests/{i915 => intel}/gem_ctx_persistence.c (100%)
- rename tests/{i915 => intel}/gem_ctx_shared.c (100%)
- rename tests/{i915 => intel}/gem_ctx_sseu.c (100%)
- rename tests/{i915 => intel}/gem_ctx_switch.c (100%)
- rename tests/{i915 => intel}/gem_eio.c (100%)
- rename tests/{i915 => intel}/gem_evict_alignment.c (100%)
- rename tests/{i915 => intel}/gem_evict_everything.c (100%)
- rename tests/{i915 => intel}/gem_exec_alignment.c (100%)
- rename tests/{i915 => intel}/gem_exec_async.c (100%)
- rename tests/{i915 => intel}/gem_exec_await.c (100%)
- rename tests/{i915 => intel}/gem_exec_balancer.c (100%)
- rename tests/{i915 => intel}/gem_exec_basic.c (100%)
- rename tests/{i915 => intel}/gem_exec_big.c (100%)
- rename tests/{i915 => intel}/gem_exec_capture.c (100%)
- rename tests/{i915 => intel}/gem_exec_create.c (100%)
- rename tests/{i915 => intel}/gem_exec_endless.c (100%)
- rename tests/{i915 => intel}/gem_exec_fair.c (100%)
- rename tests/{i915 => intel}/gem_exec_fence.c (100%)
- rename tests/{i915 => intel}/gem_exec_flush.c (100%)
- rename tests/{i915 => intel}/gem_exec_gttfill.c (100%)
- rename tests/{i915 => intel}/gem_exec_latency.c (100%)
- rename tests/{i915 => intel}/gem_exec_lut_handle.c (100%)
- rename tests/{i915 => intel}/gem_exec_nop.c (100%)
- rename tests/{i915 => intel}/gem_exec_parallel.c (100%)
- rename tests/{i915 => intel}/gem_exec_params.c (100%)
- rename tests/{i915 => intel}/gem_exec_reloc.c (100%)
- rename tests/{i915 => intel}/gem_exec_schedule.c (100%)
- rename tests/{i915 => intel}/gem_exec_store.c (100%)
- rename tests/{i915 => intel}/gem_exec_suspend.c (100%)
- rename tests/{i915 => intel}/gem_exec_whisper.c (100%)
- rename tests/{i915 => intel}/gem_exercise_blt.c (100%)
- rename tests/{i915 => intel}/gem_fd_exhaustion.c (100%)
- rename tests/{i915 => intel}/gem_fence_thrash.c (100%)
- rename tests/{i915 => intel}/gem_fence_upload.c (100%)
- rename tests/{i915 => intel}/gem_fenced_exec_thrash.c (100%)
- rename tests/{i915 => intel}/gem_flink_basic.c (100%)
- rename tests/{i915 => intel}/gem_flink_race.c (100%)
- rename tests/{i915 => intel}/gem_gpgpu_fill.c (100%)
- rename tests/{i915 => intel}/gem_gtt_cpu_tlb.c (100%)
- rename tests/{i915 => intel}/gem_gtt_hog.c (100%)
- rename tests/{i915 => intel}/gem_gtt_speed.c (100%)
- rename tests/{i915 => intel}/gem_huc_copy.c (100%)
- rename tests/{i915 => intel}/gem_linear_blits.c (100%)
- rename tests/{i915 => intel}/gem_lmem_evict.c (100%)
- rename tests/{i915 => intel}/gem_lmem_swapping.c (100%)
- rename tests/{i915 => intel}/gem_lut_handle.c (100%)
- rename tests/{i915 => intel}/gem_madvise.c (100%)
- rename tests/{i915 => intel}/gem_media_fill.c (100%)
- rename tests/{i915 => intel}/gem_media_vme.c (100%)
- rename tests/{i915 => intel}/gem_mmap.c (100%)
- rename tests/{i915 => intel}/gem_mmap_gtt.c (100%)
- rename tests/{i915 => intel}/gem_mmap_offset.c (100%)
- rename tests/{i915 => intel}/gem_mmap_wc.c (100%)
- rename tests/{i915 => intel}/gem_partial_pwrite_pread.c (100%)
- rename tests/{i915 => intel}/gem_pipe_control_store_loop.c (100%)
- rename tests/{i915 => intel}/gem_ppgtt.c (100%)
- rename tests/{i915 => intel}/gem_pread.c (100%)
- rename tests/{i915 => intel}/gem_pread_after_blit.c (100%)
- rename tests/{i915 => intel}/gem_pwrite.c (100%)
- rename tests/{i915 => intel}/gem_pwrite_snooped.c (100%)
- rename tests/{i915 => intel}/gem_pxp.c (100%)
- rename tests/{i915 => intel}/gem_read_read_speed.c (100%)
- rename tests/{i915 => intel}/gem_readwrite.c (100%)
- rename tests/{i915 => intel}/gem_reg_read.c (100%)
- rename tests/{i915 => intel}/gem_render_copy.c (100%)
- rename tests/{i915 => intel}/gem_render_copy_redux.c (100%)
- rename tests/{i915 => intel}/gem_render_linear_blits.c (100%)
- rename tests/{i915 => intel}/gem_render_tiled_blits.c (100%)
- rename tests/{i915 => intel}/gem_request_retire.c (100%)
- rename tests/{i915 => intel}/gem_reset_stats.c (100%)
- rename tests/{i915 => intel}/gem_ringfill.c (100%)
- rename tests/{i915 => intel}/gem_set_tiling_vs_blt.c (100%)
- rename tests/{i915 => intel}/gem_set_tiling_vs_gtt.c (100%)
- rename tests/{i915 => intel}/gem_set_tiling_vs_pwrite.c (100%)
- rename tests/{i915 => intel}/gem_shrink.c (100%)
- rename tests/{i915 => intel}/gem_softpin.c (100%)
- rename tests/{i915 => intel}/gem_spin_batch.c (100%)
- rename tests/{i915 => intel}/gem_streaming_writes.c (100%)
- rename tests/{i915 => intel}/gem_stress.c (100%)
- rename tests/{i915 => intel}/gem_sync.c (100%)
- rename tests/{i915 => intel}/gem_tiled_blits.c (100%)
- rename tests/{i915 => intel}/gem_tiled_fence_blits.c (100%)
- rename tests/{i915 => intel}/gem_tiled_partial_pwrite_pread.c (100%)
- rename tests/{i915 => intel}/gem_tiled_pread_basic.c (100%)
- rename tests/{i915 => intel}/gem_tiled_pread_pwrite.c (100%)
- rename tests/{i915 => intel}/gem_tiled_swapping.c (100%)
- rename tests/{i915 => intel}/gem_tiled_wb.c (100%)
- rename tests/{i915 => intel}/gem_tiled_wc.c (100%)
- rename tests/{i915 => intel}/gem_tiling_max_stride.c (100%)
- rename tests/{i915 => intel}/gem_unfence_active_buffers.c (100%)
- rename tests/{i915 => intel}/gem_unref_active_buffers.c (100%)
- rename tests/{i915 => intel}/gem_userptr_blits.c (100%)
- rename tests/{i915 => intel}/gem_vm_create.c (100%)
- rename tests/{i915 => intel}/gem_wait.c (100%)
- rename tests/{i915 => intel}/gem_watchdog.c (100%)
- rename tests/{i915 => intel}/gem_workarounds.c (100%)
- rename tests/{i915 => intel}/gen3_mixed_blits.c (100%)
- rename tests/{i915 => intel}/gen3_render_linear_blits.c (100%)
- rename tests/{i915 => intel}/gen3_render_mixed_blits.c (100%)
- rename tests/{i915 => intel}/gen3_render_tiledx_blits.c (100%)
- rename tests/{i915 => intel}/gen3_render_tiledy_blits.c (100%)
- rename tests/{i915 => intel}/gen7_exec_parse.c (100%)
- rename tests/{i915 => intel}/gen9_exec_parse.c (100%)
- rename tests/{i915 => intel}/i915_fb_tiling.c (100%)
- rename tests/{i915 => intel}/i915_getparams_basic.c (100%)
- rename tests/{i915 => intel}/i915_hangman.c (100%)
- rename tests/{i915 => intel}/i915_hwmon.c (100%)
- rename tests/{i915 => intel}/i915_module_load.c (100%)
- rename tests/{i915 => intel}/i915_pciid.c (100%)
- rename tests/{i915 => intel}/i915_pipe_stress.c (100%)
- rename tests/{i915 => intel}/i915_pm_backlight.c (100%)
- rename tests/{i915 => intel}/i915_pm_dc.c (100%)
- rename tests/{i915 => intel}/i915_pm_freq_api.c (100%)
- rename tests/{i915 => intel}/i915_pm_freq_mult.c (100%)
- rename tests/{i915 => intel}/i915_pm_lpsp.c (100%)
- rename tests/{i915 => intel}/i915_pm_rc6_residency.c (100%)
- rename tests/{i915 => intel}/i915_pm_rpm.c (100%)
- rename tests/{i915 => intel}/i915_pm_rps.c (100%)
- rename tests/{i915 => intel}/i915_pm_sseu.c (100%)
- rename tests/{i915 => intel}/i915_power.c (100%)
- rename tests/{i915 => intel}/i915_query.c (100%)
- rename tests/{i915 => intel}/i915_selftest.c (100%)
- rename tests/{i915 => intel}/i915_suspend.c (100%)
- rename tests/{i915 => intel}/i915_test_config.json (91%)
- rename tests/{i915 => intel}/kms_big_fb.c (100%)
- rename tests/{i915 => intel}/kms_big_joiner.c (100%)
- rename tests/{i915 => intel}/kms_busy.c (100%)
- rename tests/{i915 => intel}/kms_ccs.c (100%)
- rename tests/{i915 => intel}/kms_cdclk.c (100%)
- rename tests/{i915 => intel}/kms_draw_crc.c (100%)
- rename tests/{i915 => intel}/kms_dsc.c (100%)
- rename tests/{i915 => intel}/kms_dsc_helper.c (100%)
- rename tests/{i915 => intel}/kms_dsc_helper.h (100%)
- rename tests/{i915 => intel}/kms_fb_coherency.c (100%)
- rename tests/{i915 => intel}/kms_fbcon_fbt.c (100%)
- rename tests/{i915 => intel}/kms_fence_pin_leak.c (100%)
- rename tests/{i915 => intel}/kms_flip_scaled_crc.c (100%)
- rename tests/{i915 => intel}/kms_flip_tiling.c (100%)
- rename tests/{i915 => intel}/kms_frontbuffer_tracking.c (100%)
- rename tests/{i915 => intel}/kms_legacy_colorkey.c (100%)
- rename tests/{i915 => intel}/kms_mmap_write_crc.c (100%)
- rename tests/{i915 => intel}/kms_pipe_b_c_ivb.c (100%)
- rename tests/{i915 => intel}/kms_psr.c (100%)
- rename tests/{i915 => intel}/kms_psr2_sf.c (100%)
- rename tests/{i915 => intel}/kms_psr2_su.c (100%)
- rename tests/{i915 => intel}/kms_psr_stress_test.c (100%)
- rename tests/{i915 => intel}/kms_pwrite_crc.c (100%)
- rename tests/{ => intel}/kms_test_config.json (100%)
- rename tests/{i915 => intel}/perf.c (100%)
- rename tests/{i915 => intel}/perf_pmu.c (100%)
- rename tests/{ => intel}/prime_busy.c (100%)
- rename tests/{ => intel}/prime_mmap.c (100%)
- rename tests/{ => intel}/prime_mmap_coherency.c (100%)
- rename tests/{ => intel}/prime_mmap_kms.c (96%)
- rename tests/{ => intel}/prime_self_import.c (100%)
- rename tests/{i915 => intel}/sysfs_defaults.c (100%)
- rename tests/{i915 => intel}/sysfs_heartbeat_interval.c (100%)
- rename tests/{i915 => intel}/sysfs_preempt_timeout.c (100%)
- rename tests/{i915 => intel}/sysfs_timeslice_duration.c (100%)
- rename tests/{xe => intel}/xe_compute.c (100%)
- rename tests/{xe => intel}/xe_create.c (100%)
- rename tests/{xe => intel}/xe_debugfs.c (100%)
- rename tests/{xe => intel}/xe_dma_buf_sync.c (100%)
- rename tests/{xe => intel}/xe_evict.c (100%)
- rename tests/{xe => intel}/xe_exec_balancer.c (100%)
- rename tests/{xe => intel}/xe_exec_basic.c (100%)
- rename tests/{xe => intel}/xe_exec_compute_mode.c (100%)
- rename tests/{xe => intel}/xe_exec_fault_mode.c (100%)
- rename tests/{xe => intel}/xe_exec_reset.c (100%)
- rename tests/{xe => intel}/xe_exec_threads.c (100%)
- rename tests/{xe => intel}/xe_gpgpu_fill.c (100%)
- rename tests/{xe => intel}/xe_guc_pc.c (100%)
- rename tests/{xe => intel}/xe_huc_copy.c (100%)
- rename tests/{xe => intel}/xe_intel_bb.c (100%)
- rename tests/{xe => intel}/xe_live_ktest.c (100%)
- rename tests/{xe => intel}/xe_mmap.c (100%)
- rename tests/{xe => intel}/xe_mmio.c (100%)
- rename tests/{xe => intel}/xe_module_load.c (100%)
- rename tests/{xe => intel}/xe_noexec_ping_pong.c (100%)
- rename tests/{xe => intel}/xe_pm.c (100%)
- rename tests/{xe => intel}/xe_prime_self_import.c (100%)
- rename tests/{xe => intel}/xe_query.c (100%)
- rename tests/{xe => intel}/xe_spin_batch.c (100%)
- rename tests/{xe => intel}/xe_test_config.json (100%)
- rename tests/{xe => intel}/xe_vm.c (100%)
- rename tests/{xe => intel}/xe_waitfence.c (100%)
+Regards,
+Kamil
 
---
-2.40.0
+>  
+>  	obj_count = igt_get_stable_obj_count(fake) - obj_count;
+>  
+>  	igt_info("leaked %i objects\n", obj_count);
+>  
+> -	close(fake);
+> +	drm_close_driver(fake);
+>  
+>  	igt_assert_eq(obj_count, 0);
+>  }
+> @@ -398,13 +398,13 @@ static void test_export_close_race(void)
+>  		igt_assert(status == 0);
+>  	}
+>  
+> -	close(fd);
+> +	drm_close_driver(fd);
+>  
+>  	obj_count = igt_get_stable_obj_count(fake) - obj_count;
+>  
+>  	igt_info("leaked %i objects\n", obj_count);
+>  
+> -	close(fake);
+> +	drm_close_driver(fake);
+>  
+>  	igt_assert_eq(obj_count, 0);
+>  }
+> @@ -433,7 +433,7 @@ static void test_llseek_size(void)
+>  		close(dma_buf_fd);
+>  	}
+>  
+> -	close(fd);
+> +	drm_close_driver(fd);
+>  }
+>  
+>  static void test_llseek_bad(void)
+> @@ -462,7 +462,7 @@ static void test_llseek_bad(void)
+>  
+>  	close(dma_buf_fd);
+>  
+> -	close(fd);
+> +	drm_close_driver(fd);
+>  }
+>  
+>  igt_main
+> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> index 85b9cf880..876e04ed0 100644
+> --- a/tests/prime_vgem.c
+> +++ b/tests/prime_vgem.c
+> @@ -1326,7 +1326,7 @@ igt_main
+>  
+>  
+>  	igt_fixture {
+> -		close(i915);
+> -		close(vgem);
+> +		drm_close_driver(i915);
+> +		drm_close_driver(vgem);
+>  	}
+>  }
+> diff --git a/tests/syncobj_basic.c b/tests/syncobj_basic.c
+> index 3252dbd69..f079baf09 100644
+> --- a/tests/syncobj_basic.c
+> +++ b/tests/syncobj_basic.c
+> @@ -266,7 +266,7 @@ igt_main
+>  		test_valid_cycle(fd);
+>  
+>  	igt_fixture {
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  
+>  }
+> diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+> index 134a60995..b4e1d093a 100644
+> --- a/tests/syncobj_timeline.c
+> +++ b/tests/syncobj_timeline.c
+> @@ -1936,6 +1936,6 @@ igt_main
+>  		test_32bits_limit(fd);
+>  
+>  	igt_fixture {
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  }
+> diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+> index 2583ef72e..e0ff69b79 100644
+> --- a/tests/syncobj_wait.c
+> +++ b/tests/syncobj_wait.c
+> @@ -1062,6 +1062,6 @@ igt_main
+>  		test_wait_interrupted(fd, WAIT_ALL);
+>  
+>  	igt_fixture {
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  }
+> diff --git a/tests/template.c b/tests/template.c
+> index e23814fb7..ae2681c01 100644
+> --- a/tests/template.c
+> +++ b/tests/template.c
+> @@ -76,6 +76,6 @@ igt_main
+>  	 */
+>  
+>  	igt_fixture {
+> -		close(drm_fd);
+> +		drm_close_driver(drm_fd);
+>  	}
+>  }
+> diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
+> index f2255a619..63c5c0971 100644
+> --- a/tests/vgem_basic.c
+> +++ b/tests/vgem_basic.c
+> @@ -162,8 +162,8 @@ static void test_setversion(int fd)
+>  
+>  static void test_client(int fd)
+>  {
+> -	close(drm_open_driver(DRIVER_VGEM));
+> -	close(drm_open_driver_render(DRIVER_VGEM));
+> +	drm_close_driver(drm_open_driver(DRIVER_VGEM));
+> +	drm_close_driver(drm_open_driver_render(DRIVER_VGEM));
+>  }
+>  
+>  static void test_create(int fd)
+> @@ -635,6 +635,6 @@ igt_main
+>  		test_debugfs_read(fd);
+>  
+>  	igt_fixture {
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  }
+> diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
+> index 0c91cdb9d..cb9436628 100644
+> --- a/tests/vgem_slow.c
+> +++ b/tests/vgem_slow.c
+> @@ -97,6 +97,6 @@ igt_main
+>  		test_nohang(fd);
+>  
+>  	igt_fixture {
+> -		close(fd);
+> +		drm_close_driver(fd);
+>  	}
+>  }
+> -- 
+> 2.40.0
+> 
