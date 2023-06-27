@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3E3C10E310
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 16:21:19 +0000 (UTC)
-Date: Tue, 27 Jun 2023 18:16:16 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230627161616.idcsyxpg2i5p3o6j@kamilkon-desk1>
-References: <20230625122948.535456-1-priyanka.dandamudi@intel.com>
- <20230625122948.535456-2-priyanka.dandamudi@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1559310E30F
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 16:48:18 +0000 (UTC)
+Date: Tue, 27 Jun 2023 16:47:21 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <ZJsSmbU/W+HhMT/h@DUT025-TGLU.fm.intel.com>
+References: <20230627161407.344961-1-zbigniew.kempczynski@intel.com>
+ <20230627161407.344961-2-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20230625122948.535456-2-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/5] lib/igt_sysfs: Add support to
- iterate over engines
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230627161407.344961-2-zbigniew.kempczynski@intel.com>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe_query: Add milliseconds to
+ nanoseconds macro
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,87 +22,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tejas.upadhyay@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Priyanka,
+On Tue, Jun 27, 2023 at 06:14:06PM +0200, Zbigniew Kempczyński wrote:
+> We're going to change xe uapi to use nanoseconds so all tests which
+> currently are passing jiffies have to be altered.
+> 
+> Add MS_TO_NS() macro to make this work easier.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-On 2023-06-25 at 17:59:44 +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 
-> It helps to test engines by iterating over sysfs/engines.
-> 
-> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+
 > ---
->  lib/igt_sysfs.c | 35 +++++++++++++++++++++++++++++++++++
->  lib/igt_sysfs.h |  3 +++
->  2 files changed, 38 insertions(+)
+>  lib/xe/xe_query.h       | 2 ++
+>  tests/xe/xe_waitfence.c | 1 -
+>  2 files changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> index 35a4faa9..1f32e659 100644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -856,3 +856,38 @@ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
->  	igt_assert_eq(get, prev);
->  	igt_assert(!ret);
+> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+> index 943ca558a5..cca2c9aae5 100644
+> --- a/lib/xe/xe_query.h
+> +++ b/lib/xe/xe_query.h
+> @@ -99,4 +99,6 @@ bool xe_has_engine_class(int fd, uint16_t engine_class);
+>  struct xe_device *xe_device_get(int fd);
+>  void xe_device_put(int fd);
+>  
+> +#define MS_TO_NS(ms) (((int64_t)ms) * 1000000)
+> +
+>  #endif	/* XE_QUERY_H */
+> diff --git a/tests/xe/xe_waitfence.c b/tests/xe/xe_waitfence.c
+> index c6b2db125c..7763a556c7 100644
+> --- a/tests/xe/xe_waitfence.c
+> +++ b/tests/xe/xe_waitfence.c
+> @@ -38,7 +38,6 @@ static void do_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+>  	xe_vm_bind(fd, vm, bo, offset, addr, size, sync, 1);
 >  }
-> +
-
-Please add description to each new public function.
-
-Regards,
-Kamil
-
-> +void igt_sysfs_engines(int xe, int engines, const char *file,
-> +					   void (*test)(int, int))
-> +{
-> +	struct dirent *de;
-> +	DIR *dir;
-> +
-> +	lseek(engines, 0, SEEK_SET);
-> +
-> +	dir = fdopendir(engines);
-> +	if (!dir)
-> +		close(engines);
-> +
-> +	while ((de = readdir(dir))) {
-> +		int engine;
-> +
-> +		if (*de->d_name == '.')
-> +			continue;
-> +
-> +		engine = openat(engines, de->d_name, O_RDONLY);
-> +		if (engine < 0)
-> +			continue;
-> +
-> +		igt_dynamic(de->d_name) {
-> +			if (file) {
-> +				struct stat st;
-> +
-> +				igt_require(fstatat(engine, file, &st, 0) == 0);
-> +			}
-> +			errno = 0;
-> +			test(xe, engine);
-> +		}
-> +		close(engine);
-> +	}
-> +}
-> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-> index 978b6906..c89780ac 100644
-> --- a/lib/igt_sysfs.h
-> +++ b/lib/igt_sysfs.h
-> @@ -147,4 +147,7 @@ typedef struct igt_sysfs_rw_attr {
 >  
->  void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw);
->  
-> +void igt_sysfs_engines(int xe, int gt, const char *file,
-> +		       void (*test)(int, int));
-> +
->  #endif /* __IGT_SYSFS_H__ */
+> -#define MS_TO_NS(ms) (((int64_t)ms) * 1000000)
+>  enum waittype {
+>  	RELTIME,
+>  	ABSTIME,
 > -- 
-> 2.25.1
+> 2.34.1
 > 
