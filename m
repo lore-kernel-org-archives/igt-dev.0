@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 763F810E0C2
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 11:33:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 90A1F10E0C2
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 11:33:35 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Jun 2023 17:02:47 +0530
-Message-Id: <20230627113250.669971-3-swati2.sharma@intel.com>
+Date: Tue, 27 Jun 2023 17:02:48 +0530
+Message-Id: <20230627113250.669971-4-swati2.sharma@intel.com>
 In-Reply-To: <20230627113250.669971-1-swati2.sharma@intel.com>
 References: <20230627113250.669971-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/5] tests/i915/kms_dsc: use uint32_t test
- flag
+Subject: [igt-dev] [PATCH i-g-t 3/5] tests/i915/kms_dsc: use #define for
+ default bpc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,108 +23,66 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of using enum, use uinit32_t test flag. It is helpful,
-if we need to implement feature combination tests.
+For default bpc, use #define. By setting bpc as 0, means driver
+will set its own value and we are not enforcing input bpc.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/i915/kms_dsc.c | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ tests/i915/kms_dsc.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index c033a2ff0..4b5e034bf 100644
+index 4b5e034bf..84bd5dbbc 100644
 --- a/tests/i915/kms_dsc.c
 +++ b/tests/i915/kms_dsc.c
-@@ -34,11 +34,11 @@
+@@ -34,6 +34,8 @@
  
  IGT_TEST_DESCRIPTION("Test to validate display stream compression");
  
--enum dsc_test_type {
--	TEST_DSC_BASIC,
--	TEST_DSC_BPC,
--	TEST_DSC_FORMAT,
--	TEST_DSC_OUTPUT_FORMAT,
-+enum {
-+	TEST_DSC_BASIC = 1 << 0,
-+	TEST_DSC_BPC = 1 << 1,
-+	TEST_DSC_FORMAT = 1 << 2,
-+	TEST_DSC_OUTPUT_FORMAT = 1 << 3,
- };
++#define DEFAULT_BPC	0
++
+ enum {
+ 	TEST_DSC_BASIC = 1 << 0,
+ 	TEST_DSC_BPC = 1 << 1,
+@@ -295,7 +297,7 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters");
+ 	igt_subtest_with_dynamic("dsc-basic")
+-			test_dsc(&data, TEST_DSC_BASIC, 0,
++			test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
+ 				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
  
- typedef struct {
-@@ -111,7 +111,7 @@ static void test_cleanup(data_t *data)
- }
- 
- /* re-probe connectors and do a modeset with DSC */
--static void update_display(data_t *data, enum dsc_test_type test_type)
-+static void update_display(data_t *data, uint32_t test_type)
- {
- 	int ret;
- 	bool enabled;
-@@ -130,12 +130,12 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 	save_force_dsc_en(data->drm_fd, data->output);
- 	force_dsc_enable(data->drm_fd, data->output);
- 
--	if (test_type == TEST_DSC_BPC) {
-+	if (test_type & TEST_DSC_BPC) {
- 		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
- 		force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -303,7 +305,7 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		     "with default parameters and creating fb with diff formats");
+ 	igt_subtest_with_dynamic("dsc-with-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+-			test_dsc(&data, TEST_DSC_FORMAT, 0,
++			test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
+ 				 format_list[k], DSC_FORMAT_RGB);
  	}
  
--	if (test_type == TEST_DSC_OUTPUT_FORMAT) {
-+	if (test_type & TEST_DSC_OUTPUT_FORMAT) {
- 		igt_debug("Trying to set DSC %s output format\n",
- 			   kmstest_dsc_output_format_str(data->output_format));
- 		force_dsc_output_format(data->drm_fd, data->output, data->output_format);
-@@ -214,13 +214,14 @@ reset:
- 	igt_assert_eq(ret, 0);
- }
- 
--static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
--		     unsigned int plane_format, enum dsc_output_format output_format)
-+static void test_dsc(data_t *data, uint32_t test_type, int bpc,
-+		     unsigned int plane_format,
-+		     enum dsc_output_format output_format)
- {
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
--	char name[20];
- 	enum pipe pipe;
-+	char n1[20] = {0}, n2[20] = {0}, n3[20] = {0};
- 
- 	for_each_pipe_with_valid_output(display, pipe, output) {
- 		data->output_format = output_format;
-@@ -242,15 +243,14 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- 		if (!check_gen11_bpc_constraint(data->drm_fd, data->output, data->input_bpc))
- 			continue;
- 
--		if (test_type == TEST_DSC_BPC)
--			snprintf(name, sizeof(name), "-%dbpc-%s", data->input_bpc, igt_format_str(data->plane_format));
--		else if (test_type == TEST_DSC_OUTPUT_FORMAT)
--			snprintf(name, sizeof(name), "-%s-%s", kmstest_dsc_output_format_str(data->output_format),
--							       igt_format_str(data->plane_format));
--		else
--			snprintf(name, sizeof(name), "-%s", igt_format_str(data->plane_format));
-+		if (test_type & TEST_DSC_OUTPUT_FORMAT)
-+			snprintf(n1, sizeof(n1), "-%s", kmstest_dsc_output_format_str(data->output_format));
-+		if (test_type & TEST_DSC_FORMAT)
-+			snprintf(n2, sizeof(n2), "-%s", igt_format_str(data->plane_format));
-+		if (test_type & TEST_DSC_BPC)
-+			snprintf(n3, sizeof(n3), "-%dbpc", data->input_bpc);
- 
--		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
-+		igt_dynamic_f("pipe-%s-%s%s%s%s",  kmstest_pipe_name(data->pipe), data->output->name, n1, n2, n3)
- 			update_display(data, test_type);
- 
- 		if (data->limited)
-@@ -322,7 +322,7 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+@@ -322,8 +324,9 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
  	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
  		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
  			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
--				test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
-+				test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT, bpc_list[j],
- 				format_list[k], DSC_FORMAT_RGB);
+-				test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT, bpc_list[j],
+-				format_list[k], DSC_FORMAT_RGB);
++				test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
++				bpc_list[j], format_list[k],
++				DSC_FORMAT_RGB);
  			}
  		}
+ 	}
+@@ -333,7 +336,8 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		     "that support it");
+ 	igt_subtest_with_dynamic("dsc-with-output-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
+-			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, 0, DRM_FORMAT_XRGB8888,
++			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
++				 DRM_FORMAT_XRGB8888,
+ 				 output_format_list[k]);
+ 	}
+ 
 -- 
 2.25.1
