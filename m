@@ -1,15 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5B1F10E27D
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 04:22:37 +0000 (UTC)
+From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, "Upadhyay, Tejas"
+ <tejas.upadhyay@intel.com>
+Date: Tue, 27 Jun 2023 04:22:33 +0000
+Message-ID: <MW4PR11MB70561AB1FDBC1E6A4ADB26EAB327A@MW4PR11MB7056.namprd11.prod.outlook.com>
+References: <20230623114946.3803540-1-himal.prasad.ghimiray@intel.com>
+ <20230623114946.3803540-3-himal.prasad.ghimiray@intel.com>
+ <SJ1PR11MB62046E8F51197B7B60F54E2E8126A@SJ1PR11MB6204.namprd11.prod.outlook.com>
+ <875y79df9o.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <875y79df9o.wl-ashutosh.dixit@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Tue, 27 Jun 2023 03:56:09 -0000
-Message-ID: <168783816936.2456.2463482780698268461@emeril.freedesktop.org>
-References: <20230626160106.2632928-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230626160106.2632928-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_N?=
- =?utf-8?q?ew_dir_structure_for_intel_specific_tests_=28rev4=29?=
+Subject: Re: [igt-dev] [PATCH v2 2/4] lib/igt_sysfs: Handling gt related
+ sysfs uapi changes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +25,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Ashutosh,
 
-Series: New dir structure for intel specific tests (rev4)
-URL   : https://patchwork.freedesktop.org/series/117227/
-State : warning
+> -----Original Message-----
+> From: Dixit, Ashutosh <ashutosh.dixit@intel.com>
+> Sent: 27 June 2023 04:04
+> To: Upadhyay, Tejas <tejas.upadhyay@intel.com>
+> Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; igt-
+> dev@lists.freedesktop.org; Iddamsetty, Aravind
+> <aravind.iddamsetty@intel.com>; Kumar, Janga Rahul
+> <janga.rahul.kumar@intel.com>; Dugast, Francois
+> <francois.dugast@intel.com>; Roper, Matthew D
+> <matthew.d.roper@intel.com>
+> Subject: Re: [PATCH v2 2/4] lib/igt_sysfs: Handling gt related sysfs uapi
+> changes
+>=20
+> On Mon, 26 Jun 2023 03:48:16 -0700, Upadhyay, Tejas wrote:
+> >
+> > > -----Original Message-----
+> > > From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
+> > > Sent: Friday, June 23, 2023 5:20 PM
+> > > To: igt-dev@lists.freedesktop.org
+> > > Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>;
+> > > Iddamsetty, Aravind <aravind.iddamsetty@intel.com>; Upadhyay, Tejas
+> > > <tejas.upadhyay@intel.com>; Kumar, Janga Rahul
+> > > <janga.rahul.kumar@intel.com>; Dugast, Francois
+> > > <francois.dugast@intel.com>; Dixit, Ashutosh
+> > > <ashutosh.dixit@intel.com>; Roper, Matthew D
+> > > <matthew.d.roper@intel.com>
+> > > Subject: [PATCH v2 2/4] lib/igt_sysfs: Handling gt related sysfs
+> > > uapi changes
+> > >
+> > > Patch https://patchwork.freedesktop.org/series/118927/
+> > > is moving gt sysfs parent under tile folder.
+> > >
+> > > With the above patch path for sysfs changes:
+> > > from: /sys/class/drm/cardX/device/gtN/ to :
+> > > /sys/class/drm/cardX/device/tileN/gtN
+> > >
+> > > Adding xe_for_each_gt_under_each_tile macro to access new path.
+> > >
+> > > v2:
+> > > - Calculate number of tiles once within iterator. (Rahul)
+> > >
+> > > Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
+> > > Cc: Upadhyay <tejas.upadhyay@intel.com>
+> > > Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> > > Cc: Francois Dugast <francois.dugast@intel.com>
+> > > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > > Signed-off-by: Himal Prasad Ghimiray
+> > > <himal.prasad.ghimiray@intel.com>
+> > > ---
+> > >  lib/igt_sysfs.h | 6 ++++++
+> > >  1 file changed, 6 insertions(+)
+> > >
+> > > diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h index
+> > > de2c9a86..42bf2741 100644
+> > > --- a/lib/igt_sysfs.h
+> > > +++ b/lib/igt_sysfs.h
+> > > @@ -80,6 +80,12 @@
+> > >
+> > >  #define xe_for_each_tile for_each_sysfs_tile_dirfd
+> > >
+> > > +/* FIXME: Need to revisit if GT indexing under TILE changes from
+> > > +KMD */ #define xe_for_each_gt_under_each_tile(xe__, gt__, tile__,
+> tile_cnt__) \
+> > > +	for (gt__ =3D 0, tile__ =3D 0, tile_cnt__ =3D igt_sysfs_get_num_til=
+es(xe__) ;
+> \
+> > > +	     gt__ < xe_number_gt(xe__); \
+> > > +	     (xe_number_gt(xe__) =3D=3D tile_cnt__) ? ++gt__, ++tile__ :
+> > > +++gt__)
+> > > +
+> >
+> > This is with consideration of indexing and also considering equal (or
+> > all GT counts are on one tile) GT counts on each tile. Consider case
+> > when 2GTs on 1 tile and 1 GT on other tile. But for all current
+> > platforms we have it should work, need to revisit when any of those
+> scenario comes.
+>=20
+> Yes because of this like tile info should be properly exposed from the xe=
+ kmd
+> query api. Or we could do the sysfs as we did on i915.
+Agreed.
+>=20
+> For the above how about a shorter name like "xe_for_each_tile_and_gt"?
+>=20
+> Also I would change the order of tile__ and gt__ arguments since that is
+> more logical, gt's are under tiles.
+To me  xe_for_each_gt_under_each_tile more appropriate in comparison to=20
+xe_for_each_tile_and_gt. Purpose here is to iterate all gt specific sysfs e=
+ntries under each tile.=20
+>=20
+> Also I don't think tile_cnt__ should be in the macro args, we could just =
+do
+> this:
+>=20
+> #define xe_for_each_tile_and_gt(xe__, , tile__, gt__) \
+> 	for (gt__ =3D 0, tile__ =3D 0; \
+> 	     gt__ < xe_number_gt(xe__); \
+> 	     (xe_number_gt(xe__) =3D=3D igt_sysfs_get_num_tiles(xe__) ?
+> ++gt__, ++tile__ : ++gt__)
 
-== Summary ==
+In rev1. I had used this implementation. But problem is igt_sysfs_get_num_t=
+iles(xe__)=20
+will be calculated for each iteration and want to avoid it.
+>=20
+> So that is possible, but why are we comparing num_gt with num_tiles? So n=
+o
+> idea what's going on here. It should be num gt's per tile if they are all=
+ the
+> same :/
 
-Pipeline status: FAILED.
+Patch https://patchwork.freedesktop.org/series/118927/ is moving
+Gt specific sysfs entries into tile.=20
+from: /sys/class/drm/cardX/device/gtN/sysfsX to : /sys/class/drm/cardX/devi=
+ce/tileN/gtN/sysfsX
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/919560 for the overview.
+Agreed KMD should we exposing the number of gt's per tile. But as of now we=
+ don't have such queries.=20
+But we are certain that none of the platform supports multitile and multigt=
+ per tile so above check ensures.=20
+If number of gt's are equal to number of tiles then sysfs should be read in=
+ above order.  If number of gt is not equal to number of tiles
+Which will be case in MTL , gt0 and gt1 should be under tile0 only.
+Usage of this iterator can be seen from https://patchwork.freedesktop.org/p=
+atch/543998/?series=3D119801&rev=3D1
 
-build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44467237):
-      ],
-      "Created": "2019-11-20T12:54:52.073706506Z",
-      "DockerVersion": "",
-      "Labels": {},
-      "Architecture": "amd64",
-      "Os": "linux",
-      "Layers": [
-          "sha256:45252bb38c9c74dfe76c4b3808269db61d3b2aebe5e26bf7fcd85e48b93e16f9"
-      ]
-  }
-  Skipping, already built
-  Getting image source signatures
-  Copying blob sha256:45252bb38c9c74dfe76c4b3808269db61d3b2aebe5e26bf7fcd85e48b93e16f9
-  time="2023-06-27T03:53:28Z" level=fatal msg="Error reading config blob sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8: Get https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-armhf/blobs/sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8: dial tcp: lookup registry.freedesktop.org on 147.75.207.208:53: read udp 10.88.57.158:59606->147.75.207.208:53: i/o timeout" 
-  section_end:1687838009:step_script
-  section_start:1687838009:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687838009:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+BR
+Himal=20
 
-== Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/919560
+>=20
+> >
+> > Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> >
+> > >  enum i915_attr_id {
+> > >	RPS_ACT_FREQ_MHZ,
+> > >	RPS_CUR_FREQ_MHZ,
+> > > --
+> > > 2.25.1
+> >
