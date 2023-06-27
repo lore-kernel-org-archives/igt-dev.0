@@ -1,24 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A37310E29C
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 07:06:17 +0000 (UTC)
-From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Date: Tue, 27 Jun 2023 07:06:01 +0000
-Message-ID: <MW4PR11MB70560893A7E07B7A0F2CB277B327A@MW4PR11MB7056.namprd11.prod.outlook.com>
-References: <20230623114946.3803540-1-himal.prasad.ghimiray@intel.com>
- <20230623114946.3803540-3-himal.prasad.ghimiray@intel.com>
- <SJ1PR11MB62046E8F51197B7B60F54E2E8126A@SJ1PR11MB6204.namprd11.prod.outlook.com>
- <875y79df9o.wl-ashutosh.dixit@intel.com>
- <MW4PR11MB70561AB1FDBC1E6A4ADB26EAB327A@MW4PR11MB7056.namprd11.prod.outlook.com>
- <87o7l15to2.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87o7l15to2.wl-ashutosh.dixit@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD4BD10E2A3
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 07:59:03 +0000 (UTC)
+Message-ID: <d7f7b2bd-cc4a-2ff8-8b35-b54ecbab8756@intel.com>
+Date: Tue, 27 Jun 2023 13:28:28 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230626051031.2363120-1-bhanuprakash.modem@intel.com>
+ <20230626051031.2363120-13-bhanuprakash.modem@intel.com>
+ <20230626161305.3mq4zlgjwqcqf7ht@kamilkon-desk1>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230626161305.3mq4zlgjwqcqf7ht@kamilkon-desk1>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 2/4] lib/igt_sysfs: Handling gt related
- sysfs uapi changes
+Subject: Re: [igt-dev] [V4 i-g-t 12/24] tests: Use drm_close_driver() to
+ close the drm fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,232 +24,486 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Ashutosh,
+Hi Kamil,
 
-> -----Original Message-----
-> From: Dixit, Ashutosh <ashutosh.dixit@intel.com>
-> Sent: 27 June 2023 11:33
-> To: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
-> Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>; igt-
-> dev@lists.freedesktop.org; Iddamsetty, Aravind
-> <aravind.iddamsetty@intel.com>; Kumar, Janga Rahul
-> <janga.rahul.kumar@intel.com>; Dugast, Francois
-> <francois.dugast@intel.com>; Roper, Matthew D
-> <matthew.d.roper@intel.com>
-> Subject: Re: [PATCH v2 2/4] lib/igt_sysfs: Handling gt related sysfs uapi
-> changes
->=20
-> On Mon, 26 Jun 2023 21:22:33 -0700, Ghimiray, Himal Prasad wrote:
-> >
-> > Hi Ashutosh,
->=20
-> Hi Himal,
->=20
-> >
-> > > -----Original Message-----
-> > > From: Dixit, Ashutosh <ashutosh.dixit@intel.com>
-> > > Sent: 27 June 2023 04:04
-> > > To: Upadhyay, Tejas <tejas.upadhyay@intel.com>
-> > > Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; igt-
-> > > dev@lists.freedesktop.org; Iddamsetty, Aravind
-> > > <aravind.iddamsetty@intel.com>; Kumar, Janga Rahul
-> > > <janga.rahul.kumar@intel.com>; Dugast, Francois
-> > > <francois.dugast@intel.com>; Roper, Matthew D
-> > > <matthew.d.roper@intel.com>
-> > > Subject: Re: [PATCH v2 2/4] lib/igt_sysfs: Handling gt related sysfs
-> > > uapi changes
-> > >
-> > > On Mon, 26 Jun 2023 03:48:16 -0700, Upadhyay, Tejas wrote:
-> > > >
-> > > > > -----Original Message-----
-> > > > > From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
-> > > > > Sent: Friday, June 23, 2023 5:20 PM
-> > > > > To: igt-dev@lists.freedesktop.org
-> > > > > Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>;
-> > > > > Iddamsetty, Aravind <aravind.iddamsetty@intel.com>; Upadhyay,
-> > > > > Tejas <tejas.upadhyay@intel.com>; Kumar, Janga Rahul
-> > > > > <janga.rahul.kumar@intel.com>; Dugast, Francois
-> > > > > <francois.dugast@intel.com>; Dixit, Ashutosh
-> > > > > <ashutosh.dixit@intel.com>; Roper, Matthew D
-> > > > > <matthew.d.roper@intel.com>
-> > > > > Subject: [PATCH v2 2/4] lib/igt_sysfs: Handling gt related sysfs
-> > > > > uapi changes
-> > > > >
-> > > > > Patch https://patchwork.freedesktop.org/series/118927/
-> > > > > is moving gt sysfs parent under tile folder.
-> > > > >
-> > > > > With the above patch path for sysfs changes:
-> > > > > from: /sys/class/drm/cardX/device/gtN/ to :
-> > > > > /sys/class/drm/cardX/device/tileN/gtN
-> > > > >
-> > > > > Adding xe_for_each_gt_under_each_tile macro to access new path.
-> > > > >
-> > > > > v2:
-> > > > > - Calculate number of tiles once within iterator. (Rahul)
-> > > > >
-> > > > > Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
-> > > > > Cc: Upadhyay <tejas.upadhyay@intel.com>
-> > > > > Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> > > > > Cc: Francois Dugast <francois.dugast@intel.com>
-> > > > > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > > > > Cc: Matt Roper <matthew.d.roper@intel.com>
-> > > > > Signed-off-by: Himal Prasad Ghimiray
-> > > > > <himal.prasad.ghimiray@intel.com>
-> > > > > ---
-> > > > >  lib/igt_sysfs.h | 6 ++++++
-> > > > >  1 file changed, 6 insertions(+)
-> > > > >
-> > > > > diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h index
-> > > > > de2c9a86..42bf2741 100644
-> > > > > --- a/lib/igt_sysfs.h
-> > > > > +++ b/lib/igt_sysfs.h
-> > > > > @@ -80,6 +80,12 @@
-> > > > >
-> > > > >  #define xe_for_each_tile for_each_sysfs_tile_dirfd
-> > > > >
-> > > > > +/* FIXME: Need to revisit if GT indexing under TILE changes
-> > > > > +from KMD */ #define xe_for_each_gt_under_each_tile(xe__, gt__,
-> > > > > +tile__,
-> > > tile_cnt__) \
-> > > > > +	for (gt__ =3D 0, tile__ =3D 0, tile_cnt__ =3D
-> > > > > +igt_sysfs_get_num_tiles(xe__) ;
-> > > \
-> > > > > +	     gt__ < xe_number_gt(xe__); \
-> > > > > +	     (xe_number_gt(xe__) =3D=3D tile_cnt__) ? ++gt__, ++tile__ =
-:
-> > > > > +++gt__)
-> > > > > +
-> > > >
-> > > > This is with consideration of indexing and also considering equal
-> > > > (or all GT counts are on one tile) GT counts on each tile.
-> > > > Consider case when 2GTs on 1 tile and 1 GT on other tile. But for
-> > > > all current platforms we have it should work, need to revisit when
-> > > > any of those
-> > > scenario comes.
-> > >
-> > > Yes because of this like tile info should be properly exposed from
-> > > the xe kmd query api. Or we could do the sysfs as we did on i915.
-> > Agreed.
-> > >
-> > > For the above how about a shorter name like
-> "xe_for_each_tile_and_gt"?
-> > >
-> > > Also I would change the order of tile__ and gt__ arguments since
-> > > that is more logical, gt's are under tiles.
->=20
-> This is a nit but anyway what about this?
-Sorry I missed it earlier. What you suggested is logical and more appropria=
-te.=20
-Will change the order of arguments.
->=20
-> > To me  xe_for_each_gt_under_each_tile more appropriate in comparison
-> > to xe_for_each_tile_and_gt. Purpose here is to iterate all gt specific =
-sysfs
-> entries under each tile.
-> > >
-> > > Also I don't think tile_cnt__ should be in the macro args, we could
-> > > just do
-> > > this:
-> > >
-> > > #define xe_for_each_tile_and_gt(xe__, , tile__, gt__) \
-> > >	for (gt__ =3D 0, tile__ =3D 0; \
-> > >	     gt__ < xe_number_gt(xe__); \
-> > >	     (xe_number_gt(xe__) =3D=3D igt_sysfs_get_num_tiles(xe__) ?
-> > > ++gt__, ++tile__ : ++gt__)
-> >
-> > In rev1. I had used this implementation. But problem is
-> > igt_sysfs_get_num_tiles(xe__) will be calculated for each iteration and
-> want to avoid it.
->=20
-> As far as I see it, the compiler should optimize any such repetitions. We=
- can
-> even add num_tiles to 'struct xe_device' in xe_device_get() (as if it's
-> obtained from the kernel), similar to xe_number_gt().
-In that case, my preference would be using  (xe_number_gt(xe__) =3D=3D igt_=
-sysfs_get_num_tiles(xe__)=20
-Instead of populating num_tiles in struct xe_device because other members o=
-f the structure are  being intitialized=20
-on the basis of ioctl call.=20
-Please confirm what will be more appropriate.
+On Mon-26-06-2023 09:43 pm, Kamil Konieczny wrote:
+> Hi Bhanuprakash,
+> 
+> On 2023-06-26 at 10:40:19 +0530, Bhanuprakash Modem wrote:
+>> To close the drm file descriptor, use igt helper drm_close_driver()
+>> instead of using close().
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   tests/core_auth.c              | 10 +++++-----
+>>   tests/core_getclient.c         |  2 +-
+>>   tests/core_getstats.c          |  2 +-
+>>   tests/core_getversion.c        |  2 +-
+>>   tests/core_setmaster.c         |  6 +++---
+>>   tests/core_setmaster_vs_auth.c |  6 +++---
+>>   tests/debugfs_test.c           |  2 +-
+>>   tests/dumb_buffer.c            |  2 +-
+>>   tests/eviction_common.c        |  2 +-
+>>   tests/fbdev.c                  |  2 +-
+>>   tests/prime_busy.c             |  2 +-
+>>   tests/prime_mmap.c             |  2 +-
+>>   tests/prime_mmap_coherency.c   |  4 ++--
+>>   tests/prime_mmap_kms.c         |  2 +-
+>>   tests/prime_self_import.c      | 26 +++++++++++++-------------
+>>   tests/prime_vgem.c             |  4 ++--
+>>   tests/syncobj_basic.c          |  2 +-
+>>   tests/syncobj_timeline.c       |  2 +-
+>>   tests/syncobj_wait.c           |  2 +-
+>>   tests/template.c               |  2 +-
+>>   tests/vgem_basic.c             |  6 +++---
+>>   tests/vgem_slow.c              |  2 +-
+>>   22 files changed, 46 insertions(+), 46 deletions(-)
+>>
+>> diff --git a/tests/core_auth.c b/tests/core_auth.c
+>> index ed736e1ae..bc1b3b8d5 100644
+>> --- a/tests/core_auth.c
+>> +++ b/tests/core_auth.c
+>> @@ -214,7 +214,7 @@ static void test_basic_auth(int master)
+>>   	igt_assert(drmGetMagic(slave, &magic) == 0);
+>>   	igt_assert_eq(magic, old_magic);
+>>   
+>> -	close(slave);
+>> +	drm_close_driver(slave);
+>>   }
+>>   
+>>   igt_main
+>> @@ -226,7 +226,7 @@ igt_main
+>>   
+>>   		igt_assert(check_auth(fd) == true);
+>>   
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   
+>>   	igt_describe("Use 2 clients, check second is authenticated even when first dropped.");
+>> @@ -236,11 +236,11 @@ igt_main
+>>   
+>>   		igt_assert(check_auth(fd2) == true);
+>>   
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   
+>>   		igt_assert(check_auth(fd2) == true);
+>>   
+>> -		close(fd2);
+>> +		drm_close_driver(fd2);
+>>   	}
+>>   
+>>   	/* above tests require that no drm fd is open */
+>> @@ -249,7 +249,7 @@ igt_main
+>>   
+>>   		igt_fixture
+>>   			master = drm_open_driver_master(DRIVER_ANY);
+>> -	
+>> +
+> 
+> Drop this change.
 
->=20
-> > >
-> > > So that is possible, but why are we comparing num_gt with num_tiles?
-> > > So no idea what's going on here. It should be num gt's per tile if
-> > > they are all the same :/
-> >
-> > Patch https://patchwork.freedesktop.org/series/118927/ is moving Gt
-> > specific sysfs entries into tile.
-> > from: /sys/class/drm/cardX/device/gtN/sysfsX to :
-> > /sys/class/drm/cardX/device/tileN/gtN/sysfsX
-> >
-> > Agreed KMD should we exposing the number of gt's per tile. But as of no=
-w
-> we don't have such queries.
-> > But we are certain that none of the platform supports multitile and mul=
-tigt
-> per tile so above check ensures.
-> > If number of gt's are equal to number of tiles then sysfs should be
-> > read in above order.  If number of gt is not equal to number of tiles W=
-hich
-> will be case in MTL , gt0 and gt1 should be under tile0 only.
->=20
-> So the code only works for 'num_tiles =3D=3D 1' or 'num_tiles =3D=3D num_=
-gt' (1 gt
-> per tile), correct? At the minimum we should probably add this assert in =
-the
-> init section of the for loop.
-Correct, as of now code only caters multitile and multigt exclusively.=20
-Will need to enhance in case of future platform supporting both.
-AFAIK adding assert/comparison in init section of for loop is not possible.
-And I can't make it multiple statement macro because that will break in cas=
-e of handling=20
-iterator in if-else condition.
->=20
-> The correct way to do it is of course to traverse the tile/gt directory t=
-ree
-> which would be able to handle general tile/gt combinations.
->=20
-The issue with this approach is for multi tile the gt indexing is same as t=
-ile indexing.
-Tile0/gt0 and tile1/gt1. Multiple loop with extra conditions will be overki=
-ll and confusing to handle=20
-the scenario.=20
-1) First determine number of gt's_per_tile writing the logic as finding num=
-ber of tiles.
-2) For(each_tile)
-      for(each_gt) run loop till total numbers of gt's because indexing doe=
-sn't start with 0. [ skip all other index's apart from index same as tile]
+I haven't done this, some how my vim editor is adding this change. Will 
+fix it new rev.
 
+> 
+>>   		igt_describe("Test magic numbers for master and slave.");
+>>   		igt_subtest("basic-auth")
+>>   			test_basic_auth(master);
+>> diff --git a/tests/core_getclient.c b/tests/core_getclient.c
+>> index 993801ead..839fae36a 100644
+>> --- a/tests/core_getclient.c
+>> +++ b/tests/core_getclient.c
+>> @@ -70,5 +70,5 @@ igt_simple_main
+>>   	ret = ioctl(fd, DRM_IOCTL_GET_CLIENT, &client);
+>>   	igt_assert(ret == -1 && errno == EINVAL);
+>>   
+>> -	close(fd);
+>> +	drm_close_driver(fd);
+>>   }
+>> diff --git a/tests/core_getstats.c b/tests/core_getstats.c
+>> index fef122583..8b5655053 100644
+>> --- a/tests/core_getstats.c
+>> +++ b/tests/core_getstats.c
+>> @@ -64,5 +64,5 @@ igt_simple_main
+>>   	ret = ioctl(fd, DRM_IOCTL_GET_STATS, &stats);
+>>   	igt_assert(ret == 0);
+>>   
+>> -	close(fd);
+>> +	drm_close_driver(fd);
+>>   }
+>> diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+>> index 36ba01b86..32cb976e4 100644
+>> --- a/tests/core_getversion.c
+>> +++ b/tests/core_getversion.c
+>> @@ -58,5 +58,5 @@ igt_simple_main
+>>   		igt_assert_lte(1, v->version_major);
+>>   
+>>   	drmFree(v);
+>> -	close(fd);
+>> +	drm_close_driver(fd);
+>>   }
+>> diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
+>> index 621bc2469..04ee6b8b5 100644
+>> --- a/tests/core_setmaster.c
+>> +++ b/tests/core_setmaster.c
+>> @@ -104,7 +104,7 @@ static void check_drop_set(void)
+>>   	igt_assert_eq(drmDropMaster(master), 0);
+>>   	igt_assert_eq(drmSetMaster(master), 0);
+>>   
+>> -	close(master);
+>> +	drm_close_driver(master);
+>>   }
+>>   
+>>   static unsigned tweak_perm(uint8_t *saved_perm, unsigned max_perm, bool save)
+>> @@ -225,10 +225,10 @@ igt_main
+>>   			igt_assert_eq(drmSetMaster(master), -1);
+>>   			igt_assert_eq(errno, EACCES);
+>>   
+>> -			close(master);
+>> +			drm_close_driver(master);
+>>   		}
+>>   		igt_waitchildren();
+>>   
+>> -		close(master);
+>> +		drm_close_driver(master);
+>>   	}
+>>   }
+>> diff --git a/tests/core_setmaster_vs_auth.c b/tests/core_setmaster_vs_auth.c
+>> index adca1c111..b80ed3879 100644
+>> --- a/tests/core_setmaster_vs_auth.c
+>> +++ b/tests/core_setmaster_vs_auth.c
+>> @@ -78,7 +78,7 @@ igt_simple_main
+>>   	igt_assert_neq(drmAuthMagic(master2, magic), 0);
+>>   	igt_assert_eq(errno, EINVAL);
+>>   
+>> -	close(client);
+>> -	close(master2);
+>> -	close(master1);
+>> +	drm_close_driver(client);
+>> +	drm_close_driver(master2);
+>> +	drm_close_driver(master1);
+>>   }
+>> diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
+>> index 5ee615aba..b67bfabac 100644
+>> --- a/tests/debugfs_test.c
+>> +++ b/tests/debugfs_test.c
+>> @@ -255,6 +255,6 @@ igt_main
+>>   	igt_fixture {
+>>   		close(sysfs);
+>>   		close(debugfs);
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   }
+>> diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+>> index 9495d28ff..9db857f9f 100644
+>> --- a/tests/dumb_buffer.c
+>> +++ b/tests/dumb_buffer.c
+>> @@ -416,6 +416,6 @@ igt_main
+>>   		always_clear(fd, 30);
+>>   
+>>   	igt_fixture {
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   }
+>> diff --git a/tests/eviction_common.c b/tests/eviction_common.c
+>> index 95af106c1..5948fbc64 100644
+>> --- a/tests/eviction_common.c
+>> +++ b/tests/eviction_common.c
+>> @@ -300,7 +300,7 @@ static int forking_evictions(int fd, struct igt_eviction_test_ops *ops,
+>>   
+>>   		/* drmfd closing will take care of additional bo refs */
+>>   		if (flags & FORKING_EVICTIONS_DUP_DRMFD)
+>> -			close(realfd);
+>> +			drm_close_driver(realfd);
+>>   	}
+>>   
+>>   	igt_waitchildren();
+>> diff --git a/tests/fbdev.c b/tests/fbdev.c
+>> index 794882a6a..154e78b0f 100644
+>> --- a/tests/fbdev.c
+>> +++ b/tests/fbdev.c
+>> @@ -443,6 +443,6 @@ igt_main
+>>   	}
+>>   
+>>   	igt_fixture {
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   }
+>> diff --git a/tests/prime_busy.c b/tests/prime_busy.c
+>> index 6b0d7310b..90d79864f 100644
+>> --- a/tests/prime_busy.c
+>> +++ b/tests/prime_busy.c
+>> @@ -184,6 +184,6 @@ igt_main
+>>   
+>>   	igt_fixture {
+>>   		intel_ctx_destroy(fd, ctx);
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   }
+>> diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+>> index efd4deff9..25b2939e9 100644
+>> --- a/tests/prime_mmap.c
+>> +++ b/tests/prime_mmap.c
+>> @@ -590,6 +590,6 @@ igt_main
+>>   		free(query_info);
+>>   		igt_collection_destroy(set);
+>>   		igt_collection_destroy(dma_buf_set);
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   }
+>> diff --git a/tests/prime_mmap_coherency.c b/tests/prime_mmap_coherency.c
+>> index e5f7c92b2..01eb2002d 100644
+>> --- a/tests/prime_mmap_coherency.c
+>> +++ b/tests/prime_mmap_coherency.c
+>> @@ -267,7 +267,7 @@ static void blit_and_cmp(void)
+>>   
+>>   	intel_bb_destroy(local_batch);
+>>   	buf_ops_destroy(local_bops);
+>> -	close(local_fd);
+>> +	drm_close_driver(local_fd);
+>>   }
+>>   
+>>   /*
+>> @@ -364,6 +364,6 @@ igt_main
+>>   	igt_fixture {
+>>   		buf_ops_destroy(bops);
+>>   
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   }
+>> diff --git a/tests/prime_mmap_kms.c b/tests/prime_mmap_kms.c
+>> index 8b127a13c..1a63be38f 100644
+>> --- a/tests/prime_mmap_kms.c
+>> +++ b/tests/prime_mmap_kms.c
+>> @@ -263,6 +263,6 @@ igt_main
+>>   
+>>   	igt_fixture {
+>>   		igt_display_fini(&gpu.display);
+>> -		close(gpu.drm_fd);
+>> +		drm_close_driver(gpu.drm_fd);
+>>   	}
+>>   }
+>> diff --git a/tests/prime_self_import.c b/tests/prime_self_import.c
+>> index 30f2bf013..2dbf4e20f 100644
+>> --- a/tests/prime_self_import.c
+>> +++ b/tests/prime_self_import.c
+>> @@ -147,8 +147,8 @@ static void test_with_fd_dup(void)
+>>   	close(dma_buf_fd2);
+>>   	check_bo(fd2, handle_import, fd2, handle_import);
+>>   
+>> -	close(fd1);
+>> -	close(fd2);
+>> +	drm_close_driver(fd1);
+>> +	drm_close_driver(fd2);
+>>   }
+>>   
+>>   static void test_with_two_bos(void)
+>> @@ -180,8 +180,8 @@ static void test_with_two_bos(void)
+>>   
+>>   	check_bo(fd2, handle_import, fd2, handle_import);
+>>   
+>> -	close(fd1);
+>> -	close(fd2);
+>> +	drm_close_driver(fd1);
+>> +	drm_close_driver(fd2);
+>>   }
+>>   
+>>   static void test_with_one_bo_two_files(void)
+>> @@ -205,8 +205,8 @@ static void test_with_one_bo_two_files(void)
+>>   	/* dma-buf self importing an flink bo should give the same handle */
+>>   	igt_assert_eq_u32(handle_import, handle_open);
+>>   
+>> -	close(fd1);
+>> -	close(fd2);
+>> +	drm_close_driver(fd1);
+>> +	drm_close_driver(fd2);
+>>   	close(dma_buf_fd1);
+>>   	close(dma_buf_fd2);
+>>   }
+>> @@ -252,7 +252,7 @@ static void test_with_one_bo(void)
+>>   	check_bo(fd1, handle, fd2, handle_import1);
+>>   
+>>   	/* Completely rip out exporting fd. */
+>> -	close(fd1);
+>> +	drm_close_driver(fd1);
+>>   	check_bo(fd2, handle_import1, fd2, handle_import1);
+>>   }
+>>   
+>> @@ -316,14 +316,14 @@ static void test_reimport_close_race(void)
+>>   		igt_assert(status == 0);
+>>   	}
+>>   
+>> -	close(fds[0]);
+>> +	drm_close_driver(fds[0]);
+>>   	close(fds[1]);
+> ------- ^^^^^
+> this should also be changed ?
 
-> Anyway I'll let other people decide whether what we have here is ok or no=
-t
-> to merge.
->=20
+fds[1] is not a drm fd. It is a dma-buf fd to export the gem buffer.
+So, we are not going to change it.
+
+- Bhanu
+
+> 
+> Rest looks ok.
+> 
 > Regards,
-> Ashutosh
->=20
->=20
-> > Usage of this iterator can be seen from
-> > https://patchwork.freedesktop.org/patch/543998/?series=3D119801&rev=3D1
-> >
-> > BR
-> > Himal
-> >
-> >
-> > >
-> > > >
-> > > > Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> > > >
-> > > > >  enum i915_attr_id {
-> > > > >	RPS_ACT_FREQ_MHZ,
-> > > > >	RPS_CUR_FREQ_MHZ,
-> > > > > --
-> > > > > 2.25.1
-> > > >
+> Kamil
+> 
+>>   
+>>   	obj_count = igt_get_stable_obj_count(fake) - obj_count;
+>>   
+>>   	igt_info("leaked %i objects\n", obj_count);
+>>   
+>> -	close(fake);
+>> +	drm_close_driver(fake);
+>>   
+>>   	igt_assert_eq(obj_count, 0);
+>>   }
+>> @@ -398,13 +398,13 @@ static void test_export_close_race(void)
+>>   		igt_assert(status == 0);
+>>   	}
+>>   
+>> -	close(fd);
+>> +	drm_close_driver(fd);
+>>   
+>>   	obj_count = igt_get_stable_obj_count(fake) - obj_count;
+>>   
+>>   	igt_info("leaked %i objects\n", obj_count);
+>>   
+>> -	close(fake);
+>> +	drm_close_driver(fake);
+>>   
+>>   	igt_assert_eq(obj_count, 0);
+>>   }
+>> @@ -433,7 +433,7 @@ static void test_llseek_size(void)
+>>   		close(dma_buf_fd);
+>>   	}
+>>   
+>> -	close(fd);
+>> +	drm_close_driver(fd);
+>>   }
+>>   
+>>   static void test_llseek_bad(void)
+>> @@ -462,7 +462,7 @@ static void test_llseek_bad(void)
+>>   
+>>   	close(dma_buf_fd);
+>>   
+>> -	close(fd);
+>> +	drm_close_driver(fd);
+>>   }
+>>   
+>>   igt_main
+>> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+>> index 85b9cf880..876e04ed0 100644
+>> --- a/tests/prime_vgem.c
+>> +++ b/tests/prime_vgem.c
+>> @@ -1326,7 +1326,7 @@ igt_main
+>>   
+>>   
+>>   	igt_fixture {
+>> -		close(i915);
+>> -		close(vgem);
+>> +		drm_close_driver(i915);
+>> +		drm_close_driver(vgem);
+>>   	}
+>>   }
+>> diff --git a/tests/syncobj_basic.c b/tests/syncobj_basic.c
+>> index 3252dbd69..f079baf09 100644
+>> --- a/tests/syncobj_basic.c
+>> +++ b/tests/syncobj_basic.c
+>> @@ -266,7 +266,7 @@ igt_main
+>>   		test_valid_cycle(fd);
+>>   
+>>   	igt_fixture {
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   
+>>   }
+>> diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+>> index 134a60995..b4e1d093a 100644
+>> --- a/tests/syncobj_timeline.c
+>> +++ b/tests/syncobj_timeline.c
+>> @@ -1936,6 +1936,6 @@ igt_main
+>>   		test_32bits_limit(fd);
+>>   
+>>   	igt_fixture {
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   }
+>> diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+>> index 2583ef72e..e0ff69b79 100644
+>> --- a/tests/syncobj_wait.c
+>> +++ b/tests/syncobj_wait.c
+>> @@ -1062,6 +1062,6 @@ igt_main
+>>   		test_wait_interrupted(fd, WAIT_ALL);
+>>   
+>>   	igt_fixture {
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   }
+>> diff --git a/tests/template.c b/tests/template.c
+>> index e23814fb7..ae2681c01 100644
+>> --- a/tests/template.c
+>> +++ b/tests/template.c
+>> @@ -76,6 +76,6 @@ igt_main
+>>   	 */
+>>   
+>>   	igt_fixture {
+>> -		close(drm_fd);
+>> +		drm_close_driver(drm_fd);
+>>   	}
+>>   }
+>> diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
+>> index f2255a619..63c5c0971 100644
+>> --- a/tests/vgem_basic.c
+>> +++ b/tests/vgem_basic.c
+>> @@ -162,8 +162,8 @@ static void test_setversion(int fd)
+>>   
+>>   static void test_client(int fd)
+>>   {
+>> -	close(drm_open_driver(DRIVER_VGEM));
+>> -	close(drm_open_driver_render(DRIVER_VGEM));
+>> +	drm_close_driver(drm_open_driver(DRIVER_VGEM));
+>> +	drm_close_driver(drm_open_driver_render(DRIVER_VGEM));
+>>   }
+>>   
+>>   static void test_create(int fd)
+>> @@ -635,6 +635,6 @@ igt_main
+>>   		test_debugfs_read(fd);
+>>   
+>>   	igt_fixture {
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   }
+>> diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
+>> index 0c91cdb9d..cb9436628 100644
+>> --- a/tests/vgem_slow.c
+>> +++ b/tests/vgem_slow.c
+>> @@ -97,6 +97,6 @@ igt_main
+>>   		test_nohang(fd);
+>>   
+>>   	igt_fixture {
+>> -		close(fd);
+>> +		drm_close_driver(fd);
+>>   	}
+>>   }
+>> -- 
+>> 2.40.0
+>>
