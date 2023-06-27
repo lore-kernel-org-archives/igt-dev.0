@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 798FC10E305
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 14:41:58 +0000 (UTC)
-Message-ID: <d4872f00-07a8-29d9-2144-2d2da77279db@intel.com>
-Date: Tue, 27 Jun 2023 20:11:35 +0530
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230626213148.2242-1-nidhi1.gupta@intel.com>
-Content-Language: en-US
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230626213148.2242-1-nidhi1.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_cursor: Handle
- invalid pipe in big joiner
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Tue, 27 Jun 2023 14:48:15 -0000
+Message-ID: <168787729544.2459.8390492760417233694@emeril.freedesktop.org>
+References: <20230627122030.675526-1-swati2.sharma@intel.com>
+In-Reply-To: <20230627122030.675526-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_D?=
+ =?utf-8?q?SC_Fractional_BPP_Val_Support_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,53 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Nidhi,
+== Series Details ==
 
-On Tue-27-06-2023 03:01 am, Nidhi Gupta wrote:
-> If any pipe is invalid in big joiner currently test throws
-> as skip for all the pipes as it is within the dynamic subtest
-> block.
-> Fixed in IGT by not executing the subtest if valid combo of pipe
-> and output not found for big joiner and go on to check for the
-> next pipe.
-> 
-> v2: Fix commit subject and message (Bhanu)
->      Fix nitpicks (Bhanu)
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->   tests/kms_plane_cursor.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-> index 59b105c6..2e45c07c 100644
-> --- a/tests/kms_plane_cursor.c
-> +++ b/tests/kms_plane_cursor.c
-> @@ -86,7 +86,6 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
->   	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
->   
->   	igt_output_set_pipe(data->output, data->pipe_id);
-> -	igt_require(i915_pipe_output_combo_valid(display));
->   
->   	igt_info("Using (pipe %s + %s) to run the subtest.\n",
->   		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
-> @@ -310,6 +309,9 @@ igt_main
->   							     DRM_PLANE_TYPE_OVERLAY))
->   					continue;
->   
-> +				if (!i915_pipe_output_combo_valid(&data.display))
+Series: DSC Fractional BPP Val Support (rev2)
+URL   : https://patchwork.freedesktop.org/series/117493/
+State : warning
 
-This check will throw an error, since you are not using any pipe/output 
-before calling this check.
+== Summary ==
 
-- Bhanu
+Pipeline status: FAILED.
 
-> +					continue;
-> +
->   				test_init(&data, pipe, output);
->   
->   				for (j = 0; j < ARRAY_SIZE(cursor_sizes); j++) {
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/920077 for the overview.
+
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44508810):
+  0206735aec111e436dc521330289b7bdeecabd6c2ae60e8c070f4504bb56128d
+  STEP 3: COPY .gitlab-ci/docker-help.sh /usr/local/bin/docker-help.sh
+  e159d958b02c9c2f5c3d3f5154380baa08e21d745907e47a030134672a0c1912
+  STEP 4: ENV PATH="/opt/igt/bin:${PATH}"
+  fe2c5cf12dec333b4a81fe11b02cb307d14f6fbe59eab4b0472e6b2e970512f1
+  STEP 5: ENV LD_LIBRARY_PATH="/opt/igt/lib:/opt/igt/lib64:${LD_LIBRARY_PATH}"
+  03fb162f57eed27133b27022f4ffe5ab79d8b90a943437bb397a99dcb9c2a5bb
+  STEP 6: ENV IGT_TEST_ROOT="/opt/igt/libexec/igt-gpu-tools"
+  a2729ed1214faa06e067b3b93aeead58c467af65c9910c9751c5926233ca5eea
+  STEP 7: CMD docker-help.sh
+  STEP 8: COMMIT registry.freedesktop.org/gfx-ci/igt-ci-tags/igt:commit-f31528e7d69d6759f5e7c033cd06f3c93e7b918b
+  36c0e14fbc185bd379e47965d1f93129fc3a3c153cf7b08628b73cc76a887e9f
+  Getting image source signatures
+  Error: Error copying image to the remote destination: Error trying to reuse blob sha256:3504a8337d3b7eaabfd338d6a971d02441d28ebef8bd81f730d87f936ed58079 at destination: failed to read from destination repository gfx-ci/igt-ci-tags/igt: 500 (Internal Server Error)
+  section_end:1687877029:step_script
+  section_start:1687877029:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1687877030:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/920077
