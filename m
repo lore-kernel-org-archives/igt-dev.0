@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC41110E2BA
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 08:42:15 +0000 (UTC)
-Message-ID: <63cdb4b1-63ef-8fbc-4c0d-558303fd3f1c@intel.com>
-Date: Tue, 27 Jun 2023 14:11:29 +0530
-Content-Language: en-US
-To: <igt-dev@lists.freedesktop.org>, <saix.nandan.yedireswarapu@intel.com>
-References: <20230626160106.2632928-1-bhanuprakash.modem@intel.com>
- <168785402984.2458.6795077763424947963@emeril.freedesktop.org>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <168785402984.2458.6795077763424947963@emeril.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB1D210E2BA
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 08:43:20 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	kamil.konieczny@linux.intel.com
+Date: Tue, 27 Jun 2023 14:07:01 +0530
+Message-Id: <20230627083701.2684016-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230626051031.2363120-13-bhanuprakash.modem@intel.com>
+References: <20230626051031.2363120-13-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgTmV3IGRp?=
- =?utf-8?q?r_structure_for_intel_specific_tests_=28rev4=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [V4 i-g-t 12/24] tests: Use drm_close_driver() to close
+ the drm fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,220 +24,447 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Sai,
+To close the drm file descriptor, use igt helper drm_close_driver()
+instead of using close().
 
-Can you please re-report below false positive?
+V2: - Fix few nits
 
-- Bhanu
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/core_auth.c              |  8 ++++----
+ tests/core_getclient.c         |  2 +-
+ tests/core_getstats.c          |  2 +-
+ tests/core_getversion.c        |  2 +-
+ tests/core_setmaster.c         |  6 +++---
+ tests/core_setmaster_vs_auth.c |  6 +++---
+ tests/debugfs_test.c           |  2 +-
+ tests/dumb_buffer.c            |  2 +-
+ tests/eviction_common.c        |  2 +-
+ tests/fbdev.c                  |  2 +-
+ tests/prime_busy.c             |  2 +-
+ tests/prime_mmap.c             |  2 +-
+ tests/prime_mmap_coherency.c   |  4 ++--
+ tests/prime_mmap_kms.c         |  2 +-
+ tests/prime_self_import.c      | 26 +++++++++++++-------------
+ tests/prime_vgem.c             |  4 ++--
+ tests/syncobj_basic.c          |  2 +-
+ tests/syncobj_timeline.c       |  2 +-
+ tests/syncobj_wait.c           |  2 +-
+ tests/template.c               |  2 +-
+ tests/vgem_basic.c             |  6 +++---
+ tests/vgem_slow.c              |  2 +-
+ 22 files changed, 45 insertions(+), 45 deletions(-)
 
-On Tue-27-06-2023 01:50 pm, Patchwork wrote:
-> *Patch Details*
-> *Series:*	New dir structure for intel specific tests (rev4)
-> *URL:*	https://patchwork.freedesktop.org/series/117227/ 
-> <https://patchwork.freedesktop.org/series/117227/>
-> *State:*	failure
-> *Details:* 
-> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/index.html 
-> <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/index.html>
-> 
-> 
->   CI Bug Log - changes from CI_DRM_13324 -> IGTPW_9262
-> 
-> 
->     Summary
-> 
-> *FAILURE*
-> 
-> Serious unknown changes coming with IGTPW_9262 absolutely need to be
-> verified manually.
-> 
-> If you think the reported changes have nothing to do with the changes
-> introduced in IGTPW_9262, please notify your bug team to allow them
-> to document this new failure mode, which will reduce false positives in CI.
-> 
-> External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/index.html
-> 
-> 
->     Participating hosts (40 -> 41)
-> 
-> Additional (2): bat-dg1-8 bat-adlp-11
-> Missing (1): fi-snb-2520m
-> 
-> 
->     Possible new issues
-> 
-> Here are the unknown changes that may have been introduced in IGTPW_9262:
-> 
-> 
->       IGT changes
-> 
-> 
->         Possible regressions
-> 
->   * igt@i915_module_load@load:
->       o bat-rplp-1: PASS
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13324/bat-rplp-1/igt@i915_module_load@load.html> -> ABORT <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-rplp-1/igt@i915_module_load@load.html>
-> 
-> 
->         Suppressed
-> 
-> The following results come from untrusted machines, tests, or statuses.
-> They do not affect the overall result.
-> 
->   * {igt@xe_create@create-massive-size}:
->       o {bat-dg1-8}: NOTRUN -> FAIL
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-dg1-8/igt@xe_create@create-massive-size.html> +2 similar issues
-> 
-> 
->     Known issues
-> 
-> Here are the changes found in IGTPW_9262 that come from known issues:
-> 
-> 
->       IGT changes
-> 
-> 
->         Issues hit
-> 
->   *
-> 
->     igt@debugfs_test@basic-hwmon:
-> 
->       o bat-adlp-11: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@debugfs_test@basic-hwmon.html> (i915#7456 <https://gitlab.freedesktop.org/drm/intel/issues/7456>)
->   *
-> 
->     igt@gem_tiled_pread_basic:
-> 
->       o bat-adlp-11: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@gem_tiled_pread_basic.html> (i915#3282 <https://gitlab.freedesktop.org/drm/intel/issues/3282>)
->   *
-> 
->     igt@i915_pm_backlight@basic-brightness:
-> 
->       o bat-adlp-11: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@i915_pm_backlight@basic-brightness.html> (i915#3546 <https://gitlab.freedesktop.org/drm/intel/issues/3546> / i915#7561 <https://gitlab.freedesktop.org/drm/intel/issues/7561>)
->   *
-> 
->     igt@i915_pm_rpm@basic-pci-d3-state:
-> 
->       o bat-adlp-11: NOTRUN -> ABORT
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@i915_pm_rpm@basic-pci-d3-state.html> (i915#7977 <https://gitlab.freedesktop.org/drm/intel/issues/7977> / i915#8434 <https://gitlab.freedesktop.org/drm/intel/issues/8434>)
->   *
-> 
->     igt@i915_selftest@live@execlists:
-> 
->       o fi-bsw-n3050: PASS
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13324/fi-bsw-n3050/igt@i915_selftest@live@execlists.html> -> ABORT <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/fi-bsw-n3050/igt@i915_selftest@live@execlists.html> (i915#7913 <https://gitlab.freedesktop.org/drm/intel/issues/7913>)
->   *
-> 
->     igt@i915_selftest@live@requests:
-> 
->       o bat-mtlp-6: PASS
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13324/bat-mtlp-6/igt@i915_selftest@live@requests.html> -> DMESG-FAIL <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-mtlp-6/igt@i915_selftest@live@requests.html> (i915#7269 <https://gitlab.freedesktop.org/drm/intel/issues/7269>)
->   *
-> 
->     igt@i915_selftest@live@slpc:
-> 
->       o bat-mtlp-8: PASS
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13324/bat-mtlp-8/igt@i915_selftest@live@slpc.html> -> DMESG-WARN <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-mtlp-8/igt@i915_selftest@live@slpc.html> (i915#6367 <https://gitlab.freedesktop.org/drm/intel/issues/6367>)
->   *
-> 
->     igt@kms_chamelium_frames@hdmi-crc-fast:
-> 
->       o bat-adlp-11: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@kms_chamelium_frames@hdmi-crc-fast.html> (i915#7828 <https://gitlab.freedesktop.org/drm/intel/issues/7828>) +7 similar issues
->   *
-> 
->     igt@kms_chamelium_hpd@common-hpd-after-suspend:
-> 
->       o bat-dg2-11: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html> (i915#7828 <https://gitlab.freedesktop.org/drm/intel/issues/7828>)
->   *
-> 
->     igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-> 
->       o bat-adlp-11: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (i915#4103 <https://gitlab.freedesktop.org/drm/intel/issues/4103>) +1 similar issue
->   *
-> 
->     igt@kms_force_connector_basic@prune-stale-modes:
-> 
->       o bat-adlp-11: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@kms_force_connector_basic@prune-stale-modes.html> (i915#4093 <https://gitlab.freedesktop.org/drm/intel/issues/4093>) +3 similar issues
->   *
-> 
->     igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-5:
-> 
->       o bat-adlp-11: NOTRUN -> DMESG-WARN
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-5.html> (i915#6868 <https://gitlab.freedesktop.org/drm/intel/issues/6868>)
->   *
-> 
->     igt@kms_pipe_crc_basic@read-crc:
-> 
->       o bat-adlp-11: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@kms_pipe_crc_basic@read-crc.html> (i915#3546 <https://gitlab.freedesktop.org/drm/intel/issues/3546>)
->   *
-> 
->     igt@kms_psr@primary_page_flip:
-> 
->       o bat-adlp-11: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@kms_psr@primary_page_flip.html> (i915#1072 <https://gitlab.freedesktop.org/drm/intel/issues/1072>) +3 similar issues
->   *
-> 
->     igt@kms_setmode@basic-clone-single-crtc:
-> 
->       o bat-adlp-11: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-adlp-11/igt@kms_setmode@basic-clone-single-crtc.html> (i915#3555 <https://gitlab.freedesktop.org/drm/intel/issues/3555> / i915#4579 <https://gitlab.freedesktop.org/drm/intel/issues/4579>)
-> 
-> 
->         Possible fixes
-> 
->   *
-> 
->     igt@i915_selftest@live@gt_mocs:
-> 
->       o bat-mtlp-6: DMESG-FAIL
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13324/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html> (i915#7059 <https://gitlab.freedesktop.org/drm/intel/issues/7059>) -> PASS <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html>
->   *
-> 
->     igt@i915_selftest@live@requests:
-> 
->       o bat-mtlp-8: DMESG-FAIL
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13324/bat-mtlp-8/igt@i915_selftest@live@requests.html> (i915#8497 <https://gitlab.freedesktop.org/drm/intel/issues/8497>) -> PASS <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-mtlp-8/igt@i915_selftest@live@requests.html>
->   *
-> 
->     igt@i915_selftest@live@slpc:
-> 
->       o bat-rpls-1: DMESG-WARN
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13324/bat-rpls-1/igt@i915_selftest@live@slpc.html> (i915#6367 <https://gitlab.freedesktop.org/drm/intel/issues/6367>) -> PASS <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-rpls-1/igt@i915_selftest@live@slpc.html>
->   *
-> 
->     igt@i915_selftest@live@workarounds:
-> 
->       o
-> 
->         bat-mtlp-6: DMESG-FAIL
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13324/bat-mtlp-6/igt@i915_selftest@live@workarounds.html> (i915#6763 <https://gitlab.freedesktop.org/drm/intel/issues/6763>) -> PASS <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-mtlp-6/igt@i915_selftest@live@workarounds.html>
-> 
->       o
-> 
->         bat-dg2-11: INCOMPLETE
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13324/bat-dg2-11/igt@i915_selftest@live@workarounds.html> (i915#7913 <https://gitlab.freedesktop.org/drm/intel/issues/7913>) -> PASS <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/bat-dg2-11/igt@i915_selftest@live@workarounds.html>
-> 
-> {name}: This element is suppressed. This means it is ignored when computing
-> the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
-> 
->     Build changes
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7351 -> IGTPW_9262
-> 
-> CI-20190529: 20190529
-> CI_DRM_13324: d0f10363d9fd8f1cb22a020a878f76c627389355 @ 
-> git://anongit.freedesktop.org/gfx-ci/linux
-> IGTPW_9262: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9262/index.html
-> IGT_7351: d8dc96b95c60e4737fdfa1664ce9b1dcebfdef60 @ 
-> https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
+diff --git a/tests/core_auth.c b/tests/core_auth.c
+index ed736e1ae..6103d0ffc 100644
+--- a/tests/core_auth.c
++++ b/tests/core_auth.c
+@@ -214,7 +214,7 @@ static void test_basic_auth(int master)
+ 	igt_assert(drmGetMagic(slave, &magic) == 0);
+ 	igt_assert_eq(magic, old_magic);
+ 
+-	close(slave);
++	drm_close_driver(slave);
+ }
+ 
+ igt_main
+@@ -226,7 +226,7 @@ igt_main
+ 
+ 		igt_assert(check_auth(fd) == true);
+ 
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ 
+ 	igt_describe("Use 2 clients, check second is authenticated even when first dropped.");
+@@ -236,11 +236,11 @@ igt_main
+ 
+ 		igt_assert(check_auth(fd2) == true);
+ 
+-		close(fd);
++		drm_close_driver(fd);
+ 
+ 		igt_assert(check_auth(fd2) == true);
+ 
+-		close(fd2);
++		drm_close_driver(fd2);
+ 	}
+ 
+ 	/* above tests require that no drm fd is open */
+diff --git a/tests/core_getclient.c b/tests/core_getclient.c
+index 993801ead..839fae36a 100644
+--- a/tests/core_getclient.c
++++ b/tests/core_getclient.c
+@@ -70,5 +70,5 @@ igt_simple_main
+ 	ret = ioctl(fd, DRM_IOCTL_GET_CLIENT, &client);
+ 	igt_assert(ret == -1 && errno == EINVAL);
+ 
+-	close(fd);
++	drm_close_driver(fd);
+ }
+diff --git a/tests/core_getstats.c b/tests/core_getstats.c
+index fef122583..8b5655053 100644
+--- a/tests/core_getstats.c
++++ b/tests/core_getstats.c
+@@ -64,5 +64,5 @@ igt_simple_main
+ 	ret = ioctl(fd, DRM_IOCTL_GET_STATS, &stats);
+ 	igt_assert(ret == 0);
+ 
+-	close(fd);
++	drm_close_driver(fd);
+ }
+diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+index 36ba01b86..32cb976e4 100644
+--- a/tests/core_getversion.c
++++ b/tests/core_getversion.c
+@@ -58,5 +58,5 @@ igt_simple_main
+ 		igt_assert_lte(1, v->version_major);
+ 
+ 	drmFree(v);
+-	close(fd);
++	drm_close_driver(fd);
+ }
+diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
+index 621bc2469..04ee6b8b5 100644
+--- a/tests/core_setmaster.c
++++ b/tests/core_setmaster.c
+@@ -104,7 +104,7 @@ static void check_drop_set(void)
+ 	igt_assert_eq(drmDropMaster(master), 0);
+ 	igt_assert_eq(drmSetMaster(master), 0);
+ 
+-	close(master);
++	drm_close_driver(master);
+ }
+ 
+ static unsigned tweak_perm(uint8_t *saved_perm, unsigned max_perm, bool save)
+@@ -225,10 +225,10 @@ igt_main
+ 			igt_assert_eq(drmSetMaster(master), -1);
+ 			igt_assert_eq(errno, EACCES);
+ 
+-			close(master);
++			drm_close_driver(master);
+ 		}
+ 		igt_waitchildren();
+ 
+-		close(master);
++		drm_close_driver(master);
+ 	}
+ }
+diff --git a/tests/core_setmaster_vs_auth.c b/tests/core_setmaster_vs_auth.c
+index adca1c111..b80ed3879 100644
+--- a/tests/core_setmaster_vs_auth.c
++++ b/tests/core_setmaster_vs_auth.c
+@@ -78,7 +78,7 @@ igt_simple_main
+ 	igt_assert_neq(drmAuthMagic(master2, magic), 0);
+ 	igt_assert_eq(errno, EINVAL);
+ 
+-	close(client);
+-	close(master2);
+-	close(master1);
++	drm_close_driver(client);
++	drm_close_driver(master2);
++	drm_close_driver(master1);
+ }
+diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
+index 5ee615aba..b67bfabac 100644
+--- a/tests/debugfs_test.c
++++ b/tests/debugfs_test.c
+@@ -255,6 +255,6 @@ igt_main
+ 	igt_fixture {
+ 		close(sysfs);
+ 		close(debugfs);
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ }
+diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+index 9495d28ff..9db857f9f 100644
+--- a/tests/dumb_buffer.c
++++ b/tests/dumb_buffer.c
+@@ -416,6 +416,6 @@ igt_main
+ 		always_clear(fd, 30);
+ 
+ 	igt_fixture {
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ }
+diff --git a/tests/eviction_common.c b/tests/eviction_common.c
+index 95af106c1..5948fbc64 100644
+--- a/tests/eviction_common.c
++++ b/tests/eviction_common.c
+@@ -300,7 +300,7 @@ static int forking_evictions(int fd, struct igt_eviction_test_ops *ops,
+ 
+ 		/* drmfd closing will take care of additional bo refs */
+ 		if (flags & FORKING_EVICTIONS_DUP_DRMFD)
+-			close(realfd);
++			drm_close_driver(realfd);
+ 	}
+ 
+ 	igt_waitchildren();
+diff --git a/tests/fbdev.c b/tests/fbdev.c
+index 794882a6a..154e78b0f 100644
+--- a/tests/fbdev.c
++++ b/tests/fbdev.c
+@@ -443,6 +443,6 @@ igt_main
+ 	}
+ 
+ 	igt_fixture {
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ }
+diff --git a/tests/prime_busy.c b/tests/prime_busy.c
+index 6b0d7310b..90d79864f 100644
+--- a/tests/prime_busy.c
++++ b/tests/prime_busy.c
+@@ -184,6 +184,6 @@ igt_main
+ 
+ 	igt_fixture {
+ 		intel_ctx_destroy(fd, ctx);
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ }
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index efd4deff9..25b2939e9 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -590,6 +590,6 @@ igt_main
+ 		free(query_info);
+ 		igt_collection_destroy(set);
+ 		igt_collection_destroy(dma_buf_set);
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ }
+diff --git a/tests/prime_mmap_coherency.c b/tests/prime_mmap_coherency.c
+index e5f7c92b2..01eb2002d 100644
+--- a/tests/prime_mmap_coherency.c
++++ b/tests/prime_mmap_coherency.c
+@@ -267,7 +267,7 @@ static void blit_and_cmp(void)
+ 
+ 	intel_bb_destroy(local_batch);
+ 	buf_ops_destroy(local_bops);
+-	close(local_fd);
++	drm_close_driver(local_fd);
+ }
+ 
+ /*
+@@ -364,6 +364,6 @@ igt_main
+ 	igt_fixture {
+ 		buf_ops_destroy(bops);
+ 
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ }
+diff --git a/tests/prime_mmap_kms.c b/tests/prime_mmap_kms.c
+index 8b127a13c..1a63be38f 100644
+--- a/tests/prime_mmap_kms.c
++++ b/tests/prime_mmap_kms.c
+@@ -263,6 +263,6 @@ igt_main
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&gpu.display);
+-		close(gpu.drm_fd);
++		drm_close_driver(gpu.drm_fd);
+ 	}
+ }
+diff --git a/tests/prime_self_import.c b/tests/prime_self_import.c
+index 30f2bf013..2dbf4e20f 100644
+--- a/tests/prime_self_import.c
++++ b/tests/prime_self_import.c
+@@ -147,8 +147,8 @@ static void test_with_fd_dup(void)
+ 	close(dma_buf_fd2);
+ 	check_bo(fd2, handle_import, fd2, handle_import);
+ 
+-	close(fd1);
+-	close(fd2);
++	drm_close_driver(fd1);
++	drm_close_driver(fd2);
+ }
+ 
+ static void test_with_two_bos(void)
+@@ -180,8 +180,8 @@ static void test_with_two_bos(void)
+ 
+ 	check_bo(fd2, handle_import, fd2, handle_import);
+ 
+-	close(fd1);
+-	close(fd2);
++	drm_close_driver(fd1);
++	drm_close_driver(fd2);
+ }
+ 
+ static void test_with_one_bo_two_files(void)
+@@ -205,8 +205,8 @@ static void test_with_one_bo_two_files(void)
+ 	/* dma-buf self importing an flink bo should give the same handle */
+ 	igt_assert_eq_u32(handle_import, handle_open);
+ 
+-	close(fd1);
+-	close(fd2);
++	drm_close_driver(fd1);
++	drm_close_driver(fd2);
+ 	close(dma_buf_fd1);
+ 	close(dma_buf_fd2);
+ }
+@@ -252,7 +252,7 @@ static void test_with_one_bo(void)
+ 	check_bo(fd1, handle, fd2, handle_import1);
+ 
+ 	/* Completely rip out exporting fd. */
+-	close(fd1);
++	drm_close_driver(fd1);
+ 	check_bo(fd2, handle_import1, fd2, handle_import1);
+ }
+ 
+@@ -316,14 +316,14 @@ static void test_reimport_close_race(void)
+ 		igt_assert(status == 0);
+ 	}
+ 
+-	close(fds[0]);
++	drm_close_driver(fds[0]);
+ 	close(fds[1]);
+ 
+ 	obj_count = igt_get_stable_obj_count(fake) - obj_count;
+ 
+ 	igt_info("leaked %i objects\n", obj_count);
+ 
+-	close(fake);
++	drm_close_driver(fake);
+ 
+ 	igt_assert_eq(obj_count, 0);
+ }
+@@ -398,13 +398,13 @@ static void test_export_close_race(void)
+ 		igt_assert(status == 0);
+ 	}
+ 
+-	close(fd);
++	drm_close_driver(fd);
+ 
+ 	obj_count = igt_get_stable_obj_count(fake) - obj_count;
+ 
+ 	igt_info("leaked %i objects\n", obj_count);
+ 
+-	close(fake);
++	drm_close_driver(fake);
+ 
+ 	igt_assert_eq(obj_count, 0);
+ }
+@@ -433,7 +433,7 @@ static void test_llseek_size(void)
+ 		close(dma_buf_fd);
+ 	}
+ 
+-	close(fd);
++	drm_close_driver(fd);
+ }
+ 
+ static void test_llseek_bad(void)
+@@ -462,7 +462,7 @@ static void test_llseek_bad(void)
+ 
+ 	close(dma_buf_fd);
+ 
+-	close(fd);
++	drm_close_driver(fd);
+ }
+ 
+ igt_main
+diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+index 85b9cf880..876e04ed0 100644
+--- a/tests/prime_vgem.c
++++ b/tests/prime_vgem.c
+@@ -1326,7 +1326,7 @@ igt_main
+ 
+ 
+ 	igt_fixture {
+-		close(i915);
+-		close(vgem);
++		drm_close_driver(i915);
++		drm_close_driver(vgem);
+ 	}
+ }
+diff --git a/tests/syncobj_basic.c b/tests/syncobj_basic.c
+index 3252dbd69..f079baf09 100644
+--- a/tests/syncobj_basic.c
++++ b/tests/syncobj_basic.c
+@@ -266,7 +266,7 @@ igt_main
+ 		test_valid_cycle(fd);
+ 
+ 	igt_fixture {
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ 
+ }
+diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+index 134a60995..b4e1d093a 100644
+--- a/tests/syncobj_timeline.c
++++ b/tests/syncobj_timeline.c
+@@ -1936,6 +1936,6 @@ igt_main
+ 		test_32bits_limit(fd);
+ 
+ 	igt_fixture {
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ }
+diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+index 2583ef72e..e0ff69b79 100644
+--- a/tests/syncobj_wait.c
++++ b/tests/syncobj_wait.c
+@@ -1062,6 +1062,6 @@ igt_main
+ 		test_wait_interrupted(fd, WAIT_ALL);
+ 
+ 	igt_fixture {
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ }
+diff --git a/tests/template.c b/tests/template.c
+index e23814fb7..ae2681c01 100644
+--- a/tests/template.c
++++ b/tests/template.c
+@@ -76,6 +76,6 @@ igt_main
+ 	 */
+ 
+ 	igt_fixture {
+-		close(drm_fd);
++		drm_close_driver(drm_fd);
+ 	}
+ }
+diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
+index f2255a619..63c5c0971 100644
+--- a/tests/vgem_basic.c
++++ b/tests/vgem_basic.c
+@@ -162,8 +162,8 @@ static void test_setversion(int fd)
+ 
+ static void test_client(int fd)
+ {
+-	close(drm_open_driver(DRIVER_VGEM));
+-	close(drm_open_driver_render(DRIVER_VGEM));
++	drm_close_driver(drm_open_driver(DRIVER_VGEM));
++	drm_close_driver(drm_open_driver_render(DRIVER_VGEM));
+ }
+ 
+ static void test_create(int fd)
+@@ -635,6 +635,6 @@ igt_main
+ 		test_debugfs_read(fd);
+ 
+ 	igt_fixture {
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ }
+diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
+index 0c91cdb9d..cb9436628 100644
+--- a/tests/vgem_slow.c
++++ b/tests/vgem_slow.c
+@@ -97,6 +97,6 @@ igt_main
+ 		test_nohang(fd);
+ 
+ 	igt_fixture {
+-		close(fd);
++		drm_close_driver(fd);
+ 	}
+ }
+-- 
+2.40.0
