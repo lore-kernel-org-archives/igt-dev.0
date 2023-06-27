@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com
- [IPv6:2a00:1450:4864:20::12b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D90F10E2F8
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com
+ [IPv6:2a00:1450:4864:20::22c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD2C210E316
  for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 17:22:19 +0000 (UTC)
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4fb41682472so4300585e87.2
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2b6a6f224a1so31335941fa.1
  for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 10:22:19 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Jun 2023 20:22:10 +0300
-Message-Id: <20230627172210.4599-4-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230627172210.4599-1-juhapekka.heikkila@gmail.com>
-References: <20230627172210.4599-1-juhapekka.heikkila@gmail.com>
+Date: Tue, 27 Jun 2023 20:22:07 +0300
+Message-Id: <20230627172210.4599-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] lib/igt_fb: On blitter path take clear
- color modifier into account
+Subject: [igt-dev] [PATCH i-g-t 0/3] Include intel_blt funtions to blitter
+ path for igt_fb.c
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,40 +26,19 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On blitter path take clear color modifier into account so rc ccs cc will
-pass correctly.
+Here start to use copy engine for doing rc ccs on Intel hw with flat ccs. This
+will replace usage of use of rendercopy on framebuffer creation with i915
+devices with flat ccs.
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- lib/igt_fb.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Juha-Pekka Heikkila (3):
+  lib/intel_blt: Add offset to block and fast copy
+  lib/igt_fb: include lib/intel_blt functions to blitter path
+  lib/igt_fb: On blitter path take clear color modifier into account
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index d8f2cc640..ebebe86cd 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2841,9 +2841,12 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
- 	uint32_t mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
- 			   ? REGION_LMEM(0) : REGION_SMEM;
-+	/* To ignore CC plane */
-+	uint32_t src_cc = src_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
-+	uint32_t dst_cc = dst_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
- 
- 	igt_assert_eq(dst_fb->fd, src_fb->fd);
--	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
-+	igt_assert_eq(dst_fb->num_planes - dst_cc, src_fb->num_planes - src_cc);
- 
- 	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
- 	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
-@@ -2860,7 +2863,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 							  mem_region) == 0);
- 	}
- 
--	for (int i = 0; i < dst_fb->num_planes; i++) {
-+	for (int i = 0; i < dst_fb->num_planes - dst_cc; i++) {
- 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
- 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
- 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
+ lib/igt_fb.c    | 216 ++++++++++++++++++++++++++++++++++++++++++------
+ lib/intel_blt.c |  12 ++-
+ lib/intel_blt.h |   3 +
+ 3 files changed, 202 insertions(+), 29 deletions(-)
+
 -- 
 2.25.1
