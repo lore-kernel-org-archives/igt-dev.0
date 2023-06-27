@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E79710E327
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 18:03:42 +0000 (UTC)
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 27 Jun 2023 23:38:04 +0530
+Message-Id: <20230627180805.4189160-4-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230627180805.4189160-1-himal.prasad.ghimiray@intel.com>
+References: <20230627180805.4189160-1-himal.prasad.ghimiray@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Date: Tue, 27 Jun 2023 18:08:57 -0000
-Message-ID: <168788933784.2457.12529646030514817598@emeril.freedesktop.org>
-References: <20230627172210.4599-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230627172210.4599-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
- =?utf-8?q?nclude_intel=5Fblt_funtions_to_blitter_path_for_igt=5Ffb=2Ec_?=
- =?utf-8?b?KHJldjIp?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v4 3/4] tests/xe/xe_guc_pc: Change the sysfs paths
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,133 +18,462 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Upadhyay <tejas.upadhyay@intel.com>,
+ Badal Nilawar <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Changes to access sysfs entries under tile directory.
+Access freq sysfs from /sys/class/drm/cardX/device/tileN/gtN
+path.
 
-Series: Include intel_blt funtions to blitter path for igt_fb.c (rev2)
-URL   : https://patchwork.freedesktop.org/series/119886/
-State : warning
+v2:
+- Use snprintf instead of sprintf and check error.
+- Describe what changes are done. (Kamil)
 
-== Summary ==
+v3:
+- change order of gt and tile and drop passing tilecount.(Ashutosh)
 
-Pipeline status: FAILED.
+v4:
+- Rebase
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/920302 for the overview.
+Reviewed-by: Upadhyay <tejas.upadhyay@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
+Cc: Upadhyay <tejas.upadhyay@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: Riana Tauro <riana.tauro@intel.com>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+---
+ tests/xe/xe_guc_pc.c | 202 ++++++++++++++++++++++---------------------
+ 1 file changed, 102 insertions(+), 100 deletions(-)
 
-build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44528801):
-  time="2023-06-27T18:04:01Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:ac8bb7e1a32398e26c129ce64e2ddc3e7ec6c34d93424b247f16049f5a91cff4
-  Copying config sha256:49ae9acb659161695228c0667681983289fc1a40d5056e99a72eb66538086c15
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-27T18:04:04Z" level=warning msg="signal: killed"
-  time="2023-06-27T18:04:04Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1687889045:step_script
-  section_start:1687889045:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687889047:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44528803):
-  time="2023-06-27T18:04:03Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:ac8bb7e1a32398e26c129ce64e2ddc3e7ec6c34d93424b247f16049f5a91cff4
-  Copying config sha256:49ae9acb659161695228c0667681983289fc1a40d5056e99a72eb66538086c15
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-27T18:04:07Z" level=warning msg="signal: killed"
-  time="2023-06-27T18:04:07Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1687889047:step_script
-  section_start:1687889047:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687889050:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44528802):
-  time="2023-06-27T18:04:01Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:ac8bb7e1a32398e26c129ce64e2ddc3e7ec6c34d93424b247f16049f5a91cff4
-  Copying config sha256:49ae9acb659161695228c0667681983289fc1a40d5056e99a72eb66538086c15
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-27T18:04:05Z" level=warning msg="signal: killed"
-  time="2023-06-27T18:04:05Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1687889046:step_script
-  section_start:1687889046:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687889048:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44528804):
-  time="2023-06-27T18:04:05Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM debian:buster
-  Getting image source signatures
-  Copying blob sha256:ac8bb7e1a32398e26c129ce64e2ddc3e7ec6c34d93424b247f16049f5a91cff4
-  Copying config sha256:49ae9acb659161695228c0667681983289fc1a40d5056e99a72eb66538086c15
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN apt-get update
-  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-06-27T18:04:08Z" level=warning msg="signal: killed"
-  time="2023-06-27T18:04:08Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
-  section_end:1687889049:step_script
-  section_start:1687889049:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687889051:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44528805):
-  time="2023-06-27T18:04:03Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
-  Building!
-  STEP 1: FROM fedora:31
-  Getting image source signatures
-  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
-  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
-  Writing manifest to image destination
-  Storing signatures
-  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
-  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-06-27T18:04:07Z" level=warning msg="signal: killed"
-  time="2023-06-27T18:04:07Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
-  : exit status 1
-  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
-  section_end:1687889049:step_script
-  section_start:1687889049:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687889050:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/920302
+diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
+index 89d5ae9e..2900ff09 100644
+--- a/tests/xe/xe_guc_pc.c
++++ b/tests/xe/xe_guc_pc.c
+@@ -133,23 +133,25 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
+-static int set_freq(int sysfs, int gt_id, const char *freq_name, uint32_t freq)
++static int set_freq(int sysfs, int tile_id, int gt_id, const char *freq_name, uint32_t freq)
+ {
+ 	int ret = -EAGAIN;
+ 	char path[32];
+ 
+-	sprintf(path, "device/gt%d/freq_%s", gt_id, freq_name);
++	igt_assert(snprintf(path, sizeof(path), "device/tile%d/gt%d/freq_%s",
++			    tile_id, gt_id, freq_name) < sizeof(path));
+ 	while (ret == -EAGAIN)
+ 		ret = igt_sysfs_printf(sysfs, path, "%u", freq);
+ 	return ret;
+ }
+ 
+-static uint32_t get_freq(int sysfs, int gt_id, const char *freq_name)
++static uint32_t get_freq(int sysfs, int tile_id, int gt_id, const char *freq_name)
+ {
+ 	uint32_t freq;
+ 	int err = -EAGAIN;
+ 	char path[32];
+-	sprintf(path, "device/gt%d/freq_%s", gt_id, freq_name);
++	igt_assert(snprintf(path, sizeof(path), "device/tile%d/gt%d/freq_%s",
++			    tile_id, gt_id, freq_name) < sizeof(path));
+ 	while (err == -EAGAIN)
+ 		err = igt_sysfs_scanf(sysfs, path, "%u", &freq);
+ 	return freq;
+@@ -162,37 +164,37 @@ static uint32_t get_freq(int sysfs, int gt_id, const char *freq_name)
+  * Run type: BAT
+  */
+ 
+-static void test_freq_basic_api(int sysfs, int gt_id)
++static void test_freq_basic_api(int sysfs, int tile_id, int gt_id)
+ {
+-	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
+-	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
+-	uint32_t rp0 = get_freq(sysfs, gt_id, "rp0");
++	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
++	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
++	uint32_t rp0 = get_freq(sysfs, tile_id, gt_id, "rp0");
+ 
+ 	/*
+ 	 * Negative bound tests
+ 	 * RPn is the floor
+ 	 * RP0 is the ceiling
+ 	 */
+-	igt_assert(set_freq(sysfs, gt_id, "min", rpn - 1) < 0);
+-	igt_assert(set_freq(sysfs, gt_id, "min", rp0 + 1) < 0);
+-	igt_assert(set_freq(sysfs, gt_id, "max", rpn - 1) < 0);
+-	igt_assert(set_freq(sysfs, gt_id, "max", rp0 + 1) < 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn - 1) < 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rp0 + 1) < 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn - 1) < 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rp0 + 1) < 0);
+ 
+ 	/* Assert min requests are respected from rp0 to rpn */
+-	igt_assert(set_freq(sysfs, gt_id, "min", rp0) > 0);
+-	igt_assert(get_freq(sysfs, gt_id, "min") == rp0);
+-	igt_assert(set_freq(sysfs, gt_id, "min", rpe) > 0);
+-	igt_assert(get_freq(sysfs, gt_id, "min") == rpe);
+-	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
+-	igt_assert(get_freq(sysfs, gt_id, "min") == rpn);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rp0) > 0);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rp0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpe) > 0);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rpe);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rpn);
+ 
+ 	/* Assert max requests are respected from rpn to rp0 */
+-	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
+-	igt_assert(get_freq(sysfs, gt_id, "max") == rpn);
+-	igt_assert(set_freq(sysfs, gt_id, "max", rpe) > 0);
+-	igt_assert(get_freq(sysfs, gt_id, "max") == rpe);
+-	igt_assert(set_freq(sysfs, gt_id, "max", rp0) > 0);
+-	igt_assert(get_freq(sysfs, gt_id, "max") == rp0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rpn);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpe) > 0);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rpe);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rp0) > 0);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rp0);
+ }
+ 
+ /**
+@@ -205,11 +207,11 @@ static void test_freq_basic_api(int sysfs, int gt_id)
+  * Run type: FULL
+  */
+ 
+-static void test_freq_fixed(int sysfs, int gt_id)
++static void test_freq_fixed(int sysfs, int tile_id, int gt_id)
+ {
+-	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
+-	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
+-	uint32_t rp0 = get_freq(sysfs, gt_id, "rp0");
++	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
++	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
++	uint32_t rp0 = get_freq(sysfs, tile_id, gt_id, "rp0");
+ 
+ 	igt_debug("Starting testing fixed request\n");
+ 
+@@ -218,27 +220,27 @@ static void test_freq_fixed(int sysfs, int gt_id)
+ 	 * Then we check if hardware is actually operating at the desired freq
+ 	 * And let's do this for all the 3 known Render Performance (RP) values.
+ 	 */
+-	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
+-	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
+ 	usleep(ACT_FREQ_LATENCY_US);
+-	igt_assert(get_freq(sysfs, gt_id, "cur") == rpn);
+-	igt_assert(get_freq(sysfs, gt_id, "act") == rpn);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpn);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "act") == rpn);
+ 
+-	igt_assert(set_freq(sysfs, gt_id, "min", rpe) > 0);
+-	igt_assert(set_freq(sysfs, gt_id, "max", rpe) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpe) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpe) > 0);
+ 	usleep(ACT_FREQ_LATENCY_US);
+-	igt_assert(get_freq(sysfs, gt_id, "cur") == rpe);
+-	igt_assert(get_freq(sysfs, gt_id, "act") == rpe);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpe);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "act") == rpe);
+ 
+-	igt_assert(set_freq(sysfs, gt_id, "min", rp0) > 0);
+-	igt_assert(set_freq(sysfs, gt_id, "max", rp0) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rp0) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rp0) > 0);
+ 	usleep(ACT_FREQ_LATENCY_US);
+ 	/*
+ 	 * It is unlikely that PCODE will *always* respect any request above RPe
+ 	 * So for this level let's only check if GuC PC is doing its job
+ 	 * and respecting our request, by propagating it to the hardware.
+ 	 */
+-	igt_assert(get_freq(sysfs, gt_id, "cur") == rp0);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rp0);
+ 
+ 	igt_debug("Finished testing fixed request\n");
+ }
+@@ -253,20 +255,20 @@ static void test_freq_fixed(int sysfs, int gt_id)
+  * Run type: FULL
+  */
+ 
+-static void test_freq_range(int sysfs, int gt_id)
++static void test_freq_range(int sysfs, int tile_id, int gt_id)
+ {
+-	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
+-	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
++	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
++	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
+ 	uint32_t cur, act;
+ 
+ 	igt_debug("Starting testing range request\n");
+ 
+-	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
+-	igt_assert(set_freq(sysfs, gt_id, "max", rpe) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpe) > 0);
+ 	usleep(ACT_FREQ_LATENCY_US);
+-	cur = get_freq(sysfs, gt_id, "cur");
++	cur = get_freq(sysfs, tile_id, gt_id, "cur");
+ 	igt_assert(rpn <= cur && cur <= rpe);
+-	act = get_freq(sysfs, gt_id, "act");
++	act = get_freq(sysfs, tile_id, gt_id, "act");
+ 	igt_assert(rpn <= act && act <= rpe);
+ 
+ 	igt_debug("Finished testing range request\n");
+@@ -278,20 +280,20 @@ static void test_freq_range(int sysfs, int gt_id)
+  * Run type: FULL
+  */
+ 
+-static void test_freq_low_max(int sysfs, int gt_id)
++static void test_freq_low_max(int sysfs, int tile_id, int gt_id)
+ {
+-	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
+-	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
++	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
++	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
+ 
+ 	/*
+ 	 *  When max request < min request, max is ignored and min works like
+ 	 * a fixed one. Let's assert this assumption
+ 	 */
+-	igt_assert(set_freq(sysfs, gt_id, "min", rpe) > 0);
+-	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpe) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
+ 	usleep(ACT_FREQ_LATENCY_US);
+-	igt_assert(get_freq(sysfs, gt_id, "cur") == rpe);
+-	igt_assert(get_freq(sysfs, gt_id, "act") == rpe);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpe);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "act") == rpe);
+ }
+ 
+ /**
+@@ -300,20 +302,20 @@ static void test_freq_low_max(int sysfs, int gt_id)
+  * Run type: FULL
+  */
+ 
+-static void test_suspend(int sysfs, int gt_id)
++static void test_suspend(int sysfs, int tile_id, int gt_id)
+ {
+-	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
++	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
+ 
+-	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
+-	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
++	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
+ 	usleep(ACT_FREQ_LATENCY_US);
+-	igt_assert(get_freq(sysfs, gt_id, "cur") == rpn);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpn);
+ 
+ 	igt_system_suspend_autoresume(SUSPEND_STATE_S3,
+ 				      SUSPEND_TEST_NONE);
+ 
+-	igt_assert(get_freq(sysfs, gt_id, "min") == rpn);
+-	igt_assert(get_freq(sysfs, gt_id, "max") == rpn);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rpn);
++	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rpn);
+ }
+ 
+ /**
+@@ -326,24 +328,24 @@ static void test_suspend(int sysfs, int gt_id)
+  * Run type: FULL
+  */
+ 
+-static void test_reset(int fd, int sysfs, int gt_id, int cycles)
++static void test_reset(int fd, int sysfs, int tile_id, int gt_id, int cycles)
+ {
+-	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
++	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
+ 
+ 	for (int i = 0; i < cycles; i++) {
+-		igt_assert_f(set_freq(sysfs, gt_id, "min", rpn) > 0,
++		igt_assert_f(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0,
+ 			     "Failed after %d good cycles\n", i);
+-		igt_assert_f(set_freq(sysfs, gt_id, "max", rpn) > 0,
++		igt_assert_f(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0,
+ 			     "Failed after %d good cycles\n", i);
+ 		usleep(ACT_FREQ_LATENCY_US);
+-		igt_assert_f(get_freq(sysfs, gt_id, "cur") == rpn,
++		igt_assert_f(get_freq(sysfs, tile_id, gt_id, "cur") == rpn,
+ 			     "Failed after %d good cycles\n", i);
+ 
+ 		xe_force_gt_reset(fd, gt_id);
+ 
+-		igt_assert_f(get_freq(sysfs, gt_id, "min") == rpn,
++		igt_assert_f(get_freq(sysfs, tile_id, gt_id, "min") == rpn,
+ 			     "Failed after %d good cycles\n", i);
+-		igt_assert_f(get_freq(sysfs, gt_id, "max") == rpn,
++		igt_assert_f(get_freq(sysfs, tile_id, gt_id, "max") == rpn,
+ 			     "Failed after %d good cycles\n", i);
+ 	}
+ }
+@@ -359,11 +361,11 @@ static void test_reset(int fd, int sysfs, int gt_id, int cycles)
+  * Run type: BAT
+  */
+ 
+-static bool in_rc6(int sysfs, int gt_id)
++static bool in_rc6(int sysfs, int tile_id, int gt_id)
+ {
+-	char path[32];
++	char path[40];
+ 	char rc[8];
+-	sprintf(path, "device/gt%d/rc_status", gt_id);
++	sprintf(path, "device/tile%d/gt%d/rc_status", tile_id, gt_id);
+ 	if (igt_sysfs_scanf(sysfs, path, "%s", rc) < 0)
+ 		return false;
+ 	return strcmp(rc, "rc6") == 0;
+@@ -373,7 +375,7 @@ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+ 	int fd;
+-	int gt;
++	int gt, tile;
+ 	static int sysfs = -1;
+ 	int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+ 	uint32_t stash_min;
+@@ -386,24 +388,24 @@ igt_main
+ 		sysfs = igt_sysfs_open(fd);
+ 		igt_assert(sysfs != -1);
+ 
+-		/* The defaults are the same. Stashing the gt0 is enough */
+-		stash_min = get_freq(sysfs, 0, "min");
+-		stash_max = get_freq(sysfs, 0, "max");
++		/* The defaults are the same. Stashing the gt0 in tile0 is enough */
++		stash_min = get_freq(sysfs, 0, 0, "min");
++		stash_max = get_freq(sysfs, 0, 0, "max");
+ 	}
+ 
+ 	igt_subtest("freq_basic_api") {
+-		xe_for_each_gt(fd, gt)
+-			test_freq_basic_api(sysfs, gt);
++		xe_for_each_gt_under_each_tile(fd, tile, gt)
++			test_freq_basic_api(sysfs, tile, gt);
+ 	}
+ 
+ 	igt_subtest("freq_fixed_idle") {
+-		xe_for_each_gt(fd, gt) {
+-			test_freq_fixed(sysfs, gt);
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
++			test_freq_fixed(sysfs, tile, gt);
+ 		}
+ 	}
+ 
+ 	igt_subtest("freq_fixed_exec") {
+-		xe_for_each_gt(fd, gt) {
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
+ 			xe_for_each_hw_engine(fd, hwe)
+ 				igt_fork(child, ncpus) {
+ 					igt_debug("Execution Started\n");
+@@ -411,19 +413,19 @@ igt_main
+ 					igt_debug("Execution Finished\n");
+ 				}
+ 			/* While exec in threads above, let's check the freq */
+-			test_freq_fixed(sysfs, gt);
++			test_freq_fixed(sysfs, tile, gt);
+ 			igt_waitchildren();
+ 		}
+ 	}
+ 
+ 	igt_subtest("freq_range_idle") {
+-		xe_for_each_gt(fd, gt) {
+-			test_freq_range(sysfs, gt);
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
++			test_freq_range(sysfs, tile, gt);
+ 		}
+ 	}
+ 
+ 	igt_subtest("freq_range_exec") {
+-		xe_for_each_gt(fd, gt) {
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
+ 			xe_for_each_hw_engine(fd, hwe)
+ 				igt_fork(child, ncpus) {
+ 					igt_debug("Execution Started\n");
+@@ -431,46 +433,46 @@ igt_main
+ 					igt_debug("Execution Finished\n");
+ 				}
+ 			/* While exec in threads above, let's check the freq */
+-			test_freq_range(sysfs, gt);
++			test_freq_range(sysfs, tile, gt);
+ 			igt_waitchildren();
+ 		}
+ 	}
+ 
+ 	igt_subtest("freq_low_max") {
+-		xe_for_each_gt(fd, gt) {
+-			test_freq_low_max(sysfs, gt);
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
++			test_freq_low_max(sysfs, tile, gt);
+ 		}
+ 	}
+ 
+ 	igt_subtest("freq_suspend") {
+-		xe_for_each_gt(fd, gt) {
+-			test_suspend(sysfs, gt);
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
++			test_suspend(sysfs, tile, gt);
+ 		}
+ 	}
+ 
+ 	igt_subtest("freq_reset") {
+-		xe_for_each_gt(fd, gt) {
+-			test_reset(fd, sysfs, gt, 1);
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
++			test_reset(fd, sysfs, tile, gt, 1);
+ 		}
+ 	}
+ 
+ 	igt_subtest("freq_reset_multiple") {
+-		xe_for_each_gt(fd, gt) {
+-			test_reset(fd, sysfs, gt, 50);
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
++			test_reset(fd, sysfs, tile, gt, 50);
+ 		}
+ 	}
+ 
+ 	igt_subtest("rc6_on_idle") {
+ 		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+-		xe_for_each_gt(fd, gt) {
+-			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
++			assert(igt_wait(in_rc6(sysfs, tile, gt), 1000, 1));
+ 		}
+ 	}
+ 
+ 	igt_subtest("rc0_on_exec") {
+ 		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+-		xe_for_each_gt(fd, gt) {
+-			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
++			assert(igt_wait(in_rc6(sysfs, tile, gt), 1000, 1));
+ 			xe_for_each_hw_engine(fd, hwe)
+ 				igt_fork(child, ncpus) {
+ 					igt_debug("Execution Started\n");
+@@ -478,15 +480,15 @@ igt_main
+ 					igt_debug("Execution Finished\n");
+ 				}
+ 			/* While exec in threads above, let's check rc_status */
+-			assert(igt_wait(!in_rc6(sysfs, gt), 1000, 1));
++			assert(igt_wait(!in_rc6(sysfs, tile, gt), 1000, 1));
+ 			igt_waitchildren();
+ 		}
+ 	}
+ 
+ 	igt_fixture {
+-		xe_for_each_gt(fd, gt) {
+-			set_freq(sysfs, gt, "min", stash_min);
+-			set_freq(sysfs, gt, "max", stash_max);
++		xe_for_each_gt_under_each_tile(fd, tile, gt) {
++			set_freq(sysfs, tile, gt, "min", stash_min);
++			set_freq(sysfs, tile, gt, "max", stash_max);
+ 		}
+ 		close(sysfs);
+ 		xe_device_put(fd);
+-- 
+2.25.1
