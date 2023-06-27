@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D42D710E2E8
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 12:21:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3030E10E2E0
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 12:21:17 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Jun 2023 17:50:25 +0530
-Message-Id: <20230627122030.675526-5-swati2.sharma@intel.com>
+Date: Tue, 27 Jun 2023 17:50:30 +0530
+Message-Id: <20230627122030.675526-10-swati2.sharma@intel.com>
 In-Reply-To: <20230627122030.675526-1-swati2.sharma@intel.com>
 References: <20230627122030.675526-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/9] tests/i915/kms_dsc: add get_status()
+Subject: [igt-dev] [PATCH i-g-t 9/9] tests/i915/kms_dsc: add test summary
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,56 +22,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use get_status() to get current bpc when TEST_DSC_BPC test
-flag is used. If input bpc is not equal to current bpc,
-skip test.
+Add test summary giving overall summary of subtests.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/i915/kms_dsc.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ tests/i915/kms_dsc.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
 diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 84bd5dbbc..793c4409d 100644
+index 7ffa193ed..c3d789077 100644
 --- a/tests/i915/kms_dsc.c
 +++ b/tests/i915/kms_dsc.c
-@@ -112,12 +112,18 @@ static void test_cleanup(data_t *data)
- 	igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
- }
+@@ -36,6 +36,27 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
  
-+static int get_status(int drmfd, enum pipe pipe)
-+{
-+	return igt_get_pipe_current_bpc(drmfd, pipe);
-+}
+ #define DEFAULT_BPC	0
+ 
++/*
++ * Starting from gen11+, i915 driver supports DSC1.1. For validating
++ * DSC, the first step is to verify if the sink supports DSC.
++ * If the sink does support DSC, we will validate the following
++ * scenarios:
++ * (i) basic modeset (ii) input bpc (iii) pixel formats
++ * (iv) output formats (v) fractional bpp
++ * In the basic subtest, we perform modeset with default parameters.
++ * Input bpc and pixel formats subtests, we perform modeset
++ * with different input bpc (12/10/8) and pixel formats (YUV/RGB),
++ * respectively. With the support of DSC1.2 from MTL, we can
++ * verify fractional bpp and DSC YCBCR420 output format. The tests
++ * are executed with the RGB444 output format by default. However,
++ * in the output-format subtest, we verify output formats
++ * (RGB/YCBCR444/YCBCR420). Fractional bpp is tested with default
++ * parameter. In this, driver will ignore integer compressed bpp
++ * value and will do modeset with fractional bpp only. Also,
++ * tests are added to validate output format and fractional bpp
++ * with different input bpc.
++ */
 +
- /* re-probe connectors and do a modeset with DSC */
- static void update_display(data_t *data, uint32_t test_type)
- {
- 	int ret;
- 	bool enabled;
- 	int index = 0;
-+	int current_bpc = 0;
- 	igt_plane_t *primary;
- 	drmModeModeInfo *mode;
- 	igt_output_t *output = data->output;
-@@ -203,11 +209,17 @@ static void update_display(data_t *data, uint32_t test_type)
- 
- 	restore_force_dsc_en();
- 
-+	if (test_type & TEST_DSC_BPC) {
-+		current_bpc = get_status(data->drm_fd, data->pipe);
-+		igt_skip_on_f(data->input_bpc != current_bpc,
-+			      "Input bpc = %d is not equal to current bpc = %d\n",
-+			      data->input_bpc, current_bpc);
-+	}
-+
- 	igt_assert_f(enabled,
- 		     "Default DSC enable failed on connector: %s pipe: %s\n",
- 		     output->name,
- 		     kmstest_pipe_name(data->pipe));
--
- reset:
- 	test_reset(data);
- 
+ enum {
+ 	TEST_DSC_BASIC = 1 << 0,
+ 	TEST_DSC_BPC = 1 << 1,
 -- 
 2.25.1
