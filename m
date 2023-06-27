@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
- [IPv6:2a00:1450:4864:20::12d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2E2410E2F8
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 17:22:19 +0000 (UTC)
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4f004cc54f4so6673972e87.3
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 10:22:19 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD44B10E317
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jun 2023 18:03:34 +0000 (UTC)
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Jun 2023 20:22:08 +0300
-Message-Id: <20230627172210.4599-2-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230627172210.4599-1-juhapekka.heikkila@gmail.com>
-References: <20230627172210.4599-1-juhapekka.heikkila@gmail.com>
+Date: Tue, 27 Jun 2023 23:38:02 +0530
+Message-Id: <20230627180805.4189160-2-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230627180805.4189160-1-himal.prasad.ghimiray@intel.com>
+References: <20230627180805.4189160-1-himal.prasad.ghimiray@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/intel_blt: Add offset to block and
- fast copy
+Subject: [igt-dev] [PATCH v4 1/4] lib/igt_sysfs: Add support to query number
+ of tiles
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,63 +19,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Upadhyay <tejas.upadhyay@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add offset to src and dst blits, this allow to use intel_blt with multiplane
-framebuffers.
+With tile and GT seperation in KMD, we need to know
+number of tiles supported by platform.
+We will need to access tile associated properties from IGT.
+Hence adding iterator for all supported tiles.
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+v2:
+- Calculate number of tiles once within iterator. (Rahul)
+- Use snprintf instead of sprintf.
+
+Reviewed-by: Upadhyay <tejas.upadhyay@intel.com>
+Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
+Cc: Upadhyay <tejas.upadhyay@intel.com>
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 ---
- lib/intel_blt.c | 12 ++++++++----
- lib/intel_blt.h |  3 +++
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ lib/igt_sysfs.c | 30 ++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h |  8 ++++++++
+ 2 files changed, 38 insertions(+)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 28a740094..998c16939 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -708,8 +708,10 @@ uint64_t emit_blt_block_copy(int fd,
- 	igt_assert_f(blt, "block-copy requires data to do blit\n");
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 35a4faa9..495b0288 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -287,6 +287,36 @@ int igt_sysfs_get_num_gt(int device)
+ 	return num_gts;
+ }
  
- 	alignment = gem_detect_safe_alignment(fd);
--	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
--	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-+	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
-+		     + blt->src.plane_offset;
-+	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
-+		     + blt->dst.plane_offset;
- 	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
- 
- 	fill_data(&data, blt, src_offset, dst_offset, ext);
-@@ -1179,8 +1181,10 @@ uint64_t emit_blt_fast_copy(int fd,
- 	data.dw03.dst_x2 = blt->dst.x2;
- 	data.dw03.dst_y2 = blt->dst.y2;
- 
--	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
--	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-+	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
-+		     + blt->src.plane_offset;
-+	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
-+		     + blt->dst.plane_offset;
- 	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
- 
- 	data.dw04.dst_address_lo = dst_offset;
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 0cbe881f4..62cc835fd 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -88,6 +88,9 @@ struct blt_copy_object {
- 
- 	/* mapping or null */
- 	uint32_t *ptr;
++/**
++ * igt_sysfs_get_num_tiles:
++ * @device: fd of the device
++ *
++ * Reads number of tiles sysfs entries.
++ * Asserts for at least one tile entry.
++ *
++ * Returns: Number of tiles.
++ */
++int igt_sysfs_get_num_tiles(int device)
++{
++	int num_tiles;
++	char sysfs[48];
++	char tiledir[96];
 +
-+	/* enable to use multiplane framebuffers */
-+	uint32_t plane_offset;
- };
++	num_tiles =0;
++	if (!igt_sysfs_path(device, sysfs, sizeof(sysfs)))
++		return -1;
++
++	do {
++		igt_assert(snprintf(tiledir, sizeof(tiledir), "%s/device/tile%d",
++				    sysfs, num_tiles) < sizeof(tiledir));
++		num_tiles++;
++	} while (!access(tiledir, F_OK));
++
++	num_tiles--;
++	igt_assert_f(num_tiles > 0, "No tiles sysfs entry is found.");
++	return num_tiles;
++}
++
+ /**
+  * igt_sysfs_write:
+  * @dir: directory for the device from igt_sysfs_open()
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 978b6906..de2c9a86 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -38,6 +38,11 @@
+ 	     (dirfd__ = igt_sysfs_gt_open(i915__, gt__)) != -1; \
+ 	     close(dirfd__), gt__++)
  
- struct blt_copy_batch {
++#define for_each_sysfs_tile_dirfd(xe__, tile__, tile_cnt__) \
++	for (tile__ = 0, tile_cnt__ = igt_sysfs_get_num_tiles(xe__); \
++	     tile__ < tile_cnt__; \
++	     ++tile__)
++
+ #define i915_for_each_gt for_each_sysfs_gt_dirfd
+ 
+ #define igt_sysfs_rps_write(dir, id, data, len) \
+@@ -73,6 +78,8 @@
+ #define igt_sysfs_rps_set_boolean(dir, id, value) \
+ 	igt_sysfs_set_boolean(dir, igt_sysfs_dir_id_to_name(dir, id), value)
+ 
++#define xe_for_each_tile for_each_sysfs_tile_dirfd
++
+ enum i915_attr_id {
+ 	RPS_ACT_FREQ_MHZ,
+ 	RPS_CUR_FREQ_MHZ,
+@@ -97,6 +104,7 @@ int igt_sysfs_open(int device);
+ char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);
+ int igt_sysfs_gt_open(int device, int gt);
+ int igt_sysfs_get_num_gt(int device);
++int igt_sysfs_get_num_tiles(int device);
+ bool igt_sysfs_has_attr(int dir, const char *attr);
+ const char *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id);
+ const char *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id);
 -- 
 2.25.1
