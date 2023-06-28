@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52F0D10E032
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 10:06:10 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 774FA10E027
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 10:18:07 +0000 (UTC)
 From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
 To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>
-Date: Wed, 28 Jun 2023 10:06:04 +0000
-Message-ID: <CY5PR11MB6211B864875C07E555E19D179524A@CY5PR11MB6211.namprd11.prod.outlook.com>
+Date: Wed, 28 Jun 2023 10:17:46 +0000
+Message-ID: <CY5PR11MB6211D6931BE5F0729E3B856B9524A@CY5PR11MB6211.namprd11.prod.outlook.com>
 References: <20230628093504.517988-1-riana.tauro@intel.com>
- <20230628093504.517988-5-riana.tauro@intel.com>
-In-Reply-To: <20230628093504.517988-5-riana.tauro@intel.com>
+ <20230628093504.517988-3-riana.tauro@intel.com>
+In-Reply-To: <20230628093504.517988-3-riana.tauro@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] xe-fast-feedback.testlist: Remove
- rc6 tests from BAT
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] tests/xe : Add a test to check if
+ gt is in c6 on idle
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -39,42 +39,49 @@ List-ID: <igt-dev@lists.freedesktop.org>
 > Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Nilawar, Badal
 > <badal.nilawar@intel.com>; kamil.konieczny@linux.intel.com; Sundaresan,
 > Sujaritha <sujaritha.sundaresan@intel.com>
-> Subject: [PATCH i-g-t 4/4] xe-fast-feedback.testlist: Remove rc6 tests fr=
-om
-> BAT
+> Subject: [PATCH i-g-t 2/4] tests/xe : Add a test to check if gt is in c6 =
+on idle
 >=20
-> Remove rc6_on_idle and rc0_on_exec from BAT list They are removed as the
-> sysfs path changed.
->=20
-Remove this space.
-> Add gt-c6-on-idle to BAT
-Add full stop.
+> Add a test that checks if gt is in c6 on idle
+Use full stop after end of commit log.
 >=20
 > Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-With above nits.
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
 > ---
->  tests/intel-ci/xe-fast-feedback.testlist | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  tests/xe/xe_pm_residency.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 >=20
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe=
--fast-
-> feedback.testlist
-> index a956e10e..00583513 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -162,8 +162,6 @@ igt@xe_gpgpu_fill@basic
-> igt@xe_guc_pc@freq_basic_api  igt@xe_guc_pc@freq_fixed_idle
-> igt@xe_guc_pc@freq_range_idle -igt@xe_guc_pc@rc6_on_idle -
-> igt@xe_guc_pc@rc0_on_exec  igt@xe_huc_copy@huc_copy
-> igt@xe_intel_bb@add-remove-objects
->  igt@xe_intel_bb@bb-with-allocator
-> @@ -190,6 +188,7 @@ igt@xe_mmap@bad-extensions
-> igt@xe_mmap@bad-object  igt@xe_mmio@mmio-timestamp
-> igt@xe_mmio@mmio-invalid
-> +igt@xe_pm_residency@gt-c6-on-idle
->  igt@xe_prime_self_import@basic-with_one_bo
->  igt@xe_prime_self_import@basic-with_fd_dup
->  #igt@xe_prime_self_import@export-vs-gem_close-race
+> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+> index 19fbe14e..4f6c23aa 100644
+> --- a/tests/xe/xe_pm_residency.c
+> +++ b/tests/xe/xe_pm_residency.c
+> @@ -47,6 +47,11 @@ static unsigned int measured_usleep(unsigned int
+> usec)
+>  	return igt_nsec_elapsed(&ts) / 1000;
+>  }
+>=20
+> +/**
+> + * SUBTEST: gt-c6-on-idle
+> + * Description: check if gt is in C6 on idle
+> + * Run type: BAT
+> + */
+>  static bool in_gt_c6(int sysfs, int gt)  {
+>  	char path[PATH_MAX];
+> @@ -107,6 +112,11 @@ igt_main
+>  		igt_assert(sysfs !=3D -1);
+>  	}
+>=20
+> +	igt_describe("check if gt is in c6 on idle");
+%s/"check"/"validate"
+> +	igt_subtest("gt-c6-on-idle")
+> +		xe_for_each_gt(fd, gt)
+> +			assert(igt_wait(in_gt_c6(sysfs, gt), 1000, 1));
+		We should use igt_assert().
+		With all above,
+		Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> +
+>  	igt_describe("check idle residency within a time interval is within
+> tolerance");
+>  	igt_subtest("idle-residency")
+>  		xe_for_each_gt(fd, gt)
 > --
 > 2.40.0
