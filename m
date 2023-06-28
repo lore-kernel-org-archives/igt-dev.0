@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 869C010E36B
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 09:31:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9112710E36C
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 09:32:02 +0000 (UTC)
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 28 Jun 2023 15:05:02 +0530
-Message-Id: <20230628093504.517988-3-riana.tauro@intel.com>
+Date: Wed, 28 Jun 2023 15:05:03 +0530
+Message-Id: <20230628093504.517988-4-riana.tauro@intel.com>
 In-Reply-To: <20230628093504.517988-1-riana.tauro@intel.com>
 References: <20230628093504.517988-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4] tests/xe : Add a test to check if gt is
- in c6 on idle
+Subject: [igt-dev] [PATCH i-g-t 3/4] tests/xe/xe_guc_pc: Remove rc6 tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,40 +23,76 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a test that checks if gt is in c6 on idle
+Remove these tests as sysfs paths have been changed and
+a generic naming used.
 
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/441
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- tests/xe/xe_pm_residency.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/xe/xe_guc_pc.c | 44 --------------------------------------------
+ 1 file changed, 44 deletions(-)
 
-diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
-index 19fbe14e..4f6c23aa 100644
---- a/tests/xe/xe_pm_residency.c
-+++ b/tests/xe/xe_pm_residency.c
-@@ -47,6 +47,11 @@ static unsigned int measured_usleep(unsigned int usec)
- 	return igt_nsec_elapsed(&ts) / 1000;
+diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
+index 89d5ae9e..79359942 100644
+--- a/tests/xe/xe_guc_pc.c
++++ b/tests/xe/xe_guc_pc.c
+@@ -348,27 +348,6 @@ static void test_reset(int fd, int sysfs, int gt_id, int cycles)
+ 	}
  }
  
-+/**
-+ * SUBTEST: gt-c6-on-idle
-+ * Description: check if gt is in C6 on idle
-+ * Run type: BAT
-+ */
- static bool in_gt_c6(int sysfs, int gt)
+-
+-/**
+- * SUBTEST: rc6_on_idle
+- * Description: check if GPU is in RC6 on idle
+- * Run type: BAT
+- *
+- * SUBTEST: rc0_on_exec
+- * Description: check if GPU is in RC0 on when doing some work
+- * Run type: BAT
+- */
+-
+-static bool in_rc6(int sysfs, int gt_id)
+-{
+-	char path[32];
+-	char rc[8];
+-	sprintf(path, "device/gt%d/rc_status", gt_id);
+-	if (igt_sysfs_scanf(sysfs, path, "%s", rc) < 0)
+-		return false;
+-	return strcmp(rc, "rc6") == 0;
+-}
+-
+ igt_main
  {
- 	char path[PATH_MAX];
-@@ -107,6 +112,11 @@ igt_main
- 		igt_assert(sysfs != -1);
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -460,29 +439,6 @@ igt_main
+ 		}
  	}
  
-+	igt_describe("check if gt is in c6 on idle");
-+	igt_subtest("gt-c6-on-idle")
-+		xe_for_each_gt(fd, gt)
-+			assert(igt_wait(in_gt_c6(sysfs, gt), 1000, 1));
-+
- 	igt_describe("check idle residency within a time interval is within tolerance");
- 	igt_subtest("idle-residency")
- 		xe_for_each_gt(fd, gt)
+-	igt_subtest("rc6_on_idle") {
+-		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+-		xe_for_each_gt(fd, gt) {
+-			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
+-		}
+-	}
+-
+-	igt_subtest("rc0_on_exec") {
+-		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+-		xe_for_each_gt(fd, gt) {
+-			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
+-			xe_for_each_hw_engine(fd, hwe)
+-				igt_fork(child, ncpus) {
+-					igt_debug("Execution Started\n");
+-					exec_basic(fd, hwe, MAX_N_ENGINES, 16);
+-					igt_debug("Execution Finished\n");
+-				}
+-			/* While exec in threads above, let's check rc_status */
+-			assert(igt_wait(!in_rc6(sysfs, gt), 1000, 1));
+-			igt_waitchildren();
+-		}
+-	}
+-
+ 	igt_fixture {
+ 		xe_for_each_gt(fd, gt) {
+ 			set_freq(sysfs, gt, "min", stash_min);
 -- 
 2.40.0
