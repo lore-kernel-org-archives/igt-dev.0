@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com
- [IPv6:2a00:1450:4864:20::231])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65A6410E0A8
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 14:56:07 +0000 (UTC)
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2b69f1570b2so60168541fa.0
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 07:56:07 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 28 Jun 2023 17:55:57 +0300
-Message-Id: <20230628145557.11801-2-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230628145557.11801-1-juhapekka.heikkila@gmail.com>
-References: <20230628145557.11801-1-juhapekka.heikkila@gmail.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08A7E10E0B8
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 18:51:00 +0000 (UTC)
+Date: Wed, 28 Jun 2023 20:50:55 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Message-ID: <20230628185055.rtg4fercx5b2ykpw@kamilkon-desk1>
+References: <20230623230954.115437-1-jshargo@chromium.org>
+ <20230623230954.115437-2-jshargo@chromium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/2] tests/i915/kms_big_fb: take out
- blitter fallback path as it is replaced with Cairo
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230623230954.115437-2-jshargo@chromium.org>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/drmtest: Add VKMS as a known
+ driver type
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,52 +25,131 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-After adding cairo fallback path blitter path will never be used anymore
+Hi James,
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/i915/kms_big_fb.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+On 2023-06-23 at 19:09:52 -0400, James Shargo wrote:
+> From: Jim Shargo <jshargo@chromium.org>
 
-diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-index ffaa9c8d9..e9beb3b52 100644
---- a/tests/i915/kms_big_fb.c
-+++ b/tests/i915/kms_big_fb.c
-@@ -133,20 +133,9 @@ static void copy_pattern(data_t *data,
- 	/*
- 	 * We expect the kernel to limit the max fb
- 	 * size/stride to something that can still
--	 * rendered with the blitter/render engine.
-+	 * rendered with the render engine.
- 	 */
--	if (data->render_copy) {
--		data->render_copy(data->ibb, src, sx, sy, w, h, dst, dx, dy);
--	} else {
--		w = min(w, src_fb->width - sx);
--		w = min(w, dst_fb->width - dx);
--
--		h = min(h, src_fb->height - sy);
--		h = min(h, dst_fb->height - dy);
--
--		intel_bb_blt_copy(data->ibb, src, sx, sy, src->surface[0].stride,
--				  dst, dx, dy, dst->surface[0].stride, w, h, dst->bpp);
--	}
-+	data->render_copy(data->ibb, src, sx, sy, w, h, dst, dx, dy);
- 
- 	fini_buf(dst);
- 	fini_buf(src);
-@@ -998,10 +987,10 @@ igt_main
- 
- 		/*
- 		 * Gen3 render engine is limited to 2kx2k, whereas
--		 * the display engine can do 4kx4k. Use the blitter
-+		 * the display engine can do 4kx4k. Use fallback cairo path
- 		 * on gen3 to avoid exceeding the render engine limits.
- 		 * On gen2 we could use either, but let's go for the
--		 * blitter there as well.
-+		 * cairo there as well.
- 		 */
- 		if (intel_display_ver(data.devid) >= 4)
- 			data.render_copy = igt_get_render_copyfunc(data.devid);
--- 
-2.25.1
+Please write here description what do you added to lib.
+Use checkpatch.pl perl script from Linux kernel to spot
+some problems with patches.
+
+> 
+> Signed-off-by: Jim Shargo <jshargo@chromium.org>
+> ---
+>  lib/drmtest.c | 26 ++++++++++++++++++++++++++
+>  lib/drmtest.h |  7 ++++++-
+>  2 files changed, 32 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 220cfb64d..ad8cbe302 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -150,6 +150,16 @@ bool is_intel_device(int fd)
+>  	return is_i915_device(fd) || is_xe_device(fd);
+>  }
+>  
+
+Document each new public function.
+
+> +bool is_vkms_device(int fd)
+
+Why not make it as other functions? Use __is_device()
+
+> +{
+> +	char name[64] = "";
+> +
+> +	if (__get_drm_device_name(fd, name, sizeof(name) - 1))
+> +		return false;
+> +
+> +	return strncmp("vkms", name, strlen("vkms")) == 0;
+> +}
+> +
+>  static char _forced_driver[16] = "";
+>  
+>  /**
+> @@ -734,3 +744,19 @@ void igt_require_xe(int fd)
+>  {
+>  	igt_require(is_xe_device(fd));
+>  }
+> +
+
+Same here, write documentation.
+
+> +void igt_require_vkms(void)
+> +{
+> +	// Since VKMS can create and destroy virtual drivers at will,
+> +	// instead look to make sure the driver is installed.
+---------- ^ ----- ^ -- ^^
+s/instead look to //
+imho here you should use C-style comment.
+
+> +	struct stat s = {};
+> +	int ret;
+> +	char *vkms_module_dir = "/sys/module/vkms";
+------- ^
+const
+btw maybe this should be first param.
+
+> +
+> +	ret = stat(vkms_module_dir, &s);
+> +
+> +	igt_require_f(ret == 0, "VKMS stat of %s returned %d (%s)\n",
+> +		      vkms_module_dir, ret, strerror(ret));
+> +	igt_require_f(S_ISDIR(s.st_mode),
+> +		      "VKMS stat of %s was not a directory\n", vkms_module_dir);
+> +}
+
+You should also add this into modules[] struct in libdrm.c
+
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index ae86ee19a..1d418e1f6 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -53,14 +53,17 @@
+>  #define DRIVER_MSM	(1 << 6)
+>  #define DRIVER_XE	(1 << 7)
+>  #define DRIVER_VMWGFX   (1 << 8)
+> +#define DRIVER_VKMS	(1 << 9)
+>  
+>  /*
+>   * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+>   * with vgem as well as a supported driver, you can end up with a
+>   * near-100% skip rate if you don't explicitly specify the device,
+>   * depending on device-load ordering.
+> + *
+> + * Exclude VKMS to prefer hardware drivers.
+>   */
+> -#define DRIVER_ANY 	~(DRIVER_VGEM)
+> +#define DRIVER_ANY ~(DRIVER_VGEM | DRIVER_VKMS)
+>  
+>  /*
+>   * Compile friendly enum for i915/xe.
+> @@ -114,6 +117,7 @@ void igt_require_i915(int fd);
+>  void igt_require_nouveau(int fd);
+>  void igt_require_vc4(int fd);
+>  void igt_require_xe(int fd);
+> +void igt_require_vkms(void);
+
+Keep it sorted aplhabetically.
+
+>  
+>  bool is_amdgpu_device(int fd);
+>  bool is_i915_device(int fd);
+> @@ -123,6 +127,7 @@ bool is_nouveau_device(int fd);
+>  bool is_vc4_device(int fd);
+>  bool is_xe_device(int fd);
+>  bool is_intel_device(int fd);
+> +bool is_vkms_device(int fd);
+
+Move it after is_vc4_device.
+
+Regards,
+Kamil
+
+>  
+>  /**
+>   * do_or_die:
+> -- 
+> 2.41.0.162.gfafddb0af9-goog
+> 
