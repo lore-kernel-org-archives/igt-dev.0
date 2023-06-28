@@ -3,13 +3,13 @@ Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Riana Tauro" <riana.tauro@intel.com>
-Date: Wed, 28 Jun 2023 14:22:27 -0000
-Message-ID: <168796214711.32037.25802585231439608@emeril.freedesktop.org>
-References: <20230628093504.517988-1-riana.tauro@intel.com>
-In-Reply-To: <20230628093504.517988-1-riana.tauro@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_T?=
- =?utf-8?q?est_for_gtidle_properties?=
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Date: Wed, 28 Jun 2023 14:22:23 -0000
+Message-ID: <168796214301.32038.4785135285506292084@emeril.freedesktop.org>
+References: <20230628074503.2902624-1-jesse.zhang@amd.com>
+In-Reply-To: <20230628074503.2902624-1-jesse.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
+ =?utf-8?q?ib/amdgpu=3A_add_the_fence_status_check?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,37 +25,79 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Test for gtidle properties
-URL   : https://patchwork.freedesktop.org/series/119965/
+Series: lib/amdgpu: add the fence status check
+URL   : https://patchwork.freedesktop.org/series/119964/
 State : warning
 
 == Summary ==
 
 Pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/921119 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/921072 for the overview.
 
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44585436):
-  STEP 3: COPY .gitlab-ci/docker-help.sh /usr/local/bin/docker-help.sh
-  7bc43e7f793f1d1401f7abae456bcb5222cb7e6c9ea8bbfca341640dae3ceb1d
-  STEP 4: ENV PATH="/opt/igt/bin:${PATH}"
-  db72729f19d0efcb10dbafe3e32d107989f38a1e924fc69584feed72eb9f8a82
-  STEP 5: ENV LD_LIBRARY_PATH="/opt/igt/lib:/opt/igt/lib64:${LD_LIBRARY_PATH}"
-  c1b9ffd9f43a38d4173f065f2e7d44616be735d565c679b394d0542bc281b11b
-  STEP 6: ENV IGT_TEST_ROOT="/opt/igt/libexec/igt-gpu-tools"
-  29e28ed79f8fb985eeea67802eddf0f306b601f4fda92a71d43b99d311fe0c10
-  STEP 7: CMD docker-help.sh
-  STEP 8: COMMIT registry.freedesktop.org/gfx-ci/igt-ci-tags/igt:commit-813c3c4ff0bba6ccc2b5c7a7ac477a582b846439
-  6c0e2e9a59aef100d7fb3ae036836ed3fea59a430a84dfa16033e95846966fe5
-  Getting image source signatures
-  Copying blob sha256:1861d263807d15172e9db20db23af83d59c5adef038158fb3f1fe33f5be815d2
-  Error: Error copying image to the remote destination: Error trying to reuse blob sha256:3504a8337d3b7eaabfd338d6a971d02441d28ebef8bd81f730d87f936ed58079 at destination: failed to read from destination repository gfx-ci/igt-ci-tags/igt: 500 (Internal Server Error)
-  section_end:1687959236:step_script
-  section_start:1687959236:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1687959236:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44582792):
+  Running with gitlab-runner 16.0.2 (85586bd1)
+    on fdo-equinix-m3l-22 YyH_tCiK, system ID: r_a0v3jgyTbvyU
+  section_start:1687955828:prepare_executor
+  Preparing the "docker" executor
+  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-a84a394c7b7c09423fa31431ef32f2958138ba4f ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-a84a394c7b7c09423fa31431ef32f2958138ba4f ...
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-a84a394c7b7c09423fa31431ef32f2958138ba4f with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1687955829:prepare_executor
+  section_start:1687955829:prepare_script
+  Preparing environment
+  Running on runner-yyhtcik-project-3185-concurrent-0 via dcfb9e0d8998...
+  section_end:1687955830:prepare_script
+  section_start:1687955830:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44582795):
+  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-a84a394c7b7c09423fa31431ef32f2958138ba4f ...
+  Using locally found image version due to "if-not-present" pull policy
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-a84a394c7b7c09423fa31431ef32f2958138ba4f with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1687955829:prepare_executor
+  section_start:1687955829:prepare_script
+  Preparing environment
+  Running on runner-yyhtcik-project-3185-concurrent-2 via dcfb9e0d8998...
+  section_end:1687955830:prepare_script
+  section_start:1687955830:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out a84a394c as detached HEAD (ref is intel/IGTPW_9290)...
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing scripts/__pycache__/
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44582793):
+    on fdo-equinix-m3l-22 YyH_tCiK, system ID: r_a0v3jgyTbvyU
+  section_start:1687955828:prepare_executor
+  Preparing the "docker" executor
+  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-a84a394c7b7c09423fa31431ef32f2958138ba4f ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-a84a394c7b7c09423fa31431ef32f2958138ba4f ...
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-a84a394c7b7c09423fa31431ef32f2958138ba4f with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1687955829:prepare_executor
+  section_start:1687955829:prepare_script
+  Preparing environment
+  Running on runner-yyhtcik-project-3185-concurrent-1 via dcfb9e0d8998...
+  section_end:1687955830:prepare_script
+  section_start:1687955830:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/921119
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/921072
