@@ -1,17 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 828A710E362
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 06:47:35 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 28 Jun 2023 12:17:19 +0530
-Message-Id: <20230628064720.3969317-2-anshuman.gupta@intel.com>
-In-Reply-To: <20230628064720.3969317-1-anshuman.gupta@intel.com>
-References: <20230628064720.3969317-1-anshuman.gupta@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6C5610E0C7
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 07:19:24 +0000 (UTC)
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>, "Upadhyay, Tejas"
+ <tejas.upadhyay@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Wed, 28 Jun 2023 07:19:18 +0000
+Message-ID: <DM6PR11MB4492D052507BA98720270EB88D24A@DM6PR11MB4492.namprd11.prod.outlook.com>
+References: <20230625122948.535456-1-priyanka.dandamudi@intel.com>
+ <20230625122948.535456-3-priyanka.dandamudi@intel.com>
+ <MW3PR11MB47483BA68D283A1928CACCEDAE27A@MW3PR11MB4748.namprd11.prod.outlook.com>
+In-Reply-To: <MW3PR11MB47483BA68D283A1928CACCEDAE27A@MW3PR11MB4748.namprd11.prod.outlook.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 1/2] lib/igt_aux: Disable console suspend
- for suspend test
+Subject: Re: [igt-dev] [PATCH i-g-t 2/5] xe/xe_sysfs_defaults: Verify
+ .defaults in engines directory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,101 +25,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need no_console_suspend to be enable in order to dump the suspend
-logs over serial console before attempting the suspend during
-CI Execution.
-Therefore disable the console_suspend using printk module parameters
-while executing suspend test.
-
-v2:
-- Keep console_suspend restore only in exit handler. [Ashutosh]
-- Don't skip the test on open error, while opening printk parameters,
-  instead print warning. [Kmail]
-v3:
-- Fixed cosmetics and return value comment. [Ashutosh]
-v4:
-- Added igt_aux_enable_pm_suspend_dbg() function doc. [Kmail]
-
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/igt_aux.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
-
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index 386e257834..dca559384e 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -702,6 +702,10 @@ void igt_print_activity(void)
- }
- 
- static int autoresume_delay;
-+bool __console_suspend_saved_state;
-+
-+#define SYSFS_MODULE_PRINTK "/sys/module/printk/parameters/"
-+#define CONSOLE_SUSPEND_DISABLE false
- 
- static const char *suspend_state_name[] = {
- 	[SUSPEND_STATE_FREEZE] = "freeze",
-@@ -907,6 +911,45 @@ static bool is_mem_sleep_state_supported(int power_dir, enum igt_mem_sleep state
- 	return str;
- }
- 
-+static void igt_aux_pm_suspend_dbg_restore_exit_handler(int sig)
-+{
-+	int sysfs_fd;
-+
-+	sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY);
-+	if (sysfs_fd < 0)
-+		return;
-+
-+	igt_sysfs_set_boolean(sysfs_fd, "console_suspend", __console_suspend_saved_state);
-+	close(sysfs_fd);
-+}
-+
-+/**
-+ * igt_aux_enable_pm_suspend_dbg:
-+ *
-+ * Enhance the System wide suspend/resume debugging by
-+ * disabling console suspend. Disabling console suspend dump the suspend/resume
-+ * logs over serial console. That will be useful to debug CI Suspend/Resume issues
-+ * tagged with 'Incomplete' result.
-+ */
-+static void igt_aux_enable_pm_suspend_dbg(void)
-+{
-+	int sysfs_fd;
-+
-+	sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY);
-+	if (sysfs_fd > 0) {
-+		__console_suspend_saved_state = igt_sysfs_get_boolean(sysfs_fd, "console_suspend");
-+
-+		if (!igt_sysfs_set_boolean(sysfs_fd, "console_suspend", CONSOLE_SUSPEND_DISABLE))
-+			igt_warn("Unable to disable console suspend\n");
-+
-+		igt_install_exit_handler(igt_aux_pm_suspend_dbg_restore_exit_handler);
-+	} else {
-+		igt_warn("Unable to open printk parameters Err:%d\n", errno);
-+	}
-+
-+	close(sysfs_fd);
-+}
-+
- /**
-  * igt_system_suspend_autoresume:
-  * @state: an #igt_suspend_state, the target suspend state
-@@ -945,6 +988,7 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
- 		      "Suspend to disk requires swap space.\n");
- 
- 	orig_test = get_suspend_test(power_dir);
-+	igt_aux_enable_pm_suspend_dbg();
- 
- 	if (state == SUSPEND_STATE_S3) {
- 		orig_mem_sleep = get_mem_sleep();
--- 
-2.25.1
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS3VtYXIsIEphbmdhIFJh
+aHVsIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5jb20+DQo+IFNlbnQ6IDI3IEp1bmUgMjAyMyAw
+NDowNyBQTQ0KPiBUbzogRGFuZGFtdWRpLCBQcml5YW5rYSA8cHJpeWFua2EuZGFuZGFtdWRpQGlu
+dGVsLmNvbT47IFVwYWRoeWF5LA0KPiBUZWphcyA8dGVqYXMudXBhZGh5YXlAaW50ZWwuY29tPjsg
+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogUkU6IFtQQVRDSCBpLWct
+dCAyLzVdIHhlL3hlX3N5c2ZzX2RlZmF1bHRzOiBWZXJpZnkgLmRlZmF1bHRzIGluDQo+IGVuZ2lu
+ZXMgZGlyZWN0b3J5DQo+IA0KPiANCj4gDQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0N
+Cj4gPiBGcm9tOiBEYW5kYW11ZGksIFByaXlhbmthIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwu
+Y29tPg0KPiA+IFNlbnQ6IDI1IEp1bmUgMjAyMyAxODowMA0KPiA+IFRvOiBLdW1hciwgSmFuZ2Eg
+UmFodWwgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT47IFVwYWRoeWF5LCBUZWphcw0KPiA+
+IDx0ZWphcy51cGFkaHlheUBpbnRlbC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
+ZzsgRGFuZGFtdWRpLA0KPiA+IFByaXlhbmthIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29t
+Pg0KPiA+IFN1YmplY3Q6IFtQQVRDSCBpLWctdCAyLzVdIHhlL3hlX3N5c2ZzX2RlZmF1bHRzOiBW
+ZXJpZnkgLmRlZmF1bHRzIGluDQo+ID4gZW5naW5lcyBkaXJlY3RvcnkNCj4gPg0KPiA+IEZyb206
+IFByaXlhbmthIERhbmRhbXVkaSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4NCj4gPg0K
+PiA+IEFkZCBhIG5ldyB0ZXN0IHdoaWNoIHZlcmlmaWVzIC5kZWZhdWx0cyBhcmUgcmVhZG9ubHkg
+YW5kIGFsbA0KPiA+IHBhcmFtZXRlcnMgYXJlIHByZXNlbnQuDQo+ID4NCj4gPiBDYzogSmFuZ2Eg
+UmFodWwgS3VtYXIgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCj4gPiBDYzogVGVqYXMg
+VXBhZGh5YXkgPHRlamFzLnVwYWRoeWF5QGludGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBQ
+cml5YW5rYSBEYW5kYW11ZGkgPHByaXlhbmthLmRhbmRhbXVkaUBpbnRlbC5jb20+DQo+ID4gLS0t
+DQo+ID4gIHRlc3RzL21lc29uLmJ1aWxkICAgICAgICAgICAgfCAgIDEgKw0KPiA+ICB0ZXN0cy94
+ZS94ZV9zeXNmc19kZWZhdWx0cy5jIHwgMTA1DQo+ID4gKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysNCj4gPiAgMiBmaWxlcyBjaGFuZ2VkLCAxMDYgaW5zZXJ0aW9ucygrKQ0KPiA+
+ICBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMveGUveGVfc3lzZnNfZGVmYXVsdHMuYw0KPiA+DQo+
+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQgaW5k
+ZXgNCj4gPiA4NWVhN2U3NC4uYjI0YmFlNWMNCj4gPiAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9t
+ZXNvbi5idWlsZA0KPiA+ICsrKyBiL3Rlc3RzL21lc29uLmJ1aWxkDQo+ID4gQEAgLTI3MCw2ICsy
+NzAsNyBAQCB4ZV9wcm9ncyA9IFsNCj4gPiAgCSd4ZV92bScsDQo+ID4gIAkneGVfd2FpdGZlbmNl
+JywNCj4gPiAgCSd4ZV9zcGluX2JhdGNoJywNCj4gPiArCSd4ZV9zeXNmc19kZWZhdWx0cycsDQo+
+ID4gIF0NCj4gPg0KPiA+ICBtc21fcHJvZ3MgPSBbDQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL3hl
+L3hlX3N5c2ZzX2RlZmF1bHRzLmMNCj4gPiBiL3Rlc3RzL3hlL3hlX3N5c2ZzX2RlZmF1bHRzLmMg
+bmV3IGZpbGUgbW9kZSAxMDA2NDQgaW5kZXgNCj4gPiAwMDAwMDAwMC4uMTczM2FkZTcNCj4gPiAt
+LS0gL2Rldi9udWxsDQo+ID4gKysrIGIvdGVzdHMveGUveGVfc3lzZnNfZGVmYXVsdHMuYw0KPiA+
+IEBAIC0wLDAgKzEsMTA1IEBADQo+ID4gKy8qDQo+ID4gKyAqIENvcHlyaWdodCDCqSAyMDIzIElu
+dGVsIENvcnBvcmF0aW9uDQo+ID4gKyAqDQo+ID4gKyAqIFBlcm1pc3Npb24gaXMgaGVyZWJ5IGdy
+YW50ZWQsIGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVyc29uDQo+ID4gK29idGFpbmluZyBhDQo+
+ID4gKyAqIGNvcHkgb2YgdGhpcyBzb2Z0d2FyZSBhbmQgYXNzb2NpYXRlZCBkb2N1bWVudGF0aW9u
+IGZpbGVzICh0aGUNCj4gPiArIlNvZnR3YXJlIiksDQo+ID4gKyAqIHRvIGRlYWwgaW4gdGhlIFNv
+ZnR3YXJlIHdpdGhvdXQgcmVzdHJpY3Rpb24sIGluY2x1ZGluZyB3aXRob3V0DQo+ID4gK2xpbWl0
+YXRpb24NCj4gPiArICogdGhlIHJpZ2h0cyB0byB1c2UsIGNvcHksIG1vZGlmeSwgbWVyZ2UsIHB1
+Ymxpc2gsIGRpc3RyaWJ1dGUsDQo+ID4gK3N1YmxpY2Vuc2UsDQo+ID4gKyAqIGFuZC9vciBzZWxs
+IGNvcGllcyBvZiB0aGUgU29mdHdhcmUsIGFuZCB0byBwZXJtaXQgcGVyc29ucyB0byB3aG9tDQo+
+ID4gK3RoZQ0KPiA+ICsgKiBTb2Z0d2FyZSBpcyBmdXJuaXNoZWQgdG8gZG8gc28sIHN1YmplY3Qg
+dG8gdGhlIGZvbGxvd2luZyBjb25kaXRpb25zOg0KPiA+ICsgKg0KPiA+ICsgKiBUaGUgYWJvdmUg
+Y29weXJpZ2h0IG5vdGljZSBhbmQgdGhpcyBwZXJtaXNzaW9uIG5vdGljZSAoaW5jbHVkaW5nDQo+
+ID4gK3RoZSBuZXh0DQo+ID4gKyAqIHBhcmFncmFwaCkgc2hhbGwgYmUgaW5jbHVkZWQgaW4gYWxs
+IGNvcGllcyBvciBzdWJzdGFudGlhbCBwb3J0aW9ucw0KPiA+ICtvZiB0aGUNCj4gPiArICogU29m
+dHdhcmUuDQo+ID4gKyAqDQo+ID4gKyAqIFRIRSBTT0ZUV0FSRSBJUyBQUk9WSURFRCAiQVMgSVMi
+LCBXSVRIT1VUIFdBUlJBTlRZIE9GIEFOWQ0KPiBLSU5ELA0KPiA+ICtFWFBSRVNTIE9SDQo+ID4g
+KyAqIElNUExJRUQsIElOQ0xVRElORyBCVVQgTk9UIExJTUlURUQgVE8gVEhFIFdBUlJBTlRJRVMg
+T0YNCj4gPiArTUVSQ0hBTlRBQklMSVRZLA0KPiA+ICsgKiBGSVRORVNTIEZPUiBBIFBBUlRJQ1VM
+QVIgUFVSUE9TRSBBTkQgTk9OSU5GUklOR0VNRU5ULiAgSU4gTk8NCj4gPiBFVkVOVA0KPiA+ICtT
+SEFMTA0KPiA+ICsgKiBUSEUgQVVUSE9SUyBPUiBDT1BZUklHSFQgSE9MREVSUyBCRSBMSUFCTEUg
+Rk9SIEFOWSBDTEFJTSwNCj4gPiBEQU1BR0VTIE9SDQo+ID4gK09USEVSDQo+ID4gKyAqIExJQUJJ
+TElUWSwgV0hFVEhFUiBJTiBBTiBBQ1RJT04gT0YgQ09OVFJBQ1QsIFRPUlQgT1INCj4gT1RIRVJX
+SVNFLA0KPiA+ICtBUklTSU5HDQo+ID4gKyAqIEZST00sIE9VVCBPRiBPUiBJTiBDT05ORUNUSU9O
+IFdJVEggVEhFIFNPRlRXQVJFIE9SIFRIRSBVU0UNCj4gT1INCj4gPiBPVEhFUg0KPiA+ICtERUFM
+SU5HUw0KPiA+ICsgKiBJTiBUSEUgU09GVFdBUkUuDQo+ID4gKyAqLw0KPiA+ICsNCj4gPiArI2lu
+Y2x1ZGUgPGRpcmVudC5oPg0KPiA+ICsjaW5jbHVkZSA8c3lzL3R5cGVzLmg+DQo+ID4gKyNpbmNs
+dWRlIDxzeXMvc3RhdC5oPg0KPiA+ICsjaW5jbHVkZSA8dW5pc3RkLmg+DQo+ID4gKw0KPiA+ICsj
+aW5jbHVkZSAiaWd0LmgiDQo+ID4gKyNpbmNsdWRlICJpZ3Rfc3lzZnMuaCINCj4gPiArDQo+ID4g
+KyNpbmNsdWRlICJ4ZV9kcm0uaCINCj4gPiArI2luY2x1ZGUgInhlL3hlX3F1ZXJ5LmgiDQo+ID4g
+Kw0KPiA+ICsvKioNCj4gPiArICogVEVTVDogeGUgc3lzZnMgZGVmYXVsdHMNCj4gPiArICogQ2F0
+ZWdvcnk6IEluZnJhc3RydWN0dXJlDQo+ID4gKyAqIEZ1bmN0aW9uYWxpdHk6IGRyaXZlciBoYW5k
+bGVyDQo+ID4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ID4gKyAqIFN1Yi1jYXRlZ29yeTogeGUNCj4g
+PiArICogVGVzdCBjYXRlZ29yeTogU3lzTWFuDQo+ID4gKyAqIFNVQlRFU1Q6IGRlZmF1bHRzDQo+
+ID4gKyAqLw0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgdGVzdF9kZWZhdWx0cyhpbnQgeGUsIGlu
+dCBlbmdpbmUpIHsNCj4gPiArCXN0cnVjdCBkaXJlbnQgKmRlOw0KPiA+ICsJaW50IGRlZmF1bHRz
+Ow0KPiA+ICsJRElSICpkaXI7DQo+ID4gKw0KPiA+ICsJZGVmYXVsdHMgPSBvcGVuYXQoZW5naW5l
+LCAiLmRlZmF1bHRzIiwgT19ESVJFQ1RPUlkpOw0KPiBDaGVjayBldmVuIC5kZWZhdWx0cyBkaXIg
+aGFzIHJlYWRvbmx5IGFjY2VzcyBvciBub3QNCj4gPiArCWlndF9yZXF1aXJlKGRlZmF1bHRzICE9
+IC0xKTsNCj4gPiArDQo+ID4gKwlkaXIgPSBmZG9wZW5kaXIoZW5naW5lKTsNCj4gPiArCXdoaWxl
+ICgoZGUgPSByZWFkZGlyKGRpcikpKSB7DQo+ID4gKwkJaWYgKCpkZS0+ZF9uYW1lID09ICcuJykN
+Cj4gPiArCQkJY29udGludWU7DQo+ID4gKw0KPiA+ICsJCWlndF9kZWJ1ZygiQ2hlY2tpbmcgYXR0
+ciAnJXMnXG4iLCBkZS0+ZF9uYW1lKTsNCj4gPiArDQo+ID4gKwkJaWd0X2Fzc2VydF9mKGlndF9z
+eXNmc19nZXQoZGVmYXVsdHMsIGRlLT5kX25hbWUpLA0KPiA+ICsJCQkJCSAiRGVmYXVsdCB2YWx1
+ZSAlcyBpcyBub3QgcHJlc2VudCFcbiIsDQo+ID4gKwkJCQkJIGRlLT5kX25hbWUpOw0KPiA+ICsN
+Cj4gPiArCQlpZ3RfYXNzZXJ0X2YoIWlndF9zeXNmc19zZXQoZGVmYXVsdHMsIGRlLT5kX25hbWUs
+ICJnYXJiYWdlIiksDQo+ID4gKwkJCQkJICJ3cml0ZSBpbnRvIGRlZmF1bHQgdmFsdWUgb2YgJXMN
+Cj4gPiBzdWNjZWVkZWQhXG4iLA0KPiA+ICsJCQkJCSBkZS0+ZF9uYW1lKTsNCj4gPiArCX0NCj4g
+PiArCWNsb3NlZGlyKGRpcik7DQo+ID4gK30NCj4gPiArDQo+ID4gK2lndF9tYWluDQo+ID4gK3sN
+Cj4gPiArCWludCB4ZSwgc3lzOw0KPiA+ICsJaW50IGd0Ow0KPiA+ICsNCj4gPiArCWlndF9maXh0
+dXJlIHsNCj4gPiArCQl4ZSA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfWEUpOw0KPiA+ICsJCXhl
+X2RldmljZV9nZXQoeGUpOw0KPiA+ICsNCj4gPiArCQlzeXMgPSBpZ3Rfc3lzZnNfb3Blbih4ZSk7
+DQo+ID4gKwkJaWd0X3JlcXVpcmUoc3lzICE9IC0xKTsNCj4gPiArCX0NCj4gPiArCWlndF9zdWJ0
+ZXN0X3dpdGhfZHluYW1pYygiZGVmYXVsdHMiKSB7DQo+ID4gKwkJeGVfZm9yX2VhY2hfZ3QoeGUs
+IGd0KSB7DQo+ID4gKwkJCWludCBlbmdpbmVzID0gLTE7DQo+ID4gKwkJCWNoYXIgYnVmWzEwMF07
+DQo+ID4gKw0KPiA+ICsJCQlzcHJpbnRmKGJ1ZiwgImRldmljZS9ndCVkL2VuZ2luZXMiLCBndCk7
+DQo+IFBhdGNoIGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTE4OTI3
+Lw0KPiBpcyBtb3ZpbmcgZ3Qgc3lzZnMgcGFyZW50IHVuZGVyIHRpbGUgZm9sZGVyLg0KPiANCj4g
+V2l0aCB0aGUgYWJvdmUgcGF0Y2ggcGF0aCBmb3Igc3lzZnMgY2hhbmdlczoNCj4gZnJvbTogL3N5
+cy9jbGFzcy9kcm0vY2FyZFgvZGV2aWNlL2d0Ti8gdG8gOg0KPiAvc3lzL2NsYXNzL2RybS9jYXJk
+WC9kZXZpY2UvdGlsZU4vZ3RODQo+IA0KPiBJIHdvdWxkIHN1Z2dlc3QgdG8gYWRkIHNvbWUgZ2V0
+X2d0X3N5c2ZzX3BhdGgoKSB0eXBlIG9mIGZ1bmN0aW9ucyB3aGljaCBjYW4NCj4gYmUgdXNlZCBp
+biBhbGwgdGhlIHRlc3RzIGFuZCB3aWxsIGJlIGVhc3kgdG8gbWFpbnRhaW4gaWYgdGhlIHBhdGgg
+aXMgY2hhbmdlIGJ5DQo+IGtlcm5lbCBpbiBmdXR1cmUgYXMgd2VsbC4NCj4gDQo+IFRoYW5rcywN
+Cj4gUmFodWwNCg0KVGhlcmUgaXMgYWxyZWFkeSBhIGZ1bmN0aW9uIHNpbWlsYXIgdG8gdGhlIG9u
+ZSB5b3UgbWVudGlvbmVkIGJ1dCBpdCBkb2Vzbid0IHdvcmsgZm9yIHhlLg0KRm9yIG5vdywgbGV0
+IHRoaXMgYmUgYW5kIGxhdGVyIHdlIGNhbiBpbXByb3ZlIGxpYiB3aGljaCB3b3JrcyBmb3IgYm90
+aCB4ZSBhbmQgaTkxNS4NClRoYW5rcywNClByaXlhbmthDQo+ID4gKwkJCWVuZ2luZXMgPSBvcGVu
+YXQoc3lzLCBidWYsIE9fUkRPTkxZKTsNCj4gPiArCQkJaWd0X3JlcXVpcmUoZW5naW5lcyAhPSAt
+MSk7DQo+ID4gKw0KPiA+ICsJCQlpZ3Rfc3lzZnNfZW5naW5lcyh4ZSwgZW5naW5lcywgTlVMTCwg
+dGVzdF9kZWZhdWx0cyk7DQo+ID4gKw0KPiA+ICsJCQljbG9zZShlbmdpbmVzKTsNCj4gPiArCQl9
+DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJaWd0X2ZpeHR1cmUgew0KPiA+ICsJCWNsb3NlKHN5cyk7
+DQo+ID4gKwkJeGVfZGV2aWNlX3B1dCh4ZSk7DQo+ID4gKwkJY2xvc2UoeGUpOw0KPiA+ICsJfQ0K
+PiA+ICt9DQo+ID4gKw0KPiA+IC0tDQo+ID4gMi4yNS4xDQoNCg==
