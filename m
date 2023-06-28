@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5802610E0ED
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 11:23:14 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Wed, 28 Jun 2023 11:23:09 +0000
-Message-ID: <CY5PR11MB62118EF2F898BF08B491406F9524A@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230627112244.3847791-1-anshuman.gupta@intel.com>
- <20230627112244.3847791-2-anshuman.gupta@intel.com>
- <8dea5f19-66c1-39d1-3e51-a95852ce7ef3@intel.com>
-In-Reply-To: <8dea5f19-66c1-39d1-3e51-a95852ce7ef3@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CED2D10E0F3
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 11:27:06 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 28 Jun 2023 16:56:19 +0530
+Message-Id: <20230628112621.4084988-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/xe_pm : Add support to
- disable all crtc
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 0/2] vram d3cold threshold test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,55 +16,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVGF1cm8sIFJpYW5hIDxy
-aWFuYS50YXVyb0BpbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgSnVuZSAyOCwgMjAyMyA0
-OjQ4IFBNDQo+IFRvOiBHdXB0YSwgQW5zaHVtYW4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47
-IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogRGl4aXQsIEFzaHV0b3No
-IDxhc2h1dG9zaC5kaXhpdEBpbnRlbC5jb20+Ow0KPiBrYW1pbC5rb25pZWN6bnlAbGludXguaW50
-ZWwuY29tOyBOaWxhd2FyLCBCYWRhbCA8YmFkYWwubmlsYXdhckBpbnRlbC5jb20+DQo+IFN1Ympl
-Y3Q6IFJlOiBbUEFUQ0ggaS1nLXQgMS8yXSB0ZXN0cy94ZV9wbSA6IEFkZCBzdXBwb3J0IHRvIGRp
-c2FibGUgYWxsIGNydGMNCj4gDQo+IA0KPiBIaSBBbnNodW1hbg0KPiANCj4gT24gNi8yNy8yMDIz
-IDQ6NTIgUE0sIEFuc2h1bWFuIEd1cHRhIHdyb3RlOg0KPiA+IHhlX3BtIGQzIHRlc3QgcmVxdWly
-ZXMgdG8gZGlzYWJsZSBhbGwgY3J0YyBpbiBvcmRlciB0byBlbnRlciB0byBkMw0KPiA+IHN0YXRl
-IHRoZXJlZm9yZSwgYWRkaW5nIHRoZSBzdXBwb3J0IHRvIGRpc2FibGUgYWxsIGNydGMuDQo+ID4N
-Cj4gPiBTaWduZWQtb2ZmLWJ5OiBBbnNodW1hbiBHdXB0YSA8YW5zaHVtYW4uZ3VwdGFAaW50ZWwu
-Y29tPg0KPiA+IC0tLQ0KPiA+ICAgdGVzdHMveGUveGVfcG0uYyB8IDIwICsrKysrKysrKysrKysr
-KysrKysrDQo+ID4gICAxIGZpbGUgY2hhbmdlZCwgMjAgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4g
-ZGlmZiAtLWdpdCBhL3Rlc3RzL3hlL3hlX3BtLmMgYi90ZXN0cy94ZS94ZV9wbS5jIGluZGV4DQo+
-ID4gMjNiODI0NmVkLi5jNzFmY2U4OTIgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMveGUveGVfcG0u
-Yw0KPiA+ICsrKyBiL3Rlc3RzL3hlL3hlX3BtLmMNCj4gPiBAQCAtMzQsNiArMzQsNyBAQCB0eXBl
-ZGVmIHN0cnVjdCB7DQo+ID4gICAJaW50IGZkX3hlOw0KPiA+ICAgCXN0cnVjdCBwY2lfZGV2aWNl
-ICpwY2lfeGU7DQo+ID4gICAJc3RydWN0IHBjaV9kZXZpY2UgKnBjaV9yb290Ow0KPiA+ICsJaWd0
-X2Rpc3BsYXlfdCBkaXNwbGF5Ow0KPiA+ICAgfSBkZXZpY2VfdDsNCj4gPg0KPiA+ICAgLyogcnVu
-dGltZV91c2FnZSBpcyBvbmx5IGF2YWlsYWJsZSBpZiBrZXJuZWwgYnVpbGQNCj4gPiBDT05GSUdf
-UE1fQURWQU5DRURfREVCVUcgKi8gQEAgLTE1MCw2ICsxNTEsMjMgQEAgc3RhdGljIGJvb2wNCj4g
-b3V0X29mX2QzKGRldmljZV90IGRldmljZSwgZW51bSBpZ3RfYWNwaV9kX3N0YXRlIHN0YXRlKQ0K
-PiA+ICAgCXJldHVybiB0cnVlOw0KPiA+ICAgfQ0KPiA+DQo+ID4gK3N0YXRpYyB2b2lkIGRpc2Fi
-bGVfYWxsX2NydGMoZGV2aWNlX3QgKmRldmljZSkgew0KPiA+ICsJaWYgKCFkcm1Nb2RlR2V0UmVz
-b3VyY2VzKGRldmljZS0+ZmRfeGUpKQ0KPiA+ICsJCXJldHVybjsNCj4gPiArDQo+ID4gKwlpZ3Rf
-ZGlzcGxheV9yZXF1aXJlKCZkZXZpY2UtPmRpc3BsYXksIGRldmljZS0+ZmRfeGUpOw0KPiA+ICsJ
-aWd0X21vZGVzZXRfZGlzYWJsZV9hbGxfb3V0cHV0cygmZGV2aWNlLT5kaXNwbGF5KTsNCj4gPiAr
-fQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgZGlzcGxheV9maW5pKGRldmljZV90ICpkZXZpY2Up
-IHsNCj4gPiArCWlmICghZHJtTW9kZUdldFJlc291cmNlcyhkZXZpY2UtPmZkX3hlKSkNCj4gPiAr
-CQlyZXR1cm47DQo+ID4gKw0KPiA+ICsJaWd0X2Rpc3BsYXlfZmluaSgmZGV2aWNlLT5kaXNwbGF5
-KTsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgIC8qKg0KPiA+ICAgICogU1VCVEVTVDogJXMtYmFzaWMN
-Cj4gPiAgICAqIERlc2NyaXB0aW9uOiBzZXQgR1BVIHN0YXRlIHRvICVhcmdbMV0gYW5kIHRlc3Qg
-c3VzcGVuZC9hdXRvcmVzdW1lDQo+ID4gQEAgLTM3OCw2ICszOTYsNyBAQCBpZ3RfbWFpbg0KPiA+
-DQo+ID4gICAJCWdldF9kM2NvbGRfYWxsb3dlZChkZXZpY2UucGNpX3hlLCBkM2NvbGRfYWxsb3dl
-ZCk7DQo+ID4gICAJCWlndF9hc3NlcnQoaWd0X3NldHVwX3J1bnRpbWVfcG0oZGV2aWNlLmZkX3hl
-KSk7DQo+ID4gKwkJZGlzYWJsZV9hbGxfY3J0YygmZGV2aWNlKTsNCj4gU2hvdWxkIHRoaXMgYmUg
-YWRkZWQgaW4gc2V0dXBfZDMgaW5zdGVhZCBvZiBmaXh0dXJlPyBUaGUgc3VzcGVuZCB0ZXN0cyB3
-aWxsDQo+IGFsc28gYmUgZXhlY3V0ZWQgd2l0aCBjcnRjIGRpc2FibGVkIG90aGVyd2lzZQ0KWWVz
-IHRoYXQgaXMgaW50ZW50aW9uYWwgdG8ga2VlcCBhcyBzZXBhcmF0ZSBwYXRjaCB0byBwYXNzIG90
-aGVyIHRlc3QgYXMgd2VsbC4NCj4gDQo+IFRoYW5rcw0KPiBSaWFuYQ0KPiANCj4gDQo+ID4gICAJ
-fQ0KPiA+DQo+ID4gICAJZm9yIChjb25zdCBzdHJ1Y3Qgc19zdGF0ZSAqcyA9IHNfc3RhdGVzOyBz
-LT5uYW1lOyBzKyspIHsgQEAgLTQzOCw2DQo+ID4gKzQ1Nyw3IEBAIGlndF9tYWluDQo+ID4gICAJ
-fQ0KPiA+DQo+ID4gICAJaWd0X2ZpeHR1cmUgew0KPiA+ICsJCWRpc3BsYXlfZmluaSgmZGV2aWNl
-KTsNCj4gPiAgIAkJc2V0X2QzY29sZF9hbGxvd2VkKGRldmljZS5wY2lfeGUsIGQzY29sZF9hbGxv
-d2VkKTsNCj4gPiAgIAkJaWd0X3Jlc3RvcmVfcnVudGltZV9wbSgpOw0KPiA+ICAgCQl4ZV9kZXZp
-Y2VfcHV0KGRldmljZS5mZF94ZSk7DQo=
+Adding vram_d3cold_threshold subtest.
+Also adding support to disbale all crtc to avoid d3 test
+failures.
+
+Anshuman Gupta (2):
+  tests/xe_pm : Add support to disable all crtc
+  test/xe_pm: Add vram_d3cold_threshold subtest
+
+ tests/xe/xe_pm.c | 100 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 100 insertions(+)
+
+-- 
+2.25.1
