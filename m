@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 884F810E0E4
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 09:53:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B271410E0E4
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 09:53:30 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: janga.rahul.kumar@intel.com, tejas.upadhyay@intel.com,
  igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  priyanka.dandamudi@intel.com
-Date: Wed, 28 Jun 2023 15:22:38 +0530
-Message-Id: <20230628095239.615655-3-priyanka.dandamudi@intel.com>
+Date: Wed, 28 Jun 2023 15:22:39 +0530
+Message-Id: <20230628095239.615655-4-priyanka.dandamudi@intel.com>
 In-Reply-To: <20230628095239.615655-1-priyanka.dandamudi@intel.com>
 References: <20230628095239.615655-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] xe/xe_sysfs_defaults: Verify .defaults
- in engines directory
+Subject: [igt-dev] [PATCH i-g-t 3/3] xe/xe_sysfs_scheduler: Verify scheduler
+ control interface
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,51 +28,66 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Add a new test which verifies .defaults are readonly and all
-parameters are present.
+Added 3 basic tests invalid, min-max and nonpriviled-user are added to verify
+scheduler parameters for each engine.
 
-v2: Addressed small changes.(Kamil)
+1. invalid: Try to set invalid values to scheduler parameters and verify it.
+2. min-max: For a privileged user, it sets min, max values.
+   It sets scheduler parmeters within the range and verifies it.
+   It sets scheduler parameters beyond the range but within the default range and verifies it.
+3. nonpriviled-user: It drops the root privileges and try to set scheduler parmeters beyond the range
+   and verifies it.
 
 Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/meson.build            |  1 +
- tests/xe/xe_sysfs_defaults.c | 88 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 89 insertions(+)
- create mode 100644 tests/xe/xe_sysfs_defaults.c
+ tests/meson.build             |   1 +
+ tests/xe/xe_sysfs_scheduler.c | 203 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 204 insertions(+)
+ create mode 100644 tests/xe/xe_sysfs_scheduler.c
 
 diff --git a/tests/meson.build b/tests/meson.build
-index 85ea7e74e..b24bae5c2 100644
+index b24bae5c2..dc362a34d 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -270,6 +270,7 @@ xe_progs = [
- 	'xe_vm',
+@@ -271,6 +271,7 @@ xe_progs = [
  	'xe_waitfence',
  	'xe_spin_batch',
-+	'xe_sysfs_defaults',
+ 	'xe_sysfs_defaults',
++	'xe_sysfs_scheduler',
  ]
  
  msm_progs = [
-diff --git a/tests/xe/xe_sysfs_defaults.c b/tests/xe/xe_sysfs_defaults.c
+diff --git a/tests/xe/xe_sysfs_scheduler.c b/tests/xe/xe_sysfs_scheduler.c
 new file mode 100644
-index 000000000..f21b1c64b
+index 000000000..6642b8d92
 --- /dev/null
-+++ b/tests/xe/xe_sysfs_defaults.c
-@@ -0,0 +1,88 @@
++++ b/tests/xe/xe_sysfs_scheduler.c
+@@ -0,0 +1,203 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2023 Intel Corporation
 + */
 +
 +/**
-+ * TEST: xe sysfs defaults
-+ * Category: Infrastructure
-+ * Functionality: driver handler
++ * TEST: xe sysfs scheduler
 + * Run type: FULL
-+ * Sub-category: xe
-+ * Test category: SysMan
-+ * SUBTEST: engine-defaults
++ *
++ * SUBTEST: %s-invalid
++ * Description: Test to check if %s arg[1] schedule parameter rejects any unrepresentable intervals.
++ *
++ * SUBTEST: %s-min-max
++ * Description: Test to check if %s arg[1] schedule parameter checks for min max values.
++ *
++ * SUBTEST: %s-nonprivileged-user
++ * Description: Test %s arg[1] schedule parameter for nonprivileged user.
++ *
++ * arg[1]:
++ *
++ * @preempt_timeout_us:		preempt timeout us
++ * @timeslice_duration_us:	timeslice duration us
++ * @job_timeout_ms:		job timeout ms
 + */
 +
 +#include <dirent.h>
@@ -86,36 +101,139 @@ index 000000000..f21b1c64b
 +#include "xe_drm.h"
 +#include "xe/xe_query.h"
 +
-+static void test_defaults(int xe, int engine, const char **property)
++static void test_invalid(int xe, int engine, const char **property)
 +{
-+	struct dirent *de;
++	unsigned int saved, set;
++	unsigned int min, max;
++
++	igt_sysfs_scanf(engine, property[2], "%u", &max);
++	igt_sysfs_scanf(engine, property[1], "%u", &min);
++
++	igt_assert(igt_sysfs_scanf(engine, property[0], "%u", &saved) == 1);
++	igt_debug("Initial %s:%u\n", property[0], saved);
++
++	igt_sysfs_printf(engine, property[0], "%d", max+100);
++	igt_sysfs_scanf(engine, property[0], "%u", &set);
++	igt_assert_eq(set, saved);
++
++	igt_sysfs_printf(engine, property[0], "%d", min-100);
++	igt_sysfs_scanf(engine, property[0], "%u", &set);
++	igt_assert_eq(set, saved);
++}
++
++static void test_min_max(int xe, int engine, const char **property)
++{
++	unsigned int default_max, max;
++	unsigned int default_min, min;
++	unsigned int set;
 +	int defaults;
-+	DIR *dir;
 +
 +	defaults = openat(engine, ".defaults", O_DIRECTORY);
 +	igt_require(defaults != -1);
 +
-+	dir = fdopendir(engine);
-+	while ((de = readdir(dir))) {
-+		if (*de->d_name == '.')
-+			continue;
++	igt_sysfs_scanf(defaults, property[2], "%u", &default_max);
++	igt_sysfs_scanf(defaults, property[1], "%u", &default_min);
 +
-+		igt_debug("Checking attr '%s'\n", de->d_name);
++	igt_sysfs_printf(engine, property[2], "%d", default_max-10);
++	igt_sysfs_scanf(engine, property[2], "%u", &max);
++	igt_assert_eq(max, (default_max-10));
 +
-+		igt_assert_f(igt_sysfs_get(defaults, de->d_name),
-+					   "Default value %s is not present!\n",
-+					   de->d_name);
++	igt_sysfs_printf(engine, property[2], "%d", default_max+1);
++	igt_sysfs_scanf(engine, property[2], "%u", &max);
++	igt_assert_neq(max, (default_max+1));
 +
-+		igt_assert_f(!igt_sysfs_set(defaults, de->d_name, "garbage"),
-+					    "write into default value of %s succeeded!\n",
-+					    de->d_name);
++	igt_sysfs_printf(engine, property[1], "%d", default_min+1);
++	igt_sysfs_scanf(engine, property[1], "%u", &min);
++	igt_assert_eq(min, (default_min+1));
++
++	igt_sysfs_printf(engine, property[1], "%d", default_min-10);
++	igt_sysfs_scanf(engine, property[1], "%u", &min);
++	igt_assert_neq(min, (default_min-10));
++
++	igt_sysfs_printf(engine, property[0], "%d", min);
++	igt_sysfs_scanf(engine, property[0], "%u", &set);
++	igt_assert_eq(set, min);
++
++	igt_sysfs_printf(engine, property[0], "%d", max);
++	igt_sysfs_scanf(engine, property[0], "%u", &set);
++	igt_assert_eq(set, max);
++
++	igt_sysfs_printf(engine, property[0], "%d", default_min);
++	igt_sysfs_scanf(engine, property[0], "%u", &set);
++	igt_assert_eq(set, default_min);
++
++	igt_sysfs_printf(engine, property[0], "%d", min);
++	igt_sysfs_scanf(engine, property[0], "%u", &set);
++	igt_assert_eq(set, min);
++}
++
++static void test_param_nonpriv(int xe, int engine, const char **property)
++{
++	unsigned int default_max, max;
++	unsigned int default_min, min;
++	unsigned int set;
++	struct stat st;
++	int defaults;
++
++	fstat(engine, &st);
++	fchmod(engine, (st.st_mode | S_IROTH | S_IWOTH));
++
++	defaults = openat(engine, ".defaults", O_DIRECTORY);
++	igt_require(defaults != -1);
++
++	igt_sysfs_scanf(defaults, property[2], "%u", &default_max);
++	igt_sysfs_scanf(defaults, property[1], "%u", &default_min);
++
++	igt_sysfs_printf(engine, property[2], "%d", default_max-10);
++	igt_sysfs_scanf(engine, property[2], "%u", &max);
++	igt_assert_eq(max, (default_max-10));
++
++	igt_sysfs_printf(engine, property[1], "%d", default_min+1);
++	igt_sysfs_scanf(engine, property[1], "%u", &min);
++	igt_assert_eq(min, (default_min+1));
++
++	igt_fork(child, 1) {
++		igt_drop_root();
++		igt_sysfs_printf(engine, property[0], "%d", default_min);
++		igt_sysfs_scanf(engine, property[0], "%u", &set);
++		igt_assert_neq(set, default_min);
++
++		igt_sysfs_printf(engine, property[0], "%d", min);
++		igt_sysfs_scanf(engine, property[0], "%u", &set);
++		igt_assert_eq(set, min);
++
++		igt_sysfs_printf(engine, property[0], "%d", default_max);
++		igt_sysfs_scanf(engine, property[0], "%u", &set);
++		igt_assert_neq(set, default_max);
++
++		igt_sysfs_printf(engine, property[0], "%d", max);
++		igt_sysfs_scanf(engine, property[0], "%u", &set);
++		igt_assert_eq(set, max);
 +	}
-+	closedir(dir);
++	igt_waitchildren();
++
++	fchmod(engine, st.st_mode);
 +}
 +
 +igt_main
 +{
-+	int xe, sys_fd;
++	static const struct {
++		const char *name;
++		void (*fn)(int, int, const char **);
++	} tests[] = {
++		{ "invalid", test_invalid },
++		{ "min-max", test_min_max },
++		{ "nonprivileged-user", test_param_nonpriv },
++		{ }
++	};
++
++	const char *property[][3] = { {"preempt_timeout_us", "preempt_timeout_min", "preempt_timeout_max"},
++				      {"timeslice_duration_us", "timeslice_duration_min", "timeslice_duration_max"},
++				      {"job_timeout_ms", "job_timeout_min", "job_timeout_max"},
++	};
++	int count = sizeof(property) / sizeof(property[0]);
++	int xe = -1;
++	int sys_fd;
 +	int gt;
 +
 +	igt_fixture {
@@ -126,21 +244,23 @@ index 000000000..f21b1c64b
 +		igt_require(sys_fd != -1);
 +	}
 +
-+	igt_subtest_with_dynamic("engine-defaults") {
-+		xe_for_each_gt(xe, gt) {
-+			int engines_fd = -1;
-+			char buf[100];
++	for (int i = 0; i < count; i++) {
++		for (typeof(*tests) *t = tests; t->name; t++) {
++			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
++				xe_for_each_gt(xe, gt) {
++					int engines_fd = -1;
++					char buf[100];
 +
-+			sprintf(buf, "device/gt%d/engines", gt);
-+			engines_fd = openat(sys_fd, buf, O_RDONLY);
-+			igt_require(engines_fd != -1);
++					sprintf(buf, "device/gt%d/engines", gt);
++					engines_fd = openat(sys_fd, buf, O_RDONLY);
++					igt_require(engines_fd != -1);
 +
-+			igt_sysfs_engines(xe, engines_fd, NULL, test_defaults);
-+
-+			close(engines_fd);
++					igt_sysfs_engines(xe, engines_fd, property[i], t->fn);
++					close(engines_fd);
++				}
++			}
 +		}
 +	}
-+
 +	igt_fixture {
 +		close(sys_fd);
 +		xe_device_put(xe);
