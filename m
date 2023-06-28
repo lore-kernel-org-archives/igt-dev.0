@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 669F010E046
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 12:41:48 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5DA410E0E9
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jun 2023 12:42:34 +0000 (UTC)
 From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
 To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>, "Upadhyay, Tejas"
  <tejas.upadhyay@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>, "Gandi, Ramadevi" <ramadevi.gandi@intel.com>
-Date: Wed, 28 Jun 2023 12:41:44 +0000
-Message-ID: <MW3PR11MB4748F5C782912EC27E47AFCEAE24A@MW3PR11MB4748.namprd11.prod.outlook.com>
+Date: Wed, 28 Jun 2023 12:42:22 +0000
+Message-ID: <MW3PR11MB47487387842270DDF7DE04DFAE24A@MW3PR11MB4748.namprd11.prod.outlook.com>
 References: <20230628095239.615655-1-priyanka.dandamudi@intel.com>
- <20230628095239.615655-3-priyanka.dandamudi@intel.com>
-In-Reply-To: <20230628095239.615655-3-priyanka.dandamudi@intel.com>
+ <20230628095239.615655-2-priyanka.dandamudi@intel.com>
+In-Reply-To: <20230628095239.615655-2-priyanka.dandamudi@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] xe/xe_sysfs_defaults: Verify
- .defaults in engines directory
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_sysfs: Add support to
+ iterate over engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,70 +28,114 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGFuZGFtdWRpLCBQcml5
-YW5rYSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4NCj4gU2VudDogMjggSnVuZSAyMDIz
-IDE1OjIzDQo+IFRvOiBLdW1hciwgSmFuZ2EgUmFodWwgPGphbmdhLnJhaHVsLmt1bWFyQGludGVs
-LmNvbT47IFVwYWRoeWF5LCBUZWphcw0KPiA8dGVqYXMudXBhZGh5YXlAaW50ZWwuY29tPjsgaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IEdhbmRpLCBSYW1hZGV2aQ0KPiA8cmFtYWRldmku
-Z2FuZGlAaW50ZWwuY29tPjsgRGFuZGFtdWRpLCBQcml5YW5rYQ0KPiA8cHJpeWFua2EuZGFuZGFt
-dWRpQGludGVsLmNvbT4NCj4gU3ViamVjdDogW1BBVENIIGktZy10IDIvM10geGUveGVfc3lzZnNf
-ZGVmYXVsdHM6IFZlcmlmeSAuZGVmYXVsdHMgaW4gZW5naW5lcw0KPiBkaXJlY3RvcnkNCj4gDQo+
-IEZyb206IFByaXlhbmthIERhbmRhbXVkaSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4N
-Cj4gDQo+IEFkZCBhIG5ldyB0ZXN0IHdoaWNoIHZlcmlmaWVzIC5kZWZhdWx0cyBhcmUgcmVhZG9u
-bHkgYW5kIGFsbCBwYXJhbWV0ZXJzIGFyZQ0KPiBwcmVzZW50Lg0KPiANCj4gdjI6IEFkZHJlc3Nl
-ZCBzbWFsbCBjaGFuZ2VzLihLYW1pbCkNCj4gDQo+IENjOiBKYW5nYSBSYWh1bCBLdW1hciA8amFu
-Z2EucmFodWwua3VtYXJAaW50ZWwuY29tPg0KPiBDYzogVGVqYXMgVXBhZGh5YXkgPHRlamFzLnVw
-YWRoeWF5QGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogUHJpeWFua2EgRGFuZGFtdWRpIDxw
-cml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tPg0KPiAtLS0NCj4gIHRlc3RzL21lc29uLmJ1aWxk
-ICAgICAgICAgICAgfCAgMSArDQo+ICB0ZXN0cy94ZS94ZV9zeXNmc19kZWZhdWx0cy5jIHwgODgg
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ICAyIGZpbGVzIGNoYW5nZWQs
-IDg5IGluc2VydGlvbnMoKykNCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy94ZS94ZV9zeXNm
-c19kZWZhdWx0cy5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0
-cy9tZXNvbi5idWlsZCBpbmRleCA4NWVhN2U3NGUuLmIyNGJhZTVjMg0KPiAxMDA2NDQNCj4gLS0t
-IGEvdGVzdHMvbWVzb24uYnVpbGQNCj4gKysrIGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gQEAgLTI3
-MCw2ICsyNzAsNyBAQCB4ZV9wcm9ncyA9IFsNCj4gIAkneGVfdm0nLA0KPiAgCSd4ZV93YWl0ZmVu
-Y2UnLA0KPiAgCSd4ZV9zcGluX2JhdGNoJywNCj4gKwkneGVfc3lzZnNfZGVmYXVsdHMnLA0KPiAg
-XQ0KPiANCj4gIG1zbV9wcm9ncyA9IFsNCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3hlL3hlX3N5c2Zz
-X2RlZmF1bHRzLmMgYi90ZXN0cy94ZS94ZV9zeXNmc19kZWZhdWx0cy5jIG5ldyBmaWxlDQo+IG1v
-ZGUgMTAwNjQ0IGluZGV4IDAwMDAwMDAwMC4uZjIxYjFjNjRiDQo+IC0tLSAvZGV2L251bGwNCj4g
-KysrIGIvdGVzdHMveGUveGVfc3lzZnNfZGVmYXVsdHMuYw0KPiBAQCAtMCwwICsxLDg4IEBADQo+
-ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUDQo+ICsvKg0KPiArICogQ29weXJpZ2h0
-IMKpIDIwMjMgSW50ZWwgQ29ycG9yYXRpb24NCj4gKyAqLw0KPiArDQo+ICsvKioNCj4gKyAqIFRF
-U1Q6IHhlIHN5c2ZzIGRlZmF1bHRzDQo+ICsgKiBDYXRlZ29yeTogSW5mcmFzdHJ1Y3R1cmUNCj4g
-KyAqIEZ1bmN0aW9uYWxpdHk6IGRyaXZlciBoYW5kbGVyDQo+ICsgKiBSdW4gdHlwZTogRlVMTA0K
-PiArICogU3ViLWNhdGVnb3J5OiB4ZQ0KPiArICogVGVzdCBjYXRlZ29yeTogU3lzTWFuDQo+ICsg
-KiBTVUJURVNUOiBlbmdpbmUtZGVmYXVsdHMNCj4gKyAqLw0KPiArDQo+ICsjaW5jbHVkZSA8ZGly
-ZW50Lmg+DQo+ICsjaW5jbHVkZSA8c3lzL3R5cGVzLmg+DQo+ICsjaW5jbHVkZSA8c3lzL3N0YXQu
-aD4NCj4gKyNpbmNsdWRlIDx1bmlzdGQuaD4NCj4gKw0KPiArI2luY2x1ZGUgImlndC5oIg0KPiAr
-I2luY2x1ZGUgImlndF9zeXNmcy5oIg0KPiArDQo+ICsjaW5jbHVkZSAieGVfZHJtLmgiDQo+ICsj
-aW5jbHVkZSAieGUveGVfcXVlcnkuaCINCj4gKw0KPiArc3RhdGljIHZvaWQgdGVzdF9kZWZhdWx0
-cyhpbnQgeGUsIGludCBlbmdpbmUsIGNvbnN0IGNoYXIgKipwcm9wZXJ0eSkgew0KPiArCXN0cnVj
-dCBkaXJlbnQgKmRlOw0KPiArCWludCBkZWZhdWx0czsNCj4gKwlESVIgKmRpcjsNCj4gKw0KPiAr
-CWRlZmF1bHRzID0gb3BlbmF0KGVuZ2luZSwgIi5kZWZhdWx0cyIsIE9fRElSRUNUT1JZKTsNCj4g
-KwlpZ3RfcmVxdWlyZShkZWZhdWx0cyAhPSAtMSk7DQo+ICsNCj4gKwlkaXIgPSBmZG9wZW5kaXIo
-ZW5naW5lKTsNCj4gKwl3aGlsZSAoKGRlID0gcmVhZGRpcihkaXIpKSkgew0KPiArCQlpZiAoKmRl
-LT5kX25hbWUgPT0gJy4nKQ0KPiArCQkJY29udGludWU7DQo+ICsNCj4gKwkJaWd0X2RlYnVnKCJD
-aGVja2luZyBhdHRyICclcydcbiIsIGRlLT5kX25hbWUpOw0KPiArDQo+ICsJCWlndF9hc3NlcnRf
-ZihpZ3Rfc3lzZnNfZ2V0KGRlZmF1bHRzLCBkZS0+ZF9uYW1lKSwNCj4gKwkJCQkJICAgIkRlZmF1
-bHQgdmFsdWUgJXMgaXMgbm90IHByZXNlbnQhXG4iLA0KPiArCQkJCQkgICBkZS0+ZF9uYW1lKTsN
-Ckl0IHdvdWxkIGJlIGJldHRlciBpZiB5b3UgY2FuIGFkZCBhIGRlYnVnIHByaW50IHRvIHNob3cg
-LmRlYWZ1bHRzIHZhbHVlcy4NCj4gKw0KPiArCQlpZ3RfYXNzZXJ0X2YoIWlndF9zeXNmc19zZXQo
-ZGVmYXVsdHMsIGRlLT5kX25hbWUsICJnYXJiYWdlIiksDQo+ICsJCQkJCSAgICAid3JpdGUgaW50
-byBkZWZhdWx0IHZhbHVlIG9mICVzDQo+IHN1Y2NlZWRlZCFcbiIsDQo+ICsJCQkJCSAgICBkZS0+
-ZF9uYW1lKTsNCj4gKwl9DQo+ICsJY2xvc2VkaXIoZGlyKTsNCj4gK30NCj4gKw0KPiAraWd0X21h
-aW4NCj4gK3sNCj4gKwlpbnQgeGUsIHN5c19mZDsNCj4gKwlpbnQgZ3Q7DQo+ICsNCj4gKwlpZ3Rf
-Zml4dHVyZSB7DQo+ICsJCXhlID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9YRSk7DQo+ICsJCXhl
-X2RldmljZV9nZXQoeGUpOw0KPiArDQo+ICsJCXN5c19mZCA9IGlndF9zeXNmc19vcGVuKHhlKTsN
-Cj4gKwkJaWd0X3JlcXVpcmUoc3lzX2ZkICE9IC0xKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3Rfc3Vi
-dGVzdF93aXRoX2R5bmFtaWMoImVuZ2luZS1kZWZhdWx0cyIpIHsNCj4gKwkJeGVfZm9yX2VhY2hf
-Z3QoeGUsIGd0KSB7DQo+ICsJCQlpbnQgZW5naW5lc19mZCA9IC0xOw0KPiArCQkJY2hhciBidWZb
-MTAwXTsNCj4gKw0KPiArCQkJc3ByaW50ZihidWYsICJkZXZpY2UvZ3QlZC9lbmdpbmVzIiwgZ3Qp
-Ow0KPiArCQkJZW5naW5lc19mZCA9IG9wZW5hdChzeXNfZmQsIGJ1ZiwgT19SRE9OTFkpOw0KPiAr
-CQkJaWd0X3JlcXVpcmUoZW5naW5lc19mZCAhPSAtMSk7DQo+ICsNCj4gKwkJCWlndF9zeXNmc19l
-bmdpbmVzKHhlLCBlbmdpbmVzX2ZkLCBOVUxMLCB0ZXN0X2RlZmF1bHRzKTsNCj4gKw0KPiArCQkJ
-Y2xvc2UoZW5naW5lc19mZCk7DQo+ICsJCX0NCj4gKwl9DQo+ICsNCj4gKwlpZ3RfZml4dHVyZSB7
-DQo+ICsJCWNsb3NlKHN5c19mZCk7DQo+ICsJCXhlX2RldmljZV9wdXQoeGUpOw0KPiArCQljbG9z
-ZSh4ZSk7DQo+ICsJfQ0KPiArfQ0KPiArDQo+IC0tDQo+IDIuMjUuMQ0KDQpZb3UgY2FuIGNvbnNp
-ZGVyIGFib3ZlIHN1Z2dlc3Rpb24gdG8gYWRkIGRlYnVnIHByaW50Lg0KDQpSZXZpZXdlZC1ieTog
-SmFuZ2EgUmFodWwgS3VtYXIgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCg0KVGhhbmtz
-LA0KUmFodWwNCg==
+
+
+> -----Original Message-----
+> From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> Sent: 28 June 2023 15:23
+> To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; Upadhyay, Tejas
+> <tejas.upadhyay@intel.com>; igt-dev@lists.freedesktop.org; Gandi, Ramadev=
+i
+> <ramadevi.gandi@intel.com>; Dandamudi, Priyanka
+> <priyanka.dandamudi@intel.com>
+> Subject: [PATCH i-g-t 1/3] lib/igt_sysfs: Add support to iterate over eng=
+ines
+>=20
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>=20
+> It helps to test engines by iterating over sysfs/engines.
+>=20
+> v2: Updated a parameter to accept array of strings to make dynamic for al=
+l
+> schedulers.
+> Updated engine to engine_fd for better readability.(rahul) Added descript=
+ion for
+> lib function.(Kamil)
+>=20
+> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  lib/igt_sysfs.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_sysfs.h |  3 +++
+>  2 files changed, 50 insertions(+)
+>=20
+> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c index 35a4faa9a..3a4bf6f97=
+ 100644
+> --- a/lib/igt_sysfs.c
+> +++ b/lib/igt_sysfs.c
+> @@ -856,3 +856,50 @@ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *r=
+w)
+>  	igt_assert_eq(get, prev);
+>  	igt_assert(!ret);
+>  }
+> +
+> +/**
+> + * igt_sysfs_engines:
+> + * @xe: fd of the device
+> + * @engines: fd of the directory engine
+> + * @property: property array
+> + * @test: Dynamic engine test
+> + *
+> + * It iterates over sysfs/engines and runs a dynamic engine test.
+> + *
+> + */
+> +void igt_sysfs_engines(int xe, int engines, const char **property,
+> +		       void (*test)(int, int, const char **)) {
+> +	struct dirent *de;
+> +	DIR *dir;
+> +
+> +	lseek(engines, 0, SEEK_SET);
+> +
+> +	dir =3D fdopendir(engines);
+> +	if (!dir)
+> +		close(engines);
+> +
+> +	while ((de =3D readdir(dir))) {
+> +		int engine_fd;
+> +
+> +		if (*de->d_name =3D=3D '.')
+> +			continue;
+> +
+> +		engine_fd =3D openat(engines, de->d_name, O_RDONLY);
+> +		if (engine < 0)
+> +			continue;
+> +
+> +		igt_dynamic(de->d_name) {
+> +			if (property) {
+> +				struct stat st;
+> +
+> +				igt_require(fstatat(engine_fd, property[0], &st,
+> 0) =3D=3D 0);
+> +				igt_require(fstatat(engine_fd, property[1], &st,
+> 0) =3D=3D 0);
+> +				igt_require(fstatat(engine_fd, property[2], &st,
+> 0) =3D=3D 0);
+> +			}
+> +			errno =3D 0;
+> +			test(xe, engine_fd, property);
+> +		}
+> +		close(engine_fd);
+> +	}
+> +}
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h index 978b6906e..5635fc690=
+ 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -147,4 +147,7 @@ typedef struct igt_sysfs_rw_attr {
+>=20
+>  void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw);
+>=20
+> +void igt_sysfs_engines(int xe, int engines, const char **property,
+> +		       void (*test)(int, int, const char **));
+> +
+>  #endif /* __IGT_SYSFS_H__ */
+> --
+> 2.25.1
+
+LGTM
+Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+
+Thanks,
+Rahul
+
