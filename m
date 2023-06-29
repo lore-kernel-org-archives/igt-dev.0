@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E28F10E3E9
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD09810E3DF
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:47 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:18:39 +0530
-Message-Id: <20230629144910.3055377-51-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:32 +0530
+Message-Id: <20230629144910.3055377-44-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 50/81] tests/kms_force_connector_basic:
- Document each subtest for testplan
+Subject: [igt-dev] [V5 i-g-t 43/81] tests/kms_cursor_legacy: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,63 +28,319 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_force_connector_basic.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ tests/kms_cursor_legacy.c | 217 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 216 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
-index 950af8d8a..80e0822c3 100644
---- a/tests/kms_force_connector_basic.c
-+++ b/tests/kms_force_connector_basic.c
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 06dea27d6..c09dff8d9 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
 @@ -23,8 +23,9 @@
   */
  
  /**
-- * TEST: Check the debugfs force connector/edid features work correctly
-+ * TEST: kms force connector basic
+- * TEST: Stress legacy cursor ioctl
++ * TEST: kms cursor legacy
   * Category: Display
-+ * Description: Check the debugfs force connector/edid features work correctly.
++ * Description: Stress legacy cursor ioctl
   */
  
- #include "igt.h"
-@@ -68,6 +69,15 @@ static void reset_connectors(void)
- 	drm_close_driver(drm_fd);
+ #include <sched.h>
+@@ -77,6 +78,28 @@ static void override_output_modes(igt_display_t *display,
+ 	igt_output_set_pipe(output2, PIPE_NONE);
  }
  
 +/**
-+ * SUBTEST: force-load-detect
-+ * Description: Test to detect forced load.
-+ * Driver requirement: i915
-+ * Functionality: force_connector, vga
++ * SUBTEST: %s-%s
++ * Description: Test checks how many cursor updates we can fit between vblanks
++ *              on single/all pipes with different modes, priority and number
++ *              of processes
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @single:      Single
++ * @torture:     Torture
++ * @forked:      Forked
++ *
++ * arg[2]:
++ *
++ * @bo:          BO
++ * @move:        Move
++ */
+ static void stress(igt_display_t *display,
+ 		   enum pipe pipe, int num_children, unsigned mode,
+ 		   int timeout)
+@@ -544,11 +567,20 @@ enum basic_flip_cursor {
+ /**
+  * SUBTEST: basic-busy-flip-before-cursor-%s
+  * Description: Cursor test with %arg[1] mode
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: cursor
+  * Mega feature: General Display Features
+  *
++ * SUBTEST: basic-busy-flip-before-cursor-varying-size
++ * Description: Change the size of cursor b/w 64*64 to maxw x maxh.
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
+  * arg[1]:
+  *
+  * @atomic:	atomic
+@@ -558,6 +590,7 @@ enum basic_flip_cursor {
+ /**
+  * SUBTEST: basic-flip-after-cursor-%s
+  * Description: Cursor test with %arg[1]
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: cursor
+@@ -565,6 +598,7 @@ enum basic_flip_cursor {
+  *
+  * SUBTEST: basic-flip-before-cursor-%s
+  * Description: Cursor test with %arg[1]
++ * Driver requirement: any
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: cursor
+@@ -576,6 +610,53 @@ enum basic_flip_cursor {
+  * @legacy:        legacy mode
+  * @varying-size:  varying size
+  */
++
++/**
++ * SUBTEST: %s-flip-before-cursor-%s
++ * Description: Adds variety of tests:
++ *		- varying-size: change the size of cursor b/w 64*64 to maxw x maxh.\n
++ *		- atomic-transition: alternates between a full screen sprite plane
++ *		                     and full screen primary plane.\n"
++ *		- toggle: which toggles cursor visibility and make sure cursor moves
++ *		          between updates.
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @short:
++ * @short-busy:
++ *
++ * arg[2]:
++ *
++ * @atomic-transitions:
++ * @atomic-transitions-varying-size:
++ * @toggle:
++ */
++
++/**
++ * SUBTEST: short-flip-after-cursor-%s
++ * Description: Adds variety of tests:
++ *		- varying-size: change the size of cursor b/w 64*64 to maxw x maxh.\n
++ *		- atomic-transition: alternates between a full screen sprite plane
++ *		                     and full screen primary plane.\n"
++ *		- toggle: which toggles cursor visibility and make sure cursor moves
++ *		          between updates.
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic-transitions:
++ * @atomic-transitions-varying-size:
++ * @toggle:
++ */
+ static void basic_flip_cursor(igt_display_t *display,
+ 			      enum flip_test mode,
+ 			      enum basic_flip_cursor order,
+@@ -897,6 +978,25 @@ static void flip_vs_cursor(igt_display_t *display, enum flip_test mode, int nloo
+ 		igt_remove_fb(display->drm_fd, &cursor_fb2);
+ }
+ 
++/**
++ * SUBTEST: long-nonblocking-modeset-vs-cursor-atomic
++ * Description: Test checks how many cursor updates we can fit between vblanks
++ *              on all pipes with different modes, priority and number of processes
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: nonblocking-modeset-vs-cursor-atomic
++ * Description: Test checks how many cursor updates we can fit between vblanks
++ *              on all pipes with different modes, priority and number of processes
++ * Driver requirement: any
++ * Functionality: cursor
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + */
- static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmModeRes *res)
+ static void nonblocking_modeset_vs_cursor(igt_display_t *display, int loops)
  {
- 	int i, j, w = 64, h = 64;
-@@ -159,6 +169,7 @@ static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmMode
- /**
-  * SUBTEST: force-connector-state
-  * Description: Test to check the forced connector state
+ 	struct igt_fb fb_info, cursor_fb;
+@@ -996,6 +1096,44 @@ static void wait_for_modeset(igt_display_t *display, unsigned flags, int timeout
+ 	igt_reset_timeout();
+ }
+ 
++/**
++ * SUBTEST: 2x-%s-%s
++ * Description: This test executes flips on both CRTCs while running cursor
++ *              updates in parallel
 + * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: force_connector
-@@ -206,6 +217,7 @@ static void force_connector_state(int drm_fd, drmModeConnectorPtr connector)
- /**
-  * SUBTEST: force-edid
-  * Description: Test to check the values after forcing edid
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @flip-vs-cursor:
++ * @flip-vs-cursor:
++ * @long-flip-vs-cursor:
++ * @long-flip-vs-cursor:
++ *
++ * arg[2]:
++ *
++ * @atomic:
++ * @legacy:
++ */
++
++/**
++ * SUBTEST: 2x-%s-atomic
++ * Description: This test executes flips on both CRTCs while running cursor
++ *              updates in parallel
 + * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: force_connector
-@@ -255,6 +267,7 @@ static void force_edid(int drm_fd, drmModeConnectorPtr connector)
- /**
-  * SUBTEST: prune-stale-modes
-  * Description: Tests pruning of stale modes
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @long-nonblocking-modeset-vs-cursor:
++ * @nonblocking-modeset-vs-cursor:
++ */
+ static void two_screens_flip_vs_cursor(igt_display_t *display, int nloops, bool modeset, bool atomic)
+ {
+ 	struct drm_mode_cursor arg1[2], arg2[2];
+@@ -1183,6 +1321,34 @@ done:
+ 	munmap((void *)shared, PAGE_SIZE);
+ }
+ 
++/**
++ * SUBTEST: %s-%s
++ * Description: The essence of the basic test is that neither the cursor nor the
++ *              nonblocking flip stall the application of the next
 + * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: force_connector
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor-vs-flip:
++ * @cursorA-vs-flipA:
++ * @cursorA-vs-flipB:
++ * @cursorB-vs-flipA:
++ * @cursorB-vs-flipB:
++ * @flip-vs-cursor:
++ *
++ * arg[2]:
++ *
++ * @atomic:
++ * @atomic-transitions:
++ * @atomic-transitions-varying-size:
++ * @legacy:
++ * @toggle:
++ * @varying-size:
++ */
+ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloops)
+ {
+ 	struct drm_mode_cursor arg[2];
+@@ -1295,6 +1461,27 @@ static void cursor_vs_flip(igt_display_t *display, enum flip_test mode, int nloo
+ 		igt_remove_fb(display->drm_fd, &cursor_fb2);
+ }
+ 
++/**
++ * SUBTEST: 2x-%s-%s
++ * Description: This test executes flips on both CRTCs while running cursor updates in parallel
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor-vs-flip:
++ * @cursor-vs-flip:
++ * @long-cursor-vs-flip:
++ * @long-cursor-vs-flip:
++ *
++ * arg[2]:
++ *
++ * @atomic:
++ * @legacy:
++ */
+ static void two_screens_cursor_vs_flip(igt_display_t *display, int nloops, bool atomic)
+ {
+ 	struct drm_mode_cursor arg[2][2];
+@@ -1423,6 +1610,20 @@ static void two_screens_cursor_vs_flip(igt_display_t *display, int nloops, bool
+ 	munmap((void *)shared, PAGE_SIZE);
+ }
+ 
++/**
++ * SUBTEST: flip-vs-cursor-crc-%s
++ * Description: this test perform a page flip followed by a cursor update
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic:
++ * @legacy:
++ */
+ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
+ {
+ 	struct drm_mode_cursor arg[2];
+@@ -1495,6 +1696,20 @@ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
+ 	igt_remove_fb(display->drm_fd, &cursor_fb);
+ }
+ 
++/**
++ * SUBTEST: flip-vs-cursor-busy-crc-%s
++ * Description: this test perform a busy bo update followed by a cursor update
++ * Driver requirement: any
++ * Functionality: cursor
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @atomic:
++ * @legacy:
++ */
+ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ {
+ 	struct drm_mode_cursor arg[2];
 -- 
 2.40.0
