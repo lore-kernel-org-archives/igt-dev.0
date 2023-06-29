@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D98B10E3E0
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E96CE10E3E6
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:42 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:17:53 +0530
-Message-Id: <20230629144910.3055377-5-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:00 +0530
+Message-Id: <20230629144910.3055377-12-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 04/81] testplan/kms: Exclude kms helpers form
- testplan
+Subject: [igt-dev] [V5 i-g-t 11/81] tests/i915/kms_big_joiner: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,27 +23,78 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As we are using wild cards in testplan, it'll expect a binary
-for each source (.c) file. Exclude kms helpers from testplan
-to avoid the build failures.
+Add documentation for all kms tests which is used by IGT testplan
+documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_test_config.json | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/i915/kms_big_joiner.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/tests/kms_test_config.json b/tests/kms_test_config.json
-index 499f418ab..9219ae4eb 100644
---- a/tests/kms_test_config.json
-+++ b/tests/kms_test_config.json
-@@ -2,6 +2,8 @@
-     "description": "JSON file to be used to parse KMS documentation",
-     "name": "Display and KMS Tests for Intel i915 and Xe Drivers",
-     "files": [ "chamelium/kms_*.c", "i915/kms_*.c", "kms_*.c", "testdisplay.c" ],
-+    "exclude_files": [ "chamelium/kms_chamelium_helper.c", "i915/kms_dsc_helper.c",
-+                       "kms_color_helper.c"],
-     "fields": {
-         "Category": {
-             "_properties_": {
+diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
+index 2ff23398a..c448853c5 100644
+--- a/tests/i915/kms_big_joiner.c
++++ b/tests/i915/kms_big_joiner.c
+@@ -24,6 +24,11 @@
+  *  Karthik B S <karthik.b.s@intel.com>
+  */
+ 
++/**
++ * TEST: kms big joiner
++ * Category: Display
++ * Description: Test big joiner
++ */
+ #include "igt.h"
+ 
+ #define MAX_HDISPLAY_PER_PIPE 5120
+@@ -40,6 +45,16 @@ typedef struct {
+ 	uint32_t big_joiner_output[2];
+ } data_t;
+ 
++/**
++ * SUBTEST: invalid-modeset
++ * Description: Verify if the modeset on the adjoining pipe is rejected when
++ *              the pipe is active with a big joiner modeset
++ * Driver requirement: any
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_invalid_modeset(data_t *data)
+ {
+ 	igt_output_t *output;
+@@ -80,6 +95,15 @@ static void test_invalid_modeset(data_t *data)
+ 	igt_assert_lt(ret, 0);
+ }
+ 
++/**
++ * SUBTEST: basic
++ * Description: Verify the basic modeset on big joiner mode on all pipes
++ * Driver requirement: any
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_basic_modeset(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
+@@ -118,6 +142,15 @@ static void test_basic_modeset(data_t *data)
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ }
+ 
++/**
++ * SUBTEST: 2x-modeset
++ * Description: Verify simultaneous modeset on 2 big joiner outputs
++ * Driver requirement: any
++ * Functionality: 2p1p
++ * Mega feature: Bigjoiner
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_dual_display(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
 -- 
 2.40.0
