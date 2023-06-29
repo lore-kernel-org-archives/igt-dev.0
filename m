@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED00210E3E1
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:57:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B06B10E40A
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:19:08 +0530
-Message-Id: <20230629144910.3055377-80-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:59 +0530
+Message-Id: <20230629144910.3055377-71-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 79/81] tests/kms_writeback: Document each
+Subject: [igt-dev] [V5 i-g-t 70/81] tests/kms_scaling_modes: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,61 +28,39 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_writeback.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ tests/kms_scaling_modes.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index db1f0884f..8c6f3fdc3 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -32,6 +32,48 @@
- #include "igt_core.h"
- #include "igt_fb.h"
- #include "sw_sync.h"
+diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+index 31b806ae2..88e6471b8 100644
+--- a/tests/kms_scaling_modes.c
++++ b/tests/kms_scaling_modes.c
+@@ -25,6 +25,26 @@
+  */
+ 
+ #include "igt.h"
 +/**
-+ * TEST: kms writeback
++ * TEST: kms scaling modes
 + * Category: Display
-+ * Description: This test validates the expected behavior of the writeback
-+ *              connectors feature by checking if the target device support
-+ *              writeback; it validates bad and good combination, check color
-+ *              format, and check the output result by using CRC.
++ * Description: Test display scaling modes
 + *
-+ * SUBTEST: writeback-check-output
-+ * Description: Check writeback output with CRC validation
++ * SUBTEST: scaling-mode-%s
++ * Description: Tests %arg[1] display scaling mode
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: writeback-fb-id
-+ * Description: Validate WRITEBACK_FB_ID with valid and invalid options
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * arg[1]:
 + *
-+ * SUBTEST: writeback-invalid-parameters
-+ * Description: Writeback has a couple of parameters linked together(output
-+ *              framebuffer and fence); this test goes throughthe combination
-+ *              of possible bad options
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: writeback-pixel-formats
-+ * Description: Check the writeback format
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * @center:           center
++ * @full:             full
++ * @full-aspect:      full aspect
++ * @none:             none (no scaling)
 + */
  
- IGT_TEST_DESCRIPTION(
-    "This test validates the expected behavior of the writeback connectors "
+ IGT_TEST_DESCRIPTION("Test display scaling modes");
+ 
 -- 
 2.40.0
