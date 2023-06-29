@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40B4310E3E8
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 822B310E3EE
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:54 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:18:02 +0530
-Message-Id: <20230629144910.3055377-14-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:10 +0530
+Message-Id: <20230629144910.3055377-22-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 13/81] tests/i915/kms_ccs: Document each
- subtest for testplan
+Subject: [igt-dev] [V5 i-g-t 21/81] tests/i915/kms_flip_tiling: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,116 +26,34 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
-V2: - Include mtl ccs tests
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_ccs.c | 89 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 89 insertions(+)
+ tests/i915/kms_flip_tiling.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
-index f04552dd7..995e0a589 100644
---- a/tests/i915/kms_ccs.c
-+++ b/tests/i915/kms_ccs.c
-@@ -22,10 +22,99 @@
-  *
-  */
+diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
+index 02a5fe8e3..6cb85e9d3 100644
+--- a/tests/i915/kms_flip_tiling.c
++++ b/tests/i915/kms_flip_tiling.c
+@@ -30,6 +30,19 @@
+ #include <string.h>
  
-+/**
-+ * TEST: kms ccs
-+ * Category: Display
-+ * Description: Test render compression (RC), in which the main surface is
-+ *              complemented by a color control surface (CCS) that the display
-+ *              uses to interpret the compressed data.
-+ */
  #include "igt.h"
- 
- #include "i915/gem_create.h"
- 
 +/**
-+ * SUBTEST: %s-%s-%s
-+ * Description: Test %arg[2] with given %arg[3] modifier
++ * TEST: kms flip tiling
++ * Category: Display
++ * Description: Test page flips and tiling scenarios
++ *
++ * SUBTEST: flip-change-tiling
++ * Description: Check pageflip between modifiers
 + * Driver requirement: any
-+ * Functionality: ccs
++ * Functionality: kms_gem_interop
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @pipe-A:                    Pipe A
-+ * @pipe-B:                    Pipe B
-+ * @pipe-C:                    Pipe C
-+ * @pipe-D:                    Pipe D
-+ * @pipe-E:                    Pipe E
-+ * @pipe-F:                    Pipe F
-+ * @pipe-G:                    Pipe G
-+ * @pipe-H:                    Pipe H
-+ *
-+ * arg[2]:
-+ *
-+ * @bad-aux-stride:            Bad AUX stride
-+ * @ccs-on-another-bo:         CCS with different BO
-+ * @missing-ccs-buffer:        Missing CCS buffer
-+ *
-+ * arg[3]:
-+ *
-+ * @y_tiled_ccs:               Y tiled ccs
-+ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-+ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-+ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-+ * @yf_tiled_ccs:              YF tiled ccs
-+ * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
-+ * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
-+ * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
 + */
-+
-+/**
-+ * SUBTEST: %s-%s-%s
-+ * Description: Test %arg[2] with %arg[3] modifier
-+ * Driver requirement: any
-+ * Functionality: ccs
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @pipe-A:                      Pipe A
-+ * @pipe-B:                      Pipe B
-+ * @pipe-C:                      Pipe C
-+ * @pipe-D:                      Pipe D
-+ * @pipe-E:                      Pipe E
-+ * @pipe-F:                      Pipe F
-+ * @pipe-G:                      Pipe G
-+ * @pipe-H:                      Pipe H
-+ *
-+ * arg[2]:
-+ *
-+ * @bad-pixel-format:            Bad pixel format
-+ * @bad-rotation-90:             90 degree rotation
-+ * @crc-primary-basic:           Primary plane CRC compatibility
-+ * @crc-primary-rotation-180:    180 degree rotation
-+ * @crc-sprite-planes-basic:     Sprite plane CRC compatability
-+ * @random-ccs-data:             Random CCS data
-+ *
-+ * arg[3]:
-+ *
-+ * @4_tiled_dg2_mc_ccs:        4 tiled mc ccs
-+ * @4_tiled_dg2_rc_ccs:        4 tiled dg2 rc ccs
-+ * @4_tiled_dg2_rc_ccs_cc:     4 tiled dg2 rc ccs cc
-+ * @4_tiled_mtl_mc_ccs:        4 tiled mtl mc ccs
-+ * @4_tiled_mtl_rc_ccs:        4 tiled mtl rc ccs
-+ * @4_tiled_mtl_rc_ccs_cc:     4 tiled mtl rc ccs cc
-+ * @y_tiled_ccs:               Y tiled ccs
-+ * @y_tiled_gen12_mc_ccs:      Y tiled gen12 mc ccs
-+ * @y_tiled_gen12_rc_ccs:      Y tiled gen12 rc ccs
-+ * @y_tiled_gen12_rc_ccs_cc:   Y tiled gen12 rc ccs cc
-+ * @yf_tiled_ccs:              YF tiled ccs
-+ */
-+
- #define SDR_PLANE_BASE	3
  
- IGT_TEST_DESCRIPTION("Test render compression (RC), in which the main surface "
+ IGT_TEST_DESCRIPTION("Test page flips and tiling scenarios");
+ 
 -- 
 2.40.0
