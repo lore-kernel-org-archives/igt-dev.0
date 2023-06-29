@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6EF3D10E3E8
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA4C910E3F6
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:51 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:18:37 +0530
-Message-Id: <20230629144910.3055377-49-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:42 +0530
+Message-Id: <20230629144910.3055377-54-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 48/81] tests/kms_flip: Document each subtest
- for testplan
+Subject: [igt-dev] [V5 i-g-t 53/81] tests/kms_hdr: Document each subtest for
+ testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,231 +28,85 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_flip.c | 178 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 176 insertions(+), 2 deletions(-)
+ tests/kms_hdr.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index d57990240..dd7921656 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -22,8 +22,9 @@
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index ba19761e2..0442cc168 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -20,6 +20,11 @@
+  * OTHER DEALINGS IN THE SOFTWARE.
   */
  
- /**
-- * TEST: Tests for validating modeset, dpms and pageflips
-+ * TEST: kms flip
-  * Category: Display
-+ * Description: Tests for validating modeset, dpms and pageflips
-  */
- 
- #include "config.h"
-@@ -39,6 +40,169 @@
- #include <sys/poll.h>
- #include <sys/time.h>
- #include <sys/ioctl.h>
 +/**
-+ * SUBTEST: 2x-flip-vs-fences
-+ * Description: Test for validating modeset, dpms and pageflips with a pair of connected displays
-+ * Driver requirement: i915
-+ * Functionality: gtt, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: 2x-flip-vs-fences-interruptible
-+ * Description: Interrupt test for validating modeset, dpms and pageflips with pair of connected displays
-+ * Driver requirement: any
-+ * Functionality: gtt, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-vs-fences
-+ * Description: Basic test for validating modeset, dpms and pageflips
-+ * Driver requirement: i915
-+ * Functionality: gtt, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: flip-vs-fences-interruptible
-+ * Description: Interrupt test for validating modeset, dpms and pageflips
-+ * Driver requirement: i915
-+ * Functionality: gtt, vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * TEST: kms hdr
++ * Category: Display
++ * Description: Test HDR metadata interfaces and bpc switch
 + */
-+
-+/**
-+ * SUBTEST: %s
-+ * Description: Basic test for validating modeset, dpms and pageflips
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @dpms-off-confusion:
-+ * @bo-too-big:
-+ */
-+
-+/**
-+ * SUBTEST: %s
-+ * Description: Basic test for validating modeset, dpms and pageflips
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: 2x-%s
-+ * Description: Test for validating modeset, dpms and pageflips with a pair of
-+ *              connected displays
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @wf_vblank-ts-check:
-+ * @blocking-wf_vblank:
-+ * @absolute-wf_vblank:
-+ * @blocking-absolute-wf_vblank:
-+ * @busy-flip:
-+ * @plain-flip-ts-check:
-+ * @plain-flip-fb-recreate:
-+ * @flip-vs-rmfb:
-+ * @flip-vs-panning:
-+ * @flip-vs-expired-vblank:
-+ * @flip-vs-absolute-wf_vblank:
-+ * @flip-vs-blocking-wf-vblank:
-+ * @flip-vs-modeset-vs-hang:
-+ * @flip-vs-panning-vs-hang:
-+ * @flip-vs-dpms-off-vs-modeset:
-+ * @single-buffer-flip-vs-dpms-off-vs-modeset:
-+ * @nonexisting-fb:
-+ * @dpms-vs-vblank-race:
-+ * @modeset-vs-vblank-race:
-+ * @flip-vs-suspend:
-+ */
-+
-+/**
-+ * SUBTEST: 2x-%s
-+ * Description: Test for validating modeset, dpms and pageflips with a pair of
-+ *              connected displays
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @plain-flip:
-+ * @flip-vs-dpms:
-+ * @flip-vs-modeset:
-+ * @flip-vs-wf_vblank:
-+ */
-+
-+/**
-+ * SUBTEST: %s-interruptible
-+ * Description: Basic test for validating modeset, dpms and pageflips
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @dpms-off-confusion:
-+ * @bo-too-big:
-+ */
-+
-+/**
-+ * SUBTEST: %s-interruptible
-+ * Description: Basic test for validating modeset, dpms and pageflips
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: 2x-%s-interruptible
-+ * Description: Test for validating modeset, dpms and pageflips with a pair of
-+ *              connected displays
-+ * Driver requirement: any
-+ * Functionality: vblank
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @wf_vblank-ts-check:
-+ * @absolute-wf_vblank:
-+ * @blocking-absolute-wf_vblank:
-+ * @plain-flip:
-+ * @plain-flip-ts-check:
-+ * @plain-flip-fb-recreate:
-+ * @flip-vs-rmfb:
-+ * @flip-vs-panning:
-+ * @flip-vs-expired-vblank:
-+ * @flip-vs-absolute-wf_vblank:
-+ * @flip-vs-wf_vblank:
-+ * @flip-vs-dpms-off-vs-modeset:
-+ * @single-buffer-flip-vs-dpms-off-vs-modeset:
-+ * @nonexisting-fb:
-+ * @dpms-vs-vblank-race:
-+ * @modeset-vs-vblank-race:
-+ * @flip-vs-suspend:
-+ */
-+
- #ifdef HAVE_LINUX_KD_H
- #include <linux/kd.h>
- #elif HAVE_SYS_KD_H
-@@ -1564,6 +1728,7 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- /**
-  * SUBTEST: basic-flip-vs-%s
-  * Description: Basic test to valide %arg[1]
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: vblank
-@@ -1577,12 +1742,12 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
-  *
-  * SUBTEST: basic-plain-flip
-  * Description: Basic test for validating page flip
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: vblank
-  * Mega feature: General Display Features
-  */
--
- static void run_test(int duration, int flags)
- {
- 	struct test_output o;
-@@ -1759,6 +1924,15 @@ static void kms_flip_exit_handler(int sig)
- 		kmstest_set_connector_dpms(drm_fd, last_connector, DRM_MODE_DPMS_ON);
+ #include "igt.h"
+ #include <fcntl.h>
+ #include <termios.h>
+@@ -208,6 +213,21 @@ static bool has_max_bpc(igt_output_t *output)
+ 	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
  }
  
 +/**
-+ * SUBTEST: nonblocking-read
-+ * Description: Tests that nonblocking reading fails correctly
++ * SUBTEST: bpc-%s
++ * Description: Tests switching between different display output bpc modes %arg[1]
 + * Driver requirement: any
-+ * Functionality: vblank
++ * Functionality: kms_hdr
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @switch:              default
++ * @switch-dpms:         with dpms
++ * @switch-suspend:      with suspend
 + */
- static void test_nonblocking_read(int in)
+ static void test_bpc_switch(data_t *data, uint32_t flags)
  {
- 	char buffer[1024];
+ 	igt_display_t *display = &data->display;
+@@ -561,6 +581,38 @@ static bool has_hdr(igt_output_t *output)
+ 	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
+ }
+ 
++/**
++ * SUBTEST: invalid-hdr
++ * Description: Test to ensure HDR is not enabled on non-HDR panel
++ * Driver requirement: any
++ * Functionality: kms_hdr
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: invalid-metadata-sizes
++ * Description: Tests invalid HDR metadata sizes
++ * Driver requirement: any
++ * Functionality: kms_hdr
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: static-%s
++ * Description: Tests %arg[1].
++ * Driver requirement: any
++ * Functionality: kms_hdr
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @swap:                    swapping static HDR metadata
++ * @toggle:                  entering and exiting HDR mode
++ * @toggle-dpms:             static toggle with dpms
++ * @toggle-suspend:          static toggle with suspend
++ */
+ static void test_hdr(data_t *data, uint32_t flags)
+ {
+ 	igt_display_t *display = &data->display;
 -- 
 2.40.0
