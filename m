@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3C9E10E3E0
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F20B610E3E2
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:36 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:17:54 +0530
-Message-Id: <20230629144910.3055377-6-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:17:55 +0530
+Message-Id: <20230629144910.3055377-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 05/81] tests/chamelium/kms_chamelium_audio:
+Subject: [igt-dev] [V5 i-g-t 06/81] tests/chamelium/kms_chamelium_color:
  Document each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,77 +28,82 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_chamelium_audio.c | 44 +++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ tests/chamelium/kms_chamelium_color.c | 45 +++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/kms_chamelium_audio.c
-index 8fbc1f80e..453f3518a 100644
---- a/tests/chamelium/kms_chamelium_audio.c
-+++ b/tests/chamelium/kms_chamelium_audio.c
-@@ -28,6 +28,12 @@
- #include "igt_infoframe.h"
- #include "kms_chamelium_helper.h"
+diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
+index 26239a6b8..aca57095f 100644
+--- a/tests/chamelium/kms_chamelium_color.c
++++ b/tests/chamelium/kms_chamelium_color.c
+@@ -22,10 +22,25 @@
+  *
+  */
  
 +/**
-+ * TEST: kms chamelium audio
++ * TEST: kms chamelium color
 + * Category: Display
-+ * Description: Testing Audio with a Chamelium board
++ * Description: Test Color Features at Pipe level using Chamelium to verify instead of CRC
 + */
 +
- /* Playback parameters control the audio signal we synthesize and send */
- #define PLAYBACK_CHANNELS 2
- #define PLAYBACK_SAMPLES 1024
-@@ -669,6 +675,25 @@ static bool check_audio_configuration(struct alsa *alsa,
- 	return true;
- }
+ #include "kms_color_helper.h"
+ 
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
  
 +/**
-+ * SUBTEST: dp-audio
-+ * Description: Playback various audio signals with various audio formats/rates,
-+ *              capture them and check they are correct
-+ * Functionality: dp_audio
-+ * Mega feature: DP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-audio
-+ * Description: Playback various audio signals with various audio formats/rates,
-+ *              capture them and check they are correct
-+ * Functionality: hdmi_audio
-+ * Mega feature: HDMI
++ * SUBTEST: degamma
++ * Description: Verify that degamma LUT transformation works correctly
++ * Functionality: colorspace
++ * Mega feature: Color mgmt
 + * Run type: FULL
 + * Test category: functionality test
 + * Driver requirement: any
 + */
- static const char test_display_audio_desc[] =
- 	"Playback various audio signals with various audio formats/rates, "
- 	"capture them and check they are correct";
-@@ -763,6 +788,25 @@ static void test_display_audio(chamelium_data_t *data,
- 	free(alsa);
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
+  * degamma LUT and verify we have the same frame dump as drawing solid color
+@@ -115,6 +130,15 @@ static bool test_pipe_degamma(data_t *data,
+ 	return ret;
  }
  
 +/**
-+ * SUBTEST: dp-audio-edid
-+ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-+ *              EDID-Like Data reports the correct audio parameters
-+ * Functionality: dp_audio
-+ * Mega feature: DP
-+ * Run type: FULL
-+ * Test category: functionality test
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-audio-edid
-+ * Description: Plug a connector with an EDID suitable for audio, check ALSA's
-+ *              EDID-Like Data reports the correct audio parameters
-+ * Functionality: hdmi_audio
-+ * Mega feature: HDMI
++ * SUBTEST: gamma
++ * Description: Verify that gamma LUT transformation works correctly
++ * Functionality: colorspace_gamma
++ * Mega feature: Color mgmt
 + * Run type: FULL
 + * Test category: functionality test
 + * Driver requirement: any
 + */
- static const char test_display_audio_edid_desc[] =
- 	"Plug a connector with an EDID suitable for audio, check ALSA's "
- 	"EDID-Like Data reports the correct audio parameters";
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out
+  * gamma LUT and verify we have the same frame dump as drawing solid
+@@ -465,6 +489,27 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
+ 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
+ }
+ 
++/**
++ * SUBTEST: ctm-%s
++ * Description: Check the color transformation %arg[1]
++ * Functionality: colorspace
++ * Mega feature: Color mgmt
++ * Run type: FULL
++ * Test category: functionality test
++ * Driver requirement: any
++ *
++ * arg[1]:
++ *
++ * @0-25:            for 0.25 transparancy
++ * @0-50:            for 0.50 transparancy
++ * @0-75:            for 0.75 transparancy
++ * @blue-to-red:     from blue to red
++ * @green-to-red:    from green to red
++ * @limited-range:   with identity matrix
++ * @max:             for max transparancy
++ * @negative:        for negative transparancy
++ * @red-to-blue:     from red to blue
++ */
+ static void
+ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 		       color_t *expected_colors,
 -- 
 2.40.0
