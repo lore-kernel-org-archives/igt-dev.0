@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DE7410E3F8
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 663CB10E3F6
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:57 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:18:55 +0530
-Message-Id: <20230629144910.3055377-67-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:53 +0530
+Message-Id: <20230629144910.3055377-65-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 66/81] tests/kms_prop_blob: Document each
+Subject: [igt-dev] [V5 i-g-t 64/81] tests/kms_plane_scaling: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,89 +26,341 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
+V2: - Fix the documentation for renamed tests
+
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_prop_blob.c | 46 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
+ tests/kms_plane_scaling.c | 261 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 261 insertions(+)
 
-diff --git a/tests/kms_prop_blob.c b/tests/kms_prop_blob.c
-index fc172b5a3..e4f5dd71f 100644
---- a/tests/kms_prop_blob.c
-+++ b/tests/kms_prop_blob.c
-@@ -26,8 +26,9 @@
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 920290e4d..efe772dec 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -22,6 +22,11 @@
+  *
   */
- 
- /**
-- * TEST: Tests behaviour of mass-data 'blob' properties
-+ * TEST: kms prop blob
-  * Category: Display
-+ * Description: Tests behaviour of mass-data 'blob' properties.
-  */
- #include "igt.h"
- #include <errno.h>
-@@ -122,6 +123,29 @@ destroy_prop(int fd, uint32_t prop_id)
- 	return 0;
- }
  
 +/**
-+ * SUBTEST: blob-multiple
-+ * Description: Test validates destroying multiple properties explicitly works as needed.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: blob-prop-%s
-+ * Description: Tests validates the %arg[1] of the properties created.
-+ * Driver requirement: any
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @core:        validity
-+ * @lifetime:    lifetime
-+ * @validate:    blob size
++ * TEST: kms plane scaling
++ * Category: Display
++ * Description: Test display plane scaling
 + */
- static void
- test_validate(int fd)
- {
-@@ -245,6 +269,7 @@ test_core(int fd)
- /**
-  * SUBTEST: basic
-  * Description: Test to ensure property support exists
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_core
-@@ -260,6 +285,25 @@ test_basic(int fd)
- 	igt_assert_eq(destroy_prop(fd, prop_id), 0);
- }
+ #include "igt.h"
+ #include "igt_vec.h"
+ #include <math.h>
+@@ -524,6 +529,52 @@ static const uint64_t modifiers[] = {
+ 	I915_FORMAT_MOD_4_TILED
+ };
  
 +/**
-+ * SUBTEST: invalid-%s-%s
-+ * Description: Tests error handling when invalid properties are %ar[1] with %arg[2].
++ * SUBTEST: plane-scaler-with-modifiers-unity-scaling
++ * Description: Tests scaling with modifiers, unity scaling.
 + * Driver requirement: any
-+ * Functionality: kms_core
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-scaler-with-clipping-clamping-modifiers
++ * Description: Tests scaling with clipping and clamping, modifiers.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-upscale-with-modifiers-%s
++ * Description: Tests upscaling with modifiers %arg[1].
++ * Driver requirement: any
++ * Functionality: plane
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @get:            fetched
-+ * @set:            set
++ * @20x20:          from 20x20 fb
++ * @factor-0-25:    for 0.25 scaling factor
++ */
++
++/**
++ * SUBTEST: plane-downscale-with-modifiers-factor-%s
++ * Description: Tests downscaling with modifiers for %arg[1] scaling factor.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @0-25:   0.25
++ * @0-5:    0.5
++ * @0-75:   0.75
++ */
+ static void test_scaler_with_modifier_pipe(data_t *d,
+ 					   int width, int height,
+ 					   bool is_upscale,
+@@ -560,6 +611,52 @@ static void test_scaler_with_modifier_pipe(data_t *d,
+ 	}
+ }
+ 
++/**
++ * SUBTEST: plane-scaler-with-rotation-unity-scaling
++ * Description: Tests scaling with rotation, unity scaling.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-scaler-with-clipping-clamping-rotation
++ * Description: Tests scaling with clipping and clamping, rotation.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-upscale-with-rotation-%s
++ * Description: Tests upscaling with rotation %arg[1].
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @20x20:          from 20x20 fb
++ * @factor-0-25:    for 0.25 scaling factor
++ */
++
++/**
++ * SUBTEST: plane-downscale-with-rotation-factor-%s
++ * Description: Tests downscaling with rotation for %arg[1] scaling factor.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @0-25:   0.25
++ * @0-5:    0.5
++ * @0-75:   0.75
++ */
+ static void test_scaler_with_rotation_pipe(data_t *d,
+ 					   int width, int height,
+ 					   bool is_upscale,
+@@ -592,7 +689,52 @@ static void test_scaler_with_rotation_pipe(data_t *d,
+ 		}
+ 	}
+ }
++/**
++ * SUBTEST: plane-scaler-with-pixel-format-unity-scaling
++ * Description: Tests scaling with pixel formats, unity scaling.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-scaler-with-clipping-clamping-pixel-formats
++ * Description: Tests scaling with clipping and clamping, pixel formats.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: plane-upscale-with-pixel-format-%s
++ * Description: Tests upscaling with pixel formats %arg[1].
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @20x20:          from 20x20 fb
++ * @factor-0-25:    for 0.25 scaling factor
++ */
+ 
++/**
++ * SUBTEST: plane-downscale-with-pixel-format-factor-%s
++ * Description: Tests downscaling with pixel formats for %arg[1] scaling factor.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @0-25:   0.25
++ * @0-5:    0.5
++ * @0-75:   0.75
++ */
+ static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height, bool is_upscale,
+ 					       enum pipe pipe, igt_output_t *output)
+ {
+@@ -728,6 +870,88 @@ static void setup_fb(int fd, int width, int height, struct igt_fb *fb)
+ 		      fb);
+ }
+ 
++/**
++ * SUBTEST: planes-downscale-factor-%s
++ * Description: Tests downscaling of 2 planes for %arg[1] scaling factor.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @0-25:  0.25
++ * @0-5:   0.5
++ * @0-75:  0.75
++ */
++/**
++ * SUBTEST: planes-downscale-factor-%s-%s
++ * Description: Tests downscaling (scaling factor %arg[1]) and upscaling (%arg[2])
++ *              of 2 planes.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @0-25:  0.25
++ * @0-5:   0.5
++ * @0-75:  0.75
 + *
 + * arg[2]:
 + *
-+ * @prop:           blob object type
-+ * @prop-any:       object of any type
++ * @upscale-20x20:           upscale 20x20
++ * @upscale-factor-0-25:     scaling factor 0.25
++ * @unity-scaling:           Unity
 + */
- static void prop_tests(int fd)
++/**
++ * SUBTEST: planes-scaler-unity-scaling
++ * Description: Tests scaling of 2 planes, unity scaling.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: planes-upscale-%s
++ * Description: Tests upscaling of 2 planes %arg[1].
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @20x20:          from 20x20 fb
++ * @factor-0-25:    for 0.25 scaling factor
++ */
++/**
++ * SUBTEST: planes-%s-downscale-factor-%s
++ * Description: Tests scaling (%arg[1]) and downscaling (scaling factor %arg[2])
++ *              of 2 planes.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @unity-scaling:           Unity
++ * @upscale-factor-0-25:     scaling factor 0.25
++ * @upscale-20x20:           upscale 20x20
++ *
++ * arg[2]:
++ *
++ * @0-25:  0.25
++ * @0-5:   0.5
++ * @0-75:  0.75
++ */
++
+ static void
+ test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+ 			  enum pipe pipe, igt_output_t *output,
+@@ -786,6 +1010,15 @@ test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+ 	cleanup_fbs(d);
+ }
+ 
++/**
++ * SUBTEST: invalid-num-scalers
++ * Description: Negative test for number of scalers per pipe.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void
+ test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
  {
- 	struct drm_mode_obj_get_properties get_props = {};
+@@ -851,6 +1084,15 @@ test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
+ 	cleanup_fbs(d);
+ }
+ 
++/**
++ * SUBTEST: 2x-scaler-multi-pipe
++ * Description: Tests scaling with multi-pipe.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ {
+ 	igt_display_t *display = &d->display;
+@@ -935,6 +1177,15 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ 	igt_assert_eq(ret1 && ret2, 0);
+ }
+ 
++/**
++ * SUBTEST: invalid-parameters
++ * Description: test parameters which should not be accepted
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
+ static void invalid_parameter_tests(data_t *d)
+ {
+ 	enum pipe pipe = PIPE_A;
+@@ -1015,6 +1266,16 @@ static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const uint
+ 	return mode;
+ }
+ 
++/**
++ * SUBTEST: intel-max-src-size
++ * Description: Test for validating max source size.
++ * Driver requirement: any
++ * Functionality: plane
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ */
++
+ /*
+  *	Max source/destination width/height for intel driver.
+  *	These numbers are coming from
 -- 
 2.40.0
