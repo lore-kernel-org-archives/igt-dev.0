@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B552C10E3EC
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84CBA10E3E1
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:34 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:18:05 +0530
-Message-Id: <20230629144910.3055377-17-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:18 +0530
+Message-Id: <20230629144910.3055377-30-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 16/81] tests/i915/kms_dsc: Document each
- subtest for testplan
+Subject: [igt-dev] [V5 i-g-t 29/81] tests/i915/kms_psr_stress_test: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,48 +28,41 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_dsc.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ tests/i915/kms_psr_stress_test.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 0a3e29924..4cce7face 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -30,8 +30,35 @@
-  *
-  */
- 
+diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
+index 23dcb4077..356d3cea0 100644
+--- a/tests/i915/kms_psr_stress_test.c
++++ b/tests/i915/kms_psr_stress_test.c
+@@ -7,6 +7,28 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <sys/timerfd.h>
 +/**
-+ * TEST: kms dsc
++ * TEST: kms psr stress test
 + * Category: Display
-+ * Description: Test to validate display stream compression
-+ */
- #include "kms_dsc_helper.h"
- 
-+/**
-+ * SUBTEST: dsc-%s
-+ * Description: Tests basic display stream compression functionality if supported
-+ *              by a connector by forcing %arg[1]
++ *
++ * SUBTEST: flip-primary-invalidate-overlay
++ * Description: Mix page flips in primary plane and frontbuffer writes to overlay
++ *              plane and check for warnings, underruns or PSR state changes
 + * Driver requirement: any
-+ * Functionality: dsc
-+ * Mega feature: VDSC
++ * Functionality: psr
++ * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * arg[1]:
-+ *
-+ * @basic:                DSC on all connectors that support it with default parameters
-+ * @with-bpc:             DSC on all connectors that support it with certain input BPC
-+ *                        for the connector
-+ * @with-bpc-formats:     DSC on all connectors that support it with certain input
-+ *                        BPC for the connector with diff formats
-+ * @with-formats:         DSC on all connectors that support it with default parameters
-+ *                        and creating fb with diff formats
-+ * @with-output-formats:  DSC and output format on all connectors that support it
++ * SUBTEST: invalidate-primary-flip-overlay
++ * Description: Mix frontbuffer writes to the primary plane and page flips in the
++ *              overlay plane and check for warnings, underruns or PSR state changes
++ * Driver requirement: any
++ * Functionality: psr
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
 + */
-+
- IGT_TEST_DESCRIPTION("Test to validate display stream compression");
  
- enum dsc_test_type {
+ #define INVALIDATES_PER_SEC 15
+ #define FLIPS_PER_SEC 30
 -- 
 2.40.0
