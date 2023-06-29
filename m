@@ -1,27 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com
- [IPv6:2a00:1450:4864:20::230])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D29A410E3E1
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 16:04:54 +0000 (UTC)
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2b6a662b9adso13027801fa.2
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 09:04:54 -0700 (PDT)
-Message-ID: <ed84e5dd-e80e-b65a-1f12-3123029b41c5@gmail.com>
-Date: Thu, 29 Jun 2023 19:04:45 +0300
+Content-Type: multipart/alternative;
+ boundary="===============3402691886351298809=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-References: <20230627172210.4599-1-juhapekka.heikkila@gmail.com>
- <20230627172210.4599-3-juhapekka.heikkila@gmail.com>
- <41adde8f-53ce-856e-e355-8939f13988f2@intel.com>
- <744da5cd-3b56-1504-da6b-193e26e4c605@gmail.com>
- <8af0e399-4a30-c919-32c9-472539318b99@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <8af0e399-4a30-c919-32c9-472539318b99@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/igt_fb: include lib/intel_blt
- functions to blitter path
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Alan Liu" <haoping.liu@amd.com>
+Date: Thu, 29 Jun 2023 16:16:08 -0000
+Message-ID: <168805536858.28964.5528695696480624467@emeril.freedesktop.org>
+References: <20230629151001.13821-1-HaoPing.Liu@amd.com>
+In-Reply-To: <20230629151001.13821-1-HaoPing.Liu@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?amdgpu/amd=5Fchecksum=5Fregion=3A_Add_test_for_checksum=5Fregio?=
+ =?utf-8?q?n?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,461 +18,457 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 29.6.2023 14.51, Karolina Stolarek wrote:
-> On 29.06.2023 13:17, Juha-Pekka Heikkila wrote:
->> On 29.6.2023 11.45, Karolina Stolarek wrote:
->>> Hi Juha-Pekka,
->>>
->>> On 27.06.2023 19:22, Juha-Pekka Heikkila wrote:
->>>> Use intel_blt functions on blitter path and on i915 devices with
->>>> flat ccs use blitter instead of render copy.
->>>>
->>>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->>>> ---
->>>>   lib/igt_fb.c | 209 
->>>> +++++++++++++++++++++++++++++++++++++++++++++------
->>>>   1 file changed, 186 insertions(+), 23 deletions(-)
->>>>
->>>> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->>>> index 402fadf41..d8f2cc640 100644
->>>> --- a/lib/igt_fb.c
->>>> +++ b/lib/igt_fb.c
->>>> @@ -35,6 +35,8 @@
->>>>   #include "drmtest.h"
->>>>   #include "i915/gem_create.h"
->>>>   #include "i915/gem_mman.h"
->>>> +#include "intel_blt.h"
->>>> +#include "intel_mocs.h"
->>>>   #include "igt_aux.h"
->>>>   #include "igt_color_encoding.h"
->>>>   #include "igt_fb.h"
->>>> @@ -445,7 +447,7 @@ void igt_get_fb_tile_size(int fd, uint64_t 
->>>> modifier, int fb_bpp,
->>>>           *height_ret = 1;
->>>>           break;
->>>>       case I915_FORMAT_MOD_X_TILED:
->>>> -        igt_require_i915(fd);
->>>> +        igt_require_intel(fd);
->>>>           if (intel_display_ver(intel_get_drm_devid(fd)) == 2) {
->>>>               *width_ret = 128;
->>>>               *height_ret = 16;
->>>> @@ -466,7 +468,7 @@ void igt_get_fb_tile_size(int fd, uint64_t 
->>>> modifier, int fb_bpp,
->>>>       case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS:
->>>>       case I915_FORMAT_MOD_4_TILED_DG2_MC_CCS:
->>>>       case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC:
->>>> -        igt_require_i915(fd);
->>>> +        igt_require_intel(fd);
->>>>           if (intel_display_ver(intel_get_drm_devid(fd)) == 2) {
->>>>               *width_ret = 128;
->>>>               *height_ret = 16;
->>>> @@ -2453,29 +2455,47 @@ struct fb_blit_upload {
->>>>       struct intel_bb *ibb;
->>>>   };
->>>> -static bool fast_blit_ok(const struct igt_fb *fb)
->>>> +static enum blt_tiling_type fb_tile_to_blt_tile(uint64_t tile)
->>>
->>> Could we promote this function to intel_blt.c? These enums are not 
->>> just fb-specific, they are legacy stuff, and I think that tests such 
->>> as gem_blits would make use of such converter.
->>
->> We can do that but I'd rather commit this as is and then add form of 
->> clean up on top with this type changes as it will then need all those 
->> other places patched as well.
-> 
-> Sure thing
-> 
->>
->>>
->>>>   {
->>>> -    int dev_id = intel_get_drm_devid(fb->fd);
->>>> -    int ver = intel_display_ver(dev_id);
->>>> -
->>>> -    if (ver < 9)
->>>> -        return false;
->>>> -
->>>> -    if (ver < 12)
->>>> -        return true;
->>>> +    switch (igt_fb_mod_to_tiling(tile)) {
->>>> +    case I915_TILING_NONE:
->>>> +        return T_LINEAR;
->>>> +    case I915_TILING_X:
->>>> +        return T_XMAJOR;
->>>> +    case I915_TILING_Y:
->>>> +        return T_YMAJOR;
->>>> +    case I915_TILING_4:
->>>> +        return T_TILE4;
->>>> +    case I915_TILING_Yf:
->>>> +        return T_YFMAJOR;
->>>> +    default:
->>>> +        igt_assert_f(0, "Unknown tiling!\n");
->>>> +    }
->>>> +}
->>>> -    if (ver >= 13 && !IS_ALDERLAKE_P(dev_id))
->>>> -        return true;
->>>> +static bool fast_blit_ok(const struct igt_fb *fb)
->>>> +{
->>>> +    return blt_has_fast_copy(fb->fd) &&
->>>> +        !is_ccs_modifier(fb->modifier) &&
->>>> +        blt_fast_copy_supports_tiling(fb->fd,
->>>> +                           fb_tile_to_blt_tile(fb->modifier));
->>>
->>> Nit: this line is slightly misaligned
->>>
->>>> +}
->>>> -    return fb->modifier != I915_FORMAT_MOD_X_TILED;
->>>> +static bool block_copy_ok(const struct igt_fb *fb)
->>>> +{
->>>> +    return blt_has_block_copy(fb->fd) &&
->>>> +        blt_block_copy_supports_tiling(fb->fd,
->>>> +                           fb_tile_to_blt_tile(fb->modifier));
->>>>   }
->>>>   static bool blitter_ok(const struct igt_fb *fb)
->>>>   {
->>>> -    if (!is_i915_device(fb->fd))
->>>> +    if (!is_intel_device(fb->fd))
->>>>           return false;
->>>> -    if (is_ccs_modifier(fb->modifier))
->>>> +    if ((is_ccs_modifier(fb->modifier) &&
->>>> +         !HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
->>>> +         || is_gen12_mc_ccs_modifier(fb->modifier))
->>>
->>> Nit: This || should go line up
->>>
->>>>           return false;
->>>>       for (int i = 0; i < fb->num_planes; i++) {
->>>> @@ -2510,8 +2530,8 @@ static bool use_enginecopy(const struct igt_fb 
->>>> *fb)
->>>>           return false;
->>>>       return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
->>>> -           is_ccs_modifier(fb->modifier) ||
->>>> -           (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd));
->>>> +           (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && 
->>>> is_ccs_modifier(fb->modifier)) ||
->>>> +           is_gen12_mc_ccs_modifier(fb->modifier);
->>>>   }
->>>>   static bool use_blitter(const struct igt_fb *fb)
->>>> @@ -2520,6 +2540,7 @@ static bool use_blitter(const struct igt_fb *fb)
->>>>           return false;
->>>>       return fb->modifier == I915_FORMAT_MOD_Y_TILED ||
->>>> +           fb->modifier == I915_FORMAT_MOD_4_TILED ||
->>>>              fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
->>>>              (is_i915_device(fb->fd) && 
->>>> !gem_has_mappable_ggtt(fb->fd));
->>>>   }
->>>> @@ -2711,12 +2732,115 @@ static void copy_with_engine(struct 
->>>> fb_blit_upload *blit,
->>>>       fini_buf(src);
->>>>   }
->>>> +static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
->>>> +                       uint32_t plane, uint32_t memregion)
->>>> +{
->>>> +    uint32_t name, handle;
->>>> +    struct blt_copy_object *blt;
->>>> +    enum blt_tiling_type blt_tile;
->>>> +    uint64_t stride;
->>>> +
->>>> +    blt = malloc(sizeof(*blt));
->>>> +    igt_assert(blt);
->>>> +
->>>> +    name = gem_flink(fb->fd, fb->gem_handle);
->>>> +    handle = gem_open(fb->fd, name);
->>>> +
->>>> +    blt_tile = fb_tile_to_blt_tile(fb->modifier);
->>>> +    stride = blt_tile == T_LINEAR ? fb->strides[plane] : 
->>>> fb->strides[plane] / 4;
->>>> +
->>>> +    blt_set_object(blt, handle, fb->size, memregion,
->>>> +               intel_get_uc_mocs(fb->fd),
->>>> +               blt_tile,
->>>> +               is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED 
->>>> : COMPRESSION_DISABLED,
->>>> +               is_gen12_mc_ccs_modifier(fb->modifier) ? 
->>>> COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
->>>> +
->>>> +    blt_set_geom(blt, stride, 0, 0, fb->width, 
->>>> fb->plane_height[plane], 0, 0);
->>>
->>> Why do we go with fb->width instead of fb->plane_width[plane]?
->>
->> For blitter with planar formats will need to use fb->width, otherwise 
->> part of uv plane would not get copied.
->>
-> 
-> OK, I clearly lack the context :) Thank you for the explaination.
-> 
->>>
->>> Also, in blt_set_geom, you're passing 0s instead of x_offset and 
->>> y_offset, which have to be set in dword6 and dword11. I'm not sure if 
->>> that's correct.
->>
->> Here those offsets will always be zero, they cannot be anything else. 
->> There are no x_offset or y_offset parameters that I could pass which 
->> would make sense in this copy. Framebuffer will always be copied in 
->> full when calling this function.
-> 
-> Right, I was asking because I saw some offsets defined, and wasn't sure 
-> if these 0s were intentional.
-> 
->>
->>>
->>>> +
->>>> +    blt->plane_offset = fb->offsets[plane];
->>>> +
->>>> +    blt->ptr = gem_mmap__device_coherent(fb->fd, handle, 0, fb->size,
->>>> +                         PROT_READ | PROT_WRITE);
->>>> +    return blt;
->>>> +}
->>>> +
->>>> +static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
->>>> +{
->>>> +    switch (fb->plane_bpp[0]) {
->>>> +    case 8:
->>>> +        return CD_8bit;
->>>> +    case 16:
->>>> +        return CD_16bit;
->>>> +    case 32:
->>>> +        return CD_32bit;
->>>> +    case 64:
->>>> +        return CD_64bit;
->>>> +    case 96:
->>>> +        return CD_96bit;
->>>> +    case 128:
->>>> +        return CD_128bit;
->>>> +    default:
->>>> +        igt_assert(0);
->>>> +    }
->>>> +}
->>>> +
->>>> +#define BLT_TARGET_RC(x) (x.compression == COMPRESSION_ENABLED && \
->>>> +              x.compression_type == COMPRESSION_TYPE_3D)
->>>> +
->>>> +#define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
->>>> +              x.compression_type == COMPRESSION_TYPE_MEDIA)
->>>> +
->>>> +static uint32_t blt_compression_format(struct blt_copy_data *blt,
->>>> +                       const struct igt_fb *fb)
->>>> +{
->>>> +    if (blt->src.compression == COMPRESSION_DISABLED &&
->>>> +        blt->dst.compression == COMPRESSION_DISABLED)
->>>> +        return 0;
->>>> +
->>>> +    if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst)) {
->>>> +        switch (blt->color_depth) {
->>>> +        case CD_32bit:
->>>> +            return 8;
->>>> +        default:
->>>> +            igt_assert_f(0, "COMPRESSION_TYPE_3D unknown color 
->>>> depth\n");
->>>> +        }
->>>> +    } else if (BLT_TARGET_MC(blt->src)) {
->>>> +        switch (fb->drm_format) {
->>>> +        case DRM_FORMAT_XRGB8888:
->>>> +            return 8;
->>>> +        case DRM_FORMAT_XYUV8888:
->>>> +            return 9;
->>>> +        case DRM_FORMAT_NV12:
->>>> +            return 9;
->>>> +        case DRM_FORMAT_P010:
->>>> +        case DRM_FORMAT_P012:
->>>> +        case DRM_FORMAT_P016:
->>>> +            return 8;
->>>> +        default:
->>>> +            igt_assert_f(0, "COMPRESSION_TYPE_MEDIA unknown 
->>>> format\n");
->>>> +        }
->>>> +    } else if (BLT_TARGET_MC(blt->dst)) {
->>>> +        igt_assert_f(0, "Destination compression not supported on 
->>>> mc ccs\n");
->>>> +    } else {
->>>> +        igt_assert_f(0, "unknown compression\n");
->>>> +    }
->>>> +}
->>>> +
->>>>   static void blitcopy(const struct igt_fb *dst_fb,
->>>>                const struct igt_fb *src_fb)
->>>>   {
->>>>       uint32_t src_tiling, dst_tiling;
->>>>       uint32_t ctx = 0;
->>>>       uint64_t ahnd = 0;
->>>> +    const intel_ctx_t *ictx = NULL;
->>>> +    struct intel_execution_engine2 *e;
->>>> +    uint32_t bb;
->>>> +    uint64_t bb_size = 4096;
->>>> +    struct blt_copy_data blt = {};
->>>> +    struct blt_copy_object *src, *dst;
->>>> +    struct blt_block_copy_data_ext ext = {}, *pext = NULL;
->>>> +    uint32_t mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
->>>> +               ? REGION_LMEM(0) : REGION_SMEM;
->>>>       igt_assert_eq(dst_fb->fd, src_fb->fd);
->>>>       igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
->>>> @@ -2726,19 +2850,21 @@ static void blitcopy(const struct igt_fb 
->>>> *dst_fb,
->>>>       if (is_i915_device(dst_fb->fd) && 
->>>> !gem_has_relocations(dst_fb->fd)) {
->>>>           igt_require(gem_has_contexts(dst_fb->fd));
->>>> +        ictx = intel_ctx_create_all_physical(src_fb->fd);
->>>
->>> Why do we take src_fb when we have dst_fb everywhere else? Maybe it 
->>> doesn't matter much, but wanted to check it anyway.
->>
->> This I don't know why it is so, I saw some other code take this from 
->> source hence I did the same.
-> 
-> Right, I think that both should work, but you can leave it as it is.
-> 
->>
->>>
->>>>           ctx = gem_context_create(dst_fb->fd);
->>>>           ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
->>>> +
->>>> +        igt_assert(__gem_create_in_memory_regions(src_fb->fd,
->>>> +                              &bb,
->>>> +                              &bb_size,
->>>> +                              mem_region) == 0);
->>>>       }
->>>>       for (int i = 0; i < dst_fb->num_planes; i++) {
->>>>           igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
->>>>           igt_assert_eq(dst_fb->plane_width[i], 
->>>> src_fb->plane_width[i]);
->>>>           igt_assert_eq(dst_fb->plane_height[i], 
->>>> src_fb->plane_height[i]);
->>>> -        /*
->>>> -         * On GEN12+ X-tiled format support is removed from the fast
->>>> -         * blit command, so use the XY_SRC blit command for it
->>>> -         * instead.
->>>> -         */
->>>> +
->>>>           if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
->>>
->>> I know it's beyond the scope of this patch, but do you plan to switch 
->>> to intel_blt.c's fast copy as well?
->>
->> No, that fast copy igt_blitter_fast_copy__raw() is here also for 
->> platforms where relocations are supported. If this was changed there 
->> would come need to add another blitting case or go around need for ahnd.
-> 
-> Hmm, adding support for relocations to intel_blt.c would be a good move, 
-> noted.
-> 
->>
->>>
->>>>               igt_blitter_fast_copy__raw(dst_fb->fd,
->>>>                              ahnd, ctx, NULL,
->>>> @@ -2757,6 +2883,42 @@ static void blitcopy(const struct igt_fb 
->>>> *dst_fb,
->>>>                              dst_tiling,
->>>>                              0, 0 /* dst_x, dst_y */,
->>>>                              dst_fb->size);
->>>> +        } else if (ahnd && block_copy_ok(src_fb) && 
->>>> block_copy_ok(dst_fb)) {
->>>> +            for_each_ctx_engine(src_fb->fd, ictx, e) {
->>>> +                if (gem_engine_can_block_copy(src_fb->fd, e))
->>>> +                    break;
->>>> +            }
->>>> +            igt_assert_f(e, "No block copy capable engine found!\n");
->>>> +
->>>> +            src = blt_fb_init(src_fb, i, mem_region);
->>>> +            dst = blt_fb_init(dst_fb, i, mem_region);
->>>> +
->>>> +            memset(&blt, 0, sizeof(blt));
->>>> +            blt.color_depth = blt_get_bpp(src_fb);
->>>
->>> It gets bpp only from fb->plane_bpp[0], whereas in src_copy we take 
->>> (dst)_fb->plane_bpp[i]. Is this bpp still correct?
->>
->> This is what is generally used. Currently when handling framebuffer 
->> surfaces with pixel data information their bpp is always the same on 
->> i915.
-> 
-> I wonder if this will be also the case for Xe (but that's a problem for 
-> future selves).
+--===============3402691886351298809==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-For time being I think this will be valid also with Xe because Xe shares 
-display code with i915.
+== Series Details ==
 
-> 
->>
->>>
->>>> +            blt_set_copy_object(&blt.src, src);
->>>> +            blt_set_copy_object(&blt.dst, dst);
->>>> +
->>>> +            if (HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))) {
->>>
->>> This check might not be correct on some platforms. To check if we 
->>> need to fill in ext part, you could do a similar check as in commit 
->>> 45da871dd268 ("tests/gem_ccs: Check for extended block-copy and 
->>> compression support").
->>>
->>> +Zbigniew, what is the status of HAS_FLATCCS? How is it useful in the 
->>> context of blitter copy? I believe we want to switch to using command 
->>> flags, like BLT_CMD_EXTENDED? Or am I misremembering something?
->>>
->>
->> This is bit double edged situation. Even if for MTL there would be 
->> added support for compression into intel_blt, all the related handling 
->> for aux ccs would still not be here on igt_fb.c. For flat ccs 
->> everything that is needed is now in place and for time being it seems 
->> correct, everything matches. Do note this in not only controlled by 
->> HAS_FLATCCS() but also by modifiers which actually arrive onto this 
->> part of code.
-> 
-> Hmm, I see, let's leave it for now and we can revisit it in the future.
-> 
-> Thanks for answering my questions. Like I said, there are two nits that 
-> would be good to tidy up, but everything else looks good to me:
-> 
-> Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+Series: tests/amdgpu/amd_checksum_region: Add test for checksum_region
+URL   : https://patchwork.freedesktop.org/series/120017/
+State : success
 
-Thanks Karolina. In the mean time this patch was separated into two 
-parts, one where there were couple of more Xe related changes and other 
-where these blitting related changes. May I use this R-b here
+== Summary ==
 
-https://patchwork.freedesktop.org/patch/544642/?series=119886&rev=4
+CI Bug Log - changes from CI_DRM_13336 -> IGTPW_9304
+====================================================
 
-?
+Summary
+-------
 
-Those few alignment fixes and small adjustments I'll apply before 
-pushing if I will not need another ci round.
+  **SUCCESS**
 
-/Juha-Pekka
+  No regressions found.
 
->>
->>>
->>>> +                blt_set_object_ext(&ext.src,
->>>> +                           blt_compression_format(&blt, src_fb),
->>>> +                           src_fb->width, src_fb->height,
->>>> +                           SURFACE_TYPE_2D);
->>>> +
->>>> +                blt_set_object_ext(&ext.dst,
->>>> +                           blt_compression_format(&blt, dst_fb),
->>>> +                           dst_fb->width, dst_fb->height,
->>>> +                           SURFACE_TYPE_2D);
->>>> +
->>>> +                pext = &ext;
->>>> +            }
->>>> +
->>>> +            blt_set_batch(&blt.bb, bb, bb_size, mem_region);
->>>> +
->>>> +            blt_block_copy(src_fb->fd, ictx, e, ahnd, &blt, pext);
->>>> +            gem_sync(src_fb->fd, blt.dst.handle);
->>>> +
->>>> +            blt_destroy_object(src_fb->fd, src);
->>>> +            blt_destroy_object(dst_fb->fd, dst);
->>>>           } else {
->>>>               igt_blitter_src_copy(dst_fb->fd,
->>>>                            ahnd, ctx, NULL,
->>>> @@ -2781,6 +2943,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
->>>>       if (ctx)
->>>>           gem_context_destroy(dst_fb->fd, ctx);
->>>>       put_ahnd(ahnd);
->>>> +    intel_ctx_destroy(src_fb->fd, ictx);
->>>>   }
->>>>   static void free_linear_mapping(struct fb_blit_upload *blit)
->>
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/index.html
+
+Participating hosts (41 -> 42)
+------------------------------
+
+  Additional (2): fi-kbl-soraka bat-dg1-8 
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_9304:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@xe_create@create-massive-size}:
+    - {bat-dg1-8}:        NOTRUN -> [FAIL][1] +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-dg1-8/igt@xe_create@create-massive-size.html
+
+  * igt@xe_guc_pc@rc6_on_idle:
+    - {bat-dg1-8}:        NOTRUN -> [INCOMPLETE][2] +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-dg1-8/igt@xe_guc_pc@rc6_on_idle.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9304 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-mtlp-8:         NOTRUN -> [SKIP][5] ([i915#4613]) +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-mtlp-8:         NOTRUN -> [SKIP][6] ([i915#6621])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][7] ([i915#5334] / [i915#7872])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-mtlp-8:         NOTRUN -> [DMESG-FAIL][8] ([i915#7059])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][9] ([i915#1886] / [i915#7913])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-1:         [PASS][10] -> [ABORT][11] ([i915#4983] / [i915#7911] / [i915#7920])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rpls-1/igt@i915_selftest@live@requests.html
+    - bat-rpls-2:         [PASS][12] -> [ABORT][13] ([i915#7913] / [i915#7982])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-2/igt@i915_selftest@live@requests.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rpls-2/igt@i915_selftest@live@requests.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - bat-mtlp-8:         NOTRUN -> [SKIP][14] ([i915#6645])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-mtlp-8:         NOTRUN -> [SKIP][15] ([i915#7828])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][16] ([i915#7828])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-jsl-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][17] ([fdo#109271])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][18] ([fdo#109271]) +14 similar issues
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - bat-rplp-1:         NOTRUN -> [ABORT][19] ([i915#8442] / [i915#8668])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@kms_psr@primary_page_flip:
+    - bat-rplp-1:         NOTRUN -> [SKIP][20] ([i915#1072]) +2 similar issues
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rplp-1/igt@kms_psr@primary_page_flip.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][21] ([fdo#109271] / [i915#4579])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-mtlp-8:         NOTRUN -> [SKIP][22] ([i915#3708]) +2 similar issues
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@prime_vgem@basic-fence-read.html
+
+  * igt@prime_vgem@basic-gtt:
+    - bat-mtlp-8:         NOTRUN -> [SKIP][23] ([i915#3708] / [i915#4077]) +1 similar issue
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@prime_vgem@basic-gtt.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - bat-mtlp-8:         [ABORT][24] ([i915#7077] / [i915#7977]) -> [PASS][25]
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [ABORT][26] ([i915#7911] / [i915#7913]) -> [PASS][27]
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - bat-jsl-3:          [DMESG-FAIL][28] ([i915#5334]) -> [PASS][29]
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - bat-rpls-2:         [DMESG-FAIL][30] ([i915#4258] / [i915#7913]) -> [PASS][31]
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-jsl-1:          [INCOMPLETE][32] -> [PASS][33]
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-jsl-1/igt@i915_selftest@live@migrate.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-jsl-1/igt@i915_selftest@live@migrate.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [ABORT][34] ([i915#8442] / [i915#8668]) -> [PASS][35]
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
+  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6121]: https://gitlab.freedesktop.org/drm/intel/issues/6121
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
+  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
+  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7920]: https://gitlab.freedesktop.org/drm/intel/issues/7920
+  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
+  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
+  [i915#8213]: https://gitlab.freedesktop.org/drm/intel/issues/8213
+  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
+  [i915#8513]: https://gitlab.freedesktop.org/drm/intel/issues/8513
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#8676]: https://gitlab.freedesktop.org/drm/intel/issues/8676
+  [i915#8698]: https://gitlab.freedesktop.org/drm/intel/issues/8698
+  [i915#8700]: https://gitlab.freedesktop.org/drm/intel/issues/8700
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7356 -> IGTPW_9304
+
+  CI-20190529: 20190529
+  CI_DRM_13336: 1423126050a5bb0317e86e61395e4413e0ad013b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9304: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/index.html
+  IGT_7356: 66452bb0118e8d3a78d054cef50a60a9858a00a9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/index.html
+
+--===============3402691886351298809==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_checksum_region: Add test for checksum_region</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120017/">https://patchwork.freedesktop.org/series/120017/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13336 -&gt; IGTPW_9304</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/index.html</p>
+<h2>Participating hosts (41 -&gt; 42)</h2>
+<p>Additional (2): fi-kbl-soraka bat-dg1-8 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_9304:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>{igt@xe_create@create-massive-size}:</p>
+<ul>
+<li>{bat-dg1-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-dg1-8/igt@xe_create@create-massive-size.html">FAIL</a> +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_guc_pc@rc6_on_idle:</p>
+<ul>
+<li>{bat-dg1-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-dg1-8/igt@xe_guc_pc@rc6_on_idle.html">INCOMPLETE</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9304 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>
+<p>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7920">i915#7920</a>)</p>
+</li>
+<li>
+<p>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6645">i915#6645</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+<li>
+<p>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-jsl-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+<li>
+<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +14 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rplp-1/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-kbl-soraka/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-gtt:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@prime_vgem@basic-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7977">i915#7977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-2/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4258">i915#4258</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rpls-2/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-jsl-1/igt@i915_selftest@live@migrate.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-jsl-1/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7356 -&gt; IGTPW_9304</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13336: 1423126050a5bb0317e86e61395e4413e0ad013b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9304: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9304/index.html<br />
+  IGT_7356: 66452bb0118e8d3a78d054cef50a60a9858a00a9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3402691886351298809==--
