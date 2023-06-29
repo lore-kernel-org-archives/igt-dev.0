@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E89110E108
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 05:44:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB0E310E002
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 05:44:27 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: janga.rahul.kumar@intel.com, tejas.upadhyay@intel.com,
  igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  priyanka.dandamudi@intel.com
-Date: Thu, 29 Jun 2023 11:13:38 +0530
-Message-Id: <20230629054339.636091-3-priyanka.dandamudi@intel.com>
+Date: Thu, 29 Jun 2023 11:13:37 +0530
+Message-Id: <20230629054339.636091-2-priyanka.dandamudi@intel.com>
 In-Reply-To: <20230629054339.636091-1-priyanka.dandamudi@intel.com>
 References: <20230629054339.636091-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] xe/xe_sysfs_defaults: Verify .defaults
- in engines directory
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_sysfs: Add support to iterate
+ over engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,130 +27,87 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Add a new test which verifies .defaults are readonly and all
-parameters are present.
+It helps to test engines by iterating over sysfs/engines.
 
-v2: Addressed small changes.(Kamil)
-
-v3: Added debug for default value.(Rahul)
+v2: Updated a parameter to accept array of strings to make dynamic for all schedulers.
+Updated engine to engine_fd for better readability.(rahul)
+Added description for lib function.(Kamil)
 
 Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 ---
- tests/meson.build            |  1 +
- tests/xe/xe_sysfs_defaults.c | 90 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 91 insertions(+)
- create mode 100644 tests/xe/xe_sysfs_defaults.c
+ lib/igt_sysfs.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h |  3 +++
+ 2 files changed, 50 insertions(+)
 
-diff --git a/tests/meson.build b/tests/meson.build
-index 85ea7e74e..b24bae5c2 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -270,6 +270,7 @@ xe_progs = [
- 	'xe_vm',
- 	'xe_waitfence',
- 	'xe_spin_batch',
-+	'xe_sysfs_defaults',
- ]
- 
- msm_progs = [
-diff --git a/tests/xe/xe_sysfs_defaults.c b/tests/xe/xe_sysfs_defaults.c
-new file mode 100644
-index 000000000..a1df312e7
---- /dev/null
-+++ b/tests/xe/xe_sysfs_defaults.c
-@@ -0,0 +1,90 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 35a4faa9a..0876f4c6b 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -856,3 +856,50 @@ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
+ 	igt_assert_eq(get, prev);
+ 	igt_assert(!ret);
+ }
 +
 +/**
-+ * TEST: xe sysfs defaults
-+ * Category: Infrastructure
-+ * Functionality: driver handler
-+ * Run type: FULL
-+ * Sub-category: xe
-+ * Test category: SysMan
-+ * SUBTEST: engine-defaults
++ * igt_sysfs_engines:
++ * @xe: fd of the device
++ * @engines: fd of the directory engine
++ * @property: property array
++ * @test: Dynamic engine test
++ *
++ * It iterates over sysfs/engines and runs a dynamic engine test.
++ *
 + */
-+
-+#include <dirent.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <unistd.h>
-+
-+#include "igt.h"
-+#include "igt_sysfs.h"
-+
-+#include "xe_drm.h"
-+#include "xe/xe_query.h"
-+
-+static void test_defaults(int xe, int engine, const char **property)
++void igt_sysfs_engines(int xe, int engines, const char **property,
++		       void (*test)(int, int, const char **))
 +{
 +	struct dirent *de;
-+	int property_value;
-+	int defaults;
 +	DIR *dir;
 +
-+	defaults = openat(engine, ".defaults", O_DIRECTORY);
-+	igt_require(defaults != -1);
++	lseek(engines, 0, SEEK_SET);
 +
-+	dir = fdopendir(engine);
++	dir = fdopendir(engines);
++	if (!dir)
++		close(engines);
++
 +	while ((de = readdir(dir))) {
++		int engine_fd;
++
 +		if (*de->d_name == '.')
 +			continue;
 +
-+		igt_debug("Checking attr '%s'\n", de->d_name);
++		engine_fd = openat(engines, de->d_name, O_RDONLY);
++		if (engine_fd < 0)
++			continue;
 +
-+		igt_assert_f(property_value = igt_sysfs_get_u64(defaults, de->d_name),
-+			     "Default value %s is not present!\n", de->d_name);
++		igt_dynamic(de->d_name) {
++			if (property) {
++				struct stat st;
 +
-+		igt_debug("Default property:%s, value:%d\n", de->d_name, property_value);
-+
-+		igt_assert_f(!igt_sysfs_set(defaults, de->d_name, "garbage"),
-+					    "write into default value of %s succeeded!\n",
-+					    de->d_name);
-+	}
-+	closedir(dir);
-+}
-+
-+igt_main
-+{
-+	int xe, sys_fd;
-+	int gt;
-+
-+	igt_fixture {
-+		xe = drm_open_driver(DRIVER_XE);
-+		xe_device_get(xe);
-+
-+		sys_fd = igt_sysfs_open(xe);
-+		igt_require(sys_fd != -1);
-+	}
-+
-+	igt_subtest_with_dynamic("engine-defaults") {
-+		xe_for_each_gt(xe, gt) {
-+			int engines_fd = -1;
-+			char buf[100];
-+
-+			sprintf(buf, "device/gt%d/engines", gt);
-+			engines_fd = openat(sys_fd, buf, O_RDONLY);
-+			igt_require(engines_fd != -1);
-+
-+			igt_sysfs_engines(xe, engines_fd, NULL, test_defaults);
-+
-+			close(engines_fd);
++				igt_require(fstatat(engine_fd, property[0], &st, 0) == 0);
++				igt_require(fstatat(engine_fd, property[1], &st, 0) == 0);
++				igt_require(fstatat(engine_fd, property[2], &st, 0) == 0);
++			}
++			errno = 0;
++			test(xe, engine_fd, property);
 +		}
-+	}
-+
-+	igt_fixture {
-+		close(sys_fd);
-+		xe_device_put(xe);
-+		close(xe);
++		close(engine_fd);
 +	}
 +}
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 978b6906e..5635fc690 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -147,4 +147,7 @@ typedef struct igt_sysfs_rw_attr {
+ 
+ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw);
+ 
++void igt_sysfs_engines(int xe, int engines, const char **property,
++		       void (*test)(int, int, const char **));
 +
+ #endif /* __IGT_SYSFS_H__ */
 -- 
 2.25.1
