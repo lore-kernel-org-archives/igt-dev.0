@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD7C310E3F3
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3294F10E3E8
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:50 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:18:48 +0530
-Message-Id: <20230629144910.3055377-60-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:40 +0530
+Message-Id: <20230629144910.3055377-52-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 59/81] tests/kms_plane: Document each subtest
+Subject: [igt-dev] [V5 i-g-t 51/81] tests/kms_getfb: Document each subtest
  for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,105 +28,137 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+ tests/kms_getfb.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 67cff61d6..8c6ce78f3 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -24,6 +24,11 @@
-  *   Damien Lespiau <damien.lespiau@intel.com>
+diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
+index afcf07fe8..b35cd4152 100644
+--- a/tests/kms_getfb.c
++++ b/tests/kms_getfb.c
+@@ -27,6 +27,11 @@
+  *
   */
  
 +/**
-+ * TEST: kms plane
++ * TEST: kms getfb
 + * Category: Display
-+ * Description: Testes for KMS Plane
++ * Description: Tests GETFB and GETFB2 ioctls.
 + */
  #include "igt.h"
- #include "igt_vec.h"
- #include <errno.h>
-@@ -273,6 +278,21 @@ test_plane_position_with_output(data_t *data,
- 	igt_remove_fb(data->drm_fd, &sprite_fb);
+ #include <unistd.h>
+ #include <stdlib.h>
+@@ -169,6 +174,22 @@ static uint32_t get_any_prop_id(int fd)
+ 	return 0;
  }
  
 +/**
-+ * SUBTEST: plane-position-%s
-+ * Description: Verify plane position using two planes to create a %arg[1]
++ * SUBTEST: getfb-handle-%s
++ * Description: Tests error handling %arg[1]
 + * Driver requirement: any
-+ * Functionality: plane
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @covered:           fully covered screen
-+ * @hole:              partially covered screen
-+ * @hole-dpms:         partially covered screen and check for DPMS
++ * @closed:       when passing a handle that has been closed.
++ * @not-fb:       when passing an invalid handle.
++ * @valid:        when passing an valid handle.
++ * @zero:         for a zero'd input.
 + */
- static void
- test_plane_position(data_t *data, enum pipe pipe)
+ static void test_handle_input(int fd)
  {
-@@ -381,6 +401,21 @@ test_plane_panning_with_output(data_t *data,
- 	igt_remove_fb(data->drm_fd, &primary_fb);
+ 	struct drm_mode_fb_cmd2 add = {};
+@@ -224,6 +245,30 @@ static void test_handle_input(int fd)
+ 		gem_close(fd, add.handles[0]);
  }
  
 +/**
-+ * SUBTEST: plane-panning-%s
-+ * Description: Verify plane panning at %arg[1] using primary plane
++ * SUBTEST: getfb-reject-ccs
++ * Description: Tests error handling while requesting CCS buffers it should
++ *              refuse because getfb supports returning a single buffer handle.
 + * Driver requirement: any
-+ * Functionality: plane
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: getfb-%s-different-handles
++ * Description: Tests error handling while requesting for two different handles
++ *              from %arg[1].
++ * Driver requirement: any
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @bottom-right:               bottom-right position
-+ * @bottom-right-suspend:       bottom-right position with suspend
-+ * @top-left:                   top-left position
++ * @addfb:           same fd
++ * @repeated:        different fd
 + */
- static void
- test_plane_panning(data_t *data, enum pipe pipe)
+ static void test_duplicate_handles(int fd)
  {
-@@ -1101,6 +1136,20 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
- 	return index != 0 && index != 3 && index != 5;
+ 	struct drm_mode_fb_cmd2 add = {};
+@@ -289,6 +334,37 @@ static void test_duplicate_handles(int fd)
+ 	}
  }
  
 +/**
-+ * SUBTEST: pixel-%s
-+ * Description: verify the pixel formats for given plane and pipe
++ * SUBTEST: getfb2-accept-ccs
++ * Description: Tests outputs are correct when retrieving a CCS framebuffer.
 + * Driver requirement: any
-+ * Functionality: plane
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: getfb2-into-addfb2
++ * Description: Output check by passing the output of GETFB2 into ADDFB2.
++ * Driver requirement: any
++ * Functionality: kms_core
++ * Mega feature: General Display Features
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: getfb2-handle-%s
++ * Description: Tests error handling %arg[1].
++ * Driver requirement: any
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @format:
-+ * @format-source-clamping:          with source clamping
++ * @closed:                  when passing a handle that has been closed
++ * @not-fb:                  when passing an invalid handle
++ * @zero:                    for a zero'd input
 + */
- static void
- test_pixel_formats(data_t *data, enum pipe pipe)
+ static void test_getfb2(int fd)
  {
-@@ -1157,6 +1206,15 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 	igt_assert_f(result, "At least one CRC mismatch happened\n");
+ 	struct drm_mode_fb_cmd2 add_basic = {};
+@@ -397,6 +473,20 @@ static void test_getfb2(int fd)
+ 	}
  }
  
 +/**
-+ * SUBTEST: invalid-pixel-format-settings
-+ * Description: verify invalid settings for pixel format are not accepted
++ * SUBTEST: %s-handle-protection
++ * Description: Make sure %arg[1] return handles if caller is non-root or non-master.
 + * Driver requirement: any
-+ * Functionality: plane
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @getfb:      GETFB ioctl
++ * @getfb2:     GETFB2 ioctl
 + */
- static void test_invalid_settings(data_t *data)
- {
- 	enum pipe pipe = PIPE_A;
+ static void test_handle_protection(void) {
+ 	int non_master_fd;
+ 	struct drm_mode_fb_cmd2 non_master_add = {};
 -- 
 2.40.0
