@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FCE910E3E0
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DBC3710E3DF
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:46 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:18:21 +0530
-Message-Id: <20230629144910.3055377-33-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:29 +0530
+Message-Id: <20230629144910.3055377-41-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 32/81] tests/kms_addfb_basic: Document each
- subtest for testplan
+Subject: [igt-dev] [V5 i-g-t 40/81] tests/kms_content_protection: Document
+ each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,347 +28,114 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_addfb_basic.c | 188 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 152 insertions(+), 36 deletions(-)
+ tests/kms_content_protection.c | 81 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 065f21975..114b9c0f8 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -26,8 +26,9 @@
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 6cdf81a28..50929d8d5 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -22,6 +22,11 @@
+  *
   */
  
- /**
-- * TEST: Sanity test for ioctls DRM_IOCTL_MODE_ADDFB2 & DRM_IOCTL_MODE_RMFB.
-+ * TEST: kms addfb basic
-  * Category: Display
-+ * Description: Sanity test for ioctls DRM_IOCTL_MODE_ADDFB2 & DRM_IOCTL_MODE_RMFB.
-  */
- 
- #include "igt.h"
-@@ -66,33 +67,45 @@ static int legacy_addfb(int fd, struct drm_mode_fb_cmd *arg)
- }
- 
- /**
-- * SUBTEST: unused-handle
-- * Description: Test that addfb2 call fails correctly for unused handle
-+ * SUBTEST: unused-%s
-+ * Description: Test that addfb2 call fails correctly for unused %arg[1]
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-- * SUBTEST: unused-pitches
-- * Description: Test that addfb2 call fails correctly for unused pitches
-- * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-+ * SUBTEST: clobberred-modifier
-+ * Description: Check if addfb2 call works for clobbered modifier
-+ * Driver requirement: i915
-+ * Functionality: gtt, kms_gem_interop
-  * Mega feature: General Display Features
-- *
-- * SUBTEST: unused-offsets
-- * Description: Test that addfb2 call fails correctly for unused offset
-+ * Run type: FULL
-  * Test category: functionality test
-- * Run type: BAT
-+ *
-+ * SUBTEST: invalid-smem-bo-on-discrete
-+ * Description: Check if addfb2 with a system memory gem object fails correctly
-+ *              if device requires local memory framebuffers
-+ * Driver requirement: any
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-- *
-- * SUBTEST: unused-modifier
-- * Description: Test that addfb2 call fails correctly for unused modifier
-+ * Run type: FULL
-  * Test category: functionality test
-- * Run type: BAT
-+ *
-+ * SUBTEST: legacy-format
-+ * Description: Check if addfb2 call works for legacy formats
-+ * Driver requirement: any
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @handle:       Handle
-+ * @pitches:      Pitches
-+ * @offsets:      Offsets
-+ * @modifier:     Modifiers
-  */
- static void invalid_tests(int fd)
- {
-@@ -310,6 +323,7 @@ static void invalid_tests(int fd)
- /**
-  * SUBTEST: no-handle
-  * Description: Test that addfb2 call fails correctly without handle
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -317,6 +331,7 @@ static void invalid_tests(int fd)
-  *
-  * SUBTEST: basic
-  * Description: Check if addfb2 call works with given handle
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -324,6 +339,7 @@ static void invalid_tests(int fd)
-  *
-  * SUBTEST: bad-pitch-%i
-  * Description: bad-pitch-%arg[1]: Test that addfb2 call fails correctly for bad-pitches
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -378,6 +394,36 @@ static void pitch_tests(int fd)
- 		gem_close(fd, gem_bo);
++/**
++ * TEST: kms content protection
++ * Category: Display
++ * Description: Test content protection (HDCP)
++ */
+ #include <poll.h>
+ #include <fcntl.h>
+ #include <sys/epoll.h>
+@@ -485,6 +490,66 @@ test_fini(igt_output_t *output, enum igt_commit_style s)
+ 	igt_display_commit2(&data.display, s);
  }
  
 +/**
-+ * SUBTEST: basic-%s-tiled-legacy
-+ * Description: Check if addfb2 and rmfb call works for basic %arg[1] test
++ * SUBTEST: LIC
++ * Description: Test for the integrity of link.
 + * Driver requirement: any
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: framebuffer-vs-set-tiling
-+ * Description: Check if addfb2 call works for x and y tiling
-+ * Driver requirement: i915
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: tile-pitch-mismatch
-+ * Description: Test that addfb2 call fails correctly for pitches mismatch
-+ * Driver requirement: i915
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ *
-+ * arg[1]:
-+ *
-+ * @x:        x-tiling
-+ * @y:        y-tiling
-+ */
- static void tiling_tests(int fd)
- {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -460,6 +506,7 @@ static void tiling_tests(int fd)
- /**
-  * SUBTEST: size-max
-  * Description: Check if addfb2 call works with max size of buffer object
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -467,6 +514,7 @@ static void tiling_tests(int fd)
-  *
-  * SUBTEST: too-wide
-  * Description: Test that addfb2 call fails correctly with increased width of fb
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -474,6 +522,7 @@ static void tiling_tests(int fd)
-  *
-  * SUBTEST: too-high
-  * Description: Test that addfb2 call fails correctly with increased height of fb
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -481,6 +530,7 @@ static void tiling_tests(int fd)
-  *
-  * SUBTEST: bo-too-small
-  * Description: Test that addfb2 call fails correctly with small size of buffer object
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -488,10 +538,20 @@ static void tiling_tests(int fd)
-  *
-  * SUBTEST: small-bo
-  * Description: Check if addfb2 call works for given height
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-+ *
-+ * SUBTEST: bo-too-small-due-to-tiling
-+ * Description: Test that addfb2 call fails correctly with small buffer object
-+ *              after changing tile
-+ * Driver requirement: any
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-  */
- static void size_tests(int fd)
- {
-@@ -611,6 +671,7 @@ static void size_tests(int fd)
- /**
-  * SUBTEST: addfb25-modifier-no-flag
-  * Description: Test that addfb2 call fails correctly for x-tiling with given modifier
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-@@ -618,10 +679,35 @@ static void size_tests(int fd)
-  *
-  * SUBTEST: addfb25-bad-modifier
-  * Description: Test that addfb2 call fails correctly for irrelevant modifier
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-+ *
-+ * SUBTEST: addfb25-x-tiled-mismatch-legacy
-+ * Description: Test that addfb2 call fails correctly for irrelevant x-tiling
-+ * Driver requirement: any
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: addfb25-x-tiled-legacy
-+ * Description: Check if addfb2 call works for x-tiling
-+ * Driver requirement: any
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ *
-+ * SUBTEST: addfb25-framebuffer-vs-set-tiling
-+ * Description: Check if addfb2 call works for relevant combination of tiling and fbs
-+ * Driver requirement: any
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-  */
- static void addfb25_tests(int fd)
- {
-@@ -705,6 +791,28 @@ static int addfb_expected_ret(igt_display_t *disp, struct drm_mode_fb_cmd2 *f)
- 					  f->modifier[0]) ? 0 : -1;
- }
- 
-+/**
-+ * SUBTEST: addfb25-y-tiled-%s
-+ * Description: Check if addfb2 call works for y-tiling %arg[1]
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
++ * Functionality: hdcp
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: addfb25-yf-tiled-legacy
-+ * Description: Check if addfb2 call works for yf-tiling
++ * SUBTEST: content_type_change
++ * Description: Test the content type change when the content protection already
++ *              enabled
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
++ * Functionality: hdcp, hdcp2.2
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: mei_interface
++ * Description: Test the teardown and rebuild of the interface between Intel
++ *              and mei hdcp.
++ * Driver requirement: any
++ * Functionality: hdcp, hdcp2.2
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: srm
++ * Description: This test writes the facsimile SRM into the /lib/firmware/ and
++ *              check the kernel parsing of it by invoking the hdcp authentication.
++ * Driver requirement: any
++ * Functionality: hdcp
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: uevent
++ * Description: Test to detect the HDCP status change when we are reading the
++ *              uevent sent with the corresponding connector id and property id.
++ * Driver requirement: any
++ * Functionality: hdcp
++ * Mega feature: HDCP
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: %s
++ * Description: Test content protection with %arg[1]
++ * Driver requirement: any
++ * Functionality: hdcp
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @legacy:               with default size
-+ * @small-legacy:         with given size & modifier
++ * @atomic:         atomic modesetting
++ * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
++ * @legacy:         legacy style commit
++ * @type1:          content type 1 that can be handled only through HDCP2.2.
 + */
- static void addfb25_ytile(int fd)
+ static void
+ test_content_protection(enum igt_commit_style s, int content_type)
  {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -771,6 +879,15 @@ static void addfb25_ytile(int fd)
+@@ -602,6 +667,22 @@ static void test_cp_lic_on_mst(igt_output_t *mst_outputs[], int valid_outputs, b
  	}
  }
  
 +/**
-+ * SUBTEST: addfb25-4-tiled
-+ * Description: Check if addfb2 call works for tiling-4
++ * SUBTEST: dp-mst-%s
++ * Description: Test Content protection %arg[1] over DP MST.
 + * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
++ * Functionality: hdcp
++ * Mega feature: HDCP
 + * Run type: FULL
 + * Test category: functionality test
-+ */
- static void addfb25_4tile(int fd)
- {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -810,33 +927,23 @@ static void addfb25_4tile(int fd)
- }
- 
- /**
-- * SUBTEST: invalid-get-prop-any
-- * Description: Test that get-properties ioctl call fails correctly for invalid object type
-+ * SUBTEST: invalid-%s-%s
-+ * Description: Test that %arg[1] ioctl call fails correctly for %arg[2] object
-+ * Driver requirement: any
-  * Test category: functionality test
-  * Run type: BAT
-  * Functionality: kms_gem_interop
-  * Mega feature: General Display Features
-  *
-- * SUBTEST: invalid-get-prop
-- * Description: Test that get-properties ioctl call fails correctly for fb mode object
-- * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-- * Mega feature: General Display Features
-+ * arg[1]:
-  *
-- * SUBTEST: invalid-set-prop-any
-- * Description: Test that set-properties ioctl call fails correctly for invalid object type
-- * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-- * Mega feature: General Display Features
-+ * @get:           get-properties
-+ * @set:           set-properties
-  *
-- * SUBTEST: invalid-set-prop
-- * Description: Test that get-properties ioctl call fails correctly for fb mode object
-- * Test category: functionality test
-- * Run type: BAT
-- * Functionality: kms_gem_interop
-- * Mega feature: General Display Features
-+ * arg[2]:
 + *
-+ * @prop:          fb mode
-+ * @prop-any:      invalid
-  */
- static void prop_tests(int fd)
- {
-@@ -903,6 +1010,15 @@ static void prop_tests(int fd)
- 	}
- }
- 
-+/**
-+ * SUBTEST: master-rmfb
-+ * Description: Check that only master can rmfb
-+ * Driver requirement: any
-+ * Functionality: kms_gem_interop
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
++ * arg[1]:
++ *
++ * @lic-type-0:   Type 0 with LIC
++ * @lic-type-1:   Type 1 with LIC.
++ * @type-0:       Type 0
++ * @type-1:       Type 1
 + */
- static void master_tests(int fd)
+ static void
+ test_content_protection_mst(int content_type)
  {
- 	struct drm_mode_fb_cmd2 f = {};
 -- 
 2.40.0
