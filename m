@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A00A10E3E8
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 892FF10E3E3
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:00 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:17:58 +0530
-Message-Id: <20230629144910.3055377-10-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:15 +0530
+Message-Id: <20230629144910.3055377-27-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 09/81] tests/chamelium/kms_chamelium_hpd:
- Document each subtest for testplan
+Subject: [igt-dev] [V5 i-g-t 26/81] tests/i915/kms_psr: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,271 +26,265 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Add documentation for all kms tests which is used by IGT testplan
 documentation.
 
+V2: - Add missing "Driver requirement" field
+
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_chamelium_hpd.c | 186 +++++++++++++++++++++++++++-
- 1 file changed, 185 insertions(+), 1 deletion(-)
+ tests/i915/kms_psr.c | 213 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 212 insertions(+), 1 deletion(-)
 
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index 8b3189ca0..d7b9f0707 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -25,8 +25,9 @@
+diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+index 3f8f83b42..72043ba89 100644
+--- a/tests/i915/kms_psr.c
++++ b/tests/i915/kms_psr.c
+@@ -23,8 +23,9 @@
   */
  
  /**
-- * TEST: Tests behaviour of hpd using chamelium
-+ * TEST: kms chamelium hpd
+- * TEST: Tests behaviour of PSR & PSR2
++ * TEST: kms psr
   * Category: Display
-+ * Description: Testing HPD with a Chamelium board
++ * Description: Tests behaviour of PSR & PSR2
   */
  
- #include "kms_chamelium_helper.h"
-@@ -117,6 +118,7 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: dp_hotplug
-  * Mega feature: DP
+ #include "igt.h"
+@@ -36,6 +37,213 @@
+ #include <string.h>
+ #include "xe/xe_ioctl.h"
+ 
++/**
++ * SUBTEST: basic
++ * Description: Basic check for psr if it is detecting changes made in planes
 + * Driver requirement: any
-  *
-  * SUBTEST: hdmi-hpd-fast
-  * Description: Check that we get uevents and updated connector status on
-@@ -125,6 +127,7 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: hdmi_hotplug
-  * Mega feature: HDMI
-+ * Driver requirement: any
-  *
-  * SUBTEST: vga-hpd-fast
-  * Description: Check that we get uevents and updated connector status on
-@@ -133,6 +136,66 @@ static void try_suspend_resume_hpd(chamelium_data_t *data,
-  * Run type: BAT
-  * Functionality: vga_hotplug
-  * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: dp-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
++ * Functionality: psr
++ * Mega feature: PSR
 + * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
 + * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
 + *
-+ * SUBTEST: vga-hpd
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
++ * SUBTEST: %s_%s
++ * Description: Check if psr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1]
++ * Driver requirement: i915
++ * Functionality: psr
++ * Mega feature: PSR
 + * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: dp-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
 + * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-%s
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
 + *
 + * arg[1]:
 + *
-+ * @enable-disable-mode:     Toggle the mode
-+ * @with-enabled-mode:       Enabling the mode
-  */
- static const char test_basic_hotplug_desc[] =
- 	"Check that we get uevents and updated connector status on "
-@@ -200,6 +263,34 @@ static void test_hotplug(chamelium_data_t *data, struct chamelium_port *port,
- 	igt_remove_fb(data->drm_fd, &fb);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
++ * @cursor:             Cursor plane
++ * @primary:            Primary plane
++ * @sprite:             Sprite plane
 + *
-+ * SUBTEST: hdmi-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
++ * arg[2]:
 + *
-+ * SUBTEST: vga-hpd-for-each-pipe
-+ * Description: Check that we get uevents and updated connector status on
-+ *              hotplug and unplug for each pipe with valid output
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
++ * @mmap_cpu:           MMAP CPU
++ * @mmap_gtt:           MMAP GTT
 + */
- static const char test_hotplug_for_each_pipe_desc[] =
- 	"Check that we get uevents and updated connector status on "
- 	"hotplug and unplug for each pipe with valid output";
-@@ -245,6 +336,39 @@ static void test_hotplug_for_each_pipe(chamelium_data_t *data,
- 	igt_hpd_storm_reset(data->drm_fd);
- }
- 
++
 +/**
-+ * SUBTEST: dp-hpd-after-%s
-+ * Description: Toggle HPD during %arg[1], check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
++ * SUBTEST: sprite_plane_move
++ * Description: Check if psr is detecting memory mapping, rendering and plane
++ *              operations performed on sprite planes
 + * Driver requirement: any
++ * Functionality: psr
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
 + *
-+ * SUBTEST: hdmi-hpd-after-%s
-+ * Description: Toggle HPD during %arg[1], check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
++ * SUBTEST: %s_%s
++ * Description: Check if psr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
 + * Driver requirement: any
-+ *
-+ * SUBTEST: vga-hpd-after-%s
-+ * Description: Toggle HPD during %arg[1], check that uevents are sent and
-+ *              connector status is updated
-+ * Test category: functionality test
++ * Functionality: psr
++ * Mega feature: PSR
 + * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
++ * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @hibernate:     Hibernation
-+ * @suspend:       Suspend
++ * @cursor:             Cursor plane
++ * @sprite:             Sprite plane
++ *
++ * arg[2]:
++ *
++ * @blt:                Blitter
++ * @render:             Render
++ * @plane_onoff:        Plane On off
 + */
- static const char test_suspend_resume_hpd_desc[] =
- 	"Toggle HPD during suspend, check that uevents are sent and connector "
- 	"status is updated";
-@@ -276,6 +400,16 @@ static void test_suspend_resume_hpd(chamelium_data_t *data,
++
++/**
++ * SUBTEST: primary_%s
++ * Description: Check if psr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Driver requirement: any
++ * Functionality: psr
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @blt:                Blitter
++ * @render:             Render
++ */
++
++/**
++ * SUBTEST: dpms
++ * Description: Check if psr is detecting changes when rendering operation is
++ *              performed  with dpms enabled or disabled
++ * Driver requirement: any
++ * Functionality: dpms, psr
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: no_drrs
++ * Description: Check if psr is detecting changes when drrs is disabled
++ * Driver requirement: any
++ * Functionality: psr
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: suspend
++ * Description: Check if psr is detecting changes when plane operation
++ *              is performed with suspend resume cycles
++ * Driver requirement: any
++ * Functionality: psr, suspend
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: psr2_dpms
++ * Description: Check if psr is detecting changes when rendering operation
++ *              is performed  with dpms enabled or disabled
++ * Driver requirement: any
++ * Functionality: psr, psr2
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: psr2_no_drrs
++ * Description: Check if psr is detecting changes when drrs is disabled
++ * Driver requirement: any
++ * Functionality: psr, psr2
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: psr2_suspend
++ * Description: Check if psr is detecting changes when plane operation is
++ *              performed with suspend resume cycles
++ * Driver requirement: any
++ * Functionality: psr, psr2
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: psr2_basic
++ * Description: Basic check for psr if it is detecting changes made in planes
++ * Driver requirement: any
++ * Functionality: psr, psr2
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: psr2_%s_%s
++ * Description: Check if psr2 is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Driver requirement: i915
++ * Functionality: psr
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor:             Cursor plane
++ * @primary:            Primary plane
++ * @sprite:             Sprite plane
++ *
++ * arg[2]:
++ *
++ * @mmap_cpu:           MMAP CPU
++ * @mmap_gtt:           MMAP GTT
++ */
++
++/**
++ * SUBTEST: psr2_primary_page_flip
++ * Description: Check if psr is detecting memory mapping, rendering and plane
++ *              operations performed on primary planes
++ * Driver requirement: any
++ * Functionality: psr
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * SUBTEST: psr2_primary_%s
++ * Description: Check if psr is detecting memory mapping, rendering and plane
++ *              operations performed on primary planes
++ * Driver requirement: any
++ * Functionality: psr
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @blt:                Blitter
++ * @render:             Render
++ */
++
++/**
++ * SUBTEST: psr2_%s_%s
++ * Description: Check if psr is detecting memory mapping, rendering and plane
++ *              operations performed on %arg[1] planes
++ * Driver requirement: any
++ * Functionality: psr
++ * Mega feature: PSR
++ * Run type: FULL
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @cursor:             Cursor plane
++ * @sprite:             Sprite plane
++ *
++ * arg[2]:
++ *
++ * @blt:                Blitter
++ * @render:             Render
++ * @plane_onoff:        Plane On off
++ * @plane_move:         Move plane position
++ */
++
+ enum operations {
+ 	PAGE_FLIP,
+ 	MMAP_GTT,
+@@ -309,6 +517,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
+  * SUBTEST: cursor_plane_move
+  * Description: Check if psr is detecting the plane operations performed on
+  *		cursor planes
++ * Driver requirement: any
+  * Test category: functionality test
   * Run type: BAT
-  * Functionality: hotplug
-  * Mega feature: General Display Features
+  * Functionality: psr
+@@ -317,6 +526,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
+  * SUBTEST: primary_page_flip
+  * Description: Check if psr is detecting page-flipping operations performed
+  *		on primary planes
 + * Driver requirement: any
-+ *
-+ * SUBTEST: common-hpd-after-hibernate
-+ * Description: Toggle HPD during suspend on all connectors, check that uevents
-+ *              are sent and connector status is updated
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hotplug
-+ * Mega feature: General Display Features
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: psr
+@@ -325,6 +535,7 @@ static void fb_dirty_fb_ioctl(data_t *data, struct igt_fb *fb)
+  * SUBTEST: sprite_plane_onoff
+  * Description: Check if psr is detecting the plane operations performed on
+  *		sprite planes
 + * Driver requirement: any
-  */
- static const char test_suspend_resume_hpd_common_desc[] =
- 	"Toggle HPD during suspend on all connectors, check that uevents are "
-@@ -306,6 +440,16 @@ static void test_suspend_resume_hpd_common(chamelium_data_t *data,
- 	igt_cleanup_uevents(mon);
- }
- 
-+/**
-+ * SUBTEST: vga-hpd-without-ddc
-+ * Description: Disable DDC on a VGA connector, check we still get a uevent on
-+ *              hotplug
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: vga_hotplug
-+ * Mega feature: VGA
-+ * Driver requirement: any
-+ */
- static const char test_hpd_without_ddc_desc[] =
- 	"Disable DDC on a VGA connector, check we still get a uevent on hotplug";
- static void test_hpd_without_ddc(chamelium_data_t *data,
-@@ -332,6 +476,27 @@ static void test_hpd_without_ddc(chamelium_data_t *data,
- 	igt_cleanup_uevents(mon);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-storm
-+ * Description: Trigger a series of hotplugs in a very small timeframe to
-+ *              simulate abad cable, check the kernel falls back to polling
-+ *              to avoid a hotplug storm
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-storm
-+ * Description: Trigger a series of hotplugs in a very small timeframe to
-+ *              simulate abad cable, check the kernel falls back to polling
-+ *              to avoid a hotplug storm
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ */
- static const char test_hpd_storm_detect_desc[] =
- 	"Trigger a series of hotplugs in a very small timeframe to simulate a"
- 	"bad cable, check the kernel falls back to polling to avoid a hotplug "
-@@ -366,6 +531,25 @@ static void test_hpd_storm_detect(chamelium_data_t *data,
- 	igt_hpd_storm_reset(data->drm_fd);
- }
- 
-+/**
-+ * SUBTEST: dp-hpd-storm-disable
-+ * Description: Disable HPD storm detection, trigger a storm and check the
-+ *              kernel doesn't detect one
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: dp_hotplug
-+ * Mega feature: DP
-+ * Driver requirement: any
-+ *
-+ * SUBTEST: hdmi-hpd-storm-disable
-+ * Description: Disable HPD storm detection, trigger a storm and check the
-+ *              kernel doesn't detect one
-+ * Test category: functionality test
-+ * Run type: FULL
-+ * Functionality: hdmi_hotplug
-+ * Mega feature: HDMI
-+ * Driver requirement: any
-+ */
- static const char test_hpd_storm_disable_desc[] =
- 	"Disable HPD storm detection, trigger a storm and check the kernel "
- 	"doesn't detect one";
+  * Test category: functionality test
+  * Run type: BAT
+  * Functionality: psr
 -- 
 2.40.0
