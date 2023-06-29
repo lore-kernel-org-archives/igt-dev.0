@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CBAA10E3DF
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC65810E3EC
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:49 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:18:08 +0530
-Message-Id: <20230629144910.3055377-20-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:06 +0530
+Message-Id: <20230629144910.3055377-18-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 19/81] tests/i915/kms_fence_pin_leak: Document
+Subject: [igt-dev] [V5 i-g-t 17/81] tests/i915/kms_fb_coherency: Document
  each subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,32 +28,30 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_fence_pin_leak.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/i915/kms_fb_coherency.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
-index 3d63acfef..0321aa3cb 100644
---- a/tests/i915/kms_fence_pin_leak.c
-+++ b/tests/i915/kms_fence_pin_leak.c
-@@ -30,6 +30,19 @@
+diff --git a/tests/i915/kms_fb_coherency.c b/tests/i915/kms_fb_coherency.c
+index edb5ba460..8a553613a 100644
+--- a/tests/i915/kms_fb_coherency.c
++++ b/tests/i915/kms_fb_coherency.c
+@@ -5,6 +5,7 @@
  
- #include "i915/gem.h"
- #include "igt.h"
-+/**
-+ * TEST: kms fence pin leak
+ /**
+  * TEST: kms_fb_coherency
 + * Category: Display
-+ * Description: Exercises full ppgtt fence pin_count leak in the kernel.
-+ *
-+ * SUBTEST:
-+ * Description: Exercises full ppgtt fence pin_count leak in the kernel.
-+ * Driver requirement: i915
-+ * Functionality: kms_core, synchronization
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ */
+  * Description: Exercise coherency of future scanout buffer objects
+  */
  
- IGT_TEST_DESCRIPTION("Exercises full ppgtt fence pin_count leak in the "
- 		     "kernel.");
+@@ -245,6 +246,9 @@ igt_main
+ 	 *		mmapped with different mmap methods and different caching modes.
+ 	 * Mega feature: General Display Features
+ 	 * Functionality: gtt
++	 * Driver requirement: any
++	 * Run type: FULL
++	 * Test category: functionality test
+ 	 */
+ 	igt_subtest_with_dynamic("memset-crc") {
+ 		if (gem_has_mappable_ggtt(data.drm_fd)) {
 -- 
 2.40.0
