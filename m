@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F9E710E3DF
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:55:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D59A910E3F0
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:02 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:18:07 +0530
-Message-Id: <20230629144910.3055377-19-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:17 +0530
+Message-Id: <20230629144910.3055377-29-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 18/81] tests/i915/kms_fbcon_fbt: Document each
+Subject: [igt-dev] [V5 i-g-t 28/81] tests/i915/kms_psr2_su: Document each
  subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -28,61 +28,46 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_fbcon_fbt.c | 42 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ tests/i915/kms_psr2_su.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
-index 71c5285f1..990d31a23 100644
---- a/tests/i915/kms_fbcon_fbt.c
-+++ b/tests/i915/kms_fbcon_fbt.c
-@@ -32,6 +32,48 @@
- #include <sys/stat.h>
- #include <fcntl.h>
- 
+diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+index 3081887ca..6da283643 100644
+--- a/tests/i915/kms_psr2_su.c
++++ b/tests/i915/kms_psr2_su.c
+@@ -30,6 +30,33 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <sys/timerfd.h>
 +/**
-+ * TEST: kms fbcon fbt
++ * TEST: kms psr2 su
 + * Category: Display
-+ * Description: Test the relationship between fbcon and the frontbuffer tracking
-+ *              infrastructure.
++ * Description: Test PSR2 selective update
 + *
-+ * SUBTEST: fbc
-+ * Description: Test the relationship between fbcon and the frontbuffer tracking
-+ *              infrastructure with fbc enabled.
++ * SUBTEST: frontbuffer-XRGB8888
++ * Description: Test that selective update works when screen changes
 + * Driver requirement: any
-+ * Functionality: fbc, fbcon
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: fbc-suspend
-+ * Description: Suspend test to validate  the relationship between fbcon and the
-+ *              frontbuffer tracking infrastructure with fbc enabled.
-+ * Driver requirement: any
-+ * Functionality: fbc, fbcon
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: psr
-+ * Description: Test the relationship between fbcon and the frontbuffer tracking
-+ *              infrastructure with psr enabled.
-+ * Driver requirement: any
-+ * Functionality: fbcon, psr
++ * Functionality: psr2
 + * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
 + *
-+ * SUBTEST: psr-suspend
-+ * Description: Suspend test to validate the relationship between fbcon and the
-+ *              frontbuffer tracking infrastructure with psr enabled.
++ * SUBTEST: page_flip-%s
++ * Description: Test the selective update with %arg[1] when screen changes
 + * Driver requirement: any
-+ * Functionality: fbcon, psr
++ * Functionality: psr2
 + * Mega feature: PSR
 + * Run type: FULL
 + * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @NV12:        NV12 format
++ * @P010:        P010 format
++ * @XRGB8888:    XRGB8888 format
 + */
  
- IGT_TEST_DESCRIPTION("Test the relationship between fbcon and the frontbuffer "
- 		     "tracking infrastructure.");
+ IGT_TEST_DESCRIPTION("Test PSR2 selective update");
+ 
 -- 
 2.40.0
