@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA4C910E3F6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEA6110E3F3
  for <igt-dev@lists.freedesktop.org>; Thu, 29 Jun 2023 14:56:51 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Jun 2023 20:18:42 +0530
-Message-Id: <20230629144910.3055377-54-bhanuprakash.modem@intel.com>
+Date: Thu, 29 Jun 2023 20:18:43 +0530
+Message-Id: <20230629144910.3055377-55-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 References: <20230629144910.3055377-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V5 i-g-t 53/81] tests/kms_hdr: Document each subtest for
- testplan
+Subject: [igt-dev] [V5 i-g-t 54/81] tests/kms_invalid_mode: Document each
+ subtest for testplan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,85 +28,55 @@ documentation.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_hdr.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ tests/kms_invalid_mode.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index ba19761e2..0442cc168 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -20,6 +20,11 @@
-  * OTHER DEALINGS IN THE SOFTWARE.
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index c26f8befe..f9d953014 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -22,10 +22,42 @@
+  *
   */
  
 +/**
-+ * TEST: kms hdr
++ * TEST: kms invalid mode
 + * Category: Display
-+ * Description: Test HDR metadata interfaces and bpc switch
++ * Description: Make sure all modesets are rejected when the requested mode is
++ *              invalid
 + */
  #include "igt.h"
- #include <fcntl.h>
- #include <termios.h>
-@@ -208,6 +213,21 @@ static bool has_max_bpc(igt_output_t *output)
- 	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
- }
+ #include <limits.h>
+ #include <stdbool.h>
  
 +/**
-+ * SUBTEST: bpc-%s
-+ * Description: Tests switching between different display output bpc modes %arg[1]
++ * SUBTEST: %s
++ * Description: Make sure all modesets are rejected when the requested mode is
++ *              invalid
 + * Driver requirement: any
-+ * Functionality: kms_hdr
++ * Functionality: kms_core
 + * Mega feature: General Display Features
 + * Run type: FULL
 + * Test category: functionality test
 + *
 + * arg[1]:
 + *
-+ * @switch:              default
-+ * @switch-dpms:         with dpms
-+ * @switch-suspend:      with suspend
++ * @bad-hsync-end:
++ * @bad-hsync-start:
++ * @bad-htotal:
++ * @bad-vsync-end:
++ * @bad-vsync-start:
++ * @bad-vtotal:
++ * @clock-too-high:
++ * @int-max-clock:
++ * @uint-max-clock:
++ * @zero-clock:
++ * @zero-hdisplay:
++ * @zero-vdisplay:
 + */
- static void test_bpc_switch(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
-@@ -561,6 +581,38 @@ static bool has_hdr(igt_output_t *output)
- 	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
- }
++
+ IGT_TEST_DESCRIPTION("Make sure all modesets are rejected when the requested mode is invalid");
  
-+/**
-+ * SUBTEST: invalid-hdr
-+ * Description: Test to ensure HDR is not enabled on non-HDR panel
-+ * Driver requirement: any
-+ * Functionality: kms_hdr
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: invalid-metadata-sizes
-+ * Description: Tests invalid HDR metadata sizes
-+ * Driver requirement: any
-+ * Functionality: kms_hdr
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: static-%s
-+ * Description: Tests %arg[1].
-+ * Driver requirement: any
-+ * Functionality: kms_hdr
-+ * Mega feature: General Display Features
-+ * Run type: FULL
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @swap:                    swapping static HDR metadata
-+ * @toggle:                  entering and exiting HDR mode
-+ * @toggle-dpms:             static toggle with dpms
-+ * @toggle-suspend:          static toggle with suspend
-+ */
- static void test_hdr(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
+ typedef struct _data data_t;
 -- 
 2.40.0
