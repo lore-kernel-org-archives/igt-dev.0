@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13BCC10E105
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 06:43:50 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Jun 2023 12:07:27 +0530
-Message-Id: <20230630063727.3091822-1-bhanuprakash.modem@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5E0010E105
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 06:45:47 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org,
+	sai.gowtham.ch@intel.com
+Date: Fri, 30 Jun 2023 12:15:07 +0530
+Message-Id: <20230630064507.14506-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] tests/intel-ci/xe: Drop unsupported tests from BAT
+Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_store: Add xe_store test to
+ check store dword functionality
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,29 +22,246 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Below tests needs the intel display version as less than 9 and
-these are not applicable for XE. Hence drop these from the BAT.
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-(legacy|atomic)
+Adding xe_store test to valide store dword funtionality, this has basic
+test and test which runs on all the available engines.
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/intel-ci/xe-fast-feedback.testlist | 2 --
- 1 file changed, 2 deletions(-)
+ tests/meson.build   |   1 +
+ tests/xe/xe_store.c | 211 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 212 insertions(+)
+ create mode 100644 tests/xe/xe_store.c
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 73724a184..c6734b9c7 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -259,8 +259,6 @@ igt@kms_chamelium_hpd@common-hpd-after-suspend
- igt@kms_chamelium_hpd@dp-hpd-fast
- igt@kms_chamelium_hpd@hdmi-hpd-fast
- igt@kms_chamelium_hpd@vga-hpd-fast
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
- igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
- igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
- igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+diff --git a/tests/meson.build b/tests/meson.build
+index 85ea7e74e..2874be775 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -267,6 +267,7 @@ xe_progs = [
+ 	'xe_pm',
+ 	'xe_prime_self_import',
+ 	'xe_query',
++	'xe_store',
+ 	'xe_vm',
+ 	'xe_waitfence',
+ 	'xe_spin_batch',
+diff --git a/tests/xe/xe_store.c b/tests/xe/xe_store.c
+new file mode 100644
+index 000000000..38cfed733
+--- /dev/null
++++ b/tests/xe/xe_store.c
+@@ -0,0 +1,211 @@
++#include "igt.h"
++#include "lib/igt_syncobj.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe_drm.h"
++
++/**
++ * TEST: Tests to verify store dword functionality.
++ * Category: Software building block
++ * Sub-category: HW
++ * Functionality: intel-bb
++ * Test category: functionality test
++ */
++
++#define MAX_INSTANCE 9
++
++struct data {
++	uint32_t batch[16];
++	uint64_t pad;
++	uint32_t data;
++	uint64_t addr;
++};
++
++static void store_dword_batch(struct data *data, uint64_t addr)
++{
++	int b;
++	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
++	uint64_t batch_addr = addr + batch_offset;
++	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
++	uint64_t sdi_addr = addr + sdi_offset;
++
++	b = 0;
++	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++	data->batch[b++] = sdi_addr;
++	data->batch[b++] = sdi_addr >> 32;
++	data->batch[b++] = 0x123456;
++	data->batch[b++] = MI_BATCH_BUFFER_END;
++	igt_assert(b <= ARRAY_SIZE(data->batch));
++
++	data->addr = batch_addr;
++}
++
++/**
++ * SUBTEST: basic-store
++ * Description: Basic test to verify store dword.
++ * Run type: FULL
++ */
++static void store(int fd)
++{
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	struct data *data;
++	struct drm_xe_engine_class_instance *hw_engine;
++	uint32_t vm;
++	uint32_t engine;
++	uint32_t syncobj;
++	size_t bo_size;
++	uint64_t addr = 0x100000;
++	uint32_t bo = 0;
++
++	syncobj = syncobj_create(fd, 0);
++	sync.handle = syncobj;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++	bo_size = sizeof(*data);
++	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
++			xe_get_default_alignment(fd));
++
++	hw_engine = xe_hw_engine(fd, 1);
++	bo = xe_bo_create(fd, hw_engine->gt_id, vm, bo_size);
++
++	xe_vm_bind_async(fd, vm, hw_engine->gt_id, bo, 0, addr, bo_size, &sync, 1);
++	data = xe_bo_map(fd, bo, bo_size);
++	store_dword_batch(data, addr);
++
++	engine = xe_engine_create(fd, vm, hw_engine, 0);
++	exec.engine_id = engine;
++	exec.address = data->addr;
++	sync.flags &= DRM_XE_SYNC_SIGNAL;
++	xe_exec(fd, &exec);
++
++	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
++	igt_assert_eq(data->data, 0x123456);
++
++	syncobj_destroy(fd, syncobj);
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++
++	xe_engine_destroy(fd, engine);
++	xe_vm_destroy(fd, vm);
++}
++
++/**
++ * SUBTEST: basic-all
++ * Description: Test to verify store dword on all available engine.
++ * Run type: BAT
++ */
++static void store_all(int fd, int gt, int class)
++{
++	struct drm_xe_sync sync[2] = {
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, }
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 2,
++		.syncs = to_user_pointer(&sync),
++	};
++
++	struct data *data;
++	uint32_t syncobjs[MAX_INSTANCE];
++	uint32_t engines[MAX_INSTANCE];
++	uint32_t vm;
++	size_t bo_size;
++	uint64_t addr = 0x100000;
++	uint32_t bo = 0;
++	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
++	struct drm_xe_engine_class_instance *hwe;
++	int i, num_placements = 0;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++	bo_size = sizeof(*data);
++	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
++			xe_get_default_alignment(fd));
++
++	bo = xe_bo_create(fd, 0, vm, bo_size);
++	data = xe_bo_map(fd, bo, bo_size);
++
++	xe_for_each_hw_engine(fd, hwe) {
++		if (hwe->engine_class != class || hwe->gt_id != gt)
++			continue;
++		eci[num_placements++] = *hwe;
++	}
++	if (num_placements < 2)
++		return;
++
++	store_dword_batch(data, addr);
++
++	for (i = 0; i < num_placements; i++) {
++		struct drm_xe_engine_create create = {
++			.vm_id = vm,
++			.width = 1,
++			.num_placements = num_placements,
++			.instances = to_user_pointer(eci),
++		};
++
++		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE,
++					&create), 0);
++		engines[i] = create.engine_id;
++		syncobjs[i] = syncobj_create(fd, 0);
++	};
++
++	sync[0].handle = syncobj_create(fd, 0);
++	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
++
++	for (i = 0; i < num_placements; i++) {
++
++		store_dword_batch(data, addr);
++		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
++		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
++		sync[1].handle = syncobjs[i];
++
++		exec.engine_id = engines[i];
++		exec.address = data->addr;
++		xe_exec(fd, &exec);
++
++		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, NULL));
++		igt_assert_eq(data->data, 0x123456);
++	}
++
++	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
++	syncobj_destroy(fd, sync[0].handle);
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++
++	for (i = 0; i < num_placements; i++) {
++		syncobj_destroy(fd, syncobjs[i]);
++		xe_engine_destroy(fd, engines[i]);
++	}
++	xe_vm_destroy(fd, vm);
++}
++
++igt_main
++{
++	int fd, class, gt;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		xe_device_get(fd);
++	}
++
++	igt_subtest("basic-store")
++		store(fd);
++
++	igt_subtest("basic-all") {
++		xe_for_each_gt(fd, gt)
++			xe_for_each_hw_engine_class(class)
++				store_all(fd, gt, class);
++	}
++
++	igt_fixture {
++		xe_device_put(fd);
++		close(fd);
++	}
++}
 -- 
-2.40.0
+2.39.1
