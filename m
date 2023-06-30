@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 545DF10E428
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 11:00:27 +0000 (UTC)
-Message-ID: <f82bf4ea-abdd-4584-d8a6-146df1bb2220@intel.com>
-Date: Fri, 30 Jun 2023 16:30:06 +0530
-Content-Language: en-US
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-References: <20230622093718.1689978-1-badal.nilawar@intel.com>
- <87352dddnn.wl-ashutosh.dixit@intel.com>
-From: "Nilawar, Badal" <badal.nilawar@intel.com>
-In-Reply-To: <87352dddnn.wl-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BAC810E44D
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 11:04:28 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org,
+	sai.gowtham.ch@intel.com
+Date: Fri, 30 Jun 2023 16:34:26 +0530
+Message-Id: <20230630110426.23829-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: When GT is in RC6 donot
- assert if act freq is 0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/xe/xe_exec_store: Add xe_exec_store
+ test to check store dword functionality
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,62 +19,257 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
+Adding xe_store test to validate store dword funtionality, this has basic
+test and test which runs on all the available engines.
 
-On 27-06-2023 04:39, Dixit, Ashutosh wrote:
-> On Thu, 22 Jun 2023 02:37:18 -0700, Badal Nilawar wrote:
->>
->> @@ -223,13 +244,15 @@ static void test_freq_fixed(int sysfs, int gt_id)
->> 	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
->> 	usleep(ACT_FREQ_LATENCY_US);
->> 	igt_assert(get_freq(sysfs, gt_id, "cur") == rpn);
->> -	igt_assert(get_freq(sysfs, gt_id, "act") == rpn);
->> +	if (!in_rc6(sysfs, gt_id))
->> +		igt_assert(get_freq(sysfs, gt_id, "act") == rpn);
->>
->> 	igt_assert(set_freq(sysfs, gt_id, "min", rpe) > 0);
->> 	igt_assert(set_freq(sysfs, gt_id, "max", rpe) > 0);
->> 	usleep(ACT_FREQ_LATENCY_US);
->> 	igt_assert(get_freq(sysfs, gt_id, "cur") == rpe);
->> -	igt_assert(get_freq(sysfs, gt_id, "act") == rpe);
->> +	if (!in_rc6(sysfs, gt_id))
->> +		igt_assert(get_freq(sysfs, gt_id, "act") == rpe);
->>
->> 	igt_assert(set_freq(sysfs, gt_id, "min", rp0) > 0);
->> 	igt_assert(set_freq(sysfs, gt_id, "max", rp0) > 0);
->> @@ -269,7 +292,8 @@ static void test_freq_range(int sysfs, int gt_id)
->> 	cur = get_freq(sysfs, gt_id, "cur");
->> 	igt_assert(rpn <= cur && cur <= rpe);
->> 	act = get_freq(sysfs, gt_id, "act");
->> -	igt_assert(rpn <= act && act <= rpe);
->> +	if (!in_rc6(sysfs, gt_id))
->> +		igt_assert(rpn <= act && act <= rpe);
-> 
-> Basically slightly racy because in_rc6() and get_freq() are not done
-> atomically, but maybe ok here if not causing false positives?
-Not sure how to handle race here. Not observed any false positives.
-> 
-> Further, do we need to add the following else's here:
-> 
-> 	if (!in_rc6(sysfs, gt_id))
-> 		igt_assert(rpn <= act && act <= rpe);
-> 	else
-> 		igt_assert(act == 0);
-Instead of this to accommodate idle and exec test should we pass flag 
-(is_idle) here. So this will be.
-if (is_idle)
-	igt_assert(act == 0);
-else
-	igt_assert(rpn <= act && act <= rpe);
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+---
+ tests/meson.build        |   1 +
+ tests/xe/xe_exec_store.c | 218 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 219 insertions(+)
+ create mode 100644 tests/xe/xe_exec_store.c
 
-Regards,
-Badal
-> 
-> Or is that likely to blow up
-> 
-> Ashutosh
+diff --git a/tests/meson.build b/tests/meson.build
+index 85ea7e74e..ef89c6db7 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -254,6 +254,7 @@ xe_progs = [
+ 	'xe_exec_compute_mode',
+ 	'xe_exec_fault_mode',
+ 	'xe_exec_reset',
++	'xe_exec_store',
+ 	'xe_exec_threads',
+ 	'xe_gpgpu_fill',
+ 	'xe_guc_pc',
+diff --git a/tests/xe/xe_exec_store.c b/tests/xe/xe_exec_store.c
+new file mode 100644
+index 000000000..9640b1567
+--- /dev/null
++++ b/tests/xe/xe_exec_store.c
+@@ -0,0 +1,218 @@
++/* SPDX-License-Identifier: MIT */
++/*
++* Copyright © 2023 Intel Corporation
++*
++* Authors:
++*    Sai Gowtham Ch <sai.gowtham.ch@intel.com>
++*/
++
++#include "igt.h"
++#include "lib/igt_syncobj.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe_drm.h"
++
++/**
++ * TEST: Tests to verify store dword functionality.
++ * Category: Software building block
++ * Sub-category: HW
++ * Functionality: intel-bb
++ * Test category: functionality test
++ */
++
++#define MAX_INSTANCE 9
++
++struct data {
++	uint32_t batch[16];
++	uint64_t pad;
++	uint32_t data;
++	uint64_t addr;
++};
++
++static void store_dword_batch(struct data *data, uint64_t addr, int value)
++{
++	int b;
++	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
++	uint64_t batch_addr = addr + batch_offset;
++	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
++	uint64_t sdi_addr = addr + sdi_offset;
++
++	b = 0;
++	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++	data->batch[b++] = sdi_addr;
++	data->batch[b++] = sdi_addr >> 32;
++	data->batch[b++] = value;
++	data->batch[b++] = MI_BATCH_BUFFER_END;
++	igt_assert(b <= ARRAY_SIZE(data->batch));
++
++	data->addr = batch_addr;
++}
++
++/**
++ * SUBTEST: basic-store
++ * Description: Basic test to verify store dword.
++ * Run type: BAT
++ */
++static void store(int fd)
++{
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	struct data *data;
++	struct drm_xe_engine_class_instance *hw_engine;
++	uint32_t vm;
++	uint32_t engine;
++	uint32_t syncobj;
++	size_t bo_size;
++	int value = 0x123456;
++	uint64_t addr = 0x100000;
++	uint32_t bo = 0;
++
++	syncobj = syncobj_create(fd, 0);
++	sync.handle = syncobj;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++	bo_size = sizeof(*data);
++	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
++			xe_get_default_alignment(fd));
++
++	hw_engine = xe_hw_engine(fd, 1);
++	bo = xe_bo_create(fd, hw_engine->gt_id, vm, bo_size);
++
++	xe_vm_bind_async(fd, vm, hw_engine->gt_id, bo, 0, addr, bo_size, &sync, 1);
++	data = xe_bo_map(fd, bo, bo_size);
++	store_dword_batch(data, addr, value);
++
++	engine = xe_engine_create(fd, vm, hw_engine, 0);
++	exec.engine_id = engine;
++	exec.address = data->addr;
++	sync.flags &= DRM_XE_SYNC_SIGNAL;
++	xe_exec(fd, &exec);
++
++	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
++	igt_assert_eq(data->data, value);
++
++	syncobj_destroy(fd, syncobj);
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++
++	xe_engine_destroy(fd, engine);
++	xe_vm_destroy(fd, vm);
++}
++
++/**
++ * SUBTEST: basic-all
++ * Description: Test to verify store dword on all available engines.
++ * Run type: BAT
++ */
++static void store_all(int fd, int gt, int class)
++{
++	struct drm_xe_sync sync[2] = {
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
++		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, }
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 2,
++		.syncs = to_user_pointer(&sync),
++	};
++
++	struct data *data;
++	uint32_t syncobjs[MAX_INSTANCE];
++	uint32_t engines[MAX_INSTANCE];
++	uint32_t vm;
++	size_t bo_size;
++	uint64_t addr = 0x100000;
++	uint32_t bo = 0;
++	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
++	struct drm_xe_engine_class_instance *hwe;
++	int i, num_placements = 0;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++	bo_size = sizeof(*data);
++	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
++			xe_get_default_alignment(fd));
++
++	bo = xe_bo_create(fd, 0, vm, bo_size);
++	data = xe_bo_map(fd, bo, bo_size);
++
++	xe_for_each_hw_engine(fd, hwe) {
++		if (hwe->engine_class != class || hwe->gt_id != gt)
++			continue;
++		eci[num_placements++] = *hwe;
++	}
++
++	igt_require(num_placements > 1);
++
++	for (i = 0; i < num_placements; i++) {
++		struct drm_xe_engine_create create = {
++			.vm_id = vm,
++			.width = 1,
++			.num_placements = num_placements,
++			.instances = to_user_pointer(eci),
++		};
++
++		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE,
++					&create), 0);
++		engines[i] = create.engine_id;
++		syncobjs[i] = syncobj_create(fd, 0);
++	};
++
++	sync[0].handle = syncobj_create(fd, 0);
++	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
++
++	for (i = 0; i < num_placements; i++) {
++
++		store_dword_batch(data, addr, i);
++		sync[0].flags &= ~DRM_XE_SYNC_SIGNAL;
++		sync[1].flags |= DRM_XE_SYNC_SIGNAL;
++		sync[1].handle = syncobjs[i];
++
++		exec.engine_id = engines[i];
++		exec.address = data->addr;
++		xe_exec(fd, &exec);
++
++		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, NULL));
++		igt_assert_eq(data->data, i);
++	}
++
++	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
++	syncobj_destroy(fd, sync[0].handle);
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++
++	for (i = 0; i < num_placements; i++) {
++		syncobj_destroy(fd, syncobjs[i]);
++		xe_engine_destroy(fd, engines[i]);
++	}
++	xe_vm_destroy(fd, vm);
++}
++
++igt_main
++{
++	int fd, class, gt;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		xe_device_get(fd);
++	}
++
++	igt_subtest("basic-store")
++		store(fd);
++
++	igt_subtest("basic-all") {
++		xe_for_each_gt(fd, gt)
++			xe_for_each_hw_engine_class(class)
++				store_all(fd, gt, class);
++	}
++
++	igt_fixture {
++		xe_device_put(fd);
++		close(fd);
++	}
++}
+-- 
+2.39.1
