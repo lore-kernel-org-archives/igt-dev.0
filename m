@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42A7A10E49F
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 15:42:15 +0000 (UTC)
-Date: Fri, 30 Jun 2023 17:42:11 +0200
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7294810E17F
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 15:43:57 +0000 (UTC)
+Date: Fri, 30 Jun 2023 17:43:49 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230630154211.mxmaky7bsbtmtbap@kamilkon-desk1>
-References: <cover.1687862551.git.karolina.stolarek@intel.com>
- <de1528cb884ef2da5ecff84101f9dfc457901b8f.1687862551.git.karolina.stolarek@intel.com>
+Message-ID: <20230630154349.s2uihetlo7agaw3p@kamilkon-desk1>
+References: <20230628081050.2002028-1-karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <de1528cb884ef2da5ecff84101f9dfc457901b8f.1687862551.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/3] tests/i915/i915_pm_rpm: Check
- command property instead of gen
+In-Reply-To: <20230628081050.2002028-1-karolina.stolarek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_batchbuffer: Remove unused
+ argument in exec_blit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,64 +25,53 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Karolina,
-On 2023-06-27 at 12:58:20 +0200, Karolina Stolarek wrote:
-> Update submit_blt_cmd() function to check if a platform uses a long
-> version of XY_COLOR_BLT when building the command. Remove checks
-> related to the gen alone.
+On 2023-06-28 at 10:10:50 +0200, Karolina Stolarek wrote:
+> We don't use information about platform's gen anymore, so
+> stop passing it in.
 > 
 > Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+
+Even if it will be needed we can get it from fd, so
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tests/i915/i915_pm_rpm.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+>  lib/intel_batchbuffer.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-> index dee44d71b..4ce83f27f 100644
-> --- a/tests/i915/i915_pm_rpm.c
-> +++ b/tests/i915/i915_pm_rpm.c
-> @@ -1492,20 +1492,24 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
->  	uint32_t batch_handle;
->  	int batch_size = 8 * sizeof(uint32_t);
->  	uint32_t batch_buf[batch_size];
-> +	bool cmd_extended;
->  	struct drm_i915_gem_execbuffer2 execbuf = {};
->  	struct drm_i915_gem_exec_object2 objs[2] = {{}, {}};
->  	struct drm_i915_gem_relocation_entry relocs[1] = {{}};
->  	struct drm_i915_gem_wait gem_wait;
->  	uint64_t ahnd = get_reloc_ahnd(drm_fd, 0), dst_offset;
-> +	const struct intel_cmds_info *cmds_info = intel_get_cmds_info(ms_data.devid);
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 186f65aff..0e92c6f70 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -214,8 +214,8 @@ static uint32_t find_engine(const intel_ctx_cfg_t *cfg, unsigned int class)
 >  
->  	if (ahnd)
->  		dst_offset = get_offset(ahnd, dst_handle, dst_size, 0);
->  	else
->  		dst_offset = *presumed_dst_offset;
+>  static void exec_blit(int fd,
+>  		      struct drm_i915_gem_exec_object2 *objs,
+> -		      uint32_t count, unsigned int gen,
+> -		      uint32_t ctx, const intel_ctx_cfg_t *cfg)
+> +		      uint32_t count, uint32_t ctx,
+> +		      const intel_ctx_cfg_t *cfg)
+>  {
+>  	struct drm_i915_gem_execbuffer2 exec;
+>  	uint32_t devid = intel_get_drm_devid(fd);
+> @@ -514,7 +514,7 @@ void igt_blitter_src_copy(int fd,
+>  		objs[2].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+>  	}
 >  
-> +	cmd_extended = blt_cmd_has_property(cmds_info, XY_COLOR_BLT,
-> +					    BLT_CMD_EXTENDED);
->  	i = 0;
+> -	exec_blit(fd, objs, 3, gen, ctx, cfg);
+> +	exec_blit(fd, objs, 3, ctx, cfg);
 >  
-> -	if (intel_gen(ms_data.devid) >= 8)
-> +	if (cmd_extended)
->  		batch_buf[i++] = XY_COLOR_BLT_CMD_NOLEN |
->  				 XY_COLOR_BLT_WRITE_ALPHA |
->  				 XY_COLOR_BLT_WRITE_RGB | 0x5;
-> @@ -1518,12 +1522,12 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
->  	batch_buf[i++] = ((y + height) << 16) | (x + width);
->  	reloc_pos = i;
->  	batch_buf[i++] = dst_offset;
-> -	if (intel_gen(ms_data.devid) >= 8)
-> +	if (cmd_extended)
->  		batch_buf[i++] = dst_offset >> 32;
->  	batch_buf[i++] = color;
+>  	gem_close(fd, batch_handle);
+>  }
+> @@ -636,7 +636,7 @@ void igt_blitter_fast_copy__raw(int fd,
+>  		objs[2].flags |= EXEC_OBJECT_PINNED;
+>  	}
 >  
->  	batch_buf[i++] = MI_BATCH_BUFFER_END;
-> -	if (intel_gen(ms_data.devid) < 8)
-> +	if (!cmd_extended)
->  		batch_buf[i++] = MI_NOOP;
+> -	exec_blit(fd, objs, 3, intel_gen(intel_get_drm_devid(fd)), ctx, cfg);
+> +	exec_blit(fd, objs, 3, ctx, cfg);
 >  
->  	igt_assert(i * sizeof(uint32_t) == batch_size);
+>  	gem_close(fd, batch_handle);
+>  }
 > -- 
 > 2.25.1
 > 
