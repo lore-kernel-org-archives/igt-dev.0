@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE37310E4B5
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 16:31:09 +0000 (UTC)
-Date: Fri, 30 Jun 2023 18:31:04 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230630163104.yagjvzmdcgsyy3hj@kamilkon-desk1>
-References: <20230630111821.126265-1-chiahsuan.chung@amd.com>
- <20230630111821.126265-9-chiahsuan.chung@amd.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED5A710E4CF
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 17:30:49 +0000 (UTC)
+From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Date: Fri, 30 Jun 2023 17:30:45 +0000
+Message-ID: <CH0PR11MB5444C5F5CDE47AC5E1F96F9CE52AA@CH0PR11MB5444.namprd11.prod.outlook.com>
+References: <20230630172518.lq6o5l365kh4oxqg@kamilkon-desk1>
+In-Reply-To: <20230630172518.lq6o5l365kh4oxqg@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230630111821.126265-9-chiahsuan.chung@amd.com>
-Subject: Re: [igt-dev] [i-g-t,
- v2 8/8] tests/amdgpu/amd_freesync_video_mode: Add
- amd_freesync_video_mode to meson.build
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_madvise: fix dontneed-*-mmap
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,45 +21,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Christian Koenig <christian.koenig@amd.com>,
- Tom Chung <chiahsuan.chung@amd.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Tom,
-
-please subscribe to igt-dev mailing list.
-
-On 2023-06-30 at 19:18:21 +0800, Tom Chung wrote:
-> Add amd_freesync_video_mode to meson.build file.
-> 
-
-Add here peaple on Cc: which can help you in review, for example:
-
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-
-> Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-> ---
->  tests/amdgpu/meson.build | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index ce081c35a..2226e5079 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -24,6 +24,7 @@ if libdrm_amdgpu.found()
->  			  'amd_psr',
->  			  'amd_plane',
->  			  'amd_ilr',
-> +			  'amd_freesync_video_mode',
--------------------------- ^^^^^^^^^^^^^^^^^^^^^^^
-Put this in alphabetical order.
-
->  			]
->  	amdgpu_deps += libdrm_amdgpu
->  endif
-> -- 
-> 2.25.1
-> 
+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IEthbWlsIEtvbmllY3pueSA8a2FtaWwu
+a29uaWVjem55QGxpbnV4LmludGVsLmNvbT4gDQpTZW50OiBGcmlkYXksIEp1bmUgMzAsIDIwMjMg
+MTA6MjUgQU0NClRvOiBDYXZpdHQsIEpvbmF0aGFuIDxqb25hdGhhbi5jYXZpdHRAaW50ZWwuY29t
+Pg0KU3ViamVjdDogRnc6IFtQQVRDSCBpLWctdF0gaTkxNS9nZW1fbWFkdmlzZTogZml4IGRvbnRu
+ZWVkLSotbW1hcCBzdWJ0ZXN0cw0KPg0KPkhpIEpvbmF0aGFuLA0KPi0tLS0tIEZvcndhcmRlZCBt
+ZXNzYWdlIGZyb20gS2FtaWwgS29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwu
+Y29tPiAtLS0tLQ0KPg0KPkRhdGU6IFdlZCwgMjggSnVuIDIwMjMgMTA6NDU6MjggKzAyMDANCj5G
+cm9tOiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQo+
+VG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+Q2M6IEthbWlsIEtvbmllY3pueSA8
+a2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbT4NCj5TdWJqZWN0OiBbUEFUQ0ggaS1nLXRd
+IGk5MTUvZ2VtX21hZHZpc2U6IGZpeCBkb250bmVlZC0qLW1tYXAgc3VidGVzdHMNCj5NZXNzYWdl
+LUlkOiA8MjAyMzA2MjgwODQ1MjguMTg3NzktMS1rYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwu
+Y29tPg0KPlgtTWFpbGVyOiBnaXQtc2VuZC1lbWFpbCAyLjM5LjINCj4NCj5JbnRyb2R1Y3Rpb24g
+b2YgZHJtX2Nsb3NlX2RyaXZlcigpIGFuZCBmb2xsb3dpbmcgY2hhbmdlcyB3aGljaA0KPnVzZXMg
+aXQgY2F1Z2h0IGEgYnVnIGluIHR3byBkb250bmVlZCBzdWJ0ZXN0czoNCj4NCj5TdGFydGluZyBz
+dWJ0ZXN0OiBkb250bmVlZC1hZnRlci1tbWFwDQo+KGdlbV9tYWR2aXNlOjE0NjQpIGRybXRlc3Qt
+V0FSTklORzogRG9uJ3QgYXR0ZW1wdCB0byBjbG9zZSBzdGFuZGFyZC9pbnZhbGlkIGZpbGUgZGVz
+Y3JpcHRvcjogNQ0KPg0KPlN0YXJ0aW5nIHN1YnRlc3Q6IGRvbnRuZWVkLWJlZm9yZS1tbWFwDQo+
+KGdlbV9tYWR2aXNlOjE3MDgpIGRybXRlc3QtV0FSTklORzogRG9uJ3QgYXR0ZW1wdCB0byBjbG9z
+ZSBzdGFuZGFyZC9pbnZhbGlkIGZpbGUgZGVzY3JpcHRvcjogNQ0KPg0KPkl0IHR1cm5zIG91dCB0
+aGF0IGNsb3NpbmcgZmQgd2FzIGRvbmUgcmVnYXJkbGVzcyBvZiBtbWFwDQo+ZmFpbHVyZSBvciBz
+dWNjZXNzLCB0aGF0IGxlYWRzIHRvIHN0b3BwaW5nIHRlc3RpbmcgZHVlIHRvIGNsb3NlZA0KPmZk
+IGFuZCBsYXRlciBhdCB0ZXN0IGV4aXQgb3IgbG9vcCBpdGVyYXRpb24gdGhlcmUgaXMgYXR0ZW1w
+dCB0bw0KPmNsb3NlIGFscmVhZHkgY2xvc2VkIGZkLg0KPg0KPkZpeGVkIHRoYXQgYnkgZG9pbmcg
+Y2xvc2UganVzdCBiZWZvcmUgYWN0dWFsIHRlc3RpbmcuIEFsc28gd2hpbGUNCj5hdCB0aGlzLCBm
+aXggc3R5bGUgYW5kIHJlbW92ZSBvbmUgdW5uZWNlc3NlcnkgZW1wdHkgbGluZS4NCj4NCj5TaWdu
+ZWQtb2ZmLWJ5OiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5j
+b20+DQoNClJldmlld2VkLWJ5OiBKb25hdGhhbiBDYXZpdHQgPGpvbmF0aGFuLmNhdml0dEBpbnRl
+bC5jb20+DQoNCkknbSBhbHNvIGZvcndhcmRpbmcgdGhpcyB0byBpZ3QtZGV2IGJlY2F1c2UgdGhl
+eSBuZWVkIHRvIGtub3cgSSdtIFJCaW5nIHRoaXMgZm9yIGJvb2trZWVwaW5nIHJlYXNvbnMuICBU
+aGF0J3Mgd2h5IEkgY291bGRuJ3QganVzdCBnaXZlIG15IFJCIGluIFRlYW1zLg0KLUpvbmF0aGFu
+IENhdml0dA0KDQo+LS0tDQo+IHRlc3RzL2k5MTUvZ2VtX21hZHZpc2UuYyB8IDUgKystLS0NCj4g
+MSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkNCj4NCj5kaWZm
+IC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fbWFkdmlzZS5jIGIvdGVzdHMvaTkxNS9nZW1fbWFkdmlz
+ZS5jDQo+aW5kZXggNzY1ODA5ZTdmLi4wNmIzZGRmMzIgMTAwNjQ0DQo+LS0tIGEvdGVzdHMvaTkx
+NS9nZW1fbWFkdmlzZS5jDQo+KysrIGIvdGVzdHMvaTkxNS9nZW1fbWFkdmlzZS5jDQo+QEAgLTEw
+OSwxMSArMTA5LDEwIEBAIGRvbnRuZWVkX2JlZm9yZV9tbWFwKHZvaWQpDQo+IAkJcHRyID0gX19n
+ZW1fbW1hcF9vZmZzZXQoZmQsIGhhbmRsZSwgMCwgT0JKRUNUX1NJWkUsDQo+IAkJCQkJUFJPVF9S
+RUFEIHwgUFJPVF9XUklURSwNCj4gCQkJCQl0LT50eXBlKTsNCj4tDQo+LQkJZHJtX2Nsb3NlX2Ry
+aXZlcihmZCk7DQo+IAkJaWYgKCFwdHIpDQo+IAkJCWNvbnRpbnVlOw0KPiANCj4rCQlkcm1fY2xv
+c2VfZHJpdmVyKGZkKTsNCj4gCQlvbGRfc2lnc2VndiA9IHNpZ25hbChTSUdTRUdWLCBzaWd0cmFw
+KTsNCj4gCQlvbGRfc2lnYnVzID0gc2lnbmFsKFNJR0JVUywgc2lndHJhcCk7DQo+IAkJc3dpdGNo
+IChzaWdzZXRqbXAoam1wLCBTSUdCVVMgfCBTSUdTRUdWKSkgew0KPkBAIC0xNTYsMTAgKzE1NSwx
+MCBAQCBkb250bmVlZF9hZnRlcl9tbWFwKHZvaWQpDQo+IAkJCQkJdC0+dHlwZSk7DQo+IA0KPiAJ
+CWdlbV9tYWR2aXNlKGZkLCBoYW5kbGUsIEk5MTVfTUFEVl9ET05UTkVFRCk7DQo+LQkJZHJtX2Ns
+b3NlX2RyaXZlcihmZCk7DQo+IAkJaWYgKCFwdHIpDQo+IAkJCWNvbnRpbnVlOw0KPiANCj4rCQlk
+cm1fY2xvc2VfZHJpdmVyKGZkKTsNCj4gCQlvbGRfc2lnc2VndiA9IHNpZ25hbChTSUdTRUdWLCBz
+aWd0cmFwKTsNCj4gCQlvbGRfc2lnYnVzID0gc2lnbmFsKFNJR0JVUywgc2lndHJhcCk7DQo+IAkJ
+c3dpdGNoIChzaWdzZXRqbXAoam1wLCBTSUdCVVMgfCBTSUdTRUdWKSkgew0KPi0tIA0KPjIuMzku
+Mg0KPg0KPg0KPi0tLS0tIEVuZCBmb3J3YXJkZWQgbWVzc2FnZSAtLS0tLQ0KPg0K
