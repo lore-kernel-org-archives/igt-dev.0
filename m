@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2066.outbound.protection.outlook.com [40.107.237.66])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6D1710E450
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 11:21:21 +0000 (UTC)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2052.outbound.protection.outlook.com [40.107.94.52])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1447E10E459
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 11:20:56 +0000 (UTC)
 From: Tom Chung <chiahsuan.chung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 30 Jun 2023 19:18:20 +0800
-Message-ID: <20230630111821.126265-8-chiahsuan.chung@amd.com>
+Date: Fri, 30 Jun 2023 19:18:17 +0800
+Message-ID: <20230630111821.126265-5-chiahsuan.chung@amd.com>
 In-Reply-To: <20230630111821.126265-1-chiahsuan.chung@amd.com>
 References: <20230630111821.126265-1-chiahsuan.chung@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 Subject: [igt-dev] [i-g-t,
- v2 7/8] tests/amdgpu/amd_freesync_video_mode: Fix wrong resolution
- setting for some panel
+ v2 4/8] tests/amdgpu/amd_freesync_video_mode: Add some code from
+ kms_vrr to resolve tearing issue
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,64 +28,72 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 [Why]
-Some eDP panel VRR range only has 48-60Hz and it will cause some of the test failed.
+There is a tearing video issue during the stage-2 animation test.
 
 [How]
-Use the VRR range fps to select the mode for test.
+1. Refer to the kms_vrr IGT code, it needs some delay before the the next flip and
+   add some warmup time before do the flip and measure to make the test more accurate.
+2. Change the target refresh rate percentage to 75% to align with the kms_vrr test.
 
 Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
 ---
- tests/amdgpu/amd_freesync_video_mode.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ tests/amdgpu/amd_freesync_video_mode.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
 diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
-index bd3642121..77ddd85cd 100644
+index cc5b92a81..ebbb0b4e2 100644
 --- a/tests/amdgpu/amd_freesync_video_mode.c
 +++ b/tests/amdgpu/amd_freesync_video_mode.c
-@@ -421,11 +421,18 @@ static drmModeModeInfo *select_mode(
- 	case FSV_NON_FREESYNC_VIDEO_MODE:
- 		for (i = 0; i < data->count_modes; i++) {
- 			mode = &data->modes[i];
--			if (mode->hdisplay == data->hdisplay &&
--				mode->vdisplay == data->vdisplay &&
--				mode->vrefresh == refresh_rate &&
--				!is_freesync_video_mode(data, mode))
--				break;
-+			if (refresh_rate > 0) {
-+				if (mode->hdisplay == data->hdisplay &&
-+					mode->vdisplay == data->vdisplay &&
-+					mode->vrefresh == refresh_rate &&
-+					!is_freesync_video_mode(data, mode))
-+					break;
-+			} else {
-+				if (mode->hdisplay == data->hdisplay &&
-+					mode->vdisplay == data->vdisplay &&
-+					!is_freesync_video_mode(data, mode))
-+					break;
-+			}
- 		}
- 		if (i >= data->count_modes)
- 			mode = NULL;
-@@ -780,16 +787,16 @@ mode_transition(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t sce
- 		mode_playback  = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
- 		break;
- 	case SCENE_LOWER_FSV_MODE_TO_HIGHER_FSV_MODE:
--		mode_start = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
--		mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 120);
-+		mode_start = select_mode(data, FSV_FREESYNC_VIDEO_MODE, data->vrr_range.min);
-+		mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, data->vrr_range.max);
- 		break;
- 	case SCENE_NON_FSV_MODE_TO_FSV_MODE:
--		mode_start = select_mode(data, FSV_NON_FREESYNC_VIDEO_MODE, 60);
-+		mode_start = select_mode(data, FSV_NON_FREESYNC_VIDEO_MODE, 0);
- 		mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
- 		break;
- 	case SCENE_BASE_MODE_TO_CUSTUM_MODE:
- 		mode_start = select_mode(data, FSV_BASE_MODE, 0);
--		ret = prepare_custom_mode(data, &mode_custom, 72);
-+		ret = prepare_custom_mode(data, &mode_custom, data->vrr_range.min);
- 		igt_assert_eq(ret, 0);
- 		mode_playback = &mode_custom;
- 		break;
+@@ -26,7 +26,7 @@
+ #include <signal.h>
+ 
+ #define NSECS_PER_SEC		(1000000000ull)
+-#define TEST_DURATION_NS	(10 * NSECS_PER_SEC)
++#define TEST_DURATION_NS	(8 * NSECS_PER_SEC)
+ 
+ #define BYTES_PER_PIXEL         4
+ #define MK_COLOR(r, g, b)	((0 << 24) | (r << 16) | (g << 8) | b)
+@@ -638,7 +638,7 @@ flip_and_measure(
+ 	igt_info("interval_ns=%lu\n", interval_ns);
+ 
+ 	for (;;) {
+-		uint64_t event_ns;
++		uint64_t event_ns, wait_ns;
+ 		int64_t diff_ns;
+ 
+ 		data->front = !data->front;
+@@ -673,6 +673,19 @@ flip_and_measure(
+ 
+ 		if (event_ns - start_ns > duration_ns)
+ 			break;
++
++		/*
++		 * Burn CPU until next timestamp, sleeping isn't accurate enough.
++		 * The target timestamp is based on the delta b/w event timestamps
++		 * and whatever the time left to reach the expected refresh rate.
++		 */
++		diff_ns = event_ns - target_ns;
++		wait_ns = ((diff_ns + interval_ns - 1) / interval_ns) * interval_ns;
++		wait_ns -= diff_ns;
++		target_ns = event_ns + wait_ns;
++
++		while (get_time_ns() < target_ns - 10)
++			;
+ 	}
+ 
+ 	igt_info("Completed %u flips, %u were in threshold for (%llu Hz) %"PRIu64"ns.\n",
+@@ -808,9 +821,10 @@ mode_transition(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t sce
+ 	igt_info("stage-2: simple animation as video playback\n");
+ 	prepare_test(data, output, pipe, mode_playback);
+ 	interval = nsec_per_frame(mode_playback->vrefresh);
++	/* Do a short run with VRR before measure to make sure we measure in a stable state */
++	result = flip_and_measure(data, output, pipe, interval, 2 * NSECS_PER_SEC, ANIM_TYPE_CIRCLE_WAVE);
+ 	result = flip_and_measure(data, output, pipe, interval, TEST_DURATION_NS, ANIM_TYPE_CIRCLE_WAVE);
+-	igt_assert_f(result > 90, "Target refresh rate not meet(result=%d%%\n", result);
+-
++	igt_assert_f(result > 75, "Target refresh rate not meet 75%% (result=%d%%\n", result);
+ 	finish_test(data, pipe, output);
+ }
+ 
 -- 
 2.25.1
