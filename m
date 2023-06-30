@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============3459265572965244979=="
+ boundary="===============3856431263320586637=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Fri, 30 Jun 2023 07:38:46 -0000
-Message-ID: <168811072697.24873.4733731239417974118@emeril.freedesktop.org>
+Date: Fri, 30 Jun 2023 07:42:01 -0000
+Message-ID: <168811092152.24870.3535416159738839258@emeril.freedesktop.org>
 References: <20230629150324.3079878-1-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230629150324.3079878-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgRml4IEJp?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgRml4IEJp?=
  =?utf-8?q?gjoiner_checks_=28rev8=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,7 +23,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3459265572965244979==
+--===============3856431263320586637==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -32,7 +32,7 @@ Content-Transfer-Encoding: 7bit
 
 Series: Fix Bigjoiner checks (rev8)
 URL   : https://patchwork.freedesktop.org/series/115712/
-State : failure
+State : success
 
 == Summary ==
 
@@ -42,10 +42,10 @@ CI Bug Log - changes from CI_DRM_13336 -> IGTPW_9305
 Summary
 -------
 
-  **FAILURE**
+  **WARNING**
 
-  Serious unknown changes coming with IGTPW_9305 absolutely need to be
-  verified manually.
+  Minor unknown changes coming with IGTPW_9305 need to be verified
+  manually.
   
   If you think the reported changes have nothing to do with the changes
   introduced in IGTPW_9305, please notify your bug team to allow them
@@ -66,20 +66,12 @@ Possible new issues
 
 ### IGT changes ###
 
-#### Possible regressions ####
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - bat-rpls-1:         [PASS][1] -> [WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  
 #### Warnings ####
 
   * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-atsm-1:         [SKIP][3] ([i915#6166]) -> [FAIL][4] +3 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-atsm-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-atsm-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+    - bat-atsm-1:         [SKIP][1] ([i915#6166]) -> [FAIL][2] +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-atsm-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-atsm-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
 
   
 #### Suppressed ####
@@ -88,12 +80,12 @@ Possible new issues
   They do not affect the overall result.
 
   * {igt@xe_create@create-massive-size}:
-    - {bat-dg1-8}:        NOTRUN -> [FAIL][5] +2 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-dg1-8/igt@xe_create@create-massive-size.html
+    - {bat-dg1-8}:        NOTRUN -> [FAIL][3] +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-dg1-8/igt@xe_create@create-massive-size.html
 
   * igt@xe_guc_pc@rc6_on_idle:
-    - {bat-dg1-8}:        NOTRUN -> [INCOMPLETE][6] +1 similar issue
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-dg1-8/igt@xe_guc_pc@rc6_on_idle.html
+    - {bat-dg1-8}:        NOTRUN -> [INCOMPLETE][4] +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-dg1-8/igt@xe_guc_pc@rc6_on_idle.html
 
   
 Known issues
@@ -106,21 +98,26 @@ Known issues
 #### Issues hit ####
 
   * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][7] ([i915#4613]) +3 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-mtlp-8/igt@gem_lmem_swapping@parallel-random-engines.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][5] ([i915#4613]) +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-mtlp-8/igt@gem_lmem_swapping@parallel-random-engines.html
 
   * igt@i915_pm_rps@basic-api:
-    - bat-mtlp-8:         NOTRUN -> [SKIP][8] ([i915#6621])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-mtlp-8/igt@i915_pm_rps@basic-api.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][6] ([i915#6621])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-mtlp-8/igt@i915_pm_rps@basic-api.html
 
   * igt@i915_selftest@live@gt_mocs:
-    - bat-mtlp-8:         NOTRUN -> [DMESG-FAIL][9] ([i915#7059])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+    - bat-mtlp-8:         NOTRUN -> [DMESG-FAIL][7] ([i915#7059])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
 
   * igt@i915_selftest@live@mman:
-    - bat-rpls-1:         [PASS][10] -> [TIMEOUT][11] ([i915#6794] / [i915#7392])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-1/igt@i915_selftest@live@mman.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-rpls-1/igt@i915_selftest@live@mman.html
+    - bat-rpls-1:         [PASS][8] -> [TIMEOUT][9] ([i915#6794] / [i915#7392])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-1/igt@i915_selftest@live@mman.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-rpls-1/igt@i915_selftest@live@mman.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-rpls-1:         [PASS][10] -> [WARN][11] ([i915#8747])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
 
   * igt@i915_suspend@basic-s3-without-i915:
     - bat-mtlp-8:         NOTRUN -> [SKIP][12] ([i915#6645])
@@ -219,6 +216,7 @@ Known issues
   [i915#8676]: https://gitlab.freedesktop.org/drm/intel/issues/8676
   [i915#8698]: https://gitlab.freedesktop.org/drm/intel/issues/8698
   [i915#8700]: https://gitlab.freedesktop.org/drm/intel/issues/8700
+  [i915#8747]: https://gitlab.freedesktop.org/drm/intel/issues/8747
 
 
 Build changes
@@ -236,7 +234,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/index.html
 
---===============3459265572965244979==
+--===============3856431263320586637==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -258,7 +256,7 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>Fix Bigjoiner checks (rev8)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115712/">https://patchwork.freedesktop.org/series/115712/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
     <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/index.html</a></td></tr>
 
@@ -267,9 +265,9 @@ Content-Transfer-Encoding: 7bit
 
     <h1>CI Bug Log - changes from CI_DRM_13336 -&gt; IGTPW_9305</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_9305 absolutely need to be<br />
-  verified manually.</p>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with IGTPW_9305 need to be verified<br />
+  manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
   introduced in IGTPW_9305, please notify your bug team to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
@@ -280,13 +278,6 @@ Content-Transfer-Encoding: 7bit
 <h2>Possible new issues</h2>
 <p>Here are the unknown changes that may have been introduced in IGTPW_9305:</p>
 <h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_suspend@basic-s2idle-without-i915:<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">WARN</a></li>
-</ul>
-</li>
-</ul>
 <h4>Warnings</h4>
 <ul>
 <li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
@@ -338,6 +329,12 @@ Content-Transfer-Encoding: 7bit
 <p>igt@i915_selftest@live@mman:</p>
 <ul>
 <li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-1/igt@i915_selftest@live@mman.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-rpls-1/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13336/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9305/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8747">i915#8747</a>)</li>
 </ul>
 </li>
 <li>
@@ -439,4 +436,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============3459265572965244979==--
+--===============3856431263320586637==--
