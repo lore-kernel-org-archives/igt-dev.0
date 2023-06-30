@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2089.outbound.protection.outlook.com [40.107.94.89])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDC4C10E450
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 11:20:54 +0000 (UTC)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2066.outbound.protection.outlook.com [40.107.237.66])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6D1710E450
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 11:21:21 +0000 (UTC)
 From: Tom Chung <chiahsuan.chung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 30 Jun 2023 19:18:16 +0800
-Message-ID: <20230630111821.126265-4-chiahsuan.chung@amd.com>
+Date: Fri, 30 Jun 2023 19:18:20 +0800
+Message-ID: <20230630111821.126265-8-chiahsuan.chung@amd.com>
 In-Reply-To: <20230630111821.126265-1-chiahsuan.chung@amd.com>
 References: <20230630111821.126265-1-chiahsuan.chung@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 Subject: [igt-dev] [i-g-t,
- v2 3/8] tests/amdgpu/amd_freesync_video_mode: Fix wrong resolution
- setting during the test
+ v2 7/8] tests/amdgpu/amd_freesync_video_mode: Fix wrong resolution
+ setting for some panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,35 +28,64 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 [Why]
-Some monitors may have different resolution for non-Freesync video mode and it may
-cause the IGT test set to a wrong resolution during the test.
+Some eDP panel VRR range only has 48-60Hz and it will cause some of the test failed.
 
 [How]
-Check the resolution and use the same one during select the video mode.
+Use the VRR range fps to select the mode for test.
 
 Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
 ---
- tests/amdgpu/amd_freesync_video_mode.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tests/amdgpu/amd_freesync_video_mode.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
 diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
-index 79e3e493c..cc5b92a81 100644
+index bd3642121..77ddd85cd 100644
 --- a/tests/amdgpu/amd_freesync_video_mode.c
 +++ b/tests/amdgpu/amd_freesync_video_mode.c
-@@ -421,10 +421,11 @@ static drmModeModeInfo *select_mode(
+@@ -421,11 +421,18 @@ static drmModeModeInfo *select_mode(
  	case FSV_NON_FREESYNC_VIDEO_MODE:
  		for (i = 0; i < data->count_modes; i++) {
  			mode = &data->modes[i];
--			if (mode->vrefresh == refresh_rate &&
--			    !is_freesync_video_mode(data, mode)) {
-+			if (mode->hdisplay == data->hdisplay &&
-+				mode->vdisplay == data->vdisplay &&
-+				mode->vrefresh == refresh_rate &&
-+				!is_freesync_video_mode(data, mode))
- 				break;
--			}
+-			if (mode->hdisplay == data->hdisplay &&
+-				mode->vdisplay == data->vdisplay &&
+-				mode->vrefresh == refresh_rate &&
+-				!is_freesync_video_mode(data, mode))
+-				break;
++			if (refresh_rate > 0) {
++				if (mode->hdisplay == data->hdisplay &&
++					mode->vdisplay == data->vdisplay &&
++					mode->vrefresh == refresh_rate &&
++					!is_freesync_video_mode(data, mode))
++					break;
++			} else {
++				if (mode->hdisplay == data->hdisplay &&
++					mode->vdisplay == data->vdisplay &&
++					!is_freesync_video_mode(data, mode))
++					break;
++			}
  		}
  		if (i >= data->count_modes)
  			mode = NULL;
+@@ -780,16 +787,16 @@ mode_transition(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t sce
+ 		mode_playback  = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
+ 		break;
+ 	case SCENE_LOWER_FSV_MODE_TO_HIGHER_FSV_MODE:
+-		mode_start = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
+-		mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 120);
++		mode_start = select_mode(data, FSV_FREESYNC_VIDEO_MODE, data->vrr_range.min);
++		mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, data->vrr_range.max);
+ 		break;
+ 	case SCENE_NON_FSV_MODE_TO_FSV_MODE:
+-		mode_start = select_mode(data, FSV_NON_FREESYNC_VIDEO_MODE, 60);
++		mode_start = select_mode(data, FSV_NON_FREESYNC_VIDEO_MODE, 0);
+ 		mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
+ 		break;
+ 	case SCENE_BASE_MODE_TO_CUSTUM_MODE:
+ 		mode_start = select_mode(data, FSV_BASE_MODE, 0);
+-		ret = prepare_custom_mode(data, &mode_custom, 72);
++		ret = prepare_custom_mode(data, &mode_custom, data->vrr_range.min);
+ 		igt_assert_eq(ret, 0);
+ 		mode_playback = &mode_custom;
+ 		break;
 -- 
 2.25.1
