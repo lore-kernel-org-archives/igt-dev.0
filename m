@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E6E110E49C
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 15:40:39 +0000 (UTC)
-Date: Fri, 30 Jun 2023 17:40:34 +0200
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABC3C10E49D
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 15:41:44 +0000 (UTC)
+Date: Fri, 30 Jun 2023 17:41:40 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230630154034.7uue4cxjulv5qfdj@kamilkon-desk1>
+Message-ID: <20230630154140.whx2blfffwvtwi6o@kamilkon-desk1>
 References: <cover.1687862551.git.karolina.stolarek@intel.com>
- <0d0d0cb111368438c6617c3f0e67f085502e3dda.1687862551.git.karolina.stolarek@intel.com>
+ <35cbc4615d68d3381749e718c191978fd0bd2163.1687862551.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0d0d0cb111368438c6617c3f0e67f085502e3dda.1687862551.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/3] lib/intel_cmds_info: Add library
- support for XY_COLOR_BLT
+In-Reply-To: <35cbc4615d68d3381749e718c191978fd0bd2163.1687862551.git.karolina.stolarek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/3] tests/i915/i915_pm_rpm: Modify
+ gem-execbuf test for gen12+
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,152 +20,285 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Karolina,
-
-On 2023-06-27 at 12:58:18 +0200, Karolina Stolarek wrote:
+On 2023-06-27 at 12:58:19 +0200, Karolina Stolarek wrote:
 > From: Vikas Srivastava <vikas.srivastava@intel.com>
 > 
-> Add API to check support for XY_COLOR_BLT command in existing
-> library for gen12 and older platforms.
+> xy_color_blt is not supported on MTL and other gen12+ target
+> hence an IGT test update needs to be done. Modify the test
+> to add a lib API to check for xy_color_blt support.
 > 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
 > Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  lib/intel_blt.c       | 16 ++++++++++++++++
->  lib/intel_blt.h       |  1 +
->  lib/intel_cmds_info.c | 23 ++++++++++++++++++++---
->  lib/intel_cmds_info.h |  1 +
->  4 files changed, 38 insertions(+), 3 deletions(-)
+>  tests/i915/i915_pm_rpm.c | 185 ++++++++++++++++++++++++++++++---------
+>  1 file changed, 146 insertions(+), 39 deletions(-)
 > 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index 28a740094..4836149e4 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -317,6 +317,22 @@ bool blt_has_xy_src_copy(int fd)
->  	return blt_supports_command(cmds_info, XY_SRC_COPY);
->  }
+> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+> index e866e7fc9..dee44d71b 100644
+> --- a/tests/i915/i915_pm_rpm.c
+> +++ b/tests/i915/i915_pm_rpm.c
+> @@ -246,6 +246,7 @@
+>  #include "igt_debugfs.h"
+>  #include "igt_device.h"
+>  #include "igt_edid.h"
+> +#include "intel_blt.h"
 >  
-> +/**
-> + * blt_has_xy_color
-> + * @fd: drm fd
-> + *
-> + * Check if XY_COLOR_BLT is supported by @fd device
-> + *
-> + * Returns:
-> + * true if it does, false otherwise.
-> + */
-> +bool blt_has_xy_color(int fd)
-> +{
-> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(fd);
+>  #define MSR_PC8_RES	0x630
+>  #define MSR_PC9_RES	0x631
+> @@ -255,6 +256,11 @@
+>  #define MAX_ENCODERS	32
+>  #define MAX_CRTCS	16
+>  
+> +#define WIDTH 64
+> +#define HEIGHT 64
+> +#define STRIDE (WIDTH)
+> +#define SIZE (HEIGHT * STRIDE)
 > +
-> +	return blt_supports_command(cmds_info, XY_COLOR_BLT);
+>  enum pc8_status {
+>  	PC8_ENABLED,
+>  	PC8_DISABLED
+> @@ -311,10 +317,57 @@ struct modeset_params {
+>  	drmModeModeInfoPtr mode;
+>  };
+>  
+> +struct data_t {
+> +	int width;
+> +	int height;
+> +	uint32_t region;
+> +};
+> +
+>  struct modeset_params lpsp_mode_params;
+>  struct modeset_params non_lpsp_mode_params;
+>  struct modeset_params *default_mode_params;
+>  
+> +/* API to create mmap buffer */
+> +static struct intel_buf *
+> +create_buf(struct data_t *data, uint32_t color)
+> +{
+> +	struct intel_buf *buf;
+> +	uint8_t *ptr;
+> +	uint32_t handle;
+> +	struct buf_ops *bops;
+> +	int i;
+> +
+> +	buf = calloc(1, sizeof(*buf));
+> +	igt_assert(buf);
+> +	bops = buf_ops_create(drm_fd);
+> +
+> +	handle = gem_create_in_memory_regions(drm_fd, SIZE, data->region);
+> +	intel_buf_init_using_handle(bops, handle, buf,
+> +				    data->width / 4, data->height, 32, 0,
+> +				    I915_TILING_NONE, 0);
+> +
+> +	ptr = gem_mmap__cpu_coherent(drm_fd, buf->handle, 0,
+> +				     buf->surface[0].size, PROT_WRITE);
+> +
+> +	for (i = 0; i < buf->surface[0].size; i++)
+> +		ptr[i] = color;
+> +
+> +	munmap(ptr, buf->surface[0].size);
+> +
+> +	return buf;
 > +}
 > +
->  /**
->   * blt_fast_copy_supports_tiling
->   * @fd: drm fd
-> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index 0cbe881f4..64006273f 100644
-> --- a/lib/intel_blt.h
-> +++ b/lib/intel_blt.h
-> @@ -172,6 +172,7 @@ bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
->  bool blt_has_block_copy(int fd);
->  bool blt_has_fast_copy(int fd);
->  bool blt_has_xy_src_copy(int fd);
-> +bool blt_has_xy_color(int fd);
->  
->  bool blt_fast_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
->  bool blt_block_copy_supports_tiling(int fd, enum blt_tiling_type tiling);
-> diff --git a/lib/intel_cmds_info.c b/lib/intel_cmds_info.c
-> index 151cb5f72..366b37f2c 100644
-> --- a/lib/intel_cmds_info.c
-> +++ b/lib/intel_cmds_info.c
-> @@ -82,24 +82,38 @@ static const struct blt_cmd_info
->  						 BIT(T_TILE64),
->  						 BLT_CMD_EXTENDED);
->  
-> +static const struct blt_cmd_info
-> +		pre_gen6_xy_color_blt = BLT_INFO(XY_COLOR_BLT,
-> +						 BIT(T_LINEAR) |
-> +						 BIT(T_XMAJOR));
+> +/* checking the buffer content is correct or not */
+> +static void buf_check(uint8_t *ptr, int x, int y, uint8_t color)
+> +{
+> +	uint8_t val;
 > +
-> +static const struct blt_cmd_info
-> +		gen6_xy_color_blt = BLT_INFO_EXT(XY_COLOR_BLT,
-> +						 BIT(T_LINEAR) |
-> +						 BIT(T_YMAJOR) |
-> +						 BIT(T_XMAJOR),
-> +						 BLT_CMD_EXTENDED);
+> +	val = ptr[y * WIDTH + x];
+> +	igt_assert_f(val == color,
+> +		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
+> +		     color, val, x, y);
+> +}
 > +
->  const struct intel_cmds_info pre_gen6_cmds_info = {
->  	.blt_cmds = {
->  		[SRC_COPY] = &src_copy,
-> -		[XY_SRC_COPY] = &pre_gen6_xy_src_copy
-> +		[XY_SRC_COPY] = &pre_gen6_xy_src_copy,
-> +		[XY_COLOR_BLT] = &pre_gen6_xy_color_blt,
->  	}
->  };
+>  static int modprobe(const char *driver)
+>  {
+>  	return igt_kmod_load(driver, NULL);
+> @@ -1525,7 +1578,7 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
+>  /* Make sure we can submit a batch buffer and verify its result. */
+>  static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_regions)
+>  {
+> -	int x, y;
+> +	int x, y, i, j;
+>  	uint32_t handle;
+>  	int bpp = 4;
+>  	int pitch = 128 * bpp;
+> @@ -1534,10 +1587,31 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
+>  	uint32_t presumed_offset = 0;
+>  	int sq_x = 5, sq_y = 10, sq_w = 15, sq_h = 20;
+>  	uint32_t color;
+> +	struct intel_buf *buf;
+> +	uint8_t *ptr;
+> +	struct data_t data = {0, };
+> +	struct igt_collection *region;
+> +	struct drm_i915_query_memory_regions *region_info;
+> +	struct igt_collection *region_set;
+> +	uint32_t id;
 >  
->  const struct intel_cmds_info gen6_cmds_info =  {
->  	.blt_cmds = {
->  		[SRC_COPY] = &src_copy,
-> -		[XY_SRC_COPY] = &gen6_xy_src_copy
-> +		[XY_SRC_COPY] = &gen6_xy_src_copy,
-> +		[XY_COLOR_BLT] = &gen6_xy_color_blt,
+>  	igt_require_gem(drm_fd);
+>  	gem_require_blitter(drm_fd);
+>  
+> +	region_info = gem_get_query_memory_regions(drm_fd);
+> +	igt_assert(region_info);
+> +	region_set = get_memory_region_set(region_info,
+> +					   I915_DEVICE_MEMORY,
+> +					   I915_SYSTEM_MEMORY);
+> +	for_each_combination(region, 1, region_set) {
+> +		id = igt_collection_get_value(region, 0);
+> +		break;
+> +	}
+> +
+> +	data.width = WIDTH;
+> +	data.height = HEIGHT;
+> +	data.region = id;
+> +
+>  	/* Create and set data while the device is active. */
+>  	enable_one_screen_or_forcewake_get_and_wait(&ms_data);
+>  
+> @@ -1552,62 +1626,95 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
+>  	disable_all_screens_or_forcewake_put_and_wait(&ms_data);
+>  
+>  	color = 0x12345678;
+> -	submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
+> -		       &presumed_offset);
+> -	igt_assert(wait_for_suspended());
+> +	if (blt_has_xy_color(drm_fd)) {
+> +		submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
+> +			       &presumed_offset);
+> +		igt_assert(wait_for_suspended());
+>  
+> -	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+> -	igt_assert(wait_for_suspended());
+> -	for (y = 0; y < 128; y++) {
+> -		for (x = 0; x < 128; x++) {
+> -			uint32_t px = cpu_buf[y * 128 + x];
+> +		gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+> +		for (y = 0; y < 128; y++) {
+> +			for (x = 0; x < 128; x++) {
+> +				uint32_t px = cpu_buf[y * 128 + x];
+>  
+> -			if (y >= sq_y && y < (sq_y + sq_h) &&
+> -			    x >= sq_x && x < (sq_x + sq_w))
+> -				igt_assert_eq_u32(px, color);
+> -			else
+> -				igt_assert(px == 0);
+> +				if (y >= sq_y && y < (sq_y + sq_h) &&
+> +				    x >= sq_x && x < (sq_x + sq_w))
+> +					igt_assert_eq_u32(px, color);
+> +				else
+> +					igt_assert(px == 0);
+> +			}
+>  		}
+> +	} else {
+> +		buf = create_buf(&data, color);
+> +		ptr = gem_mmap__device_coherent(drm_fd, buf->handle, 0,
+> +						buf->surface[0].size, PROT_READ);
+> +		igt_assert(wait_for_suspended());
+> +
+> +		for (i = 0; i < WIDTH; i++)
+> +			for (j = 0; j < HEIGHT; j++)
+> +				buf_check(ptr, i, j, color);
+> +		munmap(ptr, buf->surface[0].size);
 >  	}
+>  
+>  	/* Now resume and check for it again. */
+>  	enable_one_screen_or_forcewake_get_and_wait(&ms_data);
+>  
+> -	memset(cpu_buf, 0, dst_size);
+> -	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+> -	for (y = 0; y < 128; y++) {
+> -		for (x = 0; x < 128; x++) {
+> -			uint32_t px = cpu_buf[y * 128 + x];
 > -
->  };
->  
->  const struct intel_cmds_info gen8_cmds_info = {
->  	.blt_cmds = {
->  		[XY_SRC_COPY] = &gen6_xy_src_copy,
-> +		[XY_COLOR_BLT] = &gen6_xy_color_blt,
+> -			if (y >= sq_y && y < (sq_y + sq_h) &&
+> -			    x >= sq_x && x < (sq_x + sq_w))
+> -				igt_assert_eq_u32(px, color);
+> -			else
+> -				igt_assert(px == 0);
+> +	if (blt_has_xy_color(drm_fd)) {
+> +		memset(cpu_buf, 0, dst_size);
+> +		gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+> +
+> +		for (y = 0; y < 128; y++) {
+> +			for (x = 0; x < 128; x++) {
+> +				uint32_t px = cpu_buf[y * 128 + x];
+> +
+> +				if (y >= sq_y && y < (sq_y + sq_h) &&
+> +				    x >= sq_x && x < (sq_x + sq_w))
+> +					igt_assert_eq_u32(px, color);
+> +				else
+> +					igt_assert(px == 0);
+> +			}
+>  		}
+> +	} else {
+> +		buf = create_buf(&data, color);
+> +		ptr = gem_mmap__device_coherent(drm_fd, buf->handle, 0,
+> +						buf->surface[0].size, PROT_READ);
+> +		for (i = 0; i < WIDTH; i++)
+> +			for (j = 0; j < HEIGHT; j++)
+> +				buf_check(ptr, i, j, color);
+> +		munmap(ptr, buf->surface[0].size);
 >  	}
->  };
 >  
-> @@ -107,6 +121,7 @@ const struct intel_cmds_info gen11_cmds_info = {
->  	.blt_cmds = {
->  		[XY_SRC_COPY] = &gen6_xy_src_copy,
->  		[XY_FAST_COPY] = &gen11_xy_fast_copy,
-> +		[XY_COLOR_BLT] = &gen6_xy_color_blt,
+>  	/* Now we'll do the opposite: do the blt while active, then read while
+>  	 * suspended. We use the same spot, but a different color. As a bonus,
+>  	 * we're testing the presumed_offset from the previous command. */
+>  	color = 0x87654321;
+> -	submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
+> -		       &presumed_offset);
+> +	if (blt_has_xy_color(drm_fd)) {
+>  
+> -	disable_all_screens_or_forcewake_put_and_wait(&ms_data);
+> +		submit_blt_cmd(handle, dst_size, sq_x, sq_y, sq_w, sq_h, pitch, color,
+> +			       &presumed_offset);
+>  
+> -	memset(cpu_buf, 0, dst_size);
+> -	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+> -	for (y = 0; y < 128; y++) {
+> -		for (x = 0; x < 128; x++) {
+> -			uint32_t px = cpu_buf[y * 128 + x];
+> -
+> -			if (y >= sq_y && y < (sq_y + sq_h) &&
+> -			    x >= sq_x && x < (sq_x + sq_w))
+> -				igt_assert_eq_u32(px, color);
+> -			else
+> -				igt_assert(px == 0);
+> +		disable_all_screens_or_forcewake_put_and_wait(&ms_data);
+> +
+> +		memset(cpu_buf, 0, dst_size);
+> +		gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+> +		for (y = 0; y < 128; y++) {
+> +			for (x = 0; x < 128; x++) {
+> +				uint32_t px = cpu_buf[y * 128 + x];
+> +
+> +				if (y >= sq_y && y < (sq_y + sq_h) &&
+> +				    x >= sq_x && x < (sq_x + sq_w))
+> +					igt_assert_eq_u32(px, color);
+> +				else
+> +					igt_assert(px == 0);
+> +			}
+>  		}
+> +	} else {
+> +		buf = create_buf(&data, color);
+> +		ptr = gem_mmap__device_coherent(drm_fd, buf->handle, 0,
+> +						buf->surface[0].size, PROT_READ);
+> +		for (i = 0; i < WIDTH; i++)
+> +			for (j = 0; j < HEIGHT; j++)
+> +				buf_check(ptr, i, j, color);
+> +		munmap(ptr, buf->surface[0].size);
 >  	}
->  };
 >  
-> @@ -115,6 +130,7 @@ const struct intel_cmds_info gen12_cmds_info = {
->  		[XY_SRC_COPY] = &gen6_xy_src_copy,
->  		[XY_FAST_COPY] = &gen12_xy_fast_copy,
->  		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
-> +		[XY_COLOR_BLT] = &gen6_xy_color_blt,
->  	}
->  };
->  
-> @@ -123,6 +139,7 @@ const struct intel_cmds_info gen12_dg2_cmds_info = {
->  		[XY_SRC_COPY] = &gen6_xy_src_copy,
->  		[XY_FAST_COPY] = &dg2_xy_fast_copy,
->  		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
-> +		[XY_COLOR_BLT] = &gen6_xy_color_blt,
->  	}
->  };
->  
-> diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
-> index 1db8709f8..91d0f15ec 100644
-> --- a/lib/intel_cmds_info.h
-> +++ b/lib/intel_cmds_info.h
-> @@ -23,6 +23,7 @@ enum blt_cmd_type {
->  	XY_SRC_COPY,
->  	XY_FAST_COPY,
->  	XY_BLOCK_COPY,
-> +	XY_COLOR_BLT,
->  	__BLT_MAX_CMD
->  };
->  
+>  	gem_close(drm_fd, handle);
 > -- 
 > 2.25.1
 > 
