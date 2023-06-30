@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C61C10E4D0
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jun 2023 17:33:45 +0000 (UTC)
-Date: Fri, 30 Jun 2023 19:33:40 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230630173340.dtylyek3wgs63h5n@kamilkon-desk1>
-References: <20230627180805.4189160-1-himal.prasad.ghimiray@intel.com>
- <20230627180805.4189160-4-himal.prasad.ghimiray@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3017801074816304047=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230627180805.4189160-4-himal.prasad.ghimiray@intel.com>
-Subject: Re: [igt-dev] [PATCH v4 3/4] tests/xe/xe_guc_pc: Change the sysfs
- paths
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Fri, 30 Jun 2023 18:25:59 -0000
+Message-ID: <168814955971.24873.2287762568568030856@emeril.freedesktop.org>
+References: <20230628122744.2810365-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230628122744.2810365-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2tt?=
+ =?utf-8?q?s=3A_Fix_the_missing_documentaion_for_KMS_library?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,484 +17,341 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Upadhyay <tejas.upadhyay@intel.com>,
- Badal Nilawar <badal.nilawar@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Himal,
+--===============3017801074816304047==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2023-06-27 at 23:38:04 +0530, Himal Prasad Ghimiray wrote:
-> Changes to access sysfs entries under tile directory.
-> Access freq sysfs from /sys/class/drm/cardX/device/tileN/gtN
-> path.
-> 
-> v2:
-> - Use snprintf instead of sprintf and check error.
-> - Describe what changes are done. (Kamil)
-> 
-> v3:
-> - change order of gt and tile and drop passing tilecount.(Ashutosh)
-> 
-> v4:
-> - Rebase
-> 
-> Reviewed-by: Upadhyay <tejas.upadhyay@intel.com>
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
-> Cc: Upadhyay <tejas.upadhyay@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Badal Nilawar <badal.nilawar@intel.com>
-> Cc: Riana Tauro <riana.tauro@intel.com>
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> ---
->  tests/xe/xe_guc_pc.c | 202 ++++++++++++++++++++++---------------------
->  1 file changed, 102 insertions(+), 100 deletions(-)
-> 
-> diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
-> index 89d5ae9e..2900ff09 100644
-> --- a/tests/xe/xe_guc_pc.c
-> +++ b/tests/xe/xe_guc_pc.c
-> @@ -133,23 +133,25 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
->  	xe_vm_destroy(fd, vm);
->  }
->  
-> -static int set_freq(int sysfs, int gt_id, const char *freq_name, uint32_t freq)
-> +static int set_freq(int sysfs, int tile_id, int gt_id, const char *freq_name, uint32_t freq)
->  {
->  	int ret = -EAGAIN;
->  	char path[32];
->  
-> -	sprintf(path, "device/gt%d/freq_%s", gt_id, freq_name);
-> +	igt_assert(snprintf(path, sizeof(path), "device/tile%d/gt%d/freq_%s",
-> +			    tile_id, gt_id, freq_name) < sizeof(path));
+== Series Details ==
 
-Could you make it work for bot old and new uAPI?
+Series: lib/kms: Fix the missing documentaion for KMS library
+URL   : https://patchwork.freedesktop.org/series/119973/
+State : success
 
->  	while (ret == -EAGAIN)
->  		ret = igt_sysfs_printf(sysfs, path, "%u", freq);
+== Summary ==
 
-Maybe add here:
-	if (ret == -ENOENT) {
-		/* use old path */
+CI Bug Log - changes from IGT_7354 -> IGTPW_9294
+====================================================
 
-	}
+Summary
+-------
 
->  	return ret;
->  }
->  
-> -static uint32_t get_freq(int sysfs, int gt_id, const char *freq_name)
-> +static uint32_t get_freq(int sysfs, int tile_id, int gt_id, const char *freq_name)
->  {
->  	uint32_t freq;
->  	int err = -EAGAIN;
->  	char path[32];
-> -	sprintf(path, "device/gt%d/freq_%s", gt_id, freq_name);
-> +	igt_assert(snprintf(path, sizeof(path), "device/tile%d/gt%d/freq_%s",
-> +			    tile_id, gt_id, freq_name) < sizeof(path));
+  **SUCCESS**
 
-This is the same code as above, maybe create a function for it,
-check for ENOENT and use old path? Or check old one first and
-if failed with ENOENT use new.
+  No regressions found.
 
-Regards,
-Kamil
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/index.html
 
->  	while (err == -EAGAIN)
->  		err = igt_sysfs_scanf(sysfs, path, "%u", &freq);
->  	return freq;
-> @@ -162,37 +164,37 @@ static uint32_t get_freq(int sysfs, int gt_id, const char *freq_name)
->   * Run type: BAT
->   */
->  
-> -static void test_freq_basic_api(int sysfs, int gt_id)
-> +static void test_freq_basic_api(int sysfs, int tile_id, int gt_id)
->  {
-> -	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
-> -	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
-> -	uint32_t rp0 = get_freq(sysfs, gt_id, "rp0");
-> +	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
-> +	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
-> +	uint32_t rp0 = get_freq(sysfs, tile_id, gt_id, "rp0");
->  
->  	/*
->  	 * Negative bound tests
->  	 * RPn is the floor
->  	 * RP0 is the ceiling
->  	 */
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rpn - 1) < 0);
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rp0 + 1) < 0);
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rpn - 1) < 0);
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rp0 + 1) < 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn - 1) < 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rp0 + 1) < 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn - 1) < 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rp0 + 1) < 0);
->  
->  	/* Assert min requests are respected from rp0 to rpn */
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rp0) > 0);
-> -	igt_assert(get_freq(sysfs, gt_id, "min") == rp0);
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rpe) > 0);
-> -	igt_assert(get_freq(sysfs, gt_id, "min") == rpe);
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
-> -	igt_assert(get_freq(sysfs, gt_id, "min") == rpn);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rp0) > 0);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rp0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpe) > 0);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rpe);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rpn);
->  
->  	/* Assert max requests are respected from rpn to rp0 */
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
-> -	igt_assert(get_freq(sysfs, gt_id, "max") == rpn);
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rpe) > 0);
-> -	igt_assert(get_freq(sysfs, gt_id, "max") == rpe);
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rp0) > 0);
-> -	igt_assert(get_freq(sysfs, gt_id, "max") == rp0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rpn);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpe) > 0);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rpe);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rp0) > 0);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rp0);
->  }
->  
->  /**
-> @@ -205,11 +207,11 @@ static void test_freq_basic_api(int sysfs, int gt_id)
->   * Run type: FULL
->   */
->  
-> -static void test_freq_fixed(int sysfs, int gt_id)
-> +static void test_freq_fixed(int sysfs, int tile_id, int gt_id)
->  {
-> -	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
-> -	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
-> -	uint32_t rp0 = get_freq(sysfs, gt_id, "rp0");
-> +	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
-> +	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
-> +	uint32_t rp0 = get_freq(sysfs, tile_id, gt_id, "rp0");
->  
->  	igt_debug("Starting testing fixed request\n");
->  
-> @@ -218,27 +220,27 @@ static void test_freq_fixed(int sysfs, int gt_id)
->  	 * Then we check if hardware is actually operating at the desired freq
->  	 * And let's do this for all the 3 known Render Performance (RP) values.
->  	 */
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
->  	usleep(ACT_FREQ_LATENCY_US);
-> -	igt_assert(get_freq(sysfs, gt_id, "cur") == rpn);
-> -	igt_assert(get_freq(sysfs, gt_id, "act") == rpn);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpn);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "act") == rpn);
->  
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rpe) > 0);
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rpe) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpe) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpe) > 0);
->  	usleep(ACT_FREQ_LATENCY_US);
-> -	igt_assert(get_freq(sysfs, gt_id, "cur") == rpe);
-> -	igt_assert(get_freq(sysfs, gt_id, "act") == rpe);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpe);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "act") == rpe);
->  
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rp0) > 0);
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rp0) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rp0) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rp0) > 0);
->  	usleep(ACT_FREQ_LATENCY_US);
->  	/*
->  	 * It is unlikely that PCODE will *always* respect any request above RPe
->  	 * So for this level let's only check if GuC PC is doing its job
->  	 * and respecting our request, by propagating it to the hardware.
->  	 */
-> -	igt_assert(get_freq(sysfs, gt_id, "cur") == rp0);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rp0);
->  
->  	igt_debug("Finished testing fixed request\n");
->  }
-> @@ -253,20 +255,20 @@ static void test_freq_fixed(int sysfs, int gt_id)
->   * Run type: FULL
->   */
->  
-> -static void test_freq_range(int sysfs, int gt_id)
-> +static void test_freq_range(int sysfs, int tile_id, int gt_id)
->  {
-> -	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
-> -	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
-> +	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
-> +	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
->  	uint32_t cur, act;
->  
->  	igt_debug("Starting testing range request\n");
->  
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rpe) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpe) > 0);
->  	usleep(ACT_FREQ_LATENCY_US);
-> -	cur = get_freq(sysfs, gt_id, "cur");
-> +	cur = get_freq(sysfs, tile_id, gt_id, "cur");
->  	igt_assert(rpn <= cur && cur <= rpe);
-> -	act = get_freq(sysfs, gt_id, "act");
-> +	act = get_freq(sysfs, tile_id, gt_id, "act");
->  	igt_assert(rpn <= act && act <= rpe);
->  
->  	igt_debug("Finished testing range request\n");
-> @@ -278,20 +280,20 @@ static void test_freq_range(int sysfs, int gt_id)
->   * Run type: FULL
->   */
->  
-> -static void test_freq_low_max(int sysfs, int gt_id)
-> +static void test_freq_low_max(int sysfs, int tile_id, int gt_id)
->  {
-> -	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
-> -	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
-> +	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
-> +	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
->  
->  	/*
->  	 *  When max request < min request, max is ignored and min works like
->  	 * a fixed one. Let's assert this assumption
->  	 */
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rpe) > 0);
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpe) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
->  	usleep(ACT_FREQ_LATENCY_US);
-> -	igt_assert(get_freq(sysfs, gt_id, "cur") == rpe);
-> -	igt_assert(get_freq(sysfs, gt_id, "act") == rpe);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpe);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "act") == rpe);
->  }
->  
->  /**
-> @@ -300,20 +302,20 @@ static void test_freq_low_max(int sysfs, int gt_id)
->   * Run type: FULL
->   */
->  
-> -static void test_suspend(int sysfs, int gt_id)
-> +static void test_suspend(int sysfs, int tile_id, int gt_id)
->  {
-> -	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
-> +	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
->  
-> -	igt_assert(set_freq(sysfs, gt_id, "min", rpn) > 0);
-> -	igt_assert(set_freq(sysfs, gt_id, "max", rpn) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0);
-> +	igt_assert(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0);
->  	usleep(ACT_FREQ_LATENCY_US);
-> -	igt_assert(get_freq(sysfs, gt_id, "cur") == rpn);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "cur") == rpn);
->  
->  	igt_system_suspend_autoresume(SUSPEND_STATE_S3,
->  				      SUSPEND_TEST_NONE);
->  
-> -	igt_assert(get_freq(sysfs, gt_id, "min") == rpn);
-> -	igt_assert(get_freq(sysfs, gt_id, "max") == rpn);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "min") == rpn);
-> +	igt_assert(get_freq(sysfs, tile_id, gt_id, "max") == rpn);
->  }
->  
->  /**
-> @@ -326,24 +328,24 @@ static void test_suspend(int sysfs, int gt_id)
->   * Run type: FULL
->   */
->  
-> -static void test_reset(int fd, int sysfs, int gt_id, int cycles)
-> +static void test_reset(int fd, int sysfs, int tile_id, int gt_id, int cycles)
->  {
-> -	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
-> +	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
->  
->  	for (int i = 0; i < cycles; i++) {
-> -		igt_assert_f(set_freq(sysfs, gt_id, "min", rpn) > 0,
-> +		igt_assert_f(set_freq(sysfs, tile_id, gt_id, "min", rpn) > 0,
->  			     "Failed after %d good cycles\n", i);
-> -		igt_assert_f(set_freq(sysfs, gt_id, "max", rpn) > 0,
-> +		igt_assert_f(set_freq(sysfs, tile_id, gt_id, "max", rpn) > 0,
->  			     "Failed after %d good cycles\n", i);
->  		usleep(ACT_FREQ_LATENCY_US);
-> -		igt_assert_f(get_freq(sysfs, gt_id, "cur") == rpn,
-> +		igt_assert_f(get_freq(sysfs, tile_id, gt_id, "cur") == rpn,
->  			     "Failed after %d good cycles\n", i);
->  
->  		xe_force_gt_reset(fd, gt_id);
->  
-> -		igt_assert_f(get_freq(sysfs, gt_id, "min") == rpn,
-> +		igt_assert_f(get_freq(sysfs, tile_id, gt_id, "min") == rpn,
->  			     "Failed after %d good cycles\n", i);
-> -		igt_assert_f(get_freq(sysfs, gt_id, "max") == rpn,
-> +		igt_assert_f(get_freq(sysfs, tile_id, gt_id, "max") == rpn,
->  			     "Failed after %d good cycles\n", i);
->  	}
->  }
-> @@ -359,11 +361,11 @@ static void test_reset(int fd, int sysfs, int gt_id, int cycles)
->   * Run type: BAT
->   */
->  
-> -static bool in_rc6(int sysfs, int gt_id)
-> +static bool in_rc6(int sysfs, int tile_id, int gt_id)
->  {
-> -	char path[32];
-> +	char path[40];
->  	char rc[8];
-> -	sprintf(path, "device/gt%d/rc_status", gt_id);
-> +	sprintf(path, "device/tile%d/gt%d/rc_status", tile_id, gt_id);
->  	if (igt_sysfs_scanf(sysfs, path, "%s", rc) < 0)
->  		return false;
->  	return strcmp(rc, "rc6") == 0;
-> @@ -373,7 +375,7 @@ igt_main
->  {
->  	struct drm_xe_engine_class_instance *hwe;
->  	int fd;
-> -	int gt;
-> +	int gt, tile;
->  	static int sysfs = -1;
->  	int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
->  	uint32_t stash_min;
-> @@ -386,24 +388,24 @@ igt_main
->  		sysfs = igt_sysfs_open(fd);
->  		igt_assert(sysfs != -1);
->  
-> -		/* The defaults are the same. Stashing the gt0 is enough */
-> -		stash_min = get_freq(sysfs, 0, "min");
-> -		stash_max = get_freq(sysfs, 0, "max");
-> +		/* The defaults are the same. Stashing the gt0 in tile0 is enough */
-> +		stash_min = get_freq(sysfs, 0, 0, "min");
-> +		stash_max = get_freq(sysfs, 0, 0, "max");
->  	}
->  
->  	igt_subtest("freq_basic_api") {
-> -		xe_for_each_gt(fd, gt)
-> -			test_freq_basic_api(sysfs, gt);
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt)
-> +			test_freq_basic_api(sysfs, tile, gt);
->  	}
->  
->  	igt_subtest("freq_fixed_idle") {
-> -		xe_for_each_gt(fd, gt) {
-> -			test_freq_fixed(sysfs, gt);
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
-> +			test_freq_fixed(sysfs, tile, gt);
->  		}
->  	}
->  
->  	igt_subtest("freq_fixed_exec") {
-> -		xe_for_each_gt(fd, gt) {
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
->  			xe_for_each_hw_engine(fd, hwe)
->  				igt_fork(child, ncpus) {
->  					igt_debug("Execution Started\n");
-> @@ -411,19 +413,19 @@ igt_main
->  					igt_debug("Execution Finished\n");
->  				}
->  			/* While exec in threads above, let's check the freq */
-> -			test_freq_fixed(sysfs, gt);
-> +			test_freq_fixed(sysfs, tile, gt);
->  			igt_waitchildren();
->  		}
->  	}
->  
->  	igt_subtest("freq_range_idle") {
-> -		xe_for_each_gt(fd, gt) {
-> -			test_freq_range(sysfs, gt);
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
-> +			test_freq_range(sysfs, tile, gt);
->  		}
->  	}
->  
->  	igt_subtest("freq_range_exec") {
-> -		xe_for_each_gt(fd, gt) {
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
->  			xe_for_each_hw_engine(fd, hwe)
->  				igt_fork(child, ncpus) {
->  					igt_debug("Execution Started\n");
-> @@ -431,46 +433,46 @@ igt_main
->  					igt_debug("Execution Finished\n");
->  				}
->  			/* While exec in threads above, let's check the freq */
-> -			test_freq_range(sysfs, gt);
-> +			test_freq_range(sysfs, tile, gt);
->  			igt_waitchildren();
->  		}
->  	}
->  
->  	igt_subtest("freq_low_max") {
-> -		xe_for_each_gt(fd, gt) {
-> -			test_freq_low_max(sysfs, gt);
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
-> +			test_freq_low_max(sysfs, tile, gt);
->  		}
->  	}
->  
->  	igt_subtest("freq_suspend") {
-> -		xe_for_each_gt(fd, gt) {
-> -			test_suspend(sysfs, gt);
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
-> +			test_suspend(sysfs, tile, gt);
->  		}
->  	}
->  
->  	igt_subtest("freq_reset") {
-> -		xe_for_each_gt(fd, gt) {
-> -			test_reset(fd, sysfs, gt, 1);
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
-> +			test_reset(fd, sysfs, tile, gt, 1);
->  		}
->  	}
->  
->  	igt_subtest("freq_reset_multiple") {
-> -		xe_for_each_gt(fd, gt) {
-> -			test_reset(fd, sysfs, gt, 50);
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
-> +			test_reset(fd, sysfs, tile, gt, 50);
->  		}
->  	}
->  
->  	igt_subtest("rc6_on_idle") {
->  		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
-> -		xe_for_each_gt(fd, gt) {
-> -			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
-> +			assert(igt_wait(in_rc6(sysfs, tile, gt), 1000, 1));
->  		}
->  	}
->  
->  	igt_subtest("rc0_on_exec") {
->  		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
-> -		xe_for_each_gt(fd, gt) {
-> -			assert(igt_wait(in_rc6(sysfs, gt), 1000, 1));
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
-> +			assert(igt_wait(in_rc6(sysfs, tile, gt), 1000, 1));
->  			xe_for_each_hw_engine(fd, hwe)
->  				igt_fork(child, ncpus) {
->  					igt_debug("Execution Started\n");
-> @@ -478,15 +480,15 @@ igt_main
->  					igt_debug("Execution Finished\n");
->  				}
->  			/* While exec in threads above, let's check rc_status */
-> -			assert(igt_wait(!in_rc6(sysfs, gt), 1000, 1));
-> +			assert(igt_wait(!in_rc6(sysfs, tile, gt), 1000, 1));
->  			igt_waitchildren();
->  		}
->  	}
->  
->  	igt_fixture {
-> -		xe_for_each_gt(fd, gt) {
-> -			set_freq(sysfs, gt, "min", stash_min);
-> -			set_freq(sysfs, gt, "max", stash_max);
-> +		xe_for_each_gt_under_each_tile(fd, tile, gt) {
-> +			set_freq(sysfs, tile, gt, "min", stash_min);
-> +			set_freq(sysfs, tile, gt, "max", stash_max);
->  		}
->  		close(sysfs);
->  		xe_device_put(fd);
-> -- 
-> 2.25.1
-> 
+Participating hosts (41 -> 41)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9294 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][3] ([i915#1886] / [i915#7913])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-rpls-1:         [PASS][4] -> [TIMEOUT][5] ([i915#6794] / [i915#7392])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-rpls-1/igt@i915_selftest@live@mman.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-rpls-1/igt@i915_selftest@live@mman.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-8:         [PASS][6] -> [DMESG-FAIL][7] ([i915#7269])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-mtlp-8/igt@i915_selftest@live@requests.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-mtlp-8/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         NOTRUN -> [DMESG-WARN][8] ([i915#6367])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-rpls-1:         [PASS][9] -> [WARN][10] ([i915#8747])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-dg1-5:          NOTRUN -> [SKIP][11] ([i915#7828])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-dg1-5/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - bat-jsl-3:          NOTRUN -> [SKIP][12] ([i915#7828])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-jsl-3/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][13] ([fdo#109271]) +14 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-vga-1:
+    - fi-ilk-650:         [PASS][14] -> [ABORT][15] ([fdo#103375])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/fi-ilk-650/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-vga-1.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-ilk-650/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-vga-1.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][16] ([fdo#109271] / [i915#4579])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-kbl-soraka/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - bat-jsl-3:          [ABORT][17] ([i915#5122]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-mtlp-8:         [DMESG-FAIL][19] ([i915#7059]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-rpls-2:         [TIMEOUT][21] ([i915#6794] / [i915#7392]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-rpls-2/igt@i915_selftest@live@mman.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-rpls-2/igt@i915_selftest@live@mman.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg1-5:          [ABORT][23] ([i915#4983]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-dg1-5/igt@i915_selftest@live@workarounds.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-dg1-5/igt@i915_selftest@live@workarounds.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - bat-jsl-3:          [FAIL][25] ([fdo#103375]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
+  [i915#7269]: https://gitlab.freedesktop.org/drm/intel/issues/7269
+  [i915#7392]: https://gitlab.freedesktop.org/drm/intel/issues/7392
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#8747]: https://gitlab.freedesktop.org/drm/intel/issues/8747
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7354 -> IGTPW_9294
+
+  CI-20190529: 20190529
+  CI_DRM_13330: dd3ec2080383e2bf738c6640aca4183997cf2dde @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9294: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/index.html
+  IGT_7354: 07fe9ec40f779a788946ad371b0b683cab3c2536 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@xe_guc_pc@rc0_on_exec
++igt@xe_guc_pc@rc6_on_idle
+-igt@xe_pm_residency@gt-c6-on-idle
+-igt@xe_pm_residency@idle-residency
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/index.html
+
+--===============3017801074816304047==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/kms: Fix the missing documentaion for KMS library</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119973/">https://patchwork.freedesktop.org/series/119973/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7354 -&gt; IGTPW_9294</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/index.html</p>
+<h2>Participating hosts (41 -&gt; 41)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9294 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-rpls-1/igt@i915_selftest@live@mman.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-rpls-1/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-mtlp-8/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7269">i915#7269</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8747">i915#8747</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-dg1-5/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+<li>
+<p>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-jsl-3/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +14 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-vga-1:</p>
+<ul>
+<li>fi-ilk-650:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/fi-ilk-650/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-vga-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-ilk-650/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-vga-1.html">ABORT</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/fi-kbl-soraka/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5122">i915#5122</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-rpls-2/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7392">i915#7392</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-rpls-2/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-dg1-5/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-dg1-5/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7354/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7354 -&gt; IGTPW_9294</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13330: dd3ec2080383e2bf738c6640aca4183997cf2dde @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9294: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9294/index.html<br />
+  IGT_7354: 07fe9ec40f779a788946ad371b0b683cab3c2536 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@xe_guc_pc@rc0_on_exec<br />
++igt@xe_guc_pc@rc6_on_idle<br />
+-igt@xe_pm_residency@gt-c6-on-idle<br />
+-igt@xe_pm_residency@idle-residency</p>
+
+</body>
+</html>
+
+--===============3017801074816304047==--
