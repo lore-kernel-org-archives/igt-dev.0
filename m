@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1F2B10E0A6
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Jul 2023 05:38:59 +0000 (UTC)
+From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  3 Jul 2023 11:08:12 +0530
+Message-Id: <20230703053812.9597-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230627185528.2498910-1-mohammed.thasleem@intel.com>
+References: <20230627185528.2498910-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Mon, 03 Jul 2023 05:06:34 -0000
-Message-ID: <168836079449.4276.549422221086149323@emeril.freedesktop.org>
-References: <20230703043420.50705-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230703043420.50705-1-vitaly.prosyak@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
- =?utf-8?q?eries_starting_with_=5B1/6=5D_lib/amdgpu=3A_prepared_shared_par?=
- =?utf-8?q?t_of_multimedia_tests?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v5 1/2] tests/kms_display_modes: Fixed mode
+ selection for extended mode tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,199 +19,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 
-Series: series starting with [1/6] lib/amdgpu: prepared shared part of multimedia tests
-URL   : https://patchwork.freedesktop.org/series/120126/
-State : warning
+This will find the connector mode combo that fits into the
+bandwidth when more than one monitor is connected.
 
-== Summary ==
+Example:
+  When two monitors connected through MST, the second monitor
+  also tries to use the same mode. So two such modes may not
+  fit into the link bandwidth. So, iterate through connected
+  outputs & modes and find a combination of modes those fit
+  into the link BW.
 
-Pipeline status: FAILED.
+v2: -Updated commit msg and description. (Bhanu)
+    -Renamed restart with retry. (Bhanu)
+    -Moved igt_pipe_crc_new before retry. (Bhanu)
+    -Removed unrelated changes and new line. (Bhanu)
+    -Minor changes.
+v3: Updated discription and added EINVAL check.
+v4: Removed EINVAL and ENOSPC checks.
+    Added check for DP-MST and 4k panels.
+    Updated discription.
+v5: Defined 4k display modes globally.
+v6: -Removed if loop checks.
+    -Added igt override to avoid dp mst bw failure.
+v7: Resolved conflict.
+v8: Removed igt_display_reset from called function.
+v9: Updated commit message and removed redundant code. (Bhanu)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/924952 for the overview.
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/kms_display_modes.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44824709):
-  Has header "linux/kd.h" : YES
-  Has header "sys/kd.h" : YES
-  Has header "libgen.h" : YES
-  Has header "sys/io.h" : YES
-  Checking if "cpuid.h" links: YES
-  Header <unistd.h> has symbol "gettid" : NO
-  Checking whether type "struct sysinfo" has member "totalram" : YES
-  Checking for function "memfd_create" : YES
-  Configuring config.h using configuration
-  Program python3 found: YES (/usr/bin/python3)
-  
-  lib/meson.build:207:4: ERROR:  File amdgpu/amd_mmd_shared.c does not exist.
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1688360492:step_script
-  section_start:1688360492:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688360493:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44824712):
-  Has header "linux/kd.h" : YES
-  Has header "sys/kd.h" : YES
-  Has header "libgen.h" : YES
-  Has header "sys/io.h" : NO
-  Checking if "cpuid.h" links: NO
-  Header <unistd.h> has symbol "gettid" : NO
-  Checking whether type "struct sysinfo" has member "totalram" : YES
-  Checking for function "memfd_create" : YES
-  Configuring config.h using configuration
-  Program python3 found: YES (/usr/bin/python3)
-  
-  lib/meson.build:207:4: ERROR:  File amdgpu/amd_mmd_shared.c does not exist.
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1688360494:step_script
-  section_start:1688360494:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688360494:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44824711):
-  Has header "linux/kd.h" : YES
-  Has header "sys/kd.h" : YES
-  Has header "libgen.h" : YES
-  Has header "sys/io.h" : YES
-  Checking if "cpuid.h" links: NO
-  Header <unistd.h> has symbol "gettid" : NO
-  Checking whether type "struct sysinfo" has member "totalram" : YES
-  Checking for function "memfd_create" : YES
-  Configuring config.h using configuration
-  Program python3 found: YES (/usr/bin/python3)
-  
-  lib/meson.build:207:4: ERROR:  File amdgpu/amd_mmd_shared.c does not exist.
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1688360494:step_script
-  section_start:1688360494:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688360495:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44824713):
-  Has header "linux/kd.h" : YES
-  Has header "sys/kd.h" : YES
-  Has header "libgen.h" : YES
-  Has header "sys/io.h" : NO
-  Checking if "cpuid.h" links: NO
-  Header <unistd.h> has symbol "gettid" : NO
-  Checking whether type "struct sysinfo" has member "totalram" : YES
-  Checking for function "memfd_create" : YES
-  Configuring config.h using configuration
-  Program python3 found: YES (/usr/bin/python3)
-  
-  lib/meson.build:207:4: ERROR:  File amdgpu/amd_mmd_shared.c does not exist.
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1688360495:step_script
-  section_start:1688360495:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688360497:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44824704):
-  Has header "linux/kd.h" : YES 
-  Has header "sys/kd.h" : YES 
-  Has header "libgen.h" : YES 
-  Has header "sys/io.h" : YES 
-  Checking if "cpuid.h" links: YES 
-  Header <unistd.h> has symbol "gettid" : YES 
-  Checking whether type "struct sysinfo" has member "totalram" : YES 
-  Checking for function "memfd_create" : YES 
-  Configuring config.h using configuration
-  Program python3 found: YES (/usr/bin/python3)
-  
-  lib/meson.build:207:4: ERROR: File amdgpu/amd_mmd_shared.c does not exist.
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1688360492:step_script
-  section_start:1688360492:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688360493:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44824708):
-  Has header "linux/kd.h" : YES 
-  Has header "sys/kd.h" : YES 
-  Has header "libgen.h" : YES 
-  Has header "sys/io.h" : YES 
-  Checking if "cpuid.h" links: YES 
-  Header <unistd.h> has symbol "gettid" : YES 
-  Checking whether type "struct sysinfo" has member "totalram" : YES 
-  Checking for function "memfd_create" : YES 
-  Configuring config.h using configuration
-  Program python3 found: YES (/usr/bin/python3)
-  
-  lib/meson.build:207:4: ERROR: File amdgpu/amd_mmd_shared.c does not exist.
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1688360496:step_script
-  section_start:1688360496:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688360498:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44824705):
-  Has header "linux/kd.h" : YES 
-  Has header "sys/kd.h" : YES 
-  Has header "libgen.h" : YES 
-  Has header "sys/io.h" : YES 
-  Checking if "cpuid.h" links: YES 
-  Header <unistd.h> has symbol "gettid" : YES 
-  Checking whether type "struct sysinfo" has member "totalram" : YES 
-  Checking for function "memfd_create" : YES 
-  Configuring config.h using configuration
-  Program python3 found: YES (/usr/bin/python3)
-  
-  lib/meson.build:207:4: ERROR: File amdgpu/amd_mmd_shared.c does not exist.
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1688360494:step_script
-  section_start:1688360494:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688360496:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44824706):
-  Has header "linux/kd.h": YES
-  Has header "sys/kd.h": YES
-  Has header "libgen.h": YES
-  Has header "sys/io.h": YES
-  Checking if "cpuid.h" links: YES
-  Header <unistd.h> has symbol "gettid": YES
-  Checking whether type "struct sysinfo" has member "totalram" : YES
-  Checking for function "memfd_create" : YES
-  Configuring config.h using configuration
-  Program python3 found: YES (/usr/bin/python3)
-  
-  lib/meson.build:207:4: ERROR:  File amdgpu/amd_mmd_shared.c does not exist.
-  
-  A full log can be found at /builds/gfx-ci/igt-ci-tags/build/meson-logs/meson-log.txt
-  section_end:1688360494:step_script
-  section_start:1688360494:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688360494:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/924952
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+index 93d91ef5b..6d7637ffa 100644
+--- a/tests/kms_display_modes.c
++++ b/tests/kms_display_modes.c
+@@ -144,11 +144,6 @@ static void run_extendedmode_basic(data_t *data,
+ 	int width, height;
+ 	cairo_t *cr;
+ 
+-	igt_display_reset(display);
+-
+-	igt_output_set_pipe(output1, pipe1);
+-	igt_output_set_pipe(output2, pipe2);
+-
+ 	mode[0] = igt_output_get_mode(output1);
+ 	mode[1] = igt_output_get_mode(output2);
+ 
+@@ -253,6 +248,9 @@ static void run_extendedmode_test(data_t *data) {
+ 					igt_output_set_pipe(output1, pipe1);
+ 					igt_output_set_pipe(output2, pipe2);
+ 
++					if (!igt_override_all_active_output_modes_to_fit_bw(display))
++						continue;
++
+ 					if (!i915_pipe_output_combo_valid(display))
+ 						continue;
+ 
+-- 
+2.25.1
