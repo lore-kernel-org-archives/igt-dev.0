@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45C1F10E0B5
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Jul 2023 07:39:13 +0000 (UTC)
-Date: Mon, 3 Jul 2023 09:39:08 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99C4910E1CC
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Jul 2023 08:00:41 +0000 (UTC)
+Date: Mon, 3 Jul 2023 10:00:36 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230703072534.62ixme6t7xmmzzhv@kamilkon-desk1>
-References: <20230702012230.385407-1-vitaly.prosyak@amd.com>
+Message-ID: <20230703080036.waovadg5qweqcqxw@kamilkon-desk1>
+References: <20230627180805.4189160-1-himal.prasad.ghimiray@intel.com>
+ <20230627180805.4189160-4-himal.prasad.ghimiray@intel.com>
+ <87jzvj8qf4.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230702012230.385407-1-vitaly.prosyak@amd.com>
-Subject: Re: [igt-dev] [PATCH] tests/amdgpu: add sync object tests
+In-Reply-To: <87jzvj8qf4.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH v4 3/4] tests/xe/xe_guc_pc: Change the sysfs
+ paths
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,329 +22,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Upadhyay <tejas.upadhyay@intel.com>,
+ Badal Nilawar <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vitaly,
+Hi Ashutosh,
 
-On 2023-07-01 at 21:22:30 -0400, vitaly.prosyak@amd.com wrote:
-> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+On 2023-07-01 at 10:58:23 -0700, Dixit, Ashutosh wrote:
+> On Tue, 27 Jun 2023 11:08:04 -0700, Himal Prasad Ghimiray wrote:
+> >
 > 
-> Using worker thread to wait on point and then signal point on other thread.
-> Another test uses a worker thread to signal point and wait on the main
-> thread using amdgpu_cs_syncobj_timeline_wait.
+> Hi Himal,
 > 
-> The command consists of two chunks :
-> 1. AMDGPU_CHUNK_ID_IB uses GFX_COMPUTE_NOP  or SDMA_NOP.
-> 2. The second chunk is AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT
->    or AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL which has the
->    point number .
+> > diff --git a/tests/xe/xe_guc_pc.c b/tests/xe/xe_guc_pc.c
+> > index 89d5ae9e..2900ff09 100644
+> > --- a/tests/xe/xe_guc_pc.c
+> > +++ b/tests/xe/xe_guc_pc.c
+> > @@ -133,23 +133,25 @@ static void exec_basic(int fd, struct drm_xe_engine_class_instance *eci,
+> >	xe_vm_destroy(fd, vm);
+> >  }
+> >
+> > -static int set_freq(int sysfs, int gt_id, const char *freq_name, uint32_t freq)
+> > +static int set_freq(int sysfs, int tile_id, int gt_id, const char *freq_name, uint32_t freq)
+> >  {
+> >	int ret = -EAGAIN;
+> >	char path[32];
+> >
+> > -	sprintf(path, "device/gt%d/freq_%s", gt_id, freq_name);
+> > +	igt_assert(snprintf(path, sizeof(path), "device/tile%d/gt%d/freq_%s",
+> > +			    tile_id, gt_id, freq_name) < sizeof(path));
+> >	while (ret == -EAGAIN)
+> >		ret = igt_sysfs_printf(sysfs, path, "%u", freq);
+> >	return ret;
+> >  }
 > 
-> v1->v2. Fixed style issues - Christian.
->         Fixed formatting issues - Kamil.
+> /snip/
 > 
-> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Acked-by: Christian Koenig <christian.koenig@amd.com>
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > @@ -162,37 +164,37 @@ static uint32_t get_freq(int sysfs, int gt_id, const char *freq_name)
+> >   * Run type: BAT
+> >   */
+> >
+> > -static void test_freq_basic_api(int sysfs, int gt_id)
+> > +static void test_freq_basic_api(int sysfs, int tile_id, int gt_id)
+> >  {
+> > -	uint32_t rpn = get_freq(sysfs, gt_id, "rpn");
+> > -	uint32_t rpe = get_freq(sysfs, gt_id, "rpe");
+> > -	uint32_t rp0 = get_freq(sysfs, gt_id, "rp0");
+> > +	uint32_t rpn = get_freq(sysfs, tile_id, gt_id, "rpn");
+> > +	uint32_t rpe = get_freq(sysfs, tile_id, gt_id, "rpe");
+> > +	uint32_t rp0 = get_freq(sysfs, tile_id, gt_id, "rp0");
+> 
+> /snip/
+> 
+> > @@ -373,7 +375,7 @@ igt_main
+> >  {
+> >	struct drm_xe_engine_class_instance *hwe;
+> >	int fd;
+> > -	int gt;
+> > +	int gt, tile;
+> >	static int sysfs = -1;
+> >	int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> >	uint32_t stash_min;
+> > @@ -386,24 +388,24 @@ igt_main
+> >		sysfs = igt_sysfs_open(fd);
+> >		igt_assert(sysfs != -1);
+> >
+> > -		/* The defaults are the same. Stashing the gt0 is enough */
+> > -		stash_min = get_freq(sysfs, 0, "min");
+> > -		stash_max = get_freq(sysfs, 0, "max");
+> > +		/* The defaults are the same. Stashing the gt0 in tile0 is enough */
+> > +		stash_min = get_freq(sysfs, 0, 0, "min");
+> > +		stash_max = get_freq(sysfs, 0, 0, "max");
+> >	}
+> >
+> >	igt_subtest("freq_basic_api") {
+> > -		xe_for_each_gt(fd, gt)
+> > -			test_freq_basic_api(sysfs, gt);
+> > +		xe_for_each_gt_under_each_tile(fd, tile, gt)
+> > +			test_freq_basic_api(sysfs, tile, gt);
+> 
+> Basically I have decided I disagree with the entire approach here, so I
+> disagree with Patches 2 and 3 in this series. Patch 2 is especially hacky
+> but I think it's not needed. Let's do this differently. My points:
+> 
+> * gt id's are unique (so e.g. on MTL we have tile0/gt0 and tile0/gt1, on
+>   PVC we have tile0/gt0 and tile1/gt1).
+> 
+> * The code in xe_guc_pc.c touches quantities (freq's etc.) which are
+>   associated with gt's. It doesn't care about tiles and which gt is present
+>   on which tile etc. It just cares about gt's. So it wrong to change the
+>   whole code to start worrying about tiles now as this patch is doing (via
+>   xe_for_each_gt_under_each_tile()).
+> 
+> * So instead what we need to do is very simple. Let's write a function
+>   which will return the sysfs path for a gt (this function will need to be
+>   tile aware so it will return things like "device/tile0/gt0",
+>   "device/tile0/gt1", "device/tile1/gt1" etc.). The function prototype is
+>   something like:
+> 
+>   char *xe_gt_sysfs_path(int gt_id);
+> 
+>   How it is implemented probably doesn't matter much. It could e.g. go
+>   through the sysfs directory tree to find the path of a gt or it could use
+>   info on how gts are situated on tiles for particular platforms (MTL vs
+>   PVC as shown above e.g.). Either approach is fine, the platform approach
+>   is simpler.
+> 
+>   So once we have this function implemented, in the above
+>   set_freq()/get_freq() functions we could just use the gt path returned by
+>   this function to read/write the sysfs. We don't need to make the entire
+>   file tile aware. We just need to modify set_freq()/get_freq().
+> 
+> If this doesn't work for some reason please let me know why. Please don't
+> merge this series till we resolve this.
+> 
+> Thanks.
+> --
+> Ashutosh
 
-Please do not merge this until you address GitLab compilation
-issue.
++Cc Riana as she is also using gt* path.
 
 Regards,
 Kamil
-
-> ---
->  tests/amdgpu/amd_syncobj.c | 266 +++++++++++++++++++++++++++++++++++++
->  tests/amdgpu/meson.build   |   1 +
->  2 files changed, 267 insertions(+)
->  create mode 100644 tests/amdgpu/amd_syncobj.c
-> 
-> diff --git a/tests/amdgpu/amd_syncobj.c b/tests/amdgpu/amd_syncobj.c
-> new file mode 100644
-> index 000000000..7cab093c9
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_syncobj.c
-> @@ -0,0 +1,266 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright 2023 Advanced Micro Devices, Inc.
-> + */
-> +
-> +#include <pthread.h>
-> +
-> +#include <amdgpu.h>
-> +#include <amdgpu_drm.h>
-> +
-> +#include "igt.h"
-> +#include "lib/amdgpu/amd_PM4.h"
-> +#include "lib/amdgpu/amd_sdma.h"
-> +#include "lib/amdgpu/amd_memory.h"
-> +
-> +struct syncobj_point {
-> +	amdgpu_device_handle device;
-> +	uint32_t syncobj_handle;
-> +	uint64_t point;
-> +};
-> +
-> +
-> +static bool
-> +syncobj_timeline_enable(int fd)
-> +{
-> +	int r;
-> +	bool ret = false;
-> +	uint64_t cap = 0;
-> +
-> +	r = drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &cap);
-> +	if (r || cap == 0)
-> +		return ret;
-> +	ret = true;
-> +
-> +	return ret;
-> +}
-> +
-> +static void
-> +syncobj_command_submission_helper(amdgpu_device_handle device_handle,
-> +		uint32_t syncobj_handle, bool wait_or_signal, uint64_t point)
-> +{
-> +	amdgpu_context_handle context_handle;
-> +	amdgpu_bo_handle ib_result_handle;
-> +	void *ib_result_cpu;
-> +	uint64_t ib_result_mc_address;
-> +	struct drm_amdgpu_cs_chunk chunks[2];
-> +	struct drm_amdgpu_cs_chunk_data chunk_data;
-> +	struct drm_amdgpu_cs_chunk_syncobj syncobj_data;
-> +	struct amdgpu_cs_fence fence_status;
-> +	amdgpu_bo_list_handle bo_list;
-> +	amdgpu_va_handle va_handle;
-> +	uint32_t expired;
-> +	int i, r;
-> +	uint64_t seq_no;
-> +	uint32_t *ptr;
-> +
-> +	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = amdgpu_bo_alloc_and_map(device_handle, 4096, 4096,
-> +				    AMDGPU_GEM_DOMAIN_GTT, 0,
-> +				    &ib_result_handle, &ib_result_cpu,
-> +				    &ib_result_mc_address, &va_handle);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL, &bo_list);
-> +	igt_assert_eq(r, 0);
-> +
-> +	ptr = ib_result_cpu;
-> +
-> +	for (i = 0; i < 16; ++i)
-> +		ptr[i] = wait_or_signal ? GFX_COMPUTE_NOP : SDMA_NOP;
-> +
-> +	chunks[0].chunk_id = AMDGPU_CHUNK_ID_IB;
-> +	chunks[0].length_dw = sizeof(struct drm_amdgpu_cs_chunk_ib) / 4;
-> +	chunks[0].chunk_data = (uint64_t)(uintptr_t)&chunk_data;
-> +	chunk_data.ib_data._pad = 0;
-> +	chunk_data.ib_data.va_start = ib_result_mc_address;
-> +	chunk_data.ib_data.ib_bytes = 16 * 4;
-> +	chunk_data.ib_data.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
-> +	chunk_data.ib_data.ip_instance = 0;
-> +	chunk_data.ib_data.ring = 0;
-> +	chunk_data.ib_data.flags = 0;
-> +
-> +	chunks[1].chunk_id = wait_or_signal ?
-> +		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT :
-> +		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL;
-> +	chunks[1].length_dw = sizeof(struct drm_amdgpu_cs_chunk_syncobj) / 4;
-> +	chunks[1].chunk_data = (uint64_t)(uintptr_t)&syncobj_data;
-> +	syncobj_data.handle = syncobj_handle;
-> +	syncobj_data.point = point;
-> +	syncobj_data.flags = DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT;
-> +
-> +	r = amdgpu_cs_submit_raw(device_handle,
-> +				 context_handle,
-> +				 bo_list,
-> +				 2,
-> +				 chunks,
-> +				 &seq_no);
-> +	igt_assert_eq(r, 0);
-> +
-> +	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
-> +	fence_status.context = context_handle;
-> +	fence_status.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
-> +	fence_status.ip_instance = 0;
-> +	fence_status.ring = 0;
-> +	fence_status.fence = seq_no;
-> +
-> +	r = amdgpu_cs_query_fence_status(&fence_status,
-> +			AMDGPU_TIMEOUT_INFINITE, 0, &expired);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = amdgpu_bo_list_destroy(bo_list);
-> +	igt_assert_eq(r, 0);
-> +
-> +	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-> +				     ib_result_mc_address, 4096);
-> +
-> +	r = amdgpu_cs_ctx_free(context_handle);
-> +	igt_assert_eq(r, 0);
-> +}
-> +
-> +static void *
-> +syncobj_wait(void *data)
-> +{
-> +	struct syncobj_point *sp = (struct syncobj_point *)data;
-> +
-> +	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, true,
-> +			sp->point);
-> +
-> +	return (void *)0;
-> +}
-> +
-> +static void *
-> +syncobj_signal(void *data)
-> +{
-> +	struct syncobj_point *sp = (struct syncobj_point *)data;
-> +
-> +	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, false,
-> +			sp->point);
-> +
-> +	return (void *)0;
-> +}
-> +
-> +static void
-> +amdgpu_syncobj_timeline(amdgpu_device_handle device_handle)
-> +{
-> +	static pthread_t wait_thread;
-> +	static pthread_t signal_thread;
-> +	static pthread_t c_thread;
-> +	struct syncobj_point sp1, sp2, sp3;
-> +	uint32_t syncobj_handle;
-> +	uint64_t payload;
-> +	uint64_t wait_point, signal_point;
-> +	uint64_t timeout;
-> +	struct timespec tp;
-> +	int r, sync_fd;
-> +	void *tmp, *tmp2;
-> +
-> +	r =  amdgpu_cs_create_syncobj2(device_handle, 0, &syncobj_handle);
-> +	igt_assert_eq(r, 0);
-> +
-> +	// wait on point 5
-> +	sp1.syncobj_handle = syncobj_handle;
-> +	sp1.device = device_handle;
-> +	sp1.point = 5;
-> +	r = pthread_create(&wait_thread, NULL, syncobj_wait, &sp1);
-> +	igt_assert_eq(r, 0);
-> +
-> +	// signal on point 10
-> +	sp2.syncobj_handle = syncobj_handle;
-> +	sp2.device = device_handle;
-> +	sp2.point = 10;
-> +	r = pthread_create(&signal_thread, NULL, syncobj_signal, &sp2);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = pthread_join(signal_thread, &tmp);
-> +	igt_assert_eq(r, 0);
-> +
-> +	r = pthread_join(wait_thread, &tmp2);
-> +	igt_assert_eq(r, 0);
-> +
-> +	//query timeline payload
-> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
-> +				    &payload, 1);
-> +	igt_assert_eq(r, 0);
-> +	igt_assert_eq(payload, 10);
-> +
-> +	//signal on point 16
-> +	sp3.syncobj_handle = syncobj_handle;
-> +	sp3.device = device_handle;
-> +	sp3.point = 16;
-> +	r = pthread_create(&c_thread, NULL, syncobj_signal, &sp3);
-> +	igt_assert_eq(r, 0);
-> +
-> +	//CPU wait on point 16
-> +	wait_point = 16;
-> +	timeout = 0;
-> +	clock_gettime(CLOCK_MONOTONIC, &tp);
-> +	timeout = tp.tv_sec * 1000000000ULL + tp.tv_nsec;
-> +	timeout += 10000000000; //10s
-> +	r = amdgpu_cs_syncobj_timeline_wait(device_handle, &syncobj_handle,
-> +					    &wait_point, 1, timeout,
-> +					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL |
-> +					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
-> +					    NULL);
-> +
-> +	igt_assert_eq(r, 0);
-> +	r = pthread_join(c_thread, &tmp);
-> +	igt_assert_eq(r, 0);
-> +
-> +	// export point 16 and import to point 18
-> +	r = amdgpu_cs_syncobj_export_sync_file2(device_handle, syncobj_handle,
-> +						16,
-> +						DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
-> +						&sync_fd);
-> +	igt_assert_eq(r, 0);
-> +	r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
-> +						18, sync_fd);
-> +	igt_assert_eq(r, 0);
-> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
-> +				    &payload, 1);
-> +	igt_assert_eq(r, 0);
-> +	igt_assert_eq(payload, 18);
-> +
-> +	// CPU signal on point 20
-> +	signal_point = 20;
-> +	r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
-> +					      &signal_point, 1);
-> +	igt_assert_eq(r, 0);
-> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
-> +				    &payload, 1);
-> +	igt_assert_eq(r, 0);
-> +	igt_assert_eq(payload, 20);
-> +
-> +	r = amdgpu_cs_destroy_syncobj(device_handle, syncobj_handle);
-> +	igt_assert_eq(r, 0);
-> +
-> +}
-> +
-> +igt_main
-> +{
-> +	amdgpu_device_handle device;
-> +	int fd = -1;
-> +
-> +	igt_fixture {
-> +		uint32_t major, minor;
-> +		int err;
-> +
-> +		fd = drm_open_driver(DRIVER_AMDGPU);
-> +		err = amdgpu_device_initialize(fd, &major, &minor, &device);
-> +		igt_require(err == 0);
-> +		igt_require(syncobj_timeline_enable(fd));
-> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
-> +			 major, minor);
-> +
-> +	}
-> +
-> +	igt_subtest("amdgpu_syncobj_timeline")
-> +	amdgpu_syncobj_timeline(device);
-> +
-> +	igt_fixture {
-> +		amdgpu_device_deinitialize(device);
-> +		close(fd);
-> +	}
-> +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index 24843de73..02096934d 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -6,6 +6,7 @@ if libdrm_amdgpu.found()
->  			  'amd_assr',
->  			  'amd_basic',
->  			  'amd_bo',
-> +			  'amd_syncobj',
->  			  'amd_bypass',
->  			  'amd_color',
->  			  'amd_cp_dma_misc',
-> -- 
-> 2.25.1
-> 
