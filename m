@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63B1D10E0B5
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Jul 2023 07:28:16 +0000 (UTC)
-Message-ID: <df7bf6c0-4d1f-3259-4c58-53fb1b0bc2ba@intel.com>
-Date: Mon, 3 Jul 2023 09:27:44 +0200
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <20230628081050.2002028-1-karolina.stolarek@intel.com>
- <20230630154349.s2uihetlo7agaw3p@kamilkon-desk1>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230630154349.s2uihetlo7agaw3p@kamilkon-desk1>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45C1F10E0B5
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Jul 2023 07:39:13 +0000 (UTC)
+Date: Mon, 3 Jul 2023 09:39:08 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230703072534.62ixme6t7xmmzzhv@kamilkon-desk1>
+References: <20230702012230.385407-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_batchbuffer: Remove unused
- argument in exec_blit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230702012230.385407-1-vitaly.prosyak@amd.com>
+Subject: Re: [igt-dev] [PATCH] tests/amdgpu: add sync object tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,68 +19,329 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 30.06.2023 17:43, Kamil Konieczny wrote:
-> Hi Karolina,
-> On 2023-06-28 at 10:10:50 +0200, Karolina Stolarek wrote:
->> We don't use information about platform's gen anymore, so
->> stop passing it in.
->>
->> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+Hi Vitaly,
+
+On 2023-07-01 at 21:22:30 -0400, vitaly.prosyak@amd.com wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > 
-> Even if it will be needed we can get it from fd, so
-
-That is true, many thanks for the review, Kamil.
-
-And I see that my changes are already merged, even more thanks to you :)
-
-All the best,
-Karolina
-
+> Using worker thread to wait on point and then signal point on other thread.
+> Another test uses a worker thread to signal point and wait on the main
+> thread using amdgpu_cs_syncobj_timeline_wait.
 > 
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> The command consists of two chunks :
+> 1. AMDGPU_CHUNK_ID_IB uses GFX_COMPUTE_NOP  or SDMA_NOP.
+> 2. The second chunk is AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT
+>    or AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL which has the
+>    point number .
 > 
->> ---
->>   lib/intel_batchbuffer.c | 8 ++++----
->>   1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
->> index 186f65aff..0e92c6f70 100644
->> --- a/lib/intel_batchbuffer.c
->> +++ b/lib/intel_batchbuffer.c
->> @@ -214,8 +214,8 @@ static uint32_t find_engine(const intel_ctx_cfg_t *cfg, unsigned int class)
->>   
->>   static void exec_blit(int fd,
->>   		      struct drm_i915_gem_exec_object2 *objs,
->> -		      uint32_t count, unsigned int gen,
->> -		      uint32_t ctx, const intel_ctx_cfg_t *cfg)
->> +		      uint32_t count, uint32_t ctx,
->> +		      const intel_ctx_cfg_t *cfg)
->>   {
->>   	struct drm_i915_gem_execbuffer2 exec;
->>   	uint32_t devid = intel_get_drm_devid(fd);
->> @@ -514,7 +514,7 @@ void igt_blitter_src_copy(int fd,
->>   		objs[2].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>   	}
->>   
->> -	exec_blit(fd, objs, 3, gen, ctx, cfg);
->> +	exec_blit(fd, objs, 3, ctx, cfg);
->>   
->>   	gem_close(fd, batch_handle);
->>   }
->> @@ -636,7 +636,7 @@ void igt_blitter_fast_copy__raw(int fd,
->>   		objs[2].flags |= EXEC_OBJECT_PINNED;
->>   	}
->>   
->> -	exec_blit(fd, objs, 3, intel_gen(intel_get_drm_devid(fd)), ctx, cfg);
->> +	exec_blit(fd, objs, 3, ctx, cfg);
->>   
->>   	gem_close(fd, batch_handle);
->>   }
->> -- 
->> 2.25.1
->>
+> v1->v2. Fixed style issues - Christian.
+>         Fixed formatting issues - Kamil.
+> 
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Acked-by: Christian Koenig <christian.koenig@amd.com>
+> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Please do not merge this until you address GitLab compilation
+issue.
+
+Regards,
+Kamil
+
+> ---
+>  tests/amdgpu/amd_syncobj.c | 266 +++++++++++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build   |   1 +
+>  2 files changed, 267 insertions(+)
+>  create mode 100644 tests/amdgpu/amd_syncobj.c
+> 
+> diff --git a/tests/amdgpu/amd_syncobj.c b/tests/amdgpu/amd_syncobj.c
+> new file mode 100644
+> index 000000000..7cab093c9
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_syncobj.c
+> @@ -0,0 +1,266 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright 2023 Advanced Micro Devices, Inc.
+> + */
+> +
+> +#include <pthread.h>
+> +
+> +#include <amdgpu.h>
+> +#include <amdgpu_drm.h>
+> +
+> +#include "igt.h"
+> +#include "lib/amdgpu/amd_PM4.h"
+> +#include "lib/amdgpu/amd_sdma.h"
+> +#include "lib/amdgpu/amd_memory.h"
+> +
+> +struct syncobj_point {
+> +	amdgpu_device_handle device;
+> +	uint32_t syncobj_handle;
+> +	uint64_t point;
+> +};
+> +
+> +
+> +static bool
+> +syncobj_timeline_enable(int fd)
+> +{
+> +	int r;
+> +	bool ret = false;
+> +	uint64_t cap = 0;
+> +
+> +	r = drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &cap);
+> +	if (r || cap == 0)
+> +		return ret;
+> +	ret = true;
+> +
+> +	return ret;
+> +}
+> +
+> +static void
+> +syncobj_command_submission_helper(amdgpu_device_handle device_handle,
+> +		uint32_t syncobj_handle, bool wait_or_signal, uint64_t point)
+> +{
+> +	amdgpu_context_handle context_handle;
+> +	amdgpu_bo_handle ib_result_handle;
+> +	void *ib_result_cpu;
+> +	uint64_t ib_result_mc_address;
+> +	struct drm_amdgpu_cs_chunk chunks[2];
+> +	struct drm_amdgpu_cs_chunk_data chunk_data;
+> +	struct drm_amdgpu_cs_chunk_syncobj syncobj_data;
+> +	struct amdgpu_cs_fence fence_status;
+> +	amdgpu_bo_list_handle bo_list;
+> +	amdgpu_va_handle va_handle;
+> +	uint32_t expired;
+> +	int i, r;
+> +	uint64_t seq_no;
+> +	uint32_t *ptr;
+> +
+> +	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_bo_alloc_and_map(device_handle, 4096, 4096,
+> +				    AMDGPU_GEM_DOMAIN_GTT, 0,
+> +				    &ib_result_handle, &ib_result_cpu,
+> +				    &ib_result_mc_address, &va_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL, &bo_list);
+> +	igt_assert_eq(r, 0);
+> +
+> +	ptr = ib_result_cpu;
+> +
+> +	for (i = 0; i < 16; ++i)
+> +		ptr[i] = wait_or_signal ? GFX_COMPUTE_NOP : SDMA_NOP;
+> +
+> +	chunks[0].chunk_id = AMDGPU_CHUNK_ID_IB;
+> +	chunks[0].length_dw = sizeof(struct drm_amdgpu_cs_chunk_ib) / 4;
+> +	chunks[0].chunk_data = (uint64_t)(uintptr_t)&chunk_data;
+> +	chunk_data.ib_data._pad = 0;
+> +	chunk_data.ib_data.va_start = ib_result_mc_address;
+> +	chunk_data.ib_data.ib_bytes = 16 * 4;
+> +	chunk_data.ib_data.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
+> +	chunk_data.ib_data.ip_instance = 0;
+> +	chunk_data.ib_data.ring = 0;
+> +	chunk_data.ib_data.flags = 0;
+> +
+> +	chunks[1].chunk_id = wait_or_signal ?
+> +		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_WAIT :
+> +		AMDGPU_CHUNK_ID_SYNCOBJ_TIMELINE_SIGNAL;
+> +	chunks[1].length_dw = sizeof(struct drm_amdgpu_cs_chunk_syncobj) / 4;
+> +	chunks[1].chunk_data = (uint64_t)(uintptr_t)&syncobj_data;
+> +	syncobj_data.handle = syncobj_handle;
+> +	syncobj_data.point = point;
+> +	syncobj_data.flags = DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT;
+> +
+> +	r = amdgpu_cs_submit_raw(device_handle,
+> +				 context_handle,
+> +				 bo_list,
+> +				 2,
+> +				 chunks,
+> +				 &seq_no);
+> +	igt_assert_eq(r, 0);
+> +
+> +	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
+> +	fence_status.context = context_handle;
+> +	fence_status.ip_type = wait_or_signal ? AMDGPU_HW_IP_GFX : AMDGPU_HW_IP_DMA;
+> +	fence_status.ip_instance = 0;
+> +	fence_status.ring = 0;
+> +	fence_status.fence = seq_no;
+> +
+> +	r = amdgpu_cs_query_fence_status(&fence_status,
+> +			AMDGPU_TIMEOUT_INFINITE, 0, &expired);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = amdgpu_bo_list_destroy(bo_list);
+> +	igt_assert_eq(r, 0);
+> +
+> +	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
+> +				     ib_result_mc_address, 4096);
+> +
+> +	r = amdgpu_cs_ctx_free(context_handle);
+> +	igt_assert_eq(r, 0);
+> +}
+> +
+> +static void *
+> +syncobj_wait(void *data)
+> +{
+> +	struct syncobj_point *sp = (struct syncobj_point *)data;
+> +
+> +	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, true,
+> +			sp->point);
+> +
+> +	return (void *)0;
+> +}
+> +
+> +static void *
+> +syncobj_signal(void *data)
+> +{
+> +	struct syncobj_point *sp = (struct syncobj_point *)data;
+> +
+> +	syncobj_command_submission_helper(sp->device, sp->syncobj_handle, false,
+> +			sp->point);
+> +
+> +	return (void *)0;
+> +}
+> +
+> +static void
+> +amdgpu_syncobj_timeline(amdgpu_device_handle device_handle)
+> +{
+> +	static pthread_t wait_thread;
+> +	static pthread_t signal_thread;
+> +	static pthread_t c_thread;
+> +	struct syncobj_point sp1, sp2, sp3;
+> +	uint32_t syncobj_handle;
+> +	uint64_t payload;
+> +	uint64_t wait_point, signal_point;
+> +	uint64_t timeout;
+> +	struct timespec tp;
+> +	int r, sync_fd;
+> +	void *tmp, *tmp2;
+> +
+> +	r =  amdgpu_cs_create_syncobj2(device_handle, 0, &syncobj_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +	// wait on point 5
+> +	sp1.syncobj_handle = syncobj_handle;
+> +	sp1.device = device_handle;
+> +	sp1.point = 5;
+> +	r = pthread_create(&wait_thread, NULL, syncobj_wait, &sp1);
+> +	igt_assert_eq(r, 0);
+> +
+> +	// signal on point 10
+> +	sp2.syncobj_handle = syncobj_handle;
+> +	sp2.device = device_handle;
+> +	sp2.point = 10;
+> +	r = pthread_create(&signal_thread, NULL, syncobj_signal, &sp2);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = pthread_join(signal_thread, &tmp);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = pthread_join(wait_thread, &tmp2);
+> +	igt_assert_eq(r, 0);
+> +
+> +	//query timeline payload
+> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
+> +				    &payload, 1);
+> +	igt_assert_eq(r, 0);
+> +	igt_assert_eq(payload, 10);
+> +
+> +	//signal on point 16
+> +	sp3.syncobj_handle = syncobj_handle;
+> +	sp3.device = device_handle;
+> +	sp3.point = 16;
+> +	r = pthread_create(&c_thread, NULL, syncobj_signal, &sp3);
+> +	igt_assert_eq(r, 0);
+> +
+> +	//CPU wait on point 16
+> +	wait_point = 16;
+> +	timeout = 0;
+> +	clock_gettime(CLOCK_MONOTONIC, &tp);
+> +	timeout = tp.tv_sec * 1000000000ULL + tp.tv_nsec;
+> +	timeout += 10000000000; //10s
+> +	r = amdgpu_cs_syncobj_timeline_wait(device_handle, &syncobj_handle,
+> +					    &wait_point, 1, timeout,
+> +					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL |
+> +					    DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
+> +					    NULL);
+> +
+> +	igt_assert_eq(r, 0);
+> +	r = pthread_join(c_thread, &tmp);
+> +	igt_assert_eq(r, 0);
+> +
+> +	// export point 16 and import to point 18
+> +	r = amdgpu_cs_syncobj_export_sync_file2(device_handle, syncobj_handle,
+> +						16,
+> +						DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT,
+> +						&sync_fd);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_cs_syncobj_import_sync_file2(device_handle, syncobj_handle,
+> +						18, sync_fd);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
+> +				    &payload, 1);
+> +	igt_assert_eq(r, 0);
+> +	igt_assert_eq(payload, 18);
+> +
+> +	// CPU signal on point 20
+> +	signal_point = 20;
+> +	r = amdgpu_cs_syncobj_timeline_signal(device_handle, &syncobj_handle,
+> +					      &signal_point, 1);
+> +	igt_assert_eq(r, 0);
+> +	r = amdgpu_cs_syncobj_query(device_handle, &syncobj_handle,
+> +				    &payload, 1);
+> +	igt_assert_eq(r, 0);
+> +	igt_assert_eq(payload, 20);
+> +
+> +	r = amdgpu_cs_destroy_syncobj(device_handle, syncobj_handle);
+> +	igt_assert_eq(r, 0);
+> +
+> +}
+> +
+> +igt_main
+> +{
+> +	amdgpu_device_handle device;
+> +	int fd = -1;
+> +
+> +	igt_fixture {
+> +		uint32_t major, minor;
+> +		int err;
+> +
+> +		fd = drm_open_driver(DRIVER_AMDGPU);
+> +		err = amdgpu_device_initialize(fd, &major, &minor, &device);
+> +		igt_require(err == 0);
+> +		igt_require(syncobj_timeline_enable(fd));
+> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
+> +			 major, minor);
+> +
+> +	}
+> +
+> +	igt_subtest("amdgpu_syncobj_timeline")
+> +	amdgpu_syncobj_timeline(device);
+> +
+> +	igt_fixture {
+> +		amdgpu_device_deinitialize(device);
+> +		close(fd);
+> +	}
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index 24843de73..02096934d 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -6,6 +6,7 @@ if libdrm_amdgpu.found()
+>  			  'amd_assr',
+>  			  'amd_basic',
+>  			  'amd_bo',
+> +			  'amd_syncobj',
+>  			  'amd_bypass',
+>  			  'amd_color',
+>  			  'amd_cp_dma_misc',
+> -- 
+> 2.25.1
+> 
