@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam04on20626.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e8b::626])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70BD910E306
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 17:45:37 +0000 (UTC)
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com
+ (mail-sn1nam02on2073.outbound.protection.outlook.com [40.107.96.73])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6637E10E00A
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 22:47:32 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 4 Jul 2023 13:44:57 -0400
-Message-ID: <20230704174502.42544-1-vitaly.prosyak@amd.com>
+Date: Tue, 4 Jul 2023 18:46:54 -0400
+Message-ID: <20230704224654.202484-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH] lib/amdgpu: prepared shared part of multimedia
- tests
+Subject: [igt-dev] [PATCH i-g-t v2] lib/amdgpu: prepared shared part of
+ multimedia tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
