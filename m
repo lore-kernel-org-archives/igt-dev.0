@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam04on2062b.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e8b::62b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1930610E307
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 17:45:17 +0000 (UTC)
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 4 Jul 2023 13:45:02 -0400
-Message-ID: <20230704174502.42544-6-vitaly.prosyak@amd.com>
-In-Reply-To: <20230704174502.42544-1-vitaly.prosyak@amd.com>
-References: <20230704174502.42544-1-vitaly.prosyak@amd.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A1C410E2B9
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 09:01:51 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  4 Jul 2023 11:01:03 +0200
+Message-Id: <20230704090104.120219-12-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230704090104.120219-1-zbigniew.kempczynski@intel.com>
+References: <20230704090104.120219-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 6/6] tests/amdgpu: add jpeg decoder test
+Subject: [igt-dev] [PATCH i-g-t 11/12] tests/xe_ccs: Check if flatccs is
+ working with block-copy for Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,498 +24,799 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+This is ported to xe copy of i915 gem_ccs test. Ported means all driver
+dependent calls - like working on regions, binding and execution were
+replaced by xe counterparts. I wondered to add conditionals for xe
+in gem_ccs but this would decrease test readability so I dropped
+this idea.
 
-Ported and refactored drmlib jpeg_tests.c and  the following is done:
-
-1. Remove everywhere global variables.
-2. Reuse common functions from amd_mmd_shared.h
-3. Properly formatted code to meet igt guidelines.
-
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/amdgpu/amd_jpeg_dec.c | 460 ++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build    |   1 +
- 2 files changed, 461 insertions(+)
- create mode 100644 tests/amdgpu/amd_jpeg_dec.c
+ tests/meson.build |   1 +
+ tests/xe/xe_ccs.c | 763 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 764 insertions(+)
+ create mode 100644 tests/xe/xe_ccs.c
 
-diff --git a/tests/amdgpu/amd_jpeg_dec.c b/tests/amdgpu/amd_jpeg_dec.c
+diff --git a/tests/meson.build b/tests/meson.build
+index ee066b8490..9bca57a5e8 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -244,6 +244,7 @@ i915_progs = [
+ ]
+ 
+ xe_progs = [
++	'xe_ccs',
+ 	'xe_create',
+ 	'xe_compute',
+ 	'xe_dma_buf_sync',
+diff --git a/tests/xe/xe_ccs.c b/tests/xe/xe_ccs.c
 new file mode 100644
-index 000000000..bb2a8e97e
+index 0000000000..e6bb29a5ed
 --- /dev/null
-+++ b/tests/amdgpu/amd_jpeg_dec.c
-@@ -0,0 +1,460 @@
++++ b/tests/xe/xe_ccs.c
+@@ -0,0 +1,763 @@
 +// SPDX-License-Identifier: MIT
-+// Copyright 2023 Advanced Micro Devices, Inc.
-+// Copyright 2017 Advanced Micro Devices, Inc.
++/*
++ * Copyright © 2023 Intel Corporation
++ */
 +
-+#include "lib/amdgpu/amd_mmd_shared.h"
++#include <errno.h>
++#include <glib.h>
++#include <sys/ioctl.h>
++#include <sys/time.h>
++#include <malloc.h>
++#include "drm.h"
++#include "igt.h"
++#include "igt_syncobj.h"
++#include "intel_blt.h"
++#include "intel_mocs.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_util.h"
++/**
++ * TEST: xe ccs
++ * Description: Exercise gen12 blitter with and without flatccs compression on Xe
++ * Run type: FULL
++ *
++ * SUBTEST: block-copy-compressed
++ * Description: Check block-copy flatccs compressed blit
++ *
++ * SUBTEST: block-copy-uncompressed
++ * Description: Check block-copy uncompressed blit
++ *
++ * SUBTEST: block-multicopy-compressed
++ * Description: Check block-multicopy flatccs compressed blit
++ *
++ * SUBTEST: block-multicopy-inplace
++ * Description: Check block-multicopy flatccs inplace decompression blit
++ *
++ * SUBTEST: ctrl-surf-copy
++ * Description: Check flatccs data can be copied from/to surface
++ *
++ * SUBTEST: ctrl-surf-copy-new-ctx
++ * Description: Check flatccs data are physically tagged and visible in vm
++ *
++ * SUBTEST: suspend-resume
++ * Description: Check flatccs data persists after suspend / resume (S0)
++ */
 +
-+/* jpeg registers */
-+#define mmUVD_JPEG_CNTL				0x0200
-+#define mmUVD_JPEG_RB_BASE			0x0201
-+#define mmUVD_JPEG_RB_WPTR			0x0202
-+#define mmUVD_JPEG_RB_RPTR			0x0203
-+#define mmUVD_JPEG_RB_SIZE			0x0204
-+#define mmUVD_JPEG_TIER_CNTL2			0x021a
-+#define mmUVD_JPEG_UV_TILING_CTRL		0x021c
-+#define mmUVD_JPEG_TILING_CTRL			0x021e
-+#define mmUVD_JPEG_OUTBUF_RPTR			0x0220
-+#define mmUVD_JPEG_OUTBUF_WPTR			0x0221
-+#define mmUVD_JPEG_PITCH			0x0222
-+#define mmUVD_JPEG_INT_EN			0x0229
-+#define mmUVD_JPEG_UV_PITCH			0x022b
-+#define mmUVD_JPEG_INDEX			0x023e
-+#define mmUVD_JPEG_DATA				0x023f
-+#define mmUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x0438
-+#define mmUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x0439
-+#define mmUVD_LMI_JPEG_READ_64BIT_BAR_HIGH	0x045a
-+#define mmUVD_LMI_JPEG_READ_64BIT_BAR_LOW	0x045b
-+#define mmUVD_CTX_INDEX				0x0528
-+#define mmUVD_CTX_DATA				0x0529
-+#define mmUVD_SOFT_RESET			0x05a0
++IGT_TEST_DESCRIPTION("Exercise gen12 blitter with and without flatccs compression on Xe");
 +
-+#define vcnipUVD_JPEG_DEC_SOFT_RST		0x402f
-+#define vcnipUVD_JRBC_IB_COND_RD_TIMER		0x408e
-+#define vcnipUVD_JRBC_IB_REF_DATA		0x408f
-+#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH	0x40e1
-+#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW	0x40e0
-+#define vcnipUVD_JPEG_RB_BASE			0x4001
-+#define vcnipUVD_JPEG_RB_SIZE			0x4004
-+#define vcnipUVD_JPEG_RB_WPTR			0x4002
-+#define vcnipUVD_JPEG_PITCH			0x401f
-+#define vcnipUVD_JPEG_UV_PITCH			0x4020
-+#define vcnipJPEG_DEC_ADDR_MODE			0x4027
-+#define vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE	0x4024
-+#define vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE	0x4025
-+#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x40e3
-+#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x40e2
-+#define vcnipUVD_JPEG_INDEX			0x402c
-+#define vcnipUVD_JPEG_DATA			0x402d
-+#define vcnipUVD_JPEG_TIER_CNTL2		0x400f
-+#define vcnipUVD_JPEG_OUTBUF_RPTR		0x401e
-+#define vcnipUVD_JPEG_OUTBUF_CNTL		0x401c
-+#define vcnipUVD_JPEG_INT_EN			0x400a
-+#define vcnipUVD_JPEG_CNTL			0x4000
-+#define vcnipUVD_JPEG_RB_RPTR			0x4003
-+#define vcnipUVD_JPEG_OUTBUF_WPTR		0x401d
++static struct param {
++	int compression_format;
++	int tiling;
++	bool write_png;
++	bool print_bb;
++	bool print_surface_info;
++	int width;
++	int height;
++} param = {
++	.compression_format = 0,
++	.tiling = -1,
++	.write_png = false,
++	.print_bb = false,
++	.print_surface_info = false,
++	.width = 512,
++	.height = 512,
++};
 +
++struct test_config {
++	bool compression;
++	bool inplace;
++	bool surfcopy;
++	bool new_ctx;
++	bool suspend_resume;
++};
 +
-+#define RDECODE_PKT_REG_J(x)		((unsigned int)(x)&0x3FFFF)
-+#define RDECODE_PKT_RES_J(x)		(((unsigned int)(x)&0x3F) << 18)
-+#define RDECODE_PKT_COND_J(x)		(((unsigned int)(x)&0xF) << 24)
-+#define RDECODE_PKT_TYPE_J(x)		(((unsigned int)(x)&0xF) << 28)
-+#define RDECODE_PKTJ(reg, cond, type)	(RDECODE_PKT_REG_J(reg) | \
-+					 RDECODE_PKT_RES_J(0) | \
-+					 RDECODE_PKT_COND_J(cond) | \
-+					 RDECODE_PKT_TYPE_J(type))
-+
-+#define UVD_BASE_INST0_SEG1		0x00007E00
-+#define SOC15_REG_ADDR(reg)		(UVD_BASE_INST0_SEG1 + reg)
-+
-+#define COND0				0
-+#define COND1				1
-+#define COND3				3
-+#define TYPE0				0
-+#define TYPE1				1
-+#define TYPE3				3
-+#define JPEG_DEC_DT_PITCH		0x100
-+#define JPEG_DEC_BSD_SIZE		0x180
-+#define JPEG_DEC_LUMA_OFFSET		0
-+#define JPEG_DEC_CHROMA_OFFSET		0x1000
-+#define JPEG_DEC_SUM			4096
-+#define IB_SIZE				4096
-+#define MAX_RESOURCES			16
-+
-+static bool
-+is_jpeg_tests_enable(amdgpu_device_handle device_handle,
-+		struct mmd_context *context)
++static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
++			    uint32_t handle, uint32_t region, uint64_t size,
++			    uint8_t mocs, enum blt_access_type access_type)
 +{
-+	struct drm_amdgpu_info_hw_ip info;
-+	int r;
++	obj->handle = handle;
++	obj->region = region;
++	obj->size = size;
++	obj->mocs = mocs;
++	obj->access_type = access_type;
++}
 +
-+	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VCN_JPEG, 0, &info);
++#define PRINT_SURFACE_INFO(name, obj) do { \
++	if (param.print_surface_info) \
++		blt_surface_info((name), (obj)); } while (0)
 +
-+	if (r != 0 || !info.available_rings ||
-+			(context->family_id < AMDGPU_FAMILY_RV &&
-+			(context->family_id == AMDGPU_FAMILY_AI &&
-+			(context->chip_id - context->chip_rev) < 0x32))) { /* Arcturus */
-+		igt_info("\n\nThe ASIC NOT support JPEG, test disabled\n");
-+		return false;
++#define WRITE_PNG(fd, id, name, obj, w, h) do { \
++	if (param.write_png) \
++		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
++
++static int compare_nxn(const struct blt_copy_object *surf1,
++		       const struct blt_copy_object *surf2,
++		       int xsize, int ysize, int bx, int by)
++{
++	int x, y, corrupted;
++	uint32_t pos, px1, px2;
++
++	corrupted = 0;
++	for (y = 0; y < ysize; y++) {
++		for (x = 0; x < xsize; x++) {
++			pos = bx * xsize + by * ysize * surf1->pitch / 4;
++			pos += x + y * surf1->pitch / 4;
++			px1 = surf1->ptr[pos];
++			px2 = surf2->ptr[pos];
++			if (px1 != px2)
++				corrupted++;
++		}
 +	}
 +
-+	if (info.hw_ip_version_major == 1)
-+		context->jpeg_direct_reg = false;
-+	else if (info.hw_ip_version_major > 1 && info.hw_ip_version_major <= 4)
-+		context->jpeg_direct_reg = true;
-+	else
-+		return false;
-+
-+	return true;
++	return corrupted;
 +}
 +
-+
-+static void
-+set_reg_jpeg(struct mmd_context *context, uint32_t reg, uint32_t cond,
-+		uint32_t type, uint32_t val, uint32_t *idx)
++static void dump_corruption_info(const struct blt_copy_object *surf1,
++				 const struct blt_copy_object *surf2)
 +{
-+	context->ib_cpu[(*idx)++] = RDECODE_PKTJ(reg, cond, type);
-+	context->ib_cpu[(*idx)++] = val;
++	const int xsize = 8, ysize = 8;
++	int w, h, bx, by, corrupted;
++
++	igt_assert(surf1->x1 == surf2->x1 && surf1->x2 == surf2->x2);
++	igt_assert(surf1->y1 == surf2->y1 && surf1->y2 == surf2->y2);
++	w = surf1->x2;
++	h = surf1->y2;
++
++	igt_info("dump corruption - width: %d, height: %d, sizex: %x, sizey: %x\n",
++		 surf1->x2, surf1->y2, xsize, ysize);
++
++	for (by = 0; by < h / ysize; by++) {
++		for (bx = 0; bx < w / xsize; bx++) {
++			corrupted = compare_nxn(surf1, surf2, xsize, ysize, bx, by);
++			if (corrupted == 0)
++				igt_info(".");
++			else
++				igt_info("%c", '0' + corrupted);
++		}
++		igt_info("\n");
++	}
 +}
 +
-+/* send a bitstream buffer command */
-+static void
-+send_cmd_bitstream(struct mmd_context *context, uint64_t addr, uint32_t *idx)
++static void surf_copy(int xe,
++		      intel_ctx_t *ctx,
++		      uint64_t ahnd,
++		      const struct blt_copy_object *src,
++		      const struct blt_copy_object *mid,
++		      const struct blt_copy_object *dst,
++		      int run_id, bool suspend_resume)
 +{
-+	/* jpeg soft reset */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 1, idx);
++	struct blt_copy_data blt = {};
++	struct blt_block_copy_data_ext ext = {};
++	struct blt_ctrl_surf_copy_data surf = {};
++	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
++	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
++	uint32_t *ccscopy;
++	uint8_t uc_mocs = intel_get_uc_mocs(xe);
++	uint32_t sysmem = system_memory(xe);
++	int result;
 +
-+	/* ensuring the Reset is asserted in SCLK domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C2, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(1 << 9), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3,
-+			(1 << 9), idx);
++	igt_assert(mid->compression);
++	ccscopy = (uint32_t *) malloc(ccssize);
++	ccs = xe_bo_create_flags(xe, 0, ccssize, sysmem);
++	ccs2 = xe_bo_create_flags(xe, 0, ccssize, sysmem);
 +
-+	/* wait mem */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
-+			0, idx);
++	blt_ctrl_surf_copy_init(xe, &surf);
++	surf.print_bb = param.print_bb;
++	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
++			uc_mocs, BLT_INDIRECT_ACCESS);
++	set_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs, DIRECT_ACCESS);
++	bb_size = xe_get_default_alignment(xe);
++	bb1 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
++	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
++	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
++	intel_ctx_xe_sync(ctx, true);
 +
-+	/* ensuring the Reset is de-asserted in SCLK domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(0 << 9), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3,
-+			(1 << 9), idx);
++	ccsmap = xe_bo_map(xe, ccs, surf.dst.size);
++	memcpy(ccscopy, ccsmap, ccssize);
 +
-+	/* set UVD_LMI_JPEG_READ_64BIT_BAR_LOW/HIGH based on bitstream buffer address */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_READ_64BIT_BAR_HIGH),
-+			COND0, TYPE0, (addr >> 32), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_READ_64BIT_BAR_LOW),
-+			COND0, TYPE0, (uint32_t)addr, idx);
++	if (suspend_resume) {
++		char *orig, *orig2, *newsum, *newsum2;
 +
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_BASE), COND0, TYPE0,
-+			0, idx);
++		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
++						   (void *)ccsmap, surf.dst.size);
++		orig2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
++						    (void *)mid->ptr, mid->size);
 +
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_SIZE), COND0, TYPE0,
-+			0xFFFFFFF0, idx);
++		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
 +
-+	/* set jpeg_rb_wptr */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_WPTR), COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+}
++		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
++				0, DIRECT_ACCESS);
++		blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
++		intel_ctx_xe_sync(ctx, true);
 +
-+/* send a target buffer command */
-+static void
-+send_cmd_target(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
++		ccsmap2 = xe_bo_map(xe, ccs2, surf.dst.size);
++		newsum = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
++						     (void *)ccsmap2, surf.dst.size);
++		newsum2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
++						      (void *)mid->ptr, mid->size);
 +
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_PITCH), COND0, TYPE0,
-+				(JPEG_DEC_DT_PITCH >> 4), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_UV_PITCH), COND0, TYPE0,
-+				(JPEG_DEC_DT_PITCH >> 4), idx);
-+
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_TILING_CTRL), COND0, TYPE0,
-+			0, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_UV_TILING_CTRL), COND0, TYPE0,
-+			0, idx);
-+
-+	/* set UVD_LMI_JPEG_WRITE_64BIT_BAR_LOW/HIGH based on target buffer address */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH),
-+			COND0, TYPE0, (addr >> 32), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW),
-+			COND0, TYPE0, (uint32_t)addr, idx);
-+
-+	/* set output buffer data address */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INDEX), COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_DATA), COND0, TYPE0,
-+			JPEG_DEC_LUMA_OFFSET, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INDEX), COND0, TYPE0, 1, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_DATA), COND0, TYPE0,
-+			JPEG_DEC_CHROMA_OFFSET, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_TIER_CNTL2), COND0, TYPE3,
-+			0, idx);
-+
-+	/* set output buffer read pointer */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_OUTBUF_RPTR), COND0, TYPE0,
-+			0, idx);
-+
-+	/* enable error interrupts */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INT_EN), COND0, TYPE0,
-+			0xFFFFFFFE, idx);
-+
-+	/* start engine command */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
-+			0x6, idx);
-+
-+	/* wait for job completion, wait for job JBSI fetch done */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C2, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_RPTR), COND0, TYPE3,
-+			0xFFFFFFFF, idx);
-+
-+	/* wait for job jpeg outbuf idle */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			0xFFFFFFFF, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_OUTBUF_WPTR), COND0, TYPE3,
-+			0x00000001, idx);
-+
-+	/* stop engine */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
-+			0x4, idx);
-+
-+	/* asserting jpeg lmi drop */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x0005, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(1 << 23 | 1 << 0), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE1, 0, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, 0, idx);
-+
-+	/* asserting jpeg reset */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 1, idx);
-+
-+	/* ensure reset is asserted in sclk domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x01C3,
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, (1 << 9),
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3, (1 << 9),
-+			idx);
-+
-+	/* de-assert jpeg reset */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 0, idx);
-+
-+	/* ensure reset is de-asserted in sclk domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x01C3,
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, (0 << 9),
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3, (1 << 9),
-+			idx);
-+
-+	/* de-asserting jpeg lmi drop */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x0005,
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, 0, idx);
-+}
-+
-+/* send a bitstream buffer command */
-+static void
-+send_cmd_bitstream_direct(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
-+
-+	/* jpeg soft reset */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND0, TYPE0, 1, idx);
-+
-+	/* ensuring the Reset is asserted in SCLK domain */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_COND_RD_TIMER, COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0,
-+			(0x1 << 0x10), idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND3, TYPE3,
-+			(0x1 << 0x10), idx);
-+
-+	/* wait mem */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND0, TYPE0, 0, idx);
-+
-+	/* ensuring the Reset is de-asserted in SCLK domain */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0, (0 << 0x10),
-+			idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND3, TYPE3,
-+			(0x1 << 0x10), idx);
-+
-+	/* set UVD_LMI_JPEG_READ_64BIT_BAR_LOW/HIGH based on bitstream buffer address */
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH, COND0, TYPE0,
-+			(addr >> 32), idx);
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW, COND0, TYPE0,
-+			addr, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_BASE, COND0, TYPE0, 0, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_SIZE, COND0, TYPE0, 0xFFFFFFF0, idx);
-+
-+	/* set jpeg_rb_wptr */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_WPTR, COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+}
-+
-+/* send a target buffer command */
-+static void
-+send_cmd_target_direct(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
-+
-+	set_reg_jpeg(context, vcnipUVD_JPEG_PITCH, COND0, TYPE0,
-+			(JPEG_DEC_DT_PITCH >> 4), idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_UV_PITCH, COND0, TYPE0,
-+			(JPEG_DEC_DT_PITCH >> 4), idx);
-+
-+	set_reg_jpeg(context, vcnipJPEG_DEC_ADDR_MODE, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE, COND0, TYPE0,
-+			0, idx);
-+	set_reg_jpeg(context, vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE, COND0, TYPE0,
-+			0, idx);
-+
-+	/* set UVD_LMI_JPEG_WRITE_64BIT_BAR_LOW/HIGH based on target buffer address */
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH, COND0, TYPE0,
-+			(addr >> 32), idx);
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW, COND0, TYPE0,
-+			addr, idx);
-+
-+	/* set output buffer data address */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0, JPEG_DEC_LUMA_OFFSET,
-+			idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 1, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0,
-+			JPEG_DEC_CHROMA_OFFSET, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_TIER_CNTL2, COND0, 0, 0, idx);
-+
-+	/* set output buffer read pointer */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_RPTR, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_CNTL, COND0, TYPE0,
-+				((0x00001587 & (~0x00000180L)) | (0x1 << 0x7) | (0x1 << 0x6)),
-+				 idx);
-+
-+	/* enable error interrupts */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_INT_EN, COND0, TYPE0, 0xFFFFFFFE, idx);
-+
-+	/* start engine command */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_CNTL, COND0, TYPE0, 0xE, idx);
-+
-+	/* wait for job completion, wait for job JBSI fetch done */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_COND_RD_TIMER, COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_RPTR, COND3, TYPE3, 0xFFFFFFFF, idx);
-+
-+	/* wait for job jpeg outbuf idle */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0, 0xFFFFFFFF,
-+			idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_WPTR, COND3, TYPE3, 0x00000001,
-+			idx);
-+
-+	/* stop engine */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_CNTL, COND0, TYPE0, 0x4, idx);
-+}
-+
-+static void
-+amdgpu_cs_jpeg_decode(amdgpu_device_handle device_handle,
-+		struct mmd_context *context)
-+{
-+
-+	struct amdgpu_mmd_bo dec_buf;
-+	int size, r;
-+	uint8_t *dec;
-+	int sum = 0, i, j;
-+	uint32_t idx;
-+
-+	size = 16 * 1024; /* 8K bitstream + 8K output */
-+
-+	context->num_resources = 0;
-+	alloc_resource(device_handle, &dec_buf, size, AMDGPU_GEM_DOMAIN_VRAM);
-+	context->resources[context->num_resources++] = dec_buf.handle;
-+	context->resources[context->num_resources++] = context->ib_handle;
-+	r = amdgpu_bo_cpu_map(dec_buf.handle, (void **)&dec_buf.ptr);
-+	igt_assert_eq(r, 0);
-+	memcpy(dec_buf.ptr, jpeg_bitstream, sizeof(jpeg_bitstream));
-+
-+	idx = 0;
-+
-+	if (context->jpeg_direct_reg == true) {
-+		send_cmd_bitstream_direct(context, dec_buf.addr, &idx);
-+		send_cmd_target_direct(context, dec_buf.addr + (size / 2), &idx);
-+	} else {
-+		send_cmd_bitstream(context, dec_buf.addr, &idx);
-+		send_cmd_target(context, dec_buf.addr + (size / 2), &idx);
++		munmap(ccsmap2, ccssize);
++		igt_assert(!strcmp(orig, newsum));
++		igt_assert(!strcmp(orig2, newsum2));
++		g_free(orig);
++		g_free(orig2);
++		g_free(newsum);
++		g_free(newsum2);
 +	}
 +
-+	amdgpu_bo_cpu_unmap(dec_buf.handle);
-+	r = submit(device_handle, context, idx, AMDGPU_HW_IP_VCN_JPEG);
-+	igt_assert_eq(r, 0);
++	/* corrupt ccs */
++	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
++		ccsmap[i] = i;
++	set_surf_object(&surf.src, ccs, sysmem, ccssize,
++			uc_mocs, DIRECT_ACCESS);
++	set_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
++			uc_mocs, INDIRECT_ACCESS);
++	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
++	intel_ctx_xe_sync(ctx, true);
 +
-+	r = amdgpu_bo_cpu_map(dec_buf.handle, (void **)&dec_buf.ptr);
-+	igt_assert_eq(r, 0);
++	blt_copy_init(xe, &blt);
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	blt_set_copy_object(&blt.src, mid);
++	blt_set_copy_object(&blt.dst, dst);
++	blt_set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
++	bb2 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
++	blt_set_batch(&blt.bb, bb2, bb_size, sysmem);
++	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
++	intel_ctx_xe_sync(ctx, true);
++	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
++	result = memcmp(src->ptr, dst->ptr, src->size);
++	igt_assert(result != 0);
 +
-+	dec = dec_buf.ptr + (size / 2);
++	/* retrieve back ccs */
++	memcpy(ccsmap, ccscopy, ccssize);
++	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
 +
-+	/* calculate result checksum */
-+	for (i = 0; i < 8; i++)
-+		for (j = 0; j < 8; j++)
-+			sum += *((dec + JPEG_DEC_LUMA_OFFSET + i * JPEG_DEC_DT_PITCH) + j);
-+	for (i = 0; i < 4; i++)
-+		for (j = 0; j < 8; j++)
-+			sum += *((dec + JPEG_DEC_CHROMA_OFFSET + i * JPEG_DEC_DT_PITCH) + j);
++	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
++	intel_ctx_xe_sync(ctx, true);
++	WRITE_PNG(xe, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
++	result = memcmp(src->ptr, dst->ptr, src->size);
++	if (result)
++		dump_corruption_info(src, dst);
 +
-+	amdgpu_bo_cpu_unmap(dec_buf.handle);
-+	igt_assert_eq(sum, JPEG_DEC_SUM);
++	munmap(ccsmap, ccssize);
++	gem_close(xe, ccs);
++	gem_close(xe, ccs2);
++	gem_close(xe, bb1);
++	gem_close(xe, bb2);
 +
-+	free_resource(&dec_buf);
++	igt_assert_f(result == 0,
++		     "Source and destination surfaces are different after "
++		     "restoring source ccs data\n");
 +}
 +
-+igt_main
++struct blt_copy3_data {
++	int xe;
++	struct blt_copy_object src;
++	struct blt_copy_object mid;
++	struct blt_copy_object dst;
++	struct blt_copy_object final;
++	struct blt_copy_batch bb;
++	enum blt_color_depth color_depth;
++
++	/* debug stuff */
++	bool print_bb;
++};
++
++struct blt_block_copy3_data_ext {
++	struct blt_block_copy_object_ext src;
++	struct blt_block_copy_object_ext mid;
++	struct blt_block_copy_object_ext dst;
++	struct blt_block_copy_object_ext final;
++};
++
++#define FILL_OBJ(_idx, _handle, _offset) do { \
++	obj[(_idx)].handle = (_handle); \
++	obj[(_idx)].offset = (_offset); \
++} while (0)
++
++static int blt_block_copy3(int xe,
++			   const intel_ctx_t *ctx,
++			   uint64_t ahnd,
++			   const struct blt_copy3_data *blt3,
++			   const struct blt_block_copy3_data_ext *ext3)
 +{
-+	amdgpu_device_handle device;
-+	struct mmd_context context = {};
-+	int fd = -1;
++	struct blt_copy_data blt0;
++	struct blt_block_copy_data_ext ext0;
++	uint64_t bb_offset, alignment;
++	uint64_t bb_pos = 0;
++	int ret;
++
++	igt_assert_f(ahnd, "block-copy3 supports softpin only\n");
++	igt_assert_f(blt3, "block-copy3 requires data to do blit\n");
++
++	alignment = xe_get_default_alignment(xe);
++	get_offset(ahnd, blt3->src.handle, blt3->src.size, alignment);
++	get_offset(ahnd, blt3->mid.handle, blt3->mid.size, alignment);
++	get_offset(ahnd, blt3->dst.handle, blt3->dst.size, alignment);
++	get_offset(ahnd, blt3->final.handle, blt3->final.size, alignment);
++	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
++
++	/* First blit src -> mid */
++	blt_copy_init(xe, &blt0);
++	blt0.src = blt3->src;
++	blt0.dst = blt3->mid;
++	blt0.bb = blt3->bb;
++	blt0.color_depth = blt3->color_depth;
++	blt0.print_bb = blt3->print_bb;
++	ext0.src = ext3->src;
++	ext0.dst = ext3->mid;
++	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, false);
++
++	/* Second blit mid -> dst */
++	blt_copy_init(xe, &blt0);
++	blt0.src = blt3->mid;
++	blt0.dst = blt3->dst;
++	blt0.bb = blt3->bb;
++	blt0.color_depth = blt3->color_depth;
++	blt0.print_bb = blt3->print_bb;
++	ext0.src = ext3->mid;
++	ext0.dst = ext3->dst;
++	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, false);
++
++	/* Third blit dst -> final */
++	blt_copy_init(xe, &blt0);
++	blt0.src = blt3->dst;
++	blt0.dst = blt3->final;
++	blt0.bb = blt3->bb;
++	blt0.color_depth = blt3->color_depth;
++	blt0.print_bb = blt3->print_bb;
++	ext0.src = ext3->dst;
++	ext0.dst = ext3->final;
++	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, true);
++
++	intel_ctx_xe_exec(ctx, ahnd, bb_offset);
++
++	return ret;
++}
++
++static void block_copy(int xe,
++		       intel_ctx_t *ctx,
++		       uint32_t region1, uint32_t region2,
++		       enum blt_tiling_type mid_tiling,
++		       const struct test_config *config)
++{
++	struct blt_copy_data blt = {};
++	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
++	struct blt_copy_object *src, *mid, *dst;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = xe_get_default_alignment(xe);
++	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
++	uint32_t run_id = mid_tiling;
++	uint32_t mid_region = region2, bb;
++	uint32_t width = param.width, height = param.height;
++	enum blt_compression mid_compression = config->compression;
++	int mid_compression_format = param.compression_format;
++	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
++	uint8_t uc_mocs = intel_get_uc_mocs(xe);
++	int result;
++
++	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
++
++	if (!blt_uses_extended_block_copy(xe))
++		pext = NULL;
++
++	blt_copy_init(xe, &blt);
++
++	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
++				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
++	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
++				mid_tiling, mid_compression, comp_type, true);
++	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
++				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
++	igt_assert(src->size == dst->size);
++	PRINT_SURFACE_INFO("src", src);
++	PRINT_SURFACE_INFO("mid", mid);
++	PRINT_SURFACE_INFO("dst", dst);
++
++	blt_surface_fill_rect(xe, src, width, height);
++	WRITE_PNG(xe, run_id, "src", src, width, height);
++
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	blt_set_copy_object(&blt.src, src);
++	blt_set_copy_object(&blt.dst, mid);
++	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext.dst, mid_compression_format, width, height, SURFACE_TYPE_2D);
++	blt_set_batch(&blt.bb, bb, bb_size, region1);
++	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
++	intel_ctx_xe_sync(ctx, true);
++
++	/* We expect mid != src if there's compression */
++	if (mid->compression)
++		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
++
++	WRITE_PNG(xe, run_id, "src", &blt.src, width, height);
++	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height);
++
++	if (config->surfcopy && pext) {
++		struct drm_xe_engine_class_instance inst = {
++			.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++		};
++		intel_ctx_t *surf_ctx = ctx;
++		uint64_t surf_ahnd = ahnd;
++		uint32_t vm, engine;
++
++		if (config->new_ctx) {
++			vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++			engine = xe_engine_create(xe, vm, &inst, 0);
++			surf_ctx = intel_ctx_xe(xe, vm, engine, 0, 0, 0);
++			surf_ahnd = intel_allocator_open(xe, surf_ctx->vm,
++							 INTEL_ALLOCATOR_RELOC);
++		}
++		surf_copy(xe, surf_ctx, surf_ahnd, src, mid, dst, run_id,
++			  config->suspend_resume);
++
++		if (surf_ctx != ctx) {
++			xe_engine_destroy(xe, engine);
++			xe_vm_destroy(xe, vm);
++			free(surf_ctx);
++			put_ahnd(surf_ahnd);
++		}
++	}
++
++	blt_copy_init(xe, &blt);
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	blt_set_copy_object(&blt.src, mid);
++	blt_set_copy_object(&blt.dst, dst);
++	blt_set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
++	if (config->inplace) {
++		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
++			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
++		blt.dst.ptr = mid->ptr;
++	}
++
++	blt_set_batch(&blt.bb, bb, bb_size, region1);
++	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
++	intel_ctx_xe_sync(ctx, true);
++
++	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height);
++
++	result = memcmp(src->ptr, blt.dst.ptr, src->size);
++
++	/* Politely clean vm */
++	put_offset(ahnd, src->handle);
++	put_offset(ahnd, mid->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(xe, src);
++	blt_destroy_object(xe, mid);
++	blt_destroy_object(xe, dst);
++	gem_close(xe, bb);
++	put_ahnd(ahnd);
++
++	igt_assert_f(!result, "source and destination surfaces differs!\n");
++}
++
++static void block_multicopy(int xe,
++			    intel_ctx_t *ctx,
++			    uint32_t region1, uint32_t region2,
++			    enum blt_tiling_type mid_tiling,
++			    const struct test_config *config)
++{
++	struct blt_copy3_data blt3 = {};
++	struct blt_copy_data blt = {};
++	struct blt_block_copy3_data_ext ext3 = {}, *pext3 = &ext3;
++	struct blt_copy_object *src, *mid, *dst, *final;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = xe_get_default_alignment(xe);
++	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
++	uint32_t run_id = mid_tiling;
++	uint32_t mid_region = region2, bb;
++	uint32_t width = param.width, height = param.height;
++	enum blt_compression mid_compression = config->compression;
++	int mid_compression_format = param.compression_format;
++	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
++	uint8_t uc_mocs = intel_get_uc_mocs(xe);
++	int result;
++
++	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
++
++	if (!blt_uses_extended_block_copy(xe))
++		pext3 = NULL;
++
++	blt_copy_init(xe, &blt);
++
++	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
++				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
++	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
++				mid_tiling, mid_compression, comp_type, true);
++	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
++				mid_tiling, COMPRESSION_DISABLED, comp_type, true);
++	final = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
++				  T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
++	igt_assert(src->size == dst->size);
++	PRINT_SURFACE_INFO("src", src);
++	PRINT_SURFACE_INFO("mid", mid);
++	PRINT_SURFACE_INFO("dst", dst);
++	PRINT_SURFACE_INFO("final", final);
++
++	blt_surface_fill_rect(xe, src, width, height);
++
++	blt3.color_depth = CD_32bit;
++	blt3.print_bb = param.print_bb;
++	blt_set_copy_object(&blt3.src, src);
++	blt_set_copy_object(&blt3.mid, mid);
++	blt_set_copy_object(&blt3.dst, dst);
++	blt_set_copy_object(&blt3.final, final);
++
++	if (config->inplace) {
++		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
++			       mid->mocs, mid_tiling, COMPRESSION_DISABLED,
++			       comp_type);
++		blt3.dst.ptr = mid->ptr;
++	}
++
++	blt_set_object_ext(&ext3.src, 0, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext3.mid, mid_compression_format, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext3.dst, 0, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext3.final, 0, width, height, SURFACE_TYPE_2D);
++	blt_set_batch(&blt3.bb, bb, bb_size, region1);
++
++	blt_block_copy3(xe, ctx, ahnd, &blt3, pext3);
++	intel_ctx_xe_sync(ctx, true);
++
++	WRITE_PNG(xe, run_id, "src", &blt3.src, width, height);
++	if (!config->inplace)
++		WRITE_PNG(xe, run_id, "mid", &blt3.mid, width, height);
++	WRITE_PNG(xe, run_id, "dst", &blt3.dst, width, height);
++	WRITE_PNG(xe, run_id, "final", &blt3.final, width, height);
++
++	result = memcmp(src->ptr, blt3.final.ptr, src->size);
++
++	put_offset(ahnd, src->handle);
++	put_offset(ahnd, mid->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, final->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(xe, src);
++	blt_destroy_object(xe, mid);
++	blt_destroy_object(xe, dst);
++	blt_destroy_object(xe, final);
++	gem_close(xe, bb);
++	put_ahnd(ahnd);
++
++	igt_assert_f(!result, "source and destination surfaces differs!\n");
++}
++
++enum copy_func {
++	BLOCK_COPY,
++	BLOCK_MULTICOPY,
++};
++
++static const struct {
++	const char *suffix;
++	void (*copyfn)(int fd,
++		       intel_ctx_t *ctx,
++		       uint32_t region1, uint32_t region2,
++		       enum blt_tiling_type btype,
++		       const struct test_config *config);
++} copyfns[] = {
++	[BLOCK_COPY] = { "", block_copy },
++	[BLOCK_MULTICOPY] = { "-multicopy", block_multicopy },
++};
++
++static void block_copy_test(int xe,
++			    const struct test_config *config,
++			    struct igt_collection *set,
++			    enum copy_func copy_function)
++{
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	intel_ctx_t *ctx;
++	struct igt_collection *regions;
++	uint32_t vm, engine;
++	int tiling;
++
++	if (config->compression && !blt_block_copy_supports_compression(xe))
++		return;
++
++	if (config->inplace && !config->compression)
++		return;
++
++	for_each_tiling(tiling) {
++		if (!blt_block_copy_supports_tiling(xe, tiling) ||
++		    (param.tiling >= 0 && param.tiling != tiling))
++			continue;
++
++		for_each_variation_r(regions, 2, set) {
++			uint32_t region1, region2;
++			char *regtxt;
++
++			region1 = igt_collection_get_value(regions, 0);
++			region2 = igt_collection_get_value(regions, 1);
++
++			/* Compressed surface must be in device memory */
++			if (config->compression && !XE_IS_VRAM_MEMORY_REGION(xe, region2))
++				continue;
++
++			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
++
++			igt_dynamic_f("%s-%s-compfmt%d-%s%s",
++				      blt_tiling_name(tiling),
++				      config->compression ?
++					      "compressed" : "uncompressed",
++				      param.compression_format, regtxt,
++				      copyfns[copy_function].suffix) {
++				uint32_t sync_bind, sync_out;
++
++				vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++				engine = xe_engine_create(xe, vm, &inst, 0);
++				sync_bind = syncobj_create(xe, 0);
++				sync_out = syncobj_create(xe, 0);
++				ctx = intel_ctx_xe(xe, vm, engine,
++						   0, sync_bind, sync_out);
++
++				copyfns[copy_function].copyfn(xe, ctx,
++							      region1, region2,
++							      tiling, config);
++
++				xe_engine_destroy(xe, engine);
++				xe_vm_destroy(xe, vm);
++				syncobj_destroy(xe, sync_bind);
++				syncobj_destroy(xe, sync_out);
++				free(ctx);
++			}
++
++			free(regtxt);
++		}
++	}
++}
++
++static int opt_handler(int opt, int opt_index, void *data)
++{
++	switch (opt) {
++	case 'b':
++		param.print_bb = true;
++		igt_debug("Print bb: %d\n", param.print_bb);
++		break;
++	case 'f':
++		param.compression_format = atoi(optarg);
++		igt_debug("Compression format: %d\n", param.compression_format);
++		igt_assert((param.compression_format & ~0x1f) == 0);
++		break;
++	case 'p':
++		param.write_png = true;
++		igt_debug("Write png: %d\n", param.write_png);
++		break;
++	case 's':
++		param.print_surface_info = true;
++		igt_debug("Print surface info: %d\n", param.print_surface_info);
++		break;
++	case 't':
++		param.tiling = atoi(optarg);
++		igt_debug("Tiling: %d\n", param.tiling);
++		break;
++	case 'W':
++		param.width = atoi(optarg);
++		igt_debug("Width: %d\n", param.width);
++		break;
++	case 'H':
++		param.height = atoi(optarg);
++		igt_debug("Height: %d\n", param.height);
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -b\tPrint bb\n"
++	"  -f\tCompression format (0-31)\n"
++	"  -p\tWrite PNG\n"
++	"  -s\tPrint surface info\n"
++	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
++	"  -W\tWidth (default 512)\n"
++	"  -H\tHeight (default 512)"
++	;
++
++igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
++{
++	struct igt_collection *set;
++	int xe;
 +
 +	igt_fixture {
-+		uint32_t major, minor;
-+		int err;
++		xe = drm_open_driver(DRIVER_XE);
++		igt_require(blt_has_block_copy(xe));
 +
-+		fd = drm_open_driver(DRIVER_AMDGPU);
-+		err = amdgpu_device_initialize(fd, &major, &minor, &device);
-+		igt_require(err == 0);
-+		igt_info("Initialized amdgpu, driver version %d.%d\n",
-+			 major, minor);
-+		err = mmd_context_init(device, &context);
-+		igt_require(err == 0);
-+		igt_skip_on(!is_jpeg_tests_enable(device, &context));
++		xe_device_get(xe);
++
++		set = xe_get_memory_region_set(xe,
++					       XE_MEM_REGION_CLASS_SYSMEM,
++					       XE_MEM_REGION_CLASS_VRAM);
 +	}
-+	igt_describe("Test whether jpeg dec decodes");
-+	igt_subtest("amdgpu_cs_jpeg_decode")
-+	amdgpu_cs_jpeg_decode(device, &context);
++
++	igt_describe("Check block-copy uncompressed blit");
++	igt_subtest_with_dynamic("block-copy-uncompressed") {
++		struct test_config config = {};
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
++	igt_describe("Check block-copy flatccs compressed blit");
++	igt_subtest_with_dynamic("block-copy-compressed") {
++		struct test_config config = { .compression = true };
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
++	igt_describe("Check block-multicopy flatccs compressed blit");
++	igt_subtest_with_dynamic("block-multicopy-compressed") {
++		struct test_config config = { .compression = true };
++
++		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
++	}
++
++	igt_describe("Check block-multicopy flatccs inplace decompression blit");
++	igt_subtest_with_dynamic("block-multicopy-inplace") {
++		struct test_config config = { .compression = true,
++					      .inplace = true };
++
++		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
++	}
++
++	igt_describe("Check flatccs data can be copied from/to surface");
++	igt_subtest_with_dynamic("ctrl-surf-copy") {
++		struct test_config config = { .compression = true,
++					      .surfcopy = true };
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
++	igt_describe("Check flatccs data are physically tagged and visible"
++		     " in different contexts");
++	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
++		struct test_config config = { .compression = true,
++					      .surfcopy = true,
++					      .new_ctx = true };
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
++	igt_describe("Check flatccs data persists after suspend / resume (S0)");
++	igt_subtest_with_dynamic("suspend-resume") {
++		struct test_config config = { .compression = true,
++					      .surfcopy = true,
++					      .suspend_resume = true };
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
 +
 +	igt_fixture {
-+		mmd_context_clean(device, &context);
-+		amdgpu_device_deinitialize(device);
-+		drm_close_driver(fd);
++		xe_device_put(xe);
++		close(xe);
 +	}
-+
 +}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index d09a4b6e7..300c6b8df 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -15,6 +15,7 @@ if libdrm_amdgpu.found()
- 			  'amd_hotplug',
- 			  'amd_ilr',
- 			  'amd_info',
-+			  'amd_jpeg_dec',
- 			  'amd_link_settings',
- 			  'amd_max_bpc',
- 			  'amd_mem_leak',
 -- 
-2.25.1
+2.34.1
