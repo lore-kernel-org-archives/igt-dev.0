@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 912B410E2B4
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 09:01:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F4CA10E2BC
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 09:01:39 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  4 Jul 2023 11:01:04 +0200
-Message-Id: <20230704090104.120219-13-zbigniew.kempczynski@intel.com>
+Date: Tue,  4 Jul 2023 11:00:59 +0200
+Message-Id: <20230704090104.120219-8-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230704090104.120219-1-zbigniew.kempczynski@intel.com>
 References: <20230704090104.120219-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 12/12] tests/xe_exercise_blt: Check blitter
- library fast-copy for Xe
+Subject: [igt-dev] [PATCH i-g-t 07/12] lib/intel_allocator: Add
+ intel_allocator_bind()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,405 +24,267 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Port this test to work on xe. Instead of adding conditional code for
-xe code which would decrease readability this is new test for xe.
+Synchronize allocator state to vm.
+
+This change allows xe user to execute vm-bind/unbind for allocator
+alloc()/free() operations which occurred since last binding/unbinding.
+Before doing exec user should call intel_allocator_bind() to ensure
+all vma's are in place.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/meson.build          |   1 +
- tests/xe/xe_exercise_blt.c | 372 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 373 insertions(+)
- create mode 100644 tests/xe/xe_exercise_blt.c
+ lib/intel_allocator.c | 161 ++++++++++++++++++++++++++++++++++++++++++
+ lib/intel_allocator.h |   3 +
+ 2 files changed, 164 insertions(+)
 
-diff --git a/tests/meson.build b/tests/meson.build
-index 9bca57a5e8..137a5cf01f 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -257,6 +257,7 @@ xe_progs = [
- 	'xe_exec_reset',
- 	'xe_exec_store',
- 	'xe_exec_threads',
-+	'xe_exercise_blt',
- 	'xe_gpgpu_fill',
- 	'xe_guc_pc',
- 	'xe_huc_copy',
-diff --git a/tests/xe/xe_exercise_blt.c b/tests/xe/xe_exercise_blt.c
-new file mode 100644
-index 0000000000..8340cf7148
---- /dev/null
-+++ b/tests/xe/xe_exercise_blt.c
-@@ -0,0 +1,372 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include "igt.h"
-+#include "drm.h"
-+#include "lib/intel_chipset.h"
-+#include "intel_blt.h"
-+#include "intel_mocs.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
+diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+index c98c410b3b..20d2c10f50 100644
+--- a/lib/intel_allocator.c
++++ b/lib/intel_allocator.c
+@@ -17,6 +17,7 @@
+ #include "intel_allocator.h"
+ #include "intel_allocator_msgchannel.h"
+ #include "xe/xe_query.h"
 +#include "xe/xe_util.h"
+ 
+ //#define ALLOCDBG
+ #ifdef ALLOCDBG
+@@ -46,6 +47,14 @@ static inline const char *reqstr(enum reqtype request_type)
+ #define alloc_debug(...) {}
+ #endif
+ 
++#ifdef ALLOCBINDDBG
++#define bind_info igt_info
++#define bind_debug igt_debug
++#else
++#define bind_info(...) {}
++#define bind_debug(...) {}
++#endif
 +
-+/**
-+ * TEST: xe exercise blt
-+ * Description: Exercise blitter commands on Xe
-+ * Feature: blitter
-+ * Run type: FULL
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: fast-copy
-+ * Description:
-+ *   Check fast-copy blit
-+ *   blitter
-+ *
-+ * SUBTEST: fast-copy-emit
-+ * Description:
-+ *   Check multiple fast-copy in one batch
-+ *   blitter
-+ */
-+
-+IGT_TEST_DESCRIPTION("Exercise blitter commands on Xe");
-+
-+static struct param {
-+	int tiling;
-+	bool write_png;
-+	bool print_bb;
-+	bool print_surface_info;
-+	int width;
-+	int height;
-+} param = {
-+	.tiling = -1,
-+	.write_png = false,
-+	.print_bb = false,
-+	.print_surface_info = false,
-+	.width = 512,
-+	.height = 512,
+ /*
+  * We limit allocator space to avoid hang when batch would be
+  * pinned in the last page.
+@@ -58,6 +67,7 @@ struct allocator {
+ 	uint32_t vm;
+ 	_Atomic(int32_t) refcount;
+ 	struct intel_allocator *ial;
++	struct igt_map *bind_map;
+ };
+ 
+ struct handle_entry {
+@@ -65,6 +75,21 @@ struct handle_entry {
+ 	struct allocator *al;
+ };
+ 
++/* For tracking alloc()/free() for Xe */
++enum allocator_bind_op {
++	BOUND,
++	TO_BIND,
++	TO_UNBIND,
 +};
 +
-+#define PRINT_SURFACE_INFO(name, obj) do { \
-+	if (param.print_surface_info) \
-+		blt_surface_info((name), (obj)); } while (0)
++struct allocator_object {
++	uint32_t handle;
++	uint64_t offset;
++	uint64_t size;
 +
-+#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+	if (param.write_png) \
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+
-+struct blt_fast_copy_data {
-+	int xe;
-+	struct blt_copy_object src;
-+	struct blt_copy_object mid;
-+	struct blt_copy_object dst;
-+
-+	struct blt_copy_batch bb;
-+	enum blt_color_depth color_depth;
-+
-+	/* debug stuff */
-+	bool print_bb;
++	enum allocator_bind_op bind_op;
 +};
 +
-+static int fast_copy_one_bb(int xe,
-+			    const intel_ctx_t *ctx,
-+			    uint64_t ahnd,
-+			    const struct blt_fast_copy_data *blt)
+ struct intel_allocator *
+ intel_allocator_reloc_create(int fd, uint64_t start, uint64_t end);
+ struct intel_allocator *
+@@ -234,6 +259,7 @@ static struct allocator *__allocator_create(int fd, uint32_t ctx, uint32_t vm,
+ 	al->vm = vm;
+ 	atomic_init(&al->refcount, 0);
+ 	al->ial = ial;
++	al->bind_map = igt_map_create(igt_map_hash_32, igt_map_equal_32);
+ 
+ 	igt_map_insert(map, al, al);
+ 
+@@ -404,6 +430,7 @@ static bool allocator_close(uint64_t ahnd)
+ 	released = __allocator_put(al);
+ 	if (released) {
+ 		is_empty = al->ial->is_empty(al->ial);
++		igt_map_destroy(al->bind_map, map_entry_free_func);
+ 		intel_allocator_destroy(al->ial);
+ 	}
+ 
+@@ -1108,6 +1135,60 @@ void intel_allocator_get_address_range(uint64_t allocator_handle,
+ 		*endp = resp.address_range.end;
+ }
+ 
++static bool is_same(struct allocator_object *obj,
++		    uint32_t handle, uint64_t offset, uint64_t size,
++		    enum allocator_bind_op bind_op)
 +{
-+	struct blt_copy_data blt_tmp;
-+	uint64_t bb_offset, alignment;
-+	uint64_t bb_pos = 0;
-+	int ret = 0;
-+
-+	alignment = xe_get_default_alignment(xe);
-+
-+	get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-+	get_offset(ahnd, blt->mid.handle, blt->mid.size, alignment);
-+	get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-+	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-+
-+	/* First blit */
-+	blt_copy_init(xe, &blt_tmp);
-+	blt_tmp.src = blt->src;
-+	blt_tmp.dst = blt->mid;
-+	blt_tmp.bb = blt->bb;
-+	blt_tmp.color_depth = blt->color_depth;
-+	blt_tmp.print_bb = blt->print_bb;
-+	bb_pos = emit_blt_fast_copy(xe, ahnd, &blt_tmp, bb_pos, false);
-+
-+	/* Second blit */
-+	blt_copy_init(xe, &blt_tmp);
-+	blt_tmp.src = blt->mid;
-+	blt_tmp.dst = blt->dst;
-+	blt_tmp.bb = blt->bb;
-+	blt_tmp.color_depth = blt->color_depth;
-+	blt_tmp.print_bb = blt->print_bb;
-+	bb_pos = emit_blt_fast_copy(xe, ahnd, &blt_tmp, bb_pos, true);
-+
-+	intel_ctx_xe_exec(ctx, ahnd, bb_offset);
-+
-+	return ret;
++	return obj->handle == handle &&	obj->offset == offset && obj->size == size &&
++	       (obj->bind_op == bind_op || obj->bind_op == BOUND);
 +}
 +
-+static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
-+			   uint32_t region1, uint32_t region2,
-+			   enum blt_tiling_type mid_tiling)
++static void track_object(uint64_t allocator_handle, uint32_t handle,
++			 uint64_t offset, uint64_t size,
++			 enum allocator_bind_op bind_op)
 +{
-+	struct blt_copy_data bltinit = {};
-+	struct blt_fast_copy_data blt = {};
-+	struct blt_copy_object *src, *mid, *dst;
-+	const uint32_t bpp = 32;
-+	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
-+						  INTEL_ALLOCATOR_SIMPLE,
-+						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+	uint32_t bb, width = param.width, height = param.height;
-+	int result;
++	struct allocator_object *obj;
++	struct allocator *al;
 +
-+	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
++	bind_info("track: [%s] ahnd: %lld, handle: %u, offset: %llx, size: %llx\n",
++		  bind_op == TO_BIND ? "BIND" : "UNBIND",
++		  (long long)allocator_handle,
++		  handle, (long long)offset, (long long)size);
++	al = __allocator_find_by_handle(allocator_handle);
++	igt_assert(al);
 +
-+	blt_copy_init(xe, &bltinit);
-+	src = blt_create_object(&bltinit, region1, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	mid = blt_create_object(&bltinit, region2, width, height, bpp, 0,
-+				mid_tiling, COMPRESSION_DISABLED, 0, true);
-+	dst = blt_create_object(&bltinit, region1, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	igt_assert(src->size == dst->size);
++	if (al->ial->driver == INTEL_DRIVER_I915)
++		return; /* no-op for i915, at least now */
 +
-+	PRINT_SURFACE_INFO("src", src);
-+	PRINT_SURFACE_INFO("mid", mid);
-+	PRINT_SURFACE_INFO("dst", dst);
++	obj = igt_map_search(al->bind_map, &handle);
++	if (obj) {
++		/*
++		 * User may call alloc() couple of times, check object is the
++		 * same. For free() there's simple case, just remove from
++		 * bind_map.
++		 */
++		if (bind_op == TO_BIND)
++			igt_assert_eq(is_same(obj, handle, offset, size, bind_op), true);
++		else if (bind_op == TO_UNBIND) {
++			if (obj->bind_op == TO_BIND)
++				igt_map_remove(al->bind_map, &obj->handle, map_entry_free_func);
++			else if (obj->bind_op == BOUND)
++				obj->bind_op = bind_op;
++		}
++	} else {
++		/* Ignore to unbind bo which wasn't previously inserted */
++		if (bind_op == TO_UNBIND)
++			return;
 +
-+	blt_surface_fill_rect(xe, src, width, height);
-+	WRITE_PNG(xe, mid_tiling, "src", src, width, height);
-+
-+	memset(&blt, 0, sizeof(blt));
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	blt_set_copy_object(&blt.src, src);
-+	blt_set_copy_object(&blt.mid, mid);
-+	blt_set_copy_object(&blt.dst, dst);
-+	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+
-+	fast_copy_one_bb(xe, ctx, ahnd, &blt);
-+
-+	WRITE_PNG(xe, mid_tiling, "mid", &blt.mid, width, height);
-+	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height);
-+
-+	result = memcmp(src->ptr, blt.dst.ptr, src->size);
-+
-+	blt_destroy_object(xe, src);
-+	blt_destroy_object(xe, mid);
-+	blt_destroy_object(xe, dst);
-+	gem_close(xe, bb);
-+	put_ahnd(ahnd);
-+
-+	munmap(&bb, bb_size);
-+
-+	igt_assert_f(!result, "source and destination surfaces differs!\n");
++		obj = calloc(1, sizeof(*obj));
++		obj->handle = handle;
++		obj->offset = offset;
++		obj->size = size;
++		obj->bind_op = bind_op;
++		igt_map_insert(al->bind_map, &obj->handle, obj);
++	}
 +}
 +
-+static void fast_copy(int xe, const intel_ctx_t *ctx,
-+		      uint32_t region1, uint32_t region2,
-+		      enum blt_tiling_type mid_tiling)
+ /**
+  * __intel_allocator_alloc:
+  * @allocator_handle: handle to an allocator
+@@ -1139,6 +1220,8 @@ uint64_t __intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
+ 	igt_assert(handle_request(&req, &resp) == 0);
+ 	igt_assert(resp.response_type == RESP_ALLOC);
+ 
++	track_object(allocator_handle, handle, resp.alloc.offset, size, TO_BIND);
++
+ 	return resp.alloc.offset;
+ }
+ 
+@@ -1216,6 +1299,8 @@ bool intel_allocator_free(uint64_t allocator_handle, uint32_t handle)
+ 	igt_assert(handle_request(&req, &resp) == 0);
+ 	igt_assert(resp.response_type == RESP_FREE);
+ 
++	track_object(allocator_handle, handle, 0, 0, TO_UNBIND);
++
+ 	return resp.free.freed;
+ }
+ 
+@@ -1400,6 +1485,82 @@ void intel_allocator_print(uint64_t allocator_handle)
+ 	}
+ }
+ 
++static void __xe_op_bind(struct allocator *al, uint32_t sync_in, uint32_t sync_out)
 +{
-+	struct blt_copy_data blt = {};
-+	struct blt_copy_object *src, *mid, *dst;
-+	const uint32_t bpp = 32;
-+	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
-+						  INTEL_ALLOCATOR_SIMPLE,
-+						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+	uint32_t bb;
-+	uint32_t width = param.width, height = param.height;
-+	int result;
++	struct allocator_object *obj;
++	struct igt_map_entry *pos;
++	struct igt_list_head obj_list;
++	struct xe_object *entry, *tmp;
 +
-+	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
++	IGT_INIT_LIST_HEAD(&obj_list);
 +
-+	blt_copy_init(xe, &blt);
-+	src = blt_create_object(&blt, region1, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	mid = blt_create_object(&blt, region2, width, height, bpp, 0,
-+				mid_tiling, COMPRESSION_DISABLED, 0, true);
-+	dst = blt_create_object(&blt, region1, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	igt_assert(src->size == dst->size);
++	igt_map_foreach(al->bind_map, pos) {
++		obj = pos->data;
 +
-+	blt_surface_fill_rect(xe, src, width, height);
-+
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	blt_set_copy_object(&blt.src, src);
-+	blt_set_copy_object(&blt.dst, mid);
-+	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+
-+	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
-+
-+	WRITE_PNG(xe, mid_tiling, "src", &blt.src, width, height);
-+	WRITE_PNG(xe, mid_tiling, "mid", &blt.dst, width, height);
-+
-+	blt_copy_init(xe, &blt);
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	blt_set_copy_object(&blt.src, mid);
-+	blt_set_copy_object(&blt.dst, dst);
-+	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+
-+	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
-+
-+	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height);
-+
-+	result = memcmp(src->ptr, blt.dst.ptr, src->size);
-+
-+	blt_destroy_object(xe, src);
-+	blt_destroy_object(xe, mid);
-+	blt_destroy_object(xe, dst);
-+	gem_close(xe, bb);
-+	put_ahnd(ahnd);
-+
-+	igt_assert_f(!result, "source and destination surfaces differs!\n");
-+}
-+
-+enum fast_copy_func {
-+	FAST_COPY,
-+	FAST_COPY_EMIT
-+};
-+
-+static char
-+	*full_subtest_str(char *regtxt, enum blt_tiling_type tiling,
-+			  enum fast_copy_func func)
-+{
-+	char *name;
-+	uint32_t len;
-+
-+	len = asprintf(&name, "%s-%s%s", blt_tiling_name(tiling), regtxt,
-+		       func == FAST_COPY_EMIT ? "-emit" : "");
-+
-+	igt_assert_f(len >= 0, "asprintf failed!\n");
-+
-+	return name;
-+}
-+
-+static void fast_copy_test(int xe,
-+			   struct igt_collection *set,
-+			   enum fast_copy_func func)
-+{
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
-+	struct igt_collection *regions;
-+	void (*copy_func)(int xe, const intel_ctx_t *ctx,
-+			  uint32_t r1, uint32_t r2, enum blt_tiling_type tiling);
-+	intel_ctx_t *ctx;
-+	int tiling;
-+
-+	for_each_tiling(tiling) {
-+		if (!blt_fast_copy_supports_tiling(xe, tiling))
++		if (obj->bind_op == BOUND)
 +			continue;
 +
-+		for_each_variation_r(regions, 2, set) {
-+			uint32_t region1, region2;
-+			uint32_t vm, engine;
-+			char *regtxt, *test_name;
++		bind_info("= [vm: %u] %s => %u %lx %lx\n",
++			  al->ctx,
++			  obj->bind_op == TO_BIND ? "TO BIND" : "TO UNBIND",
++			  obj->handle, obj->offset,
++			  obj->size);
 +
-+			region1 = igt_collection_get_value(regions, 0);
-+			region2 = igt_collection_get_value(regions, 1);
++		entry = malloc(sizeof(*entry));
++		entry->handle = obj->handle;
++		entry->offset = obj->offset;
++		entry->size = obj->size;
++		entry->bind_op = obj->bind_op == TO_BIND ? XE_OBJECT_BIND :
++							   XE_OBJECT_UNBIND;
++		entry->priv = obj;
++		igt_list_add(&entry->link, &obj_list);
++	}
 +
-+			vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+			engine = xe_engine_create(xe, vm, &inst, 0);
-+			ctx = intel_ctx_xe(xe, vm, engine, 0, 0, 0);
++	xe_bind_unbind_async(al->fd, al->ctx, 0, &obj_list, sync_in, sync_out);
 +
-+			copy_func = (func == FAST_COPY) ? fast_copy : fast_copy_emit;
-+			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
-+			test_name = full_subtest_str(regtxt, tiling, func);
++	igt_list_for_each_entry_safe(entry, tmp, &obj_list, link) {
++		obj = entry->priv;
++		if (obj->bind_op == TO_BIND)
++			obj->bind_op = BOUND;
++		else
++			igt_map_remove(al->bind_map, &obj->handle, map_entry_free_func);
 +
-+			igt_dynamic_f("%s", test_name) {
-+				copy_func(xe, ctx,
-+					  region1, region2,
-+					  tiling);
-+			}
-+
-+			free(regtxt);
-+			free(test_name);
-+			xe_engine_destroy(xe, engine);
-+			xe_vm_destroy(xe, vm);
-+			free(ctx);
-+		}
++		igt_list_del(&entry->link);
++		free(entry);
 +	}
 +}
 +
-+static int opt_handler(int opt, int opt_index, void *data)
++/**
++ * intel_allocator_bind:
++ * @allocator_handle: handle to an allocator
++ * @sync_in: syncobj (fence-in)
++ * @sync_out: syncobj (fence-out)
++ *
++ * Function binds and unbinds all objects added to the allocator which weren't
++ * previously binded/unbinded.
++ *
++ **/
++void intel_allocator_bind(uint64_t allocator_handle,
++			  uint32_t sync_in, uint32_t sync_out)
 +{
-+	switch (opt) {
-+	case 'b':
-+		param.print_bb = true;
-+		igt_debug("Print bb: %d\n", param.print_bb);
-+		break;
-+	case 'p':
-+		param.write_png = true;
-+		igt_debug("Write png: %d\n", param.write_png);
-+		break;
-+	case 's':
-+		param.print_surface_info = true;
-+		igt_debug("Print surface info: %d\n", param.print_surface_info);
-+		break;
-+	case 't':
-+		param.tiling = atoi(optarg);
-+		igt_debug("Tiling: %d\n", param.tiling);
-+		break;
-+	case 'W':
-+		param.width = atoi(optarg);
-+		igt_debug("Width: %d\n", param.width);
-+		break;
-+	case 'H':
-+		param.height = atoi(optarg);
-+		igt_debug("Height: %d\n", param.height);
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
++	struct allocator *al;
 +
-+	return IGT_OPT_HANDLER_SUCCESS;
++	igt_assert(allocator_handle);
++
++	al = __allocator_find_by_handle(allocator_handle);
++	igt_assert(al);
++
++	if (al->ial->driver == INTEL_DRIVER_I915)
++		return; /* no-op for i915, at least now */
++
++	/*
++	 * We collect bind/unbind operations on alloc()/free() to do group
++	 * operationgetting @sync_in as syncobj handle (fence-in). If user
++	 * passes 0 as @sync_out we bind/unbind synchronously.
++	 */
++	__xe_op_bind(al, sync_in, sync_out);
 +}
 +
-+const char *help_str =
-+	"  -b\tPrint bb\n"
-+	"  -p\tWrite PNG\n"
-+	"  -s\tPrint surface info\n"
-+	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64, 5 - YFMAJOR)\n"
-+	"  -W\tWidth (default 512)\n"
-+	"  -H\tHeight (default 512)"
-+	;
+ static int equal_handles(const void *key1, const void *key2)
+ {
+ 	const struct handle_entry *h1 = key1, *h2 = key2;
+diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+index ed3a78485d..ad86dc5524 100644
+--- a/lib/intel_allocator.h
++++ b/lib/intel_allocator.h
+@@ -214,6 +214,9 @@ bool intel_allocator_reserve_if_not_allocated(uint64_t allocator_handle,
+ 
+ void intel_allocator_print(uint64_t allocator_handle);
+ 
++void intel_allocator_bind(uint64_t allocator_handle,
++			  uint32_t sync_in, uint32_t sync_out);
 +
-+igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
-+{
-+	struct igt_collection *set;
-+	int xe;
-+
-+	igt_fixture {
-+		xe = drm_open_driver(DRIVER_XE);
-+		igt_require(blt_has_block_copy(xe));
-+
-+		xe_device_get(xe);
-+
-+		set = xe_get_memory_region_set(xe,
-+					       XE_MEM_REGION_CLASS_SYSMEM,
-+					       XE_MEM_REGION_CLASS_VRAM);
-+	}
-+
-+	igt_describe("Check fast-copy blit");
-+	igt_subtest_with_dynamic("fast-copy") {
-+		fast_copy_test(xe, set, FAST_COPY);
-+	}
-+
-+	igt_describe("Check multiple fast-copy in one batch");
-+	igt_subtest_with_dynamic("fast-copy-emit") {
-+		fast_copy_test(xe, set, FAST_COPY_EMIT);
-+	}
-+
-+	igt_fixture {
-+		drm_close_driver(xe);
-+	}
-+}
+ #define ALLOC_INVALID_ADDRESS (-1ull)
+ #define INTEL_ALLOCATOR_NONE   0
+ #define INTEL_ALLOCATOR_RELOC  1
 -- 
 2.34.1
