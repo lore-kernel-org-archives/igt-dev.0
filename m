@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam04on2066.outbound.protection.outlook.com [40.107.100.66])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20E0E10E25B
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2086.outbound.protection.outlook.com [40.107.93.86])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89A9210E25B
  for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 02:29:26 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 3 Jul 2023 22:29:12 -0400
-Message-ID: <20230704022915.65866-3-vitaly.prosyak@amd.com>
+Date: Mon, 3 Jul 2023 22:29:11 -0400
+Message-ID: <20230704022915.65866-2-vitaly.prosyak@amd.com>
 In-Reply-To: <20230704022915.65866-1-vitaly.prosyak@amd.com>
 References: <20230704022915.65866-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 3/6] tests/amdgpu: add uvd encoder test
+Subject: [igt-dev] [PATCH 2/6] tests/amdgpu: add uvd decoder test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,7 +28,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Ported and refactored drmlib uvd_enc_tests.c and  the following is done:
+Ported and refactored drmlib cs_tests.c and  the following is done:
 
 1. Remove everywhere global variables.
 2. Reuse common functions from amd_mmd_shared.h
@@ -36,315 +36,315 @@ Ported and refactored drmlib uvd_enc_tests.c and  the following is done:
 
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- tests/amdgpu/amd_uvd_enc.c | 337 +++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/amd_uvd_dec.c | 332 +++++++++++++++++++++++++++++++++++++
  tests/amdgpu/meson.build   |   1 +
- 2 files changed, 338 insertions(+)
- create mode 100644 tests/amdgpu/amd_uvd_enc.c
+ 2 files changed, 333 insertions(+)
+ create mode 100644 tests/amdgpu/amd_uvd_dec.c
 
-diff --git a/tests/amdgpu/amd_uvd_enc.c b/tests/amdgpu/amd_uvd_enc.c
+diff --git a/tests/amdgpu/amd_uvd_dec.c b/tests/amdgpu/amd_uvd_dec.c
 new file mode 100644
-index 000000000..e3e85522f
+index 000000000..8cc0b5ade
 --- /dev/null
-+++ b/tests/amdgpu/amd_uvd_enc.c
-@@ -0,0 +1,337 @@
++++ b/tests/amdgpu/amd_uvd_dec.c
+@@ -0,0 +1,332 @@
 +// SPDX-License-Identifier: MIT
 +// Copyright 2023 Advanced Micro Devices, Inc.
-+// Copyright 2017 Advanced Micro Devices, Inc.
++// Copyright 2014 Advanced Micro Devices, Inc.
 +
 +#include "lib/amdgpu/amd_mmd_shared.h"
 +
-+static bool
-+is_uvd_enc_enable(amdgpu_device_handle device_handle)
++static void
++uvd_cmd(uint32_t family_id, uint64_t addr, uint32_t cmd, uint32_t *idx,
++		uint32_t *ib_cpu)
 +{
++	ib_cpu[(*idx)++] = (family_id < AMDGPU_FAMILY_AI) ?
++			UVD_4_0_GPCOM_VCPU_DATA0 : VEGA_20_GPCOM_VCPU_DATA0;
++	ib_cpu[(*idx)++] = addr;
++	ib_cpu[(*idx)++] = (family_id < AMDGPU_FAMILY_AI) ?
++			UVD_4_0_GPCOM_VCPU_DATA1 : VEGA_20_GPCOM_VCPU_DATA1;
++	ib_cpu[(*idx)++] = addr >> 32;
++	ib_cpu[(*idx)++] = (family_id < AMDGPU_FAMILY_AI) ?
++			UVD_4_0_GPCOM_VCPU_CMD : VEGA_20_GPCOM_VCPU_CMD;
++	ib_cpu[(*idx)++] = cmd << 1;
++}
++
++static void
++amdgpu_uvd_dec_create(amdgpu_device_handle device_handle,
++		struct mmd_context *context)
++{
++	struct amdgpu_bo_alloc_request req = {0};
++	amdgpu_bo_handle buf_handle;
++	uint64_t va = 0;
++	amdgpu_va_handle va_handle;
++	void *msg;
++	uint32_t i;
 +	int r;
-+	struct drm_amdgpu_info_hw_ip info = {};
 +
-+	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_UVD_ENC, 0, &info);
++	req.alloc_size = 4*1024;
++	req.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
 +
-+	if (!info.available_rings)
-+		igt_info("\n\nThe ASIC NOT support UVD ENC, test skipped\n");
++	r = amdgpu_bo_alloc(device_handle, &req, &buf_handle);
++	igt_assert_eq(r, 0);
 +
-+	return (r == 0 && (info.available_rings ? true : false));
++	r = amdgpu_va_range_alloc(device_handle,
++				  amdgpu_gpu_va_range_general,
++				  IB_SIZE, 1, 0, &va,
++				  &va_handle, 0);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_va_op(buf_handle, 0, IB_SIZE, va, 0, AMDGPU_VA_OP_MAP);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_cpu_map(buf_handle, &msg);
++	igt_assert_eq(r, 0);
++
++	memcpy(msg, uvd_create_msg, sizeof(uvd_create_msg));
++
++	if (context->family_id >= AMDGPU_FAMILY_VI) {
++		((uint8_t *)msg)[0x10] = 7;
++		if (amdgpu_is_vega_or_polaris(context->family_id, context->chip_id,
++				context->chip_rev)) {
++			/* dpb size */
++			((uint8_t *)msg)[0x28] = 0x00;
++			((uint8_t *)msg)[0x29] = 0x94;
++			((uint8_t *)msg)[0x2A] = 0x6B;
++			((uint8_t *)msg)[0x2B] = 0x00;
++		}
++	}
++
++	r = amdgpu_bo_cpu_unmap(buf_handle);
++	igt_assert_eq(r, 0);
++
++	context->num_resources = 0;
++	context->resources[context->num_resources++] = buf_handle;
++	context->resources[context->num_resources++] = context->ib_handle;
++
++	i = 0;
++	uvd_cmd(context->family_id, va, 0x0, &i, context->ib_cpu);
++
++	for (; i % 16; ++i)
++		context->ib_cpu[i] = 0x80000000;
++
++	r = submit(device_handle, context, i, AMDGPU_HW_IP_UVD);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_va_op(buf_handle, 0, IB_SIZE, va, 0, AMDGPU_VA_OP_UNMAP);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_va_range_free(va_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_free(buf_handle);
++	igt_assert_eq(r, 0);
 +}
 +
 +static void
-+amdgpu_uvd_enc_create(amdgpu_device_handle device_handle,
-+					struct uvd_enc_context *context)
++amdgpu_uvd_decode(amdgpu_device_handle device_handle,
++		struct mmd_context *context)
 +{
-+	context->enc.width = 160;
-+	context->enc.height = 128;
-+
-+	context->uvd.num_resources  = 0;
-+	alloc_resource(device_handle, &context->enc.session,
-+			128 * 1024, AMDGPU_GEM_DOMAIN_GTT);
-+	context->uvd.resources[context->uvd.num_resources++] = context->enc.session.handle;
-+	context->uvd.resources[context->uvd.num_resources++] = context->uvd.ib_handle;
-+}
-+
-+static void
-+check_result(struct amdgpu_uvd_enc *enc)
-+{
++	const unsigned int dpb_size = 15923584, dt_size = 737280;
++	uint64_t msg_addr, fb_addr, bs_addr, dpb_addr, ctx_addr, dt_addr, it_addr;
++	struct amdgpu_bo_alloc_request req = {0};
++	amdgpu_bo_handle buf_handle;
++	amdgpu_va_handle va_handle;
++	uint64_t va = 0;
 +	uint64_t sum;
-+	uint32_t s = 175602;
-+	uint32_t *ptr, size;
-+	int j, r;
++	uint8_t *ptr;
++	uint32_t i;
++	int r;
 +
-+	r = amdgpu_bo_cpu_map(enc->fb.handle, (void **)&enc->fb.ptr);
-+	igt_assert_eq(r, 0);
-+	ptr = (uint32_t *)enc->fb.ptr;
-+	size = ptr[6];
-+	r = amdgpu_bo_cpu_unmap(enc->fb.handle);
-+	igt_assert_eq(r, 0);
-+	r = amdgpu_bo_cpu_map(enc->bs.handle, (void **)&enc->bs.ptr);
-+	igt_assert_eq(r, 0);
-+	for (j = 0, sum = 0; j < size; ++j)
-+		sum += enc->bs.ptr[j];
-+	igt_assert_eq(sum, s);
-+	r = amdgpu_bo_cpu_unmap(enc->bs.handle);
-+	igt_assert_eq(r, 0);
++	req.alloc_size = 4 * 1024; /* msg */
++	req.alloc_size += 4 * 1024; /* fb */
++	if (context->family_id >= AMDGPU_FAMILY_VI)
++		req.alloc_size += IB_SIZE; /*it_scaling_table*/
++	req.alloc_size += ALIGN(sizeof(uvd_bitstream), 4 * 1024);
++	req.alloc_size += ALIGN(dpb_size, 4*1024);
++	req.alloc_size += ALIGN(dt_size, 4*1024);
 +
-+}
++	req.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
 +
-+static void
-+amdgpu_uvd_enc_session_init(amdgpu_device_handle device_handle,
-+		struct uvd_enc_context *context)
-+{
-+	int len, r;
-+
-+	len = 0;
-+	memcpy((context->uvd.ib_cpu + len), uve_session_info, sizeof(uve_session_info));
-+	len += sizeof(uve_session_info) / 4;
-+	context->uvd.ib_cpu[len++] = context->enc.session.addr >> 32;
-+	context->uvd.ib_cpu[len++] = context->enc.session.addr;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_task_info, sizeof(uve_task_info));
-+	len += sizeof(uve_task_info) / 4;
-+	context->uvd.ib_cpu[len++] = 0x000000d8;
-+	context->uvd.ib_cpu[len++] = 0x00000000;
-+	context->uvd.ib_cpu[len++] = 0x00000000;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_op_init, sizeof(uve_op_init));
-+	len += sizeof(uve_op_init) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_session_init, sizeof(uve_session_init));
-+	len += sizeof(uve_session_init) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_layer_ctrl, sizeof(uve_layer_ctrl));
-+	len += sizeof(uve_layer_ctrl) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_slice_ctrl, sizeof(uve_slice_ctrl));
-+	len += sizeof(uve_slice_ctrl) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_spec_misc, sizeof(uve_spec_misc));
-+	len += sizeof(uve_spec_misc) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_rc_session_init,
-+			sizeof(uve_rc_session_init));
-+	len += sizeof(uve_rc_session_init) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_deblocking_filter,
-+			sizeof(uve_deblocking_filter));
-+	len += sizeof(uve_deblocking_filter) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_quality_params,
-+			sizeof(uve_quality_params));
-+	len += sizeof(uve_quality_params) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_op_init_rc, sizeof(uve_op_init_rc));
-+	len += sizeof(uve_op_init_rc) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_op_init_rc_vbv_level,
-+			sizeof(uve_op_init_rc_vbv_level));
-+	len += sizeof(uve_op_init_rc_vbv_level) / 4;
-+
-+	r = submit(device_handle, &context->uvd, len, AMDGPU_HW_IP_UVD_ENC);
-+	igt_assert_eq(r, 0);
-+}
-+
-+static void
-+amdgpu_uvd_enc_encode(amdgpu_device_handle device_handle,
-+		struct uvd_enc_context *context)
-+{
-+	int len, r, i;
-+	uint64_t luma_offset, chroma_offset;
-+	unsigned int luma_size;
-+	uint32_t vbuf_size, bs_size = 0x003f4800, cpb_size;
-+	unsigned int align = (context->uvd.family_id >= AMDGPU_FAMILY_AI) ? 256 : 16;
-+
-+	vbuf_size = ALIGN(context->enc.width, align) *
-+			ALIGN(context->enc.height, 16) * 1.5;
-+	cpb_size = vbuf_size * 10;
-+	context->uvd.num_resources  = 0;
-+	alloc_resource(device_handle, &context->enc.fb, 4096,
-+			AMDGPU_GEM_DOMAIN_VRAM);
-+	context->uvd.resources[context->uvd.num_resources++] = context->enc.fb.handle;
-+	alloc_resource(device_handle, &context->enc.bs, bs_size,
-+			AMDGPU_GEM_DOMAIN_VRAM);
-+	context->uvd.resources[context->uvd.num_resources++] = context->enc.bs.handle;
-+	alloc_resource(device_handle, &context->enc.vbuf, vbuf_size,
-+			AMDGPU_GEM_DOMAIN_VRAM);
-+	context->uvd.resources[context->uvd.num_resources++] = context->enc.vbuf.handle;
-+	alloc_resource(device_handle, &context->enc.cpb, cpb_size,
-+			AMDGPU_GEM_DOMAIN_VRAM);
-+	context->uvd.resources[context->uvd.num_resources++] = context->enc.cpb.handle;
-+	context->uvd.resources[context->uvd.num_resources++] = context->uvd.ib_handle;
-+
-+	r = amdgpu_bo_cpu_map(context->enc.vbuf.handle, (void **)&context->enc.vbuf.ptr);
++	r = amdgpu_bo_alloc(device_handle, &req, &buf_handle);
 +	igt_assert_eq(r, 0);
 +
-+	memset(context->enc.vbuf.ptr, 0, vbuf_size);
-+	for (i = 0; i < context->enc.height; ++i) {
-+		memcpy(context->enc.vbuf.ptr, (frame + i * context->enc.width),
-+				context->enc.width);
-+		context->enc.vbuf.ptr += ALIGN(context->enc.width, align);
-+	}
-+	for (i = 0; i < context->enc.height / 2; ++i) {
-+		memcpy(context->enc.vbuf.ptr, ((frame + context->enc.height *
-+				context->enc.width) + i * context->enc.width), context->enc.width);
-+		context->enc.vbuf.ptr += ALIGN(context->enc.width, align);
++	r = amdgpu_va_range_alloc(device_handle,
++				  amdgpu_gpu_va_range_general,
++				  req.alloc_size, 1, 0, &va,
++				  &va_handle, 0);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_va_op(buf_handle, 0, req.alloc_size, va, 0,
++			    AMDGPU_VA_OP_MAP);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_cpu_map(buf_handle, (void **)&ptr);
++	igt_assert_eq(r, 0);
++
++	memcpy(ptr, uvd_decode_msg, sizeof(uvd_decode_msg));
++	memcpy(ptr + sizeof(uvd_decode_msg), avc_decode_msg, sizeof(avc_decode_msg));
++
++	if (context->family_id >= AMDGPU_FAMILY_VI) {
++		ptr[0x10] = 7;
++		ptr[0x98] = 0x00;
++		ptr[0x99] = 0x02;
++		if (amdgpu_is_vega_or_polaris(context->family_id, context->chip_id,
++				context->chip_rev)) {
++			/* dpb size */
++			ptr[0x24] = 0x00;
++			ptr[0x25] = 0x94;
++			ptr[0x26] = 0x6B;
++			ptr[0x27] = 0x00;
++			/*ctx size */
++			ptr[0x2C] = 0x00;
++			ptr[0x2D] = 0xAF;
++			ptr[0x2E] = 0x50;
++			ptr[0x2F] = 0x00;
++		}
 +	}
 +
-+	r = amdgpu_bo_cpu_unmap(context->enc.vbuf.handle);
++	ptr += 4 * 1024;
++	memset(ptr, 0, 4 * 1024);
++	if (context->family_id >= AMDGPU_FAMILY_VI) {
++		ptr += 4 * 1024;
++		memcpy(ptr, uvd_it_scaling_table, sizeof(uvd_it_scaling_table));
++	}
++
++	ptr += 4 * 1024;
++	memcpy(ptr, uvd_bitstream, sizeof(uvd_bitstream));
++
++	ptr += ALIGN(sizeof(uvd_bitstream), 4*1024);
++	memset(ptr, 0, dpb_size);
++
++	ptr += ALIGN(dpb_size, 4 * 1024);
++	memset(ptr, 0, dt_size);
++
++	context->num_resources = 0;
++	context->resources[context->num_resources++] = buf_handle;
++	context->resources[context->num_resources++] = context->ib_handle;
++
++	msg_addr = va;
++	fb_addr = msg_addr + 4 * 1024;
++	if (context->family_id >= AMDGPU_FAMILY_VI) {
++		it_addr = fb_addr + 4 * 1024;
++		bs_addr = it_addr + 4 * 1024;
++	} else
++		bs_addr = fb_addr + 4 * 1024;
++	dpb_addr = ALIGN(bs_addr + sizeof(uvd_bitstream), 4 * 1024);
++
++	ctx_addr = 0;
++	if (context->family_id >= AMDGPU_FAMILY_VI) {
++		if (amdgpu_is_vega_or_polaris(context->family_id, context->chip_id,
++				context->chip_rev)) {
++			ctx_addr = ALIGN(dpb_addr + 0x006B9400, 4 * 1024);
++		}
++	}
++
++	dt_addr = ALIGN(dpb_addr + dpb_size, 4 * 1024);
++
++	i = 0;
++	uvd_cmd(context->family_id, msg_addr, 0x0, &i, context->ib_cpu);
++	uvd_cmd(context->family_id, dpb_addr, 0x1, &i, context->ib_cpu);
++	uvd_cmd(context->family_id, dt_addr, 0x2, &i, context->ib_cpu);
++	uvd_cmd(context->family_id, fb_addr, 0x3, &i, context->ib_cpu);
++	uvd_cmd(context->family_id, bs_addr, 0x100, &i, context->ib_cpu);
++
++	if (context->family_id >= AMDGPU_FAMILY_VI) {
++		uvd_cmd(context->family_id, it_addr, 0x204, &i, context->ib_cpu);
++		if (amdgpu_is_vega_or_polaris(context->family_id, context->chip_id,
++				context->chip_rev)) {
++			uvd_cmd(context->family_id, ctx_addr, 0x206, &i, context->ib_cpu);
++		}
++	}
++
++	context->ib_cpu[i++] = (context->family_id < AMDGPU_FAMILY_AI) ?
++			UVD_4_0__ENGINE_CNTL : VEGA_20_UVD_ENGINE_CNTL;
++	context->ib_cpu[i++] = 0x1;
++	for (; i % 16; ++i)
++		context->ib_cpu[i] = 0x80000000;
++
++	r = submit(device_handle, context, i, AMDGPU_HW_IP_UVD);
 +	igt_assert_eq(r, 0);
 +
-+	len = 0;
-+	memcpy((context->uvd.ib_cpu + len), uve_session_info, sizeof(uve_session_info));
-+	len += sizeof(uve_session_info) / 4;
-+	context->uvd.ib_cpu[len++] = context->enc.session.addr >> 32;
-+	context->uvd.ib_cpu[len++] = context->enc.session.addr;
++	/* TODO: use a real CRC32 */
++	for (i = 0, sum = 0; i < dt_size; ++i)
++		sum += ptr[i];
++	igt_assert_eq(sum, SUM_DECODE);
 +
-+	memcpy((context->uvd.ib_cpu + len), uve_task_info, sizeof(uve_task_info));
-+	len += sizeof(uve_task_info) / 4;
-+	context->uvd.ib_cpu[len++] = 0x000005e0;
-+	context->uvd.ib_cpu[len++] = 0x00000001;
-+	context->uvd.ib_cpu[len++] = 0x00000001;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_nalu_buffer_1, sizeof(uve_nalu_buffer_1));
-+	len += sizeof(uve_nalu_buffer_1) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_nalu_buffer_2, sizeof(uve_nalu_buffer_2));
-+	len += sizeof(uve_nalu_buffer_2) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_nalu_buffer_3, sizeof(uve_nalu_buffer_3));
-+	len += sizeof(uve_nalu_buffer_3) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_nalu_buffer_4, sizeof(uve_nalu_buffer_4));
-+	len += sizeof(uve_nalu_buffer_4) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_slice_header, sizeof(uve_slice_header));
-+	len += sizeof(uve_slice_header) / 4;
-+
-+	context->uvd.ib_cpu[len++] = 0x00000254;
-+	context->uvd.ib_cpu[len++] = 0x00000010;
-+	context->uvd.ib_cpu[len++] = context->enc.cpb.addr >> 32;
-+	context->uvd.ib_cpu[len++] = context->enc.cpb.addr;
-+	memcpy((context->uvd.ib_cpu + len), uve_ctx_buffer, sizeof(uve_ctx_buffer));
-+	len += sizeof(uve_ctx_buffer) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_bitstream_buffer,
-+			sizeof(uve_bitstream_buffer));
-+	len += sizeof(uve_bitstream_buffer) / 4;
-+	context->uvd.ib_cpu[len++] = 0x00000000;
-+	context->uvd.ib_cpu[len++] = context->enc.bs.addr >> 32;
-+	context->uvd.ib_cpu[len++] = context->enc.bs.addr;
-+	context->uvd.ib_cpu[len++] = 0x003f4800;
-+	context->uvd.ib_cpu[len++] = 0x00000000;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_feedback_buffer,
-+			sizeof(uve_feedback_buffer));
-+	len += sizeof(uve_feedback_buffer) / 4;
-+	context->uvd.ib_cpu[len++] = context->enc.fb.addr >> 32;
-+	context->uvd.ib_cpu[len++] = context->enc.fb.addr;
-+	context->uvd.ib_cpu[len++] = 0x00000010;
-+	context->uvd.ib_cpu[len++] = 0x00000028;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_feedback_buffer_additional,
-+			sizeof(uve_feedback_buffer_additional));
-+	len += sizeof(uve_feedback_buffer_additional) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_intra_refresh, sizeof(uve_intra_refresh));
-+	len += sizeof(uve_intra_refresh) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_layer_select, sizeof(uve_layer_select));
-+	len += sizeof(uve_layer_select) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_rc_layer_init, sizeof(uve_rc_layer_init));
-+	len += sizeof(uve_rc_layer_init) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_layer_select, sizeof(uve_layer_select));
-+	len += sizeof(uve_layer_select) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_rc_per_pic, sizeof(uve_rc_per_pic));
-+	len += sizeof(uve_rc_per_pic) / 4;
-+
-+	luma_size = ALIGN(context->enc.width, align) * ALIGN(context->enc.height, 16);
-+	luma_offset = context->enc.vbuf.addr;
-+	chroma_offset = luma_offset + luma_size;
-+	context->uvd.ib_cpu[len++] = 0x00000054;
-+	context->uvd.ib_cpu[len++] = 0x0000000c;
-+	context->uvd.ib_cpu[len++] = 0x00000002;
-+	context->uvd.ib_cpu[len++] = 0x003f4800;
-+	context->uvd.ib_cpu[len++] = luma_offset >> 32;
-+	context->uvd.ib_cpu[len++] = luma_offset;
-+	context->uvd.ib_cpu[len++] = chroma_offset >> 32;
-+	context->uvd.ib_cpu[len++] = chroma_offset;
-+	memcpy((context->uvd.ib_cpu + len), uve_encode_param, sizeof(uve_encode_param));
-+	context->uvd.ib_cpu[len] = ALIGN(context->enc.width, align);
-+	context->uvd.ib_cpu[len + 1] = ALIGN(context->enc.width, align);
-+	len += sizeof(uve_encode_param) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_op_speed_enc_mode,
-+			sizeof(uve_op_speed_enc_mode));
-+	len += sizeof(uve_op_speed_enc_mode) / 4;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_op_encode, sizeof(uve_op_encode));
-+	len += sizeof(uve_op_encode) / 4;
-+
-+	r = submit(device_handle, &context->uvd, len, AMDGPU_HW_IP_UVD_ENC);
++	r = amdgpu_bo_cpu_unmap(buf_handle);
 +	igt_assert_eq(r, 0);
 +
-+	check_result(&context->enc);
++	r = amdgpu_bo_va_op(buf_handle, 0, req.alloc_size, va, 0, AMDGPU_VA_OP_UNMAP);
++	igt_assert_eq(r, 0);
 +
-+	free_resource(&context->enc.fb);
-+	free_resource(&context->enc.bs);
-+	free_resource(&context->enc.vbuf);
-+	free_resource(&context->enc.cpb);
++	r = amdgpu_va_range_free(va_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_free(buf_handle);
++	igt_assert_eq(r, 0);
 +}
 +
 +static void
-+amdgpu_uvd_enc_destroy(amdgpu_device_handle device_handle,
-+		struct uvd_enc_context *context)
++amdgpu_uvd_dec_destroy(amdgpu_device_handle device_handle, struct mmd_context *context)
 +{
-+	int len, r;
++	struct amdgpu_bo_alloc_request req = {0};
++	amdgpu_bo_handle buf_handle;
++	amdgpu_va_handle va_handle;
++	uint64_t va = 0;
++	void *msg;
++	uint32_t i;
++	int r;
 +
-+	context->uvd.num_resources  = 0;
-+	context->uvd.resources[context->uvd.num_resources++] = context->uvd.ib_handle;
++	req.alloc_size = 4 * 1024;
++	req.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
 +
-+	len = 0;
-+	memcpy((context->uvd.ib_cpu + len), uve_session_info, sizeof(uve_session_info));
-+	len += sizeof(uve_session_info) / 4;
-+	context->uvd.ib_cpu[len++] = context->enc.session.addr >> 32;
-+	context->uvd.ib_cpu[len++] = context->enc.session.addr;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_task_info, sizeof(uve_task_info));
-+	len += sizeof(uve_task_info) / 4;
-+	context->uvd.ib_cpu[len++] = 0xffffffff;
-+	context->uvd.ib_cpu[len++] = 0x00000002;
-+	context->uvd.ib_cpu[len++] = 0x00000000;
-+
-+	memcpy((context->uvd.ib_cpu + len), uve_op_close, sizeof(uve_op_close));
-+	len += sizeof(uve_op_close) / 4;
-+
-+	r = submit(device_handle, &context->uvd, len, AMDGPU_HW_IP_UVD_ENC);
++	r = amdgpu_bo_alloc(device_handle, &req, &buf_handle);
 +	igt_assert_eq(r, 0);
 +
-+	free_resource(&context->enc.session);
++	r = amdgpu_va_range_alloc(device_handle,
++				  amdgpu_gpu_va_range_general,
++				  req.alloc_size, 1, 0, &va,
++				  &va_handle, 0);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_va_op(buf_handle, 0, req.alloc_size, va, 0,
++			    AMDGPU_VA_OP_MAP);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_cpu_map(buf_handle, &msg);
++	igt_assert_eq(r, 0);
++
++	memcpy(msg, uvd_destroy_msg, sizeof(uvd_destroy_msg));
++	if (context->family_id >= AMDGPU_FAMILY_VI)
++		((uint8_t *)msg)[0x10] = 7;
++
++	r = amdgpu_bo_cpu_unmap(buf_handle);
++	igt_assert_eq(r, 0);
++
++	context->num_resources = 0;
++	context->resources[context->num_resources++] = buf_handle;
++	context->resources[context->num_resources++] = context->ib_handle;
++
++	i = 0;
++	uvd_cmd(context->family_id, va, 0x0, &i, context->ib_cpu);
++	for (; i % 16; ++i)
++		context->ib_cpu[i] = 0x80000000;
++
++	r = submit(device_handle, context, i, AMDGPU_HW_IP_UVD);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_va_op(buf_handle, 0, req.alloc_size, va, 0, AMDGPU_VA_OP_UNMAP);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_va_range_free(va_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_free(buf_handle);
++	igt_assert_eq(r, 0);
 +}
 +
 +igt_main
 +{
 +	amdgpu_device_handle device;
-+	struct uvd_enc_context context = {};
++	struct mmd_context context = {};
 +	int fd = -1;
 +
 +	igt_fixture {
@@ -356,43 +356,38 @@ index 000000000..e3e85522f
 +		igt_require(err == 0);
 +		igt_info("Initialized amdgpu, driver version %d.%d\n",
 +			 major, minor);
-+		err = mmd_context_init(device, &context.uvd);
++		err = mmd_context_init(device, &context);
 +		igt_require(err == 0);
-+
-+		igt_skip_on(!is_uvd_enc_enable(device));
++		igt_skip_on(!is_uvd_tests_enable(context.family_id, context.chip_id,
++				context.chip_rev));
 +	}
++	igt_describe("Test whether uvd dec is created");
++	igt_subtest("amdgpu_uvd_dec_create")
++	amdgpu_uvd_dec_create(device, &context);
 +
-+	igt_describe("Test whether uvd enc is created");
-+	igt_subtest("uvd_enc_create")
-+	amdgpu_uvd_enc_create(device, &context);
++	igt_describe("Test whether uvd dec can decode");
++	igt_subtest("amdgpu_uvd_decode")
++	amdgpu_uvd_decode(device, &context);
 +
-+	igt_describe("Test whether uvd enc session init");
-+	igt_subtest("amdgpu_uvd_enc_session_init")
-+	amdgpu_uvd_enc_session_init(device, &context);
-+
-+	igt_describe("Test whether uvd enc encode");
-+	igt_subtest("amdgpu_uvd_enc_encode")
-+	amdgpu_uvd_enc_encode(device, &context);
-+
-+	igt_describe("Test whether uvd enc is destroyed");
-+	igt_subtest("uvd_enc_destroy")
-+	amdgpu_uvd_enc_destroy(device, &context);
++	igt_describe("Test whether uvd dec is destroyed");
++	igt_subtest("amdgpu_uvd_dec_destroy")
++	amdgpu_uvd_dec_destroy(device, &context);
 +
 +	igt_fixture {
-+		mmd_context_clean(device, &context.uvd);
++		mmd_context_clean(device, &context);
 +		amdgpu_device_deinitialize(device);
 +		drm_close_driver(fd);
 +	}
 +}
 diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index 690bc38db..576333aab 100644
+index 24843de73..690bc38db 100644
 --- a/tests/amdgpu/meson.build
 +++ b/tests/amdgpu/meson.build
-@@ -25,6 +25,7 @@ if libdrm_amdgpu.found()
+@@ -24,6 +24,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_plane',
  			  'amd_prime',
  			  'amd_psr',
- 			  'amd_uvd_dec',
-+			  'amd_uvd_enc',
++			  'amd_uvd_dec',
  			  'amd_vrr_range',
  			]
  	amdgpu_deps += libdrm_amdgpu
