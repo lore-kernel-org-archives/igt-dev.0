@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A720210E115
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 12:50:58 +0000 (UTC)
-Date: Tue, 4 Jul 2023 14:50:53 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <20230704145053.31c39a24@maurocar-mobl2>
-In-Reply-To: <f307f97a-506a-4897-46a7-52ce032aa8b6@linux.intel.com>
-References: <20230526064624.2886063-1-mauro.chehab@linux.intel.com>
- <20230526064624.2886063-3-mauro.chehab@linux.intel.com>
- <843966cc-f42a-5ec8-34d5-80cb832b8ee1@linux.intel.com>
- <f307f97a-506a-4897-46a7-52ce032aa8b6@linux.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8177510E127
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 13:06:07 +0000 (UTC)
+Message-ID: <82c2d355-a24a-482a-129c-abfc6eb38b66@linux.intel.com>
+Date: Tue, 4 Jul 2023 14:06:03 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] testplan/meson.build: make it check
- for missing i915 documentation
+Content-Language: en-US
+To: priyanka.dandamudi@intel.com, janga.rahul.kumar@intel.com,
+ tejas.upadhyay@intel.com, igt-dev@lists.freedesktop.org,
+ ramadevi.gandi@intel.com
+References: <20230629054339.636091-1-priyanka.dandamudi@intel.com>
+ <20230629054339.636091-3-priyanka.dandamudi@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230629054339.636091-3-priyanka.dandamudi@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] xe/xe_sysfs_defaults: Verify
+ .defaults in engines directory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,67 +24,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 4 Jul 2023 13:41:14 +0100
-Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com> wrote:
 
-> On 04/07/2023 13:28, Tvrtko Ursulin wrote:
-> > 
-> > On 26/05/2023 07:46, Mauro Carvalho Chehab wrote:  
-> >> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> >>
-> >> Now that i915 is fully documented, check it at build time.  
-> > 
-> > This step seems to be slow as molasses and it also rebuilds the Xe test 
-> > plan when I touch an i915 test.
-
-This is fixable, but better to wait for Bhanu's patch series that will
-be moving the Intel tests to a new directory (tests/intel/).
-
-> > 
-> > What is the way to disable it all when configuring the build?
-
-Yes, you can disable it:
-
-	$ meson -Dtestplan=disabled build --reconfigure
-
-We do want this enabled by default, as CI needs to check it and
-reject patches that aren't updating tests documentation.
-
-Our internal CI is already dependent on it for the Xe and KMS, and
-the plan is to extend it to i915 as well, to get rid of lots of
-hacks that currently maps tests with the tested features.
-
-> > 
-> > P.S. I also find the "now that i915 is fully documented" statement a bit 
-> > of a chuckle, since random two tests I happened to open haven't really 
-> > been documented - it rather looks to be a bit of a charade.
-
-Well, it is as good as what we had documented on IGT itself and on
-some separate spreadsheets. If you find anything odd, please fix it.
-
-> > 
-> > I wouldn't care really apart from it significantly slowing down the 
-> > development workflow.  
+On 29/06/2023 06:43, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> # time ninja
-> [1/448] Generating lib/version.h with a custom command
-> fatal: not a git repository (or any of the parent directories): .git
-> [6/6] Generating docs/testplan/i915_tests.rst with a custom command
+> Add a new test which verifies .defaults are readonly and all
+> parameters are present.
 > 
-> real    0m24.363s
-> user    0m6.530s
-> sys     0m20.968s
+> v2: Addressed small changes.(Kamil)
 > 
-> 24 seconds.. I just changed one i915 test. :(
+> v3: Added debug for default value.(Rahul)
+> 
+> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> ---
+>   tests/meson.build            |  1 +
+>   tests/xe/xe_sysfs_defaults.c | 90 ++++++++++++++++++++++++++++++++++++
+>   2 files changed, 91 insertions(+)
+>   create mode 100644 tests/xe/xe_sysfs_defaults.c
+> 
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 85ea7e74e..b24bae5c2 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -270,6 +270,7 @@ xe_progs = [
+>   	'xe_vm',
+>   	'xe_waitfence',
+>   	'xe_spin_batch',
+> +	'xe_sysfs_defaults',
+>   ]
+>   
+>   msm_progs = [
+> diff --git a/tests/xe/xe_sysfs_defaults.c b/tests/xe/xe_sysfs_defaults.c
+> new file mode 100644
+> index 000000000..a1df312e7
+> --- /dev/null
+> +++ b/tests/xe/xe_sysfs_defaults.c
+> @@ -0,0 +1,90 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: xe sysfs defaults
+> + * Category: Infrastructure
+> + * Functionality: driver handler
+> + * Run type: FULL
+> + * Sub-category: xe
+> + * Test category: SysMan
+> + * SUBTEST: engine-defaults
+> + */
+> +
 
-What it takes time is not building the docs, but to run all tests with
-"--list" parameter, in order to double-check if every test has some
-documentation.
+#include <fcntl.h>
+
+Or it doesn't build, on Ubuntu 22.04 at least. Same for 
+"xe/xe_sysfs_scheduler: Verify scheduler control interface"
 
 Regards,
-Mauro
+
+Tvrtko
+
+> +#include <dirent.h>
+> +#include <sys/types.h>
+> +#include <sys/stat.h>
+> +#include <unistd.h>
+> +
+> +#include "igt.h"
+> +#include "igt_sysfs.h"
+> +
+> +#include "xe_drm.h"
+> +#include "xe/xe_query.h"
+> +
+> +static void test_defaults(int xe, int engine, const char **property)
+> +{
+> +	struct dirent *de;
+> +	int property_value;
+> +	int defaults;
+> +	DIR *dir;
+> +
+> +	defaults = openat(engine, ".defaults", O_DIRECTORY);
+> +	igt_require(defaults != -1);
+> +
+> +	dir = fdopendir(engine);
+> +	while ((de = readdir(dir))) {
+> +		if (*de->d_name == '.')
+> +			continue;
+> +
+> +		igt_debug("Checking attr '%s'\n", de->d_name);
+> +
+> +		igt_assert_f(property_value = igt_sysfs_get_u64(defaults, de->d_name),
+> +			     "Default value %s is not present!\n", de->d_name);
+> +
+> +		igt_debug("Default property:%s, value:%d\n", de->d_name, property_value);
+> +
+> +		igt_assert_f(!igt_sysfs_set(defaults, de->d_name, "garbage"),
+> +					    "write into default value of %s succeeded!\n",
+> +					    de->d_name);
+> +	}
+> +	closedir(dir);
+> +}
+> +
+> +igt_main
+> +{
+> +	int xe, sys_fd;
+> +	int gt;
+> +
+> +	igt_fixture {
+> +		xe = drm_open_driver(DRIVER_XE);
+> +		xe_device_get(xe);
+> +
+> +		sys_fd = igt_sysfs_open(xe);
+> +		igt_require(sys_fd != -1);
+> +	}
+> +
+> +	igt_subtest_with_dynamic("engine-defaults") {
+> +		xe_for_each_gt(xe, gt) {
+> +			int engines_fd = -1;
+> +			char buf[100];
+> +
+> +			sprintf(buf, "device/gt%d/engines", gt);
+> +			engines_fd = openat(sys_fd, buf, O_RDONLY);
+> +			igt_require(engines_fd != -1);
+> +
+> +			igt_sysfs_engines(xe, engines_fd, NULL, test_defaults);
+> +
+> +			close(engines_fd);
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		close(sys_fd);
+> +		xe_device_put(xe);
+> +		close(xe);
+> +	}
+> +}
+> +
