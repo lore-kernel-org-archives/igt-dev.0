@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F4CA10E2BC
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 09:01:39 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  4 Jul 2023 11:00:59 +0200
-Message-Id: <20230704090104.120219-8-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230704090104.120219-1-zbigniew.kempczynski@intel.com>
-References: <20230704090104.120219-1-zbigniew.kempczynski@intel.com>
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam04on2062b.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e8b::62b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1930610E307
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 17:45:17 +0000 (UTC)
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Tue, 4 Jul 2023 13:45:02 -0400
+Message-ID: <20230704174502.42544-6-vitaly.prosyak@amd.com>
+In-Reply-To: <20230704174502.42544-1-vitaly.prosyak@amd.com>
+References: <20230704174502.42544-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 07/12] lib/intel_allocator: Add
- intel_allocator_bind()
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH 6/6] tests/amdgpu: add jpeg decoder test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,267 +25,498 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Synchronize allocator state to vm.
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-This change allows xe user to execute vm-bind/unbind for allocator
-alloc()/free() operations which occurred since last binding/unbinding.
-Before doing exec user should call intel_allocator_bind() to ensure
-all vma's are in place.
+Ported and refactored drmlib jpeg_tests.c and  the following is done:
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+1. Remove everywhere global variables.
+2. Reuse common functions from amd_mmd_shared.h
+3. Properly formatted code to meet igt guidelines.
+
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/intel_allocator.c | 161 ++++++++++++++++++++++++++++++++++++++++++
- lib/intel_allocator.h |   3 +
- 2 files changed, 164 insertions(+)
+ tests/amdgpu/amd_jpeg_dec.c | 460 ++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build    |   1 +
+ 2 files changed, 461 insertions(+)
+ create mode 100644 tests/amdgpu/amd_jpeg_dec.c
 
-diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-index c98c410b3b..20d2c10f50 100644
---- a/lib/intel_allocator.c
-+++ b/lib/intel_allocator.c
-@@ -17,6 +17,7 @@
- #include "intel_allocator.h"
- #include "intel_allocator_msgchannel.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_util.h"
- 
- //#define ALLOCDBG
- #ifdef ALLOCDBG
-@@ -46,6 +47,14 @@ static inline const char *reqstr(enum reqtype request_type)
- #define alloc_debug(...) {}
- #endif
- 
-+#ifdef ALLOCBINDDBG
-+#define bind_info igt_info
-+#define bind_debug igt_debug
-+#else
-+#define bind_info(...) {}
-+#define bind_debug(...) {}
-+#endif
+diff --git a/tests/amdgpu/amd_jpeg_dec.c b/tests/amdgpu/amd_jpeg_dec.c
+new file mode 100644
+index 000000000..bb2a8e97e
+--- /dev/null
++++ b/tests/amdgpu/amd_jpeg_dec.c
+@@ -0,0 +1,460 @@
++// SPDX-License-Identifier: MIT
++// Copyright 2023 Advanced Micro Devices, Inc.
++// Copyright 2017 Advanced Micro Devices, Inc.
 +
- /*
-  * We limit allocator space to avoid hang when batch would be
-  * pinned in the last page.
-@@ -58,6 +67,7 @@ struct allocator {
- 	uint32_t vm;
- 	_Atomic(int32_t) refcount;
- 	struct intel_allocator *ial;
-+	struct igt_map *bind_map;
- };
- 
- struct handle_entry {
-@@ -65,6 +75,21 @@ struct handle_entry {
- 	struct allocator *al;
- };
- 
-+/* For tracking alloc()/free() for Xe */
-+enum allocator_bind_op {
-+	BOUND,
-+	TO_BIND,
-+	TO_UNBIND,
-+};
++#include "lib/amdgpu/amd_mmd_shared.h"
 +
-+struct allocator_object {
-+	uint32_t handle;
-+	uint64_t offset;
-+	uint64_t size;
++/* jpeg registers */
++#define mmUVD_JPEG_CNTL				0x0200
++#define mmUVD_JPEG_RB_BASE			0x0201
++#define mmUVD_JPEG_RB_WPTR			0x0202
++#define mmUVD_JPEG_RB_RPTR			0x0203
++#define mmUVD_JPEG_RB_SIZE			0x0204
++#define mmUVD_JPEG_TIER_CNTL2			0x021a
++#define mmUVD_JPEG_UV_TILING_CTRL		0x021c
++#define mmUVD_JPEG_TILING_CTRL			0x021e
++#define mmUVD_JPEG_OUTBUF_RPTR			0x0220
++#define mmUVD_JPEG_OUTBUF_WPTR			0x0221
++#define mmUVD_JPEG_PITCH			0x0222
++#define mmUVD_JPEG_INT_EN			0x0229
++#define mmUVD_JPEG_UV_PITCH			0x022b
++#define mmUVD_JPEG_INDEX			0x023e
++#define mmUVD_JPEG_DATA				0x023f
++#define mmUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x0438
++#define mmUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x0439
++#define mmUVD_LMI_JPEG_READ_64BIT_BAR_HIGH	0x045a
++#define mmUVD_LMI_JPEG_READ_64BIT_BAR_LOW	0x045b
++#define mmUVD_CTX_INDEX				0x0528
++#define mmUVD_CTX_DATA				0x0529
++#define mmUVD_SOFT_RESET			0x05a0
 +
-+	enum allocator_bind_op bind_op;
-+};
++#define vcnipUVD_JPEG_DEC_SOFT_RST		0x402f
++#define vcnipUVD_JRBC_IB_COND_RD_TIMER		0x408e
++#define vcnipUVD_JRBC_IB_REF_DATA		0x408f
++#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH	0x40e1
++#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW	0x40e0
++#define vcnipUVD_JPEG_RB_BASE			0x4001
++#define vcnipUVD_JPEG_RB_SIZE			0x4004
++#define vcnipUVD_JPEG_RB_WPTR			0x4002
++#define vcnipUVD_JPEG_PITCH			0x401f
++#define vcnipUVD_JPEG_UV_PITCH			0x4020
++#define vcnipJPEG_DEC_ADDR_MODE			0x4027
++#define vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE	0x4024
++#define vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE	0x4025
++#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x40e3
++#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x40e2
++#define vcnipUVD_JPEG_INDEX			0x402c
++#define vcnipUVD_JPEG_DATA			0x402d
++#define vcnipUVD_JPEG_TIER_CNTL2		0x400f
++#define vcnipUVD_JPEG_OUTBUF_RPTR		0x401e
++#define vcnipUVD_JPEG_OUTBUF_CNTL		0x401c
++#define vcnipUVD_JPEG_INT_EN			0x400a
++#define vcnipUVD_JPEG_CNTL			0x4000
++#define vcnipUVD_JPEG_RB_RPTR			0x4003
++#define vcnipUVD_JPEG_OUTBUF_WPTR		0x401d
 +
- struct intel_allocator *
- intel_allocator_reloc_create(int fd, uint64_t start, uint64_t end);
- struct intel_allocator *
-@@ -234,6 +259,7 @@ static struct allocator *__allocator_create(int fd, uint32_t ctx, uint32_t vm,
- 	al->vm = vm;
- 	atomic_init(&al->refcount, 0);
- 	al->ial = ial;
-+	al->bind_map = igt_map_create(igt_map_hash_32, igt_map_equal_32);
- 
- 	igt_map_insert(map, al, al);
- 
-@@ -404,6 +430,7 @@ static bool allocator_close(uint64_t ahnd)
- 	released = __allocator_put(al);
- 	if (released) {
- 		is_empty = al->ial->is_empty(al->ial);
-+		igt_map_destroy(al->bind_map, map_entry_free_func);
- 		intel_allocator_destroy(al->ial);
- 	}
- 
-@@ -1108,6 +1135,60 @@ void intel_allocator_get_address_range(uint64_t allocator_handle,
- 		*endp = resp.address_range.end;
- }
- 
-+static bool is_same(struct allocator_object *obj,
-+		    uint32_t handle, uint64_t offset, uint64_t size,
-+		    enum allocator_bind_op bind_op)
++
++#define RDECODE_PKT_REG_J(x)		((unsigned int)(x)&0x3FFFF)
++#define RDECODE_PKT_RES_J(x)		(((unsigned int)(x)&0x3F) << 18)
++#define RDECODE_PKT_COND_J(x)		(((unsigned int)(x)&0xF) << 24)
++#define RDECODE_PKT_TYPE_J(x)		(((unsigned int)(x)&0xF) << 28)
++#define RDECODE_PKTJ(reg, cond, type)	(RDECODE_PKT_REG_J(reg) | \
++					 RDECODE_PKT_RES_J(0) | \
++					 RDECODE_PKT_COND_J(cond) | \
++					 RDECODE_PKT_TYPE_J(type))
++
++#define UVD_BASE_INST0_SEG1		0x00007E00
++#define SOC15_REG_ADDR(reg)		(UVD_BASE_INST0_SEG1 + reg)
++
++#define COND0				0
++#define COND1				1
++#define COND3				3
++#define TYPE0				0
++#define TYPE1				1
++#define TYPE3				3
++#define JPEG_DEC_DT_PITCH		0x100
++#define JPEG_DEC_BSD_SIZE		0x180
++#define JPEG_DEC_LUMA_OFFSET		0
++#define JPEG_DEC_CHROMA_OFFSET		0x1000
++#define JPEG_DEC_SUM			4096
++#define IB_SIZE				4096
++#define MAX_RESOURCES			16
++
++static bool
++is_jpeg_tests_enable(amdgpu_device_handle device_handle,
++		struct mmd_context *context)
 +{
-+	return obj->handle == handle &&	obj->offset == offset && obj->size == size &&
-+	       (obj->bind_op == bind_op || obj->bind_op == BOUND);
++	struct drm_amdgpu_info_hw_ip info;
++	int r;
++
++	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VCN_JPEG, 0, &info);
++
++	if (r != 0 || !info.available_rings ||
++			(context->family_id < AMDGPU_FAMILY_RV &&
++			(context->family_id == AMDGPU_FAMILY_AI &&
++			(context->chip_id - context->chip_rev) < 0x32))) { /* Arcturus */
++		igt_info("\n\nThe ASIC NOT support JPEG, test disabled\n");
++		return false;
++	}
++
++	if (info.hw_ip_version_major == 1)
++		context->jpeg_direct_reg = false;
++	else if (info.hw_ip_version_major > 1 && info.hw_ip_version_major <= 4)
++		context->jpeg_direct_reg = true;
++	else
++		return false;
++
++	return true;
 +}
 +
-+static void track_object(uint64_t allocator_handle, uint32_t handle,
-+			 uint64_t offset, uint64_t size,
-+			 enum allocator_bind_op bind_op)
++
++static void
++set_reg_jpeg(struct mmd_context *context, uint32_t reg, uint32_t cond,
++		uint32_t type, uint32_t val, uint32_t *idx)
 +{
-+	struct allocator_object *obj;
-+	struct allocator *al;
++	context->ib_cpu[(*idx)++] = RDECODE_PKTJ(reg, cond, type);
++	context->ib_cpu[(*idx)++] = val;
++}
 +
-+	bind_info("track: [%s] ahnd: %lld, handle: %u, offset: %llx, size: %llx\n",
-+		  bind_op == TO_BIND ? "BIND" : "UNBIND",
-+		  (long long)allocator_handle,
-+		  handle, (long long)offset, (long long)size);
-+	al = __allocator_find_by_handle(allocator_handle);
-+	igt_assert(al);
++/* send a bitstream buffer command */
++static void
++send_cmd_bitstream(struct mmd_context *context, uint64_t addr, uint32_t *idx)
++{
++	/* jpeg soft reset */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 1, idx);
 +
-+	if (al->ial->driver == INTEL_DRIVER_I915)
-+		return; /* no-op for i915, at least now */
++	/* ensuring the Reset is asserted in SCLK domain */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
++			0x01C2, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
++			0x01400200, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
++			0x01C3, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
++			(1 << 9), idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3,
++			(1 << 9), idx);
 +
-+	obj = igt_map_search(al->bind_map, &handle);
-+	if (obj) {
-+		/*
-+		 * User may call alloc() couple of times, check object is the
-+		 * same. For free() there's simple case, just remove from
-+		 * bind_map.
-+		 */
-+		if (bind_op == TO_BIND)
-+			igt_assert_eq(is_same(obj, handle, offset, size, bind_op), true);
-+		else if (bind_op == TO_UNBIND) {
-+			if (obj->bind_op == TO_BIND)
-+				igt_map_remove(al->bind_map, &obj->handle, map_entry_free_func);
-+			else if (obj->bind_op == BOUND)
-+				obj->bind_op = bind_op;
-+		}
++	/* wait mem */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
++			0, idx);
++
++	/* ensuring the Reset is de-asserted in SCLK domain */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
++			0x01C3, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
++			(0 << 9), idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3,
++			(1 << 9), idx);
++
++	/* set UVD_LMI_JPEG_READ_64BIT_BAR_LOW/HIGH based on bitstream buffer address */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_READ_64BIT_BAR_HIGH),
++			COND0, TYPE0, (addr >> 32), idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_READ_64BIT_BAR_LOW),
++			COND0, TYPE0, (uint32_t)addr, idx);
++
++	/* set jpeg_rb_base */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_BASE), COND0, TYPE0,
++			0, idx);
++
++	/* set jpeg_rb_base */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_SIZE), COND0, TYPE0,
++			0xFFFFFFF0, idx);
++
++	/* set jpeg_rb_wptr */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_WPTR), COND0, TYPE0,
++			(JPEG_DEC_BSD_SIZE >> 2), idx);
++}
++
++/* send a target buffer command */
++static void
++send_cmd_target(struct mmd_context *context, uint64_t addr,
++		uint32_t *idx)
++{
++
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_PITCH), COND0, TYPE0,
++				(JPEG_DEC_DT_PITCH >> 4), idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_UV_PITCH), COND0, TYPE0,
++				(JPEG_DEC_DT_PITCH >> 4), idx);
++
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_TILING_CTRL), COND0, TYPE0,
++			0, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_UV_TILING_CTRL), COND0, TYPE0,
++			0, idx);
++
++	/* set UVD_LMI_JPEG_WRITE_64BIT_BAR_LOW/HIGH based on target buffer address */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH),
++			COND0, TYPE0, (addr >> 32), idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW),
++			COND0, TYPE0, (uint32_t)addr, idx);
++
++	/* set output buffer data address */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INDEX), COND0, TYPE0, 0, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_DATA), COND0, TYPE0,
++			JPEG_DEC_LUMA_OFFSET, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INDEX), COND0, TYPE0, 1, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_DATA), COND0, TYPE0,
++			JPEG_DEC_CHROMA_OFFSET, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_TIER_CNTL2), COND0, TYPE3,
++			0, idx);
++
++	/* set output buffer read pointer */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_OUTBUF_RPTR), COND0, TYPE0,
++			0, idx);
++
++	/* enable error interrupts */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INT_EN), COND0, TYPE0,
++			0xFFFFFFFE, idx);
++
++	/* start engine command */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
++			0x6, idx);
++
++	/* wait for job completion, wait for job JBSI fetch done */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
++			0x01C3, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
++			(JPEG_DEC_BSD_SIZE >> 2), idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
++			0x01C2, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
++			0x01400200, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_RPTR), COND0, TYPE3,
++			0xFFFFFFFF, idx);
++
++	/* wait for job jpeg outbuf idle */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
++			0x01C3, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
++			0xFFFFFFFF, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_OUTBUF_WPTR), COND0, TYPE3,
++			0x00000001, idx);
++
++	/* stop engine */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
++			0x4, idx);
++
++	/* asserting jpeg lmi drop */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
++			0x0005, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
++			(1 << 23 | 1 << 0), idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE1, 0, idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, 0, idx);
++
++	/* asserting jpeg reset */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 1, idx);
++
++	/* ensure reset is asserted in sclk domain */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x01C3,
++			idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, (1 << 9),
++			idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3, (1 << 9),
++			idx);
++
++	/* de-assert jpeg reset */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 0, idx);
++
++	/* ensure reset is de-asserted in sclk domain */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x01C3,
++			idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, (0 << 9),
++			idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3, (1 << 9),
++			idx);
++
++	/* de-asserting jpeg lmi drop */
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x0005,
++			idx);
++	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, 0, idx);
++}
++
++/* send a bitstream buffer command */
++static void
++send_cmd_bitstream_direct(struct mmd_context *context, uint64_t addr,
++		uint32_t *idx)
++{
++
++	/* jpeg soft reset */
++	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND0, TYPE0, 1, idx);
++
++	/* ensuring the Reset is asserted in SCLK domain */
++	set_reg_jpeg(context, vcnipUVD_JRBC_IB_COND_RD_TIMER, COND0, TYPE0,
++			0x01400200, idx);
++	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0,
++			(0x1 << 0x10), idx);
++	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND3, TYPE3,
++			(0x1 << 0x10), idx);
++
++	/* wait mem */
++	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND0, TYPE0, 0, idx);
++
++	/* ensuring the Reset is de-asserted in SCLK domain */
++	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0, (0 << 0x10),
++			idx);
++	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND3, TYPE3,
++			(0x1 << 0x10), idx);
++
++	/* set UVD_LMI_JPEG_READ_64BIT_BAR_LOW/HIGH based on bitstream buffer address */
++	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH, COND0, TYPE0,
++			(addr >> 32), idx);
++	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW, COND0, TYPE0,
++			addr, idx);
++
++	/* set jpeg_rb_base */
++	set_reg_jpeg(context, vcnipUVD_JPEG_RB_BASE, COND0, TYPE0, 0, idx);
++
++	/* set jpeg_rb_base */
++	set_reg_jpeg(context, vcnipUVD_JPEG_RB_SIZE, COND0, TYPE0, 0xFFFFFFF0, idx);
++
++	/* set jpeg_rb_wptr */
++	set_reg_jpeg(context, vcnipUVD_JPEG_RB_WPTR, COND0, TYPE0,
++			(JPEG_DEC_BSD_SIZE >> 2), idx);
++}
++
++/* send a target buffer command */
++static void
++send_cmd_target_direct(struct mmd_context *context, uint64_t addr,
++		uint32_t *idx)
++{
++
++	set_reg_jpeg(context, vcnipUVD_JPEG_PITCH, COND0, TYPE0,
++			(JPEG_DEC_DT_PITCH >> 4), idx);
++	set_reg_jpeg(context, vcnipUVD_JPEG_UV_PITCH, COND0, TYPE0,
++			(JPEG_DEC_DT_PITCH >> 4), idx);
++
++	set_reg_jpeg(context, vcnipJPEG_DEC_ADDR_MODE, COND0, TYPE0, 0, idx);
++	set_reg_jpeg(context, vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE, COND0, TYPE0,
++			0, idx);
++	set_reg_jpeg(context, vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE, COND0, TYPE0,
++			0, idx);
++
++	/* set UVD_LMI_JPEG_WRITE_64BIT_BAR_LOW/HIGH based on target buffer address */
++	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH, COND0, TYPE0,
++			(addr >> 32), idx);
++	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW, COND0, TYPE0,
++			addr, idx);
++
++	/* set output buffer data address */
++	set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 0, idx);
++	set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0, JPEG_DEC_LUMA_OFFSET,
++			idx);
++	set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 1, idx);
++	set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0,
++			JPEG_DEC_CHROMA_OFFSET, idx);
++	set_reg_jpeg(context, vcnipUVD_JPEG_TIER_CNTL2, COND0, 0, 0, idx);
++
++	/* set output buffer read pointer */
++	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_RPTR, COND0, TYPE0, 0, idx);
++	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_CNTL, COND0, TYPE0,
++				((0x00001587 & (~0x00000180L)) | (0x1 << 0x7) | (0x1 << 0x6)),
++				 idx);
++
++	/* enable error interrupts */
++	set_reg_jpeg(context, vcnipUVD_JPEG_INT_EN, COND0, TYPE0, 0xFFFFFFFE, idx);
++
++	/* start engine command */
++	set_reg_jpeg(context, vcnipUVD_JPEG_CNTL, COND0, TYPE0, 0xE, idx);
++
++	/* wait for job completion, wait for job JBSI fetch done */
++	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0,
++			(JPEG_DEC_BSD_SIZE >> 2), idx);
++	set_reg_jpeg(context, vcnipUVD_JRBC_IB_COND_RD_TIMER, COND0, TYPE0,
++			0x01400200, idx);
++	set_reg_jpeg(context, vcnipUVD_JPEG_RB_RPTR, COND3, TYPE3, 0xFFFFFFFF, idx);
++
++	/* wait for job jpeg outbuf idle */
++	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0, 0xFFFFFFFF,
++			idx);
++	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_WPTR, COND3, TYPE3, 0x00000001,
++			idx);
++
++	/* stop engine */
++	set_reg_jpeg(context, vcnipUVD_JPEG_CNTL, COND0, TYPE0, 0x4, idx);
++}
++
++static void
++amdgpu_cs_jpeg_decode(amdgpu_device_handle device_handle,
++		struct mmd_context *context)
++{
++
++	struct amdgpu_mmd_bo dec_buf;
++	int size, r;
++	uint8_t *dec;
++	int sum = 0, i, j;
++	uint32_t idx;
++
++	size = 16 * 1024; /* 8K bitstream + 8K output */
++
++	context->num_resources = 0;
++	alloc_resource(device_handle, &dec_buf, size, AMDGPU_GEM_DOMAIN_VRAM);
++	context->resources[context->num_resources++] = dec_buf.handle;
++	context->resources[context->num_resources++] = context->ib_handle;
++	r = amdgpu_bo_cpu_map(dec_buf.handle, (void **)&dec_buf.ptr);
++	igt_assert_eq(r, 0);
++	memcpy(dec_buf.ptr, jpeg_bitstream, sizeof(jpeg_bitstream));
++
++	idx = 0;
++
++	if (context->jpeg_direct_reg == true) {
++		send_cmd_bitstream_direct(context, dec_buf.addr, &idx);
++		send_cmd_target_direct(context, dec_buf.addr + (size / 2), &idx);
 +	} else {
-+		/* Ignore to unbind bo which wasn't previously inserted */
-+		if (bind_op == TO_UNBIND)
-+			return;
-+
-+		obj = calloc(1, sizeof(*obj));
-+		obj->handle = handle;
-+		obj->offset = offset;
-+		obj->size = size;
-+		obj->bind_op = bind_op;
-+		igt_map_insert(al->bind_map, &obj->handle, obj);
++		send_cmd_bitstream(context, dec_buf.addr, &idx);
++		send_cmd_target(context, dec_buf.addr + (size / 2), &idx);
 +	}
++
++	amdgpu_bo_cpu_unmap(dec_buf.handle);
++	r = submit(device_handle, context, idx, AMDGPU_HW_IP_VCN_JPEG);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_cpu_map(dec_buf.handle, (void **)&dec_buf.ptr);
++	igt_assert_eq(r, 0);
++
++	dec = dec_buf.ptr + (size / 2);
++
++	/* calculate result checksum */
++	for (i = 0; i < 8; i++)
++		for (j = 0; j < 8; j++)
++			sum += *((dec + JPEG_DEC_LUMA_OFFSET + i * JPEG_DEC_DT_PITCH) + j);
++	for (i = 0; i < 4; i++)
++		for (j = 0; j < 8; j++)
++			sum += *((dec + JPEG_DEC_CHROMA_OFFSET + i * JPEG_DEC_DT_PITCH) + j);
++
++	amdgpu_bo_cpu_unmap(dec_buf.handle);
++	igt_assert_eq(sum, JPEG_DEC_SUM);
++
++	free_resource(&dec_buf);
 +}
 +
- /**
-  * __intel_allocator_alloc:
-  * @allocator_handle: handle to an allocator
-@@ -1139,6 +1220,8 @@ uint64_t __intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
- 	igt_assert(handle_request(&req, &resp) == 0);
- 	igt_assert(resp.response_type == RESP_ALLOC);
- 
-+	track_object(allocator_handle, handle, resp.alloc.offset, size, TO_BIND);
-+
- 	return resp.alloc.offset;
- }
- 
-@@ -1216,6 +1299,8 @@ bool intel_allocator_free(uint64_t allocator_handle, uint32_t handle)
- 	igt_assert(handle_request(&req, &resp) == 0);
- 	igt_assert(resp.response_type == RESP_FREE);
- 
-+	track_object(allocator_handle, handle, 0, 0, TO_UNBIND);
-+
- 	return resp.free.freed;
- }
- 
-@@ -1400,6 +1485,82 @@ void intel_allocator_print(uint64_t allocator_handle)
- 	}
- }
- 
-+static void __xe_op_bind(struct allocator *al, uint32_t sync_in, uint32_t sync_out)
++igt_main
 +{
-+	struct allocator_object *obj;
-+	struct igt_map_entry *pos;
-+	struct igt_list_head obj_list;
-+	struct xe_object *entry, *tmp;
++	amdgpu_device_handle device;
++	struct mmd_context context = {};
++	int fd = -1;
 +
-+	IGT_INIT_LIST_HEAD(&obj_list);
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
 +
-+	igt_map_foreach(al->bind_map, pos) {
-+		obj = pos->data;
++		fd = drm_open_driver(DRIVER_AMDGPU);
++		err = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(err == 0);
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++		err = mmd_context_init(device, &context);
++		igt_require(err == 0);
++		igt_skip_on(!is_jpeg_tests_enable(device, &context));
++	}
++	igt_describe("Test whether jpeg dec decodes");
++	igt_subtest("amdgpu_cs_jpeg_decode")
++	amdgpu_cs_jpeg_decode(device, &context);
 +
-+		if (obj->bind_op == BOUND)
-+			continue;
-+
-+		bind_info("= [vm: %u] %s => %u %lx %lx\n",
-+			  al->ctx,
-+			  obj->bind_op == TO_BIND ? "TO BIND" : "TO UNBIND",
-+			  obj->handle, obj->offset,
-+			  obj->size);
-+
-+		entry = malloc(sizeof(*entry));
-+		entry->handle = obj->handle;
-+		entry->offset = obj->offset;
-+		entry->size = obj->size;
-+		entry->bind_op = obj->bind_op == TO_BIND ? XE_OBJECT_BIND :
-+							   XE_OBJECT_UNBIND;
-+		entry->priv = obj;
-+		igt_list_add(&entry->link, &obj_list);
++	igt_fixture {
++		mmd_context_clean(device, &context);
++		amdgpu_device_deinitialize(device);
++		drm_close_driver(fd);
 +	}
 +
-+	xe_bind_unbind_async(al->fd, al->ctx, 0, &obj_list, sync_in, sync_out);
-+
-+	igt_list_for_each_entry_safe(entry, tmp, &obj_list, link) {
-+		obj = entry->priv;
-+		if (obj->bind_op == TO_BIND)
-+			obj->bind_op = BOUND;
-+		else
-+			igt_map_remove(al->bind_map, &obj->handle, map_entry_free_func);
-+
-+		igt_list_del(&entry->link);
-+		free(entry);
-+	}
 +}
-+
-+/**
-+ * intel_allocator_bind:
-+ * @allocator_handle: handle to an allocator
-+ * @sync_in: syncobj (fence-in)
-+ * @sync_out: syncobj (fence-out)
-+ *
-+ * Function binds and unbinds all objects added to the allocator which weren't
-+ * previously binded/unbinded.
-+ *
-+ **/
-+void intel_allocator_bind(uint64_t allocator_handle,
-+			  uint32_t sync_in, uint32_t sync_out)
-+{
-+	struct allocator *al;
-+
-+	igt_assert(allocator_handle);
-+
-+	al = __allocator_find_by_handle(allocator_handle);
-+	igt_assert(al);
-+
-+	if (al->ial->driver == INTEL_DRIVER_I915)
-+		return; /* no-op for i915, at least now */
-+
-+	/*
-+	 * We collect bind/unbind operations on alloc()/free() to do group
-+	 * operationgetting @sync_in as syncobj handle (fence-in). If user
-+	 * passes 0 as @sync_out we bind/unbind synchronously.
-+	 */
-+	__xe_op_bind(al, sync_in, sync_out);
-+}
-+
- static int equal_handles(const void *key1, const void *key2)
- {
- 	const struct handle_entry *h1 = key1, *h2 = key2;
-diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
-index ed3a78485d..ad86dc5524 100644
---- a/lib/intel_allocator.h
-+++ b/lib/intel_allocator.h
-@@ -214,6 +214,9 @@ bool intel_allocator_reserve_if_not_allocated(uint64_t allocator_handle,
- 
- void intel_allocator_print(uint64_t allocator_handle);
- 
-+void intel_allocator_bind(uint64_t allocator_handle,
-+			  uint32_t sync_in, uint32_t sync_out);
-+
- #define ALLOC_INVALID_ADDRESS (-1ull)
- #define INTEL_ALLOCATOR_NONE   0
- #define INTEL_ALLOCATOR_RELOC  1
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index d09a4b6e7..300c6b8df 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -15,6 +15,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_hotplug',
+ 			  'amd_ilr',
+ 			  'amd_info',
++			  'amd_jpeg_dec',
+ 			  'amd_link_settings',
+ 			  'amd_max_bpc',
+ 			  'amd_mem_leak',
 -- 
-2.34.1
+2.25.1
