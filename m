@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2066.outbound.protection.outlook.com [40.107.243.66])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D91D110E260
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 02:29:27 +0000 (UTC)
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam02on2084.outbound.protection.outlook.com [40.107.95.84])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07EA210E260
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jul 2023 02:29:28 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 3 Jul 2023 22:29:15 -0400
-Message-ID: <20230704022915.65866-6-vitaly.prosyak@amd.com>
+Date: Mon, 3 Jul 2023 22:29:13 -0400
+Message-ID: <20230704022915.65866-4-vitaly.prosyak@amd.com>
 In-Reply-To: <20230704022915.65866-1-vitaly.prosyak@amd.com>
 References: <20230704022915.65866-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 6/6] tests/amdgpu: add jpeg decoder test
+Subject: [igt-dev] [PATCH 4/6] tests/amdgpu: add vce decoder test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,7 +28,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Ported and refactored drmlib jpeg_tests.c and  the following is done:
+Ported and refactored drmlib vce_tests.c and  the following is done:
 
 1. Remove everywhere global variables.
 2. Reuse common functions from amd_mmd_shared.h
@@ -36,452 +36,578 @@ Ported and refactored drmlib jpeg_tests.c and  the following is done:
 
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- tests/amdgpu/amd_jpeg_dec.c | 460 ++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build    |   1 +
- 2 files changed, 461 insertions(+)
- create mode 100644 tests/amdgpu/amd_jpeg_dec.c
+ tests/amdgpu/amd_vce_dec.c | 602 +++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build   |   1 +
+ 2 files changed, 603 insertions(+)
+ create mode 100644 tests/amdgpu/amd_vce_dec.c
 
-diff --git a/tests/amdgpu/amd_jpeg_dec.c b/tests/amdgpu/amd_jpeg_dec.c
+diff --git a/tests/amdgpu/amd_vce_dec.c b/tests/amdgpu/amd_vce_dec.c
 new file mode 100644
-index 000000000..bb2a8e97e
+index 000000000..364534955
 --- /dev/null
-+++ b/tests/amdgpu/amd_jpeg_dec.c
-@@ -0,0 +1,460 @@
++++ b/tests/amdgpu/amd_vce_dec.c
+@@ -0,0 +1,602 @@
 +// SPDX-License-Identifier: MIT
 +// Copyright 2023 Advanced Micro Devices, Inc.
-+// Copyright 2017 Advanced Micro Devices, Inc.
++// Copyright 2014 Advanced Micro Devices, Inc.
 +
 +#include "lib/amdgpu/amd_mmd_shared.h"
++#include "lib/amdgpu/amd_mmd_vce_ib.h"
 +
-+/* jpeg registers */
-+#define mmUVD_JPEG_CNTL				0x0200
-+#define mmUVD_JPEG_RB_BASE			0x0201
-+#define mmUVD_JPEG_RB_WPTR			0x0202
-+#define mmUVD_JPEG_RB_RPTR			0x0203
-+#define mmUVD_JPEG_RB_SIZE			0x0204
-+#define mmUVD_JPEG_TIER_CNTL2			0x021a
-+#define mmUVD_JPEG_UV_TILING_CTRL		0x021c
-+#define mmUVD_JPEG_TILING_CTRL			0x021e
-+#define mmUVD_JPEG_OUTBUF_RPTR			0x0220
-+#define mmUVD_JPEG_OUTBUF_WPTR			0x0221
-+#define mmUVD_JPEG_PITCH			0x0222
-+#define mmUVD_JPEG_INT_EN			0x0229
-+#define mmUVD_JPEG_UV_PITCH			0x022b
-+#define mmUVD_JPEG_INDEX			0x023e
-+#define mmUVD_JPEG_DATA				0x023f
-+#define mmUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x0438
-+#define mmUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x0439
-+#define mmUVD_LMI_JPEG_READ_64BIT_BAR_HIGH	0x045a
-+#define mmUVD_LMI_JPEG_READ_64BIT_BAR_LOW	0x045b
-+#define mmUVD_CTX_INDEX				0x0528
-+#define mmUVD_CTX_DATA				0x0529
-+#define mmUVD_SOFT_RESET			0x05a0
++#define FW_53_0_03 ((53 << 24) | (0 << 16) | (03 << 8))
 +
-+#define vcnipUVD_JPEG_DEC_SOFT_RST		0x402f
-+#define vcnipUVD_JRBC_IB_COND_RD_TIMER		0x408e
-+#define vcnipUVD_JRBC_IB_REF_DATA		0x408f
-+#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH	0x40e1
-+#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW	0x40e0
-+#define vcnipUVD_JPEG_RB_BASE			0x4001
-+#define vcnipUVD_JPEG_RB_SIZE			0x4004
-+#define vcnipUVD_JPEG_RB_WPTR			0x4002
-+#define vcnipUVD_JPEG_PITCH			0x401f
-+#define vcnipUVD_JPEG_UV_PITCH			0x4020
-+#define vcnipJPEG_DEC_ADDR_MODE			0x4027
-+#define vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE	0x4024
-+#define vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE	0x4025
-+#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x40e3
-+#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x40e2
-+#define vcnipUVD_JPEG_INDEX			0x402c
-+#define vcnipUVD_JPEG_DATA			0x402d
-+#define vcnipUVD_JPEG_TIER_CNTL2		0x400f
-+#define vcnipUVD_JPEG_OUTBUF_RPTR		0x401e
-+#define vcnipUVD_JPEG_OUTBUF_CNTL		0x401c
-+#define vcnipUVD_JPEG_INT_EN			0x400a
-+#define vcnipUVD_JPEG_CNTL			0x4000
-+#define vcnipUVD_JPEG_RB_RPTR			0x4003
-+#define vcnipUVD_JPEG_OUTBUF_WPTR		0x401d
++struct amdgpu_vce_encode {
++	unsigned int width;
++	unsigned int height;
++	struct amdgpu_mmd_bo vbuf;
++	struct amdgpu_mmd_bo bs[2];
++	struct amdgpu_mmd_bo fb[2];
++	struct amdgpu_mmd_bo cpb;
++	unsigned int ib_len;
++	bool two_instance;
++	struct amdgpu_mmd_bo mvrefbuf;
++	struct amdgpu_mmd_bo mvb;
++	unsigned int mvbuf_size;
++};
 +
-+
-+#define RDECODE_PKT_REG_J(x)		((unsigned int)(x)&0x3FFFF)
-+#define RDECODE_PKT_RES_J(x)		(((unsigned int)(x)&0x3F) << 18)
-+#define RDECODE_PKT_COND_J(x)		(((unsigned int)(x)&0xF) << 24)
-+#define RDECODE_PKT_TYPE_J(x)		(((unsigned int)(x)&0xF) << 28)
-+#define RDECODE_PKTJ(reg, cond, type)	(RDECODE_PKT_REG_J(reg) | \
-+					 RDECODE_PKT_RES_J(0) | \
-+					 RDECODE_PKT_COND_J(cond) | \
-+					 RDECODE_PKT_TYPE_J(type))
-+
-+#define UVD_BASE_INST0_SEG1		0x00007E00
-+#define SOC15_REG_ADDR(reg)		(UVD_BASE_INST0_SEG1 + reg)
-+
-+#define COND0				0
-+#define COND1				1
-+#define COND3				3
-+#define TYPE0				0
-+#define TYPE1				1
-+#define TYPE3				3
-+#define JPEG_DEC_DT_PITCH		0x100
-+#define JPEG_DEC_BSD_SIZE		0x180
-+#define JPEG_DEC_LUMA_OFFSET		0
-+#define JPEG_DEC_CHROMA_OFFSET		0x1000
-+#define JPEG_DEC_SUM			4096
-+#define IB_SIZE				4096
-+#define MAX_RESOURCES			16
 +
 +static bool
-+is_jpeg_tests_enable(amdgpu_device_handle device_handle,
-+		struct mmd_context *context)
++is_vce_tests_enable(amdgpu_device_handle device_handle, uint32_t family_id,
++		uint32_t chip_id, uint32_t chip_rev, bool *is_mv_supported)
 +{
-+	struct drm_amdgpu_info_hw_ip info;
++	uint64_t ids_flags;
++	uint32_t version, feature;
 +	int r;
++	struct amdgpu_gpu_info gpu_info = {0};
 +
-+	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VCN_JPEG, 0, &info);
++	r = amdgpu_query_gpu_info(device_handle, &gpu_info);
++	igt_assert_eq(r, 0);
++	ids_flags = gpu_info.ids_flags;
 +
-+	if (r != 0 || !info.available_rings ||
-+			(context->family_id < AMDGPU_FAMILY_RV &&
-+			(context->family_id == AMDGPU_FAMILY_AI &&
-+			(context->chip_id - context->chip_rev) < 0x32))) { /* Arcturus */
-+		igt_info("\n\nThe ASIC NOT support JPEG, test disabled\n");
++	amdgpu_query_firmware_version(device_handle, AMDGPU_INFO_FW_VCE, 0,
++					  0, &version, &feature);
++
++	if (family_id >= AMDGPU_FAMILY_RV || family_id == AMDGPU_FAMILY_SI ||
++			is_gfx_pipe_removed(family_id, chip_id, chip_rev)) {
++		igt_info("\n\nThe ASIC NOT support VCE, tests are disabled\n");
 +		return false;
 +	}
 +
-+	if (info.hw_ip_version_major == 1)
-+		context->jpeg_direct_reg = false;
-+	else if (info.hw_ip_version_major > 1 && info.hw_ip_version_major <= 4)
-+		context->jpeg_direct_reg = true;
++	if (!(chip_id == (chip_rev + 0x3C) || /* FIJI */
++			chip_id == (chip_rev + 0x50) || /* Polaris 10*/
++			chip_id == (chip_rev + 0x5A) || /* Polaris 11*/
++			chip_id == (chip_rev + 0x64) || /* Polaris 12*/
++			(family_id >= AMDGPU_FAMILY_AI && !ids_flags))) /* dGPU > Polaris */
++		igt_info("\n\nThe ASIC NOT support VCE MV, tests are disabled\n");
++	else if (version < FW_53_0_03)
++		igt_info("\n\nThe ASIC FW version NOT support VCE MV, tests are disabled\n");
 +	else
-+		return false;
++		*is_mv_supported = true;
 +
 +	return true;
 +}
 +
-+
 +static void
-+set_reg_jpeg(struct mmd_context *context, uint32_t reg, uint32_t cond,
-+		uint32_t type, uint32_t val, uint32_t *idx)
++amdgpu_cs_vce_create(amdgpu_device_handle device_handle,
++		struct amdgpu_vce_encode *enc, struct mmd_context *context, bool is_mv_supported)
 +{
-+	context->ib_cpu[(*idx)++] = RDECODE_PKTJ(reg, cond, type);
-+	context->ib_cpu[(*idx)++] = val;
-+}
++	unsigned int align = (context->family_id >= AMDGPU_FAMILY_AI) ? 256 : 16;
++	int len, r;
 +
-+/* send a bitstream buffer command */
-+static void
-+send_cmd_bitstream(struct mmd_context *context, uint64_t addr, uint32_t *idx)
-+{
-+	/* jpeg soft reset */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 1, idx);
++	enc->width = vce_create[6];
++	enc->height = vce_create[7];
 +
-+	/* ensuring the Reset is asserted in SCLK domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C2, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(1 << 9), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3,
-+			(1 << 9), idx);
-+
-+	/* wait mem */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
-+			0, idx);
-+
-+	/* ensuring the Reset is de-asserted in SCLK domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(0 << 9), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3,
-+			(1 << 9), idx);
-+
-+	/* set UVD_LMI_JPEG_READ_64BIT_BAR_LOW/HIGH based on bitstream buffer address */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_READ_64BIT_BAR_HIGH),
-+			COND0, TYPE0, (addr >> 32), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_READ_64BIT_BAR_LOW),
-+			COND0, TYPE0, (uint32_t)addr, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_BASE), COND0, TYPE0,
-+			0, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_SIZE), COND0, TYPE0,
-+			0xFFFFFFF0, idx);
-+
-+	/* set jpeg_rb_wptr */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_WPTR), COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+}
-+
-+/* send a target buffer command */
-+static void
-+send_cmd_target(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
-+
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_PITCH), COND0, TYPE0,
-+				(JPEG_DEC_DT_PITCH >> 4), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_UV_PITCH), COND0, TYPE0,
-+				(JPEG_DEC_DT_PITCH >> 4), idx);
-+
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_TILING_CTRL), COND0, TYPE0,
-+			0, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_UV_TILING_CTRL), COND0, TYPE0,
-+			0, idx);
-+
-+	/* set UVD_LMI_JPEG_WRITE_64BIT_BAR_LOW/HIGH based on target buffer address */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH),
-+			COND0, TYPE0, (addr >> 32), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW),
-+			COND0, TYPE0, (uint32_t)addr, idx);
-+
-+	/* set output buffer data address */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INDEX), COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_DATA), COND0, TYPE0,
-+			JPEG_DEC_LUMA_OFFSET, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INDEX), COND0, TYPE0, 1, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_DATA), COND0, TYPE0,
-+			JPEG_DEC_CHROMA_OFFSET, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_TIER_CNTL2), COND0, TYPE3,
-+			0, idx);
-+
-+	/* set output buffer read pointer */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_OUTBUF_RPTR), COND0, TYPE0,
-+			0, idx);
-+
-+	/* enable error interrupts */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INT_EN), COND0, TYPE0,
-+			0xFFFFFFFE, idx);
-+
-+	/* start engine command */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
-+			0x6, idx);
-+
-+	/* wait for job completion, wait for job JBSI fetch done */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C2, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_RPTR), COND0, TYPE3,
-+			0xFFFFFFFF, idx);
-+
-+	/* wait for job jpeg outbuf idle */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			0xFFFFFFFF, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_OUTBUF_WPTR), COND0, TYPE3,
-+			0x00000001, idx);
-+
-+	/* stop engine */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
-+			0x4, idx);
-+
-+	/* asserting jpeg lmi drop */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x0005, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(1 << 23 | 1 << 0), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE1, 0, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, 0, idx);
-+
-+	/* asserting jpeg reset */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 1, idx);
-+
-+	/* ensure reset is asserted in sclk domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x01C3,
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, (1 << 9),
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3, (1 << 9),
-+			idx);
-+
-+	/* de-assert jpeg reset */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 0, idx);
-+
-+	/* ensure reset is de-asserted in sclk domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x01C3,
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, (0 << 9),
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3, (1 << 9),
-+			idx);
-+
-+	/* de-asserting jpeg lmi drop */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x0005,
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, 0, idx);
-+}
-+
-+/* send a bitstream buffer command */
-+static void
-+send_cmd_bitstream_direct(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
-+
-+	/* jpeg soft reset */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND0, TYPE0, 1, idx);
-+
-+	/* ensuring the Reset is asserted in SCLK domain */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_COND_RD_TIMER, COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0,
-+			(0x1 << 0x10), idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND3, TYPE3,
-+			(0x1 << 0x10), idx);
-+
-+	/* wait mem */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND0, TYPE0, 0, idx);
-+
-+	/* ensuring the Reset is de-asserted in SCLK domain */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0, (0 << 0x10),
-+			idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND3, TYPE3,
-+			(0x1 << 0x10), idx);
-+
-+	/* set UVD_LMI_JPEG_READ_64BIT_BAR_LOW/HIGH based on bitstream buffer address */
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH, COND0, TYPE0,
-+			(addr >> 32), idx);
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW, COND0, TYPE0,
-+			addr, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_BASE, COND0, TYPE0, 0, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_SIZE, COND0, TYPE0, 0xFFFFFFF0, idx);
-+
-+	/* set jpeg_rb_wptr */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_WPTR, COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+}
-+
-+/* send a target buffer command */
-+static void
-+send_cmd_target_direct(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
-+
-+	set_reg_jpeg(context, vcnipUVD_JPEG_PITCH, COND0, TYPE0,
-+			(JPEG_DEC_DT_PITCH >> 4), idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_UV_PITCH, COND0, TYPE0,
-+			(JPEG_DEC_DT_PITCH >> 4), idx);
-+
-+	set_reg_jpeg(context, vcnipJPEG_DEC_ADDR_MODE, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE, COND0, TYPE0,
-+			0, idx);
-+	set_reg_jpeg(context, vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE, COND0, TYPE0,
-+			0, idx);
-+
-+	/* set UVD_LMI_JPEG_WRITE_64BIT_BAR_LOW/HIGH based on target buffer address */
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH, COND0, TYPE0,
-+			(addr >> 32), idx);
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW, COND0, TYPE0,
-+			addr, idx);
-+
-+	/* set output buffer data address */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0, JPEG_DEC_LUMA_OFFSET,
-+			idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 1, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0,
-+			JPEG_DEC_CHROMA_OFFSET, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_TIER_CNTL2, COND0, 0, 0, idx);
-+
-+	/* set output buffer read pointer */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_RPTR, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_CNTL, COND0, TYPE0,
-+				((0x00001587 & (~0x00000180L)) | (0x1 << 0x7) | (0x1 << 0x6)),
-+				 idx);
-+
-+	/* enable error interrupts */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_INT_EN, COND0, TYPE0, 0xFFFFFFFE, idx);
-+
-+	/* start engine command */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_CNTL, COND0, TYPE0, 0xE, idx);
-+
-+	/* wait for job completion, wait for job JBSI fetch done */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_COND_RD_TIMER, COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_RPTR, COND3, TYPE3, 0xFFFFFFFF, idx);
-+
-+	/* wait for job jpeg outbuf idle */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0, 0xFFFFFFFF,
-+			idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_WPTR, COND3, TYPE3, 0x00000001,
-+			idx);
-+
-+	/* stop engine */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_CNTL, COND0, TYPE0, 0x4, idx);
-+}
-+
-+static void
-+amdgpu_cs_jpeg_decode(amdgpu_device_handle device_handle,
-+		struct mmd_context *context)
-+{
-+
-+	struct amdgpu_mmd_bo dec_buf;
-+	int size, r;
-+	uint8_t *dec;
-+	int sum = 0, i, j;
-+	uint32_t idx;
-+
-+	size = 16 * 1024; /* 8K bitstream + 8K output */
-+
-+	context->num_resources = 0;
-+	alloc_resource(device_handle, &dec_buf, size, AMDGPU_GEM_DOMAIN_VRAM);
-+	context->resources[context->num_resources++] = dec_buf.handle;
++	context->num_resources  = 0;
++	alloc_resource(device_handle, &enc->fb[0], 4096, AMDGPU_GEM_DOMAIN_GTT);
++	context->resources[context->num_resources++] = enc->fb[0].handle;
 +	context->resources[context->num_resources++] = context->ib_handle;
-+	r = amdgpu_bo_cpu_map(dec_buf.handle, (void **)&dec_buf.ptr);
++
++	len = 0;
++	memcpy(context->ib_cpu, vce_session, sizeof(vce_session));
++	len += sizeof(vce_session) / 4;
++	memcpy((context->ib_cpu + len), vce_taskinfo, sizeof(vce_taskinfo));
++	len += sizeof(vce_taskinfo) / 4;
++	memcpy((context->ib_cpu + len), vce_create, sizeof(vce_create));
++	context->ib_cpu[len + 8] = ALIGN(enc->width, align);
++	context->ib_cpu[len + 9] = ALIGN(enc->width, align);
++	if (is_mv_supported == true) {/* disableTwoInstance */
++		if (context->family_id >= AMDGPU_FAMILY_AI)
++			context->ib_cpu[len + 11] = 0x01000001;
++		else
++			context->ib_cpu[len + 11] = 0x01000201;
++	}
++	len += sizeof(vce_create) / 4;
++	memcpy((context->ib_cpu + len), vce_feedback, sizeof(vce_feedback));
++	context->ib_cpu[len + 2] = enc->fb[0].addr >> 32;
++	context->ib_cpu[len + 3] = enc->fb[0].addr;
++	len += sizeof(vce_feedback) / 4;
++
++	r = submit(device_handle, context, len, AMDGPU_HW_IP_VCE);
 +	igt_assert_eq(r, 0);
-+	memcpy(dec_buf.ptr, jpeg_bitstream, sizeof(jpeg_bitstream));
 +
-+	idx = 0;
++	free_resource(&enc->fb[0]);
++}
 +
-+	if (context->jpeg_direct_reg == true) {
-+		send_cmd_bitstream_direct(context, dec_buf.addr, &idx);
-+		send_cmd_target_direct(context, dec_buf.addr + (size / 2), &idx);
-+	} else {
-+		send_cmd_bitstream(context, dec_buf.addr, &idx);
-+		send_cmd_target(context, dec_buf.addr + (size / 2), &idx);
++static void
++amdgpu_cs_vce_config(amdgpu_device_handle device_handle,
++		struct mmd_context *context, bool is_mv_supported)
++{
++	int len = 0, r;
++
++	memcpy((context->ib_cpu + len), vce_session, sizeof(vce_session));
++	len += sizeof(vce_session) / 4;
++	memcpy((context->ib_cpu + len), vce_taskinfo, sizeof(vce_taskinfo));
++	context->ib_cpu[len + 3] = 2;
++	context->ib_cpu[len + 6] = 0xffffffff;
++	len += sizeof(vce_taskinfo) / 4;
++	memcpy((context->ib_cpu + len), vce_rate_ctrl, sizeof(vce_rate_ctrl));
++	len += sizeof(vce_rate_ctrl) / 4;
++	memcpy((context->ib_cpu + len), vce_config_ext, sizeof(vce_config_ext));
++	len += sizeof(vce_config_ext) / 4;
++	memcpy((context->ib_cpu + len), vce_motion_est, sizeof(vce_motion_est));
++	len += sizeof(vce_motion_est) / 4;
++	memcpy((context->ib_cpu + len), vce_rdo, sizeof(vce_rdo));
++	len += sizeof(vce_rdo) / 4;
++	memcpy((context->ib_cpu + len), vce_pic_ctrl, sizeof(vce_pic_ctrl));
++	if (is_mv_supported == true)
++		context->ib_cpu[len + 27] = 0x00000001; /* encSliceMode */
++	len += sizeof(vce_pic_ctrl) / 4;
++
++	r = submit(device_handle, context, len, AMDGPU_HW_IP_VCE);
++	igt_assert_eq(r, 0);
++}
++
++static void amdgpu_cs_vce_encode_idr(amdgpu_device_handle device_handle,
++		struct mmd_context *context, struct amdgpu_vce_encode *enc)
++{
++
++	uint64_t luma_offset, chroma_offset;
++	unsigned int align = (context->family_id >= AMDGPU_FAMILY_AI) ? 256 : 16;
++	unsigned int luma_size = ALIGN(enc->width, align) * ALIGN(enc->height, 16);
++	int len = 0, i, r;
++
++	luma_offset = enc->vbuf.addr;
++	chroma_offset = luma_offset + luma_size;
++
++	memcpy((context->ib_cpu + len), vce_session, sizeof(vce_session));
++	len += sizeof(vce_session) / 4;
++	memcpy((context->ib_cpu + len), vce_taskinfo, sizeof(vce_taskinfo));
++	len += sizeof(vce_taskinfo) / 4;
++	memcpy((context->ib_cpu + len), vce_bs_buffer, sizeof(vce_bs_buffer));
++	context->ib_cpu[len + 2] = enc->bs[0].addr >> 32;
++	context->ib_cpu[len + 3] = enc->bs[0].addr;
++	len += sizeof(vce_bs_buffer) / 4;
++	memcpy((context->ib_cpu + len), vce_context_buffer, sizeof(vce_context_buffer));
++	context->ib_cpu[len + 2] = enc->cpb.addr >> 32;
++	context->ib_cpu[len + 3] = enc->cpb.addr;
++	len += sizeof(vce_context_buffer) / 4;
++	memcpy((context->ib_cpu + len), vce_aux_buffer, sizeof(vce_aux_buffer));
++	for (i = 0; i <  8; ++i)
++		context->ib_cpu[len + 2 + i] = luma_size * 1.5 * (i + 2);
++	for (i = 0; i <  8; ++i)
++		context->ib_cpu[len + 10 + i] = luma_size * 1.5;
++	len += sizeof(vce_aux_buffer) / 4;
++	memcpy((context->ib_cpu + len), vce_feedback, sizeof(vce_feedback));
++	context->ib_cpu[len + 2] = enc->fb[0].addr >> 32;
++	context->ib_cpu[len + 3] = enc->fb[0].addr;
++	len += sizeof(vce_feedback) / 4;
++	memcpy((context->ib_cpu + len), vce_encode, sizeof(vce_encode));
++	context->ib_cpu[len + 9] = luma_offset >> 32;
++	context->ib_cpu[len + 10] = luma_offset;
++	context->ib_cpu[len + 11] = chroma_offset >> 32;
++	context->ib_cpu[len + 12] = chroma_offset;
++	context->ib_cpu[len + 14] = ALIGN(enc->width, align);
++	context->ib_cpu[len + 15] = ALIGN(enc->width, align);
++	context->ib_cpu[len + 73] = luma_size * 1.5;
++	context->ib_cpu[len + 74] = luma_size * 2.5;
++	len += sizeof(vce_encode) / 4;
++	enc->ib_len = len;
++	if (!enc->two_instance) {
++		r = submit(device_handle, context, len, AMDGPU_HW_IP_VCE);
++		igt_assert_eq(r, 0);
++	}
++}
++
++static void amdgpu_cs_vce_encode_p(amdgpu_device_handle device_handle,
++		struct mmd_context *context, struct amdgpu_vce_encode *enc)
++{
++	uint64_t luma_offset, chroma_offset;
++	int len, i, r;
++	unsigned int align = (context->family_id >= AMDGPU_FAMILY_AI) ? 256 : 16;
++	unsigned int luma_size = ALIGN(enc->width, align) * ALIGN(enc->height, 16);
++
++	len = (enc->two_instance) ? enc->ib_len : 0;
++	luma_offset = enc->vbuf.addr;
++	chroma_offset = luma_offset + luma_size;
++
++	if (!enc->two_instance) {
++		memcpy((context->ib_cpu + len), vce_session, sizeof(vce_session));
++		len += sizeof(vce_session) / 4;
++	}
++	memcpy((context->ib_cpu + len), vce_taskinfo, sizeof(vce_taskinfo));
++	len += sizeof(vce_taskinfo) / 4;
++	memcpy((context->ib_cpu + len), vce_bs_buffer, sizeof(vce_bs_buffer));
++	context->ib_cpu[len + 2] = enc->bs[1].addr >> 32;
++	context->ib_cpu[len + 3] = enc->bs[1].addr;
++	len += sizeof(vce_bs_buffer) / 4;
++	memcpy((context->ib_cpu + len), vce_context_buffer, sizeof(vce_context_buffer));
++	context->ib_cpu[len + 2] = enc->cpb.addr >> 32;
++	context->ib_cpu[len + 3] = enc->cpb.addr;
++	len += sizeof(vce_context_buffer) / 4;
++	memcpy((context->ib_cpu + len), vce_aux_buffer, sizeof(vce_aux_buffer));
++	for (i = 0; i <  8; ++i)
++		context->ib_cpu[len + 2 + i] = luma_size * 1.5 * (i + 2);
++	for (i = 0; i <  8; ++i)
++		context->ib_cpu[len + 10 + i] = luma_size * 1.5;
++	len += sizeof(vce_aux_buffer) / 4;
++	memcpy((context->ib_cpu + len), vce_feedback, sizeof(vce_feedback));
++	context->ib_cpu[len + 2] = enc->fb[1].addr >> 32;
++	context->ib_cpu[len + 3] = enc->fb[1].addr;
++	len += sizeof(vce_feedback) / 4;
++	memcpy((context->ib_cpu + len), vce_encode, sizeof(vce_encode));
++	context->ib_cpu[len + 2] = 0;
++	context->ib_cpu[len + 9] = luma_offset >> 32;
++	context->ib_cpu[len + 10] = luma_offset;
++	context->ib_cpu[len + 11] = chroma_offset >> 32;
++	context->ib_cpu[len + 12] = chroma_offset;
++	context->ib_cpu[len + 14] = ALIGN(enc->width, align);
++	context->ib_cpu[len + 15] = ALIGN(enc->width, align);
++	context->ib_cpu[len + 18] = 0;
++	context->ib_cpu[len + 19] = 0;
++	context->ib_cpu[len + 56] = 3;
++	context->ib_cpu[len + 57] = 0;
++	context->ib_cpu[len + 58] = 0;
++	context->ib_cpu[len + 59] = luma_size * 1.5;
++	context->ib_cpu[len + 60] = luma_size * 2.5;
++	context->ib_cpu[len + 73] = 0;
++	context->ib_cpu[len + 74] = luma_size;
++	context->ib_cpu[len + 81] = 1;
++	context->ib_cpu[len + 82] = 1;
++	len += sizeof(vce_encode) / 4;
++
++	r = submit(device_handle, context, len, AMDGPU_HW_IP_VCE);
++	igt_assert_eq(r, 0);
++}
++
++static void check_result(struct amdgpu_vce_encode *enc)
++{
++	uint64_t sum;
++	uint32_t s[2] = {180325, 15946};
++	uint32_t *ptr, size;
++	int i, j, r;
++
++	for (i = 0; i < 2; ++i) {
++		r = amdgpu_bo_cpu_map(enc->fb[i].handle, (void **)&enc->fb[i].ptr);
++		igt_assert_eq(r, 0);
++		ptr = (uint32_t *)enc->fb[i].ptr;
++		size = ptr[4] - ptr[9];
++		r = amdgpu_bo_cpu_unmap(enc->fb[i].handle);
++		igt_assert_eq(r, 0);
++		r = amdgpu_bo_cpu_map(enc->bs[i].handle, (void **)&enc->bs[i].ptr);
++		igt_assert_eq(r, 0);
++		for (j = 0, sum = 0; j < size; ++j)
++			sum += enc->bs[i].ptr[j];
++		igt_assert_eq(sum, s[i]);
++		r = amdgpu_bo_cpu_unmap(enc->bs[i].handle);
++		igt_assert_eq(r, 0);
++	}
++}
++
++static void
++amdgpu_cs_vce_encode(amdgpu_device_handle device_handle, struct mmd_context *context,
++		struct amdgpu_vce_encode *enc, bool is_mv_supported)
++{
++	uint32_t vbuf_size, bs_size = 0x154000, cpb_size;
++	unsigned int align = (context->family_id >= AMDGPU_FAMILY_AI) ? 256 : 16;
++	int i, r;
++
++	vbuf_size = ALIGN(enc->width, align) * ALIGN(enc->height, 16) * 1.5;
++	cpb_size = vbuf_size * 10;
++	context->num_resources = 0;
++	alloc_resource(device_handle, &enc->fb[0], 4096, AMDGPU_GEM_DOMAIN_GTT);
++	context->resources[context->num_resources++] = enc->fb[0].handle;
++	alloc_resource(device_handle, &enc->fb[1], 4096, AMDGPU_GEM_DOMAIN_GTT);
++	context->resources[context->num_resources++] = enc->fb[1].handle;
++	alloc_resource(device_handle, &enc->bs[0], bs_size, AMDGPU_GEM_DOMAIN_GTT);
++	context->resources[context->num_resources++] = enc->bs[0].handle;
++	alloc_resource(device_handle, &enc->bs[1], bs_size, AMDGPU_GEM_DOMAIN_GTT);
++	context->resources[context->num_resources++] = enc->bs[1].handle;
++	alloc_resource(device_handle, &enc->vbuf, vbuf_size, AMDGPU_GEM_DOMAIN_VRAM);
++	context->resources[context->num_resources++] = enc->vbuf.handle;
++	alloc_resource(device_handle, &enc->cpb, cpb_size, AMDGPU_GEM_DOMAIN_VRAM);
++	context->resources[context->num_resources++] = enc->cpb.handle;
++	context->resources[context->num_resources++] = context->ib_handle;
++
++	r = amdgpu_bo_cpu_map(enc->vbuf.handle, (void **)&enc->vbuf.ptr);
++	igt_assert_eq(r, 0);
++
++	memset(enc->vbuf.ptr, 0, vbuf_size);
++	for (i = 0; i < enc->height; ++i) {
++		memcpy(enc->vbuf.ptr, (frame + i * enc->width), enc->width);
++		enc->vbuf.ptr += ALIGN(enc->width, align);
++	}
++	for (i = 0; i < enc->height / 2; ++i) {
++		memcpy(enc->vbuf.ptr, ((frame + enc->height * enc->width) +
++				i * enc->width), enc->width);
++		enc->vbuf.ptr += ALIGN(enc->width, align);
 +	}
 +
-+	amdgpu_bo_cpu_unmap(dec_buf.handle);
-+	r = submit(device_handle, context, idx, AMDGPU_HW_IP_VCN_JPEG);
++	r = amdgpu_bo_cpu_unmap(enc->vbuf.handle);
 +	igt_assert_eq(r, 0);
 +
-+	r = amdgpu_bo_cpu_map(dec_buf.handle, (void **)&dec_buf.ptr);
++	amdgpu_cs_vce_config(device_handle, context, is_mv_supported);
++
++	if (context->family_id >= AMDGPU_FAMILY_VI) {
++		vce_taskinfo[3] = 3;
++		amdgpu_cs_vce_encode_idr(device_handle, context, enc);
++		amdgpu_cs_vce_encode_p(device_handle, context, enc);
++		check_result(enc);
++
++		/* two pipes */
++		vce_encode[16] = 0;
++		amdgpu_cs_vce_encode_idr(device_handle, context, enc);
++		amdgpu_cs_vce_encode_p(device_handle, context, enc);
++		check_result(enc);
++
++		/* two instances */
++		if (context->vce_harvest_config == 0) {
++			enc->two_instance = true;
++			vce_taskinfo[2] = 0x83;
++			vce_taskinfo[4] = 1;
++			amdgpu_cs_vce_encode_idr(device_handle, context, enc);
++			vce_taskinfo[2] = 0xffffffff;
++			vce_taskinfo[4] = 2;
++			amdgpu_cs_vce_encode_p(device_handle, context, enc);
++			check_result(enc);
++		}
++	} else {
++		vce_taskinfo[3] = 3;
++		vce_encode[16] = 0;
++		amdgpu_cs_vce_encode_idr(device_handle, context, enc);
++		amdgpu_cs_vce_encode_p(device_handle, context, enc);
++		check_result(enc);
++	}
++
++	free_resource(&enc->fb[0]);
++	free_resource(&enc->fb[1]);
++	free_resource(&enc->bs[0]);
++	free_resource(&enc->bs[1]);
++	free_resource(&enc->vbuf);
++	free_resource(&enc->cpb);
++}
++
++static void amdgpu_cs_vce_mv(amdgpu_device_handle device_handle,
++		struct mmd_context *context, struct amdgpu_vce_encode *enc)
++{
++	uint64_t luma_offset, chroma_offset;
++	uint64_t mv_ref_luma_offset;
++	unsigned int align = (context->family_id >= AMDGPU_FAMILY_AI) ? 256 : 16;
++	unsigned int luma_size = ALIGN(enc->width, align) * ALIGN(enc->height, 16);
++	int len = 0, i, r;
++
++	luma_offset = enc->vbuf.addr;
++	chroma_offset = luma_offset + luma_size;
++	mv_ref_luma_offset = enc->mvrefbuf.addr;
++
++	memcpy((context->ib_cpu + len), vce_session, sizeof(vce_session));
++	len += sizeof(vce_session) / 4;
++	memcpy((context->ib_cpu + len), vce_taskinfo, sizeof(vce_taskinfo));
++	len += sizeof(vce_taskinfo) / 4;
++	memcpy((context->ib_cpu + len), vce_bs_buffer, sizeof(vce_bs_buffer));
++	context->ib_cpu[len + 2] = enc->bs[0].addr >> 32;
++	context->ib_cpu[len + 3] = enc->bs[0].addr;
++	len += sizeof(vce_bs_buffer) / 4;
++	memcpy((context->ib_cpu + len), vce_context_buffer, sizeof(vce_context_buffer));
++	context->ib_cpu[len + 2] = enc->cpb.addr >> 32;
++	context->ib_cpu[len + 3] = enc->cpb.addr;
++	len += sizeof(vce_context_buffer) / 4;
++	memcpy((context->ib_cpu + len), vce_aux_buffer, sizeof(vce_aux_buffer));
++	for (i = 0; i <  8; ++i)
++		context->ib_cpu[len + 2 + i] = luma_size * 1.5 * (i + 2);
++	for (i = 0; i <  8; ++i)
++		context->ib_cpu[len + 10 + i] = luma_size * 1.5;
++	len += sizeof(vce_aux_buffer) / 4;
++	memcpy((context->ib_cpu + len), vce_feedback, sizeof(vce_feedback));
++	context->ib_cpu[len + 2] = enc->fb[0].addr >> 32;
++	context->ib_cpu[len + 3] = enc->fb[0].addr;
++	len += sizeof(vce_feedback) / 4;
++	memcpy((context->ib_cpu + len), vce_mv_buffer, sizeof(vce_mv_buffer));
++	context->ib_cpu[len + 2] = mv_ref_luma_offset >> 32;
++	context->ib_cpu[len + 3] = mv_ref_luma_offset;
++	context->ib_cpu[len + 4] = ALIGN(enc->width, align);
++	context->ib_cpu[len + 5] = ALIGN(enc->width, align);
++	context->ib_cpu[len + 6] = luma_size;
++	context->ib_cpu[len + 7] = enc->mvb.addr >> 32;
++	context->ib_cpu[len + 8] = enc->mvb.addr;
++	len += sizeof(vce_mv_buffer) / 4;
++	memcpy((context->ib_cpu + len), vce_encode, sizeof(vce_encode));
++	context->ib_cpu[len + 2] = 0;
++	context->ib_cpu[len + 3] = 0;
++	context->ib_cpu[len + 4] = 0x154000;
++	context->ib_cpu[len + 9] = luma_offset >> 32;
++	context->ib_cpu[len + 10] = luma_offset;
++	context->ib_cpu[len + 11] = chroma_offset >> 32;
++	context->ib_cpu[len + 12] = chroma_offset;
++	context->ib_cpu[len + 13] = ALIGN(enc->height, 16);
++	context->ib_cpu[len + 14] = ALIGN(enc->width, align);
++	context->ib_cpu[len + 15] = ALIGN(enc->width, align);
++	/* encDisableMBOffloading-encDisableTwoPipeMode-encInputPicArrayMode-encInputPicAddrMode */
++	context->ib_cpu[len + 16] = 0x01010000;
++	context->ib_cpu[len + 18] = 0; /* encPicType */
++	context->ib_cpu[len + 19] = 0; /* encIdrFlag */
++	context->ib_cpu[len + 20] = 0; /* encIdrPicId */
++	context->ib_cpu[len + 21] = 0; /* encMGSKeyPic */
++	context->ib_cpu[len + 22] = 0; /* encReferenceFlag */
++	context->ib_cpu[len + 23] = 0; /* encTemporalLayerIndex */
++	context->ib_cpu[len + 55] = 0; /* pictureStructure */
++	context->ib_cpu[len + 56] = 0; /* encPicType -ref[0] */
++	context->ib_cpu[len + 61] = 0; /* pictureStructure */
++	context->ib_cpu[len + 62] = 0; /* encPicType -ref[1] */
++	context->ib_cpu[len + 67] = 0; /* pictureStructure */
++	context->ib_cpu[len + 68] = 0; /* encPicType -ref1 */
++	context->ib_cpu[len + 81] = 1; /* frameNumber */
++	context->ib_cpu[len + 82] = 2; /* pictureOrderCount */
++	context->ib_cpu[len + 83] = 0xffffffff; /* numIPicRemainInRCGOP */
++	context->ib_cpu[len + 84] = 0xffffffff; /* numPPicRemainInRCGOP */
++	context->ib_cpu[len + 85] = 0xffffffff; /* numBPicRemainInRCGOP */
++	context->ib_cpu[len + 86] = 0xffffffff; /* numIRPicRemainInRCGOP */
++	context->ib_cpu[len + 87] = 0; /* remainedIntraRefreshPictures */
++	len += sizeof(vce_encode) / 4;
++
++	enc->ib_len = len;
++	r = submit(device_handle, context, len, AMDGPU_HW_IP_VCE);
++	igt_assert_eq(r, 0);
++}
++
++static void check_mv_result(struct amdgpu_vce_encode *enc)
++{
++	uint64_t sum;
++	uint32_t s = 140790;
++	int j, r;
++
++	r = amdgpu_bo_cpu_map(enc->fb[0].handle, (void **)&enc->fb[0].ptr);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_cpu_unmap(enc->fb[0].handle);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_cpu_map(enc->mvb.handle, (void **)&enc->mvb.ptr);
++	igt_assert_eq(r, 0);
++	for (j = 0, sum = 0; j < enc->mvbuf_size; ++j)
++		sum += enc->mvb.ptr[j];
++	igt_assert_eq(sum, s);
++	r = amdgpu_bo_cpu_unmap(enc->mvb.handle);
++	igt_assert_eq(r, 0);
++}
++
++static void
++amdgpu_cs_vce_encode_mv(amdgpu_device_handle device_handle, struct mmd_context *context,
++		struct amdgpu_vce_encode *enc, bool is_mv_supported)
++{
++	uint32_t vbuf_size, bs_size = 0x154000, cpb_size;
++	unsigned int align = (context->family_id >= AMDGPU_FAMILY_AI) ? 256 : 16;
++	int i, r;
++
++	vbuf_size = ALIGN(enc->width, align) * ALIGN(enc->height, 16) * 1.5;
++	enc->mvbuf_size = ALIGN(enc->width, 16) * ALIGN(enc->height, 16) / 8;
++	cpb_size = vbuf_size * 10;
++	context->num_resources = 0;
++	alloc_resource(device_handle, &enc->fb[0], 4096, AMDGPU_GEM_DOMAIN_GTT);
++	context->resources[context->num_resources++] = enc->fb[0].handle;
++	alloc_resource(device_handle, &enc->bs[0], bs_size, AMDGPU_GEM_DOMAIN_GTT);
++	context->resources[context->num_resources++] = enc->bs[0].handle;
++	alloc_resource(device_handle, &enc->mvb, enc->mvbuf_size, AMDGPU_GEM_DOMAIN_GTT);
++	context->resources[context->num_resources++] = enc->mvb.handle;
++	alloc_resource(device_handle, &enc->vbuf, vbuf_size, AMDGPU_GEM_DOMAIN_VRAM);
++	context->resources[context->num_resources++] = enc->vbuf.handle;
++	alloc_resource(device_handle, &enc->mvrefbuf, vbuf_size, AMDGPU_GEM_DOMAIN_VRAM);
++	context->resources[context->num_resources++] = enc->mvrefbuf.handle;
++	alloc_resource(device_handle, &enc->cpb, cpb_size, AMDGPU_GEM_DOMAIN_VRAM);
++	context->resources[context->num_resources++] = enc->cpb.handle;
++	context->resources[context->num_resources++] = context->ib_handle;
++
++	r = amdgpu_bo_cpu_map(enc->vbuf.handle, (void **)&enc->vbuf.ptr);
 +	igt_assert_eq(r, 0);
 +
-+	dec = dec_buf.ptr + (size / 2);
++	memset(enc->vbuf.ptr, 0, vbuf_size);
++	for (i = 0; i < enc->height; ++i) {
++		memcpy(enc->vbuf.ptr, (frame + i * enc->width), enc->width);
++		enc->vbuf.ptr += ALIGN(enc->width, align);
++	}
++	for (i = 0; i < enc->height / 2; ++i) {
++		memcpy(enc->vbuf.ptr, ((frame + enc->height * enc->width) + i * enc->width), enc->width);
++		enc->vbuf.ptr += ALIGN(enc->width, align);
++	}
 +
-+	/* calculate result checksum */
-+	for (i = 0; i < 8; i++)
-+		for (j = 0; j < 8; j++)
-+			sum += *((dec + JPEG_DEC_LUMA_OFFSET + i * JPEG_DEC_DT_PITCH) + j);
-+	for (i = 0; i < 4; i++)
-+		for (j = 0; j < 8; j++)
-+			sum += *((dec + JPEG_DEC_CHROMA_OFFSET + i * JPEG_DEC_DT_PITCH) + j);
++	r = amdgpu_bo_cpu_unmap(enc->vbuf.handle);
++	igt_assert_eq(r, 0);
 +
-+	amdgpu_bo_cpu_unmap(dec_buf.handle);
-+	igt_assert_eq(sum, JPEG_DEC_SUM);
++	r = amdgpu_bo_cpu_map(enc->mvrefbuf.handle, (void **)&enc->mvrefbuf.ptr);
++	igt_assert_eq(r, 0);
 +
-+	free_resource(&dec_buf);
++	memset(enc->mvrefbuf.ptr, 0, vbuf_size);
++	for (i = 0; i < enc->height; ++i) {
++		memcpy(enc->mvrefbuf.ptr, (frame + (enc->height - i - 1) * enc->width), enc->width);
++		enc->mvrefbuf.ptr += ALIGN(enc->width, align);
++	}
++	for (i = 0; i < enc->height / 2; ++i) {
++		memcpy(enc->mvrefbuf.ptr,
++		((frame + enc->height * enc->width) + (enc->height / 2 - i - 1) * enc->width), enc->width);
++		enc->mvrefbuf.ptr += ALIGN(enc->width, align);
++	}
++
++	r = amdgpu_bo_cpu_unmap(enc->mvrefbuf.handle);
++	igt_assert_eq(r, 0);
++
++	amdgpu_cs_vce_config(device_handle, context, is_mv_supported);
++
++	vce_taskinfo[3] = 3;
++	amdgpu_cs_vce_mv(device_handle, context, enc);
++	check_mv_result(enc);
++
++	free_resource(&enc->fb[0]);
++	free_resource(&enc->bs[0]);
++	free_resource(&enc->vbuf);
++	free_resource(&enc->cpb);
++	free_resource(&enc->mvrefbuf);
++	free_resource(&enc->mvb);
++}
++
++static void
++amdgpu_cs_vce_destroy(amdgpu_device_handle device_handle, struct mmd_context *context,
++		struct amdgpu_vce_encode *enc)
++{
++	int len, r;
++
++	context->num_resources  = 0;
++	alloc_resource(device_handle, &enc->fb[0], 4096, AMDGPU_GEM_DOMAIN_GTT);
++	context->resources[context->num_resources++] = enc->fb[0].handle;
++	context->resources[context->num_resources++] = context->ib_handle;
++
++	len = 0;
++	memcpy(context->ib_cpu, vce_session, sizeof(vce_session));
++	len += sizeof(vce_session) / 4;
++	memcpy((context->ib_cpu + len), vce_taskinfo, sizeof(vce_taskinfo));
++	context->ib_cpu[len + 3] = 1;
++	len += sizeof(vce_taskinfo) / 4;
++	memcpy((context->ib_cpu + len), vce_feedback, sizeof(vce_feedback));
++	context->ib_cpu[len + 2] = enc->fb[0].addr >> 32;
++	context->ib_cpu[len + 3] = enc->fb[0].addr;
++	len += sizeof(vce_feedback) / 4;
++	memcpy((context->ib_cpu + len), vce_destroy, sizeof(vce_destroy));
++	len += sizeof(vce_destroy) / 4;
++
++	r = submit(device_handle, context, len, AMDGPU_HW_IP_VCE);
++	igt_assert_eq(r, 0);
++
++	free_resource(&enc->fb[0]);
 +}
 +
 +igt_main
 +{
 +	amdgpu_device_handle device;
 +	struct mmd_context context = {};
++	struct amdgpu_vce_encode enc = {};
 +	int fd = -1;
++	bool is_mv_supported = false;
 +
 +	igt_fixture {
 +		uint32_t major, minor;
@@ -494,11 +620,27 @@ index 000000000..bb2a8e97e
 +			 major, minor);
 +		err = mmd_context_init(device, &context);
 +		igt_require(err == 0);
-+		igt_skip_on(!is_jpeg_tests_enable(device, &context));
++		igt_skip_on(!is_vce_tests_enable(device, context.family_id, context.chip_id,
++				context.chip_rev, &is_mv_supported));
 +	}
-+	igt_describe("Test whether jpeg dec decodes");
-+	igt_subtest("amdgpu_cs_jpeg_decode")
-+	amdgpu_cs_jpeg_decode(device, &context);
++	igt_describe("Test whether vce enc is created");
++	igt_subtest("amdgpu_cs_vce_create")
++	amdgpu_cs_vce_create(device, &enc, &context, is_mv_supported);
++
++	igt_describe("Test whether vce enc encodes");
++	igt_subtest("amdgpu_cs_vce_encode")
++	amdgpu_cs_vce_encode(device, &context, &enc,  is_mv_supported);
++
++	if (is_mv_supported) {
++		igt_describe("Test whether vce enc encodes mv");
++		igt_subtest("amdgpu_cs_vce_encode_mv")
++		amdgpu_cs_vce_encode_mv(device, &context, &enc, is_mv_supported);
++	}
++
++	igt_describe("Test whether vce enc is destroyed");
++	igt_subtest("amdgpu_cs_vce_destroy")
++	amdgpu_cs_vce_destroy(device, &context, &enc);
++
 +
 +	igt_fixture {
 +		mmd_context_clean(device, &context);
@@ -508,16 +650,16 @@ index 000000000..bb2a8e97e
 +
 +}
 diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index d09a4b6e7..300c6b8df 100644
+index 576333aab..e6e6eaabf 100644
 --- a/tests/amdgpu/meson.build
 +++ b/tests/amdgpu/meson.build
-@@ -15,6 +15,7 @@ if libdrm_amdgpu.found()
- 			  'amd_hotplug',
- 			  'amd_ilr',
- 			  'amd_info',
-+			  'amd_jpeg_dec',
- 			  'amd_link_settings',
- 			  'amd_max_bpc',
- 			  'amd_mem_leak',
+@@ -26,6 +26,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_psr',
+ 			  'amd_uvd_dec',
+ 			  'amd_uvd_enc',
++			  'amd_vce_dec',
+ 			  'amd_vrr_range',
+ 			]
+ 	amdgpu_deps += libdrm_amdgpu
 -- 
 2.25.1
