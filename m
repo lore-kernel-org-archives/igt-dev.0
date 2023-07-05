@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96EF410E397
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 15:33:12 +0000 (UTC)
-Date: Wed, 5 Jul 2023 17:33:07 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <20230705173307.083ba7e8@maurocar-mobl2>
-In-Reply-To: <20230705105659.64b4ca0f@maurocar-mobl2>
-References: <20230526064624.2886063-1-mauro.chehab@linux.intel.com>
- <20230526064624.2886063-3-mauro.chehab@linux.intel.com>
- <843966cc-f42a-5ec8-34d5-80cb832b8ee1@linux.intel.com>
- <f307f97a-506a-4897-46a7-52ce032aa8b6@linux.intel.com>
- <20230704145053.31c39a24@maurocar-mobl2>
- <b197f870-0e9d-37b0-9b58-0d2f77325480@linux.intel.com>
- <20230705105659.64b4ca0f@maurocar-mobl2>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Intel-gfx@lists.freedesktop.org
+Date: Wed,  5 Jul 2023 17:31:04 +0100
+Message-Id: <20230705163105.3804677-3-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230705163105.3804677-1-tvrtko.ursulin@linux.intel.com>
+References: <20230705163105.3804677-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] testplan/meson.build: make it check
- for missing i915 documentation
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_drm_clients: Store memory info
+ in the client
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,166 +17,128 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Rob Clark <robdclark@chromium.org>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, 5 Jul 2023 10:56:59 +0200
-Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-> On Tue, 4 Jul 2023 14:03:59 +0100
-> Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com> wrote:
-> 
-> > On 04/07/2023 13:50, Mauro Carvalho Chehab wrote:  
-> > > On Tue, 4 Jul 2023 13:41:14 +0100
-> > > Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com> wrote:
-> > >     
-> > >> On 04/07/2023 13:28, Tvrtko Ursulin wrote:    
-> > >>>
-> > >>> On 26/05/2023 07:46, Mauro Carvalho Chehab wrote:    
-> > >>>> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > >>>>
-> > >>>> Now that i915 is fully documented, check it at build time.    
-> > >>>
-> > >>> This step seems to be slow as molasses and it also rebuilds the Xe test
-> > >>> plan when I touch an i915 test.    
-> > > 
-> > > This is fixable, but better to wait for Bhanu's patch series that will
-> > > be moving the Intel tests to a new directory (tests/intel/).
-> > >     
-> > >>>
-> > >>> What is the way to disable it all when configuring the build?    
-> > > 
-> > > Yes, you can disable it:
-> > > 
-> > > 	$ meson -Dtestplan=disabled build --reconfigure    
-> > 
-> > Works, thanks!
-> >   
-> > > We do want this enabled by default, as CI needs to check it and
-> > > reject patches that aren't updating tests documentation.
-> > > 
-> > > Our internal CI is already dependent on it for the Xe and KMS, and
-> > > the plan is to extend it to i915 as well, to get rid of lots of
-> > > hacks that currently maps tests with the tested features.    
-> > 
-> > As long as the build process is not smart enough to only check a single 
-> > modified test, FWIW disabled by default sounds better to me and CI can 
-> > easily enable it.  
-> 
-> See, parsing the source code to produce documentation is really fast:
-> 
-> $ for i in tests/xe/xe_test_config.json tests/kms_test_config.json tests/i915/i915_test_config.json; do echo $i:; time ./scripts/igt_doc.py --config $i >/dev/null; echo; done
-> 
-> tests/xe/xe_test_config.json:
-> 
-> real	0m0.113s
-> user	0m0.090s
-> sys	0m0.022s
-> 
-> tests/kms_test_config.json:
-> 
-> real	0m0.132s
-> user	0m0.121s
-> sys	0m0.010s
-> 
-> tests/i915/i915_test_config.json:
-> 
-> real	0m0.271s
-> user	0m0.259s
-> sys	0m0.011s
-> 
-> Handling all documents and even producing a ReST output takes less than
-> 500ms.
-> 
-> What takes time is to get a list of all IGT tests that are covered on
-> a test set (xe, kms or i915). The way IGT is conceived is that there's no 
-> single exec file or build output that lists all tests. One needs to run all
-> tests that matches a certain pattern, using --list option, in order to get 
-> a list of tests. This is what `igt_runner -L` does. The code I implemented
-> is faster than igt_runner, but it doesn't use multithread - as python is
-> currently problematic with multi-CPU multithread[1]. 
-> 
-> [1] https://www.turing.com/kb/python-multiprocessing-vs-multithreading
-> 
-> Perhaps one solution would be to change meson.build to produce a list
-> of tests per compiled file, by running the tests after their builds,
-> storing the results under the build dir. As meson/ninja is properly
-> parallelized, this should reduce the time to generate the testlists
-> that are used by the documentation tool to check if tests are documented.
-> 
-> I'll explore such solution, as we may end speeding up some CI runs
-> by having a build time generated "full" testlist.
-> 
-> >   
-> > >>> P.S. I also find the "now that i915 is fully documented" statement a bit
-> > >>> of a chuckle, since random two tests I happened to open haven't really
-> > >>> been documented - it rather looks to be a bit of a charade.    
-> > > 
-> > > Well, it is as good as what we had documented on IGT itself and on
-> > > some separate spreadsheets. If you find anything odd, please fix it.    
-> > 
-> > I happened to open i915_pm_rps yesterday and drm_fdinfo today. Majority 
-> > of documentation are just place holders to cheat the verification step.   
-> 
-> It was not meant to be that. Those were generated from different data
-> sources:
-> 
-> 	- igt_describe(), igt_describe_f(), and IGT_TEST_DESCRIPTION();
-> 	- Grafana's feature mapping logic used internally;
-> 	- efforts from validation teams to document existing tests.
-> 
-> Now, for sure the efforts to write documentation after the facts are
-> hard.  
-> 
-> > Similarly I don't think it will be "enforceable" during code review and 
-> > such silliness will just land. Shrug. sometimes even best intentions 
-> > don't lead where you'd expect them to.  
-> 
-> The main goal of enforcing it is to ensure that developers and reviewers
-> will be doing it right for new tests and gradually fix issues at the
-> existing ones.
-> 
-> >   
-> > >>> I wouldn't care really apart from it significantly slowing down the
-> > >>> development workflow.    
-> > >>
-> > >> # time ninja
-> > >> [1/448] Generating lib/version.h with a custom command
-> > >> fatal: not a git repository (or any of the parent directories): .git
-> > >> [6/6] Generating docs/testplan/i915_tests.rst with a custom command
-> > >>
-> > >> real    0m24.363s
-> > >> user    0m6.530s
-> > >> sys     0m20.968s
-> > >>
-> > >> 24 seconds.. I just changed one i915 test. :(    
+Define the storage structure and copy over memory data as parsed by the
+fdinfo helpers.
 
-This patch series should do the trick:
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Rob Clark <robdclark@chromium.org>
+---
+ lib/igt_drm_clients.c | 31 +++++++++++++++++++++++++++++++
+ lib/igt_drm_clients.h | 11 +++++++++++
+ 2 files changed, 42 insertions(+)
 
-	https://patchwork.freedesktop.org/series/120233/
-
-The time for a single change is now 4 seconds with Sphinx disabled
-(which is the default setting).
-
-It can be speedup even further, but we need to wait for this series to
-be merged:
-
-	https://patchwork.freedesktop.org/series/117227/
-
-as it will conflict with it.
-
-Please review.
-
-> > > 
-> > > What it takes time is not building the docs, but to run all tests with
-> > > "--list" parameter, in order to double-check if every test has some
-> > > documentation.    
-> > 
-> > I don't really care what takes time, just that it was unbearable. But 
-> > now you gave me a workaround so that's good enough for me.
-> > 
-> > Regards,
-> > 
-> > Tvrtko  
+diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
+index fdea42752a81..0db5b64effea 100644
+--- a/lib/igt_drm_clients.c
++++ b/lib/igt_drm_clients.c
+@@ -103,6 +103,8 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+ 			c->clients->max_name_len = len;
+ 	}
+ 
++	/* Engines */
++
+ 	c->last_runtime = 0;
+ 	c->total_runtime = 0;
+ 
+@@ -118,6 +120,13 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+ 		c->last[i] = info->busy[i];
+ 	}
+ 
++	/* Memory regions */
++	for (i = 0; i <= c->regions->max_region_id; i++) {
++		assert(i < ARRAY_SIZE(info->region_mem));
++
++		c->memory[i] = info->region_mem[i];
++	}
++
+ 	c->samples++;
+ 	c->status = IGT_DRM_CLIENT_ALIVE;
+ }
+@@ -154,6 +163,8 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+ 	c->id = info->id;
+ 	c->drm_minor = drm_minor;
+ 	c->clients = clients;
++
++	/* Engines */
+ 	c->engines = malloc(sizeof(*c->engines));
+ 	assert(c->engines);
+ 	memset(c->engines, 0, sizeof(*c->engines));
+@@ -178,6 +189,26 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+ 	c->last = calloc(c->engines->max_engine_id + 1, sizeof(c->last));
+ 	assert(c->val && c->last);
+ 
++	/* Memory regions */
++	c->regions = malloc(sizeof(*c->regions));
++	assert(c->regions);
++	memset(c->regions, 0, sizeof(*c->regions));
++	c->regions->names = calloc(info->last_region_index + 1,
++				   sizeof(*c->regions->names));
++	assert(c->regions->names);
++
++	for (i = 0; i <= info->last_region_index; i++) {
++		if (!info->region_names[i])
++			continue;
++
++		c->regions->names[i] = strdup(info->region_names[i]);
++		assert(c->regions->names[i]);
++		c->regions->num_regions++;
++		c->regions->max_region_id = i;
++	}
++	c->memory = calloc(c->regions->max_region_id + 1, sizeof(*c->memory));
++	assert(c->memory);
++
+ 	igt_drm_client_update(c, pid, name, info);
+ }
+ 
+diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
+index ed795c193986..07bd236d43bf 100644
+--- a/lib/igt_drm_clients.h
++++ b/lib/igt_drm_clients.h
+@@ -8,6 +8,8 @@
+ 
+ #include <stdint.h>
+ 
++#include "lib/igt_drm_fdinfo.h"
++
+ /**
+  * SECTION:igt_drm_clients
+  * @short_description: Parsing driver exposed fdinfo to track DRM clients
+@@ -39,12 +41,20 @@ struct igt_drm_client_engines {
+ 	char **names; /* Array of engine names, either auto-detected or from the passed in engine map. */
+ };
+ 
++struct igt_drm_client_regions {
++	unsigned int num_regions; /* Number of discovered memory_regions. */
++	unsigned int max_region_id; /* Largest memory region index discovered.
++				       (Can differ from num_regions - 1 when using the region map facility.) */
++	char **names; /* Array of region names, either auto-detected or from the passed in region map. */
++};
++
+ struct igt_drm_clients;
+ 
+ struct igt_drm_client {
+ 	struct igt_drm_clients *clients; /* Owning list. */
+ 
+ 	enum igt_drm_client_status status;
++	struct igt_drm_client_regions *regions; /* Memory regions present in this client, to map with memory usage. */
+ 	struct igt_drm_client_engines *engines; /* Engines used by this client, to map with busynees data. */
+ 	unsigned int id; /* DRM client id from fdinfo. */
+ 	unsigned int drm_minor; /* DRM minor of this client. */
+@@ -57,6 +67,7 @@ struct igt_drm_client {
+ 	unsigned long last_runtime; /* Aggregate busyness on all engines since previous scan. */
+ 	unsigned long *val; /* Array of engine busyness data, relative to previous scan. */
+ 	uint64_t *last; /* Array of engine busyness data as parsed from fdinfo. */
++	struct drm_client_meminfo *memory; /* Array of region memory utilisation as parsed from fdinfo. */
+ };
+ 
+ struct igt_drm_clients {
+-- 
+2.39.2
