@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8143117370271674993=="
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C656C10E125
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 10:54:31 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: "Vishwanathapura, Niranjana" <niranjana.vishwanathapura@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 5 Jul 2023 10:54:27 +0000
+Message-ID: <MW3PR11MB4748FD362BEFDDAAF6FF2BC7AE2FA@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20230704210530.7721-1-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20230704210530.7721-1-niranjana.vishwanathapura@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Himal Prasad Ghimiray" <himal.prasad.ghimiray@intel.com>
-Date: Wed, 05 Jul 2023 10:18:34 -0000
-Message-ID: <168855231429.24205.15501145012672475565@emeril.freedesktop.org>
-References: <20230705085259.533791-1-himal.prasad.ghimiray@intel.com>
-In-Reply-To: <20230705085259.533791-1-himal.prasad.ghimiray@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSGFuZGxl?=
- =?utf-8?q?_GT_and_tile_seperation_in_IGT_=28rev4=29?=
+Subject: Re: [igt-dev] [RFC i-g-t] tests/xe/xe_evict: Check for memory
+ availability
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,172 +22,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Hellstrom, Thomas" <thomas.hellstrom@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8143117370271674993==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: Handle GT and tile seperation in IGT (rev4)
-URL   : https://patchwork.freedesktop.org/series/119801/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7370 -> IGTPW_9336
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/index.html
-
-Participating hosts (41 -> 24)
-------------------------------
-
-  Missing    (17): bat-adlp-9 fi-bsw-n3050 bat-dg2-8 bat-dg2-9 fi-cfl-8700k fi-snb-2520m bat-dg1-8 fi-hsw-4770 bat-adln-1 fi-kbl-x1275 fi-kbl-8809g bat-atsm-1 fi-ivb-3770 fi-cfl-8109u bat-rplp-1 bat-rpls-1 fi-bsw-nick 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9336 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - bat-mtlp-8:         [PASS][1] -> [ABORT][2] ([i915#7077] / [i915#7977] / [i915#8668])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7370/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@i915_selftest@live@slpc:
-    - bat-mtlp-6:         [PASS][3] -> [DMESG-WARN][4] ([i915#6367])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7370/bat-mtlp-6/igt@i915_selftest@live@slpc.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/bat-mtlp-6/igt@i915_selftest@live@slpc.html
-
-  * igt@kms_psr@primary_page_flip:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][5] ([fdo#109271]) +38 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
-  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
 
 
-Build changes
--------------
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Niranj=
+ana
+> Vishwanathapura
+> Sent: 05 July 2023 02:36
+> To: igt-dev@lists.freedesktop.org
+> Cc: Hellstrom, Thomas <thomas.hellstrom@intel.com>
+> Subject: [igt-dev] [RFC i-g-t] tests/xe/xe_evict: Check for memory availa=
+bility
+>=20
+> On systems with low system memory the subtests fail in various ways inclu=
+ding
+> returning -ENOMEM, hanging, etc.
+> Ensure system has enough memory for the tests, otherwise skip it.
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7370 -> IGTPW_9336
+Instead of skipping the tests, we can update the num_bo to fit in the avail=
+able memory.
 
-  CI-20190529: 20190529
-  CI_DRM_13345: 52c775d5fac7e50737584ba6cf643c1166d95855 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9336: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/index.html
-  IGT_7370: f63ab5e7c3ddef724bebde558e36647ca65d98bc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>=20
+> Signed-off-by: Niranjana Vishwanathapura
+> <niranjana.vishwanathapura@intel.com>
+> ---
+>  tests/xe/xe_evict.c | 42 ++++++++++++++++++++++++++++--------------
+>  1 file changed, 28 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/tests/xe/xe_evict.c b/tests/xe/xe_evict.c index
+> 1a70f1b45..d28400f1c 100644
+> --- a/tests/xe/xe_evict.c
+> +++ b/tests/xe/xe_evict.c
+> @@ -454,6 +454,13 @@ static uint64_t calc_bo_size(uint64_t vram_size, int
+> mul, int div)
+>  	return (ALIGN(vram_size, 0x40000000)  * mul) / div;  }
+>=20
+> +static bool has_required_memory(uint64_t mem_size, uint64_t vram_size,
+> +				int num_bos, uint64_t bo_size)
+> +{
+> +	/* Assume 1/2 of system memory is available to use */
+> +	return (mem_size / 2 + vram_size) >=3D (num_bos * bo_size); }
+I think here available VRAM size for use needs to considered instead of tot=
+al VRAM size.
 
-
-Testlist changes
-----------------
-
-+igt@xe_sysfs_tile_prop@physical_vram_size_bytes
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/index.html
-
---===============8143117370271674993==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Handle GT and tile seperation in IGT (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/119801/">https://patchwork.freedesktop.org/series/119801/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7370 -&gt; IGTPW_9336</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/index.html</p>
-<h2>Participating hosts (41 -&gt; 24)</h2>
-<p>Missing    (17): bat-adlp-9 fi-bsw-n3050 bat-dg2-8 bat-dg2-9 fi-cfl-8700k fi-snb-2520m bat-dg1-8 fi-hsw-4770 bat-adln-1 fi-kbl-x1275 fi-kbl-8809g bat-atsm-1 fi-ivb-3770 fi-cfl-8109u bat-rplp-1 bat-rpls-1 fi-bsw-nick </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9336 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7370/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7977">i915#7977</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7370/bat-mtlp-6/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/bat-mtlp-6/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +38 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7370 -&gt; IGTPW_9336</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13345: 52c775d5fac7e50737584ba6cf643c1166d95855 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9336: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9336/index.html<br />
-  IGT_7370: f63ab5e7c3ddef724bebde558e36647ca65d98bc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@xe_sysfs_tile_prop@physical_vram_size_bytes</p>
-
-</body>
-</html>
-
---===============8143117370271674993==--
+Thanks,
+Rahul
+> +
+>  /**
+>   * SUBTEST: evict-%s
+>   * Description:  %arg[1] evict test.
+> @@ -658,12 +665,13 @@ igt_main
+>  			MIXED_THREADS | MULTI_VM | THREADED |
+> BIND_ENGINE },
+>  		{ NULL },
+>  	};
+> -	uint64_t vram_size;
+> +	uint64_t mem_size, vram_size;
+>  	int fd;
+>=20
+>  	igt_fixture {
+>  		fd =3D drm_open_driver(DRIVER_XE);
+>  		igt_require(xe_has_vram(fd));
+> +		mem_size =3D igt_get_total_ram_mb() << 20;
+>  		vram_size =3D xe_vram_size(fd, 0);
+>  		igt_assert(vram_size);
+>=20
+> @@ -673,25 +681,31 @@ igt_main
+>  	}
+>=20
+>  	for (const struct section *s =3D sections; s->name; s++) {
+> -		igt_subtest_f("evict-%s", s->name)
+> -			test_evict(-1, hwe, s->n_engines, s->n_execs,
+> -				   calc_bo_size(vram_size, s->mul, s->div),
+> -				   s->flags, NULL);
+> +		igt_subtest_f("evict-%s", s->name) {
+> +			uint64_t bo_size =3D calc_bo_size(vram_size, s->mul, s-
+> >div);
+> +
+> +			igt_require(has_required_memory(mem_size,
+> vram_size, s->n_execs / 2, bo_size));
+> +			test_evict(-1, hwe, s->n_engines, s->n_execs, bo_size,
+> s->flags, NULL);
+> +		}
+>  	}
+>=20
+>  	for (const struct section_cm *s =3D sections_cm; s->name; s++) {
+> -		igt_subtest_f("evict-%s", s->name)
+> -			test_evict_cm(-1, hwe, s->n_engines, s->n_execs,
+> -				      calc_bo_size(vram_size, s->mul, s->div),
+> -				      s->flags, NULL);
+> +		igt_subtest_f("evict-%s", s->name) {
+> +			uint64_t bo_size =3D calc_bo_size(vram_size, s->mul, s-
+> >div);
+> +
+> +			igt_require(has_required_memory(mem_size,
+> vram_size, s->n_execs / 2, bo_size));
+> +			test_evict(-1, hwe, s->n_engines, s->n_execs, bo_size,
+> s->flags, NULL);
+> +		}
+>  	}
+>=20
+>  	for (const struct section_threads *s =3D sections_threads; s->name; s++=
+) {
+> -		igt_subtest_f("evict-%s", s->name)
+> -			threads(-1, hwe, s->n_threads, s->n_engines,
+> -				 s->n_execs,
+> -				 calc_bo_size(vram_size, s->mul, s->div),
+> -				 s->flags);
+> +		igt_subtest_f("evict-%s", s->name) {
+> +			uint64_t bo_size =3D calc_bo_size(vram_size, s->mul, s-
+> >div);
+> +
+> +			igt_require(has_required_memory(mem_size,
+> vram_size,
+> +							s->n_threads * (s-
+> >n_execs / 2), bo_size));
+> +			threads(-1, hwe, s->n_threads, s->n_engines, s-
+> >n_execs, bo_size, s->flags);
+> +		}
+>  	}
+>=20
+>  	igt_fixture
+> --
+> 2.21.0.rc0.32.g243a4c7e27
