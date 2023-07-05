@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE15B10E33F
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 09:20:20 +0000 (UTC)
-Message-ID: <e8a66839-46e3-aab4-85d6-fd9337079c99@intel.com>
-Date: Wed, 5 Jul 2023 14:49:51 +0530
-To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230628112621.4084988-1-anshuman.gupta@intel.com>
- <20230628112621.4084988-3-anshuman.gupta@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0EB410E356
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 12:55:00 +0000 (UTC)
+Message-ID: <034750c6-c4f4-513b-bff3-6882b4d0193a@intel.com>
+Date: Wed, 5 Jul 2023 14:54:44 +0200
 Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <20230628112621.4084988-3-anshuman.gupta@intel.com>
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230704090104.120219-1-zbigniew.kempczynski@intel.com>
+ <20230704090104.120219-5-zbigniew.kempczynski@intel.com>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230704090104.120219-5-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] test/xe_pm: Add
- vram_d3cold_threshold subtest
+Subject: Re: [igt-dev] [PATCH i-g-t 04/12] lib/xe_util: Return dynamic
+ subtest name for Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,152 +22,202 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Anshuman
-
-On 6/28/2023 4:56 PM, Anshuman Gupta wrote:
-> Adding a vram_d3cold_threshold subtest, which creates a Xe bo and
-> set the vram_d3cold_threshold according to vram used and bo size.
-> Test setups the d3cold and expect card to be limited to d3hot.
+On 4.07.2023 11:00, Zbigniew Kempczyński wrote:
+> For tests which are working on more than one region using name suffix
+> like "vram01-system" etc. is common thing. Instead handcrafting this
+> naming add xe_memregion_dynamic_subtest_name() function which is
+> similar to memregion_dynamic_subtest_name() for i915.
 > 
-> v2:
-> - Add subtest doc.
-> 
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->   tests/xe/xe_pm.c | 80 ++++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 80 insertions(+)
+>   lib/meson.build  |   3 +-
+>   lib/xe/xe_util.c | 104 +++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/xe/xe_util.h |  33 +++++++++++++++
+>   3 files changed, 139 insertions(+), 1 deletion(-)
+>   create mode 100644 lib/xe/xe_util.c
+>   create mode 100644 lib/xe/xe_util.h
 > 
-> diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c
-> index c71fce892..eaafead23 100644
-> --- a/tests/xe/xe_pm.c
-> +++ b/tests/xe/xe_pm.c
-> @@ -19,6 +19,7 @@
->   #include "igt.h"
->   #include "lib/igt_device.h"
->   #include "lib/igt_pm.h"
-> +#include "lib/igt_sysfs.h"
->   #include "lib/igt_syncobj.h"
->   #include "lib/intel_reg.h"
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 3e1ecdee2b..1d5b81ac8f 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -105,7 +105,8 @@ lib_sources = [
+>   	'xe/xe_compute_square_kernels.c',
+>   	'xe/xe_ioctl.c',
+>   	'xe/xe_query.c',
+> -	'xe/xe_spin.c'
+> +	'xe/xe_spin.c',
+> +	'xe/xe_util.c',
+>   ]
 >   
-> @@ -30,6 +31,8 @@
->   #define NO_SUSPEND -1
->   #define NO_RPM -1
->   
-> +#define SIZE (4096 * 1024)
+>   lib_deps = [
+> diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+> new file mode 100644
+> index 0000000000..448b3a3d27
+> --- /dev/null
+> +++ b/lib/xe/xe_util.c
+> @@ -0,0 +1,104 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
 > +
->   typedef struct {
->   	int fd_xe;
->   	struct pci_device *pci_xe;
-> @@ -77,6 +80,22 @@ static void set_d3cold_allowed(struct pci_device *pci,
->   	close(fd);
->   }
->   
-> +static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
+> +#include "igt.h"
+> +#include "igt_syncobj.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_util.h"
+> +
+> +static bool __region_belongs_to_regions_type(struct drm_xe_query_mem_region *region,
+> +					     uint32_t *mem_regions_type,
+> +					     int num_regions)
 > +{
-> +	char path[64];
-> +	int ret;
-> +
-> +	sprintf(path, "device/vram_d3cold_threshold");
-> +
-> +	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
-> +		ret = igt_sysfs_printf(sysfs, path, "%lu", threshold);
-> +	else
-> +		igt_warn("vram_d3cold_threshold is not present\n");
-> +
-> +	igt_info("ret value %d", ret);
-> +	igt_assert(ret > 0);
+> +	for (int i = 0; i < num_regions; i++)
+> +		if (mem_regions_type[i] == region->mem_class)
+> +			return true;
+> +	return false;
 > +}
 > +
->   static bool setup_d3(device_t device, enum igt_acpi_d_state state)
->   {
->   	switch (state) {
-> @@ -359,6 +378,62 @@ NULL));
->   		igt_assert(in_d3(device, d_state));
->   }
->   
-> +/**
-> + * SUBTEST: vram_d3cold_threshold
-Subtest: vram-d3cold-threshold
-> + * Description:
-> + *	Validate whether card is limited to d3hot while vram used
-> + *	is greater than vram_d3cold_threshol_d3cold.
-s/vram_d3cold_threshol_d3cold/vram_d3cold_threshold
-> + * Run type: FULL
-> + */
-> +static void test_vram_d3cold_threshold(device_t device)
+> +struct igt_collection *
+> +__xe_get_memory_region_set(int xe, uint32_t *mem_regions_type, int num_regions)
 > +{
-> +	struct drm_xe_query_mem_usage *mem_usage;
-> +	struct drm_xe_device_query query = {
-> +		.extensions = 0,
-> +		.query = DRM_XE_DEVICE_QUERY_MEM_USAGE,
-> +		.size = 0,
-> +		.data = 0,
-> +	};
-> +	uint64_t vram_used_mb = 0, vram_total_mb = 0, threshold, mmo;
-> +	uint32_t bo;
-> +	void *map;
-> +	int i, sysfs_fd;
+> +	struct drm_xe_query_mem_region *memregion;
+> +	struct igt_collection *set = NULL;
+> +	uint64_t memreg = all_memory_regions(xe), region;
+> +	int count = 0, pos = 0;
 > +
-> +	igt_assert_eq(igt_ioctl(device.fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> +	igt_assert_neq(query.size, 0);
+> +	xe_for_each_mem_region(xe, memreg, region) {
+> +		memregion = xe_mem_region(xe, region);
+> +		if (__region_belongs_to_regions_type(memregion,
+> +						     mem_regions_type,
+> +						     num_regions))
+> +			count++;
+> +	}
 > +
-> +	mem_usage = malloc(query.size);
-> +	igt_assert(mem_usage);
+> +	set = igt_collection_create(count);
 > +
-> +	query.data = to_user_pointer(mem_usage);
-> +	igt_assert_eq(igt_ioctl(device.fd_xe, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> +
-> +	for (i = 0; i < mem_usage->num_regions; i++) {
-> +		if (mem_usage->regions[i].mem_class == XE_MEM_REGION_CLASS_VRAM) {
-> +			vram_used_mb +=  (mem_usage->regions[i].used / (1024 * 1024));
-> +			vram_total_mb += (mem_usage->regions[i].total_size / (1024 * 1024));
+> +	xe_for_each_mem_region(xe, memreg, region) {
+> +		memregion = xe_mem_region(xe, region);
+> +		igt_assert(region < (1ull << 31));
+> +		if (__region_belongs_to_regions_type(memregion,
+> +						     mem_regions_type,
+> +						     num_regions)) {
+> +			igt_collection_set_value(set, pos++, (int)region);
 > +		}
 > +	}
 > +
-> +	bo = xe_bo_create_flags(device.fd_xe, 0, SIZE, vram_memory(device.fd_xe, 0));
-It will fail on assert of ioctl if vram is not present. Should this test 
-be skipped if !xe_has_vram
-> +	mmo = xe_bo_mmap_offset(device.fd_xe, bo);
-> +	map = mmap(NULL, SIZE, PROT_WRITE, MAP_SHARED, device.fd_xe, mmo);
-> +	igt_assert(map != MAP_FAILED);
-Replace with xe_bo_map call
+> +	igt_assert(count == pos);
 > +
-> +	memset(map, 0, SIZE);
-> +	munmap(map, SIZE);
-> +	threshold = vram_used_mb + (SIZE / (1024 * 1024));threshold should be set to vram_used_mb
-> +	igt_require(threshold < vram_total_mb); > +	sysfs_fd = igt_sysfs_open(device.fd_xe);
-> +	set_vram_d3cold_threshold(sysfs_fd, threshold);
-> +	close(sysfs_fd);
-> +
-> +	/* Setup D3Cold but card should be in D0 */
-s/D0/D3hot
-> +	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
-> +	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-> +	igt_assert(out_of_d3(device, IGT_ACPI_D3Cold));
-Release
-gem_close(fd, bo);
-
-Thanks
-Riana
+> +	return set;
 > +}
 > +
->   igt_main
->   {
->   	struct drm_xe_engine_class_instance *hwe;
-> @@ -456,6 +531,11 @@ igt_main
->   		}
->   	}
->   
-> +	igt_describe("Validate whether card is limited to d3hot, if vram used > vram threshold");
-> +	igt_subtest("vram-d3cold-threshold") {
-> +		test_vram_d3cold_threshold(device);
+> +/**
+> +  * xe_memregion_dynamic_subtest_name:
+> +  * @xe: drm fd of Xe device
+> +  * @igt_collection: memory region collection
+> +  *
+> +  * Function iterates over all memory regions inside the collection (keeped
+> +  * in the value field) and generates the name which can be used during dynamic
+> +  * subtest creation.
+> +  *
+> +  * Returns: newly allocated string, has to be freed by caller. Asserts if
+> +  * caller tries to create a name using empty collection.
+> +  */
+> +char *xe_memregion_dynamic_subtest_name(int xe, struct igt_collection *set)
+
+I'm aware that most functions here based on their i915 versions, but I'm 
+not sure about this one. Having xe_memregion_dynamic_subtest_name and 
+memregion_dynamic_subtest_name seems confusing to me.
+
+Ideally, we would have a core function that does the formatting and 
+wrappers that use it. I know that the need for fd in xe_region_class() 
+complicated things, but I wonder if we could work around it. For 
+example, why can we only store ints in igt_collection_data, and not 
+something more generic? Could we switch to a generic pointer, for 
+example? That would require more work, I'm aware of it, I'm just 
+thinking about potential solutions here.
+
+All the best,
+Karolina
+
+> +{
+> +	struct igt_collection_data *data;
+> +	char *name, *p;
+> +	uint32_t region, len;
+> +
+> +	igt_assert(set && set->size);
+> +	/* enough for "name%d-" * n */
+> +	len = set->size * 8;
+> +	p = name = malloc(len);
+> +	igt_assert(name);
+> +
+> +	for_each_collection_data(data, set) {
+> +		struct drm_xe_query_mem_region *memreg;
+> +		int r;
+> +
+> +		region = data->value;
+> +		memreg = xe_mem_region(xe, region);
+> +
+> +		if (XE_IS_CLASS_VRAM(memreg))
+> +			r = snprintf(p, len, "%s%d-",
+> +				     xe_region_name(region),
+> +				     memreg->instance);
+> +		else
+> +			r = snprintf(p, len, "%s-",
+> +				     xe_region_name(region));
+> +
+> +		igt_assert(r > 0);
+> +		p += r;
+> +		len -= r;
 > +	}
 > +
->   	igt_fixture {
->   		display_fini(&device);
->   		set_d3cold_allowed(device.pci_xe, d3cold_allowed);
+> +	/* remove last '-' */
+> +	*(p - 1) = 0;
+> +
+> +	return name;
+> +}
+> +
+> diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
+> new file mode 100644
+> index 0000000000..46b7e0d46b
+> --- /dev/null
+> +++ b/lib/xe/xe_util.h
+> @@ -0,0 +1,33 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + *
+> + */
+> +
+> +#ifndef XE_UTIL_H
+> +#define XE_UTIL_H
+> +
+> +#include <stdbool.h>
+> +#include <stddef.h>
+> +#include <stdint.h>
+> +#include <xe_drm.h>
+> +
+> +#define XE_REGION_SMEM XE_MEM_REGION_CLASS_SYSMEM
+> +#define XE_REGION_LMEM XE_MEM_REGION_CLASS_VRAM
+> +
+> +#define XE_IS_SYSMEM_MEMORY_REGION(fd, region) \
+> +	(xe_region_class(fd, region) == XE_MEM_REGION_CLASS_SYSMEM)
+> +#define XE_IS_VRAM_MEMORY_REGION(fd, region) \
+> +	(xe_region_class(fd, region) == XE_MEM_REGION_CLASS_VRAM)
+> +
+> +struct igt_collection *
+> +__xe_get_memory_region_set(int xe, uint32_t *mem_regions_type, int num_regions);
+> +
+> +#define xe_get_memory_region_set(regions, mem_region_types...) ({ \
+> +	unsigned int arr__[] = { mem_region_types }; \
+> +	__xe_get_memory_region_set(regions, arr__, ARRAY_SIZE(arr__)); \
+> +})
+> +
+> +char *xe_memregion_dynamic_subtest_name(int xe, struct igt_collection *set);
+> +
+> +#endif /* XE_UTIL_H */
