@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2073.outbound.protection.outlook.com [40.107.244.73])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F1ED10E185
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 17:30:55 +0000 (UTC)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on20624.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe5b::624])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A500610E3A8
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 17:34:09 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 5 Jul 2023 13:30:44 -0400
-Message-ID: <20230705173044.106090-1-vitaly.prosyak@amd.com>
+Date: Wed, 5 Jul 2023 13:34:02 -0400
+Message-ID: <20230705173402.107340-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v2 2/6] tests/amdgpu: add uvd decoder test
+Subject: [igt-dev] [PATCH i-g-t] tests/amdgpu: add uvd decoder test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,7 +19,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: boyuan.zhang@amd.com, leo.liu@amd.com
+Cc: Leo Liu <leo.liu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
