@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDFFC10E1A4
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 08:48:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26E5A10E1AD
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 08:48:23 +0000 (UTC)
 From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Jul 2023 14:22:55 +0530
-Message-Id: <20230705085259.533791-1-himal.prasad.ghimiray@intel.com>
+Date: Wed,  5 Jul 2023 14:22:56 +0530
+Message-Id: <20230705085259.533791-2-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230705085259.533791-1-himal.prasad.ghimiray@intel.com>
+References: <20230705085259.533791-1-himal.prasad.ghimiray@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 0/4] Handle GT and tile seperation in IGT
+Subject: [igt-dev] [PATCH i-g-t v5 1/4] lib/igt_sysfs: Add support to query
+ number of tiles
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,35 +24,94 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With seperation of GT and tiles in KMD, we will have sysfs entries
-for properties associated with tile and gtX sysfs parent will be moving
-under tileX. This series provides helper functions for accessing tile
-associated sysfs entries and gt specific sysfs under respective tile.
+With tile and GT seperation in KMD, we need to know
+number of tiles supported by platform.
+We will need to access tile associated properties from IGT.
+Hence adding iterator for all supported tiles.
 
-series addresses gt related sysfs path change for xe_guc_pc.c test case 
-and introduces new test to verify addr_range for each vram.
+v2:
+- Calculate number of tiles once within iterator. (Rahul)
+- Use snprintf instead of sprintf.
 
-Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+v3:
+- Remove unrequired for_each_sysfs_tile_dirfd (Ashutosh)
+
+Reviewed-by: Upadhyay <tejas.upadhyay@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
 Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
 Cc: Upadhyay <tejas.upadhyay@intel.com>
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+---
+ lib/igt_sysfs.c | 30 ++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h |  7 +++++++
+ 2 files changed, 37 insertions(+)
 
-Himal Prasad Ghimiray (4):
-  lib/igt_sysfs: Add support to query number of tiles
-  lib/igt_sysfs: Handling gt related sysfs uapi changes
-  tests/xe/xe_guc_pc: Change the sysfs paths
-  tests/xe/xe_sysfs_tile_prop: adds new test to verify per tile vram
-    addr_range
-
- lib/igt_sysfs.c               | 71 +++++++++++++++++++++++++++++++++++
- lib/igt_sysfs.h               |  8 ++++
- tests/meson.build             |  1 +
- tests/xe/xe_guc_pc.c          | 14 ++++++-
- tests/xe/xe_sysfs_tile_prop.c | 63 +++++++++++++++++++++++++++++++
- 5 files changed, 155 insertions(+), 2 deletions(-)
- create mode 100644 tests/xe/xe_sysfs_tile_prop.c
-
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 0876f4c6b..2ea9eb1b9 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -287,6 +287,36 @@ int igt_sysfs_get_num_gt(int device)
+ 	return num_gts;
+ }
+ 
++/**
++ * igt_sysfs_get_num_tiles:
++ * @device: fd of the device
++ *
++ * Reads number of tiles sysfs entries.
++ * Asserts for at least one tile entry.
++ *
++ * Returns: Number of tiles.
++ */
++int igt_sysfs_get_num_tiles(int device)
++{
++	int num_tiles;
++	char sysfs[48];
++	char tiledir[96];
++
++	num_tiles = 0;
++	if (!igt_sysfs_path(device, sysfs, sizeof(sysfs)))
++		return -1;
++
++	do {
++		igt_assert(snprintf(tiledir, sizeof(tiledir), "%s/device/tile%d",
++				    sysfs, num_tiles) < sizeof(tiledir));
++		num_tiles++;
++	} while (!access(tiledir, F_OK));
++
++	num_tiles--;
++	igt_assert_f(num_tiles > 0, "No tiles sysfs entry is found.");
++	return num_tiles;
++}
++
+ /**
+  * igt_sysfs_write:
+  * @dir: directory for the device from igt_sysfs_open()
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 5635fc690..c31765542 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -73,6 +73,12 @@
+ #define igt_sysfs_rps_set_boolean(dir, id, value) \
+ 	igt_sysfs_set_boolean(dir, igt_sysfs_dir_id_to_name(dir, id), value)
+ 
++#define xe_for_each_tile(xe__, tile__, tile_cnt__) \
++	for (tile__ = 0, tile_cnt__ = igt_sysfs_get_num_tiles(xe__); \
++	     tile__ < tile_cnt__; \
++	     ++tile__)
++
++
+ enum i915_attr_id {
+ 	RPS_ACT_FREQ_MHZ,
+ 	RPS_CUR_FREQ_MHZ,
+@@ -97,6 +103,7 @@ int igt_sysfs_open(int device);
+ char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);
+ int igt_sysfs_gt_open(int device, int gt);
+ int igt_sysfs_get_num_gt(int device);
++int igt_sysfs_get_num_tiles(int device);
+ bool igt_sysfs_has_attr(int dir, const char *attr);
+ const char *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id);
+ const char *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id);
 -- 
 2.25.1
