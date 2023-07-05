@@ -1,26 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7698E10E3A9
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 15:29:09 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.26.237])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 1556A580DBB
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 08:28:56 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qH4R3-001vyG-2W
- for igt-dev@lists.freedesktop.org; Wed, 05 Jul 2023 17:28:53 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B26E710E19F
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jul 2023 13:14:17 +0000 (UTC)
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Jul 2023 17:28:47 +0200
-Message-Id: <20230705152850.461010-3-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230705152850.461010-1-mauro.chehab@linux.intel.com>
-References: <20230705152850.461010-1-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Jul 2023 18:48:50 +0530
+Message-Id: <20230705131853.545449-2-himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230705131853.545449-1-himal.prasad.ghimiray@intel.com>
+References: <20230705131853.545449-1-himal.prasad.ghimiray@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/5] lib/igt_core: add an option to show the
- testlist
+Subject: [igt-dev] [PATCH i-g-t v6 1/4] lib/igt_sysfs: Add support to query
+ number of tiles
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,104 +19,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Upadhyay <tejas.upadhyay@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+With tile and GT seperation in KMD, we need to know
+number of tiles supported by platform.
+We will need to access tile associated properties from IGT.
+Hence adding iterator for all supported tiles.
 
-There are several cases where we need to list the tests the same
-way as igt_runner displays them.
+v2:
+- Calculate number of tiles once within iterator. (Rahul)
+- Use snprintf instead of sprintf.
 
-That should not return errors on failures and should work also
-when igt_simple_main() macro is used.
+v3:
+- Remove unrequired for_each_sysfs_tile_dirfd (Ashutosh)
 
-Ideally, it should also show dynamic subtests, but this is more
-complex, specially for Kselftest/KUnit ones. So, for now, let's
-not handle dynamic ones.
-
-Add an option to produce such testlist.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Reviewed-by: Upadhyay <tejas.upadhyay@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
+Cc: Upadhyay <tejas.upadhyay@intel.com>
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 ---
- lib/igt_core.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ lib/igt_sysfs.c | 30 ++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h |  7 +++++++
+ 2 files changed, 37 insertions(+)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 9a0029d294a8..2ae2cb68835e 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -274,6 +274,7 @@ const char *igt_interactive_debug;
- bool igt_skip_crc_compare;
- 
- /* subtests helpers */
-+static bool show_testlist = false;
- static bool list_subtests = false;
- static bool describe_subtests = false;
- static char *run_single_subtest = NULL;
-@@ -326,6 +327,7 @@ enum {
- 	 * conflict with core ones
- 	 */
- 	OPT_LIST_SUBTESTS = 500,
-+	OPT_SHOW_TESTLIST,
- 	OPT_DESCRIBE_SUBTESTS,
- 	OPT_RUN_SUBTEST,
- 	OPT_RUN_DYNAMIC_SUBTEST,
-@@ -896,6 +898,7 @@ static void print_usage(const char *help_str, bool output_on_stderr)
- 
- 	fprintf(f, "Usage: %s [OPTIONS]\n", command_str);
- 	fprintf(f, "  --list-subtests\n"
-+		   "  --show-testlist\n"
- 		   "  --run-subtest <pattern>\n"
- 		   "  --dynamic-subtest <pattern>\n"
- 		   "  --debug[=log-domain]\n"
-@@ -1076,6 +1079,7 @@ static int common_init(int *argc, char **argv,
- 	int c, option_index = 0, i, x;
- 	static struct option long_options[] = {
- 		{"list-subtests",     no_argument,       NULL, OPT_LIST_SUBTESTS},
-+		{"show-testlist",     no_argument,       NULL, OPT_SHOW_TESTLIST},
- 		{"describe",          optional_argument, NULL, OPT_DESCRIBE_SUBTESTS},
- 		{"run-subtest",       required_argument, NULL, OPT_RUN_SUBTEST},
- 		{"dynamic-subtest",   required_argument, NULL, OPT_RUN_DYNAMIC_SUBTEST},
-@@ -1189,6 +1193,9 @@ static int common_init(int *argc, char **argv,
- 			if (!run_single_subtest)
- 				list_subtests = true;
- 			break;
-+		case OPT_SHOW_TESTLIST:
-+			show_testlist = true;
-+			break;
- 		case OPT_DESCRIBE_SUBTESTS:
- 			if (optarg)
- 				run_single_subtest = strdup(optarg);
-@@ -1257,6 +1264,10 @@ out:
- 			igt_warn("Unknown subtest: %s\n", run_single_subtest);
- 			exit(IGT_EXIT_INVALID);
- 		}
-+		if (show_testlist) {
-+			printf("igt@%s\n", igt_test_name());
-+			exit(0);
-+		}
- 		if (list_subtests)
- 			exit(IGT_EXIT_INVALID);
- 	}
-@@ -1449,6 +1460,9 @@ bool __igt_run_subtest(const char *subtest_name, const char *file, const int lin
- 		__igt_print_description(subtest_name, file, line);
- 		_clear_current_description();
- 		return false;
-+	} else if (show_testlist) {
-+		printf("igt@%s@%s\n", igt_test_name(), subtest_name);
-+		return false;
- 	} else if (list_subtests) {
- 		printf("%s\n", subtest_name);
- 		return false;
-@@ -1522,7 +1536,7 @@ const char *igt_subtest_name(void)
-  */
- bool igt_only_list_subtests(void)
- {
--	return list_subtests;
-+	return list_subtests || show_testlist;
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 0876f4c6b..2ea9eb1b9 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -287,6 +287,36 @@ int igt_sysfs_get_num_gt(int device)
+ 	return num_gts;
  }
  
++/**
++ * igt_sysfs_get_num_tiles:
++ * @device: fd of the device
++ *
++ * Reads number of tiles sysfs entries.
++ * Asserts for at least one tile entry.
++ *
++ * Returns: Number of tiles.
++ */
++int igt_sysfs_get_num_tiles(int device)
++{
++	int num_tiles;
++	char sysfs[48];
++	char tiledir[96];
++
++	num_tiles = 0;
++	if (!igt_sysfs_path(device, sysfs, sizeof(sysfs)))
++		return -1;
++
++	do {
++		igt_assert(snprintf(tiledir, sizeof(tiledir), "%s/device/tile%d",
++				    sysfs, num_tiles) < sizeof(tiledir));
++		num_tiles++;
++	} while (!access(tiledir, F_OK));
++
++	num_tiles--;
++	igt_assert_f(num_tiles > 0, "No tiles sysfs entry is found.");
++	return num_tiles;
++}
++
+ /**
+  * igt_sysfs_write:
+  * @dir: directory for the device from igt_sysfs_open()
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 5635fc690..c31765542 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -73,6 +73,12 @@
+ #define igt_sysfs_rps_set_boolean(dir, id, value) \
+ 	igt_sysfs_set_boolean(dir, igt_sysfs_dir_id_to_name(dir, id), value)
  
++#define xe_for_each_tile(xe__, tile__, tile_cnt__) \
++	for (tile__ = 0, tile_cnt__ = igt_sysfs_get_num_tiles(xe__); \
++	     tile__ < tile_cnt__; \
++	     ++tile__)
++
++
+ enum i915_attr_id {
+ 	RPS_ACT_FREQ_MHZ,
+ 	RPS_CUR_FREQ_MHZ,
+@@ -97,6 +103,7 @@ int igt_sysfs_open(int device);
+ char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);
+ int igt_sysfs_gt_open(int device, int gt);
+ int igt_sysfs_get_num_gt(int device);
++int igt_sysfs_get_num_tiles(int device);
+ bool igt_sysfs_has_attr(int dir, const char *attr);
+ const char *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id);
+ const char *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id);
 -- 
-2.40.1
+2.25.1
