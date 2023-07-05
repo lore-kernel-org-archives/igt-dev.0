@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C6B810E1E0
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 07:30:19 +0000 (UTC)
-From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
-To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 10 Jul 2023 07:30:11 +0000
-Message-ID: <MW4PR11MB7056F8D153A2B3CFAB9D3DBFB330A@MW4PR11MB7056.namprd11.prod.outlook.com>
-References: <20230630070439.621177-1-riana.tauro@intel.com>
- <20230630070439.621177-2-riana.tauro@intel.com>
-In-Reply-To: <20230630070439.621177-2-riana.tauro@intel.com>
-Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/4] tests/xe: Add basic idle
- residency test
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Date: Wed, 05 Jul 2023 20:32:47 -0000
+Message-ID: <168858916741.24204.8867490366461452690@emeril.freedesktop.org>
+References: <20230705202316.157497-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230705202316.157497-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/amdgpu=3A_add_uvd_decoder_test_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,101 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgUmlhbmEsDQoNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3Qt
-ZGV2IDxpZ3QtZGV2LWJvdW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2Yg
-UmlhbmENCj4gVGF1cm8NCj4gU2VudDogMzAgSnVuZSAyMDIzIDEyOjM1DQo+IFRvOiBpZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogTmlsYXdhciwgQmFkYWwgPGJhZGFsLm5pbGF3
-YXJAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBbaWd0LWRldl0gW1BBVENIIGktZy10IHYyIDEvNF0g
-dGVzdHMveGU6IEFkZCBiYXNpYyBpZGxlIHJlc2lkZW5jeSB0ZXN0DQo+IA0KPiBUaGUgdGVzdCBy
-ZWFkcyBpZGxlIHJlc2lkZW5jeSB3aXRoaW4gYSB0aW1lIGludGVydmFsIGFuZCBjaGVja3MgaWYg
-aXRzIHdpdGhpbiB0aGUNCj4gdG9sZXJhbmNlLg0KPiANCj4gUGF0Y2ggZm9yIGd0aWRsZSBwcm9w
-ZXJ0aWVzDQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTE5MjYy
-Lw0KPiANCj4gdjI6DQo+ICAgIC0gcmVuYW1lIGZpbGUgdG8geGVfcG1fcmVzaWRlbmN5DQo+ICAg
-IC0gYWRkIGtlcm5lbCBwYXRjaCBpbiBjb21taXQgbWVzc2FnZSAoS2FtaWwpDQo+IA0KPiB2MzoN
-Cj4gICAgLSBhZGQgaWd0IHRlc3QgZGVzY3JpcHRpb24gKEFuc2h1bWFuKQ0KPiANCj4gdjQ6DQo+
-ICAgIC0gZml4IGNvc21ldGljIHJldmlldyBjb21tZW50cw0KPiAgICAtIHJlcGxhY2UgYXNzZXJ0
-IHdpdGggaWd0X2Fzc2VydF9mIChBbnNodW1hbikNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFJpYW5h
-IFRhdXJvIDxyaWFuYS50YXVyb0BpbnRlbC5jb20+DQo+IFJldmlld2VkLWJ5OiBBbnNodW1hbiBH
-dXB0YSA8YW5zaHVtYW4uZ3VwdGFAaW50ZWwuY29tPg0KPiAtLS0NCj4gIHRlc3RzL21lc29uLmJ1
-aWxkICAgICAgICAgIHwgICAxICsNCj4gIHRlc3RzL3hlL3hlX3BtX3Jlc2lkZW5jeS5jIHwgMTIw
-DQo+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gIDIgZmlsZXMgY2hh
-bmdlZCwgMTIxIGluc2VydGlvbnMoKykNCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy94ZS94
-ZV9wbV9yZXNpZGVuY3kuYw0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIv
-dGVzdHMvbWVzb24uYnVpbGQgaW5kZXgNCj4gODVlYTdlNzRlLi5jZGU0NDQ3ZTQgMTAwNjQ0DQo+
-IC0tLSBhL3Rlc3RzL21lc29uLmJ1aWxkDQo+ICsrKyBiL3Rlc3RzL21lc29uLmJ1aWxkDQo+IEBA
-IC0yNjUsNiArMjY1LDcgQEAgeGVfcHJvZ3MgPSBbDQo+ICAJJ3hlX21vZHVsZV9sb2FkJywNCj4g
-IAkneGVfbm9leGVjX3BpbmdfcG9uZycsDQo+ICAJJ3hlX3BtJywNCj4gKwkneGVfcG1fcmVzaWRl
-bmN5JywNCj4gIAkneGVfcHJpbWVfc2VsZl9pbXBvcnQnLA0KPiAgCSd4ZV9xdWVyeScsDQo+ICAJ
-J3hlX3ZtJywNCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3hlL3hlX3BtX3Jlc2lkZW5jeS5jIGIvdGVz
-dHMveGUveGVfcG1fcmVzaWRlbmN5LmMgbmV3DQo+IGZpbGUgbW9kZSAxMDA2NDQgaW5kZXggMDAw
-MDAwMDAwLi4zMjMzM2RmYjANCj4gLS0tIC9kZXYvbnVsbA0KPiArKysgYi90ZXN0cy94ZS94ZV9w
-bV9yZXNpZGVuY3kuYw0KPiBAQCAtMCwwICsxLDEyMCBAQA0KPiArLy8gU1BEWC1MaWNlbnNlLUlk
-ZW50aWZpZXI6IE1JVA0KPiArLyoNCj4gKyAqIENvcHlyaWdodCDCqSAyMDIzIEludGVsIENvcnBv
-cmF0aW9uDQo+ICsgKi8NCj4gKw0KPiArLyoqDQo+ICsgKiBURVNUOiBUZXN0IGd0aWRsZSBwcm9w
-ZXJ0aWVzDQo+ICsgKiBDYXRlZ29yeTogU29mdHdhcmUgYnVpbGRpbmcgYmxvY2sNCj4gKyAqIFN1
-Yi1jYXRlZ29yeTogUG93ZXIgTWFuYWdlbWVudA0KPiArICogRnVuY3Rpb25hbGl0eTogR1QgQyBT
-dGF0ZXMNCj4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdA0KPiArICovDQo+
-ICsNCj4gKyNpbmNsdWRlIDxsaW1pdHMuaD4NCj4gKw0KPiArI2luY2x1ZGUgImlndC5oIg0KPiAr
-I2luY2x1ZGUgImlndF9zeXNmcy5oIg0KPiArDQo+ICsjaW5jbHVkZSAieGUveGVfcXVlcnkuaCIN
-Cj4gKw0KPiArI2RlZmluZSBTTEVFUF9EVVJBVElPTiAzMDAwIC8qIGluIG1pbGxpc2Vjb25kcyAq
-Lw0KPiArDQo+ICtjb25zdCBkb3VibGUgdG9sZXJhbmNlID0gMC4xOw0KPiArDQo+ICsjZGVmaW5l
-IGFzc2VydF93aXRoaW5fZXBzaWxvbih4LCByZWYsIHRvbCkgXA0KPiArCWlndF9hc3NlcnRfZigo
-ZG91YmxlKSh4KSA8PSAoMS4wICsgKHRvbCkpICogKGRvdWJsZSkocmVmKSAmJiBcDQo+ICsJCSAg
-ICAgKGRvdWJsZSkoeCkgPj0gKDEuMCAtICh0b2wpKSAqIChkb3VibGUpKHJlZiksIFwNCj4gKwkJ
-ICAgICAiJyVzJyAhPSAnJXMnICglZiBub3Qgd2l0aGluICslLjFmJSUvLSUuMWYlJSB0b2xlcmFu
-Y2Ugb2YNCj4gJWYpXG4iLFwNCj4gKwkJICAgICAjeCwgI3JlZiwgKGRvdWJsZSkoeCksIFwNCj4g
-KwkJICAgICAodG9sKSAqIDEwMC4wLCAodG9sKSAqIDEwMC4wLCBcDQo+ICsJCSAgICAgKGRvdWJs
-ZSkocmVmKSkNCj4gKw0KPiArSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRlc3RzIGZvciBndGlkbGUg
-cHJvcGVydGllcyIpOw0KPiArDQo+ICtzdGF0aWMgdW5zaWduZWQgaW50IG1lYXN1cmVkX3VzbGVl
-cCh1bnNpZ25lZCBpbnQgdXNlYykgew0KPiArCXN0cnVjdCB0aW1lc3BlYyB0cyA9IHsgfTsNCj4g
-Kwl1bnNpZ25lZCBpbnQgc2xlcHQ7DQo+ICsNCj4gKwlzbGVwdCA9IGlndF9uc2VjX2VsYXBzZWQo
-JnRzKTsNCj4gKwlpZ3RfYXNzZXJ0KHNsZXB0ID09IDApOw0KPiArCWRvIHsNCj4gKwkJdXNsZWVw
-KHVzZWMgLSBzbGVwdCk7DQo+ICsJCXNsZXB0ID0gaWd0X25zZWNfZWxhcHNlZCgmdHMpIC8gMTAw
-MDsNCj4gKwl9IHdoaWxlIChzbGVwdCA8IHVzZWMpOw0KPiArDQo+ICsJcmV0dXJuIGlndF9uc2Vj
-X2VsYXBzZWQoJnRzKSAvIDEwMDA7DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyBib29sIGluX2d0X2M2
-KGludCBzeXNmcywgaW50IGd0KSB7DQo+ICsJY2hhciBwYXRoW1BBVEhfTUFYXTsNCj4gKwljaGFy
-IGd0X2Nfc3RhdGVbOF07DQo+ICsNCj4gKwlzcHJpbnRmKHBhdGgsICJkZXZpY2UvZ3QlZC9ndGlk
-bGUvaWRsZV9zdGF0dXMiLCBndCk7DQo+ICsJaWYgKGlndF9zeXNmc19zY2FuZihzeXNmcywgcGF0
-aCwgIiVzIiwgZ3RfY19zdGF0ZSkgPCAwKQ0KPiArCQlyZXR1cm4gZmFsc2U7DQo+ICsNCj4gKwly
-ZXR1cm4gc3RyY21wKGd0X2Nfc3RhdGUsICJndC1jNiIpID09IDA7IH0NCj4gKw0KPiArc3RhdGlj
-IHVuc2lnbmVkIGxvbmcgcmVhZF9pZGxlX3Jlc2lkZW5jeShpbnQgc3lzZnMsIGludCBndCkgew0K
-PiArCXVuc2lnbmVkIGxvbmcgcmVzaWRlbmN5Ow0KPiArCWNoYXIgcGF0aFtQQVRIX01BWF07DQo+
-ICsNCj4gKwlyZXNpZGVuY3kgPSAwOw0KPiArCXNwcmludGYocGF0aCwgImRldmljZS9ndCVkL2d0
-aWRsZS9pZGxlX3Jlc2lkZW5jeV9tcyIsIGd0KTsNCg0KRnJvbSBLTUQgc2lkZSBndFggaXMgbW92
-ZWQgdW5kZXIgcmVzcGVjdGl2ZSB0aWxlWC4NClRvIGFjY29tbW9kYXRlIHRob3NlIGNoYW5nZXMs
-IEkgaGF2ZSBpbnRyb2R1Y2VkIHRoZSBoZWxwZXIgZnVuY3Rpb25zIGluIGlndCBsaWJyYXJ5Lg0K
-aHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3BhdGNoLzU0NjI5OS8/c2VyaWVzPTEx
-OTgwMSZyZXY9OCBpcyBhIHJlZmVyZW5jZQ0KY2hhbmdlcyBpbiB4ZV9ndWNfcGMuYyAuDQoNClBs
-ZWFzZSBtYWtlIHNpbWlsYXIgY2hhbmdlcyBmb3IgdGhlc2UgdGVzdGNhc2VzIGFzIHdlbGwuDQoN
-CkJSDQpIaW1hbCANCj4gKwlpZ3RfYXNzZXJ0KGlndF9zeXNmc19zY2FuZihzeXNmcywgcGF0aCwg
-IiVsdSIsICZyZXNpZGVuY3kpID09IDEpOw0KPiArCXJldHVybiByZXNpZGVuY3k7DQo+ICt9DQo+
-ICsNCj4gKy8qKg0KPiArICogU1VCVEVTVDogaWRsZS1yZXNpZGVuY3kNCj4gKyAqIERlc2NyaXB0
-aW9uOiBiYXNpYyByZXNpZGVuY3kgdGVzdCB0byB2YWxpZGF0ZSBpZGxlIHJlc2lkZW5jeQ0KPiAr
-ICoJCXdpdGhpbiBhIHRpbWUgaW50ZXJ2YWwgaXMgd2l0aGluIHRvbGVyYW5jZQ0KPiArICogUnVu
-IHR5cGU6IEZVTEwNCj4gKyAqLw0KPiArc3RhdGljIHZvaWQgdGVzdF9pZGxlX3Jlc2lkZW5jeShp
-bnQgc3lzZnMsIGludCBndCkgew0KPiArCXVuc2lnbmVkIGxvbmcgZWxhcHNlZF9tcywgcmVzaWRl
-bmN5X3N0YXJ0LCByZXNpZGVuY3lfZW5kOw0KPiArDQo+ICsJaWd0X2Fzc2VydF9mKGlndF93YWl0
-KGluX2d0X2M2KHN5c2ZzLCBndCksIDEwMDAsIDEpLCAiR1Qgbm90IGluDQo+ICtDNlxuIik7DQo+
-ICsNCj4gKwlyZXNpZGVuY3lfc3RhcnQgPSByZWFkX2lkbGVfcmVzaWRlbmN5KHN5c2ZzLCBndCk7
-DQo+ICsJZWxhcHNlZF9tcyA9IG1lYXN1cmVkX3VzbGVlcChTTEVFUF9EVVJBVElPTiAqIDEwMDAp
-IC8gMTAwMDsNCj4gKwlyZXNpZGVuY3lfZW5kID0gcmVhZF9pZGxlX3Jlc2lkZW5jeShzeXNmcywg
-Z3QpOw0KPiArDQo+ICsJaWd0X2luZm8oIk1lYXN1cmVkICVsdW1zIG9mIGlkbGUgcmVzaWRlbmN5
-IGluICVsdW1zXG4iLA0KPiArCQkgcmVzaWRlbmN5X2VuZCAtIHJlc2lkZW5jeV9zdGFydCwgZWxh
-cHNlZF9tcyk7DQo+ICsNCj4gKwlhc3NlcnRfd2l0aGluX2Vwc2lsb24ocmVzaWRlbmN5X2VuZCAt
-IHJlc2lkZW5jeV9zdGFydCwgZWxhcHNlZF9tcywNCj4gK3RvbGVyYW5jZSk7IH0NCj4gKw0KPiAr
-aWd0X21haW4NCj4gK3sNCj4gKwlpbnQgZmQsIGd0Ow0KPiArCXN0YXRpYyBpbnQgc3lzZnMgPSAt
-MTsNCj4gKw0KPiArCWlndF9maXh0dXJlIHsNCj4gKwkJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJ
-VkVSX1hFKTsNCj4gKw0KPiArCQl4ZV9kZXZpY2VfZ2V0KGZkKTsNCj4gKwkJaWd0X3JlcXVpcmUo
-IUlTX1BPTlRFVkVDQ0hJTyh4ZV9kZXZfaWQoZmQpKSk7DQo+ICsNCj4gKwkJc3lzZnMgPSBpZ3Rf
-c3lzZnNfb3BlbihmZCk7DQo+ICsJCWlndF9hc3NlcnQoc3lzZnMgIT0gLTEpOw0KPiArCX0NCj4g
-Kw0KPiArCWlndF9kZXNjcmliZSgidmFsaWRhdGUgaWRsZSByZXNpZGVuY3kgd2l0aGluIGEgdGlt
-ZSBpbnRlcnZhbCBpcyB3aXRoaW4NCj4gdG9sZXJhbmNlIik7DQo+ICsJaWd0X3N1YnRlc3QoImlk
-bGUtcmVzaWRlbmN5IikNCj4gKwkJeGVfZm9yX2VhY2hfZ3QoZmQsIGd0KQ0KPiArCQkJdGVzdF9p
-ZGxlX3Jlc2lkZW5jeShzeXNmcywgZ3QpOw0KPiArDQo+ICsJaWd0X2ZpeHR1cmUgew0KPiArCQlj
-bG9zZShzeXNmcyk7DQo+ICsJCXhlX2RldmljZV9wdXQoZmQpOw0KPiArCQljbG9zZShmZCk7DQo+
-ICsJfQ0KPiArfQ0KPiAtLQ0KPiAyLjQwLjANCg0K
+== Series Details ==
+
+Series: tests/amdgpu: add uvd decoder test (rev2)
+URL   : https://patchwork.freedesktop.org/series/120243/
+State : warning
+
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/927714 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/44978635):
+  time="2023-07-05T20:29:09Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 400 (Bad Request)" 
+  Building!
+  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-3ad038c62c61b8d522606e444f53da27cc7a689c
+  Getting image source signatures
+  Copying blob sha256:2f92e8d0541551f215cc8116b6a6507a714a936f45b19286a6664467db837932
+  Copying config sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-07-05T20:29:26Z" level=warning msg="signal: killed"
+  time="2023-07-05T20:29:26Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1688588968:step_script
+  section_start:1688588968:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1688588969:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/927714
