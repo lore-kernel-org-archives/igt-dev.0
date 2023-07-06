@@ -1,15 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7177834734700273015=="
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9CB5810E459
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 15:06:48 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.26.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id D7DFF580E7F
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 08:06:45 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qHQZ9-002SAG-1k
+ for igt-dev@lists.freedesktop.org; Thu, 06 Jul 2023 17:06:43 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  6 Jul 2023 17:06:38 +0200
+Message-Id: <20230706150638.581415-6-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230706150638.581415-1-mauro.chehab@linux.intel.com>
+References: <20230706150638.581415-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Fri, 07 Jul 2023 14:07:32 -0000
-Message-ID: <168873885228.14756.7628258739568955212@emeril.freedesktop.org>
-References: <20230707130900.11246-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230707130900.11246-1-vitaly.prosyak@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/amdgp?=
- =?utf-8?q?u=3A_add_vcn_decoder_and_encoder_tests_=28rev7=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 5/5] scripts/test_list.py: speedup
+ testlist check logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,63 +28,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7177834734700273015==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Series Details ==
+Now that the build system will generate the testlist for us,
+just read them when checking for missing symbols.
 
-Series: tests/amdgpu: add vcn decoder and encoder tests (rev7)
-URL   : https://patchwork.freedesktop.org/series/120292/
-State : info
+This should speed up a log the check logic.
 
-== Summary ==
+After the change, touching on a single file and rebuilding the
+testplan with check enabled is a lot faster:
 
-Participating hosts:
-"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:
-Results: [IGTPW_9368](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9368/index.html)
+	$ touch tests/xe/xe_compute.c
+	$ time make
+	ninja -C build
+	ninja: Entering directory `build'
+	[10/10] Generating docs/testplan/i915_tests.html with a custom command
 
+	real	0m4.510s
+	user	0m5.944s
+	sys	0m0.217s
 
+This can be improved even further if we split the test_executables
+dependencies per driver.
 
---===============7177834734700273015==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ scripts/test_list.py | 30 ++++++------------------------
+ 1 file changed, 6 insertions(+), 24 deletions(-)
 
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: add vcn decoder and encoder tests (rev7)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120292/">https://patchwork.freedesktop.org/series/120292/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9368/index.html">IGTPW_9368</a></p>
-
-</body>
-</html>
-
---===============7177834734700273015==--
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index a55d2977c7c3..2c1a6f230fb5 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -909,35 +909,17 @@ class TestList:
+ 
+         return subtests
+ 
+-    def __get_testlist(self, name):
+-        match = re.match(r"(.*/)?(.*)\.c$", name)
+-        if not match:
+-            return []
+-
+-        basename = "igt@" + match.group(2)
+-
+-        fname = os.path.join(self.igt_build_path, "tests", match.group(2))
+-        if not os.path.isfile(fname):
+-            print(f"Error: file {fname} doesn't exist.")
+-            sys.exit(1)
+-        try:
+-            result = subprocess.run([ fname, "--list-subtests" ],
+-                                    check = True,
+-                                    stdout = subprocess.PIPE,
+-                                    universal_newlines=True)
+-            subtests = result.stdout.splitlines()
+-
+-            return [basename  + "@" + i for i in subtests]
+-        except subprocess.CalledProcessError:
+-            # Handle it as a test using igt_simple_main
+-            return [basename]
+-
+     def get_testlist(self):
+ 
+         """ Return a list of tests as reported by --list-subtests """
+         tests = []
+         for name in self.filenames:
+-            tests += self.__get_testlist(name)
++            fname = re.sub(r"\.c$", ".testlist", name.split('/')[-1])
++            fname = os.path.join(self.igt_build_path, "tests", fname)
++
++            with open(fname, 'r', encoding='utf8') as handle:
++                for line in handle:
++                    tests.append(line)
+ 
+         return sorted(tests)
+ 
+-- 
+2.40.1
