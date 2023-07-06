@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1840667955345058308=="
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on20603.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e8a::603])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0718710E086
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 00:00:33 +0000 (UTC)
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Wed, 5 Jul 2023 20:00:25 -0400
+Message-ID: <20230706000025.260945-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Wed, 05 Jul 2023 23:51:25 -0000
-Message-ID: <168860108573.24205.11663297470931050675@emeril.freedesktop.org>
-References: <20230705231026.238145-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230705231026.238145-1-vitaly.prosyak@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?amdgpu=3A_add_uvd_decoder_test_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t] tests/amdgpu: add uvd encoder test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,354 +19,381 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Leo Liu <leo.liu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1840667955345058308==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-== Series Details ==
+Ported and refactored drmlib uvd_enc_tests.c and  the following is done:
 
-Series: tests/amdgpu: add uvd decoder test (rev3)
-URL   : https://patchwork.freedesktop.org/series/120243/
-State : success
+1. Remove everywhere global variables.
+2. Reuse common functions from amd_mmd_shared.h
+3. Properly formatted code to meet igt guidelines.
 
-== Summary ==
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Acked-by: Leo Liu <leo.liu@amd.com>
+---
+ tests/amdgpu/amd_uvd_enc.c | 337 +++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build   |   1 +
+ 2 files changed, 338 insertions(+)
+ create mode 100644 tests/amdgpu/amd_uvd_enc.c
 
-CI Bug Log - changes from CI_DRM_13347 -> IGTPW_9347
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/index.html
-
-Participating hosts (41 -> 41)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9347 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - bat-mtlp-8:         [PASS][3] -> [ABORT][4] ([i915#7077] / [i915#7977] / [i915#8668])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [PASS][5] -> [DMESG-FAIL][6] ([i915#5334])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_mocs:
-    - bat-mtlp-6:         [PASS][7] -> [DMESG-FAIL][8] ([i915#7059])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][9] ([i915#1886] / [i915#7913])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@guc:
-    - bat-rpls-1:         [PASS][10] -> [DMESG-WARN][11] ([i915#7852])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-rpls-1/igt@i915_selftest@live@guc.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-rpls-1/igt@i915_selftest@live@guc.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-2:         [PASS][12] -> [ABORT][13] ([i915#7913])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-rpls-2/igt@i915_selftest@live@requests.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-rpls-2/igt@i915_selftest@live@requests.html
-    - bat-mtlp-6:         [PASS][14] -> [DMESG-FAIL][15] ([i915#8497])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-mtlp-6/igt@i915_selftest@live@requests.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-mtlp-6/igt@i915_selftest@live@requests.html
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - bat-adlp-9:         NOTRUN -> [SKIP][16] ([i915#7828])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-adlp-9/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-    - bat-dg2-11:         NOTRUN -> [SKIP][17] ([i915#7828])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][18] ([fdo#109271]) +15 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@kms_flip@basic-plain-flip@d-dp6:
-    - bat-adlp-11:        NOTRUN -> [ABORT][19] ([i915#4423])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-adlp-11/igt@kms_flip@basic-plain-flip@d-dp6.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
-    - bat-dg2-11:         NOTRUN -> [SKIP][20] ([i915#1845] / [i915#5354])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-adlp-9:         [INCOMPLETE][21] ([i915#4983] / [i915#7913]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg2-11:         [ABORT][23] ([i915#7913]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp5:
-    - bat-adlp-11:        [ABORT][25] ([i915#4423]) -> [PASS][26]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-adlp-11/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp5.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-adlp-11/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp5.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp6:
-    - bat-adlp-11:        [DMESG-WARN][27] ([i915#4423]) -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-adlp-11/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp6.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-adlp-11/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp6.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-rplp-1:         [SKIP][29] ([i915#1072]) -> [ABORT][30] ([i915#8442] / [i915#8668] / [i915#8712])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
-  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7852]: https://gitlab.freedesktop.org/drm/intel/issues/7852
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
-  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
-  [i915#8497]: https://gitlab.freedesktop.org/drm/intel/issues/8497
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#8712]: https://gitlab.freedesktop.org/drm/intel/issues/8712
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7372 -> IGTPW_9347
-
-  CI-20190529: 20190529
-  CI_DRM_13347: ee9b323b764f1f14ae4e6e8213164bd250160770 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9347: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/index.html
-  IGT_7372: c25f0c2ed0d9b44dcd48f4ba93bdc1fc0dfec625 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/index.html
-
---===============1840667955345058308==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: add uvd decoder test (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120243/">https://patchwork.freedesktop.org/series/120243/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_13347 -&gt; IGTPW_9347</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/index.html</p>
-<h2>Participating hosts (41 -&gt; 41)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9347 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-mtlp-8/igt@i915_pm_rpm@basic-pci-d3-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7977">i915#7977</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_mocs:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@guc:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-rpls-1/igt@i915_selftest@live@guc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-rpls-1/igt@i915_selftest@live@guc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7852">i915#7852</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>
-<p>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</p>
-</li>
-<li>
-<p>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-mtlp-6/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8497">i915#8497</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>
-<p>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-adlp-9/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
-</li>
-<li>
-<p>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-dg2-11/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +15 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@d-dp6:</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-adlp-11/igt@kms_flip@basic-plain-flip@d-dp6.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-dg2-11/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-adlp-9/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-dp5:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-adlp-11/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp5.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-adlp-11/igt@kms_flip@basic-flip-vs-wf_vblank@b-dp5.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp6:</p>
-<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-adlp-11/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp6.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-adlp-11/igt@kms_flip@basic-flip-vs-wf_vblank@d-dp6.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@sprite_plane_onoff:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13347/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8712">i915#8712</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7372 -&gt; IGTPW_9347</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13347: ee9b323b764f1f14ae4e6e8213164bd250160770 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9347: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9347/index.html<br />
-  IGT_7372: c25f0c2ed0d9b44dcd48f4ba93bdc1fc0dfec625 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1840667955345058308==--
+diff --git a/tests/amdgpu/amd_uvd_enc.c b/tests/amdgpu/amd_uvd_enc.c
+new file mode 100644
+index 000000000..e3e85522f
+--- /dev/null
++++ b/tests/amdgpu/amd_uvd_enc.c
+@@ -0,0 +1,337 @@
++// SPDX-License-Identifier: MIT
++// Copyright 2023 Advanced Micro Devices, Inc.
++// Copyright 2017 Advanced Micro Devices, Inc.
++
++#include "lib/amdgpu/amd_mmd_shared.h"
++
++static bool
++is_uvd_enc_enable(amdgpu_device_handle device_handle)
++{
++	int r;
++	struct drm_amdgpu_info_hw_ip info = {};
++
++	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_UVD_ENC, 0, &info);
++
++	if (!info.available_rings)
++		igt_info("\n\nThe ASIC NOT support UVD ENC, test skipped\n");
++
++	return (r == 0 && (info.available_rings ? true : false));
++}
++
++static void
++amdgpu_uvd_enc_create(amdgpu_device_handle device_handle,
++					struct uvd_enc_context *context)
++{
++	context->enc.width = 160;
++	context->enc.height = 128;
++
++	context->uvd.num_resources  = 0;
++	alloc_resource(device_handle, &context->enc.session,
++			128 * 1024, AMDGPU_GEM_DOMAIN_GTT);
++	context->uvd.resources[context->uvd.num_resources++] = context->enc.session.handle;
++	context->uvd.resources[context->uvd.num_resources++] = context->uvd.ib_handle;
++}
++
++static void
++check_result(struct amdgpu_uvd_enc *enc)
++{
++	uint64_t sum;
++	uint32_t s = 175602;
++	uint32_t *ptr, size;
++	int j, r;
++
++	r = amdgpu_bo_cpu_map(enc->fb.handle, (void **)&enc->fb.ptr);
++	igt_assert_eq(r, 0);
++	ptr = (uint32_t *)enc->fb.ptr;
++	size = ptr[6];
++	r = amdgpu_bo_cpu_unmap(enc->fb.handle);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_cpu_map(enc->bs.handle, (void **)&enc->bs.ptr);
++	igt_assert_eq(r, 0);
++	for (j = 0, sum = 0; j < size; ++j)
++		sum += enc->bs.ptr[j];
++	igt_assert_eq(sum, s);
++	r = amdgpu_bo_cpu_unmap(enc->bs.handle);
++	igt_assert_eq(r, 0);
++
++}
++
++static void
++amdgpu_uvd_enc_session_init(amdgpu_device_handle device_handle,
++		struct uvd_enc_context *context)
++{
++	int len, r;
++
++	len = 0;
++	memcpy((context->uvd.ib_cpu + len), uve_session_info, sizeof(uve_session_info));
++	len += sizeof(uve_session_info) / 4;
++	context->uvd.ib_cpu[len++] = context->enc.session.addr >> 32;
++	context->uvd.ib_cpu[len++] = context->enc.session.addr;
++
++	memcpy((context->uvd.ib_cpu + len), uve_task_info, sizeof(uve_task_info));
++	len += sizeof(uve_task_info) / 4;
++	context->uvd.ib_cpu[len++] = 0x000000d8;
++	context->uvd.ib_cpu[len++] = 0x00000000;
++	context->uvd.ib_cpu[len++] = 0x00000000;
++
++	memcpy((context->uvd.ib_cpu + len), uve_op_init, sizeof(uve_op_init));
++	len += sizeof(uve_op_init) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_session_init, sizeof(uve_session_init));
++	len += sizeof(uve_session_init) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_layer_ctrl, sizeof(uve_layer_ctrl));
++	len += sizeof(uve_layer_ctrl) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_slice_ctrl, sizeof(uve_slice_ctrl));
++	len += sizeof(uve_slice_ctrl) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_spec_misc, sizeof(uve_spec_misc));
++	len += sizeof(uve_spec_misc) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_rc_session_init,
++			sizeof(uve_rc_session_init));
++	len += sizeof(uve_rc_session_init) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_deblocking_filter,
++			sizeof(uve_deblocking_filter));
++	len += sizeof(uve_deblocking_filter) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_quality_params,
++			sizeof(uve_quality_params));
++	len += sizeof(uve_quality_params) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_op_init_rc, sizeof(uve_op_init_rc));
++	len += sizeof(uve_op_init_rc) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_op_init_rc_vbv_level,
++			sizeof(uve_op_init_rc_vbv_level));
++	len += sizeof(uve_op_init_rc_vbv_level) / 4;
++
++	r = submit(device_handle, &context->uvd, len, AMDGPU_HW_IP_UVD_ENC);
++	igt_assert_eq(r, 0);
++}
++
++static void
++amdgpu_uvd_enc_encode(amdgpu_device_handle device_handle,
++		struct uvd_enc_context *context)
++{
++	int len, r, i;
++	uint64_t luma_offset, chroma_offset;
++	unsigned int luma_size;
++	uint32_t vbuf_size, bs_size = 0x003f4800, cpb_size;
++	unsigned int align = (context->uvd.family_id >= AMDGPU_FAMILY_AI) ? 256 : 16;
++
++	vbuf_size = ALIGN(context->enc.width, align) *
++			ALIGN(context->enc.height, 16) * 1.5;
++	cpb_size = vbuf_size * 10;
++	context->uvd.num_resources  = 0;
++	alloc_resource(device_handle, &context->enc.fb, 4096,
++			AMDGPU_GEM_DOMAIN_VRAM);
++	context->uvd.resources[context->uvd.num_resources++] = context->enc.fb.handle;
++	alloc_resource(device_handle, &context->enc.bs, bs_size,
++			AMDGPU_GEM_DOMAIN_VRAM);
++	context->uvd.resources[context->uvd.num_resources++] = context->enc.bs.handle;
++	alloc_resource(device_handle, &context->enc.vbuf, vbuf_size,
++			AMDGPU_GEM_DOMAIN_VRAM);
++	context->uvd.resources[context->uvd.num_resources++] = context->enc.vbuf.handle;
++	alloc_resource(device_handle, &context->enc.cpb, cpb_size,
++			AMDGPU_GEM_DOMAIN_VRAM);
++	context->uvd.resources[context->uvd.num_resources++] = context->enc.cpb.handle;
++	context->uvd.resources[context->uvd.num_resources++] = context->uvd.ib_handle;
++
++	r = amdgpu_bo_cpu_map(context->enc.vbuf.handle, (void **)&context->enc.vbuf.ptr);
++	igt_assert_eq(r, 0);
++
++	memset(context->enc.vbuf.ptr, 0, vbuf_size);
++	for (i = 0; i < context->enc.height; ++i) {
++		memcpy(context->enc.vbuf.ptr, (frame + i * context->enc.width),
++				context->enc.width);
++		context->enc.vbuf.ptr += ALIGN(context->enc.width, align);
++	}
++	for (i = 0; i < context->enc.height / 2; ++i) {
++		memcpy(context->enc.vbuf.ptr, ((frame + context->enc.height *
++				context->enc.width) + i * context->enc.width), context->enc.width);
++		context->enc.vbuf.ptr += ALIGN(context->enc.width, align);
++	}
++
++	r = amdgpu_bo_cpu_unmap(context->enc.vbuf.handle);
++	igt_assert_eq(r, 0);
++
++	len = 0;
++	memcpy((context->uvd.ib_cpu + len), uve_session_info, sizeof(uve_session_info));
++	len += sizeof(uve_session_info) / 4;
++	context->uvd.ib_cpu[len++] = context->enc.session.addr >> 32;
++	context->uvd.ib_cpu[len++] = context->enc.session.addr;
++
++	memcpy((context->uvd.ib_cpu + len), uve_task_info, sizeof(uve_task_info));
++	len += sizeof(uve_task_info) / 4;
++	context->uvd.ib_cpu[len++] = 0x000005e0;
++	context->uvd.ib_cpu[len++] = 0x00000001;
++	context->uvd.ib_cpu[len++] = 0x00000001;
++
++	memcpy((context->uvd.ib_cpu + len), uve_nalu_buffer_1, sizeof(uve_nalu_buffer_1));
++	len += sizeof(uve_nalu_buffer_1) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_nalu_buffer_2, sizeof(uve_nalu_buffer_2));
++	len += sizeof(uve_nalu_buffer_2) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_nalu_buffer_3, sizeof(uve_nalu_buffer_3));
++	len += sizeof(uve_nalu_buffer_3) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_nalu_buffer_4, sizeof(uve_nalu_buffer_4));
++	len += sizeof(uve_nalu_buffer_4) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_slice_header, sizeof(uve_slice_header));
++	len += sizeof(uve_slice_header) / 4;
++
++	context->uvd.ib_cpu[len++] = 0x00000254;
++	context->uvd.ib_cpu[len++] = 0x00000010;
++	context->uvd.ib_cpu[len++] = context->enc.cpb.addr >> 32;
++	context->uvd.ib_cpu[len++] = context->enc.cpb.addr;
++	memcpy((context->uvd.ib_cpu + len), uve_ctx_buffer, sizeof(uve_ctx_buffer));
++	len += sizeof(uve_ctx_buffer) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_bitstream_buffer,
++			sizeof(uve_bitstream_buffer));
++	len += sizeof(uve_bitstream_buffer) / 4;
++	context->uvd.ib_cpu[len++] = 0x00000000;
++	context->uvd.ib_cpu[len++] = context->enc.bs.addr >> 32;
++	context->uvd.ib_cpu[len++] = context->enc.bs.addr;
++	context->uvd.ib_cpu[len++] = 0x003f4800;
++	context->uvd.ib_cpu[len++] = 0x00000000;
++
++	memcpy((context->uvd.ib_cpu + len), uve_feedback_buffer,
++			sizeof(uve_feedback_buffer));
++	len += sizeof(uve_feedback_buffer) / 4;
++	context->uvd.ib_cpu[len++] = context->enc.fb.addr >> 32;
++	context->uvd.ib_cpu[len++] = context->enc.fb.addr;
++	context->uvd.ib_cpu[len++] = 0x00000010;
++	context->uvd.ib_cpu[len++] = 0x00000028;
++
++	memcpy((context->uvd.ib_cpu + len), uve_feedback_buffer_additional,
++			sizeof(uve_feedback_buffer_additional));
++	len += sizeof(uve_feedback_buffer_additional) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_intra_refresh, sizeof(uve_intra_refresh));
++	len += sizeof(uve_intra_refresh) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_layer_select, sizeof(uve_layer_select));
++	len += sizeof(uve_layer_select) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_rc_layer_init, sizeof(uve_rc_layer_init));
++	len += sizeof(uve_rc_layer_init) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_layer_select, sizeof(uve_layer_select));
++	len += sizeof(uve_layer_select) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_rc_per_pic, sizeof(uve_rc_per_pic));
++	len += sizeof(uve_rc_per_pic) / 4;
++
++	luma_size = ALIGN(context->enc.width, align) * ALIGN(context->enc.height, 16);
++	luma_offset = context->enc.vbuf.addr;
++	chroma_offset = luma_offset + luma_size;
++	context->uvd.ib_cpu[len++] = 0x00000054;
++	context->uvd.ib_cpu[len++] = 0x0000000c;
++	context->uvd.ib_cpu[len++] = 0x00000002;
++	context->uvd.ib_cpu[len++] = 0x003f4800;
++	context->uvd.ib_cpu[len++] = luma_offset >> 32;
++	context->uvd.ib_cpu[len++] = luma_offset;
++	context->uvd.ib_cpu[len++] = chroma_offset >> 32;
++	context->uvd.ib_cpu[len++] = chroma_offset;
++	memcpy((context->uvd.ib_cpu + len), uve_encode_param, sizeof(uve_encode_param));
++	context->uvd.ib_cpu[len] = ALIGN(context->enc.width, align);
++	context->uvd.ib_cpu[len + 1] = ALIGN(context->enc.width, align);
++	len += sizeof(uve_encode_param) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_op_speed_enc_mode,
++			sizeof(uve_op_speed_enc_mode));
++	len += sizeof(uve_op_speed_enc_mode) / 4;
++
++	memcpy((context->uvd.ib_cpu + len), uve_op_encode, sizeof(uve_op_encode));
++	len += sizeof(uve_op_encode) / 4;
++
++	r = submit(device_handle, &context->uvd, len, AMDGPU_HW_IP_UVD_ENC);
++	igt_assert_eq(r, 0);
++
++	check_result(&context->enc);
++
++	free_resource(&context->enc.fb);
++	free_resource(&context->enc.bs);
++	free_resource(&context->enc.vbuf);
++	free_resource(&context->enc.cpb);
++}
++
++static void
++amdgpu_uvd_enc_destroy(amdgpu_device_handle device_handle,
++		struct uvd_enc_context *context)
++{
++	int len, r;
++
++	context->uvd.num_resources  = 0;
++	context->uvd.resources[context->uvd.num_resources++] = context->uvd.ib_handle;
++
++	len = 0;
++	memcpy((context->uvd.ib_cpu + len), uve_session_info, sizeof(uve_session_info));
++	len += sizeof(uve_session_info) / 4;
++	context->uvd.ib_cpu[len++] = context->enc.session.addr >> 32;
++	context->uvd.ib_cpu[len++] = context->enc.session.addr;
++
++	memcpy((context->uvd.ib_cpu + len), uve_task_info, sizeof(uve_task_info));
++	len += sizeof(uve_task_info) / 4;
++	context->uvd.ib_cpu[len++] = 0xffffffff;
++	context->uvd.ib_cpu[len++] = 0x00000002;
++	context->uvd.ib_cpu[len++] = 0x00000000;
++
++	memcpy((context->uvd.ib_cpu + len), uve_op_close, sizeof(uve_op_close));
++	len += sizeof(uve_op_close) / 4;
++
++	r = submit(device_handle, &context->uvd, len, AMDGPU_HW_IP_UVD_ENC);
++	igt_assert_eq(r, 0);
++
++	free_resource(&context->enc.session);
++}
++
++igt_main
++{
++	amdgpu_device_handle device;
++	struct uvd_enc_context context = {};
++	int fd = -1;
++
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver(DRIVER_AMDGPU);
++		err = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(err == 0);
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++		err = mmd_context_init(device, &context.uvd);
++		igt_require(err == 0);
++
++		igt_skip_on(!is_uvd_enc_enable(device));
++	}
++
++	igt_describe("Test whether uvd enc is created");
++	igt_subtest("uvd_enc_create")
++	amdgpu_uvd_enc_create(device, &context);
++
++	igt_describe("Test whether uvd enc session init");
++	igt_subtest("amdgpu_uvd_enc_session_init")
++	amdgpu_uvd_enc_session_init(device, &context);
++
++	igt_describe("Test whether uvd enc encode");
++	igt_subtest("amdgpu_uvd_enc_encode")
++	amdgpu_uvd_enc_encode(device, &context);
++
++	igt_describe("Test whether uvd enc is destroyed");
++	igt_subtest("uvd_enc_destroy")
++	amdgpu_uvd_enc_destroy(device, &context);
++
++	igt_fixture {
++		mmd_context_clean(device, &context.uvd);
++		amdgpu_device_deinitialize(device);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 690bc38db..576333aab 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -25,6 +25,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_prime',
+ 			  'amd_psr',
+ 			  'amd_uvd_dec',
++			  'amd_uvd_enc',
+ 			  'amd_vrr_range',
+ 			]
+ 	amdgpu_deps += libdrm_amdgpu
+-- 
+2.25.1
