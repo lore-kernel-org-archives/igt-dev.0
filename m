@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3A1710E185
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 18:23:39 +0000 (UTC)
-Date: Mon, 10 Jul 2023 20:23:36 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230710182336.j6aaesmir65kvg5m@kamilkon-desk1>
-References: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
- <20230710115354.699245-6-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7668964603325780666=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230710115354.699245-6-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 5/7] scripts/test_list.py: speedup
- testlist check logic
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 06 Jul 2023 10:39:14 -0000
+Message-ID: <168863995497.18977.565171900821577279@emeril.freedesktop.org>
+References: <20230706083947.481216-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230706083947.481216-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Simplify_te?=
+ =?utf-8?q?sts/meson=2Ebuild?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,100 +16,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+--===============7668964603325780666==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2023-07-10 at 13:53:52 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Now that the build system will generate the testlist for us,
-> just read them when checking for missing symbols.
-> 
-> This should speed up a log the check logic.
-s/a log//
+== Series Details ==
 
-> 
-> After the change, touching on a single file and rebuilding the
-> testplan with check enabled is a lot faster:
--------------------------------- ^^^^^
-Please write a factor here which you measured, like: "4 times"
+Series: Simplify tests/meson.build
+URL   : https://patchwork.freedesktop.org/series/120273/
+State : info
 
-> 
-> 	$ touch tests/xe/xe_compute.c
-> 	$ time make
-> 	ninja -C build
-> 	ninja: Entering directory `build'
-> 	[10/10] Generating docs/testplan/i915_tests.html with a custom command
-> 
-> 	real	0m4.510s
-> 	user	0m5.944s
-> 	sys	0m0.217s
-> 
-> This can be improved even further if we split the test_executables
-> dependencies per driver.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  scripts/test_list.py | 30 ++++++------------------------
->  1 file changed, 6 insertions(+), 24 deletions(-)
-> 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index a55d2977c7c3..2c1a6f230fb5 100755
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -909,35 +909,17 @@ class TestList:
->  
->          return subtests
->  
-> -    def __get_testlist(self, name):
-> -        match = re.match(r"(.*/)?(.*)\.c$", name)
-> -        if not match:
-> -            return []
-> -
-> -        basename = "igt@" + match.group(2)
-> -
-> -        fname = os.path.join(self.igt_build_path, "tests", match.group(2))
-> -        if not os.path.isfile(fname):
-> -            print(f"Error: file {fname} doesn't exist.")
-> -            sys.exit(1)
+== Summary ==
 
-We miss this basic check now?
+Participating hosts:
+"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:
+Results: [IGTPW_9351](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9351/index.html)
 
-Regards,
-Kamil
 
-> -        try:
-> -            result = subprocess.run([ fname, "--list-subtests" ],
-> -                                    check = True,
-> -                                    stdout = subprocess.PIPE,
-> -                                    universal_newlines=True)
-> -            subtests = result.stdout.splitlines()
-> -
-> -            return [basename  + "@" + i for i in subtests]
-> -        except subprocess.CalledProcessError:
-> -            # Handle it as a test using igt_simple_main
-> -            return [basename]
-> -
->      def get_testlist(self):
->  
->          """ Return a list of tests as reported by --list-subtests """
->          tests = []
->          for name in self.filenames:
-> -            tests += self.__get_testlist(name)
-> +            fname = re.sub(r"\.c$", ".testlist", name.split('/')[-1])
-> +            fname = os.path.join(self.igt_build_path, "tests", fname)
-> +
-> +            with open(fname, 'r', encoding='utf8') as handle:
-> +                for line in handle:
-> +                    tests.append(line)
->  
->          return sorted(tests)
->  
-> -- 
-> 2.40.1
-> 
+
+--===============7668964603325780666==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Simplify tests/meson.build</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120273/">https://patchwork.freedesktop.org/series/120273/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9351/index.html">IGTPW_9351</a></p>
+
+</body>
+</html>
+
+--===============7668964603325780666==--
 
