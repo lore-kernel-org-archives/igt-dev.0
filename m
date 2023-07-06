@@ -1,21 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6990B10E4E1
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 11:20:14 +0000 (UTC)
-Date: Thu, 6 Jul 2023 13:20:09 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230706112009.aienxiyhltsvxgaq@zkempczy-mobl2>
-References: <20230706060555.282757-1-zbigniew.kempczynski@intel.com>
- <20230706060555.282757-3-zbigniew.kempczynski@intel.com>
- <541ac686-d077-ec88-4856-40a717260442@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0ECAF10E435
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 15:06:47 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.26.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id D41D0580DAB
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 08:06:45 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qHQZ9-002SAD-1g
+ for igt-dev@lists.freedesktop.org; Thu, 06 Jul 2023 17:06:43 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  6 Jul 2023 17:06:37 +0200
+Message-Id: <20230706150638.581415-5-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230706150638.581415-1-mauro.chehab@linux.intel.com>
+References: <20230706150638.581415-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <541ac686-d077-ec88-4856-40a717260442@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 02/16] lib/intel_allocator: Drop
- aliasing allocator handle api
+Subject: [igt-dev] [PATCH i-g-t v3 4/5] tests/meson.build: create testlists
+ for tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,69 +28,157 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jul 06, 2023 at 10:31:15AM +0200, Karolina Stolarek wrote:
-> On 6.07.2023 08:05, Zbigniew Kempczyński wrote:
-> > There's no real user of this api, lets drop it.
-> > 
-> 
-> Should we drop REQ_OPEN_AS and/or RESP_OPEN_AS enum values as well?
-> 
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Good catch, thanks. Will be in v3.
+Let's dynamically create testlists for during build time, as this
+can speed up a lot the validation check for testplan.
 
---
-Zbigniew
+Ideally, all it would need to to that would be to use this
+logic at the end of tests/meson.build:
 
-> All the best,
-> Karolina
-> 
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > ---
-> >   lib/intel_allocator.c | 18 ------------------
-> >   lib/intel_allocator.h |  1 -
-> >   2 files changed, 19 deletions(-)
-> > 
-> > diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-> > index 8161221dbf..c31576ecef 100644
-> > --- a/lib/intel_allocator.c
-> > +++ b/lib/intel_allocator.c
-> > @@ -1037,24 +1037,6 @@ uint64_t intel_allocator_open_vm(int fd, uint32_t vm, uint8_t allocator_type)
-> >   					    ALLOC_STRATEGY_HIGH_TO_LOW, 0);
-> >   }
-> > -uint64_t intel_allocator_open_vm_as(uint64_t allocator_handle, uint32_t new_vm)
-> > -{
-> > -	struct alloc_req req = { .request_type = REQ_OPEN_AS,
-> > -				 .allocator_handle = allocator_handle,
-> > -				 .open_as.new_vm = new_vm };
-> > -	struct alloc_resp resp;
-> > -
-> > -	/* Get child_tid only once at open() */
-> > -	if (child_tid == -1)
-> > -		child_tid = gettid();
-> > -
-> > -	igt_assert(handle_request(&req, &resp) == 0);
-> > -	igt_assert(resp.open_as.allocator_handle);
-> > -	igt_assert(resp.response_type == RESP_OPEN_AS);
-> > -
-> > -	return resp.open.allocator_handle;
-> > -}
-> > -
-> >   /**
-> >    * intel_allocator_close:
-> >    * @allocator_handle: handle to the allocator that will be closed
-> > diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
-> > index a6bf573e9d..3ec74f6191 100644
-> > --- a/lib/intel_allocator.h
-> > +++ b/lib/intel_allocator.h
-> > @@ -182,7 +182,6 @@ uint64_t intel_allocator_open_vm_full(int fd, uint32_t vm,
-> >   				      enum allocator_strategy strategy,
-> >   				      uint64_t default_alignment);
-> > -uint64_t intel_allocator_open_vm_as(uint64_t allocator_handle, uint32_t new_vm);
-> >   bool intel_allocator_close(uint64_t allocator_handle);
-> >   void intel_allocator_get_address_range(uint64_t allocator_handle,
-> >   				       uint64_t *startp, uint64_t *endp);
+    foreach testexe : test_executables
+        prog = testexe.name()
+
+        output = prog.split('/').get(-1) + '.testlist'
+        custom_target(output,
+                     build_by_default : true,
+                     command : [ testexe, '--show-testlist'],
+                     capture : true,
+                     output : output)
+
+Unfortunately, this requies Meson >= 0.54. So, we need to add
+one custom_target per executable() call.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/meson.build | 54 +++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 47 insertions(+), 7 deletions(-)
+
+diff --git a/tests/meson.build b/tests/meson.build
+index 3116c458d60b..6fe5d863c70a 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -353,33 +353,54 @@ test_executables = []
+ test_list = []
+ 
+ foreach prog : test_progs
+-	test_executables += executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
++	testexe = executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
+ 		   dependencies : test_deps + extra_dependencies.get(prog, []),
+ 		   install_dir : libexecdir,
+ 		   install_rpath : libexecdir_rpathdir,
+ 		   install : true)
++	test_executables += testexe
+ 	test_list += prog
++	name = prog.split('/').get(-1)
++	custom_target(name + '.testlist',
++		     build_by_default : true,
++		     command : [testexe, '--show-testlist'],
++		     capture : true,
++		     output : name + '.testlist')
+ endforeach
+ 
+ foreach prog : i915_progs
+-	test_executables += executable(prog,
++	testexe = executable(prog,
+ 		   [join_paths('i915', prog + '.c')] + extra_sources.get(prog, []),
+ 		   dependencies : test_deps + extra_dependencies.get(prog, []),
+ 		   install_dir : libexecdir,
+ 		   install_rpath : libexecdir_rpathdir,
+ 		   install : true)
++	test_executables += testexe
+ 	test_list += prog
++	name = prog.split('/').get(-1)
++	custom_target(name + '.testlist',
++		     build_by_default : true,
++		     command : [testexe, '--show-testlist'],
++		     capture : true,
++		     output : name + '.testlist')
+ endforeach
+ 
+ if build_xe
+ 	foreach prog : xe_progs
+-		test_executables += executable(prog,
++		testexe = executable(prog,
+ 			   [join_paths('xe', prog + '.c')] + extra_sources.get(prog, []),
+ 			   dependencies : test_deps + extra_dependencies.get(prog, []),
+ 			   install_dir : libexecdir,
+ 			   install_rpath : libexecdir_rpathdir,
+ 			   install : true)
+ 		test_list += prog
++		test_executables += testexe
++		name = prog.split('/').get(-1)
++		custom_target(name + '.testlist',
++			     build_by_default : true,
++			     command : [testexe, '--show-testlist'],
++			     capture : true,
++			     output : name + '.testlist')
+ 	endforeach
+ 	build_info += 'Xe **experimental** tests enabled.'
+ endif
+@@ -395,7 +416,7 @@ endforeach
+ 
+ if chamelium.found()
+ 	foreach prog : chamelium_progs
+-		test_executables += executable(prog,
++		testexe = executable(prog,
+ 				 [join_paths('chamelium', prog + '.c'),
+ 					join_paths('chamelium', 'kms_chamelium_helper.c')],
+ 				 dependencies : test_deps,
+@@ -403,16 +424,30 @@ if chamelium.found()
+ 				 install_rpath : libexecdir_rpathdir,
+ 				 install : true)
+ 		test_list += prog
++		test_executables += testexe
++		name = prog.split('/').get(-1)
++		custom_target(name + '.testlist',
++			     build_by_default : true,
++			     command : [testexe, '--show-testlist'],
++			     capture : true,
++			     output : name + '.testlist')
+ 	endforeach
+ 	test_deps += chamelium
+ 
+-	test_executables += executable('kms_chamelium_color',
++	name = 'kms_chamelium_color'
++	testexe = executable('kms_chamelium_color',
+ 				[ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
+ 				dependencies : test_deps + [ chamelium ],
+ 				install_dir : libexecdir,
+ 				install_rpath : libexecdir_rpathdir,
+ 				install : true)
+-	test_list += 'kms_chamelium_color'
++	test_list += name
++	test_executables += testexe
++	custom_target(name + '.testlist',
++		     build_by_default : true,
++		     command : [testexe, '--show-testlist'],
++		     capture : true,
++		     output : name + '.testlist')
+ endif
+ 
+ subdir('amdgpu')
+@@ -448,11 +483,16 @@ foreach prog : test_list
+ 	test('testcase check ' + prog, test_script, args : prog)
+ endforeach
+ 
+-executable('gem_stress', 'i915/gem_stress.c',
++testexe = executable('gem_stress', 'i915/gem_stress.c',
+ 	   install : true,
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+ 	   dependencies : igt_deps)
++custom_target('gem_stress.testlist',
++                build_by_default : true,
++                command : [testexe, '--show-testlist'],
++                capture : true,
++                output : 'gem_stress.testlist')
+ 
+ image_files = [
+   '1080p-left.png',
+-- 
+2.40.1
