@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3594E10E478
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 16:29:32 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 6 Jul 2023 16:26:48 +0000
-Message-ID: <MW3PR11MB474836AF10DF12705295A5CAAE2CA@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20230705085259.533791-1-himal.prasad.ghimiray@intel.com>
- <MW3PR11MB4748F65AD46E1489A180EBD8AE2FA@MW3PR11MB4748.namprd11.prod.outlook.com>
- <MW4PR11MB7056A287FB83A09C384516FBB32FA@MW4PR11MB7056.namprd11.prod.outlook.com>
-In-Reply-To: <MW4PR11MB7056A287FB83A09C384516FBB32FA@MW4PR11MB7056.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v5 0/4] Handle GT and tile seperation in
- IGT
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Date: Thu, 06 Jul 2023 16:31:45 -0000
+Message-ID: <168866110516.18978.12979849093442899418@emeril.freedesktop.org>
+References: <20230706142236.61035-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230706142236.61035-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/amdgpu=3A_add_vcn_decoder_and_encoder_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,95 +17,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+== Series Details ==
 
+Series: tests/amdgpu: add vcn decoder and encoder tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/120292/
+State : warning
 
-> -----Original Message-----
-> From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
-> Sent: 05 July 2023 14:48
-> To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; igt-
-> dev@lists.freedesktop.org
-> Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
-> Subject: RE: [igt-dev] [PATCH i-g-t v5 0/4] Handle GT and tile seperation=
- in IGT
->=20
-> Hi Rahul,
->=20
-> > -----Original Message-----
-> > From: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
-> > Sent: 05 July 2023 14:44
-> > To: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; igt-
-> > dev@lists.freedesktop.org
-> > Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
-> > Subject: RE: [igt-dev] [PATCH i-g-t v5 0/4] Handle GT and tile
-> > seperation in IGT
-> >
-> > Hi @Himal Prasad Ghimiray,
-> >
-> > The change in GT sysfs path may regress the tests using "xe_force_gt_re=
-set()"
-> > IGT lib function.
->=20
-> Xe_force_gt_reset uses debugfs force_reset. As of now debugfs entries are=
- not
-> moved under tiles.
-Thanks for the clarification.
+== Summary ==
 
--Rahul
->=20
-> BR
-> Himal
-> > pls address this in this patch itself.
-> >
-> > Thanks,
-> > Rahul
-> >
-> > > -----Original Message-----
-> > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> > > Himal Prasad Ghimiray
-> > > Sent: 05 July 2023 14:23
-> > > To: igt-dev@lists.freedesktop.org
-> > > Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
-> > > Subject: [igt-dev] [PATCH i-g-t v5 0/4] Handle GT and tile
-> > > seperation in IGT
-> > >
-> > > With seperation of GT and tiles in KMD, we will have sysfs entries
-> > > for properties associated with tile and gtX sysfs parent will be
-> > > moving under tileX. This series provides helper functions for
-> > > accessing tile associated sysfs entries and gt specific sysfs under r=
-espective
-> tile.
-> > >
-> > > series addresses gt related sysfs path change for xe_guc_pc.c test
-> > > case and introduces new test to verify addr_range for each vram.
-> > >
-> > > Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> > > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > > Cc: Francois Dugast <francois.dugast@intel.com>
-> > > Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
-> > > Cc: Upadhyay <tejas.upadhyay@intel.com>
-> > > Signed-off-by: Himal Prasad Ghimiray
-> > > <himal.prasad.ghimiray@intel.com>
-> > >
-> > > Himal Prasad Ghimiray (4):
-> > >   lib/igt_sysfs: Add support to query number of tiles
-> > >   lib/igt_sysfs: Handling gt related sysfs uapi changes
-> > >   tests/xe/xe_guc_pc: Change the sysfs paths
-> > >   tests/xe/xe_sysfs_tile_prop: adds new test to verify per tile vram
-> > >     addr_range
-> > >
-> > >  lib/igt_sysfs.c               | 71 +++++++++++++++++++++++++++++++++=
-++
-> > >  lib/igt_sysfs.h               |  8 ++++
-> > >  tests/meson.build             |  1 +
-> > >  tests/xe/xe_guc_pc.c          | 14 ++++++-
-> > >  tests/xe/xe_sysfs_tile_prop.c | 63 +++++++++++++++++++++++++++++++
-> > >  5 files changed, 155 insertions(+), 2 deletions(-)  create mode
-> > > 100644 tests/xe/xe_sysfs_tile_prop.c
-> > >
-> > > --
-> > > 2.25.1
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/928456 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45025930):
+  time="2023-07-06T16:30:15Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:8eb6dba554cffc072c7a6c696c8a23fc311e543399d84ab3ebc55c07ab54414f
+  Copying config sha256:1de12428f6f470169eba22c18e53addae00d60e92ebe96b2c3bdd99c17c34010
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-07-06T16:30:19Z" level=warning msg="signal: killed"
+  time="2023-07-06T16:30:19Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1688661020:step_script
+  section_start:1688661020:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1688661020:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45025932):
+  time="2023-07-06T16:30:16Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:8eb6dba554cffc072c7a6c696c8a23fc311e543399d84ab3ebc55c07ab54414f
+  Copying config sha256:1de12428f6f470169eba22c18e53addae00d60e92ebe96b2c3bdd99c17c34010
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-07-06T16:30:20Z" level=warning msg="signal: killed"
+  time="2023-07-06T16:30:20Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1688661021:step_script
+  section_start:1688661021:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1688661022:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45025931):
+  time="2023-07-06T16:30:15Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:8eb6dba554cffc072c7a6c696c8a23fc311e543399d84ab3ebc55c07ab54414f
+  Copying config sha256:1de12428f6f470169eba22c18e53addae00d60e92ebe96b2c3bdd99c17c34010
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-07-06T16:30:19Z" level=warning msg="signal: killed"
+  time="2023-07-06T16:30:19Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1688661020:step_script
+  section_start:1688661020:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1688661021:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45025933):
+  time="2023-07-06T16:30:16Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:8eb6dba554cffc072c7a6c696c8a23fc311e543399d84ab3ebc55c07ab54414f
+  Copying config sha256:1de12428f6f470169eba22c18e53addae00d60e92ebe96b2c3bdd99c17c34010
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-07-06T16:30:20Z" level=warning msg="signal: killed"
+  time="2023-07-06T16:30:20Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1688661021:step_script
+  section_start:1688661021:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1688661022:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45025934):
+  time="2023-07-06T16:30:15Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM fedora:31
+  Getting image source signatures
+  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
+  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
+  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-07-06T16:30:20Z" level=warning msg="signal: killed"
+  time="2023-07-06T16:30:20Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
+  section_end:1688661021:step_script
+  section_start:1688661021:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1688661021:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/928456
