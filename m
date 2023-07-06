@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5205F10E3F2
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 05:34:05 +0000 (UTC)
-Date: Thu, 6 Jul 2023 07:34:00 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230706053400.25nv44hcfarppfmg@zkempczy-mobl2>
-References: <20230704090104.120219-1-zbigniew.kempczynski@intel.com>
- <20230704090104.120219-6-zbigniew.kempczynski@intel.com>
- <cd5c70da-ca38-a158-5911-bd9e8bb11710@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 720D910E412
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 06:06:07 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  6 Jul 2023 08:05:39 +0200
+Message-Id: <20230706060555.282757-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cd5c70da-ca38-a158-5911-bd9e8bb11710@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 05/12] lib/xe_util: Add vm bind/unbind
- helper for Xe
+Subject: [igt-dev] [PATCH i-g-t v2 00/16] Extend intel_blt to work on Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,228 +17,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jul 05, 2023 at 05:12:23PM +0200, Karolina Stolarek wrote:
-> On 4.07.2023 11:00, Zbigniew Kempczyński wrote:
-> > Before calling exec we need to prepare vm to contain valid entries.
-> > Bind/unbind in xe expects single bind_op or vector of bind_ops what
-> > makes preparation of it a little bit inconvinient. Add function
-> > which iterates over list of xe_object (auxiliary structure which
-> > describes bind information for object) and performs the bind/unbind
-> > in one step. It also supports passing syncobj in/out to work in
-> > pipelined executions.
-> > 
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > ---
-> >   lib/xe/xe_util.c | 133 +++++++++++++++++++++++++++++++++++++++++++++++
-> >   lib/xe/xe_util.h |  21 ++++++--
-> >   2 files changed, 151 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-> > index 448b3a3d27..8552db47d5 100644
-> > --- a/lib/xe/xe_util.c
-> > +++ b/lib/xe/xe_util.c
-> > @@ -102,3 +102,136 @@ char *xe_memregion_dynamic_subtest_name(int xe, struct igt_collection *set)
-> >   	return name;
-> >   }
-> > +#ifdef XEBINDDBG
-> > +#define bind_info igt_info
-> > +#define bind_debug igt_debug
-> > +#else
-> > +#define bind_info(...) {}
-> > +#define bind_debug(...) {}
-> > +#endif
-> > +
-> > +static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct igt_list_head *obj_list,
-> > +						   uint32_t *num_ops)
-> > +{
-> > +	struct drm_xe_vm_bind_op *bind_ops, *ops;
-> > +	struct xe_object *obj;
-> > +	uint32_t num_objects = 0, i = 0, op;
-> > +
-> > +	num_objects = 0;
-> 
-> It is already set to 0, you can remove that line
-> 
-> > +	igt_list_for_each_entry(obj, obj_list, link)
-> > +		num_objects++;
-> > +
-> > +	*num_ops = num_objects;
-> > +	if (!num_objects) {
-> > +		bind_info(" [nothing to bind]\n");
-> > +		return NULL;
-> > +	}
-> > +
-> > +	bind_ops = calloc(num_objects, sizeof(*bind_ops));
-> > +	igt_assert(bind_ops);
-> > +
-> > +	igt_list_for_each_entry(obj, obj_list, link) {
-> > +		ops = &bind_ops[i];
-> > +
-> > +		if (obj->bind_op == XE_OBJECT_BIND) {
-> > +			op = XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC;
-> > +			ops->obj = obj->handle;
-> > +		} else {
-> > +			op = XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_ASYNC;
-> > +		}
-> > +
-> > +		ops->op = op;
-> > +		ops->obj_offset = 0;
-> > +		ops->addr = obj->offset;
-> > +		ops->range = obj->size;
-> > +		ops->region = 0;
-> 
-> Shouldn't we pass an actual region instance here?
-> 
+Blitter library currently supports block-copy, ctrl-surf-copy
+and fast-copy on i915. Lets extend this to xe as most of the
+code is driver independent.
 
-I think this is valid for prefetch mode (see xe_vm_prefetch_async() helper)
-so for normal usage 0 is fine.
+v2: Rewrite tracking allocator calls alloc()/free() to handle
+    multiprocess/multithreaded scenarios. api_intel_allocator
+    now supports both drivers (i915 and xe).
 
-> > +
-> > +		bind_info("  [%d]: [%6s] handle: %u, offset: %llx, size: %llx\n",
-> > +			  i, obj->bind_op == XE_OBJECT_BIND ? "BIND" : "UNBIND",
-> > +			  ops->obj, (long long)ops->addr, (long long)ops->range);
-> > +		i++;
-> > +	}
-> > +
-> > +	return bind_ops;
-> > +}
-> > +
-> > +static void __xe_op_bind_async(int xe, uint32_t vm, uint32_t bind_engine,
-> > +			       struct igt_list_head *obj_list,
-> > +			       uint32_t sync_in, uint32_t sync_out)
-> > +{
-> > +	struct drm_xe_vm_bind_op *bind_ops;
-> > +	struct drm_xe_sync tabsyncs[2] = {
-> > +		{ .flags = DRM_XE_SYNC_SYNCOBJ, .handle = sync_in },
-> > +		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, .handle = sync_out },
-> > +	};
-> > +	struct drm_xe_sync *syncs;
-> > +	uint32_t num_binds = 0;
-> > +	int num_syncs;
-> > +
-> > +	bind_info("[Binding to vm: %u]\n", vm);
-> > +	bind_ops = xe_alloc_bind_ops(obj_list, &num_binds);
-> > +
-> > +	if (!num_binds) {
-> > +		if (sync_out)
-> > +			syncobj_signal(xe, &sync_out, 1);
-> > +		return;
-> > +	}
-> > +
-> > +	if (sync_in) {
-> > +		syncs = tabsyncs;
-> > +		num_syncs = 2;
-> > +	} else {
-> > +		syncs = &tabsyncs[1];
-> > +		num_syncs = 1;
-> > +	}
-> > +
-> > +	/* User didn't pass sync out, create it and wait for completion */
-> > +	if (!sync_out)
-> > +		tabsyncs[1].handle = syncobj_create(xe, 0);
-> > +
-> > +	bind_info("[Binding syncobjs: (in: %u, out: %u)]\n",
-> > +		  tabsyncs[0].handle, tabsyncs[1].handle);
-> > +
-> > +	if (num_binds == 1) {
-> > +		if ((bind_ops[0].op & 0xffff) == XE_VM_BIND_OP_MAP)
-> > +			xe_vm_bind_async(xe, vm, bind_engine, bind_ops[0].obj, 0,
-> > +					bind_ops[0].addr, bind_ops[0].range,
-> > +					syncs, num_syncs);
-> > +		else
-> > +			xe_vm_unbind_async(xe, vm, bind_engine, 0,
-> > +					   bind_ops[0].addr, bind_ops[0].range,
-> > +					   syncs, num_syncs);
-> > +	} else {
-> > +		xe_vm_bind_array(xe, vm, bind_engine, bind_ops,
-> > +				 num_binds, syncs, num_syncs);
-> > +	}
-> > +
-> > +	if (!sync_out) {
-> > +		igt_assert_eq(syncobj_wait_err(xe, &tabsyncs[1].handle, 1, INT64_MAX, 0), 0);
-> 
-> That timeout is quite long, but I see that in syncobj_wait.c test we have an
-> even higher value... Should factor the CI timeout in when picking the fence
-> timeout?
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Karolina Stolarek <karolina.stolarek@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-I think infinity is best selection - I mean we cannot move forward
-if binding is not complete - we don't handle errors here apart
-of asserting if sth wrong has happened. If we stuck on this fence
-that's really bad but CI will kill and report a failure in thi case.
+Zbigniew Kempczyński (16):
+  tests/api_intel_allocator: Don't use allocator ahnd aliasing api
+  lib/intel_allocator: Drop aliasing allocator handle api
+  lib/intel_allocator: Remove extensive debugging
+  lib/xe_query: Use vramN when returning string region name
+  lib/xe_query: Add xe_region_class() helper
+  lib/drmtest: Add get_intel_driver() helper
+  lib/xe_util: Return dynamic subtest name for Xe
+  lib/xe_util: Add vm bind/unbind helper for Xe
+  lib/intel_allocator: Add field to distinquish underlying driver
+  lib/intel_allocator: Add intel_allocator_bind()
+  lib/intel_ctx: Add xe context information
+  lib/intel_blt: Introduce blt_copy_init() helper to cache driver
+  lib/intel_blt: Extend blitter library to support xe driver
+  tests/xe_ccs: Check if flatccs is working with block-copy for Xe
+  tests/xe_exercise_blt: Check blitter library fast-copy for Xe
+  tests/api-intel-allocator: Adopt to exercise allocator to Xe
 
-Thank you for the review.
---
-Zbigniew
+ lib/drmtest.c                    |  10 +
+ lib/drmtest.h                    |   1 +
+ lib/igt_core.c                   |   5 +
+ lib/igt_fb.c                     |   2 +-
+ lib/intel_allocator.c            | 285 ++++++++++--
+ lib/intel_allocator.h            |   4 +-
+ lib/intel_blt.c                  | 292 ++++++++----
+ lib/intel_blt.h                  |  10 +-
+ lib/intel_ctx.c                  | 110 ++++-
+ lib/intel_ctx.h                  |  14 +
+ lib/meson.build                  |   3 +-
+ lib/xe/xe_query.c                |  20 +-
+ lib/xe/xe_query.h                |   1 +
+ lib/xe/xe_util.c                 | 236 ++++++++++
+ lib/xe/xe_util.h                 |  48 ++
+ tests/i915/api_intel_allocator.c |  46 +-
+ tests/i915/gem_ccs.c             |  34 +-
+ tests/i915/gem_exercise_blt.c    |  22 +-
+ tests/i915/gem_lmem_swapping.c   |   4 +-
+ tests/meson.build                |   2 +
+ tests/xe/xe_ccs.c                | 763 +++++++++++++++++++++++++++++++
+ tests/xe/xe_exercise_blt.c       | 372 +++++++++++++++
+ 22 files changed, 2112 insertions(+), 172 deletions(-)
+ create mode 100644 lib/xe/xe_util.c
+ create mode 100644 lib/xe/xe_util.h
+ create mode 100644 tests/xe/xe_ccs.c
+ create mode 100644 tests/xe/xe_exercise_blt.c
 
-> 
-> Apart from that one line thingy, the patch looks good, I think.
-> 
-> All the best,
-> Karolina
-> 
-> > +		syncobj_destroy(xe, tabsyncs[1].handle);
-> > +	}
-> > +
-> > +	free(bind_ops);
-> > +}
-> > +
-> > +/**
-> > +  * xe_bind_unbind_async:
-> > +  * @xe: drm fd of Xe device
-> > +  * @vm: vm to bind/unbind objects to/from
-> > +  * @bind_engine: bind engine, 0 if default
-> > +  * @obj_list: list of xe_object
-> > +  * @sync_in: sync object (fence-in), 0 if there's no input dependency
-> > +  * @sync_out: sync object (fence-out) to signal on bind/unbind completion,
-> > +  *            if 0 wait for bind/unbind completion.
-> > +  *
-> > +  * Function iterates over xe_object @obj_list, prepares binding operation
-> > +  * and does bind/unbind in one step. Providing sync_in / sync_out allows
-> > +  * working in pipelined mode. With sync_in and sync_out set to 0 function
-> > +  * waits until binding operation is complete.
-> > +  */
-> > +void xe_bind_unbind_async(int fd, uint32_t vm, uint32_t bind_engine,
-> > +			  struct igt_list_head *obj_list,
-> > +			  uint32_t sync_in, uint32_t sync_out)
-> > +{
-> > +	return __xe_op_bind_async(fd, vm, bind_engine, obj_list, sync_in, sync_out);
-> > +}
-> > diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
-> > index 46b7e0d46b..32f309923e 100644
-> > --- a/lib/xe/xe_util.h
-> > +++ b/lib/xe/xe_util.h
-> > @@ -12,9 +12,6 @@
-> >   #include <stdint.h>
-> >   #include <xe_drm.h>
-> > -#define XE_REGION_SMEM XE_MEM_REGION_CLASS_SYSMEM
-> > -#define XE_REGION_LMEM XE_MEM_REGION_CLASS_VRAM
-> > -
-> >   #define XE_IS_SYSMEM_MEMORY_REGION(fd, region) \
-> >   	(xe_region_class(fd, region) == XE_MEM_REGION_CLASS_SYSMEM)
-> >   #define XE_IS_VRAM_MEMORY_REGION(fd, region) \
-> > @@ -30,4 +27,22 @@ __xe_get_memory_region_set(int xe, uint32_t *mem_regions_type, int num_regions);
-> >   char *xe_memregion_dynamic_subtest_name(int xe, struct igt_collection *set);
-> > +enum xe_bind_op {
-> > +	XE_OBJECT_BIND,
-> > +	XE_OBJECT_UNBIND,
-> > +};
-> > +
-> > +struct xe_object {
-> > +	uint32_t handle;
-> > +	uint64_t offset;
-> > +	uint64_t size;
-> > +	enum xe_bind_op bind_op;
-> > +	void *priv;
-> > +	struct igt_list_head link;
-> > +};
-> > +
-> > +void xe_bind_unbind_async(int fd, uint32_t vm, uint32_t bind_engine,
-> > +			  struct igt_list_head *obj_list,
-> > +			  uint32_t sync_in, uint32_t sync_out);
-> > +
-> >   #endif /* XE_UTIL_H */
+-- 
+2.34.1
