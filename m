@@ -1,20 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26A1C10E4D0
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 10:34:26 +0000 (UTC)
-Message-ID: <11a254af-1b7e-590e-e089-8d6334d54bab@intel.com>
-Date: Thu, 6 Jul 2023 12:34:04 +0200
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20230706060555.282757-1-zbigniew.kempczynski@intel.com>
- <20230706060555.282757-10-zbigniew.kempczynski@intel.com>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230706060555.282757-10-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C68010E4CE
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 10:40:17 +0000 (UTC)
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  6 Jul 2023 16:14:56 +0530
+Message-Id: <20230706104500.595707-1-himal.prasad.ghimiray@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 09/16] lib/intel_allocator: Add field
- to distinquish underlying driver
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v7 0/4] Handle GT and tile seperation in IGT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,49 +16,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Upadhyay <tejas.upadhyay@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 6.07.2023 08:05, Zbigniew Kempczyński wrote:
-> Cache what driver is using on drm fd to avoid calling same code
-> in allocator functions.
+With seperation of GT and tiles in KMD, we will have sysfs entries
+for properties associated with tile and gtX sysfs parent will be moving
+under tileX. This series provides helper functions for accessing tile
+associated sysfs entries and gt specific sysfs under respective tile.
 
-Good call!
+series addresses gt related sysfs path change for xe_guc_pc.c test case 
+and introduces new test to verify addr_range for each vram.
 
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
+Cc: Upadhyay <tejas.upadhyay@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->   lib/intel_allocator.c | 1 +
->   lib/intel_allocator.h | 3 +++
->   2 files changed, 4 insertions(+)
-> 
-> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-> index be24f8f2d0..228b33b92f 100644
-> --- a/lib/intel_allocator.c
-> +++ b/lib/intel_allocator.c
-> @@ -318,6 +318,7 @@ static struct intel_allocator *intel_allocator_create(int fd,
->   
->   	igt_assert(ial);
->   
-> +	ial->driver = get_intel_driver(fd);
->   	ial->type = allocator_type;
->   	ial->strategy = allocator_strategy;
->   	ial->default_alignment = default_alignment;
-> diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
-> index 3ec74f6191..1001b21b98 100644
-> --- a/lib/intel_allocator.h
-> +++ b/lib/intel_allocator.h
-> @@ -141,6 +141,9 @@ struct intel_allocator {
->   	/* allocator's private structure */
->   	void *priv;
->   
-> +	/* driver - i915 or Xe */
-> +	enum intel_driver driver;
-> +
->   	void (*get_address_range)(struct intel_allocator *ial,
->   				  uint64_t *startp, uint64_t *endp);
->   	uint64_t (*alloc)(struct intel_allocator *ial, uint32_t handle,
+Himal Prasad Ghimiray (4):
+  lib/igt_sysfs: Add support to query number of tiles
+  lib/igt_sysfs: Handling gt related sysfs uapi changes
+  tests/xe/xe_guc_pc: Change the sysfs paths
+  tests/xe/xe_sysfs_tile_prop: adds new test to verify per tile vram
+    addr_range
+
+ lib/igt_sysfs.c               | 117 ++++++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h               |  11 ++++
+ tests/meson.build             |   1 +
+ tests/xe/xe_guc_pc.c          |  14 +++-
+ tests/xe/xe_sysfs_tile_prop.c |  63 ++++++++++++++++++
+ 5 files changed, 204 insertions(+), 2 deletions(-)
+ create mode 100644 tests/xe/xe_sysfs_tile_prop.c
+
+-- 
+2.25.1
