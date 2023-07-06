@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D8EE210E4CC
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 10:28:11 +0000 (UTC)
-Message-ID: <1c63fb97-17a3-2a6e-fa44-b4b749bd1f25@intel.com>
-Date: Thu, 6 Jul 2023 12:27:51 +0200
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26A1C10E4D0
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 10:34:26 +0000 (UTC)
+Message-ID: <11a254af-1b7e-590e-e089-8d6334d54bab@intel.com>
+Date: Thu, 6 Jul 2023 12:34:04 +0200
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <20230706060555.282757-1-zbigniew.kempczynski@intel.com>
- <20230706060555.282757-9-zbigniew.kempczynski@intel.com>
+ <20230706060555.282757-10-zbigniew.kempczynski@intel.com>
 From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230706060555.282757-9-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230706060555.282757-10-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 08/16] lib/xe_util: Add vm
- bind/unbind helper for Xe
+Subject: Re: [igt-dev] [PATCH i-g-t v2 09/16] lib/intel_allocator: Add field
+ to distinquish underlying driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,197 +27,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
-
-I know I replied in v1, but I still have one more question, sorry :o)
-
 On 6.07.2023 08:05, Zbigniew Kempczyński wrote:
-> Before calling exec we need to prepare vm to contain valid entries.
-> Bind/unbind in xe expects single bind_op or vector of bind_ops what
-> makes preparation of it a little bit inconvinient. Add function
-> which iterates over list of xe_object (auxiliary structure which
-> describes bind information for object) and performs the bind/unbind
-> in one step. It also supports passing syncobj in/out to work in
-> pipelined executions.
+> Cache what driver is using on drm fd to avoid calling same code
+> in allocator functions.
+
+Good call!
+
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->   lib/xe/xe_util.c | 132 +++++++++++++++++++++++++++++++++++++++++++++++
->   lib/xe/xe_util.h |  18 +++++++
->   2 files changed, 150 insertions(+)
+>   lib/intel_allocator.c | 1 +
+>   lib/intel_allocator.h | 3 +++
+>   2 files changed, 4 insertions(+)
 > 
-> diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-> index 448b3a3d27..b998a52e73 100644
-> --- a/lib/xe/xe_util.c
-> +++ b/lib/xe/xe_util.c
-> @@ -102,3 +102,135 @@ char *xe_memregion_dynamic_subtest_name(int xe, struct igt_collection *set)
->   	return name;
->   }
+> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+> index be24f8f2d0..228b33b92f 100644
+> --- a/lib/intel_allocator.c
+> +++ b/lib/intel_allocator.c
+> @@ -318,6 +318,7 @@ static struct intel_allocator *intel_allocator_create(int fd,
 >   
-> +#ifdef XEBINDDBG
-> +#define bind_info igt_info
-> +#define bind_debug igt_debug
-> +#else
-> +#define bind_info(...) {}
-> +#define bind_debug(...) {}
-> +#endif
-> +
-> +static struct drm_xe_vm_bind_op *xe_alloc_bind_ops(struct igt_list_head *obj_list,
-> +						   uint32_t *num_ops)
-> +{
-> +	struct drm_xe_vm_bind_op *bind_ops, *ops;
-> +	struct xe_object *obj;
-> +	uint32_t num_objects = 0, i = 0, op;
-> +
-> +	igt_list_for_each_entry(obj, obj_list, link)
-> +		num_objects++;
-> +
-> +	*num_ops = num_objects;
-> +	if (!num_objects) {
-> +		bind_info(" [nothing to bind]\n");
-> +		return NULL;
-> +	}
-> +
-> +	bind_ops = calloc(num_objects, sizeof(*bind_ops));
-> +	igt_assert(bind_ops);
-> +
-> +	igt_list_for_each_entry(obj, obj_list, link) {
-> +		ops = &bind_ops[i];
-> +
-> +		if (obj->bind_op == XE_OBJECT_BIND) {
-> +			op = XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC;
-> +			ops->obj = obj->handle;
-> +		} else {
-> +			op = XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_ASYNC;
-> +		}
-> +
-> +		ops->op = op;
-> +		ops->obj_offset = 0;
-> +		ops->addr = obj->offset;
-> +		ops->range = obj->size;
-> +		ops->region = 0;
-> +
-> +		bind_info("  [%d]: [%6s] handle: %u, offset: %llx, size: %llx\n",
-> +			  i, obj->bind_op == XE_OBJECT_BIND ? "BIND" : "UNBIND",
-> +			  ops->obj, (long long)ops->addr, (long long)ops->range);
-> +		i++;
-> +	}
-> +
-> +	return bind_ops;
-> +}
-> +
-> +static void __xe_op_bind_async(int xe, uint32_t vm, uint32_t bind_engine,
-> +			       struct igt_list_head *obj_list,
-> +			       uint32_t sync_in, uint32_t sync_out)
-> +{
-> +	struct drm_xe_vm_bind_op *bind_ops;
-> +	struct drm_xe_sync tabsyncs[2] = {
-> +		{ .flags = DRM_XE_SYNC_SYNCOBJ, .handle = sync_in },
-> +		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, .handle = sync_out },
-> +	};
-> +	struct drm_xe_sync *syncs;
-> +	uint32_t num_binds = 0;
-> +	int num_syncs;
-> +
-> +	bind_info("[Binding to vm: %u]\n", vm);
-> +	bind_ops = xe_alloc_bind_ops(obj_list, &num_binds);
-> +
-> +	if (!num_binds) {
-> +		if (sync_out)
-> +			syncobj_signal(xe, &sync_out, 1);
-> +		return;
-> +	}
-> +
-> +	if (sync_in) {
-> +		syncs = tabsyncs;
-> +		num_syncs = 2;
-> +	} else {
-> +		syncs = &tabsyncs[1];
-> +		num_syncs = 1;
-> +	}
-> +
-> +	/* User didn't pass sync out, create it and wait for completion */
-> +	if (!sync_out)
-> +		tabsyncs[1].handle = syncobj_create(xe, 0);
-> +
-> +	bind_info("[Binding syncobjs: (in: %u, out: %u)]\n",
-> +		  tabsyncs[0].handle, tabsyncs[1].handle);
-> +
-> +	if (num_binds == 1) {
-> +		if ((bind_ops[0].op & 0xffff) == XE_VM_BIND_OP_MAP)
-> +			xe_vm_bind_async(xe, vm, bind_engine, bind_ops[0].obj, 0,
-> +					bind_ops[0].addr, bind_ops[0].range,
-> +					syncs, num_syncs);
-> +		else
-> +			xe_vm_unbind_async(xe, vm, bind_engine, 0,
-> +					   bind_ops[0].addr, bind_ops[0].range,
-> +					   syncs, num_syncs);
-> +	} else {
-> +		xe_vm_bind_array(xe, vm, bind_engine, bind_ops,
-> +				 num_binds, syncs, num_syncs);
-> +	}
-> +
-> +	if (!sync_out) {
-> +		igt_assert_eq(syncobj_wait_err(xe, &tabsyncs[1].handle, 1, INT64_MAX, 0), 0);
-> +		syncobj_destroy(xe, tabsyncs[1].handle);
-> +	}
-> +
-> +	free(bind_ops);
-> +}
-> +
-> +/**
-> +  * xe_bind_unbind_async:
-> +  * @xe: drm fd of Xe device
-> +  * @vm: vm to bind/unbind objects to/from
-> +  * @bind_engine: bind engine, 0 if default
-> +  * @obj_list: list of xe_object
-> +  * @sync_in: sync object (fence-in), 0 if there's no input dependency
-> +  * @sync_out: sync object (fence-out) to signal on bind/unbind completion,
-> +  *            if 0 wait for bind/unbind completion.
-> +  *
-> +  * Function iterates over xe_object @obj_list, prepares binding operation
-> +  * and does bind/unbind in one step. Providing sync_in / sync_out allows
-> +  * working in pipelined mode. With sync_in and sync_out set to 0 function
-> +  * waits until binding operation is complete.
-> +  */
-> +void xe_bind_unbind_async(int fd, uint32_t vm, uint32_t bind_engine,
-> +			  struct igt_list_head *obj_list,
-> +			  uint32_t sync_in, uint32_t sync_out)
-> +{
-> +	return __xe_op_bind_async(fd, vm, bind_engine, obj_list, sync_in, sync_out);
-> +}
-> diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
-> index 9f56fa9898..32f309923e 100644
-> --- a/lib/xe/xe_util.h
-> +++ b/lib/xe/xe_util.h
-> @@ -27,4 +27,22 @@ __xe_get_memory_region_set(int xe, uint32_t *mem_regions_type, int num_regions);
+>   	igt_assert(ial);
 >   
->   char *xe_memregion_dynamic_subtest_name(int xe, struct igt_collection *set);
+> +	ial->driver = get_intel_driver(fd);
+>   	ial->type = allocator_type;
+>   	ial->strategy = allocator_strategy;
+>   	ial->default_alignment = default_alignment;
+> diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+> index 3ec74f6191..1001b21b98 100644
+> --- a/lib/intel_allocator.h
+> +++ b/lib/intel_allocator.h
+> @@ -141,6 +141,9 @@ struct intel_allocator {
+>   	/* allocator's private structure */
+>   	void *priv;
 >   
-> +enum xe_bind_op {
-> +	XE_OBJECT_BIND,
-> +	XE_OBJECT_UNBIND,
-> +};
+> +	/* driver - i915 or Xe */
+> +	enum intel_driver driver;
 > +
-> +struct xe_object {
-> +	uint32_t handle;
-> +	uint64_t offset;
-> +	uint64_t size;
-> +	enum xe_bind_op bind_op;
-> +	void *priv;
-> +	struct igt_list_head link;
-> +};
-
-It might seem obvious what *priv is for, but could we add a comment 
-about it? Or a couple of words saying about the purpose of this struct.
-Apart from that, I'm happy with the patch.
-
-Thanks,
-Karolina
-
-> +
-> +void xe_bind_unbind_async(int fd, uint32_t vm, uint32_t bind_engine,
-> +			  struct igt_list_head *obj_list,
-> +			  uint32_t sync_in, uint32_t sync_out);
-> +
->   #endif /* XE_UTIL_H */
+>   	void (*get_address_range)(struct intel_allocator *ial,
+>   				  uint64_t *startp, uint64_t *endp);
+>   	uint64_t (*alloc)(struct intel_allocator *ial, uint32_t handle,
