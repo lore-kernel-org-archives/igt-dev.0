@@ -1,26 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8C2210E4DF
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 11:13:33 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.26.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 3E123580DAB
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 04:13:32 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qHMvS-0028O5-0u
- for igt-dev@lists.freedesktop.org; Thu, 06 Jul 2023 13:13:30 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  6 Jul 2023 13:13:28 +0200
-Message-Id: <20230706111328.508790-6-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230706111328.508790-1-mauro.chehab@linux.intel.com>
-References: <20230706111328.508790-1-mauro.chehab@linux.intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6990B10E4E1
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 11:20:14 +0000 (UTC)
+Date: Thu, 6 Jul 2023 13:20:09 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Karolina Stolarek <karolina.stolarek@intel.com>
+Message-ID: <20230706112009.aienxiyhltsvxgaq@zkempczy-mobl2>
+References: <20230706060555.282757-1-zbigniew.kempczynski@intel.com>
+ <20230706060555.282757-3-zbigniew.kempczynski@intel.com>
+ <541ac686-d077-ec88-4856-40a717260442@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 5/5] scripts/test_list.py: speedup
- testlist check logic
+In-Reply-To: <541ac686-d077-ec88-4856-40a717260442@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 02/16] lib/intel_allocator: Drop
+ aliasing allocator handle api
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,83 +23,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On Thu, Jul 06, 2023 at 10:31:15AM +0200, Karolina Stolarek wrote:
+> On 6.07.2023 08:05, Zbigniew Kempczyński wrote:
+> > There's no real user of this api, lets drop it.
+> > 
+> 
+> Should we drop REQ_OPEN_AS and/or RESP_OPEN_AS enum values as well?
+> 
 
-Now that the build system will generate the testlist for us,
-just read them when checking for missing symbols.
+Good catch, thanks. Will be in v3.
 
-This should speed up a log the check logic.
+--
+Zbigniew
 
-After the change, touching on a single file and rebuilding the
-testplan with check enabled is a lot faster:
-
-	$ touch tests/xe/xe_compute.c
-	$ time make
-	ninja -C build
-	ninja: Entering directory `build'
-	[10/10] Generating docs/testplan/i915_tests.html with a custom command
-
-	real	0m4.510s
-	user	0m5.944s
-	sys	0m0.217s
-
-This can be improved even further if we split the test_executables
-dependencies per driver.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/test_list.py | 30 ++++++------------------------
- 1 file changed, 6 insertions(+), 24 deletions(-)
-
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index a55d2977c7c3..2c1a6f230fb5 100755
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -909,35 +909,17 @@ class TestList:
- 
-         return subtests
- 
--    def __get_testlist(self, name):
--        match = re.match(r"(.*/)?(.*)\.c$", name)
--        if not match:
--            return []
--
--        basename = "igt@" + match.group(2)
--
--        fname = os.path.join(self.igt_build_path, "tests", match.group(2))
--        if not os.path.isfile(fname):
--            print(f"Error: file {fname} doesn't exist.")
--            sys.exit(1)
--        try:
--            result = subprocess.run([ fname, "--list-subtests" ],
--                                    check = True,
--                                    stdout = subprocess.PIPE,
--                                    universal_newlines=True)
--            subtests = result.stdout.splitlines()
--
--            return [basename  + "@" + i for i in subtests]
--        except subprocess.CalledProcessError:
--            # Handle it as a test using igt_simple_main
--            return [basename]
--
-     def get_testlist(self):
- 
-         """ Return a list of tests as reported by --list-subtests """
-         tests = []
-         for name in self.filenames:
--            tests += self.__get_testlist(name)
-+            fname = re.sub(r"\.c$", ".testlist", name.split('/')[-1])
-+            fname = os.path.join(self.igt_build_path, "tests", fname)
-+
-+            with open(fname, 'r', encoding='utf8') as handle:
-+                for line in handle:
-+                    tests.append(line)
- 
-         return sorted(tests)
- 
--- 
-2.40.1
+> All the best,
+> Karolina
+> 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > ---
+> >   lib/intel_allocator.c | 18 ------------------
+> >   lib/intel_allocator.h |  1 -
+> >   2 files changed, 19 deletions(-)
+> > 
+> > diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+> > index 8161221dbf..c31576ecef 100644
+> > --- a/lib/intel_allocator.c
+> > +++ b/lib/intel_allocator.c
+> > @@ -1037,24 +1037,6 @@ uint64_t intel_allocator_open_vm(int fd, uint32_t vm, uint8_t allocator_type)
+> >   					    ALLOC_STRATEGY_HIGH_TO_LOW, 0);
+> >   }
+> > -uint64_t intel_allocator_open_vm_as(uint64_t allocator_handle, uint32_t new_vm)
+> > -{
+> > -	struct alloc_req req = { .request_type = REQ_OPEN_AS,
+> > -				 .allocator_handle = allocator_handle,
+> > -				 .open_as.new_vm = new_vm };
+> > -	struct alloc_resp resp;
+> > -
+> > -	/* Get child_tid only once at open() */
+> > -	if (child_tid == -1)
+> > -		child_tid = gettid();
+> > -
+> > -	igt_assert(handle_request(&req, &resp) == 0);
+> > -	igt_assert(resp.open_as.allocator_handle);
+> > -	igt_assert(resp.response_type == RESP_OPEN_AS);
+> > -
+> > -	return resp.open.allocator_handle;
+> > -}
+> > -
+> >   /**
+> >    * intel_allocator_close:
+> >    * @allocator_handle: handle to the allocator that will be closed
+> > diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+> > index a6bf573e9d..3ec74f6191 100644
+> > --- a/lib/intel_allocator.h
+> > +++ b/lib/intel_allocator.h
+> > @@ -182,7 +182,6 @@ uint64_t intel_allocator_open_vm_full(int fd, uint32_t vm,
+> >   				      enum allocator_strategy strategy,
+> >   				      uint64_t default_alignment);
+> > -uint64_t intel_allocator_open_vm_as(uint64_t allocator_handle, uint32_t new_vm);
+> >   bool intel_allocator_close(uint64_t allocator_handle);
+> >   void intel_allocator_get_address_range(uint64_t allocator_handle,
+> >   				       uint64_t *startp, uint64_t *endp);
