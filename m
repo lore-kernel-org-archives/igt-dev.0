@@ -3,12 +3,12 @@ Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 06 Jul 2023 17:45:39 -0000
-Message-ID: <168866553997.18978.7621575641813564676@emeril.freedesktop.org>
-References: <20230706150638.581415-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230706150638.581415-1-mauro.chehab@linux.intel.com>
+Date: Thu, 06 Jul 2023 13:36:37 -0000
+Message-ID: <168865059715.18978.12644061687348757784@emeril.freedesktop.org>
+References: <20230706111328.508790-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230706111328.508790-1-mauro.chehab@linux.intel.com>
 Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBTcGVl?=
- =?utf-8?q?dup_IGT_build_time_=28rev3=29?=
+ =?utf-8?q?dup_IGT_build_time_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,14 +25,14 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Speedup IGT build time (rev3)
+Series: Speedup IGT build time (rev2)
 URL   : https://patchwork.freedesktop.org/series/120233/
 State : failure
 
 == Summary ==
 
 IGT patchset build failed on latest successful build
-d1574543ba4bb322597345530053475c07be0eb9 xe-fast-feedback.testlist: Remove gt-c6-on-idle from BAT
+d581742e53b0fd5c35db4a21fe55fb9ba704a03e tests/amdgpu: add vce decoder test
 
 Installing tools/i915-perf/i915-perf-recorder to /opt/igt/bin
 Installing tools/i915-perf/i915-perf-control to /opt/igt/bin
