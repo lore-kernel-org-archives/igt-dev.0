@@ -1,26 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0DBA10E48C
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 08:39:54 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.26.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 46250580D25
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 01:39:52 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qHKWj-0021Fi-27
- for igt-dev@lists.freedesktop.org; Thu, 06 Jul 2023 10:39:49 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  6 Jul 2023 10:39:47 +0200
-Message-Id: <20230706083947.481216-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230706083947.481216-1-mauro.chehab@linux.intel.com>
-References: <20230706083947.481216-1-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2561207418116865732=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/1] tests/meson.build: Simplify builds for
- core and i915 targets
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Date: Thu, 06 Jul 2023 11:20:53 -0000
+Message-ID: <168864245346.18978.5068835381983375824@emeril.freedesktop.org>
+References: <20230706095522.28532-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230706095522.28532-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?amdgpu=3A_add_vce_decoder_test_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,390 +17,239 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============2561207418116865732==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-There are some tests that either require:
-	- extra dependencies
-	- extra source files
+== Series Details ==
 
-Right now, they have special executable() targets that are handled
-outside the normal way. remove those special targets, converting
-them into simple ones, and using two extra dictionaries to map
-those extra requirements.
+Series: tests/amdgpu: add vce decoder test (rev2)
+URL   : https://patchwork.freedesktop.org/series/120258/
+State : success
 
-This makes the meson.build file a lot simpler, and makes easier
-to add other rules when creating test lists.
+== Summary ==
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/meson.build | 223 +++++++++++++---------------------------------
- 1 file changed, 61 insertions(+), 162 deletions(-)
+CI Bug Log - changes from IGT_7374 -> IGTPW_9353
+====================================================
 
-diff --git a/tests/meson.build b/tests/meson.build
-index ee066b84900b..3116c458d60b 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -3,12 +3,14 @@ test_progs = [
- 	'core_getclient',
- 	'core_getstats',
- 	'core_getversion',
-+	'core_hotunplug',
- 	'core_setmaster',
- 	'core_setmaster_vs_auth',
- 	'debugfs_test',
- 	'dmabuf',
- 	'dmabuf_sync_file',
- 	'device_reset',
-+	'dumb_buffer',
- 	'drm_buddy',
- 	'drm_mm',
- 	'drm_read',
-@@ -21,6 +23,7 @@ test_progs = [
- 	'kms_atomic_interruptible',
- 	'kms_atomic_transition',
- 	'kms_bw',
-+	'kms_color',
- 	'kms_concurrent',
- 	'kms_content_protection',
- 	'kms_cursor_crc',
-@@ -77,7 +80,9 @@ test_progs = [
- 	'syncobj_basic',
- 	'syncobj_wait',
- 	'syncobj_timeline',
-+	'sw_sync',
- 	'template',
-+	'testdisplay',
- 	'tools_test',
- 	'vgem_basic',
- 	'vgem_slow',
-@@ -86,16 +91,19 @@ test_progs = [
- i915_progs = [
- 	'api_intel_allocator',
- 	'api_intel_bb',
-+	'drm_fdinfo',
- 	'gen3_mixed_blits',
- 	'gen3_render_linear_blits',
- 	'gen3_render_mixed_blits',
- 	'gen3_render_tiledx_blits',
- 	'gen3_render_tiledy_blits',
- 	'gem_bad_reloc',
-+	'gem_barrier_race',
- 	'gem_basic',
- 	'gem_blits',
- 	'gem_busy',
- 	'gem_caching',
-+	'gem_create',
- 	'gem_ccs',
- 	'gem_close',
- 	'gem_close_race',
-@@ -105,16 +113,20 @@ i915_progs = [
- 	'gem_ctx_create',
- 	'gem_ctx_engines',
- 	'gem_ctx_exec',
-+	'gem_ctx_freq',
- 	'gem_ctx_isolation',
- 	'gem_ctx_param',
- 	'gem_ctx_persistence',
- 	'gem_ctx_shared',
-+	'gem_ctx_sseu',
- 	'gem_ctx_switch',
-+	'gem_eio',
- 	'gem_evict_alignment',
- 	'gem_evict_everything',
- 	'gem_exec_alignment',
- 	'gem_exec_async',
- 	'gem_exec_await',
-+	'gem_exec_balancer',
- 	'gem_exec_basic',
- 	'gem_exec_big',
- 	'gem_exec_capture',
-@@ -157,6 +169,7 @@ i915_progs = [
- 	'gem_media_vme',
- 	'gem_mmap',
- 	'gem_mmap_gtt',
-+	'gem_mmap_offset',
- 	'gem_mmap_wc',
- 	'gem_partial_pwrite_pread',
- 	'gem_pipe_control_store_loop',
-@@ -200,6 +213,8 @@ i915_progs = [
- 	'gem_wait',
- 	'gem_watchdog',
- 	'gem_workarounds',
-+	'perf',
-+	'perf_pmu',
- 	'i915_fb_tiling',
- 	'i915_getparams_basic',
- 	'i915_pm_freq_api',
-@@ -209,9 +224,11 @@ i915_progs = [
- 	'i915_pciid',
- 	'i915_pipe_stress',
- 	'i915_pm_backlight',
-+	'i915_pm_freq_mult',
- 	'i915_pm_lpsp',
- 	'i915_pm_rpm',
- 	'i915_pm_dc',
-+	'i915_pm_rc6_residency',
- 	'i915_pm_rps',
- 	'i915_pm_sseu',
- 	'i915_power',
-@@ -224,6 +241,7 @@ i915_progs = [
- 	'kms_ccs',
- 	'kms_cdclk',
- 	'kms_draw_crc',
-+	'kms_dsc',
- 	'kms_fb_coherency',
- 	'kms_fbcon_fbt',
- 	'kms_fence_pin_leak',
-@@ -234,6 +252,7 @@ i915_progs = [
- 	'kms_mmap_write_crc',
- 	'kms_pipe_b_c_ivb',
- 	'kms_psr',
-+	'kms_psr2_sf',
- 	'kms_psr2_su',
- 	'kms_psr_stress_test',
- 	'kms_pwrite_crc',
-@@ -301,12 +320,41 @@ if libdrm_nouveau.found()
- 	test_deps += libdrm_nouveau
- endif
- 
-+# Extra sources used on core and Intel drivers
-+extra_sources = {
-+	'core_hotunplug': [ 'core_hotunplug.c' ],
-+	'dumb_buffer': ['dumb_buffer.c' ],
-+	'testdisplay': [ 'testdisplay_hotplug.c' ],
-+	'kms_color':  [ 'kms_color_helper.c' ],
-+	'kms_dsc': [ join_paths ('i915', 'kms_dsc_helper.c') ],
-+	'kms_psr2_sf':  [ join_paths ('i915', 'kms_dsc_helper.c') ],
-+}
-+
-+# Extra dependencies used on core and Intel drivers
-+extra_dependencies = {
-+	'core_hotunplug': [ lib_igt_i915_perf ],
-+	'drm_fdinfo': [ lib_igt_drm_fdinfo ],
-+	'dumb_buffer':  [ libatomic ],
-+	'gem_barrier_race': [ lib_igt_i915_perf ],
-+	'gem_create': [ libatomic ],
-+	'gem_ctx_freq': [ lib_igt_perf ],
-+	'gem_ctx_sseu': [ lib_igt_perf ],
-+	'gem_eio': [ realtime ],
-+	'gem_exec_balancer': [ lib_igt_perf ],
-+	'gem_mmap_offset': [ libatomic ],
-+	'i915_pm_freq_mult': [ lib_igt_perf ],
-+	'i915_pm_rc6_residency': [ lib_igt_perf ],
-+	'perf': [ lib_igt_i915_perf ],
-+	'perf_pmu':  [ lib_igt_perf ],
-+	'sw_sync': [ libatomic ],
-+}
-+
- test_executables = []
- test_list = []
- 
- foreach prog : test_progs
--	test_executables += executable(prog, prog + '.c',
--		   dependencies : test_deps,
-+	test_executables += executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
-+		   dependencies : test_deps + extra_dependencies.get(prog, []),
- 		   install_dir : libexecdir,
- 		   install_rpath : libexecdir_rpathdir,
- 		   install : true)
-@@ -315,8 +363,8 @@ endforeach
- 
- foreach prog : i915_progs
- 	test_executables += executable(prog,
--		   join_paths('i915', prog + '.c'),
--		   dependencies : test_deps,
-+		   [join_paths('i915', prog + '.c')] + extra_sources.get(prog, []),
-+		   dependencies : test_deps + extra_dependencies.get(prog, []),
- 		   install_dir : libexecdir,
- 		   install_rpath : libexecdir_rpathdir,
- 		   install : true)
-@@ -326,8 +374,8 @@ endforeach
- if build_xe
- 	foreach prog : xe_progs
- 		test_executables += executable(prog,
--			   join_paths('xe', prog + '.c'),
--			   dependencies : test_deps,
-+			   [join_paths('xe', prog + '.c')] + extra_sources.get(prog, []),
-+			   dependencies : test_deps + extra_dependencies.get(prog, []),
- 			   install_dir : libexecdir,
- 			   install_rpath : libexecdir_rpathdir,
- 			   install : true)
-@@ -357,165 +405,16 @@ if chamelium.found()
- 		test_list += prog
- 	endforeach
- 	test_deps += chamelium
--endif
--
--test_executables += executable('drm_fdinfo',
--	   join_paths('i915', 'drm_fdinfo.c'),
--	   dependencies : test_deps + [ lib_igt_drm_fdinfo ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'drm_fdinfo'
--
--test_executables += executable('dumb_buffer', 'dumb_buffer.c',
--	   dependencies : test_deps + [ libatomic ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'dumb_buffer'
--
--test_executables += executable('gem_create',
--	   join_paths('i915', 'gem_create.c'),
--	   dependencies : test_deps + [ libatomic ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'gem_create'
--
--test_executables += executable('gem_ctx_freq',
--	   join_paths('i915', 'gem_ctx_freq.c'),
--	   dependencies : test_deps + [ lib_igt_perf ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'gem_ctx_freq'
--
--test_executables += executable('gem_ctx_sseu',
--	   join_paths('i915', 'gem_ctx_sseu.c'),
--	   dependencies : test_deps + [ lib_igt_perf ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'gem_ctx_sseu'
--
--test_executables += executable('gem_eio',
--	   join_paths('i915', 'gem_eio.c'),
--	   dependencies : test_deps + [ realtime ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'gem_eio'
--
--test_executables += executable('gem_exec_balancer', 'i915/gem_exec_balancer.c',
--	   dependencies : test_deps + [ lib_igt_perf ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'gem_exec_balancer'
--
--test_executables += executable('gem_mmap_offset',
--	   join_paths('i915', 'gem_mmap_offset.c'),
--	   dependencies : test_deps + [ libatomic ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'gem_mmap_offset'
--
--test_executables += executable('i915_pm_freq_mult',
--	   join_paths('i915', 'i915_pm_freq_mult.c'),
--	   dependencies : test_deps + [ lib_igt_perf ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'i915_pm_freq_mult'
- 
--test_executables += executable('i915_pm_rc6_residency',
--	   join_paths('i915', 'i915_pm_rc6_residency.c'),
--	   dependencies : test_deps + [ lib_igt_perf ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'i915_pm_rc6_residency'
--
--test_executables += executable('gem_barrier_race',
--	   join_paths('i915', 'gem_barrier_race.c'),
--	   dependencies : test_deps + [ lib_igt_i915_perf ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'gem_barrier_race'
--
--test_executables += executable('perf_pmu',
--	   join_paths('i915', 'perf_pmu.c'),
--	   dependencies : test_deps + [ lib_igt_perf ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'perf_pmu'
--
--test_executables += executable('perf',
--	   join_paths('i915', 'perf.c'),
--	   dependencies : test_deps + [ lib_igt_i915_perf ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'perf'
--
--test_executables += executable('core_hotunplug', 'core_hotunplug.c',
--	   dependencies : test_deps + [ lib_igt_i915_perf ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'core_hotunplug'
--
--executable('testdisplay', ['testdisplay.c', 'testdisplay_hotplug.c'],
--	   dependencies : test_deps,
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'testdisplay'
--
--test_executables += executable('kms_color',
--	   [ 'kms_color.c', 'kms_color_helper.c' ],
--	   dependencies : test_deps,
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'kms_color'
--
--test_executables += executable('kms_dsc',
--	   [ join_paths('i915', 'kms_dsc.c'), join_paths ('i915', 'kms_dsc_helper.c')],
--	   dependencies : test_deps,
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'kms_dsc'
--
--test_executables += executable('kms_psr2_sf',
--	   [ join_paths('i915', 'kms_psr2_sf.c'), join_paths ('i915', 'kms_dsc_helper.c')],
--	   dependencies : test_deps,
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'kms_psr2_sf'
--
--if chamelium.found()
--       test_executables += executable('kms_chamelium_color',
--                             [ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
--                             dependencies : test_deps + [ chamelium ],
--                             install_dir : libexecdir,
--                             install_rpath : libexecdir_rpathdir,
--                             install : true)
--       test_list += 'kms_chamelium_color'
-+	test_executables += executable('kms_chamelium_color',
-+				[ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
-+				dependencies : test_deps + [ chamelium ],
-+				install_dir : libexecdir,
-+				install_rpath : libexecdir_rpathdir,
-+				install : true)
-+	test_list += 'kms_chamelium_color'
- endif
- 
--test_executables += executable('sw_sync', 'sw_sync.c',
--	   dependencies : test_deps + [ libatomic ],
--	   install_dir : libexecdir,
--	   install_rpath : libexecdir_rpathdir,
--	   install : true)
--test_list += 'sw_sync'
--
- subdir('amdgpu')
- 
- subdir('v3d')
--- 
-2.40.1
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/index.html
+
+Participating hosts (40 -> 39)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9353 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - bat-jsl-3:          [PASS][1] -> [ABORT][2] ([i915#5122])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_module_load@load:
+    - bat-adlp-11:        [PASS][3] -> [ABORT][4] ([i915#4423])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-adlp-11/igt@i915_module_load@load.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-adlp-11/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-rpls-1:         NOTRUN -> [ABORT][5] ([i915#7677])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-rpls-1/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-2:         [PASS][6] -> [ABORT][7] ([i915#4983] / [i915#7913])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-rpls-2/igt@i915_selftest@live@requests.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-rpls-2/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-mtlp-6:         [PASS][8] -> [DMESG-WARN][9] ([i915#6367])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-mtlp-6/igt@i915_selftest@live@slpc.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-mtlp-6/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - bat-jsl-3:          [PASS][10] -> [FAIL][11] ([fdo#103375])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [PASS][12] -> [ABORT][13] ([i915#8442] / [i915#8668])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-rkl-11600:       [FAIL][14] ([fdo#103375]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [ABORT][16] ([i915#4983] / [i915#7461] / [i915#7981] / [i915#8347] / [i915#8384]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
+  [i915#7677]: https://gitlab.freedesktop.org/drm/intel/issues/7677
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7981]: https://gitlab.freedesktop.org/drm/intel/issues/7981
+  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
+  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
+  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7374 -> IGTPW_9353
+
+  CI-20190529: 20190529
+  CI_DRM_13348: 23b57f4b8f17bc34c0c9b0420409fe2539f0ac01 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9353: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/index.html
+  IGT_7374: 470370c8c25d419eafa627e54edcf0af3b116d92 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/index.html
+
+--===============2561207418116865732==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: add vce decoder test (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120258/">https://patchwork.freedesktop.org/series/120258/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7374 -&gt; IGTPW_9353</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/index.html</p>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9353 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-jsl-3/igt@gem_exec_suspend@basic-s0@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5122">i915#5122</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-adlp-11/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-adlp-11/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-rpls-1/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7677">i915#7677</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-mtlp-6/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-mtlp-6/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>bat-jsl-3:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-jsl-3/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7374/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7981">i915#7981</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7374 -&gt; IGTPW_9353</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13348: 23b57f4b8f17bc34c0c9b0420409fe2539f0ac01 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9353: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9353/index.html<br />
+  IGT_7374: 470370c8c25d419eafa627e54edcf0af3b116d92 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2561207418116865732==--
