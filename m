@@ -1,26 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0ECAF10E435
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 15:06:47 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E605610E4E0
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 11:13:33 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.26.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id D41D0580DAB
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 08:06:45 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 450F8580D1E
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 04:13:32 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qHQZ9-002SAD-1g
- for igt-dev@lists.freedesktop.org; Thu, 06 Jul 2023 17:06:43 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qHMvS-0028Nq-0b
+ for igt-dev@lists.freedesktop.org; Thu, 06 Jul 2023 13:13:30 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  6 Jul 2023 17:06:37 +0200
-Message-Id: <20230706150638.581415-5-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230706150638.581415-1-mauro.chehab@linux.intel.com>
-References: <20230706150638.581415-1-mauro.chehab@linux.intel.com>
+Date: Thu,  6 Jul 2023 13:13:23 +0200
+Message-Id: <20230706111328.508790-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 4/5] tests/meson.build: create testlists
- for tests
+Subject: [igt-dev] [PATCH i-g-t v2 0/5] Speedup IGT build time
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,151 +31,43 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Let's dynamically create testlists for during build time, as this
-can speed up a lot the validation check for testplan.
+Currently, even a single change on IGT makes the build time too
+slow.
 
-Ideally, all it would need to to that would be to use this
-logic at the end of tests/meson.build:
+This is because it will re-generate the check testlist on every
+single build that touches any file.
 
-    foreach testexe : test_executables
-        prog = testexe.name()
+Change the logic to generate per-file testlists, with speeds up
+build time from 22 seconds to 4 seconds.
 
-        output = prog.split('/').get(-1) + '.testlist'
-        custom_target(output,
-                     build_by_default : true,
-                     command : [ testexe, '--show-testlist'],
-                     capture : true,
-                     output : output)
+It can be improved even further after changing the build logic
+to maintain separate test_executables for i915, kms and xe.
 
-Unfortunately, this requies Meson >= 0.54. So, we need to add
-one custom_target per executable() call.
+As there's a pending patch series touching those tests, moving
+them to tests/intel directory, let's not do a conflicting change.
+Once such patch series gets merged, I'll write a patch with the
+pending optimization.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/meson.build | 54 +++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 47 insertions(+), 7 deletions(-)
 
-diff --git a/tests/meson.build b/tests/meson.build
-index 3116c458d60b..6fe5d863c70a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -353,33 +353,54 @@ test_executables = []
- test_list = []
- 
- foreach prog : test_progs
--	test_executables += executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
-+	testexe = executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
- 		   dependencies : test_deps + extra_dependencies.get(prog, []),
- 		   install_dir : libexecdir,
- 		   install_rpath : libexecdir_rpathdir,
- 		   install : true)
-+	test_executables += testexe
- 	test_list += prog
-+	name = prog.split('/').get(-1)
-+	custom_target(name + '.testlist',
-+		     build_by_default : true,
-+		     command : [testexe, '--show-testlist'],
-+		     capture : true,
-+		     output : name + '.testlist')
- endforeach
- 
- foreach prog : i915_progs
--	test_executables += executable(prog,
-+	testexe = executable(prog,
- 		   [join_paths('i915', prog + '.c')] + extra_sources.get(prog, []),
- 		   dependencies : test_deps + extra_dependencies.get(prog, []),
- 		   install_dir : libexecdir,
- 		   install_rpath : libexecdir_rpathdir,
- 		   install : true)
-+	test_executables += testexe
- 	test_list += prog
-+	name = prog.split('/').get(-1)
-+	custom_target(name + '.testlist',
-+		     build_by_default : true,
-+		     command : [testexe, '--show-testlist'],
-+		     capture : true,
-+		     output : name + '.testlist')
- endforeach
- 
- if build_xe
- 	foreach prog : xe_progs
--		test_executables += executable(prog,
-+		testexe = executable(prog,
- 			   [join_paths('xe', prog + '.c')] + extra_sources.get(prog, []),
- 			   dependencies : test_deps + extra_dependencies.get(prog, []),
- 			   install_dir : libexecdir,
- 			   install_rpath : libexecdir_rpathdir,
- 			   install : true)
- 		test_list += prog
-+		test_executables += testexe
-+		name = prog.split('/').get(-1)
-+		custom_target(name + '.testlist',
-+			     build_by_default : true,
-+			     command : [testexe, '--show-testlist'],
-+			     capture : true,
-+			     output : name + '.testlist')
- 	endforeach
- 	build_info += 'Xe **experimental** tests enabled.'
- endif
-@@ -395,7 +416,7 @@ endforeach
- 
- if chamelium.found()
- 	foreach prog : chamelium_progs
--		test_executables += executable(prog,
-+		testexe = executable(prog,
- 				 [join_paths('chamelium', prog + '.c'),
- 					join_paths('chamelium', 'kms_chamelium_helper.c')],
- 				 dependencies : test_deps,
-@@ -403,16 +424,30 @@ if chamelium.found()
- 				 install_rpath : libexecdir_rpathdir,
- 				 install : true)
- 		test_list += prog
-+		test_executables += testexe
-+		name = prog.split('/').get(-1)
-+		custom_target(name + '.testlist',
-+			     build_by_default : true,
-+			     command : [testexe, '--show-testlist'],
-+			     capture : true,
-+			     output : name + '.testlist')
- 	endforeach
- 	test_deps += chamelium
- 
--	test_executables += executable('kms_chamelium_color',
-+	name = 'kms_chamelium_color'
-+	testexe = executable('kms_chamelium_color',
- 				[ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
- 				dependencies : test_deps + [ chamelium ],
- 				install_dir : libexecdir,
- 				install_rpath : libexecdir_rpathdir,
- 				install : true)
--	test_list += 'kms_chamelium_color'
-+	test_list += name
-+	test_executables += testexe
-+	custom_target(name + '.testlist',
-+		     build_by_default : true,
-+		     command : [testexe, '--show-testlist'],
-+		     capture : true,
-+		     output : name + '.testlist')
- endif
- 
- subdir('amdgpu')
-@@ -448,11 +483,16 @@ foreach prog : test_list
- 	test('testcase check ' + prog, test_script, args : prog)
- endforeach
- 
--executable('gem_stress', 'i915/gem_stress.c',
-+testexe = executable('gem_stress', 'i915/gem_stress.c',
- 	   install : true,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
- 	   dependencies : igt_deps)
-+custom_target('gem_stress.testlist',
-+                build_by_default : true,
-+                command : [testexe, '--show-testlist'],
-+                capture : true,
-+                output : 'gem_stress.testlist')
- 
- image_files = [
-   '1080p-left.png',
+v2:
+- make it compatible with Meson 0.47;
+- added a patch to simplify tests/meson.build
+- dropped a change at gem_stress - maybe there's a real reason
+  why this one was excluded from test_list, so let's keep it
+  as-is.
+
+Mauro Carvalho Chehab (5):
+  tests/meson.build: Simplify builds for core and i915 targets
+  lib/igt_core: use the macro when checking for list_subtests
+  lib/igt_core: add an option to show the testlist
+  tests/meson.build: create testlists for tests
+  scripts/test_list.py: speedup testlist check logic
+
+ lib/igt_core.c       |  26 +++-
+ scripts/test_list.py |  30 +----
+ tests/meson.build    | 277 +++++++++++++++++--------------------------
+ 3 files changed, 137 insertions(+), 196 deletions(-)
+
 -- 
 2.40.1
