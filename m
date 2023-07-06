@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C417710E443
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 16:25:34 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Thu, 6 Jul 2023 16:25:31 +0000
-Message-ID: <CY5PR11MB6211058AA87EF792DA145E4A952CA@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230706162252.989423-1-riana.tauro@intel.com>
-In-Reply-To: <20230706162252.989423-1-riana.tauro@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3594E10E478
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 16:29:32 +0000 (UTC)
+From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+To: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 6 Jul 2023 16:26:48 +0000
+Message-ID: <MW3PR11MB474836AF10DF12705295A5CAAE2CA@MW3PR11MB4748.namprd11.prod.outlook.com>
+References: <20230705085259.533791-1-himal.prasad.ghimiray@intel.com>
+ <MW3PR11MB4748F65AD46E1489A180EBD8AE2FA@MW3PR11MB4748.namprd11.prod.outlook.com>
+ <MW4PR11MB7056A287FB83A09C384516FBB32FA@MW4PR11MB7056.namprd11.prod.outlook.com>
+In-Reply-To: <MW4PR11MB7056A287FB83A09C384516FBB32FA@MW4PR11MB7056.namprd11.prod.outlook.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] xe-fast-feedback.testlist: Remove
- gt-c6-on-idle from BAT
+Subject: Re: [igt-dev] [PATCH i-g-t v5 0/4] Handle GT and tile seperation in
+ IGT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,6 +24,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -29,39 +32,87 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 > -----Original Message-----
-> From: Tauro, Riana <riana.tauro@intel.com>
-> Sent: Thursday, July 6, 2023 9:53 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
-> <anshuman.gupta@intel.com>
-> Subject: [PATCH i-g-t] xe-fast-feedback.testlist: Remove gt-c6-on-idle fr=
-om
-> BAT
+> From: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
+> Sent: 05 July 2023 14:48
+> To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; igt-
+> dev@lists.freedesktop.org
+> Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
+> Subject: RE: [igt-dev] [PATCH i-g-t v5 0/4] Handle GT and tile seperation=
+ in IGT
 >=20
-> A new test was accidently added to BAT.
-> Remove the test as its not present.
+> Hi Rahul,
 >=20
-> Fixes: 96f077d7d827 (xe-fast-feedback.testlist: Remove rc6 tests from
-> BAT)
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->  tests/intel-ci/xe-fast-feedback.testlist | 1 -
->  1 file changed, 1 deletion(-)
+> > -----Original Message-----
+> > From: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
+> > Sent: 05 July 2023 14:44
+> > To: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; igt-
+> > dev@lists.freedesktop.org
+> > Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
+> > Subject: RE: [igt-dev] [PATCH i-g-t v5 0/4] Handle GT and tile
+> > seperation in IGT
+> >
+> > Hi @Himal Prasad Ghimiray,
+> >
+> > The change in GT sysfs path may regress the tests using "xe_force_gt_re=
+set()"
+> > IGT lib function.
 >=20
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe=
--fast-
-> feedback.testlist
-> index ad8befc86..1e8f181c2 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -189,7 +189,6 @@ igt@xe_mmap@vram
->  igt@xe_mmap@vram-system
->  igt@xe_mmio@mmio-timestamp
->  igt@xe_mmio@mmio-invalid
-> -igt@xe_pm_residency@gt-c6-on-idle
->  igt@xe_prime_self_import@basic-with_one_bo
->  igt@xe_prime_self_import@basic-with_fd_dup
->  #igt@xe_prime_self_import@export-vs-gem_close-race
-> --
-> 2.40.0
+> Xe_force_gt_reset uses debugfs force_reset. As of now debugfs entries are=
+ not
+> moved under tiles.
+Thanks for the clarification.
+
+-Rahul
+>=20
+> BR
+> Himal
+> > pls address this in this patch itself.
+> >
+> > Thanks,
+> > Rahul
+> >
+> > > -----Original Message-----
+> > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+> > > Himal Prasad Ghimiray
+> > > Sent: 05 July 2023 14:23
+> > > To: igt-dev@lists.freedesktop.org
+> > > Cc: Upadhyay, Tejas <tejas.upadhyay@intel.com>
+> > > Subject: [igt-dev] [PATCH i-g-t v5 0/4] Handle GT and tile
+> > > seperation in IGT
+> > >
+> > > With seperation of GT and tiles in KMD, we will have sysfs entries
+> > > for properties associated with tile and gtX sysfs parent will be
+> > > moving under tileX. This series provides helper functions for
+> > > accessing tile associated sysfs entries and gt specific sysfs under r=
+espective
+> tile.
+> > >
+> > > series addresses gt related sysfs path change for xe_guc_pc.c test
+> > > case and introduces new test to verify addr_range for each vram.
+> > >
+> > > Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> > > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > > Cc: Francois Dugast <francois.dugast@intel.com>
+> > > Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
+> > > Cc: Upadhyay <tejas.upadhyay@intel.com>
+> > > Signed-off-by: Himal Prasad Ghimiray
+> > > <himal.prasad.ghimiray@intel.com>
+> > >
+> > > Himal Prasad Ghimiray (4):
+> > >   lib/igt_sysfs: Add support to query number of tiles
+> > >   lib/igt_sysfs: Handling gt related sysfs uapi changes
+> > >   tests/xe/xe_guc_pc: Change the sysfs paths
+> > >   tests/xe/xe_sysfs_tile_prop: adds new test to verify per tile vram
+> > >     addr_range
+> > >
+> > >  lib/igt_sysfs.c               | 71 +++++++++++++++++++++++++++++++++=
+++
+> > >  lib/igt_sysfs.h               |  8 ++++
+> > >  tests/meson.build             |  1 +
+> > >  tests/xe/xe_guc_pc.c          | 14 ++++++-
+> > >  tests/xe/xe_sysfs_tile_prop.c | 63 +++++++++++++++++++++++++++++++
+> > >  5 files changed, 155 insertions(+), 2 deletions(-)  create mode
+> > > 100644 tests/xe/xe_sysfs_tile_prop.c
+> > >
+> > > --
+> > > 2.25.1
