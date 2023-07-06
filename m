@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 06D7010E413
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 06:06:13 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF0DF10E414
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jul 2023 06:06:38 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  6 Jul 2023 08:05:40 +0200
-Message-Id: <20230706060555.282757-2-zbigniew.kempczynski@intel.com>
+Date: Thu,  6 Jul 2023 08:05:48 +0200
+Message-Id: <20230706060555.282757-10-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230706060555.282757-1-zbigniew.kempczynski@intel.com>
 References: <20230706060555.282757-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 01/16] tests/api_intel_allocator: Don't
- use allocator ahnd aliasing api
+Subject: [igt-dev] [PATCH i-g-t v2 09/16] lib/intel_allocator: Add field to
+ distinquish underlying driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,61 +24,40 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There's no tests (apart this one) which are using aliasing ahnd
-- intel_allocator_open_vm_as(). Additionally it is problematic
-on adopting allocator to xe where I need to track allocations
-to support easy vm binding. Let's adopt "open-vm" to not to use
-this api.
+Cache what driver is using on drm fd to avoid calling same code
+in allocator functions.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/api_intel_allocator.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ lib/intel_allocator.c | 1 +
+ lib/intel_allocator.h | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
-index b7e3efb87f..238e76c9fd 100644
---- a/tests/i915/api_intel_allocator.c
-+++ b/tests/i915/api_intel_allocator.c
-@@ -612,32 +612,27 @@ static void reopen_fork(int fd)
+diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+index be24f8f2d0..228b33b92f 100644
+--- a/lib/intel_allocator.c
++++ b/lib/intel_allocator.c
+@@ -318,6 +318,7 @@ static struct intel_allocator *intel_allocator_create(int fd,
  
- static void open_vm(int fd)
- {
--	uint64_t ahnd[4], offset[4], size = 0x1000;
-+	uint64_t ahnd[3], offset[3], size = 0x1000;
- 	int i, n = ARRAY_SIZE(ahnd);
+ 	igt_assert(ial);
  
- 	ahnd[0] = intel_allocator_open_vm(fd, 1, INTEL_ALLOCATOR_SIMPLE);
- 	ahnd[1] = intel_allocator_open_vm(fd, 1, INTEL_ALLOCATOR_SIMPLE);
--	ahnd[2] = intel_allocator_open_vm_as(ahnd[1], 2);
--	ahnd[3] = intel_allocator_open(fd, 3, INTEL_ALLOCATOR_SIMPLE);
-+	ahnd[2] = intel_allocator_open(fd, 2, INTEL_ALLOCATOR_SIMPLE);
++	ial->driver = get_intel_driver(fd);
+ 	ial->type = allocator_type;
+ 	ial->strategy = allocator_strategy;
+ 	ial->default_alignment = default_alignment;
+diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+index 3ec74f6191..1001b21b98 100644
+--- a/lib/intel_allocator.h
++++ b/lib/intel_allocator.h
+@@ -141,6 +141,9 @@ struct intel_allocator {
+ 	/* allocator's private structure */
+ 	void *priv;
  
- 	offset[0] = intel_allocator_alloc(ahnd[0], 1, size, 0);
- 	offset[1] = intel_allocator_alloc(ahnd[1], 2, size, 0);
- 	igt_assert(offset[0] != offset[1]);
- 
--	offset[2] = intel_allocator_alloc(ahnd[2], 3, size, 0);
--	igt_assert(offset[0] != offset[2] && offset[1] != offset[2]);
--
--	offset[3] = intel_allocator_alloc(ahnd[3], 1, size, 0);
--	igt_assert(offset[0] == offset[3]);
-+	offset[2] = intel_allocator_alloc(ahnd[2], 1, size, 0);
-+	igt_assert(offset[0] == offset[2]);
- 
- 	/*
--	 * As ahnd[0-2] lead to same allocator check can we free all handles
-+	 * As ahnd[0-1] lead to same allocator check can we free all handles
- 	 * using selected ahnd.
- 	 */
--	intel_allocator_free(ahnd[0], 1);
--	intel_allocator_free(ahnd[0], 2);
--	intel_allocator_free(ahnd[0], 3);
--	intel_allocator_free(ahnd[3], 1);
-+	igt_assert_eq(intel_allocator_free(ahnd[0], 1), true);
-+	igt_assert_eq(intel_allocator_free(ahnd[1], 2), true);
-+	igt_assert_eq(intel_allocator_free(ahnd[2], 1), true);
- 
- 	for (i = 0; i < n - 1; i++)
- 		igt_assert_eq(intel_allocator_close(ahnd[i]), (i == n - 2));
++	/* driver - i915 or Xe */
++	enum intel_driver driver;
++
+ 	void (*get_address_range)(struct intel_allocator *ial,
+ 				  uint64_t *startp, uint64_t *endp);
+ 	uint64_t (*alloc)(struct intel_allocator *ial, uint32_t handle,
 -- 
 2.34.1
