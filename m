@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============3740453708894374439=="
+ boundary="===============3909601870367969057=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Thu, 06 Jul 2023 17:58:20 -0000
-Message-ID: <168866630038.18977.16198797053013451106@emeril.freedesktop.org>
-References: <20230706142236.61035-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230706142236.61035-1-vitaly.prosyak@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/amdgp?=
- =?utf-8?q?u=3A_add_vcn_decoder_and_encoder_tests_=28rev2=29?=
+To: "Riana Tauro" <riana.tauro@intel.com>
+Date: Thu, 06 Jul 2023 18:23:56 -0000
+Message-ID: <168866783636.18976.8512787677355431840@emeril.freedesktop.org>
+References: <20230706162252.989423-1-riana.tauro@intel.com>
+In-Reply-To: <20230706162252.989423-1-riana.tauro@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgeGUtZmFz?=
+ =?utf-8?q?t-feedback=2Etestlist=3A_Remove_gt-c6-on-idle_from_BAT?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,26 +23,24 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3740453708894374439==
+--===============3909601870367969057==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/amdgpu: add vcn decoder and encoder tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/120292/
-State : info
+Series: xe-fast-feedback.testlist: Remove gt-c6-on-idle from BAT
+URL   : https://patchwork.freedesktop.org/series/120311/
+State : failure
 
 == Summary ==
 
-Participating hosts:
-"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:
-Results: [IGTPW_9357](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9357/index.html)
+Series 120311 revision 1 was fully merged or fully failed: no git log
 
 
 
---===============3740453708894374439==
+--===============3909601870367969057==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -62,18 +60,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: add vcn decoder and encoder tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120292/">https://patchwork.freedesktop.org/series/120292/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
+<tr><td><b>Series:</b></td><td>xe-fast-feedback.testlist: Remove gt-c6-on-idle from BAT</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120311/">https://patchwork.freedesktop.org/series/120311/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
 </table>
 
 
-    <p>Participating hosts:<br />
-"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9357/index.html">IGTPW_9357</a></p>
+    <p>Series 120311 revision 1 was fully merged or fully failed: no git log</p>
 
 </body>
 </html>
 
---===============3740453708894374439==--
+--===============3909601870367969057==--
