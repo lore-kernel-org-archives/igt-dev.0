@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED07310E505
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jul 2023 03:57:22 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 259AF10E505
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jul 2023 04:29:23 +0000 (UTC)
 From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
 To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Date: Fri, 7 Jul 2023 03:57:17 +0000
-Message-ID: <MW4PR11MB70568F2C70152FD5AFCA175BB32DA@MW4PR11MB7056.namprd11.prod.outlook.com>
+Date: Fri, 7 Jul 2023 04:29:13 +0000
+Message-ID: <MW4PR11MB7056F642EA5E135C4BDA2E69B32DA@MW4PR11MB7056.namprd11.prod.outlook.com>
 References: <20230706104500.595707-1-himal.prasad.ghimiray@intel.com>
- <20230706104500.595707-2-himal.prasad.ghimiray@intel.com>
- <87fs60d2ng.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87fs60d2ng.wl-ashutosh.dixit@intel.com>
+ <20230706104500.595707-3-himal.prasad.ghimiray@intel.com>
+ <87edlkczes.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <87edlkczes.wl-ashutosh.dixit@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v7 1/4] lib/igt_sysfs: Add support to
- query number of tiles
+Subject: Re: [igt-dev] [PATCH i-g-t v7 2/4] lib/igt_sysfs: Handling gt
+ related sysfs uapi changes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,8 +23,8 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Upadhyay,
- Tejas" <tejas.upadhyay@intel.com>
+Cc: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -33,181 +33,99 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 > -----Original Message-----
 > From: Dixit, Ashutosh <ashutosh.dixit@intel.com>
-> Sent: 07 July 2023 05:16
+> Sent: 07 July 2023 06:26
 > To: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Iddamsetty, Aravind
+> Cc: igt-dev@lists.freedesktop.org; Kamil Konieczny
+> <kamil.konieczny@linux.intel.com>; Iddamsetty, Aravind
 > <aravind.iddamsetty@intel.com>; Upadhyay, Tejas
 > <tejas.upadhyay@intel.com>; Kumar, Janga Rahul
-> <janga.rahul.kumar@intel.com>
-> Subject: Re: [PATCH i-g-t v7 1/4] lib/igt_sysfs: Add support to query num=
-ber
-> of tiles
+> <janga.rahul.kumar@intel.com>; Dugast, Francois
+> <francois.dugast@intel.com>; Roper, Matthew D
+> <matthew.d.roper@intel.com>
+> Subject: Re: [PATCH i-g-t v7 2/4] lib/igt_sysfs: Handling gt related sysf=
+s uapi
+> changes
 >=20
-> On Thu, 06 Jul 2023 03:44:57 -0700, Himal Prasad Ghimiray wrote:
+> On Thu, 06 Jul 2023 03:44:58 -0700, Himal Prasad Ghimiray wrote:
 > >
-> > With tile and GT seperation in KMD, we need to know number of tiles
-> > supported by platform.
-> > We will need to access tile associated properties from IGT.
-> > Hence adding iterator for all supported tiles.
-> >
-> > v2:
-> > - Calculate number of tiles once within iterator. (Rahul)
-> > - Use snprintf instead of sprintf.
-> >
-> > v3:
-> > - Remove unrequired for_each_sysfs_tile_dirfd (Ashutosh)
-> >
-> > v4:
-> > - Implement tiles related functions in lib.
-> >
-> > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > Cc: Aravind Iddamsetty <aravind.iddamsetty@intel.com>
-> > Cc: Upadhyay <tejas.upadhyay@intel.com>
-> > Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> > Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> > ---
-> >  lib/igt_sysfs.c | 77
-> > +++++++++++++++++++++++++++++++++++++++++++++++++
-> >  lib/igt_sysfs.h | 10 +++++++
-> >  2 files changed, 87 insertions(+)
-> >
-> > diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c index
-> > 0876f4c6b..dcb38cfc9 100644
-> > --- a/lib/igt_sysfs.c
-> > +++ b/lib/igt_sysfs.c
-> > @@ -903,3 +903,80 @@ void igt_sysfs_engines(int xe, int engines, const
-> char **property,
-> >		close(engine_fd);
-> >	}
-> >  }
+> > +/*
+> > + * xe_gt_sysfs_path::
+> > + * @sysfs: fd of sysfs
+> > + * @gt_id: gt id
+> > + *
+> > + * This function returns the path for gtX directory  */ char
+> > +*xe_gt_sysfs_path(int sysfs, int gt_id) {
+> > +	char tiledir[24];
+> > +	char gtdir[32];
+> > +	char *gt_path;
+> > +	int i =3D 0;
 > > +
-> > +/**
-> > + * xe_sysfs_tile_path:
-> > + * @device: fd of the device
+> > +	snprintf(tiledir, sizeof(tiledir), "device/tile0/");
+> > +	snprintf(gtdir, sizeof(gtdir), "%s/gt%d", tiledir, gt_id);
+> > +
+> > +	while (dir_exists_in_sysfd(sysfs, tiledir)) {
+> > +		if (dir_exists_in_sysfd(sysfs, gtdir)) {
+> > +			gt_path =3D malloc(sizeof(gtdir));
+> > +			strcpy(gt_path, gtdir);
+> > +			return gt_path;
+> > +		} else {
+> > +			snprintf(tiledir, sizeof(tiledir), "device/tile%d/", i++);
+> > +			snprintf(gtdir, sizeof(gtdir), "%s/gt%d", tiledir, gt_id);
+> > +		}
+> > +	}
+> > +	igt_assert_f(false, "No gt%d dir found in sysfs\n", gt_id); }
 >=20
-> xe_device
-
-Sure.
-
+> Now that you I see the code (sorry for changing again but we are adding t=
+his
+> to the igt lib so functions should have some uniformity), this function s=
+hould
+> have the same prototype and arguments as igt_sysfs_gt_path(). Also call i=
+t
+> xe_sysfs_gt_path.
 >=20
-> > + * @tile: tile number
-> > + * @path: buffer to fill with the sysfs tile path to the device
-> > + * @pathlen: length of @path buffer
-> > + *
-> > + * This finds the sysfs directory corresponding to @device and @tile.
-> > +If the tile
-> > + * specific directory is not available and tile is 0, path is filled
-> > +with sysfs
-> > + * base directory.
-> > + *
-> > + * Returns:
-> > + * The directory path, or NULL on failure.
-> > + */
-> > +char *xe_sysfs_tile_path(int xe_device, int tile, char *path, int
-> > +pathlen) {
-> > +	struct stat st;
-> > +
-> > +	if (xe_device < 0)
-> > +		return NULL;
-> > +
-> > +	if (igt_debug_on(fstat(xe_device, &st)) ||
-> igt_debug_on(!S_ISCHR(st.st_mode)))
-> > +		return NULL;
-> > +
-> > +	snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d",
-> > +		 major(st.st_rdev), minor(st.st_rdev), tile);
-> > +
-> > +	if (!access(path, F_OK))
-> > +		return path;
-> > +	if (!tile)
-> > +		return igt_sysfs_path(xe_device, path, pathlen);
+> Also because now we have drm_fd available we can find the device
+> (PVC/MTL) so we can use the simpler implementation I mentioned before:
 >=20
-> This if () is in igt_sysfs_gt_path to take care of the legacy case. There=
- is no
-> such thing for xe, so let's remove this if ().
-
-Ok.
-
+> 	switch (devid) {
+> 	case PVC:
+> 		return tile0/gt0 or tile1/gt1
+> 	default:
+> 		return tile0/gtN
+> }
 >=20
-> Fix the comment above the function too.
+> This function can be extended for future platforms as they arise. Or some=
+one
+> can write a better function to go over the dir tree. I think it should be=
+ done
+> similar to going over the directory as is done in hwmon_read/hwmon_write.
+> I don't like the implementation above but for now the approach mentioned
+> above is fine.
 >=20
-> > +	return NULL;
-> > +}
-> > +
-> > +/**
-> > + * xe_sysfs_tile_open:
-> > + * @xe_device: fd of the device
-> > + * @tile: tile number
-> > + *
-> > + * This opens the sysfs tile directory corresponding to device and
-> > +tile for use
-> > + *
-> > + * Returns:
-> > + * The directory fd, or -1 on failure.
-> > + */
-> > +int xe_sysfs_tile_open(int xe_device, int tile) {
-> > +	char path[96];
-> > +
-> > +	if (!xe_sysfs_tile_path(xe_device, tile, path, sizeof(path)))
-> > +		return -1;
-> > +
-> > +	return open(path, O_RDONLY);
-> > +}
-> > +
-> > +/**
-> > + * xe_sysfs_get_num_tiles:
-> > + * @xe_device: fd of the device
-> > + *
-> > + * Reads number of tile sysfs entries.
-> > + * Asserts for at least one tile entry.
-> > + * (see xe_sysfs_tile_path).
-> > + *
-> > + * Returns: Number of tiles.
-> > + */
-> > +int xe_sysfs_get_num_tiles(int xe_device) {
-> > +	int num_tiles =3D 0;
-> > +	char path[96];
-> > +
-> > +	while (xe_sysfs_tile_path(xe_device, num_tiles, path, sizeof(path)))
-> > +		++num_tiles;
-> > +
-> > +	igt_assert_f(num_tiles > 0, "No GT sysfs entry is found.");
-> > +
-> > +	return num_tiles;
-> > +}
+> The above means we will change set_freq()/get_freq() in xe_guc_pc.c to ta=
+ke
+> the drm_fd as the first argument rather than the sysfs fd. So there will =
+be
+> changes throught the file but better do that once so that all future IGT'=
+s can
+> follow the same pattern.
+>=20
+> Also write another function xe_sysfs_gt_open() similar to
+> igt_sysfs_gt_open() or xe_sysfs_tile_open().
+>=20
+> I want Kamil to take a look at this series too after he is back.
+>=20
 > > diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h index
-> > 5635fc690..5d584b1c7 100644
+> > 5d584b1c7..0792c644e 100644
 > > --- a/lib/igt_sysfs.h
 > > +++ b/lib/igt_sysfs.h
-> > @@ -38,6 +38,11 @@
-> >	     (dirfd__ =3D igt_sysfs_gt_open(i915__, gt__)) !=3D -1; \
-> >	     close(dirfd__), gt__++)
+> > @@ -153,6 +153,7 @@ typedef struct igt_sysfs_rw_attr {  }
+> > igt_sysfs_rw_attr_t;
 > >
-> > +#define for_each_sysfs_tile_dirfd(xe__, dirfd__, tile__) \
-> > +	for (tile__ =3D 0; \
-> > +	     (dirfd__ =3D xe_sysfs_tile_open(xe__, tile__)) !=3D -1; \
-> > +	     close(dirfd__), tile__++)
-> > +
-> >  #define i915_for_each_gt for_each_sysfs_gt_dirfd
+> >  void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw);
+> > +char *xe_gt_sysfs_path(int sysfs, int gt_id);
 > >
-> >  #define igt_sysfs_rps_write(dir, id, data, len) \  @@ -73,6 +78,8 @@
-> >  #define igt_sysfs_rps_set_boolean(dir, id, value) \
-> >	igt_sysfs_set_boolean(dir, igt_sysfs_dir_id_to_name(dir, id), value)
-> >
-> > +#define xe_for_each_tile for_each_sysfs_tile_dirfd
-> > +
-> >  enum i915_attr_id {
-> >	RPS_ACT_FREQ_MHZ,
-> >	RPS_CUR_FREQ_MHZ,
-> > @@ -150,4 +157,7 @@ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t
-> >*rw);
 > >  void igt_sysfs_engines(int xe, int engines, const char **property,
 > >		       void (*test)(int, int, const char **));
-> >
-> > +char *xe_sysfs_tile_path(int xe_device, int tile, char *path, int
-> > +pathlen); int xe_sysfs_tile_open(int xe_device, int tile); int
-> > +xe_sysfs_get_num_tiles(int xe_device);
-> >  #endif /* __IGT_SYSFS_H__ */
 > > --
 > > 2.25.1
 > >
