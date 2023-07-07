@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam04on2064.outbound.protection.outlook.com [40.107.101.64])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 497B510E546
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jul 2023 09:55:55 +0000 (UTC)
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 7 Jul 2023 05:55:43 -0400
-Message-ID: <20230707095543.34274-1-vitaly.prosyak@amd.com>
-MIME-Version: 1.0
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D196510E545
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jul 2023 10:05:44 +0000 (UTC)
+Message-ID: <10c5f0e0-c666-bbe6-d1ef-16c1f23ef09d@intel.com>
+Date: Fri, 7 Jul 2023 12:05:25 +0200
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230706060555.282757-1-zbigniew.kempczynski@intel.com>
+ <20230706060555.282757-15-zbigniew.kempczynski@intel.com>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230706060555.282757-15-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH] tests/amdgpu: add vcn decoder and encoder tests
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v2 14/16] tests/xe_ccs: Check if flatccs
+ is working with block-copy for Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,1509 +22,825 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Leo Liu <leo.liu@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+On 6.07.2023 08:05, Zbigniew Kempczyński wrote:
+> This is ported to xe copy of i915 gem_ccs test. Ported means all driver
+> dependent calls - like working on regions, binding and execution were
+> replaced by xe counterparts. I wondered to add conditionals for xe
+> in gem_ccs but this would decrease test readability so I dropped
+> this idea.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>   tests/meson.build |   1 +
+>   tests/xe/xe_ccs.c | 763 ++++++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 764 insertions(+)
+>   create mode 100644 tests/xe/xe_ccs.c
+> 
+> diff --git a/tests/meson.build b/tests/meson.build
+> index ee066b8490..9bca57a5e8 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -244,6 +244,7 @@ i915_progs = [
+>   ]
+>   
+>   xe_progs = [
+> +	'xe_ccs',
+>   	'xe_create',
+>   	'xe_compute',
+>   	'xe_dma_buf_sync',
+> diff --git a/tests/xe/xe_ccs.c b/tests/xe/xe_ccs.c
+> new file mode 100644
+> index 0000000000..e6bb29a5ed
+> --- /dev/null
+> +++ b/tests/xe/xe_ccs.c
+> @@ -0,0 +1,763 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Intel Corporation
+> + */
+> +
+> +#include <errno.h>
+> +#include <glib.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/time.h>
+> +#include <malloc.h>
+> +#include "drm.h"
+> +#include "igt.h"
+> +#include "igt_syncobj.h"
+> +#include "intel_blt.h"
+> +#include "intel_mocs.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_util.h"
+> +/**
+> + * TEST: xe ccs
+> + * Description: Exercise gen12 blitter with and without flatccs compression on Xe
+> + * Run type: FULL
+> + *
+> + * SUBTEST: block-copy-compressed
+> + * Description: Check block-copy flatccs compressed blit
+> + *
+> + * SUBTEST: block-copy-uncompressed
+> + * Description: Check block-copy uncompressed blit
+> + *
+> + * SUBTEST: block-multicopy-compressed
+> + * Description: Check block-multicopy flatccs compressed blit
+> + *
+> + * SUBTEST: block-multicopy-inplace
+> + * Description: Check block-multicopy flatccs inplace decompression blit
+> + *
+> + * SUBTEST: ctrl-surf-copy
+> + * Description: Check flatccs data can be copied from/to surface
+> + *
+> + * SUBTEST: ctrl-surf-copy-new-ctx
+> + * Description: Check flatccs data are physically tagged and visible in vm
+> + *
+> + * SUBTEST: suspend-resume
+> + * Description: Check flatccs data persists after suspend / resume (S0)
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("Exercise gen12 blitter with and without flatccs compression on Xe");
+> +
+> +static struct param {
+> +	int compression_format;
+> +	int tiling;
+> +	bool write_png;
+> +	bool print_bb;
+> +	bool print_surface_info;
+> +	int width;
+> +	int height;
+> +} param = {
+> +	.compression_format = 0,
+> +	.tiling = -1,
+> +	.write_png = false,
+> +	.print_bb = false,
+> +	.print_surface_info = false,
+> +	.width = 512,
+> +	.height = 512,
+> +};
+> +
+> +struct test_config {
+> +	bool compression;
+> +	bool inplace;
+> +	bool surfcopy;
+> +	bool new_ctx;
+> +	bool suspend_resume;
+> +};
+> +
+> +static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
+> +			    uint32_t handle, uint32_t region, uint64_t size,
+> +			    uint8_t mocs, enum blt_access_type access_type)
+> +{
+> +	obj->handle = handle;
+> +	obj->region = region;
+> +	obj->size = size;
+> +	obj->mocs = mocs;
+> +	obj->access_type = access_type;
+> +}
+> +
+> +#define PRINT_SURFACE_INFO(name, obj) do { \
+> +	if (param.print_surface_info) \
+> +		blt_surface_info((name), (obj)); } while (0)
+> +
+> +#define WRITE_PNG(fd, id, name, obj, w, h) do { \
+> +	if (param.write_png) \
+> +		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
+> +
+> +static int compare_nxn(const struct blt_copy_object *surf1,
+> +		       const struct blt_copy_object *surf2,
+> +		       int xsize, int ysize, int bx, int by)
 
-Ported and refactored drmlib vcn_tests.c and  the following is done:
+I think that you could avoid some repetition by creating a small lib 
+with blt copy test helpers. For example, we have 4 definitions of 
+WRITE_PNG, and it would be good to have just one and call it in four 
+separate tests.
 
-1. Remove everywhere global variables.
-2. Reuse common functions from amd_mmd_shared.h
-3. Properly formatted code to meet igt guidelines.
+> +{
+> +	int x, y, corrupted;
+> +	uint32_t pos, px1, px2;
+> +
+> +	corrupted = 0;
+> +	for (y = 0; y < ysize; y++) {
+> +		for (x = 0; x < xsize; x++) {
+> +			pos = bx * xsize + by * ysize * surf1->pitch / 4;
+> +			pos += x + y * surf1->pitch / 4;
+> +			px1 = surf1->ptr[pos];
+> +			px2 = surf2->ptr[pos];
+> +			if (px1 != px2)
+> +				corrupted++;
+> +		}
+> +	}
+> +
+> +	return corrupted;
+> +}
+> +
+> +static void dump_corruption_info(const struct blt_copy_object *surf1,
+> +				 const struct blt_copy_object *surf2)
+> +{
+> +	const int xsize = 8, ysize = 8;
+> +	int w, h, bx, by, corrupted;
+> +
+> +	igt_assert(surf1->x1 == surf2->x1 && surf1->x2 == surf2->x2);
+> +	igt_assert(surf1->y1 == surf2->y1 && surf1->y2 == surf2->y2);
+> +	w = surf1->x2;
+> +	h = surf1->y2;
+> +
+> +	igt_info("dump corruption - width: %d, height: %d, sizex: %x, sizey: %x\n",
+> +		 surf1->x2, surf1->y2, xsize, ysize);
+> +
+> +	for (by = 0; by < h / ysize; by++) {
+> +		for (bx = 0; bx < w / xsize; bx++) {
+> +			corrupted = compare_nxn(surf1, surf2, xsize, ysize, bx, by);
+> +			if (corrupted == 0)
+> +				igt_info(".");
+> +			else
+> +				igt_info("%c", '0' + corrupted);
+> +		}
+> +		igt_info("\n");
+> +	}
+> +}
+> +
+> +static void surf_copy(int xe,
+> +		      intel_ctx_t *ctx,
+> +		      uint64_t ahnd,
+> +		      const struct blt_copy_object *src,
+> +		      const struct blt_copy_object *mid,
+> +		      const struct blt_copy_object *dst,
+> +		      int run_id, bool suspend_resume)
+> +{
+> +	struct blt_copy_data blt = {};
+> +	struct blt_block_copy_data_ext ext = {};
+> +	struct blt_ctrl_surf_copy_data surf = {};
+> +	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
+> +	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
+> +	uint32_t *ccscopy;
+> +	uint8_t uc_mocs = intel_get_uc_mocs(xe);
+> +	uint32_t sysmem = system_memory(xe);
+> +	int result;
+> +
+> +	igt_assert(mid->compression);
+> +	ccscopy = (uint32_t *) malloc(ccssize);
+> +	ccs = xe_bo_create_flags(xe, 0, ccssize, sysmem);
+> +	ccs2 = xe_bo_create_flags(xe, 0, ccssize, sysmem);
+> +
+> +	blt_ctrl_surf_copy_init(xe, &surf);
+> +	surf.print_bb = param.print_bb;
+> +	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
+> +			uc_mocs, BLT_INDIRECT_ACCESS);
+> +	set_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs, DIRECT_ACCESS);
+> +	bb_size = xe_get_default_alignment(xe);
+> +	bb1 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
+> +	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
+> +	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
+> +	intel_ctx_xe_sync(ctx, true);
+> +
+> +	ccsmap = xe_bo_map(xe, ccs, surf.dst.size);
+> +	memcpy(ccscopy, ccsmap, ccssize);
+> +
+> +	if (suspend_resume) {
+> +		char *orig, *orig2, *newsum, *newsum2;
+> +
+> +		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
+> +						   (void *)ccsmap, surf.dst.size);
+> +		orig2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
+> +						    (void *)mid->ptr, mid->size);
+> +
+> +		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+> +
+> +		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
 
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Acked-by: Leo Liu <leo.liu@amd.com>
----
- tests/amdgpu/amd_vcn.c   | 1465 ++++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build |    1 +
- 2 files changed, 1466 insertions(+)
- create mode 100644 tests/amdgpu/amd_vcn.c
+Shouldn't this be sysmem instead of REGION_SMEM?
 
-diff --git a/tests/amdgpu/amd_vcn.c b/tests/amdgpu/amd_vcn.c
-new file mode 100644
-index 000000000..b0601702b
---- /dev/null
-+++ b/tests/amdgpu/amd_vcn.c
-@@ -0,0 +1,1465 @@
-+// SPDX-License-Identifier: MIT
-+// Copyright 2023 Advanced Micro Devices, Inc.
-+// Copyright 2014 Advanced Micro Devices, Inc.
-+
-+#include "lib/amdgpu/amd_mmd_shared.h"
-+
-+#define DECODE_CMD_MSG_BUFFER                              0x00000000
-+#define DECODE_CMD_DPB_BUFFER                              0x00000001
-+#define DECODE_CMD_DECODING_TARGET_BUFFER                  0x00000002
-+#define DECODE_CMD_FEEDBACK_BUFFER                         0x00000003
-+#define DECODE_CMD_PROB_TBL_BUFFER                         0x00000004
-+#define DECODE_CMD_SESSION_CONTEXT_BUFFER                  0x00000005
-+#define DECODE_CMD_BITSTREAM_BUFFER                        0x00000100
-+#define DECODE_CMD_IT_SCALING_TABLE_BUFFER                 0x00000204
-+#define DECODE_CMD_CONTEXT_BUFFER                          0x00000206
-+
-+#define DECODE_IB_PARAM_DECODE_BUFFER                      (0x00000001)
-+
-+#define DECODE_CMDBUF_FLAGS_MSG_BUFFER                     (0x00000001)
-+#define DECODE_CMDBUF_FLAGS_DPB_BUFFER                     (0x00000002)
-+#define DECODE_CMDBUF_FLAGS_BITSTREAM_BUFFER               (0x00000004)
-+#define DECODE_CMDBUF_FLAGS_DECODING_TARGET_BUFFER         (0x00000008)
-+#define DECODE_CMDBUF_FLAGS_FEEDBACK_BUFFER                (0x00000010)
-+#define DECODE_CMDBUF_FLAGS_IT_SCALING_BUFFER              (0x00000200)
-+#define DECODE_CMDBUF_FLAGS_CONTEXT_BUFFER                 (0x00000800)
-+#define DECODE_CMDBUF_FLAGS_PROB_TBL_BUFFER                (0x00001000)
-+#define DECODE_CMDBUF_FLAGS_SESSION_CONTEXT_BUFFER         (0x00100000)
-+
-+#define H264_NAL_TYPE_NON_IDR_SLICE 1
-+#define H264_NAL_TYPE_DP_A_SLICE 2
-+#define H264_NAL_TYPE_DP_B_SLICE 3
-+#define H264_NAL_TYPE_DP_C_SLICE 0x4
-+#define H264_NAL_TYPE_IDR_SLICE 0x5
-+#define H264_NAL_TYPE_SEI 0x6
-+#define H264_NAL_TYPE_SEQ_PARAM 0x7
-+#define H264_NAL_TYPE_PIC_PARAM 0x8
-+#define H264_NAL_TYPE_ACCESS_UNIT 0x9
-+#define H264_NAL_TYPE_END_OF_SEQ 0xa
-+#define H264_NAL_TYPE_END_OF_STREAM 0xb
-+#define H264_NAL_TYPE_FILLER_DATA 0xc
-+#define H264_NAL_TYPE_SEQ_EXTENSION 0xd
-+
-+#define H264_START_CODE 0x000001
-+
-+
-+struct rvcn_decode_buffer {
-+	unsigned int valid_buf_flag;
-+	unsigned int msg_buffer_address_hi;
-+	unsigned int msg_buffer_address_lo;
-+	unsigned int dpb_buffer_address_hi;
-+	unsigned int dpb_buffer_address_lo;
-+	unsigned int target_buffer_address_hi;
-+	unsigned int target_buffer_address_lo;
-+	unsigned int session_contex_buffer_address_hi;
-+	unsigned int session_contex_buffer_address_lo;
-+	unsigned int bitstream_buffer_address_hi;
-+	unsigned int bitstream_buffer_address_lo;
-+	unsigned int context_buffer_address_hi;
-+	unsigned int context_buffer_address_lo;
-+	unsigned int feedback_buffer_address_hi;
-+	unsigned int feedback_buffer_address_lo;
-+	unsigned int luma_hist_buffer_address_hi;
-+	unsigned int luma_hist_buffer_address_lo;
-+	unsigned int prob_tbl_buffer_address_hi;
-+	unsigned int prob_tbl_buffer_address_lo;
-+	unsigned int sclr_coeff_buffer_address_hi;
-+	unsigned int sclr_coeff_buffer_address_lo;
-+	unsigned int it_sclr_table_buffer_address_hi;
-+	unsigned int it_sclr_table_buffer_address_lo;
-+	unsigned int sclr_target_buffer_address_hi;
-+	unsigned int sclr_target_buffer_address_lo;
-+	unsigned int cenc_size_info_buffer_address_hi;
-+	unsigned int cenc_size_info_buffer_address_lo;
-+	unsigned int mpeg2_pic_param_buffer_address_hi;
-+	unsigned int mpeg2_pic_param_buffer_address_lo;
-+	unsigned int mpeg2_mb_control_buffer_address_hi;
-+	unsigned int mpeg2_mb_control_buffer_address_lo;
-+	unsigned int mpeg2_idct_coeff_buffer_address_hi;
-+	unsigned int mpeg2_idct_coeff_buffer_address_lo;
-+};
-+
-+struct rvcn_decode_ib_package {
-+	unsigned int package_size;
-+	unsigned int package_type;
-+};
-+
-+
-+struct amdgpu_vcn_reg {
-+	uint32_t data0;
-+	uint32_t data1;
-+	uint32_t cmd;
-+	uint32_t nop;
-+	uint32_t cntl;
-+};
-+
-+struct bufferInfo {
-+	uint32_t numOfBitsInBuffer;
-+	const uint8_t *decBuffer;
-+	uint8_t decData;
-+	uint32_t decBufferSize;
-+	const uint8_t *end;
-+};
-+
-+struct h264_decode {
-+	uint8_t profile;
-+	uint8_t level_idc;
-+	uint8_t nal_ref_idc;
-+	uint8_t nal_unit_type;
-+	uint32_t pic_width, pic_height;
-+	uint32_t slice_type;
-+};
-+
-+struct vcn_context {
-+	struct amdgpu_mmd_bo enc_buf;
-+	struct amdgpu_mmd_bo cpb_buf;
-+	uint32_t enc_task_id;
-+	uint32_t *ib_checksum;
-+	uint32_t *ib_size_in_dw;
-+	uint32_t gWidth, gHeight, gSliceType;
-+	struct rvcn_decode_buffer *decode_buffer;
-+};
-+
-+static struct amdgpu_vcn_reg reg[] = {
-+	{0x81c4, 0x81c5, 0x81c3, 0x81ff, 0x81c6},
-+	{0x504, 0x505, 0x503, 0x53f, 0x506},
-+	{0x10, 0x11, 0xf, 0x29, 0x26d},
-+};
-+
-+static uint32_t
-+bs_read_u(struct bufferInfo *bufinfo, int n);
-+
-+static uint32_t
-+bs_read_ue(struct bufferInfo *bufinfo);
-+
-+static bool
-+is_vcn_tests_enable(amdgpu_device_handle device_handle, struct mmd_context *context)
-+{
-+	struct drm_amdgpu_info_hw_ip info;
-+	int r;
-+
-+	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VCN_ENC, 0, &info);
-+
-+	if (r)
-+		return false;
-+
-+	context->vcn_ip_version_major = info.hw_ip_version_major;
-+	context->vcn_ip_version_minor = info.hw_ip_version_minor;
-+	context->enc_ring = !!info.available_rings;
-+		/* in vcn 4.0 it re-uses encoding queue as unified queue */
-+	if (context->vcn_ip_version_major >= 4) {
-+		context->vcn_unified_ring = true;
-+		context->vcn_dec_sw_ring = true;
-+		context->dec_ring = context->enc_ring;
-+	} else {
-+		r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VCN_DEC, 0, &info);
-+		context->dec_ring = !!info.available_rings;
-+	}
-+
-+	if (!(context->dec_ring || context->enc_ring) ||
-+		(context->family_id < AMDGPU_FAMILY_RV &&
-+		(context->family_id == AMDGPU_FAMILY_AI &&
-+		(context->chip_id - context->chip_rev) < 0x32))) { /* Arcturus */
-+		igt_info("The ASIC does NOT support VCN, vcn test is disabled\n");
-+		return false;
-+	}
-+
-+	if (context->family_id == AMDGPU_FAMILY_AI)
-+		context->enc_ring  = false;
-+
-+	if (!context->dec_ring) {
-+		igt_info("VCN Tests DEC create disable");
-+		igt_info("VCN Tests DEC decode disable");
-+		igt_info("VCN Tests DEC destroy disable");
-+	}
-+
-+	if (!context->enc_ring) {
-+		igt_info("VCN Tests ENC create disable");
-+		igt_info("VCN Tests ENC encode disable");
-+		igt_info("VCN Tests ENC destroy disable");
-+	}
-+
-+	if (context->vcn_ip_version_major == 1) {
-+		context->vcn_reg_index = 0;
-+	} else if (context->vcn_ip_version_major == 2 && context->vcn_ip_version_minor == 0) {
-+		context->vcn_reg_index = 1;
-+	} else if ((context->vcn_ip_version_major == 2 && context->vcn_ip_version_minor >= 5) ||
-+			context->vcn_ip_version_major == 3) {
-+		context->vcn_reg_index = 2;
-+	}
-+
-+	return true;
-+}
-+
-+static void
-+amdgpu_cs_sq_head(struct vcn_context *v_context, uint32_t *base, int *offset, bool enc)
-+{
-+	/* signature */
-+	*(base + (*offset)++) = 0x00000010;
-+	*(base + (*offset)++) = 0x30000002;
-+	v_context->ib_checksum = base + (*offset)++;
-+	v_context->ib_size_in_dw = base + (*offset)++;
-+
-+	/* engine info */
-+	*(base + (*offset)++) = 0x00000010;
-+	*(base + (*offset)++) = 0x30000001;
-+	*(base + (*offset)++) = enc ? 2 : 3;
-+	*(base + (*offset)++) = 0x00000000;
-+}
-+
-+static void
-+amdgpu_cs_sq_ib_tail(struct vcn_context *v_context, uint32_t *end)
-+{
-+	uint32_t size_in_dw;
-+	uint32_t checksum = 0;
-+
-+	/* if the pointers are invalid, no need to process */
-+	if (v_context->ib_checksum == NULL || v_context->ib_size_in_dw == NULL)
-+		return;
-+
-+	size_in_dw = end - v_context->ib_size_in_dw - 1;
-+	*v_context->ib_size_in_dw = size_in_dw;
-+	*(v_context->ib_size_in_dw + 4) = size_in_dw * sizeof(uint32_t);
-+
-+	for (int i = 0; i < size_in_dw; i++)
-+		checksum += *(v_context->ib_checksum + 2 + i);
-+
-+	*v_context->ib_checksum = checksum;
-+
-+	v_context->ib_checksum = NULL;
-+	v_context->ib_size_in_dw = NULL;
-+}
-+
-+static void
-+vcn_dec_cmd(struct mmd_context *context, struct vcn_context *v_context,
-+		uint64_t addr, unsigned int cmd, int *idx)
-+{
-+	if (context->vcn_dec_sw_ring == false) {
-+		context->ib_cpu[(*idx)++] = reg[context->vcn_reg_index].data0;
-+		context->ib_cpu[(*idx)++] = addr;
-+		context->ib_cpu[(*idx)++] = reg[context->vcn_reg_index].data1;
-+		context->ib_cpu[(*idx)++] = addr >> 32;
-+		context->ib_cpu[(*idx)++] = reg[context->vcn_reg_index].cmd;
-+		context->ib_cpu[(*idx)++] = cmd << 1;
-+		return;
-+	}
-+
-+	/* Support decode software ring message */
-+	if (!(*idx)) {
-+		struct rvcn_decode_ib_package *ib_header;
-+
-+		if (context->vcn_unified_ring)
-+			amdgpu_cs_sq_head(v_context, context->ib_cpu, idx, false);
-+
-+		ib_header = (struct rvcn_decode_ib_package *)&context->ib_cpu[*idx];
-+		ib_header->package_size = sizeof(struct rvcn_decode_buffer) +
-+			sizeof(struct rvcn_decode_ib_package);
-+
-+		(*idx)++;
-+		ib_header->package_type = (DECODE_IB_PARAM_DECODE_BUFFER);
-+		(*idx)++;
-+
-+		v_context->decode_buffer = (struct rvcn_decode_buffer *)&(context->ib_cpu[*idx]);
-+		*idx += sizeof(struct rvcn_decode_buffer) / 4;
-+		memset(v_context->decode_buffer, 0, sizeof(struct rvcn_decode_buffer));
-+	}
-+
-+	switch (cmd) {
-+	case DECODE_CMD_MSG_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= DECODE_CMDBUF_FLAGS_MSG_BUFFER;
-+		v_context->decode_buffer->msg_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->msg_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_DPB_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_DPB_BUFFER);
-+		v_context->decode_buffer->dpb_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->dpb_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_DECODING_TARGET_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_DECODING_TARGET_BUFFER);
-+		v_context->decode_buffer->target_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->target_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_FEEDBACK_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_FEEDBACK_BUFFER);
-+		v_context->decode_buffer->feedback_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->feedback_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_PROB_TBL_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_PROB_TBL_BUFFER);
-+		v_context->decode_buffer->prob_tbl_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->prob_tbl_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_SESSION_CONTEXT_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_SESSION_CONTEXT_BUFFER);
-+		v_context->decode_buffer->session_contex_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->session_contex_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_BITSTREAM_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_BITSTREAM_BUFFER);
-+		v_context->decode_buffer->bitstream_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->bitstream_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_IT_SCALING_TABLE_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_IT_SCALING_BUFFER);
-+		v_context->decode_buffer->it_sclr_table_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->it_sclr_table_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_CONTEXT_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_CONTEXT_BUFFER);
-+		v_context->decode_buffer->context_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->context_buffer_address_lo = (addr);
-+	break;
-+	default:
-+		igt_info("Not Supported!\n");
-+	}
-+}
-+
-+static void
-+amdgpu_cs_vcn_dec_create(amdgpu_device_handle device_handle, struct mmd_context *context,
-+		struct vcn_context *v_context)
-+{
-+	struct amdgpu_mmd_bo msg_buf;
-+	unsigned int ip;
-+	int len, r;
-+
-+	context->num_resources  = 0;
-+	alloc_resource(device_handle, &msg_buf, 4096, AMDGPU_GEM_DOMAIN_GTT);
-+	context->resources[context->num_resources++] = msg_buf.handle;
-+	context->resources[context->num_resources++] = context->ib_handle;
-+	r = amdgpu_bo_cpu_map(msg_buf.handle, (void **)&msg_buf.ptr);
-+	igt_assert_eq(r, 0);
-+
-+	memset(msg_buf.ptr, 0, 4096);
-+	memcpy(msg_buf.ptr, vcn_dec_create_msg, sizeof(vcn_dec_create_msg));
-+
-+	len = 0;
-+	if (context->vcn_dec_sw_ring == true)
-+		vcn_dec_cmd(context, v_context, msg_buf.addr, 0, &len);
-+	else {
-+		context->ib_cpu[len++] = reg[context->vcn_reg_index].data0;
-+		context->ib_cpu[len++] = msg_buf.addr;
-+		context->ib_cpu[len++] = reg[context->vcn_reg_index].data1;
-+		context->ib_cpu[len++] = msg_buf.addr >> 32;
-+		context->ib_cpu[len++] = reg[context->vcn_reg_index].cmd;
-+		context->ib_cpu[len++] = 0;
-+		for (; len % 16; ) {
-+			context->ib_cpu[len++] = reg[context->vcn_reg_index].nop;
-+			context->ib_cpu[len++] = 0;
-+		}
-+	}
-+
-+	if (context->vcn_unified_ring) {
-+		amdgpu_cs_sq_ib_tail(v_context, context->ib_cpu + len);
-+		ip = AMDGPU_HW_IP_VCN_ENC;
-+	} else
-+		ip = AMDGPU_HW_IP_VCN_DEC;
-+
-+	r = submit(device_handle, context, len, ip);
-+
-+	igt_assert_eq(r, 0);
-+
-+	free_resource(&msg_buf);
-+}
-+
-+static void
-+amdgpu_cs_vcn_dec_decode(amdgpu_device_handle device_handle, struct mmd_context *context,
-+		struct vcn_context *v_context)
-+{
-+	const unsigned int dpb_size = 15923584, dt_size = 737280;
-+	uint64_t msg_addr, fb_addr, bs_addr, dpb_addr, ctx_addr, dt_addr, it_addr, sum;
-+	struct amdgpu_mmd_bo dec_buf;
-+	int size, len, i, r;
-+	unsigned int ip;
-+	uint8_t *dec;
-+
-+	size = 4*1024; /* msg */
-+	size += 4*1024; /* fb */
-+	size += 4096; /*it_scaling_table*/
-+	size += ALIGN(sizeof(uvd_bitstream), 4*1024);
-+	size += ALIGN(dpb_size, 4*1024);
-+	size += ALIGN(dt_size, 4*1024);
-+
-+	context->num_resources = 0;
-+	alloc_resource(device_handle, &dec_buf, size, AMDGPU_GEM_DOMAIN_GTT);
-+	context->resources[context->num_resources++] = dec_buf.handle;
-+	context->resources[context->num_resources++] = context->ib_handle;
-+
-+	r = amdgpu_bo_cpu_map(dec_buf.handle, (void **)&dec_buf.ptr);
-+	dec = dec_buf.ptr;
-+
-+	igt_assert_eq(r, 0);
-+	memset(dec_buf.ptr, 0, size);
-+	memcpy(dec_buf.ptr, vcn_dec_decode_msg, sizeof(vcn_dec_decode_msg));
-+	memcpy(dec_buf.ptr + sizeof(vcn_dec_decode_msg),
-+			avc_decode_msg, sizeof(avc_decode_msg));
-+
-+	dec += 4*1024;
-+	memcpy(dec, feedback_msg, sizeof(feedback_msg));
-+	dec += 4*1024;
-+	memcpy(dec, uvd_it_scaling_table, sizeof(uvd_it_scaling_table));
-+
-+	dec += 4*1024;
-+	memcpy(dec, uvd_bitstream, sizeof(uvd_bitstream));
-+
-+	dec += ALIGN(sizeof(uvd_bitstream), 4*1024);
-+
-+	dec += ALIGN(dpb_size, 4*1024);
-+
-+	msg_addr = dec_buf.addr;
-+	fb_addr = msg_addr + 4*1024;
-+	it_addr = fb_addr + 4*1024;
-+	bs_addr = it_addr + 4*1024;
-+	dpb_addr = ALIGN(bs_addr + sizeof(uvd_bitstream), 4*1024);
-+	ctx_addr = ALIGN(dpb_addr + 0x006B9400, 4*1024);
-+	dt_addr = ALIGN(dpb_addr + dpb_size, 4*1024);
-+
-+	len = 0;
-+	vcn_dec_cmd(context, v_context, msg_addr, 0x0, &len);
-+	vcn_dec_cmd(context, v_context, dpb_addr, 0x1, &len);
-+	vcn_dec_cmd(context, v_context, dt_addr, 0x2, &len);
-+	vcn_dec_cmd(context, v_context, fb_addr, 0x3, &len);
-+	vcn_dec_cmd(context, v_context, bs_addr, 0x100, &len);
-+	vcn_dec_cmd(context, v_context, it_addr, 0x204, &len);
-+	vcn_dec_cmd(context, v_context, ctx_addr, 0x206, &len);
-+
-+	if (context->vcn_dec_sw_ring == false) {
-+		context->ib_cpu[len++] = reg[context->vcn_reg_index].cntl;
-+		context->ib_cpu[len++] = 0x1;
-+		for (; len % 16; ) {
-+			context->ib_cpu[len++] = reg[context->vcn_reg_index].nop;
-+			context->ib_cpu[len++] = 0;
-+		}
-+	}
-+
-+	if (context->vcn_unified_ring) {
-+		amdgpu_cs_sq_ib_tail(v_context, context->ib_cpu + len);
-+		ip = AMDGPU_HW_IP_VCN_ENC;
-+	} else
-+		ip = AMDGPU_HW_IP_VCN_DEC;
-+
-+	r = submit(device_handle, context, len, ip);
-+	igt_assert_eq(r, 0);
-+
-+	for (i = 0, sum = 0; i < dt_size; ++i)
-+		sum += dec[i];
-+
-+	igt_assert_eq(sum, SUM_DECODE);
-+
-+	free_resource(&dec_buf);
-+}
-+
-+static void
-+amdgpu_cs_vcn_dec_destroy(amdgpu_device_handle device_handle,
-+		struct mmd_context *context, struct vcn_context *v_context)
-+{
-+	struct amdgpu_mmd_bo msg_buf;
-+	unsigned int ip;
-+	int len, r;
-+
-+	context->num_resources = 0;
-+	alloc_resource(device_handle, &msg_buf, 1024, AMDGPU_GEM_DOMAIN_GTT);
-+	context->resources[context->num_resources++] = msg_buf.handle;
-+	context->resources[context->num_resources++] = context->ib_handle;
-+
-+	r = amdgpu_bo_cpu_map(msg_buf.handle, (void **)&msg_buf.ptr);
-+	igt_assert_eq(r, 0);
-+
-+	memset(msg_buf.ptr, 0, 1024);
-+	memcpy(msg_buf.ptr, vcn_dec_destroy_msg, sizeof(vcn_dec_destroy_msg));
-+
-+	len = 0;
-+	if (context->vcn_dec_sw_ring == true)
-+		vcn_dec_cmd(context, v_context, msg_buf.addr, 0, &len);
-+	else {
-+		context->ib_cpu[len++] = reg[context->vcn_reg_index].data0;
-+		context->ib_cpu[len++] = msg_buf.addr;
-+		context->ib_cpu[len++] = reg[context->vcn_reg_index].data1;
-+		context->ib_cpu[len++] = msg_buf.addr >> 32;
-+		context->ib_cpu[len++] = reg[context->vcn_reg_index].cmd;
-+		context->ib_cpu[len++] = 0;
-+		for (; len % 16; ) {
-+			context->ib_cpu[len++] = reg[context->vcn_reg_index].nop;
-+			context->ib_cpu[len++] = 0;
-+		}
-+	}
-+
-+	if (context->vcn_unified_ring) {
-+		amdgpu_cs_sq_ib_tail(v_context, context->ib_cpu + len);
-+		ip = AMDGPU_HW_IP_VCN_ENC;
-+	} else
-+		ip = AMDGPU_HW_IP_VCN_DEC;
-+
-+	r = submit(device_handle, context, len, ip);
-+	igt_assert_eq(r, 0);
-+
-+	free_resource(&msg_buf);
-+}
-+
-+static void
-+amdgpu_cs_vcn_enc_create(amdgpu_device_handle device_handle,
-+		struct mmd_context *context, struct vcn_context *v_context)
-+{
-+	int len, r;
-+	uint32_t *p_task_size = NULL;
-+	uint32_t task_offset = 0, st_offset;
-+	uint32_t *st_size = NULL;
-+	unsigned int width = 160, height = 128, buf_size;
-+	uint32_t fw_maj = 1, fw_min = 9;
-+
-+	if (context->vcn_ip_version_major == 2) {
-+		fw_maj = 1;
-+		fw_min = 1;
-+	} else if (context->vcn_ip_version_major == 3) {
-+		fw_maj = 1;
-+		fw_min = 0;
-+	}
-+
-+	v_context->gWidth = width;
-+	v_context->gHeight = height;
-+	buf_size = ALIGN(width, 256) * ALIGN(height, 32) * 3 / 2;
-+	v_context->enc_task_id = 1;
-+
-+	context->num_resources = 0;
-+	alloc_resource(device_handle, &v_context->enc_buf, 128 * 1024, AMDGPU_GEM_DOMAIN_GTT);
-+	alloc_resource(device_handle, &v_context->cpb_buf, buf_size * 2, AMDGPU_GEM_DOMAIN_GTT);
-+	context->resources[context->num_resources++] = v_context->enc_buf.handle;
-+	context->resources[context->num_resources++] = v_context->cpb_buf.handle;
-+	context->resources[context->num_resources++] = context->ib_handle;
-+
-+	r = amdgpu_bo_cpu_map(v_context->enc_buf.handle, (void **)&v_context->enc_buf.ptr);
-+	memset(v_context->enc_buf.ptr, 0, 128 * 1024);
-+	r = amdgpu_bo_cpu_unmap(v_context->enc_buf.handle);
-+
-+	r = amdgpu_bo_cpu_map(v_context->cpb_buf.handle, (void **)&v_context->enc_buf.ptr);
-+	memset(v_context->enc_buf.ptr, 0, buf_size * 2);
-+	r = amdgpu_bo_cpu_unmap(v_context->cpb_buf.handle);
-+
-+	len = 0;
-+
-+	if (context->vcn_unified_ring)
-+		amdgpu_cs_sq_head(v_context, context->ib_cpu, &len, true);
-+
-+	/* session info */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000001;	/* RENCODE_IB_PARAM_SESSION_INFO */
-+	context->ib_cpu[len++] = ((fw_maj << 16) | (fw_min << 0));
-+	context->ib_cpu[len++] = v_context->enc_buf.addr >> 32;
-+	context->ib_cpu[len++] = v_context->enc_buf.addr;
-+	context->ib_cpu[len++] = 1;	/* RENCODE_ENGINE_TYPE_ENCODE; */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* task info */
-+	task_offset = len;
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000002;	/* RENCODE_IB_PARAM_TASK_INFO */
-+	p_task_size = &context->ib_cpu[len++];
-+	context->ib_cpu[len++] = v_context->enc_task_id++;	/* task_id */
-+	context->ib_cpu[len++] = 0;	/* feedback */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* op init */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x01000001;	/* RENCODE_IB_OP_INITIALIZE */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* session_init */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000003;	/* RENCODE_IB_PARAM_SESSION_INIT */
-+	context->ib_cpu[len++] = 1;	/* RENCODE_ENCODE_STANDARD_H264 */
-+	context->ib_cpu[len++] = width;
-+	context->ib_cpu[len++] = height;
-+	context->ib_cpu[len++] = 0;
-+	context->ib_cpu[len++] = 0;
-+	context->ib_cpu[len++] = 0;	/* pre encode mode */
-+	context->ib_cpu[len++] = 0;	/* chroma enabled : false */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* slice control */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00200001;	/* RENCODE_H264_IB_PARAM_SLICE_CONTROL */
-+	context->ib_cpu[len++] = 0;	/* RENCODE_H264_SLICE_CONTROL_MODE_FIXED_MBS */
-+	context->ib_cpu[len++] = ALIGN(width, 16) / 16 * ALIGN(height, 16) / 16;
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* enc spec misc */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00200002;	/* RENCODE_H264_IB_PARAM_SPEC_MISC */
-+	context->ib_cpu[len++] = 0;	/* constrained intra pred flag */
-+	context->ib_cpu[len++] = 0;	/* cabac enable */
-+	context->ib_cpu[len++] = 0;	/* cabac init idc */
-+	context->ib_cpu[len++] = 1;	/* half pel enabled */
-+	context->ib_cpu[len++] = 1;	/* quarter pel enabled */
-+	context->ib_cpu[len++] = 100;	/* BASELINE profile */
-+	context->ib_cpu[len++] = 11;	/* level */
-+	if (context->vcn_ip_version_major == 3) {
-+		context->ib_cpu[len++] = 0;	/* b_picture_enabled */
-+		context->ib_cpu[len++] = 0;	/* weighted_bipred_idc */
-+	}
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* deblocking filter */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00200004;	/* RENCODE_H264_IB_PARAM_DEBLOCKING_FILTER */
-+	context->ib_cpu[len++] = 0;	/* disable deblocking filter idc */
-+	context->ib_cpu[len++] = 0;	/* alpha c0 offset */
-+	context->ib_cpu[len++] = 0;	/* tc offset */
-+	context->ib_cpu[len++] = 0;	/* cb offset */
-+	context->ib_cpu[len++] = 0;	/* cr offset */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* layer control */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000004;	/* RENCODE_IB_PARAM_LAYER_CONTROL */
-+	context->ib_cpu[len++] = 1;	/* max temporal layer */
-+	context->ib_cpu[len++] = 1;	/* no of temporal layer */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* rc_session init */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000006;	/* RENCODE_IB_PARAM_RATE_CONTROL_SESSION_INIT */
-+	context->ib_cpu[len++] = 0;	/* rate control */
-+	context->ib_cpu[len++] = 48;	/* vbv buffer level */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* quality params */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000009;	/* RENCODE_IB_PARAM_QUALITY_PARAMS */
-+	context->ib_cpu[len++] = 0;	/* vbaq mode */
-+	context->ib_cpu[len++] = 0;	/* scene change sensitivity */
-+	context->ib_cpu[len++] = 0;	/* scene change min idr interval */
-+	context->ib_cpu[len++] = 0;
-+	if (context->vcn_ip_version_major == 3)
-+		context->ib_cpu[len++] = 0;
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* layer select */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000005;	/* RENCODE_IB_PARAM_LAYER_SELECT */
-+	context->ib_cpu[len++] = 0;	/* temporal layer */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* rc layer init */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000007;	/* RENCODE_IB_PARAM_RATE_CONTROL_LAYER_INIT */
-+	context->ib_cpu[len++] = 0;
-+	context->ib_cpu[len++] = 0;
-+	context->ib_cpu[len++] = 25;
-+	context->ib_cpu[len++] = 1;
-+	context->ib_cpu[len++] = 0x01312d00;
-+	context->ib_cpu[len++] = 0;
-+	context->ib_cpu[len++] = 0;
-+	context->ib_cpu[len++] = 0;
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* layer select */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000005;	/* RENCODE_IB_PARAM_LAYER_SELECT */
-+	context->ib_cpu[len++] = 0;	/* temporal layer */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* rc per pic */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000008;	/* RENCODE_IB_PARAM_RATE_CONTROL_PER_PICTURE */
-+	context->ib_cpu[len++] = 20;
-+	context->ib_cpu[len++] = 0;
-+	context->ib_cpu[len++] = 51;
-+	context->ib_cpu[len++] = 0;
-+	context->ib_cpu[len++] = 1;
-+	context->ib_cpu[len++] = 0;
-+	context->ib_cpu[len++] = 1;
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* op init rc */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x01000004;	/* RENCODE_IB_OP_INIT_RC */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* op init rc vbv */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x01000005;	/* RENCODE_IB_OP_INIT_RC_VBV_BUFFER_LEVEL */
-+	*st_size = (len - st_offset) * 4;
-+
-+	*p_task_size = (len - task_offset) * 4;
-+
-+	if (context->vcn_unified_ring)
-+		amdgpu_cs_sq_ib_tail(v_context, context->ib_cpu + len);
-+
-+	r = submit(device_handle, context, len, AMDGPU_HW_IP_VCN_ENC);
-+	igt_assert_eq(r, 0);
-+}
-+
-+static int32_t
-+h264_se(struct bufferInfo *bufInfo)
-+{
-+	uint32_t ret, temp;
-+
-+	ret = bs_read_ue(bufInfo);
-+	if ((ret & 0x1) == 0) {
-+		ret >>= 1;
-+		temp = 0 - ret;
-+		return temp;
-+	}
-+
-+	return (ret + 1) >> 1;
-+}
-+
-+static void
-+h264_check_0s(struct bufferInfo *bufInfo, int count)
-+{
-+	uint32_t val;
-+
-+	val = bs_read_u(bufInfo, count);
-+	if (val != 0)
-+		igt_info("field error - %d bits should be 0 is %x\n", count, val);
-+}
-+
-+static int
-+bs_eof(struct bufferInfo *bufinfo)
-+{
-+	if (bufinfo->decBuffer >= bufinfo->end)
-+		return 1;
-+	else
-+		return 0;
-+}
-+
-+static uint32_t
-+bs_read_u1(struct bufferInfo *bufinfo)
-+{
-+	uint32_t r = 0;
-+	uint32_t temp = 0;
-+
-+	bufinfo->numOfBitsInBuffer--;
-+	if (!bs_eof(bufinfo)) {
-+		temp = (((bufinfo->decData)) >> bufinfo->numOfBitsInBuffer);
-+		r = temp & 0x01;
-+	}
-+
-+	if (bufinfo->numOfBitsInBuffer == 0) {
-+		bufinfo->decBuffer++;
-+		bufinfo->decData = *bufinfo->decBuffer;
-+		bufinfo->numOfBitsInBuffer = 8;
-+	}
-+
-+	return r;
-+}
-+
-+static uint32_t
-+bs_read_u(struct bufferInfo *bufinfo, int n)
-+{
-+	uint32_t r = 0;
-+	int i;
-+
-+	for (i = 0; i < n; i++)
-+		r |= (bs_read_u1(bufinfo) << (n - i - 1));
-+
-+	return r;
-+}
-+
-+static uint32_t
-+bs_read_ue(struct bufferInfo *bufinfo)
-+{
-+	int32_t r = 0;
-+	int i = 0;
-+
-+	while ((bs_read_u1(bufinfo) == 0) && (i < 32) && (!bs_eof(bufinfo)))
-+		i++;
-+	r = bs_read_u(bufinfo, i);
-+	r += (1 << i) - 1;
-+	return r;
-+}
-+
-+static uint32_t
-+remove_03(uint8_t *bptr, uint32_t len)
-+{
-+	uint32_t nal_len = 0;
-+
-+	while (nal_len + 2 < len) {
-+		if (bptr[0] == 0 && bptr[1] == 0 && bptr[2] == 3) {
-+			bptr += 2;
-+			nal_len += 2;
-+			len--;
-+			memmove(bptr, bptr + 1, len - nal_len);
-+		} else {
-+			bptr++;
-+			nal_len++;
-+		}
-+	}
-+	return len;
-+}
-+
-+static void
-+scaling_list(uint32_t ix, uint32_t sizeOfScalingList, struct bufferInfo *bufInfo)
-+{
-+	uint32_t lastScale = 8, nextScale = 8;
-+	uint32_t jx;
-+	int deltaScale;
-+
-+	for (jx = 0; jx < sizeOfScalingList; jx++) {
-+		if (nextScale != 0) {
-+			deltaScale = h264_se(bufInfo);
-+			nextScale = (lastScale + deltaScale + 256) % 256;
-+		}
-+		if (nextScale == 0)
-+			;
-+		else
-+			lastScale = nextScale;
-+	}
-+}
-+
-+static void
-+h264_parse_sequence_parameter_set(struct h264_decode *dec, struct bufferInfo *bufInfo)
-+{
-+	uint32_t temp, seq_scaling_matrix_present_flag, pic_order_cnt_type,
-+				PicWidthInMbs, PicHeightInMapUnits, frame_mbs_only_flag;
-+
-+	dec->profile = bs_read_u(bufInfo, 8);
-+	bs_read_u(bufInfo, 1);		/* constaint_set0_flag */
-+	bs_read_u(bufInfo, 1);		/* constaint_set1_flag */
-+	bs_read_u(bufInfo, 1);		/* constaint_set2_flag */
-+	bs_read_u(bufInfo, 1);		/* constaint_set3_flag */
-+	bs_read_u(bufInfo, 1);		/* constaint_set4_flag */
-+	bs_read_u(bufInfo, 1);		/* constaint_set5_flag */
-+
-+
-+	h264_check_0s(bufInfo, 2);
-+	dec->level_idc = bs_read_u(bufInfo, 8);
-+	bs_read_ue(bufInfo);	/* SPS id*/
-+	if (dec->profile == 100 || dec->profile == 110 ||
-+		dec->profile == 122 || dec->profile == 144) {
-+		uint32_t chroma_format_idc = bs_read_ue(bufInfo);
-+
-+		if (chroma_format_idc == 3)
-+			bs_read_u(bufInfo, 1);	/* residual_colour_transform_flag */
-+
-+		bs_read_ue(bufInfo);	/* bit_depth_luma_minus8 */
-+		bs_read_ue(bufInfo);	/* bit_depth_chroma_minus8 */
-+		bs_read_u(bufInfo, 1);	/* qpprime_y_zero_transform_bypass_flag */
-+		seq_scaling_matrix_present_flag = bs_read_u(bufInfo, 1);
-+
-+		if (seq_scaling_matrix_present_flag) {
-+			for (uint32_t ix = 0; ix < 8; ix++) {
-+				temp = bs_read_u(bufInfo, 1);
-+				if (temp)
-+					scaling_list(ix, ix < 6 ? 16 : 64, bufInfo);
-+			}
-+		}
-+	}
-+
-+	bs_read_ue(bufInfo);	/* log2_max_frame_num_minus4 */
-+	pic_order_cnt_type = bs_read_ue(bufInfo);
-+
-+	if (pic_order_cnt_type == 0) {
-+		bs_read_ue(bufInfo);	/* log2_max_pic_order_cnt_lsb_minus4 */
-+	} else if (pic_order_cnt_type == 1) {
-+		bs_read_u(bufInfo, 1);	/* delta_pic_order_always_zero_flag */
-+		h264_se(bufInfo);	/* offset_for_non_ref_pic */
-+		h264_se(bufInfo);	/* offset_for_top_to_bottom_field */
-+		temp = bs_read_ue(bufInfo);
-+		for (uint32_t ix = 0; ix < temp; ix++)
-+			h264_se(bufInfo);	/* offset_for_ref_frame[index] */
-+	}
-+	bs_read_ue(bufInfo);	/* num_ref_frames */
-+	bs_read_u(bufInfo, 1);	/* gaps_in_frame_num_flag */
-+	PicWidthInMbs = bs_read_ue(bufInfo) + 1;
-+
-+	dec->pic_width = PicWidthInMbs * 16;
-+	PicHeightInMapUnits = bs_read_ue(bufInfo) + 1;
-+
-+	dec->pic_height = PicHeightInMapUnits * 16;
-+	frame_mbs_only_flag = bs_read_u(bufInfo, 1);
-+	if (!frame_mbs_only_flag)
-+		bs_read_u(bufInfo, 1);	/* mb_adaptive_frame_field_flag */
-+	bs_read_u(bufInfo, 1);	/* direct_8x8_inference_flag */
-+	temp = bs_read_u(bufInfo, 1);
-+	if (temp) {
-+		bs_read_ue(bufInfo);	/* frame_crop_left_offset */
-+		bs_read_ue(bufInfo);	/* frame_crop_right_offset */
-+		bs_read_ue(bufInfo);	/* frame_crop_top_offset */
-+		bs_read_ue(bufInfo);	/* frame_crop_bottom_offset */
-+	}
-+	temp = bs_read_u(bufInfo, 1);	/* VUI Parameters  */
-+}
-+
-+static void
-+h264_slice_header(struct h264_decode *dec, struct bufferInfo *bufInfo)
-+{
-+	uint32_t temp;
-+
-+	bs_read_ue(bufInfo);	/* first_mb_in_slice */
-+	temp = bs_read_ue(bufInfo);
-+	dec->slice_type = ((temp > 5) ? (temp - 5) : temp);
-+}
-+
-+static uint8_t
-+h264_parse_nal(struct h264_decode *dec, struct bufferInfo *bufInfo)
-+{
-+	uint8_t type = 0;
-+
-+	h264_check_0s(bufInfo, 1);
-+	dec->nal_ref_idc = bs_read_u(bufInfo, 2);
-+	dec->nal_unit_type = type = bs_read_u(bufInfo, 5);
-+	switch (type) {
-+	case H264_NAL_TYPE_NON_IDR_SLICE:
-+	case H264_NAL_TYPE_IDR_SLICE:
-+		h264_slice_header(dec, bufInfo);
-+		break;
-+	case H264_NAL_TYPE_SEQ_PARAM:
-+		h264_parse_sequence_parameter_set(dec, bufInfo);
-+		break;
-+	case H264_NAL_TYPE_PIC_PARAM:
-+	case H264_NAL_TYPE_SEI:
-+	case H264_NAL_TYPE_ACCESS_UNIT:
-+	case H264_NAL_TYPE_SEQ_EXTENSION:
-+		/* NOP */
-+		break;
-+	default:
-+		igt_info("Nal type unknown %d\n", type);
-+		break;
-+	}
-+	return type;
-+}
-+
-+static uint32_t
-+h264_find_next_start_code(uint8_t *pBuf, uint32_t bufLen)
-+{
-+	uint32_t val;
-+	uint32_t offset, startBytes;
-+
-+	offset = startBytes = 0;
-+	if (pBuf[0] == 0 && pBuf[1] == 0 && pBuf[2] == 0 && pBuf[3] == 1) {
-+		pBuf += 4;
-+		offset = 4;
-+		startBytes = 1;
-+	} else if (pBuf[0] == 0 && pBuf[1] == 0 && pBuf[2] == 1) {
-+		pBuf += 3;
-+		offset = 3;
-+		startBytes = 1;
-+	}
-+	val = 0xffffffff;
-+	while (offset < bufLen - 3) {
-+		val <<= 8;
-+		val |= *pBuf++;
-+		offset++;
-+		if (val == H264_START_CODE)
-+			return offset - 4;
-+
-+		if ((val & 0x00ffffff) == H264_START_CODE)
-+			return offset - 3;
-+	}
-+	if (bufLen - offset <= 3 && startBytes == 0) {
-+		startBytes = 0;
-+		return 0;
-+	}
-+
-+	return offset;
-+}
-+
-+static int
-+verify_checksum(struct vcn_context *v_context, uint8_t *buffer, uint32_t buffer_size)
-+{
-+	uint32_t buffer_pos = 0;
-+	struct h264_decode dec;
-+	int done = 0;
-+
-+	memset(&dec, 0, sizeof(struct h264_decode));
-+	do {
-+		uint32_t ret;
-+
-+		ret = h264_find_next_start_code(buffer + buffer_pos,
-+				 buffer_size - buffer_pos);
-+		if (ret == 0) {
-+			done = 1;
-+			if (buffer_pos == 0)
-+				igt_info("couldn't find start code in buffer from 0\n");
-+		} else {
-+		/* have a complete NAL from buffer_pos to end */
-+			if (ret > 3) {
-+				uint32_t nal_len;
-+				struct bufferInfo bufinfo;
-+
-+				nal_len = remove_03(buffer + buffer_pos, ret);
-+				bufinfo.decBuffer = buffer + buffer_pos + (buffer[buffer_pos + 2] == 1 ? 3 : 4);
-+				bufinfo.decBufferSize = (nal_len - (buffer[buffer_pos + 2] == 1 ? 3 : 4)) * 8;
-+				bufinfo.end = buffer + buffer_pos + nal_len;
-+				bufinfo.numOfBitsInBuffer = 8;
-+				bufinfo.decData = *bufinfo.decBuffer;
-+				h264_parse_nal(&dec, &bufinfo);
-+			}
-+			buffer_pos += ret;	/*  buffer_pos points to next code */
-+		}
-+	} while (done == 0);
-+
-+	if ((dec.pic_width == v_context->gWidth) &&
-+		(dec.pic_height == v_context->gHeight) &&
-+		(dec.slice_type == v_context->gSliceType))
-+		return 0;
-+	else
-+		return -1;
-+}
-+
-+static void
-+check_result(struct vcn_context *v_context, struct amdgpu_mmd_bo fb_buf,
-+		struct amdgpu_mmd_bo bs_buf, int frame_type)
-+{
-+	uint32_t *fb_ptr;
-+	uint8_t *bs_ptr;
-+	uint32_t size;
-+	int r;
-+/*	uint64_t s[3] = {0, 1121279001727, 1059312481445};	*/
-+
-+	r = amdgpu_bo_cpu_map(fb_buf.handle, (void **)&fb_buf.ptr);
-+	igt_assert_eq(r, 0);
-+	fb_ptr = (uint32_t *)fb_buf.ptr;
-+	size = fb_ptr[6];
-+	r = amdgpu_bo_cpu_unmap(fb_buf.handle);
-+	igt_assert_eq(r, 0);
-+	r = amdgpu_bo_cpu_map(bs_buf.handle, (void **)&bs_buf.ptr);
-+	igt_assert_eq(r, 0);
-+
-+	bs_ptr = (uint8_t *)bs_buf.ptr;
-+	r = verify_checksum(v_context, bs_ptr, size);
-+	igt_assert_eq(r, 0);
-+	r = amdgpu_bo_cpu_unmap(bs_buf.handle);
-+
-+	igt_assert_eq(r, 0);
-+}
-+
-+static void
-+amdgpu_cs_vcn_enc_encode_frame(amdgpu_device_handle device_handle,
-+		struct mmd_context *context, struct vcn_context *v_context, int frame_type)
-+{
-+	struct amdgpu_mmd_bo bs_buf, fb_buf, vbv_buf;
-+	int len, r, i;
-+	unsigned	int width = 160, height = 128, buf_size;
-+	uint32_t *p_task_size = NULL;
-+	uint32_t task_offset = 0, st_offset;
-+	uint32_t *st_size = NULL;
-+	uint32_t fw_maj = 1, fw_min = 9;
-+
-+	if (context->vcn_ip_version_major == 2) {
-+		fw_maj = 1;
-+		fw_min = 1;
-+	} else if (context->vcn_ip_version_major == 3) {
-+		fw_maj = 1;
-+		fw_min = 0;
-+	}
-+	v_context->gSliceType = frame_type;
-+	buf_size = ALIGN(width, 256) * ALIGN(height, 32) * 3 / 2;
-+
-+	context->num_resources = 0;
-+	alloc_resource(device_handle, &bs_buf, 4096, AMDGPU_GEM_DOMAIN_GTT);
-+	alloc_resource(device_handle, &fb_buf, 4096, AMDGPU_GEM_DOMAIN_GTT);
-+	alloc_resource(device_handle, &vbv_buf, buf_size, AMDGPU_GEM_DOMAIN_GTT);
-+	context->resources[context->num_resources++] = v_context->enc_buf.handle;
-+	context->resources[context->num_resources++] = v_context->cpb_buf.handle;
-+	context->resources[context->num_resources++] = bs_buf.handle;
-+	context->resources[context->num_resources++] = fb_buf.handle;
-+	context->resources[context->num_resources++] = vbv_buf.handle;
-+	context->resources[context->num_resources++] = context->ib_handle;
-+
-+
-+	r = amdgpu_bo_cpu_map(bs_buf.handle, (void **)&bs_buf.ptr);
-+	memset(bs_buf.ptr, 0, 4096);
-+	r = amdgpu_bo_cpu_unmap(bs_buf.handle);
-+
-+	r = amdgpu_bo_cpu_map(fb_buf.handle, (void **)&fb_buf.ptr);
-+	memset(fb_buf.ptr, 0, 4096);
-+	r = amdgpu_bo_cpu_unmap(fb_buf.handle);
-+
-+	r = amdgpu_bo_cpu_map(vbv_buf.handle, (void **)&vbv_buf.ptr);
-+	igt_assert_eq(r, 0);
-+
-+	for (i = 0; i < ALIGN(height, 32) * 3 / 2; i++)
-+		memcpy(vbv_buf.ptr + i * ALIGN(width, 256), frame + i * width, width);
-+
-+	r = amdgpu_bo_cpu_unmap(vbv_buf.handle);
-+	igt_assert_eq(r, 0);
-+
-+	len = 0;
-+
-+	if (context->vcn_unified_ring)
-+		amdgpu_cs_sq_head(v_context, context->ib_cpu, &len, true);
-+
-+	/* session info */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000001;	/* RENCODE_IB_PARAM_SESSION_INFO */
-+	context->ib_cpu[len++] = ((fw_maj << 16) | (fw_min << 0));
-+	context->ib_cpu[len++] = v_context->enc_buf.addr >> 32;
-+	context->ib_cpu[len++] = v_context->enc_buf.addr;
-+	context->ib_cpu[len++] = 1;	/* RENCODE_ENGINE_TYPE_ENCODE */;
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* task info */
-+	task_offset = len;
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000002;	/* RENCODE_IB_PARAM_TASK_INFO */
-+	p_task_size = &context->ib_cpu[len++];
-+	context->ib_cpu[len++] = v_context->enc_task_id++;	/* task_id */
-+	context->ib_cpu[len++] = 1;	/* feedback */
-+	*st_size = (len - st_offset) * 4;
-+
-+	if (frame_type == 2) {
-+		/* sps */
-+		st_offset = len;
-+		st_size = &context->ib_cpu[len++];	/* size */
-+		if (context->vcn_ip_version_major == 1)
-+			context->ib_cpu[len++] = 0x00000020;	/* RENCODE_IB_PARAM_DIRECT_OUTPUT_NALU vcn 1 */
-+		else
-+			context->ib_cpu[len++] = 0x0000000a;	/* RENCODE_IB_PARAM_DIRECT_OUTPUT_NALU vcn 2,3 */
-+		context->ib_cpu[len++] = 0x00000002;	/* RENCODE_DIRECT_OUTPUT_NALU_TYPE_SPS */
-+		context->ib_cpu[len++] = 0x00000011;	/* sps len */
-+		context->ib_cpu[len++] = 0x00000001;	/* start code */
-+		context->ib_cpu[len++] = 0x6764440b;
-+		context->ib_cpu[len++] = 0xac54c284;
-+		context->ib_cpu[len++] = 0x68078442;
-+		context->ib_cpu[len++] = 0x37000000;
-+		*st_size = (len - st_offset) * 4;
-+
-+		/* pps */
-+		st_offset = len;
-+		st_size = &context->ib_cpu[len++];	/* size */
-+		if (context->vcn_ip_version_major == 1)
-+			context->ib_cpu[len++] = 0x00000020;	/* RENCODE_IB_PARAM_DIRECT_OUTPUT_NALU vcn 1*/
-+		else
-+			context->ib_cpu[len++] = 0x0000000a;	/* RENCODE_IB_PARAM_DIRECT_OUTPUT_NALU vcn 2,3*/
-+		context->ib_cpu[len++] = 0x00000003;	/* RENCODE_DIRECT_OUTPUT_NALU_TYPE_PPS */
-+		context->ib_cpu[len++] = 0x00000008;	/* pps len */
-+		context->ib_cpu[len++] = 0x00000001;	/* start code */
-+		context->ib_cpu[len++] = 0x68ce3c80;
-+		*st_size = (len - st_offset) * 4;
-+	}
-+
-+	/* slice header */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	if (context->vcn_ip_version_major == 1)
-+		context->ib_cpu[len++] = 0x0000000a; /* RENCODE_IB_PARAM_SLICE_HEADER vcn 1 */
-+	else
-+		context->ib_cpu[len++] = 0x0000000b; /* RENCODE_IB_PARAM_SLICE_HEADER vcn 2,3 */
-+	if (frame_type == 2) {
-+		context->ib_cpu[len++] = 0x65000000;
-+		context->ib_cpu[len++] = 0x11040000;
-+	} else {
-+		context->ib_cpu[len++] = 0x41000000;
-+		context->ib_cpu[len++] = 0x34210000;
-+	}
-+	context->ib_cpu[len++] = 0xe0000000;
-+	for (i = 0; i < 13; i++)
-+		context->ib_cpu[len++] = 0x00000000;
-+
-+	context->ib_cpu[len++] = 0x00000001;
-+	context->ib_cpu[len++] = 0x00000008;
-+	context->ib_cpu[len++] = 0x00020000;
-+	context->ib_cpu[len++] = 0x00000000;
-+	context->ib_cpu[len++] = 0x00000001;
-+	context->ib_cpu[len++] = 0x00000015;
-+	context->ib_cpu[len++] = 0x00020001;
-+	context->ib_cpu[len++] = 0x00000000;
-+	context->ib_cpu[len++] = 0x00000001;
-+	context->ib_cpu[len++] = 0x00000003;
-+	for (i = 0; i < 22; i++)
-+		context->ib_cpu[len++] = 0x00000000;
-+
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* encode params */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	if (context->vcn_ip_version_major == 1)
-+		context->ib_cpu[len++] = 0x0000000b;	/* RENCODE_IB_PARAM_ENCODE_PARAMS vcn 1*/
-+	else
-+		context->ib_cpu[len++] = 0x0000000f;	/* RENCODE_IB_PARAM_ENCODE_PARAMS vcn 2,3*/
-+	context->ib_cpu[len++] = frame_type;
-+	context->ib_cpu[len++] = 0x0001f000;
-+	context->ib_cpu[len++] = vbv_buf.addr >> 32;
-+	context->ib_cpu[len++] = vbv_buf.addr;
-+	context->ib_cpu[len++] = (vbv_buf.addr + ALIGN(width, 256) * ALIGN(height, 32)) >> 32;
-+	context->ib_cpu[len++] = vbv_buf.addr + ALIGN(width, 256) * ALIGN(height, 32);
-+	context->ib_cpu[len++] = 0x00000100;
-+	context->ib_cpu[len++] = 0x00000080;
-+	context->ib_cpu[len++] = 0x00000000;
-+	context->ib_cpu[len++] = 0xffffffff;
-+	context->ib_cpu[len++] = 0x00000000;
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* encode params h264 */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00200003;	/* RENCODE_H264_IB_PARAM_ENCODE_PARAMS */
-+	if (context->vcn_ip_version_major != 3) {
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0xffffffff;
-+	} else {
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0xffffffff;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0xffffffff;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+	}
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* encode context */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	if (context->vcn_ip_version_major == 1)
-+		context->ib_cpu[len++] = 0x0000000d;	/* ENCODE_CONTEXT_BUFFER  vcn 1 */
-+	else
-+		context->ib_cpu[len++] = 0x00000011;	/* ENCODE_CONTEXT_BUFFER  vcn 2,3 */
-+	context->ib_cpu[len++] = v_context->cpb_buf.addr >> 32;
-+	context->ib_cpu[len++] = v_context->cpb_buf.addr;
-+	context->ib_cpu[len++] = 0x00000000;	/* swizzle mode */
-+	context->ib_cpu[len++] = 0x00000100;	/* luma pitch */
-+	context->ib_cpu[len++] = 0x00000100;	/* chroma pitch */
-+	context->ib_cpu[len++] = 0x00000003; /* no reconstructed picture */
-+	context->ib_cpu[len++] = 0x00000000;	/* reconstructed pic 1 luma offset */
-+	context->ib_cpu[len++] = ALIGN(width, 256) * ALIGN(height, 32);	/* pic1 chroma offset */
-+	context->ib_cpu[len++] = ALIGN(width, 256) * ALIGN(height, 32) * 3 / 2;	/* pic2 luma offset */
-+	context->ib_cpu[len++] = ALIGN(width, 256) * ALIGN(height, 32) * 5 / 2;	/* pic2 chroma offset */
-+
-+	for (i = 0; i < 136; i++)
-+		context->ib_cpu[len++] = 0x00000000;
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* bitstream buffer */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	if (context->vcn_ip_version_major == 1)
-+		context->ib_cpu[len++] = 0x0000000e;	/* VIDEO_BITSTREAM_BUFFER vcn 1 */
-+	else
-+		context->ib_cpu[len++] = 0x00000012;	/* VIDEO_BITSTREAM_BUFFER vcn 2,3 */
-+	context->ib_cpu[len++] = 0x00000000;	/* mode */
-+	context->ib_cpu[len++] = bs_buf.addr >> 32;
-+	context->ib_cpu[len++] = bs_buf.addr;
-+	context->ib_cpu[len++] = 0x0001f000;
-+	context->ib_cpu[len++] = 0x00000000;
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* feedback */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	if (context->vcn_ip_version_major == 1)
-+		context->ib_cpu[len++] = 0x00000010;	/* FEEDBACK_BUFFER vcn 1 */
-+	else
-+		context->ib_cpu[len++] = 0x00000015;	/* FEEDBACK_BUFFER vcn 2,3 */
-+	context->ib_cpu[len++] = 0x00000000;
-+	context->ib_cpu[len++] = fb_buf.addr >> 32;
-+	context->ib_cpu[len++] = fb_buf.addr;
-+	context->ib_cpu[len++] = 0x00000010;
-+	context->ib_cpu[len++] = 0x00000028;
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* intra refresh */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];
-+	if (context->vcn_ip_version_major == 1)
-+		context->ib_cpu[len++] = 0x0000000c;	/* INTRA_REFRESH vcn 1 */
-+	else
-+		context->ib_cpu[len++] = 0x00000010;	/* INTRA_REFRESH vcn 2,3 */
-+	context->ib_cpu[len++] = 0x00000000;
-+	context->ib_cpu[len++] = 0x00000000;
-+	context->ib_cpu[len++] = 0x00000000;
-+	*st_size = (len - st_offset) * 4;
-+
-+	if (context->vcn_ip_version_major != 1) {
-+		/* Input Format */
-+		st_offset = len;
-+		st_size = &context->ib_cpu[len++];
-+		context->ib_cpu[len++] = 0x0000000c;
-+		context->ib_cpu[len++] = 0x00000000;	/* RENCODE_COLOR_VOLUME_G22_BT709 */
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;	/* RENCODE_COLOR_BIT_DEPTH_8_BIT */
-+		context->ib_cpu[len++] = 0x00000000;	/* RENCODE_COLOR_PACKING_FORMAT_NV12 */
-+		*st_size = (len - st_offset) * 4;
-+
-+		/* Output Format */
-+		st_offset = len;
-+		st_size = &context->ib_cpu[len++];
-+		context->ib_cpu[len++] = 0x0000000d;
-+		context->ib_cpu[len++] = 0x00000000;	/* RENCODE_COLOR_VOLUME_G22_BT709 */
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;
-+		context->ib_cpu[len++] = 0x00000000;	/* RENCODE_COLOR_BIT_DEPTH_8_BIT */
-+		*st_size = (len - st_offset) * 4;
-+	}
-+	/* op_speed */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];
-+	context->ib_cpu[len++] = 0x01000006;	/* SPEED_ENCODING_MODE */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* op_enc */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];
-+	context->ib_cpu[len++] = 0x01000003;
-+	*st_size = (len - st_offset) * 4;
-+
-+	*p_task_size = (len - task_offset) * 4;
-+
-+	if (context->vcn_unified_ring)
-+		amdgpu_cs_sq_ib_tail(v_context, context->ib_cpu + len);
-+
-+	r = submit(device_handle, context, len, AMDGPU_HW_IP_VCN_ENC);
-+	igt_assert_eq(r, 0);
-+
-+	/* check result */
-+	check_result(v_context, fb_buf, bs_buf, frame_type);
-+
-+	free_resource(&fb_buf);
-+	free_resource(&bs_buf);
-+	free_resource(&vbv_buf);
-+}
-+
-+static void
-+amdgpu_cs_vcn_enc_encode(amdgpu_device_handle device_handle,
-+		struct mmd_context *context, struct vcn_context *v_context)
-+{
-+	amdgpu_cs_vcn_enc_encode_frame(device_handle, context, v_context, 2);	/* IDR frame */
-+}
-+
-+static void
-+amdgpu_cs_vcn_enc_destroy(amdgpu_device_handle device_handle, struct mmd_context *context,
-+		struct vcn_context *v_context)
-+{
-+	int len = 0, r;
-+	uint32_t *p_task_size = NULL;
-+	uint32_t task_offset = 0, st_offset;
-+	uint32_t *st_size = NULL;
-+	uint32_t fw_maj = 1, fw_min = 9;
-+
-+	if (context->vcn_ip_version_major == 2) {
-+		fw_maj = 1;
-+		fw_min = 1;
-+	} else if (context->vcn_ip_version_major == 3) {
-+		fw_maj = 1;
-+		fw_min = 0;
-+	}
-+
-+	context->num_resources = 0;
-+	//alloc_resource(&v_context->enc_buf, 128 * 1024, AMDGPU_GEM_DOMAIN_GTT);
-+	context->resources[context->num_resources++] = v_context->enc_buf.handle;
-+	context->resources[context->num_resources++] = context->ib_handle;
-+
-+	if (context->vcn_unified_ring)
-+		amdgpu_cs_sq_head(v_context, context->ib_cpu, &len, true);
-+
-+	/* session info */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000001;	/* RENCODE_IB_PARAM_SESSION_INFO */
-+	context->ib_cpu[len++] = ((fw_maj << 16) | (fw_min << 0));
-+	context->ib_cpu[len++] = v_context->enc_buf.addr >> 32;
-+	context->ib_cpu[len++] = v_context->enc_buf.addr;
-+	context->ib_cpu[len++] = 1;	/* RENCODE_ENGINE_TYPE_ENCODE; */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/* task info */
-+	task_offset = len;
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];	/* size */
-+	context->ib_cpu[len++] = 0x00000002;	/* RENCODE_IB_PARAM_TASK_INFO */
-+	p_task_size = &context->ib_cpu[len++];
-+	context->ib_cpu[len++] = v_context->enc_task_id++;	/* task_id */
-+	context->ib_cpu[len++] = 0;	/* feedback */
-+	*st_size = (len - st_offset) * 4;
-+
-+	/*  op close */
-+	st_offset = len;
-+	st_size = &context->ib_cpu[len++];
-+	context->ib_cpu[len++] = 0x01000002;	/* RENCODE_IB_OP_CLOSE_SESSION */
-+	*st_size = (len - st_offset) * 4;
-+
-+	*p_task_size = (len - task_offset) * 4;
-+
-+	if (context->vcn_unified_ring)
-+		amdgpu_cs_sq_ib_tail(v_context, context->ib_cpu + len);
-+
-+	r = submit(device_handle, context, len, AMDGPU_HW_IP_VCN_ENC);
-+	igt_assert_eq(r, 0);
-+
-+	free_resource(&v_context->cpb_buf);
-+	free_resource(&v_context->enc_buf);
-+}
-+
-+igt_main
-+{
-+	amdgpu_device_handle device;
-+	struct mmd_context context = {};
-+	struct vcn_context v_context = {};
-+	int fd = -1;
-+
-+	igt_fixture {
-+		uint32_t major, minor;
-+		int err;
-+
-+		fd = drm_open_driver(DRIVER_AMDGPU);
-+		err = amdgpu_device_initialize(fd, &major, &minor, &device);
-+		igt_require(err == 0);
-+		igt_info("Initialized amdgpu, driver version %d.%d\n",
-+			 major, minor);
-+		err = mmd_context_init(device, &context);
-+		igt_require(err == 0);
-+		igt_skip_on(!is_vcn_tests_enable(device, &context));
-+		igt_skip_on_f(!context.dec_ring && !context.enc_ring, "vcn no dec and enc rings\n");
-+	}
-+
-+	igt_describe("Test whether vcn dec is created, decodes, destroyed");
-+	igt_subtest_with_dynamic("amdgpu_cs_vcn_dec_create, decode, destroy") {
-+		if (context.dec_ring) {
-+			amdgpu_cs_vcn_dec_create(device, &context, &v_context);
-+			amdgpu_cs_vcn_dec_decode(device, &context, &v_context);
-+			amdgpu_cs_vcn_dec_destroy(device, &context, &v_context);
-+		}
-+	}
-+
-+	igt_describe("Test whether vcn enc is created, decodes, destroyed");
-+	igt_subtest_with_dynamic("amdgpu_cs_vcn_enc_create, encode, destroy") {
-+		if (context.enc_ring) {
-+			amdgpu_cs_vcn_enc_create(device, &context, &v_context);
-+			amdgpu_cs_vcn_enc_encode(device, &context, &v_context);
-+			amdgpu_cs_vcn_enc_destroy(device, &context, &v_context);
-+		}
-+	}
-+
-+	igt_fixture {
-+		mmd_context_clean(device, &context);
-+		amdgpu_device_deinitialize(device);
-+		drm_close_driver(fd);
-+	}
-+
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index e6e6eaabf..d09a4b6e7 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -27,6 +27,7 @@ if libdrm_amdgpu.found()
- 			  'amd_uvd_dec',
- 			  'amd_uvd_enc',
- 			  'amd_vce_dec',
-+			  'amd_vcn',
- 			  'amd_vrr_range',
- 			]
- 	amdgpu_deps += libdrm_amdgpu
--- 
-2.25.1
+> +				0, DIRECT_ACCESS);
+> +		blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
+> +		intel_ctx_xe_sync(ctx, true);
+> +
+> +		ccsmap2 = xe_bo_map(xe, ccs2, surf.dst.size);
+> +		newsum = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
+> +						     (void *)ccsmap2, surf.dst.size);
+> +		newsum2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
+> +						      (void *)mid->ptr, mid->size);
+> +
+> +		munmap(ccsmap2, ccssize);
+> +		igt_assert(!strcmp(orig, newsum));
+> +		igt_assert(!strcmp(orig2, newsum2));
+> +		g_free(orig);
+> +		g_free(orig2);
+> +		g_free(newsum);
+> +		g_free(newsum2);
+> +	}
+> +
+> +	/* corrupt ccs */
+> +	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
+> +		ccsmap[i] = i;
+> +	set_surf_object(&surf.src, ccs, sysmem, ccssize,
+> +			uc_mocs, DIRECT_ACCESS);
+> +	set_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
+> +			uc_mocs, INDIRECT_ACCESS);
+> +	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
+> +	intel_ctx_xe_sync(ctx, true);
+> +
+> +	blt_copy_init(xe, &blt);
+> +	blt.color_depth = CD_32bit;
+> +	blt.print_bb = param.print_bb;
+> +	blt_set_copy_object(&blt.src, mid);
+> +	blt_set_copy_object(&blt.dst, dst);
+> +	blt_set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
+> +	blt_set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
+> +	bb2 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
+> +	blt_set_batch(&blt.bb, bb2, bb_size, sysmem);
+> +	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
+> +	intel_ctx_xe_sync(ctx, true);
+> +	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
+> +	result = memcmp(src->ptr, dst->ptr, src->size);
+> +	igt_assert(result != 0);
+> +
+> +	/* retrieve back ccs */
+> +	memcpy(ccsmap, ccscopy, ccssize);
+> +	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
+> +
+> +	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
+> +	intel_ctx_xe_sync(ctx, true);
+> +	WRITE_PNG(xe, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
+> +	result = memcmp(src->ptr, dst->ptr, src->size);
+> +	if (result)
+> +		dump_corruption_info(src, dst);
+> +
+> +	munmap(ccsmap, ccssize);
+> +	gem_close(xe, ccs);
+> +	gem_close(xe, ccs2);
+> +	gem_close(xe, bb1);
+> +	gem_close(xe, bb2);
+> +
+> +	igt_assert_f(result == 0,
+> +		     "Source and destination surfaces are different after "
+> +		     "restoring source ccs data\n");
+> +}
+> +
+> +struct blt_copy3_data {
+> +	int xe;
+> +	struct blt_copy_object src;
+> +	struct blt_copy_object mid;
+> +	struct blt_copy_object dst;
+> +	struct blt_copy_object final;
+> +	struct blt_copy_batch bb;
+> +	enum blt_color_depth color_depth;
+> +
+> +	/* debug stuff */
+> +	bool print_bb;
+> +};
+> +
+> +struct blt_block_copy3_data_ext {
+> +	struct blt_block_copy_object_ext src;
+> +	struct blt_block_copy_object_ext mid;
+> +	struct blt_block_copy_object_ext dst;
+> +	struct blt_block_copy_object_ext final;
+> +};
+> +
+
+Hmm, we really could make use of shared definitions like these (yes, I 
+sound like a broken record at this point, sorry!)
+
+> +#define FILL_OBJ(_idx, _handle, _offset) do { \
+> +	obj[(_idx)].handle = (_handle); \
+> +	obj[(_idx)].offset = (_offset); \
+> +} while (0)
+
+We don't use this definition in Xe tests, you can delete it
+
+> +
+> +static int blt_block_copy3(int xe,
+> +			   const intel_ctx_t *ctx,
+> +			   uint64_t ahnd,
+> +			   const struct blt_copy3_data *blt3,
+> +			   const struct blt_block_copy3_data_ext *ext3)
+> +{
+> +	struct blt_copy_data blt0;
+> +	struct blt_block_copy_data_ext ext0;
+> +	uint64_t bb_offset, alignment;
+> +	uint64_t bb_pos = 0;
+> +	int ret;
+> +
+> +	igt_assert_f(ahnd, "block-copy3 supports softpin only\n");
+> +	igt_assert_f(blt3, "block-copy3 requires data to do blit\n");
+> +
+> +	alignment = xe_get_default_alignment(xe);
+> +	get_offset(ahnd, blt3->src.handle, blt3->src.size, alignment);
+> +	get_offset(ahnd, blt3->mid.handle, blt3->mid.size, alignment);
+> +	get_offset(ahnd, blt3->dst.handle, blt3->dst.size, alignment);
+> +	get_offset(ahnd, blt3->final.handle, blt3->final.size, alignment);
+> +	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
+> +
+> +	/* First blit src -> mid */
+> +	blt_copy_init(xe, &blt0);
+> +	blt0.src = blt3->src;
+> +	blt0.dst = blt3->mid;
+> +	blt0.bb = blt3->bb;
+> +	blt0.color_depth = blt3->color_depth;
+> +	blt0.print_bb = blt3->print_bb;
+> +	ext0.src = ext3->src;
+> +	ext0.dst = ext3->mid;
+> +	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, false);
+> +
+> +	/* Second blit mid -> dst */
+> +	blt_copy_init(xe, &blt0);
+> +	blt0.src = blt3->mid;
+> +	blt0.dst = blt3->dst;
+> +	blt0.bb = blt3->bb;
+> +	blt0.color_depth = blt3->color_depth;
+> +	blt0.print_bb = blt3->print_bb;
+> +	ext0.src = ext3->mid;
+> +	ext0.dst = ext3->dst;
+> +	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, false);
+> +
+> +	/* Third blit dst -> final */
+> +	blt_copy_init(xe, &blt0);
+> +	blt0.src = blt3->dst;
+> +	blt0.dst = blt3->final;
+> +	blt0.bb = blt3->bb;
+> +	blt0.color_depth = blt3->color_depth;
+> +	blt0.print_bb = blt3->print_bb;
+> +	ext0.src = ext3->dst;
+> +	ext0.dst = ext3->final;
+> +	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, true);
+> +
+> +	intel_ctx_xe_exec(ctx, ahnd, bb_offset);
+> +
+> +	return ret;
+> +}
+> +
+> +static void block_copy(int xe,
+> +		       intel_ctx_t *ctx,
+> +		       uint32_t region1, uint32_t region2,
+> +		       enum blt_tiling_type mid_tiling,
+> +		       const struct test_config *config)
+> +{
+> +	struct blt_copy_data blt = {};
+> +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> +	struct blt_copy_object *src, *mid, *dst;
+> +	const uint32_t bpp = 32;
+> +	uint64_t bb_size = xe_get_default_alignment(xe);
+> +	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
+> +	uint32_t run_id = mid_tiling;
+> +	uint32_t mid_region = region2, bb;
+> +	uint32_t width = param.width, height = param.height;
+> +	enum blt_compression mid_compression = config->compression;
+> +	int mid_compression_format = param.compression_format;
+> +	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+> +	uint8_t uc_mocs = intel_get_uc_mocs(xe);
+> +	int result;
+> +
+> +	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
+> +
+> +	if (!blt_uses_extended_block_copy(xe))
+> +		pext = NULL;
+> +
+> +	blt_copy_init(xe, &blt);
+> +
+> +	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> +				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> +	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
+> +				mid_tiling, mid_compression, comp_type, true);
+> +	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> +				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> +	igt_assert(src->size == dst->size);
+> +	PRINT_SURFACE_INFO("src", src);
+> +	PRINT_SURFACE_INFO("mid", mid);
+> +	PRINT_SURFACE_INFO("dst", dst);
+> +
+> +	blt_surface_fill_rect(xe, src, width, height);
+> +	WRITE_PNG(xe, run_id, "src", src, width, height);
+> +
+> +	blt.color_depth = CD_32bit;
+> +	blt.print_bb = param.print_bb;
+> +	blt_set_copy_object(&blt.src, src);
+> +	blt_set_copy_object(&blt.dst, mid);
+> +	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
+> +	blt_set_object_ext(&ext.dst, mid_compression_format, width, height, SURFACE_TYPE_2D);
+> +	blt_set_batch(&blt.bb, bb, bb_size, region1);
+> +	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
+> +	intel_ctx_xe_sync(ctx, true);
+> +
+> +	/* We expect mid != src if there's compression */
+> +	if (mid->compression)
+> +		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
+> +
+> +	WRITE_PNG(xe, run_id, "src", &blt.src, width, height);
+
+It's also in gem_ccs, why are we saving "src" surface twice?
+
+Many thanks,
+Karolina
+
+> +	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height);
+> +
+> +	if (config->surfcopy && pext) {
+> +		struct drm_xe_engine_class_instance inst = {
+> +			.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> +		};
+> +		intel_ctx_t *surf_ctx = ctx;
+> +		uint64_t surf_ahnd = ahnd;
+> +		uint32_t vm, engine;
+> +
+> +		if (config->new_ctx) {
+> +			vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +			engine = xe_engine_create(xe, vm, &inst, 0);
+> +			surf_ctx = intel_ctx_xe(xe, vm, engine, 0, 0, 0);
+> +			surf_ahnd = intel_allocator_open(xe, surf_ctx->vm,
+> +							 INTEL_ALLOCATOR_RELOC);
+> +		}
+> +		surf_copy(xe, surf_ctx, surf_ahnd, src, mid, dst, run_id,
+> +			  config->suspend_resume);
+> +
+> +		if (surf_ctx != ctx) {
+> +			xe_engine_destroy(xe, engine);
+> +			xe_vm_destroy(xe, vm);
+> +			free(surf_ctx);
+> +			put_ahnd(surf_ahnd);
+> +		}
+> +	}
+> +
+> +	blt_copy_init(xe, &blt);
+> +	blt.color_depth = CD_32bit;
+> +	blt.print_bb = param.print_bb;
+> +	blt_set_copy_object(&blt.src, mid);
+> +	blt_set_copy_object(&blt.dst, dst);
+> +	blt_set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
+> +	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
+> +	if (config->inplace) {
+> +		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
+> +			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
+> +		blt.dst.ptr = mid->ptr;
+> +	}
+> +
+> +	blt_set_batch(&blt.bb, bb, bb_size, region1);
+> +	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
+> +	intel_ctx_xe_sync(ctx, true);
+> +
+> +	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height);
+> +
+> +	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+> +
+> +	/* Politely clean vm */
+> +	put_offset(ahnd, src->handle);
+> +	put_offset(ahnd, mid->handle);
+> +	put_offset(ahnd, dst->handle);
+> +	put_offset(ahnd, bb);
+> +	intel_allocator_bind(ahnd, 0, 0);
+> +	blt_destroy_object(xe, src);
+> +	blt_destroy_object(xe, mid);
+> +	blt_destroy_object(xe, dst);
+> +	gem_close(xe, bb);
+> +	put_ahnd(ahnd);
+> +
+> +	igt_assert_f(!result, "source and destination surfaces differs!\n");
+> +}
+> +
+> +static void block_multicopy(int xe,
+> +			    intel_ctx_t *ctx,
+> +			    uint32_t region1, uint32_t region2,
+> +			    enum blt_tiling_type mid_tiling,
+> +			    const struct test_config *config)
+> +{
+> +	struct blt_copy3_data blt3 = {};
+> +	struct blt_copy_data blt = {};
+> +	struct blt_block_copy3_data_ext ext3 = {}, *pext3 = &ext3;
+> +	struct blt_copy_object *src, *mid, *dst, *final;
+> +	const uint32_t bpp = 32;
+> +	uint64_t bb_size = xe_get_default_alignment(xe);
+> +	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
+> +	uint32_t run_id = mid_tiling;
+> +	uint32_t mid_region = region2, bb;
+> +	uint32_t width = param.width, height = param.height;
+> +	enum blt_compression mid_compression = config->compression;
+> +	int mid_compression_format = param.compression_format;
+> +	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+> +	uint8_t uc_mocs = intel_get_uc_mocs(xe);
+> +	int result;
+> +
+> +	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
+> +
+> +	if (!blt_uses_extended_block_copy(xe))
+> +		pext3 = NULL;
+> +
+> +	blt_copy_init(xe, &blt);
+> +
+> +	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> +				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> +	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
+> +				mid_tiling, mid_compression, comp_type, true);
+> +	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> +				mid_tiling, COMPRESSION_DISABLED, comp_type, true);
+> +	final = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> +				  T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> +	igt_assert(src->size == dst->size);
+> +	PRINT_SURFACE_INFO("src", src);
+> +	PRINT_SURFACE_INFO("mid", mid);
+> +	PRINT_SURFACE_INFO("dst", dst);
+> +	PRINT_SURFACE_INFO("final", final);
+> +
+> +	blt_surface_fill_rect(xe, src, width, height);
+> +
+> +	blt3.color_depth = CD_32bit;
+> +	blt3.print_bb = param.print_bb;
+> +	blt_set_copy_object(&blt3.src, src);
+> +	blt_set_copy_object(&blt3.mid, mid);
+> +	blt_set_copy_object(&blt3.dst, dst);
+> +	blt_set_copy_object(&blt3.final, final);
+> +
+> +	if (config->inplace) {
+> +		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
+> +			       mid->mocs, mid_tiling, COMPRESSION_DISABLED,
+> +			       comp_type);
+> +		blt3.dst.ptr = mid->ptr;
+> +	}
+> +
+> +	blt_set_object_ext(&ext3.src, 0, width, height, SURFACE_TYPE_2D);
+> +	blt_set_object_ext(&ext3.mid, mid_compression_format, width, height, SURFACE_TYPE_2D);
+> +	blt_set_object_ext(&ext3.dst, 0, width, height, SURFACE_TYPE_2D);
+> +	blt_set_object_ext(&ext3.final, 0, width, height, SURFACE_TYPE_2D);
+> +	blt_set_batch(&blt3.bb, bb, bb_size, region1);
+> +
+> +	blt_block_copy3(xe, ctx, ahnd, &blt3, pext3);
+> +	intel_ctx_xe_sync(ctx, true);
+> +
+> +	WRITE_PNG(xe, run_id, "src", &blt3.src, width, height);
+> +	if (!config->inplace)
+> +		WRITE_PNG(xe, run_id, "mid", &blt3.mid, width, height);
+> +	WRITE_PNG(xe, run_id, "dst", &blt3.dst, width, height);
+> +	WRITE_PNG(xe, run_id, "final", &blt3.final, width, height);
+> +
+> +	result = memcmp(src->ptr, blt3.final.ptr, src->size);
+> +
+> +	put_offset(ahnd, src->handle);
+> +	put_offset(ahnd, mid->handle);
+> +	put_offset(ahnd, dst->handle);
+> +	put_offset(ahnd, final->handle);
+> +	put_offset(ahnd, bb);
+> +	intel_allocator_bind(ahnd, 0, 0);
+> +	blt_destroy_object(xe, src);
+> +	blt_destroy_object(xe, mid);
+> +	blt_destroy_object(xe, dst);
+> +	blt_destroy_object(xe, final);
+> +	gem_close(xe, bb);
+> +	put_ahnd(ahnd);
+> +
+> +	igt_assert_f(!result, "source and destination surfaces differs!\n");
+> +}
+> +
+> +enum copy_func {
+> +	BLOCK_COPY,
+> +	BLOCK_MULTICOPY,
+> +};
+> +
+> +static const struct {
+> +	const char *suffix;
+> +	void (*copyfn)(int fd,
+> +		       intel_ctx_t *ctx,
+> +		       uint32_t region1, uint32_t region2,
+> +		       enum blt_tiling_type btype,
+> +		       const struct test_config *config);
+> +} copyfns[] = {
+> +	[BLOCK_COPY] = { "", block_copy },
+> +	[BLOCK_MULTICOPY] = { "-multicopy", block_multicopy },
+> +};
+> +
+> +static void block_copy_test(int xe,
+> +			    const struct test_config *config,
+> +			    struct igt_collection *set,
+> +			    enum copy_func copy_function)
+> +{
+> +	struct drm_xe_engine_class_instance inst = {
+> +		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> +	};
+> +	intel_ctx_t *ctx;
+> +	struct igt_collection *regions;
+> +	uint32_t vm, engine;
+> +	int tiling;
+> +
+> +	if (config->compression && !blt_block_copy_supports_compression(xe))
+> +		return;
+> +
+> +	if (config->inplace && !config->compression)
+> +		return;
+> +
+> +	for_each_tiling(tiling) {
+> +		if (!blt_block_copy_supports_tiling(xe, tiling) ||
+> +		    (param.tiling >= 0 && param.tiling != tiling))
+> +			continue;
+> +
+> +		for_each_variation_r(regions, 2, set) {
+> +			uint32_t region1, region2;
+> +			char *regtxt;
+> +
+> +			region1 = igt_collection_get_value(regions, 0);
+> +			region2 = igt_collection_get_value(regions, 1);
+> +
+> +			/* Compressed surface must be in device memory */
+> +			if (config->compression && !XE_IS_VRAM_MEMORY_REGION(xe, region2))
+> +				continue;
+> +
+> +			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
+> +
+> +			igt_dynamic_f("%s-%s-compfmt%d-%s%s",
+> +				      blt_tiling_name(tiling),
+> +				      config->compression ?
+> +					      "compressed" : "uncompressed",
+> +				      param.compression_format, regtxt,
+> +				      copyfns[copy_function].suffix) {
+> +				uint32_t sync_bind, sync_out;
+> +
+> +				vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+> +				engine = xe_engine_create(xe, vm, &inst, 0);
+> +				sync_bind = syncobj_create(xe, 0);
+> +				sync_out = syncobj_create(xe, 0);
+> +				ctx = intel_ctx_xe(xe, vm, engine,
+> +						   0, sync_bind, sync_out);
+> +
+> +				copyfns[copy_function].copyfn(xe, ctx,
+> +							      region1, region2,
+> +							      tiling, config);
+> +
+> +				xe_engine_destroy(xe, engine);
+> +				xe_vm_destroy(xe, vm);
+> +				syncobj_destroy(xe, sync_bind);
+> +				syncobj_destroy(xe, sync_out);
+> +				free(ctx);
+> +			}
+> +
+> +			free(regtxt);
+> +		}
+> +	}
+> +}
+> +
+> +static int opt_handler(int opt, int opt_index, void *data)
+> +{
+> +	switch (opt) {
+> +	case 'b':
+> +		param.print_bb = true;
+> +		igt_debug("Print bb: %d\n", param.print_bb);
+> +		break;
+> +	case 'f':
+> +		param.compression_format = atoi(optarg);
+> +		igt_debug("Compression format: %d\n", param.compression_format);
+> +		igt_assert((param.compression_format & ~0x1f) == 0);
+> +		break;
+> +	case 'p':
+> +		param.write_png = true;
+> +		igt_debug("Write png: %d\n", param.write_png);
+> +		break;
+> +	case 's':
+> +		param.print_surface_info = true;
+> +		igt_debug("Print surface info: %d\n", param.print_surface_info);
+> +		break;
+> +	case 't':
+> +		param.tiling = atoi(optarg);
+> +		igt_debug("Tiling: %d\n", param.tiling);
+> +		break;
+> +	case 'W':
+> +		param.width = atoi(optarg);
+> +		igt_debug("Width: %d\n", param.width);
+> +		break;
+> +	case 'H':
+> +		param.height = atoi(optarg);
+> +		igt_debug("Height: %d\n", param.height);
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =
+> +	"  -b\tPrint bb\n"
+> +	"  -f\tCompression format (0-31)\n"
+> +	"  -p\tWrite PNG\n"
+> +	"  -s\tPrint surface info\n"
+> +	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
+> +	"  -W\tWidth (default 512)\n"
+> +	"  -H\tHeight (default 512)"
+> +	;
+> +
+> +igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+> +{
+> +	struct igt_collection *set;
+> +	int xe;
+> +
+> +	igt_fixture {
+> +		xe = drm_open_driver(DRIVER_XE);
+> +		igt_require(blt_has_block_copy(xe));
+> +
+> +		xe_device_get(xe);
+> +
+> +		set = xe_get_memory_region_set(xe,
+> +					       XE_MEM_REGION_CLASS_SYSMEM,
+> +					       XE_MEM_REGION_CLASS_VRAM);
+> +	}
+> +
+> +	igt_describe("Check block-copy uncompressed blit");
+> +	igt_subtest_with_dynamic("block-copy-uncompressed") {
+> +		struct test_config config = {};
+> +
+> +		block_copy_test(xe, &config, set, BLOCK_COPY);
+> +	}
+> +
+> +	igt_describe("Check block-copy flatccs compressed blit");
+> +	igt_subtest_with_dynamic("block-copy-compressed") {
+> +		struct test_config config = { .compression = true };
+> +
+> +		block_copy_test(xe, &config, set, BLOCK_COPY);
+> +	}
+> +
+> +	igt_describe("Check block-multicopy flatccs compressed blit");
+> +	igt_subtest_with_dynamic("block-multicopy-compressed") {
+> +		struct test_config config = { .compression = true };
+> +
+> +		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
+> +	}
+> +
+> +	igt_describe("Check block-multicopy flatccs inplace decompression blit");
+> +	igt_subtest_with_dynamic("block-multicopy-inplace") {
+> +		struct test_config config = { .compression = true,
+> +					      .inplace = true };
+> +
+> +		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
+> +	}
+> +
+> +	igt_describe("Check flatccs data can be copied from/to surface");
+> +	igt_subtest_with_dynamic("ctrl-surf-copy") {
+> +		struct test_config config = { .compression = true,
+> +					      .surfcopy = true };
+> +
+> +		block_copy_test(xe, &config, set, BLOCK_COPY);
+> +	}
+> +
+> +	igt_describe("Check flatccs data are physically tagged and visible"
+> +		     " in different contexts");
+> +	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
+> +		struct test_config config = { .compression = true,
+> +					      .surfcopy = true,
+> +					      .new_ctx = true };
+> +
+> +		block_copy_test(xe, &config, set, BLOCK_COPY);
+> +	}
+> +
+> +	igt_describe("Check flatccs data persists after suspend / resume (S0)");
+> +	igt_subtest_with_dynamic("suspend-resume") {
+> +		struct test_config config = { .compression = true,
+> +					      .surfcopy = true,
+> +					      .suspend_resume = true };
+> +
+> +		block_copy_test(xe, &config, set, BLOCK_COPY);
+> +	}
+> +
+> +	igt_fixture {
+> +		xe_device_put(xe);
+> +		close(xe);
+> +	}
+> +}
