@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com
+ [IPv6:2a00:1450:4864:20::230])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 125BF10E5A4
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jul 2023 14:20:12 +0000 (UTC)
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2b6ff1a637bso31225091fa.3
+ for <igt-dev@lists.freedesktop.org>; Fri, 07 Jul 2023 07:20:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Fri, 07 Jul 2023 13:30:33 -0000
-Message-ID: <168873663344.14756.8420466274414618416@emeril.freedesktop.org>
-References: <20230707130900.11246-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230707130900.11246-1-vitaly.prosyak@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/amdgpu=3A_add_vcn_decoder_and_encoder_tests_=28rev7=29?=
+References: <20230609154336.516503-1-matthew.auld@intel.com>
+In-Reply-To: <20230609154336.516503-1-matthew.auld@intel.com>
+From: Matthew Auld <matthew.william.auld@gmail.com>
+Date: Fri, 7 Jul 2023 15:19:43 +0100
+Message-ID: <CAM0jSHPS5Msfa7gatv8BwSZKhG_OU2mOTbk-z1k6bcg0dgpobw@mail.gmail.com>
+To: Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH i-g-t v2 0/6] IGT bits for small-bar
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +24,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Fri, 9 Jun 2023 at 16:44, Matthew Auld <matthew.auld@intel.com> wrote:
+>
+> small-bar IGT changes for Xe.
+>
+> v2: Rebase on latest IGT, plus various improvements
 
-Series: tests/amdgpu: add vcn decoder and encoder tests (rev7)
-URL   : https://patchwork.freedesktop.org/series/120292/
-State : warning
+Kamil, Matt any chance you can take a look at the remaining patches
+here? The kernel and umd side is ready to go so just need to close on
+these IGTs.
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/929301 for the overview.
-
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45076963):
-  360/364 assembler test/rnde-intsrc              OK       0.01 s 
-  361/364 assembler test/rndz                     OK       0.01 s 
-  362/364 assembler test/lzd                      OK       0.01 s 
-  363/364 assembler test/not                      OK       0.01 s 
-  364/364 assembler test/immediate                OK       0.01 s 
-  
-  Ok:                  359
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1688736365:step_script
-  section_start:1688736365:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688736367:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45076962):
-  360/364 assembler test/rnde-intsrc              OK       0.01 s 
-  361/364 assembler test/rndz                     OK       0.01 s 
-  362/364 assembler test/lzd                      OK       0.01 s 
-  363/364 assembler test/not                      OK       0.01 s 
-  364/364 assembler test/immediate                OK       0.01 s 
-  
-  Ok:                  359
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1688736367:step_script
-  section_start:1688736367:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688736368:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/929301
+>
+> Kernel: https://patchwork.freedesktop.org/series/115515/
+>
+> --
+> 2.40.1
+>
