@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============3615197277434020285=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: vitaly.prosyak@amd.com
-Date: Fri, 07 Jul 2023 02:58:40 -0000
-Message-ID: <168869872028.14757.13618486255004908153@emeril.freedesktop.org>
+Date: Fri, 07 Jul 2023 03:24:45 -0000
+Message-ID: <168870028551.14755.6902542339632498532@emeril.freedesktop.org>
 References: <20230707015952.170155-1-vitaly.prosyak@amd.com>
 In-Reply-To: <20230707015952.170155-1-vitaly.prosyak@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/amdgpu=3A_add_vcn_decoder_and_encoder_tests_=28rev5=29?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?amdgpu=3A_add_vcn_decoder_and_encoder_tests_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,404 +23,237 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============3615197277434020285==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
 
 Series: tests/amdgpu: add vcn decoder and encoder tests (rev5)
 URL   : https://patchwork.freedesktop.org/series/120292/
-State : warning
+State : success
 
-=3D=3D Summary =3D=3D
+== Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from CI_DRM_13353 -> IGTPW_9363
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/928922 fo=
-r the overview.
+Summary
+-------
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/45054994):
-  [1/631] Generating version.h with a custom command.
-  [2/304] Linking target tests/amdgpu/amd_psr.
-  [3/304] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=
-'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=20
-  cc -Itests/amdgpu/b9f2b1d@@amd_vcn@exe -Itests/amdgpu -I../tests/amdgpu -=
-I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I=
-../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.=
-0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/u=
-sr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/inc=
-lude/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/x86_64-linux-gnu -=
-I/usr/include/valgrind -I/usr/include/alsa -I/usr/include -fdiagnostics-col=
-or=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=
-=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad=
--function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallth=
-rough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -W=
-missing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definiti=
-on -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuniniti=
-alized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-=
-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unu=
-sed-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -=
-Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=
-=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int=
--cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -W=
-error=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread  -MD=
- -MQ 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o' -MF 'tests/amdgpu/b9f2=
-b1d@@amd_vcn@exe/amd_vcn.c.o.d' -o 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_v=
-cn.c.o' -c ../tests/amdgpu/amd_vcn.c
-  ../tests/amdgpu/amd_vcn.c: In function =E2=80=98__igt_unique____real_main=
-1419=E2=80=99:
-  ../tests/amdgpu/amd_vcn.c:1440:2: warning: statement with no effect [-Wun=
-used-value]
-    mmd_context_clean
-    ^~~~~~~~~~~~~~~~~
-  ../tests/amdgpu/amd_vcn.c:1440:19: error: expected =E2=80=98;=E2=80=99 be=
-fore =E2=80=98igt_describe_f=E2=80=99
-    mmd_context_clean
-                     ^
-                     ;
-  ninja: build stopped: subcommand failed.
-  section_end:1688698409:step_script
-  section_start:1688698409:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688698410:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  **SUCCESS**
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/45054997):
-  [4/266] Linking target tests/amdgpu/amd_uvd_dec.
-  [5/266] Linking target tests/amdgpu/amd_psr.
-  [6/266] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=
-'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=20
-  /usr/bin/aarch64-linux-gnu-gcc -Itests/amdgpu/b9f2b1d@@amd_vcn@exe -Itest=
-s/amdgpu -I../tests/amdgpu -I../include -I../include/drm-uapi -I../include/=
-linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/=
-cairo -I/usr/include/glib-2.0 -I/usr/lib/aarch64-linux-gnu/glib-2.0/include=
- -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/us=
-r/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/u=
-sr/include/aarch64-linux-gnu -I/usr/include/valgrind -I/usr/include/alsa -f=
-diagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-p=
-ch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_S=
-OURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -W=
-implicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-form=
-at-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold=
--style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-proto=
-types -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno=
--missing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-=
-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=
-=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-poi=
-nter-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=
-=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werr=
-or=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-cal=
-loc -pthread  -MD -MQ 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o' -MF '=
-tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o.d' -o 'tests/amdgpu/b9f2b1d@@=
-amd_vcn@exe/amd_vcn.c.o' -c ../tests/amdgpu/amd_vcn.c
-  ../tests/amdgpu/amd_vcn.c: In function =E2=80=98__igt_unique____real_main=
-1419=E2=80=99:
-  ../tests/amdgpu/amd_vcn.c:1440:2: warning: statement with no effect [-Wun=
-used-value]
-    mmd_context_clean
-    ^~~~~~~~~~~~~~~~~
-  ../tests/amdgpu/amd_vcn.c:1440:19: error: expected =E2=80=98;=E2=80=99 be=
-fore =E2=80=98igt_describe_f=E2=80=99
-    mmd_context_clean
-                     ^
-                     ;
-  ninja: build stopped: subcommand failed.
-  section_end:1688698410:step_script
-  section_start:1688698410:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688698411:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  No regressions found.
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/45054996):
-  [3/267] Linking target tests/amdgpu/amd_plane.
-  [4/267] Linking target tests/amdgpu/amd_psr.
-  [5/267] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=
-'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=20
-  /usr/bin/arm-linux-gnueabihf-gcc -Itests/amdgpu/b9f2b1d@@amd_vcn@exe -Ite=
-sts/amdgpu -I../tests/amdgpu -I../include -I../include/drm-uapi -I../includ=
-e/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/includ=
-e/cairo -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/inc=
-lude -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -=
-I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau =
--I/usr/include/arm-linux-gnueabihf -I/usr/include/valgrind -I/usr/include/a=
-lsa -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winv=
-alid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FOR=
-TIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=
-=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissi=
-ng-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-extern=
-s -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstric=
-t-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitializ=
-ed -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wn=
-o-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -W=
-error=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-t=
-o-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -W=
-error=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point =
--Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builti=
-n-calloc -pthread  -MD -MQ 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o' =
--MF 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o.d' -o 'tests/amdgpu/b9f2=
-b1d@@amd_vcn@exe/amd_vcn.c.o' -c ../tests/amdgpu/amd_vcn.c
-  ../tests/amdgpu/amd_vcn.c: In function =E2=80=98__igt_unique____real_main=
-1419=E2=80=99:
-  ../tests/amdgpu/amd_vcn.c:1440:2: warning: statement with no effect [-Wun=
-used-value]
-    mmd_context_clean
-    ^~~~~~~~~~~~~~~~~
-  ../tests/amdgpu/amd_vcn.c:1440:19: error: expected =E2=80=98;=E2=80=99 be=
-fore =E2=80=98igt_describe_f=E2=80=99
-    mmd_context_clean
-                     ^
-                     ;
-  ninja: build stopped: subcommand failed.
-  section_end:1688698402:step_script
-  section_start:1688698402:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688698404:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/index.html
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/45054998):
-  [6/271] Linking target tests/core_hotunplug.
-  [7/271] Linking target tests/amdgpu/amd_uvd_dec.
-  [8/271] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=
-'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=20
-  /usr/bin/mips-linux-gnu-gcc -Itests/amdgpu/b9f2b1d@@amd_vcn@exe -Itests/a=
-mdgpu -I../tests/amdgpu -I../include -I../include/drm-uapi -I../include/lin=
-ux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cai=
-ro -I/usr/include/glib-2.0 -I/usr/lib/mips-linux-gnu/glib-2.0/include -I/us=
-r/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/incl=
-ude/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/inc=
-lude/mips-linux-gnu -I/usr/include/valgrind -I/usr/include/alsa -fdiagnosti=
-cs-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextr=
-a -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2=
- -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-=
-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attrib=
-ute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-de=
-finition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wu=
-ninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-=
-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -W=
-no-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bo=
-unds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -=
-Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-=
-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigra=
-phs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthrea=
-d  -MD -MQ 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o' -MF 'tests/amdgp=
-u/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o.d' -o 'tests/amdgpu/b9f2b1d@@amd_vcn@exe=
-/amd_vcn.c.o' -c ../tests/amdgpu/amd_vcn.c
-  ../tests/amdgpu/amd_vcn.c: In function =E2=80=98__igt_unique____real_main=
-1419=E2=80=99:
-  ../tests/amdgpu/amd_vcn.c:1440:2: warning: statement with no effect [-Wun=
-used-value]
-    mmd_context_clean
-    ^~~~~~~~~~~~~~~~~
-  ../tests/amdgpu/amd_vcn.c:1440:19: error: expected =E2=80=98;=E2=80=99 be=
-fore =E2=80=98igt_describe_f=E2=80=99
-    mmd_context_clean
-                     ^
-                     ;
-  ninja: build stopped: subcommand failed.
-  section_end:1688698406:step_script
-  section_start:1688698406:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688698407:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Participating hosts (41 -> 39)
+------------------------------
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/45054989):
-  [2/299] Linking target tests/amdgpu/amd_plane.
-  [3/299] Linking target tests/amdgpu/amd_uvd_dec.
-  [4/299] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=
-'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=20
-  cc -Itests/amdgpu/b9f2b1d@@amd_vcn@exe -Itests/amdgpu -I../tests/amdgpu -=
-I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I=
-../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.=
-0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/free=
-type2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/n=
-ouveau -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe -D_FILE_O=
-FFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOUR=
-CE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaratio=
-n-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmi=
-ssing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-=
-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredund=
-ant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbe=
-red -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-a=
-rith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-=
-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bound=
-s -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Wer=
-ror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-=
-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs=
- -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread -=
-MD -MQ 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o' -MF 'tests/amdgpu/b9=
-f2b1d@@amd_vcn@exe/amd_vcn.c.o.d' -o 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd=
-_vcn.c.o' -c ../tests/amdgpu/amd_vcn.c
-  ../tests/amdgpu/amd_vcn.c: In function =E2=80=98__igt_unique____real_main=
-1419=E2=80=99:
-  ../tests/amdgpu/amd_vcn.c:1440:2: warning: statement with no effect [-Wun=
-used-value]
-   1440 |  mmd_context_clean
-        |  ^~~~~~~~~~~~~~~~~
-  ../tests/amdgpu/amd_vcn.c:1440:19: error: expected =E2=80=98;=E2=80=99 be=
-fore =E2=80=98igt_describe_f=E2=80=99
-   1440 |  mmd_context_clean
-        |                   ^
-        |                   ;
-  ninja: build stopped: subcommand failed.
-  section_end:1688698409:step_script
-  section_start:1688698409:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688698410:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/45054993):
-  [8/304] Linking target tests/amdgpu/amd_psr.
-  [9/304] Linking target tests/amdgpu/amd_uvd_enc.
-  [10/304] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.=
-o'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=20
-  clang -Itests/amdgpu/b9f2b1d@@amd_vcn@exe -Itests/amdgpu -I../tests/amdgp=
-u -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../lib=
- -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib=
--2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/f=
-reetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdr=
-m/nouveau -I/usr/include/valgrind -Xclang -fcolor-diagnostics -pipe -D_FILE=
-_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SO=
-URCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarat=
-ion-after-statement -Wformat=3D2 -Wmissing-declarations -Wmissing-format-at=
-tribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-styl=
-e-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes=
- -Wuninitialized -Wunused -Wno-missing-field-initializers -Wno-pointer-arit=
-h -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unu=
-sed-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -=
-Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=
-=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int=
--cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -W=
-error=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread -MD =
--MQ 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o' -MF 'tests/amdgpu/b9f2b=
-1d@@amd_vcn@exe/amd_vcn.c.o.d' -o 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vc=
-n.c.o' -c ../tests/amdgpu/amd_vcn.c
-  ../tests/amdgpu/amd_vcn.c:1440:19: error: expected ';' after expression
-          mmd_context_clean
-                           ^
-                           ;
-  ../tests/amdgpu/amd_vcn.c:1440:2: warning: expression result unused [-Wun=
-used-value]
-          mmd_context_clean
-          ^~~~~~~~~~~~~~~~~
-  1 warning and 1 error generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1688698420:step_script
-  section_start:1688698420:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688698421:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Known issues
+------------
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/45054990):
-  [3/295] Linking target tests/amdgpu/amd_uvd_dec.
-  [4/295] Linking target tests/amdgpu/amd_vce_dec.
-  [5/295] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=
-'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o=20
-  cc -Itests/amdgpu/b9f2b1d@@amd_vcn@exe -Itests/amdgpu -I../tests/amdgpu -=
-I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I=
-../lib/stubs/syscalls -I. -I../ -I../lib/stubs/libunwind -I/usr/include/cai=
-ro -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pix=
-man-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdr=
-m -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -fdiagnostics-color=
-=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=
-=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad=
--function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallth=
-rough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -W=
-missing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definiti=
-on -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuniniti=
-alized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-=
-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-com=
-pare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Dad=
-dress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=
-=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dno=
-nnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequenc=
-e-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fn=
-o-builtin-calloc -pthread -MD -MQ 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vc=
-n.c.o' -MF 'tests/amdgpu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o.d' -o 'tests/amdg=
-pu/b9f2b1d@@amd_vcn@exe/amd_vcn.c.o' -c ../tests/amdgpu/amd_vcn.c
-  ../tests/amdgpu/amd_vcn.c: In function =E2=80=98__igt_unique____real_main=
-1419=E2=80=99:
-  ../tests/amdgpu/amd_vcn.c:1440:2: warning: statement with no effect [-Wun=
-used-value]
-   1440 |  mmd_context_clean
-        |  ^~~~~~~~~~~~~~~~~
-  ../tests/amdgpu/amd_vcn.c:1440:19: error: expected =E2=80=98;=E2=80=99 be=
-fore =E2=80=98igt_describe_f=E2=80=99
-   1440 |  mmd_context_clean
-        |                   ^
-        |                   ;
-  ninja: build stopped: subcommand failed.
-  section_end:1688698399:step_script
-  section_start:1688698399:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688698400:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  Here are the changes found in IGTPW_9363 that come from known issues:
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/45054991):
-  [1/625] Generating version.h with a custom command.
-  [2/294] Linking target tests/amdgpu/amd_vce_dec.
-  [3/294] Compiling C object 'tests/amdgpu/tests@amdgpu@@amd_vcn@exe/amd_vc=
-n.c.o'.
-  FAILED: tests/amdgpu/tests@amdgpu@@amd_vcn@exe/amd_vcn.c.o=20
-  cc -Itests/amdgpu/tests@amdgpu@@amd_vcn@exe -Itests/amdgpu -I../tests/amd=
-gpu -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../l=
-ib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/gl=
-ib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include=
-/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/lib=
-drm/nouveau -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe -D_F=
-ILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU=
-_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdecla=
-ration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op=
- -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmis=
-sing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wr=
-edundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-c=
-lobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-poin=
-ter-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits =
--Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-=
-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast=
- -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointe=
-r-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrig=
-raphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthr=
-ead  -MD -MQ 'tests/amdgpu/tests@amdgpu@@amd_vcn@exe/amd_vcn.c.o' -MF 'test=
-s/amdgpu/tests@amdgpu@@amd_vcn@exe/amd_vcn.c.o.d' -o 'tests/amdgpu/tests@am=
-dgpu@@amd_vcn@exe/amd_vcn.c.o' -c ../tests/amdgpu/amd_vcn.c
-  ../tests/amdgpu/amd_vcn.c: In function =E2=80=98__igt_unique____real_main=
-1419=E2=80=99:
-  ../tests/amdgpu/amd_vcn.c:1440:2: warning: statement with no effect [-Wun=
-used-value]
-   1440 |  mmd_context_clean
-        |  ^~~~~~~~~~~~~~~~~
-  ../tests/amdgpu/amd_vcn.c:1440:19: error: expected =E2=80=98;=E2=80=99 be=
-fore =E2=80=98igt_describe_f=E2=80=99
-   1440 |  mmd_context_clean
-        |                   ^
-        |                   ;
-  ninja: build stopped: subcommand failed.
-  section_end:1688698407:step_script
-  section_start:1688698407:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1688698409:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+### IGT changes ###
 
-=3D=3D Logs =3D=3D
+#### Issues hit ####
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/928922
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         NOTRUN -> [DMESG-WARN][1] ([i915#6367])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - bat-rpls-1:         NOTRUN -> [ABORT][2] ([i915#6687] / [i915#7978] / [i915#8668])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - bat-rplp-1:         NOTRUN -> [SKIP][3] ([i915#1072]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - bat-adln-1:         NOTRUN -> [ABORT][4] ([i915#8442] / [i915#8668])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-adln-1/igt@kms_psr@sprite_plane_onoff.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-rplp-1:         NOTRUN -> [ABORT][5] ([i915#8260] / [i915#8668])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [ABORT][6] ([i915#4983] / [i915#7461] / [i915#7981] / [i915#8347] / [i915#8384]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13353/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  * igt@kms_psr@cursor_plane_move:
+    - bat-adln-1:         [ABORT][8] ([i915#8434] / [i915#8668]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13353/bat-adln-1/igt@kms_psr@cursor_plane_move.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-adln-1/igt@kms_psr@cursor_plane_move.html
+
+  
+#### Warnings ####
+
+  * igt@core_auth@basic-auth:
+    - bat-adlp-11:        [ABORT][10] ([i915#4423] / [i915#8011]) -> [ABORT][11] ([i915#8011])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13353/bat-adlp-11/igt@core_auth@basic-auth.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-adlp-11/igt@core_auth@basic-auth.html
+
+  * igt@kms_psr@cursor_plane_move:
+    - bat-rplp-1:         [ABORT][12] ([i915#8434] / [i915#8668]) -> [SKIP][13] ([i915#1072])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13353/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
+
+  
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+  [i915#7981]: https://gitlab.freedesktop.org/drm/intel/issues/7981
+  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
+  [i915#8260]: https://gitlab.freedesktop.org/drm/intel/issues/8260
+  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
+  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
+  [i915#8434]: https://gitlab.freedesktop.org/drm/intel/issues/8434
+  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7377 -> IGTPW_9363
+
+  CI-20190529: 20190529
+  CI_DRM_13353: 06239df0f63763913a28614c0c00e0991e1fdda1 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9363: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/index.html
+  IGT_7377: d1574543ba4bb322597345530053475c07be0eb9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/index.html
+
+--===============3615197277434020285==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: add vcn decoder and encoder tests (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120292/">https://patchwork.freedesktop.org/series/120292/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13353 -&gt; IGTPW_9363</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/index.html</p>
+<h2>Participating hosts (41 -&gt; 39)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9363 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-adln-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8260">i915#8260</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13353/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7981">i915#7981</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@cursor_plane_move:</p>
+<ul>
+<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13353/bat-adln-1/igt@kms_psr@cursor_plane_move.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8434">i915#8434</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-adln-1/igt@kms_psr@cursor_plane_move.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@core_auth@basic-auth:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13353/bat-adlp-11/igt@core_auth@basic-auth.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8011">i915#8011</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-adlp-11/igt@core_auth@basic-auth.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8011">i915#8011</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@cursor_plane_move:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13353/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8434">i915#8434</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7377 -&gt; IGTPW_9363</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13353: 06239df0f63763913a28614c0c00e0991e1fdda1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9363: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9363/index.html<br />
+  IGT_7377: d1574543ba4bb322597345530053475c07be0eb9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3615197277434020285==--
