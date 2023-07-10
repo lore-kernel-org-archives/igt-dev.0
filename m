@@ -1,21 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9548110E13D
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 06:32:48 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: "Nayana, Venkata Ramana" <venkata.ramana.nayana@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 10 Jul 2023 06:32:40 +0000
-Message-ID: <MW3PR11MB47483039EF70E7C18E6E7BE3AE30A@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20230704135516.1884775-1-venkata.ramana.nayana@intel.com>
- <20230704135516.1884775-2-venkata.ramana.nayana@intel.com>
-In-Reply-To: <20230704135516.1884775-2-venkata.ramana.nayana@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77A2B10E13D
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 06:16:27 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.27.131])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 59289580D5F
+ for <igt-dev@lists.freedesktop.org>; Sun,  9 Jul 2023 23:16:25 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qIkC7-002ona-1R
+ for igt-dev@lists.freedesktop.org; Mon, 10 Jul 2023 08:16:23 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 10 Jul 2023 08:16:19 +0200
+Message-Id: <20230710061621.671843-5-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230710061621.671843-1-mauro.chehab@linux.intel.com>
+References: <20230710061621.671843-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 1/1] tests/xe/perf_pmu: Tests for the XE
- pmu interface
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 4/6] tests/meson.build: create testlists
+ for tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,254 +32,170 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
-di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIFZlbmthdGENCj4g
-UmFtYW5hIE5heWFuYQ0KPiBTZW50OiAwNCBKdWx5IDIwMjMgMTk6MjUNCj4gVG86IGlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1YmplY3Q6IFtpZ3QtZGV2XSBbUEFUQ0ggdjIgMS8x
-XSB0ZXN0cy94ZS9wZXJmX3BtdTogVGVzdHMgZm9yIHRoZSBYRSBwbXUNCj4gaW50ZXJmYWNlDQo+
-IA0KPiBUaGVyZSBhcmUgc2V0IG9mIGVuZ2luZSBncm91cCBidXN5bmVzcyBjb3VudGVycyBwcm92
-aWRlZCBieSBIVyB3aGljaCBhcmUNCj4gZXhwb3NlZCB2aWEgUE1VIGV2ZW50cy4gQWRkaW5nIGEg
-YmFzaWMgdW5pdCB0ZXN0cyB0byByZWFkIHRob3NlIGNvdW50ZXJzLg0KPiANCj4gdjI6IEFkZGVk
-IGlkbGUgY29uZGl0aW9uIGNoZWNrcyB3aGlsZSByZWFkaW5nIHRoZSBjb3VudGVycy4gKFJhaHVs
-KQ0KPiANCj4gQ2M6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5yYWh1bC5rdW1hckBpbnRlbC5j
-b20+DQo+IFNpZ25lZC1vZmYtYnk6IFZlbmthdGEgUmFtYW5hIE5heWFuYSA8dmVua2F0YS5yYW1h
-bmEubmF5YW5hQGludGVsLmNvbT4NCj4gLS0tDQo+ICBpbmNsdWRlL2RybS11YXBpL3hlX2RybS5o
-IHwgIDIyICsrKw0KPiAgbGliL2lndF9wZXJmLmMgICAgICAgICAgICB8ICAzNiArKysrKw0KPiAg
-bGliL2lndF9wZXJmLmggICAgICAgICAgICB8ICAgNSArDQo+ICB0ZXN0cy9tZXNvbi5idWlsZCAg
-ICAgICAgIHwgICAxICsNCj4gIHRlc3RzL3hlL3hlX3BlcmZfcG11LmMgICAgfCAzMzEgKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gIDUgZmlsZXMgY2hhbmdlZCwgMzk1
-IGluc2VydGlvbnMoKykNCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy94ZS94ZV9wZXJmX3Bt
-dS5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9kcm0tdWFwaS94ZV9kcm0uaCBiL2luY2x1
-ZGUvZHJtLXVhcGkveGVfZHJtLmggaW5kZXgNCj4gNDMyYmQ4N2NhLi44MWRhZTEwZGUgMTAwNjQ0
-DQo+IC0tLSBhL2luY2x1ZGUvZHJtLXVhcGkveGVfZHJtLmgNCj4gKysrIGIvaW5jbHVkZS9kcm0t
-dWFwaS94ZV9kcm0uaA0KPiBAQCAtNzMyLDYgKzczMiwyOCBAQCBzdHJ1Y3QgZHJtX3hlX2VuZ2lu
-ZV9jcmVhdGUgew0KPiAgCV9fdTY0IHJlc2VydmVkWzJdOw0KPiAgfTsNCj4gDQo+ICsvKioNCj4g
-KyAqIERPQzogcGVyZl9ldmVudHMgZXhwb3NlZCBieSB4ZSB0aHJvdWdoDQo+ICsvc3lzL2J1cy9l
-dmVudF9zb3VyY2VzL2RyaXZlcnMveGUNCj4gKyAqDQo+ICsgKi8NCj4gKw0KPiArDQo+ICsvKiBQ
-TVUgZXZlbnQgY29uZmlnIElEcyAqLw0KPiArDQo+ICsvKg0KPiArICogVG9wIDQgYml0cyBvZiBl
-dmVyeSBjb3VudGVyIGFyZSBHVCBpZC4NCj4gKyAqLw0KPiArI2RlZmluZSBfX1hFX1BNVV9HVF9T
-SElGVCAoNjApDQo+ICsNCj4gKyNkZWZpbmUgX19fWEVfUE1VX09USEVSKGd0LCB4KSBcDQo+ICsJ
-KCgoX191NjQpKHgpKSB8ICgoX191NjQpKGd0KSA8PCBfX1hFX1BNVV9HVF9TSElGVCkpDQo+ICsN
-Cj4gKyNkZWZpbmUgWEVfUE1VX0lOVEVSUlVQVFMoZ3QpDQo+IAlfX19YRV9QTVVfT1RIRVIoZ3Qs
-IDApDQo+ICsjZGVmaW5lIFhFX1BNVV9SRU5ERVJfR1JPVVBfQlVTWShndCkNCj4gCV9fX1hFX1BN
-VV9PVEhFUihndCwgMSkNCj4gKyNkZWZpbmUgWEVfUE1VX0NPUFlfR1JPVVBfQlVTWShndCkNCj4g
-CV9fX1hFX1BNVV9PVEhFUihndCwgMikNCj4gKyNkZWZpbmUgWEVfUE1VX01FRElBX0dST1VQX0JV
-U1koZ3QpDQo+IAlfX19YRV9QTVVfT1RIRVIoZ3QsIDMpDQo+ICsjZGVmaW5lIFhFX1BNVV9BTllf
-RU5HSU5FX0dST1VQX0JVU1koZ3QpDQo+IAlfX19YRV9QTVVfT1RIRVIoZ3QsIDQpDQo+ICsNCj4g
-IHN0cnVjdCBkcm1feGVfZW5naW5lX2dldF9wcm9wZXJ0eSB7DQo+ICAJLyoqIEBleHRlbnNpb25z
-OiBQb2ludGVyIHRvIHRoZSBmaXJzdCBleHRlbnNpb24gc3RydWN0LCBpZiBhbnkgKi8NCj4gIAlf
-X3U2NCBleHRlbnNpb25zOw0KPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9wZXJmLmMgYi9saWIvaWd0
-X3BlcmYuYyBpbmRleCBmZmUwNzhhZGMuLjM4NjZjNmQ3NyAxMDA2NDQNCj4gLS0tIGEvbGliL2ln
-dF9wZXJmLmMNCj4gKysrIGIvbGliL2lndF9wZXJmLmMNCj4gQEAgLTY5LDYgKzY5LDM2IEBAIGNv
-bnN0IGNoYXIgKmk5MTVfcGVyZl9kZXZpY2UoaW50IGk5MTUsIGNoYXIgKmJ1ZiwgaW50DQo+IGJ1
-ZmxlbikNCj4gIAlyZXR1cm4gYnVmOw0KPiAgfQ0KPiANCj4gK2NvbnN0IGNoYXIgKnhlX3BlcmZf
-ZGV2aWNlKGludCB4ZSwgY2hhciAqYnVmLCBpbnQgYnVmbGVuKSB7DQo+ICsJY2hhciAqczsNCj4g
-KwljaGFyIHByZWZbXSA9ICJ4ZV8iOw0KPiArCWludCBsZW4gPSBzdHJsZW4ocHJlZik7DQo+ICsN
-Cj4gKw0KPiArCWlmICghYnVmIHx8IGJ1ZmxlbiA8IGxlbikNCj4gKwkJcmV0dXJuICJ4ZSI7DQo+
-ICsNCj4gKwltZW1jcHkoYnVmLCBwcmVmLCBsZW4pOw0KPiArDQo+ICsJaWYgKCFidXNfYWRkcmVz
-cyh4ZSwgYnVmICsgbGVuLCBidWZsZW4gLSBsZW4pKQ0KPiArCQlidWZbbGVuIC0gMV0gPSAnXDAn
-Ow0KPiArDQo+ICsJLyogQ29udmVydCBhbGwgY29sb25zIGluIHRoZSBhZGRyZXNzIHRvICdfJywg
-dGhhbmtzIHBlcmYhICovDQo+ICsJZm9yIChzID0gYnVmOyAqczsgcysrKQ0KPiArCQlpZiAoKnMg
-PT0gJzonKQ0KPiArCQkJKnMgPSAnXyc7DQo+ICsNCj4gKwlyZXR1cm4gYnVmOw0KPiArfQ0KPiAr
-DQo+ICt1aW50NjRfdCB4ZV9wZXJmX3R5cGVfaWQoaW50IHhlKQ0KPiArew0KPiArCWNoYXIgYnVm
-WzgwXTsNCj4gKw0KPiArCXJldHVybiBpZ3RfcGVyZl90eXBlX2lkKHhlX3BlcmZfZGV2aWNlKHhl
-LCBidWYsIHNpemVvZihidWYpKSk7IH0NCj4gKw0KPiAgdWludDY0X3QgaTkxNV9wZXJmX3R5cGVf
-aWQoaW50IGk5MTUpDQo+ICB7DQo+ICAJY2hhciBidWZbODBdOw0KPiBAQCAtMTQ3LDYgKzE3Nywx
-MiBAQCBpbnQgcGVyZl9pZ2Z4X29wZW5fZ3JvdXAodWludDY0X3QgY29uZmlnLCBpbnQgZ3JvdXAp
-DQo+ICAJCQkgIFBFUkZfRk9STUFUX1RPVEFMX1RJTUVfRU5BQkxFRCB8DQo+IFBFUkZfRk9STUFU
-X0dST1VQKTsgIH0NCj4gDQo+ICtpbnQgcGVyZl94ZV9vcGVuKGludCB4ZSwgdWludDY0X3QgY29u
-ZmlnKSB7DQo+ICsJcmV0dXJuIF9wZXJmX29wZW4oeGVfcGVyZl90eXBlX2lkKHhlKSwgY29uZmln
-LCAtMSwNCj4gKwkJCVBFUkZfRk9STUFUX1RPVEFMX1RJTUVfRU5BQkxFRCk7DQo+ICt9DQo+ICsN
-Cj4gIGludCBwZXJmX2k5MTVfb3BlbihpbnQgaTkxNSwgdWludDY0X3QgY29uZmlnKSAgew0KPiAg
-CXJldHVybiBfcGVyZl9vcGVuKGk5MTVfcGVyZl90eXBlX2lkKGk5MTUpLCBjb25maWcsIC0xLCBk
-aWZmIC0tZ2l0DQo+IGEvbGliL2lndF9wZXJmLmggYi9saWIvaWd0X3BlcmYuaCBpbmRleCA0ZDg2
-ZTMxYWUuLjNkOWJhMjkxNyAxMDA2NDQNCj4gLS0tIGEvbGliL2lndF9wZXJmLmgNCj4gKysrIGIv
-bGliL2lndF9wZXJmLmgNCj4gQEAgLTYxLDEwICs2MSwxNSBAQCBpbnQgaWd0X3BlcmZfb3Blbl9n
-cm91cCh1aW50NjRfdCB0eXBlLCB1aW50NjRfdCBjb25maWcsDQo+IGludCBncm91cCk7ICBjb25z
-dCBjaGFyICppOTE1X3BlcmZfZGV2aWNlKGludCBpOTE1LCBjaGFyICpidWYsIGludCBidWZsZW4p
-Ow0KPiB1aW50NjRfdCBpOTE1X3BlcmZfdHlwZV9pZChpbnQgaTkxNSk7DQo+IA0KPiArY29uc3Qg
-Y2hhciAqeGVfcGVyZl9kZXZpY2UoaW50IHhlLCBjaGFyICpidWYsIGludCBidWZsZW4pOyB1aW50
-NjRfdA0KPiAreGVfcGVyZl90eXBlX2lkKGludCk7DQo+ICsNCj4gIGludCBwZXJmX2lnZnhfb3Bl
-bih1aW50NjRfdCBjb25maWcpOw0KPiAgaW50IHBlcmZfaWdmeF9vcGVuX2dyb3VwKHVpbnQ2NF90
-IGNvbmZpZywgaW50IGdyb3VwKTsNCj4gDQo+ICBpbnQgcGVyZl9pOTE1X29wZW4oaW50IGk5MTUs
-IHVpbnQ2NF90IGNvbmZpZyk7ICBpbnQgcGVyZl9pOTE1X29wZW5fZ3JvdXAoaW50DQo+IGk5MTUs
-IHVpbnQ2NF90IGNvbmZpZywgaW50IGdyb3VwKTsNCj4gDQo+ICtpbnQgcGVyZl94ZV9vcGVuKGlu
-dCB4ZSwgdWludDY0X3QgY29uZmlnKTsNCj4gKw0KPiAgI2VuZGlmIC8qIEk5MTVfUEVSRl9IICov
-DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1aWxkIGlu
-ZGV4IGVlMDY2Yjg0OS4uMTE1YmNmM2ZmDQo+IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9tZXNvbi5i
-dWlsZA0KPiArKysgYi90ZXN0cy9tZXNvbi5idWlsZA0KPiBAQCAtMjY3LDYgKzI2Nyw3IEBAIHhl
-X3Byb2dzID0gWw0KPiAgCSd4ZV9ub2V4ZWNfcGluZ19wb25nJywNCj4gIAkneGVfcG0nLA0KPiAg
-CSd4ZV9wcmltZV9zZWxmX2ltcG9ydCcsDQo+ICsJJ3hlX3BlcmZfcG11JywNCkFkZCBpdCBpbiBz
-b3J0ZWQgb3JkZXIuDQoNCj4gIAkneGVfcXVlcnknLA0KPiAgCSd4ZV92bScsDQo+ICAJJ3hlX3dh
-aXRmZW5jZScsDQo+IGRpZmYgLS1naXQgYS90ZXN0cy94ZS94ZV9wZXJmX3BtdS5jIGIvdGVzdHMv
-eGUveGVfcGVyZl9wbXUuYyBuZXcgZmlsZSBtb2RlDQo+IDEwMDY0NCBpbmRleCAwMDAwMDAwMDAu
-LjFmYzk0MDMzOA0KPiAtLS0gL2Rldi9udWxsDQo+ICsrKyBiL3Rlc3RzL3hlL3hlX3BlcmZfcG11
-LmMNCj4gQEAgLTAsMCArMSwzMzEgQEANCj4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBN
-SVQNCj4gKy8qDQo+ICsgKiBDb3B5cmlnaHQgwqkgMjAyMSBJbnRlbCBDb3Jwb3JhdGlvbg0KPiAr
-ICovDQo+ICsNCj4gKy8qKg0KPiArICogVEVTVDogQmFzaWMgdGVzdHMgZm9yIHZlcmlmeSBwbXUg
-cGVyZiBpbnRlcmZhY2UNCj4gKyAqIENhdGVnb3J5OiBIYXJkd2FyZSBidWlsZGluZyBibG9jaw0K
-PiArICogU3ViLWNhdGVnb3J5OiBwbXUgaW50ZXJmYWNlDQo+ICsgKiBGdW5jdGlvbmFsaXR5OiBw
-bXUNCj4gKyAqIFRlc3QgY2F0ZWdvcnk6IGZ1bmN0aW9uYWxpdHkgdGVzdA0KPiArICovDQo+ICsN
-Cj4gKyNpbmNsdWRlIDxmY250bC5oPg0KPiArI2luY2x1ZGUgPHN0cmluZy5oPg0KPiArDQo+ICsj
-aW5jbHVkZSAiaWd0LmgiDQo+ICsjaW5jbHVkZSAibGliL2lndF9zeW5jb2JqLmgiDQo+ICsjaW5j
-bHVkZSAibGliL2ludGVsX3JlZy5oIg0KPiArI2luY2x1ZGUgImxpYi9pZ3RfcGVyZi5oIg0KPiAr
-I2luY2x1ZGUgInhlX2RybS5oIg0KPiArI2luY2x1ZGUgInhlL3hlX2lvY3RsLmgiDQo+ICsjaW5j
-bHVkZSAieGUveGVfcXVlcnkuaCINCj4gKyNpbmNsdWRlICJ4ZS94ZV9zcGluLmgiDQo+ICsNCj4g
-KyNkZWZpbmUgTUFYX0lOU1RBTkNFIDkNCj4gKw0KPiArc3RhdGljIHVpbnQ2NF90IHBtdV9yZWFk
-KGludCBmZCkNCj4gK3sNCj4gKwl1aW50NjRfdCAgZGF0YVsyXTsNCj4gKw0KPiArCWlndF9hc3Nl
-cnRfZXEocmVhZChmZCwgZGF0YSwgc2l6ZW9mKGRhdGEpKSwgc2l6ZW9mKGRhdGEpKTsNCj4gKw0K
-PiArCXJldHVybiBkYXRhWzBdOw0KPiArfQ0KPiArDQo+ICtzdGF0aWMgaW50IG9wZW5fcG11KGlu
-dCBmZCwgdWludDY0X3QgY29uZmlnKSB7DQo+ICsJaW50IHBlcmZfZmQ7DQo+ICsNCj4gKwlwZXJm
-X2ZkID0gcGVyZl94ZV9vcGVuKGZkLCBjb25maWcpOw0KPiArCWlndF9za2lwX29uKHBlcmZfZmQg
-PCAwICYmIGVycm5vID09IEVOT0RFVik7DQo+ICsJaWd0X2Fzc2VydChwZXJmX2ZkID49IDApOw0K
-PiArDQo+ICsJcmV0dXJuIHBlcmZfZmQ7DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB1aW50NjRfdCBl
-bmdpbmVfZ3JvdXBfZ2V0X2NvbmZpZyhpbnQgZ3QsIGludCBjbGFzcykgew0KPiArCXVpbnQ2NF90
-IGNvbmZpZzsNCj4gKw0KPiArCXN3aXRjaCAoY2xhc3MpIHsNCj4gKwljYXNlIERSTV9YRV9FTkdJ
-TkVfQ0xBU1NfQ09QWToNCj4gKwkJY29uZmlnID0gWEVfUE1VX0NPUFlfR1JPVVBfQlVTWShndCk7
-DQo+ICsJCWJyZWFrOw0KPiArCWNhc2UgRFJNX1hFX0VOR0lORV9DTEFTU19SRU5ERVI6DQo+ICsJ
-Y2FzZSBEUk1fWEVfRU5HSU5FX0NMQVNTX0NPTVBVVEU6DQo+ICsJCWNvbmZpZyA9IFhFX1BNVV9S
-RU5ERVJfR1JPVVBfQlVTWShndCk7DQo+ICsJCWJyZWFrOw0KPiArCWNhc2UgRFJNX1hFX0VOR0lO
-RV9DTEFTU19WSURFT19ERUNPREU6DQo+ICsJY2FzZSBEUk1fWEVfRU5HSU5FX0NMQVNTX1ZJREVP
-X0VOSEFOQ0U6DQo+ICsJCWNvbmZpZyA9IFhFX1BNVV9NRURJQV9HUk9VUF9CVVNZKGd0KTsNCj4g
-KwkJYnJlYWs7DQo+ICsJfQ0KPiArDQo+ICsJcmV0dXJuIGNvbmZpZzsNCj4gK30NCj4gKw0KPiAr
-LyoqDQo+ICsgKiBUZXN0OiBCYXNpYyB0ZXN0IGZvciBtZWFzdXJlIHRoZSBhY3RpdmUgdGltZSB3
-aGVuIGVuZ2luZSBvZiBhbnkNCj4gK2NsYXNzIGFjdGl2ZQ0KPiArICoNCj4gKyAqIFNVQlRFU1Q6
-IGFueS1lbmdpbmUtZ3JvdXAtYnVzeQ0KPiArICogRGVzY3JpcHRpb246DQo+ICsgKiAgICAgIFJ1
-biBhIHRlc3QgdG8gbWVhc3VyZSB0aGUgZ2xvYmFsIGFjdGl2aXR5IHRpbWUgYnkgc3VibWl0dGlu
-Zw0KPiArICogICAgICB0aGUgV0wgdG8gYWxsIGV4aXN0aW5nIGVuZ2luZXMuDQo+ICsgKiBSdW4g
-dHlwZTogRlVMTA0KPiArICoNCj4gKyAqLw0KPiArc3RhdGljIHZvaWQgdGVzdF9hbnlfZW5naW5l
-X2J1c3luZXNzKGludCBmZCwgc3RydWN0DQo+ICtkcm1feGVfZW5naW5lX2NsYXNzX2luc3RhbmNl
-ICplY2kpIHsNCj4gKwl1aW50MzJfdCB2bTsNCj4gKwl1aW50NjRfdCBhZGRyID0gMHgxYTAwMDA7
-DQo+ICsJc3RydWN0IGRybV94ZV9zeW5jIHN5bmNbMl0gPSB7DQo+ICsJCXsgLmZsYWdzID0gRFJN
-X1hFX1NZTkNfU1lOQ09CSiB8IERSTV9YRV9TWU5DX1NJR05BTCwgfSwNCj4gKwkJeyAuZmxhZ3Mg
-PSBEUk1fWEVfU1lOQ19TWU5DT0JKIHwgRFJNX1hFX1NZTkNfU0lHTkFMLCB9LA0KPiArCX07DQo+
-ICsJc3RydWN0IGRybV94ZV9leGVjIGV4ZWMgPSB7DQo+ICsJCS5udW1fYmF0Y2hfYnVmZmVyID0g
-MSwNCj4gKwkJLm51bV9zeW5jcyA9IDIsDQo+ICsJCS5zeW5jcyA9IHRvX3VzZXJfcG9pbnRlcihz
-eW5jKSwNCj4gKwl9Ow0KPiArCXVpbnQzMl90IGVuZ2luZTsNCj4gKwl1aW50MzJfdCBzeW5jb2Jq
-Ow0KPiArCXNpemVfdCBib19zaXplOw0KPiArCXVpbnQzMl90IGJvID0gMDsNCj4gKwlzdHJ1Y3Qg
-eGVfc3BpbiAqc3BpbjsNCj4gKwl1aW50MzJfdCBwbXVfZmQ7DQo+ICsJdWludDY0X3QgY291bnQs
-IGlkbGU7DQo+ICsNCj4gKwl2bSA9IHhlX3ZtX2NyZWF0ZShmZCwgRFJNX1hFX1ZNX0NSRUFURV9B
-U1lOQ19CSU5EX09QUywgMCk7DQo+ICsJYm9fc2l6ZSA9IHNpemVvZigqc3Bpbik7DQo+ICsJYm9f
-c2l6ZSA9IEFMSUdOKGJvX3NpemUgKyB4ZV9jc19wcmVmZXRjaF9zaXplKGZkKSwNCj4gKwkJCXhl
-X2dldF9kZWZhdWx0X2FsaWdubWVudChmZCkpOw0KPiArDQo+ICsJYm8gPSB4ZV9ib19jcmVhdGUo
-ZmQsIGVjaS0+Z3RfaWQsIHZtLCBib19zaXplKTsNCj4gKwlzcGluID0geGVfYm9fbWFwKGZkLCBi
-bywgYm9fc2l6ZSk7DQo+ICsNCj4gKwllbmdpbmUgPSB4ZV9lbmdpbmVfY3JlYXRlKGZkLCB2bSwg
-ZWNpLCAwKTsNCj4gKwlzeW5jb2JqID0gc3luY29ial9jcmVhdGUoZmQsIDApOw0KPiArDQo+ICsJ
-c3luY1swXS5oYW5kbGUgPSBzeW5jb2JqX2NyZWF0ZShmZCwgMCk7DQo+ICsJeGVfdm1fYmluZF9h
-c3luYyhmZCwgdm0sIDAsIGJvLCAwLCBhZGRyLCBib19zaXplLCBzeW5jLCAxKTsNCj4gKw0KPiAr
-CXBtdV9mZCA9IG9wZW5fcG11KGZkLCBYRV9QTVVfQU5ZX0VOR0lORV9HUk9VUF9CVVNZKGVjaS0N
-Cj4gPmd0X2lkKSk7DQo+ICsJaWRsZSA9IHBtdV9yZWFkKHBtdV9mZCk7DQo+ICsJaWd0X2Fzc2Vy
-dCghaWRsZSk7DQo+ICsNCj4gKwl4ZV9zcGluX2luaXQoc3BpbiwgYWRkciwgZmFsc2UpOw0KPiAr
-DQo+ICsJc3luY1swXS5mbGFncyAmPSB+RFJNX1hFX1NZTkNfU0lHTkFMOw0KPiArCXN5bmNbMV0u
-ZmxhZ3MgfD0gRFJNX1hFX1NZTkNfU0lHTkFMOw0KPiArCXN5bmNbMV0uaGFuZGxlID0gc3luY29i
-ajsNCj4gKw0KPiArCWV4ZWMuZW5naW5lX2lkID0gZW5naW5lOw0KPiArCWV4ZWMuYWRkcmVzcyA9
-IGFkZHI7DQo+ICsJeGVfZXhlYyhmZCwgJmV4ZWMpOw0KPiArDQo+ICsJeGVfc3Bpbl93YWl0X3N0
-YXJ0ZWQoc3Bpbik7DQo+ICsJdXNsZWVwKDUwMDAwKTsNCj4gKw0KPiArCWlndF9hc3NlcnQoIXN5
-bmNvYmpfd2FpdChmZCwgJnN5bmNvYmosIDEsIDEsIDAsIE5VTEwpKTsNCj4gKwl4ZV9zcGluX2Vu
-ZChzcGluKTsNCj4gKw0KPiArCWlndF9hc3NlcnQoc3luY29ial93YWl0KGZkLCAmc3luY29iaiwg
-MSwgSU5UNjRfTUFYLCAwLCBOVUxMKSk7DQo+ICsJaWd0X2Fzc2VydChzeW5jb2JqX3dhaXQoZmQs
-ICZzeW5jWzBdLmhhbmRsZSwgMSwgSU5UNjRfTUFYLCAwLCBOVUxMKSk7DQo+ICsNCj4gKwlzeW5j
-WzBdLmZsYWdzIHw9IERSTV9YRV9TWU5DX1NJR05BTDsNCj4gKwl4ZV92bV91bmJpbmRfYXN5bmMo
-ZmQsIHZtLCAwLCAwLCBhZGRyLCBib19zaXplLCBzeW5jLCAxKTsNCj4gKwlpZ3RfYXNzZXJ0KHN5
-bmNvYmpfd2FpdChmZCwgJnN5bmNbMF0uaGFuZGxlLCAxLCBJTlQ2NF9NQVgsIDAsIE5VTEwpKTsN
-Cj4gKw0KPiArCXN5bmNvYmpfZGVzdHJveShmZCwgc3luY1swXS5oYW5kbGUpOw0KPiArCXN5bmNv
-YmpfZGVzdHJveShmZCwgc3luY29iaik7DQo+ICsNCj4gKwljb3VudCA9IHBtdV9yZWFkKHBtdV9m
-ZCk7DQo+ICsJaWd0X2Fzc2VydF9sdF91NjQoaWRsZSwgY291bnQpOw0KPiArCWlndF9kZWJ1Zygi
-SW5jcmVtZW50aW5nIGNvdW50ZXIgYWxsLWJ1c3ktZ3JvdXAgJWxkIG5zXG4iLCBjb3VudCk7DQo+
-ICsNCj4gKwl4ZV9lbmdpbmVfZGVzdHJveShmZCwgZW5naW5lKTsNCj4gKwltdW5tYXAoc3Bpbiwg
-Ym9fc2l6ZSk7DQo+ICsJZ2VtX2Nsb3NlKGZkLCBibyk7DQo+ICsJeGVfdm1fZGVzdHJveShmZCwg
-dm0pOw0KPiArCWNsb3NlKHBtdV9mZCk7DQo+ICt9DQo+ICsNCj4gKy8qKg0KPiArICogVGVzdDog
-QmFzaWMgdGVzdCBmb3IgbWVhc3VyZSB0aGUgYWN0aXZlIHRpbWUgYWNyb3NzIGVuZ2luZSBjbGFz
-cw0KPiArICoNCj4gKyAqIFNVQlRFU1Q6IHJlbmRlci1idXN5DQo+ICsgKiBEZXNjcmlwdGlvbjoN
-Cj4gKyAqCVJ1biBhIHRlc3QgdG8gbWVhc3VyZSB0aGUgYWN0aXZlIGVuZ2luZSBjbGFzcyB0aW1l
-IGJ5IHN1Ym1pdHRpbmcgdGhlDQo+ICsgKglXTCB0byBhbGwgaW5zdGFuY2VzIG9mIGEgY2xhc3MN
-Cj4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ICsgKg0KPiArICogU1VCVEVTVDogY29tcHV0ZS1idXN5
-DQo+ICsgKiBEZXNjcmlwdGlvbjogUnVuIGNvcHktZ3JvdXAtYnVzeSB0ZXN0DQo+ICsgKiBSdW4g
-dHlwZTogRlVMTA0KPiArICoNCj4gKyAqIFNVQlRFU1Q6IGNvcHktYnVzeQ0KPiArICogRGVzY3Jp
-cHRpb246IFJ1biBjb3B5LWdyb3VwLWJ1c3kgdGVzdA0KPiArICogUnVuIHR5cGU6IEZVTEwNCj4g
-KyAqDQo+ICsgKiBTVUJURVNUOiB2Y3MtYnVzeQ0KPiArICogRGVzY3JpcHRpb246IFJ1biBjb3B5
-LWdyb3VwLWJ1c3kgdGVzdA0KPiArICogUnVuIHR5cGU6IEZVTEwNCj4gKyAqDQo+ICsgKiBTVUJU
-RVNUOiB2ZWNzLWJ1c3kNCj4gKyAqIERlc2NyaXB0aW9uOiBSdW4gY29weS1ncm91cC1idXN5IHRl
-c3QNCj4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ICsgKg0KPiArICovDQo+ICsNCj4gK3N0YXRpYyB2
-b2lkIHRlc3RfZW5naW5lX2dyb3VwX2J1c3luZXNzKGludCBmZCwgaW50IGd0LCBpbnQgY2xhc3Ms
-IGNvbnN0DQo+ICtjaGFyICpuYW1lKSB7DQo+ICsJdWludDMyX3Qgdm07DQo+ICsJdWludDY0X3Qg
-YWRkciA9IDB4MWEwMDAwOw0KPiArCXN0cnVjdCBkcm1feGVfc3luYyBzeW5jWzJdID0gew0KPiAr
-CQl7IC5mbGFncyA9IERSTV9YRV9TWU5DX1NZTkNPQkogfCBEUk1fWEVfU1lOQ19TSUdOQUwsIH0s
-DQo+ICsJCXsgLmZsYWdzID0gRFJNX1hFX1NZTkNfU1lOQ09CSiB8IERSTV9YRV9TWU5DX1NJR05B
-TCwgfSwNCj4gKwl9Ow0KPiArCXN0cnVjdCBkcm1feGVfZXhlYyBleGVjID0gew0KPiArCQkubnVt
-X2JhdGNoX2J1ZmZlciA9IDEsDQo+ICsJCS5udW1fc3luY3MgPSAyLA0KPiArCQkuc3luY3MgPSB0
-b191c2VyX3BvaW50ZXIoc3luYyksDQo+ICsJfTsNCj4gKwl1aW50MzJfdCBlbmdpbmVzW01BWF9J
-TlNUQU5DRV07DQo+ICsJdWludDMyX3Qgc3luY29ianNbTUFYX0lOU1RBTkNFXTsNCj4gKwlpbnQg
-ICAgcG11X2ZkOw0KPiArCXNpemVfdCBib19zaXplOw0KPiArCXVpbnQzMl90IGJvID0gMCwgaSA9
-IDA7DQo+ICsJc3RydWN0IHsNCj4gKwkJc3RydWN0IHhlX3NwaW4gc3BpbjsNCj4gKwl9ICpkYXRh
-Ow0KPiArCXN0cnVjdCBkcm1feGVfZW5naW5lX2NsYXNzX2luc3RhbmNlICpod2U7DQo+ICsJc3Ry
-dWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgZWNpW01BWF9JTlNUQU5DRV07DQo+ICsJ
-aW50IG51bV9wbGFjZW1lbnRzID0gMDsNCj4gKwl1aW50NjRfdCBjb25maWcsIGNvdW50LCBpZGxl
-Ow0KPiArDQo+ICsJY29uZmlnID0gZW5naW5lX2dyb3VwX2dldF9jb25maWcoZ3QsIGNsYXNzKTsN
-Cj4gKw0KPiArCXhlX2Zvcl9lYWNoX2h3X2VuZ2luZShmZCwgaHdlKSB7DQo+ICsJCWlmIChod2Ut
-PmVuZ2luZV9jbGFzcyAhPSBjbGFzcyB8fCBod2UtPmd0X2lkICE9IGd0KQ0KPiArCQkJY29udGlu
-dWU7DQo+ICsNCj4gKwkJZWNpW251bV9wbGFjZW1lbnRzKytdID0gKmh3ZTsNCj4gKwl9DQo+ICsN
-Cj4gKwlpZ3Rfc2tpcF9vbl9mKCFudW1fcGxhY2VtZW50cywgIkVuZ2luZSBjbGFzczolZCBndDol
-ZCBub3QgZW5hYmxlZCBvbg0KPiB0aGlzIHBsYXRmb3JtXG4iLA0KPiArCQkgICAgICBjbGFzcywg
-Z3QpOw0KPiArDQo+ICsJdm0gPSB4ZV92bV9jcmVhdGUoZmQsIERSTV9YRV9WTV9DUkVBVEVfQVNZ
-TkNfQklORF9PUFMsIDApOw0KPiArCWJvX3NpemUgPSBzaXplb2YoKmRhdGEpICogbnVtX3BsYWNl
-bWVudHM7DQo+ICsJYm9fc2l6ZSA9IEFMSUdOKGJvX3NpemUgKyB4ZV9jc19wcmVmZXRjaF9zaXpl
-KGZkKSwNCj4gK3hlX2dldF9kZWZhdWx0X2FsaWdubWVudChmZCkpOw0KPiArDQo+ICsJYm8gPSB4
-ZV9ib19jcmVhdGUoZmQsIGd0LCB2bSwgYm9fc2l6ZSk7DQo+ICsJZGF0YSA9IHhlX2JvX21hcChm
-ZCwgYm8sIGJvX3NpemUpOw0KPiArDQo+ICsJZm9yIChpID0gMDsgaSA8IG51bV9wbGFjZW1lbnRz
-OyBpKyspIHsNCj4gKwkJc3RydWN0IGRybV94ZV9lbmdpbmVfY3JlYXRlIGNyZWF0ZSA9IHsNCj4g
-KwkJCS52bV9pZCA9IHZtLA0KPiArCQkJLndpZHRoID0gMSwNCj4gKwkJCS5udW1fcGxhY2VtZW50
-cyA9IG51bV9wbGFjZW1lbnRzLA0KPiArCQkJLmluc3RhbmNlcyA9IHRvX3VzZXJfcG9pbnRlcihl
-Y2kpLA0KPiArCQl9Ow0KPiArDQo+ICsJCWlndF9hc3NlcnRfZXEoaWd0X2lvY3RsKGZkLCBEUk1f
-SU9DVExfWEVfRU5HSU5FX0NSRUFURSwNCj4gKwkJCQkJJmNyZWF0ZSksIDApOw0KPiArCQllbmdp
-bmVzW2ldID0gY3JlYXRlLmVuZ2luZV9pZDsNCj4gKwkJc3luY29ianNbaV0gPSBzeW5jb2JqX2Ny
-ZWF0ZShmZCwgMCk7DQo+ICsJfTsNCj4gKw0KPiArCXN5bmNbMF0uaGFuZGxlID0gc3luY29ial9j
-cmVhdGUoZmQsIDApOw0KPiArCXhlX3ZtX2JpbmRfYXN5bmMoZmQsIHZtLCAwLCBibywgMCwgYWRk
-ciwgYm9fc2l6ZSwgc3luYywgMSk7DQo+ICsNCj4gKwlwbXVfZmQgPSBvcGVuX3BtdShmZCwgY29u
-ZmlnKTsNCj4gKwlpZGxlID0gcG11X3JlYWQocG11X2ZkKTsNCj4gKwlpZ3RfYXNzZXJ0KCFpZGxl
-KTsNCj4gKw0KPiArCWZvciAoaSA9IDA7IGkgPCBudW1fcGxhY2VtZW50czsgaSsrKSB7DQo+ICsJ
-CXVpbnQ2NF90IHNwaW5fb2Zmc2V0ID0gKGNoYXIgKikmZGF0YVtpXS5zcGluIC0gKGNoYXIgKilk
-YXRhOw0KPiArCQl1aW50NjRfdCBzcGluX2FkZHIgPSBhZGRyICsgc3Bpbl9vZmZzZXQ7DQo+ICsN
-Cj4gKwkJeGVfc3Bpbl9pbml0KCZkYXRhW2ldLnNwaW4sIHNwaW5fYWRkciwgZmFsc2UpOw0KPiAr
-CQlzeW5jWzBdLmZsYWdzICY9IH5EUk1fWEVfU1lOQ19TSUdOQUw7DQo+ICsJCXN5bmNbMV0uZmxh
-Z3MgfD0gRFJNX1hFX1NZTkNfU0lHTkFMOw0KPiArCQlzeW5jWzFdLmhhbmRsZSA9IHN5bmNvYmpz
-W2ldOw0KPiArDQo+ICsJCWV4ZWMuZW5naW5lX2lkID0gZW5naW5lc1tpXTsNCj4gKwkJZXhlYy5h
-ZGRyZXNzID0gc3Bpbl9hZGRyOw0KPiArCQl4ZV9leGVjKGZkLCAmZXhlYyk7DQo+ICsJCXhlX3Nw
-aW5fd2FpdF9zdGFydGVkKCZkYXRhW2ldLnNwaW4pOw0KPiArCX0NCj4gKw0KPiArCWZvciAoaSA9
-IDA7IGkgPCBudW1fcGxhY2VtZW50czsgaSsrKSB7DQo+ICsJCXhlX3NwaW5fZW5kKCZkYXRhW2ld
-LnNwaW4pOw0KPiArCQlpZ3RfYXNzZXJ0KHN5bmNvYmpfd2FpdChmZCwgJnN5bmNvYmpzW2ldLCAx
-LCBJTlQ2NF9NQVgsIDAsDQo+ICsJCQkJCU5VTEwpKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3RfYXNz
-ZXJ0KHN5bmNvYmpfd2FpdChmZCwgJnN5bmNbMF0uaGFuZGxlLCAxLCBJTlQ2NF9NQVgsIDAsIE5V
-TEwpKTsNCj4gKw0KPiArCXN5bmNbMF0uZmxhZ3MgfD0gRFJNX1hFX1NZTkNfU0lHTkFMOw0KPiAr
-CXhlX3ZtX3VuYmluZF9hc3luYyhmZCwgdm0sIDAsIDAsIGFkZHIsIGJvX3NpemUsIHN5bmMsIDEp
-Ow0KPiArCWlndF9hc3NlcnQoc3luY29ial93YWl0KGZkLCAmc3luY1swXS5oYW5kbGUsIDEsIElO
-VDY0X01BWCwgMCwgTlVMTCkpOw0KPiArDQo+ICsNCj4gKwlzeW5jb2JqX2Rlc3Ryb3koZmQsIHN5
-bmNbMF0uaGFuZGxlKTsNCj4gKwlmb3IgKGkgPSAwOyBpIDwgbnVtX3BsYWNlbWVudHM7IGkrKykg
-ew0KPiArCQlzeW5jb2JqX2Rlc3Ryb3koZmQsIHN5bmNvYmpzW2ldKTsNCj4gKwkJeGVfZW5naW5l
-X2Rlc3Ryb3koZmQsIGVuZ2luZXNbaV0pOw0KPiArCX0NCj4gKw0KPiArCWNvdW50ID0gcG11X3Jl
-YWQocG11X2ZkKTsNCj4gKwlpZ3RfYXNzZXJ0X2x0X3U2NChpZGxlLCBjb3VudCk7DQo+ICsJaWd0
-X2RlYnVnKCJJbmNyZW1lbnRpbmcgY291bnRlciAlcy1ndC0lZCAgJWxkIG5zXG4iLCBuYW1lLCBn
-dCwgY291bnQpOw0KPiArDQo+ICsJbXVubWFwKGRhdGEsIGJvX3NpemUpOw0KPiArCWdlbV9jbG9z
-ZShmZCwgYm8pOw0KPiArCXhlX3ZtX2Rlc3Ryb3koZmQsIHZtKTsNCj4gKwljbG9zZShwbXVfZmQp
-Ow0KPiArfQ0KPiArDQo+ICtpZ3RfbWFpbg0KPiArew0KPiArCXN0cnVjdCBkcm1feGVfZW5naW5l
-X2NsYXNzX2luc3RhbmNlICpod2U7DQo+ICsJY29uc3Qgc3RydWN0IHNlY3Rpb24gew0KPiArCQlj
-b25zdCBjaGFyICpuYW1lOw0KPiArCQlpbnQgY2xhc3M7DQo+ICsJfSBzZWN0aW9uc1tdID0gew0K
-PiArCQl7ICJyZW5kZXItYnVzeSIsIERSTV9YRV9FTkdJTkVfQ0xBU1NfUkVOREVSIH0sDQo+ICsJ
-CXsgImNvbXB1dGUtYnVzeSIsIERSTV9YRV9FTkdJTkVfQ0xBU1NfQ09NUFVURSB9LA0KPiArCQl7
-ICJjb3B5LWJ1c3kiLCBEUk1fWEVfRU5HSU5FX0NMQVNTX0NPUFkgfSwNCj4gKwkJeyAidmNzLWJ1
-c3kiLCBEUk1fWEVfRU5HSU5FX0NMQVNTX1ZJREVPX0RFQ09ERSB9LA0KPiArCQl7ICJ2ZWNzLWJ1
-c3kiLCBEUk1fWEVfRU5HSU5FX0NMQVNTX1ZJREVPX0VOSEFOQ0UgfSwNCj4gKwkJeyBOVUxMIH0s
-DQo+ICsJfTsNCj4gKwlpbnQgZ3Q7DQo+ICsJaW50IGNsYXNzOw0KPiArCWludCBmZDsNCj4gKw0K
-PiArCWlndF9maXh0dXJlIHsNCj4gKwkJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX1hFKTsN
-Cj4gKwkJeGVfZGV2aWNlX2dldChmZCk7DQo+ICsJfQ0KPiArDQo+ICsJZm9yIChjb25zdCBzdHJ1
-Y3Qgc2VjdGlvbiAqcyA9IHNlY3Rpb25zOyBzLT5uYW1lOyBzKyspIHsNCj4gKwkJaWd0X3N1YnRl
-c3RfZigiJXMiLCBzLT5uYW1lKQ0KPiArCQkJeGVfZm9yX2VhY2hfZ3QoZmQsIGd0KQ0KPiArCQkJ
-CXhlX2Zvcl9lYWNoX2h3X2VuZ2luZV9jbGFzcyhjbGFzcykNCj4gKwkJCQkJaWYgKGNsYXNzID09
-IHMtPmNsYXNzKQ0KPiArDQo+IAl0ZXN0X2VuZ2luZV9ncm91cF9idXN5bmVzcyhmZCwgZ3QsIGNs
-YXNzLCBzLT5uYW1lKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3Rfc3VidGVzdCgiYW55LWVuZ2luZS1n
-cm91cC1idXN5IikNCj4gKwkJeGVfZm9yX2VhY2hfaHdfZW5naW5lKGZkLCBod2UpDQo+ICsJCQl0
-ZXN0X2FueV9lbmdpbmVfYnVzeW5lc3MoZmQsIGh3ZSk7DQo+ICsNCj4gKwlpZ3RfZml4dHVyZSB7
-DQo+ICsJCXhlX2RldmljZV9wdXQoZmQpOw0KPiArCQljbG9zZShmZCk7DQo+ICsJfQ0KPiArfQ0K
-PiAtLQ0KPiAyLjI1LjENCg0KUmV2aWV3ZWQtYnk6IEphbmdhIFJhaHVsIEt1bWFyIDxqYW5nYS5y
-YWh1bC5rdW1hckBpbnRlbC5jb20+DQpNZXJnZSBpdCBhbG9uZyB3aXRoIERyaXZlciBwYXRjaCBv
-ciBwb3N0IGRyaXZlciBtZXJnZS4NCg0KVGhhbmtzLA0KUmFodWwNCg==
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Let's dynamically create testlists for during build time, as this
+can speed up a lot the validation check for testplan.
+
+Ideally, all it would need to to that would be to use this
+logic at the end of tests/meson.build:
+
+    foreach testexe : test_executables
+        prog = testexe.name()
+
+        output = prog.split('/').get(-1) + '.testlist'
+        custom_target(output,
+                     build_by_default : true,
+                     command : [ testexe, '--show-testlist'],
+                     capture : true,
+                     output : output)
+
+Unfortunately, this requies Meson >= 0.54. So, we need to add
+one custom_target per executable() call.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ docs/testplan/meson.build |  2 +-
+ tests/meson.build         | 55 ++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 49 insertions(+), 8 deletions(-)
+
+diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+index bf73dd32a15f..e838f2eb1540 100644
+--- a/docs/testplan/meson.build
++++ b/docs/testplan/meson.build
+@@ -12,7 +12,7 @@ i915_test_config = join_paths(source_root, 'tests', 'i915', 'i915_test_config.js
+ 
+ check_testlist = []
+ if build_tests
+-	doc_dependencies = test_executables
++	doc_dependencies = testlist_files
+ 	# Check if documentation matches the actual tests and tests can run
+ 	if not meson.is_cross_build()
+ 		build_info += 'Will Check if documentation is in sync with testlist'
+diff --git a/tests/meson.build b/tests/meson.build
+index 3116c458d60b..897f17ab4561 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -351,35 +351,57 @@ extra_dependencies = {
+ 
+ test_executables = []
+ test_list = []
++testlist_files = []
+ 
+ foreach prog : test_progs
+-	test_executables += executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
++	testexe = executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
+ 		   dependencies : test_deps + extra_dependencies.get(prog, []),
+ 		   install_dir : libexecdir,
+ 		   install_rpath : libexecdir_rpathdir,
+ 		   install : true)
++	test_executables += testexe
+ 	test_list += prog
++	name = prog.split('/').get(-1)
++	testlist_files += custom_target(name + '.testlist',
++		     build_by_default : true,
++		     command : [testexe, '--show-testlist'],
++		     capture : true,
++		     output : name + '.testlist')
+ endforeach
+ 
+ foreach prog : i915_progs
+-	test_executables += executable(prog,
++	testexe = executable(prog,
+ 		   [join_paths('i915', prog + '.c')] + extra_sources.get(prog, []),
+ 		   dependencies : test_deps + extra_dependencies.get(prog, []),
+ 		   install_dir : libexecdir,
+ 		   install_rpath : libexecdir_rpathdir,
+ 		   install : true)
++	test_executables += testexe
+ 	test_list += prog
++	name = prog.split('/').get(-1)
++	testlist_files += custom_target(name + '.testlist',
++		     build_by_default : true,
++		     command : [testexe, '--show-testlist'],
++		     capture : true,
++		     output : name + '.testlist')
+ endforeach
+ 
+ if build_xe
+ 	foreach prog : xe_progs
+-		test_executables += executable(prog,
++		testexe = executable(prog,
+ 			   [join_paths('xe', prog + '.c')] + extra_sources.get(prog, []),
+ 			   dependencies : test_deps + extra_dependencies.get(prog, []),
+ 			   install_dir : libexecdir,
+ 			   install_rpath : libexecdir_rpathdir,
+ 			   install : true)
+ 		test_list += prog
++		test_executables += testexe
++		name = prog.split('/').get(-1)
++		testlist_files += custom_target(name + '.testlist',
++			     build_by_default : true,
++			     command : [testexe, '--show-testlist'],
++			     capture : true,
++			     output : name + '.testlist')
+ 	endforeach
+ 	build_info += 'Xe **experimental** tests enabled.'
+ endif
+@@ -395,7 +417,7 @@ endforeach
+ 
+ if chamelium.found()
+ 	foreach prog : chamelium_progs
+-		test_executables += executable(prog,
++		testexe = executable(prog,
+ 				 [join_paths('chamelium', prog + '.c'),
+ 					join_paths('chamelium', 'kms_chamelium_helper.c')],
+ 				 dependencies : test_deps,
+@@ -403,16 +425,30 @@ if chamelium.found()
+ 				 install_rpath : libexecdir_rpathdir,
+ 				 install : true)
+ 		test_list += prog
++		test_executables += testexe
++		name = prog.split('/').get(-1)
++		testlist_files += custom_target(name + '.testlist',
++			     build_by_default : true,
++			     command : [testexe, '--show-testlist'],
++			     capture : true,
++			     output : name + '.testlist')
+ 	endforeach
+ 	test_deps += chamelium
+ 
+-	test_executables += executable('kms_chamelium_color',
++	name = 'kms_chamelium_color'
++	testexe = executable('kms_chamelium_color',
+ 				[ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
+ 				dependencies : test_deps + [ chamelium ],
+ 				install_dir : libexecdir,
+ 				install_rpath : libexecdir_rpathdir,
+ 				install : true)
+-	test_list += 'kms_chamelium_color'
++	test_list += name
++	test_executables += testexe
++	testlist_files += custom_target(name + '.testlist',
++		     build_by_default : true,
++		     command : [testexe, '--show-testlist'],
++		     capture : true,
++		     output : name + '.testlist')
+ endif
+ 
+ subdir('amdgpu')
+@@ -448,11 +484,16 @@ foreach prog : test_list
+ 	test('testcase check ' + prog, test_script, args : prog)
+ endforeach
+ 
+-executable('gem_stress', 'i915/gem_stress.c',
++testexe = executable('gem_stress', 'i915/gem_stress.c',
+ 	   install : true,
+ 	   install_dir : libexecdir,
+ 	   install_rpath : libexecdir_rpathdir,
+ 	   dependencies : igt_deps)
++testlist_files += custom_target('gem_stress.testlist',
++                build_by_default : true,
++                command : [testexe, '--show-testlist'],
++                capture : true,
++                output : 'gem_stress.testlist')
+ 
+ image_files = [
+   '1080p-left.png',
+-- 
+2.40.1
