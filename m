@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A62CA10E5C6
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 18:39:04 +0000 (UTC)
-Date: Wed, 12 Jul 2023 20:38:59 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7FFBC10E185
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 18:27:31 +0000 (UTC)
+Date: Mon, 10 Jul 2023 20:27:28 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230712183859.bafpcr4ylxinjktg@kamilkon-desk1>
-References: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
- <20230712135854.957128-7-mauro.chehab@linux.intel.com>
+Message-ID: <20230710182728.h7kuwasncnrr2jc4@kamilkon-desk1>
+References: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
+ <20230710115354.699245-8-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230712135854.957128-7-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 06/13] scripts/test_list.py: close
- config file before start processing
+In-Reply-To: <20230710115354.699245-8-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v5 7/7] scripts/test_list.py: optimize
+ check regex
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,168 +27,123 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
 
-On 2023-07-12 at 15:58:47 +0200, Mauro Carvalho Chehab wrote:
+On 2023-07-10 at 13:53:54 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Reduce the identation level of the code which parses the config
-> file, as this can be done after closing the file.
------ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Where it is? Maybe should be dropped?
-
+> Running re.sub() for an already compiled regex makes it recompile
+> again. Change the logic to use the right syntax. While here, also use
+> rstrip() to remove \n at the end of read files.
 > 
-> This is a preparation for the next patch that will offer a different
-> way to pass the configuration.
-
-Could you change description? Now it is a little confusing,
-you only change indentation but it state:
-
-v2 06/13 scripts/test_list.py: close config file before start processing
------------------------------- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Maybe something like: change indentation of code
-
-Regards,
-Kamil
-
+> Before:
+> 
+> 	$ time ./scripts/igt_doc.py --config tests/i915/i915_*json --check --igt build/
+> 
+> 	real	0m1.492s
+> 	user	0m1.457s
+> 	sys	0m0.030s
+> 
+> After:
+> 	$ time ./scripts/igt_doc.py --config tests/i915/i915_*json --check --igt build/
+> 
+> 	real	0m0.492s
+> 	user	0m0.473s
+> 	sys	0m0.017s
+> 
+> It is now 3 times faster (measured for i915 driver, which has
+> more IGT tests).
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  scripts/test_list.py | 114 +++++++++++++++++++++----------------------
->  1 file changed, 57 insertions(+), 57 deletions(-)
+>  scripts/test_list.py | 22 ++++++++++++----------
+>  1 file changed, 12 insertions(+), 10 deletions(-)
 > 
 > diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index 0452be8d7994..cfcf6712bdc0 100644
+> index 2c1a6f230fb5..19ed5e5467f5 100755
 > --- a/scripts/test_list.py
 > +++ b/scripts/test_list.py
-> @@ -274,71 +274,71 @@ class TestList:
->          with open(config_fname, 'r', encoding='utf8') as handle:
->              self.config = json.load(handle)
+> @@ -401,10 +401,10 @@ class TestList:
 >  
-> -            self.__add_field(None, 0, 0, self.config["fields"])
-> +        self.__add_field(None, 0, 0, self.config["fields"])
+>          for filter_field, regex in self.filters.items():
+>              if filter_field in subtest:
+> -                if not re.match(regex, subtest[filter_field]):
+> +                if not regex.match(subtest[filter_field]):
+>                      return True
+>              elif filter_field in test:
+> -                if not re.match(regex, test[filter_field]):
+> +                if not regex.match(test[filter_field]):
+>                      return True
+>              else:
+>                  return field_not_found_value
+> @@ -919,7 +919,7 @@ class TestList:
 >  
-> -            sublevel_count = [ 0 ] * self.level_count
-> +        sublevel_count = [ 0 ] * self.level_count
+>              with open(fname, 'r', encoding='utf8') as handle:
+>                  for line in handle:
+> -                    tests.append(line)
+> +                    tests.append(line.rstrip("\n"))
 >  
-> -            for field, item in self.props.items():
-> -                if "sublevel" in item["_properties_"]:
-> -                    level = item["_properties_"]["level"]
-> -                    sublevel = item["_properties_"]["sublevel"]
-> -                    if sublevel > sublevel_count[level - 1]:
-> -                        sublevel_count[level - 1] = sublevel
-> +        for field, item in self.props.items():
-> +            if "sublevel" in item["_properties_"]:
-> +                level = item["_properties_"]["level"]
-> +                sublevel = item["_properties_"]["sublevel"]
-> +                if sublevel > sublevel_count[level - 1]:
-> +                    sublevel_count[level - 1] = sublevel
+>          return sorted(tests)
 >  
-> -                field_lc = field.lower()
-> -                self.field_list[field_lc] = field
-> -                field_plural = _plural(field_lc)
-> -                if field_lc != field_plural:
-> -                    self.field_list[field_plural] = field
-> +            field_lc = field.lower()
-> +            self.field_list[field_lc] = field
-> +            field_plural = _plural(field_lc)
-> +            if field_lc != field_plural:
-> +                self.field_list[field_plural] = field
+> @@ -938,9 +938,11 @@ class TestList:
 >  
-> -            if include_plan:
-> -                self.props["Class"] = {}
-> -                self.props["Class"]["_properties_"] = {}
-> -                self.props["Class"]["_properties_"]["level"] = 1
-> -                self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
-> +        if include_plan:
-> +            self.props["Class"] = {}
-> +            self.props["Class"]["_properties_"] = {}
-> +            self.props["Class"]["_properties_"]["level"] = 1
-> +            self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
+>          doc_subtests = set()
 >  
-> -            # Remove non-multilevel items, as we're only interested on
-> -            # hierarchical item levels here
-> -            for field, item in self.props.items():
-> -                if "sublevel" in item["_properties_"]:
-> -                    level = item["_properties_"]["level"]
-> -                    if sublevel_count[level - 1] == 1:
-> -                        del item["_properties_"]["level"]
-> -                        del item["_properties_"]["sublevel"]
-> -            del self.props["_properties_"]
-> +        # Remove non-multilevel items, as we're only interested on
-> +        # hierarchical item levels here
-> +        for field, item in self.props.items():
-> +            if "sublevel" in item["_properties_"]:
-> +                level = item["_properties_"]["level"]
-> +                if sublevel_count[level - 1] == 1:
-> +                    del item["_properties_"]["level"]
-> +                    del item["_properties_"]["sublevel"]
-> +        del self.props["_properties_"]
+> +        args_regex = re.compile(r'\<[^\>]+\>')
+> +
+>          for subtest in self.get_subtests()[""]:
+>              subtest = "@".join(subtest.split("@")[:3])
+> -            subtest = re.sub(r'\<[^\>]+\>', r'\\d+', subtest)
+> +            subtest = args_regex.sub(r'\\d+', subtest)
+>              doc_subtests.add(subtest)
 >  
-> -            has_implemented = False
-> -            if not self.filenames:
-> -                self.filenames = []
-> -                exclude_files = []
-> -                files = self.config["files"]
-> -                exclude_file_glob = self.config.get("exclude_files", [])
-> -                for cfg_file in exclude_file_glob:
-> -                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> -                    for fname in glob.glob(cfg_file):
-> -                        exclude_files.append(fname)
-> +        has_implemented = False
-> +        if not self.filenames:
-> +            self.filenames = []
-> +            exclude_files = []
-> +            files = self.config["files"]
-> +            exclude_file_glob = self.config.get("exclude_files", [])
-> +            for cfg_file in exclude_file_glob:
-> +                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> +                for fname in glob.glob(cfg_file):
-> +                    exclude_files.append(fname)
+>          doc_subtests = list(sorted(doc_subtests))
+> @@ -957,14 +959,14 @@ class TestList:
+>          for doc_test in doc_subtests:
+>              if test_regex != r"":
+>                  test_regex += r"|"
+> -            test_regex += r'^' + doc_test + r'$'
+> +            test_regex += doc_test
 >  
-> -                for cfg_file in files:
-> -                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> -                    for fname in glob.glob(cfg_file):
-> -                        if fname in exclude_files:
-> -                            continue
-> -                        self.filenames.append(fname)
-> -                        has_implemented = True
-> -            else:
-> -                for cfg_file in self.filenames:
-> -                    if cfg_file:
-> -                        has_implemented = True
-> +            for cfg_file in files:
-> +                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> +                for fname in glob.glob(cfg_file):
-> +                    if fname in exclude_files:
-> +                        continue
-> +                    self.filenames.append(fname)
-> +                    has_implemented = True
-> +        else:
-> +            for cfg_file in self.filenames:
-> +                if cfg_file:
-> +                    has_implemented = True
+> -        test_regex = re.compile(test_regex)
+> +        test_regex = re.compile(r'^(' + test_regex + r')$')
 >  
-> -            has_planned = False
-> -            if include_plan and "planning_files" in self.config:
-> -                implemented_class = "Implemented"
-> -                files = self.config["planning_files"]
-> -                for cfg_file in files:
-> -                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> -                    for fname in glob.glob(cfg_file):
-> -                        self.plan_filenames.append(fname)
-> -                        has_planned = True
-> +        has_planned = False
-> +        if include_plan and "planning_files" in self.config:
-> +            implemented_class = "Implemented"
-> +            files = self.config["planning_files"]
-> +            for cfg_file in files:
-> +                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-> +                for fname in glob.glob(cfg_file):
-> +                    self.plan_filenames.append(fname)
-> +                    has_planned = True
+>          for doc_test in doc_subtests:
+>              found = False
+>              for run_test in run_subtests:
+> -                if re.match(test_regex, run_test):
+> +                if test_regex.match(run_test):
+>                      found = True
+>                      break
+>              if not found:
+> @@ -972,7 +974,7 @@ class TestList:
 >  
->          planned_class = None
->          if has_implemented:
+>          for run_test in run_subtests:
+>              found = False
+> -            if re.match(test_regex, run_test):
+> +            if test_regex.match(run_test):
+>                  found = True
+>              if not found:
+>                  run_missing.append(run_test)
+> @@ -1101,7 +1103,7 @@ class TestList:
+>                      continue
+>  
+>                  # It is a known section. Parse its contents
+> -                match = re.match(field_re, file_line)
+> +                match = field_re.match(file_line)
+>                  if match:
+>                      current_field = self.field_list[match.group(1).lower()]
+>                      match_val = match.group(2)
+> @@ -1198,7 +1200,7 @@ class TestList:
+>                              self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] += match_val
+>                      continue
+>  
+> -                re.sub(r"\n$","", file_line)
+> +                file_line.rstrip(r"\n")
+>                  sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized line. Need to add field at %s?\n\t==> %s" %
+>                           (self.config_fname, file_line))
+>  
 > -- 
 > 2.40.1
 > 
