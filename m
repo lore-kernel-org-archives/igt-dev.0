@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC71710E209
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 07:49:53 +0000 (UTC)
-Message-ID: <d5ecd7dd-71d2-3428-bbfa-5ee66a3efc00@intel.com>
-Date: Mon, 10 Jul 2023 13:19:24 +0530
-To: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20230630070439.621177-1-riana.tauro@intel.com>
- <20230630070439.621177-2-riana.tauro@intel.com>
- <MW4PR11MB7056F8D153A2B3CFAB9D3DBFB330A@MW4PR11MB7056.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <MW4PR11MB7056F8D153A2B3CFAB9D3DBFB330A@MW4PR11MB7056.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2076.outbound.protection.outlook.com [40.107.237.76])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7723C10E209
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 07:58:01 +0000 (UTC)
+From: Tom Chung <chiahsuan.chung@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Mon, 10 Jul 2023 15:57:40 +0800
+Message-ID: <20230710075749.2377896-1-chiahsuan.chung@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/4] tests/xe: Add basic idle
- residency test
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [i-g-t,v4 0/8] Fix some bugs in amd_freesync_video_mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,201 +18,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
+Cc: christian.koenig@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+v2: Fix some errors that report from checkpatch.pl.
+v3: Add amd_freesync_video_mode to meson.build in alphabetical order.
+v4: Fix some patch conflict.
 
+Tom Chung (8):
+  tests/amdgpu/amd_freesync_video_mode: Adjust indents and spacing
+  tests/amdgpu/amd_freesync_video_mode: Fix memory leak and corruption
+  tests/amdgpu/amd_freesync_video_mode: Fix wrong resolution setting
+    during the test
+  tests/amdgpu/amd_freesync_video_mode: Add some code from kms_vrr to
+    resolve tearing issue
+  tests/amdgpu/amd_freesync_video_mode: Add/remove some test progress
+    messages
+  tests/amdgpu/amd_freesync_video_mode: Move the vrr setting and display
+    reset
+  tests/amdgpu/amd_freesync_video_mode: Fix wrong resolution setting for
+    some panel
+  tests/amdgpu/amd_freesync_video_mode: Add amd_freesync_video_mode to
+    meson.build
 
-On 7/10/2023 1:00 PM, Ghimiray, Himal Prasad wrote:
-> Hi Riana,
-> 
-> 
->> -----Original Message-----
->> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Riana
->> Tauro
->> Sent: 30 June 2023 12:35
->> To: igt-dev@lists.freedesktop.org
->> Cc: Nilawar, Badal <badal.nilawar@intel.com>
->> Subject: [igt-dev] [PATCH i-g-t v2 1/4] tests/xe: Add basic idle residency test
->>
->> The test reads idle residency within a time interval and checks if its within the
->> tolerance.
->>
->> Patch for gtidle properties
->> https://patchwork.freedesktop.org/series/119262/
->>
->> v2:
->>     - rename file to xe_pm_residency
->>     - add kernel patch in commit message (Kamil)
->>
->> v3:
->>     - add igt test description (Anshuman)
->>
->> v4:
->>     - fix cosmetic review comments
->>     - replace assert with igt_assert_f (Anshuman)
->>
->> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
->> Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
->> ---
->>   tests/meson.build          |   1 +
->>   tests/xe/xe_pm_residency.c | 120
->> +++++++++++++++++++++++++++++++++++++
->>   2 files changed, 121 insertions(+)
->>   create mode 100644 tests/xe/xe_pm_residency.c
->>
->> diff --git a/tests/meson.build b/tests/meson.build index
->> 85ea7e74e..cde4447e4 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -265,6 +265,7 @@ xe_progs = [
->>   	'xe_module_load',
->>   	'xe_noexec_ping_pong',
->>   	'xe_pm',
->> +	'xe_pm_residency',
->>   	'xe_prime_self_import',
->>   	'xe_query',
->>   	'xe_vm',
->> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c new
->> file mode 100644 index 000000000..32333dfb0
->> --- /dev/null
->> +++ b/tests/xe/xe_pm_residency.c
->> @@ -0,0 +1,120 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2023 Intel Corporation
->> + */
->> +
->> +/**
->> + * TEST: Test gtidle properties
->> + * Category: Software building block
->> + * Sub-category: Power Management
->> + * Functionality: GT C States
->> + * Test category: functionality test
->> + */
->> +
->> +#include <limits.h>
->> +
->> +#include "igt.h"
->> +#include "igt_sysfs.h"
->> +
->> +#include "xe/xe_query.h"
->> +
->> +#define SLEEP_DURATION 3000 /* in milliseconds */
->> +
->> +const double tolerance = 0.1;
->> +
->> +#define assert_within_epsilon(x, ref, tol) \
->> +	igt_assert_f((double)(x) <= (1.0 + (tol)) * (double)(ref) && \
->> +		     (double)(x) >= (1.0 - (tol)) * (double)(ref), \
->> +		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of
->> %f)\n",\
->> +		     #x, #ref, (double)(x), \
->> +		     (tol) * 100.0, (tol) * 100.0, \
->> +		     (double)(ref))
->> +
->> +IGT_TEST_DESCRIPTION("Tests for gtidle properties");
->> +
->> +static unsigned int measured_usleep(unsigned int usec) {
->> +	struct timespec ts = { };
->> +	unsigned int slept;
->> +
->> +	slept = igt_nsec_elapsed(&ts);
->> +	igt_assert(slept == 0);
->> +	do {
->> +		usleep(usec - slept);
->> +		slept = igt_nsec_elapsed(&ts) / 1000;
->> +	} while (slept < usec);
->> +
->> +	return igt_nsec_elapsed(&ts) / 1000;
->> +}
->> +
->> +static bool in_gt_c6(int sysfs, int gt) {
->> +	char path[PATH_MAX];
->> +	char gt_c_state[8];
->> +
->> +	sprintf(path, "device/gt%d/gtidle/idle_status", gt);
->> +	if (igt_sysfs_scanf(sysfs, path, "%s", gt_c_state) < 0)
->> +		return false;
->> +
->> +	return strcmp(gt_c_state, "gt-c6") == 0; }
->> +
->> +static unsigned long read_idle_residency(int sysfs, int gt) {
->> +	unsigned long residency;
->> +	char path[PATH_MAX];
->> +
->> +	residency = 0;
->> +	sprintf(path, "device/gt%d/gtidle/idle_residency_ms", gt);
-> 
->  From KMD side gtX is moved under respective tileX.
-> To accommodate those changes, I have introduced the helper functions in igt library.
-> https://patchwork.freedesktop.org/patch/546299/?series=119801&rev=8 is a reference
-> changes in xe_guc_pc.c .
-> 
-> Please make similar changes for these testcases as well.
+ tests/amdgpu/amd_freesync_video_mode.c | 676 +++++++++++++------------
+ tests/amdgpu/meson.build               |   1 +
+ 2 files changed, 356 insertions(+), 321 deletions(-)
 
-Sure Himal. Will accommodate the tile changes
-
-Thanks
-Riana
-> 
-> BR
-> Himal
->> +	igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &residency) == 1);
->> +	return residency;
->> +}
->> +
->> +/**
->> + * SUBTEST: idle-residency
->> + * Description: basic residency test to validate idle residency
->> + *		within a time interval is within tolerance
->> + * Run type: FULL
->> + */
->> +static void test_idle_residency(int sysfs, int gt) {
->> +	unsigned long elapsed_ms, residency_start, residency_end;
->> +
->> +	igt_assert_f(igt_wait(in_gt_c6(sysfs, gt), 1000, 1), "GT not in
->> +C6\n");
->> +
->> +	residency_start = read_idle_residency(sysfs, gt);
->> +	elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
->> +	residency_end = read_idle_residency(sysfs, gt);
->> +
->> +	igt_info("Measured %lums of idle residency in %lums\n",
->> +		 residency_end - residency_start, elapsed_ms);
->> +
->> +	assert_within_epsilon(residency_end - residency_start, elapsed_ms,
->> +tolerance); }
->> +
->> +igt_main
->> +{
->> +	int fd, gt;
->> +	static int sysfs = -1;
->> +
->> +	igt_fixture {
->> +		fd = drm_open_driver(DRIVER_XE);
->> +
->> +		xe_device_get(fd);
->> +		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
->> +
->> +		sysfs = igt_sysfs_open(fd);
->> +		igt_assert(sysfs != -1);
->> +	}
->> +
->> +	igt_describe("validate idle residency within a time interval is within
->> tolerance");
->> +	igt_subtest("idle-residency")
->> +		xe_for_each_gt(fd, gt)
->> +			test_idle_residency(sysfs, gt);
->> +
->> +	igt_fixture {
->> +		close(sysfs);
->> +		xe_device_put(fd);
->> +		close(fd);
->> +	}
->> +}
->> --
->> 2.40.0
-> 
+-- 
+2.25.1
