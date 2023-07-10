@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A0AC10E0F1
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 06:16:27 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5A2210E27B
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 11:54:02 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.131])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 57390580D3A
- for <igt-dev@lists.freedesktop.org>; Sun,  9 Jul 2023 23:16:25 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 55D73580E7F
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 04:53:59 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qIkC7-002onU-1K
- for igt-dev@lists.freedesktop.org; Mon, 10 Jul 2023 08:16:23 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qIpSn-002vw5-0u
+ for igt-dev@lists.freedesktop.org; Mon, 10 Jul 2023 13:53:57 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 10 Jul 2023 08:16:17 +0200
-Message-Id: <20230710061621.671843-3-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230710061621.671843-1-mauro.chehab@linux.intel.com>
-References: <20230710061621.671843-1-mauro.chehab@linux.intel.com>
+Date: Mon, 10 Jul 2023 13:53:53 +0200
+Message-Id: <20230710115354.699245-7-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
+References: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 2/6] lib/igt_core: use the macro when
- checking for list_subtests
+Subject: [igt-dev] [PATCH i-g-t v5 6/7] tests/build: Generate and store an
+ intel-ci.testlist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,60 +34,31 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-We're implementing a new argument to display all tests. Before
-doing that, make the check for it more generic to prepare for
-the changes.
+Store a sorted testlist with tests that could be used to test the
+DRM core and the Intel drivers in a format that it would be
+expected by igt_runner.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/igt_core.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tests/intel-ci/meson.build | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 3ee3a01c3668..9a0029d294a8 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -870,7 +870,7 @@ static void print_version(void)
- {
- 	struct utsname uts;
+diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+index d5a6e4f47203..a1ec517f8da1 100644
+--- a/tests/intel-ci/meson.build
++++ b/tests/intel-ci/meson.build
+@@ -9,4 +9,12 @@ intelci_files = [
+   'xe.blocklist.txt',
+ ]
  
--	if (list_subtests)
-+	if (igt_only_list_subtests())
- 		return;
- 
- 	uname(&uts);
-@@ -1198,12 +1198,12 @@ static int common_init(int *argc, char **argv,
- 			break;
- 		case OPT_RUN_SUBTEST:
- 			assert(optarg);
--			if (!list_subtests)
-+			if (!igt_only_list_subtests())
- 				run_single_subtest = strdup(optarg);
- 			break;
- 		case OPT_RUN_DYNAMIC_SUBTEST:
- 			assert(optarg);
--			if (!list_subtests)
-+			if (!igt_only_list_subtests())
- 				run_single_dynamic_subtest = strdup(optarg);
- 			break;
- 		case OPT_DESCRIPTION:
-@@ -1265,7 +1265,7 @@ out:
- 		/* exit with no error for -h/--help */
- 		exit(ret == -1 ? 0 : IGT_EXIT_INVALID);
- 
--	if (!list_subtests) {
-+	if (!igt_only_list_subtests()) {
- 		bind_fbcon(false);
- 		igt_kmsg(KMSG_INFO "%s: executing\n", command_str);
- 		print_version();
-@@ -3098,7 +3098,7 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
- 	if (!thread_id)
- 		return;
- 
--	if (list_subtests && level <= IGT_LOG_WARN)
-+	if (igt_only_list_subtests() && level <= IGT_LOG_WARN)
- 		return;
- 
- 	if (vasprintf(&line, format, args) == -1)
++custom_target('intel-ci.testlist',
++              build_by_default : true,
++              command : ['sort', testlist_files],
++              install : true,
++              install_dir : datadir,
++              capture : true,
++              output : 'intel-ci.testlist')
++
+ install_data(sources : intelci_files, install_dir : datadir)
 -- 
 2.40.1
