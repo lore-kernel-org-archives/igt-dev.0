@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1268530919443015645=="
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D22710E185
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 18:26:46 +0000 (UTC)
+Date: Mon, 10 Jul 2023 20:26:43 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230710182643.cggqw5gp7cuv76hp@kamilkon-desk1>
+References: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
+ <20230710115354.699245-7-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 10 Jul 2023 12:38:48 -0000
-Message-ID: <168899272862.24989.13159814130958086773@emeril.freedesktop.org>
-References: <20230710091347.689384-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230710091347.689384-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_scripts/tes?=
- =?utf-8?b?dF9saXN0LnB5OiBmaXggX19maWx0ZXJfc3VidGVzdCgpIGxvZ2lj?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230710115354.699245-7-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v5 6/7] tests/build: Generate and store
+ an intel-ci.testlist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,65 +20,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1268530919443015645==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
 
-== Series Details ==
+On 2023-07-10 at 13:53:53 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Store a sorted testlist with tests that could be used to test the
+> DRM core and the Intel drivers in a format that it would be
+> expected by igt_runner.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Series: scripts/test_list.py: fix __filter_subtest() logic
-URL   : https://patchwork.freedesktop.org/series/120448/
-State : info
+Looks good, I will add also Ewelina on Cc as it creates
+intel-ci.testlist
 
-== Summary ==
+Regards,
+Kamil
 
-Participating hosts:
-"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:
-Results: [IGTPW_9375](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9375/index.html)
-
-
-
---===============1268530919443015645==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>scripts/test_list.py: fix __filter_subtest() logic</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120448/">https://patchwork.freedesktop.org/series/120448/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9375/index.html">IGTPW_9375</a></p>
-
-</body>
-</html>
-
---===============1268530919443015645==--
+> ---
+>  tests/intel-ci/meson.build | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+> index d5a6e4f47203..a1ec517f8da1 100644
+> --- a/tests/intel-ci/meson.build
+> +++ b/tests/intel-ci/meson.build
+> @@ -9,4 +9,12 @@ intelci_files = [
+>    'xe.blocklist.txt',
+>  ]
+>  
+> +custom_target('intel-ci.testlist',
+> +              build_by_default : true,
+> +              command : ['sort', testlist_files],
+> +              install : true,
+> +              install_dir : datadir,
+> +              capture : true,
+> +              output : 'intel-ci.testlist')
+> +
+>  install_data(sources : intelci_files, install_dir : datadir)
+> -- 
+> 2.40.1
+> 
 
