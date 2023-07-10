@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on20615.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7eaa::615])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4162510E2B2
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 17:26:43 +0000 (UTC)
+ (mail-dm6nam11on2060e.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7eaa::60e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D4AC10E2BD
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 18:01:48 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 10 Jul 2023 13:26:32 -0400
-Message-ID: <20230710172632.54139-1-vitaly.prosyak@amd.com>
+Date: Mon, 10 Jul 2023 14:01:29 -0400
+Message-ID: <20230710180129.72406-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t] tests/amdgpu: add jpeg decoder test
+Subject: [igt-dev] [PATCH] tests/amdgpu: add VM test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,467 +19,229 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: boyuan.zhang@amd.com, leo.liu@amd.com
+Cc: alexander.deucher@amd.com, christian.koenig@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Ported and refactored drmlib jpeg_tests.c and  the following is done:
+Ported and refactored drmlib vm_tests.c and  the following is done:
 
 1. Remove everywhere global variables.
-2. Reuse common functions from amd_mmd_shared.h
+2. Removed handling of error codes which allows the test to be skipped and
+   use igt_assert_eq(r, 0) to catch error conditions.
+   The code should be flat as much as possible without 'IF' unless it is necessary.
 3. Properly formatted code to meet igt guidelines.
 
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Acked-by: Leo Liu <leo.liu@amd.com>
 ---
- tests/amdgpu/amd_jpeg_dec.c | 460 ++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build    |   1 +
- 2 files changed, 461 insertions(+)
- create mode 100644 tests/amdgpu/amd_jpeg_dec.c
+ tests/amdgpu/amd_vm.c    | 229 +++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build |   1 +
+ 2 files changed, 230 insertions(+)
+ create mode 100644 tests/amdgpu/amd_vm.c
 
-diff --git a/tests/amdgpu/amd_jpeg_dec.c b/tests/amdgpu/amd_jpeg_dec.c
+diff --git a/tests/amdgpu/amd_vm.c b/tests/amdgpu/amd_vm.c
 new file mode 100644
-index 000000000..bb2a8e97e
+index 000000000..c9c9fa342
 --- /dev/null
-+++ b/tests/amdgpu/amd_jpeg_dec.c
-@@ -0,0 +1,460 @@
++++ b/tests/amdgpu/amd_vm.c
+@@ -0,0 +1,229 @@
 +// SPDX-License-Identifier: MIT
 +// Copyright 2023 Advanced Micro Devices, Inc.
-+// Copyright 2017 Advanced Micro Devices, Inc.
++// Copyright 2014 Advanced Micro Devices, Inc.
 +
-+#include "lib/amdgpu/amd_mmd_shared.h"
++#include <amdgpu.h>
++#include "amdgpu_drm.h"
 +
-+/* jpeg registers */
-+#define mmUVD_JPEG_CNTL				0x0200
-+#define mmUVD_JPEG_RB_BASE			0x0201
-+#define mmUVD_JPEG_RB_WPTR			0x0202
-+#define mmUVD_JPEG_RB_RPTR			0x0203
-+#define mmUVD_JPEG_RB_SIZE			0x0204
-+#define mmUVD_JPEG_TIER_CNTL2			0x021a
-+#define mmUVD_JPEG_UV_TILING_CTRL		0x021c
-+#define mmUVD_JPEG_TILING_CTRL			0x021e
-+#define mmUVD_JPEG_OUTBUF_RPTR			0x0220
-+#define mmUVD_JPEG_OUTBUF_WPTR			0x0221
-+#define mmUVD_JPEG_PITCH			0x0222
-+#define mmUVD_JPEG_INT_EN			0x0229
-+#define mmUVD_JPEG_UV_PITCH			0x022b
-+#define mmUVD_JPEG_INDEX			0x023e
-+#define mmUVD_JPEG_DATA				0x023f
-+#define mmUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x0438
-+#define mmUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x0439
-+#define mmUVD_LMI_JPEG_READ_64BIT_BAR_HIGH	0x045a
-+#define mmUVD_LMI_JPEG_READ_64BIT_BAR_LOW	0x045b
-+#define mmUVD_CTX_INDEX				0x0528
-+#define mmUVD_CTX_DATA				0x0529
-+#define mmUVD_SOFT_RESET			0x05a0
++#include "igt.h"
 +
-+#define vcnipUVD_JPEG_DEC_SOFT_RST		0x402f
-+#define vcnipUVD_JRBC_IB_COND_RD_TIMER		0x408e
-+#define vcnipUVD_JRBC_IB_REF_DATA		0x408f
-+#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH	0x40e1
-+#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW	0x40e0
-+#define vcnipUVD_JPEG_RB_BASE			0x4001
-+#define vcnipUVD_JPEG_RB_SIZE			0x4004
-+#define vcnipUVD_JPEG_RB_WPTR			0x4002
-+#define vcnipUVD_JPEG_PITCH			0x401f
-+#define vcnipUVD_JPEG_UV_PITCH			0x4020
-+#define vcnipJPEG_DEC_ADDR_MODE			0x4027
-+#define vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE	0x4024
-+#define vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE	0x4025
-+#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x40e3
-+#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x40e2
-+#define vcnipUVD_JPEG_INDEX			0x402c
-+#define vcnipUVD_JPEG_DATA			0x402d
-+#define vcnipUVD_JPEG_TIER_CNTL2		0x400f
-+#define vcnipUVD_JPEG_OUTBUF_RPTR		0x401e
-+#define vcnipUVD_JPEG_OUTBUF_CNTL		0x401c
-+#define vcnipUVD_JPEG_INT_EN			0x400a
-+#define vcnipUVD_JPEG_CNTL			0x4000
-+#define vcnipUVD_JPEG_RB_RPTR			0x4003
-+#define vcnipUVD_JPEG_OUTBUF_WPTR		0x401d
-+
-+
-+#define RDECODE_PKT_REG_J(x)		((unsigned int)(x)&0x3FFFF)
-+#define RDECODE_PKT_RES_J(x)		(((unsigned int)(x)&0x3F) << 18)
-+#define RDECODE_PKT_COND_J(x)		(((unsigned int)(x)&0xF) << 24)
-+#define RDECODE_PKT_TYPE_J(x)		(((unsigned int)(x)&0xF) << 28)
-+#define RDECODE_PKTJ(reg, cond, type)	(RDECODE_PKT_REG_J(reg) | \
-+					 RDECODE_PKT_RES_J(0) | \
-+					 RDECODE_PKT_COND_J(cond) | \
-+					 RDECODE_PKT_TYPE_J(type))
-+
-+#define UVD_BASE_INST0_SEG1		0x00007E00
-+#define SOC15_REG_ADDR(reg)		(UVD_BASE_INST0_SEG1 + reg)
-+
-+#define COND0				0
-+#define COND1				1
-+#define COND3				3
-+#define TYPE0				0
-+#define TYPE1				1
-+#define TYPE3				3
-+#define JPEG_DEC_DT_PITCH		0x100
-+#define JPEG_DEC_BSD_SIZE		0x180
-+#define JPEG_DEC_LUMA_OFFSET		0
-+#define JPEG_DEC_CHROMA_OFFSET		0x1000
-+#define JPEG_DEC_SUM			4096
-+#define IB_SIZE				4096
-+#define MAX_RESOURCES			16
++#include "lib/amdgpu/amd_PM4.h"
++#include "lib/amdgpu/amd_cp_dma.h"
++#include "lib/amdgpu/amd_memory.h"
 +
 +static bool
-+is_jpeg_tests_enable(amdgpu_device_handle device_handle,
-+		struct mmd_context *context)
++is_vm_tests_enable(uint32_t family_id)
 +{
-+	struct drm_amdgpu_info_hw_ip info;
++	bool ret = true;
++
++
++	if (family_id == AMDGPU_FAMILY_SI) {
++		//TODO currently hangs the CP on this ASIC, VM  test is disabled
++		ret = false;
++	}
++
++	return ret;
++}
++
++static void
++amdgpu_vmid_reserve_test(amdgpu_device_handle device_handle,
++		const struct amdgpu_gpu_info *gpu_info)
++{
++	amdgpu_context_handle context_handle;
++	amdgpu_bo_handle ib_result_handle;
++	void *ib_result_cpu;
++	uint64_t ib_result_mc_address;
++	struct amdgpu_cs_request ibs_request;
++	struct amdgpu_cs_ib_info ib_info;
++	struct amdgpu_cs_fence fence_status;
++	uint32_t expired, flags;
++	int i, r;
++	amdgpu_bo_list_handle bo_list;
++	amdgpu_va_handle va_handle;
++	int32_t *ptr;
++	unsigned int gc_ip_type;
++
++	gc_ip_type = asic_is_gfx_pipe_removed(gpu_info) ? AMDGPU_HW_IP_COMPUTE :
++							AMDGPU_HW_IP_GFX;
++
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
++	igt_assert_eq(r, 0);
++
++	flags = 0;
++	r = amdgpu_vm_reserve_vmid(device_handle, flags);
++	igt_assert_eq(r, 0);
++
++
++	r = amdgpu_bo_alloc_and_map(device_handle, 4096, 4096,
++			AMDGPU_GEM_DOMAIN_GTT, 0,
++						    &ib_result_handle, &ib_result_cpu,
++						    &ib_result_mc_address, &va_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL,
++			       &bo_list);
++	igt_assert_eq(r, 0);
++
++	ptr = ib_result_cpu;
++
++	for (i = 0; i < 16; ++i)
++		ptr[i] = GFX_COMPUTE_NOP;
++
++	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
++	ib_info.ib_mc_address = ib_result_mc_address;
++	ib_info.size = 16;
++
++	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
++	ibs_request.ip_type = gc_ip_type;
++	ibs_request.ring = 0;
++	ibs_request.number_of_ibs = 1;
++	ibs_request.ibs = &ib_info;
++	ibs_request.resources = bo_list;
++	ibs_request.fence_info.handle = NULL;
++
++	r = amdgpu_cs_submit(context_handle, 0, &ibs_request, 1);
++	igt_assert_eq(r, 0);
++
++
++	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
++	fence_status.context = context_handle;
++	fence_status.ip_type = gc_ip_type;
++	fence_status.ip_instance = 0;
++	fence_status.ring = 0;
++	fence_status.fence = ibs_request.seq_no;
++
++	r = amdgpu_cs_query_fence_status(&fence_status,
++			AMDGPU_TIMEOUT_INFINITE, 0, &expired);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_list_destroy(bo_list);
++	igt_assert_eq(r, 0);
++
++	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
++					ib_result_mc_address, 4096);
++
++	flags = 0;
++	r = amdgpu_vm_unreserve_vmid(device_handle, flags);
++	igt_assert_eq(r, 0);
++
++
++	r = amdgpu_cs_ctx_free(context_handle);
++	igt_assert_eq(r, 0);
++}
++
++static void
++amdgpu_vm_unaligned_map(amdgpu_device_handle device_handle)
++{
++	const uint64_t map_size = (4ULL << 30) - (2 << 12);
++	struct amdgpu_bo_alloc_request request = {};
++	amdgpu_bo_handle buf_handle;
++	amdgpu_va_handle handle;
++	uint64_t vmc_addr;
 +	int r;
 +
-+	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VCN_JPEG, 0, &info);
++	request.alloc_size = 4ULL << 30;
++	request.phys_alignment = 4096;
++	request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
++	request.flags = AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
 +
-+	if (r != 0 || !info.available_rings ||
-+			(context->family_id < AMDGPU_FAMILY_RV &&
-+			(context->family_id == AMDGPU_FAMILY_AI &&
-+			(context->chip_id - context->chip_rev) < 0x32))) { /* Arcturus */
-+		igt_info("\n\nThe ASIC NOT support JPEG, test disabled\n");
-+		return false;
++	r = amdgpu_bo_alloc(device_handle, &request, &buf_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_va_range_alloc(device_handle, amdgpu_gpu_va_range_general,
++				  4ULL << 30, 1ULL << 30, 0, &vmc_addr,
++				  &handle, 0);
++	igt_assert_eq(r, 0);
++
++	vmc_addr += 1 << 12;
++
++	r = amdgpu_bo_va_op(buf_handle, 0, map_size, vmc_addr, 0,
++			    AMDGPU_VA_OP_MAP);
++	igt_assert_eq(r, 0);
++
++	amdgpu_bo_va_op(buf_handle, 0, map_size, vmc_addr, 0,
++			AMDGPU_VA_OP_UNMAP);
++
++	amdgpu_bo_free(buf_handle);
++}
++
++static void
++amdgpu_vm_mapping_test(amdgpu_device_handle device_handle)
++{
++	struct amdgpu_bo_alloc_request req = {0};
++	struct drm_amdgpu_info_device dev_info;
++	const uint64_t size = 4096;
++	amdgpu_bo_handle buf;
++	uint64_t addr;
++	int r;
++
++	req.alloc_size = size;
++	req.phys_alignment = 0;
++	req.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
++	req.flags = 0;
++
++	r = amdgpu_bo_alloc(device_handle, &req, &buf);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_query_info(device_handle, AMDGPU_INFO_DEV_INFO,
++			      sizeof(dev_info), &dev_info);
++	igt_assert_eq(r, 0);
++
++	addr = dev_info.virtual_address_offset;
++	r = amdgpu_bo_va_op(buf, 0, size, addr, 0, AMDGPU_VA_OP_MAP);
++	igt_assert_eq(r, 0);
++
++	addr = dev_info.virtual_address_max - size;
++	r = amdgpu_bo_va_op(buf, 0, size, addr, 0, AMDGPU_VA_OP_MAP);
++	igt_assert_eq(r, 0);
++
++	if (dev_info.high_va_offset) {
++		addr = dev_info.high_va_offset;
++		r = amdgpu_bo_va_op(buf, 0, size, addr, 0, AMDGPU_VA_OP_MAP);
++		igt_assert_eq(r, 0);
++
++		addr = dev_info.high_va_max - size;
++		r = amdgpu_bo_va_op(buf, 0, size, addr, 0, AMDGPU_VA_OP_MAP);
++		igt_assert_eq(r, 0);
 +	}
 +
-+	if (info.hw_ip_version_major == 1)
-+		context->jpeg_direct_reg = false;
-+	else if (info.hw_ip_version_major > 1 && info.hw_ip_version_major <= 4)
-+		context->jpeg_direct_reg = true;
-+	else
-+		return false;
-+
-+	return true;
-+}
-+
-+
-+static void
-+set_reg_jpeg(struct mmd_context *context, uint32_t reg, uint32_t cond,
-+		uint32_t type, uint32_t val, uint32_t *idx)
-+{
-+	context->ib_cpu[(*idx)++] = RDECODE_PKTJ(reg, cond, type);
-+	context->ib_cpu[(*idx)++] = val;
-+}
-+
-+/* send a bitstream buffer command */
-+static void
-+send_cmd_bitstream(struct mmd_context *context, uint64_t addr, uint32_t *idx)
-+{
-+	/* jpeg soft reset */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 1, idx);
-+
-+	/* ensuring the Reset is asserted in SCLK domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C2, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(1 << 9), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3,
-+			(1 << 9), idx);
-+
-+	/* wait mem */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
-+			0, idx);
-+
-+	/* ensuring the Reset is de-asserted in SCLK domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(0 << 9), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3,
-+			(1 << 9), idx);
-+
-+	/* set UVD_LMI_JPEG_READ_64BIT_BAR_LOW/HIGH based on bitstream buffer address */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_READ_64BIT_BAR_HIGH),
-+			COND0, TYPE0, (addr >> 32), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_READ_64BIT_BAR_LOW),
-+			COND0, TYPE0, (uint32_t)addr, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_BASE), COND0, TYPE0,
-+			0, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_SIZE), COND0, TYPE0,
-+			0xFFFFFFF0, idx);
-+
-+	/* set jpeg_rb_wptr */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_WPTR), COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+}
-+
-+/* send a target buffer command */
-+static void
-+send_cmd_target(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
-+
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_PITCH), COND0, TYPE0,
-+				(JPEG_DEC_DT_PITCH >> 4), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_UV_PITCH), COND0, TYPE0,
-+				(JPEG_DEC_DT_PITCH >> 4), idx);
-+
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_TILING_CTRL), COND0, TYPE0,
-+			0, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_UV_TILING_CTRL), COND0, TYPE0,
-+			0, idx);
-+
-+	/* set UVD_LMI_JPEG_WRITE_64BIT_BAR_LOW/HIGH based on target buffer address */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH),
-+			COND0, TYPE0, (addr >> 32), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW),
-+			COND0, TYPE0, (uint32_t)addr, idx);
-+
-+	/* set output buffer data address */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INDEX), COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_DATA), COND0, TYPE0,
-+			JPEG_DEC_LUMA_OFFSET, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INDEX), COND0, TYPE0, 1, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_DATA), COND0, TYPE0,
-+			JPEG_DEC_CHROMA_OFFSET, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_TIER_CNTL2), COND0, TYPE3,
-+			0, idx);
-+
-+	/* set output buffer read pointer */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_OUTBUF_RPTR), COND0, TYPE0,
-+			0, idx);
-+
-+	/* enable error interrupts */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_INT_EN), COND0, TYPE0,
-+			0xFFFFFFFE, idx);
-+
-+	/* start engine command */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
-+			0x6, idx);
-+
-+	/* wait for job completion, wait for job JBSI fetch done */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C2, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_RB_RPTR), COND0, TYPE3,
-+			0xFFFFFFFF, idx);
-+
-+	/* wait for job jpeg outbuf idle */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x01C3, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			0xFFFFFFFF, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_OUTBUF_WPTR), COND0, TYPE3,
-+			0x00000001, idx);
-+
-+	/* stop engine */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0,
-+			0x4, idx);
-+
-+	/* asserting jpeg lmi drop */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0,
-+			0x0005, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0,
-+			(1 << 23 | 1 << 0), idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE1, 0, idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, 0, idx);
-+
-+	/* asserting jpeg reset */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 1, idx);
-+
-+	/* ensure reset is asserted in sclk domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x01C3,
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, (1 << 9),
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3, (1 << 9),
-+			idx);
-+
-+	/* de-assert jpeg reset */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_JPEG_CNTL), COND0, TYPE0, 0, idx);
-+
-+	/* ensure reset is de-asserted in sclk domain */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x01C3,
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, (0 << 9),
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_SOFT_RESET), COND0, TYPE3, (1 << 9),
-+			idx);
-+
-+	/* de-asserting jpeg lmi drop */
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_INDEX), COND0, TYPE0, 0x0005,
-+			idx);
-+	set_reg_jpeg(context, SOC15_REG_ADDR(mmUVD_CTX_DATA), COND0, TYPE0, 0, idx);
-+}
-+
-+/* send a bitstream buffer command */
-+static void
-+send_cmd_bitstream_direct(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
-+
-+	/* jpeg soft reset */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND0, TYPE0, 1, idx);
-+
-+	/* ensuring the Reset is asserted in SCLK domain */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_COND_RD_TIMER, COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0,
-+			(0x1 << 0x10), idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND3, TYPE3,
-+			(0x1 << 0x10), idx);
-+
-+	/* wait mem */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND0, TYPE0, 0, idx);
-+
-+	/* ensuring the Reset is de-asserted in SCLK domain */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0, (0 << 0x10),
-+			idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DEC_SOFT_RST, COND3, TYPE3,
-+			(0x1 << 0x10), idx);
-+
-+	/* set UVD_LMI_JPEG_READ_64BIT_BAR_LOW/HIGH based on bitstream buffer address */
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH, COND0, TYPE0,
-+			(addr >> 32), idx);
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW, COND0, TYPE0,
-+			addr, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_BASE, COND0, TYPE0, 0, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_SIZE, COND0, TYPE0, 0xFFFFFFF0, idx);
-+
-+	/* set jpeg_rb_wptr */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_WPTR, COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+}
-+
-+/* send a target buffer command */
-+static void
-+send_cmd_target_direct(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
-+
-+	set_reg_jpeg(context, vcnipUVD_JPEG_PITCH, COND0, TYPE0,
-+			(JPEG_DEC_DT_PITCH >> 4), idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_UV_PITCH, COND0, TYPE0,
-+			(JPEG_DEC_DT_PITCH >> 4), idx);
-+
-+	set_reg_jpeg(context, vcnipJPEG_DEC_ADDR_MODE, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE, COND0, TYPE0,
-+			0, idx);
-+	set_reg_jpeg(context, vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE, COND0, TYPE0,
-+			0, idx);
-+
-+	/* set UVD_LMI_JPEG_WRITE_64BIT_BAR_LOW/HIGH based on target buffer address */
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH, COND0, TYPE0,
-+			(addr >> 32), idx);
-+	set_reg_jpeg(context, vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW, COND0, TYPE0,
-+			addr, idx);
-+
-+	/* set output buffer data address */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0, JPEG_DEC_LUMA_OFFSET,
-+			idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 1, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0,
-+			JPEG_DEC_CHROMA_OFFSET, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_TIER_CNTL2, COND0, 0, 0, idx);
-+
-+	/* set output buffer read pointer */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_RPTR, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_CNTL, COND0, TYPE0,
-+				((0x00001587 & (~0x00000180L)) | (0x1 << 0x7) | (0x1 << 0x6)),
-+				 idx);
-+
-+	/* enable error interrupts */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_INT_EN, COND0, TYPE0, 0xFFFFFFFE, idx);
-+
-+	/* start engine command */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_CNTL, COND0, TYPE0, 0xE, idx);
-+
-+	/* wait for job completion, wait for job JBSI fetch done */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_COND_RD_TIMER, COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_RB_RPTR, COND3, TYPE3, 0xFFFFFFFF, idx);
-+
-+	/* wait for job jpeg outbuf idle */
-+	set_reg_jpeg(context, vcnipUVD_JRBC_IB_REF_DATA, COND0, TYPE0, 0xFFFFFFFF,
-+			idx);
-+	set_reg_jpeg(context, vcnipUVD_JPEG_OUTBUF_WPTR, COND3, TYPE3, 0x00000001,
-+			idx);
-+
-+	/* stop engine */
-+	set_reg_jpeg(context, vcnipUVD_JPEG_CNTL, COND0, TYPE0, 0x4, idx);
-+}
-+
-+static void
-+amdgpu_cs_jpeg_decode(amdgpu_device_handle device_handle,
-+		struct mmd_context *context)
-+{
-+
-+	struct amdgpu_mmd_bo dec_buf;
-+	int size, r;
-+	uint8_t *dec;
-+	int sum = 0, i, j;
-+	uint32_t idx;
-+
-+	size = 16 * 1024; /* 8K bitstream + 8K output */
-+
-+	context->num_resources = 0;
-+	alloc_resource(device_handle, &dec_buf, size, AMDGPU_GEM_DOMAIN_VRAM);
-+	context->resources[context->num_resources++] = dec_buf.handle;
-+	context->resources[context->num_resources++] = context->ib_handle;
-+	r = amdgpu_bo_cpu_map(dec_buf.handle, (void **)&dec_buf.ptr);
-+	igt_assert_eq(r, 0);
-+	memcpy(dec_buf.ptr, jpeg_bitstream, sizeof(jpeg_bitstream));
-+
-+	idx = 0;
-+
-+	if (context->jpeg_direct_reg == true) {
-+		send_cmd_bitstream_direct(context, dec_buf.addr, &idx);
-+		send_cmd_target_direct(context, dec_buf.addr + (size / 2), &idx);
-+	} else {
-+		send_cmd_bitstream(context, dec_buf.addr, &idx);
-+		send_cmd_target(context, dec_buf.addr + (size / 2), &idx);
-+	}
-+
-+	amdgpu_bo_cpu_unmap(dec_buf.handle);
-+	r = submit(device_handle, context, idx, AMDGPU_HW_IP_VCN_JPEG);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_cpu_map(dec_buf.handle, (void **)&dec_buf.ptr);
-+	igt_assert_eq(r, 0);
-+
-+	dec = dec_buf.ptr + (size / 2);
-+
-+	/* calculate result checksum */
-+	for (i = 0; i < 8; i++)
-+		for (j = 0; j < 8; j++)
-+			sum += *((dec + JPEG_DEC_LUMA_OFFSET + i * JPEG_DEC_DT_PITCH) + j);
-+	for (i = 0; i < 4; i++)
-+		for (j = 0; j < 8; j++)
-+			sum += *((dec + JPEG_DEC_CHROMA_OFFSET + i * JPEG_DEC_DT_PITCH) + j);
-+
-+	amdgpu_bo_cpu_unmap(dec_buf.handle);
-+	igt_assert_eq(sum, JPEG_DEC_SUM);
-+
-+	free_resource(&dec_buf);
++	amdgpu_bo_free(buf);
 +}
 +
 +igt_main
 +{
 +	amdgpu_device_handle device;
-+	struct mmd_context context = {};
++	struct amdgpu_gpu_info gpu_info = {};
 +	int fd = -1;
 +
 +	igt_fixture {
@@ -491,32 +253,40 @@ index 000000000..bb2a8e97e
 +		igt_require(err == 0);
 +		igt_info("Initialized amdgpu, driver version %d.%d\n",
 +			 major, minor);
-+		err = mmd_context_init(device, &context);
-+		igt_require(err == 0);
-+		igt_skip_on(!is_jpeg_tests_enable(device, &context));
++		err = amdgpu_query_gpu_info(device, &gpu_info);
++		igt_assert_eq(err, 0);
++
++		igt_skip_on(!is_vm_tests_enable(gpu_info.family_id));
 +	}
-+	igt_describe("Test whether jpeg dec decodes");
-+	igt_subtest("amdgpu_cs_jpeg_decode")
-+	amdgpu_cs_jpeg_decode(device, &context);
++
++	igt_describe("Test reserve vmid");
++	igt_subtest("vmid_reserve_test")
++	amdgpu_vmid_reserve_test(device, &gpu_info);
++
++	igt_describe("Test unaligned map");
++	igt_subtest("amdgpu_vm_unaligned_map")
++	amdgpu_vm_unaligned_map(device);
++
++	igt_describe("Test vm mapping");
++	igt_subtest("amdgpu_vm_mapping_test")
++	amdgpu_vm_mapping_test(device);
 +
 +	igt_fixture {
-+		mmd_context_clean(device, &context);
 +		amdgpu_device_deinitialize(device);
 +		drm_close_driver(fd);
 +	}
-+
 +}
 diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index d09a4b6e7..300c6b8df 100644
+index e6e6eaabf..7feab584a 100644
 --- a/tests/amdgpu/meson.build
 +++ b/tests/amdgpu/meson.build
-@@ -15,6 +15,7 @@ if libdrm_amdgpu.found()
- 			  'amd_hotplug',
- 			  'amd_ilr',
- 			  'amd_info',
-+			  'amd_jpeg_dec',
- 			  'amd_link_settings',
- 			  'amd_max_bpc',
- 			  'amd_mem_leak',
+@@ -27,6 +27,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_uvd_dec',
+ 			  'amd_uvd_enc',
+ 			  'amd_vce_dec',
++			  'amd_vm',
+ 			  'amd_vrr_range',
+ 			]
+ 	amdgpu_deps += libdrm_amdgpu
 -- 
 2.25.1
