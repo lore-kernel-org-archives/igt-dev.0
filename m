@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77A2B10E13D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A0AC10E0F1
  for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 06:16:27 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.131])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 59289580D5F
+ by linux.intel.com (Postfix) with ESMTPS id 57390580D3A
  for <igt-dev@lists.freedesktop.org>; Sun,  9 Jul 2023 23:16:25 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qIkC7-002ona-1R
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qIkC7-002onU-1K
  for igt-dev@lists.freedesktop.org; Mon, 10 Jul 2023 08:16:23 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 10 Jul 2023 08:16:19 +0200
-Message-Id: <20230710061621.671843-5-mauro.chehab@linux.intel.com>
+Date: Mon, 10 Jul 2023 08:16:17 +0200
+Message-Id: <20230710061621.671843-3-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230710061621.671843-1-mauro.chehab@linux.intel.com>
 References: <20230710061621.671843-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 4/6] tests/meson.build: create testlists
- for tests
+Subject: [igt-dev] [PATCH i-g-t v4 2/6] lib/igt_core: use the macro when
+ checking for list_subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,168 +34,60 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Let's dynamically create testlists for during build time, as this
-can speed up a lot the validation check for testplan.
-
-Ideally, all it would need to to that would be to use this
-logic at the end of tests/meson.build:
-
-    foreach testexe : test_executables
-        prog = testexe.name()
-
-        output = prog.split('/').get(-1) + '.testlist'
-        custom_target(output,
-                     build_by_default : true,
-                     command : [ testexe, '--show-testlist'],
-                     capture : true,
-                     output : output)
-
-Unfortunately, this requies Meson >= 0.54. So, we need to add
-one custom_target per executable() call.
+We're implementing a new argument to display all tests. Before
+doing that, make the check for it more generic to prepare for
+the changes.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- docs/testplan/meson.build |  2 +-
- tests/meson.build         | 55 ++++++++++++++++++++++++++++++++++-----
- 2 files changed, 49 insertions(+), 8 deletions(-)
+ lib/igt_core.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index bf73dd32a15f..e838f2eb1540 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -12,7 +12,7 @@ i915_test_config = join_paths(source_root, 'tests', 'i915', 'i915_test_config.js
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 3ee3a01c3668..9a0029d294a8 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -870,7 +870,7 @@ static void print_version(void)
+ {
+ 	struct utsname uts;
  
- check_testlist = []
- if build_tests
--	doc_dependencies = test_executables
-+	doc_dependencies = testlist_files
- 	# Check if documentation matches the actual tests and tests can run
- 	if not meson.is_cross_build()
- 		build_info += 'Will Check if documentation is in sync with testlist'
-diff --git a/tests/meson.build b/tests/meson.build
-index 3116c458d60b..897f17ab4561 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -351,35 +351,57 @@ extra_dependencies = {
+-	if (list_subtests)
++	if (igt_only_list_subtests())
+ 		return;
  
- test_executables = []
- test_list = []
-+testlist_files = []
+ 	uname(&uts);
+@@ -1198,12 +1198,12 @@ static int common_init(int *argc, char **argv,
+ 			break;
+ 		case OPT_RUN_SUBTEST:
+ 			assert(optarg);
+-			if (!list_subtests)
++			if (!igt_only_list_subtests())
+ 				run_single_subtest = strdup(optarg);
+ 			break;
+ 		case OPT_RUN_DYNAMIC_SUBTEST:
+ 			assert(optarg);
+-			if (!list_subtests)
++			if (!igt_only_list_subtests())
+ 				run_single_dynamic_subtest = strdup(optarg);
+ 			break;
+ 		case OPT_DESCRIPTION:
+@@ -1265,7 +1265,7 @@ out:
+ 		/* exit with no error for -h/--help */
+ 		exit(ret == -1 ? 0 : IGT_EXIT_INVALID);
  
- foreach prog : test_progs
--	test_executables += executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
-+	testexe = executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
- 		   dependencies : test_deps + extra_dependencies.get(prog, []),
- 		   install_dir : libexecdir,
- 		   install_rpath : libexecdir_rpathdir,
- 		   install : true)
-+	test_executables += testexe
- 	test_list += prog
-+	name = prog.split('/').get(-1)
-+	testlist_files += custom_target(name + '.testlist',
-+		     build_by_default : true,
-+		     command : [testexe, '--show-testlist'],
-+		     capture : true,
-+		     output : name + '.testlist')
- endforeach
+-	if (!list_subtests) {
++	if (!igt_only_list_subtests()) {
+ 		bind_fbcon(false);
+ 		igt_kmsg(KMSG_INFO "%s: executing\n", command_str);
+ 		print_version();
+@@ -3098,7 +3098,7 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
+ 	if (!thread_id)
+ 		return;
  
- foreach prog : i915_progs
--	test_executables += executable(prog,
-+	testexe = executable(prog,
- 		   [join_paths('i915', prog + '.c')] + extra_sources.get(prog, []),
- 		   dependencies : test_deps + extra_dependencies.get(prog, []),
- 		   install_dir : libexecdir,
- 		   install_rpath : libexecdir_rpathdir,
- 		   install : true)
-+	test_executables += testexe
- 	test_list += prog
-+	name = prog.split('/').get(-1)
-+	testlist_files += custom_target(name + '.testlist',
-+		     build_by_default : true,
-+		     command : [testexe, '--show-testlist'],
-+		     capture : true,
-+		     output : name + '.testlist')
- endforeach
+-	if (list_subtests && level <= IGT_LOG_WARN)
++	if (igt_only_list_subtests() && level <= IGT_LOG_WARN)
+ 		return;
  
- if build_xe
- 	foreach prog : xe_progs
--		test_executables += executable(prog,
-+		testexe = executable(prog,
- 			   [join_paths('xe', prog + '.c')] + extra_sources.get(prog, []),
- 			   dependencies : test_deps + extra_dependencies.get(prog, []),
- 			   install_dir : libexecdir,
- 			   install_rpath : libexecdir_rpathdir,
- 			   install : true)
- 		test_list += prog
-+		test_executables += testexe
-+		name = prog.split('/').get(-1)
-+		testlist_files += custom_target(name + '.testlist',
-+			     build_by_default : true,
-+			     command : [testexe, '--show-testlist'],
-+			     capture : true,
-+			     output : name + '.testlist')
- 	endforeach
- 	build_info += 'Xe **experimental** tests enabled.'
- endif
-@@ -395,7 +417,7 @@ endforeach
- 
- if chamelium.found()
- 	foreach prog : chamelium_progs
--		test_executables += executable(prog,
-+		testexe = executable(prog,
- 				 [join_paths('chamelium', prog + '.c'),
- 					join_paths('chamelium', 'kms_chamelium_helper.c')],
- 				 dependencies : test_deps,
-@@ -403,16 +425,30 @@ if chamelium.found()
- 				 install_rpath : libexecdir_rpathdir,
- 				 install : true)
- 		test_list += prog
-+		test_executables += testexe
-+		name = prog.split('/').get(-1)
-+		testlist_files += custom_target(name + '.testlist',
-+			     build_by_default : true,
-+			     command : [testexe, '--show-testlist'],
-+			     capture : true,
-+			     output : name + '.testlist')
- 	endforeach
- 	test_deps += chamelium
- 
--	test_executables += executable('kms_chamelium_color',
-+	name = 'kms_chamelium_color'
-+	testexe = executable('kms_chamelium_color',
- 				[ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
- 				dependencies : test_deps + [ chamelium ],
- 				install_dir : libexecdir,
- 				install_rpath : libexecdir_rpathdir,
- 				install : true)
--	test_list += 'kms_chamelium_color'
-+	test_list += name
-+	test_executables += testexe
-+	testlist_files += custom_target(name + '.testlist',
-+		     build_by_default : true,
-+		     command : [testexe, '--show-testlist'],
-+		     capture : true,
-+		     output : name + '.testlist')
- endif
- 
- subdir('amdgpu')
-@@ -448,11 +484,16 @@ foreach prog : test_list
- 	test('testcase check ' + prog, test_script, args : prog)
- endforeach
- 
--executable('gem_stress', 'i915/gem_stress.c',
-+testexe = executable('gem_stress', 'i915/gem_stress.c',
- 	   install : true,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
- 	   dependencies : igt_deps)
-+testlist_files += custom_target('gem_stress.testlist',
-+                build_by_default : true,
-+                command : [testexe, '--show-testlist'],
-+                capture : true,
-+                output : 'gem_stress.testlist')
- 
- image_files = [
-   '1080p-left.png',
+ 	if (vasprintf(&line, format, args) == -1)
 -- 
 2.40.1
