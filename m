@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2063.outbound.protection.outlook.com [40.107.237.63])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D90D410E2AF
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 17:19:41 +0000 (UTC)
-Message-ID: <ea02f046-82dc-eeee-856e-7aaa0e27b1fa@amd.com>
-Date: Mon, 10 Jul 2023 11:19:37 -0600
+ (mail-bn8nam12on2053.outbound.protection.outlook.com [40.107.237.53])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26D8410E2B0
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 17:19:56 +0000 (UTC)
+Message-ID: <f8b84c9d-6e19-aef7-7189-c6051b5ac778@amd.com>
+Date: Mon, 10 Jul 2023 11:19:51 -0600
 Content-Language: en-US
 To: Tom Chung <chiahsuan.chung@amd.com>, igt-dev@lists.freedesktop.org
 References: <20230710075749.2377896-1-chiahsuan.chung@amd.com>
- <20230710075749.2377896-8-chiahsuan.chung@amd.com>
+ <20230710075749.2377896-9-chiahsuan.chung@amd.com>
 From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20230710075749.2377896-8-chiahsuan.chung@amd.com>
+In-Reply-To: <20230710075749.2377896-9-chiahsuan.chung@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [i-g-t,
- v4 7/8] tests/amdgpu/amd_freesync_video_mode: Fix wrong resolution
- setting for some panel
+ v4 8/8] tests/amdgpu/amd_freesync_video_mode: Add
+ amd_freesync_video_mode to meson.build
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,63 +32,22 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Reviewed-by: Alex Hung <alex.hung@amd.com>
 
 On 2023-07-10 01:57, Tom Chung wrote:
-> [Why]
-> Some eDP panel VRR range only has 48-60Hz and it will cause some of the test failed.
-> 
-> [How]
-> Use the VRR range fps to select the mode for test.
+> Add amd_freesync_video_mode to meson.build file.
 > 
 > Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
 > ---
->   tests/amdgpu/amd_freesync_video_mode.c | 25 ++++++++++++++++---------
->   1 file changed, 16 insertions(+), 9 deletions(-)
+>   tests/amdgpu/meson.build | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
-> index 60b1da589..7716598dc 100644
-> --- a/tests/amdgpu/amd_freesync_video_mode.c
-> +++ b/tests/amdgpu/amd_freesync_video_mode.c
-> @@ -421,11 +421,18 @@ static drmModeModeInfo *select_mode(
->   	case FSV_NON_FREESYNC_VIDEO_MODE:
->   		for (i = 0; i < data->count_modes; i++) {
->   			mode = &data->modes[i];
-> -			if (mode->hdisplay == data->hdisplay &&
-> -				mode->vdisplay == data->vdisplay &&
-> -				mode->vrefresh == refresh_rate &&
-> -				!is_freesync_video_mode(data, mode))
-> -				break;
-> +			if (refresh_rate > 0) {
-> +				if (mode->hdisplay == data->hdisplay &&
-> +					mode->vdisplay == data->vdisplay &&
-> +					mode->vrefresh == refresh_rate &&
-> +					!is_freesync_video_mode(data, mode))
-> +					break;
-> +			} else {
-> +				if (mode->hdisplay == data->hdisplay &&
-> +					mode->vdisplay == data->vdisplay &&
-> +					!is_freesync_video_mode(data, mode))
-> +					break;
-> +			}
->   		}
->   		if (i >= data->count_modes)
->   			mode = NULL;
-> @@ -780,16 +787,16 @@ mode_transition(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t sce
->   		mode_playback  = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
->   		break;
->   	case SCENE_LOWER_FSV_MODE_TO_HIGHER_FSV_MODE:
-> -		mode_start = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
-> -		mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 120);
-> +		mode_start = select_mode(data, FSV_FREESYNC_VIDEO_MODE, data->vrr_range.min);
-> +		mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, data->vrr_range.max);
->   		break;
->   	case SCENE_NON_FSV_MODE_TO_FSV_MODE:
-> -		mode_start = select_mode(data, FSV_NON_FREESYNC_VIDEO_MODE, 60);
-> +		mode_start = select_mode(data, FSV_NON_FREESYNC_VIDEO_MODE, 0);
->   		mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
->   		break;
->   	case SCENE_BASE_MODE_TO_CUSTUM_MODE:
->   		mode_start = select_mode(data, FSV_BASE_MODE, 0);
-> -		ret = prepare_custom_mode(data, &mode_custom, 72);
-> +		ret = prepare_custom_mode(data, &mode_custom, data->vrr_range.min);
->   		igt_assert_eq(ret, 0);
->   		mode_playback = &mode_custom;
->   		break;
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index e6e6eaabf..f45d9fb95 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -12,6 +12,7 @@ if libdrm_amdgpu.found()
+>   			  'amd_cs_nop',
+>   			  'amd_deadlock',
+>   			  'amd_dp_dsc',
+> +			  'amd_freesync_video_mode',
+>   			  'amd_hotplug',
+>   			  'amd_ilr',
+>   			  'amd_info',
