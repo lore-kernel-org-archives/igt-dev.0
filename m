@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============3750163765420553944=="
+ boundary="===============3643843282361512521=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 10 Jul 2023 10:12:06 -0000
-Message-ID: <168898392678.24988.9468260302354353844@emeril.freedesktop.org>
+Date: Mon, 10 Jul 2023 07:30:42 -0000
+Message-ID: <168897424206.24988.1652945733877381757@emeril.freedesktop.org>
 References: <20230710061621.671843-1-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230710061621.671843-1-mauro.chehab@linux.intel.com>
 Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Speedup_IGT?=
@@ -23,7 +23,7 @@ To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3750163765420553944==
+--===============3643843282361512521==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -37,16 +37,12 @@ State : info
 == Summary ==
 
 Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
+"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:
 Results: [IGTPW_9373](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9373/index.html)
 
 
 
---===============3750163765420553944==
+--===============3643843282361512521==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -74,15 +70,11 @@ Content-Transfer-Encoding: 7bit
 
 
     <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
+"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:<br />
 Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9373/index.html">IGTPW_9373</a></p>
 
 </body>
 </html>
 
---===============3750163765420553944==--
+--===============3643843282361512521==--
 
