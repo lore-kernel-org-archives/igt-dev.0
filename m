@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 75F7210E278
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA1FE10E27C
  for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 11:54:02 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.131])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 21425580C63
+ by linux.intel.com (Postfix) with ESMTPS id 49BF6580DD0
  for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 04:53:59 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qIpSn-002vvw-0k
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qIpSn-002vw2-0r
  for igt-dev@lists.freedesktop.org; Mon, 10 Jul 2023 13:53:57 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 10 Jul 2023 13:53:50 +0200
-Message-Id: <20230710115354.699245-4-mauro.chehab@linux.intel.com>
+Date: Mon, 10 Jul 2023 13:53:52 +0200
+Message-Id: <20230710115354.699245-6-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
 References: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 3/7] lib/igt_core: add an option to show
- the testlist
+Subject: [igt-dev] [PATCH i-g-t v5 5/7] scripts/test_list.py: speedup
+ testlist check logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,98 +34,77 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-There are several cases where we need to list the tests the same
-way as igt_runner displays them.
+Now that the build system will generate the testlist for us,
+just read them when checking for missing symbols.
 
-That should not return errors on failures and should work also
-when igt_simple_main() macro is used.
+This should speed up a log the check logic.
 
-Ideally, it should also show dynamic subtests, but this is more
-complex, specially for Kselftest/KUnit ones. So, for now, let's
-not handle dynamic ones.
+After the change, touching on a single file and rebuilding the
+testplan with check enabled is a lot faster:
 
-Add an option to produce such testlist.
+	$ touch tests/xe/xe_compute.c
+	$ time make
+	ninja -C build
+	ninja: Entering directory `build'
+	[10/10] Generating docs/testplan/i915_tests.html with a custom command
+
+	real	0m4.510s
+	user	0m5.944s
+	sys	0m0.217s
+
+This can be improved even further if we split the test_executables
+dependencies per driver.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/igt_core.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ scripts/test_list.py | 30 ++++++------------------------
+ 1 file changed, 6 insertions(+), 24 deletions(-)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 9a0029d294a8..2ae2cb68835e 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -274,6 +274,7 @@ const char *igt_interactive_debug;
- bool igt_skip_crc_compare;
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index a55d2977c7c3..2c1a6f230fb5 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -909,35 +909,17 @@ class TestList:
  
- /* subtests helpers */
-+static bool show_testlist = false;
- static bool list_subtests = false;
- static bool describe_subtests = false;
- static char *run_single_subtest = NULL;
-@@ -326,6 +327,7 @@ enum {
- 	 * conflict with core ones
- 	 */
- 	OPT_LIST_SUBTESTS = 500,
-+	OPT_SHOW_TESTLIST,
- 	OPT_DESCRIBE_SUBTESTS,
- 	OPT_RUN_SUBTEST,
- 	OPT_RUN_DYNAMIC_SUBTEST,
-@@ -896,6 +898,7 @@ static void print_usage(const char *help_str, bool output_on_stderr)
+         return subtests
  
- 	fprintf(f, "Usage: %s [OPTIONS]\n", command_str);
- 	fprintf(f, "  --list-subtests\n"
-+		   "  --show-testlist\n"
- 		   "  --run-subtest <pattern>\n"
- 		   "  --dynamic-subtest <pattern>\n"
- 		   "  --debug[=log-domain]\n"
-@@ -1076,6 +1079,7 @@ static int common_init(int *argc, char **argv,
- 	int c, option_index = 0, i, x;
- 	static struct option long_options[] = {
- 		{"list-subtests",     no_argument,       NULL, OPT_LIST_SUBTESTS},
-+		{"show-testlist",     no_argument,       NULL, OPT_SHOW_TESTLIST},
- 		{"describe",          optional_argument, NULL, OPT_DESCRIBE_SUBTESTS},
- 		{"run-subtest",       required_argument, NULL, OPT_RUN_SUBTEST},
- 		{"dynamic-subtest",   required_argument, NULL, OPT_RUN_DYNAMIC_SUBTEST},
-@@ -1189,6 +1193,9 @@ static int common_init(int *argc, char **argv,
- 			if (!run_single_subtest)
- 				list_subtests = true;
- 			break;
-+		case OPT_SHOW_TESTLIST:
-+			show_testlist = true;
-+			break;
- 		case OPT_DESCRIBE_SUBTESTS:
- 			if (optarg)
- 				run_single_subtest = strdup(optarg);
-@@ -1257,6 +1264,10 @@ out:
- 			igt_warn("Unknown subtest: %s\n", run_single_subtest);
- 			exit(IGT_EXIT_INVALID);
- 		}
-+		if (show_testlist) {
-+			printf("igt@%s\n", igt_test_name());
-+			exit(0);
-+		}
- 		if (list_subtests)
- 			exit(IGT_EXIT_INVALID);
- 	}
-@@ -1449,6 +1460,9 @@ bool __igt_run_subtest(const char *subtest_name, const char *file, const int lin
- 		__igt_print_description(subtest_name, file, line);
- 		_clear_current_description();
- 		return false;
-+	} else if (show_testlist) {
-+		printf("igt@%s@%s\n", igt_test_name(), subtest_name);
-+		return false;
- 	} else if (list_subtests) {
- 		printf("%s\n", subtest_name);
- 		return false;
-@@ -1522,7 +1536,7 @@ const char *igt_subtest_name(void)
-  */
- bool igt_only_list_subtests(void)
- {
--	return list_subtests;
-+	return list_subtests || show_testlist;
- }
+-    def __get_testlist(self, name):
+-        match = re.match(r"(.*/)?(.*)\.c$", name)
+-        if not match:
+-            return []
+-
+-        basename = "igt@" + match.group(2)
+-
+-        fname = os.path.join(self.igt_build_path, "tests", match.group(2))
+-        if not os.path.isfile(fname):
+-            print(f"Error: file {fname} doesn't exist.")
+-            sys.exit(1)
+-        try:
+-            result = subprocess.run([ fname, "--list-subtests" ],
+-                                    check = True,
+-                                    stdout = subprocess.PIPE,
+-                                    universal_newlines=True)
+-            subtests = result.stdout.splitlines()
+-
+-            return [basename  + "@" + i for i in subtests]
+-        except subprocess.CalledProcessError:
+-            # Handle it as a test using igt_simple_main
+-            return [basename]
+-
+     def get_testlist(self):
  
+         """ Return a list of tests as reported by --list-subtests """
+         tests = []
+         for name in self.filenames:
+-            tests += self.__get_testlist(name)
++            fname = re.sub(r"\.c$", ".testlist", name.split('/')[-1])
++            fname = os.path.join(self.igt_build_path, "tests", fname)
++
++            with open(fname, 'r', encoding='utf8') as handle:
++                for line in handle:
++                    tests.append(line)
+ 
+         return sorted(tests)
  
 -- 
 2.40.1
