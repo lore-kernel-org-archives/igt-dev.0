@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BB3510E241
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 11:54:02 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC4B710E321
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 07:12:23 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.27.131])
+ [10.252.28.50])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 235FA580BF0
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 04:53:59 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id B8998580DBE
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 00:12:17 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qIpSn-002vvz-0o
- for igt-dev@lists.freedesktop.org; Mon, 10 Jul 2023 13:53:57 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qJ7Xj-0035rw-1j
+ for igt-dev@lists.freedesktop.org; Tue, 11 Jul 2023 09:12:15 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 10 Jul 2023 13:53:51 +0200
-Message-Id: <20230710115354.699245-5-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
-References: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
+Date: Tue, 11 Jul 2023 09:12:10 +0200
+Message-Id: <20230711071213.737377-3-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230711071213.737377-1-mauro.chehab@linux.intel.com>
+References: <20230711071213.737377-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 4/7] tests/meson.build: create testlists
- for tests
+Subject: [igt-dev] [PATCH i-g-t 2/5] scripts/test_list.py: make the class
+ more generic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,168 +34,169 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Let's dynamically create testlists for during build time, as this
-can speed up a lot the validation check for testplan.
+Currently, the class is meant to be used only on IGT. However, it
+could also be used on other projects. It actually makes sense to
+port it to the Kernel, in order to document KUnit and Kselftests.
 
-Ideally, all it would need to to that would be to use this
-logic at the end of tests/meson.build:
-
-    foreach testexe : test_executables
-        prog = testexe.name()
-
-        output = prog.split('/').get(-1) + '.testlist'
-        custom_target(output,
-                     build_by_default : true,
-                     command : [ testexe, '--show-testlist'],
-                     capture : true,
-                     output : output)
-
-Unfortunately, this requies Meson >= 0.54. So, we need to add
-one custom_target per executable() call.
+Make the class more generic by allowing the constructor to pass
+three additional arguments:
+- The tag name for the test group ("TEST");
+- The tag name for the subtest group ("SUBTEST");
+- the prefix name for the tests;
+- the separator between testa and subtests.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- docs/testplan/meson.build |  2 +-
- tests/meson.build         | 55 ++++++++++++++++++++++++++++++++++-----
- 2 files changed, 49 insertions(+), 8 deletions(-)
+ scripts/test_list.py | 43 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 28 insertions(+), 15 deletions(-)
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-index bf73dd32a15f..e838f2eb1540 100644
---- a/docs/testplan/meson.build
-+++ b/docs/testplan/meson.build
-@@ -12,7 +12,7 @@ i915_test_config = join_paths(source_root, 'tests', 'i915', 'i915_test_config.js
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 4f580fb3de58..18fdd619211a 100755
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -101,8 +101,8 @@ class TestList:
  
- check_testlist = []
- if build_tests
--	doc_dependencies = test_executables
-+	doc_dependencies = testlist_files
- 	# Check if documentation matches the actual tests and tests can run
- 	if not meson.is_cross_build()
- 		build_info += 'Will Check if documentation is in sync with testlist'
-diff --git a/tests/meson.build b/tests/meson.build
-index 3116c458d60b..897f17ab4561 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -351,35 +351,57 @@ extra_dependencies = {
+     """
+     Parse and handle test lists with test/subtest documentation, in the
+-    form of C comments, with two meta-tags (TEST and SUBTEST), and a set of
+-    `field: value` items:
++    form of C comments, with two meta-tags (by default, TEST and SUBTEST),
++    and a set of `field: value` items:
  
- test_executables = []
- test_list = []
-+testlist_files = []
+         /**
+          * TEST: Check if new IGT test documentation logic functionality is working
+@@ -246,7 +246,9 @@ class TestList:
+     """
  
- foreach prog : test_progs
--	test_executables += executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
-+	testexe = executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
- 		   dependencies : test_deps + extra_dependencies.get(prog, []),
- 		   install_dir : libexecdir,
- 		   install_rpath : libexecdir_rpathdir,
- 		   install : true)
-+	test_executables += testexe
- 	test_list += prog
-+	name = prog.split('/').get(-1)
-+	testlist_files += custom_target(name + '.testlist',
-+		     build_by_default : true,
-+		     command : [testexe, '--show-testlist'],
-+		     capture : true,
-+		     output : name + '.testlist')
- endforeach
+     def __init__(self, config_fname, include_plan = False, file_list = False,
+-                 igt_build_path = None):
++                 igt_build_path = None,
++                 test_tag = "TEST", subtest_tag = "SUBTESTS?",
++                 main_name = "igt", subtest_separator = "@"):
+         self.doc = {}
+         self.test_number = 0
+         self.config = None
+@@ -259,6 +261,11 @@ class TestList:
+         self.field_list = {}
+         self.title = None
+         self.filters = {}
++        self.subtest_separator = subtest_separator
++        self.main_name = main_name
++
++        if self.main_name:
++            self.main_name += subtest_separator
  
- foreach prog : i915_progs
--	test_executables += executable(prog,
-+	testexe = executable(prog,
- 		   [join_paths('i915', prog + '.c')] + extra_sources.get(prog, []),
- 		   dependencies : test_deps + extra_dependencies.get(prog, []),
- 		   install_dir : libexecdir,
- 		   install_rpath : libexecdir_rpathdir,
- 		   install : true)
-+	test_executables += testexe
- 	test_list += prog
-+	name = prog.split('/').get(-1)
-+	testlist_files += custom_target(name + '.testlist',
-+		     build_by_default : true,
-+		     command : [testexe, '--show-testlist'],
-+		     capture : true,
-+		     output : name + '.testlist')
- endforeach
+         driver_name = re.sub(r'(.*/)?([^\/]+)/.*', r'\2', config_fname).capitalize()
  
- if build_xe
- 	foreach prog : xe_progs
--		test_executables += executable(prog,
-+		testexe = executable(prog,
- 			   [join_paths('xe', prog + '.c')] + extra_sources.get(prog, []),
- 			   dependencies : test_deps + extra_dependencies.get(prog, []),
- 			   install_dir : libexecdir,
- 			   install_rpath : libexecdir_rpathdir,
- 			   install : true)
- 		test_list += prog
-+		test_executables += testexe
-+		name = prog.split('/').get(-1)
-+		testlist_files += custom_target(name + '.testlist',
-+			     build_by_default : true,
-+			     command : [testexe, '--show-testlist'],
-+			     capture : true,
-+			     output : name + '.testlist')
- 	endforeach
- 	build_info += 'Xe **experimental** tests enabled.'
- endif
-@@ -395,7 +417,7 @@ endforeach
+@@ -355,11 +362,13 @@ class TestList:
+             if fname == '':
+                 continue
  
- if chamelium.found()
- 	foreach prog : chamelium_progs
--		test_executables += executable(prog,
-+		testexe = executable(prog,
- 				 [join_paths('chamelium', prog + '.c'),
- 					join_paths('chamelium', 'kms_chamelium_helper.c')],
- 				 dependencies : test_deps,
-@@ -403,16 +425,30 @@ if chamelium.found()
- 				 install_rpath : libexecdir_rpathdir,
- 				 install : true)
- 		test_list += prog
-+		test_executables += testexe
-+		name = prog.split('/').get(-1)
-+		testlist_files += custom_target(name + '.testlist',
-+			     build_by_default : true,
-+			     command : [testexe, '--show-testlist'],
-+			     capture : true,
-+			     output : name + '.testlist')
- 	endforeach
- 	test_deps += chamelium
+-            self.__add_file_documentation(fname, implemented_class, field_re)
++            self.__add_file_documentation(fname, implemented_class, field_re,
++                                          test_tag, subtest_tag)
  
--	test_executables += executable('kms_chamelium_color',
-+	name = 'kms_chamelium_color'
-+	testexe = executable('kms_chamelium_color',
- 				[ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
- 				dependencies : test_deps + [ chamelium ],
- 				install_dir : libexecdir,
- 				install_rpath : libexecdir_rpathdir,
- 				install : true)
--	test_list += 'kms_chamelium_color'
-+	test_list += name
-+	test_executables += testexe
-+	testlist_files += custom_target(name + '.testlist',
-+		     build_by_default : true,
-+		     command : [testexe, '--show-testlist'],
-+		     capture : true,
-+		     output : name + '.testlist')
- endif
+         if include_plan:
+             for fname in self.plan_filenames:
+-                self.__add_file_documentation(fname, planned_class, field_re)
++                self.__add_file_documentation(fname, planned_class, field_re,
++                                              test_tag, subtest_tag)
  
- subdir('amdgpu')
-@@ -448,11 +484,16 @@ foreach prog : test_list
- 	test('testcase check ' + prog, test_script, args : prog)
- endforeach
+     #
+     # ancillary methods
+@@ -421,7 +430,7 @@ class TestList:
+         for subtest in self.doc[test]["subtest"].keys():
+             summary = test_name
+             if self.doc[test]["subtest"][subtest]["Summary"] != '':
+-                summary += '@' + self.doc[test]["subtest"][subtest]["Summary"]
++                summary += self.subtest_separator + self.doc[test]["subtest"][subtest]["Summary"]
+             if not summary:
+                 continue
  
--executable('gem_stress', 'i915/gem_stress.c',
-+testexe = executable('gem_stress', 'i915/gem_stress.c',
- 	   install : true,
- 	   install_dir : libexecdir,
- 	   install_rpath : libexecdir_rpathdir,
- 	   dependencies : igt_deps)
-+testlist_files += custom_target('gem_stress.testlist',
-+                build_by_default : true,
-+                command : [testexe, '--show-testlist'],
-+                capture : true,
-+                output : 'gem_stress.testlist')
+@@ -551,7 +560,7 @@ class TestList:
  
- image_files = [
-   '1080p-left.png',
+             name = re.sub(r'.*/', '', fname)
+             name = re.sub(r'\.[\w+]$', '', name)
+-            name = "igt@" + name
++            name = self.main_name + name
+ 
+             if not subtest_only:
+                 test_dict[name] = {}
+@@ -606,7 +615,7 @@ class TestList:
+ 
+             name = re.sub(r'.*/', '', fname)
+             name = re.sub(r'\.[ch]', '', name)
+-            name = "igt@" + name
++            name = self.main_name + name
+ 
+             tmp_subtest = self.expand_subtest(fname, name, test, False)
+ 
+@@ -844,7 +853,7 @@ class TestList:
+ 
+             test_name = re.sub(r'.*/', '', fname)
+             test_name = re.sub(r'\.[ch]', '', test_name)
+-            test_name = "igt@" + test_name
++            test_name = self.main_name + test_name
+ 
+             subtest_array += self.expand_subtest(fname, test_name, test, True)
+ 
+@@ -941,8 +950,8 @@ class TestList:
+         args_regex = re.compile(r'\<[^\>]+\>')
+ 
+         for subtest in self.get_subtests()[""]:
+-            subtest = "@".join(subtest.split("@")[:3])
+-            subtest = args_regex.sub(r'\\d+', subtest)
++            subtest = self.subtest_separator.join(subtest.split(self.subtest_separator)[:3])
++            subtest = re.sub(r'\<[^\>]+\>', r'\\d+', subtest)
+             doc_subtests.add(subtest)
+ 
+         doc_subtests = list(sorted(doc_subtests))
+@@ -993,7 +1002,8 @@ class TestList:
+     # File handling methods
+     #
+ 
+-    def __add_file_documentation(self, fname, implemented_class, field_re):
++    def __add_file_documentation(self, fname, implemented_class, field_re,
++                                 test_tag, subtest_tag):
+ 
+         """Adds the contents of test/subtest documentation form a file"""
+ 
+@@ -1007,6 +1017,9 @@ class TestList:
+         cur_arg_element = 0
+         has_test_or_subtest = 0
+ 
++        test_regex    = re.compile(test_tag    + r':\s*(.*)')
++        subtest_regex = re.compile('^' + subtest_tag + r':\s*(.*)')
++
+         with open(fname, 'r', encoding='utf8') as handle:
+             arg_ref = None
+             current_test = ''
+@@ -1041,7 +1054,7 @@ class TestList:
+                     current_field = ''
+ 
+                     # Check if it is a new TEST section
+-                    match = re.match(r'^TEST:\s*(.*)', file_line)
++                    match = test_regex.match(file_line)
+                     if match:
+                         has_test_or_subtest = 1
+                         current_test = self.test_number
+@@ -1063,7 +1076,7 @@ class TestList:
+                         continue
+ 
+                 # Check if it is a new SUBTEST section
+-                match = re.match(r'^SUBTESTS?:\s*(.*)', file_line)
++                match = subtest_regex.match(file_line)
+                 if match:
+                     has_test_or_subtest = 1
+                     current_subtest = subtest_number
+@@ -1228,7 +1241,7 @@ class TestList:
+         """Generate testlists from the test documentation"""
+ 
+         test_prefix = os.path.commonprefix(self.get_subtests()[""])
+-        test_prefix = re.sub(r'^igt@', '', test_prefix)
++        test_prefix = re.sub(r'^' + self.main_name, '', test_prefix)
+ 
+         # NOTE: currently, it uses a comma for multi-value delimitter
+         test_subtests = self.get_subtests(sort_field, ",", with_order = True)
 -- 
 2.40.1
