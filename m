@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0835F10E37C
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 11:20:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17AE410E37E
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 11:20:23 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Jul 2023 13:19:52 +0200
-Message-Id: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
+Date: Tue, 11 Jul 2023 13:19:53 +0200
+Message-Id: <20230711112009.122482-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
+References: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 00/17] Extend intel_blt to work on Xe
+Subject: [igt-dev] [PATCH i-g-t v3 01/17] tests/api_intel_allocator: Don't
+ use allocator ahnd aliasing api
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,69 +24,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Blitter library currently supports block-copy, ctrl-surf-copy
-and fast-copy on i915. Lets extend this to xe as most of the
-code is driver independent.
+There's no tests (apart this one) which are using aliasing ahnd
+- intel_allocator_open_vm_as(). Additionally it is problematic
+on adopting allocator to xe where I need to track allocations
+to support easy vm binding. Let's adopt "open-vm" to not to use
+this api.
 
-v2: Rewrite tracking allocator calls alloc()/free() to handle
-    multiprocess/multithreaded scenarios. api_intel_allocator
-    now supports both drivers (i915 and xe).
-v3: Address review comments (Karolina)
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+---
+ tests/i915/api_intel_allocator.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Karolina Stolarek <karolina.stolarek@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
-Zbigniew Kempczyński (17):
-  tests/api_intel_allocator: Don't use allocator ahnd aliasing api
-  lib/intel_allocator: Drop aliasing allocator handle api
-  lib/intel_allocator: Remove extensive debugging
-  lib/xe_ioctl: Export non-assert xe_exec function
-  lib/xe_query: Use vramN when returning string region name
-  lib/xe_query: Add xe_region_class() helper
-  lib/drmtest: Add get_intel_driver() helper
-  lib/xe_util: Return dynamic subtest name for Xe
-  lib/xe_util: Add vm bind/unbind helper for Xe
-  lib/intel_allocator: Add intel_allocator_bind()
-  lib/intel_ctx: Add xe context information
-  lib/intel_blt: Introduce blt_copy_init() helper to cache driver
-  lib/intel_blt: Extend blitter library to support xe driver
-  tests/xe_ccs: Check if flatccs is working with block-copy for Xe
-  tests/xe_exercise_blt: Check blitter library fast-copy for Xe
-  tests/api-intel-allocator: Adopt to exercise allocator to Xe
-  tests/gem_ccs: Avoid writing png twice
-
- lib/drmtest.c                    |  10 +
- lib/drmtest.h                    |   1 +
- lib/igt_core.c                   |   5 +
- lib/igt_fb.c                     |   2 +-
- lib/intel_allocator.c            | 341 ++++++++++----
- lib/intel_allocator.h            |   4 +-
- lib/intel_allocator_msgchannel.h |   8 +-
- lib/intel_blt.c                  | 271 +++++++----
- lib/intel_blt.h                  |  10 +-
- lib/intel_ctx.c                  |  98 +++-
- lib/intel_ctx.h                  |  14 +
- lib/meson.build                  |   3 +-
- lib/xe/xe_ioctl.c                |   2 +-
- lib/xe/xe_ioctl.h                |   1 +
- lib/xe/xe_query.c                |  20 +-
- lib/xe/xe_query.h                |   1 +
- lib/xe/xe_util.c                 | 229 ++++++++++
- lib/xe/xe_util.h                 |  47 ++
- tests/i915/api_intel_allocator.c |  46 +-
- tests/i915/gem_ccs.c             |  35 +-
- tests/i915/gem_exercise_blt.c    |  22 +-
- tests/i915/gem_lmem_swapping.c   |   4 +-
- tests/meson.build                |   2 +
- tests/xe/xe_ccs.c                | 757 +++++++++++++++++++++++++++++++
- tests/xe/xe_exercise_blt.c       | 377 +++++++++++++++
- 25 files changed, 2074 insertions(+), 236 deletions(-)
- create mode 100644 lib/xe/xe_util.c
- create mode 100644 lib/xe/xe_util.h
- create mode 100644 tests/xe/xe_ccs.c
- create mode 100644 tests/xe/xe_exercise_blt.c
-
+diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
+index b7e3efb87f..77c2d25e83 100644
+--- a/tests/i915/api_intel_allocator.c
++++ b/tests/i915/api_intel_allocator.c
+@@ -612,32 +612,27 @@ static void reopen_fork(int fd)
+ 
+ static void open_vm(int fd)
+ {
+-	uint64_t ahnd[4], offset[4], size = 0x1000;
++	uint64_t ahnd[3], offset[3], size = 0x1000;
+ 	int i, n = ARRAY_SIZE(ahnd);
+ 
+ 	ahnd[0] = intel_allocator_open_vm(fd, 1, INTEL_ALLOCATOR_SIMPLE);
+ 	ahnd[1] = intel_allocator_open_vm(fd, 1, INTEL_ALLOCATOR_SIMPLE);
+-	ahnd[2] = intel_allocator_open_vm_as(ahnd[1], 2);
+-	ahnd[3] = intel_allocator_open(fd, 3, INTEL_ALLOCATOR_SIMPLE);
++	ahnd[2] = intel_allocator_open(fd, 2, INTEL_ALLOCATOR_SIMPLE);
+ 
+ 	offset[0] = intel_allocator_alloc(ahnd[0], 1, size, 0);
+ 	offset[1] = intel_allocator_alloc(ahnd[1], 2, size, 0);
+ 	igt_assert(offset[0] != offset[1]);
+ 
+-	offset[2] = intel_allocator_alloc(ahnd[2], 3, size, 0);
+-	igt_assert(offset[0] != offset[2] && offset[1] != offset[2]);
+-
+-	offset[3] = intel_allocator_alloc(ahnd[3], 1, size, 0);
+-	igt_assert(offset[0] == offset[3]);
++	offset[2] = intel_allocator_alloc(ahnd[2], 1, size, 0);
++	igt_assert(offset[0] == offset[2]);
+ 
+ 	/*
+-	 * As ahnd[0-2] lead to same allocator check can we free all handles
++	 * As ahnd[0-1] lead to same allocator check we can free all handles
+ 	 * using selected ahnd.
+ 	 */
+-	intel_allocator_free(ahnd[0], 1);
+-	intel_allocator_free(ahnd[0], 2);
+-	intel_allocator_free(ahnd[0], 3);
+-	intel_allocator_free(ahnd[3], 1);
++	igt_assert_eq(intel_allocator_free(ahnd[0], 1), true);
++	igt_assert_eq(intel_allocator_free(ahnd[1], 2), true);
++	igt_assert_eq(intel_allocator_free(ahnd[2], 1), true);
+ 
+ 	for (i = 0; i < n - 1; i++)
+ 		igt_assert_eq(intel_allocator_close(ahnd[i]), (i == n - 2));
 -- 
 2.34.1
