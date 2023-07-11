@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E3AC10E387
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 11:21:09 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Jul 2023 13:20:07 +0200
-Message-Id: <20230711112009.122482-16-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
-References: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 15/17] tests/xe_exercise_blt: Check
- blitter library fast-copy for Xe
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 11 Jul 2023 11:40:44 -0000
+Message-ID: <168907564445.18664.5700557395563959593@emeril.freedesktop.org>
+References: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_E?=
+ =?utf-8?q?xtend_intel=5Fblt_to_work_on_Xe_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,417 +17,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Port this test to work on xe. Instead of adding conditional code for
-xe code which would decrease readability this is new test for xe.
+== Series Details ==
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
-v3: - Explicitely release offsets and unbind (Karolina)
-    - Use has-fast-copy instead of copied has-block-copy check (Karolina)
----
- tests/meson.build          |   1 +
- tests/xe/xe_exercise_blt.c | 377 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 378 insertions(+)
- create mode 100644 tests/xe/xe_exercise_blt.c
+Series: Extend intel_blt to work on Xe (rev3)
+URL   : https://patchwork.freedesktop.org/series/120162/
+State : warning
 
-diff --git a/tests/meson.build b/tests/meson.build
-index da8653fabc..3eddb2fb4e 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -276,6 +276,7 @@ xe_progs = [
- 	'xe_exec_reset',
- 	'xe_exec_store',
- 	'xe_exec_threads',
-+	'xe_exercise_blt',
- 	'xe_gpgpu_fill',
- 	'xe_guc_pc',
- 	'xe_huc_copy',
-diff --git a/tests/xe/xe_exercise_blt.c b/tests/xe/xe_exercise_blt.c
-new file mode 100644
-index 0000000000..693e80d0b7
---- /dev/null
-+++ b/tests/xe/xe_exercise_blt.c
-@@ -0,0 +1,377 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include "igt.h"
-+#include "drm.h"
-+#include "lib/intel_chipset.h"
-+#include "intel_blt.h"
-+#include "intel_mocs.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include "xe/xe_util.h"
-+
-+/**
-+ * TEST: xe exercise blt
-+ * Description: Exercise blitter commands on Xe
-+ * Feature: blitter
-+ * Run type: FULL
-+ * Test category: GEM_Legacy
-+ *
-+ * SUBTEST: fast-copy
-+ * Description:
-+ *   Check fast-copy blit
-+ *   blitter
-+ *
-+ * SUBTEST: fast-copy-emit
-+ * Description:
-+ *   Check multiple fast-copy in one batch
-+ *   blitter
-+ */
-+
-+IGT_TEST_DESCRIPTION("Exercise blitter commands on Xe");
-+
-+static struct param {
-+	int tiling;
-+	bool write_png;
-+	bool print_bb;
-+	bool print_surface_info;
-+	int width;
-+	int height;
-+} param = {
-+	.tiling = -1,
-+	.write_png = false,
-+	.print_bb = false,
-+	.print_surface_info = false,
-+	.width = 512,
-+	.height = 512,
-+};
-+
-+#define PRINT_SURFACE_INFO(name, obj) do { \
-+	if (param.print_surface_info) \
-+		blt_surface_info((name), (obj)); } while (0)
-+
-+#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+	if (param.write_png) \
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+
-+struct blt_fast_copy_data {
-+	int xe;
-+	struct blt_copy_object src;
-+	struct blt_copy_object mid;
-+	struct blt_copy_object dst;
-+
-+	struct blt_copy_batch bb;
-+	enum blt_color_depth color_depth;
-+
-+	/* debug stuff */
-+	bool print_bb;
-+};
-+
-+static int fast_copy_one_bb(int xe,
-+			    const intel_ctx_t *ctx,
-+			    uint64_t ahnd,
-+			    const struct blt_fast_copy_data *blt)
-+{
-+	struct blt_copy_data blt_tmp;
-+	uint64_t bb_offset, alignment;
-+	uint64_t bb_pos = 0;
-+	int ret = 0;
-+
-+	alignment = xe_get_default_alignment(xe);
-+
-+	get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-+	get_offset(ahnd, blt->mid.handle, blt->mid.size, alignment);
-+	get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-+	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-+
-+	/* First blit */
-+	blt_copy_init(xe, &blt_tmp);
-+	blt_tmp.src = blt->src;
-+	blt_tmp.dst = blt->mid;
-+	blt_tmp.bb = blt->bb;
-+	blt_tmp.color_depth = blt->color_depth;
-+	blt_tmp.print_bb = blt->print_bb;
-+	bb_pos = emit_blt_fast_copy(xe, ahnd, &blt_tmp, bb_pos, false);
-+
-+	/* Second blit */
-+	blt_copy_init(xe, &blt_tmp);
-+	blt_tmp.src = blt->mid;
-+	blt_tmp.dst = blt->dst;
-+	blt_tmp.bb = blt->bb;
-+	blt_tmp.color_depth = blt->color_depth;
-+	blt_tmp.print_bb = blt->print_bb;
-+	bb_pos = emit_blt_fast_copy(xe, ahnd, &blt_tmp, bb_pos, true);
-+
-+	intel_ctx_xe_exec(ctx, ahnd, bb_offset);
-+
-+	return ret;
-+}
-+
-+static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
-+			   uint32_t region1, uint32_t region2,
-+			   enum blt_tiling_type mid_tiling)
-+{
-+	struct blt_copy_data bltinit = {};
-+	struct blt_fast_copy_data blt = {};
-+	struct blt_copy_object *src, *mid, *dst;
-+	const uint32_t bpp = 32;
-+	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
-+						  INTEL_ALLOCATOR_SIMPLE,
-+						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+	uint32_t bb, width = param.width, height = param.height;
-+	int result;
-+
-+	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
-+
-+	blt_copy_init(xe, &bltinit);
-+	src = blt_create_object(&bltinit, region1, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	mid = blt_create_object(&bltinit, region2, width, height, bpp, 0,
-+				mid_tiling, COMPRESSION_DISABLED, 0, true);
-+	dst = blt_create_object(&bltinit, region1, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	igt_assert(src->size == dst->size);
-+
-+	PRINT_SURFACE_INFO("src", src);
-+	PRINT_SURFACE_INFO("mid", mid);
-+	PRINT_SURFACE_INFO("dst", dst);
-+
-+	blt_surface_fill_rect(xe, src, width, height);
-+	WRITE_PNG(xe, mid_tiling, "src", src, width, height);
-+
-+	memset(&blt, 0, sizeof(blt));
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	blt_set_copy_object(&blt.src, src);
-+	blt_set_copy_object(&blt.mid, mid);
-+	blt_set_copy_object(&blt.dst, dst);
-+	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+
-+	fast_copy_one_bb(xe, ctx, ahnd, &blt);
-+
-+	WRITE_PNG(xe, mid_tiling, "mid", &blt.mid, width, height);
-+	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height);
-+
-+	result = memcmp(src->ptr, blt.dst.ptr, src->size);
-+
-+	blt_destroy_object(xe, src);
-+	blt_destroy_object(xe, mid);
-+	blt_destroy_object(xe, dst);
-+	gem_close(xe, bb);
-+	put_ahnd(ahnd);
-+
-+	munmap(&bb, bb_size);
-+
-+	igt_assert_f(!result, "source and destination surfaces differs!\n");
-+}
-+
-+static void fast_copy(int xe, const intel_ctx_t *ctx,
-+		      uint32_t region1, uint32_t region2,
-+		      enum blt_tiling_type mid_tiling)
-+{
-+	struct blt_copy_data blt = {};
-+	struct blt_copy_object *src, *mid, *dst;
-+	const uint32_t bpp = 32;
-+	uint64_t bb_size = xe_get_default_alignment(xe);
-+	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
-+						  INTEL_ALLOCATOR_SIMPLE,
-+						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+	uint32_t bb;
-+	uint32_t width = param.width, height = param.height;
-+	int result;
-+
-+	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
-+
-+	blt_copy_init(xe, &blt);
-+	src = blt_create_object(&blt, region1, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	mid = blt_create_object(&blt, region2, width, height, bpp, 0,
-+				mid_tiling, COMPRESSION_DISABLED, 0, true);
-+	dst = blt_create_object(&blt, region1, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	igt_assert(src->size == dst->size);
-+
-+	blt_surface_fill_rect(xe, src, width, height);
-+
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	blt_set_copy_object(&blt.src, src);
-+	blt_set_copy_object(&blt.dst, mid);
-+	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+
-+	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
-+
-+	WRITE_PNG(xe, mid_tiling, "src", &blt.src, width, height);
-+	WRITE_PNG(xe, mid_tiling, "mid", &blt.dst, width, height);
-+
-+	blt_copy_init(xe, &blt);
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	blt_set_copy_object(&blt.src, mid);
-+	blt_set_copy_object(&blt.dst, dst);
-+	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+
-+	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
-+
-+	WRITE_PNG(xe, mid_tiling, "dst", &blt.dst, width, height);
-+
-+	result = memcmp(src->ptr, blt.dst.ptr, src->size);
-+
-+	put_offset(ahnd, src->handle);
-+	put_offset(ahnd, mid->handle);
-+	put_offset(ahnd, dst->handle);
-+	put_offset(ahnd, bb);
-+	intel_allocator_bind(ahnd, 0, 0);
-+	blt_destroy_object(xe, src);
-+	blt_destroy_object(xe, mid);
-+	blt_destroy_object(xe, dst);
-+	gem_close(xe, bb);
-+	put_ahnd(ahnd);
-+
-+	igt_assert_f(!result, "source and destination surfaces differs!\n");
-+}
-+
-+enum fast_copy_func {
-+	FAST_COPY,
-+	FAST_COPY_EMIT
-+};
-+
-+static char
-+	*full_subtest_str(char *regtxt, enum blt_tiling_type tiling,
-+			  enum fast_copy_func func)
-+{
-+	char *name;
-+	uint32_t len;
-+
-+	len = asprintf(&name, "%s-%s%s", blt_tiling_name(tiling), regtxt,
-+		       func == FAST_COPY_EMIT ? "-emit" : "");
-+
-+	igt_assert_f(len >= 0, "asprintf failed!\n");
-+
-+	return name;
-+}
-+
-+static void fast_copy_test(int xe,
-+			   struct igt_collection *set,
-+			   enum fast_copy_func func)
-+{
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
-+	struct igt_collection *regions;
-+	void (*copy_func)(int xe, const intel_ctx_t *ctx,
-+			  uint32_t r1, uint32_t r2, enum blt_tiling_type tiling);
-+	intel_ctx_t *ctx;
-+	int tiling;
-+
-+	for_each_tiling(tiling) {
-+		if (!blt_fast_copy_supports_tiling(xe, tiling))
-+			continue;
-+
-+		for_each_variation_r(regions, 2, set) {
-+			uint32_t region1, region2;
-+			uint32_t vm, engine;
-+			char *regtxt, *test_name;
-+
-+			region1 = igt_collection_get_value(regions, 0);
-+			region2 = igt_collection_get_value(regions, 1);
-+
-+			vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
-+			engine = xe_engine_create(xe, vm, &inst, 0);
-+			ctx = intel_ctx_xe(xe, vm, engine, 0, 0, 0);
-+
-+			copy_func = (func == FAST_COPY) ? fast_copy : fast_copy_emit;
-+			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
-+			test_name = full_subtest_str(regtxt, tiling, func);
-+
-+			igt_dynamic_f("%s", test_name) {
-+				copy_func(xe, ctx,
-+					  region1, region2,
-+					  tiling);
-+			}
-+
-+			free(regtxt);
-+			free(test_name);
-+			xe_engine_destroy(xe, engine);
-+			xe_vm_destroy(xe, vm);
-+			free(ctx);
-+		}
-+	}
-+}
-+
-+static int opt_handler(int opt, int opt_index, void *data)
-+{
-+	switch (opt) {
-+	case 'b':
-+		param.print_bb = true;
-+		igt_debug("Print bb: %d\n", param.print_bb);
-+		break;
-+	case 'p':
-+		param.write_png = true;
-+		igt_debug("Write png: %d\n", param.write_png);
-+		break;
-+	case 's':
-+		param.print_surface_info = true;
-+		igt_debug("Print surface info: %d\n", param.print_surface_info);
-+		break;
-+	case 't':
-+		param.tiling = atoi(optarg);
-+		igt_debug("Tiling: %d\n", param.tiling);
-+		break;
-+	case 'W':
-+		param.width = atoi(optarg);
-+		igt_debug("Width: %d\n", param.width);
-+		break;
-+	case 'H':
-+		param.height = atoi(optarg);
-+		igt_debug("Height: %d\n", param.height);
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -b\tPrint bb\n"
-+	"  -p\tWrite PNG\n"
-+	"  -s\tPrint surface info\n"
-+	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64, 5 - YFMAJOR)\n"
-+	"  -W\tWidth (default 512)\n"
-+	"  -H\tHeight (default 512)"
-+	;
-+
-+igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
-+{
-+	struct igt_collection *set;
-+	int xe;
-+
-+	igt_fixture {
-+		xe = drm_open_driver(DRIVER_XE);
-+		igt_require(blt_has_fast_copy(xe));
-+
-+		xe_device_get(xe);
-+
-+		set = xe_get_memory_region_set(xe,
-+					       XE_MEM_REGION_CLASS_SYSMEM,
-+					       XE_MEM_REGION_CLASS_VRAM);
-+	}
-+
-+	igt_describe("Check fast-copy blit");
-+	igt_subtest_with_dynamic("fast-copy") {
-+		fast_copy_test(xe, set, FAST_COPY);
-+	}
-+
-+	igt_describe("Check multiple fast-copy in one batch");
-+	igt_subtest_with_dynamic("fast-copy-emit") {
-+		fast_copy_test(xe, set, FAST_COPY_EMIT);
-+	}
-+
-+	igt_fixture {
-+		drm_close_driver(xe);
-+	}
-+}
--- 
-2.34.1
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/932186 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45263081):
+  time="2023-07-11T11:38:24Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:8eb6dba554cffc072c7a6c696c8a23fc311e543399d84ab3ebc55c07ab54414f
+  Copying config sha256:1de12428f6f470169eba22c18e53addae00d60e92ebe96b2c3bdd99c17c34010
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-07-11T11:38:32Z" level=warning msg="signal: killed"
+  time="2023-07-11T11:38:32Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1689075513:step_script
+  section_start:1689075513:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1689075516:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45263083):
+      "DockerVersion": "",
+      "Labels": {},
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Layers": [
+          "sha256:a1c4b97398ec8bc7b17c52a01ef6941dc58811cb43f945b093db7a131586297a"
+      ]
+  }
+  Skipping, already built
+  Getting image source signatures
+  Copying blob sha256:a1c4b97398ec8bc7b17c52a01ef6941dc58811cb43f945b093db7a131586297a
+  Copying config sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c
+  Writing manifest to image destination
+  time="2023-07-11T11:38:23Z" level=fatal msg="Error writing manifest: Error uploading manifest commit-72ee64f2d536b357e190a6a85a90cdcebc7ed1e8 to registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64: received unexpected HTTP status: 500 Internal Server Error" 
+  section_end:1689075504:step_script
+  section_start:1689075504:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1689075504:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45263082):
+          "intel-IGT_5164"
+      ],
+      "Created": "2019-11-20T12:54:52.073706506Z",
+      "DockerVersion": "",
+      "Labels": {},
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Layers": [
+          "sha256:45252bb38c9c74dfe76c4b3808269db61d3b2aebe5e26bf7fcd85e48b93e16f9"
+      ]
+  }
+  Skipping, already built
+  Getting image source signatures
+  time="2023-07-11T11:38:22Z" level=fatal msg="Error trying to reuse blob sha256:45252bb38c9c74dfe76c4b3808269db61d3b2aebe5e26bf7fcd85e48b93e16f9 at destination: failed to read from destination repository gfx-ci/igt-ci-tags/build-debian-armhf: 500 (Internal Server Error)" 
+  section_end:1689075503:step_script
+  section_start:1689075503:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1689075504:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45263084):
+      "DockerVersion": "",
+      "Labels": {},
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Layers": [
+          "sha256:04854e5e3796b945522a085073b5a49cadad51bd1c5414c91654fa3d63d8db4d"
+      ]
+  }
+  Skipping, already built
+  Getting image source signatures
+  Copying blob sha256:04854e5e3796b945522a085073b5a49cadad51bd1c5414c91654fa3d63d8db4d
+  Copying config sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448
+  Writing manifest to image destination
+  time="2023-07-11T11:38:23Z" level=fatal msg="Error writing manifest: Error uploading manifest commit-72ee64f2d536b357e190a6a85a90cdcebc7ed1e8 to registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips: received unexpected HTTP status: 500 Internal Server Error" 
+  section_end:1689075504:step_script
+  section_start:1689075504:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1689075504:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45263085):
+  time="2023-07-11T11:38:20Z" level=fatal msg="Error reading manifest dockerfile-d55a9096f48b128e63002d049c1e9ea16a6c5bee in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora: received unexpected HTTP status: 500 Internal Server Error" 
+  Building!
+  STEP 1: FROM fedora:31
+  Getting image source signatures
+  Copying blob sha256:854946d575a439a894349addd141568875d7c1e673d3286b08250f3dde002e6a
+  Copying config sha256:7e94ed77b448a8d2ff08b92d3ca743e4e862c744892d6886c73487581eb5863a
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils
+  error running container: error creating container for [/bin/sh -c dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils]: time="2023-07-11T11:38:26Z" level=warning msg="signal: killed"
+  time="2023-07-11T11:38:26Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN dnf install -y 	gcc flex bison libatomic meson ninja-build xdotool 	'pkgconfig(libdrm)' 	'pkgconfig(pciaccess)' 	'pkgconfig(libkmod)' 	'pkgconfig(libprocps)' 	'pkgconfig(libunwind)' 	'pkgconfig(libdw)' 	'pkgconfig(pixman-1)' 	'pkgconfig(valgrind)' 	'pkgconfig(cairo)' 	'pkgconfig(libudev)' 	'pkgconfig(glib-2.0)' 	'pkgconfig(gsl)' 	'pkgconfig(alsa)' 	'pkgconfig(xmlrpc)' 	'pkgconfig(xmlrpc_util)' 	'pkgconfig(xmlrpc_client)' 	'pkgconfig(json-c)' 	'pkgconfig(gtk-doc)' 	'pkgconfig(xv)' 	'pkgconfig(xrandr)' 	python3-docutils": error while running runtime: exit status 1
+  section_end:1689075506:step_script
+  section_start:1689075506:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1689075507:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/932186
