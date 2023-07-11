@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E5BA510E337
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 09:07:00 +0000 (UTC)
-Date: Tue, 11 Jul 2023 11:06:32 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1137610E34C
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 09:23:19 +0000 (UTC)
+Date: Tue, 11 Jul 2023 11:23:14 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230711090632.yrmouv5ajsjhdjrs@zkempczy-mobl2>
+Message-ID: <20230711092314.23vrcwrmhftpy3ze@zkempczy-mobl2>
 References: <20230706060555.282757-1-zbigniew.kempczynski@intel.com>
- <20230706060555.282757-12-zbigniew.kempczynski@intel.com>
- <a97b8206-3b1f-a7df-a8c5-edac4d577e77@intel.com>
+ <20230706060555.282757-13-zbigniew.kempczynski@intel.com>
+ <576bc7f7-dd2d-0ab7-0459-8687d0e88238@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a97b8206-3b1f-a7df-a8c5-edac4d577e77@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 11/16] lib/intel_ctx: Add xe context
- information
+In-Reply-To: <576bc7f7-dd2d-0ab7-0459-8687d0e88238@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 12/16] lib/intel_blt: Introduce
+ blt_copy_init() helper to cache driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,237 +28,356 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jul 07, 2023 at 10:31:19AM +0200, Karolina Stolarek wrote:
+On Fri, Jul 07, 2023 at 10:51:43AM +0200, Karolina Stolarek wrote:
 > On 6.07.2023 08:05, Zbigniew Kempczyński wrote:
-> > Most complicated part in adopting i915_blt to intel_blt - which should
-> > handle both drivers - is how to achieve pipelined execution. In term
-> > pipelined execution I mean all gpu workloads are executed without
-> > stalls.
-> > 
-> > Comparing to i915 relocations and softpinning xe architecture migrates
-> > binding (this means also unbind operation) responsibility from the
-> > kernel to user via vm_bind ioctl(). To avoid stalls user has to
-> > provide in/out fences (syncobjs) between consecutive bindings/execs.
-> > Of course for many igt tests we don't need pipelined execution,
-> > just synchronous bind, then exec. But exercising the driver should
-> > also cover pipelining to verify it is possible to work without stalls.
-> > 
-> > I decided to extend intel_ctx_t with all necessary for xe objects
-> > (vm, engine, syncobjs) to get flexibility in deciding how to bind,
-> > execute and wait for (synchronize) those operations. Context object
-> > along with i915 engine is already passed to blitter library so adding
-> > xe required fields doesn't break i915 but will allow xe path to get
-> > all necessary data to execute.
-> > 
-> > Using intel_ctx with xe requires some code patterns caused by usage
-> > of an allocator. For xe the allocator started tracking alloc()/free()
-> > operations to do bind/unbind in one call just before execution.
-> > I've added two helpers in intel_ctx which - intel_ctx_xe_exec()
-> > and intel_ctx_xe_sync(). Depending how intel_ctx was created
-> > (with 0 or real syncobj handles as in/bind/out fences) bind and exec
-> > in intel_ctx_xe_exec() are pipelined but synchronize last operation
-> > (exec). For real syncobjs they are used to join bind + exec calls
-> > but there's no wait for exec (sync-out) completion. This allows
-> > building more cascaded bind + exec operations without stalls.
-> > 
-> > To wait for a sync-out fence caller may use intel_ctx_xe_sync()
-> > which is synchronous wait on syncobj. It allows user to reset
-> > fences to prepare for next operation.
+> > Instead of calling is_xe_device() and is_i915_device() multiple
+> > times in code which distincs xe and i915 paths add driver field
+> > to structures used in blitter library.
 > > 
 > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > > ---
-> >   lib/intel_ctx.c | 110 +++++++++++++++++++++++++++++++++++++++++++++++-
-> >   lib/intel_ctx.h |  14 ++++++
-> >   2 files changed, 123 insertions(+), 1 deletion(-)
+> >   lib/igt_fb.c                   |  2 +-
+> >   lib/intel_blt.c                | 40 +++++++++++++++++++++++++++++++---
+> >   lib/intel_blt.h                |  8 ++++++-
+> >   tests/i915/gem_ccs.c           | 34 ++++++++++++++++-------------
+> >   tests/i915/gem_exercise_blt.c  | 22 ++++++++++---------
+> >   tests/i915/gem_lmem_swapping.c |  4 ++--
+> >   6 files changed, 78 insertions(+), 32 deletions(-)
 > > 
-> > diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
-> > index ded9c0f1e4..f210907fac 100644
-> > --- a/lib/intel_ctx.c
-> > +++ b/lib/intel_ctx.c
-> > @@ -5,9 +5,12 @@
-> >   #include <stddef.h>
-> > +#include "i915/gem_engine_topology.h"
-> > +#include "igt_syncobj.h"
-> > +#include "intel_allocator.h"
-> >   #include "intel_ctx.h"
-> >   #include "ioctl_wrappers.h"
-> > -#include "i915/gem_engine_topology.h"
-> > +#include "xe/xe_ioctl.h"
-> >   /**
-> >    * SECTION:intel_ctx
-> > @@ -390,3 +393,108 @@ unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine)
-> >   {
-> >   	return intel_ctx_cfg_engine_class(&ctx->cfg, engine);
+> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > index a8988274f2..1814e8db11 100644
+> > --- a/lib/igt_fb.c
+> > +++ b/lib/igt_fb.c
+> > @@ -2900,7 +2900,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
+> >   			src = blt_fb_init(src_fb, i, mem_region);
+> >   			dst = blt_fb_init(dst_fb, i, mem_region);
+> > -			memset(&blt, 0, sizeof(blt));
+> > +			blt_copy_init(src_fb->fd, &blt);
+> >   			blt.color_depth = blt_get_bpp(src_fb);
+> >   			blt_set_copy_object(&blt.src, src);
+> >   			blt_set_copy_object(&blt.dst, dst);
+> > diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> > index bc28f15e8d..f2f86e4947 100644
+> > --- a/lib/intel_blt.c
+> > +++ b/lib/intel_blt.c
+> > @@ -692,6 +692,22 @@ static void dump_bb_ext(struct gen12_block_copy_data_ext *data)
+> >   		 data->dw21.src_array_index);
 > >   }
-> > +
 > > +/**
-> > + * intel_ctx_xe:
-> > + * @fd: open i915 drm file descriptor
-> > + * @vm: vm
-> > + * @engine: engine
+> > + * blt_copy_init:
+> > + * @fd: drm fd
+> > + * @blt: structure for initialization
 > > + *
-> > + * Returns an intel_ctx_t representing the xe context.
+> > + * Function is zeroing @blt and sets fd and driver fields (INTEL_DRIVER_I915 or
+> > + * INTEL_DRIVER_XE).
 > > + */
-> > +intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t engine,
-> > +			  uint32_t sync_in, uint32_t sync_bind, uint32_t sync_out)
+> > +void blt_copy_init(int fd, struct blt_copy_data *blt)
 > > +{
-> > +	intel_ctx_t *ctx;
+> > +	memset(blt, 0, sizeof(*blt));
 > > +
-> > +	ctx = calloc(1, sizeof(*ctx));
-> > +	igt_assert(ctx);
-> > +
-> > +	ctx->fd = fd;
-> > +	ctx->vm = vm;
-> > +	ctx->engine = engine;
-> > +	ctx->sync_in = sync_in;
-> > +	ctx->sync_bind = sync_bind;
-> > +	ctx->sync_out = sync_out;
-> > +
-> > +	return ctx;
+> > +	blt->fd = fd;
+> > +	blt->driver = get_intel_driver(fd);
 > > +}
 > > +
-> > +static int __xe_exec(int fd, struct drm_xe_exec *exec)
+> >   /**
+> >    * emit_blt_block_copy:
+> >    * @fd: drm fd
+> > @@ -889,6 +905,22 @@ static void dump_bb_surf_ctrl_cmd(const struct gen12_ctrl_surf_copy_data *data)
+> >   		 cmd[4], data->dw04.dst_address_hi, data->dw04.dst_mocs);
+> >   }
+> > +/**
+> > + * blt_ctrl_surf_copy_init:
+> > + * @fd: drm fd
+> > + * @surf: structure for initialization
+> > + *
+> > + * Function is zeroing @surf and sets fd and driver fields (INTEL_DRIVER_I915 or
+> > + * INTEL_DRIVER_XE).
+> > + */
+> > +void blt_ctrl_surf_copy_init(int fd, struct blt_ctrl_surf_copy_data *surf)
 > > +{
-> > +	int err = 0;
+> > +	memset(surf, 0, sizeof(*surf));
 > > +
-> > +	if (igt_ioctl(fd, DRM_IOCTL_XE_EXEC, exec)) {
-> > +		err = -errno;
-> > +		igt_assume(err != 0);
-> 
-> Wouldn't "igt_assume(err)" be enough?
-> 
-> > +	}
-> > +	errno = 0;
-> > +	return err;
-> > +}
-> 
-> I'm aware that it's a helper that you use in other execs, but it feels out
-> of place, it doesn't deal with intel_ctx_t. Maybe xe_util could be its new
-> home?
-> 
-
-I'm going to just export __xe_exec() from xe_ioctl.c.
-
-> > +
-> > +int __intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset)
-> > +{
-> > +	struct drm_xe_sync syncs[2] = {
-> > +		{ .flags = DRM_XE_SYNC_SYNCOBJ, },
-> > +		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-> > +	};
-> > +	struct drm_xe_exec exec = {
-> > +		.engine_id = ctx->engine,
-> > +		.syncs = (uintptr_t)syncs,
-> > +		.num_syncs = 2,
-> > +		.address = bb_offset,
-> > +		.num_batch_buffer = 1,
-> > +	};
-> > +	uint32_t sync_in = ctx->sync_in;
-> > +	uint32_t sync_bind = ctx->sync_bind ?: syncobj_create(ctx->fd, 0);
-> > +	uint32_t sync_out = ctx->sync_out ?: syncobj_create(ctx->fd, 0);
-> > +	int ret;
-> > +
-> > +	/* Synchronize allocator state -> vm */
-> > +	intel_allocator_bind(ahnd, sync_in, sync_bind);
-> > +
-> > +	/* Pipelined exec */
-> > +	syncs[0].handle = sync_bind;
-> > +	syncs[1].handle = sync_out;
-> > +
-> > +	ret = __xe_exec(ctx->fd, &exec);
-> > +	if (ret)
-> > +		goto err;
-> > +
-> > +	if (!ctx->sync_bind || !ctx->sync_out)
-> > +		syncobj_wait_err(ctx->fd, &sync_out, 1, INT64_MAX, 0);
-> 
-> This whole flow is so nice and tidy, I like it
-> 
-> > +
-> > +err:
-> > +	if (!ctx->sync_bind)
-> > +		syncobj_destroy(ctx->fd, sync_bind);
-> > +
-> > +	if (!ctx->sync_out)
-> > +		syncobj_destroy(ctx->fd, sync_out);
-> > +
-> > +	return ret;
+> > +	surf->fd = fd;
+> > +	surf->driver = get_intel_driver(fd);
 > > +}
 > > +
-> > +void intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset)
-> > +{
-> > +	igt_assert_eq(__intel_ctx_xe_exec(ctx, ahnd, bb_offset), 0);
-> > +}
+> >   /**
+> >    * emit_blt_ctrl_surf_copy:
+> >    * @fd: drm fd
+> > @@ -1317,7 +1349,7 @@ void blt_set_batch(struct blt_copy_batch *batch,
+> >   }
+> >   struct blt_copy_object *
+> > -blt_create_object(int fd, uint32_t region,
+> > +blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+> >   		  uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
+> >   		  enum blt_tiling_type tiling,
+> >   		  enum blt_compression compression,
+> > @@ -1329,10 +1361,12 @@ blt_create_object(int fd, uint32_t region,
+> >   	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
+> >   	uint32_t handle;
+> > +	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
 > > +
-> > +#define RESET_SYNCOBJ(__fd, __sync) do { \
-> > +	if (__sync) \
-> > +		syncobj_reset((__fd), &(__sync), 1); \
-> > +} while (0)
+> >   	obj = calloc(1, sizeof(*obj));
+> >   	obj->size = size;
+> > -	igt_assert(__gem_create_in_memory_regions(fd, &handle,
+> > +	igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
+> >   						  &size, region) == 0);
+> >   	blt_set_object(obj, handle, size, region, mocs, tiling,
+> > @@ -1340,7 +1374,7 @@ blt_create_object(int fd, uint32_t region,
+> >   	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
+> >   	if (create_mapping)
+> > -		obj->ptr = gem_mmap__device_coherent(fd, handle, 0, size,
+> > +		obj->ptr = gem_mmap__device_coherent(blt->fd, handle, 0, size,
+> >   						     PROT_READ | PROT_WRITE);
+> >   	return obj;
+> > diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+> > index 9c4ddc7a89..7516ce8ac7 100644
+> > --- a/lib/intel_blt.h
+> > +++ b/lib/intel_blt.h
+> > @@ -102,6 +102,7 @@ struct blt_copy_batch {
+> >   /* Common for block-copy and fast-copy */
+> >   struct blt_copy_data {
+> >   	int fd;
+> > +	enum intel_driver driver;
+> >   	struct blt_copy_object src;
+> >   	struct blt_copy_object dst;
+> >   	struct blt_copy_batch bb;
+> > @@ -155,6 +156,7 @@ struct blt_ctrl_surf_copy_object {
+> >   struct blt_ctrl_surf_copy_data {
+> >   	int fd;
+> > +	enum intel_driver driver;
+> >   	struct blt_ctrl_surf_copy_object src;
+> >   	struct blt_ctrl_surf_copy_object dst;
+> >   	struct blt_copy_batch bb;
+> > @@ -185,6 +187,8 @@ bool blt_uses_extended_block_copy(int fd);
+> >   const char *blt_tiling_name(enum blt_tiling_type tiling);
+> > +void blt_copy_init(int fd, struct blt_copy_data *blt);
 > > +
-> > +int intel_ctx_xe_sync(intel_ctx_t *ctx, bool reset_syncs)
-> > +{
-> > +	int ret;
+> >   uint64_t emit_blt_block_copy(int fd,
+> >   			     uint64_t ahnd,
+> >   			     const struct blt_copy_data *blt,
+> > @@ -205,6 +209,8 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+> >   				 uint64_t bb_pos,
+> >   				 bool emit_bbe);
+> > +void blt_ctrl_surf_copy_init(int fd, struct blt_ctrl_surf_copy_data *surf);
 > > +
-> > +	ret = syncobj_wait_err(ctx->fd, &ctx->sync_out, 1, INT64_MAX, 0);
+> >   int blt_ctrl_surf_copy(int fd,
+> >   		       const intel_ctx_t *ctx,
+> >   		       const struct intel_execution_engine2 *e,
+> > @@ -230,7 +236,7 @@ void blt_set_batch(struct blt_copy_batch *batch,
+> >   		   uint32_t handle, uint64_t size, uint32_t region);
+> >   struct blt_copy_object *
+> > -blt_create_object(int fd, uint32_t region,
+> > +blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+> >   		  uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
+> >   		  enum blt_tiling_type tiling,
+> >   		  enum blt_compression compression,
+> > diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+> > index f9ad9267df..d9d785ed9b 100644
+> > --- a/tests/i915/gem_ccs.c
+> > +++ b/tests/i915/gem_ccs.c
+> > @@ -167,7 +167,7 @@ static void surf_copy(int i915,
+> >   	ccs = gem_create(i915, ccssize);
+> >   	ccs2 = gem_create(i915, ccssize);
+> > -	surf.fd = i915;
+> > +	blt_ctrl_surf_copy_init(i915, &surf);
+> >   	surf.print_bb = param.print_bb;
+> >   	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
+> >   			uc_mocs, BLT_INDIRECT_ACCESS);
+> > @@ -219,7 +219,7 @@ static void surf_copy(int i915,
+> >   			uc_mocs, INDIRECT_ACCESS);
+> >   	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+> > -	memset(&blt, 0, sizeof(blt));
+> > +	blt_copy_init(i915, &blt);
+> >   	blt.color_depth = CD_32bit;
+> >   	blt.print_bb = param.print_bb;
+> >   	blt_set_copy_object(&blt.src, mid);
+> > @@ -310,7 +310,7 @@ static int blt_block_copy3(int i915,
+> >   	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
+> >   	/* First blit src -> mid */
+> > -	memset(&blt0, 0, sizeof(blt0));
+> > +	blt_copy_init(i915, &blt0);
+> >   	blt0.src = blt3->src;
+> >   	blt0.dst = blt3->mid;
+> >   	blt0.bb = blt3->bb;
+> > @@ -321,7 +321,7 @@ static int blt_block_copy3(int i915,
+> >   	bb_pos = emit_blt_block_copy(i915, ahnd, &blt0, &ext0, bb_pos, false);
+> >   	/* Second blit mid -> dst */
+> > -	memset(&blt0, 0, sizeof(blt0));
+> > +	blt_copy_init(i915, &blt0);
+> >   	blt0.src = blt3->mid;
+> >   	blt0.dst = blt3->dst;
+> >   	blt0.bb = blt3->bb;
+> > @@ -332,7 +332,7 @@ static int blt_block_copy3(int i915,
+> >   	bb_pos = emit_blt_block_copy(i915, ahnd, &blt0, &ext0, bb_pos, false);
+> >   	/* Third blit dst -> final */
+> > -	memset(&blt0, 0, sizeof(blt0));
+> > +	blt_copy_init(i915, &blt0);
+> >   	blt0.src = blt3->dst;
+> >   	blt0.dst = blt3->final;
+> >   	blt0.bb = blt3->bb;
+> > @@ -390,11 +390,13 @@ static void block_copy(int i915,
+> >   	if (!blt_uses_extended_block_copy(i915))
+> >   		pext = NULL;
+> > -	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+> > +	blt_copy_init(i915, &blt);
 > > +
-> > +	if (reset_syncs) {
-> > +		RESET_SYNCOBJ(ctx->fd, ctx->sync_in);
-> > +		RESET_SYNCOBJ(ctx->fd, ctx->sync_bind);
-> > +		RESET_SYNCOBJ(ctx->fd, ctx->sync_out);
-> > +	}
+> > +	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> >   				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> > -	mid = blt_create_object(i915, mid_region, width, height, bpp, uc_mocs,
+> > +	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
+> >   				mid_tiling, mid_compression, comp_type, true);
+> > -	dst = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+> > +	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> >   				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> >   	igt_assert(src->size == dst->size);
+> >   	PRINT_SURFACE_INFO("src", src);
+> > @@ -404,7 +406,6 @@ static void block_copy(int i915,
+> >   	blt_surface_fill_rect(i915, src, width, height);
+> >   	WRITE_PNG(i915, run_id, "src", src, width, height);
+> > -	memset(&blt, 0, sizeof(blt));
+> >   	blt.color_depth = CD_32bit;
+> >   	blt.print_bb = param.print_bb;
+> >   	blt_set_copy_object(&blt.src, src);
+> > @@ -449,7 +450,7 @@ static void block_copy(int i915,
+> >   		}
+> >   	}
+> > -	memset(&blt, 0, sizeof(blt));
+> > +	blt_copy_init(i915, &blt);
+> >   	blt.color_depth = CD_32bit;
+> >   	blt.print_bb = param.print_bb;
+> >   	blt_set_copy_object(&blt.src, mid);
+> > @@ -486,6 +487,7 @@ static void block_multicopy(int i915,
+> >   			    const struct test_config *config)
+> >   {
+> >   	struct blt_copy3_data blt3 = {};
+> > +	struct blt_copy_data blt = {};
+> >   	struct blt_block_copy3_data_ext ext3 = {}, *pext3 = &ext3;
+> >   	struct blt_copy_object *src, *mid, *dst, *final;
+> >   	const uint32_t bpp = 32;
+> > @@ -505,13 +507,16 @@ static void block_multicopy(int i915,
+> >   	if (!blt_uses_extended_block_copy(i915))
+> >   		pext3 = NULL;
+> > -	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+> > +	/* For object creation */
+> > +	blt_copy_init(i915, &blt);
+> > +
+> > +	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> >   				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> > -	mid = blt_create_object(i915, mid_region, width, height, bpp, uc_mocs,
+> > +	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
+> >   				mid_tiling, mid_compression, comp_type, true);
+> > -	dst = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+> > +	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> >   				mid_tiling, COMPRESSION_DISABLED, comp_type, true);
+> > -	final = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+> > +	final = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
+> >   				  T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> >   	igt_assert(src->size == dst->size);
+> >   	PRINT_SURFACE_INFO("src", src);
+> > @@ -521,7 +526,6 @@ static void block_multicopy(int i915,
+> >   	blt_surface_fill_rect(i915, src, width, height);
+> > -	memset(&blt3, 0, sizeof(blt3));
 > 
-> Is there a usecase where we want to do a synced execution without resetting
-> syncobjs?
-> 
+> We don't init blt3 because we don't to init blt copy objects and we have
+> fd/driver passed in, correct?
 
-I don't know - that's I left decision to the user.
-
-> > +
-> > +	return ret;
-> > +}
-> > diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
-> > index 3cfeaae81e..59d0360ada 100644
-> > --- a/lib/intel_ctx.h
-> > +++ b/lib/intel_ctx.h
-> > @@ -67,6 +67,14 @@ int intel_ctx_cfg_engine_class(const intel_ctx_cfg_t *cfg, unsigned int engine);
-> >   typedef struct intel_ctx {
-> >   	uint32_t id;
-> >   	intel_ctx_cfg_t cfg;
-> > +
-> > +	/* Xe */
-> > +	int fd;
-> > +	uint32_t vm;
-> > +	uint32_t engine;
-> > +	uint32_t sync_in;
-> > +	uint32_t sync_bind;
-> > +	uint32_t sync_out;
-> 
-> Hmm, I wonder if we could wrap it in a struct. Yes, it would be painful to
-> unpack, but now it feels like we've just added a bunch of fields that are
-> irrelevant 80% of the time. Instead, we could have one additional field that
-> could be NULL, and use it if it's initialized.
-> But maybe I'm just being too nit-picky.
-
-I wondered to introduce union of i915 and xe structs, but I would need
-to rewrite almost all igt's which are using this struct so I dropped
-this idea. At the moment I need to handle both drivers so mixing
-fields is not a big pain imo.
+No, it is local for the test which collects data to use in
+blt_copy_data.
 
 --
 Zbigniew
 
 > 
-> All the best,
-> Karolina
+> Overall, the patch looks good to me:
 > 
-> >   } intel_ctx_t;
-> >   int __intel_ctx_create(int fd, const intel_ctx_cfg_t *cfg,
-> > @@ -81,4 +89,10 @@ void intel_ctx_destroy(int fd, const intel_ctx_t *ctx);
-> >   unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine);
-> > +intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t engine,
-> > +			  uint32_t sync_in, uint32_t sync_bind, uint32_t sync_out);
-> > +int __intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset);
-> > +void intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset);
-> > +int intel_ctx_xe_sync(intel_ctx_t *ctx, bool reset_syncs);
-> > +
-> >   #endif
+> Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+> 
+> >   	blt3.color_depth = CD_32bit;
+> >   	blt3.print_bb = param.print_bb;
+> >   	blt_set_copy_object(&blt3.src, src);
+> > diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
+> > index 0cd1820430..7355eabbe9 100644
+> > --- a/tests/i915/gem_exercise_blt.c
+> > +++ b/tests/i915/gem_exercise_blt.c
+> > @@ -89,7 +89,7 @@ static int fast_copy_one_bb(int i915,
+> >   	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+> >   	/* First blit */
+> > -	memset(&blt_tmp, 0, sizeof(blt_tmp));
+> > +	blt_copy_init(i915, &blt_tmp);
+> >   	blt_tmp.src = blt->src;
+> >   	blt_tmp.dst = blt->mid;
+> >   	blt_tmp.bb = blt->bb;
+> > @@ -98,7 +98,7 @@ static int fast_copy_one_bb(int i915,
+> >   	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, false);
+> >   	/* Second blit */
+> > -	memset(&blt_tmp, 0, sizeof(blt_tmp));
+> > +	blt_copy_init(i915, &blt_tmp);
+> >   	blt_tmp.src = blt->mid;
+> >   	blt_tmp.dst = blt->dst;
+> >   	blt_tmp.bb = blt->bb;
+> > @@ -140,6 +140,7 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
+> >   			   uint32_t region1, uint32_t region2,
+> >   			   enum blt_tiling_type mid_tiling)
+> >   {
+> > +	struct blt_copy_data bltinit = {};
+> >   	struct blt_fast_copy_data blt = {};
+> >   	struct blt_copy_object *src, *mid, *dst;
+> >   	const uint32_t bpp = 32;
+> > @@ -152,11 +153,12 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
+> >   	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+> > -	src = blt_create_object(i915, region1, width, height, bpp, 0,
+> > +	blt_copy_init(i915, &bltinit);
+> > +	src = blt_create_object(&bltinit, region1, width, height, bpp, 0,
+> >   				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> > -	mid = blt_create_object(i915, region2, width, height, bpp, 0,
+> > +	mid = blt_create_object(&bltinit, region2, width, height, bpp, 0,
+> >   				mid_tiling, COMPRESSION_DISABLED, 0, true);
+> > -	dst = blt_create_object(i915, region1, width, height, bpp, 0,
+> > +	dst = blt_create_object(&bltinit, region1, width, height, bpp, 0,
+> >   				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> >   	igt_assert(src->size == dst->size);
+> > @@ -212,17 +214,17 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
+> >   	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+> > -	src = blt_create_object(i915, region1, width, height, bpp, 0,
+> > +	blt_copy_init(i915, &blt);
+> > +	src = blt_create_object(&blt, region1, width, height, bpp, 0,
+> >   				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> > -	mid = blt_create_object(i915, region2, width, height, bpp, 0,
+> > +	mid = blt_create_object(&blt, region2, width, height, bpp, 0,
+> >   				mid_tiling, COMPRESSION_DISABLED, 0, true);
+> > -	dst = blt_create_object(i915, region1, width, height, bpp, 0,
+> > +	dst = blt_create_object(&blt, region1, width, height, bpp, 0,
+> >   				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> >   	igt_assert(src->size == dst->size);
+> >   	blt_surface_fill_rect(i915, src, width, height);
+> > -	memset(&blt, 0, sizeof(blt));
+> >   	blt.color_depth = CD_32bit;
+> >   	blt.print_bb = param.print_bb;
+> >   	blt_set_copy_object(&blt.src, src);
+> > @@ -235,7 +237,7 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
+> >   	WRITE_PNG(i915, mid_tiling, "src", &blt.src, width, height);
+> >   	WRITE_PNG(i915, mid_tiling, "mid", &blt.dst, width, height);
+> > -	memset(&blt, 0, sizeof(blt));
+> > +	blt_copy_init(i915, &blt);
+> >   	blt.color_depth = CD_32bit;
+> >   	blt.print_bb = param.print_bb;
+> >   	blt_set_copy_object(&blt.src, mid);
+> > diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+> > index 83dbebec83..2921de8f9f 100644
+> > --- a/tests/i915/gem_lmem_swapping.c
+> > +++ b/tests/i915/gem_lmem_swapping.c
+> > @@ -308,7 +308,7 @@ init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
+> >   		buf[j] = seed++;
+> >   	munmap(buf, obj->size);
+> > -	memset(&blt, 0, sizeof(blt));
+> > +	blt_copy_init(i915, &blt);
+> >   	blt.color_depth = CD_32bit;
+> >   	memcpy(&blt.src, tmp, sizeof(blt.src));
+> > @@ -366,7 +366,7 @@ verify_object_ccs(int i915, const struct object *obj,
+> >   	cmd->handle = gem_create_from_pool(i915, &size, region);
+> >   	blt_set_batch(cmd, cmd->handle, size, region);
+> > -	memset(&blt, 0, sizeof(blt));
+> > +	blt_copy_init(i915, &blt);
+> >   	blt.color_depth = CD_32bit;
+> >   	memcpy(&blt.src, obj->blt_obj, sizeof(blt.src));
