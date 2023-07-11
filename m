@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 72F1210E392
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 13:37:08 +0000 (UTC)
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Jul 2023 13:36:52 +0000
-Message-Id: <20230711133653.2402574-1-katarzyna.dec@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6650F10E0EB
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 16:45:26 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Auld,
+ Matthew" <matthew.auld@intel.com>
+Date: Tue, 11 Jul 2023 16:44:43 +0000
+Message-ID: <2bdf0a6181b7780a5123db8b84c6f2be1172f694.camel@intel.com>
+References: <20230609154336.516503-1-matthew.auld@intel.com>
+ <20230609154336.516503-4-matthew.auld@intel.com>
+In-Reply-To: <20230609154336.516503-4-matthew.auld@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <196D32B84C3E9A44906478E274FB9531@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/1] Remove unnecessary tests from
- fast-feedback
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/6] lib/xe: handle small-bar systems
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,40 +23,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Himanshu Girotra <himanshu.girotra@intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>,
- Sai Gowtham Ch <sai.gowtham.ch@intel.com>,
- Gandi Ramadevi <ramadevi.gandi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We have reached point where we need to reduce BAT testlist.
-First step of cleaning up fast-feedback is covering:
- * remove 'race' testcases
- * reduce xe_exec_balancer, xe_exec_basic, xe_spin_batch test cases
-
-Next steps:
- * some tests need to be on BAT list, but are failing - so these will be
-   disabled from execution with blocklists
- * some tests need more analysis before deciding what should be a part of BAT 
-
-Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
-Cc: Aditya Chauhan <aditya.chauhan@intel.com>
-Cc: Himanshu Girotra <himanshu.girotra@intel.com>
-
-Katarzyna Dec (1):
-  tests/intel-ci: Remove unnecessary tests from fast-feedback
-
- tests/intel-ci/xe-fast-feedback.testlist | 44 ------------------------
- 1 file changed, 44 deletions(-)
-
--- 
-2.34.1
+T24gRnJpLCAyMDIzLTA2LTA5IGF0IDE2OjQzICswMTAwLCBNYXR0aGV3IEF1bGQgd3JvdGU6DQo+
+IFRoZSBzcGlubmVyIHN0dWZmIHdhbnRzIHRvIHVzZSBtbWFwLiBUaGUgZmIgcmVsYXRlZCBzdHVm
+ZiBtaWdodCB3YW50IHRvDQo+IENQVSBhY2Nlc3MgdGhlIGJ1ZmZlciwgc28ganVzdCBhbHdheXMg
+YXNrIGZvciBpdC4gQW5kIHRoZSBiYXRjaCBidWZmZXINCj4gc3R1ZmYgaXMgcHJldHR5IG11Y2gg
+YWx3YXlzIGdvaW5nIHRvIG5lZWQgdG8gQ1BVIGFjY2VzcyB0aGUgYnVmZmVyLg0KDQpSZXZpZXdl
+ZC1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+DQoNCj4g
+DQo+IFNpZ25lZC1vZmYtYnk6IE1hdHRoZXcgQXVsZCA8bWF0dGhldy5hdWxkQGludGVsLmNvbT4N
+Cj4gQ2M6IEthbWlsIEtvbmllY3pueSA8a2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbT4N
+Cj4gQ2M6IEd3YW4tZ3llb25nIE11biA8Z3dhbi1neWVvbmcubXVuQGludGVsLmNvbT4NCj4gLS0t
+DQo+ICBsaWIvaWd0X2RyYXcuYyAgICAgICAgICB8IDIgKy0NCj4gIGxpYi9pZ3RfZmIuYyAgICAg
+ICAgICAgIHwgMiArLQ0KPiAgbGliL2ludGVsX2JhdGNoYnVmZmVyLmMgfCA0ICsrLS0NCj4gIGxp
+Yi94ZS94ZV9zcGluLmMgICAgICAgIHwgMyArKy0NCj4gIDQgZmlsZXMgY2hhbmdlZCwgNiBpbnNl
+cnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZHJh
+dy5jIGIvbGliL2lndF9kcmF3LmMNCj4gaW5kZXggYTVjMGNiYmY2Li41MTkwMThlYjMgMTAwNjQ0
+DQo+IC0tLSBhL2xpYi9pZ3RfZHJhdy5jDQo+ICsrKyBiL2xpYi9pZ3RfZHJhdy5jDQo+IEBAIC03
+OTQsNyArNzk0LDcgQEAgc3RhdGljIHZvaWQgZHJhd19yZWN0X3JlbmRlcihpbnQgZmQsIHN0cnVj
+dCBjbWRfZGF0YSAqY21kX2RhdGEsDQo+ICAJZWxzZQ0KPiAgCQl0bXAuaGFuZGxlID0geGVfYm9f
+Y3JlYXRlX2ZsYWdzKGZkLCAwLA0KPiAgCQkJCQkJQUxJR04odG1wLnNpemUsIHhlX2dldF9kZWZh
+dWx0X2FsaWdubWVudChmZCkpLA0KPiAtCQkJCQkJdnJhbV9pZl9wb3NzaWJsZShmZCwgMCkpOw0K
+PiArCQkJCQkJdmlzaWJsZV92cmFtX2lmX3Bvc3NpYmxlKGZkLCAwKSk7DQo+ICANCj4gIAl0bXAu
+c3RyaWRlID0gcmVjdC0+dyAqIHBpeGVsX3NpemU7DQo+ICAJdG1wLmJwcCA9IGJ1Zi0+YnBwOw0K
+PiBkaWZmIC0tZ2l0IGEvbGliL2lndF9mYi5jIGIvbGliL2lndF9mYi5jDQo+IGluZGV4IDliZTMx
+MmEyOC4uZTVlNTI5NDZlIDEwMDY0NA0KPiAtLS0gYS9saWIvaWd0X2ZiLmMNCj4gKysrIGIvbGli
+L2lndF9mYi5jDQo+IEBAIC0xMTkyLDcgKzExOTIsNyBAQCBzdGF0aWMgaW50IGNyZWF0ZV9ib19m
+b3JfZmIoc3RydWN0IGlndF9mYiAqZmIsIGJvb2wgcHJlZmVyX3N5c21lbSkNCj4gIAkJCWlndF9h
+c3NlcnQoZXJyID09IDAgfHwgZXJyID09IC1FT1BOT1RTVVBQKTsNCj4gIAkJfSBlbHNlIGlmIChp
+c194ZV9kZXZpY2UoZmQpKSB7DQo+ICAJCQlmYi0+Z2VtX2hhbmRsZSA9IHhlX2JvX2NyZWF0ZV9m
+bGFncyhmZCwgMCwgZmItPnNpemUsDQo+IC0JCQkJCQkJdnJhbV9pZl9wb3NzaWJsZShmZCwgMCkp
+Ow0KPiArCQkJCQkJCXZpc2libGVfdnJhbV9pZl9wb3NzaWJsZShmZCwgMCkpOw0KPiAgCQl9IGVs
+c2UgaWYgKGlzX3ZjNF9kZXZpY2UoZmQpKSB7DQo+ICAJCQlmYi0+Z2VtX2hhbmRsZSA9IGlndF92
+YzRfY3JlYXRlX2JvKGZkLCBmYi0+c2l6ZSk7DQo+ICANCj4gZGlmZiAtLWdpdCBhL2xpYi9pbnRl
+bF9iYXRjaGJ1ZmZlci5jIGIvbGliL2ludGVsX2JhdGNoYnVmZmVyLmMNCj4gaW5kZXggM2NkNjgw
+MDcyLi4wNDc4NDMwMDYgMTAwNjQ0DQo+IC0tLSBhL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jDQo+
+ICsrKyBiL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jDQo+IEBAIC05NDMsNyArOTQzLDcgQEAgX19p
+bnRlbF9iYl9jcmVhdGUoaW50IGZkLCB1aW50MzJfdCBjdHgsIHVpbnQzMl90IHZtLCBjb25zdCBp
+bnRlbF9jdHhfY2ZnX3QgKmNmZywNCj4gIA0KPiAgCQlpYmItPmFsaWdubWVudCA9IHhlX2dldF9k
+ZWZhdWx0X2FsaWdubWVudChmZCk7DQo+ICAJCXNpemUgPSBBTElHTihzaXplLCBpYmItPmFsaWdu
+bWVudCk7DQo+IC0JCWliYi0+aGFuZGxlID0geGVfYm9fY3JlYXRlX2ZsYWdzKGZkLCAwLCBzaXpl
+LCB2cmFtX2lmX3Bvc3NpYmxlKGZkLCAwKSk7DQo+ICsJCWliYi0+aGFuZGxlID0geGVfYm9fY3Jl
+YXRlX2ZsYWdzKGZkLCAwLCBzaXplLCB2aXNpYmxlX3ZyYW1faWZfcG9zc2libGUoZmQsIDApKTsN
+Cj4gIA0KPiAgCQkvKiBMaW1pdCB0byA0OC1iaXQgZHVlIHRvIE1JXyogYWRkcmVzcyBsaW1pdGF0
+aW9uICovDQo+ICAJCWliYi0+Z3R0X3NpemUgPSAxdWxsIDw8IG1pbl90KHVpbnQzMl90LCB4ZV92
+YV9iaXRzKGZkKSwgNDgpOw0KPiBAQCAtMTM5OSw3ICsxMzk5LDcgQEAgdm9pZCBpbnRlbF9iYl9y
+ZXNldChzdHJ1Y3QgaW50ZWxfYmIgKmliYiwgYm9vbCBwdXJnZV9vYmplY3RzX2NhY2hlKQ0KPiAg
+CQlpYmItPmhhbmRsZSA9IGdlbV9jcmVhdGUoaWJiLT5mZCwgaWJiLT5zaXplKTsNCj4gIAllbHNl
+DQo+ICAJCWliYi0+aGFuZGxlID0geGVfYm9fY3JlYXRlX2ZsYWdzKGliYi0+ZmQsIDAsIGliYi0+
+c2l6ZSwNCj4gLQkJCQkJCSB2cmFtX2lmX3Bvc3NpYmxlKGliYi0+ZmQsIDApKTsNCj4gKwkJCQkJ
+CSB2aXNpYmxlX3ZyYW1faWZfcG9zc2libGUoaWJiLT5mZCwgMCkpOw0KPiAgDQo+ICAJLyogUmVh
+Y3F1aXJlIG9mZnNldCBmb3IgUkVMT0MgYW5kIFNJTVBMRSAqLw0KPiAgCWlmIChpYmItPmFsbG9j
+YXRvcl90eXBlID09IElOVEVMX0FMTE9DQVRPUl9TSU1QTEUgfHwNCj4gZGlmZiAtLWdpdCBhL2xp
+Yi94ZS94ZV9zcGluLmMgYi9saWIveGUveGVfc3Bpbi5jDQo+IGluZGV4IDg1NmQwYmEyMi4uMzI2
+NjkwNWM5IDEwMDY0NA0KPiAtLS0gYS9saWIveGUveGVfc3Bpbi5jDQo+ICsrKyBiL2xpYi94ZS94
+ZV9zcGluLmMNCj4gQEAgLTEwMCw3ICsxMDAsOCBAQCB2b2lkIHhlX2NvcmtfaW5pdChpbnQgZmQs
+IHN0cnVjdCBkcm1feGVfZW5naW5lX2NsYXNzX2luc3RhbmNlICpod2UsDQo+ICANCj4gIAl2bSA9
+IHhlX3ZtX2NyZWF0ZShmZCwgMCwgMCk7DQo+ICANCj4gLQlibyA9IHhlX2JvX2NyZWF0ZShmZCwg
+aHdlLT5ndF9pZCwgdm0sIGJvX3NpemUpOw0KPiArCWJvID0geGVfYm9fY3JlYXRlX2ZsYWdzKGZk
+LCB2bSwgYm9fc2l6ZSwNCj4gKwkJCQl2aXNpYmxlX3ZyYW1faWZfcG9zc2libGUoZmQsIGh3ZS0+
+Z3RfaWQpKTsNCj4gIAlzcGluID0geGVfYm9fbWFwKGZkLCBibywgMHgxMDAwKTsNCj4gIA0KPiAg
+CXhlX3ZtX2JpbmRfc3luYyhmZCwgdm0sIGJvLCAwLCBhZGRyLCBib19zaXplKTsNCg0K
