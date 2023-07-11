@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8543110E383
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 11:20:59 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78B6D10E387
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 11:21:06 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Jul 2023 13:20:04 +0200
-Message-Id: <20230711112009.122482-13-zbigniew.kempczynski@intel.com>
+Date: Tue, 11 Jul 2023 13:20:06 +0200
+Message-Id: <20230711112009.122482-15-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
 References: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 12/17] lib/intel_blt: Introduce
- blt_copy_init() helper to cache driver
+Subject: [igt-dev] [PATCH i-g-t v3 14/17] tests/xe_ccs: Check if flatccs is
+ working with block-copy for Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,381 +24,796 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of calling is_xe_device() and is_i915_device() multiple
-times in code which distincs xe and i915 paths add driver field
-to structures used in blitter library.
+This is ported to xe copy of i915 gem_ccs test. Ported means all driver
+dependent calls - like working on regions, binding and execution were
+replaced by xe counterparts. I wondered to add conditionals for xe
+in gem_ccs but this would decrease test readability so I dropped
+this idea.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/igt_fb.c                   |  2 +-
- lib/intel_blt.c                | 40 +++++++++++++++++++++++++++++++---
- lib/intel_blt.h                |  8 ++++++-
- tests/i915/gem_ccs.c           | 34 ++++++++++++++++-------------
- tests/i915/gem_exercise_blt.c  | 22 ++++++++++---------
- tests/i915/gem_lmem_swapping.c |  4 ++--
- 6 files changed, 78 insertions(+), 32 deletions(-)
+v3: Drop unused macro, use system_memory() instead REGION_SMEM
+    in xe test (Karolina)
+---
+ tests/meson.build |   1 +
+ tests/xe/xe_ccs.c | 757 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 758 insertions(+)
+ create mode 100644 tests/xe/xe_ccs.c
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index a8988274f2..1814e8db11 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2900,7 +2900,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 			src = blt_fb_init(src_fb, i, mem_region);
- 			dst = blt_fb_init(dst_fb, i, mem_region);
+diff --git a/tests/meson.build b/tests/meson.build
+index d56e4c89da..da8653fabc 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -263,6 +263,7 @@ i915_progs = [
+ ]
  
--			memset(&blt, 0, sizeof(blt));
-+			blt_copy_init(src_fb->fd, &blt);
- 			blt.color_depth = blt_get_bpp(src_fb);
- 			blt_set_copy_object(&blt.src, src);
- 			blt_set_copy_object(&blt.dst, dst);
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index bc28f15e8d..f2f86e4947 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -692,6 +692,22 @@ static void dump_bb_ext(struct gen12_block_copy_data_ext *data)
- 		 data->dw21.src_array_index);
- }
- 
-+/**
-+ * blt_copy_init:
-+ * @fd: drm fd
-+ * @blt: structure for initialization
-+ *
-+ * Function is zeroing @blt and sets fd and driver fields (INTEL_DRIVER_I915 or
-+ * INTEL_DRIVER_XE).
+ xe_progs = [
++	'xe_ccs',
+ 	'xe_create',
+ 	'xe_compute',
+ 	'xe_dma_buf_sync',
+diff --git a/tests/xe/xe_ccs.c b/tests/xe/xe_ccs.c
+new file mode 100644
+index 0000000000..ee653790bf
+--- /dev/null
++++ b/tests/xe/xe_ccs.c
+@@ -0,0 +1,757 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
 + */
-+void blt_copy_init(int fd, struct blt_copy_data *blt)
-+{
-+	memset(blt, 0, sizeof(*blt));
 +
-+	blt->fd = fd;
-+	blt->driver = get_intel_driver(fd);
++#include <errno.h>
++#include <glib.h>
++#include <sys/ioctl.h>
++#include <sys/time.h>
++#include <malloc.h>
++#include "drm.h"
++#include "igt.h"
++#include "igt_syncobj.h"
++#include "intel_blt.h"
++#include "intel_mocs.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_util.h"
++/**
++ * TEST: xe ccs
++ * Description: Exercise gen12 blitter with and without flatccs compression on Xe
++ * Run type: FULL
++ *
++ * SUBTEST: block-copy-compressed
++ * Description: Check block-copy flatccs compressed blit
++ *
++ * SUBTEST: block-copy-uncompressed
++ * Description: Check block-copy uncompressed blit
++ *
++ * SUBTEST: block-multicopy-compressed
++ * Description: Check block-multicopy flatccs compressed blit
++ *
++ * SUBTEST: block-multicopy-inplace
++ * Description: Check block-multicopy flatccs inplace decompression blit
++ *
++ * SUBTEST: ctrl-surf-copy
++ * Description: Check flatccs data can be copied from/to surface
++ *
++ * SUBTEST: ctrl-surf-copy-new-ctx
++ * Description: Check flatccs data are physically tagged and visible in vm
++ *
++ * SUBTEST: suspend-resume
++ * Description: Check flatccs data persists after suspend / resume (S0)
++ */
++
++IGT_TEST_DESCRIPTION("Exercise gen12 blitter with and without flatccs compression on Xe");
++
++static struct param {
++	int compression_format;
++	int tiling;
++	bool write_png;
++	bool print_bb;
++	bool print_surface_info;
++	int width;
++	int height;
++} param = {
++	.compression_format = 0,
++	.tiling = -1,
++	.write_png = false,
++	.print_bb = false,
++	.print_surface_info = false,
++	.width = 512,
++	.height = 512,
++};
++
++struct test_config {
++	bool compression;
++	bool inplace;
++	bool surfcopy;
++	bool new_ctx;
++	bool suspend_resume;
++};
++
++static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
++			    uint32_t handle, uint32_t region, uint64_t size,
++			    uint8_t mocs, enum blt_access_type access_type)
++{
++	obj->handle = handle;
++	obj->region = region;
++	obj->size = size;
++	obj->mocs = mocs;
++	obj->access_type = access_type;
 +}
 +
- /**
-  * emit_blt_block_copy:
-  * @fd: drm fd
-@@ -889,6 +905,22 @@ static void dump_bb_surf_ctrl_cmd(const struct gen12_ctrl_surf_copy_data *data)
- 		 cmd[4], data->dw04.dst_address_hi, data->dw04.dst_mocs);
- }
- 
-+/**
-+ * blt_ctrl_surf_copy_init:
-+ * @fd: drm fd
-+ * @surf: structure for initialization
-+ *
-+ * Function is zeroing @surf and sets fd and driver fields (INTEL_DRIVER_I915 or
-+ * INTEL_DRIVER_XE).
-+ */
-+void blt_ctrl_surf_copy_init(int fd, struct blt_ctrl_surf_copy_data *surf)
-+{
-+	memset(surf, 0, sizeof(*surf));
++#define PRINT_SURFACE_INFO(name, obj) do { \
++	if (param.print_surface_info) \
++		blt_surface_info((name), (obj)); } while (0)
 +
-+	surf->fd = fd;
-+	surf->driver = get_intel_driver(fd);
++#define WRITE_PNG(fd, id, name, obj, w, h) do { \
++	if (param.write_png) \
++		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
++
++static int compare_nxn(const struct blt_copy_object *surf1,
++		       const struct blt_copy_object *surf2,
++		       int xsize, int ysize, int bx, int by)
++{
++	int x, y, corrupted;
++	uint32_t pos, px1, px2;
++
++	corrupted = 0;
++	for (y = 0; y < ysize; y++) {
++		for (x = 0; x < xsize; x++) {
++			pos = bx * xsize + by * ysize * surf1->pitch / 4;
++			pos += x + y * surf1->pitch / 4;
++			px1 = surf1->ptr[pos];
++			px2 = surf2->ptr[pos];
++			if (px1 != px2)
++				corrupted++;
++		}
++	}
++
++	return corrupted;
 +}
 +
- /**
-  * emit_blt_ctrl_surf_copy:
-  * @fd: drm fd
-@@ -1317,7 +1349,7 @@ void blt_set_batch(struct blt_copy_batch *batch,
- }
- 
- struct blt_copy_object *
--blt_create_object(int fd, uint32_t region,
-+blt_create_object(const struct blt_copy_data *blt, uint32_t region,
- 		  uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
- 		  enum blt_tiling_type tiling,
- 		  enum blt_compression compression,
-@@ -1329,10 +1361,12 @@ blt_create_object(int fd, uint32_t region,
- 	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
- 	uint32_t handle;
- 
-+	igt_assert_f(blt->driver, "Driver isn't set, have you called blt_copy_init()?\n");
++static void dump_corruption_info(const struct blt_copy_object *surf1,
++				 const struct blt_copy_object *surf2)
++{
++	const int xsize = 8, ysize = 8;
++	int w, h, bx, by, corrupted;
 +
- 	obj = calloc(1, sizeof(*obj));
- 
- 	obj->size = size;
--	igt_assert(__gem_create_in_memory_regions(fd, &handle,
-+	igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
- 						  &size, region) == 0);
- 
- 	blt_set_object(obj, handle, size, region, mocs, tiling,
-@@ -1340,7 +1374,7 @@ blt_create_object(int fd, uint32_t region,
- 	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
- 
- 	if (create_mapping)
--		obj->ptr = gem_mmap__device_coherent(fd, handle, 0, size,
-+		obj->ptr = gem_mmap__device_coherent(blt->fd, handle, 0, size,
- 						     PROT_READ | PROT_WRITE);
- 
- 	return obj;
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 9c4ddc7a89..7516ce8ac7 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -102,6 +102,7 @@ struct blt_copy_batch {
- /* Common for block-copy and fast-copy */
- struct blt_copy_data {
- 	int fd;
-+	enum intel_driver driver;
- 	struct blt_copy_object src;
- 	struct blt_copy_object dst;
- 	struct blt_copy_batch bb;
-@@ -155,6 +156,7 @@ struct blt_ctrl_surf_copy_object {
- 
- struct blt_ctrl_surf_copy_data {
- 	int fd;
-+	enum intel_driver driver;
- 	struct blt_ctrl_surf_copy_object src;
- 	struct blt_ctrl_surf_copy_object dst;
- 	struct blt_copy_batch bb;
-@@ -185,6 +187,8 @@ bool blt_uses_extended_block_copy(int fd);
- 
- const char *blt_tiling_name(enum blt_tiling_type tiling);
- 
-+void blt_copy_init(int fd, struct blt_copy_data *blt);
++	igt_assert(surf1->x1 == surf2->x1 && surf1->x2 == surf2->x2);
++	igt_assert(surf1->y1 == surf2->y1 && surf1->y2 == surf2->y2);
++	w = surf1->x2;
++	h = surf1->y2;
 +
- uint64_t emit_blt_block_copy(int fd,
- 			     uint64_t ahnd,
- 			     const struct blt_copy_data *blt,
-@@ -205,6 +209,8 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
- 				 uint64_t bb_pos,
- 				 bool emit_bbe);
- 
-+void blt_ctrl_surf_copy_init(int fd, struct blt_ctrl_surf_copy_data *surf);
++	igt_info("dump corruption - width: %d, height: %d, sizex: %x, sizey: %x\n",
++		 surf1->x2, surf1->y2, xsize, ysize);
 +
- int blt_ctrl_surf_copy(int fd,
- 		       const intel_ctx_t *ctx,
- 		       const struct intel_execution_engine2 *e,
-@@ -230,7 +236,7 @@ void blt_set_batch(struct blt_copy_batch *batch,
- 		   uint32_t handle, uint64_t size, uint32_t region);
- 
- struct blt_copy_object *
--blt_create_object(int fd, uint32_t region,
-+blt_create_object(const struct blt_copy_data *blt, uint32_t region,
- 		  uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
- 		  enum blt_tiling_type tiling,
- 		  enum blt_compression compression,
-diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-index f9ad9267df..d9d785ed9b 100644
---- a/tests/i915/gem_ccs.c
-+++ b/tests/i915/gem_ccs.c
-@@ -167,7 +167,7 @@ static void surf_copy(int i915,
- 	ccs = gem_create(i915, ccssize);
- 	ccs2 = gem_create(i915, ccssize);
- 
--	surf.fd = i915;
-+	blt_ctrl_surf_copy_init(i915, &surf);
- 	surf.print_bb = param.print_bb;
- 	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
- 			uc_mocs, BLT_INDIRECT_ACCESS);
-@@ -219,7 +219,7 @@ static void surf_copy(int i915,
- 			uc_mocs, INDIRECT_ACCESS);
- 	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
- 
--	memset(&blt, 0, sizeof(blt));
-+	blt_copy_init(i915, &blt);
- 	blt.color_depth = CD_32bit;
- 	blt.print_bb = param.print_bb;
- 	blt_set_copy_object(&blt.src, mid);
-@@ -310,7 +310,7 @@ static int blt_block_copy3(int i915,
- 	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
- 
- 	/* First blit src -> mid */
--	memset(&blt0, 0, sizeof(blt0));
-+	blt_copy_init(i915, &blt0);
- 	blt0.src = blt3->src;
- 	blt0.dst = blt3->mid;
- 	blt0.bb = blt3->bb;
-@@ -321,7 +321,7 @@ static int blt_block_copy3(int i915,
- 	bb_pos = emit_blt_block_copy(i915, ahnd, &blt0, &ext0, bb_pos, false);
- 
- 	/* Second blit mid -> dst */
--	memset(&blt0, 0, sizeof(blt0));
-+	blt_copy_init(i915, &blt0);
- 	blt0.src = blt3->mid;
- 	blt0.dst = blt3->dst;
- 	blt0.bb = blt3->bb;
-@@ -332,7 +332,7 @@ static int blt_block_copy3(int i915,
- 	bb_pos = emit_blt_block_copy(i915, ahnd, &blt0, &ext0, bb_pos, false);
- 
- 	/* Third blit dst -> final */
--	memset(&blt0, 0, sizeof(blt0));
-+	blt_copy_init(i915, &blt0);
- 	blt0.src = blt3->dst;
- 	blt0.dst = blt3->final;
- 	blt0.bb = blt3->bb;
-@@ -390,11 +390,13 @@ static void block_copy(int i915,
- 	if (!blt_uses_extended_block_copy(i915))
- 		pext = NULL;
- 
--	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
-+	blt_copy_init(i915, &blt);
++	for (by = 0; by < h / ysize; by++) {
++		for (bx = 0; bx < w / xsize; bx++) {
++			corrupted = compare_nxn(surf1, surf2, xsize, ysize, bx, by);
++			if (corrupted == 0)
++				igt_info(".");
++			else
++				igt_info("%c", '0' + corrupted);
++		}
++		igt_info("\n");
++	}
++}
 +
-+	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
- 				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
--	mid = blt_create_object(i915, mid_region, width, height, bpp, uc_mocs,
-+	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
- 				mid_tiling, mid_compression, comp_type, true);
--	dst = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
-+	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
- 				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
- 	igt_assert(src->size == dst->size);
- 	PRINT_SURFACE_INFO("src", src);
-@@ -404,7 +406,6 @@ static void block_copy(int i915,
- 	blt_surface_fill_rect(i915, src, width, height);
- 	WRITE_PNG(i915, run_id, "src", src, width, height);
- 
--	memset(&blt, 0, sizeof(blt));
- 	blt.color_depth = CD_32bit;
- 	blt.print_bb = param.print_bb;
- 	blt_set_copy_object(&blt.src, src);
-@@ -449,7 +450,7 @@ static void block_copy(int i915,
- 		}
- 	}
- 
--	memset(&blt, 0, sizeof(blt));
-+	blt_copy_init(i915, &blt);
- 	blt.color_depth = CD_32bit;
- 	blt.print_bb = param.print_bb;
- 	blt_set_copy_object(&blt.src, mid);
-@@ -486,6 +487,7 @@ static void block_multicopy(int i915,
- 			    const struct test_config *config)
- {
- 	struct blt_copy3_data blt3 = {};
++static void surf_copy(int xe,
++		      intel_ctx_t *ctx,
++		      uint64_t ahnd,
++		      const struct blt_copy_object *src,
++		      const struct blt_copy_object *mid,
++		      const struct blt_copy_object *dst,
++		      int run_id, bool suspend_resume)
++{
 +	struct blt_copy_data blt = {};
- 	struct blt_block_copy3_data_ext ext3 = {}, *pext3 = &ext3;
- 	struct blt_copy_object *src, *mid, *dst, *final;
- 	const uint32_t bpp = 32;
-@@ -505,13 +507,16 @@ static void block_multicopy(int i915,
- 	if (!blt_uses_extended_block_copy(i915))
- 		pext3 = NULL;
- 
--	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
-+	/* For object creation */
-+	blt_copy_init(i915, &blt);
++	struct blt_block_copy_data_ext ext = {};
++	struct blt_ctrl_surf_copy_data surf = {};
++	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
++	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
++	uint32_t *ccscopy;
++	uint8_t uc_mocs = intel_get_uc_mocs(xe);
++	uint32_t sysmem = system_memory(xe);
++	int result;
++
++	igt_assert(mid->compression);
++	ccscopy = (uint32_t *) malloc(ccssize);
++	ccs = xe_bo_create_flags(xe, 0, ccssize, sysmem);
++	ccs2 = xe_bo_create_flags(xe, 0, ccssize, sysmem);
++
++	blt_ctrl_surf_copy_init(xe, &surf);
++	surf.print_bb = param.print_bb;
++	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
++			uc_mocs, BLT_INDIRECT_ACCESS);
++	set_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs, DIRECT_ACCESS);
++	bb_size = xe_get_default_alignment(xe);
++	bb1 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
++	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
++	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
++	intel_ctx_xe_sync(ctx, true);
++
++	ccsmap = xe_bo_map(xe, ccs, surf.dst.size);
++	memcpy(ccscopy, ccsmap, ccssize);
++
++	if (suspend_resume) {
++		char *orig, *orig2, *newsum, *newsum2;
++
++		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
++						   (void *)ccsmap, surf.dst.size);
++		orig2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
++						    (void *)mid->ptr, mid->size);
++
++		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
++
++		set_surf_object(&surf.dst, ccs2, system_memory(xe), ccssize,
++				0, DIRECT_ACCESS);
++		blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
++		intel_ctx_xe_sync(ctx, true);
++
++		ccsmap2 = xe_bo_map(xe, ccs2, surf.dst.size);
++		newsum = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
++						     (void *)ccsmap2, surf.dst.size);
++		newsum2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1,
++						      (void *)mid->ptr, mid->size);
++
++		munmap(ccsmap2, ccssize);
++		igt_assert(!strcmp(orig, newsum));
++		igt_assert(!strcmp(orig2, newsum2));
++		g_free(orig);
++		g_free(orig2);
++		g_free(newsum);
++		g_free(newsum2);
++	}
++
++	/* corrupt ccs */
++	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
++		ccsmap[i] = i;
++	set_surf_object(&surf.src, ccs, sysmem, ccssize,
++			uc_mocs, DIRECT_ACCESS);
++	set_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
++			uc_mocs, INDIRECT_ACCESS);
++	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
++	intel_ctx_xe_sync(ctx, true);
++
++	blt_copy_init(xe, &blt);
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	blt_set_copy_object(&blt.src, mid);
++	blt_set_copy_object(&blt.dst, dst);
++	blt_set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
++	bb2 = xe_bo_create_flags(xe, 0, bb_size, sysmem);
++	blt_set_batch(&blt.bb, bb2, bb_size, sysmem);
++	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
++	intel_ctx_xe_sync(ctx, true);
++	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
++	result = memcmp(src->ptr, dst->ptr, src->size);
++	igt_assert(result != 0);
++
++	/* retrieve back ccs */
++	memcpy(ccsmap, ccscopy, ccssize);
++	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
++
++	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
++	intel_ctx_xe_sync(ctx, true);
++	WRITE_PNG(xe, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
++	result = memcmp(src->ptr, dst->ptr, src->size);
++	if (result)
++		dump_corruption_info(src, dst);
++
++	munmap(ccsmap, ccssize);
++	gem_close(xe, ccs);
++	gem_close(xe, ccs2);
++	gem_close(xe, bb1);
++	gem_close(xe, bb2);
++
++	igt_assert_f(result == 0,
++		     "Source and destination surfaces are different after "
++		     "restoring source ccs data\n");
++}
++
++struct blt_copy3_data {
++	int xe;
++	struct blt_copy_object src;
++	struct blt_copy_object mid;
++	struct blt_copy_object dst;
++	struct blt_copy_object final;
++	struct blt_copy_batch bb;
++	enum blt_color_depth color_depth;
++
++	/* debug stuff */
++	bool print_bb;
++};
++
++struct blt_block_copy3_data_ext {
++	struct blt_block_copy_object_ext src;
++	struct blt_block_copy_object_ext mid;
++	struct blt_block_copy_object_ext dst;
++	struct blt_block_copy_object_ext final;
++};
++
++static int blt_block_copy3(int xe,
++			   const intel_ctx_t *ctx,
++			   uint64_t ahnd,
++			   const struct blt_copy3_data *blt3,
++			   const struct blt_block_copy3_data_ext *ext3)
++{
++	struct blt_copy_data blt0;
++	struct blt_block_copy_data_ext ext0;
++	uint64_t bb_offset, alignment;
++	uint64_t bb_pos = 0;
++	int ret;
++
++	igt_assert_f(ahnd, "block-copy3 supports softpin only\n");
++	igt_assert_f(blt3, "block-copy3 requires data to do blit\n");
++
++	alignment = xe_get_default_alignment(xe);
++	get_offset(ahnd, blt3->src.handle, blt3->src.size, alignment);
++	get_offset(ahnd, blt3->mid.handle, blt3->mid.size, alignment);
++	get_offset(ahnd, blt3->dst.handle, blt3->dst.size, alignment);
++	get_offset(ahnd, blt3->final.handle, blt3->final.size, alignment);
++	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
++
++	/* First blit src -> mid */
++	blt_copy_init(xe, &blt0);
++	blt0.src = blt3->src;
++	blt0.dst = blt3->mid;
++	blt0.bb = blt3->bb;
++	blt0.color_depth = blt3->color_depth;
++	blt0.print_bb = blt3->print_bb;
++	ext0.src = ext3->src;
++	ext0.dst = ext3->mid;
++	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, false);
++
++	/* Second blit mid -> dst */
++	blt_copy_init(xe, &blt0);
++	blt0.src = blt3->mid;
++	blt0.dst = blt3->dst;
++	blt0.bb = blt3->bb;
++	blt0.color_depth = blt3->color_depth;
++	blt0.print_bb = blt3->print_bb;
++	ext0.src = ext3->mid;
++	ext0.dst = ext3->dst;
++	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, false);
++
++	/* Third blit dst -> final */
++	blt_copy_init(xe, &blt0);
++	blt0.src = blt3->dst;
++	blt0.dst = blt3->final;
++	blt0.bb = blt3->bb;
++	blt0.color_depth = blt3->color_depth;
++	blt0.print_bb = blt3->print_bb;
++	ext0.src = ext3->dst;
++	ext0.dst = ext3->final;
++	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, true);
++
++	intel_ctx_xe_exec(ctx, ahnd, bb_offset);
++
++	return ret;
++}
++
++static void block_copy(int xe,
++		       intel_ctx_t *ctx,
++		       uint32_t region1, uint32_t region2,
++		       enum blt_tiling_type mid_tiling,
++		       const struct test_config *config)
++{
++	struct blt_copy_data blt = {};
++	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
++	struct blt_copy_object *src, *mid, *dst;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = xe_get_default_alignment(xe);
++	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
++	uint32_t run_id = mid_tiling;
++	uint32_t mid_region = region2, bb;
++	uint32_t width = param.width, height = param.height;
++	enum blt_compression mid_compression = config->compression;
++	int mid_compression_format = param.compression_format;
++	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
++	uint8_t uc_mocs = intel_get_uc_mocs(xe);
++	int result;
++
++	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
++
++	if (!blt_uses_extended_block_copy(xe))
++		pext = NULL;
++
++	blt_copy_init(xe, &blt);
 +
 +	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
- 				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
--	mid = blt_create_object(i915, mid_region, width, height, bpp, uc_mocs,
++				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
 +	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
- 				mid_tiling, mid_compression, comp_type, true);
--	dst = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
++				mid_tiling, mid_compression, comp_type, true);
 +	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
- 				mid_tiling, COMPRESSION_DISABLED, comp_type, true);
--	final = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
++				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
++	igt_assert(src->size == dst->size);
++	PRINT_SURFACE_INFO("src", src);
++	PRINT_SURFACE_INFO("mid", mid);
++	PRINT_SURFACE_INFO("dst", dst);
++
++	blt_surface_fill_rect(xe, src, width, height);
++	WRITE_PNG(xe, run_id, "src", src, width, height);
++
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	blt_set_copy_object(&blt.src, src);
++	blt_set_copy_object(&blt.dst, mid);
++	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext.dst, mid_compression_format, width, height, SURFACE_TYPE_2D);
++	blt_set_batch(&blt.bb, bb, bb_size, region1);
++	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
++	intel_ctx_xe_sync(ctx, true);
++
++	/* We expect mid != src if there's compression */
++	if (mid->compression)
++		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
++
++	WRITE_PNG(xe, run_id, "mid", &blt.dst, width, height);
++
++	if (config->surfcopy && pext) {
++		struct drm_xe_engine_class_instance inst = {
++			.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++		};
++		intel_ctx_t *surf_ctx = ctx;
++		uint64_t surf_ahnd = ahnd;
++		uint32_t vm, engine;
++
++		if (config->new_ctx) {
++			vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++			engine = xe_engine_create(xe, vm, &inst, 0);
++			surf_ctx = intel_ctx_xe(xe, vm, engine, 0, 0, 0);
++			surf_ahnd = intel_allocator_open(xe, surf_ctx->vm,
++							 INTEL_ALLOCATOR_RELOC);
++		}
++		surf_copy(xe, surf_ctx, surf_ahnd, src, mid, dst, run_id,
++			  config->suspend_resume);
++
++		if (surf_ctx != ctx) {
++			xe_engine_destroy(xe, engine);
++			xe_vm_destroy(xe, vm);
++			free(surf_ctx);
++			put_ahnd(surf_ahnd);
++		}
++	}
++
++	blt_copy_init(xe, &blt);
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	blt_set_copy_object(&blt.src, mid);
++	blt_set_copy_object(&blt.dst, dst);
++	blt_set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
++	if (config->inplace) {
++		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
++			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
++		blt.dst.ptr = mid->ptr;
++	}
++
++	blt_set_batch(&blt.bb, bb, bb_size, region1);
++	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
++	intel_ctx_xe_sync(ctx, true);
++
++	WRITE_PNG(xe, run_id, "dst", &blt.dst, width, height);
++
++	result = memcmp(src->ptr, blt.dst.ptr, src->size);
++
++	/* Politely clean vm */
++	put_offset(ahnd, src->handle);
++	put_offset(ahnd, mid->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(xe, src);
++	blt_destroy_object(xe, mid);
++	blt_destroy_object(xe, dst);
++	gem_close(xe, bb);
++	put_ahnd(ahnd);
++
++	igt_assert_f(!result, "source and destination surfaces differs!\n");
++}
++
++static void block_multicopy(int xe,
++			    intel_ctx_t *ctx,
++			    uint32_t region1, uint32_t region2,
++			    enum blt_tiling_type mid_tiling,
++			    const struct test_config *config)
++{
++	struct blt_copy3_data blt3 = {};
++	struct blt_copy_data blt = {};
++	struct blt_block_copy3_data_ext ext3 = {}, *pext3 = &ext3;
++	struct blt_copy_object *src, *mid, *dst, *final;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = xe_get_default_alignment(xe);
++	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
++	uint32_t run_id = mid_tiling;
++	uint32_t mid_region = region2, bb;
++	uint32_t width = param.width, height = param.height;
++	enum blt_compression mid_compression = config->compression;
++	int mid_compression_format = param.compression_format;
++	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
++	uint8_t uc_mocs = intel_get_uc_mocs(xe);
++	int result;
++
++	bb = xe_bo_create_flags(xe, 0, bb_size, region1);
++
++	if (!blt_uses_extended_block_copy(xe))
++		pext3 = NULL;
++
++	blt_copy_init(xe, &blt);
++
++	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
++				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
++	mid = blt_create_object(&blt, mid_region, width, height, bpp, uc_mocs,
++				mid_tiling, mid_compression, comp_type, true);
++	dst = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
++				mid_tiling, COMPRESSION_DISABLED, comp_type, true);
 +	final = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
- 				  T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
- 	igt_assert(src->size == dst->size);
- 	PRINT_SURFACE_INFO("src", src);
-@@ -521,7 +526,6 @@ static void block_multicopy(int i915,
- 
- 	blt_surface_fill_rect(i915, src, width, height);
- 
--	memset(&blt3, 0, sizeof(blt3));
- 	blt3.color_depth = CD_32bit;
- 	blt3.print_bb = param.print_bb;
- 	blt_set_copy_object(&blt3.src, src);
-diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
-index 0cd1820430..7355eabbe9 100644
---- a/tests/i915/gem_exercise_blt.c
-+++ b/tests/i915/gem_exercise_blt.c
-@@ -89,7 +89,7 @@ static int fast_copy_one_bb(int i915,
- 	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
- 
- 	/* First blit */
--	memset(&blt_tmp, 0, sizeof(blt_tmp));
-+	blt_copy_init(i915, &blt_tmp);
- 	blt_tmp.src = blt->src;
- 	blt_tmp.dst = blt->mid;
- 	blt_tmp.bb = blt->bb;
-@@ -98,7 +98,7 @@ static int fast_copy_one_bb(int i915,
- 	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, false);
- 
- 	/* Second blit */
--	memset(&blt_tmp, 0, sizeof(blt_tmp));
-+	blt_copy_init(i915, &blt_tmp);
- 	blt_tmp.src = blt->mid;
- 	blt_tmp.dst = blt->dst;
- 	blt_tmp.bb = blt->bb;
-@@ -140,6 +140,7 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
- 			   uint32_t region1, uint32_t region2,
- 			   enum blt_tiling_type mid_tiling)
- {
-+	struct blt_copy_data bltinit = {};
- 	struct blt_fast_copy_data blt = {};
- 	struct blt_copy_object *src, *mid, *dst;
- 	const uint32_t bpp = 32;
-@@ -152,11 +153,12 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
- 
- 	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
- 
--	src = blt_create_object(i915, region1, width, height, bpp, 0,
-+	blt_copy_init(i915, &bltinit);
-+	src = blt_create_object(&bltinit, region1, width, height, bpp, 0,
- 				T_LINEAR, COMPRESSION_DISABLED, 0, true);
--	mid = blt_create_object(i915, region2, width, height, bpp, 0,
-+	mid = blt_create_object(&bltinit, region2, width, height, bpp, 0,
- 				mid_tiling, COMPRESSION_DISABLED, 0, true);
--	dst = blt_create_object(i915, region1, width, height, bpp, 0,
-+	dst = blt_create_object(&bltinit, region1, width, height, bpp, 0,
- 				T_LINEAR, COMPRESSION_DISABLED, 0, true);
- 	igt_assert(src->size == dst->size);
- 
-@@ -212,17 +214,17 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
- 
- 	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
- 
--	src = blt_create_object(i915, region1, width, height, bpp, 0,
-+	blt_copy_init(i915, &blt);
-+	src = blt_create_object(&blt, region1, width, height, bpp, 0,
- 				T_LINEAR, COMPRESSION_DISABLED, 0, true);
--	mid = blt_create_object(i915, region2, width, height, bpp, 0,
-+	mid = blt_create_object(&blt, region2, width, height, bpp, 0,
- 				mid_tiling, COMPRESSION_DISABLED, 0, true);
--	dst = blt_create_object(i915, region1, width, height, bpp, 0,
-+	dst = blt_create_object(&blt, region1, width, height, bpp, 0,
- 				T_LINEAR, COMPRESSION_DISABLED, 0, true);
- 	igt_assert(src->size == dst->size);
- 
- 	blt_surface_fill_rect(i915, src, width, height);
- 
--	memset(&blt, 0, sizeof(blt));
- 	blt.color_depth = CD_32bit;
- 	blt.print_bb = param.print_bb;
- 	blt_set_copy_object(&blt.src, src);
-@@ -235,7 +237,7 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
- 	WRITE_PNG(i915, mid_tiling, "src", &blt.src, width, height);
- 	WRITE_PNG(i915, mid_tiling, "mid", &blt.dst, width, height);
- 
--	memset(&blt, 0, sizeof(blt));
-+	blt_copy_init(i915, &blt);
- 	blt.color_depth = CD_32bit;
- 	blt.print_bb = param.print_bb;
- 	blt_set_copy_object(&blt.src, mid);
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 83dbebec83..2921de8f9f 100644
---- a/tests/i915/gem_lmem_swapping.c
-+++ b/tests/i915/gem_lmem_swapping.c
-@@ -308,7 +308,7 @@ init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
- 		buf[j] = seed++;
- 	munmap(buf, obj->size);
- 
--	memset(&blt, 0, sizeof(blt));
-+	blt_copy_init(i915, &blt);
- 	blt.color_depth = CD_32bit;
- 
- 	memcpy(&blt.src, tmp, sizeof(blt.src));
-@@ -366,7 +366,7 @@ verify_object_ccs(int i915, const struct object *obj,
- 	cmd->handle = gem_create_from_pool(i915, &size, region);
- 	blt_set_batch(cmd, cmd->handle, size, region);
- 
--	memset(&blt, 0, sizeof(blt));
-+	blt_copy_init(i915, &blt);
- 	blt.color_depth = CD_32bit;
- 
- 	memcpy(&blt.src, obj->blt_obj, sizeof(blt.src));
++				  T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
++	igt_assert(src->size == dst->size);
++	PRINT_SURFACE_INFO("src", src);
++	PRINT_SURFACE_INFO("mid", mid);
++	PRINT_SURFACE_INFO("dst", dst);
++	PRINT_SURFACE_INFO("final", final);
++
++	blt_surface_fill_rect(xe, src, width, height);
++
++	blt3.color_depth = CD_32bit;
++	blt3.print_bb = param.print_bb;
++	blt_set_copy_object(&blt3.src, src);
++	blt_set_copy_object(&blt3.mid, mid);
++	blt_set_copy_object(&blt3.dst, dst);
++	blt_set_copy_object(&blt3.final, final);
++
++	if (config->inplace) {
++		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
++			       mid->mocs, mid_tiling, COMPRESSION_DISABLED,
++			       comp_type);
++		blt3.dst.ptr = mid->ptr;
++	}
++
++	blt_set_object_ext(&ext3.src, 0, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext3.mid, mid_compression_format, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext3.dst, 0, width, height, SURFACE_TYPE_2D);
++	blt_set_object_ext(&ext3.final, 0, width, height, SURFACE_TYPE_2D);
++	blt_set_batch(&blt3.bb, bb, bb_size, region1);
++
++	blt_block_copy3(xe, ctx, ahnd, &blt3, pext3);
++	intel_ctx_xe_sync(ctx, true);
++
++	WRITE_PNG(xe, run_id, "src", &blt3.src, width, height);
++	if (!config->inplace)
++		WRITE_PNG(xe, run_id, "mid", &blt3.mid, width, height);
++	WRITE_PNG(xe, run_id, "dst", &blt3.dst, width, height);
++	WRITE_PNG(xe, run_id, "final", &blt3.final, width, height);
++
++	result = memcmp(src->ptr, blt3.final.ptr, src->size);
++
++	put_offset(ahnd, src->handle);
++	put_offset(ahnd, mid->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, final->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(xe, src);
++	blt_destroy_object(xe, mid);
++	blt_destroy_object(xe, dst);
++	blt_destroy_object(xe, final);
++	gem_close(xe, bb);
++	put_ahnd(ahnd);
++
++	igt_assert_f(!result, "source and destination surfaces differs!\n");
++}
++
++enum copy_func {
++	BLOCK_COPY,
++	BLOCK_MULTICOPY,
++};
++
++static const struct {
++	const char *suffix;
++	void (*copyfn)(int fd,
++		       intel_ctx_t *ctx,
++		       uint32_t region1, uint32_t region2,
++		       enum blt_tiling_type btype,
++		       const struct test_config *config);
++} copyfns[] = {
++	[BLOCK_COPY] = { "", block_copy },
++	[BLOCK_MULTICOPY] = { "-multicopy", block_multicopy },
++};
++
++static void block_copy_test(int xe,
++			    const struct test_config *config,
++			    struct igt_collection *set,
++			    enum copy_func copy_function)
++{
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	intel_ctx_t *ctx;
++	struct igt_collection *regions;
++	uint32_t vm, engine;
++	int tiling;
++
++	if (config->compression && !blt_block_copy_supports_compression(xe))
++		return;
++
++	if (config->inplace && !config->compression)
++		return;
++
++	for_each_tiling(tiling) {
++		if (!blt_block_copy_supports_tiling(xe, tiling) ||
++		    (param.tiling >= 0 && param.tiling != tiling))
++			continue;
++
++		for_each_variation_r(regions, 2, set) {
++			uint32_t region1, region2;
++			char *regtxt;
++
++			region1 = igt_collection_get_value(regions, 0);
++			region2 = igt_collection_get_value(regions, 1);
++
++			/* Compressed surface must be in device memory */
++			if (config->compression && !XE_IS_VRAM_MEMORY_REGION(xe, region2))
++				continue;
++
++			regtxt = xe_memregion_dynamic_subtest_name(xe, regions);
++
++			igt_dynamic_f("%s-%s-compfmt%d-%s%s",
++				      blt_tiling_name(tiling),
++				      config->compression ?
++					      "compressed" : "uncompressed",
++				      param.compression_format, regtxt,
++				      copyfns[copy_function].suffix) {
++				uint32_t sync_bind, sync_out;
++
++				vm = xe_vm_create(xe, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++				engine = xe_engine_create(xe, vm, &inst, 0);
++				sync_bind = syncobj_create(xe, 0);
++				sync_out = syncobj_create(xe, 0);
++				ctx = intel_ctx_xe(xe, vm, engine,
++						   0, sync_bind, sync_out);
++
++				copyfns[copy_function].copyfn(xe, ctx,
++							      region1, region2,
++							      tiling, config);
++
++				xe_engine_destroy(xe, engine);
++				xe_vm_destroy(xe, vm);
++				syncobj_destroy(xe, sync_bind);
++				syncobj_destroy(xe, sync_out);
++				free(ctx);
++			}
++
++			free(regtxt);
++		}
++	}
++}
++
++static int opt_handler(int opt, int opt_index, void *data)
++{
++	switch (opt) {
++	case 'b':
++		param.print_bb = true;
++		igt_debug("Print bb: %d\n", param.print_bb);
++		break;
++	case 'f':
++		param.compression_format = atoi(optarg);
++		igt_debug("Compression format: %d\n", param.compression_format);
++		igt_assert((param.compression_format & ~0x1f) == 0);
++		break;
++	case 'p':
++		param.write_png = true;
++		igt_debug("Write png: %d\n", param.write_png);
++		break;
++	case 's':
++		param.print_surface_info = true;
++		igt_debug("Print surface info: %d\n", param.print_surface_info);
++		break;
++	case 't':
++		param.tiling = atoi(optarg);
++		igt_debug("Tiling: %d\n", param.tiling);
++		break;
++	case 'W':
++		param.width = atoi(optarg);
++		igt_debug("Width: %d\n", param.width);
++		break;
++	case 'H':
++		param.height = atoi(optarg);
++		igt_debug("Height: %d\n", param.height);
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -b\tPrint bb\n"
++	"  -f\tCompression format (0-31)\n"
++	"  -p\tWrite PNG\n"
++	"  -s\tPrint surface info\n"
++	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
++	"  -W\tWidth (default 512)\n"
++	"  -H\tHeight (default 512)"
++	;
++
++igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
++{
++	struct igt_collection *set;
++	int xe;
++
++	igt_fixture {
++		xe = drm_open_driver(DRIVER_XE);
++		igt_require(blt_has_block_copy(xe));
++
++		xe_device_get(xe);
++
++		set = xe_get_memory_region_set(xe,
++					       XE_MEM_REGION_CLASS_SYSMEM,
++					       XE_MEM_REGION_CLASS_VRAM);
++	}
++
++	igt_describe("Check block-copy uncompressed blit");
++	igt_subtest_with_dynamic("block-copy-uncompressed") {
++		struct test_config config = {};
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
++	igt_describe("Check block-copy flatccs compressed blit");
++	igt_subtest_with_dynamic("block-copy-compressed") {
++		struct test_config config = { .compression = true };
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
++	igt_describe("Check block-multicopy flatccs compressed blit");
++	igt_subtest_with_dynamic("block-multicopy-compressed") {
++		struct test_config config = { .compression = true };
++
++		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
++	}
++
++	igt_describe("Check block-multicopy flatccs inplace decompression blit");
++	igt_subtest_with_dynamic("block-multicopy-inplace") {
++		struct test_config config = { .compression = true,
++					      .inplace = true };
++
++		block_copy_test(xe, &config, set, BLOCK_MULTICOPY);
++	}
++
++	igt_describe("Check flatccs data can be copied from/to surface");
++	igt_subtest_with_dynamic("ctrl-surf-copy") {
++		struct test_config config = { .compression = true,
++					      .surfcopy = true };
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
++	igt_describe("Check flatccs data are physically tagged and visible"
++		     " in different contexts");
++	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
++		struct test_config config = { .compression = true,
++					      .surfcopy = true,
++					      .new_ctx = true };
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
++	igt_describe("Check flatccs data persists after suspend / resume (S0)");
++	igt_subtest_with_dynamic("suspend-resume") {
++		struct test_config config = { .compression = true,
++					      .surfcopy = true,
++					      .suspend_resume = true };
++
++		block_copy_test(xe, &config, set, BLOCK_COPY);
++	}
++
++	igt_fixture {
++		xe_device_put(xe);
++		close(xe);
++	}
++}
 -- 
 2.34.1
