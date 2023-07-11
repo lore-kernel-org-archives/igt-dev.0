@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CACA910E382
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 11:20:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F29F610E383
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jul 2023 11:20:35 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Jul 2023 13:19:56 +0200
-Message-Id: <20230711112009.122482-5-zbigniew.kempczynski@intel.com>
+Date: Tue, 11 Jul 2023 13:19:57 +0200
+Message-Id: <20230711112009.122482-6-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
 References: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 04/17] lib/xe_ioctl: Export non-assert
- xe_exec function
+Subject: [igt-dev] [PATCH i-g-t v3 05/17] lib/xe_query: Use vramN when
+ returning string region name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,39 +24,37 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Export __xe_exec() helper to allow caller to handle the error
-individually.
+For tests which are mixing regions (like xe_ccs) name is confusing.
+As an example might be example "subtest-name-vram-1-vram-1". It's
+more readable when it will be renamed to "subtest-name-vram1-vram1".
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/xe/xe_ioctl.c | 2 +-
- lib/xe/xe_ioctl.h | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ lib/xe/xe_query.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 9ead7307c4..0b5c7a4fce 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -357,7 +357,7 @@ void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot)
- 	return __xe_bo_map(fd, bo, size, prot);
- }
- 
--static int __xe_exec(int fd, struct drm_xe_exec *exec)
-+int __xe_exec(int fd, struct drm_xe_exec *exec)
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 48fb5afba7..830b7e401d 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -445,7 +445,7 @@ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region)
+  * xe_region_name:
+  * @region: region mask
+  *
+- * Returns region string like "system" or "vram-n" where n=0...62.
++ * Returns region string like "system" or "vramN" where N=0...62.
+  */
+ const char *xe_region_name(uint64_t region)
  {
- 	int err = 0;
- 
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index e014ad66c9..320e0f9f68 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -75,6 +75,7 @@ void xe_engine_destroy(int fd, uint32_t engine);
- uint64_t xe_bo_mmap_offset(int fd, uint32_t bo);
- void *xe_bo_map(int fd, uint32_t bo, size_t size);
- void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot);
-+int __xe_exec(int fd, struct drm_xe_exec *exec);
- void xe_exec(int fd, struct drm_xe_exec *exec);
- void xe_exec_sync(int fd, uint32_t engine, uint64_t addr,
- 		  struct drm_xe_sync *sync, uint32_t num_syncs);
+@@ -457,7 +457,7 @@ const char *xe_region_name(uint64_t region)
+ 		vrams = calloc(64, sizeof(char *));
+ 		for (int i = 0; i < 64; i++) {
+ 			if (i != 0)
+-				asprintf(&vrams[i], "vram-%d", i - 1);
++				asprintf(&vrams[i], "vram%d", i - 1);
+ 			else
+ 				asprintf(&vrams[i], "system");
+ 			igt_assert(vrams[i]);
 -- 
 2.34.1
