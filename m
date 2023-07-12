@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2179D10E5C0
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:15:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0814C10E5CA
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:15:47 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Jul 2023 19:12:12 +0200
-Message-Id: <20230712171231.290555-3-zbigniew.kempczynski@intel.com>
+Date: Wed, 12 Jul 2023 19:12:16 +0200
+Message-Id: <20230712171231.290555-7-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
 References: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 02/21] tests/gem_ccs: Drop local function
- for setting ctrl surface object
+Subject: [igt-dev] [PATCH i-g-t v4 06/21] lib/intel_allocator: Drop aliasing
+ allocator handle api
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,79 +24,174 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Until now gem_ccs was the only user of set_surf_object() and probably
-from this reason it wasn't "globalized". Upcoming gem_ccs counterpart
-for xe - xe_ccs - uses same object initialization and we got this
-function (with small rename) in the blitter library so we can use it
-and get rid of local version.
+There's no real user of this api, lets drop it.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+--
+v3: Remove also ipc message passing for open-as (Karolina)
 ---
- tests/i915/gem_ccs.c | 31 ++++++++++---------------------
- 1 file changed, 10 insertions(+), 21 deletions(-)
+ lib/intel_allocator.c            | 73 --------------------------------
+ lib/intel_allocator.h            |  1 -
+ lib/intel_allocator_msgchannel.h |  8 +---
+ 3 files changed, 1 insertion(+), 81 deletions(-)
 
-diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-index f9ad9267df..9beddeaee4 100644
---- a/tests/i915/gem_ccs.c
-+++ b/tests/i915/gem_ccs.c
-@@ -77,17 +77,6 @@ struct test_config {
- 	bool suspend_resume;
- };
+diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+index 8161221dbf..09f665fbb9 100644
+--- a/lib/intel_allocator.c
++++ b/lib/intel_allocator.c
+@@ -25,7 +25,6 @@
+ static const char *reqtype_str[] = {
+ 	[REQ_STOP]		= "stop",
+ 	[REQ_OPEN]		= "open",
+-	[REQ_OPEN_AS]		= "open as",
+ 	[REQ_CLOSE]		= "close",
+ 	[REQ_ADDRESS_RANGE]	= "address range",
+ 	[REQ_ALLOC]		= "alloc",
+@@ -376,19 +375,6 @@ static struct allocator *allocator_open(int fd, uint32_t ctx, uint32_t vm,
+ 	return al;
+ }
  
--static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
--			    uint32_t handle, uint32_t region, uint64_t size,
--			    uint8_t mocs, enum blt_access_type access_type)
+-static struct allocator *allocator_open_as(struct allocator *base,
+-					   uint32_t new_vm, uint64_t *ahndp)
 -{
--	obj->handle = handle;
--	obj->region = region;
--	obj->size = size;
--	obj->mocs = mocs;
--	obj->access_type = access_type;
+-	struct allocator *al;
+-
+-	igt_assert(ahndp);
+-	al = __allocator_create(base->fd, base->ctx, new_vm, base->ial);
+-	__allocator_get(al);
+-	*ahndp = __handle_create(al);
+-
+-	return al;
 -}
 -
- #define PRINT_SURFACE_INFO(name, obj) do { \
- 	if (param.print_surface_info) \
- 		blt_surface_info((name), (obj)); } while (0)
-@@ -169,10 +158,10 @@ static void surf_copy(int i915,
+ static bool allocator_close(uint64_t ahnd)
+ {
+ 	struct allocator *al;
+@@ -512,47 +498,6 @@ static int handle_request(struct alloc_req *req, struct alloc_resp *resp)
+ 				   refcnt - 1, refcnt, ret - 1, ret);
+ 			break;
  
- 	surf.fd = i915;
- 	surf.print_bb = param.print_bb;
--	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
--			uc_mocs, BLT_INDIRECT_ACCESS);
--	set_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
--			uc_mocs, DIRECT_ACCESS);
-+	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
-+				 uc_mocs, BLT_INDIRECT_ACCESS);
-+	blt_set_ctrl_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
-+				 uc_mocs, DIRECT_ACCESS);
- 	bb_size = 4096;
- 	igt_assert_eq(__gem_create(i915, &bb_size, &bb1), 0);
- 	blt_set_batch(&surf.bb, bb1, bb_size, REGION_SMEM);
-@@ -191,8 +180,8 @@ static void surf_copy(int i915,
+-		case REQ_OPEN_AS:
+-			/* lock first to avoid concurrent close */
+-			pthread_mutex_lock(&map_mutex);
+-
+-			al = __allocator_find_by_handle(req->allocator_handle);
+-			resp->response_type = RESP_OPEN_AS;
+-
+-			if (!al) {
+-				alloc_info("<open as> [tid: %ld] ahnd: %" PRIx64
+-					   " -> no handle\n",
+-					   (long) req->tid, req->allocator_handle);
+-				pthread_mutex_unlock(&map_mutex);
+-				break;
+-			}
+-
+-			if (!al->vm) {
+-				alloc_info("<open as> [tid: %ld] ahnd: %" PRIx64
+-					   " -> only open as for <fd, vm> is possible\n",
+-					   (long) req->tid, req->allocator_handle);
+-				pthread_mutex_unlock(&map_mutex);
+-				break;
+-			}
+-
+-
+-			al = allocator_open_as(al, req->open_as.new_vm, &ahnd);
+-			refcnt = atomic_load(&al->refcount);
+-			ret = atomic_load(&al->ial->refcount);
+-			pthread_mutex_unlock(&map_mutex);
+-
+-			resp->response_type = RESP_OPEN_AS;
+-			resp->open.allocator_handle = ahnd;
+-
+-			alloc_info("<open as> [tid: %ld] fd: %d, ahnd: %" PRIx64
+-				   ", ctx: %u, vm: %u"
+-				   ", alloc_type: %u, al->refcnt: %ld->%ld"
+-				   ", refcnt: %d->%d\n",
+-				   (long) req->tid, al->fd, ahnd,
+-				   al->ctx, al->vm, al->ial->type,
+-				   refcnt - 1, refcnt, ret - 1, ret);
+-			break;
+-
+ 		case REQ_CLOSE:
+ 			pthread_mutex_lock(&map_mutex);
+ 			al = __allocator_find_by_handle(req->allocator_handle);
+@@ -1037,24 +982,6 @@ uint64_t intel_allocator_open_vm(int fd, uint32_t vm, uint8_t allocator_type)
+ 					    ALLOC_STRATEGY_HIGH_TO_LOW, 0);
+ }
  
- 		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+-uint64_t intel_allocator_open_vm_as(uint64_t allocator_handle, uint32_t new_vm)
+-{
+-	struct alloc_req req = { .request_type = REQ_OPEN_AS,
+-				 .allocator_handle = allocator_handle,
+-				 .open_as.new_vm = new_vm };
+-	struct alloc_resp resp;
+-
+-	/* Get child_tid only once at open() */
+-	if (child_tid == -1)
+-		child_tid = gettid();
+-
+-	igt_assert(handle_request(&req, &resp) == 0);
+-	igt_assert(resp.open_as.allocator_handle);
+-	igt_assert(resp.response_type == RESP_OPEN_AS);
+-
+-	return resp.open.allocator_handle;
+-}
+-
+ /**
+  * intel_allocator_close:
+  * @allocator_handle: handle to the allocator that will be closed
+diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+index a6bf573e9d..3ec74f6191 100644
+--- a/lib/intel_allocator.h
++++ b/lib/intel_allocator.h
+@@ -182,7 +182,6 @@ uint64_t intel_allocator_open_vm_full(int fd, uint32_t vm,
+ 				      enum allocator_strategy strategy,
+ 				      uint64_t default_alignment);
  
--		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
--				0, DIRECT_ACCESS);
-+		blt_set_ctrl_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
-+					 0, DIRECT_ACCESS);
- 		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
- 		gem_sync(i915, surf.dst.handle);
+-uint64_t intel_allocator_open_vm_as(uint64_t allocator_handle, uint32_t new_vm);
+ bool intel_allocator_close(uint64_t allocator_handle);
+ void intel_allocator_get_address_range(uint64_t allocator_handle,
+ 				       uint64_t *startp, uint64_t *endp);
+diff --git a/lib/intel_allocator_msgchannel.h b/lib/intel_allocator_msgchannel.h
+index cefbf4ce33..ba38530fd1 100644
+--- a/lib/intel_allocator_msgchannel.h
++++ b/lib/intel_allocator_msgchannel.h
+@@ -13,7 +13,6 @@
+ enum reqtype {
+ 	REQ_STOP,
+ 	REQ_OPEN,
+-	REQ_OPEN_AS,
+ 	REQ_CLOSE,
+ 	REQ_ADDRESS_RANGE,
+ 	REQ_ALLOC,
+@@ -27,7 +26,6 @@ enum reqtype {
  
-@@ -213,10 +202,10 @@ static void surf_copy(int i915,
- 	/* corrupt ccs */
- 	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
- 		ccsmap[i] = i;
--	set_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
--			uc_mocs, DIRECT_ACCESS);
--	set_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
--			uc_mocs, INDIRECT_ACCESS);
-+	blt_set_ctrl_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
-+				 uc_mocs, DIRECT_ACCESS);
-+	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
-+				 uc_mocs, INDIRECT_ACCESS);
- 	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+ enum resptype {
+ 	RESP_OPEN,
+-	RESP_OPEN_AS,
+ 	RESP_CLOSE,
+ 	RESP_ADDRESS_RANGE,
+ 	RESP_ALLOC,
+@@ -58,10 +56,6 @@ struct alloc_req {
+ 			uint64_t default_alignment;
+ 		} open;
  
- 	memset(&blt, 0, sizeof(blt));
+-		struct {
+-			uint32_t new_vm;
+-		} open_as;
+-
+ 		struct {
+ 			uint32_t handle;
+ 			uint64_t size;
+@@ -100,7 +94,7 @@ struct alloc_resp {
+ 	union {
+ 		struct {
+ 			uint64_t allocator_handle;
+-		} open, open_as;
++		} open;
+ 
+ 		struct {
+ 			bool is_empty;
 -- 
 2.34.1
