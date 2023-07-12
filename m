@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC8AE10E59D
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:22:33 +0000 (UTC)
+Date: Wed, 12 Jul 2023 19:22:22 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230712172222.hl4y2lki656yahrb@kamilkon-desk1>
+References: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
+ <20230712135854.957128-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 07 Jul 2023 05:26:23 -0000
-Message-ID: <168870758308.14757.12091551377448323686@emeril.freedesktop.org>
-References: <20230706150638.581415-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230706150638.581415-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBTcGVl?=
- =?utf-8?q?dup_IGT_build_time_=28rev4=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230712135854.957128-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 01/13] tests/intel-ci/meson.build:
+ Generate and store an intel-ci.testlist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,74 +20,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Mauro,
 
-Series: Speedup IGT build time (rev4)
-URL   : https://patchwork.freedesktop.org/series/120233/
-State : failure
+On 2023-07-12 at 15:58:42 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Store a sorted testlist with tests that could be used to test the
+> DRM core and the Intel drivers in a format that it would be
+> expected by igt_runner.
+> 
+> This is a preparation to simplify test_list.py checks to make it
+> more generic.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  tests/intel-ci/meson.build | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+> index d5a6e4f47203..a1ec517f8da1 100644
+> --- a/tests/intel-ci/meson.build
+> +++ b/tests/intel-ci/meson.build
+> @@ -9,4 +9,12 @@ intelci_files = [
+>    'xe.blocklist.txt',
+>  ]
+>  
+> +custom_target('intel-ci.testlist',
+> +              build_by_default : true,
+> +              command : ['sort', testlist_files],
+> +              install : true,
+> +              install_dir : datadir,
+> +              capture : true,
+> +              output : 'intel-ci.testlist')
+> +
+>  install_data(sources : intelci_files, install_dir : datadir)
 
-== Summary ==
+This looks ok, you can add my r-b, but please fix compilation error
+(from local run, GitLab report is strange):
 
-IGT patchset build failed on latest successful build
-d1574543ba4bb322597345530053475c07be0eb9 xe-fast-feedback.testlist: Remove gt-c6-on-idle from BAT
+[305/310] Generating docs/testplan/xe_tests.rst with a custom command
+FAILED: docs/testplan/xe_tests.rst 
+/home/kamil/ramdisk/tmp-build/scripts/igt_doc.py --config /home/kamil/ramdisk/tmp-build/tests/xe/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --built-testlist /home/kamil/ramdisk/tmp-build/build/tests/intel-ci/intel-ci.testlist
+Traceback (most recent call last):
+  File "/home/kamil/ramdisk/tmp-build/scripts/igt_doc.py", line 67, in <module>
+    tests.check_tests()
+  File "/home/kamil/ramdisk/tmp-build/scripts/test_list.py", line 970, in check_tests
+    with open(self.built_testlist, 'r', encoding='utf8') as handle:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/kamil/ramdisk/tmp-build/build/tests/intel-ci/intel-ci.testlist'
 
-Installing tools/i915-perf/i915-perf-recorder to /opt/igt/bin
-Installing tools/i915-perf/i915-perf-control to /opt/igt/bin
-Installing tools/i915-perf/i915-perf-reader to /opt/igt/bin
-Installing runner/igt_runner to /opt/igt/bin
-Installing runner/igt_resume to /opt/igt/bin
-Installing runner/igt_results to /opt/igt/bin
-Installing runner/igt_comms_decoder to /opt/igt/bin
-Installing assembler/intel-gen4asm to /opt/igt/bin
-Installing assembler/intel-gen4disasm to /opt/igt/bin
-Installing overlay/intel-gpu-overlay to /opt/igt/bin
-Installing man/intel_audio_dump.1.gz to /opt/igt/share/man/man1
-Installing man/intel_bios_dumper.1.gz to /opt/igt/share/man/man1
-Installing man/intel_error_decode.1.gz to /opt/igt/share/man/man1
-Installing man/intel_gpu_frequency.1.gz to /opt/igt/share/man/man1
-Installing man/intel_gpu_top.1.gz to /opt/igt/share/man/man1
-Installing man/intel_gtt.1.gz to /opt/igt/share/man/man1
-Installing man/intel_infoframes.1.gz to /opt/igt/share/man/man1
-Installing man/intel_lid.1.gz to /opt/igt/share/man/man1
-Installing man/intel_panel_fitter.1.gz to /opt/igt/share/man/man1
-Installing man/intel_reg.1.gz to /opt/igt/share/man/man1
-Installing man/intel_stepping.1.gz to /opt/igt/share/man/man1
-Installing man/intel_upload_blit_large.1.gz to /opt/igt/share/man/man1
-Installing man/intel_upload_blit_large_gtt.1.gz to /opt/igt/share/man/man1
-Installing man/intel_upload_blit_large_map.1.gz to /opt/igt/share/man/man1
-Installing man/intel_upload_blit_small.1.gz to /opt/igt/share/man/man1
-Installing man/intel_vbt_decode.1.gz to /opt/igt/share/man/man1
-Installing /usr/src/igt-gpu-tools/lib/igt_list.h to /opt/igt/include/i915-perf
-Installing /usr/src/igt-gpu-tools/lib/intel_chipset.h to /opt/igt/include/i915-perf
-Installing /usr/src/igt-gpu-tools/lib/i915/perf.h to /opt/igt/include/i915-perf
-Installing /usr/src/igt-gpu-tools/lib/i915/perf_data.h to /opt/igt/include/i915-perf
-Installing /usr/src/igt-gpu-tools/lib/i915/perf_data_reader.h to /opt/igt/include/i915-perf
-Installing /opt/igt/build/lib/i915-perf.pc to /opt/igt/lib/x86_64-linux-gnu/pkgconfig
-Installing /usr/src/igt-gpu-tools/tests/1080p-left.png to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/1080p-right.png to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/pass.png to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/fast-feedback.testlist to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/meta.testlist to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/README to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/blacklist.txt to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/blacklist-pre-merge.txt to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/xe-fast-feedback.testlist to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/xe.blocklist.txt to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tools/intel_gpu_abrt to /opt/igt/bin
-Installing /usr/src/igt-gpu-tools/tools/intel-gfx-fw-info to /opt/igt/bin
-Installing /opt/igt/build/assembler/intel-gen4asm.pc to /opt/igt/lib/x86_64-linux-gnu/pkgconfig
-Installing /usr/src/igt-gpu-tools/scripts/code_cov_capture to /opt/igt/bin
-Installing /usr/src/igt-gpu-tools/scripts/code_cov_gather_on_build to /opt/igt/bin
-Installing /usr/src/igt-gpu-tools/scripts/code_cov_gather_on_test to /opt/igt/bin
-Installing /usr/src/igt-gpu-tools/scripts/code_cov_gen_report to /opt/igt/bin
-Installing /usr/src/igt-gpu-tools/scripts/code_cov_parse_info to /opt/igt/bin
+Regards,
+Kamil
 
-
+> -- 
+> 2.40.1
+> 
 
