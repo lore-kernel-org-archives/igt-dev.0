@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 12 Jul 2023 14:44:20 -0000
-Message-ID: <168917306067.17978.4557252249309900790@emeril.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A013510E5CC
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 18:51:15 +0000 (UTC)
+Date: Wed, 12 Jul 2023 20:50:53 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230712185053.pyyekuqfhudvn7ln@kamilkon-desk1>
 References: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBNYWtl?=
- =?utf-8?q?_test=5Flist=2Epy_more_generic?=
+ <20230712135854.957128-10-mauro.chehab@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230712135854.957128-10-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 09/13] scripts/igt_doc.py: use field
+ names when create a TestList instance
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,74 +20,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Mauro,
+On 2023-07-12 at 15:58:50 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Makes the caller more generic by explicitly passing the field
+> name when calling TestList. This allows updating the class and
+> eventually re-ordering fields without the need of changes on
+> igt_doc.py.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Series: Make test_list.py more generic
-URL   : https://patchwork.freedesktop.org/series/120622/
-State : failure
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
-
-IGT patchset build failed on latest successful build
-1016723d49ff0ce3326af31468245f7b56930cc4 lib/intel_batchbuffer: Inform about unsupported bpp
-
-Installing tools/i915-perf/i915-perf-recorder to /opt/igt/bin
-Installing tools/i915-perf/i915-perf-control to /opt/igt/bin
-Installing tools/i915-perf/i915-perf-reader to /opt/igt/bin
-Installing runner/igt_runner to /opt/igt/bin
-Installing runner/igt_resume to /opt/igt/bin
-Installing runner/igt_results to /opt/igt/bin
-Installing runner/igt_comms_decoder to /opt/igt/bin
-Installing assembler/intel-gen4asm to /opt/igt/bin
-Installing assembler/intel-gen4disasm to /opt/igt/bin
-Installing overlay/intel-gpu-overlay to /opt/igt/bin
-Installing man/intel_audio_dump.1.gz to /opt/igt/share/man/man1
-Installing man/intel_bios_dumper.1.gz to /opt/igt/share/man/man1
-Installing man/intel_error_decode.1.gz to /opt/igt/share/man/man1
-Installing man/intel_gpu_frequency.1.gz to /opt/igt/share/man/man1
-Installing man/intel_gpu_top.1.gz to /opt/igt/share/man/man1
-Installing man/intel_gtt.1.gz to /opt/igt/share/man/man1
-Installing man/intel_infoframes.1.gz to /opt/igt/share/man/man1
-Installing man/intel_lid.1.gz to /opt/igt/share/man/man1
-Installing man/intel_panel_fitter.1.gz to /opt/igt/share/man/man1
-Installing man/intel_reg.1.gz to /opt/igt/share/man/man1
-Installing man/intel_stepping.1.gz to /opt/igt/share/man/man1
-Installing man/intel_upload_blit_large.1.gz to /opt/igt/share/man/man1
-Installing man/intel_upload_blit_large_gtt.1.gz to /opt/igt/share/man/man1
-Installing man/intel_upload_blit_large_map.1.gz to /opt/igt/share/man/man1
-Installing man/intel_upload_blit_small.1.gz to /opt/igt/share/man/man1
-Installing man/intel_vbt_decode.1.gz to /opt/igt/share/man/man1
-Installing /usr/src/igt-gpu-tools/lib/igt_list.h to /opt/igt/include/i915-perf
-Installing /usr/src/igt-gpu-tools/lib/intel_chipset.h to /opt/igt/include/i915-perf
-Installing /usr/src/igt-gpu-tools/lib/i915/perf.h to /opt/igt/include/i915-perf
-Installing /usr/src/igt-gpu-tools/lib/i915/perf_data.h to /opt/igt/include/i915-perf
-Installing /usr/src/igt-gpu-tools/lib/i915/perf_data_reader.h to /opt/igt/include/i915-perf
-Installing /opt/igt/build/lib/i915-perf.pc to /opt/igt/lib/x86_64-linux-gnu/pkgconfig
-Installing /usr/src/igt-gpu-tools/tests/1080p-left.png to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/1080p-right.png to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/pass.png to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/fast-feedback.testlist to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/meta.testlist to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/README to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/blacklist.txt to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/blacklist-pre-merge.txt to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/xe-fast-feedback.testlist to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tests/intel-ci/xe.blocklist.txt to /opt/igt/share/igt-gpu-tools
-Installing /usr/src/igt-gpu-tools/tools/intel_gpu_abrt to /opt/igt/bin
-Installing /usr/src/igt-gpu-tools/tools/intel-gfx-fw-info to /opt/igt/bin
-Installing /opt/igt/build/assembler/intel-gen4asm.pc to /opt/igt/lib/x86_64-linux-gnu/pkgconfig
-Installing /usr/src/igt-gpu-tools/scripts/code_cov_capture to /opt/igt/bin
-Installing /usr/src/igt-gpu-tools/scripts/code_cov_gather_on_build to /opt/igt/bin
-Installing /usr/src/igt-gpu-tools/scripts/code_cov_gather_on_test to /opt/igt/bin
-Installing /usr/src/igt-gpu-tools/scripts/code_cov_gen_report to /opt/igt/bin
-Installing /usr/src/igt-gpu-tools/scripts/code_cov_parse_info to /opt/igt/bin
-
-
+> ---
+>  scripts/igt_doc.py | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index c02029e03a31..4f4c5c755c44 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -48,8 +48,10 @@ parser.add_argument('--files', nargs='+',
+>  
+>  parse_args = parser.parse_args()
+>  
+> -tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files,
+> -                 parse_args.built_testlist)
+> +tests = TestList(config_fname = parse_args.config,
+> +                 include_plan = parse_args.include_plan,
+> +                 file_list = parse_args.files,
+> +                 built_testlist = parse_args.built_testlist)
+>  
+>  if parse_args.filter_field:
+>      for filter_expr in parse_args.filter_field:
+> -- 
+> 2.40.1
+> 
 
