@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2BB310E4E4
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 11:47:32 +0000 (UTC)
-From: Lukasz Laguna <lukasz.laguna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Jul 2023 13:45:43 +0200
-Message-Id: <20230712114543.24161-1-lukasz.laguna@intel.com>
-MIME-Version: 1.0
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2075.outbound.protection.outlook.com [40.107.220.75])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DEB1610E4E4
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 11:48:55 +0000 (UTC)
+Message-ID: <eb80b08d-f705-32ec-93e0-ab0edf8a8ad1@amd.com>
+Date: Wed, 12 Jul 2023 13:48:45 +0200
+Content-Language: en-US
+To: Simon Ser <contact@emersion.fr>, igt-dev@lists.freedesktop.org
+References: <20230712071701.11235-1-contact@emersion.fr>
+From: =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20230712071701.11235-1-contact@emersion.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_sysfs: add asserting helpers for
- read/write operations
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH v2] tests/syncobj_eventfd: new test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,826 +21,517 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: kamil.konieczny@intel.com
+Cc: "Ho, Kenny" <Kenny.Ho@amd.com>, James Jones <jajones@nvidia.com>,
+ Austin Shafer <ashafer@nvidia.com>,
+ Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+ Faith Ekstrand <faith.ekstrand@collabora.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Prefix names of existing, non-asserting helpers with "__":
+[Adding Vitaly and Kenny as well]
 
-- igt_sysfs_get_u32 -> __igt_sysfs_get_u32
-- igt_sysfs_set_u32 -> __igt_sysfs_set_u32
-- igt_sysfs_get_u64 -> __igt_sysfs_get_u64
-- igt_sysfs_set_u64 -> __igt_sysfs_set_u64
-- igt_sysfs_get_boolean -> __igt_sysfs_get_boolean
-- igt_sysfs_set_boolean -> __igt_sysfs_set_boolean
+Am 12.07.23 um 09:17 schrieb Simon Ser:
+> This series implements a new test suite for the DRM_IOCTL_SYNCOBJ_EVENTFD
+> IOCTL introduced in [1].
+>
+> v2:
+> - Check for DRM_CAP_SYNCOBJ_TIMELINE instead of DRM_CAP_SYNCOBJ
+> - Fix syncobj_eventfd availability check: ENOENT is returned when an
+>    IOCTL doesn't exist, so use an error path which returns a different
+>    errno
+>
+> [1]: https://lore.kernel.org/dri-devel/20230711142803.4054-1-contact@emersion.fr/T/#u
+>
+> Signed-off-by: Simon Ser <contact@emersion.fr>
+> Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Faith Ekstrand <faith.ekstrand@collabora.com>
+> Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+> Cc: Daniel Stone <daniel@fooishbar.org>
+> Cc: James Jones <jajones@nvidia.com>
+> Cc: Austin Shafer <ashafer@nvidia.com>
 
-Replace calls to don't introduce any functional changes in the
-existing code.
+I'm not an expert for igt, but skimming over this I can't find anything 
+of hand wrong. Feel free to add Acked-by: Christian König 
+<christian.koenig@amd.com>.
 
-Additionally, reimplement non-asserting get helpers to return boolean
-result of the read operation and store the read value via pointer
-passed as function parameter. In previous implementation, it wasn't
-possible to distinguish if returned zero was a read value or failure on
-a read attempt.
+Maybe Vitaly or Kenny can invest a few minutes to double check the patch 
+on our CI as well.
 
-On the occasion, fix a typo in modified debug message and fix a bug in
-igt_aux_enable_pm_suspend_dbg() function, because of which tests started
-asserting after introduced changes.
+Regards,
+Christian.
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
- lib/i915/gem_submission.c      |   4 +-
- lib/igt_aux.c                  |   4 +-
- lib/igt_pm.c                   |   2 +-
- lib/igt_sysfs.c                | 220 +++++++++++++++++++++++++--------
- lib/igt_sysfs.h                |  12 +-
- tests/i915/i915_pm_dc.c        |   6 +-
- tests/i915/i915_pm_freq_mult.c |  42 ++++---
- tests/i915/i915_pm_rps.c       |  32 ++---
- tests/i915/i915_power.c        |   9 +-
- tests/i915/perf_pmu.c          |  45 ++++---
- tests/kms_prime.c              |   2 +-
- tests/nouveau_crc.c            |   7 +-
- 12 files changed, 261 insertions(+), 124 deletions(-)
-
-diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
-index adf5eb394..7d1c3970f 100644
---- a/lib/i915/gem_submission.c
-+++ b/lib/i915/gem_submission.c
-@@ -65,12 +65,14 @@ unsigned gem_submission_method(int fd)
- 	const int gen = intel_gen(intel_get_drm_devid(fd));
- 	unsigned method = GEM_SUBMISSION_RINGBUF;
- 	int dir;
-+	uint32_t value = 0;
- 
- 	dir = igt_params_open(fd);
- 	if (dir < 0)
- 		return 0;
- 
--	if (igt_sysfs_get_u32(dir, "enable_guc") & 1) {
-+	__igt_sysfs_get_u32(dir, "enable_guc", &value);
-+	if (value & 1) {
- 		method = GEM_SUBMISSION_GUC;
- 	} else if (gen >= 8) {
- 		method = GEM_SUBMISSION_EXECLISTS;
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index fd5103043..1821ace67 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -953,7 +953,7 @@ static void igt_aux_enable_pm_suspend_dbg(int power_dir)
- 	if (sysfs_fd > 0) {
- 		__console_suspend_saved_state = igt_sysfs_get_boolean(sysfs_fd, "console_suspend");
- 
--		if (!igt_sysfs_set_boolean(sysfs_fd, "console_suspend", CONSOLE_SUSPEND_DISABLE))
-+		if (!__igt_sysfs_set_boolean(sysfs_fd, "console_suspend", CONSOLE_SUSPEND_DISABLE))
- 			igt_warn("Unable to disable console suspend\n");
- 
- 	} else {
-@@ -962,7 +962,7 @@ static void igt_aux_enable_pm_suspend_dbg(int power_dir)
- 
- 	/* pm_debug_messages depends on  CONFIG_PM_SLEEP_DEBUG */
- 	if (!faccessat(power_dir, "pm_debug_messages", R_OK |  W_OK, 0)) {
--		__pm_debug_messages_state = igt_sysfs_get_boolean(sysfs_fd, "pm_debug_messages");
-+		__pm_debug_messages_state = igt_sysfs_get_boolean(power_dir, "pm_debug_messages");
- 		igt_sysfs_set_boolean(power_dir, "pm_debug_messages", true);
- 	}
- 
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index 18c84bf3a..ba591f0f8 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -1415,5 +1415,5 @@ void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val)
- 		return;
- 
- 	igt_require(igt_sysfs_has_attr(gtfd, "slpc_ignore_eff_freq"));
--	igt_assert(igt_sysfs_set_u32(gtfd, "slpc_ignore_eff_freq", val));
-+	igt_sysfs_set_u32(gtfd, "slpc_ignore_eff_freq", val);
- }
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index 412edfc29..83182020b 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -565,122 +565,236 @@ int igt_sysfs_printf(int dir, const char *attr, const char *fmt, ...)
- 	return ret;
- }
- 
-+/**
-+ * __igt_sysfs_get_u32:
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to read
-+ * @value: pointer for storing read value
-+ *
-+ * Convenience wrapper to read a unsigned 32bit integer from a sysfs file.
-+ *
-+ * Returns:
-+ * True if value successfully read, false otherwise.
-+ */
-+bool __igt_sysfs_get_u32(int dir, const char *attr, uint32_t *value)
-+{
-+	if (igt_debug_on(igt_sysfs_scanf(dir, attr, "%u", value) != 1))
-+		return false;
-+
-+	return true;
-+}
-+
- /**
-  * igt_sysfs_get_u32:
-- * @dir: directory for the device from igt_sysfs_open()
-- * @attr: name of the sysfs node to open
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to read
-  *
-  * Convenience wrapper to read a unsigned 32bit integer from a sysfs file.
-+ * It asserts on failure.
-  *
-  * Returns:
-- * The value read.
-+ * Read value.
-  */
- uint32_t igt_sysfs_get_u32(int dir, const char *attr)
- {
--	uint32_t result;
-+	uint32_t value;
-+
-+	igt_assert_f(__igt_sysfs_get_u32(dir, attr, &value),
-+		     "Failed to read %s attribute (%s)\n", attr, strerror(errno));
-+
-+	return value;
-+}
-+
-+/**
-+ * __igt_sysfs_set_u32:
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to write
-+ * @value: value to set
-+ *
-+ * Convenience wrapper to write a unsigned 32bit integer to a sysfs file.
-+ *
-+ * Returns:
-+ * True if successfully written, false otherwise.
-+ */
-+bool __igt_sysfs_set_u32(int dir, const char *attr, uint32_t value)
-+{
-+	return igt_sysfs_printf(dir, attr, "%u", value) > 0;
-+}
-+
-+/**
-+ * igt_sysfs_set_u32:
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to write
-+ * @value: value to set
-+ *
-+ * Convenience wrapper to write a unsigned 32bit integer to a sysfs file.
-+ * It asserts on failure.
-+ */
-+void igt_sysfs_set_u32(int dir, const char *attr, uint32_t value)
-+{
-+	igt_assert_f(__igt_sysfs_set_u32(dir, attr, value),
-+		     "Failed to write %u to %s attribute (%s)\n", value, attr, strerror(errno));
-+}
- 
--	if (igt_debug_on(igt_sysfs_scanf(dir, attr, "%u", &result) != 1))
--		return 0;
-+/**
-+ * __igt_sysfs_get_u64:
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to read
-+ * @value: pointer for storing read value
-+ *
-+ * Convenience wrapper to read a unsigned 64bit integer from a sysfs file.
-+ *
-+ * Returns:
-+ * True if value successfully read, false otherwise.
-+ */
-+bool __igt_sysfs_get_u64(int dir, const char *attr, uint64_t *value)
-+{
-+	if (igt_debug_on(igt_sysfs_scanf(dir, attr, "%"PRIu64, value) != 1))
-+		return false;
- 
--	return result;
-+	return true;
- }
- 
- /**
-  * igt_sysfs_get_u64:
-- * @dir: directory for the device from igt_sysfs_open()
-- * @attr: name of the sysfs node to open
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to read
-  *
-  * Convenience wrapper to read a unsigned 64bit integer from a sysfs file.
-+ * It asserts on failure.
-  *
-  * Returns:
-- * The value read.
-+ * Read value.
-  */
- uint64_t igt_sysfs_get_u64(int dir, const char *attr)
- {
--	uint64_t result;
-+	uint64_t value;
- 
--	if (igt_debug_on(igt_sysfs_scanf(dir, attr, "%"PRIu64, &result) != 1))
--		return 0;
-+	igt_assert_f(__igt_sysfs_get_u64(dir, attr, &value),
-+		     "Failed to read %s attribute (%s)\n", attr, strerror(errno));
- 
--	return result;
-+	return value;
- }
- 
- /**
-- * igt_sysfs_set_u64:
-- * @dir: directory for the device from igt_sysfs_open()
-- * @attr: name of the sysfs node to open
-+ * __igt_sysfs_set_u64:
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to write
-  * @value: value to set
-  *
-  * Convenience wrapper to write a unsigned 64bit integer to a sysfs file.
-  *
-  * Returns:
-- * True if successfully written
-+ * True if successfully written, false otherwise.
-  */
--bool igt_sysfs_set_u64(int dir, const char *attr, uint64_t value)
-+bool __igt_sysfs_set_u64(int dir, const char *attr, uint64_t value)
- {
- 	return igt_sysfs_printf(dir, attr, "%"PRIu64, value) > 0;
- }
- 
- /**
-- * igt_sysfs_set_u32:
-- * @dir: directory for the device from igt_sysfs_open()
-- * @attr: name of the sysfs node to open
-+ * igt_sysfs_set_u64:
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to write
-  * @value: value to set
-  *
-- * Convenience wrapper to write a unsigned 32bit integer to a sysfs file.
-- *
-- * Returns:
-- * True if successfully written
-+ * Convenience wrapper to write a unsigned 64bit integer to a sysfs file.
-+ * It asserts on failure.
-  */
--bool igt_sysfs_set_u32(int dir, const char *attr, uint32_t value)
-+void igt_sysfs_set_u64(int dir, const char *attr, uint64_t value)
- {
--	return igt_sysfs_printf(dir, attr, "%u", value) > 0;
-+	igt_assert_f(__igt_sysfs_set_u64(dir, attr, value),
-+		     "Failed to write  %"PRIu64" to %s attribute (%s)\n",
-+		     value, attr, strerror(errno));
- }
- 
- /**
-- * igt_sysfs_get_boolean:
-- * @dir: directory for the device from igt_sysfs_open()
-- * @attr: name of the sysfs node to open
-+ * __igt_sysfs_get_boolean:
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to read
-+ * @value: pointer for storing read value
-  *
-  * Convenience wrapper to read a boolean sysfs file.
-- * 
-+ *
-  * Returns:
-- * The value read.
-+ * True if value successfully read, false otherwise.
-  */
--bool igt_sysfs_get_boolean(int dir, const char *attr)
-+bool __igt_sysfs_get_boolean(int dir, const char *attr, bool *value)
- {
--	int result;
- 	char *buf;
-+	int ret, read_value;
- 
- 	buf = igt_sysfs_get(dir, attr);
--	if (igt_debug_on(!buf))
-+	if (igt_debug_on_f(!buf, "Failed to read %s attribute (%s)\n", attr, strerror(errno)))
- 		return false;
- 
--	if (sscanf(buf, "%d", &result) != 1) {
--		/* kernel's param_get_bool() returns "Y"/"N" */
--		result = !strcasecmp(buf, "Y");
-+	ret = sscanf(buf, "%d", &read_value);
-+	if (((ret == 1) && (read_value == 1)) || ((ret == 0) && !strcasecmp(buf, "Y"))) {
-+		*value = true;
-+	} else if (((ret == 1) && (read_value == 0)) || ((ret == 0) && !strcasecmp(buf, "N"))) {
-+		*value = false;
-+	} else {
-+		igt_debug("Value read from %s attribute (%s) is not as expected (0|1|N|Y|n|y)\n",
-+			  attr, buf);
-+		free(buf);
-+		return false;
- 	}
- 
- 	free(buf);
--	return result;
-+	return true;
- }
- 
- /**
-- * igt_sysfs_set_boolean:
-- * @dir: directory for the device from igt_sysfs_open()
-- * @attr: name of the sysfs node to open
-+ * igt_sysfs_get_boolean:
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to read
-+ *
-+ * Convenience wrapper to read a boolean sysfs file.
-+ * It asserts on failure.
-+ *
-+ * Returns:
-+ * Read value.
-+ */
-+bool igt_sysfs_get_boolean(int dir, const char *attr)
-+{
-+	bool value;
-+
-+	igt_assert(__igt_sysfs_get_boolean(dir, attr, &value));
-+
-+	return value;
-+}
-+
-+/**
-+ * __igt_sysfs_set_boolean:
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to write
-  * @value: value to set
-  *
-  * Convenience wrapper to write a boolean sysfs file.
-- * 
-+ *
-  * Returns:
-- * The value read.
-+ * True if successfully written, false otherwise.
-  */
--bool igt_sysfs_set_boolean(int dir, const char *attr, bool value)
-+bool __igt_sysfs_set_boolean(int dir, const char *attr, bool value)
- {
- 	return igt_sysfs_printf(dir, attr, "%d", value) == 1;
- }
- 
-+/**
-+ * igt_sysfs_set_boolean:
-+ * @dir: directory corresponding to attribute
-+ * @attr: name of the sysfs node to write
-+ * @value: value to set
-+ *
-+ * Convenience wrapper to write a boolean sysfs file.
-+ * It asserts on failure.
-+ */
-+void igt_sysfs_set_boolean(int dir, const char *attr, bool value)
-+{
-+	igt_assert_f(__igt_sysfs_set_boolean(dir, attr, value),
-+		     "Failed to write %u to %s attribute (%s)\n", value, attr, strerror(errno));
-+}
-+
- static void bind_con(const char *name, bool enable)
- {
- 	const char *path = "/sys/class/vtconsole";
-@@ -845,14 +959,14 @@ static bool rw_attr_equal_within_epsilon(uint64_t x, uint64_t ref, double tol)
- /* Sweep the range of values for an attribute to identify matching reads/writes */
- static int rw_attr_sweep(igt_sysfs_rw_attr_t *rw)
- {
--	uint64_t get, set = rw->start;
-+	uint64_t get = 0, set = rw->start;
- 	int num_points = 0;
- 	bool ret;
- 
- 	igt_debug("'%s': sweeping range of values\n", rw->attr);
- 	while (set < UINT64_MAX / 2) {
--		ret = igt_sysfs_set_u64(rw->dir, rw->attr, set);
--		get = igt_sysfs_get_u64(rw->dir, rw->attr);
-+		ret = __igt_sysfs_set_u64(rw->dir, rw->attr, set);
-+		__igt_sysfs_get_u64(rw->dir, rw->attr, &get);
- 		igt_debug("'%s': ret %d set %lu get %lu\n", rw->attr, ret, set, get);
- 		if (ret && rw_attr_equal_within_epsilon(get, set, rw->tol)) {
- 			igt_debug("'%s': matches\n", rw->attr);
-@@ -888,7 +1002,7 @@ static int rw_attr_sweep(igt_sysfs_rw_attr_t *rw)
-  */
- void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
- {
--	uint64_t prev, get;
-+	uint64_t prev = 0, get = 0;
- 	struct stat st;
- 	int ret;
- 
-@@ -896,7 +1010,7 @@ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
- 	igt_assert(st.st_mode & 0222); /* writable */
- 	igt_assert(rw->start);	/* cannot be 0 */
- 
--	prev = igt_sysfs_get_u64(rw->dir, rw->attr);
-+	__igt_sysfs_get_u64(rw->dir, rw->attr, &prev);
- 	igt_debug("'%s': prev %lu\n", rw->attr, prev);
- 
- 	ret = rw_attr_sweep(rw);
-@@ -905,8 +1019,8 @@ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
- 	 * Restore previous value: we don't assert before this point so
- 	 * that we can restore the attr before asserting
- 	 */
--	igt_assert_eq(1, igt_sysfs_set_u64(rw->dir, rw->attr, prev));
--	get = igt_sysfs_get_u64(rw->dir, rw->attr);
-+	igt_sysfs_set_u64(rw->dir, rw->attr, prev);
-+	__igt_sysfs_get_u64(rw->dir, rw->attr, &get);
- 	igt_assert_eq(get, prev);
- 	igt_assert(!ret);
- }
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index d507fde8b..0087c03b7 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -119,14 +119,20 @@ int igt_sysfs_vprintf(int dir, const char *attr, const char *fmt, va_list ap)
- int igt_sysfs_printf(int dir, const char *attr, const char *fmt, ...)
- 	__attribute__((format(printf,3,4)));
- 
-+bool __igt_sysfs_get_u32(int dir, const char *attr, uint32_t *value);
- uint32_t igt_sysfs_get_u32(int dir, const char *attr);
--bool igt_sysfs_set_u32(int dir, const char *attr, uint32_t value);
-+bool __igt_sysfs_set_u32(int dir, const char *attr, uint32_t value);
-+void igt_sysfs_set_u32(int dir, const char *attr, uint32_t value);
- 
-+bool __igt_sysfs_get_u64(int dir, const char *attr, uint64_t *value);
- uint64_t igt_sysfs_get_u64(int dir, const char *attr);
--bool igt_sysfs_set_u64(int dir, const char *attr, uint64_t value);
-+bool __igt_sysfs_set_u64(int dir, const char *attr, uint64_t value);
-+void igt_sysfs_set_u64(int dir, const char *attr, uint64_t value);
- 
-+bool __igt_sysfs_get_boolean(int dir, const char *attr, bool *value);
- bool igt_sysfs_get_boolean(int dir, const char *attr);
--bool igt_sysfs_set_boolean(int dir, const char *attr, bool value);
-+bool __igt_sysfs_set_boolean(int dir, const char *attr, bool value);
-+void igt_sysfs_set_boolean(int dir, const char *attr, bool value);
- 
- void bind_fbcon(bool enable);
- void kick_snd_hda_intel(void);
-diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-index 5069ddcc3..90fe847fc 100644
---- a/tests/i915/i915_pm_dc.c
-+++ b/tests/i915/i915_pm_dc.c
-@@ -533,8 +533,8 @@ static void setup_dc9_dpms(data_t *data, int dc_target)
- 	int prev_dc = 0, prev_rpm, sysfs_fd;
- 
- 	igt_require((sysfs_fd = open(KMS_HELPER, O_RDONLY)) >= 0);
--	kms_poll_saved_state = igt_sysfs_get_boolean(sysfs_fd, "poll");
--	igt_sysfs_set_boolean(sysfs_fd, "poll", KMS_POLL_DISABLE);
-+	__igt_sysfs_get_boolean(sysfs_fd, "poll", &kms_poll_saved_state);
-+	__igt_sysfs_set_boolean(sysfs_fd, "poll", KMS_POLL_DISABLE);
- 	close(sysfs_fd);
- 	if (DC9_RESETS_DC_COUNTERS(data->devid)) {
- 		prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
-@@ -629,7 +629,7 @@ static void kms_poll_state_restore(int sig)
- 
- 	sysfs_fd = open(KMS_HELPER, O_RDONLY);
- 	if (sysfs_fd >= 0) {
--		igt_sysfs_set_boolean(sysfs_fd, "poll", kms_poll_saved_state);
-+		__igt_sysfs_set_boolean(sysfs_fd, "poll", kms_poll_saved_state);
- 		close(sysfs_fd);
- 	}
- }
-diff --git a/tests/i915/i915_pm_freq_mult.c b/tests/i915/i915_pm_freq_mult.c
-index af62bbc2c..49f6722b1 100644
---- a/tests/i915/i915_pm_freq_mult.c
-+++ b/tests/i915/i915_pm_freq_mult.c
-@@ -50,25 +50,26 @@ static void spin_all(void)
- 
- static void restore_rps_defaults(int dir)
- {
--	int def, min, max;
-+	int def;
-+	uint32_t min = 0, max = 0;
- 
- 	/* Read from gt/gtN/.defaults/ write to gt/gtN/ */
- 	def = openat(dir, ".defaults", O_RDONLY);
- 	if (def < 0)
- 		return;
- 
--	max = igt_sysfs_get_u32(def, "rps_max_freq_mhz");
--	igt_sysfs_set_u32(dir, "rps_max_freq_mhz", max);
-+	__igt_sysfs_get_u32(def, "rps_max_freq_mhz", &max);
-+	__igt_sysfs_set_u32(dir, "rps_max_freq_mhz", max);
- 
--	min = igt_sysfs_get_u32(def, "rps_min_freq_mhz");
--	igt_sysfs_set_u32(dir, "rps_min_freq_mhz", min);
-+	__igt_sysfs_get_u32(def, "rps_min_freq_mhz", &min);
-+	__igt_sysfs_set_u32(dir, "rps_min_freq_mhz", min);
- 
- 	close(def);
- }
- 
- static void setup_freq(int gt, int dir)
- {
--	int rp0, rp1, rpn, min, max, act, media;
-+	uint32_t rp0 = 0, rp1 = 0, rpn = 0, min = 0, max = 0, act = 0, media = 0;
- 
- 	ctx = intel_ctx_create_all_physical(i915);
- 	ahnd = get_reloc_ahnd(i915, ctx->id);
-@@ -81,17 +82,18 @@ static void setup_freq(int gt, int dir)
- 	wait_freq_set();
- 
- 	/* Print some debug information */
--	rp0 = igt_sysfs_get_u32(dir, "rps_RP0_freq_mhz");
--	rp1 = igt_sysfs_get_u32(dir, "rps_RP1_freq_mhz");
--	rpn = igt_sysfs_get_u32(dir, "rps_RPn_freq_mhz");
--	min = igt_sysfs_get_u32(dir, "rps_min_freq_mhz");
--	max = igt_sysfs_get_u32(dir, "rps_max_freq_mhz");
--	act = igt_sysfs_get_u32(dir, "rps_act_freq_mhz");
-+	rp0 = __igt_sysfs_get_u32(dir, "rps_RP0_freq_mhz", &rp0);
-+	rp1 = __igt_sysfs_get_u32(dir, "rps_RP1_freq_mhz", &rp1);
-+	rpn = __igt_sysfs_get_u32(dir, "rps_RPn_freq_mhz", &rpn);
-+	min = __igt_sysfs_get_u32(dir, "rps_min_freq_mhz", &min);
-+	max = __igt_sysfs_get_u32(dir, "rps_max_freq_mhz", &max);
-+	act = __igt_sysfs_get_u32(dir, "rps_act_freq_mhz", &act);
- 
--	igt_debug("RP0 MHz: %d, RP1 MHz: %d, RPn MHz: %d, min MHz: %d, max MHz: %d, act MHz: %d\n", rp0, rp1, rpn, min, max, act);
-+	igt_debug("RP0 MHz: %u, RP1 MHz: %u, RPn MHz: %u, min MHz: %u, max MHz: %u, act MHz: %u\n",
-+		  rp0, rp1, rpn, min, max, act);
- 
- 	if (igt_sysfs_has_attr(dir, "media_freq_factor")) {
--		media = igt_sysfs_get_u32(dir, "media_freq_factor");
-+		__igt_sysfs_get_u32(dir, "media_freq_factor", &media);
- 		igt_debug("media ratio: %.2f\n", media * FREQ_SCALE_FACTOR);
- 	}
- }
-@@ -108,6 +110,7 @@ static void cleanup(int dir)
- static void media_freq(int gt, int dir)
- {
- 	float scale;
-+	uint32_t rp0 = 0, rpn = 0;
- 
- 	igt_require(igt_sysfs_has_attr(dir, "media_freq_factor"));
- 
-@@ -116,9 +119,9 @@ static void media_freq(int gt, int dir)
- 
- 	setup_freq(gt, dir);
- 
--	igt_debug("media RP0 mhz: %d, media RPn mhz: %d\n",
--		  igt_sysfs_get_u32(dir, "media_RP0_freq_mhz"),
--		  igt_sysfs_get_u32(dir, "media_RPn_freq_mhz"));
-+	__igt_sysfs_get_u32(dir, "media_RP0_freq_mhz", &rp0);
-+	__igt_sysfs_get_u32(dir, "media_RPn_freq_mhz", &rpn);
-+	igt_debug("media RP0 MHz: %u, media RPn MHz: %u\n", rp0, rpn);
- 	igt_debug("media ratio value 0.0 represents dynamic mode\n");
- 
- 	/*
-@@ -127,7 +130,8 @@ static void media_freq(int gt, int dir)
- 	 * modes. Fixed ratio modes should return the same value.
- 	 */
- 	for (int v = 256; v >= 0; v -= 64) {
--		int getv, ret;
-+		int ret;
-+		uint32_t getv = 0;
- 
- 		/*
- 		 * Check that we can set the mode. Ratios other than 1:2
-@@ -141,7 +145,7 @@ static void media_freq(int gt, int dir)
- 
- 		wait_freq_set();
- 
--		getv = igt_sysfs_get_u32(dir, "media_freq_factor");
-+		__igt_sysfs_get_u32(dir, "media_freq_factor", &getv);
- 
- 		igt_debug("media ratio set: %.2f, media ratio get: %.2f\n",
- 			  v * scale, getv * scale);
-diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-index 7044fcd81..d9d43e568 100644
---- a/tests/i915/i915_pm_rps.c
-+++ b/tests/i915/i915_pm_rps.c
-@@ -720,7 +720,7 @@ static void fence_order(int i915)
- 		.buffer_count = ARRAY_SIZE(obj),
- 	};
- 	uint64_t wr, rw;
--	int min, max;
-+	uint32_t min = 0, max = 0;
- 	double freq;
- 	int sysfs;
- 
-@@ -742,14 +742,14 @@ static void fence_order(int i915)
- 	 */
- 
- 	sysfs = igt_sysfs_open(i915);
--	min = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
--	max = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
-+	__igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz", &min);
-+	__igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz", &max);
- 	igt_require(max > min);
- 
- 	/* Only allow ourselves to upclock via waitboosting */
--	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
--	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
--	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
-+	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%u", min);
-+	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%u", min);
-+	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%u", max);
- 
- 	/* Warm up to bind the vma */
- 	__fence_order(i915, &obj[0], &execbuf, 0, 0, &freq);
-@@ -763,8 +763,8 @@ static void fence_order(int i915)
- 	gem_close(i915, obj[0].handle);
- 	gem_close(i915, obj[1].handle);
- 
--	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
--	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
-+	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%u", min);
-+	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%u", max);
- 
- 	close(sysfs);
- 
-@@ -830,7 +830,7 @@ static void engine_order(int i915)
- 	uint64_t forward, backward, both;
- 	unsigned int num_engines;
- 	const intel_ctx_t *ctx;
--	int min, max;
-+	uint32_t min = 0, max = 0;
- 	double freq;
- 	int sysfs;
- 
-@@ -862,14 +862,14 @@ static void engine_order(int i915)
- 	execbuf.rsvd1 = ctx->id;
- 
- 	sysfs = igt_sysfs_open(i915);
--	min = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
--	max = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
-+	__igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz", &min);
-+	__igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz", &max);
- 	igt_require(max > min);
- 
- 	/* Only allow ourselves to upclock via waitboosting */
--	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
--	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
--	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
-+	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%u", min);
-+	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%u", min);
-+	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%u", max);
- 
- 	/* Warm up to bind the vma */
- 	gem_execbuf(i915, &execbuf);
-@@ -893,8 +893,8 @@ static void engine_order(int i915)
- 	gem_close(i915, obj[1].handle);
- 	intel_ctx_destroy(i915, ctx);
- 
--	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
--	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
-+	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%u", min);
-+	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%u", max);
- 
- 	close(sysfs);
- 
-diff --git a/tests/i915/i915_power.c b/tests/i915/i915_power.c
-index ed7bef495..ee00cbcd8 100644
---- a/tests/i915/i915_power.c
-+++ b/tests/i915/i915_power.c
-@@ -38,7 +38,8 @@ static void sanity(int i915)
- 	double idle, busy;
- 	igt_spin_t *spin;
- 	uint64_t ahnd;
--	int dir, gt, req, act;
-+	int dir, gt;
-+	uint32_t req = 0, act = 0;
- 
- #define DURATION_SEC 2
- 
-@@ -58,9 +59,9 @@ static void sanity(int i915)
- 	igt_spin_busywait_until_started(spin);
- 	busy = measure_power(&pwr, DURATION_SEC);
- 	i915_for_each_gt(i915, dir, gt) {
--		req = igt_sysfs_get_u32(dir, "rps_cur_freq_mhz");
--		act = igt_sysfs_get_u32(dir, "rps_act_freq_mhz");
--		igt_info("gt %d: req MHz: %d, act MHz: %d\n", gt, req, act);
-+		__igt_sysfs_get_u32(dir, "rps_cur_freq_mhz", &req);
-+		__igt_sysfs_get_u32(dir, "rps_act_freq_mhz", &act);
-+		igt_info("gt %d: req MHz: %u, act MHz: %u\n", gt, req, act);
- 	}
- 	igt_free_spins(i915);
- 	put_ahnd(ahnd);
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index 0806a8e54..441ec6f57 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -1782,7 +1782,7 @@ static igt_spin_t *spin_sync_gt(int i915, uint64_t ahnd, unsigned int gt,
- static void
- test_frequency(int gem_fd, unsigned int gt)
- {
--	uint32_t min_freq, max_freq, boost_freq;
-+	uint32_t min_freq = 0, max_freq = 0, boost_freq = 0, read_value = 0;
- 	uint64_t val[2], start[2], slept;
- 	double min[2], max[2];
- 	igt_spin_t *spin;
-@@ -1793,9 +1793,9 @@ test_frequency(int gem_fd, unsigned int gt)
- 	sysfs = igt_sysfs_gt_open(gem_fd, gt);
- 	igt_require(sysfs >= 0);
- 
--	min_freq = igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz");
--	max_freq = igt_sysfs_get_u32(sysfs, "rps_RP0_freq_mhz");
--	boost_freq = igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz");
-+	__igt_sysfs_get_u32(sysfs, "rps_RPn_freq_mhz", &min_freq);
-+	__igt_sysfs_get_u32(sysfs, "rps_RP0_freq_mhz", &max_freq);
-+	__igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz", &boost_freq);
- 	igt_info("Frequency: min=%u, max=%u, boost=%u MHz\n",
- 		 min_freq, max_freq, boost_freq);
- 	igt_require(min_freq > 0 && max_freq > 0 && boost_freq > 0);
-@@ -1808,12 +1808,15 @@ test_frequency(int gem_fd, unsigned int gt)
- 	/*
- 	 * Set GPU to min frequency and read PMU counters.
- 	 */
--	igt_require(igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", min_freq));
--	igt_require(igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz") == min_freq);
--	igt_require(igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", min_freq));
--	igt_require(igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz") == min_freq);
--	igt_require(igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", min_freq));
--	igt_require(igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz") == min_freq);
-+	igt_require(__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", min_freq));
-+	igt_require(__igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz", &read_value));
-+	igt_require(read_value == min_freq);
-+	igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", min_freq));
-+	igt_require(__igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz", &read_value));
-+	igt_require(read_value == min_freq);
-+	igt_require(__igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", min_freq));
-+	igt_require(__igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz", &read_value));
-+	igt_require(read_value == min_freq);
- 
- 	gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes effect */
- 	spin = spin_sync_gt(gem_fd, ahnd, gt, &ctx);
-@@ -1834,13 +1837,16 @@ test_frequency(int gem_fd, unsigned int gt)
- 	/*
- 	 * Set GPU to max frequency and read PMU counters.
- 	 */
--	igt_require(igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", max_freq));
--	igt_require(igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz") == max_freq);
--	igt_require(igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", boost_freq));
--	igt_require(igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz") == boost_freq);
-+	igt_require(__igt_sysfs_set_u32(sysfs, "rps_max_freq_mhz", max_freq));
-+	igt_require(__igt_sysfs_get_u32(sysfs, "rps_max_freq_mhz", &read_value));
-+	igt_require(read_value == max_freq);
-+	igt_require(__igt_sysfs_set_u32(sysfs, "rps_boost_freq_mhz", boost_freq));
-+	igt_require(__igt_sysfs_get_u32(sysfs, "rps_boost_freq_mhz", &read_value));
-+	igt_require(read_value == boost_freq);
- 
--	igt_require(igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", max_freq));
--	igt_require(igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz") == max_freq);
-+	igt_require(__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", max_freq));
-+	igt_require(__igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz", &read_value));
-+	igt_require(read_value == max_freq);
- 
- 	gem_quiescent_gpu(gem_fd);
- 	spin = spin_sync_gt(gem_fd, ahnd, gt, &ctx);
-@@ -1859,10 +1865,11 @@ test_frequency(int gem_fd, unsigned int gt)
- 	/*
- 	 * Restore min/max.
- 	 */
--	igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", min_freq);
--	if (igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz") != min_freq)
-+	__igt_sysfs_set_u32(sysfs, "rps_min_freq_mhz", min_freq);
-+	__igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz", &read_value);
-+	if (read_value != min_freq)
- 		igt_warn("Unable to restore min frequency to saved value [%u MHz], now %u MHz\n",
--			 min_freq, igt_sysfs_get_u32(sysfs, "rps_min_freq_mhz"));
-+			 min_freq, read_value);
- 	close(fd[0]);
- 	close(fd[1]);
- 	put_ahnd(ahnd);
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 52f587961..dedbf6233 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -341,7 +341,7 @@ static void kms_poll_state_restore(void)
- 	int sysfs_fd;
- 
- 	igt_assert((sysfs_fd = open(KMS_HELPER, O_RDONLY)) >= 0);
--	igt_sysfs_set_boolean(sysfs_fd, "poll", kms_poll_saved_state);
-+	__igt_sysfs_set_boolean(sysfs_fd, "poll", kms_poll_saved_state);
- 	close(sysfs_fd);
- 
- }
-diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
-index d5aa0e650..c94972318 100644
---- a/tests/nouveau_crc.c
-+++ b/tests/nouveau_crc.c
-@@ -264,15 +264,18 @@ static void test_ctx_flip_threshold_reset_after_capture(data_t *data)
- {
- 	igt_pipe_crc_t *pipe_crc;
- 	const int fd = data->drm_fd;
-+	uint32_t value = 0;
- 
- 	pipe_crc = igt_pipe_crc_new(fd, data->pipe, IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 	set_crc_flip_threshold(data, 5);
- 	igt_pipe_crc_start(pipe_crc);
--	igt_assert_eq(igt_sysfs_get_u32(data->nv_crc_dir, "flip_threshold"), 5);
-+	__igt_sysfs_get_u32(data->nv_crc_dir, "flip_threshold", &value);
-+	igt_assert_eq(value, 5);
- 	igt_pipe_crc_stop(pipe_crc);
- 
--	igt_assert_neq(igt_sysfs_get_u32(data->nv_crc_dir, "flip_threshold"), 5);
-+	__igt_sysfs_get_u32(data->nv_crc_dir, "flip_threshold", &value);
-+	igt_assert_neq(value, 5);
- 	igt_pipe_crc_free(pipe_crc);
- }
- 
--- 
-2.40.0
+> ---
+>   include/drm-uapi/drm.h  |  22 +++
+>   lib/igt_syncobj.c       |  40 +++++
+>   lib/igt_syncobj.h       |   4 +
+>   tests/meson.build       |   1 +
+>   tests/syncobj_eventfd.c | 344 ++++++++++++++++++++++++++++++++++++++++
+>   5 files changed, 411 insertions(+)
+>   create mode 100644 tests/syncobj_eventfd.c
+>
+> diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
+> index 5e54c3aa4c3a..7368a533c74b 100644
+> --- a/include/drm-uapi/drm.h
+> +++ b/include/drm-uapi/drm.h
+> @@ -903,6 +903,27 @@ struct drm_syncobj_timeline_wait {
+>   	__u32 pad;
+>   };
+>   
+> +/**
+> + * struct drm_syncobj_eventfd
+> + * @handle: syncobj handle.
+> + * @flags: Zero to wait for the point to be signalled, or
+> + *         &DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE to wait for a fence to be
+> + *         available for the point.
+> + * @point: syncobj timeline point (set to zero for binary syncobjs).
+> + * @fd: Existing eventfd to sent events to.
+> + * @pad: Must be zero.
+> + *
+> + * Register an eventfd to be signalled by a syncobj. The eventfd counter will
+> + * be incremented by one.
+> + */
+> +struct drm_syncobj_eventfd {
+> +	__u32 handle;
+> +	__u32 flags;
+> +	__u64 point;
+> +	__s32 fd;
+> +	__u32 pad;
+> +};
+> +
+>   
+>   struct drm_syncobj_array {
+>   	__u64 handles;
+> @@ -1089,6 +1110,7 @@ extern "C" {
+>   #define DRM_IOCTL_SYNCOBJ_QUERY		DRM_IOWR(0xCB, struct drm_syncobj_timeline_array)
+>   #define DRM_IOCTL_SYNCOBJ_TRANSFER	DRM_IOWR(0xCC, struct drm_syncobj_transfer)
+>   #define DRM_IOCTL_SYNCOBJ_TIMELINE_SIGNAL	DRM_IOWR(0xCD, struct drm_syncobj_timeline_array)
+> +#define DRM_IOCTL_SYNCOBJ_EVENTFD	DRM_IOWR(0xCE, struct drm_syncobj_eventfd)
+>   
+>   #define DRM_IOCTL_MODE_GETFB2		DRM_IOWR(0xCE, struct drm_mode_fb_cmd2)
+>   
+> diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
+> index a24ed10b7a0e..a53393bd7245 100644
+> --- a/lib/igt_syncobj.c
+> +++ b/lib/igt_syncobj.c
+> @@ -543,3 +543,43 @@ syncobj_timeline_to_timeline(int fd,
+>   					 timeline_dst, point_dst,
+>   					 timeline_src, point_src, 0), 0);
+>   }
+> +
+> +int
+> +__syncobj_eventfd(int fd, uint32_t handle, uint64_t point, uint32_t flags,
+> +		  int ev_fd)
+> +{
+> +	struct drm_syncobj_eventfd args;
+> +	int ret;
+> +
+> +	args.handle = handle;
+> +	args.flags = flags;
+> +	args.point = point;
+> +	args.fd = ev_fd;
+> +	args.pad = 0;
+> +
+> +	ret = igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_EVENTFD, &args);
+> +	if (ret) {
+> +		ret = -errno;
+> +		igt_assume(ret);
+> +		errno = 0;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * syncobj_eventfd:
+> + * @fd: The DRM file descriptor.
+> + * @handle: A syncobj handle.
+> + * @point: A point on the timeline syncobj, or 0 for binary syncobjs.
+> + * @flags: Flags.
+> + * @ev_fd: An eventfd.
+> + *
+> + * Wait for a syncobj with an eventfd.
+> + */
+> +void
+> +syncobj_eventfd(int fd, uint32_t handle, uint64_t point, uint32_t flags,
+> +		int ev_fd)
+> +{
+> +	igt_assert_eq(__syncobj_eventfd(fd, handle, point, flags, ev_fd), 0);
+> +}
+> diff --git a/lib/igt_syncobj.h b/lib/igt_syncobj.h
+> index e6725671d900..3911696d52f0 100644
+> --- a/lib/igt_syncobj.h
+> +++ b/lib/igt_syncobj.h
+> @@ -65,5 +65,9 @@ void syncobj_timeline_to_timeline(int fd,
+>   				  uint64_t timeline_src, uint32_t point_src);
+>   void syncobj_timeline_signal(int fd, uint32_t *handles, uint64_t *points,
+>   			     uint32_t count);
+> +int __syncobj_eventfd(int fd, uint32_t handle, uint64_t point, uint32_t flags,
+> +		      int ev_fd);
+> +void syncobj_eventfd(int fd, uint32_t handle, uint64_t point, uint32_t flags,
+> +		     int ev_fd);
+>   
+>   #endif /* IGT_SYNCOBJ_H */
+> diff --git a/tests/meson.build b/tests/meson.build
+> index d56e4c89daf3..9fc9199e267b 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -78,6 +78,7 @@ test_progs = [
+>   	'prime_udl',
+>   	'prime_vgem',
+>   	'syncobj_basic',
+> +	'syncobj_eventfd',
+>   	'syncobj_wait',
+>   	'syncobj_timeline',
+>   	'sw_sync',
+> diff --git a/tests/syncobj_eventfd.c b/tests/syncobj_eventfd.c
+> new file mode 100644
+> index 000000000000..95a2a4632114
+> --- /dev/null
+> +++ b/tests/syncobj_eventfd.c
+> @@ -0,0 +1,344 @@
+> +/*
+> + * Copyright © 2023 Simon Ser
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + */
+> +
+> +#include "igt.h"
+> +#include "sw_sync.h"
+> +#include "igt_syncobj.h"
+> +#include <fcntl.h>
+> +#include <poll.h>
+> +#include <sys/eventfd.h>
+> +#include <stdint.h>
+> +#include "drm.h"
+> +/**
+> + * TEST: syncobj eventfd
+> + * Category: Infrastructure
+> + * Description: Tests for the drm sync object eventfd API
+> + * Feature: synchronization
+> + * Functionality: semaphore
+> + * Run type: FULL
+> + * Sub-category: DRM
+> + * Test category: GEM_Legacy
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("Tests for the drm sync object eventfd API");
+> +
+> +static bool
+> +has_syncobj_eventfd(int fd)
+> +{
+> +	uint64_t value;
+> +	int ret;
+> +
+> +	if (drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &value))
+> +		return false;
+> +	if (!value)
+> +		return false;
+> +
+> +	/* Try waiting with invalid flags should fail with EINVAL */
+> +	ret = __syncobj_eventfd(fd, 0, 0, 0xdeadbeef, -1);
+> +	return ret == -EINVAL;
+> +}
+> +
+> +static int
+> +syncobj_attach_sw_sync(int fd, uint32_t handle, uint64_t point)
+> +{
+> +	int timeline, fence;
+> +	uint32_t syncobj;
+> +
+> +	timeline = sw_sync_timeline_create();
+> +	fence = sw_sync_timeline_create_fence(timeline, 1);
+> +
+> +	if (point == 0) {
+> +		syncobj_import_sync_file(fd, handle, fence);
+> +	} else {
+> +		syncobj = syncobj_create(fd, 0);
+> +
+> +		syncobj_import_sync_file(fd, syncobj, fence);
+> +		syncobj_binary_to_timeline(fd, handle, point, syncobj);
+> +		syncobj_destroy(fd, syncobj);
+> +	}
+> +
+> +	close(fence);
+> +
+> +	return timeline;
+> +}
+> +
+> +static int
+> +ev_fd_read(int ev_fd)
+> +{
+> +	uint64_t ev_fd_value;
+> +	int ret;
+> +
+> +	ret = read(ev_fd, &ev_fd_value, sizeof(ev_fd_value));
+> +	if (ret == -1)
+> +		return -errno;
+> +	igt_assert_eq(ret, sizeof(ev_fd_value));
+> +	return 0;
+> +}
+> +
+> +static void
+> +ev_fd_poll_in(int ev_fd, bool avail)
+> +{
+> +	struct pollfd pollfd;
+> +	int ret;
+> +	int timeout_ms;
+> +
+> +	/* Wait 5s if we're expecting data, 10ms otherwise */
+> +	timeout_ms = avail ? 5000 : 10;
+> +	pollfd.fd = ev_fd;
+> +	pollfd.events = POLLIN;
+> +	pollfd.revents = 0;
+> +	ret = poll(&pollfd, 1, timeout_ms);
+> +	if (avail) {
+> +		igt_assert(ret >= 0);
+> +		igt_assert(pollfd.revents & POLLIN);
+> +	} else {
+> +		igt_assert_eq(ret, 0);
+> +	}
+> +}
+> +
+> +static void
+> +ev_fd_assert_unsignaled(int ev_fd)
+> +{
+> +	/* Poll the eventfd to give the kernel time to signal it, error out if
+> +	 * that happens */
+> +	ev_fd_poll_in(ev_fd, false);
+> +	igt_assert_eq(ev_fd_read(ev_fd), -EAGAIN);
+> +}
+> +
+> +static void
+> +ev_fd_assert_signaled(int ev_fd)
+> +{
+> +	ev_fd_poll_in(ev_fd, true);
+> +	igt_assert_eq(ev_fd_read(ev_fd), 0);
+> +}
+> +
+> +static const char test_bad_flags_desc[] =
+> +	"Verifies that passing bad flags is rejected";
+> +static void
+> +test_bad_flags(int fd)
+> +{
+> +	uint32_t flags;
+> +	uint32_t syncobj;
+> +	int ev_fd;
+> +
+> +	syncobj = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
+> +	flags = 0xdeadbeef;
+> +	ev_fd = eventfd(0, EFD_NONBLOCK);
+> +	igt_assert_eq(__syncobj_eventfd(fd, syncobj, 0, flags, ev_fd), -EINVAL);
+> +
+> +	close(ev_fd);
+> +	syncobj_destroy(fd, syncobj);
+> +}
+> +
+> +static const char test_illegal_handle_desc[] =
+> +	"Verifies that passing an invalid syncobj handle is rejected";
+> +static void
+> +test_illegal_handle(int fd)
+> +{
+> +	int ev_fd;
+> +
+> +	ev_fd = eventfd(0, EFD_NONBLOCK);
+> +	igt_assert_eq(__syncobj_eventfd(fd, 0, 0, 0, ev_fd), -ENOENT);
+> +
+> +	close(ev_fd);
+> +}
+> +
+> +static const char test_illegal_eventfd_desc[] =
+> +	"Verifies that passing an invalid eventfd is rejected";
+> +static void
+> +test_illegal_eventfd(int fd)
+> +{
+> +	int dev_null;
+> +	uint32_t syncobj;
+> +
+> +	syncobj = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
+> +
+> +	dev_null = open("/dev/null", O_RDWR);
+> +	igt_assert(dev_null >= 0);
+> +
+> +	igt_assert_eq(__syncobj_eventfd(fd, syncobj, 0, 0, dev_null), -EINVAL);
+> +
+> +	close(dev_null);
+> +	syncobj_destroy(fd, syncobj);
+> +}
+> +
+> +static const char test_bad_pad_desc[] =
+> +	"Verifies that passing a non-zero padding is rejected";
+> +static void
+> +test_bad_pad(int fd)
+> +{
+> +	struct drm_syncobj_eventfd args;
+> +	int ret;
+> +
+> +	args.handle = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
+> +	args.flags = 0;
+> +	args.point = 0;
+> +	args.fd = eventfd(0, EFD_NONBLOCK);
+> +	args.pad = 0xdeadbeef;
+> +
+> +	ret = drmIoctl(fd, DRM_IOCTL_SYNCOBJ_EVENTFD, &args);
+> +	igt_assert(ret == -1 && errno == EINVAL);
+> +}
+> +
+> +static const char test_wait_desc[] =
+> +	"Verifies waiting an already-materialized fence";
+> +static void
+> +test_wait(int fd, bool use_timeline)
+> +{
+> +	uint32_t syncobj;
+> +	int timeline, ev_fd_wait, ev_fd_avail;
+> +	uint64_t point = use_timeline ? 1 : 0;
+> +
+> +	syncobj = syncobj_create(fd, 0);
+> +	timeline = syncobj_attach_sw_sync(fd, syncobj, point);
+> +	ev_fd_wait = eventfd(0, EFD_NONBLOCK);
+> +	ev_fd_avail = eventfd(0, EFD_NONBLOCK);
+> +
+> +	syncobj_eventfd(fd, syncobj, point, 0, ev_fd_wait);
+> +	syncobj_eventfd(fd, syncobj, point, DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE,
+> +			ev_fd_avail);
+> +
+> +	ev_fd_assert_unsignaled(ev_fd_wait);
+> +	ev_fd_assert_signaled(ev_fd_avail);
+> +
+> +	sw_sync_timeline_inc(timeline, 1);
+> +
+> +	ev_fd_assert_signaled(ev_fd_wait);
+> +
+> +	close(ev_fd_wait);
+> +	close(ev_fd_avail);
+> +	close(timeline);
+> +	syncobj_destroy(fd, syncobj);
+> +}
+> +
+> +static const char test_wait_before_signal_desc[] =
+> +	"Verifies waiting a fence not yet materialized";
+> +static void
+> +test_wait_before_signal(int fd, bool use_timeline)
+> +{
+> +	uint32_t syncobj;
+> +	int timeline, ev_fd_wait, ev_fd_avail;
+> +	uint64_t point = use_timeline ? 1 : 0;
+> +
+> +	syncobj = syncobj_create(fd, 0);
+> +	ev_fd_wait = eventfd(0, EFD_NONBLOCK);
+> +	ev_fd_avail = eventfd(0, EFD_NONBLOCK);
+> +
+> +	syncobj_eventfd(fd, syncobj, point, 0, ev_fd_wait);
+> +	syncobj_eventfd(fd, syncobj, point, DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE,
+> +			ev_fd_avail);
+> +
+> +	ev_fd_assert_unsignaled(ev_fd_wait);
+> +	ev_fd_assert_unsignaled(ev_fd_avail);
+> +
+> +	timeline = syncobj_attach_sw_sync(fd, syncobj, point);
+> +
+> +	ev_fd_assert_unsignaled(ev_fd_wait);
+> +	ev_fd_assert_signaled(ev_fd_avail);
+> +
+> +	sw_sync_timeline_inc(timeline, 1);
+> +
+> +	ev_fd_assert_signaled(ev_fd_wait);
+> +
+> +	close(ev_fd_wait);
+> +	close(ev_fd_avail);
+> +	close(timeline);
+> +	syncobj_destroy(fd, syncobj);
+> +}
+> +
+> +static const char test_wait_signaled_desc[] =
+> +	"Verifies waiting an already-signaled fence";
+> +static void
+> +test_wait_signaled(int fd, bool use_timeline)
+> +{
+> +	uint32_t syncobj;
+> +	int timeline, ev_fd_wait, ev_fd_avail;
+> +	uint64_t point = use_timeline ? 1 : 0;
+> +
+> +	syncobj = syncobj_create(fd, 0);
+> +	ev_fd_wait = eventfd(0, EFD_NONBLOCK);
+> +	ev_fd_avail = eventfd(0, EFD_NONBLOCK);
+> +
+> +	timeline = syncobj_attach_sw_sync(fd, syncobj, point);
+> +	sw_sync_timeline_inc(timeline, 1);
+> +
+> +	syncobj_eventfd(fd, syncobj, point, 0, ev_fd_wait);
+> +	syncobj_eventfd(fd, syncobj, point, DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE,
+> +			ev_fd_avail);
+> +
+> +	ev_fd_assert_signaled(ev_fd_wait);
+> +	ev_fd_assert_signaled(ev_fd_avail);
+> +
+> +	close(ev_fd_wait);
+> +	close(ev_fd_avail);
+> +	close(timeline);
+> +	syncobj_destroy(fd, syncobj);
+> +}
+> +
+> +igt_main
+> +{
+> +	int fd = -1, i;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_ANY);
+> +		igt_require(has_syncobj_eventfd(fd));
+> +		igt_require_sw_sync();
+> +	}
+> +
+> +	igt_describe(test_bad_flags_desc);
+> +	igt_subtest("invalid-bad-flags")
+> +		test_bad_flags(fd);
+> +
+> +	igt_describe(test_illegal_handle_desc);
+> +	igt_subtest("invalid-illegal-handle")
+> +		test_illegal_handle(fd);
+> +
+> +	igt_describe(test_illegal_eventfd_desc);
+> +	igt_subtest("invalid-illegal-eventfd")
+> +		test_illegal_eventfd(fd);
+> +
+> +	igt_describe(test_bad_pad_desc);
+> +	igt_subtest("invalid-bad-pad")
+> +		test_bad_pad(fd);
+> +
+> +	for (i = 0; i < 2; i++) {
+> +		bool use_timeline = i == 1;
+> +		const char *kind = use_timeline ? "timeline" : "binary";
+> +
+> +		igt_describe(test_wait_desc);
+> +		igt_subtest_f("%s-wait", kind)
+> +			test_wait(fd, use_timeline);
+> +
+> +		igt_describe(test_wait_before_signal_desc);
+> +		igt_subtest_f("%s-wait-before-signal", kind)
+> +			test_wait_before_signal(fd, use_timeline);
+> +
+> +		igt_describe(test_wait_signaled_desc);
+> +		igt_subtest_f("%s-wait-signaled", kind)
+> +			test_wait_signaled(fd, use_timeline);
+> +	}
+> +
+> +	igt_fixture {
+> +		drm_close_driver(fd);
+> +	}
+> +}
