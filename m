@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6A4E10E3D8
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 09:25:07 +0000 (UTC)
-Message-ID: <340f937c-6a97-966f-0b6c-4231c3159672@intel.com>
-Date: Wed, 12 Jul 2023 11:24:49 +0200
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
- <20230711112009.122482-18-zbigniew.kempczynski@intel.com>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230711112009.122482-18-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============7141108627890436527=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 17/17] tests/gem_ccs: Avoid writing
- png twice
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: priyanka.dandamudi@intel.com
+Date: Wed, 12 Jul 2023 09:26:17 -0000
+Message-ID: <168915397738.17978.17547315974670877259@emeril.freedesktop.org>
+References: <20230711093602.987411-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20230711093602.987411-1-priyanka.dandamudi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB4ZS94ZV9jcmVh?=
+ =?utf-8?q?te=3A_Modify_massive_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,35 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 11.07.2023 13:20, Zbigniew Kempczyński wrote:
-> As Karolina noticed we write source png twice what's just takes
-> time as source surface is not touched. Drop one png write.
+--===============7141108627890436527==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-It was outside of the scope, but you did it! Thanks for writing this patch:
+== Series Details ==
 
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+Series: xe/xe_create: Modify massive test
+URL   : https://patchwork.freedesktop.org/series/120537/
+State : info
 
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Karolina Stolarek <karolina.stolarek@intel.com>
-> ---
->   tests/i915/gem_ccs.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-> index d9d785ed9b..a1302e0a4d 100644
-> --- a/tests/i915/gem_ccs.c
-> +++ b/tests/i915/gem_ccs.c
-> @@ -421,7 +421,6 @@ static void block_copy(int i915,
->   	if (mid->compression)
->   		igt_assert(memcmp(src->ptr, mid->ptr, src->size) != 0);
->   
-> -	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
->   	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
->   
->   	if (config->surfcopy && pext) {
+== Summary ==
+
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9382](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9382/index.html)
+
+
+
+--===============7141108627890436527==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>xe/xe_create: Modify massive test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120537/">https://patchwork.freedesktop.org/series/120537/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9382/index.html">IGTPW_9382</a></p>
+
+</body>
+</html>
+
+--===============7141108627890436527==--
