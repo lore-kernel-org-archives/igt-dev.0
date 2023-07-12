@@ -1,23 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA98710E599
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:03:13 +0000 (UTC)
-Date: Wed, 12 Jul 2023 19:03:03 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230712170303.ywauy7iekte2w2gq@zkempczy-mobl2>
-References: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
- <20230711112009.122482-11-zbigniew.kempczynski@intel.com>
- <01576293-301d-c3c7-29f1-2f23a04fe2ae@intel.com>
- <20230712093357.atvsv7m4chl6iebn@zkempczy-mobl2>
- <437559c5-8676-2430-220a-bfa8b2575959@intel.com>
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2045.outbound.protection.outlook.com [40.107.93.45])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0869410E59F
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:05:11 +0000 (UTC)
+Message-ID: <49943005-320a-04d5-278d-4a88a908ce88@amd.com>
+Date: Wed, 12 Jul 2023 11:04:27 -0600
+To: Hersen Wu <hersenxs.wu@amd.com>, igt-dev@lists.freedesktop.org,
+ rodrigo.siqueira@amd.com, aurabindo.pillai@amd.com, stylon.wang@amd.com,
+ hamza.mahfooz@amd.com, sunpeng.li@amd.com
+References: <20230712133059.34021-1-hersenxs.wu@amd.com>
+Content-Language: en-US
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <20230712133059.34021-1-hersenxs.wu@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <437559c5-8676-2430-220a-bfa8b2575959@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 10/17] lib/intel_allocator: Add
- intel_allocator_bind()
+Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_psr: Fix eDP PSR1
+ test failure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,484 +24,204 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jul 12, 2023 at 12:39:42PM +0200, Karolina Stolarek wrote:
-> On 12.07.2023 11:33, Zbigniew Kempczyński wrote:
-> > On Wed, Jul 12, 2023 at 11:13:24AM +0200, Karolina Stolarek wrote:
-> > > On 11.07.2023 13:20, Zbigniew Kempczyński wrote:
-> > > > Synchronize allocator state to vm.
-> > > > 
-> > > > This change allows xe user to execute vm-bind/unbind for allocator
-> > > > alloc()/free() operations which occurred since last binding/unbinding.
-> > > > Before doing exec user should call intel_allocator_bind() to ensure
-> > > > all vma's are in place.
-> > > > 
-> > > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > > > ---
-> > > > v2: Rewrite tracking mechanism: previous code uses bind map embedded
-> > > >       in allocator structure. Unfortunately this wasn't good idea
-> > > >       - for xe binding everything was fine, but it regress multiprocess/
-> > > >       multithreaded allocations. Main reason of this was children
-> > > >       processes couldn't get its reference as this memory was allocated
-> > > >       on allocator thread (separate process). Currently each child
-> > > >       contains its own separate tracking maps for ahnd and for each
-> > > >       ahnd bind map.
-> > > > v3: - Don't use priv field (we may clean bind_map apriori as failing
-> > > >         asserts and outdated bind_map is not a problem anymore).
-> > > >       - Use only vm on tracking ahnd (Karolina)
-> > > >       - Add braces to avoid checkpatch complaining (Karolina)
-> > > >       - Use igt_assert_f() instead conditional block (Karolina)
-> > > > ---
-> > > >    lib/igt_core.c        |   5 +
-> > > >    lib/intel_allocator.c | 259 +++++++++++++++++++++++++++++++++++++++++-
-> > > >    lib/intel_allocator.h |   3 +
-> > > >    3 files changed, 265 insertions(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/lib/igt_core.c b/lib/igt_core.c
-> > > > index 2ae2cb6883..041e4b3288 100644
-> > > > --- a/lib/igt_core.c
-> > > > +++ b/lib/igt_core.c
-> > > > @@ -74,6 +74,7 @@
-> > > >    #include "igt_sysrq.h"
-> > > >    #include "igt_rc.h"
-> > > >    #include "igt_list.h"
-> > > > +#include "igt_map.h"
-> > > >    #include "igt_device_scan.h"
-> > > >    #include "igt_thread.h"
-> > > >    #include "runnercomms.h"
-> > > > @@ -320,6 +321,8 @@ bool test_multi_fork_child;
-> > > >    /* For allocator purposes */
-> > > >    pid_t child_pid  = -1;
-> > > >    __thread pid_t child_tid  = -1;
-> > > > +struct igt_map *ahnd_map;
-> > > > +pthread_mutex_t ahnd_map_mutex;
-> > > >    enum {
-> > > >    	/*
-> > > > @@ -2523,6 +2526,8 @@ bool __igt_fork(void)
-> > > >    	case 0:
-> > > >    		test_child = true;
-> > > >    		pthread_mutex_init(&print_mutex, NULL);
-> > > > +		pthread_mutex_init(&ahnd_map_mutex, NULL);
-> > > > +		ahnd_map = igt_map_create(igt_map_hash_64, igt_map_equal_64);
-> > > >    		child_pid = getpid();
-> > > >    		child_tid = -1;
-> > > >    		exit_handler_count = 0;
-> > > > diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-> > > > index cf964ccc41..f0a9b7fb53 100644
-> > > > --- a/lib/intel_allocator.c
-> > > > +++ b/lib/intel_allocator.c
-> > > > @@ -17,8 +17,8 @@
-> > > >    #include "intel_allocator.h"
-> > > >    #include "intel_allocator_msgchannel.h"
-> > > >    #include "xe/xe_query.h"
-> > > > +#include "xe/xe_util.h"
-> > > > -//#define ALLOCDBG
-> > > >    #ifdef ALLOCDBG
-> > > >    #define alloc_info igt_info
-> > > >    #define alloc_debug igt_debug
-> > > > @@ -45,6 +45,14 @@ static inline const char *reqstr(enum reqtype request_type)
-> > > >    #define alloc_debug(...) {}
-> > > >    #endif
-> > > > +#ifdef ALLOCBINDDBG
-> > > > +#define bind_info igt_info
-> > > > +#define bind_debug igt_debug
-> > > > +#else
-> > > > +#define bind_info(...) {}
-> > > > +#define bind_debug(...) {}
-> > > > +#endif
-> > > > +
-> > > >    /*
-> > > >     * We limit allocator space to avoid hang when batch would be
-> > > >     * pinned in the last page.
-> > > > @@ -64,6 +72,30 @@ struct handle_entry {
-> > > >    	struct allocator *al;
-> > > >    };
-> > > > +/* For tracking alloc()/free() for Xe */
-> > > > +struct ahnd_info {
-> > > > +	int fd;
-> > > > +	uint64_t ahnd;
-> > > > +	uint32_t vm;
-> > > > +	enum intel_driver driver;
-> > > > +	struct igt_map *bind_map;
-> > > > +	pthread_mutex_t bind_map_mutex;
-> > > > +};
-> > > > +
-> > > > +enum allocator_bind_op {
-> > > > +	BOUND,
-> > > > +	TO_BIND,
-> > > > +	TO_UNBIND,
-> > > > +};
-> > > > +
-> > > > +struct allocator_object {
-> > > > +	uint32_t handle;
-> > > > +	uint64_t offset;
-> > > > +	uint64_t size;
-> > > > +
-> > > > +	enum allocator_bind_op bind_op;
-> > > > +};
-> > > > +
-> > > >    struct intel_allocator *
-> > > >    intel_allocator_reloc_create(int fd, uint64_t start, uint64_t end);
-> > > >    struct intel_allocator *
-> > > > @@ -122,6 +154,13 @@ static pid_t allocator_pid = -1;
-> > > >    extern pid_t child_pid;
-> > > >    extern __thread pid_t child_tid;
-> > > > +/*
-> > > > + * Track alloc()/free() requires storing in local process which has
-> > > > + * an access to real drm fd it can work on.
-> > > > + */
-> > > > +extern struct igt_map *ahnd_map;
-> > > > +extern pthread_mutex_t ahnd_map_mutex;
-> > > > +
-> > > >    /*
-> > > >     * - for parent process we have child_pid == -1
-> > > >     * - for child which calls intel_allocator_init() allocator_pid == child_pid
-> > > > @@ -837,6 +876,45 @@ void intel_allocator_multiprocess_stop(void)
-> > > >    	}
-> > > >    }
-> > > > +static void track_ahnd(int fd, uint64_t ahnd, uint32_t vm)
-> > > > +{
-> > > > +	struct ahnd_info *ainfo;
-> > > > +
-> > > > +	pthread_mutex_lock(&ahnd_map_mutex);
-> > > > +	ainfo = igt_map_search(ahnd_map, &ahnd);
-> > > > +	if (!ainfo) {
-> > > > +		ainfo = malloc(sizeof(*ainfo));
-> > > > +		ainfo->fd = fd;
-> > > > +		ainfo->ahnd = ahnd;
-> > > > +		ainfo->vm = vm;
-> > > > +		ainfo->driver = get_intel_driver(fd);
-> > > > +		ainfo->bind_map = igt_map_create(igt_map_hash_32, igt_map_equal_32);
-> > > > +		pthread_mutex_init(&ainfo->bind_map_mutex, NULL);
-> > > > +		bind_debug("[TRACK AHND] pid: %d, tid: %d, create <fd: %d, "
-> > > > +			   "ahnd: %llx, vm: %u, driver: %d, ahnd_map: %p, bind_map: %p>\n",
-> > > > +			   getpid(), gettid(), ainfo->fd,
-> > > > +			   (long long)ainfo->ahnd, ainfo->vm,
-> > > > +			   ainfo->driver, ahnd_map, ainfo->bind_map);
-> > > > +		igt_map_insert(ahnd_map, &ainfo->ahnd, ainfo);
-> > > > +	}
-> > > > +
-> > > > +	pthread_mutex_unlock(&ahnd_map_mutex);
-> > > > +}
-> > > > +
-> > > > +static void untrack_ahnd(uint64_t ahnd)
-> > > > +{
-> > > > +	struct ahnd_info *ainfo;
-> > > > +
-> > > > +	pthread_mutex_lock(&ahnd_map_mutex);
-> > > > +	ainfo = igt_map_search(ahnd_map, &ahnd);
-> > > > +	if (ainfo) {
-> > > > +		bind_debug("[UNTRACK AHND]: pid: %d, tid: %d, removing ahnd: %llx\n",
-> > > > +			   getpid(), gettid(), (long long)ahnd);
-> > > > +		igt_map_remove(ahnd_map, &ahnd, map_entry_free_func);
-> > > > +	}
-> > > > +	pthread_mutex_unlock(&ahnd_map_mutex);
-> > > > +}
-> > > > +
-> > > >    static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
-> > > >    					    uint32_t vm,
-> > > >    					    uint64_t start, uint64_t end,
-> > > > @@ -895,6 +973,12 @@ static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
-> > > >    	igt_assert(resp.open.allocator_handle);
-> > > >    	igt_assert(resp.response_type == RESP_OPEN);
-> > > > +	/*
-> > > > +	 * Igts mostly uses ctx as id when opening the allocator (i915 legacy).
-> > > > +	 * If ctx is passed let's use it as an vm id, otherwise use vm.
-> > > > +	 */
-> > > > +	track_ahnd(fd, resp.open.allocator_handle, ctx ?: vm);
-> > > > +
-> > > >    	return resp.open.allocator_handle;
-> > > >    }
-> > > > @@ -1001,6 +1085,8 @@ bool intel_allocator_close(uint64_t allocator_handle)
-> > > >    	igt_assert(handle_request(&req, &resp) == 0);
-> > > >    	igt_assert(resp.response_type == RESP_CLOSE);
-> > > > +	untrack_ahnd(allocator_handle);
-> > > > +
-> > > >    	return resp.close.is_empty;
-> > > >    }
-> > > > @@ -1034,6 +1120,74 @@ void intel_allocator_get_address_range(uint64_t allocator_handle,
-> > > >    		*endp = resp.address_range.end;
-> > > >    }
-> > > > +static bool is_same(struct allocator_object *obj,
-> > > > +		    uint32_t handle, uint64_t offset, uint64_t size,
-> > > > +		    enum allocator_bind_op bind_op)
-> > > > +{
-> > > > +	return obj->handle == handle &&	obj->offset == offset && obj->size == size &&
-> > > > +	       (obj->bind_op == bind_op || obj->bind_op == BOUND);
-> > > > +}
-> > > > +
-> > > > +static void track_object(uint64_t allocator_handle, uint32_t handle,
-> > > > +			 uint64_t offset, uint64_t size,
-> > > > +			 enum allocator_bind_op bind_op)
-> > > > +{
-> > > > +	struct ahnd_info *ainfo;
-> > > > +	struct allocator_object *obj;
-> > > > +
-> > > > +	bind_debug("[TRACK OBJECT]: [%s] pid: %d, tid: %d, ahnd: %llx, handle: %u, offset: %llx, size: %llx\n",
-> > > > +		   bind_op == TO_BIND ? "BIND" : "UNBIND",
-> > > > +		   getpid(), gettid(),
-> > > > +		   (long long)allocator_handle,
-> > > > +		   handle, (long long)offset, (long long)size);
-> > > > +
-> > > > +	if (offset == ALLOC_INVALID_ADDRESS) {
-> > > > +		bind_debug("[TRACK OBJECT] => invalid address %llx, skipping tracking\n",
-> > > > +			   (long long)offset);
-> > > > +		return;
-> > > > +	}
-> > > > +
-> > > > +	pthread_mutex_lock(&ahnd_map_mutex);
-> > > > +	ainfo = igt_map_search(ahnd_map, &allocator_handle);
-> > > > +	pthread_mutex_unlock(&ahnd_map_mutex);
-> > > > +	igt_assert_f(ainfo, "[TRACK OBJECT] => MISSING ahnd %llx <=\n",
-> > > > +		     (long long)allocator_handle);
-> > > > +
-> > > > +	if (ainfo->driver == INTEL_DRIVER_I915)
-> > > > +		return; /* no-op for i915, at least for now */
-> > > > +
-> > > > +	pthread_mutex_lock(&ainfo->bind_map_mutex);
-> > > > +	obj = igt_map_search(ainfo->bind_map, &handle);
-> > > > +	if (obj) {
-> > > > +		/*
-> > > > +		 * User may call alloc() couple of times, check object is the
-> > > > +		 * same. For free() there's simple case, just remove from
-> > > > +		 * bind_map.
-> > > > +		 */
-> > > > +		if (bind_op == TO_BIND) {
-> > > > +			igt_assert_eq(is_same(obj, handle, offset, size, bind_op), true);
-> > > > +		} else if (bind_op == TO_UNBIND) {
-> > > > +			if (obj->bind_op == TO_BIND)
-> > > > +				igt_map_remove(ainfo->bind_map, &obj->handle, map_entry_free_func);
-> > > > +			else if (obj->bind_op == BOUND)
-> > > > +				obj->bind_op = bind_op;
-> > > > +		}
-> > > > +	} else {
-> > > > +		/* Ignore to unbind bo which wasn't previously inserted */
-> > > > +		if (bind_op == TO_UNBIND)
-> > > > +			goto out;
-> > > > +
-> > > > +		obj = calloc(1, sizeof(*obj));
-> > > > +		obj->handle = handle;
-> > > > +		obj->offset = offset;
-> > > > +		obj->size = size;
-> > > > +		obj->bind_op = bind_op;
-> > > > +		igt_map_insert(ainfo->bind_map, &obj->handle, obj);
-> > > > +	}
-> > > > +out:
-> > > > +	pthread_mutex_unlock(&ainfo->bind_map_mutex);
-> > > > +}
-> > > > +
-> > > >    /**
-> > > >     * __intel_allocator_alloc:
-> > > >     * @allocator_handle: handle to an allocator
-> > > > @@ -1065,6 +1219,8 @@ uint64_t __intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
-> > > >    	igt_assert(handle_request(&req, &resp) == 0);
-> > > >    	igt_assert(resp.response_type == RESP_ALLOC);
-> > > > +	track_object(allocator_handle, handle, resp.alloc.offset, size, TO_BIND);
-> > > > +
-> > > >    	return resp.alloc.offset;
-> > > >    }
-> > > > @@ -1142,6 +1298,8 @@ bool intel_allocator_free(uint64_t allocator_handle, uint32_t handle)
-> > > >    	igt_assert(handle_request(&req, &resp) == 0);
-> > > >    	igt_assert(resp.response_type == RESP_FREE);
-> > > > +	track_object(allocator_handle, handle, 0, 0, TO_UNBIND);
-> > > > +
-> > > >    	return resp.free.freed;
-> > > >    }
-> > > > @@ -1326,6 +1484,84 @@ void intel_allocator_print(uint64_t allocator_handle)
-> > > >    	}
-> > > >    }
-> > > > +static void __xe_op_bind(struct ahnd_info *ainfo, uint32_t sync_in, uint32_t sync_out)
-> > > > +{
-> > > > +	struct allocator_object *obj;
-> > > > +	struct igt_map_entry *pos;
-> > > > +	struct igt_list_head obj_list;
-> > > > +	struct xe_object *entry, *tmp;
-> > > > +
-> > > > +	IGT_INIT_LIST_HEAD(&obj_list);
-> > > > +
-> > > > +	pthread_mutex_lock(&ainfo->bind_map_mutex);
-> > > > +	igt_map_foreach(ainfo->bind_map, pos) {
-> > > > +		obj = pos->data;
-> > > > +
-> > > > +		if (obj->bind_op == BOUND)
-> > > > +			continue;
-> > > > +
-> > > > +		bind_info("= [vm: %u] %s => %u %lx %lx\n",
-> > > > +			  ainfo->vm,
-> > > > +			  obj->bind_op == TO_BIND ? "TO BIND" : "TO UNBIND",
-> > > > +			  obj->handle, obj->offset,
-> > > > +			  obj->size);
-> > > > +
-> > > > +		entry = malloc(sizeof(*entry));
-> > > > +		entry->handle = obj->handle;
-> > > > +		entry->offset = obj->offset;
-> > > > +		entry->size = obj->size;
-> > > > +		entry->bind_op = obj->bind_op == TO_BIND ? XE_OBJECT_BIND :
-> > > > +							   XE_OBJECT_UNBIND;
-> > > > +		igt_list_add(&entry->link, &obj_list);
-> > > > +
-> > > > +		/*
-> > > > +		 * We clean bind_map even before calling bind/unbind
-> > > > +		 * as all binding operations asserts in case of error.
-> > > > +		 */
-> > > > +		if (obj->bind_op == TO_BIND)
-> > > > +			obj->bind_op = BOUND;
-> > > > +		else
-> > > > +			igt_map_remove(ainfo->bind_map, &obj->handle,
-> > > > +				       map_entry_free_func);
-> > > 
-> > > I don't quite understand why we can clean up the map even before the actual
-> > > bind/unbind happens. If an assert fails, it means that vm_(un)bind failed,
-> > > so the actual operation didn't succeed, and that state change is incorrect.
-> > > I believe that there's a reason we can do it this way, I just don't
-> > > understand it.
-> > 
-> > I allocate separate list of xe_objects which is an argument to
-> > xe_bind_unbind_async(). As list is detached (separate) from the bind_map
-> > I may apriori do cleanup in the map. If bind/unbind is unsuccessful
-> > outdated bind_map is the smallest problem here.
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+
+On 2023-07-12 07:30, Hersen Wu wrote:
+> From: Hersen Wu <Hersenxs.Wu@amd.com>
 > 
-> I'm aware they are separate entities, I just wonder what is the benefit of
-> doing it here. Are there any dangers of removing that binding before it's
-> actually unbound?
-
-Benefit is that I don't need to track xe_object -> allocator_object or keep
-backward reference to update the bind_map. Unsuccessful bind/unbind asserts
-and what the bind_map contains doesn't matter. We enter failure path so igt
-core is cleaning up preparing to run next subtest.
-
-From my perspective if user is properly handling offsets and calls
-intel_allocator_bind() before the exec operation no assert can occur. I did
-profound test in api_intel_allocator@two-level-inception adding vm for xe
-and binding/unbinding calling intel_allocator_bind(). For RELOC stress
-test worked properly (there's no risk of reusing offset returned to the
-pool by other child/thread). For SIMPLE we may encounter situation where
-one offset is returned in some child/thread, unbind didn't happened yet,
-another child/thread allocated getting same offset so binding it will fail
-(vm still has unbounded offset). As RELOC doesn't reuse same offset (until
-wrapping around) no risk of overlapping occurs (almost ;).
-
-Anyway - it is possible to extend the allocator to be more "transactional"
-and aware what offsets are still not unbounded but I decided to not add this
-(at least) now. Especially for RELOC (mostly used) it doesn't add too much
-value. And for SIMPLE it requires deferred releasing after unbind is complete
-(what is also problematic if you want to allow user to pass its own syncobjs).
-
---
-Zbigniew
-
+> 1. Replace for_each_pipe_with_single_output with
+>     for_each_connected_output to avoid
+>     igt_display_commit_atomic return failure.
 > 
-> All the best,
-> Karolina
+>     Linux kernel AMD implementaion does not support dynamic
+>     allocatation for pipe connector combination. Kernel
+>     atomic check will return true only for one specific
+>     pipe connector combination, return false for other
+>     combinations.
 > 
-> > On assert path igt_fail()
-> > calls intel_allocator_init() which just frees contents on ahnd_map[]->bind_map.
-> > In children there's simpler because they just dies. Real problem is we
-> > still have dangling vm (no xe_vm_destroy()).
-> > So I decided to update the bind_map before calling bind/unbind as on failure
-> > doesn't matter what it will contain.
-> > 
-> > --
-> > Zbigniew
-> > 
-> > > 
-> > > Apart from that one thing, the patch looks good to me.
-> > > 
-> > > All the best,
-> > > Karolina
-> > > 
-> > > > +	}
-> > > > +	pthread_mutex_unlock(&ainfo->bind_map_mutex);
-> > > > +
-> > > > +	xe_bind_unbind_async(ainfo->fd, ainfo->vm, 0, &obj_list, sync_in, sync_out);
-> > > > +
-> > > > +	igt_list_for_each_entry_safe(entry, tmp, &obj_list, link) {
-> > > > +		igt_list_del(&entry->link);
-> > > > +		free(entry);
-> > > > +	}
-> > > > +}
-> > > > +
-> > > > +/**
-> > > > + * intel_allocator_bind:
-> > > > + * @allocator_handle: handle to an allocator
-> > > > + * @sync_in: syncobj (fence-in)
-> > > > + * @sync_out: syncobj (fence-out)
-> > > > + *
-> > > > + * Function binds and unbinds all objects added to the allocator which weren't
-> > > > + * previously binded/unbinded.
-> > > > + *
-> > > > + **/
-> > > > +void intel_allocator_bind(uint64_t allocator_handle,
-> > > > +			  uint32_t sync_in, uint32_t sync_out)
-> > > > +{
-> > > > +	struct ahnd_info *ainfo;
-> > > > +
-> > > > +	pthread_mutex_lock(&ahnd_map_mutex);
-> > > > +	ainfo = igt_map_search(ahnd_map, &allocator_handle);
-> > > > +	pthread_mutex_unlock(&ahnd_map_mutex);
-> > > > +	igt_assert(ainfo);
-> > > > +
-> > > > +	/*
-> > > > +	 * We collect bind/unbind operations on alloc()/free() to do group
-> > > > +	 * operation getting @sync_in as syncobj handle (fence-in). If user
-> > > > +	 * passes 0 as @sync_out we bind/unbind synchronously.
-> > > > +	 */
-> > > > +	__xe_op_bind(ainfo, sync_in, sync_out);
-> > > > +}
-> > > > +
-> > > >    static int equal_handles(const void *key1, const void *key2)
-> > > >    {
-> > > >    	const struct handle_entry *h1 = key1, *h2 = key2;
-> > > > @@ -1383,6 +1619,22 @@ static void __free_maps(struct igt_map *map, bool close_allocators)
-> > > >    	igt_map_destroy(map, map_entry_free_func);
-> > > >    }
-> > > > +static void __free_ahnd_map(void)
-> > > > +{
-> > > > +	struct igt_map_entry *pos;
-> > > > +	struct ahnd_info *ainfo;
-> > > > +
-> > > > +	if (!ahnd_map)
-> > > > +		return;
-> > > > +
-> > > > +	igt_map_foreach(ahnd_map, pos) {
-> > > > +		ainfo = pos->data;
-> > > > +		igt_map_destroy(ainfo->bind_map, map_entry_free_func);
-> > > > +	}
-> > > > +
-> > > > +	igt_map_destroy(ahnd_map, map_entry_free_func);
-> > > > +}
-> > > > +
-> > > >    /**
-> > > >     * intel_allocator_init:
-> > > >     *
-> > > > @@ -1400,12 +1652,15 @@ void intel_allocator_init(void)
-> > > >    	__free_maps(handles, true);
-> > > >    	__free_maps(ctx_map, false);
-> > > >    	__free_maps(vm_map, false);
-> > > > +	__free_ahnd_map();
-> > > >    	atomic_init(&next_handle, 1);
-> > > >    	handles = igt_map_create(hash_handles, equal_handles);
-> > > >    	ctx_map = igt_map_create(hash_instance, equal_ctx);
-> > > >    	vm_map = igt_map_create(hash_instance, equal_vm);
-> > > > -	igt_assert(handles && ctx_map && vm_map);
-> > > > +	pthread_mutex_init(&ahnd_map_mutex, NULL);
-> > > > +	ahnd_map = igt_map_create(igt_map_hash_64, igt_map_equal_64);
-> > > > +	igt_assert(handles && ctx_map && vm_map && ahnd_map);
-> > > >    	channel = intel_allocator_get_msgchannel(CHANNEL_SYSVIPC_MSGQUEUE);
-> > > >    }
-> > > > diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
-> > > > index 3ec74f6191..f9ff7f1cc9 100644
-> > > > --- a/lib/intel_allocator.h
-> > > > +++ b/lib/intel_allocator.h
-> > > > @@ -210,6 +210,9 @@ bool intel_allocator_reserve_if_not_allocated(uint64_t allocator_handle,
-> > > >    void intel_allocator_print(uint64_t allocator_handle);
-> > > > +void intel_allocator_bind(uint64_t allocator_handle,
-> > > > +			  uint32_t sync_in, uint32_t sync_out);
-> > > > +
-> > > >    #define ALLOC_INVALID_ADDRESS (-1ull)
-> > > >    #define INTEL_ALLOCATOR_NONE   0
-> > > >    #define INTEL_ALLOCATOR_RELOC  1
+> 2. Add eDP Rx PSR capability check psr_mode_supported.
+> 
+> 3. Increase PSR_SETTLE_DELAY to 10 seconds.
+>     Measure Linux kernel AMD implementation, it will take around 8
+>     seconds for driver and firmmware to enter PSR1 state.
+> 
+> Signed-off-by: Hersen Wu <Hersenxs.Wu@amd.com>
+> ---
+>   lib/igt_amd.c          |  4 +++-
+>   tests/amdgpu/amd_psr.c | 54 ++++++++++++++++++++++--------------------
+>   2 files changed, 31 insertions(+), 27 deletions(-)
+> 
+> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+> index 8837714f7..8da405649 100644
+> --- a/lib/igt_amd.c
+> +++ b/lib/igt_amd.c
+> @@ -1037,7 +1037,9 @@ bool igt_amd_psr_support_sink(int drm_fd, char *connector_name, enum psr_mode mo
+>   		return false;
+>   
+>   	if (mode == PSR_MODE_1)
+> -		return strstr(buf, "Sink support: yes [0x01]");
+> +		return strstr(buf, "Sink support: yes [0x01]") ||
+> +		       strstr(buf, "Sink support: yes [0x03]") ||
+> +		       strstr(buf, "Sink support: yes [0x04]");
+>   	else
+>   		return strstr(buf, "Sink support: yes [0x03]") ||
+>   		       strstr(buf, "Sink support: yes [0x04]");
+> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+> index 3932e143a..9da161a09 100644
+> --- a/tests/amdgpu/amd_psr.c
+> +++ b/tests/amdgpu/amd_psr.c
+> @@ -38,8 +38,11 @@ IGT_TEST_DESCRIPTION("Basic test for enabling Panel Self Refresh for eDP display
+>   
+>   /* After a full update, a few fast updates are necessary for PSR to be enabled */
+>   #define N_FLIPS 6
+> -/* DMCUB takes some time to actually enable PSR. Worst case delay is 4 seconds */
+> -#define PSR_SETTLE_DELAY 4
+> +/* Linux kernel AMD implementaion, After static image is submitted by kernel driver,
+> + * kernel driver notify DMCUB FW ready to enter PSR1, DMUB DW takes around 8 seconds
+> + * to actually enable PSR1 state.
+> + */
+> +#define PSR_SETTLE_DELAY 10
+>   
+>   typedef struct {
+>   	int x, y;
+> @@ -234,7 +237,7 @@ static int check_conn_type(data_t *data, uint32_t type) {
+>   	return -1;
+>   }
+>   
+> -static bool psr_su_supported(data_t *data)
+> +static bool psr_mode_supported(data_t *data, enum psr_mode mode)
+>   {
+>   	/* run PSR-SU test i.i.f. eDP panel and kernel driver both support PSR-SU */
+>   	if (!igt_amd_output_has_psr_cap(data->fd, data->output->name)) {
+> @@ -247,24 +250,24 @@ static bool psr_su_supported(data_t *data)
+>   		return false;
+>   	}
+>   
+> -	if (!igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2)) {
+> -		igt_warn(" output %s not support PSR-SU\n", data->output->name);
+> +	if (!igt_amd_psr_support_sink(data->fd, data->output->name, mode)) {
+> +		igt_warn(" output %s not support PSR mode %d\n", data->output->name, mode);
+>   		return false;
+>   	}
+>   
+> -	if (!igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2)) {
+> -		igt_warn(" kernel driver not support PSR-SU\n");
+> +	if (!igt_amd_psr_support_drv(data->fd, data->output->name, mode)) {
+> +		igt_warn(" kernel driver not support PSR mode %d\n", mode);
+>   		return false;
+>   	}
+>   
+>   	return true;
+>   }
+>   
+> +/* run_check_psr does not work with dual eDP */
+>   static void run_check_psr(data_t *data, bool test_null_crtc) {
+> -	int fd, edp_idx, dp_idx, ret, i, psr_state;
+> +	int edp_idx, dp_idx, ret, i, psr_state;
+>   	igt_fb_t ref_fb, ref_fb2;
+>   	igt_fb_t *flip_fb;
+> -	enum pipe pipe;
+>   	igt_output_t *output;
+>   
+>   	test_init(data);
+> @@ -273,7 +276,12 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
+>   	dp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_DisplayPort);
+>   	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
+>   
+> -	for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +	/* check if eDP support PSR1, PSR-SU.
+> +	 * test_null_crtc test is valid only with PSR eDP connected
+> +	 */
+> +	igt_skip_on(!psr_mode_supported(data, PSR_MODE_1) && !psr_mode_supported(data, PSR_MODE_2));
+> +
+> +	for_each_connected_output(&data->display, output) {
+>   		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
+>   			continue;
+>   
+> @@ -285,7 +293,7 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
+>   				    1.0, 0.0, &ref_fb2);
+>   
+>   		igt_plane_set_fb(data->primary, &ref_fb);
+> -		igt_output_set_pipe(output, pipe);
+> +
+>   		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+>   
+>   		for (i = 0; i < N_FLIPS; i++) {
+> @@ -299,29 +307,26 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
+>   			igt_require(ret == 0);
+>   			kmstest_wait_for_pageflip(data->fd);
+>   		}
+> -	}
+>   
+> -	/* PSR state takes some time to settle its value on static screen */
+> -	sleep(PSR_SETTLE_DELAY);
+> -
+> -	for_each_pipe_with_single_output(&data->display, pipe, output) {
+> -		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
+> -			continue;
+> +		/* PSR state takes some time to settle its value on static screen */
+> +		sleep(PSR_SETTLE_DELAY);
+>   
+>   		psr_state =  igt_amd_read_psr_state(data->fd, output->name);
+>   		igt_fail_on_f(psr_state < PSR_STATE0, "Open PSR state debugfs failed\n");
+>   		igt_fail_on_f(psr_state < PSR_STATE1, "PSR was not enabled for connector %s\n", output->name);
+>   		igt_fail_on_f(psr_state == PSR_STATE_INVALID, "PSR is invalid for connector %s\n", output->name);
+>   		igt_fail_on_f(psr_state != PSR_STATE3, "PSR state is expected to be at PSR_STATE3 (Active) on a "
+> -
+>   			      "static screen for connector %s\n", output->name);
+> +
+> +		igt_remove_fb(data->fd, &ref_fb);
+> +		igt_remove_fb(data->fd, &ref_fb2);
+>   	}
+>   
+>   	if (test_null_crtc) {
+>   		/* check whether settings crtc to null generated any warning (eDP+DP) */
+>   		igt_skip_on_f(dp_idx == -1, "no DP connector found\n");
+>   
+> -		for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +		for_each_connected_output(&data->display, output) {
+>   			if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
+>   				continue;
+>   
+> @@ -330,9 +335,6 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
+>   		}
+>   	}
+>   
+> -	igt_remove_fb(data->fd, &ref_fb);
+> -	igt_remove_fb(data->fd, &ref_fb2);
+> -	close(fd);
+>   	test_fini(data);
+>   }
+>   
+> @@ -363,7 +365,7 @@ static void run_check_psr_su_mpo(data_t *data, bool scaling, float scaling_ratio
+>   	}
+>   
+>   	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
+> -	igt_skip_on(!psr_su_supported(data));
+> +	igt_skip_on(!psr_mode_supported(data, PSR_MODE_2));
+>   
+>   	/* reference background pattern in grey */
+>   	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> @@ -504,7 +506,7 @@ static void run_check_psr_su_ffu(data_t *data)
+>   	test_init(data);
+>   
+>   	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
+> -	igt_skip_on(!psr_su_supported(data));
+> +	igt_skip_on(!psr_mode_supported(data, PSR_MODE_2));
+>   
+>   	/* reference background pattern in grey */
+>   	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> @@ -616,7 +618,7 @@ static void run_check_psr_su_cursor(data_t *data, bool test_mpo)
+>   	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
+>   
+>   	test_init(data);
+> -	igt_skip_on(!psr_su_supported(data));
+> +	igt_skip_on(!psr_mode_supported(data, PSR_MODE_2));
+>   
+>   	frame_rate = data->mode->vrefresh;
+>   
