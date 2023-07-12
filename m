@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE81510E5C1
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:15:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 771F510E5C0
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:15:43 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Jul 2023 19:12:15 +0200
-Message-Id: <20230712171231.290555-6-zbigniew.kempczynski@intel.com>
+Date: Wed, 12 Jul 2023 19:12:11 +0200
+Message-Id: <20230712171231.290555-2-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
 References: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 05/21] tests/api_intel_allocator: Don't
- use allocator ahnd aliasing api
+Subject: [igt-dev] [PATCH i-g-t v4 01/21] lib/intel_blt: Add
+ blt_ctrl_surf_object() helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,62 +24,50 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There's no tests (apart this one) which are using aliasing ahnd
-- intel_allocator_open_vm_as(). Additionally it is problematic
-on adopting allocator to xe where I need to track allocations
-to support easy vm binding. Let's adopt "open-vm" to not to use
-this api.
+In the series we start using this more time so it's worth to add
+it as common code.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- tests/i915/api_intel_allocator.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ lib/intel_blt.c | 11 +++++++++++
+ lib/intel_blt.h |  3 +++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
-index b7e3efb87f..77c2d25e83 100644
---- a/tests/i915/api_intel_allocator.c
-+++ b/tests/i915/api_intel_allocator.c
-@@ -612,32 +612,27 @@ static void reopen_fork(int fd)
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index bc28f15e8d..a3d67f5136 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -1390,6 +1390,17 @@ void blt_set_copy_object(struct blt_copy_object *obj,
+ 	memcpy(obj, orig, sizeof(*obj));
+ }
  
- static void open_vm(int fd)
- {
--	uint64_t ahnd[4], offset[4], size = 0x1000;
-+	uint64_t ahnd[3], offset[3], size = 0x1000;
- 	int i, n = ARRAY_SIZE(ahnd);
++void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
++			      uint32_t handle, uint32_t region, uint64_t size,
++			      uint8_t mocs, enum blt_access_type access_type)
++{
++	obj->handle = handle;
++	obj->region = region;
++	obj->size = size;
++	obj->mocs = mocs;
++	obj->access_type = access_type;
++}
++
+ /**
+  * blt_surface_fill_rect:
+  * @fd: drm fd
+diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+index 9c4ddc7a89..2aa1259ae8 100644
+--- a/lib/intel_blt.h
++++ b/lib/intel_blt.h
+@@ -248,6 +248,9 @@ void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
+ 			enum blt_surface_type surface_type);
+ void blt_set_copy_object(struct blt_copy_object *obj,
+ 			 const struct blt_copy_object *orig);
++void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
++			      uint32_t handle, uint32_t region, uint64_t size,
++			      uint8_t mocs, enum blt_access_type access_type);
  
- 	ahnd[0] = intel_allocator_open_vm(fd, 1, INTEL_ALLOCATOR_SIMPLE);
- 	ahnd[1] = intel_allocator_open_vm(fd, 1, INTEL_ALLOCATOR_SIMPLE);
--	ahnd[2] = intel_allocator_open_vm_as(ahnd[1], 2);
--	ahnd[3] = intel_allocator_open(fd, 3, INTEL_ALLOCATOR_SIMPLE);
-+	ahnd[2] = intel_allocator_open(fd, 2, INTEL_ALLOCATOR_SIMPLE);
- 
- 	offset[0] = intel_allocator_alloc(ahnd[0], 1, size, 0);
- 	offset[1] = intel_allocator_alloc(ahnd[1], 2, size, 0);
- 	igt_assert(offset[0] != offset[1]);
- 
--	offset[2] = intel_allocator_alloc(ahnd[2], 3, size, 0);
--	igt_assert(offset[0] != offset[2] && offset[1] != offset[2]);
--
--	offset[3] = intel_allocator_alloc(ahnd[3], 1, size, 0);
--	igt_assert(offset[0] == offset[3]);
-+	offset[2] = intel_allocator_alloc(ahnd[2], 1, size, 0);
-+	igt_assert(offset[0] == offset[2]);
- 
- 	/*
--	 * As ahnd[0-2] lead to same allocator check can we free all handles
-+	 * As ahnd[0-1] lead to same allocator check we can free all handles
- 	 * using selected ahnd.
- 	 */
--	intel_allocator_free(ahnd[0], 1);
--	intel_allocator_free(ahnd[0], 2);
--	intel_allocator_free(ahnd[0], 3);
--	intel_allocator_free(ahnd[3], 1);
-+	igt_assert_eq(intel_allocator_free(ahnd[0], 1), true);
-+	igt_assert_eq(intel_allocator_free(ahnd[1], 2), true);
-+	igt_assert_eq(intel_allocator_free(ahnd[2], 1), true);
- 
- 	for (i = 0; i < n - 1; i++)
- 		igt_assert_eq(intel_allocator_close(ahnd[i]), (i == n - 2));
+ void blt_surface_info(const char *info,
+ 		      const struct blt_copy_object *obj);
 -- 
 2.34.1
