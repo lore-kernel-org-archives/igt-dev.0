@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6D5A10E138
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 08:18:58 +0000 (UTC)
-Date: Wed, 12 Jul 2023 10:18:47 +0200
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8ED3310E073
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 08:37:58 +0000 (UTC)
 From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <ZK5h5y3s+2p7Spjp@ashyti-mobl2.lan>
-References: <20230606175226.502703-1-andi.shyti@linux.intel.com>
- <20230606175226.502703-2-andi.shyti@linux.intel.com>
- <20230607085737.tgauj4s2pvbjx7rg@kamilkon-desk1>
- <500f3993-dc82-bc64-31b1-df7390164251@linux.intel.com>
+To: IGT dev <igt-dev@lists.freedesktop.org>
+Date: Wed, 12 Jul 2023 10:37:27 +0200
+Message-Id: <20230712083727.282741-1-andi.shyti@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <500f3993-dc82-bc64-31b1-df7390164251@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH v3 1/1] test/gem_create: limit set_pat only to
- Meteor Lake
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH] test/i915/gem_create: Skip the test if the PAT
+ index is set on a non MTL device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,92 +17,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: IGT dev <igt-dev@lists.freedesktop.org>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Fei Yang <fei.yang@intel.com>
+Cc: Fei Yang <fei.yang@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+If we try to set the PAT index on a device that is not a Meteor
+Lake, we expect an -ENODEV return value. But then, we forget to
+skip and soon after we assert on the return value being '0',
+forcing the error path.
 
-On Wed, Jul 12, 2023 at 09:09:55AM +0100, Tvrtko Ursulin wrote:
-> 
-> On 07/06/2023 09:57, Kamil Konieczny wrote:
-> > On 2023-06-06 at 19:52:26 +0200, Andi Shyti wrote:
-> > > From: Fei Yang <fei.yang@intel.com>
-> > > 
-> > > For platforms other than Meteor Lake the set_pat extension should
-> > > return -ENODEV.
-> > > 
-> > > Signed-off-by: Fei Yang <fei.yang@intel.com>
-> > > Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> > > ---
-> > >   tests/i915/gem_create.c | 4 ++++
-> > >   1 file changed, 4 insertions(+)
-> > > 
-> > > diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-> > > index e9e8216d2b..b7961d9ef2 100644
-> > > --- a/tests/i915/gem_create.c
-> > > +++ b/tests/i915/gem_create.c
-> > > @@ -657,6 +657,7 @@ static void create_ext_set_pat(int fd)
-> > >   		.base = { .name = I915_GEM_CREATE_EXT_SET_PAT },
-> > >   		.pat_index = 65,
-> > >   	};
-> > > +	uint32_t devid = intel_get_drm_devid(fd);
-> > >   	struct drm_i915_gem_caching arg;
-> > >   	uint64_t size;
-> > >   	uint32_t handle;
-> > > @@ -672,6 +673,9 @@ static void create_ext_set_pat(int fd)
-> > >   	 */
-> > >   	if (ret == -EINVAL)
-> > >   		igt_skip("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
-> > > +	else if (!IS_METEORLAKE(devid))
-> > > +		igt_assert_eq(ret, -ENODEV);
+Skip, as expected, in case the return value is either EINVAL or
+ENODEV, the latter for meteor lake devices.
 
-right, we should have returned from here, if we want to have
-differentiated printouts...
+Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Fei Yang <fei.yang@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/i915/gem_create.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-> Hmm a sea of red..
-> 
-> https://intel-gfx-ci.01.org/tree/drm-tip/index.html?testfilter=set-pat
-> 
-> https://intel-gfx-ci.01.org/tree/drm-intel-fixes/CI_DIF_773/shard-snb7/igt@gem_create@create-ext-set-pat.html
-> 
-> Starting subtest: create-ext-set-pat
-> (gem_create:1095) CRITICAL: Test assertion failure function create_ext_set_pat, file ../../../usr/src/igt-gpu-tools/tests/i915/gem_create.c:679:
-> (gem_create:1095) CRITICAL: Failed assertion: ret == 0
-> Subtest create-ext-set-pat failed.
-> 
-> Not sure why shards run did not flag this (?!), but AFAICT the logic does not work.
-> 
-> It should be igt_skip on MTL, otherwise..
-> 
-> > > +
-> > 
-> > lgtm,
-> > 
-> > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > 
-> > >   	igt_assert(ret == 0);
-> 
-> .. test just fails here. So something like:
-> 
-> igt_skip_on_f(ret == -EINVAL || (ret == -ENODEV && IS_METEORLAKE(devid)), "...")
-
-But I guess this is also right!
-
-I will fix it.
-
-Thanks, Tvrtko!
-Andi
-
-> ?
-> 
-> Regards,
-> 
-> Tvrtko
-> 
-> > >   	/*
-> > > -- 
-> > > 2.40.1
-> > > 
+diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+index b7961d9ef2..4b00fe6aab 100644
+--- a/tests/i915/gem_create.c
++++ b/tests/i915/gem_create.c
+@@ -668,14 +668,25 @@ static void create_ext_set_pat(int fd)
+ 	ret = __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base);
+ 
+ 	/*
+-	 * With a valid PAT index specified, returning -EINVAL here
+-	 * indicates set_pat extension is not supported
++	 * Currently the PAT index is supported only for Meteor Lake, so that
++	 * we expect:
++	 *
++	 *  * -EINVAL if i915 does not support the PAT index, e.g. the kernel is
++	 *    too old to have the PAT index supported.
++	 *  * -ENODEV if we are trying to set the PAT index on a non Meteor Lake
++	 *    platform.
++	 *
++	 * In both cases, though, the I915_GEM_CREATE_EXT_SET_PAT flag is not
++	 * supported.
+ 	 */
+-	if (ret == -EINVAL)
+-		igt_skip("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
+-	else if (!IS_METEORLAKE(devid))
+-		igt_assert_eq(ret, -ENODEV);
++	igt_skip_on_f(ret == -EINVAL ||
++		      (ret == -ENODEV && IS_METEORLAKE(devid)),
++		      "I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
+ 
++	/*
++	 * This means that we are on a Meteor Lake and the PAT
++	 * index is already supported by the running i915
++	 */
+ 	igt_assert(ret == 0);
+ 
+ 	/*
+-- 
+2.40.1
