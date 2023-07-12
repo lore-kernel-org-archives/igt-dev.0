@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2C4610E611
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:15:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B98AA10E611
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:15:57 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Jul 2023 19:12:22 +0200
-Message-Id: <20230712171231.290555-13-zbigniew.kempczynski@intel.com>
+Date: Wed, 12 Jul 2023 19:12:24 +0200
+Message-Id: <20230712171231.290555-15-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
 References: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 12/21] lib/xe_util: Return dynamic
- subtest name for Xe
+Subject: [igt-dev] [PATCH i-g-t v4 14/21] lib/intel_allocator: Add
+ intel_allocator_bind()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,180 +24,437 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For tests which are working on more than one region using name suffix
-like "vram01-system" etc. is common thing. Instead handcrafting this
-naming add xe_memregion_dynamic_subtest_name() function which is
-similar to memregion_dynamic_subtest_name() for i915.
+Synchronize allocator state to vm.
+
+This change allows xe user to execute vm-bind/unbind for allocator
+alloc()/free() operations which occurred since last binding/unbinding.
+Before doing exec user should call intel_allocator_bind() to ensure
+all vma's are in place.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/meson.build  |   3 +-
- lib/xe/xe_util.c | 104 +++++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_util.h |  30 ++++++++++++++
- 3 files changed, 136 insertions(+), 1 deletion(-)
- create mode 100644 lib/xe/xe_util.c
- create mode 100644 lib/xe/xe_util.h
+v2: Rewrite tracking mechanism: previous code uses bind map embedded
+    in allocator structure. Unfortunately this wasn't good idea
+    - for xe binding everything was fine, but it regress multiprocess/
+    multithreaded allocations. Main reason of this was children
+    processes couldn't get its reference as this memory was allocated
+    on allocator thread (separate process). Currently each child
+    contains its own separate tracking maps for ahnd and for each
+    ahnd bind map.
+v3: - Don't use priv field (we may clean bind_map apriori as failing
+      asserts and outdated bind_map is not a problem anymore).
+    - Use only vm on tracking ahnd (Karolina)
+    - Add braces to avoid checkpatch complaining (Karolina)
+    - Use igt_assert_f() instead conditional block (Karolina)
+---
+ lib/igt_core.c        |   5 +
+ lib/intel_allocator.c | 259 +++++++++++++++++++++++++++++++++++++++++-
+ lib/intel_allocator.h |   3 +
+ 3 files changed, 265 insertions(+), 2 deletions(-)
 
-diff --git a/lib/meson.build b/lib/meson.build
-index 5523b4450e..ce11c0715f 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -105,7 +105,8 @@ lib_sources = [
- 	'xe/xe_compute_square_kernels.c',
- 	'xe/xe_ioctl.c',
- 	'xe/xe_query.c',
--	'xe/xe_spin.c'
-+	'xe/xe_spin.c',
-+	'xe/xe_util.c',
- ]
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 2ae2cb6883..041e4b3288 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -74,6 +74,7 @@
+ #include "igt_sysrq.h"
+ #include "igt_rc.h"
+ #include "igt_list.h"
++#include "igt_map.h"
+ #include "igt_device_scan.h"
+ #include "igt_thread.h"
+ #include "runnercomms.h"
+@@ -320,6 +321,8 @@ bool test_multi_fork_child;
+ /* For allocator purposes */
+ pid_t child_pid  = -1;
+ __thread pid_t child_tid  = -1;
++struct igt_map *ahnd_map;
++pthread_mutex_t ahnd_map_mutex;
  
- lib_deps = [
-diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-new file mode 100644
-index 0000000000..5f0f69a8c6
---- /dev/null
-+++ b/lib/xe/xe_util.c
-@@ -0,0 +1,104 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+#include "igt.h"
-+#include "igt_syncobj.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
+ enum {
+ 	/*
+@@ -2523,6 +2526,8 @@ bool __igt_fork(void)
+ 	case 0:
+ 		test_child = true;
+ 		pthread_mutex_init(&print_mutex, NULL);
++		pthread_mutex_init(&ahnd_map_mutex, NULL);
++		ahnd_map = igt_map_create(igt_map_hash_64, igt_map_equal_64);
+ 		child_pid = getpid();
+ 		child_tid = -1;
+ 		exit_handler_count = 0;
+diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+index cf964ccc41..f0a9b7fb53 100644
+--- a/lib/intel_allocator.c
++++ b/lib/intel_allocator.c
+@@ -17,8 +17,8 @@
+ #include "intel_allocator.h"
+ #include "intel_allocator_msgchannel.h"
+ #include "xe/xe_query.h"
 +#include "xe/xe_util.h"
+ 
+-//#define ALLOCDBG
+ #ifdef ALLOCDBG
+ #define alloc_info igt_info
+ #define alloc_debug igt_debug
+@@ -45,6 +45,14 @@ static inline const char *reqstr(enum reqtype request_type)
+ #define alloc_debug(...) {}
+ #endif
+ 
++#ifdef ALLOCBINDDBG
++#define bind_info igt_info
++#define bind_debug igt_debug
++#else
++#define bind_info(...) {}
++#define bind_debug(...) {}
++#endif
 +
-+static bool __region_belongs_to_regions_type(struct drm_xe_query_mem_region *region,
-+					     uint32_t *mem_regions_type,
-+					     int num_regions)
+ /*
+  * We limit allocator space to avoid hang when batch would be
+  * pinned in the last page.
+@@ -64,6 +72,30 @@ struct handle_entry {
+ 	struct allocator *al;
+ };
+ 
++/* For tracking alloc()/free() for Xe */
++struct ahnd_info {
++	int fd;
++	uint64_t ahnd;
++	uint32_t vm;
++	enum intel_driver driver;
++	struct igt_map *bind_map;
++	pthread_mutex_t bind_map_mutex;
++};
++
++enum allocator_bind_op {
++	BOUND,
++	TO_BIND,
++	TO_UNBIND,
++};
++
++struct allocator_object {
++	uint32_t handle;
++	uint64_t offset;
++	uint64_t size;
++
++	enum allocator_bind_op bind_op;
++};
++
+ struct intel_allocator *
+ intel_allocator_reloc_create(int fd, uint64_t start, uint64_t end);
+ struct intel_allocator *
+@@ -122,6 +154,13 @@ static pid_t allocator_pid = -1;
+ extern pid_t child_pid;
+ extern __thread pid_t child_tid;
+ 
++/*
++ * Track alloc()/free() requires storing in local process which has
++ * an access to real drm fd it can work on.
++ */
++extern struct igt_map *ahnd_map;
++extern pthread_mutex_t ahnd_map_mutex;
++
+ /*
+  * - for parent process we have child_pid == -1
+  * - for child which calls intel_allocator_init() allocator_pid == child_pid
+@@ -837,6 +876,45 @@ void intel_allocator_multiprocess_stop(void)
+ 	}
+ }
+ 
++static void track_ahnd(int fd, uint64_t ahnd, uint32_t vm)
 +{
-+	for (int i = 0; i < num_regions; i++)
-+		if (mem_regions_type[i] == region->mem_class)
-+			return true;
-+	return false;
++	struct ahnd_info *ainfo;
++
++	pthread_mutex_lock(&ahnd_map_mutex);
++	ainfo = igt_map_search(ahnd_map, &ahnd);
++	if (!ainfo) {
++		ainfo = malloc(sizeof(*ainfo));
++		ainfo->fd = fd;
++		ainfo->ahnd = ahnd;
++		ainfo->vm = vm;
++		ainfo->driver = get_intel_driver(fd);
++		ainfo->bind_map = igt_map_create(igt_map_hash_32, igt_map_equal_32);
++		pthread_mutex_init(&ainfo->bind_map_mutex, NULL);
++		bind_debug("[TRACK AHND] pid: %d, tid: %d, create <fd: %d, "
++			   "ahnd: %llx, vm: %u, driver: %d, ahnd_map: %p, bind_map: %p>\n",
++			   getpid(), gettid(), ainfo->fd,
++			   (long long)ainfo->ahnd, ainfo->vm,
++			   ainfo->driver, ahnd_map, ainfo->bind_map);
++		igt_map_insert(ahnd_map, &ainfo->ahnd, ainfo);
++	}
++
++	pthread_mutex_unlock(&ahnd_map_mutex);
 +}
 +
-+struct igt_collection *
-+__xe_get_memory_region_set(int xe, uint32_t *mem_regions_type, int num_regions)
++static void untrack_ahnd(uint64_t ahnd)
 +{
-+	struct drm_xe_query_mem_region *memregion;
-+	struct igt_collection *set = NULL;
-+	uint64_t memreg = all_memory_regions(xe), region;
-+	int count = 0, pos = 0;
++	struct ahnd_info *ainfo;
 +
-+	xe_for_each_mem_region(xe, memreg, region) {
-+		memregion = xe_mem_region(xe, region);
-+		if (__region_belongs_to_regions_type(memregion,
-+						     mem_regions_type,
-+						     num_regions))
-+			count++;
++	pthread_mutex_lock(&ahnd_map_mutex);
++	ainfo = igt_map_search(ahnd_map, &ahnd);
++	if (ainfo) {
++		bind_debug("[UNTRACK AHND]: pid: %d, tid: %d, removing ahnd: %llx\n",
++			   getpid(), gettid(), (long long)ahnd);
++		igt_map_remove(ahnd_map, &ahnd, map_entry_free_func);
++	}
++	pthread_mutex_unlock(&ahnd_map_mutex);
++}
++
+ static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
+ 					    uint32_t vm,
+ 					    uint64_t start, uint64_t end,
+@@ -895,6 +973,12 @@ static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
+ 	igt_assert(resp.open.allocator_handle);
+ 	igt_assert(resp.response_type == RESP_OPEN);
+ 
++	/*
++	 * Igts mostly uses ctx as id when opening the allocator (i915 legacy).
++	 * If ctx is passed let's use it as an vm id, otherwise use vm.
++	 */
++	track_ahnd(fd, resp.open.allocator_handle, ctx ?: vm);
++
+ 	return resp.open.allocator_handle;
+ }
+ 
+@@ -1001,6 +1085,8 @@ bool intel_allocator_close(uint64_t allocator_handle)
+ 	igt_assert(handle_request(&req, &resp) == 0);
+ 	igt_assert(resp.response_type == RESP_CLOSE);
+ 
++	untrack_ahnd(allocator_handle);
++
+ 	return resp.close.is_empty;
+ }
+ 
+@@ -1034,6 +1120,74 @@ void intel_allocator_get_address_range(uint64_t allocator_handle,
+ 		*endp = resp.address_range.end;
+ }
+ 
++static bool is_same(struct allocator_object *obj,
++		    uint32_t handle, uint64_t offset, uint64_t size,
++		    enum allocator_bind_op bind_op)
++{
++	return obj->handle == handle &&	obj->offset == offset && obj->size == size &&
++	       (obj->bind_op == bind_op || obj->bind_op == BOUND);
++}
++
++static void track_object(uint64_t allocator_handle, uint32_t handle,
++			 uint64_t offset, uint64_t size,
++			 enum allocator_bind_op bind_op)
++{
++	struct ahnd_info *ainfo;
++	struct allocator_object *obj;
++
++	bind_debug("[TRACK OBJECT]: [%s] pid: %d, tid: %d, ahnd: %llx, handle: %u, offset: %llx, size: %llx\n",
++		   bind_op == TO_BIND ? "BIND" : "UNBIND",
++		   getpid(), gettid(),
++		   (long long)allocator_handle,
++		   handle, (long long)offset, (long long)size);
++
++	if (offset == ALLOC_INVALID_ADDRESS) {
++		bind_debug("[TRACK OBJECT] => invalid address %llx, skipping tracking\n",
++			   (long long)offset);
++		return;
 +	}
 +
-+	set = igt_collection_create(count);
++	pthread_mutex_lock(&ahnd_map_mutex);
++	ainfo = igt_map_search(ahnd_map, &allocator_handle);
++	pthread_mutex_unlock(&ahnd_map_mutex);
++	igt_assert_f(ainfo, "[TRACK OBJECT] => MISSING ahnd %llx <=\n",
++		     (long long)allocator_handle);
 +
-+	xe_for_each_mem_region(xe, memreg, region) {
-+		memregion = xe_mem_region(xe, region);
-+		igt_assert(region < (1ull << 31));
-+		if (__region_belongs_to_regions_type(memregion,
-+						     mem_regions_type,
-+						     num_regions)) {
-+			igt_collection_set_value(set, pos++, (int)region);
++	if (ainfo->driver == INTEL_DRIVER_I915)
++		return; /* no-op for i915, at least for now */
++
++	pthread_mutex_lock(&ainfo->bind_map_mutex);
++	obj = igt_map_search(ainfo->bind_map, &handle);
++	if (obj) {
++		/*
++		 * User may call alloc() couple of times, check object is the
++		 * same. For free() there's simple case, just remove from
++		 * bind_map.
++		 */
++		if (bind_op == TO_BIND) {
++			igt_assert_eq(is_same(obj, handle, offset, size, bind_op), true);
++		} else if (bind_op == TO_UNBIND) {
++			if (obj->bind_op == TO_BIND)
++				igt_map_remove(ainfo->bind_map, &obj->handle, map_entry_free_func);
++			else if (obj->bind_op == BOUND)
++				obj->bind_op = bind_op;
 +		}
++	} else {
++		/* Ignore to unbind bo which wasn't previously inserted */
++		if (bind_op == TO_UNBIND)
++			goto out;
++
++		obj = calloc(1, sizeof(*obj));
++		obj->handle = handle;
++		obj->offset = offset;
++		obj->size = size;
++		obj->bind_op = bind_op;
++		igt_map_insert(ainfo->bind_map, &obj->handle, obj);
 +	}
++out:
++	pthread_mutex_unlock(&ainfo->bind_map_mutex);
++}
 +
-+	igt_assert(count == pos);
+ /**
+  * __intel_allocator_alloc:
+  * @allocator_handle: handle to an allocator
+@@ -1065,6 +1219,8 @@ uint64_t __intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
+ 	igt_assert(handle_request(&req, &resp) == 0);
+ 	igt_assert(resp.response_type == RESP_ALLOC);
+ 
++	track_object(allocator_handle, handle, resp.alloc.offset, size, TO_BIND);
 +
-+	return set;
+ 	return resp.alloc.offset;
+ }
+ 
+@@ -1142,6 +1298,8 @@ bool intel_allocator_free(uint64_t allocator_handle, uint32_t handle)
+ 	igt_assert(handle_request(&req, &resp) == 0);
+ 	igt_assert(resp.response_type == RESP_FREE);
+ 
++	track_object(allocator_handle, handle, 0, 0, TO_UNBIND);
++
+ 	return resp.free.freed;
+ }
+ 
+@@ -1326,6 +1484,84 @@ void intel_allocator_print(uint64_t allocator_handle)
+ 	}
+ }
+ 
++static void __xe_op_bind(struct ahnd_info *ainfo, uint32_t sync_in, uint32_t sync_out)
++{
++	struct allocator_object *obj;
++	struct igt_map_entry *pos;
++	struct igt_list_head obj_list;
++	struct xe_object *entry, *tmp;
++
++	IGT_INIT_LIST_HEAD(&obj_list);
++
++	pthread_mutex_lock(&ainfo->bind_map_mutex);
++	igt_map_foreach(ainfo->bind_map, pos) {
++		obj = pos->data;
++
++		if (obj->bind_op == BOUND)
++			continue;
++
++		bind_info("= [vm: %u] %s => %u %lx %lx\n",
++			  ainfo->vm,
++			  obj->bind_op == TO_BIND ? "TO BIND" : "TO UNBIND",
++			  obj->handle, obj->offset,
++			  obj->size);
++
++		entry = malloc(sizeof(*entry));
++		entry->handle = obj->handle;
++		entry->offset = obj->offset;
++		entry->size = obj->size;
++		entry->bind_op = obj->bind_op == TO_BIND ? XE_OBJECT_BIND :
++							   XE_OBJECT_UNBIND;
++		igt_list_add(&entry->link, &obj_list);
++
++		/*
++		 * We clean bind_map even before calling bind/unbind
++		 * as all binding operations asserts in case of error.
++		 */
++		if (obj->bind_op == TO_BIND)
++			obj->bind_op = BOUND;
++		else
++			igt_map_remove(ainfo->bind_map, &obj->handle,
++				       map_entry_free_func);
++	}
++	pthread_mutex_unlock(&ainfo->bind_map_mutex);
++
++	xe_bind_unbind_async(ainfo->fd, ainfo->vm, 0, &obj_list, sync_in, sync_out);
++
++	igt_list_for_each_entry_safe(entry, tmp, &obj_list, link) {
++		igt_list_del(&entry->link);
++		free(entry);
++	}
 +}
 +
 +/**
-+ * xe_memregion_dynamic_subtest_name:
-+ * @xe: drm fd of Xe device
-+ * @igt_collection: memory region collection
++ * intel_allocator_bind:
++ * @allocator_handle: handle to an allocator
++ * @sync_in: syncobj (fence-in)
++ * @sync_out: syncobj (fence-out)
 + *
-+ * Function iterates over all memory regions inside the collection (keeped
-+ * in the value field) and generates the name which can be used during dynamic
-+ * subtest creation.
++ * Function binds and unbinds all objects added to the allocator which weren't
++ * previously binded/unbinded.
 + *
-+ * Returns: newly allocated string, has to be freed by caller. Asserts if
-+ * caller tries to create a name using empty collection.
-+ */
-+char *xe_memregion_dynamic_subtest_name(int xe, struct igt_collection *set)
++ **/
++void intel_allocator_bind(uint64_t allocator_handle,
++			  uint32_t sync_in, uint32_t sync_out)
 +{
-+	struct igt_collection_data *data;
-+	char *name, *p;
-+	uint32_t region, len;
++	struct ahnd_info *ainfo;
 +
-+	igt_assert(set && set->size);
-+	/* enough for "name%d-" * n */
-+	len = set->size * 8;
-+	p = name = malloc(len);
-+	igt_assert(name);
++	pthread_mutex_lock(&ahnd_map_mutex);
++	ainfo = igt_map_search(ahnd_map, &allocator_handle);
++	pthread_mutex_unlock(&ahnd_map_mutex);
++	igt_assert(ainfo);
 +
-+	for_each_collection_data(data, set) {
-+		struct drm_xe_query_mem_region *memreg;
-+		int r;
-+
-+		region = data->value;
-+		memreg = xe_mem_region(xe, region);
-+
-+		if (XE_IS_CLASS_VRAM(memreg))
-+			r = snprintf(p, len, "%s%d-",
-+				     xe_region_name(region),
-+				     memreg->instance);
-+		else
-+			r = snprintf(p, len, "%s-",
-+				     xe_region_name(region));
-+
-+		igt_assert(r > 0);
-+		p += r;
-+		len -= r;
-+	}
-+
-+	/* remove last '-' */
-+	*(p - 1) = 0;
-+
-+	return name;
++	/*
++	 * We collect bind/unbind operations on alloc()/free() to do group
++	 * operation getting @sync_in as syncobj handle (fence-in). If user
++	 * passes 0 as @sync_out we bind/unbind synchronously.
++	 */
++	__xe_op_bind(ainfo, sync_in, sync_out);
 +}
 +
-diff --git a/lib/xe/xe_util.h b/lib/xe/xe_util.h
-new file mode 100644
-index 0000000000..9f56fa9898
---- /dev/null
-+++ b/lib/xe/xe_util.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ *
-+ */
+ static int equal_handles(const void *key1, const void *key2)
+ {
+ 	const struct handle_entry *h1 = key1, *h2 = key2;
+@@ -1383,6 +1619,22 @@ static void __free_maps(struct igt_map *map, bool close_allocators)
+ 	igt_map_destroy(map, map_entry_free_func);
+ }
+ 
++static void __free_ahnd_map(void)
++{
++	struct igt_map_entry *pos;
++	struct ahnd_info *ainfo;
 +
-+#ifndef XE_UTIL_H
-+#define XE_UTIL_H
++	if (!ahnd_map)
++		return;
 +
-+#include <stdbool.h>
-+#include <stddef.h>
-+#include <stdint.h>
-+#include <xe_drm.h>
++	igt_map_foreach(ahnd_map, pos) {
++		ainfo = pos->data;
++		igt_map_destroy(ainfo->bind_map, map_entry_free_func);
++	}
 +
-+#define XE_IS_SYSMEM_MEMORY_REGION(fd, region) \
-+	(xe_region_class(fd, region) == XE_MEM_REGION_CLASS_SYSMEM)
-+#define XE_IS_VRAM_MEMORY_REGION(fd, region) \
-+	(xe_region_class(fd, region) == XE_MEM_REGION_CLASS_VRAM)
++	igt_map_destroy(ahnd_map, map_entry_free_func);
++}
 +
-+struct igt_collection *
-+__xe_get_memory_region_set(int xe, uint32_t *mem_regions_type, int num_regions);
+ /**
+  * intel_allocator_init:
+  *
+@@ -1400,12 +1652,15 @@ void intel_allocator_init(void)
+ 	__free_maps(handles, true);
+ 	__free_maps(ctx_map, false);
+ 	__free_maps(vm_map, false);
++	__free_ahnd_map();
+ 
+ 	atomic_init(&next_handle, 1);
+ 	handles = igt_map_create(hash_handles, equal_handles);
+ 	ctx_map = igt_map_create(hash_instance, equal_ctx);
+ 	vm_map = igt_map_create(hash_instance, equal_vm);
+-	igt_assert(handles && ctx_map && vm_map);
++	pthread_mutex_init(&ahnd_map_mutex, NULL);
++	ahnd_map = igt_map_create(igt_map_hash_64, igt_map_equal_64);
++	igt_assert(handles && ctx_map && vm_map && ahnd_map);
+ 
+ 	channel = intel_allocator_get_msgchannel(CHANNEL_SYSVIPC_MSGQUEUE);
+ }
+diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+index 3ec74f6191..f9ff7f1cc9 100644
+--- a/lib/intel_allocator.h
++++ b/lib/intel_allocator.h
+@@ -210,6 +210,9 @@ bool intel_allocator_reserve_if_not_allocated(uint64_t allocator_handle,
+ 
+ void intel_allocator_print(uint64_t allocator_handle);
+ 
++void intel_allocator_bind(uint64_t allocator_handle,
++			  uint32_t sync_in, uint32_t sync_out);
 +
-+#define xe_get_memory_region_set(regions, mem_region_types...) ({ \
-+	unsigned int arr__[] = { mem_region_types }; \
-+	__xe_get_memory_region_set(regions, arr__, ARRAY_SIZE(arr__)); \
-+})
-+
-+char *xe_memregion_dynamic_subtest_name(int xe, struct igt_collection *set);
-+
-+#endif /* XE_UTIL_H */
+ #define ALLOC_INVALID_ADDRESS (-1ull)
+ #define INTEL_ALLOCATOR_NONE   0
+ #define INTEL_ALLOCATOR_RELOC  1
 -- 
 2.34.1
