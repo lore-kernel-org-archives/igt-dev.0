@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D01A410E4CC
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 10:22:27 +0000 (UTC)
-Message-ID: <65ad802e-bac4-f827-cd3b-82410a478ddb@intel.com>
-Date: Wed, 12 Jul 2023 12:22:02 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56A8710E4D0
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 10:40:12 +0000 (UTC)
+Message-ID: <437559c5-8676-2430-220a-bfa8b2575959@intel.com>
+Date: Wed, 12 Jul 2023 12:39:42 +0200
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <20230711112009.122482-1-zbigniew.kempczynski@intel.com>
- <20230711112009.122482-14-zbigniew.kempczynski@intel.com>
- <e2ab0cf6-b97c-3bab-bfa4-8906b5dae313@intel.com>
- <20230712094345.rgmvtef4qf6ieq4c@zkempczy-mobl2>
+ <20230711112009.122482-11-zbigniew.kempczynski@intel.com>
+ <01576293-301d-c3c7-29f1-2f23a04fe2ae@intel.com>
+ <20230712093357.atvsv7m4chl6iebn@zkempczy-mobl2>
 From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230712094345.rgmvtef4qf6ieq4c@zkempczy-mobl2>
+In-Reply-To: <20230712093357.atvsv7m4chl6iebn@zkempczy-mobl2>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 13/17] lib/intel_blt: Extend blitter
- library to support xe driver
+Subject: Re: [igt-dev] [PATCH i-g-t v3 10/17] lib/intel_allocator: Add
+ intel_allocator_bind()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,428 +29,452 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 12.07.2023 11:43, Zbigniew Kempczyński wrote:
-> On Wed, Jul 12, 2023 at 11:22:00AM +0200, Karolina Stolarek wrote:
+On 12.07.2023 11:33, Zbigniew Kempczyński wrote:
+> On Wed, Jul 12, 2023 at 11:13:24AM +0200, Karolina Stolarek wrote:
 >> On 11.07.2023 13:20, Zbigniew Kempczyński wrote:
->>> Use already written for i915 blitter library in xe development.
->>> Add appropriate code paths which are unique for those drivers.
+>>> Synchronize allocator state to vm.
+>>>
+>>> This change allows xe user to execute vm-bind/unbind for allocator
+>>> alloc()/free() operations which occurred since last binding/unbinding.
+>>> Before doing exec user should call intel_allocator_bind() to ensure
+>>> all vma's are in place.
 >>>
 >>> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 >>> ---
->>> v3: Extract common helpers for getting mapping and alignment (Karolina)
+>>> v2: Rewrite tracking mechanism: previous code uses bind map embedded
+>>>       in allocator structure. Unfortunately this wasn't good idea
+>>>       - for xe binding everything was fine, but it regress multiprocess/
+>>>       multithreaded allocations. Main reason of this was children
+>>>       processes couldn't get its reference as this memory was allocated
+>>>       on allocator thread (separate process). Currently each child
+>>>       contains its own separate tracking maps for ahnd and for each
+>>>       ahnd bind map.
+>>> v3: - Don't use priv field (we may clean bind_map apriori as failing
+>>>         asserts and outdated bind_map is not a problem anymore).
+>>>       - Use only vm on tracking ahnd (Karolina)
+>>>       - Add braces to avoid checkpatch complaining (Karolina)
+>>>       - Use igt_assert_f() instead conditional block (Karolina)
 >>> ---
->>>    lib/intel_blt.c | 235 ++++++++++++++++++++++++++++++------------------
->>>    lib/intel_blt.h |   2 +-
->>>    2 files changed, 150 insertions(+), 87 deletions(-)
+>>>    lib/igt_core.c        |   5 +
+>>>    lib/intel_allocator.c | 259 +++++++++++++++++++++++++++++++++++++++++-
+>>>    lib/intel_allocator.h |   3 +
+>>>    3 files changed, 265 insertions(+), 2 deletions(-)
 >>>
->>> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
->>> index f2f86e4947..5387a60ee3 100644
->>> --- a/lib/intel_blt.c
->>> +++ b/lib/intel_blt.c
->>> @@ -9,9 +9,13 @@
->>>    #include <malloc.h>
->>>    #include <cairo.h>
->>>    #include "drm.h"
->>> -#include "igt.h"
->>>    #include "i915/gem_create.h"
->>> +#include "igt.h"
->>> +#include "igt_syncobj.h"
->>>    #include "intel_blt.h"
->>> +#include "xe/xe_ioctl.h"
->>> +#include "xe/xe_query.h"
+>>> diff --git a/lib/igt_core.c b/lib/igt_core.c
+>>> index 2ae2cb6883..041e4b3288 100644
+>>> --- a/lib/igt_core.c
+>>> +++ b/lib/igt_core.c
+>>> @@ -74,6 +74,7 @@
+>>>    #include "igt_sysrq.h"
+>>>    #include "igt_rc.h"
+>>>    #include "igt_list.h"
+>>> +#include "igt_map.h"
+>>>    #include "igt_device_scan.h"
+>>>    #include "igt_thread.h"
+>>>    #include "runnercomms.h"
+>>> @@ -320,6 +321,8 @@ bool test_multi_fork_child;
+>>>    /* For allocator purposes */
+>>>    pid_t child_pid  = -1;
+>>>    __thread pid_t child_tid  = -1;
+>>> +struct igt_map *ahnd_map;
+>>> +pthread_mutex_t ahnd_map_mutex;
+>>>    enum {
+>>>    	/*
+>>> @@ -2523,6 +2526,8 @@ bool __igt_fork(void)
+>>>    	case 0:
+>>>    		test_child = true;
+>>>    		pthread_mutex_init(&print_mutex, NULL);
+>>> +		pthread_mutex_init(&ahnd_map_mutex, NULL);
+>>> +		ahnd_map = igt_map_create(igt_map_hash_64, igt_map_equal_64);
+>>>    		child_pid = getpid();
+>>>    		child_tid = -1;
+>>>    		exit_handler_count = 0;
+>>> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+>>> index cf964ccc41..f0a9b7fb53 100644
+>>> --- a/lib/intel_allocator.c
+>>> +++ b/lib/intel_allocator.c
+>>> @@ -17,8 +17,8 @@
+>>>    #include "intel_allocator.h"
+>>>    #include "intel_allocator_msgchannel.h"
+>>>    #include "xe/xe_query.h"
 >>> +#include "xe/xe_util.h"
->>>    #define BITRANGE(start, end) (end - start + 1)
->>>    #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
->>> @@ -468,24 +472,40 @@ static int __special_mode(const struct blt_copy_data *blt)
->>>    	return SM_NONE;
->>>    }
->>> -static int __memory_type(uint32_t region)
->>> +static int __memory_type(int fd, enum intel_driver driver, uint32_t region)
->>>    {
->>> -	igt_assert_f(IS_DEVICE_MEMORY_REGION(region) ||
->>> -		     IS_SYSTEM_MEMORY_REGION(region),
->>> -		     "Invalid region: %x\n", region);
->>> +	if (driver == INTEL_DRIVER_I915) {
->>> +		igt_assert_f(IS_DEVICE_MEMORY_REGION(region) ||
->>> +			     IS_SYSTEM_MEMORY_REGION(region),
->>> +			     "Invalid region: %x\n", region);
->>> +	} else {
->>> +		igt_assert_f(XE_IS_VRAM_MEMORY_REGION(fd, region) ||
->>> +			     XE_IS_SYSMEM_MEMORY_REGION(fd, region),
->>> +			     "Invalid region: %x\n", region);
->>> +	}
->>> -	if (IS_DEVICE_MEMORY_REGION(region))
->>> +	if (driver == INTEL_DRIVER_I915 && IS_DEVICE_MEMORY_REGION(region))
->>>    		return TM_LOCAL_MEM;
->>> +	else if (driver == INTEL_DRIVER_XE && XE_IS_VRAM_MEMORY_REGION(fd, region))
->>> +		return TM_LOCAL_MEM;
+>>> -//#define ALLOCDBG
+>>>    #ifdef ALLOCDBG
+>>>    #define alloc_info igt_info
+>>>    #define alloc_debug igt_debug
+>>> @@ -45,6 +45,14 @@ static inline const char *reqstr(enum reqtype request_type)
+>>>    #define alloc_debug(...) {}
+>>>    #endif
+>>> +#ifdef ALLOCBINDDBG
+>>> +#define bind_info igt_info
+>>> +#define bind_debug igt_debug
+>>> +#else
+>>> +#define bind_info(...) {}
+>>> +#define bind_debug(...) {}
+>>> +#endif
 >>> +
->>>    	return TM_SYSTEM_MEM;
->>>    }
->>> -static enum blt_aux_mode __aux_mode(const struct blt_copy_object *obj)
->>> +static enum blt_aux_mode __aux_mode(int fd,
->>> +				    enum intel_driver driver,
->>> +				    const struct blt_copy_object *obj)
->>>    {
->>> -	if (obj->compression == COMPRESSION_ENABLED) {
->>> +	if (driver == INTEL_DRIVER_I915 && obj->compression == COMPRESSION_ENABLED) {
->>>    		igt_assert_f(IS_DEVICE_MEMORY_REGION(obj->region),
->>>    			     "XY_BLOCK_COPY_BLT supports compression "
->>>    			     "on device memory only\n");
->>>    		return AM_AUX_CCS_E;
->>> +	} else if (driver == INTEL_DRIVER_XE && obj->compression == COMPRESSION_ENABLED) {
->>> +		igt_assert_f(XE_IS_VRAM_MEMORY_REGION(fd, obj->region),
->>> +			     "XY_BLOCK_COPY_BLT supports compression "
->>> +			     "on device memory only\n");
->>> +		return AM_AUX_CCS_E;
+>>>    /*
+>>>     * We limit allocator space to avoid hang when batch would be
+>>>     * pinned in the last page.
+>>> @@ -64,6 +72,30 @@ struct handle_entry {
+>>>    	struct allocator *al;
+>>>    };
+>>> +/* For tracking alloc()/free() for Xe */
+>>> +struct ahnd_info {
+>>> +	int fd;
+>>> +	uint64_t ahnd;
+>>> +	uint32_t vm;
+>>> +	enum intel_driver driver;
+>>> +	struct igt_map *bind_map;
+>>> +	pthread_mutex_t bind_map_mutex;
+>>> +};
+>>> +
+>>> +enum allocator_bind_op {
+>>> +	BOUND,
+>>> +	TO_BIND,
+>>> +	TO_UNBIND,
+>>> +};
+>>> +
+>>> +struct allocator_object {
+>>> +	uint32_t handle;
+>>> +	uint64_t offset;
+>>> +	uint64_t size;
+>>> +
+>>> +	enum allocator_bind_op bind_op;
+>>> +};
+>>> +
+>>>    struct intel_allocator *
+>>>    intel_allocator_reloc_create(int fd, uint64_t start, uint64_t end);
+>>>    struct intel_allocator *
+>>> @@ -122,6 +154,13 @@ static pid_t allocator_pid = -1;
+>>>    extern pid_t child_pid;
+>>>    extern __thread pid_t child_tid;
+>>> +/*
+>>> + * Track alloc()/free() requires storing in local process which has
+>>> + * an access to real drm fd it can work on.
+>>> + */
+>>> +extern struct igt_map *ahnd_map;
+>>> +extern pthread_mutex_t ahnd_map_mutex;
+>>> +
+>>>    /*
+>>>     * - for parent process we have child_pid == -1
+>>>     * - for child which calls intel_allocator_init() allocator_pid == child_pid
+>>> @@ -837,6 +876,45 @@ void intel_allocator_multiprocess_stop(void)
 >>>    	}
->>>    	return AM_AUX_NONE;
->>> @@ -508,9 +528,9 @@ static void fill_data(struct gen12_block_copy_data *data,
->>>    	data->dw00.length = extended_command ? 20 : 10;
->>>    	if (__special_mode(blt) == SM_FULL_RESOLVE)
->>> -		data->dw01.dst_aux_mode = __aux_mode(&blt->src);
->>> +		data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
->>>    	else
->>> -		data->dw01.dst_aux_mode = __aux_mode(&blt->dst);
->>> +		data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->dst);
->>>    	data->dw01.dst_pitch = blt->dst.pitch - 1;
->>>    	data->dw01.dst_mocs = blt->dst.mocs;
->>> @@ -531,13 +551,13 @@ static void fill_data(struct gen12_block_copy_data *data,
->>>    	data->dw06.dst_x_offset = blt->dst.x_offset;
->>>    	data->dw06.dst_y_offset = blt->dst.y_offset;
->>> -	data->dw06.dst_target_memory = __memory_type(blt->dst.region);
->>> +	data->dw06.dst_target_memory = __memory_type(blt->fd, blt->driver, blt->dst.region);
->>>    	data->dw07.src_x1 = blt->src.x1;
->>>    	data->dw07.src_y1 = blt->src.y1;
->>>    	data->dw08.src_pitch = blt->src.pitch - 1;
->>> -	data->dw08.src_aux_mode = __aux_mode(&blt->src);
->>> +	data->dw08.src_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
->>>    	data->dw08.src_mocs = blt->src.mocs;
->>>    	data->dw08.src_compression = blt->src.compression;
->>>    	data->dw08.src_tiling = __block_tiling(blt->src.tiling);
->>> @@ -550,7 +570,7 @@ static void fill_data(struct gen12_block_copy_data *data,
->>>    	data->dw11.src_x_offset = blt->src.x_offset;
->>>    	data->dw11.src_y_offset = blt->src.y_offset;
->>> -	data->dw11.src_target_memory = __memory_type(blt->src.region);
->>> +	data->dw11.src_target_memory = __memory_type(blt->fd, blt->driver, blt->src.region);
 >>>    }
->>>    static void fill_data_ext(struct gen12_block_copy_data_ext *dext,
->>> @@ -692,6 +712,24 @@ static void dump_bb_ext(struct gen12_block_copy_data_ext *data)
->>>    		 data->dw21.src_array_index);
->>>    }
->>> +static uint64_t get_default_alignment(int fd, enum intel_driver driver)
+>>> +static void track_ahnd(int fd, uint64_t ahnd, uint32_t vm)
 >>> +{
->>> +	if (driver == INTEL_DRIVER_XE)
->>> +		return xe_get_default_alignment(fd);
+>>> +	struct ahnd_info *ainfo;
 >>> +
->>> +	return gem_detect_safe_alignment(fd);
->>> +}
->>> +
->>> +static void *bo_map(int fd, uint32_t handle, uint64_t size,
->>> +		    enum intel_driver driver)
->>> +{
->>> +	if (driver == INTEL_DRIVER_XE)
->>> +		return xe_bo_map(fd, handle, size);
->>> +
->>> +	return gem_mmap__device_coherent(fd, handle, 0, size,
->>> +					 PROT_READ | PROT_WRITE);
->>> +}
->>> +
->>>    /**
->>>     * blt_copy_init:
->>>     * @fd: drm fd
->>> @@ -739,7 +777,7 @@ uint64_t emit_blt_block_copy(int fd,
->>>    	igt_assert_f(ahnd, "block-copy supports softpin only\n");
->>>    	igt_assert_f(blt, "block-copy requires data to do blit\n");
->>> -	alignment = gem_detect_safe_alignment(fd);
->>> +	alignment = get_default_alignment(fd, blt->driver);
->>>    	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
->>>    		     + blt->src.plane_offset;
->>>    	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
->>> @@ -748,8 +786,7 @@ uint64_t emit_blt_block_copy(int fd,
->>>    	fill_data(&data, blt, src_offset, dst_offset, ext);
->>> -	bb = gem_mmap__device_coherent(fd, blt->bb.handle, 0, blt->bb.size,
->>> -				       PROT_READ | PROT_WRITE);
->>> +	bb = bo_map(fd, blt->bb.handle, blt->bb.size, blt->driver);
->>>    	igt_assert(bb_pos + sizeof(data) < blt->bb.size);
->>>    	memcpy(bb + bb_pos, &data, sizeof(data));
->>> @@ -812,29 +849,35 @@ int blt_block_copy(int fd,
->>>    	igt_assert_f(ahnd, "block-copy supports softpin only\n");
->>>    	igt_assert_f(blt, "block-copy requires data to do blit\n");
->>> +	igt_assert_neq(blt->driver, 0);
->>> -	alignment = gem_detect_safe_alignment(fd);
->>> +	alignment = get_default_alignment(fd, blt->driver);
->>>    	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
->>>    	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
->>>    	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
->>>    	emit_blt_block_copy(fd, ahnd, blt, ext, 0, true);
->>> -	obj[0].offset = CANONICAL(dst_offset);
->>> -	obj[1].offset = CANONICAL(src_offset);
->>> -	obj[2].offset = CANONICAL(bb_offset);
->>> -	obj[0].handle = blt->dst.handle;
->>> -	obj[1].handle = blt->src.handle;
->>> -	obj[2].handle = blt->bb.handle;
->>> -	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
->>> -		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> -	obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> -	obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> -	execbuf.buffer_count = 3;
->>> -	execbuf.buffers_ptr = to_user_pointer(obj);
->>> -	execbuf.rsvd1 = ctx ? ctx->id : 0;
->>> -	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
->>> -	ret = __gem_execbuf(fd, &execbuf);
->>> +	if (blt->driver == INTEL_DRIVER_XE) {
->>> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
->>> +	} else {
->>> +		obj[0].offset = CANONICAL(dst_offset);
->>> +		obj[1].offset = CANONICAL(src_offset);
->>> +		obj[2].offset = CANONICAL(bb_offset);
->>> +		obj[0].handle = blt->dst.handle;
->>> +		obj[1].handle = blt->src.handle;
->>> +		obj[2].handle = blt->bb.handle;
->>> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
->>> +				EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> +		execbuf.buffer_count = 3;
->>> +		execbuf.buffers_ptr = to_user_pointer(obj);
->>> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
->>> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
->>> +
->>> +		ret = __gem_execbuf(fd, &execbuf);
+>>> +	pthread_mutex_lock(&ahnd_map_mutex);
+>>> +	ainfo = igt_map_search(ahnd_map, &ahnd);
+>>> +	if (!ainfo) {
+>>> +		ainfo = malloc(sizeof(*ainfo));
+>>> +		ainfo->fd = fd;
+>>> +		ainfo->ahnd = ahnd;
+>>> +		ainfo->vm = vm;
+>>> +		ainfo->driver = get_intel_driver(fd);
+>>> +		ainfo->bind_map = igt_map_create(igt_map_hash_32, igt_map_equal_32);
+>>> +		pthread_mutex_init(&ainfo->bind_map_mutex, NULL);
+>>> +		bind_debug("[TRACK AHND] pid: %d, tid: %d, create <fd: %d, "
+>>> +			   "ahnd: %llx, vm: %u, driver: %d, ahnd_map: %p, bind_map: %p>\n",
+>>> +			   getpid(), gettid(), ainfo->fd,
+>>> +			   (long long)ainfo->ahnd, ainfo->vm,
+>>> +			   ainfo->driver, ahnd_map, ainfo->bind_map);
+>>> +		igt_map_insert(ahnd_map, &ainfo->ahnd, ainfo);
 >>> +	}
->>>    	return ret;
+>>> +
+>>> +	pthread_mutex_unlock(&ahnd_map_mutex);
+>>> +}
+>>> +
+>>> +static void untrack_ahnd(uint64_t ahnd)
+>>> +{
+>>> +	struct ahnd_info *ainfo;
+>>> +
+>>> +	pthread_mutex_lock(&ahnd_map_mutex);
+>>> +	ainfo = igt_map_search(ahnd_map, &ahnd);
+>>> +	if (ainfo) {
+>>> +		bind_debug("[UNTRACK AHND]: pid: %d, tid: %d, removing ahnd: %llx\n",
+>>> +			   getpid(), gettid(), (long long)ahnd);
+>>> +		igt_map_remove(ahnd_map, &ahnd, map_entry_free_func);
+>>> +	}
+>>> +	pthread_mutex_unlock(&ahnd_map_mutex);
+>>> +}
+>>> +
+>>>    static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
+>>>    					    uint32_t vm,
+>>>    					    uint64_t start, uint64_t end,
+>>> @@ -895,6 +973,12 @@ static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
+>>>    	igt_assert(resp.open.allocator_handle);
+>>>    	igt_assert(resp.response_type == RESP_OPEN);
+>>> +	/*
+>>> +	 * Igts mostly uses ctx as id when opening the allocator (i915 legacy).
+>>> +	 * If ctx is passed let's use it as an vm id, otherwise use vm.
+>>> +	 */
+>>> +	track_ahnd(fd, resp.open.allocator_handle, ctx ?: vm);
+>>> +
+>>>    	return resp.open.allocator_handle;
 >>>    }
->>> @@ -950,7 +993,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
->>>    	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
->>>    	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
->>> -	alignment = max_t(uint64_t, gem_detect_safe_alignment(fd), 1ull << 16);
->>> +	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
->>>    	data.dw00.client = 0x2;
->>>    	data.dw00.opcode = 0x48;
->>> @@ -973,8 +1016,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
->>>    	data.dw04.dst_address_hi = dst_offset >> 32;
->>>    	data.dw04.dst_mocs = surf->dst.mocs;
->>> -	bb = gem_mmap__device_coherent(fd, surf->bb.handle, 0, surf->bb.size,
->>> -				       PROT_READ | PROT_WRITE);
->>> +	bb = bo_map(fd, surf->bb.handle, surf->bb.size, surf->driver);
->>>    	igt_assert(bb_pos + sizeof(data) < surf->bb.size);
->>>    	memcpy(bb + bb_pos, &data, sizeof(data));
->>> @@ -1002,7 +1044,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>>> @@ -1001,6 +1085,8 @@ bool intel_allocator_close(uint64_t allocator_handle)
+>>>    	igt_assert(handle_request(&req, &resp) == 0);
+>>>    	igt_assert(resp.response_type == RESP_CLOSE);
+>>> +	untrack_ahnd(allocator_handle);
+>>> +
+>>>    	return resp.close.is_empty;
+>>>    }
+>>> @@ -1034,6 +1120,74 @@ void intel_allocator_get_address_range(uint64_t allocator_handle,
+>>>    		*endp = resp.address_range.end;
+>>>    }
+>>> +static bool is_same(struct allocator_object *obj,
+>>> +		    uint32_t handle, uint64_t offset, uint64_t size,
+>>> +		    enum allocator_bind_op bind_op)
+>>> +{
+>>> +	return obj->handle == handle &&	obj->offset == offset && obj->size == size &&
+>>> +	       (obj->bind_op == bind_op || obj->bind_op == BOUND);
+>>> +}
+>>> +
+>>> +static void track_object(uint64_t allocator_handle, uint32_t handle,
+>>> +			 uint64_t offset, uint64_t size,
+>>> +			 enum allocator_bind_op bind_op)
+>>> +{
+>>> +	struct ahnd_info *ainfo;
+>>> +	struct allocator_object *obj;
+>>> +
+>>> +	bind_debug("[TRACK OBJECT]: [%s] pid: %d, tid: %d, ahnd: %llx, handle: %u, offset: %llx, size: %llx\n",
+>>> +		   bind_op == TO_BIND ? "BIND" : "UNBIND",
+>>> +		   getpid(), gettid(),
+>>> +		   (long long)allocator_handle,
+>>> +		   handle, (long long)offset, (long long)size);
+>>> +
+>>> +	if (offset == ALLOC_INVALID_ADDRESS) {
+>>> +		bind_debug("[TRACK OBJECT] => invalid address %llx, skipping tracking\n",
+>>> +			   (long long)offset);
+>>> +		return;
+>>> +	}
+>>> +
+>>> +	pthread_mutex_lock(&ahnd_map_mutex);
+>>> +	ainfo = igt_map_search(ahnd_map, &allocator_handle);
+>>> +	pthread_mutex_unlock(&ahnd_map_mutex);
+>>> +	igt_assert_f(ainfo, "[TRACK OBJECT] => MISSING ahnd %llx <=\n",
+>>> +		     (long long)allocator_handle);
+>>> +
+>>> +	if (ainfo->driver == INTEL_DRIVER_I915)
+>>> +		return; /* no-op for i915, at least for now */
+>>> +
+>>> +	pthread_mutex_lock(&ainfo->bind_map_mutex);
+>>> +	obj = igt_map_search(ainfo->bind_map, &handle);
+>>> +	if (obj) {
+>>> +		/*
+>>> +		 * User may call alloc() couple of times, check object is the
+>>> +		 * same. For free() there's simple case, just remove from
+>>> +		 * bind_map.
+>>> +		 */
+>>> +		if (bind_op == TO_BIND) {
+>>> +			igt_assert_eq(is_same(obj, handle, offset, size, bind_op), true);
+>>> +		} else if (bind_op == TO_UNBIND) {
+>>> +			if (obj->bind_op == TO_BIND)
+>>> +				igt_map_remove(ainfo->bind_map, &obj->handle, map_entry_free_func);
+>>> +			else if (obj->bind_op == BOUND)
+>>> +				obj->bind_op = bind_op;
+>>> +		}
+>>> +	} else {
+>>> +		/* Ignore to unbind bo which wasn't previously inserted */
+>>> +		if (bind_op == TO_UNBIND)
+>>> +			goto out;
+>>> +
+>>> +		obj = calloc(1, sizeof(*obj));
+>>> +		obj->handle = handle;
+>>> +		obj->offset = offset;
+>>> +		obj->size = size;
+>>> +		obj->bind_op = bind_op;
+>>> +		igt_map_insert(ainfo->bind_map, &obj->handle, obj);
+>>> +	}
+>>> +out:
+>>> +	pthread_mutex_unlock(&ainfo->bind_map_mutex);
+>>> +}
+>>> +
 >>>    /**
->>>     * blt_ctrl_surf_copy:
->>> - * @fd: drm fd
->>> + * @blt: bldrm fd
+>>>     * __intel_allocator_alloc:
+>>>     * @allocator_handle: handle to an allocator
+>>> @@ -1065,6 +1219,8 @@ uint64_t __intel_allocator_alloc(uint64_t allocator_handle, uint32_t handle,
+>>>    	igt_assert(handle_request(&req, &resp) == 0);
+>>>    	igt_assert(resp.response_type == RESP_ALLOC);
+>>> +	track_object(allocator_handle, handle, resp.alloc.offset, size, TO_BIND);
+>>> +
+>>>    	return resp.alloc.offset;
+>>>    }
+>>> @@ -1142,6 +1298,8 @@ bool intel_allocator_free(uint64_t allocator_handle, uint32_t handle)
+>>>    	igt_assert(handle_request(&req, &resp) == 0);
+>>>    	igt_assert(resp.response_type == RESP_FREE);
+>>> +	track_object(allocator_handle, handle, 0, 0, TO_UNBIND);
+>>> +
+>>>    	return resp.free.freed;
+>>>    }
+>>> @@ -1326,6 +1484,84 @@ void intel_allocator_print(uint64_t allocator_handle)
+>>>    	}
+>>>    }
+>>> +static void __xe_op_bind(struct ahnd_info *ainfo, uint32_t sync_in, uint32_t sync_out)
+>>> +{
+>>> +	struct allocator_object *obj;
+>>> +	struct igt_map_entry *pos;
+>>> +	struct igt_list_head obj_list;
+>>> +	struct xe_object *entry, *tmp;
+>>> +
+>>> +	IGT_INIT_LIST_HEAD(&obj_list);
+>>> +
+>>> +	pthread_mutex_lock(&ainfo->bind_map_mutex);
+>>> +	igt_map_foreach(ainfo->bind_map, pos) {
+>>> +		obj = pos->data;
+>>> +
+>>> +		if (obj->bind_op == BOUND)
+>>> +			continue;
+>>> +
+>>> +		bind_info("= [vm: %u] %s => %u %lx %lx\n",
+>>> +			  ainfo->vm,
+>>> +			  obj->bind_op == TO_BIND ? "TO BIND" : "TO UNBIND",
+>>> +			  obj->handle, obj->offset,
+>>> +			  obj->size);
+>>> +
+>>> +		entry = malloc(sizeof(*entry));
+>>> +		entry->handle = obj->handle;
+>>> +		entry->offset = obj->offset;
+>>> +		entry->size = obj->size;
+>>> +		entry->bind_op = obj->bind_op == TO_BIND ? XE_OBJECT_BIND :
+>>> +							   XE_OBJECT_UNBIND;
+>>> +		igt_list_add(&entry->link, &obj_list);
+>>> +
+>>> +		/*
+>>> +		 * We clean bind_map even before calling bind/unbind
+>>> +		 * as all binding operations asserts in case of error.
+>>> +		 */
+>>> +		if (obj->bind_op == TO_BIND)
+>>> +			obj->bind_op = BOUND;
+>>> +		else
+>>> +			igt_map_remove(ainfo->bind_map, &obj->handle,
+>>> +				       map_entry_free_func);
 >>
->> Emm, the argument seem to still be fd, and there's no blt. A typo?
+>> I don't quite understand why we can clean up the map even before the actual
+>> bind/unbind happens. If an assert fails, it means that vm_(un)bind failed,
+>> so the actual operation didn't succeed, and that state change is incorrect.
+>> I believe that there's a reason we can do it this way, I just don't
+>> understand it.
 > 
-> I'm not sure how this appeared here. Will fix and send in v4.
-> 
->>
->> Thanks for adding the helpers, the code looks nice and tidy (although I'm
->> scared of __special_mode and the like, but there's no better way to do it).
-> 
-> Yes, I also don't see better way to handle two different drivers here.
-> But I believe conditional is readable and easily understandable.
+> I allocate separate list of xe_objects which is an argument to
+> xe_bind_unbind_async(). As list is detached (separate) from the bind_map
+> I may apriori do cleanup in the map. If bind/unbind is unsuccessful
+> outdated bind_map is the smallest problem here.
 
-It is readable, so I'm fine with leaving it as it is.
+I'm aware they are separate entities, I just wonder what is the benefit 
+of doing it here. Are there any dangers of removing that binding before 
+it's actually unbound?
 
 All the best,
 Karolina
 
+> On assert path igt_fail()
+> calls intel_allocator_init() which just frees contents on ahnd_map[]->bind_map.
+> In children there's simpler because they just dies. Real problem is we
+> still have dangling vm (no xe_vm_destroy()).
+> So I decided to update the bind_map before calling bind/unbind as on failure
+> doesn't matter what it will contain.
 > 
 > --
 > Zbigniew
 > 
 >>
+>> Apart from that one thing, the patch looks good to me.
+>>
 >> All the best,
 >> Karolina
 >>
->>>     * @ctx: intel_ctx_t context
->>>     * @e: blitter engine for @ctx
->>>     * @ahnd: allocator handle
->>> @@ -1026,32 +1068,37 @@ int blt_ctrl_surf_copy(int fd,
->>>    	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
->>>    	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
->>> +	igt_assert_neq(surf->driver, 0);
->>> -	alignment = max_t(uint64_t, gem_detect_safe_alignment(fd), 1ull << 16);
->>> +	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
->>>    	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
->>>    	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
->>>    	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
->>>    	emit_blt_ctrl_surf_copy(fd, ahnd, surf, 0, true);
->>> -	obj[0].offset = CANONICAL(dst_offset);
->>> -	obj[1].offset = CANONICAL(src_offset);
->>> -	obj[2].offset = CANONICAL(bb_offset);
->>> -	obj[0].handle = surf->dst.handle;
->>> -	obj[1].handle = surf->src.handle;
->>> -	obj[2].handle = surf->bb.handle;
->>> -	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
->>> -		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> -	obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> -	obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> -	execbuf.buffer_count = 3;
->>> -	execbuf.buffers_ptr = to_user_pointer(obj);
->>> -	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
->>> -	execbuf.rsvd1 = ctx ? ctx->id : 0;
->>> -	gem_execbuf(fd, &execbuf);
->>> -	put_offset(ahnd, surf->dst.handle);
->>> -	put_offset(ahnd, surf->src.handle);
->>> -	put_offset(ahnd, surf->bb.handle);
->>> +	if (surf->driver == INTEL_DRIVER_XE) {
->>> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
->>> +	} else {
->>> +		obj[0].offset = CANONICAL(dst_offset);
->>> +		obj[1].offset = CANONICAL(src_offset);
->>> +		obj[2].offset = CANONICAL(bb_offset);
->>> +		obj[0].handle = surf->dst.handle;
->>> +		obj[1].handle = surf->src.handle;
->>> +		obj[2].handle = surf->bb.handle;
->>> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
->>> +				EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> +		execbuf.buffer_count = 3;
->>> +		execbuf.buffers_ptr = to_user_pointer(obj);
->>> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
->>> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
->>> +		gem_execbuf(fd, &execbuf);
->>> +		put_offset(ahnd, surf->dst.handle);
->>> +		put_offset(ahnd, surf->src.handle);
->>> +		put_offset(ahnd, surf->bb.handle);
 >>> +	}
->>>    	return 0;
->>>    }
->>> @@ -1208,7 +1255,7 @@ uint64_t emit_blt_fast_copy(int fd,
->>>    	uint32_t bbe = MI_BATCH_BUFFER_END;
->>>    	uint32_t *bb;
->>> -	alignment = gem_detect_safe_alignment(fd);
->>> +	alignment = get_default_alignment(fd, blt->driver);
->>>    	data.dw00.client = 0x2;
->>>    	data.dw00.opcode = 0x42;
->>> @@ -1218,8 +1265,8 @@ uint64_t emit_blt_fast_copy(int fd,
->>>    	data.dw01.dst_pitch = blt->dst.pitch;
->>>    	data.dw01.color_depth = __fast_color_depth(blt->color_depth);
->>> -	data.dw01.dst_memory = __memory_type(blt->dst.region);
->>> -	data.dw01.src_memory = __memory_type(blt->src.region);
->>> +	data.dw01.dst_memory = __memory_type(blt->fd, blt->driver, blt->dst.region);
->>> +	data.dw01.src_memory = __memory_type(blt->fd, blt->driver, blt->src.region);
->>>    	data.dw01.dst_type_y = __new_tile_y_type(blt->dst.tiling) ? 1 : 0;
->>>    	data.dw01.src_type_y = __new_tile_y_type(blt->src.tiling) ? 1 : 0;
->>> @@ -1246,8 +1293,7 @@ uint64_t emit_blt_fast_copy(int fd,
->>>    	data.dw08.src_address_lo = src_offset;
->>>    	data.dw09.src_address_hi = src_offset >> 32;
->>> -	bb = gem_mmap__device_coherent(fd, blt->bb.handle, 0, blt->bb.size,
->>> -				       PROT_READ | PROT_WRITE);
->>> +	bb = bo_map(fd, blt->bb.handle, blt->bb.size, blt->driver);
->>>    	igt_assert(bb_pos + sizeof(data) < blt->bb.size);
->>>    	memcpy(bb + bb_pos, &data, sizeof(data));
->>> @@ -1297,32 +1343,39 @@ int blt_fast_copy(int fd,
->>>    	uint64_t dst_offset, src_offset, bb_offset, alignment;
->>>    	int ret;
->>> -	alignment = gem_detect_safe_alignment(fd);
->>> +	igt_assert_f(ahnd, "fast-copy supports softpin only\n");
->>> +	igt_assert_f(blt, "fast-copy requires data to do fast-copy blit\n");
->>> +	igt_assert_neq(blt->driver, 0);
->>> +	alignment = get_default_alignment(fd, blt->driver);
->>>    	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
->>>    	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
->>>    	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
->>>    	emit_blt_fast_copy(fd, ahnd, blt, 0, true);
->>> -	obj[0].offset = CANONICAL(dst_offset);
->>> -	obj[1].offset = CANONICAL(src_offset);
->>> -	obj[2].offset = CANONICAL(bb_offset);
->>> -	obj[0].handle = blt->dst.handle;
->>> -	obj[1].handle = blt->src.handle;
->>> -	obj[2].handle = blt->bb.handle;
->>> -	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
->>> -		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> -	obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> -	obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> -	execbuf.buffer_count = 3;
->>> -	execbuf.buffers_ptr = to_user_pointer(obj);
->>> -	execbuf.rsvd1 = ctx ? ctx->id : 0;
->>> -	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
->>> -	ret = __gem_execbuf(fd, &execbuf);
->>> -	put_offset(ahnd, blt->dst.handle);
->>> -	put_offset(ahnd, blt->src.handle);
->>> -	put_offset(ahnd, blt->bb.handle);
->>> +	if (blt->driver == INTEL_DRIVER_XE) {
->>> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
->>> +	} else {
->>> +		obj[0].offset = CANONICAL(dst_offset);
->>> +		obj[1].offset = CANONICAL(src_offset);
->>> +		obj[2].offset = CANONICAL(bb_offset);
->>> +		obj[0].handle = blt->dst.handle;
->>> +		obj[1].handle = blt->src.handle;
->>> +		obj[2].handle = blt->bb.handle;
->>> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
->>> +				EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->>> +		execbuf.buffer_count = 3;
->>> +		execbuf.buffers_ptr = to_user_pointer(obj);
->>> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
->>> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
->>> +		ret = __gem_execbuf(fd, &execbuf);
->>> +		put_offset(ahnd, blt->dst.handle);
->>> +		put_offset(ahnd, blt->src.handle);
->>> +		put_offset(ahnd, blt->bb.handle);
->>> +	}
->>>    	return ret;
->>>    }
->>> @@ -1366,16 +1419,21 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
->>>    	obj = calloc(1, sizeof(*obj));
->>>    	obj->size = size;
->>> -	igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
->>> -						  &size, region) == 0);
+>>> +	pthread_mutex_unlock(&ainfo->bind_map_mutex);
 >>> +
->>> +	if (blt->driver == INTEL_DRIVER_XE) {
->>> +		size = ALIGN(size, xe_get_default_alignment(blt->fd));
->>> +		handle = xe_bo_create_flags(blt->fd, 0, size, region);
->>> +	} else {
->>> +		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
->>> +							  &size, region) == 0);
+>>> +	xe_bind_unbind_async(ainfo->fd, ainfo->vm, 0, &obj_list, sync_in, sync_out);
+>>> +
+>>> +	igt_list_for_each_entry_safe(entry, tmp, &obj_list, link) {
+>>> +		igt_list_del(&entry->link);
+>>> +		free(entry);
 >>> +	}
->>>    	blt_set_object(obj, handle, size, region, mocs, tiling,
->>>    		       compression, compression_type);
->>>    	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
->>>    	if (create_mapping)
->>> -		obj->ptr = gem_mmap__device_coherent(blt->fd, handle, 0, size,
->>> -						     PROT_READ | PROT_WRITE);
->>> +		obj->ptr = bo_map(blt->fd, handle, size, blt->driver);
->>>    	return obj;
+>>> +}
+>>> +
+>>> +/**
+>>> + * intel_allocator_bind:
+>>> + * @allocator_handle: handle to an allocator
+>>> + * @sync_in: syncobj (fence-in)
+>>> + * @sync_out: syncobj (fence-out)
+>>> + *
+>>> + * Function binds and unbinds all objects added to the allocator which weren't
+>>> + * previously binded/unbinded.
+>>> + *
+>>> + **/
+>>> +void intel_allocator_bind(uint64_t allocator_handle,
+>>> +			  uint32_t sync_in, uint32_t sync_out)
+>>> +{
+>>> +	struct ahnd_info *ainfo;
+>>> +
+>>> +	pthread_mutex_lock(&ahnd_map_mutex);
+>>> +	ainfo = igt_map_search(ahnd_map, &allocator_handle);
+>>> +	pthread_mutex_unlock(&ahnd_map_mutex);
+>>> +	igt_assert(ainfo);
+>>> +
+>>> +	/*
+>>> +	 * We collect bind/unbind operations on alloc()/free() to do group
+>>> +	 * operation getting @sync_in as syncobj handle (fence-in). If user
+>>> +	 * passes 0 as @sync_out we bind/unbind synchronously.
+>>> +	 */
+>>> +	__xe_op_bind(ainfo, sync_in, sync_out);
+>>> +}
+>>> +
+>>>    static int equal_handles(const void *key1, const void *key2)
+>>>    {
+>>>    	const struct handle_entry *h1 = key1, *h2 = key2;
+>>> @@ -1383,6 +1619,22 @@ static void __free_maps(struct igt_map *map, bool close_allocators)
+>>>    	igt_map_destroy(map, map_entry_free_func);
 >>>    }
->>> @@ -1518,14 +1576,19 @@ void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
->>>    	int format;
->>>    	int stride = obj->tiling ? obj->pitch * 4 : obj->pitch;
->>>    	char filename[FILENAME_MAX];
->>> +	bool is_xe = is_xe_device(fd);
->>>    	snprintf(filename, FILENAME_MAX-1, "%d-%s-%s-%ux%u-%s.png",
->>>    		 run_id, fileid, blt_tiling_name(obj->tiling), width, height,
->>>    		 obj->compression ? "compressed" : "uncompressed");
->>> -	if (!map)
->>> -		map = gem_mmap__device_coherent(fd, obj->handle, 0,
->>> -						obj->size, PROT_READ);
->>> +	if (!map) {
->>> +		if (is_xe)
->>> +			map = xe_bo_map(fd, obj->handle, obj->size);
->>> +		else
->>> +			map = gem_mmap__device_coherent(fd, obj->handle, 0,
->>> +							obj->size, PROT_READ);
+>>> +static void __free_ahnd_map(void)
+>>> +{
+>>> +	struct igt_map_entry *pos;
+>>> +	struct ahnd_info *ainfo;
+>>> +
+>>> +	if (!ahnd_map)
+>>> +		return;
+>>> +
+>>> +	igt_map_foreach(ahnd_map, pos) {
+>>> +		ainfo = pos->data;
+>>> +		igt_map_destroy(ainfo->bind_map, map_entry_free_func);
 >>> +	}
->>>    	format = CAIRO_FORMAT_RGB24;
->>>    	surface = cairo_image_surface_create_for_data(map,
->>>    						      format, width, height,
->>> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
->>> index 7516ce8ac7..944e2b4ae7 100644
->>> --- a/lib/intel_blt.h
->>> +++ b/lib/intel_blt.h
->>> @@ -8,7 +8,7 @@
+>>> +
+>>> +	igt_map_destroy(ahnd_map, map_entry_free_func);
+>>> +}
+>>> +
 >>>    /**
->>>     * SECTION:intel_blt
->>> - * @short_description: i915 blitter library
->>> + * @short_description: i915/xe blitter library
->>>     * @title: Blitter library
->>>     * @include: intel_blt.h
+>>>     * intel_allocator_init:
 >>>     *
+>>> @@ -1400,12 +1652,15 @@ void intel_allocator_init(void)
+>>>    	__free_maps(handles, true);
+>>>    	__free_maps(ctx_map, false);
+>>>    	__free_maps(vm_map, false);
+>>> +	__free_ahnd_map();
+>>>    	atomic_init(&next_handle, 1);
+>>>    	handles = igt_map_create(hash_handles, equal_handles);
+>>>    	ctx_map = igt_map_create(hash_instance, equal_ctx);
+>>>    	vm_map = igt_map_create(hash_instance, equal_vm);
+>>> -	igt_assert(handles && ctx_map && vm_map);
+>>> +	pthread_mutex_init(&ahnd_map_mutex, NULL);
+>>> +	ahnd_map = igt_map_create(igt_map_hash_64, igt_map_equal_64);
+>>> +	igt_assert(handles && ctx_map && vm_map && ahnd_map);
+>>>    	channel = intel_allocator_get_msgchannel(CHANNEL_SYSVIPC_MSGQUEUE);
+>>>    }
+>>> diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+>>> index 3ec74f6191..f9ff7f1cc9 100644
+>>> --- a/lib/intel_allocator.h
+>>> +++ b/lib/intel_allocator.h
+>>> @@ -210,6 +210,9 @@ bool intel_allocator_reserve_if_not_allocated(uint64_t allocator_handle,
+>>>    void intel_allocator_print(uint64_t allocator_handle);
+>>> +void intel_allocator_bind(uint64_t allocator_handle,
+>>> +			  uint32_t sync_in, uint32_t sync_out);
+>>> +
+>>>    #define ALLOC_INVALID_ADDRESS (-1ull)
+>>>    #define INTEL_ALLOCATOR_NONE   0
+>>>    #define INTEL_ALLOCATOR_RELOC  1
