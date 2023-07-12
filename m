@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2075.outbound.protection.outlook.com [40.107.220.75])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEB1610E4E4
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 11:48:55 +0000 (UTC)
-Message-ID: <eb80b08d-f705-32ec-93e0-ab0edf8a8ad1@amd.com>
-Date: Wed, 12 Jul 2023 13:48:45 +0200
-Content-Language: en-US
-To: Simon Ser <contact@emersion.fr>, igt-dev@lists.freedesktop.org
-References: <20230712071701.11235-1-contact@emersion.fr>
-From: =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20230712071701.11235-1-contact@emersion.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============3029869384010989141=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2] tests/syncobj_eventfd: new test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Andi Shyti" <andi.shyti@linux.intel.com>
+Date: Wed, 12 Jul 2023 12:21:42 -0000
+Message-ID: <168916450265.17978.17584928786752022945@emeril.freedesktop.org>
+References: <20230712083727.282741-1-andi.shyti@linux.intel.com>
+In-Reply-To: <20230712083727.282741-1-andi.shyti@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9p?=
+ =?utf-8?q?915/gem=5Fcreate=3A_Skip_the_test_if_the_PAT_index_is_set_on_a_?=
+ =?utf-8?q?non_MTL_device?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,517 +18,467 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Ho, Kenny" <Kenny.Ho@amd.com>, James Jones <jajones@nvidia.com>,
- Austin Shafer <ashafer@nvidia.com>,
- Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
- Faith Ekstrand <faith.ekstrand@collabora.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[Adding Vitaly and Kenny as well]
+--===============3029869384010989141==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Am 12.07.23 um 09:17 schrieb Simon Ser:
-> This series implements a new test suite for the DRM_IOCTL_SYNCOBJ_EVENTFD
-> IOCTL introduced in [1].
->
-> v2:
-> - Check for DRM_CAP_SYNCOBJ_TIMELINE instead of DRM_CAP_SYNCOBJ
-> - Fix syncobj_eventfd availability check: ENOENT is returned when an
->    IOCTL doesn't exist, so use an error path which returns a different
->    errno
->
-> [1]: https://lore.kernel.org/dri-devel/20230711142803.4054-1-contact@emersion.fr/T/#u
->
-> Signed-off-by: Simon Ser <contact@emersion.fr>
-> Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Faith Ekstrand <faith.ekstrand@collabora.com>
-> Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-> Cc: Daniel Stone <daniel@fooishbar.org>
-> Cc: James Jones <jajones@nvidia.com>
-> Cc: Austin Shafer <ashafer@nvidia.com>
+== Series Details ==
 
-I'm not an expert for igt, but skimming over this I can't find anything 
-of hand wrong. Feel free to add Acked-by: Christian König 
-<christian.koenig@amd.com>.
+Series: test/i915/gem_create: Skip the test if the PAT index is set on a non MTL device
+URL   : https://patchwork.freedesktop.org/series/120595/
+State : success
 
-Maybe Vitaly or Kenny can invest a few minutes to double check the patch 
-on our CI as well.
+== Summary ==
 
-Regards,
-Christian.
+CI Bug Log - changes from CI_DRM_13374 -> IGTPW_9390
+====================================================
 
-> ---
->   include/drm-uapi/drm.h  |  22 +++
->   lib/igt_syncobj.c       |  40 +++++
->   lib/igt_syncobj.h       |   4 +
->   tests/meson.build       |   1 +
->   tests/syncobj_eventfd.c | 344 ++++++++++++++++++++++++++++++++++++++++
->   5 files changed, 411 insertions(+)
->   create mode 100644 tests/syncobj_eventfd.c
->
-> diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
-> index 5e54c3aa4c3a..7368a533c74b 100644
-> --- a/include/drm-uapi/drm.h
-> +++ b/include/drm-uapi/drm.h
-> @@ -903,6 +903,27 @@ struct drm_syncobj_timeline_wait {
->   	__u32 pad;
->   };
->   
-> +/**
-> + * struct drm_syncobj_eventfd
-> + * @handle: syncobj handle.
-> + * @flags: Zero to wait for the point to be signalled, or
-> + *         &DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE to wait for a fence to be
-> + *         available for the point.
-> + * @point: syncobj timeline point (set to zero for binary syncobjs).
-> + * @fd: Existing eventfd to sent events to.
-> + * @pad: Must be zero.
-> + *
-> + * Register an eventfd to be signalled by a syncobj. The eventfd counter will
-> + * be incremented by one.
-> + */
-> +struct drm_syncobj_eventfd {
-> +	__u32 handle;
-> +	__u32 flags;
-> +	__u64 point;
-> +	__s32 fd;
-> +	__u32 pad;
-> +};
-> +
->   
->   struct drm_syncobj_array {
->   	__u64 handles;
-> @@ -1089,6 +1110,7 @@ extern "C" {
->   #define DRM_IOCTL_SYNCOBJ_QUERY		DRM_IOWR(0xCB, struct drm_syncobj_timeline_array)
->   #define DRM_IOCTL_SYNCOBJ_TRANSFER	DRM_IOWR(0xCC, struct drm_syncobj_transfer)
->   #define DRM_IOCTL_SYNCOBJ_TIMELINE_SIGNAL	DRM_IOWR(0xCD, struct drm_syncobj_timeline_array)
-> +#define DRM_IOCTL_SYNCOBJ_EVENTFD	DRM_IOWR(0xCE, struct drm_syncobj_eventfd)
->   
->   #define DRM_IOCTL_MODE_GETFB2		DRM_IOWR(0xCE, struct drm_mode_fb_cmd2)
->   
-> diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
-> index a24ed10b7a0e..a53393bd7245 100644
-> --- a/lib/igt_syncobj.c
-> +++ b/lib/igt_syncobj.c
-> @@ -543,3 +543,43 @@ syncobj_timeline_to_timeline(int fd,
->   					 timeline_dst, point_dst,
->   					 timeline_src, point_src, 0), 0);
->   }
-> +
-> +int
-> +__syncobj_eventfd(int fd, uint32_t handle, uint64_t point, uint32_t flags,
-> +		  int ev_fd)
-> +{
-> +	struct drm_syncobj_eventfd args;
-> +	int ret;
-> +
-> +	args.handle = handle;
-> +	args.flags = flags;
-> +	args.point = point;
-> +	args.fd = ev_fd;
-> +	args.pad = 0;
-> +
-> +	ret = igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_EVENTFD, &args);
-> +	if (ret) {
-> +		ret = -errno;
-> +		igt_assume(ret);
-> +		errno = 0;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * syncobj_eventfd:
-> + * @fd: The DRM file descriptor.
-> + * @handle: A syncobj handle.
-> + * @point: A point on the timeline syncobj, or 0 for binary syncobjs.
-> + * @flags: Flags.
-> + * @ev_fd: An eventfd.
-> + *
-> + * Wait for a syncobj with an eventfd.
-> + */
-> +void
-> +syncobj_eventfd(int fd, uint32_t handle, uint64_t point, uint32_t flags,
-> +		int ev_fd)
-> +{
-> +	igt_assert_eq(__syncobj_eventfd(fd, handle, point, flags, ev_fd), 0);
-> +}
-> diff --git a/lib/igt_syncobj.h b/lib/igt_syncobj.h
-> index e6725671d900..3911696d52f0 100644
-> --- a/lib/igt_syncobj.h
-> +++ b/lib/igt_syncobj.h
-> @@ -65,5 +65,9 @@ void syncobj_timeline_to_timeline(int fd,
->   				  uint64_t timeline_src, uint32_t point_src);
->   void syncobj_timeline_signal(int fd, uint32_t *handles, uint64_t *points,
->   			     uint32_t count);
-> +int __syncobj_eventfd(int fd, uint32_t handle, uint64_t point, uint32_t flags,
-> +		      int ev_fd);
-> +void syncobj_eventfd(int fd, uint32_t handle, uint64_t point, uint32_t flags,
-> +		     int ev_fd);
->   
->   #endif /* IGT_SYNCOBJ_H */
-> diff --git a/tests/meson.build b/tests/meson.build
-> index d56e4c89daf3..9fc9199e267b 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -78,6 +78,7 @@ test_progs = [
->   	'prime_udl',
->   	'prime_vgem',
->   	'syncobj_basic',
-> +	'syncobj_eventfd',
->   	'syncobj_wait',
->   	'syncobj_timeline',
->   	'sw_sync',
-> diff --git a/tests/syncobj_eventfd.c b/tests/syncobj_eventfd.c
-> new file mode 100644
-> index 000000000000..95a2a4632114
-> --- /dev/null
-> +++ b/tests/syncobj_eventfd.c
-> @@ -0,0 +1,344 @@
-> +/*
-> + * Copyright © 2023 Simon Ser
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> + * IN THE SOFTWARE.
-> + */
-> +
-> +#include "igt.h"
-> +#include "sw_sync.h"
-> +#include "igt_syncobj.h"
-> +#include <fcntl.h>
-> +#include <poll.h>
-> +#include <sys/eventfd.h>
-> +#include <stdint.h>
-> +#include "drm.h"
-> +/**
-> + * TEST: syncobj eventfd
-> + * Category: Infrastructure
-> + * Description: Tests for the drm sync object eventfd API
-> + * Feature: synchronization
-> + * Functionality: semaphore
-> + * Run type: FULL
-> + * Sub-category: DRM
-> + * Test category: GEM_Legacy
-> + */
-> +
-> +IGT_TEST_DESCRIPTION("Tests for the drm sync object eventfd API");
-> +
-> +static bool
-> +has_syncobj_eventfd(int fd)
-> +{
-> +	uint64_t value;
-> +	int ret;
-> +
-> +	if (drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE, &value))
-> +		return false;
-> +	if (!value)
-> +		return false;
-> +
-> +	/* Try waiting with invalid flags should fail with EINVAL */
-> +	ret = __syncobj_eventfd(fd, 0, 0, 0xdeadbeef, -1);
-> +	return ret == -EINVAL;
-> +}
-> +
-> +static int
-> +syncobj_attach_sw_sync(int fd, uint32_t handle, uint64_t point)
-> +{
-> +	int timeline, fence;
-> +	uint32_t syncobj;
-> +
-> +	timeline = sw_sync_timeline_create();
-> +	fence = sw_sync_timeline_create_fence(timeline, 1);
-> +
-> +	if (point == 0) {
-> +		syncobj_import_sync_file(fd, handle, fence);
-> +	} else {
-> +		syncobj = syncobj_create(fd, 0);
-> +
-> +		syncobj_import_sync_file(fd, syncobj, fence);
-> +		syncobj_binary_to_timeline(fd, handle, point, syncobj);
-> +		syncobj_destroy(fd, syncobj);
-> +	}
-> +
-> +	close(fence);
-> +
-> +	return timeline;
-> +}
-> +
-> +static int
-> +ev_fd_read(int ev_fd)
-> +{
-> +	uint64_t ev_fd_value;
-> +	int ret;
-> +
-> +	ret = read(ev_fd, &ev_fd_value, sizeof(ev_fd_value));
-> +	if (ret == -1)
-> +		return -errno;
-> +	igt_assert_eq(ret, sizeof(ev_fd_value));
-> +	return 0;
-> +}
-> +
-> +static void
-> +ev_fd_poll_in(int ev_fd, bool avail)
-> +{
-> +	struct pollfd pollfd;
-> +	int ret;
-> +	int timeout_ms;
-> +
-> +	/* Wait 5s if we're expecting data, 10ms otherwise */
-> +	timeout_ms = avail ? 5000 : 10;
-> +	pollfd.fd = ev_fd;
-> +	pollfd.events = POLLIN;
-> +	pollfd.revents = 0;
-> +	ret = poll(&pollfd, 1, timeout_ms);
-> +	if (avail) {
-> +		igt_assert(ret >= 0);
-> +		igt_assert(pollfd.revents & POLLIN);
-> +	} else {
-> +		igt_assert_eq(ret, 0);
-> +	}
-> +}
-> +
-> +static void
-> +ev_fd_assert_unsignaled(int ev_fd)
-> +{
-> +	/* Poll the eventfd to give the kernel time to signal it, error out if
-> +	 * that happens */
-> +	ev_fd_poll_in(ev_fd, false);
-> +	igt_assert_eq(ev_fd_read(ev_fd), -EAGAIN);
-> +}
-> +
-> +static void
-> +ev_fd_assert_signaled(int ev_fd)
-> +{
-> +	ev_fd_poll_in(ev_fd, true);
-> +	igt_assert_eq(ev_fd_read(ev_fd), 0);
-> +}
-> +
-> +static const char test_bad_flags_desc[] =
-> +	"Verifies that passing bad flags is rejected";
-> +static void
-> +test_bad_flags(int fd)
-> +{
-> +	uint32_t flags;
-> +	uint32_t syncobj;
-> +	int ev_fd;
-> +
-> +	syncobj = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
-> +	flags = 0xdeadbeef;
-> +	ev_fd = eventfd(0, EFD_NONBLOCK);
-> +	igt_assert_eq(__syncobj_eventfd(fd, syncobj, 0, flags, ev_fd), -EINVAL);
-> +
-> +	close(ev_fd);
-> +	syncobj_destroy(fd, syncobj);
-> +}
-> +
-> +static const char test_illegal_handle_desc[] =
-> +	"Verifies that passing an invalid syncobj handle is rejected";
-> +static void
-> +test_illegal_handle(int fd)
-> +{
-> +	int ev_fd;
-> +
-> +	ev_fd = eventfd(0, EFD_NONBLOCK);
-> +	igt_assert_eq(__syncobj_eventfd(fd, 0, 0, 0, ev_fd), -ENOENT);
-> +
-> +	close(ev_fd);
-> +}
-> +
-> +static const char test_illegal_eventfd_desc[] =
-> +	"Verifies that passing an invalid eventfd is rejected";
-> +static void
-> +test_illegal_eventfd(int fd)
-> +{
-> +	int dev_null;
-> +	uint32_t syncobj;
-> +
-> +	syncobj = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
-> +
-> +	dev_null = open("/dev/null", O_RDWR);
-> +	igt_assert(dev_null >= 0);
-> +
-> +	igt_assert_eq(__syncobj_eventfd(fd, syncobj, 0, 0, dev_null), -EINVAL);
-> +
-> +	close(dev_null);
-> +	syncobj_destroy(fd, syncobj);
-> +}
-> +
-> +static const char test_bad_pad_desc[] =
-> +	"Verifies that passing a non-zero padding is rejected";
-> +static void
-> +test_bad_pad(int fd)
-> +{
-> +	struct drm_syncobj_eventfd args;
-> +	int ret;
-> +
-> +	args.handle = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
-> +	args.flags = 0;
-> +	args.point = 0;
-> +	args.fd = eventfd(0, EFD_NONBLOCK);
-> +	args.pad = 0xdeadbeef;
-> +
-> +	ret = drmIoctl(fd, DRM_IOCTL_SYNCOBJ_EVENTFD, &args);
-> +	igt_assert(ret == -1 && errno == EINVAL);
-> +}
-> +
-> +static const char test_wait_desc[] =
-> +	"Verifies waiting an already-materialized fence";
-> +static void
-> +test_wait(int fd, bool use_timeline)
-> +{
-> +	uint32_t syncobj;
-> +	int timeline, ev_fd_wait, ev_fd_avail;
-> +	uint64_t point = use_timeline ? 1 : 0;
-> +
-> +	syncobj = syncobj_create(fd, 0);
-> +	timeline = syncobj_attach_sw_sync(fd, syncobj, point);
-> +	ev_fd_wait = eventfd(0, EFD_NONBLOCK);
-> +	ev_fd_avail = eventfd(0, EFD_NONBLOCK);
-> +
-> +	syncobj_eventfd(fd, syncobj, point, 0, ev_fd_wait);
-> +	syncobj_eventfd(fd, syncobj, point, DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE,
-> +			ev_fd_avail);
-> +
-> +	ev_fd_assert_unsignaled(ev_fd_wait);
-> +	ev_fd_assert_signaled(ev_fd_avail);
-> +
-> +	sw_sync_timeline_inc(timeline, 1);
-> +
-> +	ev_fd_assert_signaled(ev_fd_wait);
-> +
-> +	close(ev_fd_wait);
-> +	close(ev_fd_avail);
-> +	close(timeline);
-> +	syncobj_destroy(fd, syncobj);
-> +}
-> +
-> +static const char test_wait_before_signal_desc[] =
-> +	"Verifies waiting a fence not yet materialized";
-> +static void
-> +test_wait_before_signal(int fd, bool use_timeline)
-> +{
-> +	uint32_t syncobj;
-> +	int timeline, ev_fd_wait, ev_fd_avail;
-> +	uint64_t point = use_timeline ? 1 : 0;
-> +
-> +	syncobj = syncobj_create(fd, 0);
-> +	ev_fd_wait = eventfd(0, EFD_NONBLOCK);
-> +	ev_fd_avail = eventfd(0, EFD_NONBLOCK);
-> +
-> +	syncobj_eventfd(fd, syncobj, point, 0, ev_fd_wait);
-> +	syncobj_eventfd(fd, syncobj, point, DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE,
-> +			ev_fd_avail);
-> +
-> +	ev_fd_assert_unsignaled(ev_fd_wait);
-> +	ev_fd_assert_unsignaled(ev_fd_avail);
-> +
-> +	timeline = syncobj_attach_sw_sync(fd, syncobj, point);
-> +
-> +	ev_fd_assert_unsignaled(ev_fd_wait);
-> +	ev_fd_assert_signaled(ev_fd_avail);
-> +
-> +	sw_sync_timeline_inc(timeline, 1);
-> +
-> +	ev_fd_assert_signaled(ev_fd_wait);
-> +
-> +	close(ev_fd_wait);
-> +	close(ev_fd_avail);
-> +	close(timeline);
-> +	syncobj_destroy(fd, syncobj);
-> +}
-> +
-> +static const char test_wait_signaled_desc[] =
-> +	"Verifies waiting an already-signaled fence";
-> +static void
-> +test_wait_signaled(int fd, bool use_timeline)
-> +{
-> +	uint32_t syncobj;
-> +	int timeline, ev_fd_wait, ev_fd_avail;
-> +	uint64_t point = use_timeline ? 1 : 0;
-> +
-> +	syncobj = syncobj_create(fd, 0);
-> +	ev_fd_wait = eventfd(0, EFD_NONBLOCK);
-> +	ev_fd_avail = eventfd(0, EFD_NONBLOCK);
-> +
-> +	timeline = syncobj_attach_sw_sync(fd, syncobj, point);
-> +	sw_sync_timeline_inc(timeline, 1);
-> +
-> +	syncobj_eventfd(fd, syncobj, point, 0, ev_fd_wait);
-> +	syncobj_eventfd(fd, syncobj, point, DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE,
-> +			ev_fd_avail);
-> +
-> +	ev_fd_assert_signaled(ev_fd_wait);
-> +	ev_fd_assert_signaled(ev_fd_avail);
-> +
-> +	close(ev_fd_wait);
-> +	close(ev_fd_avail);
-> +	close(timeline);
-> +	syncobj_destroy(fd, syncobj);
-> +}
-> +
-> +igt_main
-> +{
-> +	int fd = -1, i;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_ANY);
-> +		igt_require(has_syncobj_eventfd(fd));
-> +		igt_require_sw_sync();
-> +	}
-> +
-> +	igt_describe(test_bad_flags_desc);
-> +	igt_subtest("invalid-bad-flags")
-> +		test_bad_flags(fd);
-> +
-> +	igt_describe(test_illegal_handle_desc);
-> +	igt_subtest("invalid-illegal-handle")
-> +		test_illegal_handle(fd);
-> +
-> +	igt_describe(test_illegal_eventfd_desc);
-> +	igt_subtest("invalid-illegal-eventfd")
-> +		test_illegal_eventfd(fd);
-> +
-> +	igt_describe(test_bad_pad_desc);
-> +	igt_subtest("invalid-bad-pad")
-> +		test_bad_pad(fd);
-> +
-> +	for (i = 0; i < 2; i++) {
-> +		bool use_timeline = i == 1;
-> +		const char *kind = use_timeline ? "timeline" : "binary";
-> +
-> +		igt_describe(test_wait_desc);
-> +		igt_subtest_f("%s-wait", kind)
-> +			test_wait(fd, use_timeline);
-> +
-> +		igt_describe(test_wait_before_signal_desc);
-> +		igt_subtest_f("%s-wait-before-signal", kind)
-> +			test_wait_before_signal(fd, use_timeline);
-> +
-> +		igt_describe(test_wait_signaled_desc);
-> +		igt_subtest_f("%s-wait-signaled", kind)
-> +			test_wait_signaled(fd, use_timeline);
-> +	}
-> +
-> +	igt_fixture {
-> +		drm_close_driver(fd);
-> +	}
-> +}
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/index.html
+
+Participating hosts (42 -> 43)
+------------------------------
+
+  Additional (2): fi-kbl-soraka fi-pnv-d510 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9390 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - bat-adlp-11:        NOTRUN -> [SKIP][1] ([i915#7456])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-11/igt@debugfs_test@basic-hwmon.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-adlp-11:        NOTRUN -> [SKIP][4] ([i915#3282])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-11/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - bat-adlp-9:         [PASS][5] -> [ABORT][6] ([i915#7977] / [i915#8668])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-adlp-9/igt@i915_pm_rpm@basic-rte.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-9/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-tgl-1115g4:      [PASS][7] -> [FAIL][8] ([i915#7940])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][9] ([i915#1886] / [i915#7913])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg2-11:         [PASS][10] -> [ABORT][11] ([i915#7913])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-8:         [PASS][12] -> [ABORT][13] ([i915#7982])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-mtlp-8/igt@i915_selftest@live@requests.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-mtlp-8/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         NOTRUN -> [DMESG-WARN][14] ([i915#6367])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-pnv-d510:        NOTRUN -> [ABORT][15] ([i915#8844])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-pnv-d510/igt@i915_suspend@basic-s3-without-i915.html
+    - bat-rpls-1:         NOTRUN -> [ABORT][16] ([i915#6687] / [i915#7978] / [i915#8668])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_busy@basic@flip:
+    - bat-adlp-11:        NOTRUN -> [ABORT][17] ([i915#4423])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-11/igt@kms_busy@basic@flip.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][18] ([fdo#109271]) +1 similar issue
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-8809g/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][19] ([fdo#109271])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][20] ([fdo#109271]) +15 similar issues
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - fi-ivb-3770:        NOTRUN -> [SKIP][21] ([fdo#109271])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-ivb-3770/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - bat-rplp-1:         NOTRUN -> [ABORT][22] ([i915#8434] / [i915#8442] / [i915#8668])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][23] ([fdo#109271]) +37 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][24] ([i915#1072]) +2 similar issues
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rplp-1/igt@kms_psr@primary_page_flip.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_auth@basic-auth:
+    - bat-adlp-11:        [ABORT][25] ([i915#8011]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-adlp-11/igt@core_auth@basic-auth.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-11/igt@core_auth@basic-auth.html
+
+  * igt@i915_module_load@load:
+    - bat-adlp-11:        [DMESG-WARN][27] ([i915#4423]) -> [PASS][28]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-adlp-11/igt@i915_module_load@load.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-11/igt@i915_module_load@load.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-7567u:       [FAIL][29] ([i915#7940]) -> [PASS][30]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/fi-kbl-7567u/igt@i915_pm_rpm@basic-rte.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-7567u/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-cfl-8700k:       [FAIL][31] ([i915#7940]) -> [PASS][32]
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/fi-cfl-8700k/igt@i915_pm_rpm@module-reload.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-cfl-8700k/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [ABORT][33] ([i915#7913]) -> [PASS][34]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-mtlp-6:         [DMESG-FAIL][35] ([i915#7059]) -> [PASS][36]
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-6:         [DMESG-FAIL][37] ([i915#7269]) -> [PASS][38]
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-mtlp-6/igt@i915_selftest@live@requests.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-mtlp-6/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [ABORT][39] ([i915#4983] / [i915#7461] / [i915#8347] / [i915#8384]) -> [PASS][40]
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-kbl-8809g:       [INCOMPLETE][41] ([i915#4817]) -> [PASS][42]
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/fi-kbl-8809g/igt@i915_suspend@basic-s3-without-i915.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-8809g/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - bat-rplp-1:         [ABORT][43] ([i915#8442] / [i915#8668]) -> [PASS][44]
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
+  [i915#7269]: https://gitlab.freedesktop.org/drm/intel/issues/7269
+  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
+  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7940]: https://gitlab.freedesktop.org/drm/intel/issues/7940
+  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
+  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
+  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
+  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
+  [i915#8434]: https://gitlab.freedesktop.org/drm/intel/issues/8434
+  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
+  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
+  [i915#8844]: https://gitlab.freedesktop.org/drm/intel/issues/8844
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7381 -> IGTPW_9390
+
+  CI-20190529: 20190529
+  CI_DRM_13374: 2d3960cce0b8f02d576183924349a09070716b8d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9390: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/index.html
+  IGT_7381: 843987ab22a2ce913830b5f6829fa53d461aa82f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/index.html
+
+--===============3029869384010989141==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/i915/gem_create: Skip the test if the PAT index is set on a non MTL device</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120595/">https://patchwork.freedesktop.org/series/120595/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13374 -&gt; IGTPW_9390</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/index.html</p>
+<h2>Participating hosts (42 -&gt; 43)</h2>
+<p>Additional (2): fi-kbl-soraka fi-pnv-d510 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9390 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-11/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7456">i915#7456</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-11/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-adlp-9/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-9/igt@i915_pm_rpm@basic-rte.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7977">i915#7977</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-mtlp-8/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-mtlp-8/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-pnv-d510/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8844">i915#8844</a>)</p>
+</li>
+<li>
+<p>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-11/igt@kms_busy@basic@flip.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-8809g/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+</li>
+<li>
+<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-bsw-n3050/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +15 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-ivb-3770/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8434">i915#8434</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +37 similar issues</p>
+</li>
+<li>
+<p>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rplp-1/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +2 similar issues</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_auth@basic-auth:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-adlp-11/igt@core_auth@basic-auth.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8011">i915#8011</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-11/igt@core_auth@basic-auth.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-adlp-11/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-adlp-11/igt@i915_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/fi-kbl-7567u/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-7567u/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/fi-cfl-8700k/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-cfl-8700k/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-mtlp-6/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7269">i915#7269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/fi-kbl-8809g/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/fi-kbl-8809g/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13374/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/bat-rplp-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7381 -&gt; IGTPW_9390</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13374: 2d3960cce0b8f02d576183924349a09070716b8d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9390: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9390/index.html<br />
+  IGT_7381: 843987ab22a2ce913830b5f6829fa53d461aa82f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3029869384010989141==--
