@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9715B10E5B2
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:13:41 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDE9410E5B6
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:13:45 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Jul 2023 19:12:13 +0200
-Message-Id: <20230712171231.290555-4-zbigniew.kempczynski@intel.com>
+Date: Wed, 12 Jul 2023 19:12:30 +0200
+Message-Id: <20230712171231.290555-21-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
 References: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 03/21] lib/intel_blt: Add dump of two
- surfaces comparison in 8x8 blocks
+Subject: [igt-dev] [PATCH i-g-t v4 20/21] tests/api-intel-allocator: Adopt
+ to exercise allocator to Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,101 +24,98 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add limited to 32bit color function which compares two surfaces
-dumping differences in 8x8 as single ascii char. It's globalized
-version of already existed dump_corruption_info() from gem_ccs
-test but I'm planning to use it in xe_ccs so keeping common code
-locally in the test doesn't make sense.
+Xe vm binding requires some cooperation from allocator side (tracking
+alloc()/free()) operations. This diverges the path internally inside
+the allocator so it is necessary to check if allocator supports
+properly both drivers.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/intel_blt.c | 64 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/intel_blt.h |  2 ++
- 2 files changed, 66 insertions(+)
+ tests/i915/api_intel_allocator.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index a3d67f5136..1af57c4912 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1516,3 +1516,67 @@ void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
- 	if (!obj->ptr)
- 		munmap(map, obj->size);
- }
+diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
+index 77c2d25e83..f3fcf8a341 100644
+--- a/tests/i915/api_intel_allocator.c
++++ b/tests/i915/api_intel_allocator.c
+@@ -9,6 +9,9 @@
+ #include "igt.h"
+ #include "igt_aux.h"
+ #include "intel_allocator.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
 +
-+static int compare_nxn(const struct blt_copy_object *surf1,
-+			       const struct blt_copy_object *surf2,
-+			       int xsize, int ysize, int bx, int by)
-+{
-+	int x, y, corrupted;
-+	uint32_t pos, px1, px2;
-+
-+	corrupted = 0;
-+	for (y = 0; y < ysize; y++) {
-+		for (x = 0; x < xsize; x++) {
-+			pos = bx * xsize + by * ysize * surf1->pitch / 4;
-+			pos += x + y * surf1->pitch / 4;
-+			px1 = surf1->ptr[pos];
-+			px2 = surf2->ptr[pos];
-+			if (px1 != px2)
-+				corrupted++;
-+		}
-+	}
-+
-+	return corrupted;
-+}
-+
-+/**
-+ * blt_dump_corruption_info_32b:
-+ * @surf1: first surface
-+ * @surf2: second surface
-+ *
-+ * Function dumps ascii representation of the surfaces corruption. Comparison
-+ * is performed on 8x8 32bpp color pixel blocks. Number of differences on
-+ * such block varies from 0 (no corruption) to 64 (pixels on those surfaces
-+ * differs). It is added then to '0' ascii character to point the corruption
-+ * occured, for non affected block '.' is printed out.
-+ *
-+ * Idea of this function is to determine character of the differences between
-+ * two surfaces without generating difference image.
-+ *
-+ * Currently function assumes both @surf1 and @surf2 are 32-bit color surfaces.
-+ */
-+void blt_dump_corruption_info_32b(const struct blt_copy_object *surf1,
-+				  const struct blt_copy_object *surf2)
-+{
-+	const int xsize = 8, ysize = 8;
-+	int w, h, bx, by, corrupted;
-+
-+	igt_assert(surf1->x1 == surf2->x1 && surf1->x2 == surf2->x2);
-+	igt_assert(surf1->y1 == surf2->y1 && surf1->y2 == surf2->y2);
-+	w = surf1->x2;
-+	h = surf1->y2;
-+
-+	igt_info("dump corruption - width: %d, height: %d, sizex: %x, sizey: %x\n",
-+		 surf1->x2, surf1->y2, xsize, ysize);
-+
-+	for (by = 0; by < h / ysize; by++) {
-+		for (bx = 0; bx < w / xsize; bx++) {
-+			corrupted = compare_nxn(surf1, surf2, xsize, ysize, bx, by);
-+			if (corrupted == 0)
-+				igt_info(".");
-+			else
-+				igt_info("%c", '0' + corrupted);
-+		}
-+		igt_info("\n");
-+	}
-+}
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 2aa1259ae8..c134466d4d 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -259,5 +259,7 @@ void blt_surface_fill_rect(int fd, const struct blt_copy_object *obj,
- void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
- 			const struct blt_copy_object *obj,
- 			uint32_t width, uint32_t height);
-+void blt_dump_corruption_info_32b(const struct blt_copy_object *surf1,
-+				  const struct blt_copy_object *surf2);
+ /**
+  * TEST: api intel allocator
+  * Category: Infrastructure
+@@ -454,6 +457,7 @@ static void __simple_allocs(int fd)
+ 	uint32_t handles[SIMPLE_GROUP_ALLOCS];
+ 	uint64_t ahnd;
+ 	uint32_t ctx;
++	bool is_xe = is_xe_device(fd);
+ 	int i;
  
- #endif
+ 	ctx = rand() % 2;
+@@ -463,7 +467,12 @@ static void __simple_allocs(int fd)
+ 		uint32_t size;
+ 
+ 		size = (rand() % 4 + 1) * 0x1000;
+-		handles[i] = gem_create(fd, size);
++		if (is_xe)
++			handles[i] = xe_bo_create_flags(fd, 0, size,
++							system_memory(fd));
++		else
++			handles[i] = gem_create(fd, size);
++
+ 		intel_allocator_alloc(ahnd, handles[i], size, 0x1000);
+ 	}
+ 
+@@ -573,8 +582,6 @@ static void reopen(int fd)
+ {
+ 	int fd2;
+ 
+-	igt_require_gem(fd);
+-
+ 	fd2 = drm_reopen_driver(fd);
+ 
+ 	__reopen_allocs(fd, fd2, true);
+@@ -587,8 +594,6 @@ static void reopen_fork(int fd)
+ {
+ 	int fd2;
+ 
+-	igt_require_gem(fd);
+-
+ 	intel_allocator_multiprocess_start();
+ 
+ 	fd2 = drm_reopen_driver(fd);
+@@ -838,7 +843,7 @@ igt_main
+ 	struct allocators *a;
+ 
+ 	igt_fixture {
+-		fd = drm_open_driver(DRIVER_INTEL);
++		fd = drm_open_driver(DRIVER_INTEL | DRIVER_XE);
+ 		atomic_init(&next_handle, 1);
+ 		srandom(0xdeadbeef);
+ 	}
+@@ -911,12 +916,16 @@ igt_main
+ 	igt_subtest_f("open-vm")
+ 		open_vm(fd);
+ 
+-	igt_subtest_f("execbuf-with-allocator")
++	igt_subtest_f("execbuf-with-allocator") {
++		igt_require(is_i915_device(fd));
+ 		execbuf_with_allocator(fd);
++	}
+ 
+ 	igt_describe("Verifies creating and executing bb from gem pool");
+-	igt_subtest_f("gem-pool")
++	igt_subtest_f("gem-pool") {
++		igt_require(is_i915_device(fd));
+ 		gem_pool(fd);
++	}
+ 
+ 	igt_fixture
+ 		drm_close_driver(fd);
 -- 
 2.34.1
