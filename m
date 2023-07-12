@@ -3,12 +3,12 @@ Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 05 Jul 2023 16:37:00 -0000
-Message-ID: <168857502052.24207.1352761067801158460@emeril.freedesktop.org>
-References: <20230705152850.461010-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230705152850.461010-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBTcGVl?=
- =?utf-8?q?dup_IGT_build_time?=
+Date: Wed, 12 Jul 2023 14:44:20 -0000
+Message-ID: <168917306067.17978.4557252249309900790@emeril.freedesktop.org>
+References: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBNYWtl?=
+ =?utf-8?q?_test=5Flist=2Epy_more_generic?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,65 +25,65 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Speedup IGT build time
-URL   : https://patchwork.freedesktop.org/series/120233/
+Series: Make test_list.py more generic
+URL   : https://patchwork.freedesktop.org/series/120622/
 State : failure
 
 == Summary ==
 
 IGT patchset build failed on latest successful build
-f8d05fd574fad1526cbf5e20672910df87b8839b intel-ci/xe-fast-feedback.testlist: Add xe_exec_store@basic-store subtest in fastfeedback
+1016723d49ff0ce3326af31468245f7b56930cc4 lib/intel_batchbuffer: Inform about unsupported bpp
 
-Compiler for C supports arguments -Werror=sequence-point: YES 
-Compiler for C supports arguments -Werror=trigraphs: YES 
-Compiler for C supports arguments -Werror=write-strings: YES 
-Compiler for C supports arguments -fno-builtin-malloc: YES 
-Compiler for C supports arguments -fno-builtin-calloc: YES 
-Found pkg-config: /usr/bin/pkg-config (0.29.1)
-Run-time dependency libdrm found: YES 2.4.107
-Run-time dependency libdrm_intel found: YES 2.4.107
-Run-time dependency pciaccess found: YES 0.16
-Run-time dependency libkmod found: YES 27
-Run-time dependency libprocps found: YES 3.3.16
-Found CMake: /usr/bin/cmake (3.16.3)
-Run-time dependency libproc2 found: NO (tried pkgconfig and cmake)
-Run-time dependency libunwind found: YES 1.21
-Run-time dependency libdw found: YES 0.176
-Run-time dependency pixman-1 found: YES 0.38.0
-Run-time dependency valgrind found: YES 3.15.0
-Run-time dependency cairo found: YES 1.17.2
-Run-time dependency libudev found: YES 245
-Run-time dependency glib-2.0 found: YES 2.64.6
-Run-time dependency xmlrpc found: NO (tried pkgconfig and cmake)
-Run-time dependency xmlrpc_util found: NO (tried pkgconfig and cmake)
-Run-time dependency xmlrpc_client found: NO (tried pkgconfig and cmake)
-Program xmlrpc-c-config found: YES (/usr/bin/xmlrpc-c-config)
-Run-time dependency gsl found: YES 2.5
-Run-time dependency alsa found: YES 1.2.2
-Run-time dependency libcurl found: YES 7.68.0
-Run-time dependency threads found: YES
-Library m found: YES
-Library rt found: YES
-Library dl found: YES
-Library z found: YES
-Checking if "built-in atomics" links: YES 
-Has header "linux/kd.h" : YES 
-Has header "sys/kd.h" : YES 
-Has header "libgen.h" : YES 
-Has header "sys/io.h" : YES 
-Checking if "cpuid.h" links: YES 
-Header <unistd.h> has symbol "gettid" : YES 
-Checking whether type "struct sysinfo" has member "totalram" : YES 
-Checking for function "memfd_create" : YES 
-Configuring config.h using configuration
-Program python3 found: YES (/usr/bin/python3)
-Configuring i915-perf.pc using configuration
-Program generate_testlist.sh found: YES (/usr/src/igt-gpu-tools/tests/generate_testlist.sh)
-Program igt_command_line.sh found: YES (/usr/src/igt-gpu-tools/tests/igt_command_line.sh)
-
-tests/meson.build:556:1: ERROR: Unknown method "name" in object.
-
-A full log can be found at /opt/igt/build/meson-logs/meson-log.txt
+Installing tools/i915-perf/i915-perf-recorder to /opt/igt/bin
+Installing tools/i915-perf/i915-perf-control to /opt/igt/bin
+Installing tools/i915-perf/i915-perf-reader to /opt/igt/bin
+Installing runner/igt_runner to /opt/igt/bin
+Installing runner/igt_resume to /opt/igt/bin
+Installing runner/igt_results to /opt/igt/bin
+Installing runner/igt_comms_decoder to /opt/igt/bin
+Installing assembler/intel-gen4asm to /opt/igt/bin
+Installing assembler/intel-gen4disasm to /opt/igt/bin
+Installing overlay/intel-gpu-overlay to /opt/igt/bin
+Installing man/intel_audio_dump.1.gz to /opt/igt/share/man/man1
+Installing man/intel_bios_dumper.1.gz to /opt/igt/share/man/man1
+Installing man/intel_error_decode.1.gz to /opt/igt/share/man/man1
+Installing man/intel_gpu_frequency.1.gz to /opt/igt/share/man/man1
+Installing man/intel_gpu_top.1.gz to /opt/igt/share/man/man1
+Installing man/intel_gtt.1.gz to /opt/igt/share/man/man1
+Installing man/intel_infoframes.1.gz to /opt/igt/share/man/man1
+Installing man/intel_lid.1.gz to /opt/igt/share/man/man1
+Installing man/intel_panel_fitter.1.gz to /opt/igt/share/man/man1
+Installing man/intel_reg.1.gz to /opt/igt/share/man/man1
+Installing man/intel_stepping.1.gz to /opt/igt/share/man/man1
+Installing man/intel_upload_blit_large.1.gz to /opt/igt/share/man/man1
+Installing man/intel_upload_blit_large_gtt.1.gz to /opt/igt/share/man/man1
+Installing man/intel_upload_blit_large_map.1.gz to /opt/igt/share/man/man1
+Installing man/intel_upload_blit_small.1.gz to /opt/igt/share/man/man1
+Installing man/intel_vbt_decode.1.gz to /opt/igt/share/man/man1
+Installing /usr/src/igt-gpu-tools/lib/igt_list.h to /opt/igt/include/i915-perf
+Installing /usr/src/igt-gpu-tools/lib/intel_chipset.h to /opt/igt/include/i915-perf
+Installing /usr/src/igt-gpu-tools/lib/i915/perf.h to /opt/igt/include/i915-perf
+Installing /usr/src/igt-gpu-tools/lib/i915/perf_data.h to /opt/igt/include/i915-perf
+Installing /usr/src/igt-gpu-tools/lib/i915/perf_data_reader.h to /opt/igt/include/i915-perf
+Installing /opt/igt/build/lib/i915-perf.pc to /opt/igt/lib/x86_64-linux-gnu/pkgconfig
+Installing /usr/src/igt-gpu-tools/tests/1080p-left.png to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/1080p-right.png to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/pass.png to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/fast-feedback.testlist to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/meta.testlist to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/README to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/blacklist.txt to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/blacklist-pre-merge.txt to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/xe-fast-feedback.testlist to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/xe.blocklist.txt to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tools/intel_gpu_abrt to /opt/igt/bin
+Installing /usr/src/igt-gpu-tools/tools/intel-gfx-fw-info to /opt/igt/bin
+Installing /opt/igt/build/assembler/intel-gen4asm.pc to /opt/igt/lib/x86_64-linux-gnu/pkgconfig
+Installing /usr/src/igt-gpu-tools/scripts/code_cov_capture to /opt/igt/bin
+Installing /usr/src/igt-gpu-tools/scripts/code_cov_gather_on_build to /opt/igt/bin
+Installing /usr/src/igt-gpu-tools/scripts/code_cov_gather_on_test to /opt/igt/bin
+Installing /usr/src/igt-gpu-tools/scripts/code_cov_gen_report to /opt/igt/bin
+Installing /usr/src/igt-gpu-tools/scripts/code_cov_parse_info to /opt/igt/bin
 
 
 
