@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F0A810E53E
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 13:59:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E9C510E53E
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 13:59:02 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.172])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 29F64580D7B
+ by linux.intel.com (Postfix) with ESMTPS id 5A6E8580E3C
  for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 06:59:00 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qJaMs-00411t-0m
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qJaMs-00412W-1L
  for igt-dev@lists.freedesktop.org; Wed, 12 Jul 2023 15:58:58 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Jul 2023 15:58:43 +0200
-Message-Id: <20230712135854.957128-3-mauro.chehab@linux.intel.com>
+Date: Wed, 12 Jul 2023 15:58:54 +0200
+Message-Id: <20230712135854.957128-14-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
 References: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 02/13] scripts/test_list.py: make the
- class more generic
+Subject: [igt-dev] [PATCH i-g-t v2 13/13] scripts/test_list.py: add support
+ to return a string instead of print
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,169 +34,175 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Currently, the class is meant to be used only on IGT. However, it
-could also be used on other projects. It actually makes sense to
-port it to the Kernel, in order to document KUnit and Kselftests.
+Sometimes, we don't want to print a testlist, but instead to return
+it for post-processing. One such example is to add a Sphinx extension
+to parse it and place the results on some existing ReST file.
 
-Make the class more generic by allowing the constructor to pass
-three additional arguments:
-- The tag name for the test group ("TEST");
-- The tag name for the subtest group ("SUBTEST");
-- the prefix name for the tests;
-- the separator between testa and subtests.
+Add support for it.
+
+A side effect is that we don't need to redirect capture anymore to
+to store the output on a file.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 43 ++++++++++++++++++++++++++++---------------
- 1 file changed, 28 insertions(+), 15 deletions(-)
+ scripts/test_list.py | 79 ++++++++++++++++++++------------------------
+ 1 file changed, 36 insertions(+), 43 deletions(-)
 
 diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 4f580fb3de58..18fdd619211a 100755
+index 11aed63cb67a..402c69e93180 100644
 --- a/scripts/test_list.py
 +++ b/scripts/test_list.py
-@@ -101,8 +101,8 @@ class TestList:
- 
-     """
-     Parse and handle test lists with test/subtest documentation, in the
--    form of C comments, with two meta-tags (TEST and SUBTEST), and a set of
--    `field: value` items:
-+    form of C comments, with two meta-tags (by default, TEST and SUBTEST),
-+    and a set of `field: value` items:
- 
-         /**
-          * TEST: Check if new IGT test documentation logic functionality is working
-@@ -246,7 +246,9 @@ class TestList:
-     """
- 
-     def __init__(self, config_fname, include_plan = False, file_list = False,
--                 igt_build_path = None):
-+                 igt_build_path = None,
-+                 test_tag = "TEST", subtest_tag = "SUBTESTS?",
-+                 main_name = "igt", subtest_separator = "@"):
-         self.doc = {}
-         self.test_number = 0
-         self.config = None
-@@ -259,6 +261,11 @@ class TestList:
-         self.field_list = {}
-         self.title = None
-         self.filters = {}
-+        self.subtest_separator = subtest_separator
-+        self.main_name = main_name
-+
-+        if self.main_name:
-+            self.main_name += subtest_separator
- 
-         driver_name = re.sub(r'(.*/)?([^\/]+)/.*', r'\2', config_fname).capitalize()
- 
-@@ -355,11 +362,13 @@ class TestList:
-             if fname == '':
-                 continue
- 
--            self.__add_file_documentation(fname, implemented_class, field_re)
-+            self.__add_file_documentation(fname, implemented_class, field_re,
-+                                          test_tag, subtest_tag)
- 
-         if include_plan:
-             for fname in self.plan_filenames:
--                self.__add_file_documentation(fname, planned_class, field_re)
-+                self.__add_file_documentation(fname, planned_class, field_re,
-+                                              test_tag, subtest_tag)
- 
-     #
-     # ancillary methods
-@@ -421,7 +430,7 @@ class TestList:
-         for subtest in self.doc[test]["subtest"].keys():
-             summary = test_name
-             if self.doc[test]["subtest"][subtest]["Summary"] != '':
--                summary += '@' + self.doc[test]["subtest"][subtest]["Summary"]
-+                summary += self.subtest_separator + self.doc[test]["subtest"][subtest]["Summary"]
-             if not summary:
-                 continue
- 
-@@ -551,7 +560,7 @@ class TestList:
- 
-             name = re.sub(r'.*/', '', fname)
-             name = re.sub(r'\.[\w+]$', '', name)
--            name = "igt@" + name
-+            name = self.main_name + name
- 
-             if not subtest_only:
-                 test_dict[name] = {}
-@@ -606,7 +615,7 @@ class TestList:
- 
-             name = re.sub(r'.*/', '', fname)
-             name = re.sub(r'\.[ch]', '', name)
--            name = "igt@" + name
-+            name = self.main_name + name
- 
-             tmp_subtest = self.expand_subtest(fname, name, test, False)
- 
-@@ -844,7 +853,7 @@ class TestList:
- 
-             test_name = re.sub(r'.*/', '', fname)
-             test_name = re.sub(r'\.[ch]', '', test_name)
--            test_name = "igt@" + test_name
-+            test_name = self.main_name + test_name
- 
-             subtest_array += self.expand_subtest(fname, test_name, test, True)
- 
-@@ -941,8 +950,8 @@ class TestList:
-         args_regex = re.compile(r'\<[^\>]+\>')
- 
-         for subtest in self.get_subtests()[""]:
--            subtest = "@".join(subtest.split("@")[:3])
--            subtest = args_regex.sub(r'\\d+', subtest)
-+            subtest = self.subtest_separator.join(subtest.split(self.subtest_separator)[:3])
-+            subtest = re.sub(r'\<[^\>]+\>', r'\\d+', subtest)
-             doc_subtests.add(subtest)
- 
-         doc_subtests = list(sorted(doc_subtests))
-@@ -993,7 +1002,8 @@ class TestList:
-     # File handling methods
+@@ -616,20 +616,13 @@ class TestList:
+     # Output methods
      #
  
--    def __add_file_documentation(self, fname, implemented_class, field_re):
-+    def __add_file_documentation(self, fname, implemented_class, field_re,
-+                                 test_tag, subtest_tag):
+-    def print_rest_flat(self, filename = None):
++    def print_rest_flat(self, filename = None, return_string = False):
  
-         """Adds the contents of test/subtest documentation form a file"""
+         """Print tests and subtests ordered by tests"""
  
-@@ -1007,6 +1017,9 @@ class TestList:
-         cur_arg_element = 0
-         has_test_or_subtest = 0
+-        handler = None
+-        if filename:
+-            original_stdout = sys.stdout
+-            handler = open(filename, "w", encoding='utf8') # pylint: disable=R1732
+-            sys.stdout = handler
+-
+-        print("=" * len(self.title))
+-        print(self.title)
+-        print("=" * len(self.title))
+-        print()
++        out = "=" * len(self.title) + "\n"
++        out += self.title + "\n"
++        out += "=" * len(self.title) + "\n\n"
  
-+        test_regex    = re.compile(test_tag    + r':\s*(.*)')
-+        subtest_regex = re.compile('^' + subtest_tag + r':\s*(.*)')
-+
-         with open(fname, 'r', encoding='utf8') as handle:
-             arg_ref = None
-             current_test = ''
-@@ -1041,7 +1054,7 @@ class TestList:
-                     current_field = ''
+         for test in sorted(self.doc.keys()):
+             fname = self.doc[test]["File"]
+@@ -651,10 +644,9 @@ class TestList:
+             if not subtest_array:
+                 continue
  
-                     # Check if it is a new TEST section
--                    match = re.match(r'^TEST:\s*(.*)', file_line)
-+                    match = test_regex.match(file_line)
-                     if match:
-                         has_test_or_subtest = 1
-                         current_test = self.test_number
-@@ -1063,7 +1076,7 @@ class TestList:
+-            print(len(name) * '=')
+-            print(name)
+-            print(len(name) * '=')
+-            print()
++            out += len(name) * '=' + "\n"
++            out += name + "\n"
++            out += len(name) * '=' + "\n\n"
+ 
+             for field in sorted(self.doc[test].keys()):
+                 if field == "subtest":
+@@ -666,29 +658,30 @@ class TestList:
+                 if field == "subtest_line":
+                     continue
+ 
+-                print(f":{field}: {self.doc[test][field]}")
++                out += f":{field}: {self.doc[test][field]}\n"
+ 
+             for subtest in subtest_array:
+ 
+-                print()
+-                print(subtest["_summary_"])
+-                print(len(subtest["_summary_"]) * '=')
+-                print("")
++                out += "\n" + subtest["_summary_"] + "\n"
++                out += len(subtest["_summary_"]) * '=' + "\n\n"
+ 
+                 for field in sorted(subtest.keys()):
+                     if field in [ '_summary_', 'arg', 'subtest_line' ]:
                          continue
  
-                 # Check if it is a new SUBTEST section
--                match = re.match(r'^SUBTESTS?:\s*(.*)', file_line)
-+                match = subtest_regex.match(file_line)
-                 if match:
-                     has_test_or_subtest = 1
-                     current_subtest = subtest_number
-@@ -1228,7 +1241,7 @@ class TestList:
-         """Generate testlists from the test documentation"""
+-                    print(f":{field}:", subtest[field])
++                    out += f":{field}:" + subtest[field] + "\n"
  
-         test_prefix = os.path.commonprefix(self.get_subtests()[""])
--        test_prefix = re.sub(r'^igt@', '', test_prefix)
-+        test_prefix = re.sub(r'^' + self.main_name, '', test_prefix)
+-                print()
++                out += "\n"
  
-         # NOTE: currently, it uses a comma for multi-value delimitter
-         test_subtests = self.get_subtests(sort_field, ",", with_order = True)
+-            print()
+-            print()
++            out += "\n\n"
+ 
+-        if handler:
+-            handler.close()
+-            sys.stdout = original_stdout
++        if filename:
++            with open(filename, "w", encoding='utf8') as handle:
++                handle.write(out)
++        elif not return_string:
++            print(out)
++        else:
++            return out
+ 
+     def get_spreadsheet(self):
+ 
+@@ -732,7 +725,7 @@ class TestList:
+                     sheet[row].append('')
+         return sheet
+ 
+-    def print_nested_rest(self, filename = None):
++    def print_nested_rest(self, filename = None, return_string = False):
+ 
+         """Print tests and subtests ordered by tests"""
+ 
+@@ -742,10 +735,9 @@ class TestList:
+             handler = open(filename, "w", encoding='utf8') # pylint: disable=R1732
+             sys.stdout = handler
+ 
+-        print("=" * len(self.title))
+-        print(self.title)
+-        print("=" * len(self.title))
+-        print()
++        out = "=" * len(self.title) + "\n"
++        out += self.title + "\n"
++        out += "=" * len(self.title) + "\n\n"
+ 
+         # Identify the sort order for the fields
+         fields_order = []
+@@ -789,14 +781,11 @@ class TestList:
+ 
+                 title_str = fields_order[i] + ": " + fields[fields_order[i]]
+ 
+-                print(title_str)
+-                print(level_markers[marker] * len(title_str))
+-                print()
++                out += title_str + "\n"
++                out += level_markers[marker] * len(title_str) + "\n\n"
+                 marker += 1
+ 
+-            print()
+-            print("``" + subtest + "``")
+-            print()
++            out += "\n``" + subtest + "``" + "\n\n"
+ 
+             # print non-hierarchy fields
+             for field in fields_order:
+@@ -804,7 +793,7 @@ class TestList:
+                     continue
+ 
+                 if field in fields:
+-                    print(f":{field}: {fields[field]}")
++                    out += f":{field}: {fields[field]}" + "\n"
+ 
+             # Store current values
+             for i in range(cur_level, len(fields_order)):
+@@ -816,11 +805,15 @@ class TestList:
+                 else:
+                     old_fields[i] = ''
+ 
+-            print()
++            out += "\n"
+ 
+-        if handler:
+-            handler.close()
+-            sys.stdout = original_stdout
++        if filename:
++            with open(filename, "w", encoding='utf8') as handle:
++                handle.write(out)
++        elif not return_string:
++            print(out)
++        else:
++            return out
+ 
+     def print_json(self, out_fname):
+ 
 -- 
 2.40.1
