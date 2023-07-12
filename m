@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E85910E543
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5680510E544
  for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 13:59:02 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.172])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 5CE69580E7D
+ by linux.intel.com (Postfix) with ESMTPS id 6E663580C63
  for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 06:59:00 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qJaMs-004125-0y
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qJaMs-00412G-18
  for igt-dev@lists.freedesktop.org; Wed, 12 Jul 2023 15:58:58 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Jul 2023 15:58:47 +0200
-Message-Id: <20230712135854.957128-7-mauro.chehab@linux.intel.com>
+Date: Wed, 12 Jul 2023 15:58:50 +0200
+Message-Id: <20230712135854.957128-10-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
 References: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 06/13] scripts/test_list.py: close config
- file before start processing
+Subject: [igt-dev] [PATCH i-g-t v2 09/13] scripts/igt_doc.py: use field
+ names when create a TestList instance
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,149 +34,32 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Reduce the identation level of the code which parses the config
-file, as this can be done after closing the file.
-
-This is a preparation for the next patch that will offer a different
-way to pass the configuration.
+Makes the caller more generic by explicitly passing the field
+name when calling TestList. This allows updating the class and
+eventually re-ordering fields without the need of changes on
+igt_doc.py.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 114 +++++++++++++++++++++----------------------
- 1 file changed, 57 insertions(+), 57 deletions(-)
+ scripts/igt_doc.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 0452be8d7994..cfcf6712bdc0 100644
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -274,71 +274,71 @@ class TestList:
-         with open(config_fname, 'r', encoding='utf8') as handle:
-             self.config = json.load(handle)
+diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+index c02029e03a31..4f4c5c755c44 100755
+--- a/scripts/igt_doc.py
++++ b/scripts/igt_doc.py
+@@ -48,8 +48,10 @@ parser.add_argument('--files', nargs='+',
  
--            self.__add_field(None, 0, 0, self.config["fields"])
-+        self.__add_field(None, 0, 0, self.config["fields"])
+ parse_args = parser.parse_args()
  
--            sublevel_count = [ 0 ] * self.level_count
-+        sublevel_count = [ 0 ] * self.level_count
+-tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files,
+-                 parse_args.built_testlist)
++tests = TestList(config_fname = parse_args.config,
++                 include_plan = parse_args.include_plan,
++                 file_list = parse_args.files,
++                 built_testlist = parse_args.built_testlist)
  
--            for field, item in self.props.items():
--                if "sublevel" in item["_properties_"]:
--                    level = item["_properties_"]["level"]
--                    sublevel = item["_properties_"]["sublevel"]
--                    if sublevel > sublevel_count[level - 1]:
--                        sublevel_count[level - 1] = sublevel
-+        for field, item in self.props.items():
-+            if "sublevel" in item["_properties_"]:
-+                level = item["_properties_"]["level"]
-+                sublevel = item["_properties_"]["sublevel"]
-+                if sublevel > sublevel_count[level - 1]:
-+                    sublevel_count[level - 1] = sublevel
- 
--                field_lc = field.lower()
--                self.field_list[field_lc] = field
--                field_plural = _plural(field_lc)
--                if field_lc != field_plural:
--                    self.field_list[field_plural] = field
-+            field_lc = field.lower()
-+            self.field_list[field_lc] = field
-+            field_plural = _plural(field_lc)
-+            if field_lc != field_plural:
-+                self.field_list[field_plural] = field
- 
--            if include_plan:
--                self.props["Class"] = {}
--                self.props["Class"]["_properties_"] = {}
--                self.props["Class"]["_properties_"]["level"] = 1
--                self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
-+        if include_plan:
-+            self.props["Class"] = {}
-+            self.props["Class"]["_properties_"] = {}
-+            self.props["Class"]["_properties_"]["level"] = 1
-+            self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
- 
--            # Remove non-multilevel items, as we're only interested on
--            # hierarchical item levels here
--            for field, item in self.props.items():
--                if "sublevel" in item["_properties_"]:
--                    level = item["_properties_"]["level"]
--                    if sublevel_count[level - 1] == 1:
--                        del item["_properties_"]["level"]
--                        del item["_properties_"]["sublevel"]
--            del self.props["_properties_"]
-+        # Remove non-multilevel items, as we're only interested on
-+        # hierarchical item levels here
-+        for field, item in self.props.items():
-+            if "sublevel" in item["_properties_"]:
-+                level = item["_properties_"]["level"]
-+                if sublevel_count[level - 1] == 1:
-+                    del item["_properties_"]["level"]
-+                    del item["_properties_"]["sublevel"]
-+        del self.props["_properties_"]
- 
--            has_implemented = False
--            if not self.filenames:
--                self.filenames = []
--                exclude_files = []
--                files = self.config["files"]
--                exclude_file_glob = self.config.get("exclude_files", [])
--                for cfg_file in exclude_file_glob:
--                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
--                    for fname in glob.glob(cfg_file):
--                        exclude_files.append(fname)
-+        has_implemented = False
-+        if not self.filenames:
-+            self.filenames = []
-+            exclude_files = []
-+            files = self.config["files"]
-+            exclude_file_glob = self.config.get("exclude_files", [])
-+            for cfg_file in exclude_file_glob:
-+                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-+                for fname in glob.glob(cfg_file):
-+                    exclude_files.append(fname)
- 
--                for cfg_file in files:
--                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
--                    for fname in glob.glob(cfg_file):
--                        if fname in exclude_files:
--                            continue
--                        self.filenames.append(fname)
--                        has_implemented = True
--            else:
--                for cfg_file in self.filenames:
--                    if cfg_file:
--                        has_implemented = True
-+            for cfg_file in files:
-+                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-+                for fname in glob.glob(cfg_file):
-+                    if fname in exclude_files:
-+                        continue
-+                    self.filenames.append(fname)
-+                    has_implemented = True
-+        else:
-+            for cfg_file in self.filenames:
-+                if cfg_file:
-+                    has_implemented = True
- 
--            has_planned = False
--            if include_plan and "planning_files" in self.config:
--                implemented_class = "Implemented"
--                files = self.config["planning_files"]
--                for cfg_file in files:
--                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
--                    for fname in glob.glob(cfg_file):
--                        self.plan_filenames.append(fname)
--                        has_planned = True
-+        has_planned = False
-+        if include_plan and "planning_files" in self.config:
-+            implemented_class = "Implemented"
-+            files = self.config["planning_files"]
-+            for cfg_file in files:
-+                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
-+                for fname in glob.glob(cfg_file):
-+                    self.plan_filenames.append(fname)
-+                    has_planned = True
- 
-         planned_class = None
-         if has_implemented:
+ if parse_args.filter_field:
+     for filter_expr in parse_args.filter_field:
 -- 
 2.40.1
