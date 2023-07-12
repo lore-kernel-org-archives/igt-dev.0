@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3399409144465231668=="
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FC7310E381
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 08:57:34 +0000 (UTC)
+Message-ID: <729729ed-9fa3-7408-5d72-61a3b3f3cebb@linux.intel.com>
+Date: Wed, 12 Jul 2023 09:57:30 +0100
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Simon Ser" <contact@emersion.fr>
-Date: Wed, 12 Jul 2023 08:40:50 -0000
-Message-ID: <168915125031.17978.10197810180806930124@emeril.freedesktop.org>
-References: <20230712071701.11235-1-contact@emersion.fr>
-In-Reply-To: <20230712071701.11235-1-contact@emersion.fr>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/synco?=
- =?utf-8?q?bj=5Feventfd=3A_new_test_=28rev2=29?=
+Content-Language: en-US
+To: Andi Shyti <andi.shyti@linux.intel.com>,
+ IGT dev <igt-dev@lists.freedesktop.org>
+References: <20230712083727.282741-1-andi.shyti@linux.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230712083727.282741-1-andi.shyti@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH] test/i915/gem_create: Skip the test if the
+ PAT index is set on a non MTL device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +22,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Fei Yang <fei.yang@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3399409144465231668==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 12/07/2023 09:37, Andi Shyti wrote:
+> If we try to set the PAT index on a device that is not a Meteor
+> Lake, we expect an -ENODEV return value. But then, we forget to
+> skip and soon after we assert on the return value being '0',
+> forcing the error path.
+> 
+> Skip, as expected, in case the return value is either EINVAL or
+> ENODEV, the latter for meteor lake devices.
+> 
+> Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: Fei Yang <fei.yang@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>   tests/i915/gem_create.c | 23 +++++++++++++++++------
+>   1 file changed, 17 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+> index b7961d9ef2..4b00fe6aab 100644
+> --- a/tests/i915/gem_create.c
+> +++ b/tests/i915/gem_create.c
+> @@ -668,14 +668,25 @@ static void create_ext_set_pat(int fd)
+>   	ret = __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base);
+>   
+>   	/*
+> -	 * With a valid PAT index specified, returning -EINVAL here
+> -	 * indicates set_pat extension is not supported
+> +	 * Currently the PAT index is supported only for Meteor Lake, so that
+> +	 * we expect:
+> +	 *
+> +	 *  * -EINVAL if i915 does not support the PAT index, e.g. the kernel is
+> +	 *    too old to have the PAT index supported.
+> +	 *  * -ENODEV if we are trying to set the PAT index on a non Meteor Lake
+> +	 *    platform.
+> +	 *
+> +	 * In both cases, though, the I915_GEM_CREATE_EXT_SET_PAT flag is not
+> +	 * supported.
+>   	 */
+> -	if (ret == -EINVAL)
+> -		igt_skip("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
+> -	else if (!IS_METEORLAKE(devid))
+> -		igt_assert_eq(ret, -ENODEV);
+> +	igt_skip_on_f(ret == -EINVAL ||
+> +		      (ret == -ENODEV && IS_METEORLAKE(devid)),
+> +		      "I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
+>   
+> +	/*
+> +	 * This means that we are on a Meteor Lake and the PAT
+> +	 * index is already supported by the running i915
+> +	 */
+>   	igt_assert(ret == 0);
+>   
+>   	/*
 
-Series: tests/syncobj_eventfd: new test (rev2)
-URL   : https://patchwork.freedesktop.org/series/120551/
-State : info
+That was fast, thanks!
 
-== Summary ==
+Looks good to me.
 
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9389](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9389/index.html)
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
+Regards,
 
-
---===============3399409144465231668==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/syncobj_eventfd: new test (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120551/">https://patchwork.freedesktop.org/series/120551/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9389/index.html">IGTPW_9389</a></p>
-
-</body>
-</html>
-
---===============3399409144465231668==--
+Tvrtko
