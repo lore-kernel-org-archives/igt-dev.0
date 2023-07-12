@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1E3210E540
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 13:59:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E85910E543
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 13:59:02 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.172])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 41ADA580DBE
+ by linux.intel.com (Postfix) with ESMTPS id 5CE69580E7D
  for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 06:59:00 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qJaMs-00412B-15
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qJaMs-004125-0y
  for igt-dev@lists.freedesktop.org; Wed, 12 Jul 2023 15:58:58 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Jul 2023 15:58:49 +0200
-Message-Id: <20230712135854.957128-9-mauro.chehab@linux.intel.com>
+Date: Wed, 12 Jul 2023 15:58:47 +0200
+Message-Id: <20230712135854.957128-7-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
 References: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 08/13] scripts/test_list.py: allow
- passing a config dict directly
+Subject: [igt-dev] [PATCH i-g-t v2 06/13] scripts/test_list.py: close config
+ file before start processing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,70 +34,149 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Make the logic more generic by allowing to pass a config dict
-directly.
+Reduce the identation level of the code which parses the config
+file, as this can be done after closing the file.
+
+This is a preparation for the next patch that will offer a different
+way to pass the configuration.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ scripts/test_list.py | 114 +++++++++++++++++++++----------------------
+ 1 file changed, 57 insertions(+), 57 deletions(-)
 
 diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 5da471617268..9861306bd777 100644
+index 0452be8d7994..cfcf6712bdc0 100644
 --- a/scripts/test_list.py
 +++ b/scripts/test_list.py
-@@ -245,8 +245,10 @@ class TestList:
-     Description: test ioctls
-     """
+@@ -274,71 +274,71 @@ class TestList:
+         with open(config_fname, 'r', encoding='utf8') as handle:
+             self.config = json.load(handle)
  
--    def __init__(self, config_fname, include_plan = False, file_list = False,
-+    def __init__(self, config_fname = None,
-+                 include_plan = False, file_list = None,
-                  built_testlist = None,
-+                 config_dict = None, sources_path = None,
-                  test_tag = "TEST", subtest_tag = "SUBTESTS?",
-                  main_name = "igt", subtest_separator = "@"):
-         self.doc = {}
-@@ -263,18 +265,34 @@ class TestList:
-         self.subtest_separator = subtest_separator
-         self.main_name = main_name
+-            self.__add_field(None, 0, 0, self.config["fields"])
++        self.__add_field(None, 0, 0, self.config["fields"])
  
-+        # Exclusive or: either one is needed
-+        if bool(config_fname) == bool(config_dict):
-+            sys.exit("Error: either config filename or config dict shall be used")
-+
-         if self.main_name:
-             self.main_name += subtest_separator
+-            sublevel_count = [ 0 ] * self.level_count
++        sublevel_count = [ 0 ] * self.level_count
  
--        driver_name = re.sub(r'(.*/)?([^\/]+)/.*', r'\2', config_fname).capitalize()
--
-         implemented_class = None
+-            for field, item in self.props.items():
+-                if "sublevel" in item["_properties_"]:
+-                    level = item["_properties_"]["level"]
+-                    sublevel = item["_properties_"]["sublevel"]
+-                    if sublevel > sublevel_count[level - 1]:
+-                        sublevel_count[level - 1] = sublevel
++        for field, item in self.props.items():
++            if "sublevel" in item["_properties_"]:
++                level = item["_properties_"]["level"]
++                sublevel = item["_properties_"]["sublevel"]
++                if sublevel > sublevel_count[level - 1]:
++                    sublevel_count[level - 1] = sublevel
  
--        with open(config_fname, 'r', encoding='utf8') as handle:
--            self.config = json.load(handle)
-+        if config_fname:
-+            with open(config_fname, 'r', encoding='utf8') as handle:
-+                self.config = json.load(handle)
+-                field_lc = field.lower()
+-                self.field_list[field_lc] = field
+-                field_plural = _plural(field_lc)
+-                if field_lc != field_plural:
+-                    self.field_list[field_plural] = field
++            field_lc = field.lower()
++            self.field_list[field_lc] = field
++            field_plural = _plural(field_lc)
++            if field_lc != field_plural:
++                self.field_list[field_plural] = field
  
--        config_origin = config_fname
--        cfg_path = os.path.realpath(os.path.dirname(config_fname)) + "/"
-+            config_origin = config_fname
-+            cfg_path = os.path.realpath(os.path.dirname(config_fname)) + "/"
-+            driver_name = re.sub(r'(.*/)?([^\/]+)/.*', r'\2', config_fname).capitalize()
-+
+-            if include_plan:
+-                self.props["Class"] = {}
+-                self.props["Class"]["_properties_"] = {}
+-                self.props["Class"]["_properties_"]["level"] = 1
+-                self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
++        if include_plan:
++            self.props["Class"] = {}
++            self.props["Class"]["_properties_"] = {}
++            self.props["Class"]["_properties_"]["level"] = 1
++            self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
+ 
+-            # Remove non-multilevel items, as we're only interested on
+-            # hierarchical item levels here
+-            for field, item in self.props.items():
+-                if "sublevel" in item["_properties_"]:
+-                    level = item["_properties_"]["level"]
+-                    if sublevel_count[level - 1] == 1:
+-                        del item["_properties_"]["level"]
+-                        del item["_properties_"]["sublevel"]
+-            del self.props["_properties_"]
++        # Remove non-multilevel items, as we're only interested on
++        # hierarchical item levels here
++        for field, item in self.props.items():
++            if "sublevel" in item["_properties_"]:
++                level = item["_properties_"]["level"]
++                if sublevel_count[level - 1] == 1:
++                    del item["_properties_"]["level"]
++                    del item["_properties_"]["sublevel"]
++        del self.props["_properties_"]
+ 
+-            has_implemented = False
+-            if not self.filenames:
+-                self.filenames = []
+-                exclude_files = []
+-                files = self.config["files"]
+-                exclude_file_glob = self.config.get("exclude_files", [])
+-                for cfg_file in exclude_file_glob:
+-                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
+-                    for fname in glob.glob(cfg_file):
+-                        exclude_files.append(fname)
++        has_implemented = False
++        if not self.filenames:
++            self.filenames = []
++            exclude_files = []
++            files = self.config["files"]
++            exclude_file_glob = self.config.get("exclude_files", [])
++            for cfg_file in exclude_file_glob:
++                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
++                for fname in glob.glob(cfg_file):
++                    exclude_files.append(fname)
+ 
+-                for cfg_file in files:
+-                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
+-                    for fname in glob.glob(cfg_file):
+-                        if fname in exclude_files:
+-                            continue
+-                        self.filenames.append(fname)
+-                        has_implemented = True
+-            else:
+-                for cfg_file in self.filenames:
+-                    if cfg_file:
+-                        has_implemented = True
++            for cfg_file in files:
++                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
++                for fname in glob.glob(cfg_file):
++                    if fname in exclude_files:
++                        continue
++                    self.filenames.append(fname)
++                    has_implemented = True
 +        else:
-+            self.config = config_dict
-+            config_origin = "config dict"
-+            cfg_path = "./"
-+            driver_name = main_name
-+
-+        if sources_path:
-+            cfg_path = os.path.realpath(sources_path) + "/"
-+
-+        if not self.config:
-+            sys.exit("Error: configuration is empty!")
++            for cfg_file in self.filenames:
++                if cfg_file:
++                    has_implemented = True
  
-         self.__add_field(None, 0, 0, self.config["fields"])
+-            has_planned = False
+-            if include_plan and "planning_files" in self.config:
+-                implemented_class = "Implemented"
+-                files = self.config["planning_files"]
+-                for cfg_file in files:
+-                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
+-                    for fname in glob.glob(cfg_file):
+-                        self.plan_filenames.append(fname)
+-                        has_planned = True
++        has_planned = False
++        if include_plan and "planning_files" in self.config:
++            implemented_class = "Implemented"
++            files = self.config["planning_files"]
++            for cfg_file in files:
++                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
++                for fname in glob.glob(cfg_file):
++                    self.plan_filenames.append(fname)
++                    has_planned = True
  
+         planned_class = None
+         if has_implemented:
 -- 
 2.40.1
