@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B063810E60D
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 07:22:44 +0000 (UTC)
-Message-ID: <25d6f640-4a4d-5eef-73cc-1a11e87531d5@intel.com>
-Date: Thu, 13 Jul 2023 09:22:30 +0200
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E5D010E60D
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 07:24:32 +0000 (UTC)
+Message-ID: <32b3e563-7bb0-cca0-81b8-340164998e60@intel.com>
+Date: Thu, 13 Jul 2023 09:24:17 +0200
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
- <20230712171231.290555-16-zbigniew.kempczynski@intel.com>
+ <20230712171231.290555-18-zbigniew.kempczynski@intel.com>
 From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230712171231.290555-16-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230712171231.290555-18-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4 15/21] lib/intel_ctx: Add xe context
- information
+Subject: Re: [igt-dev] [PATCH i-g-t v4 17/21] lib/intel_blt: Extend blitter
+ library to support xe driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,198 +28,444 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On 12.07.2023 19:12, Zbigniew Kempczyński wrote:
-> Most complicated part in adopting i915_blt to intel_blt - which should
-> handle both drivers - is how to achieve pipelined execution. In term
-> pipelined execution I mean all gpu workloads are executed without
-> stalls.
-> 
-> Comparing to i915 relocations and softpinning xe architecture migrates
-> binding (this means also unbind operation) responsibility from the
-> kernel to user via vm_bind ioctl(). To avoid stalls user has to
-> provide in/out fences (syncobjs) between consecutive bindings/execs.
-> Of course for many igt tests we don't need pipelined execution,
-> just synchronous bind, then exec. But exercising the driver should
-> also cover pipelining to verify it is possible to work without stalls.
-> 
-> I decided to extend intel_ctx_t with all necessary for xe objects
-> (vm, engine, syncobjs) to get flexibility in deciding how to bind,
-> execute and wait for (synchronize) those operations. Context object
-> along with i915 engine is already passed to blitter library so adding
-> xe required fields doesn't break i915 but will allow xe path to get
-> all necessary data to execute.
-> 
-> Using intel_ctx with xe requires some code patterns caused by usage
-> of an allocator. For xe the allocator started tracking alloc()/free()
-> operations to do bind/unbind in one call just before execution.
-> I've added two helpers in intel_ctx which - intel_ctx_xe_exec()
-> and intel_ctx_xe_sync(). Depending how intel_ctx was created
-> (with 0 or real syncobj handles as in/bind/out fences) bind and exec
-> in intel_ctx_xe_exec() are pipelined but synchronize last operation
-> (exec). For real syncobjs they are used to join bind + exec calls
-> but there's no wait for exec (sync-out) completion. This allows
-> building more cascaded bind + exec operations without stalls.
-> 
-> To wait for a sync-out fence caller may use intel_ctx_xe_sync()
-> which is synchronous wait on syncobj. It allows user to reset
-> fences to prepare for next operation.
+> Use already written for i915 blitter library in xe development.
+> Add appropriate code paths which are unique for those drivers.
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
-I think you've forgot to add my r-b, or has something changed in v4? 
-There's nothing in the log.
-
-Thanks,
-Karolina
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 
 > ---
-> v3: drop local __xe_exec() (Karolina)
+> v3: Extract common helpers for getting mapping and alignment (Karolina)
+> v4: Fix unwanted doc change (Karolina)
 > ---
->   lib/intel_ctx.c | 98 ++++++++++++++++++++++++++++++++++++++++++++++++-
->   lib/intel_ctx.h | 14 +++++++
->   2 files changed, 111 insertions(+), 1 deletion(-)
+>   lib/intel_blt.c | 233 ++++++++++++++++++++++++++++++------------------
+>   lib/intel_blt.h |   2 +-
+>   2 files changed, 149 insertions(+), 86 deletions(-)
 > 
-> diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
-> index ded9c0f1e4..0c1ce6d10b 100644
-> --- a/lib/intel_ctx.c
-> +++ b/lib/intel_ctx.c
-> @@ -5,9 +5,12 @@
->   
->   #include <stddef.h>
->   
-> +#include "i915/gem_engine_topology.h"
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index 059cc53b9c..4657bb1aec 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -9,9 +9,13 @@
+>   #include <malloc.h>
+>   #include <cairo.h>
+>   #include "drm.h"
+> -#include "igt.h"
+>   #include "i915/gem_create.h"
+> +#include "igt.h"
 > +#include "igt_syncobj.h"
-> +#include "intel_allocator.h"
->   #include "intel_ctx.h"
->   #include "ioctl_wrappers.h"
-> -#include "i915/gem_engine_topology.h"
+>   #include "intel_blt.h"
 > +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_util.h"
+>   
+>   #define BITRANGE(start, end) (end - start + 1)
+>   #define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
+> @@ -468,24 +472,40 @@ static int __special_mode(const struct blt_copy_data *blt)
+>   	return SM_NONE;
+>   }
+>   
+> -static int __memory_type(uint32_t region)
+> +static int __memory_type(int fd, enum intel_driver driver, uint32_t region)
+>   {
+> -	igt_assert_f(IS_DEVICE_MEMORY_REGION(region) ||
+> -		     IS_SYSTEM_MEMORY_REGION(region),
+> -		     "Invalid region: %x\n", region);
+> +	if (driver == INTEL_DRIVER_I915) {
+> +		igt_assert_f(IS_DEVICE_MEMORY_REGION(region) ||
+> +			     IS_SYSTEM_MEMORY_REGION(region),
+> +			     "Invalid region: %x\n", region);
+> +	} else {
+> +		igt_assert_f(XE_IS_VRAM_MEMORY_REGION(fd, region) ||
+> +			     XE_IS_SYSMEM_MEMORY_REGION(fd, region),
+> +			     "Invalid region: %x\n", region);
+> +	}
+>   
+> -	if (IS_DEVICE_MEMORY_REGION(region))
+> +	if (driver == INTEL_DRIVER_I915 && IS_DEVICE_MEMORY_REGION(region))
+>   		return TM_LOCAL_MEM;
+> +	else if (driver == INTEL_DRIVER_XE && XE_IS_VRAM_MEMORY_REGION(fd, region))
+> +		return TM_LOCAL_MEM;
+> +
+>   	return TM_SYSTEM_MEM;
+>   }
+>   
+> -static enum blt_aux_mode __aux_mode(const struct blt_copy_object *obj)
+> +static enum blt_aux_mode __aux_mode(int fd,
+> +				    enum intel_driver driver,
+> +				    const struct blt_copy_object *obj)
+>   {
+> -	if (obj->compression == COMPRESSION_ENABLED) {
+> +	if (driver == INTEL_DRIVER_I915 && obj->compression == COMPRESSION_ENABLED) {
+>   		igt_assert_f(IS_DEVICE_MEMORY_REGION(obj->region),
+>   			     "XY_BLOCK_COPY_BLT supports compression "
+>   			     "on device memory only\n");
+>   		return AM_AUX_CCS_E;
+> +	} else if (driver == INTEL_DRIVER_XE && obj->compression == COMPRESSION_ENABLED) {
+> +		igt_assert_f(XE_IS_VRAM_MEMORY_REGION(fd, obj->region),
+> +			     "XY_BLOCK_COPY_BLT supports compression "
+> +			     "on device memory only\n");
+> +		return AM_AUX_CCS_E;
+>   	}
+>   
+>   	return AM_AUX_NONE;
+> @@ -508,9 +528,9 @@ static void fill_data(struct gen12_block_copy_data *data,
+>   	data->dw00.length = extended_command ? 20 : 10;
+>   
+>   	if (__special_mode(blt) == SM_FULL_RESOLVE)
+> -		data->dw01.dst_aux_mode = __aux_mode(&blt->src);
+> +		data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
+>   	else
+> -		data->dw01.dst_aux_mode = __aux_mode(&blt->dst);
+> +		data->dw01.dst_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->dst);
+>   	data->dw01.dst_pitch = blt->dst.pitch - 1;
+>   
+>   	data->dw01.dst_mocs = blt->dst.mocs;
+> @@ -531,13 +551,13 @@ static void fill_data(struct gen12_block_copy_data *data,
+>   
+>   	data->dw06.dst_x_offset = blt->dst.x_offset;
+>   	data->dw06.dst_y_offset = blt->dst.y_offset;
+> -	data->dw06.dst_target_memory = __memory_type(blt->dst.region);
+> +	data->dw06.dst_target_memory = __memory_type(blt->fd, blt->driver, blt->dst.region);
+>   
+>   	data->dw07.src_x1 = blt->src.x1;
+>   	data->dw07.src_y1 = blt->src.y1;
+>   
+>   	data->dw08.src_pitch = blt->src.pitch - 1;
+> -	data->dw08.src_aux_mode = __aux_mode(&blt->src);
+> +	data->dw08.src_aux_mode = __aux_mode(blt->fd, blt->driver, &blt->src);
+>   	data->dw08.src_mocs = blt->src.mocs;
+>   	data->dw08.src_compression = blt->src.compression;
+>   	data->dw08.src_tiling = __block_tiling(blt->src.tiling);
+> @@ -550,7 +570,7 @@ static void fill_data(struct gen12_block_copy_data *data,
+>   
+>   	data->dw11.src_x_offset = blt->src.x_offset;
+>   	data->dw11.src_y_offset = blt->src.y_offset;
+> -	data->dw11.src_target_memory = __memory_type(blt->src.region);
+> +	data->dw11.src_target_memory = __memory_type(blt->fd, blt->driver, blt->src.region);
+>   }
+>   
+>   static void fill_data_ext(struct gen12_block_copy_data_ext *dext,
+> @@ -692,6 +712,24 @@ static void dump_bb_ext(struct gen12_block_copy_data_ext *data)
+>   		 data->dw21.src_array_index);
+>   }
+>   
+> +static uint64_t get_default_alignment(int fd, enum intel_driver driver)
+> +{
+> +	if (driver == INTEL_DRIVER_XE)
+> +		return xe_get_default_alignment(fd);
+> +
+> +	return gem_detect_safe_alignment(fd);
+> +}
+> +
+> +static void *bo_map(int fd, uint32_t handle, uint64_t size,
+> +		    enum intel_driver driver)
+> +{
+> +	if (driver == INTEL_DRIVER_XE)
+> +		return xe_bo_map(fd, handle, size);
+> +
+> +	return gem_mmap__device_coherent(fd, handle, 0, size,
+> +					 PROT_READ | PROT_WRITE);
+> +}
+> +
+>   /**
+>    * blt_copy_init:
+>    * @fd: drm fd
+> @@ -739,7 +777,7 @@ uint64_t emit_blt_block_copy(int fd,
+>   	igt_assert_f(ahnd, "block-copy supports softpin only\n");
+>   	igt_assert_f(blt, "block-copy requires data to do blit\n");
+>   
+> -	alignment = gem_detect_safe_alignment(fd);
+> +	alignment = get_default_alignment(fd, blt->driver);
+>   	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment)
+>   		     + blt->src.plane_offset;
+>   	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment)
+> @@ -748,8 +786,7 @@ uint64_t emit_blt_block_copy(int fd,
+>   
+>   	fill_data(&data, blt, src_offset, dst_offset, ext);
+>   
+> -	bb = gem_mmap__device_coherent(fd, blt->bb.handle, 0, blt->bb.size,
+> -				       PROT_READ | PROT_WRITE);
+> +	bb = bo_map(fd, blt->bb.handle, blt->bb.size, blt->driver);
+>   
+>   	igt_assert(bb_pos + sizeof(data) < blt->bb.size);
+>   	memcpy(bb + bb_pos, &data, sizeof(data));
+> @@ -812,29 +849,35 @@ int blt_block_copy(int fd,
+>   
+>   	igt_assert_f(ahnd, "block-copy supports softpin only\n");
+>   	igt_assert_f(blt, "block-copy requires data to do blit\n");
+> +	igt_assert_neq(blt->driver, 0);
+>   
+> -	alignment = gem_detect_safe_alignment(fd);
+> +	alignment = get_default_alignment(fd, blt->driver);
+>   	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
+>   	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
+>   	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+>   
+>   	emit_blt_block_copy(fd, ahnd, blt, ext, 0, true);
+>   
+> -	obj[0].offset = CANONICAL(dst_offset);
+> -	obj[1].offset = CANONICAL(src_offset);
+> -	obj[2].offset = CANONICAL(bb_offset);
+> -	obj[0].handle = blt->dst.handle;
+> -	obj[1].handle = blt->src.handle;
+> -	obj[2].handle = blt->bb.handle;
+> -	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> -		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> -	obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> -	obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> -	execbuf.buffer_count = 3;
+> -	execbuf.buffers_ptr = to_user_pointer(obj);
+> -	execbuf.rsvd1 = ctx ? ctx->id : 0;
+> -	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> -	ret = __gem_execbuf(fd, &execbuf);
+> +	if (blt->driver == INTEL_DRIVER_XE) {
+> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+> +	} else {
+> +		obj[0].offset = CANONICAL(dst_offset);
+> +		obj[1].offset = CANONICAL(src_offset);
+> +		obj[2].offset = CANONICAL(bb_offset);
+> +		obj[0].handle = blt->dst.handle;
+> +		obj[1].handle = blt->src.handle;
+> +		obj[2].handle = blt->bb.handle;
+> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> +				EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		execbuf.buffer_count = 3;
+> +		execbuf.buffers_ptr = to_user_pointer(obj);
+> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
+> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> +
+> +		ret = __gem_execbuf(fd, &execbuf);
+> +	}
+>   
+>   	return ret;
+>   }
+> @@ -950,7 +993,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>   	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
+>   	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
+>   
+> -	alignment = max_t(uint64_t, gem_detect_safe_alignment(fd), 1ull << 16);
+> +	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
+>   
+>   	data.dw00.client = 0x2;
+>   	data.dw00.opcode = 0x48;
+> @@ -973,8 +1016,7 @@ uint64_t emit_blt_ctrl_surf_copy(int fd,
+>   	data.dw04.dst_address_hi = dst_offset >> 32;
+>   	data.dw04.dst_mocs = surf->dst.mocs;
+>   
+> -	bb = gem_mmap__device_coherent(fd, surf->bb.handle, 0, surf->bb.size,
+> -				       PROT_READ | PROT_WRITE);
+> +	bb = bo_map(fd, surf->bb.handle, surf->bb.size, surf->driver);
+>   
+>   	igt_assert(bb_pos + sizeof(data) < surf->bb.size);
+>   	memcpy(bb + bb_pos, &data, sizeof(data));
+> @@ -1026,32 +1068,37 @@ int blt_ctrl_surf_copy(int fd,
+>   
+>   	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
+>   	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
+> +	igt_assert_neq(surf->driver, 0);
+>   
+> -	alignment = max_t(uint64_t, gem_detect_safe_alignment(fd), 1ull << 16);
+> +	alignment = max_t(uint64_t, get_default_alignment(fd, surf->driver), 1ull << 16);
+>   	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size, alignment);
+>   	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size, alignment);
+>   	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size, alignment);
+>   
+>   	emit_blt_ctrl_surf_copy(fd, ahnd, surf, 0, true);
+>   
+> -	obj[0].offset = CANONICAL(dst_offset);
+> -	obj[1].offset = CANONICAL(src_offset);
+> -	obj[2].offset = CANONICAL(bb_offset);
+> -	obj[0].handle = surf->dst.handle;
+> -	obj[1].handle = surf->src.handle;
+> -	obj[2].handle = surf->bb.handle;
+> -	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> -		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> -	obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> -	obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> -	execbuf.buffer_count = 3;
+> -	execbuf.buffers_ptr = to_user_pointer(obj);
+> -	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> -	execbuf.rsvd1 = ctx ? ctx->id : 0;
+> -	gem_execbuf(fd, &execbuf);
+> -	put_offset(ahnd, surf->dst.handle);
+> -	put_offset(ahnd, surf->src.handle);
+> -	put_offset(ahnd, surf->bb.handle);
+> +	if (surf->driver == INTEL_DRIVER_XE) {
+> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+> +	} else {
+> +		obj[0].offset = CANONICAL(dst_offset);
+> +		obj[1].offset = CANONICAL(src_offset);
+> +		obj[2].offset = CANONICAL(bb_offset);
+> +		obj[0].handle = surf->dst.handle;
+> +		obj[1].handle = surf->src.handle;
+> +		obj[2].handle = surf->bb.handle;
+> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> +				EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		execbuf.buffer_count = 3;
+> +		execbuf.buffers_ptr = to_user_pointer(obj);
+> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
+> +		gem_execbuf(fd, &execbuf);
+> +		put_offset(ahnd, surf->dst.handle);
+> +		put_offset(ahnd, surf->src.handle);
+> +		put_offset(ahnd, surf->bb.handle);
+> +	}
+>   
+>   	return 0;
+>   }
+> @@ -1208,7 +1255,7 @@ uint64_t emit_blt_fast_copy(int fd,
+>   	uint32_t bbe = MI_BATCH_BUFFER_END;
+>   	uint32_t *bb;
+>   
+> -	alignment = gem_detect_safe_alignment(fd);
+> +	alignment = get_default_alignment(fd, blt->driver);
+>   
+>   	data.dw00.client = 0x2;
+>   	data.dw00.opcode = 0x42;
+> @@ -1218,8 +1265,8 @@ uint64_t emit_blt_fast_copy(int fd,
+>   
+>   	data.dw01.dst_pitch = blt->dst.pitch;
+>   	data.dw01.color_depth = __fast_color_depth(blt->color_depth);
+> -	data.dw01.dst_memory = __memory_type(blt->dst.region);
+> -	data.dw01.src_memory = __memory_type(blt->src.region);
+> +	data.dw01.dst_memory = __memory_type(blt->fd, blt->driver, blt->dst.region);
+> +	data.dw01.src_memory = __memory_type(blt->fd, blt->driver, blt->src.region);
+>   	data.dw01.dst_type_y = __new_tile_y_type(blt->dst.tiling) ? 1 : 0;
+>   	data.dw01.src_type_y = __new_tile_y_type(blt->src.tiling) ? 1 : 0;
+>   
+> @@ -1246,8 +1293,7 @@ uint64_t emit_blt_fast_copy(int fd,
+>   	data.dw08.src_address_lo = src_offset;
+>   	data.dw09.src_address_hi = src_offset >> 32;
+>   
+> -	bb = gem_mmap__device_coherent(fd, blt->bb.handle, 0, blt->bb.size,
+> -				       PROT_READ | PROT_WRITE);
+> +	bb = bo_map(fd, blt->bb.handle, blt->bb.size, blt->driver);
+>   
+>   	igt_assert(bb_pos + sizeof(data) < blt->bb.size);
+>   	memcpy(bb + bb_pos, &data, sizeof(data));
+> @@ -1297,32 +1343,39 @@ int blt_fast_copy(int fd,
+>   	uint64_t dst_offset, src_offset, bb_offset, alignment;
+>   	int ret;
+>   
+> -	alignment = gem_detect_safe_alignment(fd);
+> +	igt_assert_f(ahnd, "fast-copy supports softpin only\n");
+> +	igt_assert_f(blt, "fast-copy requires data to do fast-copy blit\n");
+> +	igt_assert_neq(blt->driver, 0);
+>   
+> +	alignment = get_default_alignment(fd, blt->driver);
+>   	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
+>   	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
+>   	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+>   
+>   	emit_blt_fast_copy(fd, ahnd, blt, 0, true);
+>   
+> -	obj[0].offset = CANONICAL(dst_offset);
+> -	obj[1].offset = CANONICAL(src_offset);
+> -	obj[2].offset = CANONICAL(bb_offset);
+> -	obj[0].handle = blt->dst.handle;
+> -	obj[1].handle = blt->src.handle;
+> -	obj[2].handle = blt->bb.handle;
+> -	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> -		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> -	obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> -	obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> -	execbuf.buffer_count = 3;
+> -	execbuf.buffers_ptr = to_user_pointer(obj);
+> -	execbuf.rsvd1 = ctx ? ctx->id : 0;
+> -	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> -	ret = __gem_execbuf(fd, &execbuf);
+> -	put_offset(ahnd, blt->dst.handle);
+> -	put_offset(ahnd, blt->src.handle);
+> -	put_offset(ahnd, blt->bb.handle);
+> +	if (blt->driver == INTEL_DRIVER_XE) {
+> +		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+> +	} else {
+> +		obj[0].offset = CANONICAL(dst_offset);
+> +		obj[1].offset = CANONICAL(src_offset);
+> +		obj[2].offset = CANONICAL(bb_offset);
+> +		obj[0].handle = blt->dst.handle;
+> +		obj[1].handle = blt->src.handle;
+> +		obj[2].handle = blt->bb.handle;
+> +		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> +				EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +		execbuf.buffer_count = 3;
+> +		execbuf.buffers_ptr = to_user_pointer(obj);
+> +		execbuf.rsvd1 = ctx ? ctx->id : 0;
+> +		execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> +		ret = __gem_execbuf(fd, &execbuf);
+> +		put_offset(ahnd, blt->dst.handle);
+> +		put_offset(ahnd, blt->src.handle);
+> +		put_offset(ahnd, blt->bb.handle);
+> +	}
+>   
+>   	return ret;
+>   }
+> @@ -1366,16 +1419,21 @@ blt_create_object(const struct blt_copy_data *blt, uint32_t region,
+>   	obj = calloc(1, sizeof(*obj));
+>   
+>   	obj->size = size;
+> -	igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
+> -						  &size, region) == 0);
+> +
+> +	if (blt->driver == INTEL_DRIVER_XE) {
+> +		size = ALIGN(size, xe_get_default_alignment(blt->fd));
+> +		handle = xe_bo_create_flags(blt->fd, 0, size, region);
+> +	} else {
+> +		igt_assert(__gem_create_in_memory_regions(blt->fd, &handle,
+> +							  &size, region) == 0);
+> +	}
+>   
+>   	blt_set_object(obj, handle, size, region, mocs, tiling,
+>   		       compression, compression_type);
+>   	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
+>   
+>   	if (create_mapping)
+> -		obj->ptr = gem_mmap__device_coherent(blt->fd, handle, 0, size,
+> -						     PROT_READ | PROT_WRITE);
+> +		obj->ptr = bo_map(blt->fd, handle, size, blt->driver);
+>   
+>   	return obj;
+>   }
+> @@ -1529,14 +1587,19 @@ void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
+>   	int format;
+>   	int stride = obj->tiling ? obj->pitch * 4 : obj->pitch;
+>   	char filename[FILENAME_MAX];
+> +	bool is_xe = is_xe_device(fd);
+>   
+>   	snprintf(filename, FILENAME_MAX-1, "%d-%s-%s-%ux%u-%s.png",
+>   		 run_id, fileid, blt_tiling_name(obj->tiling), width, height,
+>   		 obj->compression ? "compressed" : "uncompressed");
+>   
+> -	if (!map)
+> -		map = gem_mmap__device_coherent(fd, obj->handle, 0,
+> -						obj->size, PROT_READ);
+> +	if (!map) {
+> +		if (is_xe)
+> +			map = xe_bo_map(fd, obj->handle, obj->size);
+> +		else
+> +			map = gem_mmap__device_coherent(fd, obj->handle, 0,
+> +							obj->size, PROT_READ);
+> +	}
+>   	format = CAIRO_FORMAT_RGB24;
+>   	surface = cairo_image_surface_create_for_data(map,
+>   						      format, width, height,
+> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+> index 307405e6e8..b8b3d724d5 100644
+> --- a/lib/intel_blt.h
+> +++ b/lib/intel_blt.h
+> @@ -8,7 +8,7 @@
 >   
 >   /**
->    * SECTION:intel_ctx
-> @@ -390,3 +393,96 @@ unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine)
->   {
->   	return intel_ctx_cfg_engine_class(&ctx->cfg, engine);
->   }
-> +
-> +/**
-> + * intel_ctx_xe:
-> + * @fd: open i915 drm file descriptor
-> + * @vm: vm
-> + * @engine: engine
-> + *
-> + * Returns an intel_ctx_t representing the xe context.
-> + */
-> +intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t engine,
-> +			  uint32_t sync_in, uint32_t sync_bind, uint32_t sync_out)
-> +{
-> +	intel_ctx_t *ctx;
-> +
-> +	ctx = calloc(1, sizeof(*ctx));
-> +	igt_assert(ctx);
-> +
-> +	ctx->fd = fd;
-> +	ctx->vm = vm;
-> +	ctx->engine = engine;
-> +	ctx->sync_in = sync_in;
-> +	ctx->sync_bind = sync_bind;
-> +	ctx->sync_out = sync_out;
-> +
-> +	return ctx;
-> +}
-> +
-> +int __intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset)
-> +{
-> +	struct drm_xe_sync syncs[2] = {
-> +		{ .flags = DRM_XE_SYNC_SYNCOBJ, },
-> +		{ .flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL, },
-> +	};
-> +	struct drm_xe_exec exec = {
-> +		.engine_id = ctx->engine,
-> +		.syncs = (uintptr_t)syncs,
-> +		.num_syncs = 2,
-> +		.address = bb_offset,
-> +		.num_batch_buffer = 1,
-> +	};
-> +	uint32_t sync_in = ctx->sync_in;
-> +	uint32_t sync_bind = ctx->sync_bind ?: syncobj_create(ctx->fd, 0);
-> +	uint32_t sync_out = ctx->sync_out ?: syncobj_create(ctx->fd, 0);
-> +	int ret;
-> +
-> +	/* Synchronize allocator state -> vm */
-> +	intel_allocator_bind(ahnd, sync_in, sync_bind);
-> +
-> +	/* Pipelined exec */
-> +	syncs[0].handle = sync_bind;
-> +	syncs[1].handle = sync_out;
-> +
-> +	ret = __xe_exec(ctx->fd, &exec);
-> +	if (ret)
-> +		goto err;
-> +
-> +	if (!ctx->sync_bind || !ctx->sync_out)
-> +		syncobj_wait_err(ctx->fd, &sync_out, 1, INT64_MAX, 0);
-> +
-> +err:
-> +	if (!ctx->sync_bind)
-> +		syncobj_destroy(ctx->fd, sync_bind);
-> +
-> +	if (!ctx->sync_out)
-> +		syncobj_destroy(ctx->fd, sync_out);
-> +
-> +	return ret;
-> +}
-> +
-> +void intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset)
-> +{
-> +	igt_assert_eq(__intel_ctx_xe_exec(ctx, ahnd, bb_offset), 0);
-> +}
-> +
-> +#define RESET_SYNCOBJ(__fd, __sync) do { \
-> +	if (__sync) \
-> +		syncobj_reset((__fd), &(__sync), 1); \
-> +} while (0)
-> +
-> +int intel_ctx_xe_sync(intel_ctx_t *ctx, bool reset_syncs)
-> +{
-> +	int ret;
-> +
-> +	ret = syncobj_wait_err(ctx->fd, &ctx->sync_out, 1, INT64_MAX, 0);
-> +
-> +	if (reset_syncs) {
-> +		RESET_SYNCOBJ(ctx->fd, ctx->sync_in);
-> +		RESET_SYNCOBJ(ctx->fd, ctx->sync_bind);
-> +		RESET_SYNCOBJ(ctx->fd, ctx->sync_out);
-> +	}
-> +
-> +	return ret;
-> +}
-> diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
-> index 3cfeaae81e..59d0360ada 100644
-> --- a/lib/intel_ctx.h
-> +++ b/lib/intel_ctx.h
-> @@ -67,6 +67,14 @@ int intel_ctx_cfg_engine_class(const intel_ctx_cfg_t *cfg, unsigned int engine);
->   typedef struct intel_ctx {
->   	uint32_t id;
->   	intel_ctx_cfg_t cfg;
-> +
-> +	/* Xe */
-> +	int fd;
-> +	uint32_t vm;
-> +	uint32_t engine;
-> +	uint32_t sync_in;
-> +	uint32_t sync_bind;
-> +	uint32_t sync_out;
->   } intel_ctx_t;
->   
->   int __intel_ctx_create(int fd, const intel_ctx_cfg_t *cfg,
-> @@ -81,4 +89,10 @@ void intel_ctx_destroy(int fd, const intel_ctx_t *ctx);
->   
->   unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine);
->   
-> +intel_ctx_t *intel_ctx_xe(int fd, uint32_t vm, uint32_t engine,
-> +			  uint32_t sync_in, uint32_t sync_bind, uint32_t sync_out);
-> +int __intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset);
-> +void intel_ctx_xe_exec(const intel_ctx_t *ctx, uint64_t ahnd, uint64_t bb_offset);
-> +int intel_ctx_xe_sync(intel_ctx_t *ctx, bool reset_syncs);
-> +
->   #endif
+>    * SECTION:intel_blt
+> - * @short_description: i915 blitter library
+> + * @short_description: i915/xe blitter library
+>    * @title: Blitter library
+>    * @include: intel_blt.h
+>    *
