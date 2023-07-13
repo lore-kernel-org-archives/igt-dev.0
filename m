@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A859B10E681
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 12:08:17 +0000 (UTC)
+Date: Thu, 13 Jul 2023 14:08:07 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20230713120807.hzdqkyyuzlsamray@kamilkon-desk1>
+References: <20230713075054.970457-1-mauro.chehab@linux.intel.com>
+ <20230713075054.970457-5-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 13 Jul 2023 11:32:26 -0000
-Message-ID: <168924794617.14985.5089952343085096651@emeril.freedesktop.org>
-References: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBNYWtl?=
- =?utf-8?q?_test=5Flist=2Epy_more_generic_=28rev3=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230713075054.970457-5-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 04/14] scripts/igt_doc.py: pass a
+ single file when checking docs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,75 +20,164 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Mauro,
 
-Series: Make test_list.py more generic (rev3)
-URL   : https://patchwork.freedesktop.org/series/120622/
-State : failure
+On 2023-07-13 at 09:50:44 +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Instead of passing a directory with several *.testlist files,
+> pass intel-ci.testlist, which should contain already everything.
+> 
+> That makes the script a lot more generic, as there won't be any
+> real dependencies from IGT related to the check logic.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  docs/testplan/meson.build |  2 +-
+>  scripts/igt_doc.py        |  6 +++---
+>  scripts/test_list.py      | 42 +++++++++++++++++++--------------------
+>  3 files changed, 25 insertions(+), 25 deletions(-)
+>  mode change 100755 => 100644 scripts/test_list.py
+> 
+> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+> index e838f2eb1540..b388a04b20ea 100644
+> --- a/docs/testplan/meson.build
+> +++ b/docs/testplan/meson.build
+> @@ -16,7 +16,7 @@ if build_tests
+>  	# Check if documentation matches the actual tests and tests can run
+>  	if not meson.is_cross_build()
+>  		build_info += 'Will Check if documentation is in sync with testlist'
+> -		check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
+> +		check_testlist = [ '--check-testlist', '--built-testlist', built_testlist.full_path() ]
+>  	else
+>  		warning('WARNING: Will not check if documentation is in sync with testlist')
+>  	endif
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index 38e2bdee4f2a..c02029e03a31 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -38,8 +38,8 @@ parser.add_argument("--check-testlist", action="store_true",
+>                      help="Compare documentation against IGT built tests.")
+>  parser.add_argument("--include-plan", action="store_true",
+>                      help="Include test plans, if any.")
+> -parser.add_argument("--igt-build-path",
+> -                    help="Path to the IGT build directory. Used by --check-testlist.",
+> +parser.add_argument("--built-testlist",
+> +                    help="Testlist generated at build time. Used by --check-testlist.",
+>                      default=IGT_BUILD_PATH)
+>  parser.add_argument("--gen-testlist",
+>                      help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
+> @@ -49,7 +49,7 @@ parser.add_argument('--files', nargs='+',
+>  parse_args = parser.parse_args()
+>  
+>  tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files,
+> -                 parse_args.igt_build_path)
+> +                 parse_args.built_testlist)
+>  
+>  if parse_args.filter_field:
+>      for filter_expr in parse_args.filter_field:
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> old mode 100755
+> new mode 100644
+> index 330ad95231fa..cfff4153b8d9
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -246,7 +246,7 @@ class TestList:
+>      """
+>  
+>      def __init__(self, config_fname, include_plan = False, file_list = False,
+> -                 igt_build_path = None,
+> +                 built_testlist = None,
+>                   test_tag = "TEST", subtest_tag = "SUBTESTS?",
+>                   main_name = "igt", subtest_separator = "@"):
+>          self.doc = {}
+> @@ -256,7 +256,7 @@ class TestList:
+>          self.plan_filenames = []
+>          self.props = {}
+>          self.config_fname = config_fname
+> -        self.igt_build_path = igt_build_path
+> +        self.built_testlist = built_testlist
+>          self.level_count = 0
+>          self.field_list = {}
+>          self.title = None
+> @@ -852,7 +852,7 @@ class TestList:
+>              fname = self.doc[test]["File"]
+>  
+>              test_name = re.sub(r'.*/', '', fname)
+> -            test_name = re.sub(r'\.[ch]', '', test_name)
+> +            test_name = re.sub(r'\.[ch]\s*', '', test_name)
+>              test_name = self.main_name + test_name
+>  
+>              subtest_array += self.expand_subtest(fname, test_name, test, True)
+> @@ -918,29 +918,15 @@ class TestList:
+>  
+>          return subtests
+>  
+> -    def get_testlist(self):
+> -
+> -        """ Return a list of tests as reported by --list-subtests """
+> -        tests = []
+> -        for name in self.filenames:
+> -            fname = re.sub(r"\.c$", ".testlist", name.split('/')[-1])
+> -            fname = os.path.join(self.igt_build_path, "tests", fname)
+> -
+> -            with open(fname, 'r', encoding='utf8') as handle:
+> -                for line in handle:
+> -                    tests.append(line.rstrip("\n"))
+> -
+> -        return sorted(tests)
+> -
+>      #
+>      # Validation methods
+>      #
+>      def check_tests(self):
+>  
+> -        """Compare documented subtests with the IGT test list"""
+> +        """Compare documented subtests with the test list"""
+>  
+> -        if not self.igt_build_path:
+> -            sys.exit("Need the IGT build path")
+> +        if not self.built_testlist:
+> +            sys.exit("Need the build path where the exec files are located")
+>  
+>          if self.filters:
+>              print("NOTE: test checks are affected by filters")
+> @@ -957,7 +943,21 @@ class TestList:
+>          doc_subtests = list(sorted(doc_subtests))
+>  
+>          # Get a list of tests from
+> -        run_subtests = self.get_testlist()
+> +        tests = set()
+> +        for name in self.filenames:
+> +            test = self.main_name + re.sub(r"\.c$", "", name.split('/')[-1])
+> +            tests.add(test)
+> +
+> +        run_subtests = []
+> +        with open(self.built_testlist, 'r', encoding='utf8') as handle:
+> +            for line in handle:
+> +                name = line.rstrip("\n")
+> +                if name in tests:
+> +                    run_subtests.append(name)
+> +                else:
+> +                    result = name.rsplit(self.subtest_separator, 1)[0]
+> +                    if name in tests:
+------------------------- ^
+> +                        run_subtests.append(name)
+---------------------------------------------- ^
+imho s/name/result/
 
-== Summary ==
+Regards,
+Kamil
 
-IGT patchset build failed on latest successful build
-6f68af5bc4c508fee58b7eb8eae61c7463b521a3 tests/gem_ccs: Avoid writing png twice
-
-Tail of build.log:
-[1578/1614] Linking target runner/testdata/skippers.
-[1579/1614] Linking target tools/intel_dp_compliance.
-[1580/1614] Linking target tools/intel_l3_parity.
-[1581/1614] Linking target tools/amd_hdmi_compliance.
-[1582/1614] Linking target runner/igt_resume.
-[1583/1614] Linking target runner/testdata/abort-dynamic.
-[1584/1614] Linking target runner/testdata/abort-fixture.
-[1585/1614] Linking target runner/testdata/dynamic.
-[1586/1614] Linking target runner/igt_comms_decoder.
-[1587/1614] Linking target runner/igt_runner.
-[1588/1614] Linking target runner/igt_results.
-[1589/1614] Linking target runner/runner_json_test.
-[1590/1614] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_mtlgt3.c.o'.
-[1591/1614] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
-[1592/1614] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-[1593/1614] Linking target runner/runner_test.
-[1594/1614] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
-[1595/1614] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
-[1596/1614] Linking target lib/libi915_perf.so.1.5.
-[1597/1614] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
-[1598/1614] Linking target tools/i915-perf/i915-perf-configs.
-[1599/1614] Linking target tools/i915-perf/i915-perf-reader.
-[1600/1614] Linking target tools/i915-perf/i915-perf-recorder.
-[1601/1614] Linking target tests/gem_barrier_race.
-[1602/1614] Linking target tests/core_hotunplug.
-[1603/1614] Linking target tests/perf.
-[1604/1614] Generating core_hotunplug.testlist with a meson_exe.py custom command.
-[1605/1614] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
-[1606/1614] Generating perf.testlist with a meson_exe.py custom command.
-[1607/1614] Generating xe_tests.rst with a custom command.
-FAILED: docs/testplan/xe_tests.rst 
-/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/xe/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --built-testlist /opt/igt/build/tests/intel-ci/intel-ci.testlist
-Traceback (most recent call last):
-  File "/usr/src/igt-gpu-tools/scripts/igt_doc.py", line 67, in <module>
-    tests.check_tests()
-  File "/usr/src/igt-gpu-tools/scripts/test_list.py", line 970, in check_tests
-    with open(self.built_testlist, 'r', encoding='utf8') as handle:
-FileNotFoundError: [Errno 2] No such file or directory: '/opt/igt/build/tests/intel-ci/intel-ci.testlist'
-[1608/1614] Generating kms_tests.rst with a custom command.
-[1609/1614] Generating i915_tests.rst with a custom command.
-FAILED: docs/testplan/i915_tests.rst 
-/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/i915/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --built-testlist /opt/igt/build/tests/intel-ci/intel-ci.testlist
-Traceback (most recent call last):
-  File "/usr/src/igt-gpu-tools/scripts/igt_doc.py", line 67, in <module>
-    tests.check_tests()
-  File "/usr/src/igt-gpu-tools/scripts/test_list.py", line 970, in check_tests
-    with open(self.built_testlist, 'r', encoding='utf8') as handle:
-FileNotFoundError: [Errno 2] No such file or directory: '/opt/igt/build/tests/intel-ci/intel-ci.testlist'
-[1610/1614] Generating intel-ci.testlist with a meson_exe.py custom command.
-ninja: build stopped: subcommand failed.
-
-
+>  
+>          # Compare arrays
+>  
+> -- 
+> 2.40.1
+> 
 
