@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19BBA10E604
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 06:53:48 +0000 (UTC)
-Message-ID: <03a6e6a5-f436-250e-c231-89f2ae80a12c@intel.com>
-Date: Thu, 13 Jul 2023 08:53:27 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E6B1510E604
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 06:59:17 +0000 (UTC)
+Message-ID: <b23323ec-5714-78a7-6324-c68eaeadb080@intel.com>
+Date: Thu, 13 Jul 2023 08:59:01 +0200
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
- <20230712171231.290555-2-zbigniew.kempczynski@intel.com>
+ <20230712171231.290555-3-zbigniew.kempczynski@intel.com>
 From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230712171231.290555-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230712171231.290555-3-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4 01/21] lib/intel_blt: Add
- blt_ctrl_surf_object() helper
+Subject: Re: [igt-dev] [PATCH i-g-t v4 02/21] tests/gem_ccs: Drop local
+ function for setting ctrl surface object
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,51 +28,80 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On 12.07.2023 19:12, Zbigniew Kempczyński wrote:
-> In the series we start using this more time so it's worth to add
-> it as common code.
+> Until now gem_ccs was the only user of set_surf_object() and probably
+> from this reason it wasn't "globalized". Upcoming gem_ccs counterpart
+> for xe - xe_ccs - uses same object initialization and we got this
+> function (with small rename) in the blitter library so we can use it
+> and get rid of local version.
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
 
 Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 
-> ---
->   lib/intel_blt.c | 11 +++++++++++
->   lib/intel_blt.h |  3 +++
->   2 files changed, 14 insertions(+)
+>   tests/i915/gem_ccs.c | 31 ++++++++++---------------------
+>   1 file changed, 10 insertions(+), 21 deletions(-)
 > 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index bc28f15e8d..a3d67f5136 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -1390,6 +1390,17 @@ void blt_set_copy_object(struct blt_copy_object *obj,
->   	memcpy(obj, orig, sizeof(*obj));
->   }
+> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+> index f9ad9267df..9beddeaee4 100644
+> --- a/tests/i915/gem_ccs.c
+> +++ b/tests/i915/gem_ccs.c
+> @@ -77,17 +77,6 @@ struct test_config {
+>   	bool suspend_resume;
+>   };
 >   
-> +void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
-> +			      uint32_t handle, uint32_t region, uint64_t size,
-> +			      uint8_t mocs, enum blt_access_type access_type)
-> +{
-> +	obj->handle = handle;
-> +	obj->region = region;
-> +	obj->size = size;
-> +	obj->mocs = mocs;
-> +	obj->access_type = access_type;
-> +}
-> +
->   /**
->    * blt_surface_fill_rect:
->    * @fd: drm fd
-> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-> index 9c4ddc7a89..2aa1259ae8 100644
-> --- a/lib/intel_blt.h
-> +++ b/lib/intel_blt.h
-> @@ -248,6 +248,9 @@ void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
->   			enum blt_surface_type surface_type);
->   void blt_set_copy_object(struct blt_copy_object *obj,
->   			 const struct blt_copy_object *orig);
-> +void blt_set_ctrl_surf_object(struct blt_ctrl_surf_copy_object *obj,
-> +			      uint32_t handle, uint32_t region, uint64_t size,
-> +			      uint8_t mocs, enum blt_access_type access_type);
+> -static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
+> -			    uint32_t handle, uint32_t region, uint64_t size,
+> -			    uint8_t mocs, enum blt_access_type access_type)
+> -{
+> -	obj->handle = handle;
+> -	obj->region = region;
+> -	obj->size = size;
+> -	obj->mocs = mocs;
+> -	obj->access_type = access_type;
+> -}
+> -
+>   #define PRINT_SURFACE_INFO(name, obj) do { \
+>   	if (param.print_surface_info) \
+>   		blt_surface_info((name), (obj)); } while (0)
+> @@ -169,10 +158,10 @@ static void surf_copy(int i915,
 >   
->   void blt_surface_info(const char *info,
->   		      const struct blt_copy_object *obj);
+>   	surf.fd = i915;
+>   	surf.print_bb = param.print_bb;
+> -	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
+> -			uc_mocs, BLT_INDIRECT_ACCESS);
+> -	set_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
+> -			uc_mocs, DIRECT_ACCESS);
+> +	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
+> +				 uc_mocs, BLT_INDIRECT_ACCESS);
+> +	blt_set_ctrl_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
+> +				 uc_mocs, DIRECT_ACCESS);
+>   	bb_size = 4096;
+>   	igt_assert_eq(__gem_create(i915, &bb_size, &bb1), 0);
+>   	blt_set_batch(&surf.bb, bb1, bb_size, REGION_SMEM);
+> @@ -191,8 +180,8 @@ static void surf_copy(int i915,
+>   
+>   		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+>   
+> -		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
+> -				0, DIRECT_ACCESS);
+> +		blt_set_ctrl_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
+> +					 0, DIRECT_ACCESS);
+>   		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+>   		gem_sync(i915, surf.dst.handle);
+>   
+> @@ -213,10 +202,10 @@ static void surf_copy(int i915,
+>   	/* corrupt ccs */
+>   	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
+>   		ccsmap[i] = i;
+> -	set_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
+> -			uc_mocs, DIRECT_ACCESS);
+> -	set_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
+> -			uc_mocs, INDIRECT_ACCESS);
+> +	blt_set_ctrl_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
+> +				 uc_mocs, DIRECT_ACCESS);
+> +	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
+> +				 uc_mocs, INDIRECT_ACCESS);
+>   	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+>   
+>   	memset(&blt, 0, sizeof(blt));
