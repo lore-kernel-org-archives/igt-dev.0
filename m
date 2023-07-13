@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7668964603325780666=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 06 Jul 2023 10:39:14 -0000
-Message-ID: <168863995497.18977.565171900821577279@emeril.freedesktop.org>
-References: <20230706083947.481216-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230706083947.481216-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Simplify_te?=
- =?utf-8?q?sts/meson=2Ebuild?=
+Date: Thu, 13 Jul 2023 09:12:25 -0000
+Message-ID: <168923954569.14984.3188596605860892007@emeril.freedesktop.org>
+References: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBNYWtl?=
+ =?utf-8?q?_test=5Flist=2Epy_more_generic_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,58 +23,67 @@ To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7668964603325780666==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: Simplify tests/meson.build
-URL   : https://patchwork.freedesktop.org/series/120273/
-State : info
+Series: Make test_list.py more generic (rev2)
+URL   : https://patchwork.freedesktop.org/series/120622/
+State : failure
 
 == Summary ==
 
-Participating hosts:
-"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:
-Results: [IGTPW_9351](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9351/index.html)
+IGT patchset build failed on latest successful build
+39f5aba75797f2c00a93ff9ee22cafd5526457cf test/i915/gem_create: Skip the test if the PAT index is set on a non MTL device
+
+Installing tools/i915-perf/i915-perf-recorder to /opt/igt/bin
+Installing tools/i915-perf/i915-perf-control to /opt/igt/bin
+Installing tools/i915-perf/i915-perf-reader to /opt/igt/bin
+Installing runner/igt_runner to /opt/igt/bin
+Installing runner/igt_resume to /opt/igt/bin
+Installing runner/igt_results to /opt/igt/bin
+Installing runner/igt_comms_decoder to /opt/igt/bin
+Installing assembler/intel-gen4asm to /opt/igt/bin
+Installing assembler/intel-gen4disasm to /opt/igt/bin
+Installing overlay/intel-gpu-overlay to /opt/igt/bin
+Installing man/intel_audio_dump.1.gz to /opt/igt/share/man/man1
+Installing man/intel_bios_dumper.1.gz to /opt/igt/share/man/man1
+Installing man/intel_error_decode.1.gz to /opt/igt/share/man/man1
+Installing man/intel_gpu_frequency.1.gz to /opt/igt/share/man/man1
+Installing man/intel_gpu_top.1.gz to /opt/igt/share/man/man1
+Installing man/intel_gtt.1.gz to /opt/igt/share/man/man1
+Installing man/intel_infoframes.1.gz to /opt/igt/share/man/man1
+Installing man/intel_lid.1.gz to /opt/igt/share/man/man1
+Installing man/intel_panel_fitter.1.gz to /opt/igt/share/man/man1
+Installing man/intel_reg.1.gz to /opt/igt/share/man/man1
+Installing man/intel_stepping.1.gz to /opt/igt/share/man/man1
+Installing man/intel_upload_blit_large.1.gz to /opt/igt/share/man/man1
+Installing man/intel_upload_blit_large_gtt.1.gz to /opt/igt/share/man/man1
+Installing man/intel_upload_blit_large_map.1.gz to /opt/igt/share/man/man1
+Installing man/intel_upload_blit_small.1.gz to /opt/igt/share/man/man1
+Installing man/intel_vbt_decode.1.gz to /opt/igt/share/man/man1
+Installing /usr/src/igt-gpu-tools/lib/igt_list.h to /opt/igt/include/i915-perf
+Installing /usr/src/igt-gpu-tools/lib/intel_chipset.h to /opt/igt/include/i915-perf
+Installing /usr/src/igt-gpu-tools/lib/i915/perf.h to /opt/igt/include/i915-perf
+Installing /usr/src/igt-gpu-tools/lib/i915/perf_data.h to /opt/igt/include/i915-perf
+Installing /usr/src/igt-gpu-tools/lib/i915/perf_data_reader.h to /opt/igt/include/i915-perf
+Installing /opt/igt/build/lib/i915-perf.pc to /opt/igt/lib/x86_64-linux-gnu/pkgconfig
+Installing /usr/src/igt-gpu-tools/tests/1080p-left.png to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/1080p-right.png to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/pass.png to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/fast-feedback.testlist to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/meta.testlist to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/README to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/blacklist.txt to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/blacklist-pre-merge.txt to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/xe-fast-feedback.testlist to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tests/intel-ci/xe.blocklist.txt to /opt/igt/share/igt-gpu-tools
+Installing /usr/src/igt-gpu-tools/tools/intel_gpu_abrt to /opt/igt/bin
+Installing /usr/src/igt-gpu-tools/tools/intel-gfx-fw-info to /opt/igt/bin
+Installing /opt/igt/build/assembler/intel-gen4asm.pc to /opt/igt/lib/x86_64-linux-gnu/pkgconfig
+Installing /usr/src/igt-gpu-tools/scripts/code_cov_capture to /opt/igt/bin
+Installing /usr/src/igt-gpu-tools/scripts/code_cov_gather_on_build to /opt/igt/bin
+Installing /usr/src/igt-gpu-tools/scripts/code_cov_gather_on_test to /opt/igt/bin
+Installing /usr/src/igt-gpu-tools/scripts/code_cov_gen_report to /opt/igt/bin
+Installing /usr/src/igt-gpu-tools/scripts/code_cov_parse_info to /opt/igt/bin
 
 
-
---===============7668964603325780666==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Simplify tests/meson.build</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120273/">https://patchwork.freedesktop.org/series/120273/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-"bat-pvc-2n""bat-atsm-2n""bat-dg2-oem2n""bat-adlp-7n"Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9351/index.html">IGTPW_9351</a></p>
-
-</body>
-</html>
-
---===============7668964603325780666==--
 
