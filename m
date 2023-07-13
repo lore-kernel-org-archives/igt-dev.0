@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73E7B10E67A
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 11:53:54 +0000 (UTC)
-Date: Thu, 13 Jul 2023 13:53:38 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230713115338.alt3z6l36d3xhi2x@kamilkon-desk1>
-References: <20230713071757.246298-1-kunal1.joshi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3314467394423212281=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230713071757.246298-1-kunal1.joshi@intel.com>
-Subject: Re: [igt-dev] [PATCH] tests/intel-ci/xe.blocklist: Add discarded
- tests in blocklist
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Date: Thu, 13 Jul 2023 12:05:05 -0000
+Message-ID: <168924990570.14984.8254445173988365281@emeril.freedesktop.org>
+References: <20230713091726.272816-1-kunal1.joshi@intel.com>
+In-Reply-To: <20230713091726.272816-1-kunal1.joshi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Fix_autodis?=
+ =?utf-8?q?covery_in_chamelium?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,58 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kunal,
+--===============3314467394423212281==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-small nit regarding subject:
+== Series Details ==
 
-[PATCH] tests/intel-ci/xe.blocklist: Add discarded tests in blocklist
-------------------------- ^ ------------------------------- ^
+Series: Fix autodiscovery in chamelium
+URL   : https://patchwork.freedesktop.org/series/120660/
+State : info
 
-You already have 'blocklist' there, no need for repeatition, also
-below you wrote about "not present" ones, so maybe:
+== Summary ==
 
-[PATCH] tests/intel-ci/xe.blocklist: Add not present tests
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9398](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9398/index.html)
 
-On 2023-07-13 at 12:47:57 +0530, Kunal Joshi wrote:
-> Chamelium and PSR config is not present on XE bat as of now
-> and hang tests are yet to be enabled hence added them in blocklist
---------------------------------------------------------------------^
-Put dot "." at end of sentence.
 
-> 
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->  tests/intel-ci/xe.blocklist.txt | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-> index 02edeb6b6..43bd360a8 100644
-> --- a/tests/intel-ci/xe.blocklist.txt
-> +++ b/tests/intel-ci/xe.blocklist.txt
-> @@ -82,3 +82,11 @@ igt@kms_plane_lowres@tiling-(4|x|y|yf)
->  ##################################################################
->  igt@xe_sysfs*
->  ##################################################################
-> +# No chamelium/psr setup on XE bat
-> +##################################################################
-> +igt@.*chamelium.*
-> +igt@.*psr.*
-> +##################################################################
-> +# Hang tests not yet enabled
-> +##################################################################
-> +igt@kms_pipe_crc_basic@hang-read-crc
 
-Why only this one? Maybe it should be:
-igt@kms_.*@.*hang.*
+--===============3314467394423212281==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Regards,
-Kamil
 
-> -- 
-> 2.25.1
-> 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix autodiscovery in chamelium</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120660/">https://patchwork.freedesktop.org/series/120660/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9398/index.html">IGTPW_9398</a></p>
+
+</body>
+</html>
+
+--===============3314467394423212281==--
