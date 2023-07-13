@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6B1510E604
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 06:59:17 +0000 (UTC)
-Message-ID: <b23323ec-5714-78a7-6324-c68eaeadb080@intel.com>
-Date: Thu, 13 Jul 2023 08:59:01 +0200
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 644BD10E608
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 07:09:04 +0000 (UTC)
+Message-ID: <22ba7a96-5452-0527-748e-378143c1cf82@intel.com>
+Date: Thu, 13 Jul 2023 09:08:40 +0200
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <20230712171231.290555-1-zbigniew.kempczynski@intel.com>
- <20230712171231.290555-3-zbigniew.kempczynski@intel.com>
+ <20230712171231.290555-4-zbigniew.kempczynski@intel.com>
 From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230712171231.290555-3-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230712171231.290555-4-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4 02/21] tests/gem_ccs: Drop local
- function for setting ctrl surface object
+Subject: Re: [igt-dev] [PATCH i-g-t v4 03/21] lib/intel_blt: Add dump of two
+ surfaces comparison in 8x8 blocks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,80 +28,108 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On 12.07.2023 19:12, Zbigniew Kempczyński wrote:
-> Until now gem_ccs was the only user of set_surf_object() and probably
-> from this reason it wasn't "globalized". Upcoming gem_ccs counterpart
-> for xe - xe_ccs - uses same object initialization and we got this
-> function (with small rename) in the blitter library so we can use it
-> and get rid of local version.
+> Add limited to 32bit color function which compares two surfaces
+> dumping differences in 8x8 as single ascii char. It's globalized
+> version of already existed dump_corruption_info() from gem_ccs
+> test but I'm planning to use it in xe_ccs so keeping common code
+> locally in the test doesn't make sense.
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
+>   lib/intel_blt.c | 64 +++++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/intel_blt.h |  2 ++
+>   2 files changed, 66 insertions(+)
+> 
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index a3d67f5136..1af57c4912 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -1516,3 +1516,67 @@ void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
+>   	if (!obj->ptr)
+>   		munmap(map, obj->size);
+>   }
+> +
+> +static int compare_nxn(const struct blt_copy_object *surf1,
+> +			       const struct blt_copy_object *surf2,
+> +			       int xsize, int ysize, int bx, int by)
+
+Alignment seems to be off here
+
+> +{
+> +	int x, y, corrupted;
+> +	uint32_t pos, px1, px2;
+> +
+> +	corrupted = 0;
+> +	for (y = 0; y < ysize; y++) {
+> +		for (x = 0; x < xsize; x++) {
+> +			pos = bx * xsize + by * ysize * surf1->pitch / 4;
+> +			pos += x + y * surf1->pitch / 4;
+> +			px1 = surf1->ptr[pos];
+> +			px2 = surf2->ptr[pos];
+> +			if (px1 != px2)
+> +				corrupted++;
+> +		}
+> +	}
+> +
+> +	return corrupted;
+> +}
+> +
+> +/**
+> + * blt_dump_corruption_info_32b:
+> + * @surf1: first surface
+> + * @surf2: second surface
+> + *
+> + * Function dumps ascii representation of the surfaces corruption. Comparison
+> + * is performed on 8x8 32bpp color pixel blocks. Number of differences on
+> + * such block varies from 0 (no corruption) to 64 (pixels on those surfaces                                                       ^- all pixels?
+> + * differs). It is added then to '0' ascii character to point the corruption
+> + * occured, for non affected block '.' is printed out.
+       ^- s/occured/occurred/
+
+With fixed alignment and docs:
 
 Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
 
->   tests/i915/gem_ccs.c | 31 ++++++++++---------------------
->   1 file changed, 10 insertions(+), 21 deletions(-)
-> 
-> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-> index f9ad9267df..9beddeaee4 100644
-> --- a/tests/i915/gem_ccs.c
-> +++ b/tests/i915/gem_ccs.c
-> @@ -77,17 +77,6 @@ struct test_config {
->   	bool suspend_resume;
->   };
+> + *
+> + * Idea of this function is to determine character of the differences between
+> + * two surfaces without generating difference image.
+> + *
+> + * Currently function assumes both @surf1 and @surf2 are 32-bit color surfaces.
+> + */
+> +void blt_dump_corruption_info_32b(const struct blt_copy_object *surf1,
+> +				  const struct blt_copy_object *surf2)
+> +{
+> +	const int xsize = 8, ysize = 8;
+> +	int w, h, bx, by, corrupted;
+> +
+> +	igt_assert(surf1->x1 == surf2->x1 && surf1->x2 == surf2->x2);
+> +	igt_assert(surf1->y1 == surf2->y1 && surf1->y2 == surf2->y2);
+> +	w = surf1->x2;
+> +	h = surf1->y2;
+> +
+> +	igt_info("dump corruption - width: %d, height: %d, sizex: %x, sizey: %x\n",
+> +		 surf1->x2, surf1->y2, xsize, ysize);
+> +
+> +	for (by = 0; by < h / ysize; by++) {
+> +		for (bx = 0; bx < w / xsize; bx++) {
+> +			corrupted = compare_nxn(surf1, surf2, xsize, ysize, bx, by);
+> +			if (corrupted == 0)
+> +				igt_info(".");
+> +			else
+> +				igt_info("%c", '0' + corrupted);
+> +		}
+> +		igt_info("\n");
+> +	}
+> +}
+> diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+> index 2aa1259ae8..c134466d4d 100644
+> --- a/lib/intel_blt.h
+> +++ b/lib/intel_blt.h
+> @@ -259,5 +259,7 @@ void blt_surface_fill_rect(int fd, const struct blt_copy_object *obj,
+>   void blt_surface_to_png(int fd, uint32_t run_id, const char *fileid,
+>   			const struct blt_copy_object *obj,
+>   			uint32_t width, uint32_t height);
+> +void blt_dump_corruption_info_32b(const struct blt_copy_object *surf1,
+> +				  const struct blt_copy_object *surf2);
 >   
-> -static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
-> -			    uint32_t handle, uint32_t region, uint64_t size,
-> -			    uint8_t mocs, enum blt_access_type access_type)
-> -{
-> -	obj->handle = handle;
-> -	obj->region = region;
-> -	obj->size = size;
-> -	obj->mocs = mocs;
-> -	obj->access_type = access_type;
-> -}
-> -
->   #define PRINT_SURFACE_INFO(name, obj) do { \
->   	if (param.print_surface_info) \
->   		blt_surface_info((name), (obj)); } while (0)
-> @@ -169,10 +158,10 @@ static void surf_copy(int i915,
->   
->   	surf.fd = i915;
->   	surf.print_bb = param.print_bb;
-> -	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
-> -			uc_mocs, BLT_INDIRECT_ACCESS);
-> -	set_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
-> -			uc_mocs, DIRECT_ACCESS);
-> +	blt_set_ctrl_surf_object(&surf.src, mid->handle, mid->region, mid->size,
-> +				 uc_mocs, BLT_INDIRECT_ACCESS);
-> +	blt_set_ctrl_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
-> +				 uc_mocs, DIRECT_ACCESS);
->   	bb_size = 4096;
->   	igt_assert_eq(__gem_create(i915, &bb_size, &bb1), 0);
->   	blt_set_batch(&surf.bb, bb1, bb_size, REGION_SMEM);
-> @@ -191,8 +180,8 @@ static void surf_copy(int i915,
->   
->   		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
->   
-> -		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
-> -				0, DIRECT_ACCESS);
-> +		blt_set_ctrl_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
-> +					 0, DIRECT_ACCESS);
->   		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
->   		gem_sync(i915, surf.dst.handle);
->   
-> @@ -213,10 +202,10 @@ static void surf_copy(int i915,
->   	/* corrupt ccs */
->   	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
->   		ccsmap[i] = i;
-> -	set_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
-> -			uc_mocs, DIRECT_ACCESS);
-> -	set_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
-> -			uc_mocs, INDIRECT_ACCESS);
-> +	blt_set_ctrl_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
-> +				 uc_mocs, DIRECT_ACCESS);
-> +	blt_set_ctrl_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
-> +				 uc_mocs, INDIRECT_ACCESS);
->   	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
->   
->   	memset(&blt, 0, sizeof(blt));
+>   #endif
