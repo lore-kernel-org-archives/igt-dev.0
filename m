@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B142D10E004
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB61C10E621
  for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 07:51:02 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.144])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 47F71580DC5
+ by linux.intel.com (Postfix) with ESMTPS id 69196580BEE
  for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 00:51:00 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qJr6I-0044U6-0g
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qJr6I-0044UA-0j
  for igt-dev@lists.freedesktop.org; Thu, 13 Jul 2023 09:50:58 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Jul 2023 09:50:53 +0200
-Message-Id: <20230713075054.970457-14-mauro.chehab@linux.intel.com>
+Date: Thu, 13 Jul 2023 09:50:54 +0200
+Message-Id: <20230713075054.970457-15-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230713075054.970457-1-mauro.chehab@linux.intel.com>
 References: <20230713075054.970457-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 13/14] scripts/test_list.py: add support
- to return a string instead of print
+Subject: [igt-dev] [PATCH i-g-t v3 14/14] scripts/test_list.py: better
+ handle internal fields
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,175 +34,243 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Sometimes, we don't want to print a testlist, but instead to return
-it for post-processing. One such example is to add a Sphinx extension
-to parse it and place the results on some existing ReST file.
+Be more consistent when dealing with internal fields:
+- use _foo_ notation for them;
+- skip them using a list instead of hardcoding values.
 
-Add support for it.
+This should help maintaining this file, if we need to add
+more internal fields.
 
-A side effect is that we don't need to redirect capture anymore to
-to store the output on a file.
+PS.: I opted to use a list for the internal fields, even
+checking if an element there takes O(n), as the number of
+internal fields is very small. We could instead use a set(),
+which is O(1) at the average case, but, as the number of
+elements is really small, it won't bring any real benefit.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 79 ++++++++++++++++++++------------------------
- 1 file changed, 36 insertions(+), 43 deletions(-)
+ scripts/test_list.py | 72 ++++++++++++++++++++------------------------
+ 1 file changed, 33 insertions(+), 39 deletions(-)
 
 diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 8e7ddef2bfb4..8c45a8f2aaeb 100644
+index 8c45a8f2aaeb..50724435b7c5 100644
 --- a/scripts/test_list.py
 +++ b/scripts/test_list.py
-@@ -616,20 +616,13 @@ class TestList:
-     # Output methods
-     #
+@@ -265,6 +265,8 @@ class TestList:
+         self.subtest_separator = subtest_separator
+         self.main_name = main_name
  
--    def print_rest_flat(self, filename = None):
-+    def print_rest_flat(self, filename = None, return_string = False):
- 
-         """Print tests and subtests ordered by tests"""
- 
--        handler = None
--        if filename:
--            original_stdout = sys.stdout
--            handler = open(filename, "w", encoding='utf8') # pylint: disable=R1732
--            sys.stdout = handler
--
--        print("=" * len(self.title))
--        print(self.title)
--        print("=" * len(self.title))
--        print()
-+        out = "=" * len(self.title) + "\n"
-+        out += self.title + "\n"
-+        out += "=" * len(self.title) + "\n\n"
- 
-         for test in sorted(self.doc.keys()):
-             fname = self.doc[test]["File"]
-@@ -651,10 +644,9 @@ class TestList:
-             if not subtest_array:
++        self.internal_fields =  [ '_summary_', '_arg_', '_subtest_line_' ]
++
+         # Exclusive or: either one is needed
+         if bool(config_fname) == bool(config_dict):
+             sys.exit("Error: either config filename or config dict shall be used")
+@@ -456,7 +458,7 @@ class TestList:
                  continue
  
--            print(len(name) * '=')
--            print(name)
--            print(len(name) * '=')
--            print()
-+            out += len(name) * '=' + "\n"
-+            out += name + "\n"
-+            out += len(name) * '=' + "\n\n"
+             num_vars = summary.count('%')
+-            file_ln = self.doc[test]["subtest_line"][subtest]
++            file_ln = self.doc[test]["_subtest_line_"][subtest]
  
-             for field in sorted(self.doc[test].keys()):
-                 if field == "subtest":
-@@ -666,29 +658,30 @@ class TestList:
-                 if field == "subtest_line":
-                     continue
+             # Handle trivial case: no wildcards
+             if num_vars == 0:
+@@ -465,7 +467,7 @@ class TestList:
+                 subtest_dict["_summary_"] = summary
  
--                print(f":{field}: {self.doc[test][field]}")
-+                out += f":{field}: {self.doc[test][field]}\n"
- 
-             for subtest in subtest_array:
- 
--                print()
--                print(subtest["_summary_"])
--                print(len(subtest["_summary_"]) * '=')
--                print("")
-+                out += "\n" + subtest["_summary_"] + "\n"
-+                out += len(subtest["_summary_"]) * '=' + "\n\n"
- 
-                 for field in sorted(subtest.keys()):
-                     if field in [ '_summary_', 'arg', 'subtest_line' ]:
+                 for k in sorted(self.doc[test]["subtest"][subtest].keys()):
+-                    if k in [ '_summary_', 'arg', 'subtest_line' ]:
++                    if k in self.internal_fields:
                          continue
  
--                    print(f":{field}:", subtest[field])
-+                    out += f":{field}:" + subtest[field] + "\n"
+                     if not allow_inherit:
+@@ -488,14 +490,14 @@ class TestList:
  
--                print()
-+                out += "\n"
+             # Convert subtest arguments into an array
+             arg_array = {}
+-            arg_ref = self.doc[test]["subtest"][subtest]["arg"]
++            arg_ref = self.doc[test]["subtest"][subtest]["_arg_"]
  
--            print()
--            print()
-+            out += "\n\n"
- 
--        if handler:
--            handler.close()
--            sys.stdout = original_stdout
-+        if filename:
-+            with open(filename, "w", encoding='utf8') as handle:
-+                handle.write(out)
-+        elif not return_string:
-+            print(out)
-+        else:
-+            return out
- 
-     def get_spreadsheet(self):
- 
-@@ -732,7 +725,7 @@ class TestList:
-                     sheet[row].append('')
-         return sheet
- 
--    def print_nested_rest(self, filename = None):
-+    def print_nested_rest(self, filename = None, return_string = False):
- 
-         """Print tests and subtests ordered by tests"""
- 
-@@ -742,10 +735,9 @@ class TestList:
-             handler = open(filename, "w", encoding='utf8') # pylint: disable=R1732
-             sys.stdout = handler
- 
--        print("=" * len(self.title))
--        print(self.title)
--        print("=" * len(self.title))
--        print()
-+        out = "=" * len(self.title) + "\n"
-+        out += self.title + "\n"
-+        out += "=" * len(self.title) + "\n\n"
- 
-         # Identify the sort order for the fields
-         fields_order = []
-@@ -789,14 +781,11 @@ class TestList:
- 
-                 title_str = fields_order[i] + ": " + fields[fields_order[i]]
- 
--                print(title_str)
--                print(level_markers[marker] * len(title_str))
--                print()
-+                out += title_str + "\n"
-+                out += level_markers[marker] * len(title_str) + "\n\n"
-                 marker += 1
- 
--            print()
--            print("``" + subtest + "``")
--            print()
-+            out += "\n``" + subtest + "``" + "\n\n"
- 
-             # print non-hierarchy fields
-             for field in fields_order:
-@@ -804,7 +793,7 @@ class TestList:
+-            for arg_k in self.doc[test]["arg"][arg_ref].keys():
++            for arg_k in self.doc[test]["_arg_"][arg_ref].keys():
+                 arg_array[arg_k] = []
+                 if int(arg_k) > num_vars:
                      continue
  
-                 if field in fields:
--                    print(f":{field}: {fields[field]}")
-+                    out += f":{field}: {fields[field]}" + "\n"
+-                for arg_el in sorted(self.doc[test]["arg"][arg_ref][arg_k].keys()):
++                for arg_el in sorted(self.doc[test]["_arg_"][arg_ref][arg_k].keys()):
+                     arg_array[arg_k].append(arg_el)
  
-             # Store current values
-             for i in range(cur_level, len(fields_order)):
-@@ -816,11 +805,15 @@ class TestList:
-                 else:
-                     old_fields[i] = ''
+             size = len(arg_array)
+@@ -520,9 +522,9 @@ class TestList:
+                     arg_val = arg_array[j][pos[j]]
+                     args[j] = arg_val
  
--            print()
-+            out += "\n"
+-                    if arg_val in self.doc[test]["arg"][arg_ref][j]:
+-                        arg_map[j] = self.doc[test]["arg"][arg_ref][j][arg_val]
+-                        if re.match(r"\<.*\>", self.doc[test]["arg"][arg_ref][j][arg_val]):
++                    if arg_val in self.doc[test]["_arg_"][arg_ref][j]:
++                        arg_map[j] = self.doc[test]["_arg_"][arg_ref][j][arg_val]
++                        if re.match(r"\<.*\>", self.doc[test]["_arg_"][arg_ref][j][arg_val]):
+                             args[j] = "<" + arg_val + ">"
+                     else:
+                         arg_map[j] = arg_val
+@@ -534,7 +536,7 @@ class TestList:
+                 subtest_dict["_summary_"] = arg_summary
  
--        if handler:
--            handler.close()
--            sys.stdout = original_stdout
-+        if filename:
-+            with open(filename, "w", encoding='utf8') as handle:
-+                handle.write(out)
-+        elif not return_string:
-+            print(out)
-+        else:
-+            return out
+                 for field in sorted(self.doc[test]["subtest"][subtest].keys()):
+-                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
++                    if field in self.internal_fields:
+                         continue
  
-     def print_json(self, out_fname):
+                     sub_field = self.doc[test]["subtest"][subtest][field]
+@@ -587,9 +589,7 @@ class TestList:
+                 test_dict[name] = {}
  
+                 for field in self.doc[test]:
+-                    if field == "subtest":
+-                        continue
+-                    if field == "arg":
++                    if field in self.internal_fields:
+                         continue
+ 
+                     test_dict[name][field] = self.doc[test][field]
+@@ -606,7 +606,7 @@ class TestList:
+ 
+                 dic[summary] = {}
+                 for field in sorted(subtest.keys()):
+-                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
++                    if field in self.internal_fields:
+                         continue
+                     dic[summary][field] = subtest[field]
+ 
+@@ -651,11 +651,7 @@ class TestList:
+             for field in sorted(self.doc[test].keys()):
+                 if field == "subtest":
+                     continue
+-                if field == "arg":
+-                    continue
+-                if field == "_summary_":
+-                    continue
+-                if field == "subtest_line":
++                if field in self.internal_fields:
+                     continue
+ 
+                 out += f":{field}: {self.doc[test][field]}\n"
+@@ -666,7 +662,7 @@ class TestList:
+                 out += len(subtest["_summary_"]) * '=' + "\n\n"
+ 
+                 for field in sorted(subtest.keys()):
+-                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
++                    if field in self.internal_fields:
+                         continue
+ 
+                     out += f":{field}:" + subtest[field] + "\n"
+@@ -1081,11 +1077,11 @@ class TestList:
+                         handle_section = 'test'
+ 
+                         self.doc[current_test] = {}
+-                        self.doc[current_test]["arg"] = {}
++                        self.doc[current_test]["_arg_"] = {}
+                         self.doc[current_test]["_summary_"] = match.group(1)
+                         self.doc[current_test]["File"] = fname
+                         self.doc[current_test]["subtest"] = {}
+-                        self.doc[current_test]["subtest_line"] = {}
++                        self.doc[current_test]["_subtest_line_"] = {}
+ 
+                         if implemented_class:
+                             self.doc[current_test]["Class"] = implemented_class
+@@ -1106,9 +1102,7 @@ class TestList:
+                     # subtests inherit properties from the tests
+                     self.doc[current_test]["subtest"][current_subtest] = {}
+                     for field in self.doc[current_test].keys():
+-                        if field == "arg":
+-                            continue
+-                        if field == "summary":
++                        if field in self.internal_fields:
+                             continue
+                         if field == "File":
+                             continue
+@@ -1122,14 +1116,14 @@ class TestList:
+ 
+                     self.doc[current_test]["subtest"][current_subtest]["_summary_"] = match.group(1)
+                     self.doc[current_test]["subtest"][current_subtest]["Description"] = ''
+-                    self.doc[current_test]["subtest_line"][current_subtest] = file_ln
++                    self.doc[current_test]["_subtest_line_"][current_subtest] = file_ln
+ 
+                     if not arg_ref:
+                         arg_ref = arg_number
+                         arg_number += 1
+-                        self.doc[current_test]["arg"][arg_ref] = {}
++                        self.doc[current_test]["_arg_"][arg_ref] = {}
+ 
+-                    self.doc[current_test]["subtest"][current_subtest]["arg"] = arg_ref
++                    self.doc[current_test]["subtest"][current_subtest]["_arg_"] = arg_ref
+ 
+                     continue
+ 
+@@ -1159,14 +1153,14 @@ class TestList:
+                         sys.exit(f"{fname}:{file_ln + 1}: arguments should be defined after one or more subtests, at the same comment")
+ 
+                     cur_arg = int(match.group(1)) - 1
+-                    if cur_arg not in self.doc[current_test]["arg"][arg_ref]:
+-                        self.doc[current_test]["arg"][arg_ref][cur_arg] = {}
++                    if cur_arg not in self.doc[current_test]["_arg_"][arg_ref]:
++                        self.doc[current_test]["_arg_"][arg_ref][cur_arg] = {}
+ 
+                     cur_arg_element = match.group(2)
+ 
+                     if match.group(2):
+                         # Should be used only for numeric values
+-                        self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] = "<" + match.group(2) + ">"
++                        self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] = "<" + match.group(2) + ">"
+ 
+                     continue
+ 
+@@ -1178,7 +1172,7 @@ class TestList:
+                             sys.exit(f"{fname}:{file_ln + 1}: arguments should be defined after one or more subtests, at the same comment")
+ 
+                         cur_arg_element = match.group(1)
+-                        self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] = match.group(2)
++                        self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] = match.group(2)
+ 
+                     else:
+                         print(f"{fname}:{file_ln + 1}: Warning: invalid argument: @%s: %s" %
+@@ -1191,14 +1185,14 @@ class TestList:
+                 if match:
+                     cur_arg = int(match.group(1)) - 1
+ 
+-                    if cur_arg not in self.doc[current_test]["arg"][arg_ref]:
+-                        self.doc[current_test]["arg"][arg_ref][cur_arg] = {}
++                    if cur_arg not in self.doc[current_test]["_arg_"][arg_ref]:
++                        self.doc[current_test]["_arg_"][arg_ref][cur_arg] = {}
+ 
+                     values = match.group(2).replace(" ", "").split(",")
+                     for split_val in values:
+                         if split_val == "":
+                             continue
+-                        self.doc[current_test]["arg"][arg_ref][cur_arg][split_val] = split_val
++                        self.doc[current_test]["_arg_"][arg_ref][cur_arg][split_val] = split_val
+ 
+                     continue
+ 
+@@ -1222,13 +1216,13 @@ class TestList:
+                     if match:
+                         match_val = match.group(1)
+ 
+-                        match = re.match(r'^(\<.*)\>$',self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element])
++                        match = re.match(r'^(\<.*)\>$',self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element])
+                         if match:
+-                            self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] = match.group(1) + ' ' + match_val + ">"
++                            self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] = match.group(1) + ' ' + match_val + ">"
+                         else:
+-                            if self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] != '':
+-                                self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] += ' '
+-                            self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] += match_val
++                            if self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] != '':
++                                self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] += ' '
++                            self.doc[current_test]["_arg_"][arg_ref][cur_arg][cur_arg_element] += match_val
+                     continue
+ 
+                 file_line.rstrip(r"\n")
 -- 
 2.40.1
