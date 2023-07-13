@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37CD610E620
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CD3C10E004
  for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 07:51:02 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.144])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 1AC75580DAF
+ by linux.intel.com (Postfix) with ESMTPS id 341A8580E3B
  for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 00:51:00 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1qJr6I-0044TW-0B
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1qJr6I-0044Tf-0K
  for igt-dev@lists.freedesktop.org; Thu, 13 Jul 2023 09:50:58 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Jul 2023 09:50:43 +0200
-Message-Id: <20230713075054.970457-4-mauro.chehab@linux.intel.com>
+Date: Thu, 13 Jul 2023 09:50:46 +0200
+Message-Id: <20230713075054.970457-7-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230713075054.970457-1-mauro.chehab@linux.intel.com>
 References: <20230713075054.970457-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 03/14] scripts/test_list.py: rename the
- internal summary value
+Subject: [igt-dev] [PATCH i-g-t v3 06/14] scripts/test_list.py: close config
+ file before start processing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,150 +34,149 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-The sumary is used internally. So, it is not meant to be used as
-a normal field. To avoid possible clashes in the future, rename
-the internal usage to _summary_, as we're using _foo_ for internal
-properties.
+Reduce the identation level of the code which parses the config
+file, as this can be done after closing the file.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+This is a preparation for the next patch that will offer a different
+way to pass the configuration.
+
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/test_list.py | 44 ++++++++++++++++++++++----------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ scripts/test_list.py | 114 +++++++++++++++++++++----------------------
+ 1 file changed, 57 insertions(+), 57 deletions(-)
 
 diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 3fcf0900c0e5..330ad95231fa 100755
+index 565760dc0201..ac77d6523672 100644
 --- a/scripts/test_list.py
 +++ b/scripts/test_list.py
-@@ -429,8 +429,8 @@ class TestList:
+@@ -274,71 +274,71 @@ class TestList:
+         with open(config_fname, 'r', encoding='utf8') as handle:
+             self.config = json.load(handle)
  
-         for subtest in self.doc[test]["subtest"].keys():
-             summary = test_name
--            if self.doc[test]["subtest"][subtest]["Summary"] != '':
--                summary += self.subtest_separator + self.doc[test]["subtest"][subtest]["Summary"]
-+            if self.doc[test]["subtest"][subtest]["_summary_"] != '':
-+                summary += self.subtest_separator + self.doc[test]["subtest"][subtest]["_summary_"]
-             if not summary:
-                 continue
+-            self.__add_field(None, 0, 0, self.config["fields"])
++        self.__add_field(None, 0, 0, self.config["fields"])
  
-@@ -441,10 +441,10 @@ class TestList:
-             if num_vars == 0:
-                 subtest_dict = {}
+-            sublevel_count = [ 0 ] * self.level_count
++        sublevel_count = [ 0 ] * self.level_count
  
--                subtest_dict["Summary"] = summary
-+                subtest_dict["_summary_"] = summary
+-            for field, item in self.props.items():
+-                if "sublevel" in item["_properties_"]:
+-                    level = item["_properties_"]["level"]
+-                    sublevel = item["_properties_"]["sublevel"]
+-                    if sublevel > sublevel_count[level - 1]:
+-                        sublevel_count[level - 1] = sublevel
++        for field, item in self.props.items():
++            if "sublevel" in item["_properties_"]:
++                level = item["_properties_"]["level"]
++                sublevel = item["_properties_"]["sublevel"]
++                if sublevel > sublevel_count[level - 1]:
++                    sublevel_count[level - 1] = sublevel
  
-                 for k in sorted(self.doc[test]["subtest"][subtest].keys()):
--                    if k in [ 'Summary', 'arg', 'subtest_line' ]:
-+                    if k in [ '_summary_', 'arg', 'subtest_line' ]:
-                         continue
+-                field_lc = field.lower()
+-                self.field_list[field_lc] = field
+-                field_plural = _plural(field_lc)
+-                if field_lc != field_plural:
+-                    self.field_list[field_plural] = field
++            field_lc = field.lower()
++            self.field_list[field_lc] = field
++            field_plural = _plural(field_lc)
++            if field_lc != field_plural:
++                self.field_list[field_plural] = field
  
-                     if not allow_inherit:
-@@ -510,10 +510,10 @@ class TestList:
+-            if include_plan:
+-                self.props["Class"] = {}
+-                self.props["Class"]["_properties_"] = {}
+-                self.props["Class"]["_properties_"]["level"] = 1
+-                self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
++        if include_plan:
++            self.props["Class"] = {}
++            self.props["Class"]["_properties_"] = {}
++            self.props["Class"]["_properties_"]["level"] = 1
++            self.props["Class"]["_properties_"]["sublevel"] = sublevel_count[0] + 1
  
-                 # Store the element
-                 subtest_dict = {}
--                subtest_dict["Summary"] = arg_summary
-+                subtest_dict["_summary_"] = arg_summary
+-            # Remove non-multilevel items, as we're only interested on
+-            # hierarchical item levels here
+-            for field, item in self.props.items():
+-                if "sublevel" in item["_properties_"]:
+-                    level = item["_properties_"]["level"]
+-                    if sublevel_count[level - 1] == 1:
+-                        del item["_properties_"]["level"]
+-                        del item["_properties_"]["sublevel"]
+-            del self.props["_properties_"]
++        # Remove non-multilevel items, as we're only interested on
++        # hierarchical item levels here
++        for field, item in self.props.items():
++            if "sublevel" in item["_properties_"]:
++                level = item["_properties_"]["level"]
++                if sublevel_count[level - 1] == 1:
++                    del item["_properties_"]["level"]
++                    del item["_properties_"]["sublevel"]
++        del self.props["_properties_"]
  
-                 for field in sorted(self.doc[test]["subtest"][subtest].keys()):
--                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
-+                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
-                         continue
+-            has_implemented = False
+-            if not self.filenames:
+-                self.filenames = []
+-                exclude_files = []
+-                files = self.config["files"]
+-                exclude_file_glob = self.config.get("exclude_files", [])
+-                for cfg_file in exclude_file_glob:
+-                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
+-                    for fname in glob.glob(cfg_file):
+-                        exclude_files.append(fname)
++        has_implemented = False
++        if not self.filenames:
++            self.filenames = []
++            exclude_files = []
++            files = self.config["files"]
++            exclude_file_glob = self.config.get("exclude_files", [])
++            for cfg_file in exclude_file_glob:
++                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
++                for fname in glob.glob(cfg_file):
++                    exclude_files.append(fname)
  
-                     sub_field = self.doc[test]["subtest"][subtest][field]
-@@ -581,11 +581,11 @@ class TestList:
-                 if self.__filter_subtest(self.doc[test], subtest, True):
-                     continue
+-                for cfg_file in files:
+-                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
+-                    for fname in glob.glob(cfg_file):
+-                        if fname in exclude_files:
+-                            continue
+-                        self.filenames.append(fname)
+-                        has_implemented = True
+-            else:
+-                for cfg_file in self.filenames:
+-                    if cfg_file:
+-                        has_implemented = True
++            for cfg_file in files:
++                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
++                for fname in glob.glob(cfg_file):
++                    if fname in exclude_files:
++                        continue
++                    self.filenames.append(fname)
++                    has_implemented = True
++        else:
++            for cfg_file in self.filenames:
++                if cfg_file:
++                    has_implemented = True
  
--                summary = subtest["Summary"]
-+                summary = subtest["_summary_"]
+-            has_planned = False
+-            if include_plan and "planning_files" in self.config:
+-                implemented_class = "Implemented"
+-                files = self.config["planning_files"]
+-                for cfg_file in files:
+-                    cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
+-                    for fname in glob.glob(cfg_file):
+-                        self.plan_filenames.append(fname)
+-                        has_planned = True
++        has_planned = False
++        if include_plan and "planning_files" in self.config:
++            implemented_class = "Implemented"
++            files = self.config["planning_files"]
++            for cfg_file in files:
++                cfg_file = os.path.realpath(os.path.dirname(config_fname)) + "/" + cfg_file
++                for fname in glob.glob(cfg_file):
++                    self.plan_filenames.append(fname)
++                    has_planned = True
  
-                 dic[summary] = {}
-                 for field in sorted(subtest.keys()):
--                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
-+                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
-                         continue
-                     dic[summary][field] = subtest[field]
- 
-@@ -646,12 +646,12 @@ class TestList:
-             for subtest in subtest_array:
- 
-                 print()
--                print(subtest["Summary"])
--                print(len(subtest["Summary"]) * '=')
-+                print(subtest["_summary_"])
-+                print(len(subtest["_summary_"]) * '=')
-                 print("")
- 
-                 for field in sorted(subtest.keys()):
--                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
-+                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
-                         continue
- 
-                     print(f":{field}:", subtest[field])
-@@ -857,7 +857,7 @@ class TestList:
- 
-             subtest_array += self.expand_subtest(fname, test_name, test, True)
- 
--        subtest_array.sort(key = lambda x : x.get('Summary'))
-+        subtest_array.sort(key = lambda x : x.get('_summary_'))
- 
-         for subtest in subtest_array:
-             if self.__filter_subtest(self.doc[test], subtest, True):
-@@ -873,27 +873,27 @@ class TestList:
-                             if test_elem not in subtests:
-                                 subtests[test_elem] = []
-                             if order:
--                                subtests[test_elem].append((subtest["Summary"], test_list))
-+                                subtests[test_elem].append((subtest["_summary_"], test_list))
-                             else:
--                                subtests[test_elem].append(subtest["Summary"])
-+                                subtests[test_elem].append(subtest["_summary_"])
-                     else:
-                         if subtest[sort_field] not in subtests:
-                             subtests[subtest[sort_field]] = []
-                             if order:
--                                subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-+                                subtests[test_elem].append((subtest["_summary_"], [subtest[sort_field]]))
-                             else:
--                                subtests[subtest[sort_field]].append(subtest["Summary"])
-+                                subtests[subtest[sort_field]].append(subtest["_summary_"])
-                 else:
-                     if order:
--                        subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-+                        subtests[test_elem].append((subtest["_summary_"], [subtest[sort_field]]))
-                     else:
--                        subtests[""].append(subtest["Summary"])
-+                        subtests[""].append(subtest["_summary_"])
- 
-             else:
-                 if order:
--                    subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-+                    subtests[test_elem].append((subtest["_summary_"], [subtest[sort_field]]))
-                 else:
--                    subtests[""].append(subtest["Summary"])
-+                    subtests[""].append(subtest["_summary_"])
- 
-         if order:
-             for group, tests in subtests.items():
-@@ -1064,7 +1064,7 @@ class TestList:
- 
-                         self.doc[current_test] = {}
-                         self.doc[current_test]["arg"] = {}
--                        self.doc[current_test]["Summary"] = match.group(1)
-+                        self.doc[current_test]["_summary_"] = match.group(1)
-                         self.doc[current_test]["File"] = fname
-                         self.doc[current_test]["subtest"] = {}
-                         self.doc[current_test]["subtest_line"] = {}
-@@ -1102,7 +1102,7 @@ class TestList:
-                             continue
-                         self.doc[current_test]["subtest"][current_subtest][field] = self.doc[current_test][field]
- 
--                    self.doc[current_test]["subtest"][current_subtest]["Summary"] = match.group(1)
-+                    self.doc[current_test]["subtest"][current_subtest]["_summary_"] = match.group(1)
-                     self.doc[current_test]["subtest"][current_subtest]["Description"] = ''
-                     self.doc[current_test]["subtest_line"][current_subtest] = file_ln
- 
+         planned_class = None
+         if has_implemented:
 -- 
 2.40.1
