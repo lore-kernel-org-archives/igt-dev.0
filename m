@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A859B10E681
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 12:08:17 +0000 (UTC)
-Date: Thu, 13 Jul 2023 14:08:07 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 218C810E681
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 12:09:08 +0000 (UTC)
+Date: Thu, 13 Jul 2023 14:09:03 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230713120807.hzdqkyyuzlsamray@kamilkon-desk1>
+Message-ID: <20230713120903.q7uccgkpcgsrkiup@kamilkon-desk1>
 References: <20230713075054.970457-1-mauro.chehab@linux.intel.com>
- <20230713075054.970457-5-mauro.chehab@linux.intel.com>
+ <20230713075054.970457-14-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230713075054.970457-5-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 04/14] scripts/igt_doc.py: pass a
- single file when checking docs
+In-Reply-To: <20230713075054.970457-14-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 13/14] scripts/test_list.py: add
+ support to return a string instead of print
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,155 +27,181 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
 
-On 2023-07-13 at 09:50:44 +0200, Mauro Carvalho Chehab wrote:
+On 2023-07-13 at 09:50:53 +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> Instead of passing a directory with several *.testlist files,
-> pass intel-ci.testlist, which should contain already everything.
+> Sometimes, we don't want to print a testlist, but instead to return
+> it for post-processing. One such example is to add a Sphinx extension
+> to parse it and place the results on some existing ReST file.
 > 
-> That makes the script a lot more generic, as there won't be any
-> real dependencies from IGT related to the check logic.
+> Add support for it.
+> 
+> A side effect is that we don't need to redirect capture anymore to
+> to store the output on a file.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  docs/testplan/meson.build |  2 +-
->  scripts/igt_doc.py        |  6 +++---
->  scripts/test_list.py      | 42 +++++++++++++++++++--------------------
->  3 files changed, 25 insertions(+), 25 deletions(-)
->  mode change 100755 => 100644 scripts/test_list.py
+>  scripts/test_list.py | 79 ++++++++++++++++++++------------------------
+>  1 file changed, 36 insertions(+), 43 deletions(-)
 > 
-> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> index e838f2eb1540..b388a04b20ea 100644
-> --- a/docs/testplan/meson.build
-> +++ b/docs/testplan/meson.build
-> @@ -16,7 +16,7 @@ if build_tests
->  	# Check if documentation matches the actual tests and tests can run
->  	if not meson.is_cross_build()
->  		build_info += 'Will Check if documentation is in sync with testlist'
-> -		check_testlist = [ '--check-testlist', '--igt-build-path', build_root ]
-> +		check_testlist = [ '--check-testlist', '--built-testlist', built_testlist.full_path() ]
->  	else
->  		warning('WARNING: Will not check if documentation is in sync with testlist')
->  	endif
-> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-> index 38e2bdee4f2a..c02029e03a31 100755
-> --- a/scripts/igt_doc.py
-> +++ b/scripts/igt_doc.py
-> @@ -38,8 +38,8 @@ parser.add_argument("--check-testlist", action="store_true",
->                      help="Compare documentation against IGT built tests.")
->  parser.add_argument("--include-plan", action="store_true",
->                      help="Include test plans, if any.")
-> -parser.add_argument("--igt-build-path",
-> -                    help="Path to the IGT build directory. Used by --check-testlist.",
-> +parser.add_argument("--built-testlist",
-> +                    help="Testlist generated at build time. Used by --check-testlist.",
->                      default=IGT_BUILD_PATH)
->  parser.add_argument("--gen-testlist",
->                      help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
-> @@ -49,7 +49,7 @@ parser.add_argument('--files', nargs='+',
->  parse_args = parser.parse_args()
->  
->  tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files,
-> -                 parse_args.igt_build_path)
-> +                 parse_args.built_testlist)
->  
->  if parse_args.filter_field:
->      for filter_expr in parse_args.filter_field:
 > diff --git a/scripts/test_list.py b/scripts/test_list.py
-> old mode 100755
-> new mode 100644
-> index 330ad95231fa..cfff4153b8d9
+> index 8e7ddef2bfb4..8c45a8f2aaeb 100644
 > --- a/scripts/test_list.py
 > +++ b/scripts/test_list.py
-> @@ -246,7 +246,7 @@ class TestList:
->      """
+> @@ -616,20 +616,13 @@ class TestList:
+>      # Output methods
+>      #
 >  
->      def __init__(self, config_fname, include_plan = False, file_list = False,
-> -                 igt_build_path = None,
-> +                 built_testlist = None,
->                   test_tag = "TEST", subtest_tag = "SUBTESTS?",
->                   main_name = "igt", subtest_separator = "@"):
->          self.doc = {}
-> @@ -256,7 +256,7 @@ class TestList:
->          self.plan_filenames = []
->          self.props = {}
->          self.config_fname = config_fname
-> -        self.igt_build_path = igt_build_path
-> +        self.built_testlist = built_testlist
->          self.level_count = 0
->          self.field_list = {}
->          self.title = None
-> @@ -852,7 +852,7 @@ class TestList:
+> -    def print_rest_flat(self, filename = None):
+> +    def print_rest_flat(self, filename = None, return_string = False):
+>  
+>          """Print tests and subtests ordered by tests"""
+>  
+> -        handler = None
+> -        if filename:
+> -            original_stdout = sys.stdout
+> -            handler = open(filename, "w", encoding='utf8') # pylint: disable=R1732
+> -            sys.stdout = handler
+> -
+> -        print("=" * len(self.title))
+> -        print(self.title)
+> -        print("=" * len(self.title))
+> -        print()
+> +        out = "=" * len(self.title) + "\n"
+> +        out += self.title + "\n"
+> +        out += "=" * len(self.title) + "\n\n"
+>  
+>          for test in sorted(self.doc.keys()):
 >              fname = self.doc[test]["File"]
+> @@ -651,10 +644,9 @@ class TestList:
+>              if not subtest_array:
+>                  continue
 >  
->              test_name = re.sub(r'.*/', '', fname)
-> -            test_name = re.sub(r'\.[ch]', '', test_name)
-> +            test_name = re.sub(r'\.[ch]\s*', '', test_name)
->              test_name = self.main_name + test_name
+> -            print(len(name) * '=')
+> -            print(name)
+> -            print(len(name) * '=')
+> -            print()
+> +            out += len(name) * '=' + "\n"
+> +            out += name + "\n"
+> +            out += len(name) * '=' + "\n\n"
 >  
->              subtest_array += self.expand_subtest(fname, test_name, test, True)
-> @@ -918,29 +918,15 @@ class TestList:
+>              for field in sorted(self.doc[test].keys()):
+>                  if field == "subtest":
+> @@ -666,29 +658,30 @@ class TestList:
+>                  if field == "subtest_line":
+>                      continue
 >  
->          return subtests
+> -                print(f":{field}: {self.doc[test][field]}")
+> +                out += f":{field}: {self.doc[test][field]}\n"
 >  
-> -    def get_testlist(self):
-> -
-> -        """ Return a list of tests as reported by --list-subtests """
-> -        tests = []
-> -        for name in self.filenames:
-> -            fname = re.sub(r"\.c$", ".testlist", name.split('/')[-1])
-> -            fname = os.path.join(self.igt_build_path, "tests", fname)
-> -
-> -            with open(fname, 'r', encoding='utf8') as handle:
-> -                for line in handle:
-> -                    tests.append(line.rstrip("\n"))
-> -
-> -        return sorted(tests)
-> -
->      #
->      # Validation methods
->      #
->      def check_tests(self):
+>              for subtest in subtest_array:
 >  
-> -        """Compare documented subtests with the IGT test list"""
-> +        """Compare documented subtests with the test list"""
+> -                print()
+> -                print(subtest["_summary_"])
+> -                print(len(subtest["_summary_"]) * '=')
+> -                print("")
+> +                out += "\n" + subtest["_summary_"] + "\n"
+> +                out += len(subtest["_summary_"]) * '=' + "\n\n"
 >  
-> -        if not self.igt_build_path:
-> -            sys.exit("Need the IGT build path")
-> +        if not self.built_testlist:
-> +            sys.exit("Need the build path where the exec files are located")
+>                  for field in sorted(subtest.keys()):
+>                      if field in [ '_summary_', 'arg', 'subtest_line' ]:
+>                          continue
 >  
->          if self.filters:
->              print("NOTE: test checks are affected by filters")
-> @@ -957,7 +943,21 @@ class TestList:
->          doc_subtests = list(sorted(doc_subtests))
+> -                    print(f":{field}:", subtest[field])
+> +                    out += f":{field}:" + subtest[field] + "\n"
 >  
->          # Get a list of tests from
-> -        run_subtests = self.get_testlist()
-> +        tests = set()
-> +        for name in self.filenames:
-> +            test = self.main_name + re.sub(r"\.c$", "", name.split('/')[-1])
-> +            tests.add(test)
-> +
-> +        run_subtests = []
-> +        with open(self.built_testlist, 'r', encoding='utf8') as handle:
-> +            for line in handle:
-> +                name = line.rstrip("\n")
-> +                if name in tests:
-> +                    run_subtests.append(name)
-> +                else:
-> +                    result = name.rsplit(self.subtest_separator, 1)[0]
-> +                    if name in tests:
-------------------------- ^
-> +                        run_subtests.append(name)
----------------------------------------------- ^
-imho s/name/result/
-
-Regards,
-Kamil
-
+> -                print()
+> +                out += "\n"
 >  
->          # Compare arrays
+> -            print()
+> -            print()
+> +            out += "\n\n"
+>  
+> -        if handler:
+> -            handler.close()
+> -            sys.stdout = original_stdout
+> +        if filename:
+> +            with open(filename, "w", encoding='utf8') as handle:
+> +                handle.write(out)
+> +        elif not return_string:
+> +            print(out)
+> +        else:
+> +            return out
+>  
+>      def get_spreadsheet(self):
+>  
+> @@ -732,7 +725,7 @@ class TestList:
+>                      sheet[row].append('')
+>          return sheet
+>  
+> -    def print_nested_rest(self, filename = None):
+> +    def print_nested_rest(self, filename = None, return_string = False):
+>  
+>          """Print tests and subtests ordered by tests"""
+>  
+> @@ -742,10 +735,9 @@ class TestList:
+>              handler = open(filename, "w", encoding='utf8') # pylint: disable=R1732
+>              sys.stdout = handler
+>  
+> -        print("=" * len(self.title))
+> -        print(self.title)
+> -        print("=" * len(self.title))
+> -        print()
+> +        out = "=" * len(self.title) + "\n"
+> +        out += self.title + "\n"
+> +        out += "=" * len(self.title) + "\n\n"
+>  
+>          # Identify the sort order for the fields
+>          fields_order = []
+> @@ -789,14 +781,11 @@ class TestList:
+>  
+>                  title_str = fields_order[i] + ": " + fields[fields_order[i]]
+>  
+> -                print(title_str)
+> -                print(level_markers[marker] * len(title_str))
+> -                print()
+> +                out += title_str + "\n"
+> +                out += level_markers[marker] * len(title_str) + "\n\n"
+>                  marker += 1
+>  
+> -            print()
+> -            print("``" + subtest + "``")
+> -            print()
+> +            out += "\n``" + subtest + "``" + "\n\n"
+>  
+>              # print non-hierarchy fields
+>              for field in fields_order:
+> @@ -804,7 +793,7 @@ class TestList:
+>                      continue
+>  
+>                  if field in fields:
+> -                    print(f":{field}: {fields[field]}")
+> +                    out += f":{field}: {fields[field]}" + "\n"
+>  
+>              # Store current values
+>              for i in range(cur_level, len(fields_order)):
+> @@ -816,11 +805,15 @@ class TestList:
+>                  else:
+>                      old_fields[i] = ''
+>  
+> -            print()
+> +            out += "\n"
+>  
+> -        if handler:
+> -            handler.close()
+> -            sys.stdout = original_stdout
+> +        if filename:
+> +            with open(filename, "w", encoding='utf8') as handle:
+> +                handle.write(out)
+> +        elif not return_string:
+> +            print(out)
+> +        else:
+> +            return out
+>  
+>      def print_json(self, out_fname):
 >  
 > -- 
 > 2.40.1
