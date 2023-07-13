@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86BB310E02A
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 22:03:41 +0000 (UTC)
-From: Gustavo Sousa <gustavo.sousa@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Jul 2023 19:03:19 -0300
-Message-ID: <20230713220319.3315155-1-gustavo.sousa@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8609106767958624121=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_async_flips: Use define for
- number of framebuffers
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Gustavo Sousa" <gustavo.sousa@intel.com>
+Date: Thu, 13 Jul 2023 22:59:49 -0000
+Message-ID: <168928918900.14985.869750118880402909@emeril.freedesktop.org>
+References: <20230713220319.3315155-1-gustavo.sousa@intel.com>
+In-Reply-To: <20230713220319.3315155-1-gustavo.sousa@intel.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
+ =?utf-8?q?async=5Fflips=3A_Use_define_for_number_of_framebuffers?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,99 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remove hard-coded usage of "4" for the number of frame buffers to make
-the code safer for future changes. While using ARRAY_SIZE() is
-legitimate, prefer to use NUM_FBS for a shorter way of expressing the
-same thing.
+--===============8609106767958624121==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
----
- tests/kms_async_flips.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 0a1199158b55..ebdc4c0b6fa4 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -41,6 +41,7 @@
- 
- #define RUN_TIME 2
- #define MIN_FLIPS_PER_FRAME 5
-+#define NUM_FBS 4
- 
- IGT_TEST_DESCRIPTION("Test asynchronous page flips.");
- 
-@@ -48,7 +49,7 @@ typedef struct {
- 	int drm_fd;
- 	uint32_t crtc_id;
- 	uint32_t refresh_rate;
--	struct igt_fb bufs[4];
-+	struct igt_fb bufs[NUM_FBS];
- 	igt_display_t display;
- 	igt_output_t *output;
- 	unsigned long flip_timestamp_us;
-@@ -132,7 +133,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
- 	int rec_width;
- 	cairo_t *cr;
- 
--	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
-+	rec_width = width / (NUM_FBS * 2);
- 
- 	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
- 			    data->modifier, 0.0, 0.0, 0.5, fb);
-@@ -183,11 +184,11 @@ static void test_init_fbs(data_t *data)
- 		prev_modifier = data->modifier;
- 
- 		if (data->bufs[0].fb_id) {
--			for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-+			for (i = 0; i < NUM_FBS; i++)
- 				igt_remove_fb(data->drm_fd, &data->bufs[i]);
- 		}
- 
--		for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-+		for (i = 0; i < NUM_FBS; i++)
- 			make_fb(data, &data->bufs[i], width, height, i);
- 	}
- 
-@@ -212,7 +213,7 @@ static void test_async_flip(data_t *data)
- 			flags &= ~DRM_MODE_PAGE_FLIP_ASYNC;
- 
- 			ret = drmModePageFlip(data->drm_fd, data->crtc_id,
--					      data->bufs[frame % 4].fb_id,
-+					      data->bufs[frame % NUM_FBS].fb_id,
- 					      flags, data);
- 
- 			igt_assert(ret == 0);
-@@ -234,7 +235,7 @@ static void test_async_flip(data_t *data)
- 
- 				if (IS_GEN9(devid) || IS_GEN10(devid) || AT_LEAST_GEN(devid, 12)) {
- 					ret = drmModePageFlip(data->drm_fd, data->crtc_id,
--							      data->bufs[frame % 4].fb_id,
-+							      data->bufs[frame % NUM_FBS].fb_id,
- 							      flags, data);
- 
- 					igt_assert(ret == 0);
-@@ -245,7 +246,7 @@ static void test_async_flip(data_t *data)
- 		}
- 
- 		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
--				      data->bufs[frame % 4].fb_id,
-+				      data->bufs[frame % NUM_FBS].fb_id,
- 				      flags, data);
- 		if (frame == 1 && data->allow_fail)
- 			igt_skip_on(ret == -EINVAL);
-@@ -670,7 +671,7 @@ igt_main
- 	}
- 
- 	igt_fixture {
--		for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
-+		for (i = 0; i < NUM_FBS; i++)
- 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
- 
- 		igt_display_reset(&data.display);
--- 
-2.41.0
+Series: tests/kms_async_flips: Use define for number of framebuffers
+URL   : https://patchwork.freedesktop.org/series/120703/
+State : info
+
+== Summary ==
+
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9406](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9406/index.html)
+
+
+
+--===============8609106767958624121==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_async_flips: Use define for number of framebuffers</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120703/">https://patchwork.freedesktop.org/series/120703/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9406/index.html">IGTPW_9406</a></p>
+
+</body>
+</html>
+
+--===============8609106767958624121==--
