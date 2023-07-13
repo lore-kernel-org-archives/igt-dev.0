@@ -3,10 +3,10 @@ Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 11 Jul 2023 09:52:21 -0000
-Message-ID: <168906914129.18666.11762794781316233290@emeril.freedesktop.org>
-References: <20230711071213.737377-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230711071213.737377-1-mauro.chehab@linux.intel.com>
+Date: Thu, 13 Jul 2023 09:10:49 -0000
+Message-ID: <168923944999.14984.11437753285020251113@emeril.freedesktop.org>
+References: <20230713075054.970457-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230713075054.970457-1-mauro.chehab@linux.intel.com>
 Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBNYWtl?=
  =?utf-8?q?_test=5Flist=2Epy_more_generic?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -26,13 +26,13 @@ List-ID: <igt-dev@lists.freedesktop.org>
 == Series Details ==
 
 Series: Make test_list.py more generic
-URL   : https://patchwork.freedesktop.org/series/120529/
+URL   : https://patchwork.freedesktop.org/series/120655/
 State : failure
 
 == Summary ==
 
 IGT patchset build failed on latest successful build
-8e65f12de2fd52c05dc48fdbcb8cfe86f6de1a75 scripts/test_list.py: fix __filter_subtest() logic
+39f5aba75797f2c00a93ff9ee22cafd5526457cf test/i915/gem_create: Skip the test if the PAT index is set on a non MTL device
 
 Installing tools/i915-perf/i915-perf-recorder to /opt/igt/bin
 Installing tools/i915-perf/i915-perf-control to /opt/igt/bin
