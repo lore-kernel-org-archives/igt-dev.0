@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 768B610E2BD
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jul 2023 18:17:37 +0000 (UTC)
-Date: Mon, 10 Jul 2023 20:17:09 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230710181709.234ki5ihaoh6cj5l@kamilkon-desk1>
-References: <20230710115354.699245-1-mauro.chehab@linux.intel.com>
- <20230710115354.699245-5-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230710115354.699245-5-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 4/7] tests/meson.build: create
- testlists for tests
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 13 Jul 2023 12:06:39 -0000
+Message-ID: <168924999905.14985.12770336769793806713@emeril.freedesktop.org>
+References: <20230713075054.970457-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230713075054.970457-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBNYWtl?=
+ =?utf-8?q?_test=5Flist=2Epy_more_generic_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,197 +16,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+== Series Details ==
 
-On 2023-07-10 at 13:53:51 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Let's dynamically create testlists for during build time, as this
------------------------------------- ^^^
-s/for//
+Series: Make test_list.py more generic (rev2)
+URL   : https://patchwork.freedesktop.org/series/120655/
+State : failure
 
-Also, in subject:
-tests/meson.build: create testlists for tests
------------------------------------ ^^^^^^^^^
-s/for tests/dynamically/
-or /at build time/ ?
+== Summary ==
 
-With that fixed you can add my r-b.
+IGT patchset build failed on latest successful build
+6f68af5bc4c508fee58b7eb8eae61c7463b521a3 tests/gem_ccs: Avoid writing png twice
 
-> can speed up a lot the validation check for testplan.
-> 
-> Ideally, all it would need to to that would be to use this
-> logic at the end of tests/meson.build:
-> 
->     foreach testexe : test_executables
->         prog = testexe.name()
-> 
->         output = prog.split('/').get(-1) + '.testlist'
->         custom_target(output,
->                      build_by_default : true,
->                      command : [ testexe, '--show-testlist'],
->                      capture : true,
->                      output : output)
-> 
-> Unfortunately, this requies Meson >= 0.54. So, we need to add
-> one custom_target per executable() call.
+Tail of build.log:
+[1578/1614] Linking target tools/msm_dp_compliance.
+[1579/1614] Linking target runner/testdata/no-subtests.
+[1580/1614] Linking target runner/testdata/dynamic.
+[1581/1614] Linking target runner/igt_resume.
+[1582/1614] Linking target runner/igt_results.
+[1583/1614] Linking target runner/testdata/abort-fixture.
+[1584/1614] Linking target runner/testdata/skippers.
+[1585/1614] Linking target runner/runner_json_test.
+[1586/1614] Linking target runner/testdata/abort-simple.
+[1587/1614] Linking target runner/testdata/abort-dynamic.
+[1588/1614] Linking target runner/igt_runner.
+[1589/1614] Linking target runner/igt_comms_decoder.
+[1590/1614] Linking target runner/testdata/abort.
+[1591/1614] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
+[1592/1614] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+[1593/1614] Linking target runner/runner_test.
+[1594/1614] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
+[1595/1614] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
+[1596/1614] Linking target lib/libi915_perf.so.1.5.
+[1597/1614] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+[1598/1614] Linking target tools/i915-perf/i915-perf-configs.
+[1599/1614] Linking target tools/i915-perf/i915-perf-recorder.
+[1600/1614] Linking target tools/i915-perf/i915-perf-reader.
+[1601/1614] Linking target tests/gem_barrier_race.
+[1602/1614] Linking target tests/core_hotunplug.
+[1603/1614] Linking target tests/perf.
+[1604/1614] Generating core_hotunplug.testlist with a meson_exe.py custom command.
+[1605/1614] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
+[1606/1614] Generating perf.testlist with a meson_exe.py custom command.
+[1607/1614] Generating xe_tests.rst with a custom command.
+FAILED: docs/testplan/xe_tests.rst 
+/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/xe/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --built-testlist /opt/igt/build/tests/intel-ci/intel-ci.testlist
+Traceback (most recent call last):
+  File "/usr/src/igt-gpu-tools/scripts/igt_doc.py", line 67, in <module>
+    tests.check_tests()
+  File "/usr/src/igt-gpu-tools/scripts/test_list.py", line 966, in check_tests
+    with open(self.built_testlist, 'r', encoding='utf8') as handle:
+FileNotFoundError: [Errno 2] No such file or directory: '/opt/igt/build/tests/intel-ci/intel-ci.testlist'
+[1608/1614] Generating kms_tests.rst with a custom command.
+[1609/1614] Generating i915_tests.rst with a custom command.
+FAILED: docs/testplan/i915_tests.rst 
+/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/i915/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --built-testlist /opt/igt/build/tests/intel-ci/intel-ci.testlist
+Traceback (most recent call last):
+  File "/usr/src/igt-gpu-tools/scripts/igt_doc.py", line 67, in <module>
+    tests.check_tests()
+  File "/usr/src/igt-gpu-tools/scripts/test_list.py", line 966, in check_tests
+    with open(self.built_testlist, 'r', encoding='utf8') as handle:
+FileNotFoundError: [Errno 2] No such file or directory: '/opt/igt/build/tests/intel-ci/intel-ci.testlist'
+[1610/1614] Generating intel-ci.testlist with a meson_exe.py custom command.
+ninja: build stopped: subcommand failed.
 
-As this is touching testlist for CI, +Cc Ewelina.
 
-Regards,
-Kamil
-
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  docs/testplan/meson.build |  2 +-
->  tests/meson.build         | 55 ++++++++++++++++++++++++++++++++++-----
->  2 files changed, 49 insertions(+), 8 deletions(-)
-> 
-> diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-> index bf73dd32a15f..e838f2eb1540 100644
-> --- a/docs/testplan/meson.build
-> +++ b/docs/testplan/meson.build
-> @@ -12,7 +12,7 @@ i915_test_config = join_paths(source_root, 'tests', 'i915', 'i915_test_config.js
->  
->  check_testlist = []
->  if build_tests
-> -	doc_dependencies = test_executables
-> +	doc_dependencies = testlist_files
->  	# Check if documentation matches the actual tests and tests can run
->  	if not meson.is_cross_build()
->  		build_info += 'Will Check if documentation is in sync with testlist'
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 3116c458d60b..897f17ab4561 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -351,35 +351,57 @@ extra_dependencies = {
->  
->  test_executables = []
->  test_list = []
-> +testlist_files = []
->  
->  foreach prog : test_progs
-> -	test_executables += executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
-> +	testexe = executable(prog, [prog + '.c'] + extra_sources.get(prog, []),
->  		   dependencies : test_deps + extra_dependencies.get(prog, []),
->  		   install_dir : libexecdir,
->  		   install_rpath : libexecdir_rpathdir,
->  		   install : true)
-> +	test_executables += testexe
->  	test_list += prog
-> +	name = prog.split('/').get(-1)
-> +	testlist_files += custom_target(name + '.testlist',
-> +		     build_by_default : true,
-> +		     command : [testexe, '--show-testlist'],
-> +		     capture : true,
-> +		     output : name + '.testlist')
->  endforeach
->  
->  foreach prog : i915_progs
-> -	test_executables += executable(prog,
-> +	testexe = executable(prog,
->  		   [join_paths('i915', prog + '.c')] + extra_sources.get(prog, []),
->  		   dependencies : test_deps + extra_dependencies.get(prog, []),
->  		   install_dir : libexecdir,
->  		   install_rpath : libexecdir_rpathdir,
->  		   install : true)
-> +	test_executables += testexe
->  	test_list += prog
-> +	name = prog.split('/').get(-1)
-> +	testlist_files += custom_target(name + '.testlist',
-> +		     build_by_default : true,
-> +		     command : [testexe, '--show-testlist'],
-> +		     capture : true,
-> +		     output : name + '.testlist')
->  endforeach
->  
->  if build_xe
->  	foreach prog : xe_progs
-> -		test_executables += executable(prog,
-> +		testexe = executable(prog,
->  			   [join_paths('xe', prog + '.c')] + extra_sources.get(prog, []),
->  			   dependencies : test_deps + extra_dependencies.get(prog, []),
->  			   install_dir : libexecdir,
->  			   install_rpath : libexecdir_rpathdir,
->  			   install : true)
->  		test_list += prog
-> +		test_executables += testexe
-> +		name = prog.split('/').get(-1)
-> +		testlist_files += custom_target(name + '.testlist',
-> +			     build_by_default : true,
-> +			     command : [testexe, '--show-testlist'],
-> +			     capture : true,
-> +			     output : name + '.testlist')
->  	endforeach
->  	build_info += 'Xe **experimental** tests enabled.'
->  endif
-> @@ -395,7 +417,7 @@ endforeach
->  
->  if chamelium.found()
->  	foreach prog : chamelium_progs
-> -		test_executables += executable(prog,
-> +		testexe = executable(prog,
->  				 [join_paths('chamelium', prog + '.c'),
->  					join_paths('chamelium', 'kms_chamelium_helper.c')],
->  				 dependencies : test_deps,
-> @@ -403,16 +425,30 @@ if chamelium.found()
->  				 install_rpath : libexecdir_rpathdir,
->  				 install : true)
->  		test_list += prog
-> +		test_executables += testexe
-> +		name = prog.split('/').get(-1)
-> +		testlist_files += custom_target(name + '.testlist',
-> +			     build_by_default : true,
-> +			     command : [testexe, '--show-testlist'],
-> +			     capture : true,
-> +			     output : name + '.testlist')
->  	endforeach
->  	test_deps += chamelium
->  
-> -	test_executables += executable('kms_chamelium_color',
-> +	name = 'kms_chamelium_color'
-> +	testexe = executable('kms_chamelium_color',
->  				[ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
->  				dependencies : test_deps + [ chamelium ],
->  				install_dir : libexecdir,
->  				install_rpath : libexecdir_rpathdir,
->  				install : true)
-> -	test_list += 'kms_chamelium_color'
-> +	test_list += name
-> +	test_executables += testexe
-> +	testlist_files += custom_target(name + '.testlist',
-> +		     build_by_default : true,
-> +		     command : [testexe, '--show-testlist'],
-> +		     capture : true,
-> +		     output : name + '.testlist')
->  endif
->  
->  subdir('amdgpu')
-> @@ -448,11 +484,16 @@ foreach prog : test_list
->  	test('testcase check ' + prog, test_script, args : prog)
->  endforeach
->  
-> -executable('gem_stress', 'i915/gem_stress.c',
-> +testexe = executable('gem_stress', 'i915/gem_stress.c',
->  	   install : true,
->  	   install_dir : libexecdir,
->  	   install_rpath : libexecdir_rpathdir,
->  	   dependencies : igt_deps)
-> +testlist_files += custom_target('gem_stress.testlist',
-> +                build_by_default : true,
-> +                command : [testexe, '--show-testlist'],
-> +                capture : true,
-> +                output : 'gem_stress.testlist')
->  
->  image_files = [
->    '1080p-left.png',
-> -- 
-> 2.40.1
-> 
 
