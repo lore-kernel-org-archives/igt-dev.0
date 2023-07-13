@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6036410E6EB
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 14:14:21 +0000 (UTC)
-Date: Thu, 13 Jul 2023 15:45:40 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230713134540.vxkznqg2qq7bki2y@kamilkon-desk1>
-References: <20230713123711.276613-1-kunal1.joshi@intel.com>
- <168925442945.14982.2082662921781655733@emeril.freedesktop.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F0F210E6F9
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Jul 2023 15:19:13 +0000 (UTC)
+Date: Thu, 13 Jul 2023 11:19:00 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+Message-ID: <ZLAV5GSTyauZAK1x@intel.com>
+References: <20230710145856.1864141-1-matthew.brost@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <168925442945.14982.2082662921781655733@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5B1/1=5D_tests/intel-ci/xe=2Eblocklist=3A_Add_n?=
- =?utf-8?q?ot_present_tests?=
+In-Reply-To: <20230710145856.1864141-1-matthew.brost@intel.com>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH 1/5] xe/xe_exec_basic: A sections to test NULL
+ (sparse) bindings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,177 +20,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Joshi, Kunal1" <kunal1.joshi@intel.com>,
- SaiX Nandan Yedireswarapu <saix.nandan.yedireswarapu@intel.com>,
- RavitejaX Veesam <ravitejax.veesam@intel.com>,
- SanjuX Marikkar <sanjux.marikkar@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+On Mon, Jul 10, 2023 at 07:58:52AM -0700, Matthew Brost wrote:
+> Update xe_exec_basic which create a NULL binding for store data address,
+> this store should just be dropped.
+> 
+> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> ---
+>  tests/xe/xe_exec_basic.c | 33 ++++++++++++++++++++++++++++-----
+>  1 file changed, 28 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/xe/xe_exec_basic.c b/tests/xe/xe_exec_basic.c
+> index af581c327..5624d31aa 100644
+> --- a/tests/xe/xe_exec_basic.c
+> +++ b/tests/xe/xe_exec_basic.c
+> @@ -28,6 +28,7 @@
+>  #define BIND_ENGINE	(0x1 << 4)
+>  #define DEFER_ALLOC	(0x1 << 5)
+>  #define DEFER_BIND	(0x1 << 6)
+> +#define SPARSE		(0x1 << 7)
+>  
+>  /**
+>   * SUBTEST: once-%s
+> @@ -70,6 +71,10 @@
+>   * @bindengine-userptr-rebind:		bind engine userptr rebind
+>   * @bindengine-userptr-invalidate:	bind engine userptr invalidate
+>   * @bindengine-userptr-invalidate-race:	bind engine userptr invalidate racy
+> + * @null:				null
+> + * @null-defer-mmap:			null defer mmap
+> + * @null-defer-bind:			null defer bind
+> + * @null-rebind:			null rebind
+>   */
+>  
+>  static void
+> @@ -86,6 +91,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  		.syncs = to_user_pointer(sync),
+>  	};
+>  	uint64_t addr[MAX_N_ENGINES];
+> +	uint64_t sparse_addr[MAX_N_ENGINES];
+>  	uint32_t vm[MAX_N_ENGINES];
+>  	uint32_t engines[MAX_N_ENGINES];
+>  	uint32_t bind_engines[MAX_N_ENGINES];
+> @@ -110,8 +116,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  			xe_get_default_alignment(fd));
+>  
+>  	addr[0] = 0x1a0000;
+> -	for (i = 1; i < MAX_N_ENGINES; ++i)
+> +	sparse_addr[0] = 0x301a0000;
 
-fail not related to Xe testlist, no need for respin.
+Why 0x301a0000?
+(Although I also never understood where the 0x1a0000 also came from to start with...)
 
-Regards,
-Kamil
+> +	for (i = 1; i < MAX_N_ENGINES; ++i) {
+>  		addr[i] = addr[i - 1] + (0x1ull << 32);
+> +		sparse_addr[i] = sparse_addr[i - 1] + (0x1ull << 32);
+> +	}
+>  
+>  	if (flags & USERPTR) {
+>  #define	MAP_ADDRESS	0x00007fadeadbe000
+> @@ -160,6 +169,13 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  			xe_vm_bind_userptr_async(fd, vm[i], bind_engines[i],
+>  						 to_user_pointer(data), addr[i],
+>  						 bo_size, sync, 1);
+> +		if (flags & SPARSE)
+> +			__xe_vm_bind_assert(fd, vm[i], bind_engines[i],
+> +					    0, 0, sparse_addr[i], bo_size,
+> +					    XE_VM_BIND_OP_MAP |
+> +					    XE_VM_BIND_FLAG_ASYNC |
+> +					    XE_VM_BIND_FLAG_NULL, sync,
+> +					    1, 0, 0);
+>  	}
+>  
+>  	if (flags & DEFER_BIND)
+> @@ -171,7 +187,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+>  		uint64_t batch_addr = __addr + batch_offset;
+>  		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+> -		uint64_t sdi_addr = __addr + sdi_offset;
+> +		uint64_t sdi_addr = (flags & SPARSE ? sparse_addr[i % n_vm] :
+> +				     __addr)+ sdi_offset;
+>  		int e = i % n_engines;
+>  
+>  		b = 0;
+> @@ -258,9 +275,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>  					INT64_MAX, 0, NULL));
+>  	}
+>  
+> -	for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
+> -	     i < n_execs; i++)
+> -		igt_assert_eq(data[i].data, 0xc0ffee);
+> +	if (!(flags & SPARSE)) {
+> +		for (i = (flags & INVALIDATE && n_execs) ? n_execs - 1 : 0;
+> +		     i < n_execs; i++)
+> +			igt_assert_eq(data[i].data, 0xc0ffee);
+> +	}
 
-On 2023-07-13 at 13:20:29 -0000, Patchwork wrote:
-> == Series Details ==
+As far as I could see, the basic exec also happens here, and this null bind
+for sparse is an extra one, so why not check the correctness of that basic anyway?
+
+oh, and if we check the basic we also need to add 'basic-' in the subtest
+names below...
+
+>  
+>  	for (i = 0; i < n_engines; i++) {
+>  		syncobj_destroy(fd, syncobjs[i]);
+> @@ -293,6 +312,10 @@ igt_main
+>  		{ "basic-defer-bind", DEFER_ALLOC | DEFER_BIND },
+>  		{ "userptr", USERPTR },
+>  		{ "rebind", REBIND },
+> +		{ "null", SPARSE },
+
+and talking about the naming... is the XE_VM_BIND_FLAG_NULL only used for sparse?
+Is any bind for sparse required to use the NULL?
+It looks to me that we have a strange mapping name here and we
+should stick to either
+{ "sparse", SPARSE },
+{ "null", NULL },
+
+but maybe it is just me missing something here...
+
+> +		{ "null-defer-mmap", SPARSE | DEFER_ALLOC },
+> +		{ "null-defer-bind", SPARSE | DEFER_ALLOC | DEFER_BIND },
+> +		{ "null-rebind", SPARSE | REBIND },
+>  		{ "userptr-rebind", USERPTR | REBIND },
+>  		{ "userptr-invalidate", USERPTR | INVALIDATE },
+>  		{ "userptr-invalidate-race", USERPTR | INVALIDATE | RACE },
+> -- 
+> 2.34.1
 > 
-> Series: series starting with [1/1] tests/intel-ci/xe.blocklist: Add not present tests
-> URL   : https://patchwork.freedesktop.org/series/120667/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_13382 -> IGTPW_9401
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_9401 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_9401, please notify your bug team to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/index.html
-> 
-> Participating hosts (41 -> 39)
-> ------------------------------
-> 
->   Missing    (2): bat-adlp-6 fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_9401:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_suspend@basic-s2idle-without-i915:
->     - bat-dg2-9:          [PASS][1] -> [WARN][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/bat-dg2-9/igt@i915_suspend@basic-s2idle-without-i915.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-dg2-9/igt@i915_suspend@basic-s2idle-without-i915.html
-> 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_9401 that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@i915_pm_rpm@basic-rte:
->     - fi-skl-guc:         [PASS][3] -> [FAIL][4] ([i915#7940])
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/fi-skl-guc/igt@i915_pm_rpm@basic-rte.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/fi-skl-guc/igt@i915_pm_rpm@basic-rte.html
->     - fi-kbl-7567u:       [PASS][5] -> [FAIL][6] ([i915#7940])
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/fi-kbl-7567u/igt@i915_pm_rpm@basic-rte.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/fi-kbl-7567u/igt@i915_pm_rpm@basic-rte.html
-> 
->   * igt@i915_selftest@live@gt_heartbeat:
->     - fi-kbl-7567u:       [PASS][7] -> [DMESG-FAIL][8] ([i915#5334] / [i915#7872])
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
->     - fi-apl-guc:         [PASS][9] -> [DMESG-FAIL][10] ([i915#5334])
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-> 
->   * igt@i915_selftest@live@slpc:
->     - bat-mtlp-6:         [PASS][11] -> [DMESG-WARN][12] ([i915#6367])
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/bat-mtlp-6/igt@i915_selftest@live@slpc.html
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-mtlp-6/igt@i915_selftest@live@slpc.html
->     - bat-rpls-1:         [PASS][13] -> [DMESG-WARN][14] ([i915#6367])
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/bat-rpls-1/igt@i915_selftest@live@slpc.html
->    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-rpls-1/igt@i915_selftest@live@slpc.html
-> 
->   * igt@i915_selftest@live@workarounds:
->     - bat-mtlp-6:         [PASS][15] -> [DMESG-FAIL][16] ([i915#6763])
->    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
->    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-> 
->   * igt@kms_psr@cursor_plane_move:
->     - bat-rplp-1:         NOTRUN -> [SKIP][17] ([i915#1072]) +1 similar issue
->    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
-> 
->   * igt@kms_psr@primary_mmap_gtt:
->     - bat-rplp-1:         NOTRUN -> [ABORT][18] ([i915#8434] / [i915#8442] / [i915#8668])
->    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-> 
->   
-> #### Possible fixes ####
-> 
->   * igt@i915_pm_rpm@basic-rte:
->     - fi-cfl-8109u:       [FAIL][19] ([i915#7940]) -> [PASS][20]
->    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/fi-cfl-8109u/igt@i915_pm_rpm@basic-rte.html
->    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/fi-cfl-8109u/igt@i915_pm_rpm@basic-rte.html
-> 
->   * igt@i915_selftest@live@gt_mocs:
->     - bat-mtlp-6:         [DMESG-FAIL][21] ([i915#7059]) -> [PASS][22]
->    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
->    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
-> 
->   * igt@i915_selftest@live@requests:
->     - bat-mtlp-8:         [DMESG-FAIL][23] ([i915#8497]) -> [PASS][24]
->    [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/bat-mtlp-8/igt@i915_selftest@live@requests.html
->    [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-mtlp-8/igt@i915_selftest@live@requests.html
->     - bat-mtlp-6:         [DMESG-FAIL][25] ([i915#7269]) -> [PASS][26]
->    [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/bat-mtlp-6/igt@i915_selftest@live@requests.html
->    [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-mtlp-6/igt@i915_selftest@live@requests.html
-> 
->   * igt@i915_selftest@live@slpc:
->     - bat-rpls-2:         [DMESG-WARN][27] ([i915#6367]) -> [PASS][28]
->    [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/bat-rpls-2/igt@i915_selftest@live@slpc.html
->    [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-rpls-2/igt@i915_selftest@live@slpc.html
->     - bat-mtlp-8:         [DMESG-WARN][29] ([i915#6367]) -> [PASS][30]
->    [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/bat-mtlp-8/igt@i915_selftest@live@slpc.html
->    [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-mtlp-8/igt@i915_selftest@live@slpc.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@kms_psr@primary_page_flip:
->     - bat-rplp-1:         [ABORT][31] ([i915#8860]) -> [SKIP][32] ([i915#1072])
->    [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13382/bat-rplp-1/igt@kms_psr@primary_page_flip.html
->    [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/bat-rplp-1/igt@kms_psr@primary_page_flip.html
-> 
->   
->   [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
->   [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
->   [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
->   [i915#6763]: https://gitlab.freedesktop.org/drm/intel/issues/6763
->   [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
->   [i915#7269]: https://gitlab.freedesktop.org/drm/intel/issues/7269
->   [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
->   [i915#7940]: https://gitlab.freedesktop.org/drm/intel/issues/7940
->   [i915#8434]: https://gitlab.freedesktop.org/drm/intel/issues/8434
->   [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
->   [i915#8497]: https://gitlab.freedesktop.org/drm/intel/issues/8497
->   [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
->   [i915#8860]: https://gitlab.freedesktop.org/drm/intel/issues/8860
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7385 -> IGTPW_9401
-> 
->   CI-20190529: 20190529
->   CI_DRM_13382: c732b5826ab2d8610161e831f4e7df13b5b56f42 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_9401: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/index.html
->   IGT_7385: 6f68af5bc4c508fee58b7eb8eae61c7463b521a3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9401/index.html
