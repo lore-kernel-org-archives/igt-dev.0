@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2ACD010E7C6
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 06:19:33 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18E1F10E1AA
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 06:27:39 +0000 (UTC)
 From: "B, Jeevan" <jeevan.b@intel.com>
 To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>
-Date: Fri, 14 Jul 2023 06:19:23 +0000
-Message-ID: <DM4PR11MB631264FD662C5388CF75181D9034A@DM4PR11MB6312.namprd11.prod.outlook.com>
+Date: Fri, 14 Jul 2023 06:27:31 +0000
+Message-ID: <DM4PR11MB63123DD7F0D9D1B59B587BD79034A@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20230713091726.272816-1-kunal1.joshi@intel.com>
- <20230713091726.272816-3-kunal1.joshi@intel.com>
-In-Reply-To: <20230713091726.272816-3-kunal1.joshi@intel.com>
+ <20230713091726.272816-4-kunal1.joshi@intel.com>
+In-Reply-To: <20230713091726.272816-4-kunal1.joshi@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/igt_chamelium: Added is_mapped
- to track mapped ports
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] lib/igt_chamelium: Added function
+ to sort chamelium ports based on is_mapped
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -37,51 +37,81 @@ Joshi
 > Sent: Thursday, July 13, 2023 2:47 PM
 > To: igt-dev@lists.freedesktop.org
 > Cc: Joshi, Kunal1 <kunal1.joshi@intel.com>
-> Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_chamelium: Added is_mapped t=
-o
-> track mapped ports
+> Subject: [igt-dev] [PATCH i-g-t 3/3] lib/igt_chamelium: Added function to=
+ sort
+> chamelium ports based on is_mapped
 >=20
-> Added boolean is_mapped, which is true for mapped ports and only plug
-> mapped ports
+> port_count was used to iterate on chamelium ports but its not neccessary =
+that
+> mapped ports are always on the top chamelium_ports array after autodiscov=
+ery
 >=20
 > Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 > ---
->  lib/igt_chamelium.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  lib/igt_chamelium.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 42 insertions(+)
 >=20
 > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c index
-> 95983ff25..a737330a6 100644
+> a737330a6..8358ca109 100644
 > --- a/lib/igt_chamelium.c
 > +++ b/lib/igt_chamelium.c
-> @@ -99,6 +99,7 @@ struct chamelium_port {
->  	char *name;
->  	bool adapter_allowed;
->  	char *connector_path;
-> +	bool is_mapped;
->  };
+> @@ -2638,6 +2638,44 @@ static bool get_connector_id_for_port(struct
+> chamelium *chamelium,
+>  	return false;
+>  }
 >=20
->  struct chamelium_frame_dump {
-> @@ -2721,6 +2722,7 @@ static bool chamelium_autodiscover(struct
-> chamelium *chamelium)
->  			igt_info("Failed to auto-discover port %d\n", port_id);
->  			goto unplug_port;
->  		}
-> +		port->is_mapped =3D true;
->  		is_any_port_mapped =3D true;
->=20
->  		/* If we found a connector for our port, increment the number
-> of valid Chamelium ports. */ @@ -2746,9 +2748,10 @@ unplug_port:
->  	}
->=20
->  	/* After we're all set, turn on all supported ports */
-> -	for (i =3D 0; i < chamelium->port_count; i++) {
-> +	for (i =3D 0; i < CHAMELIUM_MAX_PORTS; i++) {
->  		struct chamelium_port *port =3D &chamelium->ports[i];
-> -		chamelium_plug(chamelium, port);
-> +		if (port->is_mapped)
-> +			chamelium_plug(chamelium, port);
+> +static void selective_sort_ports(struct chamelium_port *ports) {
+> +    int mapped_count =3D 0;
+> +    int unmapped_count =3D 0;
+> +    int mapped_index =3D 0;
+> +    int unmapped_index =3D mapped_count;
+> +
+> +    /*
+> +     * Count the number of mapped and unmapped ports
+> +     */
+> +    for (int i =3D 0; i < CHAMELIUM_MAX_PORTS; i++) {
+> +        if (ports[i].is_mapped) {
+> +            mapped_count++;
+> +        } else {
+> +            unmapped_count++;
+> +        }
+> +    }
+> +
+> +    /*
+> +     * Rearrange the ports such that mapped ports are at the start
+> +     */
+> +    unmapped_index =3D mapped_count;
+> +
+> +    struct chamelium_port sorted_ports[CHAMELIUM_MAX_PORTS];
+> +
+> +    for (int i =3D 0; i < CHAMELIUM_MAX_PORTS; i++) {
+> +        if (ports[i].is_mapped) {
+> +            sorted_ports[mapped_index++] =3D ports[i];
+> +        } else {
+> +            sorted_ports[unmapped_index++] =3D ports[i];
+> +        }
+> +    }
+> +
+> +    /*
+> +     * Copy the sorted ports back to the original array
+> +     */
+> +    memcpy(ports, sorted_ports, CHAMELIUM_MAX_PORTS * sizeof(struct
+> +chamelium_port)); }
+> +
+>  /**
+>   * chamelium_autodiscover: automagically discover the Chamelium port
+> mapping
+>   *
+> @@ -2755,6 +2793,10 @@ unplug_port:
 >  	}
 >  	sleep(CHAMELIUM_HOTPLUG_DETECTION_DELAY);
 >=20
+> +	/*
+> +	 * Sort the ports based on the is_mapped flag
+> +	 */
+> +	selective_sort_ports(chamelium->ports);
+>  	elapsed_ns =3D igt_nsec_elapsed(&start);
+>  	igt_debug("Auto-discovery took %fms and found %i connector(s)\n",
+>  		  (float)elapsed_ns / (1000 * 1000), chamelium->port_count);
 > --
 > 2.25.1
