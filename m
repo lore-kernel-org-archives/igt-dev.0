@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2828273734891776180=="
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FEFA10E8B0
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 14:43:10 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 14 Jul 2023 15:42:38 +0100
+Message-ID: <20230714144238.573403-7-matthew.auld@intel.com>
+In-Reply-To: <20230714144238.573403-1-matthew.auld@intel.com>
+References: <20230714144238.573403-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Simon Ser" <contact@emersion.fr>
-Date: Fri, 14 Jul 2023 14:51:35 -0000
-Message-ID: <168934629522.13876.9985817913417494763@emeril.freedesktop.org>
-References: <20230714134432.27346-1-contact@emersion.fr>
-In-Reply-To: <20230714134432.27346-1-contact@emersion.fr>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?syncobj=5Feventfd=3A_new_test_=28rev4=29?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 6/6] tests/xe/mmap: sanity check small-bar
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,309 +19,200 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2828273734891776180==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Some basic sanity checks.
 
-== Series Details ==
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+---
+ lib/xe/xe_ioctl.c  | 28 ++++++++++----
+ lib/xe/xe_ioctl.h  |  2 +
+ tests/xe/xe_mmap.c | 92 +++++++++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 114 insertions(+), 8 deletions(-)
 
-Series: tests/syncobj_eventfd: new test (rev4)
-URL   : https://patchwork.freedesktop.org/series/120551/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7388 -> IGTPW_9410
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_9410 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_9410, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/index.html
-
-Participating hosts (44 -> 43)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_9410:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - fi-kbl-7567u:       [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/fi-kbl-7567u/igt@gem_exec_suspend@basic-s0@smem.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/fi-kbl-7567u/igt@gem_exec_suspend@basic-s0@smem.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9410 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-skl-guc:         [PASS][3] -> [FAIL][4] ([i915#7940])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/fi-skl-guc/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/fi-skl-guc/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-dg2-11:         [PASS][5] -> [DMESG-WARN][6] ([i915#7699])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/bat-dg2-11/igt@i915_selftest@live@migrate.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-dg2-11/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-mtlp-6:         [PASS][7] -> [ABORT][8] ([i915#7982])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/bat-mtlp-6/igt@i915_selftest@live@requests.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-mtlp-6/igt@i915_selftest@live@requests.html
-
-  * igt@kms_psr@primary_mmap_gtt:
-    - bat-rplp-1:         NOTRUN -> [SKIP][9] ([i915#1072])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-rplp-1:         NOTRUN -> [ABORT][10] ([i915#8260] / [i915#8668])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-cfl-8109u:       [FAIL][11] ([i915#7940]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/fi-cfl-8109u/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/fi-cfl-8109u/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-skl-guc:         [FAIL][13] ([i915#7940]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/fi-skl-guc/igt@i915_pm_rpm@basic-rte.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/fi-skl-guc/igt@i915_pm_rpm@basic-rte.html
-
-  * igt@i915_selftest@live@gt_mocs:
-    - bat-mtlp-8:         [DMESG-FAIL][15] ([i915#7059]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-mtlp-8:         [DMESG-FAIL][17] ([i915#7699]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/bat-mtlp-8/igt@i915_selftest@live@migrate.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-mtlp-8/igt@i915_selftest@live@migrate.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-rplp-1:         [ABORT][19] ([i915#8442] / [i915#8668] / [i915#8712]) -> [SKIP][20] ([i915#1072])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-
-  
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7940]: https://gitlab.freedesktop.org/drm/intel/issues/7940
-  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
-  [i915#8260]: https://gitlab.freedesktop.org/drm/intel/issues/8260
-  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#8712]: https://gitlab.freedesktop.org/drm/intel/issues/8712
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7388 -> IGTPW_9410
-
-  CI-20190529: 20190529
-  CI_DRM_13385: f8be3c363790b79801f7be6bd40062219e3789bc @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9410: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/index.html
-  IGT_7388: 7388
-
-
-Testlist changes
-----------------
-
-+igt@syncobj_eventfd@binary-wait
-+igt@syncobj_eventfd@binary-wait-before-signal
-+igt@syncobj_eventfd@binary-wait-signaled
-+igt@syncobj_eventfd@invalid-bad-flags
-+igt@syncobj_eventfd@invalid-bad-pad
-+igt@syncobj_eventfd@invalid-illegal-eventfd
-+igt@syncobj_eventfd@invalid-illegal-handle
-+igt@syncobj_eventfd@timeline-wait
-+igt@syncobj_eventfd@timeline-wait-before-signal
-+igt@syncobj_eventfd@timeline-wait-signaled
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/index.html
-
---===============2828273734891776180==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/syncobj_eventfd: new test (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120551/">https://patchwork.freedesktop.org/series/120551/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7388 -&gt; IGTPW_9410</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_9410 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_9410, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/index.html</p>
-<h2>Participating hosts (44 -&gt; 43)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_9410:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@gem_exec_suspend@basic-s0@smem:<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/fi-kbl-7567u/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/fi-kbl-7567u/igt@gem_exec_suspend@basic-s0@smem.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9410 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/fi-skl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/fi-skl-guc/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-mtlp-6/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_mmap_gtt:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-rplp-1/igt@kms_setmode@basic-clone-single-crtc.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8260">i915#8260</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/fi-cfl-8109u/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/fi-cfl-8109u/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-rte:</p>
-<ul>
-<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/fi-skl-guc/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/fi-skl-guc/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_mocs:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/bat-mtlp-8/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-mtlp-8/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@sprite_plane_onoff:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7388/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8712">i915#8712</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7388 -&gt; IGTPW_9410</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13385: f8be3c363790b79801f7be6bd40062219e3789bc @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9410: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9410/index.html<br />
-  IGT_7388: 7388</p>
-<h2>Testlist changes</h2>
-<p>+igt@syncobj_eventfd@binary-wait<br />
-+igt@syncobj_eventfd@binary-wait-before-signal<br />
-+igt@syncobj_eventfd@binary-wait-signaled<br />
-+igt@syncobj_eventfd@invalid-bad-flags<br />
-+igt@syncobj_eventfd@invalid-bad-pad<br />
-+igt@syncobj_eventfd@invalid-illegal-eventfd<br />
-+igt@syncobj_eventfd@invalid-illegal-handle<br />
-+igt@syncobj_eventfd@timeline-wait<br />
-+igt@syncobj_eventfd@timeline-wait-before-signal<br />
-+igt@syncobj_eventfd@timeline-wait-signaled</p>
-
-</body>
-</html>
-
---===============2828273734891776180==--
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 0b5c7a4fc..f9f722335 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -233,17 +233,31 @@ void xe_vm_destroy(int fd, uint32_t vm)
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy), 0);
+ }
+ 
++uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
++			      uint32_t *handle)
++{
++	struct drm_xe_gem_create create = {
++		.vm_id = vm,
++		.size = size,
++		.flags = flags,
++	};
++	int err;
++
++	err = igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create);
++	if (err)
++		return err;
++
++	*handle = create.handle;
++	return 0;
++}
++
+ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags)
+ {
+-	struct drm_xe_gem_create create = {
+-		.vm_id = vm,
+-		.size = size,
+-		.flags = flags,
+-	};
++	uint32_t handle;
+ 
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create), 0);
++	igt_assert_eq(__xe_bo_create_flags(fd, vm, size, flags, &handle), 0);
+ 
+-	return create.handle;
++	return handle;
+ }
+ 
+ uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size)
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 320e0f9f6..f9c3acb4a 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -64,6 +64,8 @@ void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t engine,
+ 			    uint32_t bo, struct drm_xe_sync *sync,
+ 			    uint32_t num_syncs);
+ void xe_vm_destroy(int fd, uint32_t vm);
++uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
++			      uint32_t *handle);
+ uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
+ uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
+ uint32_t xe_engine_create(int fd, uint32_t vm,
+diff --git a/tests/xe/xe_mmap.c b/tests/xe/xe_mmap.c
+index 583f39d7a..cd2076336 100644
+--- a/tests/xe/xe_mmap.c
++++ b/tests/xe/xe_mmap.c
+@@ -18,14 +18,21 @@
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ 
++#include <setjmp.h>
++#include <signal.h>
+ #include <string.h>
+ 
+-
+ /**
+  * SUBTEST: system
+  * Description: Test mmap on system memory
+  */
+ 
++/**
++ * SUBTEST: small-bar
++ * Description: Sanity check mmap behaviour on small-bar systems
++ * GPU requirements: GPU needs to have dedicated VRAM and using small-bar
++ */
++
+ /**
+  * SUBTEST: %s
+  * Description: Test mmap on %arg[1] memory
+@@ -107,6 +114,83 @@ static void test_bad_object(int fd)
+ 	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo, ENOENT);
+ }
+ 
++static jmp_buf jmp;
++
++__noreturn static void sigtrap(int sig)
++{
++	siglongjmp(jmp, sig);
++}
++
++static void trap_sigbus(uint32_t *ptr)
++{
++	sighandler_t old_sigbus;
++
++	old_sigbus = signal(SIGBUS, sigtrap);
++	switch (sigsetjmp(jmp, SIGBUS)) {
++	case SIGBUS:
++		break;
++	case 0:
++		*ptr = 0xdeadbeaf;
++	default:
++		igt_assert(!"reached");
++		break;
++	}
++	signal(SIGBUS, old_sigbus);
++}
++
++/**
++ * SUBTEST: small-bar
++ * Description: Test mmap behaviour on small-bar systems.
++ *
++ */
++static void test_small_bar(int fd)
++{
++	uint32_t visible_size = xe_visible_vram_size(fd, 0);
++	uint32_t bo;
++	uint64_t mmo;
++	uint32_t *map;
++
++	/* 2BIG invalid case */
++	igt_assert_neq(__xe_bo_create_flags(fd, 0, visible_size + 4096,
++					    visible_vram_memory(fd, 0), &bo),
++		       0);
++
++	/* Normal operation */
++	bo = xe_bo_create_flags(fd, 0, visible_size / 4,
++				visible_vram_memory(fd, 0));
++	mmo = xe_bo_mmap_offset(fd, bo);
++	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
++	igt_assert(map != MAP_FAILED);
++
++	map[0] = 0xdeadbeaf;
++
++	munmap(map, 4096);
++	gem_close(fd, bo);
++
++	/* Normal operation with system memory spilling */
++	bo = xe_bo_create_flags(fd, 0, visible_size,
++				visible_vram_memory(fd, 0) |
++				system_memory(fd));
++	mmo = xe_bo_mmap_offset(fd, bo);
++	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
++	igt_assert(map != MAP_FAILED);
++
++	map[0] = 0xdeadbeaf;
++
++	munmap(map, 4096);
++	gem_close(fd, bo);
++
++	/* Bogus operation with SIGBUS */
++	bo = xe_bo_create_flags(fd, 0, visible_size + 4096,
++				vram_memory(fd, 0));
++	mmo = xe_bo_mmap_offset(fd, bo);
++	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
++	igt_assert(map != MAP_FAILED);
++
++	trap_sigbus(map);
++	gem_close(fd, bo);
++}
++
+ igt_main
+ {
+ 	int fd;
+@@ -132,6 +216,12 @@ igt_main
+ 	igt_subtest("bad-object")
+ 		test_bad_object(fd);
+ 
++	igt_subtest("small-bar") {
++		igt_require(xe_visible_vram_size(fd, 0));
++		igt_require(xe_visible_vram_size(fd, 0) < xe_vram_size(fd, 0));
++		test_small_bar(fd);
++	}
++
+ 	igt_fixture
+ 		drm_close_driver(fd);
+ }
+-- 
+2.41.0
