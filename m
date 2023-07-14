@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DE8610E8B0
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 14:43:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6F8610E8A2
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 14:43:03 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 14 Jul 2023 15:42:35 +0100
-Message-ID: <20230714144238.573403-4-matthew.auld@intel.com>
+Date: Fri, 14 Jul 2023 15:42:34 +0100
+Message-ID: <20230714144238.573403-3-matthew.auld@intel.com>
 In-Reply-To: <20230714144238.573403-1-matthew.auld@intel.com>
 References: <20230714144238.573403-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 3/6] lib/xe: handle small-bar systems
+Subject: [igt-dev] [PATCH i-g-t v3 2/6] lib/xe: add visible vram helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,92 +22,183 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The spinner stuff wants to use mmap. The fb related stuff might want to
-CPU access the buffer, so just always ask for it. And the batch buffer
-stuff is pretty much always going to need to CPU access the buffer.
+Add helpers for object creation and querying the cpu_visible related bits.
+
+v2: Make it backwards compat with older kernels
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 ---
- lib/igt_draw.c          | 2 +-
- lib/igt_fb.c            | 2 +-
- lib/intel_batchbuffer.c | 4 ++--
- lib/xe/xe_spin.c        | 6 ++++--
- 4 files changed, 8 insertions(+), 6 deletions(-)
+ lib/xe/xe_query.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++-
+ lib/xe/xe_query.h |  6 ++++
+ 2 files changed, 91 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index 1f814bfc8..13b90702c 100644
---- a/lib/igt_draw.c
-+++ b/lib/igt_draw.c
-@@ -794,7 +794,7 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
- 	else
- 		tmp.handle = xe_bo_create_flags(fd, 0,
- 						ALIGN(tmp.size, xe_get_default_alignment(fd)),
--						vram_if_possible(fd, 0));
-+						visible_vram_if_possible(fd, 0));
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index f535ad853..5412fbeb5 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -140,6 +140,17 @@ static uint64_t gt_vram_size(const struct drm_xe_query_mem_usage *mem_usage,
+ 	return 0;
+ }
  
- 	tmp.stride = rect->w * pixel_size;
- 	tmp.bpp = buf->bpp;
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 1814e8db1..17738d7f1 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -1194,7 +1194,7 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
- 			igt_assert(err == 0 || err == -EOPNOTSUPP);
- 		} else if (is_xe_device(fd)) {
- 			fb->gem_handle = xe_bo_create_flags(fd, 0, fb->size,
--							vram_if_possible(fd, 0));
-+							visible_vram_if_possible(fd, 0));
- 		} else if (is_vc4_device(fd)) {
- 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
++static uint64_t gt_visible_vram_size(const struct drm_xe_query_mem_usage *mem_usage,
++				     const struct drm_xe_query_gts *gts, int gt)
++{
++	int region_idx = ffs(native_region_for_gt(gts, gt)) - 1;
++
++	if (XE_IS_CLASS_VRAM(&mem_usage->regions[region_idx]))
++		return mem_usage->regions[region_idx].cpu_visible_size;
++
++	return 0;
++}
++
+ static bool __mem_has_vram(struct drm_xe_query_mem_usage *mem_usage)
+ {
+ 	for (int i = 0; i < mem_usage->num_regions; i++)
+@@ -246,9 +257,14 @@ struct xe_device *xe_device_get(int fd)
+ 	xe_dev->hw_engines = xe_query_engines_new(fd, &xe_dev->number_hw_engines);
+ 	xe_dev->mem_usage = xe_query_mem_usage_new(fd);
+ 	xe_dev->vram_size = calloc(xe_dev->number_gt, sizeof(*xe_dev->vram_size));
+-	for (int gt = 0; gt < xe_dev->number_gt; gt++)
++	xe_dev->visible_vram_size = calloc(xe_dev->number_gt, sizeof(*xe_dev->visible_vram_size));
++	for (int gt = 0; gt < xe_dev->number_gt; gt++) {
+ 		xe_dev->vram_size[gt] = gt_vram_size(xe_dev->mem_usage,
+ 						     xe_dev->gts, gt);
++		xe_dev->visible_vram_size[gt] =
++			gt_visible_vram_size(xe_dev->mem_usage,
++					     xe_dev->gts, gt);
++	}
+ 	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_usage);
+ 	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_usage);
  
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 0408d62ba..163d39d6b 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -943,7 +943,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+@@ -383,6 +399,33 @@ uint64_t vram_memory(int fd, int gt)
+ 	return xe_has_vram(fd) ? native_region_for_gt(xe_dev->gts, gt) : 0;
+ }
  
- 		ibb->alignment = xe_get_default_alignment(fd);
- 		size = ALIGN(size, ibb->alignment);
--		ibb->handle = xe_bo_create_flags(fd, 0, size, vram_if_possible(fd, 0));
-+		ibb->handle = xe_bo_create_flags(fd, 0, size, visible_vram_if_possible(fd, 0));
++static uint64_t __xe_visible_vram_size(int fd, int gt)
++{
++	struct xe_device *xe_dev;
++
++	xe_dev = find_in_cache(fd);
++	igt_assert(xe_dev);
++
++	return xe_dev->visible_vram_size[gt];
++}
++
++/**
++ * visible_vram_memory:
++ * @fd: xe device fd
++ * @gt: gt id
++ *
++ * Returns vram memory bitmask for xe device @fd and @gt id, with
++ * XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM also set, to ensure that CPU access is
++ * possible.
++ */
++uint64_t visible_vram_memory(int fd, int gt)
++{
++	if (__xe_visible_vram_size(fd, gt))
++		return vram_memory(fd, gt) | XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
++	else
++		return vram_memory(fd, gt); /* older kernel */
++}
++
+ /**
+  * vram_if_possible:
+  * @fd: xe device fd
+@@ -396,6 +439,28 @@ uint64_t vram_if_possible(int fd, int gt)
+ 	return vram_memory(fd, gt) ?: system_memory(fd);
+ }
  
- 		/* Limit to 48-bit due to MI_* address limitation */
- 		ibb->gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
-@@ -1399,7 +1399,7 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
- 		ibb->handle = gem_create(ibb->fd, ibb->size);
- 	else
- 		ibb->handle = xe_bo_create_flags(ibb->fd, 0, ibb->size,
--						 vram_if_possible(ibb->fd, 0));
-+						 visible_vram_if_possible(ibb->fd, 0));
++/**
++ * visible_vram_if_possible:
++ * @fd: xe device fd
++ * @gt: gt id
++ *
++ * Returns vram memory bitmask for xe device @fd and @gt id or system memory if
++ * there's no vram memory available for @gt. Also attaches the
++ * XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM to ensure that CPU access is possible
++ * when using vram.
++ */
++uint64_t visible_vram_if_possible(int fd, int gt)
++{
++	uint64_t regions = all_memory_regions(fd);
++	uint64_t system_memory = regions & 0x1;
++	uint64_t vram = regions & (0x2 << gt);
++
++	if (__xe_visible_vram_size(fd, gt))
++		return vram ? vram | XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM : system_memory;
++	else
++		return vram ? vram : system_memory; /* older kernel */
++}
++
+ /**
+  * xe_hw_engines:
+  * @fd: xe device fd
+@@ -536,6 +601,24 @@ uint64_t xe_vram_size(int fd, int gt)
+ 	return xe_dev->vram_size[gt];
+ }
  
- 	/* Reacquire offset for RELOC and SIMPLE */
- 	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE ||
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index 529b76844..e799fcfc5 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -126,7 +126,8 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
- 			spin->engine = xe_engine_create_class(fd, spin->vm, DRM_XE_ENGINE_CLASS_COPY);
- 	}
++/**
++ * xe_visible_vram_size:
++ * @fd: xe device fd
++ * @gt: gt
++ *
++ * Returns size of visible vram of xe device @fd.
++ */
++uint64_t xe_visible_vram_size(int fd, int gt)
++{
++	uint64_t visible_size;
++
++	visible_size = __xe_visible_vram_size(fd, gt);
++	if (!visible_size) /* older kernel */
++		visible_size = xe_vram_size(fd, gt);
++
++	return visible_size;
++}
++
+ /**
+  * xe_get_default_alignment:
+  * @fd: xe device fd
+@@ -552,6 +635,7 @@ xe_dev_FN(xe_get_default_alignment, default_alignment, uint32_t);
+  */
+ xe_dev_FN(xe_va_bits, va_bits, uint32_t);
  
--	spin->handle = xe_bo_create(fd, 0, spin->vm, bo_size);
-+	spin->handle = xe_bo_create_flags(fd, spin->vm, bo_size,
-+					  visible_vram_if_possible(fd, 0));
- 	xe_spin = xe_bo_map(fd, spin->handle, bo_size);
- 	addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
- 	xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
-@@ -201,7 +202,8 @@ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
++
+ /**
+  * xe_dev_id:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 68ca5a680..1b74c58ab 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -47,6 +47,9 @@ struct xe_device {
+ 	/** @vram_size: array of vram sizes for all gts */
+ 	uint64_t *vram_size;
  
- 	vm = xe_vm_create(fd, 0, 0);
++	/** @visible_vram_size: array of visible vram sizes for all gts */
++	uint64_t *visible_vram_size;
++
+ 	/** @default_alignment: safe alignment regardless region location */
+ 	uint32_t default_alignment;
  
--	bo = xe_bo_create(fd, hwe->gt_id, vm, bo_size);
-+	bo = xe_bo_create_flags(fd, vm, bo_size,
-+				visible_vram_if_possible(fd, hwe->gt_id));
- 	spin = xe_bo_map(fd, bo, 0x1000);
- 
- 	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
+@@ -80,7 +83,9 @@ unsigned int xe_number_gt(int fd);
+ uint64_t all_memory_regions(int fd);
+ uint64_t system_memory(int fd);
+ uint64_t vram_memory(int fd, int gt);
++uint64_t visible_vram_memory(int fd, int gt);
+ uint64_t vram_if_possible(int fd, int gt);
++uint64_t visible_vram_if_possible(int fd, int gt);
+ struct drm_xe_engine_class_instance *xe_hw_engines(int fd);
+ struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
+ struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
+@@ -91,6 +96,7 @@ struct drm_xe_query_config *xe_config(int fd);
+ unsigned int xe_number_hw_engines(int fd);
+ bool xe_has_vram(int fd);
+ uint64_t xe_vram_size(int fd, int gt);
++uint64_t xe_visible_vram_size(int fd, int gt);
+ uint32_t xe_get_default_alignment(int fd);
+ uint32_t xe_va_bits(int fd);
+ uint16_t xe_dev_id(int fd);
 -- 
 2.41.0
