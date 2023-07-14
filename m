@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============5002283843994686612=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Date: Fri, 14 Jul 2023 15:58:25 -0000
-Message-ID: <168935030569.13876.381408295783195830@emeril.freedesktop.org>
-References: <20230714153946.36448-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20230714153946.36448-1-kamil.konieczny@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_R?=
- =?utf-8?q?FC=3A_runner=3A_dump_GPU_error_state_on_timeout?=
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Fri, 14 Jul 2023 16:27:50 -0000
+Message-ID: <168935207076.13874.17277643959878571073@emeril.freedesktop.org>
+References: <20230714144238.573403-1-matthew.auld@intel.com>
+In-Reply-To: <20230714144238.573403-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_IGT_bits_fo?=
+ =?utf-8?q?r_small-bar_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,61 +23,65 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============5002283843994686612==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: RFC: runner: dump GPU error state on timeout
-URL   : https://patchwork.freedesktop.org/series/120789/
-State : warning
+Series: IGT bits for small-bar (rev5)
+URL   : https://patchwork.freedesktop.org/series/115786/
+State : info
 
 == Summary ==
 
-Pipeline status: FAILED.
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9411](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9411/index.html)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/935513 for the overview.
 
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45508999):
-  361/365 assembler test/rnde-intsrc              OK       0.01 s 
-  362/365 assembler test/rndz                     OK       0.01 s 
-  363/365 assembler test/lzd                      OK       0.01 s 
-  364/365 assembler test/not                      OK       0.01 s 
-  365/365 assembler test/immediate                OK       0.01 s 
-  
-  Ok:                  360
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1689350189:step_script
-  section_start:1689350189:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1689350190:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
 
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45508998):
-  361/365 assembler test/rnde-intsrc              OK       0.01 s 
-  362/365 assembler test/rndz                     OK       0.01 s 
-  363/365 assembler test/lzd                      OK       0.01 s 
-  364/365 assembler test/not                      OK       0.01 s 
-  365/365 assembler test/immediate                OK       0.01 s 
-  
-  Ok:                  360
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1689350134:step_script
-  section_start:1689350134:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1689350135:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+--===============5002283843994686612==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-== Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/935513
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>IGT bits for small-bar (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115786/">https://patchwork.freedesktop.org/series/115786/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9411/index.html">IGTPW_9411</a></p>
+
+</body>
+</html>
+
+--===============5002283843994686612==--
