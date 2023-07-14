@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FEFA10E8B0
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 14:43:10 +0000 (UTC)
-From: Matthew Auld <matthew.auld@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D8A010E8BB
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 15:40:01 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 14 Jul 2023 15:42:38 +0100
-Message-ID: <20230714144238.573403-7-matthew.auld@intel.com>
-In-Reply-To: <20230714144238.573403-1-matthew.auld@intel.com>
-References: <20230714144238.573403-1-matthew.auld@intel.com>
+Date: Fri, 14 Jul 2023 17:39:45 +0200
+Message-Id: <20230714153946.36448-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20230714153946.36448-1-kamil.konieczny@linux.intel.com>
+References: <20230714153946.36448-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 6/6] tests/xe/mmap: sanity check small-bar
+Subject: [igt-dev] [PATCH i-g-t 1/2] runner/settings: add
+ dump-gpu-on-timeout option
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,196 +23,85 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Some basic sanity checks.
+Add new option --dump-gpu-on-timeout for dumping error state
+of GPU in case of inactivity or per-test timeout occurs. This
+will help in faster problem diagnose from CI runs.
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/xe/xe_ioctl.c  | 28 ++++++++++----
- lib/xe/xe_ioctl.h  |  2 +
- tests/xe/xe_mmap.c | 92 +++++++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 114 insertions(+), 8 deletions(-)
+ runner/settings.c | 12 +++++++++++-
+ runner/settings.h |  1 +
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 0b5c7a4fc..f9f722335 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -233,17 +233,31 @@ void xe_vm_destroy(int fd, uint32_t vm)
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy), 0);
- }
- 
-+uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-+			      uint32_t *handle)
-+{
-+	struct drm_xe_gem_create create = {
-+		.vm_id = vm,
-+		.size = size,
-+		.flags = flags,
-+	};
-+	int err;
-+
-+	err = igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create);
-+	if (err)
-+		return err;
-+
-+	*handle = create.handle;
-+	return 0;
-+}
-+
- uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags)
- {
--	struct drm_xe_gem_create create = {
--		.vm_id = vm,
--		.size = size,
--		.flags = flags,
--	};
-+	uint32_t handle;
- 
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create), 0);
-+	igt_assert_eq(__xe_bo_create_flags(fd, vm, size, flags, &handle), 0);
- 
--	return create.handle;
-+	return handle;
- }
- 
- uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size)
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 320e0f9f6..f9c3acb4a 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -64,6 +64,8 @@ void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t engine,
- 			    uint32_t bo, struct drm_xe_sync *sync,
- 			    uint32_t num_syncs);
- void xe_vm_destroy(int fd, uint32_t vm);
-+uint32_t __xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags,
-+			      uint32_t *handle);
- uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
- uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
- uint32_t xe_engine_create(int fd, uint32_t vm,
-diff --git a/tests/xe/xe_mmap.c b/tests/xe/xe_mmap.c
-index 583f39d7a..cd2076336 100644
---- a/tests/xe/xe_mmap.c
-+++ b/tests/xe/xe_mmap.c
-@@ -18,14 +18,21 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+#include <setjmp.h>
-+#include <signal.h>
- #include <string.h>
- 
+diff --git a/runner/settings.c b/runner/settings.c
+index 23aa82963..880aefbd6 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -28,6 +28,7 @@ enum {
+ 	OPT_CODE_COV_SCRIPT,
+ 	OPT_ENABLE_CODE_COVERAGE,
+ 	OPT_COV_RESULTS_PER_TEST,
++	OPT_DUMP_GPU_ON_TIMEOUT,
+ 	OPT_VERSION,
+ 	OPT_PRUNE_MODE,
+ 	OPT_HELP = 'h',
+@@ -297,6 +298,10 @@ static const char *usage_str =
+ 	"                        Requires --collect-script FILENAME\n"
+ 	"  --collect-script FILENAME\n"
+ 	"                        Use FILENAME as script to collect code coverage data.\n"
++	"  --dump-gpu-on-timeout FILENAME\n"
++	"                        Use /sys/class/drm/card*/error (default) or (if default is empty)\n"
++	"                        /sys/kernel/debug/dri/*/FILENAME for reading GPU error state\n"
++	"                        in case of inactivity/per-test timeout occurs.\n"
+ 	"\n"
+ 	"  [test_root]           Directory that contains the IGT tests. The environment\n"
+ 	"                        variable IGT_TEST_ROOT will be used if set, overriding\n"
+@@ -654,6 +659,7 @@ bool parse_options(int argc, char **argv,
+ 		{"collect-code-cov", no_argument, NULL, OPT_ENABLE_CODE_COVERAGE},
+ 		{"coverage-per-test", no_argument, NULL, OPT_COV_RESULTS_PER_TEST},
+ 		{"collect-script", required_argument, NULL, OPT_CODE_COV_SCRIPT},
++		{"dump-gpu-on-timeout", required_argument, NULL, OPT_DUMP_GPU_ON_TIMEOUT},
+ 		{"multiple-mode", no_argument, NULL, OPT_MULTIPLE},
+ 		{"inactivity-timeout", required_argument, NULL, OPT_TIMEOUT},
+ 		{"per-test-timeout", required_argument, NULL, OPT_PER_TEST_TIMEOUT},
+@@ -740,7 +746,9 @@ bool parse_options(int argc, char **argv,
+ 		case OPT_CODE_COV_SCRIPT:
+ 			settings->code_coverage_script = bin_path(optarg);
+ 			break;
 -
++		case OPT_DUMP_GPU_ON_TIMEOUT:
++			settings->dump_gpu_on_timeout = bin_path(optarg);
++			break;
+ 		case OPT_MULTIPLE:
+ 			settings->multiple_mode = true;
+ 			break;
+@@ -1039,6 +1047,7 @@ bool serialize_settings(struct settings *settings)
+ 	SERIALIZE_LINE(f, settings, enable_code_coverage, "%d");
+ 	SERIALIZE_LINE(f, settings, cov_results_per_test, "%d");
+ 	SERIALIZE_LINE(f, settings, code_coverage_script, "%s");
++	SERIALIZE_LINE(f, settings, dump_gpu_on_timeout, "%s");
+ 
+ 	if (settings->sync) {
+ 		fflush(f);
+@@ -1102,6 +1111,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
+ 		PARSE_LINE(settings, name, val, enable_code_coverage, numval);
+ 		PARSE_LINE(settings, name, val, cov_results_per_test, numval);
+ 		PARSE_LINE(settings, name, val, code_coverage_script, val ? strdup(val) : NULL);
++		PARSE_LINE(settings, name, val, dump_gpu_on_timeout, val ? strdup(val) : NULL);
+ 
+ 		printf("Warning: Unknown field in settings file: %s = %s\n",
+ 		       name, val);
+diff --git a/runner/settings.h b/runner/settings.h
+index 819c34602..ab9e4c630 100644
+--- a/runner/settings.h
++++ b/runner/settings.h
+@@ -72,6 +72,7 @@ struct settings {
+ 	char *code_coverage_script;
+ 	bool enable_code_coverage;
+ 	bool cov_results_per_test;
++	char *dump_gpu_on_timeout;
+ };
+ 
  /**
-  * SUBTEST: system
-  * Description: Test mmap on system memory
-  */
- 
-+/**
-+ * SUBTEST: small-bar
-+ * Description: Sanity check mmap behaviour on small-bar systems
-+ * GPU requirements: GPU needs to have dedicated VRAM and using small-bar
-+ */
-+
- /**
-  * SUBTEST: %s
-  * Description: Test mmap on %arg[1] memory
-@@ -107,6 +114,83 @@ static void test_bad_object(int fd)
- 	do_ioctl_err(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo, ENOENT);
- }
- 
-+static jmp_buf jmp;
-+
-+__noreturn static void sigtrap(int sig)
-+{
-+	siglongjmp(jmp, sig);
-+}
-+
-+static void trap_sigbus(uint32_t *ptr)
-+{
-+	sighandler_t old_sigbus;
-+
-+	old_sigbus = signal(SIGBUS, sigtrap);
-+	switch (sigsetjmp(jmp, SIGBUS)) {
-+	case SIGBUS:
-+		break;
-+	case 0:
-+		*ptr = 0xdeadbeaf;
-+	default:
-+		igt_assert(!"reached");
-+		break;
-+	}
-+	signal(SIGBUS, old_sigbus);
-+}
-+
-+/**
-+ * SUBTEST: small-bar
-+ * Description: Test mmap behaviour on small-bar systems.
-+ *
-+ */
-+static void test_small_bar(int fd)
-+{
-+	uint32_t visible_size = xe_visible_vram_size(fd, 0);
-+	uint32_t bo;
-+	uint64_t mmo;
-+	uint32_t *map;
-+
-+	/* 2BIG invalid case */
-+	igt_assert_neq(__xe_bo_create_flags(fd, 0, visible_size + 4096,
-+					    visible_vram_memory(fd, 0), &bo),
-+		       0);
-+
-+	/* Normal operation */
-+	bo = xe_bo_create_flags(fd, 0, visible_size / 4,
-+				visible_vram_memory(fd, 0));
-+	mmo = xe_bo_mmap_offset(fd, bo);
-+	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
-+	igt_assert(map != MAP_FAILED);
-+
-+	map[0] = 0xdeadbeaf;
-+
-+	munmap(map, 4096);
-+	gem_close(fd, bo);
-+
-+	/* Normal operation with system memory spilling */
-+	bo = xe_bo_create_flags(fd, 0, visible_size,
-+				visible_vram_memory(fd, 0) |
-+				system_memory(fd));
-+	mmo = xe_bo_mmap_offset(fd, bo);
-+	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
-+	igt_assert(map != MAP_FAILED);
-+
-+	map[0] = 0xdeadbeaf;
-+
-+	munmap(map, 4096);
-+	gem_close(fd, bo);
-+
-+	/* Bogus operation with SIGBUS */
-+	bo = xe_bo_create_flags(fd, 0, visible_size + 4096,
-+				vram_memory(fd, 0));
-+	mmo = xe_bo_mmap_offset(fd, bo);
-+	map = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED, fd, mmo);
-+	igt_assert(map != MAP_FAILED);
-+
-+	trap_sigbus(map);
-+	gem_close(fd, bo);
-+}
-+
- igt_main
- {
- 	int fd;
-@@ -132,6 +216,12 @@ igt_main
- 	igt_subtest("bad-object")
- 		test_bad_object(fd);
- 
-+	igt_subtest("small-bar") {
-+		igt_require(xe_visible_vram_size(fd, 0));
-+		igt_require(xe_visible_vram_size(fd, 0) < xe_vram_size(fd, 0));
-+		test_small_bar(fd);
-+	}
-+
- 	igt_fixture
- 		drm_close_driver(fd);
- }
 -- 
-2.41.0
+2.39.2
