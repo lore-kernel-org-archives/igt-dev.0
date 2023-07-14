@@ -1,23 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam04on2065.outbound.protection.outlook.com [40.107.100.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 609BA10E002
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 09:24:51 +0000 (UTC)
-Message-ID: <9eea967b-52ea-03b4-295e-2fcdf945d33f@amd.com>
-Date: Fri, 14 Jul 2023 17:23:39 +0800
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Harry.Wentland@amd.com, Lili.Gong@amd.com,
- Wayne.Lin@amd.com
-References: <20230705152606.13117-1-HaoPing.Liu@amd.com>
- <20230711175913.vdyn6zfgndquvnt2@kamilkon-desk1>
-From: "Liu, HaoPing (Alan)" <HaoPing.liu@amd.com>
-In-Reply-To: <20230711175913.vdyn6zfgndquvnt2@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 725EB10E02E
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 09:37:48 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 14 Jul 2023 15:11:18 +0530
+Message-Id: <20230714094121.1446298-1-riana.tauro@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v3 1/2] drm-uapi/drm_mode: sync with latest
- uAPI changes for checksum_region
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 0/3] Test for gtidle properties
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,99 +16,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
+1) Add basic idle residency test that validates residency over
+   a time interval is within the tolerance.
 
+2) Add a test to check if gt is in c6 when idle.
 
-On 2023/7/12 上午 01:59, Kamil Konieczny wrote:
-> Hi Alan,
->
-> On 2023-07-05 at 23:26:05 +0800, Alan Liu wrote:
->> Add struct drm_checksum_region and struct drm_checksum_crc as the
->> userspace data for using checksum_region feature.
->>
->> Signed-off-by: Alan Liu <HaoPing.Liu@amd.com>
-> Please send this as a separate patch, write also to which repo
-> are you sync-ing, is it drm-tip?
+Patch for gtidle properties
+https://patchwork.freedesktop.org/series/119262/
 
-I am trying to submit patches of checksum_region feature to dri-devel 
-(https://patchwork.freedesktop.org/series/119499/).
+Rev2: Fix cosmetic review comments
+Rev3: Rebase
+Rev4: Add changes to accommodate tile sysfs
+Rev5: Fix cosmetic review comments
 
-This patch series is the IGT for testing checksum_region, and this 
-particular patch adds the structs in drm_mode.h for IGT userspace to 
-test checksum_region.
+Riana Tauro (3):
+  tests/xe: Add basic idle residency test
+  tests/xe: Validate GT is in C6 on idle
+  xe-fast-feedback.testlist: Add gt-c6-on-idle to BAT
 
-I think I've already collected all the changes to drm_mode.h into this 
-patch. Do you want me to separate this patch into a new patch series?
+ tests/intel-ci/xe-fast-feedback.testlist |   1 +
+ tests/meson.build                        |   1 +
+ tests/xe/xe_pm_residency.c               | 123 +++++++++++++++++++++++
+ 3 files changed, 125 insertions(+)
+ create mode 100644 tests/xe/xe_pm_residency.c
 
-
-Thanks,
-
-Alan
-
-> Regards,
-> Kamil
->
->> ---
->>   include/drm-uapi/drm_mode.h | 42 +++++++++++++++++++++++++++++++++++++
->>   1 file changed, 42 insertions(+)
->>
->> diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
->> index e4a2570a6..dec073921 100644
->> --- a/include/drm-uapi/drm_mode.h
->> +++ b/include/drm-uapi/drm_mode.h
->> @@ -1209,6 +1209,48 @@ struct drm_mode_rect {
->>   	__s32 y2;
->>   };
->>   
->> +/**
->> + * struct drm_checksum_region - The enablement and region of checksum_region
->> + * @x_start: Horizontal starting coordinate of the region.
->> + * @y_start: Vertical starting coordinate of the region.
->> + * @x_end: Horizontal ending coordinate of the region.
->> + * @y_end: Vertical ending coordinate of the region.
->> + * @checksum_region_enable: To enable or disable checksum_region.
->> + *
->> + * Userspace uses this structure to configure the region and enablement for
->> + * checksum_region. Userspace should not submit a region out of the displayable
->> + * region because there is nothing to display and need protection.
->> + */
->> +struct drm_checksum_region {
->> +        __u32 x_start;
->> +        __u32 y_start;
->> +        __u32 x_end;
->> +        __u32 y_end;
->> +        __u8 checksum_region_enable;
->> +        __u8 pad[7];
->> +};
->> +
->> +/**
->> + * struct drm_checksum_crc - The CRC value of the corresponding checksum region.
->> + * @crc_r: CRC value of red color.
->> + * @crc_g: CRC value of green color.
->> + * @crc_b: CRC value of blue color.
->> + * @frame_count: a referenced frame count to indicate which frame the CRC values
->> + *  are generated at.
->> + *
->> + * Userspace uses this structure to retrieve the CRC values of the current
->> + * checksum region. @frame_count will be reset once a new region is updated or
->> + * it reaches a maximum value. Currently these CRC values are designed to
->> + * be validated with pre-saved CRC values, so userspace doesn't need to concern
->> + * about the algorithm used to compute the CRC.
->> + */
->> +struct drm_checksum_crc {
->> +        __u32 crc_r;
->> +        __u32 crc_g;
->> +        __u32 crc_b;
->> +        __u32 frame_count;
->> +};
->> +
->>   #if defined(__cplusplus)
->>   }
->>   #endif
->> -- 
->> 2.34.1
->>
+-- 
+2.40.0
