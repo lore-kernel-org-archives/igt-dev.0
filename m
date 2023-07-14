@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 72BD710E8A2
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 14:43:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DE8610E8B0
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 14:43:05 +0000 (UTC)
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 14 Jul 2023 15:42:33 +0100
-Message-ID: <20230714144238.573403-2-matthew.auld@intel.com>
+Date: Fri, 14 Jul 2023 15:42:35 +0100
+Message-ID: <20230714144238.573403-4-matthew.auld@intel.com>
 In-Reply-To: <20230714144238.573403-1-matthew.auld@intel.com>
 References: <20230714144238.573403-1-matthew.auld@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 1/6] xe: sync small-bar uapi
+Subject: [igt-dev] [PATCH i-g-t v3 3/6] lib/xe: handle small-bar systems
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,153 +23,92 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need a couple new fields for the region query and the new flag to
-ensure the buffer is CPU accessible.
-
-make headers_install at fcd32328261c ("drm/xe/uapi: add the userspace
-bits for small-bar")
+The spinner stuff wants to use mmap. The fb related stuff might want to
+CPU access the buffer, so just always ask for it. And the batch buffer
+stuff is pretty much always going to need to CPU access the buffer.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 78 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 69 insertions(+), 9 deletions(-)
+ lib/igt_draw.c          | 2 +-
+ lib/igt_fb.c            | 2 +-
+ lib/intel_batchbuffer.c | 4 ++--
+ lib/xe/xe_spin.c        | 6 ++++--
+ 4 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 432bd87ca..02419c1d5 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -29,7 +29,7 @@ extern "C" {
-  * redefine the interface more easily than an ever growing struct of
-  * increasing complexity, and for large parts of that interface to be
-  * entirely optional. The downside is more pointer chasing; chasing across
-- * the __user boundary with pointers encapsulated inside u64.
-+ * the boundary with pointers encapsulated inside u64.
-  *
-  * Example chaining:
-  *
-@@ -180,8 +180,37 @@ struct drm_xe_query_mem_region {
- 	 * zero.
- 	 */
- 	__u64 used;
-+	/*
-+	 * @cpu_visible_size: How much of this region can be CPU
-+	 * accessed, in bytes.
-+	 *
-+	 * This will always be <= @total_size, and the remainder (if
-+	 * any) will not be CPU accessible. If the CPU accessible part
-+	 * is smaller than @total_size then this is referred to as a
-+	 * small BAR system.
-+	 *
-+	 * On systems without small BAR (full BAR), the probed_size will
-+	 * always equal the @total_size, since all of it will be CPU
-+	 * accessible.
-+	 *
-+	 * Note this is only tracked for XE_MEM_REGION_CLASS_VRAM
-+	 * regions (for other types the value here will always equal
-+	 * zero).
-+	 */
-+	__u64 cpu_visible_size;
-+	/**
-+	 * @cpu_visible_used: Estimate of CPU visible memory used, in
-+	 * bytes.
-+	 *
-+	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
-+	 * accounting. Without this the value here will always equal
-+	 * zero.  Note this is only currently tracked for
-+	 * XE_MEM_REGION_CLASS_VRAM regions (for other types the value
-+	 * here will always be zero).
-+	 */
-+	__u64 cpu_visible_used;
- 	/** @reserved: MBZ */
--	__u64 reserved[8];
-+	__u64 reserved[6];
- };
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 1f814bfc8..13b90702c 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -794,7 +794,7 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+ 	else
+ 		tmp.handle = xe_bo_create_flags(fd, 0,
+ 						ALIGN(tmp.size, xe_get_default_alignment(fd)),
+-						vram_if_possible(fd, 0));
++						visible_vram_if_possible(fd, 0));
  
- /**
-@@ -242,11 +271,13 @@ struct drm_xe_query_gts {
- 	/** @pad: MBZ */
- 	__u32 pad;
+ 	tmp.stride = rect->w * pixel_size;
+ 	tmp.bpp = buf->bpp;
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 1814e8db1..17738d7f1 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -1194,7 +1194,7 @@ static int create_bo_for_fb(struct igt_fb *fb, bool prefer_sysmem)
+ 			igt_assert(err == 0 || err == -EOPNOTSUPP);
+ 		} else if (is_xe_device(fd)) {
+ 			fb->gem_handle = xe_bo_create_flags(fd, 0, fb->size,
+-							vram_if_possible(fd, 0));
++							visible_vram_if_possible(fd, 0));
+ 		} else if (is_vc4_device(fd)) {
+ 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
  
--	/*
-+	/**
-+	 * @gts: The GTs returned for this device
-+	 *
-+	 * TODO: convert drm_xe_query_gt to proper kernel-doc.
- 	 * TODO: Perhaps info about every mem region relative to this GT? e.g.
- 	 * bandwidth between this GT and remote region?
- 	 */
--
- 	struct drm_xe_query_gt {
- #define XE_QUERY_GT_TYPE_MAIN		0
- #define XE_QUERY_GT_TYPE_REMOTE		1
-@@ -381,6 +412,22 @@ struct drm_xe_gem_create {
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 0408d62ba..163d39d6b 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -943,7 +943,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
  
- #define XE_GEM_CREATE_FLAG_DEFER_BACKING	(0x1 << 24)
- #define XE_GEM_CREATE_FLAG_SCANOUT		(0x1 << 25)
-+/*
-+ * When using VRAM as a possible placement, ensure that the corresponding VRAM
-+ * allocation will always use the CPU accessible part of VRAM. This is important
-+ * for small-bar systems (on full-bar systems this gets turned into a noop).
-+ *
-+ * Note: System memory can be used as an extra placement if the kernel should
-+ * spill the allocation to system memory, if space can't be made available in
-+ * the CPU accessible part of VRAM (giving the same behaviour as the i915
-+ * interface, see I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS).
-+ *
-+ * Note: For clear-color CCS surfaces the kernel needs to read the clear-color
-+ * value stored in the buffer, and on discrete platforms we need to use VRAM for
-+ * display surfaces, therefore the kernel requires setting this flag for such
-+ * objects, otherwise an error is thrown on small-bar systems.
-+ */
-+#define XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM	(0x1 << 26)
- 	/**
- 	 * @flags: Flags, currently a mask of memory instances of where BO can
- 	 * be placed
-@@ -799,7 +846,7 @@ struct drm_xe_exec {
- 	/** @extensions: Pointer to the first extension struct, if any */
- 	__u64 extensions;
+ 		ibb->alignment = xe_get_default_alignment(fd);
+ 		size = ALIGN(size, ibb->alignment);
+-		ibb->handle = xe_bo_create_flags(fd, 0, size, vram_if_possible(fd, 0));
++		ibb->handle = xe_bo_create_flags(fd, 0, size, visible_vram_if_possible(fd, 0));
  
--	/** @vm_id: VM ID to run batch buffer in */
-+	/** @engine_id: Engine ID for the batch buffer */
- 	__u32 engine_id;
+ 		/* Limit to 48-bit due to MI_* address limitation */
+ 		ibb->gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
+@@ -1399,7 +1399,7 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
+ 		ibb->handle = gem_create(ibb->fd, ibb->size);
+ 	else
+ 		ibb->handle = xe_bo_create_flags(ibb->fd, 0, ibb->size,
+-						 vram_if_possible(ibb->fd, 0));
++						 visible_vram_if_possible(ibb->fd, 0));
  
- 	/** @num_syncs: Amount of struct drm_xe_sync in array. */
-@@ -852,8 +899,9 @@ struct drm_xe_mmio {
-  * struct drm_xe_wait_user_fence - wait user fence
-  *
-  * Wait on user fence, XE will wakeup on every HW engine interrupt in the
-- * instances list and check if user fence is complete:
-- * (*addr & MASK) OP (VALUE & MASK)
-+ * instances list and check if user fence is complete::
-+ *
-+ *	(*addr & MASK) OP (VALUE & MASK)
-  *
-  * Returns to user on user fence completion or timeout.
-  */
-@@ -901,8 +949,20 @@ struct drm_xe_wait_user_fence {
- #define DRM_XE_UFENCE_WAIT_U64		0xffffffffffffffffu
- 	/** @mask: comparison mask */
- 	__u64 mask;
--
--	/** @timeout: how long to wait before bailing, value in jiffies */
-+	/**
-+	 * @timeout: how long to wait before bailing, value in nanoseconds.
-+	 * Without DRM_XE_UFENCE_WAIT_ABSTIME flag set (relative timeout)
-+	 * it contains timeout expressed in nanoseconds to wait (fence will
-+	 * expire at now() + timeout).
-+	 * When DRM_XE_UFENCE_WAIT_ABSTIME flat is set (absolute timeout) wait
-+	 * will end at timeout (uses system MONOTONIC_CLOCK).
-+	 * Passing negative timeout leads to neverending wait.
-+	 *
-+	 * On relative timeout this value is updated with timeout left
-+	 * (for restarting the call in case of signal delivery).
-+	 * On absolute timeout this value stays intact (restarted call still
-+	 * expire at the same point of time).
-+	 */
- 	__s64 timeout;
+ 	/* Reacquire offset for RELOC and SIMPLE */
+ 	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE ||
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 529b76844..e799fcfc5 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -126,7 +126,8 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
+ 			spin->engine = xe_engine_create_class(fd, spin->vm, DRM_XE_ENGINE_CLASS_COPY);
+ 	}
  
- 	/**
+-	spin->handle = xe_bo_create(fd, 0, spin->vm, bo_size);
++	spin->handle = xe_bo_create_flags(fd, spin->vm, bo_size,
++					  visible_vram_if_possible(fd, 0));
+ 	xe_spin = xe_bo_map(fd, spin->handle, bo_size);
+ 	addr = intel_allocator_alloc_with_strategy(ahnd, spin->handle, bo_size, 0, ALLOC_STRATEGY_LOW_TO_HIGH);
+ 	xe_vm_bind_sync(fd, spin->vm, spin->handle, 0, addr, bo_size);
+@@ -201,7 +202,8 @@ void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 
+-	bo = xe_bo_create(fd, hwe->gt_id, vm, bo_size);
++	bo = xe_bo_create_flags(fd, vm, bo_size,
++				visible_vram_if_possible(fd, hwe->gt_id));
+ 	spin = xe_bo_map(fd, bo, 0x1000);
+ 
+ 	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
 -- 
 2.41.0
