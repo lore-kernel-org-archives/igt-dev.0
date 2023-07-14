@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D455910E8C0
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 16:30:38 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Auld,
- Matthew" <matthew.auld@intel.com>
-Date: Fri, 14 Jul 2023 16:30:03 +0000
-Message-ID: <0497ba6321eb315e8f32abefde491bdda8fad81c.camel@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BF1E10E10E
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 16:55:36 +0000 (UTC)
+Message-ID: <17293e9d-cb0e-d47a-5a21-9614715dfb40@intel.com>
+Date: Fri, 14 Jul 2023 17:55:31 +0100
+MIME-Version: 1.0
+Content-Language: en-GB
+To: "Souza, Jose" <jose.souza@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 References: <20230714144238.573403-1-matthew.auld@intel.com>
  <20230714144238.573403-3-matthew.auld@intel.com>
-In-Reply-To: <20230714144238.573403-3-matthew.auld@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <195A77A4D0747F44900DFE06FC22C2A7@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+ <0497ba6321eb315e8f32abefde491bdda8fad81c.camel@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <0497ba6321eb315e8f32abefde491bdda8fad81c.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Subject: Re: [igt-dev] [PATCH i-g-t v3 2/6] lib/xe: add visible vram helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,115 +27,198 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIzLTA3LTE0IGF0IDE1OjQyICswMTAwLCBNYXR0aGV3IEF1bGQgd3JvdGU6DQo+
-IEFkZCBoZWxwZXJzIGZvciBvYmplY3QgY3JlYXRpb24gYW5kIHF1ZXJ5aW5nIHRoZSBjcHVfdmlz
-aWJsZSByZWxhdGVkIGJpdHMuDQo+IA0KPiB2MjogTWFrZSBpdCBiYWNrd2FyZHMgY29tcGF0IHdp
-dGggb2xkZXIga2VybmVscw0KPiANCj4gU2lnbmVkLW9mZi1ieTogTWF0dGhldyBBdWxkIDxtYXR0
-aGV3LmF1bGRAaW50ZWwuY29tPg0KPiBDYzogR3dhbi1neWVvbmcgTXVuIDxnd2FuLWd5ZW9uZy5t
-dW5AaW50ZWwuY29tPg0KPiBSZXZpZXdlZC1ieTogR3dhbi1neWVvbmcgTXVuIDxnd2FuLWd5ZW9u
-Zy5tdW5AaW50ZWwuY29tPg0KPiAtLS0NCj4gIGxpYi94ZS94ZV9xdWVyeS5jIHwgODYgKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0NCj4gIGxpYi94ZS94ZV9x
-dWVyeS5oIHwgIDYgKysrKw0KPiAgMiBmaWxlcyBjaGFuZ2VkLCA5MSBpbnNlcnRpb25zKCspLCAx
-IGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL3hlL3hlX3F1ZXJ5LmMgYi9saWIv
-eGUveGVfcXVlcnkuYw0KPiBpbmRleCBmNTM1YWQ4NTMuLjU0MTJmYmViNSAxMDA2NDQNCj4gLS0t
-IGEvbGliL3hlL3hlX3F1ZXJ5LmMNCj4gKysrIGIvbGliL3hlL3hlX3F1ZXJ5LmMNCj4gQEAgLTE0
-MCw2ICsxNDAsMTcgQEAgc3RhdGljIHVpbnQ2NF90IGd0X3ZyYW1fc2l6ZShjb25zdCBzdHJ1Y3Qg
-ZHJtX3hlX3F1ZXJ5X21lbV91c2FnZSAqbWVtX3VzYWdlLA0KPiAgCXJldHVybiAwOw0KPiAgfQ0K
-PiAgDQo+ICtzdGF0aWMgdWludDY0X3QgZ3RfdmlzaWJsZV92cmFtX3NpemUoY29uc3Qgc3RydWN0
-IGRybV94ZV9xdWVyeV9tZW1fdXNhZ2UgKm1lbV91c2FnZSwNCj4gKwkJCQkgICAgIGNvbnN0IHN0
-cnVjdCBkcm1feGVfcXVlcnlfZ3RzICpndHMsIGludCBndCkNCj4gK3sNCj4gKwlpbnQgcmVnaW9u
-X2lkeCA9IGZmcyhuYXRpdmVfcmVnaW9uX2Zvcl9ndChndHMsIGd0KSkgLSAxOw0KPiArDQo+ICsJ
-aWYgKFhFX0lTX0NMQVNTX1ZSQU0oJm1lbV91c2FnZS0+cmVnaW9uc1tyZWdpb25faWR4XSkpDQo+
-ICsJCXJldHVybiBtZW1fdXNhZ2UtPnJlZ2lvbnNbcmVnaW9uX2lkeF0uY3B1X3Zpc2libGVfc2l6
-ZTsNCj4gKw0KPiArCXJldHVybiAwOw0KPiArfQ0KPiArDQo+ICBzdGF0aWMgYm9vbCBfX21lbV9o
-YXNfdnJhbShzdHJ1Y3QgZHJtX3hlX3F1ZXJ5X21lbV91c2FnZSAqbWVtX3VzYWdlKQ0KPiAgew0K
-PiAgCWZvciAoaW50IGkgPSAwOyBpIDwgbWVtX3VzYWdlLT5udW1fcmVnaW9uczsgaSsrKQ0KPiBA
-QCAtMjQ2LDkgKzI1NywxNCBAQCBzdHJ1Y3QgeGVfZGV2aWNlICp4ZV9kZXZpY2VfZ2V0KGludCBm
-ZCkNCj4gIAl4ZV9kZXYtPmh3X2VuZ2luZXMgPSB4ZV9xdWVyeV9lbmdpbmVzX25ldyhmZCwgJnhl
-X2Rldi0+bnVtYmVyX2h3X2VuZ2luZXMpOw0KPiAgCXhlX2Rldi0+bWVtX3VzYWdlID0geGVfcXVl
-cnlfbWVtX3VzYWdlX25ldyhmZCk7DQo+ICAJeGVfZGV2LT52cmFtX3NpemUgPSBjYWxsb2MoeGVf
-ZGV2LT5udW1iZXJfZ3QsIHNpemVvZigqeGVfZGV2LT52cmFtX3NpemUpKTsNCj4gLQlmb3IgKGlu
-dCBndCA9IDA7IGd0IDwgeGVfZGV2LT5udW1iZXJfZ3Q7IGd0KyspDQo+ICsJeGVfZGV2LT52aXNp
-YmxlX3ZyYW1fc2l6ZSA9IGNhbGxvYyh4ZV9kZXYtPm51bWJlcl9ndCwgc2l6ZW9mKCp4ZV9kZXYt
-PnZpc2libGVfdnJhbV9zaXplKSk7DQo+ICsJZm9yIChpbnQgZ3QgPSAwOyBndCA8IHhlX2Rldi0+
-bnVtYmVyX2d0OyBndCsrKSB7DQo+ICAJCXhlX2Rldi0+dnJhbV9zaXplW2d0XSA9IGd0X3ZyYW1f
-c2l6ZSh4ZV9kZXYtPm1lbV91c2FnZSwNCj4gIAkJCQkJCSAgICAgeGVfZGV2LT5ndHMsIGd0KTsN
-Cj4gKwkJeGVfZGV2LT52aXNpYmxlX3ZyYW1fc2l6ZVtndF0gPQ0KPiArCQkJZ3RfdmlzaWJsZV92
-cmFtX3NpemUoeGVfZGV2LT5tZW1fdXNhZ2UsDQo+ICsJCQkJCSAgICAgeGVfZGV2LT5ndHMsIGd0
-KTsNCj4gKwl9DQo+ICAJeGVfZGV2LT5kZWZhdWx0X2FsaWdubWVudCA9IF9fbWVtX2RlZmF1bHRf
-YWxpZ25tZW50KHhlX2Rldi0+bWVtX3VzYWdlKTsNCj4gIAl4ZV9kZXYtPmhhc192cmFtID0gX19t
-ZW1faGFzX3ZyYW0oeGVfZGV2LT5tZW1fdXNhZ2UpOw0KPiAgDQo+IEBAIC0zODMsNiArMzk5LDMz
-IEBAIHVpbnQ2NF90IHZyYW1fbWVtb3J5KGludCBmZCwgaW50IGd0KQ0KPiAgCXJldHVybiB4ZV9o
-YXNfdnJhbShmZCkgPyBuYXRpdmVfcmVnaW9uX2Zvcl9ndCh4ZV9kZXYtPmd0cywgZ3QpIDogMDsN
-Cj4gIH0NCj4gIA0KPiArc3RhdGljIHVpbnQ2NF90IF9feGVfdmlzaWJsZV92cmFtX3NpemUoaW50
-IGZkLCBpbnQgZ3QpDQo+ICt7DQo+ICsJc3RydWN0IHhlX2RldmljZSAqeGVfZGV2Ow0KPiArDQo+
-ICsJeGVfZGV2ID0gZmluZF9pbl9jYWNoZShmZCk7DQo+ICsJaWd0X2Fzc2VydCh4ZV9kZXYpOw0K
-PiArDQo+ICsJcmV0dXJuIHhlX2Rldi0+dmlzaWJsZV92cmFtX3NpemVbZ3RdOw0KPiArfQ0KPiAr
-DQo+ICsvKioNCj4gKyAqIHZpc2libGVfdnJhbV9tZW1vcnk6DQo+ICsgKiBAZmQ6IHhlIGRldmlj
-ZSBmZA0KPiArICogQGd0OiBndCBpZA0KPiArICoNCj4gKyAqIFJldHVybnMgdnJhbSBtZW1vcnkg
-Yml0bWFzayBmb3IgeGUgZGV2aWNlIEBmZCBhbmQgQGd0IGlkLCB3aXRoDQo+ICsgKiBYRV9HRU1f
-Q1JFQVRFX0ZMQUdfTkVFRFNfVklTSUJMRV9WUkFNIGFsc28gc2V0LCB0byBlbnN1cmUgdGhhdCBD
-UFUgYWNjZXNzIGlzDQo+ICsgKiBwb3NzaWJsZS4NCj4gKyAqLw0KPiArdWludDY0X3QgdmlzaWJs
-ZV92cmFtX21lbW9yeShpbnQgZmQsIGludCBndCkNCj4gK3sNCj4gKwlpZiAoX194ZV92aXNpYmxl
-X3ZyYW1fc2l6ZShmZCwgZ3QpKQ0KPiArCQlyZXR1cm4gdnJhbV9tZW1vcnkoZmQsIGd0KSB8IFhF
-X0dFTV9DUkVBVEVfRkxBR19ORUVEU19WSVNJQkxFX1ZSQU07DQo+ICsJZWxzZQ0KPiArCQlyZXR1
-cm4gdnJhbV9tZW1vcnkoZmQsIGd0KTsgLyogb2xkZXIga2VybmVsICovDQoNCldlIGRvbid0IG5l
-ZWQgdG8gbWFpbnRhaW4gYW55IGNvbXBhYmlsaXR5IHdpdGggb2xkZXIgWGUga2VybmVscyBmb3Ig
-bm93Li4uDQoNCj4gK30NCj4gKw0KPiAgLyoqDQo+ICAgKiB2cmFtX2lmX3Bvc3NpYmxlOg0KPiAg
-ICogQGZkOiB4ZSBkZXZpY2UgZmQNCj4gQEAgLTM5Niw2ICs0MzksMjggQEAgdWludDY0X3QgdnJh
-bV9pZl9wb3NzaWJsZShpbnQgZmQsIGludCBndCkNCj4gIAlyZXR1cm4gdnJhbV9tZW1vcnkoZmQs
-IGd0KSA/OiBzeXN0ZW1fbWVtb3J5KGZkKTsNCj4gIH0NCj4gIA0KPiArLyoqDQo+ICsgKiB2aXNp
-YmxlX3ZyYW1faWZfcG9zc2libGU6DQo+ICsgKiBAZmQ6IHhlIGRldmljZSBmZA0KPiArICogQGd0
-OiBndCBpZA0KPiArICoNCj4gKyAqIFJldHVybnMgdnJhbSBtZW1vcnkgYml0bWFzayBmb3IgeGUg
-ZGV2aWNlIEBmZCBhbmQgQGd0IGlkIG9yIHN5c3RlbSBtZW1vcnkgaWYNCj4gKyAqIHRoZXJlJ3Mg
-bm8gdnJhbSBtZW1vcnkgYXZhaWxhYmxlIGZvciBAZ3QuIEFsc28gYXR0YWNoZXMgdGhlDQo+ICsg
-KiBYRV9HRU1fQ1JFQVRFX0ZMQUdfTkVFRFNfVklTSUJMRV9WUkFNIHRvIGVuc3VyZSB0aGF0IENQ
-VSBhY2Nlc3MgaXMgcG9zc2libGUNCj4gKyAqIHdoZW4gdXNpbmcgdnJhbS4NCj4gKyAqLw0KPiAr
-dWludDY0X3QgdmlzaWJsZV92cmFtX2lmX3Bvc3NpYmxlKGludCBmZCwgaW50IGd0KQ0KPiArew0K
-PiArCXVpbnQ2NF90IHJlZ2lvbnMgPSBhbGxfbWVtb3J5X3JlZ2lvbnMoZmQpOw0KPiArCXVpbnQ2
-NF90IHN5c3RlbV9tZW1vcnkgPSByZWdpb25zICYgMHgxOw0KPiArCXVpbnQ2NF90IHZyYW0gPSBy
-ZWdpb25zICYgKDB4MiA8PCBndCk7DQo+ICsNCj4gKwlpZiAoX194ZV92aXNpYmxlX3ZyYW1fc2l6
-ZShmZCwgZ3QpKQ0KPiArCQlyZXR1cm4gdnJhbSA/IHZyYW0gfCBYRV9HRU1fQ1JFQVRFX0ZMQUdf
-TkVFRFNfVklTSUJMRV9WUkFNIDogc3lzdGVtX21lbW9yeTsNCj4gKwllbHNlDQo+ICsJCXJldHVy
-biB2cmFtID8gdnJhbSA6IHN5c3RlbV9tZW1vcnk7IC8qIG9sZGVyIGtlcm5lbCAqLw0KPiArfQ0K
-DQpzbyB0aGlzIGNhbiBiZSBkcm9wcGVkIGFuZCBjdXJyZW50IGNhbGxlcnMgc2hvdWxkIHVzZSB2
-aXNpYmxlX3ZyYW1fbWVtb3J5KCkuDQoNCj4gKw0KPiAgLyoqDQo+ICAgKiB4ZV9od19lbmdpbmVz
-Og0KPiAgICogQGZkOiB4ZSBkZXZpY2UgZmQNCj4gQEAgLTUzNiw2ICs2MDEsMjQgQEAgdWludDY0
-X3QgeGVfdnJhbV9zaXplKGludCBmZCwgaW50IGd0KQ0KPiAgCXJldHVybiB4ZV9kZXYtPnZyYW1f
-c2l6ZVtndF07DQo+ICB9DQo+ICANCj4gKy8qKg0KPiArICogeGVfdmlzaWJsZV92cmFtX3NpemU6
-DQo+ICsgKiBAZmQ6IHhlIGRldmljZSBmZA0KPiArICogQGd0OiBndA0KPiArICoNCj4gKyAqIFJl
-dHVybnMgc2l6ZSBvZiB2aXNpYmxlIHZyYW0gb2YgeGUgZGV2aWNlIEBmZC4NCj4gKyAqLw0KPiAr
-dWludDY0X3QgeGVfdmlzaWJsZV92cmFtX3NpemUoaW50IGZkLCBpbnQgZ3QpDQo+ICt7DQo+ICsJ
-dWludDY0X3QgdmlzaWJsZV9zaXplOw0KPiArDQo+ICsJdmlzaWJsZV9zaXplID0gX194ZV92aXNp
-YmxlX3ZyYW1fc2l6ZShmZCwgZ3QpOw0KPiArCWlmICghdmlzaWJsZV9zaXplKSAvKiBvbGRlciBr
-ZXJuZWwgKi8NCj4gKwkJdmlzaWJsZV9zaXplID0geGVfdnJhbV9zaXplKGZkLCBndCk7DQo+ICsN
-Cj4gKwlyZXR1cm4gdmlzaWJsZV9zaXplOw0KPiArfQ0KPiArDQo+ICAvKioNCj4gICAqIHhlX2dl
-dF9kZWZhdWx0X2FsaWdubWVudDoNCj4gICAqIEBmZDogeGUgZGV2aWNlIGZkDQo+IEBAIC01NTIs
-NiArNjM1LDcgQEAgeGVfZGV2X0ZOKHhlX2dldF9kZWZhdWx0X2FsaWdubWVudCwgZGVmYXVsdF9h
-bGlnbm1lbnQsIHVpbnQzMl90KTsNCj4gICAqLw0KPiAgeGVfZGV2X0ZOKHhlX3ZhX2JpdHMsIHZh
-X2JpdHMsIHVpbnQzMl90KTsNCj4gIA0KPiArDQo+ICAvKioNCj4gICAqIHhlX2Rldl9pZDoNCj4g
-ICAqIEBmZDogeGUgZGV2aWNlIGZkDQo+IGRpZmYgLS1naXQgYS9saWIveGUveGVfcXVlcnkuaCBi
-L2xpYi94ZS94ZV9xdWVyeS5oDQo+IGluZGV4IDY4Y2E1YTY4MC4uMWI3NGM1OGFiIDEwMDY0NA0K
-PiAtLS0gYS9saWIveGUveGVfcXVlcnkuaA0KPiArKysgYi9saWIveGUveGVfcXVlcnkuaA0KPiBA
-QCAtNDcsNiArNDcsOSBAQCBzdHJ1Y3QgeGVfZGV2aWNlIHsNCj4gIAkvKiogQHZyYW1fc2l6ZTog
-YXJyYXkgb2YgdnJhbSBzaXplcyBmb3IgYWxsIGd0cyAqLw0KPiAgCXVpbnQ2NF90ICp2cmFtX3Np
-emU7DQo+ICANCj4gKwkvKiogQHZpc2libGVfdnJhbV9zaXplOiBhcnJheSBvZiB2aXNpYmxlIHZy
-YW0gc2l6ZXMgZm9yIGFsbCBndHMgKi8NCj4gKwl1aW50NjRfdCAqdmlzaWJsZV92cmFtX3NpemU7
-DQo+ICsNCj4gIAkvKiogQGRlZmF1bHRfYWxpZ25tZW50OiBzYWZlIGFsaWdubWVudCByZWdhcmRs
-ZXNzIHJlZ2lvbiBsb2NhdGlvbiAqLw0KPiAgCXVpbnQzMl90IGRlZmF1bHRfYWxpZ25tZW50Ow0K
-PiAgDQo+IEBAIC04MCw3ICs4Myw5IEBAIHVuc2lnbmVkIGludCB4ZV9udW1iZXJfZ3QoaW50IGZk
-KTsNCj4gIHVpbnQ2NF90IGFsbF9tZW1vcnlfcmVnaW9ucyhpbnQgZmQpOw0KPiAgdWludDY0X3Qg
-c3lzdGVtX21lbW9yeShpbnQgZmQpOw0KPiAgdWludDY0X3QgdnJhbV9tZW1vcnkoaW50IGZkLCBp
-bnQgZ3QpOw0KPiArdWludDY0X3QgdmlzaWJsZV92cmFtX21lbW9yeShpbnQgZmQsIGludCBndCk7
-DQo+ICB1aW50NjRfdCB2cmFtX2lmX3Bvc3NpYmxlKGludCBmZCwgaW50IGd0KTsNCj4gK3VpbnQ2
-NF90IHZpc2libGVfdnJhbV9pZl9wb3NzaWJsZShpbnQgZmQsIGludCBndCk7DQo+ICBzdHJ1Y3Qg
-ZHJtX3hlX2VuZ2luZV9jbGFzc19pbnN0YW5jZSAqeGVfaHdfZW5naW5lcyhpbnQgZmQpOw0KPiAg
-c3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKnhlX2h3X2VuZ2luZShpbnQgZmQs
-IGludCBpZHgpOw0KPiAgc3RydWN0IGRybV94ZV9xdWVyeV9tZW1fcmVnaW9uICp4ZV9tZW1fcmVn
-aW9uKGludCBmZCwgdWludDY0X3QgcmVnaW9uKTsNCj4gQEAgLTkxLDYgKzk2LDcgQEAgc3RydWN0
-IGRybV94ZV9xdWVyeV9jb25maWcgKnhlX2NvbmZpZyhpbnQgZmQpOw0KPiAgdW5zaWduZWQgaW50
-IHhlX251bWJlcl9od19lbmdpbmVzKGludCBmZCk7DQo+ICBib29sIHhlX2hhc192cmFtKGludCBm
-ZCk7DQo+ICB1aW50NjRfdCB4ZV92cmFtX3NpemUoaW50IGZkLCBpbnQgZ3QpOw0KPiArdWludDY0
-X3QgeGVfdmlzaWJsZV92cmFtX3NpemUoaW50IGZkLCBpbnQgZ3QpOw0KPiAgdWludDMyX3QgeGVf
-Z2V0X2RlZmF1bHRfYWxpZ25tZW50KGludCBmZCk7DQo+ICB1aW50MzJfdCB4ZV92YV9iaXRzKGlu
-dCBmZCk7DQo+ICB1aW50MTZfdCB4ZV9kZXZfaWQoaW50IGZkKTsNCg0K
+On 14/07/2023 17:30, Souza, Jose wrote:
+> On Fri, 2023-07-14 at 15:42 +0100, Matthew Auld wrote:
+>> Add helpers for object creation and querying the cpu_visible related bits.
+>>
+>> v2: Make it backwards compat with older kernels
+>>
+>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+>> Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+>> ---
+>>   lib/xe/xe_query.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++-
+>>   lib/xe/xe_query.h |  6 ++++
+>>   2 files changed, 91 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+>> index f535ad853..5412fbeb5 100644
+>> --- a/lib/xe/xe_query.c
+>> +++ b/lib/xe/xe_query.c
+>> @@ -140,6 +140,17 @@ static uint64_t gt_vram_size(const struct drm_xe_query_mem_usage *mem_usage,
+>>   	return 0;
+>>   }
+>>   
+>> +static uint64_t gt_visible_vram_size(const struct drm_xe_query_mem_usage *mem_usage,
+>> +				     const struct drm_xe_query_gts *gts, int gt)
+>> +{
+>> +	int region_idx = ffs(native_region_for_gt(gts, gt)) - 1;
+>> +
+>> +	if (XE_IS_CLASS_VRAM(&mem_usage->regions[region_idx]))
+>> +		return mem_usage->regions[region_idx].cpu_visible_size;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>   static bool __mem_has_vram(struct drm_xe_query_mem_usage *mem_usage)
+>>   {
+>>   	for (int i = 0; i < mem_usage->num_regions; i++)
+>> @@ -246,9 +257,14 @@ struct xe_device *xe_device_get(int fd)
+>>   	xe_dev->hw_engines = xe_query_engines_new(fd, &xe_dev->number_hw_engines);
+>>   	xe_dev->mem_usage = xe_query_mem_usage_new(fd);
+>>   	xe_dev->vram_size = calloc(xe_dev->number_gt, sizeof(*xe_dev->vram_size));
+>> -	for (int gt = 0; gt < xe_dev->number_gt; gt++)
+>> +	xe_dev->visible_vram_size = calloc(xe_dev->number_gt, sizeof(*xe_dev->visible_vram_size));
+>> +	for (int gt = 0; gt < xe_dev->number_gt; gt++) {
+>>   		xe_dev->vram_size[gt] = gt_vram_size(xe_dev->mem_usage,
+>>   						     xe_dev->gts, gt);
+>> +		xe_dev->visible_vram_size[gt] =
+>> +			gt_visible_vram_size(xe_dev->mem_usage,
+>> +					     xe_dev->gts, gt);
+>> +	}
+>>   	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_usage);
+>>   	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_usage);
+>>   
+>> @@ -383,6 +399,33 @@ uint64_t vram_memory(int fd, int gt)
+>>   	return xe_has_vram(fd) ? native_region_for_gt(xe_dev->gts, gt) : 0;
+>>   }
+>>   
+>> +static uint64_t __xe_visible_vram_size(int fd, int gt)
+>> +{
+>> +	struct xe_device *xe_dev;
+>> +
+>> +	xe_dev = find_in_cache(fd);
+>> +	igt_assert(xe_dev);
+>> +
+>> +	return xe_dev->visible_vram_size[gt];
+>> +}
+>> +
+>> +/**
+>> + * visible_vram_memory:
+>> + * @fd: xe device fd
+>> + * @gt: gt id
+>> + *
+>> + * Returns vram memory bitmask for xe device @fd and @gt id, with
+>> + * XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM also set, to ensure that CPU access is
+>> + * possible.
+>> + */
+>> +uint64_t visible_vram_memory(int fd, int gt)
+>> +{
+>> +	if (__xe_visible_vram_size(fd, gt))
+>> +		return vram_memory(fd, gt) | XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+>> +	else
+>> +		return vram_memory(fd, gt); /* older kernel */
+> 
+> We don't need to maintain any compability with older Xe kernels for now...
+> 
+>> +}
+>> +
+>>   /**
+>>    * vram_if_possible:
+>>    * @fd: xe device fd
+>> @@ -396,6 +439,28 @@ uint64_t vram_if_possible(int fd, int gt)
+>>   	return vram_memory(fd, gt) ?: system_memory(fd);
+>>   }
+>>   
+>> +/**
+>> + * visible_vram_if_possible:
+>> + * @fd: xe device fd
+>> + * @gt: gt id
+>> + *
+>> + * Returns vram memory bitmask for xe device @fd and @gt id or system memory if
+>> + * there's no vram memory available for @gt. Also attaches the
+>> + * XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM to ensure that CPU access is possible
+>> + * when using vram.
+>> + */
+>> +uint64_t visible_vram_if_possible(int fd, int gt)
+>> +{
+>> +	uint64_t regions = all_memory_regions(fd);
+>> +	uint64_t system_memory = regions & 0x1;
+>> +	uint64_t vram = regions & (0x2 << gt);
+>> +
+>> +	if (__xe_visible_vram_size(fd, gt))
+>> +		return vram ? vram | XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM : system_memory;
+>> +	else
+>> +		return vram ? vram : system_memory; /* older kernel */
+>> +}
+> 
+> so this can be dropped and current callers should use visible_vram_memory().
+
+Here I just wanted to keep it compatible so I could merge the IGT in any 
+order. Ideally I want to merge the IGT first and let that soak for a 
+couple of hours, and assuming there is no new breakage I can re-send the 
+kernel patches with a hack patch to force small-bar on some CI machine 
+to get pre-merge testing. Once that all passes I can merge the kernel 
+side. The above compatibility stuff can then be removed after.
+
+> 
+>> +
+>>   /**
+>>    * xe_hw_engines:
+>>    * @fd: xe device fd
+>> @@ -536,6 +601,24 @@ uint64_t xe_vram_size(int fd, int gt)
+>>   	return xe_dev->vram_size[gt];
+>>   }
+>>   
+>> +/**
+>> + * xe_visible_vram_size:
+>> + * @fd: xe device fd
+>> + * @gt: gt
+>> + *
+>> + * Returns size of visible vram of xe device @fd.
+>> + */
+>> +uint64_t xe_visible_vram_size(int fd, int gt)
+>> +{
+>> +	uint64_t visible_size;
+>> +
+>> +	visible_size = __xe_visible_vram_size(fd, gt);
+>> +	if (!visible_size) /* older kernel */
+>> +		visible_size = xe_vram_size(fd, gt);
+>> +
+>> +	return visible_size;
+>> +}
+>> +
+>>   /**
+>>    * xe_get_default_alignment:
+>>    * @fd: xe device fd
+>> @@ -552,6 +635,7 @@ xe_dev_FN(xe_get_default_alignment, default_alignment, uint32_t);
+>>    */
+>>   xe_dev_FN(xe_va_bits, va_bits, uint32_t);
+>>   
+>> +
+>>   /**
+>>    * xe_dev_id:
+>>    * @fd: xe device fd
+>> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+>> index 68ca5a680..1b74c58ab 100644
+>> --- a/lib/xe/xe_query.h
+>> +++ b/lib/xe/xe_query.h
+>> @@ -47,6 +47,9 @@ struct xe_device {
+>>   	/** @vram_size: array of vram sizes for all gts */
+>>   	uint64_t *vram_size;
+>>   
+>> +	/** @visible_vram_size: array of visible vram sizes for all gts */
+>> +	uint64_t *visible_vram_size;
+>> +
+>>   	/** @default_alignment: safe alignment regardless region location */
+>>   	uint32_t default_alignment;
+>>   
+>> @@ -80,7 +83,9 @@ unsigned int xe_number_gt(int fd);
+>>   uint64_t all_memory_regions(int fd);
+>>   uint64_t system_memory(int fd);
+>>   uint64_t vram_memory(int fd, int gt);
+>> +uint64_t visible_vram_memory(int fd, int gt);
+>>   uint64_t vram_if_possible(int fd, int gt);
+>> +uint64_t visible_vram_if_possible(int fd, int gt);
+>>   struct drm_xe_engine_class_instance *xe_hw_engines(int fd);
+>>   struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
+>>   struct drm_xe_query_mem_region *xe_mem_region(int fd, uint64_t region);
+>> @@ -91,6 +96,7 @@ struct drm_xe_query_config *xe_config(int fd);
+>>   unsigned int xe_number_hw_engines(int fd);
+>>   bool xe_has_vram(int fd);
+>>   uint64_t xe_vram_size(int fd, int gt);
+>> +uint64_t xe_visible_vram_size(int fd, int gt);
+>>   uint32_t xe_get_default_alignment(int fd);
+>>   uint32_t xe_va_bits(int fd);
+>>   uint16_t xe_dev_id(int fd);
+> 
