@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 725EB10E02E
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 09:37:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E897510E02E
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 09:37:49 +0000 (UTC)
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 14 Jul 2023 15:11:18 +0530
-Message-Id: <20230714094121.1446298-1-riana.tauro@intel.com>
+Date: Fri, 14 Jul 2023 15:11:19 +0530
+Message-Id: <20230714094121.1446298-2-riana.tauro@intel.com>
+In-Reply-To: <20230714094121.1446298-1-riana.tauro@intel.com>
+References: <20230714094121.1446298-1-riana.tauro@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 0/3] Test for gtidle properties
+Subject: [igt-dev] [PATCH i-g-t v4 1/3] tests/xe: Add basic idle residency
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,29 +25,167 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-1) Add basic idle residency test that validates residency over
-   a time interval is within the tolerance.
-
-2) Add a test to check if gt is in c6 when idle.
+This test validates idle residency measured over a time interval
+is within the tolerance.
 
 Patch for gtidle properties
 https://patchwork.freedesktop.org/series/119262/
 
-Rev2: Fix cosmetic review comments
-Rev3: Rebase
-Rev4: Add changes to accommodate tile sysfs
-Rev5: Fix cosmetic review comments
+v2:
+   - rename file to xe_pm_residency
+   - add kernel patch in commit message (Kamil)
 
-Riana Tauro (3):
-  tests/xe: Add basic idle residency test
-  tests/xe: Validate GT is in C6 on idle
-  xe-fast-feedback.testlist: Add gt-c6-on-idle to BAT
+v3:
+   - add igt test description (Anshuman)
 
- tests/intel-ci/xe-fast-feedback.testlist |   1 +
- tests/meson.build                        |   1 +
- tests/xe/xe_pm_residency.c               | 123 +++++++++++++++++++++++
- 3 files changed, 125 insertions(+)
+v4:
+   - fix cosmetic review comments
+   - replace assert with igt_assert_f (Anshuman)
+
+v5:
+   - use tile sysfs library functions
+
+v6:
+   - fix cosmetic review comments (Badal)
+
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+---
+ tests/meson.build          |   1 +
+ tests/xe/xe_pm_residency.c | 113 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 114 insertions(+)
  create mode 100644 tests/xe/xe_pm_residency.c
 
+diff --git a/tests/meson.build b/tests/meson.build
+index 3eddb2fb4..944a0941f 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -287,6 +287,7 @@ xe_progs = [
+ 	'xe_module_load',
+ 	'xe_noexec_ping_pong',
+ 	'xe_pm',
++	'xe_pm_residency',
+ 	'xe_prime_self_import',
+ 	'xe_query',
+ 	'xe_sysfs_tile',
+diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+new file mode 100644
+index 000000000..4fd374933
+--- /dev/null
++++ b/tests/xe/xe_pm_residency.c
+@@ -0,0 +1,113 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++/**
++ * TEST: Test gtidle properties
++ * Category: Software building block
++ * Sub-category: Power Management
++ * Functionality: GT C States
++ * Test category: functionality test
++ */
++
++#include "igt.h"
++#include "igt_sysfs.h"
++
++#include "xe/xe_query.h"
++
++#define SLEEP_DURATION 3000 /* in milliseconds */
++
++const double tolerance = 0.1;
++
++#define assert_within_epsilon(x, ref, tol) \
++	igt_assert_f((double)(x) <= (1.0 + (tol)) * (double)(ref) && \
++		     (double)(x) >= (1.0 - (tol)) * (double)(ref), \
++		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
++		     #x, #ref, (double)(x), \
++		     (tol) * 100.0, (tol) * 100.0, \
++		     (double)(ref))
++
++IGT_TEST_DESCRIPTION("Tests for gtidle properties");
++
++static unsigned int measured_usleep(unsigned int usec)
++{
++	struct timespec ts = { };
++	unsigned int slept;
++
++	slept = igt_nsec_elapsed(&ts);
++	igt_assert(slept == 0);
++	do {
++		usleep(usec - slept);
++		slept = igt_nsec_elapsed(&ts) / 1000;
++	} while (slept < usec);
++
++	return igt_nsec_elapsed(&ts) / 1000;
++}
++
++static bool is_gt_in_c6(int fd, int gt)
++{
++	char gt_c_state[16];
++	int gt_fd;
++
++	gt_fd = xe_sysfs_gt_open(fd, gt);
++	igt_assert(gt_fd >= 0);
++	igt_assert(igt_sysfs_scanf(gt_fd, "gtidle/idle_status", "%s", gt_c_state) == 1);
++	close(gt_fd);
++
++	return strcmp(gt_c_state, "gt-c6") == 0;
++}
++
++static unsigned long read_idle_residency(int fd, int gt)
++{
++	unsigned long residency = 0;
++	int gt_fd;
++
++	gt_fd = xe_sysfs_gt_open(fd, gt);
++	igt_assert(gt_fd >= 0);
++	igt_assert(igt_sysfs_scanf(gt_fd, "gtidle/idle_residency_ms", "%lu", &residency) == 1);
++	close(gt_fd);
++
++	return residency;
++}
++
++/**
++ * SUBTEST: idle-residency
++ * Description: basic residency test to validate idle residency
++ *		measured over a time interval is within the tolerance
++ * Run type: FULL
++ */
++static void test_idle_residency(int fd, int gt)
++{
++	unsigned long elapsed_ms, residency_start, residency_end;
++
++	igt_assert_f(igt_wait(is_gt_in_c6(fd, gt), 1000, 1), "GT not in C6\n");
++
++	residency_start = read_idle_residency(fd, gt);
++	elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
++	residency_end = read_idle_residency(fd, gt);
++
++	igt_info("Measured %lums of idle residency in %lums\n",
++		 residency_end - residency_start, elapsed_ms);
++
++	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
++}
++
++igt_main
++{
++	int fd, gt;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
++	}
++
++	igt_describe("Validate idle residency measured over a time interval is within the tolerance");
++	igt_subtest("idle-residency")
++		xe_for_each_gt(fd, gt)
++			test_idle_residency(fd, gt);
++
++	igt_fixture {
++		close(fd);
++	}
++}
 -- 
 2.40.0
