@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE6FD10E1B5
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 06:15:14 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2ACD010E7C6
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 06:19:33 +0000 (UTC)
 From: "B, Jeevan" <jeevan.b@intel.com>
 To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>
-Date: Fri, 14 Jul 2023 06:15:10 +0000
-Message-ID: <DM4PR11MB631264B5741A7807A631D1169034A@DM4PR11MB6312.namprd11.prod.outlook.com>
+Date: Fri, 14 Jul 2023 06:19:23 +0000
+Message-ID: <DM4PR11MB631264FD662C5388CF75181D9034A@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20230713091726.272816-1-kunal1.joshi@intel.com>
- <20230713091726.272816-2-kunal1.joshi@intel.com>
-In-Reply-To: <20230713091726.272816-2-kunal1.joshi@intel.com>
+ <20230713091726.272816-3-kunal1.joshi@intel.com>
+In-Reply-To: <20230713091726.272816-3-kunal1.joshi@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_chamelium: reset chamelium
- before starting autodiscovery
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/igt_chamelium: Added is_mapped
+ to track mapped ports
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,7 +28,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM=20
+LTGM.
 Reviewed-by: Jeevan B <jeevan.b@intel.com>
 
 > -----Original Message-----
@@ -37,37 +37,51 @@ Joshi
 > Sent: Thursday, July 13, 2023 2:47 PM
 > To: igt-dev@lists.freedesktop.org
 > Cc: Joshi, Kunal1 <kunal1.joshi@intel.com>
-> Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_chamelium: reset chamelium b=
-efore
-> starting autodiscovery
+> Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_chamelium: Added is_mapped t=
+o
+> track mapped ports
 >=20
-> TypeC connector need disabling modeset for correctly doing hpd cycle so d=
-o it
-> before going for autodiscovery
+> Added boolean is_mapped, which is true for mapped ports and only plug
+> mapped ports
 >=20
 > Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 > ---
->  lib/igt_chamelium.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  lib/igt_chamelium.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 >=20
 > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c index
-> a235f3c87..95983ff25 100644
+> 95983ff25..a737330a6 100644
 > --- a/lib/igt_chamelium.c
 > +++ b/lib/igt_chamelium.c
-> @@ -2903,6 +2903,13 @@ struct chamelium *chamelium_init(int drm_fd,
-> igt_display_t *display)
->  	chamelium->drm_fd =3D dup(drm_fd);
->  	IGT_INIT_LIST_HEAD(&chamelium->edids);
+> @@ -99,6 +99,7 @@ struct chamelium_port {
+>  	char *name;
+>  	bool adapter_allowed;
+>  	char *connector_path;
+> +	bool is_mapped;
+>  };
 >=20
-> +	/*
-> +	 * Reset the chamelium and do a disabling modeset for
-> +	 * TypeC connector to come up nicely
-> +	 */
-> +	chamelium_reset(chamelium);
-> +	igt_modeset_disable_all_outputs(display);
-> +
->  	if (!chamelium_read_port_mappings(chamelium, drm_fd))
->  		goto error;
+>  struct chamelium_frame_dump {
+> @@ -2721,6 +2722,7 @@ static bool chamelium_autodiscover(struct
+> chamelium *chamelium)
+>  			igt_info("Failed to auto-discover port %d\n", port_id);
+>  			goto unplug_port;
+>  		}
+> +		port->is_mapped =3D true;
+>  		is_any_port_mapped =3D true;
+>=20
+>  		/* If we found a connector for our port, increment the number
+> of valid Chamelium ports. */ @@ -2746,9 +2748,10 @@ unplug_port:
+>  	}
+>=20
+>  	/* After we're all set, turn on all supported ports */
+> -	for (i =3D 0; i < chamelium->port_count; i++) {
+> +	for (i =3D 0; i < CHAMELIUM_MAX_PORTS; i++) {
+>  		struct chamelium_port *port =3D &chamelium->ports[i];
+> -		chamelium_plug(chamelium, port);
+> +		if (port->is_mapped)
+> +			chamelium_plug(chamelium, port);
+>  	}
+>  	sleep(CHAMELIUM_HOTPLUG_DETECTION_DELAY);
 >=20
 > --
 > 2.25.1
