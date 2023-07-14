@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5932C10E7C8
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 06:41:15 +0000 (UTC)
-Date: Fri, 14 Jul 2023 08:41:10 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D081410E7C8
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Jul 2023 06:43:50 +0000 (UTC)
+Date: Fri, 14 Jul 2023 08:43:46 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- ashutosh.dixit@intel.com, vinay.belgaumkar@intel.com,
- badal.nilawar@intel.com
-Message-ID: <20230714064110.2fljv7fmb7gckgxw@kamilkon-desk1>
-References: <20230711065424.1210524-1-riana.tauro@intel.com>
- <20230711065424.1210524-3-riana.tauro@intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230714064346.etq5au6ooiz7cn6m@kamilkon-desk1>
+References: <20230713220319.3315155-1-gustavo.sousa@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230711065424.1210524-3-riana.tauro@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/3] tests/xe: validate gt is in c6
- on idle
+In-Reply-To: <20230713220319.3315155-1-gustavo.sousa@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_async_flips: Use define for
+ number of framebuffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,63 +24,101 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Riana,
+Hi Gustavo,
+On 2023-07-13 at 19:03:19 -0300, Gustavo Sousa wrote:
+> Remove hard-coded usage of "4" for the number of frame buffers to make
+> the code safer for future changes. While using ARRAY_SIZE() is
+> legitimate, prefer to use NUM_FBS for a shorter way of expressing the
+> same thing.
+> 
+> Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
 
-On 2023-07-11 at 12:24:23 +0530, Riana Tauro wrote:
-> Add a test that validates if gt is in c6 on idle.
-> 
-> v2:
->    - fix cosmetic review comments (Kamil)
->    - replace assert with igt_assert_f
->    - fix cosmetic review comments (Anshuman)
-> 
-> v3:
->    - use tile sysfs library functions
-> 
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  tests/xe/xe_pm_residency.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  tests/kms_async_flips.c | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
 > 
-> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
-> index 5e55700bf..e053affde 100644
-> --- a/tests/xe/xe_pm_residency.c
-> +++ b/tests/xe/xe_pm_residency.c
-> @@ -45,6 +45,11 @@ static unsigned int measured_usleep(unsigned int usec)
->  	return igt_nsec_elapsed(&ts) / 1000;
->  }
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index 0a1199158b55..ebdc4c0b6fa4 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -41,6 +41,7 @@
 >  
-> +/**
-> + * SUBTEST: gt-c6-on-idle
-> + * Description: validate gt c6 state on idle
--------------------^------- ^^
-Nilawar wrote about using "Validate", maybe it is worth also
-s/gt c6/GT C6/ as you later write "GT not in C6"?
-
-> + * Run type: BAT
-> + */
->  static bool in_gt_c6(int fd, int gt)
->  {
->  	char gt_c_state[16];
-> @@ -102,6 +107,11 @@ igt_main
->  		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+>  #define RUN_TIME 2
+>  #define MIN_FLIPS_PER_FRAME 5
+> +#define NUM_FBS 4
+>  
+>  IGT_TEST_DESCRIPTION("Test asynchronous page flips.");
+>  
+> @@ -48,7 +49,7 @@ typedef struct {
+>  	int drm_fd;
+>  	uint32_t crtc_id;
+>  	uint32_t refresh_rate;
+> -	struct igt_fb bufs[4];
+> +	struct igt_fb bufs[NUM_FBS];
+>  	igt_display_t display;
+>  	igt_output_t *output;
+>  	unsigned long flip_timestamp_us;
+> @@ -132,7 +133,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+>  	int rec_width;
+>  	cairo_t *cr;
+>  
+> -	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
+> +	rec_width = width / (NUM_FBS * 2);
+>  
+>  	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+>  			    data->modifier, 0.0, 0.0, 0.5, fb);
+> @@ -183,11 +184,11 @@ static void test_init_fbs(data_t *data)
+>  		prev_modifier = data->modifier;
+>  
+>  		if (data->bufs[0].fb_id) {
+> -			for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
+> +			for (i = 0; i < NUM_FBS; i++)
+>  				igt_remove_fb(data->drm_fd, &data->bufs[i]);
+>  		}
+>  
+> -		for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
+> +		for (i = 0; i < NUM_FBS; i++)
+>  			make_fb(data, &data->bufs[i], width, height, i);
 >  	}
 >  
-> +	igt_describe("validate gt c6 on idle");
---------------------- ^ ------ ^^
-s/v/V/ and s/gt c6/GT C6/
-
-Regards,
-Kamil
-
-> +	igt_subtest("gt-c6-on-idle")
-> +		xe_for_each_gt(fd, gt)
-> +			igt_assert_f(igt_wait(in_gt_c6(fd, gt), 1000, 1), "GT not in C6\n");
-> +
->  	igt_describe("Validates idle residency measured over a time interval is within the tolerance");
->  	igt_subtest("idle-residency")
->  		xe_for_each_gt(fd, gt)
+> @@ -212,7 +213,7 @@ static void test_async_flip(data_t *data)
+>  			flags &= ~DRM_MODE_PAGE_FLIP_ASYNC;
+>  
+>  			ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+> -					      data->bufs[frame % 4].fb_id,
+> +					      data->bufs[frame % NUM_FBS].fb_id,
+>  					      flags, data);
+>  
+>  			igt_assert(ret == 0);
+> @@ -234,7 +235,7 @@ static void test_async_flip(data_t *data)
+>  
+>  				if (IS_GEN9(devid) || IS_GEN10(devid) || AT_LEAST_GEN(devid, 12)) {
+>  					ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+> -							      data->bufs[frame % 4].fb_id,
+> +							      data->bufs[frame % NUM_FBS].fb_id,
+>  							      flags, data);
+>  
+>  					igt_assert(ret == 0);
+> @@ -245,7 +246,7 @@ static void test_async_flip(data_t *data)
+>  		}
+>  
+>  		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+> -				      data->bufs[frame % 4].fb_id,
+> +				      data->bufs[frame % NUM_FBS].fb_id,
+>  				      flags, data);
+>  		if (frame == 1 && data->allow_fail)
+>  			igt_skip_on(ret == -EINVAL);
+> @@ -670,7 +671,7 @@ igt_main
+>  	}
+>  
+>  	igt_fixture {
+> -		for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
+> +		for (i = 0; i < NUM_FBS; i++)
+>  			igt_remove_fb(data.drm_fd, &data.bufs[i]);
+>  
+>  		igt_display_reset(&data.display);
 > -- 
-> 2.40.0
+> 2.41.0
 > 
