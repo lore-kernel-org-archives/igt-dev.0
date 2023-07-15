@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DCEC10E1EC
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Jul 2023 07:19:29 +0000 (UTC)
-Date: Mon, 17 Jul 2023 07:19:20 +0000
-To: vitaly prosyak <vprosyak@amd.com>
-From: Simon Ser <contact@emersion.fr>
-Message-ID: <hXkem34zv4T5AADfSFnNRqQ8DqZb8jfnUrwA-zQWm-1iGp0ojpbmOBy4OCowuBnIgf1yIKpPWue4iy46M3RG9tn7iUovKMhLd57KE-qeogQ=@emersion.fr>
-In-Reply-To: <05278c27-69ad-221c-ce5e-f940a3ed187b@amd.com>
-References: <20230714111737.16379-1-contact@emersion.fr>
- <05278c27-69ad-221c-ce5e-f940a3ed187b@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============3817574060149253383=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH v3] tests/syncobj_eventfd: new test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Date: Sat, 15 Jul 2023 00:17:23 -0000
+Message-ID: <168938024398.10924.2313585189870718578@emeril.freedesktop.org>
+References: <20230714231931.116529-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230714231931.116529-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/amdgp?=
+ =?utf-8?q?u=3A_add_vcn_decoder_and_encoder_tests_=28rev9=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,24 +17,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: James Jones <jajones@nvidia.com>, igt-dev@lists.freedesktop.org,
- Austin Shafer <ashafer@nvidia.com>,
- Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Faith Ekstrand <faith.ekstrand@collabora.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sunday, July 16th, 2023 at 19:14, vitaly prosyak <vprosyak@amd.com> wrot=
-e:
+--===============3817574060149253383==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> After fixing the IOCTL number conflicts with GETFB2 in both patches, no i=
-ssues are found with IGT tests.
+== Series Details ==
 
-Thanks for testing!
+Series: tests/amdgpu: add vcn decoder and encoder tests (rev9)
+URL   : https://patchwork.freedesktop.org/series/120292/
+State : info
 
-> Added Nicholas who actually found the failure of IGT kms_getfb test.
-> Please, put his name for v3.
+== Summary ==
 
-Will do.
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[1]:
+bat-dg2-oem2
+Results: [IGTPW_9414](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9414/index.html)
+
+
+
+--===============3817574060149253383==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: add vcn decoder and encoder tests (rev9)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120292/">https://patchwork.freedesktop.org/series/120292/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[1]:<br />
+bat-dg2-oem2<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9414/index.html">IGTPW_9414</a></p>
+
+</body>
+</html>
+
+--===============3817574060149253383==--
