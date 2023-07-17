@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A88B610E1F3
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Jul 2023 07:45:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBA7110E1F8
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Jul 2023 07:45:59 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Jul 2023 13:19:57 +0530
-Message-Id: <20230717075005.390330-2-kunal1.joshi@intel.com>
+Date: Mon, 17 Jul 2023 13:19:59 +0530
+Message-Id: <20230717075005.390330-4-kunal1.joshi@intel.com>
 In-Reply-To: <20230717075005.390330-1-kunal1.joshi@intel.com>
 References: <20230717075005.390330-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/9] tests/intel-ci: Added chamelium config
- blacklist
+Subject: [igt-dev] [PATCH 3/9] tests/intel-ci: Added dsc config blacklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-blacklist for non chamelium config
+blacklist for non dsc config
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/intel-ci/chamelium.blacklist | 1 +
+ tests/intel-ci/dsc.blacklist | 1 +
  1 file changed, 1 insertion(+)
- create mode 100644 tests/intel-ci/chamelium.blacklist
+ create mode 100644 tests/intel-ci/dsc.blacklist
 
-diff --git a/tests/intel-ci/chamelium.blacklist b/tests/intel-ci/chamelium.blacklist
+diff --git a/tests/intel-ci/dsc.blacklist b/tests/intel-ci/dsc.blacklist
 new file mode 100644
-index 000000000..c0325b555
+index 000000000..674050bd1
 --- /dev/null
-+++ b/tests/intel-ci/chamelium.blacklist
++++ b/tests/intel-ci/dsc.blacklist
 @@ -0,0 +1 @@
-+igt@.*chamelium.*
++igt@.*dsc.*
 -- 
 2.25.1
