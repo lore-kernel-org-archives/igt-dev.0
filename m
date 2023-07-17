@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E58B510E035
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Jul 2023 11:28:03 +0000 (UTC)
-Date: Mon, 17 Jul 2023 13:27:59 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: "Liu, HaoPing (Alan)" <HaoPing.liu@amd.com>
-Message-ID: <20230717112759.4fytbedtckx4okqj@zkempczy-mobl2>
-References: <20230705152606.13117-1-HaoPing.Liu@amd.com>
- <20230711175913.vdyn6zfgndquvnt2@kamilkon-desk1>
- <9eea967b-52ea-03b4-295e-2fcdf945d33f@amd.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD95610E142
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Jul 2023 12:08:23 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 17 Jul 2023 17:42:35 +0530
+Message-Id: <20230717121235.395279-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9eea967b-52ea-03b4-295e-2fcdf945d33f@amd.com>
-Subject: Re: [igt-dev] [PATCH v3 1/2] drm-uapi/drm_mode: sync with latest
- uAPI changes for checksum_region
+Subject: [igt-dev] [PATCH] tests/intel-ci: move chamelium testlist inside igt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,117 +16,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Lili.Gong@amd.com
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jul 14, 2023 at 05:23:39PM +0800, Liu, HaoPing (Alan) wrote:
-> Hi Kamil,
-> 
-> 
-> On 2023/7/12 上午 01:59, Kamil Konieczny wrote:
-> > Hi Alan,
-> > 
-> > On 2023-07-05 at 23:26:05 +0800, Alan Liu wrote:
-> > > Add struct drm_checksum_region and struct drm_checksum_crc as the
-> > > userspace data for using checksum_region feature.
-> > > 
-> > > Signed-off-by: Alan Liu <HaoPing.Liu@amd.com>
-> > Please send this as a separate patch, write also to which repo
-> > are you sync-ing, is it drm-tip?
-> 
-> I am trying to submit patches of checksum_region feature to dri-devel
-> (https://patchwork.freedesktop.org/series/119499/).
-> 
-> This patch series is the IGT for testing checksum_region, and this
-> particular patch adds the structs in drm_mode.h for IGT userspace to test
-> checksum_region.
-> 
-> I think I've already collected all the changes to drm_mode.h into this
-> patch. Do you want me to separate this patch into a new patch series?
+Move chamelium testlist inside igt repository
 
-I've just take a look to uapi drm_mode.h change and it is not officially
-accepted. In this case we're not merging not ready uapi.
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/intel-ci/chamelium-only.testlist | 68 ++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
+ create mode 100644 tests/intel-ci/chamelium-only.testlist
 
-Introduce your change by localizing it in the test (for example
-
-struct local_drm_checksum_region {
-...
-}
-
-Use it in the test, and when your uapi will be accepted you may
-merge drm_mode.h file, removing above local struct replacing by
-drm_checksum_region.
-
---
-Zbigniew
-
-> 
-> 
-> Thanks,
-> 
-> Alan
-> 
-> > Regards,
-> > Kamil
-> > 
-> > > ---
-> > >   include/drm-uapi/drm_mode.h | 42 +++++++++++++++++++++++++++++++++++++
-> > >   1 file changed, 42 insertions(+)
-> > > 
-> > > diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-> > > index e4a2570a6..dec073921 100644
-> > > --- a/include/drm-uapi/drm_mode.h
-> > > +++ b/include/drm-uapi/drm_mode.h
-> > > @@ -1209,6 +1209,48 @@ struct drm_mode_rect {
-> > >   	__s32 y2;
-> > >   };
-> > > +/**
-> > > + * struct drm_checksum_region - The enablement and region of checksum_region
-> > > + * @x_start: Horizontal starting coordinate of the region.
-> > > + * @y_start: Vertical starting coordinate of the region.
-> > > + * @x_end: Horizontal ending coordinate of the region.
-> > > + * @y_end: Vertical ending coordinate of the region.
-> > > + * @checksum_region_enable: To enable or disable checksum_region.
-> > > + *
-> > > + * Userspace uses this structure to configure the region and enablement for
-> > > + * checksum_region. Userspace should not submit a region out of the displayable
-> > > + * region because there is nothing to display and need protection.
-> > > + */
-> > > +struct drm_checksum_region {
-> > > +        __u32 x_start;
-> > > +        __u32 y_start;
-> > > +        __u32 x_end;
-> > > +        __u32 y_end;
-> > > +        __u8 checksum_region_enable;
-> > > +        __u8 pad[7];
-> > > +};
-> > > +
-> > > +/**
-> > > + * struct drm_checksum_crc - The CRC value of the corresponding checksum region.
-> > > + * @crc_r: CRC value of red color.
-> > > + * @crc_g: CRC value of green color.
-> > > + * @crc_b: CRC value of blue color.
-> > > + * @frame_count: a referenced frame count to indicate which frame the CRC values
-> > > + *  are generated at.
-> > > + *
-> > > + * Userspace uses this structure to retrieve the CRC values of the current
-> > > + * checksum region. @frame_count will be reset once a new region is updated or
-> > > + * it reaches a maximum value. Currently these CRC values are designed to
-> > > + * be validated with pre-saved CRC values, so userspace doesn't need to concern
-> > > + * about the algorithm used to compute the CRC.
-> > > + */
-> > > +struct drm_checksum_crc {
-> > > +        __u32 crc_r;
-> > > +        __u32 crc_g;
-> > > +        __u32 crc_b;
-> > > +        __u32 frame_count;
-> > > +};
-> > > +
-> > >   #if defined(__cplusplus)
-> > >   }
-> > >   #endif
-> > > -- 
-> > > 2.34.1
-> > > 
+diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
+new file mode 100644
+index 000000000..c9f72d703
+--- /dev/null
++++ b/tests/intel-ci/chamelium-only.testlist
+@@ -0,0 +1,68 @@
++igt@feature_discovery@chamelium
++igt@kms_chamelium_audio@dp-audio
++igt@kms_chamelium_audio@dp-audio-edid
++igt@kms_chamelium_audio@hdmi-audio
++igt@kms_chamelium_audio@hdmi-audio-edid
++igt@kms_chamelium_color@ctm-0-25
++igt@kms_chamelium_color@ctm-0-50
++igt@kms_chamelium_color@ctm-0-75
++igt@kms_chamelium_color@ctm-blue-to-red
++igt@kms_chamelium_color@ctm-green-to-red
++igt@kms_chamelium_color@ctm-limited-range
++igt@kms_chamelium_color@ctm-max
++igt@kms_chamelium_color@ctm-negative
++igt@kms_chamelium_color@ctm-red-to-blue
++igt@kms_chamelium_color@degamma
++igt@kms_chamelium_color@gamma
++igt@kms_chamelium_edid@dp-edid-change-during-suspend
++igt@kms_chamelium_edid@dp-edid-read
++igt@kms_chamelium_edid@dp-edid-resolution-list
++igt@kms_chamelium_edid@dp-edid-stress-resolution-4k
++igt@kms_chamelium_edid@dp-edid-stress-resolution-non-4k
++igt@kms_chamelium_edid@dp-mode-timings
++igt@kms_chamelium_edid@hdmi-edid-change-during-suspend
++igt@kms_chamelium_edid@hdmi-edid-read
++# Chamelium v1 board HDMI receiver supports max 4k@30 resolution 
++# removed test as its having a mode 4k@60 resulting 
++# TMDS config errors on v1 board
++#igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
++igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k
++igt@kms_chamelium_edid@hdmi-mode-timings
++igt@kms_chamelium_edid@vga-edid-read
++igt@kms_chamelium_frames@dp-crc-fast
++igt@kms_chamelium_frames@dp-crc-multiple
++igt@kms_chamelium_frames@dp-crc-single
++igt@kms_chamelium_frames@dp-frame-dump
++igt@kms_chamelium_frames@hdmi-aspect-ratio
++igt@kms_chamelium_frames@hdmi-cmp-planar-formats
++igt@kms_chamelium_frames@hdmi-crc-fast
++igt@kms_chamelium_frames@hdmi-crc-multiple
++igt@kms_chamelium_frames@hdmi-crc-nonplanar-formats
++igt@kms_chamelium_frames@hdmi-crc-single
++igt@kms_chamelium_frames@hdmi-frame-dump
++igt@kms_chamelium_frames@vga-frame-dump
++igt@kms_chamelium_hpd@common-hpd-after-suspend
++igt@kms_chamelium_hpd@dp-hpd
++igt@kms_chamelium_hpd@dp-hpd-after-suspend
++igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode
++igt@kms_chamelium_hpd@dp-hpd-fast
++igt@kms_chamelium_hpd@dp-hpd-for-each-pipe
++igt@kms_chamelium_hpd@dp-hpd-storm
++igt@kms_chamelium_hpd@dp-hpd-storm-disable
++igt@kms_chamelium_hpd@dp-hpd-with-enabled-mode
++igt@kms_chamelium_hpd@hdmi-hpd
++igt@kms_chamelium_hpd@hdmi-hpd-after-suspend
++igt@kms_chamelium_hpd@hdmi-hpd-enable-disable-mode
++igt@kms_chamelium_hpd@hdmi-hpd-fast
++igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe
++igt@kms_chamelium_hpd@hdmi-hpd-storm
++igt@kms_chamelium_hpd@hdmi-hpd-storm-disable
++igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode
++igt@kms_chamelium_hpd@vga-hpd
++igt@kms_chamelium_hpd@vga-hpd-after-suspend
++igt@kms_chamelium_hpd@vga-hpd-enable-disable-mode
++igt@kms_chamelium_hpd@vga-hpd-fast
++igt@kms_chamelium_hpd@vga-hpd-for-each-pipe
++igt@kms_chamelium_hpd@vga-hpd-with-enabled-mode
++igt@kms_chamelium_hpd@vga-hpd-without-ddc
++igt@kms_dp_tiled_display@basic-test-pattern-with-chamelium
+-- 
+2.25.1
