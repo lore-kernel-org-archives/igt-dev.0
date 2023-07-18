@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <7b948154-8b32-bb0a-0268-46194b8129ae@linux.intel.com>
-Date: Tue, 18 Jul 2023 08:35:46 +0100
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85CC410E31E
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Jul 2023 12:10:33 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 18 Jul 2023 17:44:43 +0530
+Message-Id: <20230718121443.445343-3-kunal1.joshi@intel.com>
+In-Reply-To: <20230718121443.445343-1-kunal1.joshi@intel.com>
+References: <20230718121443.445343-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
-References: <20230717165318.831766-1-tvrtko.ursulin@linux.intel.com>
- <20230717171219.832728-1-tvrtko.ursulin@linux.intel.com>
- <ZLWOJ+EDk1jyBk37@intel.com> <87sf9mib8k.wl-ashutosh.dixit@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <87sf9mib8k.wl-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915_pm_rps: Fix test after
- silent conflict
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib/igt_fb: on xe driver switch from
+ rendercopy to blitcopy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,35 +19,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+on xe driver use blitcopy for everything where otherwise would
+use rendercopy.
 
-On 17/07/2023 20:33, Dixit, Ashutosh wrote:
-> On Mon, 17 Jul 2023 11:53:27 -0700, Rodrigo Vivi wrote:
->>
->> On Mon, Jul 17, 2023 at 06:12:19PM +0100, Tvrtko Ursulin wrote:
->>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>>
->>> A silent conflict sneaked in as I was merging
->>> d86ca7e17b58 ("tests/i915_pm_rps: Exercise sysfs thresholds") in a way
->>> that igt_sysfs_set_u32 has became a function returning void.
->>>
->>> Assert is now built-in so drop it from the test.
->>>
->>> v2:
->>>   * Fix invalid value test.
->>>   * Assert new values after write while at it.
->>
->> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> 
-> Merged to fix the IGT build.
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ lib/igt_fb.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Ah thank you, didn't realize it was broken, I thought it was only warnings.
-
-Regards,
-
-Tvrtko
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 6ce4b735a..f4bc800fe 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2529,7 +2529,7 @@ static bool use_enginecopy(const struct igt_fb *fb)
+ 	if (!is_intel_device(fb->fd))
+ 		return false;
+ 
+-	if (!is_xe_device(fb->fd) && blitter_ok(fb))
++	if (blitter_ok(fb))
+ 		return false;
+ 
+ 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+@@ -3035,9 +3035,7 @@ static void free_linear_mapping(struct fb_blit_upload *blit)
+ 		igt_nouveau_delete_bo(&linear->fb);
+ 	} else if (is_xe_device(fd)) {
+ 		gem_munmap(linear->map, linear->fb.size);
+-		copy_with_engine(blit, fb, &linear->fb);
+-
+-		syncobj_wait(fd, &blit->ibb->engine_syncobj, 1, INT64_MAX, 0, NULL);
++		blitcopy(fb, &linear->fb);
+ 		gem_close(fd, linear->fb.gem_handle);
+ 	} else {
+ 		gem_munmap(linear->map, linear->fb.size);
+@@ -3117,7 +3115,7 @@ static void setup_linear_mapping(struct fb_blit_upload *blit)
+ 
+ 		linear->map = igt_nouveau_mmap_bo(&linear->fb, PROT_READ | PROT_WRITE);
+ 	} else if (is_xe_device(fd)) {
+-		copy_with_engine(blit, &linear->fb, fb);
++		blitcopy(&linear->fb, fb);
+ 
+ 		linear->map = xe_bo_mmap_ext(fd, linear->fb.gem_handle,
+ 					     linear->fb.size, PROT_READ | PROT_WRITE);
+-- 
+2.25.1
