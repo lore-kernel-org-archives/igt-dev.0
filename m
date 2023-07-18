@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============4313241834130378963=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Date: Tue, 18 Jul 2023 22:16:35 -0000
-Message-ID: <168971859505.22203.18093533815656140784@emeril.freedesktop.org>
+Date: Tue, 18 Jul 2023 22:36:42 -0000
+Message-ID: <168971980273.22205.7229294259721538347@emeril.freedesktop.org>
 References: <20230718215950.2557-1-mohammed.thasleem@intel.com>
 In-Reply-To: <20230718215950.2557-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Fatomic=5Ftransition=3A_Lower_drm_log_level_to_avoid_?=
- =?utf-8?q?exceeding_disk_usage_limit?=
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
+ =?utf-8?q?atomic=5Ftransition=3A_Lower_drm_log_level_to_avoid_exceeding_d?=
+ =?utf-8?q?isk_usage_limit?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,83 +24,65 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============4313241834130378963==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: tests/kms_atomic_transition: Lower drm log level to avoid exceeding disk usage limit
 URL   : https://patchwork.freedesktop.org/series/120942/
-State : warning
+State : info
 
 == Summary ==
 
-Pipeline status: FAILED.
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9430](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9430/index.html)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/938800 for the overview.
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45743256):
-  ../tests/kms_atomic_transition.c:1115:50: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-     igt_require((data.sysfs_fd = open(DEBUG_LEVEL, O_RDONLY)) >= 0);
-                                                    ^~~~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro ‘igt_require’
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ../tests/kms_atomic_transition.c:1115:50: note: each undeclared identifier is reported only once for each function it appears in
-     igt_require((data.sysfs_fd = open(DEBUG_LEVEL, O_RDONLY)) >= 0);
-                                                    ^~~~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro ‘igt_require’
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1689718209:step_script
-  section_start:1689718209:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1689718210:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45743255):
-  ../tests/kms_atomic_transition.c:1115:50: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-     igt_require((data.sysfs_fd = open(DEBUG_LEVEL, O_RDONLY)) >= 0);
-                                                    ^~~~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro ‘igt_require’
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ../tests/kms_atomic_transition.c:1115:50: note: each undeclared identifier is reported only once for each function it appears in
-     igt_require((data.sysfs_fd = open(DEBUG_LEVEL, O_RDONLY)) >= 0);
-                                                    ^~~~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro ‘igt_require’
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1689718188:step_script
-  section_start:1689718188:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1689718191:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+--===============4313241834130378963==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45743257):
-  ../tests/kms_atomic_transition.c:1115:50: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-     igt_require((data.sysfs_fd = open(DEBUG_LEVEL, O_RDONLY)) >= 0);
-                                                    ^~~~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro ‘igt_require’
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  ../tests/kms_atomic_transition.c:1115:50: note: each undeclared identifier is reported only once for each function it appears in
-     igt_require((data.sysfs_fd = open(DEBUG_LEVEL, O_RDONLY)) >= 0);
-                                                    ^~~~~~~~
-  ../lib/igt_core.h:1006:8: note: in definition of macro ‘igt_require’
-    if (!(expr)) igt_skip_check(#expr , NULL); \
-          ^~~~
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1689718229:step_script
-  section_start:1689718229:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1689718229:cleanup_file_variables
-  ERROR: Job failed: exit code 1
 
-== Logs ==
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/938800
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_atomic_transition: Lower drm log level to avoid exceeding disk usage limit</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120942/">https://patchwork.freedesktop.org/series/120942/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9430/index.html">IGTPW_9430</a></p>
+
+</body>
+</html>
+
+--===============4313241834130378963==--
