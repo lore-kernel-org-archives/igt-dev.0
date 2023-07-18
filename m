@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4DCC10E327
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Jul 2023 12:06:40 +0000 (UTC)
-From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0012110E345
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Jul 2023 12:10:31 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Jul 2023 17:41:36 +0530
-Message-Id: <20230718121136.2992608-1-himal.prasad.ghimiray@intel.com>
+Date: Tue, 18 Jul 2023 17:44:42 +0530
+Message-Id: <20230718121443.445343-2-kunal1.joshi@intel.com>
+In-Reply-To: <20230718121443.445343-1-kunal1.joshi@intel.com>
+References: <20230718121443.445343-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/1] tests/xe/xe_uevent: add new test for
- uevent gt reset failure
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib/igt_fb: add intel_blt for blitter
+ path on xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,194 +19,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test is to cause the fake reset failure and capture the uevent
-sent in case of gt reset failure. We are relying on debugfs to
-cause fake reset failure because there is no hardware mechanism using
-which we can force gt to fail its reset.
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-The sending of Uevent and fault injection is handled by:
-https://patchwork.freedesktop.org/series/120912/
+Add intel_btl functions for xe driver on blitter path in igt_fb.c.
+This enables tiled framebuffers on xe driver.
 
-v2:
-- Make fake reset for all GT's in platform.
-- Add test names in order (Rahul)
-- Add headers in order.
-- Instead of system call use igt helper for reading debugfs.
-- Use igt_debug instead of prints.
-- Use break instead of unnecessary goto.
-- Change test name.
-- Define values as constants. (Kamil)
-
-v3:
-- Use fault injection exposed debugfs.
-
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-
-Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/meson.build    |   1 +
- tests/xe/xe_uevent.c | 130 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 131 insertions(+)
- create mode 100644 tests/xe/xe_uevent.c
+ lib/igt_fb.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 65 insertions(+), 6 deletions(-)
 
-diff --git a/tests/meson.build b/tests/meson.build
-index 944a0941f..b9f0a9c15 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -291,6 +291,7 @@ xe_progs = [
- 	'xe_prime_self_import',
- 	'xe_query',
- 	'xe_sysfs_tile',
-+	'xe_uevent',
- 	'xe_vm',
- 	'xe_waitfence',
- 	'xe_spin_batch',
-diff --git a/tests/xe/xe_uevent.c b/tests/xe/xe_uevent.c
-new file mode 100644
-index 000000000..5da7e4f8e
---- /dev/null
-+++ b/tests/xe/xe_uevent.c
-@@ -0,0 +1,130 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 1814e8db1..6ce4b735a 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2763,8 +2763,12 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
+ 
+ 	blt->plane_offset = fb->offsets[plane];
+ 
+-	blt->ptr = gem_mmap__device_coherent(fb->fd, handle, 0, fb->size,
+-					     PROT_READ | PROT_WRITE);
++	if (is_xe_device(fb->fd))
++		blt->ptr = xe_bo_mmap_ext(fb->fd, handle, fb->size,
++					  PROT_READ | PROT_WRITE);
++	else
++		blt->ptr = gem_mmap__device_coherent(fb->fd, handle, 0, fb->size,
++						     PROT_READ | PROT_WRITE);
+ 	return blt;
+ }
+ 
+@@ -2838,16 +2842,20 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 	uint64_t ahnd = 0;
+ 	const intel_ctx_t *ictx = NULL;
+ 	struct intel_execution_engine2 *e;
+-	uint32_t bb;
++	uint32_t bb, xe_bb;
+ 	uint64_t bb_size = 4096;
+ 	struct blt_copy_data blt = {};
+ 	struct blt_copy_object *src, *dst;
+ 	struct blt_block_copy_data_ext ext = {}, *pext = NULL;
+-	uint32_t mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
+-			   ? REGION_LMEM(0) : REGION_SMEM;
++	uint32_t mem_region;
+ 	/* To ignore CC plane */
+ 	uint32_t src_cc = src_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
+ 	uint32_t dst_cc = dst_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
++	intel_ctx_t *xe_ctx;
++	uint32_t vm, engine;
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
+ 
+ 	igt_assert_eq(dst_fb->fd, src_fb->fd);
+ 	igt_assert_eq(dst_fb->num_planes - dst_cc, src_fb->num_planes - src_cc);
+@@ -2857,6 +2865,9 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 
+ 	if (is_i915_device(dst_fb->fd) && !gem_has_relocations(dst_fb->fd)) {
+ 		igt_require(gem_has_contexts(dst_fb->fd));
++		mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
++			? REGION_LMEM(0) : REGION_SMEM;
 +
-+/**
-+ * TEST: cause fake gt reset failure and listen uevent from KMD
-+ * SUBTEST:fake_reset_uevent_listener
-+ * Description:
-+ *		Test creates uevent listener and causes fake reset failure for gt0
-+ *		and returns success if uevent is sent by driver and listened by listener.
-+ */
+ 		ictx = intel_ctx_create_all_physical(src_fb->fd);
+ 		ctx = gem_context_create(dst_fb->fd);
+ 		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
+@@ -2865,6 +2876,19 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 							  &bb,
+ 							  &bb_size,
+ 							  mem_region) == 0);
++	} else if(is_xe_device(dst_fb->fd)) {
++		vm = xe_vm_create(dst_fb->fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
++		engine = xe_engine_create(dst_fb->fd, vm, &inst, 0);
++		xe_ctx = intel_ctx_xe(dst_fb->fd, vm, engine, 0, 0, 0);
++		mem_region = vram_if_possible(dst_fb->fd, 0);
 +
-+#include <libudev.h>
-+#include <string.h>
-+#include <sys/stat.h>
++		ahnd = intel_allocator_open_full(dst_fb->fd, xe_ctx->vm, 0, 0,
++						 INTEL_ALLOCATOR_SIMPLE,
++						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
 +
-+#include "igt.h"
++		bb_size = ALIGN(bb_size + xe_cs_prefetch_size(dst_fb->fd),
++				xe_get_default_alignment(dst_fb->fd));
++		xe_bb = xe_bo_create_flags(dst_fb->fd, 0, bb_size, mem_region);
+ 	}
+ 
+ 	for (int i = 0; i < dst_fb->num_planes - dst_cc; i++) {
+@@ -2872,7 +2896,34 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
+ 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
+ 
+-		if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
++		if (is_xe_device(dst_fb->fd)) {
++			src = blt_fb_init(src_fb, i, mem_region);
++			dst = blt_fb_init(dst_fb, i, mem_region);
 +
-+#include "xe_drm.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
++			blt_copy_init(src_fb->fd, &blt);
++			blt.color_depth = blt_get_bpp(src_fb);
++			blt_set_copy_object(&blt.src, src);
++			blt_set_copy_object(&blt.dst, dst);
 +
-+static bool xe_fail_gt_reset(int fd, int gt)
-+{
-+	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
-+	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
++			blt_set_object_ext(&ext.src,
++					   blt_compression_format(&blt, src_fb),
++					   src_fb->width, src_fb->height,
++					   SURFACE_TYPE_2D);
 +
-+	xe_force_gt_reset(fd, gt);
++			blt_set_object_ext(&ext.dst,
++					   blt_compression_format(&blt, dst_fb),
++					   dst_fb->width, dst_fb->height,
++					   SURFACE_TYPE_2D);
 +
-+	return true;
-+}
++			pext = &ext;
 +
-+static bool listen_reset_fail_uevent(struct udev_device *device, const char *source, int gt_id)
-+{
-+	struct udev_list_entry *list_entry;
-+	bool reset_failed = false;
-+	bool reset_unit_is_gt = false;
-+	bool gt_id_matches = false;
-+	const char *name, *val;
++			blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
 +
-+	udev_list_entry_foreach(list_entry, udev_device_get_properties_list_entry(device))
-+	{
-+		name = udev_list_entry_get_name(list_entry);
-+		val = udev_list_entry_get_value(list_entry);
++			blt_block_copy(src_fb->fd, xe_ctx, NULL, ahnd, &blt, pext);
 +
-+		if (!strcmp(name, "RESET_FAILED") && !strcmp(val, "1")) {
-+			igt_debug("%s = %s\n", name, val);
-+			reset_failed = true;
-+			continue;
-+		}
++			blt_destroy_object(src_fb->fd, src);
++			blt_destroy_object(dst_fb->fd, dst);
++		} else  if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
+ 			igt_blitter_fast_copy__raw(dst_fb->fd,
+ 						   ahnd, ctx, NULL,
+ 						   src_fb->gem_handle,
+@@ -2950,6 +3001,14 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 	if (ctx)
+ 		gem_context_destroy(dst_fb->fd, ctx);
+ 	put_ahnd(ahnd);
 +
-+		if (!strcmp(name, "RESET_UNIT") && !strcmp(val, "gt")) {
-+			igt_debug("%s = %s\n", name, val);
-+			reset_unit_is_gt = true;
-+			continue;
-+		}
-+
-+		if (!strcmp(name, "RESET_ID") && (atoi(val) == gt_id)) {
-+			igt_debug("%s = %s\n", name, val);
-+			gt_id_matches = true;
-+			continue;
-+		}
++	if(is_xe_device(dst_fb->fd)) {
++		gem_close(dst_fb->fd, xe_bb);
++		xe_engine_destroy(dst_fb->fd, engine);
++		xe_vm_destroy(dst_fb->fd, vm);
++		free(xe_ctx);
 +	}
 +
-+	return (reset_failed && reset_unit_is_gt && gt_id_matches);
-+}
-+
-+static void fake_reset_uevent_listener(int fd, int gt_id)
-+{
-+	struct udev *udev;
-+	struct udev_device *dev;
-+	struct udev_monitor *mon;
-+	bool event_received = false;
-+	bool event_sent = false;
-+	const u32 listener_timeout = 5;
-+
-+	/* create udev object */
-+	udev = udev_new();
-+	if (!udev)
-+		igt_assert_f(false, "New udev object creation failed");
-+
-+	mon = udev_monitor_new_from_netlink(udev, "kernel");
-+	udev_monitor_filter_add_match_subsystem_devtype(mon, "drm", "drm_minor");
-+	udev_monitor_enable_receiving(mon);
-+	igt_until_timeout(listener_timeout) {
-+		if (event_sent) {
-+			dev = udev_monitor_receive_device(mon);
-+			if (dev) {
-+				event_received = listen_reset_fail_uevent(dev, "kernel", gt_id);
-+				udev_device_unref(dev);
-+			}
-+		}
-+
-+		if (event_received)
-+			break;
-+
-+		if (!event_sent)
-+			event_sent = xe_fail_gt_reset(fd, gt_id);
-+	}
-+	udev_unref(udev);
-+	igt_assert_f(event_received, "Event not received");
-+}
-+
-+igt_main
-+{
-+	int fd;
-+	int gt;
-+	const u32 settle_xe_load_uevents = 50000;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		xe_device_get(fd);
-+	}
-+
-+	/* Ensures uevents triggered in case of driver
-+	 * load are settled down.
-+	 */
-+	usleep(settle_xe_load_uevents);
-+
-+	igt_subtest("fake_reset_uevent_listener")
-+		xe_for_each_gt(fd, gt) {
-+			fake_reset_uevent_listener(fd, gt);
-+		}
-+
-+	igt_fixture {
-+		xe_device_put(fd);
-+		close(fd);
-+	}
-+}
+ 	intel_ctx_destroy(src_fb->fd, ictx);
+ }
+ 
 -- 
 2.25.1
