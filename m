@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0651710E0E9
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Jul 2023 03:02:04 +0000 (UTC)
-Message-ID: <99ee8343-5f46-7e35-38d0-6dc6d3cf077b@intel.com>
-Date: Wed, 19 Jul 2023 08:31:52 +0530
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230619115858.2013195-1-bhanuprakash.modem@intel.com>
- <20230619115858.2013195-18-bhanuprakash.modem@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4698A10E00E
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Jul 2023 05:35:53 +0000 (UTC)
+Message-ID: <db5db432-54b1-71d2-28e2-765897acf451@intel.com>
+Date: Wed, 19 Jul 2023 11:05:35 +0530
 Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230619115858.2013195-18-bhanuprakash.modem@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+References: <20230718111736.3324211-1-badal.nilawar@intel.com>
+ <87edl5hybs.wl-ashutosh.dixit@intel.com>
+ <87cz0phy5u.wl-ashutosh.dixit@intel.com>
+From: "Nilawar, Badal" <badal.nilawar@intel.com>
+In-Reply-To: <87cz0phy5u.wl-ashutosh.dixit@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 17/18] tests/kms_async_flips: Add XE support
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/xe: Verify actual frequency on
+ the basis of GT state
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,54 +23,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 6/19/2023 5:28 PM, Bhanuprakash Modem wrote:
-> Add XE driver support for kms tests.
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/kms_async_flips.c | 12 +++---------
->   1 file changed, 3 insertions(+), 9 deletions(-)
->
-> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index 5cb797dec..9bea54027 100644
-> --- a/tests/kms_async_flips.c
-> +++ b/tests/kms_async_flips.c
-> @@ -229,7 +229,7 @@ static void test_async_flip(data_t *data)
->   			 * in order to change the watermark levels as per the optimization. Hence the
->   			 * subsequent async flips will actually do the asynchronous flips.
->   			 */
-> -			if (is_i915_device(data->drm_fd)) {
-> +			if (is_intel_device(data->drm_fd)) {
->   				uint32_t devid = intel_get_drm_devid(data->drm_fd);
->   
->   				if (IS_GEN9(devid) || IS_GEN10(devid) || AT_LEAST_GEN(devid, 12)) {
-> @@ -600,13 +600,7 @@ igt_main
->   	int i;
->   
->   	igt_fixture {
-> -		/*
-> -		 * FIXME: As of now, Async flips won't work with linear buffers
-> -		 * on Intel hardware, hence don't run tests on XE device as XE
-> -		 * won't support tiling.
-> -		 * Once Kernel changes got landed, please update this logic.
-> -		 */
-> -		data.drm_fd = drm_open_driver_master(DRIVER_ANY & ~DRIVER_XE);
-> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->   		kmstest_set_vt_graphics_mode();
->   		igt_display_require(&data.display, data.drm_fd);
->   		igt_display_require_output(&data.display);
-> @@ -654,7 +648,7 @@ igt_main
->   	igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
->   	igt_subtest_with_dynamic("invalid-async-flip") {
->   		/* TODO: support more vendors */
-> -		igt_require(is_i915_device(data.drm_fd));
-> +		igt_require(is_intel_device(data.drm_fd));
->   		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
->   						       I915_FORMAT_MOD_Y_TILED));
->   
+
+On 18-07-2023 23:58, Dixit, Ashutosh wrote:
+> On Tue, 18 Jul 2023 11:24:55 -0700, Dixit, Ashutosh wrote:
+>>
+>> Sorry I missed this yesterday. Basically why do we have the
+>> igt_wait(xe_is_gt_in_c6()) above at the top when we are waking up the gt
+>> when reading cur freq later?
+>>
+>> Maybe instead of this usleep, we can this do here:
+>>
+>> 		igt_assert(igt_wait(xe_is_gt_in_c6(fd, gt_id), 1000, 1));
+> 
+> Actually, maybe:
+> 
+> 		igt_assert(igt_wait(xe_is_gt_in_c6(fd, gt_id), 1000, 10))Sure I will make this change.
+> 
+>>
+>> And get rid of the igt_require(igt_wait()) at the top?
+This is added to skip test if RC6 disabled or not working. As discussed 
+offline I will move this to igt_main.
+
+Regards,
+Badal
+>>
+>> Thanks.
+>> --
+>> Ashutosh
