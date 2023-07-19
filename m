@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4313241834130378963=="
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0651710E0E9
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Jul 2023 03:02:04 +0000 (UTC)
+Message-ID: <99ee8343-5f46-7e35-38d0-6dc6d3cf077b@intel.com>
+Date: Wed, 19 Jul 2023 08:31:52 +0530
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230619115858.2013195-1-bhanuprakash.modem@intel.com>
+ <20230619115858.2013195-18-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230619115858.2013195-18-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Date: Tue, 18 Jul 2023 22:36:42 -0000
-Message-ID: <168971980273.22205.7229294259721538347@emeril.freedesktop.org>
-References: <20230718215950.2557-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230718215950.2557-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
- =?utf-8?q?atomic=5Ftransition=3A_Lower_drm_log_level_to_avoid_exceeding_d?=
- =?utf-8?q?isk_usage_limit?=
+Subject: Re: [igt-dev] [i-g-t 17/18] tests/kms_async_flips: Add XE support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,71 +22,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4313241834130378963==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
-
-Series: tests/kms_atomic_transition: Lower drm log level to avoid exceeding disk usage limit
-URL   : https://patchwork.freedesktop.org/series/120942/
-State : info
-
-== Summary ==
-
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9430](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9430/index.html)
-
-
-
---===============4313241834130378963==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_atomic_transition: Lower drm log level to avoid exceeding disk usage limit</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120942/">https://patchwork.freedesktop.org/series/120942/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9430/index.html">IGTPW_9430</a></p>
-
-</body>
-</html>
-
---===============4313241834130378963==--
+On 6/19/2023 5:28 PM, Bhanuprakash Modem wrote:
+> Add XE driver support for kms tests.
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/kms_async_flips.c | 12 +++---------
+>   1 file changed, 3 insertions(+), 9 deletions(-)
+>
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index 5cb797dec..9bea54027 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -229,7 +229,7 @@ static void test_async_flip(data_t *data)
+>   			 * in order to change the watermark levels as per the optimization. Hence the
+>   			 * subsequent async flips will actually do the asynchronous flips.
+>   			 */
+> -			if (is_i915_device(data->drm_fd)) {
+> +			if (is_intel_device(data->drm_fd)) {
+>   				uint32_t devid = intel_get_drm_devid(data->drm_fd);
+>   
+>   				if (IS_GEN9(devid) || IS_GEN10(devid) || AT_LEAST_GEN(devid, 12)) {
+> @@ -600,13 +600,7 @@ igt_main
+>   	int i;
+>   
+>   	igt_fixture {
+> -		/*
+> -		 * FIXME: As of now, Async flips won't work with linear buffers
+> -		 * on Intel hardware, hence don't run tests on XE device as XE
+> -		 * won't support tiling.
+> -		 * Once Kernel changes got landed, please update this logic.
+> -		 */
+> -		data.drm_fd = drm_open_driver_master(DRIVER_ANY & ~DRIVER_XE);
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>   		kmstest_set_vt_graphics_mode();
+>   		igt_display_require(&data.display, data.drm_fd);
+>   		igt_display_require_output(&data.display);
+> @@ -654,7 +648,7 @@ igt_main
+>   	igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
+>   	igt_subtest_with_dynamic("invalid-async-flip") {
+>   		/* TODO: support more vendors */
+> -		igt_require(is_i915_device(data.drm_fd));
+> +		igt_require(is_intel_device(data.drm_fd));
+>   		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
+>   						       I915_FORMAT_MOD_Y_TILED));
+>   
