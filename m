@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7A6B10E60D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70BC910E1C4
  for <igt-dev@lists.freedesktop.org>; Thu, 20 Jul 2023 23:18:03 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Jul 2023 16:17:45 -0700
-Message-ID: <20230720231756.3464641-10-ashutosh.dixit@intel.com>
+Date: Thu, 20 Jul 2023 16:17:40 -0700
+Message-ID: <20230720231756.3464641-5-ashutosh.dixit@intel.com>
 In-Reply-To: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
 References: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 09/20] tests/i915/perf: Fix
- test_i915_ref_count for xe
+Subject: [igt-dev] [PATCH i-g-t 04/20] lib/i915/perf: Derive topology info
+ for xe devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,104 +23,183 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need to tell read_i915_module_ref if we are using i915 or xe. Also the
-module name in /proc/modules is different.
+Derive topology info for xe devices and feed it into
+intel_perf_for_devinfo.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ lib/i915/perf.c | 115 +++++++++++++++++++++++++++++++++++++++++++++++-
+ lib/i915/perf.h |   1 +
+ 2 files changed, 115 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 292afda9a434..ef2d56e319f8 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -5418,18 +5418,21 @@ test_whitelisted_registers_userspace_config(void)
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 5b08c983918a..0bb1aa59045c 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -38,8 +38,10 @@
+ #include <i915_drm.h>
+ 
+ #include "drmtest.h"
++#include "igt_aux.h"
+ #include "i915_pciids.h"
+ #include "intel_chipset.h"
++#include "ioctl_wrappers.h"
+ #include "linux_scaffold.h"
+ #include "perf.h"
+ #include "xe/xe_query.h"
+@@ -609,6 +611,108 @@ intel_sysfs_attr_id_to_name(int sysfs_dirfd, intel_sysfs_attr_id id, int gt)
+ 		intel_sysfs_attr_name[0][id];
  }
  
- static unsigned
--read_i915_module_ref(void)
-+read_i915_module_ref(bool is_xe)
- {
- 	FILE *fp = fopen("/proc/modules", "r");
- 	char *line = NULL;
- 	size_t line_buf_size = 0;
- 	int len = 0;
- 	unsigned ref_count;
-+	char mod[8];
-+	int modn = is_xe ? 3 : 5;
- 
- 	igt_assert(fp);
- 
-+	strcpy(mod, is_xe ? "xe " : "i915 ");
- 	while ((len = getline(&line, &line_buf_size, fp)) > 0) {
--		if (strncmp(line, "i915 ", 5) == 0) {
-+		if (strncmp(line, mod, modn) == 0) {
- 			unsigned long mem;
- 			int ret = sscanf(line + 5, "%lu %u", &mem, &ref_count);
- 			igt_assert(ret == 2);
-@@ -5484,17 +5487,26 @@ test_i915_ref_count(void)
- 	unsigned baseline, ref_count0, ref_count1;
- 	uint32_t oa_report0[64];
- 	uint32_t oa_report1[64];
-+	bool is_xe;
- 
- 	/* This should be the first test before the first fixture so no drm_fd
- 	 * should have been opened so far...
- 	 */
- 	igt_assert_eq(drm_fd, -1);
- 
--	baseline = read_i915_module_ref();
-+	/* Tell read_i915_module_ref if we are on xe or i915 (because drm_fd is -1) */
-+	drm_fd = __drm_open_driver(DRIVER_INTEL | DRIVER_XE);
-+	is_xe = is_xe_device(drm_fd);
-+	drm_close_driver(drm_fd);
-+	close(sysfs);
-+	drm_fd = -1;
++struct drm_i915_query_topology_info *
++xe_fill_i915_topology_info(int drm_fd)
++{
++	struct drm_i915_query_topology_info i915_topinfo = {};
++	struct drm_i915_query_topology_info *i915_topo;
++	struct drm_xe_query_topology_mask *xe_topo;
++	int total_size, pos = 0;
++	u8 *ptr;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_GT_TOPOLOGY,
++		.size = 0,
++		.data = 0,
++	};
 +
-+	baseline = read_i915_module_ref(is_xe);
- 	igt_debug("baseline ref count (drm fd closed) = %u\n", baseline);
++	/* Fixed fields, see fill_topology_info() and intel_sseu_set_info() in i915 */
++	i915_topinfo.max_slices = 1;			/* always 1 */
++	if (IS_PONTEVECCHIO(xe_dev_id(drm_fd))) {
++		i915_topinfo.max_subslices = 64;
++		i915_topinfo.max_eus_per_subslice = 8;
++	} else if (intel_graphics_ver(xe_dev_id(drm_fd)) >= IP_VER(12, 50)) {
++		i915_topinfo.max_subslices = 32;
++		i915_topinfo.max_eus_per_subslice = 16;
++	} else if (intel_graphics_ver(xe_dev_id(drm_fd)) >= IP_VER(12, 0)) {
++		i915_topinfo.max_subslices = 6;
++		i915_topinfo.max_eus_per_subslice = 16;
++	} else {
++		igt_assert(0);
++	}
++	i915_topinfo.subslice_offset = 1;		/* always 1 */
++	i915_topinfo.subslice_stride = DIV_ROUND_UP(i915_topinfo.max_subslices, 8);
++	i915_topinfo.eu_offset = i915_topinfo.subslice_offset + i915_topinfo.subslice_stride;
++	i915_topinfo.eu_stride = DIV_ROUND_UP(i915_topinfo.max_eus_per_subslice, 8);
++
++	/* Allocate and start filling the struct to return */
++	total_size = sizeof(i915_topinfo) + i915_topinfo.eu_offset +
++			i915_topinfo.max_subslices * i915_topinfo.eu_stride;
++	i915_topo = malloc(total_size);
++	igt_assert(i915_topo);
++
++	memcpy(i915_topo, &i915_topinfo, sizeof(i915_topinfo));
++	ptr = (u8 *)i915_topo + sizeof(i915_topinfo);
++	*ptr++ = 0x1;					/* slice mask */
++
++	/* Get xe topology masks */
++	igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	igt_assert_neq(query.size, 0);
++
++	xe_topo = malloc(query.size);
++	igt_assert(xe_topo);
++
++	query.data = to_user_pointer(xe_topo);
++	igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	igt_debug("Topology size: %d\n", query.size);
++
++	while (query.size >= sizeof(struct drm_xe_query_topology_mask)) {
++		struct drm_xe_query_topology_mask *topo =
++			(struct drm_xe_query_topology_mask *)((unsigned char *)xe_topo + pos);
++		int i, sz = sizeof(struct drm_xe_query_topology_mask) + topo->num_bytes;
++		u64 geom_mask, compute_mask;
++
++		igt_debug(" gt_id: %d type: %d n:%d [%d] ",
++			  topo->gt_id, topo->type, topo->num_bytes, sz);
++		for (int j = 0; j < topo->num_bytes; j++)
++			igt_debug(" %02x", topo->mask[j]);
++		igt_debug("\n");
++
++		/* i915 only returns topology for gt 0, do the same here */
++		if (topo->gt_id)
++			continue;
++
++		/* Follow the same order as in xe query_gt_topology() */
++		switch (topo->type) {
++		case XE_TOPO_DSS_GEOMETRY:
++			igt_assert_lte(i915_topo->subslice_stride, 8);	/* Fit in u64 mask */
++			memcpy(&geom_mask, topo->mask, i915_topo->subslice_stride);
++			break;
++		case XE_TOPO_DSS_COMPUTE:
++			memcpy(&compute_mask, topo->mask, i915_topo->subslice_stride);
++			geom_mask |= compute_mask;
++			memcpy(ptr, &geom_mask, i915_topo->subslice_stride);
++			ptr += i915_topo->subslice_stride;
++			break;
++		case XE_TOPO_EU_PER_DSS:
++			for (i = 0; i < i915_topo->max_subslices; i++) {
++				memcpy(ptr, topo->mask, i915_topo->eu_stride);
++				ptr += i915_topo->eu_stride;
++			}
++			break;
++		default:
++			igt_assert(0);
++		}
++
++		query.size -= sz;
++		pos += sz;
++	}
++
++	free(xe_topo);
++
++	return i915_topo;
++}
++
+ static struct intel_perf *
+ xe_perf_for_fd(int drm_fd, int gt)
+ {
+@@ -617,6 +721,7 @@ xe_perf_for_fd(int drm_fd, int gt)
+ 	u32 timestamp_frequency;
+ 	u64 gt_min_freq;
+ 	u64 gt_max_freq;
++	struct drm_i915_query_topology_info *topology;
+ 	struct intel_perf *ret;
+ 	int sysfs_dir_fd = open_master_sysfs_dir(drm_fd);
+ 	char path_min[64], path_max[64];
+@@ -645,15 +750,23 @@ xe_perf_for_fd(int drm_fd, int gt)
+ 	device_id = intel_get_drm_devid(drm_fd);
+ 	timestamp_frequency = xe_gts(drm_fd)->gts[0].oa_timestamp_freq;
  
--	drm_fd = __drm_open_driver(DRIVER_INTEL);
--	igt_require_i915(drm_fd);
-+	drm_fd = __drm_open_driver(DRIVER_INTEL | DRIVER_XE);
-+	if (is_xe_device(drm_fd))
-+		xe_device_get(drm_fd);
- 	devid = intel_get_drm_devid(drm_fd);
- 	sysfs = perf_sysfs_open(drm_fd);
++	topology = xe_fill_i915_topology_info(drm_fd);
++	if (!topology) {
++		igt_warn("xe_fill_i915_topology_info failed\n");
++		return NULL;
++	}
++
+ 	ret = intel_perf_for_devinfo(device_id,
+ 				     device_revision,
+ 				     timestamp_frequency,
+ 				     gt_min_freq * 1000000,
+ 				     gt_max_freq * 1000000,
+-				     NULL);
++				     topology);
+ 	if (!ret)
+ 		igt_warn("intel_perf_for_devinfo failed\n");
  
-@@ -5506,12 +5518,12 @@ test_i915_ref_count(void)
- 	properties[5] = default_test_set->perf_oa_format;
- 	properties[7] = oa_exp_1_millisec;
- 
--	ref_count0 = read_i915_module_ref();
-+	ref_count0 = read_i915_module_ref(is_xe);
- 	igt_debug("initial ref count with drm_fd open = %u\n", ref_count0);
- 	igt_assert(ref_count0 > baseline);
- 
- 	stream_fd = __perf_open(drm_fd, &param, false);
--	ref_count1 = read_i915_module_ref();
-+	ref_count1 = read_i915_module_ref(is_xe);
- 	igt_debug("ref count after opening i915 perf stream = %u\n", ref_count1);
- 	igt_assert(ref_count1 > ref_count0);
- 
-@@ -5519,7 +5531,7 @@ test_i915_ref_count(void)
- 	close(sysfs);
- 	drm_fd = -1;
- 	sysfs = -1;
--	ref_count0 = read_i915_module_ref();
-+	ref_count0 = read_i915_module_ref(is_xe);
- 	igt_debug("ref count after closing drm fd = %u\n", ref_count0);
- 
- 	igt_assert(ref_count0 > baseline);
-@@ -5531,7 +5543,7 @@ test_i915_ref_count(void)
- 			  false); /* not just timer reports */
- 
- 	__perf_close(stream_fd);
--	ref_count0 = read_i915_module_ref();
-+	ref_count0 = read_i915_module_ref(is_xe);
- 	igt_debug("ref count after closing i915 perf stream fd = %u\n", ref_count0);
- 	igt_assert_eq(ref_count0, baseline);
++	free(topology);
++
+ 	return ret;
  }
+ 
+diff --git a/lib/i915/perf.h b/lib/i915/perf.h
+index 8a71ac635e78..f3df578ddc5f 100644
+--- a/lib/i915/perf.h
++++ b/lib/i915/perf.h
+@@ -318,6 +318,7 @@ intel_perf_devinfo_eu_available(const struct intel_perf_devinfo *devinfo,
+ 	return (devinfo->eu_masks[subslice_offset + eu / 8] & (1U << eu % 8)) != 0;
+ }
+ 
++struct drm_i915_query_topology_info *xe_fill_i915_topology_info(int drm_fd);
+ struct intel_perf *intel_perf_for_fd(int drm_fd, int gt);
+ struct intel_perf *intel_perf_for_devinfo(uint32_t device_id,
+ 					  uint32_t revision,
 -- 
 2.41.0
