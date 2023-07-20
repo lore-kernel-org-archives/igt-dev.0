@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E313010E1CD
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B99B410E1C4
  for <igt-dev@lists.freedesktop.org>; Thu, 20 Jul 2023 23:18:02 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Jul 2023 16:17:38 -0700
-Message-ID: <20230720231756.3464641-3-ashutosh.dixit@intel.com>
-In-Reply-To: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
-References: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
+Date: Thu, 20 Jul 2023 16:17:36 -0700
+Message-ID: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 02/20] lib/xe/xe_query: Add xe_gts interface
+Subject: [igt-dev] [PATCH i-g-t 00/20] Extend i915/perf for testing Xe OA
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,44 +20,42 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support to get XE gt info from xe_device.
+* Share i915 perf code between i915 and Xe.
+* A few shortcuts, but hopefully sufficient for testing initial Xe OA
+  patches.
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/xe/xe_query.c | 8 ++++++++
- lib/xe/xe_query.h | 1 +
- 2 files changed, 9 insertions(+)
+Ashutosh Dixit (20):
+  drm-uapi/xe_drm: OA changes
+  lib/xe/xe_query: Add xe_gts interface
+  lib/i915/perf: Add xe_perf_for_fd
+  lib/i915/perf: Derive topology info for xe devices
+  tests/i915/perf: Track variables across i915 and xe
+  tests/i915/perf: Skip not ready tests for xe
+  tests/i915/perf: Fix i915_perf_revision for use with xe
+  tests/i915/perf: Fix sysfs functions for xe
+  tests/i915/perf: Fix test_i915_ref_count for xe
+  tests/i915/perf: Support only default_engine_group for xe
+  tests/i915/perf: Only iterate over render engines for xe
+  tests/i915/perf: Don't load module
+  tests/i915/perf: Move test_sysctl_defaults after the fixture
+  tests/i915/perf: Fix has_class_instance for xe
+  tests/i915/perf: Temporarily skip render_copy for xe
+  tests/i915/perf: Skip intel_ctx_create_all_physical for xe
+  tests/i915/perf: Skip __for_each_render_engine for xe
+  tests/i915/perf: Fix buf_map for xe
+  tests/i915/perf: Use engine_id in gen12_test_mi_rpc for xe
+  HAX: Add OA tests to xe-fast-feedback.testlist
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index f535ad8534dd..b8f973b0931b 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -503,6 +503,14 @@ uint32_t xe_min_page_size(int fd, uint64_t region)
-  */
- xe_dev_FN(xe_config, config, struct drm_xe_query_config *);
- 
-+/**
-+ * xe_gts:
-+ * @fd: xe device fd
-+ *
-+ * Returns query gts of xe device @fd.
-+ */
-+xe_dev_FN(xe_gts, gts, struct drm_xe_query_gts *);
-+
- /**
-  * xe_number_hw_engine:
-  * @fd: xe device fd
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 68ca5a680c6e..8d3f0983166e 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -88,6 +88,7 @@ const char *xe_region_name(uint64_t region);
- uint16_t xe_region_class(int fd, uint64_t region);
- uint32_t xe_min_page_size(int fd, uint64_t region);
- struct drm_xe_query_config *xe_config(int fd);
-+struct drm_xe_query_gts *xe_gts(int fd);
- unsigned int xe_number_hw_engines(int fd);
- bool xe_has_vram(int fd);
- uint64_t xe_vram_size(int fd, int gt);
+ include/drm-uapi/xe_drm.h                | 295 ++++++++++++++++++++++-
+ lib/i915/perf.c                          | 170 ++++++++++++-
+ lib/i915/perf.h                          |   1 +
+ lib/meson.build                          |   2 +-
+ lib/xe/xe_query.c                        |   8 +
+ lib/xe/xe_query.h                        |   1 +
+ tests/i915/perf.c                        | 234 ++++++++++++------
+ tests/intel-ci/xe-fast-feedback.testlist |  43 ++++
+ tests/intel-ci/xe.blocklist.txt          |   1 -
+ 9 files changed, 665 insertions(+), 90 deletions(-)
+
 -- 
 2.41.0
