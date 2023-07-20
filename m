@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3779C10E607
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A27B710E617
  for <igt-dev@lists.freedesktop.org>; Thu, 20 Jul 2023 23:18:04 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Jul 2023 16:17:49 -0700
-Message-ID: <20230720231756.3464641-14-ashutosh.dixit@intel.com>
+Date: Thu, 20 Jul 2023 16:17:54 -0700
+Message-ID: <20230720231756.3464641-19-ashutosh.dixit@intel.com>
 In-Reply-To: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
 References: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 13/20] tests/i915/perf: Move
- test_sysctl_defaults after the fixture
+Subject: [igt-dev] [PATCH i-g-t 18/20] tests/i915/perf: Fix buf_map for xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,37 +22,52 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-test_sysctl_defaults requires sysctl paths to be set which is done in the
-fixture.
+buf_map for xe should use xe_bo_map. Also change gen12_test_mi_rpc to use
+buf_map instead of intel_buf_cpu_map.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/i915/perf.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index e0afbbc45ea2..78e68462ad06 100644
+index 27408e7909f5..cd1087b2e954 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -5955,9 +5955,6 @@ igt_main
- 	igt_subtest("i915-ref-count")
- 		test_i915_ref_count();
+@@ -901,15 +901,19 @@ oar_unit_default_format(void)
+  * Temporary wrapper to distinguish mappings on !llc platforms,
+  * where it seems cache over GEM_MMAP_OFFSET is not flushed before execution.
+  */
+-static void *buf_map(int i915, struct intel_buf *buf, bool write)
++static void *buf_map(int fd, struct intel_buf *buf, bool write)
+ {
+ 	void *p;
  
--	igt_subtest("sysctl-defaults")
--		test_sysctl_defaults();
+-	if (gem_has_llc(i915))
+-		p = intel_buf_cpu_map(buf, write);
+-	else
+-		p = intel_buf_device_map(buf, write);
 -
- 	igt_fixture {
- 		/* We expect that the ref count test before these fixtures
- 		 * should have closed drm_fd...
-@@ -5996,6 +5993,9 @@ igt_main
- 			render_copy = igt_get_render_copyfunc(devid);
- 	}
++	if (is_xe_device(fd)) {
++		buf->ptr = xe_bo_map(fd, buf->handle, buf->surface[0].size);
++		p = buf->ptr;
++	} else {
++		if (gem_has_llc(fd))
++			p = intel_buf_cpu_map(buf, write);
++		else
++			p = intel_buf_device_map(buf, write);
++	}
+ 	return p;
+ }
  
-+	igt_subtest("sysctl-defaults")
-+		test_sysctl_defaults();
-+
- 	igt_subtest("non-system-wide-paranoid")
- 		test_system_wide_paranoid();
+@@ -3620,7 +3624,7 @@ gen12_test_mi_rpc(const struct intel_execution_engine2 *e)
+ 	intel_bb_flush_render(ibb);
+ 	intel_bb_sync(ibb);
  
+-	intel_buf_cpu_map(buf, false);
++	buf_map(drm_fd, buf, false);
+ 	report32 = buf->ptr;
+ 	format_size_32 = format.size >> 2;
+ 	dump_report(report32, format_size_32, "mi-rpc");
 -- 
 2.41.0
