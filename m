@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B99B410E1C4
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jul 2023 23:18:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 872E310E1C4
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jul 2023 23:18:04 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Jul 2023 16:17:36 -0700
-Message-ID: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
+Date: Thu, 20 Jul 2023 16:17:53 -0700
+Message-ID: <20230720231756.3464641-18-ashutosh.dixit@intel.com>
+In-Reply-To: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
+References: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 00/20] Extend i915/perf for testing Xe OA
+Subject: [igt-dev] [PATCH i-g-t 17/20] tests/i915/perf: Skip
+ __for_each_render_engine for xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,42 +23,52 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-* Share i915 perf code between i915 and Xe.
-* A few shortcuts, but hopefully sufficient for testing initial Xe OA
-  patches.
+__for_each_render_engine uses for_each_physical_engine which is only
+available for i915. It is sufficient to directly pass a render engine into
+the test function for xe.
 
-Ashutosh Dixit (20):
-  drm-uapi/xe_drm: OA changes
-  lib/xe/xe_query: Add xe_gts interface
-  lib/i915/perf: Add xe_perf_for_fd
-  lib/i915/perf: Derive topology info for xe devices
-  tests/i915/perf: Track variables across i915 and xe
-  tests/i915/perf: Skip not ready tests for xe
-  tests/i915/perf: Fix i915_perf_revision for use with xe
-  tests/i915/perf: Fix sysfs functions for xe
-  tests/i915/perf: Fix test_i915_ref_count for xe
-  tests/i915/perf: Support only default_engine_group for xe
-  tests/i915/perf: Only iterate over render engines for xe
-  tests/i915/perf: Don't load module
-  tests/i915/perf: Move test_sysctl_defaults after the fixture
-  tests/i915/perf: Fix has_class_instance for xe
-  tests/i915/perf: Temporarily skip render_copy for xe
-  tests/i915/perf: Skip intel_ctx_create_all_physical for xe
-  tests/i915/perf: Skip __for_each_render_engine for xe
-  tests/i915/perf: Fix buf_map for xe
-  tests/i915/perf: Use engine_id in gen12_test_mi_rpc for xe
-  HAX: Add OA tests to xe-fast-feedback.testlist
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/perf.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
- include/drm-uapi/xe_drm.h                | 295 ++++++++++++++++++++++-
- lib/i915/perf.c                          | 170 ++++++++++++-
- lib/i915/perf.h                          |   1 +
- lib/meson.build                          |   2 +-
- lib/xe/xe_query.c                        |   8 +
- lib/xe/xe_query.h                        |   1 +
- tests/i915/perf.c                        | 234 ++++++++++++------
- tests/intel-ci/xe-fast-feedback.testlist |  43 ++++
- tests/intel-ci/xe.blocklist.txt          |   1 -
- 9 files changed, 665 insertions(+), 90 deletions(-)
-
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index bfe4dd6ee533..27408e7909f5 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -6153,8 +6153,14 @@ igt_main
+ 		igt_describe("Test MI REPORT PERF COUNT for Gen 12");
+ 		igt_subtest_with_dynamic("gen12-mi-rpc") {
+ 			igt_require(has_class_instance(drm_fd, I915_ENGINE_CLASS_RENDER, 0));
+-			__for_each_render_engine(drm_fd, e)
+-				gen12_test_mi_rpc(e);
++			if (is_xe_device(drm_fd)) {
++				const struct intel_execution_engine2 e2 = {};
++				igt_dynamic_f("%s", "rcs")
++					gen12_test_mi_rpc(&e2);
++			} else {
++				__for_each_render_engine(drm_fd, e)
++					gen12_test_mi_rpc(e);
++			}
+ 		}
+ 
+ 		igt_describe("Test OA TLB invalidate");
+@@ -6166,8 +6172,14 @@ igt_main
+ 		igt_subtest_with_dynamic("gen12-unprivileged-single-ctx-counters") {
+ 			igt_require(has_class_instance(drm_fd, I915_ENGINE_CLASS_RENDER, 0));
+ 			igt_require_f(render_copy, "no render-copy function\n");
+-			__for_each_render_engine(drm_fd, e)
+-				gen12_test_single_ctx_render_target_writes_a_counter(e);
++			if (is_xe_device(drm_fd)) {
++				const struct intel_execution_engine2 e2 = {};
++				igt_dynamic_f("%s", "rcs")
++					gen12_test_single_ctx_render_target_writes_a_counter(&e2);
++			} else {
++				__for_each_render_engine(drm_fd, e)
++					gen12_test_single_ctx_render_target_writes_a_counter(e);
++			}
+ 		}
+ 	}
+ 
 -- 
 2.41.0
