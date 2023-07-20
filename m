@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A27B710E617
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jul 2023 23:18:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCCFD10E1C4
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jul 2023 23:18:03 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Jul 2023 16:17:54 -0700
-Message-ID: <20230720231756.3464641-19-ashutosh.dixit@intel.com>
+Date: Thu, 20 Jul 2023 16:17:43 -0700
+Message-ID: <20230720231756.3464641-8-ashutosh.dixit@intel.com>
 In-Reply-To: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
 References: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 18/20] tests/i915/perf: Fix buf_map for xe
+Subject: [igt-dev] [PATCH i-g-t 07/20] tests/i915/perf: Fix
+ i915_perf_revision for use with xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,52 +23,31 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-buf_map for xe should use xe_bo_map. Also change gen12_test_mi_rpc to use
-buf_map instead of intel_buf_cpu_map.
+Because xe driver is based on the latest upstream i915, set the perf
+revision for xe to be greater than the latest i915 perf revision. Doing so
+ensures that all tests for latest i915 features are also available for xe.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ tests/i915/perf.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 27408e7909f5..cd1087b2e954 100644
+index 9fb11f9e0730..03af968d9484 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -901,15 +901,19 @@ oar_unit_default_format(void)
-  * Temporary wrapper to distinguish mappings on !llc platforms,
-  * where it seems cache over GEM_MMAP_OFFSET is not flushed before execution.
-  */
--static void *buf_map(int i915, struct intel_buf *buf, bool write)
-+static void *buf_map(int fd, struct intel_buf *buf, bool write)
- {
- 	void *p;
+@@ -564,6 +564,12 @@ static int i915_perf_revision(int fd)
+ 	drm_i915_getparam_t gp;
+ 	int value = 1, ret;
  
--	if (gem_has_llc(i915))
--		p = intel_buf_cpu_map(buf, write);
--	else
--		p = intel_buf_device_map(buf, write);
--
-+	if (is_xe_device(fd)) {
-+		buf->ptr = xe_bo_map(fd, buf->handle, buf->surface[0].size);
-+		p = buf->ptr;
-+	} else {
-+		if (gem_has_llc(fd))
-+			p = intel_buf_cpu_map(buf, write);
-+		else
-+			p = intel_buf_device_map(buf, write);
-+	}
- 	return p;
- }
- 
-@@ -3620,7 +3624,7 @@ gen12_test_mi_rpc(const struct intel_execution_engine2 *e)
- 	intel_bb_flush_render(ibb);
- 	intel_bb_sync(ibb);
- 
--	intel_buf_cpu_map(buf, false);
-+	buf_map(drm_fd, buf, false);
- 	report32 = buf->ptr;
- 	format_size_32 = format.size >> 2;
- 	dump_report(report32, format_size_32, "mi-rpc");
++#define FINAL_I915_PERF_REV 7
++
++	if (is_xe_device(drm_fd))
++		return FINAL_I915_PERF_REV +
++			xe_config(drm_fd)->info[XE_QUERY_OA_IOCTL_VERSION];
++
+ 	gp.param = I915_PARAM_PERF_REVISION;
+ 	gp.value = &value;
+ 	ret = igt_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
 -- 
 2.41.0
