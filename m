@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5219610E612
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jul 2023 23:18:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4717510E1CD
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jul 2023 23:18:03 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Jul 2023 16:17:50 -0700
-Message-ID: <20230720231756.3464641-15-ashutosh.dixit@intel.com>
+Date: Thu, 20 Jul 2023 16:17:39 -0700
+Message-ID: <20230720231756.3464641-4-ashutosh.dixit@intel.com>
 In-Reply-To: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
 References: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 14/20] tests/i915/perf: Fix
- has_class_instance for xe
+Subject: [igt-dev] [PATCH i-g-t 03/20] lib/i915/perf: Add xe_perf_for_fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,30 +22,118 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PMU is not available for xe so implement has_class_instance for xe without
-PMU.
+Add xe_perf_for_fd which is called from intel_perf_for_fd for xe devices.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ lib/i915/perf.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++---
+ lib/meson.build |  2 +-
+ 2 files changed, 55 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 78e68462ad06..df6cb7edd017 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -5816,6 +5816,12 @@ static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
- {
- 	int fd;
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index ddadb53b61c8..5b08c983918a 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -37,10 +37,12 @@
  
-+	if (is_xe_device(drm_fd)) {
-+		if (class == I915_ENGINE_CLASS_RENDER && !IS_PONTEVECCHIO(devid))
-+			return true;
-+		return false;
+ #include <i915_drm.h>
+ 
++#include "drmtest.h"
+ #include "i915_pciids.h"
+-
+ #include "intel_chipset.h"
++#include "linux_scaffold.h"
+ #include "perf.h"
++#include "xe/xe_query.h"
+ 
+ #include "i915_perf_metrics_hsw.h"
+ #include "i915_perf_metrics_bdw.h"
+@@ -68,8 +70,6 @@
+ #include "i915_perf_metrics_mtlgt2.h"
+ #include "i915_perf_metrics_mtlgt3.h"
+ 
+-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+-
+ static int
+ perf_ioctl(int fd, unsigned long request, void *arg)
+ {
+@@ -609,6 +609,54 @@ intel_sysfs_attr_id_to_name(int sysfs_dirfd, intel_sysfs_attr_id id, int gt)
+ 		intel_sysfs_attr_name[0][id];
+ }
+ 
++static struct intel_perf *
++xe_perf_for_fd(int drm_fd, int gt)
++{
++	u32 device_id;
++	u32 device_revision = 0;
++	u32 timestamp_frequency;
++	u64 gt_min_freq;
++	u64 gt_max_freq;
++	struct intel_perf *ret;
++	int sysfs_dir_fd = open_master_sysfs_dir(drm_fd);
++	char path_min[64], path_max[64];
++
++	if (sysfs_dir_fd < 0) {
++		igt_warn("open_master_sysfs_dir failed\n");
++		return NULL;
 +	}
 +
- 	fd = perf_i915_open(i915, I915_PMU_ENGINE_BUSY(class, instance));
- 	if (fd >= 0) {
- 		close(fd);
++	if (IS_PONTEVECCHIO(xe_dev_id(drm_fd))) {
++		sprintf(path_min, "device/tile%d/gt%d/freq_min", gt, gt);
++		sprintf(path_max, "device/tile%d/gt%d/freq_max", gt, gt);
++	} else {
++		sprintf(path_min, "device/tile0/gt%d/freq_min", gt);
++		sprintf(path_max, "device/tile0/gt%d/freq_max", gt);
++	}
++
++	if (!read_sysfs(sysfs_dir_fd, path_min, &gt_min_freq) ||
++	    !read_sysfs(sysfs_dir_fd, path_max, &gt_max_freq)) {
++		igt_warn("Unable to read freqs from sysfs\n");
++		close(sysfs_dir_fd);
++		return NULL;
++	}
++	close(sysfs_dir_fd);
++
++	device_id = intel_get_drm_devid(drm_fd);
++	timestamp_frequency = xe_gts(drm_fd)->gts[0].oa_timestamp_freq;
++
++	ret = intel_perf_for_devinfo(device_id,
++				     device_revision,
++				     timestamp_frequency,
++				     gt_min_freq * 1000000,
++				     gt_max_freq * 1000000,
++				     NULL);
++	if (!ret)
++		igt_warn("intel_perf_for_devinfo failed\n");
++
++	return ret;
++}
++
+ struct intel_perf *
+ intel_perf_for_fd(int drm_fd, int gt)
+ {
+@@ -621,6 +669,9 @@ intel_perf_for_fd(int drm_fd, int gt)
+ 	struct intel_perf *ret;
+ 	int sysfs_dir_fd = open_master_sysfs_dir(drm_fd);
+ 
++	if (is_xe_device(drm_fd))
++		return xe_perf_for_fd(drm_fd, gt);
++
+ 	if (sysfs_dir_fd < 0)
+ 		return NULL;
+ 
+diff --git a/lib/meson.build b/lib/meson.build
+index ce11c0715f96..86b53f5bfae3 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -346,7 +346,7 @@ endforeach
+ lib_igt_i915_perf_build = shared_library(
+   'i915_perf',
+   i915_perf_files,
+-  dependencies: lib_igt_chipset,
++  dependencies: [lib_igt_chipset,lib_igt,pciaccess],
+   include_directories : inc,
+   install: true,
+   soversion: '1.5')
 -- 
 2.41.0
