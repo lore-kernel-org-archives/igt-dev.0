@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============4496604047910062488=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Thu, 20 Jul 2023 12:12:39 -0000
-Message-ID: <168985515916.20750.15160478261648961099@emeril.freedesktop.org>
-References: <20230704173107.842296-1-swati2.sharma@intel.com>
-In-Reply-To: <20230704173107.842296-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_D?=
- =?utf-8?q?SC_Fractional_BPP_Val_Support_=28rev4=29?=
+To: "Badal Nilawar" <badal.nilawar@intel.com>
+Date: Thu, 20 Jul 2023 12:34:14 -0000
+Message-ID: <168985645422.20752.9482251596162135746@emeril.freedesktop.org>
+References: <20230720095041.3599085-1-badal.nilawar@intel.com>
+In-Reply-To: <20230720095041.3599085-1-badal.nilawar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy94ZTog?=
+ =?utf-8?q?Verify_actual_frequency_on_the_basis_of_GT_state_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,39 +23,67 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============4496604047910062488==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: DSC Fractional BPP Val Support (rev4)
-URL   : https://patchwork.freedesktop.org/series/117493/
-State : warning
+Series: tests/xe: Verify actual frequency on the basis of GT state (rev6)
+URL   : https://patchwork.freedesktop.org/series/120831/
+State : info
 
 == Summary ==
 
-Pipeline status: FAILED.
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[1]:
+bat-pvc-2
+Results: [IGTPW_9440](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9440/index.html)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/940444 for the overview.
 
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45853711):
-  Downloading artifacts from coordinator... ok        host=gitlab.freedesktop.org id=45853696 responseStatus=200 OK token=64_hmWFd
-  section_end:1689854948:download_artifacts
-  section_start:1689854948:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-  Login Succeeded!
-  $ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
-  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-8c92d99af66cf65a35342948b48ebf4a916c751f
-  Error: error creating build container: Error initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-8c92d99af66cf65a35342948b48ebf4a916c751f: Error reading manifest commit-8c92d99af66cf65a35342948b48ebf4a916c751f in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora: received unexpected HTTP status: 500 Internal Server Error
-  section_end:1689854950:step_script
-  section_start:1689854950:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1689854950:cleanup_file_variables
-  ERROR: Job failed: exit code 1
 
-== Logs ==
+--===============4496604047910062488==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/940444
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe: Verify actual frequency on the basis of GT state (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120831/">https://patchwork.freedesktop.org/series/120831/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[1]:<br />
+bat-pvc-2<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9440/index.html">IGTPW_9440</a></p>
+
+</body>
+</html>
+
+--===============4496604047910062488==--
