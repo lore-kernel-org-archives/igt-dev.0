@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 834C310E613
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jul 2023 04:38:00 +0000 (UTC)
-From: Matthew Brost <matthew.brost@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Jul 2023 21:37:33 -0700
-Message-Id: <20230721043735.205229-3-matthew.brost@intel.com>
-In-Reply-To: <20230721043735.205229-1-matthew.brost@intel.com>
-References: <20230721043735.205229-1-matthew.brost@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4706210E61D
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Jul 2023 05:17:30 +0000 (UTC)
+Date: Fri, 21 Jul 2023 07:17:26 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Message-ID: <20230721051726.kqimho4luacq25b5@zkempczy-mobl2>
+References: <20230720231756.3464641-1-ashutosh.dixit@intel.com>
+ <20230720231756.3464641-19-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 3/5] xe_vm: Add mmap / munmap sections that split
- large pages
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230720231756.3464641-19-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 18/20] tests/i915/perf: Fix buf_map for
+ xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,238 +21,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Splitting large pages involves using dma-resv slots for ordering, make
-sure this works.
+On Thu, Jul 20, 2023 at 04:17:54PM -0700, Ashutosh Dixit wrote:
+> buf_map for xe should use xe_bo_map. Also change gen12_test_mi_rpc to use
+> buf_map instead of intel_buf_cpu_map.
+> 
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> ---
+>  tests/i915/perf.c | 18 +++++++++++-------
+>  1 file changed, 11 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index 27408e7909f5..cd1087b2e954 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -901,15 +901,19 @@ oar_unit_default_format(void)
+>   * Temporary wrapper to distinguish mappings on !llc platforms,
+>   * where it seems cache over GEM_MMAP_OFFSET is not flushed before execution.
+>   */
+> -static void *buf_map(int i915, struct intel_buf *buf, bool write)
+> +static void *buf_map(int fd, struct intel_buf *buf, bool write)
+>  {
+>  	void *p;
+>  
+> -	if (gem_has_llc(i915))
+> -		p = intel_buf_cpu_map(buf, write);
+> -	else
+> -		p = intel_buf_device_map(buf, write);
+> -
 
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
- tests/xe/xe_vm.c | 81 +++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 60 insertions(+), 21 deletions(-)
+Please extend those two functions to xe. I think it is more clear
+way instead of changing mapping in the tests. Notice bops->driver
+field - you don't need to call is_xe_device() then.
 
-diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
-index 434bdb3322..5fd511f0b8 100644
---- a/tests/xe/xe_vm.c
-+++ b/tests/xe/xe_vm.c
-@@ -1252,7 +1252,8 @@ static void *hammer_thread(void *tdata)
- #define MAP_FLAG_USERPTR		(0x1 << 0)
- #define MAP_FLAG_INVALIDATE		(0x1 << 1)
- #define MAP_FLAG_HAMMER_FIRST_PAGE	(0x1 << 2)
--
-+#define MAP_FLAG_LARGE_PAGE		(0x1 << 3)
-+#define MAP_FLAG_LARGE_PAGE_NO_SPLIT	(0x1 << 4)
- 
- /**
-  * SUBTEST: munmap-style-unbind-%s
-@@ -1305,12 +1306,16 @@ static void *hammer_thread(void *tdata)
-  *					userptr inval many either side full
-  * @userptr-inval-many-end:		userptr inval many end
-  * @userptr-inval-many-front:		userptr inval many front
-+ * @either-side-partial-large-page-hammer:
-+ *					either side partial large page hammer
-+ * @either-side-partial-split-page-hammer:
-+ *					either side partial split page hammer
-  */
- 
- static void
- test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 			 int bo_n_pages, int n_binds,
--			 int unbind_n_page_offfset, int unbind_n_pages,
-+			 int unbind_n_page_offset, int unbind_n_pages,
- 			 unsigned int flags)
- {
- 	struct drm_xe_sync sync[2] = {
-@@ -1322,7 +1327,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 		.num_syncs = 2,
- 		.syncs = to_user_pointer(sync),
- 	};
--	uint64_t addr = 0x1a0000, base_addr = 0x1a0000;
-+	uint64_t addr = 0x1a00000, base_addr = 0x1a00000;
- 	uint32_t vm;
- 	uint32_t engine;
- 	size_t bo_size;
-@@ -1340,6 +1345,14 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct thread_data t;
- 	pthread_barrier_t barrier;
- 	int exit = 0;
-+	int n_page_per_2mb = 0x200000 / xe_get_default_alignment(fd);
-+
-+	if (flags & MAP_FLAG_LARGE_PAGE) {
-+		bo_n_pages *= n_page_per_2mb;
-+		unbind_n_pages *= n_page_per_2mb;
-+		if (flags & MAP_FLAG_LARGE_PAGE_NO_SPLIT)
-+			unbind_n_page_offset *= n_page_per_2mb;
-+	}
- 
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
- 	bo_size = page_size * bo_n_pages;
-@@ -1426,7 +1439,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
- 	xe_vm_unbind_async(fd, vm, 0, 0,
--			   addr + unbind_n_page_offfset * page_size,
-+			   addr + unbind_n_page_offset * page_size,
- 			   unbind_n_pages * page_size, sync, 2);
- 
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-@@ -1455,8 +1468,8 @@ try_again_after_invalidate:
- 		data = map + i * page_size;
- 		addr += page_size;
- 
--		if (i < unbind_n_page_offfset ||
--		    i + 1 > unbind_n_page_offfset + unbind_n_pages) {
-+		if (i < unbind_n_page_offset ||
-+		    i + 1 > unbind_n_page_offset + unbind_n_pages) {
- 			b = 0;
- 			data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
- 			data->batch[b++] = sdi_addr;
-@@ -1481,8 +1494,8 @@ try_again_after_invalidate:
- 
- 	/* Verify all pages still bound written */
- 	for (i = 0; i < n_binds; ++i) {
--		if (i < unbind_n_page_offfset ||
--		    i + 1 > unbind_n_page_offfset + unbind_n_pages) {
-+		if (i < unbind_n_page_offset ||
-+		    i + 1 > unbind_n_page_offset + unbind_n_pages) {
- 			data = map + i * page_size;
- 			igt_assert_eq(data->data, 0xc0ffee);
- 		}
-@@ -1511,13 +1524,13 @@ try_again_after_invalidate:
- 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
- 	if (flags & MAP_FLAG_USERPTR)
- 		xe_vm_bind_userptr_async(fd, vm, 0,
--					 addr + unbind_n_page_offfset * page_size,
--					 addr + unbind_n_page_offfset * page_size,
-+					 addr + unbind_n_page_offset * page_size,
-+					 addr + unbind_n_page_offset * page_size,
- 					 unbind_n_pages * page_size, sync, 1);
- 	else
- 		xe_vm_bind_async(fd, vm, 0, bo,
--				 unbind_n_page_offfset * page_size,
--				 addr + unbind_n_page_offfset * page_size,
-+				 unbind_n_page_offset * page_size,
-+				 addr + unbind_n_page_offset * page_size,
- 				 unbind_n_pages * page_size, sync, 1);
- 
- 	/* Verify we can use every page */
-@@ -1594,11 +1607,15 @@ try_again_after_invalidate:
-  * @userptr-one-partial:		userptr one partial
-  * @userptr-either-side-partial:	userptr either side partial
-  * @userptr-either-side-full:		userptr either side full
-+ * @either-side-partial-large-page-hammer:
-+ *					either side partial large page hammer
-+ * @either-side-partial-split-page-hammer:
-+ *					either side partial split page hammer
-  */
- 
- static void
- test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
--		     int bo_n_pages, int n_binds, int unbind_n_page_offfset,
-+		     int bo_n_pages, int n_binds, int unbind_n_page_offset,
- 		     int unbind_n_pages, unsigned int flags)
- {
- 	struct drm_xe_sync sync[2] = {
-@@ -1610,7 +1627,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 		.num_syncs = 2,
- 		.syncs = to_user_pointer(sync),
- 	};
--	uint64_t addr = 0x1a0000, base_addr = 0x1a0000;
-+	uint64_t addr = 0x1a00000, base_addr = 0x1a00000;
- 	uint32_t vm;
- 	uint32_t engine;
- 	size_t bo_size;
-@@ -1627,6 +1644,14 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 	struct thread_data t;
- 	pthread_barrier_t barrier;
- 	int exit = 0;
-+	int n_page_per_2mb = 0x200000 / xe_get_default_alignment(fd);
-+
-+	if (flags & MAP_FLAG_LARGE_PAGE) {
-+		bo_n_pages *= n_page_per_2mb;
-+		unbind_n_pages *= n_page_per_2mb;
-+		if (flags & MAP_FLAG_LARGE_PAGE_NO_SPLIT)
-+			unbind_n_page_offset *= n_page_per_2mb;
-+	}
- 
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
- 	bo_size = page_size * bo_n_pages;
-@@ -1721,13 +1746,13 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
- 	sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
- 	if (flags & MAP_FLAG_USERPTR)
- 		xe_vm_bind_userptr_async(fd, vm, 0, addr + bo_size +
--					 unbind_n_page_offfset * page_size,
--					 addr + unbind_n_page_offfset * page_size,
-+					 unbind_n_page_offset * page_size,
-+					 addr + unbind_n_page_offset * page_size,
- 					 unbind_n_pages * page_size, sync, 2);
- 	else
- 		xe_vm_bind_async(fd, vm, 0, bo1,
--				 unbind_n_page_offfset * page_size,
--				 addr + unbind_n_page_offfset * page_size,
-+				 unbind_n_page_offset * page_size,
-+				 addr + unbind_n_page_offset * page_size,
- 				 unbind_n_pages * page_size, sync, 2);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0, NULL));
-@@ -1826,7 +1851,7 @@ igt_main
- 		const char *name;
- 		int bo_n_pages;
- 		int n_binds;
--		int unbind_n_page_offfset;
-+		int unbind_n_page_offset;
- 		int unbind_n_pages;
- 		unsigned int flags;
- 	} munmap_sections[] = {
-@@ -1835,6 +1860,13 @@ igt_main
- 		{ "either-side-partial", 4, 2, 1, 2, 0 },
- 		{ "either-side-partial-hammer", 4, 2, 1, 2,
- 			MAP_FLAG_HAMMER_FIRST_PAGE },
-+		{ "either-side-partial-split-page-hammer", 4, 2, 1, 2,
-+			MAP_FLAG_HAMMER_FIRST_PAGE |
-+			MAP_FLAG_LARGE_PAGE },
-+		{ "either-side-partial-large-page-hammer", 4, 2, 1, 2,
-+			MAP_FLAG_HAMMER_FIRST_PAGE |
-+			MAP_FLAG_LARGE_PAGE |
-+			MAP_FLAG_LARGE_PAGE_NO_SPLIT },
- 		{ "either-side-full", 4, 4, 1, 2, 0 },
- 		{ "end", 4, 2, 0, 3, 0 },
- 		{ "front", 4, 2, 1, 3, 0 },
-@@ -1887,6 +1919,13 @@ igt_main
- 		{ "either-side-full", 4, 4, 1, 2, 0 },
- 		{ "either-side-partial-hammer", 4, 2, 1, 2,
- 			MAP_FLAG_HAMMER_FIRST_PAGE },
-+		{ "either-side-partial-split-page-hammer", 4, 2, 1, 2,
-+			MAP_FLAG_HAMMER_FIRST_PAGE |
-+			MAP_FLAG_LARGE_PAGE },
-+		{ "either-side-partial-large-page-hammer", 4, 2, 1, 2,
-+			MAP_FLAG_HAMMER_FIRST_PAGE |
-+			MAP_FLAG_LARGE_PAGE |
-+			MAP_FLAG_LARGE_PAGE_NO_SPLIT },
- 		{ "end", 4, 2, 0, 3, 0 },
- 		{ "front", 4, 2, 1, 3, 0 },
- 		{ "many-all", 4 * 8, 2 * 8, 0 * 8, 4 * 8, 0 },
-@@ -2111,7 +2150,7 @@ igt_main
- 			test_munmap_style_unbind(fd, hwe_non_copy,
- 						 s->bo_n_pages,
- 						 s->n_binds,
--						 s->unbind_n_page_offfset,
-+						 s->unbind_n_page_offset,
- 						 s->unbind_n_pages,
- 						 s->flags);
- 		}
-@@ -2125,7 +2164,7 @@ igt_main
- 			test_mmap_style_bind(fd, hwe_non_copy,
- 					     s->bo_n_pages,
- 					     s->n_binds,
--					     s->unbind_n_page_offfset,
-+					     s->unbind_n_page_offset,
- 					     s->unbind_n_pages,
- 					     s->flags);
- 		}
--- 
-2.34.1
+--
+Zbigniew
+
+> +	if (is_xe_device(fd)) {
+> +		buf->ptr = xe_bo_map(fd, buf->handle, buf->surface[0].size);
+> +		p = buf->ptr;
+> +	} else {
+> +		if (gem_has_llc(fd))
+> +			p = intel_buf_cpu_map(buf, write);
+> +		else
+> +			p = intel_buf_device_map(buf, write);
+> +	}
+>  	return p;
+>  }
+>  
+> @@ -3620,7 +3624,7 @@ gen12_test_mi_rpc(const struct intel_execution_engine2 *e)
+>  	intel_bb_flush_render(ibb);
+>  	intel_bb_sync(ibb);
+>  
+> -	intel_buf_cpu_map(buf, false);
+> +	buf_map(drm_fd, buf, false);
+>  	report32 = buf->ptr;
+>  	format_size_32 = format.size >> 2;
+>  	dump_report(report32, format_size_32, "mi-rpc");
+> -- 
+> 2.41.0
+> 
