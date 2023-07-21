@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B938A10E61C
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 834C310E613
  for <igt-dev@lists.freedesktop.org>; Fri, 21 Jul 2023 04:38:00 +0000 (UTC)
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Jul 2023 21:37:35 -0700
-Message-Id: <20230721043735.205229-5-matthew.brost@intel.com>
+Date: Thu, 20 Jul 2023 21:37:33 -0700
+Message-Id: <20230721043735.205229-3-matthew.brost@intel.com>
 In-Reply-To: <20230721043735.205229-1-matthew.brost@intel.com>
 References: <20230721043735.205229-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 5/5] xe_vm: add bind engine conflict section
+Subject: [igt-dev] [PATCH 3/5] xe_vm: Add mmap / munmap sections that split
+ large pages
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,98 +24,233 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Verify bind engines can't race and corrupt page tables.
+Splitting large pages involves using dma-resv slots for ordering, make
+sure this works.
 
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-of-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/xe/xe_vm.c | 43 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 36 insertions(+), 7 deletions(-)
+ tests/xe/xe_vm.c | 81 +++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 60 insertions(+), 21 deletions(-)
 
 diff --git a/tests/xe/xe_vm.c b/tests/xe/xe_vm.c
-index 36cd803577..315cb70094 100644
+index 434bdb3322..5fd511f0b8 100644
 --- a/tests/xe/xe_vm.c
 +++ b/tests/xe/xe_vm.c
-@@ -689,10 +689,18 @@ shared_pte_page(int fd, struct drm_xe_engine_class_instance *eci, int n_bo,
-  * Description: Test independent bind engines
-  * Functionality: bind engines
-  * Run type: BAT
-+ *
-+ * SUBTEST: bind-engines-conflict
-+ * Description: Test conflict bind engines
-+ * Functionality: bind engines
-+ * Run type: BAT
+@@ -1252,7 +1252,8 @@ static void *hammer_thread(void *tdata)
+ #define MAP_FLAG_USERPTR		(0x1 << 0)
+ #define MAP_FLAG_INVALIDATE		(0x1 << 1)
+ #define MAP_FLAG_HAMMER_FIRST_PAGE	(0x1 << 2)
+-
++#define MAP_FLAG_LARGE_PAGE		(0x1 << 3)
++#define MAP_FLAG_LARGE_PAGE_NO_SPLIT	(0x1 << 4)
+ 
+ /**
+  * SUBTEST: munmap-style-unbind-%s
+@@ -1305,12 +1306,16 @@ static void *hammer_thread(void *tdata)
+  *					userptr inval many either side full
+  * @userptr-inval-many-end:		userptr inval many end
+  * @userptr-inval-many-front:		userptr inval many front
++ * @either-side-partial-large-page-hammer:
++ *					either side partial large page hammer
++ * @either-side-partial-split-page-hammer:
++ *					either side partial split page hammer
   */
  
-+#define CONFLICT	(0x1 << 0)
-+
  static void
--test_bind_engines_independent(int fd, struct drm_xe_engine_class_instance *eci)
-+test_bind_engines_independent(int fd, struct drm_xe_engine_class_instance *eci,
-+			      unsigned int flags)
+ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
+ 			 int bo_n_pages, int n_binds,
+-			 int unbind_n_page_offfset, int unbind_n_pages,
++			 int unbind_n_page_offset, int unbind_n_pages,
+ 			 unsigned int flags)
  {
+ 	struct drm_xe_sync sync[2] = {
+@@ -1322,7 +1327,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
+ 		.num_syncs = 2,
+ 		.syncs = to_user_pointer(sync),
+ 	};
+-	uint64_t addr = 0x1a0000, base_addr = 0x1a0000;
++	uint64_t addr = 0x1a00000, base_addr = 0x1a00000;
  	uint32_t vm;
- 	uint64_t addr = 0x1a0000;
-@@ -759,7 +767,7 @@ test_bind_engines_independent(int fd, struct drm_xe_engine_class_instance *eci)
- 			xe_spin_wait_started(&data[i].spin);
- 
- 			/* Do bind to 1st engine blocked on cork */
--			addr += bo_size;
-+			addr += (flags & CONFLICT) ? (0x1 << 21) : bo_size;
- 			sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
- 			sync[1].handle = syncobjs[e];
- 			xe_vm_bind_async(fd, vm, bind_engines[e], bo, 0, addr,
-@@ -795,10 +803,20 @@ test_bind_engines_independent(int fd, struct drm_xe_engine_class_instance *eci)
- 		xe_exec(fd, &exec);
- 	}
- 
--	/* Verify initial bind, bind + write to 2nd engine done */
--	igt_assert(syncobj_wait(fd, &syncobjs[1], 1, INT64_MAX, 0, NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
--	igt_assert_eq(data[1].data, 0xc0ffee);
-+	if (!(flags & CONFLICT)) {
-+		/* Verify initial bind, bind + write to 2nd engine done */
-+		igt_assert(syncobj_wait(fd, &syncobjs[1], 1, INT64_MAX, 0,
-+					NULL));
-+		igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0,
-+					NULL));
-+		igt_assert_eq(data[1].data, 0xc0ffee);
-+	} else {
-+		/* Let jobs runs for a bit */
-+		usleep(100000);
-+		/* bind + write to 2nd engine waiting */
-+		igt_assert(!syncobj_wait(fd, &syncobjs[1], 1, 1, 0, NULL));
-+		igt_assert(!syncobj_wait(fd, &sync[0].handle, 1, 0, 0, NULL));
-+	}
- 
- 	/* Verify bind + write to 1st engine still inflight */
- 	igt_assert(!syncobj_wait(fd, &syncobjs[0], 1, 1, 0, NULL));
-@@ -811,6 +829,13 @@ test_bind_engines_independent(int fd, struct drm_xe_engine_class_instance *eci)
- 				NULL));
- 	igt_assert_eq(data[0].data, 0xc0ffee);
- 
-+	if (flags & CONFLICT) {
-+		/* Verify bind + write to 2nd engine done */
-+		igt_assert(syncobj_wait(fd, &syncobjs[1], 1, INT64_MAX, 0,
-+					NULL));
-+		igt_assert_eq(data[1].data, 0xc0ffee);
-+	}
+ 	uint32_t engine;
+ 	size_t bo_size;
+@@ -1340,6 +1345,14 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
+ 	struct thread_data t;
+ 	pthread_barrier_t barrier;
+ 	int exit = 0;
++	int n_page_per_2mb = 0x200000 / xe_get_default_alignment(fd);
 +
- 	syncobj_destroy(fd, sync[0].handle);
- 	sync[0].handle = syncobj_create(fd, 0);
++	if (flags & MAP_FLAG_LARGE_PAGE) {
++		bo_n_pages *= n_page_per_2mb;
++		unbind_n_pages *= n_page_per_2mb;
++		if (flags & MAP_FLAG_LARGE_PAGE_NO_SPLIT)
++			unbind_n_page_offset *= n_page_per_2mb;
++	}
+ 
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+ 	bo_size = page_size * bo_n_pages;
+@@ -1426,7 +1439,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
  	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
-@@ -2001,7 +2026,11 @@ igt_main
+ 	sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
+ 	xe_vm_unbind_async(fd, vm, 0, 0,
+-			   addr + unbind_n_page_offfset * page_size,
++			   addr + unbind_n_page_offset * page_size,
+ 			   unbind_n_pages * page_size, sync, 2);
  
- 	igt_subtest("bind-engines-independent")
- 		xe_for_each_hw_engine(fd, hwe)
--			test_bind_engines_independent(fd, hwe);
-+			test_bind_engines_independent(fd, hwe, 0);
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+@@ -1455,8 +1468,8 @@ try_again_after_invalidate:
+ 		data = map + i * page_size;
+ 		addr += page_size;
+ 
+-		if (i < unbind_n_page_offfset ||
+-		    i + 1 > unbind_n_page_offfset + unbind_n_pages) {
++		if (i < unbind_n_page_offset ||
++		    i + 1 > unbind_n_page_offset + unbind_n_pages) {
+ 			b = 0;
+ 			data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+ 			data->batch[b++] = sdi_addr;
+@@ -1481,8 +1494,8 @@ try_again_after_invalidate:
+ 
+ 	/* Verify all pages still bound written */
+ 	for (i = 0; i < n_binds; ++i) {
+-		if (i < unbind_n_page_offfset ||
+-		    i + 1 > unbind_n_page_offfset + unbind_n_pages) {
++		if (i < unbind_n_page_offset ||
++		    i + 1 > unbind_n_page_offset + unbind_n_pages) {
+ 			data = map + i * page_size;
+ 			igt_assert_eq(data->data, 0xc0ffee);
+ 		}
+@@ -1511,13 +1524,13 @@ try_again_after_invalidate:
+ 	sync[0].flags |= DRM_XE_SYNC_SIGNAL;
+ 	if (flags & MAP_FLAG_USERPTR)
+ 		xe_vm_bind_userptr_async(fd, vm, 0,
+-					 addr + unbind_n_page_offfset * page_size,
+-					 addr + unbind_n_page_offfset * page_size,
++					 addr + unbind_n_page_offset * page_size,
++					 addr + unbind_n_page_offset * page_size,
+ 					 unbind_n_pages * page_size, sync, 1);
+ 	else
+ 		xe_vm_bind_async(fd, vm, 0, bo,
+-				 unbind_n_page_offfset * page_size,
+-				 addr + unbind_n_page_offfset * page_size,
++				 unbind_n_page_offset * page_size,
++				 addr + unbind_n_page_offset * page_size,
+ 				 unbind_n_pages * page_size, sync, 1);
+ 
+ 	/* Verify we can use every page */
+@@ -1594,11 +1607,15 @@ try_again_after_invalidate:
+  * @userptr-one-partial:		userptr one partial
+  * @userptr-either-side-partial:	userptr either side partial
+  * @userptr-either-side-full:		userptr either side full
++ * @either-side-partial-large-page-hammer:
++ *					either side partial large page hammer
++ * @either-side-partial-split-page-hammer:
++ *					either side partial split page hammer
+  */
+ 
+ static void
+ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+-		     int bo_n_pages, int n_binds, int unbind_n_page_offfset,
++		     int bo_n_pages, int n_binds, int unbind_n_page_offset,
+ 		     int unbind_n_pages, unsigned int flags)
+ {
+ 	struct drm_xe_sync sync[2] = {
+@@ -1610,7 +1627,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+ 		.num_syncs = 2,
+ 		.syncs = to_user_pointer(sync),
+ 	};
+-	uint64_t addr = 0x1a0000, base_addr = 0x1a0000;
++	uint64_t addr = 0x1a00000, base_addr = 0x1a00000;
+ 	uint32_t vm;
+ 	uint32_t engine;
+ 	size_t bo_size;
+@@ -1627,6 +1644,14 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+ 	struct thread_data t;
+ 	pthread_barrier_t barrier;
+ 	int exit = 0;
++	int n_page_per_2mb = 0x200000 / xe_get_default_alignment(fd);
 +
-+	igt_subtest("bind-engines-conflict")
-+		xe_for_each_hw_engine(fd, hwe)
-+			test_bind_engines_independent(fd, hwe, CONFLICT);
++	if (flags & MAP_FLAG_LARGE_PAGE) {
++		bo_n_pages *= n_page_per_2mb;
++		unbind_n_pages *= n_page_per_2mb;
++		if (flags & MAP_FLAG_LARGE_PAGE_NO_SPLIT)
++			unbind_n_page_offset *= n_page_per_2mb;
++	}
  
- 	igt_subtest("bind-array-twice")
- 		xe_for_each_hw_engine(fd, hwe)
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_ASYNC_BIND_OPS, 0);
+ 	bo_size = page_size * bo_n_pages;
+@@ -1721,13 +1746,13 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+ 	sync[1].flags &= ~DRM_XE_SYNC_SIGNAL;
+ 	if (flags & MAP_FLAG_USERPTR)
+ 		xe_vm_bind_userptr_async(fd, vm, 0, addr + bo_size +
+-					 unbind_n_page_offfset * page_size,
+-					 addr + unbind_n_page_offfset * page_size,
++					 unbind_n_page_offset * page_size,
++					 addr + unbind_n_page_offset * page_size,
+ 					 unbind_n_pages * page_size, sync, 2);
+ 	else
+ 		xe_vm_bind_async(fd, vm, 0, bo1,
+-				 unbind_n_page_offfset * page_size,
+-				 addr + unbind_n_page_offfset * page_size,
++				 unbind_n_page_offset * page_size,
++				 addr + unbind_n_page_offset * page_size,
+ 				 unbind_n_pages * page_size, sync, 2);
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+ 	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0, NULL));
+@@ -1826,7 +1851,7 @@ igt_main
+ 		const char *name;
+ 		int bo_n_pages;
+ 		int n_binds;
+-		int unbind_n_page_offfset;
++		int unbind_n_page_offset;
+ 		int unbind_n_pages;
+ 		unsigned int flags;
+ 	} munmap_sections[] = {
+@@ -1835,6 +1860,13 @@ igt_main
+ 		{ "either-side-partial", 4, 2, 1, 2, 0 },
+ 		{ "either-side-partial-hammer", 4, 2, 1, 2,
+ 			MAP_FLAG_HAMMER_FIRST_PAGE },
++		{ "either-side-partial-split-page-hammer", 4, 2, 1, 2,
++			MAP_FLAG_HAMMER_FIRST_PAGE |
++			MAP_FLAG_LARGE_PAGE },
++		{ "either-side-partial-large-page-hammer", 4, 2, 1, 2,
++			MAP_FLAG_HAMMER_FIRST_PAGE |
++			MAP_FLAG_LARGE_PAGE |
++			MAP_FLAG_LARGE_PAGE_NO_SPLIT },
+ 		{ "either-side-full", 4, 4, 1, 2, 0 },
+ 		{ "end", 4, 2, 0, 3, 0 },
+ 		{ "front", 4, 2, 1, 3, 0 },
+@@ -1887,6 +1919,13 @@ igt_main
+ 		{ "either-side-full", 4, 4, 1, 2, 0 },
+ 		{ "either-side-partial-hammer", 4, 2, 1, 2,
+ 			MAP_FLAG_HAMMER_FIRST_PAGE },
++		{ "either-side-partial-split-page-hammer", 4, 2, 1, 2,
++			MAP_FLAG_HAMMER_FIRST_PAGE |
++			MAP_FLAG_LARGE_PAGE },
++		{ "either-side-partial-large-page-hammer", 4, 2, 1, 2,
++			MAP_FLAG_HAMMER_FIRST_PAGE |
++			MAP_FLAG_LARGE_PAGE |
++			MAP_FLAG_LARGE_PAGE_NO_SPLIT },
+ 		{ "end", 4, 2, 0, 3, 0 },
+ 		{ "front", 4, 2, 1, 3, 0 },
+ 		{ "many-all", 4 * 8, 2 * 8, 0 * 8, 4 * 8, 0 },
+@@ -2111,7 +2150,7 @@ igt_main
+ 			test_munmap_style_unbind(fd, hwe_non_copy,
+ 						 s->bo_n_pages,
+ 						 s->n_binds,
+-						 s->unbind_n_page_offfset,
++						 s->unbind_n_page_offset,
+ 						 s->unbind_n_pages,
+ 						 s->flags);
+ 		}
+@@ -2125,7 +2164,7 @@ igt_main
+ 			test_mmap_style_bind(fd, hwe_non_copy,
+ 					     s->bo_n_pages,
+ 					     s->n_binds,
+-					     s->unbind_n_page_offfset,
++					     s->unbind_n_page_offset,
+ 					     s->unbind_n_pages,
+ 					     s->flags);
+ 		}
 -- 
 2.34.1
