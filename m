@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7049010E0F7
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jul 2023 07:22:36 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 851BE10E63D
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Jul 2023 09:22:56 +0000 (UTC)
 From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Date: Fri, 21 Jul 2023 07:22:28 +0000
-Message-ID: <CY5PR11MB62119B8F043584731F58EA31953FA@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230718110852.2965553-1-anshuman.gupta@intel.com>
- <20230718110852.2965553-4-anshuman.gupta@intel.com>
- <ZLmiL9Nq5P3yZZxS@intel.com>
-In-Reply-To: <ZLmiL9Nq5P3yZZxS@intel.com>
+To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Fri, 21 Jul 2023 09:22:52 +0000
+Message-ID: <CY5PR11MB6211B99539C0E65F73CD4081953FA@CY5PR11MB6211.namprd11.prod.outlook.com>
+References: <20230720043015.1677140-1-riana.tauro@intel.com>
+In-Reply-To: <20230720043015.1677140-1-riana.tauro@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] test/xe_pm: Add
- vram_d3cold_threshold subtest
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add a test that validates GT
+ C0 on exec
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,8 +22,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Nilawar,
- Badal" <badal.nilawar@intel.com>
+Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -32,179 +30,101 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 > -----Original Message-----
-> From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> Sent: Friday, July 21, 2023 2:38 AM
-> To: Gupta, Anshuman <anshuman.gupta@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Dixit, Ashutosh
-> <ashutosh.dixit@intel.com>; Nilawar, Badal <badal.nilawar@intel.com>;
-> Tauro, Riana <riana.tauro@intel.com>
-> Subject: Re: [PATCH i-g-t v3 3/3] test/xe_pm: Add vram_d3cold_threshold
-> subtest
+> From: Tauro, Riana <riana.tauro@intel.com>
+> Sent: Thursday, July 20, 2023 10:00 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
+> <anshuman.gupta@intel.com>; Dixit, Ashutosh <ashutosh.dixit@intel.com>;
+> Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Nilawar, Badal
+> <badal.nilawar@intel.com>; kamil.konieczny@linux.intel.com
+> Subject: [PATCH i-g-t] tests/xe: Add a test that validates GT C0 on exec
 >=20
-> On Tue, Jul 18, 2023 at 04:38:52PM +0530, Anshuman Gupta wrote:
-> > Adding a vram_d3cold_threshold subtest, which creates a Xe bo and set
-> > the vram_d3cold_threshold according to vram used and bo size.
-> > Test setups the d3cold and expect card to be limited to d3hot.
-> >
-> > v2:
-> > - Add subtest doc.
-> > v3:
-> > - skip the test on igfx. [Riana]
-> > - Test doc enhancement. [Riana]
-> > - Create the bo before vram query. [Riana]
-> > - Use xe_bo_map insead of xe_bo_mmap_offset and mmap. [Riana]
-> > - Close the bo handle. [Riana]
-> >
-> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > ---
-> >  tests/xe/xe_pm.c | 82
-> > ++++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 82 insertions(+)
-> >
-> > diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c index
-> > 11a4c3705..a8257b13c 100644
-> > --- a/tests/xe/xe_pm.c
-> > +++ b/tests/xe/xe_pm.c
-> > @@ -20,6 +20,7 @@
-> >  #include "lib/igt_device.h"
-> >  #include "lib/igt_kms.h"
-> >  #include "lib/igt_pm.h"
-> > +#include "lib/igt_sysfs.h"
-> >  #include "lib/igt_syncobj.h"
-> >  #include "lib/intel_reg.h"
-> >
-> > @@ -31,6 +32,8 @@
-> >  #define NO_SUSPEND -1
-> >  #define NO_RPM -1
-> >
-> > +#define SIZE (4096 * 1024)
-> > +
-> >  typedef struct {
-> >  	int fd_xe;
-> >  	struct pci_device *pci_xe;
-> > @@ -77,6 +80,22 @@ static void set_d3cold_allowed(struct pci_device
-> *pci,
-> >  	close(fd);
-> >  }
-> >
-> > +static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
-> > +{
-> > +	char path[64];
-> > +	int ret;
-> > +
-> > +	sprintf(path, "device/vram_d3cold_threshold");
-> > +
-> > +	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
-> > +		ret =3D igt_sysfs_printf(sysfs, path, "%lu", threshold);
-> > +	else
-> > +		igt_warn("vram_d3cold_threshold is not present\n");
-> > +
-> > +	igt_info("ret value %d", ret);
-> > +	igt_assert(ret > 0);
-> > +}
-> > +
-> >  static bool setup_d3(device_t device, enum igt_acpi_d_state state)  {
-> >  	igt_dpms_turn_off_display(device.fd_xe);
-> > @@ -349,6 +368,64 @@ NULL));
-> >  		igt_assert(in_d3(device, d_state));  }
-> >
-> > +/**
-> > + * SUBTEST: vram-d3cold-threshold
-> > + * Description:
-> > + *	Validate whether card is limited to d3hot while vram used
-> > + *	is greater than vram_d3cold_threshold.
-> > + * Run type: FULL
-> > + */
-> > +static void test_vram_d3cold_threshold(device_t device) {
-> > +	struct drm_xe_query_mem_usage *mem_usage;
-> > +	struct drm_xe_device_query query =3D {
-> > +		.extensions =3D 0,
-> > +		.query =3D DRM_XE_DEVICE_QUERY_MEM_USAGE,
-> > +		.size =3D 0,
-> > +		.data =3D 0,
-> > +	};
-> > +	uint64_t vram_used_mb =3D 0, vram_total_mb =3D 0, threshold;
-> > +	uint32_t bo, flags;
-> > +	void *map;
-> > +	int i, sysfs_fd;
-> > +
-> > +	flags =3D vram_memory(device.fd_xe, 0);
-> > +	igt_require_f(flags, "Device doesn't support vram memory
-> region\n");
-> > +
-> > +	igt_assert_eq(igt_ioctl(device.fd_xe,
-> DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> > +	igt_assert_neq(query.size, 0);
-> > +
-> > +	mem_usage =3D malloc(query.size);
-> > +	igt_assert(mem_usage);
-> > +
-> > +	query.data =3D to_user_pointer(mem_usage);
-> > +	igt_assert_eq(igt_ioctl(device.fd_xe,
-> DRM_IOCTL_XE_DEVICE_QUERY,
-> > +&query), 0);
-> > +
-> > +	for (i =3D 0; i < mem_usage->num_regions; i++) {
-> > +		if (mem_usage->regions[i].mem_class =3D=3D
-> XE_MEM_REGION_CLASS_VRAM) {
-> > +			vram_used_mb +=3D  (mem_usage->regions[i].used /
-> (1024 * 1024));
-> > +			vram_total_mb +=3D (mem_usage-
-> >regions[i].total_size / (1024 * 1024));
-> > +		}
-> > +	}
-> > +
-> > +	threshold =3D vram_used_mb;
-> > +	igt_require(threshold < vram_total_mb);
-> > +
-> > +	bo =3D xe_bo_create_flags(device.fd_xe, 0, SIZE, flags);
-> > +	map =3D xe_bo_map(device.fd_xe, bo, SIZE);
-> > +	memset(map, 0, SIZE);
-> > +	munmap(map, SIZE);
-> > +	sysfs_fd =3D igt_sysfs_open(device.fd_xe);
-> > +	set_vram_d3cold_threshold(sysfs_fd, threshold);
-> > +	close(sysfs_fd);
-> > +
-> > +	/* Setup D3Cold but card should be in D3hot */
-> > +	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
->=20
-> should we add some wait here to ensure we gave the proper time for
-> everything to settle?
->=20
-> > +	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-> > +	igt_assert(out_of_d3(device, IGT_ACPI_D3Cold));
-> > +	gem_close(device.fd_xe, bo);
-> > +}
-> > +
-> >  igt_main
-> >  {
-> >  	struct drm_xe_engine_class_instance *hwe; @@ -449,6 +526,11 @@
-> > igt_main
-> >  		}
-> >  	}
-> >
-> > +	igt_describe("Validate whether card is limited to d3hot, if vram used
-> > vram threshold");
-> > +	igt_subtest("vram-d3cold-threshold") {
-> > +		test_vram_d3cold_threshold(device);
-> > +	}
->=20
-> we probably need the other test and confirming that we are really getting
-> d3cold after touching this sysfs entry.
->=20
-> With the kernel series I just sent that should work.
-Shall we improvise this test to test d3cold again after freeing the xe bo ?
-Thanks,
+> Add a test that validates if GT is in C0 while running a spinner on an en=
+gine of
+> the gt
+We should have a test as well to test opportunistic RC6 during workload exe=
+cution ?
+This is a negative test, not sure if this is going to fail.
+Br,
 Anshuman.
 >=20
-> but let's start with this:
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> ---
+>  tests/xe/xe_pm_residency.c | 39
+> ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
 >=20
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+> index a20c4449c..7614af761 100644
+> --- a/tests/xe/xe_pm_residency.c
+> +++ b/tests/xe/xe_pm_residency.c
+> @@ -14,6 +14,7 @@
+>  #include "igt.h"
+>  #include "igt_sysfs.h"
 >=20
-> > +
-> >  	igt_fixture {
-> >  		set_d3cold_allowed(device.pci_xe, d3cold_allowed);
-> >  		igt_restore_runtime_pm();
-> > --
-> > 2.25.1
-> >
+> +#include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>=20
+>  #define SLEEP_DURATION 3000 /* in milliseconds */ @@ -76,6 +77,38 @@
+> static unsigned long read_idle_residency(int fd, int gt)
+>  	return residency;
+>  }
+>=20
+> +/**
+> + * SUBTEST: gt-c0-on-exec
+> + * Description: Validate if GT is in C0 while running a spinner
+> + *		on an engine of that GT
+> + * Run type: FULL
+> + */
+> +static void test_c0_exec(int fd, struct drm_xe_engine_class_instance
+> +*hwe) {
+> +	uint64_t ahnd;
+> +	unsigned int engine;
+> +	uint32_t vm;
+> +	igt_spin_t *spin;
+> +
+> +	/* Start with GT in C6 */
+> +	igt_assert_f(igt_wait(is_gt_in_c6(fd, hwe->gt_id), 1000, 1), "GT is
+> +not in C6\n");
+> +
+> +	igt_debug("Run on engine: %s:%d\n",
+> +		  xe_engine_class_string(hwe->engine_class), hwe-
+> >engine_instance);
+> +	vm =3D xe_vm_create(fd, 0, 0);
+> +	engine =3D xe_engine_create(fd, vm, hwe, 0);
+> +	ahnd =3D intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+> +	spin =3D igt_spin_new(fd, .ahnd =3D ahnd, .engine =3D engine, .vm =3D v=
+m);
+> +
+> +	/* GT should be in C0 when busy */
+> +	igt_assert_f(!is_gt_in_c6(fd, hwe->gt_id), "GT in C6\n");
+> +
+> +	igt_spin_free(fd, spin);
+> +	put_ahnd(ahnd);
+> +	xe_engine_destroy(fd, engine);
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+>  /**
+>   * SUBTEST: idle-residency
+>   * Description: basic residency test to validate idle residency @@ -101,=
+12
+> +134,18 @@ static void test_idle_residency(int fd, int gt)  igt_main  {
+>  	int fd, gt;
+> +	struct drm_xe_engine_class_instance *hwe;
+>=20
+>  	igt_fixture {
+>  		fd =3D drm_open_driver(DRIVER_XE);
+>  		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+>  	}
+>=20
+> +	igt_describe("Validate GT C0 on exec");
+> +	igt_subtest("gt-c0-on-exec")
+> +		xe_for_each_hw_engine(fd, hwe)
+> +			test_c0_exec(fd, hwe);
+> +
+>  	igt_describe("Validate GT C6 on idle");
+>  	igt_subtest("gt-c6-on-idle")
+>  		xe_for_each_gt(fd, gt)
+> --
+> 2.40.0
