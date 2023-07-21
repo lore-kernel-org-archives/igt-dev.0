@@ -4,12 +4,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Matthew Auld" <matthew.auld@intel.com>
-Date: Fri, 21 Jul 2023 17:02:26 -0000
-Message-ID: <168995894678.22548.147506729767394881@emeril.freedesktop.org>
+Date: Fri, 21 Jul 2023 17:07:19 -0000
+Message-ID: <168995923979.22548.6586161082243388617@emeril.freedesktop.org>
 References: <20230721151528.495893-1-matthew.auld@intel.com>
 In-Reply-To: <20230721151528.495893-1-matthew.auld@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJR1Qg?=
- =?utf-8?q?bits_for_small-bar_=28rev6=29?=
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
+ =?utf-8?q?GT_bits_for_small-bar_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,62 +27,101 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: IGT bits for small-bar (rev6)
 URL   : https://patchwork.freedesktop.org/series/115786/
-State : failure
+State : warning
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-602cdd3c87fad86cab8b15fe4242f2a119ce48df lib: Make igt_while_interruptible() thread-safe
+Pipeline status: FAILED.
 
-Tail of build.log:
-[310/1616] Compiling C object 'lib/76b5a35@@igt-xe_xe_compute_c@sta/xe_xe_compute.c.o'.
-[311/1616] Compiling C object 'lib/76b5a35@@igt-igt_device_scan_c@sta/igt_device_scan.c.o'.
-[312/1616] Compiling C object 'lib/76b5a35@@igt-igt_frame_c@sta/igt_frame.c.o'.
-[313/1616] Compiling C object 'lib/76b5a35@@igt-igt_draw_c@sta/igt_draw.c.o'.
-[314/1616] Compiling C object 'tests/59830eb@@kms_selftest@exe/kms_selftest.c.o'.
-[315/1616] Compiling C object 'lib/76b5a35@@igt-igt_v3d_c@sta/igt_v3d.c.o'.
-[316/1616] Compiling C object 'tests/59830eb@@kms_scaling_modes@exe/kms_scaling_modes.c.o'.
-[317/1616] Compiling C object 'tests/59830eb@@kms_sysfs_edid_timing@exe/kms_sysfs_edid_timing.c.o'.
-[318/1616] Compiling C object 'lib/76b5a35@@igt-gpu_cmds_c@sta/gpu_cmds.c.o'.
-[319/1616] Compiling C object 'lib/76b5a35@@igt-igt_chamelium_stream_c@sta/igt_chamelium_stream.c.o'.
-[320/1616] Compiling C object 'lib/76b5a35@@igt-igt_alsa_c@sta/igt_alsa.c.o'.
-[321/1616] Compiling C object 'tests/59830eb@@kms_rmfb@exe/kms_rmfb.c.o'.
-[322/1616] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen7_c@sta/rendercopy_gen7.c.o'.
-[323/1616] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen6_c@sta/rendercopy_gen6.c.o'.
-[324/1616] Compiling C object 'tests/59830eb@@kms_plane_lowres@exe/kms_plane_lowres.c.o'.
-[325/1616] Compiling C object 'lib/76b5a35@@igt-igt_audio_c@sta/igt_audio.c.o'.
-[326/1616] Compiling C object 'tests/59830eb@@kms_tv_load_detect@exe/kms_tv_load_detect.c.o'.
-[327/1616] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
-[328/1616] Compiling C object 'tests/59830eb@@panfrost_prime@exe/panfrost_prime.c.o'.
-[329/1616] Compiling C object 'lib/76b5a35@@igt-intel_blt_c@sta/intel_blt.c.o'.
-[330/1616] Compiling C object 'tests/59830eb@@kms_sequence@exe/kms_sequence.c.o'.
-[331/1616] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
-[332/1616] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
-[333/1616] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
-[334/1616] Compiling C object 'tests/59830eb@@kms_prop_blob@exe/kms_prop_blob.c.o'.
-[335/1616] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
-[336/1616] Compiling C object 'tests/59830eb@@kms_vrr@exe/kms_vrr.c.o'.
-[337/1616] Compiling C object 'tests/59830eb@@kms_prime@exe/kms_prime.c.o'.
-[338/1616] Generating i915-perf-registers-acmgt3 with a custom command.
-[339/1616] Compiling C object 'tests/59830eb@@kms_vblank@exe/kms_vblank.c.o'.
-[340/1616] Compiling C object 'tests/59830eb@@kms_writeback@exe/kms_writeback.c.o'.
-[341/1616] Compiling C object 'tests/59830eb@@kms_plane_alpha_blend@exe/kms_plane_alpha_blend.c.o'.
-[342/1616] Compiling C object 'tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o'.
-[343/1616] Compiling C object 'tests/59830eb@@kms_setmode@exe/kms_setmode.c.o'.
-[344/1616] Compiling C object 'tests/59830eb@@kms_properties@exe/kms_properties.c.o'.
-[345/1616] Compiling C object 'tests/59830eb@@kms_rotation_crc@exe/kms_rotation_crc.c.o'.
-[346/1616] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
-[347/1616] Compiling C object 'tests/59830eb@@kms_universal_plane@exe/kms_universal_plane.c.o'.
-[348/1616] Generating i915-perf-metrics-acmgt3 with a custom command.
-[349/1616] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
-[350/1616] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
-[351/1616] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
-[352/1616] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
-[353/1616] Compiling C object 'lib/76b5a35@@igt-igt_chamelium_c@sta/igt_chamelium.c.o'.
-[354/1616] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
-[355/1616] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
-[356/1616] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
-[357/1616] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
-[358/1616] Generating i915-perf-equations with a custom command.
-ninja: build stopped: subcommand failed.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/941636 for the overview.
 
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45944581):
+  time="2023-07-21T17:02:24Z" level=fatal msg="Error determining repository tags: Invalid status code returned when fetching tags list 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:8eb6dba554cffc072c7a6c696c8a23fc311e543399d84ab3ebc55c07ab54414f
+  Copying config sha256:1de12428f6f470169eba22c18e53addae00d60e92ebe96b2c3bdd99c17c34010
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-07-21T17:02:28Z" level=warning msg="signal: killed"
+  time="2023-07-21T17:02:28Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1689958949:step_script
+  section_start:1689958949:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1689958949:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45944583):
+  time="2023-07-21T17:02:23Z" level=fatal msg="Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  Building!
+  STEP 1: FROM debian:buster
+  Getting image source signatures
+  Copying blob sha256:8eb6dba554cffc072c7a6c696c8a23fc311e543399d84ab3ebc55c07ab54414f
+  Copying config sha256:1de12428f6f470169eba22c18e53addae00d60e92ebe96b2c3bdd99c17c34010
+  Writing manifest to image destination
+  Storing signatures
+  STEP 2: RUN apt-get update
+  error running container: error creating container for [/bin/sh -c apt-get update]: time="2023-07-21T17:02:26Z" level=warning msg="signal: killed"
+  time="2023-07-21T17:02:26Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
+  container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\""
+  : exit status 1
+  Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+  section_end:1689958947:step_script
+  section_start:1689958947:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1689958949:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45944584):
+      ],
+      "Created": "2021-01-22T08:26:53.390348642Z",
+      "DockerVersion": "",
+      "Labels": {},
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Layers": [
+          "sha256:04854e5e3796b945522a085073b5a49cadad51bd1c5414c91654fa3d63d8db4d"
+      ]
+  }
+  Skipping, already built
+  Getting image source signatures
+  Copying blob sha256:04854e5e3796b945522a085073b5a49cadad51bd1c5414c91654fa3d63d8db4d
+  time="2023-07-21T17:02:25Z" level=fatal msg="Error reading config blob sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448: Invalid status code returned when fetching blob 500 (Internal Server Error)" 
+  section_end:1689958946:step_script
+  section_start:1689958946:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1689958947:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/45944585):
+      "Created": "2019-11-11T12:55:05.209459628Z",
+      "DockerVersion": "",
+      "Labels": {
+          "maintainer": "Clement Verna \u003ccverna@fedoraproject.org\u003e"
+      },
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Layers": [
+          "sha256:b39735705e69a2516323755ff4698ea5cd86b08b31d8c8287bc83d76d34c3bfc"
+      ]
+  }
+  Skipping, already built
+  Getting image source signatures
+  time="2023-07-21T17:02:25Z" level=fatal msg="Error trying to reuse blob sha256:b39735705e69a2516323755ff4698ea5cd86b08b31d8c8287bc83d76d34c3bfc at destination: failed to read from destination repository gfx-ci/igt-ci-tags/build-fedora: 500 (Internal Server Error)" 
+  section_end:1689958946:step_script
+  section_start:1689958946:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1689958950:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/941636
