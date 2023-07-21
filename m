@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E5EF510E0F7
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jul 2023 07:17:12 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7049010E0F7
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Jul 2023 07:22:36 +0000 (UTC)
 From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Nilawar, Badal" <badal.nilawar@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 21 Jul 2023 07:17:09 +0000
-Message-ID: <CY5PR11MB6211A2B8D751ED6E66188DA5953FA@CY5PR11MB6211.namprd11.prod.outlook.com>
+To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Date: Fri, 21 Jul 2023 07:22:28 +0000
+Message-ID: <CY5PR11MB62119B8F043584731F58EA31953FA@CY5PR11MB6211.namprd11.prod.outlook.com>
 References: <20230718110852.2965553-1-anshuman.gupta@intel.com>
  <20230718110852.2965553-4-anshuman.gupta@intel.com>
- <ec3724e4-7512-6aae-d167-e07dc75385c0@intel.com>
-In-Reply-To: <ec3724e4-7512-6aae-d167-e07dc75385c0@intel.com>
+ <ZLmiL9Nq5P3yZZxS@intel.com>
+In-Reply-To: <ZLmiL9Nq5P3yZZxS@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] test/xe_pm: Add
  vram_d3cold_threshold subtest
@@ -24,100 +23,188 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Nilawar,
+ Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTmlsYXdhciwgQmFkYWwg
-PGJhZGFsLm5pbGF3YXJAaW50ZWwuY29tPg0KPiBTZW50OiBGcmlkYXksIEp1bHkgMjEsIDIwMjMg
-OTozNSBBTQ0KPiBUbzogR3VwdGEsIEFuc2h1bWFuIDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+
-OyBpZ3QtDQo+IGRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IERpeGl0LCBBc2h1dG9z
-aCA8YXNodXRvc2guZGl4aXRAaW50ZWwuY29tPjsgVml2aSwgUm9kcmlnbw0KPiA8cm9kcmlnby52
-aXZpQGludGVsLmNvbT47IFRhdXJvLCBSaWFuYSA8cmlhbmEudGF1cm9AaW50ZWwuY29tPg0KPiBT
-dWJqZWN0OiBSZTogW1BBVENIIGktZy10IHYzIDMvM10gdGVzdC94ZV9wbTogQWRkIHZyYW1fZDNj
-b2xkX3RocmVzaG9sZA0KPiBzdWJ0ZXN0DQo+IA0KPiBIaSBBbnNodW1hbiwNCj4gDQo+IE9uIDE4
-LTA3LTIwMjMgMTY6MzgsIEFuc2h1bWFuIEd1cHRhIHdyb3RlOg0KPiA+IEFkZGluZyBhIHZyYW1f
-ZDNjb2xkX3RocmVzaG9sZCBzdWJ0ZXN0LCB3aGljaCBjcmVhdGVzIGEgWGUgYm8gYW5kIHNldA0K
-PiA+IHRoZSB2cmFtX2QzY29sZF90aHJlc2hvbGQgYWNjb3JkaW5nIHRvIHZyYW0gdXNlZCBhbmQg
-Ym8gc2l6ZS4NCj4gPiBUZXN0IHNldHVwcyB0aGUgZDNjb2xkIGFuZCBleHBlY3QgY2FyZCB0byBi
-ZSBsaW1pdGVkIHRvIGQzaG90Lg0KPiA+DQo+ID4gdjI6DQo+ID4gLSBBZGQgc3VidGVzdCBkb2Mu
-DQo+ID4gdjM6DQo+ID4gLSBza2lwIHRoZSB0ZXN0IG9uIGlnZnguIFtSaWFuYV0NCj4gPiAtIFRl
-c3QgZG9jIGVuaGFuY2VtZW50LiBbUmlhbmFdDQo+ID4gLSBDcmVhdGUgdGhlIGJvIGJlZm9yZSB2
-cmFtIHF1ZXJ5LiBbUmlhbmFdDQo+ID4gLSBVc2UgeGVfYm9fbWFwIGluc2VhZCBvZiB4ZV9ib19t
-bWFwX29mZnNldCBhbmQgbW1hcC4gW1JpYW5hXQ0KPiA+IC0gQ2xvc2UgdGhlIGJvIGhhbmRsZS4g
-W1JpYW5hXQ0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogQW5zaHVtYW4gR3VwdGEgPGFuc2h1bWFu
-Lmd1cHRhQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgIHRlc3RzL3hlL3hlX3BtLmMgfCA4Mg0K
-PiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAg
-IDEgZmlsZSBjaGFuZ2VkLCA4MiBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEv
-dGVzdHMveGUveGVfcG0uYyBiL3Rlc3RzL3hlL3hlX3BtLmMgaW5kZXgNCj4gPiAxMWE0YzM3MDUu
-LmE4MjU3YjEzYyAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy94ZS94ZV9wbS5jDQo+ID4gKysrIGIv
-dGVzdHMveGUveGVfcG0uYw0KPiA+IEBAIC0yMCw2ICsyMCw3IEBADQo+ID4gICAjaW5jbHVkZSAi
-bGliL2lndF9kZXZpY2UuaCINCj4gPiAgICNpbmNsdWRlICJsaWIvaWd0X2ttcy5oIg0KPiA+ICAg
-I2luY2x1ZGUgImxpYi9pZ3RfcG0uaCINCj4gPiArI2luY2x1ZGUgImxpYi9pZ3Rfc3lzZnMuaCIN
-Cj4gPiAgICNpbmNsdWRlICJsaWIvaWd0X3N5bmNvYmouaCINCj4gPiAgICNpbmNsdWRlICJsaWIv
-aW50ZWxfcmVnLmgiDQo+ID4NCj4gPiBAQCAtMzEsNiArMzIsOCBAQA0KPiA+ICAgI2RlZmluZSBO
-T19TVVNQRU5EIC0xDQo+ID4gICAjZGVmaW5lIE5PX1JQTSAtMQ0KPiA+DQo+ID4gKyNkZWZpbmUg
-U0laRSAoNDA5NiAqIDEwMjQpDQo+ID4gKw0KPiA+ICAgdHlwZWRlZiBzdHJ1Y3Qgew0KPiA+ICAg
-CWludCBmZF94ZTsNCj4gPiAgIAlzdHJ1Y3QgcGNpX2RldmljZSAqcGNpX3hlOw0KPiA+IEBAIC03
-Nyw2ICs4MCwyMiBAQCBzdGF0aWMgdm9pZCBzZXRfZDNjb2xkX2FsbG93ZWQoc3RydWN0IHBjaV9k
-ZXZpY2UNCj4gKnBjaSwNCj4gPiAgIAljbG9zZShmZCk7DQo+ID4gICB9DQo+ID4NCj4gPiArc3Rh
-dGljIHZvaWQgc2V0X3ZyYW1fZDNjb2xkX3RocmVzaG9sZChpbnQgc3lzZnMsIHVpbnQ2NF90IHRo
-cmVzaG9sZCkNCj4gPiArew0KPiA+ICsJY2hhciBwYXRoWzY0XTsNCj4gPiArCWludCByZXQ7DQo+
-ID4gKw0KPiA+ICsJc3ByaW50ZihwYXRoLCAiZGV2aWNlL3ZyYW1fZDNjb2xkX3RocmVzaG9sZCIp
-Ow0KPiA+ICsNCj4gPiArCWlmICghZmFjY2Vzc2F0KHN5c2ZzLCBwYXRoLCBSX09LIHwgV19PSywg
-MCkpDQo+ID4gKwkJcmV0ID0gaWd0X3N5c2ZzX3ByaW50ZihzeXNmcywgcGF0aCwgIiVsdSIsIHRo
-cmVzaG9sZCk7DQo+ID4gKwllbHNlDQo+ID4gKwkJaWd0X3dhcm4oInZyYW1fZDNjb2xkX3RocmVz
-aG9sZCBpcyBub3QgcHJlc2VudFxuIik7DQo+ID4gKw0KPiA+ICsJaWd0X2luZm8oInJldCB2YWx1
-ZSAlZCIsIHJldCk7DQo+ID4gKwlpZ3RfYXNzZXJ0KHJldCA+IDApOw0KPiA+ICt9DQo+ID4gKw0K
-PiA+ICAgc3RhdGljIGJvb2wgc2V0dXBfZDMoZGV2aWNlX3QgZGV2aWNlLCBlbnVtIGlndF9hY3Bp
-X2Rfc3RhdGUgc3RhdGUpDQo+ID4gICB7DQo+ID4gICAJaWd0X2RwbXNfdHVybl9vZmZfZGlzcGxh
-eShkZXZpY2UuZmRfeGUpOw0KPiA+IEBAIC0zNDksNiArMzY4LDY0IEBAIE5VTEwpKTsNCj4gPiAg
-IAkJaWd0X2Fzc2VydChpbl9kMyhkZXZpY2UsIGRfc3RhdGUpKTsNCj4gPiAgIH0NCj4gPg0KPiA+
-ICsvKioNCj4gPiArICogU1VCVEVTVDogdnJhbS1kM2NvbGQtdGhyZXNob2xkDQo+ID4gKyAqIERl
-c2NyaXB0aW9uOg0KPiA+ICsgKglWYWxpZGF0ZSB3aGV0aGVyIGNhcmQgaXMgbGltaXRlZCB0byBk
-M2hvdCB3aGlsZSB2cmFtIHVzZWQNCj4gPiArICoJaXMgZ3JlYXRlciB0aGFuIHZyYW1fZDNjb2xk
-X3RocmVzaG9sZC4NCj4gPiArICogUnVuIHR5cGU6IEZVTEwNCj4gPiArICovDQo+ID4gK3N0YXRp
-YyB2b2lkIHRlc3RfdnJhbV9kM2NvbGRfdGhyZXNob2xkKGRldmljZV90IGRldmljZSkgew0KPiA+
-ICsJc3RydWN0IGRybV94ZV9xdWVyeV9tZW1fdXNhZ2UgKm1lbV91c2FnZTsNCj4gPiArCXN0cnVj
-dCBkcm1feGVfZGV2aWNlX3F1ZXJ5IHF1ZXJ5ID0gew0KPiA+ICsJCS5leHRlbnNpb25zID0gMCwN
-Cj4gPiArCQkucXVlcnkgPSBEUk1fWEVfREVWSUNFX1FVRVJZX01FTV9VU0FHRSwNCj4gPiArCQku
-c2l6ZSA9IDAsDQo+ID4gKwkJLmRhdGEgPSAwLA0KPiA+ICsJfTsNCj4gPiArCXVpbnQ2NF90IHZy
-YW1fdXNlZF9tYiA9IDAsIHZyYW1fdG90YWxfbWIgPSAwLCB0aHJlc2hvbGQ7DQo+ID4gKwl1aW50
-MzJfdCBibywgZmxhZ3M7DQo+ID4gKwl2b2lkICptYXA7DQo+ID4gKwlpbnQgaSwgc3lzZnNfZmQ7
-DQo+ID4gKw0KPiA+ICsJZmxhZ3MgPSB2cmFtX21lbW9yeShkZXZpY2UuZmRfeGUsIDApOw0KPiA+
-ICsJaWd0X3JlcXVpcmVfZihmbGFncywgIkRldmljZSBkb2Vzbid0IHN1cHBvcnQgdnJhbSBtZW1v
-cnkNCj4gcmVnaW9uXG4iKTsNCj4gPiArDQo+ID4gKwlpZ3RfYXNzZXJ0X2VxKGlndF9pb2N0bChk
-ZXZpY2UuZmRfeGUsDQo+IERSTV9JT0NUTF9YRV9ERVZJQ0VfUVVFUlksICZxdWVyeSksIDApOw0K
-PiA+ICsJaWd0X2Fzc2VydF9uZXEocXVlcnkuc2l6ZSwgMCk7DQo+ID4gKw0KPiA+ICsJbWVtX3Vz
-YWdlID0gbWFsbG9jKHF1ZXJ5LnNpemUpOw0KPiA+ICsJaWd0X2Fzc2VydChtZW1fdXNhZ2UpOw0K
-PiA+ICsNCj4gPiArCXF1ZXJ5LmRhdGEgPSB0b191c2VyX3BvaW50ZXIobWVtX3VzYWdlKTsNCj4g
-PiArCWlndF9hc3NlcnRfZXEoaWd0X2lvY3RsKGRldmljZS5mZF94ZSwNCj4gRFJNX0lPQ1RMX1hF
-X0RFVklDRV9RVUVSWSwNCj4gPiArJnF1ZXJ5KSwgMCk7DQo+ID4gKw0KPiA+ICsJZm9yIChpID0g
-MDsgaSA8IG1lbV91c2FnZS0+bnVtX3JlZ2lvbnM7IGkrKykgew0KPiA+ICsJCWlmIChtZW1fdXNh
-Z2UtPnJlZ2lvbnNbaV0ubWVtX2NsYXNzID09DQo+IFhFX01FTV9SRUdJT05fQ0xBU1NfVlJBTSkg
-ew0KPiA+ICsJCQl2cmFtX3VzZWRfbWIgKz0gIChtZW1fdXNhZ2UtPnJlZ2lvbnNbaV0udXNlZCAv
-DQo+ICgxMDI0ICogMTAyNCkpOw0KPiA+ICsJCQl2cmFtX3RvdGFsX21iICs9IChtZW1fdXNhZ2Ut
-DQo+ID5yZWdpb25zW2ldLnRvdGFsX3NpemUgLyAoMTAyNCAqIDEwMjQpKTsNCj4gPiArCQl9DQo+
-ID4gKwl9DQo+ID4gKw0KPiA+ICsJdGhyZXNob2xkID0gdnJhbV91c2VkX21iOw0KPiA+ICsJaWd0
-X3JlcXVpcmUodGhyZXNob2xkIDwgdnJhbV90b3RhbF9tYik7DQo+ID4gKw0KPiA+ICsJYm8gPSB4
-ZV9ib19jcmVhdGVfZmxhZ3MoZGV2aWNlLmZkX3hlLCAwLCBTSVpFLCBmbGFncyk7DQo+ID4gKwlt
-YXAgPSB4ZV9ib19tYXAoZGV2aWNlLmZkX3hlLCBibywgU0laRSk7DQo+ID4gKwltZW1zZXQobWFw
-LCAwLCBTSVpFKTsNCj4gPiArCW11bm1hcChtYXAsIFNJWkUpOw0KPiA+ICsJc3lzZnNfZmQgPSBp
-Z3Rfc3lzZnNfb3BlbihkZXZpY2UuZmRfeGUpOw0KPiA+ICsJc2V0X3ZyYW1fZDNjb2xkX3RocmVz
-aG9sZChzeXNmc19mZCwgdGhyZXNob2xkKTsNCj4gPiArCWNsb3NlKHN5c2ZzX2ZkKTsNCj4gPiAr
-DQo+ID4gKwkvKiBTZXR1cCBEM0NvbGQgYnV0IGNhcmQgc2hvdWxkIGJlIGluIEQzaG90ICovDQo+
-ID4gKwlpZ3RfYXNzZXJ0KHNldHVwX2QzKGRldmljZSwgSUdUX0FDUElfRDNDb2xkKSk7DQo+ID4g
-KwlpZ3RfYXNzZXJ0KGluX2QzKGRldmljZSwgSUdUX0FDUElfRDNIb3QpKTsNCj4gPiArCWlndF9h
-c3NlcnQob3V0X29mX2QzKGRldmljZSwgSUdUX0FDUElfRDNDb2xkKSk7DQo+ID4gKwlnZW1fY2xv
-c2UoZGV2aWNlLmZkX3hlLCBibyk7DQo+IFNob3VsZCBvcmlnaW5hbCB0aHJlc2hvbGQgYmUgcmVz
-dG9yZWQgaGVyZSB0byBhbGxvdyBEMyBjb2xkPw0KdGhhbmtzIGZvciByZXZpZXcsIEkgd2lsbCBm
-aXggdGhpcy4NCj4gDQo+IFJlZ2FyZHMsDQo+IEJhZGFsDQo+ID4gK30NCj4gPiArDQo+ID4gICBp
-Z3RfbWFpbg0KPiA+ICAgew0KPiA+ICAgCXN0cnVjdCBkcm1feGVfZW5naW5lX2NsYXNzX2luc3Rh
-bmNlICpod2U7IEBAIC00NDksNiArNTI2LDExIEBADQo+ID4gaWd0X21haW4NCj4gPiAgIAkJfQ0K
-PiA+ICAgCX0NCj4gPg0KPiA+ICsJaWd0X2Rlc2NyaWJlKCJWYWxpZGF0ZSB3aGV0aGVyIGNhcmQg
-aXMgbGltaXRlZCB0byBkM2hvdCwgaWYgdnJhbSB1c2VkDQo+ID4gdnJhbSB0aHJlc2hvbGQiKTsN
-Cj4gPiArCWlndF9zdWJ0ZXN0KCJ2cmFtLWQzY29sZC10aHJlc2hvbGQiKSB7DQo+ID4gKwkJdGVz
-dF92cmFtX2QzY29sZF90aHJlc2hvbGQoZGV2aWNlKTsNCj4gPiArCX0NCj4gPiArDQo+ID4gICAJ
-aWd0X2ZpeHR1cmUgew0KPiA+ICAgCQlzZXRfZDNjb2xkX2FsbG93ZWQoZGV2aWNlLnBjaV94ZSwg
-ZDNjb2xkX2FsbG93ZWQpOw0KPiA+ICAgCQlpZ3RfcmVzdG9yZV9ydW50aW1lX3BtKCk7DQo=
+
+
+> -----Original Message-----
+> From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
+> Sent: Friday, July 21, 2023 2:38 AM
+> To: Gupta, Anshuman <anshuman.gupta@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Dixit, Ashutosh
+> <ashutosh.dixit@intel.com>; Nilawar, Badal <badal.nilawar@intel.com>;
+> Tauro, Riana <riana.tauro@intel.com>
+> Subject: Re: [PATCH i-g-t v3 3/3] test/xe_pm: Add vram_d3cold_threshold
+> subtest
+>=20
+> On Tue, Jul 18, 2023 at 04:38:52PM +0530, Anshuman Gupta wrote:
+> > Adding a vram_d3cold_threshold subtest, which creates a Xe bo and set
+> > the vram_d3cold_threshold according to vram used and bo size.
+> > Test setups the d3cold and expect card to be limited to d3hot.
+> >
+> > v2:
+> > - Add subtest doc.
+> > v3:
+> > - skip the test on igfx. [Riana]
+> > - Test doc enhancement. [Riana]
+> > - Create the bo before vram query. [Riana]
+> > - Use xe_bo_map insead of xe_bo_mmap_offset and mmap. [Riana]
+> > - Close the bo handle. [Riana]
+> >
+> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> > ---
+> >  tests/xe/xe_pm.c | 82
+> > ++++++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 82 insertions(+)
+> >
+> > diff --git a/tests/xe/xe_pm.c b/tests/xe/xe_pm.c index
+> > 11a4c3705..a8257b13c 100644
+> > --- a/tests/xe/xe_pm.c
+> > +++ b/tests/xe/xe_pm.c
+> > @@ -20,6 +20,7 @@
+> >  #include "lib/igt_device.h"
+> >  #include "lib/igt_kms.h"
+> >  #include "lib/igt_pm.h"
+> > +#include "lib/igt_sysfs.h"
+> >  #include "lib/igt_syncobj.h"
+> >  #include "lib/intel_reg.h"
+> >
+> > @@ -31,6 +32,8 @@
+> >  #define NO_SUSPEND -1
+> >  #define NO_RPM -1
+> >
+> > +#define SIZE (4096 * 1024)
+> > +
+> >  typedef struct {
+> >  	int fd_xe;
+> >  	struct pci_device *pci_xe;
+> > @@ -77,6 +80,22 @@ static void set_d3cold_allowed(struct pci_device
+> *pci,
+> >  	close(fd);
+> >  }
+> >
+> > +static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
+> > +{
+> > +	char path[64];
+> > +	int ret;
+> > +
+> > +	sprintf(path, "device/vram_d3cold_threshold");
+> > +
+> > +	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
+> > +		ret =3D igt_sysfs_printf(sysfs, path, "%lu", threshold);
+> > +	else
+> > +		igt_warn("vram_d3cold_threshold is not present\n");
+> > +
+> > +	igt_info("ret value %d", ret);
+> > +	igt_assert(ret > 0);
+> > +}
+> > +
+> >  static bool setup_d3(device_t device, enum igt_acpi_d_state state)  {
+> >  	igt_dpms_turn_off_display(device.fd_xe);
+> > @@ -349,6 +368,64 @@ NULL));
+> >  		igt_assert(in_d3(device, d_state));  }
+> >
+> > +/**
+> > + * SUBTEST: vram-d3cold-threshold
+> > + * Description:
+> > + *	Validate whether card is limited to d3hot while vram used
+> > + *	is greater than vram_d3cold_threshold.
+> > + * Run type: FULL
+> > + */
+> > +static void test_vram_d3cold_threshold(device_t device) {
+> > +	struct drm_xe_query_mem_usage *mem_usage;
+> > +	struct drm_xe_device_query query =3D {
+> > +		.extensions =3D 0,
+> > +		.query =3D DRM_XE_DEVICE_QUERY_MEM_USAGE,
+> > +		.size =3D 0,
+> > +		.data =3D 0,
+> > +	};
+> > +	uint64_t vram_used_mb =3D 0, vram_total_mb =3D 0, threshold;
+> > +	uint32_t bo, flags;
+> > +	void *map;
+> > +	int i, sysfs_fd;
+> > +
+> > +	flags =3D vram_memory(device.fd_xe, 0);
+> > +	igt_require_f(flags, "Device doesn't support vram memory
+> region\n");
+> > +
+> > +	igt_assert_eq(igt_ioctl(device.fd_xe,
+> DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> > +	igt_assert_neq(query.size, 0);
+> > +
+> > +	mem_usage =3D malloc(query.size);
+> > +	igt_assert(mem_usage);
+> > +
+> > +	query.data =3D to_user_pointer(mem_usage);
+> > +	igt_assert_eq(igt_ioctl(device.fd_xe,
+> DRM_IOCTL_XE_DEVICE_QUERY,
+> > +&query), 0);
+> > +
+> > +	for (i =3D 0; i < mem_usage->num_regions; i++) {
+> > +		if (mem_usage->regions[i].mem_class =3D=3D
+> XE_MEM_REGION_CLASS_VRAM) {
+> > +			vram_used_mb +=3D  (mem_usage->regions[i].used /
+> (1024 * 1024));
+> > +			vram_total_mb +=3D (mem_usage-
+> >regions[i].total_size / (1024 * 1024));
+> > +		}
+> > +	}
+> > +
+> > +	threshold =3D vram_used_mb;
+> > +	igt_require(threshold < vram_total_mb);
+> > +
+> > +	bo =3D xe_bo_create_flags(device.fd_xe, 0, SIZE, flags);
+> > +	map =3D xe_bo_map(device.fd_xe, bo, SIZE);
+> > +	memset(map, 0, SIZE);
+> > +	munmap(map, SIZE);
+> > +	sysfs_fd =3D igt_sysfs_open(device.fd_xe);
+> > +	set_vram_d3cold_threshold(sysfs_fd, threshold);
+> > +	close(sysfs_fd);
+> > +
+> > +	/* Setup D3Cold but card should be in D3hot */
+> > +	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
+>=20
+> should we add some wait here to ensure we gave the proper time for
+> everything to settle?
+>=20
+> > +	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
+> > +	igt_assert(out_of_d3(device, IGT_ACPI_D3Cold));
+> > +	gem_close(device.fd_xe, bo);
+> > +}
+> > +
+> >  igt_main
+> >  {
+> >  	struct drm_xe_engine_class_instance *hwe; @@ -449,6 +526,11 @@
+> > igt_main
+> >  		}
+> >  	}
+> >
+> > +	igt_describe("Validate whether card is limited to d3hot, if vram used
+> > vram threshold");
+> > +	igt_subtest("vram-d3cold-threshold") {
+> > +		test_vram_d3cold_threshold(device);
+> > +	}
+>=20
+> we probably need the other test and confirming that we are really getting
+> d3cold after touching this sysfs entry.
+>=20
+> With the kernel series I just sent that should work.
+Shall we improvise this test to test d3cold again after freeing the xe bo ?
+Thanks,
+Anshuman.
+>=20
+> but let's start with this:
+>=20
+> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>=20
+> > +
+> >  	igt_fixture {
+> >  		set_d3cold_allowed(device.pci_xe, d3cold_allowed);
+> >  		igt_restore_runtime_pm();
+> > --
+> > 2.25.1
+> >
