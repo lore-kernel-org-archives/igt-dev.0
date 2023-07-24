@@ -1,22 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2445710E274
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 06:55:50 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 24 Jul 2023 06:55:46 +0000
-Message-ID: <CY5PR11MB62111B0E0F61B1EB473C249D9502A@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230720043015.1677140-1-riana.tauro@intel.com>
- <CY5PR11MB6211B99539C0E65F73CD4081953FA@CY5PR11MB6211.namprd11.prod.outlook.com>
- <75b81eb1-c5c6-1e13-a613-307661448694@intel.com>
-In-Reply-To: <75b81eb1-c5c6-1e13-a613-307661448694@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AC7E10E1AA
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 07:37:09 +0000 (UTC)
+Message-ID: <2805f4e6-06fe-58a7-78a9-bba26f4e4916@intel.com>
+Date: Mon, 24 Jul 2023 13:06:27 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230718121443.445343-1-kunal1.joshi@intel.com>
+ <20230718121443.445343-3-kunal1.joshi@intel.com>
+ <20230720100245.2lref6sw6j7btr7k@zkempczy-mobl2>
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <20230720100245.2lref6sw6j7btr7k@zkempczy-mobl2>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add a test that validates GT
- C0 on exec
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_fb: on xe driver switch
+ from rendercopy to blitcopy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,86 +23,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>, "Vivi,
- Rodrigo" <rodrigo.vivi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVGF1cm8sIFJpYW5hIDxy
-aWFuYS50YXVyb0BpbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwgSnVseSAyNCwgMjAyMyAxMDo0
-MyBBTQ0KPiBUbzogR3VwdGEsIEFuc2h1bWFuIDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+OyBp
-Z3QtDQo+IGRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IERpeGl0LCBBc2h1dG9zaCA8
-YXNodXRvc2guZGl4aXRAaW50ZWwuY29tPjsgQmVsZ2F1bWthciwgVmluYXkNCj4gPHZpbmF5LmJl
-bGdhdW1rYXJAaW50ZWwuY29tPjsgTmlsYXdhciwgQmFkYWwgPGJhZGFsLm5pbGF3YXJAaW50ZWwu
-Y29tPjsNCj4ga2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbTsgVml2aSwgUm9kcmlnbyA8
-cm9kcmlnby52aXZpQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdF0gdGVz
-dHMveGU6IEFkZCBhIHRlc3QgdGhhdCB2YWxpZGF0ZXMgR1QgQzAgb24gZXhlYw0KPiANCj4gDQo+
-IEhpIEFuc2h1bWFuDQo+IA0KPiBPbiA3LzIxLzIwMjMgMjo1MiBQTSwgR3VwdGEsIEFuc2h1bWFu
-IHdyb3RlOg0KPiA+DQo+ID4NCj4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPj4g
-RnJvbTogVGF1cm8sIFJpYW5hIDxyaWFuYS50YXVyb0BpbnRlbC5jb20+DQo+ID4+IFNlbnQ6IFRo
-dXJzZGF5LCBKdWx5IDIwLCAyMDIzIDEwOjAwIEFNDQo+ID4+IFRvOiBpZ3QtZGV2QGxpc3RzLmZy
-ZWVkZXNrdG9wLm9yZw0KPiA+PiBDYzogVGF1cm8sIFJpYW5hIDxyaWFuYS50YXVyb0BpbnRlbC5j
-b20+OyBHdXB0YSwgQW5zaHVtYW4NCj4gPj4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47IERp
-eGl0LCBBc2h1dG9zaA0KPiA+PiA8YXNodXRvc2guZGl4aXRAaW50ZWwuY29tPjsgQmVsZ2F1bWth
-ciwgVmluYXkNCj4gPj4gPHZpbmF5LmJlbGdhdW1rYXJAaW50ZWwuY29tPjsgTmlsYXdhciwgQmFk
-YWwNCj4gPj4gPGJhZGFsLm5pbGF3YXJAaW50ZWwuY29tPjsga2FtaWwua29uaWVjem55QGxpbnV4
-LmludGVsLmNvbQ0KPiA+PiBTdWJqZWN0OiBbUEFUQ0ggaS1nLXRdIHRlc3RzL3hlOiBBZGQgYSB0
-ZXN0IHRoYXQgdmFsaWRhdGVzIEdUIEMwIG9uDQo+ID4+IGV4ZWMNCj4gPj4NCj4gPj4gQWRkIGEg
-dGVzdCB0aGF0IHZhbGlkYXRlcyBpZiBHVCBpcyBpbiBDMCB3aGlsZSBydW5uaW5nIGEgc3Bpbm5l
-ciBvbg0KPiA+PiBhbiBlbmdpbmUgb2YgdGhlIGd0DQo+ID4gV2Ugc2hvdWxkIGhhdmUgYSB0ZXN0
-IGFzIHdlbGwgdG8gdGVzdCBvcHBvcnR1bmlzdGljIFJDNiBkdXJpbmcgd29ya2xvYWQNCj4gZXhl
-Y3V0aW9uID8NCj4gPiBUaGlzIGlzIGEgbmVnYXRpdmUgdGVzdCwgbm90IHN1cmUgaWYgdGhpcyBp
-cyBnb2luZyB0byBmYWlsLg0KPiBUaGlzIGlzIGEgcmVwbGFjZW1lbnQgZm9yIHJjMF9vbl9leGVj
-IGZyb20NCj4gaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3BhdGNoLzU0NDM4OC8/
-c2VyaWVzPTExOTkxMCZyZXY9MS4NCj4gDQo+IER1ZSB0byB0aGUgcGF0aCBjaGFuZ2UsIG1vdmVk
-IHRoaXMgdGVzdCBoZXJlIGFuZCB1c2VkIHNwaW5uZXIuDQo+IFNob3VsZCBpIGRyb3AgdGhpcyB0
-ZXN0Pw0KV2UgY2FuIGhhdmUgdGhpcyB0ZXN0IG51dCB3ZSBzaG91bGQgaGF2ZSBhIHRlc3QgYXMg
-d2VsbCB0byB0ZXN0IHJjNiBhcyB3ZWxsLg0KUmVnYXJkcywNCkFuc2h1bWFuLg0KPiANCj4gVGhh
-bmtzDQo+IFJpYW5hDQo+ID4gQnIsDQo+ID4gQW5zaHVtYW4uDQo+ID4+DQo+ID4+IFNpZ25lZC1v
-ZmYtYnk6IFJpYW5hIFRhdXJvIDxyaWFuYS50YXVyb0BpbnRlbC5jb20+DQo+ID4+IC0tLQ0KPiA+
-PiAgIHRlc3RzL3hlL3hlX3BtX3Jlc2lkZW5jeS5jIHwgMzkNCj4gPj4gKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysNCj4gPj4gICAxIGZpbGUgY2hhbmdlZCwgMzkgaW5zZXJ0
-aW9ucygrKQ0KPiA+Pg0KPiA+PiBkaWZmIC0tZ2l0IGEvdGVzdHMveGUveGVfcG1fcmVzaWRlbmN5
-LmMgYi90ZXN0cy94ZS94ZV9wbV9yZXNpZGVuY3kuYw0KPiA+PiBpbmRleCBhMjBjNDQ0OWMuLjc2
-MTRhZjc2MSAxMDA2NDQNCj4gPj4gLS0tIGEvdGVzdHMveGUveGVfcG1fcmVzaWRlbmN5LmMNCj4g
-Pj4gKysrIGIvdGVzdHMveGUveGVfcG1fcmVzaWRlbmN5LmMNCj4gPj4gQEAgLTE0LDYgKzE0LDcg
-QEANCj4gPj4gICAjaW5jbHVkZSAiaWd0LmgiDQo+ID4+ICAgI2luY2x1ZGUgImlndF9zeXNmcy5o
-Ig0KPiA+Pg0KPiA+PiArI2luY2x1ZGUgInhlL3hlX2lvY3RsLmgiDQo+ID4+ICAgI2luY2x1ZGUg
-InhlL3hlX3F1ZXJ5LmgiDQo+ID4+DQo+ID4+ICAgI2RlZmluZSBTTEVFUF9EVVJBVElPTiAzMDAw
-IC8qIGluIG1pbGxpc2Vjb25kcyAqLyBAQCAtNzYsNiArNzcsMzgNCj4gPj4gQEAgc3RhdGljIHVu
-c2lnbmVkIGxvbmcgcmVhZF9pZGxlX3Jlc2lkZW5jeShpbnQgZmQsIGludCBndCkNCj4gPj4gICAJ
-cmV0dXJuIHJlc2lkZW5jeTsNCj4gPj4gICB9DQo+ID4+DQo+ID4+ICsvKioNCj4gPj4gKyAqIFNV
-QlRFU1Q6IGd0LWMwLW9uLWV4ZWMNCj4gPj4gKyAqIERlc2NyaXB0aW9uOiBWYWxpZGF0ZSBpZiBH
-VCBpcyBpbiBDMCB3aGlsZSBydW5uaW5nIGEgc3Bpbm5lcg0KPiA+PiArICoJCW9uIGFuIGVuZ2lu
-ZSBvZiB0aGF0IEdUDQo+ID4+ICsgKiBSdW4gdHlwZTogRlVMTA0KPiA+PiArICovDQo+ID4+ICtz
-dGF0aWMgdm9pZCB0ZXN0X2MwX2V4ZWMoaW50IGZkLCBzdHJ1Y3QgZHJtX3hlX2VuZ2luZV9jbGFz
-c19pbnN0YW5jZQ0KPiA+PiArKmh3ZSkgew0KPiA+PiArCXVpbnQ2NF90IGFobmQ7DQo+ID4+ICsJ
-dW5zaWduZWQgaW50IGVuZ2luZTsNCj4gPj4gKwl1aW50MzJfdCB2bTsNCj4gPj4gKwlpZ3Rfc3Bp
-bl90ICpzcGluOw0KPiA+PiArDQo+ID4+ICsJLyogU3RhcnQgd2l0aCBHVCBpbiBDNiAqLw0KPiA+
-PiArCWlndF9hc3NlcnRfZihpZ3Rfd2FpdChpc19ndF9pbl9jNihmZCwgaHdlLT5ndF9pZCksIDEw
-MDAsIDEpLCAiR1QgaXMNCj4gPj4gK25vdCBpbiBDNlxuIik7DQo+ID4+ICsNCj4gPj4gKwlpZ3Rf
-ZGVidWcoIlJ1biBvbiBlbmdpbmU6ICVzOiVkXG4iLA0KPiA+PiArCQkgIHhlX2VuZ2luZV9jbGFz
-c19zdHJpbmcoaHdlLT5lbmdpbmVfY2xhc3MpLCBod2UtDQo+ID4+PiBlbmdpbmVfaW5zdGFuY2Up
-Ow0KPiA+PiArCXZtID0geGVfdm1fY3JlYXRlKGZkLCAwLCAwKTsNCj4gPj4gKwllbmdpbmUgPSB4
-ZV9lbmdpbmVfY3JlYXRlKGZkLCB2bSwgaHdlLCAwKTsNCj4gPj4gKwlhaG5kID0gaW50ZWxfYWxs
-b2NhdG9yX29wZW4oZmQsIDAsIElOVEVMX0FMTE9DQVRPUl9SRUxPQyk7DQo+ID4+ICsJc3BpbiA9
-IGlndF9zcGluX25ldyhmZCwgLmFobmQgPSBhaG5kLCAuZW5naW5lID0gZW5naW5lLCAudm0gPSB2
-bSk7DQo+ID4+ICsNCj4gPj4gKwkvKiBHVCBzaG91bGQgYmUgaW4gQzAgd2hlbiBidXN5ICovDQo+
-ID4+ICsJaWd0X2Fzc2VydF9mKCFpc19ndF9pbl9jNihmZCwgaHdlLT5ndF9pZCksICJHVCBpbiBD
-NlxuIik7DQo+ID4+ICsNCj4gPj4gKwlpZ3Rfc3Bpbl9mcmVlKGZkLCBzcGluKTsNCj4gPj4gKwlw
-dXRfYWhuZChhaG5kKTsNCj4gPj4gKwl4ZV9lbmdpbmVfZGVzdHJveShmZCwgZW5naW5lKTsNCj4g
-Pj4gKwl4ZV92bV9kZXN0cm95KGZkLCB2bSk7DQo+ID4+ICt9DQo+ID4+ICsNCj4gPj4gICAvKioN
-Cj4gPj4gICAgKiBTVUJURVNUOiBpZGxlLXJlc2lkZW5jeQ0KPiA+PiAgICAqIERlc2NyaXB0aW9u
-OiBiYXNpYyByZXNpZGVuY3kgdGVzdCB0byB2YWxpZGF0ZSBpZGxlIHJlc2lkZW5jeSBAQA0KPiA+
-PiAtMTAxLDEyDQo+ID4+ICsxMzQsMTggQEAgc3RhdGljIHZvaWQgdGVzdF9pZGxlX3Jlc2lkZW5j
-eShpbnQgZmQsIGludCBndCkgIGlndF9tYWluDQo+ID4+ICt7DQo+ID4+ICAgCWludCBmZCwgZ3Q7
-DQo+ID4+ICsJc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKmh3ZTsNCj4gPj4N
-Cj4gPj4gICAJaWd0X2ZpeHR1cmUgew0KPiA+PiAgIAkJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJ
-VkVSX1hFKTsNCj4gPj4gICAJCWlndF9yZXF1aXJlKCFJU19QT05URVZFQ0NISU8oeGVfZGV2X2lk
-KGZkKSkpOw0KPiA+PiAgIAl9DQo+ID4+DQo+ID4+ICsJaWd0X2Rlc2NyaWJlKCJWYWxpZGF0ZSBH
-VCBDMCBvbiBleGVjIik7DQo+ID4+ICsJaWd0X3N1YnRlc3QoImd0LWMwLW9uLWV4ZWMiKQ0KPiA+
-PiArCQl4ZV9mb3JfZWFjaF9od19lbmdpbmUoZmQsIGh3ZSkNCj4gPj4gKwkJCXRlc3RfYzBfZXhl
-YyhmZCwgaHdlKTsNCj4gPj4gKw0KPiA+PiAgIAlpZ3RfZGVzY3JpYmUoIlZhbGlkYXRlIEdUIEM2
-IG9uIGlkbGUiKTsNCj4gPj4gICAJaWd0X3N1YnRlc3QoImd0LWM2LW9uLWlkbGUiKQ0KPiA+PiAg
-IAkJeGVfZm9yX2VhY2hfZ3QoZmQsIGd0KQ0KPiA+PiAtLQ0KPiA+PiAyLjQwLjANCj4gPg0K
+
+On 7/20/2023 3:32 PM, Zbigniew Kempczyński wrote:
+> On Tue, Jul 18, 2023 at 05:44:43PM +0530, Kunal Joshi wrote:
+>> on xe driver use blitcopy for everything where otherwise would
+>> use rendercopy.
+>>
+>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>> ---
+>>   lib/igt_fb.c | 8 +++-----
+>>   1 file changed, 3 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+>> index 6ce4b735a..f4bc800fe 100644
+>> --- a/lib/igt_fb.c
+>> +++ b/lib/igt_fb.c
+>> @@ -2529,7 +2529,7 @@ static bool use_enginecopy(const struct igt_fb *fb)
+>>   	if (!is_intel_device(fb->fd))
+>>   		return false;
+>>   
+>> -	if (!is_xe_device(fb->fd) && blitter_ok(fb))
+>> +	if (blitter_ok(fb))
+>>   		return false;
+> I stared to this and for me it looks we disable rendercopy at all
+> for i915 as well for xe even if rendercopy is same for i915 and xe
+> (intel-bb should handle this).
+>
+> --
+> Zbigniew
+
+
+Thanks Zbigniew :) , for pointing it out,
+Will make changes and send next revision.
+
+Regards
+
+Kunal Joshi
