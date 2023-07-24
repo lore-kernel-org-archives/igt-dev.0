@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F54B10E0FA
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 05:13:10 +0000 (UTC)
-Message-ID: <75b81eb1-c5c6-1e13-a613-307661448694@intel.com>
-Date: Mon, 24 Jul 2023 10:42:44 +0530
-To: "Gupta, Anshuman" <anshuman.gupta@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20230720043015.1677140-1-riana.tauro@intel.com>
- <CY5PR11MB6211B99539C0E65F73CD4081953FA@CY5PR11MB6211.namprd11.prod.outlook.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C1FD10E0FA
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 05:19:10 +0000 (UTC)
+Message-ID: <4746c9e3-2cc8-4f63-beff-00732e56cfcf@intel.com>
+Date: Mon, 24 Jul 2023 10:48:34 +0530
 Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <CY5PR11MB6211B99539C0E65F73CD4081953FA@CY5PR11MB6211.namprd11.prod.outlook.com>
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230704173107.842296-1-swati2.sharma@intel.com>
+ <20230704173107.842296-3-swati2.sharma@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20230704173107.842296-3-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add a test that validates GT
- C0 on exec
+Subject: Re: [igt-dev] [v2 2/9] tests/i915/kms_dsc: use uint32_t test flag
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,119 +21,128 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>, "Vivi,
- Rodrigo" <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+LGTM.
 
-Hi Anshuman
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-On 7/21/2023 2:52 PM, Gupta, Anshuman wrote:
-> 
-> 
->> -----Original Message-----
->> From: Tauro, Riana <riana.tauro@intel.com>
->> Sent: Thursday, July 20, 2023 10:00 AM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
->> <anshuman.gupta@intel.com>; Dixit, Ashutosh <ashutosh.dixit@intel.com>;
->> Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Nilawar, Badal
->> <badal.nilawar@intel.com>; kamil.konieczny@linux.intel.com
->> Subject: [PATCH i-g-t] tests/xe: Add a test that validates GT C0 on exec
->>
->> Add a test that validates if GT is in C0 while running a spinner on an engine of
->> the gt
-> We should have a test as well to test opportunistic RC6 during workload execution ?
-> This is a negative test, not sure if this is going to fail.
-This is a replacement for rc0_on_exec from 
-https://patchwork.freedesktop.org/patch/544388/?series=119910&rev=1.
-
-Due to the path change, moved this test here and used spinner.
-Should i drop this test?
-
-Thanks
-Riana
-> Br,
-> Anshuman.
->>
->> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
->> ---
->>   tests/xe/xe_pm_residency.c | 39
->> ++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 39 insertions(+)
->>
->> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
->> index a20c4449c..7614af761 100644
->> --- a/tests/xe/xe_pm_residency.c
->> +++ b/tests/xe/xe_pm_residency.c
->> @@ -14,6 +14,7 @@
->>   #include "igt.h"
->>   #include "igt_sysfs.h"
->>
->> +#include "xe/xe_ioctl.h"
->>   #include "xe/xe_query.h"
->>
->>   #define SLEEP_DURATION 3000 /* in milliseconds */ @@ -76,6 +77,38 @@
->> static unsigned long read_idle_residency(int fd, int gt)
->>   	return residency;
->>   }
->>
->> +/**
->> + * SUBTEST: gt-c0-on-exec
->> + * Description: Validate if GT is in C0 while running a spinner
->> + *		on an engine of that GT
->> + * Run type: FULL
->> + */
->> +static void test_c0_exec(int fd, struct drm_xe_engine_class_instance
->> +*hwe) {
->> +	uint64_t ahnd;
->> +	unsigned int engine;
->> +	uint32_t vm;
->> +	igt_spin_t *spin;
->> +
->> +	/* Start with GT in C6 */
->> +	igt_assert_f(igt_wait(is_gt_in_c6(fd, hwe->gt_id), 1000, 1), "GT is
->> +not in C6\n");
->> +
->> +	igt_debug("Run on engine: %s:%d\n",
->> +		  xe_engine_class_string(hwe->engine_class), hwe-
->>> engine_instance);
->> +	vm = xe_vm_create(fd, 0, 0);
->> +	engine = xe_engine_create(fd, vm, hwe, 0);
->> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
->> +	spin = igt_spin_new(fd, .ahnd = ahnd, .engine = engine, .vm = vm);
->> +
->> +	/* GT should be in C0 when busy */
->> +	igt_assert_f(!is_gt_in_c6(fd, hwe->gt_id), "GT in C6\n");
->> +
->> +	igt_spin_free(fd, spin);
->> +	put_ahnd(ahnd);
->> +	xe_engine_destroy(fd, engine);
->> +	xe_vm_destroy(fd, vm);
->> +}
->> +
->>   /**
->>    * SUBTEST: idle-residency
->>    * Description: basic residency test to validate idle residency @@ -101,12
->> +134,18 @@ static void test_idle_residency(int fd, int gt)  igt_main  {
->>   	int fd, gt;
->> +	struct drm_xe_engine_class_instance *hwe;
->>
->>   	igt_fixture {
->>   		fd = drm_open_driver(DRIVER_XE);
->>   		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
->>   	}
->>
->> +	igt_describe("Validate GT C0 on exec");
->> +	igt_subtest("gt-c0-on-exec")
->> +		xe_for_each_hw_engine(fd, hwe)
->> +			test_c0_exec(fd, hwe);
->> +
->>   	igt_describe("Validate GT C6 on idle");
->>   	igt_subtest("gt-c6-on-idle")
->>   		xe_for_each_gt(fd, gt)
->> --
->> 2.40.0
-> 
+On 7/4/2023 11:01 PM, Swati Sharma wrote:
+> Instead of using enum, use uinit32_t test flag. It is helpful,
+> if we need to implement feature combination tests.
+>
+> v2: -use #define (Ankit)
+>      -use 2D char array (Ankit)
+>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   tests/i915/kms_dsc.c | 50 +++++++++++++++++++++++++-------------------
+>   1 file changed, 28 insertions(+), 22 deletions(-)
+>
+> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+> index 23ccbca00..99d35a7ff 100644
+> --- a/tests/i915/kms_dsc.c
+> +++ b/tests/i915/kms_dsc.c
+> @@ -34,12 +34,12 @@
+>   
+>   IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+>   
+> -enum dsc_test_type {
+> -	TEST_DSC_BASIC,
+> -	TEST_DSC_BPC,
+> -	TEST_DSC_FORMAT,
+> -	TEST_DSC_OUTPUT_FORMAT,
+> -};
+> +#define LEN		20
+> +
+> +#define TEST_DSC_BASIC		(0<<0)
+> +#define TEST_DSC_BPC		(1<<0)
+> +#define TEST_DSC_FORMAT		(1<<1)
+> +#define TEST_DSC_OUTPUT_FORMAT	(1<<2)
+>   
+>   typedef struct {
+>   	int drm_fd;
+> @@ -111,7 +111,7 @@ static void test_cleanup(data_t *data)
+>   }
+>   
+>   /* re-probe connectors and do a modeset with DSC */
+> -static void update_display(data_t *data, enum dsc_test_type test_type)
+> +static void update_display(data_t *data, uint32_t test_type)
+>   {
+>   	int ret;
+>   	bool enabled;
+> @@ -130,12 +130,12 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+>   	save_force_dsc_en(data->drm_fd, data->output);
+>   	force_dsc_enable(data->drm_fd, data->output);
+>   
+> -	if (test_type == TEST_DSC_BPC) {
+> +	if (test_type & TEST_DSC_BPC) {
+>   		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
+>   		force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
+>   	}
+>   
+> -	if (test_type == TEST_DSC_OUTPUT_FORMAT) {
+> +	if (test_type & TEST_DSC_OUTPUT_FORMAT) {
+>   		igt_debug("Trying to set DSC %s output format\n",
+>   			   kmstest_dsc_output_format_str(data->output_format));
+>   		force_dsc_output_format(data->drm_fd, data->output, data->output_format);
+> @@ -214,13 +214,18 @@ reset:
+>   	igt_assert_eq(ret, 0);
+>   }
+>   
+> -static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+> -		     unsigned int plane_format, enum dsc_output_format output_format)
+> +static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+> +		     unsigned int plane_format,
+> +		     enum dsc_output_format output_format)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_output_t *output;
+> -	char name[20];
+>   	enum pipe pipe;
+> +	char name[3][LEN] = {
+> +				{0},
+> +				{0},
+> +				{0},
+> +			    };
+>   
+>   	for_each_pipe_with_valid_output(display, pipe, output) {
+>   		data->output_format = output_format;
+> @@ -242,15 +247,15 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+>   		if (!check_gen11_bpc_constraint(data->drm_fd, data->output, data->input_bpc))
+>   			continue;
+>   
+> -		if (test_type == TEST_DSC_BPC)
+> -			snprintf(name, sizeof(name), "-%dbpc-%s", data->input_bpc, igt_format_str(data->plane_format));
+> -		else if (test_type == TEST_DSC_OUTPUT_FORMAT)
+> -			snprintf(name, sizeof(name), "-%s-%s", kmstest_dsc_output_format_str(data->output_format),
+> -							       igt_format_str(data->plane_format));
+> -		else
+> -			snprintf(name, sizeof(name), "-%s", igt_format_str(data->plane_format));
+> +		if (test_type & TEST_DSC_OUTPUT_FORMAT)
+> +			snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
+> +		if (test_type & TEST_DSC_FORMAT)
+> +			snprintf(&name[1][0], LEN, "-%s", igt_format_str(data->plane_format));
+> +		if (test_type & TEST_DSC_BPC)
+> +			snprintf(&name[2][0], LEN, "-%dbpc", data->input_bpc);
+>   
+> -		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
+> +		igt_dynamic_f("pipe-%s-%s%s%s%s",  kmstest_pipe_name(data->pipe), data->output->name,
+> +			      &name[0][0], &name[1][0], &name[2][0])
+>   			update_display(data, test_type);
+>   
+>   		if (data->limited)
+> @@ -322,8 +327,9 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+>   		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+>   			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+> -				test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
+> -				format_list[k], DSC_FORMAT_RGB);
+> +				test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
+> +				bpc_list[j], format_list[k],
+> +				DSC_FORMAT_RGB);
+>   			}
+>   		}
+>   	}
