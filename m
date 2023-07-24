@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA64910E0FA
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 05:33:04 +0000 (UTC)
-Message-ID: <11a8c555-e8ff-8063-4f53-aa29c57cd270@intel.com>
-Date: Mon, 24 Jul 2023 11:02:47 +0530
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4F8210E00E
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 06:12:39 +0000 (UTC)
+Message-ID: <d3a7cbf9-b53e-fc31-35b9-e6f7ef0e97af@intel.com>
+Date: Mon, 24 Jul 2023 11:42:15 +0530
 Content-Language: en-US
 To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20230704173107.842296-1-swati2.sharma@intel.com>
- <20230704173107.842296-9-swati2.sharma@intel.com>
+ <20230704173107.842296-7-swati2.sharma@intel.com>
 From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230704173107.842296-9-swati2.sharma@intel.com>
+In-Reply-To: <20230704173107.842296-7-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v2 8/9] tests/i915/kms_dsc: add subtest
+Subject: Re: [igt-dev] [v2 6/9] lib/dsc: add helpers for vdsc fractional bpp
+ debugfs entry
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,35 +28,150 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 LGTM.
 
+Minor alignment suggestions, with those addressed, this is:
+
 Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
+
 On 7/4/2023 11:01 PM, Swati Sharma wrote:
-> New subtest is added to validate fractional bpp with different
-> input bpc.
+> Helper functions are added for getting/setting VDSC Fractional BPP
+> debugfs entry.
+>
+> v2: -improved func description (Ankit)
+>      -increased buff size (Ankit)
+>      -asserted bpp_prec (Ankit)
+> v3: -return 0 on success instead of 1 (Jouni)
+> v4: -rebase
 >
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->   tests/i915/kms_dsc.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+>   lib/igt_dsc.c | 84 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_dsc.h |  5 +++
+>   2 files changed, 89 insertions(+)
 >
-> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> index 26d6e2ffb..d46a5e74d 100644
-> --- a/tests/i915/kms_dsc.c
-> +++ b/tests/i915/kms_dsc.c
-> @@ -392,6 +392,16 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
->   				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
->   				 DSC_FORMAT_RGB);
+> diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
+> index 76a420c10..90ac91131 100644
+> --- a/lib/igt_dsc.c
+> +++ b/lib/igt_dsc.c
+> @@ -205,3 +205,87 @@ int igt_force_dsc_output_format(int drmfd, char *connector_name,
 >   
-> +	igt_describe("Tests fractional compressed bpp functionality if supported "
-> +		     "by a connector by forcing fractional_bpp on all connectors that support it "
-> +		     "with certain input BPC for the connector.");
-> +	igt_subtest_with_dynamic("dsc-fractional-bpp-with-bpc") {
-> +		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
-> +			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
-> +				 bpc_list[j], DRM_FORMAT_XRGB8888,
-> +				 DSC_FORMAT_RGB);
-> +	}
+>   	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_output_format", buf);
+>   }
 > +
->   	igt_fixture {
->   		igt_display_fini(&data.display);
->   		drm_close_driver(data.drm_fd);
+> +static
+> +bool check_dsc_fractional_bpp_debugfs(int drmfd, char *connector_name,
+> +				      const char *check_str)
+> +{
+> +	char file_name[128] = {0};
+> +	char buf[512];
+> +
+> +	sprintf(file_name, "%s/i915_dsc_fractional_bpp", connector_name);
+> +
+> +	igt_debugfs_read(drmfd, file_name, buf);
+> +
+> +	return strstr(buf, check_str);
+> +}
+> +
+> +/*
+> + * igt_get_dsc_fractional_bpp_supported:
+> + * @drmfd: A drm file descriptor
+> + * @connector_name: Name of the libdrm connector we're going to use
+> + *
+> + * Returns: The dsc sink bpp precision.
+
+
+(supported by the sink)
+
+
+> + * 	    Precision value of
+> + * 				16 => 1/16
+> + * 				8  => 1/8
+> + * 				1  => fractional bpp not supported
+
+Alignment seems off. IMHO Left aligned will be better.
+
+Regards,
+
+Ankit
+
+> + */
+> +int igt_get_dsc_fractional_bpp_supported(int drmfd, char *connector_name)
+> +{
+> +	char file_name[128] = {0};
+> +	char buf[512];
+> +	char *start_loc;
+> +	int bpp_prec;
+> +
+> +	sprintf(file_name, "%s/i915_dsc_fec_support", connector_name);
+> +	igt_debugfs_read(drmfd, file_name, buf);
+> +
+> +	igt_assert(start_loc = strstr(buf, "DSC_Sink_BPP_Precision: "));
+> +	igt_assert_eq(sscanf(start_loc, "DSC_Sink_BPP_Precision: %d", &bpp_prec), 1);
+> +	igt_assert(bpp_prec > 0);
+> +
+> +	return bpp_prec;
+> +}
+> +
+> +/*
+> + * igt_is_force_dsc_fractional_bpp_enabled:
+> + * @drmfd: A drm file descriptor
+> + * @connector_name: Name of the libdrm connector we're going to use
+> + *
+> + * Returns: True if DSC Fractional BPP is force enabled (via debugfs) for the given connector,
+> + * false otherwise.
+> + */
+> +bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name)
+> +{
+> +	return check_dsc_fractional_bpp_debugfs(drmfd, connector_name, "Force_DSC_Fractional_BPP_Enable: yes");
+> +}
+> +
+> +/*
+> + * igt_force_dsc_fractional_bpp_enable:
+> + * @drmfd: A drm file descriptor
+> + * @connector_name: Name of the libdrm connector we're going to use
+> + *
+> + * Returns: 0 on success or negative error code, in case of failure.
+> + */
+> +int igt_force_dsc_fractional_bpp_enable(int drmfd, char *connector_name)
+> +{
+> +	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_fractional_bpp", "1");
+> +}
+> +
+> +/*
+> + * igt_get_dsc_fractional_bpp_debugfs_fd:
+> + * @drmfd: A drm file descriptor
+> + * @connector_name: Name of the libdrm connector we're going to use
+> + *
+> + * Returns: fd of the DSC Fractional BPP debugfs for the given connector,
+> + * else returns -1.
+> + */
+> +int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name)
+> +{
+> +	char file_name[128] = {0};
+> +
+> +	sprintf(file_name, "%s/i915_dsc_fractional_bpp", connector_name);
+> +
+> +	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
+> +}
+> diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
+> index b58743b5f..5d918ea7a 100644
+> --- a/lib/igt_dsc.h
+> +++ b/lib/igt_dsc.h
+> @@ -8,6 +8,7 @@
+>   
+>   #include "igt_fb.h"
+>   #include "igt_kms.h"
+> +#include "igt_core.h"
+>   
+>   bool igt_is_dsc_supported_by_source(int drmfd);
+>   bool igt_is_dsc_supported_by_sink(int drmfd, char *connector_name);
+> @@ -21,5 +22,9 @@ bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
+>   						enum dsc_output_format output_format);
+>   int igt_force_dsc_output_format(int drmfd, char *connector_name,
+>   				enum dsc_output_format output_format);
+> +int igt_get_dsc_fractional_bpp_supported(int drmfd, char *connector_name);
+> +bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name);
+> +int igt_force_dsc_fractional_bpp_enable(int drmfd, char *connector_name);
+> +int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name);
+>   
+>   #endif
