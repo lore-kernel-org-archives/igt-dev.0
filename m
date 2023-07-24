@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 02E1110E0FA
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 05:08:58 +0000 (UTC)
-Message-ID: <932d4a21-4f6f-761f-7877-f1d26379975a@intel.com>
-Date: Mon, 24 Jul 2023 10:38:40 +0530
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230704173107.842296-1-swati2.sharma@intel.com>
- <20230704173107.842296-2-swati2.sharma@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F54B10E0FA
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 05:13:10 +0000 (UTC)
+Message-ID: <75b81eb1-c5c6-1e13-a613-307661448694@intel.com>
+Date: Mon, 24 Jul 2023 10:42:44 +0530
+To: "Gupta, Anshuman" <anshuman.gupta@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20230720043015.1677140-1-riana.tauro@intel.com>
+ <CY5PR11MB6211B99539C0E65F73CD4081953FA@CY5PR11MB6211.namprd11.prod.outlook.com>
 Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230704173107.842296-2-swati2.sharma@intel.com>
+From: Riana Tauro <riana.tauro@intel.com>
+In-Reply-To: <CY5PR11MB6211B99539C0E65F73CD4081953FA@CY5PR11MB6211.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v2 1/9] tests/i915/kms_dsc: add new test flag
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/xe: Add a test that validates GT
+ C0 on exec
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,47 +23,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Nilawar, Badal" <badal.nilawar@intel.com>, "Vivi,
+ Rodrigo" <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 7/4/2023 11:00 PM, Swati Sharma wrote:
-> Add new test flag TEST_DSC_FORMAT.
+Hi Anshuman
 
-I understand, this flag is added to differentiate the basic dsc test and 
-the tests where we want to change different plane pixel formats.
+On 7/21/2023 2:52 PM, Gupta, Anshuman wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Tauro, Riana <riana.tauro@intel.com>
+>> Sent: Thursday, July 20, 2023 10:00 AM
+>> To: igt-dev@lists.freedesktop.org
+>> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
+>> <anshuman.gupta@intel.com>; Dixit, Ashutosh <ashutosh.dixit@intel.com>;
+>> Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Nilawar, Badal
+>> <badal.nilawar@intel.com>; kamil.konieczny@linux.intel.com
+>> Subject: [PATCH i-g-t] tests/xe: Add a test that validates GT C0 on exec
+>>
+>> Add a test that validates if GT is in C0 while running a spinner on an engine of
+>> the gt
+> We should have a test as well to test opportunistic RC6 during workload execution ?
+> This is a negative test, not sure if this is going to fail.
+This is a replacement for rc0_on_exec from 
+https://patchwork.freedesktop.org/patch/544388/?series=119910&rev=1.
 
-Lets capture this in the commit message too.
+Due to the path change, moved this test here and used spinner.
+Should i drop this test?
 
-With that change this is:
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-
->
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/i915/kms_dsc.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> index 0a3e29924..23ccbca00 100644
-> --- a/tests/i915/kms_dsc.c
-> +++ b/tests/i915/kms_dsc.c
-> @@ -37,6 +37,7 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
->   enum dsc_test_type {
->   	TEST_DSC_BASIC,
->   	TEST_DSC_BPC,
-> +	TEST_DSC_FORMAT,
->   	TEST_DSC_OUTPUT_FORMAT,
->   };
->   
-> @@ -302,7 +303,7 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
->   		     "with default parameters and creating fb with diff formats");
->   	igt_subtest_with_dynamic("dsc-with-formats") {
->   		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
-> -			test_dsc(&data, TEST_DSC_BASIC, 0,
-> +			test_dsc(&data, TEST_DSC_FORMAT, 0,
->   				 format_list[k], DSC_FORMAT_RGB);
->   	}
->   
+Thanks
+Riana
+> Br,
+> Anshuman.
+>>
+>> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+>> ---
+>>   tests/xe/xe_pm_residency.c | 39
+>> ++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 39 insertions(+)
+>>
+>> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+>> index a20c4449c..7614af761 100644
+>> --- a/tests/xe/xe_pm_residency.c
+>> +++ b/tests/xe/xe_pm_residency.c
+>> @@ -14,6 +14,7 @@
+>>   #include "igt.h"
+>>   #include "igt_sysfs.h"
+>>
+>> +#include "xe/xe_ioctl.h"
+>>   #include "xe/xe_query.h"
+>>
+>>   #define SLEEP_DURATION 3000 /* in milliseconds */ @@ -76,6 +77,38 @@
+>> static unsigned long read_idle_residency(int fd, int gt)
+>>   	return residency;
+>>   }
+>>
+>> +/**
+>> + * SUBTEST: gt-c0-on-exec
+>> + * Description: Validate if GT is in C0 while running a spinner
+>> + *		on an engine of that GT
+>> + * Run type: FULL
+>> + */
+>> +static void test_c0_exec(int fd, struct drm_xe_engine_class_instance
+>> +*hwe) {
+>> +	uint64_t ahnd;
+>> +	unsigned int engine;
+>> +	uint32_t vm;
+>> +	igt_spin_t *spin;
+>> +
+>> +	/* Start with GT in C6 */
+>> +	igt_assert_f(igt_wait(is_gt_in_c6(fd, hwe->gt_id), 1000, 1), "GT is
+>> +not in C6\n");
+>> +
+>> +	igt_debug("Run on engine: %s:%d\n",
+>> +		  xe_engine_class_string(hwe->engine_class), hwe-
+>>> engine_instance);
+>> +	vm = xe_vm_create(fd, 0, 0);
+>> +	engine = xe_engine_create(fd, vm, hwe, 0);
+>> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+>> +	spin = igt_spin_new(fd, .ahnd = ahnd, .engine = engine, .vm = vm);
+>> +
+>> +	/* GT should be in C0 when busy */
+>> +	igt_assert_f(!is_gt_in_c6(fd, hwe->gt_id), "GT in C6\n");
+>> +
+>> +	igt_spin_free(fd, spin);
+>> +	put_ahnd(ahnd);
+>> +	xe_engine_destroy(fd, engine);
+>> +	xe_vm_destroy(fd, vm);
+>> +}
+>> +
+>>   /**
+>>    * SUBTEST: idle-residency
+>>    * Description: basic residency test to validate idle residency @@ -101,12
+>> +134,18 @@ static void test_idle_residency(int fd, int gt)  igt_main  {
+>>   	int fd, gt;
+>> +	struct drm_xe_engine_class_instance *hwe;
+>>
+>>   	igt_fixture {
+>>   		fd = drm_open_driver(DRIVER_XE);
+>>   		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+>>   	}
+>>
+>> +	igt_describe("Validate GT C0 on exec");
+>> +	igt_subtest("gt-c0-on-exec")
+>> +		xe_for_each_hw_engine(fd, hwe)
+>> +			test_c0_exec(fd, hwe);
+>> +
+>>   	igt_describe("Validate GT C6 on idle");
+>>   	igt_subtest("gt-c6-on-idle")
+>>   		xe_for_each_gt(fd, gt)
+>> --
+>> 2.40.0
+> 
