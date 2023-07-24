@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9005D10E2E4
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 12:43:05 +0000 (UTC)
-Message-ID: <448075e2-3ae0-518c-3650-bdbd331567eb@intel.com>
-Date: Mon, 24 Jul 2023 14:43:00 +0200
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Language: en-US
-To: igt-dev@lists.freedesktop.org
-References: <20230706160014.1027512-1-andrzej.hajda@intel.com>
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-In-Reply-To: <20230706160014.1027512-1-andrzej.hajda@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_exec_await: Avoid DG2 conflicts
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Mon, 24 Jul 2023 13:28:35 -0000
+Message-ID: <169020531500.30102.12536123957470651481@emeril.freedesktop.org>
+References: <20230721151528.495893-1-matthew.auld@intel.com>
+In-Reply-To: <20230721151528.495893-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJR1Qg?=
+ =?utf-8?q?bits_for_small-bar_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,353 +17,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
- Chris Wilson <chris.p.wilson@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+== Series Details ==
 
+Series: IGT bits for small-bar (rev7)
+URL   : https://patchwork.freedesktop.org/series/115786/
+State : failure
 
-On 06.07.2023 18:00, Andrzej Hajda wrote:
-> From: Chris Wilson <chris.p.wilson@linux.intel.com>
->
-> DG2 is restricted in what contexts/engines can be run concurrently, if
-> we submit a non-preemptible context on both rcs/ccs it will only run one
-> at a time. Progress (heartbeats) along ccs will be blocked by rcs, and
-> vice versa. This is independent of the ccs switch holdout w/a.
-> Since this is not required for constructing a wide set of active fences
-> (a fence is active until it has been signaled, whether it is running on
-> HW or waiting to run is irrelevant to the signal state), refactor the
-> context construction to be favourable for DG2.
->
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5892
-> Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> [ahajda: adjust to upstream driver]
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-> ---
->   tests/i915/gem_exec_await.c | 180 ++++++++++++++++--------------------
->   1 file changed, 80 insertions(+), 100 deletions(-)
+== Summary ==
 
-Gently ping, over two weeks passed.
+IGT patchset build failed on latest successful build
+86fa0e885f8d020eeb046f27fae5729d5962ebd7 tests/intel-ci: move chamelium testlist inside igt
 
-Regards
-Andrzej
+Tail of build.log:
+[311/1616] Compiling C object 'lib/76b5a35@@igt-ioctl_wrappers_c@sta/ioctl_wrappers.c.o'.
+[312/1616] Compiling C object 'lib/76b5a35@@igt-xe_xe_spin_c@sta/xe_xe_spin.c.o'.
+[313/1616] Compiling C object 'tests/59830eb@@prime_udl@exe/prime_udl.c.o'.
+[314/1616] Compiling C object 'tests/59830eb@@meta_test@exe/meta_test.c.o'.
+[315/1616] Compiling C object 'lib/76b5a35@@igt-igt_chamelium_stream_c@sta/igt_chamelium_stream.c.o'.
+[316/1616] Compiling C object 'lib/76b5a35@@igt-veboxcopy_gen12_c@sta/veboxcopy_gen12.c.o'.
+[317/1616] Compiling C object 'lib/76b5a35@@igt-intel_allocator_c@sta/intel_allocator.c.o'.
+[318/1616] Compiling C object 'lib/76b5a35@@igt-xe_xe_compute_c@sta/xe_xe_compute.c.o'.
+[319/1616] Compiling C object 'lib/76b5a35@@igt-igt_dummyload_c@sta/igt_dummyload.c.o'.
+[320/1616] Compiling C object 'lib/76b5a35@@igt-igt_kmod_c@sta/igt_kmod.c.o'.
+[321/1616] Compiling C object 'tests/59830eb@@panfrost_gem_new@exe/panfrost_gem_new.c.o'.
+[322/1616] Compiling C object 'lib/76b5a35@@igt-igt_audio_c@sta/igt_audio.c.o'.
+[323/1616] Compiling C object 'lib/76b5a35@@igt-igt_alsa_c@sta/igt_alsa.c.o'.
+[324/1616] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
+[325/1616] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
+[326/1616] Compiling C object 'tests/59830eb@@prime_mmap_kms@exe/prime_mmap_kms.c.o'.
+[327/1616] Compiling C object 'lib/76b5a35@@igt-igt_device_scan_c@sta/igt_device_scan.c.o'.
+[328/1616] Compiling C object 'lib/76b5a35@@igt-igt_v3d_c@sta/igt_v3d.c.o'.
+[329/1616] Compiling C object 'lib/76b5a35@@igt-igt_draw_c@sta/igt_draw.c.o'.
+[330/1616] Compiling C object 'tests/59830eb@@prime_busy@exe/prime_busy.c.o'.
+[331/1616] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
+[332/1616] Compiling C object 'lib/76b5a35@@igt-instdone_c@sta/instdone.c.o'.
+[333/1616] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen6_c@sta/rendercopy_gen6.c.o'.
+[334/1616] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen7_c@sta/rendercopy_gen7.c.o'.
+[335/1616] Compiling C object 'tests/59830eb@@panfrost_submit@exe/panfrost_submit.c.o'.
+[336/1616] Compiling C object 'lib/76b5a35@@igt-gpu_cmds_c@sta/gpu_cmds.c.o'.
+[337/1616] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
+[338/1616] Compiling C object 'tests/59830eb@@prime_self_import@exe/prime_self_import.c.o'.
+[339/1616] Compiling C object 'tests/59830eb@@prime_mmap_coherency@exe/prime_mmap_coherency.c.o'.
+[340/1616] Compiling C object 'lib/76b5a35@@igt-intel_blt_c@sta/intel_blt.c.o'.
+[341/1616] Compiling C object 'tests/59830eb@@kms_writeback@exe/kms_writeback.c.o'.
+[342/1616] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
+[343/1616] Compiling C object 'tests/59830eb@@kms_vblank@exe/kms_vblank.c.o'.
+[344/1616] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
+[345/1616] Compiling C object 'tests/59830eb@@prime_mmap@exe/prime_mmap.c.o'.
+[346/1616] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
+[347/1616] Generating i915-perf-registers-acmgt3 with a custom command.
+[348/1616] Generating i915-perf-metrics-acmgt3 with a custom command.
+[349/1616] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
+[350/1616] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
+[351/1616] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
+[352/1616] Compiling C object 'tests/59830eb@@prime_vgem@exe/prime_vgem.c.o'.
+[353/1616] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
+[354/1616] Compiling C object 'lib/76b5a35@@igt-igt_chamelium_c@sta/igt_chamelium.c.o'.
+[355/1616] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
+[356/1616] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
+[357/1616] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
+[358/1616] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
+[359/1616] Generating i915-perf-equations with a custom command.
+ninja: build stopped: subcommand failed.
 
->
-> diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
-> index 53b7bac2f96..b87adcb4a18 100644
-> --- a/tests/i915/gem_exec_await.c
-> +++ b/tests/i915/gem_exec_await.c
-> @@ -25,12 +25,23 @@
->   #include <sys/ioctl.h>
->   #include <sys/signal.h>
->   
-> +#include "drmtest.h"
->   #include "i915/gem.h"
->   #include "i915/gem_create.h"
-> -#include "igt.h"
-> +#include "i915/gem_engine_topology.h"
-> +#include "i915/gem_mman.h"
-> +#include "i915/gem_submission.h"
-> +#include "i915/gem_vm.h"
-> +#include "igt_aux.h"
-> +#include "igt_core.h"
->   #include "igt_rand.h"
->   #include "igt_sysfs.h"
-> +#include "igt_types.h"
->   #include "igt_vgem.h"
-> +#include "ioctl_wrappers.h"
-> +#include "intel_chipset.h"
-> +#include "intel_ctx.h"
-> +#include "intel_gpu_commands.h"
->   /**
->    * TEST: gem exec await
->    * Category: Infrastructure
-> @@ -66,7 +77,7 @@ static void xchg_obj(void *array, unsigned i, unsigned j)
->   }
->   
->   #define CONTEXTS 0x1
-> -static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
-> +static void wide(int fd, intel_ctx_cfg_t *cfg, int ring_size,
->   		 int timeout, unsigned int flags)
->   {
->   	const struct intel_execution_engine2 *engine;
-> @@ -75,7 +86,6 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
->   	struct {
->   		struct drm_i915_gem_exec_object2 *obj;
->   		struct drm_i915_gem_exec_object2 exec[2];
-> -		struct drm_i915_gem_relocation_entry reloc;
->   		struct drm_i915_gem_execbuffer2 execbuf;
->   		const intel_ctx_t *ctx;
->   		uint32_t *cmd;
-> @@ -83,9 +93,13 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
->   	struct drm_i915_gem_exec_object2 *obj;
->   	struct drm_i915_gem_execbuffer2 execbuf;
->   	unsigned engines[I915_EXEC_RING_MASK + 1], nengine;
-> +	const intel_ctx_t *ctx;
->   	unsigned long count;
->   	double time;
-> -	uint64_t ahnd = get_reloc_ahnd(fd, 0); /* just offset provider */
-> +
-> +	__gem_vm_create(fd, &cfg->vm);
-> +	if (__intel_ctx_create(fd, cfg, &ctx))
-> +		ctx = intel_ctx_0(fd);
->   
->   	nengine = 0;
->   	for_each_ctx_engine(fd, ctx, engine) {
-> @@ -102,7 +116,7 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
->   	igt_assert(exec);
->   
->   	igt_require_memory(nengine*(2 + ring_size), 4096, CHECK_RAM);
-> -	obj = calloc(nengine*ring_size + 1, sizeof(*obj));
-> +	obj = calloc(nengine * (ring_size  + 1) + 1, sizeof(*obj));
->   	igt_assert(obj);
->   
->   	for (unsigned e = 0; e < nengine; e++) {
-> @@ -111,69 +125,63 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
->   		for (unsigned n = 0; n < ring_size; n++)  {
->   			exec[e].obj[n].handle = gem_create(fd, 4096);
->   			exec[e].obj[n].flags = EXEC_OBJECT_WRITE;
-> -			exec[e].obj[n].offset = get_offset(ahnd, exec[e].obj[n].handle,
-> -							   4096, 0);
-> -			if (ahnd)
-> -				exec[e].obj[n].flags |= EXEC_OBJECT_PINNED;
-> -
-> -			obj[e*ring_size + n].handle = exec[e].obj[n].handle;
-> -			obj[e*ring_size + n].offset = exec[e].obj[n].offset;
-> +			obj[e * ring_size + n] = exec[e].obj[n];
->   		}
->   
->   		exec[e].execbuf.buffers_ptr = to_user_pointer(exec[e].exec);
-> -		exec[e].execbuf.buffer_count = 1;
-> -		exec[e].execbuf.flags = (engines[e] |
-> -					 I915_EXEC_NO_RELOC |
-> -					 I915_EXEC_HANDLE_LUT);
-> +		exec[e].execbuf.buffer_count = 2;
-> +		exec[e].execbuf.flags = engines[e];
-> +		exec[e].execbuf.rsvd1 = ctx->id;
->   
->   		if (flags & CONTEXTS) {
-> -			exec[e].ctx = intel_ctx_create(fd, &ctx->cfg);
-> +			exec[e].ctx = intel_ctx_create(fd, cfg);
->   			exec[e].execbuf.rsvd1 = exec[e].ctx->id;
-> -		} else {
-> -			exec[e].execbuf.rsvd1 = ctx->id;
->   		}
->   
-> -		exec[e].exec[0].handle = gem_create(fd, 4096);
-> -		exec[e].exec[0].offset = get_offset(ahnd, exec[e].exec[0].handle,
-> -						    4096, 0);
-> -		if (ahnd)
-> -			exec[e].exec[0].flags = EXEC_OBJECT_PINNED;
-> -
-> -		exec[e].cmd = gem_mmap__device_coherent(fd, exec[e].exec[0].handle,
-> -							0, 4096, PROT_WRITE);
-> -
-> -		gem_set_domain(fd, exec[e].exec[0].handle,
-> -			       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
-> -		exec[e].cmd[0] = MI_BATCH_BUFFER_END;
-> -
-> -		gem_execbuf(fd, &exec[e].execbuf);
-> -		exec[e].exec[1] = exec[e].exec[0];
-> -		exec[e].execbuf.buffer_count = 2;
-> -
-> -		exec[e].reloc.target_handle = 1; /* recurse */
-> -		exec[e].reloc.offset = sizeof(uint32_t);
-> -		exec[e].reloc.read_domains = I915_GEM_DOMAIN_COMMAND;
-> -		if (gen < 4)
-> -			exec[e].reloc.delta = 1;
-> -
-> -		exec[e].exec[1].relocs_ptr = to_user_pointer(&exec[e].reloc);
-> -		exec[e].exec[1].relocation_count = !ahnd ? 1 : 0;
-> +		exec[e].exec[1].handle = gem_create(fd, 4096);
-> +		obj[nengine * ring_size + e] = exec[e].exec[1];
->   	}
->   
-> -	obj[nengine*ring_size].handle = gem_create(fd, 4096);
-> -	gem_write(fd, obj[nengine*ring_size].handle, 0, &bbe, sizeof(bbe));
-> -
-> -	obj[nengine*ring_size].offset = get_offset(ahnd, obj[nengine*ring_size].handle,
-> -						   4096, 0);
-> -	if (ahnd)
-> -		obj[nengine*ring_size].flags |= EXEC_OBJECT_PINNED;
-> +	obj[nengine * (ring_size + 1)].handle = gem_create(fd, 4096);
-> +	gem_write(fd, obj[nengine * (ring_size + 1)].handle, 0,
-> +		  &bbe, sizeof(bbe));
->   
->   	memset(&execbuf, 0, sizeof(execbuf));
-> -	execbuf.buffers_ptr = to_user_pointer(&obj[nengine*ring_size]);
-> -	execbuf.buffer_count = 1;
-> -	gem_execbuf(fd, &execbuf); /* tag the object as a batch in the GTT */
->   	execbuf.buffers_ptr = to_user_pointer(obj);
-> -	execbuf.buffer_count = nengine*ring_size + 1;
-> +	execbuf.buffer_count = nengine * (ring_size + 1) + 1;
-> +	execbuf.rsvd1 = ctx->id;
-> +	gem_execbuf(fd, &execbuf); /* tag the object as a batch in the GTT */
-> +	for (unsigned e = 0; e < nengine; e++) {
-> +		uint64_t address;
-> +		uint32_t *cs;
-> +
-> +		for (unsigned n = 0; n < ring_size; n++) {
-> +			obj[e * ring_size + n].flags |= EXEC_OBJECT_PINNED;
-> +			exec[e].obj[n] = obj[e * ring_size + n];
-> +		}
-> +		exec[e].exec[1] = obj[nengine * ring_size + e];
-> +		exec[e].exec[1].flags |= EXEC_OBJECT_PINNED;
-> +		address = exec[e].exec[1].offset;
-> +
-> +		exec[e].cmd = gem_mmap__device_coherent(fd, exec[e].exec[1].handle,
-> +							0, 4096, PROT_WRITE);
-> +		cs = exec[e].cmd;
-> +
-> +		*cs++ = MI_NOOP;
-> +		if (gen >= 8) {
-> +			*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
-> +			*cs++ = address;
-> +			*cs++ = address >> 32;
-> +		} else if (gen >= 6) {
-> +			*cs++ = MI_BATCH_BUFFER_START | 1 << 8;
-> +			*cs++ = address;
-> +		} else {
-> +			*cs++ = MI_BATCH_BUFFER_START | 2 << 6;
-> +			if (gen < 4)
-> +				address |= 1;
-> +			*cs++ = address;
-> +		}
-> +	}
->   
->   	intel_detect_and_clear_missed_interrupts(fd);
->   
-> @@ -182,42 +190,22 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
->   	igt_until_timeout(timeout) {
->   		struct timespec start, now;
->   		for (unsigned e = 0; e < nengine; e++) {
-> -			uint64_t address;
-> -			int i;
-> -
->   			if (flags & CONTEXTS) {
->   				intel_ctx_destroy(fd, exec[e].ctx);
-> -				exec[e].ctx = intel_ctx_create(fd, &ctx->cfg);
-> +				exec[e].ctx = intel_ctx_create(fd, cfg);
->   				exec[e].execbuf.rsvd1 = exec[e].ctx->id;
->   			}
->   
-> -			exec[e].reloc.presumed_offset = exec[e].exec[1].offset;
-> -			address = (exec[e].reloc.presumed_offset +
-> -				   exec[e].reloc.delta);
->   			gem_set_domain(fd, exec[e].exec[1].handle,
->   				       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
-> +			exec[e].cmd[0] = MI_ARB_CHECK;
->   
-> -			i = 0;
-> -			exec[e].cmd[i] = MI_BATCH_BUFFER_START;
-> -			if (gen >= 8) {
-> -				exec[e].cmd[i] |= 1 << 8 | 1;
-> -				exec[e].cmd[++i] = address;
-> -				exec[e].cmd[++i] = address >> 32;
-> -			} else if (gen >= 6) {
-> -				exec[e].cmd[i] |= 1 << 8;
-> -				exec[e].cmd[++i] = address;
-> -			} else {
-> -				exec[e].cmd[i] |= 2 << 6;
-> -				exec[e].cmd[++i] = address;
-> -			}
-> -
-> -			exec[e].exec[0] = obj[nengine*ring_size];
-> +			exec[e].exec[0] = obj[nengine * (ring_size + 1)];
->   			gem_execbuf(fd, &exec[e].execbuf);
->   
->   			for (unsigned n = 0; n < ring_size; n++) {
->   				exec[e].exec[0] = exec[e].obj[n];
->   				gem_execbuf(fd, &exec[e].execbuf);
-> -				exec[e].obj[n].offset = exec[e].exec[0].offset;
->   			}
->   		}
->   
-> @@ -225,10 +213,7 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
->   
->   		clock_gettime(CLOCK_MONOTONIC, &start);
->   		for (unsigned e = 0; e < nengine; e++) {
-> -			execbuf.flags = (engines[e] |
-> -					 I915_EXEC_NO_RELOC |
-> -					 I915_EXEC_HANDLE_LUT);
-> -			execbuf.rsvd1 = ctx->id;
-> +			execbuf.flags = engines[e];
->   			gem_execbuf(fd, &execbuf);
->   		}
->   		clock_gettime(CLOCK_MONOTONIC, &now);
-> @@ -245,43 +230,40 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
->   	igt_info("%s: %'lu cycles: %.3fus\n",
->   		 __func__, count, time*1e6 / count);
->   
-> -	gem_close(fd, obj[nengine*ring_size].handle);
-> +	for (unsigned n = 0; n < nengine * (ring_size + 1) + 1; n++)
-> +		gem_close(fd, obj[n].handle);
->   	free(obj);
->   
->   	for (unsigned e = 0; e < nengine; e++) {
->   		if (flags & CONTEXTS)
->   			intel_ctx_destroy(fd, exec[e].ctx);
->   
-> -		for (unsigned n = 0; n < ring_size; n++) {
-> -			gem_close(fd, exec[e].obj[n].handle);
-> -			put_offset(ahnd, exec[e].obj[n].handle);
-> -		}
-> -		free(exec[e].obj);
-> -
->   		munmap(exec[e].cmd, 4096);
-> -		gem_close(fd, exec[e].exec[1].handle);
-> -		put_offset(ahnd, exec[e].exec[1].handle);
-> +		free(exec[e].obj);
->   	}
->   	free(exec);
-> -	put_ahnd(ahnd);
-> +
-> +	intel_ctx_destroy(fd, ctx);
-> +	__gem_vm_destroy(fd, cfg->vm);
-> +	cfg->vm = 0;
->   }
->   
->   #define TIMEOUT 20
->   
->   igt_main
->   {
-> +	intel_ctx_cfg_t cfg;
->   	int ring_size = 0;
-> -	int device = -1;
-> -	const intel_ctx_t *ctx;
-> +	igt_fd_t(device);
->   
->   	igt_fixture {
->   
->   		device = drm_open_driver(DRIVER_INTEL);
->   		igt_require_gem(device);
->   		gem_submission_print_method(device);
-> -		ctx = intel_ctx_create_all_physical(device);
-> +		cfg = intel_ctx_cfg_all_physical(device);
->   
-> -		ring_size = gem_submission_measure(device, &ctx->cfg, ALL_ENGINES);
-> +		ring_size = gem_submission_measure(device, &cfg, ALL_ENGINES);
->   
->   		igt_info("Ring size: %d batches\n", ring_size);
->   		igt_require(ring_size > 0);
-> @@ -290,16 +272,14 @@ igt_main
->   	}
->   
->   	igt_subtest("wide-all")
-> -		wide(device, ctx, ring_size, TIMEOUT, 0);
-> +		wide(device, &cfg, ring_size, TIMEOUT, 0);
->   
->   	igt_subtest("wide-contexts") {
->   		gem_require_contexts(device);
-> -		wide(device, ctx, ring_size, TIMEOUT, CONTEXTS);
-> +		wide(device, &cfg, ring_size, TIMEOUT, CONTEXTS);
->   	}
->   
->   	igt_fixture {
->   		igt_stop_hang_detector();
-> -		intel_ctx_destroy(device, ctx);
-> -		drm_close_driver(device);
->   	}
->   }
