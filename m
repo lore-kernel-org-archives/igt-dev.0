@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4F8210E00E
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 06:12:39 +0000 (UTC)
-Message-ID: <d3a7cbf9-b53e-fc31-35b9-e6f7ef0e97af@intel.com>
-Date: Mon, 24 Jul 2023 11:42:15 +0530
-Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230704173107.842296-1-swati2.sharma@intel.com>
- <20230704173107.842296-7-swati2.sharma@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230704173107.842296-7-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AEE3910E324
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 14:16:35 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 24 Jul 2023 15:15:57 +0100
+Message-ID: <20230724141602.47733-2-matthew.auld@intel.com>
+In-Reply-To: <20230724141602.47733-1-matthew.auld@intel.com>
+References: <20230724141602.47733-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v2 6/9] lib/dsc: add helpers for vdsc fractional bpp
- debugfs entry
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v5 1/6] xe: sync small-bar uapi
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,152 +23,154 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM.
+We need a couple new fields for the region query and the new flag to
+ensure the buffer is CPU accessible.
 
-Minor alignment suggestions, with those addressed, this is:
+make headers_install at fcd32328261c ("drm/xe/uapi: add the userspace
+bits for small-bar")
 
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+---
+ include/drm-uapi/xe_drm.h | 78 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 69 insertions(+), 9 deletions(-)
 
-
-On 7/4/2023 11:01 PM, Swati Sharma wrote:
-> Helper functions are added for getting/setting VDSC Fractional BPP
-> debugfs entry.
->
-> v2: -improved func description (Ankit)
->      -increased buff size (Ankit)
->      -asserted bpp_prec (Ankit)
-> v3: -return 0 on success instead of 1 (Jouni)
-> v4: -rebase
->
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   lib/igt_dsc.c | 84 +++++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_dsc.h |  5 +++
->   2 files changed, 89 insertions(+)
->
-> diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
-> index 76a420c10..90ac91131 100644
-> --- a/lib/igt_dsc.c
-> +++ b/lib/igt_dsc.c
-> @@ -205,3 +205,87 @@ int igt_force_dsc_output_format(int drmfd, char *connector_name,
->   
->   	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_output_format", buf);
->   }
-> +
-> +static
-> +bool check_dsc_fractional_bpp_debugfs(int drmfd, char *connector_name,
-> +				      const char *check_str)
-> +{
-> +	char file_name[128] = {0};
-> +	char buf[512];
-> +
-> +	sprintf(file_name, "%s/i915_dsc_fractional_bpp", connector_name);
-> +
-> +	igt_debugfs_read(drmfd, file_name, buf);
-> +
-> +	return strstr(buf, check_str);
-> +}
-> +
-> +/*
-> + * igt_get_dsc_fractional_bpp_supported:
-> + * @drmfd: A drm file descriptor
-> + * @connector_name: Name of the libdrm connector we're going to use
-> + *
-> + * Returns: The dsc sink bpp precision.
-
-
-(supported by the sink)
-
-
-> + * 	    Precision value of
-> + * 				16 => 1/16
-> + * 				8  => 1/8
-> + * 				1  => fractional bpp not supported
-
-Alignment seems off. IMHO Left aligned will be better.
-
-Regards,
-
-Ankit
-
-> + */
-> +int igt_get_dsc_fractional_bpp_supported(int drmfd, char *connector_name)
-> +{
-> +	char file_name[128] = {0};
-> +	char buf[512];
-> +	char *start_loc;
-> +	int bpp_prec;
-> +
-> +	sprintf(file_name, "%s/i915_dsc_fec_support", connector_name);
-> +	igt_debugfs_read(drmfd, file_name, buf);
-> +
-> +	igt_assert(start_loc = strstr(buf, "DSC_Sink_BPP_Precision: "));
-> +	igt_assert_eq(sscanf(start_loc, "DSC_Sink_BPP_Precision: %d", &bpp_prec), 1);
-> +	igt_assert(bpp_prec > 0);
-> +
-> +	return bpp_prec;
-> +}
-> +
-> +/*
-> + * igt_is_force_dsc_fractional_bpp_enabled:
-> + * @drmfd: A drm file descriptor
-> + * @connector_name: Name of the libdrm connector we're going to use
-> + *
-> + * Returns: True if DSC Fractional BPP is force enabled (via debugfs) for the given connector,
-> + * false otherwise.
-> + */
-> +bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name)
-> +{
-> +	return check_dsc_fractional_bpp_debugfs(drmfd, connector_name, "Force_DSC_Fractional_BPP_Enable: yes");
-> +}
-> +
-> +/*
-> + * igt_force_dsc_fractional_bpp_enable:
-> + * @drmfd: A drm file descriptor
-> + * @connector_name: Name of the libdrm connector we're going to use
-> + *
-> + * Returns: 0 on success or negative error code, in case of failure.
-> + */
-> +int igt_force_dsc_fractional_bpp_enable(int drmfd, char *connector_name)
-> +{
-> +	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_fractional_bpp", "1");
-> +}
-> +
-> +/*
-> + * igt_get_dsc_fractional_bpp_debugfs_fd:
-> + * @drmfd: A drm file descriptor
-> + * @connector_name: Name of the libdrm connector we're going to use
-> + *
-> + * Returns: fd of the DSC Fractional BPP debugfs for the given connector,
-> + * else returns -1.
-> + */
-> +int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name)
-> +{
-> +	char file_name[128] = {0};
-> +
-> +	sprintf(file_name, "%s/i915_dsc_fractional_bpp", connector_name);
-> +
-> +	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
-> +}
-> diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
-> index b58743b5f..5d918ea7a 100644
-> --- a/lib/igt_dsc.h
-> +++ b/lib/igt_dsc.h
-> @@ -8,6 +8,7 @@
->   
->   #include "igt_fb.h"
->   #include "igt_kms.h"
-> +#include "igt_core.h"
->   
->   bool igt_is_dsc_supported_by_source(int drmfd);
->   bool igt_is_dsc_supported_by_sink(int drmfd, char *connector_name);
-> @@ -21,5 +22,9 @@ bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
->   						enum dsc_output_format output_format);
->   int igt_force_dsc_output_format(int drmfd, char *connector_name,
->   				enum dsc_output_format output_format);
-> +int igt_get_dsc_fractional_bpp_supported(int drmfd, char *connector_name);
-> +bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name);
-> +int igt_force_dsc_fractional_bpp_enable(int drmfd, char *connector_name);
-> +int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name);
->   
->   #endif
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 432bd87ca..02419c1d5 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -29,7 +29,7 @@ extern "C" {
+  * redefine the interface more easily than an ever growing struct of
+  * increasing complexity, and for large parts of that interface to be
+  * entirely optional. The downside is more pointer chasing; chasing across
+- * the __user boundary with pointers encapsulated inside u64.
++ * the boundary with pointers encapsulated inside u64.
+  *
+  * Example chaining:
+  *
+@@ -180,8 +180,37 @@ struct drm_xe_query_mem_region {
+ 	 * zero.
+ 	 */
+ 	__u64 used;
++	/*
++	 * @cpu_visible_size: How much of this region can be CPU
++	 * accessed, in bytes.
++	 *
++	 * This will always be <= @total_size, and the remainder (if
++	 * any) will not be CPU accessible. If the CPU accessible part
++	 * is smaller than @total_size then this is referred to as a
++	 * small BAR system.
++	 *
++	 * On systems without small BAR (full BAR), the probed_size will
++	 * always equal the @total_size, since all of it will be CPU
++	 * accessible.
++	 *
++	 * Note this is only tracked for XE_MEM_REGION_CLASS_VRAM
++	 * regions (for other types the value here will always equal
++	 * zero).
++	 */
++	__u64 cpu_visible_size;
++	/**
++	 * @cpu_visible_used: Estimate of CPU visible memory used, in
++	 * bytes.
++	 *
++	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
++	 * accounting. Without this the value here will always equal
++	 * zero.  Note this is only currently tracked for
++	 * XE_MEM_REGION_CLASS_VRAM regions (for other types the value
++	 * here will always be zero).
++	 */
++	__u64 cpu_visible_used;
+ 	/** @reserved: MBZ */
+-	__u64 reserved[8];
++	__u64 reserved[6];
+ };
+ 
+ /**
+@@ -242,11 +271,13 @@ struct drm_xe_query_gts {
+ 	/** @pad: MBZ */
+ 	__u32 pad;
+ 
+-	/*
++	/**
++	 * @gts: The GTs returned for this device
++	 *
++	 * TODO: convert drm_xe_query_gt to proper kernel-doc.
+ 	 * TODO: Perhaps info about every mem region relative to this GT? e.g.
+ 	 * bandwidth between this GT and remote region?
+ 	 */
+-
+ 	struct drm_xe_query_gt {
+ #define XE_QUERY_GT_TYPE_MAIN		0
+ #define XE_QUERY_GT_TYPE_REMOTE		1
+@@ -381,6 +412,22 @@ struct drm_xe_gem_create {
+ 
+ #define XE_GEM_CREATE_FLAG_DEFER_BACKING	(0x1 << 24)
+ #define XE_GEM_CREATE_FLAG_SCANOUT		(0x1 << 25)
++/*
++ * When using VRAM as a possible placement, ensure that the corresponding VRAM
++ * allocation will always use the CPU accessible part of VRAM. This is important
++ * for small-bar systems (on full-bar systems this gets turned into a noop).
++ *
++ * Note: System memory can be used as an extra placement if the kernel should
++ * spill the allocation to system memory, if space can't be made available in
++ * the CPU accessible part of VRAM (giving the same behaviour as the i915
++ * interface, see I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS).
++ *
++ * Note: For clear-color CCS surfaces the kernel needs to read the clear-color
++ * value stored in the buffer, and on discrete platforms we need to use VRAM for
++ * display surfaces, therefore the kernel requires setting this flag for such
++ * objects, otherwise an error is thrown on small-bar systems.
++ */
++#define XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM	(0x1 << 26)
+ 	/**
+ 	 * @flags: Flags, currently a mask of memory instances of where BO can
+ 	 * be placed
+@@ -799,7 +846,7 @@ struct drm_xe_exec {
+ 	/** @extensions: Pointer to the first extension struct, if any */
+ 	__u64 extensions;
+ 
+-	/** @vm_id: VM ID to run batch buffer in */
++	/** @engine_id: Engine ID for the batch buffer */
+ 	__u32 engine_id;
+ 
+ 	/** @num_syncs: Amount of struct drm_xe_sync in array. */
+@@ -852,8 +899,9 @@ struct drm_xe_mmio {
+  * struct drm_xe_wait_user_fence - wait user fence
+  *
+  * Wait on user fence, XE will wakeup on every HW engine interrupt in the
+- * instances list and check if user fence is complete:
+- * (*addr & MASK) OP (VALUE & MASK)
++ * instances list and check if user fence is complete::
++ *
++ *	(*addr & MASK) OP (VALUE & MASK)
+  *
+  * Returns to user on user fence completion or timeout.
+  */
+@@ -901,8 +949,20 @@ struct drm_xe_wait_user_fence {
+ #define DRM_XE_UFENCE_WAIT_U64		0xffffffffffffffffu
+ 	/** @mask: comparison mask */
+ 	__u64 mask;
+-
+-	/** @timeout: how long to wait before bailing, value in jiffies */
++	/**
++	 * @timeout: how long to wait before bailing, value in nanoseconds.
++	 * Without DRM_XE_UFENCE_WAIT_ABSTIME flag set (relative timeout)
++	 * it contains timeout expressed in nanoseconds to wait (fence will
++	 * expire at now() + timeout).
++	 * When DRM_XE_UFENCE_WAIT_ABSTIME flat is set (absolute timeout) wait
++	 * will end at timeout (uses system MONOTONIC_CLOCK).
++	 * Passing negative timeout leads to neverending wait.
++	 *
++	 * On relative timeout this value is updated with timeout left
++	 * (for restarting the call in case of signal delivery).
++	 * On absolute timeout this value stays intact (restarted call still
++	 * expire at the same point of time).
++	 */
+ 	__s64 timeout;
+ 
+ 	/**
+-- 
+2.41.0
