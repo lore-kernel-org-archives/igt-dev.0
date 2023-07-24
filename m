@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1473810E0FA
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 05:30:00 +0000 (UTC)
-Message-ID: <a5f6d52e-d0d8-005b-458d-232cf6b4c854@intel.com>
-Date: Mon, 24 Jul 2023 10:59:46 +0530
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA64910E0FA
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jul 2023 05:33:04 +0000 (UTC)
+Message-ID: <11a8c555-e8ff-8063-4f53-aa29c57cd270@intel.com>
+Date: Mon, 24 Jul 2023 11:02:47 +0530
 Content-Language: en-US
 To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20230704173107.842296-1-swati2.sharma@intel.com>
- <20230704173107.842296-5-swati2.sharma@intel.com>
+ <20230704173107.842296-9-swati2.sharma@intel.com>
 From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230704173107.842296-5-swati2.sharma@intel.com>
+In-Reply-To: <20230704173107.842296-9-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v2 4/9] tests/i915/kms_dsc: add get_status()
+Subject: Re: [igt-dev] [v2 8/9] tests/i915/kms_dsc: add subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,63 +25,37 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 7/4/2023 11:01 PM, Swati Sharma wrote:
-> Use get_status() to get current bpc when TEST_DSC_BPC test
-> flag is used. If input bpc is not equal to current bpc,
-> skip test.
->
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/i915/kms_dsc.c | 14 +++++++++++++-
->   1 file changed, 13 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> index 7b9bae91a..df9b27225 100644
-> --- a/tests/i915/kms_dsc.c
-> +++ b/tests/i915/kms_dsc.c
-> @@ -111,12 +111,18 @@ static void test_cleanup(data_t *data)
->   	igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
->   }
->   
-> +static int get_status(int drmfd, enum pipe pipe)
-> +{
-> +	return igt_get_pipe_current_bpc(drmfd, pipe);
-> +}
-
-I think we can directly call the lib function, so this is not required.
-
-Otherwise the change looks good to me.
+LGTM.
 
 Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-> +
->   /* re-probe connectors and do a modeset with DSC */
->   static void update_display(data_t *data, uint32_t test_type)
->   {
->   	int ret;
->   	bool enabled;
->   	int index = 0;
-> +	int current_bpc = 0;
->   	igt_plane_t *primary;
->   	drmModeModeInfo *mode;
->   	igt_output_t *output = data->output;
-> @@ -202,11 +208,17 @@ static void update_display(data_t *data, uint32_t test_type)
+On 7/4/2023 11:01 PM, Swati Sharma wrote:
+> New subtest is added to validate fractional bpp with different
+> input bpc.
+>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   tests/i915/kms_dsc.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+>
+> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+> index 26d6e2ffb..d46a5e74d 100644
+> --- a/tests/i915/kms_dsc.c
+> +++ b/tests/i915/kms_dsc.c
+> @@ -392,6 +392,16 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+>   				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
+>   				 DSC_FORMAT_RGB);
 >   
->   	restore_force_dsc_en();
->   
-> +	if (test_type & TEST_DSC_BPC) {
-> +		current_bpc = get_status(data->drm_fd, data->pipe);
-> +		igt_skip_on_f(data->input_bpc != current_bpc,
-> +			      "Input bpc = %d is not equal to current bpc = %d\n",
-> +			      data->input_bpc, current_bpc);
+> +	igt_describe("Tests fractional compressed bpp functionality if supported "
+> +		     "by a connector by forcing fractional_bpp on all connectors that support it "
+> +		     "with certain input BPC for the connector.");
+> +	igt_subtest_with_dynamic("dsc-fractional-bpp-with-bpc") {
+> +		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+> +			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
+> +				 bpc_list[j], DRM_FORMAT_XRGB8888,
+> +				 DSC_FORMAT_RGB);
 > +	}
 > +
->   	igt_assert_f(enabled,
->   		     "Default DSC enable failed on connector: %s pipe: %s\n",
->   		     output->name,
->   		     kmstest_pipe_name(data->pipe));
-> -
->   reset:
->   	test_reset(data);
->   
+>   	igt_fixture {
+>   		igt_display_fini(&data.display);
+>   		drm_close_driver(data.drm_fd);
