@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-4323.proton.ch (mail-4323.proton.ch [185.70.43.23])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0715810E392
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 06:37:32 +0000 (UTC)
-Date: Tue, 25 Jul 2023 06:37:19 +0000
-To: =?utf-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-From: Simon Ser <contact@emersion.fr>
-Message-ID: <tGRNs3O1zv1sqMjGeR6kX4GMYKG5K9-1ll13Rnv797HudW3sHx91ACtQkUiFo1_2lIeVHqTz1abSCLAEgR62L9vRs2ikHb8GdD1zDnJNhoU=@emersion.fr>
-In-Reply-To: <20230725041807.f4cydvkattmc7sie@zkempczy-mobl2>
-References: <2aafc4e6-0ba7-5d78-4adb-0a0368f74792@nvidia.com>
- <20230725041807.f4cydvkattmc7sie@zkempczy-mobl2>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6435710E39D
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 07:14:52 +0000 (UTC)
+From: janga.rahul.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
+ janga.rahul.kumar@intel.com
+Date: Tue, 25 Jul 2023 12:46:20 +0530
+Message-Id: <20230725071622.206601-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH] tests/syncobj_sync_file: new test
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/2] Add Xe lib support for hang & GT reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,26 +17,27 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: James Jones <jajones@nvidia.com>, igt-dev@lists.freedesktop.org,
- Austin Shafer <ashafer@nvidia.com>
+Cc: sai.gowtham.ch@intel.com, kunal1.joshi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tuesday, July 25th, 2023 at 06:18, Zbigniew Kempczy=C5=84ski <zbigniew.k=
-empczynski@intel.com> wrote:
+From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-> At the moment (before uapi will be accepted) I would add locally in the t=
-est:
-> - drm.h definitions naming them LOCAL_DRM_IOCTL_...
-> - two functions locally in the test. In this case names can stay, when
-> uapi will be accepted and merged just move them to igt_syncobj.c/h
-> (use inside LOCAL_DRM_IOCTL_... until official merge).
->=20
-> After uapi merge we do verbatim copy of header from the kernel
-> include directory and remove "localization" described above.
->=20
-> I'm sorry for inconvinience but that's the rules.
+Add library support for hang and resetting all the GT's.
 
-Alternatively, just get the IGT patch reviewed on the list and hold off
-merging until the kernel part lands.
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+
+Janga Rahul Kumar (2):
+  lib/xe: Add support to reset all GT's
+  lib/xe: Add hang library support
+
+ lib/igt_gt.c      | 28 ++++++++++++++++++
+ lib/xe/xe_ioctl.c | 72 +++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_ioctl.h |  8 ++++++
+ 3 files changed, 108 insertions(+)
+
+-- 
+2.25.1
