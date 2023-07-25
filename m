@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4011D10E39D
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 07:14:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 497F810E3A1
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 07:14:59 +0000 (UTC)
 From: janga.rahul.kumar@intel.com
 To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  janga.rahul.kumar@intel.com
-Date: Tue, 25 Jul 2023 12:46:21 +0530
-Message-Id: <20230725071622.206601-2-janga.rahul.kumar@intel.com>
+Date: Tue, 25 Jul 2023 12:46:22 +0530
+Message-Id: <20230725071622.206601-3-janga.rahul.kumar@intel.com>
 In-Reply-To: <20230725071622.206601-1-janga.rahul.kumar@intel.com>
 References: <20230725071622.206601-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/xe: Add support to reset all GT's
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib/xe: Add hang library support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,130 +26,122 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Add library support to check support for GT reset and
-force reset all GT's.
+Add hang library support using spinners.
 
 Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 ---
- lib/igt_gt.c      |  7 +++++++
- lib/xe/xe_ioctl.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_ioctl.h |  2 ++
- 3 files changed, 61 insertions(+)
+ lib/igt_gt.c      | 21 +++++++++++++++++++++
+ lib/xe/xe_ioctl.c | 20 ++++++++++++++++++++
+ lib/xe/xe_ioctl.h |  6 ++++++
+ 3 files changed, 47 insertions(+)
 
 diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-index d4a825e66..2ce464ba6 100644
+index 2ce464ba6..6821179ca 100644
 --- a/lib/igt_gt.c
 +++ b/lib/igt_gt.c
-@@ -45,6 +45,7 @@
- #include "intel_chipset.h"
- #include "igt_dummyload.h"
+@@ -170,6 +170,15 @@ static void context_set_ban(int fd, unsigned ctx, unsigned ban)
  
-+#include "xe/xe_ioctl.h"
- /**
-  * SECTION:igt_gt
-  * @short_description: GT support library
-@@ -60,6 +61,9 @@ static int reset_query_once = -1;
+ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
+ {
++	if (is_xe_device(fd)) {
++		if (!igt_check_boolean_env_var("IGT_HANG", true))
++			igt_skip("hang injection disabled by user [IGT_HANG=0]\n");
++
++		igt_require(has_gpu_reset(fd));
++
++		return (struct igt_hang){ 0, ctx, 0, flags };
++       }
++
+ 	struct drm_i915_gem_context_param param = {
+ 		.ctx_id = ctx,
+ 	};
+@@ -219,6 +228,9 @@ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
  
- static bool has_gpu_reset(int fd)
+ void igt_disallow_hang(int fd, igt_hang_t arg)
  {
 +	if (is_xe_device(fd))
-+		has_xe_gt_reset(fd);
++		return;
 +
- 	if (reset_query_once < 0) {
- 		reset_query_once = gem_gpu_reset_type(fd);
+ 	context_set_ban(fd, arg.ctx, arg.ban);
  
-@@ -395,6 +399,9 @@ void igt_post_hang_ring(int fd, igt_hang_t arg)
-  */
- void igt_force_gpu_reset(int drm_fd)
+ 	if ((arg.flags & HANG_ALLOW_CAPTURE) == 0) {
+@@ -290,6 +302,9 @@ static bool has_ctx_exec(int fd, unsigned ring, uint32_t ctx)
+ static igt_hang_t __igt_hang_ctx(int fd, uint64_t ahnd, uint32_t ctx, int ring,
+ 				 unsigned flags)
  {
-+	if (is_xe_device(drm_fd))
-+		xe_force_gt_reset_all(drm_fd);
++	if (is_xe_device(fd))
++		return xe_hang_engine(fd, ahnd, ctx, ring, flags);
 +
- 	int dir, wedged;
+ 	struct drm_i915_gem_context_param param;
+ 	igt_spin_t *spin;
+ 	unsigned ban;
+@@ -372,6 +387,12 @@ void igt_post_hang_ring(int fd, igt_hang_t arg)
+ 	if (!arg.spin)
+ 		return;
  
- 	igt_debug("Triggering GPU reset\n");
++	if (is_xe_device(fd)) {
++		igt_spin_free(fd, arg.spin);
++		xe_post_hang_ring(fd, arg);
++		return;
++	}
++
+ 	gem_sync(fd, arg.spin->handle); /* Wait until it hangs */
+ 	igt_spin_free(fd, arg.spin);
+ 
 diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 1f9240cd9..488aa218e 100644
+index 488aa218e..5ec85239a 100644
 --- a/lib/xe/xe_ioctl.c
 +++ b/lib/xe/xe_ioctl.c
-@@ -41,6 +41,7 @@
- #include "config.h"
- #include "drmtest.h"
- #include "igt_syncobj.h"
-+#include "igt_sysfs.h"
- #include "ioctl_wrappers.h"
- #include "xe_ioctl.h"
- #include "xe_query.h"
-@@ -455,6 +456,57 @@ int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
- 	return ts.tv_sec * 1e9 + ts.tv_nsec;
+@@ -520,6 +520,26 @@ void xe_force_gt_reset(int fd, int gt)
+ 	system(reset_string);
  }
  
 +
-+/**
-+ * has_xe_gt_reset:
-+ * @fd: open xe drm file descriptor
-+ *
-+ * Check gt force reset syfs entry is available or not
-+ *
-+ * Returns: reset sysfs entry available
-+ */
-+bool has_xe_gt_reset(int fd)
++igt_hang_t xe_hang_engine(int fd, uint64_t ahnd, uint32_t ctx, int ring,
++				unsigned flags)
 +{
-+	char reset_sysfs_path[100];
-+	struct stat st;
-+	int gt;
-+	int reset_sysfs_fd = -1;
-+	int sysfs_fd = -1;
-+	igt_assert_eq(fstat(fd, &st), 0);
++	uint32_t vm;
++	unsigned int engine;
++	igt_spin_t *spin_t;
++	vm = xe_vm_create(fd, 0, 0);
++	engine = xe_engine_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
 +
-+	sysfs_fd = igt_sysfs_open(fd);
-+	igt_assert(sysfs_fd != -1);
-+
-+	xe_for_each_gt(fd, gt) {
-+		sprintf(reset_sysfs_path, "/sys/kernel/debug/dri/%d/gt%d/force_reset", minor(st.st_rdev), gt);
-+		reset_sysfs_fd = openat(sysfs_fd, reset_sysfs_path, O_RDONLY);
-+
-+		if(reset_sysfs_fd == -1) {
-+			close(sysfs_fd);
-+			return 0;
-+		}
-+
-+		close(reset_sysfs_fd);
-+       }
-+
-+	close(sysfs_fd);
-+	return 1;
++	spin_t = igt_spin_new(fd, .ahnd = ahnd, .engine = engine, .vm = vm, .flags = IGT_SPIN_NO_PREEMPTION);
++	return (igt_hang_t){ spin_t, engine, 0, flags };
 +}
 +
-+/**
-+ * xe_force_gt_reset_all:
-+ *
-+ * Forces reset of all the GT's.
-+ *
-+ */
-+void xe_force_gt_reset_all(int xe_fd)
++void xe_post_hang_ring(int fd, igt_hang_t arg)
 +{
-+	int gt;
-+	xe_for_each_gt(xe_fd, gt)
-+		xe_force_gt_reset(xe_fd, gt);
++	xe_engine_destroy(fd, arg.ctx);
++	xe_vm_destroy(fd, arg.spin->vm);
 +}
 +
-+
- void xe_force_gt_reset(int fd, int gt)
+ void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t size,
+ 		   uint32_t property, uint32_t value)
  {
- 	char reset_string[128];
 diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 320e0f9f6..5a528b345 100644
+index 5a528b345..0e9708194 100644
 --- a/lib/xe/xe_ioctl.h
 +++ b/lib/xe/xe_ioctl.h
-@@ -87,6 +87,8 @@ int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
- 			       struct drm_xe_engine_class_instance *eci,
- 			       int64_t timeout);
+@@ -15,6 +15,9 @@
+ #include <stdint.h>
+ #include <xe_drm.h>
+ 
++#include "lib/igt_gt.h"
++#include "xe_spin.h"
++
+ uint32_t xe_cs_prefetch_size(int fd);
+ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
+ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t engine, uint32_t bo,
+@@ -89,6 +92,9 @@ int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
  void xe_force_gt_reset(int fd, int gt);
-+void xe_force_gt_reset_all(int fd);
-+bool has_xe_gt_reset(int fd);
+ void xe_force_gt_reset_all(int fd);
+ bool has_xe_gt_reset(int fd);
++igt_hang_t xe_hang_engine(int fd, uint64_t ahnd, uint32_t ctx, int ring,
++				unsigned flags);
++void xe_post_hang_ring(int fd, igt_hang_t arg);
  void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t size,
  		   uint32_t property, uint32_t value);
  
