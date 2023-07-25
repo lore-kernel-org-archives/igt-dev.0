@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E40110E3E6
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 16:05:43 +0000 (UTC)
-Date: Tue, 25 Jul 2023 18:04:30 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E643110E15C
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 16:20:31 +0000 (UTC)
+Date: Tue, 25 Jul 2023 18:20:27 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230725160430.oq6mur2qlzutglzh@kamilkon-desk1>
-References: <20230720150239.550161-1-nemesa.garg@intel.com>
+To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+Message-ID: <20230725162027.mgyy2mey5svoxdob@kamilkon-desk1>
+References: <20230718215950.2557-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230720150239.550161-1-nemesa.garg@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdmi_inject: As audio driver
- is blacklisted so loading the module before the test run
+In-Reply-To: <20230718215950.2557-1-mohammed.thasleem@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic_transition: Lower drm
+ log level to avoid exceeding disk usage limit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,64 +20,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Garg, Nemesa" <nemesa.garg@intel.com>, Garg@freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Thasleem@freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Nemesa,
+Hi Mohammed,
 
-please make commit message short, this one:
+On 2023-07-19 at 03:29:50 +0530, Thasleem, Mohammed wrote:
+> Set drm debug log level for DP messages and DRIVER messages to fix exceeding disk
+> usage limit in modeset-transition test cases.
 
-As audio driver is blacklisted so loading the module before the test run
+I am reluctant to see such changes in tests.
+Btw how much it reduces logs? Twice or more?
+Maybe there should be an option to not change it?
 
-is better for description, so maybe something like:
+> 
+> Signed-off-by: Thasleem, Mohammed <mohammed.thasleem@intel.com>
+---------------- ^ ------- ^
+This should be as in your e-mail:
 
-tests/kms_hdmi_inject: load audio driver before tests
-
-On 2023-07-20 at 20:32:39 +0530, Garg, Nemesa wrote:
-
-Write here description why we need it.
-
-> Signed-off-by: Garg, Nemesa <nemesa.garg@intel.com>
----------------- ^ --- ^
-This should be as in your e-mail address:
-
-Signed-off-by: Nemesa Garg <nemesa.garg@intel.com>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 
 > ---
->  tests/kms_hdmi_inject.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  tests/kms_atomic_transition.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
-> index 9aa5c59fc..1b99e190e 100644
-> --- a/tests/kms_hdmi_inject.c
-> +++ b/tests/kms_hdmi_inject.c
-> @@ -30,6 +30,7 @@
->  #include "igt_edid.h"
->  #include "igt_eld.h"
->  #include "xe/xe_query.h"
-> +#include "igt_kmod.h"
->  
->  #define HDISPLAY_4K	3840
->  #define VDISPLAY_4K	2160
-> @@ -208,6 +209,9 @@ igt_main
->  		kmstest_unset_all_crtcs(drm_fd, res);
->  	}
->  
-> +	if (!igt_kmod_is_loaded("snd_hda_intel"))
-> +                igt_kmod_load("snd_hda_intel", NULL);
-> +
+> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+> index 6ab5267ca..fb719c8c9 100644
+> --- a/tests/kms_atomic_transition.c
+> +++ b/tests/kms_atomic_transition.c
+> @@ -25,6 +25,7 @@
+>  #include "igt_rand.h"
+>  #include "drmtest.h"
+>  #include "sw_sync.h"
+> +#include "igt_sysfs.h"
 
-Place this in fixture, good place would be in if block which
-checks for intel driver.
+Keep this alphabetically, put it after "igt_rand.h" include.
+
+>  #include <errno.h>
+>  #include <pthread.h>
+>  #include <stdbool.h>
+> @@ -39,6 +40,7 @@
+>  #ifndef DRM_CAP_CURSOR_HEIGHT
+>  #define DRM_CAP_CURSOR_HEIGHT 0x9
+>  #endif
+
+Add newline here.
+
+> +#define DEBUG_LEVEL "/sys/module/drm/parameters/"
+---------- ^
+better: DRM_DEBUG_LEVEL
+
+>  
+>  struct plane_parms {
+>  	struct igt_fb *fb;
+> @@ -46,7 +48,8 @@ struct plane_parms {
+>  };
+>  
+>  typedef struct {
+> -	int drm_fd;
+> +	int drm_fd, sysfs_fd;
+> +	uint32_t log_level;
+>  	struct igt_fb fbs[2], argb_fb, sprite_fb;
+>  	igt_display_t display;
+>  	bool extended;
+> @@ -965,6 +968,8 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
+>  	int num_outputs = 0;
+>  	enum pipe pipe;
+>  
+> +	igt_sysfs_set_u32(data->sysfs_fd, "debug", 0xa);
+-------------------------------------------------- ^^^
+Maybe this also needs to be define or global const.
+Also do not do this if log level is already lower.
 
 Regards,
 Kamil
 
->  	igt_describe("Make sure that 4K modes exposed by DRM match the "
->                       "forced EDID and modesetting using it succeed.");
->  	igt_subtest("inject-4k")
+> +
+>  	for_each_pipe(&data->display, pipe) {
+>  		igt_output_t *output;
+>  
+> @@ -1107,6 +1112,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>  
+>  		igt_display_require_output(&data.display);
+>  
+> +		igt_require((data.sysfs_fd = open(DEBUG_LEVEL, O_RDONLY)) >= 0);
+> +		data.log_level = igt_sysfs_get_u32(data.sysfs_fd, "debug");
+> +
+>  		for_each_connected_output(&data.display, output)
+>  			count++;
+>  	}
+> @@ -1181,6 +1189,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>  	}
+>  
+>  	igt_fixture {
+> +		igt_sysfs_set_u32(data.sysfs_fd, "debug", data.log_level);
+>  		igt_display_fini(&data.display);
+>  		drm_close_driver(data.drm_fd);
+>  	}
 > -- 
-> 2.25.1
+> 2.34.1
 > 
