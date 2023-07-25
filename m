@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2049.outbound.protection.outlook.com [40.107.92.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3113410E0EC
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 15:18:31 +0000 (UTC)
-Message-ID: <47ec7785-442a-1f63-424d-a268bfdcc546@amd.com>
-Date: Tue, 25 Jul 2023 11:21:02 -0400
-To: Stylon Wang <stylon.wang@amd.com>, igt-dev@lists.freedesktop.org
-References: <20230713141830.335019-1-stylon.wang@amd.com>
-Content-Language: en-US
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20230713141830.335019-1-stylon.wang@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E94810E3E2
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 15:51:46 +0000 (UTC)
+Date: Tue, 25 Jul 2023 17:51:41 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230725155141.723nfuzd22nbr6kp@kamilkon-desk1>
+References: <20230721130458.64856-1-aesteve@redhat.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] test/amdgpu/amd_color: Add test
- description to amd_color tests
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230721130458.64856-1-aesteve@redhat.com>
+Subject: Re: [igt-dev] [PATCH 0/3] Add atomic DRM cursor hotspot test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,43 +19,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: belmouss@redhat.com, javierm@redhat.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Albert,
 
+please subscribe to igt-dev mailinglist.
 
-On 7/13/23 10:18, Stylon Wang wrote:
-> Signed-off-by: Stylon Wang <stylon.wang@amd.com>
-> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> ---
->   tests/amdgpu/amd_color.c | 5 +++++
->   1 file changed, 5 insertions(+)
+On 2023-07-21 at 15:04:55 +0200, Albert Esteve wrote:
+> Add test to verify the kernel patch at [1].
 > 
-> diff --git a/tests/amdgpu/amd_color.c b/tests/amdgpu/amd_color.c
-> index 34002ed88..4a98df3be 100644
-> --- a/tests/amdgpu/amd_color.c
-> +++ b/tests/amdgpu/amd_color.c
-> @@ -22,6 +22,8 @@
->   
->   #include "igt.h"
->   
-> +IGT_TEST_DESCRIPTION("Test Color Features for DRM conformance");
-> +
->   /* (De)gamma LUT. */
->   typedef struct lut {
->   	struct drm_color_lut *data;
-> @@ -409,8 +411,11 @@ igt_main
->   		igt_display_require_output(&data.display);
->   	}
->   
-> +	igt_describe("Tests correctness of linear degamma on CRTC");
->   	igt_subtest("crtc-linear-degamma") test_crtc_linear_degamma(&data);
-> +	igt_describe("Tests correctness of linear regamma on CRTC");
->   	igt_subtest("crtc-linear-regamma") test_crtc_linear_regamma(&data);
-> +	igt_describe("Tests color accuracy of CRTC degamma and regamma");
->   	igt_subtest("crtc-lut-accuracy") test_crtc_lut_accuracy(&data);
->   
->   	igt_fixture
+> The test modifies the hotspot x and y properties and
+> checks that they get properly updated after every
+> display commit.
+> 
+> The first git commit updating the drm header shall be removed,
+> and update the header properly after the kernel patch has
+> landed.
+> 
+> [1] - https://lists.freedesktop.org/archives/dri-devel/2023-July/414509.html
 
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Add this to your 3rd patch with commit message (subject),
+as links tends to rot.
+
+Regards,
+Kamil
+
+> 
+> Albert Esteve (3):
+>   drm header update: temp commit
+>   igt_kms: add hotspot plane property
+>   kms_cursor_legacy: modeset-atomic-cursor-hotspot
+> 
+>  include/drm-uapi/drm.h    | 54 +++++++++++++++++++++++++++-
+>  lib/igt_kms.c             |  9 +++++
+>  lib/igt_kms.h             |  4 ++-
+>  tests/kms_cursor_legacy.c | 75 +++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 140 insertions(+), 2 deletions(-)
+> 
+> -- 
+> 2.40.0
+> 
