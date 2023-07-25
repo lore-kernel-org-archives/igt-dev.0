@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E643110E15C
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 16:20:31 +0000 (UTC)
-Date: Tue, 25 Jul 2023 18:20:27 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Message-ID: <20230725162027.mgyy2mey5svoxdob@kamilkon-desk1>
-References: <20230718215950.2557-1-mohammed.thasleem@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61FB610E152
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 16:41:04 +0000 (UTC)
+From: "Garg, Nemesa" <nemesa.garg@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 25 Jul 2023 16:40:18 +0000
+Message-ID: <IA1PR11MB64679DFAB04784984FBC50E7E303A@IA1PR11MB6467.namprd11.prod.outlook.com>
+References: <20230720150239.550161-1-nemesa.garg@intel.com>
+ <20230725160430.oq6mur2qlzutglzh@kamilkon-desk1>
+In-Reply-To: <20230725160430.oq6mur2qlzutglzh@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230718215950.2557-1-mohammed.thasleem@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic_transition: Lower drm
- log level to avoid exceeding disk usage limit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdmi_inject: As audio driver
+ is blacklisted so loading the module before the test run
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,105 +23,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Thasleem@freedesktop.org
+Cc: "Garg@freedesktop.org" <Garg@freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mohammed,
-
-On 2023-07-19 at 03:29:50 +0530, Thasleem, Mohammed wrote:
-> Set drm debug log level for DP messages and DRIVER messages to fix exceeding disk
-> usage limit in modeset-transition test cases.
-
-I am reluctant to see such changes in tests.
-Btw how much it reduces logs? Twice or more?
-Maybe there should be an option to not change it?
-
-> 
-> Signed-off-by: Thasleem, Mohammed <mohammed.thasleem@intel.com>
----------------- ^ ------- ^
-This should be as in your e-mail:
-
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-
-> ---
->  tests/kms_atomic_transition.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-> index 6ab5267ca..fb719c8c9 100644
-> --- a/tests/kms_atomic_transition.c
-> +++ b/tests/kms_atomic_transition.c
-> @@ -25,6 +25,7 @@
->  #include "igt_rand.h"
->  #include "drmtest.h"
->  #include "sw_sync.h"
-> +#include "igt_sysfs.h"
-
-Keep this alphabetically, put it after "igt_rand.h" include.
-
->  #include <errno.h>
->  #include <pthread.h>
->  #include <stdbool.h>
-> @@ -39,6 +40,7 @@
->  #ifndef DRM_CAP_CURSOR_HEIGHT
->  #define DRM_CAP_CURSOR_HEIGHT 0x9
->  #endif
-
-Add newline here.
-
-> +#define DEBUG_LEVEL "/sys/module/drm/parameters/"
----------- ^
-better: DRM_DEBUG_LEVEL
-
->  
->  struct plane_parms {
->  	struct igt_fb *fb;
-> @@ -46,7 +48,8 @@ struct plane_parms {
->  };
->  
->  typedef struct {
-> -	int drm_fd;
-> +	int drm_fd, sysfs_fd;
-> +	uint32_t log_level;
->  	struct igt_fb fbs[2], argb_fb, sprite_fb;
->  	igt_display_t display;
->  	bool extended;
-> @@ -965,6 +968,8 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
->  	int num_outputs = 0;
->  	enum pipe pipe;
->  
-> +	igt_sysfs_set_u32(data->sysfs_fd, "debug", 0xa);
--------------------------------------------------- ^^^
-Maybe this also needs to be define or global const.
-Also do not do this if log level is already lower.
-
-Regards,
-Kamil
-
-> +
->  	for_each_pipe(&data->display, pipe) {
->  		igt_output_t *output;
->  
-> @@ -1107,6 +1112,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->  
->  		igt_display_require_output(&data.display);
->  
-> +		igt_require((data.sysfs_fd = open(DEBUG_LEVEL, O_RDONLY)) >= 0);
-> +		data.log_level = igt_sysfs_get_u32(data.sysfs_fd, "debug");
-> +
->  		for_each_connected_output(&data.display, output)
->  			count++;
->  	}
-> @@ -1181,6 +1189,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->  	}
->  
->  	igt_fixture {
-> +		igt_sysfs_set_u32(data.sysfs_fd, "debug", data.log_level);
->  		igt_display_fini(&data.display);
->  		drm_close_driver(data.drm_fd);
->  	}
-> -- 
-> 2.34.1
-> 
+SGkgS2FtaWwsDQoNClRoYW5rcyBmb3IgeW91ciBjb21tZW50cy4gSSBoYXZlIGZsb2F0ZWQgYSBu
+ZXcgcGF0Y2ggZm9yIHNhbWUgY2hhbmdlcy4NCg0KUGxlYXNlIGlnbm9yZSB0aGlzIHBhdGNoLg0K
+DQpUaGFua3MgYW5kIFJlZ2FyZHMsDQpOZW1lc2ENCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2Ut
+LS0tLQ0KPiBGcm9tOiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRl
+bC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIEp1bHkgMjUsIDIwMjMgOTozNSBQTQ0KPiBUbzogaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IEdhcmcsIE5lbWVzYSA8bmVtZXNhLmdh
+cmdAaW50ZWwuY29tPjsgR2FyZ0BmcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogUmU6IFtpZ3Qt
+ZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19oZG1pX2luamVjdDogQXMgYXVkaW8gZHJpdmVy
+IGlzDQo+IGJsYWNrbGlzdGVkIHNvIGxvYWRpbmcgdGhlIG1vZHVsZSBiZWZvcmUgdGhlIHRlc3Qg
+cnVuDQo+IA0KPiBIaSBOZW1lc2EsDQo+IA0KPiBwbGVhc2UgbWFrZSBjb21taXQgbWVzc2FnZSBz
+aG9ydCwgdGhpcyBvbmU6DQo+IA0KPiBBcyBhdWRpbyBkcml2ZXIgaXMgYmxhY2tsaXN0ZWQgc28g
+bG9hZGluZyB0aGUgbW9kdWxlIGJlZm9yZSB0aGUgdGVzdCBydW4NCj4gDQo+IGlzIGJldHRlciBm
+b3IgZGVzY3JpcHRpb24sIHNvIG1heWJlIHNvbWV0aGluZyBsaWtlOg0KPiANCj4gdGVzdHMva21z
+X2hkbWlfaW5qZWN0OiBsb2FkIGF1ZGlvIGRyaXZlciBiZWZvcmUgdGVzdHMNCj4gDQo+IE9uIDIw
+MjMtMDctMjAgYXQgMjA6MzI6MzkgKzA1MzAsIEdhcmcsIE5lbWVzYSB3cm90ZToNCj4gDQo+IFdy
+aXRlIGhlcmUgZGVzY3JpcHRpb24gd2h5IHdlIG5lZWQgaXQuDQo+IA0KPiA+IFNpZ25lZC1vZmYt
+Ynk6IEdhcmcsIE5lbWVzYSA8bmVtZXNhLmdhcmdAaW50ZWwuY29tPg0KPiAtLS0tLS0tLS0tLS0t
+LS0tIF4gLS0tIF4NCj4gVGhpcyBzaG91bGQgYmUgYXMgaW4geW91ciBlLW1haWwgYWRkcmVzczoN
+Cj4gDQo+IFNpZ25lZC1vZmYtYnk6IE5lbWVzYSBHYXJnIDxuZW1lc2EuZ2FyZ0BpbnRlbC5jb20+
+DQo+IA0KPiA+IC0tLQ0KPiA+ICB0ZXN0cy9rbXNfaGRtaV9pbmplY3QuYyB8IDQgKysrKw0KPiA+
+ICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEv
+dGVzdHMva21zX2hkbWlfaW5qZWN0LmMgYi90ZXN0cy9rbXNfaGRtaV9pbmplY3QuYyBpbmRleA0K
+PiA+IDlhYTVjNTlmYy4uMWI5OWUxOTBlIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2ttc19oZG1p
+X2luamVjdC5jDQo+ID4gKysrIGIvdGVzdHMva21zX2hkbWlfaW5qZWN0LmMNCj4gPiBAQCAtMzAs
+NiArMzAsNyBAQA0KPiA+ICAjaW5jbHVkZSAiaWd0X2VkaWQuaCINCj4gPiAgI2luY2x1ZGUgImln
+dF9lbGQuaCINCj4gPiAgI2luY2x1ZGUgInhlL3hlX3F1ZXJ5LmgiDQo+ID4gKyNpbmNsdWRlICJp
+Z3Rfa21vZC5oIg0KPiA+DQo+ID4gICNkZWZpbmUgSERJU1BMQVlfNEsJMzg0MA0KPiA+ICAjZGVm
+aW5lIFZESVNQTEFZXzRLCTIxNjANCj4gPiBAQCAtMjA4LDYgKzIwOSw5IEBAIGlndF9tYWluDQo+
+ID4gIAkJa21zdGVzdF91bnNldF9hbGxfY3J0Y3MoZHJtX2ZkLCByZXMpOw0KPiA+ICAJfQ0KPiA+
+DQo+ID4gKwlpZiAoIWlndF9rbW9kX2lzX2xvYWRlZCgic25kX2hkYV9pbnRlbCIpKQ0KPiA+ICsg
+ICAgICAgICAgICAgICAgaWd0X2ttb2RfbG9hZCgic25kX2hkYV9pbnRlbCIsIE5VTEwpOw0KPiA+
+ICsNCj4gDQo+IFBsYWNlIHRoaXMgaW4gZml4dHVyZSwgZ29vZCBwbGFjZSB3b3VsZCBiZSBpbiBp
+ZiBibG9jayB3aGljaCBjaGVja3MgZm9yIGludGVsDQo+IGRyaXZlci4NCj4gDQo+IFJlZ2FyZHMs
+DQo+IEthbWlsDQo+IA0KPiA+ICAJaWd0X2Rlc2NyaWJlKCJNYWtlIHN1cmUgdGhhdCA0SyBtb2Rl
+cyBleHBvc2VkIGJ5IERSTSBtYXRjaCB0aGUgIg0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAi
+Zm9yY2VkIEVESUQgYW5kIG1vZGVzZXR0aW5nIHVzaW5nIGl0IHN1Y2NlZWQuIik7DQo+ID4gIAlp
+Z3Rfc3VidGVzdCgiaW5qZWN0LTRrIikNCj4gPiAtLQ0KPiA+IDIuMjUuMQ0KPiA+DQo=
