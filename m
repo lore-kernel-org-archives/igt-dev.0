@@ -1,25 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.129.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 006CE10E487
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 14:53:47 +0000 (UTC)
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-31779e89e39so182868f8f.2
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 07:53:45 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Albert Esteve <aesteve@redhat.com>
-In-Reply-To: <CADSE00L4H_fAEXizdyoPZJLztr7b3dBZoiXECRnUpLcevR+Dzw@mail.gmail.com>
-References: <20230721130458.64856-1-aesteve@redhat.com>
- <20230721130458.64856-4-aesteve@redhat.com>
- <87cz0gjcd6.fsf@minerva.mail-host-address-is-not-set>
- <CADSE00L4H_fAEXizdyoPZJLztr7b3dBZoiXECRnUpLcevR+Dzw@mail.gmail.com>
-Date: Wed, 26 Jul 2023 16:53:43 +0200
-Message-ID: <874jlq4tc8.fsf@minerva.mail-host-address-is-not-set>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8192910E487
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 15:04:57 +0000 (UTC)
+Date: Wed, 26 Jul 2023 17:02:50 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230726150250.4dc6uqgqeshen6kp@kamilkon-desk1>
+References: <20230718110006.28283-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH 3/3] kms_cursor_legacy:
- modeset-atomic-cursor-hotspot
+Content-Disposition: inline
+In-Reply-To: <20230718110006.28283-1-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip: Restrict the hang tests
+ execution to first and last pipe combinations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,42 +20,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, belmouss@redhat.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Albert Esteve <aesteve@redhat.com> writes:
+Hi Jeevan,
 
-> On Tue, Jul 25, 2023 at 4:26=E2=80=AFPM Javier Martinez Canillas <javierm=
-@redhat.com>
-> wrote:
->
+We already have patch with: "Restrict the hang tests execution to first and last pipe combinations"
+so maybe change your message to: Restrict even further hang tests
 
-[...]
+On 2023-07-18 at 16:30:06 +0530, Jeevan B wrote:
+> restrict the hang tests execution to single pipe combinations still
+- ^
+Start from uppercase, s/restrict/Restrict/
 
->> Also, there's
->> https://docs.kernel.org/gpu/drm-uapi.html#c.DRM_CAP_CURSOR_WIDTH
->> and DRM_CAP_CURSOR_HEIGHT to query the hardware cursor size. Maybe you
->> should
->> use that instead of assume a 64x64 cursor size ?
->>
->
-> In many other tests in the same file the size of the cursor is hardcoded =
-to
-> 64, same as here.
-> So I kept it consistent.
-> Could be a nice refactor, but I guess it is outside the scope of this pat=
-ch.
->
+> causing timed-out so limiting the combination to first and last pipe.
 
-Ah, didn't look at the rest of the file but yes, agreed that is better to
-keep it consistent and in any case the whole file could be cleaned up in
-a separate patch.
+Please write which tests where so long and give some log example why
+it helped, how much less it took?
 
---=20
-Best regards,
+> 
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>  tests/kms_flip.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index ef2234f74..ee4e8a43d 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -1729,10 +1729,14 @@ static void run_pair(int duration, int flags)
+>  					crtc_idxs[0] = n;
+>  					crtc_idxs[1] = m;
+>  
+> -					/* Limit the execution to PIPE_A combination for hang tests */
+> +					/* Limit the execution to 2 CRTCs
+> +					 * (first and last combination) for hang tests */
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+Write multiline comment starting with empty /* like:
+					/*
+					 * Limit the execution to 2 CRTCs
+					 * (first and last combination) for hang tests
+					 */
+
+>  					if ((flags & TEST_HANG) && !all_pipes &&
+>  					    (n != 0 && n != resources->count_crtcs))
+>  						continue;
+> +					if ((flags & TEST_HANG) && !all_pipes &&
+> +					    m != resources->count_crtcs - 1)
+> +						continue;
+>  
+
+Why not putting it all together?
+  					if ((flags & TEST_HANG) && !all_pipes &&
+  					    n != 0 && n != resources->count_crtcs &&
+					    m != resources->count_crtcs - 1)
+  						continue;
+
+I made some simple test with single monitor connected and did
+not see any difference. In what configuration did you test it?
+
+Regards,
+Kamil
+
+>  					run_test_on_crtc_set(&o, crtc_idxs,
+>  							     RUN_PAIR,
+> -- 
+> 2.41.0
+> 
