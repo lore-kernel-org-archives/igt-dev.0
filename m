@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5D9410E489
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 15:11:19 +0000 (UTC)
-Date: Wed, 26 Jul 2023 17:10:58 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230726151058.wvpsstazbgajzso6@kamilkon-desk1>
-References: <20230717075005.390330-1-kunal1.joshi@intel.com>
- <20230717075005.390330-2-kunal1.joshi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0908650608664795147=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230717075005.390330-2-kunal1.joshi@intel.com>
-Subject: Re: [igt-dev] [PATCH 1/9] tests/intel-ci: Added chamelium config
- blacklist
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nemesa Garg" <nemesa.garg@intel.com>
+Date: Wed, 26 Jul 2023 16:11:23 -0000
+Message-ID: <169038788365.23471.9895720572867821421@emeril.freedesktop.org>
+References: <20230726134008.750267-1-nemesa.garg@intel.com>
+In-Reply-To: <20230726134008.750267-1-nemesa.garg@intel.com>
+Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
+ =?utf-8?q?hdmi=5Finject=3A_Fix_audio_test_by_loading_snd_driver_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,42 +18,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kunal,
+--===============0908650608664795147==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-please use new terminology: blocklist
+== Series Details ==
 
-On 2023-07-17 at 13:19:57 +0530, Kunal Joshi wrote:
-> blacklist for non chamelium config
-- ^ ------------------------------- ^
-Start from uppercase and move to new terminology: blocklist,
-so s/blacklist/Blocklist/
-Also put dot '.' at end of sentence.
+Series: tests/kms_hdmi_inject: Fix audio test by loading snd driver (rev2)
+URL   : https://patchwork.freedesktop.org/series/121214/
+State : info
 
-If that is already merged, talk with CI team about moving this
-into 'blocklist' files.
+== Summary ==
 
-Regards,
-Kamil
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9462](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9462/index.html)
 
-> 
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->  tests/intel-ci/chamelium.blacklist | 1 +
->  1 file changed, 1 insertion(+)
->  create mode 100644 tests/intel-ci/chamelium.blacklist
-> 
-> diff --git a/tests/intel-ci/chamelium.blacklist b/tests/intel-ci/chamelium.blacklist
-> new file mode 100644
-> index 000000000..c0325b555
-> --- /dev/null
-> +++ b/tests/intel-ci/chamelium.blacklist
-> @@ -0,0 +1 @@
-> +igt@.*chamelium.*
-> -- 
-> 2.25.1
-> 
+
+
+--===============0908650608664795147==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_hdmi_inject: Fix audio test by loading snd driver (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121214/">https://patchwork.freedesktop.org/series/121214/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9462/index.html">IGTPW_9462</a></p>
+
+</body>
+</html>
+
+--===============0908650608664795147==--
