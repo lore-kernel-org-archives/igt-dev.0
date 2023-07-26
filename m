@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8192910E487
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 15:04:57 +0000 (UTC)
-Date: Wed, 26 Jul 2023 17:02:50 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5D9410E489
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 15:11:19 +0000 (UTC)
+Date: Wed, 26 Jul 2023 17:10:58 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230726150250.4dc6uqgqeshen6kp@kamilkon-desk1>
-References: <20230718110006.28283-1-jeevan.b@intel.com>
+Message-ID: <20230726151058.wvpsstazbgajzso6@kamilkon-desk1>
+References: <20230717075005.390330-1-kunal1.joshi@intel.com>
+ <20230717075005.390330-2-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230718110006.28283-1-jeevan.b@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip: Restrict the hang tests
- execution to first and last pipe combinations
+In-Reply-To: <20230717075005.390330-2-kunal1.joshi@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/9] tests/intel-ci: Added chamelium config
+ blacklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,71 +21,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jeevan,
+Hi Kunal,
 
-We already have patch with: "Restrict the hang tests execution to first and last pipe combinations"
-so maybe change your message to: Restrict even further hang tests
+please use new terminology: blocklist
 
-On 2023-07-18 at 16:30:06 +0530, Jeevan B wrote:
-> restrict the hang tests execution to single pipe combinations still
-- ^
-Start from uppercase, s/restrict/Restrict/
+On 2023-07-17 at 13:19:57 +0530, Kunal Joshi wrote:
+> blacklist for non chamelium config
+- ^ ------------------------------- ^
+Start from uppercase and move to new terminology: blocklist,
+so s/blacklist/Blocklist/
+Also put dot '.' at end of sentence.
 
-> causing timed-out so limiting the combination to first and last pipe.
-
-Please write which tests where so long and give some log example why
-it helped, how much less it took?
-
-> 
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->  tests/kms_flip.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> index ef2234f74..ee4e8a43d 100755
-> --- a/tests/kms_flip.c
-> +++ b/tests/kms_flip.c
-> @@ -1729,10 +1729,14 @@ static void run_pair(int duration, int flags)
->  					crtc_idxs[0] = n;
->  					crtc_idxs[1] = m;
->  
-> -					/* Limit the execution to PIPE_A combination for hang tests */
-> +					/* Limit the execution to 2 CRTCs
-> +					 * (first and last combination) for hang tests */
-
-Write multiline comment starting with empty /* like:
-					/*
-					 * Limit the execution to 2 CRTCs
-					 * (first and last combination) for hang tests
-					 */
-
->  					if ((flags & TEST_HANG) && !all_pipes &&
->  					    (n != 0 && n != resources->count_crtcs))
->  						continue;
-> +					if ((flags & TEST_HANG) && !all_pipes &&
-> +					    m != resources->count_crtcs - 1)
-> +						continue;
->  
-
-Why not putting it all together?
-  					if ((flags & TEST_HANG) && !all_pipes &&
-  					    n != 0 && n != resources->count_crtcs &&
-					    m != resources->count_crtcs - 1)
-  						continue;
-
-I made some simple test with single monitor connected and did
-not see any difference. In what configuration did you test it?
+If that is already merged, talk with CI team about moving this
+into 'blocklist' files.
 
 Regards,
 Kamil
 
->  					run_test_on_crtc_set(&o, crtc_idxs,
->  							     RUN_PAIR,
+> 
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> ---
+>  tests/intel-ci/chamelium.blacklist | 1 +
+>  1 file changed, 1 insertion(+)
+>  create mode 100644 tests/intel-ci/chamelium.blacklist
+> 
+> diff --git a/tests/intel-ci/chamelium.blacklist b/tests/intel-ci/chamelium.blacklist
+> new file mode 100644
+> index 000000000..c0325b555
+> --- /dev/null
+> +++ b/tests/intel-ci/chamelium.blacklist
+> @@ -0,0 +1 @@
+> +igt@.*chamelium.*
 > -- 
-> 2.41.0
+> 2.25.1
 > 
