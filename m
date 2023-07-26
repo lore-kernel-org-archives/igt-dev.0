@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C35710E4A1
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 16:33:20 +0000 (UTC)
-Message-ID: <54df27bc-31f5-837c-cb9d-e2676ce7946c@linux.intel.com>
-Date: Wed, 26 Jul 2023 17:32:49 +0100
+Date: Wed, 26 Jul 2023 19:00:37 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230726170037.a5sghtawzm6mv2zc@kamilkon-desk1>
+References: <20230705163105.3804677-1-tvrtko.ursulin@linux.intel.com>
+ <20230705163105.3804677-3-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: "Yang, Fei" <fei.yang@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, IGT dev <igt-dev@lists.freedesktop.org>
-References: <20230712083727.282741-1-andi.shyti@linux.intel.com>
- <BYAPR11MB25679950A496EA431A76C8D09A36A@BYAPR11MB2567.namprd11.prod.outlook.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <BYAPR11MB25679950A496EA431A76C8D09A36A@BYAPR11MB2567.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH] test/i915/gem_create: Skip the test if the
- PAT index is set on a non MTL device
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230705163105.3804677-3-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/3] lib/igt_drm_clients:
+ Store memory info in the client
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,74 +19,149 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rob Clark <robdclark@chromium.org>, Intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Tvrtko,
 
-On 12/07/2023 17:20, Yang, Fei wrote:
-> On 12/07/2023 09:37, Andi Shyti wrote:
->> If we try to set the PAT index on a device that is not a Meteor Lake, we expect an -ENODEV return value. But then, we forget to skip and soon after we assert on the return value being '0', forcing the error path.
->>
->> Skip, as expected, in case the return value is either EINVAL or ENODEV, the latter for meteor lake devices.
->>
->> Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
->> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+On 2023-07-05 at 17:31:04 +0100, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > 
-> Thanks for the fix.
-> Reviewed-by: Fei Yang <fei.yang@intel.com>
+> Define the storage structure and copy over memory data as parsed by the
+> fdinfo helpers.
 > 
->> Cc: Fei Yang <fei.yang@intel.com>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> ---
->>   tests/i915/gem_create.c | 23 +++++++++++++++++------
->>   1 file changed, 17 insertions(+), 6 deletions(-)
->>
->> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c index b7961d9ef2..4b00fe6aab 100644
->> --- a/tests/i915/gem_create.c
->> +++ b/tests/i915/gem_create.c
->> @@ -668,14 +668,25 @@ static void create_ext_set_pat(int fd)
->>   	ret = __gem_create_ext(fd, &size, 0, &handle, &setparam_pat.base);
->>   
->>   	/*
->> -	 * With a valid PAT index specified, returning -EINVAL here
->> -	 * indicates set_pat extension is not supported
->> +	 * Currently the PAT index is supported only for Meteor Lake, so that
->> +	 * we expect:
->> +	 *
->> +	 *  * -EINVAL if i915 does not support the PAT index, e.g. the kernel is
->> +	 *    too old to have the PAT index supported.
->> +	 *  * -ENODEV if we are trying to set the PAT index on a non Meteor Lake
->> +	 *    platform.
->> +	 *
->> +	 * In both cases, though, the I915_GEM_CREATE_EXT_SET_PAT flag is not
->> +	 * supported.
->>   	 */
->> -	if (ret == -EINVAL)
->> -		igt_skip("I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
->> -	else if (!IS_METEORLAKE(devid))
->> -		igt_assert_eq(ret, -ENODEV);
->> +	igt_skip_on_f(ret == -EINVAL ||
->> +		      (ret == -ENODEV && IS_METEORLAKE(devid)),
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: Rob Clark <robdclark@chromium.org>
+> ---
+>  lib/igt_drm_clients.c | 31 +++++++++++++++++++++++++++++++
+>  lib/igt_drm_clients.h | 11 +++++++++++
+>  2 files changed, 42 insertions(+)
+> 
+> diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
+> index fdea42752a81..0db5b64effea 100644
+> --- a/lib/igt_drm_clients.c
+> +++ b/lib/igt_drm_clients.c
+> @@ -103,6 +103,8 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+>  			c->clients->max_name_len = len;
+>  	}
+>  
+> +	/* Engines */
+> +
+>  	c->last_runtime = 0;
+>  	c->total_runtime = 0;
+>  
+> @@ -118,6 +120,13 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+>  		c->last[i] = info->busy[i];
+>  	}
+>  
+> +	/* Memory regions */
+> +	for (i = 0; i <= c->regions->max_region_id; i++) {
+> +		assert(i < ARRAY_SIZE(info->region_mem));
+> +
+> +		c->memory[i] = info->region_mem[i];
+> +	}
+> +
+>  	c->samples++;
+>  	c->status = IGT_DRM_CLIENT_ALIVE;
+>  }
+> @@ -154,6 +163,8 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+>  	c->id = info->id;
+>  	c->drm_minor = drm_minor;
+>  	c->clients = clients;
+> +
+> +	/* Engines */
+>  	c->engines = malloc(sizeof(*c->engines));
+>  	assert(c->engines);
+>  	memset(c->engines, 0, sizeof(*c->engines));
+> @@ -178,6 +189,26 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+>  	c->last = calloc(c->engines->max_engine_id + 1, sizeof(c->last));
+>  	assert(c->val && c->last);
+>  
+> +	/* Memory regions */
+> +	c->regions = malloc(sizeof(*c->regions));
+> +	assert(c->regions);
+> +	memset(c->regions, 0, sizeof(*c->regions));
+> +	c->regions->names = calloc(info->last_region_index + 1,
+> +				   sizeof(*c->regions->names));
+> +	assert(c->regions->names);
+> +
+> +	for (i = 0; i <= info->last_region_index; i++) {
+> +		if (!info->region_names[i])
 
-Should IS_METEORLAKE actually be !IS_METEORLAKE here?
+This do not compile:
+../lib/igt_drm_clients.c:201:21: error: the comparison will always evaluate as ‘true’ for the address of ‘region_names’ will never be NULL [-Werror=address]
+  201 |                 if (!info->region_names[i])
+      |                     ^
+In file included from ../lib/igt_drm_clients.h:11,
+                 from ../lib/igt_drm_clients.c:20:
+../lib/igt_drm_fdinfo.h:57:14: note: ‘region_names’ declared here
+   57 |         char region_names[DRM_CLIENT_FDINFO_MAX_REGIONS][256];
+      |              ^~~~~~~~~~~~
 
-Because I notice it still seems failing:
+did you mean:
 
-https://intel-gfx-ci.01.org/tree/drm-intel-fixes/CI_DIF_778/shard-dg2-3/igt@gem_create@create-ext-set-pat.html
+		if (!info->region_names[i][0])
 
 Regards,
+Kamil
 
-Tvrtko
-
->> +		      "I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
->>   
->> +	/*
->> +	 * This means that we are on a Meteor Lake and the PAT
->> +	 * index is already supported by the running i915
->> +	 */
->>   	igt_assert(ret == 0);
->>   
->>   	/*
->> --
->> 2.40.1
+> +			continue;
+> +
+> +		c->regions->names[i] = strdup(info->region_names[i]);
+> +		assert(c->regions->names[i]);
+> +		c->regions->num_regions++;
+> +		c->regions->max_region_id = i;
+> +	}
+> +	c->memory = calloc(c->regions->max_region_id + 1, sizeof(*c->memory));
+> +	assert(c->memory);
+> +
+>  	igt_drm_client_update(c, pid, name, info);
+>  }
+>  
+> diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
+> index ed795c193986..07bd236d43bf 100644
+> --- a/lib/igt_drm_clients.h
+> +++ b/lib/igt_drm_clients.h
+> @@ -8,6 +8,8 @@
+>  
+>  #include <stdint.h>
+>  
+> +#include "lib/igt_drm_fdinfo.h"
+> +
+>  /**
+>   * SECTION:igt_drm_clients
+>   * @short_description: Parsing driver exposed fdinfo to track DRM clients
+> @@ -39,12 +41,20 @@ struct igt_drm_client_engines {
+>  	char **names; /* Array of engine names, either auto-detected or from the passed in engine map. */
+>  };
+>  
+> +struct igt_drm_client_regions {
+> +	unsigned int num_regions; /* Number of discovered memory_regions. */
+> +	unsigned int max_region_id; /* Largest memory region index discovered.
+> +				       (Can differ from num_regions - 1 when using the region map facility.) */
+> +	char **names; /* Array of region names, either auto-detected or from the passed in region map. */
+> +};
+> +
+>  struct igt_drm_clients;
+>  
+>  struct igt_drm_client {
+>  	struct igt_drm_clients *clients; /* Owning list. */
+>  
+>  	enum igt_drm_client_status status;
+> +	struct igt_drm_client_regions *regions; /* Memory regions present in this client, to map with memory usage. */
+>  	struct igt_drm_client_engines *engines; /* Engines used by this client, to map with busynees data. */
+>  	unsigned int id; /* DRM client id from fdinfo. */
+>  	unsigned int drm_minor; /* DRM minor of this client. */
+> @@ -57,6 +67,7 @@ struct igt_drm_client {
+>  	unsigned long last_runtime; /* Aggregate busyness on all engines since previous scan. */
+>  	unsigned long *val; /* Array of engine busyness data, relative to previous scan. */
+>  	uint64_t *last; /* Array of engine busyness data as parsed from fdinfo. */
+> +	struct drm_client_meminfo *memory; /* Array of region memory utilisation as parsed from fdinfo. */
+>  };
+>  
+>  struct igt_drm_clients {
+> -- 
+> 2.39.2
+> 
