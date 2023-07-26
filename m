@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BAFE610E132
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jul 2023 17:44:17 +0000 (UTC)
-Date: Tue, 25 Jul 2023 19:44:10 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230725174410.nkztvtel5opmjjel@kamilkon-desk1>
-References: <20230725071622.206601-1-janga.rahul.kumar@intel.com>
- <20230725071622.206601-2-janga.rahul.kumar@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 128E310E0D7
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 06:32:08 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Garg, Nemesa" <nemesa.garg@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Wed, 26 Jul 2023 06:31:59 +0000
+Message-ID: <DM4PR11MB63124982D6E127F65E521A7D9000A@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20230724073737.666171-1-nemesa.garg@intel.com>
+ <DM4PR11MB6312856125031942BDDCC3D89003A@DM4PR11MB6312.namprd11.prod.outlook.com>
+ <IA1PR11MB64673A3EB598BBA5B962D906E300A@IA1PR11MB6467.namprd11.prod.outlook.com>
+In-Reply-To: <IA1PR11MB64673A3EB598BBA5B962D906E300A@IA1PR11MB6467.namprd11.prod.outlook.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230725071622.206601-2-janga.rahul.kumar@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/xe: Add support to reset all
- GT's
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdmi_inject: Fix audio test
+ by loading snd driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,158 +24,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: sai.gowtham.ch@intel.com, kunal1.joshi@intel.com, ramadevi.gandi@intel.com
+Cc: "Garg@freedesktop.org" <Garg@freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janga,
-
-On 2023-07-25 at 12:46:21 +0530, janga.rahul.kumar@intel.com wrote:
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> 
-> Add library support to check support for GT reset and
-> force reset all GT's.
-> 
-> Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> Cc: Kunal Joshi <kunal1.joshi@intel.com>
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> ---
->  lib/igt_gt.c      |  7 +++++++
->  lib/xe/xe_ioctl.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++
->  lib/xe/xe_ioctl.h |  2 ++
->  3 files changed, 61 insertions(+)
-> 
-> diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-> index d4a825e66..2ce464ba6 100644
-> --- a/lib/igt_gt.c
-> +++ b/lib/igt_gt.c
-> @@ -45,6 +45,7 @@
->  #include "intel_chipset.h"
->  #include "igt_dummyload.h"
->  
-> +#include "xe/xe_ioctl.h"
-
-Add newline here.
-
->  /**
->   * SECTION:igt_gt
->   * @short_description: GT support library
-> @@ -60,6 +61,9 @@ static int reset_query_once = -1;
->  
->  static bool has_gpu_reset(int fd)
->  {
-> +	if (is_xe_device(fd))
-> +		has_xe_gt_reset(fd);
-> +
->  	if (reset_query_once < 0) {
->  		reset_query_once = gem_gpu_reset_type(fd);
->  
-> @@ -395,6 +399,9 @@ void igt_post_hang_ring(int fd, igt_hang_t arg)
->   */
->  void igt_force_gpu_reset(int drm_fd)
->  {
-> +	if (is_xe_device(drm_fd))
-> +		xe_force_gt_reset_all(drm_fd);
-> +
-
-Move above code after igt_debug below.
-
->  	int dir, wedged;
->  
->  	igt_debug("Triggering GPU reset\n");
-> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> index 1f9240cd9..488aa218e 100644
-> --- a/lib/xe/xe_ioctl.c
-> +++ b/lib/xe/xe_ioctl.c
-> @@ -41,6 +41,7 @@
->  #include "config.h"
->  #include "drmtest.h"
->  #include "igt_syncobj.h"
-> +#include "igt_sysfs.h"
->  #include "ioctl_wrappers.h"
->  #include "xe_ioctl.h"
->  #include "xe_query.h"
-> @@ -455,6 +456,57 @@ int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
->  	return ts.tv_sec * 1e9 + ts.tv_nsec;
->  }
->  
-> +
-> +/**
-> + * has_xe_gt_reset:
-> + * @fd: open xe drm file descriptor
-> + *
-> + * Check gt force reset syfs entry is available or not
-> + *
-> + * Returns: reset sysfs entry available
-> + */
-> +bool has_xe_gt_reset(int fd)
-> +{
-> +	char reset_sysfs_path[100];
-> +	struct stat st;
-> +	int gt;
-> +	int reset_sysfs_fd = -1;
-> +	int sysfs_fd = -1;
-
-Add newline here.
-
-> +	igt_assert_eq(fstat(fd, &st), 0);
-> +
-> +	sysfs_fd = igt_sysfs_open(fd);
-> +	igt_assert(sysfs_fd != -1);
-> +
-> +	xe_for_each_gt(fd, gt) {
-> +		sprintf(reset_sysfs_path, "/sys/kernel/debug/dri/%d/gt%d/force_reset", minor(st.st_rdev), gt);
-> +		reset_sysfs_fd = openat(sysfs_fd, reset_sysfs_path, O_RDONLY);
-> +
-> +		if(reset_sysfs_fd == -1) {
-> +			close(sysfs_fd);
-> +			return 0;
-> +		}
-> +
-> +		close(reset_sysfs_fd);
-> +       }
-> +
-> +	close(sysfs_fd);
-> +	return 1;
-> +}
-> +
-> +/**
-> + * xe_force_gt_reset_all:
-> + *
-> + * Forces reset of all the GT's.
-> + *
-> + */
-> +void xe_force_gt_reset_all(int xe_fd)
-> +{
-> +	int gt;
-
-Add newline.
-
-Regards,
-Kamil
-
-> +	xe_for_each_gt(xe_fd, gt)
-> +		xe_force_gt_reset(xe_fd, gt);
-> +}
-> +
-> +
->  void xe_force_gt_reset(int fd, int gt)
->  {
->  	char reset_string[128];
-> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-> index 320e0f9f6..5a528b345 100644
-> --- a/lib/xe/xe_ioctl.h
-> +++ b/lib/xe/xe_ioctl.h
-> @@ -87,6 +87,8 @@ int64_t xe_wait_ufence_abstime(int fd, uint64_t *addr, uint64_t value,
->  			       struct drm_xe_engine_class_instance *eci,
->  			       int64_t timeout);
->  void xe_force_gt_reset(int fd, int gt);
-> +void xe_force_gt_reset_all(int fd);
-> +bool has_xe_gt_reset(int fd);
->  void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t size,
->  		   uint32_t property, uint32_t value);
->  
-> -- 
-> 2.25.1
-> 
+> -----Original Message-----
+> From: Garg, Nemesa <nemesa.garg@intel.com>
+> Sent: Wednesday, July 26, 2023 10:57 AM
+> To: B, Jeevan <jeevan.b@intel.com>; igt-dev@lists.freedesktop.org
+> Cc: Garg@freedesktop.org
+> Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_hdmi_inject: Fix audio tes=
+t by
+> loading snd driver
+>=20
+>=20
+>=20
+> > -----Original Message-----
+> > From: B, Jeevan <jeevan.b@intel.com>
+> > Sent: Tuesday, July 25, 2023 3:26 PM
+> > To: Garg, Nemesa <nemesa.garg@intel.com>;
+> > igt-dev@lists.freedesktop.org
+> > Cc: Garg@freedesktop.org; Garg, Nemesa <nemesa.garg@intel.com>
+> > Subject: RE: [igt-dev] [PATCH i-g-t] tests/kms_hdmi_inject: Fix audio
+> > test by loading snd driver
+> >
+> > > -----Original Message-----
+> > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+> > > Garg, Nemesa
+> > > Sent: Monday, July 24, 2023 1:08 PM
+> > > To: igt-dev@lists.freedesktop.org
+> > > Cc: Garg@freedesktop.org; Garg, Nemesa <nemesa.garg@intel.com>
+> > > Subject: [igt-dev] [PATCH i-g-t] tests/kms_hdmi_inject: Fix audio
+> > > test by loading snd driver
+> > >
+> > > As audio driver is blacklisted so load the snd_hda_intel module
+> > > before the inject_audio test run
+> > Any idea why snd_hda_intel si blocklisted ? It should be done right.
+> During boot time the driver is blacklisted as seen in boot logs and after=
+ boot
+> the driver does not get loaded so added this function.
+Let's check why it's blocklisted, it shouldn't be done without a reason.=20
+> > >
+> > > Signed-off-by: Garg, Nemesa <nemesa.garg@intel.com>
+> > > ---
+> > >  tests/kms_hdmi_inject.c | 4 ++++
+> > >  1 file changed, 4 insertions(+)
+> > >
+> > > diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c index
+> > > 9aa5c59fc..1964d7541 100644
+> > > --- a/tests/kms_hdmi_inject.c
+> > > +++ b/tests/kms_hdmi_inject.c
+> > > @@ -30,6 +30,7 @@
+> > >  #include "igt_edid.h"
+> > >  #include "igt_eld.h"
+> > >  #include "xe/xe_query.h"
+> > > +#include "igt_kmod.h"
+> > >
+> > >  #define HDISPLAY_4K	3840
+> > >  #define VDISPLAY_4K	2160
+> > > @@ -206,6 +207,9 @@ igt_main
+> > >  		igt_require(connector);
+> > >
+> > >  		kmstest_unset_all_crtcs(drm_fd, res);
+> > > +
+> > > +		if (!igt_kmod_is_loaded("snd_hda_intel"))
+> > > +			igt_kmod_load("snd_hda_intel", NULL);
+> > >  	}
+> > >
+> > >  	igt_describe("Make sure that 4K modes exposed by DRM match the
+> "
+> > > --
+> > > 2.25.1
