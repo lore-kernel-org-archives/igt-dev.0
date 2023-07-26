@@ -1,20 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE65F10E045
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 17:57:11 +0000 (UTC)
-Message-ID: <d57e1268-1da7-5440-dfeb-2ec4e1bc39d6@nvidia.com>
-Date: Wed, 26 Jul 2023 10:57:07 -0700
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8226C10E045
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 18:10:43 +0000 (UTC)
+Message-ID: <11c002a4-78f5-7cb4-6c01-53ed10c66e06@intel.com>
+Date: Wed, 26 Jul 2023 23:40:28 +0530
 Content-Language: en-US
-To: Simon Ser <contact@emersion.fr>
-References: <2aafc4e6-0ba7-5d78-4adb-0a0368f74792@nvidia.com>
- <rOMfgyv59TFDh11y6sCRvXRsQpKuVPfkmXhk4KMtAHZNO0D6VhudiLseaz-V1uXMq7b5jjwg1NsWeEkLe4gcNzRy6ezOSOQ4TIqcYyQTYWs=@emersion.fr>
-From: Erik Kurzinger <ekurzinger@nvidia.com>
-In-Reply-To: <rOMfgyv59TFDh11y6sCRvXRsQpKuVPfkmXhk4KMtAHZNO0D6VhudiLseaz-V1uXMq7b5jjwg1NsWeEkLe4gcNzRy6ezOSOQ4TIqcYyQTYWs=@emersion.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Janga Rahul Kumar
+ <janga.rahul.kumar@intel.com>, Francois Dugast <francois.dugast@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Lucas De Marchi
+ <lucas.demarchi@intel.com>
+References: <20230725121852.3749558-1-himal.prasad.ghimiray@intel.com>
+ <20230725173013.val5xlhg4uffj6iq@kamilkon-desk1>
+From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20230725173013.val5xlhg4uffj6iq@kamilkon-desk1>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/syncobj_sync_file: new test
+Subject: Re: [igt-dev] [PATCH i-g-t v4 1/1] tests/xe/xe_uevent: add new test
+ for uevent gt reset failure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,217 +26,245 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Austin Shafer <ashafer@nvidia.com>,
- James Jones <jajones@nvidia.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks for reviewing! responses inline...
+Hi Kamil,
 
-On 7/26/23 02:43, Simon Ser wrote:
-> Overall looks pretty good to me, a few comments below.
-> 
-> On Tuesday, July 25th, 2023 at 00:33, Erik Kurzinger <ekurzinger@nvidia.com> wrote:
-> 
->> diff --git a/lib/igt_syncobj.h b/lib/igt_syncobj.h
->> index e6725671d..01f5f062b 100644
->> --- a/lib/igt_syncobj.h
->> +++ b/lib/igt_syncobj.h
->> @@ -34,7 +34,9 @@ int __syncobj_handle_to_fd(int fd, struct drm_syncobj_handle *args);
->>  int __syncobj_fd_to_handle(int fd, struct drm_syncobj_handle *args);
->>  int syncobj_handle_to_fd(int fd, uint32_t handle, uint32_t flags);
->>  uint32_t syncobj_fd_to_handle(int fd, int syncobj_fd, uint32_t flags);
->> +int __syncobj_import_sync_file(int fd, struct drm_syncobj_sync_file *args);
->>  void syncobj_import_sync_file(int fd, uint32_t handle, int sync_file);
->> +int __syncobj_export_sync_file(int fd, struct drm_syncobj_sync_file *args);
-> 
-> Hm, this is a bit confusing because the old transfer logic and the new IOCTL
-> both have the same name modulo the "__" prefix. Usually IGT uses a pattern
-> where the function without the "__" prefix just calls the one with the prefix
-> and asserts that it succeeds. Maybe we should rename the old functions in a
-> separate patch? Or find a different name for the new functions?
-> 
-
-For lack of creativity, I've affixed "v2" to the new functions to differentiate them from the old ones. I did this for both the import and export functions for symmetry's sake even though there's no "v1" export function, hopefully that's ok. Naming things is hard.
-
-> Optional nit: maybe it would be more ergonomic if the new function took
-> arguments instead of a struct drm_syncobj_sync_file. Callers wouldn't have to
-> init the struct.
-> 
-
-Sure, that does make the test code a little bit cleaner. I think we still need to expose the "raw" versions, though, for the tests that check error codes.
-
->> +const char *test_binary_import_export_desc =
->> +	"Verifies importing and exporting a sync file with a binary syncobj.";
->> +static void
->> +test_binary_import_export(int fd)
+On 25-07-2023 23:00, Kamil Konieczny wrote:
+> Hi Himal,
+>
+> On 2023-07-25 at 17:48:52 +0530, Himal Prasad Ghimiray wrote:
+>> This test is to cause the fake reset failure and capture the uevent
+>> sent in case of gt reset failure. We are relying on debugfs to
+>> cause fake reset failure because there is no hardware mechanism using
+>> which we can force gt to fail its reset.
+>>
+>> v2:
+>> - Make fake reset for all GT's in platform.
+>> - Add test names in order (Rahul)
+>> - Add headers in order.
+>> - Instead of system call use igt helper for reading debugfs.
+>> - Use igt_debug instead of prints.
+>> - Use break instead of unnecessary goto.
+>> - Change test name.
+>> - Define values as constants. (Kamil)
+>>
+>> v3:
+>> - Use fault injection exposed debugfs.
+>>
+>> v4:
+>> - Use pci subsystem for uevent listening.
+>>
+>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>> Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+>> Cc: Francois Dugast <francois.dugast@intel.com>
+>> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+>>
+>> Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+>> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+>> ---
+>> The sending of Uevent and fault injection is handled by:
+>> https://patchwork.freedesktop.org/series/120919/
+>>
+>>   tests/meson.build    |   1 +
+>>   tests/xe/xe_uevent.c | 130 +++++++++++++++++++++++++++++++++++++++++++
+>>   2 files changed, 131 insertions(+)
+>>   create mode 100644 tests/xe/xe_uevent.c
+>>
+>> diff --git a/tests/meson.build b/tests/meson.build
+>> index 944a0941f..b9f0a9c15 100644
+>> --- a/tests/meson.build
+>> +++ b/tests/meson.build
+>> @@ -291,6 +291,7 @@ xe_progs = [
+>>   	'xe_prime_self_import',
+>>   	'xe_query',
+>>   	'xe_sysfs_tile',
+>> +	'xe_uevent',
+>>   	'xe_vm',
+>>   	'xe_waitfence',
+>>   	'xe_spin_batch',
+>> diff --git a/tests/xe/xe_uevent.c b/tests/xe/xe_uevent.c
+>> new file mode 100644
+>> index 000000000..aabeb89b8
+>> --- /dev/null
+>> +++ b/tests/xe/xe_uevent.c
+>> @@ -0,0 +1,130 @@
+>> +// SPDX-License-Identifier: MIT
+>> +/*
+>> + * Copyright © 2023 Intel Corporation
+>> + */
+>> +
+>> +/**
+>> + * TEST: cause fake gt reset failure and listen uevent from KMD
+>> + * SUBTEST:fake_reset_uevent_listener
+>> + * Description:
+>> + *		Test creates uevent listener and causes fake reset failure for gt0
+>> + *		and returns success if uevent is sent by driver and listened by listener.
+>> + */
+>> +
+>> +#include <libudev.h>
+>> +#include <string.h>
+>> +#include <sys/stat.h>
+>> +
+>> +#include "igt.h"
+>> +
+>> +#include "xe_drm.h"
+>> +#include "xe/xe_ioctl.h"
+>> +#include "xe/xe_query.h"
+>> +
+>> +static bool xe_fail_gt_reset(int fd, int gt)
 >> +{
->> +	struct drm_syncobj_sync_file args = { 0 };
->> +	int timeline = sw_sync_timeline_create();
+>> +	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
+>> +	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
 >> +
->> +	args.handle = syncobj_create(fd, 0);
->> +	args.fd = sw_sync_timeline_create_fence(timeline, 1);
->> +	args.point = 0;
->> +	igt_assert_eq(__syncobj_import_sync_file(fd, &args), 0);
->> +	close(args.fd);
->> +	args.fd = -1;
->> +	igt_assert_eq(__syncobj_export_sync_file(fd, &args), 0);
+>> +	xe_force_gt_reset(fd, gt);
 >> +
->> +	igt_assert(!syncobj_wait(fd, &args.handle, 1, 0, 0, NULL));
->> +	igt_assert_eq(sync_fence_status(args.fd), 0);
->> +
->> +	sw_sync_timeline_inc(timeline, 1);
->> +	igt_assert(syncobj_wait(fd, &args.handle, 1, 0, 0, NULL));
->> +	igt_assert_eq(sync_fence_status(args.fd), 1);
->> +
->> +	close(args.fd);
->> +	close(timeline);
->> +	syncobj_destroy(fd, args.handle);
+>> +	return true;
+> -------------- ^^^^
+> Better make this function void with no return.
+
+Sure will address in next patch.
+
+>
 >> +}
 >> +
->> +const char *test_timeline_import_export_desc =
->> +	"Verifies importing and exporting sync files with a timeline syncobj.";
->> +static void
->> +test_timeline_import_export(int fd)
+>> +static bool listen_reset_fail_uevent(struct udev_device *device, const char *source, int gt_id)
 >> +{
->> +	struct drm_syncobj_sync_file args = { 0 };
->> +	int timeline = sw_sync_timeline_create();
->> +	int fence1, fence2;
->> +	uint64_t point1 = 1, point2 = 2;
+>> +	struct udev_list_entry *list_entry;
+>> +	bool dev_needs_reset = false;
+>> +	bool reset_unit_is_gt = false;
+>> +	bool gt_id_matches = false;
+>> +	const char *name, *val;
 >> +
->> +	args.handle = syncobj_create(fd, 0);
->> +	args.fd = sw_sync_timeline_create_fence(timeline, 1);
->> +	args.point = 1;
->> +	igt_assert_eq(__syncobj_import_sync_file(fd, &args), 0);
->> +	close(args.fd);
->> +	args.fd = -1;
->> +	igt_assert_eq(__syncobj_export_sync_file(fd, &args), 0);
->> +	fence1 = args.fd;
+>> +	udev_list_entry_foreach(list_entry, udev_device_get_properties_list_entry(device))
+>> +	{
+>> +		name = udev_list_entry_get_name(list_entry);
+>> +		val = udev_list_entry_get_value(list_entry);
 >> +
->> +	args.fd = sw_sync_timeline_create_fence(timeline, 2);
->> +	args.point = 2;
->> +	igt_assert_eq(__syncobj_import_sync_file(fd, &args), 0);
->> +	close(args.fd);
->> +	args.fd = -1;
->> +	igt_assert_eq(__syncobj_export_sync_file(fd, &args), 0);
->> +	fence2 = args.fd;
+>> +		if (!strcmp(name, "DEVICE_STATUS") && !strcmp(val, "NEEDS_RESET")) {
+>> +			igt_debug("%s = %s\n", name, val);
+>> +			dev_needs_reset = true;
+>> +			continue;
+>> +		}
 >> +
->> +	igt_assert(!syncobj_timeline_wait(fd, &args.handle, &point1, 1, 0, 0, NULL));
->> +	igt_assert_eq(sync_fence_status(fence1), 0);
->> +	igt_assert(!syncobj_timeline_wait(fd, &args.handle, &point2, 1, 0, 0, NULL));
->> +	igt_assert_eq(sync_fence_status(fence2), 0);
+>> +		if (!strcmp(name, "RESET_FAILED") && !strcmp(val, "gt")) {
+>> +			igt_debug("%s = %s\n", name, val);
+>> +			reset_unit_is_gt = true;
+>> +			continue;
+>> +		}
 >> +
->> +	sw_sync_timeline_inc(timeline, 1);
->> +	igt_assert(syncobj_timeline_wait(fd, &args.handle, &point1, 1, 0, 0, NULL));
->> +	igt_assert_eq(sync_fence_status(fence1), 1);
->> +	igt_assert(!syncobj_timeline_wait(fd, &args.handle, &point2, 1, 0, 0, NULL));
->> +	igt_assert_eq(sync_fence_status(fence2), 0);
+>> +		if (!strcmp(name, "RESET_ID") && (atoi(val) == gt_id)) {
+>> +			igt_debug("%s = %s\n", name, val);
+>> +			gt_id_matches = true;
+>> +			continue;
+>> +		}
+>> +	}
 >> +
->> +	sw_sync_timeline_inc(timeline, 1);
->> +	igt_assert(syncobj_timeline_wait(fd, &args.handle, &point1, 1, 0, 0, NULL));
->> +	igt_assert_eq(sync_fence_status(fence1), 1);
->> +	igt_assert(syncobj_timeline_wait(fd, &args.handle, &point2, 1, 0, 0, NULL));
->> +	igt_assert_eq(sync_fence_status(fence2), 1);
->> +
->> +	close(fence1);
->> +	close(fence2);
->> +	close(timeline);
->> +	syncobj_destroy(fd, args.handle);
+>> +	return (dev_needs_reset && reset_unit_is_gt && gt_id_matches);
 >> +}
 >> +
->> +const char *test_invalid_handle_import_desc =
->> +	"Verifies that importing a sync file to an invalid syncobj fails.";
->> +static void
->> +test_invalid_handle_import(int fd)
+>> +static void fake_reset_uevent_listener(int fd, int gt_id)
 >> +{
->> +	struct drm_syncobj_sync_file args = { 0 };
->> +	int timeline = sw_sync_timeline_create();
+>> +	struct udev *udev;
+>> +	struct udev_device *dev;
+>> +	struct udev_monitor *mon;
+>> +	bool event_received = false;
+>> +	bool event_sent = false;
+>> +	const u32 listener_timeout = 5;
 >> +
->> +	args.handle = 0;
->> +	args.point = 0;
->> +	args.fd = sw_sync_timeline_create_fence(timeline, 1);
->> +	igt_assert_eq(__syncobj_import_sync_file(fd, &args), -EINVAL);
-> 
-> Shouldn't this be ENOENT?
-> 
+>> +	/* create udev object */
+>> +	udev = udev_new();
+>> +	if (!udev)
+>> +		igt_assert_f(false, "New udev object creation failed");
+>> +
+>> +	mon = udev_monitor_new_from_netlink(udev, "kernel");
+>> +	udev_monitor_filter_add_match_subsystem_devtype(mon, "pci", NULL);
+>> +	udev_monitor_enable_receiving(mon);
+>> +	igt_until_timeout(listener_timeout) {
+>> +		if (event_sent) {
+>> +			dev = udev_monitor_receive_device(mon);
+>> +			if (dev) {
+>> +				event_received = listen_reset_fail_uevent(dev, "kernel", gt_id);
+>> +				udev_device_unref(dev);
+>> +			}
+>> +		}
+>> +
+>> +		if (event_received)
+>> +			break;
+>> +
+>> +		if (!event_sent)
+>> +			event_sent = xe_fail_gt_reset(fd, gt_id);
+> ----------------------- ^^^^^^^^^^^^
+> This looks like the only purpose function return true is to set
+> this var here. Loop looks convoluted, why not:
+>
+> 	igt_until_timeout(listener_timeout) {
+> 		if (event_sent) {
+> 			...your old code here...
+> 		} else {
+> 			event_sent = true;
+> 			xe_fail_gt_reset(fd, gt_id);
+> 		}
+Makes sense. Will address in next patch.
+>
+>> +			}
+>> +		}
+>> +	}
+> Add newline here.
+>
+>> +	udev_unref(udev);
+> ------------ ^
+> Why unref here?
+>
+>> +	igt_assert_f(event_received, "Event not received");
+>> +}
+>> +
+>> +igt_main
+>> +{
+>> +	int fd;
+>> +	int gt;
+>> +	const u32 settle_xe_load_uevents = 50000;
+>> +
+>> +	igt_fixture {
+>> +		fd = drm_open_driver(DRIVER_XE);
+>> +		xe_device_get(fd);
+> --------------- ^
+> Not needed as drm_open_driver will do this.
+>
+>> +	}
+>> +
+>> +	/* Ensures uevents triggered in case of driver
+>> +	 * load are settled down.
+>> +	 */
+>> +	usleep(settle_xe_load_uevents);
+>> +
+>> +	igt_subtest("fake_reset_uevent_listener")
+>> +		xe_for_each_gt(fd, gt) {
+>> +			fake_reset_uevent_listener(fd, gt);
+>> +		}
+>> +
+>> +	igt_fixture {
+>> +		xe_device_put(fd);
+> --------------- ^
+>> +		close(fd);
+> --------------- ^
+> Same here, just use drm_close_driver(fd);
 
-D'oh, yes it should. It looks like I fixed this after local testing but forgot to ammend the commit. Sorry.
+Sure
 
-> drm_syncobj_import_sync_file_fence() returns ENOENT when drm_syncobj_find()
-> fails.
-> 
->> +
->> +	close(args.fd);
->> +	close(timeline);
->> +}
->> +
->> +const char *test_invalid_handle_export_desc =
->> +	"Verifies that exporting a sync file from an invalid syncobj fails.";
->> +static void
->> +test_invalid_handle_export(int fd)
->> +{
->> +	struct drm_syncobj_sync_file args = { 0 };
->> +
->> +	args.handle = 0;
->> +	args.point = 0;
->> +	args.fd = -1;
->> +	igt_assert_eq(__syncobj_export_sync_file(fd, &args), -EINVAL);
-> 
-> Ditto
-> 
->> +}
->> +
->> +const char *test_invalid_fd_import_desc =
->> +	"Verifies that importing an invalid sync file fails.";
->> +static void
->> +test_invalid_fd_import(int fd)
->> +{
->> +	struct drm_syncobj_sync_file args = { 0 };
->> +
->> +	args.handle = syncobj_create(fd, 0);
->> +	args.point = 0;
->> +	args.fd = -1;
->> +	igt_assert_eq(__syncobj_import_sync_file(fd, &args), -EINVAL);
->> +
->> +	syncobj_destroy(fd, args.handle);
->> +}
->> +
->> +const char *test_unsubmitted_export_desc =
->> +	"Verifies that exporting a sync file for an unsubmitted point fails.";
->> +static void
->> +test_unsubmitted_export(int fd)
->> +{
->> +	struct drm_syncobj_sync_file args = { 0 };
->> +
->> +	args.handle = syncobj_create(fd, 0);
->> +	args.point = 0;
->> +	args.fd = -1;
->> +	igt_assert_eq(__syncobj_export_sync_file(fd, &args), -EINVAL);
->> +
->> +	syncobj_destroy(fd, args.handle);
->> +}
->> +
->> +static bool has_syncobj_timeline(int fd)
->> +{
->> +	uint64_t value;
->> +	return drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE,
->> +			 &value) == 0 && value;
->> +}
->> +
->> +static bool has_syncobj_sync_file_import_export(int fd)
->> +{
->> +	struct drm_syncobj_sync_file args = { 0 };
->> +	args.handle = 0xffffffff;
-> 
-> 0 is guaranteed to always be an invalid drm_syncobj handle, while in theory
-> 0xffffffff could be a valid one. So it's a bit safer to just leave the handle
-> to zero here.
-> 
+BR
 
-Good point, fixed.
+Himal
 
->> +	/* if sync file import/export is supported this will fail with ENOENT,
->> +	 * otherwise it will fail with EINVAL */
->> +	return __syncobj_export_sync_file(fd, &args) == -ENOENT;
+>
+> Regards,
+> Kamil
+>
+>> +	}
 >> +}
+>> -- 
+>> 2.25.1
+>>
