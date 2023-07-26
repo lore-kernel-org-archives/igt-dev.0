@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4496604047910062488=="
+Date: Wed, 26 Jul 2023 10:23:25 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>, "Matthew
+ Auld" <matthew.auld@intel.com>
+Message-ID: <ZMEsXUB9GlF/djiq@intel.com>
+References: <20230725205626.346256-1-rodrigo.vivi@intel.com>
+ <20230725205626.346256-2-rodrigo.vivi@intel.com>
+ <20230726101431.o53pbvurkpouv2mm@kamilkon-desk1>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230726101431.o53pbvurkpouv2mm@kamilkon-desk1>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Badal Nilawar" <badal.nilawar@intel.com>
-Date: Thu, 20 Jul 2023 12:34:14 -0000
-Message-ID: <168985645422.20752.9482251596162135746@emeril.freedesktop.org>
-References: <20230720095041.3599085-1-badal.nilawar@intel.com>
-In-Reply-To: <20230720095041.3599085-1-badal.nilawar@intel.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy94ZTog?=
- =?utf-8?q?Verify_actual_frequency_on_the_basis_of_GT_state_=28rev6=29?=
+Subject: Re: [igt-dev] [Intel-xe] [PATCH i-g-t 2/2] xe_debugfs: Remove
+ guc_enable check.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,73 +21,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4496604047910062488==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Jul 26, 2023 at 12:14:31PM +0200, Kamil Konieczny wrote:
+> Hi Rodrigo,
+> 
+> On 2023-07-25 at 16:56:25 -0400, Rodrigo Vivi wrote:
+> > drm-xe-next commit "drm/xe: Invert guc vs execlists parameters and info.")
+> > inverted the param to expose the status of the non-default config.
+> > 
+> > And commit ("drm/xe/uapi: Remove XE_QUERY_CONFIG_FLAGS_USE_GUC")
+> > entirely removed the query check.
+> > 
+> > So, let's simply stop doing this debugfs check here.
+> > 
+> > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> 
+> I am sorry, please drop my reply for 1/2 because separate 2/2 patch
+> break incremental compile, so merge all this into one commit.
+> 
+> With that you can add my r-b tag.
 
-== Series Details ==
+Thank you both for the reviews. I squashed both patches together and pushed.
 
-Series: tests/xe: Verify actual frequency on the basis of GT state (rev6)
-URL   : https://patchwork.freedesktop.org/series/120831/
-State : info
-
-== Summary ==
-
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[1]:
-bat-pvc-2
-Results: [IGTPW_9440](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9440/index.html)
-
-
-
---===============4496604047910062488==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe: Verify actual frequency on the basis of GT state (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120831/">https://patchwork.freedesktop.org/series/120831/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[1]:<br />
-bat-pvc-2<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9440/index.html">IGTPW_9440</a></p>
-
-</body>
-</html>
-
---===============4496604047910062488==--
+> 
+> Regards,
+> Kamil
+> 
+> > ---
+> >  tests/xe/xe_debugfs.c | 4 ----
+> >  1 file changed, 4 deletions(-)
+> > 
+> > diff --git a/tests/xe/xe_debugfs.c b/tests/xe/xe_debugfs.c
+> > index 5e16a71a0..5434d4645 100644
+> > --- a/tests/xe/xe_debugfs.c
+> > +++ b/tests/xe/xe_debugfs.c
+> > @@ -104,10 +104,6 @@ test_base(int fd, struct drm_xe_query_config *config)
+> >  
+> >  	igt_assert(igt_debugfs_search(fd, "info", reference));
+> >  
+> > -	sprintf(reference, "enable_guc %s", config->info[XE_QUERY_CONFIG_FLAGS] &
+> > -		XE_QUERY_CONFIG_FLAGS_USE_GUC ? "yes" : "no");
+> > -	igt_assert(igt_debugfs_search(fd, "info", reference));
+> > -
+> >  	sprintf(reference, "tile_count %lld", config->info[XE_QUERY_CONFIG_GT_COUNT]);
+> >  	igt_assert(igt_debugfs_search(fd, "info", reference));
+> >  
+> > -- 
+> > 2.41.0
+> > 
