@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4AC210E04B
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 17:54:18 +0000 (UTC)
-Date: Wed, 26 Jul 2023 19:54:14 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E856910E045
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jul 2023 17:57:09 +0000 (UTC)
+Message-ID: <26f9a6a1-abd3-eff0-893c-2cbb214154c1@nvidia.com>
+Date: Wed, 26 Jul 2023 10:56:58 -0700
+Content-Language: en-US
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230726175414.li26piwnirqy3vct@kamilkon-desk1>
-References: <20230725121852.3749558-1-himal.prasad.ghimiray@intel.com>
- <20230725173013.val5xlhg4uffj6iq@kamilkon-desk1>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+From: Erik Kurzinger <ekurzinger@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230725173013.val5xlhg4uffj6iq@kamilkon-desk1>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 1/1] tests/xe/xe_uevent: add new test
- for uevent gt reset failure
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH v2] tests/syncobj_sync_file: new test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,245 +19,415 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Simon Ser <contact@emersion.fr>, Austin Shafer <ashafer@nvidia.com>,
+ James Jones <jajones@nvidia.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+This test suite exercises the new DRM_IOCTL_IMPORT/EXPORT_SYNC_FILE
+ioctl introduced in [1].
 
-On 2023-07-25 at 19:30:13 +0200, Kamil Konieczny wrote:
-> Hi Himal,
-> 
-> On 2023-07-25 at 17:48:52 +0530, Himal Prasad Ghimiray wrote:
-> > This test is to cause the fake reset failure and capture the uevent
-> > sent in case of gt reset failure. We are relying on debugfs to
-> > cause fake reset failure because there is no hardware mechanism using
-> > which we can force gt to fail its reset.
-> > 
-> > v2:
-> > - Make fake reset for all GT's in platform.
-> > - Add test names in order (Rahul)
-> > - Add headers in order.
-> > - Instead of system call use igt helper for reading debugfs.
-> > - Use igt_debug instead of prints.
-> > - Use break instead of unnecessary goto.
-> > - Change test name.
-> > - Define values as constants. (Kamil)
-> > 
-> > v3:
-> > - Use fault injection exposed debugfs.
-> > 
-> > v4:
-> > - Use pci subsystem for uevent listening.
-> > 
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> > Cc: Francois Dugast <francois.dugast@intel.com>
-> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> > 
-> > Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> > Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> > ---
-> > The sending of Uevent and fault injection is handled by:
-> > https://patchwork.freedesktop.org/series/120919/
-> > 
-> >  tests/meson.build    |   1 +
-> >  tests/xe/xe_uevent.c | 130 +++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 131 insertions(+)
-> >  create mode 100644 tests/xe/xe_uevent.c
-> > 
-> > diff --git a/tests/meson.build b/tests/meson.build
-> > index 944a0941f..b9f0a9c15 100644
-> > --- a/tests/meson.build
-> > +++ b/tests/meson.build
-> > @@ -291,6 +291,7 @@ xe_progs = [
-> >  	'xe_prime_self_import',
-> >  	'xe_query',
-> >  	'xe_sysfs_tile',
-> > +	'xe_uevent',
-> >  	'xe_vm',
-> >  	'xe_waitfence',
-> >  	'xe_spin_batch',
-> > diff --git a/tests/xe/xe_uevent.c b/tests/xe/xe_uevent.c
-> > new file mode 100644
-> > index 000000000..aabeb89b8
-> > --- /dev/null
-> > +++ b/tests/xe/xe_uevent.c
-> > @@ -0,0 +1,130 @@
-> > +// SPDX-License-Identifier: MIT
-> > +/*
-> > + * Copyright © 2023 Intel Corporation
-> > + */
-> > +
-> > +/**
-> > + * TEST: cause fake gt reset failure and listen uevent from KMD
-> > + * SUBTEST:fake_reset_uevent_listener
-> > + * Description:
-> > + *		Test creates uevent listener and causes fake reset failure for gt0
-> > + *		and returns success if uevent is sent by driver and listened by listener.
-> > + */
-> > +
-> > +#include <libudev.h>
-> > +#include <string.h>
-> > +#include <sys/stat.h>
-> > +
-> > +#include "igt.h"
-> > +
-> > +#include "xe_drm.h"
-> > +#include "xe/xe_ioctl.h"
-> > +#include "xe/xe_query.h"
-> > +
-> > +static bool xe_fail_gt_reset(int fd, int gt)
-> > +{
-> > +	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
-> > +	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
-> > +
-> > +	xe_force_gt_reset(fd, gt);
-> > +
-> > +	return true;
-> -------------- ^^^^
-> Better make this function void with no return.
-> 
-> > +}
-> > +
-> > +static bool listen_reset_fail_uevent(struct udev_device *device, const char *source, int gt_id)
-> > +{
-> > +	struct udev_list_entry *list_entry;
-> > +	bool dev_needs_reset = false;
-> > +	bool reset_unit_is_gt = false;
-> > +	bool gt_id_matches = false;
-> > +	const char *name, *val;
-> > +
-> > +	udev_list_entry_foreach(list_entry, udev_device_get_properties_list_entry(device))
-> > +	{
-> > +		name = udev_list_entry_get_name(list_entry);
-> > +		val = udev_list_entry_get_value(list_entry);
-> > +
-> > +		if (!strcmp(name, "DEVICE_STATUS") && !strcmp(val, "NEEDS_RESET")) {
-> > +			igt_debug("%s = %s\n", name, val);
-> > +			dev_needs_reset = true;
-> > +			continue;
-> > +		}
-> > +
-> > +		if (!strcmp(name, "RESET_FAILED") && !strcmp(val, "gt")) {
-> > +			igt_debug("%s = %s\n", name, val);
-> > +			reset_unit_is_gt = true;
-> > +			continue;
-> > +		}
-> > +
-> > +		if (!strcmp(name, "RESET_ID") && (atoi(val) == gt_id)) {
-> > +			igt_debug("%s = %s\n", name, val);
-> > +			gt_id_matches = true;
-> > +			continue;
-> > +		}
-> > +	}
-> > +
-> > +	return (dev_needs_reset && reset_unit_is_gt && gt_id_matches);
-> > +}
-> > +
-> > +static void fake_reset_uevent_listener(int fd, int gt_id)
-> > +{
-> > +	struct udev *udev;
-> > +	struct udev_device *dev;
-> > +	struct udev_monitor *mon;
-> > +	bool event_received = false;
-> > +	bool event_sent = false;
-> > +	const u32 listener_timeout = 5;
-> > +
-> > +	/* create udev object */
-> > +	udev = udev_new();
-> > +	if (!udev)
-> > +		igt_assert_f(false, "New udev object creation failed");
-> > +
-> > +	mon = udev_monitor_new_from_netlink(udev, "kernel");
-> > +	udev_monitor_filter_add_match_subsystem_devtype(mon, "pci", NULL);
-> > +	udev_monitor_enable_receiving(mon);
-> > +	igt_until_timeout(listener_timeout) {
-> > +		if (event_sent) {
-> > +			dev = udev_monitor_receive_device(mon);
-> > +			if (dev) {
-> > +				event_received = listen_reset_fail_uevent(dev, "kernel", gt_id);
-> > +				udev_device_unref(dev);
-> > +			}
-> > +		}
-> > +
-> > +		if (event_received)
-> > +			break;
-> 
-> > +
-> > +		if (!event_sent)
-> > +			event_sent = xe_fail_gt_reset(fd, gt_id);
-> ----------------------- ^^^^^^^^^^^^
-> This looks like the only purpose function return true is to set
-> this var here. Loop looks convoluted, why not:
-> 
-> 	igt_until_timeout(listener_timeout) {
-> 		if (event_sent) {
-> 			...your old code here...
-> 		} else {
-> 			event_sent = true;
-> 			xe_fail_gt_reset(fd, gt_id);
-> 		}
-> 
-> 
-> > +			}
-> > +		}
-> > +	}
-> 
-> Add newline here.
-> 
-> > +	udev_unref(udev);
-> ------------ ^
-> Why unref here?
+[1] https://lore.kernel.org/dri-devel/5e687ad8-78ad-0350-6052-a698b278cc8c@nvidia.com/
 
-Sorry, it is other unref and is ok here,
+V1 -> V2:
+* added "v2" to new libigt functions to differentiate them from existing ones
+* added convenience functions to wrap the raw import/export ioctls
+* fixed error codes in invalid handle tests, ENOENT instead of EINVAL
+* used 0 instead of 0xffffffff as invalid handle in requirement check
 
-Regards,
-Kamil
+Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
+---
+ include/drm-uapi/drm.h    |  11 ++
+ lib/igt_syncobj.c         |  64 ++++++++++
+ lib/igt_syncobj.h         |   5 +
+ tests/meson.build         |   1 +
+ tests/syncobj_sync_file.c | 242 ++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 323 insertions(+)
+ create mode 100644 tests/syncobj_sync_file.c
 
-> 
-> > +	igt_assert_f(event_received, "Event not received");
-> > +}
-> > +
-> > +igt_main
-> > +{
-> > +	int fd;
-> > +	int gt;
-> > +	const u32 settle_xe_load_uevents = 50000;
-> > +
-> > +	igt_fixture {
-> > +		fd = drm_open_driver(DRIVER_XE);
-> > +		xe_device_get(fd);
-> --------------- ^
-> Not needed as drm_open_driver will do this.
-> 
-> > +	}
-> > +
-> > +	/* Ensures uevents triggered in case of driver
-> > +	 * load are settled down.
-> > +	 */
-> > +	usleep(settle_xe_load_uevents);
-> > +
-> > +	igt_subtest("fake_reset_uevent_listener")
-> > +		xe_for_each_gt(fd, gt) {
-> > +			fake_reset_uevent_listener(fd, gt);
-> > +		}
-> > +
-> > +	igt_fixture {
-> > +		xe_device_put(fd);
-> --------------- ^
-> > +		close(fd);
-> --------------- ^
-> Same here, just use drm_close_driver(fd);
-> 
-> Regards,
-> Kamil
-> 
-> > +	}
-> > +}
-> > -- 
-> > 2.25.1
-> > 
+diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
+index 5e54c3aa4..389dc138a 100644
+--- a/include/drm-uapi/drm.h
++++ b/include/drm-uapi/drm.h
+@@ -878,6 +878,12 @@ struct drm_syncobj_transfer {
+ 	__u32 pad;
+ };
+ 
++struct drm_syncobj_sync_file {
++	__u32 handle;
++	__u32 fd;
++	__u64 point;
++};
++
+ #define DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL (1 << 0)
+ #define DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT (1 << 1)
+ #define DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE (1 << 2) /* wait for time point to become available */
+@@ -1090,8 +1096,13 @@ extern "C" {
+ #define DRM_IOCTL_SYNCOBJ_TRANSFER	DRM_IOWR(0xCC, struct drm_syncobj_transfer)
+ #define DRM_IOCTL_SYNCOBJ_TIMELINE_SIGNAL	DRM_IOWR(0xCD, struct drm_syncobj_timeline_array)
+ 
++
++
+ #define DRM_IOCTL_MODE_GETFB2		DRM_IOWR(0xCE, struct drm_mode_fb_cmd2)
+ 
++#define DRM_IOCTL_SYNCOBJ_IMPORT_SYNC_FILE	DRM_IOWR(0xD0, struct drm_syncobj_sync_file)
++#define DRM_IOCTL_SYNCOBJ_EXPORT_SYNC_FILE	DRM_IOWR(0xD1, struct drm_syncobj_sync_file)
++
+ /*
+  * Device specific ioctls should only be in their respective headers
+  * The device specific ioctl range is from 0x40 to 0x9f.
+diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
+index a24ed10b7..ee7d01ad0 100644
+--- a/lib/igt_syncobj.c
++++ b/lib/igt_syncobj.c
+@@ -181,6 +181,70 @@ syncobj_import_sync_file(int fd, uint32_t handle, int sync_file)
+ 	igt_assert_eq(__syncobj_fd_to_handle(fd, &args), 0);
+ }
+ 
++int
++__syncobj_import_sync_file_v2(int fd, struct drm_syncobj_sync_file *args)
++{
++	int err = 0;
++	if (igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_IMPORT_SYNC_FILE, args)) {
++		err = -errno;
++		igt_assume(err);
++		errno = 0;
++	}
++	return err;
++}
++
++/**
++ * syncobj_import_sync_file_v2:
++ * @fd: The DRM file descriptor
++ * @handle: The handle of the syncobj to import into
++ * @sync_file: The sync_file FD to import
++ * @point: The timeline point to import into
++ *
++ * Import a sync_file fd into a syncobj at a given timeline point
++ */
++void
++syncobj_import_sync_file_v2(int fd, uint32_t handle,
++			    int sync_file, uint64_t point)
++{
++	struct drm_syncobj_sync_file args = { 0 };
++	args.handle = handle;
++	args.point = point;
++	args.fd = sync_file;
++	igt_assert_eq(__syncobj_import_sync_file_v2(fd, &args), 0);
++}
++
++int
++__syncobj_export_sync_file_v2(int fd, struct drm_syncobj_sync_file *args)
++{
++	int err = 0;
++	if (igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_EXPORT_SYNC_FILE, args)) {
++		err = -errno;
++		igt_assume(err);
++		errno = 0;
++	}
++	return err;
++}
++
++/**
++ * syncobj_export_sync_file_v2:
++ * @fd: The DRM file descriptor
++ * @handle: The handle to the syncobj to export from
++ * @point: The timeline point to export from
++ *
++ * Export a sync_file FD from a syncobj at a given timeline point
++ * Returns: The exported sync_file FD
++ */
++int
++syncobj_export_sync_file_v2(int fd, uint32_t handle, uint64_t point)
++{
++	struct drm_syncobj_sync_file args = { 0 };
++	args.handle = handle;
++	args.point = point;
++	args.fd = -1;
++	igt_assert_eq(__syncobj_export_sync_file_v2(fd, &args), 0);
++	return args.fd;
++}
++
+ int
+ __syncobj_wait(int fd, struct drm_syncobj_wait *args)
+ {
+diff --git a/lib/igt_syncobj.h b/lib/igt_syncobj.h
+index e6725671d..207fd2142 100644
+--- a/lib/igt_syncobj.h
++++ b/lib/igt_syncobj.h
+@@ -35,6 +35,11 @@ int __syncobj_fd_to_handle(int fd, struct drm_syncobj_handle *args);
+ int syncobj_handle_to_fd(int fd, uint32_t handle, uint32_t flags);
+ uint32_t syncobj_fd_to_handle(int fd, int syncobj_fd, uint32_t flags);
+ void syncobj_import_sync_file(int fd, uint32_t handle, int sync_file);
++int __syncobj_import_sync_file_v2(int fd, struct drm_syncobj_sync_file *args);
++void syncobj_import_sync_file_v2(int fd, uint32_t handle,
++				 int sync_file, uint64_t point);
++int __syncobj_export_sync_file_v2(int fd, struct drm_syncobj_sync_file *args);
++int syncobj_export_sync_file_v2(int fd, uint32_t handle, uint64_t point);
+ int __syncobj_wait(int fd, struct drm_syncobj_wait *args);
+ int syncobj_wait_err(int fd, uint32_t *handles, uint32_t count,
+ 		     uint64_t abs_timeout_nsec, uint32_t flags);
+diff --git a/tests/meson.build b/tests/meson.build
+index 944a0941f..1712c31ca 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -80,6 +80,7 @@ test_progs = [
+ 	'syncobj_basic',
+ 	'syncobj_wait',
+ 	'syncobj_timeline',
++	'syncobj_sync_file',
+ 	'sw_sync',
+ 	'template',
+ 	'testdisplay',
+diff --git a/tests/syncobj_sync_file.c b/tests/syncobj_sync_file.c
+new file mode 100644
+index 000000000..3a6a8f8a1
+--- /dev/null
++++ b/tests/syncobj_sync_file.c
+@@ -0,0 +1,242 @@
++/*
++ * Copyright © 2023 NVIDIA
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ */
++
++#include "igt.h"
++#include "igt_syncobj.h"
++#include "sw_sync.h"
++#include <unistd.h>
++#include <sys/ioctl.h>
++#include "drm.h"
++
++/**
++ * TEST: syncobj sync file
++ * Category: Infrastructure
++ * Description: Tests for DRM syncobj sync file import and export
++ * Feature: synchronization
++ * Functionality: semaphore
++ * Run type: FULL
++ * Sub-category: DRM
++ * Test category: GEM_Legacy
++ *
++ * SUBTEST: binary-import-export
++ * Description: Verifies importing and exporting sync files with a binary syncobj.
++ *
++ * SUBTEST: timeline-import-export
++ * Description: Verifies importing and exporting sync files with a timeline syncobj.
++ *
++ * SUBTEST: invalid-handle-import
++ * Description: Verifies that importing a sync file to an invalid syncobj fails.
++ *
++ * SUBTEST: invalid-handle-export
++ * Description: Verifies that exporting a sync file from an invalid syncobj fails.
++ *
++ * SUBTEST: invalid-fd-import
++ * Description: Verifies that importing an invalid sync file fails.
++ *
++ * SUBTEST: unsubmitted-export
++ * Description: Verifies that exporting a sync file for an unsubmitted point fails.
++ *
++ */
++
++IGT_TEST_DESCRIPTION("Tests for DRM syncobj sync file import and export");
++
++const char *test_binary_import_export_desc =
++	"Verifies importing and exporting a sync file with a binary syncobj.";
++static void
++test_binary_import_export(int fd)
++{
++	uint32_t syncobj = syncobj_create(fd, 0);
++	int timeline = sw_sync_timeline_create();
++	int sync_file = sw_sync_timeline_create_fence(timeline, 1);
++	int exported_sync_file;
++
++	syncobj_import_sync_file_v2(fd, syncobj, sync_file, 0);
++	close(sync_file);
++	exported_sync_file = syncobj_export_sync_file_v2(fd, syncobj, 0);
++
++	igt_assert(!syncobj_wait(fd, &syncobj, 1, 0, 0, NULL));
++	igt_assert_eq(sync_fence_status(exported_sync_file), 0);
++
++	sw_sync_timeline_inc(timeline, 1);
++	igt_assert(syncobj_wait(fd, &syncobj, 1, 0, 0, NULL));
++	igt_assert_eq(sync_fence_status(exported_sync_file), 1);
++
++	close(exported_sync_file);
++	close(timeline);
++	syncobj_destroy(fd, syncobj);
++}
++
++const char *test_timeline_import_export_desc =
++	"Verifies importing and exporting sync files with a timeline syncobj.";
++static void
++test_timeline_import_export(int fd)
++{
++	uint32_t syncobj = syncobj_create(fd, 0);
++	int timeline = sw_sync_timeline_create();
++	int sync_file1 = sw_sync_timeline_create_fence(timeline, 1);
++	int sync_file2 = sw_sync_timeline_create_fence(timeline, 2);
++	int exported_sync_file1, exported_sync_file2;
++	uint64_t point1 = 1, point2 = 2;
++
++	syncobj_import_sync_file_v2(fd, syncobj, sync_file1, point1);
++	close(sync_file1);
++	exported_sync_file1 = syncobj_export_sync_file_v2(fd, syncobj, point1);
++
++	syncobj_import_sync_file_v2(fd, syncobj, sync_file2, point2);
++	close(sync_file2);
++	exported_sync_file2 = syncobj_export_sync_file_v2(fd, syncobj, point2);
++
++	igt_assert(!syncobj_timeline_wait(fd, &syncobj, &point1, 1, 0, 0, NULL));
++	igt_assert_eq(sync_fence_status(exported_sync_file1), 0);
++	igt_assert(!syncobj_timeline_wait(fd, &syncobj, &point2, 1, 0, 0, NULL));
++	igt_assert_eq(sync_fence_status(exported_sync_file2), 0);
++
++	sw_sync_timeline_inc(timeline, 1);
++	igt_assert(syncobj_timeline_wait(fd, &syncobj, &point1, 1, 0, 0, NULL));
++	igt_assert_eq(sync_fence_status(exported_sync_file1), 1);
++	igt_assert(!syncobj_timeline_wait(fd, &syncobj, &point2, 1, 0, 0, NULL));
++	igt_assert_eq(sync_fence_status(exported_sync_file2), 0);
++
++	sw_sync_timeline_inc(timeline, 1);
++	igt_assert(syncobj_timeline_wait(fd, &syncobj, &point1, 1, 0, 0, NULL));
++	igt_assert_eq(sync_fence_status(exported_sync_file1), 1);
++	igt_assert(syncobj_timeline_wait(fd, &syncobj, &point2, 1, 0, 0, NULL));
++	igt_assert_eq(sync_fence_status(exported_sync_file2), 1);
++
++	close(exported_sync_file1);
++	close(exported_sync_file2);
++	close(timeline);
++	syncobj_destroy(fd, syncobj);
++}
++
++const char *test_invalid_handle_import_desc =
++	"Verifies that importing a sync file to an invalid syncobj fails.";
++static void
++test_invalid_handle_import(int fd)
++{
++	struct drm_syncobj_sync_file args = { 0 };
++	int timeline = sw_sync_timeline_create();
++
++	args.fd = sw_sync_timeline_create_fence(timeline, 1);
++	igt_assert_eq(__syncobj_import_sync_file_v2(fd, &args), -ENOENT);
++
++	close(args.fd);
++	close(timeline);
++}
++
++const char *test_invalid_handle_export_desc =
++	"Verifies that exporting a sync file from an invalid syncobj fails.";
++static void
++test_invalid_handle_export(int fd)
++{
++	struct drm_syncobj_sync_file args = { 0 };
++
++	args.fd = -1;
++	igt_assert_eq(__syncobj_export_sync_file_v2(fd, &args), -ENOENT);
++}
++
++const char *test_invalid_fd_import_desc =
++	"Verifies that importing an invalid sync file fails.";
++static void
++test_invalid_fd_import(int fd)
++{
++	struct drm_syncobj_sync_file args = { 0 };
++
++	args.handle = syncobj_create(fd, 0);
++	args.point = 0;
++	args.fd = -1;
++	igt_assert_eq(__syncobj_import_sync_file_v2(fd, &args), -EINVAL);
++
++	syncobj_destroy(fd, args.handle);
++}
++
++const char *test_unsubmitted_export_desc =
++	"Verifies that exporting a sync file for an unsubmitted point fails.";
++static void
++test_unsubmitted_export(int fd)
++{
++	struct drm_syncobj_sync_file args = { 0 };
++
++	args.handle = syncobj_create(fd, 0);
++	args.point = 0;
++	args.fd = -1;
++	igt_assert_eq(__syncobj_export_sync_file_v2(fd, &args), -EINVAL);
++
++	syncobj_destroy(fd, args.handle);
++}
++
++static bool has_syncobj_timeline(int fd)
++{
++	uint64_t value;
++	return drmGetCap(fd, DRM_CAP_SYNCOBJ_TIMELINE,
++			 &value) == 0 && value;
++}
++
++static bool has_syncobj_sync_file_import_export(int fd)
++{
++	struct drm_syncobj_sync_file args = { 0 };
++	/* if sync file import/export is supported this will fail with ENOENT,
++	 * otherwise it will fail with EINVAL */
++	return __syncobj_export_sync_file_v2(fd, &args) == -ENOENT;
++}
++
++igt_main
++{
++	int fd = -1;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_ANY);
++		igt_require(has_syncobj_timeline(fd));
++		igt_require(has_syncobj_sync_file_import_export(fd));
++		igt_require_sw_sync();
++	}
++
++	igt_describe(test_binary_import_export_desc);
++	igt_subtest("binary-import-export")
++		test_binary_import_export(fd);
++
++	igt_describe(test_timeline_import_export_desc);
++	igt_subtest("timeline-import-export")
++		test_timeline_import_export(fd);
++
++	igt_describe(test_invalid_handle_import_desc);
++	igt_subtest("invalid-handle-import")
++		test_invalid_handle_import(fd);
++
++	igt_describe(test_invalid_handle_export_desc);
++	igt_subtest("invalid-handle-export")
++		test_invalid_handle_export(fd);
++
++	igt_describe(test_invalid_fd_import_desc);
++	igt_subtest("invalid-fd-import")
++		test_invalid_fd_import(fd);
++
++	igt_describe(test_unsubmitted_export_desc);
++	igt_subtest("unsubmitted-export")
++		test_unsubmitted_export(fd);
++
++	igt_fixture {
++		drm_close_driver(fd);
++	}
++
++}
+-- 
+2.41.0
+
