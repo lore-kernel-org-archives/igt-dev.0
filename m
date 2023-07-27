@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============2251998734159088116=="
+ boundary="===============6937432755166448305=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Thu, 27 Jul 2023 03:01:38 -0000
-Message-ID: <169042689839.19796.12153377981238102721@emeril.freedesktop.org>
-References: <20230726233610.240761-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230726233610.240761-1-vitaly.prosyak@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/amdgp?=
- =?utf-8?q?u=3A_add_VM_test_=28rev3=29?=
+To: "Yang, Fei" <fei.yang@intel.com>
+Date: Thu, 27 Jul 2023 03:35:54 -0000
+Message-ID: <169042895465.19797.2171925341366471909@emeril.freedesktop.org>
+References: <20230727001039.3923486-1-fei.yang@intel.com>
+In-Reply-To: <20230727001039.3923486-1-fei.yang@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_test/i915/g?=
+ =?utf-8?q?em=5Fcreate=3A_skip_set=5Fpat_for_non_MTL_devices?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,15 +23,15 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2251998734159088116==
+--===============6937432755166448305==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/amdgpu: add VM test (rev3)
-URL   : https://patchwork.freedesktop.org/series/120475/
+Series: test/i915/gem_create: skip set_pat for non MTL devices
+URL   : https://patchwork.freedesktop.org/series/121397/
 State : info
 
 == Summary ==
@@ -42,11 +42,11 @@ bat-atsm-2
 bat-dg2-oem2
 bat-adlp-7
 Missing hosts results[0]:
-Results: [IGTPW_9468](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9468/index.html)
+Results: [IGTPW_9469](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9469/index.html)
 
 
 
---===============2251998734159088116==
+--===============6937432755166448305==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -66,8 +66,8 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: add VM test (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/120475/">https://patchwork.freedesktop.org/series/120475/</a></td></tr>
+<tr><td><b>Series:</b></td><td>test/i915/gem_create: skip set_pat for non MTL devices</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121397/">https://patchwork.freedesktop.org/series/121397/</a></td></tr>
 <tr><td><b>State:</b></td><td>info</td></tr>
 
 </table>
@@ -79,9 +79,9 @@ bat-atsm-2<br />
 bat-dg2-oem2<br />
 bat-adlp-7<br />
 Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9468/index.html">IGTPW_9468</a></p>
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9469/index.html">IGTPW_9469</a></p>
 
 </body>
 </html>
 
---===============2251998734159088116==--
+--===============6937432755166448305==--
