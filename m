@@ -2,12 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Thu, 27 Jul 2023 10:20:22 +0100
-Message-Id: <20230727092025.1895728-1-tvrtko.ursulin@linux.intel.com>
+Date: Thu, 27 Jul 2023 10:20:24 +0100
+Message-Id: <20230727092025.1895728-3-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230727092025.1895728-1-tvrtko.ursulin@linux.intel.com>
+References: <20230727092025.1895728-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/3] gputop memory usage
+Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_drm_clients: Store memory info
+ in the client
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,53 +25,126 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Same general approach as with engine utilisation, adding parsing of the relevant
-fdinfo fields and plumbing to client discovery helpers to finally present some
-of the available data in gputop:
-
-DRM minor 0
- PID      MEM      RSS  render    copy     video   NAME
-8098     124M     124M |███████||       ||       ||       | neverball
- 888      76M      75M |▊      ||       ||       ||       | Xorg
- 966      12M      12M |       ||       ||       ||       | xfwm4
-
-Or with Wayland:
-
-DRM minor 0
- PID      MEM      RSS    render        copy         video    video-enhance NAME
-2093     191M     191M |▊          ||           ||           ||           | gnome-shell
-DRM minor 128
- PID      MEM      RSS    render        copy         video    video-enhance NAME
-2551      71M      71M |██▉        ||           ||           ||           | neverball
-2553      50M      50M |           ||           ||           ||           | Xwayland
-
-There is probably scope to consolidate some of the igt_drm_fdinfo code and to
-improve on the presentation but this is a start.
-
-For now, out of the available memory categories, only total and resident are
-displayed, and also all discovered memory regions are summed up and shown under
-a single heading.
+Define the storage structure and copy over memory data as parsed by the
+fdinfo helpers.
 
 v2:
- * One style tweak, two missing s-o-b, one build failure.
+ * Fix empty region map entry skip condition. (Kamil, Chris)
 
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Cc: Rob Clark <robdclark@chromium.org>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Chris Healy <cphealy@gmail.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/igt_drm_clients.c | 32 ++++++++++++++++++++++++++++++++
+ lib/igt_drm_clients.h | 11 +++++++++++
+ 2 files changed, 43 insertions(+)
 
-Tvrtko Ursulin (3):
-  lib/igt_drm_fdinfo: Parse memory usage
-  lib/igt_drm_clients: Store memory info in the client
-  gputop: Add memory information
-
- lib/igt_drm_clients.c   |  35 +++++++++-
- lib/igt_drm_clients.h   |  11 ++++
- lib/igt_drm_fdinfo.c    | 143 ++++++++++++++++++++++++++++++++++++++--
- lib/igt_drm_fdinfo.h    |  24 ++++++-
- tests/i915/drm_fdinfo.c |   8 +--
- tools/gputop.c          |  34 +++++++++-
- tools/intel_gpu_top.c   |   2 +-
- 7 files changed, 242 insertions(+), 15 deletions(-)
-
+diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
+index fdea42752a81..47ad137d5f1f 100644
+--- a/lib/igt_drm_clients.c
++++ b/lib/igt_drm_clients.c
+@@ -103,6 +103,8 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+ 			c->clients->max_name_len = len;
+ 	}
+ 
++	/* Engines */
++
+ 	c->last_runtime = 0;
+ 	c->total_runtime = 0;
+ 
+@@ -118,6 +120,13 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+ 		c->last[i] = info->busy[i];
+ 	}
+ 
++	/* Memory regions */
++	for (i = 0; i <= c->regions->max_region_id; i++) {
++		assert(i < ARRAY_SIZE(info->region_mem));
++
++		c->memory[i] = info->region_mem[i];
++	}
++
+ 	c->samples++;
+ 	c->status = IGT_DRM_CLIENT_ALIVE;
+ }
+@@ -154,6 +163,8 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+ 	c->id = info->id;
+ 	c->drm_minor = drm_minor;
+ 	c->clients = clients;
++
++	/* Engines */
+ 	c->engines = malloc(sizeof(*c->engines));
+ 	assert(c->engines);
+ 	memset(c->engines, 0, sizeof(*c->engines));
+@@ -178,6 +189,27 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+ 	c->last = calloc(c->engines->max_engine_id + 1, sizeof(c->last));
+ 	assert(c->val && c->last);
+ 
++	/* Memory regions */
++	c->regions = malloc(sizeof(*c->regions));
++	assert(c->regions);
++	memset(c->regions, 0, sizeof(*c->regions));
++	c->regions->names = calloc(info->last_region_index + 1,
++				   sizeof(*c->regions->names));
++	assert(c->regions->names);
++
++	for (i = 0; i <= info->last_region_index; i++) {
++		/* Region map is allowed to be sparse. */
++		if (!info->region_names[i][0])
++			continue;
++
++		c->regions->names[i] = strdup(info->region_names[i]);
++		assert(c->regions->names[i]);
++		c->regions->num_regions++;
++		c->regions->max_region_id = i;
++	}
++	c->memory = calloc(c->regions->max_region_id + 1, sizeof(*c->memory));
++	assert(c->memory);
++
+ 	igt_drm_client_update(c, pid, name, info);
+ }
+ 
+diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
+index ed795c193986..07bd236d43bf 100644
+--- a/lib/igt_drm_clients.h
++++ b/lib/igt_drm_clients.h
+@@ -8,6 +8,8 @@
+ 
+ #include <stdint.h>
+ 
++#include "lib/igt_drm_fdinfo.h"
++
+ /**
+  * SECTION:igt_drm_clients
+  * @short_description: Parsing driver exposed fdinfo to track DRM clients
+@@ -39,12 +41,20 @@ struct igt_drm_client_engines {
+ 	char **names; /* Array of engine names, either auto-detected or from the passed in engine map. */
+ };
+ 
++struct igt_drm_client_regions {
++	unsigned int num_regions; /* Number of discovered memory_regions. */
++	unsigned int max_region_id; /* Largest memory region index discovered.
++				       (Can differ from num_regions - 1 when using the region map facility.) */
++	char **names; /* Array of region names, either auto-detected or from the passed in region map. */
++};
++
+ struct igt_drm_clients;
+ 
+ struct igt_drm_client {
+ 	struct igt_drm_clients *clients; /* Owning list. */
+ 
+ 	enum igt_drm_client_status status;
++	struct igt_drm_client_regions *regions; /* Memory regions present in this client, to map with memory usage. */
+ 	struct igt_drm_client_engines *engines; /* Engines used by this client, to map with busynees data. */
+ 	unsigned int id; /* DRM client id from fdinfo. */
+ 	unsigned int drm_minor; /* DRM minor of this client. */
+@@ -57,6 +67,7 @@ struct igt_drm_client {
+ 	unsigned long last_runtime; /* Aggregate busyness on all engines since previous scan. */
+ 	unsigned long *val; /* Array of engine busyness data, relative to previous scan. */
+ 	uint64_t *last; /* Array of engine busyness data as parsed from fdinfo. */
++	struct drm_client_meminfo *memory; /* Array of region memory utilisation as parsed from fdinfo. */
+ };
+ 
+ struct igt_drm_clients {
 -- 
 2.39.2
