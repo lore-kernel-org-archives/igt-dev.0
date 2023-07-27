@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (unknown [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EB4D10E5C8
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Jul 2023 16:54:08 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 27 Jul 2023 22:23:51 +0530
+Message-Id: <20230727165401.926688-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
-Date: Fri, 28 Jul 2023 00:35:07 -0000
-Message-ID: <169050450786.19729.6475329559207529132@emeril.freedesktop.org>
-References: <20230727213352.92360-1-vitaly.prosyak@amd.com>
-In-Reply-To: <20230727213352.92360-1-vitaly.prosyak@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/amdgpu=3A_add_VM_test_=28rev4=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [v3 00/10] DSC Fractional BPP Val Support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,28 +16,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Existing i-g-t is extended to enable validation for dsc
+fractional bpp.
+This series is split from
+https://patchwork.freedesktop.org/series/111342/
 
-Series: tests/amdgpu: add VM test (rev4)
-URL   : https://patchwork.freedesktop.org/series/120475/
-State : failure
+v2: addressed review comments from Ankit
+v3: addressed review comments from Ankit
 
-== Summary ==
+Swati Sharma (10):
+  tests/i915/kms_dsc: add new test flag
+  tests/i915/kms_dsc: use uint32_t test flag
+  tests/i915/kms_dsc: use #define for default bpc
+  tests/i915/kms_dsc: use igt_get_pipe_current_bpc()
+  tests/i915/kms_dsc: add test validating output formats with input bpc
+  lib/dsc: add helpers for vdsc fractional bpp debugfs entry
+  tests/i915/kms_dsc: enable validation for vdsc fractional bpp
+  tests/i915/kms_dsc: add test to validate fractional bpp with input bpc
+  tests/i915/kms_dsc: add test summary
+  HAX: Add dsc tests to fast-feedback.testlist
 
-Applying: tests/amdgpu: add VM test
-Using index info to reconstruct a base tree...
-M	tests/amdgpu/meson.build
-Falling back to patching base and 3-way merge...
-CONFLICT (add/add): Merge conflict in tests/amdgpu/amd_vm.c
-Auto-merging tests/amdgpu/amd_vm.c
-Patch failed at 0001 tests/amdgpu: add VM test
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+ lib/igt_dsc.c                         |  84 +++++++++++++++++
+ lib/igt_dsc.h                         |   5 +
+ tests/i915/kms_dsc.c                  | 131 +++++++++++++++++++++-----
+ tests/i915/kms_dsc_helper.c           |  69 ++++++++++++++
+ tests/i915/kms_dsc_helper.h           |   4 +
+ tests/intel-ci/fast-feedback.testlist |  10 ++
+ 6 files changed, 278 insertions(+), 25 deletions(-)
 
+-- 
+2.25.1
