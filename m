@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <051feba1-c414-8792-6e58-1e6f2a7c1872@linux.intel.com>
-Date: Thu, 27 Jul 2023 09:51:42 +0100
+Message-ID: <5221790e-d3f7-3677-ddc6-55b0c6e138e3@linux.intel.com>
+Date: Thu, 27 Jul 2023 10:08:58 +0100
 MIME-Version: 1.0
 Content-Language: en-US
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
  Rob Clark <robdclark@chromium.org>
 References: <20230705163105.3804677-1-tvrtko.ursulin@linux.intel.com>
- <20230705163105.3804677-2-tvrtko.ursulin@linux.intel.com>
- <20230726172816.damgil4hb7h34eit@kamilkon-desk1>
+ <20230705163105.3804677-3-tvrtko.ursulin@linux.intel.com>
+ <20230726170037.a5sghtawzm6mv2zc@kamilkon-desk1>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230726172816.damgil4hb7h34eit@kamilkon-desk1>
+In-Reply-To: <20230726170037.a5sghtawzm6mv2zc@kamilkon-desk1>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/3] lib/igt_drm_fdinfo:
- Parse memory usage
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/3] lib/igt_drm_clients:
+ Store memory info in the client
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,136 +27,90 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 26/07/2023 18:28, Kamil Konieczny wrote:
+On 26/07/2023 18:00, Kamil Konieczny wrote:
 > Hi Tvrtko,
 > 
-> please check your patches with Linux kernel script checkpatch.pl
-> Some of it's warnings seems strange, like:
-> 
-> WARNING: Co-developed-by and Signed-off-by: name/email do not match
-> #12:
-> Co-developed-by: Rob Clark <robdclark@chromium.org>
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-
-Done.
-
-> On 2023-07-05 at 17:31:03 +0100, Tvrtko Ursulin wrote:
+> On 2023-07-05 at 17:31:04 +0100, Tvrtko Ursulin wrote:
 >> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 >>
->> Add parsing and memory storage for the memory usage related fdinfo stats.
+>> Define the storage structure and copy over memory data as parsed by the
+>> fdinfo helpers.
 >>
->> Uses the same approach as the engine utilization code by either auto-
->> discovering different memory regions, or allowing for the caller to pass
->> in a map with predefined index to name relationship.
->>
->> Co-developed-by: Rob Clark <robdclark@chromium.org>
 >> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>> Cc: Rob Clark <robdclark@chromium.org>
 >> ---
->>   lib/igt_drm_clients.c   |   3 +-
->>   lib/igt_drm_fdinfo.c    | 142 ++++++++++++++++++++++++++++++++++++++--
->>   lib/igt_drm_fdinfo.h    |  24 ++++++-
->>   tests/i915/drm_fdinfo.c |   8 +--
->>   tools/intel_gpu_top.c   |   2 +-
->>   5 files changed, 165 insertions(+), 14 deletions(-)
+>>   lib/igt_drm_clients.c | 31 +++++++++++++++++++++++++++++++
+>>   lib/igt_drm_clients.h | 11 +++++++++++
+>>   2 files changed, 42 insertions(+)
 >>
 >> diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
->> index f0294ba81c42..fdea42752a81 100644
+>> index fdea42752a81..0db5b64effea 100644
 >> --- a/lib/igt_drm_clients.c
 >> +++ b/lib/igt_drm_clients.c
->> @@ -491,7 +491,8 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
+>> @@ -103,6 +103,8 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+>>   			c->clients->max_name_len = len;
+>>   	}
 >>   
->>   			if (!__igt_parse_drm_fdinfo(dirfd(fdinfo_dir),
->>   						    fdinfo_dent->d_name, &info,
->> -						    name_map, map_entries))
->> +						    name_map, map_entries,
->> +						    NULL, 0))
->>   				continue;
+>> +	/* Engines */
+>> +
+>>   	c->last_runtime = 0;
+>>   	c->total_runtime = 0;
 >>   
->>   			if (filter_client && !filter_client(clients, &info))
->> diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
->> index b5f8a8679a71..d08632dfb690 100644
->> --- a/lib/igt_drm_fdinfo.c
->> +++ b/lib/igt_drm_fdinfo.c
->> @@ -124,13 +124,81 @@ static const char *find_kv(const char *buf, const char *key, size_t keylen)
->>   	return *p ? p : NULL;
->>   }
+>> @@ -118,6 +120,13 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+>>   		c->last[i] = info->busy[i];
+>>   	}
 >>   
->> +static int parse_region(char *line, struct drm_client_fdinfo *info,
->> +			size_t prefix_len,
->> +			const char **region_map, unsigned int region_entries,
->> +			uint64_t *val)
->> +{
->> +	char *name, *p, *unit = NULL;
->> +	ssize_t name_len;
->> +	int found = -1;
->> +	unsigned int i;
+>> +	/* Memory regions */
+>> +	for (i = 0; i <= c->regions->max_region_id; i++) {
+>> +		assert(i < ARRAY_SIZE(info->region_mem));
 >> +
->> +	p = index(line, ':');
->> +	if (!p || p == line)
->> +		return -1;
->> +
->> +	name_len = p - line - prefix_len;
->> +	if (name_len < 1)
->> +		return -1;
->> +
->> +	name = line + prefix_len;
->> +
->> +	if (region_map) {
->> +		for (i = 0; i < region_entries; i++) {
->> +			if (!strncmp(name, region_map[i], name_len)) {
->> +				found = i;
->> +				break;
->> +			}
->> +		}
->> +	} else {
->> +		for (i = 0; i < info->num_regions; i++) {
->> +			if (!strncmp(name, info->region_names[i], name_len)) {
->> +				found = i;
->> +				break;
->> +			}
->> +		}
->> +
->> +		if (found < 0) {
->> +			assert((info->num_regions + 1) < ARRAY_SIZE(info->region_names));
->> +			assert((strlen(name) + 1) < sizeof(info->region_names[0]));
->> +			strncpy(info->region_names[info->num_regions], name, name_len);
->> +			found = info->num_regions;
->> +		}
+>> +		c->memory[i] = info->region_mem[i];
 >> +	}
 >> +
->> +	if (found < 0)
->> +		goto out;
+>>   	c->samples++;
+>>   	c->status = IGT_DRM_CLIENT_ALIVE;
+>>   }
+>> @@ -154,6 +163,8 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+>>   	c->id = info->id;
+>>   	c->drm_minor = drm_minor;
+>>   	c->clients = clients;
 >> +
->> +	while (*++p && isspace(*p));
-> ---------------------------------- ^
-> According to checkpatch:
-> 	while (*++p && isspace(*p))
-> 		;
-
-Done.
-
+>> +	/* Engines */
+>>   	c->engines = malloc(sizeof(*c->engines));
+>>   	assert(c->engines);
+>>   	memset(c->engines, 0, sizeof(*c->engines));
+>> @@ -178,6 +189,26 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+>>   	c->last = calloc(c->engines->max_engine_id + 1, sizeof(c->last));
+>>   	assert(c->val && c->last);
+>>   
+>> +	/* Memory regions */
+>> +	c->regions = malloc(sizeof(*c->regions));
+>> +	assert(c->regions);
+>> +	memset(c->regions, 0, sizeof(*c->regions));
+>> +	c->regions->names = calloc(info->last_region_index + 1,
+>> +				   sizeof(*c->regions->names));
+>> +	assert(c->regions->names);
+>> +
+>> +	for (i = 0; i <= info->last_region_index; i++) {
+>> +		if (!info->region_names[i])
 > 
->> +	*val = strtoull(p, NULL, 10);
->> +
->> +	p = index(p, ' ');
->> +	if (!p)
->> +		goto out;
->> +
->> +	unit = ++p;
->> +	if (!strcmp(unit, "KiB")) {
->> +		*val *= 1024;
->> +	} else if (!strcmp(unit, "MiB")) {
-> ------- ^^^^^^
-> No need for separate 'else':
-> 	if (!strcmp(unit, "MiB")) {
+> This do not compile:
+> ../lib/igt_drm_clients.c:201:21: error: the comparison will always evaluate as ‘true’ for the address of ‘region_names’ will never be NULL [-Werror=address]
+>    201 |                 if (!info->region_names[i])
+>        |                     ^
+> In file included from ../lib/igt_drm_clients.h:11,
+>                   from ../lib/igt_drm_clients.c:20:
+> ../lib/igt_drm_fdinfo.h:57:14: note: ‘region_names’ declared here
+>     57 |         char region_names[DRM_CLIENT_FDINFO_MAX_REGIONS][256];
+>        |              ^~~~~~~~~~~~
 > 
->> +		*val *= 1024 * 1024;
->> +	} else if (!strcmp(unit, "GiB")) {
-> ------- ^^^^^^
-> Same here.
+> did you mean:
+> 
+> 		if (!info->region_names[i][0])
 
-We don't want to run strcmp multiple times for no reason so I opted to 
-leave as is.
+Yes. But it's odd.. I can see the error today. But back then I built the 
+thing, ran it, collected the screenshot for the cover letter. Oh well a 
+mystery. Fixed now, thanks!
 
 Regards,
 
@@ -166,243 +120,61 @@ Tvrtko
 > Regards,
 > Kamil
 > 
->> +		*val *= 1024 * 1024 * 1024;
+>> +			continue;
+>> +
+>> +		c->regions->names[i] = strdup(info->region_names[i]);
+>> +		assert(c->regions->names[i]);
+>> +		c->regions->num_regions++;
+>> +		c->regions->max_region_id = i;
 >> +	}
+>> +	c->memory = calloc(c->regions->max_region_id + 1, sizeof(*c->memory));
+>> +	assert(c->memory);
 >> +
->> +out:
->> +	return found;
->> +}
->> +
->>   unsigned int
->>   __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
->> -		       const char **name_map, unsigned int map_entries)
->> +		       const char **name_map, unsigned int map_entries,
->> +		       const char **region_map, unsigned int region_entries)
->>   {
->> +	bool regions_found[DRM_CLIENT_FDINFO_MAX_REGIONS] = { };
->> +	unsigned int good = 0, num_capacity = 0;
->>   	char buf[4096], *_buf = buf;
->>   	char *l, *ctx = NULL;
->> -	unsigned int good = 0, num_capacity = 0;
->>   	size_t count;
->>   
->>   	count = read_fdinfo(buf, sizeof(buf), dir, fd);
->> @@ -173,18 +241,79 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
->>   				info->capacity[idx] = val;
->>   				num_capacity++;
->>   			}
->> +		} else if (!strncmp(l, "drm-total-", 10)) {
->> +			idx = parse_region(l, info, strlen("drm-total-"),
->> +					   region_map, region_entries, &val);
->> +			if (idx >= 0) {
->> +				info->region_mem[idx].total = val;
->> +				if (!regions_found[idx]) {
->> +					info->num_regions++;
->> +					regions_found[idx] = true;
->> +					if (idx > info->last_region_index)
->> +						info->last_region_index = idx;
->> +				}
->> +			}
->> +		} else if (!strncmp(l, "drm-shared-", 11)) {
->> +			idx = parse_region(l, info, strlen("drm-shared-"),
->> +					   region_map, region_entries, &val);
->> +			if (idx >= 0) {
->> +				info->region_mem[idx].shared = val;
->> +				if (!regions_found[idx]) {
->> +					info->num_regions++;
->> +					regions_found[idx] = true;
->> +					if (idx > info->last_region_index)
->> +						info->last_region_index = idx;
->> +				}
->> +			}
->> +		} else if (!strncmp(l, "drm-resident-", 13)) {
->> +			idx = parse_region(l, info, strlen("drm-resident-"),
->> +					   region_map, region_entries, &val);
->> +			if (idx >= 0) {
->> +				info->region_mem[idx].resident = val;
->> +				if (!regions_found[idx]) {
->> +					info->num_regions++;
->> +					regions_found[idx] = true;
->> +					if (idx > info->last_region_index)
->> +						info->last_region_index = idx;
->> +				}
->> +			}
->> +		} else if (!strncmp(l, "drm-purgeable-", 14)) {
->> +			idx = parse_region(l, info, strlen("drm-purgeable-"),
->> +					   region_map, region_entries, &val);
->> +			if (idx >= 0) {
->> +				info->region_mem[idx].purgeable = val;
->> +				if (!regions_found[idx]) {
->> +					info->num_regions++;
->> +					regions_found[idx] = true;
->> +					if (idx > info->last_region_index)
->> +						info->last_region_index = idx;
->> +				}
->> +			}
->> +		} else if (!strncmp(l, "drm-active-", 11)) {
->> +			idx = parse_region(l, info, strlen("drm-active-"),
->> +					   region_map, region_entries, &val);
->> +			if (idx >= 0) {
->> +				info->region_mem[idx].active = val;
->> +				if (!regions_found[idx]) {
->> +					info->num_regions++;
->> +					regions_found[idx] = true;
->> +					if (idx > info->last_region_index)
->> +						info->last_region_index = idx;
->> +				}
->> +			}
->>   		}
->>   	}
->>   
->> -	if (good < 2 || !info->num_engines)
->> +	if (good < 2 || (!info->num_engines && !info->num_regions))
->>   		return 0; /* fdinfo format not as expected */
->>   
->> -	return good + info->num_engines + num_capacity;
->> +	return good + info->num_engines + num_capacity + info->num_regions;
+>>   	igt_drm_client_update(c, pid, name, info);
 >>   }
 >>   
->>   unsigned int
->>   igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
->> -		     const char **name_map, unsigned int map_entries)
->> +		     const char **name_map, unsigned int map_entries,
->> +		     const char **region_map, unsigned int region_entries)
->>   {
->>   	unsigned int res;
->>   	char fd[64];
->> @@ -198,7 +327,8 @@ igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
->>   	if (dir < 0)
->>   		return false;
+>> diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
+>> index ed795c193986..07bd236d43bf 100644
+>> --- a/lib/igt_drm_clients.h
+>> +++ b/lib/igt_drm_clients.h
+>> @@ -8,6 +8,8 @@
 >>   
->> -	res = __igt_parse_drm_fdinfo(dir, fd, info, name_map, map_entries);
->> +	res = __igt_parse_drm_fdinfo(dir, fd, info, name_map, map_entries,
->> +				     region_map, region_entries);
->>   
->>   	close(dir);
->>   
->> diff --git a/lib/igt_drm_fdinfo.h b/lib/igt_drm_fdinfo.h
->> index 6284e05e868a..1999c4f2b857 100644
->> --- a/lib/igt_drm_fdinfo.h
->> +++ b/lib/igt_drm_fdinfo.h
->> @@ -30,8 +30,17 @@
 >>   #include <stdint.h>
->>   #include <stdbool.h>
 >>   
->> +#define DRM_CLIENT_FDINFO_MAX_REGIONS 16
->>   #define DRM_CLIENT_FDINFO_MAX_ENGINES 16
->>   
->> +struct drm_client_meminfo {
->> +	uint64_t total;
->> +	uint64_t shared;
->> +	uint64_t resident;
->> +	uint64_t purgeable;
->> +	uint64_t active;
->> +};
+>> +#include "lib/igt_drm_fdinfo.h"
 >> +
->>   struct drm_client_fdinfo {
->>   	char driver[128];
->>   	char pdev[128];
->> @@ -42,6 +51,11 @@ struct drm_client_fdinfo {
->>   	unsigned int capacity[DRM_CLIENT_FDINFO_MAX_ENGINES];
->>   	char names[DRM_CLIENT_FDINFO_MAX_ENGINES][256];
->>   	uint64_t busy[DRM_CLIENT_FDINFO_MAX_ENGINES];
->> +
->> +	unsigned int num_regions;
->> +	unsigned int last_region_index;
->> +	char region_names[DRM_CLIENT_FDINFO_MAX_REGIONS][256];
->> +	struct drm_client_meminfo region_mem[DRM_CLIENT_FDINFO_MAX_REGIONS];
+>>   /**
+>>    * SECTION:igt_drm_clients
+>>    * @short_description: Parsing driver exposed fdinfo to track DRM clients
+>> @@ -39,12 +41,20 @@ struct igt_drm_client_engines {
+>>   	char **names; /* Array of engine names, either auto-detected or from the passed in engine map. */
 >>   };
 >>   
->>   /**
->> @@ -51,13 +65,16 @@ struct drm_client_fdinfo {
->>    * @info: Structure to populate with read data. Must be zeroed.
->>    * @name_map: Optional array of strings representing engine names
->>    * @map_entries: Number of strings in the names array
->> + * @region_map: Optional array of strings representing memory regions
->> + * @region_entries: Number of strings in the region map
->>    *
->>    * Returns the number of valid drm fdinfo keys found or zero if not all
->>    * mandatory keys were present or no engines found.
->>    */
->>   unsigned int
->>   igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
->> -		     const char **name_map, unsigned int map_entries);
->> +		     const char **name_map, unsigned int map_entries,
->> +		     const char **region_map, unsigned int region_entries);
+>> +struct igt_drm_client_regions {
+>> +	unsigned int num_regions; /* Number of discovered memory_regions. */
+>> +	unsigned int max_region_id; /* Largest memory region index discovered.
+>> +				       (Can differ from num_regions - 1 when using the region map facility.) */
+>> +	char **names; /* Array of region names, either auto-detected or from the passed in region map. */
+>> +};
+>> +
+>>   struct igt_drm_clients;
 >>   
->>   /**
->>    * __igt_parse_drm_fdinfo: Parses the drm fdinfo file
->> @@ -67,6 +84,8 @@ igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
->>    * @info: Structure to populate with read data. Must be zeroed.
->>    * @name_map: Optional array of strings representing engine names
->>    * @map_entries: Number of strings in the names array
->> + * @region_map: Optional array of strings representing memory regions
->> + * @region_entries: Number of strings in the region map
->>    *
->>    * Returns the number of valid drm fdinfo keys found or zero if not all
->>    * mandatory keys were present or no engines found.
->> @@ -74,6 +93,7 @@ igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
->>   unsigned int
->>   __igt_parse_drm_fdinfo(int dir, const char *fd,
->>   		       struct drm_client_fdinfo *info,
->> -		       const char **name_map, unsigned int map_entries);
->> +		       const char **name_map, unsigned int map_entries,
->> +		       const char **region_map, unsigned int region_entries);
+>>   struct igt_drm_client {
+>>   	struct igt_drm_clients *clients; /* Owning list. */
 >>   
->>   #endif /* IGT_DRM_FDINFO_H */
->> diff --git a/tests/i915/drm_fdinfo.c b/tests/i915/drm_fdinfo.c
->> index c0e0ba1905f1..01526c0e19de 100644
->> --- a/tests/i915/drm_fdinfo.c
->> +++ b/tests/i915/drm_fdinfo.c
->> @@ -104,7 +104,7 @@ static void basics(int i915, unsigned int num_classes)
->>   	unsigned int ret;
+>>   	enum igt_drm_client_status status;
+>> +	struct igt_drm_client_regions *regions; /* Memory regions present in this client, to map with memory usage. */
+>>   	struct igt_drm_client_engines *engines; /* Engines used by this client, to map with busynees data. */
+>>   	unsigned int id; /* DRM client id from fdinfo. */
+>>   	unsigned int drm_minor; /* DRM minor of this client. */
+>> @@ -57,6 +67,7 @@ struct igt_drm_client {
+>>   	unsigned long last_runtime; /* Aggregate busyness on all engines since previous scan. */
+>>   	unsigned long *val; /* Array of engine busyness data, relative to previous scan. */
+>>   	uint64_t *last; /* Array of engine busyness data as parsed from fdinfo. */
+>> +	struct drm_client_meminfo *memory; /* Array of region memory utilisation as parsed from fdinfo. */
+>>   };
 >>   
->>   	ret = igt_parse_drm_fdinfo(i915, &info, engine_map,
->> -				   ARRAY_SIZE(engine_map));
->> +				   ARRAY_SIZE(engine_map), NULL, 0);
->>   	igt_assert(ret);
->>   
->>   	igt_assert(!strcmp(info.driver, "i915"));
->> @@ -236,7 +236,7 @@ static uint64_t read_busy(int i915, unsigned int class)
->>   	struct drm_client_fdinfo info = { };
->>   
->>   	igt_assert(igt_parse_drm_fdinfo(i915, &info, engine_map,
->> -					ARRAY_SIZE(engine_map)));
->> +					ARRAY_SIZE(engine_map), NULL, 0));
->>   
->>   	return info.busy[class];
->>   }
->> @@ -326,7 +326,7 @@ static void read_busy_all(int i915, uint64_t *val)
->>   	struct drm_client_fdinfo info = { };
->>   
->>   	igt_assert(igt_parse_drm_fdinfo(i915, &info, engine_map,
->> -					ARRAY_SIZE(engine_map)));
->> +					ARRAY_SIZE(engine_map), NULL, 0));
->>   
->>   	memcpy(val, info.busy, sizeof(info.busy));
->>   }
->> @@ -797,7 +797,7 @@ igt_main
->>   		i915 = __drm_open_driver(DRIVER_INTEL);
->>   
->>   		igt_require_gem(i915);
->> -		igt_require(igt_parse_drm_fdinfo(i915, &info, NULL, 0));
->> +		igt_require(igt_parse_drm_fdinfo(i915, &info, NULL, 0, NULL, 0));
->>   
->>   		ctx = intel_ctx_create_all_physical(i915);
->>   
->> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->> index cef1d3c7fa9f..87e9681e53b4 100644
->> --- a/tools/intel_gpu_top.c
->> +++ b/tools/intel_gpu_top.c
->> @@ -2307,7 +2307,7 @@ static bool has_drm_fdinfo(const struct igt_device_card *card)
->>   	if (fd < 0)
->>   		return false;
->>   
->> -	cnt = igt_parse_drm_fdinfo(fd, &info, NULL, 0);
->> +	cnt = igt_parse_drm_fdinfo(fd, &info, NULL, 0, NULL, 0);
->>   
->>   	close(fd);
->>   
+>>   struct igt_drm_clients {
 >> -- 
 >> 2.39.2
 >>
