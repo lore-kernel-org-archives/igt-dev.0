@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B9DF10E4CE
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Jul 2023 00:08:40 +0000 (UTC)
-From: fei.yang@intel.com
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Jul 2023 17:10:39 -0700
-Message-Id: <20230727001039.3923486-2-fei.yang@intel.com>
-In-Reply-To: <20230727001039.3923486-1-fei.yang@intel.com>
-References: <20230727001039.3923486-1-fei.yang@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44AAA10E044
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Jul 2023 00:16:37 +0000 (UTC)
+From: "Yang, Fei" <fei.yang@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, Andi Shyti
+ <andi.shyti@linux.intel.com>, IGT dev <igt-dev@lists.freedesktop.org>
+Date: Thu, 27 Jul 2023 00:16:21 +0000
+Message-ID: <BYAPR11MB256767809FE977D8512693AD9A01A@BYAPR11MB2567.namprd11.prod.outlook.com>
+References: <20230712083727.282741-1-andi.shyti@linux.intel.com>
+ <BYAPR11MB25679950A496EA431A76C8D09A36A@BYAPR11MB2567.namprd11.prod.outlook.com>
+ <54df27bc-31f5-837c-cb9d-e2676ce7946c@linux.intel.com>
+In-Reply-To: <54df27bc-31f5-837c-cb9d-e2676ce7946c@linux.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/1] test/i915/gem_create: skip set_pat for non
- MTL devices
+Subject: Re: [igt-dev] [PATCH] test/i915/gem_create: Skip the test if the
+ PAT index is set on a non MTL device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,35 +24,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Fei Yang <fei.yang@intel.com>, tvrtko.ursulin@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Fei Yang <fei.yang@intel.com>
-
-Fix the logic checking for non-meteorlake devices.
-
-Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Signed-off-by: Fei Yang <fei.yang@intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/i915/gem_create.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-index 4b00fe6aa..87fde2963 100644
---- a/tests/i915/gem_create.c
-+++ b/tests/i915/gem_create.c
-@@ -680,7 +680,7 @@ static void create_ext_set_pat(int fd)
- 	 * supported.
- 	 */
- 	igt_skip_on_f(ret == -EINVAL ||
--		      (ret == -ENODEV && IS_METEORLAKE(devid)),
-+		      (ret == -ENODEV && !IS_METEORLAKE(devid)),
- 		      "I915_GEM_CREATE_EXT_SET_PAT is not supported\n");
- 
- 	/*
--- 
-2.25.1
+PiBPbiAxMi8wNy8yMDIzIDE3OjIwLCBZYW5nLCBGZWkgd3JvdGU6DQo+PiBPbiAxMi8wNy8yMDIz
+IDA5OjM3LCBBbmRpIFNoeXRpIHdyb3RlOg0KPj4+IElmIHdlIHRyeSB0byBzZXQgdGhlIFBBVCBp
+bmRleCBvbiBhIGRldmljZSB0aGF0IGlzIG5vdCBhIE1ldGVvciBMYWtlLA0KPj4+IHdlIGV4cGVj
+dCBhbiAtRU5PREVWIHJldHVybiB2YWx1ZS4gQnV0IHRoZW4sIHdlIGZvcmdldCB0byBza2lwIGFu
+ZA0KPj4+IHNvb24gYWZ0ZXIgd2UgYXNzZXJ0IG9uIHRoZSByZXR1cm4gdmFsdWUgYmVpbmcgJzAn
+LCBmb3JjaW5nIHRoZSBlcnJvcg0KPj4+IHBhdGguDQo+Pj4NCj4+PiBTa2lwLCBhcyBleHBlY3Rl
+ZCwgaW4gY2FzZSB0aGUgcmV0dXJuIHZhbHVlIGlzIGVpdGhlciBFSU5WQUwgb3IgRU5PREVWLA0K
+Pj4+IHRoZSBsYXR0ZXIgZm9yIG1ldGVvciBsYWtlIGRldmljZXMuDQo+Pj4NCj4+PiBTdWdnZXN0
+ZWQtYnk6IFR2cnRrbyBVcnN1bGluIDx0dnJ0a28udXJzdWxpbkBsaW51eC5pbnRlbC5jb20+DQo+
+Pj4gU2lnbmVkLW9mZi1ieTogQW5kaSBTaHl0aSA8YW5kaS5zaHl0aUBsaW51eC5pbnRlbC5jb20+
+DQo+Pg0KPj4gVGhhbmtzIGZvciB0aGUgZml4Lg0KPj4gUmV2aWV3ZWQtYnk6IEZlaSBZYW5nIDxm
+ZWkueWFuZ0BpbnRlbC5jb20+DQo+Pg0KPj4+IENjOiBGZWkgWWFuZyA8ZmVpLnlhbmdAaW50ZWwu
+Y29tPg0KPj4+IENjOiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRl
+bC5jb20+DQo+Pj4gLS0tDQo+Pj4gICB0ZXN0cy9pOTE1L2dlbV9jcmVhdGUuYyB8IDIzICsrKysr
+KysrKysrKysrKysrLS0tLS0tDQo+Pj4gICAxIGZpbGUgY2hhbmdlZCwgMTcgaW5zZXJ0aW9ucygr
+KSwgNiBkZWxldGlvbnMoLSkNCj4+Pg0KPj4+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9j
+cmVhdGUuYyBiL3Rlc3RzL2k5MTUvZ2VtX2NyZWF0ZS5jIGluZGV4IGI3OTYxZDllZjIuLjRiMDBm
+ZTZhYWIgMTAwNjQ0DQo+Pj4gLS0tIGEvdGVzdHMvaTkxNS9nZW1fY3JlYXRlLmMNCj4+PiArKysg
+Yi90ZXN0cy9pOTE1L2dlbV9jcmVhdGUuYw0KPj4+IEBAIC02NjgsMTQgKzY2OCwyNSBAQCBzdGF0
+aWMgdm9pZCBjcmVhdGVfZXh0X3NldF9wYXQoaW50IGZkKQ0KPj4+ICAgICByZXQgPSBfX2dlbV9j
+cmVhdGVfZXh0KGZkLCAmc2l6ZSwgMCwgJmhhbmRsZSwgJnNldHBhcmFtX3BhdC5iYXNlKTsNCj4+
+Pg0KPj4+ICAgICAvKg0KPj4+IC0gICAgKiBXaXRoIGEgdmFsaWQgUEFUIGluZGV4IHNwZWNpZmll
+ZCwgcmV0dXJuaW5nIC1FSU5WQUwgaGVyZQ0KPj4+IC0gICAgKiBpbmRpY2F0ZXMgc2V0X3BhdCBl
+eHRlbnNpb24gaXMgbm90IHN1cHBvcnRlZA0KPj4+ICsgICAgKiBDdXJyZW50bHkgdGhlIFBBVCBp
+bmRleCBpcyBzdXBwb3J0ZWQgb25seSBmb3IgTWV0ZW9yIExha2UsIHNvIHRoYXQNCj4+PiArICAg
+ICogd2UgZXhwZWN0Og0KPj4+ICsgICAgKg0KPj4+ICsgICAgKiAgKiAtRUlOVkFMIGlmIGk5MTUg
+ZG9lcyBub3Qgc3VwcG9ydCB0aGUgUEFUIGluZGV4LCBlLmcuIHRoZSBrZXJuZWwgaXMNCj4+PiAr
+ICAgICogICAgdG9vIG9sZCB0byBoYXZlIHRoZSBQQVQgaW5kZXggc3VwcG9ydGVkLg0KPj4+ICsg
+ICAgKiAgKiAtRU5PREVWIGlmIHdlIGFyZSB0cnlpbmcgdG8gc2V0IHRoZSBQQVQgaW5kZXggb24g
+YSBub24gTWV0ZW9yIExha2UNCj4+PiArICAgICogICAgcGxhdGZvcm0uDQo+Pj4gKyAgICAqDQo+
+Pj4gKyAgICAqIEluIGJvdGggY2FzZXMsIHRob3VnaCwgdGhlIEk5MTVfR0VNX0NSRUFURV9FWFRf
+U0VUX1BBVCBmbGFnIGlzIG5vdA0KPj4+ICsgICAgKiBzdXBwb3J0ZWQuDQo+Pj4gKyAgICAqIHN1
+cHBvcnRlZC4NCj4+PiAgICAgICovDQo+Pj4gLSAgIGlmIChyZXQgPT0gLUVJTlZBTCkNCj4+PiAt
+ICAgICAgICAgICBpZ3Rfc2tpcCgiSTkxNV9HRU1fQ1JFQVRFX0VYVF9TRVRfUEFUIGlzIG5vdCBz
+dXBwb3J0ZWRcbiIpOw0KPj4+IC0gICBlbHNlIGlmICghSVNfTUVURU9STEFLRShkZXZpZCkpDQo+
+Pj4gLSAgICAgICAgICAgaWd0X2Fzc2VydF9lcShyZXQsIC1FTk9ERVYpOw0KPj4+ICsgICBpZ3Rf
+c2tpcF9vbl9mKHJldCA9PSAtRUlOVkFMIHx8DQo+Pj4gKyAgICAgICAgICAgICAgICAgKHJldCA9
+PSAtRU5PREVWICYmIElTX01FVEVPUkxBS0UoZGV2aWQpKSwNCj4NCj4gU2hvdWxkIElTX01FVEVP
+UkxBS0UgYWN0dWFsbHkgYmUgIUlTX01FVEVPUkxBS0UgaGVyZT8NCg0KVW5mb3J0dW5hdGVseSB5
+ZXMuIFRvbyBiYWQgdGhpcyBoYXMgdG8gYmUgcGF0Y2hlZCBzbyBtYW55IHRpbWVzLg0KSnVzdCBz
+ZW50IGFub3RoZXIuDQoNCi1GZWkNCg0KPiBCZWNhdXNlIEkgbm90aWNlIGl0IHN0aWxsIHNlZW1z
+IGZhaWxpbmc6DQo+DQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS1pbnRl
+bC1maXhlcy9DSV9ESUZfNzc4L3NoYXJkLWRnMi0zL2lndEBnZW1fY3JlYXRlQGNyZWF0ZS1leHQt
+c2V0LXBhdC5odG1sDQo+DQo+IFJlZ2FyZHMsDQo+DQo+IFR2cnRrbw0KPg0KPj4+ICsgICAgICAg
+ICAgICAgICAgICJJOTE1X0dFTV9DUkVBVEVfRVhUX1NFVF9QQVQgaXMgbm90IHN1cHBvcnRlZFxu
+Iik7DQo+Pj4NCj4+PiArICAgLyoNCj4+PiArICAgICogVGhpcyBtZWFucyB0aGF0IHdlIGFyZSBv
+biBhIE1ldGVvciBMYWtlIGFuZCB0aGUgUEFUDQo+Pj4gKyAgICAqIGluZGV4IGlzIGFscmVhZHkg
+c3VwcG9ydGVkIGJ5IHRoZSBydW5uaW5nIGk5MTUNCj4+PiArICAgICovDQo+Pj4gICAgIGlndF9h
+c3NlcnQocmV0ID09IDApOw0KPj4+DQo+Pj4gICAgIC8qDQo+Pj4gLS0NCj4+PiAyLjQwLjENCiAg
+ICAgICAgICAgICAgICAgICAgDQo=
