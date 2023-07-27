@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (unknown [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2EB4D10E5C8
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B266A10E5CF
  for <igt-dev@lists.freedesktop.org>; Thu, 27 Jul 2023 16:54:08 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Jul 2023 22:23:51 +0530
-Message-Id: <20230727165401.926688-1-swati2.sharma@intel.com>
+Date: Thu, 27 Jul 2023 22:23:54 +0530
+Message-Id: <20230727165401.926688-4-swati2.sharma@intel.com>
+In-Reply-To: <20230727165401.926688-1-swati2.sharma@intel.com>
+References: <20230727165401.926688-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v3 00/10] DSC Fractional BPP Val Support
+Subject: [igt-dev] [v3 03/10] tests/i915/kms_dsc: use #define for default bpc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,33 +22,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Existing i-g-t is extended to enable validation for dsc
-fractional bpp.
-This series is split from
-https://patchwork.freedesktop.org/series/111342/
+For default bpc, use #define. By setting bpc as 0, means driver
+will set its own value and we are not enforcing input bpc.
 
-v2: addressed review comments from Ankit
-v3: addressed review comments from Ankit
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+---
+ tests/i915/kms_dsc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Swati Sharma (10):
-  tests/i915/kms_dsc: add new test flag
-  tests/i915/kms_dsc: use uint32_t test flag
-  tests/i915/kms_dsc: use #define for default bpc
-  tests/i915/kms_dsc: use igt_get_pipe_current_bpc()
-  tests/i915/kms_dsc: add test validating output formats with input bpc
-  lib/dsc: add helpers for vdsc fractional bpp debugfs entry
-  tests/i915/kms_dsc: enable validation for vdsc fractional bpp
-  tests/i915/kms_dsc: add test to validate fractional bpp with input bpc
-  tests/i915/kms_dsc: add test summary
-  HAX: Add dsc tests to fast-feedback.testlist
-
- lib/igt_dsc.c                         |  84 +++++++++++++++++
- lib/igt_dsc.h                         |   5 +
- tests/i915/kms_dsc.c                  | 131 +++++++++++++++++++++-----
- tests/i915/kms_dsc_helper.c           |  69 ++++++++++++++
- tests/i915/kms_dsc_helper.h           |   4 +
- tests/intel-ci/fast-feedback.testlist |  10 ++
- 6 files changed, 278 insertions(+), 25 deletions(-)
-
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 99d35a7ff..7b9bae91a 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -35,6 +35,7 @@
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
+ #define LEN		20
++#define DEFAULT_BPC	0
+ 
+ #define TEST_DSC_BASIC		(0<<0)
+ #define TEST_DSC_BPC		(1<<0)
+@@ -300,7 +301,7 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters");
+ 	igt_subtest_with_dynamic("dsc-basic")
+-			test_dsc(&data, TEST_DSC_BASIC, 0,
++			test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
+ 				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
+ 
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -308,7 +309,7 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		     "with default parameters and creating fb with diff formats");
+ 	igt_subtest_with_dynamic("dsc-with-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+-			test_dsc(&data, TEST_DSC_FORMAT, 0,
++			test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
+ 				 format_list[k], DSC_FORMAT_RGB);
+ 	}
+ 
+@@ -339,7 +340,8 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		     "that support it");
+ 	igt_subtest_with_dynamic("dsc-with-output-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
+-			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, 0, DRM_FORMAT_XRGB8888,
++			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
++				 DRM_FORMAT_XRGB8888,
+ 				 output_format_list[k]);
+ 	}
+ 
 -- 
 2.25.1
