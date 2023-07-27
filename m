@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7785164218060103739=="
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam02on2044.outbound.protection.outlook.com [40.107.95.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1132D10E601
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Jul 2023 20:30:15 +0000 (UTC)
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Thu, 27 Jul 2023 16:30:03 -0400
+Message-ID: <20230727203003.61907-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Simon Ser" <contact@emersion.fr>
-Date: Thu, 27 Jul 2023 19:58:08 -0000
-Message-ID: <169048788823.19794.11895303407426869029@emeril.freedesktop.org>
-References: <20230727174311.327796-1-contact@emersion.fr>
-In-Reply-To: <20230727174311.327796-1-contact@emersion.fr>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciBkcm0tdWFwaTog?=
- =?utf-8?q?sync_with_drm-next_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH] tests/amdgpu: add security tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +18,452 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: alexander.deucher@amd.com, luben.tuikov@amd.com, christian.koenig@amd.com,
+ aaron.liu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7785164218060103739==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-== Series Details ==
+Ported and refactored drmlib security tests and  the following is done:
 
-Series: drm-uapi: sync with drm-next (rev2)
-URL   : https://patchwork.freedesktop.org/series/121445/
-State : info
+1. Remove everywhere global variables.
+2. Reuse common functions from amd_command_submission.c
+3. Reuse IGT igt_fixture functions.
+4. Properly formatted code to meet IGT guidelines.
 
-== Summary ==
+v2:
+    - Numerous improvements related to formatting, style,
+      spelling, includes (Luben).
+    - Use amdgpu_bo_export  to retrieve the kms handle of
+      amdgpu_bo (Christian)
 
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9475](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9475/index.html)
+Cc: Aaron Liu <aaron.liu@amd.com>
+Cc: Luben Tuikov <luben.tuikov@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+---
+ lib/amdgpu/amd_ip_blocks.c  |   3 +-
+ tests/amdgpu/amd_security.c | 375 ++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build    |   1 +
+ 3 files changed, 377 insertions(+), 2 deletions(-)
+ create mode 100644 tests/amdgpu/amd_security.c
 
-
-
---===============7785164218060103739==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>drm-uapi: sync with drm-next (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121445/">https://patchwork.freedesktop.org/series/121445/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9475/index.html">IGTPW_9475</a></p>
-
-</body>
-</html>
-
---===============7785164218060103739==--
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index 1249551cc..44768ba64 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -669,6 +669,7 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
+ 	case GFX8: /* tested */
+ 	case GFX9: /* tested */
+ 	case GFX10:/* tested */
++	case GFX10_3: /* tested */
+ 		amdgpu_device_ip_block_add(&gfx_v8_x_ip_block);
+ 		amdgpu_device_ip_block_add(&compute_v8_x_ip_block);
+ 		amdgpu_device_ip_block_add(&sdma_v3_x_ip_block);
+@@ -680,8 +681,6 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
+ 		igt_assert_eq(gfx_v8_x_ip_block.funcs->family_id, FAMILY_VI);
+ 		igt_assert_eq(sdma_v3_x_ip_block.funcs->family_id, FAMILY_VI);
+ 		break;
+-	case GFX10_3:
+-		break;
+ 	default:
+ 		igt_info("amdgpu: GFX or old.\n");
+ 		return -1;
+diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
+new file mode 100644
+index 000000000..46180df2e
+--- /dev/null
++++ b/tests/amdgpu/amd_security.c
+@@ -0,0 +1,375 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright 2019 Advanced Micro Devices, Inc.
++ * Copyright 2023 Advanced Micro Devices, Inc.
++ */
++
++#include <amdgpu.h>
++
++#include "igt.h"
++
++#include "lib/amdgpu/amd_memory.h"
++#include "lib/amdgpu/amd_command_submission.h"
++
++/* --------------------- Secure bounce test ------------------------ *
++ *
++ * The secure bounce test tests that we can evict a TMZ buffer,
++ * and page it back in, via a bounce buffer, as it encryption/decryption
++ * depends on its physical address, and have the same data, i.e. data
++ * integrity is preserved.
++ *
++ * The steps are as follows (from Christian K.):
++ *
++ * Buffer A which is TMZ protected and filled by the CPU with a
++ * certain pattern. That the GPU is reading only random nonsense from
++ * that pattern is irrelevant for the test.
++ *
++ * This buffer A is then secure copied into buffer B which is also
++ * TMZ protected.
++ *
++ * Buffer B is moved around, from VRAM to GTT, GTT to SYSTEM,
++ * etc.
++ *
++ * Then, we use another secure copy of buffer B back to buffer A.
++ *
++ * And lastly we check with the CPU the pattern.
++ *
++ * Assuming that we don't have memory contention and buffer A stayed
++ * at the same place, we should still see the same pattern when read
++ * by the CPU.
++ *
++ * If we don't see the same pattern then something in the buffer
++ * migration code is not working as expected.
++ */
++
++#define PACKET_LCOPY_SIZE         8
++#define PACKET_NOP_SIZE          16
++#define SECURE_BUFFER_SIZE       (4 * 1024 * sizeof(secure_pattern))
++
++static uint32_t
++get_handle(struct amdgpu_bo *bo)
++{
++	uint32_t handle;
++	int r;
++
++	r = amdgpu_bo_export(bo, amdgpu_bo_handle_type_kms, &handle);
++	igt_assert_eq(r, 0);
++
++	return handle;
++}
++
++static void
++amdgpu_sdma_lcopy(uint32_t *packet, uint64_t dst, uint64_t src, uint32_t size,
++				uint32_t secure)
++{
++	/* Set the packet to Linear copy with TMZ set.
++	 */
++	packet[0] = htole32(secure << 18 | 1);
++	packet[1] = htole32(size-1);
++	packet[2] = htole32(0);
++	packet[3] = htole32((uint32_t)(src & 0xFFFFFFFFU));
++	packet[4] = htole32((uint32_t)(src >> 32));
++	packet[5] = htole32((uint32_t)(dst & 0xFFFFFFFFU));
++	packet[6] = htole32((uint32_t)(dst >> 32));
++	packet[7] = htole32(0);
++}
++
++static void
++amdgpu_sdma_nop(uint32_t *packet, uint32_t nop_count)
++{
++	/* A packet of the desired number of NOPs.
++	 */
++	packet[0] = htole32(nop_count << 16);
++	for ( ; nop_count > 0; nop_count--)
++		packet[nop_count-1] = 0;
++}
++
++/**
++ * amdgpu_bo_lcopy -- linear copy with TMZ set, using sDMA
++ * @dev: AMDGPU device to which both buffer objects belong to
++ * @ring_context: aux struct which has destination and source buffer objects
++ * @size: size of memory to move, in bytes.
++ * @secure: Set to 1 to perform secure copy, 0 for clear
++ *
++ * Issues and waits for completion of a Linear Copy with TMZ
++ * set, to the sDMA engine. @size should be a multiple of
++ * at least 16 bytes.
++ */
++static void
++amdgpu_bo_lcopy(amdgpu_device_handle device,
++		struct amdgpu_ring_context *ring_context,
++		const struct amdgpu_ip_block_version *ip_block, uint32_t size,
++		uint32_t secure)
++{
++	ring_context->pm4 = calloc(PACKET_LCOPY_SIZE, sizeof(*ring_context->pm4));
++	ring_context->secure = secure;
++	ring_context->pm4_size = PACKET_LCOPY_SIZE;
++	ring_context->pm4_dw = PACKET_LCOPY_SIZE;
++	ring_context->res_cnt = 2;
++	igt_assert(ring_context->pm4);
++
++	amdgpu_sdma_lcopy(ring_context->pm4, ring_context->bo_mc2,
++			ring_context->bo_mc, size, secure);
++	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
++	free(ring_context->pm4);
++}
++
++/**
++ * amdgpu_bo_move -- Evoke a move of the buffer object (BO)
++ * @dev: device to which this buffer object belongs to
++ * @ring_context: aux struct which has destination and source buffer objects
++ * @whereto: one of AMDGPU_GEM_DOMAIN_xyz
++ * @secure: set to 1 to submit secure IBs
++ *
++ * Evokes a move of the buffer object @bo to the GEM domain
++ * descibed by @whereto.
++ *
++ * Returns 0 on success; -errno on error.
++ */
++static void
++amdgpu_bo_move(amdgpu_device_handle device, int fd,
++		struct amdgpu_ring_context *ring_context,
++		const struct amdgpu_ip_block_version *ip_block, uint64_t whereto,
++		uint32_t secure)
++{
++	int r;
++	struct drm_amdgpu_gem_op gop = {
++		.handle  = get_handle(ring_context->bo2),
++		.op      = AMDGPU_GEM_OP_SET_PLACEMENT,
++		.value   = whereto,
++	};
++
++	ring_context->pm4 = calloc(PACKET_NOP_SIZE, sizeof(*ring_context->pm4));
++	ring_context->secure = secure;
++	ring_context->pm4_size = PACKET_NOP_SIZE;
++	ring_context->pm4_dw = PACKET_NOP_SIZE;
++	ring_context->res_cnt = 1;
++	igt_assert(ring_context->pm4);
++
++	/* Change the buffer's placement.
++	 */
++	r = drmIoctl(fd, DRM_IOCTL_AMDGPU_GEM_OP, &gop);
++	igt_assert_eq(r, 0);
++
++	/* Now issue a NOP to actually evoke the MM to move
++	 * it to the desired location.
++	 */
++	amdgpu_sdma_nop(ring_context->pm4, PACKET_NOP_SIZE);
++	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
++	free(ring_context->pm4);
++}
++
++/* Safe, O Sec!
++ */
++static const uint8_t secure_pattern[] = { 0x5A, 0xFE, 0x05, 0xEC };
++
++
++
++static void
++amdgpu_secure_bounce(amdgpu_device_handle device_handle, int fd,
++		struct drm_amdgpu_info_hw_ip  *sdma_info,
++		const struct amdgpu_ip_block_version *ip_block, bool secure)
++{
++	struct amdgpu_ring_context *ring_context;
++
++	long page_size;
++	uint8_t *pp;
++	int r;
++
++	ring_context = calloc(1, sizeof(*ring_context));
++	igt_assert(ring_context);
++
++	page_size = sysconf(_SC_PAGESIZE);
++	r = amdgpu_cs_ctx_create(device_handle, &ring_context->context_handle);
++	igt_assert_eq(r, 0);
++
++	/* Use the first present ring.
++	 */
++	ring_context->ring_id = ffs(sdma_info->available_rings) - 1;
++	if (ring_context->ring_id == -1)
++		igt_assert(false);
++
++
++	/* Allocate a buffer named Alice (bo, bo_cpu, bo_mc) in VRAM. */
++	r = amdgpu_bo_alloc_and_map_raw(device_handle, SECURE_BUFFER_SIZE,
++						page_size,	AMDGPU_GEM_DOMAIN_VRAM,
++						secure == true ? AMDGPU_GEM_CREATE_ENCRYPTED : 0, 0,
++						&ring_context->bo,
++						(void **)&ring_context->bo_cpu,
++						&ring_context->bo_mc,
++						&ring_context->va_handle);
++	igt_assert_eq(r, 0);
++
++	/* Fill Alice with a pattern */
++	for (pp = (__typeof__(pp))ring_context->bo_cpu;
++	     pp < (__typeof__(pp)) ring_context->bo_cpu + SECURE_BUFFER_SIZE;
++	     pp += sizeof(secure_pattern))
++		memcpy(pp, secure_pattern, sizeof(secure_pattern));
++
++	/* Allocate a buffer named Bob(bo2, bo_cpu2, bo_mc2)  in VRAM.
++	 */
++	r = amdgpu_bo_alloc_and_map_raw(device_handle, SECURE_BUFFER_SIZE,
++						page_size, AMDGPU_GEM_DOMAIN_VRAM,
++						secure == true ? AMDGPU_GEM_CREATE_ENCRYPTED : 0, 0,
++						&ring_context->bo2,
++						(void **)&ring_context->bo2_cpu,
++						&ring_context->bo_mc2,
++						&ring_context->va_handle2);
++	igt_assert_eq(r, 0);
++
++	/* sDMA TMZ copy from Alice to Bob */
++	ring_context->resources[0] = ring_context->bo2;	// Bob
++	ring_context->resources[1] = ring_context->bo;	// Alice
++
++	amdgpu_bo_lcopy(device_handle, ring_context, ip_block, SECURE_BUFFER_SIZE,
++			secure == true ? 1 : 0);
++
++	/* Verify the contents of Bob. */
++	for (pp = (__typeof__(pp))ring_context->bo2_cpu;
++	     pp < (__typeof__(pp)) ring_context->bo2_cpu + SECURE_BUFFER_SIZE;
++	     pp += sizeof(secure_pattern)) {
++		r = memcmp(pp, secure_pattern, sizeof(secure_pattern));
++		if (r) {
++			// test failure
++			igt_assert(false);
++			break;
++		}
++	}
++
++	/* Move Bob to the GTT domain. */
++	amdgpu_bo_move(device_handle, fd, ring_context, ip_block,
++			AMDGPU_GEM_DOMAIN_GTT, 0);
++
++	/* sDMA TMZ copy from Bob to Alice.
++	 * bo is a source ,bo2 is destination
++	 */
++
++	ring_context->resources[0] = ring_context->bo; // Alice
++	ring_context->resources[1] = ring_context->bo2; // Bob
++
++	/* sDMA TMZ copy from Bob to Alice. */
++	amdgpu_bo_lcopy(device_handle, ring_context, ip_block, SECURE_BUFFER_SIZE,
++			secure == true ? 1 : 0);
++
++	/* Verify the contents of Alice */
++	for (pp = (__typeof__(pp))ring_context->bo_cpu;
++	     pp < (__typeof__(pp)) ring_context->bo_cpu + SECURE_BUFFER_SIZE;
++	     pp += sizeof(secure_pattern)) {
++		r = memcmp(pp, secure_pattern, sizeof(secure_pattern));
++		if (r) {
++			// test failure
++			igt_assert(false);
++			break;
++		}
++	}
++	amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle,
++			ring_context->bo_mc, SECURE_BUFFER_SIZE);
++	amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2,
++			ring_context->bo_mc2, SECURE_BUFFER_SIZE);
++	amdgpu_cs_ctx_free(ring_context->context_handle);
++	free(ring_context);
++}
++
++
++static void
++amdgpu_security_alloc_buf_test(amdgpu_device_handle device_handle)
++{
++	amdgpu_bo_handle bo;
++	amdgpu_va_handle va_handle;
++	uint64_t bo_mc;
++
++	/* Test secure buffer allocation in VRAM */
++	bo = gpu_mem_alloc(device_handle, 4096, 4096,
++			   AMDGPU_GEM_DOMAIN_VRAM,
++			   AMDGPU_GEM_CREATE_ENCRYPTED,
++			   &bo_mc, &va_handle);
++
++	gpu_mem_free(bo, va_handle, bo_mc, 4096);
++
++	/* Test secure buffer allocation in system memory */
++	bo = gpu_mem_alloc(device_handle, 4096, 4096,
++			   AMDGPU_GEM_DOMAIN_GTT,
++			   AMDGPU_GEM_CREATE_ENCRYPTED,
++			   &bo_mc, &va_handle);
++
++	gpu_mem_free(bo, va_handle, bo_mc, 4096);
++
++	/* Test secure buffer allocation in invisible VRAM */
++	bo = gpu_mem_alloc(device_handle, 4096, 4096,
++			   AMDGPU_GEM_DOMAIN_GTT,
++			   AMDGPU_GEM_CREATE_ENCRYPTED |
++			   AMDGPU_GEM_CREATE_NO_CPU_ACCESS,
++			   &bo_mc, &va_handle);
++
++	gpu_mem_free(bo, va_handle, bo_mc, 4096);
++}
++
++static bool
++is_security_tests_enable(amdgpu_device_handle device_handle,
++		const struct amdgpu_gpu_info *gpu_info, uint32_t major, uint32_t minor)
++{
++	bool enable = true;
++
++	if (!(gpu_info->ids_flags & AMDGPU_IDS_FLAGS_TMZ)) {
++		igt_info("Don't support TMZ (trust memory zone), security test is disabled\n");
++		enable = false;
++	}
++
++	if ((major < 3) ||
++		((major == 3) && (minor < 37))) {
++		igt_info("Don't support TMZ (trust memory zone), kernel DRM version (%d.%d)\n",
++				major, minor);
++		enable = false;
++	}
++
++	return enable;
++}
++
++igt_main
++{
++	amdgpu_device_handle device;
++	struct amdgpu_gpu_info gpu_info = {};
++	struct drm_amdgpu_info_hw_ip  sdma_info = {};
++	int r, fd = -1;
++	bool is_secure = true;
++
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver(DRIVER_AMDGPU);
++		err = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(err == 0);
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++		err = amdgpu_query_gpu_info(device, &gpu_info);
++		igt_assert_eq(err, 0);
++		r = setup_amdgpu_ip_blocks(major, minor,  &gpu_info, device);
++		igt_assert_eq(r, 0);
++		r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_DMA, 0, &sdma_info);
++		igt_assert_eq(r, 0);
++		igt_skip_on(!is_security_tests_enable(device, &gpu_info, major, minor));
++	}
++
++	igt_describe("amdgpu_security_alloc_buf_test");
++	igt_subtest("amdgpu-security-alloc-buf-test")
++	amdgpu_security_alloc_buf_test(device);
++
++	igt_describe("amdgpu_command_submission_write_linear_helper");
++	igt_subtest("write-linear-helper-secure")
++	amdgpu_command_submission_write_linear_helper(device,
++			get_ip_block(device, AMDGPU_HW_IP_DMA), is_secure);
++
++	/* dynamic test based on sdma_info.available rings */
++	igt_describe("amdgpu_secure_bounce");
++	igt_subtest("amdgpu-secure-bounce")
++	amdgpu_secure_bounce(device, fd, &sdma_info, get_ip_block(device,
++			AMDGPU_HW_IP_DMA), is_secure);
++
++	igt_fixture {
++		amdgpu_device_deinitialize(device);
++		drm_close_driver(fd);
++	}
++}
++
++
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index ef1735fda..bdada90ca 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -26,6 +26,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_plane',
+ 			  'amd_prime',
+ 			  'amd_psr',
++			  'amd_security',
+ 			  'amd_uvd_dec',
+ 			  'amd_uvd_enc',
+ 			  'amd_vce_dec',
+-- 
+2.25.1
