@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (unknown [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 562FF10E6C1
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jul 2023 09:34:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F1DC10E6C1
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jul 2023 09:34:53 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Jul 2023 15:04:39 +0530
-Message-Id: <20230728093449.950073-1-swati2.sharma@intel.com>
+Date: Fri, 28 Jul 2023 15:04:40 +0530
+Message-Id: <20230728093449.950073-2-swati2.sharma@intel.com>
+In-Reply-To: <20230728093449.950073-1-swati2.sharma@intel.com>
+References: <20230728093449.950073-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v5 00/10] DSC Fractional BPP Val Support
+Subject: [igt-dev] [v5 01/10] tests/i915/kms_dsc: add new test flag
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,33 +22,38 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Existing i-g-t is extended to enable validation for dsc
-fractional bpp.
-This series is split from
-https://patchwork.freedesktop.org/series/111342/
+Add new test flag TEST_DSC_FORMAT. This flag is added to
+differentiate the basic dsc test and the tests where we want to
+change different plane pixel formats.
 
-v2: addressed review comments from Ankit
-v3: addressed review comments from Ankit
-v5: fixed if() conditions and documentation (Ankit)
+v2: -update commit message (Ankit)
 
-Swati Sharma (10):
-  tests/i915/kms_dsc: add new test flag
-  tests/i915/kms_dsc: use uint32_t test flag
-  tests/i915/kms_dsc: use #define for default bpc
-  tests/i915/kms_dsc: update if conditions
-  tests/i915/kms_dsc: use igt_get_pipe_current_bpc()
-  tests/i915/kms_dsc: add test validating output formats with input bpc
-  tests/i915/kms_dsc: add test summary
-  lib/dsc: add helpers for vdsc fractional bpp debugfs entry
-  tests/i915/kms_dsc: enable validation for vdsc fractional bpp
-  tests/i915/kms_dsc: add test to validate fractional bpp with input bpc
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+---
+ tests/i915/kms_dsc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- lib/igt_dsc.c               |  84 +++++++++++++++++++++
- lib/igt_dsc.h               |   5 ++
- tests/i915/kms_dsc.c        | 146 ++++++++++++++++++++++++++++--------
- tests/i915/kms_dsc_helper.c |  73 +++++++++++++++++-
- tests/i915/kms_dsc_helper.h |   6 +-
- 5 files changed, 280 insertions(+), 34 deletions(-)
-
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 0a3e29924..23ccbca00 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -37,6 +37,7 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ enum dsc_test_type {
+ 	TEST_DSC_BASIC,
+ 	TEST_DSC_BPC,
++	TEST_DSC_FORMAT,
+ 	TEST_DSC_OUTPUT_FORMAT,
+ };
+ 
+@@ -302,7 +303,7 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		     "with default parameters and creating fb with diff formats");
+ 	igt_subtest_with_dynamic("dsc-with-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+-			test_dsc(&data, TEST_DSC_BASIC, 0,
++			test_dsc(&data, TEST_DSC_FORMAT, 0,
+ 				 format_list[k], DSC_FORMAT_RGB);
+ 	}
+ 
 -- 
 2.25.1
