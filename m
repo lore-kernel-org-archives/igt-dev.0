@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54CC610E69B
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jul 2023 08:31:25 +0000 (UTC)
-Date: Fri, 28 Jul 2023 08:31:18 +0000
-To: =?utf-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-From: Simon Ser <contact@emersion.fr>
-Message-ID: <K4cmpjO20z_cvNP63T2Ihn2eLPSopWBkrxkLC2hMJH1vcpwSajGBR3qtIYXaoRpa6dfNE3zOekFpEusdkFGrRNC72CjqUU6wjPoDTDSRfkI=@emersion.fr>
-In-Reply-To: <20230728082150.pz267tg26xgltqow@zkempczy-mobl2>
-References: <20230727174311.327796-1-contact@emersion.fr>
- <20230728082150.pz267tg26xgltqow@zkempczy-mobl2>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <davidgow@google.com>
+Date: Fri, 28 Jul 2023 17:44:21 +0200
+Message-ID: <20230728154419.1810177-6-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20230728154419.1810177-5-janusz.krzysztofik@linux.intel.com>
+References: <20230728154419.1810177-5-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH v2] drm-uapi: sync with drm-next
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH 1/3] kunit: Report the count of test suites in a
+ module
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,52 +17,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org,
- =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Fei Yang <fei.yang@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: linux-kernel@vger.kernel.org, igt-dev@lists.freedesktop.org,
+ linux-kselftest@vger.kernel.org, intel-xe@lists.freedesktop.org,
+ kunit-dev@googlegroups.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Friday, July 28th, 2023 at 10:21, Zbigniew Kempczy=C5=84ski <zbigniew.ke=
-mpczynski@intel.com> wrote:
+According to KTAP specification[1], results should always start from a
+header that provides a TAP protocol version, followed by a test plan with
+a count of items to be executed.  That pattern should be followed at each
+nesting level.  In the current implementation of the top-most, i.e., test
+suite level, those rules apply only for test suites built into the kernel,
+executed and reported on boot.  Results submitted to dmesg from kunit test
+modules loaded later are missing those top-level headers.
 
-> On Thu, Jul 27, 2023 at 05:43:17PM +0000, Simon Ser wrote:
->=20
-> > Sync with drm-next commit 52920704df878050123dfeb469aa6ab8022547c1.
-> >=20
-> > This is required for:
-> > https://patchwork.freedesktop.org/patch/547602/?series=3D120551&rev=3D4
-> >=20
-> > v2: drop redefinitions from lib/i915/i915_drm_local.h
->=20
->=20
-> I was pretty sure we're doing verbatim copy of kernel drm uapi
-> files but it looks due to two issues there's not possible at the
-> moment.
->=20
-> I've copied all drm files to igt directories and two definitions
-> needs to be added locally to work:
->=20
-> 1. in drm.h
-> +#define __user
->=20
-> 2. in i915_drm:
-> #define __packed attribute((packed))
->=20
-> (change 2 requires removing this definition from tools/intel_vbt_decode.c=
-)
->=20
-> I think the best would be to replace in kernel uapi i915_drm.h file
-> __packed to attribute((packed)) (this is used in single place).
->=20
-> Simon - what do you think? I think to avoid manually comparison of
-> drm uapi header files between kernel and igt would be better to
-> introduce #define __user in drm.h each time we sync but rest of
-> the files would be intact (but this requires merging 2.).
+As a consequence, if a kunit test module provides more than one test suite
+then, without the top level test plan, external tools that are parsing
+dmesg for kunit test output are not able to tell how many test suites
+should be expected and whether to continue parsing after complete output
+from the first test suite is collected.
 
-This is not what the README says, and I don't think it's a great
-solution, because it requires more manual steps and is difficult to
-review.
+Submit the top-level headers also from the kunit test module notifier
+initialization callback.
 
-I don't see __user anywhere, neither in the old nor in the new headers.
+[1] https://docs.kernel.org/dev-tools/ktap.html#
+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ lib/kunit/test.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/lib/kunit/test.c b/lib/kunit/test.c
+index 84e4666555c94..a29ca1acc4d81 100644
+--- a/lib/kunit/test.c
++++ b/lib/kunit/test.c
+@@ -729,6 +729,11 @@ EXPORT_SYMBOL_GPL(__kunit_test_suites_exit);
+ #ifdef CONFIG_MODULES
+ static void kunit_module_init(struct module *mod)
+ {
++	if (mod->num_kunit_suites > 0) {
++		pr_info("KTAP version 1\n");
++		pr_info("1..%d\n", mod->num_kunit_suites);
++	}
++
+ 	__kunit_test_suites_init(mod->kunit_suites, mod->num_kunit_suites);
+ }
+ 
+-- 
+2.41.0
