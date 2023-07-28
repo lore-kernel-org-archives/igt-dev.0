@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (unknown [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9010F10E6C3
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jul 2023 09:34:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F59510E6C3
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jul 2023 09:34:56 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Jul 2023 15:04:43 +0530
-Message-Id: <20230728093449.950073-5-swati2.sharma@intel.com>
+Date: Fri, 28 Jul 2023 15:04:42 +0530
+Message-Id: <20230728093449.950073-4-swati2.sharma@intel.com>
 In-Reply-To: <20230728093449.950073-1-swati2.sharma@intel.com>
 References: <20230728093449.950073-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v5 04/10] tests/i915/kms_dsc: update if conditions
+Subject: [igt-dev] [v5 03/10] tests/i915/kms_dsc: use #define for default bpc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,79 +22,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Check is_dsc_output_format_supported() iff test flag is set to
-OUTPUT_FORMAT. Also, combine is_dsc_supported_by_sink () and
-gen11_dp_constraint() conditions together.
-Move, bpc_constraint() out of loop since its independent of output.
+For default bpc, use #define. By setting bpc as 0, means driver
+will set its own value and we are not enforcing input bpc.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/i915/kms_dsc.c        | 16 +++++++---------
- tests/i915/kms_dsc_helper.c |  2 +-
- tests/i915/kms_dsc_helper.h |  2 +-
- 3 files changed, 9 insertions(+), 11 deletions(-)
+ tests/i915/kms_dsc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 7b9bae91a..dc4054d94 100644
+index 99d35a7ff..7b9bae91a 100644
 --- a/tests/i915/kms_dsc.c
 +++ b/tests/i915/kms_dsc.c
-@@ -228,6 +228,8 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 				{0},
- 			    };
+@@ -35,6 +35,7 @@
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
  
-+	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
-+
- 	for_each_pipe_with_valid_output(display, pipe, output) {
- 		data->output_format = output_format;
- 		data->plane_format = plane_format;
-@@ -235,17 +237,13 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 		data->output = output;
- 		data->pipe = pipe;
+ #define LEN		20
++#define DEFAULT_BPC	0
  
--		if (!is_dsc_supported_by_sink(data->drm_fd, data->output))
--			continue;
--
--		if (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
--						    data->output, data->output_format))
--			continue;
--
--		if (!check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
-+		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) &&
-+		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
- 			continue;
+ #define TEST_DSC_BASIC		(0<<0)
+ #define TEST_DSC_BPC		(1<<0)
+@@ -300,7 +301,7 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters");
+ 	igt_subtest_with_dynamic("dsc-basic")
+-			test_dsc(&data, TEST_DSC_BASIC, 0,
++			test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
+ 				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
  
--		if (!check_gen11_bpc_constraint(data->drm_fd, data->output, data->input_bpc))
-+		if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
-+		    (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
-+						     data->output, data->output_format)))
- 			continue;
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -308,7 +309,7 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		     "with default parameters and creating fb with diff formats");
+ 	igt_subtest_with_dynamic("dsc-with-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+-			test_dsc(&data, TEST_DSC_FORMAT, 0,
++			test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
+ 				 format_list[k], DSC_FORMAT_RGB);
+ 	}
  
- 		if (test_type & TEST_DSC_OUTPUT_FORMAT)
-diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
-index 61f76ddee..ae59edb6b 100644
---- a/tests/i915/kms_dsc_helper.c
-+++ b/tests/i915/kms_dsc_helper.c
-@@ -96,7 +96,7 @@ bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe)
- }
+@@ -339,7 +340,8 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 		     "that support it");
+ 	igt_subtest_with_dynamic("dsc-with-output-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
+-			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, 0, DRM_FORMAT_XRGB8888,
++			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
++				 DRM_FORMAT_XRGB8888,
+ 				 output_format_list[k]);
+ 	}
  
- /* Max DSC Input BPC for ICL is 10 and for TGL+ is 12 */
--bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc)
-+bool check_gen11_bpc_constraint(int drmfd, int input_bpc)
- {
- 	uint32_t devid = intel_get_drm_devid(drmfd);
- 
-diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
-index 2109bd767..28ed56d83 100644
---- a/tests/i915/kms_dsc_helper.h
-+++ b/tests/i915/kms_dsc_helper.h
-@@ -29,7 +29,7 @@ void kms_dsc_exit_handler(int sig);
- bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output);
- bool is_dsc_supported_by_source(int drmfd);
- bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe);
--bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc);
-+bool check_gen11_bpc_constraint(int drmfd, int input_bpc);
- void force_dsc_output_format(int drmfd, igt_output_t *output,
- 			     enum dsc_output_format output_format);
- bool is_dsc_output_format_supported(int disp_ver, int drmfd, igt_output_t *output,
 -- 
 2.25.1
