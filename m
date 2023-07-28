@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (unknown [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F38610E6C7
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jul 2023 09:35:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9010F10E6C3
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jul 2023 09:34:57 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Jul 2023 15:04:46 +0530
-Message-Id: <20230728093449.950073-8-swati2.sharma@intel.com>
+Date: Fri, 28 Jul 2023 15:04:43 +0530
+Message-Id: <20230728093449.950073-5-swati2.sharma@intel.com>
 In-Reply-To: <20230728093449.950073-1-swati2.sharma@intel.com>
 References: <20230728093449.950073-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v5 07/10] tests/i915/kms_dsc: add test summary
+Subject: [igt-dev] [v5 04/10] tests/i915/kms_dsc: update if conditions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,44 +22,79 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add test summary giving overall summary of subtests.
-
-v2: -drop DSC1.2 reference (Ankit)
+Check is_dsc_output_format_supported() iff test flag is set to
+OUTPUT_FORMAT. Also, combine is_dsc_supported_by_sink () and
+gen11_dp_constraint() conditions together.
+Move, bpc_constraint() out of loop since its independent of output.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/i915/kms_dsc.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/i915/kms_dsc.c        | 16 +++++++---------
+ tests/i915/kms_dsc_helper.c |  2 +-
+ tests/i915/kms_dsc_helper.h |  2 +-
+ 3 files changed, 9 insertions(+), 11 deletions(-)
 
 diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 25fd410a9..7c51c2ddc 100644
+index 7b9bae91a..dc4054d94 100644
 --- a/tests/i915/kms_dsc.c
 +++ b/tests/i915/kms_dsc.c
-@@ -42,6 +42,24 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- #define TEST_DSC_FORMAT		(1<<1)
- #define TEST_DSC_OUTPUT_FORMAT	(1<<2)
+@@ -228,6 +228,8 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 				{0},
+ 			    };
  
-+/*
-+ * Starting from gen11, intel driver supports DSC1.1. For validating
-+ * DSC, the first step is to verify if the sink supports DSC.
-+ * If the sink does support DSC, we will validate different
-+ * scenarios by forcing dsc. Outline of the tests is as follows:
-+ * (i) basic modeset (ii) input bpc (iii) pixel formats
-+ * (iv) output formats
-+ * In the basic subtest, we perform modeset with default parameters.
-+ * Input bpc and pixel formats subtests, we perform modeset
-+ * with different input bpc (12/10/8) and pixel formats (YUV/RGB),
-+ * respectively. From MTL+, we can verify DSC YCBCR420 output format.
-+ * The tests are executed with the RGB444 output format by default.
-+ * However, in the output-format subtest, we verify different
-+ * output formats (RGB/YCBCR444/YCBCR420). Also, test is added to
-+ * validate output formats with different input bpc (12/10/8).
-+ */
++	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
 +
-+
- typedef struct {
- 	int drm_fd;
- 	uint32_t devid;
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
+ 		data->output_format = output_format;
+ 		data->plane_format = plane_format;
+@@ -235,17 +237,13 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 		data->output = output;
+ 		data->pipe = pipe;
+ 
+-		if (!is_dsc_supported_by_sink(data->drm_fd, data->output))
+-			continue;
+-
+-		if (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
+-						    data->output, data->output_format))
+-			continue;
+-
+-		if (!check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
++		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) &&
++		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
+ 			continue;
+ 
+-		if (!check_gen11_bpc_constraint(data->drm_fd, data->output, data->input_bpc))
++		if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
++		    (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
++						     data->output, data->output_format)))
+ 			continue;
+ 
+ 		if (test_type & TEST_DSC_OUTPUT_FORMAT)
+diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
+index 61f76ddee..ae59edb6b 100644
+--- a/tests/i915/kms_dsc_helper.c
++++ b/tests/i915/kms_dsc_helper.c
+@@ -96,7 +96,7 @@ bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe)
+ }
+ 
+ /* Max DSC Input BPC for ICL is 10 and for TGL+ is 12 */
+-bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc)
++bool check_gen11_bpc_constraint(int drmfd, int input_bpc)
+ {
+ 	uint32_t devid = intel_get_drm_devid(drmfd);
+ 
+diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
+index 2109bd767..28ed56d83 100644
+--- a/tests/i915/kms_dsc_helper.h
++++ b/tests/i915/kms_dsc_helper.h
+@@ -29,7 +29,7 @@ void kms_dsc_exit_handler(int sig);
+ bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output);
+ bool is_dsc_supported_by_source(int drmfd);
+ bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe);
+-bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc);
++bool check_gen11_bpc_constraint(int drmfd, int input_bpc);
+ void force_dsc_output_format(int drmfd, igt_output_t *output,
+ 			     enum dsc_output_format output_format);
+ bool is_dsc_output_format_supported(int disp_ver, int drmfd, igt_output_t *output,
 -- 
 2.25.1
