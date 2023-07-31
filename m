@@ -1,24 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.129.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B518910E26D
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Jul 2023 11:27:22 +0000 (UTC)
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-53ff4f39c0fso2696163a12.0
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Jul 2023 04:27:19 -0700 (PDT)
+Received: from mgamail.intel.com (unknown [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 87C1510E26E
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Jul 2023 12:04:52 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>, "Tauro, Riana"
+ <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Mon, 31 Jul 2023 12:04:48 +0000
+Message-ID: <CY5PR11MB6211507AB9E69C3FA0A716F39505A@CY5PR11MB6211.namprd11.prod.outlook.com>
+References: <20230728060906.2047834-1-riana.tauro@intel.com>
+ <825ff60a-aa42-7941-8d27-6002935e58b3@intel.com>
+ <cb014e1f-b302-6705-a00e-a98855af0d9d@intel.com>
+ <1f93b4b2-24ac-431f-0e4d-6b407f3a5892@intel.com>
+In-Reply-To: <1f93b4b2-24ac-431f-0e4d-6b407f3a5892@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20230728143742.322532-1-aesteve@redhat.com>
- <20230728143742.322532-2-aesteve@redhat.com>
- <a5ada367-5eb6-8b97-82eb-af2d36f120b1@intel.com>
- <CADSE00L-KZQgSs63EbpsEms7F6pqyagB_HVG7KzUKcGc3R0oXA@mail.gmail.com>
- <c9bf9ed1-9370-41d3-7f33-1e953f28cfc4@intel.com>
-In-Reply-To: <c9bf9ed1-9370-41d3-7f33-1e953f28cfc4@intel.com>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Mon, 31 Jul 2023 13:27:07 +0200
-Message-ID: <CADSE00JZDhCvDiVuhu_8nFe+BPXekHvCE-S+N-smNiFRKyyTYQ@mail.gmail.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Content-Type: multipart/alternative; boundary="0000000000009743540601c6b68a"
-Subject: Re: [igt-dev] [PATCH v2 1/2] igt_kms: add hotspot plane property
+Subject: Re: [igt-dev] [PATCH i-g-t] RFC tests/xe: Stress test GT C states
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,410 +25,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, belmouss@redhat.com, javierm@redhat.com
+Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---0000000000009743540601c6b68a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Jul 31, 2023 at 10:49=E2=80=AFAM Modem, Bhanuprakash <
-bhanuprakash.modem@intel.com> wrote:
-
->
->
-> On Mon-31-07-2023 01:42 pm, Albert Esteve wrote:
-> >
-> >
-> >
-> > On Mon, Jul 31, 2023 at 8:30=E2=80=AFAM Modem, Bhanuprakash
-> > <bhanuprakash.modem@intel.com <mailto:bhanuprakash.modem@intel.com>>
-> wrote:
-> >
-> >     Hello,
-> >
-> >     On Fri-28-07-2023 08:07 pm, Albert Esteve wrote:
-> >      > Introduce LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT
-> >      > capability definition until patched drm.h uapi header
-> >      > is upstreamed and lands on IGT.
-> >      >
-> >      > CURSOR_PLANE_HOTSPOT capability is enabled
-> >      > conditionally, and then tracked in the igt_display
-> >      > struct.
-> >      >
-> >      > Add HOTSPOT_X and HOTSPOT_Y properties
-> >      > to the atomic_plane_properties struct.
-> >      >
-> >      > Signed-off-by: Albert Esteve <aesteve@redhat.com
-> >     <mailto:aesteve@redhat.com>>
-> >      > ---
-> >      >   lib/igt_kms.c | 10 ++++++++++
-> >      >   lib/igt_kms.h | 11 ++++++++++-
-> >      >   2 files changed, 20 insertions(+), 1 deletion(-)
-> >      >
-> >      > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> >      > index f2b0eed57..73119d0e5 100644
-> >      > --- a/lib/igt_kms.c
-> >      > +++ b/lib/igt_kms.c
-> >      > @@ -601,6 +601,8 @@ const char * const
-> >     igt_plane_prop_names[IGT_NUM_PLANE_PROPS] =3D {
-> >      >       [IGT_PLANE_CRTC_Y] =3D "CRTC_Y",
-> >      >       [IGT_PLANE_CRTC_W] =3D "CRTC_W",
-> >      >       [IGT_PLANE_CRTC_H] =3D "CRTC_H",
-> >      > +     [IGT_PLANE_HOTSPOT_X] =3D "HOTSPOT_X",
-> >      > +     [IGT_PLANE_HOTSPOT_Y] =3D "HOTSPOT_Y",
-> >      >       [IGT_PLANE_FB_ID] =3D "FB_ID",
-> >      >       [IGT_PLANE_CRTC_ID] =3D "CRTC_ID",
-> >      >       [IGT_PLANE_IN_FENCE_FD] =3D "IN_FENCE_FD",
-> >      > @@ -2296,6 +2298,11 @@ static void igt_plane_reset(igt_plane_t
-> >     *plane)
-> >      >       if (igt_plane_has_prop(plane, IGT_PLANE_SCALING_FILTER))
-> >      >               igt_plane_set_prop_enum(plane,
-> >     IGT_PLANE_SCALING_FILTER, "Default");
-> >      >
-> >      > +     if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_X))
-> >      > +             igt_plane_set_prop_value(plane,
-> >     IGT_PLANE_HOTSPOT_X, 0);
-> >      > +     if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_Y))
-> >      > +             igt_plane_set_prop_value(plane,
-> >     IGT_PLANE_HOTSPOT_Y, 0);
-> >      > +
-> >      >       igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD)=
-;
-> >      >       plane->values[IGT_PLANE_IN_FENCE_FD] =3D ~0ULL;
-> >      >       plane->gem_handle =3D 0;
-> >      > @@ -2679,6 +2686,9 @@ void igt_display_require(igt_display_t
-> >     *display, int drm_fd)
-> >      >       drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1=
-);
-> >      >       if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) =3D=
-=3D 0)
-> >      >               display->is_atomic =3D 1;
-> >      > +
-> >      > +     if (drmSetClientCap(drm_fd,
-> >     LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) =3D=3D 0)
-> >      > +             display->set_hotspots =3D 1;
-> >
-> >     Any special reason to add this to display struct?
-> >     IMHO, it is better to handle it at test level.
-> >
-> >
-> > Hi Bhanu,
-> >
-> > Mostly for keeping it consistent with the `is_atomic` capability.
-> >
-> > Are you suggesting moving the `drmSetClientCap` to the test?
->
-> Yes.
->
-> > I am ok with changing this, just trying to understand what would
-> > be the preferred way here.
->
-> Either way (adding to display struct or checking at test level) is fine.
->
-> Generally to maintain the re-usability (ex: checking for the same
-> capability multiple times) we used to cache the capabilities to display
-> struct. If multiple tests (or multiple places in your test) want to use
-> this hotspot capability, you can add it to the display struct.
->
-
-ATM it is only this test. If there is a need for more tests,
-we can move capability setting back to display, but for the time being I
-will follow
-your advice and move it to the test.
-
-Something like...?
-igt_subtest("modeset-atomic-cursor-hotspot") {
-    igt_require(drmSetClientCap(display.drm_fd,
-LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) =3D=3D 0);
-    modeset_atomic_cursor_hotspot(&display);
-    igt_assert_eq(drmSetClientCap(display.drm_fd,
-LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 0), 0);
-}
-
-
->
-> - Bhanu
->
-> >
-> > Thanks!
-> >
-> >
-> >     - Bhanu
-> >
-> >      >
-> >      >       plane_resources =3D drmModeGetPlaneResources(display->drm_=
-fd);
-> >      >       igt_assert(plane_resources);
-> >      > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> >      > index 1b6988c17..cf0a6d82b 100644
-> >      > --- a/lib/igt_kms.h
-> >      > +++ b/lib/igt_kms.h
-> >      > @@ -41,6 +41,12 @@
-> >      >
-> >      >   /* Low-level helpers with kmstest_ prefix */
-> >      >
-> >      > +/**
-> >      > + * Clients which do set cursor hotspot and treat the cursor pla=
-ne
-> >      > + * like a mouse cursor should set this property.
-> >      > + */
-> >      > +#define LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT    6
-> >      > +
-> >      >   /**
-> >      >    * pipe:
-> >      >    * @PIPE_NONE: Invalid pipe, used for disconnecting a output
-> >     from a pipe.
-> >      > @@ -318,7 +324,9 @@ enum igt_atomic_plane_properties {
-> >      >          IGT_PLANE_ZPOS,
-> >      >          IGT_PLANE_FB_DAMAGE_CLIPS,
-> >      >          IGT_PLANE_SCALING_FILTER,
-> >      > -       IGT_NUM_PLANE_PROPS
-> >      > +       IGT_PLANE_HOTSPOT_X,
-> >      > +       IGT_PLANE_HOTSPOT_Y,
-> >      > +       IGT_NUM_PLANE_PROPS
-> >      >   };
-> >      >
-> >      >   /**
-> >      > @@ -448,6 +456,7 @@ struct igt_display {
-> >      >       igt_pipe_t *pipes;
-> >      >       bool has_cursor_plane;
-> >      >       bool is_atomic;
-> >      > +     bool set_hotspots;
-> >      >       bool first_commit;
-> >      >
-> >      >       uint64_t *modifiers;
-> >
->
->
-
---0000000000009743540601c6b68a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
-ature"><div dir=3D"ltr"><br></div></div></div></div><br><div class=3D"gmail=
-_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 31, 2023 at 10:49=
-=E2=80=AFAM Modem, Bhanuprakash &lt;<a href=3D"mailto:bhanuprakash.modem@in=
-tel.com">bhanuprakash.modem@intel.com</a>&gt; wrote:<br></div><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
-d rgb(204,204,204);padding-left:1ex"><br>
-<br>
-On Mon-31-07-2023 01:42 pm, Albert Esteve wrote:<br>
-&gt; <br>
-&gt; <br>
-&gt; <br>
-&gt; On Mon, Jul 31, 2023 at 8:30=E2=80=AFAM Modem, Bhanuprakash <br>
-&gt; &lt;<a href=3D"mailto:bhanuprakash.modem@intel.com" target=3D"_blank">=
-bhanuprakash.modem@intel.com</a> &lt;mailto:<a href=3D"mailto:bhanuprakash.=
-modem@intel.com" target=3D"_blank">bhanuprakash.modem@intel.com</a>&gt;&gt;=
- wrote:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0Hello,<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0On Fri-28-07-2023 08:07 pm, Albert Esteve wrote:<br=
->
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Introduce LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_H=
-OTSPOT<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; capability definition until patched drm.h uap=
-i header<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; is upstreamed and lands on IGT.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; CURSOR_PLANE_HOTSPOT capability is enabled<br=
->
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; conditionally, and then tracked in the igt_di=
-splay<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; struct.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Add HOTSPOT_X and HOTSPOT_Y properties<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; to the atomic_plane_properties struct.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Signed-off-by: Albert Esteve &lt;<a href=3D"m=
-ailto:aesteve@redhat.com" target=3D"_blank">aesteve@redhat.com</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:aesteve@redhat.com" ta=
-rget=3D"_blank">aesteve@redhat.com</a>&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; ---<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0lib/igt_kms.c | 10 ++++++++++<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0lib/igt_kms.h | 11 ++++++++++-<br=
->
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A02 files changed, 20 insertions(+)=
-, 1 deletion(-)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; diff --git a/lib/igt_kms.c b/lib/igt_kms.c<br=
->
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; index f2b0eed57..73119d0e5 100644<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; --- a/lib/igt_kms.c<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +++ b/lib/igt_kms.c<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; @@ -601,6 +601,8 @@ const char * const<br>
-&gt;=C2=A0 =C2=A0 =C2=A0igt_plane_prop_names[IGT_NUM_PLANE_PROPS] =3D {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0[IGT_PLANE_CRTC_Y] =
-=3D &quot;CRTC_Y&quot;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0[IGT_PLANE_CRTC_W] =
-=3D &quot;CRTC_W&quot;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0[IGT_PLANE_CRTC_H] =
-=3D &quot;CRTC_H&quot;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0[IGT_PLANE_HOTSPOT_X] =
-=3D &quot;HOTSPOT_X&quot;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0[IGT_PLANE_HOTSPOT_Y] =
-=3D &quot;HOTSPOT_Y&quot;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0[IGT_PLANE_FB_ID] =
-=3D &quot;FB_ID&quot;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0[IGT_PLANE_CRTC_ID]=
- =3D &quot;CRTC_ID&quot;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0[IGT_PLANE_IN_FENCE=
-_FD] =3D &quot;IN_FENCE_FD&quot;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; @@ -2296,6 +2298,11 @@ static void igt_plane_=
-reset(igt_plane_t<br>
-&gt;=C2=A0 =C2=A0 =C2=A0*plane)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (igt_plane_has_p=
-rop(plane, IGT_PLANE_SCALING_FILTER))<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0igt_plane_set_prop_enum(plane,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0IGT_PLANE_SCALING_FILTER, &quot;Default&quot;);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0if (igt_plane_has_prop(p=
-lane, IGT_PLANE_HOTSPOT_X))<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0igt_plane_set_prop_value(plane,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0IGT_PLANE_HOTSPOT_X, 0);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0if (igt_plane_has_prop(p=
-lane, IGT_PLANE_HOTSPOT_Y))<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0igt_plane_set_prop_value(plane,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0IGT_PLANE_HOTSPOT_Y, 0);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_plane_clear_pro=
-p_changed(plane, IGT_PLANE_IN_FENCE_FD);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0plane-&gt;values[IG=
-T_PLANE_IN_FENCE_FD] =3D ~0ULL;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0plane-&gt;gem_handl=
-e =3D 0;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; @@ -2679,6 +2686,9 @@ void igt_display_requir=
-e(igt_display_t<br>
-&gt;=C2=A0 =C2=A0 =C2=A0*display, int drm_fd)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0drmSetClientCap(drm=
-_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (drmSetClientCap=
-(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) =3D=3D 0)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0display-&gt;is_atomic =3D 1;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0if (drmSetClientCap(drm_=
-fd,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) =3D=
-=3D 0)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0display-&gt;set_hotspots =3D 1;<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0Any special reason to add this to display struct?<b=
-r>
-&gt;=C2=A0 =C2=A0 =C2=A0IMHO, it is better to handle it at test level.<br>
-&gt; <br>
-&gt; <br>
-&gt; Hi Bhanu,<br>
-&gt; <br>
-&gt; Mostly for keeping it consistent with the `is_atomic` capability.<br>
-&gt; <br>
-&gt; Are you suggesting moving the `drmSetClientCap` to the test?<br>
-<br>
-Yes.<br>
-<br>
-&gt; I am ok with changing this, just trying to understand what would<br>
-&gt; be the preferred way here.<br>
-<br>
-Either way (adding to display struct or checking at test level) is fine.<br=
->
-<br>
-Generally to maintain the re-usability (ex: checking for the same <br>
-capability multiple times) we used to cache the capabilities to display <br=
->
-struct. If multiple tests (or multiple places in your test) want to use <br=
->
-this hotspot capability, you can add it to the display struct.<br></blockqu=
-ote><div><br></div><div>ATM it is only this test. If there is a need for mo=
-re tests,</div><div>we can move capability setting back to display, but for=
- the time being I will follow</div><div>your advice and move it to the test=
-.</div><div><br></div><div>Something like...?</div><div>igt_subtest(&quot;m=
-odeset-atomic-cursor-hotspot&quot;) {<br></div><div>=C2=A0 =C2=A0 igt_requi=
-re(drmSetClientCap(display.drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPO=
-T, 1) =3D=3D 0);<br>=C2=A0 =C2=A0 modeset_atomic_cursor_hotspot(&amp;displa=
-y);<br>=C2=A0 =C2=A0 igt_assert_eq(drmSetClientCap(display.drm_fd, LOCAL_DR=
-M_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 0), 0);<br>=09=09}<br></div><div>=C2=A0<=
-/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
-rder-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-- Bhanu<br>
-<br>
-&gt; <br>
-&gt; Thanks!<br>
-&gt; <br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0- Bhanu<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0plane_resources =3D=
- drmModeGetPlaneResources(display-&gt;drm_fd);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_assert(plane_re=
-sources);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; diff --git a/lib/igt_kms.h b/lib/igt_kms.h<br=
->
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; index 1b6988c17..cf0a6d82b 100644<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; --- a/lib/igt_kms.h<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +++ b/lib/igt_kms.h<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; @@ -41,6 +41,12 @@<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0/* Low-level helpers with kmstest=
-_ prefix */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +/**<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; + * Clients which do set cursor hotspot and t=
-reat the cursor plane<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; + * like a mouse cursor should set this prope=
-rty.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; + */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +#define LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HO=
-TSPOT=C2=A0 =C2=A0 6<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0/**<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 * pipe:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 * @PIPE_NONE: Invalid pipe, used=
- for disconnecting a output<br>
-&gt;=C2=A0 =C2=A0 =C2=A0from a pipe.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; @@ -318,7 +324,9 @@ enum igt_atomic_plane_pro=
-perties {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 IGT_PLANE_Z=
-POS,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 IGT_PLANE_F=
-B_DAMAGE_CLIPS,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 IGT_PLANE_S=
-CALING_FILTER,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0IGT_NUM_PLANE_PRO=
-PS<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0IGT_PLANE_HOTSPOT=
-_X,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0IGT_PLANE_HOTSPOT=
-_Y,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0IGT_NUM_PLANE_PRO=
-PS<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0};<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0/**<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; @@ -448,6 +456,7 @@ struct igt_display {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_pipe_t *pipes;<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0bool has_cursor_pla=
-ne;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0bool is_atomic;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0bool set_hotspots;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0bool first_commit;<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0uint64_t *modifiers=
-;<br>
-&gt; <br>
-<br>
-</blockquote></div></div>
-
---0000000000009743540601c6b68a--
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU3VuZGFyZXNhbiwgU3Vq
+YXJpdGhhIDxzdWphcml0aGEuc3VuZGFyZXNhbkBpbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwg
+SnVseSAzMSwgMjAyMyAzOjM4IFBNDQo+IFRvOiBUYXVybywgUmlhbmEgPHJpYW5hLnRhdXJvQGlu
+dGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBOaWxhd2FyLCBC
+YWRhbCA8YmFkYWwubmlsYXdhckBpbnRlbC5jb20+OyBHdXB0YSwgQW5zaHVtYW4NCj4gPGFuc2h1
+bWFuLmd1cHRhQGludGVsLmNvbT47IEJlbGdhdW1rYXIsIFZpbmF5DQo+IDx2aW5heS5iZWxnYXVt
+a2FyQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRdIFJG
+QyB0ZXN0cy94ZTogU3RyZXNzIHRlc3QgR1QgQyBzdGF0ZXMNCj4gDQo+IA0KPiBPbiA3LzMxLzIw
+MjMgMTo1NyBQTSwgUmlhbmEgVGF1cm8gd3JvdGU6DQo+ID4gSGkgU3VqYQ0KPiA+DQo+ID4gT24g
+Ny8zMS8yMDIzIDE6MDAgUE0sIFN1bmRhcmVzYW4sIFN1amFyaXRoYSB3cm90ZToNCj4gPj4NCj4g
+Pj4gT24gNy8yOC8yMDIzIDExOjM5IEFNLCBSaWFuYSBUYXVybyB3cm90ZToNCj4gPj4+IHN0cmVz
+cyB0ZXN0IEdUIEMgc3RhdGVzIGJ5IGNoZWNraW5nIGlmIEdUIGlzIGluIEMwIHdoZW4gZm9yY2V3
+YWtlIGlzDQo+ID4+PiBhY3F1aXJlZCBhbmQgaW4gQzYgb25jZSByZWxlYXNlZC4NCj4gPj4+DQo+
+ID4+PiBTaWduZWQtb2ZmLWJ5OiBSaWFuYSBUYXVybyA8cmlhbmEudGF1cm9AaW50ZWwuY29tPg0K
+PiA+Pj4gLS0tDQo+ID4+PiDCoCB0ZXN0cy94ZS94ZV9wbV9yZXNpZGVuY3kuYyB8IDI3ICsrKysr
+KysrKysrKysrKysrKysrKysrKysrKw0KPiA+Pj4gwqAgMSBmaWxlIGNoYW5nZWQsIDI3IGluc2Vy
+dGlvbnMoKykNCj4gPj4+DQo+ID4+PiBkaWZmIC0tZ2l0IGEvdGVzdHMveGUveGVfcG1fcmVzaWRl
+bmN5LmMgYi90ZXN0cy94ZS94ZV9wbV9yZXNpZGVuY3kuYw0KPiA+Pj4gaW5kZXggNDkzNmRlMTY2
+Li45NzEzZTYxY2QgMTAwNjQ0DQo+ID4+PiAtLS0gYS90ZXN0cy94ZS94ZV9wbV9yZXNpZGVuY3ku
+Yw0KPiA+Pj4gKysrIGIvdGVzdHMveGUveGVfcG1fcmVzaWRlbmN5LmMNCj4gPj4+IEBAIC04NSw2
+ICs4NSwyOSBAQCBzdGF0aWMgdm9pZCB0ZXN0X2lkbGVfcmVzaWRlbmN5KGludCBmZCwgaW50IGd0
+KQ0KPiA+Pj4gwqDCoMKgwqDCoCBhc3NlcnRfd2l0aGluX2Vwc2lsb24ocmVzaWRlbmN5X2VuZCAt
+IHJlc2lkZW5jeV9zdGFydCwNCj4gPj4+IGVsYXBzZWRfbXMsIHRvbGVyYW5jZSk7DQo+ID4+PiDC
+oCB9DQo+ID4+PiArLyoqDQo+ID4+PiArICogU1VCVEVTVDogc3RyZXNzLWd0LWM2DQo+ID4+PiAr
+ICogRGVzY3JpcHRpb246IHN0cmVzcyB0ZXN0IEdUIEMgc3RhdGVzIGJ5IGFjcXVpcmluZy9yZWxl
+YXNpbmcNCj4gPj4+IGZvcmNld2FrZQ0KPiA+Pj4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ID4+PiAr
+ICovDQo+ID4+PiArc3RhdGljIHZvaWQgc3RyZXNzX2M2KGludCBmZCwgaW50IG4pIHsNCj4gPj4+
+ICvCoMKgwqAgaW50IGhhbmRsZSwgZ3Q7DQo+ID4+PiArDQo+ID4+PiArwqDCoMKgIHdoaWxlIChu
+LS0pIHsNCj4gPj4+ICvCoMKgwqDCoMKgwqDCoCBoYW5kbGUgPSBpZ3RfZGVidWdmc19vcGVuKGZk
+LCAiZm9yY2V3YWtlX2FsbCIsIE9fV1JPTkxZKTsNCj4gPj4+ICvCoMKgwqDCoMKgwqDCoCBpZ3Rf
+YXNzZXJ0KGhhbmRsZSA+PSAwKTsNCj4gPj4+ICvCoMKgwqDCoMKgwqDCoCAvKiBjaGVjayBpZiBh
+bGwgZ3RzIGFyZSBpbiBDMCBhZnRlciBmb3JjZXdha2UgaXMgYWNxdWlyZWQNCj4gPj4+ICsqLw0K
+PiA+Pj4gK8KgwqDCoMKgwqDCoMKgIHhlX2Zvcl9lYWNoX2d0KGZkLCBndCkNCj4gPj4+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIGlndF9hc3NlcnRfZigheGVfaXNfZ3RfaW5fYzYoZmQsIGd0KSwg
+IkdUIGluIEM2XG4iKTsNCj4gPj4+ICvCoMKgwqDCoMKgwqDCoCBjbG9zZShoYW5kbGUpOw0KPiA+
+Pj4gK8KgwqDCoMKgwqDCoMKgIC8qIGNoZWNrIGlmIGFsbCBndHMgYXJlIGluIEM2IGFmdGVyIGZv
+cmNld2FrZSBpcyByZWxlYXNlZA0KPiA+Pj4gKyovDQo+ID4+PiArwqDCoMKgwqDCoMKgwqAgeGVf
+Zm9yX2VhY2hfZ3QoZmQsIGd0KQ0KPiA+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X2Fz
+c2VydF9mKGlndF93YWl0KHhlX2lzX2d0X2luX2M2KGZkLCBndCksIDEwMDAsIDEpLA0KPiA+Pj4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIkdUIGlzIG5vdCBpbiBD
+NlxuIik7DQo+ID4+PiArwqDCoMKgIH0NCj4gPj4+ICt9DQo+ID4+PiArDQo+ID4+PiDCoCBpZ3Rf
+bWFpbg0KPiA+Pj4gwqAgew0KPiA+Pj4gwqDCoMKgwqDCoCBpbnQgZmQsIGd0Ow0KPiA+Pj4gQEAg
+LTEwNCw2ICsxMjcsMTAgQEAgaWd0X21haW4NCj4gPj4+IMKgwqDCoMKgwqDCoMKgwqDCoCB4ZV9m
+b3JfZWFjaF9ndChmZCwgZ3QpDQo+ID4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB0ZXN0
+X2lkbGVfcmVzaWRlbmN5KGZkLCBndCk7DQo+ID4+PiArwqDCoMKgIGlndF9kZXNjcmliZSgic3Ry
+ZXNzIHRlc3QgR1QgQyBzdGF0ZXMgYnkgYWNxdWlyaW5nL3JlbGVhc2luZw0KPiA+Pj4gZm9yY2V3
+YWtlIik7DQo+ID4+PiArwqDCoMKgIGlndF9zdWJ0ZXN0KCJzdHJlc3MtZ3QtYzYiKQ0KSG93IGFi
+b3V0IHRvZ2dsZS1ndC1jNiA/DQpUaGFua3MsDQpBbnNodW1hbiBHdXB0YS4NCj4gPj4+ICvCoMKg
+wqDCoMKgwqDCoCBzdHJlc3NfYzYoZmQsIDE2KTsNCj4gPj4+ICsNCj4gPj4+IMKgwqDCoMKgwqAg
+aWd0X2ZpeHR1cmUgew0KPiA+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIGNsb3NlKGZkKTsNCj4gPj4+
+IMKgwqDCoMKgwqAgfQ0KPiA+Pg0KPiA+PiBIaSBSaWFuYSwNCj4gPj4NCj4gPj4gSnVzdCBjdXJp
+b3VzLCBCdXQgdXN1YWxseSBzdHJlc3MgdGVzdGluZyBpbnZvbHZlcyBzb21lIHNvcnQgYQ0KPiA+
+PiB3b3JrbG9hZCBydW5uaW5nIHRvIHRlc3Qgb3V0IHJjNiBkdXJpbmcgdGhlIHJ1bi4gV2lsbCB5
+b3UgYmUNCj4gPj4gaW50cm9kdWNpbmcgYW5vdGhlciB0ZXN0IHdpdGggYSBzcGlubmVyIG9mIHNv
+cnRzID9JIHdpbGwgYmUgc2VuZGluZw0KPiA+PiBvdXQgYW5vdGhlciBwYXRjaCBzZXJpZXMgZm9y
+IGV4ZWMgYXMgd2VsbCB3aGljaCB3aWxsDQo+ID4gYmUgc2ltaWxhciB0byByYzYtaWRsZSBvZiBp
+OTE1Lg0KPiBHb3QgaXQuDQo+ID4NCj4gPiBUaGlzIHBhdGNoIGRvZXMgb25seSBhY3F1aXJpbmcv
+cmVsZWFzaW5nIGZvcmNld2FrZSBhbmQgY2hlY2tzIEdUIEMNCj4gPiBzdGF0ZXMuIGFkZGVkIGEg
+bG9vcCB0byBjaGVjayBtdWx0aXBsZSB0aW1lcy4NCj4gVGhlIGxvb3AgZm9yIHRoaXMgY2FzZSBt
+YWtlcyBzZW5zZS4NCj4gPg0KPiA+IFNob3VsZCBpIHJlbmFtZSB0aGUgdGVzdD8NCj4gTWF5YmUg
+PyBCdXQgSSdtIG5vdCBzdXJlIHRvIHdoYXQuIEkgZ3Vlc3MgdGhpcyBpcyBiZXR3ZWVuIHNhbml0
+eSBhbmQgc3RyZXNzIHRlc3QuDQo+IFNvIHRoYXQgY2FuIGJlIHlvdXIgY2FsbCBJIGd1ZXNzLg0K
+PiA+DQo+ID4gVGhhbmtzDQo+ID4gUmlhbmENCj4gPj4NCj4gPj4gVGhhbmtzLA0KPiA+Pg0KPiA+
+PiBTdWphDQo+ID4+DQo=
