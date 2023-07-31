@@ -2,14 +2,14 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: Brendan Higgins <brendan.higgins@linux.dev>,
  David Gow <davidgow@google.com>
-Date: Mon, 31 Jul 2023 07:45:54 +0200
-Message-ID: <20230731054552.2145292-6-janusz.krzysztofik@linux.intel.com>
+Date: Mon, 31 Jul 2023 07:45:56 +0200
+Message-ID: <20230731054552.2145292-8-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20230731054552.2145292-5-janusz.krzysztofik@linux.intel.com>
 References: <20230731054552.2145292-5-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 1/3] kunit: Report the count of test suites in
- a module
+Subject: [igt-dev] [PATCH v2 3/3] kunit: Allow kunit test modules to use
+ test filtering
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,45 +24,212 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-According to KTAP specification[1], results should always start from a
-header that provides a TAP protocol version, followed by a test plan with
-a count of items to be executed.  That pattern should be followed at each
-nesting level.  In the current implementation of the top-most, i.e., test
-suite level, those rules apply only for test suites built into the kernel,
-executed and reported on boot.  Results submitted to dmesg from kunit test
-modules loaded later are missing those top-level headers.
+External tools, e.g., Intel GPU tools (IGT), support execution of
+individual selftests provided by kernel modules.  That could be also
+applicable to kunit test modules if they provided test filtering.  But
+test filtering is now possible only when kunit code is built into the
+kernel.  Moreover, a filter can be specified only at boot time, then
+reboot is required each time a different filter is needed.
 
-As a consequence, if a kunit test module provides more than one test suite
-then, without the top level test plan, external tools that are parsing
-dmesg for kunit test output are not able to tell how many test suites
-should be expected and whether to continue parsing after complete output
-from the first test suite is collected.
+Build the test filtering code also when kunit is configured as a module,
+expose test filtering functions to other kunit source files, and use them
+in kunit module notifier callback functions.  Userspace can then reload
+the kunit module with a value of the filter_glob parameter tuned to a
+specific kunit test module every time it wants to limit the scope of tests
+executed on that module load.  Make the kunit.filter_glob parameter
+visible in sysfs for user convenience.
 
-Submit the top-level headers also from the kunit test module notifier
-initialization callback.
-
-[1] https://docs.kernel.org/dev-tools/ktap.html#
+v2: Fix new name of a structure moved to kunit namespace not updated
+    across all uses.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- lib/kunit/test.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/kunit/test.h | 13 +++++++++++++
+ lib/kunit/executor.c | 42 ++++++++++++++++++++++--------------------
+ lib/kunit/test.c     | 22 ++++++++++++++++++++++
+ 3 files changed, 57 insertions(+), 20 deletions(-)
 
+diff --git a/include/kunit/test.h b/include/kunit/test.h
+index 6d693f21a4833..14ff12e72252a 100644
+--- a/include/kunit/test.h
++++ b/include/kunit/test.h
+@@ -190,6 +190,12 @@ struct kunit_suite {
+ 	int suite_init_err;
+ };
+ 
++/* Stores an array of suites, end points one past the end */
++struct kunit_suite_set {
++	struct kunit_suite * const *start;
++	struct kunit_suite * const *end;
++};
++
+ /**
+  * struct kunit - represents a running instance of a test.
+  *
+@@ -238,6 +244,7 @@ static inline void kunit_set_failure(struct kunit *test)
+ 
+ bool kunit_enabled(void);
+ const char *kunit_action(void);
++const char *kunit_filter_glob(void);
+ 
+ void kunit_init_test(struct kunit *test, const char *name, char *log);
+ 
+@@ -248,6 +255,12 @@ size_t kunit_suite_num_test_cases(struct kunit_suite *suite);
+ unsigned int kunit_test_case_num(struct kunit_suite *suite,
+ 				 struct kunit_case *test_case);
+ 
++struct kunit_suite_set
++kunit_filter_suites(const struct kunit_suite_set *suite_set,
++		    const char *filter_glob,
++		    int *err);
++void kunit_free_suite_set(struct kunit_suite_set suite_set);
++
+ int __kunit_test_suites_init(struct kunit_suite * const * const suites, int num_suites);
+ 
+ void __kunit_test_suites_exit(struct kunit_suite **suites, int num_suites);
+diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
+index d1c0616569dfd..49fe40cc8f1af 100644
+--- a/lib/kunit/executor.c
++++ b/lib/kunit/executor.c
+@@ -25,14 +25,17 @@ const char *kunit_action(void)
+ 	return action_param;
+ }
+ 
+-#if IS_BUILTIN(CONFIG_KUNIT)
+-
+ static char *filter_glob_param;
+ 
+-module_param_named(filter_glob, filter_glob_param, charp, 0);
++module_param_named(filter_glob, filter_glob_param, charp, 0400);
+ MODULE_PARM_DESC(filter_glob,
+ 		"Filter which KUnit test suites/tests run at boot-time, e.g. list* or list*.*del_test");
+ 
++const char *kunit_filter_glob(void)
++{
++	return filter_glob_param;
++}
++
+ /* glob_match() needs NULL terminated strings, so we need a copy of filter_glob_param. */
+ struct kunit_test_filter {
+ 	char *suite_glob;
+@@ -96,16 +99,7 @@ kunit_filter_tests(const struct kunit_suite *const suite, const char *test_glob)
+ 	return copy;
+ }
+ 
+-static char *kunit_shutdown;
+-core_param(kunit_shutdown, kunit_shutdown, charp, 0644);
+-
+-/* Stores an array of suites, end points one past the end */
+-struct suite_set {
+-	struct kunit_suite * const *start;
+-	struct kunit_suite * const *end;
+-};
+-
+-static void kunit_free_suite_set(struct suite_set suite_set)
++void kunit_free_suite_set(struct kunit_suite_set suite_set)
+ {
+ 	struct kunit_suite * const *suites;
+ 
+@@ -114,13 +108,14 @@ static void kunit_free_suite_set(struct suite_set suite_set)
+ 	kfree(suite_set.start);
+ }
+ 
+-static struct suite_set kunit_filter_suites(const struct suite_set *suite_set,
+-					    const char *filter_glob,
+-					    int *err)
++struct kunit_suite_set
++kunit_filter_suites(const struct kunit_suite_set *suite_set,
++		    const char *filter_glob,
++		    int *err)
+ {
+ 	int i;
+ 	struct kunit_suite **copy, *filtered_suite;
+-	struct suite_set filtered;
++	struct kunit_suite_set filtered;
+ 	struct kunit_test_filter filter;
+ 
+ 	const size_t max = suite_set->end - suite_set->start;
+@@ -155,6 +150,11 @@ static struct suite_set kunit_filter_suites(const struct suite_set *suite_set,
+ 	return filtered;
+ }
+ 
++#if IS_BUILTIN(CONFIG_KUNIT)
++
++static char *kunit_shutdown;
++core_param(kunit_shutdown, kunit_shutdown, charp, 0644);
++
+ static void kunit_handle_shutdown(void)
+ {
+ 	if (!kunit_shutdown)
+@@ -169,7 +169,7 @@ static void kunit_handle_shutdown(void)
+ 
+ }
+ 
+-static void kunit_exec_run_tests(struct suite_set *suite_set)
++static void kunit_exec_run_tests(struct kunit_suite_set *suite_set)
+ {
+ 	size_t num_suites = suite_set->end - suite_set->start;
+ 
+@@ -179,7 +179,7 @@ static void kunit_exec_run_tests(struct suite_set *suite_set)
+ 	__kunit_test_suites_init(suite_set->start, num_suites);
+ }
+ 
+-static void kunit_exec_list_tests(struct suite_set *suite_set)
++static void kunit_exec_list_tests(struct kunit_suite_set *suite_set)
+ {
+ 	struct kunit_suite * const *suites;
+ 	struct kunit_case *test_case;
+@@ -195,7 +195,9 @@ static void kunit_exec_list_tests(struct suite_set *suite_set)
+ 
+ int kunit_run_all_tests(void)
+ {
+-	struct suite_set suite_set = {__kunit_suites_start, __kunit_suites_end};
++	struct kunit_suite_set suite_set = {
++		__kunit_suites_start, __kunit_suites_end,
++	};
+ 	int err = 0;
+ 	if (!kunit_enabled()) {
+ 		pr_info("kunit: disabled\n");
 diff --git a/lib/kunit/test.c b/lib/kunit/test.c
-index 84e4666555c94..a29ca1acc4d81 100644
+index 413d9fd364a8d..bfc2f65bd1dae 100644
 --- a/lib/kunit/test.c
 +++ b/lib/kunit/test.c
-@@ -729,6 +729,11 @@ EXPORT_SYMBOL_GPL(__kunit_test_suites_exit);
+@@ -757,6 +757,22 @@ EXPORT_SYMBOL_GPL(__kunit_test_suites_exit);
  #ifdef CONFIG_MODULES
  static void kunit_module_init(struct module *mod)
  {
-+	if (mod->num_kunit_suites > 0) {
-+		pr_info("KTAP version 1\n");
-+		pr_info("1..%d\n", mod->num_kunit_suites);
-+	}
++	struct kunit_suite_set suite_set = {
++		mod->kunit_suites, mod->kunit_suites + mod->num_kunit_suites,
++	};
++	int err = 0;
 +
- 	__kunit_test_suites_init(mod->kunit_suites, mod->num_kunit_suites);
++	suite_set = kunit_filter_suites(&suite_set,
++					kunit_filter_glob() ?: "*.*", &err);
++	if (err) {
++		pr_err("kunit module: error filtering suites: %d\n",
++		       err);
++		kfree(suite_set.start);
++		suite_set.start = NULL;
++	}
++	mod->kunit_suites = (struct kunit_suite **)suite_set.start;
++	mod->num_kunit_suites = suite_set.end - suite_set.start;
++
+ 	if (mod->num_kunit_suites > 0) {
+ 		pr_info("KTAP version 1\n");
+ 		pr_info("1..%d\n", mod->num_kunit_suites);
+@@ -767,7 +783,13 @@ static void kunit_module_init(struct module *mod)
+ 
+ static void kunit_module_exit(struct module *mod)
+ {
++	struct kunit_suite_set suite_set = {
++		mod->kunit_suites, mod->kunit_suites + mod->num_kunit_suites,
++	};
++
+ 	__kunit_test_suites_exit(mod->kunit_suites, mod->num_kunit_suites);
++	if (suite_set.start)
++		kunit_free_suite_set(suite_set);
  }
  
+ static int kunit_module_notify(struct notifier_block *nb, unsigned long val,
 -- 
 2.41.0
