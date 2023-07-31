@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22D1710E185
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Jul 2023 08:49:11 +0000 (UTC)
-Message-ID: <c9bf9ed1-9370-41d3-7f33-1e953f28cfc4@intel.com>
-Date: Mon, 31 Jul 2023 14:18:41 +0530
+Received: from mgamail.intel.com (unknown [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 891BB10E1C6
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Jul 2023 10:08:37 +0000 (UTC)
+Message-ID: <1f93b4b2-24ac-431f-0e4d-6b407f3a5892@intel.com>
+Date: Mon, 31 Jul 2023 15:37:45 +0530
 Content-Language: en-US
-To: Albert Esteve <aesteve@redhat.com>
-References: <20230728143742.322532-1-aesteve@redhat.com>
- <20230728143742.322532-2-aesteve@redhat.com>
- <a5ada367-5eb6-8b97-82eb-af2d36f120b1@intel.com>
- <CADSE00L-KZQgSs63EbpsEms7F6pqyagB_HVG7KzUKcGc3R0oXA@mail.gmail.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <CADSE00L-KZQgSs63EbpsEms7F6pqyagB_HVG7KzUKcGc3R0oXA@mail.gmail.com>
+To: Riana Tauro <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230728060906.2047834-1-riana.tauro@intel.com>
+ <825ff60a-aa42-7941-8d27-6002935e58b3@intel.com>
+ <cb014e1f-b302-6705-a00e-a98855af0d9d@intel.com>
+From: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
+In-Reply-To: <cb014e1f-b302-6705-a00e-a98855af0d9d@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 1/2] igt_kms: add hotspot plane property
+Subject: Re: [igt-dev] [PATCH i-g-t] RFC tests/xe: Stress test GT C states
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,149 +22,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, belmouss@redhat.com, javierm@redhat.com
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-
-On Mon-31-07-2023 01:42 pm, Albert Esteve wrote:
-> 
-> 
-> 
-> On Mon, Jul 31, 2023 at 8:30 AM Modem, Bhanuprakash 
-> <bhanuprakash.modem@intel.com <mailto:bhanuprakash.modem@intel.com>> wrote:
-> 
->     Hello,
-> 
->     On Fri-28-07-2023 08:07 pm, Albert Esteve wrote:
->      > Introduce LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT
->      > capability definition until patched drm.h uapi header
->      > is upstreamed and lands on IGT.
->      >
->      > CURSOR_PLANE_HOTSPOT capability is enabled
->      > conditionally, and then tracked in the igt_display
->      > struct.
->      >
->      > Add HOTSPOT_X and HOTSPOT_Y properties
->      > to the atomic_plane_properties struct.
->      >
->      > Signed-off-by: Albert Esteve <aesteve@redhat.com
->     <mailto:aesteve@redhat.com>>
->      > ---
->      >   lib/igt_kms.c | 10 ++++++++++
->      >   lib/igt_kms.h | 11 ++++++++++-
->      >   2 files changed, 20 insertions(+), 1 deletion(-)
->      >
->      > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->      > index f2b0eed57..73119d0e5 100644
->      > --- a/lib/igt_kms.c
->      > +++ b/lib/igt_kms.c
->      > @@ -601,6 +601,8 @@ const char * const
->     igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
->      >       [IGT_PLANE_CRTC_Y] = "CRTC_Y",
->      >       [IGT_PLANE_CRTC_W] = "CRTC_W",
->      >       [IGT_PLANE_CRTC_H] = "CRTC_H",
->      > +     [IGT_PLANE_HOTSPOT_X] = "HOTSPOT_X",
->      > +     [IGT_PLANE_HOTSPOT_Y] = "HOTSPOT_Y",
->      >       [IGT_PLANE_FB_ID] = "FB_ID",
->      >       [IGT_PLANE_CRTC_ID] = "CRTC_ID",
->      >       [IGT_PLANE_IN_FENCE_FD] = "IN_FENCE_FD",
->      > @@ -2296,6 +2298,11 @@ static void igt_plane_reset(igt_plane_t
->     *plane)
->      >       if (igt_plane_has_prop(plane, IGT_PLANE_SCALING_FILTER))
->      >               igt_plane_set_prop_enum(plane,
->     IGT_PLANE_SCALING_FILTER, "Default");
->      >
->      > +     if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_X))
->      > +             igt_plane_set_prop_value(plane,
->     IGT_PLANE_HOTSPOT_X, 0);
->      > +     if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_Y))
->      > +             igt_plane_set_prop_value(plane,
->     IGT_PLANE_HOTSPOT_Y, 0);
->      > +
->      >       igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
->      >       plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
->      >       plane->gem_handle = 0;
->      > @@ -2679,6 +2686,9 @@ void igt_display_require(igt_display_t
->     *display, int drm_fd)
->      >       drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
->      >       if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
->      >               display->is_atomic = 1;
->      > +
->      > +     if (drmSetClientCap(drm_fd,
->     LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
->      > +             display->set_hotspots = 1;
-> 
->     Any special reason to add this to display struct?
->     IMHO, it is better to handle it at test level.
-> 
-> 
-> Hi Bhanu,
-> 
-> Mostly for keeping it consistent with the `is_atomic` capability.
-> 
-> Are you suggesting moving the `drmSetClientCap` to the test?
-
-Yes.
-
-> I am ok with changing this, just trying to understand what would
-> be the preferred way here.
-
-Either way (adding to display struct or checking at test level) is fine.
-
-Generally to maintain the re-usability (ex: checking for the same 
-capability multiple times) we used to cache the capabilities to display 
-struct. If multiple tests (or multiple places in your test) want to use 
-this hotspot capability, you can add it to the display struct.
-
-- Bhanu
-
-> 
-> Thanks!
-> 
-> 
->     - Bhanu
-> 
->      >
->      >       plane_resources = drmModeGetPlaneResources(display->drm_fd);
->      >       igt_assert(plane_resources);
->      > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
->      > index 1b6988c17..cf0a6d82b 100644
->      > --- a/lib/igt_kms.h
->      > +++ b/lib/igt_kms.h
->      > @@ -41,6 +41,12 @@
->      >
->      >   /* Low-level helpers with kmstest_ prefix */
->      >
->      > +/**
->      > + * Clients which do set cursor hotspot and treat the cursor plane
->      > + * like a mouse cursor should set this property.
->      > + */
->      > +#define LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT    6
->      > +
->      >   /**
->      >    * pipe:
->      >    * @PIPE_NONE: Invalid pipe, used for disconnecting a output
->     from a pipe.
->      > @@ -318,7 +324,9 @@ enum igt_atomic_plane_properties {
->      >          IGT_PLANE_ZPOS,
->      >          IGT_PLANE_FB_DAMAGE_CLIPS,
->      >          IGT_PLANE_SCALING_FILTER,
->      > -       IGT_NUM_PLANE_PROPS
->      > +       IGT_PLANE_HOTSPOT_X,
->      > +       IGT_PLANE_HOTSPOT_Y,
->      > +       IGT_NUM_PLANE_PROPS
->      >   };
->      >
->      >   /**
->      > @@ -448,6 +456,7 @@ struct igt_display {
->      >       igt_pipe_t *pipes;
->      >       bool has_cursor_plane;
->      >       bool is_atomic;
->      > +     bool set_hotspots;
->      >       bool first_commit;
->      >
->      >       uint64_t *modifiers;
-> 
+On 7/31/2023 1:57 PM, Riana Tauro wrote:
+> Hi Suja
+>
+> On 7/31/2023 1:00 PM, Sundaresan, Sujaritha wrote:
+>>
+>> On 7/28/2023 11:39 AM, Riana Tauro wrote:
+>>> stress test GT C states by checking if GT is in C0 when
+>>> forcewake is acquired and in C6 once released.
+>>>
+>>> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+>>> ---
+>>>   tests/xe/xe_pm_residency.c | 27 +++++++++++++++++++++++++++
+>>>   1 file changed, 27 insertions(+)
+>>>
+>>> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+>>> index 4936de166..9713e61cd 100644
+>>> --- a/tests/xe/xe_pm_residency.c
+>>> +++ b/tests/xe/xe_pm_residency.c
+>>> @@ -85,6 +85,29 @@ static void test_idle_residency(int fd, int gt)
+>>>       assert_within_epsilon(residency_end - residency_start, 
+>>> elapsed_ms, tolerance);
+>>>   }
+>>> +/**
+>>> + * SUBTEST: stress-gt-c6
+>>> + * Description: stress test GT C states by acquiring/releasing 
+>>> forcewake
+>>> + * Run type: FULL
+>>> + */
+>>> +static void stress_c6(int fd, int n)
+>>> +{
+>>> +    int handle, gt;
+>>> +
+>>> +    while (n--) {
+>>> +        handle = igt_debugfs_open(fd, "forcewake_all", O_WRONLY);
+>>> +        igt_assert(handle >= 0);
+>>> +        /* check if all gts are in C0 after forcewake is acquired */
+>>> +        xe_for_each_gt(fd, gt)
+>>> +            igt_assert_f(!xe_is_gt_in_c6(fd, gt), "GT in C6\n");
+>>> +        close(handle);
+>>> +        /* check if all gts are in C6 after forcewake is released */
+>>> +        xe_for_each_gt(fd, gt)
+>>> +            igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
+>>> +                     "GT is not in C6\n");
+>>> +    }
+>>> +}
+>>> +
+>>>   igt_main
+>>>   {
+>>>       int fd, gt;
+>>> @@ -104,6 +127,10 @@ igt_main
+>>>           xe_for_each_gt(fd, gt)
+>>>               test_idle_residency(fd, gt);
+>>> +    igt_describe("stress test GT C states by acquiring/releasing 
+>>> forcewake");
+>>> +    igt_subtest("stress-gt-c6")
+>>> +        stress_c6(fd, 16);
+>>> +
+>>>       igt_fixture {
+>>>           close(fd);
+>>>       }
+>>
+>> Hi Riana,
+>>
+>> Just curious, But usually stress testing involves some sort a 
+>> workload running to test out rc6 during the run. Will you be 
+>> introducing another test with a spinner of sorts ?I will be sending 
+>> out another patch series for exec as well which will 
+> be similar to rc6-idle of i915.
+Got it.
+>
+> This patch does only acquiring/releasing forcewake and checks GT C 
+> states. added a loop to check multiple times.
+The loop for this case makes sense.
+>
+> Should i rename the test?
+Maybe ? But I'm not sure to what. I guess this is between sanity and 
+stress test. So that can be your call I guess.
+>
+> Thanks
+> Riana
+>>
+>> Thanks,
+>>
+>> Suja
+>>
