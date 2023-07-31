@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Brendan Higgins <brendan.higgins@linux.dev>,
- David Gow <davidgow@google.com>
-Date: Mon, 31 Jul 2023 07:45:56 +0200
-Message-ID: <20230731054552.2145292-8-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20230731054552.2145292-5-janusz.krzysztofik@linux.intel.com>
-References: <20230731054552.2145292-5-janusz.krzysztofik@linux.intel.com>
+Received: from mgamail.intel.com (unknown [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4138E10E1A7
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Jul 2023 06:29:24 +0000 (UTC)
+Message-ID: <a5ada367-5eb6-8b97-82eb-af2d36f120b1@intel.com>
+Date: Mon, 31 Jul 2023 11:58:57 +0530
+To: Albert Esteve <aesteve@redhat.com>, <igt-dev@lists.freedesktop.org>
+References: <20230728143742.322532-1-aesteve@redhat.com>
+ <20230728143742.322532-2-aesteve@redhat.com>
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230728143742.322532-2-aesteve@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 3/3] kunit: Allow kunit test modules to use
- test filtering
+Subject: Re: [igt-dev] [PATCH v2 1/2] igt_kms: add hotspot plane property
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,219 +21,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, igt-dev@lists.freedesktop.org,
- linux-kselftest@vger.kernel.org, intel-xe@lists.freedesktop.org,
- kunit-dev@googlegroups.com
+Cc: belmouss@redhat.com, javierm@redhat.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-External tools, e.g., Intel GPU tools (IGT), support execution of
-individual selftests provided by kernel modules.  That could be also
-applicable to kunit test modules if they provided test filtering.  But
-test filtering is now possible only when kunit code is built into the
-kernel.  Moreover, a filter can be specified only at boot time, then
-reboot is required each time a different filter is needed.
+Hello,
 
-Build the test filtering code also when kunit is configured as a module,
-expose test filtering functions to other kunit source files, and use them
-in kunit module notifier callback functions.  Userspace can then reload
-the kunit module with a value of the filter_glob parameter tuned to a
-specific kunit test module every time it wants to limit the scope of tests
-executed on that module load.  Make the kunit.filter_glob parameter
-visible in sysfs for user convenience.
+On Fri-28-07-2023 08:07 pm, Albert Esteve wrote:
+> Introduce LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT
+> capability definition until patched drm.h uapi header
+> is upstreamed and lands on IGT.
+> 
+> CURSOR_PLANE_HOTSPOT capability is enabled
+> conditionally, and then tracked in the igt_display
+> struct.
+> 
+> Add HOTSPOT_X and HOTSPOT_Y properties
+> to the atomic_plane_properties struct.
+> 
+> Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> ---
+>   lib/igt_kms.c | 10 ++++++++++
+>   lib/igt_kms.h | 11 ++++++++++-
+>   2 files changed, 20 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index f2b0eed57..73119d0e5 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -601,6 +601,8 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
+>   	[IGT_PLANE_CRTC_Y] = "CRTC_Y",
+>   	[IGT_PLANE_CRTC_W] = "CRTC_W",
+>   	[IGT_PLANE_CRTC_H] = "CRTC_H",
+> +	[IGT_PLANE_HOTSPOT_X] = "HOTSPOT_X",
+> +	[IGT_PLANE_HOTSPOT_Y] = "HOTSPOT_Y",
+>   	[IGT_PLANE_FB_ID] = "FB_ID",
+>   	[IGT_PLANE_CRTC_ID] = "CRTC_ID",
+>   	[IGT_PLANE_IN_FENCE_FD] = "IN_FENCE_FD",
+> @@ -2296,6 +2298,11 @@ static void igt_plane_reset(igt_plane_t *plane)
+>   	if (igt_plane_has_prop(plane, IGT_PLANE_SCALING_FILTER))
+>   		igt_plane_set_prop_enum(plane, IGT_PLANE_SCALING_FILTER, "Default");
+>   
+> +	if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_X))
+> +		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_X, 0);
+> +	if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_Y))
+> +		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_Y, 0);
+> +
+>   	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
+>   	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
+>   	plane->gem_handle = 0;
+> @@ -2679,6 +2686,9 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>   	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+>   	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
+>   		display->is_atomic = 1;
+> +	
+> +	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
+> +		display->set_hotspots = 1;
 
-v2: Fix new name of a structure moved to kunit namespace not updated
-    across all uses.
+Any special reason to add this to display struct?
+IMHO, it is better to handle it at test level.
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- include/kunit/test.h | 13 +++++++++++++
- lib/kunit/executor.c | 42 ++++++++++++++++++++++--------------------
- lib/kunit/test.c     | 22 ++++++++++++++++++++++
- 3 files changed, 57 insertions(+), 20 deletions(-)
+- Bhanu
 
-diff --git a/include/kunit/test.h b/include/kunit/test.h
-index 6d693f21a4833..14ff12e72252a 100644
---- a/include/kunit/test.h
-+++ b/include/kunit/test.h
-@@ -190,6 +190,12 @@ struct kunit_suite {
- 	int suite_init_err;
- };
- 
-+/* Stores an array of suites, end points one past the end */
-+struct kunit_suite_set {
-+	struct kunit_suite * const *start;
-+	struct kunit_suite * const *end;
-+};
-+
- /**
-  * struct kunit - represents a running instance of a test.
-  *
-@@ -238,6 +244,7 @@ static inline void kunit_set_failure(struct kunit *test)
- 
- bool kunit_enabled(void);
- const char *kunit_action(void);
-+const char *kunit_filter_glob(void);
- 
- void kunit_init_test(struct kunit *test, const char *name, char *log);
- 
-@@ -248,6 +255,12 @@ size_t kunit_suite_num_test_cases(struct kunit_suite *suite);
- unsigned int kunit_test_case_num(struct kunit_suite *suite,
- 				 struct kunit_case *test_case);
- 
-+struct kunit_suite_set
-+kunit_filter_suites(const struct kunit_suite_set *suite_set,
-+		    const char *filter_glob,
-+		    int *err);
-+void kunit_free_suite_set(struct kunit_suite_set suite_set);
-+
- int __kunit_test_suites_init(struct kunit_suite * const * const suites, int num_suites);
- 
- void __kunit_test_suites_exit(struct kunit_suite **suites, int num_suites);
-diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
-index d1c0616569dfd..49fe40cc8f1af 100644
---- a/lib/kunit/executor.c
-+++ b/lib/kunit/executor.c
-@@ -25,14 +25,17 @@ const char *kunit_action(void)
- 	return action_param;
- }
- 
--#if IS_BUILTIN(CONFIG_KUNIT)
--
- static char *filter_glob_param;
- 
--module_param_named(filter_glob, filter_glob_param, charp, 0);
-+module_param_named(filter_glob, filter_glob_param, charp, 0400);
- MODULE_PARM_DESC(filter_glob,
- 		"Filter which KUnit test suites/tests run at boot-time, e.g. list* or list*.*del_test");
- 
-+const char *kunit_filter_glob(void)
-+{
-+	return filter_glob_param;
-+}
-+
- /* glob_match() needs NULL terminated strings, so we need a copy of filter_glob_param. */
- struct kunit_test_filter {
- 	char *suite_glob;
-@@ -96,16 +99,7 @@ kunit_filter_tests(const struct kunit_suite *const suite, const char *test_glob)
- 	return copy;
- }
- 
--static char *kunit_shutdown;
--core_param(kunit_shutdown, kunit_shutdown, charp, 0644);
--
--/* Stores an array of suites, end points one past the end */
--struct suite_set {
--	struct kunit_suite * const *start;
--	struct kunit_suite * const *end;
--};
--
--static void kunit_free_suite_set(struct suite_set suite_set)
-+void kunit_free_suite_set(struct kunit_suite_set suite_set)
- {
- 	struct kunit_suite * const *suites;
- 
-@@ -114,13 +108,14 @@ static void kunit_free_suite_set(struct suite_set suite_set)
- 	kfree(suite_set.start);
- }
- 
--static struct suite_set kunit_filter_suites(const struct suite_set *suite_set,
--					    const char *filter_glob,
--					    int *err)
-+struct kunit_suite_set
-+kunit_filter_suites(const struct kunit_suite_set *suite_set,
-+		    const char *filter_glob,
-+		    int *err)
- {
- 	int i;
- 	struct kunit_suite **copy, *filtered_suite;
--	struct suite_set filtered;
-+	struct kunit_suite_set filtered;
- 	struct kunit_test_filter filter;
- 
- 	const size_t max = suite_set->end - suite_set->start;
-@@ -155,6 +150,11 @@ static struct suite_set kunit_filter_suites(const struct suite_set *suite_set,
- 	return filtered;
- }
- 
-+#if IS_BUILTIN(CONFIG_KUNIT)
-+
-+static char *kunit_shutdown;
-+core_param(kunit_shutdown, kunit_shutdown, charp, 0644);
-+
- static void kunit_handle_shutdown(void)
- {
- 	if (!kunit_shutdown)
-@@ -169,7 +169,7 @@ static void kunit_handle_shutdown(void)
- 
- }
- 
--static void kunit_exec_run_tests(struct suite_set *suite_set)
-+static void kunit_exec_run_tests(struct kunit_suite_set *suite_set)
- {
- 	size_t num_suites = suite_set->end - suite_set->start;
- 
-@@ -179,7 +179,7 @@ static void kunit_exec_run_tests(struct suite_set *suite_set)
- 	__kunit_test_suites_init(suite_set->start, num_suites);
- }
- 
--static void kunit_exec_list_tests(struct suite_set *suite_set)
-+static void kunit_exec_list_tests(struct kunit_suite_set *suite_set)
- {
- 	struct kunit_suite * const *suites;
- 	struct kunit_case *test_case;
-@@ -195,7 +195,9 @@ static void kunit_exec_list_tests(struct suite_set *suite_set)
- 
- int kunit_run_all_tests(void)
- {
--	struct suite_set suite_set = {__kunit_suites_start, __kunit_suites_end};
-+	struct kunit_suite_set suite_set = {
-+		__kunit_suites_start, __kunit_suites_end,
-+	};
- 	int err = 0;
- 	if (!kunit_enabled()) {
- 		pr_info("kunit: disabled\n");
-diff --git a/lib/kunit/test.c b/lib/kunit/test.c
-index 413d9fd364a8d..bfc2f65bd1dae 100644
---- a/lib/kunit/test.c
-+++ b/lib/kunit/test.c
-@@ -757,6 +757,22 @@ EXPORT_SYMBOL_GPL(__kunit_test_suites_exit);
- #ifdef CONFIG_MODULES
- static void kunit_module_init(struct module *mod)
- {
-+	struct kunit_suite_set suite_set = {
-+		mod->kunit_suites, mod->kunit_suites + mod->num_kunit_suites,
-+	};
-+	int err = 0;
-+
-+	suite_set = kunit_filter_suites(&suite_set,
-+					kunit_filter_glob() ?: "*.*", &err);
-+	if (err) {
-+		pr_err("kunit module: error filtering suites: %d\n",
-+		       err);
-+		kfree(suite_set.start);
-+		suite_set.start = NULL;
-+	}
-+	mod->kunit_suites = (struct kunit_suite **)suite_set.start;
-+	mod->num_kunit_suites = suite_set.end - suite_set.start;
-+
- 	if (mod->num_kunit_suites > 0) {
- 		pr_info("KTAP version 1\n");
- 		pr_info("1..%d\n", mod->num_kunit_suites);
-@@ -767,7 +783,13 @@ static void kunit_module_init(struct module *mod)
- 
- static void kunit_module_exit(struct module *mod)
- {
-+	struct kunit_suite_set suite_set = {
-+		mod->kunit_suites, mod->kunit_suites + mod->num_kunit_suites,
-+	};
-+
- 	__kunit_test_suites_exit(mod->kunit_suites, mod->num_kunit_suites);
-+	if (suite_set.start)
-+		kunit_free_suite_set(suite_set);
- }
- 
- static int kunit_module_notify(struct notifier_block *nb, unsigned long val,
--- 
-2.41.0
+>   
+>   	plane_resources = drmModeGetPlaneResources(display->drm_fd);
+>   	igt_assert(plane_resources);
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 1b6988c17..cf0a6d82b 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -41,6 +41,12 @@
+>   
+>   /* Low-level helpers with kmstest_ prefix */
+>   
+> +/**
+> + * Clients which do set cursor hotspot and treat the cursor plane
+> + * like a mouse cursor should set this property.
+> + */
+> +#define LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT	6
+> +
+>   /**
+>    * pipe:
+>    * @PIPE_NONE: Invalid pipe, used for disconnecting a output from a pipe.
+> @@ -318,7 +324,9 @@ enum igt_atomic_plane_properties {
+>          IGT_PLANE_ZPOS,
+>          IGT_PLANE_FB_DAMAGE_CLIPS,
+>          IGT_PLANE_SCALING_FILTER,
+> -       IGT_NUM_PLANE_PROPS
+> +       IGT_PLANE_HOTSPOT_X,
+> +       IGT_PLANE_HOTSPOT_Y,
+> +       IGT_NUM_PLANE_PROPS
+>   };
+>   
+>   /**
+> @@ -448,6 +456,7 @@ struct igt_display {
+>   	igt_pipe_t *pipes;
+>   	bool has_cursor_plane;
+>   	bool is_atomic;
+> +	bool set_hotspots;
+>   	bool first_commit;
+>   
+>   	uint64_t *modifiers;
