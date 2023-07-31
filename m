@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 31 Jul 2023 16:39:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Brendan Higgins <brendan.higgins@linux.dev>,
- David Gow <davidgow@google.com>
-Message-ID: <202307311645.CdN0xKiF-lkp@intel.com>
-References: <20230731054552.2145292-8-janusz.krzysztofik@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8799960557890375974=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230731054552.2145292-8-janusz.krzysztofik@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH v2 3/3] kunit: Allow kunit test modules to use
- test filtering
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: priyanka.dandamudi@intel.com
+Date: Mon, 31 Jul 2023 15:01:40 -0000
+Message-ID: <169081570028.10569.8627534309462335602@emeril.freedesktop.org>
+References: <20230731140953.1167462-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20230731140953.1167462-1-priyanka.dandamudi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVXBkYXRl?=
+ =?utf-8?q?_code_to_use_xe=5Fsysfs=5Fgt=5Fopen_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,112 +17,329 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: kunit-dev@googlegroups.com, llvm@lists.linux.dev,
- linux-kernel@vger.kernel.org, igt-dev@lists.freedesktop.org,
- linux-kselftest@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
- intel-xe@lists.freedesktop.org, linux-media@vger.kernel.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janusz,
+--===============8799960557890375974==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-kernel test robot noticed the following build errors:
+== Series Details ==
 
-[auto build test ERROR on shuah-kselftest/kunit-fixes]
-[also build test ERROR on linus/master v6.5-rc4]
-[cannot apply to shuah-kselftest/kunit next-20230731]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Series: Update code to use xe_sysfs_gt_open (rev2)
+URL   : https://patchwork.freedesktop.org/series/121046/
+State : success
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Janusz-Krzysztofik/kunit-Report-the-count-of-test-suites-in-a-module/20230731-141908
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git kunit-fixes
-patch link:    https://lore.kernel.org/r/20230731054552.2145292-8-janusz.krzysztofik%40linux.intel.com
-patch subject: [PATCH v2 3/3] kunit: Allow kunit test modules to use test filtering
-config: hexagon-randconfig-r041-20230731 (https://download.01.org/0day-ci/archive/20230731/202307311645.CdN0xKiF-lkp@intel.com/config)
-compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
-reproduce: (https://download.01.org/0day-ci/archive/20230731/202307311645.CdN0xKiF-lkp@intel.com/reproduce)
+== Summary ==
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202307311645.CdN0xKiF-lkp@intel.com/
+CI Bug Log - changes from CI_DRM_13447 -> IGTPW_9486
+====================================================
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+Summary
+-------
 
-WARNING: modpost: missing MODULE_DESCRIPTION() in vmlinux.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/locking/locktorture.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/locking/test-ww_mutex.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/rcu/rcutorture.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/rcu/refscale.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/torture.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/scftorture.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp737.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp855.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp857.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp860.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp874.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp932.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_euc-jp.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp950.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-3.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-5.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-9.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_koi8-u.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_koi8-ru.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-gaelic.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-romanian.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-roman.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/binfmt_script.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/autofs/autofs4.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in security/keys/trusted-keys/trusted.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/kunit/kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/kunit/kunit-example-test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/math/prime_numbers.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/zlib_deflate/zlib_deflate.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpio/gpio-gw-pld.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpio/gpio-pcf857x.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/video/backlight/platform_lcd.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/video/backlight/rt4831-backlight.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/video/fbdev/vfb.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dma/qcom/hdma_mgmt.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dma/qcom/hdma.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/regulator/da9121-regulator.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/regulator/rt4831-regulator.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/regulator/tps6286x-regulator.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/serial/8250/8250_base.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/serial/serial_mctrl_gpio.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/ttynull.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/goldfish.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/ttyprintk.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/ppdev.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/bridge/lontium-lt9611uxc.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/bridge/sil-sii8620.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/bridge/sii9234.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-ram.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-raw-ram.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-slimbus.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mfd/ssbi.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mfd/rt4831.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mfd/qcom-pm8008.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/auxdisplay/line-display.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hwmon/mr75203.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/mmc_core.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/pwrseq_emmc.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/sdio_uart.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/crypto/atmel-sha204a.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/goldfish/goldfish_pipe.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/devfreq/governor_simpleondemand.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/devfreq/governor_userspace.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hwtracing/intel_th/intel_th_msu_sink.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/parport/parport.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mtd/chips/cfi_util.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mtd/maps/map_funcs.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pcmcia/pcmcia_rsrc.o
->> ERROR: modpost: "glob_match" [lib/kunit/kunit.ko] undefined!
+  **SUCCESS**
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_9486 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_auth@basic-auth:
+    - bat-adlp-11:        NOTRUN -> [ABORT][1] ([i915#8011])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-adlp-11/igt@core_auth@basic-auth.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-tgl-1115g4:      [PASS][2] -> [FAIL][3] ([i915#7940])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/fi-tgl-1115g4/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/fi-tgl-1115g4/igt@i915_pm_rpm@basic-pci-d3-state.html
+    - bat-adlp-9:         [PASS][4] -> [FAIL][5] ([i915#7940])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-cfl-8109u:       [PASS][6] -> [FAIL][7] ([i915#7940])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/fi-cfl-8109u/igt@i915_pm_rpm@basic-rte.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/fi-cfl-8109u/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][8] -> [DMESG-FAIL][9] ([i915#5334])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_mocs:
+    - bat-mtlp-8:         [PASS][10] -> [DMESG-FAIL][11] ([i915#7059])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html
+    - bat-mtlp-6:         [PASS][12] -> [DMESG-FAIL][13] ([i915#7059])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-dg2-11:         [PASS][14] -> [DMESG-WARN][15] ([i915#7699])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-mtlp-6:         [PASS][16] -> [DMESG-FAIL][17] ([i915#7269])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-mtlp-6/igt@i915_selftest@live@requests.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-mtlp-6/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-2:         [PASS][18] -> [ABORT][19] ([i915#4983] / [i915#7461] / [i915#7913] / [i915#8347])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-mtlp-8:         [PASS][20] -> [DMESG-WARN][21] ([i915#6367])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-mtlp-8/igt@i915_selftest@live@slpc.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-mtlp-8/igt@i915_selftest@live@slpc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-cfl-8109u:       [FAIL][22] ([i915#7940]) -> [PASS][23]
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/fi-cfl-8109u/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/fi-cfl-8109u/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-cfl-guc:         [FAIL][24] ([i915#7940]) -> [PASS][25]
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/fi-cfl-guc/igt@i915_pm_rpm@module-reload.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/fi-cfl-guc/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         [DMESG-WARN][26] ([i915#6367]) -> [PASS][27]
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [DMESG-FAIL][28] ([i915#6763]) -> [PASS][29]
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_module_load@load:
+    - bat-adlp-11:        [ABORT][30] ([i915#4423]) -> [DMESG-WARN][31] ([i915#4423])
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-adlp-11/igt@i915_module_load@load.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-adlp-11/igt@i915_module_load@load.html
+
+  * igt@kms_psr@cursor_plane_move:
+    - bat-rplp-1:         [SKIP][32] ([i915#1072]) -> [ABORT][33] ([i915#8434])
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-rplp-1/igt@kms_psr@cursor_plane_move.html
+
+  
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#4423]: https://gitlab.freedesktop.org/drm/intel/issues/4423
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6763]: https://gitlab.freedesktop.org/drm/intel/issues/6763
+  [i915#7059]: https://gitlab.freedesktop.org/drm/intel/issues/7059
+  [i915#7269]: https://gitlab.freedesktop.org/drm/intel/issues/7269
+  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7940]: https://gitlab.freedesktop.org/drm/intel/issues/7940
+  [i915#8011]: https://gitlab.freedesktop.org/drm/intel/issues/8011
+  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
+  [i915#8434]: https://gitlab.freedesktop.org/drm/intel/issues/8434
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7411 -> IGTPW_9486
+
+  CI-20190529: 20190529
+  CI_DRM_13447: 4de6d1dd98632da97632e83f446888704bfbbcb7 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_9486: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/index.html
+  IGT_7411: 7411
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/index.html
+
+--===============8799960557890375974==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Update code to use xe_sysfs_gt_open (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121046/">https://patchwork.freedesktop.org/series/121046/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_13447 -&gt; IGTPW_9486</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_9486 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_auth@basic-auth:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-adlp-11/igt@core_auth@basic-auth.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8011">i915#8011</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/fi-tgl-1115g4/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/fi-tgl-1115g4/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>)</p>
+</li>
+<li>
+<p>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/fi-cfl-8109u/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/fi-cfl-8109u/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>
+<p>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-mtlp-8/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>)</p>
+</li>
+<li>
+<p>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-mtlp-6/igt@i915_selftest@live@gt_mocs.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7059">i915#7059</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-mtlp-6/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-mtlp-6/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7269">i915#7269</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-mtlp-8/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-mtlp-8/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/fi-cfl-8109u/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/fi-cfl-8109u/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/fi-cfl-guc/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/fi-cfl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6763">i915#6763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-adlp-11/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-adlp-11/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4423">i915#4423</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@cursor_plane_move:</p>
+<ul>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_13447/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/bat-rplp-1/igt@kms_psr@cursor_plane_move.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8434">i915#8434</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7411 -&gt; IGTPW_9486</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_13447: 4de6d1dd98632da97632e83f446888704bfbbcb7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_9486: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9486/index.html<br />
+  IGT_7411: 7411</p>
+
+</body>
+</html>
+
+--===============8799960557890375974==--
