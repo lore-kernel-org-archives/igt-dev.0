@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11E7C10E2AA
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Jul 2023 14:34:31 +0000 (UTC)
-Message-ID: <070ad02b-79f3-986e-1f59-98f36c71a9d7@intel.com>
-Date: Mon, 31 Jul 2023 20:04:25 +0530
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Language: en-US
-To: =?UTF-8?Q?Jouni_H=c3=b6gander?= <jouni.hogander@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230622054543.3360732-3-jouni.hogander@intel.com>
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20230622054543.3360732-3-jouni.hogander@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [i-g-t, v6,
- 2/4] tests/i915/kms_frontbuffer_tracking: Split drrs into library
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Date: Mon, 31 Jul 2023 14:55:38 -0000
+Message-ID: <169081533878.10565.11969830264067014719@emeril.freedesktop.org>
+References: <20230731141021.2854827-5-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20230731141021.2854827-5-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBrdW5p?=
+ =?utf-8?q?t=3A_Expose_some_built-in_features_to_modules_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,17 +17,23 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+== Series Details ==
 
-On 6/22/2023 11:15 AM, Jouni Högander wrote:
-> Split drrs handling into library to be used by other testcases as well.
->
-> v3: Add library function descriptions
-> v2: Moved into libigt instead of static kms_drrs_helper
->
-> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-LGTM
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Series: kunit: Expose some built-in features to modules (rev3)
+URL   : https://patchwork.freedesktop.org/series/121535/
+State : failure
+
+== Summary ==
+
+Applying: kunit: Report the count of test suites in a module
+Patch failed at 0001 kunit: Report the count of test suites in a module
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
