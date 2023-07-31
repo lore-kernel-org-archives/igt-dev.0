@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Wed, 26 Jul 2023 19:00:37 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230726170037.a5sghtawzm6mv2zc@kamilkon-desk1>
-References: <20230705163105.3804677-1-tvrtko.ursulin@linux.intel.com>
- <20230705163105.3804677-3-tvrtko.ursulin@linux.intel.com>
+Received: from mgamail.intel.com (unknown [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 596C210E1A6
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Jul 2023 05:16:22 +0000 (UTC)
+Date: Mon, 31 Jul 2023 07:16:17 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Albert Esteve <aesteve@redhat.com>
+Message-ID: <20230731051617.xazyykzsrgnfn55y@zkempczy-mobl2>
+References: <20230728143742.322532-1-aesteve@redhat.com>
+ <20230728143742.322532-2-aesteve@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230705163105.3804677-3-tvrtko.ursulin@linux.intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/3] lib/igt_drm_clients:
- Store memory info in the client
+In-Reply-To: <20230728143742.322532-2-aesteve@redhat.com>
+Subject: Re: [igt-dev] [PATCH v2 1/2] igt_kms: add hotspot plane property
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,149 +21,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, belmouss@redhat.com, javierm@redhat.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Tvrtko,
-
-On 2023-07-05 at 17:31:04 +0100, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On Fri, Jul 28, 2023 at 04:37:41PM +0200, Albert Esteve wrote:
+> Introduce LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT
+> capability definition until patched drm.h uapi header
+> is upstreamed and lands on IGT.
 > 
-> Define the storage structure and copy over memory data as parsed by the
-> fdinfo helpers.
+> CURSOR_PLANE_HOTSPOT capability is enabled
+> conditionally, and then tracked in the igt_display
+> struct.
 > 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Rob Clark <robdclark@chromium.org>
+> Add HOTSPOT_X and HOTSPOT_Y properties
+> to the atomic_plane_properties struct.
+> 
+> Signed-off-by: Albert Esteve <aesteve@redhat.com>
 > ---
->  lib/igt_drm_clients.c | 31 +++++++++++++++++++++++++++++++
->  lib/igt_drm_clients.h | 11 +++++++++++
->  2 files changed, 42 insertions(+)
+>  lib/igt_kms.c | 10 ++++++++++
+>  lib/igt_kms.h | 11 ++++++++++-
+>  2 files changed, 20 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-> index fdea42752a81..0db5b64effea 100644
-> --- a/lib/igt_drm_clients.c
-> +++ b/lib/igt_drm_clients.c
-> @@ -103,6 +103,8 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
->  			c->clients->max_name_len = len;
->  	}
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index f2b0eed57..73119d0e5 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -601,6 +601,8 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
+>  	[IGT_PLANE_CRTC_Y] = "CRTC_Y",
+>  	[IGT_PLANE_CRTC_W] = "CRTC_W",
+>  	[IGT_PLANE_CRTC_H] = "CRTC_H",
+> +	[IGT_PLANE_HOTSPOT_X] = "HOTSPOT_X",
+> +	[IGT_PLANE_HOTSPOT_Y] = "HOTSPOT_Y",
+>  	[IGT_PLANE_FB_ID] = "FB_ID",
+>  	[IGT_PLANE_CRTC_ID] = "CRTC_ID",
+>  	[IGT_PLANE_IN_FENCE_FD] = "IN_FENCE_FD",
+> @@ -2296,6 +2298,11 @@ static void igt_plane_reset(igt_plane_t *plane)
+>  	if (igt_plane_has_prop(plane, IGT_PLANE_SCALING_FILTER))
+>  		igt_plane_set_prop_enum(plane, IGT_PLANE_SCALING_FILTER, "Default");
 >  
-> +	/* Engines */
+> +	if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_X))
+> +		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_X, 0);
+> +	if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_Y))
+> +		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_Y, 0);
 > +
->  	c->last_runtime = 0;
->  	c->total_runtime = 0;
->  
-> @@ -118,6 +120,13 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
->  		c->last[i] = info->busy[i];
->  	}
->  
-> +	/* Memory regions */
-> +	for (i = 0; i <= c->regions->max_region_id; i++) {
-> +		assert(i < ARRAY_SIZE(info->region_mem));
-> +
-> +		c->memory[i] = info->region_mem[i];
-> +	}
-> +
->  	c->samples++;
->  	c->status = IGT_DRM_CLIENT_ALIVE;
->  }
-> @@ -154,6 +163,8 @@ igt_drm_client_add(struct igt_drm_clients *clients,
->  	c->id = info->id;
->  	c->drm_minor = drm_minor;
->  	c->clients = clients;
-> +
-> +	/* Engines */
->  	c->engines = malloc(sizeof(*c->engines));
->  	assert(c->engines);
->  	memset(c->engines, 0, sizeof(*c->engines));
-> @@ -178,6 +189,26 @@ igt_drm_client_add(struct igt_drm_clients *clients,
->  	c->last = calloc(c->engines->max_engine_id + 1, sizeof(c->last));
->  	assert(c->val && c->last);
->  
-> +	/* Memory regions */
-> +	c->regions = malloc(sizeof(*c->regions));
-> +	assert(c->regions);
-> +	memset(c->regions, 0, sizeof(*c->regions));
-> +	c->regions->names = calloc(info->last_region_index + 1,
-> +				   sizeof(*c->regions->names));
-> +	assert(c->regions->names);
-> +
-> +	for (i = 0; i <= info->last_region_index; i++) {
-> +		if (!info->region_names[i])
+>  	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
+>  	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
+>  	plane->gem_handle = 0;
+> @@ -2679,6 +2686,9 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+>  	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
+>  		display->is_atomic = 1;
+> +	
 
-This do not compile:
-../lib/igt_drm_clients.c:201:21: error: the comparison will always evaluate as ‘true’ for the address of ‘region_names’ will never be NULL [-Werror=address]
-  201 |                 if (!info->region_names[i])
-      |                     ^
-In file included from ../lib/igt_drm_clients.h:11,
-                 from ../lib/igt_drm_clients.c:20:
-../lib/igt_drm_fdinfo.h:57:14: note: ‘region_names’ declared here
-   57 |         char region_names[DRM_CLIENT_FDINFO_MAX_REGIONS][256];
-      |              ^~~~~~~~~~~~
+Trailing tab.
 
-did you mean:
-
-		if (!info->region_names[i][0])
-
-Regards,
-Kamil
-
-> +			continue;
-> +
-> +		c->regions->names[i] = strdup(info->region_names[i]);
-> +		assert(c->regions->names[i]);
-> +		c->regions->num_regions++;
-> +		c->regions->max_region_id = i;
-> +	}
-> +	c->memory = calloc(c->regions->max_region_id + 1, sizeof(*c->memory));
-> +	assert(c->memory);
-> +
->  	igt_drm_client_update(c, pid, name, info);
->  }
+> +	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
+> +		display->set_hotspots = 1;
 >  
-> diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-> index ed795c193986..07bd236d43bf 100644
-> --- a/lib/igt_drm_clients.h
-> +++ b/lib/igt_drm_clients.h
-> @@ -8,6 +8,8 @@
+>  	plane_resources = drmModeGetPlaneResources(display->drm_fd);
+>  	igt_assert(plane_resources);
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 1b6988c17..cf0a6d82b 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -41,6 +41,12 @@
 >  
->  #include <stdint.h>
+>  /* Low-level helpers with kmstest_ prefix */
 >  
-> +#include "lib/igt_drm_fdinfo.h"
+> +/**
+> + * Clients which do set cursor hotspot and treat the cursor plane
+> + * like a mouse cursor should set this property.
+> + */
+> +#define LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT	6
 > +
 >  /**
->   * SECTION:igt_drm_clients
->   * @short_description: Parsing driver exposed fdinfo to track DRM clients
-> @@ -39,12 +41,20 @@ struct igt_drm_client_engines {
->  	char **names; /* Array of engine names, either auto-detected or from the passed in engine map. */
+>   * pipe:
+>   * @PIPE_NONE: Invalid pipe, used for disconnecting a output from a pipe.
+> @@ -318,7 +324,9 @@ enum igt_atomic_plane_properties {
+>         IGT_PLANE_ZPOS,
+>         IGT_PLANE_FB_DAMAGE_CLIPS,
+>         IGT_PLANE_SCALING_FILTER,
+> -       IGT_NUM_PLANE_PROPS
+> +       IGT_PLANE_HOTSPOT_X,
+> +       IGT_PLANE_HOTSPOT_Y,
+> +       IGT_NUM_PLANE_PROPS      
+
+Trailing spaces.
+
+Rest is ok for me, fix nits above and mark with:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
 >  };
 >  
-> +struct igt_drm_client_regions {
-> +	unsigned int num_regions; /* Number of discovered memory_regions. */
-> +	unsigned int max_region_id; /* Largest memory region index discovered.
-> +				       (Can differ from num_regions - 1 when using the region map facility.) */
-> +	char **names; /* Array of region names, either auto-detected or from the passed in region map. */
-> +};
-> +
->  struct igt_drm_clients;
+>  /**
+> @@ -448,6 +456,7 @@ struct igt_display {
+>  	igt_pipe_t *pipes;
+>  	bool has_cursor_plane;
+>  	bool is_atomic;
+> +	bool set_hotspots;
+>  	bool first_commit;
 >  
->  struct igt_drm_client {
->  	struct igt_drm_clients *clients; /* Owning list. */
->  
->  	enum igt_drm_client_status status;
-> +	struct igt_drm_client_regions *regions; /* Memory regions present in this client, to map with memory usage. */
->  	struct igt_drm_client_engines *engines; /* Engines used by this client, to map with busynees data. */
->  	unsigned int id; /* DRM client id from fdinfo. */
->  	unsigned int drm_minor; /* DRM minor of this client. */
-> @@ -57,6 +67,7 @@ struct igt_drm_client {
->  	unsigned long last_runtime; /* Aggregate busyness on all engines since previous scan. */
->  	unsigned long *val; /* Array of engine busyness data, relative to previous scan. */
->  	uint64_t *last; /* Array of engine busyness data as parsed from fdinfo. */
-> +	struct drm_client_meminfo *memory; /* Array of region memory utilisation as parsed from fdinfo. */
->  };
->  
->  struct igt_drm_clients {
+>  	uint64_t *modifiers;
 > -- 
-> 2.39.2
+> 2.40.0
 > 
