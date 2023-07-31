@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5339D10E1AF
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Jul 2023 14:11:59 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
- tejas.upadhyay@intel.com, priyanka.dandamudi@intel.com
-Date: Mon, 31 Jul 2023 19:39:52 +0530
-Message-Id: <20230731140953.1167462-4-priyanka.dandamudi@intel.com>
-In-Reply-To: <20230731140953.1167462-1-priyanka.dandamudi@intel.com>
-References: <20230731140953.1167462-1-priyanka.dandamudi@intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <davidgow@google.com>
+Date: Mon, 31 Jul 2023 16:10:22 +0200
+Message-ID: <20230731141021.2854827-5-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/4] xe-fast-feedback.testlist: Add sysfs
- tests to BAT
+Subject: [igt-dev] [PATCH v3 0/3] kunit: Expose some built-in features to
+ modules
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,41 +15,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: linux-kernel@vger.kernel.org, igt-dev@lists.freedesktop.org,
+ linux-kselftest@vger.kernel.org, intel-xe@lists.freedesktop.org,
+ kunit-dev@googlegroups.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Submit the top-level headers also from the kunit test module notifier
+initialization callback, so external tools that are parsing dmesg for
+kunit test output are able to tell how many test suites should be expected
+and whether to continue parsing after complete output from the first test
+suite is collected.
 
-Add sysfs_scheduler and sysfs_defaults to BAT.
-This validates the basic sysfs scheduler parameters.
+Extend kunit module notifier initialization callback with a processing
+path for only listing the tests provided by a module if the kunit action
+parameter is set to "list", so external tools can obtain a list of test
+cases to be executed in advance and can make a better job on assigning
+kernel messages interleaved with kunit output to specific tests.
 
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Acked-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Use test filtering functions in kunit module notifier callback functions,
+so external tools are able to execute individual test cases from kunit
+test modules in order to still better isolate their potential impact on
+kernel messages that appear interleaved with output from other tests.
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 2799d9cfb..c994d29e9 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -164,6 +164,16 @@ igt@xe_query@query-invalid-query
- igt@xe_query@query-invalid-size
- igt@xe_spin_batch@spin-basic
- igt@xe_spin_batch@spin-batch
-+igt@xe_sysfs_defaults@engine-defaults
-+igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
-+igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
-+igt@xe_sysfs_scheduler@preempt_timeout_us-nonprivileged-user
-+igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
-+igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
-+igt@xe_sysfs_scheduler@timeslice_duration_us-nonprivileged-user
-+igt@xe_sysfs_scheduler@job_timeout_ms-invalid
-+igt@xe_sysfs_scheduler@job_timeout_ms-min-max
-+igt@xe_sysfs_scheduler@job_timeout_ms-nonprivileged-user
- #igt@xe_vm@bind-once
- #igt@xe_vm@scratch
- igt@xe_vm@shared-pte-page
+v3: Fix CONFIG_GLOB, required by filtering fuctions, not selected when
+    building as a module.
+v2: Fix new name of a structure moved to kunit namespace not updated
+    across all uses.
+
+Janusz Krzysztofik (3):
+  kunit: Report the count of test suites in a module
+  kunit: Make 'list' action available to kunit test modules
+  kunit: Allow kunit test modules to use test filtering
+
+ include/kunit/test.h | 14 +++++++++++
+ lib/kunit/Kconfig    |  2 +-
+ lib/kunit/executor.c | 57 +++++++++++++++++++++++++-------------------
+ lib/kunit/test.c     | 57 +++++++++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 104 insertions(+), 26 deletions(-)
+
 -- 
-2.25.1
+2.41.0
