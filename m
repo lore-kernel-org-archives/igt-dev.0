@@ -1,23 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87C1510E26E
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Jul 2023 12:04:52 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>, "Tauro, Riana"
- <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 31 Jul 2023 12:04:48 +0000
-Message-ID: <CY5PR11MB6211507AB9E69C3FA0A716F39505A@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230728060906.2047834-1-riana.tauro@intel.com>
- <825ff60a-aa42-7941-8d27-6002935e58b3@intel.com>
- <cb014e1f-b302-6705-a00e-a98855af0d9d@intel.com>
- <1f93b4b2-24ac-431f-0e4d-6b407f3a5892@intel.com>
-In-Reply-To: <1f93b4b2-24ac-431f-0e4d-6b407f3a5892@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <davidgow@google.com>, kernel test robot <lkp@intel.com>
+Date: Mon, 31 Jul 2023 14:07:49 +0200
+Message-ID: <1971193.8hb0ThOEGa@jkrzyszt-mobl2.ger.corp.intel.com>
+In-Reply-To: <202307311645.CdN0xKiF-lkp@intel.com>
+References: <20230731054552.2145292-8-janusz.krzysztofik@linux.intel.com>
+ <202307311645.CdN0xKiF-lkp@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] RFC tests/xe: Stress test GT C states
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Subject: Re: [igt-dev] [PATCH v2 3/3] kunit: Allow kunit test modules to use
+ test filtering
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,72 +19,22 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
+Cc: kunit-dev@googlegroups.com, llvm@lists.linux.dev,
+ linux-kernel@vger.kernel.org, igt-dev@lists.freedesktop.org,
+ linux-kselftest@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
+ intel-xe@lists.freedesktop.org, linux-media@vger.kernel.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU3VuZGFyZXNhbiwgU3Vq
-YXJpdGhhIDxzdWphcml0aGEuc3VuZGFyZXNhbkBpbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwg
-SnVseSAzMSwgMjAyMyAzOjM4IFBNDQo+IFRvOiBUYXVybywgUmlhbmEgPHJpYW5hLnRhdXJvQGlu
-dGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBOaWxhd2FyLCBC
-YWRhbCA8YmFkYWwubmlsYXdhckBpbnRlbC5jb20+OyBHdXB0YSwgQW5zaHVtYW4NCj4gPGFuc2h1
-bWFuLmd1cHRhQGludGVsLmNvbT47IEJlbGdhdW1rYXIsIFZpbmF5DQo+IDx2aW5heS5iZWxnYXVt
-a2FyQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXRdIFJG
-QyB0ZXN0cy94ZTogU3RyZXNzIHRlc3QgR1QgQyBzdGF0ZXMNCj4gDQo+IA0KPiBPbiA3LzMxLzIw
-MjMgMTo1NyBQTSwgUmlhbmEgVGF1cm8gd3JvdGU6DQo+ID4gSGkgU3VqYQ0KPiA+DQo+ID4gT24g
-Ny8zMS8yMDIzIDE6MDAgUE0sIFN1bmRhcmVzYW4sIFN1amFyaXRoYSB3cm90ZToNCj4gPj4NCj4g
-Pj4gT24gNy8yOC8yMDIzIDExOjM5IEFNLCBSaWFuYSBUYXVybyB3cm90ZToNCj4gPj4+IHN0cmVz
-cyB0ZXN0IEdUIEMgc3RhdGVzIGJ5IGNoZWNraW5nIGlmIEdUIGlzIGluIEMwIHdoZW4gZm9yY2V3
-YWtlIGlzDQo+ID4+PiBhY3F1aXJlZCBhbmQgaW4gQzYgb25jZSByZWxlYXNlZC4NCj4gPj4+DQo+
-ID4+PiBTaWduZWQtb2ZmLWJ5OiBSaWFuYSBUYXVybyA8cmlhbmEudGF1cm9AaW50ZWwuY29tPg0K
-PiA+Pj4gLS0tDQo+ID4+PiDCoCB0ZXN0cy94ZS94ZV9wbV9yZXNpZGVuY3kuYyB8IDI3ICsrKysr
-KysrKysrKysrKysrKysrKysrKysrKw0KPiA+Pj4gwqAgMSBmaWxlIGNoYW5nZWQsIDI3IGluc2Vy
-dGlvbnMoKykNCj4gPj4+DQo+ID4+PiBkaWZmIC0tZ2l0IGEvdGVzdHMveGUveGVfcG1fcmVzaWRl
-bmN5LmMgYi90ZXN0cy94ZS94ZV9wbV9yZXNpZGVuY3kuYw0KPiA+Pj4gaW5kZXggNDkzNmRlMTY2
-Li45NzEzZTYxY2QgMTAwNjQ0DQo+ID4+PiAtLS0gYS90ZXN0cy94ZS94ZV9wbV9yZXNpZGVuY3ku
-Yw0KPiA+Pj4gKysrIGIvdGVzdHMveGUveGVfcG1fcmVzaWRlbmN5LmMNCj4gPj4+IEBAIC04NSw2
-ICs4NSwyOSBAQCBzdGF0aWMgdm9pZCB0ZXN0X2lkbGVfcmVzaWRlbmN5KGludCBmZCwgaW50IGd0
-KQ0KPiA+Pj4gwqDCoMKgwqDCoCBhc3NlcnRfd2l0aGluX2Vwc2lsb24ocmVzaWRlbmN5X2VuZCAt
-IHJlc2lkZW5jeV9zdGFydCwNCj4gPj4+IGVsYXBzZWRfbXMsIHRvbGVyYW5jZSk7DQo+ID4+PiDC
-oCB9DQo+ID4+PiArLyoqDQo+ID4+PiArICogU1VCVEVTVDogc3RyZXNzLWd0LWM2DQo+ID4+PiAr
-ICogRGVzY3JpcHRpb246IHN0cmVzcyB0ZXN0IEdUIEMgc3RhdGVzIGJ5IGFjcXVpcmluZy9yZWxl
-YXNpbmcNCj4gPj4+IGZvcmNld2FrZQ0KPiA+Pj4gKyAqIFJ1biB0eXBlOiBGVUxMDQo+ID4+PiAr
-ICovDQo+ID4+PiArc3RhdGljIHZvaWQgc3RyZXNzX2M2KGludCBmZCwgaW50IG4pIHsNCj4gPj4+
-ICvCoMKgwqAgaW50IGhhbmRsZSwgZ3Q7DQo+ID4+PiArDQo+ID4+PiArwqDCoMKgIHdoaWxlIChu
-LS0pIHsNCj4gPj4+ICvCoMKgwqDCoMKgwqDCoCBoYW5kbGUgPSBpZ3RfZGVidWdmc19vcGVuKGZk
-LCAiZm9yY2V3YWtlX2FsbCIsIE9fV1JPTkxZKTsNCj4gPj4+ICvCoMKgwqDCoMKgwqDCoCBpZ3Rf
-YXNzZXJ0KGhhbmRsZSA+PSAwKTsNCj4gPj4+ICvCoMKgwqDCoMKgwqDCoCAvKiBjaGVjayBpZiBh
-bGwgZ3RzIGFyZSBpbiBDMCBhZnRlciBmb3JjZXdha2UgaXMgYWNxdWlyZWQNCj4gPj4+ICsqLw0K
-PiA+Pj4gK8KgwqDCoMKgwqDCoMKgIHhlX2Zvcl9lYWNoX2d0KGZkLCBndCkNCj4gPj4+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIGlndF9hc3NlcnRfZigheGVfaXNfZ3RfaW5fYzYoZmQsIGd0KSwg
-IkdUIGluIEM2XG4iKTsNCj4gPj4+ICvCoMKgwqDCoMKgwqDCoCBjbG9zZShoYW5kbGUpOw0KPiA+
-Pj4gK8KgwqDCoMKgwqDCoMKgIC8qIGNoZWNrIGlmIGFsbCBndHMgYXJlIGluIEM2IGFmdGVyIGZv
-cmNld2FrZSBpcyByZWxlYXNlZA0KPiA+Pj4gKyovDQo+ID4+PiArwqDCoMKgwqDCoMKgwqAgeGVf
-Zm9yX2VhY2hfZ3QoZmQsIGd0KQ0KPiA+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X2Fz
-c2VydF9mKGlndF93YWl0KHhlX2lzX2d0X2luX2M2KGZkLCBndCksIDEwMDAsIDEpLA0KPiA+Pj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIkdUIGlzIG5vdCBpbiBD
-NlxuIik7DQo+ID4+PiArwqDCoMKgIH0NCj4gPj4+ICt9DQo+ID4+PiArDQo+ID4+PiDCoCBpZ3Rf
-bWFpbg0KPiA+Pj4gwqAgew0KPiA+Pj4gwqDCoMKgwqDCoCBpbnQgZmQsIGd0Ow0KPiA+Pj4gQEAg
-LTEwNCw2ICsxMjcsMTAgQEAgaWd0X21haW4NCj4gPj4+IMKgwqDCoMKgwqDCoMKgwqDCoCB4ZV9m
-b3JfZWFjaF9ndChmZCwgZ3QpDQo+ID4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB0ZXN0
-X2lkbGVfcmVzaWRlbmN5KGZkLCBndCk7DQo+ID4+PiArwqDCoMKgIGlndF9kZXNjcmliZSgic3Ry
-ZXNzIHRlc3QgR1QgQyBzdGF0ZXMgYnkgYWNxdWlyaW5nL3JlbGVhc2luZw0KPiA+Pj4gZm9yY2V3
-YWtlIik7DQo+ID4+PiArwqDCoMKgIGlndF9zdWJ0ZXN0KCJzdHJlc3MtZ3QtYzYiKQ0KSG93IGFi
-b3V0IHRvZ2dsZS1ndC1jNiA/DQpUaGFua3MsDQpBbnNodW1hbiBHdXB0YS4NCj4gPj4+ICvCoMKg
-wqDCoMKgwqDCoCBzdHJlc3NfYzYoZmQsIDE2KTsNCj4gPj4+ICsNCj4gPj4+IMKgwqDCoMKgwqAg
-aWd0X2ZpeHR1cmUgew0KPiA+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIGNsb3NlKGZkKTsNCj4gPj4+
-IMKgwqDCoMKgwqAgfQ0KPiA+Pg0KPiA+PiBIaSBSaWFuYSwNCj4gPj4NCj4gPj4gSnVzdCBjdXJp
-b3VzLCBCdXQgdXN1YWxseSBzdHJlc3MgdGVzdGluZyBpbnZvbHZlcyBzb21lIHNvcnQgYQ0KPiA+
-PiB3b3JrbG9hZCBydW5uaW5nIHRvIHRlc3Qgb3V0IHJjNiBkdXJpbmcgdGhlIHJ1bi4gV2lsbCB5
-b3UgYmUNCj4gPj4gaW50cm9kdWNpbmcgYW5vdGhlciB0ZXN0IHdpdGggYSBzcGlubmVyIG9mIHNv
-cnRzID9JIHdpbGwgYmUgc2VuZGluZw0KPiA+PiBvdXQgYW5vdGhlciBwYXRjaCBzZXJpZXMgZm9y
-IGV4ZWMgYXMgd2VsbCB3aGljaCB3aWxsDQo+ID4gYmUgc2ltaWxhciB0byByYzYtaWRsZSBvZiBp
-OTE1Lg0KPiBHb3QgaXQuDQo+ID4NCj4gPiBUaGlzIHBhdGNoIGRvZXMgb25seSBhY3F1aXJpbmcv
-cmVsZWFzaW5nIGZvcmNld2FrZSBhbmQgY2hlY2tzIEdUIEMNCj4gPiBzdGF0ZXMuIGFkZGVkIGEg
-bG9vcCB0byBjaGVjayBtdWx0aXBsZSB0aW1lcy4NCj4gVGhlIGxvb3AgZm9yIHRoaXMgY2FzZSBt
-YWtlcyBzZW5zZS4NCj4gPg0KPiA+IFNob3VsZCBpIHJlbmFtZSB0aGUgdGVzdD8NCj4gTWF5YmUg
-PyBCdXQgSSdtIG5vdCBzdXJlIHRvIHdoYXQuIEkgZ3Vlc3MgdGhpcyBpcyBiZXR3ZWVuIHNhbml0
-eSBhbmQgc3RyZXNzIHRlc3QuDQo+IFNvIHRoYXQgY2FuIGJlIHlvdXIgY2FsbCBJIGd1ZXNzLg0K
-PiA+DQo+ID4gVGhhbmtzDQo+ID4gUmlhbmENCj4gPj4NCj4gPj4gVGhhbmtzLA0KPiA+Pg0KPiA+
-PiBTdWphDQo+ID4+DQo=
+On Monday, 31 July 2023 10:39:03 CEST kernel test robot wrote:
+> >> ERROR: modpost: "glob_match" [lib/kunit/kunit.ko] undefined!
+
+Caused by CONFIG_GLOB possibly not selected when building kunit as a module  
+(it was selected via another, unrelated setting in my test .config).
+
+Please expect v3 with that fixed.
+
+Thanks,
+Janusz
+
