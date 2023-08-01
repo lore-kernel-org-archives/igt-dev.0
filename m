@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04A0A10E368
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Aug 2023 09:18:43 +0000 (UTC)
-From: Lukasz Laguna <lukasz.laguna@intel.com>
+Received: from mgamail.intel.com (unknown [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EA9610E404
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Aug 2023 13:39:19 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Aug 2023 11:18:29 +0200
-Message-Id: <20230801091829.8848-1-lukasz.laguna@intel.com>
+Date: Tue,  1 Aug 2023 19:08:11 +0530
+Message-Id: <20230801133811.975849-11-swati2.sharma@intel.com>
+In-Reply-To: <20230801133811.975849-1-swati2.sharma@intel.com>
+References: <20230801133811.975849-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] lib/xe_query: add helper getting available VRAM
+Subject: [igt-dev] [v6 10/10] tests/i915/kms_dsc: add test to validate
+ fractional bpp with input bpc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,65 +19,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: mauro.chehab@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Helper allows to read available VRAM of a specified device and GT.
+New subtest is added to validate fractional bpp with different
+input bpc.
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- lib/xe/xe_query.c | 24 ++++++++++++++++++++++++
- lib/xe/xe_query.h |  1 +
- 2 files changed, 25 insertions(+)
+ tests/i915/kms_dsc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 8963c7b06b..d5a2cf11c1 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -630,6 +630,30 @@ uint64_t xe_visible_vram_size(int fd, int gt)
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 0982cf325..40d3c636d 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -60,7 +60,8 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+  * validate output formats with different input bpc (12/10/8).
+  * Lastly, fractional bpp is tested with default parameters.
+  * In this, driver will ignore integer compressed bpp value and
+- * will do modeset with fractional bpp only.
++ * will do modeset with fractional bpp only. Test is added to
++ * validate fractional bpp with different input bpc (12/10/8).
+  */
  
- 	return visible_size;
- }
-+/**
-+ * xe_vram_available:
-+ * @fd: xe device fd
-+ * @gt: gt
-+ *
-+ * Returns available vram of xe device @fd and @gt.
-+ */
-+uint64_t xe_vram_available(int fd, int gt)
-+{
-+	struct xe_device *xe_dev;
-+	int region_idx;
-+	struct drm_xe_query_mem_region *mem_region;
-+
-+	xe_dev = find_in_cache(fd);
-+	igt_assert(xe_dev);
-+
-+	region_idx = ffs(native_region_for_gt(xe_dev->gts, gt)) - 1;
-+	mem_region = &xe_dev->mem_usage->regions[region_idx];
-+
-+	if (XE_IS_CLASS_VRAM(mem_region))
-+		return xe_dev->vram_size[gt] - mem_region->used;
-+
-+	return 0;
-+}
  
- /**
-  * xe_get_default_alignment:
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 1b74c58ab8..20dbfa12c4 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -97,6 +97,7 @@ unsigned int xe_number_hw_engines(int fd);
- bool xe_has_vram(int fd);
- uint64_t xe_vram_size(int fd, int gt);
- uint64_t xe_visible_vram_size(int fd, int gt);
-+uint64_t xe_vram_available(int fd, int gt);
- uint32_t xe_get_default_alignment(int fd);
- uint32_t xe_va_bits(int fd);
- uint16_t xe_dev_id(int fd);
+@@ -407,6 +408,16 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
+ 				 DSC_FORMAT_RGB);
+ 
++	igt_describe("Tests fractional compressed bpp functionality if supported "
++		     "by a connector by forcing fractional_bpp on all connectors that support it "
++		     "with certain input BPC for the connector.");
++	igt_subtest_with_dynamic("dsc-fractional-bpp-with-bpc") {
++		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
++			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
++				 bpc_list[j], DRM_FORMAT_XRGB8888,
++				 DSC_FORMAT_RGB);
++	}
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
 -- 
-2.40.0
+2.25.1
