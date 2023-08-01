@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0D2710E340
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Aug 2023 13:26:13 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
+Received: from mgamail.intel.com (unknown [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D085810E070
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Aug 2023 13:39:05 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Aug 2023 18:55:40 +0530
-Message-Id: <20230801132540.563102-1-anshuman.gupta@intel.com>
+Date: Tue,  1 Aug 2023 19:08:03 +0530
+Message-Id: <20230801133811.975849-3-swati2.sharma@intel.com>
+In-Reply-To: <20230801133811.975849-1-swati2.sharma@intel.com>
+References: <20230801133811.975849-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] test/perf_pmu: Dump drpc on C6 failure
+Subject: [igt-dev] [v6 02/10] tests/i915/kms_dsc: use uint32_t test flag
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,156 +18,126 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Dump drpc debugfs on RC6/MC6 failure, it will be useful to
-debug any C6 failure issue by using drpc debugfs debug info.
+Instead of using enum, use uinit32_t test flag. It is helpful,
+if we need to implement feature combination tests.
 
-Co-developed-by: Badal Nilawar <badal.nilawar@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+v2: -use #define (Ankit)
+    -use 2D char array (Ankit)
+
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/i915/perf_pmu.c | 61 +++++++++++++++++++++++++++++--------------
- 1 file changed, 42 insertions(+), 19 deletions(-)
+ tests/i915/kms_dsc.c | 50 +++++++++++++++++++++++++-------------------
+ 1 file changed, 28 insertions(+), 22 deletions(-)
 
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index 58f4a82a2..bcd6db799 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -256,6 +256,18 @@ IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
- const double tolerance = 0.05f;
- const unsigned long batch_duration_ns = 500e6;
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 23ccbca00..99d35a7ff 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -34,12 +34,12 @@
  
-+char *drpc;
-+const char *no_debug_data = "\0";
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
+-enum dsc_test_type {
+-	TEST_DSC_BASIC,
+-	TEST_DSC_BPC,
+-	TEST_DSC_FORMAT,
+-	TEST_DSC_OUTPUT_FORMAT,
+-};
++#define LEN		20
 +
-+static char *get_drpc(int i915, int gt_id)
-+{
-+	int gt_dir;
-+
-+	gt_dir = igt_debugfs_gt_dir(i915, gt_id);
-+	igt_assert(gt_dir != -1);
-+	return igt_sysfs_get(gt_dir, "drpc");
-+}
-+
- static int open_pmu(int i915, uint64_t config)
++#define TEST_DSC_BASIC		(0<<0)
++#define TEST_DSC_BPC		(1<<0)
++#define TEST_DSC_FORMAT		(1<<1)
++#define TEST_DSC_OUTPUT_FORMAT	(1<<2)
+ 
+ typedef struct {
+ 	int drm_fd;
+@@ -111,7 +111,7 @@ static void test_cleanup(data_t *data)
+ }
+ 
+ /* re-probe connectors and do a modeset with DSC */
+-static void update_display(data_t *data, enum dsc_test_type test_type)
++static void update_display(data_t *data, uint32_t test_type)
  {
- 	int fd;
-@@ -336,17 +348,19 @@ static uint64_t pmu_read_multi(int fd, unsigned int num, uint64_t *val)
- 	return buf[1];
+ 	int ret;
+ 	bool enabled;
+@@ -130,12 +130,12 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 	save_force_dsc_en(data->drm_fd, data->output);
+ 	force_dsc_enable(data->drm_fd, data->output);
+ 
+-	if (test_type == TEST_DSC_BPC) {
++	if (test_type & TEST_DSC_BPC) {
+ 		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
+ 		force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
+ 	}
+ 
+-	if (test_type == TEST_DSC_OUTPUT_FORMAT) {
++	if (test_type & TEST_DSC_OUTPUT_FORMAT) {
+ 		igt_debug("Trying to set DSC %s output format\n",
+ 			   kmstest_dsc_output_format_str(data->output_format));
+ 		force_dsc_output_format(data->drm_fd, data->output, data->output_format);
+@@ -214,13 +214,18 @@ reset:
+ 	igt_assert_eq(ret, 0);
  }
  
--#define __assert_within_epsilon(x, ref, tol_up, tol_down) \
-+#define __assert_within_epsilon(x, ref, tol_up, tol_down, debug_data) \
- 	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
- 		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
--		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
-+		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n%s\n",\
- 		     #x, #ref, (double)(x), \
- 		     (tol_up) * 100.0, (tol_down) * 100.0, \
--		     (double)(ref))
-+		     (double)(ref), debug_data)
+-static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+-		     unsigned int plane_format, enum dsc_output_format output_format)
++static void test_dsc(data_t *data, uint32_t test_type, int bpc,
++		     unsigned int plane_format,
++		     enum dsc_output_format output_format)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+-	char name[20];
+ 	enum pipe pipe;
++	char name[3][LEN] = {
++				{0},
++				{0},
++				{0},
++			    };
  
- #define assert_within_epsilon(x, ref, tolerance) \
--	__assert_within_epsilon(x, ref, tolerance, tolerance)
-+	__assert_within_epsilon(x, ref, tolerance, tolerance, "\0")
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
+ 		data->output_format = output_format;
+@@ -242,15 +247,15 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 		if (!check_gen11_bpc_constraint(data->drm_fd, data->output, data->input_bpc))
+ 			continue;
  
-+#define assert_within_epsilon_dump(x, ref, tolerance, debug_data) \
-+	__assert_within_epsilon(x, ref, tolerance, tolerance, debug_data)
- /*
-  * Helper for cases where we assert on time spent sleeping (directly or
-  * indirectly), so make it more robust by ensuring the system sleep time
-@@ -1822,7 +1836,7 @@ test_frequency(int gem_fd, unsigned int gt)
- 	 * On thermally throttled devices we cannot be sure maximum frequency
- 	 * can be reached so use larger tolerance downards.
- 	 */
--	__assert_within_epsilon(max[0], max_freq, tolerance, 0.15f);
-+	__assert_within_epsilon(max[0], max_freq, tolerance, 0.15f, no_debug_data);
- }
+-		if (test_type == TEST_DSC_BPC)
+-			snprintf(name, sizeof(name), "-%dbpc-%s", data->input_bpc, igt_format_str(data->plane_format));
+-		else if (test_type == TEST_DSC_OUTPUT_FORMAT)
+-			snprintf(name, sizeof(name), "-%s-%s", kmstest_dsc_output_format_str(data->output_format),
+-							       igt_format_str(data->plane_format));
+-		else
+-			snprintf(name, sizeof(name), "-%s", igt_format_str(data->plane_format));
++		if (test_type & TEST_DSC_OUTPUT_FORMAT)
++			snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
++		if (test_type & TEST_DSC_FORMAT)
++			snprintf(&name[1][0], LEN, "-%s", igt_format_str(data->plane_format));
++		if (test_type & TEST_DSC_BPC)
++			snprintf(&name[2][0], LEN, "-%dbpc", data->input_bpc);
  
- static void
-@@ -1967,7 +1981,8 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
+-		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
++		igt_dynamic_f("pipe-%s-%s%s%s%s",  kmstest_pipe_name(data->pipe), data->output->name,
++			      &name[0][0], &name[1][0], &name[2][0])
+ 			update_display(data, test_type);
+ 
+ 		if (data->limited)
+@@ -322,8 +327,9 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+ 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+ 			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+-				test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
+-				format_list[k], DSC_FORMAT_RGB);
++				test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
++				bpc_list[j], format_list[k],
++				DSC_FORMAT_RGB);
+ 			}
  		}
  	}
- 
--	igt_require(wait_for_rc6(fd[0], 1, pmus, test_idx));
-+	igt_require_f(wait_for_rc6(fd[0], 1, pmus, test_idx),
-+		      "failed to enter rc6/mc6 \n%s\n", drpc = get_drpc(gem_fd, test_idx));
- 
- 	/* While idle check full RC6. */
- 	ts[0] = pmu_read_multi(fd[0], pmus, prev);
-@@ -1977,9 +1992,11 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
- 	for (gt_ = 0; gt_ < pmus; gt_++) {
- 		igt_debug("gt%u: idle rc6=%"PRIu64", slept=%lu, perf=%"PRIu64"\n",
- 			  gt_, idle[gt_] - prev[gt_], slept, ts[1] - ts[0]);
--		assert_within_epsilon(idle[gt_] - prev[gt_],
--				      ts[1] - ts[0],
--				      tolerance);
-+		drpc = get_drpc(gem_fd, gt_);
-+		assert_within_epsilon_dump(idle[gt_] - prev[gt_],
-+					   ts[1] - ts[0],
-+					   tolerance, drpc);
-+		free(drpc);
- 	}
- 
- 	if (flags & TEST_S3) {
-@@ -2005,7 +2022,8 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
- 		}
- 	}
- 
--	igt_assert(wait_for_rc6(fd[0], 5, pmus, test_idx));
-+	igt_require_f(wait_for_rc6(fd[0], 5, pmus, test_idx),
-+		      "failed to enter rc6/mc6 \n%s\n", drpc = get_drpc(gem_fd, test_idx));
- 
- 	ts[0] = pmu_read_multi(fd[0], pmus, prev);
- 	slept = measured_usleep(duration_ns / 1000);
-@@ -2014,9 +2032,11 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
- 	for (gt_ = 0; gt_ < pmus; gt_++) {
- 		igt_debug("gt%u: idle rc6=%"PRIu64", slept=%lu, perf=%"PRIu64"\n",
- 			  gt_, idle[gt_] - prev[gt_], slept, ts[1] - ts[0]);
--		assert_within_epsilon(idle[gt_] - prev[gt_],
--				      ts[1] - ts[0],
--				      tolerance);
-+		drpc = get_drpc(gem_fd, gt_);
-+		assert_within_epsilon_dump(idle[gt_] - prev[gt_],
-+					   ts[1] - ts[0],
-+					   tolerance, drpc);
-+		free(drpc);
- 	}
- 
- 	/* Wake up device and check no RC6. */
-@@ -2048,14 +2068,16 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
- 	for (gt_ = 0; gt_ < pmus; gt_++) {
- 		igt_debug("gt%u: busy rc6=%"PRIu64", slept=%lu, perf=%"PRIu64"\n",
- 			  gt_, busy[gt_] - prev[gt_], slept, ts[1] - ts[0]);
-+		drpc = get_drpc(gem_fd, gt_);
- 		if (gt_ == test_idx || (flags & TEST_ALL))
--			assert_within_epsilon(busy[gt_] - prev[gt_],
--					      0.0,
--					      tolerance);
-+			assert_within_epsilon_dump(busy[gt_] - prev[gt_],
-+						   0.0,
-+						   tolerance, drpc);
- 		else
--			assert_within_epsilon(busy[gt_] - prev[gt_],
--					      ts[1] - ts[0],
--					      tolerance);
-+			assert_within_epsilon_dump(busy[gt_] - prev[gt_],
-+						   ts[1] - ts[0],
-+						   tolerance, drpc);
-+		free(drpc);
- 	}
- }
- 
-@@ -2720,6 +2742,7 @@ igt_main
- 	igt_fixture {
- 		intel_ctx_destroy(fd, ctx);
- 		drm_close_driver(fd);
-+		free(drpc);
- 	}
- 
- 	igt_subtest("module-unload") {
 -- 
-2.38.0
+2.25.1
