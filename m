@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7689547681349192819=="
+Received: from mgamail.intel.com (unknown [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0D2710E340
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Aug 2023 13:26:13 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  1 Aug 2023 18:55:40 +0530
+Message-Id: <20230801132540.563102-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lukasz Laguna" <lukasz.laguna@intel.com>
-Date: Tue, 01 Aug 2023 12:05:22 -0000
-Message-ID: <169089152230.10129.2526344399217764738@emeril.freedesktop.org>
-References: <20230801091829.8848-1-lukasz.laguna@intel.com>
-In-Reply-To: <20230801091829.8848-1-lukasz.laguna@intel.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciBsaWIveGVfcXVl?=
- =?utf-8?q?ry=3A_add_helper_getting_available_VRAM?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] test/perf_pmu: Dump drpc on C6 failure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +16,156 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7689547681349192819==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Dump drpc debugfs on RC6/MC6 failure, it will be useful to
+debug any C6 failure issue by using drpc debugfs debug info.
 
-== Series Details ==
+Co-developed-by: Badal Nilawar <badal.nilawar@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+---
+ tests/i915/perf_pmu.c | 61 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 42 insertions(+), 19 deletions(-)
 
-Series: lib/xe_query: add helper getting available VRAM
-URL   : https://patchwork.freedesktop.org/series/121704/
-State : info
-
-== Summary ==
-
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9490](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9490/index.html)
-
-
-
---===============7689547681349192819==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/xe_query: add helper getting available VRAM</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121704/">https://patchwork.freedesktop.org/series/121704/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9490/index.html">IGTPW_9490</a></p>
-
-</body>
-</html>
-
---===============7689547681349192819==--
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index 58f4a82a2..bcd6db799 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -256,6 +256,18 @@ IGT_TEST_DESCRIPTION("Test the i915 pmu perf interface");
+ const double tolerance = 0.05f;
+ const unsigned long batch_duration_ns = 500e6;
+ 
++char *drpc;
++const char *no_debug_data = "\0";
++
++static char *get_drpc(int i915, int gt_id)
++{
++	int gt_dir;
++
++	gt_dir = igt_debugfs_gt_dir(i915, gt_id);
++	igt_assert(gt_dir != -1);
++	return igt_sysfs_get(gt_dir, "drpc");
++}
++
+ static int open_pmu(int i915, uint64_t config)
+ {
+ 	int fd;
+@@ -336,17 +348,19 @@ static uint64_t pmu_read_multi(int fd, unsigned int num, uint64_t *val)
+ 	return buf[1];
+ }
+ 
+-#define __assert_within_epsilon(x, ref, tol_up, tol_down) \
++#define __assert_within_epsilon(x, ref, tol_up, tol_down, debug_data) \
+ 	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
+ 		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
+-		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
++		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n%s\n",\
+ 		     #x, #ref, (double)(x), \
+ 		     (tol_up) * 100.0, (tol_down) * 100.0, \
+-		     (double)(ref))
++		     (double)(ref), debug_data)
+ 
+ #define assert_within_epsilon(x, ref, tolerance) \
+-	__assert_within_epsilon(x, ref, tolerance, tolerance)
++	__assert_within_epsilon(x, ref, tolerance, tolerance, "\0")
+ 
++#define assert_within_epsilon_dump(x, ref, tolerance, debug_data) \
++	__assert_within_epsilon(x, ref, tolerance, tolerance, debug_data)
+ /*
+  * Helper for cases where we assert on time spent sleeping (directly or
+  * indirectly), so make it more robust by ensuring the system sleep time
+@@ -1822,7 +1836,7 @@ test_frequency(int gem_fd, unsigned int gt)
+ 	 * On thermally throttled devices we cannot be sure maximum frequency
+ 	 * can be reached so use larger tolerance downards.
+ 	 */
+-	__assert_within_epsilon(max[0], max_freq, tolerance, 0.15f);
++	__assert_within_epsilon(max[0], max_freq, tolerance, 0.15f, no_debug_data);
+ }
+ 
+ static void
+@@ -1967,7 +1981,8 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
+ 		}
+ 	}
+ 
+-	igt_require(wait_for_rc6(fd[0], 1, pmus, test_idx));
++	igt_require_f(wait_for_rc6(fd[0], 1, pmus, test_idx),
++		      "failed to enter rc6/mc6 \n%s\n", drpc = get_drpc(gem_fd, test_idx));
+ 
+ 	/* While idle check full RC6. */
+ 	ts[0] = pmu_read_multi(fd[0], pmus, prev);
+@@ -1977,9 +1992,11 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
+ 	for (gt_ = 0; gt_ < pmus; gt_++) {
+ 		igt_debug("gt%u: idle rc6=%"PRIu64", slept=%lu, perf=%"PRIu64"\n",
+ 			  gt_, idle[gt_] - prev[gt_], slept, ts[1] - ts[0]);
+-		assert_within_epsilon(idle[gt_] - prev[gt_],
+-				      ts[1] - ts[0],
+-				      tolerance);
++		drpc = get_drpc(gem_fd, gt_);
++		assert_within_epsilon_dump(idle[gt_] - prev[gt_],
++					   ts[1] - ts[0],
++					   tolerance, drpc);
++		free(drpc);
+ 	}
+ 
+ 	if (flags & TEST_S3) {
+@@ -2005,7 +2022,8 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
+ 		}
+ 	}
+ 
+-	igt_assert(wait_for_rc6(fd[0], 5, pmus, test_idx));
++	igt_require_f(wait_for_rc6(fd[0], 5, pmus, test_idx),
++		      "failed to enter rc6/mc6 \n%s\n", drpc = get_drpc(gem_fd, test_idx));
+ 
+ 	ts[0] = pmu_read_multi(fd[0], pmus, prev);
+ 	slept = measured_usleep(duration_ns / 1000);
+@@ -2014,9 +2032,11 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
+ 	for (gt_ = 0; gt_ < pmus; gt_++) {
+ 		igt_debug("gt%u: idle rc6=%"PRIu64", slept=%lu, perf=%"PRIu64"\n",
+ 			  gt_, idle[gt_] - prev[gt_], slept, ts[1] - ts[0]);
+-		assert_within_epsilon(idle[gt_] - prev[gt_],
+-				      ts[1] - ts[0],
+-				      tolerance);
++		drpc = get_drpc(gem_fd, gt_);
++		assert_within_epsilon_dump(idle[gt_] - prev[gt_],
++					   ts[1] - ts[0],
++					   tolerance, drpc);
++		free(drpc);
+ 	}
+ 
+ 	/* Wake up device and check no RC6. */
+@@ -2048,14 +2068,16 @@ test_rc6(int gem_fd, unsigned int gt, unsigned int num_gt, unsigned int flags)
+ 	for (gt_ = 0; gt_ < pmus; gt_++) {
+ 		igt_debug("gt%u: busy rc6=%"PRIu64", slept=%lu, perf=%"PRIu64"\n",
+ 			  gt_, busy[gt_] - prev[gt_], slept, ts[1] - ts[0]);
++		drpc = get_drpc(gem_fd, gt_);
+ 		if (gt_ == test_idx || (flags & TEST_ALL))
+-			assert_within_epsilon(busy[gt_] - prev[gt_],
+-					      0.0,
+-					      tolerance);
++			assert_within_epsilon_dump(busy[gt_] - prev[gt_],
++						   0.0,
++						   tolerance, drpc);
+ 		else
+-			assert_within_epsilon(busy[gt_] - prev[gt_],
+-					      ts[1] - ts[0],
+-					      tolerance);
++			assert_within_epsilon_dump(busy[gt_] - prev[gt_],
++						   ts[1] - ts[0],
++						   tolerance, drpc);
++		free(drpc);
+ 	}
+ }
+ 
+@@ -2720,6 +2742,7 @@ igt_main
+ 	igt_fixture {
+ 		intel_ctx_destroy(fd, ctx);
+ 		drm_close_driver(fd);
++		free(drpc);
+ 	}
+ 
+ 	igt_subtest("module-unload") {
+-- 
+2.38.0
