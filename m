@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (unknown [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB40710E34B
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Aug 2023 13:39:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DDB5210E340
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Aug 2023 13:39:12 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Aug 2023 19:08:08 +0530
-Message-Id: <20230801133811.975849-8-swati2.sharma@intel.com>
+Date: Tue,  1 Aug 2023 19:08:06 +0530
+Message-Id: <20230801133811.975849-6-swati2.sharma@intel.com>
 In-Reply-To: <20230801133811.975849-1-swati2.sharma@intel.com>
 References: <20230801133811.975849-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v6 07/10] tests/i915/kms_dsc: add test summary
+Subject: [igt-dev] [v6 05/10] tests/i915/kms_dsc: use
+ igt_get_pipe_current_bpc()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,44 +23,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add test summary giving overall summary of subtests.
+Use igt_get_pipe_current_bpc() to get current bpc when
+TEST_DSC_BPC test flag is used. If input bpc is not equal to
+current bpc, skip test.
 
-v2: -drop DSC1.2 reference (Ankit)
+v2: -use helper directly (Ankit)
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/i915/kms_dsc.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/i915/kms_dsc.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index f2eed7df0..5bdac57e2 100644
+index 635fef1cd..49c0824c8 100644
 --- a/tests/i915/kms_dsc.c
 +++ b/tests/i915/kms_dsc.c
-@@ -42,6 +42,24 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- #define TEST_DSC_FORMAT		(1<<1)
- #define TEST_DSC_OUTPUT_FORMAT	(1<<2)
+@@ -117,6 +117,7 @@ static void update_display(data_t *data, uint32_t test_type)
+ 	int ret;
+ 	bool enabled;
+ 	int index = 0;
++	int current_bpc = 0;
+ 	igt_plane_t *primary;
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output = data->output;
+@@ -202,11 +203,17 @@ static void update_display(data_t *data, uint32_t test_type)
  
-+/*
-+ * Starting from gen11, intel driver supports DSC1.1. For validating
-+ * DSC, the first step is to verify if the sink supports DSC.
-+ * If the sink does support DSC, we will validate different
-+ * scenarios by forcing dsc. Outline of the tests is as follows:
-+ * (i) basic modeset (ii) input bpc (iii) pixel formats
-+ * (iv) output formats
-+ * In the basic subtest, we perform modeset with default parameters.
-+ * Input bpc and pixel formats subtests, we perform modeset
-+ * with different input bpc (12/10/8) and pixel formats (YUV/RGB),
-+ * respectively. From MTL+, we can verify DSC YCBCR420 output format.
-+ * The tests are executed with the RGB444 output format by default.
-+ * However, in the output-format subtest, we verify different
-+ * output formats (RGB/YCBCR444/YCBCR420). Also, test is added to
-+ * validate output formats with different input bpc (12/10/8).
-+ */
+ 	restore_force_dsc_en();
+ 
++	if (test_type & TEST_DSC_BPC) {
++		current_bpc = igt_get_pipe_current_bpc(data->drm_fd, data->pipe);
++		igt_skip_on_f(data->input_bpc != current_bpc,
++			      "Input bpc = %d is not equal to current bpc = %d\n",
++			      data->input_bpc, current_bpc);
++	}
 +
-+
- typedef struct {
- 	int drm_fd;
- 	uint32_t devid;
+ 	igt_assert_f(enabled,
+ 		     "Default DSC enable failed on connector: %s pipe: %s\n",
+ 		     output->name,
+ 		     kmstest_pipe_name(data->pipe));
+-
+ reset:
+ 	test_reset(data);
+ 
 -- 
 2.25.1
