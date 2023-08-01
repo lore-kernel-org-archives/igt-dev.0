@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3EA9610E404
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Aug 2023 13:39:19 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Aug 2023 19:08:11 +0530
-Message-Id: <20230801133811.975849-11-swati2.sharma@intel.com>
-In-Reply-To: <20230801133811.975849-1-swati2.sharma@intel.com>
-References: <20230801133811.975849-1-swati2.sharma@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3627719881146653018=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v6 10/10] tests/i915/kms_dsc: add test to validate
- fractional bpp with input bpc
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Albert Esteve" <aesteve@redhat.com>
+Date: Tue, 01 Aug 2023 10:11:28 -0000
+Message-ID: <169088468835.10128.17260589612737582206@emeril.freedesktop.org>
+References: <20230801084853.42075-1-aesteve@redhat.com>
+In-Reply-To: <20230801084853.42075-1-aesteve@redhat.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_Add_atomic_?=
+ =?utf-8?q?DRM_cursor_hotspot_test_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,49 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-New subtest is added to validate fractional bpp with different
-input bpc.
+--===============3627719881146653018==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tests/i915/kms_dsc.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 0982cf325..40d3c636d 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -60,7 +60,8 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
-  * validate output formats with different input bpc (12/10/8).
-  * Lastly, fractional bpp is tested with default parameters.
-  * In this, driver will ignore integer compressed bpp value and
-- * will do modeset with fractional bpp only.
-+ * will do modeset with fractional bpp only. Test is added to
-+ * validate fractional bpp with different input bpc (12/10/8).
-  */
- 
- 
-@@ -407,6 +408,16 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
- 				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
- 				 DSC_FORMAT_RGB);
- 
-+	igt_describe("Tests fractional compressed bpp functionality if supported "
-+		     "by a connector by forcing fractional_bpp on all connectors that support it "
-+		     "with certain input BPC for the connector.");
-+	igt_subtest_with_dynamic("dsc-fractional-bpp-with-bpc") {
-+		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
-+			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
-+				 bpc_list[j], DRM_FORMAT_XRGB8888,
-+				 DSC_FORMAT_RGB);
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-2.25.1
+Series: Add atomic DRM cursor hotspot test (rev3)
+URL   : https://patchwork.freedesktop.org/series/121225/
+State : info
+
+== Summary ==
+
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9489](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9489/index.html)
+
+
+
+--===============3627719881146653018==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add atomic DRM cursor hotspot test (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121225/">https://patchwork.freedesktop.org/series/121225/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9489/index.html">IGTPW_9489</a></p>
+
+</body>
+</html>
+
+--===============3627719881146653018==--
