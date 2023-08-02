@@ -1,19 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF7B810E0A1
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 09:48:53 +0000 (UTC)
-Message-ID: <1fba5505-d81c-20ed-5e49-0229db086811@intel.com>
-Date: Wed, 2 Aug 2023 15:18:41 +0530
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230801133811.975849-1-swati2.sharma@intel.com>
- <20230801133811.975849-5-swati2.sharma@intel.com>
+Received: from mgamail.intel.com (unknown [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FC3110E1EB
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 09:54:14 +0000 (UTC)
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>, "Kumar, Janga Rahul"
+ <janga.rahul.kumar@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Wed, 2 Aug 2023 09:54:10 +0000
+Message-ID: <DM6PR11MB449226BE0DFB46E1E717B84D8D0BA@DM6PR11MB4492.namprd11.prod.outlook.com>
+References: <20230802083900.1175872-1-priyanka.dandamudi@intel.com>
+ <20230802083900.1175872-2-priyanka.dandamudi@intel.com>
+ <SJ1PR11MB6204368BA9AFEF54A6B51EEA810BA@SJ1PR11MB6204.namprd11.prod.outlook.com>
+In-Reply-To: <SJ1PR11MB6204368BA9AFEF54A6B51EEA810BA@SJ1PR11MB6204.namprd11.prod.outlook.com>
 Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20230801133811.975849-5-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v6 04/10] tests/i915/kms_dsc: update if conditions
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] xe/xe_sysfs: Updated tests to use
+ xe_sysfs_gt_open
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,84 +29,146 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM.
 
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-On 8/1/2023 7:08 PM, Swati Sharma wrote:
-> Check is_dsc_output_format_supported() iff test flag is set to
-> OUTPUT_FORMAT. Also, combine is_dsc_supported_by_sink () and
-> gen11_dp_constraint() conditions together.
-> Move, bpc_constraint() out of loop since its independent of output.
->
-> v2: -fixed if() (CI)
->
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/i915/kms_dsc.c        | 16 +++++++---------
->   tests/i915/kms_dsc_helper.c |  2 +-
->   tests/i915/kms_dsc_helper.h |  2 +-
->   3 files changed, 9 insertions(+), 11 deletions(-)
->
-> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> index 7b9bae91a..635fef1cd 100644
-> --- a/tests/i915/kms_dsc.c
-> +++ b/tests/i915/kms_dsc.c
-> @@ -228,6 +228,8 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
->   				{0},
->   			    };
->   
-> +	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
-> +
->   	for_each_pipe_with_valid_output(display, pipe, output) {
->   		data->output_format = output_format;
->   		data->plane_format = plane_format;
-> @@ -235,17 +237,13 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
->   		data->output = output;
->   		data->pipe = pipe;
->   
-> -		if (!is_dsc_supported_by_sink(data->drm_fd, data->output))
-> -			continue;
-> -
-> -		if (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
-> -						    data->output, data->output_format))
-> -			continue;
-> -
-> -		if (!check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
-> +		if (!(is_dsc_supported_by_sink(data->drm_fd, data->output) &&
-> +		      check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe)))
->   			continue;
->   
-> -		if (!check_gen11_bpc_constraint(data->drm_fd, data->output, data->input_bpc))
-> +		if ((test_type & TEST_DSC_OUTPUT_FORMAT) &&
-> +		    (!is_dsc_output_format_supported(data->drm_fd, data->disp_ver,
-> +						     data->output, data->output_format)))
->   			continue;
->   
->   		if (test_type & TEST_DSC_OUTPUT_FORMAT)
-> diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
-> index 61f76ddee..ae59edb6b 100644
-> --- a/tests/i915/kms_dsc_helper.c
-> +++ b/tests/i915/kms_dsc_helper.c
-> @@ -96,7 +96,7 @@ bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe)
->   }
->   
->   /* Max DSC Input BPC for ICL is 10 and for TGL+ is 12 */
-> -bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc)
-> +bool check_gen11_bpc_constraint(int drmfd, int input_bpc)
->   {
->   	uint32_t devid = intel_get_drm_devid(drmfd);
->   
-> diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
-> index 2109bd767..28ed56d83 100644
-> --- a/tests/i915/kms_dsc_helper.h
-> +++ b/tests/i915/kms_dsc_helper.h
-> @@ -29,7 +29,7 @@ void kms_dsc_exit_handler(int sig);
->   bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output);
->   bool is_dsc_supported_by_source(int drmfd);
->   bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe);
-> -bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int input_bpc);
-> +bool check_gen11_bpc_constraint(int drmfd, int input_bpc);
->   void force_dsc_output_format(int drmfd, igt_output_t *output,
->   			     enum dsc_output_format output_format);
->   bool is_dsc_output_format_supported(int disp_ver, int drmfd, igt_output_t *output,
+> -----Original Message-----
+> From: Upadhyay, Tejas <tejas.upadhyay@intel.com>
+> Sent: 02 August 2023 03:11 PM
+> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Kumar, Janga
+> Rahul <janga.rahul.kumar@intel.com>; igt-dev@lists.freedesktop.org
+> Subject: RE: [PATCH i-g-t 1/4] xe/xe_sysfs: Updated tests to use
+> xe_sysfs_gt_open
+>=20
+>=20
+>=20
+> > -----Original Message-----
+> > From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> > Sent: Wednesday, August 2, 2023 2:09 PM
+> > To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; igt-
+> > dev@lists.freedesktop.org; Upadhyay, Tejas <tejas.upadhyay@intel.com>;
+> > Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> > Subject: [PATCH i-g-t 1/4] xe/xe_sysfs: Updated tests to use
+> > xe_sysfs_gt_open
+> >
+> > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> >
+> > Tests have been updated to use xe_sysfs_gt_open function.
+> >
+> > v2: Updated code to check when root user try to set value beyond local
+> > min/max scheduler property.
+> >
+> > Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> > Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> > ---
+> >  tests/xe/xe_sysfs_defaults.c  | 10 ++++++----
+> > tests/xe/xe_sysfs_scheduler.c
+> > | 12 +++++++-----
+> >  2 files changed, 13 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/tests/xe/xe_sysfs_defaults.c
+> > b/tests/xe/xe_sysfs_defaults.c index 5c9de43e9..ff958161b 100644
+> > --- a/tests/xe/xe_sysfs_defaults.c
+> > +++ b/tests/xe/xe_sysfs_defaults.c
+> > @@ -65,25 +65,27 @@ igt_main
+> >
+> >  		sys_fd =3D igt_sysfs_open(xe);
+> >  		igt_require(sys_fd !=3D -1);
+> > +		close(sys_fd);
+> >  	}
+> >
+> >  	igt_subtest_with_dynamic("engine-defaults") {
+> >  		xe_for_each_gt(xe, gt) {
+> >  			int engines_fd =3D -1;
+> > -			char buf[100];
+> > +			int gt_fd =3D -1;
+> >
+> > -			sprintf(buf, "device/gt%d/engines", gt);
+> > -			engines_fd =3D openat(sys_fd, buf, O_RDONLY);
+> > +			gt_fd =3D xe_sysfs_gt_open(xe, gt);
+> > +			igt_require(gt_fd !=3D -1);
+> > +			engines_fd =3D openat(gt_fd, "engines", O_RDONLY);
+> >  			igt_require(engines_fd !=3D -1);
+> >
+> >  			igt_sysfs_engines(xe, engines_fd, NULL,
+> test_defaults);
+> >
+> >  			close(engines_fd);
+> > +			 close(gt_fd);
+> >  		}
+> >  	}
+> >
+> >  	igt_fixture {
+> > -		close(sys_fd);
+> >  		xe_device_put(xe);
+> >  		close(xe);
+> >  	}
+> > diff --git a/tests/xe/xe_sysfs_scheduler.c
+> > b/tests/xe/xe_sysfs_scheduler.c index 1da0f541a..f199d6be8 100644
+> > --- a/tests/xe/xe_sysfs_scheduler.c
+> > +++ b/tests/xe/xe_sysfs_scheduler.c
+> > @@ -94,7 +94,7 @@ static void test_min_max(int xe, int engine, const
+> > char
+> > **property)
+> >
+> >  	igt_sysfs_printf(engine, property[0], "%d", default_min);
+> >  	igt_sysfs_scanf(engine, property[0], "%u", &set);
+> > -	igt_assert_eq(set, default_min);
+> > +	igt_assert_neq(set, default_min);
+>=20
+> Also what is default_min here, is it min/max under .defaults/? To test
+> min/max, I think it should sysfs min/max that we should check against.
+
+default_min here is under min/max under .defaults. This is sort of a negati=
+ve test when we try to test beyond sysfs min/max and within default min/max=
+ it should fail. This I changed to negative, as the requirement has been ch=
+anged.
+
+Regards,
+Priyanka
+
+>=20
+> Tejas
+> >
+> >  	igt_sysfs_printf(engine, property[0], "%d", min);
+> >  	igt_sysfs_scanf(engine, property[0], "%u", &set); @@ -184,6 +184,7
+> > @@ igt_main
+> >
+> >  		sys_fd =3D igt_sysfs_open(xe);
+> >  		igt_require(sys_fd !=3D -1);
+> > +		close(sys_fd);
+> >  	}
+> >
+> >  	for (int i =3D 0; i < count; i++) {
+> > @@ -191,20 +192,21 @@ igt_main
+> >  			igt_subtest_with_dynamic_f("%s-%s", property[i][0],
+> > t->name) {
+> >  				xe_for_each_gt(xe, gt) {
+> >  					int engines_fd =3D -1;
+> > -					char buf[100];
+> > +					int gt_fd =3D -1;
+> >
+> > -					sprintf(buf, "device/gt%d/engines",
+> > gt);
+> > -					engines_fd =3D openat(sys_fd, buf,
+> > O_RDONLY);
+> > +					gt_fd =3D xe_sysfs_gt_open(xe, gt);
+> > +					igt_require(gt_fd !=3D -1);
+> > +					engines_fd =3D openat(gt_fd, "engines",
+> > O_RDONLY);
+> >  					igt_require(engines_fd !=3D -1);
+> >
+> >  					igt_sysfs_engines(xe, engines_fd,
+> property[i], t->fn);
+> >  					close(engines_fd);
+> > +					close(gt_fd);
+> >  				}
+> >  			}
+> >  		}
+> >  	}
+> >  	igt_fixture {
+> > -		close(sys_fd);
+> >  		xe_device_put(xe);
+> >  		close(xe);
+> >  	}
+> > --
+> > 2.25.1
