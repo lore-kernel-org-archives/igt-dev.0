@@ -1,23 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 30CC710E1EB
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 09:56:21 +0000 (UTC)
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>, "Kumar, Janga Rahul"
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9559810E531
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 10:01:13 +0000 (UTC)
+From: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
+To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>, "Kumar, Janga Rahul"
  <janga.rahul.kumar@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>
-Date: Wed, 2 Aug 2023 09:56:15 +0000
-Message-ID: <DM6PR11MB449279B4D1645B38C144B3898D0BA@DM6PR11MB4492.namprd11.prod.outlook.com>
+Date: Wed, 2 Aug 2023 10:00:04 +0000
+Message-ID: <SJ1PR11MB62046B265011F96FAAC03A92810BA@SJ1PR11MB6204.namprd11.prod.outlook.com>
 References: <20230802083900.1175872-1-priyanka.dandamudi@intel.com>
- <20230802083900.1175872-3-priyanka.dandamudi@intel.com>
- <SJ1PR11MB6204E928F9C5514480AD2D22810BA@SJ1PR11MB6204.namprd11.prod.outlook.com>
-In-Reply-To: <SJ1PR11MB6204E928F9C5514480AD2D22810BA@SJ1PR11MB6204.namprd11.prod.outlook.com>
+ <20230802083900.1175872-2-priyanka.dandamudi@intel.com>
+ <SJ1PR11MB6204368BA9AFEF54A6B51EEA810BA@SJ1PR11MB6204.namprd11.prod.outlook.com>
+ <DM6PR11MB449226BE0DFB46E1E717B84D8D0BA@DM6PR11MB4492.namprd11.prod.outlook.com>
+In-Reply-To: <DM6PR11MB449226BE0DFB46E1E717B84D8D0BA@DM6PR11MB4492.namprd11.prod.outlook.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] xe/xe_sysfs: Modified code to work
- for non priv user
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] xe/xe_sysfs: Updated tests to use
+ xe_sysfs_gt_open
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,122 +33,166 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 > -----Original Message-----
-> From: Upadhyay, Tejas <tejas.upadhyay@intel.com>
-> Sent: 02 August 2023 03:13 PM
-> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Kumar, Janga
-> Rahul <janga.rahul.kumar@intel.com>; igt-dev@lists.freedesktop.org
-> Subject: RE: [PATCH i-g-t 2/4] xe/xe_sysfs: Modified code to work for non=
- priv
-> user
+> From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> Sent: Wednesday, August 2, 2023 3:24 PM
+> To: Upadhyay, Tejas <tejas.upadhyay@intel.com>; Kumar, Janga Rahul
+> <janga.rahul.kumar@intel.com>; igt-dev@lists.freedesktop.org
+> Subject: RE: [PATCH i-g-t 1/4] xe/xe_sysfs: Updated tests to use
+> xe_sysfs_gt_open
 >=20
 >=20
 >=20
 > > -----Original Message-----
-> > From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-> > Sent: Wednesday, August 2, 2023 2:09 PM
-> > To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; igt-
-> > dev@lists.freedesktop.org; Upadhyay, Tejas <tejas.upadhyay@intel.com>;
-> > Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-> > Subject: [PATCH i-g-t 2/4] xe/xe_sysfs: Modified code to work for non
-> > priv user
+> > From: Upadhyay, Tejas <tejas.upadhyay@intel.com>
+> > Sent: 02 August 2023 03:11 PM
+> > To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Kumar, Janga
+> > Rahul <janga.rahul.kumar@intel.com>; igt-dev@lists.freedesktop.org
+> > Subject: RE: [PATCH i-g-t 1/4] xe/xe_sysfs: Updated tests to use
+> > xe_sysfs_gt_open
 > >
-> > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > >
-> > Updated code to work non privileged user.
-> > Modified documentation.
 > >
-> > Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> > Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> > Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> > ---
-> >  tests/xe/xe_sysfs_defaults.c  |  6 +++---
-> > tests/xe/xe_sysfs_scheduler.c | 19
-> > +++++++++++++++----
-> >  2 files changed, 18 insertions(+), 7 deletions(-)
+> > > -----Original Message-----
+> > > From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> > > Sent: Wednesday, August 2, 2023 2:09 PM
+> > > To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; igt-
+> > > dev@lists.freedesktop.org; Upadhyay, Tejas
+> > > <tejas.upadhyay@intel.com>; Dandamudi, Priyanka
+> > > <priyanka.dandamudi@intel.com>
+> > > Subject: [PATCH i-g-t 1/4] xe/xe_sysfs: Updated tests to use
+> > > xe_sysfs_gt_open
+> > >
+> > > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> > >
+> > > Tests have been updated to use xe_sysfs_gt_open function.
+> > >
+> > > v2: Updated code to check when root user try to set value beyond
+> > > local min/max scheduler property.
+> > >
+> > > Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> > > Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> > > ---
+> > >  tests/xe/xe_sysfs_defaults.c  | 10 ++++++----
+> > > tests/xe/xe_sysfs_scheduler.c
+> > > | 12 +++++++-----
+> > >  2 files changed, 13 insertions(+), 9 deletions(-)
+> > >
+> > > diff --git a/tests/xe/xe_sysfs_defaults.c
+> > > b/tests/xe/xe_sysfs_defaults.c index 5c9de43e9..ff958161b 100644
+> > > --- a/tests/xe/xe_sysfs_defaults.c
+> > > +++ b/tests/xe/xe_sysfs_defaults.c
+> > > @@ -65,25 +65,27 @@ igt_main
+> > >
+> > >  		sys_fd =3D igt_sysfs_open(xe);
+> > >  		igt_require(sys_fd !=3D -1);
+> > > +		close(sys_fd);
+> > >  	}
+> > >
+> > >  	igt_subtest_with_dynamic("engine-defaults") {
+> > >  		xe_for_each_gt(xe, gt) {
+> > >  			int engines_fd =3D -1;
+> > > -			char buf[100];
+> > > +			int gt_fd =3D -1;
+> > >
+> > > -			sprintf(buf, "device/gt%d/engines", gt);
+> > > -			engines_fd =3D openat(sys_fd, buf, O_RDONLY);
+> > > +			gt_fd =3D xe_sysfs_gt_open(xe, gt);
+> > > +			igt_require(gt_fd !=3D -1);
+> > > +			engines_fd =3D openat(gt_fd, "engines", O_RDONLY);
+> > >  			igt_require(engines_fd !=3D -1);
+> > >
+> > >  			igt_sysfs_engines(xe, engines_fd, NULL,
+> > test_defaults);
+> > >
+> > >  			close(engines_fd);
+> > > +			 close(gt_fd);
+> > >  		}
+> > >  	}
+> > >
+> > >  	igt_fixture {
+> > > -		close(sys_fd);
+> > >  		xe_device_put(xe);
+> > >  		close(xe);
+> > >  	}
+> > > diff --git a/tests/xe/xe_sysfs_scheduler.c
+> > > b/tests/xe/xe_sysfs_scheduler.c index 1da0f541a..f199d6be8 100644
+> > > --- a/tests/xe/xe_sysfs_scheduler.c
+> > > +++ b/tests/xe/xe_sysfs_scheduler.c
+> > > @@ -94,7 +94,7 @@ static void test_min_max(int xe, int engine, const
+> > > char
+> > > **property)
+> > >
+> > >  	igt_sysfs_printf(engine, property[0], "%d", default_min);
+> > >  	igt_sysfs_scanf(engine, property[0], "%u", &set);
+> > > -	igt_assert_eq(set, default_min);
+> > > +	igt_assert_neq(set, default_min);
 > >
-> > diff --git a/tests/xe/xe_sysfs_defaults.c
-> > b/tests/xe/xe_sysfs_defaults.c index
-> > ff958161b..0fc2918b6 100644
-> > --- a/tests/xe/xe_sysfs_defaults.c
-> > +++ b/tests/xe/xe_sysfs_defaults.c
-> > @@ -6,10 +6,10 @@
-> >  /**
-> >   * TEST: xe sysfs defaults
-> >   * Category: Infrastructure
-> > - * Functionality: driver handler
-> > + * Functionality: sysman defaults
-> >   * Run type: FULL
-> > - * Sub-category: xe
-> > - * Test category: SysMan
-> > + * Sub-category: sysman
-> > + * Test category: functionality test
-> >   * SUBTEST: engine-defaults
-> >   */
-> >
-> > diff --git a/tests/xe/xe_sysfs_scheduler.c
-> > b/tests/xe/xe_sysfs_scheduler.c index f199d6be8..6dbbd1760 100644
-> > --- a/tests/xe/xe_sysfs_scheduler.c
-> > +++ b/tests/xe/xe_sysfs_scheduler.c
-> > @@ -5,6 +5,9 @@
-> >
-> >  /**
-> >   * TEST: xe sysfs scheduler
-> > + * Sub-category: sysman
-> > + * Functionality: scheduler control interface
-> > + * Test category: functionality test
-> >   * Run type: FULL
-> >   *
-> >   * SUBTEST: %s-invalid
-> > @@ -107,14 +110,21 @@ static void test_min_max(int xe, int engine,
-> > const char **property)
-> >
-> >  static void test_param_nonpriv(int xe, int engine, const char
-> > **property)  {
-> > +	struct stat st_engine, st_property;
-> >  	unsigned int default_max, max;
-> >  	unsigned int default_min, min;
-> >  	unsigned int set;
-> > -	struct stat st;
-> >  	int defaults;
-> > +	int property_fd;
-> >
-> > -	fstat(engine, &st);
-> > -	fchmod(engine, (st.st_mode | S_IROTH | S_IWOTH));
-> > +	property_fd =3D openat(engine, property[0], O_RDWR);
-> > +	igt_require(property_fd !=3D -1);
-> > +
-> > +	fstat(engine, &st_engine);
-> > +	fchmod(engine, (st_engine.st_mode | S_IRWXO | S_IRWXG |
-> > S_IRWXU));
-> > +
-> > +	fstat(property_fd, &st_property);
-> > +	fchmod(property_fd, (st_property.st_mode | S_IRWXO | S_IRWXG |
-> > +S_IRWXU));
+> > Also what is default_min here, is it min/max under .defaults/? To test
+> > min/max, I think it should sysfs min/max that we should check against.
 >=20
-> Description of commit is not really talking about why this change is made=
-.
-> Can you please describe or reply here what are we trying to do here?
+> default_min here is under min/max under .defaults. This is sort of a nega=
+tive
+> test when we try to test beyond sysfs min/max and within default min/max =
+it
+> should fail. This I changed to negative, as the requirement has been chan=
+ged.
 >=20
-I just added permission to engine folder as well along with property. So, I=
- have written in a high level that "updated code to make it work for non-pr=
-ivileged user" in commit description.
 
-Regards,
-Priyanka
-> Tejas
+Ok, how about checking negative test also keeping sysfs min/max in equation=
+. As requirement is all limited in sysfs min/max range. Default has no rele=
+vant here.
+
+Am I right?
+
+Thanks,
+Tejas =20
+
+> Regards,
+> Priyanka
+>=20
 > >
-> >  	defaults =3D openat(engine, ".defaults", O_DIRECTORY);
-> >  	igt_require(defaults !=3D -1);
-> > @@ -150,7 +160,8 @@ static void test_param_nonpriv(int xe, int engine,
-> > const char **property)
-> >  	}
-> >  	igt_waitchildren();
-> >
-> > -	fchmod(engine, st.st_mode);
-> > +	fchmod(engine, st_engine.st_mode);
-> > +	fchmod(property_fd, st_property.st_mode);
-> >
-> >  	/* Reset max, min to original values */
-> >  	igt_sysfs_printf(engine, property[1], "%d", default_min);
-> > --
-> > 2.25.1
+> > Tejas
+> > >
+> > >  	igt_sysfs_printf(engine, property[0], "%d", min);
+> > >  	igt_sysfs_scanf(engine, property[0], "%u", &set); @@ -184,6 +184,7
+> > > @@ igt_main
+> > >
+> > >  		sys_fd =3D igt_sysfs_open(xe);
+> > >  		igt_require(sys_fd !=3D -1);
+> > > +		close(sys_fd);
+> > >  	}
+> > >
+> > >  	for (int i =3D 0; i < count; i++) {
+> > > @@ -191,20 +192,21 @@ igt_main
+> > >  			igt_subtest_with_dynamic_f("%s-%s", property[i][0],
+> > > t->name) {
+> > >  				xe_for_each_gt(xe, gt) {
+> > >  					int engines_fd =3D -1;
+> > > -					char buf[100];
+> > > +					int gt_fd =3D -1;
+> > >
+> > > -					sprintf(buf, "device/gt%d/engines",
+> > > gt);
+> > > -					engines_fd =3D openat(sys_fd, buf,
+> > > O_RDONLY);
+> > > +					gt_fd =3D xe_sysfs_gt_open(xe, gt);
+> > > +					igt_require(gt_fd !=3D -1);
+> > > +					engines_fd =3D openat(gt_fd, "engines",
+> > > O_RDONLY);
+> > >  					igt_require(engines_fd !=3D -1);
+> > >
+> > >  					igt_sysfs_engines(xe, engines_fd,
+> > property[i], t->fn);
+> > >  					close(engines_fd);
+> > > +					close(gt_fd);
+> > >  				}
+> > >  			}
+> > >  		}
+> > >  	}
+> > >  	igt_fixture {
+> > > -		close(sys_fd);
+> > >  		xe_device_put(xe);
+> > >  		close(xe);
+> > >  	}
+> > > --
+> > > 2.25.1
