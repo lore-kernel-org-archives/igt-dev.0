@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0824052326967385505=="
+Received: from mgamail.intel.com (unknown [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0293610E580
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 19:43:20 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  3 Aug 2023 01:03:27 +0530
+Message-Id: <20230802193330.3843896-5-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230802193330.3843896-1-bhanuprakash.modem@intel.com>
+References: <20230802193330.3843896-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Riana Tauro" <riana.tauro@intel.com>
-Date: Thu, 03 Aug 2023 06:39:19 -0000
-Message-ID: <169104475988.5269.3084309676142891322@emeril.freedesktop.org>
-References: <20230803054810.2842880-1-riana.tauro@intel.com>
-In-Reply-To: <20230803054810.2842880-1-riana.tauro@intel.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy94ZTog?=
- =?utf-8?q?Add_a_test_to_toggle_GT_C_states?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V4 4/7] tests/meson.build: Simplify builds for
+ Chamelium targets
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +19,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0824052326967385505==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Move Chamelium based extra dependencies & source files to
+corresponding generic dictionaries.
 
-== Series Details ==
+If we want to change extra source files for any Chamelium
+target, we can simply update in the dictionary, no need to
+re-wrire the rules.
 
-Series: tests/xe: Add a test to toggle GT C states
-URL   : https://patchwork.freedesktop.org/series/121922/
-State : info
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/meson.build | 26 ++++++++------------------
+ 1 file changed, 8 insertions(+), 18 deletions(-)
 
-== Summary ==
-
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9501](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9501/index.html)
-
-
-
---===============0824052326967385505==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe: Add a test to toggle GT C states</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121922/">https://patchwork.freedesktop.org/series/121922/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9501/index.html">IGTPW_9501</a></p>
-
-</body>
-</html>
-
---===============0824052326967385505==--
+diff --git a/tests/meson.build b/tests/meson.build
+index b9f0a9c15..ad2dc8fb9 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -308,6 +308,7 @@ msm_progs = [
+ 
+ chamelium_progs = [
+ 	'kms_chamelium_audio',
++	'kms_chamelium_color',
+ 	'kms_chamelium_edid',
+ 	'kms_chamelium_frames',
+ 	'kms_chamelium_hpd',
+@@ -331,6 +332,11 @@ extra_sources = {
+ 	'dumb_buffer': ['dumb_buffer.c' ],
+ 	'testdisplay': [ 'testdisplay_hotplug.c' ],
+ 	'kms_color':  [ 'kms_color_helper.c' ],
++	'kms_chamelium_audio': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_color':  [ 'kms_color_helper.c' ],
++	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ 	'kms_dsc': [ join_paths ('i915', 'kms_dsc_helper.c') ],
+ 	'kms_psr2_sf':  [ join_paths ('i915', 'kms_dsc_helper.c') ],
+ }
+@@ -423,9 +429,8 @@ endforeach
+ if chamelium.found()
+ 	foreach prog : chamelium_progs
+ 		testexe = executable(prog,
+-				 [join_paths('chamelium', prog + '.c'),
+-					join_paths('chamelium', 'kms_chamelium_helper.c')],
+-				 dependencies : test_deps,
++				 [join_paths('chamelium', prog + '.c')] + extra_sources.get(prog, []),
++				 dependencies : test_deps + extra_dependencies.get(prog, []),
+ 				 install_dir : libexecdir,
+ 				 install_rpath : libexecdir_rpathdir,
+ 				 install : true)
+@@ -439,21 +444,6 @@ if chamelium.found()
+ 			     output : name + '.testlist')
+ 	endforeach
+ 	test_deps += chamelium
+-
+-	name = 'kms_chamelium_color'
+-	testexe = executable('kms_chamelium_color',
+-				[ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
+-				dependencies : test_deps + [ chamelium ],
+-				install_dir : libexecdir,
+-				install_rpath : libexecdir_rpathdir,
+-				install : true)
+-	test_list += name
+-	test_executables += testexe
+-	testlist_files += custom_target(name + '.testlist',
+-		     build_by_default : true,
+-		     command : [testexe, '--show-testlist'],
+-		     capture : true,
+-		     output : name + '.testlist')
+ endif
+ 
+ subdir('amdgpu')
+-- 
+2.40.0
