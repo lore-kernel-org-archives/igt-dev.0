@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (unknown [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7066110E525
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 08:40:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3304510E525
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 08:40:45 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
  tejas.upadhyay@intel.com, priyanka.dandamudi@intel.com
-Date: Wed,  2 Aug 2023 14:08:58 +0530
-Message-Id: <20230802083900.1175872-3-priyanka.dandamudi@intel.com>
+Date: Wed,  2 Aug 2023 14:08:59 +0530
+Message-Id: <20230802083900.1175872-4-priyanka.dandamudi@intel.com>
 In-Reply-To: <20230802083900.1175872-1-priyanka.dandamudi@intel.com>
 References: <20230802083900.1175872-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4] xe/xe_sysfs: Modified code to work for
- non priv user
+Subject: [igt-dev] [PATCH i-g-t 3/4] xe-fast-feedback.testlist: Add sysfs
+ tests to BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,83 +26,35 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Updated code to work non privileged user.
-Modified documentation.
+Add sysfs_scheduler and sysfs_defaults to BAT.
+This validates the basic sysfs scheduler parameters.
 
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Acked-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
 ---
- tests/xe/xe_sysfs_defaults.c  |  6 +++---
- tests/xe/xe_sysfs_scheduler.c | 19 +++++++++++++++----
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ tests/intel-ci/xe-fast-feedback.testlist | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/tests/xe/xe_sysfs_defaults.c b/tests/xe/xe_sysfs_defaults.c
-index ff958161b..0fc2918b6 100644
---- a/tests/xe/xe_sysfs_defaults.c
-+++ b/tests/xe/xe_sysfs_defaults.c
-@@ -6,10 +6,10 @@
- /**
-  * TEST: xe sysfs defaults
-  * Category: Infrastructure
-- * Functionality: driver handler
-+ * Functionality: sysman defaults
-  * Run type: FULL
-- * Sub-category: xe
-- * Test category: SysMan
-+ * Sub-category: sysman
-+ * Test category: functionality test
-  * SUBTEST: engine-defaults
-  */
- 
-diff --git a/tests/xe/xe_sysfs_scheduler.c b/tests/xe/xe_sysfs_scheduler.c
-index f199d6be8..6dbbd1760 100644
---- a/tests/xe/xe_sysfs_scheduler.c
-+++ b/tests/xe/xe_sysfs_scheduler.c
-@@ -5,6 +5,9 @@
- 
- /**
-  * TEST: xe sysfs scheduler
-+ * Sub-category: sysman
-+ * Functionality: scheduler control interface
-+ * Test category: functionality test
-  * Run type: FULL
-  *
-  * SUBTEST: %s-invalid
-@@ -107,14 +110,21 @@ static void test_min_max(int xe, int engine, const char **property)
- 
- static void test_param_nonpriv(int xe, int engine, const char **property)
- {
-+	struct stat st_engine, st_property;
- 	unsigned int default_max, max;
- 	unsigned int default_min, min;
- 	unsigned int set;
--	struct stat st;
- 	int defaults;
-+	int property_fd;
- 
--	fstat(engine, &st);
--	fchmod(engine, (st.st_mode | S_IROTH | S_IWOTH));
-+	property_fd = openat(engine, property[0], O_RDWR);
-+	igt_require(property_fd != -1);
-+
-+	fstat(engine, &st_engine);
-+	fchmod(engine, (st_engine.st_mode | S_IRWXO | S_IRWXG | S_IRWXU));
-+
-+	fstat(property_fd, &st_property);
-+	fchmod(property_fd, (st_property.st_mode | S_IRWXO | S_IRWXG | S_IRWXU));
- 
- 	defaults = openat(engine, ".defaults", O_DIRECTORY);
- 	igt_require(defaults != -1);
-@@ -150,7 +160,8 @@ static void test_param_nonpriv(int xe, int engine, const char **property)
- 	}
- 	igt_waitchildren();
- 
--	fchmod(engine, st.st_mode);
-+	fchmod(engine, st_engine.st_mode);
-+	fchmod(property_fd, st_property.st_mode);
- 
- 	/* Reset max, min to original values */
- 	igt_sysfs_printf(engine, property[1], "%d", default_min);
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 2799d9cfb..c994d29e9 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -164,6 +164,16 @@ igt@xe_query@query-invalid-query
+ igt@xe_query@query-invalid-size
+ igt@xe_spin_batch@spin-basic
+ igt@xe_spin_batch@spin-batch
++igt@xe_sysfs_defaults@engine-defaults
++igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
++igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
++igt@xe_sysfs_scheduler@preempt_timeout_us-nonprivileged-user
++igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
++igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
++igt@xe_sysfs_scheduler@timeslice_duration_us-nonprivileged-user
++igt@xe_sysfs_scheduler@job_timeout_ms-invalid
++igt@xe_sysfs_scheduler@job_timeout_ms-min-max
++igt@xe_sysfs_scheduler@job_timeout_ms-nonprivileged-user
+ #igt@xe_vm@bind-once
+ #igt@xe_vm@scratch
+ igt@xe_vm@shared-pte-page
 -- 
 2.25.1
