@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B5F910E0A1
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 09:38:55 +0000 (UTC)
-Message-ID: <a79232f9-a5f0-4c67-c1de-8b958b90d3b9@intel.com>
-Date: Wed, 2 Aug 2023 15:08:41 +0530
+Received: from mgamail.intel.com (unknown [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C068910E0A1
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 09:41:25 +0000 (UTC)
+From: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
+To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>, "Kumar, Janga Rahul"
+ <janga.rahul.kumar@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Wed, 2 Aug 2023 09:41:23 +0000
+Message-ID: <SJ1PR11MB6204368BA9AFEF54A6B51EEA810BA@SJ1PR11MB6204.namprd11.prod.outlook.com>
+References: <20230802083900.1175872-1-priyanka.dandamudi@intel.com>
+ <20230802083900.1175872-2-priyanka.dandamudi@intel.com>
+In-Reply-To: <20230802083900.1175872-2-priyanka.dandamudi@intel.com>
 Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230801132540.563102-1-anshuman.gupta@intel.com>
- <5549034d-a1c3-14d4-31b3-5c6db2641ec1@intel.com>
-In-Reply-To: <5549034d-a1c3-14d4-31b3-5c6db2641ec1@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] test/perf_pmu: Dump drpc on C6 failure
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] xe/xe_sysfs: Updated tests to use
+ xe_sysfs_gt_open
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,170 +24,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 8/2/2023 3:06 PM, Riana Tauro wrote:
-> Hi Anshuman
-> 
-> On 8/1/2023 6:55 PM, Anshuman Gupta wrote:
->> Dump drpc debugfs on RC6/MC6 failure, it will be useful to
->> debug any C6 failure issue by using drpc debugfs debug info.
->>
->> Co-developed-by: Badal Nilawar <badal.nilawar@intel.com>
->> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
->> ---
->>   tests/i915/perf_pmu.c | 61 +++++++++++++++++++++++++++++--------------
->>   1 file changed, 42 insertions(+), 19 deletions(-)
->>
->> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
->> index 58f4a82a2..bcd6db799 100644
->> --- a/tests/i915/perf_pmu.c
->> +++ b/tests/i915/perf_pmu.c
->> @@ -256,6 +256,18 @@ IGT_TEST_DESCRIPTION("Test the i915 pmu perf 
->> interface");
->>   const double tolerance = 0.05f;
->>   const unsigned long batch_duration_ns = 500e6;
->> +char *drpc;
->> +const char *no_debug_data = "\0";
->> +
->> +static char *get_drpc(int i915, int gt_id)
->> +{
->> +    int gt_dir;
->> +
->> +    gt_dir = igt_debugfs_gt_dir(i915, gt_id);
->> +    igt_assert(gt_dir != -1);
->> +    return igt_sysfs_get(gt_dir, "drpc");
->> +}
->> +
->>   static int open_pmu(int i915, uint64_t config)
->>   {
->>       int fd;
->> @@ -336,17 +348,19 @@ static uint64_t pmu_read_multi(int fd, unsigned 
->> int num, uint64_t *val)
->>       return buf[1];
->>   }
->> -#define __assert_within_epsilon(x, ref, tol_up, tol_down) \
->> +#define __assert_within_epsilon(x, ref, tol_up, tol_down, debug_data) \
->>       igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
->>                (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
->> -             "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance 
->> of %f)\n",\
->> +             "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance 
->> of %f)\n%s\n",\
->>                #x, #ref, (double)(x), \
->>                (tol_up) * 100.0, (tol_down) * 100.0, \
->> -             (double)(ref))
->> +             (double)(ref), debug_data)
->>   #define assert_within_epsilon(x, ref, tolerance) \
->> -    __assert_within_epsilon(x, ref, tolerance, tolerance)
->> +    __assert_within_epsilon(x, ref, tolerance, tolerance, "\0")
-no_debug_data can be used here
->> +#define assert_within_epsilon_dump(x, ref, tolerance, debug_data) \
->> +    __assert_within_epsilon(x, ref, tolerance, tolerance, debug_data)
-> debug instead of dump?
->>   /*
->>    * Helper for cases where we assert on time spent sleeping (directly or
->>    * indirectly), so make it more robust by ensuring the system sleep 
->> time
->> @@ -1822,7 +1836,7 @@ test_frequency(int gem_fd, unsigned int gt)
->>        * On thermally throttled devices we cannot be sure maximum 
->> frequency
->>        * can be reached so use larger tolerance downards.
->>        */
->> -    __assert_within_epsilon(max[0], max_freq, tolerance, 0.15f);
->> +    __assert_within_epsilon(max[0], max_freq, tolerance, 0.15f, 
->> no_debug_data);
->>   }
->>   static void
->> @@ -1967,7 +1981,8 @@ test_rc6(int gem_fd, unsigned int gt, unsigned 
->> int num_gt, unsigned int flags)
->>           }
->>       }
->> -    igt_require(wait_for_rc6(fd[0], 1, pmus, test_idx));
->> +    igt_require_f(wait_for_rc6(fd[0], 1, pmus, test_idx),
->> +              "failed to enter rc6/mc6 \n%s\n", drpc = 
->> get_drpc(gem_fd, test_idx));
-> test_idx is assigned to pmus in this function. Safer to use gt.
-> 
-> Thanks
-> Riana
->>       /* While idle check full RC6. */
->>       ts[0] = pmu_read_multi(fd[0], pmus, prev);
->> @@ -1977,9 +1992,11 @@ test_rc6(int gem_fd, unsigned int gt, unsigned 
->> int num_gt, unsigned int flags)
->>       for (gt_ = 0; gt_ < pmus; gt_++) {
->>           igt_debug("gt%u: idle rc6=%"PRIu64", slept=%lu, 
->> perf=%"PRIu64"\n",
->>                 gt_, idle[gt_] - prev[gt_], slept, ts[1] - ts[0]);
->> -        assert_within_epsilon(idle[gt_] - prev[gt_],
->> -                      ts[1] - ts[0],
->> -                      tolerance);
->> +        drpc = get_drpc(gem_fd, gt_);
->> +        assert_within_epsilon_dump(idle[gt_] - prev[gt_],
->> +                       ts[1] - ts[0],
->> +                       tolerance, drpc);
->> +        free(drpc);
->>       }
->>       if (flags & TEST_S3) {
->> @@ -2005,7 +2022,8 @@ test_rc6(int gem_fd, unsigned int gt, unsigned 
->> int num_gt, unsigned int flags)
->>           }
->>       }
->> -    igt_assert(wait_for_rc6(fd[0], 5, pmus, test_idx));
->> +    igt_require_f(wait_for_rc6(fd[0], 5, pmus, test_idx),
->> +              "failed to enter rc6/mc6 \n%s\n", drpc = 
->> get_drpc(gem_fd, test_idx));
->>       ts[0] = pmu_read_multi(fd[0], pmus, prev);
->>       slept = measured_usleep(duration_ns / 1000);
->> @@ -2014,9 +2032,11 @@ test_rc6(int gem_fd, unsigned int gt, unsigned 
->> int num_gt, unsigned int flags)
->>       for (gt_ = 0; gt_ < pmus; gt_++) {
->>           igt_debug("gt%u: idle rc6=%"PRIu64", slept=%lu, 
->> perf=%"PRIu64"\n",
->>                 gt_, idle[gt_] - prev[gt_], slept, ts[1] - ts[0]);
->> -        assert_within_epsilon(idle[gt_] - prev[gt_],
->> -                      ts[1] - ts[0],
->> -                      tolerance);
->> +        drpc = get_drpc(gem_fd, gt_);
->> +        assert_within_epsilon_dump(idle[gt_] - prev[gt_],
->> +                       ts[1] - ts[0],
->> +                       tolerance, drpc);
->> +        free(drpc);
->>       }
->>       /* Wake up device and check no RC6. */
->> @@ -2048,14 +2068,16 @@ test_rc6(int gem_fd, unsigned int gt, unsigned 
->> int num_gt, unsigned int flags)
->>       for (gt_ = 0; gt_ < pmus; gt_++) {
->>           igt_debug("gt%u: busy rc6=%"PRIu64", slept=%lu, 
->> perf=%"PRIu64"\n",
->>                 gt_, busy[gt_] - prev[gt_], slept, ts[1] - ts[0]);
->> +        drpc = get_drpc(gem_fd, gt_);
->>           if (gt_ == test_idx || (flags & TEST_ALL))
->> -            assert_within_epsilon(busy[gt_] - prev[gt_],
->> -                          0.0,
->> -                          tolerance);
->> +            assert_within_epsilon_dump(busy[gt_] - prev[gt_],
->> +                           0.0,
->> +                           tolerance, drpc);
->>           else
->> -            assert_within_epsilon(busy[gt_] - prev[gt_],
->> -                          ts[1] - ts[0],
->> -                          tolerance);
->> +            assert_within_epsilon_dump(busy[gt_] - prev[gt_],
->> +                           ts[1] - ts[0],
->> +                           tolerance, drpc);
->> +        free(drpc);
->>       }
->>   }
->> @@ -2720,6 +2742,7 @@ igt_main
->>       igt_fixture {
->>           intel_ctx_destroy(fd, ctx);
->>           drm_close_driver(fd);
->> +        free(drpc);
->>       }
->>       igt_subtest("module-unload") {
+> -----Original Message-----
+> From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> Sent: Wednesday, August 2, 2023 2:09 PM
+> To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; igt-
+> dev@lists.freedesktop.org; Upadhyay, Tejas <tejas.upadhyay@intel.com>;
+> Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> Subject: [PATCH i-g-t 1/4] xe/xe_sysfs: Updated tests to use
+> xe_sysfs_gt_open
+>=20
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>=20
+> Tests have been updated to use xe_sysfs_gt_open function.
+>=20
+> v2: Updated code to check when root user try to set value beyond local
+> min/max scheduler property.
+>=20
+> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  tests/xe/xe_sysfs_defaults.c  | 10 ++++++----  tests/xe/xe_sysfs_schedul=
+er.c
+> | 12 +++++++-----
+>  2 files changed, 13 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/tests/xe/xe_sysfs_defaults.c b/tests/xe/xe_sysfs_defaults.c =
+index
+> 5c9de43e9..ff958161b 100644
+> --- a/tests/xe/xe_sysfs_defaults.c
+> +++ b/tests/xe/xe_sysfs_defaults.c
+> @@ -65,25 +65,27 @@ igt_main
+>=20
+>  		sys_fd =3D igt_sysfs_open(xe);
+>  		igt_require(sys_fd !=3D -1);
+> +		close(sys_fd);
+>  	}
+>=20
+>  	igt_subtest_with_dynamic("engine-defaults") {
+>  		xe_for_each_gt(xe, gt) {
+>  			int engines_fd =3D -1;
+> -			char buf[100];
+> +			int gt_fd =3D -1;
+>=20
+> -			sprintf(buf, "device/gt%d/engines", gt);
+> -			engines_fd =3D openat(sys_fd, buf, O_RDONLY);
+> +			gt_fd =3D xe_sysfs_gt_open(xe, gt);
+> +			igt_require(gt_fd !=3D -1);
+> +			engines_fd =3D openat(gt_fd, "engines", O_RDONLY);
+>  			igt_require(engines_fd !=3D -1);
+>=20
+>  			igt_sysfs_engines(xe, engines_fd, NULL,
+> test_defaults);
+>=20
+>  			close(engines_fd);
+> +			 close(gt_fd);
+>  		}
+>  	}
+>=20
+>  	igt_fixture {
+> -		close(sys_fd);
+>  		xe_device_put(xe);
+>  		close(xe);
+>  	}
+> diff --git a/tests/xe/xe_sysfs_scheduler.c b/tests/xe/xe_sysfs_scheduler.=
+c
+> index 1da0f541a..f199d6be8 100644
+> --- a/tests/xe/xe_sysfs_scheduler.c
+> +++ b/tests/xe/xe_sysfs_scheduler.c
+> @@ -94,7 +94,7 @@ static void test_min_max(int xe, int engine, const char
+> **property)
+>=20
+>  	igt_sysfs_printf(engine, property[0], "%d", default_min);
+>  	igt_sysfs_scanf(engine, property[0], "%u", &set);
+> -	igt_assert_eq(set, default_min);
+> +	igt_assert_neq(set, default_min);
+
+Also what is default_min here, is it min/max under .defaults/? To test min/=
+max, I think it should sysfs min/max that we should check against.
+
+Tejas
+>=20
+>  	igt_sysfs_printf(engine, property[0], "%d", min);
+>  	igt_sysfs_scanf(engine, property[0], "%u", &set); @@ -184,6 +184,7
+> @@ igt_main
+>=20
+>  		sys_fd =3D igt_sysfs_open(xe);
+>  		igt_require(sys_fd !=3D -1);
+> +		close(sys_fd);
+>  	}
+>=20
+>  	for (int i =3D 0; i < count; i++) {
+> @@ -191,20 +192,21 @@ igt_main
+>  			igt_subtest_with_dynamic_f("%s-%s", property[i][0],
+> t->name) {
+>  				xe_for_each_gt(xe, gt) {
+>  					int engines_fd =3D -1;
+> -					char buf[100];
+> +					int gt_fd =3D -1;
+>=20
+> -					sprintf(buf, "device/gt%d/engines",
+> gt);
+> -					engines_fd =3D openat(sys_fd, buf,
+> O_RDONLY);
+> +					gt_fd =3D xe_sysfs_gt_open(xe, gt);
+> +					igt_require(gt_fd !=3D -1);
+> +					engines_fd =3D openat(gt_fd, "engines",
+> O_RDONLY);
+>  					igt_require(engines_fd !=3D -1);
+>=20
+>  					igt_sysfs_engines(xe, engines_fd,
+> property[i], t->fn);
+>  					close(engines_fd);
+> +					close(gt_fd);
+>  				}
+>  			}
+>  		}
+>  	}
+>  	igt_fixture {
+> -		close(sys_fd);
+>  		xe_device_put(xe);
+>  		close(xe);
+>  	}
+> --
+> 2.25.1
