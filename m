@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A963410E5BE
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jul 2023 17:31:19 +0000 (UTC)
-Date: Wed, 12 Jul 2023 19:31:00 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230712173100.ygh43vp3y3rnnykc@kamilkon-desk1>
-References: <20230712135854.957128-1-mauro.chehab@linux.intel.com>
- <20230712135854.957128-4-mauro.chehab@linux.intel.com>
+Received: from mgamail.intel.com (unknown [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DB8110E0AA
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Aug 2023 11:13:00 +0000 (UTC)
+From: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
+To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>, "Kumar, Janga Rahul"
+ <janga.rahul.kumar@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Wed, 2 Aug 2023 11:12:56 +0000
+Message-ID: <SJ1PR11MB62049456A99CD89C28BF26FD810BA@SJ1PR11MB6204.namprd11.prod.outlook.com>
+References: <20230802083900.1175872-1-priyanka.dandamudi@intel.com>
+ <20230802083900.1175872-3-priyanka.dandamudi@intel.com>
+ <SJ1PR11MB6204E928F9C5514480AD2D22810BA@SJ1PR11MB6204.namprd11.prod.outlook.com>
+In-Reply-To: <SJ1PR11MB6204E928F9C5514480AD2D22810BA@SJ1PR11MB6204.namprd11.prod.outlook.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230712135854.957128-4-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 03/13] scripts/test_list.py: rename
- the internal summary value
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] xe/xe_sysfs: Modified code to work
+ for non priv user
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,162 +27,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
 
-On 2023-07-12 at 15:58:44 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> The sumary is used internally. So, it is not meant to be used as
-> a normal field. To avoid possible clashes in the future, rename
-> the internal usage to _summary_, as we're using _foo_ for internal
-> properties.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> -----Original Message-----
+> From: Upadhyay, Tejas
+> Sent: Wednesday, August 2, 2023 3:13 PM
+> To: Dandamudi, Priyanka <Priyanka.Dandamudi@intel.com>; Kumar, Janga
+> Rahul <janga.rahul.kumar@intel.com>; igt-dev@lists.freedesktop.org
+> Subject: RE: [PATCH i-g-t 2/4] xe/xe_sysfs: Modified code to work for non=
+ priv
+> user
+>=20
+>=20
+>=20
+> > -----Original Message-----
+> > From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> > Sent: Wednesday, August 2, 2023 2:09 PM
+> > To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; igt-
+> > dev@lists.freedesktop.org; Upadhyay, Tejas <tejas.upadhyay@intel.com>;
+> > Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> > Subject: [PATCH i-g-t 2/4] xe/xe_sysfs: Modified code to work for non
+> > priv user
+> >
+> > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> >
+> > Updated code to work non privileged user.
+> > Modified documentation.
+> >
+> > Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> > Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> > Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> > ---
+> >  tests/xe/xe_sysfs_defaults.c  |  6 +++---
+> > tests/xe/xe_sysfs_scheduler.c | 19
+> > +++++++++++++++----
+> >  2 files changed, 18 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/tests/xe/xe_sysfs_defaults.c
+> > b/tests/xe/xe_sysfs_defaults.c index
+> > ff958161b..0fc2918b6 100644
+> > --- a/tests/xe/xe_sysfs_defaults.c
+> > +++ b/tests/xe/xe_sysfs_defaults.c
+> > @@ -6,10 +6,10 @@
+> >  /**
+> >   * TEST: xe sysfs defaults
+> >   * Category: Infrastructure
+> > - * Functionality: driver handler
+> > + * Functionality: sysman defaults
+> >   * Run type: FULL
+> > - * Sub-category: xe
+> > - * Test category: SysMan
+> > + * Sub-category: sysman
+> > + * Test category: functionality test
+> >   * SUBTEST: engine-defaults
+> >   */
+> >
+> > diff --git a/tests/xe/xe_sysfs_scheduler.c
+> > b/tests/xe/xe_sysfs_scheduler.c index f199d6be8..6dbbd1760 100644
+> > --- a/tests/xe/xe_sysfs_scheduler.c
+> > +++ b/tests/xe/xe_sysfs_scheduler.c
+> > @@ -5,6 +5,9 @@
+> >
+> >  /**
+> >   * TEST: xe sysfs scheduler
+> > + * Sub-category: sysman
+> > + * Functionality: scheduler control interface
+> > + * Test category: functionality test
+> >   * Run type: FULL
+> >   *
+> >   * SUBTEST: %s-invalid
+> > @@ -107,14 +110,21 @@ static void test_min_max(int xe, int engine,
+> > const char **property)
+> >
+> >  static void test_param_nonpriv(int xe, int engine, const char
+> > **property)  {
 
-> ---
->  scripts/test_list.py | 44 ++++++++++++++++++++++----------------------
->  1 file changed, 22 insertions(+), 22 deletions(-)
-> 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index 18fdd619211a..8dca7fc7c49e 100755
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -429,8 +429,8 @@ class TestList:
->  
->          for subtest in self.doc[test]["subtest"].keys():
->              summary = test_name
-> -            if self.doc[test]["subtest"][subtest]["Summary"] != '':
-> -                summary += self.subtest_separator + self.doc[test]["subtest"][subtest]["Summary"]
-> +            if self.doc[test]["subtest"][subtest]["_summary_"] != '':
-> +                summary += self.subtest_separator + self.doc[test]["subtest"][subtest]["_summary_"]
->              if not summary:
->                  continue
->  
-> @@ -441,10 +441,10 @@ class TestList:
->              if num_vars == 0:
->                  subtest_dict = {}
->  
-> -                subtest_dict["Summary"] = summary
-> +                subtest_dict["_summary_"] = summary
->  
->                  for k in sorted(self.doc[test]["subtest"][subtest].keys()):
-> -                    if k in [ 'Summary', 'arg', 'subtest_line' ]:
-> +                    if k in [ '_summary_', 'arg', 'subtest_line' ]:
->                          continue
->  
->                      if not allow_inherit:
-> @@ -510,10 +510,10 @@ class TestList:
->  
->                  # Store the element
->                  subtest_dict = {}
-> -                subtest_dict["Summary"] = arg_summary
-> +                subtest_dict["_summary_"] = arg_summary
->  
->                  for field in sorted(self.doc[test]["subtest"][subtest].keys()):
-> -                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
-> +                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
->                          continue
->  
->                      sub_field = self.doc[test]["subtest"][subtest][field]
-> @@ -581,11 +581,11 @@ class TestList:
->                  if self.__filter_subtest(self.doc[test], subtest, True):
->                      continue
->  
-> -                summary = subtest["Summary"]
-> +                summary = subtest["_summary_"]
->  
->                  dic[summary] = {}
->                  for field in sorted(subtest.keys()):
-> -                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
-> +                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
->                          continue
->                      dic[summary][field] = subtest[field]
->  
-> @@ -646,12 +646,12 @@ class TestList:
->              for subtest in subtest_array:
->  
->                  print()
-> -                print(subtest["Summary"])
-> -                print(len(subtest["Summary"]) * '=')
-> +                print(subtest["_summary_"])
-> +                print(len(subtest["_summary_"]) * '=')
->                  print("")
->  
->                  for field in sorted(subtest.keys()):
-> -                    if field in [ 'Summary', 'arg', 'subtest_line' ]:
-> +                    if field in [ '_summary_', 'arg', 'subtest_line' ]:
->                          continue
->  
->                      print(f":{field}:", subtest[field])
-> @@ -857,7 +857,7 @@ class TestList:
->  
->              subtest_array += self.expand_subtest(fname, test_name, test, True)
->  
-> -        subtest_array.sort(key = lambda x : x.get('Summary'))
-> +        subtest_array.sort(key = lambda x : x.get('_summary_'))
->  
->          for subtest in subtest_array:
->              if self.__filter_subtest(self.doc[test], subtest, True):
-> @@ -873,27 +873,27 @@ class TestList:
->                              if test_elem not in subtests:
->                                  subtests[test_elem] = []
->                              if order:
-> -                                subtests[test_elem].append((subtest["Summary"], test_list))
-> +                                subtests[test_elem].append((subtest["_summary_"], test_list))
->                              else:
-> -                                subtests[test_elem].append(subtest["Summary"])
-> +                                subtests[test_elem].append(subtest["_summary_"])
->                      else:
->                          if subtest[sort_field] not in subtests:
->                              subtests[subtest[sort_field]] = []
->                              if order:
-> -                                subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-> +                                subtests[test_elem].append((subtest["_summary_"], [subtest[sort_field]]))
->                              else:
-> -                                subtests[subtest[sort_field]].append(subtest["Summary"])
-> +                                subtests[subtest[sort_field]].append(subtest["_summary_"])
->                  else:
->                      if order:
-> -                        subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-> +                        subtests[test_elem].append((subtest["_summary_"], [subtest[sort_field]]))
->                      else:
-> -                        subtests[""].append(subtest["Summary"])
-> +                        subtests[""].append(subtest["_summary_"])
->  
->              else:
->                  if order:
-> -                    subtests[test_elem].append((subtest["Summary"], [subtest[sort_field]]))
-> +                    subtests[test_elem].append((subtest["_summary_"], [subtest[sort_field]]))
->                  else:
-> -                    subtests[""].append(subtest["Summary"])
-> +                    subtests[""].append(subtest["_summary_"])
->  
->          if order:
->              for group, tests in subtests.items():
-> @@ -1064,7 +1064,7 @@ class TestList:
->  
->                          self.doc[current_test] = {}
->                          self.doc[current_test]["arg"] = {}
-> -                        self.doc[current_test]["Summary"] = match.group(1)
-> +                        self.doc[current_test]["_summary_"] = match.group(1)
->                          self.doc[current_test]["File"] = fname
->                          self.doc[current_test]["subtest"] = {}
->                          self.doc[current_test]["subtest_line"] = {}
-> @@ -1102,7 +1102,7 @@ class TestList:
->                              continue
->                          self.doc[current_test]["subtest"][current_subtest][field] = self.doc[current_test][field]
->  
-> -                    self.doc[current_test]["subtest"][current_subtest]["Summary"] = match.group(1)
-> +                    self.doc[current_test]["subtest"][current_subtest]["_summary_"] = match.group(1)
->                      self.doc[current_test]["subtest"][current_subtest]["Description"] = ''
->                      self.doc[current_test]["subtest_line"][current_subtest] = file_ln
->  
-> -- 
-> 2.40.1
-> 
+Please remove non-priv test, as it does not make difference. Sysfs is suppo=
+sed to be written by priv user only. So we should check those tests only.
 
+Thanks,
+Tejas
+> > +	struct stat st_engine, st_property;
+> >  	unsigned int default_max, max;
+> >  	unsigned int default_min, min;
+> >  	unsigned int set;
+> > -	struct stat st;
+> >  	int defaults;
+> > +	int property_fd;
+> >
+> > -	fstat(engine, &st);
+> > -	fchmod(engine, (st.st_mode | S_IROTH | S_IWOTH));
+> > +	property_fd =3D openat(engine, property[0], O_RDWR);
+> > +	igt_require(property_fd !=3D -1);
+> > +
+> > +	fstat(engine, &st_engine);
+> > +	fchmod(engine, (st_engine.st_mode | S_IRWXO | S_IRWXG |
+> > S_IRWXU));
+> > +
+> > +	fstat(property_fd, &st_property);
+> > +	fchmod(property_fd, (st_property.st_mode | S_IRWXO | S_IRWXG |
+> > +S_IRWXU));
+>=20
+> Description of commit is not really talking about why this change is made=
+.
+> Can you please describe or reply here what are we trying to do here?
+>=20
+> Tejas
+> >
+> >  	defaults =3D openat(engine, ".defaults", O_DIRECTORY);
+> >  	igt_require(defaults !=3D -1);
+> > @@ -150,7 +160,8 @@ static void test_param_nonpriv(int xe, int engine,
+> > const char **property)
+> >  	}
+> >  	igt_waitchildren();
+> >
+> > -	fchmod(engine, st.st_mode);
+> > +	fchmod(engine, st_engine.st_mode);
+> > +	fchmod(property_fd, st_property.st_mode);
+> >
+> >  	/* Reset max, min to original values */
+> >  	igt_sysfs_printf(engine, property[1], "%d", default_min);
+> > --
+> > 2.25.1
