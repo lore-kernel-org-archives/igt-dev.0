@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1788F10E626
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 16:09:50 +0000 (UTC)
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  3 Aug 2023 16:05:17 +0000
-Message-Id: <20230803160517.3054990-2-katarzyna.dec@intel.com>
-In-Reply-To: <20230803160517.3054990-1-katarzyna.dec@intel.com>
-References: <20230803160517.3054990-1-katarzyna.dec@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0713449182267915984=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/1] tests/intel-ci: Remove deleted IGT test
- from PVC blocklist
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Katarzyna Dec" <katarzyna.dec@intel.com>
+Date: Thu, 03 Aug 2023 16:25:52 -0000
+Message-ID: <169107995280.5270.14411086988033603633@emeril.freedesktop.org>
+References: <20230803140307.3052435-1-katarzyna.dec@intel.com>
+In-Reply-To: <20230803140307.3052435-1-katarzyna.dec@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?intel-co=3A_xe=2Eblocklist_description_update?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,46 +17,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Aditya Chauhan <aditya.chauhan@intel.com>,
- Himanshu Girotra <himanshu.girotra@intel.com>,
- Gandi Ramadevi <ramadevi.gandi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In commit xe_guc_pc@*rc6* testcases were remove from code:
+--===============0713449182267915984==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-commit 38af51c0ce6d9573793f53fc32782b77061bf169
-Author: Riana Tauro <riana.tauro@intel.com>
-Date:   Fri Jun 30 12:34:39 2023 +0530
+== Series Details ==
 
-tests/xe/xe_guc_pc: Remove rc6 tests
+Series: tests/intel-co: xe.blocklist description update
+URL   : https://patchwork.freedesktop.org/series/121962/
+State : failure
 
-Remove these tests as sysfs paths have been changed and
-a generic naming used.
+== Summary ==
 
-Let's remove test from blocklist.
+Series 121962 revision 1 was fully merged or fully failed: no git log
 
-Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
-Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
-Cc: Aditya Chauhan <aditya.chauhan@intel.com>
-Cc: Himanshu Girotra <himanshu.girotra@intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/intel-ci/xe.pvc.blocklist.txt | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/tests/intel-ci/xe.pvc.blocklist.txt b/tests/intel-ci/xe.pvc.blocklist.txt
-index 8965854fe..bc045241b 100644
---- a/tests/intel-ci/xe.pvc.blocklist.txt
-+++ b/tests/intel-ci/xe.pvc.blocklist.txt
-@@ -32,7 +32,6 @@ igt@xe_huc_copy
- # VLK-46910
- # Expected skip because of rc6 state which is not POR on PVC xe
- ##################################################################
--igt@xe_guc_pc@rc(6|0)
- igt@xe_pm_residency@gt-c6-on-idle
- ##################################################################
- # VLK-49993
--- 
-2.34.1
+
+--===============0713449182267915984==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-co: xe.blocklist description update</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121962/">https://patchwork.freedesktop.org/series/121962/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <p>Series 121962 revision 1 was fully merged or fully failed: no git log</p>
+
+</body>
+</html>
+
+--===============0713449182267915984==--
