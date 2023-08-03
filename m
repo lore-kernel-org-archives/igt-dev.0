@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1123503909098230477=="
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0AB810E664
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 21:11:38 +0000 (UTC)
+Message-ID: <7f16bc86-d81d-5065-3a23-afdc5e49b214@intel.com>
+Date: Thu, 3 Aug 2023 23:11:19 +0200
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
-Date: Thu, 03 Aug 2023 20:57:08 -0000
-Message-ID: <169109622822.5268.12336011942646485138@emeril.freedesktop.org>
-References: <20230803195455.615024-1-aurabindo.pillai@amd.com>
-In-Reply-To: <20230803195455.615024-1-aurabindo.pillai@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/amdgp?=
- =?utf-8?q?u=3A_Add_test_for_MALL_static_screen_cache_scanout_=28rev2=29?=
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20230803074902.172493-1-zbigniew.kempczynski@intel.com>
+ <20230803074902.172493-2-zbigniew.kempczynski@intel.com>
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+In-Reply-To: <20230803074902.172493-2-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/media_fill: Use RENDER engine
+ flag to work on Xe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +23,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1123503909098230477==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Zbigniew,
 
-== Series Details ==
+On 3.08.2023 09:49, Zbigniew Kempczyński wrote:
+> Due to explicit requirement of running on valid hw engine on xe
+> change I915_EXEC_DEFAULT to I915_EXEC_RENDER. This change doesn't
+> break i915 media pipeline allowing to create and assign valid xe
+> engine to execute media fill test.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+> ---
+>   lib/media_fill.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/media_fill.c b/lib/media_fill.c
+> index e80dae1505..2520995d97 100644
+> --- a/lib/media_fill.c
+> +++ b/lib/media_fill.c
+> @@ -281,7 +281,7 @@ __gen9_media_fillfunc(int i915,
+>   	intel_bb_ptr_align(ibb, 32);
+>   
+>   	intel_bb_exec(ibb, intel_bb_offset(ibb),
+> -		      I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC, true);
+> +		      I915_EXEC_RENDER | I915_EXEC_NO_RELOC, true);
 
-Series: tests/amdgpu: Add test for MALL static screen cache scanout (rev2)
-URL   : https://patchwork.freedesktop.org/series/121980/
-State : info
+As discussed offline - since we are the ones doing the i915 to xe engine 
+type conversion, we could as well translate 'I915_EXEC_DEFAULT' to 
+'DRM_XE_ENGINE_CLASS_RENDER'. But I think it's a minor thing, besides I 
+already reviewed a similar change in gpgpu_fill so:
 
-== Summary ==
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9510](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9510/index.html)
-
-
-
---===============1123503909098230477==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+Christoph
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: Add test for MALL static screen cache scanout (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121980/">https://patchwork.freedesktop.org/series/121980/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9510/index.html">IGTPW_9510</a></p>
-
-</body>
-</html>
-
---===============1123503909098230477==--
+>   
+>   	intel_bb_destroy(ibb);
+>   }
