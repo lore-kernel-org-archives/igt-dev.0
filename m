@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5245E10E1CC
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 14:28:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1AA1710E0FB
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 08:21:45 +0000 (UTC)
 From: Katarzyna Dec <katarzyna.dec@intel.com>
-Date: Thu,  3 Aug 2023 14:03:06 +0000
-Message-Id: <20230803140307.3052435-1-katarzyna.dec@intel.com>
+Date: Thu,  3 Aug 2023 08:21:33 +0000
+Message-Id: <20230803082134.3039513-1-katarzyna.dec@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/1] tests/intel-co: xe.blocklist
- description update
+Subject: [igt-dev] [PATCH i-g-t 0/1] xe.blocklist description update
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,19 +26,18 @@ Update of description of blocked tests:
 	igt@drm_buddy
 	igt@drm_mm
 	igt@kms_selftest.*
-
-v2: Removing comment about xe_sysfs
+* test blocked as KMD not ready
+	igt@xe_sysfs*
 
 Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
 Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Reviewed-by: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 
 Katarzyna Dec (1):
   tests/intel-ci: Add detailed description to blocked tests
 
- tests/intel-ci/xe.blocklist.txt | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/intel-ci/xe.blocklist.txt | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 -- 
 2.34.1
