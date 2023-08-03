@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 38C0510E596
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 05:44:09 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  3 Aug 2023 11:18:10 +0530
-Message-Id: <20230803054810.2842880-1-riana.tauro@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0610805844288166925=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/xe: Add a test to toggle GT C states
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Date: Thu, 03 Aug 2023 06:05:13 -0000
+Message-ID: <169104271368.5270.6265325138084682923@emeril.freedesktop.org>
+References: <20230803050609.2835714-1-riana.tauro@intel.com>
+In-Reply-To: <20230803050609.2835714-1-riana.tauro@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_RFC_Modify_?=
+ =?utf-8?q?igt=5Fpm_functions_and_add_GT_C6_freeze_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,71 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a test that toggles GT C states by checking if GT is in C0 when
-forcewake is acquired and in C6 once released.
+--===============0610805844288166925==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: change test name (Suja, Anshuman)
+== Series Details ==
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/xe/xe_pm_residency.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+Series: RFC Modify igt_pm functions and add GT C6 freeze test
+URL   : https://patchwork.freedesktop.org/series/121921/
+State : info
 
-diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
-index 4936de166..1c12113bc 100644
---- a/tests/xe/xe_pm_residency.c
-+++ b/tests/xe/xe_pm_residency.c
-@@ -38,6 +38,10 @@ const double tolerance = 0.1;
-  * Description: basic residency test to validate idle residency
-  *		measured over a time interval is within the tolerance
-  * Run type: FULL
-+ *
-+ * SUBTEST: toggle-gt-c6
-+ * Description: Toggle GT C states by acquiring/releasing forcewake
-+ * Run type: FULL
-  */
- IGT_TEST_DESCRIPTION("Tests for gtidle properties");
- 
-@@ -85,6 +89,24 @@ static void test_idle_residency(int fd, int gt)
- 	assert_within_epsilon(residency_end - residency_start, elapsed_ms, tolerance);
- }
- 
-+static void toggle_gt_c6(int fd, int n)
-+{
-+	int handle, gt;
-+
-+	while (n--) {
-+		handle = igt_debugfs_open(fd, "forcewake_all", O_WRONLY);
-+		igt_assert(handle >= 0);
-+		/* check if all gts are in C0 after forcewake is acquired */
-+		xe_for_each_gt(fd, gt)
-+			igt_assert_f(!xe_is_gt_in_c6(fd, gt), "GT in C6\n");
-+		close(handle);
-+		/* check if all gts are in C6 after forcewake is released */
-+		xe_for_each_gt(fd, gt)
-+			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
-+				     "GT is not in C6\n");
-+	}
-+}
-+
- igt_main
- {
- 	int fd, gt;
-@@ -104,6 +126,10 @@ igt_main
- 		xe_for_each_gt(fd, gt)
- 			test_idle_residency(fd, gt);
- 
-+	igt_describe("Toggle GT C states by acquiring/releasing forcewake");
-+	igt_subtest("toggle-gt-c6")
-+		toggle_gt_c6(fd, 16);
-+
- 	igt_fixture {
- 		close(fd);
- 	}
--- 
-2.40.0
+== Summary ==
+
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9500](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9500/index.html)
+
+
+
+--===============0610805844288166925==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>RFC Modify igt_pm functions and add GT C6 freeze test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121921/">https://patchwork.freedesktop.org/series/121921/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9500/index.html">IGTPW_9500</a></p>
+
+</body>
+</html>
+
+--===============0610805844288166925==--
