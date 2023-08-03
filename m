@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C618F10E59B
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 06:44:22 +0000 (UTC)
+Received: from mgamail.intel.com (unknown [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E19C10E5A6
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 07:14:58 +0000 (UTC)
 From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
 To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>
-Date: Thu, 3 Aug 2023 06:44:19 +0000
-Message-ID: <CY5PR11MB62114B1DA867D262FEBDABAA9508A@CY5PR11MB6211.namprd11.prod.outlook.com>
+Date: Thu, 3 Aug 2023 07:07:56 +0000
+Message-ID: <CY5PR11MB6211640207E73BDF3CF0D1239508A@CY5PR11MB6211.namprd11.prod.outlook.com>
 References: <20230803050609.2835714-1-riana.tauro@intel.com>
- <20230803050609.2835714-2-riana.tauro@intel.com>
-In-Reply-To: <20230803050609.2835714-2-riana.tauro@intel.com>
+ <20230803050609.2835714-3-riana.tauro@intel.com>
+In-Reply-To: <20230803050609.2835714-3-riana.tauro@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/igt_device: Add a function to
- get the pci slot name
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/igt_pm: change d3cold_allowed
+ function parameters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -39,66 +39,148 @@ List-ID: <igt-dev@lists.freedesktop.org>
 > Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Nilawar, Badal
 > <badal.nilawar@intel.com>; Sundaresan, Sujaritha
 > <sujaritha.sundaresan@intel.com>
-> Subject: [PATCH i-g-t 1/4] lib/igt_device: Add a function to get the pci =
-slot
-> name
+> Subject: [PATCH i-g-t 2/4] lib/igt_pm: change d3cold_allowed function
+> parameters
 >=20
-> Add a function that gets the pci slot name of the pci device
-What is the justification of doing that, please add that in to commit-log.
-Thanks,
-Anshuman Gupta.
+> Change function parameter of d3cold_allowed get/set functions to pci slot
+> name. Change the data type from char to uint32_t as it is more appropriat=
+e.
+>=20
+> This change is done so that both xe tests and i915 test can use the same
+> library function.
+> Modify i915_suspend to use these functions.
+> No Functional Changes.
+Why xe test can not use card->pci_slot_name, add that justification in comm=
+it log.
+Regards,
+Anshuman.
 >=20
 > Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 > ---
->  lib/igt_device.c | 20 ++++++++++++++++++++  lib/igt_device.h |  1 +
->  2 files changed, 21 insertions(+)
+>  lib/igt_pm.c              | 22 +++++++++++-----------
+>  lib/igt_pm.h              |  4 ++--
+>  tests/i915/i915_suspend.c |  8 ++++----
+>  3 files changed, 17 insertions(+), 17 deletions(-)
 >=20
-> diff --git a/lib/igt_device.c b/lib/igt_device.c index 49b771221..ffb3f56=
-ce
-> 100644
-> --- a/lib/igt_device.c
-> +++ b/lib/igt_device.c
-> @@ -23,6 +23,7 @@
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c index ba591f0f8..11cf82950 10064=
+4
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -1204,47 +1204,47 @@ void igt_pm_setup_pci_card_runtime_pm(struct
+> pci_device *pci_dev)
+>=20
+>  /**
+>   * igt_pm_get_d3cold_allowed:
+> - * @igt_device_card: device card
+> - * @val: value to be read into
+> + * @pci_slot_name: slot name of the pci device
+> + * @value: value to be read into
+>   *
+>   * Reads the value of d3cold_allowed attribute
+>   * of the pci device
 >   */
->  #include <sys/types.h>
->  #include <fcntl.h>
-> +#include <limits.h>
+> -void igt_pm_get_d3cold_allowed(struct igt_device_card *card, char *val)
+> +void igt_pm_get_d3cold_allowed(const char *pci_slot_name, uint32_t
+> +*value)
+>  {
+>  	char name[PATH_MAX];
+>  	int fd;
 >=20
->  #include <sys/stat.h>
->  #ifdef __linux__
-> @@ -287,3 +288,22 @@ igt_device_get_pci_root_port(int fd)
+>  	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%s",
+> -		 card->pci_slot_name);
+> +		 pci_slot_name);
 >=20
->  	return prev;
+>  	fd =3D open(name, O_RDONLY);
+>  	igt_assert_f(fd >=3D 0, "Can't open %s\n", name);
+>=20
+> -	igt_sysfs_read(fd, "d3cold_allowed", val, sizeof(val));
+> +	__igt_sysfs_get_u32(fd, "d3cold_allowed", value);
+>=20
+>  	close(fd);
 >  }
-> +
-> +/**
-> + * igt_device_get_pci_slot_name:
-> + * @fd: the device.
-> + * @pci_slot_name: pci slot name
-> + *
-> + * Looks up the graphics pci device using libpciaccess
-> + * and gets the slot name
-> + */
-> +void igt_device_get_pci_slot_name(int fd, char *pci_slot_name) {
-> +	struct pci_device *pci_dev;
-> +
-> +	pci_dev =3D __igt_device_get_pci_device(fd, 0);
-> +	igt_require(pci_dev);
-> +
-> +	snprintf(pci_slot_name, NAME_MAX, "%04x:%02x:%02x.%01x",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev-
-> >func); }
-> diff --git a/lib/igt_device.h b/lib/igt_device.h index 800a0fcc3..dad7bb0=
-47
-> 100644
-> --- a/lib/igt_device.h
-> +++ b/lib/igt_device.h
-> @@ -36,4 +36,5 @@ struct pci_device *igt_device_get_pci_device(int fd);
-> struct pci_device *__igt_device_get_pci_device(int fd, unsigned int vf_id=
-);
-> struct pci_device *igt_device_get_pci_root_port(int fd);
 >=20
-> +void igt_device_get_pci_slot_name(int fd, char *pci_slot_name);
->  #endif /* __IGT_DEVICE_H__ */
+>  /**
+> - * igt_pm_get_d3cold_allowed:
+> - * @igt_device_card: device card
+> - * @val: value to be written
+> + * igt_pm_set_d3cold_allowed:
+> + * @pci_slot_name: slot name of pci device
+> + * @value: value to be written
+>   *
+>   * writes the value to d3cold_allowed attribute of pci device
+>   */
+> -void igt_pm_set_d3cold_allowed(struct igt_device_card *card, const char
+> *val)
+> +void igt_pm_set_d3cold_allowed(const char *pci_slot_name, uint32_t
+> +value)
+>  {
+>  	char name[PATH_MAX];
+>  	int fd;
+>=20
+>  	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%s",
+> -		 card->pci_slot_name);
+> +		 pci_slot_name);
+>=20
+>  	fd =3D open(name, O_RDONLY);
+>  	igt_assert_f(fd >=3D 0, "Can't open %s\n", name);
+>=20
+> -	igt_sysfs_write(fd, "d3cold_allowed", val, sizeof(val));
+> +	__igt_sysfs_set_u32(fd, "d3cold_allowed", value);
+>  	close(fd);
+>  }
+>=20
+> diff --git a/lib/igt_pm.h b/lib/igt_pm.h index 71ec2f239..306a9eb46 10064=
+4
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -79,8 +79,8 @@ enum igt_acpi_d_state
+>  igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);  void
+> igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
+>  				       struct pci_device *i915);
+> -void igt_pm_get_d3cold_allowed(struct igt_device_card *card, char *val);=
+ -
+> void igt_pm_set_d3cold_allowed(struct igt_device_card *card, const char
+> *val);
+> +void igt_pm_get_d3cold_allowed(const char *pci_slot_name, uint32_t
+> +*value); void igt_pm_set_d3cold_allowed(const char *pci_slot_name,
+> +uint32_t value);
+>  void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);  void
+> igt_pm_restore_pci_card_runtime_pm(void);
+>  void igt_pm_print_pci_card_runtime_status(void);
+> diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c index
+> 851e797c2..c25805584 100644
+> --- a/tests/i915/i915_suspend.c
+> +++ b/tests/i915/i915_suspend.c
+> @@ -283,7 +283,7 @@ static void
+>  test_suspend_without_i915(int state)
+>  {
+>  	struct igt_device_card card;
+> -	char d3cold_allowed[2];
+> +	uint32_t d3cold_allowed;
+>  	int fd;
+>=20
+>  	fd =3D __drm_open_driver(DRIVER_INTEL);
+> @@ -297,8 +297,8 @@ test_suspend_without_i915(int state)
+>  	 */
+>  	if (state =3D=3D SUSPEND_STATE_FREEZE &&
+>  	    igt_device_find_first_i915_discrete_card(&card)) {
+> -		igt_pm_get_d3cold_allowed(&card, d3cold_allowed);
+> -		igt_pm_set_d3cold_allowed(&card, "0\n");
+> +		igt_pm_get_d3cold_allowed(card.pci_slot_name,
+> &d3cold_allowed);
+> +		igt_pm_set_d3cold_allowed(card.pci_slot_name, 0);
+>  	}
+>  	drm_close_driver(fd);
+>=20
+> @@ -308,7 +308,7 @@ test_suspend_without_i915(int state)
+>  	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
+>=20
+>  	if (state =3D=3D SUSPEND_STATE_FREEZE && strlen(card.card))
+> -		igt_pm_set_d3cold_allowed(&card, d3cold_allowed);
+> +		igt_pm_set_d3cold_allowed(card.pci_slot_name,
+> d3cold_allowed);
+>=20
+>  	igt_kmsg(KMSG_INFO "Re-loading i915 \n");
+>  	igt_assert_eq(igt_i915_driver_load(NULL), 0);
 > --
 > 2.40.0
