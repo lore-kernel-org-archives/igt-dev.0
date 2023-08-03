@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21B6A10E5D6
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 08:46:38 +0000 (UTC)
-Message-ID: <c8c28ffe-717a-046e-a07a-9d94ac4a19f4@intel.com>
-Date: Thu, 3 Aug 2023 14:16:13 +0530
+Received: from mgamail.intel.com (unknown [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9993710E5D9
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 08:49:12 +0000 (UTC)
+Message-ID: <2f00dd9e-9a10-ebd6-88f8-5147a4346230@intel.com>
+Date: Thu, 3 Aug 2023 14:18:16 +0530
+Content-Language: en-US
 To: "Gupta, Anshuman" <anshuman.gupta@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 References: <20230803050609.2835714-1-riana.tauro@intel.com>
- <20230803050609.2835714-3-riana.tauro@intel.com>
- <CY5PR11MB6211640207E73BDF3CF0D1239508A@CY5PR11MB6211.namprd11.prod.outlook.com>
-Content-Language: en-US
+ <20230803050609.2835714-5-riana.tauro@intel.com>
+ <CY5PR11MB6211F90C0EE12FFBEC92CFD79508A@CY5PR11MB6211.namprd11.prod.outlook.com>
 From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <CY5PR11MB6211640207E73BDF3CF0D1239508A@CY5PR11MB6211.namprd11.prod.outlook.com>
+In-Reply-To: <CY5PR11MB6211F90C0EE12FFBEC92CFD79508A@CY5PR11MB6211.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/igt_pm: change d3cold_allowed
- function parameters
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/xe: Add a test that validates
+ residency during s2idle
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,9 +30,8 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-Hi Anshuman
 
-On 8/3/2023 12:37 PM, Gupta, Anshuman wrote:
+On 8/3/2023 1:17 PM, Gupta, Anshuman wrote:
 > 
 > 
 >> -----Original Message-----
@@ -44,159 +43,146 @@ On 8/3/2023 12:37 PM, Gupta, Anshuman wrote:
 >> Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Nilawar, Badal
 >> <badal.nilawar@intel.com>; Sundaresan, Sujaritha
 >> <sujaritha.sundaresan@intel.com>
->> Subject: [PATCH i-g-t 2/4] lib/igt_pm: change d3cold_allowed function
->> parameters
+>> Subject: [PATCH i-g-t 4/4] tests/xe: Add a test that validates residency during
+>> s2idle
 >>
->> Change function parameter of d3cold_allowed get/set functions to pci slot
->> name. Change the data type from char to uint32_t as it is more appropriate.
->>
->> This change is done so that both xe tests and i915 test can use the same
->> library function.
->> Modify i915_suspend to use these functions.
->> No Functional Changes.
-> Why xe test can not use card->pci_slot_name, add that justification in commit log.
-
-i915_suspend tests find the first discrete card and that is done by 
-igt_device_scan using udev.
-So initially when this lib was written it made use of igt_device_card as 
-it was appropriate for the test.
-
-Xe tests use pci_device. To add a common function I couldn't convert 
-igt_device_card to pci_device/ find a helper function to do so.
-
-So i added the parameter slot name in this RFC patch as it was common. 
-Should i continue with this? Or create a new function for XE?
-
-Thanks
-Riana
-
-> Regards,
-> Anshuman.
+>> During s2idle, the device is powered up and GT C6 enabled so we expect the
+>> residency to increase across suspend.
+>> Add a test that validates the residency over a s2idle cycle is within the
+>> threshold.
 >>
 >> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 >> ---
->>   lib/igt_pm.c              | 22 +++++++++++-----------
->>   lib/igt_pm.h              |  4 ++--
->>   tests/i915/i915_suspend.c |  8 ++++----
->>   3 files changed, 17 insertions(+), 17 deletions(-)
+>>   tests/xe/xe_pm_residency.c | 54
+>> ++++++++++++++++++++++++++++++++++----
+>>   1 file changed, 49 insertions(+), 5 deletions(-)
 >>
->> diff --git a/lib/igt_pm.c b/lib/igt_pm.c index ba591f0f8..11cf82950 100644
->> --- a/lib/igt_pm.c
->> +++ b/lib/igt_pm.c
->> @@ -1204,47 +1204,47 @@ void igt_pm_setup_pci_card_runtime_pm(struct
->> pci_device *pci_dev)
->>
->>   /**
->>    * igt_pm_get_d3cold_allowed:
->> - * @igt_device_card: device card
->> - * @val: value to be read into
->> + * @pci_slot_name: slot name of the pci device
->> + * @value: value to be read into
->>    *
->>    * Reads the value of d3cold_allowed attribute
->>    * of the pci device
+>> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+>> index 4936de166..a2b56e78d 100644
+>> --- a/tests/xe/xe_pm_residency.c
+>> +++ b/tests/xe/xe_pm_residency.c
+>> @@ -10,8 +10,10 @@
+>>    * Functionality: GT C States
+>>    * Test category: functionality test
 >>    */
->> -void igt_pm_get_d3cold_allowed(struct igt_device_card *card, char *val)
->> +void igt_pm_get_d3cold_allowed(const char *pci_slot_name, uint32_t
->> +*value)
->>   {
->>   	char name[PATH_MAX];
->>   	int fd;
+>> +#include <limits.h>
 >>
->>   	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%s",
->> -		 card->pci_slot_name);
->> +		 pci_slot_name);
+>>   #include "igt.h"
+>> +#include "igt_device.h"
+>>   #include "igt_sysfs.h"
 >>
->>   	fd = open(name, O_RDONLY);
->>   	igt_assert_f(fd >= 0, "Can't open %s\n", name);
+>>   #include "xe/xe_query.h"
+>> @@ -29,6 +31,11 @@ const double tolerance = 0.1;
+>>   		     (tol) * 100.0, (tol) * 100.0, \
+>>   		     (double)(ref))
 >>
->> -	igt_sysfs_read(fd, "d3cold_allowed", val, sizeof(val));
->> +	__igt_sysfs_get_u32(fd, "d3cold_allowed", value);
+>> +enum test_type {
+>> +	TEST_S2IDLE,
+>> +	TEST_SLEEP,
+>> +};
+>> +
+>>   /**
+>>    * SUBTEST: gt-c6-on-idle
+>>    * Description: Validate GT C6 state on idle @@ -38,9 +45,22 @@ const
+>> double tolerance = 0.1;
+>>    * Description: basic residency test to validate idle residency
+>>    *		measured over a time interval is within the tolerance
+>>    * Run type: FULL
+>> + *
+>> + * SUBTEST: gt-c6-freeze
+>> + * Description: Validate idle residency measured over suspend(s2idle)
+>> + *              is within the tolerance
+>> + * Run type: FULL
+>>    */
+>>   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
 >>
->>   	close(fd);
+>> +static unsigned long walltime_ms(void)
+>> +{
+>> +	struct timespec ts;
+>> +
+>> +	clock_gettime(CLOCK_REALTIME, &ts);
+>> +	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000; }
+>> +
+>>   static unsigned int measured_usleep(unsigned int usec)  {
+>>   	struct timespec ts = { };
+>> @@ -69,15 +89,25 @@ static unsigned long read_idle_residency(int fd, int gt)
+>>   	return residency;
 >>   }
 >>
->>   /**
->> - * igt_pm_get_d3cold_allowed:
->> - * @igt_device_card: device card
->> - * @val: value to be written
->> + * igt_pm_set_d3cold_allowed:
->> + * @pci_slot_name: slot name of pci device
->> + * @value: value to be written
->>    *
->>    * writes the value to d3cold_allowed attribute of pci device
->>    */
->> -void igt_pm_set_d3cold_allowed(struct igt_device_card *card, const char
->> *val)
->> +void igt_pm_set_d3cold_allowed(const char *pci_slot_name, uint32_t
->> +value)
+>> -static void test_idle_residency(int fd, int gt)
+>> +static void test_idle_residency(int fd, int gt, enum test_type flag)
 >>   {
->>   	char name[PATH_MAX];
->>   	int fd;
+>>   	unsigned long elapsed_ms, residency_start, residency_end;
 >>
->>   	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%s",
->> -		 card->pci_slot_name);
->> +		 pci_slot_name);
+>>   	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not in
+>> C6\n");
 >>
->>   	fd = open(name, O_RDONLY);
->>   	igt_assert_f(fd >= 0, "Can't open %s\n", name);
+>> -	residency_start = read_idle_residency(fd, gt);
+>> -	elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
+>> -	residency_end = read_idle_residency(fd, gt);
+>> +	if (flag == TEST_S2IDLE) {
+>> +		residency_start = read_idle_residency(fd, gt);
+>> +		elapsed_ms -= walltime_ms();
+>> +		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE,
+>> SUSPEND_TEST_NONE);
+>> +		elapsed_ms += walltime_ms();
+>> +		residency_end = read_idle_residency(fd, gt);
+>> +	}
+>> +
+>> +	if (flag == TEST_SLEEP) {
+>> +		residency_start = read_idle_residency(fd, gt);
+>> +		elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) /
+>> 1000;
+>> +		residency_end = read_idle_residency(fd, gt);
+>> +	}
 >>
->> -	igt_sysfs_write(fd, "d3cold_allowed", val, sizeof(val));
->> +	__igt_sysfs_set_u32(fd, "d3cold_allowed", value);
->>   	close(fd);
->>   }
->>
->> diff --git a/lib/igt_pm.h b/lib/igt_pm.h index 71ec2f239..306a9eb46 100644
->> --- a/lib/igt_pm.h
->> +++ b/lib/igt_pm.h
->> @@ -79,8 +79,8 @@ enum igt_acpi_d_state
->>   igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);  void
->> igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
->>   				       struct pci_device *i915);
->> -void igt_pm_get_d3cold_allowed(struct igt_device_card *card, char *val); -
->> void igt_pm_set_d3cold_allowed(struct igt_device_card *card, const char
->> *val);
->> +void igt_pm_get_d3cold_allowed(const char *pci_slot_name, uint32_t
->> +*value); void igt_pm_set_d3cold_allowed(const char *pci_slot_name,
->> +uint32_t value);
->>   void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);  void
->> igt_pm_restore_pci_card_runtime_pm(void);
->>   void igt_pm_print_pci_card_runtime_status(void);
->> diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c index
->> 851e797c2..c25805584 100644
->> --- a/tests/i915/i915_suspend.c
->> +++ b/tests/i915/i915_suspend.c
->> @@ -283,7 +283,7 @@ static void
->>   test_suspend_without_i915(int state)
->>   {
->>   	struct igt_device_card card;
->> -	char d3cold_allowed[2];
+>>   	igt_info("Measured %lums of idle residency in %lums\n",
+>>   		 residency_end - residency_start, elapsed_ms); @@ -88,6
+>> +118,8 @@ static void test_idle_residency(int fd, int gt)  igt_main  {
+>>   	int fd, gt;
+>> +	char pci_slot_name[NAME_MAX];
 >> +	uint32_t d3cold_allowed;
->>   	int fd;
 >>
->>   	fd = __drm_open_driver(DRIVER_INTEL);
->> @@ -297,8 +297,8 @@ test_suspend_without_i915(int state)
->>   	 */
->>   	if (state == SUSPEND_STATE_FREEZE &&
->>   	    igt_device_find_first_i915_discrete_card(&card)) {
->> -		igt_pm_get_d3cold_allowed(&card, d3cold_allowed);
->> -		igt_pm_set_d3cold_allowed(&card, "0\n");
->> +		igt_pm_get_d3cold_allowed(card.pci_slot_name,
+>>   	igt_fixture {
+>>   		fd = drm_open_driver(DRIVER_XE);
+>> @@ -99,10 +131,22 @@ igt_main
+>>   		xe_for_each_gt(fd, gt)
+>>   			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
+>> "GT not in C6\n");
+>>
+>> +	igt_describe("Validate idle residency measured over suspend cycle is
+>> within the tolerance");
+>> +	igt_subtest("gt-c6-freeze") {
+>> +		igt_device_get_pci_slot_name(fd, pci_slot_name);
+>> +		igt_pm_get_d3cold_allowed(pci_slot_name,
 >> &d3cold_allowed);
->> +		igt_pm_set_d3cold_allowed(card.pci_slot_name, 0);
->>   	}
->>   	drm_close_driver(fd);
->>
->> @@ -308,7 +308,7 @@ test_suspend_without_i915(int state)
->>   	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
->>
->>   	if (state == SUSPEND_STATE_FREEZE && strlen(card.card))
->> -		igt_pm_set_d3cold_allowed(&card, d3cold_allowed);
->> +		igt_pm_set_d3cold_allowed(card.pci_slot_name,
+>> +		igt_pm_set_d3cold_allowed(pci_slot_name, 0);
+> We need to disallow d3cold only for discrete cards, rc6 residency should not get reset on integrated gfx.
+> This can save some execution time on CI.
+
+Sure Will fix this.
+
+Thanks
+Riana
+> Thanks,
+> Anshuman.
+>> +
+>> +		xe_for_each_gt(fd, gt)
+>> +			test_idle_residency(fd, gt, TEST_S2IDLE);
+>> +
+>> +		igt_pm_set_d3cold_allowed(pci_slot_name,
 >> d3cold_allowed);
+>> +	}
+>> +
+>>   	igt_describe("Validate idle residency measured over a time interval is
+>> within the tolerance");
+>>   	igt_subtest("idle-residency")
+>>   		xe_for_each_gt(fd, gt)
+>> -			test_idle_residency(fd, gt);
+>> +			test_idle_residency(fd, gt, TEST_SLEEP);
 >>
->>   	igt_kmsg(KMSG_INFO "Re-loading i915 \n");
->>   	igt_assert_eq(igt_i915_driver_load(NULL), 0);
+>>   	igt_fixture {
+>>   		close(fd);
 >> --
 >> 2.40.0
 > 
