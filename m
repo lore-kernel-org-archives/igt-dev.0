@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5091696241427559545=="
+Received: from mgamail.intel.com (unknown [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F10E410E5B8
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 07:49:17 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  3 Aug 2023 09:49:00 +0200
+Message-Id: <20230803074902.172493-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Suraj Kandpal" <suraj.kandpal@intel.com>
-Date: Thu, 03 Aug 2023 07:49:07 -0000
-Message-ID: <169104894725.5271.13883564323562621424@emeril.freedesktop.org>
-References: <20230803061456.3757949-1-suraj.kandpal@intel.com>
-In-Reply-To: <20230803061456.3757949-1-suraj.kandpal@intel.com>
-Subject: [igt-dev] =?utf-8?b?4peLIENJLnhlQkFUOiBpbmZvIGZvciB0ZXN0cy9rbXNf?=
- =?utf-8?q?content=5Fprotection=3A_HDCP_MST_output_color_modification?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/2] Add xe_media_fill test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +17,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5091696241427559545==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+It's adopted to xe gem_media_fill test.
 
-== Series Details ==
+Zbigniew Kempczyński (2):
+  lib/media_fill: Use RENDER engine flag to work on Xe
+  tests/xe_media_fill: Exercise media fill on Xe
 
-Series: tests/kms_content_protection: HDCP MST output color modification
-URL   : https://patchwork.freedesktop.org/series/121924/
-State : info
+ lib/media_fill.c         |   2 +-
+ tests/meson.build        |   1 +
+ tests/xe/xe_media_fill.c | 135 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 137 insertions(+), 1 deletion(-)
+ create mode 100644 tests/xe/xe_media_fill.c
 
-== Summary ==
-
-Participating hosts:
-bat-pvc-2
-bat-atsm-2
-bat-dg2-oem2
-bat-adlp-7
-Missing hosts results[0]:
-Results: [IGTPW_9503](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9503/index.html)
-
-
-
---===============5091696241427559545==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_content_protection: HDCP MST output color modification</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121924/">https://patchwork.freedesktop.org/series/121924/</a></td></tr>
-<tr><td><b>State:</b></td><td>info</td></tr>
-
-</table>
-
-
-    <p>Participating hosts:<br />
-bat-pvc-2<br />
-bat-atsm-2<br />
-bat-dg2-oem2<br />
-bat-adlp-7<br />
-Missing hosts results[0]:<br />
-Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9503/index.html">IGTPW_9503</a></p>
-
-</body>
-</html>
-
---===============5091696241427559545==--
+-- 
+2.34.1
