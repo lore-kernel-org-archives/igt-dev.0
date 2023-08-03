@@ -1,23 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A205510E5B5
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 07:42:32 +0000 (UTC)
-From: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
-To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>, "Kumar, Janga Rahul"
- <janga.rahul.kumar@intel.com>, "igt-dev@lists.freedesktop.org"
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BD1510E5B5
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 07:48:00 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>
-Date: Thu, 3 Aug 2023 07:42:29 +0000
-Message-ID: <SJ1PR11MB6204E8E6B580BCDFEE8858358108A@SJ1PR11MB6204.namprd11.prod.outlook.com>
-References: <20230803060814.1180879-1-priyanka.dandamudi@intel.com>
- <20230803060814.1180879-3-priyanka.dandamudi@intel.com>
- <SJ1PR11MB62048C69DE22CF34CD41E51E8108A@SJ1PR11MB6204.namprd11.prod.outlook.com>
-In-Reply-To: <SJ1PR11MB62048C69DE22CF34CD41E51E8108A@SJ1PR11MB6204.namprd11.prod.outlook.com>
+Date: Thu, 3 Aug 2023 07:47:48 +0000
+Message-ID: <CY5PR11MB6211F90C0EE12FFBEC92CFD79508A@CY5PR11MB6211.namprd11.prod.outlook.com>
+References: <20230803050609.2835714-1-riana.tauro@intel.com>
+ <20230803050609.2835714-5-riana.tauro@intel.com>
+In-Reply-To: <20230803050609.2835714-5-riana.tauro@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/5] xe/xe_sysfs_scheduler: Try to set
- sysfs scheduler with default min
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/xe: Add a test that validates
+ residency during s2idle
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,6 +23,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -32,59 +31,152 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 
 > -----Original Message-----
-> From: Upadhyay, Tejas
-> Sent: Thursday, August 3, 2023 1:10 PM
-> To: Dandamudi, Priyanka <Priyanka.Dandamudi@intel.com>; Kumar, Janga
-> Rahul <janga.rahul.kumar@intel.com>; igt-dev@lists.freedesktop.org
-> Subject: RE: [PATCH i-g-t 2/5] xe/xe_sysfs_scheduler: Try to set sysfs
-> scheduler with default min
+> From: Tauro, Riana <riana.tauro@intel.com>
+> Sent: Thursday, August 3, 2023 10:36 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
+> <anshuman.gupta@intel.com>; Dixit, Ashutosh <ashutosh.dixit@intel.com>;
+> Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Nilawar, Badal
+> <badal.nilawar@intel.com>; Sundaresan, Sujaritha
+> <sujaritha.sundaresan@intel.com>
+> Subject: [PATCH i-g-t 4/4] tests/xe: Add a test that validates residency =
+during
+> s2idle
 >=20
+> During s2idle, the device is powered up and GT C6 enabled so we expect th=
+e
+> residency to increase across suspend.
+> Add a test that validates the residency over a s2idle cycle is within the
+> threshold.
 >=20
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> ---
+>  tests/xe/xe_pm_residency.c | 54
+> ++++++++++++++++++++++++++++++++++----
+>  1 file changed, 49 insertions(+), 5 deletions(-)
 >=20
-> > -----Original Message-----
-> > From: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-> > Sent: Thursday, August 3, 2023 11:38 AM
-> > To: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>; igt-
-> > dev@lists.freedesktop.org; Upadhyay, Tejas <tejas.upadhyay@intel.com>;
-> > Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-> > Subject: [PATCH i-g-t 2/5] xe/xe_sysfs_scheduler: Try to set sysfs
-> > scheduler with default min
-> >
-> > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> >
-> > Test tries to set sysfs scheduler with default min which is beyond
-> > local min and assert is expected to be not equal to the set one.
-> >
-> > Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> > ---
-> >  tests/xe/xe_sysfs_scheduler.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/tests/xe/xe_sysfs_scheduler.c
-> > b/tests/xe/xe_sysfs_scheduler.c index 2a113ea0f..f199d6be8 100644
-> > --- a/tests/xe/xe_sysfs_scheduler.c
-> > +++ b/tests/xe/xe_sysfs_scheduler.c
-> > @@ -94,7 +94,7 @@ static void test_min_max(int xe, int engine, const
-> > char
-> > **property)
-> >
-> >  	igt_sysfs_printf(engine, property[0], "%d", default_min);
-> >  	igt_sysfs_scanf(engine, property[0], "%u", &set);
-> > -	igt_assert_eq(set, default_min);
-> > +	igt_assert_neq(set, default_min);
+> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
+> index 4936de166..a2b56e78d 100644
+> --- a/tests/xe/xe_pm_residency.c
+> +++ b/tests/xe/xe_pm_residency.c
+> @@ -10,8 +10,10 @@
+>   * Functionality: GT C States
+>   * Test category: functionality test
+>   */
+> +#include <limits.h>
 >=20
-> Should we make sure we store-restore property[0] as well at start and end=
- of
-> test respectively.
-
-With store-restore for property[0] added,=20
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-
+>  #include "igt.h"
+> +#include "igt_device.h"
+>  #include "igt_sysfs.h"
 >=20
-> Thanks,
-> Tejas
-> >
-> >  	igt_sysfs_printf(engine, property[0], "%d", min);
-> >  	igt_sysfs_scanf(engine, property[0], "%u", &set);
-> > --
-> > 2.25.1
+>  #include "xe/xe_query.h"
+> @@ -29,6 +31,11 @@ const double tolerance =3D 0.1;
+>  		     (tol) * 100.0, (tol) * 100.0, \
+>  		     (double)(ref))
+>=20
+> +enum test_type {
+> +	TEST_S2IDLE,
+> +	TEST_SLEEP,
+> +};
+> +
+>  /**
+>   * SUBTEST: gt-c6-on-idle
+>   * Description: Validate GT C6 state on idle @@ -38,9 +45,22 @@ const
+> double tolerance =3D 0.1;
+>   * Description: basic residency test to validate idle residency
+>   *		measured over a time interval is within the tolerance
+>   * Run type: FULL
+> + *
+> + * SUBTEST: gt-c6-freeze
+> + * Description: Validate idle residency measured over suspend(s2idle)
+> + *              is within the tolerance
+> + * Run type: FULL
+>   */
+>  IGT_TEST_DESCRIPTION("Tests for gtidle properties");
+>=20
+> +static unsigned long walltime_ms(void)
+> +{
+> +	struct timespec ts;
+> +
+> +	clock_gettime(CLOCK_REALTIME, &ts);
+> +	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000; }
+> +
+>  static unsigned int measured_usleep(unsigned int usec)  {
+>  	struct timespec ts =3D { };
+> @@ -69,15 +89,25 @@ static unsigned long read_idle_residency(int fd, int =
+gt)
+>  	return residency;
+>  }
+>=20
+> -static void test_idle_residency(int fd, int gt)
+> +static void test_idle_residency(int fd, int gt, enum test_type flag)
+>  {
+>  	unsigned long elapsed_ms, residency_start, residency_end;
+>=20
+>  	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not in
+> C6\n");
+>=20
+> -	residency_start =3D read_idle_residency(fd, gt);
+> -	elapsed_ms =3D measured_usleep(SLEEP_DURATION * 1000) / 1000;
+> -	residency_end =3D read_idle_residency(fd, gt);
+> +	if (flag =3D=3D TEST_S2IDLE) {
+> +		residency_start =3D read_idle_residency(fd, gt);
+> +		elapsed_ms -=3D walltime_ms();
+> +		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE,
+> SUSPEND_TEST_NONE);
+> +		elapsed_ms +=3D walltime_ms();
+> +		residency_end =3D read_idle_residency(fd, gt);
+> +	}
+> +
+> +	if (flag =3D=3D TEST_SLEEP) {
+> +		residency_start =3D read_idle_residency(fd, gt);
+> +		elapsed_ms =3D measured_usleep(SLEEP_DURATION * 1000) /
+> 1000;
+> +		residency_end =3D read_idle_residency(fd, gt);
+> +	}
+>=20
+>  	igt_info("Measured %lums of idle residency in %lums\n",
+>  		 residency_end - residency_start, elapsed_ms); @@ -88,6
+> +118,8 @@ static void test_idle_residency(int fd, int gt)  igt_main  {
+>  	int fd, gt;
+> +	char pci_slot_name[NAME_MAX];
+> +	uint32_t d3cold_allowed;
+>=20
+>  	igt_fixture {
+>  		fd =3D drm_open_driver(DRIVER_XE);
+> @@ -99,10 +131,22 @@ igt_main
+>  		xe_for_each_gt(fd, gt)
+>  			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
+> "GT not in C6\n");
+>=20
+> +	igt_describe("Validate idle residency measured over suspend cycle is
+> within the tolerance");
+> +	igt_subtest("gt-c6-freeze") {
+> +		igt_device_get_pci_slot_name(fd, pci_slot_name);
+> +		igt_pm_get_d3cold_allowed(pci_slot_name,
+> &d3cold_allowed);
+> +		igt_pm_set_d3cold_allowed(pci_slot_name, 0);
+We need to disallow d3cold only for discrete cards, rc6 residency should no=
+t get reset on integrated gfx.
+This can save some execution time on CI.
+Thanks,
+Anshuman.
+> +
+> +		xe_for_each_gt(fd, gt)
+> +			test_idle_residency(fd, gt, TEST_S2IDLE);
+> +
+> +		igt_pm_set_d3cold_allowed(pci_slot_name,
+> d3cold_allowed);
+> +	}
+> +
+>  	igt_describe("Validate idle residency measured over a time interval is
+> within the tolerance");
+>  	igt_subtest("idle-residency")
+>  		xe_for_each_gt(fd, gt)
+> -			test_idle_residency(fd, gt);
+> +			test_idle_residency(fd, gt, TEST_SLEEP);
+>=20
+>  	igt_fixture {
+>  		close(fd);
+> --
+> 2.40.0
