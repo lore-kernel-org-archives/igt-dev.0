@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (unknown [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD11310E599
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 06:10:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B7E110E59B
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 06:10:23 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
  tejas.upadhyay@intel.com, priyanka.dandamudi@intel.com
-Date: Thu,  3 Aug 2023 11:38:09 +0530
-Message-Id: <20230803060814.1180879-1-priyanka.dandamudi@intel.com>
+Date: Thu,  3 Aug 2023 11:38:10 +0530
+Message-Id: <20230803060814.1180879-2-priyanka.dandamudi@intel.com>
+In-Reply-To: <20230803060814.1180879-1-priyanka.dandamudi@intel.com>
+References: <20230803060814.1180879-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/5] Update code to use xe_sysfs_gt_open
+Subject: [igt-dev] [PATCH i-g-t 1/5] xe/xe_sysfs: Updated tests to use
+ xe_sysfs_gt_open
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,32 +27,87 @@ List-ID: <igt-dev@lists.freedesktop.org>
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
 Tests have been updated to use xe_sysfs_gt_open function.
-Modified documentation.
-
-v2: Split updated tests patch into 2 patches
-1 with only to use xe_sysfs_gt_open and other
-to update documentation, non privileged user.(Tejas)
-
-v3: Updated code to check when root user try to set value beyond
-local min/max scheduler property.
-
-v4: Removed non privileged user test, made small changes.(Tejas)
 
 Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ tests/xe/xe_sysfs_defaults.c  | 10 ++++++----
+ tests/xe/xe_sysfs_scheduler.c | 10 ++++++----
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
-Priyanka Dandamudi (5):
-  xe/xe_sysfs: Updated tests to use xe_sysfs_gt_open
-  xe/xe_sysfs_scheduler: Try to set sysfs scheduler with default min
-  xe/xe_sysfs: Removing non privileged user test
-  tests/intel-ci: Remove xe_sysfs from blacklist
-  xe-fast-feedback.testlist: Add sysfs tests to BAT
-
- tests/intel-ci/xe-fast-feedback.testlist |  7 +++
- tests/intel-ci/xe.blocklist.txt          |  2 -
- tests/xe/xe_sysfs_defaults.c             | 16 +++---
- tests/xe/xe_sysfs_scheduler.c            | 68 ++++--------------------
- 4 files changed, 26 insertions(+), 67 deletions(-)
-
+diff --git a/tests/xe/xe_sysfs_defaults.c b/tests/xe/xe_sysfs_defaults.c
+index 5c9de43e9..ff958161b 100644
+--- a/tests/xe/xe_sysfs_defaults.c
++++ b/tests/xe/xe_sysfs_defaults.c
+@@ -65,25 +65,27 @@ igt_main
+ 
+ 		sys_fd = igt_sysfs_open(xe);
+ 		igt_require(sys_fd != -1);
++		close(sys_fd);
+ 	}
+ 
+ 	igt_subtest_with_dynamic("engine-defaults") {
+ 		xe_for_each_gt(xe, gt) {
+ 			int engines_fd = -1;
+-			char buf[100];
++			int gt_fd = -1;
+ 
+-			sprintf(buf, "device/gt%d/engines", gt);
+-			engines_fd = openat(sys_fd, buf, O_RDONLY);
++			gt_fd = xe_sysfs_gt_open(xe, gt);
++			igt_require(gt_fd != -1);
++			engines_fd = openat(gt_fd, "engines", O_RDONLY);
+ 			igt_require(engines_fd != -1);
+ 
+ 			igt_sysfs_engines(xe, engines_fd, NULL, test_defaults);
+ 
+ 			close(engines_fd);
++			 close(gt_fd);
+ 		}
+ 	}
+ 
+ 	igt_fixture {
+-		close(sys_fd);
+ 		xe_device_put(xe);
+ 		close(xe);
+ 	}
+diff --git a/tests/xe/xe_sysfs_scheduler.c b/tests/xe/xe_sysfs_scheduler.c
+index 1da0f541a..2a113ea0f 100644
+--- a/tests/xe/xe_sysfs_scheduler.c
++++ b/tests/xe/xe_sysfs_scheduler.c
+@@ -184,6 +184,7 @@ igt_main
+ 
+ 		sys_fd = igt_sysfs_open(xe);
+ 		igt_require(sys_fd != -1);
++		close(sys_fd);
+ 	}
+ 
+ 	for (int i = 0; i < count; i++) {
+@@ -191,20 +192,21 @@ igt_main
+ 			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
+ 				xe_for_each_gt(xe, gt) {
+ 					int engines_fd = -1;
+-					char buf[100];
++					int gt_fd = -1;
+ 
+-					sprintf(buf, "device/gt%d/engines", gt);
+-					engines_fd = openat(sys_fd, buf, O_RDONLY);
++					gt_fd = xe_sysfs_gt_open(xe, gt);
++					igt_require(gt_fd != -1);
++					engines_fd = openat(gt_fd, "engines", O_RDONLY);
+ 					igt_require(engines_fd != -1);
+ 
+ 					igt_sysfs_engines(xe, engines_fd, property[i], t->fn);
+ 					close(engines_fd);
++					close(gt_fd);
+ 				}
+ 			}
+ 		}
+ 	}
+ 	igt_fixture {
+-		close(sys_fd);
+ 		xe_device_put(xe);
+ 		close(xe);
+ 	}
 -- 
 2.25.1
