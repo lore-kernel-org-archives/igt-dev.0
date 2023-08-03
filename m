@@ -1,22 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (unknown [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9993710E5D9
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 08:49:12 +0000 (UTC)
-Message-ID: <2f00dd9e-9a10-ebd6-88f8-5147a4346230@intel.com>
-Date: Thu, 3 Aug 2023 14:18:16 +0530
-Content-Language: en-US
-To: "Gupta, Anshuman" <anshuman.gupta@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7954F10E5D9
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 08:49:24 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Thu, 3 Aug 2023 08:48:45 +0000
+Message-ID: <CY5PR11MB6211B14FB81FECBE76EEA1FA9508A@CY5PR11MB6211.namprd11.prod.outlook.com>
 References: <20230803050609.2835714-1-riana.tauro@intel.com>
- <20230803050609.2835714-5-riana.tauro@intel.com>
- <CY5PR11MB6211F90C0EE12FFBEC92CFD79508A@CY5PR11MB6211.namprd11.prod.outlook.com>
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <CY5PR11MB6211F90C0EE12FFBEC92CFD79508A@CY5PR11MB6211.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+ <20230803050609.2835714-3-riana.tauro@intel.com>
+ <CY5PR11MB6211640207E73BDF3CF0D1239508A@CY5PR11MB6211.namprd11.prod.outlook.com>
+ <c8c28ffe-717a-046e-a07a-9d94ac4a19f4@intel.com>
+In-Reply-To: <c8c28ffe-717a-046e-a07a-9d94ac4a19f4@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/xe: Add a test that validates
- residency during s2idle
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/igt_pm: change d3cold_allowed
+ function parameters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,160 +30,127 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-On 8/3/2023 1:17 PM, Gupta, Anshuman wrote:
-> 
-> 
->> -----Original Message-----
->> From: Tauro, Riana <riana.tauro@intel.com>
->> Sent: Thursday, August 3, 2023 10:36 AM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
->> <anshuman.gupta@intel.com>; Dixit, Ashutosh <ashutosh.dixit@intel.com>;
->> Belgaumkar, Vinay <vinay.belgaumkar@intel.com>; Nilawar, Badal
->> <badal.nilawar@intel.com>; Sundaresan, Sujaritha
->> <sujaritha.sundaresan@intel.com>
->> Subject: [PATCH i-g-t 4/4] tests/xe: Add a test that validates residency during
->> s2idle
->>
->> During s2idle, the device is powered up and GT C6 enabled so we expect the
->> residency to increase across suspend.
->> Add a test that validates the residency over a s2idle cycle is within the
->> threshold.
->>
->> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
->> ---
->>   tests/xe/xe_pm_residency.c | 54
->> ++++++++++++++++++++++++++++++++++----
->>   1 file changed, 49 insertions(+), 5 deletions(-)
->>
->> diff --git a/tests/xe/xe_pm_residency.c b/tests/xe/xe_pm_residency.c
->> index 4936de166..a2b56e78d 100644
->> --- a/tests/xe/xe_pm_residency.c
->> +++ b/tests/xe/xe_pm_residency.c
->> @@ -10,8 +10,10 @@
->>    * Functionality: GT C States
->>    * Test category: functionality test
->>    */
->> +#include <limits.h>
->>
->>   #include "igt.h"
->> +#include "igt_device.h"
->>   #include "igt_sysfs.h"
->>
->>   #include "xe/xe_query.h"
->> @@ -29,6 +31,11 @@ const double tolerance = 0.1;
->>   		     (tol) * 100.0, (tol) * 100.0, \
->>   		     (double)(ref))
->>
->> +enum test_type {
->> +	TEST_S2IDLE,
->> +	TEST_SLEEP,
->> +};
->> +
->>   /**
->>    * SUBTEST: gt-c6-on-idle
->>    * Description: Validate GT C6 state on idle @@ -38,9 +45,22 @@ const
->> double tolerance = 0.1;
->>    * Description: basic residency test to validate idle residency
->>    *		measured over a time interval is within the tolerance
->>    * Run type: FULL
->> + *
->> + * SUBTEST: gt-c6-freeze
->> + * Description: Validate idle residency measured over suspend(s2idle)
->> + *              is within the tolerance
->> + * Run type: FULL
->>    */
->>   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
->>
->> +static unsigned long walltime_ms(void)
->> +{
->> +	struct timespec ts;
->> +
->> +	clock_gettime(CLOCK_REALTIME, &ts);
->> +	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000; }
->> +
->>   static unsigned int measured_usleep(unsigned int usec)  {
->>   	struct timespec ts = { };
->> @@ -69,15 +89,25 @@ static unsigned long read_idle_residency(int fd, int gt)
->>   	return residency;
->>   }
->>
->> -static void test_idle_residency(int fd, int gt)
->> +static void test_idle_residency(int fd, int gt, enum test_type flag)
->>   {
->>   	unsigned long elapsed_ms, residency_start, residency_end;
->>
->>   	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT not in
->> C6\n");
->>
->> -	residency_start = read_idle_residency(fd, gt);
->> -	elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) / 1000;
->> -	residency_end = read_idle_residency(fd, gt);
->> +	if (flag == TEST_S2IDLE) {
->> +		residency_start = read_idle_residency(fd, gt);
->> +		elapsed_ms -= walltime_ms();
->> +		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE,
->> SUSPEND_TEST_NONE);
->> +		elapsed_ms += walltime_ms();
->> +		residency_end = read_idle_residency(fd, gt);
->> +	}
->> +
->> +	if (flag == TEST_SLEEP) {
->> +		residency_start = read_idle_residency(fd, gt);
->> +		elapsed_ms = measured_usleep(SLEEP_DURATION * 1000) /
->> 1000;
->> +		residency_end = read_idle_residency(fd, gt);
->> +	}
->>
->>   	igt_info("Measured %lums of idle residency in %lums\n",
->>   		 residency_end - residency_start, elapsed_ms); @@ -88,6
->> +118,8 @@ static void test_idle_residency(int fd, int gt)  igt_main  {
->>   	int fd, gt;
->> +	char pci_slot_name[NAME_MAX];
->> +	uint32_t d3cold_allowed;
->>
->>   	igt_fixture {
->>   		fd = drm_open_driver(DRIVER_XE);
->> @@ -99,10 +131,22 @@ igt_main
->>   		xe_for_each_gt(fd, gt)
->>   			igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1),
->> "GT not in C6\n");
->>
->> +	igt_describe("Validate idle residency measured over suspend cycle is
->> within the tolerance");
->> +	igt_subtest("gt-c6-freeze") {
->> +		igt_device_get_pci_slot_name(fd, pci_slot_name);
->> +		igt_pm_get_d3cold_allowed(pci_slot_name,
->> &d3cold_allowed);
->> +		igt_pm_set_d3cold_allowed(pci_slot_name, 0);
-> We need to disallow d3cold only for discrete cards, rc6 residency should not get reset on integrated gfx.
-> This can save some execution time on CI.
-
-Sure Will fix this.
-
-Thanks
-Riana
-> Thanks,
-> Anshuman.
->> +
->> +		xe_for_each_gt(fd, gt)
->> +			test_idle_residency(fd, gt, TEST_S2IDLE);
->> +
->> +		igt_pm_set_d3cold_allowed(pci_slot_name,
->> d3cold_allowed);
->> +	}
->> +
->>   	igt_describe("Validate idle residency measured over a time interval is
->> within the tolerance");
->>   	igt_subtest("idle-residency")
->>   		xe_for_each_gt(fd, gt)
->> -			test_idle_residency(fd, gt);
->> +			test_idle_residency(fd, gt, TEST_SLEEP);
->>
->>   	igt_fixture {
->>   		close(fd);
->> --
->> 2.40.0
-> 
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVGF1cm8sIFJpYW5hIDxy
+aWFuYS50YXVyb0BpbnRlbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBBdWd1c3QgMywgMjAyMyAy
+OjE2IFBNDQo+IFRvOiBHdXB0YSwgQW5zaHVtYW4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47
+IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogRGl4aXQsIEFzaHV0b3No
+IDxhc2h1dG9zaC5kaXhpdEBpbnRlbC5jb20+OyBCZWxnYXVta2FyLCBWaW5heQ0KPiA8dmluYXku
+YmVsZ2F1bWthckBpbnRlbC5jb20+OyBOaWxhd2FyLCBCYWRhbCA8YmFkYWwubmlsYXdhckBpbnRl
+bC5jb20+Ow0KPiBTdW5kYXJlc2FuLCBTdWphcml0aGEgPHN1amFyaXRoYS5zdW5kYXJlc2FuQGlu
+dGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdCAyLzRdIGxpYi9pZ3RfcG06IGNo
+YW5nZSBkM2NvbGRfYWxsb3dlZCBmdW5jdGlvbg0KPiBwYXJhbWV0ZXJzDQo+IA0KPiANCj4gSGkg
+QW5zaHVtYW4NCj4gDQo+IE9uIDgvMy8yMDIzIDEyOjM3IFBNLCBHdXB0YSwgQW5zaHVtYW4gd3Jv
+dGU6DQo+ID4NCj4gPg0KPiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9t
+OiBUYXVybywgUmlhbmEgPHJpYW5hLnRhdXJvQGludGVsLmNvbT4NCj4gPj4gU2VudDogVGh1cnNk
+YXksIEF1Z3VzdCAzLCAyMDIzIDEwOjM2IEFNDQo+ID4+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZw0KPiA+PiBDYzogVGF1cm8sIFJpYW5hIDxyaWFuYS50YXVyb0BpbnRlbC5jb20+
+OyBHdXB0YSwgQW5zaHVtYW4NCj4gPj4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47IERpeGl0
+LCBBc2h1dG9zaA0KPiA+PiA8YXNodXRvc2guZGl4aXRAaW50ZWwuY29tPjsgQmVsZ2F1bWthciwg
+VmluYXkNCj4gPj4gPHZpbmF5LmJlbGdhdW1rYXJAaW50ZWwuY29tPjsgTmlsYXdhciwgQmFkYWwN
+Cj4gPj4gPGJhZGFsLm5pbGF3YXJAaW50ZWwuY29tPjsgU3VuZGFyZXNhbiwgU3VqYXJpdGhhDQo+
+ID4+IDxzdWphcml0aGEuc3VuZGFyZXNhbkBpbnRlbC5jb20+DQo+ID4+IFN1YmplY3Q6IFtQQVRD
+SCBpLWctdCAyLzRdIGxpYi9pZ3RfcG06IGNoYW5nZSBkM2NvbGRfYWxsb3dlZCBmdW5jdGlvbg0K
+PiA+PiBwYXJhbWV0ZXJzDQo+ID4+DQo+ID4+IENoYW5nZSBmdW5jdGlvbiBwYXJhbWV0ZXIgb2Yg
+ZDNjb2xkX2FsbG93ZWQgZ2V0L3NldCBmdW5jdGlvbnMgdG8gcGNpDQo+ID4+IHNsb3QgbmFtZS4g
+Q2hhbmdlIHRoZSBkYXRhIHR5cGUgZnJvbSBjaGFyIHRvIHVpbnQzMl90IGFzIGl0IGlzIG1vcmUN
+Cj4gYXBwcm9wcmlhdGUuDQo+ID4+DQo+ID4+IFRoaXMgY2hhbmdlIGlzIGRvbmUgc28gdGhhdCBi
+b3RoIHhlIHRlc3RzIGFuZCBpOTE1IHRlc3QgY2FuIHVzZSB0aGUNCj4gPj4gc2FtZSBsaWJyYXJ5
+IGZ1bmN0aW9uLg0KPiA+PiBNb2RpZnkgaTkxNV9zdXNwZW5kIHRvIHVzZSB0aGVzZSBmdW5jdGlv
+bnMuDQo+ID4+IE5vIEZ1bmN0aW9uYWwgQ2hhbmdlcy4NCj4gPiBXaHkgeGUgdGVzdCBjYW4gbm90
+IHVzZSBjYXJkLT5wY2lfc2xvdF9uYW1lLCBhZGQgdGhhdCBqdXN0aWZpY2F0aW9uIGluDQo+IGNv
+bW1pdCBsb2cuDQo+IA0KPiBpOTE1X3N1c3BlbmQgdGVzdHMgZmluZCB0aGUgZmlyc3QgZGlzY3Jl
+dGUgY2FyZCBhbmQgdGhhdCBpcyBkb25lIGJ5DQo+IGlndF9kZXZpY2Vfc2NhbiB1c2luZyB1ZGV2
+Lg0KPiBTbyBpbml0aWFsbHkgd2hlbiB0aGlzIGxpYiB3YXMgd3JpdHRlbiBpdCBtYWRlIHVzZSBv
+ZiBpZ3RfZGV2aWNlX2NhcmQgYXMgaXQgd2FzDQo+IGFwcHJvcHJpYXRlIGZvciB0aGUgdGVzdC4N
+Cj4gDQo+IFhlIHRlc3RzIHVzZSBwY2lfZGV2aWNlLiBUbyBhZGQgYSBjb21tb24gZnVuY3Rpb24g
+SSBjb3VsZG4ndCBjb252ZXJ0DQo+IGlndF9kZXZpY2VfY2FyZCB0byBwY2lfZGV2aWNlLyBmaW5k
+IGEgaGVscGVyIGZ1bmN0aW9uIHRvIGRvIHNvLg0KPiANCj4gU28gaSBhZGRlZCB0aGUgcGFyYW1l
+dGVyIHNsb3QgbmFtZSBpbiB0aGlzIFJGQyBwYXRjaCBhcyBpdCB3YXMgY29tbW9uLg0KPiBTaG91
+bGQgaSBjb250aW51ZSB3aXRoIHRoaXM/IE9yIGNyZWF0ZSBhIG5ldyBmdW5jdGlvbiBmb3IgWEU/
+DQpUaGFua3MgZm9yIGV4cGxhbmF0aW9uLg0KUGxlYXNlIGNvbnRpbnVlIHdpdGggdGhlIGNoYW5n
+ZSBhbmQgYWRkIHRoYXQganVzdGlmaWNhdGlvbiBpbiBjb21taXQtbG9nLg0KVGhhbmtzLA0KQW5z
+aHVtYW4uDQo+IA0KPiBUaGFua3MNCj4gUmlhbmENCj4gDQo+ID4gUmVnYXJkcywNCj4gPiBBbnNo
+dW1hbi4NCj4gPj4NCj4gPj4gU2lnbmVkLW9mZi1ieTogUmlhbmEgVGF1cm8gPHJpYW5hLnRhdXJv
+QGludGVsLmNvbT4NCj4gPj4gLS0tDQo+ID4+ICAgbGliL2lndF9wbS5jICAgICAgICAgICAgICB8
+IDIyICsrKysrKysrKysrLS0tLS0tLS0tLS0NCj4gPj4gICBsaWIvaWd0X3BtLmggICAgICAgICAg
+ICAgIHwgIDQgKystLQ0KPiA+PiAgIHRlc3RzL2k5MTUvaTkxNV9zdXNwZW5kLmMgfCAgOCArKysr
+LS0tLQ0KPiA+PiAgIDMgZmlsZXMgY2hhbmdlZCwgMTcgaW5zZXJ0aW9ucygrKSwgMTcgZGVsZXRp
+b25zKC0pDQo+ID4+DQo+ID4+IGRpZmYgLS1naXQgYS9saWIvaWd0X3BtLmMgYi9saWIvaWd0X3Bt
+LmMgaW5kZXggYmE1OTFmMGY4Li4xMWNmODI5NTANCj4gPj4gMTAwNjQ0DQo+ID4+IC0tLSBhL2xp
+Yi9pZ3RfcG0uYw0KPiA+PiArKysgYi9saWIvaWd0X3BtLmMNCj4gPj4gQEAgLTEyMDQsNDcgKzEy
+MDQsNDcgQEAgdm9pZA0KPiBpZ3RfcG1fc2V0dXBfcGNpX2NhcmRfcnVudGltZV9wbShzdHJ1Y3QN
+Cj4gPj4gcGNpX2RldmljZSAqcGNpX2RldikNCj4gPj4NCj4gPj4gICAvKioNCj4gPj4gICAgKiBp
+Z3RfcG1fZ2V0X2QzY29sZF9hbGxvd2VkOg0KPiA+PiAtICogQGlndF9kZXZpY2VfY2FyZDogZGV2
+aWNlIGNhcmQNCj4gPj4gLSAqIEB2YWw6IHZhbHVlIHRvIGJlIHJlYWQgaW50bw0KPiA+PiArICog
+QHBjaV9zbG90X25hbWU6IHNsb3QgbmFtZSBvZiB0aGUgcGNpIGRldmljZQ0KPiA+PiArICogQHZh
+bHVlOiB2YWx1ZSB0byBiZSByZWFkIGludG8NCj4gPj4gICAgKg0KPiA+PiAgICAqIFJlYWRzIHRo
+ZSB2YWx1ZSBvZiBkM2NvbGRfYWxsb3dlZCBhdHRyaWJ1dGUNCj4gPj4gICAgKiBvZiB0aGUgcGNp
+IGRldmljZQ0KPiA+PiAgICAqLw0KPiA+PiAtdm9pZCBpZ3RfcG1fZ2V0X2QzY29sZF9hbGxvd2Vk
+KHN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgKmNhcmQsIGNoYXINCj4gPj4gKnZhbCkNCj4gPj4gK3Zv
+aWQgaWd0X3BtX2dldF9kM2NvbGRfYWxsb3dlZChjb25zdCBjaGFyICpwY2lfc2xvdF9uYW1lLCB1
+aW50MzJfdA0KPiA+PiArKnZhbHVlKQ0KPiA+PiAgIHsNCj4gPj4gICAJY2hhciBuYW1lW1BBVEhf
+TUFYXTsNCj4gPj4gICAJaW50IGZkOw0KPiA+Pg0KPiA+PiAgIAlzbnByaW50ZihuYW1lLCBQQVRI
+X01BWCwgIi9zeXMvYnVzL3BjaS9kZXZpY2VzLyVzIiwNCj4gPj4gLQkJIGNhcmQtPnBjaV9zbG90
+X25hbWUpOw0KPiA+PiArCQkgcGNpX3Nsb3RfbmFtZSk7DQo+ID4+DQo+ID4+ICAgCWZkID0gb3Bl
+bihuYW1lLCBPX1JET05MWSk7DQo+ID4+ICAgCWlndF9hc3NlcnRfZihmZCA+PSAwLCAiQ2FuJ3Qg
+b3BlbiAlc1xuIiwgbmFtZSk7DQo+ID4+DQo+ID4+IC0JaWd0X3N5c2ZzX3JlYWQoZmQsICJkM2Nv
+bGRfYWxsb3dlZCIsIHZhbCwgc2l6ZW9mKHZhbCkpOw0KPiA+PiArCV9faWd0X3N5c2ZzX2dldF91
+MzIoZmQsICJkM2NvbGRfYWxsb3dlZCIsIHZhbHVlKTsNCj4gPj4NCj4gPj4gICAJY2xvc2UoZmQp
+Ow0KPiA+PiAgIH0NCj4gPj4NCj4gPj4gICAvKioNCj4gPj4gLSAqIGlndF9wbV9nZXRfZDNjb2xk
+X2FsbG93ZWQ6DQo+ID4+IC0gKiBAaWd0X2RldmljZV9jYXJkOiBkZXZpY2UgY2FyZA0KPiA+PiAt
+ICogQHZhbDogdmFsdWUgdG8gYmUgd3JpdHRlbg0KPiA+PiArICogaWd0X3BtX3NldF9kM2NvbGRf
+YWxsb3dlZDoNCj4gPj4gKyAqIEBwY2lfc2xvdF9uYW1lOiBzbG90IG5hbWUgb2YgcGNpIGRldmlj
+ZQ0KPiA+PiArICogQHZhbHVlOiB2YWx1ZSB0byBiZSB3cml0dGVuDQo+ID4+ICAgICoNCj4gPj4g
+ICAgKiB3cml0ZXMgdGhlIHZhbHVlIHRvIGQzY29sZF9hbGxvd2VkIGF0dHJpYnV0ZSBvZiBwY2kg
+ZGV2aWNlDQo+ID4+ICAgICovDQo+ID4+IC12b2lkIGlndF9wbV9zZXRfZDNjb2xkX2FsbG93ZWQo
+c3RydWN0IGlndF9kZXZpY2VfY2FyZCAqY2FyZCwgY29uc3QNCj4gPj4gY2hhcg0KPiA+PiAqdmFs
+KQ0KPiA+PiArdm9pZCBpZ3RfcG1fc2V0X2QzY29sZF9hbGxvd2VkKGNvbnN0IGNoYXIgKnBjaV9z
+bG90X25hbWUsIHVpbnQzMl90DQo+ID4+ICt2YWx1ZSkNCj4gPj4gICB7DQo+ID4+ICAgCWNoYXIg
+bmFtZVtQQVRIX01BWF07DQo+ID4+ICAgCWludCBmZDsNCj4gPj4NCj4gPj4gICAJc25wcmludGYo
+bmFtZSwgUEFUSF9NQVgsICIvc3lzL2J1cy9wY2kvZGV2aWNlcy8lcyIsDQo+ID4+IC0JCSBjYXJk
+LT5wY2lfc2xvdF9uYW1lKTsNCj4gPj4gKwkJIHBjaV9zbG90X25hbWUpOw0KPiA+Pg0KPiA+PiAg
+IAlmZCA9IG9wZW4obmFtZSwgT19SRE9OTFkpOw0KPiA+PiAgIAlpZ3RfYXNzZXJ0X2YoZmQgPj0g
+MCwgIkNhbid0IG9wZW4gJXNcbiIsIG5hbWUpOw0KPiA+Pg0KPiA+PiAtCWlndF9zeXNmc193cml0
+ZShmZCwgImQzY29sZF9hbGxvd2VkIiwgdmFsLCBzaXplb2YodmFsKSk7DQo+ID4+ICsJX19pZ3Rf
+c3lzZnNfc2V0X3UzMihmZCwgImQzY29sZF9hbGxvd2VkIiwgdmFsdWUpOw0KPiA+PiAgIAljbG9z
+ZShmZCk7DQo+ID4+ICAgfQ0KPiA+Pg0KPiA+PiBkaWZmIC0tZ2l0IGEvbGliL2lndF9wbS5oIGIv
+bGliL2lndF9wbS5oIGluZGV4IDcxZWMyZjIzOS4uMzA2YTllYjQ2DQo+ID4+IDEwMDY0NA0KPiA+
+PiAtLS0gYS9saWIvaWd0X3BtLmgNCj4gPj4gKysrIGIvbGliL2lndF9wbS5oDQo+ID4+IEBAIC03
+OSw4ICs3OSw4IEBAIGVudW0gaWd0X2FjcGlfZF9zdGF0ZQ0KPiA+PiAgIGlndF9wbV9nZXRfYWNw
+aV9yZWFsX2Rfc3RhdGUoc3RydWN0IHBjaV9kZXZpY2UgKnBjaV9kZXYpOyAgdm9pZA0KPiA+PiBp
+Z3RfcG1fZW5hYmxlX3BjaV9jYXJkX3J1bnRpbWVfcG0oc3RydWN0IHBjaV9kZXZpY2UgKnJvb3Qs
+DQo+ID4+ICAgCQkJCSAgICAgICBzdHJ1Y3QgcGNpX2RldmljZSAqaTkxNSk7IC12b2lkDQo+ID4+
+IGlndF9wbV9nZXRfZDNjb2xkX2FsbG93ZWQoc3RydWN0IGlndF9kZXZpY2VfY2FyZCAqY2FyZCwg
+Y2hhciAqdmFsKTsgLQ0KPiA+PiB2b2lkIGlndF9wbV9zZXRfZDNjb2xkX2FsbG93ZWQoc3RydWN0
+IGlndF9kZXZpY2VfY2FyZCAqY2FyZCwgY29uc3QNCj4gPj4gY2hhciAqdmFsKTsNCj4gPj4gK3Zv
+aWQgaWd0X3BtX2dldF9kM2NvbGRfYWxsb3dlZChjb25zdCBjaGFyICpwY2lfc2xvdF9uYW1lLCB1
+aW50MzJfdA0KPiA+PiArKnZhbHVlKTsgdm9pZCBpZ3RfcG1fc2V0X2QzY29sZF9hbGxvd2VkKGNv
+bnN0IGNoYXIgKnBjaV9zbG90X25hbWUsDQo+ID4+ICt1aW50MzJfdCB2YWx1ZSk7DQo+ID4+ICAg
+dm9pZCBpZ3RfcG1fc2V0dXBfcGNpX2NhcmRfcnVudGltZV9wbShzdHJ1Y3QgcGNpX2RldmljZSAq
+cGNpX2Rldik7DQo+ID4+IHZvaWQgaWd0X3BtX3Jlc3RvcmVfcGNpX2NhcmRfcnVudGltZV9wbSh2
+b2lkKTsNCj4gPj4gICB2b2lkIGlndF9wbV9wcmludF9wY2lfY2FyZF9ydW50aW1lX3N0YXR1cyh2
+b2lkKTsNCj4gPj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvaTkxNV9zdXNwZW5kLmMgYi90ZXN0
+cy9pOTE1L2k5MTVfc3VzcGVuZC5jDQo+ID4+IGluZGV4DQo+ID4+IDg1MWU3OTdjMi4uYzI1ODA1
+NTg0IDEwMDY0NA0KPiA+PiAtLS0gYS90ZXN0cy9pOTE1L2k5MTVfc3VzcGVuZC5jDQo+ID4+ICsr
+KyBiL3Rlc3RzL2k5MTUvaTkxNV9zdXNwZW5kLmMNCj4gPj4gQEAgLTI4Myw3ICsyODMsNyBAQCBz
+dGF0aWMgdm9pZA0KPiA+PiAgIHRlc3Rfc3VzcGVuZF93aXRob3V0X2k5MTUoaW50IHN0YXRlKQ0K
+PiA+PiAgIHsNCj4gPj4gICAJc3RydWN0IGlndF9kZXZpY2VfY2FyZCBjYXJkOw0KPiA+PiAtCWNo
+YXIgZDNjb2xkX2FsbG93ZWRbMl07DQo+ID4+ICsJdWludDMyX3QgZDNjb2xkX2FsbG93ZWQ7DQo+
+ID4+ICAgCWludCBmZDsNCj4gPj4NCj4gPj4gICAJZmQgPSBfX2RybV9vcGVuX2RyaXZlcihEUklW
+RVJfSU5URUwpOyBAQCAtMjk3LDggKzI5Nyw4IEBADQo+ID4+IHRlc3Rfc3VzcGVuZF93aXRob3V0
+X2k5MTUoaW50IHN0YXRlKQ0KPiA+PiAgIAkgKi8NCj4gPj4gICAJaWYgKHN0YXRlID09IFNVU1BF
+TkRfU1RBVEVfRlJFRVpFICYmDQo+ID4+ICAgCSAgICBpZ3RfZGV2aWNlX2ZpbmRfZmlyc3RfaTkx
+NV9kaXNjcmV0ZV9jYXJkKCZjYXJkKSkgew0KPiA+PiAtCQlpZ3RfcG1fZ2V0X2QzY29sZF9hbGxv
+d2VkKCZjYXJkLCBkM2NvbGRfYWxsb3dlZCk7DQo+ID4+IC0JCWlndF9wbV9zZXRfZDNjb2xkX2Fs
+bG93ZWQoJmNhcmQsICIwXG4iKTsNCj4gPj4gKwkJaWd0X3BtX2dldF9kM2NvbGRfYWxsb3dlZChj
+YXJkLnBjaV9zbG90X25hbWUsDQo+ID4+ICZkM2NvbGRfYWxsb3dlZCk7DQo+ID4+ICsJCWlndF9w
+bV9zZXRfZDNjb2xkX2FsbG93ZWQoY2FyZC5wY2lfc2xvdF9uYW1lLCAwKTsNCj4gPj4gICAJfQ0K
+PiA+PiAgIAlkcm1fY2xvc2VfZHJpdmVyKGZkKTsNCj4gPj4NCj4gPj4gQEAgLTMwOCw3ICszMDgs
+NyBAQCB0ZXN0X3N1c3BlbmRfd2l0aG91dF9pOTE1KGludCBzdGF0ZSkNCj4gPj4gICAJaWd0X3N5
+c3RlbV9zdXNwZW5kX2F1dG9yZXN1bWUoc3RhdGUsIFNVU1BFTkRfVEVTVF9OT05FKTsNCj4gPj4N
+Cj4gPj4gICAJaWYgKHN0YXRlID09IFNVU1BFTkRfU1RBVEVfRlJFRVpFICYmIHN0cmxlbihjYXJk
+LmNhcmQpKQ0KPiA+PiAtCQlpZ3RfcG1fc2V0X2QzY29sZF9hbGxvd2VkKCZjYXJkLCBkM2NvbGRf
+YWxsb3dlZCk7DQo+ID4+ICsJCWlndF9wbV9zZXRfZDNjb2xkX2FsbG93ZWQoY2FyZC5wY2lfc2xv
+dF9uYW1lLA0KPiA+PiBkM2NvbGRfYWxsb3dlZCk7DQo+ID4+DQo+ID4+ICAgCWlndF9rbXNnKEtN
+U0dfSU5GTyAiUmUtbG9hZGluZyBpOTE1IFxuIik7DQo+ID4+ICAgCWlndF9hc3NlcnRfZXEoaWd0
+X2k5MTVfZHJpdmVyX2xvYWQoTlVMTCksIDApOw0KPiA+PiAtLQ0KPiA+PiAyLjQwLjANCj4gPg0K
