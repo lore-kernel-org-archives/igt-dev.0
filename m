@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B32A610E113
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 20:20:36 +0000 (UTC)
-Date: Thu, 3 Aug 2023 22:20:32 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Lukasz Laguna <lukasz.laguna@intel.com>
-Message-ID: <20230803202032.67zostu7sjysikgn@zkempczy-mobl2>
-References: <20230803114232.15120-1-lukasz.laguna@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1123503909098230477=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230803114232.15120-1-lukasz.laguna@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/xe_query: add helper getting
- available VRAM
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
+Date: Thu, 03 Aug 2023 20:57:08 -0000
+Message-ID: <169109622822.5268.12336011942646485138@emeril.freedesktop.org>
+References: <20230803195455.615024-1-aurabindo.pillai@amd.com>
+In-Reply-To: <20230803195455.615024-1-aurabindo.pillai@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_tests/amdgp?=
+ =?utf-8?q?u=3A_Add_test_for_MALL_static_screen_cache_scanout_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,87 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, mauro.chehab@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Aug 03, 2023 at 01:42:32PM +0200, Lukasz Laguna wrote:
-> Helper allows to read available VRAM of a specified device and GT.
-> 
-> v2:
-> - Query for current memory usage instead of using cached one (Zbigniew)
-> 
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->  lib/xe/xe_query.c | 30 ++++++++++++++++++++++++++++++
->  lib/xe/xe_query.h |  1 +
->  2 files changed, 31 insertions(+)
-> 
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index 8963c7b06..ef515b088 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -630,6 +630,36 @@ uint64_t xe_visible_vram_size(int fd, int gt)
->  
->  	return visible_size;
->  }
-> +/**
-> + * xe_vram_available:
-> + * @fd: xe device fd
-> + * @gt: gt
-> + *
-> + * Returns available vram of xe device @fd and @gt.
-> + */
-> +uint64_t xe_vram_available(int fd, int gt)
-> +{
-> +	struct xe_device *xe_dev;
-> +	int region_idx;
-> +	struct drm_xe_query_mem_region *mem_region;
-> +
-> +	xe_dev = find_in_cache(fd);
-> +	igt_assert(xe_dev);
-> +
-> +	region_idx = ffs(native_region_for_gt(xe_dev->gts, gt)) - 1;
-> +	mem_region = &xe_dev->mem_usage->regions[region_idx];
+--===============1123503909098230477==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I think this pointer will point out to freed mem_usage soon, so I bet:
-> +
-> +	if (XE_IS_CLASS_VRAM(mem_region)) {
-> +		pthread_mutex_lock(&cache.cache_mutex);
-> +		free(xe_dev->mem_usage);
-> +		xe_dev->mem_usage = xe_query_mem_usage_new(fd);
-> +		pthread_mutex_unlock(&cache.cache_mutex);
-> +
-> +		return mem_region->total_size - mem_region->used;
+== Series Details ==
 
-uaf will happen here (mem_region points to freed memory).
+Series: tests/amdgpu: Add test for MALL static screen cache scanout (rev2)
+URL   : https://patchwork.freedesktop.org/series/121980/
+State : info
 
-Reacquire mem_region after xe_query_mem_usage_new(fd) and this
-should be good.
+== Summary ==
 
---
-Zbigniew
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9510](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9510/index.html)
 
-> +	}
-> +
-> +	return 0;
-> +}
->  
->  /**
->   * xe_get_default_alignment:
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index 1b74c58ab..20dbfa12c 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -97,6 +97,7 @@ unsigned int xe_number_hw_engines(int fd);
->  bool xe_has_vram(int fd);
->  uint64_t xe_vram_size(int fd, int gt);
->  uint64_t xe_visible_vram_size(int fd, int gt);
-> +uint64_t xe_vram_available(int fd, int gt);
->  uint32_t xe_get_default_alignment(int fd);
->  uint32_t xe_va_bits(int fd);
->  uint16_t xe_dev_id(int fd);
-> -- 
-> 2.40.0
-> 
+
+
+--===============1123503909098230477==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: Add test for MALL static screen cache scanout (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121980/">https://patchwork.freedesktop.org/series/121980/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9510/index.html">IGTPW_9510</a></p>
+
+</body>
+</html>
+
+--===============1123503909098230477==--
