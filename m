@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (unknown [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF2AF10E5FA
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Aug 2023 12:30:33 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  3 Aug 2023 17:53:05 +0530
-Message-Id: <20230803122305.3887694-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2585201679519375584=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] intel-ci/xe: Update kms blocklist documentation
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Thu, 03 Aug 2023 13:45:09 -0000
+Message-ID: <169107030948.5268.3373667865656485891@emeril.freedesktop.org>
+References: <20230803122305.3887694-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230803122305.3887694-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=97=8B_CI=2ExeBAT=3A_info_for_intel-ci/xe?=
+ =?utf-8?q?=3A_Update_kms_blocklist_documentation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,85 +17,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add justification to kms blocklist.
+--===============2585201679519375584==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/xe.blocklist.txt | 41 ++++++++++++++++++---------------
- 1 file changed, 22 insertions(+), 19 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index b40dd4f70..df7bb4149 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -44,41 +44,44 @@ igt@syncobj_.*
- igt@template
- igt@tools_test
- ##################################################################
--# Pipe E, F, G and H
-+# KMS: Pipe E, F, G and H are not available on Intel hardware
- ##################################################################
- igt@.*@.*pipe-(e|f|g|h).*
--##################################################################
--# Multidisplay
--##################################################################
- igt@kms_bw@.*-(5|6|7|8)-displays-.*
- ##################################################################
-+# KMS: Tests those are specific to i915 driver
-+##################################################################
-+igt@kms_busy@.*
- igt@kms_draw_crc@draw-method-(mmap-cpu|mmap-gtt|pwrite)
--igt@kms_draw_crc@fill-fb
--igt@kms_pipe_b_c_ivb@.*
--igt@kms_pwrite_crc
--igt@kms_ccs@.*
--igt@kms_frontbuffer_tracking@.*
--igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
- igt@kms_fence_pin_leak
--igt@kms_busy@.*
--igt@kms_psr@.*_mmap_(cpu|gtt)
--igt@kms_legacy_colorkey@basic
--igt@kms_legacy_colorkey@invalid-plane
--igt@kms_flip_scaled_crc@flip-(32|64)bpp-(4|x|y|yf|tileccs)tile-.*
--igt@kms_big_fb@(4|x|y|yf)-tiled-.*
- igt@kms_flip@2x-flip-vs-fences
- igt@kms_flip@flip-vs-fences(-interruptible)
-+igt@kms_legacy_colorkey@basic
-+igt@kms_legacy_colorkey@invalid-plane
-+igt@kms_pipe_b_c_ivb@.*
-+igt@kms_psr@.*_mmap_(cpu|gtt)
-+igt@kms_pwrite_crc
-+igt@kms_rotation_crc@exhaust-fences
-+##################################################################
-+# KMS: IGT HANG & Tiling support is not ready.
-+# To be removed once IGT started supporting these features.
-+##################################################################
- igt@kms_addfb_basic@clobberred-modifier
- igt@kms_addfb_basic@.*-tiling
- igt@kms_addfb_basic@.*-(4|x|y|yf)-.*
- igt@kms_async_flips@.*
--igt@kms_plane_multiple@tiling-(4|x|y|yf)
-+igt@kms_big_fb@(4|x|y|yf)-tiled-.*
-+igt@kms_ccs@.*
- igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-(atomic|legacy)
--igt@kms_rotation_crc@primary-(4|x|y|yf)-tiled-.*
--igt@kms_rotation_crc@exhaust-fences
-+igt@kms_draw_crc@fill-fb
-+igt@kms_fbcon_fbt@(fbc|psr)(-suspend)
-+igt@kms_flip_scaled_crc@flip-(32|64)bpp-(4|x|y|yf|tileccs)tile-.*
- igt@kms_force_connector_basic@force-load-detect
-+igt@kms_frontbuffer_tracking@.*
- igt@kms_getfb@.*-ccs
- igt@kms_plane_lowres@tiling-(4|x|y|yf)
-+igt@kms_plane_multiple@tiling-(4|x|y|yf)
-+igt@kms_rotation_crc@primary-(4|x|y|yf)-tiled-.*
- igt@kms_.*@.*hang.*
- ##################################################################
- igt@xe_sysfs*
--- 
-2.40.0
+Series: intel-ci/xe: Update kms blocklist documentation
+URL   : https://patchwork.freedesktop.org/series/121956/
+State : info
+
+== Summary ==
+
+Participating hosts:
+bat-pvc-2
+bat-atsm-2
+bat-dg2-oem2
+bat-adlp-7
+Missing hosts results[0]:
+Results: [IGTPW_9507](https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9507/index.html)
+
+
+
+--===============2585201679519375584==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci/xe: Update kms blocklist documentation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/121956/">https://patchwork.freedesktop.org/series/121956/</a></td></tr>
+<tr><td><b>State:</b></td><td>info</td></tr>
+
+</table>
+
+
+    <p>Participating hosts:<br />
+bat-pvc-2<br />
+bat-atsm-2<br />
+bat-dg2-oem2<br />
+bat-adlp-7<br />
+Missing hosts results[0]:<br />
+Results: <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_9507/index.html">IGTPW_9507</a></p>
+
+</body>
+</html>
+
+--===============2585201679519375584==--
