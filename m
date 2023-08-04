@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C61C010E241
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Aug 2023 05:12:13 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
- tejas.upadhyay@intel.com, priyanka.dandamudi@intel.com
-Date: Fri,  4 Aug 2023 10:40:11 +0530
-Message-Id: <20230804051015.1193986-2-priyanka.dandamudi@intel.com>
-In-Reply-To: <20230804051015.1193986-1-priyanka.dandamudi@intel.com>
-References: <20230804051015.1193986-1-priyanka.dandamudi@intel.com>
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2057.outbound.protection.outlook.com [40.107.92.57])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65A1A10E23B
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Aug 2023 05:29:48 +0000 (UTC)
+From: "Wang, Chao-kai (Stylon)" <Stylon.Wang@amd.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Fri, 4 Aug 2023 05:29:45 +0000
+Message-ID: <BN9PR12MB5145307AD1A72BFB7EDF6522FF09A@BN9PR12MB5145.namprd12.prod.outlook.com>
+Content-Language: en-CA
+Content-Type: multipart/alternative;
+ boundary="_000_BN9PR12MB5145307AD1A72BFB7EDF6522FF09ABN9PR12MB5145namp_"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/5] xe/xe_sysfs: Updated tests to use
- xe_sysfs_gt_open
+Subject: [igt-dev] False positives of IGT CI on tests/amdgpu/amd_color
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,95 +19,164 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: SaiX Nandan <saix.nandan.yedireswarapu@intel.com>,
+ "ravitejax.veesam@intel.com" <ravitejax.veesam@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+--_000_BN9PR12MB5145307AD1A72BFB7EDF6522FF09ABN9PR12MB5145namp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Tests have been updated to use xe_sysfs_gt_open function.
+[AMD Official Use Only - General]
 
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
----
- tests/xe/xe_sysfs_defaults.c  | 10 ++++++----
- tests/xe/xe_sysfs_scheduler.c | 10 ++++++----
- 2 files changed, 12 insertions(+), 8 deletions(-)
+Hi Sai,
 
-diff --git a/tests/xe/xe_sysfs_defaults.c b/tests/xe/xe_sysfs_defaults.c
-index 5c9de43e9..ff958161b 100644
---- a/tests/xe/xe_sysfs_defaults.c
-+++ b/tests/xe/xe_sysfs_defaults.c
-@@ -65,25 +65,27 @@ igt_main
- 
- 		sys_fd = igt_sysfs_open(xe);
- 		igt_require(sys_fd != -1);
-+		close(sys_fd);
- 	}
- 
- 	igt_subtest_with_dynamic("engine-defaults") {
- 		xe_for_each_gt(xe, gt) {
- 			int engines_fd = -1;
--			char buf[100];
-+			int gt_fd = -1;
- 
--			sprintf(buf, "device/gt%d/engines", gt);
--			engines_fd = openat(sys_fd, buf, O_RDONLY);
-+			gt_fd = xe_sysfs_gt_open(xe, gt);
-+			igt_require(gt_fd != -1);
-+			engines_fd = openat(gt_fd, "engines", O_RDONLY);
- 			igt_require(engines_fd != -1);
- 
- 			igt_sysfs_engines(xe, engines_fd, NULL, test_defaults);
- 
- 			close(engines_fd);
-+			 close(gt_fd);
- 		}
- 	}
- 
- 	igt_fixture {
--		close(sys_fd);
- 		xe_device_put(xe);
- 		close(xe);
- 	}
-diff --git a/tests/xe/xe_sysfs_scheduler.c b/tests/xe/xe_sysfs_scheduler.c
-index 1da0f541a..2a113ea0f 100644
---- a/tests/xe/xe_sysfs_scheduler.c
-+++ b/tests/xe/xe_sysfs_scheduler.c
-@@ -184,6 +184,7 @@ igt_main
- 
- 		sys_fd = igt_sysfs_open(xe);
- 		igt_require(sys_fd != -1);
-+		close(sys_fd);
- 	}
- 
- 	for (int i = 0; i < count; i++) {
-@@ -191,20 +192,21 @@ igt_main
- 			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
- 				xe_for_each_gt(xe, gt) {
- 					int engines_fd = -1;
--					char buf[100];
-+					int gt_fd = -1;
- 
--					sprintf(buf, "device/gt%d/engines", gt);
--					engines_fd = openat(sys_fd, buf, O_RDONLY);
-+					gt_fd = xe_sysfs_gt_open(xe, gt);
-+					igt_require(gt_fd != -1);
-+					engines_fd = openat(gt_fd, "engines", O_RDONLY);
- 					igt_require(engines_fd != -1);
- 
- 					igt_sysfs_engines(xe, engines_fd, property[i], t->fn);
- 					close(engines_fd);
-+					close(gt_fd);
- 				}
- 			}
- 		}
- 	}
- 	igt_fixture {
--		close(sys_fd);
- 		xe_device_put(xe);
- 		close(xe);
- 	}
--- 
-2.25.1
+I am getting a false positive for this patch work, which is basically addin=
+g test descriptions. Can you help to re-run the CI?
+https://patchwork.freedesktop.org/series/120680/
+
+
+Thanks
+
+Stylon Wang
+
+MTS Software Development Eng.  |  AMD
+Display Solution Team
+
+O +(886) 2-3789-3667 ext. 23667  C +(886) 921-897-142
+
+---------------------------------------------------------------------------=
+-------------------------------------------------------
+
+6F, 3, YuanCyu St (NanKang Software Park) Taipei, Taiwan
+
+Facebook<https://www.facebook.com/AMD> |  Twitter<https://twitter.com/AMD> =
+|  amd.com<http://www.amd.com/>
+
+
+
+--_000_BN9PR12MB5145307AD1A72BFB7EDF6522FF09ABN9PR12MB5145namp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<p style=3D"font-family:Arial;font-size:10pt;color:#0000FF;margin:5pt;font-=
+style:normal;font-weight:normal;text-decoration:none;" align=3D"Left">
+[AMD Official Use Only - General]<br>
+</p>
+<br>
+<div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+Hi Sai,</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+I am getting a false positive for this patch work, which is basically addin=
+g test descriptions. Can you help to re-run the CI?</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof ContentPasted0">
+<a href=3D"https://patchwork.freedesktop.org/series/120680/" id=3D"LPlnk364=
+993">https://patchwork.freedesktop.org/series/120680/</a><br>
+</div>
+<div class=3D"elementToProof">
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 11pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 11pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 11pt; color: rgb(0, 0, 0);">
+Thanks</div>
+<div id=3D"Signature">
+<div>
+<div></div>
+<div></div>
+<div></div>
+<div id=3D"divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size: 12pt; font=
+-family: Calibri, Helvetica, sans-serif; color: rgb(0, 0, 0);">
+<p style=3D"margin-top:0px; margin-bottom:0px; margin-top:0; margin-bottom:=
+0"></p>
+<p style=3D"margin: 0in 0in 0.0001pt; font-size: 11pt; font-family: Calibri=
+, sans-serif; text-align: start; color: rgb(32, 31, 30); background-color: =
+rgb(255, 255, 255);">
+<span style=3D"margin: 0px; font-size: 9pt; font-family: Arial, sans-serif;=
+ color: black;"><u><b>Stylon Wang</b></u></span></p>
+<p style=3D"margin: 0in 0in 0.0001pt; font-size: 11pt; font-family: Calibri=
+, sans-serif; text-align: start; color: rgb(32, 31, 30); background-color: =
+rgb(255, 255, 255);">
+<span style=3D"margin: 0px; font-size: 9pt; font-family: Arial, sans-serif;=
+ color: black;">MTS Software Development Eng.&nbsp;&nbsp;|<b>&nbsp;&nbsp;AM=
+D</b><br>
+Display Solution Team</span></p>
+<p style=3D"margin: 0in 0in 0.0001pt; font-size: 11pt; font-family: Calibri=
+, sans-serif; text-align: start; color: rgb(32, 31, 30); background-color: =
+rgb(255, 255, 255);">
+<span style=3D"margin: 0px; font-size: 9pt; font-family: Arial, sans-serif;=
+ color: black;"><b style=3D"font-family: Calibri, sans-serif; font-size: 14=
+.6667px; color: rgb(32, 31, 30); background-color: rgb(255, 255, 255);"><sp=
+an style=3D"margin: 0px; font-size: 9pt; font-family: Arial, sans-serif; co=
+lor: black;">O</span></b><span style=3D"margin: 0px; font-size: 9pt; font-f=
+amily: Arial, sans-serif; color: black; background-color: rgb(255, 255, 255=
+);">&nbsp;+(886)
+ 2-3789-3667 ext. 23667&nbsp;&nbsp;<b>C</b>&nbsp;+(886) 921-897-142</span><=
+br>
+</span></p>
+<p style=3D"margin: 0in 0in 0.0001pt; font-size: 11pt; font-family: Calibri=
+, sans-serif; text-align: start; color: rgb(32, 31, 30); background-color: =
+rgb(255, 255, 255);">
+<b><span style=3D"margin: 0px; font-size: 9pt; letter-spacing: -1.4pt; colo=
+r: rgb(242, 101, 34);">----------------------------------------------------=
+---------------------------------------------------------------------------=
+---</span></b><b><span style=3D"margin: 0px; font-size: 9pt; color: rgb(242=
+, 101, 34);"></span></b></p>
+<p style=3D"margin: 0in 0in 0.0001pt; font-size: 11pt; font-family: Calibri=
+, sans-serif; text-align: start; color: rgb(32, 31, 30); background-color: =
+rgb(255, 255, 255);">
+<span style=3D"margin: 0px; font-size: 9pt; font-family: Arial, sans-serif;=
+ color: black;"><span tabindex=3D"0" style=3D"margin:0px; padding:1px 0px; =
+border-width:0px 0px 1px; border-bottom-style:dashed">6F, 3, YuanCyu St (Na=
+nKang Software Park) Taipei, Taiwan</span></span></p>
+<p style=3D"margin: 0in 0in 0.0001pt; font-size: 11pt; font-family: Calibri=
+, sans-serif; text-align: start; color: rgb(32, 31, 30); background-color: =
+rgb(255, 255, 255);">
+<span style=3D"margin: 0px; font-size: 9pt; font-family: Arial, sans-serif;=
+ color: black;"><a href=3D"https://www.facebook.com/AMD" target=3D"_blank" =
+rel=3D"noopener noreferrer" style=3D"margin:0px"><span style=3D"margin:0px"=
+>Facebook</span></a>&nbsp;|&nbsp;&nbsp;<a href=3D"https://twitter.com/AMD" =
+target=3D"_blank" rel=3D"noopener noreferrer" style=3D"margin:0px"><span st=
+yle=3D"margin:0px">Twitter</span></a>&nbsp;|&nbsp;&nbsp;<a href=3D"http://w=
+ww.amd.com/" target=3D"_blank" rel=3D"noopener noreferrer" style=3D"margin:=
+0px"><span style=3D"margin:0px">amd.com</span></a></span><span style=3D"mar=
+gin: 0px; font-size: 10pt; font-family: Arial, sans-serif; color: black;">&=
+nbsp;</span></p>
+<p style=3D"margin: 0in 0in 0.0001pt; font-size: 11pt; font-family: Calibri=
+, sans-serif; text-align: start; color: rgb(32, 31, 30); background-color: =
+rgb(255, 255, 255);">
+&nbsp;</p>
+<p style=3D"margin-top:0px; margin-bottom:0px; margin-top:0; margin-bottom:=
+0"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+--_000_BN9PR12MB5145307AD1A72BFB7EDF6522FF09ABN9PR12MB5145namp_--
