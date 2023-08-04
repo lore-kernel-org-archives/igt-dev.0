@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A68E10E242
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABEA910E244
  for <igt-dev@lists.freedesktop.org>; Fri,  4 Aug 2023 05:12:14 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
  tejas.upadhyay@intel.com, priyanka.dandamudi@intel.com
-Date: Fri,  4 Aug 2023 10:40:10 +0530
-Message-Id: <20230804051015.1193986-1-priyanka.dandamudi@intel.com>
+Date: Fri,  4 Aug 2023 10:40:14 +0530
+Message-Id: <20230804051015.1193986-5-priyanka.dandamudi@intel.com>
+In-Reply-To: <20230804051015.1193986-1-priyanka.dandamudi@intel.com>
+References: <20230804051015.1193986-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/5] Update code to use xe_sysfs_gt_open
+Subject: [igt-dev] [PATCH i-g-t 4/5] tests/intel-ci: Remove xe_sysfs from
+ blacklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,36 +26,23 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Tests have been updated to use xe_sysfs_gt_open function.
-Modified documentation.
+Removing xe_sysfs tests as kernel related patches are ready.
 
-v2: Split updated tests patch into 2 patches
-1 with only to use xe_sysfs_gt_open and other
-to update documentation, non privileged user.(Tejas)
-
-v3: Updated code to check when root user try to set value beyond
-local min/max scheduler property.
-
-v4: Removed non privileged user test, made small changes.(Tejas)
-
-v5: Added code to store/restore property in test min/max.(Tejas)
-
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Acked-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+---
+ tests/intel-ci/xe.blocklist.txt | 2 --
+ 1 file changed, 2 deletions(-)
 
-Priyanka Dandamudi (5):
-  xe/xe_sysfs: Updated tests to use xe_sysfs_gt_open
-  xe/xe_sysfs_scheduler: Try to set sysfs scheduler with default min
-  xe/xe_sysfs: Removing non privileged user test
-  tests/intel-ci: Remove xe_sysfs from blacklist
-  xe-fast-feedback.testlist: Add sysfs tests to BAT
-
- tests/intel-ci/xe-fast-feedback.testlist |  7 +++
- tests/intel-ci/xe.blocklist.txt          |  2 -
- tests/xe/xe_sysfs_defaults.c             | 16 ++---
- tests/xe/xe_sysfs_scheduler.c            | 74 +++++-------------------
- 4 files changed, 30 insertions(+), 69 deletions(-)
-
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index f660d8386..1778e91f1 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -82,5 +82,3 @@ igt@kms_getfb@.*-ccs
+ igt@kms_plane_lowres@tiling-(4|x|y|yf)
+ igt@kms_.*@.*hang.*
+ ##################################################################
+-igt@xe_sysfs*
+-##################################################################
 -- 
 2.25.1
