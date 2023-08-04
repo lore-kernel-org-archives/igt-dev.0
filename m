@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7836033496511993462=="
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <davidgow@google.com>
+Date: Sat,  5 Aug 2023 00:52:23 +0200
+Message-ID: <20230804225220.8005-7-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20230804225220.8005-5-janusz.krzysztofik@linux.intel.com>
+References: <20230804225220.8005-5-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
-Date: Fri, 04 Aug 2023 22:00:25 -0000
-Message-ID: <169118642527.2854.15161335247409436748@emeril.freedesktop.org>
-References: <20230804205509.280987-1-aurabindo.pillai@amd.com>
-In-Reply-To: <20230804205509.280987-1-aurabindo.pillai@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bv2=2C1/2=5D_lib/amdgpu=3A_Add_helper_function?=
- =?utf-8?q?s_to_return_MALL_support?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v4 2/3] kunit: Make 'list' action available to
+ kunit test modules
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,394 +17,169 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org, Rae Moar <rmoar@google.com>,
+ igt-dev@lists.freedesktop.org, linux-kselftest@vger.kernel.org,
+ intel-xe@lists.freedesktop.org, kunit-dev@googlegroups.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7836033496511993462==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Results from kunit tests reported via dmesg may be interleaved with other
+kernel messages.  When parsing dmesg for modular kunit results in real
+time, external tools, e.g., Intel GPU tools (IGT), may want to insert
+their own test name markers into dmesg at the start of each test, before
+any kernel message related to that test appears there, so existing upper
+level test result parsers have no doubt which test to blame for a specific
+kernel message.  Unfortunately, kunit reports names of tests only at their
+completion (with the exeption of a not standarized "# Subtest: <name>"
+header above a test plan of each test suite or parametrized test).
 
-== Series Details ==
+External tools could be able to insert their own "start of the test"
+markers with test names included if they new those names in advance.
+Test names could be learned from a list if provided by a kunit test
+module.
 
-Series: series starting with [v2,1/2] lib/amdgpu: Add helper functions to return MALL support
-URL   : https://patchwork.freedesktop.org/series/122051/
-State : success
+There exists a feature of listing kunit tests without actually executing
+them, but it is now limited to configurations with the kunit module built
+in and covers only built-in tests, already available at boot time.
+Moreover, switching from list to normal mode requires reboot.  If that
+feature was also available when kunit is built as a module, userspace
+could load the module with action=list parameter, load some kunit test
+modules they are interested in and learn about the list of tests provided
+by those modules, then unload them, reload the kunit module in normal mode
+and execute the tests with their lists already known.
 
-== Summary ==
+Extend kunit module notifier initialization callback with a processing
+path for only listing the tests provided by a module if the kunit action
+parameter is set to "list" or "list_attr".  For user convenience, make the
+kunit.action parameter visible in sysfs.
 
-CI Bug Log - changes from IGT_7416 -> IGTPW_9519
-====================================================
+v2: Don't use a different format, use kunit_exec_list_tests() (Rae),
+  - refresh on top of new attributes patches, handle newly introduced
+    kunit.action=list_attr case (Rae).
 
-Summary
--------
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Rae Moar <rmoar@google.com>
+---
+ include/kunit/test.h |  2 ++
+ lib/kunit/executor.c | 28 +++++++++++++++++-----------
+ lib/kunit/test.c     | 18 +++++++++++++++---
+ 3 files changed, 34 insertions(+), 14 deletions(-)
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/index.html
-
-Participating hosts (42 -> 42)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_9519 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-7567u:       [PASS][3] -> [FAIL][4] ([i915#7940])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-kbl-soraka:      NOTRUN -> [INCOMPLETE][5] ([i915#7913])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][6] ([i915#5334] / [i915#7872])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][7] ([i915#1886] / [i915#7913])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-mtlp-6:         [PASS][8] -> [DMESG-FAIL][9] ([i915#7699])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-mtlp-6/igt@i915_selftest@live@migrate.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-mtlp-6/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-2:         NOTRUN -> [DMESG-WARN][10] ([i915#6367])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-2/igt@i915_selftest@live@slpc.html
-    - bat-rpls-1:         NOTRUN -> [DMESG-WARN][11] ([i915#6367])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-rpls-1:         NOTRUN -> [ABORT][12] ([i915#6687] / [i915#7978] / [i915#8668])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - bat-rpls-2:         NOTRUN -> [SKIP][13] ([i915#7828])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-2/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][14] ([fdo#109271]) +16 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc:
-    - bat-rpls-2:         NOTRUN -> [SKIP][15] ([i915#1845])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-2/igt@kms_pipe_crc_basic@suspend-read-crc.html
-
-  * igt@kms_psr@primary_mmap_gtt:
-    - bat-rplp-1:         NOTRUN -> [ABORT][16] ([i915#8434])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - bat-adlp-9:         [FAIL][17] ([i915#7940]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-cfl-8109u:       [FAIL][19] ([i915#7940]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/fi-cfl-8109u/igt@i915_pm_rpm@basic-rte.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-cfl-8109u/igt@i915_pm_rpm@basic-rte.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-rkl-11600:       [FAIL][21] ([i915#7940]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/fi-rkl-11600/igt@i915_pm_rpm@module-reload.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-rkl-11600/igt@i915_pm_rpm@module-reload.html
-    - fi-cfl-guc:         [FAIL][23] ([i915#7940]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/fi-cfl-guc/igt@i915_pm_rpm@module-reload.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-cfl-guc/igt@i915_pm_rpm@module-reload.html
-    - fi-cfl-8700k:       [FAIL][25] ([i915#7940]) -> [PASS][26]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/fi-cfl-8700k/igt@i915_pm_rpm@module-reload.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-cfl-8700k/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - bat-jsl-1:          [DMESG-FAIL][27] ([i915#5334]) -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-2:         [ABORT][29] ([i915#7913] / [i915#7982]) -> [PASS][30]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-rpls-2/igt@i915_selftest@live@requests.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-2/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-rpls-1:         [ABORT][31] ([i915#4983] / [i915#7461] / [i915#8347] / [i915#8384]) -> [PASS][32]
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-rpls-1/igt@i915_selftest@live@reset.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-1/igt@i915_selftest@live@reset.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - bat-rplp-1:         [ABORT][33] ([i915#8442] / [i915#8668] / [i915#8712]) -> [SKIP][34] ([i915#1072])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#485]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/485
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#7461]: https://gitlab.freedesktop.org/drm/intel/issues/7461
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7940]: https://gitlab.freedesktop.org/drm/intel/issues/7940
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
-  [i915#8347]: https://gitlab.freedesktop.org/drm/intel/issues/8347
-  [i915#8384]: https://gitlab.freedesktop.org/drm/intel/issues/8384
-  [i915#8434]: https://gitlab.freedesktop.org/drm/intel/issues/8434
-  [i915#8442]: https://gitlab.freedesktop.org/drm/intel/issues/8442
-  [i915#8668]: https://gitlab.freedesktop.org/drm/intel/issues/8668
-  [i915#8712]: https://gitlab.freedesktop.org/drm/intel/issues/8712
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7416 -> IGTPW_9519
-
-  CI-20190529: 20190529
-  CI_DRM_13479: acb67613848e89e954f68be8621678cb5827e816 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_9519: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/index.html
-  IGT_7416: 7416
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/index.html
-
---===============7836033496511993462==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [v2,1/2] lib/amdgpu: Add helper functions to return MALL support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/122051/">https://patchwork.freedesktop.org/series/122051/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7416 -&gt; IGTPW_9519</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/index.html</p>
-<h2>Participating hosts (42 -&gt; 42)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_9519 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7872">i915#7872</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-mtlp-6/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-mtlp-6/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>
-<p>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</p>
-</li>
-<li>
-<p>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-1/igt@i915_suspend@basic-s3-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-2/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
-<ul>
-<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-2/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_mmap_gtt:</p>
-<ul>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rplp-1/igt@kms_psr@primary_mmap_gtt.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8434">i915#8434</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-adlp-9/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-rte:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/fi-cfl-8109u/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-cfl-8109u/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>
-<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/fi-rkl-11600/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-rkl-11600/igt@i915_pm_rpm@module-reload.html">PASS</a></p>
-</li>
-<li>
-<p>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/fi-cfl-guc/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-cfl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a></p>
-</li>
-<li>
-<p>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/fi-cfl-8700k/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7940">i915#7940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/fi-cfl-8700k/igt@i915_pm_rpm@module-reload.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7982">i915#7982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7461">i915#7461</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8347">i915#8347</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8384">i915#8384</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@sprite_plane_onoff:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7416/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8442">i915#8442</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8668">i915#8668</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8712">i915#8712</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/bat-rplp-1/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7416 -&gt; IGTPW_9519</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_13479: acb67613848e89e954f68be8621678cb5827e816 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_9519: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_9519/index.html<br />
-  IGT_7416: 7416</p>
-
-</body>
-</html>
-
---===============7836033496511993462==--
+diff --git a/include/kunit/test.h b/include/kunit/test.h
+index 3d002e6b252f2..6a338a3267ed5 100644
+--- a/include/kunit/test.h
++++ b/include/kunit/test.h
+@@ -309,6 +309,7 @@ static inline void kunit_set_failure(struct kunit *test)
+ }
+ 
+ bool kunit_enabled(void);
++const char *kunit_action(void);
+ 
+ void kunit_init_test(struct kunit *test, const char *name, char *log);
+ 
+@@ -324,6 +325,7 @@ int __kunit_test_suites_init(struct kunit_suite * const * const suites, int num_
+ void __kunit_test_suites_exit(struct kunit_suite **suites, int num_suites);
+ 
+ void kunit_exec_run_tests(struct kunit_suite_set *suite_set, bool builtin);
++void kunit_exec_list_tests(struct kunit_suite_set *suite_set, bool include_attr);
+ 
+ #if IS_BUILTIN(CONFIG_KUNIT)
+ int kunit_run_all_tests(void);
+diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
+index bd6f3b5dc47f7..b3878a34c35a5 100644
+--- a/lib/kunit/executor.c
++++ b/lib/kunit/executor.c
+@@ -13,22 +13,29 @@
+ extern struct kunit_suite * const __kunit_suites_start[];
+ extern struct kunit_suite * const __kunit_suites_end[];
+ 
++static char *action_param;
++
++module_param_named(action, action_param, charp, 0400);
++MODULE_PARM_DESC(action,
++		 "Changes KUnit executor behavior, valid values are:\n"
++		 "<none>: run the tests like normal\n"
++		 "'list' to list test names instead of running them.\n"
++		 "'list_attr' to list test names and attributes instead of running them.\n");
++
++const char *kunit_action(void)
++{
++	return action_param;
++}
++
+ #if IS_BUILTIN(CONFIG_KUNIT)
+ 
+ static char *filter_glob_param;
+-static char *action_param;
+ static char *filter_param;
+ static char *filter_action_param;
+ 
+ module_param_named(filter_glob, filter_glob_param, charp, 0);
+ MODULE_PARM_DESC(filter_glob,
+ 		"Filter which KUnit test suites/tests run at boot-time, e.g. list* or list*.*del_test");
+-module_param_named(action, action_param, charp, 0);
+-MODULE_PARM_DESC(action,
+-		 "Changes KUnit executor behavior, valid values are:\n"
+-		 "<none>: run the tests like normal\n"
+-		 "'list' to list test names instead of running them.\n"
+-		 "'list_attr' to list test names and attributes instead of running them.\n");
+ module_param_named(filter, filter_param, charp, 0);
+ MODULE_PARM_DESC(filter,
+ 		"Filter which KUnit test suites/tests run at boot-time using attributes, e.g. speed>slow");
+@@ -228,10 +235,7 @@ void kunit_exec_run_tests(struct kunit_suite_set *suite_set, bool builtin)
+ 	__kunit_test_suites_init(suite_set->start, num_suites);
+ }
+ 
+-#if IS_BUILTIN(CONFIG_KUNIT)
+-
+-static void kunit_exec_list_tests(struct kunit_suite_set *suite_set,
+-				  bool include_attr)
++void kunit_exec_list_tests(struct kunit_suite_set *suite_set, bool include_attr)
+ {
+ 	struct kunit_suite * const *suites;
+ 	struct kunit_case *test_case;
+@@ -254,6 +258,8 @@ static void kunit_exec_list_tests(struct kunit_suite_set *suite_set,
+ 	}
+ }
+ 
++#if IS_BUILTIN(CONFIG_KUNIT)
++
+ int kunit_run_all_tests(void)
+ {
+ 	struct kunit_suite_set suite_set = {
+diff --git a/lib/kunit/test.c b/lib/kunit/test.c
+index 8b2808068497f..5232a43737826 100644
+--- a/lib/kunit/test.c
++++ b/lib/kunit/test.c
+@@ -739,13 +739,25 @@ static void kunit_module_init(struct module *mod)
+ 	struct kunit_suite_set suite_set = {
+ 		mod->kunit_suites, mod->kunit_suites + mod->num_kunit_suites,
+ 	};
+-
+-	kunit_exec_run_tests(&suite_set, false);
++	const char *action = kunit_action();
++
++	if (!action)
++		kunit_exec_run_tests(&suite_set, false);
++	else if (!strcmp(action, "list"))
++		kunit_exec_list_tests(&suite_set, false);
++	else if (!strcmp(action, "list_attr"))
++		kunit_exec_list_tests(&suite_set, true);
++	else
++		pr_err("kunit: unknown action '%s'\n", action);
+ }
+ 
+ static void kunit_module_exit(struct module *mod)
+ {
+-	__kunit_test_suites_exit(mod->kunit_suites, mod->num_kunit_suites);
++	const char *action = kunit_action();
++
++	if (!action)
++		__kunit_test_suites_exit(mod->kunit_suites,
++					 mod->num_kunit_suites);
+ }
+ 
+ static int kunit_module_notify(struct notifier_block *nb, unsigned long val,
+-- 
+2.41.0
