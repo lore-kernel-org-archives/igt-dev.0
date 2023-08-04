@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8888110E242
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C61C010E241
  for <igt-dev@lists.freedesktop.org>; Fri,  4 Aug 2023 05:12:13 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
  tejas.upadhyay@intel.com, priyanka.dandamudi@intel.com
-Date: Fri,  4 Aug 2023 10:40:12 +0530
-Message-Id: <20230804051015.1193986-3-priyanka.dandamudi@intel.com>
+Date: Fri,  4 Aug 2023 10:40:11 +0530
+Message-Id: <20230804051015.1193986-2-priyanka.dandamudi@intel.com>
 In-Reply-To: <20230804051015.1193986-1-priyanka.dandamudi@intel.com>
 References: <20230804051015.1193986-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/5] xe/xe_sysfs_scheduler: Try to set sysfs
- scheduler with default min
+Subject: [igt-dev] [PATCH i-g-t 1/5] xe/xe_sysfs: Updated tests to use
+ xe_sysfs_gt_open
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,54 +26,89 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Test tries to set sysfs scheduler with default min which is beyond local min
-and assert is expected to be not equal to the set one.
+Tests have been updated to use xe_sysfs_gt_open function.
 
-v2: Added code to store and restore property in test min/max.(Tejas)
-
+Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
 ---
- tests/xe/xe_sysfs_scheduler.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tests/xe/xe_sysfs_defaults.c  | 10 ++++++----
+ tests/xe/xe_sysfs_scheduler.c | 10 ++++++----
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
+diff --git a/tests/xe/xe_sysfs_defaults.c b/tests/xe/xe_sysfs_defaults.c
+index 5c9de43e9..ff958161b 100644
+--- a/tests/xe/xe_sysfs_defaults.c
++++ b/tests/xe/xe_sysfs_defaults.c
+@@ -65,25 +65,27 @@ igt_main
+ 
+ 		sys_fd = igt_sysfs_open(xe);
+ 		igt_require(sys_fd != -1);
++		close(sys_fd);
+ 	}
+ 
+ 	igt_subtest_with_dynamic("engine-defaults") {
+ 		xe_for_each_gt(xe, gt) {
+ 			int engines_fd = -1;
+-			char buf[100];
++			int gt_fd = -1;
+ 
+-			sprintf(buf, "device/gt%d/engines", gt);
+-			engines_fd = openat(sys_fd, buf, O_RDONLY);
++			gt_fd = xe_sysfs_gt_open(xe, gt);
++			igt_require(gt_fd != -1);
++			engines_fd = openat(gt_fd, "engines", O_RDONLY);
+ 			igt_require(engines_fd != -1);
+ 
+ 			igt_sysfs_engines(xe, engines_fd, NULL, test_defaults);
+ 
+ 			close(engines_fd);
++			 close(gt_fd);
+ 		}
+ 	}
+ 
+ 	igt_fixture {
+-		close(sys_fd);
+ 		xe_device_put(xe);
+ 		close(xe);
+ 	}
 diff --git a/tests/xe/xe_sysfs_scheduler.c b/tests/xe/xe_sysfs_scheduler.c
-index 2a113ea0f..7a190f3d3 100644
+index 1da0f541a..2a113ea0f 100644
 --- a/tests/xe/xe_sysfs_scheduler.c
 +++ b/tests/xe/xe_sysfs_scheduler.c
-@@ -59,7 +59,7 @@ static void test_min_max(int xe, int engine, const char **property)
- {
- 	unsigned int default_max, max;
- 	unsigned int default_min, min;
--	unsigned int set;
-+	unsigned int set, store;
- 	int defaults;
+@@ -184,6 +184,7 @@ igt_main
  
- 	defaults = openat(engine, ".defaults", O_DIRECTORY);
-@@ -67,6 +67,7 @@ static void test_min_max(int xe, int engine, const char **property)
+ 		sys_fd = igt_sysfs_open(xe);
+ 		igt_require(sys_fd != -1);
++		close(sys_fd);
+ 	}
  
- 	igt_sysfs_scanf(defaults, property[2], "%u", &default_max);
- 	igt_sysfs_scanf(defaults, property[1], "%u", &default_min);
-+	igt_sysfs_scanf(engine, property[0], "%u", &store);
+ 	for (int i = 0; i < count; i++) {
+@@ -191,20 +192,21 @@ igt_main
+ 			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
+ 				xe_for_each_gt(xe, gt) {
+ 					int engines_fd = -1;
+-					char buf[100];
++					int gt_fd = -1;
  
- 	igt_sysfs_printf(engine, property[2], "%d", default_max-10);
- 	igt_sysfs_scanf(engine, property[2], "%u", &max);
-@@ -94,13 +95,14 @@ static void test_min_max(int xe, int engine, const char **property)
+-					sprintf(buf, "device/gt%d/engines", gt);
+-					engines_fd = openat(sys_fd, buf, O_RDONLY);
++					gt_fd = xe_sysfs_gt_open(xe, gt);
++					igt_require(gt_fd != -1);
++					engines_fd = openat(gt_fd, "engines", O_RDONLY);
+ 					igt_require(engines_fd != -1);
  
- 	igt_sysfs_printf(engine, property[0], "%d", default_min);
- 	igt_sysfs_scanf(engine, property[0], "%u", &set);
--	igt_assert_eq(set, default_min);
-+	igt_assert_neq(set, default_min);
- 
- 	igt_sysfs_printf(engine, property[0], "%d", min);
- 	igt_sysfs_scanf(engine, property[0], "%u", &set);
- 	igt_assert_eq(set, min);
- 
--	/* Reset max, min to original values */
-+	/* Reset property, max, min to original values */
-+	igt_sysfs_printf(engine, property[0], "%d", store);
- 	igt_sysfs_printf(engine, property[1], "%d", default_min);
- 	igt_sysfs_printf(engine, property[2], "%d", default_max);
- }
+ 					igt_sysfs_engines(xe, engines_fd, property[i], t->fn);
+ 					close(engines_fd);
++					close(gt_fd);
+ 				}
+ 			}
+ 		}
+ 	}
+ 	igt_fixture {
+-		close(sys_fd);
+ 		xe_device_put(xe);
+ 		close(xe);
+ 	}
 -- 
 2.25.1
