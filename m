@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4B8B10E1BD
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Aug 2023 03:56:24 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Mon,  7 Aug 2023 09:28:04 +0530
-Message-Id: <20230807035805.1054349-3-janga.rahul.kumar@intel.com>
-In-Reply-To: <20230807035805.1054349-1-janga.rahul.kumar@intel.com>
-References: <20230807035805.1054349-1-janga.rahul.kumar@intel.com>
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97DB910E12C
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Aug 2023 20:55:19 +0000 (UTC)
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Fri, 4 Aug 2023 16:55:09 -0400
+Message-ID: <20230804205509.280987-2-aurabindo.pillai@amd.com>
+In-Reply-To: <20230804205509.280987-1-aurabindo.pillai@amd.com>
+References: <20230804205509.280987-1-aurabindo.pillai@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] lib/xe: Add hang library support
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH v2 2/2] tests/amdgpu: Add test for MALL static
+ screen cache scanout
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,120 +21,216 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: sai.gowtham.ch@intel.com, kunal1.joshi@intel.com
+Cc: hersenxs.wu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+MALL stands for memory access at last level.
 
-Add helper library support to inject hang batch and clean
-state post hang.
+This test is to verify that the display scanout is triggered from MALL cache instead
+of GPU VRAM when the contents of the screen is idle for some time.
 
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Anna Karas <anna.karas@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
+Requires UMR userspace utility from
+https://gitlab.freedesktop.org/tomstdenis/umr to read MALL register
+value.
+
+This test commits a test pattern FB, sleeps for some
+time, and then reads back the MALL status register to check if display
+refresh from static screen is triggered.
+
+Changes in v2:
+
+Added possibility to skip the test on Asics that do not support MALL
+
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 ---
- lib/xe/xe_gt.c | 64 ++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_gt.h |  7 +++++-
- 2 files changed, 70 insertions(+), 1 deletion(-)
+ tests/amdgpu/amd_mall.c  | 164 +++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build |   1 +
+ 2 files changed, 165 insertions(+)
+ create mode 100644 tests/amdgpu/amd_mall.c
 
-diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
-index 9cad739be..912b1e074 100644
---- a/lib/xe/xe_gt.c
-+++ b/lib/xe/xe_gt.c
-@@ -60,3 +60,67 @@ void xe_force_gt_reset_all(int xe_fd)
- 		xe_force_gt_reset(xe_fd, gt);
- }
- 
-+/**
-+ * xe_hang_ring:
-+ * @fd: open xe drm file descriptor
-+ * @ring: execbuf ring flag
+diff --git a/tests/amdgpu/amd_mall.c b/tests/amdgpu/amd_mall.c
+new file mode 100644
+index 000000000..6f7afab31
+--- /dev/null
++++ b/tests/amdgpu/amd_mall.c
+@@ -0,0 +1,164 @@
++/*
++ * Copyright 2023 Advanced Micro Devices, Inc.
 + *
-+ * This helper function injects a hanging batch into @ring. It returns a
-+ * #igt_hang_t structure which must be passed to xe_post_hang_ring() for
-+ * hang post-processing (after the gpu hang interaction has been tested.
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
 + *
-+ * Returns:
-+ * Structure with helper internal state for xe_post_hang_ring().
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
 + */
-+igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
-+				unsigned int flags)
++
++#include "igt.h"
++#include "igt_amd.h"
++#include "igt_core.h"
++#include <fcntl.h>
++
++IGT_TEST_DESCRIPTION("Test display refresh from MALL cache");
++
++#define MALL_SETTLE_DELAY 10
++
++/* Common test data. */
++typedef struct data {
++	igt_display_t display;
++	igt_plane_t *primary;
++	igt_output_t *output;
++	igt_pipe_t *pipe;
++	igt_pipe_crc_t *pipe_crc;
++	drmModeModeInfo *mode;
++	enum pipe pipe_id;
++	int fd;
++	int w;
++	int h;
++} data_t;
++
++struct line_check {
++	int found;
++	const char *substr;
++};
++
++/* Common test setup. */
++static void test_init(data_t *data)
 +{
-+	uint16_t class;
-+	uint32_t vm;
-+	unsigned int exec_queue;
-+	igt_spin_t *spin_t;
++	igt_display_t *display = &data->display;
++	bool mall_capable = false;
 +
-+	vm = xe_vm_create(fd, 0, 0);
++	/* It doesn't matter which pipe we choose on amdpgu. */
++	data->pipe_id = PIPE_A;
++	data->pipe = &data->display.pipes[data->pipe_id];
 +
-+	switch (ring) {
-+	case I915_EXEC_DEFAULT:
-+	case I915_EXEC_RENDER:
-+		if (IS_PONTEVECCHIO(intel_get_drm_devid(fd)))
-+			class = DRM_XE_ENGINE_CLASS_COPY;
-+		else
-+			class = DRM_XE_ENGINE_CLASS_RENDER;
-+		break;
-+	case I915_EXEC_BLT:
-+		class = DRM_XE_ENGINE_CLASS_COPY;
-+		break;
-+	case I915_EXEC_BSD:
-+		class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
-+		break;
-+	case I915_EXEC_VEBOX:
-+		class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
-+		break;
-+	default:
-+		igt_assert_f(false, "Unknown engine: %x", (uint32_t) flags);
++	igt_display_reset(display);
++
++	mall_capable =  igt_amd_is_mall_capable(data->fd);
++	igt_require_f(mall_capable, "Requires hardware that supports MALL cache\n");
++
++	/* find a connected output */
++	data->output = NULL;
++	for (int i=0; i < data->display.n_outputs; ++i) {
++		drmModeConnector *connector = data->display.outputs[i].config.connector;
++		if (connector->connection == DRM_MODE_CONNECTED) {
++			data->output = &data->display.outputs[i];
++		}
++	}
++	igt_require_f(data->output, "Requires a connected display\n");
++
++	data->mode = igt_output_get_mode(data->output);
++	igt_assert(data->mode);
++
++	data->primary =
++		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
++
++	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
++					  IGT_PIPE_CRC_SOURCE_AUTO);
++
++	igt_output_set_pipe(data->output, data->pipe_id);
++
++	data->w = data->mode->hdisplay;
++	data->h = data->mode->vdisplay;
++}
++
++/* Common test cleanup. */
++static void test_fini(data_t *data)
++{
++	igt_pipe_crc_free(data->pipe_crc);
++	igt_display_reset(&data->display);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
++}
++
++static bool check_cmd_output(const char *line, void *data)
++{
++	struct line_check *check = data;
++
++	if (strstr(line, check->substr)) {
++		check->found++;
 +	}
 +
-+	exec_queue = xe_exec_queue_create_class(fd, vm, class);
-+
-+	spin_t = igt_spin_new(fd, .ahnd = ahnd, .engine = exec_queue, .vm = vm,
-+				.flags = IGT_SPIN_NO_PREEMPTION);
-+	return (igt_hang_t){ spin_t, exec_queue, 0, flags };
++	return false;
 +}
-+
-+/**
-+ * xe_post_hang_ring:
-+ * @fd: open xe drm file descriptor
-+ * @arg: hang state from xe_hang_ring()
-+ *
-+ * This function does the necessary post-processing after a gpu hang injected
-+ * with xe_hang_ring().
-+ */
-+void xe_post_hang_ring(int fd, igt_hang_t arg)
++static void test_mall_ss(data_t *data)
 +{
-+	xe_exec_queue_destroy(fd, arg.ctx);
-+	xe_vm_destroy(fd, arg.spin->vm);
++	igt_display_t *display = &data->display;
++	igt_fb_t rfb;
++	int exec_ret;
++	struct line_check line = {0};
++
++	test_init(data);
++
++	igt_create_pattern_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, 0, &rfb);
++	igt_plane_set_fb(data->primary, &rfb);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	sleep(MALL_SETTLE_DELAY);
++
++	igt_system_cmd(exec_ret, "umr -O bits -r *.*.HUBP0_HUBP_MALL_STATUS | grep MALL_IN_USE");
++
++	igt_skip_on_f(exec_ret != IGT_EXIT_SUCCESS, "Error running UMR\n");
++
++	line.substr = "1 (0x00000001)";
++	igt_log_buffer_inspect(check_cmd_output, &line);
++
++	igt_assert_eq(line.found, 1);
++
++	igt_remove_fb(data->fd, &rfb);
++	test_fini(data);
 +}
 +
-diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
-index e075ebf62..26bbe23d4 100644
---- a/lib/xe/xe_gt.h
-+++ b/lib/xe/xe_gt.h
-@@ -12,6 +12,9 @@
- 
- #include "igt_core.h"
- #include "igt_sysfs.h"
-+#include "lib/igt_gt.h"
-+#include "lib/intel_chipset.h"
-+#include "xe_spin.h"
- #include "xe_ioctl.h"
- #include "xe_query.h"
- 
-@@ -24,4 +27,6 @@
- 
- bool has_xe_gt_reset(int fd);
- void xe_force_gt_reset_all(int fd);
--
-+igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
-+				unsigned int flags);
-+void xe_post_hang_ring(int fd, igt_hang_t arg);
++igt_main
++{
++	data_t data;
++
++	igt_skip_on_simulation();
++
++	memset(&data, 0, sizeof(data));
++
++	igt_fixture
++	{
++		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.fd);
++		igt_require(data.display.is_atomic);
++		igt_display_require_output(&data.display);
++	}
++
++	igt_describe("Tests whether display scanout is triggered from MALL cache instead "
++		     "of GPU VRAM when screen contents are idle");
++	igt_subtest("static-screen") test_mall_ss(&data);
++
++	igt_fixture
++	{
++		igt_display_fini(&data.display);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index e179bddcd..9bed83366 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -33,6 +33,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_vcn',
+ 			  'amd_vm',
+ 			  'amd_vrr_range',
++			  'amd_mall',
+ 			]
+ 	amdgpu_deps += libdrm_amdgpu
+ endif
 -- 
-2.25.1
+2.41.0
